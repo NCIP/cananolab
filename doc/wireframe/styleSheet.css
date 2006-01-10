@@ -161,7 +161,7 @@ td.subMenuFooter{ /* for the last row in the submenu left of the footer menu */
 LINKS BEGIN 
 ###############*/
 a:link,a:visited,a:active{ /* default links */
-	color:#000000; /* constant: black */
+	color:#333333; /* constant: dark gray */
 	text-decoration:underline;	
 	white-space: nowrap;
 }
@@ -328,14 +328,14 @@ DATA TABLE BEGINS
 ###############*/
 .dataTablePrimaryLabel{ /* for the first row */
   font-family:arial,helvetica,verdana,sans-serif;
-  font-size:0.8em;
+  font-size:0.7em;
   font-weight:bold;
-  background-color:#5C5C5C; /* constant: dark gray */
+  background-color:#666666; /* constant: dark gray */
   color:#FFFFFF; /* constant: white */
   border-top:1px solid #5C5C5C; /* constant: dark gray */
   border-left:1px solid #5C5C5C; /* constant: dark gray */
   border-right:1px solid #5C5C5C; /* constant: dark gray */
-  padding-left:0.4em;
+  padding-left:0.2em;
 }
 .dataTableSecondaryLabel{ /* for the optional second row */
   font-family:arial,helvetica,verdana,sans-serif;
@@ -417,6 +417,17 @@ h2,.h2{ /* for header of page */
   color:#5C5C5C; /* constant: dark gray */
   text-align:center;
 }
+.formLabelGrey{
+	font-family:arial,helvetica,verdana,sans-serif;
+	font-size:0.7em;
+	background-color:#cccccc;
+	color:#666666;
+	border-right:1px solid #5C5C5C;
+	border-bottom:1px solid #5C5C5C;
+	text-align:right;
+	border-left: 1px solid #5C5C5C;
+	padding-left:0.2em;
+}
 .formLabelWhite{
 	font-family:arial,helvetica,verdana,sans-serif;
 	font-size:0.7em;
@@ -426,6 +437,16 @@ h2,.h2{ /* for header of page */
 	border-bottom:1px solid #5C5C5C;
 	text-align:right;
 	border-left: 1px solid #5C5C5C;
+	padding-left:0.2em;
+}
+td.formFieldGrey {
+  font-family:arial,helvetica,verdana,sans-serif;
+  font-size:0.7em;
+  color:#666666; /* constant: black */
+  border-right:1px solid #5C5C5C; /* constant: dark gray */
+  border-bottom:1px solid #5C5C5C; /* constant: dark gray */
+  background-color:#cccccc; /* constant: light gray */
+	padding-left:0.2em;
 }
 td.formFieldWhite {
   font-family:arial,helvetica,verdana,sans-serif;
@@ -434,6 +455,7 @@ td.formFieldWhite {
   border-right:1px solid #5C5C5C; /* constant: dark gray */
   border-bottom:1px solid #5C5C5C; /* constant: dark gray */
   background-color:#FFFFFF; /* constant: light gray */
+	padding-left:0.2em;
 }
 h3,.h3{ /* for title of page */
   font-size:1.3em;
