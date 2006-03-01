@@ -266,6 +266,12 @@ input.formFieldSized,textarea.formFieldSized,select.formFieldSized{ /* for the f
   font-size:1em;
 	width:25em;
 }
+.loginStatus {
+	font-size: .7em;
+	font-family: Arial, Helvetica, sans-serif;
+	font-style: normal;
+  color: white;
+}
 td.formFieldLogin{ /* for the cell that contains the form elements */
   font-family:arial,helvetica,verdana,sans-serif;
   font-size:0.7em;
@@ -327,9 +333,9 @@ SIDEBAR BEGINS
 DATA TABLE BEGINS 
 ###############*/
 .dataTablePrimaryLabel{ /* for the first row */
-  font-family:arial,helvetica,verdana,sans-serif;
-  font-size:0.7em;
-  font-weight:bold;
+  font-family:arial, helvetica, verdana, sans-serif;
+  font-size:0.6em;
+  font-weight:bolder;
   background-color:#666666; /* constant: dark gray */
   color:#FFFFFF; /* constant: white */
   border-top:1px solid #5C5C5C; /* constant: dark gray */
@@ -425,6 +431,18 @@ h2,.h2{ /* for header of page */
 	border-right:1px solid #5C5C5C;
 	border-bottom:1px solid #5C5C5C;
 	text-align:right;
+	border-left: 1px solid #5C5C5C;
+	padding-left:0.2em;
+}
+.formLabelBoxWhite{
+	font-family:arial,helvetica,verdana,sans-serif;
+	font-size:0.7em;
+	background-color:#FFFFFF;
+	color:#000000;
+	border-right:1px solid #5C5C5C;
+	border-bottom:1px solid #5C5C5C;
+	border-top:1px solid #5C5C5C;
+	text-align:center;
 	border-left: 1px solid #5C5C5C;
 	padding-left:0.2em;
 }
