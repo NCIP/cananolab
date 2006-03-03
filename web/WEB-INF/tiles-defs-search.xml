@@ -6,7 +6,7 @@
     
 <tiles-definitions>
      <!-- definition for the search sample page -->
-    <definition name="calab.searchsample" extends="calab.home">
+    <definition name="search.searchsample" extends="calab.home">
         <put name="calabContent" value="/search/bodySearchSample.jsp"/>
     </definition>
 </tiles-definitions>

@@ -6,7 +6,7 @@
     
 <tiles-definitions>
      <!-- definition for the create sample page -->
-    <definition name="calab.createsample" extends="calab.home">
+    <definition name="administration.createsample" extends="calab.home">
         <put name="calabContent" value="/administration/bodyCreateSample.jsp"/>
     </definition>
 </tiles-definitions>
