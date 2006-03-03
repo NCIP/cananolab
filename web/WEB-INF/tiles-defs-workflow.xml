@@ -6,7 +6,7 @@
     
 <tiles-definitions>
      <!-- definition for the use aliquot page -->
-    <definition name="calab.usealiquot" extends="calab.home">
+    <definition name="workflow.usealiquot" extends="calab.home">
         <put name="calabContent" value="/workflow/bodyUseAliquot.jsp"/>
     </definition>
 </tiles-definitions>
