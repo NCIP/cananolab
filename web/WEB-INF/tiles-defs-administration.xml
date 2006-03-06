@@ -9,4 +9,8 @@
     <definition name="administration.createsample" extends="calab.home">
         <put name="calabContent" value="/administration/bodyCreateSample.jsp"/>
     </definition>
+    <definition name="administration.sampledetails" extends="calab.home">
+        <put name="calabContent" value="/administration/bodySampleDetails.jsp"/>
+    </definition>
+    
 </tiles-definitions>
