@@ -1,0 +1,27 @@
+<form-validation>
+	<global>
+		<validator name="required" classname="org.apache.struts.validator.FieldChecks" method="validateRequired"
+			methodParams="java.lang.Object,
+                 org.apache.commons.validator.ValidatorAction,
+                 org.apache.commons.validator.Field,
+                 org.apache.struts.action.ActionErrors,
+                 javax.servlet.http.HttpServletRequest"
+			msg="errors.required" />
+
+		<validator name="mask" classname="org.apache.struts.validator.FieldChecks" method="validateMask"
+			methodParams="java.lang.Object,
+                 org.apache.commons.validator.ValidatorAction,
+                 org.apache.commons.validator.Field,
+                 org.apache.struts.action.ActionErrors,
+                 javax.servlet.http.HttpServletRequest"
+			msg="errors.invalid" />
+
+		<validator name="mask" classname="org.apache.struts.validator.FieldChecks" method="validateDate"
+			methodParams="java.lang.Object,
+                 org.apache.commons.validator.ValidatorAction,
+                 org.apache.commons.validator.Field,
+                 org.apache.struts.action.ActionErrors,
+                 javax.servlet.http.HttpServletRequest"
+			msg="errors.invalid" />
+	</global>
+</form-validation>
