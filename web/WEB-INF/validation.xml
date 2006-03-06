@@ -1,0 +1,11 @@
+<form-validation>
+ <formset>
+  <form name="useAliquotForm">
+    <field 
+      property="aliquotIds"
+      depends="required">
+      <arg key="useAliquotForm.aliquotIds"/>
+    </field>
+  </form>
+ </formset>
+</form-validation>
