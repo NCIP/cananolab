@@ -73,7 +73,8 @@ true,				// UseScrollingForTallMenus
 ];
 
 
-// === 4 === MENU DEFINITIONS
+// === MENU DEFINITIONS
+// Wrokflow submenu
 s_add(
 {
 N:'workflow',	// NAME
@@ -86,5 +87,36 @@ S:s_CSSTop	// STYLE Array to use for this menu
 },
 [		// define items {U:'url',T:'text' ...} look at the Manual for details
 {U:'',T:'Execute Workflow'}
+]
+);
+// Administration submenu
+s_add(
+{
+N:'administration',	// NAME
+LV:1,		// LEVEL (look at IMPORTANT NOTES 1 in the Manual)
+MinW:130,	// MINIMAL WIDTH
+T:138,		// TOP (look at IMPORTANT HOWTOS 6 in the Manual)
+L:236,		// LEFT (look at IMPORTANT HOWTOS 6 in the Manual)
+P:false,	// menu is PERMANENT (you can only set true if this is LEVEL 1 menu)
+S:s_CSSTop	// STYLE Array to use for this menu
+},
+[		// define items {U:'url',T:'text' ...} look at the Manual for details
+{U:'',T:'Manage Samples'}
+]
+);
+// Wrokflow submenu
+s_add(
+{
+N:'search',	// NAME
+LV:1,		// LEVEL (look at IMPORTANT NOTES 1 in the Manual)
+MinW:130,	// MINIMAL WIDTH
+T:138,		// TOP (look at IMPORTANT HOWTOS 6 in the Manual)
+L:236,		// LEFT (look at IMPORTANT HOWTOS 6 in the Manual)
+P:false,	// menu is PERMANENT (you can only set true if this is LEVEL 1 menu)
+S:s_CSSTop	// STYLE Array to use for this menu
+},
+[		// define items {U:'url',T:'text' ...} look at the Manual for details
+{U:'',T:'Search Workflow'}
+{U:'',T:'Search Sample'}
 ]
 );
