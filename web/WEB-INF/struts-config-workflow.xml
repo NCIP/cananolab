@@ -2,16 +2,22 @@
 <!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
 <struts-config>
 	<form-beans>
-		<form-bean name="loadAliquotsForm"
-			type="org.apache.struts.action.DynaActionForm">
+		<form-bean name="loadAliquotsForm" type="org.apache.struts.action.DynaActionForm"></form-bean>
+		<form-bean name="useAliquotForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="action" type="java.lang.String" />
+			<form-property name="aliquotIds" type="java.lang.String[]"/>
+			<form-property name="comments" type="java.lang.String"/>
 		</form-bean>
 	</form-beans>
 	<action-mappings>
-		<action path="/loadAliquots" name="loadAliquotsForm"
-			type="gov.nih.nci.calab.ui.workflow.LoadAliquotsAction"
-			scope="request" validate="false">
+		<action path="/loadAliquots" name="loadAliquotsForm" type="gov.nih.nci.calab.ui.workflow.LoadAliquotsAction" scope="request" validate="false">
 			<forward name="success" path="workflow.usealiquot"></forward>
-			<forward name="failure" path="workflow.error"></forward>
-		</action>	
+			<forward name="failure" path="workflow.message"></forward>
+		</action>
+		<action input="input" name="useAliquotForm" path="/useAliquot" scope="request" type="gov.nih.nci.calab.ui.workflow.UseAliquotAction">
+			<forward name="blank" path="workflow.message" />
+			<forward name="success" path="workflow.message" />
+			<forward name="input" path="workflow.usealiquot"/>
+		</action>
 	</action-mappings>
 </struts-config>
