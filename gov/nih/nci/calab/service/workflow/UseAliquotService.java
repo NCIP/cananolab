@@ -10,7 +10,7 @@ public class UseAliquotService {
 	 * 
 	 * @return a list of aliquot id
 	 */
-	public List<String> getAliquot()
+	public List<String> getAliquots()
 	{
 		// Need detail....
 		
@@ -35,7 +35,7 @@ public class UseAliquotService {
 	 * 
 	 * @return a list of aliquot id 
 	 */
-	public List<String> getAliquotByAssay(String assayTypeName, String assayName)
+	public List<String> getAliquotsByAssay(String assayTypeName, String assayName)
 	{
 		// Detail impl needed
 		
