@@ -4,6 +4,13 @@
 
 <form-validation>
  <formset>
+   <form name="loadAliquotsForm">
+    <field 
+      property="runId"
+      depends="required">
+      <arg0 key="loadAliquotsForm.runId"/>
+    </field>
+  </form>
   <form name="useAliquotForm">
     <field 
       property="aliquotIds"
