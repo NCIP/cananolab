@@ -13,18 +13,20 @@
 					<table summary="" cellpadding="0" cellspacing="0" border="0" class="contentPage" width="600">
 						<tr>
 							<td width="100%" valign="top">
-								<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+								<table width="100%" border="0" align="top" cellpadding="0" cellspacing="0">
 									<tr>
 										<td class="contentPage">
 											<logic:messagesPresent>
-												<html:messages id="err" message="true" property="error">
-													<bean:write name="err" />
-													<br />
+											    <font color="red">ERROR</font><ul>
+												<html:messages id="error">
+													<li><bean:write name="error" /></li>
 												</html:messages>
-										    </logic:messagesPresent>
-										    <br>
-										    <logic:messagesPresent message="true">
-												<html:messages id="msg" message="true" property="message">
+												</ul>
+											</logic:messagesPresent>
+
+											<br>
+											<logic:messagesPresent message="true">
+												<html:messages id="msg" message="true">
 													<bean:write name="msg" />
 													<br />
 												</html:messages>
