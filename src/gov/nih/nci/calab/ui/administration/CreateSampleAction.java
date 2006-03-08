@@ -27,4 +27,10 @@ public class CreateSampleAction extends AbstractBaseAction  {
 		}
 		return forward;
 	}
+	
+	public boolean loginRequired() {
+		//temporarily set to false until login module is working
+		return false; 
+		//return true;
+	}
 }
