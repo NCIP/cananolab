@@ -6,8 +6,10 @@
 		<forward name="login" path="/index.jsp" />
 		<forward name="error" path="calab.error" />
 	</global-forwards>
-
-	<message-resources parameter="resources.application" null="false" />
+	<controller>
+		<set-property value="true" property="inputForward" />
+	</controller>
+	<message-resources parameter="gov.nih.nci.calab.resources.application" null="false" />
 	<plug-in className="org.apache.struts.tiles.TilesPlugin">
 		<set-property property="definitions-config"
 			value="/WEB-INF/tiles-defs.xml,       												   
