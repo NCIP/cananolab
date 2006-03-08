@@ -17,11 +17,12 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: */
+/* CVS $Id: AbstractBaseAction.java,v 1.2 2006-03-08 19:30:42 pansu Exp $ */
 
-import org.apache.log4j.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.log4j.Logger;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -37,10 +38,16 @@ public abstract class AbstractBaseAction extends Action {
 		ActionForward forward = null;
 		try {
 			/**@todo fill in the common operations */
-			forward = executeTask(mapping, form, request, response);
+			if (!loginRequired() ||
+				loginRequired() && isUserLoggedIn(request)) {
+				forward = executeTask(mapping, form, request, response);	
+			}
+			else {
+				logger.debug("an attempt to access the page without authentication.");
+				forward = mapping.findForward("login");
+			}
 		} catch (Throwable t) {
-			logger.error("Caught System Exception", t);
-			
+			logger.error("Caught System Exception", t);		
 			/**@todo add error handling details here */
 			forward = mapping.findForward("error");
 		}
@@ -48,10 +55,25 @@ public abstract class AbstractBaseAction extends Action {
 	}
 
 	/**
+	 * 
+	 * @param request
+	 * @return whether the user is successfully logged in.
+	 */
+	private boolean isUserLoggedIn(HttpServletRequest request) {
+		boolean isLoggedIn=false;
+		/** @todo fill in details of checking whether user is valid within the request */
+		return isLoggedIn;
+	}
+	
+	/**
 	 * Provide implementation of this abstract method in each subclass.
 	 */
 	public abstract ActionForward executeTask(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception;
 
+	/**
+	 * Provide implementation of the abstract method in each subclass.
+	 */
+	public abstract boolean loginRequired();
 }
