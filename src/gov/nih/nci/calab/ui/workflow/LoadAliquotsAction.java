@@ -5,19 +5,21 @@ package gov.nih.nci.calab.ui.workflow;
  * @author pansu
  */
 
-/* CVS $Id: LoadAliquotsAction.java,v 1.2 2006-03-08 19:31:11 pansu Exp $ */
-import java.util.ArrayList;
-import java.util.List;
+/* CVS $Id: LoadAliquotsAction.java,v 1.3 2006-03-08 22:09:12 pansu Exp $ */
+import gov.nih.nci.calab.service.workflow.UseAliquotService;
+import gov.nih.nci.calab.ui.core.AbstractBaseAction;
 
-import org.apache.log4j.*;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-
-import gov.nih.nci.calab.ui.core.*;
+import org.apache.struts.validator.DynaValidatorForm;
 
 public class LoadAliquotsAction extends AbstractBaseAction  {
 	private static Logger logger=Logger.getLogger(LoadAliquotsAction.class);
@@ -26,14 +28,16 @@ public class LoadAliquotsAction extends AbstractBaseAction  {
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		ActionForward forward=null;
+		HttpSession session=request.getSession();
 		try {
 			/**@todo fill in details for getting aliquot IDs */
 			// tmp codes to be replaced.
-			List allAliquotIds=new ArrayList();
-			allAliquotIds.add("NCL-3-1");
-			allAliquotIds.add("NCL-3-2");
-			allAliquotIds.add("NCL-3-3");
-			request.getSession().setAttribute("allAliquotIds", allAliquotIds);
+			DynaValidatorForm loadAliquotsForm = (DynaValidatorForm) form;
+			String runId=(String)loadAliquotsForm.get("runId");
+			UseAliquotService service=new UseAliquotService();
+			List<String> allAliquotIds=service.getAliquots();
+			session.setAttribute("allAliquotIds", allAliquotIds);
+			session.setAttribute("runId", runId);
 			// end of tmp codes
 			
 			forward=mapping.findForward("success");	
