@@ -10,6 +10,6 @@
         <put name="calabContent" value="/workflow/bodyUseAliquot.jsp"/>
     </definition>
     <definition name="workflow.message" extends="calab.home">
-        <put name="calabContent" value="/workflow/bodyMessage.jsp"/>
+        <put name="calabContent" value="/bodyMessage.jsp"/>
     </definition>    
 </tiles-definitions>
