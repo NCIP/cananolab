@@ -50,7 +50,7 @@ true,				// UseSubImg
 7,				// SubImgWidth
 7,				// SubImgHeight
 5,				// SubImgTop px (from item top)
-'#8A8CCC',			// SELECTED ItemBgColor
+'#6A8989',			// SELECTED ItemBgColor
 '#FFFFFF',			// SELECTED ItemFontColor
 '',	// SELECTED SubImgSrc
 true,				// UseScrollingForTallMenus
@@ -119,5 +119,32 @@ S:s_CSSTop	// STYLE Array to use for this menu
 [		// define items {U:'url',T:'text' ...} look at the Manual for details
 {U:'searchWorkflow.html',T:'Search Workflow'},
 {U:'searchSample.html',T:'Search Sample'}
+]
+);
+
+//TOOL TIP
+
+//workflow Search section assayName
+s_add(
+{N:'workflowSearch_assayName',LV:1,W:186,T:'mouseY-10',L:'mouseX+5',P:false,S:s_CSSTop},
+[
+{U:'',T:'Assay Name',SELECTED:true},
+{U:'',T:'The Assay name could be wild carded by \'*\'.',ROLL:true}
+]
+);
+//Assay Type
+s_add(
+{N:'workflowSearch_assayType',LV:1,W:186,T:'mouseY+10',L:'mouseX+10',P:false,S:s_CSSTop},
+[
+{U:'',T:'Assay Type',SELECTED:true},
+{U:'',T:'The Assay type could be selected from the list.',ROLL:true}
+]
+);
+//workflow Search section assay Run Date
+s_add(
+{N:'workflowSearch_assayName',LV:1,W:186,T:'mouseY-10',L:'mouseX+5',P:false,S:s_CSSTop},
+[
+{U:'',T:'Assay Name',SELECTED:true},
+{U:'',T:'The Assay name could be wild carded by \'*\'.',ROLL:true}
 ]
 );
