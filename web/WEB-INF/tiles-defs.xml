@@ -17,6 +17,7 @@
 		<put name="nciFooter" value="/html/nciFooter.html" />
 	</definition>
 	<definition name="calab.error" extends="calab.home">
-		<put name="calabContent" value="/bodyError.jsp" />
+		<put name="calabContent" value="/bodyMessage.jsp" />
+		<put name="menu" value="home"/>
 	</definition>
 </tiles-definitions>
