@@ -2,17 +2,15 @@
 <!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
 <struts-config>
 	<form-beans>
-		<form-bean name="loadAliquotsForm" type="org.apache.struts.validator.DynaValidatorForm">
-			<form-property name="runId" type="java.lang.String" />
-		</form-bean>
-		<form-bean name="useAliquotForm" type="org.apache.struts.validator.DynaValidatorForm">
+		<form-bean name="useAliquotForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+     		<form-property name="runId" type="java.lang.String" />
 			<form-property name="action" type="java.lang.String" />
 			<form-property name="aliquotIds" type="java.lang.String[]" />
 			<form-property name="comments" type="java.lang.String" />
 		</form-bean>
 	</form-beans>
 	<action-mappings>
-		<action input="input" path="/loadAliquots" name="loadAliquotsForm" type="gov.nih.nci.calab.ui.workflow.LoadAliquotsAction" scope="request">
+		<action input="input" name="useAliquotForm" path="/loadAliquots" type="gov.nih.nci.calab.ui.workflow.LoadAliquotsAction" scope="request">
 			<forward name="success" path="workflow.usealiquot"></forward>
 			<forward name="failure" path="workflow.message"></forward>
 			<forward name="input" path="workflow.message"></forward>
