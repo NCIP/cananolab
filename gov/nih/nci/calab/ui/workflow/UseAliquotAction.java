@@ -5,7 +5,7 @@ package gov.nih.nci.calab.ui.workflow;
  * @author pansu
  */
 
-/* CVS $Id: UseAliquotAction.java,v 1.1 2006-03-08 19:31:11 pansu Exp $*/
+/* CVS $Id: UseAliquotAction.java,v 1.2 2006-03-09 17:26:47 pansu Exp $*/
 
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
 
@@ -18,7 +18,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
-import org.apache.struts.validator.DynaValidatorForm;
+import org.apache.struts.validator.DynaValidatorActionForm;
 
 public class UseAliquotAction extends AbstractBaseAction {
 	private static Logger logger=Logger.getLogger(LoadAliquotsAction.class);
@@ -27,10 +27,11 @@ public class UseAliquotAction extends AbstractBaseAction {
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		ActionForward forward=null;
-		DynaValidatorForm useAliquotForm = (DynaValidatorForm) form;
-		String[] aliquotIds=(String[])useAliquotForm.get("aliquotIds");
-		String action=(String)useAliquotForm.get("action");
-		String comments=(String)useAliquotForm.get("comments");
+		DynaValidatorActionForm theForm = (DynaValidatorActionForm) form;
+		String runId=(String)theForm.get("runId");
+		String[] aliquotIds=(String[])theForm.get("aliquotIds");
+		String action=(String)theForm.get("action");
+		String comments=(String)theForm.get("comments");
 		try {
 			/**@todo fill in details for saving aliquot IDs and comments*/
 			if (action.equalsIgnoreCase("submit")) {
