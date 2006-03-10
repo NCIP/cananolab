@@ -5,7 +5,7 @@ package gov.nih.nci.calab.ui.workflow;
  * @author pansu
  */
 
-/* CVS $Id: LoadAliquotsAction.java,v 1.4 2006-03-09 17:26:39 pansu Exp $ */
+/* CVS $Id: LoadAliquotsAction.java,v 1.5 2006-03-10 16:29:03 pansu Exp $ */
 import gov.nih.nci.calab.service.workflow.UseAliquotService;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
 
@@ -28,8 +28,6 @@ public class LoadAliquotsAction extends AbstractBaseAction  {
 			HttpServletResponse response) throws Exception {
 		ActionForward forward=null;
 		try {
-			/**@todo fill in details for getting aliquot IDs */
-			// tmp codes to be replaced.
 			DynaValidatorActionForm theForm = (DynaValidatorActionForm) form;
 			String runId=(String)theForm.get("runId");
 			UseAliquotService service=new UseAliquotService();
@@ -37,13 +35,12 @@ public class LoadAliquotsAction extends AbstractBaseAction  {
 			//use to populate the drop-down list.
 			request.getSession().setAttribute("allAliquotIds", allAliquotIds);
 			theForm.set("runId", runId);
-			// end of tmp codes
 			
 			forward=mapping.findForward("success");	
 		}
 		catch(Exception e) {
 			logger.error("Caught exception when loading in aliquot IDs.", e);
-			/**@todo fill in details for error handling */
+			//TODO fill in details for error handling */
 			forward=mapping.findForward("failure");
 		}
 		return forward;
