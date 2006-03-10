@@ -8,5 +8,6 @@
      <!-- definition for the search sample page -->
     <definition name="search.searchsample" extends="calab.home">
         <put name="calabContent" value="/search/bodySearchSample.jsp"/>
+        <put name="menu" value="search"/>
     </definition>
 </tiles-definitions>
