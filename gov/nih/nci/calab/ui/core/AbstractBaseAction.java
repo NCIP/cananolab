@@ -17,7 +17,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: AbstractBaseAction.java,v 1.2 2006-03-08 19:30:42 pansu Exp $ */
+/* CVS $Id: AbstractBaseAction.java,v 1.3 2006-03-10 16:29:20 pansu Exp $ */
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,7 +37,7 @@ public abstract class AbstractBaseAction extends Action {
 
 		ActionForward forward = null;
 		try {
-			/**@todo fill in the common operations */
+			//TODO fill in the common operations */
 			if (!loginRequired() ||
 				loginRequired() && isUserLoggedIn(request)) {
 				forward = executeTask(mapping, form, request, response);	
@@ -48,7 +48,7 @@ public abstract class AbstractBaseAction extends Action {
 			}
 		} catch (Throwable t) {
 			logger.error("Caught System Exception", t);		
-			/**@todo add error handling details here */
+			//TODO add error handling details here */
 			forward = mapping.findForward("error");
 		}
 		return forward;
