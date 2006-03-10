@@ -1,5 +1,10 @@
 package gov.nih.nci.calab.ui.administration;
-
+/**
+ * This class saves user entered sample and container information 
+ * into the database.
+ * 
+ * @author pansu
+ */
 import org.apache.log4j.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +23,7 @@ public class CreateSampleAction extends AbstractBaseAction  {
 			HttpServletResponse response) throws Exception {
 		ActionForward forward=null;
 		try {
-			/**@todo fill in details for sample information */
+			//TODO fill in details for sample information */
 			forward=mapping.findForward("success");	
 		}
 		catch(Exception e) {
