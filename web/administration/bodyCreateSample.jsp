@@ -1,419 +1,231 @@
-<%@ taglib uri="http://struts.apache.org/tags-tiles" prefix="tiles" %>
-<script type="text/javascript" src="javascript/calendar2.js"></script>		  
-<form name="createSample">
-<tr>
-   <td valign="top" width="100%">
-   <!-- target of anchor to skip menus -->
-   <table height="100%" cellspacing="0" cellpadding="0" width="600" summary="" border="0">
-   <!-- banner begins --><!-- banner begins -->
-   <tbody>
-     <tr>
-       <td height="100%">
-         <table class="contentPage" cellspacing="0" cellpadding="0" width="600" summary="" border="0">
-           <tbody>
-             <tr>
-               <td valign="top" width="100%">
-                 <table cellspacing="0" cellpadding="0" width="100%" align="center" border="0">
-                   <tbody>
-                     <tr>
-                       <td class="contentPage">
-                         <h2><br>
-                         Create Sample</h2>
+<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
+<%@	taglib uri="/WEB-INF/c.tld" prefix="c"%>
 
-                         <blockquote>
-                           <table class="topBorderOnly" cellspacing="0" cellpadding="3" width="90%" align="center" summary="" border="0">
-                             <tbody>
-                               <tr class="topBorder">
-                                 <td class="dataTablePrimaryLabel">
-                                   <div align="justify">
-                                     <em>DESCRIPTION</em>
-                                   </div>
-                                 </td>
-                               </tr>
+<script type="text/javascript" src="javascript/calendar2.js"></script>
 
-                               <tr>
-                                 <td class="formLabel">
-                                   <div align="justify">
-                                     <strong>Sample ID* <span class="formField"><span class="formFieldWhite"><input size="10" value="NCL6" name="Input22"></span></span>
-                                     &nbsp; &nbsp; Type <span class="formFieldWhite"><select name="select12">
-                                       <option value="sample type1" selected>
-                                         sample type 1
-                                       </option>
+<script type="text/javascript">
+function refreshContainers() {
+  var currLoc=window.location.href;
+  var ind=currLoc.indexOf('?');
+  var newLoc;
+  if (ind!=-1) {
+     newLoc=currLoc.substring(0, ind);
+  }
+  else {
+     newLoc=window.location.href;
+  }
+  window.location.href=newLoc+"?numberOfContainers="+document.createSampleForm.numberOfContainers.value;
+}
+</script>
 
-                                       <option value="baseline">
-                                         baseline
-                                       </option>
+<html:form action="/createSample">
+	<h2>
+		<br>
+		Create Sample
+	</h2>
+	<blockquote>
 
-                                       <option value="bp1">
-                                         Dendirmer
-                                       </option>
+		<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+			<tbody>
+				<tr class="topBorder">
+					<td class="dataTablePrimaryLabel">
+						<div align="justify">
+							<em>DESCRIPTION</em>
+						</div>
+					</td>
+				</tr>
 
-                                       </select></span> &nbsp; &nbsp; SOP <span class="formFieldWhite"><select name="select7">
-                                       <option value="bp1" selected>
-                                         sample procedure 1
-                                       </option>
+				<tr>
+					<td class="formLabel">
+						<div align="justify">
+							<strong>Sample ID* <span class="formField"><span class="formFieldWhite"><html:text property="sampleId" size="10" /></span></span> &nbsp; &nbsp; Sample Type <span class="formFieldWhite"> <html:select property="sampleType">
+										<html:options name="allSampleTypes" />
+									</html:select> &nbsp; &nbsp; SOP</span></strong>
+						</div>
+					</td>
+				</tr>
 
-                                       <option value="baseline">
-                                         &nbsp;
-                                       </option>
+				<tr>
+					<td class="formLabelWhite">
+						<div align="justify">
+							<strong>Description <br> <span class="formField"><span class="formFieldWhite"><html:textarea property="sampleDescription" cols="70" /></span></span></strong>
+						</div>
+					</td>
+				</tr>
 
-                                       <option value="baseline">
-                                         &nbsp;
-                                       </option>
+				<tr>
+					<td class="formLabel">
+						<div align="justify">
+							<strong>Source <span class="formFieldWhite"> <html:text property="vendor" size="10" /></span> &nbsp; &nbsp; Source ID <span class="formFieldWhite"><html:text property="vendorSampleId" size="10" /> </span> &nbsp; &nbsp; Date Received <html:text
+									property="dateReceived" size="7" /> <span class="formFieldWhite"> <a href="javascript:cal.popup();"><img height="18" src="images/calendar-icon.gif" width="22" border="0" alt="Click Here to Pick up the date"></a></span> </strong>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="formLabelWhite">
+						<div align="justify">
+							<strong>Solubility <br> <span class="formFieldWhite"><html:textarea property="solubility" cols="70" /></span> &nbsp;</strong>
+						</div>
+					</td>
+				</tr>
 
-                                       <option value="bp2">
-                                         &nbsp;
-                                       </option>
+				<tr>
+					<td class="formLabel">
+						<div align="justify">
+							<strong>Lot ID*&nbsp; <html:text property="lotId" size="5" /> &nbsp; &nbsp; &nbsp; Lot Description <span class="formFieldWhite"><html:text property="lotDescription" size="20" /></span> &nbsp; &nbsp; &nbsp; Number of Containers* <span
+								class="formFieldWhite"><html:text property="numberOfContainers" size="2" onchange="javascript:refreshContainers();"/> &nbsp;</span></strong>
 
-                                       <option value="bp3">
-                                         &nbsp;
-                                       </option>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="formLabelWhite">
+						<div align="left">
+							<strong>General Comments</strong>
+							<br>
+							<span class="formField"><span class="formFieldWhite"> <html:textarea property="generalComments" cols="70" /></span></span>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<br>
+		<%-- if request parameter cnum is not entered assume cnum=1 --%>
+		<c:choose>
+			<c:when test='${param.numberOfContainers== null}'>
+				<c:set var="cnum" value="1" />
+			</c:when>
+			<c:otherwise>
+				<c:set var="cnum" value="${param.numberOfContainers}" />
+			</c:otherwise>
+		</c:choose>
+		<%--create container for each container number --%>
+		<c:forEach var="cnum" begin="1" end="${cnum}">
+			<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+				<tbody>
+					<tr class="topBorder">
+						<td class="dataTablePrimaryLabel" width="30%">
+							<div align="justify">
+								<em>CONTAINER <c:out value="${cnum}" /></em>
+							</div>
+						</td>
+					</tr>
 
-                                       <option value="bp4">
-                                         &nbsp;
-                                       </option>
-                                     </select></span></strong>
-                                   </div>
-                                 </td>
-                               </tr>
+					<tr>
+						<td class="formLabel">
+							<div align="justify">
+								<strong>Container Type* <span class="formFieldWhite"> <html:select property="containerType">
+											<html:options name="sampleContainerInfo" property="containerTypes" />
+										</html:select></span> &nbsp; &nbsp; &nbsp; Other <span class="formFieldWhite"><html:text property="otherContainerType" size="8" /></span> &nbsp; &nbsp; &nbsp; </strong>
+							</div>
+						</td>
+					</tr>
 
-                               <tr>
-                                 <td class="formLabelWhite style1">
-                                   <div align="justify">
-                                     Description <span class="formField"><span class="formFieldWhite"><input size="40" value="sample description 1" name=
-                                     "Input222"></span></span>
-                                   </div>
+					<tr>
+						<td class="formLabelWhite style1">
+							<div align="left">
+								<strong>Quantity <span class="formFieldWhite"><html:text size="5" property="quantity" /></span><span class="formFieldWhite"> <html:select property="quantityUnit">
+											<html:options name="sampleContainerInfo" property="quantityUnits" />
+										</html:select> </span> &nbsp; Concentration <span class="formFieldWhite"><html:text size="8" property="concentration" /></span><span class="formFieldWhite"> <html:select property="concentrationUnit">
+											<html:options name="sampleContainerInfo" property="concentrationUnits" />
+										</html:select> </span>&nbsp; Volume <span class="formFieldWhite"><html:text size="8" property="volume" /></span><span class="formFieldWhite"> <html:select property="volumeUnit">
+											<html:options name="sampleContainerInfo" property="volumeUnits" />
+										</html:select></span></strong> &nbsp;&nbsp;&nbsp;
+							</div>
 
-                                   <div align="justify"></div>
-                                 </td>
-                               </tr>
+							<div align="justify"></div>
+						</td>
+					</tr>
+					<tr>
+						<td class="formLabel">
+							<div align="justify">
+								<strong>Diluents/Solvent <html:text property="solvents" size="10" /> &nbsp; &nbsp; &nbsp; Safety Precautions <html:text property="safetyPrecautions" size="30" /> &nbsp; &nbsp; &nbsp;</strong>
+							</div>
+						</td>
+					</tr>
 
-                               <tr>
-                                 <td class="formLabel">
-                                   <div align="justify">
-                                     <strong>Source <span class="formFieldWhite"><select name="select5">
-                                       <option value="baseline" selected>
-                                         vendorX
-                                       </option>
+					<tr>
+						<td class="formLabelWhite style1">
+							<div align="justify">
+								<strong>Storage Conditions <span class="formField"><html:text property="storageConditions" size="50" /></span></strong>
+							</div>
 
-                                       <option value="baseline">
-                                         vendorY
-                                       </option>
+							<div align="justify"></div>
+						</td>
+					</tr>
 
-                                       <option value="bp1">
-                                    
-vendorZ
-                                       </option>
-                                     </select></span> &nbsp; &nbsp; Source ID <span class="formFieldWhite"><select name="select6">
-                                       <option value="baseline" selected>
-                                         vendorX123
-                                       </option>
+					<tr>
+						<td class="formLabel">
+							<div align="left">
+								<strong>Storage Location<br> <br> Room&nbsp; <html:select property="storageRoom">
+										<html:options name="sampleContainerInfo" property="storageRooms" />
+									</html:select> &nbsp; Freezer&nbsp; <html:select property="storageFreezer">
+										<html:options name="sampleContainerInfo" property="storageFreezers" />
+									</html:select> &nbsp;Shelf &nbsp; <html:text property="storageShelf" size="5" /> &nbsp; Box &nbsp; <html:text property="storageBox" size="5" /> &nbsp;</strong>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td class="formLabelWhite">
+							<div align="left">
+								<strong>Comments</strong>
+								<br>
+								<span class="formField"><span class="formFieldWhite"> <html:textarea property="containerComments" cols="70" /> </span></span>
+								<br>
+							</div>
+						</td>
+					</tr>
 
-                                       <option value="baseline">
-                                         &nbsp;
-                                       </option>
+				</tbody>
+			</table>
+			<br>
+		</c:forEach>
 
-                                       <option value="bp1">
-                                         &nbsp;
-                                       </option>
+		<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+			<tbody>
+				<tr>
+					<td width="30%">
+						Accessioned by: Jane Doe Accession Date: 02/06/2006
+						<br>
+						<br>
 
-                                       <option value="bp2">
-                                         &nbsp;
-                                       </option>
+						<table height="32" cellspacing="0" cellpadding="4" width="200" align="right" border="0">
+							<tbody>
+								<tr>
+									<td width="198" height="32">
+										<div align="right">
+											<input onclick="javascript:location.href='createSampleReset.html';" type="button" value="Reset" name="Submit2222">
+											<input onclick="javascript:location.href='createSampleSuccess.html';" type="button" value="Submit" name="Submit2223">
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
 
-                                       <option value="bp3">
-                                         &nbsp;
-                                       </option>
+						<div align="right"></div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
 
-                                       <option value="bp4">
-                                         &nbsp;
-                                       </option>
-                                     </select></span> &nbsp; &nbsp;</strong>
-                                   </div>
-                                 </td>
-                               </tr>
+		<p>
+			&nbsp;
+		</p>
 
-                               <tr>
-                                 <td class="formLabelWhite">
-                                   <div align="justify">
-                                     <strong>Date Recieved <input size="10" name="Input22628"> <span class="formFieldWhite">
-															  				
-															  <a href="javascript:cal.popup();"><img height="18" src=
-                                     "images/calendar-icon.gif" width="22" border="0" alt="Click Here to Pick up the date"></a></span>&nbsp; &nbsp; Solubility <span class="formFieldWhite"><input size="30" value=
-                                     "solubility text for the sample" name="Input226222"></span> &nbsp;</strong>
-                                   </div>
-                                 </td>
-                               </tr>
-														
-                               <tr>
-                                 <td class="formLabel">
-                                   <div align="justify">
-                                     <strong>Lot ID*&nbsp; <input size="8" value="7105" name="Input2262"> &nbsp; &nbsp; &nbsp; Lot Description <span class=
-                                     "formFieldWhite"><input size="15" value="lot description" name="Input22622"></span> &nbsp; &nbsp;
-                                     &nbsp;</strong> <strong>Number of Containers* <span class="formFieldWhite"><input size="3" value="3" name="Input226223">
-                                     &nbsp;</span></strong>
-                                   </div>
-                                 </td>
-                               </tr>
+		<p>
+			&nbsp;
+		</p>
 
-                               <tr>
-                                 <td class="formLabelWhite">
-                                   <div align="left">
-                                     <strong>General Comments</strong><br>
-                                     <br>
-                                     <span class="formField"><span class="formFieldWhite">
-                                     <textarea name="textarea" cols="70">
-general comments about the sample
-</textarea></span></span>
-                                   </div>
-                                 </td>
-                               </tr>
-                             </tbody>
-                           </table><br>
-
-                           <table class="topBorderOnly" cellspacing="0" cellpadding="3" width="90%" align="center" summary="" border="0">
-                             <tbody>
-                               <tr class="topBorder">
-                                 <td class="dataTablePrimaryLabel" width="30%">
-                                   <div align="justify">
-                                     <em>CONTAINER 1</em>
-                                   </div>
-                                 </td>
-                               </tr>
-
-                               <tr>
-                                 <td class="formLabel">
-                                   <div align="justify">
-                                     <strong>Container Type* <span class="formFieldWhite"><select name="select">
-                                       <option value="bp1" selected>
-                                         Tube
-                                       </option>
-
-                                       <option value="bp2">
-                                         Vial
-                                       </option>
-
-                                       <option value="bp3">
-                                         Other
-                                       </option>
-                                     </select></span> &nbsp; &nbsp; &nbsp;Other <span class="formFieldWhite"><input size="10" name="Input226224"></span> &nbsp; &nbsp;
-                                     &nbsp;</strong>
-                                   </div>
-                                 </td>
-                               </tr>
-
-                               <tr>
-                                 <td class="formLabelWhite style1">
-                                   <div align="left">
-                                     Quantity <strong><span class="formFieldWhite"><input size="4" value="10" name="Input2262232"></span></strong> <strong><span class=
-                                     "formFieldWhite"><select name="select8">
-                                       <option value="baseline">
-                                         &nbsp;
-                                       </option>
-
-                                       <html>
-<option value="baseline">
-                                         &nbsp;
-                                       </option>
-
-                                       <option value="bp1" selected>
-                                         &nbsp; mg
-                                       </option>
-
-                                       <option value="bp2">
-                                         &nbsp;
-                                       </option>
-
-                                       <option value="bp3">
-                                         &nbsp;
-                                       </option>
-
-                                       <option value="bp4">
-                                         &nbsp;
-                                       </option>
-                                     </select></span></strong> &nbsp; Concentration <strong><span class="formFieldWhite"><input size="4" value="2" name=
-                                     "Input2262233"></span></strong> <strong><span class="formFieldWhite"><select name="select9">
-                                       <option value="baseline">
-                                         &nbsp;
-                                       </option>
-
-                                       <option value="baseline">
-                                         &nbsp;
-                                       </option>
-
-                                       <option value="bp1" selected>
-                                         &nbsp; mg/ml
-                                       </option>
-
-                                       <option value="bp2">
-                                         &nbsp;
-                                       </option>
-
-                                       <option value="bp3">
-                                         &nbsp;
-                                       </option>
-
-                                       <option value="bp4">
-                                         &nbsp;
-                                       </option>
-                                     </select></span></strong> &nbsp; Volume <strong><span class="formFieldWhite"><input size="4" value="5" name=
-                                     "Input2262234"></span></strong> <strong><span class="formFieldWhite"><select name="select10">
-                                       <option value="baseline">
-                                         &nbsp;
-                                       </option>
-
-                                       <option value="baseline">
-                                         &nbsp;
-                                       </option>
-
-                                       <option value="bp1" selected>
-                                         &nbsp; ml
-                                       </option>
-
-                                       <option value="bp2">
-                                         &nbsp;
-                                       </option>
-
-                                       <option value="bp3">
-                                         &nbsp;
-                                       </option>
-
-                                       <option value="bp4">
-                                         &nbsp;
-                                       </option>
-                                     </select></span></strong> &nbsp;&nbsp;&nbsp;
-                                   </div>
-
-                                   <div align="justify"></div>
-                                 </td>
-                               </tr>
-
-                               <tr>
-                                 <td class="formLabel">
-                                   <div align="justify">
-                                     <strong>Diluents/Solvent <input size="10" value="solvent1" name="Input22626"> &nbsp; &nbsp; &nbsp; Safety Precautions <input value=
-                                     "safety precautions text" name="Input22627"> &nbsp; &nbsp; &nbsp;</strong>
-                                   </div>
-                                 </td>
-                               </tr>
-
-                               <tr>
-                                 <td class="formLabelWhite style1">
-                                   <div align="justify">
-                                     <strong>Storage Conditions <span class="formField"><span class="formFieldWhite"><input size="50" value="storage conditions text" name=
-                                     "Input222232"></span></span></strong>
-                                   </div>
-
-                                   <div align="justify"></div>
-                                 </td>
-                               </tr>
-
-                               <tr>
-                                 <td class="formLabel">
-                                   <div align="left">
-                                     <strong>Storage Location<br>
-                                     <br>
-                                     Room&nbsp; <select name="select4">
-                                       <option value="baseline" selected>
-                                         117
-                                       </option>
-
-                                       <option value="baseline">
-                                         118
-                                       </option>
-
-                                       <option value="bp1">
-                                         119
-                                       </option>
-                                     </select> &nbsp; Freezer&nbsp;<select name="select4">
-                                       <option value="baseline">
-                                         1
-                                       </option>
-
-                                       <option value="baselin<head>
-e">
-                                         2
-                                       </option>
-
-                                       <option value="bp1" selected>
-                                         3
-                                       </option>
-
-                                       <option value="bp2">
-                                         &nbsp;
-                                       </option>
-                                     </select> &nbsp; Shelf &nbsp; <input size="8" value="A" name="Input22632"> &nbsp; Box &nbsp; <input size="8" value="1" name="Input22722">
-                                     &nbsp;</strong>
-                                   </div>
-                                 </td>
-                               </tr>
-
-                               <tr>
-                                 <td class="formLabelWhite">
-                                   <div align="left">
-                                     <strong>Comments</strong><br>
-                                     <br>
-                                     <span class="formField"><span class="formFieldWhite">
-                                     <textarea name="Input222222" cols="70">
-Comments about container 1
-</textarea></span></span><br>
-                                   </div>
-                                 </td>
-                               </tr>
-                             </tbody>
-                           </table><br>
-
-                           <table class="topBorderOnly" cellspacing="0" cellpadding="3" width="90%" align="center" summary="" border="0">
-                             <tbody>
-                               <tr>
-                                 <td width="30%">
-                                   Accessioned by: Jane Doe Accession Date: 02/06/2006<br>
-                                   <br>
-
-                                   <table height="32" cellspacing="0" cellpadding="4" width="200" align="right" border="0">
-                                     <tbody>
-                                       <tr>
-                                         <td width="198" height="32">
-                                           <div align="right">
-																	  <input onclick="javascript:location.href='createSampleReset.html';" type="button" value="Clear" name="Submit2222">
-                                             <input onclick="javascript:location.href='createSampleSuccess.html';" type="button" value="Submit" name="Submit2223"> 
-                                           </div>
-                                         </td>
-                                       </tr>
-                                     </tbody>
-                                   </table>
-
-                                   <div align="right"></div>
-                                 </td>
-                               </tr>
-                             </tbody>
-                           </table>
-
-                           <p>&nbsp;</p>
-
-                           <p>&nbsp;</p>
-
-                           <p>&nbsp;</p>
-                         </blockquote>
-                       </td>
-                       </tr>
-                   </tbody>
-                 </table>
-               </td>
-             </tr>
-           </tbody>
-         </table>
-       </td>
-     </tr>
-   </tbody>
- </table>
-    </td>
-  </tr><!--_____ main content ends _____-->
-					  </form>
-					  <script language="JavaScript">
-					  <!-- //
-					  var cal = new calendar2(document.forms['createSample'].elements['Input22628']);
-	            	  cal.year_scroll = true;
-				      cal.time_comp = false;
-  				      //-->
-					  </script>
+		<p>
+			&nbsp;
+		</p>
+	</blockquote>
+</html:form>
+<script language="JavaScript">
+<!-- //
+ var cal = new calendar2(document.forms['createSampleForm'].elements['dateReceived']);
+ cal.year_scroll = true;
+ cal.time_comp = false;
+//-->
+</script>
