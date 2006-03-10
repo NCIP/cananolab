@@ -5,7 +5,7 @@ package gov.nih.nci.calab.ui.workflow;
  * @author pansu
  */
 
-/* CVS $Id: UseAliquotAction.java,v 1.2 2006-03-09 17:26:47 pansu Exp $*/
+/* CVS $Id: UseAliquotAction.java,v 1.3 2006-03-10 16:28:37 pansu Exp $*/
 
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
 
@@ -27,13 +27,15 @@ public class UseAliquotAction extends AbstractBaseAction {
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		ActionForward forward=null;
-		DynaValidatorActionForm theForm = (DynaValidatorActionForm) form;
-		String runId=(String)theForm.get("runId");
-		String[] aliquotIds=(String[])theForm.get("aliquotIds");
-		String action=(String)theForm.get("action");
-		String comments=(String)theForm.get("comments");
 		try {
-			/**@todo fill in details for saving aliquot IDs and comments*/
+			DynaValidatorActionForm theForm = (DynaValidatorActionForm) form;
+
+			String runId=(String)theForm.get("runId");
+			String[] aliquotIds=(String[])theForm.get("aliquotIds");
+			String action=(String)theForm.get("action");
+			String comments=(String)theForm.get("comments");
+
+			//TODO fill in details for saving aliquot IDs and comments*/
 			if (action.equalsIgnoreCase("submit")) {
 				ActionMessages msgs=new ActionMessages();
 				ActionMessage msg=new ActionMessage("message.useAliquot");
