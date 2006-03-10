@@ -10,20 +10,27 @@
 		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp"/>
 	</definition>
 	
-    <!-- definition for the use aliquot page -->
+    <!-- definitions for the use aliquot page -->
     <definition name="workflow.usealiquot.content" extends="workflow.content.home">
         <put name="workflowContent" value="/workflow/bodyUseAliquot.jsp"/>
     </definition>
     
     <definition name="workflow.usealiquot" extends="calab.home">
-        <put name="calabContent" value="/workflow/bodyUseAliquot.jsp"/>
-        <put name="calabSidemenu" value="/workflow/sideMenuTree.jsp"/>
-    </definition>
-    <definition name="workflow.createrun" extends="calab.home">
-        <put name="calabContent" value="/workflow/bodyCreateRun.jsp"/>
+        <put name="calabContent" value="workflow.usealiquot.content"/>
         <put name="calabSidemenu" value="/workflow/sideMenuTree.jsp"/>
     </definition>
     
+    <!-- definitions for the create run page -->    
+    <definition name="workflow.createrun.content" extends="workflow.content.home">
+        <put name="workflowContent" value="/workflow/bodyCreateRun.jsp"/>
+    </definition>
+    
+    <definition name="workflow.createrun" extends="calab.home">
+        <put name="calabContent" value="workflow.createrun.content"/>
+        <put name="calabSidemenu" value="/workflow/sideMenuTree.jsp"/>
+    </definition>
+    
+    <!-- definitions for the workflow message page -->
     <definition name="workflow.message.content" extends="workflow.content.home">
         <put name="workflowContent" value="/bodyMessage.jsp"/>
     </definition>    
