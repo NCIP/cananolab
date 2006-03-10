@@ -5,11 +5,25 @@
        "http://struts.apache.org/dtds/tiles-config_1_3.dtd">
     
 <tiles-definitions>
-     <!-- definition for the use aliquot page -->
-    <definition name="workflow.usealiquot" extends="calab.home">
-        <put name="calabContent" value="/workflow/bodyUseAliquot.jsp"/>
+    <!-- main layout definition for the workflow content page inside caLAB -->
+	<definition name="workflow.content.home" path="/layout/workflowLayout.jsp">
+		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp"/>
+	</definition>
+	
+    <!-- definition for the use aliquot page -->
+    <definition name="workflow.usealiquot.content" extends="workflow.content.home">
+        <put name="workflowContent" value="/workflow/bodyUseAliquot.jsp"/>
     </definition>
-    <definition name="workflow.message" extends="calab.home">
-        <put name="calabContent" value="/bodyMessage.jsp"/>
+    
+    <definition name="workflow.usealiquot" extends="calab.home">
+        <put name="calabContent" value="workflow.usealiquot.content"/>
+    </definition>
+    
+    <definition name="workflow.message.content" extends="workflow.content.home">
+        <put name="workflowContent" value="/bodyMessage.jsp"/>
     </definition>    
+    <definition name="workflow.message" extends="calab.home">
+        <put name="calabContent" value="workflow.message.content"/>
+    </definition>    
+    
 </tiles-definitions>
