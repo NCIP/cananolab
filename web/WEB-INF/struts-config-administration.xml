@@ -1,13 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
 <struts-config>
+	<form-beans>
+		<form-bean name="createSampleForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+      <form-property name="sampleId" type="java.lang.String" />
+      <form-property name="volume" type="java.lang.Float" />
+      <form-property name="volumeUnit" type="java.lang.String" />
+      <form-property name="safetyPrecautions" type="java.lang.String" />
+      <form-property name="storageConditions" type="java.lang.String" />
+      <form-property name="quantityUnit" type="java.lang.String" />
+      <form-property name="generalComments" type="java.lang.String" />
+      <form-property name="numberOfContainers" type="java.lang.Integer" />
+      <form-property name="concentration" type="java.lang.Float" />
+      <form-property name="storageBox" type="java.lang.String" />
+      <form-property name="lotId" type="java.lang.String" />
+      <form-property name="quantity" type="java.lang.String" />
+      <form-property name="storageRoom" type="java.lang.String" />
+      <form-property name="storageFreezer" type="java.lang.String" />
+      <form-property name="solvents" type="java.lang.String" />
+      <form-property name="vendorSampleId" type="java.lang.String" />
+      <form-property name="otherContainerType" type="java.lang.String" />
+      <form-property name="vendor" type="java.lang.String" />
+      <form-property name="dateReceived" type="java.util.Date" />
+      <form-property name="sampleType" type="java.lang.String" />
+      <form-property name="sampleSOP" type="java.lang.String" />
+      <form-property name="solubility" type="java.lang.String" />
+      <form-property name="containerComments" type="java.lang.String" />
+      <form-property name="concentrationUnit" type="java.lang.String" />
+      <form-property name="storageShelf" type="java.lang.String" />
+      <form-property name="sampleDescription" type="java.lang.String" />
+      <form-property name="containerType" type="java.lang.String" />
+      <form-property name="lotDescription" type="java.lang.String" />
+    </form-bean>
+	</form-beans>
 	<action-mappings>
-		<action path="/createSample"
-			type="gov.nih.nci.calab.ui.administration.CreateSampleAction"
-			scope="request" validate="true" input="administration.createsample">
-			<forward name="success"
-				path="administration.sampledetails">
-			</forward>
+		<action name="createSampleForm" path="/createSample" type="gov.nih.nci.calab.ui.administration.CreateSampleAction" scope="request" input="administration.createsample">
+			<forward name="success" path="administration.sampledetails" />
+			<forward name="failure" path="administration.message" />
+		</action>
+		<action attribute="createSampleForm" name="createSampleForm" path="/loadSampleInfo" scope="request" type="gov.nih.nci.calab.ui.administration.LoadSampleInfoAction" validate="false">
+			<forward name="success" path="administration.createsample" />
+			<forward name="failure" path="administration.message" />
 		</action>
 	</action-mappings>
 </struts-config>
