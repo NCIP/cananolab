@@ -1,22 +1,52 @@
 <!DOCTYPE form-validation PUBLIC
 "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1.3//EN"
-"http://jakarta.apache.org/commons/dtds/validator_1_1_3.dtd"> 
+"http://jakarta.apache.org/commons/dtds/validator_1_1_3.dtd">
 
 <form-validation>
- <formset>
-   <form name="/loadAliquots">
-    <field 
-      property="runId"
-      depends="required">
-      <arg0 key="useAliquotsForm.runId"/>
-    </field>
-  </form>
-  <form name="/useAliquot">
-    <field 
-      property="aliquotIds"
-      depends="required">
-      <arg0 key="useAliquotForm.aliquotIds"/>
-    </field>
-  </form>
- </formset>
+	<formset>
+		<form name="/loadAliquots">
+			<field property="runId" depends="required">
+				<arg0 key="useAliquotsForm.runId" />
+			</field>
+		</form>
+		<form name="/useAliquot">
+			<field property="aliquotIds" depends="required">
+				<arg0 key="useAliquotForm.aliquotIds" />
+			</field>
+		</form>
+		<form name="/createSample">
+			<field property="sampleId" depends="required">
+				<arg0 key="createSampleForm.sampleId" />
+			</field>
+			<field property="lotId" depends="required">
+				<arg0 key="createSampleForm.lotId" />
+			</field>
+			<field property="numberOfContainers" depends="required, integer">
+				<arg0 key="createSampleForm.numberOfContainers" />
+			</field>
+			<field property="dateReceived" depends="date">
+				<arg0 key="createSampleForm.dateReceived" />
+				<var>
+					<var-name>datePattern</var-name>
+					<var-value>MM/dd/yyyy</var-value>
+				</var>
+			</field>
+			<field property="otherContainerType" depends="requiredif">
+				<arg0 key="createSampleForm.otherContainerType" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((containerType!=Other) or (*this* !=null))</var-value>
+				</var>
+			</field>
+			<field property="quantity" depends="float">
+				<arg0 key="createSampleForm.quantity" />
+			</field>
+			<field property="concentration" depends="float">
+				<arg0 key="createSampleForm.concentration" />
+			</field>
+			<field property="volume" depends="float">
+				<arg0 key="createSampleForm.volume" />
+			</field>
+		</form>
+	</formset>
 </form-validation>
