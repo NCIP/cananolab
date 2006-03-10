@@ -16,7 +16,12 @@
     </definition>
     
     <definition name="workflow.usealiquot" extends="calab.home">
-        <put name="calabContent" value="workflow.usealiquot.content"/>
+        <put name="calabContent" value="/workflow/bodyUseAliquot.jsp"/>
+        <put name="calabSidemenu" value="/workflow/sideMenuTree.jsp"/>
+    </definition>
+    <definition name="workflow.createrun" extends="calab.home">
+        <put name="calabContent" value="/workflow/bodyCreateRun.jsp"/>
+        <put name="calabSidemenu" value="/workflow/sideMenuTree.jsp"/>
     </definition>
     
     <definition name="workflow.message.content" extends="workflow.content.home">
