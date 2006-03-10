@@ -1,12 +1,14 @@
 <%@ taglib uri="http://struts.apache.org/tags-tiles" prefix="tiles"%>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <html>
-	<head>
-		<title><tiles:getAsString name="title" ignore="true" /></title>
-		<link rel="stylesheet" type="text/css" href="css/caLab.css" />
-		<link rel="stylesheet" type="text/css" href="css/menu.css" />
-		<script type="text/javascript" src="javascript/script.js"></script>
-	</head>
+<head>
+<title><tiles:getAsString name="title" ignore="true"/></title>
+<link rel="stylesheet" type="text/css" href="css/caLab.css" />
+<link rel="stylesheet" type="text/css" href="css/menu.css" />
+<link rel="StyleSheet" type="text/css" href="css/dtree.css" >
+<script type="text/javascript" src="javascript/script.js"></script>
+<script type="text/javascript" src="javascript/dtree.js"></script>
+</head>
 
 	<body>
 		<table height="100%" cellspacing="0" cellpadding="0" width="100%" summary="" border="0">
