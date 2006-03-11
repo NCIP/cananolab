@@ -8,9 +8,22 @@
 <link rel="StyleSheet" type="text/css" href="css/dtree.css" >
 <script type="text/javascript" src="javascript/script.js"></script>
 <script type="text/javascript" src="javascript/dtree.js"></script>
+<script type="text/javascript" language="JavaScript">
+<!--
+	function s_show(){return false}
+	function s_hide(){return false}
+	if(window.event+''=='undefined')event=0
+//-->
+</script>
+
 </head>
 
 	<body>
+		<script type="text/javascript" language="JavaScript1.2" src="javascript/s_loader.js"></script>
+		<script type="text/javascript" language="JavaScript1.2" src="javascript/s_arrays.js"></script>
+		<script type="text/javascript" language="JavaScript1.2" src="javascript/s_script_dom.js"></script>
+		<script type="text/javascript" language="JavaScript1.2" src="javascript/s_script_ns4.js"></script>
+		<script type="text/javascript" language="JavaScript1.2" src="javascript/s_script_old.js"></script>
 		<table height="100%" cellspacing="0" cellpadding="0" width="100%" summary="" border="0">
 			<!-- nci hdr begins -->
 			<tbody>
