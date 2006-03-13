@@ -25,7 +25,7 @@ function refreshContainers() {
 		Create Sample
 	</h2>
 	<blockquote>
-
+    <html:errors/>
 		<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 			<tbody>
 				<tr class="topBorder">
@@ -195,8 +195,8 @@ function refreshContainers() {
 								<tr>
 									<td width="198" height="32">
 										<div align="right">
-											<input onclick="javascript:location.href='createSampleReset.html';" type="button" value="Reset" name="Submit2222">
-											<input onclick="javascript:location.href='createSampleSuccess.html';" type="button" value="Submit" name="Submit2223">
+											<input type="reset" value="Reset">
+											<input type="submit" value="Submit">
 										</div>
 									</td>
 								</tr>
