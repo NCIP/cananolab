@@ -10,6 +10,10 @@
 		<set-property value="true" property="inputForward" />
 	</controller>
 	<message-resources parameter="gov.nih.nci.calab.resources.application" null="false" />
+	<message-resources key="workflow" parameter="gov.nih.nci.calab.resources.workflow" null="false" />
+	<message-resources key="administration" parameter="gov.nih.nci.calab.resources.administration" null="false" />
+	<message-resources key="search" parameter="gov.nih.nci.calab.resources.search" null="false" />
+	
 	<plug-in className="org.apache.struts.tiles.TilesPlugin">
 		<set-property property="definitions-config"
 			value="/WEB-INF/tiles-defs.xml,       												   
@@ -22,7 +26,9 @@
 	</plug-in>
 	<plug-in className="org.apache.struts.validator.ValidatorPlugIn">
 		<set-property property="stopOnFirstError" value="false" />
-		<set-property property="pathnames" value="/WEB-INF/validation.xml,               
-                     /WEB-INF/validator-rules.xml" />
+		<set-property property="pathnames" value="/WEB-INF/validation-workflow.xml, 
+												  /WEB-INF/validation-administration.xml, 
+                                            	  /WEB-INF/validation-search.xml,               
+                                                  /WEB-INF/validator-rules.xml" />
 	</plug-in>
 </struts-config>
