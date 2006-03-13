@@ -15,7 +15,7 @@
 		<put name="menu" value="administration" />
 	</definition>
 	<definition name="administration.message" extends="calab.home">
-		<put name="calabContent" value="/bodyMessage.jsp" />
+		<put name="calabContent" value="/bodyMessage.jsp?bundle=administration" />
 		<put name="menu" value="administration" />
 	</definition>
 
