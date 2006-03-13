@@ -21,7 +21,7 @@
       <form-property name="vendorSampleId" type="java.lang.String" />
       <form-property name="otherContainerType" type="java.lang.String" />
       <form-property name="vendor" type="java.lang.String" />
-      <form-property name="dateReceived" type="java.util.Date" />
+      <form-property name="dateReceived" type="java.lang.String" />
       <form-property name="sampleType" type="java.lang.String" />
       <form-property name="sampleSOP" type="java.lang.String" />
       <form-property name="solubility" type="java.lang.String" />
@@ -34,11 +34,12 @@
     </form-bean>
 	</form-beans>
 	<action-mappings>
-		<action name="createSampleForm" path="/createSample" type="gov.nih.nci.calab.ui.administration.CreateSampleAction" scope="request" input="administration.createsample">
+		<action name="createSampleForm" path="/createSample" type="gov.nih.nci.calab.ui.administration.CreateSampleAction" scope="request" input="input">
 			<forward name="success" path="administration.sampledetails" />
 			<forward name="failure" path="administration.message" />
+			<forward name="input" path="administration.createsample" />
 		</action>
-		<action attribute="createSampleForm" name="createSampleForm" path="/loadSampleInfo" scope="request" type="gov.nih.nci.calab.ui.administration.LoadSampleInfoAction" validate="false">
+		<action name="createSampleForm" path="/loadSampleInfo" scope="request" type="gov.nih.nci.calab.ui.administration.LoadSampleInfoAction" validate="false">
 			<forward name="success" path="administration.createsample" />
 			<forward name="failure" path="administration.message" />
 		</action>
