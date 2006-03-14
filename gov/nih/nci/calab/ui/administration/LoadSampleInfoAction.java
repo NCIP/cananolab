@@ -23,7 +23,7 @@ import gov.nih.nci.calab.service.administration.ManageSampleService;
 import gov.nih.nci.calab.ui.core.*;
 
 public class LoadSampleInfoAction extends AbstractBaseAction {
-	private static Logger logger = Logger.getLogger(CreateSampleAction.class);
+	private static Logger logger = Logger.getLogger(LoadSampleInfoAction.class);
 
 	public ActionForward executeTask(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
@@ -45,6 +45,8 @@ public class LoadSampleInfoAction extends AbstractBaseAction {
 			  theForm.set("lotId", service.getDefaultLotId()); 
 			}
 			
+			//retrieve from sesssion first if available assuming these values
+			//are not likely to change within the same session
 			List sampleTypes = null;
 			if (session.getAttribute("allSampleTypes") != null) {
 				sampleTypes = (List) session.getAttribute("allSampleTypes");
