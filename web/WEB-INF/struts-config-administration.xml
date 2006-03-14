@@ -4,14 +4,14 @@
 	<form-beans>
 		<form-bean name="createSampleForm" type="org.apache.struts.validator.DynaValidatorActionForm">
       <form-property name="sampleId" type="java.lang.String" />
-      <form-property name="volume" type="java.lang.Float" />
+      <form-property name="volume" type="java.lang.String" />
       <form-property name="volumeUnit" type="java.lang.String" />
       <form-property name="safetyPrecautions" type="java.lang.String" />
       <form-property name="storageConditions" type="java.lang.String" />
       <form-property name="quantityUnit" type="java.lang.String" />
       <form-property name="generalComments" type="java.lang.String" />
-      <form-property name="numberOfContainers" type="java.lang.Integer" />
-      <form-property name="concentration" type="java.lang.Float" />
+      <form-property name="numberOfContainers" type="java.lang.String" initial="1"/>
+      <form-property name="concentration" type="java.lang.String" />
       <form-property name="storageBox" type="java.lang.String" />
       <form-property name="lotId" type="java.lang.String" />
       <form-property name="quantity" type="java.lang.String" />
