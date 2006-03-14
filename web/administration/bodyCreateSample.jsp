@@ -5,18 +5,11 @@
 <script type="text/javascript" src="javascript/calendar2.js"></script>
 
 <script type="text/javascript">
+
 function refreshContainers() {
-  var currLoc=window.location.href;
-  var ind=currLoc.indexOf('?');
-  var newLoc;
-  if (ind!=-1) {
-     newLoc=currLoc.substring(0, ind);
-  }
-  else {
-     newLoc=window.location.href;
-  }
-  window.location.href=newLoc+"?numberOfContainers="+document.createSampleForm.numberOfContainers.value;
+  window.location.href="loadSampleInfo.do?numberOfContainers="+document.createSampleForm.numberOfContainers.value;
 }
+
 </script>
 
 <html:form action="/createSample">
@@ -25,7 +18,7 @@ function refreshContainers() {
 		Create Sample
 	</h2>
 	<blockquote>
-    <html:errors/>
+		<html:errors />
 		<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 			<tbody>
 				<tr class="topBorder">
@@ -74,7 +67,7 @@ function refreshContainers() {
 					<td class="formLabel">
 						<div align="justify">
 							<strong>Lot ID*&nbsp; <html:text property="lotId" size="5" /> &nbsp; &nbsp; &nbsp; Lot Description <span class="formFieldWhite"><html:text property="lotDescription" size="20" /></span> &nbsp; &nbsp; &nbsp; Number of Containers* <span
-								class="formFieldWhite"><html:text property="numberOfContainers" size="2" onchange="javascript:refreshContainers();"/> &nbsp;</span></strong>
+								class="formFieldWhite"> <html:text property="numberOfContainers" size="2" onchange="javascript:refreshContainers();" /> &nbsp;</span></strong>
 
 						</div>
 					</td>
@@ -98,8 +91,18 @@ function refreshContainers() {
 			</c:when>
 			<c:otherwise>
 				<c:set var="cnum" value="${param.numberOfContainers}" />
+				<%-- if numberOfContainers is not a number, set it to 0 --%>
+				<c:catch var="e">
+					<c:if test="${cnum>0}">
+						<c:out value="${e}" />
+					</c:if>
+				</c:catch>
+				<c:if test="${e!=null}">
+					<c:set var="cnum" value="0" />
+				</c:if>
 			</c:otherwise>
 		</c:choose>
+
 		<%--create container for each container number --%>
 		<c:forEach var="cnum" begin="1" end="${cnum}">
 			<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
@@ -181,7 +184,6 @@ function refreshContainers() {
 			</table>
 			<br>
 		</c:forEach>
-
 		<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 			<tbody>
 				<tr>
@@ -196,7 +198,7 @@ function refreshContainers() {
 									<td width="198" height="32">
 										<div align="right">
 											<input type="reset" value="Reset">
-											<input type="submit" value="Submit">
+											<html:submit />
 										</div>
 									</td>
 								</tr>
