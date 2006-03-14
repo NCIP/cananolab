@@ -11,7 +11,7 @@
 			<field property="lotId" depends="required">
 				<arg position="0" key="createSampleForm.lotId" bundle="administration"/>
 			</field>
-			<field property="numberOfContainers" depends="required, int">
+			<field property="numberOfContainers" depends="required,integer">
 				<arg position="0" key="createSampleForm.numberOfContainers" bundle="administration"/>
 			</field>
 			<field property="dateReceived" depends="date">
@@ -21,11 +21,11 @@
 					<var-value>MM/dd/yyyy</var-value>
 				</var>
 			</field>
-			<field property="otherContainerType" depends="requiredif">
+			<field property="otherContainerType" depends="validwhen">
 				<arg position="0" key="createSampleForm.otherContainerType" bundle="administration"/>
 				<var>
 					<var-name>test</var-name>
-					<var-value>((containerType!=Other) or (*this* !=null))</var-value>
+					<var-value>((containerType!="Other") or (*this*!=null))</var-value>
 				</var>
 			</field>
 			<field property="quantity" depends="float">
