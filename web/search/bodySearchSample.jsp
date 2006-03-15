@@ -1,7 +1,7 @@
 <script type="text/javascript" src="javascript/calendar2.js"></script>
 <form name="searchSample">
-
-	<strong>Search Sample </strong>
+	<h2><br>
+	<strong><center>Search Sample </center></strong>
 	</h2>
 	<blockquote>
 		<TABLE WIDTH=90% BORDER=0 align="center" CELLPADDING=1 CELLSPACING=0>
@@ -256,15 +256,8 @@
 			&nbsp;
 		</p>
 	</blockquote>
-	</td>
-	</tr>
-	</table>
-	<h2>
-		&nbsp;
-	</h2>
-	<blockquote>
-		&nbsp;
-	</blockquote>
+
+
 </form>
 <script language="JavaScript">
 					  <!-- //
