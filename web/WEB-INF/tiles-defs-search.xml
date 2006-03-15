@@ -10,4 +10,11 @@
         <put name="calabContent" value="/search/bodySearchSample.jsp"/>
         <put name="menu" value="search"/>
     </definition>
+    
+         <!-- definition for the search workflow page -->
+    <definition name="search.searchworkflow" extends="calab.home">
+        <put name="calabContent" value="/search/bodySearchWorkflow.jsp"/>
+        <put name="menu" value="search"/>
+    </definition>
+
 </tiles-definitions>
