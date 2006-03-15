@@ -53,19 +53,17 @@ public class LoadSampleInfoAction extends AbstractBaseAction {
 			
 			//retrieve from sesssion first if available assuming these values
 			//are not likely to change within the same session
-			List sampleTypes = null;
-			if (session.getAttribute("allSampleTypes") != null) {
-				sampleTypes = (List) session.getAttribute("allSampleTypes");
-			} else {
-				sampleTypes=service.getAllSampleTypes();
+			
+			if (session.getAttribute("allSampleTypes") == null) {
+			    List sampleTypes=service.getAllSampleTypes();
 				session.setAttribute("allSampleTypes", sampleTypes);
 			}
-			ContainerInfoBean containerInfo = null;
-			if (session.getAttribute("containerInfo") != null) {
-				containerInfo = (ContainerInfoBean) session
-						.getAttribute("containerInfo");
-			} else {
-				containerInfo=service.getContainerInfo();
+			if (session.getAttribute("allSampleSOPs") == null) {
+			    List sampleSOPs =service.getAllSampleSOPs();
+				session.setAttribute("allSampleSOPs", sampleSOPs);
+			}
+			if (session.getAttribute("containerInfo") == null) {
+				ContainerInfoBean containerInfo=service.getContainerInfo();
 				session.setAttribute("sampleContainerInfo", containerInfo);
 			}
 			request.setAttribute("sampleId", sampleId);
