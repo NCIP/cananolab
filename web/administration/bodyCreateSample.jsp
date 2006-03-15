@@ -4,13 +4,18 @@
 <%@	taglib uri="/WEB-INF/c.tld" prefix="c"%>
 
 <script type="text/javascript" src="javascript/calendar2.js"></script>
-
 <script type="text/javascript">
 
 function refreshContainers() {
   window.location.href="loadSampleInfo.do?numberOfContainers="+document.createSampleForm.numberOfContainers.value;
 }
 
+function openLink() {
+  var url=document.createSampleForm.sampleSOP.value;
+  if (url!='') {
+    openWindow(url, 'sampleSOP', 600, 400);
+  }
+}
 </script>
 
 <html:form action="/createSample">
@@ -34,8 +39,12 @@ function refreshContainers() {
 					<td class="formLabel">
 						<div align="justify">
 							<strong>Sample ID* <span class="formField"><span class="formFieldWhite"><html:text property="sampleId" size="10" /></span></span> &nbsp; &nbsp; Sample Type <span class="formFieldWhite"> <html:select property="sampleType">
+										<option value=""></option>
 										<html:options name="allSampleTypes" />
-									</html:select> &nbsp; &nbsp; SOP</span></strong>
+									</html:select> &nbsp; &nbsp; SOP <html:select property="sampleSOP" onchange="javascript:openLink()">
+										<option value=""></option>
+										<html:options name="allSampleSOPs" />
+									</html:select></span></strong>
 						</div>
 					</td>
 				</tr>
@@ -105,86 +114,91 @@ function refreshContainers() {
 		</c:choose>
 		<%--create container for each container number --%>
 		<%--		<c:forEach var="cnum" begin="1" end="${cnum}">--%>
-<%--		<logic:iterate name="createSampleForm" property="containers" id="container" type="gov.nih.nci.calab.dto.administration.ContainerBean" indexId="cnum">--%>
-        <c:forEach var="containers" items="${createSampleForm.map.containers}" varStatus="status">
-		<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
-			<tbody>
-				<tr class="topBorder">
-					<td class="dataTablePrimaryLabel" width="30%">
-						<div align="justify">
-							<em>CONTAINER <c:out value="${status.index+1}" /></em>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td class="formLabel">
-						<div align="justify">
-							<strong>Container Type* <span class="formFieldWhite"> <html:select name="containers" indexed="true" property="containerType">
-										<html:options name="sampleContainerInfo" property="containerTypes" />
-									</html:select></span> &nbsp; &nbsp; &nbsp; Other <span class="formFieldWhite"><html:text name="containers" indexed="true" property="otherContainerType" size="8" /></span> &nbsp; &nbsp; &nbsp; </strong>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td class="formLabelWhite style1">
-						<div align="left">
-							<strong>Quantity <span class="formFieldWhite"><html:text size="5" name="containers" indexed="true" property="quantity" /></span><span class="formFieldWhite"> <html:select name="containers" indexed="true" property="quantityUnit">
-										<html:options name="sampleContainerInfo" property="quantityUnits" />
-									</html:select> </span> &nbsp; Concentration <span class="formFieldWhite"><html:text size="8" name="containers" indexed="true" property="concentration" /></span><span class="formFieldWhite"> <html:select name="containers" indexed="true"
-										property="concentrationUnit">
-										<html:options name="sampleContainerInfo" property="concentrationUnits" />
-									</html:select> </span>&nbsp; Volume <span class="formFieldWhite"><html:text size="8" name="containers" indexed="true" property="volume" /></span><span class="formFieldWhite"> <html:select name="containers" indexed="true" property="volumeUnit">
-										<html:options name="sampleContainerInfo" property="volumeUnits" />
-									</html:select></span></strong> &nbsp;&nbsp;&nbsp;
-						</div>
+		<%--		<logic:iterate name="createSampleForm" property="containers" id="container" type="gov.nih.nci.calab.dto.administration.ContainerBean" indexId="cnum">--%>
+		<c:forEach var="containers" items="${createSampleForm.map.containers}" varStatus="status">
+			<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+				<tbody>
+					<tr class="topBorder">
+						<td class="dataTablePrimaryLabel" width="30%">
+							<div align="justify">
+								<em>CONTAINER <c:out value="${status.index+1}" /></em>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td class="formLabel">
+							<div align="justify">
+								<strong>Container Type* <span class="formFieldWhite"> <html:select name="containers" indexed="true" property="containerType">
+											<html:options name="sampleContainerInfo" property="containerTypes" />
+										</html:select></span> &nbsp; &nbsp; &nbsp; Other <span class="formFieldWhite"><html:text name="containers" indexed="true" property="otherContainerType" size="8" /></span> &nbsp; &nbsp; &nbsp; </strong>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td class="formLabelWhite style1">
+							<div align="left">
+								<strong>Quantity <span class="formFieldWhite"><html:text size="5" name="containers" indexed="true" property="quantity" /></span><span class="formFieldWhite"> <html:select name="containers" indexed="true" property="quantityUnit">
+											<option value=""></option>
+											<html:options name="sampleContainerInfo" property="quantityUnits" />
+										</html:select> </span> &nbsp; Concentration <span class="formFieldWhite"><html:text size="8" name="containers" indexed="true" property="concentration" /></span><span class="formFieldWhite"> <html:select name="containers" indexed="true"
+											property="concentrationUnit">
+											<option value=""></option>
+											<html:options name="sampleContainerInfo" property="concentrationUnits" />
+										</html:select> </span>&nbsp; Volume <span class="formFieldWhite"><html:text size="8" name="containers" indexed="true" property="volume" /></span><span class="formFieldWhite"> <html:select name="containers" indexed="true" property="volumeUnit">
+											<option value=""></option>
+											<html:options name="sampleContainerInfo" property="volumeUnits" />
+										</html:select></span></strong> &nbsp;&nbsp;&nbsp;
+							</div>
 
-						<div align="justify"></div>
-					</td>
-				</tr>
-				<tr>
-					<td class="formLabel">
-						<div align="justify">
-							<strong>Diluents/Solvent <html:text name="containers" indexed="true" property="solvent" size="10" /> &nbsp; &nbsp; &nbsp; Safety Precautions <html:text name="containers" indexed="true" property="safetyPrecaution" size="30" /> &nbsp; &nbsp; &nbsp;</strong>
-						</div>
-					</td>
-				</tr>
+							<div align="justify"></div>
+						</td>
+					</tr>
+					<tr>
+						<td class="formLabel">
+							<div align="justify">
+								<strong>Diluents/Solvent <html:text name="containers" indexed="true" property="solvent" size="10" /> &nbsp; &nbsp; &nbsp; Safety Precautions <html:text name="containers" indexed="true" property="safetyPrecaution" size="30" /> &nbsp; &nbsp; &nbsp;</strong>
+							</div>
+						</td>
+					</tr>
 
-				<tr>
-					<td class="formLabelWhite style1">
-						<div align="justify">
-							<strong>Storage Conditions <span class="formField"><html:text name="containers" indexed="true" property="storageCondition" size="50" /></span></strong>
-						</div>
+					<tr>
+						<td class="formLabelWhite style1">
+							<div align="justify">
+								<strong>Storage Conditions <span class="formField"><html:text name="containers" indexed="true" property="storageCondition" size="50" /></span></strong>
+							</div>
 
-						<div align="justify"></div>
-					</td>
-				</tr>
+							<div align="justify"></div>
+						</td>
+					</tr>
 
-				<tr>
-					<td class="formLabel">
-						<div align="left">
-							<strong>Storage Location<br> <br> Room&nbsp; <html:select name="containers" indexed="true" property="storageRoom">
-									<html:options name="sampleContainerInfo" property="storageRooms" />
-								</html:select> &nbsp; Freezer&nbsp; <html:select name="containers" indexed="true" property="storageFreezer">
-									<html:options name="sampleContainerInfo" property="storageFreezers" />
-								</html:select> &nbsp;Shelf &nbsp; <html:text name="containers" indexed="true" property="storageShelf" size="5" /> &nbsp; Box &nbsp; <html:text name="containers" indexed="true" property="storageBox" size="5" /> &nbsp;</strong>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td class="formLabelWhite">
-						<div align="left">
-							<strong>Comments</strong>
-							<br>
-							<span class="formField"><span class="formFieldWhite"> <html:textarea name="containers" indexed="true" property="containerComments" cols="70" /> </span></span>
-							<br>
-						</div>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-		<br>
+					<tr>
+						<td class="formLabel">
+							<div align="left">
+								<strong>Storage Location<br> <br> Room&nbsp; <html:select name="containers" indexed="true" property="storageRoom">
+										<option value=""></option>
+										<html:options name="sampleContainerInfo" property="storageRooms" />
+									</html:select> &nbsp; Freezer&nbsp; <html:select name="containers" indexed="true" property="storageFreezer">
+										<option value=""></option>
+										<html:options name="sampleContainerInfo" property="storageFreezers" />
+									</html:select> &nbsp;Shelf &nbsp; <html:text name="containers" indexed="true" property="storageShelf" size="5" /> &nbsp; Box &nbsp; <html:text name="containers" indexed="true" property="storageBox" size="5" /> &nbsp;</strong>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td class="formLabelWhite">
+							<div align="left">
+								<strong>Comments</strong>
+								<br>
+								<span class="formField"><span class="formFieldWhite"> <html:textarea name="containers" indexed="true" property="containerComments" cols="70" /> </span></span>
+								<br>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<br>
 		</c:forEach>
-<%--		</logic:iterate>--%>
+		<%--		</logic:iterate>--%>
 
 		<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 			<tbody>
