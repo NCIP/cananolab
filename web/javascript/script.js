@@ -53,4 +53,8 @@ function gotoPage(pageURL)	{
 	window.location.href=pageURL;
 }
 
+function openWindow(pageURL, name, width, height) {
+    window.open (pageURL, name, "alwaysRaised,dependent,status,scrollbars,resizable,width="+width+",height="+height); 
+    
+}
 
