@@ -1,11 +1,11 @@
 package gov.nih.nci.calab.service.administration;
 
-import gov.nih.nci.calab.ui.administration.ContainerInfoBean;
+import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/* CVS $Id: ManageSampleService.java,v 1.2 2006-03-13 21:37:11 pansu Exp $ */
+/* CVS $Id: ManageSampleService.java,v 1.3 2006-03-15 21:50:43 zengje Exp $ */
 public class ManageSampleService {
   /**
    * 
