@@ -20,4 +20,8 @@
 		<put name="calabContent" value="/bodyMessage.jsp" />
 		<put name="menu" value="home"/>
 	</definition>
+	<definition name="calab.help" extends="calab.home">
+		<put name="calabContent" value="/help/bodyOnlineHelp.jsp" />
+		<put name="menu" value="help"/>
+	</definition>
 </tiles-definitions>
