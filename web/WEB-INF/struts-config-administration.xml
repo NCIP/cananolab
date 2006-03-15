@@ -3,45 +3,32 @@
 <struts-config>
 	<form-beans>
 		<form-bean name="createSampleForm" type="org.apache.struts.validator.DynaValidatorActionForm">
-      <form-property name="sampleId" type="java.lang.String" />
-      <form-property name="volume" type="java.lang.String" />
-      <form-property name="volumeUnit" type="java.lang.String" />
-      <form-property name="safetyPrecautions" type="java.lang.String" />
-      <form-property name="storageConditions" type="java.lang.String" />
-      <form-property name="quantityUnit" type="java.lang.String" />
-      <form-property name="generalComments" type="java.lang.String" />
-      <form-property name="numberOfContainers" type="java.lang.String" initial="1"/>
-      <form-property name="concentration" type="java.lang.String" />
-      <form-property name="storageBox" type="java.lang.String" />
-      <form-property name="lotId" type="java.lang.String" />
-      <form-property name="quantity" type="java.lang.String" />
-      <form-property name="storageRoom" type="java.lang.String" />
-      <form-property name="storageFreezer" type="java.lang.String" />
-      <form-property name="solvents" type="java.lang.String" />
-      <form-property name="vendorSampleId" type="java.lang.String" />
-      <form-property name="otherContainerType" type="java.lang.String" />
-      <form-property name="vendor" type="java.lang.String" />
-      <form-property name="dateReceived" type="java.lang.String" />
-      <form-property name="sampleType" type="java.lang.String" />
-      <form-property name="sampleSOP" type="java.lang.String" />
-      <form-property name="solubility" type="java.lang.String" />
-      <form-property name="containerComments" type="java.lang.String" />
-      <form-property name="concentrationUnit" type="java.lang.String" />
-      <form-property name="storageShelf" type="java.lang.String" />
-      <form-property name="sampleDescription" type="java.lang.String" />
-      <form-property name="containerType" type="java.lang.String" />
-      <form-property name="lotDescription" type="java.lang.String" />
-    </form-bean>
+			<form-property name="sampleId" type="java.lang.String" />
+			<form-property name="sampleType" type="java.lang.String" />
+			<form-property name="sampleSOP" type="java.lang.String" />
+			<form-property name="sampleDescription" type="java.lang.String" />
+			<form-property name="vendor" type="java.lang.String" />
+			<form-property name="vendorSampleId" type="java.lang.String" />
+			<form-property name="dateReceived" type="java.lang.String" />
+			<form-property name="lotId" type="java.lang.String" />
+			<form-property name="lotDescription" type="java.lang.String" />
+			<form-property name="solubility" type="java.lang.String" />
+			<form-property name="numberOfContainers" type="java.lang.String" initial="1" />
+			<form-property name="generalComments" type="java.lang.String" />
+			<form-property name="containers" type="gov.nih.nci.calab.dto.administration.ContainerBean[]"/>
+		</form-bean>
 	</form-beans>
 	<action-mappings>
-		<action name="createSampleForm" path="/createSample" type="gov.nih.nci.calab.ui.administration.CreateSampleAction" scope="request" input="input">
+		<action name="createSampleForm" path="/loadSampleInfo" scope="session" type="gov.nih.nci.calab.ui.administration.LoadSampleInfoAction" input="input">
+			<forward name="success" path="administration.createsample" />
+			<forward name="failure" path="administration.message" />
+			<forward name="input" path="administration.message" />
+		</action>
+
+		<action name="createSampleForm" path="/createSample" type="gov.nih.nci.calab.ui.administration.CreateSampleAction" scope="session" input="input">
 			<forward name="success" path="administration.sampledetails" />
 			<forward name="failure" path="administration.message" />
 			<forward name="input" path="administration.createsample" />
-		</action>
-		<action name="createSampleForm" path="/loadSampleInfo" scope="request" type="gov.nih.nci.calab.ui.administration.LoadSampleInfoAction" validate="false">
-			<forward name="success" path="administration.createsample" />
-			<forward name="failure" path="administration.message" />
 		</action>
 	</action-mappings>
 </struts-config>
