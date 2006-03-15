@@ -18,5 +18,11 @@
 		<put name="calabContent" value="/bodyMessage.jsp?bundle=administration" />
 		<put name="menu" value="administration" />
 	</definition>
+	
+	<definition name="administration.createaliquot" extends="calab.home">
+		<put name="calabContent" value="/administration/bodyCreateAliquot.jsp" />
+		<put name="menu" value="administration" />
+	</definition>
+	
 
 </tiles-definitions>
