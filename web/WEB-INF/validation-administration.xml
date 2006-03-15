@@ -4,38 +4,44 @@
 
 <form-validation>
 	<formset>
+		<form name="/loadSampleInfo">
+			<field property="numberOfContainers" depends="integer">
+				<arg position="0" key="createSampleForm.numberOfContainers" bundle="administration" />
+			</field>
+		</form>
+
 		<form name="/createSample">
 			<field property="sampleId" depends="required">
-				<arg position="0" key="createSampleForm.sampleId" bundle="administration"/>
+				<arg position="0" key="createSampleForm.sampleId" bundle="administration" />
 			</field>
 			<field property="lotId" depends="required">
-				<arg position="0" key="createSampleForm.lotId" bundle="administration"/>
+				<arg position="0" key="createSampleForm.lotId" bundle="administration" />
 			</field>
 			<field property="numberOfContainers" depends="required,integer">
-				<arg position="0" key="createSampleForm.numberOfContainers" bundle="administration"/>
+				<arg position="0" key="createSampleForm.numberOfContainers" bundle="administration" />
 			</field>
 			<field property="dateReceived" depends="date">
-				<arg position="0" key="createSampleForm.dateReceived" bundle="administration"/>
+				<arg position="0" key="createSampleForm.dateReceived" bundle="administration" />
 				<var>
 					<var-name>datePattern</var-name>
 					<var-value>MM/dd/yyyy</var-value>
 				</var>
 			</field>
-			<field property="otherContainerType" depends="validwhen">
-				<arg position="0" key="createSampleForm.otherContainerType" bundle="administration"/>
+			<field property="otherContainerType" depends="validwhen" indexedListProperty="containers">
+				<arg position="0" key="createSampleForm.otherContainerType" bundle="administration" />
 				<var>
 					<var-name>test</var-name>
-					<var-value>((containerType!="Other") or (*this*!=null))</var-value>
+					<var-value>((containers[].containerType!="Other") or (*this*!=null))</var-value>
 				</var>
 			</field>
-			<field property="quantity" depends="float">
-				<arg position="0" key="createSampleForm.quantity" bundle="administration"/>
+			<field property="quantity" depends="float" indexedListProperty="containers">
+				<arg position="0" key="createSampleForm.quantity" bundle="administration" />
 			</field>
-			<field property="concentration" depends="float">
-				<arg position="0" key="createSampleForm.concentration" bundle="administration"/>
+			<field property="concentration" depends="float" indexedListProperty="containers">
+				<arg position="0" key="createSampleForm.concentration" bundle="administration" />
 			</field>
-			<field property="volume" depends="float">
-				<arg position="0" key="createSampleForm.volume" bundle="administration"/>
+			<field property="volume" depends="float" indexedListProperty="containers">
+				<arg position="0" key="createSampleForm.volume" bundle="administration" />
 			</field>
 		</form>
 	</formset>
