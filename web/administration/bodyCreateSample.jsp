@@ -1,5 +1,6 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
+<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@	taglib uri="/WEB-INF/c.tld" prefix="c"%>
 
 <script type="text/javascript" src="javascript/calendar2.js"></script>
@@ -102,88 +103,89 @@ function refreshContainers() {
 				</c:if>
 			</c:otherwise>
 		</c:choose>
-
 		<%--create container for each container number --%>
-		<c:forEach var="cnum" begin="1" end="${cnum}">
-			<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
-				<tbody>
-					<tr class="topBorder">
-						<td class="dataTablePrimaryLabel" width="30%">
-							<div align="justify">
-								<em>CONTAINER <c:out value="${cnum}" /></em>
-							</div>
-						</td>
-					</tr>
+		<%--		<c:forEach var="cnum" begin="1" end="${cnum}">--%>
+<%--		<logic:iterate name="createSampleForm" property="containers" id="container" type="gov.nih.nci.calab.dto.administration.ContainerBean" indexId="cnum">--%>
+        <c:forEach var="containers" items="${createSampleForm.map.containers}" varStatus="status">
+		<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+			<tbody>
+				<tr class="topBorder">
+					<td class="dataTablePrimaryLabel" width="30%">
+						<div align="justify">
+							<em>CONTAINER <c:out value="${status.index+1}" /></em>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="formLabel">
+						<div align="justify">
+							<strong>Container Type* <span class="formFieldWhite"> <html:select name="containers" indexed="true" property="containerType">
+										<html:options name="sampleContainerInfo" property="containerTypes" />
+									</html:select></span> &nbsp; &nbsp; &nbsp; Other <span class="formFieldWhite"><html:text name="containers" indexed="true" property="otherContainerType" size="8" /></span> &nbsp; &nbsp; &nbsp; </strong>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="formLabelWhite style1">
+						<div align="left">
+							<strong>Quantity <span class="formFieldWhite"><html:text size="5" name="containers" indexed="true" property="quantity" /></span><span class="formFieldWhite"> <html:select name="containers" indexed="true" property="quantityUnit">
+										<html:options name="sampleContainerInfo" property="quantityUnits" />
+									</html:select> </span> &nbsp; Concentration <span class="formFieldWhite"><html:text size="8" name="containers" indexed="true" property="concentration" /></span><span class="formFieldWhite"> <html:select name="containers" indexed="true"
+										property="concentrationUnit">
+										<html:options name="sampleContainerInfo" property="concentrationUnits" />
+									</html:select> </span>&nbsp; Volume <span class="formFieldWhite"><html:text size="8" name="containers" indexed="true" property="volume" /></span><span class="formFieldWhite"> <html:select name="containers" indexed="true" property="volumeUnit">
+										<html:options name="sampleContainerInfo" property="volumeUnits" />
+									</html:select></span></strong> &nbsp;&nbsp;&nbsp;
+						</div>
 
-					<tr>
-						<td class="formLabel">
-							<div align="justify">
-								<strong>Container Type* <span class="formFieldWhite"> <html:select property="containerType">
-											<html:options name="sampleContainerInfo" property="containerTypes" />
-										</html:select></span> &nbsp; &nbsp; &nbsp; Other <span class="formFieldWhite"><html:text property="otherContainerType" size="8" /></span> &nbsp; &nbsp; &nbsp; </strong>
-							</div>
-						</td>
-					</tr>
+						<div align="justify"></div>
+					</td>
+				</tr>
+				<tr>
+					<td class="formLabel">
+						<div align="justify">
+							<strong>Diluents/Solvent <html:text name="containers" indexed="true" property="solvent" size="10" /> &nbsp; &nbsp; &nbsp; Safety Precautions <html:text name="containers" indexed="true" property="safetyPrecaution" size="30" /> &nbsp; &nbsp; &nbsp;</strong>
+						</div>
+					</td>
+				</tr>
 
-					<tr>
-						<td class="formLabelWhite style1">
-							<div align="left">
-								<strong>Quantity <span class="formFieldWhite"><html:text size="5" property="quantity" /></span><span class="formFieldWhite"> <html:select property="quantityUnit">
-											<html:options name="sampleContainerInfo" property="quantityUnits" />
-										</html:select> </span> &nbsp; Concentration <span class="formFieldWhite"><html:text size="8" property="concentration" /></span><span class="formFieldWhite"> <html:select property="concentrationUnit">
-											<html:options name="sampleContainerInfo" property="concentrationUnits" />
-										</html:select> </span>&nbsp; Volume <span class="formFieldWhite"><html:text size="8" property="volume" /></span><span class="formFieldWhite"> <html:select property="volumeUnit">
-											<html:options name="sampleContainerInfo" property="volumeUnits" />
-										</html:select></span></strong> &nbsp;&nbsp;&nbsp;
-							</div>
+				<tr>
+					<td class="formLabelWhite style1">
+						<div align="justify">
+							<strong>Storage Conditions <span class="formField"><html:text name="containers" indexed="true" property="storageCondition" size="50" /></span></strong>
+						</div>
 
-							<div align="justify"></div>
-						</td>
-					</tr>
-					<tr>
-						<td class="formLabel">
-							<div align="justify">
-								<strong>Diluents/Solvent <html:text property="solvents" size="10" /> &nbsp; &nbsp; &nbsp; Safety Precautions <html:text property="safetyPrecautions" size="30" /> &nbsp; &nbsp; &nbsp;</strong>
-							</div>
-						</td>
-					</tr>
+						<div align="justify"></div>
+					</td>
+				</tr>
 
-					<tr>
-						<td class="formLabelWhite style1">
-							<div align="justify">
-								<strong>Storage Conditions <span class="formField"><html:text property="storageConditions" size="50" /></span></strong>
-							</div>
-
-							<div align="justify"></div>
-						</td>
-					</tr>
-
-					<tr>
-						<td class="formLabel">
-							<div align="left">
-								<strong>Storage Location<br> <br> Room&nbsp; <html:select property="storageRoom">
-										<html:options name="sampleContainerInfo" property="storageRooms" />
-									</html:select> &nbsp; Freezer&nbsp; <html:select property="storageFreezer">
-										<html:options name="sampleContainerInfo" property="storageFreezers" />
-									</html:select> &nbsp;Shelf &nbsp; <html:text property="storageShelf" size="5" /> &nbsp; Box &nbsp; <html:text property="storageBox" size="5" /> &nbsp;</strong>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td class="formLabelWhite">
-							<div align="left">
-								<strong>Comments</strong>
-								<br>
-								<span class="formField"><span class="formFieldWhite"> <html:textarea property="containerComments" cols="70" /> </span></span>
-								<br>
-							</div>
-						</td>
-					</tr>
-
-				</tbody>
-			</table>
-			<br>
+				<tr>
+					<td class="formLabel">
+						<div align="left">
+							<strong>Storage Location<br> <br> Room&nbsp; <html:select name="containers" indexed="true" property="storageRoom">
+									<html:options name="sampleContainerInfo" property="storageRooms" />
+								</html:select> &nbsp; Freezer&nbsp; <html:select name="containers" indexed="true" property="storageFreezer">
+									<html:options name="sampleContainerInfo" property="storageFreezers" />
+								</html:select> &nbsp;Shelf &nbsp; <html:text name="containers" indexed="true" property="storageShelf" size="5" /> &nbsp; Box &nbsp; <html:text name="containers" indexed="true" property="storageBox" size="5" /> &nbsp;</strong>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="formLabelWhite">
+						<div align="left">
+							<strong>Comments</strong>
+							<br>
+							<span class="formField"><span class="formFieldWhite"> <html:textarea name="containers" indexed="true" property="containerComments" cols="70" /> </span></span>
+							<br>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<br>
 		</c:forEach>
+<%--		</logic:iterate>--%>
+
 		<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 			<tbody>
 				<tr>
