@@ -5,7 +5,7 @@ import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
 import java.util.ArrayList;
 import java.util.List;
 
-/* CVS $Id: ManageSampleService.java,v 1.3 2006-03-15 21:50:43 zengje Exp $ */
+/* CVS $Id: ManageSampleService.java,v 1.4 2006-03-15 21:58:01 pansu Exp $ */
 public class ManageSampleService {
   /**
    * 
@@ -21,6 +21,13 @@ public class ManageSampleService {
 		return sampleTypes;
   }
   
+  public List<String> getAllSampleSOPs() {
+	  List<String> sampleSOPs=new ArrayList();
+	  sampleSOPs.add("http://www.cnn.com");
+	  sampleSOPs.add("http://www.google.com");
+	  return sampleSOPs;
+  }
+
   /**
    * 
    * @return auto-generated default value for sample ID
