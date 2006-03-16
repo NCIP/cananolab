@@ -4,7 +4,7 @@
 
 <form-validation>
 	<formset>
-		<form name="/loadSampleInfo">
+		<form name="/preCreateSample">
 			<field property="numberOfContainers" depends="integer">
 				<arg position="0" key="createSampleForm.numberOfContainers" bundle="administration" />
 			</field>
@@ -44,5 +44,11 @@
 				<arg position="0" key="createSampleForm.volume" bundle="administration" />
 			</field>
 		</form>
+		
+		<form name="/preCreateAliquot">
+			<field property="numberOfAliquots" depends="integer">
+				<arg position="0" key="createAliquotForm.numberOfAliquots" bundle="administration" />
+			</field>
+        </form>
 	</formset>
 </form-validation>
