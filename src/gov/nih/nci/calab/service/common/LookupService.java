@@ -12,7 +12,7 @@ import java.util.List;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.3 2006-03-16 15:10:18 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.4 2006-03-16 21:50:15 pansu Exp $ */
 
 public class LookupService {
 
@@ -61,9 +61,9 @@ public class LookupService {
 
 	/**
 	 * 
-	 * @return the default container information in a form of ContainerInfoBean
+	 * @return the default sample container information in a form of ContainerInfoBean
 	 */
-	public ContainerInfoBean getContainerInfo() {
+	public ContainerInfoBean getSampleContainerInfo() {
 		// tmp code to be replaced
 		List containerTypes = new ArrayList();
 		containerTypes.add("Tube");
@@ -90,14 +90,50 @@ public class LookupService {
 		freezers.add("F1");
 		freezers.add("F2");
 		
-		List createMethods=new ArrayList();
-		createMethods.add("Solubilized");
-		createMethods.add("Liatholized");
-
 		//set labs and racks to null for now
 		ContainerInfoBean containerInfo = new ContainerInfoBean(containerTypes,
 				quantityUnits, concentrationUnits, volumeUnits, null, rooms,
-				null, freezers, createMethods);
+				null, freezers);
+		// end of tmp code
+		
+		return containerInfo;
+	}
+
+	/**
+	 * 
+	 * @return the default sample container information in a form of ContainerInfoBean
+	 */
+	public ContainerInfoBean getAliquotContainerInfo() {
+		// tmp code to be replaced
+		List containerTypes = new ArrayList();
+		containerTypes.add("Tube");
+		containerTypes.add("Vial");
+		containerTypes.add("Other");
+
+		List quantityUnits = new ArrayList();
+		quantityUnits.add("g");
+		quantityUnits.add("mg");
+
+		List concentrationUnits = new ArrayList();
+		concentrationUnits.add("g/ml");
+		concentrationUnits.add("mg/ml");
+
+		List volumeUnits = new ArrayList();
+		volumeUnits.add("ml");
+		volumeUnits.add("ul");
+
+		List rooms = new ArrayList();
+		rooms.add("250");
+		rooms.add("117");
+
+		List freezers = new ArrayList();
+		freezers.add("F1");
+		freezers.add("F2");
+		
+		//set labs and racks to null for now
+		ContainerInfoBean containerInfo = new ContainerInfoBean(containerTypes,
+				quantityUnits, concentrationUnits, volumeUnits, null, rooms,
+				null, freezers);
 		// end of tmp code
 		
 		return containerInfo;
