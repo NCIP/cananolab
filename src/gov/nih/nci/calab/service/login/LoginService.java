@@ -126,8 +126,8 @@ public class LoginService
 	 * @param	username,password
 	 * @return	boolean
 	 */
-	public boolean login(String username, String password ) throws CSException {
-		return am.login( username, password );
+	public boolean login(String strusername, String strpassword ) throws CSException {
+		return am.login( strusername, strpassword );
 	}
 	
 	/*
