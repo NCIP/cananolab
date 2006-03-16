@@ -34,10 +34,10 @@
 <table>
 	<tr>
 		<logic:iterate name="actions" id="action">
-			<td class="mainMenuItemOver">
+			<td class="formLabelGrey">
 				<a href="<bean:write name="action" property="value"/>"><bean:write name="action" property="key"/></a>
 				&nbsp; &nbsp;
 			</td>
 		</logic:iterate>
-    </tr>
+    </tr> 
 </table>
