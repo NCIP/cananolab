@@ -20,7 +20,11 @@ public class ContainerInfoBean {
 
 	private List<String> volumeUnits;
 
+	private List<String> storageLabs;
+
 	private List<String> storeageRooms;
+
+	private List<String> storeageRacks;
 
 	private List<String> storageFreezers;
 
@@ -28,21 +32,19 @@ public class ContainerInfoBean {
 
 	public ContainerInfoBean(List<String> containerTypes,
 			List<String> quantityUnits, List<String> concentrationUnits,
-			List<String> volumeUnits, List<String> rooms, List<String> freezers) {
+			List<String> volumeUnits, List<String> storageLabs,
+			List<String> storeageRooms, List<String> storeageRacks,
+			List<String> storageFreezers, List<String> howCreated) {
+		super();
+		// TODO Auto-generated constructor stub
 		this.containerTypes = containerTypes;
 		this.quantityUnits = quantityUnits;
 		this.concentrationUnits = concentrationUnits;
 		this.volumeUnits = volumeUnits;
-		this.storeageRooms = rooms;
-		this.storageFreezers = freezers;
-	}
-
-	public ContainerInfoBean(List<String> containerTypes,
-			List<String> quantityUnits, List<String> concentrationUnits,
-			List<String> volumnUnits, List<String> rooms,
-			List<String> freezers, List<String> howCreated) {
-		this(containerTypes, quantityUnits, concentrationUnits, volumnUnits,
-				rooms, freezers);
+		this.storageLabs = storageLabs;
+		this.storeageRooms = storeageRooms;
+		this.storeageRacks = storeageRacks;
+		this.storageFreezers = storageFreezers;
 		this.howCreated = howCreated;
 	}
 
@@ -100,6 +102,30 @@ public class ContainerInfoBean {
 
 	public void setHowCreated(List<String> howCreated) {
 		this.howCreated = howCreated;
+	}
+
+	public List<String> getStorageLabs() {
+		return storageLabs;
+	}
+
+	public void setStorageLabs(List<String> storageLabs) {
+		this.storageLabs = storageLabs;
+	}
+
+	public List<String> getStoreageRacks() {
+		return storeageRacks;
+	}
+
+	public void setStoreageRacks(List<String> storeageRacks) {
+		this.storeageRacks = storeageRacks;
+	}
+
+	public List<String> getStoreageRooms() {
+		return storeageRooms;
+	}
+
+	public void setStoreageRooms(List<String> storeageRooms) {
+		this.storeageRooms = storeageRooms;
 	}
 
 }
