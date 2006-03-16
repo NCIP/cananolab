@@ -5,7 +5,7 @@ package gov.nih.nci.calab.ui.workflow;
  * @author pansu
  */
 
-/* CVS $Id: UseAliquotAction.java,v 1.3 2006-03-10 16:28:37 pansu Exp $*/
+/* CVS $Id: UseAliquotAction.java,v 1.4 2006-03-16 15:37:26 pansu Exp $*/
 
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
 
@@ -21,7 +21,7 @@ import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorActionForm;
 
 public class UseAliquotAction extends AbstractBaseAction {
-	private static Logger logger=Logger.getLogger(LoadAliquotsAction.class);
+	private static Logger logger=Logger.getLogger(UseAliquotAction.class);
 	
 	public ActionForward executeTask(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
