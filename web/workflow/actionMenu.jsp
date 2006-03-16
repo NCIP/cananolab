@@ -11,7 +11,7 @@
 			java.util.Map actions = new HashMap();
 			if (type != null){
 				if (type.equals("in")) {			
-					actions.put("Use Aliquot", "loadAliquots.do?runId=4");
+					actions.put("Use Aliquot", "preUseAliquot.do?runId=4");
 					actions.put("Upload Files", "useAliquot.jsp");
 					actions.put("Download All Files (Zipped)", "/useAliquot.jsp");
 					actions.put("Download All Files (Unzipped)", "/useAliquot.jsp");
