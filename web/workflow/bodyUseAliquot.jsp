@@ -50,12 +50,9 @@
 			</tr>
 			<tr>
 				<td width="30%">
-					<p>
-						&nbsp;
-					</p>
-					<table width="200" height="32" border="0" align="right" cellpadding="4" cellspacing="0">
+					<table border="0" align="right" cellpadding="4" cellspacing="0">
 						<tr>
-							<td width="198" height="32">
+							<td>
 								<div align="left">
 									<input name="action" type="reset" value="Reset">
 									<input name="action" type="submit" value="Submit">
