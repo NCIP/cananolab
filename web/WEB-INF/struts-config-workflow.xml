@@ -10,7 +10,7 @@
 		</form-bean>
 	</form-beans>
 	<action-mappings>
-		<action input="input" name="useAliquotForm" path="/loadAliquots" type="gov.nih.nci.calab.ui.workflow.LoadAliquotsAction" scope="request">
+		<action input="input" name="useAliquotForm" path="/preUseAliquot" type="gov.nih.nci.calab.ui.workflow.PreUseAliquotAction" scope="request">
 			<forward name="success" path="workflow.usealiquot"></forward>
 			<forward name="failure" path="workflow.message"></forward>
 			<forward name="input" path="workflow.message"></forward>
