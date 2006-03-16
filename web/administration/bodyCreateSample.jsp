@@ -203,10 +203,8 @@ function openLink() {
 		<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 			<tbody>
 				<tr>
-					<td width="30%">
+					<td width="30%" class="formMessage">
 						Accessioned by: Jane Doe Accession Date: 02/06/2006
-						<br>
-						<br>
 
 						<table height="32" cellspacing="0" cellpadding="4" width="200" align="right" border="0">
 							<tbody>
