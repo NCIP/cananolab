@@ -8,6 +8,7 @@ package gov.nih.nci.calab.ui.administration;
 import gov.nih.nci.calab.dto.administration.ContainerBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
 import gov.nih.nci.calab.service.administration.ManageSampleService;
+import gov.nih.nci.calab.service.common.LookupService;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
 
 import java.util.List;
@@ -37,13 +38,14 @@ public class LoadSampleInfoAction extends AbstractBaseAction {
 			String lotId = (String) theForm.get("lotId");
 			int numContainers=Integer.parseInt((String)theForm.get("numberOfContainers"));
 			
-			ManageSampleService service=new ManageSampleService();
+			ManageSampleService mangeSampleService=new ManageSampleService();
+			LookupService lookupService=new LookupService();
 			//set default form values
 			if (sampleId.length()==0) {
-			  theForm.set("sampleId", service.getDefaultSampleId());
+			  theForm.set("sampleId", mangeSampleService.getDefaultSampleId());
 			}
 			if (lotId.length()==0) {
-			  theForm.set("lotId", service.getDefaultLotId()); 
+			  theForm.set("lotId", mangeSampleService.getDefaultLotId()); 
 			}
 			ContainerBean[] containers=new ContainerBean[numContainers];
 			for (int i=0; i<numContainers; i++) {
@@ -55,15 +57,15 @@ public class LoadSampleInfoAction extends AbstractBaseAction {
 			//are not likely to change within the same session
 			
 			if (session.getAttribute("allSampleTypes") == null) {
-			    List sampleTypes=service.getAllSampleTypes();
+			    List sampleTypes=lookupService.getAllSampleTypes();
 				session.setAttribute("allSampleTypes", sampleTypes);
 			}
 			if (session.getAttribute("allSampleSOPs") == null) {
-			    List sampleSOPs =service.getAllSampleSOPs();
+			    List sampleSOPs =mangeSampleService.getAllSampleSOPs();
 				session.setAttribute("allSampleSOPs", sampleSOPs);
 			}
 			if (session.getAttribute("containerInfo") == null) {
-				ContainerInfoBean containerInfo=service.getContainerInfo();
+				ContainerInfoBean containerInfo=lookupService.getContainerInfo();
 				session.setAttribute("sampleContainerInfo", containerInfo);
 			}
 			request.setAttribute("sampleId", sampleId);

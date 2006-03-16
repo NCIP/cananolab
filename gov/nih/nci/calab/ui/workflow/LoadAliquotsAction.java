@@ -5,8 +5,8 @@ package gov.nih.nci.calab.ui.workflow;
  * @author pansu
  */
 
-/* CVS $Id: LoadAliquotsAction.java,v 1.6 2006-03-13 20:58:15 zengje Exp $ */
-import gov.nih.nci.calab.service.workflow.ExecuteWorkflowService;
+/* CVS $Id: LoadAliquotsAction.java,v 1.7 2006-03-16 15:08:17 pansu Exp $ */
+import gov.nih.nci.calab.service.common.LookupService;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
 
 import java.util.List;
@@ -30,7 +30,7 @@ public class LoadAliquotsAction extends AbstractBaseAction  {
 		try {
 			DynaValidatorActionForm theForm = (DynaValidatorActionForm) form;
 			String runId=(String)theForm.get("runId");
-			ExecuteWorkflowService service=new ExecuteWorkflowService();
+			LookupService service=new LookupService();
 			List<String> allAliquotIds=service.getAliquots();
 			//use to populate the drop-down list.
 			request.getSession().setAttribute("allAliquotIds", allAliquotIds);
