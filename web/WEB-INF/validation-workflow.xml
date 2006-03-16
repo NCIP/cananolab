@@ -4,7 +4,7 @@
 
 <form-validation>
 	<formset>
-		<form name="/loadAliquots">
+		<form name="/preUseAliquot">
 			<field property="runId" depends="required">
 				<arg position="0" key="useAliquotsForm.runId" bundle="workflow"/>
 			</field>
