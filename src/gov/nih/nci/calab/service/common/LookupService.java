@@ -1,24 +1,52 @@
 package gov.nih.nci.calab.service.common;
 
+import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The service to return all the prepopulate table and data
+ * The service to return prepopulated data that are shared across different
+ * views.
  * 
  * @author zengje
- *
+ * 
  */
+/* CVS $Id: LookupService.java,v 1.2 2006-03-16 15:05:17 pansu Exp $ */
+
 public class LookupService {
-	
+
+	/**
+	 * Retriving all unmasked aliquot in the system, for views use aliquot,
+	 * create run, create aliquot, search sample.
+	 * 
+	 * @return a list of aliquot id
+	 */
+	public List<String> getAliquots() {
+		// Need detail....
+
+		List aliquotIds = new ArrayList();
+		aliquotIds.add("NCL-0-1234");
+		aliquotIds.add("NCL-0-1234-0");
+		aliquotIds.add("NCL-1-1234-1");
+		aliquotIds.add("NCL-1-1234");
+		aliquotIds.add("NCL-2-1235");
+		aliquotIds.add("NCL-5-1234");
+		aliquotIds.add("NCL-5-1234-0");
+		aliquotIds.add("NCL-5-1234-1");
+		aliquotIds.add("NCL-6-1234");
+		aliquotIds.add("NCL-6-1235");
+
+		return aliquotIds;
+	}
+
 	/**
 	 * Get all the SampleType
 	 */
-	public List<String> getAllSampleTypes()
-	{
-		// Detail here  
+	public List<String> getAllSampleTypes() {
+		// Detail here
 		// Retrieve data from Sample_Type table
-		
+
 		List sampleTypes = new ArrayList();
 		sampleTypes.add("Dendrimer");
 		sampleTypes.add("Quantom Dot");
@@ -27,53 +55,73 @@ public class LookupService {
 		sampleTypes.add("Fullerence");
 		sampleTypes.add("Liposome");
 		sampleTypes.add("Nanotubes");
-		
+
 		return sampleTypes;
 	}
 
 	/**
-	 * Get all Quantity Unit
+	 * 
+	 * @return the default container information in a form of ContainerInfoBean
 	 */
-	public List<String> getQuantityUnits()
-	{
-		// Detail here  retrieve data from 
-		
+	public ContainerInfoBean getContainerInfo() {
+		// tmp code to be replaced
+		List containerTypes = new ArrayList();
+		containerTypes.add("Tube");
+		containerTypes.add("Vial");
+		containerTypes.add("Other");
+
 		List quantityUnits = new ArrayList();
 		quantityUnits.add("g");
 		quantityUnits.add("mg");
-		quantityUnits.add("ug");
-		
-		return quantityUnits;
-	}
-	
-	/**
-	 * Get all Concentration Unit
-	 */
-	public List<String> getConcentrationUnits()
-	{
-		// Detail here  retrieve data from 
-		
+
 		List concentrationUnits = new ArrayList();
 		concentrationUnits.add("g/ml");
 		concentrationUnits.add("mg/ml");
-		concentrationUnits.add("ug/ml");
-		concentrationUnits.add("ug/ul");
-		
-		return concentrationUnits;
-	}
-	
-	/**
-	 * Get all Volume Unit
-	 */
-	public List<String> getVolumeUnits()
-	{
-		// Detail here  retrieve data from 
-		
+
 		List volumeUnits = new ArrayList();
 		volumeUnits.add("ml");
 		volumeUnits.add("ul");
-		
-		return volumeUnits;
+
+		List rooms = new ArrayList();
+		rooms.add("250");
+		rooms.add("117");
+
+		List freezers = new ArrayList();
+		freezers.add("F1");
+		freezers.add("F2");
+
+		ContainerInfoBean containerInfo = new ContainerInfoBean(containerTypes,
+				quantityUnits, concentrationUnits, volumeUnits, null, rooms,
+				null, freezers, null);
+		// end of tmp code
+		return containerInfo;
 	}
 
+	/**
+	 * 
+	 * @return all sample Ids
+	 */
+	public List<String> getAllSampleIds() {
+		// tmp code to be replaced
+		List<String> sampleIds = new ArrayList();
+		sampleIds.add("NCL-6");
+		sampleIds.add("NCL-3");
+		// end of tmp code
+
+		return sampleIds;
+	}
+
+	/**
+	 * 
+	 * @return all lot Ids
+	 */
+	public List<String> getAllLotIds() {
+		// tmp code to be replaced
+		List<String> lotIds = new ArrayList();
+		lotIds.add("NCL-6-1");
+		lotIds.add("NCL-3-1");
+		// end of tmp code
+
+		return lotIds;
+	}
 }
