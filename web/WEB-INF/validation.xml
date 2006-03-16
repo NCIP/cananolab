@@ -6,10 +6,10 @@
 	<formset>
 		<form name="loginForm">
 			<field property="loginId" depends="required">
-				<arg position="0" key="logonForm.userName"/>
+				<arg position="0" key="loginForm.loginId"/>
 			</field>
 			<field property="password" depends="required">
-				<arg position="0" key="logonForm.password"/>
+				<arg position="0" key="loginForm.password"/>
 			</field>
 		</form>
 	</formset>
