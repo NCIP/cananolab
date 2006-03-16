@@ -28,13 +28,11 @@ public class ContainerInfoBean {
 
 	private List<String> storageFreezers;
 
-	private List<String> howCreated;
-
 	public ContainerInfoBean(List<String> containerTypes,
 			List<String> quantityUnits, List<String> concentrationUnits,
 			List<String> volumeUnits, List<String> storageLabs,
 			List<String> storeageRooms, List<String> storeageRacks,
-			List<String> storageFreezers, List<String> howCreated) {
+			List<String> storageFreezers) {
 		super();
 		// TODO Auto-generated constructor stub
 		this.containerTypes = containerTypes;
@@ -45,7 +43,6 @@ public class ContainerInfoBean {
 		this.storeageRooms = storeageRooms;
 		this.storeageRacks = storeageRacks;
 		this.storageFreezers = storageFreezers;
-		this.howCreated = howCreated;
 	}
 
 	public List<String> getConcentrationUnits() {
@@ -94,14 +91,6 @@ public class ContainerInfoBean {
 
 	public void setVolumeUnits(List<String> volumeUnits) {
 		this.volumeUnits = volumeUnits;
-	}
-
-	public List<String> getHowCreated() {
-		return howCreated;
-	}
-
-	public void setHowCreated(List<String> howCreated) {
-		this.howCreated = howCreated;
 	}
 
 	public List<String> getStorageLabs() {
