@@ -7,7 +7,7 @@
 <script type="text/javascript">
 
 function refreshContainers() {
-  window.location.href="loadSampleInfo.do?numberOfContainers="+document.createSampleForm.numberOfContainers.value;
+  window.location.href="preCreateSample.do?numberOfContainers="+document.createSampleForm.numberOfContainers.value;
 }
 
 function openLink() {

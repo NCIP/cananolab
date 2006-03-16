@@ -101,7 +101,7 @@ P:false,	// menu is PERMANENT (you can only set true if this is LEVEL 1 menu)
 S:s_CSSTop	// STYLE Array to use for this menu
 },
 [		// define items {U:'url',T:'text' ...} look at the Manual for details
-{U:'loadSampleInfo.do',T:'Manage Samples'},
+{U:'preCreateSample.do',T:'Manage Samples'},
 {U:'createAliquot.jsp',T:'Manage Aliquots'}
 ]
 );
