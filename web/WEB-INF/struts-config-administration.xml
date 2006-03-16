@@ -15,11 +15,18 @@
 			<form-property name="solubility" type="java.lang.String" />
 			<form-property name="numberOfContainers" type="java.lang.String" initial="1" />
 			<form-property name="generalComments" type="java.lang.String" />
-			<form-property name="containers" type="gov.nih.nci.calab.dto.administration.ContainerBean[]"/>
+			<form-property name="containers" type="gov.nih.nci.calab.dto.administration.ContainerBean[]" />
+		</form-bean>
+		<form-bean name="createAliquotForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+			<form-property name="sampleId" type="java.lang.String" />
+			<form-property name="aliquotId" type="java.lang.String" />
+			<form-property name="numberOfAliquots" type="java.lang.String" />
+			<form-property name="template" type="gov.nih.nci.calab.dto.administration.ContainerInfoBean" />
+			<form-property name="lotId" type="java.lang.String" />
 		</form-bean>
 	</form-beans>
 	<action-mappings>
-		<action name="createSampleForm" path="/loadSampleInfo" scope="session" type="gov.nih.nci.calab.ui.administration.LoadSampleInfoAction" input="input">
+		<action name="createSampleForm" path="/preCreateSample" scope="session" type="gov.nih.nci.calab.ui.administration.PreCreateSampleAction" input="input">
 			<forward name="success" path="administration.createsample" />
 			<forward name="failure" path="administration.message" />
 			<forward name="input" path="administration.message" />
@@ -27,8 +34,13 @@
 
 		<action name="createSampleForm" path="/createSample" type="gov.nih.nci.calab.ui.administration.CreateSampleAction" scope="session" input="input">
 			<forward name="success" path="administration.sampledetails" />
-			<forward name="failure" path="administration.message" />
+			<forward name="failure" path="administration.createsample" />
 			<forward name="input" path="administration.createsample" />
+		</action>
+		<action attribute="createAliquotForm" name="createAliquotForm" path="/createAliquot" scope="request" type="gov.nih.nci.calab.ui.administration.CreateAliquotAction">
+			<forward name="input" path="administration.createaliquot" />
+			<forward name="success" path="administration.message" />
+			<forward name="failure" path="administration.createaliquot" />
 		</action>
 	</action-mappings>
 </struts-config>
