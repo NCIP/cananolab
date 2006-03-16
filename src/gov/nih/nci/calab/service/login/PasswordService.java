@@ -10,15 +10,14 @@ import sun.misc.BASE64Encoder;
 
 /**
  * This class will provide a utility to provide one way encryption of the user's passwords
- * for authentication purposes.  This is a REUSABLE class.
+ * for authentication purposes.
  * 
  * @author shinohaa
  *
  */
-public class PasswordService 
-{
-
-	private static final String ENCRYPTION_TYPE = "SHA";
+public final class PasswordService {
+    
+    private static final String ENCRYPTION_TYPE = "SHA";
     private static PasswordService instance;
 
     private static Logger logger = Logger.getLogger(PasswordService.class);
@@ -54,5 +53,4 @@ public class PasswordService
         }
         return instance;
     }
-	
 }
