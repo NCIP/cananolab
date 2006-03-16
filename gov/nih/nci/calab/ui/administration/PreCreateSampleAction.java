@@ -5,6 +5,9 @@ package gov.nih.nci.calab.ui.administration;
  * 
  * @author pansu
  */
+
+/* CVS $Id: PreCreateSampleAction.java,v 1.2 2006-03-16 21:53:41 pansu Exp $ */
+
 import gov.nih.nci.calab.dto.administration.ContainerBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
 import gov.nih.nci.calab.service.administration.ManageSampleService;
@@ -64,8 +67,8 @@ public class PreCreateSampleAction extends AbstractBaseAction {
 			    List sampleSOPs =mangeSampleService.getAllSampleSOPs();
 				session.setAttribute("allSampleSOPs", sampleSOPs);
 			}
-			if (session.getAttribute("containerInfo") == null) {
-				ContainerInfoBean containerInfo=lookupService.getContainerInfo();
+			if (session.getAttribute("sampleContainerInfo") == null) {
+				ContainerInfoBean containerInfo=lookupService.getSampleContainerInfo();
 				session.setAttribute("sampleContainerInfo", containerInfo);
 			}
 			request.setAttribute("sampleId", sampleId);
