@@ -7,7 +7,9 @@
 <script type="text/javascript">
 
 function refreshContainers() {
-  window.location.href="preCreateSample.do?numberOfContainers="+document.createSampleForm.numberOfContainers.value;
+  //window.location.href="preCreateSample.do?numberOfContainers="+document.createSampleForm.numberOfContainers.value;
+  document.createSampleForm.action="/calab/preCreateSample.do";
+  document.createSampleForm.submit();
 }
 
 function openLink() {
@@ -77,7 +79,7 @@ function openLink() {
 					<td class="formLabel">
 						<div align="justify">
 							<strong>Lot ID*&nbsp; <html:text property="lotId" size="5" /> &nbsp; &nbsp; &nbsp; Lot Description <span class="formFieldWhite"><html:text property="lotDescription" size="20" /></span> &nbsp; &nbsp; &nbsp; Number of Containers* <span
-								class="formFieldWhite"> <html:text property="numberOfContainers" size="2" onchange="javascript:refreshContainers();" /> &nbsp;</span></strong>
+								class="formFieldWhite"> <html:text property="numberOfContainers" size="2" onblur="javascript:refreshContainers();" /> &nbsp;</span></strong>
 
 						</div>
 					</td>

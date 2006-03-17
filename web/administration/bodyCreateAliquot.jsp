@@ -1,11 +1,12 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
-<%@	taglib uri="/WEB-INF/c.tld" prefix="c"%>
 <script type="text/javascript">
 <!--//
 function refreshAliquots() {
-  window.location.href="preCreateAliquot.do?numberOfAliquots="+document.createAliquotForm.numberOfAliquots.value;
+  //window.location.href="preCreateAliquot.do?numberOfAliquots="+document.createAliquotForm.numberOfAliquots.value;
+  document.createAliquotForm.action="/calab/preCreateAliquot.do";
+  document.createAliquotForm.submit();
 }
 //-->
 </script>
@@ -13,6 +14,7 @@ function refreshAliquots() {
 	<br>
 	Create Aliquot
 </h2>
+<html:errors />
 <blockquote>
 	<html:form action="/createAliquot">
 		<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
@@ -30,7 +32,7 @@ function refreshAliquots() {
 									<option value=""></option>
 									<html:options name="allSampleIds" />
 								</html:select></span></strong>&nbsp; &nbsp;<strong>Lot ID<span class="formFieldWhite"> <html:select property="lotId">
-									<option value=""></option>
+									<option value="NA"></option>
 									<html:options name="allLotIds" />
 								</html:select></span></strong>&nbsp; &nbsp; <strong>Aliquot ID<span class="formFieldWhite"> <html:select property="parentAliquotId">
 									<option value=""></option>
@@ -39,7 +41,13 @@ function refreshAliquots() {
 					</div>
 				</td>
 			</tr>
-
+			<tr>
+				<td class="formLabelWhite">
+					<div align="justify">
+						<strong><span class="formFieldWhite"> </span>Number of Aliquots *<span class="formFieldWhite"> <html:text property="numberOfAliquots" size="5" onblur="javascript:refreshAliquots();" /> &nbsp; </span></strong>
+					</div>
+				</td>
+			</tr>
 		</table>
 
 		<br>
@@ -68,10 +76,10 @@ function refreshAliquots() {
 							<strong>Quantity <span class="formFieldWhite"><html:text size="5" property="template.container.quantity" /></span> <span class="formFieldWhite"> <html:select property="template.container.quantityUnit">
 										<option value=""></option>
 										<html:options name="aliquotContainerInfo" property="quantityUnits" />
-									</html:select> </span> &nbsp; Concentration <span class="formFieldWhite"><html:text size="8" property="template.container.concentration" /></span><span class="formFieldWhite"> <html:select property="template.container.concentrationUnit">
+									</html:select> </span> &nbsp; Concentration <span class="formFieldWhite"><html:text size="5" property="template.container.concentration" /></span><span class="formFieldWhite"> <html:select property="template.container.concentrationUnit">
 										<option value=""></option>
 										<html:options name="aliquotContainerInfo" property="concentrationUnits" />
-									</html:select> </span>&nbsp; Volume <span class="formFieldWhite"><html:text size="8" property="template.container.volume" /></span><span class="formFieldWhite"> <html:select property="template.container.volumeUnit">
+									</html:select> </span>&nbsp; Volume <span class="formFieldWhite"><html:text size="5" property="template.container.volume" /></span><span class="formFieldWhite"> <html:select property="template.container.volumeUnit">
 										<option value=""></option>
 										<html:options name="aliquotContainerInfo" property="volumeUnits" />
 									</html:select></span></strong> &nbsp;&nbsp;&nbsp;
@@ -114,32 +122,49 @@ function refreshAliquots() {
 					</td>
 				</tr>
 				<tr>
-				<td class="formLabelWhite">
-					<div align="justify">
-						<strong><span class="formFieldWhite"> </span>Number of Aliquots *<span class="formFieldWhite"> <html:text property="numberOfAliquots" size="5" onchange="javascript:refreshAliquots();"/> &nbsp; </span></strong>
-					</div>
-				</td>
-			</tr>
+					<td class="formLabelWhite">
+						<div align="left">
+							<strong>General Comments</strong>
+							<br>
+							<span class="formField"><span class="formFieldWhite"> <html:textarea property="generalComments" cols="70" /></span></span>
+						</div>
+					</td>
+				</tr>
 			</tbody>
 		</table>
 
 		<br>
 		<logic:present name="aliquotMatrix">
 			<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
-				<logic:iterate name="aliquotMatrix" id="aliquotRow" type="gov.nih.nci.calab.dto.administration.AliquotBean[]">
+				<logic:iterate name="aliquotMatrix" id="aliquotRow" type="gov.nih.nci.calab.dto.administration.AliquotBean[]" indexId="rowNum">
 					<tr>
 						<td class="formLabelBoxWhite">
 							<div align="left">
 								<table border="0" align="center" cellpadding="3" cellspacing="0">
 									<tr>
-										<logic:iterate name="aliquotRow" id="aliquot" type="gov.nih.nci.calab.dto.administration.AliquotBean">
-											<td width="45">
+										<logic:iterate name="aliquotRow" id="aliquot" type="gov.nih.nci.calab.dto.administration.AliquotBean" indexId="colNum">
+											<td width="55">
 												<table border="0" cellspacing="0" cellpadding="0">
 													<tr>
 														<td class="formLabelBoxWhite">
-															<logic:present name="aliquot">
-																<a href="#"><bean:write name="aliquot" property="aliquotId" /> <br> <bean:write name="aliquot" property="container.quantity" /> <bean:write name="aliquot" property="container.quantityUnit" /> <br> <bean:write name="aliquot"
-																		property="container.concentration" /> <bean:write name="aliquot" property="container.concentrationUnit" /> <br> <bean:write name="aliquot" property="container.volume" /> <bean:write name="aliquot" property="container.volumeUnit" /> </a>
+															<logic:present name="aliquot">												
+																<% java.util.Map editAliquotParams=new java.util.HashMap();
+																   editAliquotParams.put("rowNum", rowNum);
+																   editAliquotParams.put("colNum", colNum); 
+																   pageContext.setAttribute("editAliquotParams", editAliquotParams);%>
+
+																<html:link action="preEditAliquot" name="editAliquotParams">
+																	<bean:write name="aliquot" property="aliquotId" />
+																	<br>
+																	<bean:write name="aliquot" property="container.quantity" />
+																	<bean:write name="aliquot" property="container.quantityUnit" />
+																	<br>
+																	<bean:write name="aliquot" property="container.concentration" />
+																	<bean:write name="aliquot" property="container.concentrationUnit" />
+																	<br>
+																	<bean:write name="aliquot" property="container.volume" />
+																	<bean:write name="aliquot" property="container.volumeUnit" />
+																</html:link>
 															</logic:present>
 														</td>
 													</tr>
@@ -162,9 +187,8 @@ function refreshAliquots() {
 						<tr>
 							<td width="198" height="32">
 								<div align="right">
-									<input name="Submit2222" type="submit" onClick="javascript:location.href='managefiles.html';" value="Reset">
-									<input name="Submit2223" type="submit" onClick="javascript:location.href='managefiles.html';" value="Submit">
-									<input name="Submit222" type="submit" onClick="javascript:location.href='managefiles.html';" value="Cancel">
+									<input type="reset" value="Reset">
+									<html:submit />
 								</div>
 							</td>
 						</tr>
