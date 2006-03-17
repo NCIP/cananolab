@@ -37,7 +37,10 @@ public class LoginAction extends AbstractBaseAction {
 			}
 			else
 			{
-				//TODO send password through the PasswordService for encryption
+				//TODO turn on password encryption. 
+				//PasswordService passwordservice = new PasswordService();
+				//password = passwordservice.encrypt(password);
+				
 				LoginService loginservice = new LoginService("caLAB");
 			    Boolean authenticated = loginservice.login(loginId, password);
 			    if (authenticated == true)
