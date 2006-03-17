@@ -10,8 +10,8 @@
 	</form-beans>
 	<action-mappings>
 		<action name="loginForm" path="/login" scope="session" type="gov.nih.nci.calab.ui.security.LoginAction" input="input">
-			<forward name="success" path="calab" />
-			<forward name="failure" path="calab.home" />
+			<forward name="success" path="welcome.jsp" />
+			<forward name="failure" path="calab.error" />
 			<forward name="input" path="calab.home" />
 		</action>
 	</action-mappings>
