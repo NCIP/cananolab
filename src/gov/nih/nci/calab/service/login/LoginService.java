@@ -82,7 +82,7 @@ public class LoginService
 	/*
 	 * Constructor
 	 */
-	private LoginService( String name ) throws Exception 
+	public LoginService( String name ) throws Exception 
 	{
 		this.applicationName = name;
 		//upm = SecurityServiceProvider.getUserProvisioningManager(this.applicationName);
