@@ -234,9 +234,8 @@
 						<tr>
 							<td width="490" height="32">
 								<div align="right">
-									<input name="Submit2222" type="submit" onClick="javascript:location.href='#';" value="Reset">
-									<input name="Submit222" type="submit" onClick="javascript:location.href='#';" value="Search">
-									<input name="Submit22" type="submit" onClick="javascript:location.href='#';" value="Back">
+									<input name="Submit2222" type="button" onClick="javascript:location.href='#';" value="Reset">
+									<input name="Submit222" type="button" onClick="document.location.href='searchSampleResult.jsp';" value="Search">
 								</div>
 							</td>
 						</tr>
