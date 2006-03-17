@@ -18,11 +18,17 @@
 		<put name="calabContent" value="/bodyMessage.jsp?bundle=administration" />
 		<put name="menu" value="administration" />
 	</definition>
-	
+
+	<!-- definition for the create aliquot page -->
 	<definition name="administration.createaliquot" extends="calab.home">
 		<put name="calabContent" value="/administration/bodyCreateAliquot.jsp" />
 		<put name="menu" value="administration" />
 	</definition>
-	
+
+	<!-- definition for the edit aliquot page -->
+	<definition name="administration.editaliquot" extends="calab.home">
+		<put name="calabContent" value="/administration/bodyEditAliquot.jsp" />
+		<put name="menu" value="administration" />
+	</definition>
 
 </tiles-definitions>
