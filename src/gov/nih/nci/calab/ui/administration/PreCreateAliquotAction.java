@@ -6,17 +6,16 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: PreCreateAliquotAction.java,v 1.1 2006-03-16 21:54:24 pansu Exp $ */
-
-import java.util.ArrayList;
-import java.util.List;
+/* CVS $Id: PreCreateAliquotAction.java,v 1.2 2006-03-17 21:46:43 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
-import gov.nih.nci.calab.dto.administration.ContainerBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
 import gov.nih.nci.calab.service.administration.ManageAliquotService;
 import gov.nih.nci.calab.service.common.LookupService;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -77,28 +76,24 @@ public class PreCreateAliquotAction extends AbstractBaseAction {
 			} else {
 				numAliquots = Integer.parseInt(numberOfAliquots);
 			}
+
 			AliquotBean template = (AliquotBean) theForm.get("template");
-			//set default template
-			if (template==null) {
-				ContainerBean container=new ContainerBean();
-				template=new AliquotBean("", container, "");
-				theForm.set("template", template);
-			}
 
 			// calculate number of rows in the matrix
 			if (numAliquots > 0) {
 				int colNum = manageAliquotService
 						.getDefaultAliquotMatrixColumnNumber();
-				int rowNum = (int)Math.ceil((float) numAliquots / colNum);
+				int rowNum = (int) Math.ceil((float) numAliquots / colNum);
 
 				// calculate the first aliquot Id to use
-				int firstAliquotId = getFirstAliquotId(sampleId, lotId,
-						parentAliquotId);
-
+				int firstAliquotNum = manageAliquotService.getFirstAliquotNum(
+						sampleId, lotId, parentAliquotId);
+				String aliquotPrefix = manageAliquotService.getAliquotPrefix(
+						sampleId, lotId, parentAliquotId);
 				// create a 2-D matrix for aliquot
 				List<AliquotBean[]> aliquotMatrix = createAliquotMatrix(colNum,
-						rowNum, numAliquots, firstAliquotId, template);
-				request.setAttribute("aliquotMatrix", aliquotMatrix);
+						rowNum, numAliquots, aliquotPrefix, firstAliquotNum, template);
+				session.setAttribute("aliquotMatrix", aliquotMatrix);
 			}
 			// TODO fill in details to save the data through some service
 			forward = mapping.findForward("success");
@@ -126,19 +121,22 @@ public class PreCreateAliquotAction extends AbstractBaseAction {
 	 * @return a 2-D matrix of aliquots
 	 */
 	private List<AliquotBean[]> createAliquotMatrix(int colNum, int rowNum,
-			int numAliquots, int firstAliquotId, AliquotBean template) {
+			int numAliquots, String aliquotPrefix, int firstAliquotId, AliquotBean template) {
 
 		List<AliquotBean[]> aliquotMatrix = new ArrayList();
 		int aliquotId = firstAliquotId;
 		for (int i = 0; i < rowNum; i++) {
-			AliquotBean[] aliquotRow = new AliquotBean[colNum];
+			// calculate number of columsn per row
 			int cols = colNum;
-			if (numAliquots < colNum) {
-				cols = numAliquots;
+			if (numAliquots % colNum < colNum && numAliquots % colNum > 0
+					&& i == rowNum - 1) {
+				cols = numAliquots % colNum;
 			}
+			AliquotBean[] aliquotRow = new AliquotBean[colNum];
+
 			for (int j = 0; j < cols; j++) {
-				AliquotBean aliquot = new AliquotBean(aliquotId + "", template.getContainer(),
-						template.getHowCreated());
+				AliquotBean aliquot = new AliquotBean(aliquotPrefix+aliquotId, template
+						.getContainer(), template.getHowCreated());
 				aliquotRow[j] = aliquot;
 				aliquotId++;
 			}
