@@ -2,20 +2,21 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 
-<logic:present parameter="bundle">
-<bean:parameter id="bundle" name="bundle"/>
+<%-- errors don't need bundle attribute --%>
 <logic:messagesPresent>
 	<font color="red">ERROR</font>
 	<ul>
-		<html:messages id="error" bundle="<%=bundle%>">
+		<html:messages id="error">
 			<li>
-				<bean:write name="error" />
+				<bean:write name="error"/>
 			</li>
 		</html:messages>
 	</ul>
 </logic:messagesPresent>
-
 <br>
+
+<logic:present parameter="bundle">
+<bean:parameter id="bundle" name="bundle"/>
 <logic:messagesPresent message="true">
 	<html:messages id="msg" message="true" bundle="<%=bundle%>">
 		<bean:write name="msg" />
@@ -25,18 +26,6 @@
 </logic:present>
 
 <logic:notPresent parameter="bundle">
-<logic:messagesPresent>
-	<font color="red">ERROR</font>
-	<ul>
-		<html:messages id="error">
-			<li>
-				<bean:write name="error" />
-			</li>
-		</html:messages>
-	</ul>
-</logic:messagesPresent>
-
-<br>
 <logic:messagesPresent message="true">
 	<html:messages id="msg" message="true">
 		<bean:write name="msg" />
