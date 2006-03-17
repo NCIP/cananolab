@@ -32,7 +32,7 @@ public class LoginService
 	UserProvisioningManager upm = null;
 	AuthenticationManager am = null;
 	
-    private static Logger logger = Logger.getLogger(LoginService.class);	
+    //private static Logger logger = Logger.getLogger(LoginService.class);	
 	
 	// Name of the "READ" Role
 	//private static final String readRoleName = NCIAConfig.getProtectionElementPrefix() + "READ";
@@ -41,13 +41,13 @@ public class LoginService
 	//private static final String publicProtectionGroupName = NCIAConfig.getProtectionElementPrefix() + "PUBLIC";	
 	
 	// Singleton instance of the security manager
-	private static LoginService manager = null;
+	//private static LoginService manager = null;
 	
 	// The primary key of the read role name
 	//private static Long readRoleId;
 	
 	// Primary key of the public protection group
-	private static Long publicProtGroupId;
+	//private static Long publicProtGroupId;
 	
 	/**
 	 * Returns an instance for the specified application name
@@ -55,13 +55,13 @@ public class LoginService
 	 * @return
 	 * @throws CSException
 	 */
-	public static LoginService getInstance(String name) throws Exception {
+	//public static LoginService getInstance(String name) throws Exception {
 		
-		if ( manager == null )
-			manager = new LoginService(name);
+		//if ( manager == null )
+		//	manager = new LoginService(name);
 		
-		return manager; 
-	}
+		//return manager; 
+	//}
 	
 	/**
 	 * Returns an instance for the default application name
