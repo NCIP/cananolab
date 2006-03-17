@@ -2,6 +2,20 @@
 <!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
 <struts-config>
 	<display-name>caLAB</display-name>
+	<form-beans>
+		<form-bean name="loginForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="loginId" type="java.lang.String" />
+			<form-property name="password" type="java.lang.String" />
+		</form-bean>
+	</form-beans>
+	<action-mappings>
+		<action name="loginForm" path="/login" scope="session" type="gov.nih.nci.calab.ui.security.LoginAction" input="input">
+			<forward name="success" path="calab" />
+			<forward name="failure" path="calab.home" />
+			<forward name="input" path="calab.home" />
+		</action>
+	</action-mappings>
+	
 	<global-forwards>
 		<forward name="login" path="/index.jsp" />
 		<forward name="error" path="calab.error" />
