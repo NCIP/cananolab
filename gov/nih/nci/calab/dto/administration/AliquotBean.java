@@ -8,7 +8,7 @@ package gov.nih.nci.calab.dto.administration;
  * 
  */
 
-/* CVS $Id: AliquotBean.java,v 1.1 2006-03-16 21:55:26 pansu Exp $ */
+/* CVS $Id: AliquotBean.java,v 1.2 2006-03-17 21:44:08 pansu Exp $ */
 
 public class AliquotBean {
 	private String aliquotId;
@@ -17,6 +17,10 @@ public class AliquotBean {
 
 	private String howCreated;
 
+	public AliquotBean() {
+		container=new ContainerBean();
+	}
+	
 	public AliquotBean(String aliquotId, ContainerBean container,
 			String howCreated) {
 		// TODO Auto-generated constructor stub
