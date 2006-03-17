@@ -10,7 +10,7 @@
 			<form-property name="vendor" type="java.lang.String" />
 			<form-property name="vendorSampleId" type="java.lang.String" />
 			<form-property name="dateReceived" type="java.lang.String" />
-			<form-property name="lotId" type="java.lang.String" />
+			<form-property name="lotId" type="java.lang.String" initial="NA" />
 			<form-property name="lotDescription" type="java.lang.String" />
 			<form-property name="solubility" type="java.lang.String" />
 			<form-property name="numberOfContainers" type="java.lang.String" initial="1" />
@@ -19,12 +19,20 @@
 		</form-bean>
 		<form-bean name="createAliquotForm" type="org.apache.struts.validator.DynaValidatorActionForm">
 			<form-property name="sampleId" type="java.lang.String" />
-			<form-property name="lotId" type="java.lang.String" />
+			<form-property name="lotId" type="java.lang.String" initial="NA" />
 			<form-property name="parentAliquotId" type="java.lang.String" />
-			<form-property name="numberOfAliquots" type="java.lang.String" />
+			<form-property name="numberOfAliquots" type="java.lang.String" initial="0" />
 			<form-property name="template" type="gov.nih.nci.calab.dto.administration.AliquotBean" />
+			<form-property name="generalComments" type="java.lang.String"/>
+		</form-bean>
+		<form-bean name="editAliquotForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+		    <form-property name="rowNum" type="java.lang.String"/>
+		    <form-property name="colNum" type="java.lang.String"/>
+			<form-property name="aliquot" type="gov.nih.nci.calab.dto.administration.AliquotBean" />
+			<form-property name="generalComments" type="java.lang.String"/>
 		</form-bean>
 	</form-beans>
+
 	<action-mappings>
 		<action name="createSampleForm" path="/preCreateSample" scope="session" type="gov.nih.nci.calab.ui.administration.PreCreateSampleAction" input="input">
 			<forward name="success" path="administration.createsample" />
@@ -37,15 +45,27 @@
 			<forward name="failure" path="administration.createsample" />
 			<forward name="input" path="administration.createsample" />
 		</action>
-		<action name="createAliquotForm" path="/createAliquot" scope="session" type="gov.nih.nci.calab.ui.administration.CreateAliquotAction" input="input">
+		<action name="createAliquotForm" path="/createAliquot" scope="request" type="gov.nih.nci.calab.ui.administration.CreateAliquotAction" input="input">
 			<forward name="input" path="administration.createaliquot" />
 			<forward name="success" path="administration.message" />
 			<forward name="failure" path="administration.createaliquot" />
 		</action>
-		<action name="createAliquotForm" path="/preCreateAliquot" scope="session" type="gov.nih.nci.calab.ui.administration.PreCreateAliquotAction" input="input">
+		<action name="createAliquotForm" path="/preCreateAliquot" scope="request" type="gov.nih.nci.calab.ui.administration.PreCreateAliquotAction" input="input">
 			<forward name="input" path="administration.message" />
 			<forward name="success" path="administration.createaliquot" />
 			<forward name="failure" path="administration.message" />
 		</action>
+		<action name="editAliquotForm" path="/preEditAliquot" scope="request" type="gov.nih.nci.calab.ui.administration.PreEditAliquotAction" input="input">
+			<forward name="input" path="administration.createaliquot" />
+			<forward name="success" path="administration.editaliquot" />
+			<forward name="failure" path="administration.message" />
+			
+		</action>
+		<action name="editAliquotForm" path="/editAliquot" scope="request" type="gov.nih.nci.calab.ui.administration.EditAliquotAction" input="input">
+			<forward name="input" path="administration.editaliquot" />
+			<forward name="success" path="administration.createaliquot" />
+			<forward name="failure" path="administration.message" />
+		</action>
+
 	</action-mappings>
 </struts-config>
