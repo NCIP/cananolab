@@ -17,4 +17,9 @@
         <put name="menu" value="search"/>
     </definition>
 
+        <!-- definition for the search sample result page -->
+    <definition name="search.searchsampleresult" extends="calab.home">
+        <put name="calabContent" value="/search/bodySearchSampleResult.jsp"/>
+        <put name="menu" value="search"/>
+    </definition>
 </tiles-definitions>
