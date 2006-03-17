@@ -1,3 +1,6 @@
+<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
+<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <table summary="" cellpadding="0" cellspacing="0" border="0" height="100%">
 	<tr>
 		<td valign="top">
@@ -41,7 +44,7 @@
 										<tr>
 											<td class="sidebarLogin" align="right">
 												<label for="loginID">
-													EMAIL
+													LOGIN ID
 												</label>
 											</td>
 											<td class="formFieldLogin">
