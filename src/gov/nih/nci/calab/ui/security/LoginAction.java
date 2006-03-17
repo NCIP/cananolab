@@ -41,7 +41,7 @@ public class LoginAction extends AbstractBaseAction {
 				//PasswordService passwordservice = new PasswordService();
 				//password = passwordservice.encrypt(password);
 				
-				LoginService loginservice = new LoginService("caLAB");
+				LoginService loginservice = new LoginService("calab");
 			    Boolean authenticated = loginservice.login(loginId, password);
 			    if (authenticated == true)
 			    {		    	
