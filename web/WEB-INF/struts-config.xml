@@ -8,18 +8,20 @@
 			<form-property name="password" type="java.lang.String" />
 		</form-bean>
 	</form-beans>
+		
+	<global-forwards>
+		<forward name="login" path="/index.jsp" />
+		<forward name="error" path="calab.error" />
+	</global-forwards>
+	
 	<action-mappings>
 		<action name="loginForm" path="/login" scope="session" type="gov.nih.nci.calab.ui.security.LoginAction" input="input">
-			<forward name="success" path="welcome.jsp" />
+			<forward name="success" path="calab.welcome" />
 			<forward name="failure" path="calab.error" />
 			<forward name="input" path="calab.home" />
 		</action>
 	</action-mappings>
 	
-	<global-forwards>
-		<forward name="login" path="/index.jsp" />
-		<forward name="error" path="calab.error" />
-	</global-forwards>
 	<controller>
 		<set-property value="true" property="inputForward" />
 	</controller>
