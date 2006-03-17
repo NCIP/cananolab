@@ -9,7 +9,7 @@ import java.util.List;
  * 
  */
 
-/* CVS $Id: ManageAliquotService.java,v 1.2 2006-03-16 21:54:49 pansu Exp $ */
+/* CVS $Id: ManageAliquotService.java,v 1.3 2006-03-17 21:44:57 pansu Exp $ */
 
 public class ManageAliquotService {
 
@@ -26,5 +26,32 @@ public class ManageAliquotService {
 	
 	public int getDefaultAliquotMatrixColumnNumber() {
 		return 10;
+	}
+	
+	public String getAliquotPrefix(String sampleId, String lotId, String parentAliquotId) {
+		if (lotId.equals("NA")) {
+			lotId=null;
+		}
+		if (parentAliquotId.length()==0) {
+			parentAliquotId=null;
+		}
+		String aliquotPrefix=sampleId+"-";
+		if (lotId!=null) {
+			String[] lotIdParts=lotId.split("-");
+			String lotNum=lotIdParts[lotIdParts.length-1];
+		    aliquotPrefix+=lotNum+"-";
+		}
+		if (parentAliquotId!=null) {
+			String[] aliquotIdParts=parentAliquotId.split("-");
+			String aliquotNum=aliquotIdParts[aliquotIdParts.length-1];
+			aliquotPrefix+=aliquotNum+"-";
+		}
+		return aliquotPrefix;
+	}
+	
+	public int getFirstAliquotNum(String sampleId, String lotId, String parentAliquotId) {
+		//tmp code to be replaced
+		int aliquotNum=1;
+		return aliquotNum;
 	}
 }
