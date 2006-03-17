@@ -12,7 +12,7 @@ import java.util.List;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.4 2006-03-16 21:50:15 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.5 2006-03-17 21:45:43 pansu Exp $ */
 
 public class LookupService {
 
@@ -26,14 +26,9 @@ public class LookupService {
 		// Need detail....
 
 		List aliquotIds = new ArrayList();
-		aliquotIds.add("NCL-0-1234");
-		aliquotIds.add("NCL-0-1234-0");
-		aliquotIds.add("NCL-1-1234-1");
-		aliquotIds.add("NCL-1-1234");
-		aliquotIds.add("NCL-2-1235");
-		aliquotIds.add("NCL-5-1234");
-		aliquotIds.add("NCL-5-1234-0");
-		aliquotIds.add("NCL-5-1234-1");
+		aliquotIds.add("NCL-3-2345");
+		aliquotIds.add("NCL-3-2345-0");
+		aliquotIds.add("NCL-3-1234-1");
 		aliquotIds.add("NCL-6-1234");
 		aliquotIds.add("NCL-6-1235");
 
@@ -160,8 +155,8 @@ public class LookupService {
 	public List<String> getAllLotIds() {
 		// tmp code to be replaced
 		List<String> lotIds = new ArrayList();
-		lotIds.add("NCL-6-1");
-		lotIds.add("NCL-3-1");
+		lotIds.add("NCL-6-1234");
+		lotIds.add("NCL-3-2345");
 		// end of tmp code
 
 		return lotIds;
