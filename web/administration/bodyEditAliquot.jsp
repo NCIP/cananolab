@@ -89,7 +89,7 @@
 				</tr>
 				<tr>
 					<td height="32">
-						<div align="left">
+						<div align="right">
 							<html:hidden property="rowNum" />
 							<html:hidden property="colNum" />
 							<html:hidden property="aliquot.aliquotId"/>
