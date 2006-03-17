@@ -22,11 +22,13 @@ public final class PasswordService {
 
     private static Logger logger = Logger.getLogger(PasswordService.class);
     
-    private PasswordService() {
+    /*
+    private PasswordService() 
+    {
 
     }
-
-    public synchronized String encrypt(String plaintext) {
+*/
+    public synchronized String encrypt(String strplaintext) {
 
         MessageDigest md = null;
         try {
@@ -35,7 +37,7 @@ public final class PasswordService {
             logger.error("Error with password algorithm type", e);
         }
         try {
-            md.update(plaintext.getBytes("UTF-8")); 
+            md.update(strplaintext.getBytes("UTF-8")); 
         } catch (UnsupportedEncodingException e) {
             logger.error("Problem with encoding type", e);
         }
