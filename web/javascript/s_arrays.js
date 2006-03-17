@@ -102,7 +102,7 @@ S:s_CSSTop	// STYLE Array to use for this menu
 },
 [		// define items {U:'url',T:'text' ...} look at the Manual for details
 {U:'preCreateSample.do',T:'Manage Samples'},
-{U:'createAliquot.jsp',T:'Manage Aliquots'}
+{U:'preCreateAliquot.do',T:'Manage Aliquots'}
 ]
 );
 
