@@ -46,16 +46,24 @@
 		</form>
 
 		<form name="/preCreateAliquot">
+			<field property="sampleId" depends="validwhen">
+				<arg position="0" key="createAliquotForm.sampleId" bundle="administration" />
+				<var>
+				<var-name>test</var-name>
+				<var-value>((numberOfAliquots==0) or (*this*!=null))</var-value>
+				</var>
+			</field>
+			<field property="lotId" depends="required">
+				<arg position="0" key="createAliquotForm.lotId" bundle="administration" />
+			</field>
 			<field property="numberOfAliquots" depends="integer">
 				<arg position="0" key="createAliquotForm.numberOfAliquots" bundle="administration" />
 			</field>
-		</form>
-		<form name="/createAliquot">
 			<field property="template.container.otherContainerType" depends="validwhen">
 				<arg position="0" key="createAliquotForm.otherContainerType" bundle="administration" />
 				<var>
 					<var-name>test</var-name>
-					<var-value>(template.container.containerType!="Other") or (*this*!=null))</var-value>
+					<var-value>((template.container.containerType!="Other") or (*this*!=null))</var-value>
 				</var>
 			</field>
 			<field property="template.container.quantity" depends="float">
@@ -64,7 +72,34 @@
 			<field property="template.container.concentration" depends="float">
 				<arg position="0" key="createAliquotForm.concentration" bundle="administration" />
 			</field>
-			<field property="template.container.volume" depends="float" >
+			<field property="template.container.volume" depends="float">
+				<arg position="0" key="createAliquotForm.volume" bundle="administration" />
+			</field>
+		</form>
+		<form name="/createAliquot">
+			<field property="sampleId" depends="required">
+				<arg position="0" key="createAliquotForm.sampleId" bundle="administration" />
+			</field>
+			<field property="lotId" depends="required">
+				<arg position="0" key="createAliquotForm.lotId" bundle="administration" />
+			</field>
+			<field property="numberOfAliquots" depends="required,integer">
+				<arg position="0" key="createAliquotForm.numberOfAliquots" bundle="administration" />
+			</field>
+			<field property="template.container.otherContainerType" depends="validwhen">
+				<arg position="0" key="createAliquotForm.otherContainerType" bundle="administration" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((template.container.containerType!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
+			<field property="template.container.quantity" depends="float">
+				<arg position="0" key="createAliquotForm.quantity" bundle="administration" />
+			</field>
+			<field property="template.container.concentration" depends="float">
+				<arg position="0" key="createAliquotForm.concentration" bundle="administration" />
+			</field>
+			<field property="template.container.volume" depends="float">
 				<arg position="0" key="createAliquotForm.volume" bundle="administration" />
 			</field>
 		</form>
