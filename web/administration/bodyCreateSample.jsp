@@ -63,7 +63,7 @@ function openLink() {
 					<td class="formLabel">
 						<div align="justify">
 							<strong>Source <span class="formFieldWhite"> <html:text property="vendor" size="10" /></span> &nbsp; &nbsp; Source ID <span class="formFieldWhite"><html:text property="vendorSampleId" size="10" /> </span> &nbsp; &nbsp; Date Received <html:text
-									property="dateReceived" size="7" /> <span class="formFieldWhite"> <a href="javascript:cal.popup();"><img height="18" src="images/calendar-icon.gif" width="22" border="0" alt="Click Here to Pick up the date"></a></span> </strong>
+									property="dateReceived" size="9" /> <span class="formFieldWhite"> <a href="javascript:cal.popup();"><img height="18" src="images/calendar-icon.gif" width="22" border="0" alt="Click Here to Pick up the date"></a></span> </strong>
 						</div>
 					</td>
 				</tr>
