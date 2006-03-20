@@ -1,11 +1,13 @@
 package gov.nih.nci.calab.service.administration;
 
+import gov.nih.nci.calab.dto.administration.ContainerBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
+import gov.nih.nci.calab.dto.administration.SampleBean;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/* CVS $Id: ManageSampleService.java,v 1.6 2006-03-20 17:00:46 pansu Exp $ */
+/* CVS $Id: ManageSampleService.java,v 1.7 2006-03-20 21:51:01 pansu Exp $ */
 public class ManageSampleService {
  
   public List<String> getAllSampleSOPs() {
@@ -34,5 +36,11 @@ public class ManageSampleService {
 	  return lotId;
   }
   
- 
+  /**
+   * Saves the sample into the database
+   * @throws Exception
+   */
+  public void saveSample(SampleBean sample, ContainerBean[] containers, String comments) throws Exception{
+	  //TODO fill in details to save the sample and associated containers.
+  }
 }
