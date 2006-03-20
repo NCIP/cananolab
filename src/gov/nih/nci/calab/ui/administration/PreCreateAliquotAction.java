@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: PreCreateAliquotAction.java,v 1.2 2006-03-17 21:46:43 pansu Exp $ */
+/* CVS $Id: PreCreateAliquotAction.java,v 1.3 2006-03-20 17:02:05 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
@@ -28,7 +28,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.validator.DynaValidatorActionForm;
 
 public class PreCreateAliquotAction extends AbstractBaseAction {
-	private static Logger logger = Logger.getLogger(CreateAliquotAction.class);
+	private static Logger logger = Logger.getLogger(PreCreateAliquotAction.class);
 
 	public ActionForward executeTask(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
@@ -94,6 +94,9 @@ public class PreCreateAliquotAction extends AbstractBaseAction {
 				List<AliquotBean[]> aliquotMatrix = createAliquotMatrix(colNum,
 						rowNum, numAliquots, aliquotPrefix, firstAliquotNum, template);
 				session.setAttribute("aliquotMatrix", aliquotMatrix);
+			}
+			else {
+				session.removeAttribute("aliquotMatrix");
 			}
 			// TODO fill in details to save the data through some service
 			forward = mapping.findForward("success");
