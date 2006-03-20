@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: PreCreateAliquotAction.java,v 1.5 2006-03-20 21:52:26 pansu Exp $ */
+/* CVS $Id: PreCreateAliquotAction.java,v 1.6 2006-03-20 21:57:54 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
@@ -100,7 +100,6 @@ public class PreCreateAliquotAction extends AbstractBaseAction {
 			else {
 				session.removeAttribute("aliquotMatrix");
 			}
-			// TODO fill in details to save the data through some service
 			forward = mapping.findForward("success");
 		} catch (Exception e) {
 			ActionMessages errors=new ActionMessages();
