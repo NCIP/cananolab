@@ -5,8 +5,9 @@ package gov.nih.nci.calab.ui.workflow;
  * @author pansu
  */
 
-/* CVS $Id: UseAliquotAction.java,v 1.4 2006-03-16 15:37:26 pansu Exp $*/
+/* CVS $Id: UseAliquotAction.java,v 1.5 2006-03-20 21:53:30 pansu Exp $*/
 
+import gov.nih.nci.calab.service.workflow.ExecuteWorkflowService;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,8 +36,9 @@ public class UseAliquotAction extends AbstractBaseAction {
 			String action=(String)theForm.get("action");
 			String comments=(String)theForm.get("comments");
 
-			//TODO fill in details for saving aliquot IDs and comments*/
 			if (action.equalsIgnoreCase("submit")) {
+				ExecuteWorkflowService executeWorkflowService=new ExecuteWorkflowService();
+				executeWorkflowService.saveRunAliquots(runId, aliquotIds, comments);
 				ActionMessages msgs=new ActionMessages();
 				ActionMessage msg=new ActionMessage("message.useAliquot");
 				msgs.add("message", msg);

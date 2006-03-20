@@ -60,4 +60,13 @@ public class ExecuteWorkflowService {
 		return aliquotIds;
 	}
 
+	/**
+	 * Save the aliquot IDs to be associated with the given run ID.
+	 * @param runId
+	 * @param aliquotIds
+	 * @throws Exception
+	 */
+	public void saveRunAliquots(String runId, String[] aliquotIds, String comments) throws Exception {
+		//TODO fill in details for saving aliquotIds for the run
+	}
 }
