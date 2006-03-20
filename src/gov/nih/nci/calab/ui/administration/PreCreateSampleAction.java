@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: PreCreateSampleAction.java,v 1.3 2006-03-20 20:47:39 pansu Exp $ */
+/* CVS $Id: PreCreateSampleAction.java,v 1.4 2006-03-20 21:52:56 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.ContainerBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
@@ -26,7 +26,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
-import org.apache.struts.taglib.html.ErrorsTag;
 import org.apache.struts.validator.DynaValidatorActionForm;
 
 public class PreCreateSampleAction extends AbstractBaseAction {
