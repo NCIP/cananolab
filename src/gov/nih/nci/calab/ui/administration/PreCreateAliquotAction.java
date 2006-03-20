@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: PreCreateAliquotAction.java,v 1.4 2006-03-20 20:47:39 pansu Exp $ */
+/* CVS $Id: PreCreateAliquotAction.java,v 1.5 2006-03-20 21:52:26 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
@@ -119,12 +119,6 @@ public class PreCreateAliquotAction extends AbstractBaseAction {
 		// return true;
 	}
 
-	private int getFirstAliquotId(String sampleId, String lotId,
-			String parentAliquotId) {
-		int firstId = 0;
-		return firstId;
-	}
-
 	/**
 	 * 
 	 * @return a 2-D matrix of aliquots
@@ -132,7 +126,7 @@ public class PreCreateAliquotAction extends AbstractBaseAction {
 	private List<AliquotBean[]> createAliquotMatrix(int colNum, int rowNum,
 			int numAliquots, String aliquotPrefix, int firstAliquotId, AliquotBean template) {
 
-		List<AliquotBean[]> aliquotMatrix = new ArrayList();
+		List<AliquotBean[]> aliquotMatrix = new ArrayList<AliquotBean[]>();
 		int aliquotId = firstAliquotId;
 		for (int i = 0; i < rowNum; i++) {
 			// calculate number of columsn per row
