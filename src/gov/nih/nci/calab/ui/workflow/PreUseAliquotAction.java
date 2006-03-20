@@ -5,7 +5,7 @@ package gov.nih.nci.calab.ui.workflow;
  * @author pansu
  */
 
-/* CVS $Id: PreUseAliquotAction.java,v 1.1 2006-03-16 15:34:54 pansu Exp $ */
+/* CVS $Id: PreUseAliquotAction.java,v 1.2 2006-03-20 21:53:13 pansu Exp $ */
 import gov.nih.nci.calab.service.common.LookupService;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
 
@@ -18,6 +18,8 @@ import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorActionForm;
 
 public class PreUseAliquotAction extends AbstractBaseAction  {
@@ -39,8 +41,11 @@ public class PreUseAliquotAction extends AbstractBaseAction  {
 			forward=mapping.findForward("success");	
 		}
 		catch(Exception e) {
+			ActionMessages errors=new ActionMessages();
+			ActionMessage error=new ActionMessage("error.preUseAliquot");
+			errors.add("error", error);
+			saveMessages(request, errors);
 			logger.error("Caught exception when loading in aliquot IDs.", e);
-			//TODO fill in details for error handling */
 			forward=mapping.findForward("failure");
 		}
 		return forward;
