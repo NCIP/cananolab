@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: PreCreateAliquotAction.java,v 1.3 2006-03-20 17:02:05 pansu Exp $ */
+/* CVS $Id: PreCreateAliquotAction.java,v 1.4 2006-03-20 20:47:39 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
@@ -25,6 +25,8 @@ import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorActionForm;
 
 public class PreCreateAliquotAction extends AbstractBaseAction {
@@ -101,7 +103,11 @@ public class PreCreateAliquotAction extends AbstractBaseAction {
 			// TODO fill in details to save the data through some service
 			forward = mapping.findForward("success");
 		} catch (Exception e) {
-			logger.error("Caught exception when creating aliquots", e);
+			ActionMessages errors=new ActionMessages();
+			ActionMessage error=new ActionMessage("error.preCreateAliquot");
+			errors.add("error", error);
+			saveMessages(request, errors);
+			logger.error("Caught exception loading creating aliquot page", e);
 			forward = mapping.getInputForward();
 		}
 		return forward;
