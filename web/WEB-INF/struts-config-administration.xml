@@ -34,23 +34,23 @@
 	</form-beans>
 
 	<action-mappings>
-		<action name="createSampleForm" path="/preCreateSample" scope="session" type="gov.nih.nci.calab.ui.administration.PreCreateSampleAction" input="input">
+		<action name="createSampleForm" path="/preCreateSample" type="gov.nih.nci.calab.ui.administration.PreCreateSampleAction" input="input">
 			<forward name="success" path="administration.createsample" />
 			<forward name="failure" path="administration.message" />
 			<forward name="input" path="administration.message" />
 		</action>
 
-		<action name="createSampleForm" path="/createSample" type="gov.nih.nci.calab.ui.administration.CreateSampleAction" scope="session" input="input">
+		<action name="createSampleForm" path="/createSample" type="gov.nih.nci.calab.ui.administration.CreateSampleAction" input="input">
 			<forward name="success" path="administration.sampledetails" />
 			<forward name="failure" path="administration.createsample" />
 			<forward name="input" path="administration.createsample" />
 		</action>
-		<action name="createAliquotForm" path="/createAliquot" scope="request" type="gov.nih.nci.calab.ui.administration.CreateAliquotAction" input="input">
+		<action name="createAliquotForm" path="/createAliquot" type="gov.nih.nci.calab.ui.administration.CreateAliquotAction" input="input">
 			<forward name="input" path="administration.createaliquot" />
 			<forward name="success" path="administration.message" />
 			<forward name="failure" path="administration.createaliquot" />
 		</action>
-		<action name="createAliquotForm" path="/preCreateAliquot" scope="request" type="gov.nih.nci.calab.ui.administration.PreCreateAliquotAction" input="input">
+		<action name="createAliquotForm" path="/preCreateAliquot" type="gov.nih.nci.calab.ui.administration.PreCreateAliquotAction" input="input">
 			<forward name="input" path="administration.message" />
 			<forward name="success" path="administration.createaliquot" />
 			<forward name="failure" path="administration.message" />
