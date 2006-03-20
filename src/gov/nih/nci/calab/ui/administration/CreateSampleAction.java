@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: CreateSampleAction.java,v 1.5 2006-03-16 21:53:55 pansu Exp $ */
+/* CVS $Id: CreateSampleAction.java,v 1.6 2006-03-20 20:47:39 pansu Exp $ */
 
 import org.apache.log4j.*;
 
@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorActionForm;
 
 import gov.nih.nci.calab.dto.administration.ContainerBean;
@@ -55,6 +57,10 @@ public class CreateSampleAction extends AbstractBaseAction {
 			// TODO fill in details to save the data through some service
 			forward = mapping.findForward("success");
 		} catch (Exception e) {
+			ActionMessages errors=new ActionMessages();
+			ActionMessage error=new ActionMessage("error.createSample");
+			errors.add("error", error);
+			saveMessages(request, errors);
 			logger.error("Caught exception when creating a sample", e);
 			forward = mapping.getInputForward();
 		}

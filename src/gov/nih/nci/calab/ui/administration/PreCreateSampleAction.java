@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: PreCreateSampleAction.java,v 1.2 2006-03-16 21:53:41 pansu Exp $ */
+/* CVS $Id: PreCreateSampleAction.java,v 1.3 2006-03-20 20:47:39 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.ContainerBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
@@ -24,6 +24,9 @@ import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
+import org.apache.struts.taglib.html.ErrorsTag;
 import org.apache.struts.validator.DynaValidatorActionForm;
 
 public class PreCreateSampleAction extends AbstractBaseAction {
@@ -34,7 +37,7 @@ public class PreCreateSampleAction extends AbstractBaseAction {
 			throws Exception {
 		ActionForward forward = null;
 		HttpSession session = request.getSession();
-
+		
 		try {
 			DynaValidatorActionForm theForm = (DynaValidatorActionForm) form;
 			String sampleId = (String) theForm.get("sampleId");
@@ -74,6 +77,10 @@ public class PreCreateSampleAction extends AbstractBaseAction {
 			request.setAttribute("sampleId", sampleId);
 			forward = mapping.findForward("success");
 		} catch (Exception e) {
+			ActionMessages errors=new ActionMessages();
+			ActionMessage error=new ActionMessage("error.preCreateSample");
+			errors.add("error", error);
+			saveMessages(request, errors);
 			logger.error("Caught exceptions when loading create sample page", e);
 			forward = mapping.findForward("failure");
 		}
