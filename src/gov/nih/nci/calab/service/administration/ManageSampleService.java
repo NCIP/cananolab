@@ -5,7 +5,7 @@ import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
 import java.util.ArrayList;
 import java.util.List;
 
-/* CVS $Id: ManageSampleService.java,v 1.5 2006-03-16 15:06:31 pansu Exp $ */
+/* CVS $Id: ManageSampleService.java,v 1.6 2006-03-20 17:00:46 pansu Exp $ */
 public class ManageSampleService {
  
   public List<String> getAllSampleSOPs() {
@@ -30,7 +30,7 @@ public class ManageSampleService {
    * @return the default lot Id
    */
   public String getDefaultLotId() {
-	  String lotId="1";
+	  String lotId="N/A";
 	  return lotId;
   }
   

@@ -31,8 +31,10 @@ function refreshAliquots() {
 						<strong>Sample ID*<span class="formFieldWhite"> <html:select property="sampleId">
 									<option value=""></option>
 									<html:options name="allSampleIds" />
-								</html:select></span></strong>&nbsp; &nbsp;<strong>Lot ID<span class="formFieldWhite"> <html:select property="lotId">
-									<option value="NA"></option>
+								</html:select></span></strong>&nbsp; &nbsp;<strong>Lot ID*<span class="formFieldWhite"> <html:select property="lotId">
+									<option value="N/A">
+										N/A
+									</option>
 									<html:options name="allLotIds" />
 								</html:select></span></strong>&nbsp; &nbsp; <strong>Aliquot ID<span class="formFieldWhite"> <html:select property="parentAliquotId">
 									<option value=""></option>
@@ -139,41 +141,39 @@ function refreshAliquots() {
 				<logic:iterate name="aliquotMatrix" id="aliquotRow" type="gov.nih.nci.calab.dto.administration.AliquotBean[]" indexId="rowNum">
 					<tr>
 						<td class="formLabelBoxWhite">
-							<div align="left">
-								<table border="0" align="center" cellpadding="3" cellspacing="0">
-									<tr>
-										<logic:iterate name="aliquotRow" id="aliquot" type="gov.nih.nci.calab.dto.administration.AliquotBean" indexId="colNum">
-											<td width="55">
-												<table border="0" cellspacing="0" cellpadding="0">
-													<tr>
-														<td class="formLabelBoxWhite">
-															<logic:present name="aliquot">												
-																<% java.util.Map editAliquotParams=new java.util.HashMap();
-																   editAliquotParams.put("rowNum", rowNum);
-																   editAliquotParams.put("colNum", colNum); 
-																   pageContext.setAttribute("editAliquotParams", editAliquotParams);%>
+							<table align="left" border="0" align="center" cellpadding="3" cellspacing="0">
+								<tr>
+									<logic:iterate name="aliquotRow" id="aliquot" type="gov.nih.nci.calab.dto.administration.AliquotBean" indexId="colNum">
+										<td width="85">
+											<table border="0" cellspacing="0" cellpadding="0">
+												<tr>
+													<td class="formLabelBoxWhite">
+														<logic:present name="aliquot">
+															<%java.util.Map editAliquotParams = new java.util.HashMap();
+			editAliquotParams.put("rowNum", rowNum);
+			editAliquotParams.put("colNum", colNum);
+			pageContext.setAttribute("editAliquotParams", editAliquotParams);%>
 
-																<html:link action="preEditAliquot" name="editAliquotParams">
-																	<bean:write name="aliquot" property="aliquotId" />
-																	<br>
-																	<bean:write name="aliquot" property="container.quantity" />
-																	<bean:write name="aliquot" property="container.quantityUnit" />
-																	<br>
-																	<bean:write name="aliquot" property="container.concentration" />
-																	<bean:write name="aliquot" property="container.concentrationUnit" />
-																	<br>
-																	<bean:write name="aliquot" property="container.volume" />
-																	<bean:write name="aliquot" property="container.volumeUnit" />
-																</html:link>
-															</logic:present>
-														</td>
-													</tr>
-												</table>
-											</td>
-										</logic:iterate>
-									</tr>
-								</table>
-							</div>
+															<html:link action="preEditAliquot" name="editAliquotParams">
+																<bean:write name="aliquot" property="aliquotId" />
+																<br>
+																<bean:write name="aliquot" property="container.quantity" />
+																<bean:write name="aliquot" property="container.quantityUnit" />
+																<br>
+																<bean:write name="aliquot" property="container.concentration" />
+																<bean:write name="aliquot" property="container.concentrationUnit" />
+																<br>
+																<bean:write name="aliquot" property="container.volume" />
+																<bean:write name="aliquot" property="container.volumeUnit" />
+															</html:link>
+														</logic:present>
+													</td>
+												</tr>
+											</table>
+										</td>
+									</logic:iterate>
+								</tr>
+							</table>
 						</td>
 					</tr>
 				</logic:iterate>

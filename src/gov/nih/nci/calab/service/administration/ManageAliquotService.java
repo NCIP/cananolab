@@ -9,7 +9,7 @@ import java.util.List;
  * 
  */
 
-/* CVS $Id: ManageAliquotService.java,v 1.3 2006-03-17 21:44:57 pansu Exp $ */
+/* CVS $Id: ManageAliquotService.java,v 1.4 2006-03-20 17:00:37 pansu Exp $ */
 
 public class ManageAliquotService {
 
@@ -29,7 +29,7 @@ public class ManageAliquotService {
 	}
 	
 	public String getAliquotPrefix(String sampleId, String lotId, String parentAliquotId) {
-		if (lotId.equals("NA")) {
+		if (lotId.equals("N/A")) {
 			lotId=null;
 		}
 		if (parentAliquotId.length()==0) {
