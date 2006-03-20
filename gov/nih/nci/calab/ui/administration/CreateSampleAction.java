@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: CreateSampleAction.java,v 1.6 2006-03-20 20:47:39 pansu Exp $ */
+/* CVS $Id: CreateSampleAction.java,v 1.7 2006-03-20 21:52:03 pansu Exp $ */
 
 import org.apache.log4j.*;
 
@@ -22,6 +22,7 @@ import org.apache.struts.validator.DynaValidatorActionForm;
 
 import gov.nih.nci.calab.dto.administration.ContainerBean;
 import gov.nih.nci.calab.dto.administration.SampleBean;
+import gov.nih.nci.calab.service.administration.ManageSampleService;
 import gov.nih.nci.calab.ui.core.*;
 
 public class CreateSampleAction extends AbstractBaseAction {
@@ -54,7 +55,9 @@ public class CreateSampleAction extends AbstractBaseAction {
 			ContainerBean[] containers=(ContainerBean[])theForm.get("containers");
 			request.setAttribute("sample", sample);
 			request.setAttribute("containers", containers);
-			// TODO fill in details to save the data through some service
+			
+			ManageSampleService manageSampleService=new ManageSampleService();
+			manageSampleService.saveSample(sample, containers, generalComments);
 			forward = mapping.findForward("success");
 		} catch (Exception e) {
 			ActionMessages errors=new ActionMessages();
