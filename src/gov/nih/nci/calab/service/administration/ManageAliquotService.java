@@ -9,7 +9,7 @@ import java.util.List;
  * 
  */
 
-/* CVS $Id: ManageAliquotService.java,v 1.4 2006-03-20 17:00:37 pansu Exp $ */
+/* CVS $Id: ManageAliquotService.java,v 1.5 2006-03-20 21:50:50 pansu Exp $ */
 
 public class ManageAliquotService {
 
@@ -28,6 +28,13 @@ public class ManageAliquotService {
 		return 10;
 	}
 	
+	/**
+	 * 
+	 * @param sampleId
+	 * @param lotId
+	 * @param parentAliquotId
+	 * @return the existing prefix for assigning a new aliquot ID.
+	 */
 	public String getAliquotPrefix(String sampleId, String lotId, String parentAliquotId) {
 		if (lotId.equals("N/A")) {
 			lotId=null;
@@ -49,9 +56,30 @@ public class ManageAliquotService {
 		return aliquotPrefix;
 	}
 	
+	/**
+	 * 
+	 * @param sampleId
+	 * @param lotId
+	 * @param parentAliquotId
+	 * @return the first number for assigning a new aliquot IDs.
+	 */
 	public int getFirstAliquotNum(String sampleId, String lotId, String parentAliquotId) {
 		//tmp code to be replaced
 		int aliquotNum=1;
 		return aliquotNum;
+	}
+	
+	 
+	/**
+	 * Save the aliquots into the database
+	 * @param sampleId
+	 * @param lotId
+	 * @param parentAliquotId
+	 * @param aliquotMatrix
+	 * @param comments
+	 * @throws Exception
+	 */
+	public void saveAliquots(String sampleId, String lotId, String parentAliquotId, List aliquotMatrix, String comments) throws Exception {
+		//TODO fill in details for saving aliquots
 	}
 }
