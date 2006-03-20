@@ -5,6 +5,7 @@
 	<br>
 	Edit Aliquot
 </h2>
+<html:errors />
 <blockquote>
 	<html:form action="/editAliquot">
 		<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
