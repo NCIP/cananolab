@@ -96,27 +96,7 @@ function openLink() {
 			</tbody>
 		</table>
 		<br>
-		<%-- if request parameter cnum is not entered assume cnum=1 --%>
-		<c:choose>
-			<c:when test='${param.numberOfContainers== null}'>
-				<c:set var="cnum" value="1" />
-			</c:when>
-			<c:otherwise>
-				<c:set var="cnum" value="${param.numberOfContainers}" />
-				<%-- if numberOfContainers is not a number, set it to 0 --%>
-				<c:catch var="e">
-					<c:if test="${cnum>0}">
-						<c:out value="${e}" />
-					</c:if>
-				</c:catch>
-				<c:if test="${e!=null}">
-					<c:set var="cnum" value="0" />
-				</c:if>
-			</c:otherwise>
-		</c:choose>
 		<%--create container for each container number --%>
-		<%--		<c:forEach var="cnum" begin="1" end="${cnum}">--%>
-		<%--		<logic:iterate name="createSampleForm" property="containers" id="container" type="gov.nih.nci.calab.dto.administration.ContainerBean" indexId="cnum">--%>
 		<c:forEach var="containers" items="${createSampleForm.map.containers}" varStatus="status">
 			<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 				<tbody>
@@ -131,6 +111,7 @@ function openLink() {
 						<td class="formLabel">
 							<div align="justify">
 								<strong>Container Type* <span class="formFieldWhite"> <html:select name="containers" indexed="true" property="containerType">
+								            <option value=""></option>
 											<html:options name="sampleContainerInfo" property="containerTypes" />
 										</html:select></span> &nbsp; &nbsp; &nbsp; Other <span class="formFieldWhite"><html:text name="containers" indexed="true" property="otherContainerType" size="8" /></span> &nbsp; &nbsp; &nbsp; </strong>
 							</div>
