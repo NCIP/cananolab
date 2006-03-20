@@ -187,7 +187,7 @@ function refreshAliquots() {
 						<tr>
 							<td width="198" height="32">
 								<div align="right">
-									<input type="reset" value="Reset">
+									<html:reset/>
 									<html:submit />
 								</div>
 							</td>
