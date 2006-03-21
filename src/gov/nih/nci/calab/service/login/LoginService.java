@@ -9,7 +9,6 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 import gov.nih.nci.security.AuthenticationManager;
-//import gov.nih.nci.security.UserProvisioningManager;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionElement;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionElementPrivilegeContext;
 import gov.nih.nci.security.authorization.domainobjects.User;
@@ -19,11 +18,12 @@ import gov.nih.nci.security.exceptions.CSException;
 import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
 import gov.nih.nci.security.exceptions.CSTransactionException;
 import gov.nih.nci.security.SecurityServiceProvider;
-//import gov.nih.nci.ncia.util.NCIAConfig;
 import gov.nih.nci.security.authorization.domainobjects.Role;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionGroup;
 import gov.nih.nci.security.dao.RoleSearchCriteria;
 import gov.nih.nci.security.dao.ProtectionGroupSearchCriteria;
+
+import gov.nih.nci.calab.dto.security.SecurityBean;
 
 /** 
  * The LoginService authenticates users into the calab system.
@@ -65,6 +65,21 @@ public class LoginService
 		return am.login( strUsername,strPassword);
 	}
 	
-
+	/**
+	 * The userInfo method sets and authenticated user's information 
+	 * @param	strLoginId LoginId of the authenticated user
+	 * @return	SecurityBean containing an authenticated user's information
+	 */
+    public SecurityBean userInfo(String strLoginId)
+    {
+    	//TODO Implement method to query CSM_USER table and get logged in user's recordset
+    	SecurityBean securityBean = new SecurityBean();
+    	
+    	securityBean.setLoginId(strLoginId);
+    	//set remaining info
+    	
+    	return securityBean;
+    	
+    }
 	
 }
