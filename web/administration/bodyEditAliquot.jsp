@@ -84,7 +84,7 @@
 						<div align="left">
 							<strong>General Comments</strong>
 							<br>
-							<span class="formField"><span class="formFieldWhite"> <html:textarea property="aliquot.container.comments" cols="70" /></span></span>
+							<span class="formField"><span class="formFieldWhite"> <html:textarea property="aliquot.container.containerComments" cols="70" /></span></span>
 						</div>
 					</td>
 				</tr>
