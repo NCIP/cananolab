@@ -6,12 +6,10 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: PreCreateAliquotAction.java,v 1.6 2006-03-20 21:57:54 pansu Exp $ */
+/* CVS $Id: PreCreateAliquotAction.java,v 1.7 2006-03-21 17:22:34 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
-import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
 import gov.nih.nci.calab.service.administration.ManageAliquotService;
-import gov.nih.nci.calab.service.common.LookupService;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
 
 import java.util.ArrayList;
@@ -37,37 +35,11 @@ public class PreCreateAliquotAction extends AbstractBaseAction {
 			throws Exception {
 		ActionForward forward = null;
 		HttpSession session = request.getSession();
+		
 		try {
 			// TODO fill in details for sample information */
 			DynaValidatorActionForm theForm = (DynaValidatorActionForm) form;
 
-			// retrieve from sesssion first if available assuming these values
-			// are not likely to change within the same session. If changed, the
-			// session should be updated.
-			LookupService lookupService = new LookupService();
-			ManageAliquotService manageAliquotService = new ManageAliquotService();
-
-			if (session.getAttribute("allSampleIds") == null) {
-				List sampleIds = lookupService.getAllSampleIds();
-				session.setAttribute("allSampleIds", sampleIds);
-			}
-			if (session.getAttribute("allLotIds") == null) {
-				List lotIds = lookupService.getAllLotIds();
-				session.setAttribute("allLotIds", lotIds);
-			}
-			if (session.getAttribute("allAliquotIds") == null) {
-				List aliquotIds = lookupService.getAliquots();
-				session.setAttribute("allAliquotIds", aliquotIds);
-			}
-			if (session.getAttribute("aliquotContainerInfo") == null) {
-				ContainerInfoBean containerInfo = lookupService
-						.getAliquotContainerInfo();
-				session.setAttribute("aliquotContainerInfo", containerInfo);
-			}
-			if (session.getAttribute("aliquotCreateMethods") == null) {
-				List methods = manageAliquotService.getAliquotCreateMethods();
-				session.setAttribute("aliquotCreateMethods", methods);
-			}
 			String sampleId = (String) theForm.get("sampleId");
 			String lotId = (String) theForm.get("lotId");
 			String parentAliquotId = (String) theForm.get("parentAliquotId");
@@ -83,6 +55,7 @@ public class PreCreateAliquotAction extends AbstractBaseAction {
 
 			// calculate number of rows in the matrix
 			if (numAliquots > 0) {
+				ManageAliquotService manageAliquotService=new ManageAliquotService();
 				int colNum = manageAliquotService
 						.getDefaultAliquotMatrixColumnNumber();
 				int rowNum = (int) Math.ceil((float) numAliquots / colNum);
