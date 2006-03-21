@@ -13,21 +13,28 @@ import sun.misc.BASE64Encoder;
  * for authentication purposes.
  * 
  * @author shinohaa
+ * @author doswellj
  *
  */
-public final class PasswordService {
+public final class PasswordService 
+{
     
     private static final String ENCRYPTION_TYPE = "SHA";
     private static PasswordService instance;
 
     private static Logger logger = Logger.getLogger(PasswordService.class);
     
-    /*
+   
     private PasswordService() 
     {
 
     }
-*/
+
+    /**
+     * Uses SHA to encrypt a password.
+     * @param strplaintext Accepts a password as a string
+     * @return encrypted password
+     */
     public synchronized String encrypt(String strplaintext) {
 
         MessageDigest md = null;
@@ -47,6 +54,10 @@ public final class PasswordService {
         return hash; 
     }
 
+    /**
+     * Returns an instance of the PasswordService class.
+     * @return  instance of PasswordService
+     */
     public static synchronized PasswordService getInstance() // step 1
     {
 
