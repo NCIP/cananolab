@@ -54,9 +54,10 @@
 						<tr>
 							<td>
 								<div align="left">
-									<input name="action" type="reset" value="Reset">
-									<input name="action" type="submit" value="Submit">
-									<input name="action" type="submit" value="Cancel">
+								    <input type="hidden" name="runId" value="<bean:write name="runId"/>">
+									<html:reset/>
+									<html:submit/>
+									<input type="button" value="Cancel" onclick="javascript:history.go(-1)">
 								</div>
 							</td>
 						</tr>
