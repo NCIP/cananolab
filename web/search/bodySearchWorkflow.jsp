@@ -176,8 +176,7 @@
 								<td width="490" height="32">
 									<div align="right">
 										<input name="Submit2222" type="submit" onClick="javascript:location.href='#';" value="Reset">
-										<input name="Submit222" type="submit" onClick="javascript:location.href='#';" value="Search">
-										<input name="Submit22" type="submit" onClick="javascript:location.href='#';" value="Back">
+										<input name="Submit222" type="submit" onClick="javascript:location.href='searchWorkflowResult.jsp';" value="Search">
 									</div>
 								</td>
 							</tr>

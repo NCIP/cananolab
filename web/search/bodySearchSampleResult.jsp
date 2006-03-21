@@ -1,90 +1,60 @@
 <h2>
 	<br>
-	Search Results
+	Sample Search Results
 </h2>
 <blockquote>
 	<table width="590" border="0" align="center" cellpadding="0" cellspacing="0">
 		<tr>
 			<td width="55" align="left" class="dataTablePrimaryLabel">
-				Sample ID/
+				Sample ID
 			</td>
 			<td width="76" align="left" class="dataTablePrimaryLabel">
 				<div align="left">
 					Accessioned Date <strong></strong>
 				</div>
 			</td>
-			<td width="69" align="left" class="dataTablePrimaryLabel">
-				Submission Date
-			</td>
 			<td width="41" align="left" class="dataTablePrimaryLabel">
 				<div align="left">
 					Particle Type
 				</div>
 			</td>
-			<td width="48" align="left" class="dataTablePrimaryLabel">
-				<div align="left">
-					Creation
-					<br>
-					Date
-				</div>
-			</td>
 			<td width="44" align="left" class="dataTablePrimaryLabel">
-				Location
+			<div align="left">Location</div>
 			</td>
 			<td width="48" align="left" class="dataTablePrimaryLabel">
 				<div align="left">
 					Submitter
-				</div>
-			</td>
-			<td width="45" align="left" class="dataTablePrimaryLabel">
-				<div align="left">
-					File Status
 				</div>
 			</td>
 			<td width="102" align="left" class="dataTablePrimaryLabel">
-				Actions
+				<div align="center">Actions</div>
 			</td>
 		</tr>
 		<tr>
-			<td class="formLabelGrey" valign="top">
+			<td class="formLabelWhite" valign="top">
 				<div align="left">
-					<a href="#">NCL3-1 </a>
+					<a href="#">NCL6-1 </a>
 				</div>
 			</td>
-			<td class="formFieldGrey" valign="top">
+			<td class="formLabelWhite" valign="top">
 				<div align="left">
-					10/12/05&#13;
+					10/12/05
 				</div>
 			</td>
-			<td class="formFieldGrey" valign="top">
+			<td class="formLabelWhite" valign="top">
 				<div align="left">
-					10/12/05&#13;
+					Liposome
 				</div>
 			</td>
-			<td class="formFieldGrey" valign="top">
+			<td class="formLabelWhite" valign="top">
+				<div align="left">Rm 250 F1</div>
+			</td>
+			<td class="formLabelWhite" valign="top">
 				<div align="left">
-					Type
+					Scott
 				</div>
 			</td>
-			<td class="formFieldGrey" valign="top">
-				<div align="left">
-					10/12/05&#13;
-				</div>
-			</td>
-			<td class="formFieldGrey" valign="top">
-				Location
-			</td>
-			<td class="formFieldGrey" valign="top">
-				<div align="left">
-					Submitter
-				</div>
-			</td>
-			<td class="formFieldGrey" valign="top">
-				<div align="left">
-					<strong>Masked</strong>
-				</div>
-			</td>
-			<td class="formFieldGrey" valign="bottom">
+			<td class="formLabelWhite" valign="bottom">
 				<div align="center">
 					<span class="formFieldWhite"><a href="createSample.do">View</a></span>
 				</div>
@@ -93,7 +63,7 @@
 		<tr>
 			<td class="formLabelWhite" valign="top">
 				<div align="left">
-					<a href="#">NCL3-1 </a>
+					<a href="#">NCL6-3 </a>
 				</div>
 			</td>
 			<td class="formFieldWhite" valign="top">
@@ -103,42 +73,27 @@
 			</td>
 			<td class="formFieldWhite" valign="top">
 				<div align="left">
-					10/12/05
+					Dendrimer
 				</div>
 			</td>
 			<td class="formFieldWhite" valign="top">
+				<div align="left">Rm 250 F4</div>
+			</td>
+			<td class="formLabelWhite" valign="top">
 				<div align="left">
-					Type
+					Marty
 				</div>
 			</td>
-			<td class="formFieldWhite" valign="top">
-				<div align="left">
-					10/12/05
-				</div>
-			</td>
-			<td class="formFieldWhite" valign="top">
-				<span class="formFieldGrey">Location</span>
-			</td>
-			<td class="formFieldWhite" valign="top">
-				<div align="left">
-					Submitter
-				</div>
-			</td>
-			<td class="formFieldWhite" valign="top">
-				<div align="left">
-					-
-				</div>
-			</td>
-			<td class="formFieldWhite" valign="middle">
+			<td class="formLabelWhite" valign="middle">
 				<div align="center">
-					<span class="formFieldGrey"><a href="createSample.do">View</a></span>
+					<a href="createSample.do">View</a>
 				</div>
 			</td>
 		</tr>
 		<tr>
 			<td class="formLabelWhite" valign="top">
 				<div align="left">
-					<a href="#">NCL3-1 </a>
+					<a href="#">NCL6-3-3 </a>
 				</div>
 			</td>
 			<td class="formFieldWhite" valign="top">
@@ -148,133 +103,57 @@
 			</td>
 			<td class="formFieldWhite" valign="top">
 				<div align="left">
-					10/12/05&#13;
+					Liposome
 				</div>
 			</td>
 			<td class="formFieldWhite" valign="top">
+				<div align="left">Rm 117 F1</div>
+			</td>
+			<td class="formLabelWhite" valign="top">
 				<div align="left">
-					Type
+					Anil
 				</div>
 			</td>
-			<td class="formFieldWhite" valign="top">
-				<div align="left">
-					10/12/05&#13;
-				</div>
-			</td>
-			<td class="formFieldWhite" valign="top">
-				<span class="formFieldGrey">Location</span>
-			</td>
-			<td class="formFieldWhite" valign="top">
-				<div align="left">
-					Submitter
-				</div>
-			</td>
-			<td class="formFieldWhite" valign="top">
-				<div align="left">
-					-
-				</div>
-			</td>
-			<td class="formFieldWhite" valign="middle">
+			<td class="formLabelWhite" valign="middle">
 				<div align="center">
-					<span class="formFieldGrey"><a href="createSample.do">View</a></span>
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td class="formLabelGrey" valign="top">
-				&#13;
-				<div align="left">
-					<a href="#">NCL3-1 </a>
-				</div>
-			</td>
-			<td class="formFieldGrey" valign="top">
-				<div align="left">
-					10/12/05&#13;
-				</div>
-			</td>
-			<td class="formFieldGrey" valign="top">
-				<div align="left">
-					10/12/05&#13;
-				</div>
-			</td>
-			<td class="formFieldGrey" valign="top">
-				<div align="left">
-					Type
-				</div>
-			</td>
-			<td class="formFieldGrey" valign="top">
-				<div align="left">
-					10/12/05&#13;
-				</div>
-			</td>
-			<td class="formFieldGrey" valign="top">
-				Location
-			</td>
-			<td class="formFieldGrey" valign="top">
-				<div align="left">
-					Submitter
-				</div>
-			</td>
-			<td class="formFieldGrey" valign="top">
-				<div align="left">
-					<strong>Masked</strong>
-				</div>
-			</td>
-			<td class="formFieldGrey" valign="middle">
-				<div align="center">
-					<span class="formFieldWhite"><a href="createSample.do">View</a></span>
+					<a href="createSample.do">View</a>
 				</div>
 			</td>
 		</tr>
 		<tr>
 			<td class="formLabelWhite" valign="top">
 				<div align="left">
-					<a href="#">NCL3-1 </a>
+					<a href="#">NCL6-3-31 </a>
 				</div>
 			</td>
-			<td class="formFieldWhite" valign="top">
+			<td class="formLabelWhite" valign="top">
 				<div align="left">
 					10/12/05&#13;
 				</div>
 			</td>
-			<td class="formFieldWhite" valign="top">
+			<td class="formLabelWhite" valign="top">
 				<div align="left">
-					10/12/05&#13;
+					Dendrimer
 				</div>
 			</td>
-			<td class="formFieldWhite" valign="top">
+			<td class="formLabelWhite" valign="top">
+				<div align="left">Rm250 F2</div>
+			</td>
+			<td class="formLabelWhite" valign="top">
 				<div align="left">
-					Type
+					Marina
 				</div>
 			</td>
-			<td class="formFieldWhite" valign="top">
-				<div align="left">
-					10/12/05&#13;
-				</div>
-			</td>
-			<td class="formFieldWhite" valign="top">
-				<span class="formFieldGrey">Location</span>
-			</td>
-			<td class="formFieldWhite" valign="top">
-				<div align="left">
-					Submitter
-				</div>
-			</td>
-			<td class="formFieldWhite" valign="top">
-				<div align="left">
-					-
-				</div>
-			</td>
-			<td class="formFieldWhite" valign="middle">
+			<td class="formLabelWhite" valign="middle">
 				<div align="center">
-					<span class="formFieldGrey"><a href="createSample.do">View</a> </span>
+					<a href="createSample.do">View</a>
 				</div>
 			</td>
 		</tr>
 		<tr>
 			<td class="formLabelWhite" valign="top">
 				<div align="left">
-					<a href="#">NCL3-1 </a>
+					<a href="#">NCL6-4-12 </a>
 				</div>
 			</td>
 			<td class="formFieldWhite" valign="top">
@@ -284,42 +163,57 @@
 			</td>
 			<td class="formFieldWhite" valign="top">
 				<div align="left">
-					10/12/05&#13;
+					Ploymer
 				</div>
 			</td>
 			<td class="formFieldWhite" valign="top">
+				Rm117 F4
+			</td>
+			<td class="formLabelWhite" valign="top">
 				<div align="left">
-					Type
+					Steve
 				</div>
 			</td>
-			<td class="formFieldWhite" valign="top">
-				<div align="left">
-					10/12/05&#13;
-				</div>
-			</td>
-			<td class="formFieldWhite" valign="top">
-				<span class="formFieldGrey">Location</span>
-			</td>
-			<td class="formFieldWhite" valign="top">
-				<div align="left">
-					Submitter
-				</div>
-			</td>
-			<td class="formFieldWhite" valign="top">
-				<div align="left">
-					-
-				</div>
-			</td>
-			<td class="formFieldWhite" valign="middle">
+			<td class="formLabelWhite" valign="middle">
 				<div align="center">
-					<span class="formFieldGrey"> <a href="createSample.do">View</a></span>
+					<a href="createSample.do">View</a>
 				</div>
 			</td>
 		</tr>
 		<tr>
 			<td class="formLabelWhite" valign="top">
 				<div align="left">
-					<a href="#">NCL3-1 </a>
+					<a href="#">NCL6-4-27 </a>
+				</div>
+			</td>
+			<td class="formFieldWhite" valign="top">
+				<div align="left">
+					10/12/05&#13;
+				</div>
+			</td>
+			<td class="formFieldWhite" valign="top">
+				<div align="left">
+					Liposome
+				</div>
+			</td>
+			<td class="formFieldWhite" valign="top">
+				<div align="left">Rm 117 F4</div>
+			</td>
+			<td class="formLabelWhite" valign="top">
+				<div align="left">
+					Jiwen
+				</div>
+			</td>
+			<td class="formLabelWhite" valign="middle">
+				<div align="center">
+					<a href="createSample.do">View</a>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td class="formLabelWhite" valign="top">
+				<div align="left">
+					<a href="#">NCL6-4-57 </a>
 				</div>
 			</td>
 			<td class="formFieldWhite" valign="top">
@@ -329,38 +223,30 @@
 			</td>
 			<td class="formFieldWhite" valign="top">
 				<div align="left">
-					10/12/05
+					Polymer
 				</div>
 			</td>
 			<td class="formFieldWhite" valign="top">
+				<div align="left">Rm 250 F4</div>
+			</td>
+			<td class="formLabelWhite" valign="top">
 				<div align="left">
-					Type
+					Banu
 				</div>
 			</td>
-			<td class="formFieldWhite" valign="top">
-				<div align="left">
-					10/12/05
-				</div>
-			</td>
-			<td class="formFieldWhite" valign="top">
-				<span class="formFieldGrey">Location</span>
-			</td>
-			<td class="formFieldWhite" valign="top">
-				<div align="left">
-					Submitter
-				</div>
-			</td>
-			<td class="formFieldWhite" valign="top">
-				<div align="left">
-					-
-				</div>
-			</td>
-			<td class="formFieldWhite" valign="middle">
+			<td class="formLabelWhite" valign="middle">
 				<div align="center">
-					<span class="formFieldGrey"><a href="createSample.do">View</a></span>
+					<a href="createSample.do">View</a>
 				</div>
 			</td>
 		</tr>
+		<tr><td colspan="8"><br><br></td></tr>
+		<tr valign="bottom" align="right">
+			<td colspan="8">
+				<input name="Submit22" type="button" onClick="javascript:location.href='searchWorkflow.jsp';" value="Back">
+			</td>
+		</tr>				
+		
 	</table>
 </blockquote>
 
