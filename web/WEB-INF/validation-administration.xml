@@ -27,7 +27,7 @@
 					<var-value>MM/dd/yyyy</var-value>
 				</var>
 			</field>
-			<field property="containerType" depends="required">
+			<field property="containerType" depends="required" indexedListProperty="containers">
 				<arg position="0" key="createSampleForm.containerType" bundle="administration" />
 			</field>
 			<field property="otherContainerType" depends="validwhen" indexedListProperty="containers">
@@ -83,6 +83,9 @@
 			<field property="numberOfAliquots" depends="integer">
 				<arg position="0" key="createAliquotForm.numberOfAliquots" bundle="administration" />
 			</field>
+			<field property="template.container.containerType" depends="required">
+				<arg position="0" key="createAliquotForm.containerType" bundle="administration" />
+			</field>
 			<field property="template.container.otherContainerType" depends="validwhen">
 				<arg position="0" key="createAliquotForm.otherContainerType" bundle="administration" />
 				<var>
@@ -106,14 +109,14 @@
 					<var-value>((template.container.quantity==null) or (*this*!=null))</var-value>
 				</var>
 			</field>
-			<field property="template.container.concentration" depends="validwhen">
+			<field property="template.container.concentrationUnit" depends="validwhen">
 				<arg position="0" key="createAliquotForm.concentrationUnit" bundle="administration" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>((template.container.concentration==null) or (*this*!=null))</var-value>
 				</var>
 			</field>
-			<field property="template.container.volume" depends="validwhen">
+			<field property="template.container.volumeUnit" depends="validwhen">
 				<arg position="0" key="createAliquotForm.volumeUnit" bundle="administration" />
 				<var>
 					<var-name>test</var-name>
@@ -121,6 +124,7 @@
 				</var>
 			</field>
 		</form>
+
 		<form name="/createAliquot">
 			<field property="sampleId" depends="required">
 				<arg position="0" key="createAliquotForm.sampleId" bundle="administration" />
@@ -128,8 +132,12 @@
 			<field property="lotId" depends="required">
 				<arg position="0" key="createAliquotForm.lotId" bundle="administration" />
 			</field>
-			<field property="numberOfAliquots" depends="required,integer">
+			<field property="numberOfAliquots" depends="integer,validwhen">
 				<arg position="0" key="createAliquotForm.numberOfAliquots" bundle="administration" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>(numberOfAliquots>0)</var-value>
+				</var>
 			</field>
 			<field property="template.container.containerType" depends="required">
 				<arg position="0" key="createAliquotForm.containerType" bundle="administration" />
@@ -157,14 +165,14 @@
 					<var-value>((template.container.quantity==null) or (*this*!=null))</var-value>
 				</var>
 			</field>
-			<field property="template.container.concentration" depends="validwhen">
+			<field property="template.container.concentrationUnit" depends="validwhen">
 				<arg position="0" key="createAliquotForm.concentrationUnit" bundle="administration" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>((template.container.concentration==null) or (*this*!=null))</var-value>
 				</var>
 			</field>
-			<field property="template.container.volume" depends="validwhen">
+			<field property="template.container.volumeUnit" depends="validwhen">
 				<arg position="0" key="createAliquotForm.volumeUnit" bundle="administration" />
 				<var>
 					<var-name>test</var-name>
@@ -199,14 +207,14 @@
 					<var-value>((aliquot.container.quantity==null) or (*this*!=null))</var-value>
 				</var>
 			</field>
-			<field property="aliquot.container.concentration" depends="validwhen">
+			<field property="aliquot.container.concentrationUnit" depends="validwhen">
 				<arg position="0" key="createAliquotForm.concentrationUnit" bundle="administration" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>((aliquot.container.concentration==null) or (*this*!=null))</var-value>
 				</var>
 			</field>
-			<field property="aliquot.container.volume" depends="validwhen">
+			<field property="aliquot.container.volumeUnit" depends="validwhen">
 				<arg position="0" key="createAliquotForm.volumeUnit" bundle="administration" />
 				<var>
 					<var-name>test</var-name>
