@@ -10,13 +10,21 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-//import org.apache.struts.validator.DynaValidatorActionForm;
+
 import org.apache.struts.validator.DynaValidatorForm;
 
+import gov.nih.nci.calab.dto.security.SecurityBean;
 import gov.nih.nci.calab.service.login.*; 
 import gov.nih.nci.calab.ui.core.*;
 
-public class LoginAction extends AbstractBaseAction {
+/** 
+* The LoginAction authenticates a user into the caLAB system.
+* 
+* @author      doswellj 
+*/
+
+public class LoginAction extends AbstractBaseAction 
+{
 	private static Logger logger = Logger.getLogger(LoginAction.class);
 
 	public ActionForward executeTask(ActionMapping mapping, ActionForm form,
@@ -25,42 +33,36 @@ public class LoginAction extends AbstractBaseAction {
 		ActionForward forward = null;
 		try 
 		{
-			// TODO fill in details for sample information */
 			DynaValidatorForm theForm = (DynaValidatorForm) form;
-			String loginId = (String) theForm.get("loginId");
-			String password = (String) theForm.get("password");
+			String strLoginId = (String) theForm.get("loginId");
+			String strPassword = (String) theForm.get("password");
+
+			//Encrypt the password. 
+			String strEncryptedPass = PasswordService.getInstance().encrypt(strPassword);
 			
-			if (loginId == null || password == null)
-			{
-				//TODO provide user with the exact error.
-				mapping.findForward("failure");
-			}
-			else
-			{
-				//TODO turn on password encryption. 
-				//PasswordService passwordservice = new PasswordService();
-				//password = passwordservice.encrypt(password);
-				
-				LoginService loginservice = new LoginService("calab");
-			    Boolean authenticated = loginservice.login(loginId, password);
-			    if (authenticated == true)
-			    {		    	
-			    	//request.setAttribute("loginId", loginId);
-					//request.setAttribute("password", password);
-			    	
-			    	//Invalidate the current session and create a new one.
-			    	HttpSession session = request.getSession(false);
-			    	session.invalidate();
-			    	session = request.getSession(true);
-			    	session.setAttribute("loginId",loginId);
-			    	session.setAttribute("password",password);
-			    	
-					forward = mapping.findForward("success");
-			    }
-			}
+			//Call CSM to authenticate the user.
+			LoginService loginservice = new LoginService("calab");
+			Boolean blnAuthenticated = loginservice.login(strLoginId, strEncryptedPass);
+			if (blnAuthenticated  == true)
+			{		    	
+			    //Invalidate the current session and create a new one.
+			    HttpSession session = request.getSession(false);
+			    session.invalidate();
+			    session = request.getSession(true);
+			    
+			    //Save authenticated user information into User DTO.
+			    SecurityBean securityBean = new SecurityBean();
+			    securityBean.setLoginId(strLoginId);
+			    securityBean.setPassword(strEncryptedPass);
+			    
+			    session.setAttribute("user",securityBean);	
+				forward = mapping.findForward("success");
+			 }
+			
 			
 		} catch (Exception e) {
-			logger.error("Caught exception when authenticating the user", e);
+			logger.error("Error Authenticating the user", e);
+			//Forward to the failed login page
 			forward = mapping.findForward("failure");			
 		}
 		return forward;
