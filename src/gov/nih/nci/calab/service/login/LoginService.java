@@ -70,7 +70,7 @@ public class LoginService
 	 * @param	strLoginId LoginId of the authenticated user
 	 * @return	SecurityBean containing an authenticated user's information
 	 */
-    public SecurityBean userInfo(String strLoginId)
+    public SecurityBean setUserInfo(String strLoginId)
     {
     	//TODO Implement method to query CSM_USER table and get logged in user's recordset
     	SecurityBean securityBean = new SecurityBean();
