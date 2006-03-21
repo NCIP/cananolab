@@ -6,19 +6,14 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: PreCreateSampleAction.java,v 1.4 2006-03-20 21:52:56 pansu Exp $ */
+/* CVS $Id: PreCreateSampleAction.java,v 1.5 2006-03-21 17:22:43 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.ContainerBean;
-import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
 import gov.nih.nci.calab.service.administration.ManageSampleService;
-import gov.nih.nci.calab.service.common.LookupService;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
-
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
@@ -29,58 +24,59 @@ import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorActionForm;
 
 public class PreCreateSampleAction extends AbstractBaseAction {
-	private static Logger logger = Logger.getLogger(PreCreateSampleAction.class);
+	private static Logger logger = Logger
+			.getLogger(PreCreateSampleAction.class);
 
 	public ActionForward executeTask(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		ActionForward forward = null;
-		HttpSession session = request.getSession();
-		
 		try {
 			DynaValidatorActionForm theForm = (DynaValidatorActionForm) form;
 			String sampleId = (String) theForm.get("sampleId");
 			String lotId = (String) theForm.get("lotId");
-			int numContainers=Integer.parseInt((String)theForm.get("numberOfContainers"));
-			
-			ManageSampleService mangeSampleService=new ManageSampleService();
-			LookupService lookupService=new LookupService();
-			//set default form values
-			if (sampleId.length()==0) {
-			  theForm.set("sampleId", mangeSampleService.getDefaultSampleId());
+			int numContainers = Integer.parseInt((String) theForm
+					.get("numberOfContainers"));
+
+			ManageSampleService mangeSampleService = new ManageSampleService();
+			// set default form values
+			if (sampleId.length() == 0) {
+				theForm
+						.set("sampleId", mangeSampleService
+								.getDefaultSampleId());
 			}
-			if (lotId.length()==0) {
-			  theForm.set("lotId", mangeSampleService.getDefaultLotId()); 
+			if (lotId.length() == 0) {
+				theForm.set("lotId", mangeSampleService.getDefaultLotId());
 			}
-			ContainerBean[] containers=new ContainerBean[numContainers];
-			for (int i=0; i<numContainers; i++) {
-				containers[i]=new ContainerBean();
+			ContainerBean[] origContainers = (ContainerBean[]) theForm
+					.get("containers");
+			ContainerBean[] containers = new ContainerBean[numContainers];
+			// reuse the containers set from last request
+			if (origContainers.length < numContainers) {
+				for (int i = 0; i < origContainers.length; i++) {
+					containers[i] = origContainers[i];
+				}
+				for (int i = origContainers.length; i < numContainers; i++) {
+					containers[i] = new ContainerBean();
+				}
+
+			} else {
+				for (int i = 0; i < numContainers; i++) {
+					containers[i] = origContainers[i];
+				}
 			}
 			theForm.set("containers", containers);
-			
-			//retrieve from sesssion first if available assuming these values
-			//are not likely to change within the same session
-			
-			if (session.getAttribute("allSampleTypes") == null) {
-			    List sampleTypes=lookupService.getAllSampleTypes();
-				session.setAttribute("allSampleTypes", sampleTypes);
-			}
-			if (session.getAttribute("allSampleSOPs") == null) {
-			    List sampleSOPs =mangeSampleService.getAllSampleSOPs();
-				session.setAttribute("allSampleSOPs", sampleSOPs);
-			}
-			if (session.getAttribute("sampleContainerInfo") == null) {
-				ContainerInfoBean containerInfo=lookupService.getSampleContainerInfo();
-				session.setAttribute("sampleContainerInfo", containerInfo);
-			}
+
 			request.setAttribute("sampleId", sampleId);
 			forward = mapping.findForward("success");
 		} catch (Exception e) {
-			ActionMessages errors=new ActionMessages();
-			ActionMessage error=new ActionMessage("error.preCreateSample");
+			ActionMessages errors = new ActionMessages();
+			ActionMessage error = new ActionMessage("error.preCreateSample");
 			errors.add("error", error);
 			saveMessages(request, errors);
-			logger.error("Caught exceptions when loading create sample page", e);
+			logger
+					.error("Caught exceptions when loading create sample page",
+							e);
 			forward = mapping.findForward("failure");
 		}
 		return forward;
