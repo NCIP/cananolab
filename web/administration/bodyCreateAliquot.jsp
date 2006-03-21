@@ -46,7 +46,7 @@ function refreshAliquots() {
 			<tr>
 				<td class="formLabelWhite">
 					<div align="justify">
-						<strong><span class="formFieldWhite"> </span>Number of Aliquots *<span class="formFieldWhite"> <html:text property="numberOfAliquots" size="5" onblur="javascript:refreshAliquots();" /> &nbsp; </span></strong>
+						<strong><span class="formFieldWhite"> </span>Number of Aliquots *<span class="formFieldWhite"> <html:text property="numberOfAliquots" size="5" /> &nbsp; <input type="button" value="refresh" onclick="javascript:refreshAliquots();"></span></strong>
 					</div>
 				</td>
 			</tr>
