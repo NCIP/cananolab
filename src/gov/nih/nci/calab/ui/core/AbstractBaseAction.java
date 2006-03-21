@@ -17,7 +17,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: AbstractBaseAction.java,v 1.3 2006-03-10 16:29:20 pansu Exp $ */
+/* CVS $Id: AbstractBaseAction.java,v 1.4 2006-03-21 17:32:03 pansu Exp $ */
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -61,7 +61,9 @@ public abstract class AbstractBaseAction extends Action {
 	 */
 	private boolean isUserLoggedIn(HttpServletRequest request) {
 		boolean isLoggedIn=false;
-		/** @todo fill in details of checking whether user is valid within the request */
+		if (request.getSession().getAttribute("user")!=null) {
+			isLoggedIn=true;
+		}			
 		return isLoggedIn;
 	}
 	
