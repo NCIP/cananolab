@@ -1,11 +1,12 @@
 package gov.nih.nci.calab.ui.workflow;
+
 /**
  * This class saves the association between a run and the user selected aliquot IDs and comments .
  * 
  * @author pansu
  */
 
-/* CVS $Id: UseAliquotAction.java,v 1.5 2006-03-20 21:53:30 pansu Exp $*/
+/* CVS $Id: UseAliquotAction.java,v 1.6 2006-03-21 17:24:06 pansu Exp $*/
 
 import gov.nih.nci.calab.service.workflow.ExecuteWorkflowService;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
@@ -19,55 +20,45 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
-import org.apache.struts.validator.DynaValidatorActionForm;
+import org.apache.struts.validator.DynaValidatorForm;
 
 public class UseAliquotAction extends AbstractBaseAction {
-	private static Logger logger=Logger.getLogger(UseAliquotAction.class);
-	
-	public ActionForward executeTask(ActionMapping mapping,
-			ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-		ActionForward forward=null;
+	private static Logger logger = Logger.getLogger(UseAliquotAction.class);
+
+	public ActionForward executeTask(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		ActionForward forward = null;
+		String runId=null;
 		try {
-			DynaValidatorActionForm theForm = (DynaValidatorActionForm) form;
+			DynaValidatorForm theForm = (DynaValidatorForm) form;
+			runId = (String) theForm.get("runId");
+			String[] aliquotIds = (String[]) theForm.get("aliquotIds");
+			String comments = (String) theForm.get("comments");
 
-			String runId=(String)theForm.get("runId");
-			String[] aliquotIds=(String[])theForm.get("aliquotIds");
-			String action=(String)theForm.get("action");
-			String comments=(String)theForm.get("comments");
-
-			if (action.equalsIgnoreCase("submit")) {
-				ExecuteWorkflowService executeWorkflowService=new ExecuteWorkflowService();
-				executeWorkflowService.saveRunAliquots(runId, aliquotIds, comments);
-				ActionMessages msgs=new ActionMessages();
-				ActionMessage msg=new ActionMessage("message.useAliquot");
-				msgs.add("message", msg);
-				saveMessages(request, msgs);
-				forward=mapping.findForward("success");	
-			}
-			else if (action.equalsIgnoreCase("cancel")) {
-				forward=mapping.findForward("blank");
-			}
-			else {
-				forward=mapping.getInputForward();
-			}
-		}
-		catch(Exception e) {
-			logger.error("Caught exception when saving selected aliquot IDs.", e);
-			ActionMessages errors=new ActionMessages();
-			ActionMessage error=new ActionMessage("error.useAliquot");
+			ExecuteWorkflowService executeWorkflowService = new ExecuteWorkflowService();
+			executeWorkflowService.saveRunAliquots(runId, aliquotIds, comments);
+			ActionMessages msgs = new ActionMessages();
+			ActionMessage msg = new ActionMessage("message.useAliquot", runId);
+			msgs.add("message", msg);
+			saveMessages(request, msgs);
+			forward = mapping.findForward("success");
+		} catch (Exception e) {
+			logger.error("Caught exception when saving selected aliquot IDs.",
+					e);
+			ActionMessages errors = new ActionMessages();
+			ActionMessage error = new ActionMessage("error.useAliquot", runId);
 			errors.add("error", error);
 			saveMessages(request, errors);
-			forward=mapping.getInputForward();
+			forward = mapping.getInputForward();
 		}
 		return forward;
 	}
-	
+
 	public boolean loginRequired() {
-		//temporarily set to false until login module is working
-		return false; 
-		//return true;
+		// temporarily set to false until login module is working
+		return false;
+		// return true;
 	}
 
 }
-
