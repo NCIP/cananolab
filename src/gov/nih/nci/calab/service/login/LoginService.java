@@ -25,19 +25,28 @@ import gov.nih.nci.security.authorization.domainobjects.ProtectionGroup;
 import gov.nih.nci.security.dao.RoleSearchCriteria;
 import gov.nih.nci.security.dao.ProtectionGroupSearchCriteria;
 
+/** 
+ * The LoginService authenticates users into the calab system.
+ * 
+ * @author      doswellj
+ * @param applicationName sets the application name for use by CSM
+ * @param am  Authentication Manager for CSM.
+ */
+
 public class LoginService 
 {
 
 	String applicationName = null;
 	AuthenticationManager am = null;
 	
-//	 Singleton instance of the security manager
-//private static LoginService manager = null;
+// TODO Make a singleton 
+
 	
-	
-	/*
-	 * Constructor
+	/**
+	 * LoginService Constructor
+	 * @param strname name of the application
 	 */
+
 	public LoginService(String strname) throws Exception 
 	{
 		this.applicationName = strname;
@@ -45,8 +54,15 @@ public class LoginService
         //TODO Add Role implementation
 	 }
 	
-	public boolean login(String strusername, String strpassword ) throws CSException {
-		return am.login( strusername, strpassword );
+	/**
+	 * The login method uses CSM to authenticated the user with LoginId and Password credentials 
+	 * @param	strusername  LoginId of the user
+	 * @param 	strpassword  Encrypted password of the user
+	 * @return	boolean identicating whether the user successfully authenticated
+	 */
+	public boolean login(String strUsername, String strPassword ) throws CSException 
+	{
+		return am.login( strUsername,strPassword);
 	}
 	
 
