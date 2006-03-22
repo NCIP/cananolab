@@ -4,23 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ExecuteWorkflowService {
-	/**
-	 * Retrieve all Assay Types from the system
-	 *
-	 * @return A list of all assay type
-	 */
-	public List getAllAssayTypes()
-	{
-		// Detail here... ...
-			// if the return from DB are null or size zero
-			// read from the xml
 
-		List assayTypes = new ArrayList();
-		assayTypes.add("Pre-screening Assay");
-		assayTypes.add("In Vitro");
-		assayTypes.add("In Vivo");
-		return assayTypes;
-	}
 
 	/**
 	 * Retrieve assays by assayType
