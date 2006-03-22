@@ -12,7 +12,7 @@ import java.util.List;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.5 2006-03-17 21:45:43 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.6 2006-03-22 21:04:04 pansu Exp $ */
 
 public class LookupService {
 
@@ -160,5 +160,23 @@ public class LookupService {
 		// end of tmp code
 
 		return lotIds;
+	}
+	
+	/**
+	 * Retrieve all Assay Types from the system
+	 *
+	 * @return A list of all assay type
+	 */
+	public List getAllAssayTypes()
+	{
+		// Detail here... ...
+			// if the return from DB are null or size zero
+			// read from the xml
+
+		List assayTypes = new ArrayList();
+		assayTypes.add("Pre-screening Assay");
+		assayTypes.add("In Vitro");
+		assayTypes.add("In Vivo");
+		return assayTypes;
 	}
 }
