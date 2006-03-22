@@ -1,7 +1,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
-<html:form action="/login">
+<html:form action="/login" focus="loginID">
 	<table summary="" cellpadding="0" cellspacing="0" border="0" height="100%">
 		<tr>
 			<td valign="top">
