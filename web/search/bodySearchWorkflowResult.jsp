@@ -1,281 +1,139 @@
+<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
+<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
+<%@	taglib uri="/WEB-INF/c.tld" prefix="c"%>
 
-		<h2>
-			<br>
-			Search Results
-		</h2>
-		<blockquote>
-			<table width="91%" border="0" align="left" cellpadding="0" cellspacing="0">
+<h2>
+	<br>
+	Search Results
+</h2>
+<blockquote>
+	<logic:present name="workflows">
+		<table width="100%" border="0" align="left" cellpadding="0" cellspacing="0">
+			<tr>
+				<td width="111" class="dataTablePrimaryLabel">
+					File Name
+				</td>
+				<td width="33" align="left" class="dataTablePrimaryLabel">
+					<div align="left">
+						Assay Type
+					</div>
+				</td>
+				<td width="51" align="left" class="dataTablePrimaryLabel">
+					Assay Name
+				</td>
+				<td width="51" align="left" class="dataTablePrimaryLabel">
+					Assay Run Date
+				</td>
+				<td width="53" align="left" class="dataTablePrimaryLabel">
+					Aliquot ID
+				</td>
+				<td width="53" align="left" class="dataTablePrimaryLabel">
+					<div align="left">
+						File Submission Date
+					</div>
+				</td>
+				<td width="61" align="left" class="dataTablePrimaryLabel">
+					<div align="left">
+						File Submitter&#13;
+					</div>
+				</td>
+				<td width="44" align="left" class="dataTablePrimaryLabel">
+					<div align="left">
+						File Status
+					</div>
+				</td>
+			</tr>
+			<logic:iterate name="workflows" id="workflow" type="gov.nih.nci.calab.dto.search.WorkflowResultBean" indexId="rowNum">
+				<c:choose>
+					<c:when test="${rowNum % 2 == 0}">
+						<c:set var="style" value="formLabelGrey" />
+					</c:when>
+					<c:otherwise>
+						<c:set var="style" value="formLabelWhite" />
+					</c:otherwise>
+				</c:choose>
 				<tr>
-					<td width="111" class="dataTablePrimaryLabel">
-						File Name
-					</td>
-					<td width="33" align="left" class="dataTablePrimaryLabel">
+					<td class="${style}" valign="top">
 						<div align="left">
-							Assay Type
+							<a href="#" class="style2" align="left"><bean:write name="workflow" property="fileName" /></a>
 						</div>
 					</td>
-					<td width="51" align="left" class="dataTablePrimaryLabel">
-						Assay Name
-					</td>
-					<td width="53" align="left" class="dataTablePrimaryLabel">
-						Aliquot ID
-					</td>
-					<td width="53" align="left" class="dataTablePrimaryLabel">
+					<td class="${style}" valign="top">
 						<div align="left">
-							File Submission Date
+							<bean:write name="workflow" property="assayType" />
 						</div>
 					</td>
-					<td width="61" align="left" class="dataTablePrimaryLabel">
+					<td class="${style}" valign="top">
+						<bean:write name="workflow" property="assayName" />
+					</td>
+					<td class="${style}" valign="top">
+						<bean:write name="workflow" property="assayRunDate" />
+					</td>
+					<td class="${style}" valign="top">
+						<bean:write name="workflow" property="aliquotId" />
+					</td>
+					<td class="${style}" valign="top">
 						<div align="left">
-							File Submitter&#13;
+							<bean:write name="workflow" property="fileSubmissionDate" />
 						</div>
 					</td>
-					<td width="44" align="left" class="dataTablePrimaryLabel">
+					<td class="${style}" valign="top">
 						<div align="left">
-							File Status
+							<bean:write name="workflow" property="fileSubmitter" />
+						</div>
+					</td>
+					<td class="${style}" valign="top">
+						<div align="left">
+							<strong><bean:write name="workflow" property="fileMaskStatus" /></strong>
 						</div>
 					</td>
 				</tr>
-				<tr>
-					<td class="formLabelGrey" valign="top">
-						<div align="left">
-							<a href="#" class="style2" align="left">PrescreeningAssays/STE_1?run_1/in/run1_input.ab1</a>
-						</div>
-					</td>
-					<td class="formFieldGrey" valign="top">
+			</logic:iterate>
+		</table>
+	</logic:present>
+	<logic:notPresent name="workflows">
+		<logic:messagesPresent message="true">
+			<ul>
+				<font color="red"> <html:messages id="msg" message="true" bundle="search">
+						<li>
+							<bean:write name="msg" />
+						</li>
+					</html:messages> </font>
+			</ul>
+		</logic:messagesPresent>
+	</logic:notPresent>
+	<p>
+		&nbsp;
+	</p>
+	<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
+		<tr>
+			<td width="30%">
+				<span class="formMessage"> </span>
+				<br>
+				<table width="498" height="32" border="0" align="right" cellpadding="4" cellspacing="0">
+					<tr>
+						<td width="490" height="32">
+							<div align="right">
+								<input type="button" value="Back" onclick="javascript:history.go(-1)">
+							</div>
+						</td>
+					</tr>
+				</table>
+				<div align="right"></div>
+			</td>
+		</tr>
+	</table>
+	<br>
+	<p>
+		&nbsp;
+	</p>
+	<p>
+		&nbsp;
+	</p>
+	<p>
+		&nbsp;
+	</p>
+</blockquote>
 
-						<div align="left">
-							Prescreening Assay
-						</div>
-					</td>
-					<td class="formFieldGrey" valign="top">
-						STE-1
-					</td>
-					<td class="formFieldGrey" valign="top">
-						NCL6-3-15
-					</td>
-					<td class="formFieldGrey" valign="top">
-						<div align="left">
-							10/12/05&#13;
-						</div>
-					</td>
-					<td class="formFieldGrey" valign="top">
-						<div align="left">
-							Chris
-						</div>
-					</td>
-					<td class="formFieldGrey" valign="top">
-						<div align="left">
-							<strong>Masked</strong>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td class="formLabelWhite" valign="top">
-						<div align="left">
-							<a href="#" class="style2" align="left">PrescreeningAssays/STE_2?run_4/Out/LRDv4-102303_H12_1_2003-10-25.ab1</a>
-						</div>
-					</td>
-					<td class="formFieldWhite" valign="top">
-						<div align="left">
-							Prescreening Assay
-						</div>
-					</td>
-					<td class="formFieldWhite" valign="top">
-						STE-2
-					</td>
-					<td class="formFieldWhite" valign="top">
-						NCL6-4-138
-					</td>
-					<td class="formFieldWhite" valign="top">
-						<div align="left">
-							10/12/05
-						</div>
-					</td>
-					<td class="formFieldWhite" valign="top">
-						<div align="left">
-							Tim
-						</div>
-					</td>
-					<td class="formFieldWhite" valign="top">
-						<div align="left">
-							-
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td class="formLabelWhite" valign="top">
-						<div align="left">
-							<a href="#" class="style2" align="left">PrescreeningAssays/STE_1?run_1/Out/LRDv4-102303_H12_1_2003-10-23.ab1</a>
-						</div>
-					</td>
-					<td class="formFieldWhite" valign="top">
-						<div align="left">
-							Prescreening Assay
-						</div>
-					</td>
-					<td class="formFieldWhite" valign="top">
-						STE-1
-					</td>
-					<td class="formFieldWhite" valign="top">
-						NCL6-401-26
-					</td>
-					<td class="formFieldWhite" valign="top">
-						<div align="left">
-							10/12/05&#13;
-						</div>
-					</td>
-					<td class="formFieldWhite" valign="top">
-						<div align="left">
-							Sarah
-						</div>
-					</td>
-					<td class="formFieldWhite" valign="top">
-						<div align="left">
-							-
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td class="formLabelGrey" valign="top">
-						&#13;
-						<div align="left">
-							<a href="#" class="style2" align="left">PrescreeningAssays/STE_1?run_1/In/LRDv4-102303_H12_1_2003-10-23.ab1</a><a href="#">&#13;</a>
-						</div>
-					</td>
-					<td class="formFieldGrey" valign="top">
-						<div align="left">
-							Prescreening Assay
-						</div>
-					</td>
-					<td class="formFieldGrey" valign="top">
-						STE-1
-					</td>
-					<td class="formFieldGrey" valign="top">
-						<span class="formFieldWhite">NCL7-1705</span>
-					</td>
-					<td class="formFieldGrey" valign="top">
-						<div align="left">
-							10/12/05&#13;
-						</div>
-					</td>
-					<td class="formFieldGrey" valign="top">
-						<div align="left">
-							Banu
-						</div>
-					</td>
-					<td class="formFieldGrey" valign="top">
-						<div align="left">
-							<strong>Masked</strong>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td class="formLabelWhite" valign="top">
-						<div align="left">
-							<a href="#" class="style2" align="left">PrescreeningAssays/STE_3?run_1/Out/LRDv4-102303_H12_1_2003-10-23.ab1</a><a href="#" align="left">&#13;</a>
-						</div>
-					</td>
-					<td class="formFieldWhite" valign="top">
-						<div align="left">
-							Prescreening Assay
-						</div>
-					</td>
-					<td class="formFieldWhite" valign="top">
-						STE-3
-					</td>
-					<td class="formFieldWhite" valign="top">
-						NCL7
-					</td>
-					<td class="formFieldWhite" valign="top">
-						<div align="left">
-							10/12/05&#13;
-						</div>
-					</td>
-					<td class="formFieldWhite" valign="top">
-						<div align="left">
-							Marina
-						</div>
-					</td>
-					<td class="formFieldWhite" valign="top">
-						<div align="left">
-							-
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td class="formLabelWhite" valign="top">
-						<div align="left">
-							<a href="#" class="style2" align="left">PrescreeningAssays/STE_1?run_1/Out/LRDv4-abcd_H12_1_2003-10-23.ab1</a>&#13;
-						</div>
-					</td>
-					<td class="formFieldWhite" valign="top">
-						<div align="left">
-							Prescreening Assay
-						</div>
-					</td>
-					<td class="formFieldWhite" valign="top">
-						STE-1
-					</td>
-					<td class="formFieldWhite" valign="top">
-						NCL6-1705-26
-					</td>
-					<td class="formFieldWhite" valign="top">
-						<div align="left">
-							10/12/05&#13;
-						</div>
-					</td>
-					<td class="formFieldWhite" valign="top">
-						<div align="left">
-							Jiwen
-						</div>
-					</td>
-					<td class="formFieldWhite" valign="top">
-						<div align="left">
-							-
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td class="formLabelWhite" valign="top">
-						<div align="left">
-							<a href="#" class="style2" align="left">PrescreeningAssays/STE_2?run_1/Out/LRDv4-102303_H12_1_2003-10-23.ab1</a>
-						</div>
-					</td>
-					<td class="formFieldWhite" valign="top">
-						<div align="left">
-							Prescreening Assay
-						</div>
-					</td>
-					<td class="formFieldWhite" valign="top">
-						STE-2
-					</td>
-					<td class="formFieldWhite" valign="top">
-						NCL8-15-389
-					</td>
-					<td class="formFieldWhite" valign="top">
-						<div align="left">
-							10/12/05
-						</div>
-					</td>
-					<td class="formFieldWhite" valign="top">
-						<div align="left">
-							Steve
-						</div>
-					</td>
-					<td class="formFieldWhite" valign="top">
-						<div align="left">
-							-
-						</div>
-					</td>
-				</tr>
-				<tr><td colspan="8"><br><br></td></tr>
-				<tr valign="bottom" align="right">
-					<td colspan="8">
-						<input name="Submit22" type="button" onClick="javascript:location.href='searchWorkflow.jsp';" value="Back">
-					</td>
-				</tr>				
-			</table>
-			<br>
-		</blockquote>
-	
+
