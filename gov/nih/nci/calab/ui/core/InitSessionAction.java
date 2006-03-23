@@ -7,12 +7,13 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.1 2006-03-21 17:22:58 pansu Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.2 2006-03-23 21:33:31 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
 import gov.nih.nci.calab.service.administration.ManageAliquotService;
 import gov.nih.nci.calab.service.administration.ManageSampleService;
 import gov.nih.nci.calab.service.common.LookupService;
+import gov.nih.nci.calab.service.search.SearchWorkflowService;
 
 import java.util.List;
 
@@ -48,13 +49,17 @@ public class InitSessionAction extends AbstractBaseAction {
 			LookupService lookupService = new LookupService();
 			if (forwardPage.equals("useAliquot")) {
 				String runId=(String)request.getParameter("runId");
-				request.setAttribute("runId", runId);
+				session.setAttribute("runId", runId);
 				setUseAliquotSession(session, lookupService);
 			} else if (forwardPage.equals("createSample")) {
 				setCreateSampleSession(session, lookupService);
 
 			} else if (forwardPage.equals("createAliquot")) {
 				setCreateAliquotSession(session, lookupService);
+			} else if (forwardPage.equals("searchWorkflow")) {
+				setSearchWorkflowSession(session, lookupService);
+			} else if (forwardPage.equals("searchSample")) {
+				setSearchSampleSession(session, lookupService);
 			}
 			forward = mapping.findForward(forwardPage);
 			
@@ -154,4 +159,49 @@ public class InitSessionAction extends AbstractBaseAction {
 			session.removeAttribute("aliquotMatrix");
 		}
 	}
+	
+	/**
+	 * Set up session attributes for search workflow page
+	 * @param session
+	 * @param lookupService
+	 */
+	private void setSearchWorkflowSession(HttpSession session,
+			LookupService lookupService) {
+		SearchWorkflowService searchWorkflowService=new SearchWorkflowService();
+		if (session.getAttribute("allAssayTypes") == null) {
+			List assayTypes = lookupService.getAllAssayTypes();
+			session.setAttribute("allAssayTypes", assayTypes);
+		}
+		if (session.getAttribute("allFileSubmitters") == null) {
+			List submitters = searchWorkflowService.getAllFileSubmitters();
+			session.setAttribute("allFileSubmitters", submitters);
+		}
+	}
+	
+	/**
+	 * Set up session attributes for search sample page
+	 * @param session
+	 * @param lookupService
+	 */
+	private void setSearchSampleSession(HttpSession session,
+			LookupService lookupService) {
+		if (session.getAttribute("allSampleIds") == null) {
+			List sampleIds = lookupService.getAllSampleIds();
+			session.setAttribute("allSampleIds", sampleIds);
+		}
+		if (session.getAttribute("allLotIds") == null) {
+			List lotIds = lookupService.getAllLotIds();
+			session.setAttribute("allLotIds", lotIds);
+		}
+		if (session.getAttribute("allAliquotIds") == null) {
+			List aliquotIds = lookupService.getAliquots();
+			session.setAttribute("allAliquotIds", aliquotIds);
+		}
+		if (session.getAttribute("sampleContainerInfo") == null) {
+			ContainerInfoBean containerInfo = lookupService
+					.getSampleContainerInfo();
+			session.setAttribute("sampleContainerInfo", containerInfo);
+		}
+	}
+	
 }
