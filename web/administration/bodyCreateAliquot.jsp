@@ -15,6 +15,15 @@ function refreshAliquots() {
 	Create Aliquot
 </h2>
 <html:errors />
+<logic:messagesPresent message="true">
+	<ul>
+		<font color="red"> <html:messages id="msg" message="true" bundle="administration">
+				<li>
+					<bean:write name="msg" />
+				</li>
+			</html:messages> </font>
+	</ul>
+</logic:messagesPresent>
 <blockquote>
 	<html:form action="/createAliquot">
 		<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
@@ -187,7 +196,7 @@ function refreshAliquots() {
 						<tr>
 							<td width="198" height="32">
 								<div align="right">
-									<html:reset/>
+									<html:reset />
 									<html:submit />
 								</div>
 							</td>

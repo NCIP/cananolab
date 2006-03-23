@@ -6,6 +6,15 @@
 	Edit Aliquot
 </h2>
 <html:errors />
+<logic:messagesPresent message="true">
+	<ul>
+		<font color="red"> <html:messages id="msg" message="true" bundle="administration">
+				<li>
+					<bean:write name="msg" />
+				</li>
+			</html:messages> </font>
+	</ul>
+</logic:messagesPresent>
 <blockquote>
 	<html:form action="/editAliquot">
 		<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
@@ -93,8 +102,8 @@
 						<div align="right">
 							<html:hidden property="rowNum" />
 							<html:hidden property="colNum" />
-							<html:hidden property="aliquot.aliquotId"/>
-							<html:hidden property="aliquot.howCreated"/>
+							<html:hidden property="aliquot.aliquotId" />
+							<html:hidden property="aliquot.howCreated" />
 							<input type="reset" value="Reset">
 							<input type="button" value="Cancel" onclick="javascript:history.go(-1)">
 							<html:submit />
