@@ -6,6 +6,15 @@
 		<br>
 		Use Aliquot
 	</h2>
+	<logic:messagesPresent message="true">
+		<ul>
+			<font color="red"> <html:messages id="msg" message="true" bundle="workflow">
+					<li>
+						<bean:write name="msg" />
+					</li>
+				</html:messages> </font>
+		</ul>
+	</logic:messagesPresent>
 	<blockquote>
 		<table width="75%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 			<tr class="topBorder">
@@ -54,9 +63,9 @@
 						<tr>
 							<td>
 								<div align="left">
-								    <input type="hidden" name="runId" value="<bean:write name="runId"/>">
-									<html:reset/>
-									<html:submit/>
+									<input type="hidden" name="runId" value="<bean:write name="runId"/>">
+									<html:reset />
+									<html:submit />
 									<input type="button" value="Cancel" onclick="javascript:history.go(-1)">
 								</div>
 							</td>

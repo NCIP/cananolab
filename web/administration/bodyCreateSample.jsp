@@ -27,6 +27,15 @@ function openLink() {
 	</h2>
 	<blockquote>
 		<html:errors />
+		<logic:messagesPresent message="true">
+			<ul>
+				<font color="red"> <html:messages id="msg" message="true" bundle="administration">
+						<li>
+							<bean:write name="msg" />
+						</li>
+					</html:messages> </font>
+			</ul>
+		</logic:messagesPresent>
 		<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 			<tbody>
 				<tr class="topBorder">
@@ -111,7 +120,7 @@ function openLink() {
 						<td class="formLabel">
 							<div align="justify">
 								<strong>Container Type* <span class="formFieldWhite"> <html:select name="containers" indexed="true" property="containerType">
-								            <option value=""></option>
+											<option value=""></option>
 											<html:options name="sampleContainerInfo" property="containerTypes" />
 										</html:select></span> &nbsp; &nbsp; &nbsp; Other <span class="formFieldWhite"><html:text name="containers" indexed="true" property="otherContainerType" size="8" /></span> &nbsp; &nbsp; &nbsp; </strong>
 							</div>
