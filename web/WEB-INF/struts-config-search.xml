@@ -8,7 +8,7 @@
 			<form-property name="assayRunDateEnd" type="java.lang.String" />
 			<form-property name="assayName" type="java.lang.String" />
 			<form-property name="fileSubmissionDateEnd" type="java.lang.String" />
-			<form-property name="isFileIn" type="java.lang.String" />
+			<form-property name="isFileIn" type="java.lang.String" initial="In"/>
 			<form-property name="aliquotId" type="java.lang.String" />
 			<form-property name="includeMaskedAliquots" type="java.lang.String" />
 			<form-property name="assayType" type="java.lang.String" />
