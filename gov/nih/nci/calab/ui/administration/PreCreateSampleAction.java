@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: PreCreateSampleAction.java,v 1.5 2006-03-21 17:22:43 pansu Exp $ */
+/* CVS $Id: PreCreateSampleAction.java,v 1.6 2006-03-23 19:40:17 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.ContainerBean;
 import gov.nih.nci.calab.service.administration.ManageSampleService;
@@ -51,18 +51,81 @@ public class PreCreateSampleAction extends AbstractBaseAction {
 			ContainerBean[] origContainers = (ContainerBean[]) theForm
 					.get("containers");
 			ContainerBean[] containers = new ContainerBean[numContainers];
-			// reuse the containers set from last request
+
+			// reuse containers from the previous request
+			// set other containers to have values from the first container
 			if (origContainers.length < numContainers) {
 				for (int i = 0; i < origContainers.length; i++) {
-					containers[i] = origContainers[i];
+					containers[i] = new ContainerBean(origContainers[i]
+							.getContainerType(), origContainers[i]
+							.getOtherContainerType(), origContainers[i]
+							.getQuantity(),
+							origContainers[i].getQuantityUnit(),
+							origContainers[i].getConcentration(),
+							origContainers[i].getConcentrationUnit(),
+							origContainers[i].getVolume(), origContainers[i]
+									.getVolumeUnit(), origContainers[i]
+									.getSolvent(), origContainers[i]
+									.getSafetyPrecaution(), origContainers[i]
+									.getStorageCondition(), origContainers[i]
+									.getStorageLab(), origContainers[i]
+									.getStorageRoom(), origContainers[i]
+									.getStorageFreezer(), origContainers[i]
+									.getStorageShelf(), origContainers[i]
+									.getStorageRack(), origContainers[i]
+									.getStorageBox(), origContainers[i]
+									.getContainerComments());
+
 				}
 				for (int i = origContainers.length; i < numContainers; i++) {
-					containers[i] = new ContainerBean();
+					if (origContainers.length > 0) {
+						containers[i] = new ContainerBean(origContainers[0]
+								.getContainerType(), origContainers[0]
+								.getOtherContainerType(), origContainers[0]
+								.getQuantity(), origContainers[0]
+								.getQuantityUnit(), origContainers[0]
+								.getConcentration(), origContainers[0]
+								.getConcentrationUnit(), origContainers[0]
+								.getVolume(),
+								origContainers[0].getVolumeUnit(),
+								origContainers[0].getSolvent(),
+								origContainers[0].getSafetyPrecaution(),
+								origContainers[0].getStorageCondition(),
+								origContainers[0].getStorageLab(),
+								origContainers[0].getStorageRoom(),
+								origContainers[0].getStorageFreezer(),
+								origContainers[0].getStorageShelf(),
+								origContainers[0].getStorageRack(),
+								origContainers[0].getStorageBox(),
+								origContainers[0].getContainerComments());
+					}
+					// if no containers from previous request, set them new
+					else {
+						containers[i] = new ContainerBean();
+					}
 				}
 
 			} else {
 				for (int i = 0; i < numContainers; i++) {
-					containers[i] = origContainers[i];
+					containers[i] = new ContainerBean(origContainers[i]
+							.getContainerType(), origContainers[i]
+							.getOtherContainerType(), origContainers[i]
+							.getQuantity(),
+							origContainers[i].getQuantityUnit(),
+							origContainers[i].getConcentration(),
+							origContainers[i].getConcentrationUnit(),
+							origContainers[i].getVolume(), origContainers[i]
+									.getVolumeUnit(), origContainers[i]
+									.getSolvent(), origContainers[i]
+									.getSafetyPrecaution(), origContainers[i]
+									.getStorageCondition(), origContainers[i]
+									.getStorageLab(), origContainers[i]
+									.getStorageRoom(), origContainers[i]
+									.getStorageFreezer(), origContainers[i]
+									.getStorageShelf(), origContainers[i]
+									.getStorageRack(), origContainers[i]
+									.getStorageBox(), origContainers[i]
+									.getContainerComments());
 				}
 			}
 			theForm.set("containers", containers);
