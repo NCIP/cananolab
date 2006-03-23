@@ -1,4 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
 <struts-config>
+	<form-beans>
+		<form-bean name="searchWorkflowForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="fileName" type="java.lang.String" />
+			<form-property name="assayRunDateBegin" type="java.lang.String" />
+			<form-property name="assayRunDateEnd" type="java.lang.String" />
+			<form-property name="assayName" type="java.lang.String" />
+			<form-property name="fileSubmissionDateEnd" type="java.lang.String" />
+			<form-property name="isFileIn" type="java.lang.String" />
+			<form-property name="aliquotId" type="java.lang.String" />
+			<form-property name="includeMaskedAliquots" type="java.lang.String" />
+			<form-property name="assayType" type="java.lang.String" />
+			<form-property name="fileSubmissionDateBegin" type="java.lang.String" />
+			<form-property name="fileSubmitter" type="java.lang.String" />
+			<form-property name="includeMaskedFiles" type="java.lang.String" />
+		</form-bean>
+		<form-bean name="searchSampleForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="sampleId" type="java.lang.String" />
+			<form-property name="vendorSampleId" type="java.lang.String" />
+			<form-property name="vendor" type="java.lang.String" />
+			<form-property name="dateAccessionedBegin" type="java.lang.String" />
+			<form-property name="sampleType" type="java.lang.String" />
+			<form-property name="aliquotId" type="java.lang.String" />
+			<form-property name="storageBox" type="java.lang.String" />
+			<form-property name="dateAccessionedEnd" type="java.lang.String" />
+			<form-property name="submmitter" type="java.lang.String" />
+			<form-property name="storageShelf" type="java.lang.String" />
+			<form-property name="lotId" type="java.lang.String" />
+			<form-property name="storageRoom" type="java.lang.String" />
+			<form-property name="storageFreezer" type="java.lang.String" />
+		</form-bean>
+	</form-beans>
+	<global-forwards>
+		<forward name="searchWorkflow" path="search.searchworkflow" />
+		<forward name="searchSample" path="search.searchsample" />
+	</global-forwards>
+	<action-mappings>
+		<action input="input" name="searchWorkflowForm" path="/searchWorkflow" scope="request" type="gov.nih.nci.calab.ui.search.SearchWorkflowAction">
+			<forward name="input" path="search.searchworkflow" />
+			<forward name="success" path="search.searchworkflowresult" />
+			<forward name="failure" path="search.searchworkflow" />
+		</action>
+		<action input="input" name="searchSampleForm" path="searchSample" scope="request" type="gov.nih.nci.calab.ui.search.SearchSampleAction">
+			<forward name="input" path="search.searchsample" />
+			<forward name="success" path="search.searchsampleresult" />
+			<forward name="failure" path="search.searchsample" />
+		</action>
+	</action-mappings>
+
 </struts-config>
