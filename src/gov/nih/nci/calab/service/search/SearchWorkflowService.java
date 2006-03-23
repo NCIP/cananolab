@@ -12,7 +12,7 @@ import java.util.List;
  * 
  */
 
-/* CVS $Id: SearchWorkflowService.java,v 1.2 2006-03-23 21:33:03 pansu Exp $ */
+/* CVS $Id: SearchWorkflowService.java,v 1.3 2006-03-23 21:36:25 pansu Exp $ */
 
 public class SearchWorkflowService {
 	/**
@@ -35,11 +35,11 @@ public class SearchWorkflowService {
 		List<WorkflowResultBean> workflows = new ArrayList<WorkflowResultBean>();
 		workflows.add(new WorkflowResultBean(
 				"PrescreeningAssays/STE_1?run_1/in/run1_input.ab1",
-				"Prescreening Assay", "STE-1", null, "NCL6-3-15", "10/12/05",
+				"Prescreening Assay", "STE-1", "10/11/05", "NCL6-3-15", "10/12/05",
 				"Jane Doe", "Masked"));
 		workflows.add(new WorkflowResultBean(
 				"PrescreeningAssays/STE_1?run_1/in/run1_input.ab1",
-				"Prescreening Assay", "STE-1", null, "NCL6-4-15", "10/12/05",
+				"Prescreening Assay", "STE-1", "10/11/05", "NCL6-4-15", "10/12/05",
 				"Jane Doe", "Masked"));
 
 		return workflows;
