@@ -3,4 +3,36 @@
 "http://jakarta.apache.org/commons/dtds/validator_1_1_3.dtd">
 
 <form-validation>
+	<formset>
+		<form name="searchWorkflowForm">
+			<field property="assayRunDateBegin" depends="date">
+				<arg key="searchWorkflowForm.assayRunDateBegin" bundle="search" position="0" />
+				<var>
+					<var-name>datePatternStrict</var-name>
+					<var-value>MM/dd/yyyy</var-value>
+				</var>
+			</field>
+			<field property="assayRunDateEmd" depends="date">
+				<arg key="searchWorkflowForm.assayRunDateEnd" bundle="search" position="0" />
+				<var>
+					<var-name>datePatternStrict</var-name>
+					<var-value>MM/dd/yyyy</var-value>
+				</var>
+			</field>
+			<field property="fileSubmissionDateBegin" depends="date">
+				<arg key="searchWorkflowForm.fileSubmissionDateBegin" bundle="search" position="0" />
+				<var>
+					<var-name>datePatternStrict</var-name>
+					<var-value>MM/dd/yyyy</var-value>
+				</var>
+			</field>
+			<field property="fileSubmissionDateEnd" depends="date">
+				<arg key="searchWorkflowForm.fileSubmissionDateEnd" bundle="search" position="0" />
+				<var>
+					<var-name>datePatternStrict</var-name>
+					<var-value>MM/dd/yyyy</var-value>
+				</var>
+			</field>
+		</form>
+	</formset>
 </form-validation>
