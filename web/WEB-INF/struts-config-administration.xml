@@ -19,7 +19,6 @@
 		</form-bean>
 		<form-bean name="createAliquotForm" type="org.apache.struts.validator.DynaValidatorActionForm">
 			<form-property name="sampleId" type="java.lang.String" />
-			<form-property name="lotId" type="java.lang.String" initial="N/A" />
 			<form-property name="parentAliquotId" type="java.lang.String" />
 			<form-property name="numberOfAliquots" type="java.lang.String" initial="0" />
 			<form-property name="template" type="gov.nih.nci.calab.dto.administration.AliquotBean" />
