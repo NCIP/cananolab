@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: PreCreateAliquotAction.java,v 1.7 2006-03-21 17:22:34 pansu Exp $ */
+/* CVS $Id: PreCreateAliquotAction.java,v 1.8 2006-03-24 21:13:06 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.service.administration.ManageAliquotService;
@@ -26,6 +26,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorActionForm;
+import org.apache.struts.validator.DynaValidatorForm;
 
 public class PreCreateAliquotAction extends AbstractBaseAction {
 	private static Logger logger = Logger.getLogger(PreCreateAliquotAction.class);
@@ -38,10 +39,9 @@ public class PreCreateAliquotAction extends AbstractBaseAction {
 		
 		try {
 			// TODO fill in details for sample information */
-			DynaValidatorActionForm theForm = (DynaValidatorActionForm) form;
+			DynaValidatorForm theForm = (DynaValidatorForm) form;
 
 			String sampleId = (String) theForm.get("sampleId");
-			String lotId = (String) theForm.get("lotId");
 			String parentAliquotId = (String) theForm.get("parentAliquotId");
 			String numberOfAliquots = (String) theForm.get("numberOfAliquots");
 			int numAliquots;
@@ -62,9 +62,9 @@ public class PreCreateAliquotAction extends AbstractBaseAction {
 
 				// calculate the first aliquot Id to use
 				int firstAliquotNum = manageAliquotService.getFirstAliquotNum(
-						sampleId, lotId, parentAliquotId);
+						sampleId, parentAliquotId);
 				String aliquotPrefix = manageAliquotService.getAliquotPrefix(
-						sampleId, lotId, parentAliquotId);
+						sampleId, parentAliquotId);
 				// create a 2-D matrix for aliquot
 				List<AliquotBean[]> aliquotMatrix = createAliquotMatrix(colNum,
 						rowNum, numAliquots, aliquotPrefix, firstAliquotNum, template);
