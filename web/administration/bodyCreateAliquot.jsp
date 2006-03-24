@@ -40,11 +40,6 @@ function refreshAliquots() {
 						<strong>Sample ID*<span class="formFieldWhite"> <html:select property="sampleId">
 									<option value=""></option>
 									<html:options name="allSampleIds" />
-								</html:select></span></strong>&nbsp; &nbsp;<strong>Lot ID*<span class="formFieldWhite"> <html:select property="lotId">
-									<option value="N/A">
-										N/A
-									</option>
-									<html:options name="allLotIds" />
 								</html:select></span></strong>&nbsp; &nbsp; <strong>Aliquot ID<span class="formFieldWhite"> <html:select property="parentAliquotId">
 									<option value=""></option>
 									<html:options name="allAliquotIds" />
