@@ -83,7 +83,7 @@
 					<strong>File Name <img src="images/help.gif" width="15" height="15" onmouseover="s_show('workflowSearch_fileName',event)" onmouseout="s_hide()"></strong>
 				</td>
 				<td class="formField">
-					<span class="formFieldWhite"><strong> <html:text property="fileName" size="20" /> &nbsp; &nbsp; &nbsp; <html:radio property="isFileIn" value="In" /> In <strong> &nbsp; &nbsp; &nbsp; <html:radio property="isFileIn" value="Out" /> Out </strong></strong></span>
+					<span class="formFieldWhite"><strong> <html:text property="fileName" size="20" /> &nbsp; &nbsp; &nbsp; <html:checkbox property="isFileIn"/> In <strong> &nbsp; &nbsp; &nbsp; <html:checkbox property="isFileOut"/> Out </strong></strong></span>
 				</td>
 			</tr>
 			<tr>
@@ -123,8 +123,13 @@
 				</td>
 			</tr>
 			<tr>
-				<td align="center" colspan="3">
-					<!-- action buttons begins -->
+				<td class="formLabelWhite">
+					<strong> Join Search Criteria by </strong>
+					<label for="label2"></label>
+					<img src="images/help.gif" width="15" height="15" onmouseover="s_show('workflowSearch_maskedFiles',event)" onmouseout="s_hide()">
+				</td>
+				<td class="formFieldWhite">
+					<span class="formField"> <strong> <html:radio property="criteriaJoin" value="and"/> &nbsp; &nbsp; And &nbsp;&nbsp; <html:radio property="criteriaJoin" value="or"/> Or </strong></span>
 				</td>
 			</tr>
 		</table>
