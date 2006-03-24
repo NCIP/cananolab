@@ -49,13 +49,14 @@ function openLink() {
 				<tr>
 					<td class="formLabel">
 						<div align="justify">
-							<strong>Sample ID* <span class="formField"><span class="formFieldWhite"><html:text property="sampleId" size="10" /></span></span> &nbsp; &nbsp; Sample Type <span class="formFieldWhite"> <html:select property="sampleType">
+							<strong>Sample ID Prefix* <span class="formField"><span class="formFieldWhite"><html:text property="sampleIdPrefix" size="10" /></span></span> &nbsp; &nbsp; Sample Type <span class="formFieldWhite"> <html:select property="sampleType">
 										<option value=""></option>
 										<html:options name="allSampleTypes" />
-									</html:select> &nbsp; &nbsp; SOP <html:select property="sampleSOP" onchange="javascript:openLink()">
+									</html:select> &nbsp; &nbsp; SOP <html:select property="sampleSOP">
 										<option value=""></option>
 										<html:options name="allSampleSOPs" />
-									</html:select></span></strong>
+									</html:select></span></strong> &nbsp; &nbsp;
+							<input type="button" value="view SOP" onclick="javascript:openLink()">
 						</div>
 					</td>
 				</tr>
@@ -88,7 +89,7 @@ function openLink() {
 					<td class="formLabel">
 						<div align="justify">
 							<strong>Lot ID*&nbsp; <html:text property="lotId" size="5" /> &nbsp; &nbsp; &nbsp; Lot Description <span class="formFieldWhite"><html:text property="lotDescription" size="20" /></span> &nbsp; &nbsp; &nbsp; Number of Containers* <span
-								class="formFieldWhite"> <html:text property="numberOfContainers" size="2" onblur="javascript:refreshContainers();" /> &nbsp;</span></strong>
+								class="formFieldWhite"> <html:text property="numberOfContainers" size="2" /> &nbsp; <input type="button" value="Update Containers" onclick="javascript:refreshContainers();"></span></strong>
 
 						</div>
 					</td>
@@ -112,7 +113,11 @@ function openLink() {
 					<tr class="topBorder">
 						<td class="dataTablePrimaryLabel" width="30%">
 							<div align="justify">
-								<em>CONTAINER <c:out value="${status.index+1}" /></em>
+								<em>CONTAINER <c:out value="${status.index+1}" /> <c:choose>
+										<c:when test="${status.index== 0}">
+											(TEMPLATE CONTAINER)
+										</c:when>
+									</c:choose> </em>
 							</div>
 						</td>
 					</tr>
