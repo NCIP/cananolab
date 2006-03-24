@@ -12,7 +12,7 @@ import java.util.List;
  * 
  */
 
-/* CVS $Id: SearchWorkflowService.java,v 1.3 2006-03-23 21:36:25 pansu Exp $ */
+/* CVS $Id: SearchWorkflowService.java,v 1.4 2006-03-24 21:49:30 pansu Exp $ */
 
 public class SearchWorkflowService {
 	/**
@@ -29,9 +29,9 @@ public class SearchWorkflowService {
 	public List<WorkflowResultBean> searchWorkflows(String assayName,
 			String assayType, Date assayRunDateBegin, Date assayRunDateEnd,
 			String aliquotId, boolean includeMaskedAliquots, String fileName,
-			boolean isFileIn, Date fileSubmissionDateBegin,
+			boolean isFileIn, boolean isFileOut, Date fileSubmissionDateBegin,
 			Date fileSubmissionDateEnd, String fileSubmitter,
-			boolean includeMaskedFiles) {
+			boolean includeMaskedFiles, String criteriaJoin) {
 		List<WorkflowResultBean> workflows = new ArrayList<WorkflowResultBean>();
 		workflows.add(new WorkflowResultBean(
 				"PrescreeningAssays/STE_1?run_1/in/run1_input.ab1",
