@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchWorkflowAction.java,v 1.1 2006-03-23 21:33:48 pansu Exp $ */
+/* CVS $Id: SearchWorkflowAction.java,v 1.2 2006-03-24 21:49:51 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.search.WorkflowResultBean;
 import gov.nih.nci.calab.service.search.SearchWorkflowService;
@@ -57,7 +57,9 @@ public class SearchWorkflowAction extends AbstractBaseAction {
 					.get("includeMaskedAliquots")).equals("on") ? true : false;
 			String fileName = (String) theForm.get("fileName");
 			boolean isFileInput = ((String) theForm.get("isFileIn"))
-					.equals("In") ? true : false;
+					.equals("in") ? true : false;
+			boolean isFileOutput = ((String) theForm.get("isFileOut"))
+					.equals("out") ? true : false;
 			String fileSubmissionDateBeginStr = (String) theForm
 					.get("fileSubmissionDateBegin");
 			String fileSubmissionDateEndStr = (String) theForm
@@ -72,15 +74,16 @@ public class SearchWorkflowAction extends AbstractBaseAction {
 			String fileSubmitter = (String) theForm.get("fileSubmitter");
 			boolean includeMaskedFiles = ((String) theForm
 					.get("includeMaskedFiles")).equals("on") ? true : false;
+			String criteriaJoin = (String) theForm.get("criteriaJoin");
 
 			// pass the parameters to the searchWorkflowService
 			SearchWorkflowService searchWorkflowService = new SearchWorkflowService();
 			List<WorkflowResultBean> workflows = searchWorkflowService
 					.searchWorkflows(assayName, assayType, assayRunDateBegin,
 							assayRunDateEnd, aliquotId, includeMaskedAliquots,
-							fileName, isFileInput, fileSubmissionDateBegin,
+							fileName, isFileInput, isFileOutput, fileSubmissionDateBegin,
 							fileSubmissionDateEnd, fileSubmitter,
-							includeMaskedFiles);
+							includeMaskedFiles, criteriaJoin);
 			if (workflows == null || workflows.isEmpty()) {
 				ActionMessage msg = new ActionMessage(
 						"message.searchworkflow.noresult");
