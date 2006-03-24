@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: CreateAliquotAction.java,v 1.3 2006-03-20 21:51:56 pansu Exp $ */
+/* CVS $Id: CreateAliquotAction.java,v 1.4 2006-03-24 21:11:57 pansu Exp $ */
 
 import gov.nih.nci.calab.service.administration.ManageAliquotService;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
@@ -25,6 +25,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorActionForm;
+import org.apache.struts.validator.DynaValidatorForm;
 
 public class CreateAliquotAction extends AbstractBaseAction {
 	private static Logger logger = Logger.getLogger(CreateAliquotAction.class);
@@ -37,16 +38,15 @@ public class CreateAliquotAction extends AbstractBaseAction {
 		ActionMessages messages=new ActionMessages();
 		try {
 			// TODO fill in details for aliquot information */
-			DynaValidatorActionForm theForm = (DynaValidatorActionForm) form;
+			DynaValidatorForm theForm = (DynaValidatorForm) form;
 			String sampleId = (String) theForm.get("sampleId");
-			String lotId = (String) theForm.get("lotId");
 			String parentAliquotId = (String) theForm.get("parentAliquotId");
 			String comments=(String)theForm.get("generalComments");
 			if (session.getAttribute("aliquotMatrix") != null) {
 				List aliquotMatrix = (List) session
 						.getAttribute("aliquotMatrix");
 				ManageAliquotService manageAliquotService=new ManageAliquotService();
-				manageAliquotService.saveAliquots(sampleId, lotId, parentAliquotId, aliquotMatrix, comments);
+				manageAliquotService.saveAliquots(sampleId, parentAliquotId, aliquotMatrix, comments);
 				ActionMessages msgs = new ActionMessages();
 				ActionMessage msg = new ActionMessage("message.createAliquot");
 				msgs.add("message", msg);
