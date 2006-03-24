@@ -7,7 +7,7 @@ import gov.nih.nci.calab.dto.administration.SampleBean;
 import java.util.ArrayList;
 import java.util.List;
 
-/* CVS $Id: ManageSampleService.java,v 1.7 2006-03-20 21:51:01 pansu Exp $ */
+/* CVS $Id: ManageSampleService.java,v 1.8 2006-03-24 21:14:19 pansu Exp $ */
 public class ManageSampleService {
  
   public List<String> getAllSampleSOPs() {
@@ -19,12 +19,22 @@ public class ManageSampleService {
 
   /**
    * 
-   * @return auto-generated default value for sample ID
+   * @return auto-generated default value for sample ID prefix
    */
-  public String getDefaultSampleId() {
+  public String getDefaultSampleIdPrefix() {
 	  //tmp code to be replaced
-	  String sampleId="NCL-6-1";
-	  return sampleId;
+	  String sampleIdPrefix="NCL-6";
+	  return sampleIdPrefix;
+  }
+ 
+  /**
+   * 
+   * @param sampleIdPrefix
+   * @param lotId
+   * @return sampleId from sampleId prefix and lotId
+   */
+  public String getSampleId(String sampleIdPrefix, String lotId) {
+	  return sampleIdPrefix+"-"+lotId;
   }
   
   /**
