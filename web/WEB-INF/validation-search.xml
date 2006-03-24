@@ -12,7 +12,7 @@
 					<var-value>MM/dd/yyyy</var-value>
 				</var>
 			</field>
-			<field property="assayRunDateEmd" depends="date">
+			<field property="assayRunDateEnd" depends="date">
 				<arg key="searchWorkflowForm.assayRunDateEnd" bundle="search" position="0" />
 				<var>
 					<var-name>datePatternStrict</var-name>
