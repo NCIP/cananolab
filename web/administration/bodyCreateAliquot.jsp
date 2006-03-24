@@ -8,6 +8,18 @@ function refreshAliquots() {
   document.createAliquotForm.action="/calab/preCreateAliquot.do";
   document.createAliquotForm.submit();
 }
+
+function openLink() {
+  for (var i=0; i<document.createAliquotForm.elements.length; i++) {
+     var elementName=document.createAliquotForm.elements[i].name;
+     if (elementName=="template.howCreated") {
+       var url=document.createAliquotForm.elements[i].value;
+         if (url!='') {
+            openWindow(url, 'aliquotProtocol', 600, 400);
+         }
+     }
+  } 
+}
 //-->
 </script>
 <h2>
@@ -40,7 +52,7 @@ function refreshAliquots() {
 						<strong>Sample ID*<span class="formFieldWhite"> <html:select property="sampleId">
 									<option value=""></option>
 									<html:options name="allSampleIds" />
-								</html:select></span></strong>&nbsp; &nbsp; <strong>Aliquot ID<span class="formFieldWhite"> <html:select property="parentAliquotId">
+								</html:select></span></strong>&nbsp; &nbsp; or &nbsp; &nbsp; <strong>Aliquot ID*<span class="formFieldWhite"> <html:select property="parentAliquotId">
 									<option value=""></option>
 									<html:options name="allAliquotIds" />
 								</html:select></span></strong>
@@ -50,7 +62,7 @@ function refreshAliquots() {
 			<tr>
 				<td class="formLabelWhite">
 					<div align="justify">
-						<strong><span class="formFieldWhite"> </span>Number of Aliquots *<span class="formFieldWhite"> <html:text property="numberOfAliquots" size="5" /> &nbsp; <input type="button" value="refresh" onclick="javascript:refreshAliquots();"></span></strong>
+						<strong><span class="formFieldWhite"> </span>Number of Aliquots *<span class="formFieldWhite"> <html:text property="numberOfAliquots" size="5" /> &nbsp; <input type="button" value="Update Aliquots" onclick="javascript:refreshAliquots();"></span></strong>
 					</div>
 				</td>
 			</tr>
@@ -99,8 +111,9 @@ function refreshAliquots() {
 						<div align="justify">
 							<strong>Diluents/Solvent <html:text property="template.container.solvent" size="10" /> &nbsp; &nbsp; &nbsp; How Created <html:select property="template.howCreated">
 									<option value=""></option>
-									<html:options name="aliquotCreateMethods" />
+									<html:options collection="aliquotCreateMethods" property="value" labelProperty="label"/>
 								</html:select> &nbsp; &nbsp; &nbsp;</strong>
+							<input type="button" value="View Protocol" onclick="javascript:openLink()">
 						</div>
 					</td>
 				</tr>
