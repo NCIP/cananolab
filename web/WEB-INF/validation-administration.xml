@@ -97,9 +97,6 @@
 					<var-value>((numberOfAliquots==0) or (*this*!=null))</var-value>
 				</var>
 			</field>
-			<field property="lotId" depends="required">
-				<arg position="0" key="createAliquotForm.lotId" bundle="administration" />
-			</field>
 			<field property="numberOfAliquots" depends="integer,intRange">
 				<arg position="0" key="createAliquotForm.numberOfAliquots" bundle="administration" />
 				<arg position="1" name="intRange" key="${var:min}" resource="false"/>
@@ -158,9 +155,6 @@
 		<form name="/createAliquot">
 			<field property="sampleId" depends="required">
 				<arg position="0" key="createAliquotForm.sampleId" bundle="administration" />
-			</field>
-			<field property="lotId" depends="required">
-				<arg position="0" key="createAliquotForm.lotId" bundle="administration" />
 			</field>
 			<field property="numberOfAliquots" depends="integer,intRange">
 				<arg position="0" key="createAliquotForm.numberOfAliquots" bundle="administration" />
