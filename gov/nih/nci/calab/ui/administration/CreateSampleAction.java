@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: CreateSampleAction.java,v 1.7 2006-03-20 21:52:03 pansu Exp $ */
+/* CVS $Id: CreateSampleAction.java,v 1.8 2006-03-24 21:12:33 pansu Exp $ */
 
 import org.apache.log4j.*;
 
@@ -35,7 +35,7 @@ public class CreateSampleAction extends AbstractBaseAction {
 		try {
 			// TODO fill in details for sample information */
 			DynaValidatorActionForm theForm = (DynaValidatorActionForm) form;
-			String sampleId = (String) theForm.get("sampleId");
+			String sampleIdPrefix = (String) theForm.get("sampleIdPrefix");
 			String sampleType = (String) theForm.get("sampleType");
 			String sampleSOP = (String) theForm.get("sampleSOP");
 			String sampleDescription = (String) theForm
@@ -48,6 +48,9 @@ public class CreateSampleAction extends AbstractBaseAction {
 			String lotDescription = (String) theForm.get("lotDescription");
 			String numContainers = (String) theForm.get("numberOfContainers");
 			String generalComments = (String) theForm.get("generalComments");
+			ManageSampleService manageSampleService=new ManageSampleService();
+			String sampleId=manageSampleService.getSampleId(sampleIdPrefix, lotId);
+			
 			SampleBean sample = new SampleBean(sampleId, sampleType, sampleSOP,
 					sampleDescription, vendor, vendorSampleId, dateReceived,
 					solubility, lotId, lotDescription, numContainers,
@@ -56,7 +59,6 @@ public class CreateSampleAction extends AbstractBaseAction {
 			request.setAttribute("sample", sample);
 			request.setAttribute("containers", containers);
 			
-			ManageSampleService manageSampleService=new ManageSampleService();
 			manageSampleService.saveSample(sample, containers, generalComments);
 			forward = mapping.findForward("success");
 		} catch (Exception e) {
