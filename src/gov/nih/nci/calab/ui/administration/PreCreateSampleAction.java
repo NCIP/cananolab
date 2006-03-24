@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: PreCreateSampleAction.java,v 1.6 2006-03-23 19:40:17 pansu Exp $ */
+/* CVS $Id: PreCreateSampleAction.java,v 1.7 2006-03-24 21:13:19 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.ContainerBean;
 import gov.nih.nci.calab.service.administration.ManageSampleService;
@@ -33,17 +33,16 @@ public class PreCreateSampleAction extends AbstractBaseAction {
 		ActionForward forward = null;
 		try {
 			DynaValidatorActionForm theForm = (DynaValidatorActionForm) form;
-			String sampleId = (String) theForm.get("sampleId");
+			String sampleIdPrefix = (String) theForm.get("sampleIdPrefix");
 			String lotId = (String) theForm.get("lotId");
 			int numContainers = Integer.parseInt((String) theForm
 					.get("numberOfContainers"));
 
 			ManageSampleService mangeSampleService = new ManageSampleService();
 			// set default form values
-			if (sampleId.length() == 0) {
-				theForm
-						.set("sampleId", mangeSampleService
-								.getDefaultSampleId());
+			if (sampleIdPrefix.length() == 0) {
+				theForm.set("sampleIdPrefix", mangeSampleService
+						.getDefaultSampleIdPrefix());
 			}
 			if (lotId.length() == 0) {
 				theForm.set("lotId", mangeSampleService.getDefaultLotId());
@@ -129,8 +128,6 @@ public class PreCreateSampleAction extends AbstractBaseAction {
 				}
 			}
 			theForm.set("containers", containers);
-
-			request.setAttribute("sampleId", sampleId);
 			forward = mapping.findForward("success");
 		} catch (Exception e) {
 			ActionMessages errors = new ActionMessages();
