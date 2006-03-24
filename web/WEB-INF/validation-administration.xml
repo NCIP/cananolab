@@ -5,8 +5,18 @@
 <form-validation>
 	<formset>
 		<form name="/preCreateSample">
-			<field property="numberOfContainers" depends="integer">
+			<field property="numberOfContainers" depends="integer,intRange">
 				<arg position="0" key="createSampleForm.numberOfContainers" bundle="administration" />
+				<arg position="1" name="intRange" key="${var:min}" resource="false" bundle="administration" />
+				<arg position="2" name="intRange" key="${var:max}" resource="false" bundle="administration" />
+				<var>
+					<var-name>min</var-name>
+					<var-value>0</var-value>
+				</var>
+				<var>
+					<var-name>max</var-name>
+					<var-value>20</var-value>
+				</var>
 			</field>
 		</form>
 
@@ -17,8 +27,18 @@
 			<field property="lotId" depends="required">
 				<arg position="0" key="createSampleForm.lotId" bundle="administration" />
 			</field>
-			<field property="numberOfContainers" depends="required,integer">
+			<field property="numberOfContainers" depends="required,integer,intRange">
 				<arg position="0" key="createSampleForm.numberOfContainers" bundle="administration" />
+				<arg position="1" name="intRange" key="${var:min}" resource="false" bundle="administration" />
+				<arg position="2" name="intRange" key="${var:max}" resource="false" bundle="administration" />
+				<var>
+					<var-name>min</var-name>
+					<var-value>0</var-value>
+				</var>
+				<var>
+					<var-name>max</var-name>
+					<var-value>20</var-value>
+				</var>
 			</field>
 			<field property="dateReceived" depends="date">
 				<arg position="0" key="createSampleForm.dateReceived" bundle="administration" />
@@ -80,8 +100,18 @@
 			<field property="lotId" depends="required">
 				<arg position="0" key="createAliquotForm.lotId" bundle="administration" />
 			</field>
-			<field property="numberOfAliquots" depends="integer">
+			<field property="numberOfAliquots" depends="integer,intRange">
 				<arg position="0" key="createAliquotForm.numberOfAliquots" bundle="administration" />
+				<arg position="1" name="intRange" key="${var:min}" resource="false"/>
+				<arg position="2" name="intRange" key="${var:max}" resource="false"/>
+				<var>
+					<var-name>min</var-name>
+					<var-value>1</var-value>
+				</var>
+				<var>
+					<var-name>max</var-name>
+					<var-value>500</var-value>
+				</var>
 			</field>
 			<field property="template.container.containerType" depends="required">
 				<arg position="0" key="createAliquotForm.containerType" bundle="administration" />
@@ -132,11 +162,17 @@
 			<field property="lotId" depends="required">
 				<arg position="0" key="createAliquotForm.lotId" bundle="administration" />
 			</field>
-			<field property="numberOfAliquots" depends="integer,validwhen">
+			<field property="numberOfAliquots" depends="integer,intRange">
 				<arg position="0" key="createAliquotForm.numberOfAliquots" bundle="administration" />
+				<arg position="1" name="intRange" key="${var:min}" resource="false"/>
+				<arg position="2" name="intRange" key="${var:max}" resource="false"/>
 				<var>
-					<var-name>test</var-name>
-					<var-value>(numberOfAliquots>0)</var-value>
+					<var-name>min</var-name>
+					<var-value>1</var-value>
+				</var>
+				<var>
+					<var-name>max</var-name>
+					<var-value>500</var-value>
 				</var>
 			</field>
 			<field property="template.container.containerType" depends="required">
