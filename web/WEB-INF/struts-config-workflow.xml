@@ -7,14 +7,35 @@
 			<form-property name="aliquotIds" type="java.lang.String[]" />
 			<form-property name="comments" type="java.lang.String" />
 		</form-bean>
+		<form-bean name="maskAliquotForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="maskType" type="java.lang.String" />			
+			<form-property name="aliquotId" type="java.lang.String" />
+			<form-property name="description" type="java.lang.String" />
+		</form-bean>
+		<form-bean name="maskFileForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="maskType" type="java.lang.String" />			
+			<form-property name="fileId" type="java.lang.String" />
+			<form-property name="description" type="java.lang.String" />
+		</form-bean>
 	</form-beans>
 	<global-forwards>
 		<forward name="useAliquot" path="workflow.usealiquot" />
+		<forward name="maskAliquot" path="workflow.maskaliquot" />
+        <forward name="maskFile" path="workflow.maskfile" />
+		
 	</global-forwards>
 	<action-mappings>
 		<action input="input" name="useAliquotForm" path="/useAliquot" scope="request" type="gov.nih.nci.calab.ui.workflow.UseAliquotAction">
 			<forward name="success" path="workflow.message" />
 			<forward name="input" path="workflow.usealiquot" />
+		</action>
+		<action input="input" name="maskAliquotForm" path="/maskAliquot" scope="request" type="gov.nih.nci.calab.ui.workflow.MaskAction">
+			<forward name="success" path="workflow.message" />
+			<forward name="input" path="workflow.maskaliquot" />
+		</action>
+		<action input="input" name="maskFileForm" path="/maskFile" scope="request" type="gov.nih.nci.calab.ui.workflow.MaskAction">
+			<forward name="success" path="workflow.message" />
+			<forward name="input" path="workflow.maskfile" />
 		</action>
 	</action-mappings>
 </struts-config>
