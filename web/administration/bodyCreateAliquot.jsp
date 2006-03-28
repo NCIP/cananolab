@@ -130,13 +130,13 @@ function openLink() {
 				<tr>
 					<td class="formLabel">
 						<div align="left">
-							<strong>Storage Location<br> <br> Room&nbsp; <html:select property="template.container.storageRoom">
+							<strong>Storage Location<br> <br> Room&nbsp; <html:select property="template.container.storageLocation.room">
 									<option value=""></option>
 									<html:options name="aliquotContainerInfo" property="storageRooms" />
-								</html:select> &nbsp; Freezer&nbsp; <html:select property="template.container.storageFreezer">
+								</html:select> &nbsp; Freezer&nbsp; <html:select property="template.container.storageLocation.freezer">
 									<option value=""></option>
 									<html:options name="aliquotContainerInfo" property="storageFreezers" />
-								</html:select> &nbsp;Shelf &nbsp; <html:text property="template.container.storageShelf" size="5" /> &nbsp; Box &nbsp; <html:text property="template.container.storageBox" size="5" /> &nbsp;</strong>
+								</html:select> &nbsp;Shelf &nbsp; <html:text property="template.container.storageLocation.shelf" size="5" /> &nbsp; Box &nbsp; <html:text property="template.container.storageLocation.box" size="5" /> &nbsp;</strong>
 						</div>
 					</td>
 				</tr>
@@ -198,8 +198,8 @@ function openLink() {
 		</logic:present>
 		<table border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 			<tr>
-				<td width="30%">
-					<span class="formMessage"> Aliquoted by: Jane Doe Aliquoted Date: 02/06/2006</span>
+				<td width="30%">	
+					<span class="formMessage"> Aliquoted by: <bean:write name="creator"/> Aliquoted Date: <bean:write name="creationDate"/></span>--%>
 					<table border="0" align="right" cellpadding="4" cellspacing="0">
 						<tr>
 							<td width="198" height="32">

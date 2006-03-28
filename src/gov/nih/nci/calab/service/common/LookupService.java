@@ -12,7 +12,7 @@ import java.util.List;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.6 2006-03-22 21:04:04 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.7 2006-03-28 23:00:36 pansu Exp $ */
 
 public class LookupService {
 
@@ -87,8 +87,7 @@ public class LookupService {
 		
 		//set labs and racks to null for now
 		ContainerInfoBean containerInfo = new ContainerInfoBean(containerTypes,
-				quantityUnits, concentrationUnits, volumeUnits, null, rooms,
-				null, freezers);
+				quantityUnits, concentrationUnits, volumeUnits, null, rooms, freezers);
 		// end of tmp code
 		
 		return containerInfo;
@@ -127,8 +126,7 @@ public class LookupService {
 		
 		//set labs and racks to null for now
 		ContainerInfoBean containerInfo = new ContainerInfoBean(containerTypes,
-				quantityUnits, concentrationUnits, volumeUnits, null, rooms,
-				null, freezers);
+				quantityUnits, concentrationUnits, volumeUnits, null, rooms, freezers);
 		// end of tmp code
 		
 		return containerInfo;

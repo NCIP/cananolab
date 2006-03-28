@@ -78,13 +78,13 @@
 				<tr>
 					<td class="formLabel">
 						<div align="left">
-							<strong>Storage Location<br> <br> Room&nbsp; <html:select property="aliquot.container.storageRoom">
+							<strong>Storage Location<br> <br> Room&nbsp; <html:select property="aliquot.container.storageLocation.room">
 									<option value=""></option>
 									<html:options name="aliquotContainerInfo" property="storageRooms" />
-								</html:select> &nbsp; Freezer&nbsp; <html:select property="aliquot.container.storageFreezer">
+								</html:select> &nbsp; Freezer&nbsp; <html:select property="aliquot.container.storageLocation.freezer">
 									<option value=""></option>
 									<html:options name="aliquotContainerInfo" property="storageFreezers" />
-								</html:select> &nbsp;Shelf &nbsp; <html:text property="aliquot.container.storageShelf" size="5" /> &nbsp; Box &nbsp; <html:text property="aliquot.container.storageBox" size="5" /> &nbsp;</strong>
+								</html:select> &nbsp;Shelf &nbsp; <html:text property="aliquot.container.storageLocation.shelf" size="5" /> &nbsp; Box &nbsp; <html:text property="aliquot.container.storageLocation.box" size="5" /> &nbsp;</strong>
 						</div>
 					</td>
 				</tr>
