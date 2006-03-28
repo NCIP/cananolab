@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: CreateAliquotAction.java,v 1.4 2006-03-24 21:11:57 pansu Exp $ */
+/* CVS $Id: CreateAliquotAction.java,v 1.5 2006-03-28 23:01:33 pansu Exp $ */
 
 import gov.nih.nci.calab.service.administration.ManageAliquotService;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
@@ -24,7 +24,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
-import org.apache.struts.validator.DynaValidatorActionForm;
 import org.apache.struts.validator.DynaValidatorForm;
 
 public class CreateAliquotAction extends AbstractBaseAction {
