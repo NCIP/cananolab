@@ -7,14 +7,18 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.2 2006-03-23 21:33:31 pansu Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.3 2006-03-28 23:03:31 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
+import gov.nih.nci.calab.dto.security.SecurityBean;
 import gov.nih.nci.calab.service.administration.ManageAliquotService;
 import gov.nih.nci.calab.service.administration.ManageSampleService;
 import gov.nih.nci.calab.service.common.LookupService;
+import gov.nih.nci.calab.service.search.SearchSampleService;
 import gov.nih.nci.calab.service.search.SearchWorkflowService;
+import gov.nih.nci.calab.service.util.StringUtils;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,17 +42,17 @@ public class InitSessionAction extends AbstractBaseAction {
 
 		HttpSession session = request.getSession();
 		ActionForward forward = null;
-		String forwardPage=null;
+		String forwardPage = null;
 		try {
 			DynaActionForm theForm = (DynaActionForm) form;
 			forwardPage = (String) theForm.get("forwardPage");
-            
+
 			// retrieve from sesssion first if available assuming these values
 			// are not likely to change within the same session. If changed, the
 			// session should be updated.
 			LookupService lookupService = new LookupService();
 			if (forwardPage.equals("useAliquot")) {
-				String runId=(String)request.getParameter("runId");
+				String runId = (String) request.getParameter("runId");
 				session.setAttribute("runId", runId);
 				setUseAliquotSession(session, lookupService);
 			} else if (forwardPage.equals("createSample")) {
@@ -61,11 +65,22 @@ public class InitSessionAction extends AbstractBaseAction {
 			} else if (forwardPage.equals("searchSample")) {
 				setSearchSampleSession(session, lookupService);
 			}
+			// get user and date information
+			String creator = "";
+			if (session.getAttribute("user") != null) {
+				SecurityBean user = (SecurityBean) session.getAttribute("user");
+				creator = user.getLoginId();
+			}
+			String creationDate = StringUtils.convertDateToString(new Date(),
+					"MM/dd/yyyy");
+			session.setAttribute("creator", creator);
+			session.setAttribute("creationDate", creationDate);
 			forward = mapping.findForward(forwardPage);
-			
+
 		} catch (Exception e) {
 			ActionMessages errors = new ActionMessages();
-			ActionMessage error = new ActionMessage("error.initSession", forwardPage);
+			ActionMessage error = new ActionMessage("error.initSession",
+					forwardPage);
 			errors.add("error", error);
 			saveMessages(request, errors);
 			logger.error(
@@ -83,6 +98,7 @@ public class InitSessionAction extends AbstractBaseAction {
 
 	/**
 	 * Set up session attributes for use aliquot page
+	 * 
 	 * @param session
 	 * @param lookupService
 	 */
@@ -96,6 +112,7 @@ public class InitSessionAction extends AbstractBaseAction {
 
 	/**
 	 * Set up session attributes for create sample page
+	 * 
 	 * @param session
 	 * @param lookupService
 	 */
@@ -115,14 +132,15 @@ public class InitSessionAction extends AbstractBaseAction {
 					.getSampleContainerInfo();
 			session.setAttribute("sampleContainerInfo", containerInfo);
 		}
-		//clear the form in the session
-		if (session.getAttribute("createSampleForm")!=null) {
+		// clear the form in the session
+		if (session.getAttribute("createSampleForm") != null) {
 			session.removeAttribute("createSampleForm");
 		}
 	}
 
 	/**
 	 * Set up session attributes for create aliquot page
+	 * 
 	 * @param session
 	 * @param lookupService
 	 */
@@ -151,23 +169,24 @@ public class InitSessionAction extends AbstractBaseAction {
 			List methods = manageAliquotService.getAliquotCreateMethods();
 			session.setAttribute("aliquotCreateMethods", methods);
 		}
-		//clear the form in the session
-		if (session.getAttribute("createAliquotForm")!=null) {
+		// clear the form in the session
+		if (session.getAttribute("createAliquotForm") != null) {
 			session.removeAttribute("createAliquotForm");
 		}
-		if (session.getAttribute("aliquotMatrix")!=null) {
+		if (session.getAttribute("aliquotMatrix") != null) {
 			session.removeAttribute("aliquotMatrix");
 		}
 	}
-	
+
 	/**
 	 * Set up session attributes for search workflow page
+	 * 
 	 * @param session
 	 * @param lookupService
 	 */
 	private void setSearchWorkflowSession(HttpSession session,
 			LookupService lookupService) {
-		SearchWorkflowService searchWorkflowService=new SearchWorkflowService();
+		SearchWorkflowService searchWorkflowService = new SearchWorkflowService();
 		if (session.getAttribute("allAssayTypes") == null) {
 			List assayTypes = lookupService.getAllAssayTypes();
 			session.setAttribute("allAssayTypes", assayTypes);
@@ -177,31 +196,50 @@ public class InitSessionAction extends AbstractBaseAction {
 			session.setAttribute("allFileSubmitters", submitters);
 		}
 	}
-	
+
 	/**
 	 * Set up session attributes for search sample page
+	 * 
 	 * @param session
 	 * @param lookupService
 	 */
 	private void setSearchSampleSession(HttpSession session,
 			LookupService lookupService) {
+		SearchSampleService searchSampleService = new SearchSampleService();
 		if (session.getAttribute("allSampleIds") == null) {
 			List sampleIds = lookupService.getAllSampleIds();
 			session.setAttribute("allSampleIds", sampleIds);
 		}
-		if (session.getAttribute("allLotIds") == null) {
-			List lotIds = lookupService.getAllLotIds();
-			session.setAttribute("allLotIds", lotIds);
-		}
 		if (session.getAttribute("allAliquotIds") == null) {
 			List aliquotIds = lookupService.getAliquots();
 			session.setAttribute("allAliquotIds", aliquotIds);
+		}
+		if (session.getAttribute("allSampleTypes") == null) {
+			List sampleTypes = lookupService.getAllSampleTypes();
+			session.setAttribute("allSampleTypes", sampleTypes);
+		}
+		if (session.getAttribute("allSampleSources") == null) {
+			List sampleSources = searchSampleService.getAllSampleSources();
+			session.setAttribute("allSampleSources", sampleSources);
+		}
+		if (session.getAttribute("allSourceSampleIds") == null) {
+			List sourceSampleIds = searchSampleService.getAllSourceSampleIds();
+			session.setAttribute("allSourceSampleIds", sourceSampleIds);
+		}
+		if (session.getAttribute("allSampleSubmitters") == null) {
+			List submitters = searchSampleService.getAllSampleSubmitters();
+			session.setAttribute("allSampleSubmitters", submitters);
 		}
 		if (session.getAttribute("sampleContainerInfo") == null) {
 			ContainerInfoBean containerInfo = lookupService
 					.getSampleContainerInfo();
 			session.setAttribute("sampleContainerInfo", containerInfo);
 		}
+		if (session.getAttribute("aliquotContainerInfo") == null) {
+			ContainerInfoBean containerInfo = lookupService
+					.getAliquotContainerInfo();
+			session.setAttribute("aliquotContainerInfo", containerInfo);
+		}
 	}
-	
+
 }
