@@ -7,8 +7,8 @@
 			<form-property name="sampleType" type="java.lang.String" />
 			<form-property name="sampleSOP" type="java.lang.String" />
 			<form-property name="sampleDescription" type="java.lang.String" />
-			<form-property name="vendor" type="java.lang.String" />
-			<form-property name="vendorSampleId" type="java.lang.String" />
+			<form-property name="sampleSource" type="java.lang.String" />
+			<form-property name="sourceSampleId" type="java.lang.String" />
 			<form-property name="dateReceived" type="java.lang.String" />
 			<form-property name="lotId" type="java.lang.String" initial="N/A" />
 			<form-property name="lotDescription" type="java.lang.String" />
