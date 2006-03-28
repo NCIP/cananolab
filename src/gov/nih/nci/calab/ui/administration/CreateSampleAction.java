@@ -7,23 +7,24 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: CreateSampleAction.java,v 1.8 2006-03-24 21:12:33 pansu Exp $ */
+/* CVS $Id: CreateSampleAction.java,v 1.9 2006-03-28 23:10:53 pansu Exp $ */
 
-import org.apache.log4j.*;
+import gov.nih.nci.calab.dto.administration.ContainerBean;
+import gov.nih.nci.calab.dto.administration.SampleBean;
+import gov.nih.nci.calab.service.administration.ManageSampleService;
+import gov.nih.nci.calab.ui.core.AbstractBaseAction;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorActionForm;
-
-import gov.nih.nci.calab.dto.administration.ContainerBean;
-import gov.nih.nci.calab.dto.administration.SampleBean;
-import gov.nih.nci.calab.service.administration.ManageSampleService;
-import gov.nih.nci.calab.ui.core.*;
 
 public class CreateSampleAction extends AbstractBaseAction {
 	private static Logger logger = Logger.getLogger(CreateSampleAction.class);
@@ -32,6 +33,7 @@ public class CreateSampleAction extends AbstractBaseAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		ActionForward forward = null;
+		HttpSession session = request.getSession();
 		try {
 			// TODO fill in details for sample information */
 			DynaValidatorActionForm theForm = (DynaValidatorActionForm) form;
@@ -40,30 +42,38 @@ public class CreateSampleAction extends AbstractBaseAction {
 			String sampleSOP = (String) theForm.get("sampleSOP");
 			String sampleDescription = (String) theForm
 					.get("sampleDescription");
-			String vendor = (String) theForm.get("vendor");
-			String vendorSampleId = (String) theForm.get("vendorSampleId");
+			String sampleSource = (String) theForm.get("sampleSource");
+			String sourceSampleId = (String) theForm.get("sourceSampleId");
 			String dateReceived = (String) theForm.get("dateReceived");
 			String solubility = (String) theForm.get("solubility");
 			String lotId = (String) theForm.get("lotId");
 			String lotDescription = (String) theForm.get("lotDescription");
 			String numContainers = (String) theForm.get("numberOfContainers");
 			String generalComments = (String) theForm.get("generalComments");
-			ManageSampleService manageSampleService=new ManageSampleService();
-			String sampleId=manageSampleService.getSampleId(sampleIdPrefix, lotId);
+			ManageSampleService manageSampleService = new ManageSampleService();
+			String sampleId = manageSampleService.getSampleId(sampleIdPrefix,
+					lotId);
+
+			// get user and date information from session
+			String sampleSubmitter = (String)session.getAttribute("creator");
+			String accessionDate=(String)session.getAttribute("creationDate");
 			
+			ContainerBean[] containers = (ContainerBean[]) theForm
+					.get("containers");
+
 			SampleBean sample = new SampleBean(sampleId, sampleType, sampleSOP,
-					sampleDescription, vendor, vendorSampleId, dateReceived,
-					solubility, lotId, lotDescription, numContainers,
-					generalComments);
-			ContainerBean[] containers=(ContainerBean[])theForm.get("containers");
+					sampleDescription, sampleSource, sourceSampleId,
+					dateReceived, solubility, lotId, lotDescription,
+					numContainers, generalComments, sampleSubmitter,
+					accessionDate, containers);
+
 			request.setAttribute("sample", sample);
-			request.setAttribute("containers", containers);
-			
+
 			manageSampleService.saveSample(sample, containers, generalComments);
 			forward = mapping.findForward("success");
 		} catch (Exception e) {
-			ActionMessages errors=new ActionMessages();
-			ActionMessage error=new ActionMessage("error.createSample");
+			ActionMessages errors = new ActionMessages();
+			ActionMessage error = new ActionMessage("error.createSample");
 			errors.add("error", error);
 			saveMessages(request, errors);
 			logger.error("Caught exception when creating a sample", e);
