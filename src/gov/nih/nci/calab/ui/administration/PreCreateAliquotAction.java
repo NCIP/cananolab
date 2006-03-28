@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: PreCreateAliquotAction.java,v 1.8 2006-03-24 21:13:06 pansu Exp $ */
+/* CVS $Id: PreCreateAliquotAction.java,v 1.9 2006-03-28 23:02:38 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.service.administration.ManageAliquotService;
@@ -25,18 +25,18 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
-import org.apache.struts.validator.DynaValidatorActionForm;
 import org.apache.struts.validator.DynaValidatorForm;
 
 public class PreCreateAliquotAction extends AbstractBaseAction {
-	private static Logger logger = Logger.getLogger(PreCreateAliquotAction.class);
+	private static Logger logger = Logger
+			.getLogger(PreCreateAliquotAction.class);
 
 	public ActionForward executeTask(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		ActionForward forward = null;
 		HttpSession session = request.getSession();
-		
+
 		try {
 			// TODO fill in details for sample information */
 			DynaValidatorForm theForm = (DynaValidatorForm) form;
@@ -55,7 +55,9 @@ public class PreCreateAliquotAction extends AbstractBaseAction {
 
 			// calculate number of rows in the matrix
 			if (numAliquots > 0) {
-				ManageAliquotService manageAliquotService=new ManageAliquotService();
+
+				
+				ManageAliquotService manageAliquotService = new ManageAliquotService();
 				int colNum = manageAliquotService
 						.getDefaultAliquotMatrixColumnNumber();
 				int rowNum = (int) Math.ceil((float) numAliquots / colNum);
@@ -66,17 +68,19 @@ public class PreCreateAliquotAction extends AbstractBaseAction {
 				String aliquotPrefix = manageAliquotService.getAliquotPrefix(
 						sampleId, parentAliquotId);
 				// create a 2-D matrix for aliquot
+				String creator=(String)session.getAttribute("creator");
+				String creationDate=(String)session.getAttribute("creationDate");
 				List<AliquotBean[]> aliquotMatrix = createAliquotMatrix(colNum,
-						rowNum, numAliquots, aliquotPrefix, firstAliquotNum, template);
+						rowNum, numAliquots, aliquotPrefix, firstAliquotNum,
+						template, creator, creationDate);
 				session.setAttribute("aliquotMatrix", aliquotMatrix);
-			}
-			else {
+			} else {
 				session.removeAttribute("aliquotMatrix");
 			}
 			forward = mapping.findForward("success");
 		} catch (Exception e) {
-			ActionMessages errors=new ActionMessages();
-			ActionMessage error=new ActionMessage("error.preCreateAliquot");
+			ActionMessages errors = new ActionMessages();
+			ActionMessage error = new ActionMessage("error.preCreateAliquot");
 			errors.add("error", error);
 			saveMessages(request, errors);
 			logger.error("Caught exception loading creating aliquot page", e);
@@ -96,7 +100,8 @@ public class PreCreateAliquotAction extends AbstractBaseAction {
 	 * @return a 2-D matrix of aliquots
 	 */
 	private List<AliquotBean[]> createAliquotMatrix(int colNum, int rowNum,
-			int numAliquots, String aliquotPrefix, int firstAliquotId, AliquotBean template) {
+			int numAliquots, String aliquotPrefix, int firstAliquotId,
+			AliquotBean template, String aliquotCreator, String creationDate) {
 
 		List<AliquotBean[]> aliquotMatrix = new ArrayList<AliquotBean[]>();
 		int aliquotId = firstAliquotId;
@@ -110,8 +115,9 @@ public class PreCreateAliquotAction extends AbstractBaseAction {
 			AliquotBean[] aliquotRow = new AliquotBean[colNum];
 
 			for (int j = 0; j < cols; j++) {
-				AliquotBean aliquot = new AliquotBean(aliquotPrefix+aliquotId, template
-						.getContainer(), template.getHowCreated());
+				AliquotBean aliquot = new AliquotBean(
+						aliquotPrefix + aliquotId, template.getContainer(),
+						template.getHowCreated(), aliquotCreator, creationDate);
 				aliquotRow[j] = aliquot;
 				aliquotId++;
 			}
