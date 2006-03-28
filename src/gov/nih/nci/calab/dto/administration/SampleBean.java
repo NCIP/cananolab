@@ -1,45 +1,81 @@
 package gov.nih.nci.calab.dto.administration;
 
+
 /**
- * This class represents all properties of a sample that need to be viewed and saved.
+ * This class represents all properties of a sample that need to be viewed and
+ * saved.
+ * 
  * @author pansu
- *
+ * 
  */
 
-/* CVS $Id: SampleBean.java,v 1.1 2006-03-15 18:44:40 pansu Exp $ */
+/* CVS $Id: SampleBean.java,v 1.2 2006-03-28 22:59:36 pansu Exp $ */
 public class SampleBean {
 	private String sampleId;
+
 	private String sampleType;
+
 	private String sampleSOP;
+
 	private String sampleDescription;
-	private String vendor;
-	private String vendorSampleId;
+
+	private String sampleSource;
+
+	private String sourceSampleId;
+
 	private String dateReceived;
+
 	private String lotId;
+
 	private String lotDescription;
+
 	private String solubility;
+
 	private String numberOfContainers;
+
 	private String generalComments;
-	
-	public SampleBean(String sampleId, String sampleType, String sampleSOP, String sampleDescription, String vendor, String vendorSampleId, String dateReceived, String solubility, String lotId, String lotDescription, String numberOfContainers, String generalComments) {
+
+	private String sampleSubmitter;
+
+	private String accessionDate;
+
+	private ContainerBean[] containers;
+
+	public SampleBean(String sampleId, String sampleType, String sampleSOP,
+			String sampleDescription, String sampleSource,
+			String sourceSampleId, String dateReceived, String solubility,
+			String lotId, String lotDescription, String numberOfContainers,
+			String generalComments, String sampleSubmitter,
+			String accessionDate, ContainerBean[] containers) {
 		super();
 		// TODO Auto-generated constructor stub
 		this.sampleId = sampleId;
 		this.sampleType = sampleType;
 		this.sampleSOP = sampleSOP;
 		this.sampleDescription = sampleDescription;
-		this.vendor = vendor;
-		this.vendorSampleId = vendorSampleId;
+		this.sampleSource = sampleSource;
+		this.sourceSampleId = sourceSampleId;
 		this.dateReceived = dateReceived;
 		this.lotId = lotId;
 		this.lotDescription = lotDescription;
 		this.solubility = solubility;
 		this.numberOfContainers = numberOfContainers;
 		this.generalComments = generalComments;
+		this.sampleSubmitter = sampleSubmitter;
+		this.accessionDate=accessionDate;
+		this.containers = containers;
 	}
 
 	public String getDateReceived() {
 		return dateReceived;
+	}
+
+	public String getAccessionDate() {
+		return accessionDate;
+	}
+
+	public void setAccessionDate(String accessionDate) {
+		this.accessionDate = accessionDate;
 	}
 
 	public void setDateReceived(String dateReceived) {
@@ -118,21 +154,36 @@ public class SampleBean {
 		this.solubility = solubility;
 	}
 
-	public String getVendor() {
-		return vendor;
+	public String getSampleSource() {
+		return sampleSource;
 	}
 
-	public void setVendor(String vendor) {
-		this.vendor = vendor;
+	public void setSampleSource(String sampleSource) {
+		this.sampleSource = sampleSource;
 	}
 
-	public String getVendorSampleId() {
-		return vendorSampleId;
+	public String getSourceSampleId() {
+		return sourceSampleId;
 	}
 
-	public void setVendorSampleId(String vendorSampleId) {
-		this.vendorSampleId = vendorSampleId;
+	public void setSourceSampleId(String sourceSampleId) {
+		this.sourceSampleId = sourceSampleId;
 	}
-	
+
+	public String getSampleSubmitter() {
+		return sampleSubmitter;
+	}
+
+	public void setSampleSubmitter(String sampleSubmitter) {
+		this.sampleSubmitter = sampleSubmitter;
+	}
+
+	public ContainerBean[] getContainers() {
+		return containers;
+	}
+
+	public void setContainers(ContainerBean[] containers) {
+		this.containers = containers;
+	}
 
 }
