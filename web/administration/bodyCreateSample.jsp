@@ -72,7 +72,7 @@ function openLink() {
 				<tr>
 					<td class="formLabel">
 						<div align="justify">
-							<strong>Source <span class="formFieldWhite"> <html:text property="vendor" size="10" /></span> &nbsp; &nbsp; Source ID <span class="formFieldWhite"><html:text property="vendorSampleId" size="10" /> </span> &nbsp; &nbsp; Date Received <html:text
+							<strong>Source <span class="formFieldWhite"> <html:text property="sampleSource" size="10" /></span> &nbsp; &nbsp; Source ID <span class="formFieldWhite"><html:text property="sourceSampleId" size="10" /> </span> &nbsp; &nbsp; Date Received <html:text
 									property="dateReceived" size="9" /> <span class="formFieldWhite"> <a href="javascript:cal.popup();"><img height="18" src="images/calendar-icon.gif" width="22" border="0" alt="Click Here to Pick up the date"></a></span> </strong>
 						</div>
 					</td>
@@ -171,13 +171,13 @@ function openLink() {
 					<tr>
 						<td class="formLabel">
 							<div align="left">
-								<strong>Storage Location<br> <br> Room&nbsp; <html:select name="containers" indexed="true" property="storageRoom">
+								<strong>Storage Location<br> <br> Room&nbsp; <html:select name="containers" indexed="true" property="storageLocation.room">
 										<option value=""></option>
 										<html:options name="sampleContainerInfo" property="storageRooms" />
-									</html:select> &nbsp; Freezer&nbsp; <html:select name="containers" indexed="true" property="storageFreezer">
+									</html:select> &nbsp; Freezer&nbsp; <html:select name="containers" indexed="true" property="storageLocation.freezer">
 										<option value=""></option>
 										<html:options name="sampleContainerInfo" property="storageFreezers" />
-									</html:select> &nbsp;Shelf &nbsp; <html:text name="containers" indexed="true" property="storageShelf" size="5" /> &nbsp; Box &nbsp; <html:text name="containers" indexed="true" property="storageBox" size="5" /> &nbsp;</strong>
+									</html:select> &nbsp;Shelf &nbsp; <html:text name="containers" indexed="true" property="storageLocation.shelf" size="5" /> &nbsp; Box &nbsp; <html:text name="containers" indexed="true" property="storageLocation.box" size="5" /> &nbsp;</strong>
 							</div>
 						</td>
 					</tr>
@@ -201,7 +201,7 @@ function openLink() {
 			<tbody>
 				<tr>
 					<td width="30%" class="formMessage">
-						Accessioned by: Jane Doe Accession Date: 02/06/2006
+						Accessioned by: <bean:write name="creator"/> Accession Date: <bean:write name="creationDate"/>
 
 						<table height="32" cellspacing="0" cellpadding="4" width="200" align="right" border="0">
 							<tbody>
