@@ -9,6 +9,7 @@ import java.util.List;
  * @author pansu
  * 
  */
+/* CVS $Id: ContainerInfoBean.java,v 1.4 2006-03-28 22:59:07 pansu Exp $ */
 
 public class ContainerInfoBean {
 
@@ -24,14 +25,12 @@ public class ContainerInfoBean {
 
 	private List<String> storeageRooms;
 
-	private List<String> storeageRacks;
-
 	private List<String> storageFreezers;
 
 	public ContainerInfoBean(List<String> containerTypes,
 			List<String> quantityUnits, List<String> concentrationUnits,
 			List<String> volumeUnits, List<String> storageLabs,
-			List<String> storeageRooms, List<String> storeageRacks,
+			List<String> storeageRooms, 
 			List<String> storageFreezers) {
 		super();
 		// TODO Auto-generated constructor stub
@@ -41,7 +40,6 @@ public class ContainerInfoBean {
 		this.volumeUnits = volumeUnits;
 		this.storageLabs = storageLabs;
 		this.storeageRooms = storeageRooms;
-		this.storeageRacks = storeageRacks;
 		this.storageFreezers = storageFreezers;
 	}
 
@@ -101,13 +99,6 @@ public class ContainerInfoBean {
 		this.storageLabs = storageLabs;
 	}
 
-	public List<String> getStoreageRacks() {
-		return storeageRacks;
-	}
-
-	public void setStoreageRacks(List<String> storeageRacks) {
-		this.storeageRacks = storeageRacks;
-	}
 
 	public List<String> getStoreageRooms() {
 		return storeageRooms;
