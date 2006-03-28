@@ -1,13 +1,12 @@
 package gov.nih.nci.calab.ui.search;
 
 /**
- * This class initializes session data to prepopulate the drop-down lists required 
- * in different view pages. 
+ * This class searches workflows based on user supplied criteria.
  * 
  * @author pansu
  */
 
-/* CVS $Id: SearchWorkflowAction.java,v 1.2 2006-03-24 21:49:51 pansu Exp $ */
+/* CVS $Id: SearchWorkflowAction.java,v 1.3 2006-03-28 23:04:10 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.search.WorkflowResultBean;
 import gov.nih.nci.calab.service.search.SearchWorkflowService;
@@ -86,7 +85,7 @@ public class SearchWorkflowAction extends AbstractBaseAction {
 							includeMaskedFiles, criteriaJoin);
 			if (workflows == null || workflows.isEmpty()) {
 				ActionMessage msg = new ActionMessage(
-						"message.searchworkflow.noresult");
+						"message.searchWorkflow.noResult");
 				msgs.add("message", msg);
 				saveMessages(request, msgs);
 				forward = mapping.getInputForward();
@@ -95,7 +94,7 @@ public class SearchWorkflowAction extends AbstractBaseAction {
 				forward = mapping.findForward("success");
 			}
 		} catch (Exception e) {
-			ActionMessage error = new ActionMessage("error.searchworkflow");
+			ActionMessage error = new ActionMessage("error.searchWorkflow");
 			msgs.add("error", error);
 			saveMessages(request, msgs);
 			logger.error("Caught exception searching workflow data", e);
