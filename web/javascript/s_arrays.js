@@ -134,7 +134,7 @@ S:s_CSSTop	// STYLE Array to use for this menu
 },
 [		// define items {U:'url',T:'text' ...} look at the Manual for details
 {U:'initSession.do?forwardPage=searchWorkflow',T:'Search Workflow'},
-{U:'searchSample.jsp',T:'Search Sample'}
+{U:'initSession.do?forwardPage=searchSample',T:'Search Sample'}
 ]
 );
 
