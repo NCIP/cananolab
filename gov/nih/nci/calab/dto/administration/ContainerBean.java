@@ -1,5 +1,7 @@
 package gov.nih.nci.calab.dto.administration;
 
+import gov.nih.nci.calab.service.util.StringUtils;
+
 /**
  * This class represents all properties of a container that need to be viewed
  * and saved.
@@ -7,7 +9,8 @@ package gov.nih.nci.calab.dto.administration;
  * @author pansu
  * 
  */
-/* CVS $Id: ContainerBean.java,v 1.2 2006-03-23 19:37:41 pansu Exp $ */
+/* CVS $Id: ContainerBean.java,v 1.3 2006-03-28 22:58:35 pansu Exp $ */
+
 public class ContainerBean {
 	private String containerType;
 
@@ -31,31 +34,21 @@ public class ContainerBean {
 
 	private String storageCondition;
 
-	private String storageLab;
+	private StorageLocation storageLocation;
 
-	private String storageRoom;
-
-	private String storageRack;
-
-	private String storageFreezer;
-
-	private String storageShelf;
-
-	private String storageBox;
+	private String storageLocationStr;
 
 	private String containerComments;
 
 	public ContainerBean() {
-
+		storageLocation=new StorageLocation();
 	}
 
 	public ContainerBean(String containerType, String otherContainerType,
 			String quantity, String quantityUnit, String concentration,
 			String concentrationUnit, String volume, String volumeUnit,
 			String solvent, String safetyPrecaution, String storageCondition,
-			String storageLab, String storageRoom, String storageFreezer,
-			String storageShelf, String storageRack, String storageBox,
-			String containerComments) {
+			StorageLocation storageLocation, String containerComments) {
 		super();
 		// TODO Auto-generated constructor stub
 		this.containerType = containerType;
@@ -69,12 +62,7 @@ public class ContainerBean {
 		this.solvent = solvent;
 		this.safetyPrecaution = safetyPrecaution;
 		this.storageCondition = storageCondition;
-		this.storageLab = storageLab;
-		this.storageRoom = storageRoom;
-		this.storageFreezer = storageFreezer;
-		this.storageShelf = storageShelf;
-		this.storageRack=storageRack;
-		this.storageBox = storageBox;
+		this.storageLocation = storageLocation;
 		this.containerComments = containerComments;
 	}
 
@@ -150,44 +138,12 @@ public class ContainerBean {
 		this.solvent = solvent;
 	}
 
-	public String getStorageBox() {
-		return storageBox;
-	}
-
-	public void setStorageBox(String storageBox) {
-		this.storageBox = storageBox;
-	}
-
 	public String getStorageCondition() {
 		return storageCondition;
 	}
 
 	public void setStorageCondition(String storageCondition) {
 		this.storageCondition = storageCondition;
-	}
-
-	public String getStorageFreezer() {
-		return storageFreezer;
-	}
-
-	public void setStorageFreezer(String storageFreezer) {
-		this.storageFreezer = storageFreezer;
-	}
-
-	public String getStorageRoom() {
-		return storageRoom;
-	}
-
-	public void setStorageRoom(String storageRoom) {
-		this.storageRoom = storageRoom;
-	}
-
-	public String getStorageShelf() {
-		return storageShelf;
-	}
-
-	public void setStorageShelf(String storageShelf) {
-		this.storageShelf = storageShelf;
 	}
 
 	public String getVolume() {
@@ -206,19 +162,33 @@ public class ContainerBean {
 		this.volumeUnit = volumeUnit;
 	}
 
-	public String getStorageLab() {
-		return storageLab;
+	public StorageLocation getStorageLocation() {
+		return storageLocation;
 	}
 
-	public void setStorageLab(String storageLab) {
-		this.storageLab = storageLab;
+	public void setStorageLocation(StorageLocation storageLocation) {
+		this.storageLocation = storageLocation;
 	}
 
-	public String getStorageRack() {
-		return storageRack;
+	public String getStorageLocationStr() {
+		String lab = (storageLocation.getLab() == null) ? "" : "Lab"
+				+ storageLocation.getLab();
+		String room = (storageLocation.getRoom() == null) ? "" : "Room"
+				+ storageLocation.getRoom();
+		String freezer = (storageLocation.getFreezer() == null) ? ""
+				: "Freezer" + storageLocation.getFreezer();
+		String shelf = (storageLocation.getShelf() == null) ? "" : "Shelf"
+				+ storageLocation.getShelf();
+		String rack = (storageLocation.getRack() == null) ? "" : "Rack"
+				+ storageLocation.getRack();
+		String box = (storageLocation.getBox() == null) ? "" : "Box"
+				+ storageLocation.getBox();
+		String[] strs = new String[] { lab, room, freezer, shelf, rack, box };
+		storageLocationStr = StringUtils.join(strs, "-");
+		return storageLocationStr;
 	}
 
-	public void setStorageRack(String storageRack) {
-		this.storageRack = storageRack;
+	public void setStorageLocationStr(String storageLocationStr) {
+		this.storageLocationStr = storageLocationStr;
 	}
 }
