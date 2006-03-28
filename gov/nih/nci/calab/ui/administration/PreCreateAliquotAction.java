@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: PreCreateAliquotAction.java,v 1.9 2006-03-28 23:02:38 pansu Exp $ */
+/* CVS $Id: PreCreateAliquotAction.java,v 1.10 2006-03-28 23:11:05 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.service.administration.ManageAliquotService;
@@ -67,9 +67,12 @@ public class PreCreateAliquotAction extends AbstractBaseAction {
 						sampleId, parentAliquotId);
 				String aliquotPrefix = manageAliquotService.getAliquotPrefix(
 						sampleId, parentAliquotId);
-				// create a 2-D matrix for aliquot
+				
+				//get user and date from session
 				String creator=(String)session.getAttribute("creator");
 				String creationDate=(String)session.getAttribute("creationDate");
+                
+				// create a 2-D matrix for aliquot
 				List<AliquotBean[]> aliquotMatrix = createAliquotMatrix(colNum,
 						rowNum, numAliquots, aliquotPrefix, firstAliquotNum,
 						template, creator, creationDate);
