@@ -8,30 +8,32 @@
 			<form-property name="assayRunDateEnd" type="java.lang.String" />
 			<form-property name="assayName" type="java.lang.String" />
 			<form-property name="fileSubmissionDateEnd" type="java.lang.String" />
-			<form-property name="isFileIn" type="java.lang.String" initial="in"/>
-			<form-property name="isFileOut" type="java.lang.String" initial="out"/>
+			<form-property name="isFileIn" type="java.lang.String" initial="in" />
+			<form-property name="isFileOut" type="java.lang.String" initial="out" />
 			<form-property name="aliquotId" type="java.lang.String" />
 			<form-property name="includeMaskedAliquots" type="java.lang.String" />
 			<form-property name="assayType" type="java.lang.String" />
 			<form-property name="fileSubmissionDateBegin" type="java.lang.String" />
 			<form-property name="fileSubmitter" type="java.lang.String" />
 			<form-property name="includeMaskedFiles" type="java.lang.String" />
-			<form-property name="criteriaJoin" type="java.lang.String" initial="and"/>
+			<form-property name="criteriaJoin" type="java.lang.String" initial="and" />
 		</form-bean>
 		<form-bean name="searchSampleForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="sampleId" type="java.lang.String" />
-			<form-property name="vendorSampleId" type="java.lang.String" />
-			<form-property name="vendor" type="java.lang.String" />
+			<form-property name="sourceSampleId" type="java.lang.String" />
+			<form-property name="sampleSource" type="java.lang.String" />
 			<form-property name="dateAccessionedBegin" type="java.lang.String" />
 			<form-property name="sampleType" type="java.lang.String" />
 			<form-property name="aliquotId" type="java.lang.String" />
 			<form-property name="storageBox" type="java.lang.String" />
 			<form-property name="dateAccessionedEnd" type="java.lang.String" />
-			<form-property name="submmitter" type="java.lang.String" />
-			<form-property name="storageShelf" type="java.lang.String" />
+			<form-property name="sampleSubmitter" type="java.lang.String" />
 			<form-property name="lotId" type="java.lang.String" />
-			<form-property name="storageRoom" type="java.lang.String" />
-			<form-property name="storageFreezer" type="java.lang.String" />
+			<form-property name="storageLocation" type="gov.nih.nci.calab.dto.administration.StorageLocation" />
+		</form-bean>
+		<form-bean name="viewSampleDetailForm" type="org.apache.struts.action.DynaActionForm">
+		    <form-property name="sampleNum" type="java.lang.String"/>
+		    <form-property name="containerNum" type="java.lang.String"/>
 		</form-bean>
 	</form-beans>
 	<global-forwards>
@@ -44,10 +46,15 @@
 			<forward name="success" path="search.searchworkflowresult" />
 			<forward name="failure" path="search.searchworkflow" />
 		</action>
-		<action input="input" name="searchSampleForm" path="searchSample" scope="request" type="gov.nih.nci.calab.ui.search.SearchSampleAction">
+		<action input="input" name="searchSampleForm" path="/searchSample" scope="request" type="gov.nih.nci.calab.ui.search.SearchSampleAction">
 			<forward name="input" path="search.searchsample" />
 			<forward name="success" path="search.searchsampleresult" />
 			<forward name="failure" path="search.searchsample" />
+		</action>
+		<action input="input" name="viewSampleDetailForm" path="/viewSampleDetail" scope="request" type="gov.nih.nci.calab.ui.search.ViewSampleDetailAction">
+			<forward name="input" path="search.searchsampleresult" />
+			<forward name="success" path="search.viewsampledetails" />
+			<forward name="failure" path="search.searchsampleresult" />
 		</action>
 	</action-mappings>
 
