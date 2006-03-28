@@ -28,4 +28,10 @@
         <put name="calabContent" value="/search/bodySearchWorkflowResult.jsp"/>
         <put name="menu" value="search"/>
     </definition>
+    <definition name="search.viewsampledetails" extends="calab.home">
+        <put name="calabContent" value="/administration/bodySampleDetails.jsp"/>
+        <put name="menu" value="search"/>
+    </definition>
+    
+    
 </tiles-definitions>
