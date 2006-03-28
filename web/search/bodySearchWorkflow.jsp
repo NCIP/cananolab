@@ -123,12 +123,12 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="formLabelWhite">
+				<td class="formLabel">
 					<strong> Join Search Criteria by </strong>
 					<label for="label2"></label>
 					<img src="images/help.gif" width="15" height="15" onmouseover="s_show('workflowSearch_maskedFiles',event)" onmouseout="s_hide()">
 				</td>
-				<td class="formFieldWhite">
+				<td class="formField">
 					<span class="formField"> <strong> <html:radio property="criteriaJoin" value="and"/> &nbsp; &nbsp; And &nbsp;&nbsp; <html:radio property="criteriaJoin" value="or"/> Or </strong></span>
 				</td>
 			</tr>
@@ -144,7 +144,7 @@
 							<td width="490" height="32">
 								<div align="right">
 									<html:reset />
-									<html:submit />
+									<html:submit value="Search"/>
 								</div>
 							</td>
 						</tr>
