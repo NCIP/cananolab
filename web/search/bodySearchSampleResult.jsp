@@ -40,10 +40,12 @@
 					</div>
 				</td>
 			</tr>
+			<c:set var="rowNum" value="-1"/>
 			<logic:iterate name="samples" id="sample" type="gov.nih.nci.calab.dto.administration.SampleBean" indexId="sampleNum">
 				<logic:iterate name="sample" property="containers" id="container" type="gov.nih.nci.calab.dto.administration.ContainerBean" indexId="containerNum">
+				<c:set var="rowNum" value="${rowNum+1}"/>
 					<c:choose>
-						<c:when test="${sampleNum % 2 == 0}">
+						<c:when test="${rowNum % 2 == 0}">
 							<c:set var="style" value="formLabelGrey" />
 						</c:when>
 						<c:otherwise>
