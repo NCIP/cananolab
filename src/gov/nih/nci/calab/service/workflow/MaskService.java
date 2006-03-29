@@ -10,15 +10,22 @@ package gov.nih.nci.calab.service.workflow;
  */
 public class MaskService 
 {
-    public void setMask(String strType, String strId, String strDescription)
+    
+	//This functionality is pending the completed Object Model
+	public void setMask(String strType, String strId, String strDescription)
     {
         if (strType.equals("aliquot"))
         {
-            //TODO Find Aliquot record based on the its id and set the status to "Masked" and its Description
+            //TODO Find Aliquot record based on the strID
+        	
+        	//TODO Set File Status record to "Masked". 
+        	
         }
         if (strType.equals("file"))
         {
-        	//TODO Find File record based on the its id and set the status to "Masked" and its Description
+        	//TODO Find File record based on the its strID
+        	
+        	//TODO Set File Status record to "Masked". 
         }
         	
         	 
