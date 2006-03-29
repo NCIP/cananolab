@@ -163,13 +163,17 @@
 		<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="90%" align="center" summary="" border="0">
 			<tbody>
 				<tr class="topBorder">
-					<td class="dataTablePrimaryLabel" colspan="2">
+					<c:choose>
+						<c:when test="${containerNum == cnum}">
+							<c:set var="style" value="dataTableHighlightLabel" />
+						</c:when>
+						<c:otherwise>
+							<c:set var="style" value="dataTablePrimaryLabel" />
+						</c:otherwise>
+					</c:choose>
+					<td class="${style}" colspan="2">
 						<div align="justify">
-							<em>Container <c:out value="${cnum+1}" /> <logic:present name="containerNum">
-									<logic:equal name="containerNum" value="${cnum}">
-										<font color="red"> (selected) </font>
-									</logic:equal>
-								</logic:present> </em>
+							<em>Container <c:out value="${cnum+1}" /> </em>
 						</div>
 					</td>
 				</tr>
@@ -339,7 +343,7 @@
 		<br>
 	</logic:iterate>
 
-	<table class="topBorderOnly" cellspacing="0" cellpadding="3" align="center" summary="" border="0">
+	<table class="topBorderOnly" cellspacing="0" cellpadding="3" align="center" width="90%" summary="" border="0">
 
 		<tr>
 			<td width="30%" class="formMessage">
@@ -347,6 +351,11 @@
 				<bean:write name="sample" property="sampleSubmitter" />
 				Accession Date:
 				<bean:write name="sample" property="accessionDate" />
+			</td>
+		</tr>
+		<tr valign="bottom" align="right">
+			<td colspan="8">
+				<input type="button" onClick="javascript:history.go(-1);" value="Back">
 			</td>
 		</tr>
 
