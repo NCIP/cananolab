@@ -82,4 +82,14 @@
         <put name="calabContent" value="workflow.outputmenu.content"/>
         <put name="calabSidemenu" value="/workflow/sideMenuTree.jsp"/>
     </definition>    
+    
+    <!-- definitions for the mask aliquot page -->
+    <definition name="workflow.maskaliquot.content" extends="workflow.content.home">
+ 		<put name="workflowContent" value="/workflow/bodyMaskAliquot.jsp"/>
+    </definition>
+    
+    <definition name="workflow.maskaliquot" extends="calab.home">
+        <put name="calabContent" value="workflow.maskaliquot.content"/>
+        <put name="calabSidemenu" value="/workflow/sideMenuTree.jsp"/>
+    </definition>    
 </tiles-definitions>
