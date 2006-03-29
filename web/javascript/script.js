@@ -29,7 +29,7 @@ function get_tree()
 		d.add(2,1,'STE-1','javascript:gotoPage(\'assayActionMenu.jsp\')', '', '', '');
 		d.add(3,2,'run 1','javascript:void(0)');
 		d.add(4,3,'In','javascript:gotoPage(\'inputActionMenu.jsp\')');
-		d.add(5,4,'NCL6-7105-1','javascript:gotoPage(\'viewAliquot.jsp\')', '', '', '');
+		d.add(5,4,'NCL6-7105-1','javascript:gotoPage(\'viewAliquot.do?aliquotId=NCL6-7105-1\')', '', '', '');
 		d.add(6,4,'NCL6-7105-2','javascript:void(0)','','','');
 		d.add(7,3,'Out','javascript:gotoPage(\'outputActionMenu.jsp\')');
 		d.add(8,7,'NCL6.vaf','doc/astra_5.doc');
