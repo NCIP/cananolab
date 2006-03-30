@@ -16,7 +16,7 @@
 	</ul>
 </logic:messagesPresent>
 <blockquote>
-	<html:form action="/maskAliquot">
+	<html:form action="/preMaskAliquot">
 		<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 			<tbody>
 				<tr class="topBorder">
@@ -106,7 +106,6 @@
 				<td height="32">
 					<div align="right">
 						<html:hidden name="aliquot" property="aliquotId" />
-						<html:hidden property="maskType" value="aliquot" />
 						<html:submit value="Mask Aliquot" />
 					</div>
 				</td>
