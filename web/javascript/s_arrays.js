@@ -92,7 +92,7 @@ S:s_CSSTop	// STYLE Array to use for this menu
 //Workflow
 s_add(
 {
-N:'workflow',	// NAME
+N:'WORKFLOW',	// NAME
 LV:1,		// LEVEL (look at IMPORTANT NOTES 1 in the Manual)
 MinW:130,	// MINIMAL WIDTH
 T:143,		// TOP (look at IMPORTANT HOWTOS 6 in the Manual)
@@ -107,7 +107,7 @@ S:s_CSSTop	// STYLE Array to use for this menu
 //administration
 s_add(
 {
-N:'administration',	// NAME
+N:'ADMINISTRATION',	// NAME
 LV:1,		// LEVEL (look at IMPORTANT NOTES 1 in the Manual)
 MinW:130,	// MINIMAL WIDTH
 T:143,		// TOP (look at IMPORTANT HOWTOS 6 in the Manual)
@@ -124,7 +124,7 @@ S:s_CSSTop	// STYLE Array to use for this menu
 //Search
 s_add(
 {
-N:'search',	// NAME
+N:'SEARCH',	// NAME
 LV:1,		// LEVEL (look at IMPORTANT NOTES 1 in the Manual)
 MinW:130,	// MINIMAL WIDTH
 T:143,		// TOP (look at IMPORTANT HOWTOS 6 in the Manual)
