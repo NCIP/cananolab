@@ -25,7 +25,6 @@
 		<forward name="useAliquot" path="workflow.usealiquot" />
 		<forward name="maskAliquot" path="workflow.maskaliquot" />
 		<forward name="maskFile" path="workflow.maskfile" />
-
 	</global-forwards>
 	<action-mappings>
 		<action input="input" name="useAliquotForm" path="/useAliquot" scope="request" type="gov.nih.nci.calab.ui.workflow.UseAliquotAction">
@@ -44,5 +43,6 @@
 			<forward name="success" path="workflow.viewaliquot" />
 			<forward name="failure" path="workflow.message" />
 		</action>
+		<action name="maskAliquotForm" scope="request" path="/preMaskAliquot" type="org.apache.struts.actions.ForwardAction" parameter="workflow.maskaliquot" />
 	</action-mappings>
 </struts-config>
