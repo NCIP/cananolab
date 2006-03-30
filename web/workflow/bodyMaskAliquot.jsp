@@ -1,6 +1,8 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
+
+
 <html:form action="/maskAliquot">
 	<h2> &nbsp;<BR> &nbsp;Mask Aliquot </h2>
 	<logic:messagesPresent message="true">
@@ -23,7 +25,7 @@
 			</tr>
 			<tr>
 				<td class="formLabel">
-					<strong>Aliquot ID </strong>
+					<strong>Aliquot ID</strong> <bean:write name="maskAliquotForm" property="aliquotId"/>								
 				</td>
 				<td class="formField">
 					<DIV align="left"> &nbsp;<SPAN class="formField" align="left"><SPAN class="mainMenu"><SPAN class="formMessage"><STRONG>&nbsp;</STRONG>Are you sure you would you like to mask this aliquot?</SPAN></SPAN></SPAN>&nbsp;<SPAN class="formFieldWhite"> &nbsp;</SPAN> </DIV>
@@ -52,8 +54,8 @@
 						<tr>
 							<td>
 								<DIV align="left">
-									<input type="hidden" name="maskType" value="aliquot">
-									<input type="hidden" name="aliquotId" value="<bean:write name="aliquotId"/>">
+									<input type="hidden" name="maskType" value="aliquot">																
+									<html:hidden property="aliquotId"/>
 									<html:submit value="Yes" />
 									<INPUT type="button" value="No " onclick="javascript:history.go(-1)">
 								</DIV>
