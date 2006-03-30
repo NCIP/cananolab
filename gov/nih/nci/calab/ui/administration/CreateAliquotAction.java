@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: CreateAliquotAction.java,v 1.5 2006-03-28 23:01:33 pansu Exp $ */
+/* CVS $Id: CreateAliquotAction.java,v 1.6 2006-03-30 15:27:07 pansu Exp $ */
 
 import gov.nih.nci.calab.service.administration.ManageAliquotService;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
@@ -55,7 +55,7 @@ public class CreateAliquotAction extends AbstractBaseAction {
 				logger
 						.error("Session containing the aliquot matrix either is expired or doesn't exist");
 				ActionMessage error = new ActionMessage(
-						"errors.createAliquot.nomatrix");
+						"error.createAliquot.nomatrix");
 				messages.add("error", error);
 				saveMessages(request, messages);
 				forward = mapping.getInputForward();
