@@ -11,14 +11,22 @@
 		<put name="nciHeader" value="/html/nciHeader.html" />
 		<put name="calabHeader" value="/html/calabHeader.html" />
 		<put name="calabSidemenu" value="/html/calabBaseSidemenu.html" />
-		<put name="calabMainmenu" value="/html/calabMainmenu.html" />
+		<put name="calabMainmenu" value="/calabMainmenu.jsp" />
 		<put name="calabContent" value="/bodyLogin.jsp" />
 		<put name="calabFooter" value="/html/calabFooter.html" />
 		<put name="nciFooter" value="/html/nciFooter.html" />
+		<put name="menu" value="home"/>
+		<putList name="items">
+		   <item value="HOME" link="index.jsp"/>
+		   <item value="WORKFLOW" link=""/>
+		   <item value="ADMINISTRATION" link=""/>
+		   <item value="SEARCH" link=""/>
+		   <item value="HELP" link="onlineHelp.jsp"/>		 
+		</putList>
 	</definition>
 	<definition name="calab.error" extends="calab.home">
 		<put name="calabContent" value="/bodyMessage.jsp" />
-		<put name="menu" value="home"/>
+		<put name="menu" value="HOME"/>
 	</definition>
 	<definition name="calab.help" extends="calab.home">
 		<put name="calabContent" value="/help/bodyOnlineHelp.jsp" />
