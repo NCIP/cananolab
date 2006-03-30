@@ -26,11 +26,12 @@
 				}
 			}				
 			else {
-			actions.put("","");
+			actions=null;
 			}
 			pageContext.setAttribute("actions", actions);
 %>
 
+<logic:present name="actions">
 <table>
 	<tr>
 		<logic:iterate name="actions" id="action">
@@ -41,3 +42,4 @@
 		</logic:iterate>
     </tr> 
 </table>
+</logic:present>
