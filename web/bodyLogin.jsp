@@ -40,6 +40,15 @@
 								<tr>
 									<td class="sidebarTitle" height="20">
 										<html:errors/>
+	                                    <logic:messagesPresent message="true">
+		                                    <ul>
+			                                    <font color="red"> <html:messages id="msg" message="true">
+					                               <li>
+						                              <bean:write name="msg" />
+					                               </li>
+				                                   </html:messages> </font>
+		                                   </ul>
+	                                    </logic:messagesPresent>
 									</td>
 								</tr>
 								<tr>
@@ -75,7 +84,7 @@
 											</tr>
 											<tr>
 												<td colspan="2">
-													<a href="#" class="formMessage">Create an Account<br> </a><a href="#" class="formMessage"> Forgot your password? </a>
+													
 												</td>
 											</tr>
 										</table>
