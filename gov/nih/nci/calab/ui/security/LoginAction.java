@@ -10,6 +10,8 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
 
 import org.apache.struts.validator.DynaValidatorForm;
 
@@ -30,7 +32,10 @@ public class LoginAction extends AbstractBaseAction
 	public ActionForward executeTask(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		
 		ActionForward forward = null;
+		ActionMessages msgs = new ActionMessages();
+		HttpSession session = request.getSession();
 		try 
 		{
 			DynaValidatorForm theForm = (DynaValidatorForm) form;
@@ -46,7 +51,7 @@ public class LoginAction extends AbstractBaseAction
 			if (blnAuthenticated  == true)
 			{		    	
 			    //Invalidate the current session and create a new one.
-			    HttpSession session = request.getSession(false);
+			    session = request.getSession(false);
 			    session.invalidate();
 			    session = request.getSession(true);
 			    
@@ -58,11 +63,13 @@ public class LoginAction extends AbstractBaseAction
 			    session.setAttribute("user",securityBean);	
 				forward = mapping.findForward("success");
 			 }
-			
-			
-		} catch (Exception e) {
+			 
+		} catch (Exception e) 
+		{
+			ActionMessage error = new ActionMessage("error.login");
+	        msgs.add("error", error);
+	        saveMessages(request, msgs);
 			logger.error("Error Authenticating the user", e);
-			//Forward to the failed login page
 			forward = mapping.findForward("failure");			
 		}
 		return forward;
