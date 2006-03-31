@@ -62,7 +62,7 @@
 													</label>
 												</td>
 												<td class="formFieldLogin">
-												    <html:text property="password" size="14"/>
+												    <html:password property="password" size="14"/>
 												</td>
 											</tr>
 											<tr>
