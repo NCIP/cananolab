@@ -26,6 +26,9 @@
 								<option value="bp3">
 									In Vivo
 								</option>
+								<option value="bp4">
+									Physical Characterization Assays
+								</option>
 							</select> </span> &nbsp; &nbsp; &nbsp;Assay<span class="formFieldWhite"> <select name=select2>
 								<option value="baseline">
 									&nbsp;
@@ -58,7 +61,8 @@
 					<tr>
 						<td width="28%" height="39" valign="top">
 							<div align="center">
-								<span class="mainMenu"> <span class="formMessage">Aliquots</span> <select multiple size="4" name="list1" style="width:100">
+								<span class="mainMenu"> <span class="formMessage">Aliquots</span> 
+									<select multiple size="4" name="availableAliquotList" style="width:100">
 										<option value="12">
 											NCL6-7105-1
 										</option>
@@ -72,8 +76,8 @@
 							<table border="0" cellspacing="0" cellpadding="10">
 								<tr>
 									<td>
-										<img src="images/greaterthan.gif" width="20" height="17" onclick="">
-										<img src="images/lessthan.gif" width="20" height="17">
+										<img src="images/greaterthan.gif" width="20" onClick="moveItems(this.form.availableAliquotList,this.form.useAliquotList)" height="17" onclick="">
+										<img src="images/lessthan.gif" width="20" onClick="moveItems(this.form.useAliquotList,this.form.availableAliquotList)" height="17">
 									</td>
 								</tr>
 							</table>
@@ -81,7 +85,7 @@
 						<td width="62%" valign="top">
 							<div align="center">
 								<span class="formMessage">Use Aliquots</span>
-								<select multiple size="4" name="list1" style="width:100">
+								<select multiple size="4" name="useAliquotList" style="width:100">
 									<option value="12">
 										NCL6-7105-1
 									</option>
@@ -127,6 +131,26 @@
 							</option>
 						</select> </span>&nbsp; <input name="Submit222322" type="submit" onClick="javascript:location.href='uploadFiles.htm';" value="Upload Files"> </strong>
 			</td>
+		</tr>
+		<tr>
+			<td class="formLabelWhite">
+				<div align="left">
+					<strong>Run By</strong>
+				</div>
+			</td>
+			<td class="formFieldWhite">
+				<input type="text" value="John Doe" name="ranBy">
+			</td>	
+		</tr>
+		<tr>
+			<td class="formLabelWhite">
+				<div align="left">
+					<strong>Run Date</strong>
+				</div>
+			</td>
+			<td class="formFieldWhite">
+				<input type="text" value="4/3/06" name="runDate" >
+			</td>	
 		</tr>
 	</table>
 	<br>
