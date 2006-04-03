@@ -31,13 +31,26 @@ public class MaskAction extends AbstractBaseAction
 			throws Exception {
 		
 		ActionForward forward = null;
+		String strDescription = null;
 		String strMaskType=null;
 		String strId = null;
-		ActionMessage msg = null;
+		ActionMessages msgs = new ActionMessages();
 		try 
 		{
 			DynaValidatorForm theForm = (DynaValidatorForm) form;
+			
 			strMaskType = (String) theForm.get("maskType");
+			strDescription = (String) theForm.getString("description");
+			if (strDescription.equals(null))
+			{
+				ActionMessage error = new ActionMessage("error.mask");
+		        msgs.add("error", error);
+		        saveMessages(request, msgs);
+				logger.error("Error Masking" + strMaskType);
+				forward = mapping.findForward("failure");
+			}
+			
+			//Check mask type
 			if (strMaskType.equals("aliquot"))
 			{
 			    strId = (String) theForm.get("aliquotId");
@@ -46,12 +59,13 @@ public class MaskAction extends AbstractBaseAction
 			{
 				strId = (String) theForm.get("fileId");
 			}
-			String strDescription= (String) theForm.get("description");
 			
-           //Call MaskService to Mask Aliquot, Mask File, etc.
+            //1.Call MaskService to mask caLab component based on type(e.g., Aliquot, File, etc.)
+		    //2.Display message that masking was successful
 			MaskService maskservice = new MaskService();
 			maskservice.setMask(strMaskType, strId, strDescription);
-			ActionMessages msgs = new ActionMessages();
+			msgs = new ActionMessages();
+			ActionMessage msg = null;
 			if (strMaskType.equals("aliquot"))
 			{
 			       msg = new ActionMessage("message.maskAliquot", strId);
@@ -72,11 +86,11 @@ public class MaskAction extends AbstractBaseAction
 			
 			if (strMaskType.equals("aliquot"))
 			{
-				error = new ActionMessage("error.useAliquot", strId);
+				error = new ActionMessage("error.unexspectedMaskError", strId);
 			}
 			if (strMaskType.equals("file"))
 			{
-				error = new ActionMessage("error.useAliquot", strId);
+				error = new ActionMessage("error.unexspectedMaskError", strId);
 			}
 			errors.add("error", error);
 			saveMessages(request, errors);
