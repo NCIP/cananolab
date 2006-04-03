@@ -5,6 +5,7 @@
 
 <html:form action="/maskAliquot">
 	<h2> &nbsp;<BR> &nbsp;Mask Aliquot </h2>
+	<html:errors/>
 	<logic:messagesPresent message="true">
 		<ul>
 			<font color="red"> <html:messages id="msg" message="true" bundle="workflow">
@@ -38,7 +39,7 @@
 		<table width="60%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 			<tr class="topBorder">
 				<td class="dataTablePrimaryLabel">
-					<div align="justify"> &nbsp;Reason for mask:</div>
+					<div align="justify"> *&nbsp; &nbsp;Explain reason for mask:</div>
 				</td>
 			</tr>
 			<tr>
