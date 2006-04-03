@@ -3,6 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <html:form action="/maskFile">
 	<h2> &nbsp;<BR> &nbsp;Mask&nbsp;File </h2>
+	<html:errors/>
 	<logic:messagesPresent message="true">
 		<ul>
 			<font color="red"> <html:messages id="msg" message="true" bundle="workflow">
