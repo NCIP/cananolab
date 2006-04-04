@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.3 2006-03-28 23:03:31 pansu Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.4 2006-04-04 15:34:20 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
 import gov.nih.nci.calab.dto.security.SecurityBean;
@@ -43,6 +43,7 @@ public class InitSessionAction extends AbstractBaseAction {
 		HttpSession session = request.getSession();
 		ActionForward forward = null;
 		String forwardPage = null;
+
 		try {
 			DynaActionForm theForm = (DynaActionForm) form;
 			forwardPage = (String) theForm.get("forwardPage");
@@ -119,23 +120,32 @@ public class InitSessionAction extends AbstractBaseAction {
 	private void setCreateSampleSession(HttpSession session,
 			LookupService lookupService) {
 		ManageSampleService mangeSampleService = new ManageSampleService();
-		if (session.getAttribute("allSampleTypes") == null) {
+		// if values don't exist in the database or if no new samples created.
+		// call the service
+		if (session.getAttribute("allSampleTypes") == null
+				|| session.getAttribute("newSampleCreated") != null) {
 			List sampleTypes = lookupService.getAllSampleTypes();
 			session.setAttribute("allSampleTypes", sampleTypes);
+
 		}
-		if (session.getAttribute("allSampleSOPs") == null) {
+		if (session.getAttribute("allSampleSOPs") == null
+				|| session.getAttribute("newSampleCreated") != null) {
 			List sampleSOPs = mangeSampleService.getAllSampleSOPs();
 			session.setAttribute("allSampleSOPs", sampleSOPs);
 		}
-		if (session.getAttribute("sampleContainerInfo") == null) {
+		if (session.getAttribute("sampleContainerInfo") == null
+				|| session.getAttribute("newSampleCreated") != null) {
 			ContainerInfoBean containerInfo = lookupService
 					.getSampleContainerInfo();
 			session.setAttribute("sampleContainerInfo", containerInfo);
 		}
 		// clear the form in the session
-		if (session.getAttribute("createSampleForm") != null) {
+		if (session.getAttribute("createSampleForm") != null
+				|| session.getAttribute("newSampleCreated") != null) {
 			session.removeAttribute("createSampleForm");
 		}
+		// clear the new sample created flag
+		session.removeAttribute("newSampleCreated");
 	}
 
 	/**
@@ -148,19 +158,18 @@ public class InitSessionAction extends AbstractBaseAction {
 			LookupService lookupService) {
 		ManageAliquotService manageAliquotService = new ManageAliquotService();
 
-		if (session.getAttribute("allSampleIds") == null) {
+		if (session.getAttribute("allSampleIds") == null
+				|| session.getAttribute("newSampleCreated") != null) {
 			List sampleIds = lookupService.getAllSampleIds();
 			session.setAttribute("allSampleIds", sampleIds);
 		}
-		if (session.getAttribute("allLotIds") == null) {
-			List lotIds = lookupService.getAllLotIds();
-			session.setAttribute("allLotIds", lotIds);
-		}
-		if (session.getAttribute("allAliquotIds") == null) {
+		if (session.getAttribute("allAliquotIds") == null
+				|| session.getAttribute("newAliquotCreated") != null) {
 			List aliquotIds = lookupService.getAliquots();
 			session.setAttribute("allAliquotIds", aliquotIds);
 		}
-		if (session.getAttribute("aliquotContainerInfo") == null) {
+		if (session.getAttribute("aliquotContainerInfo") == null
+				|| session.getAttribute("newAliquotCreated") != null) {
 			ContainerInfoBean containerInfo = lookupService
 					.getAliquotContainerInfo();
 			session.setAttribute("aliquotContainerInfo", containerInfo);
@@ -176,6 +185,9 @@ public class InitSessionAction extends AbstractBaseAction {
 		if (session.getAttribute("aliquotMatrix") != null) {
 			session.removeAttribute("aliquotMatrix");
 		}
+		// clear new aliquot created flag and new sample created flag
+		session.removeAttribute("newAliquotCreated");
+		session.removeAttribute("newSampleCreated");
 	}
 
 	/**
@@ -206,40 +218,55 @@ public class InitSessionAction extends AbstractBaseAction {
 	private void setSearchSampleSession(HttpSession session,
 			LookupService lookupService) {
 		SearchSampleService searchSampleService = new SearchSampleService();
-		if (session.getAttribute("allSampleIds") == null) {
+		if (session.getAttribute("allSampleIds") == null
+				|| session.getAttribute("newSampleCreated") != null) {
 			List sampleIds = lookupService.getAllSampleIds();
 			session.setAttribute("allSampleIds", sampleIds);
 		}
-		if (session.getAttribute("allAliquotIds") == null) {
+		if (session.getAttribute("allAliquotIds") == null
+				|| session.getAttribute("newAliquotCreated") != null) {
 			List aliquotIds = lookupService.getAliquots();
 			session.setAttribute("allAliquotIds", aliquotIds);
 		}
-		if (session.getAttribute("allSampleTypes") == null) {
+		if (session.getAttribute("allSampleTypes") == null
+				|| session.getAttribute("newSampleCreated") != null) {
 			List sampleTypes = lookupService.getAllSampleTypes();
 			session.setAttribute("allSampleTypes", sampleTypes);
 		}
-		if (session.getAttribute("allSampleSources") == null) {
+		if (session.getAttribute("allSampleSources") == null
+				|| session.getAttribute("newSampleCreated") != null) {
 			List sampleSources = searchSampleService.getAllSampleSources();
 			session.setAttribute("allSampleSources", sampleSources);
 		}
-		if (session.getAttribute("allSourceSampleIds") == null) {
+		if (session.getAttribute("allSourceSampleIds") == null
+				|| session.getAttribute("newSampleCreated") != null) {
 			List sourceSampleIds = searchSampleService.getAllSourceSampleIds();
 			session.setAttribute("allSourceSampleIds", sourceSampleIds);
 		}
-		if (session.getAttribute("allSampleSubmitters") == null) {
+		if (session.getAttribute("allSampleSubmitters") == null
+				|| session.getAttribute("newSampleCreated") != null) {
 			List submitters = searchSampleService.getAllSampleSubmitters();
 			session.setAttribute("allSampleSubmitters", submitters);
 		}
-		if (session.getAttribute("sampleContainerInfo") == null) {
+		if (session.getAttribute("sampleContainerInfo") == null
+				|| session.getAttribute("newSampleCreated") != null) {
 			ContainerInfoBean containerInfo = lookupService
 					.getSampleContainerInfo();
 			session.setAttribute("sampleContainerInfo", containerInfo);
 		}
-		if (session.getAttribute("aliquotContainerInfo") == null) {
+		if (session.getAttribute("aliquotContainerInfo") == null
+				|| session.getAttribute("newAliquotCreated") != null) {
 			ContainerInfoBean containerInfo = lookupService
 					.getAliquotContainerInfo();
 			session.setAttribute("aliquotContainerInfo", containerInfo);
 		}
+		
+		// clear new aliquot created flag and new sample created flag
+		session.removeAttribute("newAliquotCreated");
+		session.removeAttribute("newSampleCreated");
+		
+		//clear session attributes created during search sample
+		session.removeAttribute("samples");
+		session.removeAttribute("aliquots");
 	}
-
 }
