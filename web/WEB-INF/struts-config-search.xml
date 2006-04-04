@@ -34,6 +34,8 @@
 		<form-bean name="viewSampleDetailForm" type="org.apache.struts.action.DynaActionForm">
 		    <form-property name="sampleNum" type="java.lang.String"/>
 		    <form-property name="containerNum" type="java.lang.String"/>
+		    <form-property name="aliquotNum" type="java.lang.String"/>
+		    <form-property name="showAliquot" type="java.lang.Boolean"/>
 		</form-bean>
 	</form-beans>
 	<global-forwards>
