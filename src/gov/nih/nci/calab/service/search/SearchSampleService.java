@@ -1,5 +1,6 @@
 package gov.nih.nci.calab.service.search;
 
+import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerBean;
 import gov.nih.nci.calab.dto.administration.SampleBean;
 import gov.nih.nci.calab.dto.administration.StorageLocation;
@@ -13,7 +14,7 @@ import java.util.List;
  * @author pansu
  * 
  */
-/* CVS $Id: SearchSampleService.java,v 1.2 2006-03-28 23:00:50 pansu Exp $ */
+/* CVS $Id: SearchSampleService.java,v 1.3 2006-04-04 15:33:11 pansu Exp $ */
 
 public class SearchSampleService {
 	/**
@@ -124,6 +125,39 @@ public class SearchSampleService {
 		samples.add(sample1);
 
 		return samples;
+	}
+
+	/**
+	 * 
+	 * @param aliquotId
+	 * @param sampleType
+	 * @param sampleSource
+	 * @param sourceSampleId
+	 * @param dateAccessionedBegin
+	 * @param dateAccessionedEnd
+	 * @param sampleSubmitter
+	 * @param storageLocation
+	 * @return
+	 */
+	public List<AliquotBean> searchAliquotsByAliquotId(String aliquotId,
+			String sampleType, String sampleSource, String sourceSampleId,
+			Date dateAccessionedBegin, Date dateAccessionedEnd,
+			String sampleSubmitter, StorageLocation storageLocation) {
+		List<AliquotBean> aliquots = new ArrayList<AliquotBean>();
+
+		AliquotBean aliquot = new AliquotBean(aliquotId, new ContainerBean(
+				"Tube", "", "18", "mg", "1.8", "mg/ml", "10", "ml", "solvent",
+				"safety precautions", "storageCondition", new StorageLocation(
+						null, "205", "1", "1", null, "A"), "comments"),
+				"solubilized", "Jane Doe", "10/21/2005", new SampleBean(
+						"NCL-6", sampleType, "SOP", "description",
+						sampleSource, sourceSampleId, "10/21/2005",
+						"solubility", "1", "lot description", "1", "comments",
+						"Jane Doe", "10/21/2005"));
+
+		aliquots.add(aliquot);
+
+		return aliquots;
 	}
 
 	/**
