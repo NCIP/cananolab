@@ -1,13 +1,17 @@
 package gov.nih.nci.calab.service.administration;
 
+import gov.nih.nci.calab.db.DataAccessProxy;
+import gov.nih.nci.calab.db.IDataAccess;
+import gov.nih.nci.calab.domain.Aliquot;
 import gov.nih.nci.calab.dto.administration.ContainerBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
 import gov.nih.nci.calab.dto.administration.SampleBean;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-/* CVS $Id: ManageSampleService.java,v 1.9 2006-04-04 15:32:54 pansu Exp $ */
+/* CVS $Id: ManageSampleService.java,v 1.10 2006-04-04 20:02:49 zengje Exp $ */
 public class ManageSampleService {
  
   public List<String> getAllSampleSOPs() {
@@ -23,8 +27,25 @@ public class ManageSampleService {
    */
   public String getDefaultSampleIdPrefix() {
 	  //tmp code to be replaced
-	  String sampleIdPrefix="NCL-6";
-	  return sampleIdPrefix;
+	    String sampleIdPrefix="hardcode-6";
+		try {
+			IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.TOOLKITAPI);
+			ida.open();
+			String hqlString = "select max(sample.sampleSequenceId) from Sample sample";
+			List results = ida.query(hqlString, Aliquot.class.getName());
+			for (Iterator iter=results.iterator(); iter.hasNext();)
+			{
+				Object obj = iter.next();
+				System.out.println("ManageSampleService.getDefaultSampleIdPrefix(): return object type = "
+									+ obj.getClass().getName());
+				sampleIdPrefix = "NCL-" + obj;
+			}
+			ida.close();			
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+
+	    return sampleIdPrefix;
   }
  
   /**
