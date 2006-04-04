@@ -17,7 +17,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: AbstractBaseAction.java,v 1.4 2006-03-21 17:32:03 pansu Exp $ */
+/* CVS $Id: AbstractBaseAction.java,v 1.5 2006-04-04 19:48:28 pansu Exp $ */
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,6 +27,8 @@ import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
 
 public abstract class AbstractBaseAction extends Action {
 	private static Logger logger = Logger.getLogger(AbstractBaseAction.class);
@@ -36,6 +38,7 @@ public abstract class AbstractBaseAction extends Action {
 			throws Exception {
 
 		ActionForward forward = null;
+		ActionMessages msgs = new ActionMessages();
 		try {
 			//TODO fill in the common operations */
 			if (!loginRequired() ||
@@ -44,11 +47,16 @@ public abstract class AbstractBaseAction extends Action {
 			}
 			else {
 				logger.debug("an attempt to access the page without authentication.");
+				ActionMessage error=new ActionMessage("error.login.required");
+				msgs.add("error", error);
+				saveMessages(request, msgs);
 				forward = mapping.findForward("login");
 			}
 		} catch (Throwable t) {
 			logger.error("Caught System Exception", t);		
-			//TODO add error handling details here */
+			ActionMessage error=new ActionMessage("error.system");
+			msgs.add("error", error);
+			saveMessages(request, msgs);
 			forward = mapping.findForward("error");
 		}
 		return forward;
