@@ -6,8 +6,9 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchSampleAction.java,v 1.1 2006-03-28 23:03:44 pansu Exp $ */
+/* CVS $Id: SearchSampleAction.java,v 1.2 2006-04-04 15:34:43 pansu Exp $ */
 
+import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.SampleBean;
 import gov.nih.nci.calab.dto.administration.StorageLocation;
 import gov.nih.nci.calab.service.search.SearchSampleService;
@@ -39,6 +40,7 @@ public class SearchSampleAction extends AbstractBaseAction {
 		ActionForward forward = null;
 		ActionMessages msgs = new ActionMessages();
 		HttpSession session = request.getSession();
+
 		try {
 			DynaValidatorForm theForm = (DynaValidatorForm) form;
 			String sampleId = (String) theForm.get("sampleId");
@@ -51,6 +53,14 @@ public class SearchSampleAction extends AbstractBaseAction {
 			String dateAccessionedEndStr = (String) theForm
 					.get("dateAccessionedEnd");
 
+			// search base on aliquotId if aliquotId is present
+			// otherwise search base sampleId
+			boolean showAliquot = false;
+			if (aliquotId.length() > 0) {
+				showAliquot = true;				
+			}
+			request.setAttribute("showAliquot", showAliquot);
+		
 			Date dateAccessionedBegin = dateAccessionedBeginStr.length() == 0 ? null
 					: StringUtils.convertToDate(dateAccessionedBeginStr,
 							"MM/dd/yyyy");
@@ -63,34 +73,39 @@ public class SearchSampleAction extends AbstractBaseAction {
 
 			// pass the parameters to the searchSampleService
 			SearchSampleService searchSampleService = new SearchSampleService();
-			// search base on aliquotId if aliquotId is present
-			// otherwise search base sampleId
+
 			List<SampleBean> samples = null;
-			if (sampleId.length() == 0 && aliquotId.length() == 0) {
-				samples = searchSampleService.searchSamples(sampleType,
-						sampleSource, sourceSampleId, dateAccessionedBegin,
-						dateAccessionedEnd, sampleSubmitter, storageLocation);
-			}
-			else if (aliquotId.length() > 0) {
-				samples = searchSampleService.searchSamplesByAliquotId(
+			List<AliquotBean> aliquots = null;
+
+			if (showAliquot) {
+				aliquots = searchSampleService.searchAliquotsByAliquotId(
 						aliquotId, sampleType, sampleSource, sourceSampleId,
 						dateAccessionedBegin, dateAccessionedEnd,
-						sampleSubmitter, storageLocation);
+						sampleSubmitter, storageLocation);				
 			} else if (sampleId.length() >= 0) {
 				samples = searchSampleService.searchSamplesBySampleId(sampleId,
 						sampleType, sampleSource, sourceSampleId,
 						dateAccessionedBegin, dateAccessionedEnd,
-						sampleSubmitter, storageLocation);
+						sampleSubmitter, storageLocation);			
+			} else {
+				samples = searchSampleService.searchSamples(sampleType,
+						sampleSource, sourceSampleId, dateAccessionedBegin,
+						dateAccessionedEnd, sampleSubmitter, storageLocation);				
 			}
 
-			if (samples == null || samples.isEmpty()) {
+			if (!showAliquot && (samples == null || samples.isEmpty())
+					|| showAliquot && (aliquots == null || aliquots.isEmpty())) {
 				ActionMessage msg = new ActionMessage(
 						"message.searchSample.noResult");
 				msgs.add("message", msg);
 				saveMessages(request, msgs);
 				forward = mapping.getInputForward();
 			} else {
-				session.setAttribute("samples", samples);
+				if (!showAliquot) {
+					session.setAttribute("samples", samples);
+				} else {
+					session.setAttribute("aliquots", aliquots);
+				}
 				forward = mapping.findForward("success");
 			}
 		} catch (Exception e) {
