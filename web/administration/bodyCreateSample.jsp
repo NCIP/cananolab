@@ -81,14 +81,19 @@ function refreshContainers() {
 				<tr>
 					<td class="formLabel">
 						<div align="justify">
-							<strong>Lot ID*&nbsp; <html:text property="lotId" size="5" /> &nbsp; &nbsp; &nbsp; Lot Description <span class="formFieldWhite"><html:text property="lotDescription" size="20" /></span> &nbsp; &nbsp; &nbsp; Number of Containers* <span
-								class="formFieldWhite"> <html:text property="numberOfContainers" size="2" /> &nbsp; <input type="button" value="Update Containers" onclick="javascript:refreshContainers();"></span></strong>
-
+							<strong>Lot ID*&nbsp; <html:text property="lotId" size="5" /> &nbsp; &nbsp; &nbsp; Lot Description <span class="formFieldWhite"><html:text property="lotDescription" size="20" /></span> &nbsp; &nbsp; &nbsp; 
 						</div>
 					</td>
 				</tr>
 				<tr>
 					<td class="formLabelWhite">
+						<div align="justify">
+							<strong>Number of Containers*<span class="formFieldWhite"> &nbsp; <html:text property="numberOfContainers" size="2" /> &nbsp; <input type="button" value="Update Containers" onclick="javascript:refreshContainers();"></span></strong>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="formLabel">
 						<div align="left">
 							<strong>General Comments</strong>
 							<br>
@@ -194,7 +199,10 @@ function refreshContainers() {
 			<tbody>
 				<tr>
 					<td width="30%" class="formMessage">
-						Accessioned by: <bean:write name="creator"/> Accession Date: <bean:write name="creationDate"/>
+						Accessioned by:
+						<bean:write name="creator" />
+						Accession Date:
+						<bean:write name="creationDate" />
 
 						<table height="32" cellspacing="0" cellpadding="4" width="200" align="right" border="0">
 							<tbody>
