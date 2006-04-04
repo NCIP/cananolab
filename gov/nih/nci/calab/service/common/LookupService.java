@@ -1,8 +1,13 @@
 package gov.nih.nci.calab.service.common;
 
+import gov.nih.nci.calab.db.DataAccessProxy;
+import gov.nih.nci.calab.db.IDataAccess;
+import gov.nih.nci.calab.domain.Aliquot;
+import gov.nih.nci.calab.domain.Sample;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -12,7 +17,7 @@ import java.util.List;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.7 2006-03-28 23:00:36 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.8 2006-04-04 20:03:14 zengje Exp $ */
 
 public class LookupService {
 
@@ -31,6 +36,23 @@ public class LookupService {
 		aliquotIds.add("NCL-3-1234-1");
 		aliquotIds.add("NCL-6-1234");
 		aliquotIds.add("NCL-6-1235");
+		
+		try {
+			IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.TOOLKITAPI);
+			ida.open();
+			String hqlString = "select aliquot.name from Aliquot aliquot";
+			List results = ida.query(hqlString, Aliquot.class.getName());
+			for (Iterator iter=results.iterator(); iter.hasNext();)
+			{
+				Object obj = iter.next();
+				System.out.println("sample name type = " + obj.getClass().getName());
+				aliquotIds.add((String)obj);
+			}
+			ida.close();			
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+
 
 		return aliquotIds;
 	}
@@ -138,10 +160,27 @@ public class LookupService {
 	 */
 	public List<String> getAllSampleIds() {
 		// tmp code to be replaced
-		List<String> sampleIds = new ArrayList();
+		List<String> sampleIds = new ArrayList<String>();
 		sampleIds.add("NCL-6");
 		sampleIds.add("NCL-3");
 		// end of tmp code
+		
+		// Sample Name?
+		try {
+			IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.TOOLKITAPI);
+			ida.open();
+			String hqlString = "select sample.name from Sample sample";
+			List results = ida.query(hqlString, Sample.class.getName());
+			for (Iterator iter=results.iterator(); iter.hasNext();)
+			{
+				Object obj = iter.next();
+				System.out.println("sample name type = " + obj.getClass().getName());
+				sampleIds.add((String)obj);
+			}
+			ida.close();			
+		}catch (Exception e){
+			e.printStackTrace();
+		}
 
 		return sampleIds;
 	}
@@ -152,7 +191,7 @@ public class LookupService {
 	 */
 	public List<String> getAllLotIds() {
 		// tmp code to be replaced
-		List<String> lotIds = new ArrayList();
+		List<String> lotIds = new ArrayList<String>();
 		lotIds.add("NCL-6-1234");
 		lotIds.add("NCL-3-2345");
 		// end of tmp code
@@ -171,7 +210,7 @@ public class LookupService {
 			// if the return from DB are null or size zero
 			// read from the xml
 
-		List assayTypes = new ArrayList();
+		List<String> assayTypes = new ArrayList<String>();
 		assayTypes.add("Pre-screening Assay");
 		assayTypes.add("In Vitro");
 		assayTypes.add("In Vivo");
