@@ -9,7 +9,7 @@ package gov.nih.nci.calab.dto.administration;
  * 
  */
 
-/* CVS $Id: SampleBean.java,v 1.2 2006-03-28 22:59:36 pansu Exp $ */
+/* CVS $Id: SampleBean.java,v 1.3 2006-04-04 15:31:45 pansu Exp $ */
 public class SampleBean {
 	private String sampleId;
 
@@ -41,6 +41,34 @@ public class SampleBean {
 
 	private ContainerBean[] containers;
 
+	public SampleBean() {
+		
+	}
+	
+	public SampleBean(String sampleId, String sampleType, String sampleSOP,
+			String sampleDescription, String sampleSource,
+			String sourceSampleId, String dateReceived, String solubility,
+			String lotId, String lotDescription, String numberOfContainers,
+			String generalComments, String sampleSubmitter,
+			String accessionDate) {
+		super();
+		// TODO Auto-generated constructor stub
+		this.sampleId = sampleId;
+		this.sampleType = sampleType;
+		this.sampleSOP = sampleSOP;
+		this.sampleDescription = sampleDescription;
+		this.sampleSource = sampleSource;
+		this.sourceSampleId = sourceSampleId;
+		this.dateReceived = dateReceived;
+		this.lotId = lotId;
+		this.lotDescription = lotDescription;
+		this.solubility = solubility;
+		this.numberOfContainers = numberOfContainers;
+		this.generalComments = generalComments;
+		this.sampleSubmitter = sampleSubmitter;
+		this.accessionDate=accessionDate;
+	}
+	
 	public SampleBean(String sampleId, String sampleType, String sampleSOP,
 			String sampleDescription, String sampleSource,
 			String sourceSampleId, String dateReceived, String solubility,
