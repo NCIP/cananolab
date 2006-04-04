@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: CreateAliquotAction.java,v 1.6 2006-03-30 15:27:07 pansu Exp $ */
+/* CVS $Id: CreateAliquotAction.java,v 1.7 2006-04-04 15:33:34 pansu Exp $ */
 
 import gov.nih.nci.calab.service.administration.ManageAliquotService;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
@@ -50,6 +50,11 @@ public class CreateAliquotAction extends AbstractBaseAction {
 				ActionMessage msg = new ActionMessage("message.createAliquot");
 				msgs.add("message", msg);
 				saveMessages(request, msgs);
+				
+				//set a flag to indicate that new aliquots have been created so session can 
+				//be refreshed in initSession.do
+				session.setAttribute("newAliquotsCreated", "yes");
+				
 				forward = mapping.findForward("success");
 			} else {
 				logger
