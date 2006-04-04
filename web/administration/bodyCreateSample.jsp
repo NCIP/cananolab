@@ -12,12 +12,6 @@ function refreshContainers() {
   document.createSampleForm.submit();
 }
 
-function openLink() {
-  var url=document.createSampleForm.sampleSOP.value;
-  if (url!='') {
-    openWindow(url, 'sampleSOP', 600, 400);
-  }
-}
 </script>
 
 <html:form action="/createSample">
@@ -55,8 +49,7 @@ function openLink() {
 									</html:select> &nbsp; &nbsp; SOP <html:select property="sampleSOP">
 										<option value=""></option>
 										<html:options name="allSampleSOPs" />
-									</html:select></span></strong> &nbsp; &nbsp;
-							<input type="button" value="view SOP" onclick="javascript:openLink()">
+									</html:select></span></strong>
 						</div>
 					</td>
 				</tr>
