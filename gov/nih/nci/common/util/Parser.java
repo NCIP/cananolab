@@ -68,7 +68,6 @@ public Hashtable elemAttr = new Hashtable();
 public Parser(String fileName)
 {
 	SAXBuilder builder = new SAXBuilder();
-	System.out.println("Parser.Parser(): fileName = " + fileName);
 	try {
 		 doc = builder.build(Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName));
 	}
@@ -76,8 +75,7 @@ public Parser(String fileName)
 	    log.error("JDOMException: " + e.getMessage());
 	    }
 	catch (IOException e) {
-		e.printStackTrace();
-	    log.error("IOException: " + e.getMessage());
+	    log.error("IOException: " + fileName + " does not exist.");
 	    }
 
 }
