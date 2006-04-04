@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="gov.nih.nci.calab.domain">
+  <class name="Source" table="Source" lazy="true" polymorphism="explicit">
+    <cache usage="read-write" />
+    <id name="id" type="java.lang.Long" column="SOURCE_PK_ID">
+      <generator class="assigned" />
+    </id>
+    <property name="organizationName" type="java.lang.String" column="ORGANIZATION_NAME" />
+    <property name="address" type="java.lang.String" column="ADDRESS" />
+    <property name="city" type="java.lang.String" column="CITY" />
+    <property name="state" type="java.lang.String" column="STATE" />
+    <property name="country" type="java.lang.String" column="COUNTRY" />
+    <set name="contactCollection" table="Source_contact" lazy="true">
+      <cache usage="read-write" />
+      <key column="SOURCE_PK_ID" />
+      <many-to-many class="gov.nih.nci.calab.domain.Contact" column="CONTACT_PK_ID" />
+    </set>
+    <set name="sampleCollection" lazy="true" inverse="true">
+      <cache usage="read-write" />
+      <key column="SOURCE_PK_ID" />
+      <one-to-many class="gov.nih.nci.calab.domain.Sample" />
+    </set>
+  </class>
+</hibernate-mapping>
+

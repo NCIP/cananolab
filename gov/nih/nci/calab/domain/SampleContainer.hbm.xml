@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="gov.nih.nci.calab.domain">
+  <class name="SampleContainer" table="Sample_Container" lazy="true" polymorphism="explicit" discriminator-value="false">
+    <cache usage="read-write" />
+    <id name="id" type="java.lang.Long" column="SAMPLE_CONTAINER_PK_ID">
+      <generator class="assigned" />
+    </id>
+    <discriminator column="IS_DERIVED" type="string"></discriminator>
+    <property name="quantity" type="java.lang.Float" column="QUANTITY" />
+    <property name="concentration" type="java.lang.Float" column="CONCENTRATION" />
+    <property name="volume" type="java.lang.Float" column="VOLUME" />
+    <property name="diluentsSolvent" type="java.lang.String" column="DILUENTS_SOLVENT" />
+    <property name="safetyPrecaution" type="java.lang.String" column="SAFETY_PRECAUTIONS" />
+    <property name="storageCondition" type="java.lang.String" column="STORAGE_CONDITIONS" />
+    <property name="comments" type="java.lang.String" column="COMMENTS" />
+    <property name="quantityUnit" type="java.lang.String" column="QUANTITY_UNIT" />
+    <property name="concentrationUnit" type="java.lang.String" column="CONCENTRATION_UNIT" />
+    <property name="volumeUnit" type="java.lang.String" column="VOLUME_UNIT" />
+    <property name="createdBy" type="java.lang.String" column="CREATED_BY" />
+    <property name="createdDate" type="java.util.Date" column="CREATED_DATE" />
+    <property name="barcode" type="java.lang.String" column="BARCODE" />
+    <property name="containerType" type="java.lang.String" column="CONTAINER_TYPE" />
+    <property name="createdMethod" type="java.lang.String" column="CREATED_METHOD" />
+    <many-to-one name="storage" class="gov.nih.nci.calab.domain.Storage" column="STORAGE_PK_ID" lazy="true" />
+    <set name="parentSampleContainerCollection" table="Derived_sample_container" lazy="true">
+      <cache usage="read-write" />
+      <key column="PARENT_SAMPLE_CONTAINER_ID" />
+      <many-to-many class="gov.nih.nci.calab.domain.SampleContainer" column="SAMPLE_CONTAINER_PK_ID" />
+    </set>
+    <set name="childSampleContainerCollection" table="Derived_sample_container" lazy="true" inverse="true">
+      <cache usage="read-write" />
+      <key column="SAMPLE_CONTAINER_PK_ID" />
+      <many-to-many class="gov.nih.nci.calab.domain.SampleContainer" column="PARENT_SAMPLE_CONTAINER_ID" />
+    </set>
+    <set name="runSampleContainerCollection" lazy="true" inverse="true">
+      <cache usage="read-write" />
+      <key column="SAMPLE_CONTAINER_PK_ID" />
+      <one-to-many class="gov.nih.nci.calab.domain.RunSampleContainer" />
+    </set>
+    <many-to-one name="sample" class="gov.nih.nci.calab.domain.Sample" column="SAMPLE_PK_ID" lazy="true" />
+    <subclass name="gov.nih.nci.calab.domain.Aliquot" discriminator-value="true">
+           <property name="name" type="java.lang.String" column="NAME" />
+    </subclass>
+  </class>
+</hibernate-mapping>
+
