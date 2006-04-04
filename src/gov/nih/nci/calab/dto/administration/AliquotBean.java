@@ -8,7 +8,7 @@ package gov.nih.nci.calab.dto.administration;
  * 
  */
 
-/* CVS $Id: AliquotBean.java,v 1.3 2006-03-28 22:58:17 pansu Exp $ */
+/* CVS $Id: AliquotBean.java,v 1.4 2006-04-04 15:31:29 pansu Exp $ */
 
 public class AliquotBean {
 	private String aliquotId;
@@ -21,8 +21,11 @@ public class AliquotBean {
 	
 	private String creationDate;
 
+	private SampleBean sample;
+	
 	public AliquotBean() {
 		container=new ContainerBean();
+		sample=new SampleBean();
 	}
 	
 	public AliquotBean(String aliquotId, ContainerBean container,
@@ -33,6 +36,13 @@ public class AliquotBean {
 		this.howCreated = howCreated;
 		this.creator=creator;
 		this.creationDate=creationDate;
+	}
+	
+	public AliquotBean(String aliquotId, ContainerBean container,
+			String howCreated, String creator, String creationDate, SampleBean sample) {
+		// TODO Auto-generated constructor stub
+		this(aliquotId, container, howCreated, creator, creationDate);
+		this.sample=sample;
 	}
 
 	public String getAliquotId() {
@@ -73,6 +83,14 @@ public class AliquotBean {
 
 	public void setCreator(String creator) {
 		this.creator = creator;
+	}
+
+	public SampleBean getSample() {
+		return sample;
+	}
+
+	public void setSample(SampleBean sample) {
+		this.sample = sample;
 	}
 
 }
