@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="gov.nih.nci.calab.domain">
+  <class name="RunSampleContainer" table="Run_Sample_Container" lazy="true" polymorphism="explicit">
+    <cache usage="read-write" />
+    <id name="id" type="java.lang.Long" column="RUN_SAMPLE_CONTAINER_PK_ID">
+      <generator class="assigned" />
+    </id>
+    <property name="comments" type="java.lang.String" column="COMMENTS" />
+    <property name="createdBy" type="java.lang.String" column="CREATED_BY" />
+    <property name="createdDate" type="java.util.Date" column="CREATED_DATE" />
+    <many-to-one name="sampleContainer" class="gov.nih.nci.calab.domain.SampleContainer" column="SAMPLE_CONTAINER_PK_ID" lazy="true" />
+    <many-to-one name="run" class="gov.nih.nci.calab.domain.Run" column="RUN_PK_ID" lazy="true" />
+  </class>
+</hibernate-mapping>
+
