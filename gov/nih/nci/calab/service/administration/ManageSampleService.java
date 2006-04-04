@@ -7,13 +7,13 @@ import gov.nih.nci.calab.dto.administration.SampleBean;
 import java.util.ArrayList;
 import java.util.List;
 
-/* CVS $Id: ManageSampleService.java,v 1.8 2006-03-24 21:14:19 pansu Exp $ */
+/* CVS $Id: ManageSampleService.java,v 1.9 2006-04-04 15:32:54 pansu Exp $ */
 public class ManageSampleService {
  
   public List<String> getAllSampleSOPs() {
 	  List<String> sampleSOPs=new ArrayList();
-	  sampleSOPs.add("http://www.cnn.com");
-	  sampleSOPs.add("http://www.google.com");
+	  sampleSOPs.add("Original");
+	  sampleSOPs.add("Testing");
 	  return sampleSOPs;
   }
 
