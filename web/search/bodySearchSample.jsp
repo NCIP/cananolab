@@ -19,7 +19,7 @@
 		</ul>
 	</logic:messagesPresent>
 	<blockquote>
-		<TABLE WIDTH=90% BORDER=0 align="center" CELLPADDING=1 CELLSPACING=0>
+		<TABLE WIDTH=100% BORDER=0 align="center" CELLPADDING=1 CELLSPACING=0>
 			<TR>
 				<td width="64%" class="dataTablePrimaryLabel">
 					Search
@@ -31,7 +31,7 @@
 				</td>
 			</TR>
 		</TABLE>
-		<table width="90%" border="0" align="center" cellpadding="3" cellspacing="0" summary="">
+		<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" summary="">
 			<tr>
 				<td colspan="2" class="formLabel">
 					<div align="center">
@@ -123,14 +123,14 @@
 			</tr>
 		</table>
 		<br>
-		<table width="82%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
+		<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 			<tr>
-				<td width="30%">
+				<td>
 					<span class="formMessage"> </span>
 					<br>
-					<table width="498" height="32" border="0" align="right" cellpadding="4" cellspacing="0">
+					<table border="0" align="right" cellpadding="4" cellspacing="0">
 						<tr>
-							<td width="490" height="32">
+							<td>
 								<div align="right">
 									<html:reset />
 									<html:submit value="Search" />
