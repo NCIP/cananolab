@@ -1,5 +1,6 @@
 package gov.nih.nci.calab.db;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -95,7 +96,8 @@ public class HibernateDataAccess implements IDataAccess {
     
     public Object createObject(Object obj) throws Exception
     {
-    	throw new Exception ("Not supported yet");
+    	return session.save(obj);
+//    	throw new Exception ("Not supported yet");
     }
     
     public Object updateObject(Object obj) throws Exception
@@ -134,4 +136,8 @@ public class HibernateDataAccess implements IDataAccess {
         return session.getNamedQuery(name);
     }
 
+    public Object load(Class klass, Serializable id) throws Exception
+    {
+    	return session.load(klass, id);
+    }
 }

@@ -6,6 +6,7 @@
  */
 package gov.nih.nci.calab.db;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -94,6 +95,11 @@ public class DataAccessProxy implements IDataAccess {
 //	{
 //		return access.getObjects(obj);
 //	}
+	
+	public Object load(Class klass, Serializable id) throws Exception
+	{
+		return access.load(klass, id);
+	}
 	
 	public IDataAccess getInstance(int type) throws Exception {
 		switch (type) {
