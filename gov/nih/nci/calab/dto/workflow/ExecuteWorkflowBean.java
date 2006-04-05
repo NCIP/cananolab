@@ -25,7 +25,7 @@ public class ExecuteWorkflowBean {
 
 	private String runBy;
 
-	private String[] aliquotIds;
+	private List<String> aliquotIds;
 
 	private String fileSubmissionDate;
 
@@ -41,7 +41,7 @@ public class ExecuteWorkflowBean {
 			String runName,
 			String runDate,
 			String runBy,
-			String[] aliquotIds,
+			List <String> aliquotIds,
 			String fileSubmissionDate,
 			String fileSubmitter,
 			String fileMaskStatus) 
@@ -116,11 +116,11 @@ public class ExecuteWorkflowBean {
 	{
 		this.runBy=runBy;	
 	}
-	public String[] getAliquotIds()
+	public List<String> getAliquotIds()
 	{
 		return aliquotIds;
 	}
-	public void setAliquotIds(String aliquotIds[])	
+	public void setAliquotIds(List<String> aliquotIds)	
 	{
 		this.aliquotIds=aliquotIds;	
 	}
