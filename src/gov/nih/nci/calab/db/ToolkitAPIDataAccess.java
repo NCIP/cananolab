@@ -2,8 +2,8 @@ package gov.nih.nci.calab.db;
 
 import gov.nih.nci.common.util.HQLCriteria;
 import gov.nih.nci.system.applicationservice.ApplicationService;
-import gov.nih.nci.system.applicationservice.ApplicationServiceProvider;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
@@ -85,5 +85,9 @@ public class ToolkitAPIDataAccess implements IDataAccess {
 		appService.removeObject(obj);
 	}
 	
-//	public List getObjects()
+
+	public Object load(Class klass, Serializable id) throws Exception
+	{
+		throw new Exception( "Not supported yet");
+	}
 }
