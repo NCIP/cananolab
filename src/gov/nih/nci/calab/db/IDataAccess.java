@@ -6,6 +6,7 @@
  */
 package gov.nih.nci.calab.db;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -33,4 +34,5 @@ public interface IDataAccess {
 	public abstract Object updateObject(Object obj) throws Exception;
 	public abstract void removeObject(Object obj) throws Exception;
 //	public abstract List getObjects(Object obj) throws Exception;
+	public abstract Object load(Class klass, Serializable id) throws Exception;
 }
