@@ -3,12 +3,18 @@ package gov.nih.nci.calab.service.common;
 import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
 import gov.nih.nci.calab.domain.Aliquot;
+import gov.nih.nci.calab.domain.AssayType;
+import gov.nih.nci.calab.domain.MeasureUnit;
 import gov.nih.nci.calab.domain.Sample;
+import gov.nih.nci.calab.domain.SampleContainer;
+import gov.nih.nci.calab.domain.SampleType;
+import gov.nih.nci.calab.domain.StorageElement;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+
+import org.apache.log4j.Logger;
 
 /**
  * The service to return prepopulated data that are shared across different
@@ -17,141 +23,199 @@ import java.util.List;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.8 2006-04-04 20:03:14 zengje Exp $ */
+/* CVS $Id: LookupService.java,v 1.9 2006-04-06 19:52:46 pansu Exp $ */
 
 public class LookupService {
+	private static Logger logger = Logger.getLogger(LookupService.class);
 
 	/**
-	 * Retriving all unmasked aliquot in the system, for views use aliquot,
-	 * create run, create aliquot, search sample.
+	 * Retriving all aliquot in the system, for views create run, search sample.
 	 * 
 	 * @return a list of aliquot id
 	 */
 	public List<String> getAliquots() {
-		// Need detail....
-
-		List aliquotIds = new ArrayList();
-		aliquotIds.add("NCL-3-2345");
-		aliquotIds.add("NCL-3-2345-0");
-		aliquotIds.add("NCL-3-1234-1");
-		aliquotIds.add("NCL-6-1234");
-		aliquotIds.add("NCL-6-1235");
-		
+		List<String> aliquotIds = new ArrayList<String>();
 		try {
-			IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.TOOLKITAPI);
+			IDataAccess ida = (new DataAccessProxy())
+					.getInstance(IDataAccess.TOOLKITAPI);
 			ida.open();
 			String hqlString = "select aliquot.name from Aliquot aliquot";
 			List results = ida.query(hqlString, Aliquot.class.getName());
-			for (Iterator iter=results.iterator(); iter.hasNext();)
-			{
-				Object obj = iter.next();
-				System.out.println("sample name type = " + obj.getClass().getName());
-				aliquotIds.add((String)obj);
+			for (Object obj : results) {
+				aliquotIds.add((String) obj);
 			}
-			ida.close();			
-		}catch (Exception e){
-			e.printStackTrace();
+			ida.close();
+		} catch (Exception e) {
+			logger.error("Error in retrieving all aliquot IDs", e);
+			throw new RuntimeException("Error in retrieving all aliquot IDs");
 		}
-
-
 		return aliquotIds;
 	}
 
 	/**
-	 * Get all the SampleType
+	 * Retrieving all unmasked aliquots for views use aliquot and create
+	 * aliquot.
+	 * 
+	 * @return a list of unmasked aliquot IDs.
+	 */
+	public List<String> getUnmaskedAliquots() {
+		List<String> aliquotIds = null;
+		try {
+			IDataAccess ida = (new DataAccessProxy())
+					.getInstance(IDataAccess.TOOLKITAPI);
+			ida.open();
+			//String hqlString = "select aliquot.name from Aliquot aliquot where aliquot.dataStatus.status!='masked'";
+			String hqlString = "select aliquot.name from Aliquot aliquot";
+			List results = ida.query(hqlString, Aliquot.class.getName());
+			for (Object obj : results) {
+				aliquotIds.add((String) obj);
+			}
+			ida.close();
+		} catch (Exception e) {
+			logger.error("Error in retrieving all unmasked aliquot IDs", e);
+			throw new RuntimeException(
+					"Error in retrieving all umasked aliquot IDs");
+		}
+		return aliquotIds;
+	}
+
+	/**
+	 * Retrieving all sample types.
+	 * 
+	 * @return a list of all sample types
 	 */
 	public List<String> getAllSampleTypes() {
 		// Detail here
 		// Retrieve data from Sample_Type table
+		List<String> sampleTypes = new ArrayList<String>();
 
-		List sampleTypes = new ArrayList();
-		sampleTypes.add("Dendrimer");
-		sampleTypes.add("Quantom Dot");
-		sampleTypes.add("Ploymer");
-		sampleTypes.add("Metal Colloid");
-		sampleTypes.add("Fullerence");
-		sampleTypes.add("Liposome");
-		sampleTypes.add("Nanotubes");
+		try {
+			IDataAccess ida = (new DataAccessProxy())
+					.getInstance(IDataAccess.TOOLKITAPI);
+			ida.open();
+			String hqlString = "select sampleType.name from SampleType sampleType";
+			List results = ida.query(hqlString, SampleType.class.getName());
+			for (Object obj : results) {
+				sampleTypes.add((String) obj);
+			}
+			ida.close();
+		} catch (Exception e) {
+			logger.error("Error in retrieving all sample types", e);
+			throw new RuntimeException("Error in retrieving all sample types");
+		}
 
 		return sampleTypes;
 	}
 
 	/**
 	 * 
-	 * @return the default sample container information in a form of ContainerInfoBean
+	 * @return the default sample container information in a form of
+	 *         ContainerInfoBean
 	 */
 	public ContainerInfoBean getSampleContainerInfo() {
 		// tmp code to be replaced
-		List containerTypes = new ArrayList();
-		containerTypes.add("Tube");
-		containerTypes.add("Vial");
-		containerTypes.add("Other");
+		List<String> containerTypes = getAllContainerTypes();
+		List<MeasureUnit> units = getAllMeasureUnits();
+		List<StorageElement> storageElements = getAllRoomAndFreezers();
+		List<String> quantityUnits = new ArrayList<String>();
+		List<String> concentrationUnits = new ArrayList<String>();
+		List<String> volumeUnits = new ArrayList<String>();
+		List<String> rooms = new ArrayList<String>();
+		List<String> freezers = new ArrayList<String>();
 
-		List quantityUnits = new ArrayList();
-		quantityUnits.add("g");
-		quantityUnits.add("mg");
+		for (MeasureUnit unit : units) {
+			if (unit.getType().equalsIgnoreCase("Quantity")) {
+				quantityUnits.add(unit.getName());
+			} else if (unit.getType().equalsIgnoreCase("Volume")) {
+				volumeUnits.add(unit.getName());
+			} else if (unit.getType().equalsIgnoreCase("Concentration")) {
+				concentrationUnits.add(unit.getName());
+			}
+		}
 
-		List concentrationUnits = new ArrayList();
-		concentrationUnits.add("g/ml");
-		concentrationUnits.add("mg/ml");
+		for (StorageElement storageElement : storageElements) {
+			if (storageElement.getType().equalsIgnoreCase("Room")) {
+				rooms.add((storageElement.getLocation()));
+			} else if (storageElement.getType().equalsIgnoreCase("Freezer")) {
+				freezers.add((storageElement.getLocation()));
+			}
+		}
 
-		List volumeUnits = new ArrayList();
-		volumeUnits.add("ml");
-		volumeUnits.add("ul");
-
-		List rooms = new ArrayList();
-		rooms.add("250");
-		rooms.add("117");
-
-		List freezers = new ArrayList();
-		freezers.add("F1");
-		freezers.add("F2");
-		
-		//set labs and racks to null for now
+		// set labs and racks to null for now
 		ContainerInfoBean containerInfo = new ContainerInfoBean(containerTypes,
-				quantityUnits, concentrationUnits, volumeUnits, null, rooms, freezers);
-		// end of tmp code
-		
+				quantityUnits, concentrationUnits, volumeUnits, null, rooms,
+				freezers);
+
 		return containerInfo;
+	}
+
+	private List<String> getAllContainerTypes() {
+		List<String> containerTypes = new ArrayList<String>();
+		try {
+			IDataAccess ida = (new DataAccessProxy())
+					.getInstance(IDataAccess.TOOLKITAPI);
+			ida.open();
+			String hqlString = "select distinct container.containerType from SampleContainer container";
+			List results = ida
+					.query(hqlString, SampleContainer.class.getName());
+			for (Object obj : results) {
+				containerTypes.add((String) obj);
+			}
+			ida.close();
+		} catch (Exception e) {
+			logger.error("Error in retrieving all container types", e);
+			throw new RuntimeException(
+					"Error in retrieving all container types.");
+		}
+		return containerTypes;
+	}
+
+	private List<MeasureUnit> getAllMeasureUnits() {
+		List<MeasureUnit> units = new ArrayList<MeasureUnit>();
+		try {
+			IDataAccess ida = (new DataAccessProxy())
+					.getInstance(IDataAccess.TOOLKITAPI);
+			ida.open();
+			String hqlString = "from MeasureUnit";
+			List results = ida.query(hqlString, MeasureUnit.class.getName());
+			for (Object obj : results) {
+				units.add((MeasureUnit) obj);
+			}
+			ida.close();
+		} catch (Exception e) {
+			logger.error("Error in retrieving all measure units", e);
+			throw new RuntimeException("Error in retrieving all measure units.");
+		}
+		return units;
+	}
+
+	private List<StorageElement> getAllRoomAndFreezers() {
+		List<StorageElement> storageElements = new ArrayList<StorageElement>();
+		try {
+			IDataAccess ida = (new DataAccessProxy())
+					.getInstance(IDataAccess.TOOLKITAPI);
+			ida.open();
+			String hqlString = "from StorageElement where type in ('Room', 'Freezer')";
+			List results = ida.query(hqlString, StorageElement.class.getName());
+			for (Object obj : results) {
+				storageElements.add((StorageElement) obj);
+			}
+			ida.close();
+		} catch (Exception e) {
+			logger.error("Error in retrieving all rooms and freezers", e);
+			throw new RuntimeException(
+					"Error in retrieving all rooms and freezers.");
+		}
+		return storageElements;
 	}
 
 	/**
 	 * 
-	 * @return the default sample container information in a form of ContainerInfoBean
+	 * @return the default sample container information in a form of
+	 *         ContainerInfoBean
 	 */
 	public ContainerInfoBean getAliquotContainerInfo() {
-		// tmp code to be replaced
-		List containerTypes = new ArrayList();
-		containerTypes.add("Tube");
-		containerTypes.add("Vial");
-		containerTypes.add("Other");
-
-		List quantityUnits = new ArrayList();
-		quantityUnits.add("g");
-		quantityUnits.add("mg");
-
-		List concentrationUnits = new ArrayList();
-		concentrationUnits.add("g/ml");
-		concentrationUnits.add("mg/ml");
-
-		List volumeUnits = new ArrayList();
-		volumeUnits.add("ml");
-		volumeUnits.add("ul");
-
-		List rooms = new ArrayList();
-		rooms.add("250");
-		rooms.add("117");
-
-		List freezers = new ArrayList();
-		freezers.add("F1");
-		freezers.add("F2");
-		
-		//set labs and racks to null for now
-		ContainerInfoBean containerInfo = new ContainerInfoBean(containerTypes,
-				quantityUnits, concentrationUnits, volumeUnits, null, rooms, freezers);
-		// end of tmp code
-		
-		return containerInfo;
+		return getSampleContainerInfo();
 	}
 
 	/**
@@ -159,61 +223,47 @@ public class LookupService {
 	 * @return all sample Ids
 	 */
 	public List<String> getAllSampleIds() {
-		// tmp code to be replaced
 		List<String> sampleIds = new ArrayList<String>();
-		sampleIds.add("NCL-6");
-		sampleIds.add("NCL-3");
-		// end of tmp code
-		
-		// Sample Name?
+
 		try {
-			IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.TOOLKITAPI);
+			IDataAccess ida = (new DataAccessProxy())
+					.getInstance(IDataAccess.TOOLKITAPI);
 			ida.open();
 			String hqlString = "select sample.name from Sample sample";
 			List results = ida.query(hqlString, Sample.class.getName());
-			for (Iterator iter=results.iterator(); iter.hasNext();)
-			{
-				Object obj = iter.next();
-				System.out.println("sample name type = " + obj.getClass().getName());
-				sampleIds.add((String)obj);
+			for (Object obj : results) {
+				sampleIds.add((String) obj);
 			}
-			ida.close();			
-		}catch (Exception e){
-			e.printStackTrace();
+			ida.close();
+		} catch (Exception e) {
+			logger.error("Error in retrieving all sample IDs", e);
+			throw new RuntimeException("Error in retrieving all sample IDs");
 		}
 
 		return sampleIds;
 	}
 
 	/**
-	 * 
-	 * @return all lot Ids
-	 */
-	public List<String> getAllLotIds() {
-		// tmp code to be replaced
-		List<String> lotIds = new ArrayList<String>();
-		lotIds.add("NCL-6-1234");
-		lotIds.add("NCL-3-2345");
-		// end of tmp code
-
-		return lotIds;
-	}
-	
-	/**
 	 * Retrieve all Assay Types from the system
-	 *
+	 * 
 	 * @return A list of all assay type
 	 */
-	public List getAllAssayTypes()
-	{
-		// Detail here... ...
-			// if the return from DB are null or size zero
-			// read from the xml
-
+	public List getAllAssayTypes() {
 		List<String> assayTypes = new ArrayList<String>();
-		assayTypes.add("Pre-screening Assay");
-		assayTypes.add("In Vitro");
-		assayTypes.add("In Vivo");
+		try {
+			IDataAccess ida = (new DataAccessProxy())
+					.getInstance(IDataAccess.TOOLKITAPI);
+			ida.open();
+			String hqlString = "select assayType.name from AssayType assayType";
+			List results = ida.query(hqlString, AssayType.class.getName());
+			for (Object obj : results) {
+				assayTypes.add((String) obj);
+			}
+			ida.close();
+		} catch (Exception e) {
+			logger.error("Error in retrieving all assay types", e);
+			throw new RuntimeException("Error in retrieving all assay types");
+		}
 		return assayTypes;
 	}
 }
