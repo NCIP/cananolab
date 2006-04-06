@@ -9,7 +9,7 @@
     </id>
     <property name="name" type="java.lang.String" column="PROJECT_NAME" />
     <property name="description" type="java.lang.String" column="DESCRIPTION" />
-    <set name="sampleCollection" table="Project_sample" lazy="true">
+    <set name="sampleCollection" table="Project_sample" cascade="all-delete-orphan" lazy="true">
       <cache usage="read-write" />
       <key column="PROJECT_PK_ID" />
       <many-to-many class="gov.nih.nci.calab.domain.Sample" column="SAMPLE_PK_ID" />

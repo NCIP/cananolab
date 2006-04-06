@@ -11,7 +11,7 @@
     <property name="createdBy" type="java.lang.String" column="CREATED_BY" />
     <property name="createdDate" type="java.util.Date" column="CREATED_DATE" />
     <many-to-one name="sampleContainer" class="gov.nih.nci.calab.domain.SampleContainer" column="SAMPLE_CONTAINER_PK_ID" lazy="true" />
-    <many-to-one name="run" class="gov.nih.nci.calab.domain.Run" column="RUN_PK_ID" lazy="true" />
+    <many-to-one name="run" class="gov.nih.nci.calab.domain.Run" column="RUN_PK_ID" cascade="all-delete-orphan" lazy="true" />
   </class>
 </hibernate-mapping>
 

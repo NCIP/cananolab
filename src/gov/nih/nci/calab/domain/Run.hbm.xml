@@ -14,17 +14,17 @@
     <property name="runDate" type="java.util.Date" column="RUN_DATE" />
     <property name="runBy" type="java.lang.String" column="RUN_BY" />
     <many-to-one name="assay" class="gov.nih.nci.calab.domain.Assay" column="ASSAY_PK_ID" lazy="true" />
-    <set name="runSampleContainerCollection" lazy="true" inverse="true">
+    <set name="runSampleContainerCollection" cascade="all-delete-orphan" lazy="true" inverse="true">
       <cache usage="read-write" />
       <key column="RUN_PK_ID" />
       <one-to-many class="gov.nih.nci.calab.domain.RunSampleContainer" />
     </set>
-    <set name="inputFileCollection" lazy="true" inverse="true">
+    <set name="inputFileCollection" cascade="all-delete-orphan" lazy="true" inverse="true">
       <cache usage="read-write" />
       <key column="RUN_PK_ID" />
       <one-to-many class="gov.nih.nci.calab.domain.InputFile" />
     </set>
-    <set name="outputFileCollection" lazy="true" inverse="true">
+    <set name="outputFileCollection" cascade="all-delete-orphan" lazy="true" inverse="true">
       <cache usage="read-write" />
       <key column="RUN_PK_ID" />
       <one-to-many class="gov.nih.nci.calab.domain.OutputFile" />
