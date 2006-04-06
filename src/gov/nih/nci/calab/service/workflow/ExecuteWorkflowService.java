@@ -56,7 +56,7 @@ public class ExecuteWorkflowService {
 	 * @param aliquotIds
 	 * @throws Exception
 	 */
-	public void saveRunAliquots(String runId, List<String> aliquotIds,
+	public void saveRunAliquots(String runId, String[] aliquotIds,
 			String comments) throws Exception {
 		// TODO fill in details for saving aliquotIds for the run
 	}
