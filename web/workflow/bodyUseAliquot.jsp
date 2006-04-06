@@ -33,7 +33,7 @@
 						* Hold down the shift key for multiple selections.
 						<br>
 						<span class="formField" align="left"><span class="mainMenu"><span class="formMessage"><strong> <html:select property="aliquotIds" multiple="true" size="3">
-											<html:options name="allAliquotIds" />
+											<html:options name="allUnmaskedAliquotIds" />
 										</html:select> </strong></span></span></span> <span class="formFieldWhite"> </span>
 					</div>
 					<html:errors />
