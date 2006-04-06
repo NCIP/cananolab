@@ -1,5 +1,9 @@
 package gov.nih.nci.calab.service.search;
 
+import gov.nih.nci.calab.db.DataAccessProxy;
+import gov.nih.nci.calab.db.IDataAccess;
+import gov.nih.nci.calab.domain.Sample;
+import gov.nih.nci.calab.domain.Source;
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerBean;
 import gov.nih.nci.calab.dto.administration.SampleBean;
@@ -9,23 +13,41 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 /**
  * 
  * @author pansu
  * 
  */
-/* CVS $Id: SearchSampleService.java,v 1.3 2006-04-04 15:33:11 pansu Exp $ */
+/* CVS $Id: SearchSampleService.java,v 1.4 2006-04-06 20:26:07 pansu Exp $ */
 
 public class SearchSampleService {
+	private static Logger logger = Logger.getLogger(SearchSampleService.class);
+
 	/**
 	 * 
 	 * @return all sample sources
 	 */
 	public List<String> getAllSampleSources() {
-		List<String> sources = new ArrayList<String>();
-		sources.add("Vendor X");
-		sources.add("Institute Y");
-		return sources;
+		List<String> sampleSources = new ArrayList<String>();
+
+		try {
+			IDataAccess ida = (new DataAccessProxy())
+					.getInstance(IDataAccess.TOOLKITAPI);
+			ida.open();
+			String hqlString = "select source.organizationName from Source source";
+			List results = ida.query(hqlString, Source.class.getName());
+			for (Object obj : results) {
+				sampleSources.add((String) obj);
+			}
+			ida.close();
+		} catch (Exception e) {
+			logger.error("Error in retrieving all sample sources", e);
+			throw new RuntimeException("Error in retrieving all sample sources");
+		}
+
+		return sampleSources;
 	}
 
 	/**
@@ -34,8 +56,22 @@ public class SearchSampleService {
 	 */
 	public List<String> getAllSourceSampleIds() {
 		List<String> sourceSampleIds = new ArrayList<String>();
-		sourceSampleIds.add("X123");
-		sourceSampleIds.add("Y-345");
+
+		try {
+			IDataAccess ida = (new DataAccessProxy())
+					.getInstance(IDataAccess.TOOLKITAPI);
+			ida.open();
+			String hqlString = "select distinct sample.sourceSampleId from Sample sample";
+			List results = ida.query(hqlString, Sample.class.getName());
+			for (Object obj : results) {
+				sourceSampleIds.add((String) obj);
+			}
+			ida.close();
+		} catch (Exception e) {
+			logger.error("Error in retrieving all source sample IDs", e);
+			throw new RuntimeException("Error in retrieving all source sample IDs");
+		}
+
 		return sourceSampleIds;
 	}
 
@@ -45,8 +81,21 @@ public class SearchSampleService {
 	 */
 	public List<String> getAllSampleSubmitters() {
 		List<String> sampleSubmitters = new ArrayList<String>();
-		sampleSubmitters.add("Jane Doe");
-		sampleSubmitters.add("John Doe");
+		try {
+			IDataAccess ida = (new DataAccessProxy())
+					.getInstance(IDataAccess.TOOLKITAPI);
+			ida.open();
+			String hqlString = "select distinct sample.createdBy from Sample sample";
+			List results = ida.query(hqlString, Sample.class.getName());
+			for (Object obj : results) {
+				sampleSubmitters.add((String) obj);
+			}
+			ida.close();
+		} catch (Exception e) {
+			logger.error("Error in retrieving all sample submitters", e);
+			throw new RuntimeException("Error in retrieving all sample submitters");
+		}
+
 		return sampleSubmitters;
 	}
 
