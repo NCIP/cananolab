@@ -54,7 +54,7 @@ function openLink() {
 									<html:options name="allSampleIds" />
 								</html:select></span></strong>&nbsp; &nbsp; or &nbsp; &nbsp; <strong>Aliquot ID*<span class="formFieldWhite"> <html:select property="parentAliquotId">
 									<option value=""></option>
-									<html:options name="allAliquotIds" />
+									<html:options name="allUnmaskedAliquotIds" />
 								</html:select></span></strong>
 					</div>
 				</td>
@@ -84,7 +84,7 @@ function openLink() {
 							<strong>Container Type* <span class="formFieldWhite"> <html:select property="template.container.containerType">
 										<option value=""></option>
 										<html:options name="aliquotContainerInfo" property="containerTypes" />
-									</html:select></span> &nbsp; &nbsp; &nbsp; Other <span class="formFieldWhite"><html:text property="template.container.otherContainerType" size="8" /></span> &nbsp; &nbsp; &nbsp; </strong>
+									<option value="Other">Other</option></html:select></span> &nbsp; &nbsp; &nbsp; Other <span class="formFieldWhite"><html:text property="template.container.otherContainerType" size="8" /></span> &nbsp; &nbsp; &nbsp; </strong>
 						</div>
 					</td>
 				</tr>
