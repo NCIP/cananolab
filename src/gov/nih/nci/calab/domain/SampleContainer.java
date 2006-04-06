@@ -173,24 +173,30 @@ public  class SampleContainer
 	      
 			
 			
-	   		public gov.nih.nci.calab.domain.Storage storage;
-			public gov.nih.nci.calab.domain.Storage getStorage(){
-			
-              ApplicationService applicationService = ApplicationServiceProvider.getApplicationService();
-			  gov.nih.nci.calab.domain.SampleContainer thisIdSet = new gov.nih.nci.calab.domain.SampleContainer();
-			  thisIdSet.setId(this.getId());
-			  try {
-			  java.util.List resultList = applicationService.search("gov.nih.nci.calab.domain.Storage", thisIdSet);				 
-			 
-			  if (resultList!=null && resultList.size()>0) {
-			     storage = (gov.nih.nci.calab.domain.Storage)resultList.get(0);
-			     }
-			  } catch(Exception ex) 
-			  { 
-			      	System.out.println("SampleContainer:getStorage throws exception ... ...");
-			   		ex.printStackTrace(); 
-			  }
-			  return storage;			
+	   		public java.util.Collection storageElementCollection;
+			public java.util.Collection getStorageElementCollection(){
+			try{
+				   if(storageElementCollection.size() == 0) {}
+			           } catch(Exception e) {			     
+				      ApplicationService applicationService = ApplicationServiceProvider.getApplicationService();
+				      try {
+				      
+				      
+				         
+					 	gov.nih.nci.calab.domain.SampleContainer thisIdSet = new gov.nih.nci.calab.domain.SampleContainer();
+				         	thisIdSet.setId(this.getId());
+				         	java.util.Collection resultList = applicationService.search("gov.nih.nci.calab.domain.StorageElement", thisIdSet);				 
+				         	storageElementCollection = resultList;  
+					 	return resultList;
+					 
+				      
+				      }catch(Exception ex) 
+				      {
+				      	System.out.println("SampleContainer:getStorageElementCollection throws exception ... ...");
+				   		ex.printStackTrace(); 
+				      }
+				   }	
+		              return storageElementCollection;
 			 		
               }
                         
@@ -199,8 +205,8 @@ public  class SampleContainer
 	   
 	   
 	   
-	   public void setStorage(gov.nih.nci.calab.domain.Storage storage){
-		this.storage = storage;
+	   public void setStorageElementCollection(java.util.Collection StorageElementCollection){
+		this.storageElementCollection = storageElementCollection;
 	   }	
 	   
 	   

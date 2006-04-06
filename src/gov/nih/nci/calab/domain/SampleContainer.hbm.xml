@@ -5,7 +5,10 @@
   <class name="SampleContainer" table="Sample_Container" lazy="true" polymorphism="explicit" discriminator-value="false">
     <cache usage="read-write" />
     <id name="id" type="java.lang.Long" column="SAMPLE_CONTAINER_PK_ID">
-      <generator class="assigned" />
+       <generator class="org.hibernate.id.TableHiLoGenerator">
+  	  			<param name="table">hibernate_unique_key</param>
+				<param name="column">next_hi</param>
+	   </generator>
     </id>
     <discriminator column="IS_DERIVED" type="string"></discriminator>
     <property name="quantity" type="java.lang.Float" column="QUANTITY" />
@@ -23,7 +26,11 @@
     <property name="barcode" type="java.lang.String" column="BARCODE" />
     <property name="containerType" type="java.lang.String" column="CONTAINER_TYPE" />
     <property name="createdMethod" type="java.lang.String" column="CREATED_METHOD" />
-    <many-to-one name="storage" class="gov.nih.nci.calab.domain.Storage" column="STORAGE_PK_ID" lazy="true" />
+    <set name="storageElementCollection" table="Container_storage_location" cascade="all-delete-orphan" lazy="true">
+      <cache usage="read-write" />
+      <key column="SAMPLE_CONTAINER_PK_ID" />
+      <many-to-many class="gov.nih.nci.calab.domain.StorageElement" column="STORAGE_PK_ID" />
+    </set>
     <set name="parentSampleContainerCollection" table="Derived_sample_container" lazy="true">
       <cache usage="read-write" />
       <key column="PARENT_SAMPLE_CONTAINER_ID" />
@@ -34,7 +41,7 @@
       <key column="SAMPLE_CONTAINER_PK_ID" />
       <many-to-many class="gov.nih.nci.calab.domain.SampleContainer" column="PARENT_SAMPLE_CONTAINER_ID" />
     </set>
-    <set name="runSampleContainerCollection" lazy="true" inverse="true">
+    <set name="runSampleContainerCollection" cascade="all-delete-orphan" lazy="true" inverse="true">
       <cache usage="read-write" />
       <key column="SAMPLE_CONTAINER_PK_ID" />
       <one-to-many class="gov.nih.nci.calab.domain.RunSampleContainer" />
