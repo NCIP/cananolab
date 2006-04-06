@@ -12,12 +12,15 @@ import org.apache.log4j.Logger;
  * @author pansu
  * 
  */
-/* CVS $Id: StringUtils.java,v 1.2 2006-03-28 23:01:03 pansu Exp $ */
+/* CVS $Id: StringUtils.java,v 1.3 2006-04-06 15:41:48 pansu Exp $ */
 
 public class StringUtils {
 	private static Logger logger = Logger.getLogger(StringUtils.class);
 
 	public static Date convertToDate(String dateString, String dateFormat) {
+		if (dateString==null || dateString=="") {
+			return null;
+		}
 		Date theDate = null;
 		try {
 			SimpleDateFormat format = new SimpleDateFormat(dateFormat);
@@ -55,6 +58,9 @@ public class StringUtils {
 	}
 
 	public static String convertDateToString(Date date, String format) {
+		if (date==null) {
+			return "";
+		}
 		String dateStr = null;
 		SimpleDateFormat dateFormat = new SimpleDateFormat(format);
 		try {
@@ -67,5 +73,17 @@ public class StringUtils {
 			throw new RuntimeException("Can't format the given date: " + date);
 		}
 		return dateStr;
+	}
+
+	public static Float convertToFloat(String floatStr) {
+		if (floatStr == null || floatStr=="") {
+			return null;
+		}
+		try {
+			Float floatNum = Float.parseFloat(floatStr);
+			return floatNum;
+		} catch (NumberFormatException e) {
+			logger.error("Error converting the given string to a float number", e);
+			throw new RuntimeException("Can't convert the given string to a float number: "+floatStr);		}
 	}
 }
