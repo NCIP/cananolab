@@ -23,7 +23,7 @@ import org.apache.log4j.Logger;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.9 2006-04-06 19:52:46 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.10 2006-04-06 21:29:12 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -59,7 +59,7 @@ public class LookupService {
 	 * @return a list of unmasked aliquot IDs.
 	 */
 	public List<String> getUnmaskedAliquots() {
-		List<String> aliquotIds = null;
+		List<String> aliquotIds = new ArrayList<String>();
 		try {
 			IDataAccess ida = (new DataAccessProxy())
 					.getInstance(IDataAccess.TOOLKITAPI);
