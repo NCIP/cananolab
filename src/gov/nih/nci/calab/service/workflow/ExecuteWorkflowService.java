@@ -23,6 +23,10 @@ public class ExecuteWorkflowService {
 			assays.add("STE-2");
 			assays.add("STE-3");
 		}
+		else if(assayTypeName.equals("Physical Characterization Assays")) 
+		{
+		}	
+		
 		return assays;
 	}
 
@@ -52,7 +56,7 @@ public class ExecuteWorkflowService {
 	 * @param aliquotIds
 	 * @throws Exception
 	 */
-	public void saveRunAliquots(String runId, String[] aliquotIds,
+	public void saveRunAliquots(String runId, List<String> aliquotIds,
 			String comments) throws Exception {
 		// TODO fill in details for saving aliquotIds for the run
 	}
