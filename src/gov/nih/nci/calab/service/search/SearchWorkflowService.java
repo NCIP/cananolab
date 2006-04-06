@@ -2,6 +2,8 @@ package gov.nih.nci.calab.service.search;
 
 import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
+import gov.nih.nci.calab.domain.InputFile;
+import gov.nih.nci.calab.domain.OutputFile;
 import gov.nih.nci.calab.domain.Sample;
 import gov.nih.nci.calab.dto.search.WorkflowResultBean;
 
@@ -17,7 +19,7 @@ import org.apache.log4j.Logger;
  * 
  */
 
-/* CVS $Id: SearchWorkflowService.java,v 1.5 2006-04-06 21:10:01 pansu Exp $ */
+/* CVS $Id: SearchWorkflowService.java,v 1.6 2006-04-06 21:13:44 pansu Exp $ */
 
 public class SearchWorkflowService {
 	private static Logger logger = Logger.getLogger(SearchWorkflowService.class);
@@ -30,15 +32,15 @@ public class SearchWorkflowService {
 		List<String> submitters = new ArrayList<String>();
 		try {
 			IDataAccess ida = (new DataAccessProxy())
-					.getInstance(IDataAccess.HIBERNATE);
+					.getInstance(IDataAccess.TOOLKITAPI);
 			ida.open();
 			String hqlString1 = "select distinct createdBy from InputFile";
-			List results1 = ida.search(hqlString1);
+			List results1 = ida.query(hqlString1, InputFile.class.getName());
 			for (Object obj : results1) {
 				submitters.add((String) obj);
 			}
-			String hqlString2 = "select distinct createdBy from OutputFile";
-			List results2 = ida.search(hqlString2);
+			String hqlString2 = "select distinct createdBy from OutputFile";			
+			List results2 = ida.query(hqlString2, OutputFile.class.getName());
 			for (Object obj : results2) {
 				submitters.add((String) obj);
 			}
