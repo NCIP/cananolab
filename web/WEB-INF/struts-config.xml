@@ -4,7 +4,7 @@
 	<display-name>caLAB</display-name>
 	<form-beans>
 		<form-bean name="initSessionForm" type="org.apache.struts.action.DynaActionForm">
-		    <form-property name="forwardPage" type="java.lang.String"/>
+			<form-property name="forwardPage" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="loginForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="loginId" type="java.lang.String" />
@@ -18,7 +18,7 @@
 	</global-forwards>
 
 	<action-mappings>
-		<action name="initSessionForm" path="/initSession" scope="request" type="gov.nih.nci.calab.ui.core.InitSessionAction"></action>
+		<action name="initSessionForm" path="/initSession" scope="request" type="gov.nih.nci.calab.ui.core.InitSessionAction" input="error" />
 		<action name="loginForm" path="/login" scope="session" type="gov.nih.nci.calab.ui.security.LoginAction" input="input">
 			<forward name="success" path="calab.welcome" />
 			<forward name="failure" path="calab.home" />
