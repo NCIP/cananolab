@@ -1,10 +1,15 @@
 package gov.nih.nci.calab.service.search;
 
+import gov.nih.nci.calab.db.DataAccessProxy;
+import gov.nih.nci.calab.db.IDataAccess;
+import gov.nih.nci.calab.domain.Sample;
 import gov.nih.nci.calab.dto.search.WorkflowResultBean;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import org.apache.log4j.Logger;
 
 /**
  * 
@@ -12,17 +17,36 @@ import java.util.List;
  * 
  */
 
-/* CVS $Id: SearchWorkflowService.java,v 1.4 2006-03-24 21:49:30 pansu Exp $ */
+/* CVS $Id: SearchWorkflowService.java,v 1.5 2006-04-06 21:10:01 pansu Exp $ */
 
 public class SearchWorkflowService {
+	private static Logger logger = Logger.getLogger(SearchWorkflowService.class);
+
 	/**
 	 * 
 	 * @return all file submitters
 	 */
 	public List<String> getAllFileSubmitters() {
 		List<String> submitters = new ArrayList<String>();
-		submitters.add("Jane Doe");
-		submitters.add("John Doe");
+		try {
+			IDataAccess ida = (new DataAccessProxy())
+					.getInstance(IDataAccess.HIBERNATE);
+			ida.open();
+			String hqlString1 = "select distinct createdBy from InputFile";
+			List results1 = ida.search(hqlString1);
+			for (Object obj : results1) {
+				submitters.add((String) obj);
+			}
+			String hqlString2 = "select distinct createdBy from OutputFile";
+			List results2 = ida.search(hqlString2);
+			for (Object obj : results2) {
+				submitters.add((String) obj);
+			}
+			ida.close();
+		} catch (Exception e) {
+			logger.error("Error in retrieving all file submitters", e);
+			throw new RuntimeException("Error in retrieving all file submitters");
+		}
 		return submitters;
 	}
 
