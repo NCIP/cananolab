@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.4 2006-04-04 15:34:20 pansu Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.5 2006-04-06 19:51:55 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
 import gov.nih.nci.calab.dto.security.SecurityBean;
@@ -92,9 +92,7 @@ public class InitSessionAction extends AbstractBaseAction {
 	}
 
 	public boolean loginRequired() {
-		// temporarily set to false until login module is working
-		return false;
-		// return true;
+		return true;
 	}
 
 	/**
@@ -105,9 +103,10 @@ public class InitSessionAction extends AbstractBaseAction {
 	 */
 	private void setUseAliquotSession(HttpSession session,
 			LookupService lookupService) {
-		if (session.getAttribute("allAliquotIds") == null) {
-			List<String> allAliquotIds = lookupService.getAliquots();
-			session.setAttribute("allAliquotIds", allAliquotIds);
+		if (session.getAttribute("allUnmaskedAliquotIds") == null
+				|| session.getAttribute("newAliquotCreated") != null) {
+			List<String> allAliquotIds = lookupService.getUnmaskedAliquots();
+			session.setAttribute("allUnmaskedAliquotIds", allAliquotIds);
 		}
 	}
 
@@ -163,10 +162,10 @@ public class InitSessionAction extends AbstractBaseAction {
 			List sampleIds = lookupService.getAllSampleIds();
 			session.setAttribute("allSampleIds", sampleIds);
 		}
-		if (session.getAttribute("allAliquotIds") == null
+		if (session.getAttribute("allUnmaskedAliquotIds") == null
 				|| session.getAttribute("newAliquotCreated") != null) {
-			List aliquotIds = lookupService.getAliquots();
-			session.setAttribute("allAliquotIds", aliquotIds);
+			List aliquotIds = lookupService.getUnmaskedAliquots();
+			session.setAttribute("allUnmaskedAliquotIds", aliquotIds);
 		}
 		if (session.getAttribute("aliquotContainerInfo") == null
 				|| session.getAttribute("newAliquotCreated") != null) {
@@ -260,12 +259,12 @@ public class InitSessionAction extends AbstractBaseAction {
 					.getAliquotContainerInfo();
 			session.setAttribute("aliquotContainerInfo", containerInfo);
 		}
-		
+
 		// clear new aliquot created flag and new sample created flag
 		session.removeAttribute("newAliquotCreated");
 		session.removeAttribute("newSampleCreated");
-		
-		//clear session attributes created during search sample
+
+		// clear session attributes created during search sample
 		session.removeAttribute("samples");
 		session.removeAttribute("aliquots");
 	}
