@@ -1,9 +1,9 @@
 
 
 package gov.nih.nci.calab.domain;
-import gov.nih.nci.calab.domain.*;
+
 import gov.nih.nci.system.applicationservice.*;
-import java.util.*;
+
 
 /**
  * <!-- LICENSE_TEXT_START -->
@@ -146,176 +146,119 @@ public  class Sample
 	      this.receivedDate = receivedDate;
 	   }
 	
-
-	
-	   
-	   
-	   
-	      
-			
-			
-			
-			
-			private gov.nih.nci.calab.domain.Source source;
-			public gov.nih.nci.calab.domain.Source getSource(){
-			
-			
-			
-			  ApplicationService applicationService = ApplicationServiceProvider.getApplicationService();
-			  gov.nih.nci.calab.domain.Sample thisIdSet = new gov.nih.nci.calab.domain.Sample();
-			  thisIdSet.setId(this.getId());
-			  
-			  try {
-			     java.util.List resultList = applicationService.search("gov.nih.nci.calab.domain.Source", thisIdSet);				 
-		             if (resultList!=null && resultList.size()>0) {
-		                source = (gov.nih.nci.calab.domain.Source)resultList.get(0);
-		             }
-		          
-			  } catch(Exception ex) 
-			  { 
-			      	System.out.println("Sample:getSource throws exception ... ...");
-			   		ex.printStackTrace(); 
-			  }
-			  return source;	
-			 
-			 		
-           }
+		private gov.nih.nci.calab.domain.Source source;
+		public gov.nih.nci.calab.domain.Source getSource(){
+		
+		
+		
+		  ApplicationService applicationService = ApplicationServiceProvider.getApplicationService();
+		  gov.nih.nci.calab.domain.Sample thisIdSet = new gov.nih.nci.calab.domain.Sample();
+		  thisIdSet.setId(this.getId());
+		  
+		  try {
+		     java.util.List resultList = applicationService.search("gov.nih.nci.calab.domain.Source", thisIdSet);				 
+	             if (resultList!=null && resultList.size()>0) {
+	                source = (gov.nih.nci.calab.domain.Source)resultList.get(0);
+	             }
+	          
+		  } catch(Exception ex) 
+		  { 
+		      	System.out.println("Sample:getSource throws exception ... ...");
+		   		ex.printStackTrace(); 
+		  }
+		  return source;	
+		 
+		 		
+       }
 		   
-	      
-	               
-	   
-	   
-	   
 	   public void setSource(gov.nih.nci.calab.domain.Source source){
 		this.source = source;
 	   }	
 	   
-	   
-	
-	   
-	   
-	   
-	      
-			
-			
-			private gov.nih.nci.calab.domain.SampleSOP sampleSOP;
-			public gov.nih.nci.calab.domain.SampleSOP getSampleSOP(){
-			
-              ApplicationService applicationService = ApplicationServiceProvider.getApplicationService();
-			  gov.nih.nci.calab.domain.Sample thisIdSet = new gov.nih.nci.calab.domain.Sample();
-			  thisIdSet.setId(this.getId());
-			  try {
-			  java.util.List resultList = applicationService.search("gov.nih.nci.calab.domain.SampleSOP", thisIdSet);				 
-			 
-			  if (resultList!=null && resultList.size()>0) {
-			     sampleSOP = (gov.nih.nci.calab.domain.SampleSOP)resultList.get(0);
-			     }
-			  } catch(Exception ex) 
-			  { 
-			      	System.out.println("Sample:getSampleSOP throws exception ... ...");
-			   		ex.printStackTrace(); 
-			  }
-			  return sampleSOP;			
-			 		
-              }
-                        
-	      
-	               
-	   
-	   
+		private gov.nih.nci.calab.domain.SampleSOP sampleSOP;
+		public gov.nih.nci.calab.domain.SampleSOP getSampleSOP(){
+		
+          ApplicationService applicationService = ApplicationServiceProvider.getApplicationService();
+		  gov.nih.nci.calab.domain.Sample thisIdSet = new gov.nih.nci.calab.domain.Sample();
+		  thisIdSet.setId(this.getId());
+		  try {
+		  java.util.List resultList = applicationService.search("gov.nih.nci.calab.domain.SampleSOP", thisIdSet);				 
+		 
+		  if (resultList!=null && resultList.size()>0) {
+		     sampleSOP = (gov.nih.nci.calab.domain.SampleSOP)resultList.get(0);
+		     }
+		  } catch(Exception ex) 
+		  { 
+		      	System.out.println("Sample:getSampleSOP throws exception ... ...");
+		   		ex.printStackTrace(); 
+		  }
+		  return sampleSOP;			
+		 		
+          }
 	   
 	   public void setSampleSOP(gov.nih.nci.calab.domain.SampleSOP sampleSOP){
 		this.sampleSOP = sampleSOP;
 	   }	
-	   
-	   
-	
-	   
-	   
-	   
 	      
-			private java.util.Collection sampleContainerCollection = new java.util.HashSet();
-			public java.util.Collection getSampleContainerCollection(){
-			try{
-			   if(sampleContainerCollection.size() == 0) {}
-		           } catch(Exception e) {			     
-			      ApplicationService applicationService = ApplicationServiceProvider.getApplicationService();
-			      try {
-			      
-			      
-			         
-				 	gov.nih.nci.calab.domain.Sample thisIdSet = new gov.nih.nci.calab.domain.Sample();
-			         	thisIdSet.setId(this.getId());
-			         	java.util.Collection resultList = applicationService.search("gov.nih.nci.calab.domain.SampleContainer", thisIdSet);				 
-				 	sampleContainerCollection = resultList;  
-				 	return resultList;
-				 
-			      
-			      }catch(Exception ex) 
-			      {
-			      	System.out.println("Sample:getSampleContainerCollection throws exception ... ...");
-			   		ex.printStackTrace(); 
-			      }
-			   }	
-	              return sampleContainerCollection;
-	          }
+		private java.util.Collection sampleContainerCollection = new java.util.HashSet();
+		public java.util.Collection getSampleContainerCollection(){
+//			try{
+//			   if(sampleContainerCollection.size() == 0) {}
+//		           } catch(Exception e) {			     
+//			      ApplicationService applicationService = ApplicationServiceProvider.getApplicationService();
+//			      try {
+//			      
+//			      
+//			         
+//				 	gov.nih.nci.calab.domain.Sample thisIdSet = new gov.nih.nci.calab.domain.Sample();
+//			         	thisIdSet.setId(this.getId());
+//			         	java.util.Collection resultList = applicationService.search("gov.nih.nci.calab.domain.SampleContainer", thisIdSet);				 
+//				 	sampleContainerCollection = resultList;  
+//				 	return resultList;
+//				 
+//			      
+//			      }catch(Exception ex) 
+//			      {
+//			      	System.out.println("Sample:getSampleContainerCollection throws exception ... ...");
+//			   		ex.printStackTrace(); 
+//			      }
+//			   }	
+              return sampleContainerCollection;
+          }
 			   
-			   
-			   
-			   
-			   
-	      
-	               
-	   
 	   	public void setSampleContainerCollection(java.util.Collection sampleContainerCollection){
 	   		this.sampleContainerCollection = sampleContainerCollection;
 	        }	
 	   
-	   
-	
-	   
-	   
-	   
-	      
-			private java.util.Collection projectCollection = new java.util.HashSet();
-			public java.util.Collection getProjectCollection(){
-			try{
-			   if(projectCollection.size() == 0) {}
-		           } catch(Exception e) {			     
-			      ApplicationService applicationService = ApplicationServiceProvider.getApplicationService();
-			      try {
-			      
-			      
-			         
-				 	gov.nih.nci.calab.domain.Sample thisIdSet = new gov.nih.nci.calab.domain.Sample();
-			         	thisIdSet.setId(this.getId());
-			         	java.util.Collection resultList = applicationService.search("gov.nih.nci.calab.domain.Project", thisIdSet);				 
-				 	projectCollection = resultList;  
-				 	return resultList;
-				 
-			      
-			      }catch(Exception ex) 
-			      {
-			      	System.out.println("Sample:getProjectCollection throws exception ... ...");
-			   		ex.printStackTrace(); 
-			      }
-			   }	
-	              return projectCollection;
-	          }
+		private java.util.Collection projectCollection = new java.util.HashSet();
+		public java.util.Collection getProjectCollection(){
+		try{
+		   if(projectCollection.size() == 0) {}
+	           } catch(Exception e) {			     
+		      ApplicationService applicationService = ApplicationServiceProvider.getApplicationService();
+		      try {
+		      
+		      
+		         
+			 	gov.nih.nci.calab.domain.Sample thisIdSet = new gov.nih.nci.calab.domain.Sample();
+		         	thisIdSet.setId(this.getId());
+		         	java.util.Collection resultList = applicationService.search("gov.nih.nci.calab.domain.Project", thisIdSet);				 
+			 	projectCollection = resultList;  
+			 	return resultList;
+			 
+		      
+		      }catch(Exception ex) 
+		      {
+		      	System.out.println("Sample:getProjectCollection throws exception ... ...");
+		   		ex.printStackTrace(); 
+		      }
+		   }	
+              return projectCollection;
+          }
 			   
-			   
-			   
-			   
-			   
-	      
-	               
-	   
 	   	public void setProjectCollection(java.util.Collection projectCollection){
 	   		this.projectCollection = projectCollection;
 	        }	
-	   
-	   
-	
 
 		public boolean equals(Object obj){
 			boolean eq = false;
