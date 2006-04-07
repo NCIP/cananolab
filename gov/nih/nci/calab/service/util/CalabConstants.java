@@ -8,4 +8,5 @@ public class CalabConstants {
 	public static final String STORAGE_RACK = "Rack";
 	public static final String STORAGE_FREEZER = "Freezer";
 	public static final String STORAGE_ROOM = "Room";
+	public static final String STORAGE_LAB = "Lab";
 }
