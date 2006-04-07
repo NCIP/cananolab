@@ -24,6 +24,7 @@ public interface IDataAccess {
     
 	public abstract void open() throws Exception;
 	public abstract void close() throws Exception;
+	public abstract void rollback();
 	public abstract List search( String HQL ) throws Exception;
 	public abstract List search(  Class className, Object o ) throws Exception;
 	public abstract List search(  Class className, List l ) throws Exception;

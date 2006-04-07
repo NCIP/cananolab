@@ -2,6 +2,7 @@ package gov.nih.nci.calab.db;
 
 import gov.nih.nci.common.util.HQLCriteria;
 import gov.nih.nci.system.applicationservice.ApplicationService;
+import gov.nih.nci.system.applicationservice.ApplicationServiceProvider;
 
 import java.io.Serializable;
 import java.util.List;
@@ -11,29 +12,18 @@ import org.hibernate.criterion.DetachedCriteria;
 public class ToolkitAPIDataAccess implements IDataAccess {
 
 	private ApplicationService appService = null;
-//	private boolean useLocal;
-//	
-//	public ToolkitAPIDataAccess(boolean useLocal)
-//	{
-//	   this.useLocal = useLocal;	
-//	}
 
 	public void open() throws Exception
 	 {
-//		if(useLocal)
-//		{
-			appService = ApplicationService.getLocalInstance();			
-//		}
-//		else
-//		{
-//			appService = ApplicationService.getRemoteInstance(
-//												NCIAConfig.getSearchApiUrl() );
-//		}
-//		appService = ApplicationServiceProvider.getApplicationService();
+		appService = ApplicationServiceProvider.getApplicationService();
 	}
 	public void close() throws Exception {
 		appService = null;
 	}
+    public void rollback(){
+    	
+    }
+
 	
 	public List search(String HQL) throws Exception {
 		
