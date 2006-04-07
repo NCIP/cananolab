@@ -17,7 +17,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-/* CVS $Id: ManageSampleService.java,v 1.12 2006-04-07 13:26:40 zengje Exp $ 
+/* CVS $Id: ManageSampleService.java,v 1.13 2006-04-07 15:28:29 pansu Exp $ 
  */
 public class ManageSampleService {
 	private static Logger logger = Logger.getLogger(ManageSampleService.class);
@@ -81,6 +81,9 @@ public class ManageSampleService {
 	 * @return sampleId from sampleId prefix and lotId
 	 */
 	public String getSampleId(String sampleIdPrefix, String lotId) {
+		if (lotId.equals("N/A")) {
+			return sampleIdPrefix;
+		}
 		return sampleIdPrefix + "-" + lotId;
 	}
 
