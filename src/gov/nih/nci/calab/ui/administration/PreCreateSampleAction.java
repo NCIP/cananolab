@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: PreCreateSampleAction.java,v 1.8 2006-03-28 23:03:05 pansu Exp $ */
+/* CVS $Id: PreCreateSampleAction.java,v 1.9 2006-04-07 15:29:37 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.ContainerBean;
 import gov.nih.nci.calab.dto.administration.StorageLocation;
@@ -32,7 +32,7 @@ public class PreCreateSampleAction extends AbstractBaseAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		ActionForward forward = null;
-		
+
 		try {
 			DynaValidatorActionForm theForm = (DynaValidatorActionForm) form;
 			String sampleIdPrefix = (String) theForm.get("sampleIdPrefix");
@@ -154,8 +154,6 @@ public class PreCreateSampleAction extends AbstractBaseAction {
 	}
 
 	public boolean loginRequired() {
-		// temporarily set to false until login module is working
-		return false;
-		// return true;
+		return true;
 	}
 }

@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: EditAliquotAction.java,v 1.3 2006-03-30 15:27:15 pansu Exp $ */
+/* CVS $Id: EditAliquotAction.java,v 1.4 2006-04-07 15:29:37 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
@@ -68,8 +68,6 @@ public class EditAliquotAction extends AbstractBaseAction {
 	}
 
 	public boolean loginRequired() {
-		// temporarily set to false until login module is working
-		return false;
-		// return true;
+		return true;
 	}
 }

@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: PreEditAliquotAction.java,v 1.2 2006-03-20 20:47:39 pansu Exp $ */
+/* CVS $Id: PreEditAliquotAction.java,v 1.3 2006-04-07 15:29:37 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
@@ -55,8 +55,8 @@ public class PreEditAliquotAction extends AbstractBaseAction {
 			}
 
 		} catch (Exception e) {
-			ActionMessages errors=new ActionMessages();
-			ActionMessage error=new ActionMessage("error.preEditAliquot");
+			ActionMessages errors = new ActionMessages();
+			ActionMessage error = new ActionMessage("error.preEditAliquot");
 			errors.add("error", error);
 			saveMessages(request, errors);
 			logger.error("Caught exception when showing edit aliquot page", e);
@@ -66,8 +66,6 @@ public class PreEditAliquotAction extends AbstractBaseAction {
 	}
 
 	public boolean loginRequired() {
-		// temporarily set to false until login module is working
-		return false;
-		// return true;
+		return true;
 	}
 }
