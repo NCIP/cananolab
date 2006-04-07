@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: ViewSampleDetailAction.java,v 1.2 2006-04-04 15:34:55 pansu Exp $ */
+/* CVS $Id: ViewSampleDetailAction.java,v 1.3 2006-04-07 15:29:53 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.SampleBean;
@@ -97,8 +97,6 @@ public class ViewSampleDetailAction extends AbstractBaseAction {
 	}
 
 	public boolean loginRequired() {
-		// temporarily set to false until login module is working
 		return false;
-		// return true;
 	}
 }

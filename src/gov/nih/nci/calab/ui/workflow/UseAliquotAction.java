@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.workflow;
  * @author pansu
  */
 
-/* CVS $Id: UseAliquotAction.java,v 1.6 2006-03-21 17:24:06 pansu Exp $*/
+/* CVS $Id: UseAliquotAction.java,v 1.7 2006-04-07 15:30:05 pansu Exp $*/
 
 import gov.nih.nci.calab.service.workflow.ExecuteWorkflowService;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
@@ -56,9 +56,7 @@ public class UseAliquotAction extends AbstractBaseAction {
 	}
 
 	public boolean loginRequired() {
-		// temporarily set to false until login module is working
-		return false;
-		// return true;
+		return true;
 	}
 
 }

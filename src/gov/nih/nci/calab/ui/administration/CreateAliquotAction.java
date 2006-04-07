@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: CreateAliquotAction.java,v 1.7 2006-04-04 15:33:34 pansu Exp $ */
+/* CVS $Id: CreateAliquotAction.java,v 1.8 2006-04-07 15:29:37 pansu Exp $ */
 
 import gov.nih.nci.calab.service.administration.ManageAliquotService;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
@@ -77,8 +77,6 @@ public class CreateAliquotAction extends AbstractBaseAction {
 	}
 
 	public boolean loginRequired() {
-		// temporarily set to false until login module is working
-		return false;
-		// return true;
+	    return true;
 	}
 }

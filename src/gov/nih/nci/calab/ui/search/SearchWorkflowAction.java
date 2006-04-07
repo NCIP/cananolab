@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchWorkflowAction.java,v 1.3 2006-03-28 23:04:10 pansu Exp $ */
+/* CVS $Id: SearchWorkflowAction.java,v 1.4 2006-04-07 15:29:53 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.search.WorkflowResultBean;
 import gov.nih.nci.calab.service.search.SearchWorkflowService;
@@ -104,9 +104,7 @@ public class SearchWorkflowAction extends AbstractBaseAction {
 	}
 
 	public boolean loginRequired() {
-		// temporarily set to false until login module is working
-		return false;
-		// return true;
+		return true;
 	}
 
 }
