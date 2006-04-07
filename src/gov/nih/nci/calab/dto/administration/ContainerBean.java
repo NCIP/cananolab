@@ -1,5 +1,11 @@
 package gov.nih.nci.calab.dto.administration;
 
+import java.util.List;
+import java.util.Set;
+
+import gov.nih.nci.calab.domain.SampleContainer;
+import gov.nih.nci.calab.domain.StorageElement;
+import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 
 /**
@@ -9,7 +15,7 @@ import gov.nih.nci.calab.service.util.StringUtils;
  * @author pansu
  * 
  */
-/* CVS $Id: ContainerBean.java,v 1.3 2006-03-28 22:58:35 pansu Exp $ */
+/* CVS $Id: ContainerBean.java,v 1.4 2006-04-07 21:04:20 pansu Exp $ */
 
 public class ContainerBean {
 	private String containerType;
@@ -66,6 +72,46 @@ public class ContainerBean {
 		this.containerComments = containerComments;
 	}
 
+	public ContainerBean(SampleContainer container) {
+		this.containerType=container.getContainerType();
+		this.quantity=container.getQuantity()+"";
+		this.quantityUnit=container.getQuantityUnit();
+		this.concentration=container.getConcentration()+"";
+		this.concentrationUnit=container.getConcentrationUnit();
+		this.volume=container.getVolume()+"";
+		this.volumeUnit=container.getVolumeUnit();
+		this.solvent=container.getDiluentsSolvent();
+		this.safetyPrecaution=container.getSafetyPrecaution();
+		this.storageCondition=container.getStorageCondition();		
+		this.containerComments=container.getComments();
+		
+		Set storageElements=(Set)container.getStorageElementCollection();
+		String lab="", room="", freezer="", shelf="", rack="", box="";
+		for (Object obj: storageElements) {
+			StorageElement element=(StorageElement)obj;
+			String location=element.getLocation();
+			if (element.getType().equals(CalabConstants.STORAGE_LAB)) {
+				lab=location;
+			}
+			else if (element.getType().equals(CalabConstants.STORAGE_ROOM)) {
+				room=location;
+			}
+			else if (element.getType().equals(CalabConstants.STORAGE_FREEZER)) {
+				freezer=location;
+			}
+			else if (element.getType().equals(CalabConstants.STORAGE_SHELF)) {
+				shelf=location;
+			}
+			else if (element.getType().equals(CalabConstants.STORAGE_RACK)) {
+				rack=location;
+			}
+			else if (element.getType().equals(CalabConstants.STORAGE_BOX)) {
+				box=location;
+			}
+		}
+		this.storageLocation=new StorageLocation(lab, room, freezer, shelf, rack, box);
+	}
+	
 	public String getConcentration() {
 		return concentration;
 	}
