@@ -1,5 +1,14 @@
 package gov.nih.nci.calab.dto.administration;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+
+import gov.nih.nci.calab.domain.Sample;
+import gov.nih.nci.calab.domain.SampleContainer;
+import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.StringUtils;
+
 /**
  * This class represents all properties of a sample that need to be viewed and
  * saved.
@@ -8,7 +17,7 @@ package gov.nih.nci.calab.dto.administration;
  * 
  */
 
-/* CVS $Id: SampleBean.java,v 1.4 2006-04-07 13:40:57 pansu Exp $ */
+/* CVS $Id: SampleBean.java,v 1.5 2006-04-07 21:04:20 pansu Exp $ */
 public class SampleBean {
 	private String sampleIdPrefix;
 
@@ -99,6 +108,32 @@ public class SampleBean {
 		this.sampleIdPrefix = sampleIdPrefix;
 		this.containers = containers;
 
+	}
+
+	public SampleBean(Sample sample) {
+		this.sampleId = sample.getName();
+		this.sampleType = sample.getType();
+		this.sampleSOP = (sample.getSampleSOP()==null)?"":sample.getSampleSOP().getName();
+		this.sampleDescription = sample.getDescription();
+		this.sampleSource = (sample.getSource()==null)?"":sample.getSource().getOrganizationName();
+		this.sourceSampleId = sample.getSourceSampleId();
+		this.dateReceived = StringUtils.convertDateToString(sample
+				.getReceivedDate(), CalabConstants.DATE_FORMAT);
+		this.solubility=sample.getSolubility();
+		this.lotId=sample.getLotId();
+		this.lotDescription=sample.getLotDescription();
+		Set sampleContainers=(Set)sample.getSampleContainerCollection();
+		this.numberOfContainers=sampleContainers.size()+"";
+		this.generalComments=sample.getComments();
+		this.sampleSubmitter=sample.getCreatedBy();
+		this.accessionDate=StringUtils.convertDateToString(sample.getCreatedDate(), CalabConstants.DATE_FORMAT);
+		this.containers=new ContainerBean[sampleContainers.size()];		
+		
+		int i=0;
+		for (Object obj: sampleContainers) {
+			SampleContainer sampleContainer=(SampleContainer)obj;
+			containers[i]=new ContainerBean(sampleContainer);
+		}
 	}
 
 	public String getDateReceived() {
