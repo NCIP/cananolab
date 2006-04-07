@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: CreateSampleAction.java,v 1.10 2006-04-04 15:33:45 pansu Exp $ */
+/* CVS $Id: CreateSampleAction.java,v 1.11 2006-04-07 13:41:23 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.ContainerBean;
 import gov.nih.nci.calab.dto.administration.SampleBean;
@@ -61,7 +61,7 @@ public class CreateSampleAction extends AbstractBaseAction {
 			ContainerBean[] containers = (ContainerBean[]) theForm
 					.get("containers");
 
-			SampleBean sample = new SampleBean(sampleId, sampleType, sampleSOP,
+			SampleBean sample = new SampleBean(sampleIdPrefix, sampleId, sampleType, sampleSOP,
 					sampleDescription, sampleSource, sourceSampleId,
 					dateReceived, solubility, lotId, lotDescription,
 					numContainers, generalComments, sampleSubmitter,
@@ -69,7 +69,7 @@ public class CreateSampleAction extends AbstractBaseAction {
 
 			request.setAttribute("sample", sample);
 
-			manageSampleService.saveSample(sample, containers, generalComments);
+			manageSampleService.saveSample(sample, containers);
             //set a flag to indicate that new sample have been created so session can 
 			//be refreshed in initSession.do
 			session.setAttribute("newSampleCreated", "yes");
@@ -87,8 +87,6 @@ public class CreateSampleAction extends AbstractBaseAction {
 	}
 
 	public boolean loginRequired() {
-		// temporarily set to false until login module is working
-		return false;
-		// return true;
+		return true;
 	}
 }
