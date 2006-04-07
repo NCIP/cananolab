@@ -1,6 +1,7 @@
 package gov.nih.nci.calab.db;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -102,6 +103,7 @@ public class HibernateDataAccess implements IDataAccess {
     
     public Object createObject(Object obj) throws Exception
     {
+    	// check if the obj exist in database, if it is, return the serializable id
     	return session.save(obj);
 //    	throw new Exception ("Not supported yet");
     }
@@ -145,5 +147,49 @@ public class HibernateDataAccess implements IDataAccess {
     public Object load(Class klass, Serializable id) throws Exception
     {
     	return session.load(klass, id);
+    }
+    
+    public List searchByParam(String hqlString, List paramList)
+    {
+    	Query query = session.createQuery(hqlString);
+    	int i = 0;
+    	for(Object valueObj: paramList)
+    	{
+//			log.debug("NestCriteria2HQL. param list i = " + i + " | value = " + valueObj);				
+			if (valueObj instanceof String)
+			{
+				query.setString(i, (String)valueObj);
+			}
+			else if (valueObj instanceof Long)
+			{
+				query.setLong(i, ((Long)valueObj).longValue());
+			}
+			else if (valueObj instanceof Date)
+			{
+				query.setDate(i,(Date)valueObj);
+			}
+			else if (valueObj instanceof Boolean)
+			{
+				query.setBoolean(i, ((Boolean)valueObj).booleanValue());
+			}
+			else if (valueObj instanceof Double)
+			{
+				query.setDouble(i, ((Double)valueObj).doubleValue());
+			}
+			else if (valueObj instanceof Float)
+			{
+				query.setFloat(i, ((Float)valueObj).floatValue());
+			}
+			else if (valueObj instanceof Integer)
+			{
+				query.setInteger(i, ((Integer)valueObj).intValue());
+			}
+			else
+			{
+				query.setString(i, valueObj.toString());
+			}
+			i++;
+    	}
+    	return query.list();
     }
 }

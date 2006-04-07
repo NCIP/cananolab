@@ -120,4 +120,9 @@ public class DataAccessProxy implements IDataAccess {
 		return access;
 	}
 
+	public List searchByParam (String hqlstring, List paramList) throws Exception
+	{
+		return access.searchByParam(hqlstring, paramList);
+	}
+
 }
