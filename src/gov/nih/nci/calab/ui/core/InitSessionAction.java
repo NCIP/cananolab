@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.5 2006-04-06 19:51:55 pansu Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.6 2006-04-07 15:26:17 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
 import gov.nih.nci.calab.dto.security.SecurityBean;
@@ -43,6 +43,7 @@ public class InitSessionAction extends AbstractBaseAction {
 		HttpSession session = request.getSession();
 		ActionForward forward = null;
 		String forwardPage = null;
+		String urlPrefix=request.getContextPath();		
 
 		try {
 			DynaActionForm theForm = (DynaActionForm) form;
@@ -60,7 +61,7 @@ public class InitSessionAction extends AbstractBaseAction {
 				setCreateSampleSession(session, lookupService);
 
 			} else if (forwardPage.equals("createAliquot")) {
-				setCreateAliquotSession(session, lookupService);
+				setCreateAliquotSession(session, lookupService, urlPrefix);
 			} else if (forwardPage.equals("searchWorkflow")) {
 				setSearchWorkflowSession(session, lookupService);
 			} else if (forwardPage.equals("searchSample")) {
@@ -154,7 +155,7 @@ public class InitSessionAction extends AbstractBaseAction {
 	 * @param lookupService
 	 */
 	private void setCreateAliquotSession(HttpSession session,
-			LookupService lookupService) {
+			LookupService lookupService, String urlPrefix) {
 		ManageAliquotService manageAliquotService = new ManageAliquotService();
 
 		if (session.getAttribute("allSampleIds") == null
@@ -174,7 +175,7 @@ public class InitSessionAction extends AbstractBaseAction {
 			session.setAttribute("aliquotContainerInfo", containerInfo);
 		}
 		if (session.getAttribute("aliquotCreateMethods") == null) {
-			List methods = manageAliquotService.getAliquotCreateMethods();
+			List methods = manageAliquotService.getAliquotCreateMethods(urlPrefix);
 			session.setAttribute("aliquotCreateMethods", methods);
 		}
 		// clear the form in the session
