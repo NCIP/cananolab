@@ -5,7 +5,10 @@
   <class name="StorageElement" table="Storage" lazy="true" polymorphism="explicit">
     <cache usage="read-write" />
     <id name="id" type="java.lang.Long" column="STORAGE_PK_ID">
-      <generator class="assigned" />
+      <generator class="org.hibernate.id.TableHiLoGenerator">
+  	  			<param name="table">hibernate_unique_key</param>
+				<param name="column">next_hi</param>
+	   </generator>
     </id>
     <property name="location" type="java.lang.String" column="STORAGE_LOCATION" />
     <property name="type" type="java.lang.String" column="STORAGE_TYPE" />
