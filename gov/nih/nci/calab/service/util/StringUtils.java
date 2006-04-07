@@ -5,6 +5,8 @@ import java.util.Date;
 
 import org.apache.log4j.Logger;
 
+import java.util.List;
+
 /**
  * This class contains a set of utilities for converting Strings to other
  * formats or converting other formats to String.
@@ -12,7 +14,7 @@ import org.apache.log4j.Logger;
  * @author pansu
  * 
  */
-/* CVS $Id: StringUtils.java,v 1.4 2006-04-07 13:25:14 zengje Exp $ */
+/* CVS $Id: StringUtils.java,v 1.5 2006-04-07 21:05:10 pansu Exp $ */
 
 public class StringUtils {
 	private static Logger logger = Logger.getLogger(StringUtils.class);
@@ -57,6 +59,28 @@ public class StringUtils {
 		return joinedStr;
 	}
 
+	public static String join(List<String> stringList, String delimiter) {
+		String joinedStr = "";
+		if (stringList == null || stringList.isEmpty()) {
+			return joinedStr;
+		}
+		int i=0;
+		for (String str: stringList) {
+		    if (str == null) {
+				str = "";
+			}
+			if ((str.length() > 0)) {
+				if (i < stringList.size() - 1) {
+					joinedStr += str + delimiter;
+				} else {
+					joinedStr += str;
+				}
+			}
+			i++;
+		}
+		return joinedStr;
+	}
+	
 	public static String convertDateToString(Date date, String format) {
 		if (date==null) {
 			return "";
