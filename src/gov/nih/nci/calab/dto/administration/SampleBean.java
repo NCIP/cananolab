@@ -1,6 +1,5 @@
 package gov.nih.nci.calab.dto.administration;
 
-
 /**
  * This class represents all properties of a sample that need to be viewed and
  * saved.
@@ -9,8 +8,10 @@ package gov.nih.nci.calab.dto.administration;
  * 
  */
 
-/* CVS $Id: SampleBean.java,v 1.3 2006-04-04 15:31:45 pansu Exp $ */
+/* CVS $Id: SampleBean.java,v 1.4 2006-04-07 13:40:57 pansu Exp $ */
 public class SampleBean {
+	private String sampleIdPrefix;
+
 	private String sampleId;
 
 	private String sampleType;
@@ -42,15 +43,14 @@ public class SampleBean {
 	private ContainerBean[] containers;
 
 	public SampleBean() {
-		
+
 	}
-	
+
 	public SampleBean(String sampleId, String sampleType, String sampleSOP,
 			String sampleDescription, String sampleSource,
 			String sourceSampleId, String dateReceived, String solubility,
 			String lotId, String lotDescription, String numberOfContainers,
-			String generalComments, String sampleSubmitter,
-			String accessionDate) {
+			String generalComments, String sampleSubmitter, String accessionDate) {
 		super();
 		// TODO Auto-generated constructor stub
 		this.sampleId = sampleId;
@@ -66,32 +66,39 @@ public class SampleBean {
 		this.numberOfContainers = numberOfContainers;
 		this.generalComments = generalComments;
 		this.sampleSubmitter = sampleSubmitter;
-		this.accessionDate=accessionDate;
+		this.accessionDate = accessionDate;
 	}
-	
+
 	public SampleBean(String sampleId, String sampleType, String sampleSOP,
 			String sampleDescription, String sampleSource,
 			String sourceSampleId, String dateReceived, String solubility,
 			String lotId, String lotDescription, String numberOfContainers,
 			String generalComments, String sampleSubmitter,
 			String accessionDate, ContainerBean[] containers) {
-		super();
 		// TODO Auto-generated constructor stub
-		this.sampleId = sampleId;
-		this.sampleType = sampleType;
-		this.sampleSOP = sampleSOP;
-		this.sampleDescription = sampleDescription;
-		this.sampleSource = sampleSource;
-		this.sourceSampleId = sourceSampleId;
-		this.dateReceived = dateReceived;
-		this.lotId = lotId;
-		this.lotDescription = lotDescription;
-		this.solubility = solubility;
-		this.numberOfContainers = numberOfContainers;
-		this.generalComments = generalComments;
-		this.sampleSubmitter = sampleSubmitter;
-		this.accessionDate=accessionDate;
+		this(sampleId, sampleType, sampleSOP, sampleDescription, sampleSource,
+				sourceSampleId, dateReceived, lotId, lotDescription,
+				solubility, numberOfContainers, generalComments,
+				sampleSubmitter, accessionDate);
 		this.containers = containers;
+
+	}
+
+	public SampleBean(String sampleIdPrefix, String sampleId,
+			String sampleType, String sampleSOP, String sampleDescription,
+			String sampleSource, String sourceSampleId, String dateReceived,
+			String solubility, String lotId, String lotDescription,
+			String numberOfContainers, String generalComments,
+			String sampleSubmitter, String accessionDate,
+			ContainerBean[] containers) {
+		// TODO Auto-generated constructor stub
+		this(sampleId, sampleType, sampleSOP, sampleDescription, sampleSource,
+				sourceSampleId, dateReceived, lotId, lotDescription,
+				solubility, numberOfContainers, generalComments,
+				sampleSubmitter, accessionDate);
+		this.sampleIdPrefix = sampleIdPrefix;
+		this.containers = containers;
+
 	}
 
 	public String getDateReceived() {
@@ -212,6 +219,14 @@ public class SampleBean {
 
 	public void setContainers(ContainerBean[] containers) {
 		this.containers = containers;
+	}
+
+	public String getSampleIdPrefix() {
+		return sampleIdPrefix;
+	}
+
+	public void setSampleIdPrefix(String sampleIdPrefix) {
+		this.sampleIdPrefix = sampleIdPrefix;
 	}
 
 }
