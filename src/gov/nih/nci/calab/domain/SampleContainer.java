@@ -1,9 +1,8 @@
 
 
 package gov.nih.nci.calab.domain;
-import gov.nih.nci.calab.domain.*;
+
 import gov.nih.nci.system.applicationservice.*;
-import java.util.*;
 
 /**
  * <!-- LICENSE_TEXT_START -->
@@ -165,226 +164,161 @@ public  class SampleContainer
 	      this.createdMethod = createdMethod;
 	   }
 	
-
-	
-	   
-	   
-	   
-	      
 			
-			
-	   		public java.util.Collection storageElementCollection;
-			public java.util.Collection getStorageElementCollection(){
-			try{
-				   if(storageElementCollection.size() == 0) {}
-			           } catch(Exception e) {			     
-				      ApplicationService applicationService = ApplicationServiceProvider.getApplicationService();
-				      try {
-				      
-				      
-				         
-					 	gov.nih.nci.calab.domain.SampleContainer thisIdSet = new gov.nih.nci.calab.domain.SampleContainer();
-				         	thisIdSet.setId(this.getId());
-				         	java.util.Collection resultList = applicationService.search("gov.nih.nci.calab.domain.StorageElement", thisIdSet);				 
-				         	storageElementCollection = resultList;  
-					 	return resultList;
-					 
-				      
-				      }catch(Exception ex) 
-				      {
-				      	System.out.println("SampleContainer:getStorageElementCollection throws exception ... ...");
-				   		ex.printStackTrace(); 
-				      }
-				   }	
-		              return storageElementCollection;
-			 		
-              }
-                        
-	      
-	               
-	   
-	   
+   		public java.util.Collection storageElementCollection;
+		public java.util.Collection getStorageElementCollection(){
+//		try{
+//			   if(storageElementCollection.size() == 0) {}
+//		           } catch(Exception e) {			     
+//			      ApplicationService applicationService = ApplicationServiceProvider.getApplicationService();
+//			      try {
+//			    	  gov.nih.nci.calab.domain.SampleContainer thisIdSet = new gov.nih.nci.calab.domain.SampleContainer();
+//			         	thisIdSet.setId(this.getId());
+//			         	java.util.Collection resultList = applicationService.search("gov.nih.nci.calab.domain.StorageElement", thisIdSet);				 
+//			         	storageElementCollection = resultList;  
+//				 	return resultList;
+//				 
+//			      
+//			      }catch(Exception ex) 
+//			      {
+//			      	System.out.println("SampleContainer:getStorageElementCollection throws exception ... ...");
+//			   		ex.printStackTrace(); 
+//			      }
+//			   }	
+	              return storageElementCollection;
+		 		
+          }
+                    
 	   
 	   public void setStorageElementCollection(java.util.Collection StorageElementCollection){
 		this.storageElementCollection = storageElementCollection;
 	   }	
 	   
-	   
-	
-	   
-	   
-	   
-	      
-	   		public java.util.Collection parentSampleContainerCollection = new java.util.HashSet();
-			public java.util.Collection getParentSampleContainerCollection(){
-			try{
-			   if(parentSampleContainerCollection.size() == 0) {}
-		           } catch(Exception e) {			     
-			      ApplicationService applicationService = ApplicationServiceProvider.getApplicationService();
-			      try {
-			      
-			      
-			         
-				 	gov.nih.nci.calab.domain.SampleContainer thisIdSet = new gov.nih.nci.calab.domain.SampleContainer();
-			         	thisIdSet.setId(this.getId());
-			         	java.util.Collection resultList = applicationService.search("gov.nih.nci.calab.domain.SampleContainer", thisIdSet);				 
-				 	parentSampleContainerCollection = resultList;  
-				 	return resultList;
-				 
-			      
-			      }catch(Exception ex) 
-			      {
-			      	System.out.println("SampleContainer:getParentSampleContainerCollection throws exception ... ...");
-			   		ex.printStackTrace(); 
-			      }
-			   }	
-	              return parentSampleContainerCollection;
-	          }
-			   
-			   
-			   
-			   
-			   
-	      
-	               
+   		public java.util.Collection parentSampleContainerCollection = new java.util.HashSet();
+		public java.util.Collection getParentSampleContainerCollection(){
+//		try{
+//		   if(parentSampleContainerCollection.size() == 0) {}
+//	           } catch(Exception e) {			     
+//		      ApplicationService applicationService = ApplicationServiceProvider.getApplicationService();
+//		      try {
+//		      
+//		      
+//		         
+//			 	gov.nih.nci.calab.domain.SampleContainer thisIdSet = new gov.nih.nci.calab.domain.SampleContainer();
+//		         	thisIdSet.setId(this.getId());
+//		         	java.util.Collection resultList = applicationService.search("gov.nih.nci.calab.domain.SampleContainer", thisIdSet);				 
+//			 	parentSampleContainerCollection = resultList;  
+//			 	return resultList;
+//			 
+//		      
+//		      }catch(Exception ex) 
+//		      {
+//		      	System.out.println("SampleContainer:getParentSampleContainerCollection throws exception ... ...");
+//		   		ex.printStackTrace(); 
+//		      }
+//		   }	
+              return parentSampleContainerCollection;
+          }
 	   
 	   	public void setParentSampleContainerCollection(java.util.Collection parentSampleContainerCollection){
 	   		this.parentSampleContainerCollection = parentSampleContainerCollection;
 	        }	
 	   
-	   
-	
-	   
-	   
-	   
 	      
-	   		public java.util.Collection childSampleContainerCollection = new java.util.HashSet();
-			public java.util.Collection getChildSampleContainerCollection(){
-			try{
-			   if(childSampleContainerCollection.size() == 0) {}
-		           } catch(Exception e) {			     
-			      ApplicationService applicationService = ApplicationServiceProvider.getApplicationService();
-			      try {
-			      
-			      
-			         
-				 	gov.nih.nci.calab.domain.SampleContainer thisIdSet = new gov.nih.nci.calab.domain.SampleContainer();
-			         	thisIdSet.setId(this.getId());
-			         	java.util.Collection resultList = applicationService.search("gov.nih.nci.calab.domain.SampleContainer", thisIdSet);				 
-				 	childSampleContainerCollection = resultList;  
-				 	return resultList;
-				 
-			      
-			      }catch(Exception ex) 
-			      {
-			      	System.out.println("SampleContainer:getChildSampleContainerCollection throws exception ... ...");
-			   		ex.printStackTrace(); 
-			      }
-			   }	
-	              return childSampleContainerCollection;
-	          }
-			   
-			   
-			   
-			   
-			   
-	      
-	               
+   		public java.util.Collection childSampleContainerCollection = new java.util.HashSet();
+		public java.util.Collection getChildSampleContainerCollection(){
+//		try{
+//		   if(childSampleContainerCollection.size() == 0) {}
+//	           } catch(Exception e) {			     
+//		      ApplicationService applicationService = ApplicationServiceProvider.getApplicationService();
+//		      try {
+//		      
+//		      
+//		         
+//			 	gov.nih.nci.calab.domain.SampleContainer thisIdSet = new gov.nih.nci.calab.domain.SampleContainer();
+//		         	thisIdSet.setId(this.getId());
+//		         	java.util.Collection resultList = applicationService.search("gov.nih.nci.calab.domain.SampleContainer", thisIdSet);				 
+//			 	childSampleContainerCollection = resultList;  
+//			 	return resultList;
+//			 
+//		      
+//		      }catch(Exception ex) 
+//		      {
+//		      	System.out.println("SampleContainer:getChildSampleContainerCollection throws exception ... ...");
+//		   		ex.printStackTrace(); 
+//		      }
+//		   }	
+              return childSampleContainerCollection;
+          }
 	   
 	   	public void setChildSampleContainerCollection(java.util.Collection childSampleContainerCollection){
 	   		this.childSampleContainerCollection = childSampleContainerCollection;
 	        }	
 	   
-	   
-	
-	   
-	   
-	   
-	      
-	   		public java.util.Collection runSampleContainerCollection = new java.util.HashSet();
-			public java.util.Collection getRunSampleContainerCollection(){
-			try{
-			   if(runSampleContainerCollection.size() == 0) {}
-		           } catch(Exception e) {			     
-			      ApplicationService applicationService = ApplicationServiceProvider.getApplicationService();
-			      try {
-			      
-			      
-			         
-				 	gov.nih.nci.calab.domain.SampleContainer thisIdSet = new gov.nih.nci.calab.domain.SampleContainer();
-			         	thisIdSet.setId(this.getId());
-			         	java.util.Collection resultList = applicationService.search("gov.nih.nci.calab.domain.RunSampleContainer", thisIdSet);				 
-				 	runSampleContainerCollection = resultList;  
-				 	return resultList;
-				 
-			      
-			      }catch(Exception ex) 
-			      {
-			      	System.out.println("SampleContainer:getRunSampleContainerCollection throws exception ... ...");
-			   		ex.printStackTrace(); 
-			      }
-			   }	
-	              return runSampleContainerCollection;
-	          }
-			   
-			   
-			   
-			   
-			   
-	      
-	               
+   		public java.util.Collection runSampleContainerCollection = new java.util.HashSet();
+		public java.util.Collection getRunSampleContainerCollection(){
+//		try{
+//		   if(runSampleContainerCollection.size() == 0) {}
+//	           } catch(Exception e) {			     
+//		      ApplicationService applicationService = ApplicationServiceProvider.getApplicationService();
+//		      try {
+//		      
+//		      
+//		         
+//			 	gov.nih.nci.calab.domain.SampleContainer thisIdSet = new gov.nih.nci.calab.domain.SampleContainer();
+//		         	thisIdSet.setId(this.getId());
+//		         	java.util.Collection resultList = applicationService.search("gov.nih.nci.calab.domain.RunSampleContainer", thisIdSet);				 
+//			 	runSampleContainerCollection = resultList;  
+//			 	return resultList;
+//			 
+//		      
+//		      }catch(Exception ex) 
+//		      {
+//		      	System.out.println("SampleContainer:getRunSampleContainerCollection throws exception ... ...");
+//		   		ex.printStackTrace(); 
+//		      }
+//		   }	
+              return runSampleContainerCollection;
+          }
 	   
 	   	public void setRunSampleContainerCollection(java.util.Collection runSampleContainerCollection){
 	   		this.runSampleContainerCollection = runSampleContainerCollection;
 	        }	
-	   
-	   
-	
-	   
-	   
-	   
-	      
 			
-			
-			
-			
-	   		protected gov.nih.nci.calab.domain.Sample sample;
-			public gov.nih.nci.calab.domain.Sample getSample(){
-			
-			
-			
-			  ApplicationService applicationService = ApplicationServiceProvider.getApplicationService();
-			  gov.nih.nci.calab.domain.SampleContainer thisIdSet = new gov.nih.nci.calab.domain.SampleContainer();
-			  thisIdSet.setId(this.getId());
-			  
-			  try {
-			     java.util.List resultList = applicationService.search("gov.nih.nci.calab.domain.Sample", thisIdSet);				 
-		             if (resultList!=null && resultList.size()>0) {
-		                sample = (gov.nih.nci.calab.domain.Sample)resultList.get(0);
-		             }
-		          
-			  } catch(Exception ex) 
-			  { 
-			      	System.out.println("SampleContainer:getSample throws exception ... ...");
-			   		ex.printStackTrace(); 
-			  }
-			  return sample;	
-			 
-			 		
-           }
-		   
-	      
-	               
-	   
-	   
+   		protected gov.nih.nci.calab.domain.Sample sample;
+		public gov.nih.nci.calab.domain.Sample getSample(){
+		
+		  ApplicationService applicationService = ApplicationServiceProvider.getApplicationService();
+		  gov.nih.nci.calab.domain.SampleContainer thisIdSet = new gov.nih.nci.calab.domain.SampleContainer();
+		  thisIdSet.setId(this.getId());
+		  
+		  try {
+		     java.util.List resultList = applicationService.search("gov.nih.nci.calab.domain.Sample", thisIdSet);				 
+	             if (resultList!=null && resultList.size()>0) {
+	                sample = (gov.nih.nci.calab.domain.Sample)resultList.get(0);
+	             }
+	          
+		  } catch(Exception ex) 
+		  { 
+		      	System.out.println("SampleContainer:getSample throws exception ... ...");
+		   		ex.printStackTrace(); 
+		  }
+		  return sample;	
+       }
 	   
 	   public void setSample(gov.nih.nci.calab.domain.Sample sample){
 		this.sample = sample;
 	   }	
 	   
 	   
-	
-
+	   private gov.nih.nci.calab.domain.DataStatus dataStatus;
+	   public gov.nih.nci.calab.domain.DataStatus getDataStatus() {
+		   return this.dataStatus;
+	   }
+	   public void setDataStatus(DataStatus dataStatus) {
+		   this.dataStatus = dataStatus;
+	   }
+	   
 		public boolean equals(Object obj){
 			boolean eq = false;
 			if(obj instanceof SampleContainer) {
