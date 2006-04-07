@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
  * @author pansu
  * 
  */
-/* CVS $Id: StringUtils.java,v 1.3 2006-04-06 15:41:48 pansu Exp $ */
+/* CVS $Id: StringUtils.java,v 1.4 2006-04-07 13:25:14 zengje Exp $ */
 
 public class StringUtils {
 	private static Logger logger = Logger.getLogger(StringUtils.class);
@@ -86,4 +86,17 @@ public class StringUtils {
 			logger.error("Error converting the given string to a float number", e);
 			throw new RuntimeException("Can't convert the given string to a float number: "+floatStr);		}
 	}
+	
+	public static Long convertToLong(String longStr) {
+		if (longStr == null || longStr=="") {
+			return null;
+		}
+		try {
+			Long longNum = Long.parseLong(longStr);
+			return longNum;
+		} catch (NumberFormatException e) {
+			logger.error("Error converting the given string to a long number", e);
+			throw new RuntimeException("Can't convert the given string to a long number: "+longStr);		}
+	}
+
 }
