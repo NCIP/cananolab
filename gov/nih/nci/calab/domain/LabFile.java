@@ -1,10 +1,6 @@
 
 
 package gov.nih.nci.calab.domain;
-import gov.nih.nci.calab.domain.*;
-import gov.nih.nci.system.applicationservice.*;
-
-import java.util.*;
 
 /**
  * <!-- LICENSE_TEXT_START -->
@@ -63,8 +59,7 @@ public  abstract class LabFile
 	   public void setVersion( java.lang.String version){
 	      this.version = version;
 	   }
-	
-
+	   
 	   private java.lang.String path;
 	   public  java.lang.String getPath(){
 	      return path;
@@ -73,7 +68,15 @@ public  abstract class LabFile
 	      this.path = path;
 	   }
 
-		public boolean equals(Object obj){
+	   private gov.nih.nci.calab.domain.DataStatus dataStatus;
+	   public gov.nih.nci.calab.domain.DataStatus getDataStatus() {
+		   return this.dataStatus;
+	   }
+	   public void setDataStatus(DataStatus dataStatus) {
+		   this.dataStatus = dataStatus;
+	   }
+
+	   public boolean equals(Object obj){
 			boolean eq = false;
 			if(obj instanceof InputFile) {
 				InputFile c =(InputFile)obj; 			 
