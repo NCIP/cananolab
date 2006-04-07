@@ -2,6 +2,8 @@ package gov.nih.nci.calab.service.administration;
 
 import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
+import gov.nih.nci.calab.domain.Aliquot;
+import gov.nih.nci.calab.domain.SampleContainer;
 import gov.nih.nci.calab.domain.SampleSOP;
 
 import java.util.ArrayList;
@@ -16,7 +18,7 @@ import org.apache.struts.util.LabelValueBean;
  * 
  */
 
-/* CVS $Id: ManageAliquotService.java,v 1.7 2006-04-07 15:27:13 pansu Exp $ */
+/* CVS $Id: ManageAliquotService.java,v 1.8 2006-04-07 18:27:19 pansu Exp $ */
 
 public class ManageAliquotService {
 	private static Logger logger = Logger.getLogger(ManageAliquotService.class);
@@ -75,21 +77,65 @@ public class ManageAliquotService {
 	public int getFirstAliquotNum(String sampleId, String parentAliquotId) {
 		int aliquotNum = 0;
 		if (parentAliquotId.length() == 0) {
-			aliquotNum = getLastSampleNum() + 1;
+			aliquotNum = getLastSampleAliquotNum(sampleId) + 1;
 		} else {
-			aliquotNum = getLastAliquotNum() + 1;
+			aliquotNum = getLastAliquotChildAliquotNum(parentAliquotId) + 1;
 		}
 		return aliquotNum;
 	}
 
-	private int getLastSampleNum() {
-		// TODO query db for the actual data
-		return 0;
+	private int getLastSampleAliquotNum(String sampleId) {
+		int aliquotNum=0;
+		try {
+			IDataAccess ida = (new DataAccessProxy())
+					.getInstance(IDataAccess.TOOLKITAPI);
+			ida.open();
+			String hqlString = "select container from Sample sample join sample.sampleContainerCollection container where sample.name='"+sampleId+"'";
+			List results = ida.query(hqlString, SampleSOP.class.getName());
+			for (Object obj : results) {
+				SampleContainer container=(SampleContainer)obj;
+				if (container instanceof Aliquot) {
+					String aliquotName=((Aliquot)container).getName();
+					String[] aliquotNameParts=aliquotName.split("-");
+					int aliquotSeqNum=Integer.parseInt(aliquotNameParts[aliquotNameParts.length]);
+					if (aliquotSeqNum>aliquotNum) {
+						aliquotNum=aliquotSeqNum;						
+					}
+				}
+			}
+			ida.close();
+		} catch (Exception e) {
+			logger.error("Error in retrieving the last sample aliquot number", e);
+			throw new RuntimeException("Error in retrieving the last sample aliquot number");
+		}
+		return aliquotNum;
 	}
 
-	private int getLastAliquotNum() {
-		// TODO query db for the actual data
-		return 0;
+	private int getLastAliquotChildAliquotNum(String parentAliquotId) {
+		int aliquotNum=0;
+		try {
+			IDataAccess ida = (new DataAccessProxy())
+					.getInstance(IDataAccess.TOOLKITAPI);
+			ida.open();
+			String hqlString = "select child from Aliquot parent join parent.childSampleContainerCollection child where parent.name='"+parentAliquotId+"'";
+			List results = ida.query(hqlString, SampleSOP.class.getName());
+			for (Object obj : results) {
+				SampleContainer container=(SampleContainer)obj;
+				if (container instanceof Aliquot) {
+					String aliquotName=((Aliquot)container).getName();
+					String[] aliquotNameParts=aliquotName.split("-");
+					int aliquotSeqNum=Integer.parseInt(aliquotNameParts[aliquotNameParts.length]);
+					if (aliquotSeqNum>aliquotNum) {
+						aliquotNum=aliquotSeqNum;						
+					}
+				}
+			}
+			ida.close();
+		} catch (Exception e) {
+			logger.error("Error in retrieving the last aliquot child aliquot number", e);
+			throw new RuntimeException("Error in retrieving the last aliquot child aliquot number");
+		}
+		return aliquotNum;
 	}
 
 	/**
