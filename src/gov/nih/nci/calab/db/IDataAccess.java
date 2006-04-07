@@ -36,4 +36,6 @@ public interface IDataAccess {
 	public abstract void removeObject(Object obj) throws Exception;
 //	public abstract List getObjects(Object obj) throws Exception;
 	public abstract Object load(Class klass, Serializable id) throws Exception;
+	
+	public abstract List searchByParam (String hqlstring, List paramList) throws Exception;
 }

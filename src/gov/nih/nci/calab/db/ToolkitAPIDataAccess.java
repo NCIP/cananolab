@@ -80,4 +80,10 @@ public class ToolkitAPIDataAccess implements IDataAccess {
 	{
 		throw new Exception( "Not supported yet");
 	}
+	
+	public List searchByParam (String hqlstring, List paramList) throws Exception
+	{
+		throw new Exception ( "Not supported yet");
+	}
+
 }
