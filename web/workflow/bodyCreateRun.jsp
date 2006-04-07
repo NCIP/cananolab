@@ -149,7 +149,8 @@
 				</div>
 			</td>
 			<td class="formFieldWhite">
-				<input type="text" value="4/3/06" name="runDate" >
+				<input type="text" value="" name="runDate" >
+				<span class="formFieldWhite"> <a href="javascript:cal.popup();"><img height="18" src="images/calendar-icon.gif" width="22" border="0" alt="Click Here to Pick up the date"></a></span>
 			</td>	
 		</tr>
 	</table>
