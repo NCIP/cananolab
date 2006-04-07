@@ -68,6 +68,12 @@ public class HibernateDataAccess implements IDataAccess {
         }
         thread.set(null);
     }
+    
+    public void rollback(){
+    	if (session.isOpen()){
+    		tx.rollback();
+    	}
+    }
 
     public List search(String hql) throws Exception {
     	List retList = session.createQuery( hql ).list();

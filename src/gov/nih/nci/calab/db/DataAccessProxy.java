@@ -35,6 +35,10 @@ public class DataAccessProxy implements IDataAccess {
 		access.close();
 	}
 
+	public void rollback()
+	{
+		access.rollback();
+	}
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.ncia.db.IDataAccess#retrieve(java.lang.String)
 	 */
@@ -106,8 +110,6 @@ public class DataAccessProxy implements IDataAccess {
 		case IDataAccess.HIBERNATE:
 			access = HibernateDataAccess.getInstance();
 			break;
-		case IDataAccess.LOCALTOOLKITAPI:
-		case IDataAccess.REMOTETOOLKITAPI:
 		case IDataAccess.TOOLKITAPI:
 			access = new ToolkitAPIDataAccess();
 			break;		
