@@ -190,7 +190,7 @@ public  class SampleContainer
           }
                     
 	   
-	   public void setStorageElementCollection(java.util.Collection StorageElementCollection){
+	   public void setStorageElementCollection(java.util.Collection storageElementCollection){
 		this.storageElementCollection = storageElementCollection;
 	   }	
 	   
