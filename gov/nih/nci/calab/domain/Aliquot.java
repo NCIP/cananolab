@@ -37,35 +37,35 @@ public  class Aliquot
 	      
 			
 			
-			private gov.nih.nci.calab.domain.DataStatus dataStatus;
-			public gov.nih.nci.calab.domain.DataStatus getDataStatus(){
-			
-              ApplicationService applicationService = ApplicationServiceProvider.getApplicationService();
-			  gov.nih.nci.calab.domain.Aliquot thisIdSet = new gov.nih.nci.calab.domain.Aliquot();
-			  thisIdSet.setId(this.getId());
-			  try {
-			  java.util.List resultList = applicationService.search("gov.nih.nci.calab.domain.DataStatus", thisIdSet);				 
-			 
-			  if (resultList!=null && resultList.size()>0) {
-			     dataStatus = (gov.nih.nci.calab.domain.DataStatus)resultList.get(0);
-			     }
-			  } catch(Exception ex) 
-			  { 
-			      	System.out.println("Aliquot:getDataStatus throws exception ... ...");
-			   		ex.printStackTrace(); 
-			  }
-			  return dataStatus;			
-			 		
-              }
-                        
-	      
-	               
-	   
-	   
-	   
-	   public void setDataStatus(gov.nih.nci.calab.domain.DataStatus dataStatus){
-		this.dataStatus = dataStatus;
-	   }	
+//			private gov.nih.nci.calab.domain.DataStatus dataStatus;
+//			public gov.nih.nci.calab.domain.DataStatus getDataStatus(){
+//			
+//              ApplicationService applicationService = ApplicationServiceProvider.getApplicationService();
+//			  gov.nih.nci.calab.domain.Aliquot thisIdSet = new gov.nih.nci.calab.domain.Aliquot();
+//			  thisIdSet.setId(this.getId());
+//			  try {
+//			  java.util.List resultList = applicationService.search("gov.nih.nci.calab.domain.DataStatus", thisIdSet);				 
+//			 
+//			  if (resultList!=null && resultList.size()>0) {
+//			     dataStatus = (gov.nih.nci.calab.domain.DataStatus)resultList.get(0);
+//			     }
+//			  } catch(Exception ex) 
+//			  { 
+//			      	System.out.println("Aliquot:getDataStatus throws exception ... ...");
+//			   		ex.printStackTrace(); 
+//			  }
+//			  return dataStatus;			
+//			 		
+//              }
+//                        
+//	      
+//	               
+//	   
+//	   
+//	   
+//	   public void setDataStatus(gov.nih.nci.calab.domain.DataStatus dataStatus){
+//		this.dataStatus = dataStatus;
+//	   }	
 	   
 	   
 	
