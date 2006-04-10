@@ -19,7 +19,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-/* CVS $Id: ManageSampleService.java,v 1.14 2006-04-09 03:48:42 zengje Exp $ 
+/* CVS $Id: ManageSampleService.java,v 1.15 2006-04-10 12:46:49 zengje Exp $ 
  */
 public class ManageSampleService {
 	private static Logger logger = Logger.getLogger(ManageSampleService.class);
@@ -166,10 +166,10 @@ public class ManageSampleService {
 			doSample.setSourceSampleId(sample.getSourceSampleId());
 			// TODO: Fill in the sample SOP info, if sampleBean can pass the primary key......
 //			doSample.setSampleSOP(ida.load(SampleSop.class, sample.getSampleSOP().));
-			String sopType = sample.getSampleSOP();
-			if ( sopType != null)
+			String sopName = sample.getSampleSOP();
+			if ( sopName != null)
 			{
-				List existedSOP = ida.search("from SampleSOP sop where sop.type = '" + sopType + "'");					
+				List existedSOP = ida.search("from SampleSOP sop where sop.name = '" + sopName + "'");					
 				SampleSOP  sop = (SampleSOP)existedSOP.get(0);
 				doSample.setSampleSOP(sop);	
 			}
