@@ -1,6 +1,6 @@
 /**
  * This is a Data Transfer Object that sends and recieves data between
- * ExecuteWorkflowAction and ExecuteWorkflowService objects 
+ * CreateRunAction and ExecuteWorkflowService objects 
  *
  */
 package gov.nih.nci.calab.dto.workflow;
