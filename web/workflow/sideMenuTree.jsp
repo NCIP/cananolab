@@ -13,9 +13,9 @@
 						  <td align="left" valign="top" class="formMessage">
      						<div class="dtree" style="white-space: nowrap;">
 							<script type="text/javascript">
-							<!--
-							get_tree();
-							//-->
+							<%
+							//DemoTree.java goes here
+							%>
 							</script>
 							</div>
                           <p>&nbsp;</p></td>
