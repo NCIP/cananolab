@@ -1,5 +1,6 @@
 package gov.nih.nci.calab.service.workflow;
 
+import gov.nih.nci.calab.dto.workflow.ExecuteWorkflowBean;
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerBean;
 import gov.nih.nci.calab.dto.administration.StorageLocation;
@@ -69,4 +70,52 @@ public class ExecuteWorkflowService {
 				"comments"), "solubilized", "Jane Doe", "10/21/2005");
 		return aliquot;
 	}
+	
+	
+	/**
+	 * Save the aliquot IDs to be associated with the given run ID.
+	 * @param assayId
+	 * @param runBy
+	 * @param runDate
+	 * @param createdBy
+	 * @param createdDate
+	 * @throws Exception
+	 */
+	public String saveRun(String assayId, String runBy, String runDate,String createdBy, String createdDate ) throws Exception {
+		// Details of Saving to RUN Table		
+		
+		String runId;
+		
+		runId= "1";  // Run Id is the primary key of the saved Run
+		
+		return runId;
+	}
+	
+	public ExecuteWorkflowBean getFileInfoForRunId(String runId) throws Exception {
+		//TODO fill in details for saving RUN INFO for the run
+		return null;
+	}
+	
+	
+	/**
+	 * Save the aliquot IDs to be associated with the given run ID.
+	 * @param fileURI
+	 * @param fileName
+	 * @param runId
+	 * @throws Exception
+	 */
+	public void saveFileInfo(String fileURI, String fileName, String runId) throws Exception {
+		//TODO fill in details for saving RUN INFO for the run
+	}
+	
+	/**
+	 * Get the File information for the given Run Id.
+	 * @param runId
+	 * @throws Exception
+	 */	
+	public ExecuteWorkflowBean getAllWorkflows() throws Exception {
+		//TODO fill in details for saving RUN INFO for the run
+		return null;
+	}
+	
 }
