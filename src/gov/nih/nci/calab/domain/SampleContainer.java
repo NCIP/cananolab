@@ -288,21 +288,21 @@ public  class SampleContainer
    		protected gov.nih.nci.calab.domain.Sample sample;
 		public gov.nih.nci.calab.domain.Sample getSample(){
 		
-		  ApplicationService applicationService = ApplicationServiceProvider.getApplicationService();
-		  gov.nih.nci.calab.domain.SampleContainer thisIdSet = new gov.nih.nci.calab.domain.SampleContainer();
-		  thisIdSet.setId(this.getId());
-		  
-		  try {
-		     java.util.List resultList = applicationService.search("gov.nih.nci.calab.domain.Sample", thisIdSet);				 
-	             if (resultList!=null && resultList.size()>0) {
-	                sample = (gov.nih.nci.calab.domain.Sample)resultList.get(0);
-	             }
-	          
-		  } catch(Exception ex) 
-		  { 
-		      	System.out.println("SampleContainer:getSample throws exception ... ...");
-		   		ex.printStackTrace(); 
-		  }
+//		  ApplicationService applicationService = ApplicationServiceProvider.getApplicationService();
+//		  gov.nih.nci.calab.domain.SampleContainer thisIdSet = new gov.nih.nci.calab.domain.SampleContainer();
+//		  thisIdSet.setId(this.getId());
+//		  
+//		  try {
+//		     java.util.List resultList = applicationService.search("gov.nih.nci.calab.domain.Sample", thisIdSet);				 
+//	             if (resultList!=null && resultList.size()>0) {
+//	                sample = (gov.nih.nci.calab.domain.Sample)resultList.get(0);
+//	             }
+//	          
+//		  } catch(Exception ex) 
+//		  { 
+//		      	System.out.println("SampleContainer:getSample throws exception ... ...");
+//		   		ex.printStackTrace(); 
+//		  }
 		  return sample;	
        }
 	   
