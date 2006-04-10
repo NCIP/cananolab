@@ -2,12 +2,14 @@ package gov.nih.nci.calab.service.search;
 
 import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
+import gov.nih.nci.calab.domain.Aliquot;
 import gov.nih.nci.calab.domain.Sample;
 import gov.nih.nci.calab.domain.Source;
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerBean;
 import gov.nih.nci.calab.dto.administration.SampleBean;
 import gov.nih.nci.calab.dto.administration.StorageLocation;
+import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,7 +22,7 @@ import org.apache.log4j.Logger;
  * @author pansu
  * 
  */
-/* CVS $Id: SearchSampleService.java,v 1.4 2006-04-06 20:26:07 pansu Exp $ */
+/* CVS $Id: SearchSampleService.java,v 1.5 2006-04-10 18:10:19 pansu Exp $ */
 
 public class SearchSampleService {
 	private static Logger logger = Logger.getLogger(SearchSampleService.class);
@@ -69,7 +71,8 @@ public class SearchSampleService {
 			ida.close();
 		} catch (Exception e) {
 			logger.error("Error in retrieving all source sample IDs", e);
-			throw new RuntimeException("Error in retrieving all source sample IDs");
+			throw new RuntimeException(
+					"Error in retrieving all source sample IDs");
 		}
 
 		return sourceSampleIds;
@@ -93,7 +96,8 @@ public class SearchSampleService {
 			ida.close();
 		} catch (Exception e) {
 			logger.error("Error in retrieving all sample submitters", e);
-			throw new RuntimeException("Error in retrieving all sample submitters");
+			throw new RuntimeException(
+					"Error in retrieving all sample submitters");
 		}
 
 		return sampleSubmitters;
@@ -117,61 +121,101 @@ public class SearchSampleService {
 			Date dateAccessionedBegin, Date dateAccessionedEnd,
 			String sampleSubmitter, StorageLocation storageLocation) {
 		List<SampleBean> samples = new ArrayList<SampleBean>();
+		try {
+			List<Object> paramList = new ArrayList<Object>();
+			List<String> whereList = new ArrayList<String>();
 
-		SampleBean sample1 = new SampleBean(sampleId, sampleType, "SOP",
-				"description", sampleSource, sourceSampleId, "10/21/2005",
-				"solubility", "1", "lot description", "1", "comments",
-				"Jane Doe", "10/21/2005", new ContainerBean[] {
-						new ContainerBean("Tube", "", "18", "mg", "1.8",
-								"mg/ml", "10", "ml", "solvent",
-								"safety precautions", "storageCondition",
-								new StorageLocation(null, "205", "1", "1",
-										null, "A"), "comments"),
-						new ContainerBean("Vial", "", "18", "mg", "1.8",
-								"mg/ml", "10", "ml", "solvent",
-								"safety precautions", "storageCondition",
-								new StorageLocation(null, "205", "1", "1",
-										null, "A"), "comments") });
-		samples.add(sample1);
+			String where = "";
+			String storageFrom = "";
+			if (sampleId != "") {
+				paramList.add(sampleId);
+				where = "where ";
+				whereList.add("sample.name=?");
+			}
+			if (sampleType != "") {
+				paramList.add(sampleType);
+				where = "where ";
+				whereList.add("sample.type=?");
+			}
 
-		return samples;
-	}
+			if (sampleSource != "") {
+				paramList.add(sampleSource);
+				where = "where ";
+				whereList.add("sample.source.organizationName=?");
+			}
 
-	/**
-	 * Search database for sample container information based on aliquot ID
-	 * 
-	 * @param aliquotId
-	 * @param sampleType
-	 * @param sampleSource
-	 * @param sourceSampleId
-	 * @param dateAccessionedBegin
-	 * @param dateAccessionedEnd
-	 * @param sampleSubmitter
-	 * @param storageLocation
-	 * @return
-	 */
-	public List<SampleBean> searchSamplesByAliquotId(String aliquotId,
-			String sampleType, String sampleSource, String sourceSampleId,
-			Date dateAccessionedBegin, Date dateAccessionedEnd,
-			String sampleSubmitter, StorageLocation storageLocation) {
-		List<SampleBean> samples = new ArrayList<SampleBean>();
-		String sampleId = aliquotId;
-		SampleBean sample1 = new SampleBean(sampleId, sampleType, "SOP",
-				"description", sampleSource, sourceSampleId, "10/21/2005",
-				"solubility", "1", "lot description", "1", "comments",
-				"Jane Doe", "10/21/2005", new ContainerBean[] {
-						new ContainerBean("Tube", "", "18", "mg", "1.8",
-								"mg/ml", "10", "ml", "solvent",
-								"safety precautions", "storageCondition",
-								new StorageLocation(null, "205", "1", "1",
-										null, "A"), "comments"),
-						new ContainerBean("Vial", "", "18", "mg", "1.8",
-								"mg/ml", "10", "ml", "solvent",
-								"safety precautions", "storageCondition",
-								new StorageLocation(null, "205", "1", "1",
-										null, "A"), "comments") });
+			if (sourceSampleId != "") {
+				paramList.add(sourceSampleId);
+				where = "where ";
+				whereList.add("sample.sourceSampleId=?");
+			}
 
-		samples.add(sample1);
+			if (dateAccessionedBegin != null) {
+				paramList.add(dateAccessionedBegin);
+				where = "where ";
+				whereList.add("sample.createdDate>=?");
+			}
+
+			if (dateAccessionedEnd != null) {
+				paramList.add(dateAccessionedEnd);
+				where = "where ";
+				whereList.add("sample.createdDate<=?");
+			}
+			if (sampleSubmitter != "") {
+				paramList.add(sampleSubmitter);
+				where = "where ";
+				whereList.add("sample.createdBy=?");
+			}
+
+			if (storageLocation.getRoom() != "") {
+				paramList.add(storageLocation.getRoom());
+				where = "where ";
+				storageFrom = "join sample.sampleContainerCollection container join container.storageElementCollection storage ";
+				whereList.add("storage.type='Room' and storage.location=?");
+			}
+
+			if (storageLocation.getFreezer() != "") {
+				paramList.add(storageLocation.getFreezer());
+				where = "where ";
+				storageFrom = "join sample.sampleContainerCollection container join container.storageElementCollection storage ";
+				whereList.add("storage.type='Freezer' and storage.location=?");
+			}
+
+			if (storageLocation.getFreezer() != "") {
+				paramList.add(storageLocation.getFreezer());
+				where = "where ";
+				storageFrom = "join sample.sampleContainerCollection container join container.storageElementCollection storage ";
+				whereList.add(" storage.type='Shelf' and storage.location=?");
+			}
+
+			if (storageLocation.getBox() != "") {
+				paramList.add(storageLocation.getBox());
+				where = "where ";
+				storageFrom = "join sample.sampleContainerCollection container join container.storageElementCollection storage ";
+				whereList.add("storage.type='Box' and storage.location=?");
+			}
+
+			String whereStr = StringUtils.join(whereList, " and ");
+			String hqlString = "select sample from Sample sample "
+					+ storageFrom + where + whereStr;
+
+			IDataAccess ida = (new DataAccessProxy())
+					.getInstance(IDataAccess.HIBERNATE);
+			ida.open();
+
+			List results = ida.searchByParam(hqlString, paramList);
+			for (Object obj : results) {
+				Sample sample = (Sample) obj;
+				samples.add(new SampleBean(sample));
+			}
+			ida.close();
+		} catch (Exception e) {
+			logger
+					.error("Error in searching sample by the given parameters",
+							e);
+			throw new RuntimeException(
+					"Error in searching sample by the given parameters");
+		}
 
 		return samples;
 	}
@@ -193,18 +237,102 @@ public class SearchSampleService {
 			Date dateAccessionedBegin, Date dateAccessionedEnd,
 			String sampleSubmitter, StorageLocation storageLocation) {
 		List<AliquotBean> aliquots = new ArrayList<AliquotBean>();
+		try {
+			List<Object> paramList = new ArrayList<Object>();
+			List<String> whereList = new ArrayList<String>();
 
-		AliquotBean aliquot = new AliquotBean(aliquotId, new ContainerBean(
-				"Tube", "", "18", "mg", "1.8", "mg/ml", "10", "ml", "solvent",
-				"safety precautions", "storageCondition", new StorageLocation(
-						null, "205", "1", "1", null, "A"), "comments"),
-				"solubilized", "Jane Doe", "10/21/2005", new SampleBean(
-						"NCL-6", sampleType, "SOP", "description",
-						sampleSource, sourceSampleId, "10/21/2005",
-						"solubility", "1", "lot description", "1", "comments",
-						"Jane Doe", "10/21/2005"));
+			String where = "";
+			String storageFrom = "";
+			if (aliquotId != "") {
+				paramList.add(aliquotId);
+				where = "where ";
+				whereList.add("aliquot.name=?");
+			}
+			if (sampleType != "") {
+				paramList.add(sampleType);
+				where = "where ";
+				whereList.add("aliquot.sample.type=?");
+			}
 
-		aliquots.add(aliquot);
+			if (sampleSource != "") {
+				paramList.add(sampleSource);
+				where = "where ";
+				whereList.add("aliquot.sample.source.organizationName=?");
+			}
+
+			if (sourceSampleId != "") {
+				paramList.add(sourceSampleId);
+				where = "where ";
+				whereList.add("aliquot.sample.sourceSampleId=?");
+			}
+
+			if (dateAccessionedBegin != null) {
+				paramList.add(dateAccessionedBegin);
+				where = "where ";
+				whereList.add("aliquot.createdDate>=?");
+			}
+
+			if (dateAccessionedEnd != null) {
+				paramList.add(dateAccessionedEnd);
+				where = "where ";
+				whereList.add("aliquot.createdDate<=?");
+			}
+			if (sampleSubmitter != "") {
+				paramList.add(sampleSubmitter);
+				where = "where ";
+				whereList.add("aliquot.createdBy=?");
+			}
+
+			if (storageLocation.getRoom() != "") {
+				paramList.add(storageLocation.getRoom());
+				where = "where ";
+				storageFrom = "join aliquot.storageElementCollection storage ";
+				whereList.add("storage.type='Room' and storage.location=?");
+			}
+
+			if (storageLocation.getFreezer() != "") {
+				paramList.add(storageLocation.getFreezer());
+				where = "where ";
+				storageFrom = "join aliquot.storageElementCollection storage ";
+				whereList.add("storage.type='Freezer' and storage.location=?");
+			}
+
+			if (storageLocation.getFreezer() != "") {
+				paramList.add(storageLocation.getFreezer());
+				where = "where ";
+				storageFrom = "join aliquot.storageElementCollection storage ";
+				whereList.add(" storage.type='Shelf' and storage.location=?");
+			}
+
+			if (storageLocation.getBox() != "") {
+				paramList.add(storageLocation.getBox());
+				where = "where ";
+				storageFrom = "join aliquot.storageElementCollection storage ";
+				whereList.add("storage.type='Box' and storage.location=?");
+			}
+
+			String whereStr = StringUtils.join(whereList, " and ");
+			String hqlString = "select aliquot from Aliquot aliquot "
+					+ storageFrom + where + whereStr;
+
+			IDataAccess ida = (new DataAccessProxy())
+					.getInstance(IDataAccess.HIBERNATE);
+			ida.open();
+
+			List results = ida.searchByParam(hqlString, paramList);
+			for (Object obj : results) {
+				Aliquot aliquot = (Aliquot) obj;
+				aliquots.add(new AliquotBean(aliquot));
+				aliquot.getSample();
+			}			
+			ida.close();
+		} catch (Exception e) {
+			logger
+					.error("Error in searching aliquots by the given parameters",
+							e);
+			throw new RuntimeException(
+					"Error in searching aliquots by the given parameters");
+		}
 
 		return aliquots;
 	}
@@ -226,35 +354,9 @@ public class SearchSampleService {
 			String sampleSource, String sourceSampleId,
 			Date dateAccessionedBegin, Date dateAccessionedEnd,
 			String sampleSubmitter, StorageLocation storageLocation) {
-		List<SampleBean> samples = new ArrayList<SampleBean>();
-		SampleBean sample1 = new SampleBean("NCL-6", sampleType, "SOP",
-				"description", sampleSource, sourceSampleId, "10/21/2005",
-				"solubility", "1", "lot description", "1", "comments",
-				"Jane Doe", "10/21/2005", new ContainerBean[] {
-						new ContainerBean("Tube", "", "18", "mg", "1.8",
-								"mg/ml", "10", "ml", "solvent",
-								"safety precautions", "storageCondition",
-								new StorageLocation(null, "205", "1", "1",
-										null, "A"), "comments"),
-						new ContainerBean("Vial", "", "18", "mg", "1.8",
-								"mg/ml", "10", "ml", "solvent",
-								"safety precautions", "storageCondition",
-								new StorageLocation(null, "205", "1", "1",
-										null, "A"), "comments") });
 
-		SampleBean sample2 = new SampleBean("NCL-7", sampleType, "SOP",
-				"description", sampleSource, sourceSampleId, "10/21/2005",
-				"solubility", "1", "lot description", "1", "comments",
-				"Jane Doe", "10/21/2005",
-				new ContainerBean[] { new ContainerBean("Tube", "", "18", "mg",
-						"1.8", "mg/ml", "10", "ml", "solvent",
-						"safety precautions", "storageCondition",
-						new StorageLocation(null, "205", "1", "1", null, "A"),
-						"comments") });
-
-		samples.add(sample1);
-		samples.add(sample2);
-
-		return samples;
+		return searchSamplesBySampleId("", sampleType, sampleSource,
+				sourceSampleId, dateAccessionedBegin, dateAccessionedEnd,
+				sampleSubmitter, storageLocation);
 	}
 }
