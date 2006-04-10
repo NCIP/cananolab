@@ -6,7 +6,6 @@ import gov.nih.nci.calab.domain.Aliquot;
 import gov.nih.nci.calab.domain.Sample;
 import gov.nih.nci.calab.domain.Source;
 import gov.nih.nci.calab.dto.administration.AliquotBean;
-import gov.nih.nci.calab.dto.administration.ContainerBean;
 import gov.nih.nci.calab.dto.administration.SampleBean;
 import gov.nih.nci.calab.dto.administration.StorageLocation;
 import gov.nih.nci.calab.service.util.StringUtils;
@@ -22,7 +21,7 @@ import org.apache.log4j.Logger;
  * @author pansu
  * 
  */
-/* CVS $Id: SearchSampleService.java,v 1.5 2006-04-10 18:10:19 pansu Exp $ */
+/* CVS $Id: SearchSampleService.java,v 1.6 2006-04-10 18:23:48 pansu Exp $ */
 
 public class SearchSampleService {
 	private static Logger logger = Logger.getLogger(SearchSampleService.class);
