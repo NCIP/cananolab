@@ -13,13 +13,12 @@ import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
-/* CVS $Id: ManageSampleService.java,v 1.15 2006-04-10 12:46:49 zengje Exp $ 
+/* CVS $Id: ManageSampleService.java,v 1.16 2006-04-10 18:25:13 pansu Exp $ 
  */
 public class ManageSampleService {
 	private static Logger logger = Logger.getLogger(ManageSampleService.class);
@@ -36,7 +35,7 @@ public class ManageSampleService {
 			}
 			ida.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Problem to retrieve all Sample SOPs.");
 			throw new RuntimeException("Problem to retrieve all Sample SOPs. ");
 		}
 		return sampleSOPs;
@@ -64,7 +63,8 @@ public class ManageSampleService {
 			logger.debug("ManageSampleService.getSampleSequenceId(): current seq id = " + seqId);
 			ida.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Problem in retrieving default sample ID prefix.");
+			throw new RuntimeException("Problem in retrieving default sample ID prefix.");
 		}
 
 		return sampleIdPrefix + (seqId+1);
@@ -281,7 +281,8 @@ public class ManageSampleService {
 			}
 		}catch (Exception e){
 			e.printStackTrace();
-			
+			logger.error("Problem saving the sample.");
+
 			ida.rollback();
 			ida.close();
 			throw new Exception (e.getMessage());
