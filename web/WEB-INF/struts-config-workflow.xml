@@ -37,11 +37,19 @@
 			<form-property name="fileMaskStatus" type="java.lang.String" />
 			<form-property name="template" type="gov.nih.nci.calab.dto.workflow.ExecuteWorkflowBean" />
 		</form-bean>
+		<form-bean name="editRunForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+			<form-property name="runDate" type="java.lang.String" />
+			<form-property name="runBy" type="java.lang.String" />
+			<form-property name="createdDate" type="java.lang.String" />
+			<form-property name="createdBy" type="java.lang.String" />
+			<form-property name="template" type="gov.nih.nci.calab.dto.workflow.ExecuteWorkflowBean" />
+		</form-bean>
 	</form-beans>
 	<global-forwards>
 		<forward name="useAliquot" path="workflow.usealiquot" />
 		<forward name="maskAliquot" path="workflow.maskaliquot" />
 		<forward name="maskFile" path="workflow.maskfile" />
+		<forward name="createRun" path="workflow.createrun" />
 	</global-forwards>
 	<action-mappings>
 		<action input="input" name="useAliquotForm" path="/useAliquot" scope="request" type="gov.nih.nci.calab.ui.workflow.UseAliquotAction">
@@ -64,6 +72,16 @@
 		<action input="input" name="executeWorkflowForm" path="/executeWorkflow" scope="request" type="gov.nih.nci.calab.ui.workflow.ExecuteWorkflowAction">
 			<forward name="success" path="workflow.message" />
 			<forward name="input" path="workflow.executeworkflow" />
+		</action>
+		<action name="createRunForm" path="/createRun" type="gov.nih.nci.calab.ui.workflow.CreateRunAction" input="input">
+			<forward name="input" path="workflow.createrun" />
+			<forward name="success" path="workflow.message" />
+			<forward name="failure" path="workflow.createrun" />
+		</action>
+		<action name="editRunForm" path="/editRun" scope="request" type="gov.nih.nci.calab.ui.workflow.EditRunAction" input="input">
+			<forward name="input" path="workflow.editaliquot" />
+			<forward name="success" path="workflow.createrun" />
+			<forward name="failure" path="workflow.message" />
 		</action>		
 	</action-mappings>
 </struts-config>
