@@ -14,7 +14,7 @@ import java.util.List;
  * @author pansu
  * 
  */
-/* CVS $Id: StringUtils.java,v 1.5 2006-04-07 21:05:10 pansu Exp $ */
+/* CVS $Id: StringUtils.java,v 1.6 2006-04-10 18:11:30 pansu Exp $ */
 
 public class StringUtils {
 	private static Logger logger = Logger.getLogger(StringUtils.class);
@@ -123,4 +123,12 @@ public class StringUtils {
 			throw new RuntimeException("Can't convert the given string to a long number: "+longStr);		}
 	}
 
+	public static String convertToString(Object obj) {
+		if (obj==null) {
+			return "";
+		}
+		else {
+			return obj.toString();
+		}
+	}
 }
