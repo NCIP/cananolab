@@ -53,7 +53,7 @@ public class EditRunAction extends AbstractBaseAction {
 			ActionMessage error=new ActionMessage("error.editRun");
 			errors.add("error", error);
 			saveMessages(request, errors);
-			logger.error("Caught exception when showing edit aliquot page", e);
+			logger.error("Caught exception when showing edit Run page", e);
 			forward = mapping.getInputForward();
 		}
 		return forward;
