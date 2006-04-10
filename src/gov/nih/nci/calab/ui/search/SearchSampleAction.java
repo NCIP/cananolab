@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchSampleAction.java,v 1.3 2006-04-07 15:29:53 pansu Exp $ */
+/* CVS $Id: SearchSampleAction.java,v 1.4 2006-04-10 18:10:55 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.SampleBean;
@@ -78,11 +78,17 @@ public class SearchSampleAction extends AbstractBaseAction {
 			List<AliquotBean> aliquots = null;
 
 			if (showAliquot) {
+				if (aliquotId.equals("all")) {
+					aliquotId="";
+				}
 				aliquots = searchSampleService.searchAliquotsByAliquotId(
 						aliquotId, sampleType, sampleSource, sourceSampleId,
 						dateAccessionedBegin, dateAccessionedEnd,
 						sampleSubmitter, storageLocation);				
 			} else if (sampleId.length() >= 0) {
+				if (sampleId.equals("all")) {
+					sampleId="";
+				}
 				samples = searchSampleService.searchSamplesBySampleId(sampleId,
 						sampleType, sampleSource, sourceSampleId,
 						dateAccessionedBegin, dateAccessionedEnd,

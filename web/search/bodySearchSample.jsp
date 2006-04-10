@@ -37,9 +37,11 @@
 					<div align="center">
 						<strong>Sample ID <span class="formFieldWhite"><img src="images/help.gif" width="15" height="15"> <html:select property="sampleId">
 									<option value="" />
+									<option value="all">all</option>
 										<html:options name="allSampleIds" />
 								</html:select> &nbsp; &nbsp; &nbsp; </span></strong> or<strong>&nbsp; &nbsp; &nbsp; Aliquot ID<img src="images/help.gif" width="15" height="15"> <html:select property="aliquotId">
 								<option value="" />
+								<option value="all">all</option>
 									<html:options name="allAliquotIds" />
 							</html:select> </strong>
 					</div>
