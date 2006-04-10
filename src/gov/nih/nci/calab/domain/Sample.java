@@ -2,7 +2,11 @@
 
 package gov.nih.nci.calab.domain;
 
-import gov.nih.nci.system.applicationservice.*;
+import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.system.applicationservice.ApplicationService;
+import gov.nih.nci.system.applicationservice.ApplicationServiceProvider;
+
+import java.util.HashSet;
 
 
 /**
@@ -225,6 +229,22 @@ public  class Sample
 //			   }	
               return sampleContainerCollection;
           }
+		
+		public java.util.Collection getSampleContainerCollection(String type){
+			
+			HashSet typedContainer = new HashSet();
+			for (Object obj: sampleContainerCollection)
+			{
+				SampleContainer container = (SampleContainer)obj;
+				if ((type.equals(CalabConstants.ALIQUOT) && (container instanceof Aliquot))) {
+					typedContainer.add(container);
+				} else if ((type.equals(CalabConstants.SAMPLE_CONTAINER) && !(container instanceof Aliquot))) {
+					typedContainer.add(container);
+				}
+			}
+              return typedContainer;
+          }
+		
 			   
 	   	public void setSampleContainerCollection(java.util.Collection sampleContainerCollection){
 	   		this.sampleContainerCollection = sampleContainerCollection;
