@@ -1,5 +1,9 @@
 package gov.nih.nci.calab.dto.administration;
 
+import gov.nih.nci.calab.domain.Aliquot;
+import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.StringUtils;
+
 /**
  * This class includes all properties of an aliquot that need to be viewed and
  * saved.
@@ -8,18 +12,18 @@ package gov.nih.nci.calab.dto.administration;
  * 
  */
 
-/* CVS $Id: AliquotBean.java,v 1.4 2006-04-04 15:31:29 pansu Exp $ */
+/* CVS $Id: AliquotBean.java,v 1.5 2006-04-10 18:10:39 pansu Exp $ */
 
 public class AliquotBean {
-	private String aliquotId;
+	private String aliquotId="";
 
 	private ContainerBean container;
 
-	private String howCreated;
+	private String howCreated="";
 	
-	private String creator;
+	private String creator="";
 	
-	private String creationDate;
+	private String creationDate="";
 
 	private SampleBean sample;
 	
@@ -45,6 +49,15 @@ public class AliquotBean {
 		this.sample=sample;
 	}
 
+	public AliquotBean(Aliquot aliquot) {
+		this.aliquotId=StringUtils.convertToString(aliquot.getName());
+		this.container=new ContainerBean(aliquot);
+		this.howCreated=StringUtils.convertToString(aliquot.getCreatedMethod());
+		this.creator=StringUtils.convertToString(aliquot.getCreatedBy());
+		this.creationDate=StringUtils.convertDateToString(aliquot.getCreatedDate(), CalabConstants.DATE_FORMAT);
+		this.sample=new SampleBean(aliquot.getSample());
+	}
+	
 	public String getAliquotId() {
 		return aliquotId;
 	}
