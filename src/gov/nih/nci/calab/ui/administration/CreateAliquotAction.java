@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: CreateAliquotAction.java,v 1.8 2006-04-07 15:29:37 pansu Exp $ */
+/* CVS $Id: CreateAliquotAction.java,v 1.9 2006-04-10 13:39:44 pansu Exp $ */
 
 import gov.nih.nci.calab.service.administration.ManageAliquotService;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
@@ -40,12 +40,11 @@ public class CreateAliquotAction extends AbstractBaseAction {
 			DynaValidatorForm theForm = (DynaValidatorForm) form;
 			String sampleId = (String) theForm.get("sampleId");
 			String parentAliquotId = (String) theForm.get("parentAliquotId");
-			String comments=(String)theForm.get("generalComments");
 			if (session.getAttribute("aliquotMatrix") != null) {
 				List aliquotMatrix = (List) session
 						.getAttribute("aliquotMatrix");
 				ManageAliquotService manageAliquotService=new ManageAliquotService();
-				manageAliquotService.saveAliquots(sampleId, parentAliquotId, aliquotMatrix, comments);
+				manageAliquotService.saveAliquots(sampleId, parentAliquotId, aliquotMatrix);
 				ActionMessages msgs = new ActionMessages();
 				ActionMessage msg = new ActionMessage("message.createAliquot");
 				msgs.add("message", msg);
