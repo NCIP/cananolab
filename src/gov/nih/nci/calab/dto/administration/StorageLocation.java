@@ -7,20 +7,20 @@ package gov.nih.nci.calab.dto.administration;
  * @author pansu
  * 
  */
-/* CVS $Id: StorageLocation.java,v 1.1 2006-03-28 22:59:48 pansu Exp $ */
+/* CVS $Id: StorageLocation.java,v 1.2 2006-04-10 18:10:39 pansu Exp $ */
 
 public class StorageLocation {
-	private String lab;
+	private String lab="";
 
-	private String room;
+	private String room="";
 
-	private String freezer;
+	private String freezer="";
 
-	private String shelf;
+	private String shelf="";
 
-	private String rack;
+	private String rack="";
 
-	private String box;
+	private String box="";
 
 	public StorageLocation() {
 		

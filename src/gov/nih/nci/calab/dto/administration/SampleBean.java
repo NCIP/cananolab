@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import gov.nih.nci.calab.domain.Aliquot;
 import gov.nih.nci.calab.domain.Sample;
 import gov.nih.nci.calab.domain.SampleContainer;
 import gov.nih.nci.calab.service.util.CalabConstants;
@@ -17,42 +18,41 @@ import gov.nih.nci.calab.service.util.StringUtils;
  * 
  */
 
-/* CVS $Id: SampleBean.java,v 1.5 2006-04-07 21:04:20 pansu Exp $ */
+/* CVS $Id: SampleBean.java,v 1.6 2006-04-10 18:10:39 pansu Exp $ */
 public class SampleBean {
-	private String sampleIdPrefix;
+	private String sampleIdPrefix="";
 
-	private String sampleId;
+	private String sampleId="";
 
-	private String sampleType;
+	private String sampleType="";
 
-	private String sampleSOP;
+	private String sampleSOP="";
 
-	private String sampleDescription;
+	private String sampleDescription="";
 
-	private String sampleSource;
+	private String sampleSource="";
 
-	private String sourceSampleId;
+	private String sourceSampleId="";
 
-	private String dateReceived;
+	private String dateReceived="";
 
-	private String lotId;
+	private String lotId="";
 
-	private String lotDescription;
+	private String lotDescription="";
 
-	private String solubility;
+	private String solubility="";
 
-	private String numberOfContainers;
+	private String numberOfContainers="";
 
-	private String generalComments;
+	private String generalComments="";
 
-	private String sampleSubmitter;
+	private String sampleSubmitter="";
 
-	private String accessionDate;
+	private String accessionDate="";
 
 	private ContainerBean[] containers;
 
 	public SampleBean() {
-
 	}
 
 	public SampleBean(String sampleId, String sampleType, String sampleSOP,
@@ -111,28 +111,33 @@ public class SampleBean {
 	}
 
 	public SampleBean(Sample sample) {
-		this.sampleId = sample.getName();
-		this.sampleType = sample.getType();
-		this.sampleSOP = (sample.getSampleSOP()==null)?"":sample.getSampleSOP().getName();
-		this.sampleDescription = sample.getDescription();
-		this.sampleSource = (sample.getSource()==null)?"":sample.getSource().getOrganizationName();
-		this.sourceSampleId = sample.getSourceSampleId();
+		this.sampleId = StringUtils.convertToString(sample.getName());
+		this.sampleType = StringUtils.convertToString(sample.getType());
+		this.sampleSOP = (sample.getSampleSOP() == null) ? "" : StringUtils.convertToString(sample
+				.getSampleSOP().getName());
+		this.sampleDescription = StringUtils.convertToString(sample.getDescription());
+		this.sampleSource = (sample.getSource() == null) ? "" : StringUtils.convertToString(sample
+				.getSource().getOrganizationName());
+		this.sourceSampleId = StringUtils.convertToString(sample.getSourceSampleId());
 		this.dateReceived = StringUtils.convertDateToString(sample
 				.getReceivedDate(), CalabConstants.DATE_FORMAT);
-		this.solubility=sample.getSolubility();
-		this.lotId=sample.getLotId();
-		this.lotDescription=sample.getLotDescription();
-		Set sampleContainers=(Set)sample.getSampleContainerCollection();
-		this.numberOfContainers=sampleContainers.size()+"";
-		this.generalComments=sample.getComments();
-		this.sampleSubmitter=sample.getCreatedBy();
-		this.accessionDate=StringUtils.convertDateToString(sample.getCreatedDate(), CalabConstants.DATE_FORMAT);
-		this.containers=new ContainerBean[sampleContainers.size()];		
-		
-		int i=0;
-		for (Object obj: sampleContainers) {
-			SampleContainer sampleContainer=(SampleContainer)obj;
-			containers[i]=new ContainerBean(sampleContainer);
+		this.solubility = StringUtils.convertToString(sample.getSolubility());
+		this.lotId = StringUtils.convertToString(sample.getLotId());
+		this.lotDescription = StringUtils.convertToString(sample.getLotDescription());
+		// exclude aliquots
+		//Set sampleContainers = (Set) sample.getSampleContainerCollection(CalabConstants.SAMPLE_CONTAINER);
+		Set sampleContainers = (Set) sample.getSampleContainerCollection();
+		this.numberOfContainers = StringUtils.convertToString(sampleContainers.size());
+		this.generalComments = StringUtils.convertToString(sample.getComments());
+		this.sampleSubmitter = StringUtils.convertToString(sample.getCreatedBy());
+		this.accessionDate = StringUtils.convertDateToString(sample
+				.getCreatedDate(), CalabConstants.DATE_FORMAT);
+		this.containers = new ContainerBean[sampleContainers.size()];
+	
+		int i = 0;
+		for (Object obj : sampleContainers) {
+			SampleContainer sampleContainer = (SampleContainer) obj;
+			containers[i] = new ContainerBean(sampleContainer);
 		}
 	}
 

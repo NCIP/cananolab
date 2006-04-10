@@ -1,12 +1,11 @@
 package gov.nih.nci.calab.dto.administration;
 
-import java.util.List;
-import java.util.Set;
-
 import gov.nih.nci.calab.domain.SampleContainer;
 import gov.nih.nci.calab.domain.StorageElement;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
+
+import java.util.Set;
 
 /**
  * This class represents all properties of a container that need to be viewed
@@ -15,39 +14,39 @@ import gov.nih.nci.calab.service.util.StringUtils;
  * @author pansu
  * 
  */
-/* CVS $Id: ContainerBean.java,v 1.4 2006-04-07 21:04:20 pansu Exp $ */
+/* CVS $Id: ContainerBean.java,v 1.5 2006-04-10 18:10:39 pansu Exp $ */
 
 public class ContainerBean {
-	private String containerType;
+	private String containerType = "";
 
-	private String otherContainerType;
+	private String otherContainerType = "";
 
-	private String quantity;
+	private String quantity = "";
 
-	private String quantityUnit;
+	private String quantityUnit = "";
 
-	private String concentration;
+	private String concentration = "";
 
-	private String concentrationUnit;
+	private String concentrationUnit = "";
 
-	private String volume;
+	private String volume = "";
 
-	private String volumeUnit;
+	private String volumeUnit = "";
 
-	private String solvent;
+	private String solvent = "";
 
-	private String safetyPrecaution;
+	private String safetyPrecaution = "";
 
-	private String storageCondition;
+	private String storageCondition = "";
 
 	private StorageLocation storageLocation;
 
-	private String storageLocationStr;
+	private String storageLocationStr = "";
 
-	private String containerComments;
+	private String containerComments = "";
 
 	public ContainerBean() {
-		storageLocation=new StorageLocation();
+		storageLocation = new StorageLocation();
 	}
 
 	public ContainerBean(String containerType, String otherContainerType,
@@ -73,45 +72,47 @@ public class ContainerBean {
 	}
 
 	public ContainerBean(SampleContainer container) {
-		this.containerType=container.getContainerType();
-		this.quantity=container.getQuantity()+"";
-		this.quantityUnit=container.getQuantityUnit();
-		this.concentration=container.getConcentration()+"";
-		this.concentrationUnit=container.getConcentrationUnit();
-		this.volume=container.getVolume()+"";
-		this.volumeUnit=container.getVolumeUnit();
-		this.solvent=container.getDiluentsSolvent();
-		this.safetyPrecaution=container.getSafetyPrecaution();
-		this.storageCondition=container.getStorageCondition();		
-		this.containerComments=container.getComments();
-		
-		Set storageElements=(Set)container.getStorageElementCollection();
-		String lab="", room="", freezer="", shelf="", rack="", box="";
-		for (Object obj: storageElements) {
-			StorageElement element=(StorageElement)obj;
-			String location=element.getLocation();
-			if (element.getType().equals(CalabConstants.STORAGE_LAB)) {
-				lab=location;
-			}
-			else if (element.getType().equals(CalabConstants.STORAGE_ROOM)) {
-				room=location;
-			}
-			else if (element.getType().equals(CalabConstants.STORAGE_FREEZER)) {
-				freezer=location;
-			}
-			else if (element.getType().equals(CalabConstants.STORAGE_SHELF)) {
-				shelf=location;
-			}
-			else if (element.getType().equals(CalabConstants.STORAGE_RACK)) {
-				rack=location;
-			}
-			else if (element.getType().equals(CalabConstants.STORAGE_BOX)) {
-				box=location;
+		this.containerType = StringUtils.convertToString(container.getContainerType());
+		this.quantity = StringUtils.convertToString(container.getQuantity());
+		this.quantityUnit = StringUtils.convertToString(container.getQuantityUnit());
+		this.concentration = StringUtils.convertToString(container.getConcentration());
+		this.concentrationUnit = StringUtils.convertToString(container.getConcentrationUnit());
+		this.volume = StringUtils.convertToString(container.getVolume());
+		this.volumeUnit = StringUtils.convertToString(container.getVolumeUnit());
+		this.solvent = StringUtils.convertToString(container.getDiluentsSolvent());
+		this.safetyPrecaution = StringUtils.convertToString(container.getSafetyPrecaution());
+		this.storageCondition = StringUtils.convertToString(container.getStorageCondition());
+		this.containerComments = StringUtils.convertToString(container.getComments());
+
+		Set storageElements = (Set) container.getStorageElementCollection();
+		String lab = null, room = null, freezer = null, shelf = null, rack = null, box = null;
+		if (storageElements != null) {
+			for (Object obj : storageElements) {
+				StorageElement element = (StorageElement) obj;
+				String location = element.getLocation();
+				if (element.getType().equals(CalabConstants.STORAGE_LAB)) {
+					lab = location;
+				} else if (element.getType()
+						.equals(CalabConstants.STORAGE_ROOM)) {
+					room = location;
+				} else if (element.getType().equals(
+						CalabConstants.STORAGE_FREEZER)) {
+					freezer = location;
+				} else if (element.getType().equals(
+						CalabConstants.STORAGE_SHELF)) {
+					shelf = location;
+				} else if (element.getType()
+						.equals(CalabConstants.STORAGE_RACK)) {
+					rack = location;
+				} else if (element.getType().equals(CalabConstants.STORAGE_BOX)) {
+					box = location;
+				}
 			}
 		}
-		this.storageLocation=new StorageLocation(lab, room, freezer, shelf, rack, box);
+		this.storageLocation = new StorageLocation(lab, room, freezer, shelf,
+				rack, box);
 	}
-	
+
 	public String getConcentration() {
 		return concentration;
 	}
