@@ -12,4 +12,5 @@ public class CalabConstants {
 	public static final String STORAGE_LAB = "Lab";
 	
 	public static final String MASK_STATUS = "Masked";
+	public static final String OTHER = "Other";
 }
