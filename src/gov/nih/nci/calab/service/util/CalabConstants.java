@@ -13,4 +13,7 @@ public class CalabConstants {
 	
 	public static final String MASK_STATUS = "Masked";
 	public static final String OTHER = "Other";
+	
+	public static final String ALIQUOT = "Aliquot";
+	public static final String SAMPLE_CONTAINER = "Sample_container";
 }
