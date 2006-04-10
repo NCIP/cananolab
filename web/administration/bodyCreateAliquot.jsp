@@ -145,7 +145,7 @@ function openLink() {
 						<div align="left">
 							<strong>General Comments</strong>
 							<br>
-							<span class="formField"><span class="formFieldWhite"> <html:textarea property="generalComments" cols="70" /></span></span>
+							<span class="formField"><span class="formFieldWhite"> <html:textarea property="template.container.containerComments" cols="70" /></span></span>
 						</div>
 					</td>
 				</tr>
