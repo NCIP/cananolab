@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.workflow;
  * @author pansu
  */
 
-/* CVS $Id: ViewAliquotAction.java,v 1.2 2006-04-07 15:30:05 pansu Exp $*/
+/* CVS $Id: ViewAliquotAction.java,v 1.3 2006-04-11 18:26:17 pansu Exp $*/
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.service.workflow.ExecuteWorkflowService;
@@ -36,9 +36,19 @@ public class ViewAliquotAction extends AbstractBaseAction {
 			aliquotId = (String) theForm.get("aliquotId");
 
 			ExecuteWorkflowService executeWorkflowService = new ExecuteWorkflowService();
-			AliquotBean aliquot=executeWorkflowService.getAliquot(aliquotId);
-			request.setAttribute("aliquot", aliquot);
-			forward = mapping.findForward("success");
+			AliquotBean aliquot = executeWorkflowService.getAliquot(aliquotId);
+			if (aliquot != null) {
+				request.setAttribute("aliquot", aliquot);
+				forward = mapping.findForward("success");
+			} else {
+				logger.error("Can't find an aliquot by the given ID");
+				ActionMessages errors = new ActionMessages();
+				ActionMessage error = new ActionMessage(
+						"error.viewAliquot.noresult", aliquotId);
+				errors.add("error", error);
+				saveMessages(request, errors);
+				forward = mapping.findForward("failure");
+			}
 		} catch (Exception e) {
 			logger.error("Caught exception when showing aliquot.", e);
 			ActionMessages errors = new ActionMessages();
