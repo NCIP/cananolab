@@ -14,9 +14,6 @@ import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -90,7 +87,7 @@ public class ExecuteWorkflowService {
 			IDataAccess ida = (new DataAccessProxy())
 					.getInstance(IDataAccess.HIBERNATE);
 			ida.open();
-			String hqlString = "from Aliquot aliquot where aliquot.name ='" + aliquotId+ "'";
+			String hqlString = "from Aliquot aliquot where aliquot.id ='" + aliquotId+ "'";
 			List results = ida.search(hqlString);
 			for (Object obj : results) {
 				Aliquot doAliquot = (Aliquot) obj;
