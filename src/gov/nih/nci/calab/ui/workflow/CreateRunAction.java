@@ -8,7 +8,13 @@ package gov.nih.nci.calab.ui.workflow;
  */
 
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
+import gov.nih.nci.calab.dto.security.SecurityBean;
+import gov.nih.nci.calab.service.common.LookupService;
+import gov.nih.nci.calab.service.util.StringUtils;
+import gov.nih.nci.calab.service.workflow.ExecuteWorkflowService;
 
+
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -46,14 +52,21 @@ public class CreateRunAction extends AbstractBaseAction {
 			String assayId	= (String) theForm.get("assayId"); 
 			String runBy	= (String) theForm.get("runBy"); 
 			String runDate	= (String) theForm.get("runDate");
-			//SimpleDateFormatter dateFormat = new SimpleDateFormatter("MM/dd/yyyy");
-			//Get Current session user
-			String createdBy	= "Current User"; 
-			String createdDate	= "12/12/2006";			
+
+			String creator = "";
+
+			if (session.getAttribute("user") != null) {
+				SecurityBean user = (SecurityBean) session.getAttribute("user");
+				creator = user.getLoginId();
+			}
+			String creationDate = StringUtils.convertDateToString(new Date(),
+					"MM/dd/yyyy");
+
+		
 			
 			ExecuteWorkflowService workflowService=new ExecuteWorkflowService();
 			//Save Run
-			String runId = workflowService.saveRun(assayId,runBy,runDate,createdBy,createdDate );
+			String runId = workflowService.saveRun(assayId,runBy,runDate,creator,creationDate);
 			
 			//File info
 			String inFileName	= (String) theForm.get("inFileName");
