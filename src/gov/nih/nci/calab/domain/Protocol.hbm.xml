@@ -5,7 +5,10 @@
   <class name="Protocol" table="Protocol" lazy="true" polymorphism="explicit">
     <cache usage="read-write" />
     <id name="id" type="java.lang.Long" column="PROTOCOL_PK_ID" unsaved-value="0">
-      <generator class="assigned" />
+      <generator class="org.hibernate.id.TableHiLoGenerator">
+  	  			<param name="table">hibernate_unique_key</param>
+				<param name="column">next_hi</param>
+	   </generator>
     </id>
     <property name="description" type="java.lang.String" column="DESCRIPTION" />
     <property name="name" type="java.lang.String" column="PROTOCOL_NAME" />

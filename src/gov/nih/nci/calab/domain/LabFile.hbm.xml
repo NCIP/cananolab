@@ -5,7 +5,10 @@
   <class name="LabFile" table="Lab_File">
     <cache usage="read-write" />
     <id name="id" type="java.lang.Long" column="FILE_PK_ID" unsaved-value="0">
-      <generator class="assigned" />
+      <generator class="org.hibernate.id.TableHiLoGenerator">
+  	  			<param name="table">hibernate_unique_key</param>
+				<param name="column">next_hi</param>
+	   </generator>
     </id>
     <discriminator column="FILE_SOURCE_TYPE" type="string" />
 	<property name="extension" type="java.lang.String" column="FILE_TYPE_EXTENSION" />
