@@ -15,7 +15,7 @@ import java.util.Set;
  * 
  */
 
-/* CVS $Id: SampleBean.java,v 1.8 2006-04-11 16:37:56 pansu Exp $ */
+/* CVS $Id: SampleBean.java,v 1.9 2006-04-11 19:31:48 pansu Exp $ */
 public class SampleBean {
 	private String sampleId="";
 	
@@ -114,8 +114,7 @@ public class SampleBean {
 		this.lotId = StringUtils.convertToString(sample.getLotId());
 		this.lotDescription = StringUtils.convertToString(sample.getLotDescription());
 		// exclude aliquots
-		//Set sampleContainers = (Set) sample.getSampleContainerCollection(CalabConstants.SAMPLE_CONTAINER);
-		Set sampleContainers = (Set) sample.getSampleContainerCollection();
+		Set sampleContainers = (Set) sample.getSampleContainerCollection(CalabConstants.SAMPLE_CONTAINER);
 		this.numberOfContainers = StringUtils.convertToString(sampleContainers.size());
 		this.generalComments = StringUtils.convertToString(sample.getComments());
 		this.sampleSubmitter = StringUtils.convertToString(sample.getCreatedBy());
