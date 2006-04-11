@@ -6,13 +6,14 @@ package gov.nih.nci.calab.ui.workflow;
  * @author pansu
  */
 
-/* CVS $Id: UseAliquotAction.java,v 1.7 2006-04-07 15:30:05 pansu Exp $*/
+/* CVS $Id: UseAliquotAction.java,v 1.8 2006-04-11 15:41:52 zengje Exp $*/
 
 import gov.nih.nci.calab.service.workflow.ExecuteWorkflowService;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
@@ -30,6 +31,7 @@ public class UseAliquotAction extends AbstractBaseAction {
 			throws Exception {
 		ActionForward forward = null;
 		String runId=null;
+		HttpSession session = request.getSession();
 		try {
 			DynaValidatorForm theForm = (DynaValidatorForm) form;
 			runId = (String) theForm.get("runId");
@@ -37,7 +39,8 @@ public class UseAliquotAction extends AbstractBaseAction {
 			String comments = (String) theForm.get("comments");
 
 			ExecuteWorkflowService executeWorkflowService = new ExecuteWorkflowService();
-			executeWorkflowService.saveRunAliquots(runId, aliquotIds, comments);
+			executeWorkflowService.saveRunAliquots(runId, aliquotIds, comments,
+							(String)session.getAttribute("creator"),(String)session.getAttribute("creationDate") );
 			ActionMessages msgs = new ActionMessages();
 			ActionMessage msg = new ActionMessage("message.useAliquot", runId);
 			msgs.add("message", msg);
