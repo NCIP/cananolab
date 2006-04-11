@@ -21,7 +21,7 @@ import org.apache.log4j.Logger;
  * @author pansu
  * 
  */
-/* CVS $Id: SearchSampleService.java,v 1.7 2006-04-11 18:30:52 pansu Exp $ */
+/* CVS $Id: SearchSampleService.java,v 1.8 2006-04-11 21:29:22 pansu Exp $ */
 
 public class SearchSampleService {
 	private static Logger logger = Logger.getLogger(SearchSampleService.class);
@@ -37,7 +37,7 @@ public class SearchSampleService {
 			IDataAccess ida = (new DataAccessProxy())
 					.getInstance(IDataAccess.TOOLKITAPI);
 			ida.open();
-			String hqlString = "select source.organizationName from Source source";
+			String hqlString = "select source.organizationName from Source source order by source.organizationName";
 			List results = ida.query(hqlString, Source.class.getName());
 			for (Object obj : results) {
 				sampleSources.add((String) obj);
@@ -62,7 +62,7 @@ public class SearchSampleService {
 			IDataAccess ida = (new DataAccessProxy())
 					.getInstance(IDataAccess.TOOLKITAPI);
 			ida.open();
-			String hqlString = "select distinct sample.sourceSampleId from Sample sample";
+			String hqlString = "select distinct sample.sourceSampleId from Sample sample order by sample.sourceSampleId";
 			List results = ida.query(hqlString, Sample.class.getName());
 			for (Object obj : results) {
 				sourceSampleIds.add((String) obj);
@@ -87,7 +87,7 @@ public class SearchSampleService {
 			IDataAccess ida = (new DataAccessProxy())
 					.getInstance(IDataAccess.TOOLKITAPI);
 			ida.open();
-			String hqlString = "select distinct sample.createdBy from Sample sample";
+			String hqlString = "select distinct sample.createdBy from Sample sample order by sample.createdBy";
 			List results = ida.query(hqlString, Sample.class.getName());
 			for (Object obj : results) {
 				sampleSubmitters.add((String) obj);
