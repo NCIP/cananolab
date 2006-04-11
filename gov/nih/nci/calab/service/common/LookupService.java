@@ -26,7 +26,7 @@ import org.apache.log4j.Logger;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.12 2006-04-11 18:30:41 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.13 2006-04-11 21:24:34 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -43,7 +43,7 @@ public class LookupService {
 			IDataAccess ida = (new DataAccessProxy())
 					.getInstance(IDataAccess.TOOLKITAPI);
 			ida.open();
-			String hqlString = "select aliquot.id, aliquot.name from Aliquot aliquot";
+			String hqlString = "select aliquot.id, aliquot.name from Aliquot aliquot order by aliquot.name";
 			List results = ida.query(hqlString, Aliquot.class.getName());
 			for (Object obj : results) {
 				Object[] aliquotInfo = (Object[]) obj;
@@ -74,7 +74,7 @@ public class LookupService {
 			IDataAccess ida = (new DataAccessProxy())
 					.getInstance(IDataAccess.TOOLKITAPI);
 			ida.open();
-			String hqlString = "select aliquot.id, aliquot.name from Aliquot aliquot where aliquot.dataStatus is null";
+			String hqlString = "select aliquot.id, aliquot.name from Aliquot aliquot where aliquot.dataStatus is null order by aliquot.name";
 			List results = ida.query(hqlString, Aliquot.class.getName());
 			for (Object obj : results) {
 				Object[] aliquotInfo = (Object[]) obj;
@@ -105,7 +105,7 @@ public class LookupService {
 			IDataAccess ida = (new DataAccessProxy())
 					.getInstance(IDataAccess.TOOLKITAPI);
 			ida.open();
-			String hqlString = "select sampleType.name from SampleType sampleType";
+			String hqlString = "select sampleType.name from SampleType sampleType order by sampleType.name";
 			List results = ida.query(hqlString, SampleType.class.getName());
 			for (Object obj : results) {
 				sampleTypes.add((String) obj);
@@ -167,7 +167,7 @@ public class LookupService {
 			IDataAccess ida = (new DataAccessProxy())
 					.getInstance(IDataAccess.TOOLKITAPI);
 			ida.open();
-			String hqlString = "select distinct container.containerType from SampleContainer container";
+			String hqlString = "select distinct container.containerType from SampleContainer container order by container.containerType";
 			List results = ida
 					.query(hqlString, SampleContainer.class.getName());
 			for (Object obj : results) {
@@ -242,7 +242,7 @@ public class LookupService {
 			IDataAccess ida = (new DataAccessProxy())
 					.getInstance(IDataAccess.TOOLKITAPI);
 			ida.open();
-			String hqlString = "select sample.id, sample.name from Sample sample";
+			String hqlString = "select sample.id, sample.name from Sample sample order by sample.name";
 			List results = ida.query(hqlString, Sample.class.getName());
 			for (Object obj : results) {
 				Object[] sampleInfo = (Object[]) obj;
@@ -271,7 +271,7 @@ public class LookupService {
 			IDataAccess ida = (new DataAccessProxy())
 					.getInstance(IDataAccess.TOOLKITAPI);
 			ida.open();
-			String hqlString = "select assayType.name from AssayType assayType";
+			String hqlString = "select assayType.name from AssayType assayType order by assayType.name";
 			List results = ida.query(hqlString, AssayType.class.getName());
 			for (Object obj : results) {
 				assayTypes.add((String) obj);
