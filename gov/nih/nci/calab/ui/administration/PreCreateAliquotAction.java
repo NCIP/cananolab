@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: PreCreateAliquotAction.java,v 1.11 2006-04-07 15:29:37 pansu Exp $ */
+/* CVS $Id: PreCreateAliquotAction.java,v 1.12 2006-04-11 18:31:22 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.service.administration.ManageAliquotService;
@@ -41,8 +41,8 @@ public class PreCreateAliquotAction extends AbstractBaseAction {
 			// TODO fill in details for sample information */
 			DynaValidatorForm theForm = (DynaValidatorForm) form;
 
-			String sampleId = (String) theForm.get("sampleId");
-			String parentAliquotId = (String) theForm.get("parentAliquotId");
+			String sampleName = (String) theForm.get("sampleName");
+			String parentAliquotName = (String) theForm.get("parentAliquotName");
 			String numberOfAliquots = (String) theForm.get("numberOfAliquots");
 			int numAliquots;
 			if (numberOfAliquots.length() == 0) {
@@ -64,9 +64,9 @@ public class PreCreateAliquotAction extends AbstractBaseAction {
 
 				// calculate the first aliquot Id to use
 				int firstAliquotNum = manageAliquotService.getFirstAliquotNum(
-						sampleId, parentAliquotId);
+						sampleName, parentAliquotName);
 				String aliquotPrefix = manageAliquotService.getAliquotPrefix(
-						sampleId, parentAliquotId);
+						sampleName, parentAliquotName);
 				
 				//get user and date from session
 				String creator=(String)session.getAttribute("creator");
@@ -101,11 +101,11 @@ public class PreCreateAliquotAction extends AbstractBaseAction {
 	 * @return a 2-D matrix of aliquots
 	 */
 	private List<AliquotBean[]> createAliquotMatrix(int colNum, int rowNum,
-			int numAliquots, String aliquotPrefix, int firstAliquotId,
+			int numAliquots, String aliquotPrefix, int firstAliquotName,
 			AliquotBean template, String aliquotCreator, String creationDate) {
 
 		List<AliquotBean[]> aliquotMatrix = new ArrayList<AliquotBean[]>();
-		int aliquotId = firstAliquotId;
+		int aliquotName = firstAliquotName;
 		for (int i = 0; i < rowNum; i++) {
 			// calculate number of columsn per row
 			int cols = colNum;
@@ -117,10 +117,10 @@ public class PreCreateAliquotAction extends AbstractBaseAction {
 
 			for (int j = 0; j < cols; j++) {
 				AliquotBean aliquot = new AliquotBean(
-						aliquotPrefix + aliquotId, template.getContainer(),
+						aliquotPrefix + aliquotName, template.getContainer(),
 						template.getHowCreated(), aliquotCreator, creationDate);
 				aliquotRow[j] = aliquot;
-				aliquotId++;
+				aliquotName++;
 			}
 			aliquotMatrix.add(aliquotRow);
 		}

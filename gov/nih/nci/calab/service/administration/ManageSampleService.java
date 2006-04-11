@@ -18,7 +18,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-/* CVS $Id: ManageSampleService.java,v 1.17 2006-04-11 15:48:34 zengje Exp $ 
+/* CVS $Id: ManageSampleService.java,v 1.18 2006-04-11 18:29:58 pansu Exp $ 
  */
 public class ManageSampleService {
 	private static Logger logger = Logger.getLogger(ManageSampleService.class);
@@ -43,11 +43,11 @@ public class ManageSampleService {
 
 	/**
 	 * 
-	 * @return auto-generated default value for sample ID prefix
+	 * @return auto-generated default value for sample name prefix
 	 */
-	public String getDefaultSampleIdPrefix() throws Exception {
+	public String getDefaultSampleNamePrefix() throws Exception {
 		// TODO: Get configurable sample format string
-		String sampleIdPrefix = "NCL-";
+		String sampleNamePrefix = "NCL-";
 		long seqId = 0;
 		try {
 			IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.TOOLKITAPI);
@@ -67,7 +67,7 @@ public class ManageSampleService {
 			throw new RuntimeException("Problem in retrieving default sample ID prefix.");
 		}
 
-		return sampleIdPrefix + (seqId+1);
+		return sampleNamePrefix + (seqId+1);
 	}
 
 	public Long getUserDefinedSequenceId(String userDefinedPrefix) {
@@ -78,15 +78,15 @@ public class ManageSampleService {
 	}
 	/**
 	 * 
-	 * @param sampleIdPrefix
+	 * @param sampleNamePrefix
 	 * @param lotId
-	 * @return sampleId from sampleId prefix and lotId
+	 * @return sampleName from sampleName prefix and lotId
 	 */
-	public String getSampleId(String sampleIdPrefix, String lotId) {
+	public String getSampleName(String sampleNamePrefix, String lotId) {
 		if (lotId.equals("N/A")) {
-			return sampleIdPrefix;
+			return sampleNamePrefix;
 		}
-		return sampleIdPrefix + "-" + lotId;
+		return sampleNamePrefix + "-" + lotId;
 	}
 
 	/**
@@ -112,7 +112,7 @@ public class ManageSampleService {
 	      IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
     	  try {
 			ida.open();
-			String hqlString = "select count(*) from Sample sample where sample.name = '" + sample.getSampleId()+"'";
+			String hqlString = "select count(*) from Sample sample where sample.name = '" + sample.getSampleName()+"'";
 //			List results = ida.query(hqlString, Sample.class.getName());
 			List results = ida.search(hqlString);
 			if (results.iterator().hasNext())
@@ -156,11 +156,13 @@ public class ManageSampleService {
 			doSample.setDescription(sample.getSampleDescription());
 			doSample.setLotDescription(sample.getLotDescription());
 			doSample.setLotId(sample.getLotId());
-			doSample.setName(sample.getSampleId());
-			//  ReceivedBy and Date are not in the wireframe.
+			doSample.setName(sample.getSampleName());
+			// TODO: ReceivedBy and Date are not in the wireframe.
+
 			doSample.setReceivedBy("");
 			doSample.setReceivedDate(StringUtils.convertToDate(sample.getDateReceived(), CalabConstants.DATE_FORMAT));
-			doSample.setSampleSequenceId(getUserDefinedSequenceId(sample.getSampleIdPrefix()));
+			doSample.setSampleSequenceId(getUserDefinedSequenceId(sample.getSampleNamePrefix()));
+
 			doSample.setSolubility(sample.getSolubility());
 			doSample.setSourceSampleId(sample.getSourceSampleId());
 			// TODO: Fill in the sample SOP info, if sampleBean can pass the primary key......

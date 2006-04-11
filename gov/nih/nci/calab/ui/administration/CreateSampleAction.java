@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: CreateSampleAction.java,v 1.11 2006-04-07 13:41:23 pansu Exp $ */
+/* CVS $Id: CreateSampleAction.java,v 1.12 2006-04-11 18:31:22 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.ContainerBean;
 import gov.nih.nci.calab.dto.administration.SampleBean;
@@ -37,7 +37,7 @@ public class CreateSampleAction extends AbstractBaseAction {
 		try {
 			// TODO fill in details for sample information */
 			DynaValidatorActionForm theForm = (DynaValidatorActionForm) form;
-			String sampleIdPrefix = (String) theForm.get("sampleIdPrefix");
+			String sampleNamePrefix = (String) theForm.get("sampleNamePrefix");
 			String sampleType = (String) theForm.get("sampleType");
 			String sampleSOP = (String) theForm.get("sampleSOP");
 			String sampleDescription = (String) theForm
@@ -51,7 +51,7 @@ public class CreateSampleAction extends AbstractBaseAction {
 			String numContainers = (String) theForm.get("numberOfContainers");
 			String generalComments = (String) theForm.get("generalComments");
 			ManageSampleService manageSampleService = new ManageSampleService();
-			String sampleId = manageSampleService.getSampleId(sampleIdPrefix,
+			String sampleName = manageSampleService.getSampleName(sampleNamePrefix,
 					lotId);
 
 			// get user and date information from session
@@ -61,7 +61,7 @@ public class CreateSampleAction extends AbstractBaseAction {
 			ContainerBean[] containers = (ContainerBean[]) theForm
 					.get("containers");
 
-			SampleBean sample = new SampleBean(sampleIdPrefix, sampleId, sampleType, sampleSOP,
+			SampleBean sample = new SampleBean(sampleNamePrefix, sampleName, sampleType, sampleSOP,
 					sampleDescription, sampleSource, sourceSampleId,
 					dateReceived, solubility, lotId, lotDescription,
 					numContainers, generalComments, sampleSubmitter,
