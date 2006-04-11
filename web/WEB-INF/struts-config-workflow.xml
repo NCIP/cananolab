@@ -23,15 +23,15 @@
 		<form-bean name="createRunForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="inFileName" type="java.lang.String" />
 			<form-property name="outFileName" type="java.lang.String" />
-			<form-property name="assayType" type="java.lang.String" />
-			<form-property name="assayName" type="java.lang.String" />
+			<form-property name="assayTypeId" type="java.lang.String" />
+			<form-property name="assayId" type="java.lang.String" />
 			<form-property name="runName" type="java.lang.String" />
 			<form-property name="runDate" type="java.lang.String" />
 			<form-property name="runBy" type="java.lang.String" />
 			<form-property name="createdDate" type="java.lang.String" />
 			<form-property name="createdBy" type="java.lang.String" />
-			<form-property name="aliquotIds" type="java.lang.String" />
-			<form-property name="allAliquotIds" type="java.lang.String" />
+			<form-property name="availableAliquotIds" type="java.lang.String" />
+			<form-property name="assignedAliquotIds" type="java.lang.String" />
 			<form-property name="fileSubmissionDate" type="java.lang.String" />
 			<form-property name="fileSubmitter" type="java.lang.String" />
 			<form-property name="fileMaskStatus" type="java.lang.String" />
