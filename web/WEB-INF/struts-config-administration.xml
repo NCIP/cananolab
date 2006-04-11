@@ -3,7 +3,7 @@
 <struts-config>
 	<form-beans>
 		<form-bean name="createSampleForm" type="org.apache.struts.validator.DynaValidatorActionForm">
-			<form-property name="sampleIdPrefix" type="java.lang.String" />
+			<form-property name="sampleNamePrefix" type="java.lang.String" />
 			<form-property name="sampleType" type="java.lang.String" />
 			<form-property name="sampleSOP" type="java.lang.String" />
 			<form-property name="sampleDescription" type="java.lang.String" />
@@ -18,8 +18,8 @@
 			<form-property name="containers" type="gov.nih.nci.calab.dto.administration.ContainerBean[]" />
 		</form-bean>
 		<form-bean name="createAliquotForm" type="org.apache.struts.validator.DynaValidatorForm">
-			<form-property name="sampleId" type="java.lang.String" />
-			<form-property name="parentAliquotId" type="java.lang.String" />
+			<form-property name="sampleName" type="java.lang.String" />
+			<form-property name="parentAliquotName" type="java.lang.String" />
 			<form-property name="numberOfAliquots" type="java.lang.String" initial="0" />
 			<form-property name="template" type="gov.nih.nci.calab.dto.administration.AliquotBean" />
 			<form-property name="generalComments" type="java.lang.String" />

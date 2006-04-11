@@ -21,8 +21,8 @@
 		</form>
 
 		<form name="/createSample">
-			<field property="sampleIdPrefix" depends="required">
-				<arg position="0" key="createSampleForm.sampleIdPrefix" bundle="administration" />
+			<field property="sampleNamePrefix" depends="required">
+				<arg position="0" key="createSampleForm.sampleNamePrefix" bundle="administration" />
 			</field>
 			<field property="lotId" depends="required">
 				<arg position="0" key="createSampleForm.lotId" bundle="administration" />
@@ -90,18 +90,18 @@
 		</form>
 
 		<form name="createAliquotForm">
-			<field property="sampleId" depends="validwhen">
-				<arg position="0" key="createAliquotForm.sampleId" bundle="administration" />
+			<field property="sampleName" depends="validwhen">
+				<arg position="0" key="createAliquotForm.sampleName" bundle="administration" />
 				<var>
 					<var-name>test</var-name>
-					<var-value>((parentAliquotId!=null) or (*this*!=null))</var-value>
+					<var-value>((parentAliquotName!=null) or (*this*!=null))</var-value>
 				</var>
 			</field>
-			<field property="parentAliquotId" depends="validwhen">
-				<arg position="0" key="createAliquotForm.parentAliquotId" bundle="administration" />
+			<field property="parentAliquotName" depends="validwhen">
+				<arg position="0" key="createAliquotForm.parentAliquotName" bundle="administration" />
 				<var>
 					<var-name>test</var-name>
-					<var-value>((sampleId!=null) or (*this*!=null))</var-value>
+					<var-value>((sampleName!=null) or (*this*!=null))</var-value>
 				</var>
 			</field>
 			<field property="numberOfAliquots" depends="integer,intRange">

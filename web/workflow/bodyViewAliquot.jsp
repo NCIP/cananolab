@@ -22,7 +22,7 @@
 				<tr class="topBorder">
 					<td class="dataTablePrimaryLabel" width="30%">
 						<div align="justify">
-							<em>ALIQUOT <bean:write name="aliquot" property="aliquotId" /></em>
+							<em>ALIQUOT <bean:write name="aliquot" property="aliquotName" /></em>
 						</div>
 					</td>
 				</tr>
@@ -104,7 +104,7 @@
 			</tr>
 			<tr>
 				<td height="32">
-					<div align="right">
+					<div align="right">			
 						<html:hidden name="aliquot" property="aliquotId" />
 						<html:submit value="Mask Aliquot" />
 					</div>

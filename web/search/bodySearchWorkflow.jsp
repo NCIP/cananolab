@@ -66,7 +66,7 @@
 				</td>
 				<td class="formField">
 					<span class="formFieldWhite"> <label>
-							<strong> <html:text property="aliquotId" size="20" /> </strong>
+							<strong> <html:text property="aliquotName" size="20" /> </strong>
 						</label> </span>
 				</td>
 			</tr>

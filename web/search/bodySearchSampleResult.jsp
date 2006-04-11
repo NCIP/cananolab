@@ -58,7 +58,7 @@
 					<tr>
 						<td class="${style}" valign="top">
 							<div align="left">
-								<bean:write name="sample" property="sampleId" />
+								<bean:write name="sample" property="sampleName" />
 							</div>
 						</td>
 						<td class="${style}" valign="top">
@@ -141,7 +141,7 @@
 				<tr>
 					<td class="${style}" valign="top">
 						<div align="left">
-							<bean:write name="aliquot" property="sample.sampleId" />
+							<bean:write name="aliquot" property="sample.sampleName" />
 						</div>
 					</td>
 					<td class="${style}" valign="top">
@@ -161,7 +161,7 @@
 					</td>
 					<td class="${style}" valign="top">
 						<div align="left">
-							<bean:write name="aliquot" property="aliquotId" />
+							<bean:write name="aliquot" property="aliquotName" />
 						</div>
 					</td>
 					<td class="${style}" valign="top">
