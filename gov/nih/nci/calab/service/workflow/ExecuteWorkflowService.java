@@ -82,7 +82,7 @@ public class ExecuteWorkflowService {
 	}
 
 	public AliquotBean getAliquot(String aliquotId) {
-		AliquotBean aliquotBean = new AliquotBean();
+		AliquotBean aliquotBean = null;
 		try {
 			IDataAccess ida = (new DataAccessProxy())
 					.getInstance(IDataAccess.HIBERNATE);
