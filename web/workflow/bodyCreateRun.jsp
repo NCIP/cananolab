@@ -1,6 +1,28 @@
+<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
+<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
+
+<script type="text/javascript">
+<!--//
+function refreshTree() {
+  
+  document.createRunForm.submit();
+}
+//-->
+</script>
 <h2>
 <strong>Create Run </strong>
 </h2>
+<html:errors />
+<logic:messagesPresent message="true">
+	<ul>
+		<font color="red"> <html:messages id="msg" message="true" bundle="workflow">
+				<li>
+					<bean:write name="msg" />
+				</li>
+			</html:messages> </font>
+	</ul>
+</logic:messagesPresent>
 <blockquote>
 	<table width="90%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 		<tr class="topBorder">
@@ -11,43 +33,18 @@
 			</td>
 		</tr>
 		<tr>
-			<td colspan="2" class="formLabel">
-				<div align="justify">
-					<strong>Assay Type<span class="formFieldWhite"> <select name=select>
-								<option value="baseline">
-									&nbsp;
-								</option>
-								<option value="bp1" selected>
-									Prescreening
-								</option>
-								<option value="bp2">
-									In Vitro
-								</option>
-								<option value="bp3">
-									In Vivo
-								</option>
-								<option value="bp4">
-									Physical Characterization Assays
-								</option>
-							</select> </span> &nbsp; &nbsp; &nbsp;Assay<span class="formFieldWhite"> <select name=select2>
-								<option value="baseline">
-									&nbsp;
-								</option>
-								<option value="baseline">
-									PCC-1
-								</option>
-								<option value="bp1" selected>
-									STE-1
-								</option>
-								<option value="bp2">
-									STE-2
-								</option>
-								<option value="bp3">
-									STE-3
-								</option>
-							</select> </span>&nbsp; &nbsp; &nbsp; <input name="Submit2223" type="submit" onClick="javascript:window.open('doc/protocol.pdf','Protocol','');" value="View Protocol"> </strong>
-				</div>
-			</td>
+				<td class="formLabel">
+					<div align="justify">
+						<strong>Assay Type<span class="formFieldWhite"> <html:select property="assayTypeId">
+									<option value=""></option>
+									<html:options name="assayTypeName" />
+								</html:select></span></strong>&nbsp; &nbsp; &nbsp; &nbsp; <strong>Assay<span class="formFieldWhite"> <html:select property="assayId">
+									<option value=""></option>
+									<html:options name="assayName" />
+								</html:select></span></strong>
+					</div>
+				</td>				
+			
 		</tr>
 		<tr>
 			<td width="27%" class="formLabelWhite">
@@ -61,23 +58,20 @@
 					<tr>
 						<td width="28%" height="39" valign="top">
 							<div align="center">
-								<span class="mainMenu"> <span class="formMessage">Aliquots</span> 
-									<select multiple size="4" name="availableAliquotList" style="width:100">
-										<option value="12">
-											NCL6-7105-1
-										</option>
-										<option value="54">
-											NCL6-7105-2
-										</option>
-									</select> </span>
+								<span class="mainMenu"> <span class="formMessage">Aliquots</span> 								
+								<html:select multiple="true" property="allAliquotsIds">
+									<html:options name="allAliquotIds" />
+								</html:select>
+								</span>
 							</div>
 						</td>
 						<td width="10%" align="center" valign="middle">
 							<table border="0" cellspacing="0" cellpadding="10">
 								<tr>
 									<td>
-										<img src="images/greaterthan.gif" width="20" onClick="moveItems(this.form.availableAliquotList,this.form.useAliquotList)" height="17" onclick="">
-										<img src="images/lessthan.gif" width="20" onClick="moveItems(this.form.useAliquotList,this.form.availableAliquotList)" height="17">
+									<!-- 
+										<input type="button" onClick="moveItems(this.form.allAliquotsIds,this.form.aliquotsIds)" value="<<"><input type="button" onClick="moveItems(this.form.aliquotsIds,this.form.allAliquotsIds)" value=">>">
+										-->
 									</td>
 								</tr>
 							</table>
@@ -85,11 +79,9 @@
 						<td width="62%" valign="top">
 							<div align="center">
 								<span class="formMessage">Use Aliquots</span>
-								<select multiple size="4" name="useAliquotList" style="width:100">
-									<option value="12">
-										NCL6-7105-1
-									</option>
-								</select>
+								<html:select multiple="true" property="aliquotsIds">
+									<html:options name="aliquotIds" />
+								</html:select>
 							</div>
 						</td>
 					</tr>
@@ -123,9 +115,7 @@
 			</td>
 			<td class="formFieldWhite">
 				<strong><span class="mainMenu"> <select multiple size="4" name="select4" style="width:100">
-							<option value="12">
-								x.vaf
-							</option>
+							<option value="12">	</option>
 							<option value="54">
 								&nbsp;
 							</option>
@@ -135,22 +125,27 @@
 		<tr>
 			<td class="formLabelWhite">
 				<div align="left">
-					<strong>Run By</strong>
+					<strong>Run By*</strong>
 				</div>
 			</td>
-			<td class="formFieldWhite">
-				<input type="text" value="John Doe" name="ranBy">
+			<td class="formFieldWhite">				
+				<html:text property="runBy" size="15" />
 			</td>	
 		</tr>
 		<tr>
 			<td class="formLabelWhite">
+			
 				<div align="left">
-					<strong>Run Date</strong>
+					<strong>Run Date*</span> </strong>
 				</div>
 			</td>
-			<td class="formFieldWhite">
-				<input type="text" value="" name="runDate" >
-				<span class="formFieldWhite"> <a href="javascript:cal.popup();"><img height="18" src="images/calendar-icon.gif" width="22" border="0" alt="Click Here to Pick up the date"></a></span>
+			<td class="formFieldWhite">				
+				<html:text property="runDate" size="10" />
+				<span class="formFieldWhite">
+				 <a href="javascript:cal.popup();">
+				 	<img height="18" src="images/calendar-icon.gif" width="22" border="0" alt="Click Here to Pick up the date">
+				 </a>
+				</span>
 			</td>	
 		</tr>
 	</table>
