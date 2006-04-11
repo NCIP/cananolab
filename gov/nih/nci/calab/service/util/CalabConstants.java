@@ -2,7 +2,7 @@ package gov.nih.nci.calab.service.util;
 
 public class CalabConstants {
 	
-	public static final String DATE_FORMAT = "mm/dd/yyyy";
+	public static final String DATE_FORMAT = "MM/dd/yyyy";
 	
 	public static final String STORAGE_BOX = "Box";
 	public static final String STORAGE_SHELF = "Shelf";
