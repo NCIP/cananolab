@@ -14,13 +14,13 @@ import java.util.List;
  * @author pansu
  * 
  */
-/* CVS $Id: StringUtils.java,v 1.6 2006-04-10 18:11:30 pansu Exp $ */
+/* CVS $Id: StringUtils.java,v 1.7 2006-04-11 21:02:14 pansu Exp $ */
 
 public class StringUtils {
 	private static Logger logger = Logger.getLogger(StringUtils.class);
 
 	public static Date convertToDate(String dateString, String dateFormat) {
-		if (dateString==null || dateString=="") {
+		if (dateString == null || dateString == "") {
 			return null;
 		}
 		Date theDate = null;
@@ -56,6 +56,9 @@ public class StringUtils {
 				}
 			}
 		}
+		if (joinedStr.endsWith(delimiter)) {
+			joinedStr=joinedStr.substring(0, joinedStr.length()-1);
+		}
 		return joinedStr;
 	}
 
@@ -63,26 +66,30 @@ public class StringUtils {
 		String joinedStr = "";
 		if (stringList == null || stringList.isEmpty()) {
 			return joinedStr;
-		}
-		int i=0;
-		for (String str: stringList) {
-		    if (str == null) {
-				str = "";
+		}		
+		//remove null and empty item from the list
+		for (String str : stringList) {
+			if (str == null) {
+				stringList.remove(str);
 			}
-			if ((str.length() > 0)) {
-				if (i < stringList.size() - 1) {
-					joinedStr += str + delimiter;
-				} else {
-					joinedStr += str;
-				}
+			if (str.length() == 0) {
+				stringList.remove(str);
+			}
+		}
+		int i = 0;
+		for (String str : stringList) {
+			if (i < stringList.size() - 1) {
+				joinedStr += str + delimiter;
+			} else {
+				joinedStr += str;
 			}
 			i++;
 		}
 		return joinedStr;
 	}
-	
+
 	public static String convertDateToString(Date date, String format) {
-		if (date==null) {
+		if (date == null) {
 			return "";
 		}
 		String dateStr = null;
@@ -100,34 +107,41 @@ public class StringUtils {
 	}
 
 	public static Float convertToFloat(String floatStr) {
-		if (floatStr == null || floatStr=="") {
+		if (floatStr == null || floatStr == "") {
 			return null;
 		}
 		try {
 			Float floatNum = Float.parseFloat(floatStr);
 			return floatNum;
 		} catch (NumberFormatException e) {
-			logger.error("Error converting the given string to a float number", e);
-			throw new RuntimeException("Can't convert the given string to a float number: "+floatStr);		}
+			logger.error("Error converting the given string to a float number",
+					e);
+			throw new RuntimeException(
+					"Can't convert the given string to a float number: "
+							+ floatStr);
+		}
 	}
-	
+
 	public static Long convertToLong(String longStr) {
-		if (longStr == null || longStr=="") {
+		if (longStr == null || longStr == "") {
 			return null;
 		}
 		try {
 			Long longNum = Long.parseLong(longStr);
 			return longNum;
 		} catch (NumberFormatException e) {
-			logger.error("Error converting the given string to a long number", e);
-			throw new RuntimeException("Can't convert the given string to a long number: "+longStr);		}
+			logger.error("Error converting the given string to a long number",
+					e);
+			throw new RuntimeException(
+					"Can't convert the given string to a long number: "
+							+ longStr);
+		}
 	}
 
 	public static String convertToString(Object obj) {
-		if (obj==null) {
+		if (obj == null) {
 			return "";
-		}
-		else {
+		} else {
 			return obj.toString();
 		}
 	}
