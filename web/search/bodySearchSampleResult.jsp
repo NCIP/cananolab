@@ -73,7 +73,9 @@
 						</td>
 						<td class="${style}" valign="top">
 							<div align="left">
-								<bean:write name="container" property="storageLocationStr" />
+								<logic:present name="container">
+									<bean:write name="container" property="storageLocationStr" />
+								</logic:present>
 							</div>
 						</td>
 						<td class="${style}" valign="top">
@@ -86,7 +88,7 @@
 			viewSampleDetailParams.put("sampleNum", sampleNum);
 			viewSampleDetailParams.put("containerNum", containerNum);
 			viewSampleDetailParams.put("showAliquot", showAliquot);
-			
+
 			pageContext.setAttribute("viewSampleDetailParams",
 					viewSampleDetailParams);%>
 							<div align="center">
