@@ -79,7 +79,7 @@
 													&nbsp;
 												</td>
 												<td>
-													<input name="submit2" type="submit" class="actionButton" value="Login" />
+												    <html:submit value="Login"/>
 												</td>
 											</tr>
 											<tr>
