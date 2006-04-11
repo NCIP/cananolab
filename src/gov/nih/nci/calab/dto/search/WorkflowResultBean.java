@@ -16,7 +16,7 @@ public class WorkflowResultBean {
 
 	private String assayRunDate;
 
-	private String aliquotId;
+	private String aliquotName;
 
 	private String fileSubmissionDate;
 
@@ -25,7 +25,7 @@ public class WorkflowResultBean {
 	private String fileMaskStatus;
 
 	public WorkflowResultBean(String fileName, String assayType, String assayName,
-			String assayRunDate, String aliquotId, String fileSubmissionDate,
+			String assayRunDate, String aliquotName, String fileSubmissionDate,
 			String fileSubmitter, String fileMaskStatus) {
 		super();
 		// TODO Auto-generated constructor stub
@@ -33,18 +33,18 @@ public class WorkflowResultBean {
 		this.assayType = assayType;
 		this.assayName = assayName;
 		this.assayRunDate = assayRunDate;
-		this.aliquotId = aliquotId;
+		this.aliquotName = aliquotName;
 		this.fileSubmissionDate = fileSubmissionDate;
 		this.fileSubmitter = fileSubmitter;
 		this.fileMaskStatus = fileMaskStatus;
 	}
 
-	public String getAliquotId() {
-		return aliquotId;
+	public String getAliquotName() {
+		return aliquotName;
 	}
 
-	public void setAliquotId(String aliquotId) {
-		this.aliquotId = aliquotId;
+	public void setAliquotName(String aliquotName) {
+		this.aliquotName = aliquotName;
 	}
 
 	public String getAssayName() {
