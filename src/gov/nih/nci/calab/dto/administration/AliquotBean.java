@@ -12,58 +12,72 @@ import gov.nih.nci.calab.service.util.StringUtils;
  * 
  */
 
-/* CVS $Id: AliquotBean.java,v 1.5 2006-04-10 18:10:39 pansu Exp $ */
+/* CVS $Id: AliquotBean.java,v 1.6 2006-04-11 18:28:43 pansu Exp $ */
 
 public class AliquotBean {
-	private String aliquotId="";
+	private String aliquotId = "";
+
+	private String aliquotName = "";
 
 	private ContainerBean container;
 
-	private String howCreated="";
-	
-	private String creator="";
-	
-	private String creationDate="";
+	private String howCreated = "";
+
+	private String creator = "";
+
+	private String creationDate = "";
 
 	private SampleBean sample;
-	
+
 	public AliquotBean() {
-		container=new ContainerBean();
-		sample=new SampleBean();
+		container = new ContainerBean();
+		sample = new SampleBean();
+	}
+
+	public AliquotBean(String aliquotId, String aliquotName) {
+		this.aliquotId=aliquotId;
+		this.aliquotName=aliquotName;
 	}
 	
-	public AliquotBean(String aliquotId, ContainerBean container,
+	public AliquotBean(String aliquotName, ContainerBean container,
 			String howCreated, String creator, String creationDate) {
 		// TODO Auto-generated constructor stub
-		this.aliquotId = aliquotId;
+		this.aliquotName = aliquotName;
 		this.container = container;
 		this.howCreated = howCreated;
-		this.creator=creator;
-		this.creationDate=creationDate;
+		this.creator = creator;
+		this.creationDate = creationDate;
 	}
 	
-	public AliquotBean(String aliquotId, ContainerBean container,
-			String howCreated, String creator, String creationDate, SampleBean sample) {
+	public AliquotBean(String aliquotId, String aliquotName, ContainerBean container,
+			String howCreated, String creator, String creationDate) {
 		// TODO Auto-generated constructor stub
-		this(aliquotId, container, howCreated, creator, creationDate);
-		this.sample=sample;
+		this.aliquotId=aliquotId;
+		this.aliquotName = aliquotName;
+		this.container = container;
+		this.howCreated = howCreated;
+		this.creator = creator;
+		this.creationDate = creationDate;
+	}
+
+	public AliquotBean(String aliquotName, ContainerBean container,
+			String howCreated, String creator, String creationDate,
+			SampleBean sample) {
+		// TODO Auto-generated constructor stub
+		this(aliquotName, container, howCreated, creator, creationDate);
+		this.sample = sample;
 	}
 
 	public AliquotBean(Aliquot aliquot) {
-		this.aliquotId=StringUtils.convertToString(aliquot.getName());
-		this.container=new ContainerBean(aliquot);
-		this.howCreated=StringUtils.convertToString(aliquot.getCreatedMethod());
-		this.creator=StringUtils.convertToString(aliquot.getCreatedBy());
-		this.creationDate=StringUtils.convertDateToString(aliquot.getCreatedDate(), CalabConstants.DATE_FORMAT);
-		this.sample=new SampleBean(aliquot.getSample());
-	}
-	
-	public String getAliquotId() {
-		return aliquotId;
-	}
-
-	public void setAliquotId(String aliquotId) {
-		this.aliquotId = aliquotId;
+		this.aliquotId=StringUtils.convertToString(aliquot.getId());
+		this.aliquotName = StringUtils.convertToString(aliquot.getName());
+		this.container = new ContainerBean(aliquot);
+		this.howCreated = StringUtils.convertToString(aliquot
+				.getCreatedMethod());
+		this.creator = StringUtils.convertToString(aliquot.getCreatedBy());
+		this.creationDate = StringUtils.convertDateToString(aliquot
+				.getCreatedDate(), CalabConstants.DATE_FORMAT);
+		this.sample = new SampleBean(aliquot.getSample());
 	}
 
 	public ContainerBean getContainer() {
@@ -104,6 +118,22 @@ public class AliquotBean {
 
 	public void setSample(SampleBean sample) {
 		this.sample = sample;
+	}
+
+	public String getAliquotId() {
+		return aliquotId;
+	}
+
+	public void setAliquotId(String aliquotId) {
+		this.aliquotId = aliquotId;
+	}
+
+	public String getAliquotName() {
+		return aliquotName;
+	}
+
+	public void setAliquotName(String aliquotName) {
+		this.aliquotName = aliquotName;
 	}
 
 }
