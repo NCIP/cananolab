@@ -18,11 +18,13 @@ import gov.nih.nci.calab.service.util.StringUtils;
  * 
  */
 
-/* CVS $Id: SampleBean.java,v 1.6 2006-04-10 18:10:39 pansu Exp $ */
+/* CVS $Id: SampleBean.java,v 1.7 2006-04-11 16:32:10 pansu Exp $ */
 public class SampleBean {
-	private String sampleIdPrefix="";
-
 	private String sampleId="";
+	
+	private String sampleNamePrefix="";
+
+	private String sampleName="";
 
 	private String sampleType="";
 
@@ -55,14 +57,19 @@ public class SampleBean {
 	public SampleBean() {
 	}
 
-	public SampleBean(String sampleId, String sampleType, String sampleSOP,
+	public SampleBean(String sampleId, String sampleName) {
+		this.sampleId=sampleId;
+		this.sampleName=sampleName;
+	}
+	
+	public SampleBean(String sampleName, String sampleType, String sampleSOP,
 			String sampleDescription, String sampleSource,
 			String sourceSampleId, String dateReceived, String solubility,
 			String lotId, String lotDescription, String numberOfContainers,
 			String generalComments, String sampleSubmitter, String accessionDate) {
 		super();
 		// TODO Auto-generated constructor stub
-		this.sampleId = sampleId;
+		this.sampleName = sampleName;
 		this.sampleType = sampleType;
 		this.sampleSOP = sampleSOP;
 		this.sampleDescription = sampleDescription;
@@ -78,14 +85,14 @@ public class SampleBean {
 		this.accessionDate = accessionDate;
 	}
 
-	public SampleBean(String sampleId, String sampleType, String sampleSOP,
+	public SampleBean(String sampleName, String sampleType, String sampleSOP,
 			String sampleDescription, String sampleSource,
 			String sourceSampleId, String dateReceived, String solubility,
 			String lotId, String lotDescription, String numberOfContainers,
 			String generalComments, String sampleSubmitter,
 			String accessionDate, ContainerBean[] containers) {
 		// TODO Auto-generated constructor stub
-		this(sampleId, sampleType, sampleSOP, sampleDescription, sampleSource,
+		this(sampleName, sampleType, sampleSOP, sampleDescription, sampleSource,
 				sourceSampleId, dateReceived, lotId, lotDescription,
 				solubility, numberOfContainers, generalComments,
 				sampleSubmitter, accessionDate);
@@ -93,7 +100,7 @@ public class SampleBean {
 
 	}
 
-	public SampleBean(String sampleIdPrefix, String sampleId,
+	public SampleBean(String sampleNamePrefix, String sampleId,
 			String sampleType, String sampleSOP, String sampleDescription,
 			String sampleSource, String sourceSampleId, String dateReceived,
 			String solubility, String lotId, String lotDescription,
@@ -105,13 +112,13 @@ public class SampleBean {
 				sourceSampleId, dateReceived, lotId, lotDescription,
 				solubility, numberOfContainers, generalComments,
 				sampleSubmitter, accessionDate);
-		this.sampleIdPrefix = sampleIdPrefix;
+		this.sampleNamePrefix = sampleNamePrefix;
 		this.containers = containers;
 
 	}
 
 	public SampleBean(Sample sample) {
-		this.sampleId = StringUtils.convertToString(sample.getName());
+		this.sampleName = StringUtils.convertToString(sample.getName());
 		this.sampleType = StringUtils.convertToString(sample.getType());
 		this.sampleSOP = (sample.getSampleSOP() == null) ? "" : StringUtils.convertToString(sample
 				.getSampleSOP().getName());
@@ -197,12 +204,12 @@ public class SampleBean {
 		this.sampleDescription = sampleDescription;
 	}
 
-	public String getSampleId() {
-		return sampleId;
+	public String getSampleName() {
+		return sampleName;
 	}
 
-	public void setSampleId(String sampleId) {
-		this.sampleId = sampleId;
+	public void setSampleName(String sampleId) {
+		this.sampleName = sampleId;
 	}
 
 	public String getSampleSOP() {
@@ -261,12 +268,20 @@ public class SampleBean {
 		this.containers = containers;
 	}
 
-	public String getSampleIdPrefix() {
-		return sampleIdPrefix;
+	public String getSampleNamePrefix() {
+		return sampleNamePrefix;
 	}
 
-	public void setSampleIdPrefix(String sampleIdPrefix) {
-		this.sampleIdPrefix = sampleIdPrefix;
+	public void setSampleNamePrefix(String sampleIdPrefix) {
+		this.sampleNamePrefix = sampleIdPrefix;
+	}
+
+	public String getSampleId() {
+		return sampleId;
+	}
+
+	public void setSampleId(String sampleId) {
+		this.sampleId = sampleId;
 	}
 
 }
