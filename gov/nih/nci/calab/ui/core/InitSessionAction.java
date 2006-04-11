@@ -7,8 +7,9 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.7 2006-04-11 14:06:43 thangars Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.8 2006-04-11 18:31:39 pansu Exp $ */
 
+import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
 import gov.nih.nci.calab.dto.security.SecurityBean;
 import gov.nih.nci.calab.service.administration.ManageAliquotService;
@@ -16,6 +17,7 @@ import gov.nih.nci.calab.service.administration.ManageSampleService;
 import gov.nih.nci.calab.service.common.LookupService;
 import gov.nih.nci.calab.service.search.SearchSampleService;
 import gov.nih.nci.calab.service.search.SearchWorkflowService;
+import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.service.workflow.ExecuteWorkflowService;
 
@@ -77,7 +79,7 @@ public class InitSessionAction extends AbstractBaseAction {
 				creator = user.getLoginId();
 			}
 			String creationDate = StringUtils.convertDateToString(new Date(),
-					"MM/dd/yyyy");
+					CalabConstants.DATE_FORMAT);
 			session.setAttribute("creator", creator);
 			session.setAttribute("creationDate", creationDate);
 			forward = mapping.findForward(forwardPage);
@@ -107,10 +109,10 @@ public class InitSessionAction extends AbstractBaseAction {
 	 */
 	private void setUseAliquotSession(HttpSession session,
 			LookupService lookupService) {
-		if (session.getAttribute("allUnmaskedAliquotIds") == null
+		if (session.getAttribute("allUnmaskedAliquots") == null
 				|| session.getAttribute("newAliquotCreated") != null) {
-			List<String> allAliquotIds = lookupService.getUnmaskedAliquots();
-			session.setAttribute("allUnmaskedAliquotIds", allAliquotIds);
+			List<AliquotBean> allAliquots = lookupService.getUnmaskedAliquots();
+			session.setAttribute("allUnmaskedAliquots", allAliquots);
 		}
 	}
 
@@ -161,15 +163,15 @@ public class InitSessionAction extends AbstractBaseAction {
 			LookupService lookupService, String urlPrefix) {
 		ManageAliquotService manageAliquotService = new ManageAliquotService();
 
-		if (session.getAttribute("allSampleIds") == null
+		if (session.getAttribute("allSamples") == null
 				|| session.getAttribute("newSampleCreated") != null) {
-			List sampleIds = lookupService.getAllSampleIds();
-			session.setAttribute("allSampleIds", sampleIds);
+			List samples = lookupService.getAllSamples();
+			session.setAttribute("allSamples", samples);
 		}
-		if (session.getAttribute("allUnmaskedAliquotIds") == null
+		if (session.getAttribute("allUnmaskedAliquots") == null
 				|| session.getAttribute("newAliquotCreated") != null) {
-			List aliquotIds = lookupService.getUnmaskedAliquots();
-			session.setAttribute("allUnmaskedAliquotIds", aliquotIds);
+			List aliquots = lookupService.getUnmaskedAliquots();
+			session.setAttribute("allUnmaskedAliquots", aliquots);
 		}
 		if (session.getAttribute("aliquotContainerInfo") == null
 				|| session.getAttribute("newAliquotCreated") != null) {
@@ -221,15 +223,15 @@ public class InitSessionAction extends AbstractBaseAction {
 	private void setSearchSampleSession(HttpSession session,
 			LookupService lookupService) {
 		SearchSampleService searchSampleService = new SearchSampleService();
-		if (session.getAttribute("allSampleIds") == null
+		if (session.getAttribute("allSamples") == null
 				|| session.getAttribute("newSampleCreated") != null) {
-			List sampleIds = lookupService.getAllSampleIds();
-			session.setAttribute("allSampleIds", sampleIds);
+			List samples = lookupService.getAllSamples();
+			session.setAttribute("allSamples", samples);
 		}
-		if (session.getAttribute("allAliquotIds") == null
+		if (session.getAttribute("allAliquots") == null
 				|| session.getAttribute("newAliquotCreated") != null) {
-			List aliquotIds = lookupService.getAliquots();
-			session.setAttribute("allAliquotIds", aliquotIds);
+			List aliquots = lookupService.getAliquots();
+			session.setAttribute("allAliquots", aliquots);
 		}
 		if (session.getAttribute("allSampleTypes") == null
 				|| session.getAttribute("newSampleCreated") != null) {
@@ -280,8 +282,6 @@ public class InitSessionAction extends AbstractBaseAction {
 	 */
 	   private void setCreateRunSession(HttpSession session,
 			LookupService lookupService) {
-		ExecuteWorkflowService workflowService = new ExecuteWorkflowService();
-		
 		if (session.getAttribute("allAssayTypeIds") == null) {
 			List allAssayTypeIds = lookupService.getAllAssayTypes();
 			session.setAttribute("allAssayTypeIds", allAssayTypeIds);
@@ -290,9 +290,9 @@ public class InitSessionAction extends AbstractBaseAction {
 			List allAssayIds = lookupService.getAllAssays();
 			session.setAttribute("allAssayIds", allAssayIds);
 		}
-		if (session.getAttribute("allAvailableAliquotIds") == null) {
-			List allAvailableAliquotIds = lookupService.getAliquots(); //reused getAliquots
-			session.setAttribute("allAvailableAliquotIds", allAvailableAliquotIds);
+		if (session.getAttribute("allAliquots") == null) {
+			List allAliquots = lookupService.getAliquots(); 
+			session.setAttribute("allAliquots", allAliquots);
 		}
 	}
 }
