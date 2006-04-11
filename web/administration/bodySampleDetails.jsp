@@ -163,7 +163,7 @@
 		</table>
 		<br>
 
-		<logic:iterate name="sample" property="containers" id="container" type="gov.nih.nci.calab.dto.administration.ContainerBean" indexId="cnum">
+		<logic:iterate name="sample" property="containers" id="container" indexId="cnum">
 			<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="90%" align="center" summary="" border="0">
 				<tbody>
 					<tr class="topBorder">
