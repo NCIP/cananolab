@@ -1,14 +1,29 @@
 package gov.nih.nci.calab.service.workflow;
 
-import gov.nih.nci.calab.dto.workflow.ExecuteWorkflowBean;
+import gov.nih.nci.calab.db.DataAccessProxy;
+import gov.nih.nci.calab.db.IDataAccess;
+import gov.nih.nci.calab.domain.Aliquot;
+import gov.nih.nci.calab.domain.Run;
+import gov.nih.nci.calab.domain.RunSampleContainer;
+import gov.nih.nci.calab.domain.StorageElement;
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerBean;
 import gov.nih.nci.calab.dto.administration.StorageLocation;
+import gov.nih.nci.calab.dto.workflow.ExecuteWorkflowBean;
+import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import org.apache.log4j.Logger;
 
 public class ExecuteWorkflowService {
+	private static Logger logger = Logger.getLogger(ExecuteWorkflowService.class);
 
 	/**
 	 * Retrieve assays by assayType
@@ -17,37 +32,22 @@ public class ExecuteWorkflowService {
 	 */
 	public List<String> getAssayByType(String assayTypeName) {
 		// Detail here
-		List assays = new ArrayList();
-		if (assayTypeName.equals("Pre-screening Assay")) {
-			assays.add("PCC-1");
-			assays.add("STE-1");
-			assays.add("STE-2");
-			assays.add("STE-3");
+		List<String> assays = new ArrayList<String>();
+		try {
+			IDataAccess ida = (new DataAccessProxy())
+					.getInstance(IDataAccess.HIBERNATE);
+			ida.open();
+			String hqlString = "select assay.name from Assay assay where assay.assayType ='" + assayTypeName + "'";
+			List results = ida.search(hqlString);
+			for (Object obj : results) {
+				assays.add((String) obj);
+			}
+			ida.close();
+		} catch (Exception e) {
+			logger.error("Error in retrieving assay by assayType -- " + assayTypeName, e);
+			throw new RuntimeException("Error in retrieving assay by assayType -- " + assayTypeName);
 		}
-		else if(assayTypeName.equals("Physical Characterization Assays")) 
-		{
-		}	
-		
 		return assays;
-	}
-
-	/**
-	 * Retrive aliquots associate with Assay
-	 * 
-	 * @return a list of aliquot id
-	 */
-	public List<String> getAliquotsByAssay(String assayTypeName,
-			String assayName) {
-		// Detail impl needed
-
-		List aliquotIds = new ArrayList();
-		aliquotIds.add("NCL-0-1234");
-		aliquotIds.add("NCL-0-1234-0");
-		aliquotIds.add("NCL-1-1234-1");
-		aliquotIds.add("NCL-1-1234");
-		aliquotIds.add("NCL-2-1235");
-
-		return aliquotIds;
 	}
 
 	/**
@@ -58,17 +58,90 @@ public class ExecuteWorkflowService {
 	 * @throws Exception
 	 */
 	public void saveRunAliquots(String runId, String[] aliquotIds,
-			String comments) throws Exception {
-		// TODO fill in details for saving aliquotIds for the run
+			String comments, String creator, String creationDate) throws Exception {
+		// TODO:   Would be helpful if the aliquot ID are the primary key  and Run ID is the primary key
+		try {
+			IDataAccess ida = (new DataAccessProxy())
+					.getInstance(IDataAccess.HIBERNATE);
+			ida.open();
+			//load run object
+			Run doRun = (Run)ida.load(Run.class, StringUtils.convertToLong(runId));
+		
+			// Create RunSampleContainer collection
+			for (int i=0;i<aliquotIds.length;i++) {
+				RunSampleContainer doRunSC = new RunSampleContainer();
+				doRunSC.setComments(comments);
+				doRunSC.setRun(doRun);
+				doRunSC.setSampleContainer((Aliquot)ida.load(Aliquot.class, StringUtils.convertToLong(aliquotIds[i])));
+				doRunSC.setCreatedBy(creator);
+				doRunSC.setCreatedDate(StringUtils.convertToDate(creationDate, CalabConstants.DATE_FORMAT));
+				ida.createObject(doRunSC);
+			}
+			ida.close();
+		} catch (Exception e) {
+			logger.error("Error in saving Run Aliquot ", e);
+			throw new RuntimeException("Error in saving Run Aliquot ");
+		}
 	}
 
 	public AliquotBean getAliquot(String aliquotId) {
-		AliquotBean aliquot = new AliquotBean(aliquotId, new ContainerBean(
-				"Tube", null, "18", "mg", "1.8", "mg/ml", "10", "ml",
-				"solvent", "safety precautions", "storage conditions",
-				new StorageLocation(null, "205", "1", "1", null, "A"),
-				"comments"), "solubilized", "Jane Doe", "10/21/2005");
-		return aliquot;
+		AliquotBean aliquotBean = new AliquotBean();
+		try {
+			IDataAccess ida = (new DataAccessProxy())
+					.getInstance(IDataAccess.HIBERNATE);
+			ida.open();
+			String hqlString = "from Aliquot aliquot where aliquot.name ='" + aliquotId+ "'";
+			List results = ida.search(hqlString);
+			for (Object obj : results) {
+				Aliquot doAliquot = (Aliquot) obj;
+				aliquotBean.setAliquotId(aliquotId); // name
+				aliquotBean.setCreationDate(StringUtils.convertDateToString(doAliquot.getCreatedDate(), CalabConstants.DATE_FORMAT));
+				aliquotBean.setCreator(doAliquot.getCreatedBy());
+				aliquotBean.setHowCreated(doAliquot.getCreatedMethod());
+				
+				// ContainerBean
+				ContainerBean containerBean = new ContainerBean();
+				containerBean.setConcentration(doAliquot.getConcentration().toString());
+				containerBean.setConcentrationUnit(doAliquot.getConcentrationUnit());
+				containerBean.setContainerComments(doAliquot.getComments());
+				containerBean.setContainerType(doAliquot.getContainerType());
+				containerBean.setQuantity(doAliquot.getQuantity().toString());
+				containerBean.setQuantityUnit(doAliquot.getQuantityUnit());
+				containerBean.setSafetyPrecaution(doAliquot.getSafetyPrecaution());
+				containerBean.setSolvent(doAliquot.getDiluentsSolvent());
+				containerBean.setStorageCondition(doAliquot.getStorageCondition());
+				containerBean.setVolume(doAliquot.getVolume().toString());
+				containerBean.setVolumeUnit(doAliquot.getVolumeUnit());
+				
+//				containerBean.setStorageLocationStr();
+				StorageLocation location = new StorageLocation();
+				Set storageElements = (Set)doAliquot.getStorageElementCollection();
+				for(Object storageObj: storageElements) {
+					StorageElement element = (StorageElement)storageObj;
+					if (element.getType().equals(CalabConstants.STORAGE_ROOM)) {
+						location.setRoom(element.getLocation());
+					} else if (element.getType().equals(CalabConstants.STORAGE_FREEZER)) {
+						location.setFreezer(element.getLocation());
+					} else if (element.getType().equals(CalabConstants.STORAGE_SHELF)) {
+						location.setShelf(element.getLocation());
+					} else if (element.getType().equals(CalabConstants.STORAGE_BOX)) {
+						location.setBox(element.getLocation());
+					} else if (element.getType().equals(CalabConstants.STORAGE_RACK)) {
+						location.setRack(element.getLocation());
+					} else if (element.getType().equals(CalabConstants.STORAGE_LAB)) {
+						location.setLab(element.getLocation());
+					}					
+				}
+				containerBean.setStorageLocation(location);
+					
+				aliquotBean.setContainer(containerBean);
+			}
+			ida.close();
+		} catch (Exception e) {
+			logger.error("Error in retrieving aliquot information with name -- " + aliquotId, e);
+			throw new RuntimeException("Error in retrieving aliquot information with name -- " + aliquotId);
+		}
+		return aliquotBean;
 	}
 	
 	
