@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.6 2006-04-07 15:26:17 pansu Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.7 2006-04-11 14:06:43 thangars Exp $ */
 
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
 import gov.nih.nci.calab.dto.security.SecurityBean;
@@ -17,6 +17,7 @@ import gov.nih.nci.calab.service.common.LookupService;
 import gov.nih.nci.calab.service.search.SearchSampleService;
 import gov.nih.nci.calab.service.search.SearchWorkflowService;
 import gov.nih.nci.calab.service.util.StringUtils;
+import gov.nih.nci.calab.service.workflow.ExecuteWorkflowService;
 
 import java.util.Date;
 import java.util.List;
@@ -66,6 +67,8 @@ public class InitSessionAction extends AbstractBaseAction {
 				setSearchWorkflowSession(session, lookupService);
 			} else if (forwardPage.equals("searchSample")) {
 				setSearchSampleSession(session, lookupService);
+			} else if (forwardPage.equals("createRun")) {
+				setCreateRunSession(session, lookupService);
 			}
 			// get user and date information
 			String creator = "";
@@ -268,5 +271,28 @@ public class InitSessionAction extends AbstractBaseAction {
 		// clear session attributes created during search sample
 		session.removeAttribute("samples");
 		session.removeAttribute("aliquots");
+	}
+
+	/**
+	 * Set up session attributes for create Run
+	 * @param session
+	 * @param lookupService
+	 */
+	   private void setCreateRunSession(HttpSession session,
+			LookupService lookupService) {
+		ExecuteWorkflowService workflowService = new ExecuteWorkflowService();
+		
+		if (session.getAttribute("allAssayTypeIds") == null) {
+			List allAssayTypeIds = lookupService.getAllAssayTypes();
+			session.setAttribute("allAssayTypeIds", allAssayTypeIds);
+		}
+		if (session.getAttribute("allAssayIds") == null) {
+			List allAssayIds = lookupService.getAllAssays();
+			session.setAttribute("allAssayIds", allAssayIds);
+		}
+		if (session.getAttribute("allAvailableAliquotIds") == null) {
+			List allAvailableAliquotIds = lookupService.getAliquots(); //reused getAliquots
+			session.setAttribute("allAvailableAliquotIds", allAvailableAliquotIds);
+		}
 	}
 }
