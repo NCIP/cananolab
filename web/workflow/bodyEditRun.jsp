@@ -1,3 +1,13 @@
+<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
+<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
+
+<script type="text/javascript">
+<!--//
+function refreshTree() {
+  
+  document.editRunForm.submit();
+}
 <h2>
 <strong>Run Information</strong>
 </h2>
@@ -10,25 +20,30 @@
 				</div>
 			</td>
 		</tr>
-		
 		<tr>
 			<td class="formLabelWhite">
 				<div align="left">
-					<strong>Run Created By</strong>
+					<strong>Run Created By*</strong>
 				</div>
 			</td>
-			<td class="formFieldWhite">
-				<input type="text" value="" name="runCreatedBy">
+			<td class="formFieldWhite">				
+				<html:text property="createdBy" size="15" />
 			</td>	
 		</tr>
 		<tr>
 			<td class="formLabelWhite">
+			
 				<div align="left">
-					<strong>Run Created Date</strong>
+					<strong>Run Created Date*</span> </strong>
 				</div>
 			</td>
-			<td class="formFieldWhite">
-				<input type="text" value="" name="runCreatedDate">
+			<td class="formFieldWhite">				
+				<html:text property="createdDate" size="10" />
+				<span class="formFieldWhite">
+				 <a href="javascript:cal.popup();">
+				 	<img height="18" src="images/calendar-icon.gif" width="22" border="0" alt="Click Here to Pick up the date">
+				 </a>
+				</span>
 			</td>	
 		</tr>
 		<tr>
@@ -37,8 +52,8 @@
 					<strong>Run By*</strong>
 				</div>
 			</td>
-			<td class="formFieldWhite">
-				<input type="text" value="John Doe" name="runBy">
+			<td class="formFieldWhite">				
+				<html:text property="runBy" size="15" />
 			</td>	
 		</tr>
 		<tr>
@@ -48,8 +63,13 @@
 					<strong>Run Date*</span> </strong>
 				</div>
 			</td>
-			<td class="formFieldWhite">
-				<input type="text" value="" name="runDate" ><span class="formFieldWhite"> <a href="javascript:cal.popup();"><img height="18" src="images/calendar-icon.gif" width="22" border="0" alt="Click Here to Pick up the date"></a></span>
+			<td class="formFieldWhite">				
+				<html:text property="runDate" size="10" />
+				<span class="formFieldWhite">
+				 <a href="javascript:cal.popup();">
+				 	<img height="18" src="images/calendar-icon.gif" width="22" border="0" alt="Click Here to Pick up the date">
+				 </a>
+				</span>
 			</td>	
 		</tr>
 	</table>
