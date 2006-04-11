@@ -1,14 +1,11 @@
 package gov.nih.nci.calab.dto.administration;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-
-import gov.nih.nci.calab.domain.Aliquot;
 import gov.nih.nci.calab.domain.Sample;
 import gov.nih.nci.calab.domain.SampleContainer;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
+
+import java.util.Set;
 
 /**
  * This class represents all properties of a sample that need to be viewed and
@@ -18,7 +15,7 @@ import gov.nih.nci.calab.service.util.StringUtils;
  * 
  */
 
-/* CVS $Id: SampleBean.java,v 1.7 2006-04-11 16:32:10 pansu Exp $ */
+/* CVS $Id: SampleBean.java,v 1.8 2006-04-11 16:37:56 pansu Exp $ */
 public class SampleBean {
 	private String sampleId="";
 	
@@ -85,22 +82,7 @@ public class SampleBean {
 		this.accessionDate = accessionDate;
 	}
 
-	public SampleBean(String sampleName, String sampleType, String sampleSOP,
-			String sampleDescription, String sampleSource,
-			String sourceSampleId, String dateReceived, String solubility,
-			String lotId, String lotDescription, String numberOfContainers,
-			String generalComments, String sampleSubmitter,
-			String accessionDate, ContainerBean[] containers) {
-		// TODO Auto-generated constructor stub
-		this(sampleName, sampleType, sampleSOP, sampleDescription, sampleSource,
-				sourceSampleId, dateReceived, lotId, lotDescription,
-				solubility, numberOfContainers, generalComments,
-				sampleSubmitter, accessionDate);
-		this.containers = containers;
-
-	}
-
-	public SampleBean(String sampleNamePrefix, String sampleId,
+	public SampleBean(String sampleNamePrefix, String sampleName,
 			String sampleType, String sampleSOP, String sampleDescription,
 			String sampleSource, String sourceSampleId, String dateReceived,
 			String solubility, String lotId, String lotDescription,
@@ -108,16 +90,16 @@ public class SampleBean {
 			String sampleSubmitter, String accessionDate,
 			ContainerBean[] containers) {
 		// TODO Auto-generated constructor stub
-		this(sampleId, sampleType, sampleSOP, sampleDescription, sampleSource,
+		this(sampleName, sampleType, sampleSOP, sampleDescription, sampleSource,
 				sourceSampleId, dateReceived, lotId, lotDescription,
 				solubility, numberOfContainers, generalComments,
 				sampleSubmitter, accessionDate);
 		this.sampleNamePrefix = sampleNamePrefix;
 		this.containers = containers;
-
 	}
 
 	public SampleBean(Sample sample) {
+		this.sampleId=StringUtils.convertToString(sample.getId());
 		this.sampleName = StringUtils.convertToString(sample.getName());
 		this.sampleType = StringUtils.convertToString(sample.getType());
 		this.sampleSOP = (sample.getSampleSOP() == null) ? "" : StringUtils.convertToString(sample
