@@ -23,7 +23,7 @@ import org.apache.log4j.Logger;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.10 2006-04-06 21:29:12 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.11 2006-04-11 14:05:57 thangars Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -265,5 +265,21 @@ public class LookupService {
 			throw new RuntimeException("Error in retrieving all assay types");
 		}
 		return assayTypes;
+	}
+	
+	
+	/**
+	 * Retrieve all Assays from the system
+	 *
+	 * @return A list of all assay type
+	 */
+	public List getAllAssays()
+	{
+		List assays = new ArrayList();
+		assays.add("PCC-1");
+		assays.add("STE-1");
+		assays.add("STE-2");
+		assays.add("STE-3");
+		return assays;
 	}
 }
