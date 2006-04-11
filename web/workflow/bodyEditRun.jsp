@@ -4,10 +4,11 @@
 
 <script type="text/javascript">
 <!--//
-function refreshTree() {
-  
+function refreshTree() {  
   document.editRunForm.submit();
 }
+//-->
+</script>
 <h2>
 <strong>Run Information</strong>
 </h2>
