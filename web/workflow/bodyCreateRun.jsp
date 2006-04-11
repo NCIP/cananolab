@@ -64,7 +64,7 @@ function refreshTree() {
 							<div align="center">
 								<span class="mainMenu"> <span class="formMessage">Aliquots</span> 								
 								<html:select multiple="true" property="availableAliquotIds">
-									<html:options name="allAvailableAliquotIds" />
+									<html:options collection="allAliquots" property="aliquotId" labelProperty="aliquotName" />
 								</html:select>
 								</span>
 							</div>
@@ -142,7 +142,7 @@ function refreshTree() {
 			<td class="formLabelWhite">
 			
 				<div align="left">
-					<strong>Run Date*</span> </strong>
+					<strong>Run Date* </strong>
 				</div>
 			</td>
 			<td class="formFieldWhite">				

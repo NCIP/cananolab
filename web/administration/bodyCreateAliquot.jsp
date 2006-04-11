@@ -1,6 +1,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
-<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
+<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%> 
+
 <script type="text/javascript">
 <!--//
 function refreshAliquots() {
@@ -49,12 +50,12 @@ function openLink() {
 			<tr>
 				<td class="formLabel">
 					<div align="justify">
-						<strong>Sample ID*<span class="formFieldWhite"> <html:select property="sampleId">
+						<strong>Sample ID*<span class="formFieldWhite"> <html:select property="sampleName">
 									<option value=""></option>
-									<html:options name="allSampleIds" />
-								</html:select></span></strong>&nbsp; &nbsp; or &nbsp; &nbsp; <strong>Aliquot ID*<span class="formFieldWhite"> <html:select property="parentAliquotId">
+									<html:options collection="allSamples" property="sampleName" labelProperty="sampleName" />
+								</html:select></span></strong>&nbsp; &nbsp; or &nbsp; &nbsp; <strong>Aliquot ID*<span class="formFieldWhite"> <html:select property="parentAliquotName">
 									<option value=""></option>
-									<html:options name="allUnmaskedAliquotIds" />
+									<html:options collection="allUnmaskedAliquots" property="aliquotName" labelProperty="aliquotName" />
 								</html:select></span></strong>
 					</div>
 				</td>
@@ -172,7 +173,7 @@ function openLink() {
 			pageContext.setAttribute("editAliquotParams", editAliquotParams);%>
 
 															<html:link action="preEditAliquot" name="editAliquotParams">
-																<bean:write name="aliquot" property="aliquotId" />
+																<bean:write name="aliquot" property="aliquotName" />
 																<br>
 																<bean:write name="aliquot" property="container.quantity" />
 																<bean:write name="aliquot" property="container.quantityUnit" />

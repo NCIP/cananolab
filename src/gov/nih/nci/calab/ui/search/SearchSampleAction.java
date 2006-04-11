@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchSampleAction.java,v 1.4 2006-04-10 18:10:55 pansu Exp $ */
+/* CVS $Id: SearchSampleAction.java,v 1.5 2006-04-11 18:33:53 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.SampleBean;
@@ -43,8 +43,8 @@ public class SearchSampleAction extends AbstractBaseAction {
 
 		try {
 			DynaValidatorForm theForm = (DynaValidatorForm) form;
-			String sampleId = (String) theForm.get("sampleId");
-			String aliquotId = (String) theForm.get("aliquotId");
+			String sampleName = (String) theForm.get("sampleName");
+			String aliquotName = (String) theForm.get("aliquotName");
 			String sampleType = (String) theForm.get("sampleType");
 			String sampleSource = (String) theForm.get("sampleSource");
 			String sourceSampleId = (String) theForm.get("sourceSampleId");
@@ -53,10 +53,10 @@ public class SearchSampleAction extends AbstractBaseAction {
 			String dateAccessionedEndStr = (String) theForm
 					.get("dateAccessionedEnd");
 
-			// search base on aliquotId if aliquotId is present
-			// otherwise search base sampleId
+			// search base on aliquotName if aliquotName is present
+			// otherwise search base sampleName
 			boolean showAliquot = false;
-			if (aliquotId.length() > 0) {
+			if (aliquotName.length() > 0) {
 				showAliquot = true;				
 			}
 			request.setAttribute("showAliquot", showAliquot);
@@ -78,18 +78,18 @@ public class SearchSampleAction extends AbstractBaseAction {
 			List<AliquotBean> aliquots = null;
 
 			if (showAliquot) {
-				if (aliquotId.equals("all")) {
-					aliquotId="";
+				if (aliquotName.equals("all")) {
+					aliquotName="";
 				}
-				aliquots = searchSampleService.searchAliquotsByAliquotId(
-						aliquotId, sampleType, sampleSource, sourceSampleId,
+				aliquots = searchSampleService.searchAliquotsByAliquotName(
+						aliquotName, sampleType, sampleSource, sourceSampleId,
 						dateAccessionedBegin, dateAccessionedEnd,
 						sampleSubmitter, storageLocation);				
-			} else if (sampleId.length() >= 0) {
-				if (sampleId.equals("all")) {
-					sampleId="";
+			} else if (sampleName.length() >= 0) {
+				if (sampleName.equals("all")) {
+					sampleName="";
 				}
-				samples = searchSampleService.searchSamplesBySampleId(sampleId,
+				samples = searchSampleService.searchSamplesBySampleName(sampleName,
 						sampleType, sampleSource, sourceSampleId,
 						dateAccessionedBegin, dateAccessionedEnd,
 						sampleSubmitter, storageLocation);			

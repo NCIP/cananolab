@@ -22,7 +22,7 @@
 				<tr class="topBorder">
 					<td class="dataTablePrimaryLabel" width="30%">
 						<div align="justify">
-							<em>ALIQUOT <bean:write name="editAliquotForm" property="aliquot.aliquotId" /></em>
+							<em>ALIQUOT <bean:write name="editAliquotForm" property="aliquot.aliquotName" /></em>
 						</div>
 					</td>
 				</tr>
@@ -103,7 +103,7 @@
 						<div align="right">
 							<html:hidden property="rowNum" />
 							<html:hidden property="colNum" />
-							<html:hidden property="aliquot.aliquotId" />
+							<html:hidden property="aliquot.aliquotName" />
 							<html:hidden property="aliquot.howCreated" />
 							<input type="reset" value="Reset">
 							<input type="button" value="Cancel" onclick="javascript:history.go(-1)">

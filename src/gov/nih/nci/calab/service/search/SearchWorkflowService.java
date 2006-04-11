@@ -19,7 +19,7 @@ import org.apache.log4j.Logger;
  * 
  */
 
-/* CVS $Id: SearchWorkflowService.java,v 1.6 2006-04-06 21:13:44 pansu Exp $ */
+/* CVS $Id: SearchWorkflowService.java,v 1.7 2006-04-11 18:30:52 pansu Exp $ */
 
 public class SearchWorkflowService {
 	private static Logger logger = Logger.getLogger(SearchWorkflowService.class);
@@ -54,7 +54,7 @@ public class SearchWorkflowService {
 
 	public List<WorkflowResultBean> searchWorkflows(String assayName,
 			String assayType, Date assayRunDateBegin, Date assayRunDateEnd,
-			String aliquotId, boolean includeMaskedAliquots, String fileName,
+			String aliquotName, boolean includeMaskedAliquots, String fileName,
 			boolean isFileIn, boolean isFileOut, Date fileSubmissionDateBegin,
 			Date fileSubmissionDateEnd, String fileSubmitter,
 			boolean includeMaskedFiles, String criteriaJoin) {

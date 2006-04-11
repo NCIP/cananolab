@@ -9,7 +9,10 @@ import gov.nih.nci.calab.domain.Sample;
 import gov.nih.nci.calab.domain.SampleContainer;
 import gov.nih.nci.calab.domain.SampleType;
 import gov.nih.nci.calab.domain.StorageElement;
+import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
+import gov.nih.nci.calab.dto.administration.SampleBean;
+import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,60 +26,69 @@ import org.apache.log4j.Logger;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.11 2006-04-11 14:05:57 thangars Exp $ */
+/* CVS $Id: LookupService.java,v 1.12 2006-04-11 18:30:41 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
 
 	/**
-	 * Retriving all aliquot in the system, for views create run, search sample.
+	 * Retriving all aliquot in the system, for views view aliquot, create run,
+	 * search sample.
 	 * 
-	 * @return a list of aliquot id
+	 * @return a list of AliquotBeans containing aliquot ID and aliquot name
 	 */
-	public List<String> getAliquots() {
-		List<String> aliquotIds = new ArrayList<String>();
+	public List<AliquotBean> getAliquots() {
+		List<AliquotBean> aliquots = new ArrayList<AliquotBean>();
 		try {
 			IDataAccess ida = (new DataAccessProxy())
 					.getInstance(IDataAccess.TOOLKITAPI);
 			ida.open();
-			String hqlString = "select aliquot.name from Aliquot aliquot";
+			String hqlString = "select aliquot.id, aliquot.name from Aliquot aliquot";
 			List results = ida.query(hqlString, Aliquot.class.getName());
 			for (Object obj : results) {
-				aliquotIds.add((String) obj);
+				Object[] aliquotInfo = (Object[]) obj;
+				aliquots.add(new AliquotBean(StringUtils
+						.convertToString(aliquotInfo[0]), StringUtils
+						.convertToString(aliquotInfo[1])));
 			}
 			ida.close();
 		} catch (Exception e) {
-			logger.error("Error in retrieving all aliquot IDs", e);
-			throw new RuntimeException("Error in retrieving all aliquot IDs");
+			logger.error("Error in retrieving all aliquot Ids and names", e);
+			throw new RuntimeException(
+					"Error in retrieving all aliquot Ids and names");
 		}
-		return aliquotIds;
+		return aliquots;
 	}
 
 	/**
 	 * Retrieving all unmasked aliquots for views use aliquot and create
 	 * aliquot.
 	 * 
-	 * @return a list of unmasked aliquot IDs.
+	 * @return a list of AliquotBeans containing unmasked aliquot IDs and names.
+	 * 
 	 */
-	public List<String> getUnmaskedAliquots() {
-		List<String> aliquotIds = new ArrayList<String>();
+
+	public List<AliquotBean> getUnmaskedAliquots() {
+		List<AliquotBean> aliquots = new ArrayList<AliquotBean>();
 		try {
 			IDataAccess ida = (new DataAccessProxy())
 					.getInstance(IDataAccess.TOOLKITAPI);
 			ida.open();
-			//String hqlString = "select aliquot.name from Aliquot aliquot where aliquot.dataStatus.status!='masked'";
-			String hqlString = "select aliquot.name from Aliquot aliquot";
+			String hqlString = "select aliquot.id, aliquot.name from Aliquot aliquot where aliquot.dataStatus is null";
 			List results = ida.query(hqlString, Aliquot.class.getName());
 			for (Object obj : results) {
-				aliquotIds.add((String) obj);
+				Object[] aliquotInfo = (Object[]) obj;
+				aliquots.add(new AliquotBean(StringUtils
+						.convertToString(aliquotInfo[0]), StringUtils
+						.convertToString(aliquotInfo[1])));
 			}
 			ida.close();
 		} catch (Exception e) {
-			logger.error("Error in retrieving all unmasked aliquot IDs", e);
+			logger.error("Error in retrieving all aliquot Ids and names", e);
 			throw new RuntimeException(
-					"Error in retrieving all umasked aliquot IDs");
+					"Error in retrieving all aliquot Ids and names");
 		}
-		return aliquotIds;
+		return aliquots;
 	}
 
 	/**
@@ -219,28 +231,33 @@ public class LookupService {
 	}
 
 	/**
+	 * Get all samples in the database
 	 * 
-	 * @return all sample Ids
+	 * @return a list of SampleBean containing sample Ids and names
 	 */
-	public List<String> getAllSampleIds() {
-		List<String> sampleIds = new ArrayList<String>();
+	public List<SampleBean> getAllSamples() {
+		List<SampleBean> samples = new ArrayList<SampleBean>();
 
 		try {
 			IDataAccess ida = (new DataAccessProxy())
 					.getInstance(IDataAccess.TOOLKITAPI);
 			ida.open();
-			String hqlString = "select sample.name from Sample sample";
+			String hqlString = "select sample.id, sample.name from Sample sample";
 			List results = ida.query(hqlString, Sample.class.getName());
 			for (Object obj : results) {
-				sampleIds.add((String) obj);
+				Object[] sampleInfo = (Object[]) obj;
+				samples.add(new SampleBean(StringUtils
+						.convertToString(sampleInfo[0]), StringUtils
+						.convertToString(sampleInfo[1])));
 			}
 			ida.close();
 		} catch (Exception e) {
-			logger.error("Error in retrieving all sample IDs", e);
-			throw new RuntimeException("Error in retrieving all sample IDs");
+			logger.error("Error in retrieving all sample IDs and names", e);
+			throw new RuntimeException(
+					"Error in retrieving all sample IDs and names");
 		}
 
-		return sampleIds;
+		return samples;
 	}
 
 	/**

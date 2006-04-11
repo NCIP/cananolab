@@ -21,7 +21,7 @@ import org.apache.log4j.Logger;
  * @author pansu
  * 
  */
-/* CVS $Id: SearchSampleService.java,v 1.6 2006-04-10 18:23:48 pansu Exp $ */
+/* CVS $Id: SearchSampleService.java,v 1.7 2006-04-11 18:30:52 pansu Exp $ */
 
 public class SearchSampleService {
 	private static Logger logger = Logger.getLogger(SearchSampleService.class);
@@ -115,7 +115,7 @@ public class SearchSampleService {
 	 * @param storageLocation
 	 * @return a list of SampleBean
 	 */
-	public List<SampleBean> searchSamplesBySampleId(String sampleId,
+	public List<SampleBean> searchSamplesBySampleName(String sampleId,
 			String sampleType, String sampleSource, String sourceSampleId,
 			Date dateAccessionedBegin, Date dateAccessionedEnd,
 			String sampleSubmitter, StorageLocation storageLocation) {
@@ -221,7 +221,7 @@ public class SearchSampleService {
 
 	/**
 	 * 
-	 * @param aliquotId
+	 * @param aliquotName
 	 * @param sampleType
 	 * @param sampleSource
 	 * @param sourceSampleId
@@ -231,7 +231,7 @@ public class SearchSampleService {
 	 * @param storageLocation
 	 * @return
 	 */
-	public List<AliquotBean> searchAliquotsByAliquotId(String aliquotId,
+	public List<AliquotBean> searchAliquotsByAliquotName(String aliquotName,
 			String sampleType, String sampleSource, String sourceSampleId,
 			Date dateAccessionedBegin, Date dateAccessionedEnd,
 			String sampleSubmitter, StorageLocation storageLocation) {
@@ -242,8 +242,8 @@ public class SearchSampleService {
 
 			String where = "";
 			String storageFrom = "";
-			if (aliquotId != "") {
-				paramList.add(aliquotId);
+			if (aliquotName != "") {
+				paramList.add(aliquotName);
 				where = "where ";
 				whereList.add("aliquot.name=?");
 			}
@@ -354,7 +354,7 @@ public class SearchSampleService {
 			Date dateAccessionedBegin, Date dateAccessionedEnd,
 			String sampleSubmitter, StorageLocation storageLocation) {
 
-		return searchSamplesBySampleId("", sampleType, sampleSource,
+		return searchSamplesBySampleName("", sampleType, sampleSource,
 				sourceSampleId, dateAccessionedBegin, dateAccessionedEnd,
 				sampleSubmitter, storageLocation);
 	}

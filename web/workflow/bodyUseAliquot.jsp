@@ -32,8 +32,8 @@
 					<div align="left">
 						* Hold down the shift key for multiple selections.
 						<br>
-						<span class="formField" align="left"><span class="mainMenu"><span class="formMessage"><strong> <html:select property="aliquotIds" multiple="true" size="3">
-											<html:options name="allUnmaskedAliquotIds" />
+						<span class="formField" align="left"><span class="mainMenu"><span class="formMessage"><strong> <html:select property="aliquotIds" multiple="true" size="10">
+											<html:options collection="allUnmaskedAliquots" property="aliquotId" labelProperty="aliquotName"/>
 										</html:select> </strong></span></span></span> <span class="formFieldWhite"> </span>
 					</div>
 					<html:errors />

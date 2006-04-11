@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: PreCreateSampleAction.java,v 1.9 2006-04-07 15:29:37 pansu Exp $ */
+/* CVS $Id: PreCreateSampleAction.java,v 1.10 2006-04-11 18:31:22 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.ContainerBean;
 import gov.nih.nci.calab.dto.administration.StorageLocation;
@@ -35,16 +35,16 @@ public class PreCreateSampleAction extends AbstractBaseAction {
 
 		try {
 			DynaValidatorActionForm theForm = (DynaValidatorActionForm) form;
-			String sampleIdPrefix = (String) theForm.get("sampleIdPrefix");
+			String sampleNamePrefix = (String) theForm.get("sampleNamePrefix");
 			String lotId = (String) theForm.get("lotId");
 			int numContainers = Integer.parseInt((String) theForm
 					.get("numberOfContainers"));
 
 			ManageSampleService mangeSampleService = new ManageSampleService();
 			// set default form values
-			if (sampleIdPrefix.length() == 0) {
-				theForm.set("sampleIdPrefix", mangeSampleService
-						.getDefaultSampleIdPrefix());
+			if (sampleNamePrefix.length() == 0) {
+				theForm.set("sampleNamePrefix", mangeSampleService
+						.getDefaultSampleNamePrefix());
 			}
 			if (lotId.length() == 0) {
 				theForm.set("lotId", mangeSampleService.getDefaultLotId());

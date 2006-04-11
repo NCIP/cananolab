@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchWorkflowAction.java,v 1.4 2006-04-07 15:29:53 pansu Exp $ */
+/* CVS $Id: SearchWorkflowAction.java,v 1.5 2006-04-11 18:33:53 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.search.WorkflowResultBean;
 import gov.nih.nci.calab.service.search.SearchWorkflowService;
@@ -51,7 +51,7 @@ public class SearchWorkflowAction extends AbstractBaseAction {
 					: StringUtils.convertToDate(assayRunDateEndStr,
 							"MM/dd/yyyy");
 
-			String aliquotId = (String) theForm.get("aliquotId");
+			String aliquotName = (String) theForm.get("aliquotName");
 			boolean includeMaskedAliquots = ((String) theForm
 					.get("includeMaskedAliquots")).equals("on") ? true : false;
 			String fileName = (String) theForm.get("fileName");
@@ -79,7 +79,7 @@ public class SearchWorkflowAction extends AbstractBaseAction {
 			SearchWorkflowService searchWorkflowService = new SearchWorkflowService();
 			List<WorkflowResultBean> workflows = searchWorkflowService
 					.searchWorkflows(assayName, assayType, assayRunDateBegin,
-							assayRunDateEnd, aliquotId, includeMaskedAliquots,
+							assayRunDateEnd, aliquotName, includeMaskedAliquots,
 							fileName, isFileInput, isFileOutput, fileSubmissionDateBegin,
 							fileSubmissionDateEnd, fileSubmitter,
 							includeMaskedFiles, criteriaJoin);

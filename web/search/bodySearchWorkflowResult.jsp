@@ -71,7 +71,7 @@
 						<bean:write name="workflow" property="assayRunDate" />
 					</td>
 					<td class="${style}" valign="top">
-						<bean:write name="workflow" property="aliquotId" />
+						<bean:write name="workflow" property="aliquotName" />
 					</td>
 					<td class="${style}" valign="top">
 						<div align="left">

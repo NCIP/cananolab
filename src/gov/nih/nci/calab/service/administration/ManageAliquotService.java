@@ -26,7 +26,7 @@ import org.apache.struts.util.LabelValueBean;
  */
 
 /*
- * CVS $Id: ManageAliquotService.java,v 1.10 2006-04-10 14:00:30 pansu Exp $
+ * CVS $Id: ManageAliquotService.java,v 1.11 2006-04-11 18:29:46 pansu Exp $
  */
 
 public class ManageAliquotService {
@@ -64,43 +64,43 @@ public class ManageAliquotService {
 
 	/**
 	 * 
-	 * @param sampleId
-	 * @param parentAliquotId
+	 * @param sampleName
+	 * @param parentaliquotName
 	 * @return the existing prefix for assigning a new aliquot ID.
 	 */
-	public String getAliquotPrefix(String sampleId, String parentAliquotId) {
+	public String getAliquotPrefix(String sampleName, String parentaliquotName) {
 
-		if (parentAliquotId.length() == 0) {
-			return sampleId + "-";
+		if (parentaliquotName.length() == 0) {
+			return sampleName + "-";
 		} else {
-			return parentAliquotId + "-";
+			return parentaliquotName + "-";
 		}
 	}
 
 	/**
 	 * 
-	 * @param sampleId
-	 * @param parentAliquotId
+	 * @param sampleName
+	 * @param parentaliquotName
 	 * @return the first number for assigning a new aliquot IDs.
 	 */
-	public int getFirstAliquotNum(String sampleId, String parentAliquotId) {
+	public int getFirstAliquotNum(String sampleName, String parentaliquotName) {
 		int aliquotNum = 0;
-		if (parentAliquotId.length() == 0) {
-			aliquotNum = getLastSampleAliquotNum(sampleId) + 1;
+		if (parentaliquotName.length() == 0) {
+			aliquotNum = getLastSampleAliquotNum(sampleName) + 1;
 		} else {
-			aliquotNum = getLastAliquotChildAliquotNum(parentAliquotId) + 1;
+			aliquotNum = getLastAliquotChildAliquotNum(parentaliquotName) + 1;
 		}
 		return aliquotNum;
 	}
 
-	private int getLastSampleAliquotNum(String sampleId) {
+	private int getLastSampleAliquotNum(String sampleName) {
 		int aliquotNum = 0;
 		try {
 			IDataAccess ida = (new DataAccessProxy())
 					.getInstance(IDataAccess.TOOLKITAPI);
 			ida.open();
 			String hqlString = "select container from Sample sample join sample.sampleContainerCollection container where sample.name='"
-					+ sampleId + "'";
+					+ sampleName + "'";
 			List results = ida.query(hqlString, SampleSOP.class.getName());
 			for (Object obj : results) {
 				SampleContainer container = (SampleContainer) obj;
@@ -124,14 +124,14 @@ public class ManageAliquotService {
 		return aliquotNum;
 	}
 
-	private int getLastAliquotChildAliquotNum(String parentAliquotId) {
+	private int getLastAliquotChildAliquotNum(String parentAliquotName) {
 		int aliquotNum = 0;
 		try {
 			IDataAccess ida = (new DataAccessProxy())
 					.getInstance(IDataAccess.TOOLKITAPI);
 			ida.open();
 			String hqlString = "select child from Aliquot parent join parent.childSampleContainerCollection child where parent.name='"
-					+ parentAliquotId + "'";
+					+ parentAliquotName + "'";
 			List results = ida.query(hqlString, SampleSOP.class.getName());
 			for (Object obj : results) {
 				SampleContainer container = (SampleContainer) obj;
@@ -160,12 +160,12 @@ public class ManageAliquotService {
 	/**
 	 * Save the aliquots into the database
 	 * 
-	 * @param sampleId
-	 * @param parentAliquotId
+	 * @param sampleName
+	 * @param parentaliquotName
 	 * @param aliquotMatrix
 	 * @throws Exception
 	 */
-	public void saveAliquots(String sampleId, String parentAliquotId,
+	public void saveAliquots(String sampleName, String parentAliquotName,
 			List<AliquotBean[]> aliquotMatrix) throws Exception {
 		// Check to if the aliquot is from Sample or Aliqot
 		IDataAccess ida = (new DataAccessProxy())
@@ -175,16 +175,16 @@ public class ManageAliquotService {
 
 			Aliquot parentAliquot = null;
 			Sample sample = null;
-			if ((parentAliquotId != null) && (parentAliquotId.length() > 0)) {
+			if ((parentAliquotName != null) && (parentAliquotName.length() > 0)) {
 				// Get aliqot ID and load the object
 				List aliquots = ida
 						.search("from Aliquot aliquot where aliquot.name='"
-								+ parentAliquotId + "'");
+								+ parentAliquotName + "'");
 				parentAliquot = (Aliquot) aliquots.get(0);
 			} else {
 				List samples = ida
 						.search("from Sample sample where sample.name='"
-								+ sampleId + "'");
+								+ sampleName + "'");
 				sample = (Sample) samples.get(0);
 			}
 
@@ -208,8 +208,8 @@ public class ManageAliquotService {
 							aliquotBean.getCreationDate(),
 							CalabConstants.DATE_FORMAT));
 					doAliquot.setDiluentsSolvent(containerBean.getSolvent());
-					// TODO: construct the name (AliquotID is the whole name?)
-					doAliquot.setName(aliquotBean.getAliquotId());
+					// TODO: construct the name (aliquotName is the whole name?)
+					doAliquot.setName(aliquotBean.getAliquotName());
 					doAliquot.setQuantity(StringUtils
 							.convertToFloat(containerBean.getQuantity()));
 					doAliquot.setQuantityUnit(containerBean.getQuantityUnit());
@@ -223,8 +223,8 @@ public class ManageAliquotService {
 
 					// Associations
 					// 1. ParentAliquos or Sample
-					if ((parentAliquotId != null)
-							&& (parentAliquotId.length() > 0)) {
+					if ((parentAliquotName != null)
+							&& (parentAliquotName.length() > 0)) {
 						doAliquot.getParentSampleContainerCollection().add(
 								parentAliquot);
 					} else {
