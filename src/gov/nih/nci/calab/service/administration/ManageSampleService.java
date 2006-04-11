@@ -18,7 +18,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-/* CVS $Id: ManageSampleService.java,v 1.16 2006-04-10 18:25:13 pansu Exp $ 
+/* CVS $Id: ManageSampleService.java,v 1.17 2006-04-11 15:48:34 zengje Exp $ 
  */
 public class ManageSampleService {
 	private static Logger logger = Logger.getLogger(ManageSampleService.class);
@@ -130,12 +130,12 @@ public class ManageSampleService {
 			// Create Sample Object, save source, save sample, save storageElement, save SampleContainer, 
 			// set storageElement in sampleContainer, save sampleContainer again
 			
-			
 			// Create sample object
 			Sample doSample = new Sample();
 			
 			// Front end source is a plain text, so just save the source object
-			if (sample.getSampleSource() != null) {
+			String sampleSourceName = sample.getSampleSource();
+			if (( sampleSourceName != null) && (sampleSourceName.trim().length() > 0)) {
 				List existedSources = ida.search("from Source source where source.organizationName = '" + sample.getSampleSource() + "'");
 				
 				Source source = null;
@@ -157,17 +157,15 @@ public class ManageSampleService {
 			doSample.setLotDescription(sample.getLotDescription());
 			doSample.setLotId(sample.getLotId());
 			doSample.setName(sample.getSampleId());
-			// TODO: ReceivedBy and Date are not in the wireframe.
+			//  ReceivedBy and Date are not in the wireframe.
 			doSample.setReceivedBy("");
-			doSample.setReceivedDate(null);
-			// TODO: need to parse the sampleID to get the sequence id
+			doSample.setReceivedDate(StringUtils.convertToDate(sample.getDateReceived(), CalabConstants.DATE_FORMAT));
 			doSample.setSampleSequenceId(getUserDefinedSequenceId(sample.getSampleIdPrefix()));
 			doSample.setSolubility(sample.getSolubility());
 			doSample.setSourceSampleId(sample.getSourceSampleId());
 			// TODO: Fill in the sample SOP info, if sampleBean can pass the primary key......
-//			doSample.setSampleSOP(ida.load(SampleSop.class, sample.getSampleSOP().));
 			String sopName = sample.getSampleSOP();
-			if ( sopName != null)
+			if ( (sopName != null) && (sopName.length() > 0))
 			{
 				List existedSOP = ida.search("from SampleSOP sop where sop.name = '" + sopName + "'");					
 				SampleSOP  sop = (SampleSOP)existedSOP.get(0);
@@ -185,7 +183,13 @@ public class ManageSampleService {
 				doSampleContainer.setComments(containers[i].getContainerComments());
 				doSampleContainer.setConcentration(StringUtils.convertToFloat(containers[i].getConcentration()));
 				doSampleContainer.setConcentrationUnit(containers[i].getConcentrationUnit());
-				doSampleContainer.setContainerType(containers[i].getContainerType());
+				
+				if ((containers[i].getContainerType().equals(CalabConstants.OTHER))) {
+					doSampleContainer.setContainerType((containers[i].getOtherContainerType()));
+				} else {
+					doSampleContainer.setContainerType((containers[i].getContainerType()));
+				}
+
 				// Container is created by the same person who creates sample
 				doSampleContainer.setCreatedBy(sample.getSampleSubmitter());
 				doSampleContainer.setCreatedDate(StringUtils.convertToDate(sample.getAccessionDate(), CalabConstants.DATE_FORMAT));
@@ -201,7 +205,7 @@ public class ManageSampleService {
 				HashSet<StorageElement> storages = new HashSet<StorageElement>();
 				
 				String boxValue = containers[i].getStorageLocation().getBox();
-				if ( boxValue != null)
+				if (( boxValue != null)&&(boxValue.trim().length()>0))
 				{
 					List existedSE = ida.search("from StorageElement se where se.type = '" + CalabConstants.STORAGE_BOX + 
 													 "' and se.location = '" + boxValue + "'");					
@@ -219,7 +223,7 @@ public class ManageSampleService {
 				}
 				
 				String shelfValue = containers[i].getStorageLocation().getShelf();
-				if ( shelfValue != null)
+				if ((shelfValue != null)&&(shelfValue.trim().length()>0))
 				{
 					List existedSE = ida.search("from StorageElement se where se.type = '" + CalabConstants.STORAGE_SHELF + 
 													 "' and se.location = '" + shelfValue + "'");					
@@ -237,7 +241,7 @@ public class ManageSampleService {
 				}
 				
 				String freezerValue = containers[i].getStorageLocation().getFreezer();
-				if ( freezerValue != null)
+				if ( (freezerValue != null)&& (freezerValue.length()>0))
 				{
 					List existedSE = ida.search("from StorageElement se where se.type = '" + CalabConstants.STORAGE_FREEZER + 
 													 "' and se.location = '" + freezerValue + "'");					
@@ -255,7 +259,7 @@ public class ManageSampleService {
 				}
 
 				String roomValue = containers[i].getStorageLocation().getRoom();
-				if ( roomValue != null)
+				if ((roomValue != null)&&(roomValue.length()>0))
 				{
 					List existedSE = ida.search("from StorageElement se where se.type = '" + CalabConstants.STORAGE_ROOM + 
 													 "' and se.location = '" + roomValue + "'");					
@@ -289,28 +293,4 @@ public class ManageSampleService {
 		}
 		ida.close();
 	  }
-
-	
-//	  private StorageElement retrieveContainerStorages(IDataAccess ida, StorageLocation location, String locationType)
-//	  {
-//			String boxValue = location.getBox();
-//			if ( boxValue != null)
-//			{
-//				List existedSE = ida.search("from StorageElement se where se.type = '" + CalabConstants.STORAGE_BOX + 
-//												 "' and se.location = '" + boxValue + "'");					
-//				StorageElement box = null;
-//				if (existedSE.size() > 0){
-//					box = (StorageElement)existedSE.get(0);
-//				} else {
-//					box = new StorageElement();
-//					box.setLocation(boxValue);
-//					box.setType(CalabConstants.STORAGE_BOX);
-//					ida.store(box);
-//				}
-//				// Create releationship between this source and this sample
-//				storages.add(box);			
-//			}
-//
-//		  return null;
-//	  }
 }
