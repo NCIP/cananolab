@@ -8,6 +8,9 @@ function refreshTree() {
   
   document.createRunForm.submit();
 }
+  var cal1 = new calendar2(document.forms['createRun'].elements['runDate']);
+  cal1.year_scroll = true;
+  cal1.time_comp = false;
 //-->
 </script>
 <h2>
@@ -24,6 +27,7 @@ function refreshTree() {
 	</ul>
 </logic:messagesPresent>
 <blockquote>
+	<html:form action="/createRun">
 	<table width="90%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 		<tr class="topBorder">
 			<td colspan="2" class="dataTablePrimaryLabel">
@@ -37,10 +41,10 @@ function refreshTree() {
 					<div align="justify">
 						<strong>Assay Type<span class="formFieldWhite"> <html:select property="assayTypeId">
 									<option value=""></option>
-									<html:options name="assayTypeName" />
+									<html:options name="allAssayTypeIds" />
 								</html:select></span></strong>&nbsp; &nbsp; &nbsp; &nbsp; <strong>Assay<span class="formFieldWhite"> <html:select property="assayId">
 									<option value=""></option>
-									<html:options name="assayName" />
+									<html:options name="allAssayIds" />
 								</html:select></span></strong>
 					</div>
 				</td>				
@@ -59,8 +63,8 @@ function refreshTree() {
 						<td width="28%" height="39" valign="top">
 							<div align="center">
 								<span class="mainMenu"> <span class="formMessage">Aliquots</span> 								
-								<html:select multiple="true" property="allAliquotsIds">
-									<html:options name="allAliquotIds" />
+								<html:select multiple="true" property="availableAliquotIds">
+									<html:options name="allAvailableAliquotIds" />
 								</html:select>
 								</span>
 							</div>
@@ -79,8 +83,8 @@ function refreshTree() {
 						<td width="62%" valign="top">
 							<div align="center">
 								<span class="formMessage">Use Aliquots</span>
-								<html:select multiple="true" property="aliquotsIds">
-									<html:options name="aliquotIds" />
+								<html:select multiple="true" property="assignedAliquotIds">
+									<html:options name="allAssignedAliquotIds" />
 								</html:select>
 							</div>
 						</td>
@@ -114,12 +118,14 @@ function refreshTree() {
 				</div>
 			</td>
 			<td class="formFieldWhite">
-				<strong><span class="mainMenu"> <select multiple size="4" name="select4" style="width:100">
+				<strong>
+				<span class="mainMenu"> <select multiple size="4" name="select4" style="width:100">
 							<option value="12">	</option>
 							<option value="54">
 								&nbsp;
 							</option>
-						</select> </span>&nbsp; <input name="Submit222322" type="submit" onClick="javascript:location.href='uploadFiles.htm';" value="Upload Files"> </strong>
+				</select> </span>&nbsp; 
+						<input name="Submit222322" type="submit" onClick="javascript:location.href='uploadFiles.htm';" value="Upload Files"> </strong>
 			</td>
 		</tr>
 		<tr>
@@ -158,9 +164,10 @@ function refreshTree() {
 				<table width="498" height="32" border="0" align="right" cellpadding="4" cellspacing="0">
 					<tr>
 						<td width="490" height="32">
-							<div align="right">
-								<input name="Submit2222" type="submit" onClick="javascript:location.href='createWorkflowReset.html';" value="Reset">
-								<input name="Submit222" type="submit" onClick="javascript:location.href='#';" value="Submit">
+								<div align="right"><div align="right">
+									<html:reset />
+									<html:submit />
+								</div>
 							</div>
 						</td>
 					</tr>
@@ -172,4 +179,5 @@ function refreshTree() {
 	<p>
 		&nbsp;
 	</p>
+	</html:form>
 </blockquote>
