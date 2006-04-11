@@ -26,7 +26,7 @@ import org.apache.struts.util.LabelValueBean;
  */
 
 /*
- * CVS $Id: ManageAliquotService.java,v 1.11 2006-04-11 18:29:46 pansu Exp $
+ * CVS $Id: ManageAliquotService.java,v 1.12 2006-04-11 19:12:42 zengje Exp $
  */
 
 public class ManageAliquotService {
@@ -165,6 +165,7 @@ public class ManageAliquotService {
 	 * @param aliquotMatrix
 	 * @throws Exception
 	 */
+
 	public void saveAliquots(String sampleName, String parentAliquotName,
 			List<AliquotBean[]> aliquotMatrix) throws Exception {
 		// Check to if the aliquot is from Sample or Aliqot
@@ -189,18 +190,29 @@ public class ManageAliquotService {
 			}
 
 			for (AliquotBean[] aliquotBeans : aliquotMatrix) {
-				for (int i = 0; i < aliquotBeans.length; i++) {
+				// aliquotBeans[i] != null is for the matrix is in between 10s
+				for (int i = 0; i < aliquotBeans.length
+						&& aliquotBeans[i] != null; i++) {
 					AliquotBean aliquotBean = aliquotBeans[i];
 					Aliquot doAliquot = new Aliquot();
 					// use Hibernate Hilo algorithm to generate the id
 
 					// Attributes
-					// TODO: AliquotBean need to have a comment
-					ContainerBean containerBean = aliquotBean.getContainer();					
+					ContainerBean containerBean = aliquotBean.getContainer();
+					doAliquot.setComments(containerBean.getContainerComments());
 					doAliquot.setConcentration(StringUtils
 							.convertToFloat(containerBean.getConcentration()));
 					doAliquot.setConcentrationUnit(containerBean
 							.getConcentrationUnit());
+					if (containerBean.getContainerType().equals(
+							CalabConstants.OTHER)) {
+						doAliquot.setContainerType(containerBean
+								.getOtherContainerType());
+					} else {
+						doAliquot.setContainerType(containerBean
+								.getContainerType());
+					}
+
 					doAliquot
 							.setContainerType(containerBean.getContainerType());
 					doAliquot.setCreatedBy(aliquotBean.getCreator());
@@ -208,8 +220,8 @@ public class ManageAliquotService {
 							aliquotBean.getCreationDate(),
 							CalabConstants.DATE_FORMAT));
 					doAliquot.setDiluentsSolvent(containerBean.getSolvent());
-					// TODO: construct the name (aliquotName is the whole name?)
-					doAliquot.setName(aliquotBean.getAliquotName());
+					// TODO: construct the name (AliquotID is the whole name?)
+					doAliquot.setName(aliquotBean.getAliquotId());
 					doAliquot.setQuantity(StringUtils
 							.convertToFloat(containerBean.getQuantity()));
 					doAliquot.setQuantityUnit(containerBean.getQuantityUnit());
@@ -220,6 +232,7 @@ public class ManageAliquotService {
 					doAliquot.setVolume(StringUtils
 							.convertToFloat(containerBean.getVolume()));
 					doAliquot.setVolumeUnit(containerBean.getVolumeUnit());
+					doAliquot.setCreatedMethod(aliquotBean.getHowCreated());
 
 					// Associations
 					// 1. ParentAliquos or Sample
@@ -232,9 +245,6 @@ public class ManageAliquotService {
 					}
 
 					ida.createObject(doAliquot);
-
-					// TODO: 2. Protocol -- CreatedMethod is Protocol or string
-					// doAliquot.setCreatedMethod()
 
 					// 3. StorageElement
 					HashSet<StorageElement> storages = new HashSet<StorageElement>();
@@ -257,8 +267,6 @@ public class ManageAliquotService {
 							box.setType(CalabConstants.STORAGE_BOX);
 							ida.store(box);
 						}
-						// Create releationship between this source and this
-						// sample
 						storages.add(box);
 					}
 
@@ -280,8 +288,6 @@ public class ManageAliquotService {
 							shelf.setType(CalabConstants.STORAGE_SHELF);
 							ida.store(shelf);
 						}
-						// Create releationship between this source and this
-						// sample
 						storages.add(shelf);
 					}
 
@@ -302,8 +308,6 @@ public class ManageAliquotService {
 							freezer.setType(CalabConstants.STORAGE_FREEZER);
 							ida.store(freezer);
 						}
-						// Create releationship between this source and this
-						// sample
 						storages.add(freezer);
 					}
 
@@ -325,8 +329,6 @@ public class ManageAliquotService {
 							room.setType(CalabConstants.STORAGE_ROOM);
 							ida.store(room);
 						}
-						// Create releationship between this source and this
-						// sample
 						storages.add(room);
 					}
 					doAliquot.setStorageElementCollection(storages);
