@@ -22,28 +22,13 @@
         <put name="menu" value="workflow"/>
     </definition>
     
-    <!-- definitions for the create run page -->    
-    <definition name="workflow.createrun.content" extends="workflow.content.home">
- 		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp?type=assay"/>
-        <put name="workflowContent" value="/workflow/bodyCreateRun.jsp"/>
-    </definition>
-    
+    <!-- definitions for the create run page -->  
     <definition name="workflow.createrun" extends="calab.home">
-        <put name="calabContent" value="workflow.createrun.content"/>
-        <put name="calabSidemenu" value="/workflow/sideMenuTree.jsp"/>
-        <put name="menu" value="workflow"/>
-    </definition>
-   
-   <!-- definition for the edit run page -->
-    <definition name="workflow.editrun.content" extends="workflow.content.home">
- 		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp?type=assay"/>
-        <put name="workflowContent" value="/workflow/bodyEditRun.jsp"/>
-    </definition>    
-	<definition name="workflow.editrun" extends="calab.home">
-        <put name="calabContent" value="workflow.createrun.content"/>
-        <put name="calabSidemenu" value="/workflow/sideMenuTree.jsp"/>
-	</definition>   
-	 
+		<put name="calabContent" value="/workflow/bodyCreateRun.jsp" />
+		<put name="menu" value="workflow" />
+	</definition>
+ 
+
     <!-- definitions for the workflow message page -->
     <definition name="workflow.message.content" extends="workflow.content.home">
         <put name="workflowContent" value="/bodyMessage.jsp?bundle=workflow"/>
