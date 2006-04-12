@@ -2,17 +2,10 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 
-<script type="text/javascript">
-<!--//
-function refreshTree() {
-  
-  document.createRunForm.submit();
-}
-  var cal1 = new calendar2(document.forms['createRun'].elements['runDate']);
-  cal1.year_scroll = true;
-  cal1.time_comp = false;
-//-->
+
 </script>
+<html:form action="/createRun">
+<blockquote>
 <h2>
 <strong>Create Run </strong>
 </h2>
@@ -26,8 +19,6 @@ function refreshTree() {
 			</html:messages> </font>
 	</ul>
 </logic:messagesPresent>
-<blockquote>
-	<html:form action="/createRun">
 	<table width="90%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 		<tr class="topBorder">
 			<td colspan="2" class="dataTablePrimaryLabel">
@@ -37,14 +28,16 @@ function refreshTree() {
 			</td>
 		</tr>
 		<tr>
-				<td class="formLabel">
+			<td colspan="2" class="formLabel">
 					<div align="justify">
-						<strong>Assay Type<span class="formFieldWhite"> <html:select property="assayTypeId">
+								<strong>Assay Type<span class="formFieldWhite">
+								<html:select property="assayType">
 									<option value=""></option>
-									<html:options name="allAssayTypeIds" />
-								</html:select></span></strong>&nbsp; &nbsp; &nbsp; &nbsp; <strong>Assay<span class="formFieldWhite"> <html:select property="assayId">
+									<html:options name="allAssayTypes" />
+								</html:select></span></strong>&nbsp; &nbsp; &nbsp; &nbsp;<strong>Assay<span class="formFieldWhite">
+								<html:select property="assay">
 									<option value=""></option>
-									<html:options name="allAssayIds" />
+									<html:options name="allAssays" />
 								</html:select></span></strong>
 					</div>
 				</td>				
@@ -63,8 +56,8 @@ function refreshTree() {
 						<td width="28%" height="39" valign="top">
 							<div align="center">
 								<span class="mainMenu"> <span class="formMessage">Aliquots</span> 								
-								<html:select multiple="true" property="availableAliquotIds">
-									<html:options collection="allAliquots" property="aliquotId" labelProperty="aliquotName" />
+								<html:select multiple="true" property="availableAliquot" size="4" >
+									<html:options name="allAvailableAliquots" />
 								</html:select>
 								</span>
 							</div>
@@ -73,9 +66,7 @@ function refreshTree() {
 							<table border="0" cellspacing="0" cellpadding="10">
 								<tr>
 									<td>
-									<!-- 
-										<input type="button" onClick="moveItems(this.form.allAliquotsIds,this.form.aliquotsIds)" value="<<"><input type="button" onClick="moveItems(this.form.aliquotsIds,this.form.allAliquotsIds)" value=">>">
-										-->
+										<input type="button" onClick="moveItems(this.form.availableAliquot, this.form.assignedAliquot)" value=">>" />
 									</td>
 								</tr>
 							</table>
@@ -83,9 +74,10 @@ function refreshTree() {
 						<td width="62%" valign="top">
 							<div align="center">
 								<span class="formMessage">Use Aliquots</span>
-								<html:select multiple="true" property="assignedAliquotIds">
-									<html:options name="allAssignedAliquotIds" />
+								<html:select multiple="true" property="assignedAliquot"  size="4">
+									<html:options name="allAssignedAliquots" />
 								</html:select>
+								</span>
 							</div>
 						</td>
 					</tr>
@@ -100,14 +92,14 @@ function refreshTree() {
 			</td>
 			<td class="formField">
 				<div align="left">
-					<strong> <span class="mainMenu"> <select multiple size="4" name="select3" style="width:100">
-								<option value="12">
-									&nbsp;
-								</option>
-								<option value="54">
-									&nbsp;
-								</option>
-							</select> </span>&nbsp; <input name="Submit22232" type="submit" onClick="javascript:location.href='uploadFiles.htm';" value="Upload Files"> </strong>
+							<strong> <span class="mainMenu"> 
+								<html:select multiple="true" property="inFiles" size="4" >
+									<html:options name="allInFiles"/>
+								</html:select>
+								 
+							</span>&nbsp; 
+							<input name="SubmitIn" type="submit" onClick="javascript:location.href='uploadFiles.htm';" value="Upload Files"> 
+							</strong>
 				</div>
 			</td>
 		</tr>
@@ -119,13 +111,12 @@ function refreshTree() {
 			</td>
 			<td class="formFieldWhite">
 				<strong>
-				<span class="mainMenu"> <select multiple size="4" name="select4" style="width:100">
-							<option value="12">	</option>
-							<option value="54">
-								&nbsp;
-							</option>
-				</select> </span>&nbsp; 
-						<input name="Submit222322" type="submit" onClick="javascript:location.href='uploadFiles.htm';" value="Upload Files"> </strong>
+				<span class="mainMenu"> 
+								<html:select multiple="true" property="outFiles" size="4" >
+									<html:options name="allOutFiles"/>
+								</html:select>
+				 </span>&nbsp; 
+						<input name="SubmitOut" type="submit" onClick="javascript:location.href='uploadFiles.htm';" value="Upload Files"> </strong>
 			</td>
 		</tr>
 		<tr>
@@ -179,5 +170,12 @@ function refreshTree() {
 	<p>
 		&nbsp;
 	</p>
-	</html:form>
 </blockquote>
+</html:form>
+<script language="JavaScript">
+<!--//
+  var cal = new calendar2(document.forms['createRun'].elements['runDate']);
+  cal.year_scroll = true;
+  cal.time_comp = false;
+//-->
+</script>
