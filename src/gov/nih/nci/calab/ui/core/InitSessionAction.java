@@ -1,13 +1,13 @@
 package gov.nih.nci.calab.ui.core;
 
 /**
- * This class initializes session data to prepopulate the drop-down lists required 
- * in different view pages. 
- * 
+ * This class initializes session data to prepopulate the drop-down lists required
+ * in different view pages.
+ *
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.8 2006-04-11 18:31:39 pansu Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.9 2006-04-12 10:27:03 thangars Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
@@ -46,7 +46,7 @@ public class InitSessionAction extends AbstractBaseAction {
 		HttpSession session = request.getSession();
 		ActionForward forward = null;
 		String forwardPage = null;
-		String urlPrefix=request.getContextPath();		
+		String urlPrefix=request.getContextPath();
 
 		try {
 			DynaActionForm theForm = (DynaActionForm) form;
@@ -103,7 +103,7 @@ public class InitSessionAction extends AbstractBaseAction {
 
 	/**
 	 * Set up session attributes for use aliquot page
-	 * 
+	 *
 	 * @param session
 	 * @param lookupService
 	 */
@@ -118,7 +118,7 @@ public class InitSessionAction extends AbstractBaseAction {
 
 	/**
 	 * Set up session attributes for create sample page
-	 * 
+	 *
 	 * @param session
 	 * @param lookupService
 	 */
@@ -155,7 +155,7 @@ public class InitSessionAction extends AbstractBaseAction {
 
 	/**
 	 * Set up session attributes for create aliquot page
-	 * 
+	 *
 	 * @param session
 	 * @param lookupService
 	 */
@@ -197,7 +197,7 @@ public class InitSessionAction extends AbstractBaseAction {
 
 	/**
 	 * Set up session attributes for search workflow page
-	 * 
+	 *
 	 * @param session
 	 * @param lookupService
 	 */
@@ -216,7 +216,7 @@ public class InitSessionAction extends AbstractBaseAction {
 
 	/**
 	 * Set up session attributes for search sample page
-	 * 
+	 *
 	 * @param session
 	 * @param lookupService
 	 */
@@ -282,17 +282,35 @@ public class InitSessionAction extends AbstractBaseAction {
 	 */
 	   private void setCreateRunSession(HttpSession session,
 			LookupService lookupService) {
-		if (session.getAttribute("allAssayTypeIds") == null) {
-			List allAssayTypeIds = lookupService.getAllAssayTypes();
-			session.setAttribute("allAssayTypeIds", allAssayTypeIds);
+		if (session.getAttribute("allAssayTypes") == null) {
+			List assayTypes = lookupService.getAllAssayTypes();
+			session.setAttribute("allAssayTypes", assayTypes);
 		}
-		if (session.getAttribute("allAssayIds") == null) {
-			List allAssayIds = lookupService.getAllAssays();
-			session.setAttribute("allAssayIds", allAssayIds);
+		if (session.getAttribute("allAssays") == null) {
+			List allAssays = lookupService.getAllAssays();
+			session.setAttribute("allAssays", allAssays);
 		}
-		if (session.getAttribute("allAliquots") == null) {
-			List allAliquots = lookupService.getAliquots(); 
-			session.setAttribute("allAliquots", allAliquots);
+		if (session.getAttribute("allAvailableAliquots") == null) {
+			List allAvailableAliquots = lookupService.getAllAvailableAliquots();
+			session.setAttribute("allAvailableAliquots", allAvailableAliquots);
 		}
+		if (session.getAttribute("allAssignedAliquots") == null) {
+			List allAssignedAliquots = lookupService.getAllAssignedAliquots();
+			session.setAttribute("allAssignedAliquots", allAssignedAliquots);
+		}
+		if (session.getAttribute("allInFiles") == null) {
+			List allInFiles = lookupService.getAllInFiles();
+			session.setAttribute("allInFiles", allInFiles);
+		}
+		if (session.getAttribute("allOutFiles") == null) {
+			List allOutFiles = lookupService.getAllOutFiles();
+			session.setAttribute("allOutFiles", allOutFiles);
+		}
+
 	}
+	   private void set(HttpSession session,
+				LookupService lookupService) 
+	   {
+		   session.setAttribute("dTree", lookupService.getWorkflowTree() );
+	   }
 }
