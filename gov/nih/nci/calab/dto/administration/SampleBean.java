@@ -15,7 +15,7 @@ import java.util.Set;
  * 
  */
 
-/* CVS $Id: SampleBean.java,v 1.9 2006-04-11 19:31:48 pansu Exp $ */
+/* CVS $Id: SampleBean.java,v 1.10 2006-04-12 19:21:45 pansu Exp $ */
 public class SampleBean {
 	private String sampleId="";
 	
@@ -126,6 +126,7 @@ public class SampleBean {
 		for (Object obj : sampleContainers) {
 			SampleContainer sampleContainer = (SampleContainer) obj;
 			containers[i] = new ContainerBean(sampleContainer);
+			i++;
 		}
 	}
 
