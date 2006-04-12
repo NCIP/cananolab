@@ -3,12 +3,14 @@ package gov.nih.nci.calab.service.workflow;
 import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
 import gov.nih.nci.calab.domain.Aliquot;
+import gov.nih.nci.calab.domain.Assay;
 import gov.nih.nci.calab.domain.Run;
 import gov.nih.nci.calab.domain.RunSampleContainer;
 import gov.nih.nci.calab.domain.StorageElement;
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerBean;
 import gov.nih.nci.calab.dto.administration.StorageLocation;
+import gov.nih.nci.calab.dto.workflow.AssayBean;
 import gov.nih.nci.calab.dto.workflow.ExecuteWorkflowBean;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
@@ -22,10 +24,35 @@ import org.apache.log4j.Logger;
 public class ExecuteWorkflowService {
 	private static Logger logger = Logger.getLogger(ExecuteWorkflowService.class);
 
+    /**
+	 * Retrieve assays by assayType
+	 * 
+	 * @return a list of all assays in certain type
+	 */
+	public List<AssayBean> getAssayByType(String assayTypeName) {
+		// Detail here
+		List<AssayBean> assays = new ArrayList<AssayBean>();
+		try {
+			IDataAccess ida = (new DataAccessProxy())
+					.getInstance(IDataAccess.HIBERNATE);
+			ida.open();
+			String hqlString = "select assay.id, assay.name, assay.type from Assay assay where assay.assayType ='" + assayTypeName + "'";
+			List results = ida.search(hqlString);
+			for (Object obj : results) {
+				Object[] objArray = (Object[])obj;
+				assays.add(new AssayBean((String)objArray[0], (String)objArray[1], (String)objArray[2]));
+			}
+			ida.close();
+		} catch (Exception e) {
+			logger.error("Error in retrieving assay by assayType -- " + assayTypeName, e);
+			throw new RuntimeException("Error in retrieving assay by assayType -- " + assayTypeName);
+		}
+		return assays;
+	}
 
 	/**
 	 * Save the aliquot IDs to be associated with the given run ID.
-	 *
+	 * 
 	 * @param runId
 	 * @param aliquotIds
 	 * @throws Exception
@@ -38,14 +65,27 @@ public class ExecuteWorkflowService {
 					.getInstance(IDataAccess.HIBERNATE);
 			ida.open();
 			//load run object
+			logger.debug("ExecuteWorkflowService.saveRunAliquots(): run id = " + runId);
 			Run doRun = (Run)ida.load(Run.class, StringUtils.convertToLong(runId));
-
+		
 			// Create RunSampleContainer collection
 			for (int i=0;i<aliquotIds.length;i++) {
+				// check if the aliquot has been assigned to the run, if it is, skip it
+				String hqlString ="select count(runcontainer.id)from RunSampleContainer runcontiner where runcontainer.run.id='" + runId + 
+								  "' and runcontainer.sampleContainer.id='" + aliquotIds[i] + "'";
+				List results = ida.search(hqlString);
+				if (((Integer)results.get(0)).intValue() > 0)
+				{
+					logger.debug("The aliquot id " + aliquotIds[i] + " is already assigned to this run, continue .... " );
+					continue;
+				}
 				RunSampleContainer doRunSC = new RunSampleContainer();
 				doRunSC.setComments(comments);
 				doRunSC.setRun(doRun);
-				doRunSC.setSampleContainer((Aliquot)ida.load(Aliquot.class, StringUtils.convertToLong(aliquotIds[i])));
+				logger.debug("ExecuteWorkflowService.saveRunAliquots(): aliquot id = " + aliquotIds[i]);
+				Aliquot doAliquot = (Aliquot)ida.load(Aliquot.class, StringUtils.convertToLong(aliquotIds[i]));
+				logger.debug("ExecuteWorkflowService.saveRunAliquots(): doAliquot = " + doAliquot);
+				doRunSC.setSampleContainer(doAliquot);
 				doRunSC.setCreatedBy(creator);
 				doRunSC.setCreatedDate(StringUtils.convertToDate(creationDate, CalabConstants.DATE_FORMAT));
 				ida.createObject(doRunSC);
@@ -71,7 +111,7 @@ public class ExecuteWorkflowService {
 				aliquotBean.setCreationDate(StringUtils.convertDateToString(doAliquot.getCreatedDate(), CalabConstants.DATE_FORMAT));
 				aliquotBean.setCreator(doAliquot.getCreatedBy());
 				aliquotBean.setHowCreated(doAliquot.getCreatedMethod());
-
+				
 				// ContainerBean
 				ContainerBean containerBean = new ContainerBean();
 				containerBean.setConcentration(doAliquot.getConcentration().toString());
@@ -85,7 +125,7 @@ public class ExecuteWorkflowService {
 				containerBean.setStorageCondition(doAliquot.getStorageCondition());
 				containerBean.setVolume(doAliquot.getVolume().toString());
 				containerBean.setVolumeUnit(doAliquot.getVolumeUnit());
-
+				
 //				containerBean.setStorageLocationStr();
 				StorageLocation location = new StorageLocation();
 				Set storageElements = (Set)doAliquot.getStorageElementCollection();
@@ -103,10 +143,10 @@ public class ExecuteWorkflowService {
 						location.setRack(element.getLocation());
 					} else if (element.getType().equals(CalabConstants.STORAGE_LAB)) {
 						location.setLab(element.getLocation());
-					}
+					}					
 				}
 				containerBean.setStorageLocation(location);
-
+					
 				aliquotBean.setContainer(containerBean);
 			}
 			ida.close();
@@ -116,8 +156,8 @@ public class ExecuteWorkflowService {
 		}
 		return aliquotBean;
 	}
-
-
+	
+	
 	/**
 	 * Save the aliquot IDs to be associated with the given run ID.
 	 * @param assayId
@@ -128,21 +168,67 @@ public class ExecuteWorkflowService {
 	 * @throws Exception
 	 */
 	public String saveRun(String assayId, String runBy, String runDate,String createdBy, String createdDate ) throws Exception {
-		// Details of Saving to RUN Table
-
-		String runId;
-
-		runId= "1";  // Run Id is the primary key of the saved Run
-
-		return runId;
+		// Details of Saving to RUN Table		
+		
+		Long runId; // Run Id is the primary key of the saved Run
+		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
+		
+		logger.debug("ExecuteWorkflowService.saveRun(): assayId = " + assayId);
+		try {
+			ida.open();
+			
+			Run doRun = new Run();
+			
+			// Retrieve the max sequence number for assay run
+			String runName = CalabConstants.RUN + (getLastAssayRunNum(ida,assayId)+1);
+			logger.debug("ExecuteWorkflowService.saveRun(): new run name = " + runName);
+			doRun.setName(runName);
+			doRun.setCreatedBy(createdBy);
+			doRun.setCreatedDate(StringUtils.convertToDate(createdDate, CalabConstants.DATE_FORMAT));
+			doRun.setRunBy(runBy);
+			doRun.setRunDate(StringUtils.convertToDate(runDate, CalabConstants.DATE_FORMAT));
+			doRun.setAssay((Assay)ida.load(Assay.class, StringUtils.convertToLong(assayId)));
+			
+			runId =  (Long)ida.createObject(doRun);
+			
+			ida.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			ida.rollback();
+			ida.close();
+			logger.error("Error in creating Run for assay. ", e);
+			throw new RuntimeException("Error in creating Run for assay. ");
+		}
+		return runId.toString();
 	}
-
+	
+	private int getLastAssayRunNum(IDataAccess ida, String assayId) {
+		int runNum = 0;
+		try {
+			String hqlString = "select run.name from Run run join run.assay  assay where assay.id='" + assayId + "'";
+			List results = ida.search(hqlString);
+			for (Object obj : results) {
+				String runName = (String)obj;
+				int runSeqNum = Integer.parseInt(runName.substring(CalabConstants.RUN.length()).trim());
+				if (runSeqNum > runNum) {
+					runNum = runSeqNum;
+				}
+			}
+		} catch (Exception e) {
+			logger.error("Error in retrieving the last aliquot child aliquot number",e);
+			throw new RuntimeException(
+					"Error in retrieving the last aliquot child aliquot number");
+		}
+		return runNum;
+	}
+	
+	
 	public ExecuteWorkflowBean getFileInfoForRunId(String runId) throws Exception {
 		//TODO fill in details for saving RUN INFO for the run
 		return null;
 	}
-
-
+	
+	
 	/**
 	 * Save the aliquot IDs to be associated with the given run ID.
 	 * @param fileURI
@@ -150,18 +236,18 @@ public class ExecuteWorkflowService {
 	 * @param runId
 	 * @throws Exception
 	 */
-	public void saveFileInfo(String fileURI, String[] fileName, String runId) throws Exception {
+	public void saveFileInfo(String fileURI, String fileName, String runId) throws Exception {
 		//TODO fill in details for saving RUN INFO for the run
 	}
-
+	
 	/**
 	 * Get the File information for the given Run Id.
 	 * @param runId
 	 * @throws Exception
-	 */
+	 */	
 	public ExecuteWorkflowBean getAllWorkflows() throws Exception {
 		//TODO fill in details for saving RUN INFO for the run
 		return null;
 	}
-
+	
 }
