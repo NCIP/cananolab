@@ -1,45 +1,36 @@
-<%@ page import="java.util.HashMap"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
+<%@	taglib uri="/WEB-INF/c.tld" prefix="c"%>
 
-<%//tmp code to be replaced 
-			String type = request.getParameter("type");
-			
-			System.out.println("request parameter type = " + type);
-			
-			java.util.Map actions = new HashMap();
-			if (type != null){
-				if (type.equals("in")) {			
-					actions.put("Use Aliquot", "initSession.do?forwardPage=useAliquot&runId=4");
-					actions.put("Upload Files", "useAliquot.jsp");
-					actions.put("Download All Files (Zipped)", "/useAliquot.jsp");
-					actions.put("Download All Files (Unzipped)", "/useAliquot.jsp");
-				}
-				else if (type.equals("out")){
-					actions.put("Upload Files", "/useAliquot.jsp");
-					actions.put("Download All Files (Zipped)", "/useAliquot.jsp");
-					actions.put("Download All Files (Unzipped)", "/useAliquot.jsp");
-				}
-				else if (type.equals("assay")) {
-					actions.put("Create Run", "createRun.jsp");
-				}
-			}				
-			else {
-			actions=null;
-			}
-			pageContext.setAttribute("actions", actions);
-%>
-
-<logic:present name="actions">
-<table>
-	<tr>
-		<logic:iterate name="actions" id="action">
-			<td class="formLabelGrey">
-				<a href="<bean:write name="action" property="value"/>"><bean:write name="action" property="key"/></a>
-				&nbsp; &nbsp;
-			</td>
-		</logic:iterate>
-    </tr> 
-</table>
+<logic:present parameter="type">
+	<logic:equal parameter="type" value="in">
+		<bean:define id="actions" name="inActions" type="java.util.List" />
+	</logic:equal>
+	<logic:equal parameter="type" value="out">
+		<bean:define id="actions" name="outActions" type="java.util.List" />
+	</logic:equal>
+	<logic:equal parameter="type" value="assay">
+		<bean:define id="actions" name="assayActions" type="java.util.List" />
+	</logic:equal>
+	<logic:present name="actions">
+		<table>
+			<tr>
+				<logic:iterate name="actions" id="item" type="org.apache.struts.tiles.beans.MenuItem">
+					<td class="formLabelGrey">
+						<c:url var="linkVal" value="${item.link}">
+							<c:forEach var="paramItem" items="${paramValues}">
+								<c:choose>
+									<c:when test="${paramItem.key ne 'type'}">
+										<c:param name="${paramItem.key}" value="${paramItem.value[0]}" />
+									</c:when>
+								</c:choose>
+							</c:forEach>
+						</c:url>
+						<a href="${linkVal}"><bean:write name="item" property="value" /></a> &nbsp; &nbsp;
+					</td>
+				</logic:iterate>
+			</tr>
+		</table>
+	</logic:present>
 </logic:present>
