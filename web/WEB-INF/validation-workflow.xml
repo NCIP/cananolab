@@ -9,16 +9,9 @@
 				<arg position="0" key="useAliquotForm.aliquotIds" bundle="workflow" />
 			</field>
 		</form>
-		<form name="executeWorkflowForm">
+		<form name="createRunForm">
 			<field property="runDate" depends="date">
-				<arg key="executeWorkflowForm.runDate" bundle="workflow" position="0" />
-				<var>
-					<var-name>datePatternStrict</var-name>
-					<var-value>MM/dd/yyyy</var-value>
-				</var>
-			</field>
-			<field property="runBy" depends="date,required">
-				<arg key="executeWorkflowForm.runDate" bundle="workflow" position="0" />
+				<arg key="createRunForm.runDate" bundle="workflow" position="0" />
 				<var>
 					<var-name>datePatternStrict</var-name>
 					<var-value>MM/dd/yyyy</var-value>

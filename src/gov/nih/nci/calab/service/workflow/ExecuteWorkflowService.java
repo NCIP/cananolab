@@ -22,34 +22,10 @@ import org.apache.log4j.Logger;
 public class ExecuteWorkflowService {
 	private static Logger logger = Logger.getLogger(ExecuteWorkflowService.class);
 
-	/**
-	 * Retrieve assays by assayType
-	 * 
-	 * @return a list of all assays in certain type
-	 */
-	public List<String> getAssayByType(String assayTypeName) {
-		// Detail here
-		List<String> assays = new ArrayList<String>();
-		try {
-			IDataAccess ida = (new DataAccessProxy())
-					.getInstance(IDataAccess.HIBERNATE);
-			ida.open();
-			String hqlString = "select assay.name from Assay assay where assay.assayType ='" + assayTypeName + "'";
-			List results = ida.search(hqlString);
-			for (Object obj : results) {
-				assays.add((String) obj);
-			}
-			ida.close();
-		} catch (Exception e) {
-			logger.error("Error in retrieving assay by assayType -- " + assayTypeName, e);
-			throw new RuntimeException("Error in retrieving assay by assayType -- " + assayTypeName);
-		}
-		return assays;
-	}
 
 	/**
 	 * Save the aliquot IDs to be associated with the given run ID.
-	 * 
+	 *
 	 * @param runId
 	 * @param aliquotIds
 	 * @throws Exception
@@ -63,7 +39,7 @@ public class ExecuteWorkflowService {
 			ida.open();
 			//load run object
 			Run doRun = (Run)ida.load(Run.class, StringUtils.convertToLong(runId));
-		
+
 			// Create RunSampleContainer collection
 			for (int i=0;i<aliquotIds.length;i++) {
 				RunSampleContainer doRunSC = new RunSampleContainer();
@@ -95,7 +71,7 @@ public class ExecuteWorkflowService {
 				aliquotBean.setCreationDate(StringUtils.convertDateToString(doAliquot.getCreatedDate(), CalabConstants.DATE_FORMAT));
 				aliquotBean.setCreator(doAliquot.getCreatedBy());
 				aliquotBean.setHowCreated(doAliquot.getCreatedMethod());
-				
+
 				// ContainerBean
 				ContainerBean containerBean = new ContainerBean();
 				containerBean.setConcentration(doAliquot.getConcentration().toString());
@@ -109,7 +85,7 @@ public class ExecuteWorkflowService {
 				containerBean.setStorageCondition(doAliquot.getStorageCondition());
 				containerBean.setVolume(doAliquot.getVolume().toString());
 				containerBean.setVolumeUnit(doAliquot.getVolumeUnit());
-				
+
 //				containerBean.setStorageLocationStr();
 				StorageLocation location = new StorageLocation();
 				Set storageElements = (Set)doAliquot.getStorageElementCollection();
@@ -127,10 +103,10 @@ public class ExecuteWorkflowService {
 						location.setRack(element.getLocation());
 					} else if (element.getType().equals(CalabConstants.STORAGE_LAB)) {
 						location.setLab(element.getLocation());
-					}					
+					}
 				}
 				containerBean.setStorageLocation(location);
-					
+
 				aliquotBean.setContainer(containerBean);
 			}
 			ida.close();
@@ -140,8 +116,8 @@ public class ExecuteWorkflowService {
 		}
 		return aliquotBean;
 	}
-	
-	
+
+
 	/**
 	 * Save the aliquot IDs to be associated with the given run ID.
 	 * @param assayId
@@ -152,21 +128,21 @@ public class ExecuteWorkflowService {
 	 * @throws Exception
 	 */
 	public String saveRun(String assayId, String runBy, String runDate,String createdBy, String createdDate ) throws Exception {
-		// Details of Saving to RUN Table		
-		
+		// Details of Saving to RUN Table
+
 		String runId;
-		
+
 		runId= "1";  // Run Id is the primary key of the saved Run
-		
+
 		return runId;
 	}
-	
+
 	public ExecuteWorkflowBean getFileInfoForRunId(String runId) throws Exception {
 		//TODO fill in details for saving RUN INFO for the run
 		return null;
 	}
-	
-	
+
+
 	/**
 	 * Save the aliquot IDs to be associated with the given run ID.
 	 * @param fileURI
@@ -174,18 +150,18 @@ public class ExecuteWorkflowService {
 	 * @param runId
 	 * @throws Exception
 	 */
-	public void saveFileInfo(String fileURI, String fileName, String runId) throws Exception {
+	public void saveFileInfo(String fileURI, String[] fileName, String runId) throws Exception {
 		//TODO fill in details for saving RUN INFO for the run
 	}
-	
+
 	/**
 	 * Get the File information for the given Run Id.
 	 * @param runId
 	 * @throws Exception
-	 */	
+	 */
 	public ExecuteWorkflowBean getAllWorkflows() throws Exception {
 		//TODO fill in details for saving RUN INFO for the run
 		return null;
 	}
-	
+
 }
