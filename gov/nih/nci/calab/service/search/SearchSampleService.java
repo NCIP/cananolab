@@ -12,6 +12,7 @@ import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -21,7 +22,7 @@ import org.apache.log4j.Logger;
  * @author pansu
  * 
  */
-/* CVS $Id: SearchSampleService.java,v 1.8 2006-04-11 21:29:22 pansu Exp $ */
+/* CVS $Id: SearchSampleService.java,v 1.9 2006-04-12 19:24:27 pansu Exp $ */
 
 public class SearchSampleService {
 	private static Logger logger = Logger.getLogger(SearchSampleService.class);
@@ -203,7 +204,7 @@ public class SearchSampleService {
 			ida.open();
 
 			List results = ida.searchByParam(hqlString, paramList);
-			for (Object obj : results) {
+			for (Object obj : new HashSet<Object>(results)) {
 				Sample sample = (Sample) obj;
 				samples.add(new SampleBean(sample));
 			}
@@ -231,7 +232,7 @@ public class SearchSampleService {
 	 * @param storageLocation
 	 * @return
 	 */
-	public List<AliquotBean> searchAliquotsByAliquotName(String aliquotName,
+public List<AliquotBean> searchAliquotsByAliquotName(String aliquotName,
 			String sampleType, String sampleSource, String sourceSampleId,
 			Date dateAccessionedBegin, Date dateAccessionedEnd,
 			String sampleSubmitter, StorageLocation storageLocation) {
@@ -242,24 +243,24 @@ public class SearchSampleService {
 
 			String where = "";
 			String storageFrom = "";
-			if (aliquotName != "") {
+			if (aliquotName.length()>0) {
 				paramList.add(aliquotName);
 				where = "where ";
 				whereList.add("aliquot.name=?");
 			}
-			if (sampleType != "") {
+			if (sampleType.length()>0) {
 				paramList.add(sampleType);
 				where = "where ";
 				whereList.add("aliquot.sample.type=?");
 			}
 
-			if (sampleSource != "") {
+			if (sampleSource.length()>0) {
 				paramList.add(sampleSource);
 				where = "where ";
 				whereList.add("aliquot.sample.source.organizationName=?");
 			}
 
-			if (sourceSampleId != "") {
+			if (sourceSampleId.length()>0) {
 				paramList.add(sourceSampleId);
 				where = "where ";
 				whereList.add("aliquot.sample.sourceSampleId=?");
@@ -276,34 +277,34 @@ public class SearchSampleService {
 				where = "where ";
 				whereList.add("aliquot.createdDate<=?");
 			}
-			if (sampleSubmitter != "") {
+			if (sampleSubmitter.length()>0) {
 				paramList.add(sampleSubmitter);
 				where = "where ";
 				whereList.add("aliquot.createdBy=?");
 			}
 
-			if (storageLocation.getRoom() != "") {
+			if (storageLocation.getRoom().length()>0) {
 				paramList.add(storageLocation.getRoom());
 				where = "where ";
 				storageFrom = "join aliquot.storageElementCollection storage ";
 				whereList.add("storage.type='Room' and storage.location=?");
 			}
 
-			if (storageLocation.getFreezer() != "") {
+			if (storageLocation.getFreezer().length()>0) {
 				paramList.add(storageLocation.getFreezer());
 				where = "where ";
 				storageFrom = "join aliquot.storageElementCollection storage ";
 				whereList.add("storage.type='Freezer' and storage.location=?");
 			}
 
-			if (storageLocation.getFreezer() != "") {
+			if (storageLocation.getFreezer().length()>0) {
 				paramList.add(storageLocation.getFreezer());
 				where = "where ";
 				storageFrom = "join aliquot.storageElementCollection storage ";
 				whereList.add(" storage.type='Shelf' and storage.location=?");
 			}
 
-			if (storageLocation.getBox() != "") {
+			if (storageLocation.getBox().length()>0) {
 				paramList.add(storageLocation.getBox());
 				where = "where ";
 				storageFrom = "join aliquot.storageElementCollection storage ";
@@ -319,7 +320,7 @@ public class SearchSampleService {
 			ida.open();
 
 			List results = ida.searchByParam(hqlString, paramList);
-			for (Object obj : results) {
+			for (Object obj : new HashSet<Object>(results)) {
 				Aliquot aliquot = (Aliquot) obj;
 				aliquots.add(new AliquotBean(aliquot));
 				aliquot.getSample();
@@ -335,7 +336,6 @@ public class SearchSampleService {
 
 		return aliquots;
 	}
-
 	/**
 	 * Search database for sample container information based on other
 	 * parameters
