@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.9 2006-04-12 10:27:03 thangars Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.10 2006-04-12 18:28:03 zengje Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
@@ -211,7 +211,7 @@ public class InitSessionAction extends AbstractBaseAction {
 		if (session.getAttribute("allFileSubmitters") == null) {
 			List submitters = searchWorkflowService.getAllFileSubmitters();
 			session.setAttribute("allFileSubmitters", submitters);
-		}
+		}	
 	}
 
 	/**
@@ -305,6 +305,11 @@ public class InitSessionAction extends AbstractBaseAction {
 		if (session.getAttribute("allOutFiles") == null) {
 			List allOutFiles = lookupService.getAllOutFiles();
 			session.setAttribute("allOutFiles", allOutFiles);
+		}
+		
+		if (session.getAttribute("allAssayBeans") == null) {
+			List allAssayBeans = lookupService.getAllAssayBeans();
+			session.setAttribute("allAssayBeans", allAssayBeans);
 		}
 
 	}
