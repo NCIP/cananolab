@@ -1,4 +1,6 @@
 <%@ taglib uri="http://struts.apache.org/tags-tiles" prefix="tiles"%>
+<tiles:importAttribute scope="session"/>
+
 <table height="100%" cellspacing="0" cellpadding="0" width="100%" summary="" border="0">
 	<tr>
 		<td height="20">
