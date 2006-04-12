@@ -101,7 +101,7 @@ P:false,	// menu is PERMANENT (you can only set true if this is LEVEL 1 menu)
 S:s_CSSTop	// STYLE Array to use for this menu
 },
 [		// define items {U:'url',T:'text' ...} look at the Manual for details
-{U:'createRun.jsp',T:'Execute Workflow'}
+{U:'initSession.do?forwardPage=createRun',T:'Execute Workflow'},
 ]
 );
 //administration
