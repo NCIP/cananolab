@@ -13,6 +13,7 @@ import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
 import gov.nih.nci.calab.dto.administration.SampleBean;
 import gov.nih.nci.calab.service.util.StringUtils;
+import gov.nih.nci.calab.dto.workflow.AssayBean;
 
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ import org.apache.log4j.Logger;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.14 2006-04-12 10:25:54 thangars Exp $ */
+/* CVS $Id: LookupService.java,v 1.15 2006-04-12 18:24:12 zengje Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -372,6 +373,28 @@ public class LookupService {
 	 *
 	 * @return a list of all assays in certain type
 	 */
+
+	public List<AssayBean> getAllAssayBeans()
+	{
+		List<AssayBean> assayBeans = new ArrayList<AssayBean>();
+		try {
+			IDataAccess ida = (new DataAccessProxy())
+					.getInstance(IDataAccess.HIBERNATE);
+			ida.open();
+			String hqlString = "select assay.id, assay.name, assay.assayType from Assay assay";
+			List results = ida.search(hqlString);
+			for (Object obj : results) {
+				Object[] objArray = (Object[])obj;
+				AssayBean assay = new AssayBean(((Long)objArray[0]).toString(), (String)objArray[1], (String)objArray[2]);
+				assayBeans.add(assay);
+			}
+			ida.close();
+		} catch (Exception e) {
+			logger.error("Error in retrieving all assay beans. ", e);
+			throw new RuntimeException("Error in retrieving all assays beans. ");
+		}
+		return assayBeans;
+	}
 	public List<String> getAssayByType(String assayTypeName) {
 		// Detail here
 		List<String> assays = new ArrayList<String>();
@@ -389,6 +412,7 @@ public class LookupService {
 			logger.error("Error in retrieving assay by assayType -- " + assayTypeName, e);
 			throw new RuntimeException("Error in retrieving assay by assayType -- " + assayTypeName);
 		}
+
 		return assays;
 	}
 	
