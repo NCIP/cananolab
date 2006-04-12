@@ -5,6 +5,7 @@ public class AssayBean {
 	private String assayId;
 	private String assayName;
 	private String assayType;
+	private String assayStr;
 	
 	public AssayBean(String assayId, String assayName, String assayType) {
 		super();
@@ -31,6 +32,12 @@ public class AssayBean {
 	public void setAssayType(String assayType) {
 		this.assayType = assayType;
 	}
+	public String getAssayStr() {
+		return this.assayType + " : " + this.assayName;
+	}
+//	public void setAssayStr(String assayStr) {
+//		this.assayStr = assayStr;
+//	}
 	
 	
 
