@@ -49,7 +49,8 @@ public class CreateRunAction extends AbstractBaseAction {
 			
 			//Get Prameters from form elements
 			//Run info 
-			String assayId	= (String) theForm.get("assayId"); 
+			/*
+			String assayId	= (String) theForm.get("assay"); 
 			String runBy	= (String) theForm.get("runBy"); 
 			String runDate	= (String) theForm.get("runDate");
 
@@ -69,8 +70,8 @@ public class CreateRunAction extends AbstractBaseAction {
 			String runId = workflowService.saveRun(assayId,runBy,runDate,creator,creationDate);
 			
 			//File info
-			String inFileName	= (String) theForm.get("inFileName");
-			String outFileName	= (String) theForm.get("outFileName");
+			String[] inFileName	= (String[]) theForm.get("inFileName");
+			String[] outFileName	= (String[]) theForm.get("outFileName");
 			String fileURI = ""; //Get from File Upload module			
 			//Save File info
 			workflowService.saveFileInfo(fileURI, inFileName,runId);
@@ -79,7 +80,6 @@ public class CreateRunAction extends AbstractBaseAction {
 			
 			//Other info
 			String assayType	= (String) theForm.get("assayType");
-			String assayName	= (String) theForm.get("assayName");
 			String runName	= "Run 1";
 			String aliquotIds	= (String) theForm.get("aliquotIds");
 			String allAliquotIds	= (String) theForm.get("allAliquotIds");			
@@ -87,9 +87,6 @@ public class CreateRunAction extends AbstractBaseAction {
 			String fileSubmitter	= (String) theForm.get("fileSubmitter");
 			String fileMaskStatus	= (String) theForm.get("fileMaskStatus");
 			
-			/*, assayName,
-			runName, runDate, runBy, createdDate, createdBy, aliquotIds,
-			allAliquotIds, fileSubmissionDate, fileSubmitter, fileMaskStatus);
 			*/
 			
 			//Bean 
@@ -98,7 +95,8 @@ public class CreateRunAction extends AbstractBaseAction {
 			//set to Request object			
 			//request.setAttribute("executeworkflow", executeworkflow);
 			//set Forward
-			forward = mapping.findForward("success");			
+			forward = mapping.findForward("success");
+			System.out.print(">>>>SUCCESS CREATE RUN");
 		} catch (Exception e) {
 			ActionMessage error=new ActionMessage("error.createRun");
 			messages.add("error", error);
