@@ -1,98 +1,110 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
-    
-    <!DOCTYPE tiles-definitions PUBLIC
+
+<!DOCTYPE tiles-definitions PUBLIC
        "-//Apache Software Foundation//DTD Tiles Configuration 1.3//EN"
        "http://struts.apache.org/dtds/tiles-config_1_3.dtd">
-    
 <tiles-definitions>
-    <!-- main layout definition for the workflow content page inside caLAB -->
+	<!-- main layout definition for the workflow content page inside caLAB -->
 	<definition name="workflow.content.home" path="/layout/workflowLayout.jsp">
-		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp"/>
+		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp" />
+		<putList name="inActions">
+			<item value="Use Aliquot" link="initSession.do?forwardPage=useAliquot" />
+			<item value="Upload Files" link="useAliquot.jsp" />
+			<item value="Download All Files (Zipped)" link="useAliquot.jsp" />
+			<item value="Download All Files (Unzipped)" link="useAliquot.jsp" />
+		</putList>
+		<putList name="outActions">
+			<item value="Upload Files" link="useAliquot.jsp" />
+			<item value="Download All Files (Zipped)" link="useAliquot.jsp" />
+		</putList>
+		<putList name="assayActions">
+			<item value="Create Run" link="initSession.do?forwardPage=createRun" />
+		</putList>
 	</definition>
-	
-    <!-- definitions for the use aliquot page -->
-    <definition name="workflow.usealiquot.content" extends="workflow.content.home">
-			<put name="workflowActionMenu" value="/workflow/actionMenu.jsp?type=in"/>
-	    <put name="workflowContent" value="/workflow/bodyUseAliquot.jsp"/>
-    </definition>
-    
-    <definition name="workflow.usealiquot" extends="calab.home">
-        <put name="calabContent" value="workflow.usealiquot.content"/>
-        <put name="calabSidemenu" value="/workflow/sideMenuTree.jsp"/>
-        <put name="menu" value="workflow"/>
-    </definition>
-    
-    <!-- definitions for the create run page -->  
-    <definition name="workflow.createrun" extends="calab.home">
+
+	<!-- definitions for the use aliquot page -->
+	<definition name="workflow.usealiquot.content" extends="workflow.content.home">
+		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp?type=in" />
+		<put name="workflowContent" value="/workflow/bodyUseAliquot.jsp" />
+	</definition>
+
+	<definition name="workflow.usealiquot" extends="calab.home">
+		<put name="calabContent" value="workflow.usealiquot.content" />
+		<put name="calabSidemenu" value="/workflow/sideMenuTree.jsp" />
+		<put name="menu" value="workflow" />
+	</definition>
+
+	<!-- definitions for the create run page -->
+	<definition name="workflow.createrun" extends="calab.home">
 		<put name="calabContent" value="/workflow/bodyCreateRun.jsp" />
 		<put name="menu" value="workflow" />
 	</definition>
- 
 
-    <!-- definitions for the workflow message page -->
-    <definition name="workflow.message.content" extends="workflow.content.home">
-        <put name="workflowContent" value="/bodyMessage.jsp?bundle=workflow"/>
-    </definition>    
-    <definition name="workflow.message" extends="calab.home">
-        <put name="calabContent" value="workflow.message.content"/>
-        <put name="menu" value="workflow"/>
-    </definition>    
-    
-    <!-- definitions for the view aliquot page -->
-    <definition name="workflow.viewaliquot.content" extends="workflow.content.home">
-        <put name="workflowContent" value="/workflow/bodyViewAliquot.jsp"/>
-    </definition>
-    
-    <definition name="workflow.viewaliquot" extends="calab.home">
-        <put name="calabContent" value="workflow.viewaliquot.content"/>
-        <put name="calabSidemenu" value="/workflow/sideMenuTree.jsp"/>
-        <put name="menu" value="workflow"/>
-    </definition>
 
-    <!-- definitions for the view assay menu page -->
-    <definition name="workflow.assaymenu.content" extends="workflow.content.home">
- 		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp?type=assay"/>
-        <put name="workflowContent" value="/workflow/bodyEmpty.jsp"/>
-    </definition>
-    
-    <definition name="workflow.assaymenu" extends="calab.home">
-        <put name="calabContent" value="workflow.assaymenu.content"/>
-        <put name="calabSidemenu" value="/workflow/sideMenuTree.jsp"/>
-        <put name="menu" value="workflow"/>
-    </definition>    
-    
-    <!-- definitions for the view input menu page -->
-    <definition name="workflow.inputmenu.content" extends="workflow.content.home">
- 		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp?type=in"/>
-        <put name="workflowContent" value="/workflow/bodyEmpty.jsp"/>
-    </definition>
-    
-    <definition name="workflow.inputmenu" extends="calab.home">
-        <put name="calabContent" value="workflow.inputmenu.content"/>
-        <put name="calabSidemenu" value="/workflow/sideMenuTree.jsp"/>
-        <put name="menu" value="workflow"/>
-    </definition>    
-    
-    <!-- definitions for the view output menu page -->
-    <definition name="workflow.outputmenu.content" extends="workflow.content.home">
- 		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp?type=out"/>
-        <put name="workflowContent" value="/workflow/bodyEmpty.jsp"/>
-    </definition>
-    
-    <definition name="workflow.outputmenu" extends="calab.home">
-        <put name="calabContent" value="workflow.outputmenu.content"/>
-        <put name="calabSidemenu" value="/workflow/sideMenuTree.jsp"/>
-        <put name="menu" value="workflow"/>
-    </definition>    
-    
-    <!-- definitions for the mask aliquot page -->
-    <definition name="workflow.maskaliquot.content" extends="workflow.content.home">
- 		<put name="workflowContent" value="/workflow/bodyMaskAliquot.jsp"/>
-    </definition>
-    
-    <definition name="workflow.maskaliquot" extends="calab.home">
-        <put name="calabContent" value="workflow.maskaliquot.content"/>
-        <put name="calabSidemenu" value="/workflow/sideMenuTree.jsp"/>
-        <put name="menu" value="workflow"/>
-    </definition>    
+	<!-- definitions for the workflow message page -->
+	<definition name="workflow.message.content" extends="workflow.content.home">
+		<put name="workflowContent" value="/bodyMessage.jsp?bundle=workflow" />
+	</definition>
+	<definition name="workflow.message" extends="calab.home">
+		<put name="calabContent" value="workflow.message.content" />
+		<put name="menu" value="workflow" />
+	</definition>
+
+	<!-- definitions for the view aliquot page -->
+	<definition name="workflow.viewaliquot.content" extends="workflow.content.home">
+		<put name="workflowContent" value="/workflow/bodyViewAliquot.jsp" />
+	</definition>
+
+	<definition name="workflow.viewaliquot" extends="calab.home">
+		<put name="calabContent" value="workflow.viewaliquot.content" />
+		<put name="calabSidemenu" value="/workflow/sideMenuTree.jsp" />
+		<put name="menu" value="workflow" />
+	</definition>
+
+	<!-- definitions for the view assay menu page -->
+	<definition name="workflow.assaymenu.content" extends="workflow.content.home">
+		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp?type=assay" />
+		<put name="workflowContent" value="/workflow/bodyEmpty.jsp" />
+	</definition>
+
+	<definition name="workflow.assaymenu" extends="calab.home">
+		<put name="calabContent" value="workflow.assaymenu.content" />
+		<put name="calabSidemenu" value="/workflow/sideMenuTree.jsp" />
+		<put name="menu" value="workflow" />
+	</definition>
+
+	<!-- definitions for the view input menu page -->
+	<definition name="workflow.inputmenu.content" extends="workflow.content.home">
+		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp?type=in" />
+		<put name="workflowContent" value="/workflow/bodyEmpty.jsp" />
+	</definition>
+
+	<definition name="workflow.inputmenu" extends="calab.home">
+		<put name="calabContent" value="workflow.inputmenu.content" />
+		<put name="calabSidemenu" value="/workflow/sideMenuTree.jsp" />
+		<put name="menu" value="workflow" />
+	</definition>
+
+	<!-- definitions for the view output menu page -->
+	<definition name="workflow.outputmenu.content" extends="workflow.content.home">
+		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp?type=out" />
+		<put name="workflowContent" value="/workflow/bodyEmpty.jsp" />
+	</definition>
+
+	<definition name="workflow.outputmenu" extends="calab.home">
+		<put name="calabContent" value="workflow.outputmenu.content" />
+		<put name="calabSidemenu" value="/workflow/sideMenuTree.jsp" />
+		<put name="menu" value="workflow" />
+	</definition>
+
+	<!-- definitions for the mask aliquot page -->
+	<definition name="workflow.maskaliquot.content" extends="workflow.content.home">
+		<put name="workflowContent" value="/workflow/bodyMaskAliquot.jsp" />
+	</definition>
+
+	<definition name="workflow.maskaliquot" extends="calab.home">
+		<put name="calabContent" value="workflow.maskaliquot.content" />
+		<put name="calabSidemenu" value="/workflow/sideMenuTree.jsp" />
+		<put name="menu" value="workflow" />
+	</definition>
 </tiles-definitions>
