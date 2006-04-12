@@ -24,6 +24,10 @@
 			<forward name="failure" path="calab.home" />
 			<forward name="input" path="calab.home" />
 		</action>
+		<action path="/logout" scope="request" type="gov.nih.nci.calab.ui.security.LogoutAction">
+			<forward name="success" path="calab.error" />
+			<forward name="failure" path="calab.error" />
+		</action>
 	</action-mappings>
 
 	<controller>
