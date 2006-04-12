@@ -3,7 +3,6 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 
 
-</script>
 <html:form action="/createRun">
 <blockquote>
 <h2>
@@ -30,14 +29,16 @@
 		<tr>
 			<td colspan="2" class="formLabel">
 					<div align="justify">
-								<strong>Assay Type<span class="formFieldWhite">
+								<!-- <strong>Assay Type<span class="formFieldWhite">
 								<html:select property="assayType">
 									<option value=""></option>
 									<html:options name="allAssayTypes" />
-								</html:select></span></strong>&nbsp; &nbsp; &nbsp; &nbsp;<strong>Assay<span class="formFieldWhite">
+								</html:select></span></strong>&nbsp; &nbsp; &nbsp; &nbsp; -->
+								<strong>AssayType : Assay<span class="formFieldWhite">
 								<html:select property="assay">
 									<option value=""></option>
-									<html:options name="allAssays" />
+									<!--  <html:options name="allAssays" /> -->
+									<html:options collection="allAssayBeans" property="assayId" labelProperty="assayStr" />
 								</html:select></span></strong>
 					</div>
 				</td>				
@@ -77,7 +78,7 @@
 								<html:select multiple="true" property="assignedAliquot"  size="4">
 									<html:options name="allAssignedAliquots" />
 								</html:select>
-								</span>
+							
 							</div>
 						</td>
 					</tr>
