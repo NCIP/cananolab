@@ -1,3 +1,7 @@
+<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
+<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
+<%@	taglib uri="/WEB-INF/c.tld" prefix="c"%>
        <tr>   <td width="190" valign="top" class="subMenu">
             <!-- submenu begins -->
             <table summary="" cellpadding="0" cellspacing="0" border="0" width="220" height="100%">
@@ -14,7 +18,7 @@
      						<div class="dtree" style="white-space: nowrap;">
 							<script type="text/javascript">
 							<%
-							//DemoTree.java goes here
+							
 							%>
 							</script>
 							</div>
