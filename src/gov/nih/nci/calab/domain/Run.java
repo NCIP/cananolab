@@ -98,21 +98,21 @@ public  class Run
 			
 			
 			
-			  ApplicationService applicationService = ApplicationServiceProvider.getApplicationService();
-			  gov.nih.nci.calab.domain.Run thisIdSet = new gov.nih.nci.calab.domain.Run();
-			  thisIdSet.setId(this.getId());
-			  
-			  try {
-			     java.util.List resultList = applicationService.search("gov.nih.nci.calab.domain.Assay", thisIdSet);				 
-		             if (resultList!=null && resultList.size()>0) {
-		                assay = (gov.nih.nci.calab.domain.Assay)resultList.get(0);
-		             }
-		          
-			  } catch(Exception ex) 
-			  { 
-			      	System.out.println("Run:getAssay throws exception ... ...");
-			   		ex.printStackTrace(); 
-			  }
+//			  ApplicationService applicationService = ApplicationServiceProvider.getApplicationService();
+//			  gov.nih.nci.calab.domain.Run thisIdSet = new gov.nih.nci.calab.domain.Run();
+//			  thisIdSet.setId(this.getId());
+//			  
+//			  try {
+//			     java.util.List resultList = applicationService.search("gov.nih.nci.calab.domain.Assay", thisIdSet);				 
+//		             if (resultList!=null && resultList.size()>0) {
+//		                assay = (gov.nih.nci.calab.domain.Assay)resultList.get(0);
+//		             }
+//		          
+//			  } catch(Exception ex) 
+//			  { 
+//			      	System.out.println("Run:getAssay throws exception ... ...");
+//			   		ex.printStackTrace(); 
+//			  }
 			  return assay;	
 			 
 			 		
@@ -135,27 +135,27 @@ public  class Run
 	      
 			private java.util.Collection runSampleContainerCollection = new java.util.HashSet();
 			public java.util.Collection getRunSampleContainerCollection(){
-			try{
-			   if(runSampleContainerCollection.size() == 0) {}
-		           } catch(Exception e) {			     
-			      ApplicationService applicationService = ApplicationServiceProvider.getApplicationService();
-			      try {
-			      
-			      
-			         
-				 	gov.nih.nci.calab.domain.Run thisIdSet = new gov.nih.nci.calab.domain.Run();
-			         	thisIdSet.setId(this.getId());
-			         	java.util.Collection resultList = applicationService.search("gov.nih.nci.calab.domain.RunSampleContainer", thisIdSet);				 
-				 	runSampleContainerCollection = resultList;  
-				 	return resultList;
-				 
-			      
-			      }catch(Exception ex) 
-			      {
-			      	System.out.println("Run:getRunSampleContainerCollection throws exception ... ...");
-			   		ex.printStackTrace(); 
-			      }
-			   }	
+//			try{
+//			   if(runSampleContainerCollection.size() == 0) {}
+//		           } catch(Exception e) {			     
+//			      ApplicationService applicationService = ApplicationServiceProvider.getApplicationService();
+//			      try {
+//			      
+//			      
+//			         
+//				 	gov.nih.nci.calab.domain.Run thisIdSet = new gov.nih.nci.calab.domain.Run();
+//			         	thisIdSet.setId(this.getId());
+//			         	java.util.Collection resultList = applicationService.search("gov.nih.nci.calab.domain.RunSampleContainer", thisIdSet);				 
+//				 	runSampleContainerCollection = resultList;  
+//				 	return resultList;
+//				 
+//			      
+//			      }catch(Exception ex) 
+//			      {
+//			      	System.out.println("Run:getRunSampleContainerCollection throws exception ... ...");
+//			   		ex.printStackTrace(); 
+//			      }
+//			   }	
 	              return runSampleContainerCollection;
 	          }
 			   
@@ -178,27 +178,27 @@ public  class Run
 	      
 			private java.util.Collection inputFileCollection = new java.util.HashSet();
 			public java.util.Collection getInputFileCollection(){
-			try{
-			   if(inputFileCollection.size() == 0) {}
-		           } catch(Exception e) {			     
-			      ApplicationService applicationService = ApplicationServiceProvider.getApplicationService();
-			      try {
-			      
-			      
-			         
-				 	gov.nih.nci.calab.domain.Run thisIdSet = new gov.nih.nci.calab.domain.Run();
-			         	thisIdSet.setId(this.getId());
-			         	java.util.Collection resultList = applicationService.search("gov.nih.nci.calab.domain.InputFile", thisIdSet);				 
-				 	inputFileCollection = resultList;  
-				 	return resultList;
-				 
-			      
-			      }catch(Exception ex) 
-			      {
-			      	System.out.println("Run:getInputFileCollection throws exception ... ...");
-			   		ex.printStackTrace(); 
-			      }
-			   }	
+//			try{
+//			   if(inputFileCollection.size() == 0) {}
+//		           } catch(Exception e) {			     
+//			      ApplicationService applicationService = ApplicationServiceProvider.getApplicationService();
+//			      try {
+//			      
+//			      
+//			         
+//				 	gov.nih.nci.calab.domain.Run thisIdSet = new gov.nih.nci.calab.domain.Run();
+//			         	thisIdSet.setId(this.getId());
+//			         	java.util.Collection resultList = applicationService.search("gov.nih.nci.calab.domain.InputFile", thisIdSet);				 
+//				 	inputFileCollection = resultList;  
+//				 	return resultList;
+//				 
+//			      
+//			      }catch(Exception ex) 
+//			      {
+//			      	System.out.println("Run:getInputFileCollection throws exception ... ...");
+//			   		ex.printStackTrace(); 
+//			      }
+//			   }	
 	              return inputFileCollection;
 	          }
 			   
@@ -221,27 +221,27 @@ public  class Run
 	      
 			private java.util.Collection outputFileCollection = new java.util.HashSet();
 			public java.util.Collection getOutputFileCollection(){
-			try{
-			   if(outputFileCollection.size() == 0) {}
-		           } catch(Exception e) {			     
-			      ApplicationService applicationService = ApplicationServiceProvider.getApplicationService();
-			      try {
-			      
-			      
-			         
-				 	gov.nih.nci.calab.domain.Run thisIdSet = new gov.nih.nci.calab.domain.Run();
-			         	thisIdSet.setId(this.getId());
-			         	java.util.Collection resultList = applicationService.search("gov.nih.nci.calab.domain.OutputFile", thisIdSet);				 
-				 	outputFileCollection = resultList;  
-				 	return resultList;
-				 
-			      
-			      }catch(Exception ex) 
-			      {
-			      	System.out.println("Run:getOutputFileCollection throws exception ... ...");
-			   		ex.printStackTrace(); 
-			      }
-			   }	
+//			try{
+//			   if(outputFileCollection.size() == 0) {}
+//		           } catch(Exception e) {			     
+//			      ApplicationService applicationService = ApplicationServiceProvider.getApplicationService();
+//			      try {
+//			      
+//			      
+//			         
+//				 	gov.nih.nci.calab.domain.Run thisIdSet = new gov.nih.nci.calab.domain.Run();
+//			         	thisIdSet.setId(this.getId());
+//			         	java.util.Collection resultList = applicationService.search("gov.nih.nci.calab.domain.OutputFile", thisIdSet);				 
+//				 	outputFileCollection = resultList;  
+//				 	return resultList;
+//				 
+//			      
+//			      }catch(Exception ex) 
+//			      {
+//			      	System.out.println("Run:getOutputFileCollection throws exception ... ...");
+//			   		ex.printStackTrace(); 
+//			      }
+//			   }	
 	              return outputFileCollection;
 	          }
 			   
