@@ -21,28 +21,20 @@
 			<form-property name="aliquotId" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="createRunForm" type="org.apache.struts.validator.DynaValidatorForm">
-			<form-property name="inFileName" type="java.lang.String" />
-			<form-property name="outFileName" type="java.lang.String" />
-			<form-property name="assayTypeId" type="java.lang.String" />
-			<form-property name="assayId" type="java.lang.String" />
-			<form-property name="runName" type="java.lang.String" />
+			<form-property name="assayType" type="java.lang.String" />
+			<form-property name="assay" type="java.lang.String" />
+			<form-property name="availableAliquot" type="java.lang.String[]" />
+			<form-property name="assignedAliquot" type="java.lang.String[]" />
+			<form-property name="inFiles" type="java.lang.String[]" />
+			<form-property name="outFiles" type="java.lang.String[]" />
 			<form-property name="runDate" type="java.lang.String" />
 			<form-property name="runBy" type="java.lang.String" />
-			<form-property name="createdDate" type="java.lang.String" />
-			<form-property name="createdBy" type="java.lang.String" />
-			<form-property name="availableAliquotIds" type="java.lang.String" />
-			<form-property name="assignedAliquotIds" type="java.lang.String" />
-			<form-property name="fileSubmissionDate" type="java.lang.String" />
-			<form-property name="fileSubmitter" type="java.lang.String" />
-			<form-property name="fileMaskStatus" type="java.lang.String" />
-			<form-property name="template" type="gov.nih.nci.calab.dto.workflow.ExecuteWorkflowBean" />
 		</form-bean>
 		<form-bean name="editRunForm" type="org.apache.struts.validator.DynaValidatorActionForm">
 			<form-property name="runDate" type="java.lang.String" />
 			<form-property name="runBy" type="java.lang.String" />
 			<form-property name="createdDate" type="java.lang.String" />
-			<form-property name="createdBy" type="java.lang.String" />
-			<form-property name="template" type="gov.nih.nci.calab.dto.workflow.ExecuteWorkflowBean" />
+			<form-property name="createdBy" type="java.lang.String" />=
 		</form-bean>
 	</form-beans>
 	<global-forwards>
