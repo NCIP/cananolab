@@ -34,7 +34,7 @@
 			<form-property name="runDate" type="java.lang.String" />
 			<form-property name="runBy" type="java.lang.String" />
 			<form-property name="createdDate" type="java.lang.String" />
-			<form-property name="createdBy" type="java.lang.String" />=
+			<form-property name="createdBy" type="java.lang.String" />
 		</form-bean>
 	</form-beans>
 	<global-forwards>
