@@ -16,4 +16,6 @@ public class CalabConstants {
 	
 	public static final String ALIQUOT = "Aliquot";
 	public static final String SAMPLE_CONTAINER = "Sample_container";
+	
+	public static final String RUN = "Run";
 }
