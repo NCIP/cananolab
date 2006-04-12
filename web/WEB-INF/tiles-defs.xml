@@ -21,7 +21,8 @@
 		   <item value="WORKFLOW" link=""/>
 		   <item value="ADMINISTRATION" link=""/>
 		   <item value="SEARCH" link=""/>
-		   <item value="HELP" link="onlineHelp.jsp"/>		 
+		   <item value="HELP" link="onlineHelp.jsp"/>	
+		   <item value="LOGOUT" link="/calab/logout.do"/>	 
 		</putList>
 	</definition>
 	<definition name="calab.error" extends="calab.home">
