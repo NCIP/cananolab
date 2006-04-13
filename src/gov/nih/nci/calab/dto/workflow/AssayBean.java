@@ -1,6 +1,6 @@
 package gov.nih.nci.calab.dto.workflow;
 
-import java.util.Set;
+import java.util.List;
 
 public class AssayBean {
 	
@@ -8,10 +8,10 @@ public class AssayBean {
 	private String assayName;
 	private String assayType;
 	private String assayStr;
-	private Set runBeans;
+	private List runBeans;
 	
 	public AssayBean() {
-	
+		super();
 	}
 	public AssayBean(String assayId, String assayName, String assayType) {
 		super();
@@ -44,10 +44,10 @@ public class AssayBean {
 //	public void setAssayStr(String assayStr) {
 //		this.assayStr = assayStr;
 //	}
-	public Set getRunBeans() {
+	public List getRunBeans() {
 		return runBeans;
 	}
-	public void setRunBeans(Set runBeans) {
+	public void setRunBeans(List runBeans) {
 		this.runBeans = runBeans;
 	}
 	
