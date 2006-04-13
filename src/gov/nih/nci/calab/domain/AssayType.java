@@ -44,7 +44,13 @@ public  class AssayType
 	      this.description = description;
 	   }
 	
-
+	   private java.lang.String order;
+	   public  java.lang.String getOrder(){
+	      return order;
+	   }
+	   public void setOrder( java.lang.String order){
+	      this.description = order;
+	   }
 	
 
 		public boolean equals(Object obj){
