@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchWorkflowAction.java,v 1.5 2006-04-11 18:33:53 pansu Exp $ */
+/* CVS $Id: SearchWorkflowAction.java,v 1.6 2006-04-13 17:27:58 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.search.WorkflowResultBean;
 import gov.nih.nci.calab.service.search.SearchWorkflowService;
@@ -39,7 +39,7 @@ public class SearchWorkflowAction extends AbstractBaseAction {
 		try {
 			DynaValidatorForm theForm = (DynaValidatorForm) form;
 			String assayName = (String) theForm.get("assayName");
-			String assayType = (String) theForm.get("assayType");
+			String assayType = ((String) theForm.get("assayType")).trim();
 			String assayRunDateBeginStr = (String) theForm
 					.get("assayRunDateBegin");
 			String assayRunDateEndStr = (String) theForm.get("assayRunDateEnd");
@@ -56,9 +56,9 @@ public class SearchWorkflowAction extends AbstractBaseAction {
 					.get("includeMaskedAliquots")).equals("on") ? true : false;
 			String fileName = (String) theForm.get("fileName");
 			boolean isFileInput = ((String) theForm.get("isFileIn"))
-					.equals("in") ? true : false;
+					.equals("on") ? true : false;
 			boolean isFileOutput = ((String) theForm.get("isFileOut"))
-					.equals("out") ? true : false;
+					.equals("on") ? true : false;
 			String fileSubmissionDateBeginStr = (String) theForm
 					.get("fileSubmissionDateBegin");
 			String fileSubmissionDateEndStr = (String) theForm
