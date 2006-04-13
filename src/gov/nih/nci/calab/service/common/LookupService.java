@@ -29,7 +29,7 @@ import org.apache.log4j.Logger;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.15 2006-04-12 18:24:12 zengje Exp $ */
+/* CVS $Id: LookupService.java,v 1.16 2006-04-13 20:36:44 zengje Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -274,7 +274,7 @@ public class LookupService {
 			IDataAccess ida = (new DataAccessProxy())
 					.getInstance(IDataAccess.TOOLKITAPI);
 			ida.open();
-			String hqlString = "select assayType.name from AssayType assayType order by assayType.name";
+			String hqlString = "select assayType.name from AssayType assayType order by assayType.order";
 			List results = ida.query(hqlString, AssayType.class.getName());
 			for (Object obj : results) {
 				assayTypes.add((String) obj);
