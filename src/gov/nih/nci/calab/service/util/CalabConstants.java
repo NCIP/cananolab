@@ -18,4 +18,5 @@ public class CalabConstants {
 	public static final String SAMPLE_CONTAINER = "Sample_container";
 	
 	public static final String RUN = "Run";
+    public static final String FILEUPLOAD_PROPERTY = "fileupload.properties";
 }
