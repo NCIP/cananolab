@@ -22,7 +22,7 @@ import org.apache.log4j.Logger;
  * @author pansu
  * 
  */
-/* CVS $Id: SearchSampleService.java,v 1.9 2006-04-12 19:24:27 pansu Exp $ */
+/* CVS $Id: SearchSampleService.java,v 1.10 2006-04-13 17:27:25 pansu Exp $ */
 
 public class SearchSampleService {
 	private static Logger logger = Logger.getLogger(SearchSampleService.class);
@@ -322,8 +322,7 @@ public List<AliquotBean> searchAliquotsByAliquotName(String aliquotName,
 			List results = ida.searchByParam(hqlString, paramList);
 			for (Object obj : new HashSet<Object>(results)) {
 				Aliquot aliquot = (Aliquot) obj;
-				aliquots.add(new AliquotBean(aliquot));
-				aliquot.getSample();
+				aliquots.add(new AliquotBean(aliquot));				
 			}			
 			ida.close();
 		} catch (Exception e) {
