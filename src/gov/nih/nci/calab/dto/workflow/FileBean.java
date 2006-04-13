@@ -11,6 +11,7 @@ public class FileBean {
 
 	private String id;
 	private String path;
+	private String filename;
 	
 	/**
 	 * 
@@ -25,6 +26,7 @@ public class FileBean {
 		// TODO Auto-generated constructor stub
 		this.id = id;
 		this.path = path;
+		this.filename = parsePath(path);
 	}
 
 	public String getId() {
@@ -41,6 +43,33 @@ public class FileBean {
 
 	public void setPath(String path) {
 		this.path = path;
+	}
+
+	public String getFilename() {
+		return filename;
+	}
+
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
+	
+	private String parsePath(String path)
+	{
+		if (path == null) {
+			return null;
+		} else {
+			if ((path.indexOf("/") < 0) && (path.indexOf("\\") <0)) {
+				return path;
+			} else if (path.indexOf("/") > 0) {
+				return path.substring(path.lastIndexOf("/")+1);
+			} else if (path.indexOf("\\") > 0) {
+				return path.substring(path.lastIndexOf("\\") + 1);
+			} else {
+				return path;
+			}
+		}
+	
+		
 	}
 
 }
