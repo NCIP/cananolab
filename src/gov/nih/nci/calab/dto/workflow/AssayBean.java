@@ -1,12 +1,18 @@
 package gov.nih.nci.calab.dto.workflow;
 
+import java.util.Set;
+
 public class AssayBean {
 	
 	private String assayId;
 	private String assayName;
 	private String assayType;
 	private String assayStr;
+	private Set runBeans;
 	
+	public AssayBean() {
+	
+	}
 	public AssayBean(String assayId, String assayName, String assayType) {
 		super();
 		// TODO Auto-generated constructor stub
@@ -38,6 +44,12 @@ public class AssayBean {
 //	public void setAssayStr(String assayStr) {
 //		this.assayStr = assayStr;
 //	}
+	public Set getRunBeans() {
+		return runBeans;
+	}
+	public void setRunBeans(Set runBeans) {
+		this.runBeans = runBeans;
+	}
 	
 	
 
