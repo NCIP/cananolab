@@ -18,7 +18,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-/* CVS $Id: ManageSampleService.java,v 1.18 2006-04-11 18:29:58 pansu Exp $ 
+/* CVS $Id: ManageSampleService.java,v 1.19 2006-04-13 13:19:20 zengje Exp $ 
  */
 public class ManageSampleService {
 	private static Logger logger = Logger.getLogger(ManageSampleService.class);
@@ -58,7 +58,9 @@ public class ManageSampleService {
 			if (results.iterator().hasNext()) {
 				Object obj = results.iterator().next();
 				logger.debug("ManageSampleService.getSampleSequenceId(): obj = " + obj);
-				seqId = (Long)obj;
+				if (obj != null){
+					seqId = (Long)obj;					
+				}
 			}
 			logger.debug("ManageSampleService.getSampleSequenceId(): current seq id = " + seqId);
 			ida.close();
@@ -123,7 +125,7 @@ public class ManageSampleService {
 				  // Yes, throws exception
 				if (((Integer)obj).intValue() > 0)
 				{
-					throw new Exception("The the same sample is already exist in the system.");
+					throw new RuntimeException("The the same sample is already exist in the system.");
 				}
 			}
 			// No, save it
@@ -162,7 +164,6 @@ public class ManageSampleService {
 			doSample.setReceivedBy("");
 			doSample.setReceivedDate(StringUtils.convertToDate(sample.getDateReceived(), CalabConstants.DATE_FORMAT));
 			doSample.setSampleSequenceId(getUserDefinedSequenceId(sample.getSampleNamePrefix()));
-
 			doSample.setSolubility(sample.getSolubility());
 			doSample.setSourceSampleId(sample.getSourceSampleId());
 			// TODO: Fill in the sample SOP info, if sampleBean can pass the primary key......
