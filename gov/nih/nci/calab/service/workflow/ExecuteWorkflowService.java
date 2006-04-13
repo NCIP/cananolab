@@ -71,7 +71,7 @@ public class ExecuteWorkflowService {
 			// Create RunSampleContainer collection
 			for (int i=0;i<aliquotIds.length;i++) {
 				// check if the aliquot has been assigned to the run, if it is, skip it
-				String hqlString ="select count(runcontainer.id)from RunSampleContainer runcontiner where runcontainer.run.id='" + runId + 
+				String hqlString ="select count(runcontainer.id) from RunSampleContainer runcontainer where runcontainer.run.id='" + runId + 
 								  "' and runcontainer.sampleContainer.id='" + aliquotIds[i] + "'";
 				List results = ida.search(hqlString);
 				if (((Integer)results.get(0)).intValue() > 0)
