@@ -6,7 +6,7 @@ package gov.nih.nci.calab.domain;
  */
 
 /**
-
+ * 
  */
 
 public class DataStatus implements java.io.Serializable {

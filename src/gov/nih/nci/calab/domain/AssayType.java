@@ -1,9 +1,6 @@
 
 
 package gov.nih.nci.calab.domain;
-import gov.nih.nci.calab.domain.*;
-import gov.nih.nci.system.applicationservice.*;
-import java.util.*;
 
 /**
  * <!-- LICENSE_TEXT_START -->
