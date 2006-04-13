@@ -1,9 +1,6 @@
 
 
 package gov.nih.nci.calab.domain;
-import gov.nih.nci.calab.domain.*;
-import gov.nih.nci.system.applicationservice.*;
-import java.util.*;
 
 /**
  * <!-- LICENSE_TEXT_START -->
@@ -89,21 +86,21 @@ public  class Assay
 			
 			
 			
-			  ApplicationService applicationService = ApplicationServiceProvider.getApplicationService();
-			  gov.nih.nci.calab.domain.Assay thisIdSet = new gov.nih.nci.calab.domain.Assay();
-			  thisIdSet.setId(this.getId());
-			  
-			  try {
-			     java.util.List resultList = applicationService.search("gov.nih.nci.calab.domain.Protocol", thisIdSet);				 
-		             if (resultList!=null && resultList.size()>0) {
-		                protocol = (gov.nih.nci.calab.domain.Protocol)resultList.get(0);
-		             }
-		          
-			  } catch(Exception ex) 
-			  { 
-			      	System.out.println("Assay:getProtocol throws exception ... ...");
-			   		ex.printStackTrace(); 
-			  }
+//			  ApplicationService applicationService = ApplicationServiceProvider.getApplicationService();
+//			  gov.nih.nci.calab.domain.Assay thisIdSet = new gov.nih.nci.calab.domain.Assay();
+//			  thisIdSet.setId(this.getId());
+//			  
+//			  try {
+//			     java.util.List resultList = applicationService.search("gov.nih.nci.calab.domain.Protocol", thisIdSet);				 
+//		             if (resultList!=null && resultList.size()>0) {
+//		                protocol = (gov.nih.nci.calab.domain.Protocol)resultList.get(0);
+//		             }
+//		          
+//			  } catch(Exception ex) 
+//			  { 
+//			      	System.out.println("Assay:getProtocol throws exception ... ...");
+//			   		ex.printStackTrace(); 
+//			  }
 			  return protocol;	
 			 
 			 		
@@ -126,27 +123,27 @@ public  class Assay
 	      
 			private java.util.Collection runCollection = new java.util.HashSet();
 			public java.util.Collection getRunCollection(){
-			try{
-			   if(runCollection.size() == 0) {}
-		           } catch(Exception e) {			     
-			      ApplicationService applicationService = ApplicationServiceProvider.getApplicationService();
-			      try {
-			      
-			      
-			         
-				 	gov.nih.nci.calab.domain.Assay thisIdSet = new gov.nih.nci.calab.domain.Assay();
-			         	thisIdSet.setId(this.getId());
-			         	java.util.Collection resultList = applicationService.search("gov.nih.nci.calab.domain.Run", thisIdSet);				 
-				 	runCollection = resultList;  
-				 	return resultList;
-				 
-			      
-			      }catch(Exception ex) 
-			      {
-			      	System.out.println("Assay:getRunCollection throws exception ... ...");
-			   		ex.printStackTrace(); 
-			      }
-			   }	
+//			try{
+//			   if(runCollection.size() == 0) {}
+//		           } catch(Exception e) {			     
+//			      ApplicationService applicationService = ApplicationServiceProvider.getApplicationService();
+//			      try {
+//			      
+//			      
+//			         
+//				 	gov.nih.nci.calab.domain.Assay thisIdSet = new gov.nih.nci.calab.domain.Assay();
+//			         	thisIdSet.setId(this.getId());
+//			         	java.util.Collection resultList = applicationService.search("gov.nih.nci.calab.domain.Run", thisIdSet);				 
+//				 	runCollection = resultList;  
+//				 	return resultList;
+//				 
+//			      
+//			      }catch(Exception ex) 
+//			      {
+//			      	System.out.println("Assay:getRunCollection throws exception ... ...");
+//			   		ex.printStackTrace(); 
+//			      }
+//			   }	
 	              return runCollection;
 	          }
 			   
