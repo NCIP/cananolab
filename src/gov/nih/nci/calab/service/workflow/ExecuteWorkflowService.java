@@ -301,7 +301,7 @@ public class ExecuteWorkflowService {
 		try {
 			ida.open();
 			// Get all assay for AssayType
-			String hqlString = "from AssayType assayType order by assayType.order";
+			String hqlString = "from AssayType assayType order by assayType.executeOrder";
 			List results = ida.search(hqlString);
 			for (Object obj: results) {
 				String assayTypeName = ((AssayType)obj).getName();
