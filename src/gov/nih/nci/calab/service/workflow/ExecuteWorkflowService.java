@@ -4,6 +4,7 @@ import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
 import gov.nih.nci.calab.domain.Aliquot;
 import gov.nih.nci.calab.domain.Assay;
+import gov.nih.nci.calab.domain.AssayType;
 import gov.nih.nci.calab.domain.InputFile;
 import gov.nih.nci.calab.domain.OutputFile;
 import gov.nih.nci.calab.domain.Run;
@@ -34,23 +35,72 @@ public class ExecuteWorkflowService {
 	 * 
 	 * @return a list of all assays in certain type
 	 */
-	public List<AssayBean> getAssayByType(String assayTypeName) {
+	private List<AssayBean> getAssayByType(String assayTypeName, IDataAccess ida) throws Exception {
 		// Detail here
 		List<AssayBean> assays = new ArrayList<AssayBean>();
 		try {
-			IDataAccess ida = (new DataAccessProxy())
-					.getInstance(IDataAccess.HIBERNATE);
-			ida.open();
-			String hqlString = "select assay.id, assay.name, assay.type from Assay assay where assay.assayType ='" + assayTypeName + "'";
+			String hqlString = "from Assay assay where assay.assayType ='" + assayTypeName +"'";
 			List results = ida.search(hqlString);
-			for (Object obj : results) {
-				Object[] objArray = (Object[])obj;
-				assays.add(new AssayBean((String)objArray[0], (String)objArray[1], (String)objArray[2]));
+			
+			for (Object obj: results){
+				Assay doAssay = (Assay)obj;
+				AssayBean assayBean = new AssayBean();
+				assayBean.setAssayId(doAssay.getId().toString());
+				assayBean.setAssayName(doAssay.getName());
+				assayBean.setAssayType(doAssay.getAssayType());
+				
+				List runs = (List)doAssay.getRunCollection();
+				List<RunBean> runBeans = new ArrayList<RunBean>();
+				for (Object run: runs) {
+					Run doRun = (Run)run;
+					RunBean runBean = new RunBean();
+					runBean.setId(doRun.getId().toString());
+					runBean.setName(doRun.getName());
+					
+					List runAliquots = (List)doRun.getRunSampleContainerCollection();
+					List<AliquotBean> aliquotBeans= new ArrayList<AliquotBean>();
+					for(Object runAliquot: runAliquots){
+						RunSampleContainer doRunAliquot = (RunSampleContainer)runAliquot;
+						SampleContainer container = doRunAliquot.getSampleContainer();
+						// TODO: suppose no need to check instanceof, since run only association with Aliquot
+						if (container instanceof Aliquot) {
+							Aliquot doAliquot = (Aliquot)container;
+							AliquotBean aliquotBean = new AliquotBean(doAliquot.getId().toString(), doAliquot.getName());;
+							aliquotBeans.add(aliquotBean);
+						}						
+					}
+					runBean.setAliquotBeans(aliquotBeans);
+					
+					List inputFiles = (List)doRun.getInputFileCollection();
+					List<FileBean> inputFileBeans = new ArrayList<FileBean>();
+					for (Object infile: inputFiles) {
+						InputFile doInputFile = (InputFile)infile;
+						FileBean infileBean = new FileBean();
+						infileBean.setId(doInputFile.getId().toString());
+						infileBean.setPath(doInputFile.getPath());
+						inputFileBeans.add(infileBean);
+					}
+					runBean.setInputFileBeans(inputFileBeans);
+					
+					List outputFiles = (List)doRun.getOutputFileCollection();
+					List<FileBean> outputFileBeans = new ArrayList<FileBean>();
+					for (Object outfile: outputFiles) {
+						OutputFile doOutputFile = (OutputFile)outfile;
+						FileBean outfileBean = new FileBean();
+						outfileBean.setId(doOutputFile.getId().toString());
+						outfileBean.setPath(doOutputFile.getPath());
+						outputFileBeans.add(outfileBean);
+					}
+					runBean.setOutputFileBeans(outputFileBeans);
+					
+					runBeans.add(runBean);
+				}					
+				assayBean.setRunBeans(runBeans);
+				assays.add(assayBean);
 			}
-			ida.close();
 		} catch (Exception e) {
 			logger.error("Error in retrieving assay by assayType -- " + assayTypeName, e);
-			throw new RuntimeException("Error in retrieving assay by assayType -- " + assayTypeName);
+			throw new Exception("Error in retrieving assay by assayType -- " + assayTypeName);
 		}
 		return assays;
 	}
@@ -247,70 +297,16 @@ public class ExecuteWorkflowService {
 	public HashMap getWorkflowAssays() throws Exception {
 		
 		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
-		HashMap<String, AssayBean> typedAssayBeans = new HashMap<String, AssayBean>();
+		HashMap<String, List<AssayBean>> typedAssayBeans = new HashMap<String, List<AssayBean>>();
 		try {
 			ida.open();
-			// Get all assay
-			String hqlString = "from Assay assay";
+			// Get all assay for AssayType
+			String hqlString = "from AssayType assayType order by assayType.order";
 			List results = ida.search(hqlString);
-			
-			for (Object obj: results){
-				Assay doAssay = (Assay)obj;
-				AssayBean assayBean = new AssayBean();
-				assayBean.setAssayId(doAssay.getId().toString());
-				assayBean.setAssayName(doAssay.getName());
-				assayBean.setAssayType(doAssay.getAssayType());
-				
-				Set runs = (Set)doAssay.getRunCollection();
-				List<RunBean> runBeans = new ArrayList<RunBean>();
-				for (Object run: runs) {
-					Run doRun = (Run)run;
-					RunBean runBean = new RunBean();
-					runBean.setId(doRun.getId().toString());
-					runBean.setName(doRun.getName());
-					
-					Set runAliquots = (Set)doRun.getRunSampleContainerCollection();
-					List<AliquotBean> aliquotBeans= new ArrayList<AliquotBean>();
-					for(Object runAliquot: runAliquots){
-						RunSampleContainer doRunAliquot = (RunSampleContainer)runAliquot;
-						SampleContainer container = doRunAliquot.getSampleContainer();
-						// TODO: suppose no need to check instanceof, since run only association with Aliquot
-						if (container instanceof Aliquot) {
-							Aliquot doAliquot = (Aliquot)container;
-							AliquotBean aliquotBean = new AliquotBean(doAliquot.getId().toString(), doAliquot.getName());;
-							aliquotBeans.add(aliquotBean);
-						}						
-					}
-					runBean.setAliquotBeans(aliquotBeans);
-					
-					Set inputFiles = (Set)doRun.getInputFileCollection();
-					List<FileBean> inputFileBeans = new ArrayList<FileBean>();
-					for (Object infile: inputFiles) {
-						InputFile doInputFile = (InputFile)infile;
-						FileBean infileBean = new FileBean();
-						infileBean.setId(doInputFile.getId().toString());
-						infileBean.setPath(doInputFile.getPath());
-						inputFileBeans.add(infileBean);
-					}
-					runBean.setInputFileBeans(inputFileBeans);
-					
-					Set outputFiles = (Set)doRun.getOutputFileCollection();
-					List<FileBean> outputFileBeans = new ArrayList<FileBean>();
-					for (Object outfile: outputFiles) {
-						OutputFile doOutputFile = (OutputFile)outfile;
-						FileBean outfileBean = new FileBean();
-						outfileBean.setId(doOutputFile.getId().toString());
-						outfileBean.setPath(doOutputFile.getPath());
-						outputFileBeans.add(outfileBean);
-					}
-					runBean.setOutputFileBeans(outputFileBeans);
-					
-					runBeans.add(runBean);
-				}					
-				assayBean.setRunBeans(runBeans);
-				typedAssayBeans.put(assayBean.getAssayType(), assayBean);
+			for (Object obj: results) {
+				String assayTypeName = ((AssayType)obj).getName();
+				typedAssayBeans.put(assayTypeName, getAssayByType(assayTypeName, ida));
 			}
-			
 			ida.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -318,6 +314,5 @@ public class ExecuteWorkflowService {
 			throw new RuntimeException("Error in retriving execute workflow objects ");
 		}
 		return typedAssayBeans;
-	}
-	
+	}	
 }
