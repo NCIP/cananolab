@@ -33,6 +33,22 @@
 			<form-property name="createdDate" type="java.lang.String" />
 			<form-property name="createdBy" type="java.lang.String" />
 		</form-bean>
+		<form-bean name="fileUploadForm" type="org.apache.struts.validator.DynaValidatorActionForm" >
+			<form-property name="assayType" type="java.lang.String" />
+			<form-property name="assay" type="java.lang.String" />
+			<form-property name="run" type="java.lang.String" />
+			<form-property name="runby" type="java.lang.String" />
+			<form-property name="rundate" type="java.lang.String" />
+			<form-property name="inout" type="java.lang.String" />
+			<form-property name="method" type="java.lang.String" />
+			<form-property name="archiveValue" type="java.lang.String"/>
+			<form-property name="servletURL" type="java.lang.String"/>
+			<form-property name="notifyURL" type="java.lang.String"/>
+			<form-property name="module" type="java.lang.String"/>
+			<form-property name="defaultURL" type="java.lang.String"/>
+			<form-property name="sid" type="java.lang.String"/>
+			<form-property name="permissibleFileExtension" type="java.lang.String"/>
+		</form-bean>		
 	</form-beans>
 	<global-forwards>
 		<forward name="useAliquot" path="workflow.usealiquot" />
@@ -71,7 +87,11 @@
 			<forward name="input" path="workflow.editaliquot" />
 			<forward name="success" path="workflow.createrun" />
 			<forward name="failure" path="workflow.message" />
-		</action>
+		</action>		
+		<action name="fileUploadForm" parameter="method" path="/fileUpload" scope="request" type="gov.nih.nci.calab.ui.workflow.FileUploadAction" input="input">
+			<forward name="success" path="workflow.fileUpload" />
+			<forward name="failure" path="workflow.message" />
+		</action>		
 		<action path="/workflowForward" type="org.apache.struts.actions.ForwardAction" parameter="workflow.message"/>
 	</action-mappings>
 </struts-config>
