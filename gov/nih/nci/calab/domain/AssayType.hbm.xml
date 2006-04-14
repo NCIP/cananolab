@@ -9,7 +9,7 @@
     </id>
     <property name="name" type="java.lang.String" column="ASSAY_TYPE_NAME" />
     <property name="description" type="java.lang.String" column="DESCRIPTION" />
-    <property name="order" type="java.lang.String" column="EXECUTE_ORDER" />
-  </class>
+    <property name="executeOrder" type="java.lang.String" column="EXECUTE_ORDER" />
+  </class> 
 </hibernate-mapping>
 
