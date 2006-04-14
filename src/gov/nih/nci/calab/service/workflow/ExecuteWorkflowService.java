@@ -61,7 +61,8 @@ public class ExecuteWorkflowService {
 					List<AliquotBean> aliquotBeans= new ArrayList<AliquotBean>();
 					for(Object runAliquot: runAliquots){
 						RunSampleContainer doRunAliquot = (RunSampleContainer)runAliquot;
-						SampleContainer container = doRunAliquot.getSampleContainer();
+						// Have to load the class to get away the classcastexception (Cast Lazy loaded SampleContainer to Aliquot) 
+						SampleContainer container = (SampleContainer)ida.load(SampleContainer.class, doRunAliquot.getSampleContainer().getId());
 						// TODO: suppose no need to check instanceof, since run only association with Aliquot
 						if (container instanceof Aliquot) {
 							Aliquot doAliquot = (Aliquot)container;
@@ -114,7 +115,6 @@ public class ExecuteWorkflowService {
 	 */
 	public void saveRunAliquots(String runId, String[] aliquotIds,
 			String comments, String creator, String creationDate) throws Exception {
-		// TODO:   Would be helpful if the aliquot ID are the primary key  and Run ID is the primary key
 		try {
 			IDataAccess ida = (new DataAccessProxy())
 					.getInstance(IDataAccess.HIBERNATE);
