@@ -1,23 +1,25 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
+<%@	taglib uri="/WEB-INF/c.tld" prefix="c"%>
 
+<script type="text/javascript" src="javascript/calendar2.js"> </script>
 
 <html:form action="/createRun">
-<blockquote>
 <h2>
 <strong>Create Run </strong>
 </h2>
-<html:errors />
-<logic:messagesPresent message="true">
-	<ul>
-		<font color="red"> <html:messages id="msg" message="true" bundle="workflow">
+	<blockquote>
+		<html:errors />
+			<logic:messagesPresent message="true">
+				<ul>
+					<font color="red"> <html:messages id="msg" message="true" bundle="workflow">
 				<li>
 					<bean:write name="msg" />
 				</li>
 			</html:messages> </font>
 	</ul>
-</logic:messagesPresent>
+	</logic:messagesPresent>
 	<table width="90%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 		<tr class="topBorder">
 			<td colspan="2" class="dataTablePrimaryLabel">
@@ -29,15 +31,9 @@
 		<tr>
 			<td colspan="2" class="formLabel">
 					<div align="justify">
-								<!-- <strong>Assay Type<span class="formFieldWhite">
-								<html:select property="assayType">
-									<option value=""></option>
-									<html:options name="allAssayTypes" />
-								</html:select></span></strong>&nbsp; &nbsp; &nbsp; &nbsp; -->
 								<strong>AssayType : Assay<span class="formFieldWhite">
 								<html:select property="assay">
 									<option value=""></option>
-									<!--  <html:options name="allAssays" /> -->
 									<html:options collection="allAssayBeans" property="assayId" labelProperty="assayStr" />
 								</html:select></span></strong>
 					</div>
@@ -73,7 +69,6 @@
 							</table>
 						</td>
 						<td width="62%" valign="top">
-							<div align="center">
 								<span class="formMessage">Use Aliquots</span>
 								<html:select multiple="true" property="assignedAliquot"  size="4">
 									<html:options name="allAssignedAliquots" />
@@ -83,41 +78,6 @@
 						</td>
 					</tr>
 				</table>
-			</td>
-		</tr>
-		<tr>
-			<td class="formLabel">
-				<div align="left">
-					<strong>Inputs </strong>
-				</div>
-			</td>
-			<td class="formField">
-				<div align="left">
-							<strong> <span class="mainMenu"> 
-								<html:select multiple="true" property="inFiles" size="4" >
-									<html:options name="allInFiles"/>
-								</html:select>
-								 
-							</span>&nbsp; 
-							<input name="SubmitIn" type="submit" onClick="javascript:location.href='uploadFiles.htm';" value="Upload Files"> 
-							</strong>
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td class="formLabelWhite">
-				<div align="left">
-					<strong>Outputs</strong>
-				</div>
-			</td>
-			<td class="formFieldWhite">
-				<strong>
-				<span class="mainMenu"> 
-								<html:select multiple="true" property="outFiles" size="4" >
-									<html:options name="allOutFiles"/>
-								</html:select>
-				 </span>&nbsp; 
-						<input name="SubmitOut" type="submit" onClick="javascript:location.href='uploadFiles.htm';" value="Upload Files"> </strong>
 			</td>
 		</tr>
 		<tr>
@@ -139,10 +99,8 @@
 			</td>
 			<td class="formFieldWhite">				
 				<html:text property="runDate" size="10" />
-				<span class="formFieldWhite">
-				 <a href="javascript:cal.popup();">
-				 	<img height="18" src="images/calendar-icon.gif" width="22" border="0" alt="Click Here to Pick up the date">
-				 </a>
+				<span class="formFieldWhite"> 
+									<a href="javascript:cal.popup();"> <img height="18" src="images/calendar-icon.gif" width="22" border="0" alt="Click Here to Pick up the date"> </a>
 				</span>
 			</td>	
 		</tr>
@@ -157,7 +115,7 @@
 					<tr>
 						<td width="490" height="32">
 								<div align="right"><div align="right">
-									<html:reset />
+									<input type="reset" value="Reset">
 									<html:submit />
 								</div>
 							</div>
@@ -171,11 +129,11 @@
 	<p>
 		&nbsp;
 	</p>
-</blockquote>
+	</blockquote>
 </html:form>
 <script language="JavaScript">
 <!--//
-  var cal = new calendar2(document.forms['createRun'].elements['runDate']);
+  var cal = new calendar2(document.forms['createRunForm'].elements['runDate']);
   cal.year_scroll = true;
   cal.time_comp = false;
 //-->
