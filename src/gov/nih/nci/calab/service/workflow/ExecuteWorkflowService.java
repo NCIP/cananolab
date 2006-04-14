@@ -62,7 +62,8 @@ public class ExecuteWorkflowService {
 					for(Object runAliquot: runAliquots){
 						RunSampleContainer doRunAliquot = (RunSampleContainer)runAliquot;
 						// Have to load the class to get away the classcastexception (Cast Lazy loaded SampleContainer to Aliquot) 
-						SampleContainer container = (SampleContainer)ida.load(SampleContainer.class, doRunAliquot.getSampleContainer().getId());
+						Aliquot container = (Aliquot)ida.load(Aliquot.class, doRunAliquot.getSampleContainer().getId());
+//						System.out.println("container class type = " + container.getClass().getName());
 						// TODO: suppose no need to check instanceof, since run only association with Aliquot
 						if (container instanceof Aliquot) {
 							Aliquot doAliquot = (Aliquot)container;
