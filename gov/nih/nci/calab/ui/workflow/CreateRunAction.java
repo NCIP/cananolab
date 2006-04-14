@@ -49,54 +49,18 @@ public class CreateRunAction extends AbstractBaseAction {
 			
 			//Get Prameters from form elements
 			//Run info 
-			/*
-			String assayId	= (String) theForm.get("assay"); 
-			String runBy	= (String) theForm.get("runBy"); 
-			String runDate	= (String) theForm.get("runDate");
-
-			String creator = "";
-
-			if (session.getAttribute("user") != null) {
-				SecurityBean user = (SecurityBean) session.getAttribute("user");
-				creator = user.getLoginId();
-			}
-			String creationDate = StringUtils.convertDateToString(new Date(),
-					"MM/dd/yyyy");
-
-		
 			
+			String assayId = (String) theForm.get("assay");			
+			String runBy = (String) theForm.get("runBy");
+			String runDate = (String) theForm.get("runDate");
+			// get user and date information from session
+			String creator = (String)session.getAttribute("creator");
+			String creationDate=(String)session.getAttribute("creationDate");
 			ExecuteWorkflowService workflowService=new ExecuteWorkflowService();
-			//Save Run
 			String runId = workflowService.saveRun(assayId,runBy,runDate,creator,creationDate);
-			
-			//File info
-			String[] inFileName	= (String[]) theForm.get("inFileName");
-			String[] outFileName	= (String[]) theForm.get("outFileName");
-			String fileURI = ""; //Get from File Upload module			
-			//Save File info
-			workflowService.saveFileInfo(fileURI, inFileName,runId);
-			workflowService.saveFileInfo(fileURI, outFileName,runId);
-			
-			
-			//Other info
-			String assayType	= (String) theForm.get("assayType");
-			String runName	= "Run 1";
-			String aliquotIds	= (String) theForm.get("aliquotIds");
-			String allAliquotIds	= (String) theForm.get("allAliquotIds");			
-			String fileSubmissionDate	= (String) theForm.get("fileSubmissionDate");
-			String fileSubmitter	= (String) theForm.get("fileSubmitter");
-			String fileMaskStatus	= (String) theForm.get("fileMaskStatus");
-			
-			*/
-			
-			//Bean 
-			//ExecuteWorkflowBean executeworkflow = new ExecuteWorkflowBean(inFileName, outFileName, assayType, assayName,runName, runDate, runBy, createdDate,	createdBy, aliquotIds,allAliquotIds, fileSubmissionDate, fileSubmitter, fileMaskStatus);
-			
-			//set to Request object			
-			//request.setAttribute("executeworkflow", executeworkflow);
+			session.setAttribute("runId", runId);			
 			//set Forward
 			forward = mapping.findForward("success");
-			System.out.print(">>>>SUCCESS CREATE RUN");
 		} catch (Exception e) {
 			ActionMessage error=new ActionMessage("error.createRun");
 			messages.add("error", error);
