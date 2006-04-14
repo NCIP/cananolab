@@ -85,17 +85,44 @@ public class HttpUploadParameters
     private String id = null;
     
     /**
-     * The port number on the server that listens for incoming files. 
-     * To be used by file upload through the Socket object. 
-     */ 
-    private int portNumber = 8080;
-
-    /**
      * The session id for session identification.
      */
     private String sid = null;
     
     /**
+     * The URL for http tunneling 
+     */
+    private String httpTunnelingURL = null;
+    
+    /**
+     * The mode for applet
+     */
+    private String module = null;
+    
+    /**
+     * The permissible file extensions for the files 
+     * to be uploaded for this applet session.  The
+     * file extension is in the form of "CEL_CHP"
+     */
+    private String permissibleFileExtension = null;
+    
+    /**
+     * 
+     * @return String http tunneling URL
+     */
+    public String getHttpTunnelingURL() {
+		return httpTunnelingURL;
+	}
+
+    /**
+     * 
+     * @param httpTunnelingURL
+     */
+	public void setHttpTunnelingURL(String httpTunnelingURL) {
+		this.httpTunnelingURL = httpTunnelingURL;
+	}
+
+	/**
      * The default constructor
      */
     public HttpUploadParameters()
@@ -114,20 +141,6 @@ public class HttpUploadParameters
     public void setId(String id) 
     {
         this.id = id;
-    }
-    /**
-     * @return Returns the portNumber.
-     */
-    public int getPortNumber() 
-    {
-        return portNumber;
-    }
-    /**
-     * @param portNumber The portNumber to set.
-     */
-    public void setPortNumber(int portNumber) 
-    {
-        this.portNumber = portNumber;
     }
 
     /**
@@ -236,6 +249,46 @@ public class HttpUploadParameters
      */
     public String getDefaultURLWithSid()
     {
-        return defaultURL + sidString + sid;
+    	int index = defaultURL.indexOf("?");
+    	if (index == -1)
+            return defaultURL + sidString + sid;
+            
+        String str = sidString + sid;
+        StringBuffer sb = new StringBuffer(defaultURL);
+        sb.insert(index, str);
+
+        return sb.toString(); 
     }
+
+    /**
+     * 
+     * @return String module 
+     */
+	public String getModule() {
+		return module;
+	}
+
+	/**
+	 * 
+	 * @param module
+	 */
+	public void setModule(String module) {
+		this.module = module;
+	}
+	
+    /**
+     * 
+     * @return String permissibleFileExtension 
+     */
+	public String getPermissibleFileExtension() {
+		return permissibleFileExtension;
+	}
+
+	/**
+	 * 
+	 * @param permissibleFileExtension
+	 */
+	public void setPermissibleFileExtention(String permissibleFileExtension) {
+		this.permissibleFileExtension = permissibleFileExtension;
+	}
 }

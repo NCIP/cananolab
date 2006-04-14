@@ -56,30 +56,22 @@ import java.util.Vector;
 import java.util.Iterator;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+import java.util.zip.ZipInputStream;
 import java.io.IOException;
 import java.io.File;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
-import java.io.FileNotFoundException;
 import java.net.URLConnection;
 import java.net.URL;
 import java.net.Socket;
 import java.text.NumberFormat;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.MultipartPostMethod;
-import org.apache.commons.httpclient.methods.multipart.Part;
-import org.apache.commons.httpclient.methods.multipart.FilePart;
-import org.apache.commons.httpclient.HttpException;
 
-//import org.apache.commons.httpclient.methods.RequestEntity;
-//import org.apache.commons.httpclient.params.HttpMethodParams;
-//import org.apache.commons.httpclient.methods.PostMethod;
-//import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
 
 /**
  * This object is the central part of the file upload implementation.  It
@@ -132,7 +124,7 @@ public class HttpFileUploader
      * The boolean variable used as a flag for zipping. True for
      * zipping completed, otherwise not completed.
      */
-    private boolean isZipped = false;
+    private volatile boolean isZipped = false;
 
     /**
      * The boolean value used as a flag to indicate the uploading
@@ -141,8 +133,19 @@ public class HttpFileUploader
      * and fails to notify server upon upload completion leading to no file
      * parsing senario.
      */
-    private boolean isFailed = false;
+    private volatile boolean isFailed = false;
 
+    /**
+     * The boolean value used as a flag to indicate that the
+     * selected file is legal when input file is a zip file. 
+     */ 
+    private volatile boolean isIllegalInputFile = false;
+
+    /**
+     * The boolean value used as a flag to indicate that user
+     * requested a stop action. 
+     */   
+    private volatile boolean isStopped = false;
     /**
      * The boolean value used as a flag to indicate the uploading process is
      * completed or not.  it seems this variable is not needed.
@@ -240,6 +243,12 @@ public class HttpFileUploader
             '+',  '&', '^',   '\t'};
 
     /**
+     * The array of String represents the permissible file extensions
+     * derived from HttpUploadParameters's permissibleFileExtension field.
+     */
+    String[] fileExtensions = null;
+    
+    /**
      * constructor
      *
      * @param files The Vector containing a batch of file names to be uploaded.
@@ -252,6 +261,10 @@ public class HttpFileUploader
         this.up = up;
         formater = NumberFormat.getNumberInstance();
         formater.setMaximumFractionDigits(0);
+        if ("arrayDesign".equalsIgnoreCase(up.getModule()))
+        {
+        	fileExtensions = up.getPermissibleFileExtension().split("_");
+		}
     }
 
     public boolean isZipped()
@@ -277,7 +290,7 @@ public class HttpFileUploader
             try
             {
                 File tempFile = File.createTempFile("dummy", ".zip");
-                //File tempFile = File.createTempFile("dummy", ".zip", new File("C:\\temp_zips"));
+
                 tempFilePath = getFilePath(tempFile.getAbsolutePath());
                 tempFile.delete();
             }
@@ -299,18 +312,131 @@ public class HttpFileUploader
         int i = 0;
         for (Iterator it = files.iterator(); it.hasNext();)
         {
+        	//We will stop zipping process if users requested
+        	//a stop action.
+        	if (isStopped)
+        	{
+        		isFailed = true;
+        		return;
+        	}
+        	if (isIllegalInputFile)
+        	{
+        		isFailed = true;
+        		return;
+        	}
             HttpUploadFile uf = (HttpUploadFile)it.next();
-            try
+            //Let's check if this is a zip file
+            if (uf.isZipFile())
             {
-                zipFile(uf);
-                i++;
+            	/*
+            	String newName = replaceIllegalCharacter(uf.getFileName());
+            	//The file name is legal
+            	if (newName == null)
+            	{
+            		uf.setZipFileName(uf.getFileName());
+            	}
+            	//The file name changed to make it legal
+            	else
+            	{
+            		uf.setZipFileName(newName);
+            	}
+            	
+            	uf.setZipFilePath(uf.getAbsoluteFilePath());
+            	*/
+            	boolean illegalFileInZip = false;
+            	boolean illegalFileNumInZip = false;
+            	
+            	//Check the zip file contents.
+            	try
+            	{
+            		File f = new File(uf.getAbsoluteFilePath());
+            		ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(f));
+            		String zipEntryName = null;
+            		ZipEntry zEntry = zipInputStream.getNextEntry();
+            		int count = 0;
+            		while (zEntry != null)
+            		{
+            			zipEntryName = zEntry.getName();
+            			
+            			illegalFileInZip = checkFileType(zipEntryName);
+            			
+            			if (illegalFileInZip)
+            				break;
+            			else
+            				zEntry = zipInputStream.getNextEntry();
+            			count++;
+            		}
+					
+					if (!illegalFileInZip)
+            			illegalFileNumInZip = checkFileNumber(count);
+            		
+                    //long timeS = System.currentTimeMillis();
+                    if (!illegalFileInZip && !illegalFileNumInZip)
+                    {
+                    	String crc32 = AppletValidatorCodeGenerator.getValidatorCode(f);
+                    	if (crc32 != null)
+                    	{
+                	    	uf.setCrc32(crc32.toString());
+                    	}
+                    	i++;
+                    }
+                    else
+                    {
+                    	isIllegalInputFile = true;
+                		failFiles.add(uf.getAbsoluteFilePath());
+                		if (illegalFileInZip)
+                			failureMessage = "The zip file contains illegal file types. ";
+                			
+                		if (illegalFileNumInZip)
+                		{
+                			if (failureMessage == null)
+                				failureMessage = "The zip file contains illegal number of files.";
+                			else
+                			    failureMessage += " The zip file contains illegal number of files.";
+                		}
+                		isFailed = true;
+                		return;
+                    }
+            	}
+            	catch (Exception e)
+            	{
+                	failFiles.add(uf.getAbsoluteFilePath());
+                	failureMessage = e.getMessage();
+            	}
             }
-            catch (Exception e)
-            {
-                failFiles.add(uf.getAbsoluteFilePath());
-                failureMessage = e.getMessage();
+            //else
+            //{
+            //No matter the file is zip file or not, we zip it anyway to
+            //preserved original file name.
+                try
+                {
+                    zipFile(uf);
+                
+                    //Now generate CRC32 value.
+                    File justZipped = new File(uf.getZipFilePath());
+                
+                    //long timeS = System.currentTimeMillis();
+                    String crc32 = AppletValidatorCodeGenerator.getValidatorCode(justZipped);
+                    //long timeE = System.currentTimeMillis();
+
+                    if (crc32 != null)
+                    {
+                	    uf.setCrc32(crc32);
+                    }
+                    else
+                    {
+                	    uf.setCrc32("0");
+                    }
+                
+                    i++;
+                }
+                catch (Exception e)
+                {
+                    failFiles.add(uf.getAbsoluteFilePath());
+                    failureMessage = e.getMessage();
+                }
             }
-        }
+        //}
 
         //at least one file is zipped.
         if (i > 0)
@@ -373,15 +499,15 @@ public class HttpFileUploader
             FileInputStream fis = new FileInputStream(fileName);
 
             ZipEntry entry = null;
+            
+            //Put the original file name into the zip file.
+            entry = new ZipEntry(uf.getFileName());
+            
             if (newName == null)
             {
-                entry = new ZipEntry(uf.getFileName());
+               uf.setFileName(newName);
             }
-            else
-            {
-                entry = new ZipEntry(newName);
-                uf.setFileName(newName);
-            }
+
             zipOut.setMethod(ZipOutputStream.DEFLATED);
             zipOut.setLevel(1);
             zipOut.putNextEntry(entry);
@@ -412,6 +538,7 @@ public class HttpFileUploader
      * Retreive the parent directory path for a file from this file'
      * absolute path. return null if no path available.
      */
+    /*
     private String getParentPath(String path)
     {
         int index = path.lastIndexOf("\\");
@@ -421,6 +548,7 @@ public class HttpFileUploader
         }
         return null;
     }
+    */
 
     /**
      * Replace any characters illegal for the Unix file naming
@@ -479,7 +607,7 @@ public class HttpFileUploader
         {
             HttpUploadFile uf = (HttpUploadFile)it.next();
 
-            if (uf.getZipFilePath().equals(uf.getAbsoluteFilePath()))
+            if (uf.getZipFilePath() == null || uf.getZipFilePath().equals(uf.getAbsoluteFilePath()))
             {
                 continue;
             }
@@ -838,6 +966,12 @@ public class HttpFileUploader
         //Upload will go on if some of them fail.
         for (Iterator it = files.iterator(); it.hasNext();)
         {
+        	//The loop continues only no stop action is 
+        	//requested by the user.
+        	if (isStopped)
+        	{
+        		break;
+        	}
             HttpUploadFile uf = (HttpUploadFile)it.next();
 
             try
@@ -861,14 +995,47 @@ public class HttpFileUploader
                 filePost.setRequestEntity(new MultipartRequestEntity(parts, filePost.getParams()));
                 */
                 int status = client.executeMethod(filePost);
-                filePost.releaseConnection();
-                bytesSent += fileLength;
+                
+                String res = filePost.getResponseBodyAsString();
 
-                okFiles.add(currentFileName);
+                filePost.releaseConnection();
+                
+                //Now to turn off this flag
                 if (isFirst)
                 {
                     isFirst = false;
                 }
+                //Check to see the session is expired on the server side.
+                //If server side is ok, the response string is only two bytes
+                //long.  So do checking only the res is longer than 5 bytes to be safe.
+                if (res != null && res.length() > 5)
+                {
+                    //As long as response body contains message, we check
+                    //for expiration information since the servlet may 
+                    //throw an IOException when writing file to the file system.
+
+                    int index = res.indexOf("expired");
+
+                	if (index != -1)
+                	{
+                		isFailed = true;
+                		failureMessage = res;
+                		break;
+                	}
+                	//File is not saved by the system, but
+                	//the loop goes on.
+                	index = res.indexOf("system failed");
+                	if (index != -1)
+                	{
+                		failureMessage = res;
+                		failFiles.add(currentFileName + ": \n      " + res);
+                        failFiles.add(currentFileName);
+                		continue;
+                	}
+                }
+                bytesSent += fileLength;
+
+                okFiles.add(currentFileName);
             }
             catch (Exception e)
             {
@@ -910,7 +1077,7 @@ public class HttpFileUploader
         try
         {
             url = new URL(up.getUploadURLWithSid());
-            sock = new Socket(url.getHost(), up.getPortNumber());
+            sock = new Socket(url.getHost(), 8080);
             out = new DataOutputStream(new BufferedOutputStream(sock.getOutputStream()));
             br  = new BufferedReader(new InputStreamReader(sock.getInputStream()));
         }
@@ -1206,6 +1373,9 @@ public class HttpFileUploader
         //query.append("&filePath="+uf.getAbsoluteFilePath());
         query.append("&fileName=" + uf.getZipFileName());
         query.append("&id=" + up.getId());
+        query.append("&crc32=" + uf.getCrc32());
+        query.append("&module=" + up.getModule());
+
         if (isFirst)
         {
             query.append("&mode=first");
@@ -1227,6 +1397,7 @@ public class HttpFileUploader
         StringBuffer query = new StringBuffer();
         query.append("&id=" + up.getId());
         query.append("&mode=" + mode);
+        query.append("&module=" + up.getModule());
         return query.toString();
     }
 
@@ -1303,4 +1474,44 @@ public class HttpFileUploader
         }
         return sbRan.toString();
     }
+
+	public boolean isStopped() {
+		return isStopped;
+	}
+
+	public void setStopped(boolean isStopped) {
+		this.isStopped = isStopped;
+	}
+	private boolean checkFileType(String zipEntryName)
+	{
+		int index = -1;
+		zipEntryName = zipEntryName.toUpperCase();
+		for (int i = 0; i < fileExtensions.length; i++)
+		{
+			if ("ZIP".equals(fileExtensions[i]))
+				continue;
+			else
+			{
+				index = zipEntryName.lastIndexOf(fileExtensions[i]);
+				if (index == -1)
+					return true;
+				//somehow the checked extesion not at the right end of the file name.
+				else if ((index + fileExtensions[i].length() != zipEntryName.length()))
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	private boolean checkFileNumber(int count)
+	{
+		for (int i = 0; i < fileExtensions.length; i++)
+		{
+			if ("GAL".equals(fileExtensions[i]) && count > 1)
+				return true;
+		}
+		return false;
+	}
 }
