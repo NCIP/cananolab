@@ -10,7 +10,10 @@
 			</field>
 		</form>
 		<form name="createRunForm">
-			<field property="runDate" depends="date">
+			<field property="runBy" depends="required">
+				<arg key="createRunForm.runBy" bundle="workflow" position="0" />
+			</field>
+			<field property="runDate" depends="date,required">
 				<arg key="createRunForm.runDate" bundle="workflow" position="0" />
 				<var>
 					<var-name>datePatternStrict</var-name>
