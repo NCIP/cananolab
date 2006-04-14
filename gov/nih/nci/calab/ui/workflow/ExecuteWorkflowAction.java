@@ -6,11 +6,14 @@ package gov.nih.nci.calab.ui.workflow;
  * @author pansu
  */
 
-/* CVS $Id: ExecuteWorkflowAction.java,v 1.3 2006-04-14 16:49:44 pansu Exp $*/
+/* CVS $Id: ExecuteWorkflowAction.java,v 1.4 2006-04-14 22:22:54 pansu Exp $*/
 
+import gov.nih.nci.calab.dto.workflow.AssayBean;
+import gov.nih.nci.calab.dto.workflow.RunBean;
 import gov.nih.nci.calab.service.workflow.ExecuteWorkflowService;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,7 +44,34 @@ public class ExecuteWorkflowAction extends AbstractBaseAction {
 				saveMessages(request, msgs);
 				forward = mapping.findForward("failure");
 			} else {
+				int totalAssayCount=0;
+				int totalRunCount=0;
+				int totalInputFileCount=0;
+				int totalOutputFileCount=0;
+				int totalAliquotCount=0;
+				for (Object entry: assayMap.entrySet()) {
+					List assays=(List)(((Map.Entry)entry).getValue());
+					totalAssayCount+=assays.size();
+					for (Object assay: assays) {
+						List runs=(List)((AssayBean)assay).getRunBeans();
+						totalRunCount+=runs.size();
+						for (Object run: runs) {
+							List aliquots=(List)((RunBean)run).getAliquotBeans();
+							totalAliquotCount+=aliquots.size();
+							List inputFiles=(List)((RunBean)run).getInputFileBeans();
+							totalInputFileCount+=inputFiles.size();
+							List outputFiles=(List)((RunBean)run).getOutputFileBeans();
+							totalOutputFileCount+=outputFiles.size();
+
+						}
+					}
+				}
 				request.setAttribute("assayMap", assayMap);
+				request.setAttribute("totalAssayCount", totalAssayCount);
+				request.setAttribute("totalRunCount", totalRunCount);
+				request.setAttribute("totalAliquotCount", totalAliquotCount);
+				request.setAttribute("totalInputFileCount", totalInputFileCount);
+				request.setAttribute("totalOutputFileCount", totalOutputFileCount);
 				forward = mapping.findForward("success");
 			}
 		} catch (Exception e) {
