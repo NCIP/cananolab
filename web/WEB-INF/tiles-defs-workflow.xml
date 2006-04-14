@@ -37,6 +37,7 @@
 	<!-- definitions for the create run page -->
 	<definition name="workflow.createrun" extends="calab.home">
 		<put name="calabContent" value="/workflow/bodyCreateRun.jsp" />
+		<put name="calabSidemenu" value="/workflow/sideMenuTree.jsp" />
 		<put name="menu" value="workflow" />
 	</definition>
 
