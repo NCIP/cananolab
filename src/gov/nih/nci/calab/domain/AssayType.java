@@ -44,12 +44,12 @@ public  class AssayType
 	      this.description = description;
 	   }
 	
-	   private java.lang.String order;
-	   public  java.lang.String getOrder(){
-	      return order;
+	   private java.lang.String executeOrder;
+	   public  java.lang.String getExecuteOrder(){
+	      return executeOrder;
 	   }
-	   public void setOrder( java.lang.String order){
-	      this.description = order;
+	   public void setExecuteOrder( java.lang.String executeOrder){
+	      this.executeOrder = executeOrder;
 	   }
 	
 
