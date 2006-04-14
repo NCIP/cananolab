@@ -261,7 +261,7 @@ public class ExecuteWorkflowService {
 				assayBean.setAssayName(doAssay.getName());
 				assayBean.setAssayType(doAssay.getAssayType());
 				
-				List runs = (List)doAssay.getRunCollection();
+				Set runs = (Set)doAssay.getRunCollection();
 				List<RunBean> runBeans = new ArrayList<RunBean>();
 				for (Object run: runs) {
 					Run doRun = (Run)run;
@@ -269,7 +269,7 @@ public class ExecuteWorkflowService {
 					runBean.setId(doRun.getId().toString());
 					runBean.setName(doRun.getName());
 					
-					List runAliquots = (List)doRun.getRunSampleContainerCollection();
+					Set runAliquots = (Set)doRun.getRunSampleContainerCollection();
 					List<AliquotBean> aliquotBeans= new ArrayList<AliquotBean>();
 					for(Object runAliquot: runAliquots){
 						RunSampleContainer doRunAliquot = (RunSampleContainer)runAliquot;
@@ -283,7 +283,7 @@ public class ExecuteWorkflowService {
 					}
 					runBean.setAliquotBeans(aliquotBeans);
 					
-					List inputFiles = (List)doRun.getInputFileCollection();
+					Set inputFiles = (Set)doRun.getInputFileCollection();
 					List<FileBean> inputFileBeans = new ArrayList<FileBean>();
 					for (Object infile: inputFiles) {
 						InputFile doInputFile = (InputFile)infile;
@@ -294,7 +294,7 @@ public class ExecuteWorkflowService {
 					}
 					runBean.setInputFileBeans(inputFileBeans);
 					
-					List outputFiles = (List)doRun.getOutputFileCollection();
+					Set outputFiles = (Set)doRun.getOutputFileCollection();
 					List<FileBean> outputFileBeans = new ArrayList<FileBean>();
 					for (Object outfile: outputFiles) {
 						OutputFile doOutputFile = (OutputFile)outfile;
