@@ -70,30 +70,18 @@ public class HttpFileUploadThread extends Thread
     /**
      * A boolean value to indicate if all uploading files have been zipped. 
      */
-    private boolean isZipped = false;
+    private volatile boolean isZipped = false;
 
     /**
      * A boolean value to indicate if fatal error happens before zipping is started. 
      */ 
-    private boolean isFailed = false;
+    private volatile boolean isFailed = false;
 
     /**
      * A boolean value to indicate if the upload process is completed. 
      */
-    private boolean isUploadComplete = false;
+    private volatile boolean isUploadComplete = false;
     
-    /**
-     * The container holds files to be uploaded. Valid 
-     * data type for it: HttpUploadFile.
-     */ 
-    private Vector files = null;
-
-    /**
-     * The bean holds all parameters passed from the server.
-     */  
-    private HttpUploadParameters up = null;
-
-
     /** 
      * CONSTRUCTOR 
      *
@@ -103,8 +91,6 @@ public class HttpFileUploadThread extends Thread
      */
     public HttpFileUploadThread(Vector files, HttpUploadParameters up)
     {
-        this.files = files;
-        this.up = up;
         loader = new HttpFileUploader(files, up); 
     }
 
@@ -124,7 +110,7 @@ public class HttpFileUploadThread extends Thread
         boolean done = false;
         //If failed to zip files, then there is no point to
         //to start upload.
-        while (!isUploadComplete && !isFailed)
+        while (!isFailed)
         {    
             //turn off this flag once in upload loop, so
             //Applet can diplay other meaningful message to the user.
@@ -138,20 +124,34 @@ public class HttpFileUploadThread extends Thread
             if (done)
             {
             	isUploadComplete = true;
+            	break;
             }
         }
     }
     
     /**
-     * To stop this thread, and reset some flags to default values.
+     * To stop the run method of this thread. To stop the
+     * run method, loader sets isStopped value to true, which
+     * will cause the exit of file upload loop when the file
+     * being uploaded finished.  
      */
-    public void stopUpload()
+    public boolean stopUpload()
     {
-        isZipped = false;
-        isFailed = false;
-        isUploadComplete = false; 
+        loader.setStopped(true);
         
-        this.interrupt();
+        while (!isFailed && !isUploadComplete)
+        {
+        	try
+        	{
+        	    Thread.sleep(50);
+        	}
+        	catch (InterruptedException e)
+        	{
+        		;
+        	}
+        }
+
+        return true;
     }
     /** 
      * Delete temp zip files

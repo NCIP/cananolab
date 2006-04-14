@@ -57,7 +57,6 @@ import java.awt.Container;
 import java.awt.BorderLayout;
 import java.awt.Choice;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -83,7 +82,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
-import javax.swing.JFrame;
 import javax.swing.Timer;
 import javax.swing.BoxLayout;
 import javax.swing.JTextArea;
@@ -153,43 +151,90 @@ public class HttpFileUploadApplet extends JApplet
 
     private HttpUploadFile uFile;
 
-    //private String notifyURL = "http://localhost:8080/caarray/hybridizationFileProcessAction.do?method=processFile"; 
-    //private String uploadURL = "http://localhost:8080/caarray/processFileUpload";
     //To be implemented:
     private HttpUploadParameters up = null;
     HttpFileUploadThread thread = null;
     private Timer timer;
+    //private ArrayList fileList = new ArrayList();
     
     ResultFrame resultWindow = null;
     HelpFrame helpWindow = null;
 
+    String[] extensions = null;
+    String module = null;
+    
+    boolean isSingleFile = false;
 
+        
     /** Component initialization */
     public void init()
-    {
+    {	
         // get startup parameters
         up = new HttpUploadParameters();
         up.setUploadURL(this.getParameter("uploadURL"));
         up.setNotifyURL(this.getParameter("notifyURL"));
         up.setDefaultURL(this.getParameter("defaultURL"));
+        up.setHttpTunnelingURL(this.getParameter("tunnelURL"));
         up.setId(this.getParameter("id"));
-        up.setPortNumber(Integer.parseInt(this.getParameter("portNumber")));
         up.setSid(this.getParameter("sid"));
+        up.setModule(this.getParameter("module"));
+        up.setPermissibleFileExtention(this.getParameter("permissibleFileExtension"));
+        if (up.getPermissibleFileExtension()== null 
+        		|| up.getPermissibleFileExtension().length() == 0)
+        {
+        	extensions = new String[0];
+        }
+        else
+        {
+            extensions = up.getPermissibleFileExtension().split("_");
+        }
+        module = up.getModule();
+        
+        if (module.equalsIgnoreCase("arraydesign"))
+        {
+        	isSingleFile = true;
+        }
+        //fileList = getHybridizationFileList(up.getHttpTunnelingURL(), up.getId(), module);
+        
+        //For array design, only one file is allowed, so 
+        //we do not check for duplicate file name
+
+
+        //Test code
+        /*
+        up.setUploadURL("http://localhost:8080/caarray/processFileUpload");
+        up.setNotifyURL("http://localhost:8080/caarray/hybridizationFileProcessAction.do?method=processFile");
+        up.setId("1015897577532015");
+        up.setSid("9FFC40669F978DFD6816168EE76050AB");
+        up.setModule("hybridization");
+        up.setPermissibleFileExtension("TXT");
+        extensions = up.getPermissibleFileExtension().split("_");
+        fileList.add("design_22.txt");
+        fileList.add("desgin_21.txt");
+        */
         statusLayout();
         validate();       
-        
-        //Testing code
-        /* 
-        up.setUploadURL(uploadURL);
-        up.setNotifyURL(notifyURL);
-        up.setId("127823891289_1");
-        up.setPortNumber(8080);
-        statusLayout();
-        validate();
-        */
     }
     
-    /**
+    private ArrayList getHybridizationFileList(String tunnelURL, String id, String module) {
+		ArrayList fileList = new ArrayList();
+		
+		String command = module + "|" + id;
+		
+		HttpTunnelingFetchFileList htff = new HttpTunnelingFetchFileList();
+		try
+		{
+			fileList = htff.FetchFileList(tunnelURL, command);
+		}
+		catch (Exception e)
+		{
+			JOptionPane.showMessageDialog(this,"Error: \n" + e.toString(), "Error message", JOptionPane.INFORMATION_MESSAGE);
+		}
+    	
+    	return fileList;
+	}
+
+	/**
      * method to create the UI for the status monitor)
      *
      */
@@ -211,8 +256,11 @@ public class HttpFileUploadApplet extends JApplet
         dataBt.setText("Data >>");
         dataBt.addActionListener(new UploadFrame_dataBt_actionAdapter(this));
         
-        otherBt.setText("Other >>");
-        otherBt.addActionListener(new UploadFrame_otherBt_actionAdapter(this));
+        if ("hybridization".equals(up.getModule()))
+        {
+            otherBt.setText("Other >>");
+            otherBt.addActionListener(new UploadFrame_otherBt_actionAdapter(this));
+        }
         removeBt.setText("Remove");
         removeBt.addActionListener(new UploadFrame_removeBt_actionAdapter(this));
         removeAllBt.setText("Remove All");
@@ -324,7 +372,10 @@ public class HttpFileUploadApplet extends JApplet
 
         centerC.add(thirdPane);
         thirdPane.add(upperPane);
-        upperPane.add(otherBt);
+        if ("hybridization".equals(up.getModule()))
+        {
+            upperPane.add(otherBt);
+        }
         centerC.add(new Label("    "));
         centerPane.add(centerC);
         //set up center right pane (selected files list)
@@ -529,10 +580,14 @@ public class HttpFileUploadApplet extends JApplet
             {
                 ext = file.substring(index);
                 
-                //We exclude zip files from this list.
-                if (!extList.contains(ext) && !ext.equals(".zip"))
+                //We exclude zip files from this list if module = hybridization.
+                if (!extList.contains(ext))
+                    
                 {
-                    extList.add(ext);
+                	if (ext.equalsIgnoreCase(".zip") && module.equalsIgnoreCase("hybridization"))
+                		continue;
+                	else
+                    	extList.add(ext);
                 }
             }
         }
@@ -645,16 +700,89 @@ public class HttpFileUploadApplet extends JApplet
 
     void dataBt_actionPerformed(ActionEvent e)
     {
+    	
         // move data file to selected list
         String[] preSelectedFileNames = chooseLst.getSelectedItems();
+        
+        if (isSingleFile && ((preSelectedFileNames.length > 1) || selectedLst.getItemCount() > 0))
+        {
+            JOptionPane.showMessageDialog(null, "Only one file is allowed for this array design", "Information", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         if (selectedFileVec.size() > 0)
         {
             preSelectedFileNames = checkDuplicateName(preSelectedFileNames);
         }
+        //preSelectedFileNames = processPreSelectedFileNames(preSelectedFileNames);
         processItems(preSelectedFileNames, "data");
         for (int i = 1; i < files.length + 1; i++)
             chooseLst.deselect(i);
     }
+    
+    /* No longer check file name crash
+    private String[] processPreSelectedFileNames(String[] psFileNames)
+    {
+    	ArrayList duplicateFileList = new ArrayList();
+    	ArrayList notDuplicateFileList = new ArrayList();
+    	ArrayList confirmOverwriteFileList = new ArrayList();
+    	boolean toAdd = false;
+    	String[] preSelectedFileNames = null;
+    	
+    	preSelectedFileNames = psFileNames;
+    	
+        if(!module.equalsIgnoreCase("arraydesign"))
+        {
+            fileList = getHybridizationFileList(up.getHttpTunnelingURL(), up.getId(), module);
+        }
+
+        for (int i = 0; i < preSelectedFileNames.length; i++)
+        {
+           	toAdd = fileList.contains(preSelectedFileNames[i]);
+           	if (toAdd)
+           	{
+           		duplicateFileList.add(preSelectedFileNames[i]);
+           	}
+           	else
+           	{
+           		notDuplicateFileList.add(preSelectedFileNames[i]);
+           	}
+        }	
+        
+        if(duplicateFileList.size() > 0)
+        {
+        	String[] fileArray = new String[duplicateFileList.size()];
+        	for (int i = 0; i < fileArray.length; i++)
+        	{
+        		fileArray[i] = (String)duplicateFileList.get(i);
+        	}
+        	LoadDuplicateFileNameProcessor ldfnp = new LoadDuplicateFileNameProcessor(
+        			fileArray, confirmOverwriteFileList);
+            
+        }
+    	
+        preSelectedFileNames = new String[notDuplicateFileList.size() + confirmOverwriteFileList.size()];
+        
+        ArrayList newList = new ArrayList();
+        
+        for (int i = 0; i < notDuplicateFileList.size(); i ++)
+        {
+        	newList.add(notDuplicateFileList.get(i));
+        }
+        
+        for (int i = 0; i < confirmOverwriteFileList.size(); i++)
+        {
+        	newList.add(confirmOverwriteFileList.get(i));
+        }
+        
+        preSelectedFileNames = new String[newList.size()];
+        for (int i = 0; i < preSelectedFileNames.length; i++)
+        {
+        	preSelectedFileNames[i] = (String)newList.get(i);
+        }
+        
+    	return preSelectedFileNames;
+    }
+    */
 
     void selectAllBt_actionPerformed(ActionEvent e)
     {
@@ -676,6 +804,7 @@ public class HttpFileUploadApplet extends JApplet
         {
             preSelectedFileNames = checkDuplicateName(preSelectedFileNames);
         }
+        //preSelectedFileNames = processPreSelectedFileNames(preSelectedFileNames);
         processItems(preSelectedFileNames, "other");
         for (int i = 1; i < files.length + 1; i++)
             chooseLst.deselect(i);
@@ -685,12 +814,20 @@ public class HttpFileUploadApplet extends JApplet
     {
         Vector tempHolderVec = new Vector();
         boolean popup = false;
+        boolean illegalType = false;
         for (int i = 0; i < preSelectedFileNames.length; i++)
         {
             if (!popup)
             {
                 popup = isNameIllegal(preSelectedFileNames[i]);
             }
+            
+            //File filtering was disabled for now. 
+//            if ("Data".equalsIgnoreCase(type) && !illegalType)
+//            {
+//                illegalType = isExtensionIllegal(preSelectedFileNames[i]);
+//            }
+            
             File pFile = new File(directoryDisplayLabel.getText() + File.separator
                     + preSelectedFileNames[i]);
             if (!pFile.isDirectory()
@@ -703,7 +840,37 @@ public class HttpFileUploadApplet extends JApplet
                 tempHolderVec.addElement(uFile);
             }
         }
-        
+        if (illegalType)
+        {
+            StringBuffer sb = new StringBuffer();
+            if ("hybridization".equalsIgnoreCase(module))
+            {
+            	sb.append("The selected file names contain file extensions that are not\n");
+            	sb.append("permissible to the hybridization data file type you have selected.\n");
+            	sb.append("Only the following file extension(s) allowed:  ");
+            }
+            else if ("arraydesign".equalsIgnoreCase(module))
+            {
+            	sb.append("The selected file names contain file extensions that are not\n");
+            	sb.append("permissible to the array design type you have selected.\n");
+            	sb.append("Only the following file extension(s) allowed:  ");
+            }
+            for (int m = 0; m < extensions.length; m++)
+            {
+                if (m != 0)
+                {
+                    sb.append(", " + extensions[m]);
+                }
+                else
+                {
+                    sb.append(extensions[m]);
+                }
+            }
+            sb.append(".");
+            
+            JOptionPane.showMessageDialog(null, sb.toString(), "Information", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         if (popup)
         {
             int userChoice = JOptionPane.showConfirmDialog(this,
@@ -737,6 +904,25 @@ public class HttpFileUploadApplet extends JApplet
                return true;
         }   
         return false;
+    }
+
+    //To check the file name has the permissible extention.
+    //Yes return false, otherwise return true;
+    
+    private boolean isExtensionIllegal(String name)
+    {
+        int index = -1;
+        String fileName = name.toUpperCase();
+        for (int i = 0; i < extensions.length; i++)
+        {
+            index = fileName.lastIndexOf("." + extensions[i]);
+            
+            if (index != -1)
+            {
+                return false;
+            }
+        }
+        return true;
     }
     
     String[] checkDuplicateName(String[] names)
@@ -814,15 +1000,15 @@ public class HttpFileUploadApplet extends JApplet
      */
     void uploadBt_actionPerformed(ActionEvent e)
     {
-    	
     	//Object []buttons = {"Yes", "Cancel"};
     	int i = JOptionPane.showConfirmDialog(this,
-			"Please ensure the selected files are associated with your array design! \nPress Ok to proceed, Cancel to edit selections.", "File Upload Confirmation",
+			"Please ensure the selected files are correct! \nPress Ok to proceed, Cancel to edit selections.", "File Upload Confirmation",
 			JOptionPane.OK_CANCEL_OPTION);
     		
         //upload files, make sure progress bar start working here
         if (selectedFileVec.size() != 0 && i == JOptionPane.OK_OPTION)
         {
+        	updateBar(0);
             uploadFileName.setText("Applet is preparing for upload...");
             
             changeButtonOn(false, true);      
@@ -844,11 +1030,31 @@ public class HttpFileUploadApplet extends JApplet
                     }
                     
                     //The chance to catch this flag is very low.
-                    if (!thread.isUploadPreparationDone())
+                    if (!thread.isUploadPreparationDone() && !thread.isFailed())
                     {
                         uploadFileName.setText("Preparing for file upload, please wait...");
                     }
+                    //In this case, no files are zipped, or socket connection failed
+                    //and user has to try again.
+                    else if ( thread.isFailed() )
+                    {
+                        uploadFileName.setText("File upload failed...");
+                        timer.stop();
+                        String message = thread.getFailureMessage();
                         
+                        if (message != null && message.indexOf("expired") != -1)
+                        {
+    	                    //Object []buttons = {"Yes", "Cancel"};
+    	                    JOptionPane.showMessageDialog(null, message, "Information", JOptionPane.ERROR_MESSAGE);
+                            forwardToDefaultPage();
+                        }
+                        else
+                        {
+                        	uploadFileName.setText(message);
+                            resultWindow.displayResults(thread.getOkFiles(), thread.getFailFiles(), "0 byte uploaded due to zipping process failure");
+                            changeButtonOn(true, false);
+                        }
+                    }
                     else if (!thread.isUploadComplete())
                     {
                         uploadFileName.setText("Uploading file: " + thread.getCurrentFileName() + "...");
@@ -860,38 +1066,32 @@ public class HttpFileUploadApplet extends JApplet
                         updateBar(100);
                         uploadFileName.setText("File upload complete...");
                         
-                        if (thread.notifyServer("success"))
+                        //Only okFiles is not empty, we send a success signal to the server.
+                        if (thread.getOkFiles().length > 0 && thread.notifyServer("success"))
                         {
                             uploadFileName.setText(thread.getNotifyReply());
                         }
                         else
                         {
-                            uploadFileName.setText(thread.getFailureMessage());
+                            uploadFileName.setText("Your file upload process failed. Please try again.");
                         }
                         
-                        changeButtonOn(true, false);
-                            
+                        if ("arraydesign".equalsIgnoreCase(up.getModule()))
+                        {
+                        	disableUpload();
+                        }
+                        else
+                        {
+                        	changeButtonOn(true, false);
+                        }
                         //Display upload summary to the user
-                        resultWindow.displayResults(thread.getOkFiles(), thread.getFailFiles(), thread.getTimeBytes());
+                        resultWindow.displayResults(thread.getOkFiles(), thread.getFailFiles(), thread.getTimeBytes()); //thread.getFailureMessage()); //);
                         
                         thread.cleanUp();
-                        thread.stopUpload();
                         selectedFileVec.clear();
                         selectedLst.removeAll();
-                        thread = null;
                     }
-                    
-                    //In this case, no files are zipped, or socket connection failed
-                    //and user has to try again.
-                    else if ( thread.isFailed() )
-                    {
-                        timer.stop();
-                        uploadFileName.setText(thread.getFailureMessage());
-                        resultWindow.displayResults(thread.getOkFiles(), thread.getFailFiles(), "0 byte uploaded due to zipping process failure");
-
-                        changeButtonOn(true, false);
-                    }
-                } 
+                }
             });
             timer.start();
         }
@@ -902,33 +1102,14 @@ public class HttpFileUploadApplet extends JApplet
      */
     void stopBt_actionPerformed(ActionEvent e)
     {
-        //Kill the current thread to stop the upload process.
-        if (thread != null)
+        uploadFileName.setText("Is stopping...");
+    	timer.stop();        
+        if (thread.stopUpload())
         {
-            uploadFileName.setText("Is stopping...");
-            thread.stopUpload();
-            thread = null;
-            timer.stop();
+        	//Notify server only stopUpload returns.
+        	thread.notifyServer("stop");
+        	thread.cleanUp();
         }
-        
-        //Create another thread to clean up
-        thread = new HttpFileUploadThread(selectedFileVec, up);
-
-        //It will be helpful if we can wait for a while since the
-        //io intensive upload process can't be stopped right away.
-       /* try
-        {
-            Thread.sleep(1000);
-        }
-        catch (InterruptedException io)
-        {
-            ;
-        }
-        */
-        thread.notifyServer("stop");
-        thread.cleanUp();
-        thread.stopUpload();
-        thread = null;
 
         changeButtonOn(true, false);
 
@@ -942,14 +1123,11 @@ public class HttpFileUploadApplet extends JApplet
      */
     void doneBt_actionPerformed(ActionEvent e)
     {
-        if (thread == null)
-        {
-        	thread = new HttpFileUploadThread(selectedFileVec, up);
-        }
-            
+    	if (thread == null)
+    	{
+    		thread = new HttpFileUploadThread(selectedFileVec, up);
+    	}
         thread.notifyServer("done");
-        thread.stopUpload();
-        thread = null;
         
         changeButtonOn(false, false);
 
@@ -1012,6 +1190,18 @@ public class HttpFileUploadApplet extends JApplet
         doneBt.setEnabled(on1);
         
         stopBt.setEnabled(on2);
+    }
+    
+    public void disableUpload()
+    {
+        dataBt.setEnabled(false);
+        otherBt.setEnabled(false);
+        removeBt.setEnabled(false);
+        removeAllBt.setEnabled(false);
+        uploadBt.setEnabled(false);
+        doneBt.setEnabled(true);
+        
+        stopBt.setEnabled(false);	
     }
     /** 
      * A popup window to display to the user upload summary that includes

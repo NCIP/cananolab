@@ -86,10 +86,18 @@ public class HttpUploadFile
     private String zipFilePath = null;
     
     /**
-     * The selected file name without path part.
+     * The selected file name without path part. 
+     * This file name has been changed if it 
+     * contains illegal characters.
      */
     private String fileName = null;
-
+    
+    /**
+     * The CRC32 value in string for the zipped file.
+     */
+    private String crc32 = null;
+     
+    private static String ZIPEXTENSION = ".zip";
     /**
      * Modify the file name to include its data type for display purpose only.
      *
@@ -138,6 +146,8 @@ public class HttpUploadFile
      */
     public String getZipFileName()
     {
+    	if (zipFileName != null)
+    		return zipFileName;
         zipFileName = getFileName();
         zipFileName = zipFileName.replace('.', '_');
         zipFileName = zipFileName + ".zip";
@@ -215,5 +225,29 @@ public class HttpUploadFile
     public void setFileName(String fileName)
     {
         this.fileName = fileName;
+    }
+    
+    public void setCrc32(String crc32)
+    {
+        this.crc32 = crc32;
+    }
+    
+    public String getCrc32()
+    {
+        return crc32;
+    }
+    public boolean isZipFile()
+    {
+    	String tempPath = absoluteFilePath.toLowerCase();
+    	
+    	int index = tempPath.lastIndexOf(ZIPEXTENSION);
+    	if (index == -1)
+    		return false;
+    		
+    	if ((index + ZIPEXTENSION.length() ) == tempPath.length())
+    	{
+    		return true;
+    	} 
+    	return false;
     }
 }
