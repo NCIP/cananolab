@@ -71,10 +71,8 @@ public class CreateRunAction extends AbstractBaseAction {
 		return forward;
 	}
 
-	public boolean loginRequired() {
-		// temporarily set to false until login module is working
-		return false;
-		// return true;
+	public boolean loginRequired() {		
+		 return true;
 	}
 }
 
