@@ -70,6 +70,11 @@ public class HttpFileUploadSessionData implements Serializable
      * data through many jsp pages.
      */
     private String timeStamp = null;
+    private String assayType = null;
+    private String assay = null;
+    private String run = null;
+    private String inout = null;
+    
 
     /**
      * The container object that is the place for all meta data for 
@@ -175,6 +180,46 @@ public class HttpFileUploadSessionData implements Serializable
     public int getFileListSize()
     {
         return fileList.size();
+    }
+
+    public String getAssay()
+    {
+        return assay;
+    }
+
+    public void setAssay(String assay)
+    {
+        this.assay = assay;
+    }
+
+    public String getAssayType()
+    {
+        return assayType;
+    }
+
+    public void setAssayType(String assayType)
+    {
+        this.assayType = assayType;
+    }
+
+    public String getInout()
+    {
+        return inout;
+    }
+
+    public void setInout(String inout)
+    {
+        this.inout = inout;
+    }
+
+    public String getRun()
+    {
+        return run;
+    }
+
+    public void setRun(String run)
+    {
+        this.run = run;
     }
 }
     
