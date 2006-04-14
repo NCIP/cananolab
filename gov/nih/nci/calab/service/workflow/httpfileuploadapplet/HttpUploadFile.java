@@ -106,7 +106,7 @@ public class HttpUploadFile
     public String toString()
     {
        //return null; //
-       return new File(absoluteFilePath).getName() + " (" + fileType + ")";
+       return new File(absoluteFilePath).getName();
     }
 
     public String getAbsoluteFilePath()
