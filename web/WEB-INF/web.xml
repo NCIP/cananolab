@@ -23,7 +23,7 @@
   </servlet>
   <servlet>
         <servlet-name>processFileUpload</servlet-name>
-        <servlet-class>gov.nih.nci.calab.services.util.file.ProcessFileUpload</servlet-class>
+        <servlet-class>gov.nih.nci.calab.service.util.file.ProcessFileUpload</servlet-class>
         <load-on-startup>2</load-on-startup>
   </servlet>
   <servlet-mapping>
