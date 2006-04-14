@@ -1,6 +1,5 @@
 package gov.nih.nci.calab.service.workflow.httpfileuploadapplet;
 
-import gov.nih.nci.caarray.services.util.file.FileValidator;
 
 import java.io.File;
 import java.io.FileInputStream;
