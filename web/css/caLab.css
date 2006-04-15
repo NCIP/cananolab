@@ -334,7 +334,7 @@ DATA TABLE BEGINS
 ###############*/
 .dataTablePrimaryLabel{ /* for the first row */
   font-family:arial, helvetica, verdana, sans-serif;
-  font-size:0.6em;
+  font-size:1.2em;
   font-weight:bolder;
   background-color:#666666; /* constant: dark gray */
   color:#FFFFFF; /* constant: white */
@@ -342,6 +342,7 @@ DATA TABLE BEGINS
   border-left:1px solid #5C5C5C; /* constant: dark gray */
   border-right:1px solid #5C5C5C; /* constant: dark gray */
   padding-left:0.2em;
+  text-align:center;
 }
 .dataTableSecondaryLabel{ /* for the optional second row */
   font-family:arial,helvetica,verdana,sans-serif;
