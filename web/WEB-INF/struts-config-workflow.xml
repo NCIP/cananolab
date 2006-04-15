@@ -91,6 +91,8 @@
 		<action name="fileUploadForm" parameter="method" path="/fileUpload" scope="request" type="gov.nih.nci.calab.ui.workflow.FileUploadAction" input="input">
 			<forward name="success" path="workflow.fileUpload" />
 			<forward name="failure" path="workflow.message" />
+			<forward name="expiredSession" path="/login.do" />
+			<forward name="done" path="/initSession.do?forwardPage='createRun'" />
 		</action>		
 		<action path="/workflowForward" type="org.apache.struts.actions.ForwardAction" parameter="workflow.message"/>
 	</action-mappings>
