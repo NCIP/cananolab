@@ -50,6 +50,9 @@
  */
 package gov.nih.nci.calab.service.util.file;
 
+import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.PropertyReader;
+
 import java.io.File;
 import java.util.Iterator;
 import java.util.List;
@@ -167,8 +170,22 @@ public class ProcessFileUpload extends HttpServlet
                 
                 String fullPathName = null;
                 
-                //TODO: set fullpathName here
+                //TODO: set path here
+                String path = PropertyReader.getProperty(CalabConstants.FILEUPLOAD_PROPERTY, "inputFileDirectory");
                 
+               
+                fullPathName = path + sessionData.getAssayType() + File.separator 
+                                        + sessionData.getAssay() + File.separator
+                                        + sessionData.getRun()   + File.separator
+                                        + sessionData.getInout();
+
+                //check directory is existing or not.
+                File fPath = new File(fullPathName);
+                if (!fPath.exists())
+                {
+                    fPath.mkdirs();
+                }
+
                 //If failed to get the 
                 if (fullPathName == null || fullPathName.length() == 0)
                 {
