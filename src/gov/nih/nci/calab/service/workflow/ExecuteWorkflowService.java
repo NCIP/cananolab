@@ -174,17 +174,23 @@ public class ExecuteWorkflowService {
 				
 				// ContainerBean
 				ContainerBean containerBean = new ContainerBean();
-				containerBean.setConcentration(doAliquot.getConcentration().toString());
-				containerBean.setConcentrationUnit(doAliquot.getConcentrationUnit());
+				if (doAliquot.getConcentration() != null){
+					containerBean.setConcentration(doAliquot.getConcentration().toString());
+					containerBean.setConcentrationUnit(doAliquot.getConcentrationUnit());					
+				}
 				containerBean.setContainerComments(doAliquot.getComments());
 				containerBean.setContainerType(doAliquot.getContainerType());
-				containerBean.setQuantity(doAliquot.getQuantity().toString());
-				containerBean.setQuantityUnit(doAliquot.getQuantityUnit());
+				if (doAliquot.getQuantity() != null) {
+					containerBean.setQuantity(doAliquot.getQuantity().toString());
+					containerBean.setQuantityUnit(doAliquot.getQuantityUnit());					
+				}
 				containerBean.setSafetyPrecaution(doAliquot.getSafetyPrecaution());
 				containerBean.setSolvent(doAliquot.getDiluentsSolvent());
 				containerBean.setStorageCondition(doAliquot.getStorageCondition());
-				containerBean.setVolume(doAliquot.getVolume().toString());
-				containerBean.setVolumeUnit(doAliquot.getVolumeUnit());
+				if (doAliquot.getVolume() != null) {
+					containerBean.setVolume(doAliquot.getVolume().toString());
+					containerBean.setVolumeUnit(doAliquot.getVolumeUnit());					
+				}
 				
 //				containerBean.setStorageLocationStr();
 				StorageLocation location = new StorageLocation();
@@ -211,7 +217,7 @@ public class ExecuteWorkflowService {
 			}
 			ida.close();
 		} catch (Exception e) {
-			logger.error("Error in retrieving aliquot information with name -- " + aliquotId, e);
+			logger.error("Error in retrieving aliquot information with id -- " + aliquotId, e);
 			throw new RuntimeException("Error in retrieving aliquot information with name -- " + aliquotId);
 		}
 		return aliquotBean;
