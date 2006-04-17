@@ -19,9 +19,11 @@ public class CalabConstants {
 	
 	public static final String RUN = "Run";
     public static final String FILEUPLOAD_PROPERTY = "fileupload.properties";
+    public static final String UNCOMPRESSED_FILE_DIRECTORY="uncompressedFiles";
     
     public static final String EMPTY = "N/A";
     
     public static final String INPUT = "input";
     public static final String OUTPUT = "output";
+
 }
