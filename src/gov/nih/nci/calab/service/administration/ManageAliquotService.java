@@ -26,7 +26,7 @@ import org.apache.struts.util.LabelValueBean;
  */
 
 /*
- * CVS $Id: ManageAliquotService.java,v 1.12 2006-04-11 19:12:42 zengje Exp $
+ * CVS $Id: ManageAliquotService.java,v 1.13 2006-04-17 16:39:55 zengje Exp $
  */
 
 public class ManageAliquotService {
@@ -221,7 +221,7 @@ public class ManageAliquotService {
 							CalabConstants.DATE_FORMAT));
 					doAliquot.setDiluentsSolvent(containerBean.getSolvent());
 					// TODO: construct the name (AliquotID is the whole name?)
-					doAliquot.setName(aliquotBean.getAliquotId());
+					doAliquot.setName(aliquotBean.getAliquotName());
 					doAliquot.setQuantity(StringUtils
 							.convertToFloat(containerBean.getQuantity()));
 					doAliquot.setQuantityUnit(containerBean.getQuantityUnit());
