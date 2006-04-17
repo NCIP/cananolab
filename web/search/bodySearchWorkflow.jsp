@@ -20,116 +20,106 @@
 		</ul>
 	</logic:messagesPresent>
 	<blockquote>
-		<TABLE WIDTH=100% BORDER=0 align="center" CELLPADDING=1 CELLSPACING=0>
-			<TR>
-				<td width="64%" class="dataTablePrimaryLabel">
-					Search
-				</td>
-				<td width="36%" height="20" class="dataTablePrimaryLabel">
-					<div align="center">
-						* Search for Wildcards
-					</div>
-				</td>
-			</TR>
-		</TABLE>
 		<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" summary="">
 			<tr>
-				<td colspan="2" class="formLabel">
-					<div align="center">
-						<label for="label">
-							<strong>Assay Name<span class="formFieldWhite"><img src="images/help.gif" width="15" height="15" onmouseover="s_show('workflowSearch_assayName',event)" onmouseout="s_hide()"> </span> <html:text property="assayName" size="20" /> &nbsp; &nbsp; &nbsp;
-								&nbsp;Assay Type<span class="formFieldWhite"><img src="images/help.gif" width="15" height="15" onmouseover="s_show('workflowSearch_assayType',event)" onmouseout="s_hide()"></span> <span class="formFieldWhite"> <html:select property="assayType">
-										<option value=""></option>
-										<html:options name="allAssayTypes" />
-									</html:select> </span>&nbsp; &nbsp; </strong>
-						</label>
-					</div>
+				<td width="36%" class="dataTablePrimaryLabel">
+					Search
+				</td>
+				<td class="dataTablePrimaryLabel">
+					* Search for Wildcards
 				</td>
 			</tr>
 			<tr>
-				<td width="38%" class="formLabelWhite">
+				<td class="formLabel">
+					<strong>Assay Name<strong>
+				</td>
+				<td class="formField">
+					<html:text property="assayName" size="15" />
+				</td>
+			</tr>
+			<tr>
+				<td class="formLabelWhite">
+					<strong>Assay Type </strong>
+				</td>
+				<td class="formFieldWhite">
+					<html:select property="assayType">
+						<option value=""></option>
+						<html:options name="allAssayTypes" />
+					</html:select>
+				</td>
+			</tr>
+			<tr>
+				<td width="38%" class="formLabel">
 					<strong>Assay Run Date</strong>
-					<img src="images/help.gif" width="15" height="15" onmouseover="s_show('workflowSearch_assayRunDate',event)" onmouseout="s_hide()">
 				</td>
-				<td width="62%" valign="top" class="formFieldWhite">
-					<span class="formField"><html:text property="assayRunDateBegin" size="10" /> <a href="javascript:cal.popup();"><img src="images/calendar-icon.gif" width="22" height="18" border="0" align="middle"></a> <label>
-							&nbsp;&nbsp; to &nbsp;&nbsp;
-							<html:text property="assayRunDateEnd" size="10" />
-
-							<a href="javascript:cal2.popup();"><img src="images/calendar-icon.gif" width="22" height="18" border="0" align="middle"></a>
-						</label> </span>
-				</td>
-			</tr>
-			<tr>
-				<td class="formLabel">
-					<strong><strong>Aliquot ID </strong><img src="images/help.gif" width="15" height="15" onmouseover="s_show('workflowSearch_aliquotId',event)" onmouseout="s_hide()">
-				</td>
-				<td class="formField">
-					<span class="formFieldWhite"> <label>
-							<strong> <html:text property="aliquotName" size="20" /> </strong>
-						</label> </span>
+				<td width="62%" valign="top" class="formField">
+					<html:text property="assayRunDateBegin" size="10" />
+					<a href="javascript:cal.popup();"><img src="images/calendar-icon.gif" width="22" height="18" border="0" align="middle"></a> &nbsp;&nbsp; to &nbsp;&nbsp;
+					<html:text property="assayRunDateEnd" size="10" />
+					<a href="javascript:cal2.popup();"><img src="images/calendar-icon.gif" width="22" height="18" border="0" align="middle"></a>
 				</td>
 			</tr>
 			<tr>
 				<td class="formLabelWhite">
-					<strong>Include Masked Aliquots?<img src="images/help.gif" width="15" height="15" onmouseover="s_show('workflowSearch_maskedAliquots',event)" onmouseout="s_hide()"></strong>
+					<strong>Aliquot ID</strong>
 				</td>
 				<td class="formFieldWhite">
-					<span class="formField"> <html:checkbox property="includeMaskedAliquots" /></span>
+					<strong> <html:text property="aliquotName" size="20" /> </strong>
 				</td>
 			</tr>
 			<tr>
 				<td class="formLabel">
-					<strong>File Name <img src="images/help.gif" width="15" height="15" onmouseover="s_show('workflowSearch_fileName',event)" onmouseout="s_hide()"></strong>
+					<strong>Include Masked Aliquots?</strong>
 				</td>
 				<td class="formField">
-					<span class="formFieldWhite"><strong> <html:text property="fileName" size="20" /> &nbsp; &nbsp; &nbsp; <html:checkbox property="isFileIn"/> In <strong> &nbsp; &nbsp; &nbsp; <html:checkbox property="isFileOut"/> Out </strong></strong></span>
+					<html:checkbox property="includeMaskedAliquots" />
 				</td>
 			</tr>
 			<tr>
 				<td class="formLabelWhite">
+					<strong>File Name </strong>
+				</td>
+				<td class="formFieldWhite">
+					<strong> <html:text property="fileName" size="20" /> &nbsp; &nbsp; &nbsp; <html:checkbox property="isFileIn" /> In &nbsp; &nbsp; &nbsp; <html:checkbox property="isFileOut" /> Out </strong>
+				</td>
+			</tr>
+			<tr>
+				<td class="formLabel">
 					<strong>File Submission Date</strong>
-					<img src="images/help.gif" width="15" height="15" onmouseover="s_show('workflowSearch_fileSubmissionDate',event)" onmouseout="s_hide()">
-				</td>
-				<td class="formFieldWhite">
-					<span class="formField"> <html:text property="fileSubmissionDateBegin" size="10" /> <a href="javascript:cal3.popup();"><img src="images/calendar-icon.gif" width="22" height="18" border="0" align="middle"></a> <label>
-							&nbsp;&nbsp; to &nbsp;&nbsp;
-							<html:text property="fileSubmissionDateEnd" size="10" />
-
-							<a href="javascript:cal4.popup();"><img src="images/calendar-icon.gif" width="22" height="18" border="0" align="middle"></a>
-						</label> </span>
-				</td>
-			</tr>
-			<tr>
-				<td class="formLabel">
-					<strong>File Submitter </strong>
-					<img src="images/help.gif" width="15" height="15" onmouseover="s_show('workflowSearch_fileSubmitter',event)" onmouseout="s_hide()">
 				</td>
 				<td class="formField">
-					<span class="formFieldWhite"><strong> <html:select property="fileSubmitter">
-								<option value=""></option>
-								<html:options name="allFileSubmitters" />
-							</html:select> </strong> </span>
+					<html:text property="fileSubmissionDateBegin" size="10" />
+					<a href="javascript:cal3.popup();"><img src="images/calendar-icon.gif" width="22" height="18" border="0" align="middle"></a> &nbsp;&nbsp; to &nbsp;&nbsp;
+					<html:text property="fileSubmissionDateEnd" size="10" />
+					<a href="javascript:cal4.popup();"><img src="images/calendar-icon.gif" width="22" height="18" border="0" align="middle"></a>
+
 				</td>
 			</tr>
 			<tr>
 				<td class="formLabelWhite">
-					<strong> Include Masked Files? </strong>
-					<label for="label2"></label>
-					<img src="images/help.gif" width="15" height="15" onmouseover="s_show('workflowSearch_maskedFiles',event)" onmouseout="s_hide()">
+					<strong>File Submitter </strong>
 				</td>
 				<td class="formFieldWhite">
-					<span class="formField"> <strong> <html:checkbox property="includeMaskedFiles" /> </strong> </span>
+					<strong> <html:select property="fileSubmitter">
+							<option value=""></option>
+							<html:options name="allFileSubmitters" />
+						</html:select> </strong>
 				</td>
 			</tr>
 			<tr>
 				<td class="formLabel">
-					<strong> Join Search Criteria by </strong>
-					<label for="label2"></label>
-					<img src="images/help.gif" width="15" height="15" onmouseover="s_show('workflowSearch_maskedFiles',event)" onmouseout="s_hide()">
+					<strong> Include Masked Files? </strong>
 				</td>
 				<td class="formField">
-					<span class="formField"> <strong> <html:radio property="criteriaJoin" value="and"/> &nbsp; &nbsp; And &nbsp;&nbsp; <html:radio property="criteriaJoin" value="or"/> Or </strong></span>
+					<strong> <html:checkbox property="includeMaskedFiles" /> </strong>
+				</td>
+			</tr>
+			<tr>
+				<td class="formLabelWhite">
+					<strong> Join Search Criteria by </strong>
+				</td>
+				<td class="formFieldWhite">
+					<strong> <html:radio property="criteriaJoin" value="and" /> &nbsp; &nbsp; And &nbsp;&nbsp; <html:radio property="criteriaJoin" value="or" /> Or </strong>
 				</td>
 			</tr>
 		</table>
@@ -137,14 +127,12 @@
 		<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 			<tr>
 				<td width="30%">
-					<span class="formMessage"> </span>
-					<br>
 					<table width="498" height="32" border="0" align="right" cellpadding="4" cellspacing="0">
 						<tr>
 							<td width="490" height="32">
 								<div align="right">
 									<html:reset />
-									<html:submit value="Search"/>
+									<html:submit value="Search" />
 								</div>
 							</td>
 						</tr>

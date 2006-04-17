@@ -56,43 +56,37 @@
 				<tr>
 					<td class="${style}" valign="top">
 						<div align="left">
-							&nbsp; <a href="#" class="style2" align="left"><bean:write name="workflow" property="fileName" /></a>
-						</div>
+							<a href="#" class="style2" align="left"><bean:write name="workflow" property="fileName" /></a>
+						</div>&nbsp;
 					</td>
 					<td class="${style}" valign="top">
 						<div align="left">
-							&nbsp;
 							<bean:write name="workflow" property="assayType" />
-						</div>
+						</div>&nbsp;
 					</td>
 					<td class="${style}" valign="top">
-						&nbsp;
-						<bean:write name="workflow" property="assayName" />
+						<bean:write name="workflow" property="assayName" />&nbsp;
 					</td>
 					<td class="${style}" valign="top">
-						&nbsp;
-						<bean:write name="workflow" property="assayRunDate" />
+						<bean:write name="workflow" property="assayRunDate" />&nbsp;
 					</td>
 					<td class="${style}" valign="top">
-						&nbsp;
-						<bean:write name="workflow" property="aliquotName" />
+						<bean:write name="workflow" property="aliquotName" />&nbsp;
 					</td>
 					<td class="${style}" valign="top">
 						<div align="left">
-							&nbsp;
 							<bean:write name="workflow" property="fileSubmissionDate" />
-						</div>
+						</div>&nbsp;
 					</td>
 					<td class="${style}" valign="top">
 						<div align="left">
-							&nbsp;
 							<bean:write name="workflow" property="fileSubmitter" />
-						</div>
+						</div>&nbsp;
 					</td>
 					<td class="${style}" valign="top">
 						<div align="left">
-							&nbsp; <strong><bean:write name="workflow" property="fileMaskStatus" /></strong>
-						</div>
+							<strong><bean:write name="workflow" property="fileMaskStatus" /></strong>
+						</div>&nbsp;
 					</td>
 				</tr>
 			</logic:iterate>

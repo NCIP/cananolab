@@ -33,20 +33,22 @@
 						</td>
 
 						<td class="formField" width="72%">
-							&nbsp; <span class="formMessage"><span style="FONT-SIZE: 8pt"><bean:write name="sample" property="sampleName" /></span></span>
+							<bean:write name="sample" property="sampleName" />
+							&nbsp;
 						</td>
 					</tr>
 
 					<tr>
 						<td class="formLabelWhite">
 							<div align="left">
-								<span class="formFieldWhite"><strong>Type</strong></span>
+								<strong>Type</strong>
 							</div>
+							&nbsp;
 						</td>
 
 						<td class="formFieldWhite">
-							&nbsp;
 							<bean:write name="sample" property="sampleType" />
+							&nbsp;
 						</td>
 					</tr>
 
@@ -58,7 +60,8 @@
 						</td>
 
 						<td class="formField">
-							&nbsp; <span class="formFieldWhite"><span class="formMessage"><span style="FONT-SIZE: 8pt"><bean:write name="sample" property="sampleDescription" /></span></span></span>
+							<bean:write name="sample" property="sampleDescription" />
+							&nbsp;
 						</td>
 					</tr>
 
@@ -70,8 +73,8 @@
 						</td>
 
 						<td class="formFieldWhite">
-							&nbsp;
 							<bean:write name="sample" property="sampleSource" />
+							&nbsp;
 						</td>
 					</tr>
 
@@ -83,34 +86,34 @@
 						</td>
 
 						<td class="formField">
-							&nbsp;
 							<bean:write name="sample" property="sourceSampleId" />
+							&nbsp;
 						</td>
 					</tr>
 
 					<tr>
 						<td class="formLabelWhite">
 							<div align="left">
-								<strong><strong>Date Received</strong></strong>
+								<strong>Date Received</strong>
 							</div>
 						</td>
 
 						<td class="formFieldWhite">
-							&nbsp;
 							<bean:write name="sample" property="dateReceived" />
+							&nbsp;
 						</td>
 					</tr>
 
 					<tr>
 						<td class="formLabel">
 							<div align="left">
-								<span class="formField"><strong>Solubility</strong></span>
+								<strong>Solubility</strong>
 							</div>
 						</td>
 
 						<td class="formField">
-							&nbsp;
 							<bean:write name="sample" property="solubility" />
+							&nbsp;
 						</td>
 					</tr>
 
@@ -122,22 +125,21 @@
 						</td>
 
 						<td class="formFieldWhite">
-							&nbsp;
 							<bean:write name="sample" property="lotId" />
+							&nbsp;
 						</td>
 					</tr>
 
 					<tr>
 						<td class="formLabel">
 							<div align="left">
-								<span class="formField"><strong>Lot Description</strong></span>
+								<strong>Lot Description</strong>&nbsp;
 							</div>
 						</td>
 
 						<td class="formField">
-							&nbsp;
 							<bean:write name="sample" property="lotDescription" />
-							&nbsp; &nbsp; &nbsp;
+							&nbsp;
 						</td>
 					</tr>
 
@@ -149,8 +151,8 @@
 						</td>
 
 						<td class="formFieldWhite">
-							&nbsp;
 							<bean:write name="sample" property="numberOfContainers" />
+							&nbsp;
 						</td>
 					</tr>
 					<tr>
@@ -161,8 +163,8 @@
 						</td>
 
 						<td class="formFieldWhite">
-							&nbsp;
 							<bean:write name="sample" property="generalComments" />
+							&nbsp;
 						</td>
 					</tr>
 				</tbody>
@@ -195,14 +197,13 @@
 								</div>
 							</td>
 							<td class="formField" width="72%">
-								&nbsp;
 								<logic:notEqual name="container" property="containerType" value="Other">
 									<bean:write name="container" property="containerType" />
 								</logic:notEqual>
 								<logic:equal name="container" property="containerType" value="Other">
 									<bean:write name="container" property="otherContainerType" />
 								</logic:equal>
-
+								&nbsp;
 							</td>
 						</tr>
 						<tr>
@@ -213,9 +214,9 @@
 							</td>
 
 							<td class="formFieldWhite">
-								&nbsp;
 								<bean:write name="container" property="quantity" />
 								<bean:write name="container" property="quantityUnit" />
+								&nbsp;
 							</td>
 						</tr>
 
@@ -227,10 +228,10 @@
 							</td>
 
 							<td class="formField">
-								&nbsp;
 								<bean:write name="container" property="concentration" />
 								&nbsp;
 								<bean:write name="container" property="concentrationUnit" />
+								&nbsp;
 							</td>
 						</tr>
 
@@ -242,7 +243,6 @@
 							</td>
 
 							<td class="formFieldWhite">
-								&nbsp;
 								<bean:write name="container" property="volume" />
 								&nbsp;
 								<bean:write name="container" property="volumeUnit" />
@@ -258,8 +258,8 @@
 							</td>
 
 							<td class="formField">
-								&nbsp;
 								<bean:write name="container" property="solvent" />
+								&nbsp;
 							</td>
 						</tr>
 
@@ -271,21 +271,21 @@
 							</td>
 
 							<td class="formFieldWhite">
-								&nbsp;
 								<bean:write name="container" property="safetyPrecaution" />
+								&nbsp;
 							</td>
 						</tr>
 
 						<tr>
 							<td class="formLabel">
 								<div align="left">
-									<span class="formField"><strong>Storage Conditions</strong></span>
+									<strong>Storage Conditions</strong>
 								</div>
 							</td>
 
 							<td class="formField">
-								&nbsp;
 								<bean:write name="container" property="storageCondition" />
+								&nbsp;
 							</td>
 						</tr>
 
@@ -305,8 +305,8 @@
 							</td>
 
 							<td class="formField">
-								&nbsp;
 								<bean:write name="container" property="storageLocation.room" />
+								&nbsp;
 							</td>
 						</tr>
 
@@ -318,8 +318,8 @@
 							</td>
 
 							<td class="formFieldWhite">
-								&nbsp;
 								<bean:write name="container" property="storageLocation.freezer" />
+								&nbsp;
 							</td>
 						</tr>
 
@@ -331,8 +331,8 @@
 							</td>
 
 							<td class="formField">
-								&nbsp;
 								<bean:write name="container" property="storageLocation.shelf" />
+								&nbsp;
 							</td>
 						</tr>
 
@@ -344,8 +344,8 @@
 							</td>
 
 							<td class="formFieldWhite">
-								&nbsp;
 								<bean:write name="container" property="storageLocation.box" />
+								&nbsp;
 							</td>
 						</tr>
 						<tr>
@@ -356,8 +356,8 @@
 							</td>
 
 							<td class="formFieldWhite">
-								&nbsp;
 								<bean:write name="container" property="containerComments" />
+								&nbsp;
 							</td>
 						</tr>
 					</tbody>
@@ -401,19 +401,21 @@
 						</td>
 
 						<td class="formField" width="72%">
-							<span class="formMessage"><span style="FONT-SIZE: 8pt"><bean:write name="aliquot" property="sample.sampleName" /></span></span>
+							<bean:write name="aliquot" property="sample.sampleName" />
+							&nbsp;
 						</td>
 					</tr>
 
 					<tr>
 						<td class="formLabelWhite">
 							<div align="left">
-								<span class="formFieldWhite"><strong>Type</strong></span>
+								<strong>Type</strong>
 							</div>
 						</td>
 
 						<td class="formFieldWhite">
 							<bean:write name="aliquot" property="sample.sampleType" />
+							&nbsp;
 						</td>
 					</tr>
 
@@ -425,7 +427,8 @@
 						</td>
 
 						<td class="formField">
-							<span class="formFieldWhite"><span class="formMessage"><span style="FONT-SIZE: 8pt"><bean:write name="aliquot" property="sample.sampleDescription" /></span></span></span>
+							<bean:write name="aliquot" property="sample.sampleDescription" />
+							&nbsp;
 						</td>
 					</tr>
 
@@ -437,8 +440,8 @@
 						</td>
 
 						<td class="formFieldWhite">
-							&nbsp;
 							<bean:write name="aliquot" property="sample.sampleSource" />
+							&nbsp;
 						</td>
 					</tr>
 
@@ -451,6 +454,7 @@
 
 						<td class="formField">
 							<bean:write name="aliquot" property="sample.sourceSampleId" />
+							&nbsp;
 						</td>
 					</tr>
 
@@ -462,8 +466,8 @@
 						</td>
 
 						<td class="formFieldWhite">
-							&nbsp;
 							<bean:write name="aliquot" property="sample.dateReceived" />
+							&nbsp;
 						</td>
 					</tr>
 
@@ -475,8 +479,8 @@
 						</td>
 
 						<td class="formField">
-							&nbsp;
 							<bean:write name="aliquot" property="sample.solubility" />
+							&nbsp;
 						</td>
 					</tr>
 
@@ -488,8 +492,8 @@
 						</td>
 
 						<td class="formFieldWhite">
-							&nbsp;
 							<bean:write name="aliquot" property="sample.lotId" />
+							&nbsp;
 						</td>
 					</tr>
 
@@ -502,7 +506,7 @@
 
 						<td class="formField">
 							<bean:write name="aliquot" property="sample.lotDescription" />
-							&nbsp; &nbsp; &nbsp;
+							&nbsp;
 						</td>
 					</tr>
 
@@ -515,6 +519,7 @@
 
 						<td class="formFieldWhite">
 							<bean:write name="aliquot" property="sample.numberOfContainers" />
+							&nbsp;
 						</td>
 					</tr>
 					<tr>
@@ -526,6 +531,7 @@
 
 						<td class="formFieldWhite">
 							<bean:write name="aliquot" property="sample.generalComments" />
+							&nbsp;
 						</td>
 					</tr>
 				</tbody>
@@ -554,7 +560,7 @@
 							<logic:equal name="aliquot" property="container.containerType" value="Other">
 								<bean:write name="aliquot" property="container.otherContainerType" />
 							</logic:equal>
-
+							&nbsp;
 						</td>
 					</tr>
 					<tr>
@@ -567,6 +573,7 @@
 						<td class="formFieldWhite">
 							<bean:write name="aliquot" property="container.quantity" />
 							<bean:write name="aliquot" property="container.quantityUnit" />
+							&nbsp;
 						</td>
 					</tr>
 
@@ -581,6 +588,7 @@
 							<bean:write name="aliquot" property="container.concentration" />
 							&nbsp;
 							<bean:write name="aliquot" property="container.concentrationUnit" />
+							&nbsp;
 						</td>
 					</tr>
 
@@ -608,6 +616,7 @@
 
 						<td class="formField">
 							<bean:write name="aliquot" property="container.solvent" />
+							&nbsp;
 						</td>
 					</tr>
 
@@ -620,18 +629,20 @@
 
 						<td class="formFieldWhite">
 							<bean:write name="aliquot" property="container.safetyPrecaution" />
+							&nbsp;
 						</td>
 					</tr>
 
 					<tr>
 						<td class="formLabel">
 							<div align="left">
-								<span class="formField"><strong>Storage Conditions</strong></span>
+								<strong>Storage Conditions</strong>
 							</div>
 						</td>
 
 						<td class="formField">
 							<bean:write name="aliquot" property="container.storageCondition" />
+							&nbsp;
 						</td>
 					</tr>
 
@@ -652,6 +663,7 @@
 
 						<td class="formField">
 							<bean:write name="aliquot" property="container.storageLocation.room" />
+							&nbsp;
 						</td>
 					</tr>
 
@@ -664,6 +676,7 @@
 
 						<td class="formFieldWhite">
 							<bean:write name="aliquot" property="container.storageLocation.freezer" />
+							&nbsp;
 						</td>
 					</tr>
 
@@ -676,6 +689,7 @@
 
 						<td class="formField">
 							<bean:write name="aliquot" property="container.storageLocation.shelf" />
+							&nbsp;
 						</td>
 					</tr>
 
@@ -688,6 +702,7 @@
 
 						<td class="formFieldWhite">
 							<bean:write name="aliquot" property="container.storageLocation.box" />
+							&nbsp;
 						</td>
 					</tr>
 					<tr>
@@ -699,6 +714,7 @@
 
 						<td class="formFieldWhite">
 							<bean:write name="aliquot" property="container.containerComments" />
+							&nbsp;
 						</td>
 					</tr>
 				</tbody>

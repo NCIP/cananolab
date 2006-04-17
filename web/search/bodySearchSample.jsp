@@ -19,86 +19,84 @@
 		</ul>
 	</logic:messagesPresent>
 	<blockquote>
-		<TABLE WIDTH=100% BORDER=0 align="center" CELLPADDING=1 CELLSPACING=0>
+		<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" summary="">
 			<TR>
-				<td width="64%" class="dataTablePrimaryLabel">
+				<td width="36%" class="dataTablePrimaryLabel">
 					Search
 				</td>
-				<td width="36%" height="20" class="dataTablePrimaryLabel">
-					<div align="center">
-						* Search for Wildcards
-					</div>
+				<td class="dataTablePrimaryLabel">
+					* Search for Wildcards
 				</td>
 			</TR>
-		</TABLE>
-		<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" summary="">
 			<tr>
-				<td colspan="2" class="formLabel">
-					<div align="center">
-						<strong>Sample ID <span class="formFieldWhite"><img src="images/help.gif" width="15" height="15"> <html:select property="sampleName">
-									<option value="" />
-									<option value="all">all</option>
-										<html:options collection="allSamples" property="sampleName" labelProperty="sampleName"/>
-								</html:select> &nbsp; &nbsp; &nbsp; </span></strong> or<strong>&nbsp; &nbsp; &nbsp; Aliquot ID<img src="images/help.gif" width="15" height="15"> <html:select property="aliquotName">
-								<option value="" />
-								<option value="all">all</option>
-									<html:options collection="allAliquots" property="aliquotName" labelProperty="aliquotName"/>
-							</html:select> </strong>
-					</div>
+				<td class="formLabel">
+					<strong>Search by </strong>
+				</td>
+				<td class="formField">
+					<html:radio property="showAliquot" value="false"/>
+					<strong>Sample &nbsp; &nbsp; <html:radio property="showAliquot" value="true" /> Aliquot</strong>
 				</td>
 			</tr>
 			<tr>
-				<td width="36%" class="formLabelWhite">
-					<strong> <label for="label2">
-							Sample Type
-						</label> <span class="formFieldWhite"><img src="images/help.gif" width="15" height="15"></span> </strong>
+				<td class="formLabelWhite">
+					<strong>Search ID (Sample or Aliquot) 
 				</td>
-				<td width="64%" class="formFieldWhite">
-					<span class="formField"><strong> <html:select property="sampleType">
-								<option value="" />
-									<html:options name="allSampleTypes" />
-							</html:select></strong></span>
+				<td class="formFieldWhite">
+					<html:text property="searchName" size="15" />
 				</td>
 			</tr>
 			<tr>
 				<td class="formLabel">
+					<strong> Sample Type </strong>
+				</td>
+				<td class="formField">
+					<strong> <html:select property="sampleType">
+							<option value="" />
+								<html:options name="allSampleTypes" />
+						</html:select></strong>
+				</td>
+			</tr>
+			<tr>
+				<td class="formLabelWhite">
 					<strong>Source</strong>
 				</td>
-				<td class="formField">
-					<span class="formFieldWhite"> <strong> <html:select property="sampleSource">
-								<option value="" />
-									<html:options name="allSampleSources" />
-							</html:select></strong> </span>
-				</td>
-			</tr>
-			<tr>
-				<td class="formLabelWhite">
-					<strong>Source ID</strong>
-				</td>
 				<td class="formFieldWhite">
-					<span class="formField"> <strong> <html:select property="sourceSampleId">
-								<option value="" />
-									<html:options name="allSourceSampleIds" />
-							</html:select> </strong> </span>
+					<strong> <html:select property="sampleSource">
+							<option value="" />
+								<html:options name="allSampleSources" />
+						</html:select></strong>
 				</td>
 			</tr>
 			<tr>
 				<td class="formLabel">
-					<strong> Date Accessioned<img src="images/help.gif" width="15" height="15"></strong>
+					<strong>Source ID</strong>
 				</td>
 				<td class="formField">
-					<span class="formField"> <html:text property="dateAccessionedBegin" size="10" /> <a href="javascript:cal1.popup();"><img src="images/calendar-icon.gif" width="22" height="18" border="0" alt="Click Here to Pick up the date" align="middle"></a> <label>
-							&nbsp; to &nbsp;
-							<html:text property="dateAccessionedEnd" size="10" />
-							<a href="javascript:cal2.popup();"><img src="images/calendar-icon.gif" width="22" height="18" border="0" alt="Click Here to Pick up the date" align="middle"></a>
-						</label> </span>
+					<strong> <html:select property="sourceSampleId">
+							<option value="" />
+								<html:options name="allSourceSampleIds" />
+						</html:select> </strong>
 				</td>
 			</tr>
 			<tr>
 				<td class="formLabelWhite">
-					<strong> Submitter <span class="formFieldWhite"><img src="images/help.gif" width="15" height="15"></span> </strong>
+					<strong> Date Accessioned</strong>
 				</td>
 				<td class="formFieldWhite">
+					<html:text property="dateAccessionedBegin" size="10" />
+					<a href="javascript:cal1.popup();"><img src="images/calendar-icon.gif" width="22" height="18" border="0" alt="Click Here to Pick up the date" align="middle"></a>
+					<label>
+						&nbsp; to &nbsp;
+						<html:text property="dateAccessionedEnd" size="10" />
+						<a href="javascript:cal2.popup();"><img src="images/calendar-icon.gif" width="22" height="18" border="0" alt="Click Here to Pick up the date" align="middle"></a>
+					</label>
+				</td>
+			</tr>
+			<tr>
+				<td class="formLabel">
+					<strong> Submitter </strong>
+				</td>
+				<td class="formField">
 					<html:select property="sampleSubmitter">
 						<option value="" />
 							<html:options name="allSampleSubmitters" />
@@ -106,7 +104,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2" class="formLabel">
+				<td colspan="2" class="formLabelWhite">
 					<div align="center">
 						<strong>Storage Location<br> <br> Room&nbsp; <html:select property="storageLocation.room">
 								<option value="" />
