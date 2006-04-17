@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchSampleAction.java,v 1.5 2006-04-11 18:33:53 pansu Exp $ */
+/* CVS $Id: SearchSampleAction.java,v 1.6 2006-04-17 19:25:00 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.SampleBean;
@@ -43,8 +43,19 @@ public class SearchSampleAction extends AbstractBaseAction {
 
 		try {
 			DynaValidatorForm theForm = (DynaValidatorForm) form;
-			String sampleName = (String) theForm.get("sampleName");
-			String aliquotName = (String) theForm.get("aliquotName");
+			// search base on aliquotName if aliquotName is present
+			// otherwise search base sampleName
+			boolean showAliquot = ((String) theForm.get("showAliquot"))
+					.equals("true") ? true : false;
+			String searchName = (String) theForm.get("searchName");
+			String sampleName="";
+			String aliquotName="";
+			if (showAliquot) {
+				aliquotName=searchName;
+			}
+			else {
+				sampleName=searchName;
+			}			
 			String sampleType = (String) theForm.get("sampleType");
 			String sampleSource = (String) theForm.get("sampleSource");
 			String sourceSampleId = (String) theForm.get("sourceSampleId");
@@ -53,14 +64,8 @@ public class SearchSampleAction extends AbstractBaseAction {
 			String dateAccessionedEndStr = (String) theForm
 					.get("dateAccessionedEnd");
 
-			// search base on aliquotName if aliquotName is present
-			// otherwise search base sampleName
-			boolean showAliquot = false;
-			if (aliquotName.length() > 0) {
-				showAliquot = true;				
-			}
 			request.setAttribute("showAliquot", showAliquot);
-		
+
 			Date dateAccessionedBegin = dateAccessionedBeginStr.length() == 0 ? null
 					: StringUtils.convertToDate(dateAccessionedBeginStr,
 							"MM/dd/yyyy");
@@ -79,24 +84,24 @@ public class SearchSampleAction extends AbstractBaseAction {
 
 			if (showAliquot) {
 				if (aliquotName.equals("all")) {
-					aliquotName="";
+					aliquotName = "";
 				}
 				aliquots = searchSampleService.searchAliquotsByAliquotName(
 						aliquotName, sampleType, sampleSource, sourceSampleId,
 						dateAccessionedBegin, dateAccessionedEnd,
-						sampleSubmitter, storageLocation);				
+						sampleSubmitter, storageLocation);
 			} else if (sampleName.length() >= 0) {
 				if (sampleName.equals("all")) {
-					sampleName="";
+					sampleName = "";
 				}
-				samples = searchSampleService.searchSamplesBySampleName(sampleName,
-						sampleType, sampleSource, sourceSampleId,
+				samples = searchSampleService.searchSamplesBySampleName(
+						sampleName, sampleType, sampleSource, sourceSampleId,
 						dateAccessionedBegin, dateAccessionedEnd,
-						sampleSubmitter, storageLocation);			
+						sampleSubmitter, storageLocation);
 			} else {
 				samples = searchSampleService.searchSamples(sampleType,
 						sampleSource, sourceSampleId, dateAccessionedBegin,
-						dateAccessionedEnd, sampleSubmitter, storageLocation);				
+						dateAccessionedEnd, sampleSubmitter, storageLocation);
 			}
 
 			if (!showAliquot && (samples == null || samples.isEmpty())
