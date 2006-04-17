@@ -95,7 +95,7 @@
 			<forward name="success" path="workflow.fileUpload" />
 			<forward name="failure" path="/initSession.do?forwardPage=workflowMessage" />
 			<forward name="expiredSession" path="/login.do" />
-			<forward name="done" path="/initSession.do?forwardPage=createRun" />
+			<forward name="done" path="calab.welcome" />
 		</action>		
 		<action path="/workflowForward" type="org.apache.struts.actions.ForwardAction" parameter="workflow.message"/>
 	</action-mappings>
