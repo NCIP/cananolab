@@ -54,8 +54,9 @@
 							<div align="center">
 								<span class="mainMenu"> <span class="formMessage">Aliquots</span> 								
 								<html:select multiple="true" property="availableAliquot" size="4" >
-									<html:options name="allAvailableAliquots" />
+									<html:options collection="allAvailableAliquots" property="aliquotId" labelProperty="aliquotName"/>										
 								</html:select>
+											
 								</span>
 							</div>
 						</td>
@@ -69,7 +70,7 @@
 							</table>
 						</td>
 						<td width="62%" valign="top">
-								<span class="formMessage">Use Aliquots</span>
+								<div align="top"><span class="formMessage" >Use Aliquots</span></div>
 								<html:select multiple="true" property="assignedAliquot"  size="4">
 									<html:options name="allAssignedAliquots" />
 								</html:select>
@@ -102,7 +103,20 @@
 				<span class="formFieldWhite"> 
 									<a href="javascript:cal.popup();"> <img height="18" src="images/calendar-icon.gif" width="22" border="0" alt="Click Here to Pick up the date"> </a>
 				</span>
-			</td>	
+			</td>
+		</tr>	
+		<tr>
+			<td class="formLabelWhite">
+			
+				<div align="left">
+					<strong>Commets </strong>
+				</div>
+			</td>
+			<td class="formLabelWhite">
+					<div align="justify">
+						<span class="formFieldWhite"><html:textarea property="runComment" cols="70" /></span></span></strong>
+					</div>
+				</td>
 		</tr>
 	</table>
 	<br>
@@ -115,7 +129,7 @@
 					<tr>
 						<td width="490" height="32">
 								<div align="right"><div align="right">
-									<input type="reset" value="Reset">
+									<input type="reset" value="Clear" onclick="clearObject(document.createRunForm.assignedAliquot);">
 									<html:submit />
 								</div>
 							</div>
@@ -136,5 +150,12 @@
   var cal = new calendar2(document.forms['createRunForm'].elements['runDate']);
   cal.year_scroll = true;
   cal.time_comp = false;
+  function clearObject(obj) {
+		for (index=obj.length-1; index>=0; index--) {			
+				obj[index] = null;
+		}
+  return true;		
+}
+
 //-->
 </script>
