@@ -22,7 +22,7 @@ import org.apache.log4j.Logger;
  * @author pansu
  * 
  */
-/* CVS $Id: SearchSampleService.java,v 1.10 2006-04-13 17:27:25 pansu Exp $ */
+/* CVS $Id: SearchSampleService.java,v 1.11 2006-04-17 19:24:27 pansu Exp $ */
 
 public class SearchSampleService {
 	private static Logger logger = Logger.getLogger(SearchSampleService.class);
@@ -116,7 +116,7 @@ public class SearchSampleService {
 	 * @param storageLocation
 	 * @return a list of SampleBean
 	 */
-	public List<SampleBean> searchSamplesBySampleName(String sampleId,
+	public List<SampleBean> searchSamplesBySampleName(String sampleName,
 			String sampleType, String sampleSource, String sourceSampleId,
 			Date dateAccessionedBegin, Date dateAccessionedEnd,
 			String sampleSubmitter, StorageLocation storageLocation) {
@@ -127,24 +127,30 @@ public class SearchSampleService {
 
 			String where = "";
 			String storageFrom = "";
-			if (sampleId != "") {
-				paramList.add(sampleId);
+
+			if (sampleName.length()>0) {				
 				where = "where ";
-				whereList.add("sample.name=?");
+				if (sampleName.indexOf("*") != -1) {
+					sampleName = sampleName.replace('*', '%');
+					whereList.add("sample.name like ?");
+				} else {
+					whereList.add("sample.name=?");
+				}
+				paramList.add(sampleName);
 			}
-			if (sampleType != "") {
+			if (sampleType.length()>0) {
 				paramList.add(sampleType);
 				where = "where ";
 				whereList.add("sample.type=?");
 			}
 
-			if (sampleSource != "") {
+			if (sampleSource.length()>0) {
 				paramList.add(sampleSource);
 				where = "where ";
 				whereList.add("sample.source.organizationName=?");
 			}
 
-			if (sourceSampleId != "") {
+			if (sourceSampleId.length()>0) {
 				paramList.add(sourceSampleId);
 				where = "where ";
 				whereList.add("sample.sourceSampleId=?");
@@ -161,34 +167,34 @@ public class SearchSampleService {
 				where = "where ";
 				whereList.add("sample.createdDate<=?");
 			}
-			if (sampleSubmitter != "") {
+			if (sampleSubmitter.length()>0) {
 				paramList.add(sampleSubmitter);
 				where = "where ";
 				whereList.add("sample.createdBy=?");
 			}
 
-			if (storageLocation.getRoom() != "") {
+			if (storageLocation.getRoom().length()>0) {
 				paramList.add(storageLocation.getRoom());
 				where = "where ";
 				storageFrom = "join sample.sampleContainerCollection container join container.storageElementCollection storage ";
 				whereList.add("storage.type='Room' and storage.location=?");
 			}
 
-			if (storageLocation.getFreezer() != "") {
+			if (storageLocation.getFreezer().length()>0) {
 				paramList.add(storageLocation.getFreezer());
 				where = "where ";
 				storageFrom = "join sample.sampleContainerCollection container join container.storageElementCollection storage ";
 				whereList.add("storage.type='Freezer' and storage.location=?");
 			}
 
-			if (storageLocation.getFreezer() != "") {
+			if (storageLocation.getFreezer().length()>0) {
 				paramList.add(storageLocation.getFreezer());
 				where = "where ";
 				storageFrom = "join sample.sampleContainerCollection container join container.storageElementCollection storage ";
 				whereList.add(" storage.type='Shelf' and storage.location=?");
 			}
 
-			if (storageLocation.getBox() != "") {
+			if (storageLocation.getBox().length()>0) {
 				paramList.add(storageLocation.getBox());
 				where = "where ";
 				storageFrom = "join sample.sampleContainerCollection container join container.storageElementCollection storage ";
@@ -243,10 +249,15 @@ public List<AliquotBean> searchAliquotsByAliquotName(String aliquotName,
 
 			String where = "";
 			String storageFrom = "";
-			if (aliquotName.length()>0) {
-				paramList.add(aliquotName);
+			if (aliquotName.length()>0) {								
 				where = "where ";
-				whereList.add("aliquot.name=?");
+				if (aliquotName.indexOf("*") != -1) {
+					aliquotName = aliquotName.replace('*', '%');
+					whereList.add("aliquot.name like ?");
+				} else {
+					whereList.add("aliquot.name=?");
+				}
+				paramList.add(aliquotName);
 			}
 			if (sampleType.length()>0) {
 				paramList.add(sampleType);
