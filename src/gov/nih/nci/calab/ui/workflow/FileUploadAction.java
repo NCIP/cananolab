@@ -7,6 +7,7 @@ import java.util.List;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
 import gov.nih.nci.calab.service.util.file.FileLocatorUtils;
+import gov.nih.nci.calab.service.util.file.FileNameConvertor;
 import gov.nih.nci.calab.service.util.file.HttpFileUploadSessionData;
 import gov.nih.nci.calab.service.util.file.HttpUploadedFileData;
 
@@ -115,6 +116,17 @@ public class FileUploadAction extends DispatchAction
                         if (file.exists())
                         {
                             file.delete();
+                        }
+                        
+                        //delete uncompressed files
+                        String fileName = null;
+                        FileNameConvertor fnConvertor = new FileNameConvertor();
+                        fileName = fnConvertor.getConvertedFileName(data.getFileName());
+                        
+                        File uncompressedFile = new File(fullPathName, fileName);
+                        if (uncompressedFile.exists())
+                        {
+                            uncompressedFile.delete();
                         }
                     }
                     catch (Exception e)
