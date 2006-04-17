@@ -33,7 +33,7 @@
 						</td>
 
 						<td class="formField" width="72%">
-							<span class="formMessage"><span style="FONT-SIZE: 8pt"><bean:write name="sample" property="sampleName" /></span></span>
+							&nbsp; <span class="formMessage"><span style="FONT-SIZE: 8pt"><bean:write name="sample" property="sampleName" /></span></span>
 						</td>
 					</tr>
 
@@ -45,6 +45,7 @@
 						</td>
 
 						<td class="formFieldWhite">
+							&nbsp;
 							<bean:write name="sample" property="sampleType" />
 						</td>
 					</tr>
@@ -57,7 +58,7 @@
 						</td>
 
 						<td class="formField">
-							<span class="formFieldWhite"><span class="formMessage"><span style="FONT-SIZE: 8pt"><bean:write name="sample" property="sampleDescription" /></span></span></span>
+							&nbsp; <span class="formFieldWhite"><span class="formMessage"><span style="FONT-SIZE: 8pt"><bean:write name="sample" property="sampleDescription" /></span></span></span>
 						</td>
 					</tr>
 
@@ -82,6 +83,7 @@
 						</td>
 
 						<td class="formField">
+							&nbsp;
 							<bean:write name="sample" property="sourceSampleId" />
 						</td>
 					</tr>
@@ -133,6 +135,7 @@
 						</td>
 
 						<td class="formField">
+							&nbsp;
 							<bean:write name="sample" property="lotDescription" />
 							&nbsp; &nbsp; &nbsp;
 						</td>
@@ -146,6 +149,7 @@
 						</td>
 
 						<td class="formFieldWhite">
+							&nbsp;
 							<bean:write name="sample" property="numberOfContainers" />
 						</td>
 					</tr>
@@ -157,6 +161,7 @@
 						</td>
 
 						<td class="formFieldWhite">
+							&nbsp;
 							<bean:write name="sample" property="generalComments" />
 						</td>
 					</tr>
@@ -190,6 +195,7 @@
 								</div>
 							</td>
 							<td class="formField" width="72%">
+								&nbsp;
 								<logic:notEqual name="container" property="containerType" value="Other">
 									<bean:write name="container" property="containerType" />
 								</logic:notEqual>
@@ -207,6 +213,7 @@
 							</td>
 
 							<td class="formFieldWhite">
+								&nbsp;
 								<bean:write name="container" property="quantity" />
 								<bean:write name="container" property="quantityUnit" />
 							</td>
@@ -220,6 +227,7 @@
 							</td>
 
 							<td class="formField">
+								&nbsp;
 								<bean:write name="container" property="concentration" />
 								&nbsp;
 								<bean:write name="container" property="concentrationUnit" />
@@ -234,6 +242,7 @@
 							</td>
 
 							<td class="formFieldWhite">
+								&nbsp;
 								<bean:write name="container" property="volume" />
 								&nbsp;
 								<bean:write name="container" property="volumeUnit" />
@@ -249,6 +258,7 @@
 							</td>
 
 							<td class="formField">
+								&nbsp;
 								<bean:write name="container" property="solvent" />
 							</td>
 						</tr>
@@ -261,6 +271,7 @@
 							</td>
 
 							<td class="formFieldWhite">
+								&nbsp;
 								<bean:write name="container" property="safetyPrecaution" />
 							</td>
 						</tr>
@@ -273,6 +284,7 @@
 							</td>
 
 							<td class="formField">
+								&nbsp;
 								<bean:write name="container" property="storageCondition" />
 							</td>
 						</tr>
@@ -293,6 +305,7 @@
 							</td>
 
 							<td class="formField">
+								&nbsp;
 								<bean:write name="container" property="storageLocation.room" />
 							</td>
 						</tr>
@@ -305,6 +318,7 @@
 							</td>
 
 							<td class="formFieldWhite">
+								&nbsp;
 								<bean:write name="container" property="storageLocation.freezer" />
 							</td>
 						</tr>
@@ -317,6 +331,7 @@
 							</td>
 
 							<td class="formField">
+								&nbsp;
 								<bean:write name="container" property="storageLocation.shelf" />
 							</td>
 						</tr>
@@ -329,6 +344,7 @@
 							</td>
 
 							<td class="formFieldWhite">
+								&nbsp;
 								<bean:write name="container" property="storageLocation.box" />
 							</td>
 						</tr>
@@ -340,6 +356,7 @@
 							</td>
 
 							<td class="formFieldWhite">
+								&nbsp;
 								<bean:write name="container" property="containerComments" />
 							</td>
 						</tr>

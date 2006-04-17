@@ -58,21 +58,25 @@
 					<tr>
 						<td class="${style}" valign="top">
 							<div align="left">
+								&nbsp;
 								<bean:write name="sample" property="sampleName" />
 							</div>
 						</td>
 						<td class="${style}" valign="top">
 							<div align="left">
+								&nbsp;
 								<bean:write name="sample" property="accessionDate" />
 							</div>
 						</td>
 						<td class="${style}" valign="top">
 							<div align="left">
+								&nbsp;
 								<bean:write name="sample" property="sampleType" />
 							</div>
 						</td>
 						<td class="${style}" valign="top">
 							<div align="left">
+								&nbsp;
 								<logic:present name="container">
 									<bean:write name="container" property="storageLocationStr" />
 								</logic:present>
@@ -80,6 +84,7 @@
 						</td>
 						<td class="${style}" valign="top">
 							<div align="left">
+								&nbsp;
 								<bean:write name="sample" property="sampleSubmitter" />
 							</div>
 						</td>
@@ -92,7 +97,8 @@
 			pageContext.setAttribute("viewSampleDetailParams",
 					viewSampleDetailParams);%>
 							<div align="center">
-								<span class="${style}"><html:link action="viewSampleDetail" name="viewSampleDetailParams">View</html:link></span>
+								&nbsp;
+								<html:link action="viewSampleDetail" name="viewSampleDetailParams">View</html:link>
 							</div>
 						</td>
 					</tr>
@@ -143,41 +149,49 @@
 				<tr>
 					<td class="${style}" valign="top">
 						<div align="left">
+							&nbsp;
 							<bean:write name="aliquot" property="sample.sampleName" />
 						</div>
 					</td>
 					<td class="${style}" valign="top">
 						<div align="left">
+							&nbsp;
 							<bean:write name="aliquot" property="sample.accessionDate" />
 						</div>
 					</td>
 					<td class="${style}" valign="top">
 						<div align="left">
+							&nbsp;
 							<bean:write name="aliquot" property="sample.sampleType" />
 						</div>
 					</td>
 					<td class="${style}" valign="top">
 						<div align="left">
+							&nbsp;
 							<bean:write name="aliquot" property="sample.sampleSubmitter" />
 						</div>
 					</td>
 					<td class="${style}" valign="top">
 						<div align="left">
+							&nbsp;
 							<bean:write name="aliquot" property="aliquotName" />
 						</div>
 					</td>
 					<td class="${style}" valign="top">
 						<div align="left">
+							&nbsp;
 							<bean:write name="aliquot" property="creationDate" />
 						</div>
 					</td>
 					<td class="${style}" valign="top">
 						<div align="left">
+							&nbsp;
 							<bean:write name="aliquot" property="container.storageLocationStr" />
 						</div>
 					</td>
 					<td class="${style}" valign="top">
 						<div align="left">
+							&nbsp;
 							<bean:write name="aliquot" property="creator" />
 						</div>
 					</td>
@@ -188,7 +202,7 @@
 			pageContext.setAttribute("viewAliquotDetailParams",
 					viewAliquotDetailParams);%>
 						<div align="center">
-							<span class="${style}"><html:link action="viewSampleDetail" name="viewAliquotDetailParams">View</html:link></span>
+							&nbsp; <span class="${style}"><html:link action="viewSampleDetail" name="viewAliquotDetailParams">View</html:link></span>
 						</div>
 					</td>
 				</tr>
