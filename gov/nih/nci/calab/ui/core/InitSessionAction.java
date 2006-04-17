@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.12 2006-04-17 19:30:05 pansu Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.13 2006-04-17 19:55:47 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
@@ -63,7 +63,6 @@ public class InitSessionAction extends AbstractBaseAction {
 				setUseAliquotSession(session, lookupService);
 			} else if (forwardPage.equals("createSample")) {
 				setCreateSampleSession(session, lookupService);
-
 			} else if (forwardPage.equals("createAliquot")) {
 				setCreateAliquotSession(session, lookupService, urlPrefix);
 			} else if (forwardPage.equals("searchWorkflow")) {
@@ -122,6 +121,10 @@ public class InitSessionAction extends AbstractBaseAction {
 					.getExecuteWorkflowBean();
 			session.setAttribute("workflow", workflowBean);
 		}
+		// clear the new aliquot created flag
+		session.removeAttribute("newAliquotCreated");
+		// clear the new workflow created flag
+		session.removeAttribute("newWorkflowCreated");
 	}
 
 	/**
@@ -315,6 +318,7 @@ public class InitSessionAction extends AbstractBaseAction {
 			List allAssayBeans = lookupService.getAllAssayBeans();
 			session.setAttribute("allAssayBeans", allAssayBeans);
 		}
-
+		// clear the new workflow created flag
+		session.removeAttribute("newWorkflowCreated");
 	}
 }
