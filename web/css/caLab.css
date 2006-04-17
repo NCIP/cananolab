@@ -334,7 +334,7 @@ DATA TABLE BEGINS
 ###############*/
 .dataTablePrimaryLabel{ /* for the first row */
   font-family:arial, helvetica, verdana, sans-serif;
-  font-size:1.2em;
+  font-size:1.0em;
   font-weight:bolder;
   background-color:#666666; /* constant: dark gray */
   color:#FFFFFF; /* constant: white */
