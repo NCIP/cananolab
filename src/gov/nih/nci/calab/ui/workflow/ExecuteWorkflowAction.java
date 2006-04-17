@@ -6,15 +6,11 @@ package gov.nih.nci.calab.ui.workflow;
  * @author pansu
  */
 
-/* CVS $Id: ExecuteWorkflowAction.java,v 1.4 2006-04-14 22:22:54 pansu Exp $*/
+/* CVS $Id: ExecuteWorkflowAction.java,v 1.5 2006-04-17 14:46:31 pansu Exp $*/
 
-import gov.nih.nci.calab.dto.workflow.AssayBean;
-import gov.nih.nci.calab.dto.workflow.RunBean;
+import gov.nih.nci.calab.dto.workflow.ExecuteWorkflowBean;
 import gov.nih.nci.calab.service.workflow.ExecuteWorkflowService;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
-
-import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,41 +33,14 @@ public class ExecuteWorkflowAction extends AbstractBaseAction {
 		ActionMessages msgs = new ActionMessages();		
 		try {			
 			ExecuteWorkflowService executeWorkflowService = new ExecuteWorkflowService();
-			Map assayMap = executeWorkflowService.getWorkflowAssays();
-			if (assayMap.isEmpty()) {
+			ExecuteWorkflowBean workflowBean=executeWorkflowService.getExecuteWorkflowBean();
+			if (workflowBean.getAssayBeanMap().isEmpty()) {
 				ActionMessage error = new ActionMessage("error.noworkflow");
 				msgs.add("error", error);
 				saveMessages(request, msgs);
 				forward = mapping.findForward("failure");
 			} else {
-				int totalAssayCount=0;
-				int totalRunCount=0;
-				int totalInputFileCount=0;
-				int totalOutputFileCount=0;
-				int totalAliquotCount=0;
-				for (Object entry: assayMap.entrySet()) {
-					List assays=(List)(((Map.Entry)entry).getValue());
-					totalAssayCount+=assays.size();
-					for (Object assay: assays) {
-						List runs=(List)((AssayBean)assay).getRunBeans();
-						totalRunCount+=runs.size();
-						for (Object run: runs) {
-							List aliquots=(List)((RunBean)run).getAliquotBeans();
-							totalAliquotCount+=aliquots.size();
-							List inputFiles=(List)((RunBean)run).getInputFileBeans();
-							totalInputFileCount+=inputFiles.size();
-							List outputFiles=(List)((RunBean)run).getOutputFileBeans();
-							totalOutputFileCount+=outputFiles.size();
-
-						}
-					}
-				}
-				request.setAttribute("assayMap", assayMap);
-				request.setAttribute("totalAssayCount", totalAssayCount);
-				request.setAttribute("totalRunCount", totalRunCount);
-				request.setAttribute("totalAliquotCount", totalAliquotCount);
-				request.setAttribute("totalInputFileCount", totalInputFileCount);
-				request.setAttribute("totalOutputFileCount", totalOutputFileCount);
+				request.setAttribute("workflow", workflowBean);
 				forward = mapping.findForward("success");
 			}
 		} catch (Exception e) {
