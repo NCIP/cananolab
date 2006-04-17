@@ -56,36 +56,42 @@
 				<tr>
 					<td class="${style}" valign="top">
 						<div align="left">
-							<a href="#" class="style2" align="left"><bean:write name="workflow" property="fileName" /></a>
+							&nbsp; <a href="#" class="style2" align="left"><bean:write name="workflow" property="fileName" /></a>
 						</div>
 					</td>
 					<td class="${style}" valign="top">
 						<div align="left">
+							&nbsp;
 							<bean:write name="workflow" property="assayType" />
 						</div>
 					</td>
 					<td class="${style}" valign="top">
+						&nbsp;
 						<bean:write name="workflow" property="assayName" />
 					</td>
 					<td class="${style}" valign="top">
+						&nbsp;
 						<bean:write name="workflow" property="assayRunDate" />
 					</td>
 					<td class="${style}" valign="top">
+						&nbsp;
 						<bean:write name="workflow" property="aliquotName" />
 					</td>
 					<td class="${style}" valign="top">
 						<div align="left">
+							&nbsp;
 							<bean:write name="workflow" property="fileSubmissionDate" />
 						</div>
 					</td>
 					<td class="${style}" valign="top">
 						<div align="left">
+							&nbsp;
 							<bean:write name="workflow" property="fileSubmitter" />
 						</div>
 					</td>
 					<td class="${style}" valign="top">
 						<div align="left">
-							<strong><bean:write name="workflow" property="fileMaskStatus" /></strong>
+							&nbsp; <strong><bean:write name="workflow" property="fileMaskStatus" /></strong>
 						</div>
 					</td>
 				</tr>
