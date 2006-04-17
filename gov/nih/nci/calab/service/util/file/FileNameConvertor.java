@@ -25,11 +25,19 @@ public class FileNameConvertor
             throw new IOException("Please provide the orginal file name. ");
         }
         String convertedFileName = null;
-        int lastIndexOfDot = orgFileName.lastIndexOf(".");
-        String nameWithoutZipExt = orgFileName.substring(0, lastIndexOfDot);
-        int lastIndexOfUnderScore = nameWithoutZipExt.lastIndexOf("_");
-        convertedFileName = nameWithoutZipExt.substring(0, lastIndexOfUnderScore)
-                           + "." + nameWithoutZipExt.substring(lastIndexOfUnderScore+1);
+        try
+        {
+            int lastIndexOfDot = orgFileName.lastIndexOf(".");
+            String nameWithoutZipExt = orgFileName.substring(0, lastIndexOfDot);
+            int lastIndexOfUnderScore = nameWithoutZipExt.lastIndexOf("_");
+            convertedFileName = nameWithoutZipExt.substring(0, lastIndexOfUnderScore)
+                               + "." + nameWithoutZipExt.substring(lastIndexOfUnderScore+1);
+        }
+        catch (Exception e)
+        {
+            log_.error("cannot create file name!");
+            new Exception("Cannot create file name.");
+        }
         
         return convertedFileName;
     }
