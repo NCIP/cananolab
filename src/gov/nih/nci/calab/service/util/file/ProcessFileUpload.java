@@ -199,6 +199,20 @@ public class ProcessFileUpload extends HttpServlet
                 fi.write(fNew);
                 isSaved = true;
                 log_.debug("Module " + module + ": File " + fNew.getName() + " saved");
+                
+                //uncompress file here
+                String unzipFilePath = fullPathName + File.separator
+                                       + CalabConstants.UNCOMPRESSED_FILE_DIRECTORY;
+                File unzipFile = new File(unzipFilePath);
+                if (!unzipFile.exists())
+                {
+                    unzipFile.mkdirs();
+                }
+                
+                FileUnzipper fUnzipper = new FileUnzipper();
+                fUnzipper.unzip(fullPathName + File.separator+ uploadFileName,
+                                unzipFilePath);
+                
             }
         }    
         catch (Exception e)
@@ -259,8 +273,8 @@ public class ProcessFileUpload extends HttpServlet
             {
             	data.setOriginalFileName("lost");
             }
-            //persitent data here
         }
+        
     }
     public void doGet(HttpServletRequest request, HttpServletResponse response)
     {
