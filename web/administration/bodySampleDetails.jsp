@@ -162,7 +162,7 @@
 							</div>
 						</td>
 
-						<td class="formFieldWhite">
+						<td class="formField">
 							<bean:write name="sample" property="generalComments" />
 							&nbsp;
 						</td>
@@ -355,7 +355,7 @@
 								</div>
 							</td>
 
-							<td class="formFieldWhite">
+							<td class="formField">
 								<bean:write name="container" property="containerComments" />
 								&nbsp;
 							</td>
@@ -529,7 +529,7 @@
 							</div>
 						</td>
 
-						<td class="formFieldWhite">
+						<td class="formField">
 							<bean:write name="aliquot" property="sample.generalComments" />
 							&nbsp;
 						</td>
@@ -712,7 +712,7 @@
 							</div>
 						</td>
 
-						<td class="formFieldWhite">
+						<td class="formField">
 							<bean:write name="aliquot" property="container.containerComments" />
 							&nbsp;
 						</td>
