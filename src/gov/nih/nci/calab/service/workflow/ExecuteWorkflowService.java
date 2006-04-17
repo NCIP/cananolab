@@ -6,6 +6,7 @@ import gov.nih.nci.calab.domain.Aliquot;
 import gov.nih.nci.calab.domain.Assay;
 import gov.nih.nci.calab.domain.AssayType;
 import gov.nih.nci.calab.domain.InputFile;
+import gov.nih.nci.calab.domain.LabFile;
 import gov.nih.nci.calab.domain.OutputFile;
 import gov.nih.nci.calab.domain.Run;
 import gov.nih.nci.calab.domain.RunSampleContainer;
@@ -19,8 +20,12 @@ import gov.nih.nci.calab.dto.workflow.FileBean;
 import gov.nih.nci.calab.dto.workflow.RunBean;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
+import gov.nih.nci.calab.service.util.file.HttpUploadedFileData;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -360,6 +365,7 @@ public class ExecuteWorkflowService {
 							RunBean runBean = new RunBean();
 							runBean.setId(doRun.getId().toString());
 							runBean.setName(doRun.getName());
+							runBean.setAssayBean(assayBean);
 							
 							Set runAliquots = (Set)doRun.getRunSampleContainerCollection();
 							aliquotCount = aliquotCount + runAliquots.size();
@@ -432,4 +438,86 @@ public class ExecuteWorkflowService {
 		return workflowBean;
 	}	
 
+	/**
+	 * Save the aliquot IDs to be associated with the given run ID.
+	 * @param fileURI
+	 * @param fileName
+	 * @param runId
+	 * @throws Exception
+	 */
+	public void saveFile(List<HttpUploadedFileData> fileList, String filepath, String runId, String inout, String creator) throws Exception {
+		// fileList is a list of HttpUploadedFileData
+		Date date = Calendar.getInstance().getTime();
+
+		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
+		try {
+			// TODO: only one run should  be returned
+			Run doRun = (Run)ida.load(Run.class, StringUtils.convertToLong(runId));
+			String assayName = doRun.getAssay().getName();
+			String assayType = doRun.getAssay().getAssayType();
+
+			for (HttpUploadedFileData fileData: fileList) {
+
+				if (inout.equals(CalabConstants.INPUT)) {
+					InputFile doInputFile = new InputFile();
+					doInputFile.setRun(doRun);
+					doInputFile.setCreatedBy(creator);
+					doInputFile.setCreatedDate(date);
+					System.out.println("ExecuteWorkflowService.saveFile(): input file created Date = " + date);
+					//TODO: is a "/" needed between filepath and filename?
+					doInputFile.setPath(filepath + fileData.getOriginalFileName());
+
+					ida.createObject(doInputFile);
+				} else if (inout.equals(CalabConstants.OUTPUT)) {
+					OutputFile doOutputFile = new OutputFile();
+					doOutputFile.setRun(doRun);
+					doOutputFile.setCreatedBy(creator);
+					doOutputFile.setCreatedDate(date);
+					System.out.println("ExecuteWorkflowService.saveFile(): output file created Date = " + date);
+					doOutputFile.setPath(filepath);
+
+					ida.createObject(doOutputFile);
+				}
+			}
+		} catch (Exception e) {
+			ida.rollback();
+			ida.close();
+			e.printStackTrace();
+			throw new RuntimeException("Error in persist File information for  run -> " + runId + " |  " + inout);
+		}
+	}
+
+//	private void setFileDetail(LabFile file, HttpUploadedFileData fileData) {
+//		
+//		Date date = Calendar.getInstance().getTime();
+//
+//		// TODO: file
+//		file.setPath(fileData.getFilePath());
+//		// TODO: fileData extension is zip or original?
+//		file.setExtension(fileData.getFileExtension());
+//		// TODO: if I create a new date, it will be different from upload time
+//		file.setCreatedDate(date);
+//		// TODO:  get user info from session
+////		file.setCreatedBy();
+//	}
+
+	public RunBean getAssayInfoByRun(ExecuteWorkflowBean workflowBean, String runId)
+	{
+		if (workflowBean != null) {
+			Collection<List<AssayBean>> typedAssayBeans = workflowBean.getAssayBeanMap().values();
+			for (List<AssayBean> assayBeans: typedAssayBeans) {
+				for (AssayBean assayBean: assayBeans) {
+					for (RunBean runBean: assayBean.getRunBeans()) {
+						if (runBean.getId().equals(runId)) {
+							return runBean;
+						}
+					}
+				}
+			}
+			logger.debug("Could not find Run's assay info for Run ID = " + runId);
+			return null;
+		} else {
+			return null;
+		}
+	}
 }
