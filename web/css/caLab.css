@@ -357,7 +357,7 @@ DATA TABLE BEGINS
 }
 .dataTableHighlightLabel{ /* for the highlighted row */
   font-family:arial,helvetica,verdana,sans-serif;
-  font-size:0.7em;
+  font-size:1.0em;
   font-weight:bold;
   background-color:#6A8989 ; /* constant: darker green */
   color:#98B7B7; /* constant: lighter green */
