@@ -15,7 +15,7 @@ import java.util.Set;
  * 
  */
 
-/* CVS $Id: SampleBean.java,v 1.10 2006-04-12 19:21:45 pansu Exp $ */
+/* CVS $Id: SampleBean.java,v 1.11 2006-04-17 18:44:25 pansu Exp $ */
 public class SampleBean {
 	private String sampleId="";
 	
@@ -91,8 +91,8 @@ public class SampleBean {
 			ContainerBean[] containers) {
 		// TODO Auto-generated constructor stub
 		this(sampleName, sampleType, sampleSOP, sampleDescription, sampleSource,
-				sourceSampleId, dateReceived, lotId, lotDescription,
-				solubility, numberOfContainers, generalComments,
+				sourceSampleId, dateReceived, solubility, lotId, lotDescription,
+				numberOfContainers, generalComments,
 				sampleSubmitter, accessionDate);
 		this.sampleNamePrefix = sampleNamePrefix;
 		this.containers = containers;
