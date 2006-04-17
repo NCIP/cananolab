@@ -7,7 +7,8 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.14 2006-04-17 21:23:18 thangars Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.15 2006-04-17 21:41:02 zengje Exp $ */
+
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
@@ -63,6 +64,7 @@ public class InitSessionAction extends AbstractBaseAction {
 				setUseAliquotSession(session, lookupService);
 			} else if (forwardPage.equals("createSample")) {
 				setCreateSampleSession(session, lookupService);
+
 			} else if (forwardPage.equals("createAliquot")) {
 				setCreateAliquotSession(session, lookupService, urlPrefix);
 			} else if (forwardPage.equals("searchWorkflow")) {
@@ -71,6 +73,9 @@ public class InitSessionAction extends AbstractBaseAction {
 				setSearchSampleSession(session, lookupService);
 			} else if (forwardPage.equals("createRun")) {
 				setCreateRunSession(session, lookupService);
+//				setUseAliquotSession(session, lookupService);
+			} else if (forwardPage.equals("workflowMessage")) {
+				setWorkflowMessageSession(session);
 			}
 			// get user and date information
 			String creator = "";
@@ -120,10 +125,6 @@ public class InitSessionAction extends AbstractBaseAction {
 			ExecuteWorkflowBean workflowBean = executeWorkflowService.getExecuteWorkflowBean();
 			session.setAttribute("workflow", workflowBean);
 		}
-		// clear the new aliquot created flag
-		session.removeAttribute("newAliquotCreated");
-		// clear the new workflow created flag
-		session.removeAttribute("newWorkflowCreated");
 	}
 
 	/**
@@ -239,7 +240,16 @@ public class InitSessionAction extends AbstractBaseAction {
 	private void setSearchSampleSession(HttpSession session,
 			LookupService lookupService) {
 		SearchSampleService searchSampleService = new SearchSampleService();
-
+		if (session.getAttribute("allSamples") == null
+				|| session.getAttribute("newSampleCreated") != null) {
+			List samples = lookupService.getAllSamples();
+			session.setAttribute("allSamples", samples);
+		}
+		if (session.getAttribute("allAliquots") == null
+				|| session.getAttribute("newAliquotCreated") != null) {
+			List aliquots = lookupService.getAliquots();
+			session.setAttribute("allAliquots", aliquots);
+		}
 		if (session.getAttribute("allSampleTypes") == null
 				|| session.getAttribute("newSampleCreated") != null) {
 			List sampleTypes = lookupService.getAllSampleTypes();
@@ -301,6 +311,11 @@ public class InitSessionAction extends AbstractBaseAction {
 			ExecuteWorkflowBean workflowBean = executeWorkflowService.getExecuteWorkflowBean();
 			session.setAttribute("workflow", workflowBean);
 		}
+		if (session.getAttribute("allUnmaskedAliquots") == null
+				|| session.getAttribute("newAliquotCreated") != null) {
+			List aliquots = lookupService.getUnmaskedAliquots();
+			session.setAttribute("allUnmaskedAliquots", aliquots);
+		}
 		if (session.getAttribute("allAvailableAliquots") == null) {
 			List<AliquotBean> allAvailableAliquots = lookupService.getUnmaskedAliquots();
 			session.setAttribute("allAvailableAliquots", allAvailableAliquots);
@@ -323,7 +338,19 @@ public class InitSessionAction extends AbstractBaseAction {
 			List allAssayBeans = lookupService.getAllAssayBeans();
 			session.setAttribute("allAssayBeans", allAssayBeans);
 		}
-		// clear the new workflow created flag
+		session.removeAttribute("newWorkflowCreated");
+		session.removeAttribute("newAliquotCreated");
+
+	}
+	
+	private void setWorkflowMessageSession(HttpSession session) throws Exception{
+		
+		ExecuteWorkflowService executeWorkflowService = new ExecuteWorkflowService();
+		if (session.getAttribute("workflow") == null
+				|| session.getAttribute("newWorkflowCreated") != null) {
+			ExecuteWorkflowBean workflowBean = executeWorkflowService.getExecuteWorkflowBean();
+			session.setAttribute("workflow", workflowBean);
+		}
 		session.removeAttribute("newWorkflowCreated");
 	}
 }
