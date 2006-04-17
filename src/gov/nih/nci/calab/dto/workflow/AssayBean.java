@@ -8,7 +8,7 @@ public class AssayBean {
 	private String assayName;
 	private String assayType;
 	private String assayStr;
-	private List runBeans;
+	private List<RunBean> runBeans;
 	
 	public AssayBean() {
 		super();
@@ -44,10 +44,10 @@ public class AssayBean {
 //	public void setAssayStr(String assayStr) {
 //		this.assayStr = assayStr;
 //	}
-	public List getRunBeans() {
+	public List<RunBean> getRunBeans() {
 		return runBeans;
 	}
-	public void setRunBeans(List runBeans) {
+	public void setRunBeans(List<RunBean> runBeans) {
 		this.runBeans = runBeans;
 	}
 	
