@@ -46,30 +46,35 @@ public class FileUnzipper
        * @param unzippedFilePath
        * @throws IOException
        */
-      public void unzip(String zippedFileName, String unzippedFilePath) throws IOException {
+      public void unzip(String zippedFileName, String unzippedFilePath)
+            throws IOException
+    {
         Enumeration entries;
         ZipFile zipFile;
 
-        if (zippedFileName.length() == 1 && zippedFileName.length() < 1 )
+        if (zippedFileName.length() == 1 && zippedFileName.length() < 1)
         {
             log_.error("Please provide zip file name.");
             throw new IOException("Please provide zip file name.");
         }
-
-          zipFile = new ZipFile(zippedFileName);
-
-          entries = zipFile.entries();
-
-          while(entries.hasMoreElements()) {
-            ZipEntry entry = (ZipEntry)entries.nextElement();
+        String zippedFileShortName = new File(zippedFileName).getName();
+        
+        zipFile = new ZipFile(zippedFileName);
+        entries = zipFile.entries();
+        while (entries.hasMoreElements())
+        {
+            ZipEntry entry = (ZipEntry) entries.nextElement();
 
             log_.info("Extracting file: " + entry.getName());
-            //create a new file name associated with the zipped file name
-            
+            // create a new file name associated with the zipped file name
+            FileNameConvertor fileNameConvertor = new FileNameConvertor();
+            String entryName = fileNameConvertor
+                    .getConvertedFileName(zippedFileShortName);
             copyInputStream(zipFile.getInputStream(entry),
-               new BufferedOutputStream(new FileOutputStream(new File(unzippedFilePath, entry.getName()))));
-          }
+                    new BufferedOutputStream(new FileOutputStream(new File(
+                            unzippedFilePath, entryName))));
+        }
 
-          zipFile.close();
-      }
+        zipFile.close();
+    }
 }
