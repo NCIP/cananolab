@@ -73,8 +73,26 @@ true,				// UseScrollingForTallMenus
 ];
 
 
+// FUNCTION USED FOR RELATIVE POSITIONING
+function s_getStart(a,e){
+
+var bodyMarginTop=0;// specify manually to get over bugs
+var bodyMarginLeft=0;// in Opera 5/6, Konqueror<3.2 and IE5.x/Mac
+
+var o=e.currentTarget?e.currentTarget:e.srcElement?e.srcElement:e.target;
+if(!o)return a=="x"?-630:0;
+
+if(s_nS4)return a=="x"?o.x:o.y;
+var oP,oC,ieW;oP=o.offsetParent;oC=a=="x"?o.offsetLeft:o.offsetTop;
+ieW=s_iE&&!s_mC?1:0;
+while(oP){if(ieW&&oP.tagName&&oP.tagName.toLowerCase()=="table"&&oP.border&&oP.border>0)oC++;oC+=a=="x"?oP.offsetLeft:oP.offsetTop;oP=oP.offsetParent};
+return s_oP7m||s_kN31p&&!s_kN32p||s_iE5M?a=="x"?s_oP7m?oC:oC+bodyMarginLeft:oC+bodyMarginTop:oC};
+// FUNCTION USED FOR RELATIVE POSITIONING
+
+
 // === 4 === MENU DEFINITIONS
 // workaround for the top left space
+
 s_add(
 {
 N:'',	// NAME
@@ -89,29 +107,36 @@ S:s_CSSTop	// STYLE Array to use for this menu
 {U:'',T:''}
 ]
 );
+
+
 //Workflow
 s_add(
 {
 N:'WORKFLOW',	// NAME
 LV:1,		// LEVEL (look at IMPORTANT NOTES 1 in the Manual)
 MinW:130,	// MINIMAL WIDTH
-T:143,		// TOP (look at IMPORTANT HOWTOS 6 in the Manual)
-L:270,		// LEFT (look at IMPORTANT HOWTOS 6 in the Manual)
+//T:143,		// TOP (look at IMPORTANT HOWTOS 6 in the Manual)
+//L:270,		// LEFT (look at IMPORTANT HOWTOS 6 in the Manual)
+T:'s_getStart("y",e)+15',	// TOP (look at IMPORTANT HOWTOS 6 in the Manual)
+L:'s_getStart("x",e)-12',		// LEFT (look at IMPORTANT HOWTOS 6 in the Manual)
 P:false,	// menu is PERMANENT (you can only set true if this is LEVEL 1 menu)
 S:s_CSSTop	// STYLE Array to use for this menu
 },
 [		// define items {U:'url',T:'text' ...} look at the Manual for details
-{U:'initSession.do?forwardPage=createRun',T:'Execute Workflow'},
+{U:'initSession.do?forwardPage=createRun',T:'Execute Workflow'}
 ]
 );
+
 //administration
 s_add(
 {
 N:'ADMINISTRATION',	// NAME
 LV:1,		// LEVEL (look at IMPORTANT NOTES 1 in the Manual)
 MinW:130,	// MINIMAL WIDTH
-T:143,		// TOP (look at IMPORTANT HOWTOS 6 in the Manual)
-L:352,		// LEFT (look at IMPORTANT HOWTOS 6 in the Manual)
+//T:143,		// TOP (look at IMPORTANT HOWTOS 6 in the Manual)
+//L:352,		// LEFT (look at IMPORTANT HOWTOS 6 in the Manual)
+T:'s_getStart("y",e)+15',	// TOP (look at IMPORTANT HOWTOS 6 in the Manual)
+L:'s_getStart("x",e)-12',		// LEFT (look at IMPORTANT HOWTOS 6 in the Manual)
 P:false,	// menu is PERMANENT (you can only set true if this is LEVEL 1 menu)
 S:s_CSSTop	// STYLE Array to use for this menu
 },
@@ -127,8 +152,10 @@ s_add(
 N:'SEARCH',	// NAME
 LV:1,		// LEVEL (look at IMPORTANT NOTES 1 in the Manual)
 MinW:130,	// MINIMAL WIDTH
-T:143,		// TOP (look at IMPORTANT HOWTOS 6 in the Manual)
-L:457,		// LEFT (look at IMPORTANT HOWTOS 6 in the Manual)
+//T:143,		// TOP (look at IMPORTANT HOWTOS 6 in the Manual)
+//L:457,		// LEFT (look at IMPORTANT HOWTOS 6 in the Manual)
+T:'s_getStart("y",e)+15',	// TOP (look at IMPORTANT HOWTOS 6 in the Manual)
+L:'s_getStart("x",e)-12',		// LEFT (look at IMPORTANT HOWTOS 6 in the Manual)
 P:false,	// menu is PERMANENT (you can only set true if this is LEVEL 1 menu)
 S:s_CSSTop	// STYLE Array to use for this menu
 },
