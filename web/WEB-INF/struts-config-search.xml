@@ -19,7 +19,8 @@
 			<form-property name="criteriaJoin" type="java.lang.String" initial="and" />
 		</form-bean>
 		<form-bean name="searchSampleForm" type="org.apache.struts.validator.DynaValidatorForm">
-			<form-property name="sampleName" type="java.lang.String" />
+		    <form-property name="showAliquot" type="java.lang.String" initial="false"/>
+			<form-property name="searchName" type="java.lang.String" />
 			<form-property name="sourceSampleId" type="java.lang.String" />
 			<form-property name="sampleSource" type="java.lang.String" />
 			<form-property name="dateAccessionedBegin" type="java.lang.String" />
