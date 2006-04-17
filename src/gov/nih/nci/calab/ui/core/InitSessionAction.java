@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.11 2006-04-17 15:51:32 pansu Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.12 2006-04-17 19:30:05 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
@@ -232,16 +232,7 @@ public class InitSessionAction extends AbstractBaseAction {
 	private void setSearchSampleSession(HttpSession session,
 			LookupService lookupService) {
 		SearchSampleService searchSampleService = new SearchSampleService();
-		if (session.getAttribute("allSamples") == null
-				|| session.getAttribute("newSampleCreated") != null) {
-			List samples = lookupService.getAllSamples();
-			session.setAttribute("allSamples", samples);
-		}
-		if (session.getAttribute("allAliquots") == null
-				|| session.getAttribute("newAliquotCreated") != null) {
-			List aliquots = lookupService.getAliquots();
-			session.setAttribute("allAliquots", aliquots);
-		}
+
 		if (session.getAttribute("allSampleTypes") == null
 				|| session.getAttribute("newSampleCreated") != null) {
 			List sampleTypes = lookupService.getAllSampleTypes();
