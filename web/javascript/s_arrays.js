@@ -115,8 +115,6 @@ s_add(
 N:'WORKFLOW',	// NAME
 LV:1,		// LEVEL (look at IMPORTANT NOTES 1 in the Manual)
 MinW:130,	// MINIMAL WIDTH
-//T:143,		// TOP (look at IMPORTANT HOWTOS 6 in the Manual)
-//L:270,		// LEFT (look at IMPORTANT HOWTOS 6 in the Manual)
 T:'s_getStart("y",e)+15',	// TOP (look at IMPORTANT HOWTOS 6 in the Manual)
 L:'s_getStart("x",e)-12',		// LEFT (look at IMPORTANT HOWTOS 6 in the Manual)
 P:false,	// menu is PERMANENT (you can only set true if this is LEVEL 1 menu)
@@ -133,8 +131,6 @@ s_add(
 N:'ADMINISTRATION',	// NAME
 LV:1,		// LEVEL (look at IMPORTANT NOTES 1 in the Manual)
 MinW:130,	// MINIMAL WIDTH
-//T:143,		// TOP (look at IMPORTANT HOWTOS 6 in the Manual)
-//L:352,		// LEFT (look at IMPORTANT HOWTOS 6 in the Manual)
 T:'s_getStart("y",e)+15',	// TOP (look at IMPORTANT HOWTOS 6 in the Manual)
 L:'s_getStart("x",e)-12',		// LEFT (look at IMPORTANT HOWTOS 6 in the Manual)
 P:false,	// menu is PERMANENT (you can only set true if this is LEVEL 1 menu)
@@ -152,8 +148,6 @@ s_add(
 N:'SEARCH',	// NAME
 LV:1,		// LEVEL (look at IMPORTANT NOTES 1 in the Manual)
 MinW:130,	// MINIMAL WIDTH
-//T:143,		// TOP (look at IMPORTANT HOWTOS 6 in the Manual)
-//L:457,		// LEFT (look at IMPORTANT HOWTOS 6 in the Manual)
 T:'s_getStart("y",e)+15',	// TOP (look at IMPORTANT HOWTOS 6 in the Manual)
 L:'s_getStart("x",e)-12',		// LEFT (look at IMPORTANT HOWTOS 6 in the Manual)
 P:false,	// menu is PERMANENT (you can only set true if this is LEVEL 1 menu)
