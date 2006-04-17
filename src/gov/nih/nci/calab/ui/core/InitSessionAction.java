@@ -7,11 +7,12 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.10 2006-04-12 18:28:03 zengje Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.11 2006-04-17 15:51:32 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
 import gov.nih.nci.calab.dto.security.SecurityBean;
+import gov.nih.nci.calab.dto.workflow.ExecuteWorkflowBean;
 import gov.nih.nci.calab.service.administration.ManageAliquotService;
 import gov.nih.nci.calab.service.administration.ManageSampleService;
 import gov.nih.nci.calab.service.common.LookupService;
@@ -46,7 +47,7 @@ public class InitSessionAction extends AbstractBaseAction {
 		HttpSession session = request.getSession();
 		ActionForward forward = null;
 		String forwardPage = null;
-		String urlPrefix=request.getContextPath();
+		String urlPrefix = request.getContextPath();
 
 		try {
 			DynaActionForm theForm = (DynaActionForm) form;
@@ -103,22 +104,29 @@ public class InitSessionAction extends AbstractBaseAction {
 
 	/**
 	 * Set up session attributes for use aliquot page
-	 *
+	 * 
 	 * @param session
 	 * @param lookupService
 	 */
 	private void setUseAliquotSession(HttpSession session,
-			LookupService lookupService) {
+			LookupService lookupService) throws Exception {
 		if (session.getAttribute("allUnmaskedAliquots") == null
 				|| session.getAttribute("newAliquotCreated") != null) {
 			List<AliquotBean> allAliquots = lookupService.getUnmaskedAliquots();
 			session.setAttribute("allUnmaskedAliquots", allAliquots);
 		}
+		ExecuteWorkflowService executeWorkflowService = new ExecuteWorkflowService();
+		if (session.getAttribute("workflow") == null
+				|| session.getAttribute("newWorkflowCreated") != null) {
+			ExecuteWorkflowBean workflowBean = executeWorkflowService
+					.getExecuteWorkflowBean();
+			session.setAttribute("workflow", workflowBean);
+		}
 	}
 
 	/**
 	 * Set up session attributes for create sample page
-	 *
+	 * 
 	 * @param session
 	 * @param lookupService
 	 */
@@ -155,7 +163,7 @@ public class InitSessionAction extends AbstractBaseAction {
 
 	/**
 	 * Set up session attributes for create aliquot page
-	 *
+	 * 
 	 * @param session
 	 * @param lookupService
 	 */
@@ -180,7 +188,8 @@ public class InitSessionAction extends AbstractBaseAction {
 			session.setAttribute("aliquotContainerInfo", containerInfo);
 		}
 		if (session.getAttribute("aliquotCreateMethods") == null) {
-			List methods = manageAliquotService.getAliquotCreateMethods(urlPrefix);
+			List methods = manageAliquotService
+					.getAliquotCreateMethods(urlPrefix);
 			session.setAttribute("aliquotCreateMethods", methods);
 		}
 		// clear the form in the session
@@ -197,7 +206,7 @@ public class InitSessionAction extends AbstractBaseAction {
 
 	/**
 	 * Set up session attributes for search workflow page
-	 *
+	 * 
 	 * @param session
 	 * @param lookupService
 	 */
@@ -211,12 +220,12 @@ public class InitSessionAction extends AbstractBaseAction {
 		if (session.getAttribute("allFileSubmitters") == null) {
 			List submitters = searchWorkflowService.getAllFileSubmitters();
 			session.setAttribute("allFileSubmitters", submitters);
-		}	
+		}
 	}
 
 	/**
 	 * Set up session attributes for search sample page
-	 *
+	 * 
 	 * @param session
 	 * @param lookupService
 	 */
@@ -277,18 +286,22 @@ public class InitSessionAction extends AbstractBaseAction {
 
 	/**
 	 * Set up session attributes for create Run
+	 * 
 	 * @param session
 	 * @param lookupService
 	 */
-	   private void setCreateRunSession(HttpSession session,
-			LookupService lookupService) {
+	private void setCreateRunSession(HttpSession session,
+			LookupService lookupService) throws Exception {
+		ExecuteWorkflowService executeWorkflowService = new ExecuteWorkflowService();
 		if (session.getAttribute("allAssayTypes") == null) {
 			List assayTypes = lookupService.getAllAssayTypes();
 			session.setAttribute("allAssayTypes", assayTypes);
 		}
-		if (session.getAttribute("allAssays") == null) {
-			List allAssays = lookupService.getAllAssays();
-			session.setAttribute("allAssays", allAssays);
+		if (session.getAttribute("workflow") == null
+				|| session.getAttribute("newWorkflowCreated") != null) {
+			ExecuteWorkflowBean workflowBean = executeWorkflowService
+					.getExecuteWorkflowBean();
+			session.setAttribute("workflow", workflowBean);
 		}
 		if (session.getAttribute("allAvailableAliquots") == null) {
 			List allAvailableAliquots = lookupService.getAllAvailableAliquots();
@@ -306,16 +319,11 @@ public class InitSessionAction extends AbstractBaseAction {
 			List allOutFiles = lookupService.getAllOutFiles();
 			session.setAttribute("allOutFiles", allOutFiles);
 		}
-		
+
 		if (session.getAttribute("allAssayBeans") == null) {
 			List allAssayBeans = lookupService.getAllAssayBeans();
 			session.setAttribute("allAssayBeans", allAssayBeans);
 		}
 
 	}
-	   private void set(HttpSession session,
-				LookupService lookupService) 
-	   {
-		   session.setAttribute("dTree", lookupService.getWorkflowTree() );
-	   }
 }
