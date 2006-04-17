@@ -68,7 +68,7 @@
 						</td>
 						<td class="${style}" valign="top">
 							<div align="left">
-								<bean:write name="sample" property="sampleType" />
+								<bean:write name="sample" property="sampleType" />&nbsp;
 							</div>
 						</td>
 						<td class="${style}" valign="top">
@@ -93,7 +93,7 @@
 					viewSampleDetailParams);%>
 							<div align="center">
 								<html:link action="viewSampleDetail" name="viewSampleDetailParams">View</html:link>								
-							</div>
+							</div>&nbsp;
 						</td>
 					</tr>
 				</logic:iterate>
