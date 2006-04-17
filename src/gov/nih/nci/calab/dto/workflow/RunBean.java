@@ -16,6 +16,7 @@ public class RunBean {
 	private List aliquotBeans;
 	private List inputFileBeans;
 	private List outputFileBeans;
+	private AssayBean assayBean;
 	
 	/**
 	 * 
@@ -70,6 +71,14 @@ public class RunBean {
 
 	public void setOutputFileBeans(List outputFileBeans) {
 		this.outputFileBeans = outputFileBeans;
+	}
+
+	public AssayBean getAssayBean() {
+		return assayBean;
+	}
+
+	public void setAssayBean(AssayBean assayBean) {
+		this.assayBean = assayBean;
 	}
 
 	
