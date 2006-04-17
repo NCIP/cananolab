@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.13 2006-04-17 19:55:47 pansu Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.14 2006-04-17 21:23:18 thangars Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
@@ -117,8 +117,7 @@ public class InitSessionAction extends AbstractBaseAction {
 		ExecuteWorkflowService executeWorkflowService = new ExecuteWorkflowService();
 		if (session.getAttribute("workflow") == null
 				|| session.getAttribute("newWorkflowCreated") != null) {
-			ExecuteWorkflowBean workflowBean = executeWorkflowService
-					.getExecuteWorkflowBean();
+			ExecuteWorkflowBean workflowBean = executeWorkflowService.getExecuteWorkflowBean();
 			session.setAttribute("workflow", workflowBean);
 		}
 		// clear the new aliquot created flag
@@ -216,6 +215,11 @@ public class InitSessionAction extends AbstractBaseAction {
 	private void setSearchWorkflowSession(HttpSession session,
 			LookupService lookupService) {
 		SearchWorkflowService searchWorkflowService = new SearchWorkflowService();
+
+		if (session.getAttribute("allUnmaskedAliquots") == null) {
+			List<AliquotBean> allAliquots = lookupService.getUnmaskedAliquots();
+			session.setAttribute("allUnmaskedAliquots", allAliquots);
+		}		
 		if (session.getAttribute("allAssayTypes") == null) {
 			List assayTypes = lookupService.getAllAssayTypes();
 			session.setAttribute("allAssayTypes", assayTypes);
@@ -291,16 +295,17 @@ public class InitSessionAction extends AbstractBaseAction {
 			List assayTypes = lookupService.getAllAssayTypes();
 			session.setAttribute("allAssayTypes", assayTypes);
 		}
+		
 		if (session.getAttribute("workflow") == null
 				|| session.getAttribute("newWorkflowCreated") != null) {
-			ExecuteWorkflowBean workflowBean = executeWorkflowService
-					.getExecuteWorkflowBean();
+			ExecuteWorkflowBean workflowBean = executeWorkflowService.getExecuteWorkflowBean();
 			session.setAttribute("workflow", workflowBean);
 		}
 		if (session.getAttribute("allAvailableAliquots") == null) {
-			List allAvailableAliquots = lookupService.getAllAvailableAliquots();
+			List<AliquotBean> allAvailableAliquots = lookupService.getUnmaskedAliquots();
 			session.setAttribute("allAvailableAliquots", allAvailableAliquots);
 		}
+		
 		if (session.getAttribute("allAssignedAliquots") == null) {
 			List allAssignedAliquots = lookupService.getAllAssignedAliquots();
 			session.setAttribute("allAssignedAliquots", allAssignedAliquots);
