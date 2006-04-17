@@ -38,15 +38,15 @@
 								d.add(0,-1,'Workflow');
 								
 								<c:set var="assaySeq" value="${fn:length(allAssayTypes)}"/>
-								<c:set var="runSeq" value="${assaySeq+workflow.assayCount}"/>		
-								<c:set var="aliquotSeq" value="${runSeq+workflow.runCount*3+2}"/>
-								<c:set var="inputFileSeq" value="${aliquotSeq+workflow.aliquotCount}"/>
-								<c:set var="outFileSeq" value="${aliquotSeq+workflow.inputFileCount}"/>
+								<c:set var="runSeq" value="${assaySeq+sessionScope.workflow.assayCount}"/>		
+								<c:set var="aliquotSeq" value="${runSeq+sessionScope.workflow.runCount*3+2}"/>
+								<c:set var="inputFileSeq" value="${aliquotSeq+sessionScope.workflow.aliquotCount}"/>
+								<c:set var="outFileSeq" value="${aliquotSeq+sessionScope.workflow.inputFileCount}"/>
 													    		
 								<c:forEach var="assayType" items="${allAssayTypes}" varStatus="assayTypeNum">
 								    d.add(${assayTypeNum.count}, 0, '${assayType}','javascript:void(0)', '', '', '');									    
 
-								    <c:forEach var="assay" items="${workflow.assayBeanMap[assayType]}">
+								    <c:forEach var="assay" items="${sessionScope.workflow.assayBeanMap[assayType]}">
     								    <c:set var="assaySeq" value="${assaySeq+1}"/>
 								        d.add(${assaySeq},${assayTypeNum.count},'${assay.assayName}','javascript:gotoPage(\'/calab/workflowForward.do?type=assay\')', '', '', '');
 	 									
