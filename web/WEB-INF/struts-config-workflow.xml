@@ -58,6 +58,14 @@
 			<form-property name="sid" type="java.lang.String"/>
 			<form-property name="permissibleFileExtension" type="java.lang.String"/>
 		</form-bean>		
+		<form-bean name="fileDownloadForm" type="org.apache.struts.validator.DynaValidatorActionForm" >
+			<form-property name="assayType" type="java.lang.String" />
+			<form-property name="assay" type="java.lang.String" />
+			<form-property name="run" type="java.lang.String" />
+			<form-property name="inout" type="java.lang.String" />
+			<form-property name="method" type="java.lang.String" />
+			<form-property name="fileList" type="java.util.list" />
+		</form-bean>		
 	</form-beans>
 	<global-forwards>
 		<forward name="useAliquot" path="workflow.usealiquot" />
@@ -96,6 +104,9 @@
 			<forward name="failure" path="/initSession.do?forwardPage=workflowMessage" />
 			<forward name="expiredSession" path="/login.do" />
 			<forward name="done" path="calab.welcome" />
+		</action>		
+		<action name="fileDownloadForm" parameter="method" path="/fileDownload" scope="request" type="gov.nih.nci.calab.ui.workflow.FileDownloadAction" input="input">
+			<forward name="success" path="workflow.fileDownload" />
 		</action>		
 		<action path="/workflowForward" type="org.apache.struts.actions.ForwardAction" parameter="workflow.message"/>
 	</action-mappings>
