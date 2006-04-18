@@ -43,7 +43,7 @@ public class MaskAction extends AbstractBaseAction
 			strDescription = (String) theForm.getString("description");
 			if (strDescription.equals(null))
 			{
-				ActionMessage error = new ActionMessage("error.mask");
+				ActionMessage error = new ActionMessage("error.mask", strMaskType);
 		        msgs.add("error", error);
 		        saveMessages(request, msgs);
 				logger.error("Error Masking" + strMaskType);
@@ -86,11 +86,11 @@ public class MaskAction extends AbstractBaseAction
 			
 			if (strMaskType.equals("aliquot"))
 			{
-				error = new ActionMessage("error.unexspectedMaskError", strId);
+				error = new ActionMessage("error.unexpectedMaskError", strId);
 			}
 			if (strMaskType.equals("file"))
 			{
-				error = new ActionMessage("error.unexspectedMaskError", strId);
+				error = new ActionMessage("error.unexpectedMaskError", strId);
 			}
 			errors.add("error", error);
 			saveMessages(request, errors);
@@ -103,7 +103,7 @@ public class MaskAction extends AbstractBaseAction
 	public boolean loginRequired() 
 	{
 		// temporarily set to false until login module is working
-		return false;
+		return true;
 		// return true;
 	}
 	
