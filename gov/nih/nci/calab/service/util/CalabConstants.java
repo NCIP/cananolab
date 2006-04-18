@@ -26,4 +26,5 @@ public class CalabConstants {
     public static final String INPUT = "input";
     public static final String OUTPUT = "output";
 
+    public static final String ALL_FILES = "ALL_FILES";
 }
