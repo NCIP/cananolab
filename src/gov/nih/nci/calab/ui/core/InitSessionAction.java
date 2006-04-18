@@ -7,8 +7,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.15 2006-04-17 21:41:02 zengje Exp $ */
-
+/* CVS $Id: InitSessionAction.java,v 1.16 2006-04-18 13:13:40 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
@@ -73,7 +72,7 @@ public class InitSessionAction extends AbstractBaseAction {
 				setSearchSampleSession(session, lookupService);
 			} else if (forwardPage.equals("createRun")) {
 				setCreateRunSession(session, lookupService);
-//				setUseAliquotSession(session, lookupService);
+				// setUseAliquotSession(session, lookupService);
 			} else if (forwardPage.equals("workflowMessage")) {
 				setWorkflowMessageSession(session);
 			}
@@ -122,9 +121,14 @@ public class InitSessionAction extends AbstractBaseAction {
 		ExecuteWorkflowService executeWorkflowService = new ExecuteWorkflowService();
 		if (session.getAttribute("workflow") == null
 				|| session.getAttribute("newWorkflowCreated") != null) {
-			ExecuteWorkflowBean workflowBean = executeWorkflowService.getExecuteWorkflowBean();
+			ExecuteWorkflowBean workflowBean = executeWorkflowService
+					.getExecuteWorkflowBean();
 			session.setAttribute("workflow", workflowBean);
 		}
+		// clear the new aliquote created flag
+		session.removeAttribute("newAliquotCreated");
+		// clear the new workflow created flag
+		session.removeAttribute("newWorkflowcreated");
 	}
 
 	/**
@@ -213,11 +217,12 @@ public class InitSessionAction extends AbstractBaseAction {
 	 * @param session
 	 * @param lookupService
 	 */
-	private void setSearchWorkflowSession(HttpSession session,
+private void setSearchWorkflowSession(HttpSession session,
 			LookupService lookupService) {
 		SearchWorkflowService searchWorkflowService = new SearchWorkflowService();
 
-		if (session.getAttribute("allUnmaskedAliquots") == null) {
+		if (session.getAttribute("allUnmaskedAliquots") == null
+				|| session.getAttribute("newAliquotCreated") != null) {
 			List<AliquotBean> allAliquots = lookupService.getUnmaskedAliquots();
 			session.setAttribute("allUnmaskedAliquots", allAliquots);
 		}		
@@ -229,8 +234,9 @@ public class InitSessionAction extends AbstractBaseAction {
 			List submitters = searchWorkflowService.getAllFileSubmitters();
 			session.setAttribute("allFileSubmitters", submitters);
 		}
+		// clear the new aliquote created flag
+		session.removeAttribute("newAliquotCreated");
 	}
-
 	/**
 	 * Set up session attributes for search sample page
 	 * 
@@ -305,10 +311,11 @@ public class InitSessionAction extends AbstractBaseAction {
 			List assayTypes = lookupService.getAllAssayTypes();
 			session.setAttribute("allAssayTypes", assayTypes);
 		}
-		
+
 		if (session.getAttribute("workflow") == null
 				|| session.getAttribute("newWorkflowCreated") != null) {
-			ExecuteWorkflowBean workflowBean = executeWorkflowService.getExecuteWorkflowBean();
+			ExecuteWorkflowBean workflowBean = executeWorkflowService
+					.getExecuteWorkflowBean();
 			session.setAttribute("workflow", workflowBean);
 		}
 		if (session.getAttribute("allUnmaskedAliquots") == null
@@ -317,10 +324,11 @@ public class InitSessionAction extends AbstractBaseAction {
 			session.setAttribute("allUnmaskedAliquots", aliquots);
 		}
 		if (session.getAttribute("allAvailableAliquots") == null) {
-			List<AliquotBean> allAvailableAliquots = lookupService.getUnmaskedAliquots();
+			List<AliquotBean> allAvailableAliquots = lookupService
+					.getUnmaskedAliquots();
 			session.setAttribute("allAvailableAliquots", allAvailableAliquots);
 		}
-		
+
 		if (session.getAttribute("allAssignedAliquots") == null) {
 			List allAssignedAliquots = lookupService.getAllAssignedAliquots();
 			session.setAttribute("allAssignedAliquots", allAssignedAliquots);
@@ -342,13 +350,15 @@ public class InitSessionAction extends AbstractBaseAction {
 		session.removeAttribute("newAliquotCreated");
 
 	}
-	
-	private void setWorkflowMessageSession(HttpSession session) throws Exception{
-		
+
+	private void setWorkflowMessageSession(HttpSession session)
+			throws Exception {
+
 		ExecuteWorkflowService executeWorkflowService = new ExecuteWorkflowService();
 		if (session.getAttribute("workflow") == null
 				|| session.getAttribute("newWorkflowCreated") != null) {
-			ExecuteWorkflowBean workflowBean = executeWorkflowService.getExecuteWorkflowBean();
+			ExecuteWorkflowBean workflowBean = executeWorkflowService
+					.getExecuteWorkflowBean();
 			session.setAttribute("workflow", workflowBean);
 		}
 		session.removeAttribute("newWorkflowCreated");
