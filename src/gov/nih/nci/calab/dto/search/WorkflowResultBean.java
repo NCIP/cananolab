@@ -1,5 +1,7 @@
 package gov.nih.nci.calab.dto.search;
 
+import gov.nih.nci.calab.service.util.StringUtils;
+
 /**
  * This class includes all properties of a workflow to be displayed in the
  * search workflow result page.
@@ -8,21 +10,21 @@ package gov.nih.nci.calab.dto.search;
  * 
  */
 public class WorkflowResultBean {
-	private String fileName;
+	private String fileName="";
 
-	private String assayType;
+	private String assayType="";
 
-	private String assayName;
+	private String assayName="";
 
-	private String assayRunDate;
+	private String assayRunDate="";
 
-	private String aliquotName;
+	private String aliquotName="";
 
-	private String fileSubmissionDate;
+	private String fileSubmissionDate="";
 
-	private String fileSubmitter;
+	private String fileSubmitter="";
 
-	private String fileMaskStatus;
+	private String fileMaskStatus="";
 
 	public WorkflowResultBean(String fileName, String assayType, String assayName,
 			String assayRunDate, String aliquotName, String fileSubmissionDate,
@@ -103,4 +105,33 @@ public class WorkflowResultBean {
 		this.fileSubmitter = fileSubmitter;
 	}
 
+	public int hashCode() {
+		return toString().hashCode();
+	}
+	
+	public String toString() {
+		String[] thisAttrs=new String[] {fileName, assayType, assayName,
+				assayRunDate, aliquotName, fileSubmissionDate,
+				fileSubmitter, fileMaskStatus};
+		return StringUtils.join(thisAttrs,":");		
+	}
+	
+	public int compareTo(Object b) {
+		if (b instanceof WorkflowResultBean) {
+			WorkflowResultBean bWorkflow=(WorkflowResultBean)b;			
+			return toString().compareTo(bWorkflow.toString());
+		}
+		else {
+			return -1;
+		}
+	}
+	
+	public boolean equals(Object b) {
+		if (this.compareTo(b)==0) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 }
