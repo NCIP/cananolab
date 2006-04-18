@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.16 2006-04-18 13:13:40 pansu Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.17 2006-04-18 15:03:48 zengje Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
@@ -70,9 +70,8 @@ public class InitSessionAction extends AbstractBaseAction {
 				setSearchWorkflowSession(session, lookupService);
 			} else if (forwardPage.equals("searchSample")) {
 				setSearchSampleSession(session, lookupService);
-			} else if (forwardPage.equals("createRun")) {
+			} else if (forwardPage.equals("createRun") || forwardPage.equals("createAssayRun")) {
 				setCreateRunSession(session, lookupService);
-				// setUseAliquotSession(session, lookupService);
 			} else if (forwardPage.equals("workflowMessage")) {
 				setWorkflowMessageSession(session);
 			}
