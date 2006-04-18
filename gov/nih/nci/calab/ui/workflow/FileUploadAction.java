@@ -12,6 +12,7 @@ import gov.nih.nci.calab.service.util.file.FileNameConvertor;
 import gov.nih.nci.calab.service.util.file.FilePacker;
 import gov.nih.nci.calab.service.util.file.HttpFileUploadSessionData;
 import gov.nih.nci.calab.service.util.file.HttpUploadedFileData;
+import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,7 +31,7 @@ import org.apache.struts.validator.DynaValidatorActionForm;
  *
  */
 
-public class FileUploadAction extends DispatchAction
+public class FileUploadAction extends AbstractDispatchAction
 {
     private static org.apache.log4j.Logger logger_ =
         org.apache.log4j.Logger.getLogger(FileUploadAction.class);
@@ -205,5 +206,9 @@ public class FileUploadAction extends DispatchAction
                 
         return forward;    
 
+    }
+    
+    public boolean loginRequired() {        
+         return true;
     }
 }
