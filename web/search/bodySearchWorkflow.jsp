@@ -49,7 +49,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td width="38%" class="formLabel">
+				<td class="formLabel">
 					<strong>Assay Run Date</strong>
 				</td>
 				<td width="62%" valign="top" class="formField">
