@@ -18,14 +18,6 @@
 		<td><b>Run</b></td>
 		<td class="datraCellText"><bean:write name="fileUploadForm" property="run" /></td>
 	</tr>
-	<tr class="dataRowDark">
-		<td><b>Run by</b></td>
-		<td class="datraCellText"><bean:write name="fileUploadForm" property="runby" /></td>
-	</tr>
-	<tr class="dataRowLight" >
-		<td><b>Run time</b></td>
-		<td class="datraCellText"><bean:write name="fileUploadForm" property="rundate" /></td>
-	<tr>
 </table>	
 
  <center>
