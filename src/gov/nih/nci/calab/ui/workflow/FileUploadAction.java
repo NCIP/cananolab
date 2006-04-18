@@ -1,18 +1,20 @@
 package gov.nih.nci.calab.ui.workflow;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
+import gov.nih.nci.calab.dto.workflow.ExecuteWorkflowBean;
+import gov.nih.nci.calab.dto.workflow.RunBean;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
-import gov.nih.nci.calab.service.util.file.FileLocatorUtils;
 import gov.nih.nci.calab.service.util.file.FileNameConvertor;
 import gov.nih.nci.calab.service.util.file.FilePacker;
 import gov.nih.nci.calab.service.util.file.HttpFileUploadSessionData;
 import gov.nih.nci.calab.service.util.file.HttpUploadedFileData;
+import gov.nih.nci.calab.service.workflow.ExecuteWorkflowService;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,7 +23,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.actions.DispatchAction;
 import org.apache.struts.validator.DynaValidatorActionForm;
 
 /**
@@ -52,14 +53,26 @@ public class FileUploadAction extends AbstractDispatchAction
     {
         DynaValidatorActionForm fileForm = (DynaValidatorActionForm)form;
         //TODO: get data from database or GUI, currently, all parameters are hardcoded. 
-        fileForm.set("assayType", "Prescreening_Assay");
-        fileForm.set("assay", "STE_1");
-        fileForm.set("run", "run1");
-        fileForm.set("runby", "Jim Zhou");
-        fileForm.set("rundate", "04/11/2006");
-        fileForm.set("inout", "input");
+//        fileForm.set("assayType", "Prescreening_Assay");
+//        fileForm.set("assay", "STE_1");
+//        fileForm.set("run", "run1");
+//        fileForm.set("runby", "Jim Zhou");
+//        fileForm.set("rundate", "04/11/2006");
+//        fileForm.set("inout", "input");
+        
+        
         
         HttpSession session = request.getSession();
+ 
+        String runId = request.getParameter("runId");
+        ExecuteWorkflowService workflowService = new ExecuteWorkflowService();
+        RunBean runBean = workflowService.getAssayInfoByRun((ExecuteWorkflowBean)session.getAttribute("workflow"), runId);
+        
+        fileForm.set("assayType", runBean.getAssayBean().getAssayType());
+        fileForm.set("assay", runBean.getAssayBean().getAssayName());
+        fileForm.set("run", runBean.getName());
+        fileForm.set("inout", request.getParameter("type"));
+        
         
         fileForm.set("archiveValue", PropertyReader.getProperty(CalabConstants.FILEUPLOAD_PROPERTY,"archiveValue"));
         fileForm.set("servletURL", PropertyReader.getProperty(CalabConstants.FILEUPLOAD_PROPERTY,"servletURL"));
