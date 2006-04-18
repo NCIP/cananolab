@@ -111,7 +111,7 @@ function refreshContainers() {
 					<tr class="topBorder">
 						<td class="dataTablePrimaryLabel" width="30%">
 							<div align="justify">
-								<em>CONTAINER <c:out value="${status.index+1}" /> <c:choose>
+								<em>CONTAINER <c:out value="${status.index+1}" /> <html:hidden name="containers" indexed="true" property="containerName" value="${status.index+1}"/><c:choose>
 										<c:when test="${status.index== 0}">
 											(TEMPLATE CONTAINER)
 										</c:when>
