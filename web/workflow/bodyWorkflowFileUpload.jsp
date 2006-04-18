@@ -38,7 +38,7 @@
     <td>
 
    <OBJECT classid="clsid:CAFEEFAC-0014-0002-0000-ABCDEFFEDCBA"  
-        WIDTH = "300" HEIGHT = "100"    codebase="http://java.sun.com/products/plugin/autodl/jinstall-1_4_2-windows-i586.cab#Version=1,4,0,0">                  
+        WIDTH = "500" HEIGHT = "700"    codebase="http://java.sun.com/products/plugin/autodl/jinstall-1_4_2-windows-i586.cab#Version=1,4,0,0">                  
    <PARAM NAME = "code" VALUE ="gov.nih.nci.caarray.services.util.httpfileuploadapplet.HttpFileUploadApplet">
    <PARAM NAME = "archive" VALUE ="<bean:write name="fileUploadForm" property="archiveValue" />">
    <PARAM NAME ="type" VALUE="application/x-java-applet;jpi-version=1.3">
