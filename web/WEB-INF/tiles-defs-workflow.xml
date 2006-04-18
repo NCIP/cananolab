@@ -17,7 +17,7 @@
 			<item value="Download All Files (Zipped)" link="useAliquot.jsp" />
 		</putList>
 		<putList name="assayActions">
-			<item value="Create Run" link="initSession.do?forwardPage=createRun" />
+			<item value="Create Run" link="initSession.do?forwardPage=createAssayRun" />
 		</putList>
 	</definition>
 
@@ -73,6 +73,17 @@
     
     <definition name="workflow.createrun" extends="calab.home">
         <put name="calabContent" value="workflow.createrun.content"/>
+        <put name="calabSidemenu" value="/workflow/sideMenuTree.jsp"/>
+        <put name="menu" value="workflow"/>
+    </definition>
+    <!-- definitions for the create run page -->    
+    <definition name="workflow.createassayrun.content" extends="workflow.content.home">
+ 		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp?type=assay"/>
+        <put name="workflowContent" value="/workflow/bodyCreateAssayRun.jsp"/>
+    </definition>
+    
+    <definition name="workflow.createassayrun" extends="calab.home">
+        <put name="calabContent" value="workflow.createassayrun.content"/>
         <put name="calabSidemenu" value="/workflow/sideMenuTree.jsp"/>
         <put name="menu" value="workflow"/>
     </definition>
