@@ -57,10 +57,10 @@
 					<c:set var="rowNum" value="${rowNum+1}" />
 					<c:choose>
 						<c:when test="${rowNum % 2 == 0}">
-							<c:set var="style" value="formFieldGrey" />
+							<c:set var="style" value="leftBorderedFormFieldGrey" />
 						</c:when>
 						<c:otherwise>
-							<c:set var="style" value="formFieldWhite" />
+							<c:set var="style" value="leftBorderedFormFieldWhite" />
 						</c:otherwise>
 					</c:choose>
 					<tr>
@@ -136,10 +136,10 @@
 			<logic:iterate name="aliquots" id="aliquot" type="gov.nih.nci.calab.dto.administration.AliquotBean" indexId="aliquotNum">
 				<c:choose>
 					<c:when test="${aliquotNum % 2 == 0}">
-						<c:set var="style" value="formFieldGrey" />
+						<c:set var="style" value="leftBorderedFormFieldGrey" />
 					</c:when>
 					<c:otherwise>
-						<c:set var="style" value="formFieldWhite" />
+						<c:set var="style" value="leftBorderedFormFieldWhite" />
 					</c:otherwise>
 				</c:choose>
 				<tr>
