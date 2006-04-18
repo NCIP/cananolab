@@ -1,6 +1,7 @@
 package gov.nih.nci.calab.ui.workflow;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
 import gov.nih.nci.calab.service.util.file.FileLocatorUtils;
 import gov.nih.nci.calab.service.util.file.FileNameConvertor;
+import gov.nih.nci.calab.service.util.file.FilePacker;
 import gov.nih.nci.calab.service.util.file.HttpFileUploadSessionData;
 import gov.nih.nci.calab.service.util.file.HttpUploadedFileData;
 
@@ -89,6 +91,12 @@ public class FileUploadAction extends DispatchAction
     {
         ActionForward forward = null;
         HttpFileUploadSessionData mySessionData = (HttpFileUploadSessionData)request.getSession().getAttribute("httpFileUploadSessionData");
+        String path = PropertyReader.getProperty(CalabConstants.FILEUPLOAD_PROPERTY, "inputFileDirectory");
+        String fullPathName = path + mySessionData.getAssayType() + File.separator 
+                                   + mySessionData.getAssay() + File.separator
+                                   + mySessionData.getRun()   + File.separator
+                                   + mySessionData.getInout();
+
         String mode = (String)request.getParameter("mode");
         
         if ("stop".equals(mode))
@@ -98,11 +106,6 @@ public class FileUploadAction extends DispatchAction
                 mySessionData.setIsStopped(true);
                 List list = mySessionData.getFileList();
                 
-                String path = PropertyReader.getProperty(CalabConstants.FILEUPLOAD_PROPERTY, "inputFileDirectory");
-                String fullPathName = path + mySessionData.getAssayType() + File.separator 
-                + mySessionData.getAssay() + File.separator
-                + mySessionData.getRun()   + File.separator
-                + mySessionData.getInout();
                 
                 for (Iterator it = list.iterator(); it.hasNext();)
                 {
@@ -162,7 +165,33 @@ public class FileUploadAction extends DispatchAction
             
             //TODO: Persist data here, Jennifer's task
             logger_.info("Persist file upload data to database ");
-
+            
+            //After data persistence, we need to create all.zip for all upload files,
+            //which includes previous uploaded file and uploaded files currently.
+            //TODO: Jennifer needs to get previous uploaded files from database.
+            
+            //Currently, we temporarily just look in File System and get all files from
+            //uncompressedFiles direcoty.
+            FilePacker fPacker = new FilePacker();
+            String uncompressedFileDirecory = fullPathName + File.separator 
+                                + CalabConstants.UNCOMPRESSED_FILE_DIRECTORY;
+            fPacker.removeOldZipFile(uncompressedFileDirecory);
+            
+            //temp testing code *******************
+            ArrayList  fileNameHolder = new ArrayList();
+            String[] listFiles = new File(uncompressedFileDirecory).list();
+            for(int i = 0; i < listFiles.length; i++ )
+            {
+                 fileNameHolder.add(listFiles[i]);
+            }
+            String[] needToPackFiles = new String[fileNameHolder.size()];
+            for(int i = 0; i < needToPackFiles.length; i++)
+            {
+                needToPackFiles[i] = (String)fileNameHolder.get(i);
+            }
+            boolean isCreated = fPacker.packFiles(needToPackFiles,uncompressedFileDirecory );
+            logger_.info("Creating ALL_FILES.zip is " + isCreated);
+            //end of testing code *************************
             mySessionData.clearList();
 
             forward = null;
