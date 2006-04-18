@@ -14,9 +14,11 @@ import java.util.Set;
  * @author pansu
  * 
  */
-/* CVS $Id: ContainerBean.java,v 1.5 2006-04-10 18:10:39 pansu Exp $ */
+/* CVS $Id: ContainerBean.java,v 1.6 2006-04-18 20:29:35 pansu Exp $ */
 
 public class ContainerBean {
+	private String containerName="";
+	
 	private String containerType = "";
 
 	private String otherContainerType = "";
@@ -72,6 +74,7 @@ public class ContainerBean {
 	}
 
 	public ContainerBean(SampleContainer container) {
+		this.containerName=StringUtils.convertToString(container.getName());
 		this.containerType = StringUtils.convertToString(container.getContainerType());
 		this.quantity = StringUtils.convertToString(container.getQuantity());
 		this.quantityUnit = StringUtils.convertToString(container.getQuantityUnit());
@@ -237,5 +240,13 @@ public class ContainerBean {
 
 	public void setStorageLocationStr(String storageLocationStr) {
 		this.storageLocationStr = storageLocationStr;
+	}
+
+	public String getContainerName() {
+		return containerName;
+	}
+
+	public void setContainerName(String containerName) {
+		this.containerName = containerName;
 	}
 }
