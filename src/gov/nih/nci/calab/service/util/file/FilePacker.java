@@ -50,6 +50,8 @@ INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIM
 */
 package gov.nih.nci.calab.service.util.file;
 
+import gov.nih.nci.calab.service.util.CalabConstants;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -77,7 +79,6 @@ public class FilePacker
 {
     
     private String path;
-    private String fileType;
     
 	private Log log_ = LogFactory.getLog(this.getClass());
 
@@ -85,10 +86,9 @@ public class FilePacker
      * @param path
      * @param fileType
      */
-    public FilePacker(String path, String fileType)
+    public FilePacker(String path)
     {
         this.path = path;
-        this.fileType = fileType;
     }
     
     public FilePacker()
@@ -96,12 +96,12 @@ public class FilePacker
         //doing nothing
     }
     
-    public boolean packFiles(String[] needToPackFiles,String path, String fileType)
+    public boolean packFiles(String[] needToPackFiles,String path)
     {
         boolean isDone = false;
         try
         {
-            createPackedFile(needToPackFiles, path, fileType);
+            createPackedFile(needToPackFiles, path);
             isDone = true;
         }
         catch (Exception e)
@@ -121,16 +121,13 @@ public class FilePacker
         boolean isDone = false;
         Vector fileNameHolder = new Vector();
         
-        removeOldZipFile(path, fileType);
+        removeOldZipFile(path);
 
         File  f = new File(path);
         String[] fileLists = f.list();
         for(int i = 0; i < fileLists.length; i++ )
         {
-            if((fileLists[i].toUpperCase()).indexOf(fileType) >= 0 && !fileLists[i].equalsIgnoreCase("ALL_" + fileType + ".zip"))
-            {
-                fileNameHolder.addElement(fileLists[i]);
-            }
+             fileNameHolder.addElement(fileLists[i]);
         }
         String[] needToPackFiles = new String[fileNameHolder.size()];
         for(int i = 0; i < needToPackFiles.length; i++)
@@ -139,7 +136,7 @@ public class FilePacker
         }
         try
         {
-            createPackedFile(needToPackFiles, path, fileType);
+            createPackedFile(needToPackFiles, path);
             isDone = true;
         }
         catch (Exception e)
@@ -155,19 +152,19 @@ public class FilePacker
      * @param path
      * @param fileType
      */
-    private void removeOldZipFile(String path, String fileType)
+    public void removeOldZipFile(String path)
     {
-        File f = new File(path + File.separator + "ALL_" + fileType.toUpperCase() + ".zip");
+        File f = new File(path + File.separator + CalabConstants.ALL_FILES + ".zip");
         if(f.exists())
         {
 	        boolean isDeleted = f.delete();
 	        if(isDeleted)
 	        {
-	            log_.info("File " + "ALL_" + fileType.toUpperCase() + ".zip has been deleted");
+	            log_.info("File " + CalabConstants.ALL_FILES + ".zip has been deleted");
 	        }
 	        else
 	        {
-	            log_.debug("File " + "ALL_" + fileType.toUpperCase() + ".zip cannot be deleted");
+	            log_.debug("File " + CalabConstants.ALL_FILES + ".zip cannot be deleted");
 	        }
         }
     }
@@ -177,11 +174,11 @@ public class FilePacker
      * @param path
      * @param fileType
      */
-    private void createPackedFile(String[] needToPackFiles, String path, String fileType)
+    private void createPackedFile(String[] needToPackFiles, String path)
     throws Exception
     {
         byte[] buf = new byte[1024];
-        String outFileName = path + File.separator + "ALL_" + fileType.toUpperCase() + ".zip";
+        String outFileName = path + File.separator + CalabConstants.ALL_FILES + ".zip";
         ZipOutputStream out = null;        
         
         List existingFiles = new ArrayList(); 
