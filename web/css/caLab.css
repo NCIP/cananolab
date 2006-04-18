@@ -474,12 +474,30 @@ td.formFieldGrey {
   font-size:0.7em;
   color:#666666; /* constant: black */
   border-right:1px solid #5C5C5C; /* constant: dark gray */
-  border-left:1px solid #5C5C5C; /* constant: dark gray */
   border-bottom:1px solid #5C5C5C; /* constant: dark gray */
   background-color:#cccccc; /* constant: light gray */
   padding-left:0.2em;
 }
 td.formFieldWhite {
+  font-family:arial,helvetica,verdana,sans-serif;
+  font-size:0.7em;
+  color:#000000; /* constant: black */
+  border-right:1px solid #5C5C5C; /* constant: dark gray */
+  border-bottom:1px solid #5C5C5C; /* constant: dark gray */
+  background-color:#FFFFFF; /* constant: light gray */
+  padding-left:0.2em;
+}
+td.leftBorderedFormFieldGrey {
+  font-family:arial,helvetica,verdana,sans-serif;
+  font-size:0.7em;
+  color:#666666; /* constant: black */
+  border-right:1px solid #5C5C5C; /* constant: dark gray */
+  border-left:1px solid #5C5C5C; /* constant: dark gray */
+  border-bottom:1px solid #5C5C5C; /* constant: dark gray */
+  background-color:#cccccc; /* constant: light gray */
+  padding-left:0.2em;
+}
+td.leftBorderedFormFieldWhite {
   font-family:arial,helvetica,verdana,sans-serif;
   font-size:0.7em;
   color:#000000; /* constant: black */
