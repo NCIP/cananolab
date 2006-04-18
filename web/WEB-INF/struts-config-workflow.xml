@@ -64,7 +64,9 @@
 			<form-property name="run" type="java.lang.String" />
 			<form-property name="inout" type="java.lang.String" />
 			<form-property name="method" type="java.lang.String" />
-			<form-property name="fileList" type="java.util.list" />
+			<form-property name="fileName" type="java.lang.String" />
+			<form-property name="fileInfoList" type="java.util.ArrayList" />
+			<form-property name="downloadAll" type="java.lang.String" />
 		</form-bean>		
 	</form-beans>
 	<global-forwards>
