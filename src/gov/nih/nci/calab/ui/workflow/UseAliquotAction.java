@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.workflow;
  * @author pansu
  */
 
-/* CVS $Id: UseAliquotAction.java,v 1.8 2006-04-11 15:41:52 zengje Exp $*/
+/* CVS $Id: UseAliquotAction.java,v 1.9 2006-04-18 15:21:07 zengje Exp $*/
 
 import gov.nih.nci.calab.service.workflow.ExecuteWorkflowService;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
@@ -45,6 +45,7 @@ public class UseAliquotAction extends AbstractBaseAction {
 			ActionMessage msg = new ActionMessage("message.useAliquot", runId);
 			msgs.add("message", msg);
 			saveMessages(request, msgs);
+			session.setAttribute("newWorkflowCreated", "true");
 			forward = mapping.findForward("success");
 		} catch (Exception e) {
 			logger.error("Caught exception when saving selected aliquot IDs.",
