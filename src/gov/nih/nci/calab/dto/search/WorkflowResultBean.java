@@ -16,6 +16,8 @@ public class WorkflowResultBean {
 
 	private String assayName="";
 
+	private String assayRunName="";
+	
 	private String assayRunDate="";
 
 	private String aliquotName="";
@@ -27,13 +29,14 @@ public class WorkflowResultBean {
 	private String fileMaskStatus="";
 
 	public WorkflowResultBean(String fileName, String assayType, String assayName,
-			String assayRunDate, String aliquotName, String fileSubmissionDate,
+			String assayRunName, String assayRunDate, String aliquotName, String fileSubmissionDate,
 			String fileSubmitter, String fileMaskStatus) {
 		super();
 		// TODO Auto-generated constructor stub
 		this.fileName = fileName;
 		this.assayType = assayType;
 		this.assayName = assayName;
+		this.assayRunName=assayRunName;
 		this.assayRunDate = assayRunDate;
 		this.aliquotName = aliquotName;
 		this.fileSubmissionDate = fileSubmissionDate;
@@ -133,5 +136,13 @@ public class WorkflowResultBean {
 		else {
 			return false;
 		}
+	}
+
+	public String getAssayRunName() {
+		return assayRunName;
+	}
+
+	public void setAssayRunName(String assayRunName) {
+		this.assayRunName = assayRunName;
 	}
 }

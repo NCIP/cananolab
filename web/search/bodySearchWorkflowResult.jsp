@@ -29,6 +29,9 @@
 					Assay Name
 				</td>
 				<td width="51" class="dataTablePrimaryLabel">
+					Assay Run Name
+				</td>
+				<td width="51" class="dataTablePrimaryLabel">
 					Assay Run Date
 				</td>
 				<td width="53" class="dataTablePrimaryLabel">
@@ -63,6 +66,10 @@
 					</td>
 					<td class="${style}">
 						<bean:write name="workflow" property="assayName" />
+						&nbsp;
+					</td>
+					<td class="${style}">
+						<bean:write name="workflow" property="assayRunName" />
 						&nbsp;
 					</td>
 					<td class="${style}">
