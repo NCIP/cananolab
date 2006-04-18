@@ -25,7 +25,7 @@ import org.apache.log4j.Logger;
  * 
  */
 
-/* CVS $Id: SearchWorkflowService.java,v 1.13 2006-04-18 17:38:01 pansu Exp $ */
+/* CVS $Id: SearchWorkflowService.java,v 1.14 2006-04-18 19:31:51 pansu Exp $ */
 
 public class SearchWorkflowService {
 	private static Logger logger = Logger
@@ -85,17 +85,17 @@ public class SearchWorkflowService {
 					"or");
 		}
 
-		String hqlString = "select distinct file.path, assay.assayType, assay.name, run.createdDate, aliquot.name, file.createdDate, file.createdBy, fileStatus.status ";
-
+		String hqlString = "select distinct file.path, assay.assayType, assay.name, run.name, run.createdDate, aliquot.name, file.createdDate, file.createdBy, fileStatus.status ";
+		
 		// search either input file or output file, not both
 		if (!(isFileIn && isFileOut)) {
 			boolean isInputFile = (isFileIn == true) ? true : false;
 			{
 				// if select an item, need to include in join
-				if (isInputFile) {
-					hqlString += "from Aliquot aliquot left join aliquot.dataStatus aliquotStatus join aliquot.runSampleContainerCollection.run run left join run.inputFileCollection file join run.assay assay left join file.dataStatus fileStatus ";
+				if (isInputFile) {					
+					hqlString+="from Assay assay join assay.runCollection run left join run.inputFileCollection file left join file.dataStatus fileStatus left join run.runSampleContainerCollection runSampleContainer left join runSampleContainer.sampleContainer aliquot left join aliquot.dataStatus aliquotStatus ";
 				} else {
-					hqlString += "from Aliquot aliquot left join aliquot.dataStatus aliquotStatus join aliquot.runSampleContainerCollection.run run left join run.outputFileCollection file join run.assay assay left join file.dataStatus fileStatus ";
+					hqlString+="from Assay assay join assay.runCollection run left join run.outputFileCollection file left join file.dataStatus fileStatus left join run.runSampleContainerCollection runSampleContainer left join runSampleContainer.sampleContainer aliquot left join aliquot.dataStatus aliquotStatus ";					
 				}
 				hqlString += whereParams[0];
 				workflows = getWorkflows(hqlString, (List) whereParams[1]);
@@ -104,13 +104,13 @@ public class SearchWorkflowService {
 		else {
 			//get inputFile workflows first
 			Set<WorkflowResultBean> workflowSet=new HashSet<WorkflowResultBean>();
-			String inHqlString =hqlString+ "from Aliquot aliquot left join aliquot.dataStatus aliquotStatus join aliquot.runSampleContainerCollection.run run left join run.inputFileCollection file join run.assay assay left join file.dataStatus fileStatus ";
+			String inHqlString =hqlString+"from Assay assay join assay.runCollection run left join run.inputFileCollection file left join file.dataStatus fileStatus left join run.runSampleContainerCollection runSampleContainer left join runSampleContainer.sampleContainer aliquot left join aliquot.dataStatus aliquotStatus ";
 			inHqlString +=  whereParams[0];
 			List<WorkflowResultBean> inWorkflows = getWorkflows(inHqlString, (List) whereParams[1]);
 			workflowSet.addAll(inWorkflows);
 			
 			//get outputFile workflows next
-			String outHqlString =hqlString+ "from Aliquot aliquot left join aliquot.dataStatus aliquotStatus join aliquot.runSampleContainerCollection.run run left join run.outputFileCollection file join run.assay assay left join file.dataStatus fileStatus ";
+			String outHqlString =hqlString+ "from Assay assay join assay.runCollection run left join run.outputFileCollection file left join file.dataStatus fileStatus left join run.runSampleContainerCollection runSampleContainer left join runSampleContainer.sampleContainer aliquot left join aliquot.dataStatus aliquotStatus ";
 			outHqlString +=  whereParams[0];
 			List<WorkflowResultBean> outWorkflows = getWorkflows(outHqlString, (List) whereParams[1]);
 			workflowSet.addAll(outWorkflows);
@@ -242,16 +242,17 @@ public class SearchWorkflowService {
 				String theFilePath = (String) items[0];
 				String theAssayType = (String) items[1];
 				String theAssayName = (String) items[2];
+				String theAssayRunName = (String) items[3];
 				String theAssayRunDate = StringUtils.convertDateToString(
-						(Date) items[3], CalabConstants.DATE_FORMAT);
-				String theAliquotName = (String) items[4];
+						(Date) items[4], CalabConstants.DATE_FORMAT);
+				String theAliquotName = (String) items[5];
 				String theFileSubmissionDate = StringUtils.convertDateToString(
-						(Date) items[5], CalabConstants.DATE_FORMAT);
-				String theFileSubmitter = (String) items[6];
-				String theFileStatus = (String) items[7];
+						(Date) items[6], CalabConstants.DATE_FORMAT);
+				String theFileSubmitter = (String) items[7];
+				String theFileStatus = (String) items[8];
 				workflows
 						.add(new WorkflowResultBean(theFilePath, theAssayType,
-								theAssayName, theAssayRunDate, theAliquotName,
+								theAssayName, theAssayRunName, theAssayRunDate, theAliquotName,
 								theFileSubmissionDate, theFileSubmitter,
 								theFileStatus));
 			}
