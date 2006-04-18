@@ -20,11 +20,14 @@
 					<td class="formLabelGrey">
 						<c:url var="linkVal" value="${item.link}">
 							<c:forEach var="paramItem" items="${paramValues}">
+							<%--
 								<c:choose>
 									<c:when test="${paramItem.key ne 'type'}">
+									--%>
 										<c:param name="${paramItem.key}" value="${paramItem.value[0]}" />
+										<%--
 									</c:when>
-								</c:choose>
+								</c:choose>--%>
 							</c:forEach>
 						</c:url>
 						<a href="${linkVal}"><bean:write name="item" property="value" /></a> &nbsp; &nbsp;
