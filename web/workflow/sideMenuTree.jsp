@@ -48,7 +48,7 @@
 
 								    <c:forEach var="assay" items="${sessionScope.workflow.assayBeanMap[assayType]}">
     								    <c:set var="assaySeq" value="${assaySeq+1}"/>
-								        d.add(${assaySeq},${assayTypeNum.count},'${assay.assayName}','javascript:gotoPage(\'/calab/workflowForward.do?type=assay\')', '', '', '');
+								        d.add(${assaySeq},${assayTypeNum.count},'${assay.assayName}','javascript:gotoPage(\'/calab/workflowForward.do?type=assay&assayId=${assay.assayId}&assayName=${assay.assayName}\')', '', '', '');
 	 									
 										<c:forEach var="run" items="${assay.runBeans}">																
 										    <c:set var="runSeq" value="${runSeq+1+2}"/>
