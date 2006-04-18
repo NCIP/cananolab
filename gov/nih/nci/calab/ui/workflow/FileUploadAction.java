@@ -88,10 +88,10 @@ public class FileUploadAction extends AbstractDispatchAction
             session.removeAttribute("httpFileUploadSessionData");
         }
         hFileUploadData = new HttpFileUploadSessionData();
-        hFileUploadData.setAssayType("Prescreening_Assay");
-        hFileUploadData.setAssay("STE_1");
-        hFileUploadData.setRun("run1");
-        hFileUploadData.setInout("input");
+        hFileUploadData.setAssayType(runBean.getAssayBean().getAssayType());
+        hFileUploadData.setAssay(runBean.getAssayBean().getAssayName());
+        hFileUploadData.setRun(runBean.getName());
+        hFileUploadData.setInout(request.getParameter("type"));
         
         session.setAttribute("httpFileUploadSessionData", hFileUploadData);
         
