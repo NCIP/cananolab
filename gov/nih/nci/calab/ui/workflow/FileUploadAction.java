@@ -36,6 +36,9 @@ public class FileUploadAction extends AbstractDispatchAction
 {
     private static org.apache.log4j.Logger logger_ =
         org.apache.log4j.Logger.getLogger(FileUploadAction.class);
+    
+    private ExecuteWorkflowService workflowService = new ExecuteWorkflowService();
+
     /**
      * This method is setting up the parameters for the workflow input upload files
      * or output upload files.
@@ -65,14 +68,12 @@ public class FileUploadAction extends AbstractDispatchAction
         HttpSession session = request.getSession();
  
         String runId = request.getParameter("runId");
-        ExecuteWorkflowService workflowService = new ExecuteWorkflowService();
         RunBean runBean = workflowService.getAssayInfoByRun((ExecuteWorkflowBean)session.getAttribute("workflow"), runId);
         
         fileForm.set("assayType", runBean.getAssayBean().getAssayType());
         fileForm.set("assay", runBean.getAssayBean().getAssayName());
         fileForm.set("run", runBean.getName());
-        fileForm.set("inout", request.getParameter("type"));
-        
+        fileForm.set("inout", (request.getParameter("type")).equalsIgnoreCase("in")?"Input" : "Output");
         
         fileForm.set("archiveValue", PropertyReader.getProperty(CalabConstants.FILEUPLOAD_PROPERTY,"archiveValue"));
         fileForm.set("servletURL", PropertyReader.getProperty(CalabConstants.FILEUPLOAD_PROPERTY,"servletURL"));
@@ -91,7 +92,8 @@ public class FileUploadAction extends AbstractDispatchAction
         hFileUploadData.setAssayType(runBean.getAssayBean().getAssayType());
         hFileUploadData.setAssay(runBean.getAssayBean().getAssayName());
         hFileUploadData.setRun(runBean.getName());
-        hFileUploadData.setInout(request.getParameter("type"));
+        hFileUploadData.setInout((request.getParameter("type")).equalsIgnoreCase("in")?"Input" : "Output");
+        hFileUploadData.setRunId(runId);
         
         session.setAttribute("httpFileUploadSessionData", hFileUploadData);
         
@@ -101,18 +103,20 @@ public class FileUploadAction extends AbstractDispatchAction
     public ActionForward persistFileUploadData(ActionMapping mapping, 
             ActionForm form,
             HttpServletRequest request,
-            HttpServletResponse response)
+            HttpServletResponse response) throws Exception
     {
         ActionForward forward = null;
         HttpFileUploadSessionData mySessionData = (HttpFileUploadSessionData)request.getSession().getAttribute("httpFileUploadSessionData");
         String path = PropertyReader.getProperty(CalabConstants.FILEUPLOAD_PROPERTY, "inputFileDirectory");
-        String fullPathName = path + mySessionData.getAssayType() + File.separator 
-                                   + mySessionData.getAssay() + File.separator
-                                   + mySessionData.getRun()   + File.separator
-                                   + mySessionData.getInout();
+        String relativePathName = mySessionData.getAssayType() + File.separator 
+                                    + mySessionData.getAssay() + File.separator
+                                    + mySessionData.getRun()   + File.separator
+                                    + mySessionData.getInout();
+        String fullPathName = path + relativePathName;
 
         String mode = (String)request.getParameter("mode");
-        
+        HttpSession session = request.getSession();
+      
         if ("stop".equals(mode))
         {
             if (mySessionData != null)
@@ -171,14 +175,18 @@ public class FileUploadAction extends AbstractDispatchAction
             }
             
             
-            List fileList = mySessionData.getFileList();
+            List<HttpUploadedFileData> fileList = mySessionData.getFileList();
             String assayType = mySessionData.getAssayType();
             String assay = mySessionData.getAssay();
             String run = mySessionData.getRun();
             String inout = mySessionData.getInout();
+            String runId = mySessionData.getRunId();
             
             //TODO: Persist data here, Jennifer's task
             logger_.info("Persist file upload data to database ");
+            String unzipFilePath= File.separator + relativePathName + File.separator + CalabConstants.UNCOMPRESSED_FILE_DIRECTORY;
+            workflowService.saveFile(fileList,unzipFilePath,runId,inout,(String)session.getAttribute("creator"));
+            
             
             //After data persistence, we need to create all.zip for all upload files,
             //which includes previous uploaded file and uploaded files currently.
