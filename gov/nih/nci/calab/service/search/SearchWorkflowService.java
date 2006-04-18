@@ -10,7 +10,9 @@ import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -23,7 +25,7 @@ import org.apache.log4j.Logger;
  * 
  */
 
-/* CVS $Id: SearchWorkflowService.java,v 1.12 2006-04-18 15:51:50 pansu Exp $ */
+/* CVS $Id: SearchWorkflowService.java,v 1.13 2006-04-18 17:38:01 pansu Exp $ */
 
 public class SearchWorkflowService {
 	private static Logger logger = Logger
@@ -101,17 +103,18 @@ public class SearchWorkflowService {
 		}
 		else {
 			//get inputFile workflows first
-			workflows=new ArrayList<WorkflowResultBean>();
+			Set<WorkflowResultBean> workflowSet=new HashSet<WorkflowResultBean>();
 			String inHqlString =hqlString+ "from Aliquot aliquot left join aliquot.dataStatus aliquotStatus join aliquot.runSampleContainerCollection.run run left join run.inputFileCollection file join run.assay assay left join file.dataStatus fileStatus ";
 			inHqlString +=  whereParams[0];
 			List<WorkflowResultBean> inWorkflows = getWorkflows(inHqlString, (List) whereParams[1]);
-			workflows.addAll(inWorkflows);
+			workflowSet.addAll(inWorkflows);
 			
 			//get outputFile workflows next
 			String outHqlString =hqlString+ "from Aliquot aliquot left join aliquot.dataStatus aliquotStatus join aliquot.runSampleContainerCollection.run run left join run.outputFileCollection file join run.assay assay left join file.dataStatus fileStatus ";
 			outHqlString +=  whereParams[0];
 			List<WorkflowResultBean> outWorkflows = getWorkflows(outHqlString, (List) whereParams[1]);
-			workflows.addAll(outWorkflows);
+			workflowSet.addAll(outWorkflows);
+			workflows=new ArrayList<WorkflowResultBean>(workflowSet);
 		}
 		return workflows;
 	}
