@@ -10,6 +10,9 @@
 			</field>
 		</form>
 		<form name="createRunForm">
+			<field property="assay" depends="required">
+				<arg key="createRunForm.assay" bundle="workflow" position="0" />
+			</field>
 			<field property="runBy" depends="required">
 				<arg key="createRunForm.runBy" bundle="workflow" position="0" />
 			</field>
