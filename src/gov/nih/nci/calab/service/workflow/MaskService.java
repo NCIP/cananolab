@@ -4,9 +4,9 @@ import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
 import gov.nih.nci.calab.domain.Aliquot;
 import gov.nih.nci.calab.domain.DataStatus;
+import gov.nih.nci.calab.domain.LabFile;
 import gov.nih.nci.calab.service.util.CalabConstants;
-
-import java.util.List;
+import gov.nih.nci.calab.service.util.StringUtils;
 
 /**
  * Generalizes Mask functionality for masking Aliquot, File, etc.  
@@ -30,20 +30,26 @@ public class MaskService
 	        if (strType.equals("aliquot"))
 	        {
 	            //TODO Find Aliquot record based on the strID
-				List aliquots = ida.search("from Aliquot aliquot where aliquot.name='" + strId + "'");
-				Aliquot aliquot = (Aliquot)aliquots.get(0);
+//				List aliquots = ida.search("from Aliquot aliquot where aliquot.name='" + strId + "'");
+				Aliquot aliquot = (Aliquot)ida.load(Aliquot.class, StringUtils.convertToLong(strId));
 				DataStatus maskStatus = new DataStatus();
 				maskStatus.setReason(strDescription);
 				maskStatus.setStatus(CalabConstants.MASK_STATUS);
+				ida.createObject(maskStatus);
 				
 				aliquot.setDataStatus(maskStatus);
 				ida.store(aliquot); 	        	
 	        }
 	        if (strType.equals("file"))
 	        {
-	        	//TODO Find File record based on the its strID
-	        	
-	        	//TODO Set File Status record to "Masked". 
+				LabFile file = (LabFile)ida.load(LabFile.class, StringUtils.convertToLong(strId));
+				DataStatus maskStatus = new DataStatus();
+				maskStatus.setReason(strDescription);
+				maskStatus.setStatus(CalabConstants.MASK_STATUS);
+				ida.createObject(maskStatus);
+				
+				file.setDataStatus(maskStatus);
+				ida.store(file); 	        	
 	        }
 			ida.close();
 		}catch (Exception e) {
