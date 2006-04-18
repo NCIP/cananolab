@@ -8,85 +8,81 @@
 	Search Results
 </h2>
 <blockquote>
+	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+		<tr valign="bottom">
+			<td align="right">
+				<input type="button" onClick="javascript:history.go(-1);" value="Back">
+			</td>
+		</tr>
+	</table>
+	<br>
 	<logic:present name="workflows">
 		<table width="100%" border="0" align="left" cellpadding="0" cellspacing="0">
 			<tr>
 				<td width="111" class="dataTablePrimaryLabel">
 					File Name
 				</td>
-				<td width="33" align="left" class="dataTablePrimaryLabel">
-					<div align="left">
-						Assay Type
-					</div>
+				<td width="33" class="dataTablePrimaryLabel">
+					Assay Type
 				</td>
-				<td width="51" align="left" class="dataTablePrimaryLabel">
+				<td width="51" class="dataTablePrimaryLabel">
 					Assay Name
 				</td>
-				<td width="51" align="left" class="dataTablePrimaryLabel">
+				<td width="51" class="dataTablePrimaryLabel">
 					Assay Run Date
 				</td>
-				<td width="53" align="left" class="dataTablePrimaryLabel">
+				<td width="53" class="dataTablePrimaryLabel">
 					Aliquot ID
 				</td>
-				<td width="53" align="left" class="dataTablePrimaryLabel">
-					<div align="left">
-						File Submission Date
-					</div>
+				<td width="53" class="dataTablePrimaryLabel">
+					File Submission Date
 				</td>
-				<td width="61" align="left" class="dataTablePrimaryLabel">
-					<div align="left">
-						File Submitter&#13;
-					</div>
+				<td width="61" class="dataTablePrimaryLabel">
+					File Submitter&#13;
 				</td>
-				<td width="44" align="left" class="dataTablePrimaryLabel">
-					<div align="left">
-						File Status
-					</div>
+				<td width="44" class="dataTablePrimaryLabel">
+					File Status
 				</td>
 			</tr>
 			<logic:iterate name="workflows" id="workflow" type="gov.nih.nci.calab.dto.search.WorkflowResultBean" indexId="rowNum">
 				<c:choose>
 					<c:when test="${rowNum % 2 == 0}">
-						<c:set var="style" value="formLabelGrey" />
+						<c:set var="style" value="formFieldGrey" />
 					</c:when>
 					<c:otherwise>
-						<c:set var="style" value="formLabelWhite" />
+						<c:set var="style" value="formFieldWhite" />
 					</c:otherwise>
 				</c:choose>
 				<tr>
-					<td class="${style}" valign="top">
-						<div align="left">
-							<a href="#" class="style2" align="left"><bean:write name="workflow" property="fileName" /></a>
-						</div>&nbsp;
+					<td class="${style}">
+						<a href="#"><bean:write name="workflow" property="fileName" /></a> &nbsp;
 					</td>
-					<td class="${style}" valign="top">
-						<div align="left">
-							<bean:write name="workflow" property="assayType" />
-						</div>&nbsp;
+					<td class="${style}">
+						<bean:write name="workflow" property="assayType" />
+						&nbsp;
 					</td>
-					<td class="${style}" valign="top">
-						<bean:write name="workflow" property="assayName" />&nbsp;
+					<td class="${style}">
+						<bean:write name="workflow" property="assayName" />
+						&nbsp;
 					</td>
-					<td class="${style}" valign="top">
-						<bean:write name="workflow" property="assayRunDate" />&nbsp;
+					<td class="${style}">
+						<bean:write name="workflow" property="assayRunDate" />
+						&nbsp;
 					</td>
-					<td class="${style}" valign="top">
-						<bean:write name="workflow" property="aliquotName" />&nbsp;
+					<td class="${style}">
+						<bean:write name="workflow" property="aliquotName" />
+						&nbsp;
 					</td>
-					<td class="${style}" valign="top">
-						<div align="left">
-							<bean:write name="workflow" property="fileSubmissionDate" />
-						</div>&nbsp;
+					<td class="${style}">
+						<bean:write name="workflow" property="fileSubmissionDate" />
+						&nbsp;
 					</td>
-					<td class="${style}" valign="top">
-						<div align="left">
-							<bean:write name="workflow" property="fileSubmitter" />
-						</div>&nbsp;
+					<td class="${style}">
+						<bean:write name="workflow" property="fileSubmitter" />
+						&nbsp;
 					</td>
-					<td class="${style}" valign="top">
-						<div align="left">
-							<strong><bean:write name="workflow" property="fileMaskStatus" /></strong>
-						</div>&nbsp;
+					<td class="${style}">
+						<strong><bean:write name="workflow" property="fileMaskStatus" /></strong> &nbsp;
 					</td>
 				</tr>
 			</logic:iterate>
@@ -103,31 +99,6 @@
 			</ul>
 		</logic:messagesPresent>
 	</logic:notPresent>
-	<p>
-		&nbsp;
-	</p>
-	<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
-		<tr>
-			<td width="30%">
-				<span class="formMessage"> </span>
-				<br>
-				<table width="498" height="32" border="0" align="right" cellpadding="4" cellspacing="0">
-					<tr>
-						<td width="490" height="32">
-							<div align="right">
-								<input type="button" value="Back" onclick="javascript:history.go(-1)">
-							</div>
-						</td>
-					</tr>
-				</table>
-				<div align="right"></div>
-			</td>
-		</tr>
-	</table>
-	<br>
-	<p>
-		&nbsp;
-	</p>
 	<p>
 		&nbsp;
 	</p>

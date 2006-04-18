@@ -12,10 +12,18 @@
 	</logic:notPresent>
 </h2>
 <blockquote>
+	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+		<tr valign="bottom">
+			<td align="right">
+				<input type="button" onClick="javascript:history.go(-1);" value="Back">
+			</td>
+		</tr>
+	</table>
+	<br>
 	<%--show sample details --%>
 	<c:choose>
 		<c:when test="${param.showAliquot == null || param.showAliquot=='false'}">
-			<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="90%" align="center" summary="" border="0">
+			<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 				<tbody>
 					<tr class="topBorder">
 						<td class="dataTablePrimaryLabel" colspan="2">
@@ -172,7 +180,7 @@
 			<br>
 
 			<logic:iterate name="sample" property="containers" id="container" indexId="cnum">
-				<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="90%" align="center" summary="" border="0">
+				<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 					<tbody>
 						<tr class="topBorder">
 							<c:choose>
@@ -365,7 +373,7 @@
 				<br>
 			</logic:iterate>
 
-			<table class="topBorderOnly" cellspacing="0" cellpadding="3" align="center" width="90%" summary="" border="0">
+			<table class="topBorderOnly" cellspacing="0" cellpadding="3" align="center" width="100%" summary="" border="0">
 				<tr>
 					<td width="30%" class="formMessage">
 						Accessioned by:
@@ -374,17 +382,12 @@
 						<bean:write name="sample" property="accessionDate" />
 					</td>
 				</tr>
-				<tr valign="bottom" align="right">
-					<td colspan="8">
-						<input type="button" onClick="javascript:history.go(-1);" value="Back">
-					</td>
-				</tr>
 			</table>
 		</c:when>
 
 		<%-- show aliquot details --%>
 		<c:otherwise>
-			<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="90%" align="center" summary="" border="0">
+			<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 				<tbody>
 					<tr class="topBorder">
 						<td class="dataTablePrimaryLabel" colspan="2">
@@ -537,7 +540,7 @@
 				</tbody>
 			</table>
 			<br>
-			<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="90%" align="center" summary="" border="0">
+			<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 				<tbody>
 					<tr class="topBorder">
 						<td class="dataTablePrimaryLabel" colspan="2">
@@ -721,7 +724,7 @@
 			</table>
 
 			<br>
-			<table class="topBorderOnly" cellspacing="0" cellpadding="3" align="center" width="90%" summary="" border="0">
+			<table class="topBorderOnly" cellspacing="0" cellpadding="3" align="center" width="100%" summary="" border="0">
 				<tr>
 					<td width="30%" class="formMessage">
 						Aliquoted by:
@@ -730,11 +733,7 @@
 						<bean:write name="aliquot" property="creationDate" />
 					</td>
 				</tr>
-				<tr valign="bottom" align="right">
-					<td colspan="8">
-						<input type="button" onClick="javascript:history.go(-1);" value="Back">
-					</td>
-				</tr>
+
 			</table>
 		</c:otherwise>
 	</c:choose>
