@@ -193,7 +193,7 @@
 							</c:choose>
 							<td class="${style}" colspan="2">
 								<div align="justify">
-									<em>Container <c:out value="${cnum+1}" /> </em>
+									<em>Container <c:out value="${container.containerName}" /> </em>
 								</div>
 							</td>
 						</tr>
