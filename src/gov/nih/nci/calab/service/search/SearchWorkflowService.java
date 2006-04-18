@@ -23,7 +23,7 @@ import org.apache.log4j.Logger;
  * 
  */
 
-/* CVS $Id: SearchWorkflowService.java,v 1.11 2006-04-18 14:04:26 pansu Exp $ */
+/* CVS $Id: SearchWorkflowService.java,v 1.12 2006-04-18 15:51:50 pansu Exp $ */
 
 public class SearchWorkflowService {
 	private static Logger logger = Logger
@@ -91,9 +91,9 @@ public class SearchWorkflowService {
 			{
 				// if select an item, need to include in join
 				if (isInputFile) {
-					hqlString += "from Aliquot aliquot join aliquot.dataStatus aliquotStatus join aliquot.runSampleContainerCollection.run run join run.inputFileCollection file join run.assay assay join file.dataStatus fileStatus ";
+					hqlString += "from Aliquot aliquot left join aliquot.dataStatus aliquotStatus join aliquot.runSampleContainerCollection.run run left join run.inputFileCollection file join run.assay assay left join file.dataStatus fileStatus ";
 				} else {
-					hqlString += "from Aliquot aliquot join aliquot.dataStatus aliquotStatus join aliquot.runSampleContainerCollection.run run join run.outputFileCollection file join run.assay assay join file.dataStatus fileStatus ";
+					hqlString += "from Aliquot aliquot left join aliquot.dataStatus aliquotStatus join aliquot.runSampleContainerCollection.run run left join run.outputFileCollection file join run.assay assay left join file.dataStatus fileStatus ";
 				}
 				hqlString += whereParams[0];
 				workflows = getWorkflows(hqlString, (List) whereParams[1]);
@@ -101,13 +101,14 @@ public class SearchWorkflowService {
 		}
 		else {
 			//get inputFile workflows first
-			String inHqlString =hqlString+ "from Aliquot aliquot join aliquot.dataStatus aliquotStatus join aliquot.runSampleContainerCollection.run run join run.inputFileCollection file join run.assay assay join file.dataStatus fileStatus ";
+			workflows=new ArrayList<WorkflowResultBean>();
+			String inHqlString =hqlString+ "from Aliquot aliquot left join aliquot.dataStatus aliquotStatus join aliquot.runSampleContainerCollection.run run left join run.inputFileCollection file join run.assay assay left join file.dataStatus fileStatus ";
 			inHqlString +=  whereParams[0];
 			List<WorkflowResultBean> inWorkflows = getWorkflows(inHqlString, (List) whereParams[1]);
 			workflows.addAll(inWorkflows);
 			
 			//get outputFile workflows next
-			String outHqlString =hqlString+ "from Aliquot aliquot join aliquot.dataStatus aliquotStatus join aliquot.runSampleContainerCollection.run run join run.outputFileCollection file join run.assay assay join file.dataStatus fileStatus ";
+			String outHqlString =hqlString+ "from Aliquot aliquot left join aliquot.dataStatus aliquotStatus join aliquot.runSampleContainerCollection.run run left join run.outputFileCollection file join run.assay assay left join file.dataStatus fileStatus ";
 			outHqlString +=  whereParams[0];
 			List<WorkflowResultBean> outWorkflows = getWorkflows(outHqlString, (List) whereParams[1]);
 			workflows.addAll(outWorkflows);
@@ -172,10 +173,11 @@ public class SearchWorkflowService {
 			paramList.add(aliquotName);
 			where = "where ";
 		}
+		
 		if (!includeMaskedAliquots) {
 			whereList.add("aliquotStatus.status is null");
 			where = "where ";
-		}
+		}		
 
 		if (fileName.length() > 0) {
 			if (fileName.indexOf("*") != -1) {
@@ -203,11 +205,12 @@ public class SearchWorkflowService {
 			whereList.add("file.createdBy=?");
 			where = "where ";
 		}
+        
 		if (!includeMaskedFiles) {
 			whereList.add("fileStatus.status is null");
 			where = "where ";
 		}
-
+		
 		String whereStr = "";
 		if (join.equals("and")) {
 			whereStr = StringUtils.join(whereList, " and ");
