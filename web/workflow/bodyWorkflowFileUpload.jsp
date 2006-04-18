@@ -1,26 +1,25 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
-
-<table width="100%" class="dataTable">
+<center>
+<table width="80%" border="0" align="center" cellpadding="0" cellspacing="0">
 	<tr>
 		<td class="dataTablePrimaryLabel" colspan="2"> General Information for the workflow </td>
 	</tr>
-	<tr class="dataRowLight">
-		<td><b>Assay Type</b> </td>
-		<td class="datraCellText"><bean:write name="fileUploadForm" property="assayType" /> </td>
+	<tr >
+		<td class="leftBorderedFormFieldGrey"><b>Assay Type</b> </td>
+		<td class="leftBorderedFormFieldGrey"><bean:write name="fileUploadForm" property="assayType" /> </td>
 	</tr>
-	<tr class="dataRowDark">
-		<td><b>Assay</b></td>
-		<td class="datraCellText"><bean:write name="fileUploadForm" property="assay" /></td>
+	<tr >
+		<td class="leftBorderedFormFieldWhite"><b>Assay</b></td>
+		<td class="leftBorderedFormFieldWhite"><bean:write name="fileUploadForm" property="assay" /></td>
 	</tr>
-	<tr class="dataRowLight">
-		<td><b>Run</b></td>
-		<td class="datraCellText"><bean:write name="fileUploadForm" property="run" /></td>
+	<tr >
+		<td class="leftBorderedFormFieldGrey"><b>Run</b></td>
+		<td class="leftBorderedFormFieldGrey"><bean:write name="fileUploadForm" property="run" /></td>
 	</tr>
 </table>	
-
- <center>
+<br><br>
 <table class="dataTable">
 	<tr>
 	<td class="dataTablePrimaryLabel"> <bean:write name="fileUploadForm" property="inout"/> File Upload
