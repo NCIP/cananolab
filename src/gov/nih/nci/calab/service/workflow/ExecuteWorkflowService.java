@@ -6,7 +6,6 @@ import gov.nih.nci.calab.domain.Aliquot;
 import gov.nih.nci.calab.domain.Assay;
 import gov.nih.nci.calab.domain.AssayType;
 import gov.nih.nci.calab.domain.InputFile;
-import gov.nih.nci.calab.domain.LabFile;
 import gov.nih.nci.calab.domain.OutputFile;
 import gov.nih.nci.calab.domain.Run;
 import gov.nih.nci.calab.domain.RunSampleContainer;
@@ -20,8 +19,10 @@ import gov.nih.nci.calab.dto.workflow.FileBean;
 import gov.nih.nci.calab.dto.workflow.RunBean;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
+import gov.nih.nci.calab.service.util.file.FileNameConvertor;
 import gov.nih.nci.calab.service.util.file.HttpUploadedFileData;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -390,12 +391,13 @@ public class ExecuteWorkflowService {
 							}
 							runBean.setAliquotBeans(aliquotBeans);
 							
-							Set inputFiles = (Set)doRun.getInputFileCollection();
+                            Set inputFiles = (Set)doRun.getInputFileCollection();
 							
 							inputFileCount = inputFileCount + inputFiles.size();
 							
 							List<FileBean> inputFileBeans = new ArrayList<FileBean>();
 							for (Object infile: inputFiles) {
+                                logger.info("run's object input file type = " + infile.getClass().getName());
 								InputFile doInputFile = (InputFile)infile;
 								FileBean infileBean = new FileBean();
 								infileBean.setId(doInputFile.getId().toString());
@@ -407,6 +409,7 @@ public class ExecuteWorkflowService {
 							Set outputFiles = (Set)doRun.getOutputFileCollection();
 							List<FileBean> outputFileBeans = new ArrayList<FileBean>();
 							for (Object outfile: outputFiles) {
+                                logger.info("run's object input file type = " + outfile.getClass().getName());
 								OutputFile doOutputFile = (OutputFile)outfile;
 								FileBean outfileBean = new FileBean();
 								outfileBean.setId(doOutputFile.getId().toString());
@@ -457,24 +460,27 @@ public class ExecuteWorkflowService {
 
 		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
 		try {
+            ida.open();
 			// TODO: only one run should  be returned
 			Run doRun = (Run)ida.load(Run.class, StringUtils.convertToLong(runId));
-			String assayName = doRun.getAssay().getName();
-			String assayType = doRun.getAssay().getAssayType();
+//			String assayName = doRun.getAssay().getName();
+//			String assayType = doRun.getAssay().getAssayType();
 
 			for (HttpUploadedFileData fileData: fileList) {
 
-				if (inout.equals(CalabConstants.INPUT)) {
+				if (inout.equalsIgnoreCase(CalabConstants.INPUT)) {
 					InputFile doInputFile = new InputFile();
 					doInputFile.setRun(doRun);
 					doInputFile.setCreatedBy(creator);
 					doInputFile.setCreatedDate(date);
 					System.out.println("ExecuteWorkflowService.saveFile(): input file created Date = " + date);
 					//TODO: is a "/" needed between filepath and filename?
-					doInputFile.setPath(filepath + fileData.getOriginalFileName());
+                    FileNameConvertor fconvertor = new FileNameConvertor();
+					doInputFile.setPath(filepath + File.separator + fconvertor.getConvertedFileName(fileData.getFileName()));
 
-					ida.createObject(doInputFile);
-				} else if (inout.equals(CalabConstants.OUTPUT)) {
+					Object object = ida.createObject(doInputFile);
+                    logger.info("Object object retruned from inputfile = " + object);
+				} else if (inout.equalsIgnoreCase(CalabConstants.OUTPUT)) {
 					OutputFile doOutputFile = new OutputFile();
 					doOutputFile.setRun(doRun);
 					doOutputFile.setCreatedBy(creator);
@@ -487,10 +493,12 @@ public class ExecuteWorkflowService {
 			}
 		} catch (Exception e) {
 			ida.rollback();
-			ida.close();
 			e.printStackTrace();
 			throw new RuntimeException("Error in persist File information for  run -> " + runId + " |  " + inout);
-		}
+		} finally {
+            ida.close();
+        }
+
 	}
 
 //	private void setFileDetail(LabFile file, HttpUploadedFileData fileData) {
