@@ -18,7 +18,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-/* CVS $Id: ManageSampleService.java,v 1.19 2006-04-13 13:19:20 zengje Exp $ 
+/* CVS $Id: ManageSampleService.java,v 1.20 2006-04-18 23:27:56 zengje Exp $ 
  */
 public class ManageSampleService {
 	private static Logger logger = Logger.getLogger(ManageSampleService.class);
@@ -203,6 +203,8 @@ public class ManageSampleService {
 				doSampleContainer.setStorageCondition(containers[i].getStorageCondition());
 				doSampleContainer.setVolume(StringUtils.convertToFloat(containers[i].getVolume()));
 				doSampleContainer.setVolumeUnit(containers[i].getVolumeUnit());
+				// TODO: set name is it suppose to be sequence number?
+				doSampleContainer.setName(containers[i].getContainerName());
 				
 				// TODO: relationship with storage need to be added too.
 				HashSet<StorageElement> storages = new HashSet<StorageElement>();
