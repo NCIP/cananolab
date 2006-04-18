@@ -174,6 +174,16 @@ public class SampleContainer implements java.io.Serializable {
 	public void setCreatedMethod(java.lang.String createdMethod) {
 		this.createdMethod = createdMethod;
 	}
+	
+	private java.lang.String name;
+	
+	public java.lang.String getName() {
+		return name;
+	}
+
+	public void setName(java.lang.String name) {
+		this.name = name;
+	}
 
 	public java.util.Collection storageElementCollection;
 
