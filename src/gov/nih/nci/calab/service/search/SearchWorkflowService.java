@@ -10,7 +10,6 @@ import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -24,7 +23,7 @@ import org.apache.log4j.Logger;
  * 
  */
 
-/* CVS $Id: SearchWorkflowService.java,v 1.10 2006-04-18 13:52:55 pansu Exp $ */
+/* CVS $Id: SearchWorkflowService.java,v 1.11 2006-04-18 14:04:26 pansu Exp $ */
 
 public class SearchWorkflowService {
 	private static Logger logger = Logger
@@ -84,7 +83,7 @@ public class SearchWorkflowService {
 					"or");
 		}
 
-		String hqlString = "select distinct file.path, assay.assayType.name, assay.name, run.createdDate, aliquot.name, file.createdDate, file.createdBy, fileStatus.status ";
+		String hqlString = "select distinct file.path, assay.assayType, assay.name, run.createdDate, aliquot.name, file.createdDate, file.createdBy, fileStatus.status ";
 
 		// search either input file or output file, not both
 		if (!(isFileIn && isFileOut)) {
@@ -140,9 +139,9 @@ public class SearchWorkflowService {
 		if (assayType.length() > 0) {
 			if (assayType.indexOf("*") != -1) {
 				assayType = assayType.replace('*', '%');
-				whereList.add("assay.assayType.name like ?");
+				whereList.add("assay.assayType like ?");
 			} else {
-				whereList.add("assay.assayType.name=?");
+				whereList.add("assay.assayType =?");
 			}
 			paramList.add(assayType);
 			where = "where ";
