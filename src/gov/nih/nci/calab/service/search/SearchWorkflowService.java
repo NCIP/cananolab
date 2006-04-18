@@ -24,7 +24,7 @@ import org.apache.log4j.Logger;
  * 
  */
 
-/* CVS $Id: SearchWorkflowService.java,v 1.9 2006-04-13 17:27:08 pansu Exp $ */
+/* CVS $Id: SearchWorkflowService.java,v 1.10 2006-04-18 13:52:55 pansu Exp $ */
 
 public class SearchWorkflowService {
 	private static Logger logger = Logger
@@ -126,8 +126,7 @@ public class SearchWorkflowService {
 		List<String> whereList = new ArrayList<String>();
 
 		String where = "";
-		Object[] objs = new Object[] { where, paramList };
-
+		
 		if (assayName.length() > 0) {
 			if (assayName.indexOf("*") != -1) {
 				assayName = assayName.replace('*', '%');
@@ -217,6 +216,7 @@ public class SearchWorkflowService {
 			whereStr = StringUtils.join(whereList, " or ");
 		}
 		where = where + whereStr;
+		Object[] objs = new Object[] { where, paramList };
 
 		return objs;
 	}
