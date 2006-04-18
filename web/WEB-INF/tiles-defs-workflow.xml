@@ -105,7 +105,7 @@
     </definition>
     
      <!-- definitions for the file upload page -->
-    <definition name="workflow.download.content" extends="workflow.content.home">
+    <definition name="workflow.fileDownload.content" extends="workflow.content.home">
 		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp"/>
 	    <put name="workflowContent" value="/workflow/bodyWorkflowFiledownload.jsp"/>
     </definition>
@@ -117,7 +117,7 @@
     </definition>
 
     <definition name="workflow.fileDownload" extends="calab.home">
-        <put name="calabContent" value="workflow.filedownload.content"/>
+        <put name="calabContent" value="workflow.fileDownload.content"/>
         <put name="calabSidemenu" value="/workflow/sideMenuTree.jsp"/>
         <put name="menu" value="workflow"/>
     </definition>
