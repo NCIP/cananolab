@@ -74,6 +74,7 @@ public class HttpFileUploadSessionData implements Serializable
     private String assay = null;
     private String run = null;
     private String inout = null;
+    private String runId= null;
     
 
     /**
@@ -220,6 +221,16 @@ public class HttpFileUploadSessionData implements Serializable
     public void setRun(String run)
     {
         this.run = run;
+    }
+
+    public String getRunId()
+    {
+        return runId;
+    }
+
+    public void setRunId(String runId)
+    {
+        this.runId = runId;
     }
 }
     
