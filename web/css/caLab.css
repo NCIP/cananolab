@@ -360,7 +360,7 @@ DATA TABLE BEGINS
   font-size:1.0em;
   font-weight:bold;
   background-color:#6A8989 ; /* constant: darker green */
-  color:#98B7B7; /* constant: lighter green */
+  color:#FFFFFF; /* constant: white */
   border-top:1px solid #5C5C5C; /* constant: dark gray */
   border-left:1px solid #5C5C5C; /* constant: dark gray */
   border-right:1px solid #5C5C5C; /* constant: dark gray */
