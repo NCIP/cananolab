@@ -16,7 +16,7 @@ import java.util.Comparator;
  * 
  */
 
-/* CVS $Id: CalabComparators.java,v 1.1 2006-04-19 19:53:59 pansu Exp $ */
+/* CVS $Id: CalabComparators.java,v 1.2 2006-04-19 20:17:09 pansu Exp $ */
 
 public class CalabComparators {
 
@@ -111,8 +111,8 @@ public class CalabComparators {
 				if (runDiff == 0) {
 					// compare aliquot
 					if (aliquotDiff == 0) {
-						return workflow1.getFile().getFileName().compareTo(
-								workflow2.getFile().getFileName());
+						return workflow1.getFile().getFilename().compareTo(
+								workflow2.getFile().getFilename());
 					} else {
 						return aliquotDiff;
 					}
