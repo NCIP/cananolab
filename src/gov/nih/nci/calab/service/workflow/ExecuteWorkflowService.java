@@ -121,9 +121,9 @@ public class ExecuteWorkflowService {
 	 */
 	public void saveRunAliquots(String runId, String[] aliquotIds,
 			String comments, String creator, String creationDate) throws Exception {
+		
+		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
 		try {
-			IDataAccess ida = (new DataAccessProxy())
-					.getInstance(IDataAccess.HIBERNATE);
 			ida.open();
 			//load run object
 			logger.debug("ExecuteWorkflowService.saveRunAliquots(): run id = " + runId);
@@ -153,16 +153,19 @@ public class ExecuteWorkflowService {
 			}
 			ida.close();
 		} catch (Exception e) {
+			ida.rollback();
 			logger.error("Error in saving Run Aliquot ", e);
 			throw new RuntimeException("Error in saving Run Aliquot ");
+		}finally {
+			ida.close();
 		}
 	}
 
-	public AliquotBean getAliquot(String aliquotId) {
+	public AliquotBean getAliquot(String aliquotId) throws Exception {
+		
 		AliquotBean aliquotBean = new AliquotBean();
+		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
 		try {
-			IDataAccess ida = (new DataAccessProxy())
-					.getInstance(IDataAccess.HIBERNATE);
 			ida.open();
 			String hqlString = "from Aliquot aliquot where aliquot.id ='" + aliquotId+ "'";
 			List results = ida.search(hqlString);
@@ -216,10 +219,11 @@ public class ExecuteWorkflowService {
 					
 				aliquotBean.setContainer(containerBean);
 			}
-			ida.close();
 		} catch (Exception e) {
 			logger.error("Error in retrieving aliquot information with id -- " + aliquotId, e);
 			throw new RuntimeException("Error in retrieving aliquot information with name -- " + aliquotId);
+		} finally {
+			ida.close();
 		}
 		return aliquotBean;
 	}
@@ -257,13 +261,13 @@ public class ExecuteWorkflowService {
 			doRun.setAssay((Assay)ida.load(Assay.class, StringUtils.convertToLong(assayId)));
 			
 			runId =  (Long)ida.createObject(doRun);
-			ida.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 			ida.rollback();
-			ida.close();
 			logger.error("Error in creating Run for assay. ", e);
 			throw new RuntimeException("Error in creating Run for assay. ");
+		} finally {
+			ida.close();
 		}
 		return runId.toString();
 	}
@@ -287,19 +291,7 @@ public class ExecuteWorkflowService {
 		}
 		return runNum;
 	}
-	
-	
-	/**
-	 * Save the aliquot IDs to be associated with the given run ID.
-	 * @param fileURI
-	 * @param fileName
-	 * @param runId
-	 * @throws Exception
-	 */
-	public void saveFileInfo(String fileURI, String fileName, String runId) throws Exception {
-		//TODO fill in details for saving RUN INFO for the run
-	}
-	
+
 	/**
 	 * Get the File information for the given Run Id.
 	 * @param runId
@@ -318,11 +310,11 @@ public class ExecuteWorkflowService {
 				String assayTypeName = ((AssayType)obj).getName();
 				typedAssayBeans.put(assayTypeName, getAssayByType(assayTypeName, ida));
 			}			
-			ida.close();
 		} catch (Exception e) {
-			e.printStackTrace();
-			ida.close();		
+			e.printStackTrace();		
 			throw new RuntimeException("Error in retriving execute workflow objects ");
+		} finally {
+			ida.close();
 		}
 		return typedAssayBeans;
 	}	
@@ -428,8 +420,7 @@ public class ExecuteWorkflowService {
 					throw new Exception("Error in retrieving assay by assayType -- " + assayTypeName);
 				}				
 				typedAssayBeans.put(assayTypeName, assays);
-			}
-			
+			}			
 			// Get all count
 			workflowBean.setAssayTypeCount(assayTypeCount);
 			workflowBean.setAssayCount(assayCount);
@@ -437,13 +428,14 @@ public class ExecuteWorkflowService {
 			workflowBean.setAliquotCount(aliquotCount);
 			workflowBean.setInputFileCount(inputFileCount);
 			workflowBean.setAssayBeanMap(typedAssayBeans);
-			System.out.println(" assayTypeCount = " + assayTypeCount + " | assayCount = " + assayCount + " | runCount = " + runCount + " | inputFileCount = " + inputFileCount);
-			ida.close();
+			
 		} catch (Exception e) {
-			e.printStackTrace();
-			ida.close();		
+			e.printStackTrace();		
 			throw new RuntimeException("Error in retriving execute workflow objects ");
+		} finally {
+			ida.close();
 		}
+		
 		return workflowBean;
 	}	
 
@@ -500,20 +492,6 @@ public class ExecuteWorkflowService {
         }
 
 	}
-
-//	private void setFileDetail(LabFile file, HttpUploadedFileData fileData) {
-//		
-//		Date date = Calendar.getInstance().getTime();
-//
-//		// TODO: file
-//		file.setPath(fileData.getFilePath());
-//		// TODO: fileData extension is zip or original?
-//		file.setExtension(fileData.getFileExtension());
-//		// TODO: if I create a new date, it will be different from upload time
-//		file.setCreatedDate(date);
-//		// TODO:  get user info from session
-////		file.setCreatedBy();
-//	}
 
 	public RunBean getAssayInfoByRun(ExecuteWorkflowBean workflowBean, String runId)
 	{
