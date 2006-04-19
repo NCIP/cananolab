@@ -13,8 +13,8 @@
 			<item value="Download Files" link="fileDownload.do?method=setup" />
 		</putList>
 		<putList name="outActions">
-			<item value="Upload Files" link="useAliquot.jsp" />
-			<item value="Download All Files (Zipped)" link="useAliquot.jsp" />
+			<item value="Upload Files" link="fileUpload.do?method=setup" />
+			<item value="Download Files" link="fileDownload.do?method=setup" />
 		</putList>
 		<putList name="assayActions">
 			<item value="Create Run" link="initSession.do?forwardPage=createAssayRun" />
