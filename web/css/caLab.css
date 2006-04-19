@@ -536,7 +536,7 @@ p,.p{ /* for paragraphs */
 }
 .welcomeContent{ /* for the area below the title content of the home page */
   font-family:arial,helvetica,verdana,sans-serif;
-  font-size:0.6em;
+  font-size:0.8em;
   padding:1em;
   line-height:1.5em;
 }
