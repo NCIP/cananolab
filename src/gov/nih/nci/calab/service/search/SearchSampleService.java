@@ -8,9 +8,11 @@ import gov.nih.nci.calab.domain.Source;
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.SampleBean;
 import gov.nih.nci.calab.dto.administration.StorageLocation;
+import gov.nih.nci.calab.service.util.CalabComparators;
 import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -22,7 +24,7 @@ import org.apache.log4j.Logger;
  * @author pansu
  * 
  */
-/* CVS $Id: SearchSampleService.java,v 1.11 2006-04-17 19:24:27 pansu Exp $ */
+/* CVS $Id: SearchSampleService.java,v 1.12 2006-04-19 19:53:48 pansu Exp $ */
 
 public class SearchSampleService {
 	private static Logger logger = Logger.getLogger(SearchSampleService.class);
@@ -222,7 +224,8 @@ public class SearchSampleService {
 			throw new RuntimeException(
 					"Error in searching sample by the given parameters");
 		}
-
+        
+		Collections.sort(samples, new CalabComparators.SampleBeanComparator());
 		return samples;
 	}
 
@@ -333,6 +336,7 @@ public List<AliquotBean> searchAliquotsByAliquotName(String aliquotName,
 			List results = ida.searchByParam(hqlString, paramList);
 			for (Object obj : new HashSet<Object>(results)) {
 				Aliquot aliquot = (Aliquot) obj;
+				Sample sample=aliquot.getSample();
 				aliquots.add(new AliquotBean(aliquot));				
 			}			
 			ida.close();
