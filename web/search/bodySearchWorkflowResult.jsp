@@ -81,7 +81,7 @@
 						&nbsp;
 					</td>
 					<td class="${style}">
-						<bean:write name="workflow" property="file.fileSubmissionDate" />
+						<bean:write name="workflow" property="file.createDateStr" />
 						&nbsp;
 					</td>
 					<td class="${style}">
