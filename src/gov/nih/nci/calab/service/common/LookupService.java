@@ -12,13 +12,11 @@ import gov.nih.nci.calab.domain.StorageElement;
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
 import gov.nih.nci.calab.dto.administration.SampleBean;
-import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.dto.workflow.AssayBean;
-
+import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 
@@ -29,7 +27,7 @@ import org.apache.log4j.Logger;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.17 2006-04-14 21:28:28 zengje Exp $ */
+/* CVS $Id: LookupService.java,v 1.18 2006-04-19 19:53:25 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -59,7 +57,7 @@ public class LookupService {
 			logger.error("Error in retrieving all aliquot Ids and names", e);
 			throw new RuntimeException(
 					"Error in retrieving all aliquot Ids and names");
-		}
+		}		
 		return aliquots;
 	}
 
@@ -293,54 +291,6 @@ public class LookupService {
 	 *
 	 * @return a list of all assays in certain type
 	 */
-	public List<String> getAllAssays() {
-		// Detail here
-		List<String> assays = new ArrayList<String>();
-		try {
-			IDataAccess ida = (new DataAccessProxy())
-					.getInstance(IDataAccess.HIBERNATE);
-			ida.open();
-			String hqlString = "select assay.name from Assay assay";
-			List results = ida.search(hqlString);
-			for (Object obj : results) {
-				assays.add((String) obj);
-			}
-			ida.close();
-		} catch (Exception e) {
-			logger.error("Error in retrieving all assays  ", e);
-			throw new RuntimeException("Error in retrieving all assay " );
-		}
-		return assays;
-	}
-	/**
-	 * Retrieve all assays
-	 *
-	 * @return a list of all assays in certain type
-	 */
-	public List<String> getAllAvailableAliquots() {
-		// Detail here
-		List<String> assays = new ArrayList<String>();
-		try {
-			IDataAccess ida = (new DataAccessProxy())
-					.getInstance(IDataAccess.HIBERNATE);
-			ida.open();
-			String hqlString = "select aliquot.name from Aliquot aliquot order by aliquot.name";
-			List results = ida.search(hqlString);
-			for (Object obj : results) {
-				assays.add((String) obj);
-			}
-			ida.close();
-		} catch (Exception e) {
-			logger.error("Error in retrieving all assays  ", e);
-			throw new RuntimeException("Error in retrieving all assay " );
-		}
-		return assays;
-	}
-	/**
-	 * Retrieve all assays
-	 *
-	 * @return a list of all assays in certain type
-	 */
 	public List<String> getAllAssignedAliquots() {
 		// Detail here
 		List<String> aliquots = new ArrayList<String>();
@@ -395,180 +345,4 @@ public class LookupService {
 		}
 		return assayBeans;
 	}
-	public List<String> getAssayByType(String assayTypeName) {
-		// Detail here
-		List<String> assays = new ArrayList<String>();
-		try {
-			IDataAccess ida = (new DataAccessProxy())
-					.getInstance(IDataAccess.HIBERNATE);
-			ida.open();
-			String hqlString = "select assay.name from Assay assay where assay.assayType ='" + assayTypeName + "'";
-			List results = ida.search(hqlString);
-			for (Object obj : results) {
-				assays.add((String) obj);
-			}
-			ida.close();
-		} catch (Exception e) {
-			logger.error("Error in retrieving assay by assayType -- " + assayTypeName, e);
-			throw new RuntimeException("Error in retrieving assay by assayType -- " + assayTypeName);
-		}
-
-		return assays;
-	}
-	
-	
-
-	/**
-	 * Retrieve get Run Names By Assay
-	 *
-	 * @return a list of all assays in certain type
-	 */
-	public List<String> getRunByAssay(String assayTypeName) {
-		// Detail here
-		List<String> runs = new ArrayList<String>();
-		runs.add("Run1");
-		runs.add("Run2");
-		return runs;
-	}
-
-	/**
-	 * Retrieve get FolderNames 
-	 *@param runName
-	 * @return a list of all assays in certain type
-	 */
-	public List<String> getFolderNames(String runName) {
-		// Detail here
-		List<String> folderNames = new ArrayList<String>();
-		folderNames.add("In");
-		folderNames.add("Out");
-		return folderNames;
-	}
-	
-	/**
-	 * Retrieve get FileNames 
-	 *@param runName
-	 * @return a list of all assays in certain type
-	 */
-	
-	public List<String> getFileNames(String folderName) {
-		// Detail here
-		List<String> fileNames = new ArrayList<String>();
-		fileNames.add("NCL6.vaf");
-		fileNames.add("NCL14.vaf");
-		return fileNames;
-	}	
-	
-	/**
-	 * Builds the Workflow in a dTree javaScript Tree view(Refer script.js)
-	
-	
-	s	d = new dTree('d');	d.config.target="";	d.add(0,-1,'Workflow');
-		
-	s	d.add(1,0,'Pre-screening Assays','javascript:void(0)', '', '', '');
-		
-	s	d.add(2,1,'STE-1','javascript:gotoPage(\'assayActionMenu.jsp\')', '', '', '');
-		
-	s	d.add(3,2,'run 1','javascript:gotoPage(\'editRun.jsp\')', '', '', '');
-		
-	s	d.add(4,3,'In','javascript:gotoPage(\'inputActionMenu.jsp\')');
-		
-	s	d.add(5,4,'NCL6-7105-1','javascript:void(0)','','','');
-		
-		d.add(6,4,'NCL6-7105-2','javascript:void(0)','','','');
-		
-		d.add(7,3,'Out','javascript:gotoPage(\'outputActionMenu.jsp\')');
-		
-		d.add(8,7,'NCL6.vaf','doc/astra_5.doc');
-		
-		d.add(9,2,'run 2','javascript:void(0)');
-		
-		d.add(10,9,'In','javascript:gotoPage(\'inputActionMenu.jsp\')');
-		
-		d.add(11,9,'Out','javascript:gotoPage(\'outputActionMenu.jsp\')');
-		d.add(12,1,'STE-2','javascript:gotoPage(\'assayActionMenu.jsp\')');
-		d.add(13,1,'STE-3','javascript:gotoPage(\'assayActionMenu.jsp\')', '', '', '');
-		d.add(14,1,'PCC-1','javascript:gotoPage(\'assayActionMenu.jsp\')', '', '', '');
-		d.add(15,0,'In Vitro Assays','javascript:void(0)', '', '', '');
-		d.add(16,0,'In Vivo Assays','javascript:void(0)', '', '', '');
-		
-		document.write(d);
-		
-	 * 
-	 * 
-	 * 
-	 */
-	
-	public String getWorkflowTree() 
-	{
-		
-		List<String> assayTypes = getAllAssayTypes();
-		Iterator<String> atit = assayTypes.iterator();
-		int ia=0, ib=-1;
-		String treeStr = "d = new dTree('d');	d.config.target=\"\";	d.add(0,-1,'Workflow');";
-		
-	    while (atit.hasNext()) 
-	    {
-	      String assayTypeName = atit.next();
-	      //Add AssyType node       1          0         Pre  
-	      ia=ia++;
-	      ib=ib++;
-	      treeStr=treeStr+" d.add("+ia+" ,"+ib+",'"+assayTypeName+"','javascript:void(0)', '', '', '');";
-	      
-	      //    Add Assy node
-		  List<String> assayNames = getAssayByType(assayTypeName);
-		  Iterator<String> asit = assayTypes.iterator();
-		  while(asit.hasNext())
-		  {
-			  ia=ia++;
-			  ib=ia;
-		      String assayName = asit.next();
-			  //  						2		1       							1	
-		      //					d.add(2,1,'STE-1','javascript:gotoPage(\'assayActionMenu.jsp\')', '', '', '');
-		      treeStr=treeStr+" d.add("+ia+" ,"+ib+",'"+assayName+",'javascript:gotoPage(\'assayActionMenu.jsp\')', '', '', '');";
-		      		//    Add Run nodes
-			  		List<String> runNames = getRunByAssay(assayName);
-			  		Iterator<String> rit = runNames.iterator();
-			  		while(rit.hasNext())
-			  		{
-			  			ia=ia++;
-			  			ib=ia;
-			  			String runName = rit.next();
-			  			//  						2		1       							1	
-			  			//						d.add(3,2,'run 1','javascript:gotoPage(\'editRun.jsp\')', '', '', '');
-			  			treeStr=treeStr+" d.add("+ia+" ,"+ib+",'"+assayName+",'javascript:gotoPage(\'editRun.jsp\')', '', '', '');";
-			  			
-			  			//		   Add Folder nodes
-				  		List<String> folderNames = getFolderNames(runName);
-				  		Iterator<String> folderit = runNames.iterator();
-				  		while(folderit.hasNext())
-				  		{
-				  			ia=ia++;
-				  			ib=ia;
-				  			String folderName = folderit.next();
-				  			//  						2		1       							1	
-				  			//						d.add(4,3,'In','javascript:gotoPage(\'inputActionMenu.jsp\')');
-				  			treeStr=treeStr+" d.add("+ia+" ,"+ib+",'"+folderName+",'javascript:gotoPage(\'inputActionMenu.jsp.jsp\')');";
-				  			
-				  			//	 		   Add Folder nodes
-					  		List<String> fileNames = getFileNames(folderName);
-					  		Iterator<String> fileit = fileNames.iterator();
-					  		while(fileit.hasNext())
-					  		{
-					  			ia=ia++;
-					  			ib=ia;
-					  			String fileName = fileit.next();
-					  			//  						2		1       							1	
-					  			//						d.add(6,4,'NCL6-7105-2','javascript:void(0)','','','');
-					  			treeStr=treeStr+" d.add("+ia+" ,"+ib+",'"+fileName+",'javascript:void(0)','','','');";
-					  		}//file
-				  		}//folder
-			  		}//Run
-		  		}//Assay
-	    	}//AssayType
-
-	      System.out.println(treeStr);
-	      return treeStr;
-	}	
-
-	
 }
