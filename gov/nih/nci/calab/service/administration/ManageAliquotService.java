@@ -26,7 +26,7 @@ import org.apache.struts.util.LabelValueBean;
  */
 
 /*
- * CVS $Id: ManageAliquotService.java,v 1.13 2006-04-17 16:39:55 zengje Exp $
+ * CVS $Id: ManageAliquotService.java,v 1.14 2006-04-19 22:50:13 zengje Exp $
  */
 
 public class ManageAliquotService {
@@ -182,6 +182,7 @@ public class ManageAliquotService {
 						.search("from Aliquot aliquot where aliquot.name='"
 								+ parentAliquotName + "'");
 				parentAliquot = (Aliquot) aliquots.get(0);
+				sample = parentAliquot.getSample();
 			} else {
 				List samples = ida
 						.search("from Sample sample where sample.name='"
@@ -240,9 +241,9 @@ public class ManageAliquotService {
 							&& (parentAliquotName.length() > 0)) {
 						doAliquot.getParentSampleContainerCollection().add(
 								parentAliquot);
-					} else {
-						doAliquot.setSample(sample);
-					}
+					} 
+					doAliquot.setSample(sample);
+
 
 					ida.createObject(doAliquot);
 
