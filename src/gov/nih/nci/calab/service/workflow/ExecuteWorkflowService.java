@@ -85,6 +85,7 @@ public class ExecuteWorkflowService {
 						FileBean infileBean = new FileBean();
 						infileBean.setId(doInputFile.getId().toString());
 						infileBean.setPath(doInputFile.getPath());
+                        infileBean.setCreatedDate(doInputFile.getCreatedDate());
 						inputFileBeans.add(infileBean);
 					}
 					runBean.setInputFileBeans(inputFileBeans);
@@ -96,6 +97,7 @@ public class ExecuteWorkflowService {
 						FileBean outfileBean = new FileBean();
 						outfileBean.setId(doOutputFile.getId().toString());
 						outfileBean.setPath(doOutputFile.getPath());
+                        outfileBean.setCreatedDate(doOutputFile.getCreatedDate());
 						outputFileBeans.add(outfileBean);
 					}
 					runBean.setOutputFileBeans(outputFileBeans);
@@ -394,6 +396,7 @@ public class ExecuteWorkflowService {
 								FileBean infileBean = new FileBean();
 								infileBean.setId(doInputFile.getId().toString());
 								infileBean.setPath(doInputFile.getPath());
+                                infileBean.setCreatedDate(doInputFile.getCreatedDate());
 								inputFileBeans.add(infileBean);
 							}
 							runBean.setInputFileBeans(inputFileBeans);
@@ -406,6 +409,7 @@ public class ExecuteWorkflowService {
 								FileBean outfileBean = new FileBean();
 								outfileBean.setId(doOutputFile.getId().toString());
 								outfileBean.setPath(doOutputFile.getPath());
+                                outfileBean.setCreatedDate(doOutputFile.getCreatedDate());
 								outputFileBeans.add(outfileBean);
 							}
 							runBean.setOutputFileBeans(outputFileBeans);
@@ -468,19 +472,20 @@ public class ExecuteWorkflowService {
 					System.out.println("ExecuteWorkflowService.saveFile(): input file created Date = " + date);
 					//TODO: is a "/" needed between filepath and filename?
                     FileNameConvertor fconvertor = new FileNameConvertor();
-					doInputFile.setPath(filepath + File.separator + fconvertor.getConvertedFileName(fileData.getFileName()));
+					doInputFile.setPath(filepath + CalabConstants.URI_SEPERATOR + fconvertor.getConvertedFileName(fileData.getFileName()));
 
-					Object object = ida.createObject(doInputFile);
-                    logger.info("Object object retruned from inputfile = " + object);
+					ida.store(doInputFile);
+//                    logger.info("Object object retruned from inputfile = " + object);
 				} else if (inout.equalsIgnoreCase(CalabConstants.OUTPUT)) {
 					OutputFile doOutputFile = new OutputFile();
 					doOutputFile.setRun(doRun);
 					doOutputFile.setCreatedBy(creator);
 					doOutputFile.setCreatedDate(date);
 					System.out.println("ExecuteWorkflowService.saveFile(): output file created Date = " + date);
-					doOutputFile.setPath(filepath);
+                    FileNameConvertor fconvertor = new FileNameConvertor();
+                    doOutputFile.setPath(filepath + CalabConstants.URI_SEPERATOR + fconvertor.getConvertedFileName(fileData.getFileName()));
 
-					ida.createObject(doOutputFile);
+					ida.store(doOutputFile);
 				}
 			}
 		} catch (Exception e) {
@@ -512,4 +517,44 @@ public class ExecuteWorkflowService {
 			return null;
 		}
 	}
+    
+    public List<FileBean> getLastesFileListByRun(String runId, String type) throws Exception {
+        IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
+        List<FileBean> fileBeans = new ArrayList<FileBean>();
+        try {
+            ida.open();
+            Run doRun = (Run)ida.load(Run.class, StringUtils.convertToLong(runId));
+            if (type.equalsIgnoreCase("input")) {
+                Set inputFiles = (Set)doRun.getInputFileCollection();
+                
+                for (Object infile: inputFiles) {
+                    InputFile doInputFile = (InputFile)infile;
+                    FileBean infileBean = new FileBean();
+                    infileBean.setId(doInputFile.getId().toString());
+                    infileBean.setPath(doInputFile.getPath());
+                    infileBean.setCreatedDate(doInputFile.getCreatedDate());
+                    fileBeans.add(infileBean);
+                }               
+            } else if (type.equalsIgnoreCase("output")) {
+                Set outputFiles = (Set)doRun.getOutputFileCollection();
+                for (Object outfile: outputFiles) {
+                    OutputFile doOutputFile = (OutputFile)outfile;
+                    FileBean outfileBean = new FileBean();
+                    outfileBean.setId(doOutputFile.getId().toString());
+                    outfileBean.setPath(doOutputFile.getPath());
+                    outfileBean.setCreatedDate(doOutputFile.getCreatedDate());
+                    fileBeans.add(outfileBean);
+                }              
+            }            
+         } catch (Exception e) {
+            e.printStackTrace();
+            ida.rollback();
+            logger.error("Error in retrieving updated file list. ", e);
+            throw new RuntimeException("Error in retrieving updated file list. ");
+        } finally {
+            ida.close();
+        }
+       
+        return fileBeans;
+    }
 }
