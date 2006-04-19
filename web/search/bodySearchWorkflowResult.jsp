@@ -58,38 +58,38 @@
 				</c:choose>
 				<tr>
 					<td class="${style}">
-						<a href="#"><bean:write name="workflow" property="fileName" /></a> &nbsp;
+						<a href="#"><bean:write name="workflow" property="file.fileName" /></a> &nbsp;
 					</td>
 					<td class="${style}">
-						<bean:write name="workflow" property="assayType" />
+						<bean:write name="workflow" property="assay.assayType" />
 						&nbsp;
 					</td>
 					<td class="${style}">
-						<bean:write name="workflow" property="assayName" />
+						<bean:write name="workflow" property="assay.assayName" />
 						&nbsp;
 					</td>
 					<td class="${style}">
-						<bean:write name="workflow" property="assayRunName" />
+						<bean:write name="workflow" property="run.name" />
 						&nbsp;
 					</td>
 					<td class="${style}">
-						<bean:write name="workflow" property="assayRunDate" />
+						<bean:write name="workflow" property="run.runDate" />
 						&nbsp;
 					</td>
 					<td class="${style}">
-						<bean:write name="workflow" property="aliquotName" />
+						<bean:write name="workflow" property="aliquot.aliquotName" />
 						&nbsp;
 					</td>
 					<td class="${style}">
-						<bean:write name="workflow" property="fileSubmissionDate" />
+						<bean:write name="workflow" property="file.fileSubmissionDate" />
 						&nbsp;
 					</td>
 					<td class="${style}">
-						<bean:write name="workflow" property="fileSubmitter" />
+						<bean:write name="workflow" property="file.fileSubmitter" />
 						&nbsp;
 					</td>
 					<td class="${style}">
-						<strong><bean:write name="workflow" property="fileMaskStatus" /></strong> &nbsp;
+						<strong><bean:write name="workflow" property="file.fileMaskStatus" /></strong> &nbsp;
 					</td>
 				</tr>
 			</logic:iterate>
