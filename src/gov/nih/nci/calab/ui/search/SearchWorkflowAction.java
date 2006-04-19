@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchWorkflowAction.java,v 1.6 2006-04-13 17:27:58 pansu Exp $ */
+/* CVS $Id: SearchWorkflowAction.java,v 1.7 2006-04-19 21:19:04 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.search.WorkflowResultBean;
 import gov.nih.nci.calab.service.search.SearchWorkflowService;
@@ -59,6 +59,13 @@ public class SearchWorkflowAction extends AbstractBaseAction {
 					.equals("on") ? true : false;
 			boolean isFileOutput = ((String) theForm.get("isFileOut"))
 					.equals("on") ? true : false;
+			
+			//if both are false set them to true
+			if (!isFileInput&&!isFileOutput) {
+				isFileInput=true;
+				isFileOutput=true;
+			}
+			
 			String fileSubmissionDateBeginStr = (String) theForm
 					.get("fileSubmissionDateBegin");
 			String fileSubmissionDateEndStr = (String) theForm
