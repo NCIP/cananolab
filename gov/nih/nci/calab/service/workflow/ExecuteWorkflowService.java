@@ -17,6 +17,7 @@ import gov.nih.nci.calab.dto.workflow.AssayBean;
 import gov.nih.nci.calab.dto.workflow.ExecuteWorkflowBean;
 import gov.nih.nci.calab.dto.workflow.FileBean;
 import gov.nih.nci.calab.dto.workflow.RunBean;
+import gov.nih.nci.calab.service.util.CalabComparators;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.service.util.file.FileNameConvertor;
@@ -26,6 +27,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -76,6 +78,7 @@ public class ExecuteWorkflowService {
 							aliquotBeans.add(aliquotBean);
 						}						
 					}
+					Collections.sort(aliquotBeans, new CalabComparators.AliquotBeanComparator());
 					runBean.setAliquotBeans(aliquotBeans);
 					
 					Set inputFiles = (Set)doRun.getInputFileCollection();
@@ -104,6 +107,8 @@ public class ExecuteWorkflowService {
 					
 					runBeans.add(runBean);
 				}					
+				//sort runBeans by runNumber
+				Collections.sort(runBeans, new CalabComparators.RunBeanComparator());
 				assayBean.setRunBeans(runBeans);
 				assays.add(assayBean);
 			}
@@ -111,6 +116,7 @@ public class ExecuteWorkflowService {
 			logger.error("Error in retrieving assay by assayType -- " + assayTypeName, e);
 			throw new Exception("Error in retrieving assay by assayType -- " + assayTypeName);
 		}
+		Collections.sort(assays, new CalabComparators.AssayBeanComparator());
 		return assays;
 	}
 
@@ -383,6 +389,8 @@ public class ExecuteWorkflowService {
 									aliquotBeans.add(aliquotBean);
 								}						
 							}
+							//sort aliquots by name
+							Collections.sort(aliquotBeans, new CalabComparators.AliquotBeanComparator());
 							runBean.setAliquotBeans(aliquotBeans);
 							
                             Set inputFiles = (Set)doRun.getInputFileCollection();
@@ -415,14 +423,19 @@ public class ExecuteWorkflowService {
 							runBean.setOutputFileBeans(outputFileBeans);
 							
 							runBeans.add(runBean);
-						}					
+						}
+						//sort runBeans by runNumber
+						Collections.sort(runBeans, new CalabComparators.RunBeanComparator());
 						assayBean.setRunBeans(runBeans);
 						assays.add(assayBean);
 					}
 				} catch (Exception e) {
 					logger.error("Error in retrieving assay by assayType -- " + assayTypeName, e);
 					throw new Exception("Error in retrieving assay by assayType -- " + assayTypeName);
-				}				
+				}
+//				sort assayBeans by type, prefix and number
+				CalabComparators.AssayBeanComparator assayBeanComparator = new CalabComparators.AssayBeanComparator();
+				Collections.sort(assays, assayBeanComparator);
 				typedAssayBeans.put(assayTypeName, assays);
 			}			
 			// Get all count
