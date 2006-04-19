@@ -3,9 +3,11 @@ package gov.nih.nci.calab.dto.administration;
 import gov.nih.nci.calab.domain.Sample;
 import gov.nih.nci.calab.domain.SampleContainer;
 import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.CalabComparators;
 import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.Set;
+import java.util.Arrays;
 
 /**
  * This class represents all properties of a sample that need to be viewed and
@@ -15,7 +17,7 @@ import java.util.Set;
  * 
  */
 
-/* CVS $Id: SampleBean.java,v 1.11 2006-04-17 18:44:25 pansu Exp $ */
+/* CVS $Id: SampleBean.java,v 1.12 2006-04-19 19:52:01 pansu Exp $ */
 public class SampleBean {
 	private String sampleId="";
 	
@@ -128,6 +130,7 @@ public class SampleBean {
 			containers[i] = new ContainerBean(sampleContainer);
 			i++;
 		}
+		Arrays.sort(containers, new CalabComparators.ContainerBeanComparator());
 	}
 
 	public String getDateReceived() {
