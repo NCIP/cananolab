@@ -27,4 +27,6 @@ public class CalabConstants {
     public static final String OUTPUT = "output";
 
     public static final String ALL_FILES = "ALL_FILES";
+    
+    public static final String URI_SEPERATOR = "/";
 }
