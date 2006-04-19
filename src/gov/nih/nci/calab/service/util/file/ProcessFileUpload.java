@@ -86,7 +86,7 @@ public class ProcessFileUpload extends HttpServlet
 {
     private Log log_ = LogFactory.getLog(this.getClass());
 
-    public void doPost(HttpServletRequest request, HttpServletResponse response)
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
         String query = request.getQueryString();
         log_.debug("doPost..." + query);
@@ -171,7 +171,7 @@ public class ProcessFileUpload extends HttpServlet
                 String fullPathName = null;
                 
                 //TODO: set path here
-                String path = PropertyReader.getProperty(CalabConstants.FILEUPLOAD_PROPERTY, "inputFileDirectory");
+                String path = PropertyReader.getProperty(CalabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
                 
                
                 fullPathName = path + sessionData.getAssayType() + File.separator 
@@ -217,8 +217,9 @@ public class ProcessFileUpload extends HttpServlet
         }    
         catch (Exception e)
         {
-        	errorMessage = "cannot write files into File System. sending a message to applet";
+        	errorMessage = "Cannot write files into File System. sending a message to applet";
             log_.error(errorMessage);
+            throw new IOException("Error in writing files into File system, " + e.getMessage());
         }
         //Get zip file's original name, which is embedded
         //in the zip file.
@@ -276,7 +277,7 @@ public class ProcessFileUpload extends HttpServlet
         }
         
     }
-    public void doGet(HttpServletRequest request, HttpServletResponse response)
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
         doPost(request, response);
     }
