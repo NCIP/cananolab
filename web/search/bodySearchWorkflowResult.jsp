@@ -58,7 +58,7 @@
 				</c:choose>
 				<tr>
 					<td class="${style}">
-						<a href="#"><bean:write name="workflow" property="file.fileName" /></a> &nbsp;
+						<a href="#"><bean:write name="workflow" property="file.filename" /></a> &nbsp;
 					</td>
 					<td class="${style}">
 						<bean:write name="workflow" property="assay.assayType" />
