@@ -128,7 +128,7 @@
 					<tr>
 						<td width="490" height="32">
 								<div align="right"><div align="right">
-									<input type="reset" value="Clear" onclick="clearObject(document.createRunForm.assignedAliquot);">
+									<input type="reset" value="Reset" onclick="resetObject(document.createRunForm.assignedAliquot, document.createRunForm.availableAliquot);">
 									<html:submit />
 								</div>
 							</div>
@@ -149,10 +149,11 @@
   var cal = new calendar2(document.forms['createRunForm'].elements['runDate']);
   cal.year_scroll = true;
   cal.time_comp = false;
-  function clearObject(obj) {
-		for (index=obj.length-1; index>=0; index--) {			
-				obj[index] = null;
+  function resetObject(fromObj,toObj) {
+		for(i = 0; i < fromObj.options.length; i++){		
+		fromObj.options[i].selected=true;	
 		}
+		moveItems(fromObj,toObj);
   return true;		
 }
 
