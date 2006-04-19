@@ -49,17 +49,17 @@
 
 								    <c:forEach var="assay" items="${sessionScope.workflow.assayBeanMap[assayType]}">
     								    <c:set var="assaySeq" value="${assaySeq+1}"/>
-								        d.add(${assaySeq},${assayTypeNum.count},'${assay.assayName}','javascript:gotoPage(\'/calab/workflowForward.do?type=assay&assayId=${assay.assayId}&assayName=${assay.assayName}\')', '', '', '');
+								        d.add(${assaySeq},${assayTypeNum.count},'${assay.assayName}','javascript:gotoPage(\'workflowForward.do?type=assay&assayId=${assay.assayId}&assayName=${assay.assayName}\')', '', '', '');
 	 									
 										<c:forEach var="run" items="${assay.runBeans}">																
 										    <c:set var="runSeq" value="${runSeq+1+2}"/>
   											d.add(${runSeq},${assaySeq}, '${run.name}','javascript:void(0)'); 											  				
-  											d.add(${runSeq+1},${runSeq},'In','javascript:gotoPage(\'/calab/workflowForward.do?type=in&runId=${run.id}\')');
-  											d.add(${runSeq+2},${runSeq},'Out','javascript:gotoPage(\'/calab/workflowForward.do?type=out&runId=${run.id}\')');
+  											d.add(${runSeq+1},${runSeq},'In','javascript:gotoPage(\'workflowForward.do?type=in&runId=${run.id}\')');
+  											d.add(${runSeq+2},${runSeq},'Out','javascript:gotoPage(\'workflowForward.do?type=out&runId=${run.id}\')');
 											 											
 											<c:forEach var="aliquot" items="${run.aliquotBeans}">
   											    <c:set var="aliquotSeq" value="${aliquotSeq+1}"/>  											
-												d.add(${aliquotSeq}, ${runSeq+1},'${aliquot.aliquotName}','javascript:gotoPage(\'/calab/viewAliquot.do?aliquotId=${aliquot.aliquotId}\')', '', '', '');
+												d.add(${aliquotSeq}, ${runSeq+1},'${aliquot.aliquotName}','javascript:gotoPage(\'viewAliquot.do?aliquotId=${aliquot.aliquotId}\')', '', '', '');
   											</c:forEach>
   											
 											<c:forEach var="inputFile" items="${run.inputFileBeans}">
