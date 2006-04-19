@@ -187,7 +187,7 @@ public class FileUploadAction extends AbstractDispatchAction
             String unzipFilePath= File.separator + relativePathName + File.separator + CalabConstants.UNCOMPRESSED_FILE_DIRECTORY;
             workflowService.saveFile(fileList,unzipFilePath,runId,inout,(String)session.getAttribute("creator"));
             
-            
+            session.setAttribute("newWorkflowCreated", "true");
             //After data persistence, we need to create all.zip for all upload files,
             //which includes previous uploaded file and uploaded files currently.
             //TODO: Jennifer needs to get previous uploaded files from database.
@@ -215,7 +215,7 @@ public class FileUploadAction extends AbstractDispatchAction
             logger_.info("Creating ALL_FILES.zip is " + isCreated);
             //end of testing code *************************
             mySessionData.clearList();
-
+            
             forward = null;
         }
         //If user says it's done, then move to our defaut page for this action.
