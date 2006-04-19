@@ -9,17 +9,24 @@ import java.util.List;
 
 /**
  * @author zengje
- *
+ * 
  */
 public class RunBean {
-	
-	private String id;
-	private String name;
+
+	private String id = "";
+
+	private String name = "";
+
+	private String runDate = "";
+
 	private List<AliquotBean> aliquotBeans;
+
 	private List<FileBean> inputFileBeans;
+
 	private List<FileBean> outputFileBeans;
+
 	private AssayBean assayBean;
-	
+
 	/**
 	 * 
 	 */
@@ -27,12 +34,18 @@ public class RunBean {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	public RunBean(String id, String name) {
 		super();
 		// TODO Auto-generated constructor stub
 		this.id = id;
 		this.name = name;
+	}
+
+	// used in WorkflowResultBean
+	public RunBean(String id, String name, String runDate) {
+		this.name = name;
+		this.runDate = runDate;
 	}
 
 	public List<AliquotBean> getAliquotBeans() {
@@ -83,5 +96,29 @@ public class RunBean {
 		this.assayBean = assayBean;
 	}
 
-	
+	/**
+	 * Assume runName has a sequenceNumber at the end
+	 * 
+	 * @return the sequence number for an run
+	 */
+	public Integer getRunNumber() {
+		Integer runNumber = -1;
+		if (name.matches("\\D+(\\d+)")) {
+			try {
+				runNumber = Integer.parseInt(name
+						.replaceAll("\\D+(\\d+)", "$1"));
+			} catch (Exception e) {
+				return -1;
+			}
+		}
+		return runNumber;
+	}
+
+	public String getRunDate() {
+		return runDate;
+	}
+
+	public void setRunDate(String runDate) {
+		this.runDate = runDate;
+	}
 }
