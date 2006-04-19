@@ -12,7 +12,7 @@ import gov.nih.nci.calab.service.util.StringUtils;
  * 
  */
 
-/* CVS $Id: AliquotBean.java,v 1.6 2006-04-11 18:28:43 pansu Exp $ */
+/* CVS $Id: AliquotBean.java,v 1.7 2006-04-19 19:52:30 pansu Exp $ */
 
 public class AliquotBean {
 	private String aliquotId = "";
@@ -34,6 +34,11 @@ public class AliquotBean {
 		sample = new SampleBean();
 	}
 
+	//used in WorkflowResultBean
+	public AliquotBean(String aliquotName) {
+		this.aliquotName=aliquotName;
+	}
+	
 	public AliquotBean(String aliquotId, String aliquotName) {
 		this.aliquotId=aliquotId;
 		this.aliquotName=aliquotName;
