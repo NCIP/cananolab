@@ -53,7 +53,7 @@
 							<div align="center">
 								<span class="mainMenu"> <span class="formMessage">Aliquots</span> 								
 								<html:select multiple="true" property="availableAliquot" size="4" >
-									<html:options collection="allAvailableAliquots" property="aliquotId" labelProperty="aliquotName"/>										
+									<html:options collection="allUnmaskedAliquots" property="aliquotId" labelProperty="aliquotName"/>										
 								</html:select>
 											
 								</span>
