@@ -64,12 +64,12 @@
   											
 											<c:forEach var="inputFile" items="${run.inputFileBeans}">
   											    <c:set var="inputFileSeq" value="${inputFileSeq+1}"/>
-                                                d.add(${inputFileSeq},${runSeq+1},'${inputFile.filename}', 'javascript:gotoPage(\'${pageContext.request.contextPath}\'+\'/workflowdata/${inputFile.path}\')');
+                                                d.add(${inputFileSeq},${runSeq+1},'${inputFile.filename}', 'javascript:gotoPage(\'/workflowdata/${inputFile.path}\')');
   											</c:forEach>
   											
   											<c:forEach var="outputFile" items="${run.outputFileBeans}">
   											   <c:set var="outputFileSeq" value="${outputFileSeq+1}"/>  											
-								                d.add(${outputFileSeq},${runSeq+2},'${outputFile.filename}', 'javascript:gotoPage(\'${pageContext.request.contextPath}\'+\'/workflowdata/${outputFile.path}\')');
+								                d.add(${outputFileSeq},${runSeq+2},'${outputFile.filename}', 'javascript:gotoPage(\'/workflowdata/${outputFile.path}\')');
   											</c:forEach> 
                                         </c:forEach>
 									</c:forEach>
