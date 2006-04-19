@@ -6,7 +6,7 @@
 <!--//
 function refreshAliquots() {
   //window.location.href="preCreateAliquot.do?numberOfAliquots="+document.createAliquotForm.numberOfAliquots.value;
-  document.createAliquotForm.action="/calab/preCreateAliquot.do";
+  document.createAliquotForm.action="preCreateAliquot.do";
   document.createAliquotForm.submit();
 }
 

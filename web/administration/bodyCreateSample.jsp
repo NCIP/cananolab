@@ -8,7 +8,7 @@
 
 function refreshContainers() {
   //window.location.href="preCreateSample.do?numberOfContainers="+document.createSampleForm.numberOfContainers.value;
-  document.createSampleForm.action="/calab/preCreateSample.do";
+  document.createSampleForm.action="preCreateSample.do";
   document.createSampleForm.submit();
 }
 
