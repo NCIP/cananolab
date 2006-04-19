@@ -16,7 +16,7 @@
     <property name="createdDate" type="java.util.Date" column="CREATED_DATE" />
     <property name="version" type="java.lang.String" column="VERSION" />
     <property name="path" type="java.lang.String" column="FILE_URI" /> 	
-    <joined-subclass name="gov.nih.nci.calab.domain.OutputFile" table="VIEW_RUN_OUTPUT_FILE">
+    <joined-subclass name="gov.nih.nci.calab.domain.OutputFile" table="RUN_OUTPUT_FILE">
     	<key column="OUTPUT_FILE_PK_ID" />
         <many-to-one name="run" class="gov.nih.nci.calab.domain.Run" column="RUN_PK_ID" lazy="true" />
        <many-to-one name="dataStatus" class="gov.nih.nci.calab.domain.DataStatus" column="DATA_STATUS_PK_ID" lazy="true" />
@@ -25,7 +25,7 @@
     	<key column="SOP_FILE_PK_ID" />
 	    <many-to-one name="sampleSOP" class="gov.nih.nci.calab.domain.SampleSOP" column="SAMPLE_SOP_PK_ID" lazy="true" />
     </joined-subclass>
-    <joined-subclass name="gov.nih.nci.calab.domain.InputFile" table="VIEW_RUN_INPUT_FILE">
+    <joined-subclass name="gov.nih.nci.calab.domain.InputFile" table="RUN_INPUT_FILE">
     	<key column="INPUT_FILE_PK_ID" />
         <many-to-one name="run" class="gov.nih.nci.calab.domain.Run" column="RUN_PK_ID" lazy="true" />
         <many-to-one name="dataStatus" class="gov.nih.nci.calab.domain.DataStatus" column="DATA_STATUS_PK_ID" lazy="true" />
