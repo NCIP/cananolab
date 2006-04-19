@@ -1,5 +1,4 @@
-
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 
 <COMMENT> A Java Plugin Approach is used with static versioning for File Upload. Hence, a static code base is used for which the reusable code has been tested </COMMENT>
 
