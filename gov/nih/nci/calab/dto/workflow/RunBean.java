@@ -3,6 +3,8 @@
  */
 package gov.nih.nci.calab.dto.workflow;
 
+import gov.nih.nci.calab.dto.administration.AliquotBean;
+
 import java.util.List;
 
 /**
@@ -13,9 +15,9 @@ public class RunBean {
 	
 	private String id;
 	private String name;
-	private List aliquotBeans;
-	private List inputFileBeans;
-	private List outputFileBeans;
+	private List<AliquotBean> aliquotBeans;
+	private List<FileBean> inputFileBeans;
+	private List<FileBean> outputFileBeans;
 	private AssayBean assayBean;
 	
 	/**
@@ -33,11 +35,11 @@ public class RunBean {
 		this.name = name;
 	}
 
-	public List getAliquotBeans() {
+	public List<AliquotBean> getAliquotBeans() {
 		return aliquotBeans;
 	}
 
-	public void setAliquotBeans(List aliquotBeans) {
+	public void setAliquotBeans(List<AliquotBean> aliquotBeans) {
 		this.aliquotBeans = aliquotBeans;
 	}
 
@@ -49,11 +51,11 @@ public class RunBean {
 		this.id = id;
 	}
 
-	public List getInputFileBeans() {
+	public List<FileBean> getInputFileBeans() {
 		return inputFileBeans;
 	}
 
-	public void setInputFileBeans(List inputFileBeans) {
+	public void setInputFileBeans(List<FileBean> inputFileBeans) {
 		this.inputFileBeans = inputFileBeans;
 	}
 
@@ -65,11 +67,11 @@ public class RunBean {
 		this.name = name;
 	}
 
-	public List getOutputFileBeans() {
+	public List<FileBean> getOutputFileBeans() {
 		return outputFileBeans;
 	}
 
-	public void setOutputFileBeans(List outputFileBeans) {
+	public void setOutputFileBeans(List<FileBean> outputFileBeans) {
 		this.outputFileBeans = outputFileBeans;
 	}
 
