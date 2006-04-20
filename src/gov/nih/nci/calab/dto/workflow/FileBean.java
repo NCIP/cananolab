@@ -28,6 +28,8 @@ public class FileBean {
 	private String fileMaskStatus = "";
 
 	private Date createdDate;
+	
+	private String shortFilename="";
 
 	/**
 	 * 
@@ -44,6 +46,7 @@ public class FileBean {
 		this.createDateStr = fileSubmissionDate;
 		this.fileSubmitter = fileSubmitter;
 		this.fileMaskStatus = fileMaskStatus;
+		this.filename = getFileName(path);
 	}
 
 	public FileBean(String id, String path) {
@@ -51,7 +54,7 @@ public class FileBean {
 		// TODO Auto-generated constructor stub
 		this.id = id;
 		this.path = path;
-		this.filename = parsePath(path);
+		this.filename = getFileName(path);
 	}
 
 	public String getId() {
@@ -68,7 +71,7 @@ public class FileBean {
 
 	public void setPath(String path) {
 		this.path = path;
-		this.filename = parsePath(path);
+		this.filename = getFileName(path);
 	}
 
 	public String getFilename() {
@@ -80,12 +83,11 @@ public class FileBean {
 	// }
 	//	
 
-	private String parsePath(String path) {
-		String rootpath = PropertyReader.getProperty(
-				CalabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
-		File file = new File(rootpath + path);
-		return file.getName();
+	private String getFileName(String path) {
+		String[] tokens = path.split("/");
+		return tokens[tokens.length-1];
 	}
+	
 
 	public String getFileMaskStatus() {
 		return fileMaskStatus;
@@ -119,4 +121,11 @@ public class FileBean {
 		this.createdDate = createdDate;
 	}
 
+	public String getShortFilename() {
+		return shortFilename;
+	}
+
+	public void setShortFilename(String shortFileName) {
+		this.shortFilename = shortFileName;
+	}
 }
