@@ -21,6 +21,10 @@
 		<putList name="assayActions">
 			<item value="Create Run" link="initSession.do?forwardPage=createAssayRun" />
 		</putList>
+		<putList name="uploadAction">
+			<item value="Upload Input File" link="fileUpload.do?method=setup" />
+			<item value="Upload Output File" link="fileUpload.do?method=setup" />
+		</putList>
 	</definition>
 
 	<!-- definitions for the use aliquot page -->
@@ -34,6 +38,19 @@
 		<put name="calabSidemenu" value="/workflow/sideMenuTree.jsp" />
 		<put name="menu" value="workflow" />
 	</definition>
+	
+	<!-- definitions for the upload input/output option page -->
+	<definition name="workflow.uploadoption.content" extends="workflow.content.home">
+		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp?type=upload" />
+		<put name="workflowContent" value="/workflow/bodyEmpty.jsp" />
+	</definition>
+
+	<definition name="workflow.uploadoption" extends="calab.home">
+		<put name="calabContent" value="workflow.uploadoption.content" />
+		<put name="calabSidemenu" value="/workflow/sideMenuTree.jsp" />
+		<put name="menu" value="workflow" />
+	</definition>
+	
 
 	<!-- definitions for the workflow message page -->
 	<definition name="workflow.message.content" extends="workflow.content.home">
