@@ -109,15 +109,15 @@
 		</action>
 		<action name="maskAliquotForm" scope="request" path="/preMaskAliquot" type="org.apache.struts.actions.ForwardAction" parameter="workflow.maskaliquot" />
 
-		<action name="createRunForm" path="/createRun" type="gov.nih.nci.calab.ui.workflow.CreateRunAction" input="input">
+		<action name="createRunForm" path="/createRun" type="gov.nih.nci.calab.ui.workflow.CreateRunAction" input="input" scope="request">
 			<forward name="input" path="workflow.createrun" />
-			<forward name="success" path="/initSession.do?forwardPage=fileUpload" />
+			<forward name="success" path="workflow.uploadoption" />
 			<forward name="failure" path="workflow.createrun" />
 		</action>
 		
-		<action name="createAssayRunForm" path="/createAssayRun" type="gov.nih.nci.calab.ui.workflow.CreateRunAction" input="input">
+		<action name="createAssayRunForm" path="/createAssayRun" type="gov.nih.nci.calab.ui.workflow.CreateRunAction" input="input" scope="request">
 			<forward name="input" path="workflow.createrun" />
-			<forward name="success" path="/initSession.do?forwardPage=fileUpload" />
+			<forward name="success" path="workflow.uploadoption" />
 			<forward name="failure" path="workflow.createrun" />
 		</action>
 		
