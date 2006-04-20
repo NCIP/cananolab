@@ -1,6 +1,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
+<br><br>
 <center>
 <table width="80%" border="0" align="center" cellpadding="0" cellspacing="0">
 	<tr>
@@ -29,7 +30,7 @@
     <td>
 
    <OBJECT classid="clsid:CAFEEFAC-0014-0002-0000-ABCDEFFEDCBA"  
-        WIDTH = "500" HEIGHT = "700"    codebase="http://java.sun.com/products/plugin/autodl/jinstall-1_4_2-windows-i586.cab#Version=1,4,0,0">                  
+        WIDTH = "500" HEIGHT = "500"    codebase="http://java.sun.com/products/plugin/autodl/jinstall-1_4_2-windows-i586.cab#Version=1,4,0,0">                  
    <PARAM NAME = "code" VALUE ="gov.nih.nci.caarray.services.util.httpfileuploadapplet.HttpFileUploadApplet">
    <PARAM NAME = "archive" VALUE ="<bean:write name="fileUploadForm" property="archiveValue" />">
    <PARAM NAME ="type" VALUE="application/x-java-applet;jpi-version=1.3">
