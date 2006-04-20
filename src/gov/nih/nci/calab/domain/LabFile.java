@@ -68,6 +68,14 @@ public  abstract class LabFile
 	      this.path = path;
 	   }
 
+	   private String filename;
+	   public String getFilename() {
+		   return this.filename;
+	   }
+	   public void setFilename(String filename) {
+		   this.filename = filename;
+	   }
+
 	   private gov.nih.nci.calab.domain.DataStatus dataStatus;
 	   public gov.nih.nci.calab.domain.DataStatus getDataStatus() {
 		   return this.dataStatus;
