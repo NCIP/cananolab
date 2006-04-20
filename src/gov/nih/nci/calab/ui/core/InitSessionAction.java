@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.18 2006-04-19 21:03:34 pansu Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.19 2006-04-20 18:11:23 zengje Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
@@ -74,6 +74,8 @@ public class InitSessionAction extends AbstractBaseAction {
 				setCreateRunSession(session, lookupService);
 			} else if (forwardPage.equals("workflowMessage")) {
 				setWorkflowMessageSession(session);
+			}  else if (forwardPage.equals("fileDownload") || forwardPage.equals("fileMask")) {
+				setFileActionSession(session);
 			}
 			// get user and date information
 			String creator = "";
@@ -355,5 +357,17 @@ private void setSearchWorkflowSession(HttpSession session,
 			session.setAttribute("workflow", workflowBean);
 		}
 		session.removeAttribute("newWorkflowCreated");
+	}
+	
+	private void setFileActionSession(HttpSession session) throws Exception {
+		
+		ExecuteWorkflowService executeWorkflowService = new ExecuteWorkflowService();
+		if (session.getAttribute("workflow") == null
+				|| session.getAttribute("newWorkflowCreated") != null) {
+			ExecuteWorkflowBean workflowBean = executeWorkflowService.getExecuteWorkflowBean();
+			session.setAttribute("workflow", workflowBean);
+		}
+		session.removeAttribute("newWorkflowCreated");
+		
 	}
 }
