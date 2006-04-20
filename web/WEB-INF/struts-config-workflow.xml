@@ -68,6 +68,16 @@
 			<form-property name="fileInfoList" type="java.util.ArrayList" />
 			<form-property name="downloadAll" type="java.lang.String" />
 		</form-bean>		
+		<form-bean name="fileMaskForm" type="org.apache.struts.validator.DynaValidatorActionForm" >
+			<form-property name="assayType" type="java.lang.String" />
+			<form-property name="assay" type="java.lang.String" />
+			<form-property name="run" type="java.lang.String" />
+			<form-property name="inout" type="java.lang.String" />
+			<form-property name="method" type="java.lang.String" />
+			<form-property name="fileName" type="java.lang.String" />
+			<form-property name="fileInfoList" type="java.util.ArrayList" />
+			<form-property name="fileId" type="java.lang.String" />
+		</form-bean>		
 	</form-beans>
 	<global-forwards>
 		<forward name="useAliquot" path="workflow.usealiquot" />
@@ -119,6 +129,9 @@
 		</action>		
 		<action name="fileDownloadForm" parameter="method" path="/fileDownload" scope="request" type="gov.nih.nci.calab.ui.workflow.FileDownloadAction" input="input">
 			<forward name="success" path="workflow.fileDownload" />
+		</action>		
+		<action name="fileMaskForm" parameter="method" path="/fileMask" scope="request" type="gov.nih.nci.calab.ui.workflow.FileMaskAction" input="input">
+			<forward name="success" path="workflow.fileMask" />
 		</action>		
 		<action path="/workflowForward" type="org.apache.struts.actions.ForwardAction" parameter="workflow.message"/>
 	</action-mappings>
