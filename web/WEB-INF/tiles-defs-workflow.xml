@@ -21,9 +21,9 @@
 		<putList name="assayActions">
 			<item value="Create Run" link="initSession.do?forwardPage=createAssayRun" />
 		</putList>
-		<putList name="uploadAction">
-			<item value="Upload Input File" link="fileUpload.do?method=setup" />
-			<item value="Upload Output File" link="fileUpload.do?method=setup" />
+		<putList name="uploadActions">
+			<item value="Upload Input File" link="fileUpload.do?method=setup&type=in" />
+			<item value="Upload Output File" link="fileUpload.do?method=setup&type=out" />
 		</putList>
 	</definition>
 

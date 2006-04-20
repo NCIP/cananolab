@@ -15,7 +15,7 @@
 		<bean:define id="actions" name="assayActions" type="java.util.List" />
 	</logic:equal>
 	<logic:equal parameter="type" value="upload">
-		<bean:define id="actions" name="uploadAction" type="java.util.List" />
+		<bean:define id="actions" name="uploadActions" type="java.util.List" />
 	</logic:equal>
 	<logic:present name="actions">
 		<table>
