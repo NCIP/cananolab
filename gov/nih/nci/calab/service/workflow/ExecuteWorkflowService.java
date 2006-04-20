@@ -487,8 +487,9 @@ public class ExecuteWorkflowService {
 					System.out.println("ExecuteWorkflowService.saveFile(): input file created Date = " + date);
 					//TODO: is a "/" needed between filepath and filename?
                     FileNameConvertor fconvertor = new FileNameConvertor();
-					doInputFile.setPath(filepath + CalabConstants.URI_SEPERATOR + fconvertor.getConvertedFileName(fileData.getFileName()));
-					doInputFile.setFilename(fileData.getFileName());
+                    String filename =  fconvertor.getConvertedFileName(fileData.getFileName());
+					doInputFile.setPath(filepath + CalabConstants.URI_SEPERATOR + filename);
+					doInputFile.setFilename(getShortFilename(filename));
 					
 					ida.store(doInputFile);
 //                    logger.info("Object object retruned from inputfile = " + object);
@@ -499,8 +500,9 @@ public class ExecuteWorkflowService {
 					doOutputFile.setCreatedDate(date);
 					System.out.println("ExecuteWorkflowService.saveFile(): output file created Date = " + date);
                     FileNameConvertor fconvertor = new FileNameConvertor();
+                    String filename =  fconvertor.getConvertedFileName(fileData.getFileName());
                     doOutputFile.setPath(filepath + CalabConstants.URI_SEPERATOR + fconvertor.getConvertedFileName(fileData.getFileName()));
-                    doOutputFile.setFilename(fileData.getFileName());
+                    doOutputFile.setFilename(getShortFilename(filename));
 
 					ida.store(doOutputFile);
 				}
@@ -573,5 +575,14 @@ public class ExecuteWorkflowService {
         }
        
         return fileBeans;
+    }
+    
+    private String getShortFilename(String longName) {
+    	String shortname = "";
+    	String[] tokens = longName.split("_");
+    	//longname format as 20060419_15-16-42-557_filename.ext
+    	int timeStampLength = (tokens[0].length()+tokens[1].length()+2);
+    	shortname = longName.substring(timeStampLength);
+    	return shortname;
     }
 }
