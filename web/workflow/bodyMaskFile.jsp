@@ -23,7 +23,7 @@
 			</tr>
 			<tr>
 				<td class="formLabel">
-					<strong>File Name </strong>
+					<strong>File Name : <bean:write name="fileMaskForm" property="fileName"/></strong>
 				</td>
 				<td class="formField">
 					<DIV align="left"> &nbsp;<SPAN class="formField" align="left"><SPAN class="mainMenu"><SPAN class="formMessage"><STRONG></STRONG>Are you sure you would you like to mask this File ?</SPAN></SPAN></SPAN>&nbsp;<SPAN class="formFieldWhite"> &nbsp;</SPAN> </DIV>
@@ -52,9 +52,10 @@
 						<tr>
 							<td>
 								<DIV align="left">
-									<input type="hidden" name="maskType" value="file">
-									<input type="hidden" name="fileId" value="<bean:write name="fileId"/>">
-									<html:submit value="Yes" /><INPUT type="button" value="No " onclick="javascript:history.go(-1)"></DIV>
+									<input type="hidden" name="maskType" value="file">																
+									<input type="hidden" name="fileId" value="<bean:write name='fileMaskForm' property='fileId'/>">
+									<html:submit value="Yes" />
+									<INPUT type="button" value="No " onclick="javascript:history.go(-1)">
 							</td>
 						</tr>
 					</table>
