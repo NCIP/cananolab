@@ -23,14 +23,19 @@
 				<logic:iterate name="actions" id="item" type="org.apache.struts.tiles.beans.MenuItem">
 					<td class="formLabelGrey">
 						<c:url var="linkVal" value="${item.link}">
-							<c:forEach var="paramItem" items="${paramValues}" varStatus="ind">						
-								<c:choose>
-								    <%-- exclude the first one if its key=forwardPage --%>
-									<c:when test="${ind.count>1 || paramItem.key ne 'forwardPage'}">
-										<c:param name="${paramItem.key}" value="${paramItem.value[0]}" />
-									</c:when>
-								</c:choose>						    
-							</c:forEach>
+							<c:choose>
+							    <%-- only pass GET parameters --%>
+								<c:when test="${pageContext.request.method eq 'GET'}">								  
+									<c:forEach var="paramItem" items="${paramValues}" varStatus="ind">
+										<c:choose>
+										    <%-- exclude first parameter if key=forwardPage --%>
+											<c:when test="${ind.count>1 || paramItem.key ne 'forwardPage'}">
+												<c:param name="${paramItem.key}" value="${paramItem.value[0]}" />
+											</c:when>
+										</c:choose>
+									</c:forEach>
+								</c:when>
+							</c:choose>
 						</c:url>
 						<a href="${linkVal}"><bean:write name="item" property="value" /></a> &nbsp; &nbsp;
 					</td>
@@ -38,5 +43,5 @@
 			</tr>
 		</table>
 	</logic:present>
-	
+
 </logic:present>
