@@ -77,6 +77,8 @@
 		<forward name="createAssayRun" path="workflow.createassayrun" />
 		<forward name="workflowMessage" path="workflow.message" />
 		<forward name="fileUpload" path="/fileUpload.do" />
+		<forward name="fileDownload" path="/fileDownload.do" />
+		<forward name="fileMask" path="/fileMask.do" />
 	</global-forwards>
 	<action-mappings>
 		<action input="input" name="useAliquotForm" path="/useAliquot" scope="request" type="gov.nih.nci.calab.ui.workflow.UseAliquotAction">
