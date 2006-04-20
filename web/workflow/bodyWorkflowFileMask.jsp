@@ -39,7 +39,7 @@
     	</td>
     	<td class=<%= ((i%2)==0)?"leftBorderedFormFieldWhite":"leftBorderedFormFieldGrey" %>>  <bean:write name="fileInfo" property="uploadDate"/>
     	</td>
-    	<td align="right" class=<%= ((i%2)==0)?"leftBorderedFormFieldWhite":"leftBorderedFormFieldGrey" %>> <b> <a href="<bean:write name='fileInfo' property='action'/>"> Download </a> </b>
+    	<td align="right" class=<%= ((i%2)==0)?"leftBorderedFormFieldWhite":"leftBorderedFormFieldGrey" %>> <b> <a href="<bean:write name='fileInfo' property='action'/>"> Mask </a> </b>
     	</td>
     </tr>	
     </logic:iterate>
