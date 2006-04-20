@@ -11,10 +11,12 @@
 			<item value="Use Aliquot" link="initSession.do?forwardPage=useAliquot" />
 			<item value="Upload Files" link="fileUpload.do?method=setup" />
 			<item value="Download Files" link="fileDownload.do?method=setup" />
+			<item value="Mask Files" link="fileMask.do?method=setup" />
 		</putList>
 		<putList name="outActions">
 			<item value="Upload Files" link="fileUpload.do?method=setup" />
 			<item value="Download Files" link="fileDownload.do?method=setup" />
+			<item value="Mask Files" link="fileMask.do?method=setup" />
 		</putList>
 		<putList name="assayActions">
 			<item value="Create Run" link="initSession.do?forwardPage=createAssayRun" />
