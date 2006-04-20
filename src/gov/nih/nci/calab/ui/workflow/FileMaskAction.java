@@ -79,7 +79,7 @@ public class FileMaskAction extends AbstractDispatchAction
             FileDownloadInfo fileDownloadInfo = new FileDownloadInfo();
             fileDownloadInfo.setFileName(fileBean.getFilename());
             fileDownloadInfo.setUploadDate(fileBean.getCreatedDate());
-            fileDownloadInfo.setAction(contentPath + "/fileMask.do?method=maskFile&fileId=" + fileBean.getId());
+            fileDownloadInfo.setAction(contentPath + "/fileMask.do?method=maskFile&fileId=" + fileBean.getId() +"&fileName=" +  fileBean.getFilename());
             fileNameHolder.add(fileDownloadInfo);
         }
         fileForm.set("fileInfoList", fileNameHolder);
@@ -95,7 +95,7 @@ public class FileMaskAction extends AbstractDispatchAction
         DynaValidatorActionForm fileForm = (DynaValidatorActionForm)form;
         
         String fileId = (String)fileForm.get("fileId");
-        //TODO: Jennifer's task, call backend code to mask file in database.
+        String fileName = (String)fileForm.get("fileName");
        
         return mapping.findForward("maskpage");
     }
