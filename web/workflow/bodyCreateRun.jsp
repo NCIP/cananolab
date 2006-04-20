@@ -63,7 +63,7 @@
 							<table border="0" cellspacing="0" cellpadding="10">
 								<tr>
 									<td>
-										<input type="button" onClick="moveItems(this.form.availableAliquot, this.form.assignedAliquot)" value=">>" />
+										<input type="button" onClick="assignAliquots(document.createRunForm.availableAliquot, document.createRunForm.assignedAliquot)" value=">>" />
 									</td>
 								</tr>
 							</table>
@@ -146,16 +146,40 @@
 </html:form>
 <script language="JavaScript">
 <!--//
+
+  /* 
+  	 cal is java script variable instantiated from calendar2 function
+  	 in script.js file
+  */ 
   var cal = new calendar2(document.forms['createRunForm'].elements['runDate']);
   cal.year_scroll = true;
   cal.time_comp = false;
-  function resetObject(fromObj,toObj) {
+  
+  /* assignAliquots function moves the selected aliquots 
+     from available aliquot list to the assigned select list box.
+  */ 
+  function assignAliquots(fromObj,toObj)
+  {
+  		moveItems(fromObj, toObj);
+  		for(i = 0; i < toObj.options.length; i++){		
+			toObj.options[i].selected=true;	
+		}
+  	
+  }
+  
+  
+  /* 
+  	 resetObject function re assigns the items of assignedAliquot select box 
+  	 to availableAliquot select box.     
+  */ 
+  function resetObject(fromObj,toObj) 
+  {
 		for(i = 0; i < fromObj.options.length; i++){		
 		fromObj.options[i].selected=true;	
 		}
 		moveItems(fromObj,toObj);
   return true;		
-}
+  }
 
 //-->
 </script>
