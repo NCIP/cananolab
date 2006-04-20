@@ -405,6 +405,7 @@ public class ExecuteWorkflowService {
 								infileBean.setId(doInputFile.getId().toString());
 								infileBean.setPath(doInputFile.getPath());
                                 infileBean.setCreatedDate(doInputFile.getCreatedDate());
+                                infileBean.setShortFilename(doInputFile.getFilename());
 								inputFileBeans.add(infileBean);
 							}
 							runBean.setInputFileBeans(inputFileBeans);
@@ -418,6 +419,7 @@ public class ExecuteWorkflowService {
 								outfileBean.setId(doOutputFile.getId().toString());
 								outfileBean.setPath(doOutputFile.getPath());
                                 outfileBean.setCreatedDate(doOutputFile.getCreatedDate());
+                                outfileBean.setShortFilename(doOutputFile.getFilename());
 								outputFileBeans.add(outfileBean);
 							}
 							runBean.setOutputFileBeans(outputFileBeans);
@@ -486,7 +488,8 @@ public class ExecuteWorkflowService {
 					//TODO: is a "/" needed between filepath and filename?
                     FileNameConvertor fconvertor = new FileNameConvertor();
 					doInputFile.setPath(filepath + CalabConstants.URI_SEPERATOR + fconvertor.getConvertedFileName(fileData.getFileName()));
-
+					doInputFile.setFilename(fileData.getFileName());
+					
 					ida.store(doInputFile);
 //                    logger.info("Object object retruned from inputfile = " + object);
 				} else if (inout.equalsIgnoreCase(CalabConstants.OUTPUT)) {
@@ -497,6 +500,7 @@ public class ExecuteWorkflowService {
 					System.out.println("ExecuteWorkflowService.saveFile(): output file created Date = " + date);
                     FileNameConvertor fconvertor = new FileNameConvertor();
                     doOutputFile.setPath(filepath + CalabConstants.URI_SEPERATOR + fconvertor.getConvertedFileName(fileData.getFileName()));
+                    doOutputFile.setFilename(fileData.getFileName());
 
 					ida.store(doOutputFile);
 				}
