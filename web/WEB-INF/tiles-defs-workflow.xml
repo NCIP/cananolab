@@ -106,10 +106,16 @@
 	    <put name="workflowContent" value="/workflow/bodyWorkflowFileUpload.jsp"/>
     </definition>
     
-     <!-- definitions for the file upload page -->
+     <!-- definitions for the file download page -->
     <definition name="workflow.fileDownload.content" extends="workflow.content.home">
 		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp"/>
 	    <put name="workflowContent" value="/workflow/bodyWorkflowFiledownload.jsp"/>
+    </definition>
+
+     <!-- definitions for the file mask page -->
+    <definition name="workflow.fileMask.content" extends="workflow.content.home">
+		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp"/>
+	    <put name="workflowContent" value="/workflow/bodyWorkflowFileMask.jsp"/>
     </definition>
        
     <definition name="workflow.fileUpload" extends="calab.home">
@@ -124,4 +130,9 @@
         <put name="menu" value="workflow"/>
     </definition>
     
-</tiles-definitions>
+    <definition name="workflow.fileMask" extends="calab.home">
+        <put name="calabContent" value="workflow.fileMask.content"/>
+        <put name="calabSidemenu" value="/workflow/sideMenuTree.jsp"/>
+        <put name="menu" value="workflow"/>
+    </definition>
+ </tiles-definitions>
