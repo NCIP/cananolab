@@ -28,5 +28,6 @@
 	<classpathentry kind="lib" path="web/WEB-INF/lib/spring.jar"/>
 	<classpathentry kind="lib" path="web/WEB-INF/lib/castor-0.9.9.jar"/>
 	<classpathentry kind="lib" path="web/WEB-INF/lib/xerces.jar"/>
+	<classpathentry kind="lib" path="web/WEB-INF/lib/commons-collections-2.1.1.jar"/>
 	<classpathentry kind="output" path="web/WEB-INF/classes"/>
 </classpath>
