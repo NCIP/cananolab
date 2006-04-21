@@ -1,8 +1,8 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
- 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <h2>
 	<br>
 	Search Results
@@ -34,8 +34,8 @@
 				<td width="51" class="dataTablePrimaryLabel">
 					Assay Run Date
 				</td>
-				<td width="53" class="dataTablePrimaryLabel">
-					Aliquot ID
+				<td width="51" class="dataTablePrimaryLabel">
+					Input File or Output File
 				</td>
 				<td width="53" class="dataTablePrimaryLabel">
 					File Submission Date
@@ -45,6 +45,9 @@
 				</td>
 				<td width="44" class="dataTablePrimaryLabel">
 					File Status
+				</td>
+				<td width="53" class="dataTablePrimaryLabel">
+					Aliquot ID
 				</td>
 			</tr>
 			<logic:iterate name="workflows" id="workflow" type="gov.nih.nci.calab.dto.search.WorkflowResultBean" indexId="rowNum">
@@ -77,7 +80,7 @@
 						&nbsp;
 					</td>
 					<td class="${style}">
-						<bean:write name="workflow" property="aliquot.aliquotName" />
+						<bean:write name="workflow" property="file.inoutType" />
 						&nbsp;
 					</td>
 					<td class="${style}">
@@ -90,6 +93,10 @@
 					</td>
 					<td class="${style}">
 						<strong><bean:write name="workflow" property="file.fileMaskStatus" /></strong> &nbsp;
+					</td>
+					<td class="${style}">
+						<bean:write name="workflow" property="aliquot.aliquotName" />
+						&nbsp;
 					</td>
 				</tr>
 			</logic:iterate>
