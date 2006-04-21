@@ -4,8 +4,12 @@
 
 
 <html:form action="/maskAliquot">
-	<h2> &nbsp;<BR> &nbsp;Mask Aliquot </h2>
-	<html:errors/>
+	<h2>
+		&nbsp;
+		<BR>
+		&nbsp;Mask Aliquot
+	</h2>
+	<html:errors />
 	<logic:messagesPresent message="true">
 		<ul>
 			<font color="red"> <html:messages id="msg" message="true" bundle="workflow">
@@ -26,11 +30,13 @@
 			</tr>
 			<tr>
 				<td class="formLabel">
-					<strong>Aliquot ID</strong> <bean:write name="maskAliquotForm" property="aliquotId"/>								
+					<strong>Aliquot ID</strong>
+					<bean:write name="maskAliquotForm" property="aliquotId" />
 				</td>
 				<td class="formField">
-					<DIV align="left"> &nbsp;<SPAN class="formField" align="left"><SPAN class="mainMenu"><SPAN class="formMessage"><STRONG>&nbsp;</STRONG>Are you sure you would you like to mask this aliquot?</SPAN></SPAN></SPAN>&nbsp;<SPAN class="formFieldWhite"> &nbsp;</SPAN> </DIV>
-					 
+					<DIV align="left">
+						&nbsp;<SPAN class="formField" align="left"><STRONG>&nbsp;</STRONG>Are you sure you would you like to mask this aliquot?</SPAN>&nbsp;
+					</DIV>
 				</td>
 			</tr>
 		</table>
@@ -39,7 +45,9 @@
 		<table width="60%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 			<tr class="topBorder">
 				<td class="dataTablePrimaryLabel">
-					<div align="justify"> *&nbsp; &nbsp;Explain reason for mask:</div>
+					<div align="justify">
+						*&nbsp; &nbsp;Explain reason for mask:
+					</div>
 				</td>
 			</tr>
 			<tr>
@@ -55,8 +63,8 @@
 						<tr>
 							<td>
 								<DIV align="left">
-									<input type="hidden" name="maskType" value="aliquot">																
-									<html:hidden property="aliquotId"/>
+									<input type="hidden" name="maskType" value="aliquot">
+									<html:hidden property="aliquotId" />
 									<html:submit value="Yes" />
 									<INPUT type="button" value="No " onclick="javascript:history.go(-1)">
 								</DIV>
@@ -69,13 +77,13 @@
 			</tr>
 		</table>
 		<p>
-			 &nbsp;
+			&nbsp;
 		</p>
 		<p>
-			 &nbsp;
+			&nbsp;
 		</p>
 		<p>
-			 &nbsp;
+			&nbsp;
 		</p>
 	</blockquote>
 </html:form>
