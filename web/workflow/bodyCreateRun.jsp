@@ -81,7 +81,7 @@
 		<tr>
 			<td class="formLabelWhite">
 				<div align="left">
-					<strong>Aliquot Commets </strong>
+					<strong>Aliquot Comments </strong>
 				</div>
 			</td>
 			<td class="formLabelWhite">
