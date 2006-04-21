@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: CreateAliquotAction.java,v 1.10 2006-04-11 18:31:22 pansu Exp $ */
+/* CVS $Id: CreateAliquotAction.java,v 1.11 2006-04-21 12:58:46 zengje Exp $ */
 
 import gov.nih.nci.calab.service.administration.ManageAliquotService;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
@@ -51,7 +51,7 @@ public class CreateAliquotAction extends AbstractBaseAction {
 				
 				//set a flag to indicate that new aliquots have been created so session can 
 				//be refreshed in initSession.do
-				session.setAttribute("newAliquotsCreated", "yes");
+				session.setAttribute("newAliquotCreated", "yes");
 				
 				forward = mapping.findForward("success");
 			} else {
