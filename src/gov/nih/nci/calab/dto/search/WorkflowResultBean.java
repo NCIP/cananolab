@@ -20,10 +20,10 @@ public class WorkflowResultBean {
 	
 	public WorkflowResultBean(String filePath, String assayType, String assayName,
 			String assayRunName, String assayRunDate, String aliquotName, String fileSubmissionDate,
-			String fileSubmitter, String fileMaskStatus) {
+			String fileSubmitter, String fileMaskStatus, String inoutType) {
 		super();
 		// TODO Auto-generated constructor stub
-		this.file=new FileBean(filePath, fileSubmissionDate, fileSubmitter, fileMaskStatus);
+		this.file=new FileBean(filePath, fileSubmissionDate, fileSubmitter, fileMaskStatus, inoutType);
 		this.assay=new AssayBean(assayName, assayType);		
 		this.run=new RunBean("", assayRunName, assayRunDate);
 		this.aliquot=new AliquotBean(aliquotName);	
