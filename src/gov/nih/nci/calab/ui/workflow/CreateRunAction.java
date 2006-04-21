@@ -61,11 +61,12 @@ public class CreateRunAction extends AbstractBaseAction {
 			
 			//Save Aliquots assigned
 			String[] aliquotIds = (String[]) theForm.get("assignedAliquot");
-			String comments =  (String)session.getAttribute("runComment");
+			String comments =  (String)theForm.get("aliquotComment");
 			
 			workflowService.saveRunAliquots(runId, aliquotIds, comments,
-					creator,creationDate);			
+					creator,creationDate);	
 			
+			session.setAttribute("newWorkflowCreated", "true");
 			session.setAttribute("runId", runId);			
 			//set Forward
 			forward = mapping.findForward("success");
