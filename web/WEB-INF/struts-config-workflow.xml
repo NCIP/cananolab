@@ -15,6 +15,7 @@
 		<form-bean name="maskFileForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="maskType" type="java.lang.String" />
 			<form-property name="fileId" type="java.lang.String" />
+			<form-property name="fileName" type="java.lang.String" />
 			<form-property name="description" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="viewAliquotForm" type="org.apache.struts.action.DynaActionForm">
@@ -125,14 +126,18 @@
 			<forward name="success" path="workflow.fileUpload" />
 			<forward name="failure" path="/initSession.do?forwardPage=workflowMessage" />
 			<forward name="expiredSession" path="/login.do" />
-			<forward name="done" path="calab.welcome" />
+			<forward name="done" path="/initSession.do?forwardPage=createRun" />
 		</action>		
 		<action name="fileDownloadForm" parameter="method" path="/fileDownload" scope="request" type="gov.nih.nci.calab.ui.workflow.FileDownloadAction" input="input">
 			<forward name="success" path="workflow.fileDownload" />
 		</action>		
 		<action name="fileMaskForm" parameter="method" path="/fileMask" scope="request" type="gov.nih.nci.calab.ui.workflow.FileMaskAction" input="input">
 			<forward name="success" path="workflow.fileMask" />
+			<forward name="maskpage" path="workflow.maskfile" />
 		</action>		
+		
+		<action name="maskFileForm" scope="request" path="/preMaskFile" type="org.apache.struts.actions.ForwardAction" parameter="workflow.maskfile" />		
+		
 		<action path="/workflowForward" type="org.apache.struts.actions.ForwardAction" parameter="workflow.message"/>
 	</action-mappings>
 </struts-config>
