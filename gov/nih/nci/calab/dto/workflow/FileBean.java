@@ -29,7 +29,11 @@ public class FileBean {
 
 	private Date createdDate;
 	
-	private String shortFilename="";
+	private String shortFilename = "";
+	
+	private String status = "";
+	
+	private String inoutType = "";
 
 	/**
 	 * 
@@ -41,12 +45,13 @@ public class FileBean {
 
 	// used in WorkflowResultBean
 	public FileBean(String path, String fileSubmissionDate,
-			String fileSubmitter, String fileMaskStatus) {
+			String fileSubmitter, String fileMaskStatus, String inoutType) {
 		this.path = path;
 		this.createDateStr = fileSubmissionDate;
 		this.fileSubmitter = fileSubmitter;
 		this.fileMaskStatus = fileMaskStatus;
 		this.filename = getFileName(path);
+		this.inoutType = inoutType;
 	}
 
 	public FileBean(String id, String path) {
@@ -128,4 +133,21 @@ public class FileBean {
 	public void setShortFilename(String shortFileName) {
 		this.shortFilename = shortFileName;
 	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
+	public String getInoutType() {
+		return inoutType;
+	}
+
+	public void setInoutType(String inoutType) {
+		this.inoutType = inoutType;
+	}
+
 }
