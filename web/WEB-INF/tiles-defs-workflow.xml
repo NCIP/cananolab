@@ -86,7 +86,7 @@
 	
     <!-- definitions for the create run page -->    
     <definition name="workflow.createrun.content" extends="workflow.content.home">
- 		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp?type=assay"/>
+ 		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp"/>
         <put name="workflowContent" value="/workflow/bodyCreateRun.jsp"/>
     </definition>
     
