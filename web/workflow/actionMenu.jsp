@@ -21,7 +21,7 @@
 		<table>
 			<tr>
 				<logic:iterate name="actions" id="item" type="org.apache.struts.tiles.beans.MenuItem">
-					<td class="formLabelGrey"><c:out value="${item.value}"/>
+					<td class="formLabelGrey">
 						<c:url var="linkVal" value="${item.link}">
 							<c:choose>
 								<%-- only pass GET parameters --%>
