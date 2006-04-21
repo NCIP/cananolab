@@ -67,9 +67,19 @@ public class FileMaskAction extends AbstractDispatchAction
         // Retrieve filename(not uri) from database
         List<FileBean> fileBeanList = new ArrayList<FileBean>();
         if ((request.getParameter("type")).equalsIgnoreCase("in")) {
-            fileBeanList = runBean.getInputFileBeans();
+            List<FileBean> allfiles = runBean.getInputFileBeans();
+            for(FileBean fileBean: allfiles){
+            	if (fileBean.getStatus().equals(CalabConstants.OTHER_STATUS)){
+            		fileBeanList.add(fileBean);
+            	}
+            }
         } else if ((request.getParameter("type")).equalsIgnoreCase("out")) {
-            fileBeanList = runBean.getOutputFileBeans();
+            List<FileBean> allfiles = runBean.getOutputFileBeans();
+            for(FileBean fileBean: allfiles){
+            	if (fileBean.getStatus().equals(CalabConstants.OTHER_STATUS)){
+            		fileBeanList.add(fileBean);
+            	}
+            }
         }
          
 
