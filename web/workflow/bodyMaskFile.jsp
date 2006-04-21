@@ -26,8 +26,8 @@
 					<strong>File Name : <bean:write name="fileMaskForm" property="fileName"/></strong>
 				</td>
 				<td class="formField">
-					<DIV align="left"> &nbsp;<SPAN class="formField" align="left"><SPAN class="mainMenu"><SPAN class="formMessage"><STRONG></STRONG>Are you sure you would you like to mask this File ?</SPAN></SPAN></SPAN>&nbsp;<SPAN class="formFieldWhite"> &nbsp;</SPAN> </DIV>
-					 
+					<DIV align="left"> &nbsp;<SPAN class="formField" align="left"><STRONG></STRONG>Are you sure you would you like to mask this File ?</SPAN></DIV>
+		 
 				</td>
 			</tr>
 		</table>
