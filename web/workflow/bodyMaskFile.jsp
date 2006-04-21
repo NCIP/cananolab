@@ -53,6 +53,9 @@
 							<td>
 								<DIV align="left">
 									<input type="hidden" name="maskType" value="file">																
+									<input type="hidden" name="runId" value='<bean:write name="fileMaskForm" property="runId"/>' >									
+									<input type="hidden" name="type" value='<bean:write name="fileMaskForm" property="inout"/>' >									
+									<input type="hidden" name="method" value='<bean:write name="fileMaskForm" property="method"/>'>																
 									<input type="hidden" name="fileId" value="<bean:write name='fileMaskForm' property='fileId'/>">
 									<html:submit value="Yes" />
 									<INPUT type="button" value="No " onclick="javascript:history.go(-1)">
