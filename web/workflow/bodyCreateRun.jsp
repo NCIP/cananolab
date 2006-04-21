@@ -30,7 +30,7 @@
 		<tr>
 			<td colspan="2" class="formLabel">
 					<div align="justify">
-								<strong>AssayType : Assay<span class="formFieldWhite">
+								<strong>Assay Type : Assay<span class="formFieldWhite">
 								<html:select property="assay">
 									<option value=""></option>
 									<html:options collection="allAssayBeans" property="assayId" labelProperty="assayStr" />
@@ -73,13 +73,23 @@
 								<html:select multiple="true" property="assignedAliquot"  size="4">
 									<html:options name="allAssignedAliquots" />
 								</html:select>
-							
-							</div>
 						</td>
 					</tr>
 				</table>
 			</td>
 		</tr>
+		<tr>
+			<td class="formLabelWhite">
+				<div align="left">
+					<strong>Aliquot Commets </strong>
+				</div>
+			</td>
+			<td class="formLabelWhite">
+					<div align="justify">
+						<span class="formFieldWhite"><html:textarea property="aliquotComment" cols="40" /></span></strong>
+					</div>
+			</td>
+		</tr>	
 		<tr>
 			<td class="formLabelWhite">
 				<div align="left">
@@ -104,19 +114,6 @@
 				</span>
 			</td>
 		</tr>	
-		<tr>
-			<td class="formLabelWhite">
-			
-				<div align="left">
-					<strong>Commets </strong>
-				</div>
-			</td>
-			<td class="formLabelWhite">
-					<div align="justify">
-						<span class="formFieldWhite"><html:textarea property="runComment" cols="70" /></span></span></strong>
-					</div>
-				</td>
-		</tr>
 	</table>
 	<br>
 	<table width="82%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
@@ -163,8 +160,7 @@
   		moveItems(fromObj, toObj);
   		for(i = 0; i < toObj.options.length; i++){		
 			toObj.options[i].selected=true;	
-		}
-  	
+		}  	
   }
   
   
