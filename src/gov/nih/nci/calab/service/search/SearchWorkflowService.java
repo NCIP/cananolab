@@ -5,16 +5,14 @@ import gov.nih.nci.calab.db.IDataAccess;
 import gov.nih.nci.calab.domain.InputFile;
 import gov.nih.nci.calab.domain.OutputFile;
 import gov.nih.nci.calab.dto.search.WorkflowResultBean;
-import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.CalabComparators;
+import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -27,7 +25,7 @@ import org.apache.log4j.Logger;
  * 
  */
 
-/* CVS $Id: SearchWorkflowService.java,v 1.17 2006-04-21 13:44:11 pansu Exp $ */
+/* CVS $Id: SearchWorkflowService.java,v 1.18 2006-04-21 13:48:16 pansu Exp $ */
 
 public class SearchWorkflowService {
 	private static Logger logger = Logger
