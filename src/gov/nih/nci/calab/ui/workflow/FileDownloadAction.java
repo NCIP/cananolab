@@ -61,7 +61,7 @@ public class FileDownloadAction extends AbstractDispatchAction
        fileForm.set("assayType", runBean.getAssayBean().getAssayType());
         fileForm.set("assay", runBean.getAssayBean().getAssayName());
         fileForm.set("run", runBean.getName());
-        fileForm.set("inout", (request.getParameter("type")).equalsIgnoreCase("in")?"Input" : "Output");
+        fileForm.set("inout", request.getParameter("type"));
  
         String contentPath = request.getContextPath();
         
@@ -74,9 +74,9 @@ public class FileDownloadAction extends AbstractDispatchAction
         
         // Retrieve filename(not uri) from database
         List<FileBean> fileBeanList = new ArrayList<FileBean>();
-        if ((request.getParameter("type")).equalsIgnoreCase("in")) {
+        if ((request.getParameter("type")).equalsIgnoreCase(CalabConstants.INPUT)) {
             fileBeanList = runBean.getInputFileBeans();
-        } else if ((request.getParameter("type")).equalsIgnoreCase("out")) {
+        } else if ((request.getParameter("type")).equalsIgnoreCase(CalabConstants.OUTPUT)) {
             fileBeanList = runBean.getOutputFileBeans();
         }
          
