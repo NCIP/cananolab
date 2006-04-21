@@ -5,10 +5,10 @@
 <br>
 <br>
 <logic:present parameter="type">
-	<logic:equal parameter="type" value="in">
+	<logic:equal parameter="type" value="Input">
 		<bean:define id="actions" name="inActions" type="java.util.List" />
 	</logic:equal>
-	<logic:equal parameter="type" value="out">
+	<logic:equal parameter="type" value="Output">
 		<bean:define id="actions" name="outActions" type="java.util.List" />
 	</logic:equal>
 	<logic:equal parameter="type" value="assay">
