@@ -44,7 +44,7 @@
 					Sample Location
 				</td>
 				<td width="48" class="dataTablePrimaryLabel">
-					Sample Submitter
+					Sample Creator
 				</td>
 				<td width="102" class="dataTablePrimaryLabel">
 					Actions
