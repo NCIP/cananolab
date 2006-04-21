@@ -94,7 +94,7 @@
 			</tr>
 			<tr>
 				<td class="formLabel">
-					<strong> Submitter </strong>
+					<strong> Creator </strong>
 				</td>
 				<td class="formField">
 					<html:select property="sampleSubmitter">
