@@ -5,6 +5,7 @@ import gov.nih.nci.calab.dto.administration.ContainerBean;
 import gov.nih.nci.calab.dto.administration.SampleBean;
 import gov.nih.nci.calab.dto.search.WorkflowResultBean;
 import gov.nih.nci.calab.dto.workflow.AssayBean;
+import gov.nih.nci.calab.dto.workflow.FileBean;
 import gov.nih.nci.calab.dto.workflow.RunBean;
 
 import java.util.Comparator;
@@ -16,7 +17,7 @@ import java.util.Comparator;
  * 
  */
 
-/* CVS $Id: CalabComparators.java,v 1.2 2006-04-19 20:17:09 pansu Exp $ */
+/* CVS $Id: CalabComparators.java,v 1.3 2006-04-21 13:45:55 pansu Exp $ */
 
 public class CalabComparators {
 
@@ -94,6 +95,19 @@ public class CalabComparators {
 		}
 	}
 
+	public static class FileBeanComparator implements Comparator {
+		public int compare(Object a, Object b) {
+			FileBean file1 = (FileBean) a;
+			FileBean file2 = (FileBean) b;
+			// compare file name then file inouttype
+			if (file1.getFilename().compareTo(file2.getFilename()) == 0) {
+				return file1.getInoutType().compareTo(file2.getInoutType());
+			} else {
+				return file1.getFilename().compareTo(file2.getFilename());
+			}
+		}
+	}
+
 	public static class WorkflowResultBeanComparator implements Comparator {
 		public int compare(Object a, Object b) {
 			WorkflowResultBean workflow1 = (WorkflowResultBean) a;
@@ -102,6 +116,8 @@ public class CalabComparators {
 					.getAssay(), workflow2.getAssay());
 			int runDiff = (new RunBeanComparator()).compare(workflow1.getRun(),
 					workflow2.getRun());
+			int fileDiff = (new FileBeanComparator()).compare(workflow1
+					.getFile(), workflow2.getFile());
 			int aliquotDiff = (new AliquotBeanComparator()).compare(workflow1
 					.getAliquot(), workflow2.getAliquot());
 
@@ -111,8 +127,7 @@ public class CalabComparators {
 				if (runDiff == 0) {
 					// compare aliquot
 					if (aliquotDiff == 0) {
-						return workflow1.getFile().getFilename().compareTo(
-								workflow2.getFile().getFilename());
+						return fileDiff;
 					} else {
 						return aliquotDiff;
 					}
