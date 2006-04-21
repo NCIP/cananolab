@@ -24,7 +24,7 @@ import org.apache.log4j.Logger;
  * @author pansu
  * 
  */
-/* CVS $Id: SearchSampleService.java,v 1.12 2006-04-19 19:53:48 pansu Exp $ */
+/* CVS $Id: SearchSampleService.java,v 1.13 2006-04-21 18:14:33 pansu Exp $ */
 
 public class SearchSampleService {
 	private static Logger logger = Logger.getLogger(SearchSampleService.class);
@@ -348,6 +348,7 @@ public List<AliquotBean> searchAliquotsByAliquotName(String aliquotName,
 					"Error in searching aliquots by the given parameters");
 		}
 
+		Collections.sort(aliquots, new CalabComparators.AliquotBeanComparator());
 		return aliquots;
 	}
 	/**
