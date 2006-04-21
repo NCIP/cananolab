@@ -27,7 +27,7 @@ import org.apache.log4j.Logger;
  * 
  */
 
-/* CVS $Id: SearchWorkflowService.java,v 1.16 2006-04-21 13:29:49 pansu Exp $ */
+/* CVS $Id: SearchWorkflowService.java,v 1.17 2006-04-21 13:44:11 pansu Exp $ */
 
 public class SearchWorkflowService {
 	private static Logger logger = Logger
@@ -259,7 +259,8 @@ private List<WorkflowResultBean> getWorkflows(String hqlString,
 						(Date) items[6], CalabConstants.DATE_FORMAT);
 				String theFileSubmitter = StringUtils.convertToString(items[7]);
 				String theFileStatus = StringUtils.convertToString(items[8]);
-				String theFileInoutType=StringUtils.convertToString(items[9]);
+				//set inout type to empty string when file path is emtpy
+				String theFileInoutType=(theFilePath.equals(""))?"":StringUtils.convertToString(items[9]);
 				workflows
 						.add(new WorkflowResultBean(theFilePath, theAssayType,
 								theAssayName, theAssayRunName, theAssayRunDate, theAliquotName,
