@@ -27,7 +27,7 @@ import org.apache.log4j.Logger;
  * 
  */
 
-/* CVS $Id: SearchWorkflowService.java,v 1.15 2006-04-19 19:53:48 pansu Exp $ */
+/* CVS $Id: SearchWorkflowService.java,v 1.16 2006-04-21 13:29:49 pansu Exp $ */
 
 public class SearchWorkflowService {
 	private static Logger logger = Logger
@@ -95,9 +95,9 @@ public class SearchWorkflowService {
 			{
 				// if select an item, need to include in join
 				if (isInputFile) {
-					hqlString += "from Assay assay join assay.runCollection run left join run.inputFileCollection file left join file.dataStatus fileStatus left join run.runSampleContainerCollection runSampleContainer left join runSampleContainer.sampleContainer aliquot left join aliquot.dataStatus aliquotStatus ";
+					hqlString += ", '"+ CalabConstants.INPUT+ "' from Assay assay join assay.runCollection run left join run.inputFileCollection file left join file.dataStatus fileStatus left join run.runSampleContainerCollection runSampleContainer left join runSampleContainer.sampleContainer aliquot left join aliquot.dataStatus aliquotStatus ";
 				} else {
-					hqlString += "from Assay assay join assay.runCollection run left join run.outputFileCollection file left join file.dataStatus fileStatus left join run.runSampleContainerCollection runSampleContainer left join runSampleContainer.sampleContainer aliquot left join aliquot.dataStatus aliquotStatus ";
+					hqlString += ", '"+ CalabConstants.OUTPUT+"' from Assay assay join assay.runCollection run left join run.outputFileCollection file left join file.dataStatus fileStatus left join run.runSampleContainerCollection runSampleContainer left join runSampleContainer.sampleContainer aliquot left join aliquot.dataStatus aliquotStatus ";
 				}
 				hqlString += whereParams[0];
 				workflows = getWorkflows(hqlString, (List) whereParams[1]);
@@ -109,7 +109,7 @@ public class SearchWorkflowService {
 			SortedSet<WorkflowResultBean> workflowSet = new TreeSet<WorkflowResultBean>(
 					new CalabComparators.WorkflowResultBeanComparator());
 			String inHqlString = hqlString
-					+ "from Assay assay join assay.runCollection run left join run.inputFileCollection file left join file.dataStatus fileStatus left join run.runSampleContainerCollection runSampleContainer left join runSampleContainer.sampleContainer aliquot left join aliquot.dataStatus aliquotStatus ";
+					+ ", '"+ CalabConstants.INPUT+"' from Assay assay join assay.runCollection run left join run.inputFileCollection file left join file.dataStatus fileStatus left join run.runSampleContainerCollection runSampleContainer left join runSampleContainer.sampleContainer aliquot left join aliquot.dataStatus aliquotStatus ";
 			inHqlString += whereParams[0];
 			List<WorkflowResultBean> inWorkflows = getWorkflows(inHqlString,
 					(List) whereParams[1]);
@@ -117,7 +117,7 @@ public class SearchWorkflowService {
 
 			// get outputFile workflows next
 			String outHqlString = hqlString
-					+ "from Assay assay join assay.runCollection run left join run.outputFileCollection file left join file.dataStatus fileStatus left join run.runSampleContainerCollection runSampleContainer left join runSampleContainer.sampleContainer aliquot left join aliquot.dataStatus aliquotStatus ";
+					+ ", '"+ CalabConstants.OUTPUT+"' from Assay assay join assay.runCollection run left join run.outputFileCollection file left join file.dataStatus fileStatus left join run.runSampleContainerCollection runSampleContainer left join runSampleContainer.sampleContainer aliquot left join aliquot.dataStatus aliquotStatus ";
 			outHqlString += whereParams[0];
 			List<WorkflowResultBean> outWorkflows = getWorkflows(outHqlString,
 					(List) whereParams[1]);
@@ -259,11 +259,12 @@ private List<WorkflowResultBean> getWorkflows(String hqlString,
 						(Date) items[6], CalabConstants.DATE_FORMAT);
 				String theFileSubmitter = StringUtils.convertToString(items[7]);
 				String theFileStatus = StringUtils.convertToString(items[8]);
+				String theFileInoutType=StringUtils.convertToString(items[9]);
 				workflows
 						.add(new WorkflowResultBean(theFilePath, theAssayType,
 								theAssayName, theAssayRunName, theAssayRunDate, theAliquotName,
 								theFileSubmissionDate, theFileSubmitter,
-								theFileStatus));
+								theFileStatus, theFileInoutType));
 			}
 			ida.close();
 		} catch (Exception e) {
