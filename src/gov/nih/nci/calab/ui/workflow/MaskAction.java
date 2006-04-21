@@ -1,13 +1,13 @@
 package gov.nih.nci.calab.ui.workflow;
 
-import gov.nih.nci.calab.ui.core.AbstractBaseAction;
 import gov.nih.nci.calab.service.workflow.MaskService;
+import gov.nih.nci.calab.ui.core.AbstractBaseAction;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.apache.log4j.Logger;
-
-
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -37,6 +37,7 @@ public class MaskAction extends AbstractBaseAction
 		ActionMessages msgs = new ActionMessages();
 		try 
 		{
+            HttpSession session = request.getSession();
 			DynaValidatorForm theForm = (DynaValidatorForm) form;
 			
 			strMaskType = (String) theForm.get("maskType");
@@ -74,6 +75,7 @@ public class MaskAction extends AbstractBaseAction
 			{
 				  msg = new ActionMessage("message.maskFile", strId);
 			}
+            session.setAttribute("newWorkflowCreated","true");
 			msgs.add("message", msg);
 			saveMessages(request, msgs);
 			forward = mapping.findForward("success");
