@@ -31,8 +31,6 @@ public class FileBean {
 	
 	private String shortFilename = "";
 	
-	private String status = "";
-	
 	private String inoutType = "";
 
 	/**
@@ -133,15 +131,6 @@ public class FileBean {
 	public void setShortFilename(String shortFileName) {
 		this.shortFilename = shortFileName;
 	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-	
 	public String getInoutType() {
 		return inoutType;
 	}
