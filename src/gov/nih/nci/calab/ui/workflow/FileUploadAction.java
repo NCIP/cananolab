@@ -57,10 +57,10 @@ public class FileUploadAction extends AbstractDispatchAction
                                HttpServletResponse response)
     {
         DynaValidatorActionForm fileForm = (DynaValidatorActionForm)form;
-        
+ 
         HttpSession session = request.getSession();
  
-        String runId = request.getParameter("runId");
+        String runId = (request.getParameter("runId") == null)? (String)session.getAttribute("runId"): request.getParameter("runId");
         RunBean runBean = workflowService.getAssayInfoByRun((ExecuteWorkflowBean)session.getAttribute("workflow"), runId);
         
         SpecialCharReplacer specialCharReplacer = new SpecialCharReplacer();
