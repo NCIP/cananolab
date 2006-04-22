@@ -1,12 +1,13 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <script type="text/javascript" src="javascript/calendar2.js"> </script>
 
 <html:form action="/createAssayRun">
 	<h2>
-		<strong>Create Run for Assay <%=request.getParameter("assayName")%></strong>
+		<strong>Create Run for Assay <c:out value="${param.assayName}"/></strong>
 	</h2>
 	<blockquote>
 		<html:errors />
@@ -19,7 +20,7 @@
 					</html:messages> </font>
 			</ul>
 		</logic:messagesPresent>
-		<html:hidden property="assay"/>
+		<html:hidden property="assayId" value="${param.assayId}"/>
 		<table width="90%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 			<tr class="topBorder">
 				<td colspan="2" class="dataTablePrimaryLabel">
@@ -74,7 +75,7 @@
 				</td>
 				<td class="formLabelWhite">
 					<div align="justify">
-						<span class="formFieldWhite"><html:textarea property="aliquotComment" cols="40" /></span></strong>
+						<span class="formFieldWhite"><html:textarea property="aliquotComment" cols="40" /></span>
 					</div>
 				</td>
 			</tr>
