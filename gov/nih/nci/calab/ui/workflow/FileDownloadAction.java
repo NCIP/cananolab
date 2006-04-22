@@ -35,7 +35,7 @@ public class FileDownloadAction extends AbstractDispatchAction
     private static org.apache.log4j.Logger logger_ =
         org.apache.log4j.Logger.getLogger(FileDownloadAction.class);
     
-    public String fullPathName = null; 
+     
     /**
      * This method is setting up the parameters for the workflow input upload files
      * or output upload files.
@@ -58,7 +58,7 @@ public class FileDownloadAction extends AbstractDispatchAction
         RunBean runBean = workflowService.getAssayInfoByRun((ExecuteWorkflowBean)session.getAttribute("workflow"), runId);
 
     	DynaValidatorActionForm fileForm = (DynaValidatorActionForm)form;
-       fileForm.set("assayType", runBean.getAssayBean().getAssayType());
+        fileForm.set("assayType", runBean.getAssayBean().getAssayType());
         fileForm.set("assay", runBean.getAssayBean().getAssayName());
         fileForm.set("run", runBean.getName());
         fileForm.set("inout", request.getParameter("type"));
@@ -66,7 +66,7 @@ public class FileDownloadAction extends AbstractDispatchAction
         String contentPath = request.getContextPath();
         
         String path = PropertyReader.getProperty(CalabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
-        fullPathName = path + fileForm.get("assayType") + File.separator 
+        String fullPathName = path + fileForm.get("assayType") + File.separator 
                                    + fileForm.get("assay") + File.separator
                                    + fileForm.get("run")   + File.separator
                                    + fileForm.get("inout") + File.separator
@@ -87,7 +87,8 @@ public class FileDownloadAction extends AbstractDispatchAction
             FileDownloadInfo fileDownloadInfo = new FileDownloadInfo();
             fileDownloadInfo.setFileName(fileBean.getFilename());
             fileDownloadInfo.setUploadDate(fileBean.getCreatedDate());
-            fileDownloadInfo.setAction(contentPath+"/fileDownload.do?method=downloadFile&fileName="+fileBean.getFilename());
+            fileDownloadInfo.setAction(contentPath+"/fileDownload.do?method=downloadFile&fileName="+fileBean.getFilename()
+                                                  +"&runId="+runId+"&type="+fileForm.get("inout"));
             fileNameHolder.add(fileDownloadInfo);
         }
 
@@ -102,9 +103,25 @@ public class FileDownloadAction extends AbstractDispatchAction
             HttpServletRequest request,
             HttpServletResponse response) throws Exception
     {
+        HttpSession session = request.getSession();
         DynaValidatorActionForm fileForm = (DynaValidatorActionForm)form;
+        ExecuteWorkflowService workflowService = new ExecuteWorkflowService();
+        String runId = request.getParameter("runId");
+        RunBean runBean = workflowService.getAssayInfoByRun((ExecuteWorkflowBean)session.getAttribute("workflow"), runId);
+
+        fileForm.set("assayType", runBean.getAssayBean().getAssayType());
+        fileForm.set("assay", runBean.getAssayBean().getAssayName());
+        fileForm.set("run", runBean.getName());
+        fileForm.set("inout", request.getParameter("type"));
+
         
         String fileName = (String)fileForm.get("fileName");
+        String path = PropertyReader.getProperty(CalabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
+        String fullPathName = path + fileForm.get("assayType") + File.separator 
+                                   + fileForm.get("assay") + File.separator
+                                   + fileForm.get("run")   + File.separator
+                                   + fileForm.get("inout") + File.separator
+                                   + CalabConstants.UNCOMPRESSED_FILE_DIRECTORY;
         File f = new File(fullPathName+File.separator+fileName);
         if (!f.exists())
         {
