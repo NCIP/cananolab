@@ -34,6 +34,8 @@ public class MaskAction extends AbstractBaseAction
 		String strDescription = null;
 		String strMaskType=null;
 		String strId = null;
+        String runId = null;
+        
 		ActionMessages msgs = new ActionMessages();
 		try 
 		{
@@ -41,8 +43,13 @@ public class MaskAction extends AbstractBaseAction
 			DynaValidatorForm theForm = (DynaValidatorForm) form;
 			
 			strMaskType = (String) theForm.get("maskType");
-			strDescription = (String) theForm.getString("description");
-			if (strDescription.equals(null))
+			strDescription = theForm.getString("description");
+			runId = (String)theForm.get("runId");
+            theForm.set("method","setup");
+            theForm.set("inout",(String)theForm.get("inout"));
+//            theForm.set("type", )
+            
+            if (strDescription.equals(null))
 			{
 				ActionMessage error = new ActionMessage("error.mask", strMaskType);
 		        msgs.add("error", error);
