@@ -31,7 +31,7 @@
 			<td colspan="2" class="formLabel">
 					<div align="justify">
 								<strong>Assay Type : Assay<span class="formFieldWhite">
-								<html:select property="assay">
+								<html:select property="assayId">
 									<option value=""></option>
 									<html:options collection="allAssayBeans" property="assayId" labelProperty="assayStr" />
 								</html:select></span></strong>
