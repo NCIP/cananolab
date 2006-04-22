@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.21 2006-04-22 19:47:17 zengje Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.22 2006-04-22 21:08:59 zengje Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
@@ -144,7 +144,7 @@ public class InitSessionAction extends AbstractBaseAction {
 	 * @param lookupService
 	 */
 	private void setCreateSampleSession(HttpSession session,
-			LookupService lookupService) {
+			LookupService lookupService) throws Exception {
 		ManageSampleService mangeSampleService = new ManageSampleService();
 		// if values don't exist in the database or if no new samples created.
 		// call the service
@@ -181,7 +181,7 @@ public class InitSessionAction extends AbstractBaseAction {
 	 * @param lookupService
 	 */
 	private void setCreateAliquotSession(HttpSession session,
-			LookupService lookupService, String urlPrefix) {
+			LookupService lookupService, String urlPrefix) throws Exception {
 		ManageAliquotService manageAliquotService = new ManageAliquotService();
 
 		if (session.getAttribute("allSamples") == null
@@ -224,7 +224,7 @@ public class InitSessionAction extends AbstractBaseAction {
 	 * @param lookupService
 	 */
 private void setSearchWorkflowSession(HttpSession session,
-			LookupService lookupService) {
+			LookupService lookupService) throws Exception {
 		SearchWorkflowService searchWorkflowService = new SearchWorkflowService();
 
 		if (session.getAttribute("allUnmaskedAliquots") == null
@@ -250,7 +250,7 @@ private void setSearchWorkflowSession(HttpSession session,
 	 * @param lookupService
 	 */
 	private void setSearchSampleSession(HttpSession session,
-			LookupService lookupService) {
+			LookupService lookupService) throws Exception {
 		SearchSampleService searchSampleService = new SearchSampleService();
 		if (session.getAttribute("allSamples") == null
 				|| session.getAttribute("newSampleCreated") != null) {
