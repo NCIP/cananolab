@@ -35,7 +35,7 @@ public class FileMaskAction extends AbstractDispatchAction
     private static org.apache.log4j.Logger logger_ =
         org.apache.log4j.Logger.getLogger(FileMaskAction.class);
     
-    public String fullPathName = null; 
+     
     /**
      * This method is setting up the parameters for the workflow mask files.
      * 
@@ -60,20 +60,23 @@ public class FileMaskAction extends AbstractDispatchAction
         fileForm.set("assayType", runBean.getAssayBean().getAssayType());
         fileForm.set("assay", runBean.getAssayBean().getAssayName());
         fileForm.set("run", runBean.getName());
-        fileForm.set("inout", request.getParameter("type"));
- 
+       
+        fileForm.set("runId", runId);
+
         String contentPath = request.getContextPath();
         
         // Retrieve filename(not uri) from database
         List<FileBean> fileBeanList = new ArrayList<FileBean>();
-        if ((request.getParameter("type")).equalsIgnoreCase(CalabConstants.INPUT)) {
+        if (  (request.getParameter("type") != null && (request.getParameter("type")).equalsIgnoreCase(CalabConstants.INPUT))
+             || ((fileForm.get("inout") != null) &&((String)fileForm.get("inout")).equalsIgnoreCase(CalabConstants.INPUT))) {
             List<FileBean> allfiles = runBean.getInputFileBeans();
             for(FileBean fileBean: allfiles){
             	if (!fileBean.getFileMaskStatus().equals(CalabConstants.MASK_STATUS)){
             		fileBeanList.add(fileBean);
             	}
             }
-        } else if ((request.getParameter("type")).equalsIgnoreCase(CalabConstants.OUTPUT)) {
+        } else if (  (request.getParameter("type") != null && (request.getParameter("type")).equalsIgnoreCase(CalabConstants.OUTPUT))
+                    || ((fileForm.get("inout") != null) &&((String)fileForm.get("inout")).equalsIgnoreCase(CalabConstants.OUTPUT))) {
             List<FileBean> allfiles = runBean.getOutputFileBeans();
             for(FileBean fileBean: allfiles){
             	if (!fileBean.getFileMaskStatus().equals(CalabConstants.MASK_STATUS)){
@@ -89,7 +92,10 @@ public class FileMaskAction extends AbstractDispatchAction
             FileDownloadInfo fileDownloadInfo = new FileDownloadInfo();
             fileDownloadInfo.setFileName(fileBean.getFilename());
             fileDownloadInfo.setUploadDate(fileBean.getCreatedDate());
-            fileDownloadInfo.setAction(contentPath + "/fileMask.do?method=maskFile&fileId=" + fileBean.getId() +"&fileName=" +  fileBean.getFilename());
+            fileDownloadInfo.setAction(contentPath + "/fileMask.do?method=maskFile&fileId=" + fileBean.getId() +"&fileName=" 
+                                                   +  fileBean.getFilename()
+                                                   + "&runId="+runId
+                                                   + "&type="+fileForm.get("inout"));
             fileNameHolder.add(fileDownloadInfo);
         }
         fileForm.set("fileInfoList", fileNameHolder);
@@ -106,6 +112,7 @@ public class FileMaskAction extends AbstractDispatchAction
         
         String fileId = (String)fileForm.get("fileId");
         String fileName = (String)fileForm.get("fileName");
+        String runId = (String)fileForm.get("runId");
        
         return mapping.findForward("maskpage");
     }
