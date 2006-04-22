@@ -18,25 +18,26 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-/* CVS $Id: ManageSampleService.java,v 1.20 2006-04-18 23:27:56 zengje Exp $ 
+/* CVS $Id: ManageSampleService.java,v 1.21 2006-04-22 21:08:27 zengje Exp $ 
  */
 public class ManageSampleService {
 	private static Logger logger = Logger.getLogger(ManageSampleService.class);
 
-	public List<String> getAllSampleSOPs() {
+	public List<String> getAllSampleSOPs() throws Exception {
 		List<String> sampleSOPs = new ArrayList<String>();
+		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
 		try {
-			IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.TOOLKITAPI);
 			ida.open();
 			String hqlString = "select sampleSOP.name from SampleSOP sampleSOP where sampleSOP.description='sample creation'";
-			List results = ida.query(hqlString, SampleSOP.class.getName());
+			List results = ida.search(hqlString);
 			for (Object obj:results) {
 				sampleSOPs.add((String)obj);
 			}
-			ida.close();
 		} catch (Exception e) {
 			logger.error("Problem to retrieve all Sample SOPs.");
 			throw new RuntimeException("Problem to retrieve all Sample SOPs. ");
+		} finally {
+			ida.close();
 		}
 		return sampleSOPs;
 	}
@@ -49,11 +50,11 @@ public class ManageSampleService {
 		// TODO: Get configurable sample format string
 		String sampleNamePrefix = "NCL-";
 		long seqId = 0;
+		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
 		try {
-			IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.TOOLKITAPI);
 			ida.open();
 			String hqlString = "select max(sample.sampleSequenceId) from Sample sample";
-			List results = ida.query(hqlString, Sample.class.getName());
+			List results = ida.search(hqlString);
 			logger.debug("ManageSampleService.getSampleSequenceId(): results.size = " + results.size());
 			if (results.iterator().hasNext()) {
 				Object obj = results.iterator().next();
@@ -63,10 +64,11 @@ public class ManageSampleService {
 				}
 			}
 			logger.debug("ManageSampleService.getSampleSequenceId(): current seq id = " + seqId);
-			ida.close();
 		} catch (Exception e) {
 			logger.error("Problem in retrieving default sample ID prefix.");
 			throw new RuntimeException("Problem in retrieving default sample ID prefix.");
+		} finally {
+			ida.close();
 		}
 
 		return sampleNamePrefix + (seqId+1);
@@ -115,7 +117,6 @@ public class ManageSampleService {
     	  try {
 			ida.open();
 			String hqlString = "select count(*) from Sample sample where sample.name = '" + sample.getSampleName()+"'";
-//			List results = ida.query(hqlString, Sample.class.getName());
 			List results = ida.search(hqlString);
 			if (results.iterator().hasNext())
 			{
@@ -291,11 +292,10 @@ public class ManageSampleService {
 		}catch (Exception e){
 			e.printStackTrace();
 			logger.error("Problem saving the sample.");
-
 			ida.rollback();
-			ida.close();
 			throw new Exception (e.getMessage());
+		} finally {
+			ida.close();
 		}
-		ida.close();
 	  }
 }

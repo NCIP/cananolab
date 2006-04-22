@@ -27,7 +27,7 @@ import org.apache.log4j.Logger;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.18 2006-04-19 19:53:25 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.19 2006-04-22 21:08:27 zengje Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -38,26 +38,26 @@ public class LookupService {
 	 * 
 	 * @return a list of AliquotBeans containing aliquot ID and aliquot name
 	 */
-	public List<AliquotBean> getAliquots() {
+	public List<AliquotBean> getAliquots() throws Exception {
 		List<AliquotBean> aliquots = new ArrayList<AliquotBean>();
+		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
 		try {
-			IDataAccess ida = (new DataAccessProxy())
-					.getInstance(IDataAccess.TOOLKITAPI);
 			ida.open();
 			String hqlString = "select aliquot.id, aliquot.name from Aliquot aliquot order by aliquot.name";
-			List results = ida.query(hqlString, Aliquot.class.getName());
+			List results = ida.search(hqlString);
 			for (Object obj : results) {
 				Object[] aliquotInfo = (Object[]) obj;
 				aliquots.add(new AliquotBean(StringUtils
 						.convertToString(aliquotInfo[0]), StringUtils
 						.convertToString(aliquotInfo[1])));
 			}
-			ida.close();
 		} catch (Exception e) {
 			logger.error("Error in retrieving all aliquot Ids and names", e);
 			throw new RuntimeException(
 					"Error in retrieving all aliquot Ids and names");
-		}		
+		} finally {
+			ida.close();
+		}
 		return aliquots;
 	}
 
@@ -69,25 +69,25 @@ public class LookupService {
 	 * 
 	 */
 
-	public List<AliquotBean> getUnmaskedAliquots() {
+	public List<AliquotBean> getUnmaskedAliquots() throws Exception{
 		List<AliquotBean> aliquots = new ArrayList<AliquotBean>();
+		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
 		try {
-			IDataAccess ida = (new DataAccessProxy())
-					.getInstance(IDataAccess.TOOLKITAPI);
 			ida.open();
 			String hqlString = "select aliquot.id, aliquot.name from Aliquot aliquot where aliquot.dataStatus is null order by aliquot.name";
-			List results = ida.query(hqlString, Aliquot.class.getName());
+			List results = ida.search(hqlString);
 			for (Object obj : results) {
 				Object[] aliquotInfo = (Object[]) obj;
 				aliquots.add(new AliquotBean(StringUtils
 						.convertToString(aliquotInfo[0]), StringUtils
 						.convertToString(aliquotInfo[1])));
 			}
-			ida.close();
 		} catch (Exception e) {
 			logger.error("Error in retrieving all aliquot Ids and names", e);
 			throw new RuntimeException(
 					"Error in retrieving all aliquot Ids and names");
+		} finally {
+			ida.close();
 		}
 		return aliquots;
 	}
@@ -97,24 +97,23 @@ public class LookupService {
 	 * 
 	 * @return a list of all sample types
 	 */
-	public List<String> getAllSampleTypes() {
+	public List<String> getAllSampleTypes() throws Exception {
 		// Detail here
 		// Retrieve data from Sample_Type table
 		List<String> sampleTypes = new ArrayList<String>();
-
+		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
 		try {
-			IDataAccess ida = (new DataAccessProxy())
-					.getInstance(IDataAccess.TOOLKITAPI);
 			ida.open();
 			String hqlString = "select sampleType.name from SampleType sampleType order by sampleType.name";
-			List results = ida.query(hqlString, SampleType.class.getName());
+			List results = ida.search(hqlString);
 			for (Object obj : results) {
 				sampleTypes.add((String) obj);
 			}
-			ida.close();
 		} catch (Exception e) {
 			logger.error("Error in retrieving all sample types", e);
 			throw new RuntimeException("Error in retrieving all sample types");
+		} finally {
+			ida.close();
 		}
 
 		return sampleTypes;
@@ -125,7 +124,7 @@ public class LookupService {
 	 * @return the default sample container information in a form of
 	 *         ContainerInfoBean
 	 */
-	public ContainerInfoBean getSampleContainerInfo() {
+	public ContainerInfoBean getSampleContainerInfo() throws Exception {
 		// tmp code to be replaced
 		List<String> containerTypes = getAllContainerTypes();
 		List<MeasureUnit> units = getAllMeasureUnits();
@@ -162,62 +161,62 @@ public class LookupService {
 		return containerInfo;
 	}
 
-	private List<String> getAllContainerTypes() {
+	private List<String> getAllContainerTypes() throws Exception {
 		List<String> containerTypes = new ArrayList<String>();
+		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
 		try {
-			IDataAccess ida = (new DataAccessProxy())
-					.getInstance(IDataAccess.TOOLKITAPI);
 			ida.open();
 			String hqlString = "select distinct container.containerType from SampleContainer container order by container.containerType";
-			List results = ida
-					.query(hqlString, SampleContainer.class.getName());
+			List results = ida.search(hqlString);
 			for (Object obj : results) {
 				containerTypes.add((String) obj);
 			}
-			ida.close();
 		} catch (Exception e) {
 			logger.error("Error in retrieving all container types", e);
 			throw new RuntimeException(
 					"Error in retrieving all container types.");
+		} finally {
+			ida.close();
 		}
 		return containerTypes;
 	}
 
-	private List<MeasureUnit> getAllMeasureUnits() {
+	private List<MeasureUnit> getAllMeasureUnits() throws Exception {
 		List<MeasureUnit> units = new ArrayList<MeasureUnit>();
+		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
 		try {
-			IDataAccess ida = (new DataAccessProxy())
-					.getInstance(IDataAccess.TOOLKITAPI);
 			ida.open();
 			String hqlString = "from MeasureUnit";
-			List results = ida.query(hqlString, MeasureUnit.class.getName());
+			List results = ida.search(hqlString);
 			for (Object obj : results) {
 				units.add((MeasureUnit) obj);
 			}
-			ida.close();
 		} catch (Exception e) {
 			logger.error("Error in retrieving all measure units", e);
 			throw new RuntimeException("Error in retrieving all measure units.");
+		} finally {
+			ida.close();
 		}
+		
 		return units;
 	}
 
-	private List<StorageElement> getAllRoomAndFreezers() {
+	private List<StorageElement> getAllRoomAndFreezers() throws Exception {
 		List<StorageElement> storageElements = new ArrayList<StorageElement>();
+		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
 		try {
-			IDataAccess ida = (new DataAccessProxy())
-					.getInstance(IDataAccess.TOOLKITAPI);
 			ida.open();
 			String hqlString = "from StorageElement where type in ('Room', 'Freezer')";
-			List results = ida.query(hqlString, StorageElement.class.getName());
+			List results = ida.search(hqlString);
 			for (Object obj : results) {
 				storageElements.add((StorageElement) obj);
 			}
-			ida.close();
 		} catch (Exception e) {
 			logger.error("Error in retrieving all rooms and freezers", e);
 			throw new RuntimeException(
 					"Error in retrieving all rooms and freezers.");
+		} finally {
+			ida.close();
 		}
 		return storageElements;
 	}
@@ -227,7 +226,7 @@ public class LookupService {
 	 * @return the default sample container information in a form of
 	 *         ContainerInfoBean
 	 */
-	public ContainerInfoBean getAliquotContainerInfo() {
+	public ContainerInfoBean getAliquotContainerInfo() throws Exception {
 		return getSampleContainerInfo();
 	}
 
@@ -236,26 +235,26 @@ public class LookupService {
 	 * 
 	 * @return a list of SampleBean containing sample Ids and names
 	 */
-	public List<SampleBean> getAllSamples() {
+	public List<SampleBean> getAllSamples() throws Exception {
 		List<SampleBean> samples = new ArrayList<SampleBean>();
+		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
 
 		try {
-			IDataAccess ida = (new DataAccessProxy())
-					.getInstance(IDataAccess.TOOLKITAPI);
 			ida.open();
 			String hqlString = "select sample.id, sample.name from Sample sample order by sample.name";
-			List results = ida.query(hqlString, Sample.class.getName());
+			List results = ida.search(hqlString);
 			for (Object obj : results) {
 				Object[] sampleInfo = (Object[]) obj;
 				samples.add(new SampleBean(StringUtils
 						.convertToString(sampleInfo[0]), StringUtils
 						.convertToString(sampleInfo[1])));
 			}
-			ida.close();
 		} catch (Exception e) {
 			logger.error("Error in retrieving all sample IDs and names", e);
 			throw new RuntimeException(
 					"Error in retrieving all sample IDs and names");
+		} finally {
+			ida.close();
 		}
 
 		return samples;
@@ -266,21 +265,21 @@ public class LookupService {
 	 * 
 	 * @return A list of all assay type
 	 */
-	public List getAllAssayTypes() {
+	public List getAllAssayTypes() throws Exception {
 		List<String> assayTypes = new ArrayList<String>();
+		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
 		try {
-			IDataAccess ida = (new DataAccessProxy())
-					.getInstance(IDataAccess.TOOLKITAPI);
 			ida.open();
 			String hqlString = "select assayType.name from AssayType assayType order by assayType.executeOrder";
-			List results = ida.query(hqlString, AssayType.class.getName());
+			List results = ida.search(hqlString);
 			for (Object obj : results) {
 				assayTypes.add((String) obj);
 			}
-			ida.close();
 		} catch (Exception e) {
 			logger.error("Error in retrieving all assay types", e);
 			throw new RuntimeException("Error in retrieving all assay types");
+		} finally {
+			ida.close();
 		}
 		return assayTypes;
 	}
@@ -324,12 +323,10 @@ public class LookupService {
 	 * @return a list of all assays in certain type
 	 */
 
-	public List<AssayBean> getAllAssayBeans()
-	{
+	public List<AssayBean> getAllAssayBeans() throws Exception {
 		List<AssayBean> assayBeans = new ArrayList<AssayBean>();
+		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
 		try {
-			IDataAccess ida = (new DataAccessProxy())
-					.getInstance(IDataAccess.HIBERNATE);
 			ida.open();
 			String hqlString = "select assay.id, assay.name, assay.assayType from Assay assay";
 			List results = ida.search(hqlString);
@@ -338,10 +335,11 @@ public class LookupService {
 				AssayBean assay = new AssayBean(((Long)objArray[0]).toString(), (String)objArray[1], (String)objArray[2]);
 				assayBeans.add(assay);
 			}
-			ida.close();
 		} catch (Exception e) {
 			logger.error("Error in retrieving all assay beans. ", e);
 			throw new RuntimeException("Error in retrieving all assays beans. ");
+		} finally {
+			ida.close();
 		}
 		return assayBeans;
 	}
