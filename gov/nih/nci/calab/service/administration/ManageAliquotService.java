@@ -26,7 +26,7 @@ import org.apache.struts.util.LabelValueBean;
  */
 
 /*
- * CVS $Id: ManageAliquotService.java,v 1.14 2006-04-19 22:50:13 zengje Exp $
+ * CVS $Id: ManageAliquotService.java,v 1.15 2006-04-22 21:08:27 zengje Exp $
  */
 
 public class ManageAliquotService {
@@ -36,24 +36,24 @@ public class ManageAliquotService {
 	 * 
 	 * @return all methods for creating aliquots
 	 */
-	public List<LabelValueBean> getAliquotCreateMethods(String urlPrefix) {
+	public List<LabelValueBean> getAliquotCreateMethods(String urlPrefix) throws Exception {
 		List<LabelValueBean> createMethods = new ArrayList<LabelValueBean>();
+		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
 		try {
-			IDataAccess ida = (new DataAccessProxy())
-					.getInstance(IDataAccess.TOOLKITAPI);
 			ida.open();
 			String hqlString = "select sop.name, file.path from SampleSOP sop join sop.sampleSOPFileCollection file where sop.description='aliquot creation'";
-			List results = ida.query(hqlString, SampleSOP.class.getName());
+			List results = ida.search(hqlString);
 			for (Object obj : results) {
 				String sopName = (String) ((Object[]) obj)[0];
 				String sopURI = (String) ((Object[]) obj)[1];
 				String sopURL = (sopURI == null) ? "" : urlPrefix + sopURI;
 				createMethods.add(new LabelValueBean(sopName, sopURL));
 			}
-			ida.close();
 		} catch (Exception e) {
 			logger.error("Error in retrieving all sample sources", e);
 			throw new RuntimeException("Error in retrieving all sample sources");
+		} finally {
+			ida.close();
 		}
 		return createMethods;
 	}
@@ -83,7 +83,7 @@ public class ManageAliquotService {
 	 * @param parentaliquotName
 	 * @return the first number for assigning a new aliquot IDs.
 	 */
-	public int getFirstAliquotNum(String sampleName, String parentaliquotName) {
+	public int getFirstAliquotNum(String sampleName, String parentaliquotName) throws Exception {
 		int aliquotNum = 0;
 		if (parentaliquotName.length() == 0) {
 			aliquotNum = getLastSampleAliquotNum(sampleName) + 1;
@@ -93,15 +93,14 @@ public class ManageAliquotService {
 		return aliquotNum;
 	}
 
-	private int getLastSampleAliquotNum(String sampleName) {
+	private int getLastSampleAliquotNum(String sampleName) throws Exception {
 		int aliquotNum = 0;
+		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
 		try {
-			IDataAccess ida = (new DataAccessProxy())
-					.getInstance(IDataAccess.TOOLKITAPI);
 			ida.open();
 			String hqlString = "select container from Sample sample join sample.sampleContainerCollection container where sample.name='"
 					+ sampleName + "'";
-			List results = ida.query(hqlString, SampleSOP.class.getName());
+			List results = ida.search(hqlString);
 			for (Object obj : results) {
 				SampleContainer container = (SampleContainer) obj;
 				if (container instanceof Aliquot) {
@@ -114,25 +113,25 @@ public class ManageAliquotService {
 					}
 				}
 			}
-			ida.close();
 		} catch (Exception e) {
 			logger.error("Error in retrieving the last sample aliquot number",
 					e);
 			throw new RuntimeException(
 					"Error in retrieving the last sample aliquot number");
+		} finally {
+			ida.close();
 		}
 		return aliquotNum;
 	}
 
-	private int getLastAliquotChildAliquotNum(String parentAliquotName) {
+	private int getLastAliquotChildAliquotNum(String parentAliquotName) throws Exception{
 		int aliquotNum = 0;
+		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
 		try {
-			IDataAccess ida = (new DataAccessProxy())
-					.getInstance(IDataAccess.TOOLKITAPI);
 			ida.open();
 			String hqlString = "select child from Aliquot parent join parent.childSampleContainerCollection child where parent.name='"
 					+ parentAliquotName + "'";
-			List results = ida.query(hqlString, SampleSOP.class.getName());
+			List results = ida.search(hqlString);
 			for (Object obj : results) {
 				SampleContainer container = (SampleContainer) obj;
 				if (container instanceof Aliquot) {
@@ -145,7 +144,6 @@ public class ManageAliquotService {
 					}
 				}
 			}
-			ida.close();
 		} catch (Exception e) {
 			logger
 					.error(
@@ -153,6 +151,8 @@ public class ManageAliquotService {
 							e);
 			throw new RuntimeException(
 					"Error in retrieving the last aliquot child aliquot number");
+		} finally {
+			ida.close();
 		}
 		return aliquotNum;
 	}
@@ -336,12 +336,12 @@ public class ManageAliquotService {
 					ida.store(doAliquot);
 				}
 			}
-			ida.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 			ida.rollback();
-			ida.close();
 			throw new RuntimeException(e.getMessage());
+		} finally {
+			ida.close();
 		}
 	}
 }
