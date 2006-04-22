@@ -50,7 +50,7 @@ public class CreateRunAction extends AbstractBaseAction {
 			//Get Prameters from form elements
 			//Run info 
 			
-			String assayId = (String) theForm.get("assay");			
+			String assayId = (String) theForm.get("assayId");			
 			String runBy = (String) theForm.get("runBy");
 			String runDate = (String) theForm.get("runDate");
 			// get user and date information from session
