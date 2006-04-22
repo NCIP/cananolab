@@ -68,9 +68,14 @@
 				<filter token="DBPASSWORD" value="${database.password}"/>
 				<filter token="DBSERVER" value="${database.server}"/>
 				<filter token="DBSCHEMA" value="${database.schema}"/>
+				
+				<filter token="HOSTNAME" value="${hostname}"/>
+				
+				<filter token="FILE_REPOSITORY_DIR" value="${file.repository.dir}" />
 		</filterset>
 		</copy>
 		<move file="${build.classes.dir}/hibernate.properties.template" tofile="${build.classes.dir}/hibernate.properties"/>
+		<move file="${build.classes.dir}/fileupload.properties.template" tofile="${build.classes.dir}/fileupload.properties"/>
 
 		
 		<!-- Pack WAR file -->
