@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.20 2006-04-22 19:40:20 zhouji Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.21 2006-04-22 19:47:17 zengje Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
@@ -74,10 +74,12 @@ public class InitSessionAction extends AbstractBaseAction {
 				setCreateRunSession(session, lookupService);
 			} else if (forwardPage.equals("workflowMessage")) {
 				setWorkflowMessageSession(session);
+
+			} else if (forwardPage.equals("fileUploadOption")) {
+				setFileActionSession(session);
 			}  else if (forwardPage.equals("fileDownload") ) {
 				setFileActionSession(session);
-			} else if ( forwardPage.equals("fileMask"))
-            {
+			} else if ( forwardPage.equals("fileMask")){
                 setFileActionSession(session);
             }
 			// get user and date information
