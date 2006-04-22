@@ -24,7 +24,7 @@ import org.apache.log4j.Logger;
  * @author pansu
  * 
  */
-/* CVS $Id: SearchSampleService.java,v 1.13 2006-04-21 18:14:33 pansu Exp $ */
+/* CVS $Id: SearchSampleService.java,v 1.14 2006-04-22 21:08:27 zengje Exp $ */
 
 public class SearchSampleService {
 	private static Logger logger = Logger.getLogger(SearchSampleService.class);
@@ -33,22 +33,21 @@ public class SearchSampleService {
 	 * 
 	 * @return all sample sources
 	 */
-	public List<String> getAllSampleSources() {
+	public List<String> getAllSampleSources() throws Exception {
 		List<String> sampleSources = new ArrayList<String>();
-
+		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
 		try {
-			IDataAccess ida = (new DataAccessProxy())
-					.getInstance(IDataAccess.TOOLKITAPI);
 			ida.open();
 			String hqlString = "select source.organizationName from Source source order by source.organizationName";
-			List results = ida.query(hqlString, Source.class.getName());
+			List results = ida.search(hqlString);
 			for (Object obj : results) {
 				sampleSources.add((String) obj);
 			}
-			ida.close();
 		} catch (Exception e) {
 			logger.error("Error in retrieving all sample sources", e);
 			throw new RuntimeException("Error in retrieving all sample sources");
+		} finally {
+			ida.close();
 		}
 
 		return sampleSources;
@@ -58,23 +57,22 @@ public class SearchSampleService {
 	 * 
 	 * @return all source sample IDs
 	 */
-	public List<String> getAllSourceSampleIds() {
+	public List<String> getAllSourceSampleIds() throws Exception {
 		List<String> sourceSampleIds = new ArrayList<String>();
-
+		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
 		try {
-			IDataAccess ida = (new DataAccessProxy())
-					.getInstance(IDataAccess.TOOLKITAPI);
 			ida.open();
 			String hqlString = "select distinct sample.sourceSampleId from Sample sample order by sample.sourceSampleId";
-			List results = ida.query(hqlString, Sample.class.getName());
+			List results = ida.search(hqlString);
 			for (Object obj : results) {
 				sourceSampleIds.add((String) obj);
 			}
-			ida.close();
 		} catch (Exception e) {
 			logger.error("Error in retrieving all source sample IDs", e);
 			throw new RuntimeException(
 					"Error in retrieving all source sample IDs");
+		} finally {
+			ida.close();
 		}
 
 		return sourceSampleIds;
@@ -84,22 +82,23 @@ public class SearchSampleService {
 	 * 
 	 * @return all sample submitters
 	 */
-	public List<String> getAllSampleSubmitters() {
+	public List<String> getAllSampleSubmitters() throws Exception {
 		List<String> sampleSubmitters = new ArrayList<String>();
+		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
+		
 		try {
-			IDataAccess ida = (new DataAccessProxy())
-					.getInstance(IDataAccess.TOOLKITAPI);
 			ida.open();
 			String hqlString = "select distinct sample.createdBy from Sample sample order by sample.createdBy";
-			List results = ida.query(hqlString, Sample.class.getName());
+			List results = ida.search(hqlString);
 			for (Object obj : results) {
 				sampleSubmitters.add((String) obj);
 			}
-			ida.close();
 		} catch (Exception e) {
 			logger.error("Error in retrieving all sample submitters", e);
 			throw new RuntimeException(
 					"Error in retrieving all sample submitters");
+		} finally {
+			ida.close();
 		}
 
 		return sampleSubmitters;
@@ -121,8 +120,10 @@ public class SearchSampleService {
 	public List<SampleBean> searchSamplesBySampleName(String sampleName,
 			String sampleType, String sampleSource, String sourceSampleId,
 			Date dateAccessionedBegin, Date dateAccessionedEnd,
-			String sampleSubmitter, StorageLocation storageLocation) {
+			String sampleSubmitter, StorageLocation storageLocation) throws Exception {
 		List<SampleBean> samples = new ArrayList<SampleBean>();
+		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
+
 		try {
 			List<Object> paramList = new ArrayList<Object>();
 			List<String> whereList = new ArrayList<String>();
@@ -207,8 +208,6 @@ public class SearchSampleService {
 			String hqlString = "select sample from Sample sample "
 					+ storageFrom + where + whereStr;
 
-			IDataAccess ida = (new DataAccessProxy())
-					.getInstance(IDataAccess.HIBERNATE);
 			ida.open();
 
 			List results = ida.searchByParam(hqlString, paramList);
@@ -216,13 +215,14 @@ public class SearchSampleService {
 				Sample sample = (Sample) obj;
 				samples.add(new SampleBean(sample));
 			}
-			ida.close();
 		} catch (Exception e) {
 			logger
 					.error("Error in searching sample by the given parameters",
 							e);
 			throw new RuntimeException(
 					"Error in searching sample by the given parameters");
+		} finally {
+			ida.close();
 		}
         
 		Collections.sort(samples, new CalabComparators.SampleBeanComparator());
@@ -244,8 +244,9 @@ public class SearchSampleService {
 public List<AliquotBean> searchAliquotsByAliquotName(String aliquotName,
 			String sampleType, String sampleSource, String sourceSampleId,
 			Date dateAccessionedBegin, Date dateAccessionedEnd,
-			String sampleSubmitter, StorageLocation storageLocation) {
+			String sampleSubmitter, StorageLocation storageLocation) throws Exception {
 		List<AliquotBean> aliquots = new ArrayList<AliquotBean>();
+		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
 		try {
 			List<Object> paramList = new ArrayList<Object>();
 			List<String> whereList = new ArrayList<String>();
@@ -329,8 +330,6 @@ public List<AliquotBean> searchAliquotsByAliquotName(String aliquotName,
 			String hqlString = "select aliquot from Aliquot aliquot "
 					+ storageFrom + where + whereStr;
 
-			IDataAccess ida = (new DataAccessProxy())
-					.getInstance(IDataAccess.HIBERNATE);
 			ida.open();
 
 			List results = ida.searchByParam(hqlString, paramList);
@@ -338,14 +337,15 @@ public List<AliquotBean> searchAliquotsByAliquotName(String aliquotName,
 				Aliquot aliquot = (Aliquot) obj;
 				Sample sample=aliquot.getSample();
 				aliquots.add(new AliquotBean(aliquot));				
-			}			
-			ida.close();
+			}
 		} catch (Exception e) {
 			logger
 					.error("Error in searching aliquots by the given parameters",
 							e);
 			throw new RuntimeException(
 					"Error in searching aliquots by the given parameters");
+		} finally {
+			ida.close();
 		}
 
 		Collections.sort(aliquots, new CalabComparators.AliquotBeanComparator());
@@ -367,7 +367,7 @@ public List<AliquotBean> searchAliquotsByAliquotName(String aliquotName,
 	public List<SampleBean> searchSamples(String sampleType,
 			String sampleSource, String sourceSampleId,
 			Date dateAccessionedBegin, Date dateAccessionedEnd,
-			String sampleSubmitter, StorageLocation storageLocation) {
+			String sampleSubmitter, StorageLocation storageLocation) throws Exception {
 
 		return searchSamplesBySampleName("", sampleType, sampleSource,
 				sourceSampleId, dateAccessionedBegin, dateAccessionedEnd,

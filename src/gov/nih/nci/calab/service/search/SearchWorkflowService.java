@@ -25,7 +25,7 @@ import org.apache.log4j.Logger;
  * 
  */
 
-/* CVS $Id: SearchWorkflowService.java,v 1.18 2006-04-21 13:48:16 pansu Exp $ */
+/* CVS $Id: SearchWorkflowService.java,v 1.19 2006-04-22 21:08:27 zengje Exp $ */
 
 public class SearchWorkflowService {
 	private static Logger logger = Logger
@@ -35,28 +35,27 @@ public class SearchWorkflowService {
 	 * 
 	 * @return all file submitters
 	 */
-	public List<String> getAllFileSubmitters() {
+	public List<String> getAllFileSubmitters() throws Exception {
 		SortedSet<String> submitters = new TreeSet<String>();
+		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
 		try {
-			IDataAccess ida = (new DataAccessProxy())
-					.getInstance(IDataAccess.TOOLKITAPI);
 			ida.open();
 			String hqlString1 = "select distinct createdBy from InputFile order by createdBy";
-			List results1 = ida.query(hqlString1, InputFile.class.getName());
+			List results1 = ida.search(hqlString1);
 			for (Object obj : results1) {
 				submitters.add((String) obj);
 			}
 			String hqlString2 = "select distinct createdBy from OutputFile order by createdBy";
-			List results2 = ida.query(hqlString2, OutputFile.class.getName());
+			List results2 = ida.search(hqlString2);
 			for (Object obj : results2) {
 				submitters.add((String) obj);
 			}
-			ida.close();
-
 		} catch (Exception e) {
 			logger.error("Error in retrieving all file submitters", e);
 			throw new RuntimeException(
 					"Error in retrieving all file submitters");
+		} finally {
+			ida.close();
 		}
 		return new ArrayList<String>(submitters);
 	}
@@ -66,7 +65,7 @@ public class SearchWorkflowService {
 			String aliquotName, boolean includeMaskedAliquots, String fileName,
 			boolean isFileIn, boolean isFileOut, Date fileSubmissionDateBegin,
 			Date fileSubmissionDateEnd, String fileSubmitter,
-			boolean includeMaskedFiles, String criteriaJoin) {
+			boolean includeMaskedFiles, String criteriaJoin) throws Exception {
 		List<WorkflowResultBean> workflows = null;
 
 		// construct where clause and parameter list
@@ -234,12 +233,11 @@ public class SearchWorkflowService {
 	}
 
 private List<WorkflowResultBean> getWorkflows(String hqlString,
-			List paramList) {
+			List paramList) throws Exception {
 		List<WorkflowResultBean> workflows = new ArrayList<WorkflowResultBean>();
+		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
 
 		try {
-			IDataAccess ida = (new DataAccessProxy())
-					.getInstance(IDataAccess.HIBERNATE);
 			ida.open();
 
 			List results = ida.searchByParam(hqlString, paramList);
@@ -265,12 +263,13 @@ private List<WorkflowResultBean> getWorkflows(String hqlString,
 								theFileSubmissionDate, theFileSubmitter,
 								theFileStatus, theFileInoutType));
 			}
-			ida.close();
 		} catch (Exception e) {
 			logger.error("Error in searching aliquots by the given parameters",
 					e);
 			throw new RuntimeException(
 					"Error in searching aliquots by the given parameters");
+		} finally {
+			ida.close();
 		}
 		return workflows;
 	}}
