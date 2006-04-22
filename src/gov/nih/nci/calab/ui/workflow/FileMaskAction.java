@@ -60,23 +60,23 @@ public class FileMaskAction extends AbstractDispatchAction
         fileForm.set("assayType", runBean.getAssayBean().getAssayType());
         fileForm.set("assay", runBean.getAssayBean().getAssayName());
         fileForm.set("run", runBean.getName());
-        fileForm.set("inout", (request.getParameter("type")).equalsIgnoreCase("in")?"Input" : "Output");
+        fileForm.set("inout", request.getParameter("type"));
  
         String contentPath = request.getContextPath();
         
         // Retrieve filename(not uri) from database
         List<FileBean> fileBeanList = new ArrayList<FileBean>();
-        if ((request.getParameter("type")).equalsIgnoreCase("in")) {
+        if ((request.getParameter("type")).equalsIgnoreCase(CalabConstants.INPUT)) {
             List<FileBean> allfiles = runBean.getInputFileBeans();
             for(FileBean fileBean: allfiles){
-            	if (fileBean.getStatus().equals(CalabConstants.OTHER_STATUS)){
+            	if (!fileBean.getFileMaskStatus().equals(CalabConstants.MASK_STATUS)){
             		fileBeanList.add(fileBean);
             	}
             }
-        } else if ((request.getParameter("type")).equalsIgnoreCase("out")) {
+        } else if ((request.getParameter("type")).equalsIgnoreCase(CalabConstants.OUTPUT)) {
             List<FileBean> allfiles = runBean.getOutputFileBeans();
             for(FileBean fileBean: allfiles){
-            	if (fileBean.getStatus().equals(CalabConstants.OTHER_STATUS)){
+            	if (!fileBean.getFileMaskStatus().equals(CalabConstants.MASK_STATUS)){
             		fileBeanList.add(fileBean);
             	}
             }
