@@ -81,7 +81,7 @@
 		<!-- Pack WAR file -->
 		<war destfile="${build.war.dir}/calab.war"
 			webxml="${build.webinf.dir}/web.xml"
-			basedir="${build.webinf.dir}"
+			basedir="${build.webroot.dir}"
 			compress="false"
 			excludes="*.war"/>
 			
