@@ -301,7 +301,7 @@ public class ExecuteWorkflowService {
                                 if (doInputFile.getDataStatus() == null) {
                                 	infileBean.setFileMaskStatus(CalabConstants.OTHER_STATUS);
                                 } else {
-                                	infileBean.setFileMaskStatus(CalabConstants.OTHER_STATUS);
+                                	infileBean.setFileMaskStatus(CalabConstants.MASK_STATUS);
                                 }
 								inputFileBeans.add(infileBean);
 							}
@@ -321,7 +321,7 @@ public class ExecuteWorkflowService {
                                 if (doOutputFile.getDataStatus() == null) {
                                 	outfileBean.setFileMaskStatus(CalabConstants.OTHER_STATUS);
                                 } else {
-                                	outfileBean.setFileMaskStatus(CalabConstants.OTHER_STATUS);
+                                	outfileBean.setFileMaskStatus(CalabConstants.MASK_STATUS);
                                 }
 								outputFileBeans.add(outfileBean);
 							}
