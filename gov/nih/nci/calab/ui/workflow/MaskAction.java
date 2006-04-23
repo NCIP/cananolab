@@ -45,21 +45,7 @@ public class MaskAction extends AbstractBaseAction
 			
 			strMaskType = (String) theForm.get("maskType");
 			strDescription = theForm.getString("description");
-			runId = (String)theForm.get("runId");
-            theForm.set("method","setup");
-            theForm.set("inout",(String)theForm.get("inout"));
-            request.setAttribute("inout",(String)theForm.get("inout"));
-//            theForm.set("type", )
             
-            if (strDescription.equals(null))
-			{
-				ActionMessage error = new ActionMessage("error.mask", strMaskType);
-		        msgs.add("error", error);
-		        saveMessages(request, msgs);
-				logger.error("Error Masking" + strMaskType);
-				forward = mapping.findForward("failure");
-			}
-			
 			//Check mask type
 			if (strMaskType.equals("aliquot"))
 			{
@@ -74,21 +60,26 @@ public class MaskAction extends AbstractBaseAction
 		    //2.Display message that masking was successful
 			MaskService maskservice = new MaskService();
 			
-			strDescription = strDescription + "\nMasked by " + session.getAttribute("creator");
+			strDescription = strDescription + "   Masked by " + session.getAttribute("creator");
 			maskservice.setMask(strMaskType, strId, strDescription);
 			msgs = new ActionMessages();
 			ActionMessage msg = null;
 			if (strMaskType.equals("aliquot"))
 			{
 			       msg = new ActionMessage("message.maskAliquot", strId);
+				   msgs.add("message", msg);
+				   saveMessages(request, msgs);
+				   forward = mapping.findForward("success");
 			}
 			if (strMaskType.equals("file"))
 			{
-				  msg = new ActionMessage("message.maskFile", strId);
+				runId = (String)theForm.get("runId");
+	            theForm.set("method","setup");
+	            theForm.set("inout",(String)theForm.get("inout"));
+	            request.setAttribute("inout",(String)theForm.get("inout"));
+	              session.setAttribute("newWorkflowCreated","true");
+	  			  forward = mapping.findForward("success");
 			}
-            session.setAttribute("newWorkflowCreated","true");
-			msgs.add("message", msg);
-			saveMessages(request, msgs);
 			forward = mapping.findForward("success");
 			
 			
