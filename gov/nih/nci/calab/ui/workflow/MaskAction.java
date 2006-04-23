@@ -1,5 +1,6 @@
 package gov.nih.nci.calab.ui.workflow;
 
+import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.workflow.MaskService;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
 
@@ -47,6 +48,7 @@ public class MaskAction extends AbstractBaseAction
 			runId = (String)theForm.get("runId");
             theForm.set("method","setup");
             theForm.set("inout",(String)theForm.get("inout"));
+            request.setAttribute("inout",(String)theForm.get("inout"));
 //            theForm.set("type", )
             
             if (strDescription.equals(null))
@@ -71,6 +73,8 @@ public class MaskAction extends AbstractBaseAction
             //1.Call MaskService to mask caLab component based on type(e.g., Aliquot, File, etc.)
 		    //2.Display message that masking was successful
 			MaskService maskservice = new MaskService();
+			
+			strDescription = strDescription + "\nMasked by " + session.getAttribute("creator");
 			maskservice.setMask(strMaskType, strId, strDescription);
 			msgs = new ActionMessages();
 			ActionMessage msg = null;

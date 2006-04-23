@@ -62,7 +62,14 @@ public class FileMaskAction extends AbstractDispatchAction
         fileForm.set("run", runBean.getName());
        
         fileForm.set("runId", runId);
-
+        if (request.getParameter("type") != null)
+        {
+            fileForm.set("inout",(String)request.getParameter("type"));
+        }
+        else if (request.getAttribute("inout") != null)
+        {
+            fileForm.set("inout",(String)request.getAttribute("inout"));
+        }
         String contentPath = request.getContextPath();
         
         // Retrieve filename(not uri) from database
@@ -95,7 +102,7 @@ public class FileMaskAction extends AbstractDispatchAction
             fileDownloadInfo.setAction(contentPath + "/fileMask.do?method=maskFile&fileId=" + fileBean.getId() +"&fileName=" 
                                                    +  fileBean.getFilename()
                                                    + "&runId="+runId
-                                                   + "&type="+fileForm.get("inout"));
+                                                   + "&inout="+fileForm.get("inout"));
             fileNameHolder.add(fileDownloadInfo);
         }
         fileForm.set("fileInfoList", fileNameHolder);
