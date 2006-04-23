@@ -36,5 +36,16 @@
 				</var>
 			</field>
 		</form>
+		<form name="maskFileForm">
+			<field property="description" depends="required">
+				<arg key="maskFileForm.description" bundle="workflow" position="0" />
+			</field>
+		</form>
+		<form name="maskAliquotForm">
+			<field property="description" depends="required">
+				<arg key="maskAliquotForm.description" bundle="workflow" position="0" />
+			</field>
+		</form>
+		
 	</formset>
 </form-validation>
