@@ -68,8 +68,8 @@ public class FileUploadAction extends AbstractDispatchAction
         fileForm.set("assayType", specialCharReplacer.getReplacedString(runBean.getAssayBean().getAssayType()));
         fileForm.set("assay", specialCharReplacer.getReplacedString(runBean.getAssayBean().getAssayName()));
         fileForm.set("run", specialCharReplacer.getReplacedString(runBean.getName()));
-        fileForm.set("inout", request.getParameter("type"));
-        
+//        fileForm.set("inout", request.getParameter("inout"));
+        String inout=(String)fileForm.get("inout");
         fileForm.set("archiveValue", PropertyReader.getProperty(CalabConstants.FILEUPLOAD_PROPERTY,"archiveValue"));
         fileForm.set("servletURL", PropertyReader.getProperty(CalabConstants.FILEUPLOAD_PROPERTY,"servletURL"));
         fileForm.set("notifyURL", PropertyReader.getProperty(CalabConstants.FILEUPLOAD_PROPERTY,"notifyURL"));
@@ -87,7 +87,7 @@ public class FileUploadAction extends AbstractDispatchAction
         hFileUploadData.setAssayType(specialCharReplacer.getReplacedString(runBean.getAssayBean().getAssayType()));
         hFileUploadData.setAssay(specialCharReplacer.getReplacedString(runBean.getAssayBean().getAssayName()));
         hFileUploadData.setRun(specialCharReplacer.getReplacedString(runBean.getName()));
-        hFileUploadData.setInout(request.getParameter("type"));
+        hFileUploadData.setInout(inout);
         hFileUploadData.setRunId(runId);
         
         session.setAttribute("httpFileUploadSessionData", hFileUploadData);
