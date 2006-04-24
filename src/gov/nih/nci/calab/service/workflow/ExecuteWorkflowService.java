@@ -290,8 +290,7 @@ public class ExecuteWorkflowService {
 							
 							List<FileBean> inputFileBeans = new ArrayList<FileBean>();
 							for (Object infile: inputFiles) {
-                                logger.info("run's object input file type = " + infile.getClass().getName());
-								InputFile doInputFile = (InputFile)infile;
+ 								InputFile doInputFile = (InputFile)infile;
 								FileBean infileBean = new FileBean();
 								infileBean.setId(doInputFile.getId().toString());
 								infileBean.setPath(doInputFile.getPath());
@@ -310,7 +309,6 @@ public class ExecuteWorkflowService {
 							Set outputFiles = (Set)doRun.getOutputFileCollection();
 							List<FileBean> outputFileBeans = new ArrayList<FileBean>();
 							for (Object outfile: outputFiles) {
-                                logger.info("run's object input file type = " + outfile.getClass().getName());
 								OutputFile doOutputFile = (OutputFile)outfile;
 								FileBean outfileBean = new FileBean();
 								outfileBean.setId(doOutputFile.getId().toString());
