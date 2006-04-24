@@ -62,6 +62,12 @@ public class FileMaskAction extends AbstractDispatchAction
         fileForm.set("run", runBean.getName());
        
         fileForm.set("runId", runId);
+        String inout=(String)fileForm.get("inout");
+        if (request.getAttribute("inout")!=null) {
+        	inout=(String)request.getAttribute("inout");
+        	fileForm.set("inout",(String)request.getAttribute("inout"));
+        }
+        /*
         if (request.getParameter("type") != null)
         {
             fileForm.set("inout",(String)request.getParameter("type"));
@@ -70,20 +76,24 @@ public class FileMaskAction extends AbstractDispatchAction
         {
             fileForm.set("inout",(String)request.getAttribute("inout"));
         }
+        */
         String contentPath = request.getContextPath();
         
         // Retrieve filename(not uri) from database
         List<FileBean> fileBeanList = new ArrayList<FileBean>();
-        if (  (request.getParameter("type") != null && (request.getParameter("type")).equalsIgnoreCase(CalabConstants.INPUT))
-             || ((fileForm.get("inout") != null) &&((String)fileForm.get("inout")).equalsIgnoreCase(CalabConstants.INPUT))) {
+//        if (  (request.getParameter("type") != null && (request.getParameter("type")).equalsIgnoreCase(CalabConstants.INPUT))
+//             || ((fileForm.get("inout") != null) &&((String)fileForm.get("inout")).equalsIgnoreCase(CalabConstants.INPUT))) {
+        if (inout.equalsIgnoreCase(CalabConstants.INPUT)) {
             List<FileBean> allfiles = runBean.getInputFileBeans();
             for(FileBean fileBean: allfiles){
             	if (!fileBean.getFileMaskStatus().equals(CalabConstants.MASK_STATUS)){
             		fileBeanList.add(fileBean);
             	}
             }
-        } else if (  (request.getParameter("type") != null && (request.getParameter("type")).equalsIgnoreCase(CalabConstants.OUTPUT))
-                    || ((fileForm.get("inout") != null) &&((String)fileForm.get("inout")).equalsIgnoreCase(CalabConstants.OUTPUT))) {
+        } 
+//        else if (  (request.getParameter("type") != null && (request.getParameter("type")).equalsIgnoreCase(CalabConstants.OUTPUT))
+//                    || ((fileForm.get("inout") != null) &&((String)fileForm.get("inout")).equalsIgnoreCase(CalabConstants.OUTPUT))) {
+        else if (inout.equalsIgnoreCase(CalabConstants.OUTPUT)) {
             List<FileBean> allfiles = runBean.getOutputFileBeans();
             for(FileBean fileBean: allfiles){
             	if (!fileBean.getFileMaskStatus().equals(CalabConstants.MASK_STATUS)){
