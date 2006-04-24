@@ -56,13 +56,13 @@ public class FileDownloadAction extends AbstractDispatchAction
         ExecuteWorkflowService workflowService = new ExecuteWorkflowService();
         String runId = request.getParameter("runId");
         RunBean runBean = workflowService.getAssayInfoByRun((ExecuteWorkflowBean)session.getAttribute("workflow"), runId);
-
+        
     	DynaValidatorActionForm fileForm = (DynaValidatorActionForm)form;
         fileForm.set("assayType", runBean.getAssayBean().getAssayType());
         fileForm.set("assay", runBean.getAssayBean().getAssayName());
         fileForm.set("run", runBean.getName());
-        fileForm.set("inout", request.getParameter("type"));
- 
+//        fileForm.set("inout", request.getParameter("type"));
+        String inout=(String)fileForm.get("inout");
         String contentPath = request.getContextPath();
         
         String path = PropertyReader.getProperty(CalabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
@@ -74,9 +74,11 @@ public class FileDownloadAction extends AbstractDispatchAction
         
         // Retrieve filename(not uri) from database
         List<FileBean> fileBeanList = new ArrayList<FileBean>();
-        if ((request.getParameter("type")).equalsIgnoreCase(CalabConstants.INPUT)) {
+//        if ((request.getParameter("type")).equalsIgnoreCase(CalabConstants.INPUT)) {
+        if (inout.equalsIgnoreCase(CalabConstants.INPUT)) {
             fileBeanList = runBean.getInputFileBeans();
-        } else if ((request.getParameter("type")).equalsIgnoreCase(CalabConstants.OUTPUT)) {
+//        } else if ((request.getParameter("type")).equalsIgnoreCase(CalabConstants.OUTPUT)) {
+        } else if (inout.equalsIgnoreCase(CalabConstants.OUTPUT)) {
             fileBeanList = runBean.getOutputFileBeans();
         }
          
@@ -88,7 +90,7 @@ public class FileDownloadAction extends AbstractDispatchAction
             fileDownloadInfo.setFileName(fileBean.getFilename());
             fileDownloadInfo.setUploadDate(fileBean.getCreatedDate());
             fileDownloadInfo.setAction(contentPath+"/fileDownload.do?method=downloadFile&fileName="+fileBean.getFilename()
-                                                  +"&runId="+runId+"&type="+fileForm.get("inout"));
+                                                  +"&runId="+runId+"&inout="+fileForm.get("inout"));
             fileNameHolder.add(fileDownloadInfo);
         }
 
