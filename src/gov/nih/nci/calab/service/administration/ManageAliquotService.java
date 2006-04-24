@@ -5,7 +5,6 @@ import gov.nih.nci.calab.db.IDataAccess;
 import gov.nih.nci.calab.domain.Aliquot;
 import gov.nih.nci.calab.domain.Sample;
 import gov.nih.nci.calab.domain.SampleContainer;
-import gov.nih.nci.calab.domain.SampleSOP;
 import gov.nih.nci.calab.domain.StorageElement;
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerBean;
@@ -26,7 +25,7 @@ import org.apache.struts.util.LabelValueBean;
  */
 
 /*
- * CVS $Id: ManageAliquotService.java,v 1.15 2006-04-22 21:08:27 zengje Exp $
+ * CVS $Id: ManageAliquotService.java,v 1.16 2006-04-24 18:39:56 pansu Exp $
  */
 
 public class ManageAliquotService {
