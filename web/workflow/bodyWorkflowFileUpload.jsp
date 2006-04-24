@@ -45,43 +45,13 @@
 		<tr>
 		<tr>
 			<td>
-				<%--
-   <OBJECT classid="clsid:CAFEEFAC-0014-0002-0000-ABCDEFFEDCBA"  
-        WIDTH = "500" HEIGHT = "500"    codebase="http://java.sun.com/products/plugin/autodl/jinstall-1_4_2-windows-i586.cab#Version=1,4,0,0">                  
-   <PARAM NAME = "code" VALUE ="gov.nih.nci.caarray.services.util.httpfileuploadapplet.HttpFileUploadApplet">
-   <PARAM NAME = "archive" VALUE ="<bean:write name="fileUploadForm" property="archiveValue" />">
-   <PARAM NAME ="type" VALUE="application/x-java-applet;jpi-version=1.3">
-   <PARAM NAME ="uploadURL" VALUE ="<bean:write name="fileUploadForm" property="servletURL" />">
-   <PARAM NAME ="notifyURL" VALUE ="<bean:write name="fileUploadForm" property="notifyURL" />">
-   <PARAM NAME="sid" VALUE="<bean:write name="fileUploadForm" property="sid" />">
-   <PARAM NAME="module" VALUE="<bean:write name="fileUploadForm" property="module" />">
-   <PARAM NAME ="defaultURL" VALUE ="<bean:write name="fileUploadForm" property="defaultURL" />">
-   <PARAM NAME="permissibleFileExtension" VALUE="<bean:write name="fileUploadForm" property="permissibleFileExtension" />">  
-   <COMMENT>
-   <EMBED type="application/x-java-applet;version=1.3"    
-        java_CODE ="gov.nih.nci.caarray.services.util.httpfileuploadapplet.HttpFileUploadApplet"  
-        java_ARCHIVE ="<bean:write name="fileUploadForm" property="archiveValue" />"               
-        WIDTH ="700" HEIGHT ="500"               
-        uploadURL="<bean:write name="fileUploadForm" property="servletURL" />"              
-        notifyURL="<bean:write name="fileUploadForm" property="notifyURL" />"  
-        sid="<bean:write name="fileUploadForm" property="sid" />" 
-        module="<bean:write name="fileUploadForm" property="module" />"
-        defaultURL="<bean:write name="fileUploadForm" property="defaultURL" />" 
-        permissibleFileExtension="<bean:write name="fileUploadForm" property="permissibleFileExtension" />"                                        
-        pluginspage="http://java.sun.com/products/plugin/1.3/plugin-install.html">
-        <NOEMBED></COMMENT>      
-    </NOEMBED></COMMENT>
-   </OBJECT>  
---%>
 				<jsp:plugin type="applet" 
-				     code="gov.nih.nci.caarray.services.util.httpfileuploadapplet.HttpFileUploadApplet.class" codebase="" name="HttpFileUploadApplet" 
+				     code="gov.nih.nci.caarray.services.util.httpfileuploadapplet.HttpFileUploadApplet.class" 
+				     codebase="workflow" name="HttpFileUploadApplet" 
 				     archive="SignedHttpUploadApplet.jar" 
 				     height="500" width="500" 
-				     align="top" jreversion="1.4">
+				     align="top" jreversion="1.3">
 					<jsp:params>
-						<jsp:param name="code" value="gov.nih.nci.caarray.services.util.httpfileuploadapplet.HttpFileUploadApplet" />
-						<jsp:param name="archive" value="${fileUploadForm.map.archiveValue}" />
-						<jsp:param name="type" value="application/x-java-applet;jpi-version=1.3" />
 						<jsp:param name="uploadURL" value="${fileUploadForm.map.servletURL}" />
 						<jsp:param name="notifyURL" value="${fileUploadForm.map.notifyURL}" />
 						<jsp:param name="sid" value="${fileUploadForm.map.sid}" />
@@ -89,7 +59,6 @@
 						<jsp:param name="defaultURL" value="${fileUploadForm.map.defaultURL}" />
 						<jsp:param name="permissibleFileExtension" value="${fileUploadForm.map.permissibleFileExtension}" />
 					</jsp:params>
-
 					<jsp:fallback>
 		<p> The file upload applet couldn't be loaded correctly, please contact caLAB administrator </p>
 					</jsp:fallback>
