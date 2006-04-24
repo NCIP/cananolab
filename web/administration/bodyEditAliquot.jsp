@@ -61,7 +61,7 @@
 						<div align="justify">
 							<strong>Diluents/Solvent <html:text property="aliquot.container.solvent" size="10" /> &nbsp; &nbsp; &nbsp; How Created <html:select property="aliquot.howCreated">
 									<option value=""></option>
-									<html:options name="aliquotCreateMethods" />
+									<html:options collection="aliquotCreateMethods" property="value" labelProperty="label"/>
 								</html:select> &nbsp; &nbsp; &nbsp;</strong>
 						</div>
 					</td>
