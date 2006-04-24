@@ -14,9 +14,9 @@
 			<item value="Mask Files" link="initSession.do?forwardPage=fileMask" />
 		</putList>
 		<putList name="outActions">
-			<item value="Upload Files" link="fileUpload.do" />
-			<item value="Download Files" link="initSession.do?forwardPage=fileDownload" />
-			<item value="Mask Files" link="initSession.do?forwardPage=fileMask" />
+			<item value="Upload Files" link="fileUpload.do?method=setup" />
+			<item value="Download Files" link="initSession.do?method=setup&amp;forwardPage=fileDownload" />
+			<item value="Mask Files" link="initSession.do?method=setup&amp;forwardPage=fileMask" />
 		</putList>
 		<putList name="assayActions">
 			<item value="Create Assay Run" link="initSession.do?forwardPage=createAssayRun" />
