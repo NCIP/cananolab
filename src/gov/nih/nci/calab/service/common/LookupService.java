@@ -27,7 +27,7 @@ import org.apache.log4j.Logger;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.19 2006-04-22 21:08:27 zengje Exp $ */
+/* CVS $Id: LookupService.java,v 1.20 2006-04-24 17:31:34 zengje Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -343,4 +343,25 @@ public class LookupService {
 		}
 		return assayBeans;
 	}
+	
+	public List<String> getAllUsernames() throws Exception {
+		List<String> usernames = new ArrayList<String>();
+		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			String hqlString = "select user.loginName from User user order by user.loginName";
+			List results = ida.search(hqlString);
+			for (Object obj : results) {
+				usernames.add((String)obj);
+			}
+		} catch (Exception e) {
+			logger.error("Error in retrieving all aliquot Ids and names", e);
+			throw new RuntimeException(
+					"Error in retrieving all aliquot Ids and names");
+		} finally {
+			ida.close();
+		}
+		return usernames;
+	}
+
 }
