@@ -10,11 +10,11 @@
 		<putList name="inActions">
 			<item value="Use Aliquot" link="initSession.do?forwardPage=useAliquot" />
 			<item value="Upload Files" link="fileUpload.do?method=setup" />
-			<item value="Download Files" link="initSession.do?forwardPage=fileDownload" />
+			<item value="Download Files" link="initSession.do?method=setup&amp;forwardPage=fileDownload" />
 			<item value="Mask Files" link="initSession.do?forwardPage=fileMask" />
 		</putList>
 		<putList name="outActions">
-			<item value="Upload Files" link="fileUpload.do?method=setup" />
+			<item value="Upload Files" link="fileUpload.do" />
 			<item value="Download Files" link="initSession.do?forwardPage=fileDownload" />
 			<item value="Mask Files" link="initSession.do?forwardPage=fileMask" />
 		</putList>
@@ -22,8 +22,8 @@
 			<item value="Create Assay Run" link="initSession.do?forwardPage=createAssayRun" />
 		</putList>
 		<putList name="uploadActions">
-			<item value="Upload Input File" link="fileUpload.do?method=setup" />
-			<item value="Upload Output File" link="fileUpload.do?method=setup" />
+			<item value="Upload Input File" link="fileUpload.do?method=setup&amp;inout=Input&amp;type=upload" />
+			<item value="Upload Output File" link="fileUpload.do?method=setup&amp;inout=Output&amp;type=upload" />
 		</putList>
 	</definition>
 
@@ -105,17 +105,7 @@
         <put name="calabContent" value="workflow.createassayrun.content"/>
         <put name="calabSidemenu" value="/workflow/sideMenuTree.jsp"/>
         <put name="menu" value="workflow"/>
-    </definition>
-   
-   <!-- definition for the edit run page -->
-    <definition name="workflow.editrun.content" extends="workflow.content.home">
- 		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp?type=assay"/>
-        <put name="workflowContent" value="/workflow/bodyEditRun.jsp"/>
-    </definition>    
-	<definition name="workflow.editrun" extends="calab.home">
-        <put name="calabContent" value="workflow.createrun.content"/>
-        <put name="calabSidemenu" value="/workflow/sideMenuTree.jsp"/>
-	</definition>   
+    </definition>   
 	    
     <!-- definitions for the file upload page -->
     <definition name="workflow.fileupload.content" extends="workflow.content.home">
