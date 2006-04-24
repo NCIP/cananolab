@@ -5,10 +5,10 @@
 <br>
 <br>
 <logic:present parameter="type">
-	<logic:equal parameter="type" value="Input">
+	<logic:equal parameter="type" value="in">
 		<bean:define id="actions" name="inActions" type="java.util.List" />
 	</logic:equal>
-	<logic:equal parameter="type" value="Output">
+	<logic:equal parameter="type" value="out">
 		<bean:define id="actions" name="outActions" type="java.util.List" />
 	</logic:equal>
 	<logic:equal parameter="type" value="assay">
@@ -21,11 +21,11 @@
 		<table>
 			<tr>
 				<logic:iterate name="actions" id="item" type="org.apache.struts.tiles.beans.MenuItem">
-					<td class="formLabelGrey">
+					<td class="formLabelGrey">			
 						<c:url var="linkVal" value="${item.link}">
 							<c:choose>
-								<%-- only pass GET parameters --%>
-								<c:when test="${pageContext.request.method eq 'GET'}">
+								<%-- pass parameters when method is GET and type is not upload--%>
+								<c:when test="${pageContext.request.method eq 'GET' && param.type ne 'upload'}">
 									<c:forEach var="paramItem" items="${paramValues}" varStatus="ind">
 										<c:choose>
 											<%-- exclude first parameter if key=forwardPage --%>
@@ -34,12 +34,6 @@
 											</c:when>
 										</c:choose>
 									</c:forEach>
-								</c:when>
-								<c:when test="${item.value eq 'Upload Input File'}">
-									<c:param name="type" value="Input"/>
-								</c:when>
-								<c:when test="${item.value eq 'Upload Output File'}">
-									<c:param name="type" value="Output"/>
 								</c:when>
 							</c:choose>
 						</c:url>
