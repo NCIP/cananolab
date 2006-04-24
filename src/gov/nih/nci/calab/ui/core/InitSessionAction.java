@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.23 2006-04-23 13:16:16 zengje Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.24 2006-04-24 17:31:59 zengje Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
@@ -347,6 +347,12 @@ private void setSearchWorkflowSession(HttpSession session,
 			List allAssayBeans = lookupService.getAllAssayBeans();
 			session.setAttribute("allAssayBeans", allAssayBeans);
 		}
+		
+		if (session.getAttribute("allUsernames") == null) {
+			List allUsernames = lookupService.getAllUsernames();
+			session.setAttribute("allUsernames", allUsernames);
+		}
+
 		session.removeAttribute("newWorkflowCreated");
 		session.removeAttribute("newAliquotCreated");
 
