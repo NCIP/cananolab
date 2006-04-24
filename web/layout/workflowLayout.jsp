@@ -8,7 +8,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td height="80%" valign="top">
+		<td valign="top">
 			<tiles:insert attribute="workflowContent" />
 		</td>
 	</tr>
