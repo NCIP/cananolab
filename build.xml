@@ -47,7 +47,6 @@
 		<!--  copy web files and lib files for the war file -->	
 		<copy todir="${build.webroot.dir}">
 			<fileset dir="${src.webroot.dir}">
-				<exclude name="**/doc/**"/>
 				<exclude name="**/*.mex" />
 				<exclude name="**/WEB-INF/classes/**"/>
 			</fileset>
