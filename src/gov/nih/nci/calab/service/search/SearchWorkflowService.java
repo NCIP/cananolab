@@ -25,7 +25,7 @@ import org.apache.log4j.Logger;
  * 
  */
 
-/* CVS $Id: SearchWorkflowService.java,v 1.19 2006-04-22 21:08:27 zengje Exp $ */
+/* CVS $Id: SearchWorkflowService.java,v 1.20 2006-04-25 19:02:26 pansu Exp $ */
 
 public class SearchWorkflowService {
 	private static Logger logger = Logger
@@ -37,7 +37,8 @@ public class SearchWorkflowService {
 	 */
 	public List<String> getAllFileSubmitters() throws Exception {
 		SortedSet<String> submitters = new TreeSet<String>();
-		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
 			String hqlString1 = "select distinct createdBy from InputFile order by createdBy";
@@ -84,7 +85,7 @@ public class SearchWorkflowService {
 					"or");
 		}
 
-		String hqlString = "select distinct file.path, assay.assayType, assay.name, run.name, run.createdDate, aliquot.name, file.createdDate, file.createdBy, fileStatus.status ";
+		String hqlString = "select distinct file.path, assay.assayType, assay.name, run.name, run.createdDate, aliquot.name, aliquotStatus.status, file.createdDate, file.createdBy, fileStatus.status ";
 
 		// search either input file or output file, not both
 		if (!(isFileIn && isFileOut)) {
@@ -92,12 +93,17 @@ public class SearchWorkflowService {
 			{
 				// if select an item, need to include in join
 				if (isInputFile) {
-					hqlString += ", '"+ CalabConstants.INPUT+ "' from Assay assay join assay.runCollection run left join run.inputFileCollection file left join file.dataStatus fileStatus left join run.runSampleContainerCollection runSampleContainer left join runSampleContainer.sampleContainer aliquot left join aliquot.dataStatus aliquotStatus ";
+					hqlString += ", '"
+							+ CalabConstants.INPUT
+							+ "' from Assay assay join assay.runCollection run left join run.inputFileCollection file left join file.dataStatus fileStatus left join run.runSampleContainerCollection runSampleContainer left join runSampleContainer.sampleContainer aliquot left join aliquot.dataStatus aliquotStatus ";
 				} else {
-					hqlString += ", '"+ CalabConstants.OUTPUT+"' from Assay assay join assay.runCollection run left join run.outputFileCollection file left join file.dataStatus fileStatus left join run.runSampleContainerCollection runSampleContainer left join runSampleContainer.sampleContainer aliquot left join aliquot.dataStatus aliquotStatus ";
+					hqlString += ", '"
+							+ CalabConstants.OUTPUT
+							+ "' from Assay assay join assay.runCollection run left join run.outputFileCollection file left join file.dataStatus fileStatus left join run.runSampleContainerCollection runSampleContainer left join runSampleContainer.sampleContainer aliquot left join aliquot.dataStatus aliquotStatus ";
 				}
 				hqlString += whereParams[0];
-				workflows = getWorkflows(hqlString, (List) whereParams[1]);
+				workflows = getWorkflows(hqlString, (List) whereParams[1],
+						includeMaskedAliquots, includeMaskedFiles);
 				Collections.sort(workflows,
 						new CalabComparators.WorkflowResultBeanComparator());
 			}
@@ -106,18 +112,24 @@ public class SearchWorkflowService {
 			SortedSet<WorkflowResultBean> workflowSet = new TreeSet<WorkflowResultBean>(
 					new CalabComparators.WorkflowResultBeanComparator());
 			String inHqlString = hqlString
-					+ ", '"+ CalabConstants.INPUT+"' from Assay assay join assay.runCollection run left join run.inputFileCollection file left join file.dataStatus fileStatus left join run.runSampleContainerCollection runSampleContainer left join runSampleContainer.sampleContainer aliquot left join aliquot.dataStatus aliquotStatus ";
+					+ ", '"
+					+ CalabConstants.INPUT
+					+ "' from Assay assay join assay.runCollection run left join run.inputFileCollection file left join file.dataStatus fileStatus left join run.runSampleContainerCollection runSampleContainer left join runSampleContainer.sampleContainer aliquot left join aliquot.dataStatus aliquotStatus ";
 			inHqlString += whereParams[0];
 			List<WorkflowResultBean> inWorkflows = getWorkflows(inHqlString,
-					(List) whereParams[1]);
+					(List) whereParams[1], includeMaskedAliquots,
+					includeMaskedFiles);
 			workflowSet.addAll(inWorkflows);
 
 			// get outputFile workflows next
 			String outHqlString = hqlString
-					+ ", '"+ CalabConstants.OUTPUT+"' from Assay assay join assay.runCollection run left join run.outputFileCollection file left join file.dataStatus fileStatus left join run.runSampleContainerCollection runSampleContainer left join runSampleContainer.sampleContainer aliquot left join aliquot.dataStatus aliquotStatus ";
+					+ ", '"
+					+ CalabConstants.OUTPUT
+					+ "' from Assay assay join assay.runCollection run left join run.outputFileCollection file left join file.dataStatus fileStatus left join run.runSampleContainerCollection runSampleContainer left join runSampleContainer.sampleContainer aliquot left join aliquot.dataStatus aliquotStatus ";
 			outHqlString += whereParams[0];
 			List<WorkflowResultBean> outWorkflows = getWorkflows(outHqlString,
-					(List) whereParams[1]);
+					(List) whereParams[1], includeMaskedAliquots,
+					includeMaskedFiles);
 			workflowSet.addAll(outWorkflows);
 			workflows = new ArrayList<WorkflowResultBean>(workflowSet);
 		}
@@ -183,10 +195,10 @@ public class SearchWorkflowService {
 			where = "where ";
 		}
 
-		if (!includeMaskedAliquots) {
-			whereList.add("aliquotStatus.status is null");
-			where = "where ";
-		}
+		// if (!includeMaskedAliquots) {
+		// whereList.add("aliquotStatus.status is null");
+		// where = "where ";
+		// }
 
 		if (fileName.length() > 0) {
 			if (fileName.indexOf("*") != -1) {
@@ -215,10 +227,10 @@ public class SearchWorkflowService {
 			where = "where ";
 		}
 
-		if (!includeMaskedFiles) {
-			whereList.add("fileStatus.status is null");
-			where = "where ";
-		}
+		// if (!includeMaskedFiles) {
+		// whereList.add("fileStatus.status is null");
+		// where = "where ";
+		// }
 
 		String whereStr = "";
 		if (join.equals("and")) {
@@ -232,10 +244,12 @@ public class SearchWorkflowService {
 		return objs;
 	}
 
-private List<WorkflowResultBean> getWorkflows(String hqlString,
-			List paramList) throws Exception {
+	private List<WorkflowResultBean> getWorkflows(String hqlString,
+			List paramList, boolean includedMaskedAliquots,
+			boolean includeMaskedFiles) throws Exception {
 		List<WorkflowResultBean> workflows = new ArrayList<WorkflowResultBean>();
-		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
 
 		try {
 			ida.open();
@@ -251,17 +265,25 @@ private List<WorkflowResultBean> getWorkflows(String hqlString,
 				String theAssayRunDate = StringUtils.convertDateToString(
 						(Date) items[4], CalabConstants.DATE_FORMAT);
 				String theAliquotName = StringUtils.convertToString(items[5]);
+				String theAliquotStatus = StringUtils.convertToString(items[6]);
 				String theFileSubmissionDate = StringUtils.convertDateToString(
-						(Date) items[6], CalabConstants.DATE_FORMAT);
-				String theFileSubmitter = StringUtils.convertToString(items[7]);
-				String theFileStatus = StringUtils.convertToString(items[8]);
-				//set inout type to empty string when file path is emtpy
-				String theFileInoutType=(theFilePath.equals(""))?"":StringUtils.convertToString(items[9]);
-				workflows
-						.add(new WorkflowResultBean(theFilePath, theAssayType,
-								theAssayName, theAssayRunName, theAssayRunDate, theAliquotName,
-								theFileSubmissionDate, theFileSubmitter,
-								theFileStatus, theFileInoutType));
+						(Date) items[7], CalabConstants.DATE_FORMAT);
+				String theFileSubmitter = StringUtils.convertToString(items[8]);
+				String theFileStatus = StringUtils.convertToString(items[9]);
+				// set inout type to empty string when file path is emtpy
+				String theFileInoutType = (theFilePath.equals("")) ? ""
+						: StringUtils.convertToString(items[10]);
+				//filter out workflows that don't satisfy masking criteria
+				if (theAliquotStatus.length()>0 && !includedMaskedAliquots ||						
+				    theFileStatus.length()>0 && !includeMaskedFiles) {					
+				}
+				else {					
+					workflows.add(new WorkflowResultBean(theFilePath,
+							theAssayType, theAssayName, theAssayRunName,
+							theAssayRunDate, theAliquotName, theAliquotStatus,
+							theFileSubmissionDate, theFileSubmitter,
+							theFileStatus, theFileInoutType));
+				}
 			}
 		} catch (Exception e) {
 			logger.error("Error in searching aliquots by the given parameters",
@@ -272,4 +294,5 @@ private List<WorkflowResultBean> getWorkflows(String hqlString,
 			ida.close();
 		}
 		return workflows;
-	}}
+	}
+}
