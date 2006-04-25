@@ -42,7 +42,7 @@
 								<c:set var="runSeq" value="${assaySeq+sessionScope.workflow.assayCount}"/>		
 								<c:set var="aliquotSeq" value="${runSeq+sessionScope.workflow.runCount*3+2}"/>
 								<c:set var="inputFileSeq" value="${aliquotSeq+sessionScope.workflow.aliquotCount}"/>
-								<c:set var="outFileSeq" value="${aliquotSeq+sessionScope.workflow.inputFileCount}"/>
+								<c:set var="outputFileSeq" value="${aliquotSeq+sessionScope.workflow.inputFileCount}"/>
 													    		
 								<c:forEach var="assayType" items="${allAssayTypes}" varStatus="assayTypeNum">
 								    d.add(${assayTypeNum.count}, 0, '${assayType}','javascript:void(0)', '', '', '');									    
