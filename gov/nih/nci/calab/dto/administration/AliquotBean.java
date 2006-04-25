@@ -12,7 +12,7 @@ import gov.nih.nci.calab.service.util.StringUtils;
  * 
  */
 
-/* CVS $Id: AliquotBean.java,v 1.8 2006-04-25 16:58:04 pansu Exp $ */
+/* CVS $Id: AliquotBean.java,v 1.9 2006-04-25 19:01:01 pansu Exp $ */
 
 public class AliquotBean {
 	private String aliquotId = "";
@@ -29,7 +29,7 @@ public class AliquotBean {
 
 	private SampleBean sample;
 	
-	private String maskStatus;
+	private String maskStatus="";
 
 	public AliquotBean() {
 		container = new ContainerBean();
@@ -37,14 +37,15 @@ public class AliquotBean {
 	}
 
 	//used in WorkflowResultBean
-	public AliquotBean(String aliquotName) {
+	public AliquotBean(String aliquotName, String maskStatus) {
 		this.aliquotName=aliquotName;
+		this.maskStatus=(maskStatus.length()>0)?maskStatus:CalabConstants.ACTIVE_STATUS;
 	}
 	
 	public AliquotBean(String aliquotId, String aliquotName, String maskStatus) {
 		this.aliquotId=aliquotId;
 		this.aliquotName=aliquotName;
-		this.maskStatus=maskStatus;
+		this.maskStatus=(maskStatus.length()>0)?maskStatus:CalabConstants.ACTIVE_STATUS;
 	}
 	
 	public AliquotBean(String aliquotName, ContainerBean container,
@@ -149,6 +150,6 @@ public class AliquotBean {
 	}
 
 	public void setMaskStatus(String maskStatus) {
-		this.maskStatus = maskStatus;
+		this.maskStatus = (maskStatus.length()>0)?maskStatus:CalabConstants.ACTIVE_STATUS;
 	}
 }
