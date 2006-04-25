@@ -27,7 +27,7 @@ import org.apache.log4j.Logger;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.20 2006-04-24 17:31:34 zengje Exp $ */
+/* CVS $Id: LookupService.java,v 1.21 2006-04-25 16:59:16 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -43,13 +43,14 @@ public class LookupService {
 		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
-			String hqlString = "select aliquot.id, aliquot.name from Aliquot aliquot order by aliquot.name";
+			String hqlString = "select aliquot.id, aliquot.name, status.status from Aliquot aliquot left join aliquot.dataStatus status order by aliquot.name";
 			List results = ida.search(hqlString);
 			for (Object obj : results) {
 				Object[] aliquotInfo = (Object[]) obj;
+				String status=(aliquotInfo[2]==null)?"Active":(String)aliquotInfo[2];
 				aliquots.add(new AliquotBean(StringUtils
 						.convertToString(aliquotInfo[0]), StringUtils
-						.convertToString(aliquotInfo[1])));
+						.convertToString(aliquotInfo[1]), status));
 			}
 		} catch (Exception e) {
 			logger.error("Error in retrieving all aliquot Ids and names", e);
@@ -80,7 +81,7 @@ public class LookupService {
 				Object[] aliquotInfo = (Object[]) obj;
 				aliquots.add(new AliquotBean(StringUtils
 						.convertToString(aliquotInfo[0]), StringUtils
-						.convertToString(aliquotInfo[1])));
+						.convertToString(aliquotInfo[1]), "Active"));
 			}
 		} catch (Exception e) {
 			logger.error("Error in retrieving all aliquot Ids and names", e);
