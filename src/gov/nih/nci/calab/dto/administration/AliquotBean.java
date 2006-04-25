@@ -12,7 +12,7 @@ import gov.nih.nci.calab.service.util.StringUtils;
  * 
  */
 
-/* CVS $Id: AliquotBean.java,v 1.9 2006-04-25 19:01:01 pansu Exp $ */
+/* CVS $Id: AliquotBean.java,v 1.10 2006-04-25 20:36:26 pansu Exp $ */
 
 public class AliquotBean {
 	private String aliquotId = "";
@@ -39,13 +39,13 @@ public class AliquotBean {
 	//used in WorkflowResultBean
 	public AliquotBean(String aliquotName, String maskStatus) {
 		this.aliquotName=aliquotName;
-		this.maskStatus=(maskStatus.length()>0)?maskStatus:CalabConstants.ACTIVE_STATUS;
+		this.maskStatus=(maskStatus.length()==0 && aliquotName.length()>0)?CalabConstants.ACTIVE_STATUS:maskStatus;
 	}
 	
 	public AliquotBean(String aliquotId, String aliquotName, String maskStatus) {
 		this.aliquotId=aliquotId;
 		this.aliquotName=aliquotName;
-		this.maskStatus=(maskStatus.length()>0)?maskStatus:CalabConstants.ACTIVE_STATUS;
+		this.maskStatus=(maskStatus.length()==0 && aliquotName.length()>0)?CalabConstants.ACTIVE_STATUS:maskStatus;
 	}
 	
 	public AliquotBean(String aliquotName, ContainerBean container,
@@ -150,6 +150,6 @@ public class AliquotBean {
 	}
 
 	public void setMaskStatus(String maskStatus) {
-		this.maskStatus = (maskStatus.length()>0)?maskStatus:CalabConstants.ACTIVE_STATUS;
+		this.maskStatus = (maskStatus.length()==0 && getAliquotName().length()>0)?CalabConstants.ACTIVE_STATUS:maskStatus;
 	}
 }
