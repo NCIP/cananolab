@@ -45,8 +45,8 @@ public class FileBean {
 		this.path = path;
 		this.createDateStr = fileSubmissionDate;
 		this.fileSubmitter = fileSubmitter;
-		this.fileMaskStatus = (fileMaskStatus.length()>0)?fileMaskStatus:CalabConstants.ACTIVE_STATUS;
 		this.filename = getFileName(path);
+		this.fileMaskStatus = (fileMaskStatus.length()==0 && filename.length()>0)?CalabConstants.ACTIVE_STATUS:fileMaskStatus;
 		this.inoutType = inoutType;
 	}
 
@@ -95,7 +95,7 @@ public class FileBean {
 	}
 
 	public void setFileMaskStatus(String fileMaskStatus) {
-		this.fileMaskStatus = (fileMaskStatus.length()>0)?fileMaskStatus:CalabConstants.ACTIVE_STATUS;
+		this.fileMaskStatus = (fileMaskStatus.length()==0 && getFilename().length()>0)?CalabConstants.ACTIVE_STATUS:fileMaskStatus;
 	}
 
 	public String getCreateDateStr() {
