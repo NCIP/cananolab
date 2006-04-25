@@ -4,9 +4,7 @@
 package gov.nih.nci.calab.dto.workflow;
 
 import gov.nih.nci.calab.service.util.CalabConstants;
-import gov.nih.nci.calab.service.util.PropertyReader;
 
-import java.io.File;
 import java.util.Date;
 
 /**
@@ -47,7 +45,7 @@ public class FileBean {
 		this.path = path;
 		this.createDateStr = fileSubmissionDate;
 		this.fileSubmitter = fileSubmitter;
-		this.fileMaskStatus = fileMaskStatus;
+		this.fileMaskStatus = (fileMaskStatus.length()>0)?fileMaskStatus:CalabConstants.ACTIVE_STATUS;
 		this.filename = getFileName(path);
 		this.inoutType = inoutType;
 	}
@@ -97,7 +95,7 @@ public class FileBean {
 	}
 
 	public void setFileMaskStatus(String fileMaskStatus) {
-		this.fileMaskStatus = fileMaskStatus;
+		this.fileMaskStatus = (fileMaskStatus.length()>0)?fileMaskStatus:CalabConstants.ACTIVE_STATUS;
 	}
 
 	public String getCreateDateStr() {

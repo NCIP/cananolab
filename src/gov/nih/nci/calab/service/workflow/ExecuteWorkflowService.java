@@ -276,7 +276,7 @@ public class ExecuteWorkflowService {
 								// TODO: suppose no need to check instanceof, since run only association with Aliquot
 								if (container instanceof Aliquot) {
 									Aliquot doAliquot = (Aliquot)container;	
-									String maskStatus=(doAliquot.getDataStatus()==null)?"Active":doAliquot.getDataStatus().getStatus();
+									String maskStatus=(doAliquot.getDataStatus()==null)?CalabConstants.ACTIVE_STATUS:doAliquot.getDataStatus().getStatus();
 									AliquotBean aliquotBean = new AliquotBean(doAliquot.getId().toString(), doAliquot.getName(), maskStatus);;
 									aliquotBeans.add(aliquotBean);
 								}						
@@ -299,7 +299,7 @@ public class ExecuteWorkflowService {
                                 infileBean.setShortFilename(doInputFile.getFilename());
                                 infileBean.setInoutType(CalabConstants.INPUT);
                                 if (doInputFile.getDataStatus() == null) {
-                                	infileBean.setFileMaskStatus(CalabConstants.OTHER_STATUS);
+                                	infileBean.setFileMaskStatus(CalabConstants.ACTIVE_STATUS);
                                 } else {
                                 	infileBean.setFileMaskStatus(CalabConstants.MASK_STATUS);
                                 }
@@ -318,7 +318,7 @@ public class ExecuteWorkflowService {
                                 outfileBean.setShortFilename(doOutputFile.getFilename());
                                 outfileBean.setInoutType(CalabConstants.OUTPUT);
                                 if (doOutputFile.getDataStatus() == null) {
-                                	outfileBean.setFileMaskStatus(CalabConstants.OTHER_STATUS);
+                                	outfileBean.setFileMaskStatus(CalabConstants.ACTIVE_STATUS);
                                 } else {
                                 	outfileBean.setFileMaskStatus(CalabConstants.MASK_STATUS);
                                 }
