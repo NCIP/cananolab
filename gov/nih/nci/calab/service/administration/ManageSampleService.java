@@ -18,7 +18,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-/* CVS $Id: ManageSampleService.java,v 1.21 2006-04-22 21:08:27 zengje Exp $ 
+/* CVS $Id: ManageSampleService.java,v 1.22 2006-04-25 17:35:21 pansu Exp $ 
  */
 public class ManageSampleService {
 	private static Logger logger = Logger.getLogger(ManageSampleService.class);
@@ -160,6 +160,7 @@ public class ManageSampleService {
 			doSample.setLotDescription(sample.getLotDescription());
 			doSample.setLotId(sample.getLotId());
 			doSample.setName(sample.getSampleName());
+			doSample.setType(sample.getSampleType());
 			// TODO: ReceivedBy and Date are not in the wireframe.
 
 			doSample.setReceivedBy("");
