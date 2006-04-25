@@ -1,6 +1,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
-<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%> 
+<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <script type="text/javascript">
 <!--//
@@ -14,9 +15,10 @@ function openLink() {
   for (var i=0; i<document.createAliquotForm.elements.length; i++) {
      var elementName=document.createAliquotForm.elements[i].name;
      if (elementName=="template.howCreated") {
-       var url=document.createAliquotForm.elements[i].value;
+       var uriPrefix = "${pageContext.request.contextPath}";
+       var url= document.createAliquotForm.elements[i].value;
          if (url!='') {
-            openWindow(url, 'aliquotProtocol', 600, 400);
+            openWindow(uriPrefix + url, 'aliquotProtocol', 600, 400);
          }
      }
   } 
@@ -85,12 +87,15 @@ function openLink() {
 							<strong>Container Type* <span class="formFieldWhite"> <html:select property="template.container.containerType">
 										<option value=""></option>
 										<html:options name="aliquotContainerInfo" property="containerTypes" />
-									<option value="Other">Other</option></html:select></span> &nbsp; &nbsp; &nbsp; Other <span class="formFieldWhite"><html:text property="template.container.otherContainerType" size="8" /></span> &nbsp; &nbsp; &nbsp; </strong>
+										<option value="Other">
+											Other
+										</option>
+									</html:select></span> &nbsp; &nbsp; &nbsp; Other <span class="formFieldWhite"><html:text property="template.container.otherContainerType" size="8" /></span> &nbsp; &nbsp; &nbsp; </strong>
 						</div>
 					</td>
 				</tr>
 				<tr>
-					<td class="formLabelWhite style1">
+					<td class="formLabelWhite">
 						<div align="left">
 							<strong>Quantity <span class="formFieldWhite"><html:text size="5" property="template.container.quantity" /></span> <span class="formFieldWhite"> <html:select property="template.container.quantityUnit">
 										<option value=""></option>
@@ -112,7 +117,7 @@ function openLink() {
 						<div align="justify">
 							<strong>Diluents/Solvent <html:text property="template.container.solvent" size="10" /> &nbsp; &nbsp; &nbsp; How Created <html:select property="template.howCreated">
 									<option value=""></option>
-									<html:options collection="aliquotCreateMethods" property="value" labelProperty="label"/>
+									<html:options collection="aliquotCreateMethods" property="value" labelProperty="label" />
 								</html:select> &nbsp; &nbsp; &nbsp;</strong>
 							<input type="button" value="View Protocol" onclick="javascript:openLink()">
 						</div>
@@ -199,8 +204,8 @@ function openLink() {
 		</logic:present>
 		<table border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 			<tr>
-				<td width="30%">	
-					<span class="formMessage"> Aliquoted by: <bean:write name="creator"/> Aliquoted Date: <bean:write name="creationDate"/></span>
+				<td width="30%">
+					<span class="formMessage"> Aliquoted by: <bean:write name="creator" /> Aliquoted Date: <bean:write name="creationDate" /></span>
 					<table border="0" align="right" cellpadding="4" cellspacing="0">
 						<tr>
 							<td width="198" height="32">
