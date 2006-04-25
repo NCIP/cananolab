@@ -275,8 +275,9 @@ public class ExecuteWorkflowService {
 //								System.out.println("container class type = " + container.getClass().getName());
 								// TODO: suppose no need to check instanceof, since run only association with Aliquot
 								if (container instanceof Aliquot) {
-									Aliquot doAliquot = (Aliquot)container;							
-									AliquotBean aliquotBean = new AliquotBean(doAliquot.getId().toString(), doAliquot.getName());;
+									Aliquot doAliquot = (Aliquot)container;	
+									String maskStatus=(doAliquot.getDataStatus()==null)?"Active":doAliquot.getDataStatus().getStatus();
+									AliquotBean aliquotBean = new AliquotBean(doAliquot.getId().toString(), doAliquot.getName(), maskStatus);;
 									aliquotBeans.add(aliquotBean);
 								}						
 							}
