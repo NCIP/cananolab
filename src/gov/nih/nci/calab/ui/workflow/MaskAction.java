@@ -66,7 +66,7 @@ public class MaskAction extends AbstractBaseAction
 			ActionMessage msg = null;
 			if (strMaskType.equals("aliquot"))
 			{
-			       msg = new ActionMessage("message.maskAliquot", strId);
+			       msg = new ActionMessage("message.maskAliquot", (String)theForm.get("aliquotName"));
 				   msgs.add("message", msg);
 				   saveMessages(request, msgs);
 				   forward = mapping.findForward("success");
