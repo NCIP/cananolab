@@ -98,6 +98,7 @@ public class ExecuteWorkflowService {
 			for (Object obj : results) {
 				Aliquot doAliquot = (Aliquot) obj;
 				aliquotBean.setAliquotId(aliquotId); // name
+				aliquotBean.setAliquotName(doAliquot.getName());
 				aliquotBean.setCreationDate(StringUtils.convertDateToString(doAliquot.getCreatedDate(), CalabConstants.DATE_FORMAT));
 				aliquotBean.setCreator(doAliquot.getCreatedBy());
 				aliquotBean.setHowCreated(doAliquot.getCreatedMethod());
