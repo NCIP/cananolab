@@ -114,7 +114,7 @@
 			<forward name="success" path="workflow.viewaliquot" />
 			<forward name="failure" path="/initSession.do?forwardPage=workflowMessage" />
 		</action>
-		<action name="maskAliquotForm" scope="request" path="/preMaskAliquot" type="org.apache.struts.actions.ForwardAction" parameter="workflow.maskaliquot" />
+		<action name="maskAliquotForm" scope="request" path="/preMaskAliquot" type="org.apache.struts.actions.ForwardAction" parameter="workflow.maskaliquot" validate="false"/>
 
 		<action name="createRunForm" path="/createRun" type="gov.nih.nci.calab.ui.workflow.CreateRunAction" input="input" scope="request">
 			<forward name="input" path="workflow.createrun" />
@@ -141,9 +141,6 @@
 			<forward name="success" path="workflow.fileMask" />
 			<forward name="maskpage" path="workflow.maskfile" />
 		</action>		
-		
-		<action name="maskFileForm" scope="request" path="/preMaskFile" type="org.apache.struts.actions.ForwardAction" parameter="workflow.maskfile" />		
-		
 		<action path="/workflowForward" type="org.apache.struts.actions.ForwardAction" parameter="workflow.message"/>
 	</action-mappings>
 </struts-config>
