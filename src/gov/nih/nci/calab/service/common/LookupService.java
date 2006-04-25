@@ -2,17 +2,13 @@ package gov.nih.nci.calab.service.common;
 
 import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
-import gov.nih.nci.calab.domain.Aliquot;
-import gov.nih.nci.calab.domain.AssayType;
 import gov.nih.nci.calab.domain.MeasureUnit;
-import gov.nih.nci.calab.domain.Sample;
-import gov.nih.nci.calab.domain.SampleContainer;
-import gov.nih.nci.calab.domain.SampleType;
 import gov.nih.nci.calab.domain.StorageElement;
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
 import gov.nih.nci.calab.dto.administration.SampleBean;
 import gov.nih.nci.calab.dto.workflow.AssayBean;
+import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.ArrayList;
@@ -27,7 +23,7 @@ import org.apache.log4j.Logger;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.21 2006-04-25 16:59:16 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.22 2006-04-25 19:02:07 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -38,7 +34,7 @@ public class LookupService {
 	 * 
 	 * @return a list of AliquotBeans containing aliquot ID and aliquot name
 	 */
-	public List<AliquotBean> getAliquots() throws Exception {
+public List<AliquotBean> getAliquots() throws Exception {
 		List<AliquotBean> aliquots = new ArrayList<AliquotBean>();
 		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
 		try {
@@ -46,11 +42,10 @@ public class LookupService {
 			String hqlString = "select aliquot.id, aliquot.name, status.status from Aliquot aliquot left join aliquot.dataStatus status order by aliquot.name";
 			List results = ida.search(hqlString);
 			for (Object obj : results) {
-				Object[] aliquotInfo = (Object[]) obj;
-				String status=(aliquotInfo[2]==null)?"Active":(String)aliquotInfo[2];
-				aliquots.add(new AliquotBean(StringUtils
-						.convertToString(aliquotInfo[0]), StringUtils
-						.convertToString(aliquotInfo[1]), status));
+				Object[] aliquotInfo = (Object[]) obj;				
+				aliquots.add(new AliquotBean(StringUtils.convertToString(aliquotInfo[0]), 
+						StringUtils.convertToString(aliquotInfo[1]), 
+						StringUtils.convertToString(aliquotInfo[2])));
 			}
 		} catch (Exception e) {
 			logger.error("Error in retrieving all aliquot Ids and names", e);
@@ -61,7 +56,6 @@ public class LookupService {
 		}
 		return aliquots;
 	}
-
 	/**
 	 * Retrieving all unmasked aliquots for views use aliquot and create
 	 * aliquot.
@@ -70,9 +64,10 @@ public class LookupService {
 	 * 
 	 */
 
-	public List<AliquotBean> getUnmaskedAliquots() throws Exception{
+	public List<AliquotBean> getUnmaskedAliquots() throws Exception {
 		List<AliquotBean> aliquots = new ArrayList<AliquotBean>();
-		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
 			String hqlString = "select aliquot.id, aliquot.name from Aliquot aliquot where aliquot.dataStatus is null order by aliquot.name";
@@ -81,7 +76,7 @@ public class LookupService {
 				Object[] aliquotInfo = (Object[]) obj;
 				aliquots.add(new AliquotBean(StringUtils
 						.convertToString(aliquotInfo[0]), StringUtils
-						.convertToString(aliquotInfo[1]), "Active"));
+						.convertToString(aliquotInfo[1]), CalabConstants.ACTIVE_STATUS));
 			}
 		} catch (Exception e) {
 			logger.error("Error in retrieving all aliquot Ids and names", e);
@@ -102,7 +97,8 @@ public class LookupService {
 		// Detail here
 		// Retrieve data from Sample_Type table
 		List<String> sampleTypes = new ArrayList<String>();
-		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
 			String hqlString = "select sampleType.name from SampleType sampleType order by sampleType.name";
@@ -164,7 +160,8 @@ public class LookupService {
 
 	private List<String> getAllContainerTypes() throws Exception {
 		List<String> containerTypes = new ArrayList<String>();
-		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
 			String hqlString = "select distinct container.containerType from SampleContainer container order by container.containerType";
@@ -184,7 +181,8 @@ public class LookupService {
 
 	private List<MeasureUnit> getAllMeasureUnits() throws Exception {
 		List<MeasureUnit> units = new ArrayList<MeasureUnit>();
-		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
 			String hqlString = "from MeasureUnit";
@@ -198,13 +196,14 @@ public class LookupService {
 		} finally {
 			ida.close();
 		}
-		
+
 		return units;
 	}
 
 	private List<StorageElement> getAllRoomAndFreezers() throws Exception {
 		List<StorageElement> storageElements = new ArrayList<StorageElement>();
-		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
 			String hqlString = "from StorageElement where type in ('Room', 'Freezer')";
@@ -238,7 +237,8 @@ public class LookupService {
 	 */
 	public List<SampleBean> getAllSamples() throws Exception {
 		List<SampleBean> samples = new ArrayList<SampleBean>();
-		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
 
 		try {
 			ida.open();
@@ -268,7 +268,8 @@ public class LookupService {
 	 */
 	public List getAllAssayTypes() throws Exception {
 		List<String> assayTypes = new ArrayList<String>();
-		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
 			String hqlString = "select assayType.name from AssayType assayType order by assayType.executeOrder";
@@ -284,11 +285,10 @@ public class LookupService {
 		}
 		return assayTypes;
 	}
-	
 
 	/**
 	 * Retrieve all assays
-	 *
+	 * 
 	 * @return a list of all assays in certain type
 	 */
 	public List<String> getAllAssignedAliquots() {
@@ -296,9 +296,10 @@ public class LookupService {
 		List<String> aliquots = new ArrayList<String>();
 		return aliquots;
 	}
+
 	/**
 	 * Retrieve all assays
-	 *
+	 * 
 	 * @return a list of all assays in certain type
 	 */
 	public List<String> getAllInFiles() {
@@ -306,9 +307,10 @@ public class LookupService {
 		List<String> allInFiles = new ArrayList<String>();
 		return allInFiles;
 	}
+
 	/**
 	 * Retrieve all assays
-	 *
+	 * 
 	 * @return a list of all assays in certain type
 	 */
 	public List<String> getAllOutFiles() {
@@ -317,23 +319,25 @@ public class LookupService {
 		return allOutFiles;
 	}
 
-	
 	/**
 	 * Retrieve assays by assayType
-	 *
+	 * 
 	 * @return a list of all assays in certain type
 	 */
 
 	public List<AssayBean> getAllAssayBeans() throws Exception {
 		List<AssayBean> assayBeans = new ArrayList<AssayBean>();
-		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
 			String hqlString = "select assay.id, assay.name, assay.assayType from Assay assay";
 			List results = ida.search(hqlString);
 			for (Object obj : results) {
-				Object[] objArray = (Object[])obj;
-				AssayBean assay = new AssayBean(((Long)objArray[0]).toString(), (String)objArray[1], (String)objArray[2]);
+				Object[] objArray = (Object[]) obj;
+				AssayBean assay = new AssayBean(
+						((Long) objArray[0]).toString(), (String) objArray[1],
+						(String) objArray[2]);
 				assayBeans.add(assay);
 			}
 		} catch (Exception e) {
@@ -344,16 +348,17 @@ public class LookupService {
 		}
 		return assayBeans;
 	}
-	
+
 	public List<String> getAllUsernames() throws Exception {
 		List<String> usernames = new ArrayList<String>();
-		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
 			String hqlString = "select user.loginName from User user order by user.loginName";
 			List results = ida.search(hqlString);
 			for (Object obj : results) {
-				usernames.add((String)obj);
+				usernames.add((String) obj);
 			}
 		} catch (Exception e) {
 			logger.error("Error in retrieving all aliquot Ids and names", e);
