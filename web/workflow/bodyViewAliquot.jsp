@@ -102,14 +102,17 @@
 					<div align="right"></div>
 				</td>
 			</tr>
+			<logic:equal name="aliquot" property="maskStatus" value="Active" >
 			<tr>
 				<td height="32">
 					<div align="right">			
 						<html:hidden name="aliquot" property="aliquotId" />
+						<input type="hidden" name="aliquotName" value=<bean:write name="aliquot" property="aliquotName" /> />
 						<html:submit value="Mask Aliquot" />
 					</div>
 				</td>
 			</tr>
+			</logic:equal>
 		</table>
 	</html:form>
 
