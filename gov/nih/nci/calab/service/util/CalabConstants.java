@@ -14,7 +14,7 @@ public class CalabConstants {
 	
 	// DataStatus
 	public static final String MASK_STATUS = "Masked";
-	public static final String OTHER_STATUS = "Active";
+	public static final String ACTIVE_STATUS = "Active";
 	
 	// for Container type
 	public static final String OTHER = "Other";
