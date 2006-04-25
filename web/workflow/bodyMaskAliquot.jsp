@@ -30,8 +30,8 @@
 			</tr>
 			<tr>
 				<td class="formLabel">
-					<strong>Aliquot ID</strong>
-					<bean:write name="maskAliquotForm" property="aliquotId" />
+					<strong>Aliquot Name</strong>
+					<bean:write name="maskAliquotForm" property="aliquotName" />
 				</td>
 				<td class="formField">
 					<DIV align="left">
