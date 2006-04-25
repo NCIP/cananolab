@@ -1,7 +1,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <h2>
 	<br>
@@ -57,14 +57,16 @@
 					<c:set var="rowNum" value="${rowNum+1}" />
 					<c:choose>
 						<c:when test="${rowNum % 2 == 0}">
-							<c:set var="style" value="leftBorderedFormFieldGrey" />
+							<c:set var="style" value="formFieldGrey" />
+							<c:set var="style0" value="leftBorderedFormFieldGrey" />
 						</c:when>
 						<c:otherwise>
-							<c:set var="style" value="leftBorderedFormFieldWhite" />
+							<c:set var="style" value="formFieldWhite" />
+							<c:set var="style0" value="leftBorderedFormFieldWhite" />
 						</c:otherwise>
 					</c:choose>
 					<tr>
-						<td class="${style}">
+						<td class="${style0}">
 							<bean:write name="sample" property="sampleName" />
 							&nbsp;
 						</td>
@@ -135,15 +137,17 @@
 			</tr>
 			<logic:iterate name="aliquots" id="aliquot" type="gov.nih.nci.calab.dto.administration.AliquotBean" indexId="aliquotNum">
 				<c:choose>
-					<c:when test="${aliquotNum % 2 == 0}">
-						<c:set var="style" value="leftBorderedFormFieldGrey" />
-					</c:when>
-					<c:otherwise>
-						<c:set var="style" value="leftBorderedFormFieldWhite" />
-					</c:otherwise>
+						<c:when test="$aliquotNum % 2 == 0}">
+							<c:set var="style" value="formFieldGrey" />
+							<c:set var="style0" value="leftBorderedFormFieldGrey" />
+						</c:when>
+						<c:otherwise>
+							<c:set var="style" value="formFieldWhite" />
+							<c:set var="style0" value="leftBorderedFormFieldWhite" />
+						</c:otherwise>
 				</c:choose>
 				<tr>
-					<td class="${style}">
+					<td class="${style0}">
 						<bean:write name="aliquot" property="sample.sampleName" />
 						&nbsp;
 					</td>

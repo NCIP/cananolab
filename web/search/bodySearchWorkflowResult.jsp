@@ -53,14 +53,16 @@
 			<logic:iterate name="workflows" id="workflow" type="gov.nih.nci.calab.dto.search.WorkflowResultBean" indexId="rowNum">
 				<c:choose>
 					<c:when test="${rowNum % 2 == 0}">
-						<c:set var="style" value="leftBorderedFormFieldGrey" />
+						<c:set var="style" value="formFieldGrey" />
+						<c:set var="style0" value="leftBorderedFormFieldGrey" />
 					</c:when>
 					<c:otherwise>
-						<c:set var="style" value="leftBorderedFormFieldWhite" />
+						<c:set var="style" value="formFieldWhite" />
+						<c:set var="style0" value="leftBorderedFormFieldWhite" />
 					</c:otherwise>
 				</c:choose>
 				<tr>
-					<td class="${style}">
+					<td class="${style0}">
 						<a href="#"><bean:write name="workflow" property="file.filename" /></a> &nbsp;
 					</td>
 					<td class="${style}">
