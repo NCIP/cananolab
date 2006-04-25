@@ -77,9 +77,10 @@ public class MaskAction extends AbstractBaseAction
 	            theForm.set("method","setup");
 	            theForm.set("inout",(String)theForm.get("inout"));
 	            request.setAttribute("inout",(String)theForm.get("inout"));
-	              session.setAttribute("newWorkflowCreated","true");
-	  			  forward = mapping.findForward("success");
+      			forward = mapping.findForward("success");
 			}
+            session.setAttribute("newWorkflowCreated","true");
+
 			forward = mapping.findForward("success");
 			
 			
