@@ -25,7 +25,7 @@ import org.apache.struts.util.LabelValueBean;
  */
 
 /*
- * CVS $Id: ManageAliquotService.java,v 1.16 2006-04-24 18:39:56 pansu Exp $
+ * CVS $Id: ManageAliquotService.java,v 1.17 2006-04-25 13:50:50 zengje Exp $
  */
 
 public class ManageAliquotService {
@@ -35,7 +35,7 @@ public class ManageAliquotService {
 	 * 
 	 * @return all methods for creating aliquots
 	 */
-	public List<LabelValueBean> getAliquotCreateMethods(String urlPrefix) throws Exception {
+	public List<LabelValueBean> getAliquotCreateMethods() throws Exception {
 		List<LabelValueBean> createMethods = new ArrayList<LabelValueBean>();
 		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
 		try {
@@ -45,7 +45,7 @@ public class ManageAliquotService {
 			for (Object obj : results) {
 				String sopName = (String) ((Object[]) obj)[0];
 				String sopURI = (String) ((Object[]) obj)[1];
-				String sopURL = (sopURI == null) ? "" : urlPrefix + sopURI;
+				String sopURL = (sopURI == null) ? "" : sopURI;
 				createMethods.add(new LabelValueBean(sopName, sopURL));
 			}
 		} catch (Exception e) {
@@ -232,7 +232,7 @@ public class ManageAliquotService {
 					doAliquot.setVolume(StringUtils
 							.convertToFloat(containerBean.getVolume()));
 					doAliquot.setVolumeUnit(containerBean.getVolumeUnit());
-					doAliquot.setCreatedMethod(aliquotBean.getHowCreated());
+					doAliquot.setCreatedMethod(getCreatedMethod(ida, aliquotBean.getHowCreated()));
 
 					// Associations
 					// 1. ParentAliquos or Sample
@@ -342,5 +342,14 @@ public class ManageAliquotService {
 		} finally {
 			ida.close();
 		}
+	}
+	
+	private String getCreatedMethod(IDataAccess ida, String sopURI) throws Exception {
+		String hqlString = "select sop.name from SampleSOP sop join sop.sampleSOPFileCollection sopFile where sopFile.path='" + sopURI + "'";
+		List results = ida.search(hqlString);
+		for (Object obj: results) {
+			return (String)obj;
+		}
+		return "";
 	}
 }
