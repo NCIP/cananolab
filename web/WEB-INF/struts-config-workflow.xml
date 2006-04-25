@@ -10,6 +10,7 @@
 		<form-bean name="maskAliquotForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="maskType" type="java.lang.String" />
 			<form-property name="aliquotId" type="java.lang.String" />
+			<form-property name="aliquotName" type="java.lang.String" />
 			<form-property name="description" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="maskFileForm" type="org.apache.struts.validator.DynaValidatorForm">
