@@ -14,19 +14,25 @@ import gov.nih.nci.calab.dto.workflow.RunBean;
  */
 public class WorkflowResultBean {
 	private FileBean file;
+
 	private AssayBean assay;
+
 	private AliquotBean aliquot;
+
 	private RunBean run;
-	
-	public WorkflowResultBean(String filePath, String assayType, String assayName,
-			String assayRunName, String assayRunDate, String aliquotName, String fileSubmissionDate,
-			String fileSubmitter, String fileMaskStatus, String inoutType) {
+
+	public WorkflowResultBean(String filePath, String assayType,
+			String assayName, String assayRunName, String assayRunDate,
+			String aliquotName, String aliquotStatus,
+			String fileSubmissionDate, String fileSubmitter,
+			String fileMaskStatus, String inoutType) {
 		super();
 		// TODO Auto-generated constructor stub
-		this.file=new FileBean(filePath, fileSubmissionDate, fileSubmitter, fileMaskStatus, inoutType);
-		this.assay=new AssayBean(assayName, assayType);		
-		this.run=new RunBean("", assayRunName, assayRunDate);
-		this.aliquot=new AliquotBean(aliquotName);	
+		this.file = new FileBean(filePath, fileSubmissionDate, fileSubmitter,
+				fileMaskStatus, inoutType);
+		this.assay = new AssayBean(assayName, assayType);
+		this.run = new RunBean("", assayRunName, assayRunDate);
+		this.aliquot = new AliquotBean(aliquotName, aliquotStatus);
 	}
 
 	public AliquotBean getAliquot() {
