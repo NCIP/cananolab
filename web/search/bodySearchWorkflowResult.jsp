@@ -49,6 +49,9 @@
 				<td width="53" class="dataTablePrimaryLabel">
 					Aliquot ID
 				</td>
+				<td width="53" class="dataTablePrimaryLabel">
+					Aliquot Status
+				</td>
 			</tr>
 			<logic:iterate name="workflows" id="workflow" type="gov.nih.nci.calab.dto.search.WorkflowResultBean" indexId="rowNum">
 				<c:choose>
@@ -94,10 +97,15 @@
 						&nbsp;
 					</td>
 					<td class="${style}">
-						<strong><bean:write name="workflow" property="file.fileMaskStatus" /></strong> &nbsp;
+						<bean:write name="workflow" property="file.fileMaskStatus" />
+						&nbsp;
 					</td>
 					<td class="${style}">
 						<bean:write name="workflow" property="aliquot.aliquotName" />
+						&nbsp;
+					</td>
+					<td class="${style}">
+						<bean:write name="workflow" property="aliquot.maskStatus" />
 						&nbsp;
 					</td>
 				</tr>
