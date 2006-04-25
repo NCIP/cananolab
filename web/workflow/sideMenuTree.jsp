@@ -58,8 +58,15 @@
   											d.add(${runSeq+2},${runSeq},'Out','javascript:gotoPage(\'workflowForward.do?type=out&runId=${run.id}&inout=Output\')');
 											 											
 											<c:forEach var="aliquot" items="${run.aliquotBeans}">
-  											    <c:set var="aliquotSeq" value="${aliquotSeq+1}"/>  											
-												d.add(${aliquotSeq}, ${runSeq+1},'${aliquot.aliquotName}','javascript:gotoPage(\'viewAliquot.do?aliquotId=${aliquot.aliquotId}\')', '', '', '');
+  											    <c:set var="aliquotSeq" value="${aliquotSeq+1}"/>  	
+  											    <c:choose>
+  	    	      							       <c:when test="${aliquot.maskStatus eq 'Active'}">  											    								
+												     d.add(${aliquotSeq}, ${runSeq+1},'${aliquot.aliquotName}','javascript:gotoPage(\'viewAliquot.do?aliquotId=${aliquot.aliquotId}\')', '', '', '');
+												   </c:when>
+												   <c:otherwise>
+  												     d.add(${aliquotSeq}, ${runSeq+1},'<i>${aliquot.aliquotName}</i>','javascript:gotoPage(\'viewAliquot.do?aliquotId=${aliquot.aliquotId}\')', '', '', '');
+												   </c:otherwise>
+												</c:choose>
   											</c:forEach>
   											
 											<c:forEach var="inputFile" items="${run.inputFileBeans}">
