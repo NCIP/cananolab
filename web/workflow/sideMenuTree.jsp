@@ -64,12 +64,26 @@
   											
 											<c:forEach var="inputFile" items="${run.inputFileBeans}">
   											    <c:set var="inputFileSeq" value="${inputFileSeq+1}"/>
-                                                d.add(${inputFileSeq},${runSeq+1},'${inputFile.shortFilename}', 'javascript:gotoPage(\'${pageContext.request.contextPath}\'+\'/fileDownload.do?method=downloadFile&fileName=${inputFile.filename}\')');
+  											    <c:choose>
+  	    	      							       <c:when test="${inputFile.fileMaskStatus eq 'Active'}">
+                                                      d.add(${inputFileSeq},${runSeq+1},'${inputFile.shortFilename}', 'javascript:gotoPage(\'${pageContext.request.contextPath}\'+\'/fileDownload.do?method=downloadFile&fileName=${inputFile.filename}\')');
+                                                   </c:when>
+                                                   <c:otherwise>
+                                                      d.add(${inputFileSeq},${runSeq+1},'<i>${inputFile.shortFilename}</i>', 'javascript:gotoPage(\'${pageContext.request.contextPath}\'+\'/fileDownload.do?method=downloadFile&fileName=${inputFile.filename}\')');
+                                                   </c:otherwise>                                                   
+                                                </c:choose>
   											</c:forEach>
   											
   											<c:forEach var="outputFile" items="${run.outputFileBeans}">
-  											   <c:set var="outputFileSeq" value="${outputFileSeq+1}"/>  											
-								                d.add(${outputFileSeq},${runSeq+2},'${outputFile.shortFilename}', 'javascript:gotoPage(\'${pageContext.request.contextPath}\'+\'/fileDownload.do?method=downloadFile&fileName=${outputFile.filename}\')');
+  											   <c:set var="outputFileSeq" value="${outputFileSeq+1}"/>    											   
+  											   <c:choose>
+  	    	      							       <c:when test="${outputFile.fileMaskStatus eq 'Active'}">											
+ 								                     d.add(${outputFileSeq},${runSeq+2},'${outputFile.shortFilename}', 'javascript:gotoPage(\'${pageContext.request.contextPath}\'+\'/fileDownload.do?method=downloadFile&fileName=${outputFile.filename}\')');
+ 								                   </c:when>
+ 								                   <c:otherwise>
+	  								                 d.add(${outputFileSeq},${runSeq+2},'<i>${outputFile.shortFilename}</i>', 'javascript:gotoPage(\'${pageContext.request.contextPath}\'+\'/fileDownload.do?method=downloadFile&fileName=${outputFile.filename}\')');
+ 								                   </c:otherwise>
+ 								               </c:choose>
   											</c:forEach> 
                                         </c:forEach>
 									</c:forEach>
