@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.24 2006-04-24 17:31:59 zengje Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.25 2006-04-25 13:51:59 zengje Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
@@ -203,7 +203,7 @@ public class InitSessionAction extends AbstractBaseAction {
 		}
 		if (session.getAttribute("aliquotCreateMethods") == null) {
 			List methods = manageAliquotService
-					.getAliquotCreateMethods(urlPrefix);
+					.getAliquotCreateMethods();
 			session.setAttribute("aliquotCreateMethods", methods);
 		}
 		// clear the form in the session
