@@ -102,6 +102,9 @@ public class ExecuteWorkflowService {
 				aliquotBean.setCreator(doAliquot.getCreatedBy());
 				aliquotBean.setHowCreated(doAliquot.getCreatedMethod());
 				
+				String maskStatus = (doAliquot.getDataStatus() == null)?CalabConstants.ACTIVE_STATUS:CalabConstants.MASK_STATUS;
+				aliquotBean.setMaskStatus(maskStatus);
+				
 				// ContainerBean
 				ContainerBean containerBean = new ContainerBean();
 				if (doAliquot.getConcentration() != null){
