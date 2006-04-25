@@ -12,7 +12,7 @@ import gov.nih.nci.calab.service.util.StringUtils;
  * 
  */
 
-/* CVS $Id: AliquotBean.java,v 1.7 2006-04-19 19:52:30 pansu Exp $ */
+/* CVS $Id: AliquotBean.java,v 1.8 2006-04-25 16:58:04 pansu Exp $ */
 
 public class AliquotBean {
 	private String aliquotId = "";
@@ -28,6 +28,8 @@ public class AliquotBean {
 	private String creationDate = "";
 
 	private SampleBean sample;
+	
+	private String maskStatus;
 
 	public AliquotBean() {
 		container = new ContainerBean();
@@ -39,9 +41,10 @@ public class AliquotBean {
 		this.aliquotName=aliquotName;
 	}
 	
-	public AliquotBean(String aliquotId, String aliquotName) {
+	public AliquotBean(String aliquotId, String aliquotName, String maskStatus) {
 		this.aliquotId=aliquotId;
 		this.aliquotName=aliquotName;
+		this.maskStatus=maskStatus;
 	}
 	
 	public AliquotBean(String aliquotName, ContainerBean container,
@@ -141,4 +144,11 @@ public class AliquotBean {
 		this.aliquotName = aliquotName;
 	}
 
+	public String getMaskStatus() {
+		return maskStatus;
+	}
+
+	public void setMaskStatus(String maskStatus) {
+		this.maskStatus = maskStatus;
+	}
 }
