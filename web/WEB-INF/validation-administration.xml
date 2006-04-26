@@ -195,6 +195,21 @@
 					<var-value>((template.container.containerType!="Other") or (*this*!=null))</var-value>
 				</var>
 			</field>
+			<field property="template.container.solvent" depends="validwhen">
+				<arg position="0" key="createAliquotForm.concentrationSolvent" bundle="administration" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((template.container.concentration==null) or (*this*!=null))</var-value>
+				</var>
+			</field>
+			<field property="template.container.concentration" depends="validwhen">
+				<arg position="0" key="createAliquotForm.solventConcentration" bundle="administration" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((template.container.solvent==null) or (*this*!=null))</var-value>
+				</var>
+			</field>
+
 			<field property="template.container.quantity" depends="float">
 				<arg position="0" key="createAliquotForm.quantity" bundle="administration" />
 			</field>
@@ -236,6 +251,20 @@
 				<var>
 					<var-name>test</var-name>
 					<var-value>((aliquot.container.containerType!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
+			<field property="aliquot.container.solvent" depends="validwhen">
+				<arg position="0" key="editAliquotForm.concentrationSolvent" bundle="administration" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((aliquot.container.concentration==null) or (*this*!=null))</var-value>
+				</var>
+			</field>
+			<field property="aliquot.container.concentration" depends="validwhen">
+				<arg position="0" key="editAliquotForm.solventConcentration" bundle="administration" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((aliquot.container.solvent==null) or (*this*!=null))</var-value>
 				</var>
 			</field>
 			<field property="aliquot.container.quantity" depends="float">
