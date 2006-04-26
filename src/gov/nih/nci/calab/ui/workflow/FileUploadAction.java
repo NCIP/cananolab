@@ -90,6 +90,11 @@ public class FileUploadAction extends AbstractDispatchAction
         hFileUploadData.setInout(inout);
         hFileUploadData.setRunId(runId);
         
+        // set where this upload from
+        hFileUploadData.setFromType(request.getParameter("type"));
+        
+        
+        
         session.setAttribute("httpFileUploadSessionData", hFileUploadData);
         
         return mapping.findForward("success");
