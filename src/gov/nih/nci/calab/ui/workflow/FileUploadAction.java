@@ -216,8 +216,8 @@ public class FileUploadAction extends AbstractDispatchAction
         //If user says it's done, then move to our defaut page for this action.
         else if ("done".equals(mode))
         {
-            request.getSession().removeAttribute("httpFileUploadSessionData");
-            forward = mapping.findForward("done");
+        	// The page will be forwarded to the DefaultURl defined in fileupload.properties
+            forward = null;
         }
                 
         return forward;    
