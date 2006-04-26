@@ -69,44 +69,34 @@
 						<a href="#"><bean:write name="workflow" property="file.filename" /></a> &nbsp;
 					</td>
 					<td class="${style}">
-						<bean:write name="workflow" property="assay.assayType" />
-						&nbsp;
+						<bean:write name="workflow" property="assay.assayType" />&nbsp;
 					</td>
 					<td class="${style}">
-						<bean:write name="workflow" property="assay.assayName" />
-						&nbsp;
+						<bean:write name="workflow" property="assay.assayName" />&nbsp;
 					</td>
 					<td class="${style}">
-						<bean:write name="workflow" property="run.name" />
-						&nbsp;
+						<bean:write name="workflow" property="run.name" />&nbsp;
 					</td>
 					<td class="${style}">
-						<bean:write name="workflow" property="run.runDate" />
-						&nbsp;
+						<bean:write name="workflow" property="run.runDate" />&nbsp;
 					</td>
 					<td class="${style}">
-						<bean:write name="workflow" property="file.inoutType" />
-						&nbsp;
+						<bean:write name="workflow" property="file.inoutType" />&nbsp;
 					</td>
 					<td class="${style}">
-						<bean:write name="workflow" property="file.createDateStr" />
-						&nbsp;
+						<bean:write name="workflow" property="file.createDateStr" />&nbsp;
 					</td>
 					<td class="${style}">
-						<bean:write name="workflow" property="file.fileSubmitter" />
-						&nbsp;
+						<bean:write name="workflow" property="file.fileSubmitter" />&nbsp;
 					</td>
 					<td class="${style}">
-						<bean:write name="workflow" property="file.fileMaskStatus" />
-						&nbsp;
+						<bean:write name="workflow" property="file.fileMaskStatus" />&nbsp;
 					</td>
 					<td class="${style}">
-						<bean:write name="workflow" property="aliquot.aliquotName" />
-						&nbsp;
+						<bean:write name="workflow" property="aliquot.aliquotName" />&nbsp;
 					</td>
 					<td class="${style}">
-						<bean:write name="workflow" property="aliquot.maskStatus" />
-						&nbsp;
+						<bean:write name="workflow" property="aliquot.maskStatus" />&nbsp;
 					</td>
 				</tr>
 			</logic:iterate>
