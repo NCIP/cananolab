@@ -75,6 +75,7 @@ public class HttpFileUploadSessionData implements Serializable
     private String run = null;
     private String inout = null;
     private String runId= null;
+    private String fromType = null;
     
 
     /**
@@ -232,6 +233,15 @@ public class HttpFileUploadSessionData implements Serializable
     {
         this.runId = runId;
     }
+
+	public String getFromType() {
+		return fromType;
+	}
+
+	public void setFromType(String fromType) {
+		this.fromType = fromType;
+	}
+    
 }
     
 
