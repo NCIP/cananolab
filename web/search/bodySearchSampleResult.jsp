@@ -67,26 +67,21 @@
 					</c:choose>
 					<tr>
 						<td class="${style0}">
-							<bean:write name="sample" property="sampleName" />
-							&nbsp;
+							<bean:write name="sample" property="sampleName" />&nbsp;
 						</td>
 						<td class="${style}">
-							<bean:write name="sample" property="accessionDate" />
-							&nbsp;
+							<bean:write name="sample" property="accessionDate" />&nbsp;
 						</td>
 						<td class="${style}">
-							<bean:write name="sample" property="sampleType" />
-							&nbsp;
+							<bean:write name="sample" property="sampleType" />&nbsp;
 						</td>
 						<td class="${style}">
 							<logic:present name="container">
 								<bean:write name="container" property="storageLocationStr" />
-							</logic:present>
-							&nbsp;
+							</logic:present>&nbsp;
 						</td>
 						<td class="${style}">
-							<bean:write name="sample" property="sampleSubmitter" />
-							&nbsp;
+							<bean:write name="sample" property="sampleSubmitter" />&nbsp;
 						</td>
 						<td class="${style}" valign="bottom">
 							<%java.util.Map viewSampleDetailParams = new java.util.HashMap();
@@ -96,8 +91,7 @@
 
 			pageContext.setAttribute("viewSampleDetailParams",
 					viewSampleDetailParams);%>
-							<html:link action="viewSampleDetail" name="viewSampleDetailParams">View</html:link>
-							&nbsp;
+							<html:link action="viewSampleDetail" name="viewSampleDetailParams">View</html:link>&nbsp;
 						</td>
 					</tr>
 				</logic:iterate>
@@ -148,36 +142,28 @@
 				</c:choose>
 				<tr>
 					<td class="${style0}">
-						<bean:write name="aliquot" property="sample.sampleName" />
-						&nbsp;
+						<bean:write name="aliquot" property="sample.sampleName" />&nbsp;
 					</td>
 					<td class="${style}">
-						<bean:write name="aliquot" property="sample.accessionDate" />
-						&nbsp;
+						<bean:write name="aliquot" property="sample.accessionDate" />&nbsp;
 					</td>
 					<td class="${style}">
-						<bean:write name="aliquot" property="sample.sampleType" />
-						&nbsp;
+						<bean:write name="aliquot" property="sample.sampleType" />&nbsp;
 					</td>
 					<td class="${style}">
-						<bean:write name="aliquot" property="sample.sampleSubmitter" />
-						&nbsp;
+						<bean:write name="aliquot" property="sample.sampleSubmitter" />&nbsp;
 					</td>
 					<td class="${style}">
-						<bean:write name="aliquot" property="aliquotName" />
-						&nbsp;
+						<bean:write name="aliquot" property="aliquotName" />&nbsp;
 					</td>
 					<td class="${style}">
-						<bean:write name="aliquot" property="creationDate" />
-						&nbsp;
+						<bean:write name="aliquot" property="creationDate" />&nbsp;
 					</td>
 					<td class="${style}">
-						<bean:write name="aliquot" property="container.storageLocationStr" />
-						&nbsp;
+						<bean:write name="aliquot" property="container.storageLocationStr" />&nbsp;
 					</td>
 					<td class="${style}">
-						<bean:write name="aliquot" property="creator" />
-						&nbsp;
+						<bean:write name="aliquot" property="creator" />&nbsp;
 					</td>
 					<td class="${style}">
 						<%java.util.Map viewAliquotDetailParams = new java.util.HashMap();
@@ -185,7 +171,7 @@
 			viewAliquotDetailParams.put("showAliquot", showAliquot);
 			pageContext.setAttribute("viewAliquotDetailParams",
 					viewAliquotDetailParams);%>
-						<span class="${style}"><html:link action="viewSampleDetail" name="viewAliquotDetailParams">View</html:link></span> &nbsp;
+						<span class="${style}"><html:link action="viewSampleDetail" name="viewAliquotDetailParams">View</html:link></span>&nbsp;
 					</td>
 				</tr>
 			</logic:iterate>
@@ -194,5 +180,3 @@
 	<br>
 	<br>
 </blockquote>
-
-
