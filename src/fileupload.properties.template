@@ -8,7 +8,7 @@ fileRepositoryDir=@FILE_REPOSITORY_DIR@
 archiveValue=http://@HOSTNAME@/calab/workflow/SignedHttpUploadApplet.jar
 servletURL=http://@HOSTNAME@/calab/processFileUpload
 notifyURL=http://@HOSTNAME@/calab/fileUpload.do?method=persistFileUploadData
-defaultURL=http://@HOSTNAME@/calab/initSession.do?forwardPage=createRun
+defaultURL=http://@HOSTNAME@/calab/initSession.do?forwardPage=uploadForward
 
 
 # Properties to specify what file extensions are allowed for each type. They must be in upercase.
