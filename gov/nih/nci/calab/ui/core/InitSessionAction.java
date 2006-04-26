@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.25 2006-04-25 13:51:59 zengje Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.26 2006-04-26 11:48:14 zengje Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
@@ -20,6 +20,7 @@ import gov.nih.nci.calab.service.search.SearchSampleService;
 import gov.nih.nci.calab.service.search.SearchWorkflowService;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
+import gov.nih.nci.calab.service.util.file.HttpFileUploadSessionData;
 import gov.nih.nci.calab.service.workflow.ExecuteWorkflowService;
 
 import java.util.Date;
@@ -74,14 +75,27 @@ public class InitSessionAction extends AbstractBaseAction {
 				setCreateRunSession(session, lookupService);
 			} else if (forwardPage.equals("workflowMessage")) {
 				setWorkflowMessageSession(session);
-			} else if (forwardPage.equals("fileUploadOption")) {
+			} else if (forwardPage.equals("fileUploadOption") || forwardPage.equals("fileDownload") 
+						|| forwardPage.equals("fileMask") || forwardPage.equals("fileMaskSetup")) {
 				setFileActionSession(session);
-			}  else if (forwardPage.equals("fileDownload") ) {
-				setFileActionSession(session);
-			} else if ( forwardPage.equals("fileMask")){
-                setFileActionSession(session);
-            } else if ( forwardPage.equals("fileMaskSetup")) {
-            	setFileActionSession(session);
+            } else if (forwardPage.equals("uploadForward")) {
+            	// read HttpFileUploadSessionData from session
+                HttpFileUploadSessionData hFileUploadData = (HttpFileUploadSessionData)request.getSession().getAttribute("httpFileUploadSessionData");
+                																						     
+            	// based on the type=in/out/upload and runId to modify the forwardPage
+                String type = hFileUploadData.getFromType();
+                String runId = hFileUploadData.getRunId();
+                String inout = hFileUploadData.getInout();
+                
+                if (type.equalsIgnoreCase("in")) {
+                	forwardPage = "workflowForward.do?type="+ type + "&runId=" + runId + "&inout=" + inout;
+                } else if (type.equalsIgnoreCase("upload")) {
+                	session.setAttribute("runId", runId);
+                	forwardPage = "workflow.createassayrun";
+                }
+            	// in   -->   forwardPage = workflowForward.do?type=in&runId=163840&inout=Input
+            	// out  -->   forwardpage = workflowForward.do?type=out&runId=163840&inout=Output
+            	// upload ->  forwardPage = workflow.createassayrun with session.attribute("runId")
             }
 			// get user and date information
 			String creator = "";
