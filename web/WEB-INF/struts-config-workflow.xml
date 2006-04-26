@@ -133,7 +133,6 @@
 			<forward name="success" path="workflow.fileUpload" />
 			<forward name="failure" path="/initSession.do?forwardPage=workflowMessage" />
 			<forward name="expiredSession" path="/login.do" />
-			<forward name="done" path="/initSession.do?forwardPage=createRun" />
 		</action>		
 		<action name="fileDownloadForm" parameter="method" path="/fileDownload" scope="request" type="gov.nih.nci.calab.ui.workflow.FileDownloadAction" input="input">
 			<forward name="success" path="workflow.fileDownload" />
