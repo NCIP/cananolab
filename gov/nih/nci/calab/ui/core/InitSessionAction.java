@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.26 2006-04-26 11:48:14 zengje Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.27 2006-04-26 13:21:34 zhouji Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
@@ -46,13 +46,15 @@ public class InitSessionAction extends AbstractBaseAction {
 			throws Exception {
 
 		HttpSession session = request.getSession();
+        System.out.println("sessionId "+ session.getId());
 		ActionForward forward = null;
 		String forwardPage = null;
 		String urlPrefix = request.getContextPath();
 
 		try {
 			DynaActionForm theForm = (DynaActionForm) form;
-			forwardPage = (String) theForm.get("forwardPage");
+//			forwardPage = (String) theForm.get("forwardPage");
+            forwardPage = request.getParameter("forwardPage");
 
 			// retrieve from sesssion first if available assuming these values
 			// are not likely to change within the same session. If changed, the
@@ -93,6 +95,8 @@ public class InitSessionAction extends AbstractBaseAction {
                 	session.setAttribute("runId", runId);
                 	forwardPage = "workflow.createassayrun";
                 }
+                
+                session.removeAttribute("httpFileUploadSessionData");
             	// in   -->   forwardPage = workflowForward.do?type=in&runId=163840&inout=Input
             	// out  -->   forwardpage = workflowForward.do?type=out&runId=163840&inout=Output
             	// upload ->  forwardPage = workflow.createassayrun with session.attribute("runId")
