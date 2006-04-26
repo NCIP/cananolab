@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.27 2006-04-26 13:21:34 zhouji Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.28 2006-04-26 15:42:57 zengje Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
@@ -46,15 +46,25 @@ public class InitSessionAction extends AbstractBaseAction {
 			throws Exception {
 
 		HttpSession session = request.getSession();
-        System.out.println("sessionId "+ session.getId());
 		ActionForward forward = null;
 		String forwardPage = null;
 		String urlPrefix = request.getContextPath();
 
 		try {
 			DynaActionForm theForm = (DynaActionForm) form;
-//			forwardPage = (String) theForm.get("forwardPage");
-            forwardPage = request.getParameter("forwardPage");
+			forwardPage = (String) theForm.get("forwardPage");
+            
+			// get user and date information
+			String creator = "";
+			if (session.getAttribute("user") != null) {
+				SecurityBean user = (SecurityBean) session.getAttribute("user");
+				creator = user.getLoginId();
+			}
+			String creationDate = StringUtils.convertDateToString(new Date(),
+					CalabConstants.DATE_FORMAT);
+			session.setAttribute("creator", creator);
+			session.setAttribute("creationDate", creationDate);
+
 
 			// retrieve from sesssion first if available assuming these values
 			// are not likely to change within the same session. If changed, the
@@ -81,6 +91,9 @@ public class InitSessionAction extends AbstractBaseAction {
 						|| forwardPage.equals("fileMask") || forwardPage.equals("fileMaskSetup")) {
 				setFileActionSession(session);
             } else if (forwardPage.equals("uploadForward")) {
+            	// refresh tree view
+            	setFileActionSession(session);
+            	
             	// read HttpFileUploadSessionData from session
                 HttpFileUploadSessionData hFileUploadData = (HttpFileUploadSessionData)request.getSession().getAttribute("httpFileUploadSessionData");
                 																						     
@@ -89,29 +102,24 @@ public class InitSessionAction extends AbstractBaseAction {
                 String runId = hFileUploadData.getRunId();
                 String inout = hFileUploadData.getInout();
                 
-                if (type.equalsIgnoreCase("in")) {
-                	forwardPage = "workflowForward.do?type="+ type + "&runId=" + runId + "&inout=" + inout;
+                session.removeAttribute("httpFileUploadSessionData");
+               
+                if (type.equalsIgnoreCase("in") || type.equalsIgnoreCase("out")) {
+                	// cannot forward to a page with the request parameter, so use response
+                	response.sendRedirect(urlPrefix + "/workflowForward.do?type="+ type + "&runId=" + runId + "&inout=" + inout);
+                	forwardPage = null;
                 } else if (type.equalsIgnoreCase("upload")) {
                 	session.setAttribute("runId", runId);
-                	forwardPage = "workflow.createassayrun";
-                }
-                
-                session.removeAttribute("httpFileUploadSessionData");
-            	// in   -->   forwardPage = workflowForward.do?type=in&runId=163840&inout=Input
-            	// out  -->   forwardpage = workflowForward.do?type=out&runId=163840&inout=Output
-            	// upload ->  forwardPage = workflow.createassayrun with session.attribute("runId")
-            }
-			// get user and date information
-			String creator = "";
-			if (session.getAttribute("user") != null) {
-				SecurityBean user = (SecurityBean) session.getAttribute("user");
-				creator = user.getLoginId();
+                	forwardPage = "fileUploadOption";
+                }              
+             }
+			if (forwardPage == null) {
+				// for response.setRedirect()
+				forward = null;
+			} else {
+				forward = mapping.findForward(forwardPage);				
 			}
-			String creationDate = StringUtils.convertDateToString(new Date(),
-					CalabConstants.DATE_FORMAT);
-			session.setAttribute("creator", creator);
-			session.setAttribute("creationDate", creationDate);
-			forward = mapping.findForward(forwardPage);
+				
 
 		} catch (Exception e) {
 			ActionMessages errors = new ActionMessages();
