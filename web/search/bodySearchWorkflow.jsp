@@ -19,7 +19,7 @@
 				</html:messages> </font>
 		</ul>
 	</logic:messagesPresent>
-    <blockquote>
+	<blockquote>
 		<table width="90%" border="0" align="center" cellpadding="3" cellspacing="0" summary="">
 			<tr>
 				<td class="dataTablePrimaryLabel">
@@ -64,7 +64,7 @@
 					<strong>Aliquot ID</strong>
 				</td>
 				<td class="formFieldWhite">
-					<strong> <html:text property="aliquotName" size="20" /> &nbsp;</strong> and &nbsp;<strong>Include Masked Aliquots?&nbsp;&nbsp;<html:checkbox property="includeMaskedAliquots" /></strong>
+					<strong> <html:text property="aliquotName" size="20" /> </strong>
 				</td>
 			</tr>
 			<tr>
@@ -72,7 +72,7 @@
 					<strong>File Name </strong>
 				</td>
 				<td class="formField">
-					<strong> <html:text property="fileName" size="20" /> &nbsp;<html:checkbox property="isFileIn" /> In <html:checkbox property="isFileOut" /> Out &nbsp;</strong> and &nbsp;<strong>Include Masked Files? <html:checkbox property="includeMaskedFiles" /></strong>
+					<strong> <html:text property="fileName" size="20" /> </strong>
 				</td>
 			</tr>
 			<tr>
@@ -108,6 +108,22 @@
 			</tr>
 		</table>
 		<br>
+		<table width="90%" border="0" align="center" cellpadding="3" cellspacing="0" summary="">
+			<tr>
+				<td class="dataTablePrimaryLabel" colspan="2">
+					and Additional Filtering of Above Data
+				</td>
+			</tr>
+			<tr>
+				<td class="formLabel">
+					<div align="center">
+						<strong> <html:checkbox property="isFileIn" /> Input Files?&nbsp; &nbsp; <html:checkbox property="isFileOut" /> Output Files? &nbsp;&nbsp; <html:checkbox
+								property="includeMaskedAliquots" />Include Masked Aliquots? <html:checkbox property="includeMaskedFiles" />Include Masked Files?</strong>
+					</div>
+				</td>
+			</tr>
+		</table>
+		<br>
 		<table width="90%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 			<tr>
 				<td width="30%">
@@ -125,7 +141,6 @@
 				</td>
 			</tr>
 		</table>
-		<br>
 		<p>
 			&nbsp;
 		</p>
