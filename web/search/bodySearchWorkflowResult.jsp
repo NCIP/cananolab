@@ -8,7 +8,7 @@
 	Search Results
 </h2>
 <blockquote>
-	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+	<table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
 		<tr valign="bottom">
 			<td align="right">
 				<input type="button" onClick="javascript:history.go(-1);" value="Back">
@@ -17,7 +17,7 @@
 	</table>
 	<br>
 	<logic:present name="workflows">
-		<table width="100%" border="0" align="left" cellpadding="0" cellspacing="0">
+		<table width="90%" border="0" align="left" cellpadding="0" cellspacing="0">
 			<tr>
 				<td width="111" class="dataTablePrimaryLabel">
 					File Name

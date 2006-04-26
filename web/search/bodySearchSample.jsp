@@ -19,9 +19,9 @@
 		</ul>
 	</logic:messagesPresent>
 	<blockquote>
-		<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" summary="">
+		<table width="90%" border="0" align="center" cellpadding="3" cellspacing="0" summary="">
 			<TR>
-				<td width="36%" class="dataTablePrimaryLabel">
+				<td class="dataTablePrimaryLabel">
 					Search
 				</td>
 				<td class="dataTablePrimaryLabel">
@@ -123,7 +123,7 @@
 			</tr>
 		</table>
 		<br>
-		<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
+		<table width="90%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 			<tr>
 				<td>
 					<span class="formMessage"> </span>

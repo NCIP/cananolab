@@ -30,7 +30,7 @@ function refreshContainers() {
 					</html:messages> </font>
 			</ul>
 		</logic:messagesPresent>
-		<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+		<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="90%" align="center" summary="" border="0">
 			<tbody>
 				<tr class="topBorder">
 					<td class="dataTablePrimaryLabel">
@@ -106,7 +106,7 @@ function refreshContainers() {
 		<br>
 		<%--create container for each container number --%>
 		<c:forEach var="containers" items="${createSampleForm.map.containers}" varStatus="status">
-			<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+			<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="90%" align="center" summary="" border="0">
 				<tbody>
 					<tr class="topBorder">
 						<td class="dataTablePrimaryLabel" width="30%">
@@ -196,7 +196,7 @@ function refreshContainers() {
 		</c:forEach>
 		<%--		</logic:iterate>--%>
 
-		<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+		<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="90%" align="center" summary="" border="0">
 			<tbody>
 				<tr>
 					<td width="30%" class="formMessage">

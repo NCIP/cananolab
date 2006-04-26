@@ -1,6 +1,6 @@
 
 <tr>
-	<td width="100%" valign="top">
+	<td width="90%" valign="top">
 		<br>
 
 		<!-- target of anchor to skip menus -->
@@ -35,7 +35,7 @@
 					<td>
 						<img class="img" src="images/imageHolder.gif" width="117" height="117" alt="image holder with 1px gray border" />
 					</td>
-					<td width="100%">
+					<td width="90%">
 						<p>
 							<a href="#">General Link1</a>
 							<br />
