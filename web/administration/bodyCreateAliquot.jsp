@@ -41,7 +41,7 @@ function openLink() {
 </logic:messagesPresent>
 <blockquote>
 	<html:form action="/createAliquot">
-		<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
+		<table width="90%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 			<tr class="topBorder">
 				<td class="dataTablePrimaryLabel">
 					<div align="justify">
@@ -72,7 +72,7 @@ function openLink() {
 		</table>
 
 		<br>
-		<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+		<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="90%" align="center" summary="" border="0">
 			<tbody>
 				<tr class="topBorder">
 					<td class="dataTablePrimaryLabel" width="30%">
@@ -160,7 +160,7 @@ function openLink() {
 
 		<br>
 		<logic:present name="aliquotMatrix">
-			<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
+			<table width="90%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 				<logic:iterate name="aliquotMatrix" id="aliquotRow" type="gov.nih.nci.calab.dto.administration.AliquotBean[]" indexId="rowNum">
 					<tr>
 						<td class="formLabelBoxWhite">

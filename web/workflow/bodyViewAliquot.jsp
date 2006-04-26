@@ -17,7 +17,7 @@
 </logic:messagesPresent>
 <blockquote>
 	<html:form action="/preMaskAliquot">
-		<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+		<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="90%" align="center" summary="" border="0">
 			<tbody>
 				<tr class="topBorder">
 					<td class="dataTablePrimaryLabel" width="30%">
@@ -93,7 +93,7 @@
 			</tbody>
 		</table>
 		<br>
-		<table border="0" width="100%" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
+		<table border="0" width="90%" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 			<tr>
 				<td width="30%">
 					<span class="formMessage"> Aliquoted by: <bean:write name="aliquot" property="creator" /> Aliquoted Date: <bean:write name="aliquot" property="creationDate" /></span>

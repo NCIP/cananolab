@@ -18,7 +18,7 @@
 				</html:messages> </font>
 		</ul>
 	</logic:messagesPresent>
-	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+	<table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
 		<tr valign="bottom">
 			<td align="right">
 				<input type="button" onClick="javascript:history.go(-1);" value="Back">
@@ -29,7 +29,7 @@
 	<%--show sample results --%>
 	<bean:define id="showAliquot" name="showAliquot" type="java.lang.Boolean" />
 	<logic:equal name="showAliquot" value="false">
-		<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+		<table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
 			<tr>
 				<td width="55" class="dataTablePrimaryLabel">
 					Sample ID
@@ -99,7 +99,7 @@
 		</table>
 	</logic:equal>
 	<logic:equal name="showAliquot" value="true">
-		<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+		<table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
 			<tr>
 				<td width="55" class="dataTablePrimaryLabel">
 					Sample ID

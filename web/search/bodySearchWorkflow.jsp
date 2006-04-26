@@ -19,10 +19,10 @@
 				</html:messages> </font>
 		</ul>
 	</logic:messagesPresent>
-	<blockquote>
-		<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" summary="">
+    <blockquote>
+		<table width="90%" border="0" align="center" cellpadding="3" cellspacing="0" summary="">
 			<tr>
-				<td width="36%" class="dataTablePrimaryLabel">
+				<td class="dataTablePrimaryLabel">
 					Search
 				</td>
 				<td class="dataTablePrimaryLabel">
@@ -52,7 +52,7 @@
 				<td class="formLabel">
 					<strong>Assay Run Date</strong>
 				</td>
-				<td width="62%" valign="top" class="formField">
+				<td valign="top" class="formField">
 					<html:text property="assayRunDateBegin" size="10" />
 					<a href="javascript:cal.popup();"><img src="images/calendar-icon.gif" width="22" height="18" border="0" align="middle"></a> &nbsp;&nbsp; to &nbsp;&nbsp;
 					<html:text property="assayRunDateEnd" size="10" />
@@ -64,30 +64,22 @@
 					<strong>Aliquot ID</strong>
 				</td>
 				<td class="formFieldWhite">
-					<strong> <html:text property="aliquotName" size="20" /> </strong>
+					<strong> <html:text property="aliquotName" size="20" /> &nbsp;</strong> and &nbsp;<strong>Include Masked Aliquots?&nbsp;&nbsp;<html:checkbox property="includeMaskedAliquots" /></strong>
 				</td>
 			</tr>
 			<tr>
 				<td class="formLabel">
-					<strong>Include Masked Aliquots?</strong>
+					<strong>File Name </strong>
 				</td>
 				<td class="formField">
-					<html:checkbox property="includeMaskedAliquots" />
+					<strong> <html:text property="fileName" size="20" /> &nbsp;<html:checkbox property="isFileIn" /> In <html:checkbox property="isFileOut" /> Out &nbsp;</strong> and &nbsp;<strong>Include Masked Files? <html:checkbox property="includeMaskedFiles" /></strong>
 				</td>
 			</tr>
 			<tr>
 				<td class="formLabelWhite">
-					<strong>File Name </strong>
-				</td>
-				<td class="formFieldWhite">
-					<strong> <html:text property="fileName" size="20" /> &nbsp; &nbsp; &nbsp; <html:checkbox property="isFileIn" /> In &nbsp; &nbsp; &nbsp; <html:checkbox property="isFileOut" /> Out </strong>
-				</td>
-			</tr>
-			<tr>
-				<td class="formLabel">
 					<strong>File Submission Date</strong>
 				</td>
-				<td class="formField">
+				<td class="formFieldWhite">
 					<html:text property="fileSubmissionDateBegin" size="10" />
 					<a href="javascript:cal3.popup();"><img src="images/calendar-icon.gif" width="22" height="18" border="0" align="middle"></a> &nbsp;&nbsp; to &nbsp;&nbsp;
 					<html:text property="fileSubmissionDateEnd" size="10" />
@@ -96,22 +88,14 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="formLabelWhite">
+				<td class="formLabel">
 					<strong>File Submitter </strong>
 				</td>
-				<td class="formFieldWhite">
+				<td class="formField">
 					<strong> <html:select property="fileSubmitter">
 							<option value=""></option>
 							<html:options name="allFileSubmitters" />
 						</html:select> </strong>
-				</td>
-			</tr>
-			<tr>
-				<td class="formLabel">
-					<strong> Include Masked Files? </strong>
-				</td>
-				<td class="formField">
-					<strong> <html:checkbox property="includeMaskedFiles" /> </strong>
 				</td>
 			</tr>
 			<tr>
@@ -124,7 +108,7 @@
 			</tr>
 		</table>
 		<br>
-		<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
+		<table width="90%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 			<tr>
 				<td width="30%">
 					<table width="498" height="32" border="0" align="right" cellpadding="4" cellspacing="0">
@@ -151,8 +135,8 @@
 		<p>
 			&nbsp;
 		</p>
-	</blockquote>
 </html:form>
+</blockquote>
 <script language="JavaScript">
 <!-- //
  var cal = new calendar2(document.forms['searchWorkflowForm'].elements['assayRunDateBegin']);
