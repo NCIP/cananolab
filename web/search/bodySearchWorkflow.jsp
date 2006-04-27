@@ -94,7 +94,7 @@
 				<td class="formField">
 					<strong> <html:select property="fileSubmitter">
 							<option value=""></option>
-							<html:options name="allFileSubmitters" />
+							<html:options name="allUsernames" />
 						</html:select> </strong>
 				</td>
 			</tr>
