@@ -7,11 +7,13 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: CreateAliquotAction.java,v 1.11 2006-04-21 12:58:46 zengje Exp $ */
+/* CVS $Id: CreateAliquotAction.java,v 1.12 2006-04-27 14:52:52 pansu Exp $ */
 
+import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.service.administration.ManageAliquotService;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,25 +36,30 @@ public class CreateAliquotAction extends AbstractBaseAction {
 			throws Exception {
 		ActionForward forward = null;
 		HttpSession session = request.getSession();
-		ActionMessages messages=new ActionMessages();
+		ActionMessages messages = new ActionMessages();
 		try {
 			// TODO fill in details for aliquot information */
 			DynaValidatorForm theForm = (DynaValidatorForm) form;
 			String sampleName = (String) theForm.get("sampleName");
-			String parentAliquotName = (String) theForm.get("parentAliquotName");
+			String parentAliquotName = (String) theForm
+					.get("parentAliquotName");
 			if (session.getAttribute("aliquotMatrix") != null) {
-				List aliquotMatrix = (List) session.getAttribute("aliquotMatrix");
-				ManageAliquotService manageAliquotService=new ManageAliquotService();
-				manageAliquotService.saveAliquots(sampleName, parentAliquotName, aliquotMatrix);
+				List<AliquotBean[]> aliquotMatrix = new ArrayList<AliquotBean[]>(
+						(List<? extends AliquotBean[]>) session
+								.getAttribute("aliquotMatrix"));
+				ManageAliquotService manageAliquotService = new ManageAliquotService();
+				manageAliquotService.saveAliquots(sampleName,
+						parentAliquotName, aliquotMatrix);
 				ActionMessages msgs = new ActionMessages();
 				ActionMessage msg = new ActionMessage("message.createAliquot");
 				msgs.add("message", msg);
 				saveMessages(request, msgs);
-				
-				//set a flag to indicate that new aliquots have been created so session can 
-				//be refreshed in initSession.do
+
+				// set a flag to indicate that new aliquots have been created so
+				// session can
+				// be refreshed in initSession.do
 				session.setAttribute("newAliquotCreated", "yes");
-				
+
 				forward = mapping.findForward("success");
 			} else {
 				logger
@@ -65,7 +72,7 @@ public class CreateAliquotAction extends AbstractBaseAction {
 			}
 
 		} catch (Exception e) {
-			ActionMessage error=new ActionMessage("error.createAliquot");
+			ActionMessage error = new ActionMessage("error.createAliquot");
 			messages.add("error", error);
 			saveMessages(request, messages);
 			logger.error("Caught exception when creating aliquots", e);
@@ -75,6 +82,6 @@ public class CreateAliquotAction extends AbstractBaseAction {
 	}
 
 	public boolean loginRequired() {
-	    return true;
+		return true;
 	}
 }

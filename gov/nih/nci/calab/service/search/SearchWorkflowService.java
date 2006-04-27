@@ -23,7 +23,7 @@ import org.apache.log4j.Logger;
  * 
  */
 
-/* CVS $Id: SearchWorkflowService.java,v 1.21 2006-04-26 21:35:04 pansu Exp $ */
+/* CVS $Id: SearchWorkflowService.java,v 1.22 2006-04-27 14:51:08 pansu Exp $ */
 
 public class SearchWorkflowService {
 	private static Logger logger = Logger
@@ -100,7 +100,7 @@ public class SearchWorkflowService {
 		workflows = filterWorkflows(new ArrayList<WorkflowResultBean>(
 				workflowSet), isFileIn, isFileOut, includeMaskedAliquots,
 				includeMaskedFiles);
-
+		Collections.sort(workflows, new CalabComparators.WorkflowResultBeanComparator());
 		return workflows;
 	}
 
