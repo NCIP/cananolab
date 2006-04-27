@@ -142,6 +142,6 @@
 			<forward name="success" path="workflow.fileMask" />
 			<forward name="maskpage" path="workflow.maskfile" />
 		</action>		
-		<action path="/workflowForward" type="gov.nih.nci.calab.ui.core.BaseForwardAction" parameter="workflow.message"/>
+		<action path="/workflowForward" type="gov.nih.nci.calab.ui.core.BaseForwardAction" parameter="workflow.message" scope="request"/>
 	</action-mappings>
 </struts-config>
