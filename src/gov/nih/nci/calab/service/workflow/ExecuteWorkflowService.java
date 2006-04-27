@@ -23,7 +23,6 @@ import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.service.util.file.FileNameConvertor;
 import gov.nih.nci.calab.service.util.file.HttpUploadedFileData;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
