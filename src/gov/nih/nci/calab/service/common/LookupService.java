@@ -12,7 +12,10 @@ import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 
@@ -23,7 +26,7 @@ import org.apache.log4j.Logger;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.23 2006-04-27 18:19:58 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.24 2006-04-27 20:25:51 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -34,18 +37,20 @@ public class LookupService {
 	 * 
 	 * @return a list of AliquotBeans containing aliquot ID and aliquot name
 	 */
-public List<AliquotBean> getAliquots() throws Exception {
+	public List<AliquotBean> getAliquots() throws Exception {
 		List<AliquotBean> aliquots = new ArrayList<AliquotBean>();
-		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
 			String hqlString = "select aliquot.id, aliquot.name, status.status from Aliquot aliquot left join aliquot.dataStatus status order by aliquot.name";
 			List results = ida.search(hqlString);
 			for (Object obj : results) {
-				Object[] aliquotInfo = (Object[]) obj;				
-				aliquots.add(new AliquotBean(StringUtils.convertToString(aliquotInfo[0]), 
-						StringUtils.convertToString(aliquotInfo[1]), 
-						StringUtils.convertToString(aliquotInfo[2])));
+				Object[] aliquotInfo = (Object[]) obj;
+				aliquots.add(new AliquotBean(StringUtils
+						.convertToString(aliquotInfo[0]), StringUtils
+						.convertToString(aliquotInfo[1]), StringUtils
+						.convertToString(aliquotInfo[2])));
 			}
 		} catch (Exception e) {
 			logger.error("Error in retrieving all aliquot Ids and names", e);
@@ -56,6 +61,7 @@ public List<AliquotBean> getAliquots() throws Exception {
 		}
 		return aliquots;
 	}
+
 	/**
 	 * Retrieving all unmasked aliquots for views use aliquot and create
 	 * aliquot.
@@ -76,7 +82,8 @@ public List<AliquotBean> getAliquots() throws Exception {
 				Object[] aliquotInfo = (Object[]) obj;
 				aliquots.add(new AliquotBean(StringUtils
 						.convertToString(aliquotInfo[0]), StringUtils
-						.convertToString(aliquotInfo[1]), CalabConstants.ACTIVE_STATUS));
+						.convertToString(aliquotInfo[1]),
+						CalabConstants.ACTIVE_STATUS));
 			}
 		} catch (Exception e) {
 			logger.error("Error in retrieving all aliquot Ids and names", e);
@@ -122,8 +129,7 @@ public List<AliquotBean> getAliquots() throws Exception {
 	 *         ContainerInfoBean
 	 */
 	public ContainerInfoBean getSampleContainerInfo() throws Exception {
-		// tmp code to be replaced
-		List<String> containerTypes = getAllContainerTypes();
+
 		List<MeasureUnit> units = getAllMeasureUnits();
 		List<StorageElement> storageElements = getAllRoomAndFreezers();
 		List<String> quantityUnits = new ArrayList<String>();
@@ -151,15 +157,14 @@ public List<AliquotBean> getAliquots() throws Exception {
 		}
 
 		// set labs and racks to null for now
-		ContainerInfoBean containerInfo = new ContainerInfoBean(containerTypes,
-				quantityUnits, concentrationUnits, volumeUnits, null, rooms,
-				freezers);
+		ContainerInfoBean containerInfo = new ContainerInfoBean(quantityUnits,
+				concentrationUnits, volumeUnits, null, rooms, freezers);
 
 		return containerInfo;
 	}
 
-	private List<String> getAllContainerTypes() throws Exception {
-		List<String> containerTypes = new ArrayList<String>();
+	public List<String> getAllSampleContainerTypes() throws Exception {
+		SortedSet<String> containerTypes = new TreeSet<String>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
@@ -170,13 +175,39 @@ public List<AliquotBean> getAliquots() throws Exception {
 				containerTypes.add((String) obj);
 			}
 		} catch (Exception e) {
-			logger.error("Error in retrieving all container types", e);
+			logger.error("Error in retrieving all sample container types", e);
 			throw new RuntimeException(
-					"Error in retrieving all container types.");
+					"Error in retrieving all sample container types.");
 		} finally {
 			ida.close();
 		}
-		return containerTypes;
+		containerTypes.addAll(Arrays.asList(CalabConstants.DEFAULT_CONTAINER_TYPES));
+		List<String> containerTypeList=new ArrayList<String>(containerTypes);
+		
+		return containerTypeList;
+	}
+
+	public List<String> getAllAliquotContainerTypes() throws Exception {
+		SortedSet<String> containerTypes = new TreeSet<String>();
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			String hqlString = "select distinct aliquot.containerType from Aliquot aliquot order by aliquot.containerType";
+			List results = ida.search(hqlString);
+			for (Object obj : results) {
+				containerTypes.add((String) obj);
+			}
+		} catch (Exception e) {
+			logger.error("Error in retrieving all aliquot container types", e);
+			throw new RuntimeException(
+					"Error in retrieving all aliquot container types.");
+		} finally {
+			ida.close();
+		}
+		containerTypes.addAll(Arrays.asList(CalabConstants.DEFAULT_CONTAINER_TYPES));
+		List<String> containerTypeList=new ArrayList<String>(containerTypes);		
+		return containerTypeList;
 	}
 
 	private List<MeasureUnit> getAllMeasureUnits() throws Exception {
