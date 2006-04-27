@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: CreateAliquotAction.java,v 1.12 2006-04-27 14:52:52 pansu Exp $ */
+/* CVS $Id: CreateAliquotAction.java,v 1.13 2006-04-27 18:19:24 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.service.administration.ManageAliquotService;
@@ -43,6 +43,8 @@ public class CreateAliquotAction extends AbstractBaseAction {
 			String sampleName = (String) theForm.get("sampleName");
 			String parentAliquotName = (String) theForm
 					.get("parentAliquotName");
+			String parentName=(parentAliquotName.length()==0)?"Sample "+sampleName:"Aliquot "+parentAliquotName;
+			request.setAttribute("parentName", parentName);
 			if (session.getAttribute("aliquotMatrix") != null) {
 				List<AliquotBean[]> aliquotMatrix = new ArrayList<AliquotBean[]>(
 						(List<? extends AliquotBean[]>) session
