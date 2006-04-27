@@ -20,9 +20,9 @@
 		<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="90%" align="center" summary="" border="0">
 			<tbody>
 				<tr class="topBorder">
-					<td class="dataTablePrimaryLabel" width="30%">
+					<td class="formTitle" width="30%">
 						<div align="justify">
-							<em>ALIQUOT <bean:write name="editAliquotForm" property="aliquot.aliquotName" /></em>
+							<em>Aliquot <bean:write name="editAliquotForm" property="aliquot.aliquotName" /></em>
 						</div>
 					</td>
 				</tr>

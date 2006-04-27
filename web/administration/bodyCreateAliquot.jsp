@@ -43,9 +43,9 @@ function openLink() {
 	<html:form action="/createAliquot">
 		<table width="90%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 			<tr class="topBorder">
-				<td class="dataTablePrimaryLabel">
+				<td class="formTitle">
 					<div align="justify">
-						<em>DESCRIPTION</em>
+						Description
 					</div>
 				</td>
 			</tr>
@@ -75,9 +75,9 @@ function openLink() {
 		<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="90%" align="center" summary="" border="0">
 			<tbody>
 				<tr class="topBorder">
-					<td class="dataTablePrimaryLabel" width="30%">
+					<td class="formTitle" width="30%">
 						<div align="justify">
-							<em>TEMPLATE ALIQUOT</em>
+							Template Aliquot
 						</div>
 					</td>
 				</tr>

@@ -5,7 +5,7 @@
 <center>
 	<table width="80%" border="0" align="center" cellpadding="0" cellspacing="0">
 		<tr>
-			<td class="dataTablePrimaryLabel" colspan="2">
+			<td class="formTitle" colspan="2" align="center">
 				General Information for the workflow
 			</td>
 		</tr>
@@ -38,7 +38,7 @@
 	<br>
 	<table border="0" align="center" cellpadding="0" cellspacing="0">
 		<tr>
-			<td class="dataTablePrimaryLabel">
+			<td class="formTitle" align="center">
 				<bean:write name="fileUploadForm" property="inout" />
 				File Upload
 			</td>

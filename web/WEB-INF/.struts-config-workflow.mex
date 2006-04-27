@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlowViewLayout Version="1.2">
+  <StrutsActivity path="/useAliquot.do" location="1390,169" dimension="265,88" />
+  <StrutsActivity path="/maskAliquot.do" location="479,169" dimension="238,88" />
+  <StrutsActivity path="/maskFile.do" location="1052,169" dimension="238,88" />
+  <StrutsActivity path="/viewAliquot.do" location="1755,169" dimension="269,88" />
+  <StrutsActivity path="/preMaskAliquot.do" location="0,531" dimension="238,88" />
+  <StrutsActivity path="/createRun.do" location="2873,169" dimension="266,88" />
+  <StrutsActivity path="/createAssayRun.do" location="1250,750" dimension="266,88" />
+  <StrutsActivity path="/fileUpload.do" location="350,550" dimension="263,88" />
+  <StrutsActivity path="/fileDownload.do" location="950,950" dimension="277,88" />
+  <StrutsActivity path="/fileMask.do" location="350,1050" dimension="97,75" />
+  <StrutsActivity path="/workflowForward.do" location="950,550" dimension="238,88" />
+  <StrutsActivity path="useAliquot;6" location="817,175" dimension="135,75" />
+  <StrutsActivity path="maskAliquot;6" location="0,175" dimension="142,75" />
+  <StrutsActivity path="maskFile;6" location="242,175" dimension="124,75" />
+  <StrutsActivity path="createRun;6" location="3239,175" dimension="133,75" />
+  <StrutsActivity path="createAssayRun;6" location="50,1150" dimension="161,75" />
+  <StrutsActivity path="workflowMessage;6" location="1250,550" dimension="269,75" />
+  <StrutsActivity path="fileUpload;6" location="50,750" dimension="106,75" />
+  <StrutsActivity path="fileDownload;6" location="50,950" dimension="120,75" />
+  <StrutsActivity path="fileMask;6" location="1550,950" dimension="97,75" />
+  <StrutsActivity path="fileMaskSetup;6" location="650,1250" dimension="173,75" />
+  <StrutsActivity path="fileUploadOption;6" location="950,1150" dimension="148,75" />
+  <StrutsActivity path="workflow.usealiquot" location="1087,437" dimension="125,49" />
+  <StrutsActivity path="/initSession.do" location="650,850" dimension="109,75" />
+  <StrutsActivity path="input" location="1897,0" dimension="53,49" />
+  <StrutsActivity path="workflow.maskaliquot" location="227,437" dimension="132,49" />
+  <StrutsActivity path="workflow.maskfile" location="639,437" dimension="114,49" />
+  <StrutsActivity path="workflow.viewaliquot" location="1917,437" dimension="130,49" />
+  <StrutsActivity path="workflow.createrun" location="3065,437" dimension="123,49" />
+  <StrutsActivity path="workflow.createassayrun" location="1250,1350" dimension="151,49" />
+  <StrutsActivity path="/login.do" location="350,850" dimension="81,75" />
+  <StrutsActivity path="workflow.fileUpload" location="950,850" dimension="123,49" />
+  <StrutsActivity path="workflow.fileDownload" location="950,1350" dimension="137,49" />
+  <StrutsActivity path="workflow.fileMask" location="650,1450" dimension="114,49" />
+  <StrutsActivity path="workflow.message" location="1513,437" dimension="118,49" />
+  <StrutsActivity path="workflow.uploadoption" location="650,750" dimension="138,49" />
+  <StrutsActivity path="calab.welcome" location="350,1350" dimension="99,49" />
+  <StrutsActivity path="workflow.editaliquot" location="2584,437" dimension="126,49" />
+  <StrutsActivity path="workflow.executeworkflow" location="2268,437" dimension="158,49" />
+  <StrutsActivity path="workflowMessage" location="350,750" dimension="114,49" />
+  <StrutsActivity path="workflow.createAssayRun" location="950,750" dimension="155,49" />
+  <StrutsTransition id="input,null,/createAssayRun.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1950,46" />
+      <AbsolutePoint location="2152,46" />
+      <AbsolutePoint location="2152,794" />
+      <AbsolutePoint location="1516,794" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="input,null,/fileMask.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1945,49" />
+      <AbsolutePoint location="1945,144" />
+      <AbsolutePoint location="-73,144" />
+      <AbsolutePoint location="-73,1109" />
+      <AbsolutePoint location="350,1109" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/fileUpload.do,failure,/initSession.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="599,638" />
+      <AbsolutePoint location="599,965" />
+      <AbsolutePoint location="704,965" />
+      <AbsolutePoint location="704,925" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="input,null,/fileDownload.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1897,24" />
+      <AbsolutePoint location="809,24" />
+      <AbsolutePoint location="809,994" />
+      <AbsolutePoint location="950,994" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="fileUploadOption;6,null,workflow.uploadoption,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1098,1187" />
+      <AbsolutePoint location="2343,1187" />
+      <AbsolutePoint location="2343,501" />
+      <AbsolutePoint location="726,501" />
+      <AbsolutePoint location="726,750" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/maskFile.do,input,workflow.maskfile,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1171,257" />
+      <AbsolutePoint location="1171,392" />
+      <AbsolutePoint location="696,392" />
+      <AbsolutePoint location="696,437" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="createRun;6,null,workflow.createrun,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="3239,212" />
+      <AbsolutePoint location="3154,212" />
+      <AbsolutePoint location="3154,437" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="useAliquot;6,null,workflow.usealiquot,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="903,250" />
+      <AbsolutePoint location="903,461" />
+      <AbsolutePoint location="1087,461" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/createAssayRun.do,success,/initSession.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1383,750" />
+      <AbsolutePoint location="1383,653" />
+      <AbsolutePoint location="569,653" />
+      <AbsolutePoint location="569,857" />
+      <AbsolutePoint location="650,857" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/createAssayRun.do,failure,workflow.createassayrun,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1353,838" />
+      <AbsolutePoint location="1353,1350" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/fileMask.do,maskpage,workflow.maskfile,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="350,1087" />
+      <AbsolutePoint location="283,1087" />
+      <AbsolutePoint location="283,683" />
+      <AbsolutePoint location="696,683" />
+      <AbsolutePoint location="696,486" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="fileMaskSetup;6,null,/fileMask.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="650,1287" />
+      <AbsolutePoint location="398,1287" />
+      <AbsolutePoint location="398,1125" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="input,null,/useAliquot.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1897,46" />
+      <AbsolutePoint location="1522,46" />
+      <AbsolutePoint location="1522,169" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/useAliquot.do,success,/initSession.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1655,213" />
+      <AbsolutePoint location="1700,213" />
+      <AbsolutePoint location="1700,914" />
+      <AbsolutePoint location="759,914" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="input,null,/createRun.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1950,24" />
+      <AbsolutePoint location="3006,24" />
+      <AbsolutePoint location="3006,169" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="input,null,/maskFile.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1923,0" />
+      <AbsolutePoint location="1923,-75" />
+      <AbsolutePoint location="1171,-75" />
+      <AbsolutePoint location="1171,169" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/maskAliquot.do,input,workflow.maskaliquot,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="568,257" />
+      <AbsolutePoint location="568,461" />
+      <AbsolutePoint location="359,461" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/viewAliquot.do,failure,/initSession.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1889,257" />
+      <AbsolutePoint location="1889,683" />
+      <AbsolutePoint location="933,683" />
+      <AbsolutePoint location="933,854" />
+      <AbsolutePoint location="759,854" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="input,null,/maskAliquot.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1923,49" />
+      <AbsolutePoint location="1923,94" />
+      <AbsolutePoint location="598,94" />
+      <AbsolutePoint location="598,169" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="createAssayRun;6,null,workflow.createassayrun,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="130,1225" />
+      <AbsolutePoint location="130,1514" />
+      <AbsolutePoint location="1325,1514" />
+      <AbsolutePoint location="1325,1399" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="fileUpload;6,null,/fileUpload.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="156,784" />
+      <AbsolutePoint location="253,784" />
+      <AbsolutePoint location="253,564" />
+      <AbsolutePoint location="350,564" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/fileUpload.do,success,workflow.fileUpload,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="613,594" />
+      <AbsolutePoint location="903,594" />
+      <AbsolutePoint location="903,884" />
+      <AbsolutePoint location="950,884" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="workflowMessage;6,null,workflow.message,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1519,587" />
+      <AbsolutePoint location="1572,587" />
+      <AbsolutePoint location="1572,486" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/createRun.do,success,/initSession.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="3006,257" />
+      <AbsolutePoint location="3006,713" />
+      <AbsolutePoint location="539,713" />
+      <AbsolutePoint location="539,887" />
+      <AbsolutePoint location="650,887" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="input,null,/fileUpload.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1897,2" />
+      <AbsolutePoint location="472,2" />
+      <AbsolutePoint location="472,550" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="fileDownload;6,null,/fileDownload.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="50,987" />
+      <AbsolutePoint location="-105,987" />
+      <AbsolutePoint location="-105,1414" />
+      <AbsolutePoint location="1143,1414" />
+      <AbsolutePoint location="1143,1038" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/viewAliquot.do,success,workflow.viewaliquot,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1932,257" />
+      <AbsolutePoint location="1932,437" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/fileUpload.do,expiredSession,/login.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="350,594" />
+      <AbsolutePoint location="313,594" />
+      <AbsolutePoint location="313,887" />
+      <AbsolutePoint location="350,887" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/maskAliquot.do,success,/initSession.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="598,257" />
+      <AbsolutePoint location="598,332" />
+      <AbsolutePoint location="862,332" />
+      <AbsolutePoint location="862,884" />
+      <AbsolutePoint location="759,884" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/createRun.do,input,workflow.createrun,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="3080,257" />
+      <AbsolutePoint location="3080,437" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/createRun.do,failure,workflow.createrun,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="3110,257" />
+      <AbsolutePoint location="3110,437" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/fileMask.do,success,workflow.fileMask,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="447,1117" />
+      <AbsolutePoint location="539,1117" />
+      <AbsolutePoint location="539,1474" />
+      <AbsolutePoint location="650,1474" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/fileDownload.do,success,workflow.fileDownload,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1113,1038" />
+      <AbsolutePoint location="1113,1374" />
+      <AbsolutePoint location="1087,1374" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="fileMask;6,null,/fileMask.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1598,1025" />
+      <AbsolutePoint location="1598,1574" />
+      <AbsolutePoint location="569,1574" />
+      <AbsolutePoint location="569,1087" />
+      <AbsolutePoint location="447,1087" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/maskFile.do,success,/initSession.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1242,257" />
+      <AbsolutePoint location="1242,814" />
+      <AbsolutePoint location="704,814" />
+      <AbsolutePoint location="704,850" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="maskFile;6,null,workflow.maskfile,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="304,250" />
+      <AbsolutePoint location="304,272" />
+      <AbsolutePoint location="666,272" />
+      <AbsolutePoint location="666,437" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="maskAliquot;6,null,workflow.maskaliquot,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="71,250" />
+      <AbsolutePoint location="71,461" />
+      <AbsolutePoint location="227,461" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/createAssayRun.do,input,workflow.createassayrun,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1383,838" />
+      <AbsolutePoint location="1383,1350" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/useAliquot.do,input,workflow.usealiquot,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1498,257" />
+      <AbsolutePoint location="1498,461" />
+      <AbsolutePoint location="1212,461" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+</FlowViewLayout>
+

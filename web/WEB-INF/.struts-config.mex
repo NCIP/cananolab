@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlowViewLayout Version="1.2">
+  <StrutsActivity path="/initSession.do" location="0,580" dimension="244,88" />
+  <StrutsActivity path="/login.do" location="0,149" dimension="234,88" />
+  <StrutsActivity path="/logout.do" location="364,0" dimension="242,88" />
+  <StrutsActivity path="login;6" location="289,431" dimension="87,75" />
+  <StrutsActivity path="error;6" location="706,6" dimension="92,75" />
+  <StrutsActivity path="error" location="95,431" dimension="53,49" />
+  <StrutsActivity path="calab.home" location="36,337" dimension="84,49" />
+  <StrutsActivity path="calab.welcome" location="220,337" dimension="99,49" />
+  <StrutsActivity path="input" location="90,0" dimension="53,49" />
+  <StrutsActivity path="calab.error" location="504,188" dimension="82,49" />
+  <StrutsActivity path="/index.jsp" location="294,606" dimension="77,49" />
+  <StrutsTransition id="login;6,null,/index.jsp,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="332,506" />
+      <AbsolutePoint location="332,606" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="input,null,/login.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="117,49" />
+      <AbsolutePoint location="117,149" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/logout.do,success,calab.error,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="424,88" />
+      <AbsolutePoint location="424,138" />
+      <AbsolutePoint location="518,138" />
+      <AbsolutePoint location="518,188" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/login.do,success,calab.welcome,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="195,237" />
+      <AbsolutePoint location="195,287" />
+      <AbsolutePoint location="269,287" />
+      <AbsolutePoint location="269,337" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="error;6,null,calab.error,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="752,81" />
+      <AbsolutePoint location="752,138" />
+      <AbsolutePoint location="572,138" />
+      <AbsolutePoint location="572,188" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="error,null,/initSession.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="122,480" />
+      <AbsolutePoint location="122,580" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/login.do,failure,calab.home,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="117,237" />
+      <AbsolutePoint location="117,287" />
+      <AbsolutePoint location="99,287" />
+      <AbsolutePoint location="99,337" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/logout.do,failure,calab.error,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="545,88" />
+      <AbsolutePoint location="545,188" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/login.do,input,calab.home,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="39,237" />
+      <AbsolutePoint location="39,287" />
+      <AbsolutePoint location="57,287" />
+      <AbsolutePoint location="57,337" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+</FlowViewLayout>
+
