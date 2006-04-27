@@ -23,41 +23,11 @@ import org.apache.log4j.Logger;
  * 
  */
 
-/* CVS $Id: SearchWorkflowService.java,v 1.22 2006-04-27 14:51:08 pansu Exp $ */
+/* CVS $Id: SearchWorkflowService.java,v 1.23 2006-04-27 18:57:30 pansu Exp $ */
 
 public class SearchWorkflowService {
 	private static Logger logger = Logger
 			.getLogger(SearchWorkflowService.class);
-
-	/**
-	 * 
-	 * @return all file submitters
-	 */
-	public List<String> getAllFileSubmitters() throws Exception {
-		SortedSet<String> submitters = new TreeSet<String>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
-		try {
-			ida.open();
-			String hqlString1 = "select distinct createdBy from InputFile order by createdBy";
-			List results1 = ida.search(hqlString1);
-			for (Object obj : results1) {
-				submitters.add((String) obj);
-			}
-			String hqlString2 = "select distinct createdBy from OutputFile order by createdBy";
-			List results2 = ida.search(hqlString2);
-			for (Object obj : results2) {
-				submitters.add((String) obj);
-			}
-		} catch (Exception e) {
-			logger.error("Error in retrieving all file submitters", e);
-			throw new RuntimeException(
-					"Error in retrieving all file submitters");
-		} finally {
-			ida.close();
-		}
-		return new ArrayList<String>(submitters);
-	}
 
 	public List<WorkflowResultBean> searchWorkflows(String assayName,
 			String assayType, Date assayRunDateBegin, Date assayRunDateEnd,
