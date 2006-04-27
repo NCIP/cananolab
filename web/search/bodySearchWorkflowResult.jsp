@@ -18,40 +18,40 @@
 	<br>
 	<logic:present name="workflows">
 		<table width="90%" border="0" align="left" cellpadding="0" cellspacing="0">
-			<tr>
-				<td width="111" class="dataTablePrimaryLabel">
+			<tr><div align="center">
+				<td width="111" class="formTitle">
 					File Name
 				</td>
-				<td width="33" class="dataTablePrimaryLabel">
+				<td width="33" class="formTitle">
 					Assay Type
 				</td>
-				<td width="51" class="dataTablePrimaryLabel">
+				<td width="51" class="formTitle">
 					Assay Name
 				</td>
-				<td width="51" class="dataTablePrimaryLabel">
+				<td width="51" class="formTitle">
 					Assay Run Name
 				</td>
-				<td width="51" class="dataTablePrimaryLabel">
+				<td width="51" class="formTitle">
 					Assay Run Date
 				</td>
-				<td width="51" class="dataTablePrimaryLabel">
+				<td width="51" class="formTitle">
 					Input File or Output File
 				</td>
-				<td width="53" class="dataTablePrimaryLabel">
+				<td width="53" class="formTitle">
 					File Submission Date
 				</td>
-				<td width="61" class="dataTablePrimaryLabel">
+				<td width="61" class="formTitle">
 					File Submitter&#13;
 				</td>
-				<td width="44" class="dataTablePrimaryLabel">
+				<td width="44" class="formTitle">
 					File Status
 				</td>
-				<td width="53" class="dataTablePrimaryLabel">
+				<td width="53" class="formTitle">
 					Aliquot ID
 				</td>
-				<td width="53" class="dataTablePrimaryLabel">
+				<td width="53" class="formTitle">
 					Aliquot Status
-				</td>
+				</td></div>
 			</tr>
 			<logic:iterate name="workflows" id="workflow" type="gov.nih.nci.calab.dto.search.WorkflowResultBean" indexId="rowNum">
 				<c:choose>

@@ -30,25 +30,25 @@
 	<bean:define id="showAliquot" name="showAliquot" type="java.lang.Boolean" />
 	<logic:equal name="showAliquot" value="false">
 		<table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
-			<tr>
-				<td width="55" class="dataTablePrimaryLabel">
+			<tr><div align="center">
+				<td width="55" class="formTitle">
 					Sample ID
 				</td>
-				<td width="76" class="dataTablePrimaryLabel">
+				<td width="76" class="formTitle">
 					Sample Accessioned Date <strong></strong>
 				</td>
-				<td width="41" class="dataTablePrimaryLabel">
+				<td width="41" class="formTitle">
 					Sample Type
 				</td>
-				<td width="44" class="dataTablePrimaryLabel">
+				<td width="44" class="formTitle">
 					Sample Location
 				</td>
-				<td width="48" class="dataTablePrimaryLabel">
+				<td width="48" class="formTitle">
 					Sample Creator
 				</td>
-				<td width="102" class="dataTablePrimaryLabel">
+				<td width="102" class="formTitle">
 					Actions
-				</td>
+				</td></div>
 			</tr>
 
 			<c:set var="rowNum" value="-1" />
@@ -100,38 +100,38 @@
 	</logic:equal>
 	<logic:equal name="showAliquot" value="true">
 		<table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
-			<tr>
-				<td width="55" class="dataTablePrimaryLabel">
+			<tr><div align="center">
+				<td width="55" class="formTitle">
 					Sample ID
 				</td>
-				<td width="76" class="dataTablePrimaryLabel">
+				<td width="76" class="formTitle">
 					Sample Accessioned Date
 				</td>
-				<td width="41" class="dataTablePrimaryLabel">
+				<td width="41" class="formTitle">
 					Sample Type
 				</td>
-				<td width="44" class="dataTablePrimaryLabel">
+				<td width="44" class="formTitle">
 					Sample Submitter
 				</td>
-				<td width="55" class="dataTablePrimaryLabel">
+				<td width="55" class="formTitle">
 					Aliquot ID
 				</td>
-				<td width="76" class="dataTablePrimaryLabel">
+				<td width="76" class="formTitle">
 					Aliquoted Date
 				</td>
-				<td width="76" class="dataTablePrimaryLabel">
+				<td width="76" class="formTitle">
 					Aliquoted Location
 				</td>
-				<td width="76" class="dataTablePrimaryLabel">
+				<td width="76" class="formTitle">
 					Aliquoted Creator
 				</td>
-				<td width="102" class="dataTablePrimaryLabel">
+				<td width="102" class="formTitle">
 					Actions
 				</td>
 			</tr>
 			<logic:iterate name="aliquots" id="aliquot" type="gov.nih.nci.calab.dto.administration.AliquotBean" indexId="aliquotNum">
 				<c:choose>
-						<c:when test="$aliquotNum % 2 == 0}">
+						<c:when test="${aliquotNum % 2 == 0}">
 							<c:set var="style" value="formFieldGrey" />
 							<c:set var="style0" value="leftBorderedFormFieldGrey" />
 						</c:when>
