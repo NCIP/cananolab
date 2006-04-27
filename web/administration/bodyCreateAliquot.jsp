@@ -86,10 +86,7 @@ function openLink() {
 						<div align="justify">
 							<strong>Container Type* <span class="formFieldWhite"> <html:select property="template.container.containerType">
 										<option value=""></option>
-										<html:options name="aliquotContainerInfo" property="containerTypes" />
-										<option value="Other">
-											Other
-										</option>
+										<html:options name="allAliquotContainerTypes" />										
 									</html:select></span> &nbsp; &nbsp; &nbsp; Other <span class="formFieldWhite"><html:text property="template.container.otherContainerType" size="8" /></span> &nbsp; &nbsp; &nbsp; </strong>
 						</div>
 					</td>
