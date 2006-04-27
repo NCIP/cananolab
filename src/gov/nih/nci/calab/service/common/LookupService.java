@@ -23,7 +23,7 @@ import org.apache.log4j.Logger;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.22 2006-04-25 19:02:07 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.23 2006-04-27 18:19:58 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -297,34 +297,6 @@ public List<AliquotBean> getAliquots() throws Exception {
 		return aliquots;
 	}
 
-	/**
-	 * Retrieve all assays
-	 * 
-	 * @return a list of all assays in certain type
-	 */
-	public List<String> getAllInFiles() {
-		// Detail here
-		List<String> allInFiles = new ArrayList<String>();
-		return allInFiles;
-	}
-
-	/**
-	 * Retrieve all assays
-	 * 
-	 * @return a list of all assays in certain type
-	 */
-	public List<String> getAllOutFiles() {
-		// Detail here
-		List<String> allOutFiles = new ArrayList<String>();
-		return allOutFiles;
-	}
-
-	/**
-	 * Retrieve assays by assayType
-	 * 
-	 * @return a list of all assays in certain type
-	 */
-
 	public List<AssayBean> getAllAssayBeans() throws Exception {
 		List<AssayBean> assayBeans = new ArrayList<AssayBean>();
 		IDataAccess ida = (new DataAccessProxy())
@@ -369,5 +341,4 @@ public List<AliquotBean> getAliquots() throws Exception {
 		}
 		return usernames;
 	}
-
 }
