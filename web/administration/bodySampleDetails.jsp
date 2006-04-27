@@ -12,13 +12,25 @@
 	</logic:notPresent>
 </h2>
 <blockquote>
-	<table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
-		<tr valign="bottom">
-			<td align="right">
-				<input type="button" onClick="javascript:history.go(-1);" value="Back">
-			</td>
-		</tr>
-	</table>
+	<c:choose>
+  		<c:when test="${not empty containerNum or not empty aliquotNum}">  											    								
+			
+		</c:when>
+		<c:otherwise>
+		</c:otherwise>
+	</c:choose>
+	
+	<c:choose>
+  		<c:when test="${not empty containerNum or not empty aliquotNum}">  											    								
+			<table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
+				<tr valign="bottom">
+					<td align="right">
+						<input type="button" onClick="javascript:history.go(-1);" value="Back">
+					</td>
+				</tr>		
+			</table>
+		</c:when>
+	</c:choose>
 	<br>
 	<%--show sample details --%>
 	<c:choose>
