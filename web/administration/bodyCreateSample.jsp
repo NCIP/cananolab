@@ -124,8 +124,7 @@ function refreshContainers() {
 							<div align="justify">
 								<strong>Container Type* <span class="formFieldWhite"> <html:select name="containers" indexed="true" property="containerType">
 											<option value=""></option>
-											<html:options name="sampleContainerInfo" property="containerTypes" />										
-										<option value="Other">Other</option>
+											<html:options name="allSampleContainerTypes"/>																				
 										</html:select></span> &nbsp; &nbsp; &nbsp; Other <span class="formFieldWhite"><html:text name="containers" indexed="true" property="otherContainerType" size="8" /></span> &nbsp; &nbsp; &nbsp; </strong>
 							</div>
 						</td>
