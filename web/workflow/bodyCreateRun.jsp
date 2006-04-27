@@ -5,9 +5,9 @@
 <script type="text/javascript" src="javascript/calendar2.js"> </script>
 
 <html:form action="/createRun">
-	<h2>
+	<h3>
 		<strong>Create Run </strong>
-	</h2>
+	</h3>
 	<blockquote>
 		<html:errors />
 		<logic:messagesPresent message="true">

@@ -9,9 +9,9 @@ function refreshTree() {
 }
 //-->
 </script>
-<h2>
+<h3>
 <strong>Run Information</strong>
-</h2>
+</h3>
 <blockquote>
 	<table width="90%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 		<tr class="topBorder">

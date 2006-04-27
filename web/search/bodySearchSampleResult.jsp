@@ -3,10 +3,10 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<h2>
+<h3>
 	<br>
 	Sample Search Results
-</h2>
+</h3>
 <blockquote>
 	<html:errors />
 	<logic:messagesPresent message="true">
@@ -113,7 +113,7 @@
 				<td width="44" class="formTitle">
 					Sample Submitter
 				</td>
-				<td width="55" class="formTitle">
+				<td width="75" class="formTitle">
 					Aliquot ID
 				</td>
 				<td width="76" class="formTitle">
@@ -125,7 +125,7 @@
 				<td width="76" class="formTitle">
 					Aliquoted Creator
 				</td>
-				<td width="102" class="formTitle">
+				<td width="82" class="formTitle">
 					Actions
 				</td>
 			</tr>

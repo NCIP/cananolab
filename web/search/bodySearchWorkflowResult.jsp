@@ -3,10 +3,10 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<h2>
+<h3>
 	<br>
 	Search Results
-</h2>
+</h3>
 <blockquote>
 	<table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
 		<tr valign="bottom">

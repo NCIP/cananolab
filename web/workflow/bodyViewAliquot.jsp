@@ -2,9 +2,9 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 
-<h2>
+<h3>
 	View Aliquot
-</h2>
+</h3>
 <html:errors />
 <logic:messagesPresent message="true">
 	<ul>
