@@ -96,7 +96,8 @@ public class FileDownloadAction extends AbstractDispatchAction
 
         
         fileForm.set("fileInfoList", fileNameHolder);
-        fileForm.set("downloadAll", contentPath+"/fileDownload.do?method=downloadFile&fileName="+CalabConstants.ALL_FILES+".zip");
+        fileForm.set("downloadAll", contentPath+"/fileDownload.do?method=downloadFile&runId="+runId+"&inout="
+        									   +fileForm.get("inout")+"&fileName="+CalabConstants.ALL_FILES+".zip");
         return mapping.findForward("success");
     }
     
@@ -114,7 +115,7 @@ public class FileDownloadAction extends AbstractDispatchAction
         fileForm.set("assayType", runBean.getAssayBean().getAssayType());
         fileForm.set("assay", runBean.getAssayBean().getAssayName());
         fileForm.set("run", runBean.getName());
-        fileForm.set("inout", request.getParameter("type"));
+        fileForm.set("inout", request.getParameter("inout"));
 
         
         String fileName = (String)fileForm.get("fileName");
