@@ -18,7 +18,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-/* CVS $Id: ManageSampleService.java,v 1.22 2006-04-25 17:35:21 pansu Exp $ 
+/* CVS $Id: ManageSampleService.java,v 1.23 2006-04-27 20:25:29 pansu Exp $ 
  */
 public class ManageSampleService {
 	private static Logger logger = Logger.getLogger(ManageSampleService.class);
@@ -87,7 +87,7 @@ public class ManageSampleService {
 	 * @return sampleName from sampleName prefix and lotId
 	 */
 	public String getSampleName(String sampleNamePrefix, String lotId) {
-		if (lotId.equals("N/A")) {
+		if (lotId.equals(CalabConstants.EMPTY)) {
 			return sampleNamePrefix;
 		}
 		return sampleNamePrefix + "-" + lotId;
@@ -98,7 +98,7 @@ public class ManageSampleService {
 	 * @return the default lot Id
 	 */
 	public String getDefaultLotId() {
-		String lotId = "N/A";
+		String lotId = CalabConstants.EMPTY;
 		return lotId;
 	}
 
