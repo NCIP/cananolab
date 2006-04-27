@@ -4,11 +4,11 @@
 
 
 <html:form action="/maskAliquot">
-	<h2>
+	<h3>
 		&nbsp;
 		<BR>
 		&nbsp;Mask Aliquot
-	</h2>
+	</h3>
 	<html:errors />
 	<logic:messagesPresent message="true">
 		<ul>
@@ -22,7 +22,7 @@
 	<blockquote>
 		<table width="75%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 			<tr class="topBorder">
-				<td colspan="2" class="dataTablePrimaryLabel">
+				<td colspan="2" class="formTitle">
 					<DIV align="justify">
 						&nbsp;<STRONG>Confirm Aliquot Mask:</STRONG>
 					</DIV>
@@ -44,7 +44,7 @@
 
 		<table width="60%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 			<tr class="topBorder">
-				<td class="dataTablePrimaryLabel">
+				<td class="formTitle">
 					<div align="justify">
 						*&nbsp; &nbsp;Explain reason for mask:
 					</div>

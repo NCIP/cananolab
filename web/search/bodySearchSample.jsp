@@ -4,10 +4,10 @@
 
 <script type="text/javascript" src="javascript/calendar2.js"></script>
 <html:form action="searchSample">
-	<h2>
+	<h3>
 		<br>
 		Search Sample Container
-	</h2>
+	</h3>
 	<html:errors />
 	<logic:messagesPresent message="true">
 		<ul>

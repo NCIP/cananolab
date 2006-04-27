@@ -15,10 +15,10 @@ function refreshContainers() {
 </script>
 
 <html:form action="/createSample">
-	<h2>
+	<h3>
 		<br>
 		Create Sample
-	</h2>
+	</h3>
 	<blockquote>
 		<html:errors />
 		<logic:messagesPresent message="true">

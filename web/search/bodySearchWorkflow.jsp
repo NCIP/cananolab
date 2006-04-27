@@ -5,10 +5,10 @@
 <script type="text/javascript" src="javascript/calendar2.js"></script>
 
 <html:form action="/searchWorkflow">
-	<h2>
+	<h3>
 		<br>
 		<strong>Search Workflow </strong>
-	</h2>
+	</h3>
 	<html:errors />
 	<logic:messagesPresent message="true">
 		<ul>

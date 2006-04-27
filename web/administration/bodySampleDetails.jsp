@@ -2,7 +2,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
+<center>
 <h3>
 	<br>
 	<logic:notPresent name="containerNum">
@@ -11,6 +11,7 @@
 	    </logic:notPresent>
 	</logic:notPresent>
 </h3>
+</center>
 <blockquote>
 	<c:choose>
   		<c:when test="${not empty containerNum or not empty aliquotNum}">  											    								
@@ -205,7 +206,7 @@
 							</c:choose>
 							<td class="${style}" colspan="2">
 								<div align="justify">
-									<em>Container <c:out value="${container.containerName}" /> </em>
+									Container <c:out value="${container.containerName}" />
 								</div>
 							</td>
 						</tr>
@@ -557,7 +558,7 @@
 					<tr class="topBorder">
 						<td class="formTitle" colspan="2">
 							<div align="justify">
-								<em>Aliquot <bean:write name="aliquot" property="aliquotName" /> </em>
+								Aliquot <bean:write name="aliquot" property="aliquotName" />
 							</div>
 						</td>
 					</tr>

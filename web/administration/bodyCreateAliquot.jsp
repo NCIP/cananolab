@@ -25,10 +25,10 @@ function openLink() {
 }
 //-->
 </script>
-<h2>
+<h3>
 	<br>
 	Create Aliquot
-</h2>
+</h3>
 <html:errors />
 <logic:messagesPresent message="true">
 	<ul>

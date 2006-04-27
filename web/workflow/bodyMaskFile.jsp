@@ -2,7 +2,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <html:form action="/maskFile">
-	<h2> &nbsp;<BR> &nbsp;Mask&nbsp;File </h2>
+	<h3> &nbsp;<BR> &nbsp;Mask&nbsp;File </h3>
 	<html:errors/>
 	<logic:messagesPresent message="true">
 		<ul>
@@ -16,7 +16,7 @@
 	<blockquote>
 		<table width="75%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 			<tr class="topBorder">
-				<td colspan="2" class="dataTablePrimaryLabel">
+				<td colspan="2" class="formTitle">
 					<DIV align="justify">
 						&nbsp;<STRONG>Confirm&nbsp;File Mask:</STRONG> </DIV>
 				</td>
