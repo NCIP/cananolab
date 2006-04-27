@@ -1,13 +1,13 @@
 package gov.nih.nci.calab.ui.core;
 
 /**
- * This class initializes session data to prepopulate the drop-down lists required
+ * This class initializes session and application scope data to prepopulate the drop-down lists required
  * in different view pages.
  *
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.29 2006-04-27 18:20:12 pansu Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.30 2006-04-27 18:47:58 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
@@ -17,7 +17,6 @@ import gov.nih.nci.calab.service.administration.ManageAliquotService;
 import gov.nih.nci.calab.service.administration.ManageSampleService;
 import gov.nih.nci.calab.service.common.LookupService;
 import gov.nih.nci.calab.service.search.SearchSampleService;
-import gov.nih.nci.calab.service.search.SearchWorkflowService;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.service.util.file.HttpFileUploadSessionData;
@@ -86,16 +85,15 @@ public class InitSessionAction extends AbstractBaseAction {
 			} else if (forwardPage.equals("createRun")
 					|| forwardPage.equals("createAssayRun")) {
 				setCreateRunSession(session, lookupService);
-			} else if (forwardPage.equals("workflowMessage")) {
-				setWorkflowMessageSession(session);
-			} else if (forwardPage.equals("fileUploadOption")
+			} else if (forwardPage.equals("workflowMessage")
+					|| forwardPage.equals("fileUploadOption")
 					|| forwardPage.equals("fileDownload")
 					|| forwardPage.equals("fileMask")
 					|| forwardPage.equals("fileMaskSetup")) {
-				setFileActionSession(session);
+				setWorkflowMessageSession(session);
 			} else if (forwardPage.equals("uploadForward")) {
 				// refresh tree view
-				setFileActionSession(session);
+				setWorkflowMessageSession(session);
 
 				// read HttpFileUploadSessionData from session
 				HttpFileUploadSessionData hFileUploadData = (HttpFileUploadSessionData) request
@@ -172,7 +170,7 @@ public class InitSessionAction extends AbstractBaseAction {
 	}
 
 	/**
-	 * Set up session attributes for create sample page
+	 * Set up session and application attributes for create sample page
 	 * 
 	 * @param session
 	 * @param lookupService
@@ -182,22 +180,22 @@ public class InitSessionAction extends AbstractBaseAction {
 		ManageSampleService mangeSampleService = new ManageSampleService();
 		// if values don't exist in the database or if no new samples created.
 		// call the service
-		if (session.getAttribute("allSampleTypes") == null
-				|| session.getAttribute("newSampleCreated") != null) {
+		if (session.getServletContext().getAttribute("allSampleTypes") == null) {
 			List sampleTypes = lookupService.getAllSampleTypes();
-			session.setAttribute("allSampleTypes", sampleTypes);
+			session.getServletContext().setAttribute("allSampleTypes",
+					sampleTypes);
 
 		}
-		if (session.getAttribute("allSampleSOPs") == null
-				|| session.getAttribute("newSampleCreated") != null) {
+		if (session.getServletContext().getAttribute("allSampleSOPs") == null) {
 			List sampleSOPs = mangeSampleService.getAllSampleSOPs();
-			session.setAttribute("allSampleSOPs", sampleSOPs);
+			session.getServletContext().setAttribute("allSampleSOPs",
+					sampleSOPs);
 		}
-		if (session.getAttribute("sampleContainerInfo") == null
-				|| session.getAttribute("newSampleCreated") != null) {
+		if (session.getServletContext().getAttribute("sampleContainerInfo") == null) {
 			ContainerInfoBean containerInfo = lookupService
 					.getSampleContainerInfo();
-			session.setAttribute("sampleContainerInfo", containerInfo);
+			session.getServletContext().setAttribute("sampleContainerInfo",
+					containerInfo);
 		}
 		// clear the form in the session
 		if (session.getAttribute("createSampleForm") != null
@@ -209,7 +207,7 @@ public class InitSessionAction extends AbstractBaseAction {
 	}
 
 	/**
-	 * Set up session attributes for create aliquot page
+	 * Set up session and application attributes for create aliquot page
 	 * 
 	 * @param session
 	 * @param lookupService
@@ -228,14 +226,16 @@ public class InitSessionAction extends AbstractBaseAction {
 			List aliquots = lookupService.getUnmaskedAliquots();
 			session.setAttribute("allUnmaskedAliquots", aliquots);
 		}
-		if (session.getAttribute("aliquotContainerInfo") == null) {
+		if (session.getServletContext().getAttribute("aliquotContainerInfo") == null) {
 			ContainerInfoBean containerInfo = lookupService
 					.getAliquotContainerInfo();
-			session.setAttribute("aliquotContainerInfo", containerInfo);
+			session.getServletContext().setAttribute("aliquotContainerInfo",
+					containerInfo);
 		}
-		if (session.getAttribute("aliquotCreateMethods") == null) {
+		if (session.getServletContext().getAttribute("aliquotCreateMethods") == null) {
 			List methods = manageAliquotService.getAliquotCreateMethods();
-			session.setAttribute("aliquotCreateMethods", methods);
+			session.getServletContext().setAttribute("aliquotCreateMethods",
+					methods);
 		}
 
 		// clear new aliquot created flag and new sample created flag
@@ -251,15 +251,16 @@ public class InitSessionAction extends AbstractBaseAction {
 	 */
 	private void setSearchWorkflowSession(HttpSession session,
 			LookupService lookupService) throws Exception {
-		SearchWorkflowService searchWorkflowService = new SearchWorkflowService();
 
-		if (session.getAttribute("allAssayTypes") == null) {
+		if (session.getServletContext().getAttribute("allAssayTypes") == null) {
 			List assayTypes = lookupService.getAllAssayTypes();
-			session.setAttribute("allAssayTypes", assayTypes);
+			session.getServletContext().setAttribute("allAssayTypes",
+					assayTypes);
 		}
-		if (session.getAttribute("allFileSubmitters") == null) {
-			List submitters = searchWorkflowService.getAllFileSubmitters();
-			session.setAttribute("allFileSubmitters", submitters);
+		if (session.getServletContext().getAttribute("allUsernames") == null) {
+			List allUsernames = lookupService.getAllUsernames();
+			session.getServletContext().setAttribute("allUsernames",
+					allUsernames);
 		}
 	}
 
@@ -273,9 +274,10 @@ public class InitSessionAction extends AbstractBaseAction {
 			LookupService lookupService) throws Exception {
 		SearchSampleService searchSampleService = new SearchSampleService();
 
-		if (session.getAttribute("allSampleTypes") == null) {
+		if (session.getServletContext().getAttribute("allSampleTypes") == null) {
 			List sampleTypes = lookupService.getAllSampleTypes();
-			session.setAttribute("allSampleTypes", sampleTypes);
+			session.getServletContext().setAttribute("allSampleTypes",
+					sampleTypes);
 		}
 		if (session.getAttribute("allSampleSources") == null
 				|| session.getAttribute("newSampleCreated") != null) {
@@ -287,19 +289,22 @@ public class InitSessionAction extends AbstractBaseAction {
 			List sourceSampleIds = searchSampleService.getAllSourceSampleIds();
 			session.setAttribute("allSourceSampleIds", sourceSampleIds);
 		}
-		if (session.getAttribute("allSampleSubmitters") == null) {
-			List submitters = searchSampleService.getAllSampleSubmitters();
-			session.setAttribute("allSampleSubmitters", submitters);
+		if (session.getServletContext().getAttribute("allUsernames") == null) {
+			List allUsernames = lookupService.getAllUsernames();
+			session.getServletContext().setAttribute("allUsernames",
+					allUsernames);
 		}
-		if (session.getAttribute("sampleContainerInfo") == null) {
+		if (session.getServletContext().getAttribute("sampleContainerInfo") == null) {
 			ContainerInfoBean containerInfo = lookupService
 					.getSampleContainerInfo();
-			session.setAttribute("sampleContainerInfo", containerInfo);
+			session.getServletContext().setAttribute("sampleContainerInfo",
+					containerInfo);
 		}
-		if (session.getAttribute("aliquotContainerInfo") == null) {
+		if (session.getServletContext().getAttribute("aliquotContainerInfo") == null) {
 			ContainerInfoBean containerInfo = lookupService
 					.getAliquotContainerInfo();
-			session.setAttribute("aliquotContainerInfo", containerInfo);
+			session.getServletContext().setAttribute("aliquotContainerInfo",
+					containerInfo);
 		}
 		// clear the new sample created flag
 		session.removeAttribute("newSampleCreated");
@@ -314,9 +319,10 @@ public class InitSessionAction extends AbstractBaseAction {
 	private void setCreateRunSession(HttpSession session,
 			LookupService lookupService) throws Exception {
 		ExecuteWorkflowService executeWorkflowService = new ExecuteWorkflowService();
-		if (session.getAttribute("allAssayTypes") == null) {
+		if (session.getServletContext().getAttribute("allAssayTypes") == null) {
 			List assayTypes = lookupService.getAllAssayTypes();
-			session.setAttribute("allAssayTypes", assayTypes);
+			session.getServletContext().setAttribute("allAssayTypes",
+					assayTypes);
 		}
 
 		if (session.getAttribute("workflow") == null
@@ -340,9 +346,10 @@ public class InitSessionAction extends AbstractBaseAction {
 			session.setAttribute("allAssayBeans", allAssayBeans);
 		}
 
-		if (session.getAttribute("allUsernames") == null) {
+		if (session.getServletContext().getAttribute("allUsernames") == null) {
 			List allUsernames = lookupService.getAllUsernames();
-			session.setAttribute("allUsernames", allUsernames);
+			session.getServletContext().setAttribute("allUsernames",
+					allUsernames);
 		}
 
 		session.removeAttribute("newWorkflowCreated");
@@ -363,44 +370,32 @@ public class InitSessionAction extends AbstractBaseAction {
 		session.removeAttribute("newWorkflowCreated");
 	}
 
-	private void setFileActionSession(HttpSession session) throws Exception {
-
-		ExecuteWorkflowService executeWorkflowService = new ExecuteWorkflowService();
-		if (session.getAttribute("workflow") == null
-				|| session.getAttribute("newWorkflowCreated") != null) {
-			ExecuteWorkflowBean workflowBean = executeWorkflowService
-					.getExecuteWorkflowBean();
-			session.setAttribute("workflow", workflowBean);
-		}
-		session.removeAttribute("newWorkflowCreated");
-	}
-
 	private void clearSessionData(HttpSession session, String forwardPage) {
 		if (!forwardPage.equals("createAliquot")) {
-			//clear session attributes created during create aliquot
+			// clear session attributes created during create aliquot
 			session.removeAttribute("aliquotMatrix");
 			session.removeAttribute("createAliquotForm");
 		}
 		if (!forwardPage.equals("createSample")) {
-			session.removeAttribute("createSampleForm");	
+			session.removeAttribute("createSampleForm");
 		}
-		
+
 		if (!forwardPage.equals("searchSample")) {
 			// clear session attributes created during search sample
 			session.removeAttribute("samples");
-			session.removeAttribute("aliquots");			
+			session.removeAttribute("aliquots");
 		}
-		
+
 		if (!forwardPage.equals("uploadForward")) {
 			// clear session attributes creatd during fileUpload
 			session.removeAttribute("httpFileUploadSessionData");
 		}
-		
-		if (forwardPage.equals("createSample") ||
-				forwardPage.equals("createAliquot")||
-				forwardPage.equals("searchSample")||
-				forwardPage.equals("searchWorkflow")) {
-			//clear session attributes created during execute workflow pages
+
+		if (forwardPage.equals("createSample")
+				|| forwardPage.equals("createAliquot")
+				|| forwardPage.equals("searchSample")
+				|| forwardPage.equals("searchWorkflow")) {
+			// clear session attributes created during execute workflow pages
 			session.removeAttribute("workflow");
 		}
 	}
