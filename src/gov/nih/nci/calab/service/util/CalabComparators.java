@@ -17,14 +17,12 @@ import java.util.Comparator;
  * 
  */
 
-/* CVS $Id: CalabComparators.java,v 1.3 2006-04-21 13:45:55 pansu Exp $ */
+/* CVS $Id: CalabComparators.java,v 1.4 2006-04-27 14:51:20 pansu Exp $ */
 
 public class CalabComparators {
 
-	public static class RunBeanComparator implements Comparator {
-		public int compare(Object a, Object b) {
-			RunBean run1 = (RunBean) a;
-			RunBean run2 = (RunBean) b;
+	public static class RunBeanComparator implements Comparator<RunBean> {
+		public int compare(RunBean run1, RunBean run2) {
 			// if no run number compare by name
 			if (run1.getRunNumber() == -1 || run2.getRunNumber() == -1) {
 				return run1.getName().compareTo(run2.getName());
@@ -33,20 +31,17 @@ public class CalabComparators {
 		}
 	}
 
-	public static class AliquotBeanComparator implements Comparator {
-		public int compare(Object a, Object b) {
-			AliquotBean aliquot1 = (AliquotBean) a;
-			AliquotBean aliquot2 = (AliquotBean) b;
+	public static class AliquotBeanComparator implements
+			Comparator<AliquotBean> {
+		public int compare(AliquotBean aliquot1, AliquotBean aliquot2) {
 
 			return aliquot1.getAliquotName().compareTo(
 					aliquot2.getAliquotName());
 		}
 	}
 
-	public static class AssayBeanComparator implements Comparator {
-		public int compare(Object a, Object b) {
-			AssayBean assay1 = (AssayBean) a;
-			AssayBean assay2 = (AssayBean) b;
+	public static class AssayBeanComparator implements Comparator<AssayBean> {
+		public int compare(AssayBean assay1, AssayBean assay2) {
 
 			// compare assayType first then if assayNumber is valid, compare
 			// prefix then number, else
@@ -70,19 +65,15 @@ public class CalabComparators {
 		}
 	}
 
-	public static class SampleBeanComparator implements Comparator {
-		public int compare(Object a, Object b) {
-			SampleBean sample1 = (SampleBean) a;
-			SampleBean sample2 = (SampleBean) b;
-
+	public static class SampleBeanComparator implements Comparator<SampleBean> {
+		public int compare(SampleBean sample1, SampleBean sample2) {
 			return sample1.getSampleName().compareTo(sample2.getSampleName());
 		}
 	}
 
-	public static class ContainerBeanComparator implements Comparator {
-		public int compare(Object a, Object b) {
-			ContainerBean container1 = (ContainerBean) a;
-			ContainerBean container2 = (ContainerBean) b;
+	public static class ContainerBeanComparator implements
+			Comparator<ContainerBean> {
+		public int compare(ContainerBean container1, ContainerBean container2) {
 
 			// if no container number compare by name
 			if (container1.getContainerNumber() == -1
@@ -95,10 +86,8 @@ public class CalabComparators {
 		}
 	}
 
-	public static class FileBeanComparator implements Comparator {
-		public int compare(Object a, Object b) {
-			FileBean file1 = (FileBean) a;
-			FileBean file2 = (FileBean) b;
+	public static class FileBeanComparator implements Comparator<FileBean> {
+		public int compare(FileBean file1, FileBean file2) {
 			// compare file name then file inouttype
 			if (file1.getFilename().compareTo(file2.getFilename()) == 0) {
 				return file1.getInoutType().compareTo(file2.getInoutType());
@@ -108,10 +97,10 @@ public class CalabComparators {
 		}
 	}
 
-	public static class WorkflowResultBeanComparator implements Comparator {
-		public int compare(Object a, Object b) {
-			WorkflowResultBean workflow1 = (WorkflowResultBean) a;
-			WorkflowResultBean workflow2 = (WorkflowResultBean) b;
+	public static class WorkflowResultBeanComparator implements
+			Comparator<WorkflowResultBean> {
+		public int compare(WorkflowResultBean workflow1,
+				WorkflowResultBean workflow2) {
 			int assayDiff = (new AssayBeanComparator()).compare(workflow1
 					.getAssay(), workflow2.getAssay());
 			int runDiff = (new RunBeanComparator()).compare(workflow1.getRun(),
