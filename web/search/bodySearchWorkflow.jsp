@@ -22,10 +22,10 @@
 	<blockquote>
 		<table width="90%" border="0" align="center" cellpadding="3" cellspacing="0" summary="">
 			<tr>
-				<td class="dataTablePrimaryLabel">
+				<td class="formTitle">
 					Search
 				</td>
-				<td class="dataTablePrimaryLabel">
+				<td class="formTitle">
 					* Search for Wildcards
 				</td>
 			</tr>
@@ -110,8 +110,10 @@
 		<br>
 		<table width="90%" border="0" align="center" cellpadding="3" cellspacing="0" summary="">
 			<tr>
-				<td class="dataTablePrimaryLabel" colspan="2">
+				<td class="formTitle" colspan="2">
+					<div align="center">
 					and Additional Filtering of Above Data
+					</div>
 				</td>
 			</tr>
 			<tr>

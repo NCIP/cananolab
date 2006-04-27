@@ -21,10 +21,10 @@
 	<blockquote>
 		<table width="90%" border="0" align="center" cellpadding="3" cellspacing="0" summary="">
 			<TR>
-				<td class="dataTablePrimaryLabel">
+				<td class="formTitle">
 					Search
 				</td>
-				<td class="dataTablePrimaryLabel">
+				<td class="formTitle">
 					* Search for Wildcards
 				</td>
 			</TR>
