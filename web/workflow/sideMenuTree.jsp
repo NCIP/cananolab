@@ -95,7 +95,8 @@
                                         </c:forEach>
 									</c:forEach>
 								</c:forEach>							
-								document.write(d);								
+								document.write(d);			
+								d.config.closeSameLevel=true;
 							//-->
 							</script>
 								</div>
