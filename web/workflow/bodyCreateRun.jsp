@@ -27,14 +27,17 @@
 					</div>
 				</td>
 			</tr>
+
 			<tr>
-				<td colspan="2" class="formLabel">
-					<div align="justify">
-						<strong>Assay Type : Assay*<span class="formFieldWhite"> <html:select property="assayId">
-									<option value=""></option>
-									<html:options collection="allAssayBeans" property="assayId" labelProperty="assayStr" />
-								</html:select></span></strong>
-					</div>
+				<td class="formLabel">
+					<strong>Assay Type : Assay*</strong>
+				</td>
+				<TD class="formField">
+					<html:select property="assayId">
+						<option value=""></option>
+						<html:options collection="allAssayBeans" property="assayId" labelProperty="assayStr" />
+					</html:select>
+					</span>
 				</td>
 
 			</tr>
@@ -77,12 +80,12 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="formLabelWhite">
+				<td class="formLabel">
 					<div align="left">
 						<strong>Aliquot Comments </strong>
 					</div>
 				</td>
-				<td class="formLabelWhite">
+				<td class="formField">
 					<div align="justify">
 						<span class="formFieldWhite"><html:textarea property="aliquotComment" cols="40" /></span>
 					</div>
@@ -90,9 +93,7 @@
 			</tr>
 			<tr>
 				<td class="formLabelWhite">
-					<div align="left">
-						<strong>Run By*</strong>
-					</div>
+					<strong>Run By*</strong>
 				</td>
 				<td class="formFieldWhite">
 					<html:select property="runBy">
@@ -102,13 +103,10 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="formLabelWhite">
-
-					<div align="left">
-						<strong>Run Date* </strong>
-					</div>
+				<td class="formLabel">
+					<strong>Run Date* </strong>
 				</td>
-				<td class="formFieldWhite">
+				<td class="formField">
 					<html:text property="runDate" size="10" />
 					<span class="formFieldWhite"> <a href="javascript:cal.popup();"> <img height="18" src="images/calendar-icon.gif" width="22" border="0" alt="Click Here to Pick up the date"> </a> </span>
 				</td>
