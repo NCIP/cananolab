@@ -238,7 +238,7 @@ FORM BEGINS
 	color:#000000;
 	border-right:1px solid #5C5C5C;
 	border-bottom:1px solid #5C5C5C;
-	text-align:right;
+	text-align:left;
 	border-left: 1px solid #5C5C5C;
 }
 .formTitle{ /* for header cells (top) of forms */
@@ -465,7 +465,7 @@ h2,.h2{ /* for header of page */
 	color:#000000;
 	border-right:1px solid #5C5C5C;
 	border-bottom:1px solid #5C5C5C;
-	text-align:right;
+	text-align:left;
 	border-left: 1px solid #5C5C5C;
 	padding-left:0.2em;
 }
