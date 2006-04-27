@@ -99,7 +99,7 @@
 				<td class="formField">
 					<html:select property="sampleSubmitter">
 						<option value="" />
-							<html:options name="allSampleSubmitters" />
+							<html:options name="allUsernames" />
 					</html:select>
 				</td>
 			</tr>
