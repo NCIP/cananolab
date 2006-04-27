@@ -4,6 +4,7 @@
 	<form-beans>
 		<form-bean name="useAliquotForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="runId" type="java.lang.String" />
+			<form-property name="runName" type="java.lang.String" />
 			<form-property name="aliquotIds" type="java.lang.String[]" />
 			<form-property name="comments" type="java.lang.String" />
 		</form-bean>
