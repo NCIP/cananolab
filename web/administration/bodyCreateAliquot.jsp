@@ -202,7 +202,7 @@ function openLink() {
 				</logic:iterate>
 			</table>
 		</logic:present>
-		<table border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
+		<table width="90%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 			<tr>
 				<td width="30%">
 					<span class="formMessage"> Aliquoted by: <bean:write name="creator" /> Aliquoted Date: <bean:write name="creationDate" /></span>
