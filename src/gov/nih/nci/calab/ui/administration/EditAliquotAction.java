@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: EditAliquotAction.java,v 1.4 2006-04-07 15:29:37 pansu Exp $ */
+/* CVS $Id: EditAliquotAction.java,v 1.5 2006-04-27 18:19:38 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
@@ -44,7 +44,6 @@ public class EditAliquotAction extends AbstractBaseAction {
 						.getAttribute("aliquotMatrix");
 				//replace the aliquot in the matrix and reset the session variable
 				((AliquotBean[]) aliquotMatrx.get(rowNum))[colNum]=aliquot;
-				session.setAttribute("aliquotMatrix", aliquotMatrx);
 				forward = mapping.findForward("success");
 			} else {
 				logger
