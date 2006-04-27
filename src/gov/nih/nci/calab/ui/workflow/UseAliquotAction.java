@@ -6,9 +6,8 @@ package gov.nih.nci.calab.ui.workflow;
  * @author pansu
  */
 
-/* CVS $Id: UseAliquotAction.java,v 1.10 2006-04-27 15:56:15 pansu Exp $*/
+/* CVS $Id: UseAliquotAction.java,v 1.11 2006-04-27 16:00:18 pansu Exp $*/
 
-import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.service.workflow.ExecuteWorkflowService;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
 
