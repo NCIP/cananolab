@@ -23,7 +23,7 @@ import org.apache.log4j.Logger;
  * @author pansu
  * 
  */
-/* CVS $Id: SearchSampleService.java,v 1.15 2006-04-27 14:51:08 pansu Exp $ */
+/* CVS $Id: SearchSampleService.java,v 1.16 2006-04-27 18:58:08 pansu Exp $ */
 
 public class SearchSampleService {
 	private static Logger logger = Logger.getLogger(SearchSampleService.class);
@@ -75,32 +75,6 @@ public class SearchSampleService {
 		}
 
 		return sourceSampleIds;
-	}
-
-	/**
-	 * 
-	 * @return all sample submitters
-	 */
-	public List<String> getAllSampleSubmitters() throws Exception {
-		List<String> sampleSubmitters = new ArrayList<String>();
-		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
-		
-		try {
-			ida.open();
-			String hqlString = "select distinct sample.createdBy from Sample sample order by sample.createdBy";
-			List results = ida.search(hqlString);
-			for (Object obj : results) {
-				sampleSubmitters.add((String) obj);
-			}
-		} catch (Exception e) {
-			logger.error("Error in retrieving all sample submitters", e);
-			throw new RuntimeException(
-					"Error in retrieving all sample submitters");
-		} finally {
-			ida.close();
-		}
-
-		return sampleSubmitters;
 	}
 
 	/**
