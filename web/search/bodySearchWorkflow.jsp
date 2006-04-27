@@ -22,7 +22,7 @@
 	<blockquote>
 		<table width="90%" border="0" align="center" cellpadding="3" cellspacing="0" summary="">
 			<tr>
-				<td class="formTitle">
+				<td class="formTitle" width="30%">
 					Search
 				</td>
 				<td class="formTitle">
@@ -30,7 +30,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="formLabel">
+				<td class="formLabel" width="30%">
 					<strong>Assay Name<strong>
 				</td>
 				<td class="formField">
@@ -38,7 +38,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="formLabelWhite">
+				<td class="formLabelWhite" width="30%">
 					<strong>Assay Type </strong>
 				</td>
 				<td class="formFieldWhite">
@@ -49,7 +49,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="formLabel">
+				<td class="formLabel" width="30%">
 					<strong>Assay Run Date</strong>
 				</td>
 				<td valign="top" class="formField">
@@ -60,7 +60,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="formLabelWhite">
+				<td class="formLabelWhite" width="30%">
 					<strong>Aliquot ID</strong>
 				</td>
 				<td class="formFieldWhite">
@@ -68,7 +68,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="formLabel">
+				<td class="formLabel" width="30%">
 					<strong>File Name </strong>
 				</td>
 				<td class="formField">
@@ -76,7 +76,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="formLabelWhite">
+				<td class="formLabelWhite" width="30%">
 					<strong>File Submission Date</strong>
 				</td>
 				<td class="formFieldWhite">
@@ -88,7 +88,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="formLabel">
+				<td class="formLabel" width="30%">
 					<strong>File Submitter </strong>
 				</td>
 				<td class="formField">
@@ -99,7 +99,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="formLabelWhite">
+				<td class="formLabelWhite" width="30%">
 					<strong> Join Search Criteria by </strong>
 				</td>
 				<td class="formFieldWhite">
