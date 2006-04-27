@@ -3,14 +3,14 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<h2>
+<h3>
 	<br>
 	<logic:notPresent name="containerNum">
 		<logic:notPresent name="aliquotNum">
         	The following sample is successfully created:
 	    </logic:notPresent>
 	</logic:notPresent>
-</h2>
+</h3>
 <blockquote>
 	<c:choose>
   		<c:when test="${not empty containerNum or not empty aliquotNum}">  											    								
