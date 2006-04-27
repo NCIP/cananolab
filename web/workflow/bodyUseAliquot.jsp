@@ -20,13 +20,13 @@
 			<tr class="topBorder">
 				<td colspan="2" class="dataTablePrimaryLabel">
 					<div align="justify">
-						<em>USE ALIQUOT </em>
+						<em>USE ALIQUOT for run <bean:write name="runName"/></em>
 					</div>
 				</td>
 			</tr>
 			<tr>
 				<td class="formLabel">
-					<strong>Aliquot ID <img src="images/help.gif" width="15" height="15"></strong>
+					<strong>Aliquot ID</strong>
 				</td>
 				<td class="formField">
 					<div align="left">
@@ -64,6 +64,7 @@
 							<td>
 								<div align="left">
 									<input type="hidden" name="runId" value="<bean:write name="runId"/>">
+									<input type="hidden" name="runName" value="<bean:write name="runName"/>">
 									<html:reset />
 									<html:submit />
 									<input type="button" value="Cancel" onclick="javascript:history.go(-1)">
