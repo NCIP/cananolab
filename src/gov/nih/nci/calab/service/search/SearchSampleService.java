@@ -4,7 +4,6 @@ import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
 import gov.nih.nci.calab.domain.Aliquot;
 import gov.nih.nci.calab.domain.Sample;
-import gov.nih.nci.calab.domain.Source;
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.SampleBean;
 import gov.nih.nci.calab.dto.administration.StorageLocation;
@@ -24,7 +23,7 @@ import org.apache.log4j.Logger;
  * @author pansu
  * 
  */
-/* CVS $Id: SearchSampleService.java,v 1.14 2006-04-22 21:08:27 zengje Exp $ */
+/* CVS $Id: SearchSampleService.java,v 1.15 2006-04-27 14:51:08 pansu Exp $ */
 
 public class SearchSampleService {
 	private static Logger logger = Logger.getLogger(SearchSampleService.class);
@@ -210,7 +209,7 @@ public class SearchSampleService {
 
 			ida.open();
 
-			List results = ida.searchByParam(hqlString, paramList);
+			List<? extends Object> results = (List<? extends Object>)ida.searchByParam(hqlString, paramList);
 			for (Object obj : new HashSet<Object>(results)) {
 				Sample sample = (Sample) obj;
 				samples.add(new SampleBean(sample));
@@ -332,10 +331,9 @@ public List<AliquotBean> searchAliquotsByAliquotName(String aliquotName,
 
 			ida.open();
 
-			List results = ida.searchByParam(hqlString, paramList);
+			List<? extends Object> results = (List<? extends Object>)ida.searchByParam(hqlString, paramList);
 			for (Object obj : new HashSet<Object>(results)) {
 				Aliquot aliquot = (Aliquot) obj;
-				Sample sample=aliquot.getSample();
 				aliquots.add(new AliquotBean(aliquot));				
 			}
 		} catch (Exception e) {
