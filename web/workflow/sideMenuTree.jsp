@@ -54,7 +54,7 @@
 										<c:forEach var="run" items="${assay.runBeans}">																
 										    <c:set var="runSeq" value="${runSeq+1+2}"/>
   											d.add(${runSeq},${assaySeq}, '${run.name}','javascript:void(0)'); 											  				
-  											d.add(${runSeq+1},${runSeq},'In','javascript:gotoPage(\'workflowForward.do?type=in&runId=${run.id}&inout=Input\')');
+  											d.add(${runSeq+1},${runSeq},'In','javascript:gotoPage(\'workflowForward.do?type=in&runId=${run.id}&runName=${run.name}&inout=Input\')');
   											d.add(${runSeq+2},${runSeq},'Out','javascript:gotoPage(\'workflowForward.do?type=out&runId=${run.id}&inout=Output\')');
 											 											
 											<c:forEach var="aliquot" items="${run.aliquotBeans}">
