@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.28 2006-04-26 15:42:57 zengje Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.29 2006-04-27 18:20:12 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
@@ -53,7 +53,9 @@ public class InitSessionAction extends AbstractBaseAction {
 		try {
 			DynaActionForm theForm = (DynaActionForm) form;
 			forwardPage = (String) theForm.get("forwardPage");
-            
+			// clean up session data
+			clearSessionData(session, forwardPage);
+
 			// get user and date information
 			String creator = "";
 			if (session.getAttribute("user") != null) {
@@ -65,14 +67,12 @@ public class InitSessionAction extends AbstractBaseAction {
 			session.setAttribute("creator", creator);
 			session.setAttribute("creationDate", creationDate);
 
-
 			// retrieve from sesssion first if available assuming these values
 			// are not likely to change within the same session. If changed, the
 			// session should be updated.
+
 			LookupService lookupService = new LookupService();
 			if (forwardPage.equals("useAliquot")) {
-				String runId = (String) request.getParameter("runId");
-				session.setAttribute("runId", runId);
 				setUseAliquotSession(session, lookupService);
 			} else if (forwardPage.equals("createSample")) {
 				setCreateSampleSession(session, lookupService);
@@ -83,43 +83,50 @@ public class InitSessionAction extends AbstractBaseAction {
 				setSearchWorkflowSession(session, lookupService);
 			} else if (forwardPage.equals("searchSample")) {
 				setSearchSampleSession(session, lookupService);
-			} else if (forwardPage.equals("createRun") || forwardPage.equals("createAssayRun")) {
+			} else if (forwardPage.equals("createRun")
+					|| forwardPage.equals("createAssayRun")) {
 				setCreateRunSession(session, lookupService);
 			} else if (forwardPage.equals("workflowMessage")) {
 				setWorkflowMessageSession(session);
-			} else if (forwardPage.equals("fileUploadOption") || forwardPage.equals("fileDownload") 
-						|| forwardPage.equals("fileMask") || forwardPage.equals("fileMaskSetup")) {
+			} else if (forwardPage.equals("fileUploadOption")
+					|| forwardPage.equals("fileDownload")
+					|| forwardPage.equals("fileMask")
+					|| forwardPage.equals("fileMaskSetup")) {
 				setFileActionSession(session);
-            } else if (forwardPage.equals("uploadForward")) {
-            	// refresh tree view
-            	setFileActionSession(session);
-            	
-            	// read HttpFileUploadSessionData from session
-                HttpFileUploadSessionData hFileUploadData = (HttpFileUploadSessionData)request.getSession().getAttribute("httpFileUploadSessionData");
-                																						     
-            	// based on the type=in/out/upload and runId to modify the forwardPage
-                String type = hFileUploadData.getFromType();
-                String runId = hFileUploadData.getRunId();
-                String inout = hFileUploadData.getInout();
-                
-                session.removeAttribute("httpFileUploadSessionData");
-               
-                if (type.equalsIgnoreCase("in") || type.equalsIgnoreCase("out")) {
-                	// cannot forward to a page with the request parameter, so use response
-                	response.sendRedirect(urlPrefix + "/workflowForward.do?type="+ type + "&runId=" + runId + "&inout=" + inout);
-                	forwardPage = null;
-                } else if (type.equalsIgnoreCase("upload")) {
-                	session.setAttribute("runId", runId);
-                	forwardPage = "fileUploadOption";
-                }              
-             }
+			} else if (forwardPage.equals("uploadForward")) {
+				// refresh tree view
+				setFileActionSession(session);
+
+				// read HttpFileUploadSessionData from session
+				HttpFileUploadSessionData hFileUploadData = (HttpFileUploadSessionData) request
+						.getSession().getAttribute("httpFileUploadSessionData");
+
+				// based on the type=in/out/upload and runId to modify the
+				// forwardPage
+				String type = hFileUploadData.getFromType();
+				String runId = hFileUploadData.getRunId();
+				String inout = hFileUploadData.getInout();
+
+				session.removeAttribute("httpFileUploadSessionData");
+
+				if (type.equalsIgnoreCase("in") || type.equalsIgnoreCase("out")) {
+					// cannot forward to a page with the request parameter, so
+					// use response
+					response.sendRedirect(urlPrefix
+							+ "/workflowForward.do?type=" + type + "&runId="
+							+ runId + "&inout=" + inout);
+					forwardPage = null;
+				} else if (type.equalsIgnoreCase("upload")) {
+					session.setAttribute("runId", runId);
+					forwardPage = "fileUploadOption";
+				}
+			}
 			if (forwardPage == null) {
 				// for response.setRedirect()
 				forward = null;
 			} else {
-				forward = mapping.findForward(forwardPage);				
+				forward = mapping.findForward(forwardPage);
 			}
-				
 
 		} catch (Exception e) {
 			ActionMessages errors = new ActionMessages();
@@ -221,24 +228,16 @@ public class InitSessionAction extends AbstractBaseAction {
 			List aliquots = lookupService.getUnmaskedAliquots();
 			session.setAttribute("allUnmaskedAliquots", aliquots);
 		}
-		if (session.getAttribute("aliquotContainerInfo") == null
-				|| session.getAttribute("newAliquotCreated") != null) {
+		if (session.getAttribute("aliquotContainerInfo") == null) {
 			ContainerInfoBean containerInfo = lookupService
 					.getAliquotContainerInfo();
 			session.setAttribute("aliquotContainerInfo", containerInfo);
 		}
 		if (session.getAttribute("aliquotCreateMethods") == null) {
-			List methods = manageAliquotService
-					.getAliquotCreateMethods();
+			List methods = manageAliquotService.getAliquotCreateMethods();
 			session.setAttribute("aliquotCreateMethods", methods);
 		}
-		// clear the form in the session
-		if (session.getAttribute("createAliquotForm") != null) {
-			session.removeAttribute("createAliquotForm");
-		}
-		if (session.getAttribute("aliquotMatrix") != null) {
-			session.removeAttribute("aliquotMatrix");
-		}
+
 		// clear new aliquot created flag and new sample created flag
 		session.removeAttribute("newAliquotCreated");
 		session.removeAttribute("newSampleCreated");
@@ -250,15 +249,10 @@ public class InitSessionAction extends AbstractBaseAction {
 	 * @param session
 	 * @param lookupService
 	 */
-private void setSearchWorkflowSession(HttpSession session,
+	private void setSearchWorkflowSession(HttpSession session,
 			LookupService lookupService) throws Exception {
 		SearchWorkflowService searchWorkflowService = new SearchWorkflowService();
 
-		if (session.getAttribute("allUnmaskedAliquots") == null
-				|| session.getAttribute("newAliquotCreated") != null) {
-			List<AliquotBean> allAliquots = lookupService.getUnmaskedAliquots();
-			session.setAttribute("allUnmaskedAliquots", allAliquots);
-		}		
 		if (session.getAttribute("allAssayTypes") == null) {
 			List assayTypes = lookupService.getAllAssayTypes();
 			session.setAttribute("allAssayTypes", assayTypes);
@@ -267,9 +261,8 @@ private void setSearchWorkflowSession(HttpSession session,
 			List submitters = searchWorkflowService.getAllFileSubmitters();
 			session.setAttribute("allFileSubmitters", submitters);
 		}
-		// clear the new aliquote created flag
-		session.removeAttribute("newAliquotCreated");
 	}
+
 	/**
 	 * Set up session attributes for search sample page
 	 * 
@@ -279,18 +272,8 @@ private void setSearchWorkflowSession(HttpSession session,
 	private void setSearchSampleSession(HttpSession session,
 			LookupService lookupService) throws Exception {
 		SearchSampleService searchSampleService = new SearchSampleService();
-		if (session.getAttribute("allSamples") == null
-				|| session.getAttribute("newSampleCreated") != null) {
-			List samples = lookupService.getAllSamples();
-			session.setAttribute("allSamples", samples);
-		}
-		if (session.getAttribute("allAliquots") == null
-				|| session.getAttribute("newAliquotCreated") != null) {
-			List aliquots = lookupService.getAliquots();
-			session.setAttribute("allAliquots", aliquots);
-		}
-		if (session.getAttribute("allSampleTypes") == null
-				|| session.getAttribute("newSampleCreated") != null) {
+
+		if (session.getAttribute("allSampleTypes") == null) {
 			List sampleTypes = lookupService.getAllSampleTypes();
 			session.setAttribute("allSampleTypes", sampleTypes);
 		}
@@ -304,31 +287,22 @@ private void setSearchWorkflowSession(HttpSession session,
 			List sourceSampleIds = searchSampleService.getAllSourceSampleIds();
 			session.setAttribute("allSourceSampleIds", sourceSampleIds);
 		}
-		if (session.getAttribute("allSampleSubmitters") == null
-				|| session.getAttribute("newSampleCreated") != null) {
+		if (session.getAttribute("allSampleSubmitters") == null) {
 			List submitters = searchSampleService.getAllSampleSubmitters();
 			session.setAttribute("allSampleSubmitters", submitters);
 		}
-		if (session.getAttribute("sampleContainerInfo") == null
-				|| session.getAttribute("newSampleCreated") != null) {
+		if (session.getAttribute("sampleContainerInfo") == null) {
 			ContainerInfoBean containerInfo = lookupService
 					.getSampleContainerInfo();
 			session.setAttribute("sampleContainerInfo", containerInfo);
 		}
-		if (session.getAttribute("aliquotContainerInfo") == null
-				|| session.getAttribute("newAliquotCreated") != null) {
+		if (session.getAttribute("aliquotContainerInfo") == null) {
 			ContainerInfoBean containerInfo = lookupService
 					.getAliquotContainerInfo();
 			session.setAttribute("aliquotContainerInfo", containerInfo);
 		}
-
-		// clear new aliquot created flag and new sample created flag
-		session.removeAttribute("newAliquotCreated");
+		// clear the new sample created flag
 		session.removeAttribute("newSampleCreated");
-
-		// clear session attributes created during search sample
-		session.removeAttribute("samples");
-		session.removeAttribute("aliquots");
 	}
 
 	/**
@@ -360,20 +334,12 @@ private void setSearchWorkflowSession(HttpSession session,
 			List allAssignedAliquots = lookupService.getAllAssignedAliquots();
 			session.setAttribute("allAssignedAliquots", allAssignedAliquots);
 		}
-		if (session.getAttribute("allInFiles") == null) {
-			List allInFiles = lookupService.getAllInFiles();
-			session.setAttribute("allInFiles", allInFiles);
-		}
-		if (session.getAttribute("allOutFiles") == null) {
-			List allOutFiles = lookupService.getAllOutFiles();
-			session.setAttribute("allOutFiles", allOutFiles);
-		}
 
 		if (session.getAttribute("allAssayBeans") == null) {
 			List allAssayBeans = lookupService.getAllAssayBeans();
 			session.setAttribute("allAssayBeans", allAssayBeans);
 		}
-		
+
 		if (session.getAttribute("allUsernames") == null) {
 			List allUsernames = lookupService.getAllUsernames();
 			session.setAttribute("allUsernames", allUsernames);
@@ -396,16 +362,46 @@ private void setSearchWorkflowSession(HttpSession session,
 		}
 		session.removeAttribute("newWorkflowCreated");
 	}
-	
+
 	private void setFileActionSession(HttpSession session) throws Exception {
-		
+
 		ExecuteWorkflowService executeWorkflowService = new ExecuteWorkflowService();
 		if (session.getAttribute("workflow") == null
 				|| session.getAttribute("newWorkflowCreated") != null) {
-			ExecuteWorkflowBean workflowBean = executeWorkflowService.getExecuteWorkflowBean();
+			ExecuteWorkflowBean workflowBean = executeWorkflowService
+					.getExecuteWorkflowBean();
 			session.setAttribute("workflow", workflowBean);
 		}
 		session.removeAttribute("newWorkflowCreated");
+	}
+
+	private void clearSessionData(HttpSession session, String forwardPage) {
+		if (!forwardPage.equals("createAliquot")) {
+			//clear session attributes created during create aliquot
+			session.removeAttribute("aliquotMatrix");
+			session.removeAttribute("createAliquotForm");
+		}
+		if (!forwardPage.equals("createSample")) {
+			session.removeAttribute("createSampleForm");	
+		}
 		
+		if (!forwardPage.equals("searchSample")) {
+			// clear session attributes created during search sample
+			session.removeAttribute("samples");
+			session.removeAttribute("aliquots");			
+		}
+		
+		if (!forwardPage.equals("uploadForward")) {
+			// clear session attributes creatd during fileUpload
+			session.removeAttribute("httpFileUploadSessionData");
+		}
+		
+		if (forwardPage.equals("createSample") ||
+				forwardPage.equals("createAliquot")||
+				forwardPage.equals("searchSample")||
+				forwardPage.equals("searchWorkflow")) {
+			//clear session attributes created during execute workflow pages
+			session.removeAttribute("workflow");
+		}
 	}
 }
