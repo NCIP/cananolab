@@ -1,10 +1,11 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html:form action="/useAliquot">
 	<h2>
 		<br>
-		Use Aliquot
+		Use Aliquot for <c:out value="${param.runName}"/>
 	</h2>
 	<logic:messagesPresent message="true">
 		<ul>
@@ -20,7 +21,7 @@
 			<tr class="topBorder">
 				<td colspan="2" class="dataTablePrimaryLabel">
 					<div align="justify">
-						<em>USE ALIQUOT for run <bean:write name="runName"/></em>
+						<em>USE ALIQUOT</em>
 					</div>
 				</td>
 			</tr>
@@ -63,8 +64,8 @@
 						<tr>
 							<td>
 								<div align="left">
-									<input type="hidden" name="runId" value="<bean:write name="runId"/>">
-									<input type="hidden" name="runName" value="<bean:write name="runName"/>">
+									<input type="hidden" name="runId" value="${param.runId}"/>
+									<input type="hidden" name="runName" value="${param.runName}">
 									<html:reset />
 									<html:submit />
 									<input type="button" value="Cancel" onclick="javascript:history.go(-1)">
