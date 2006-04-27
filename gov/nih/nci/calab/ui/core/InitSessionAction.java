@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.30 2006-04-27 18:47:58 pansu Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.31 2006-04-27 20:26:25 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
@@ -75,7 +75,6 @@ public class InitSessionAction extends AbstractBaseAction {
 				setUseAliquotSession(session, lookupService);
 			} else if (forwardPage.equals("createSample")) {
 				setCreateSampleSession(session, lookupService);
-
 			} else if (forwardPage.equals("createAliquot")) {
 				setCreateAliquotSession(session, lookupService, urlPrefix);
 			} else if (forwardPage.equals("searchWorkflow")) {
@@ -180,6 +179,12 @@ public class InitSessionAction extends AbstractBaseAction {
 		ManageSampleService mangeSampleService = new ManageSampleService();
 		// if values don't exist in the database or if no new samples created.
 		// call the service
+		if (session.getAttribute("allSampleContainerTypes") == null
+				|| session.getAttribute("newSampleCreated") != null) {
+			List containerTypes = lookupService.getAllSampleContainerTypes();
+			session.setAttribute("allSampleContainerTypes", containerTypes);
+		}
+
 		if (session.getServletContext().getAttribute("allSampleTypes") == null) {
 			List sampleTypes = lookupService.getAllSampleTypes();
 			session.getServletContext().setAttribute("allSampleTypes",
@@ -197,11 +202,7 @@ public class InitSessionAction extends AbstractBaseAction {
 			session.getServletContext().setAttribute("sampleContainerInfo",
 					containerInfo);
 		}
-		// clear the form in the session
-		if (session.getAttribute("createSampleForm") != null
-				|| session.getAttribute("newSampleCreated") != null) {
-			session.removeAttribute("createSampleForm");
-		}
+
 		// clear the new sample created flag
 		session.removeAttribute("newSampleCreated");
 	}
@@ -221,6 +222,12 @@ public class InitSessionAction extends AbstractBaseAction {
 			List samples = lookupService.getAllSamples();
 			session.setAttribute("allSamples", samples);
 		}
+		if (session.getAttribute("allAliquotContainerTypes") == null
+				|| session.getAttribute("newAliquotCreated") != null) {
+			List containerTypes = lookupService.getAllAliquotContainerTypes();
+			session.setAttribute("allAliquotContainerTypes", containerTypes);
+		}
+
 		if (session.getAttribute("allUnmaskedAliquots") == null
 				|| session.getAttribute("newAliquotCreated") != null) {
 			List aliquots = lookupService.getUnmaskedAliquots();
@@ -341,9 +348,10 @@ public class InitSessionAction extends AbstractBaseAction {
 			session.setAttribute("allAssignedAliquots", allAssignedAliquots);
 		}
 
-		if (session.getAttribute("allAssayBeans") == null) {
+		if (session.getServletContext().getAttribute("allAssayBeans") == null) {
 			List allAssayBeans = lookupService.getAllAssayBeans();
-			session.setAttribute("allAssayBeans", allAssayBeans);
+			session.getServletContext().setAttribute("allAssayBeans",
+					allAssayBeans);
 		}
 
 		if (session.getServletContext().getAttribute("allUsernames") == null) {
@@ -374,10 +382,16 @@ public class InitSessionAction extends AbstractBaseAction {
 		if (!forwardPage.equals("createAliquot")) {
 			// clear session attributes created during create aliquot
 			session.removeAttribute("aliquotMatrix");
-			session.removeAttribute("createAliquotForm");
+			session.removeAttribute("allSamples");
+			session.removeAttribute("allAliquotContainerTypes");
 		}
+
+		session.removeAttribute("createAliquotForm");
+		session.removeAttribute("createSampleForm");
+
 		if (!forwardPage.equals("createSample")) {
-			session.removeAttribute("createSampleForm");
+			// clear session attributes created during create sample
+			session.removeAttribute("allSampleContainerTypes");
 		}
 
 		if (!forwardPage.equals("searchSample")) {
