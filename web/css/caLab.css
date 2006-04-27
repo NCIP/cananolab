@@ -510,6 +510,8 @@ td.leftBorderedFormFieldWhite {
 h3,.h3{ /* for title of page */
   font-size:1.3em;
   font-weight:bold;
+  color:#5C5C5C; /* constant: dark gray */
+  text-align:center;
 }
 p,.p{ /* for paragraphs */
   padding-left:1em;
