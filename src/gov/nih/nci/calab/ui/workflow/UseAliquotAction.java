@@ -6,8 +6,9 @@ package gov.nih.nci.calab.ui.workflow;
  * @author pansu
  */
 
-/* CVS $Id: UseAliquotAction.java,v 1.9 2006-04-18 15:21:07 zengje Exp $*/
+/* CVS $Id: UseAliquotAction.java,v 1.10 2006-04-27 15:56:15 pansu Exp $*/
 
+import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.service.workflow.ExecuteWorkflowService;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
 
@@ -31,18 +32,21 @@ public class UseAliquotAction extends AbstractBaseAction {
 			throws Exception {
 		ActionForward forward = null;
 		String runId=null;
+		String runName=null;
+		String[] aliquotIds=null;
 		HttpSession session = request.getSession();
 		try {
 			DynaValidatorForm theForm = (DynaValidatorForm) form;
 			runId = (String) theForm.get("runId");
-			String[] aliquotIds = (String[]) theForm.get("aliquotIds");
+			runName = (String) theForm.get("runName");
+			aliquotIds = (String[]) theForm.get("aliquotIds");
 			String comments = (String) theForm.get("comments");
 
 			ExecuteWorkflowService executeWorkflowService = new ExecuteWorkflowService();
 			executeWorkflowService.saveRunAliquots(runId, aliquotIds, comments,
 							(String)session.getAttribute("creator"),(String)session.getAttribute("creationDate") );
 			ActionMessages msgs = new ActionMessages();
-			ActionMessage msg = new ActionMessage("message.useAliquot", runId);
+			ActionMessage msg = new ActionMessage("message.useAliquot", runName);
 			msgs.add("message", msg);
 			saveMessages(request, msgs);
 			session.setAttribute("newWorkflowCreated", "true");
@@ -51,7 +55,7 @@ public class UseAliquotAction extends AbstractBaseAction {
 			logger.error("Caught exception when saving selected aliquot IDs.",
 					e);
 			ActionMessages errors = new ActionMessages();
-			ActionMessage error = new ActionMessage("error.useAliquot", runId);
+			ActionMessage error = new ActionMessage("error.useAliquot", runName);
 			errors.add("error", error);
 			saveMessages(request, errors);
 			forward = mapping.getInputForward();
