@@ -21,7 +21,7 @@
 	<blockquote>
 		<table width="90%" border="0" align="center" cellpadding="3" cellspacing="0" summary="">
 			<TR>
-				<td class="formTitle">
+				<td class="formTitle" width="30%">
 					Search
 				</td>
 				<td class="formTitle">
@@ -29,7 +29,7 @@
 				</td>
 			</TR>
 			<tr>
-				<td class="formLabel">
+				<td class="formLabel"  width="30%">
 					<strong>Search by </strong>
 				</td>
 				<td class="formField">
@@ -38,7 +38,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="formLabelWhite">
+				<td class="formLabelWhite"  width="30%">
 					<strong>Search ID (Sample or Aliquot) 
 				</td>
 				<td class="formFieldWhite">
@@ -46,7 +46,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="formLabel">
+				<td class="formLabel"  width="30%">
 					<strong> Sample Type </strong>
 				</td>
 				<td class="formField">
@@ -57,7 +57,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="formLabelWhite">
+				<td class="formLabelWhite"  width="30%">
 					<strong>Source</strong>
 				</td>
 				<td class="formFieldWhite">
@@ -68,7 +68,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="formLabel">
+				<td class="formLabel"  width="30%">
 					<strong>Source ID</strong>
 				</td>
 				<td class="formField">
@@ -79,7 +79,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="formLabelWhite">
+				<td class="formLabelWhite"  width="30%">
 					<strong> Date Accessioned</strong>
 				</td>
 				<td class="formFieldWhite">
@@ -93,7 +93,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="formLabel">
+				<td class="formLabel"  width="30%">
 					<strong> Creator </strong>
 				</td>
 				<td class="formField">
