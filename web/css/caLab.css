@@ -346,7 +346,7 @@ DATA TABLE BEGINS
 }
 .dataTableSecondaryLabel{ /* for the optional second row */
   font-family:arial,helvetica,verdana,sans-serif;
-  font-size:1.0em;
+  font-size:0.8em;
   font-weight:bolder;
   background-color:#CCCCCC; /* constant: medium gray */
   color:#5C5C5C; /* constant: dark gray */
@@ -357,7 +357,7 @@ DATA TABLE BEGINS
 }
 .dataTableHighlightLabel{ /* for the highlighted row */
   font-family:arial,helvetica,verdana,sans-serif;
-  font-size:1.0em;
+  font-size:0.8em;
   font-weight:bold;
   background-color:#6A8989 ; /* constant: darker green */
   color:#FFFFFF; /* constant: white */

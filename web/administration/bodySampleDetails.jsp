@@ -38,9 +38,9 @@
 			<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="90%" align="center" summary="" border="0">
 				<tbody>
 					<tr class="topBorder">
-						<td class="dataTablePrimaryLabel" colspan="2">
+						<td class="formTitle" colspan="2">
 							<div align="justify">
-								<em>SAMPLE</em>
+								Sample
 							</div>
 						</td>
 					</tr>
@@ -200,7 +200,7 @@
 									<c:set var="style" value="dataTableHighlightLabel" />
 								</c:when>
 								<c:otherwise>
-									<c:set var="style" value="dataTablePrimaryLabel" />
+									<c:set var="style" value="formTitle" />
 								</c:otherwise>
 							</c:choose>
 							<td class="${style}" colspan="2">
@@ -402,9 +402,9 @@
 			<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="90%" align="center" summary="" border="0">
 				<tbody>
 					<tr class="topBorder">
-						<td class="dataTablePrimaryLabel" colspan="2">
+						<td class="formTitle" colspan="2">
 							<div align="justify">
-								<em>SAMPLE</em>
+								Sample
 							</div>
 						</td>
 					</tr>
@@ -555,7 +555,7 @@
 			<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="90%" align="center" summary="" border="0">
 				<tbody>
 					<tr class="topBorder">
-						<td class="dataTablePrimaryLabel" colspan="2">
+						<td class="formTitle" colspan="2">
 							<div align="justify">
 								<em>Aliquot <bean:write name="aliquot" property="aliquotName" /> </em>
 							</div>

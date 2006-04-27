@@ -30,7 +30,7 @@
 	<bean:define id="showAliquot" name="showAliquot" type="java.lang.Boolean" />
 	<logic:equal name="showAliquot" value="false">
 		<table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
-			<tr><div align="center">
+		<tr><div align="center">
 				<td width="55" class="formTitle">
 					Sample ID
 				</td>

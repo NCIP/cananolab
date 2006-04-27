@@ -106,7 +106,14 @@
 								</tr>
 								<tr>
 									<td class="sidebarContent">
-										What's new message. What's new message. What's new message. What's new message. What's new message.
+										<strong>caLAB .50 is now available!</strong>  <br>
+										caLAB .50 contains the following features: <br>
+										<ul>
+											<li>Sample Management
+											<li>Aliquot Creation
+											<li>Create Assay Run
+											<li>Submit Assay Results
+										</ul>
 									</td>
 								</tr>
 							</table>

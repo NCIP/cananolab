@@ -17,7 +17,7 @@
 	</table>
 	<br>
 	<logic:present name="workflows">
-		<table width="90%" border="0" align="left" cellpadding="0" cellspacing="0">
+		<table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
 			<tr><div align="center">
 				<td width="111" class="formTitle">
 					File Name

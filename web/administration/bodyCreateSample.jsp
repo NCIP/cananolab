@@ -33,9 +33,9 @@ function refreshContainers() {
 		<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="90%" align="center" summary="" border="0">
 			<tbody>
 				<tr class="topBorder">
-					<td class="dataTablePrimaryLabel">
+					<td class="formTitle">
 						<div align="justify">
-							<em>DESCRIPTION</em>
+							Description
 						</div>
 					</td>
 				</tr>
@@ -109,13 +109,13 @@ function refreshContainers() {
 			<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="90%" align="center" summary="" border="0">
 				<tbody>
 					<tr class="topBorder">
-						<td class="dataTablePrimaryLabel" width="30%">
+						<td class="formTitle" width="30%">
 							<div align="justify">
-								<em>CONTAINER <c:out value="${status.index+1}" /> <html:hidden name="containers" indexed="true" property="containerName" value="${status.index+1}"/><c:choose>
+								Container <c:out value="${status.index+1}" /> <html:hidden name="containers" indexed="true" property="containerName" value="${status.index+1}"/><c:choose>
 										<c:when test="${status.index== 0}">
-											(TEMPLATE CONTAINER)
+											(Template Container)
 										</c:when>
-									</c:choose> </em>
+									</c:choose>
 							</div>
 						</td>
 					</tr>

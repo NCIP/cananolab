@@ -5,7 +5,7 @@
 <center>
 <table width="80%" border="0" align="center" cellpadding="0" cellspacing="0">
 	<tr>
-		<td class="dataTablePrimaryLabel" colspan="2"> General Information for the workflow </td>
+		<td class="formTitle" colspan="2" align="center"> General Information for the workflow </td>
 	</tr>
 	<tr >
 		<td class="leftBorderedFormFieldGrey"><b>Assay Type</b> </td>
@@ -24,7 +24,7 @@
  <br><br>
 <table width="80%" border="0" align="center" cellpadding="0" cellspacing="0">
 	<tr>
- 	  <td colspan="3" class="dataTablePrimaryLabel"> Uploaded <bean:write name="fileMaskForm" property="inout"/> Files
+ 	  <td colspan="3" class="formTitle" align="center"> Uploaded <bean:write name="fileMaskForm" property="inout"/> Files
 	  </td>
 	<tr>
    <tr>
