@@ -21,6 +21,7 @@
 			</ul>
 		</logic:messagesPresent>
 		<html:hidden property="assayId" value="${param.assayId}" />
+		<html:hidden property="assayName" value="${param.assayName}" />
 		<table width="90%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 			<tr class="topBorder">
 				<td colspan="2" class="formTitle">
