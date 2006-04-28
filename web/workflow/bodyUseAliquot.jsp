@@ -5,7 +5,8 @@
 <html:form action="/useAliquot">
 	<h3>
 		<br>
-		Use Aliquot for <c:out value="${param.runName}"/>
+		Use Aliquot for
+		<c:out value="${param.runName}" />
 	</h3>
 	<logic:messagesPresent message="true">
 		<ul>
@@ -16,6 +17,7 @@
 				</html:messages> </font>
 		</ul>
 	</logic:messagesPresent>
+	<html:errors />
 	<blockquote>
 		<table width="75%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 			<tr class="topBorder">
@@ -34,10 +36,9 @@
 						* Hold down the shift key for multiple selections.
 						<br>
 						<span class="formField" align="left"><span class="mainMenu"><span class="formMessage"><strong> <html:select property="aliquotIds" multiple="true" size="10">
-											<html:options collection="allUnmaskedAliquots" property="aliquotId" labelProperty="aliquotName"/>
+											<html:options collection="allUnmaskedAliquots" property="aliquotId" labelProperty="aliquotName" />
 										</html:select> </strong></span></span></span> <span class="formFieldWhite"> </span>
 					</div>
-					<html:errors />
 				</td>
 			</tr>
 		</table>
@@ -64,8 +65,8 @@
 						<tr>
 							<td>
 								<div align="left">
-									<input type="hidden" name="runId" value="${param.runId}"/>
-									<input type="hidden" name="runName" value="${param.runName}">
+									<input type="hidden" name="runId" value="${param.runId}" />
+									<input type="hidden" name="runName" value="${param.runName}">									
 									<html:reset />
 									<html:submit />
 									<input type="button" value="Cancel" onclick="javascript:history.go(-1)">
