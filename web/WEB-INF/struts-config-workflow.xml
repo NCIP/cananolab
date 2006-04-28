@@ -36,6 +36,7 @@
 		</form-bean>
 		<form-bean name="createAssayRunForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="assayId" type="java.lang.String" />
+			<form-property name="assayName" type="java.lang.String"/>
 			<form-property name="availableAliquot" type="java.lang.String[]" />
 			<form-property name="assignedAliquot" type="java.lang.String[]" />
 			<form-property name="runBy" type="java.lang.String" />
