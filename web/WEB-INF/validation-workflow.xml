@@ -8,6 +8,12 @@
 			<field property="aliquotIds" depends="required">
 				<arg position="0" key="useAliquotForm.aliquotIds" bundle="workflow" />
 			</field>
+			<field property="runId" depends="required">
+				<arg position="0" key="useAliquotForm.runId" bundle="workflow" />
+			</field>
+			<field property="runName" depends="required">
+				<arg position="0" key="useAliquotForm.runName" bundle="workflow" />
+			</field>
 		</form>
 		<form name="createRunForm">
 			<field property="assayId" depends="required">
@@ -46,6 +52,6 @@
 				<arg key="maskAliquotForm.description" bundle="workflow" position="0" />
 			</field>
 		</form>
-		
+
 	</formset>
 </form-validation>
