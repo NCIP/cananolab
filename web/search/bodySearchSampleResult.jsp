@@ -109,7 +109,7 @@
 
 								<c:url value="/searchSample.do" var="showAliquotURL">
 									<c:param name="showAliquot" value="true" />
-									<c:param name="sampleName" value="${sample.sampleName}*" />
+									<c:param name="searchName" value="${sample.sampleName}-*" />
 								</c:url>
 								<a href="${showAliquotURL}">Show Aliquots</a> &nbsp;
 							</td>
