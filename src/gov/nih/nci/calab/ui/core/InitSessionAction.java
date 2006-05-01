@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.31 2006-04-27 20:26:25 pansu Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.32 2006-05-01 17:36:27 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
@@ -86,9 +86,8 @@ public class InitSessionAction extends AbstractBaseAction {
 				setCreateRunSession(session, lookupService);
 			} else if (forwardPage.equals("workflowMessage")
 					|| forwardPage.equals("fileUploadOption")
-					|| forwardPage.equals("fileDownload")
-					|| forwardPage.equals("fileMask")
-					|| forwardPage.equals("fileMaskSetup")) {
+					|| forwardPage.equals("fileDownload")					
+					|| forwardPage.equals("runFileMask")) {
 				setWorkflowMessageSession(session);
 			} else if (forwardPage.equals("uploadForward")) {
 				// refresh tree view
