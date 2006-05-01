@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchSampleAction.java,v 1.7 2006-05-01 14:51:15 zengje Exp $ */
+/* CVS $Id: SearchSampleAction.java,v 1.8 2006-05-01 14:58:47 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.SampleBean;
@@ -47,7 +47,6 @@ public class SearchSampleAction extends AbstractBaseAction {
 			// otherwise search base sampleName
 			boolean showAliquot = ((String) theForm.get("showAliquot"))
 					.equals("true") ? true : false;
-			String paramSampleName = request.getParameter("sampleName");
 			String searchName = (String) theForm.get("searchName");
 			String sampleName="";
 			String aliquotName="";
@@ -87,14 +86,10 @@ public class SearchSampleAction extends AbstractBaseAction {
 				if (aliquotName.equals("all")) {
 					aliquotName = "";
 				}
-				if (paramSampleName != null) {
-					aliquots = searchSampleService.searchAliquotBySampleName(paramSampleName);
-				} else {
-					aliquots = searchSampleService.searchAliquotsByAliquotName(
-							aliquotName, sampleType, sampleSource, sourceSampleId,
-							dateAccessionedBegin, dateAccessionedEnd,
-							sampleSubmitter, storageLocation);					
-				}
+				aliquots = searchSampleService.searchAliquotsByAliquotName(
+						aliquotName, sampleType, sampleSource, sourceSampleId,
+						dateAccessionedBegin, dateAccessionedEnd,
+						sampleSubmitter, storageLocation);
 			} else if (sampleName.length() >= 0) {
 				if (sampleName.equals("all")) {
 					sampleName = "";
