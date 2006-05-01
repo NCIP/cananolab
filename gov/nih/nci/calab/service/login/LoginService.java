@@ -1,6 +1,6 @@
 package gov.nih.nci.calab.service.login;
 
-import gov.nih.nci.calab.dto.security.SecurityBean;
+import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.security.AuthenticationManager;
 import gov.nih.nci.security.SecurityServiceProvider;
 import gov.nih.nci.security.exceptions.CSException;
@@ -50,10 +50,10 @@ public class LoginService
 	 * @param	strLoginId LoginId of the authenticated user
 	 * @return	SecurityBean containing an authenticated user's information
 	 */
-    public SecurityBean setUserInfo(String strLoginId)
+    public UserBean setUserInfo(String strLoginId)
     {
     	//TODO Implement method to query CSM_USER table and get logged in user's recordset
-    	SecurityBean securityBean = new SecurityBean();
+    	UserBean securityBean = new UserBean();
     	
     	securityBean.setLoginId(strLoginId);
     	//set remaining info
