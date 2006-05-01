@@ -389,8 +389,6 @@ public class ExecuteWorkflowService {
 					doInputFile.setRun(doRun);
 					doInputFile.setCreatedBy(creator);
 					doInputFile.setCreatedDate(date);
-					System.out.println("ExecuteWorkflowService.saveFile(): input file created Date = " + date);
-					//TODO: is a "/" needed between filepath and filename?
                     FileNameConvertor fconvertor = new FileNameConvertor();
                     String filename =  fconvertor.getConvertedFileName(fileData.getFileName());
 					doInputFile.setPath(filepath + CalabConstants.URI_SEPERATOR + filename);
