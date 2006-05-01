@@ -141,6 +141,7 @@
   var cal = new calendar2(document.forms['createAssayRunForm'].elements['runDate']);
   cal.year_scroll = true;
   cal.time_comp = false;
+  cal.context = '${pageContext.request.contextPath}';
   
   /* assignAliquots function moves the selected aliquots 
      from available aliquot list to the assigned select list box.

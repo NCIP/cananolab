@@ -159,9 +159,11 @@
 					  var cal1 = new calendar2(document.forms['searchSampleForm'].elements['dateAccessionedBegin']);
 	            	  cal1.year_scroll = true;
 				      cal1.time_comp = false;
+					  cal1.context = '${pageContext.request.contextPath}';
 				      var cal2 = new calendar2(document.forms['searchSampleForm'].elements['dateAccessionedEnd']);
 	            	  cal2.year_scroll = true;
 				      cal2.time_comp = false;
+				      cal2.context = '${pageContext.request.contextPath}';
   				      //-->
 					  </script>
 

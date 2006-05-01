@@ -241,5 +241,6 @@ function refreshContainers() {
  var cal = new calendar2(document.forms['createSampleForm'].elements['dateReceived']);
  cal.year_scroll = true;
  cal.time_comp = false;
+ cal.context = '${pageContext.request.contextPath}';
 //-->
 </script>
