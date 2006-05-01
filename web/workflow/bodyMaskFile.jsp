@@ -1,6 +1,8 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <html:form action="/maskFile">
 	<h3> &nbsp;<BR> &nbsp;Mask&nbsp;File </h3>
 	<html:errors/>
@@ -23,7 +25,7 @@
 			</tr>
 			<tr>
 				<td class="formLabel">
-					<strong>File Name : <bean:write name="fileMaskForm" property="fileName"/></strong>
+					<strong>File Name : <c:out value="${param.fileName}"/></strong>
 				</td>
 				<td class="formField">
 					<DIV align="left"> &nbsp;<SPAN class="formField" align="left"><STRONG></STRONG>Are you sure you would you like to mask this File ?</SPAN></DIV>
@@ -53,10 +55,11 @@
 							<td>
 								<DIV align="left">
 									<input type="hidden" name="maskType" value="file">																
-									<input type="hidden" name="runId" value='<bean:write name="fileMaskForm" property="runId"/>' >									
-									<input type="hidden" name="inout" value='<bean:write name="fileMaskForm" property="inout"/>' >									
-									<input type="hidden" name="method" value='<bean:write name="fileMaskForm" property="method"/>'>																
-									<input type="hidden" name="fileId" value="<bean:write name='fileMaskForm' property='fileId'/>">
+									<html:hidden property="runId"/>						
+									<html:hidden property="inout"/>										
+									<html:hidden property="method"/>																
+									<html:hidden property="fileId"/>	
+									<html:hidden property="fileName"/>
 									<html:submit value="Yes" />
 									<INPUT type="button" value="No " onclick="javascript:history.go(-1)">
 							</td>
