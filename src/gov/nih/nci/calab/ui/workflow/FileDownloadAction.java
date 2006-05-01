@@ -128,8 +128,8 @@ public class FileDownloadAction extends AbstractDispatchAction
         File f = new File(fullPathName+File.separator+fileName);
         if (!f.exists())
         {
-            logger_.error("File has been remove, please contact system administrator.");
-            throw new Exception ("File has been remove, please contact system administrator.");
+            logger_.error("File to download doesn't exist on the server.");
+            throw new Exception ("File to download doesn't exist on the server.");
         }
         ActionUtil actionUtil = new ActionUtil();
         actionUtil.writeBinaryStream(f, response);
