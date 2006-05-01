@@ -156,20 +156,25 @@
 </blockquote>
 <script language="JavaScript">
 <!-- //
+ var context = '${pageContext.request.contextPath}';
  var cal = new calendar2(document.forms['searchWorkflowForm'].elements['assayRunDateBegin']);
  cal.year_scroll = true;
  cal.time_comp = false;
+ cal.context = context;
  
  var cal2 = new calendar2(document.forms['searchWorkflowForm'].elements['assayRunDateEnd']);
  cal2.year_scroll = true;
  cal2.time_comp = false;
+ cal2.context = context;
  
  var cal3 = new calendar2(document.forms['searchWorkflowForm'].elements['fileSubmissionDateBegin']);
  cal3.year_scroll = true;
  cal3.time_comp = false;
+ cal3.context = context;
  
  var cal4 = new calendar2(document.forms['searchWorkflowForm'].elements['fileSubmissionDateEnd']);
  cal4.year_scroll = true;
  cal4.time_comp = false;
+ cal4.context = context;
 //-->
 </script>
