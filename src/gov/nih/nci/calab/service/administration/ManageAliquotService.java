@@ -25,7 +25,7 @@ import org.apache.struts.util.LabelValueBean;
  */
 
 /*
- * CVS $Id: ManageAliquotService.java,v 1.17 2006-04-25 13:50:50 zengje Exp $
+ * CVS $Id: ManageAliquotService.java,v 1.18 2006-05-01 13:04:53 zengje Exp $
  */
 
 public class ManageAliquotService {
@@ -190,9 +190,16 @@ public class ManageAliquotService {
 			}
 
 			for (AliquotBean[] aliquotBeans : aliquotMatrix) {
+				
 				// aliquotBeans[i] != null is for the matrix is in between 10s
 				for (int i = 0; i < aliquotBeans.length
 						&& aliquotBeans[i] != null; i++) {
+					// check if the same aliquot name exists in the system
+					int total = ida.search("from Aliquot aliquot where aliquot.name='" + aliquotBeans[i].getAliquotName() + "'").size();
+					if (total > 0){
+						throw new Exception ("The aliquot(s) has been created.  Please use the Create Aliquot page to create new aliquots. ");
+					}
+					
 					AliquotBean aliquotBean = aliquotBeans[i];
 					Aliquot doAliquot = new Aliquot();
 					// use Hibernate Hilo algorithm to generate the id
@@ -213,8 +220,6 @@ public class ManageAliquotService {
 								.getContainerType());
 					}
 
-					doAliquot
-							.setContainerType(containerBean.getContainerType());
 					doAliquot.setCreatedBy(aliquotBean.getCreator());
 					doAliquot.setCreatedDate(StringUtils.convertToDate(
 							aliquotBean.getCreationDate(),
@@ -233,6 +238,8 @@ public class ManageAliquotService {
 							.convertToFloat(containerBean.getVolume()));
 					doAliquot.setVolumeUnit(containerBean.getVolumeUnit());
 					doAliquot.setCreatedMethod(getCreatedMethod(ida, aliquotBean.getHowCreated()));
+					doAliquot.setCreatedBy(aliquotBean.getCreator());
+					doAliquot.setCreatedDate(StringUtils.convertToDate(aliquotBean.getCreationDate(), CalabConstants.DATE_FORMAT));
 
 					// Associations
 					// 1. ParentAliquos or Sample
