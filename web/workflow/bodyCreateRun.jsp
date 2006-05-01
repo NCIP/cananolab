@@ -98,7 +98,7 @@
 				<td class="formFieldWhite">
 					<html:select property="runBy">
 						<option value=""></option>
-						<html:options name="allUsernames" />
+						<html:options collection="allUserBeans" property="loginId" labelProperty="fullName"/>
 					</html:select>
 				</td>
 			</tr>

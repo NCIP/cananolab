@@ -94,7 +94,7 @@
 				<td class="formField">
 					<strong> <html:select property="fileSubmitter">
 							<option value=""></option>
-							<html:options name="allUsernames" />
+							<html:options collection="allUserBeans" property="loginId" labelProperty="fullName"/>
 						</html:select> </strong>
 				</td>
 			</tr>
