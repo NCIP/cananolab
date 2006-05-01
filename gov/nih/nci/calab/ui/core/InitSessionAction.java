@@ -7,11 +7,11 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.32 2006-05-01 17:36:27 pansu Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.33 2006-05-01 22:06:21 zengje Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
-import gov.nih.nci.calab.dto.security.SecurityBean;
+import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.workflow.ExecuteWorkflowBean;
 import gov.nih.nci.calab.service.administration.ManageAliquotService;
 import gov.nih.nci.calab.service.administration.ManageSampleService;
@@ -58,7 +58,7 @@ public class InitSessionAction extends AbstractBaseAction {
 			// get user and date information
 			String creator = "";
 			if (session.getAttribute("user") != null) {
-				SecurityBean user = (SecurityBean) session.getAttribute("user");
+				UserBean user = (UserBean) session.getAttribute("user");
 				creator = user.getLoginId();
 			}
 			String creationDate = StringUtils.convertDateToString(new Date(),
@@ -264,9 +264,9 @@ public class InitSessionAction extends AbstractBaseAction {
 					assayTypes);
 		}
 		if (session.getServletContext().getAttribute("allUsernames") == null) {
-			List allUsernames = lookupService.getAllUsernames();
-			session.getServletContext().setAttribute("allUsernames",
-					allUsernames);
+			List allUserBeans = lookupService.getAllUserBeans();
+			session.getServletContext().setAttribute("allUserBeans",
+					allUserBeans);
 		}
 	}
 
@@ -295,10 +295,10 @@ public class InitSessionAction extends AbstractBaseAction {
 			List sourceSampleIds = searchSampleService.getAllSourceSampleIds();
 			session.setAttribute("allSourceSampleIds", sourceSampleIds);
 		}
-		if (session.getServletContext().getAttribute("allUsernames") == null) {
-			List allUsernames = lookupService.getAllUsernames();
-			session.getServletContext().setAttribute("allUsernames",
-					allUsernames);
+		if (session.getServletContext().getAttribute("allUserBeans") == null) {
+			List allUserBeans = lookupService.getAllUserBeans();
+			session.getServletContext().setAttribute("allUserBeans",
+					allUserBeans);
 		}
 		if (session.getServletContext().getAttribute("sampleContainerInfo") == null) {
 			ContainerInfoBean containerInfo = lookupService
@@ -353,10 +353,10 @@ public class InitSessionAction extends AbstractBaseAction {
 					allAssayBeans);
 		}
 
-		if (session.getServletContext().getAttribute("allUsernames") == null) {
-			List allUsernames = lookupService.getAllUsernames();
-			session.getServletContext().setAttribute("allUsernames",
-					allUsernames);
+		if (session.getServletContext().getAttribute("allUserBeans") == null) {
+			List allUserBeans = lookupService.getAllUserBeans();
+			session.getServletContext().setAttribute("allUserBeans",
+					allUserBeans);
 		}
 
 		session.removeAttribute("newWorkflowCreated");
