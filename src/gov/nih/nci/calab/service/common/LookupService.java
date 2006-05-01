@@ -4,9 +4,11 @@ import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
 import gov.nih.nci.calab.domain.MeasureUnit;
 import gov.nih.nci.calab.domain.StorageElement;
+import gov.nih.nci.calab.domain.User;
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
 import gov.nih.nci.calab.dto.administration.SampleBean;
+import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.workflow.AssayBean;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
@@ -26,7 +28,7 @@ import org.apache.log4j.Logger;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.24 2006-04-27 20:25:51 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.25 2006-05-01 22:04:31 zengje Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -352,16 +354,18 @@ public class LookupService {
 		return assayBeans;
 	}
 
-	public List<String> getAllUsernames() throws Exception {
-		List<String> usernames = new ArrayList<String>();
+	public List<UserBean> getAllUserBeans() throws Exception {
+		List<UserBean> userBeans = new ArrayList<UserBean>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
-			String hqlString = "select user.loginName from User user order by user.loginName";
+			String hqlString = "from User user order by user.loginName";
 			List results = ida.search(hqlString);
 			for (Object obj : results) {
-				usernames.add((String) obj);
+				User doUser = (User)obj;
+				UserBean user = new UserBean(doUser.getLoginName(),doUser.getFirstName(),doUser.getLastName());
+				userBeans.add(user);
 			}
 		} catch (Exception e) {
 			logger.error("Error in retrieving all aliquot Ids and names", e);
@@ -370,6 +374,6 @@ public class LookupService {
 		} finally {
 			ida.close();
 		}
-		return usernames;
+		return userBeans;
 	}
 }
