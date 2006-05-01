@@ -1,7 +1,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <html:form action="/maskAliquot">
 	<h3>
@@ -31,7 +31,7 @@
 			<tr>
 				<td class="formLabel">
 					<strong>Aliquot Name</strong>
-					<bean:write name="maskAliquotForm" property="aliquotName" />
+					<c:out value="${param.aliquotName}" />
 				</td>
 				<td class="formField">
 					<DIV align="left">
@@ -65,6 +65,7 @@
 								<DIV align="left">
 									<input type="hidden" name="maskType" value="aliquot">
 									<html:hidden property="aliquotId" />
+									<html:hidden property="aliquotName"/>
 									<html:submit value="Yes" />
 									<INPUT type="button" value="No " onclick="javascript:history.go(-1)">
 								</DIV>
