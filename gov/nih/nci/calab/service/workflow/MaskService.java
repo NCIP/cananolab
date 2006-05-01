@@ -51,15 +51,14 @@ public class MaskService
 				file.setDataStatus(maskStatus);
 				ida.store(file); 	        	
 	        }
-			ida.close();
-		}catch (Exception e) {
-			
+		}catch (Exception e) {			
 			ida.rollback();
-			ida.close();
-			
 			e.printStackTrace();
 			throw new RuntimeException(e.getMessage());
+		} finally {
+			ida.close();
 		}
+		
         	
         	 
     }
