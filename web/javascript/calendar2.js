@@ -35,6 +35,7 @@ function calendar2(obj_target) {
 	this.target = obj_target;
 	this.time_comp = BUL_TIMECOMPONENT;
 	this.year_scroll = BUL_YEARSCROLL;
+	this.context='/';
 	
 	// register in global collections
 	this.id = calendars.length;
@@ -52,7 +53,8 @@ function cal_popup2 (str_datetime) {
 	if (!this.dt_current) return;
 
 	var obj_calwindow = window.open(
-		'html/calendar.html?datetime=' + this.dt_current.valueOf()+ '&id=' + this.id,
+		this.context + 
+		'/html/calendar.html?datetime=' + this.dt_current.valueOf()+ '&id=' + this.id,
 		'Calendar', 'width=200,height='+(this.time_comp ? 215 : 190)+
 		',status=no,resizable=no,top=200,left=200,dependent=yes,alwaysRaised=yes'
 	);
