@@ -99,7 +99,8 @@
 				<td class="formField">
 					<html:select property="sampleSubmitter">
 						<option value="" />
-							<html:options name="allUsernames" />
+							<html:options collection="allUserBeans" property="loginId" labelProperty="fullName"/>
+							
 					</html:select>
 				</td>
 			</tr>
