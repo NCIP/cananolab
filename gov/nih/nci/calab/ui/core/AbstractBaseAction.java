@@ -17,7 +17,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: AbstractBaseAction.java,v 1.5 2006-04-04 19:48:28 pansu Exp $ */
+/* CVS $Id: AbstractBaseAction.java,v 1.6 2006-05-01 19:31:04 pansu Exp $ */
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -54,7 +54,7 @@ public abstract class AbstractBaseAction extends Action {
 			}
 		} catch (Throwable t) {
 			logger.error("Caught System Exception", t);		
-			ActionMessage error=new ActionMessage("error.system");
+			ActionMessage error=new ActionMessage("error.system", t.getMessage());
 			msgs.add("error", error);
 			saveMessages(request, msgs);
 			forward = mapping.findForward("error");

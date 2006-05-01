@@ -94,7 +94,7 @@ public abstract class AbstractDispatchAction extends DispatchAction
 			}
 		} catch (Throwable t) {
 			logger.error("Caught System Exception", t);		
-			ActionMessage error=new ActionMessage("error.system");
+			ActionMessage error=new ActionMessage("error.system", t.getMessage());
 			msgs.add("error", error);
 			saveMessages(request, msgs);
 			forward = mapping.findForward("error");
