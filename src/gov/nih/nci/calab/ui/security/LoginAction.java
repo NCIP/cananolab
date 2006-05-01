@@ -15,7 +15,7 @@ import org.apache.struts.action.ActionMessages;
 
 import org.apache.struts.validator.DynaValidatorForm;
 
-import gov.nih.nci.calab.dto.security.SecurityBean;
+import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.login.*; 
 import gov.nih.nci.calab.ui.core.*;
 
@@ -56,11 +56,10 @@ public class LoginAction extends AbstractBaseAction
 			    session = request.getSession(true);
 			    
 			    //Save authenticated user information into User DTO.
-			    SecurityBean securityBean = new SecurityBean();
-			    securityBean.setLoginId(strLoginId);
-			    securityBean.setPassword(strEncryptedPass);
+			    UserBean userBean = new UserBean();
+			    userBean.setLoginId(strLoginId);
 			    
-			    session.setAttribute("user",securityBean);	
+			    session.setAttribute("user",userBean);	
 				forward = mapping.findForward("success");
 			 }
 			 
