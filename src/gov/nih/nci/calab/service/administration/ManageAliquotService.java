@@ -8,6 +8,7 @@ import gov.nih.nci.calab.domain.SampleContainer;
 import gov.nih.nci.calab.domain.StorageElement;
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerBean;
+import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 
@@ -25,7 +26,7 @@ import org.apache.struts.util.LabelValueBean;
  */
 
 /*
- * CVS $Id: ManageAliquotService.java,v 1.18 2006-05-01 13:04:53 zengje Exp $
+ * CVS $Id: ManageAliquotService.java,v 1.19 2006-05-01 22:03:20 zengje Exp $
  */
 
 public class ManageAliquotService {
@@ -197,7 +198,7 @@ public class ManageAliquotService {
 					// check if the same aliquot name exists in the system
 					int total = ida.search("from Aliquot aliquot where aliquot.name='" + aliquotBeans[i].getAliquotName() + "'").size();
 					if (total > 0){
-						throw new Exception ("The aliquot(s) has been created.  Please use the Create Aliquot page to create new aliquots. ");
+						throw new CalabException ("The aliquot(s) is already existed in the system.  Please use the Create Aliquot page to create new aliquots. ");
 					}
 					
 					AliquotBean aliquotBean = aliquotBeans[i];
@@ -342,10 +343,14 @@ public class ManageAliquotService {
 					ida.store(doAliquot);
 				}
 			}
-		} catch (Exception e) {
+		}
+		catch (CalabException ce) {
+			throw ce;
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 			ida.rollback();
-			throw new RuntimeException(e.getMessage());
+			throw e;
 		} finally {
 			ida.close();
 		}
