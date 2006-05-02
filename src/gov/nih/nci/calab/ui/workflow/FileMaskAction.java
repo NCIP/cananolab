@@ -28,10 +28,6 @@ import org.apache.struts.action.DynaActionForm;
 
 public class FileMaskAction extends AbstractBaseAction
 {
-    private static org.apache.log4j.Logger logger_ =
-        org.apache.log4j.Logger.getLogger(FileMaskAction.class);
-    
-     
     /**
      * This method is setting up the parameters for the workflow mask files.
      * 
