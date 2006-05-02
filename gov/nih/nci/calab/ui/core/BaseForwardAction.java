@@ -16,7 +16,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: BaseForwardAction.java,v 1.1 2006-04-27 17:05:41 pansu Exp $ */
+/* CVS $Id: BaseForwardAction.java,v 1.2 2006-05-02 20:12:17 pansu Exp $ */
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,54 +38,3 @@ public class BaseForwardAction extends AbstractBaseAction {
 		return true;
 	}
 }
-
-// public class BaseForwardAction extends ForwardAction {
-// private static Logger logger = Logger.getLogger(BaseForwardAction.class);
-//	
-// public ActionForward execute(ActionMapping mapping, ActionForm form,
-// HttpServletRequest request, HttpServletResponse response)
-// throws Exception {
-//		
-// ActionForward forward = null;
-// ActionMessages msgs = new ActionMessages();
-//
-// try {
-// //TODO fill in the common operations */
-// if (!loginRequired() ||
-// loginRequired() && isUserLoggedIn(request)) {
-// forward=super.execute(mapping, form, request, response);
-// }
-// else {
-// logger.debug("an attempt to access the page without authentication.");
-// ActionMessage error=new ActionMessage("error.login.required");
-// msgs.add("error", error);
-// saveMessages(request, msgs);
-// forward = mapping.findForward("login");
-// }
-// } catch (Throwable t) {
-// logger.error("Caught System Exception", t);
-// ActionMessage error=new ActionMessage("error.system");
-// msgs.add("error", error);
-// saveMessages(request, msgs);
-// forward = mapping.findForward("error");
-// }
-// return forward;
-// }
-//	
-// /**
-// *
-// * @param request
-// * @return whether the user is successfully logged in.
-// */
-// private boolean isUserLoggedIn(HttpServletRequest request) {
-// boolean isLoggedIn=false;
-// if (request.getSession().getAttribute("user")!=null) {
-// isLoggedIn=true;
-// }
-// return isLoggedIn;
-// }
-//	
-// public boolean loginRequired() {
-// return true;
-// }
-// }
