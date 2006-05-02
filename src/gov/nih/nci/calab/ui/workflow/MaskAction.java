@@ -16,100 +16,69 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
-
-/** 
-* The MastAction sets is a generalized MaskAction class that is designed to Mask any caLAB object.
-* The strMaskType checks the hidden field on a Mask form and uses this to determine the appropriate action. 
-* @author      doswellj 
-*/
-public class MaskAction extends AbstractBaseAction
-{
-
-	private static Logger logger = Logger.getLogger(MaskAction.class);
+/**
+ * The MastAction sets is a generalized MaskAction class that is designed to
+ * Mask any caLAB object. The strMaskType checks the hidden field on a Mask form
+ * and uses this to determine the appropriate action.
+ * 
+ * @author doswellj
+ */
+public class MaskAction extends AbstractBaseAction {
 
 	public ActionForward executeTask(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		
-		ActionForward forward = null;
-		String strDescription = null;
-		String strMaskType=null;
-		String strId = null;
-        String runId = null;
-        
-		ActionMessages msgs = new ActionMessages();
-		try 
-		{
-            HttpSession session = request.getSession();
-			DynaValidatorForm theForm = (DynaValidatorForm) form;
-			
-			strMaskType = (String) theForm.get("maskType");
-			strDescription = theForm.getString("description");
-            
-			//Check mask type
-			if (strMaskType.equals("aliquot"))
-			{
-			    strId = (String) theForm.get("aliquotId");
-			}
-			if (strMaskType.equals("file"))
-			{
-				strId = (String) theForm.get("fileId");
-			}
-			
-            //1.Call MaskService to mask caLab component based on type(e.g., Aliquot, File, etc.)
-		    //2.Display message that masking was successful
-			MaskService maskservice = new MaskService();
-			
-			strDescription = strDescription + "   Masked by " + session.getAttribute("creator");
-			maskservice.setMask(strMaskType, strId, strDescription);
-			msgs = new ActionMessages();
-			ActionMessage msg = null;
-			if (strMaskType.equals("aliquot"))
-			{
-			       msg = new ActionMessage("message.maskAliquot", (String)theForm.get("aliquotName"));
-				   msgs.add("message", msg);
-				   saveMessages(request, msgs);
-				   forward = mapping.findForward("success");
-			}
-			if (strMaskType.equals("file"))
-			{
-				runId = (String)theForm.get("runId");
-	            theForm.set("method","setup");
-	            theForm.set("inout",(String)theForm.get("inout"));
-	            request.setAttribute("inout",(String)theForm.get("inout"));
-      			forward = mapping.findForward("success");
-			}
-            session.setAttribute("newWorkflowCreated","true");
 
-			forward = mapping.findForward("success");
-			
-			
-		} catch (Exception e) {
-			logger.error("Error Authenticating the user", e);
-			ActionMessage error = null;
-			ActionMessages errors = new ActionMessages();
-			
-			if (strMaskType.equals("aliquot"))
-			{
-				error = new ActionMessage("error.unexpectedMaskError", strId);
-			}
-			if (strMaskType.equals("file"))
-			{
-				error = new ActionMessage("error.unexpectedMaskError", strId);
-			}
-			errors.add("error", error);
-			saveMessages(request, errors);
-			forward = mapping.getInputForward();
-			forward = mapping.findForward("failure");			
+		ActionForward forward = null;
+
+		String strId = null;
+		String runId = null;
+
+		HttpSession session = request.getSession();
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+
+		String strMaskType = (String) theForm.get("maskType");
+		String strDescription = theForm.getString("description");
+
+		// Check mask type
+		if (strMaskType.equals("aliquot")) {
+			strId = (String) theForm.get("aliquotId");
 		}
+		if (strMaskType.equals("file")) {
+			strId = (String) theForm.get("fileId");
+		}
+
+		// 1.Call MaskService to mask caLab component based on type(e.g.,
+		// Aliquot, File, etc.)
+		// 2.Display message that masking was successful
+		MaskService maskservice = new MaskService();
+
+		strDescription = strDescription + "   Masked by "
+				+ session.getAttribute("creator");
+		maskservice.setMask(strMaskType, strId, strDescription);
+
+		if (strMaskType.equals("aliquot")) {
+			ActionMessages msgs=new ActionMessages();
+			ActionMessage msg = new ActionMessage("message.maskAliquot", (String) theForm
+					.get("aliquotName"));
+			msgs.add("message", msg);
+			saveMessages(request, msgs);
+			forward = mapping.findForward("success");
+		}
+		if (strMaskType.equals("file")) {
+			runId = (String) theForm.get("runId");
+			theForm.set("method", "setup");
+			theForm.set("inout", (String) theForm.get("inout"));
+			request.setAttribute("inout", (String) theForm.get("inout"));
+			forward = mapping.findForward("success");
+		}
+		session.setAttribute("newWorkflowCreated", "true");
+		forward = mapping.findForward("success");
 		return forward;
 	}
 
-	public boolean loginRequired() 
-	{
-		// temporarily set to false until login module is working
+	public boolean loginRequired() {
 		return true;
-		// return true;
 	}
-	
+
 }

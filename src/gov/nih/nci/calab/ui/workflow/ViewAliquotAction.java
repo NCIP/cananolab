@@ -6,57 +6,36 @@ package gov.nih.nci.calab.ui.workflow;
  * @author pansu
  */
 
-/* CVS $Id: ViewAliquotAction.java,v 1.3 2006-04-11 18:26:17 pansu Exp $*/
+/* CVS $Id: ViewAliquotAction.java,v 1.4 2006-05-02 18:58:34 pansu Exp $*/
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
+import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.workflow.ExecuteWorkflowService;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
 
 public class ViewAliquotAction extends AbstractBaseAction {
-	private static Logger logger = Logger.getLogger(ViewAliquotAction.class);
-
 	public ActionForward executeTask(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		ActionForward forward = null;
-		String aliquotId = null;
-		try {
-			DynaActionForm theForm = (DynaActionForm) form;
-			aliquotId = (String) theForm.get("aliquotId");
+		DynaActionForm theForm = (DynaActionForm) form;
+		String aliquotId = (String) theForm.get("aliquotId");
 
-			ExecuteWorkflowService executeWorkflowService = new ExecuteWorkflowService();
-			AliquotBean aliquot = executeWorkflowService.getAliquot(aliquotId);
-			if (aliquot != null) {
-				request.setAttribute("aliquot", aliquot);
-				forward = mapping.findForward("success");
-			} else {
-				logger.error("Can't find an aliquot by the given ID");
-				ActionMessages errors = new ActionMessages();
-				ActionMessage error = new ActionMessage(
-						"error.viewAliquot.noresult", aliquotId);
-				errors.add("error", error);
-				saveMessages(request, errors);
-				forward = mapping.findForward("failure");
-			}
-		} catch (Exception e) {
-			logger.error("Caught exception when showing aliquot.", e);
-			ActionMessages errors = new ActionMessages();
-			ActionMessage error = new ActionMessage("error.viewAliquot",
-					aliquotId);
-			errors.add("error", error);
-			saveMessages(request, errors);
-			forward = mapping.findForward("failure");
+		ExecuteWorkflowService executeWorkflowService = new ExecuteWorkflowService();
+		AliquotBean aliquot = executeWorkflowService.getAliquot(aliquotId);
+		if (aliquot != null) {
+			request.setAttribute("aliquot", aliquot);
+			forward = mapping.findForward("success");
+		} else {
+			throw new CalabException("Can't find an aliquot by the given ID");
 		}
 		return forward;
 	}
@@ -64,5 +43,4 @@ public class ViewAliquotAction extends AbstractBaseAction {
 	public boolean loginRequired() {
 		return true;
 	}
-
 }

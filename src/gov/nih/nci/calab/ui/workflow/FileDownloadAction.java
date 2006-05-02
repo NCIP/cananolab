@@ -4,6 +4,7 @@ import gov.nih.nci.calab.dto.workflow.ExecuteWorkflowBean;
 import gov.nih.nci.calab.dto.workflow.FileBean;
 import gov.nih.nci.calab.dto.workflow.FileDownloadInfo;
 import gov.nih.nci.calab.dto.workflow.RunBean;
+import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.util.ActionUtil;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
@@ -31,11 +32,7 @@ import org.apache.struts.validator.DynaValidatorActionForm;
  */
 
 public class FileDownloadAction extends AbstractDispatchAction
-{
-    private static org.apache.log4j.Logger logger_ =
-        org.apache.log4j.Logger.getLogger(FileDownloadAction.class);
-    
-     
+{      
     /**
      * This method is setting up the parameters for the workflow input upload files
      * or output upload files.
@@ -65,12 +62,12 @@ public class FileDownloadAction extends AbstractDispatchAction
         String inout=(String)fileForm.get("inout");
         String contentPath = request.getContextPath();
         
-        String path = PropertyReader.getProperty(CalabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
-        String fullPathName = path + fileForm.get("assayType") + File.separator 
-                                   + fileForm.get("assay") + File.separator
-                                   + fileForm.get("run")   + File.separator
-                                   + fileForm.get("inout") + File.separator
-                                   + CalabConstants.UNCOMPRESSED_FILE_DIRECTORY;
+//        String path = PropertyReader.getProperty(CalabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
+//        String fullPathName = path + fileForm.get("assayType") + File.separator 
+//                                   + fileForm.get("assay") + File.separator
+//                                   + fileForm.get("run")   + File.separator
+//                                   + fileForm.get("inout") + File.separator
+//                                   + CalabConstants.UNCOMPRESSED_FILE_DIRECTORY;
         
         // Retrieve filename(not uri) from database
         List<FileBean> fileBeanList = new ArrayList<FileBean>();
@@ -82,7 +79,6 @@ public class FileDownloadAction extends AbstractDispatchAction
             fileBeanList = runBean.getOutputFileBeans();
         }
          
-
         List<FileDownloadInfo>  fileNameHolder = new ArrayList<FileDownloadInfo>();
         for(FileBean fileBean: fileBeanList)
         {
@@ -128,8 +124,7 @@ public class FileDownloadAction extends AbstractDispatchAction
         File f = new File(fullPathName+File.separator+fileName);
         if (!f.exists())
         {
-            logger_.error("File to download doesn't exist on the server.");
-            throw new Exception ("File to download doesn't exist on the server.");
+            throw new CalabException ("File to download doesn't exist on the server");
         }
         ActionUtil actionUtil = new ActionUtil();
         actionUtil.writeBinaryStream(f, response);
