@@ -11,22 +11,20 @@
 			<form-property name="password" type="java.lang.String" />
 		</form-bean>
 	</form-beans>
-
-	<global-forwards>
-		<forward name="login" path="/index.jsp" />
-		<forward name="error" path="calab.error" />
-	</global-forwards>
+	<global-exceptions>
+		<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.login.required" path="/index.jsp" type="gov.nih.nci.calab.exception.CalabException" />
+	</global-exceptions>
 
 	<action-mappings>
 		<action name="initSessionForm" path="/initSession" scope="request" type="gov.nih.nci.calab.ui.core.InitSessionAction" input="error" />
 		<action name="loginForm" path="/login" scope="request" type="gov.nih.nci.calab.ui.security.LoginAction" input="input">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.login" path="/index.jsp" type="java.lang.Exception" />
 			<forward name="success" path="calab.welcome" />
-			<forward name="failure" path="calab.home" />
 			<forward name="input" path="calab.home" />
 		</action>
 		<action path="/logout" scope="request" type="gov.nih.nci.calab.ui.security.LogoutAction">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.logout" path="calab.error" type="java.lang.Exception" />
 			<forward name="success" path="calab.error" />
-			<forward name="failure" path="calab.error" />
 		</action>
 	</action-mappings>
 
@@ -51,9 +49,10 @@
 	<plug-in className="org.apache.struts.validator.ValidatorPlugIn">
 		<set-property property="stopOnFirstError" value="false" />
 		<set-property property="pathnames"
-			value="/WEB-INF/validation-workflow.xml, 
-												  /WEB-INF/validation-administration.xml, 
-                                            	  /WEB-INF/validation-search.xml,               
-                                                  /WEB-INF/validator-rules.xml" />
+			value="/WEB-INF/validation.xml,
+			      /WEB-INF/validation-workflow.xml , 
+			      /WEB-INF/validation-administration.xml , 
+                  /WEB-INF/validation-search.xml ,               
+                  /WEB-INF/validator-rules.xml" />
 	</plug-in>
 </struts-config>
