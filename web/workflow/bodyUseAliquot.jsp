@@ -8,17 +8,8 @@
 		Use Aliquot for
 		<c:out value="${param.runName}" />
 	</h3>
-	<logic:messagesPresent message="true">
-		<ul>
-			<font color="red"> <html:messages id="msg" message="true" bundle="workflow">
-					<li>
-						<bean:write name="msg" />
-					</li>
-				</html:messages> </font>
-		</ul>
-	</logic:messagesPresent>
-	<html:errors />
 	<blockquote>
+		<jsp:include page="/bodyMessage.jsp?bundle=workflow" />
 		<table width="75%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 			<tr class="topBorder">
 				<td colspan="2" class="formTitle">
@@ -66,7 +57,7 @@
 							<td>
 								<div align="left">
 									<input type="hidden" name="runId" value="${param.runId}" />
-									<input type="hidden" name="runName" value="${param.runName}">									
+									<input type="hidden" name="runName" value="${param.runName}">
 									<html:reset />
 									<html:submit />
 									<input type="button" value="Cancel" onclick="javascript:history.go(-1)">

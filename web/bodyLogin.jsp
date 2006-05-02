@@ -14,7 +14,8 @@
 					</tr>
 					<tr>
 						<td class="welcomeContent" valign="top">
-							Welcome to the cancer Laboratory Analysis Bench (caLAB).  caLAB is a Laboratory Information Management System (LIMS) designed to capture the workflow in the laboratory.  caLAB provides support for the execution of assays and the recording of assay results.  Additionally, caLAB allows for the management of laboratory inventory (samples) that is leveraged as input to laboratory assays.
+							Welcome to the cancer Laboratory Analysis Bench (caLAB). caLAB is a Laboratory Information Management System (LIMS) designed to capture the workflow in the laboratory. caLAB provides support for the execution of assays and the recording of assay
+							results. Additionally, caLAB allows for the management of laboratory inventory (samples) that is leveraged as input to laboratory assays.
 						</td>
 					</tr>
 				</table>
@@ -39,16 +40,7 @@
 								</tr>
 								<tr>
 									<td class="sidebarTitle" height="20">
-										<html:errors/>
-	                                    <logic:messagesPresent message="true">
-		                                    <ul>
-			                                    <font color="red"> <html:messages id="msg" message="true">
-					                               <li>
-						                              <bean:write name="msg" />
-					                               </li>
-				                                   </html:messages> </font>
-		                                   </ul>
-	                                    </logic:messagesPresent>
+										<jsp:include page="/bodyMessage.jsp"/>
 									</td>
 								</tr>
 								<tr>
@@ -60,8 +52,8 @@
 														LOGIN ID
 													</label>
 												</td>
-												<td class="formFieldLogin">							
-													<html:text property="loginId" size="14"/>
+												<td class="formFieldLogin">
+													<html:text property="loginId" size="14" />
 												</td>
 											</tr>
 											<tr>
@@ -71,7 +63,7 @@
 													</label>
 												</td>
 												<td class="formFieldLogin">
-												    <html:password property="password" size="14"/>
+													<html:password property="password" size="14" />
 												</td>
 											</tr>
 											<tr>
@@ -79,12 +71,12 @@
 													&nbsp;
 												</td>
 												<td>
-												    <html:submit value="Login"/>
+													<html:submit value="Login" />
 												</td>
 											</tr>
 											<tr>
 												<td colspan="2">
-													
+
 												</td>
 											</tr>
 										</table>
@@ -106,13 +98,19 @@
 								</tr>
 								<tr>
 									<td class="sidebarContent">
-										<strong>caLAB .50 is now available!</strong>  <br>
-										caLAB .50 contains the following features: <br>
+										<strong>caLAB .50 is now available!</strong>
+										<br>
+										caLAB .50 contains the following features:
+										<br>
 										<ul>
-											<li>Sample Management
-											<li>Aliquot Creation
-											<li>Create Assay Run
-											<li>Submit Assay Results
+											<li>
+												Sample Management
+											<li>
+												Aliquot Creation
+											<li>
+												Create Assay Run
+											<li>
+												Submit Assay Results
 										</ul>
 									</td>
 								</tr>

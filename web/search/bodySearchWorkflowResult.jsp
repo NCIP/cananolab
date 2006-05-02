@@ -18,7 +18,8 @@
 	<br>
 	<logic:present name="workflows">
 		<table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
-			<tr><div align="center">
+			<tr>
+				<div align="center">
 				<td width="111" class="formTitle">
 					File Name
 				</td>
@@ -51,7 +52,8 @@
 				</td>
 				<td width="53" class="formTitle">
 					Aliquot Status
-				</td></div>
+				</td>
+				</div>
 			</tr>
 			<logic:iterate name="workflows" id="workflow" type="gov.nih.nci.calab.dto.search.WorkflowResultBean" indexId="rowNum">
 				<c:choose>
@@ -69,49 +71,51 @@
 						<a href="#"><bean:write name="workflow" property="file.filename" /></a>&nbsp;
 					</td>
 					<td class="${style}">
-						<bean:write name="workflow" property="assay.assayType" />&nbsp;
+						<bean:write name="workflow" property="assay.assayType" />
+						&nbsp;
 					</td>
 					<td class="${style}">
-						<bean:write name="workflow" property="assay.assayName" />&nbsp;
+						<bean:write name="workflow" property="assay.assayName" />
+						&nbsp;
 					</td>
 					<td class="${style}">
-						<bean:write name="workflow" property="run.name" />&nbsp;
+						<bean:write name="workflow" property="run.name" />
+						&nbsp;
 					</td>
 					<td class="${style}">
-						<bean:write name="workflow" property="run.runDate" />&nbsp;
+						<bean:write name="workflow" property="run.runDate" />
+						&nbsp;
 					</td>
 					<td class="${style}">
-						<bean:write name="workflow" property="file.inoutType" />&nbsp;
+						<bean:write name="workflow" property="file.inoutType" />
+						&nbsp;
 					</td>
 					<td class="${style}">
-						<bean:write name="workflow" property="file.createDateStr" />&nbsp;
+						<bean:write name="workflow" property="file.createDateStr" />
+						&nbsp;
 					</td>
 					<td class="${style}">
-						<bean:write name="workflow" property="file.fileSubmitter" />&nbsp;
+						<bean:write name="workflow" property="file.fileSubmitter" />
+						&nbsp;
 					</td>
 					<td class="${style}">
-						<bean:write name="workflow" property="file.fileMaskStatus" />&nbsp;
+						<bean:write name="workflow" property="file.fileMaskStatus" />
+						&nbsp;
 					</td>
 					<td class="${style}">
-						<bean:write name="workflow" property="aliquot.aliquotName" />&nbsp;
+						<bean:write name="workflow" property="aliquot.aliquotName" />
+						&nbsp;
 					</td>
 					<td class="${style}">
-						<bean:write name="workflow" property="aliquot.maskStatus" />&nbsp;
+						<bean:write name="workflow" property="aliquot.maskStatus" />
+						&nbsp;
 					</td>
 				</tr>
 			</logic:iterate>
 		</table>
 	</logic:present>
 	<logic:notPresent name="workflows">
-		<logic:messagesPresent message="true">
-			<ul>
-				<font color="red"> <html:messages id="msg" message="true" bundle="search">
-						<li>
-							<bean:write name="msg" />
-						</li>
-					</html:messages> </font>
-			</ul>
-		</logic:messagesPresent>
+		<jsp:include page="/bodyMessage.jsp?bundle=search" />
 	</logic:notPresent>
 	<p>
 		&nbsp;

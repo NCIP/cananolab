@@ -9,17 +9,8 @@
 		<BR>
 		&nbsp;Mask Aliquot
 	</h3>
-	<html:errors />
-	<logic:messagesPresent message="true">
-		<ul>
-			<font color="red"> <html:messages id="msg" message="true" bundle="workflow">
-					<li>
-						<bean:write name="msg" />
-					</li>
-				</html:messages> </font>
-		</ul>
-	</logic:messagesPresent>
 	<blockquote>
+		<jsp:include page="/bodyMessage.jsp?bundle=workflow" />
 		<table width="75%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 			<tr class="topBorder">
 				<td colspan="2" class="formTitle">
@@ -65,7 +56,7 @@
 								<DIV align="left">
 									<input type="hidden" name="maskType" value="aliquot">
 									<html:hidden property="aliquotId" />
-									<html:hidden property="aliquotName"/>
+									<html:hidden property="aliquotName" />
 									<html:submit value="Yes" />
 									<INPUT type="button" value="No " onclick="javascript:history.go(-1)">
 								</DIV>
