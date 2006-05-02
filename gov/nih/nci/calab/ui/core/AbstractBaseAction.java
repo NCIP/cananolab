@@ -17,7 +17,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: AbstractBaseAction.java,v 1.6 2006-05-01 19:31:04 pansu Exp $ */
+/* CVS $Id: AbstractBaseAction.java,v 1.7 2006-05-02 18:58:19 pansu Exp $ */
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,26 +39,18 @@ public abstract class AbstractBaseAction extends Action {
 
 		ActionForward forward = null;
 		ActionMessages msgs = new ActionMessages();
-		try {
-			//TODO fill in the common operations */
-			if (!loginRequired() ||
-				loginRequired() && isUserLoggedIn(request)) {
-				forward = executeTask(mapping, form, request, response);	
-			}
-			else {
-				logger.debug("an attempt to access the page without authentication.");
-				ActionMessage error=new ActionMessage("error.login.required");
-				msgs.add("error", error);
-				saveMessages(request, msgs);
-				forward = mapping.findForward("login");
-			}
-		} catch (Throwable t) {
-			logger.error("Caught System Exception", t);		
-			ActionMessage error=new ActionMessage("error.system", t.getMessage());
+
+		if (!loginRequired() || loginRequired() && isUserLoggedIn(request)) {
+			forward = executeTask(mapping, form, request, response);
+		} else {
+			logger
+					.debug("an attempt to access the page without authentication.");
+			ActionMessage error = new ActionMessage("error.login.required");
 			msgs.add("error", error);
 			saveMessages(request, msgs);
-			forward = mapping.findForward("error");
+			forward = mapping.findForward("login");
 		}
+
 		return forward;
 	}
 
@@ -68,13 +60,13 @@ public abstract class AbstractBaseAction extends Action {
 	 * @return whether the user is successfully logged in.
 	 */
 	private boolean isUserLoggedIn(HttpServletRequest request) {
-		boolean isLoggedIn=false;
-		if (request.getSession().getAttribute("user")!=null) {
-			isLoggedIn=true;
-		}			
+		boolean isLoggedIn = false;
+		if (request.getSession().getAttribute("user") != null) {
+			isLoggedIn = true;
+		}
 		return isLoggedIn;
 	}
-	
+
 	/**
 	 * Provide implementation of this abstract method in each subclass.
 	 */
