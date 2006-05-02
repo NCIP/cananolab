@@ -50,6 +50,8 @@
  */
 package gov.nih.nci.calab.ui.core;
 
+import gov.nih.nci.calab.exception.CalabException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -80,12 +82,7 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 		if (!loginRequired() || loginRequired() && isUserLoggedIn(request)) {
 			forward = super.execute(mapping, form, request, response);
 		} else {
-			logger
-					.debug("an attempt to access the page without authentication.");
-			ActionMessage error = new ActionMessage("error.login.required");
-			msgs.add("error", error);
-			saveMessages(request, msgs);
-			forward = mapping.findForward("login");
+			throw new CalabException("Login required.");	
 		}
 		return forward;
 	}
