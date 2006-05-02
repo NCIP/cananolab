@@ -93,45 +93,52 @@
 	</global-forwards>
 	<action-mappings>
 		<action input="input" name="useAliquotForm" path="/useAliquot" scope="request" type="gov.nih.nci.calab.ui.workflow.UseAliquotAction">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="workflow" key="error.useAliquot" path="workflow.usealiquot" type="java.lang.Exception" />
 			<forward name="success" path="/initSession.do?forwardPage=workflowMessage" />
 			<forward name="input" path="workflow.usealiquot" />
 		</action>
 		<action input="input" name="maskAliquotForm" path="/maskAliquot" scope="request" type="gov.nih.nci.calab.ui.workflow.MaskAction">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="workflow" key="error.maskAliquot" path="workflow.maskaliquot" type="java.lang.Exception" />
 			<forward name="success" path="/initSession.do?forwardPage=workflowMessage" />
 			<forward name="input" path="workflow.maskaliquot" />
 		</action>
 		<action input="input" name="maskFileForm" path="/maskFile" scope="request" type="gov.nih.nci.calab.ui.workflow.MaskAction">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="workflow" key="error.maskFile" path="workflow.maskfile" type="java.lang.Exception" />
 			<forward name="success" path="/initSession.do?forwardPage=runFileMask" />
 			<forward name="input" path="workflow.maskfile" />
 		</action>
 		<action name="viewAliquotForm" path="/viewAliquot" scope="request" type="gov.nih.nci.calab.ui.workflow.ViewAliquotAction">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="workflow" key="error.viewAliquot.noresult" path="/initSession.do?forwardPage=workflowMessage" type="gov.nih.nci.calab.exception.CalabException" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="workflow" key="error.viewAliquot" path="/initSession.do?forwardPage=workflowMessage" type="java.lang.Exception" />
 			<forward name="success" path="workflow.viewaliquot" />
-			<forward name="failure" path="/initSession.do?forwardPage=workflowMessage" />
 		</action>
 		<action name="maskAliquotForm" scope="request" path="/preMaskAliquot" type="gov.nih.nci.calab.ui.core.BaseForwardAction" parameter="workflow.maskaliquot" validate="false" />
 		<action name="maskFileForm" scope="request" path="/preMaskFile" type="gov.nih.nci.calab.ui.core.BaseForwardAction" parameter="workflow.maskfile" validate="false" />
 
 		<action name="createRunForm" path="/createRun" type="gov.nih.nci.calab.ui.workflow.CreateRunAction" input="input" scope="request">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="workflow" key="error.createRun" path="workflow.createrun" type="java.lang.Exception" />
 			<forward name="input" path="workflow.createrun" />
 			<forward name="success" path="/initSession.do?forwardPage=fileUploadOption" />
-			<forward name="failure" path="workflow.createrun" />
 		</action>
 
 		<action name="createAssayRunForm" path="/createAssayRun" type="gov.nih.nci.calab.ui.workflow.CreateRunAction" input="input" scope="request">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="workflow" key="error.createAssayRun" path="workflow.createassayrun" type="java.lang.Exception" />
 			<forward name="input" path="workflow.createassayrun" />
 			<forward name="success" path="/initSession.do?forwardPage=fileUploadOption" />
-			<forward name="failure" path="workflow.createassayrun" />
 		</action>
 
 		<action name="fileUploadForm" parameter="method" path="/fileUpload" scope="request" type="gov.nih.nci.calab.ui.workflow.FileUploadAction" input="input">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="workflow" key="error.fileUpload" path="/initSession.do?forwardPage=workflowMessage" type="java.lang.Exception" />
 			<forward name="success" path="workflow.fileUpload" />
-			<forward name="failure" path="/initSession.do?forwardPage=workflowMessage" />
 			<forward name="expiredSession" path="/login.do" />
 		</action>
 		<action name="fileDownloadForm" parameter="method" path="/fileDownload" scope="request" type="gov.nih.nci.calab.ui.workflow.FileDownloadAction" input="input">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="workflow" key="error.fileDownload.nofile" path="/initSession.do?forwardPage=workflowMessage" type="gov.nih.nci.calab.exception.CalabException" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="workflow" key="error.fileDownload" path="/initSession.do?forwardPage=workflowMessage" type="java.lang.Exception" />
 			<forward name="success" path="workflow.fileDownload" />
 		</action>
 		<action name="maskFileForm" path="/fileMask" scope="request" type="gov.nih.nci.calab.ui.workflow.FileMaskAction" validate="false">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="workflow" key="error.runFileMask" path="/initSession.do?forwardPage=workflowMessage" type="java.lang.Exception" />
 			<forward name="success" path="workflow.runfilemask" />
 		</action>
 		<action path="/workflowForward" type="gov.nih.nci.calab.ui.core.BaseForwardAction" parameter="workflow.message" scope="request" />
