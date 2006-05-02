@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.34 2006-05-02 21:36:33 zengje Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.35 2006-05-02 22:27:29 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
@@ -29,17 +29,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
 
 public class InitSessionAction extends AbstractBaseAction {
-	private static Logger logger = Logger.getLogger(InitSessionAction.class);
-
 	public ActionForward executeTask(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -48,93 +43,79 @@ public class InitSessionAction extends AbstractBaseAction {
 		ActionForward forward = null;
 		String forwardPage = null;
 		String urlPrefix = request.getContextPath();
+		DynaActionForm theForm = (DynaActionForm) form;
+		forwardPage = (String) theForm.get("forwardPage");
+		// clean up session data
+		clearSessionData(session, forwardPage);
 
-		try {
-			DynaActionForm theForm = (DynaActionForm) form;
-			forwardPage = (String) theForm.get("forwardPage");
-			// clean up session data
-			clearSessionData(session, forwardPage);
+		// get user and date information
+		String creator = "";
+		if (session.getAttribute("user") != null) {
+			UserBean user = (UserBean) session.getAttribute("user");
+			creator = user.getLoginId();
+		}
+		String creationDate = StringUtils.convertDateToString(new Date(),
+				CalabConstants.DATE_FORMAT);
+		session.setAttribute("creator", creator);
+		session.setAttribute("creationDate", creationDate);
 
-			// get user and date information
-			String creator = "";
-			if (session.getAttribute("user") != null) {
-				UserBean user = (UserBean) session.getAttribute("user");
-				creator = user.getLoginId();
+		// retrieve from sesssion first if available assuming these values
+		// are not likely to change within the same session. If changed, the
+		// session should be updated.
+
+		LookupService lookupService = new LookupService();
+		if (forwardPage.equals("useAliquot")) {
+			setUseAliquotSession(session, lookupService);
+		} else if (forwardPage.equals("createSample")) {
+			setCreateSampleSession(session, lookupService);
+		} else if (forwardPage.equals("createAliquot")) {
+			setCreateAliquotSession(session, lookupService);
+		} else if (forwardPage.equals("searchWorkflow")) {
+			setSearchWorkflowSession(session, lookupService);
+		} else if (forwardPage.equals("searchSample")) {
+			setSearchSampleSession(session, lookupService);
+		} else if (forwardPage.equals("createRun")
+				|| forwardPage.equals("createAssayRun")) {
+			setCreateRunSession(session, lookupService);
+		} else if (forwardPage.equals("workflowMessage")
+				|| forwardPage.equals("fileUploadOption")
+				|| forwardPage.equals("fileDownload")
+				|| forwardPage.equals("runFileMask")) {
+			setWorkflowMessageSession(session);
+		} else if (forwardPage.equals("uploadForward")) {
+			// refresh tree view
+			setWorkflowMessageSession(session);
+
+			// read HttpFileUploadSessionData from session
+			HttpFileUploadSessionData hFileUploadData = (HttpFileUploadSessionData) request
+					.getSession().getAttribute("httpFileUploadSessionData");
+
+			// based on the type=in/out/upload and runId to modify the
+			// forwardPage
+			String type = hFileUploadData.getFromType();
+			String runId = hFileUploadData.getRunId();
+			String inout = hFileUploadData.getInout();
+			String runName = hFileUploadData.getRun();
+
+			session.removeAttribute("httpFileUploadSessionData");
+
+			if (type.equalsIgnoreCase("in") || type.equalsIgnoreCase("out")) {
+				// cannot forward to a page with the request parameter, so
+				// use response
+				response.sendRedirect(urlPrefix + "/workflowForward.do?type="
+						+ type + "&runName=" + runName + "&runId=" + runId
+						+ "&inout=" + inout);
+				forwardPage = null;
+			} else if (type.equalsIgnoreCase("upload")) {
+				session.setAttribute("runId", runId);
+				forwardPage = "fileUploadOption";
 			}
-			String creationDate = StringUtils.convertDateToString(new Date(),
-					CalabConstants.DATE_FORMAT);
-			session.setAttribute("creator", creator);
-			session.setAttribute("creationDate", creationDate);
-
-			// retrieve from sesssion first if available assuming these values
-			// are not likely to change within the same session. If changed, the
-			// session should be updated.
-
-			LookupService lookupService = new LookupService();
-			if (forwardPage.equals("useAliquot")) {
-				setUseAliquotSession(session, lookupService);
-			} else if (forwardPage.equals("createSample")) {
-				setCreateSampleSession(session, lookupService);
-			} else if (forwardPage.equals("createAliquot")) {
-				setCreateAliquotSession(session, lookupService, urlPrefix);
-			} else if (forwardPage.equals("searchWorkflow")) {
-				setSearchWorkflowSession(session, lookupService);
-			} else if (forwardPage.equals("searchSample")) {
-				setSearchSampleSession(session, lookupService);
-			} else if (forwardPage.equals("createRun")
-					|| forwardPage.equals("createAssayRun")) {
-				setCreateRunSession(session, lookupService);
-			} else if (forwardPage.equals("workflowMessage")
-					|| forwardPage.equals("fileUploadOption")
-					|| forwardPage.equals("fileDownload")					
-					|| forwardPage.equals("runFileMask")) {
-				setWorkflowMessageSession(session);
-			} else if (forwardPage.equals("uploadForward")) {
-				// refresh tree view
-				setWorkflowMessageSession(session);
-
-				// read HttpFileUploadSessionData from session
-				HttpFileUploadSessionData hFileUploadData = (HttpFileUploadSessionData) request
-						.getSession().getAttribute("httpFileUploadSessionData");
-
-				// based on the type=in/out/upload and runId to modify the
-				// forwardPage
-				String type = hFileUploadData.getFromType();
-				String runId = hFileUploadData.getRunId();
-				String inout = hFileUploadData.getInout();
-				String runName = hFileUploadData.getRun();
-
-				session.removeAttribute("httpFileUploadSessionData");
-
-				if (type.equalsIgnoreCase("in") || type.equalsIgnoreCase("out")) {
-					// cannot forward to a page with the request parameter, so
-					// use response
-					response.sendRedirect(urlPrefix
-							+ "/workflowForward.do?type=" + type 
-							+ "&runName="	+ runName
-							+ "&runId=" + runId + "&inout=" + inout);
-					forwardPage = null;
-				} else if (type.equalsIgnoreCase("upload")) {
-					session.setAttribute("runId", runId);
-					forwardPage = "fileUploadOption";
-				}
-			}
-			if (forwardPage == null) {
-				// for response.setRedirect()
-				forward = null;
-			} else {
-				forward = mapping.findForward(forwardPage);
-			}
-
-		} catch (Exception e) {
-			ActionMessages errors = new ActionMessages();
-			ActionMessage error = new ActionMessage("error.initSession",
-					forwardPage);
-			errors.add("error", error);
-			saveMessages(request, errors);
-			logger.error(
-					"Caught exception loading initial drop-down lists data", e);
-			forward = mapping.getInputForward();
+		}
+		if (forwardPage == null) {
+			// for response.setRedirect()
+			forward = null;
+		} else {
+			forward = mapping.findForward(forwardPage);
 		}
 		return forward;
 	}
@@ -215,7 +196,7 @@ public class InitSessionAction extends AbstractBaseAction {
 	 * @param lookupService
 	 */
 	private void setCreateAliquotSession(HttpSession session,
-			LookupService lookupService, String urlPrefix) throws Exception {
+			LookupService lookupService) throws Exception {
 		ManageAliquotService manageAliquotService = new ManageAliquotService();
 
 		if (session.getAttribute("allSamples") == null
@@ -382,11 +363,10 @@ public class InitSessionAction extends AbstractBaseAction {
 	private void clearSessionData(HttpSession session, String forwardPage) {
 		if (!forwardPage.equals("createAliquot")) {
 			// clear session attributes created during create aliquot
-			session.removeAttribute("aliquotMatrix");
 			session.removeAttribute("allSamples");
 			session.removeAttribute("allAliquotContainerTypes");
 		}
-
+		session.removeAttribute("aliquotMatrix");
 		session.removeAttribute("createAliquotForm");
 		session.removeAttribute("createSampleForm");
 

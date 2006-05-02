@@ -30,44 +30,48 @@
 			<form-property name="aliquot" type="gov.nih.nci.calab.dto.administration.AliquotBean" />
 		</form-bean>
 	</form-beans>
-	
+
 	<global-forwards>
-	  <forward name="createSample" path="/preCreateSample.do" />
-	  <forward name="createAliquot" path="administration.createaliquot" />
+		<forward name="createSample" path="/preCreateSample.do" />
+		<forward name="createAliquot" path="administration.createaliquot" />
 	</global-forwards>
-	
+
 	<action-mappings>
 		<action name="createSampleForm" path="/preCreateSample" type="gov.nih.nci.calab.ui.administration.PreCreateSampleAction" input="input">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="administration" key="error.preCreateSample" path="administration.message" type="java.lang.Exception" />
 			<forward name="success" path="administration.createsample" />
-			<forward name="failure" path="administration.message" />
 			<forward name="input" path="administration.createsample" />
 		</action>
 
 		<action name="createSampleForm" path="/createSample" type="gov.nih.nci.calab.ui.administration.CreateSampleAction" input="input">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="administration" key="error.createSample" path="administration.createsample" type="java.lang.Exception" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="administration" key="error.createSample.duplicate" path="administration.createaliquot" type="gov.nih.nci.calab.exception.DuplicateEntriesException" />
 			<forward name="success" path="administration.sampledetails" />
-			<forward name="failure" path="administration.createsample" />
 			<forward name="input" path="administration.createsample" />
 		</action>
 		<action name="createAliquotForm" path="/createAliquot" type="gov.nih.nci.calab.ui.administration.CreateAliquotAction" input="input">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="administration" key="error.createAliquot.nomatrix" path="administration.createaliquot" type="gov.nih.nci.calab.exception.CalabException" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="administration" key="error.createAliquot.duplicate" path="administration.createaliquot" type="gov.nih.nci.calab.exception.DuplicateEntriesException" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="administration" key="error.createAliquot" path="administration.createaliquot" type="java.lang.Exception" />
 			<forward name="input" path="administration.createaliquot" />
 			<forward name="success" path="administration.aliquotdetails" />
-			<forward name="failure" path="administration.createaliquot" />
 		</action>
 		<action name="createAliquotForm" path="/preCreateAliquot" type="gov.nih.nci.calab.ui.administration.PreCreateAliquotAction" input="input">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="administration" key="error.preCreateAliquot" path="administration.message" type="java.lang.Exception" />
 			<forward name="input" path="administration.createaliquot" />
 			<forward name="success" path="administration.createaliquot" />
-			<forward name="failure" path="administration.message" />
 		</action>
 		<action name="editAliquotForm" path="/preEditAliquot" scope="request" type="gov.nih.nci.calab.ui.administration.PreEditAliquotAction" input="input">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="administration" key="error.preEditAliquot.nomatrix" path="administration.createaliquot" type="gov.nih.nci.calab.exception.CalabException" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="administration" key="error.preEditAliquot" path="administration.createaliquot" type="java.lang.Exception" />
 			<forward name="input" path="administration.createaliquot" />
 			<forward name="success" path="administration.editaliquot" />
-			<forward name="failure" path="administration.message" />
-
 		</action>
 		<action name="editAliquotForm" path="/editAliquot" scope="request" type="gov.nih.nci.calab.ui.administration.EditAliquotAction" input="input">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="administration" key="error.editAliquot.nomatrix" path="administration.createaliquot" type="gov.nih.nci.calab.exception.CalabException" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="administration" key="error.editAliquot" path="administration.createaliquot" type="java.lang.Exception" />
 			<forward name="input" path="administration.editaliquot" />
 			<forward name="success" path="administration.createaliquot" />
-			<forward name="failure" path="administration.message" />
 		</action>
 	</action-mappings>
 </struts-config>
