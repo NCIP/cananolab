@@ -86,8 +86,7 @@ public class ExecuteWorkflowService {
 		}
 	}
 
-	public AliquotBean getAliquot(String aliquotId) throws Exception {
-		
+	public AliquotBean getAliquot(String aliquotId) throws Exception {		
 		AliquotBean aliquotBean = new AliquotBean();
 		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
 		try {
@@ -154,7 +153,10 @@ public class ExecuteWorkflowService {
 		} finally {
 			ida.close();
 		}
-		return aliquotBean;
+		if (aliquotBean.getAliquotId().length()==0) {
+			return null;
+		}
+ 		return aliquotBean;
 	}
 	
 	
