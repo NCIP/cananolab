@@ -5,24 +5,16 @@
 <h3>
 	View Aliquot
 </h3>
-<html:errors />
-<logic:messagesPresent message="true">
-	<ul>
-		<font color="red"> <html:messages id="msg" message="true" bundle="workflow">
-				<li>
-					<bean:write name="msg" />
-				</li>
-			</html:messages> </font>
-	</ul>
-</logic:messagesPresent>
 <blockquote>
+	<jsp:include page="/bodyMessage.jsp?bundle=workflow" />
 	<html:form action="/preMaskAliquot">
 		<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="90%" align="center" summary="" border="0">
 			<tbody>
 				<tr class="topBorder">
 					<td class="formTitle" width="30%">
 						<div align="justify">
-							Aliquot <bean:write name="aliquot" property="aliquotName" />
+							Aliquot
+							<bean:write name="aliquot" property="aliquotName" />
 						</div>
 					</td>
 				</tr>
@@ -102,16 +94,16 @@
 					<div align="right"></div>
 				</td>
 			</tr>
-			<logic:equal name="aliquot" property="maskStatus" value="Active" >
-			<tr>
-				<td height="32">
-					<div align="right">			
-						<html:hidden name="aliquot" property="aliquotId" />
-						<input type="hidden" name="aliquotName" value=<bean:write name="aliquot" property="aliquotName" /> />
-						<html:submit value="Mask Aliquot" />
-					</div>
-				</td>
-			</tr>
+			<logic:equal name="aliquot" property="maskStatus" value="Active">
+				<tr>
+					<td height="32">
+						<div align="right">
+							<html:hidden name="aliquot" property="aliquotId" />
+							<input type="hidden" name="aliquotName" value=<bean:write name="aliquot" property="aliquotName" /> />
+							<html:submit value="Mask Aliquot" />
+						</div>
+					</td>
+				</tr>
 			</logic:equal>
 		</table>
 	</html:form>

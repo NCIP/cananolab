@@ -15,17 +15,7 @@
 	Search Results
 </h3>
 <blockquote>
-	<html:errors />
-
-	<logic:messagesPresent message="true">
-		<ul>
-			<font color="red"> <html:messages id="msg" message="true" bundle="search">
-					<li>
-						<bean:write name="msg" />
-					</li>
-				</html:messages> </font>
-		</ul>
-	</logic:messagesPresent>
+	<jsp:include page="/bodyMessage.jsp?bundle=search" />
 	<table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
 		<tr valign="bottom">
 			<td align="right">

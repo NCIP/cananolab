@@ -8,17 +8,8 @@
 		<br>
 		Search Sample Container
 	</h3>
-	<html:errors />
-	<logic:messagesPresent message="true">
-		<ul>
-			<font color="red"> <html:messages id="msg" message="true" bundle="search">
-					<li>
-						<bean:write name="msg" />
-					</li>
-				</html:messages> </font>
-		</ul>
-	</logic:messagesPresent>
 	<blockquote>
+	<jsp:include page="/bodyMessage.jsp?bundle=search"/>
 		<table width="90%" border="0" align="center" cellpadding="3" cellspacing="0" summary="">
 			<TR>
 				<td class="formTitle" width="30%">

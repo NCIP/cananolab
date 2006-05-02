@@ -4,32 +4,30 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <html:form action="/maskFile">
-	<h3> &nbsp;<BR> &nbsp;Mask&nbsp;File </h3>
-	<html:errors/>
-	<logic:messagesPresent message="true">
-		<ul>
-			<font color="red"> <html:messages id="msg" message="true" bundle="workflow">
-					<li>
-						<bean:write name="msg" />
-					</li>
-				</html:messages> </font>
-		</ul>
-	</logic:messagesPresent>
+	<h3>
+		&nbsp;
+		<BR>
+		&nbsp;Mask&nbsp;File
+	</h3>
 	<blockquote>
+		<jsp:include page="/bodyMessage.jsp?bundle=workflow" />
 		<table width="75%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 			<tr class="topBorder">
 				<td colspan="2" class="formTitle">
 					<DIV align="justify">
-						&nbsp;<STRONG>Confirm&nbsp;File Mask:</STRONG> </DIV>
+						&nbsp;<STRONG>Confirm&nbsp;File Mask:</STRONG>
+					</DIV>
 				</td>
 			</tr>
 			<tr>
 				<td class="formLabel">
-					<strong>File Name : <c:out value="${param.fileName}"/></strong>
+					<strong>File Name : <c:out value="${param.fileName}" /></strong>
 				</td>
 				<td class="formField">
-					<DIV align="left"> &nbsp;<SPAN class="formField" align="left"><STRONG></STRONG>Are you sure you would you like to mask this File ?</SPAN></DIV>
-		 
+					<DIV align="left">
+						&nbsp;<SPAN class="formField" align="left"><STRONG></STRONG>Are you sure you would you like to mask this File ?</SPAN>
+					</DIV>
+
 				</td>
 			</tr>
 		</table>
@@ -38,7 +36,9 @@
 		<table width="60%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 			<tr class="topBorder">
 				<td class="dataTablePrimaryLabel">
-					<div align="justify"> &nbsp;*&nbsp;Explain  reason for mask:</div>
+					<div align="justify">
+						&nbsp;*&nbsp;Explain reason for mask:
+					</div>
 				</td>
 			</tr>
 			<tr>
@@ -54,12 +54,12 @@
 						<tr>
 							<td>
 								<DIV align="left">
-									<input type="hidden" name="maskType" value="file">																
-									<html:hidden property="runId"/>						
-									<html:hidden property="inout"/>										
-									<html:hidden property="method"/>																
-									<html:hidden property="fileId"/>	
-									<html:hidden property="fileName"/>
+									<input type="hidden" name="maskType" value="file">
+									<html:hidden property="runId" />
+									<html:hidden property="inout" />
+									<html:hidden property="method" />
+									<html:hidden property="fileId" />
+									<html:hidden property="fileName" />
 									<html:submit value="Yes" />
 									<INPUT type="button" value="No " onclick="javascript:history.go(-1)">
 							</td>
@@ -70,13 +70,13 @@
 			</tr>
 		</table>
 		<p>
-			 &nbsp;
+			&nbsp;
 		</p>
 		<p>
-			 &nbsp;
+			&nbsp;
 		</p>
 		<p>
-			 &nbsp;
+			&nbsp;
 		</p>
 	</blockquote>
 </html:form>

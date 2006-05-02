@@ -5,17 +5,8 @@
 	<br>
 	Edit Aliquot
 </h3>
-<html:errors />
-<logic:messagesPresent message="true">
-	<ul>
-		<font color="red"> <html:messages id="msg" message="true" bundle="administration">
-				<li>
-					<bean:write name="msg" />
-				</li>
-			</html:messages> </font>
-	</ul>
-</logic:messagesPresent>
 <blockquote>
+	<jsp:include page="/bodyMessage.jsp?bundle=administration" />
 	<html:form action="/editAliquot">
 		<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="90%" align="center" summary="" border="0">
 			<tbody>
@@ -60,7 +51,7 @@
 						<div align="justify">
 							<strong>Diluents/Solvent <html:text property="aliquot.container.solvent" size="10" /> &nbsp; &nbsp; &nbsp; How Created <html:select property="aliquot.howCreated">
 									<option value=""></option>
-									<html:options collection="aliquotCreateMethods" property="value" labelProperty="label"/>
+									<html:options collection="aliquotCreateMethods" property="value" labelProperty="label" />
 								</html:select> &nbsp; &nbsp; &nbsp;</strong>
 						</div>
 					</td>

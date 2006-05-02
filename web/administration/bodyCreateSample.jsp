@@ -1,7 +1,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <script type="text/javascript" src="javascript/calendar2.js"></script>
 <script type="text/javascript">
@@ -20,16 +20,7 @@ function refreshContainers() {
 		Create Sample
 	</h3>
 	<blockquote>
-		<html:errors />
-		<logic:messagesPresent message="true">
-			<ul>
-				<font color="red"> <html:messages id="msg" message="true" bundle="administration">
-						<li>
-							<bean:write name="msg" />
-						</li>
-					</html:messages> </font>
-			</ul>
-		</logic:messagesPresent>
+		<jsp:include page="/bodyMessage.jsp?bundle=administration" />
 		<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="90%" align="center" summary="" border="0">
 			<tbody>
 				<tr class="topBorder">
@@ -111,11 +102,14 @@ function refreshContainers() {
 					<tr class="topBorder">
 						<td class="formTitle" width="30%">
 							<div align="justify">
-								Container <c:out value="${status.index+1}" /> <html:hidden name="containers" indexed="true" property="containerName" value="${status.index+1}"/><c:choose>
-										<c:when test="${status.index== 0}">
+								Container
+								<c:out value="${status.index+1}" />
+								<html:hidden name="containers" indexed="true" property="containerName" value="${status.index+1}" />
+								<c:choose>
+									<c:when test="${status.index== 0}">
 											(Template Container)
 										</c:when>
-									</c:choose>
+								</c:choose>
 							</div>
 						</td>
 					</tr>
@@ -124,7 +118,7 @@ function refreshContainers() {
 							<div align="justify">
 								<strong>Container Type* <span class="formFieldWhite"> <html:select name="containers" indexed="true" property="containerType">
 											<option value=""></option>
-											<html:options name="allSampleContainerTypes"/>																				
+											<html:options name="allSampleContainerTypes" />
 										</html:select></span> &nbsp; &nbsp; &nbsp; Other <span class="formFieldWhite"><html:text name="containers" indexed="true" property="otherContainerType" size="8" /></span> &nbsp; &nbsp; &nbsp; </strong>
 							</div>
 						</td>

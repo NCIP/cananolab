@@ -9,17 +9,8 @@
 		<br>
 		<strong>Search Workflow </strong>
 	</h3>
-	<html:errors />
-	<logic:messagesPresent message="true">
-		<ul>
-			<font color="red"> <html:messages id="msg" message="true" bundle="search">
-					<li>
-						<bean:write name="msg" />
-					</li>
-				</html:messages> </font>
-		</ul>
-	</logic:messagesPresent>
 	<blockquote>
+		<jsp:include page="/bodyMessage.jsp?bundle=search" />
 		<table width="90%" border="0" align="center" cellpadding="3" cellspacing="0" summary="">
 			<tr>
 				<td class="formTitle" width="30%">
@@ -94,7 +85,7 @@
 				<td class="formField">
 					<strong> <html:select property="fileSubmitter">
 							<option value=""></option>
-							<html:options collection="allUserBeans" property="loginId" labelProperty="fullName"/>
+							<html:options collection="allUserBeans" property="loginId" labelProperty="fullName" />
 						</html:select> </strong>
 				</td>
 			</tr>
@@ -112,15 +103,15 @@
 			<tr>
 				<td class="formTitle" colspan="2">
 					<div align="center">
-					and Additional Filtering of Above Data
+						and Additional Filtering of Above Data
 					</div>
 				</td>
 			</tr>
 			<tr>
 				<td class="formLabel">
 					<div align="center">
-						<strong> <html:checkbox property="isFileIn" /> Input Files?&nbsp; &nbsp; <html:checkbox property="isFileOut" /> Output Files? &nbsp;&nbsp; <html:checkbox
-								property="includeMaskedAliquots" />Include Masked Aliquots? <html:checkbox property="includeMaskedFiles" />Include Masked Files?</strong>
+						<strong> <html:checkbox property="isFileIn" /> Input Files?&nbsp; &nbsp; <html:checkbox property="isFileOut" /> Output Files? &nbsp;&nbsp; <html:checkbox property="includeMaskedAliquots" />Include Masked Aliquots? <html:checkbox
+								property="includeMaskedFiles" />Include Masked Files?</strong>
 					</div>
 				</td>
 			</tr>

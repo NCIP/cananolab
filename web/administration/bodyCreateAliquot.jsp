@@ -29,17 +29,8 @@ function openLink() {
 	<br>
 	Create Aliquot
 </h3>
-<html:errors />
-<logic:messagesPresent message="true">
-	<ul>
-		<font color="red"> <html:messages id="msg" message="true" bundle="administration">
-				<li>
-					<bean:write name="msg" />
-				</li>
-			</html:messages> </font>
-	</ul>
-</logic:messagesPresent>
 <blockquote>
+	<jsp:include page="/bodyMessage.jsp?bundle=administration" />
 	<html:form action="/createAliquot">
 		<table width="90%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 			<tr class="topBorder">
@@ -86,7 +77,7 @@ function openLink() {
 						<div align="justify">
 							<strong>Container Type* <span class="formFieldWhite"> <html:select property="template.container.containerType">
 										<option value=""></option>
-										<html:options name="allAliquotContainerTypes" />										
+										<html:options name="allAliquotContainerTypes" />
 									</html:select></span> &nbsp; &nbsp; &nbsp; Other <span class="formFieldWhite"><html:text property="template.container.otherContainerType" size="8" /></span> &nbsp; &nbsp; &nbsp; </strong>
 						</div>
 					</td>

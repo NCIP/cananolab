@@ -9,16 +9,7 @@
 		<strong>Create Run </strong>
 	</h3>
 	<blockquote>
-		<html:errors />
-		<logic:messagesPresent message="true">
-			<ul>
-				<font color="red"> <html:messages id="msg" message="true" bundle="workflow">
-						<li>
-							<bean:write name="msg" />
-						</li>
-					</html:messages> </font>
-			</ul>
-		</logic:messagesPresent>
+		<jsp:include page="/bodyMessage.jsp?bundle=workflow" />
 		<table width="90%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 			<tr class="topBorder">
 				<td colspan="2" class="formTitle">
@@ -98,7 +89,7 @@
 				<td class="formFieldWhite">
 					<html:select property="runBy">
 						<option value=""></option>
-						<html:options collection="allUserBeans" property="loginId" labelProperty="fullName"/>
+						<html:options collection="allUserBeans" property="loginId" labelProperty="fullName" />
 					</html:select>
 				</td>
 			</tr>
