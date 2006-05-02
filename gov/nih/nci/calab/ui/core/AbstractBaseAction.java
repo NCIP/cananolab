@@ -17,38 +17,29 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: AbstractBaseAction.java,v 1.7 2006-05-02 18:58:19 pansu Exp $ */
+/* CVS $Id: AbstractBaseAction.java,v 1.8 2006-05-02 20:22:32 pansu Exp $ */
+
+import gov.nih.nci.calab.exception.CalabException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
 
-public abstract class AbstractBaseAction extends Action {
-	private static Logger logger = Logger.getLogger(AbstractBaseAction.class);
+public abstract class AbstractBaseAction extends Action {	
 
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 
 		ActionForward forward = null;
-		ActionMessages msgs = new ActionMessages();
-
 		if (!loginRequired() || loginRequired() && isUserLoggedIn(request)) {
 			forward = executeTask(mapping, form, request, response);
 		} else {
-			logger
-					.debug("an attempt to access the page without authentication.");
-			ActionMessage error = new ActionMessage("error.login.required");
-			msgs.add("error", error);
-			saveMessages(request, msgs);
-			forward = mapping.findForward("login");
+			throw new CalabException("Login required.");			
 		}
 
 		return forward;
