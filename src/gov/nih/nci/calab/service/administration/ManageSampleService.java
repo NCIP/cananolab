@@ -9,7 +9,7 @@ import gov.nih.nci.calab.domain.Source;
 import gov.nih.nci.calab.domain.StorageElement;
 import gov.nih.nci.calab.dto.administration.ContainerBean;
 import gov.nih.nci.calab.dto.administration.SampleBean;
-import gov.nih.nci.calab.exception.CalabException;
+import gov.nih.nci.calab.exception.DuplicateEntriesException;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 
@@ -19,7 +19,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-/* CVS $Id: ManageSampleService.java,v 1.24 2006-05-01 22:03:20 zengje Exp $ 
+/* CVS $Id: ManageSampleService.java,v 1.25 2006-05-02 21:35:48 zengje Exp $ 
  */
 public class ManageSampleService {
 	private static Logger logger = Logger.getLogger(ManageSampleService.class);
@@ -127,7 +127,7 @@ public class ManageSampleService {
 				  // Yes, throws exception
 				if (((Integer)obj).intValue() > 0)
 				{
-					throw new CalabException("The same sample is already exist in the system.");
+					throw new DuplicateEntriesException("The same sample already exists in the system.");
 				}
 			}
 			// No, save it
@@ -291,7 +291,7 @@ public class ManageSampleService {
 				doSampleContainer.setStorageElementCollection(storages);
 				ida.store(doSampleContainer);
 			}
-		} catch (CalabException ce) {
+		} catch (DuplicateEntriesException ce) {
     		throw ce; 		
     	} catch (Exception e){
 			e.printStackTrace();
