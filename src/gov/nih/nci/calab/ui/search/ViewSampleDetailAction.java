@@ -6,10 +6,11 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: ViewSampleDetailAction.java,v 1.3 2006-04-07 15:29:53 pansu Exp $ */
+/* CVS $Id: ViewSampleDetailAction.java,v 1.4 2006-05-02 22:27:29 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.SampleBean;
+import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
 
 import java.util.List;
@@ -36,62 +37,48 @@ public class ViewSampleDetailAction extends AbstractBaseAction {
 		ActionForward forward = null;
 		HttpSession session = request.getSession();
 		ActionMessages messages = new ActionMessages();
-		try {
-			DynaActionForm theForm = (DynaActionForm) form;
-			boolean showAliquot=false;
-			if (theForm.get("showAliquot")!=null) {
-				showAliquot=(Boolean)theForm.get("showAliquot");
-			}
-			// if no aliquot information show sample details and its containers
+		DynaActionForm theForm = (DynaActionForm) form;
+		boolean showAliquot = false;
+		if (theForm.get("showAliquot") != null) {
+			showAliquot = (Boolean) theForm.get("showAliquot");
+		}
+		// if no aliquot information show sample details and its containers
 
-			if (!showAliquot) {
-				int sampleNum = Integer.parseInt((String) theForm
-						.get("sampleNum"));
+		if (!showAliquot) {
+			int sampleNum = Integer.parseInt((String) theForm.get("sampleNum"));
 
-				int containerNum = Integer.parseInt((String) theForm
-						.get("containerNum"));
-				if (session.getAttribute("samples") != null) {
-					List samples = (List) session.getAttribute("samples");
-					SampleBean sample = ((SampleBean) samples.get(sampleNum));
-					request.setAttribute("sample", sample);
-					request.setAttribute("containerNum", containerNum);
-					forward = mapping.findForward("success");
-				} else {
-					logger
-							.error("Session containing the searched sample results either is expired or doesn't exist");
-					ActionMessage error = new ActionMessage(
-							"error.viewSampleDetails.nosamples");
-					messages.add("error", error);
-					saveMessages(request, messages);
-					forward = mapping.getInputForward();
-				}
+			int containerNum = Integer.parseInt((String) theForm
+					.get("containerNum"));
+			if (session.getAttribute("samples") != null) {
+				List samples = (List) session.getAttribute("samples");
+				SampleBean sample = ((SampleBean) samples.get(sampleNum));
+				request.setAttribute("sample", sample);
+				request.setAttribute("containerNum", containerNum);
+				forward = mapping.findForward("success");
+			} else {
+				logger
+						.error("Session containing the searched sample results either is expired or doesn't exist");
+				ActionMessage error = new ActionMessage(
+						"error.viewSampleDetails.nosamples");
+				messages.add("error", error);
+				saveMessages(request, messages);
+				forward = mapping.getInputForward();
 			}
-			// show aliquot and its container detail
-			else {
-				int aliquotNum=Integer.parseInt((String) theForm.get("aliquotNum"));
-				if (session.getAttribute("aliquots") != null) {
-					List aliquots = (List) session.getAttribute("aliquots");
-					AliquotBean aliquot = ((AliquotBean)aliquots.get(aliquotNum));
-					request.setAttribute("aliquot", aliquot);
-					request.setAttribute("aliquotNum", aliquotNum);
-					forward = mapping.findForward("success");
-				} else {
-					logger
-							.error("Session containing the searched sample aliquot results either is expired or doesn't exist");
-					ActionMessage error = new ActionMessage(
-							"error.viewSampleDetails.nosamples");
-					messages.add("error", error);
-					saveMessages(request, messages);
-					forward = mapping.getInputForward();
-				}
+		}
+		// show aliquot and its container detail
+		else {
+			int aliquotNum = Integer.parseInt((String) theForm
+					.get("aliquotNum"));
+			if (session.getAttribute("aliquots") != null) {
+				List aliquots = (List) session.getAttribute("aliquots");
+				AliquotBean aliquot = ((AliquotBean) aliquots.get(aliquotNum));
+				request.setAttribute("aliquot", aliquot);
+				request.setAttribute("aliquotNum", aliquotNum);
+				forward = mapping.findForward("success");
+			} else {
+				throw new CalabException(
+						"Session containing the searched sample aliquot results either is expired or doesn't exist");
 			}
-		} catch (Exception e) {
-			ActionMessages errors = new ActionMessages();
-			ActionMessage error = new ActionMessage("error.viewSampleDetails");
-			errors.add("error", error);
-			saveMessages(request, errors);
-			logger.error("Caught exception when showing sample detail page", e);
-			forward = mapping.getInputForward();
 		}
 		return forward;
 	}

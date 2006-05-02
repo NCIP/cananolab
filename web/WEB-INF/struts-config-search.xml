@@ -19,7 +19,7 @@
 			<form-property name="criteriaJoin" type="java.lang.String" initial="and" />
 		</form-bean>
 		<form-bean name="searchSampleForm" type="org.apache.struts.validator.DynaValidatorForm">
-		    <form-property name="showAliquot" type="java.lang.String" initial="false"/>
+			<form-property name="showAliquot" type="java.lang.String" initial="false" />
 			<form-property name="searchName" type="java.lang.String" />
 			<form-property name="sourceSampleId" type="java.lang.String" />
 			<form-property name="sampleSource" type="java.lang.String" />
@@ -33,10 +33,10 @@
 			<form-property name="storageLocation" type="gov.nih.nci.calab.dto.administration.StorageLocation" />
 		</form-bean>
 		<form-bean name="viewSampleDetailForm" type="org.apache.struts.action.DynaActionForm">
-		    <form-property name="sampleNum" type="java.lang.String"/>
-		    <form-property name="containerNum" type="java.lang.String"/>
-		    <form-property name="aliquotNum" type="java.lang.String"/>
-		    <form-property name="showAliquot" type="java.lang.Boolean"/>
+			<form-property name="sampleNum" type="java.lang.String" />
+			<form-property name="containerNum" type="java.lang.String" />
+			<form-property name="aliquotNum" type="java.lang.String" />
+			<form-property name="showAliquot" type="java.lang.Boolean" />
 		</form-bean>
 	</form-beans>
 	<global-forwards>
@@ -45,20 +45,21 @@
 	</global-forwards>
 	<action-mappings>
 		<action input="input" name="searchWorkflowForm" path="/searchWorkflow" scope="request" type="gov.nih.nci.calab.ui.search.SearchWorkflowAction">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="search" key="error.searchWorkflow" path="search.searchworkflow" type="java.lang.Exception" />
 			<forward name="input" path="search.searchworkflow" />
 			<forward name="success" path="search.searchworkflowresult" />
-			<forward name="failure" path="search.searchworkflow" />
 		</action>
 		<action input="input" name="searchSampleForm" path="/searchSample" scope="request" type="gov.nih.nci.calab.ui.search.SearchSampleAction">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="search" key="error.searchSample" path="search.searchsample" type="java.lang.Exception" />
 			<forward name="input" path="search.searchsample" />
 			<forward name="success" path="search.searchsampleresult" />
-			<forward name="failure" path="search.searchsample" />
 		</action>
 		<action input="input" name="viewSampleDetailForm" path="/viewSampleDetail" scope="request" type="gov.nih.nci.calab.ui.search.ViewSampleDetailAction">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="search" key="error.viewSampleDetails.noSamples" path="search.searchsampleresult" type="java.lang.Exception" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="search" key="error.viewSampleDetails" path="search.searchsampleresult" type="java.lang.Exception" />
 			<forward name="input" path="search.searchsampleresult" />
 			<forward name="success" path="search.viewsampledetails" />
-			<forward name="failure" path="search.searchsampleresult" />
-		</action>
+			</action>
 	</action-mappings>
 
 </struts-config>
