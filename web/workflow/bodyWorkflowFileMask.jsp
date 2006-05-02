@@ -5,6 +5,7 @@
 <br>
 <br>
 <center>
+<logic:present name="filesToMask">
 	<table width="80%" border="0" align="center" cellpadding="0" cellspacing="0">
 		<tr>
 			<td class="formTitle" colspan="2" align="center">
@@ -82,4 +83,8 @@
 			</tr>
 		</logic:iterate>
 	</table>
+</logic:present>
+<logic:notPresent name="filesToMask">
+no files to mask
+</logic:notPresent>
 </center>
