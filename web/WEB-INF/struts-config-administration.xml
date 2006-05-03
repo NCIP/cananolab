@@ -15,7 +15,7 @@
 			<form-property name="solubility" type="java.lang.String" />
 			<form-property name="numberOfContainers" type="java.lang.String" initial="1" />
 			<form-property name="generalComments" type="java.lang.String" />
-			<form-property name="containers" type="gov.nih.nci.calab.dto.administration.ContainerBean[]" />
+			<form-property name="containers" type="gov.nih.nci.calab.dto.administration.ContainerBean[]" size="100" />
 		</form-bean>
 		<form-bean name="createAliquotForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="sampleName" type="java.lang.String" />
@@ -37,7 +37,7 @@
 	</global-forwards>
 
 	<action-mappings>
-		<action name="createSampleForm" path="/preCreateSample" type="gov.nih.nci.calab.ui.administration.PreCreateSampleAction" input="input">
+		<action name="createSampleForm" path="/preCreateSample" type="gov.nih.nci.calab.ui.administration.PreCreateSampleAction" input="input" scope="session">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="administration" key="error.preCreateSample" path="administration.message" type="java.lang.Exception" />
 			<forward name="success" path="administration.createsample" />
 			<forward name="input" path="administration.createsample" />
