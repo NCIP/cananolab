@@ -50,28 +50,21 @@
  */
 package gov.nih.nci.calab.ui.core;
 
-import gov.nih.nci.calab.exception.CalabException;
+import gov.nih.nci.calab.exception.InvalidSessionException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
 import org.apache.struts.actions.DispatchAction;
 
 public abstract class AbstractDispatchAction extends DispatchAction {
-	private Log logger = LogFactory.getLog(this.getClass());
-
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		ActionForward forward = null;
-		ActionMessages msgs = new ActionMessages();
+		ActionForward forward = null;		
 
 		response.addHeader("Cache-Control", "no-cache");
 
@@ -82,7 +75,7 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 		if (!loginRequired() || loginRequired() && isUserLoggedIn(request)) {
 			forward = super.execute(mapping, form, request, response);
 		} else {
-			throw new CalabException("User is not logged in or Session is expired");	
+			throw new InvalidSessionException();	
 		}
 		return forward;
 	}
