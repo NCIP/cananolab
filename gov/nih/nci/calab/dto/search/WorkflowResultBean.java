@@ -22,7 +22,7 @@ public class WorkflowResultBean {
 	private RunBean run;
 
 	public WorkflowResultBean(String filePath, String assayType,
-			String assayName, String assayRunName, String assayRunDate,
+			String assayName, String assayRunId, String assayRunName, String assayRunDate,
 			String aliquotName, String aliquotStatus,
 			String fileSubmissionDate, String fileSubmitter,
 			String fileMaskStatus, String inoutType) {
@@ -31,7 +31,7 @@ public class WorkflowResultBean {
 		this.file = new FileBean(filePath, fileSubmissionDate, fileSubmitter,
 				fileMaskStatus, inoutType);
 		this.assay = new AssayBean(assayName, assayType);
-		this.run = new RunBean("", assayRunName, assayRunDate);
+		this.run = new RunBean(assayRunId, assayRunName, assayRunDate);
 		this.aliquot = new AliquotBean(aliquotName, aliquotStatus);
 	}
 
