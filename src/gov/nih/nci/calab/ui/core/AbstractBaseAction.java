@@ -17,9 +17,9 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: AbstractBaseAction.java,v 1.9 2006-05-03 18:16:01 pansu Exp $ */
+/* CVS $Id: AbstractBaseAction.java,v 1.10 2006-05-03 19:07:44 pansu Exp $ */
 
-import gov.nih.nci.calab.exception.CalabException;
+import gov.nih.nci.calab.exception.InvalidSessionException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,7 +39,7 @@ public abstract class AbstractBaseAction extends Action {
 		if (!loginRequired() || loginRequired() && isUserLoggedIn(request)) {
 			forward = executeTask(mapping, form, request, response);
 		} else {
-			throw new CalabException("User is not logged in or Session is expired");			
+			throw new InvalidSessionException();			
 		}
 
 		return forward;
