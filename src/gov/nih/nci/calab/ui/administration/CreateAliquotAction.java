@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: CreateAliquotAction.java,v 1.15 2006-05-02 22:27:17 pansu Exp $ */
+/* CVS $Id: CreateAliquotAction.java,v 1.16 2006-05-03 19:35:20 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.exception.CalabException;
@@ -62,7 +62,7 @@ public class CreateAliquotAction extends AbstractBaseAction {
 
 			forward = mapping.findForward("success");
 		} else {
-			throw new CalabException("Can't find the aliquot matrix to save.  Session is either expired or user clicks on submit button before creating aliquot matrix");
+			throw new CalabException("Can't find the aliquot matrix to save.  Please click on 'Update Aliquots' button before submitting");
 		}
 		return forward;
 	}
