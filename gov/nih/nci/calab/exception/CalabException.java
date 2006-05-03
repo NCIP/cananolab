@@ -13,8 +13,7 @@ public class CalabException extends Exception {
 	 * 
 	 */
 	public CalabException() {
-		super();
-
+		super("An exception ocurred in caLAB");
 	}
 
 	public CalabException(String message) {
