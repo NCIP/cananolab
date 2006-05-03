@@ -14,11 +14,11 @@ import java.util.Set;
  * @author pansu
  * 
  */
-/* CVS $Id: ContainerBean.java,v 1.7 2006-04-19 19:52:13 pansu Exp $ */
+/* CVS $Id: ContainerBean.java,v 1.8 2006-05-03 17:39:37 pansu Exp $ */
 
 public class ContainerBean {
-	private String containerName="";
-	
+	private String containerName = "";
+
 	private String containerType = "";
 
 	private String otherContainerType = "";
@@ -51,6 +51,24 @@ public class ContainerBean {
 		storageLocation = new StorageLocation();
 	}
 
+	public ContainerBean(ContainerBean container) {
+		containerName = container.getContainerName();
+		containerType = container.getContainerType();
+		otherContainerType = container.getOtherContainerType();
+		quantity = container.getQuantity();
+		quantityUnit =container.getQuantityUnit();
+		concentration = container.getConcentration();
+		concentrationUnit =container.getConcentrationUnit();
+		volume = container.getVolume();
+		volumeUnit = container.getVolumeUnit();
+		solvent = container.getSolvent();
+		safetyPrecaution = container.getSafetyPrecaution();
+		storageCondition = container.getStorageCondition();
+		storageLocation=container.getStorageLocation();
+		storageLocationStr = container.getStorageLocationStr();
+		containerComments = container.getContainerComments();
+	}
+
 	public ContainerBean(String containerType, String otherContainerType,
 			String quantity, String quantityUnit, String concentration,
 			String concentrationUnit, String volume, String volumeUnit,
@@ -74,18 +92,27 @@ public class ContainerBean {
 	}
 
 	public ContainerBean(SampleContainer container) {
-		this.containerName=StringUtils.convertToString(container.getName());
-		this.containerType = StringUtils.convertToString(container.getContainerType());
+		this.containerName = StringUtils.convertToString(container.getName());
+		this.containerType = StringUtils.convertToString(container
+				.getContainerType());
 		this.quantity = StringUtils.convertToString(container.getQuantity());
-		this.quantityUnit = StringUtils.convertToString(container.getQuantityUnit());
-		this.concentration = StringUtils.convertToString(container.getConcentration());
-		this.concentrationUnit = StringUtils.convertToString(container.getConcentrationUnit());
+		this.quantityUnit = StringUtils.convertToString(container
+				.getQuantityUnit());
+		this.concentration = StringUtils.convertToString(container
+				.getConcentration());
+		this.concentrationUnit = StringUtils.convertToString(container
+				.getConcentrationUnit());
 		this.volume = StringUtils.convertToString(container.getVolume());
-		this.volumeUnit = StringUtils.convertToString(container.getVolumeUnit());
-		this.solvent = StringUtils.convertToString(container.getDiluentsSolvent());
-		this.safetyPrecaution = StringUtils.convertToString(container.getSafetyPrecaution());
-		this.storageCondition = StringUtils.convertToString(container.getStorageCondition());
-		this.containerComments = StringUtils.convertToString(container.getComments());
+		this.volumeUnit = StringUtils
+				.convertToString(container.getVolumeUnit());
+		this.solvent = StringUtils.convertToString(container
+				.getDiluentsSolvent());
+		this.safetyPrecaution = StringUtils.convertToString(container
+				.getSafetyPrecaution());
+		this.storageCondition = StringUtils.convertToString(container
+				.getStorageCondition());
+		this.containerComments = StringUtils.convertToString(container
+				.getComments());
 
 		Set storageElements = (Set) container.getStorageElementCollection();
 		String lab = null, room = null, freezer = null, shelf = null, rack = null, box = null;
@@ -249,7 +276,7 @@ public class ContainerBean {
 	public void setContainerName(String containerName) {
 		this.containerName = containerName;
 	}
-	
+
 	/**
 	 * Assume runName has a sequenceNumber at the end
 	 * 
@@ -259,8 +286,8 @@ public class ContainerBean {
 		Integer containerNumber = -1;
 		if (containerName.matches("\\D+(\\d+)")) {
 			try {
-				containerNumber = Integer.parseInt(containerName
-						.replaceAll("\\D+(\\d+)", "$1"));
+				containerNumber = Integer.parseInt(containerName.replaceAll(
+						"\\D+(\\d+)", "$1"));
 			} catch (Exception e) {
 				return -1;
 			}
