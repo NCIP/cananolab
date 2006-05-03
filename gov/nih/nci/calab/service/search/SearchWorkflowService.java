@@ -23,7 +23,7 @@ import org.apache.log4j.Logger;
  * 
  */
 
-/* CVS $Id: SearchWorkflowService.java,v 1.23 2006-04-27 18:57:30 pansu Exp $ */
+/* CVS $Id: SearchWorkflowService.java,v 1.24 2006-05-03 21:06:07 pansu Exp $ */
 
 public class SearchWorkflowService {
 	private static Logger logger = Logger
@@ -43,7 +43,7 @@ public class SearchWorkflowService {
 				fileSubmissionDateBegin, fileSubmissionDateEnd, fileSubmitter,
 				criteriaJoin);
 
-		String hqlString = "select distinct file.path, assay.assayType, assay.name, run.name, run.createdDate, aliquot.name, aliquotStatus.status, file.createdDate, file.createdBy, fileStatus.status ";
+		String hqlString = "select distinct file.path, assay.assayType, assay.name, run.id, run.name, run.createdDate, aliquot.name, aliquotStatus.status, file.createdDate, file.createdBy, fileStatus.status ";
 
 		// get inputFile workflows first
 		SortedSet<WorkflowResultBean> workflowSet = new TreeSet<WorkflowResultBean>(
@@ -186,18 +186,19 @@ public class SearchWorkflowService {
 				String theFilePath = StringUtils.convertToString(items[0]);
 				String theAssayType = StringUtils.convertToString(items[1]);
 				String theAssayName = StringUtils.convertToString(items[2]);
-				String theAssayRunName = StringUtils.convertToString(items[3]);
+				String theAssayRunId=StringUtils.convertToString(items[3]);
+				String theAssayRunName = StringUtils.convertToString(items[4]);				
 				String theAssayRunDate = StringUtils.convertDateToString(
-						(Date) items[4], CalabConstants.DATE_FORMAT);
-				String theAliquotName = StringUtils.convertToString(items[5]);
-				String theAliquotStatus = StringUtils.convertToString(items[6]);
+						(Date) items[5], CalabConstants.DATE_FORMAT);
+				String theAliquotName = StringUtils.convertToString(items[6]);
+				String theAliquotStatus = StringUtils.convertToString(items[7]);
 				String theFileSubmissionDate = StringUtils.convertDateToString(
-						(Date) items[7], CalabConstants.DATE_FORMAT);
-				String theFileSubmitter = StringUtils.convertToString(items[8]);
-				String theFileStatus = StringUtils.convertToString(items[9]);
+						(Date) items[8], CalabConstants.DATE_FORMAT);
+				String theFileSubmitter = StringUtils.convertToString(items[9]);
+				String theFileStatus = StringUtils.convertToString(items[10]);
 				// set inout type to empty string when file path is emtpy
 				String theFileInoutType = StringUtils
-						.convertToString(items[10]);
+						.convertToString(items[11]);
 				// filter out rows with inouttype=out and empty file path
 				if (!theFileInoutType.equals(CalabConstants.OUTPUT)
 						|| theFilePath.length() > 0) {
@@ -205,7 +206,7 @@ public class SearchWorkflowService {
 					theFileInoutType = (theFilePath.length() == 0) ? ""
 							: theFileInoutType;
 					workflows.add(new WorkflowResultBean(theFilePath,
-							theAssayType, theAssayName, theAssayRunName,
+							theAssayType, theAssayName, theAssayRunId, theAssayRunName,
 							theAssayRunDate, theAliquotName, theAliquotStatus,
 							theFileSubmissionDate, theFileSubmitter,
 							theFileStatus, theFileInoutType));
