@@ -6,10 +6,9 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: PreCreateSampleAction.java,v 1.11 2006-05-02 22:27:17 pansu Exp $ */
+/* CVS $Id: PreCreateSampleAction.java,v 1.12 2006-05-03 17:40:11 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.ContainerBean;
-import gov.nih.nci.calab.dto.administration.StorageLocation;
 import gov.nih.nci.calab.service.administration.ManageSampleService;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
 
@@ -49,51 +48,11 @@ public class PreCreateSampleAction extends AbstractBaseAction {
 		// set other containers to have values from the first container
 		if (origContainers.length < numContainers) {
 			for (int i = 0; i < origContainers.length; i++) {
-				StorageLocation loc = new StorageLocation(origContainers[i]
-						.getStorageLocation().getLab(), origContainers[i]
-						.getStorageLocation().getRoom(), origContainers[i]
-						.getStorageLocation().getFreezer(), origContainers[i]
-						.getStorageLocation().getShelf(), origContainers[i]
-						.getStorageLocation().getRack(), origContainers[i]
-						.getStorageLocation().getBox());
-
-				containers[i] = new ContainerBean(origContainers[i]
-						.getContainerType(), origContainers[i]
-						.getOtherContainerType(), origContainers[i]
-						.getQuantity(), origContainers[i].getQuantityUnit(),
-						origContainers[i].getConcentration(), origContainers[i]
-								.getConcentrationUnit(), origContainers[i]
-								.getVolume(),
-						origContainers[i].getVolumeUnit(), origContainers[i]
-								.getSolvent(), origContainers[i]
-								.getSafetyPrecaution(), origContainers[i]
-								.getStorageCondition(), loc, origContainers[i]
-								.getContainerComments());
-
+				containers[i] = new ContainerBean(origContainers[i]);
 			}
 			for (int i = origContainers.length; i < numContainers; i++) {
 				if (origContainers.length > 0) {
-					StorageLocation loc = new StorageLocation(origContainers[0]
-							.getStorageLocation().getLab(), origContainers[0]
-							.getStorageLocation().getRoom(), origContainers[0]
-							.getStorageLocation().getFreezer(),
-							origContainers[0].getStorageLocation().getShelf(),
-							origContainers[0].getStorageLocation().getRack(),
-							origContainers[0].getStorageLocation().getBox());
-
-					containers[i] = new ContainerBean(origContainers[0]
-							.getContainerType(), origContainers[0]
-							.getOtherContainerType(), origContainers[0]
-							.getQuantity(),
-							origContainers[0].getQuantityUnit(),
-							origContainers[0].getConcentration(),
-							origContainers[0].getConcentrationUnit(),
-							origContainers[0].getVolume(), origContainers[0]
-									.getVolumeUnit(), origContainers[0]
-									.getSolvent(), origContainers[0]
-									.getSafetyPrecaution(), origContainers[0]
-									.getStorageCondition(), loc,
-							origContainers[0].getContainerComments());
+					containers[i] = new ContainerBean(origContainers[0]);
 				}
 				// if no containers from previous request, set them new
 				else {
@@ -103,26 +62,7 @@ public class PreCreateSampleAction extends AbstractBaseAction {
 
 		} else {
 			for (int i = 0; i < numContainers; i++) {
-				StorageLocation loc = new StorageLocation(origContainers[i]
-						.getStorageLocation().getLab(), origContainers[i]
-						.getStorageLocation().getRoom(), origContainers[i]
-						.getStorageLocation().getFreezer(), origContainers[i]
-						.getStorageLocation().getShelf(), origContainers[i]
-						.getStorageLocation().getRack(), origContainers[i]
-						.getStorageLocation().getBox());
-
-				containers[i] = new ContainerBean(origContainers[i]
-						.getContainerType(), origContainers[i]
-						.getOtherContainerType(), origContainers[i]
-						.getQuantity(), origContainers[i].getQuantityUnit(),
-						origContainers[i].getConcentration(), origContainers[i]
-								.getConcentrationUnit(), origContainers[i]
-								.getVolume(),
-						origContainers[i].getVolumeUnit(), origContainers[i]
-								.getSolvent(), origContainers[i]
-								.getSafetyPrecaution(), origContainers[i]
-								.getStorageCondition(), loc, origContainers[i]
-								.getContainerComments());
+				containers[i] = new ContainerBean(origContainers[i]);
 			}
 		}
 		theForm.set("containers", containers);
