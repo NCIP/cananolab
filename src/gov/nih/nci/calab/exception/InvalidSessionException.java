@@ -26,9 +26,4 @@ public class InvalidSessionException extends CalabException {
 	public InvalidSessionException(Throwable cause) {
 		super(cause);	
 	}
-	
-	public static void main(String[] args) {
-		InvalidSessionException e = new InvalidSessionException();
-		System.out.println(e.getMessage());
-	}
 }
