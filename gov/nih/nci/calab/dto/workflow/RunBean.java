@@ -44,6 +44,7 @@ public class RunBean {
 
 	// used in WorkflowResultBean
 	public RunBean(String id, String name, String runDate) {
+		this.id=id;
 		this.name = name;
 		this.runDate = runDate;
 	}
