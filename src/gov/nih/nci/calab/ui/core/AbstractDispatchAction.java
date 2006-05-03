@@ -82,7 +82,7 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 		if (!loginRequired() || loginRequired() && isUserLoggedIn(request)) {
 			forward = super.execute(mapping, form, request, response);
 		} else {
-			throw new CalabException("Login required.");	
+			throw new CalabException("User is not logged in or Session is expired");	
 		}
 		return forward;
 	}
