@@ -1,31 +1,37 @@
 package gov.nih.nci.calab.dto.administration;
 
-
 /**
  * This class captures all properties of a storage location.
  * 
  * @author pansu
  * 
  */
-/* CVS $Id: StorageLocation.java,v 1.2 2006-04-10 18:10:39 pansu Exp $ */
+/* CVS $Id: StorageLocation.java,v 1.3 2006-05-03 17:39:37 pansu Exp $ */
 
 public class StorageLocation {
-	private String lab="";
+	private String lab = "";
 
-	private String room="";
+	private String room = "";
 
-	private String freezer="";
+	private String freezer = "";
 
-	private String shelf="";
+	private String shelf = "";
 
-	private String rack="";
+	private String rack = "";
 
-	private String box="";
+	private String box = "";
 
 	public StorageLocation() {
-		
 	}
 	
+	public StorageLocation(StorageLocation loc) {
+		lab=loc.getLab();
+		room=loc.getRoom();
+		freezer=loc.getFreezer();
+		shelf=loc.getShelf();
+		rack=loc.getRack();
+		box=loc.getBox();
+	}
 	public StorageLocation(String lab, String room, String freezer,
 			String shelf, String rack, String box) {
 		super();
