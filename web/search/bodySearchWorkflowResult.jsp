@@ -3,10 +3,16 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<h3>
-	<br>
-	Search Results
-</h3>
+<table width="90%" align="center"><tr>
+	<td width="10%">&nbsp;</td>
+	<td>
+		<h3><br>Search Results</h3>
+	</td>
+	<td align="right" width="10%">
+		<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=sample_search_results')" class="helpText">Help</a>
+	</td>
+</table>
+
 <blockquote>
 	<table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
 		<tr valign="bottom">

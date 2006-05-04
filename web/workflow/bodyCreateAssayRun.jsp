@@ -6,9 +6,16 @@
 <script type="text/javascript" src="javascript/calendar2.js"> </script>
 
 <html:form action="/createAssayRun">
-	<h3>
-		<strong>Create Run for Assay <c:out value="${param.assayName}" /></strong>
-	</h3>
+<table width="90%" align="center"><tr>
+	<td width="10%">&nbsp;</td>
+	<td >
+		<h3>Create Run for Assay <c:out value="${param.assayName}" /></h3>
+	</td>
+	<td align="right" width="10%">
+		<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=create_assay_run')" class="helpText">Help</a>
+	</td>
+</table>
+
 	<blockquote>
 		<jsp:include page="/bodyMessage.jsp?bundle=workflow" />
 		<html:hidden property="assayId" value="${param.assayId}" />

@@ -4,11 +4,17 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <html:form action="/maskAliquot">
-	<h3>
-		&nbsp;
-		<BR>
-		&nbsp;Mask Aliquot
-	</h3>
+<table width="75%" align="center"><tr>
+	<td width="33%">&nbsp;</td>
+	<td width="33%">
+		<h3><br>Mask Aliquot</h3>
+	</td>
+	<td align="right">
+		<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=mask_aliquot')" class="helpText">Help</a>
+	</td>
+</table>
+
+
 	<blockquote>
 		<jsp:include page="/bodyMessage.jsp?bundle=workflow" />
 		<table width="75%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
@@ -33,7 +39,7 @@
 		</table>
 		<br>
 
-		<table width="60%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
+		<table width="75%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 			<tr class="topBorder">
 				<td class="formTitle">
 					<div align="justify">
@@ -44,7 +50,7 @@
 			<tr>
 				<td class="formLabel">
 					<div align="left">
-						<span class="formField"><span class="formFieldWhite"> <textarea name="description" cols="50" rows="3" wrap="ON"></textarea> </span></span>
+						<span class="formField"><span class="formFieldWhite"> <textarea name="description" cols="65" rows="3" wrap="ON"></textarea> </span></span>
 					</div>
 				</td>
 			</tr>
