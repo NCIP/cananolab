@@ -110,13 +110,11 @@ public class FileDownloadAction extends AbstractDispatchAction
         
         ExecuteWorkflowBean workflowBean = (ExecuteWorkflowBean)session.getAttribute("workflow");
         if (workflowBean == null) {
-        	ExecuteWorkflowService executeWorkflowService = new ExecuteWorkflowService();
         	runBean = workflowService.getRunBeanById(runId);
         } else {
             runBean = workflowService.getAssayInfoByRun(workflowBean, runId);      	
         }
         
- 
         fileForm.set("assayType", runBean.getAssayBean().getAssayType());
         fileForm.set("assay", runBean.getAssayBean().getAssayName());
         fileForm.set("run", runBean.getName());
