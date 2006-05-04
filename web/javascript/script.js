@@ -58,6 +58,11 @@ function openWindow(pageURL, name, width, height) {
     window.open (pageURL, name, "alwaysRaised,dependent,status,scrollbars,resizable,width="+width+",height="+height); 
     
 }
+
+function openHelpWindow(pageURL) {
+    window.open (pageURL,"Help", "alwaysRaised,dependent,status,scrollbars,resizable,width=800,height=500"); 
+    
+}
 /**
 moveItems is a function used in moving items in one multiple select to the other.
 */
