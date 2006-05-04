@@ -15,7 +15,7 @@
 		<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.login.required" path="/index.jsp" type="gov.nih.nci.calab.exception.InvalidSessionException" />
 	</global-exceptions>
 	<action-mappings>
-		<action name="initSessionForm" path="/initSession" scope="request" type="gov.nih.nci.calab.ui.core.InitSessionAction">
+		<action name="initSessionForm" path="/initSession" scope="request" parameter="forwardPage" type="gov.nih.nci.calab.ui.core.InitSessionAction">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.initSession" path="calab.error" type="java.lang.Exception" />
 		</action>
 		<action name="loginForm" path="/login" scope="request" type="gov.nih.nci.calab.ui.security.LoginAction" input="input">
