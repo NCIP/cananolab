@@ -25,10 +25,15 @@ function openLink() {
 }
 //-->
 </script>
-<h3>
-	<br>
-	Create Aliquot
-</h3>
+<table width="90%" align="center"><tr>
+	<td width="33%">&nbsp;</td>
+	<td width="33%">
+		<h3><br>Create Aliquot</h3>
+	</td>
+	<td align="right">
+		<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=create_aliquot')" class="helpText">Help</a>
+	</td>
+</table>
 <blockquote>
 	<jsp:include page="/bodyMessage.jsp?bundle=administration" />
 	<html:form action="/createAliquot">
