@@ -490,4 +490,27 @@ public class ExecuteWorkflowService {
     	shortname = longName.substring(timeStampLength);
     	return shortname;
     }
+    
+    public RunBean getRunBeanById(String runId) throws Exception {
+        IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
+        RunBean runBean = new RunBean();
+        try {
+        	ida.open();
+        	String hqlString = "select run.name, assay.name, assay.assayType from Run run join run.assay assay where run.id='" + runId + "'";
+        	List results = ida.search(hqlString);       	
+        	for(Object obj: results){
+        		Object[] values = (Object[])obj;
+        		runBean.setName(StringUtils.convertToString(values[0]));
+        		AssayBean assayBean = new AssayBean(StringUtils.convertToString(values[1]),StringUtils.convertToString(values[2]));
+        		runBean.setAssayBean(assayBean);
+        		break;
+        	}
+        } catch (Exception e) {
+        	e.printStackTrace();
+        	throw e;
+        } finally {
+        	ida.close();
+        }
+    	return runBean;
+    }
 }
