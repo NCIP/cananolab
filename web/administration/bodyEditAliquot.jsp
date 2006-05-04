@@ -1,10 +1,17 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
-<h3>
-	<br>
-	Edit Aliquot
-</h3>
+
+<table width="90%" align="center"><tr>
+	<td width="33%">&nbsp;</td>
+	<td width="33%">
+		<h3><br>Edit Aliquot</h3>
+	</td>
+	<td align="right">
+		<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=edit_aliquot')" class="helpText">Help</a>
+	</td>
+</table>
+
 <blockquote>
 	<jsp:include page="/bodyMessage.jsp?bundle=administration" />
 	<html:form action="/editAliquot">
