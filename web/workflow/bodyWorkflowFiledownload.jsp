@@ -3,6 +3,12 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <br><br>
 <center>
+<table width="80%"><tr>
+	<td align="right">
+		<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=download_files')" class="helpText">Help</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	</td>
+</tr></table>
+<br>
 <table width="80%" border="0" align="center" cellpadding="0" cellspacing="0">
 	<tr>
 		<td class="formTitle" colspan="2" align="center"> General Information for the workflow </td>

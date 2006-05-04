@@ -33,7 +33,7 @@
 		</table>
 		<br>
 
-		<table width="60%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
+		<table width="75%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 			<tr class="topBorder">
 				<td class="dataTablePrimaryLabel">
 					<div align="justify">
@@ -44,7 +44,7 @@
 			<tr>
 				<td class="formLabel">
 					<div align="left">
-						<span class="formField"><span class="formFieldWhite"> <textarea name="description" cols="50" rows="3" wrap="ON"></textarea> </span></span>
+						<span class="formField"><span class="formFieldWhite"> <textarea name="description" cols="65" rows="3" wrap="ON"></textarea> </span></span>
 					</div>
 				</td>
 			</tr>

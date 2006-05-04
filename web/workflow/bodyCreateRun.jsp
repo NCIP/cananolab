@@ -5,9 +5,15 @@
 <script type="text/javascript" src="javascript/calendar2.js"> </script>
 
 <html:form action="/createRun">
-	<h3>
-		<strong>Create Run </strong>
-	</h3>
+<table width="90%" align="center"><tr>
+	<td width="10%">&nbsp;</td>
+	<td >
+		<h3>Create Run </h3>
+	</td>
+	<td align="right" width="10%">
+		<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=create_assay_run')" class="helpText">Help</a>
+	</td>
+</table>
 	<blockquote>
 		<jsp:include page="/bodyMessage.jsp?bundle=workflow" />
 		<table width="90%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">

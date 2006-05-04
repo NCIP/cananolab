@@ -4,10 +4,16 @@
 
 <script type="text/javascript" src="javascript/calendar2.js"></script>
 <html:form action="searchSample">
-	<h3>
-		<br>
-		Search Sample Container
-	</h3>
+<table width="90%" align="center"><tr>
+	<td width="10%">&nbsp;</td>
+	<td>
+		<h3><br>Search Sample Container</h3>
+	</td>
+	<td align="right" width="10%">
+		<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=search_sample_container')" class="helpText">Help</a>
+	</td>
+</table>
+
 	<blockquote>
 	<jsp:include page="/bodyMessage.jsp?bundle=search"/>
 		<table width="90%" border="0" align="center" cellpadding="3" cellspacing="0" summary="">

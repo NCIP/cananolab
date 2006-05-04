@@ -3,11 +3,11 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 
 <table width="90%" align="center"><tr>
-	<td width="33%">&nbsp;</td>
-	<td width="33%">
+	<td width="10%">&nbsp;</td>
+	<td>
 		<h3><br>Edit Aliquot</h3>
 	</td>
-	<td align="right">
+	<td align="right" width="10%">
 		<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=edit_aliquot')" class="helpText">Help</a>
 	</td>
 </table>
