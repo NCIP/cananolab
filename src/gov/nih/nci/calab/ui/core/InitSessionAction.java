@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.35 2006-05-02 22:27:29 pansu Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.36 2006-05-04 20:45:42 zhouji Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
@@ -108,7 +108,8 @@ public class InitSessionAction extends AbstractBaseAction {
 				forwardPage = null;
 			} else if (type.equalsIgnoreCase("upload")) {
 				session.setAttribute("runId", runId);
-				forwardPage = "fileUploadOption";
+                response.sendRedirect(urlPrefix + "/workflowForward.do?type=" + type);
+                forwardPage = null;
 			}
 		}
 		if (forwardPage == null) {
