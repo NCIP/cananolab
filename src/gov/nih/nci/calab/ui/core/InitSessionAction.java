@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.36 2006-05-04 20:45:42 zhouji Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.37 2006-05-04 20:57:12 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
@@ -32,282 +32,30 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.DynaActionForm;
 
-public class InitSessionAction extends AbstractBaseAction {
-	public ActionForward executeTask(ActionMapping mapping, ActionForm form,
+public class InitSessionAction extends AbstractDispatchAction {
+
+	public ActionForward createRun(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		clearSessionData(request, "createRun");
+		setCreateRunSession(request);
+		return mapping.findForward("createRun");
+	}
 
+	public ActionForward createAssayRun(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		clearSessionData(request, "createAssayRun");
+		setCreateRunSession(request);
+		return mapping.findForward("createAssayRun");
+	}
+
+	private void setCreateRunSession(HttpServletRequest request)
+			throws Exception {
 		HttpSession session = request.getSession();
-		ActionForward forward = null;
-		String forwardPage = null;
-		String urlPrefix = request.getContextPath();
-		DynaActionForm theForm = (DynaActionForm) form;
-		forwardPage = (String) theForm.get("forwardPage");
-		// clean up session data
-		clearSessionData(session, forwardPage);
-
-		// get user and date information
-		String creator = "";
-		if (session.getAttribute("user") != null) {
-			UserBean user = (UserBean) session.getAttribute("user");
-			creator = user.getLoginId();
-		}
-		String creationDate = StringUtils.convertDateToString(new Date(),
-				CalabConstants.DATE_FORMAT);
-		session.setAttribute("creator", creator);
-		session.setAttribute("creationDate", creationDate);
-
-		// retrieve from sesssion first if available assuming these values
-		// are not likely to change within the same session. If changed, the
-		// session should be updated.
-
 		LookupService lookupService = new LookupService();
-		if (forwardPage.equals("useAliquot")) {
-			setUseAliquotSession(session, lookupService);
-		} else if (forwardPage.equals("createSample")) {
-			setCreateSampleSession(session, lookupService);
-		} else if (forwardPage.equals("createAliquot")) {
-			setCreateAliquotSession(session, lookupService);
-		} else if (forwardPage.equals("searchWorkflow")) {
-			setSearchWorkflowSession(session, lookupService);
-		} else if (forwardPage.equals("searchSample")) {
-			setSearchSampleSession(session, lookupService);
-		} else if (forwardPage.equals("createRun")
-				|| forwardPage.equals("createAssayRun")) {
-			setCreateRunSession(session, lookupService);
-		} else if (forwardPage.equals("workflowMessage")
-				|| forwardPage.equals("fileUploadOption")
-				|| forwardPage.equals("fileDownload")
-				|| forwardPage.equals("runFileMask")) {
-			setWorkflowMessageSession(session);
-		} else if (forwardPage.equals("uploadForward")) {
-			// refresh tree view
-			setWorkflowMessageSession(session);
 
-			// read HttpFileUploadSessionData from session
-			HttpFileUploadSessionData hFileUploadData = (HttpFileUploadSessionData) request
-					.getSession().getAttribute("httpFileUploadSessionData");
-
-			// based on the type=in/out/upload and runId to modify the
-			// forwardPage
-			String type = hFileUploadData.getFromType();
-			String runId = hFileUploadData.getRunId();
-			String inout = hFileUploadData.getInout();
-			String runName = hFileUploadData.getRun();
-
-			session.removeAttribute("httpFileUploadSessionData");
-
-			if (type.equalsIgnoreCase("in") || type.equalsIgnoreCase("out")) {
-				// cannot forward to a page with the request parameter, so
-				// use response
-				response.sendRedirect(urlPrefix + "/workflowForward.do?type="
-						+ type + "&runName=" + runName + "&runId=" + runId
-						+ "&inout=" + inout);
-				forwardPage = null;
-			} else if (type.equalsIgnoreCase("upload")) {
-				session.setAttribute("runId", runId);
-                response.sendRedirect(urlPrefix + "/workflowForward.do?type=" + type);
-                forwardPage = null;
-			}
-		}
-		if (forwardPage == null) {
-			// for response.setRedirect()
-			forward = null;
-		} else {
-			forward = mapping.findForward(forwardPage);
-		}
-		return forward;
-	}
-
-	public boolean loginRequired() {
-		return true;
-	}
-
-	/**
-	 * Set up session attributes for use aliquot page
-	 * 
-	 * @param session
-	 * @param lookupService
-	 */
-	private void setUseAliquotSession(HttpSession session,
-			LookupService lookupService) throws Exception {
-		if (session.getAttribute("allUnmaskedAliquots") == null
-				|| session.getAttribute("newAliquotCreated") != null) {
-			List<AliquotBean> allAliquots = lookupService.getUnmaskedAliquots();
-			session.setAttribute("allUnmaskedAliquots", allAliquots);
-		}
-		ExecuteWorkflowService executeWorkflowService = new ExecuteWorkflowService();
-		if (session.getAttribute("workflow") == null
-				|| session.getAttribute("newWorkflowCreated") != null) {
-			ExecuteWorkflowBean workflowBean = executeWorkflowService
-					.getExecuteWorkflowBean();
-			session.setAttribute("workflow", workflowBean);
-		}
-		// clear the new aliquote created flag
-		session.removeAttribute("newAliquotCreated");
-		// clear the new workflow created flag
-		session.removeAttribute("newWorkflowcreated");
-	}
-
-	/**
-	 * Set up session and application attributes for create sample page
-	 * 
-	 * @param session
-	 * @param lookupService
-	 */
-	private void setCreateSampleSession(HttpSession session,
-			LookupService lookupService) throws Exception {
-		ManageSampleService mangeSampleService = new ManageSampleService();
-		// if values don't exist in the database or if no new samples created.
-		// call the service
-		if (session.getAttribute("allSampleContainerTypes") == null
-				|| session.getAttribute("newSampleCreated") != null) {
-			List containerTypes = lookupService.getAllSampleContainerTypes();
-			session.setAttribute("allSampleContainerTypes", containerTypes);
-		}
-
-		if (session.getServletContext().getAttribute("allSampleTypes") == null) {
-			List sampleTypes = lookupService.getAllSampleTypes();
-			session.getServletContext().setAttribute("allSampleTypes",
-					sampleTypes);
-
-		}
-		if (session.getServletContext().getAttribute("allSampleSOPs") == null) {
-			List sampleSOPs = mangeSampleService.getAllSampleSOPs();
-			session.getServletContext().setAttribute("allSampleSOPs",
-					sampleSOPs);
-		}
-		if (session.getServletContext().getAttribute("sampleContainerInfo") == null) {
-			ContainerInfoBean containerInfo = lookupService
-					.getSampleContainerInfo();
-			session.getServletContext().setAttribute("sampleContainerInfo",
-					containerInfo);
-		}
-
-		// clear the new sample created flag
-		session.removeAttribute("newSampleCreated");
-	}
-
-	/**
-	 * Set up session and application attributes for create aliquot page
-	 * 
-	 * @param session
-	 * @param lookupService
-	 */
-	private void setCreateAliquotSession(HttpSession session,
-			LookupService lookupService) throws Exception {
-		ManageAliquotService manageAliquotService = new ManageAliquotService();
-
-		if (session.getAttribute("allSamples") == null
-				|| session.getAttribute("newSampleCreated") != null) {
-			List samples = lookupService.getAllSamples();
-			session.setAttribute("allSamples", samples);
-		}
-		if (session.getAttribute("allAliquotContainerTypes") == null
-				|| session.getAttribute("newAliquotCreated") != null) {
-			List containerTypes = lookupService.getAllAliquotContainerTypes();
-			session.setAttribute("allAliquotContainerTypes", containerTypes);
-		}
-
-		if (session.getAttribute("allUnmaskedAliquots") == null
-				|| session.getAttribute("newAliquotCreated") != null) {
-			List aliquots = lookupService.getUnmaskedAliquots();
-			session.setAttribute("allUnmaskedAliquots", aliquots);
-		}
-		if (session.getServletContext().getAttribute("aliquotContainerInfo") == null) {
-			ContainerInfoBean containerInfo = lookupService
-					.getAliquotContainerInfo();
-			session.getServletContext().setAttribute("aliquotContainerInfo",
-					containerInfo);
-		}
-		if (session.getServletContext().getAttribute("aliquotCreateMethods") == null) {
-			List methods = manageAliquotService.getAliquotCreateMethods();
-			session.getServletContext().setAttribute("aliquotCreateMethods",
-					methods);
-		}
-
-		// clear new aliquot created flag and new sample created flag
-		session.removeAttribute("newAliquotCreated");
-		session.removeAttribute("newSampleCreated");
-	}
-
-	/**
-	 * Set up session attributes for search workflow page
-	 * 
-	 * @param session
-	 * @param lookupService
-	 */
-	private void setSearchWorkflowSession(HttpSession session,
-			LookupService lookupService) throws Exception {
-
-		if (session.getServletContext().getAttribute("allAssayTypes") == null) {
-			List assayTypes = lookupService.getAllAssayTypes();
-			session.getServletContext().setAttribute("allAssayTypes",
-					assayTypes);
-		}
-		if (session.getServletContext().getAttribute("allUsernames") == null) {
-			List allUserBeans = lookupService.getAllUserBeans();
-			session.getServletContext().setAttribute("allUserBeans",
-					allUserBeans);
-		}
-	}
-
-	/**
-	 * Set up session attributes for search sample page
-	 * 
-	 * @param session
-	 * @param lookupService
-	 */
-	private void setSearchSampleSession(HttpSession session,
-			LookupService lookupService) throws Exception {
-		SearchSampleService searchSampleService = new SearchSampleService();
-
-		if (session.getServletContext().getAttribute("allSampleTypes") == null) {
-			List sampleTypes = lookupService.getAllSampleTypes();
-			session.getServletContext().setAttribute("allSampleTypes",
-					sampleTypes);
-		}
-		if (session.getAttribute("allSampleSources") == null
-				|| session.getAttribute("newSampleCreated") != null) {
-			List sampleSources = searchSampleService.getAllSampleSources();
-			session.setAttribute("allSampleSources", sampleSources);
-		}
-		if (session.getAttribute("allSourceSampleIds") == null
-				|| session.getAttribute("newSampleCreated") != null) {
-			List sourceSampleIds = searchSampleService.getAllSourceSampleIds();
-			session.setAttribute("allSourceSampleIds", sourceSampleIds);
-		}
-		if (session.getServletContext().getAttribute("allUserBeans") == null) {
-			List allUserBeans = lookupService.getAllUserBeans();
-			session.getServletContext().setAttribute("allUserBeans",
-					allUserBeans);
-		}
-		if (session.getServletContext().getAttribute("sampleContainerInfo") == null) {
-			ContainerInfoBean containerInfo = lookupService
-					.getSampleContainerInfo();
-			session.getServletContext().setAttribute("sampleContainerInfo",
-					containerInfo);
-		}
-		if (session.getServletContext().getAttribute("aliquotContainerInfo") == null) {
-			ContainerInfoBean containerInfo = lookupService
-					.getAliquotContainerInfo();
-			session.getServletContext().setAttribute("aliquotContainerInfo",
-					containerInfo);
-		}
-		// clear the new sample created flag
-		session.removeAttribute("newSampleCreated");
-	}
-
-	/**
-	 * Set up session attributes for create Run
-	 * 
-	 * @param session
-	 * @param lookupService
-	 */
-	private void setCreateRunSession(HttpSession session,
-			LookupService lookupService) throws Exception {
 		ExecuteWorkflowService executeWorkflowService = new ExecuteWorkflowService();
 		if (session.getServletContext().getAttribute("allAssayTypes") == null) {
 			List assayTypes = lookupService.getAllAssayTypes();
@@ -345,12 +93,250 @@ public class InitSessionAction extends AbstractBaseAction {
 
 		session.removeAttribute("newWorkflowCreated");
 		session.removeAttribute("newAliquotCreated");
+	}
+
+	public ActionForward useAliquot(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		clearSessionData(request, "useAliquot");
+		HttpSession session = request.getSession();
+		LookupService lookupService = new LookupService();
+		if (session.getAttribute("allUnmaskedAliquots") == null
+				|| session.getAttribute("newAliquotCreated") != null) {
+			List<AliquotBean> allAliquots = lookupService.getUnmaskedAliquots();
+			session.setAttribute("allUnmaskedAliquots", allAliquots);
+		}
+		ExecuteWorkflowService executeWorkflowService = new ExecuteWorkflowService();
+		if (session.getAttribute("workflow") == null
+				|| session.getAttribute("newWorkflowCreated") != null) {
+			ExecuteWorkflowBean workflowBean = executeWorkflowService
+					.getExecuteWorkflowBean();
+			session.setAttribute("workflow", workflowBean);
+		}
+		// clear the new aliquote created flag
+		session.removeAttribute("newAliquotCreated");
+		// clear the new workflow created flag
+		session.removeAttribute("newWorkflowcreated");
+		return mapping.findForward("useAliquot");
+	}
+
+	public ActionForward createSample(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		clearSessionData(request, "createSample");
+		HttpSession session = request.getSession();
+		LookupService lookupService = new LookupService();
+		ManageSampleService mangeSampleService = new ManageSampleService();
+		// if values don't exist in the database or if no new samples created.
+		// call the service
+		if (session.getAttribute("allSampleContainerTypes") == null
+				|| session.getAttribute("newSampleCreated") != null) {
+			List containerTypes = lookupService.getAllSampleContainerTypes();
+			session.setAttribute("allSampleContainerTypes", containerTypes);
+		}
+
+		if (session.getServletContext().getAttribute("allSampleTypes") == null) {
+			List sampleTypes = lookupService.getAllSampleTypes();
+			session.getServletContext().setAttribute("allSampleTypes",
+					sampleTypes);
+
+		}
+		if (session.getServletContext().getAttribute("allSampleSOPs") == null) {
+			List sampleSOPs = mangeSampleService.getAllSampleSOPs();
+			session.getServletContext().setAttribute("allSampleSOPs",
+					sampleSOPs);
+		}
+		if (session.getServletContext().getAttribute("sampleContainerInfo") == null) {
+			ContainerInfoBean containerInfo = lookupService
+					.getSampleContainerInfo();
+			session.getServletContext().setAttribute("sampleContainerInfo",
+					containerInfo);
+		}
+
+		// clear the new sample created flag
+		session.removeAttribute("newSampleCreated");
+		return mapping.findForward("createSample");
+	}
+
+	public ActionForward createAliquot(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		clearSessionData(request, "createAliquot");
+		HttpSession session = request.getSession();
+		LookupService lookupService = new LookupService();
+		ManageAliquotService manageAliquotService = new ManageAliquotService();
+
+		if (session.getAttribute("allSamples") == null
+				|| session.getAttribute("newSampleCreated") != null) {
+			List samples = lookupService.getAllSamples();
+			session.setAttribute("allSamples", samples);
+		}
+		if (session.getAttribute("allAliquotContainerTypes") == null
+				|| session.getAttribute("newAliquotCreated") != null) {
+			List containerTypes = lookupService.getAllAliquotContainerTypes();
+			session.setAttribute("allAliquotContainerTypes", containerTypes);
+		}
+
+		if (session.getAttribute("allUnmaskedAliquots") == null
+				|| session.getAttribute("newAliquotCreated") != null) {
+			List aliquots = lookupService.getUnmaskedAliquots();
+			session.setAttribute("allUnmaskedAliquots", aliquots);
+		}
+		if (session.getServletContext().getAttribute("aliquotContainerInfo") == null) {
+			ContainerInfoBean containerInfo = lookupService
+					.getAliquotContainerInfo();
+			session.getServletContext().setAttribute("aliquotContainerInfo",
+					containerInfo);
+		}
+		if (session.getServletContext().getAttribute("aliquotCreateMethods") == null) {
+			List methods = manageAliquotService.getAliquotCreateMethods();
+			session.getServletContext().setAttribute("aliquotCreateMethods",
+					methods);
+		}
+
+		// clear new aliquot created flag and new sample created flag
+		session.removeAttribute("newAliquotCreated");
+		session.removeAttribute("newSampleCreated");
+		return mapping.findForward("createAliquot");
+	}
+
+	public ActionForward searchWorkflow(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		clearSessionData(request, "searchWorkflow");
+		HttpSession session = request.getSession();
+		LookupService lookupService = new LookupService();
+
+		if (session.getServletContext().getAttribute("allAssayTypes") == null) {
+			List assayTypes = lookupService.getAllAssayTypes();
+			session.getServletContext().setAttribute("allAssayTypes",
+					assayTypes);
+		}
+		if (session.getServletContext().getAttribute("allUsernames") == null) {
+			List allUserBeans = lookupService.getAllUserBeans();
+			session.getServletContext().setAttribute("allUserBeans",
+					allUserBeans);
+		}
+		return mapping.findForward("searchWorkflow");
+	}
+
+	public ActionForward searchSample(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		clearSessionData(request, "searchSample");
+		HttpSession session = request.getSession();
+		LookupService lookupService = new LookupService();
+		SearchSampleService searchSampleService = new SearchSampleService();
+
+		if (session.getServletContext().getAttribute("allSampleTypes") == null) {
+			List sampleTypes = lookupService.getAllSampleTypes();
+			session.getServletContext().setAttribute("allSampleTypes",
+					sampleTypes);
+		}
+		if (session.getAttribute("allSampleSources") == null
+				|| session.getAttribute("newSampleCreated") != null) {
+			List sampleSources = searchSampleService.getAllSampleSources();
+			session.setAttribute("allSampleSources", sampleSources);
+		}
+		if (session.getAttribute("allSourceSampleIds") == null
+				|| session.getAttribute("newSampleCreated") != null) {
+			List sourceSampleIds = searchSampleService.getAllSourceSampleIds();
+			session.setAttribute("allSourceSampleIds", sourceSampleIds);
+		}
+		if (session.getServletContext().getAttribute("allUserBeans") == null) {
+			List allUserBeans = lookupService.getAllUserBeans();
+			session.getServletContext().setAttribute("allUserBeans",
+					allUserBeans);
+		}
+		if (session.getServletContext().getAttribute("sampleContainerInfo") == null) {
+			ContainerInfoBean containerInfo = lookupService
+					.getSampleContainerInfo();
+			session.getServletContext().setAttribute("sampleContainerInfo",
+					containerInfo);
+		}
+		if (session.getServletContext().getAttribute("aliquotContainerInfo") == null) {
+			ContainerInfoBean containerInfo = lookupService
+					.getAliquotContainerInfo();
+			session.getServletContext().setAttribute("aliquotContainerInfo",
+					containerInfo);
+		}
+		// clear the new sample created flag
+		session.removeAttribute("newSampleCreated");
+		return mapping.findForward("searchSample");
 
 	}
 
-	private void setWorkflowMessageSession(HttpSession session)
-			throws Exception {
+	public ActionForward workflowMessage(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		clearSessionData(request, "workflowMessage");
+		setWorkflowMessageSession(request);
+		return mapping.findForward("workflowMessage");
+	}
 
+	public ActionForward fileUploadOption(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		clearSessionData(request, "fileUploadOption");
+		setWorkflowMessageSession(request);
+		return mapping.findForward("fileUploadOption");
+	}
+
+	public ActionForward fileDownload(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		clearSessionData(request, "fileDownload");
+		setWorkflowMessageSession(request);
+		return mapping.findForward("fileDownload");
+	}
+
+	public ActionForward runFileMask(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		clearSessionData(request, "runFileMask");
+		setWorkflowMessageSession(request);
+		return mapping.findForward("runFileMask");
+	}
+
+	public ActionForward uploadForward(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		clearSessionData(request, "uploadForward");
+		setWorkflowMessageSession(request);
+		HttpSession session = request.getSession();
+		
+		// read HttpFileUploadSessionData from session
+		HttpFileUploadSessionData hFileUploadData = (HttpFileUploadSessionData) request
+				.getSession().getAttribute("httpFileUploadSessionData");
+
+		// based on the type=in/out/upload and runId to modify the
+		// forwardPage
+		String type = hFileUploadData.getFromType();
+		String runId = hFileUploadData.getRunId();
+		String inout = hFileUploadData.getInout();
+		String runName = hFileUploadData.getRun();
+
+		session.removeAttribute("httpFileUploadSessionData");
+		String urlPrefix = request.getContextPath();
+
+		if (type.equalsIgnoreCase("in") || type.equalsIgnoreCase("out")) {
+			// cannot forward to a page with the request parameter, so
+			// use response
+			response.sendRedirect(urlPrefix + "/workflowForward.do?type="
+					+ type + "&runName=" + runName + "&runId=" + runId
+					+ "&inout=" + inout);
+		} else if (type.equalsIgnoreCase("upload")) {
+			session.setAttribute("runId", runId);
+			//forwardPage = "fileUploadOption";
+			response.sendRedirect(urlPrefix + "/workflowForward.do?type="
+					+ type);
+		}
+		return null;
+	}
+
+	private void setWorkflowMessageSession(HttpServletRequest request)
+			throws Exception {
+		HttpSession session = request.getSession();
 		ExecuteWorkflowService executeWorkflowService = new ExecuteWorkflowService();
 		if (session.getAttribute("workflow") == null
 				|| session.getAttribute("newWorkflowCreated") != null) {
@@ -361,7 +347,12 @@ public class InitSessionAction extends AbstractBaseAction {
 		session.removeAttribute("newWorkflowCreated");
 	}
 
-	private void clearSessionData(HttpSession session, String forwardPage) {
+	public boolean loginRequired() {
+		return true;
+	}
+
+	private void clearSessionData(HttpServletRequest request, String forwardPage) {
+		HttpSession session = request.getSession();
 		if (!forwardPage.equals("createAliquot")) {
 			// clear session attributes created during create aliquot
 			session.removeAttribute("allSamples");
@@ -394,5 +385,16 @@ public class InitSessionAction extends AbstractBaseAction {
 			// clear session attributes created during execute workflow pages
 			session.removeAttribute("workflow");
 		}
+		
+		// get user and date information
+		String creator = "";
+		if (session.getAttribute("user") != null) {
+			UserBean user = (UserBean) session.getAttribute("user");
+			creator = user.getLoginId();
+		}
+		String creationDate = StringUtils.convertDateToString(new Date(),
+				CalabConstants.DATE_FORMAT);
+		session.setAttribute("creator", creator);
+		session.setAttribute("creationDate", creationDate);
 	}
 }
