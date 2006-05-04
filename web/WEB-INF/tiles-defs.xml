@@ -19,7 +19,7 @@
 		   <item value="WORKFLOW" link=""/>
 		   <item value="ADMINISTRATION" link=""/>
 		   <item value="SEARCH" link=""/>
-		   <item value="HELP" link="onlineHelp.jsp"/>	
+		   <item value="HELP" link="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html')"/>	
 		   <item value="LOGOUT" link="logout.do"/>	 
 		</putList>
 	</definition>
