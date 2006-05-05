@@ -1,7 +1,6 @@
 function FileData_Pairs(x)
 {
 x.t("aliquot.","page");
-x.t("aliquot.","masking");
 x.t("tree","select");
 x.t("once","aliquot");
 x.t("always","part");
@@ -12,8 +11,6 @@ x.t("listed","folder.");
 x.t("want","examine.");
 x.t("details","page");
 x.t("assay","run");
-x.t("creating","aliquots");
-x.t("creating","assay");
 x.t("examine.","click");
 x.t("name","open");
 x.t("aliquot","once");
@@ -21,7 +18,6 @@ x.t("aliquot","always");
 x.t("aliquot","name");
 x.t("aliquot","viewing");
 x.t("aliquot","calab");
-x.t("aliquot","informa\u00adtion.");
 x.t("aliquot","details.");
 x.t("aliquot","created");
 x.t("part","input");
@@ -50,11 +46,9 @@ x.t("page","aliquot.");
 x.t("page","mask");
 x.t("details.","follow");
 x.t("folder.","click");
-x.t("created","creating");
+x.t("created","added");
 x.t("run","listed");
 x.t("run","want");
-x.t("run","creating");
 x.t("run","view");
 x.t("symbol","front");
-x.t("masking","aliquot");
 }
