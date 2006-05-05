@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.37 2006-05-04 20:57:12 pansu Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.38 2006-05-05 15:41:58 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
@@ -316,7 +316,7 @@ public class InitSessionAction extends AbstractDispatchAction {
 		String inout = hFileUploadData.getInout();
 		String runName = hFileUploadData.getRun();
 
-		session.removeAttribute("httpFileUploadSessionData");
+		session.removeAttribute("httpFileUploadSessionData");		
 		String urlPrefix = request.getContextPath();
 
 		if (type.equalsIgnoreCase("in") || type.equalsIgnoreCase("out")) {
@@ -327,10 +327,10 @@ public class InitSessionAction extends AbstractDispatchAction {
 					+ "&inout=" + inout);
 		} else if (type.equalsIgnoreCase("upload")) {
 			session.setAttribute("runId", runId);
-			//forwardPage = "fileUploadOption";
-			response.sendRedirect(urlPrefix + "/workflowForward.do?type="
-					+ type);
+			String forwardPage = "fileUploadOption";
+			return mapping.findForward(forwardPage);
 		}
+		
 		return null;
 	}
 
