@@ -25,7 +25,7 @@
 			<field property="runDate" depends="date,required">
 				<arg key="createRunForm.runDate" bundle="workflow" position="0" />
 				<var>
-					<var-name>datePattern</var-name>
+					<var-name>datePatternStrict</var-name>
 					<var-value>MM/dd/yyyy</var-value>
 				</var>
 			</field>
@@ -37,7 +37,7 @@
 			<field property="runDate" depends="date,required">
 				<arg key="createAssayRunForm.runDate" bundle="workflow" position="0" />
 				<var>
-					<var-name>datePattern</var-name>
+					<var-name>datePatternStrict</var-name>
 					<var-value>MM/dd/yyyy</var-value>
 				</var>
 			</field>
