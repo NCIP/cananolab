@@ -74,7 +74,7 @@
 			<field property="dateReceived" depends="date">
 				<arg position="0" key="createSampleForm.dateReceived" bundle="administration" />
 				<var>
-					<var-name>datePatternStrict</var-name>
+					<var-name>datePattern</var-name>
 					<var-value>MM/dd/yyyy</var-value>
 				</var>
 			</field>
