@@ -1,7 +1,6 @@
 function FileData_Pairs(x)
 {
 x.t("searching","workflow");
-x.t("infor","\u00admation");
 x.t("table","format.");
 x.t("launching","calab");
 x.t("format.","column");
@@ -33,13 +32,13 @@ x.t("displayed","file");
 x.t("view","download");
 x.t("online","help");
 x.t("help","working");
+x.t("information","table");
 x.t("information","configuring");
 x.t("defined","search");
-x.t("\u00admation","table");
 x.t("criteria.","displayed");
 x.t("summarizing","assay");
 x.t("column","headings");
-x.t("run","infor");
+x.t("run","information");
 x.t("links","click");
 x.t("names","hypertext");
 x.t("file.","information");

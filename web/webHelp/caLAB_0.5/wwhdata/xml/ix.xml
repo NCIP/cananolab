@@ -58,9 +58,6 @@
       <i t="assays in">
         <j l="5#1080116" />
       </i>
-      <i t="file naming conventions">
-        <j l="20#1083672" />
-      </i>
       <i t="introduction to">
         <j l="1#1064739" />
       </i>
@@ -119,8 +116,8 @@
       <i t="masking">
         <j l="21#1083578" />
       </i>
-      <i t="naming conventions">
-        <j l="20#1083672" />
+      <i t="uploading">
+        <j l="19#1078684" />
       </i>
       <i t="working with">
         <j l="18#1086982" />
@@ -210,6 +207,9 @@
     </i>
   </g>
   <g t="U" o="002">
+    <i t="Uploading input/output files">
+      <j l="19#1078684" />
+    </i>
     <i t="User account">
       <j l="2#1069299" />
     </i>
