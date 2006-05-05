@@ -8,6 +8,7 @@ import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.util.ActionUtil;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
+import gov.nih.nci.calab.service.util.SpecialCharReplacer;
 import gov.nih.nci.calab.service.workflow.ExecuteWorkflowService;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 
@@ -33,7 +34,10 @@ import org.apache.struts.validator.DynaValidatorActionForm;
 
 public class FileDownloadAction extends AbstractDispatchAction
 {      
-    /**
+    private static org.apache.log4j.Logger logger =
+        org.apache.log4j.Logger.getLogger(FileDownloadAction.class);
+ 
+	/**
      * This method is setting up the parameters for the workflow input upload files
      * or output upload files.
      * 
@@ -54,27 +58,19 @@ public class FileDownloadAction extends AbstractDispatchAction
         String runId = request.getParameter("runId");
         RunBean runBean = workflowService.getAssayInfoByRun((ExecuteWorkflowBean)session.getAttribute("workflow"), runId);
         
+        SpecialCharReplacer specialCharReplacer = new SpecialCharReplacer();
+        
     	DynaValidatorActionForm fileForm = (DynaValidatorActionForm)form;
-        fileForm.set("assayType", runBean.getAssayBean().getAssayType());
-        fileForm.set("assay", runBean.getAssayBean().getAssayName());
-        fileForm.set("run", runBean.getName());
-//        fileForm.set("inout", request.getParameter("type"));
+        fileForm.set("assayType", specialCharReplacer.getReplacedString(runBean.getAssayBean().getAssayType()));
+        fileForm.set("assay", specialCharReplacer.getReplacedString(runBean.getAssayBean().getAssayName()));
+        fileForm.set("run", specialCharReplacer.getReplacedString(runBean.getName()));
         String inout=(String)fileForm.get("inout");
         String contentPath = request.getContextPath();
         
-//        String path = PropertyReader.getProperty(CalabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
-//        String fullPathName = path + fileForm.get("assayType") + File.separator 
-//                                   + fileForm.get("assay") + File.separator
-//                                   + fileForm.get("run")   + File.separator
-//                                   + fileForm.get("inout") + File.separator
-//                                   + CalabConstants.UNCOMPRESSED_FILE_DIRECTORY;
-        
         // Retrieve filename(not uri) from database
         List<FileBean> fileBeanList = new ArrayList<FileBean>();
-//        if ((request.getParameter("type")).equalsIgnoreCase(CalabConstants.INPUT)) {
         if (inout.equalsIgnoreCase(CalabConstants.INPUT)) {
             fileBeanList = runBean.getInputFileBeans();
-//        } else if ((request.getParameter("type")).equalsIgnoreCase(CalabConstants.OUTPUT)) {
         } else if (inout.equalsIgnoreCase(CalabConstants.OUTPUT)) {
             fileBeanList = runBean.getOutputFileBeans();
         }
@@ -89,8 +85,7 @@ public class FileDownloadAction extends AbstractDispatchAction
                                                   +"&runId="+runId+"&inout="+fileForm.get("inout"));
             fileNameHolder.add(fileDownloadInfo);
         }
-
-        
+      
         fileForm.set("fileInfoList", fileNameHolder);
         fileForm.set("downloadAll", contentPath+"/fileDownload.do?method=downloadFile&runId="+runId+"&inout="
         									   +fileForm.get("inout")+"&fileName="+CalabConstants.ALL_FILES+".zip");
@@ -115,9 +110,11 @@ public class FileDownloadAction extends AbstractDispatchAction
             runBean = workflowService.getAssayInfoByRun(workflowBean, runId);      	
         }
         
-        fileForm.set("assayType", runBean.getAssayBean().getAssayType());
-        fileForm.set("assay", runBean.getAssayBean().getAssayName());
-        fileForm.set("run", runBean.getName());
+        SpecialCharReplacer specialCharReplacer = new SpecialCharReplacer();
+               
+        fileForm.set("assayType", specialCharReplacer.getReplacedString(runBean.getAssayBean().getAssayType()));
+        fileForm.set("assay", specialCharReplacer.getReplacedString(runBean.getAssayBean().getAssayName()));
+        fileForm.set("run", specialCharReplacer.getReplacedString(runBean.getName()));
         fileForm.set("inout", request.getParameter("inout"));
 
         
