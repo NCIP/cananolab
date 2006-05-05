@@ -45,7 +45,7 @@
 								<c:set var="outputFileSeq" value="${aliquotSeq+sessionScope.workflow.inputFileCount}"/>
 													    		
 								<c:forEach var="assayType" items="${allAssayTypes}" varStatus="assayTypeNum">
-								    d.add(${assayTypeNum.count}, 0, '${assayType}','javascript:void(0)', '', '', '');									    
+								    d.add(${assayTypeNum.count}, 0, '${assayType}');									    
 
 								    <c:forEach var="assay" items="${sessionScope.workflow.assayBeanMap[assayType]}">
     								    <c:set var="assaySeq" value="${assaySeq+1}"/>
@@ -53,7 +53,7 @@
 	 									
 										<c:forEach var="run" items="${assay.runBeans}">																
 										    <c:set var="runSeq" value="${runSeq+1+2}"/>
-  											d.add(${runSeq},${assaySeq}, '${run.name}','javascript:void(0)'); 											  				
+  											d.add(${runSeq},${assaySeq}, '${run.name}'); 											  				
   											d.add(${runSeq+1},${runSeq},'In','javascript:gotoPage(\'workflowForward.do?type=in&runId=${run.id}&runName=${run.name}&inout=Input\')');
   											d.add(${runSeq+2},${runSeq},'Out','javascript:gotoPage(\'workflowForward.do?type=out&runId=${run.id}&inout=Output\')');
 											 											
