@@ -4,9 +4,9 @@
 <html:form action="/login" focus="loginID">
 	<table summary="" cellpadding="0" cellspacing="0" border="0" height="100%">
 		<tr>
-			<td valign="top">
+			<td valign="top" width=600>
 				<img src="images/bannerhome.jpg" width="600" height="140">
-				<table summary="" cellpadding="0" cellspacing="0" border="0" width="90%" height="100%">
+				<table summary="" cellpadding="0" cellspacing="0" border="0" height="100%">
 					<tr>
 						<td class="welcomeTitle" height="20">
 							WELCOME TO caLAB
@@ -31,15 +31,15 @@
 
 					<!-- login begins -->
 					<tr>
-						<td valign="top">
-							<table summary="" cellpadding="2" cellspacing="0" border="0" width="90%" class="sidebarSection">
+						<td valign="top" width="250">
+							<table summary="" cellpadding="2" cellspacing="0" border="0" class="sidebarSection">
 								<tr>
 									<td class="sidebarTitle" height="20">
 										USER LOGIN
 									</td>
 								</tr>
 								<tr>
-									<td class="sidebarTitle" height="20">
+									<td>
 										<jsp:include page="/bodyMessage.jsp"/>
 									</td>
 								</tr>
@@ -89,8 +89,8 @@
 
 					<!-- what's new begins -->
 					<tr>
-						<td valign="top">
-							<table summary="" cellpadding="0" cellspacing="0" border="0" width="90%" class="sidebarSection">
+						<td valign="top" width="250">
+							<table summary="" cellpadding="0" cellspacing="0" border="0" class="sidebarSection">
 								<tr>
 									<td class="sidebarTitle" height="20">
 										WHAT'S NEW
@@ -124,8 +124,8 @@
 
 					<!-- spacer cell begins (keep for dynamic expanding) -->
 					<tr>
-						<td valign="top" height="100%">
-							<table summary="" cellpadding="0" cellspacing="0" border="0" width="90%" height="100%" class="sidebarSection">
+						<td valign="top" height="100%" width="250">
+							<table summary="" cellpadding="0" cellspacing="0" border="0" width="100%" height="100%" class="sidebarSection">
 								<tr>
 									<td class="sidebarContent" valign="top">
 										&nbsp;
