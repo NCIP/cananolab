@@ -60,7 +60,7 @@
 													</td>
 												</tr>
 												<tr>
-													<td width="100%" valign="top">
+													<td width="800" valign="top">
 														<%-- include caLAB main content --%>
 														<tiles:insert attribute="calabContent" />
 													</td>
