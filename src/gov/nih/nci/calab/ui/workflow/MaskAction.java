@@ -63,6 +63,7 @@ public class MaskAction extends AbstractBaseAction {
 					.get("aliquotName"));
 			msgs.add("message", msg);
 			saveMessages(request, msgs);
+			session.setAttribute("newAliquotCreated", "true");
 			forward = mapping.findForward("success");
 		}
 		if (strMaskType.equals("file")) {
