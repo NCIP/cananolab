@@ -3,11 +3,16 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html:form action="/useAliquot">
-	<h3>
-		<br>
-		Use Aliquot for
-		<c:out value="${param.runName}" />
-	</h3>
+<table width="90%" align="center"><tr>
+	<td width="10%">&nbsp;</td>
+	<td >
+		<br><h3>Use Aliquot for
+		<c:out value="${param.runName}" /></h3>
+	</td>
+	<td align="right" width="10%">
+		<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=create_assay_run')" class="helpText">Help</a>
+	</td>
+</table>
 	<blockquote>
 		<jsp:include page="/bodyMessage.jsp?bundle=workflow" />
 		<table width="75%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
