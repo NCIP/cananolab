@@ -66,7 +66,7 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 			throws Exception {
 		ActionForward forward = null;		
 
-//		response.addHeader("Cache-Control", "no-cache");
+		response.setHeader("Cache-Control", "no-cache");
 
 		if (isCancelled(request))
 			return mapping.findForward("cancel");
