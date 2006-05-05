@@ -114,7 +114,7 @@
               </div>
             </td>
             <td width="100%">
-              <div class="Bullet_inner"><a name="1076650">Open caLAB page-sensitive help topics by  clicking the </a><span style="font-weight: bold;">Help</span> button at the top of each page or form. </div>
+              <div class="Bullet_inner"><a name="1076650">Open caLAB page-sensitive help topics by  clicking the </a><span style="font-weight: bold;">Help</span> button at the top of each page or form.</div>
             </td>
           </tr>
         </table>
@@ -124,6 +124,11 @@
           // Clear related topics
           //
           WWHClearRelatedTopics();
+
+          // Add related topics
+          //
+          WWHAddRelatedTopic("caLAB Welcome Workflow Page", "caLAB_0.5", "About caLAB.2.3.html#1079711");
+          WWHAddRelatedTopic("caLAB Online Help ", "caLAB_0.5", "About caLAB.2.4.html#1088640");
 
           document.writeln(WWHRelatedTopicsInlineHTML());
         // -->
