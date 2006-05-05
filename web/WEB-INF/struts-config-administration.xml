@@ -45,7 +45,7 @@
 
 		<action name="createSampleForm" path="/createSample" type="gov.nih.nci.calab.ui.administration.CreateSampleAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="administration" key="error.createSample" path="administration.createsample" type="java.lang.Exception" />
-			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="administration" key="error.createSample.duplicate" path="administration.createaliquot" type="gov.nih.nci.calab.exception.DuplicateEntriesException" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="administration" key="error.createSample.duplicate" path="administration.createsample" type="gov.nih.nci.calab.exception.DuplicateEntriesException" />
 			<forward name="success" path="administration.sampledetails" />
 			<forward name="input" path="administration.createsample" />
 		</action>
