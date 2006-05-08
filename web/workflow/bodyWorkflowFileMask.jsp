@@ -2,51 +2,23 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<br>
-<br>
 <center>
-	<table width="80%">
+	<table width="90%" align="center">
 		<tr>
-			<td align="right">
-				<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=mask_files')" class="helpText">Help</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<td width="10%">
+				&nbsp;
 			</td>
-		</tr>
+			<td>
+				<br>
+				<h3>
+					Mask Files
+				</h3>
+			</td>
+			<td align="right" width="10%">
+				<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=mask_files')" class="helpText">Help</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			</td>
 	</table>
-	<br>
-	<table width="80%" border="0" align="center" cellpadding="0" cellspacing="0">
-		<tr>
-			<td class="formTitle" colspan="2" align="center">
-				General Information for the workflow
-			</td>
-		</tr>
-		<tr>
-			<td class="leftBorderedFormFieldGrey">
-				<b>Assay Type</b>
-			</td>
-			<td class="leftBorderedFormFieldGrey">
-				<bean:write name="maskFileForm" property="assayType" />
-			</td>
-		</tr>
-		<tr>
-			<td class="leftBorderedFormFieldWhite">
-				<b>Assay</b>
-			</td>
-			<td class="leftBorderedFormFieldWhite">
-				<bean:write name="maskFileForm" property="assayName" />
-			</td>
-		</tr>
-		<tr>
-			<td class="leftBorderedFormFieldGrey">
-				<b>Run</b>
-			</td>
-			<td class="leftBorderedFormFieldGrey">
-				<bean:write name="maskFileForm" property="runName" />
-			</td>
-		</tr>
-
-	</table>
-	<br>
-	<br>
+	<jsp:include page="/workflow/bodyWorkflowInfo.jsp" />
 	<logic:notPresent name="filesToMask">
 		<font color="blue">There are no files to mask.</font>
 	</logic:notPresent>
@@ -87,6 +59,9 @@
 						<c:param name="inout" value="${param.inout}" />
 						<c:param name="fileId" value="${file.id}" />
 						<c:param name="fileName" value="${file.filename}" />
+						<c:param name="runName" value="${param.runName}" />
+						<c:param name="assayName" value="${param.assayName}" />
+						<c:param name="assayType" value="${param.assayType}" />
 					</c:url>
 					<td align="right" class=<%= ((i%2)==0)?"leftBorderedFormFieldWhite":"leftBorderedFormFieldGrey" %>>
 						<b><a href="${maskFileURL}">Mask </a> </b>

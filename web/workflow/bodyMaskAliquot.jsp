@@ -4,20 +4,24 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <html:form action="/maskAliquot">
-<table width="75%" align="center"><tr>
-	<td width="33%">&nbsp;</td>
-	<td width="33%">
-		<h3><br>Mask Aliquot</h3>
-	</td>
-	<td align="right">
-		<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=mask_aliquot')" class="helpText">Help</a>
-	</td>
-</table>
-
-
+	<table width="80%" align="center">
+		<tr>
+			<td width="33%">
+				&nbsp;
+			</td>
+			<td width="33%">
+				<h3>
+					<br>
+					Mask Aliquot
+				</h3>
+			</td>
+			<td align="right">
+				<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=mask_aliquot')" class="helpText">Help</a>
+			</td>
+	</table>
+	<jsp:include page="/workflow/bodyWorkflowInfo.jsp" />
 	<blockquote>
-		<jsp:include page="/bodyMessage.jsp?bundle=workflow" />
-		<table width="75%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
+		<table width="80%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 			<tr class="topBorder">
 				<td colspan="2" class="formTitle">
 					<DIV align="justify">
@@ -39,7 +43,7 @@
 		</table>
 		<br>
 
-		<table width="75%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
+		<table width="80%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 			<tr class="topBorder">
 				<td class="formTitle">
 					<div align="justify">
@@ -63,6 +67,9 @@
 									<input type="hidden" name="maskType" value="aliquot">
 									<html:hidden property="aliquotId" />
 									<html:hidden property="aliquotName" />
+									<html:hidden property="runName" />
+									<html:hidden property="assayName" />
+									<html:hidden property="assayType" />
 									<html:submit value="Yes" />
 									<INPUT type="button" value="No " onclick="javascript:history.go(-1)">
 								</DIV>
