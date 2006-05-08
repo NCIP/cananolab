@@ -3,7 +3,9 @@
  */
 package gov.nih.nci.calab.dto.workflow;
 
+import gov.nih.nci.calab.domain.Run;
 import gov.nih.nci.calab.dto.administration.AliquotBean;
+import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.List;
 
@@ -49,6 +51,11 @@ public class RunBean {
 		this.runDate = runDate;
 	}
 
+	public RunBean(Run run) {
+		this.id=StringUtils.convertToString(run.getId());
+		this.name=StringUtils.convertToString(run.getName());
+		this.assayBean=new AssayBean(run.getAssay());
+	}
 	public List<AliquotBean> getAliquotBeans() {
 		return aliquotBeans;
 	}

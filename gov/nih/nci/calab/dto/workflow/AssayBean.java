@@ -1,5 +1,8 @@
 package gov.nih.nci.calab.dto.workflow;
 
+import gov.nih.nci.calab.domain.Assay;
+import gov.nih.nci.calab.service.util.StringUtils;
+
 import java.util.List;
 
 public class AssayBean {
@@ -34,6 +37,12 @@ public class AssayBean {
 		this.assayType = assayType;
 	}
 
+	public AssayBean(Assay assay) {
+		this.assayId=StringUtils.convertToString(assay.getId());
+		this.assayName=StringUtils.convertToString(assay.getName());
+		this.assayType=StringUtils.convertToString(assay.getAssayType());
+	}
+	
 	public String getAssayId() {
 		return assayId;
 	}
