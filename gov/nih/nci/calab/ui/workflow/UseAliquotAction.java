@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.workflow;
  * @author pansu
  */
 
-/* CVS $Id: UseAliquotAction.java,v 1.12 2006-05-02 18:58:34 pansu Exp $*/
+/* CVS $Id: UseAliquotAction.java,v 1.13 2006-05-08 19:39:18 pansu Exp $*/
 
 import gov.nih.nci.calab.service.workflow.ExecuteWorkflowService;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
@@ -32,8 +32,7 @@ public class UseAliquotAction extends AbstractBaseAction {
 		HttpSession session = request.getSession();
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String runId = (String) theForm.get("runId");
-		String runName = (String) theForm.get("runName");
+		String runId = (String) theForm.get("runId");		
 		aliquotIds = (String[]) theForm.get("aliquotIds");
 		String comments = (String) theForm.get("comments");
 
@@ -42,7 +41,7 @@ public class UseAliquotAction extends AbstractBaseAction {
 				(String) session.getAttribute("creator"), (String) session
 						.getAttribute("creationDate"));
 		ActionMessages msgs = new ActionMessages();
-		ActionMessage msg = new ActionMessage("message.useAliquot", runName);
+		ActionMessage msg = new ActionMessage("message.useAliquot");
 		msgs.add("message", msg);
 		saveMessages(request, msgs);
 		session.setAttribute("newWorkflowCreated", "true");
