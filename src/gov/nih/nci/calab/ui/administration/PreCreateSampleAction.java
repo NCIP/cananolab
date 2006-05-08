@@ -6,10 +6,12 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: PreCreateSampleAction.java,v 1.12 2006-05-03 17:40:11 pansu Exp $ */
+/* CVS $Id: PreCreateSampleAction.java,v 1.13 2006-05-08 18:58:55 zengje Exp $ */
 
 import gov.nih.nci.calab.dto.administration.ContainerBean;
 import gov.nih.nci.calab.service.administration.ManageSampleService;
+import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.PropertyReader;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,6 +39,8 @@ public class PreCreateSampleAction extends AbstractBaseAction {
 			theForm.set("sampleNamePrefix", mangeSampleService
 					.getDefaultSampleNamePrefix());
 		}
+		theForm.set("configuredSampleNamePrefix", PropertyReader.getProperty(CalabConstants.CALAB_PROPERTY,"samplePrefix"));
+		
 		if (lotId.length() == 0) {
 			theForm.set("lotId", mangeSampleService.getDefaultLotId());
 		}
