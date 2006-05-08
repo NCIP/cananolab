@@ -27,7 +27,7 @@
 			<td valign="top">
 
 				<!-- sidebar begins -->
-				<table summary="" cellpadding="0" cellspacing="0" border="1" height="100%">
+				<table summary="" cellpadding="0" cellspacing="0" border="0" height="100%">
 
 					<!-- login begins -->
 					<tr>
