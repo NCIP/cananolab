@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchWorkflowAction.java,v 1.9 2006-05-02 22:27:29 pansu Exp $ */
+/* CVS $Id: SearchWorkflowAction.java,v 1.10 2006-05-08 14:40:14 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.search.WorkflowResultBean;
 import gov.nih.nci.calab.service.search.SearchWorkflowService;
@@ -44,8 +44,8 @@ public class SearchWorkflowAction extends AbstractBaseAction {
 				: StringUtils.convertToDate(assayRunDateEndStr, "MM/dd/yyyy");
 
 		String aliquotName = (String) theForm.get("aliquotName");
-		boolean includeMaskedAliquots = ((String) theForm
-				.get("includeMaskedAliquots")).equals("on") ? true : false;
+		boolean excludeMaskedAliquots = ((String) theForm
+				.get("excludeMaskedAliquots")).equals("on") ? true : false;
 		String fileName = (String) theForm.get("fileName");
 		boolean isFileInput = ((String) theForm.get("isFileIn")).equals("on") ? true
 				: false;
@@ -64,18 +64,18 @@ public class SearchWorkflowAction extends AbstractBaseAction {
 						"MM/dd/yyyy");
 
 		String fileSubmitter = (String) theForm.get("fileSubmitter");
-		boolean includeMaskedFiles = ((String) theForm
-				.get("includeMaskedFiles")).equals("on") ? true : false;
+		boolean excludeMaskedFiles = ((String) theForm
+				.get("excludeMaskedFiles")).equals("on") ? true : false;
 		String criteriaJoin = (String) theForm.get("criteriaJoin");
 
 		// pass the parameters to the searchWorkflowService
 		SearchWorkflowService searchWorkflowService = new SearchWorkflowService();
 		List<WorkflowResultBean> workflows = searchWorkflowService
 				.searchWorkflows(assayName, assayType, assayRunDateBegin,
-						assayRunDateEnd, aliquotName, includeMaskedAliquots,
+						assayRunDateEnd, aliquotName, excludeMaskedAliquots,
 						fileName, isFileInput, isFileOutput,
 						fileSubmissionDateBegin, fileSubmissionDateEnd,
-						fileSubmitter, includeMaskedFiles, criteriaJoin);
+						fileSubmitter, excludeMaskedFiles, criteriaJoin);
 		if (workflows == null || workflows.isEmpty()) {
 			ActionMessages msgs = new ActionMessages();
 			ActionMessage msg = new ActionMessage(
