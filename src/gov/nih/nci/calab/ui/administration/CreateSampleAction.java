@@ -7,11 +7,13 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: CreateSampleAction.java,v 1.13 2006-05-02 22:27:17 pansu Exp $ */
+/* CVS $Id: CreateSampleAction.java,v 1.14 2006-05-08 18:58:23 zengje Exp $ */
 
 import gov.nih.nci.calab.dto.administration.ContainerBean;
 import gov.nih.nci.calab.dto.administration.SampleBean;
 import gov.nih.nci.calab.service.administration.ManageSampleService;
+import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.PropertyReader;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +23,8 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorActionForm;
 
 public class CreateSampleAction extends AbstractBaseAction {
@@ -33,6 +37,18 @@ public class CreateSampleAction extends AbstractBaseAction {
 		// TODO fill in details for sample information */
 		DynaValidatorActionForm theForm = (DynaValidatorActionForm) form;
 		String sampleNamePrefix = (String) theForm.get("sampleNamePrefix");
+		String preconfiguredPrefix = PropertyReader.getProperty(CalabConstants.CALAB_PROPERTY,"samplePrefix");
+		if (!sampleNamePrefix.equals(preconfiguredPrefix)) {
+			
+			ActionMessages msgs = new ActionMessages();
+			ActionMessage msg = new ActionMessage("error.createSample.SampleIDFormat", preconfiguredPrefix);
+			msgs.add("error", msg);
+			saveMessages(request, msgs);
+			
+			forward = mapping.findForward("input");
+
+			return forward;
+		}
 		String sampleType = (String) theForm.get("sampleType");
 		String sampleSOP = (String) theForm.get("sampleSOP");
 		String sampleDescription = (String) theForm.get("sampleDescription");
@@ -76,4 +92,13 @@ public class CreateSampleAction extends AbstractBaseAction {
 	public boolean loginRequired() {
 		return true;
 	}
+	
+	private boolean validateSamplePrefix(String samplePrefix) {
+		if (samplePrefix.equals(PropertyReader.getProperty(CalabConstants.CALAB_PROPERTY,"samplePrefix"))) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
 }
