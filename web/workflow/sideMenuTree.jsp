@@ -49,22 +49,22 @@
 
 								    <c:forEach var="assay" items="${sessionScope.workflow.assayBeanMap[assayType]}">
     								    <c:set var="assaySeq" value="${assaySeq+1}"/>
-								        d.add(${assaySeq},${assayTypeNum.count},'${assay.assayName}','javascript:gotoPage(\'initSession.do?forwardPage=createAssayRun&assayId=${assay.assayId}&assayName=${assay.assayName}\')', '', '', '');
-	 									
+				 					    d.add(${assaySeq},${assayTypeNum.count},'${assay.assayName}','javascript:gotoPage(\'initSession.do?forwardPage=createAssayRun&assayId=${assay.assayId}&assayName=${assay.assayName}\')', '', '', '');
+
 										<c:forEach var="run" items="${assay.runBeans}">																
 										    <c:set var="runSeq" value="${runSeq+1+2}"/>
   											d.add(${runSeq},${assaySeq}, '${run.name}'); 											  				
-  											d.add(${runSeq+1},${runSeq},'In','javascript:gotoPage(\'workflowForward.do?type=in&runId=${run.id}&runName=${run.name}&inout=Input\')');
-  											d.add(${runSeq+2},${runSeq},'Out','javascript:gotoPage(\'workflowForward.do?type=out&runId=${run.id}&inout=Output\')');
+  											d.add(${runSeq+1},${runSeq},'In','javascript:gotoPage(\'workflowForward.do?type=in&assayType=${assay.assayType}&assayName=${assay.assayName}&runId=${run.id}&runName=${run.name}&inout=Input\')');
+  											d.add(${runSeq+2},${runSeq},'Out','javascript:gotoPage(\'workflowForward.do?type=out&&assayType=${assay.assayType}&assayName=${assay.assayName}&runId=${run.id}&runName=${run.name}&inout=Output\')');
 											 											
 											<c:forEach var="aliquot" items="${run.aliquotBeans}">
   											    <c:set var="aliquotSeq" value="${aliquotSeq+1}"/>  	
   											    <c:choose>
   	    	      							       <c:when test="${aliquot.maskStatus eq 'Active'}">  											    								
-												     d.add(${aliquotSeq}, ${runSeq+1},'${aliquot.aliquotName}','javascript:gotoPage(\'viewAliquot.do?aliquotId=${aliquot.aliquotId}\')', '', '', '');
+												     d.add(${aliquotSeq}, ${runSeq+1},'${aliquot.aliquotName}','javascript:gotoPage(\'viewAliquot.do?assayType=${assay.assayType}&assayName=${assay.assayName}&runName=${run.name}&aliquotId=${aliquot.aliquotId}\')', '', '', '');
 												   </c:when>
 												   <c:otherwise>
-  												     d.add(${aliquotSeq}, ${runSeq+1},'<i>${aliquot.aliquotName}</i>','javascript:gotoPage(\'viewAliquot.do?aliquotId=${aliquot.aliquotId}\')', '', '', '');
+  												     d.add(${aliquotSeq}, ${runSeq+1},'<i>${aliquot.aliquotName}</i>','javascript:gotoPage(\'viewAliquot.do?assayType=${assay.assayType}&assayName=${assay.assayName}&runName=${run.name}&aliquotId=${aliquot.aliquotId}\')', '', '', '');
 												   </c:otherwise>
 												</c:choose>
   											</c:forEach>
