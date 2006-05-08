@@ -23,7 +23,7 @@ import org.apache.log4j.Logger;
  * 
  */
 
-/* CVS $Id: SearchWorkflowService.java,v 1.24 2006-05-03 21:06:07 pansu Exp $ */
+/* CVS $Id: SearchWorkflowService.java,v 1.25 2006-05-08 14:39:41 pansu Exp $ */
 
 public class SearchWorkflowService {
 	private static Logger logger = Logger
@@ -31,10 +31,10 @@ public class SearchWorkflowService {
 
 	public List<WorkflowResultBean> searchWorkflows(String assayName,
 			String assayType, Date assayRunDateBegin, Date assayRunDateEnd,
-			String aliquotName, boolean includeMaskedAliquots, String fileName,
+			String aliquotName, boolean excludeMaskedAliquots, String fileName,
 			boolean isFileIn, boolean isFileOut, Date fileSubmissionDateBegin,
 			Date fileSubmissionDateEnd, String fileSubmitter,
-			boolean includeMaskedFiles, String criteriaJoin) throws Exception {
+			boolean excludeMaskedFiles, String criteriaJoin) throws Exception {
 		List<WorkflowResultBean> workflows = null;
 
 		// construct where clause and parameter list
@@ -68,8 +68,8 @@ public class SearchWorkflowService {
 				(List) whereParams[1]);
 		workflowSet.addAll(outWorkflows);
 		workflows = filterWorkflows(new ArrayList<WorkflowResultBean>(
-				workflowSet), isFileIn, isFileOut, includeMaskedAliquots,
-				includeMaskedFiles);
+				workflowSet), isFileIn, isFileOut, excludeMaskedAliquots,
+				excludeMaskedFiles);
 		Collections.sort(workflows, new CalabComparators.WorkflowResultBeanComparator());
 		return workflows;
 	}
@@ -225,12 +225,12 @@ public class SearchWorkflowService {
 
 	private List<WorkflowResultBean> filterWorkflows(
 			List<WorkflowResultBean> origWorkflows, boolean isFileIn,
-			boolean isFileOut, boolean includedMaskedAliquots,
-			boolean includeMaskedFiles) {
+			boolean isFileOut, boolean excludeMaskedAliquots,
+			boolean excludeMaskedFiles) {
 
 		// no filtering
-		if (!isFileIn && !isFileOut && includedMaskedAliquots
-				&& includeMaskedFiles) {
+		if (!isFileIn && !isFileOut && !excludeMaskedAliquots
+				&& !excludeMaskedFiles) {
 			return origWorkflows;
 		}
 
@@ -252,9 +252,9 @@ public class SearchWorkflowService {
 			String aliquotStatus = workflow.getAliquot().getMaskStatus();
 
 			// filter out workflows when not satisfying masking criteria
-			if (!includeMaskedFiles
+			if (excludeMaskedFiles
 					&& (fileStatus.equals(CalabConstants.MASK_STATUS))
-					|| !includedMaskedAliquots
+					|| excludeMaskedAliquots
 					&& aliquotStatus.equals(CalabConstants.MASK_STATUS)) {
 			}
 			// and filter out workflows when not satisfying in out criteria
