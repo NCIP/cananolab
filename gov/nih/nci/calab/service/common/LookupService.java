@@ -28,7 +28,7 @@ import org.apache.log4j.Logger;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.25 2006-05-01 22:04:31 zengje Exp $ */
+/* CVS $Id: LookupService.java,v 1.26 2006-05-08 14:05:09 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -360,7 +360,7 @@ public class LookupService {
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
-			String hqlString = "from User user order by user.loginName";
+			String hqlString = "from User user order by user.lastName";
 			List results = ida.search(hqlString);
 			for (Object obj : results) {
 				User doUser = (User)obj;
