@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.38 2006-05-05 15:41:58 pansu Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.39 2006-05-08 14:40:03 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
@@ -212,7 +212,7 @@ public class InitSessionAction extends AbstractDispatchAction {
 			session.getServletContext().setAttribute("allAssayTypes",
 					assayTypes);
 		}
-		if (session.getServletContext().getAttribute("allUsernames") == null) {
+		if (session.getServletContext().getAttribute("allUserBeans") == null) {
 			List allUserBeans = lookupService.getAllUserBeans();
 			session.getServletContext().setAttribute("allUserBeans",
 					allUserBeans);
