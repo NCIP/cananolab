@@ -52,4 +52,7 @@ public class CalabConstants {
 	public static final String ALL_FILES = "ALL_FILES";
 
 	public static final String URI_SEPERATOR = "/";
+	
+	// caLAB property file
+	public static final String CALAB_PROPERTY = "calab.properties";
 }
