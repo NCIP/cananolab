@@ -115,8 +115,8 @@
 			<tr>
 				<td class="formLabel">
 					<div align="center">
-						<strong> <html:checkbox property="isFileIn" /> Input Files?&nbsp; &nbsp; <html:checkbox property="isFileOut" /> Output Files? &nbsp;&nbsp; <html:checkbox property="includeMaskedAliquots" />Include Masked Aliquots? <html:checkbox
-								property="includeMaskedFiles" />Include Masked Files?</strong>
+						<strong> <html:checkbox property="isFileIn" /> Input Files?&nbsp; &nbsp; <html:checkbox property="isFileOut" /> Output Files? &nbsp;&nbsp; <html:checkbox property="excludeMaskedAliquots" />Exclude Masked Aliquots? <html:checkbox
+								property="excludeMaskedFiles" />Exclude Masked Files?</strong>
 					</div>
 				</td>
 			</tr>
