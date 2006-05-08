@@ -55,7 +55,7 @@
 										    <c:set var="runSeq" value="${runSeq+1+2}"/>
   											d.add(${runSeq},${assaySeq}, '${run.name}'); 											  				
   											d.add(${runSeq+1},${runSeq},'In','javascript:gotoPage(\'workflowForward.do?type=in&assayType=${assay.assayType}&assayName=${assay.assayName}&runId=${run.id}&runName=${run.name}&inout=Input\')');
-  											d.add(${runSeq+2},${runSeq},'Out','javascript:gotoPage(\'workflowForward.do?type=out&&assayType=${assay.assayType}&assayName=${assay.assayName}&runId=${run.id}&runName=${run.name}&inout=Output\')');
+  											d.add(${runSeq+2},${runSeq},'Out','javascript:gotoPage(\'workflowForward.do?type=out&assayType=${assay.assayType}&assayName=${assay.assayName}&runId=${run.id}&runName=${run.name}&inout=Output\')');
 											 											
 											<c:forEach var="aliquot" items="${run.aliquotBeans}">
   											    <c:set var="aliquotSeq" value="${aliquotSeq+1}"/>  	
@@ -73,10 +73,10 @@
   											    <c:set var="inputFileSeq" value="${inputFileSeq+1}"/>
   											    <c:choose>
   	    	      							       <c:when test="${inputFile.fileMaskStatus eq 'Active'}">
-                                                      d.add(${inputFileSeq},${runSeq+1},'${inputFile.shortFilename}', 'javascript:gotoPage(\'${pageContext.request.contextPath}\'+\'/fileDownload.do?method=downloadFile&fileName=${inputFile.filename}&runId=${run.id}&inout=Input\')','${inputFile.filename}');
+                                                      d.add(${inputFileSeq},${runSeq+1},'${inputFile.shortFilename}', 'javascript:gotoPage(\'${pageContext.request.contextPath}\'+\'/fileDownload.do?method=downloadFile&fileName=${inputFile.filename}&runId=${run.id}&inout=Inputa&ssayType=${assay.assayType}&assayName=${assay.assayName}&runName=${run.name}\')','${inputFile.filename}');
                                                    </c:when>
                                                    <c:otherwise>
-                                                      d.add(${inputFileSeq},${runSeq+1},'<i>${inputFile.shortFilename}</i>', 'javascript:gotoPage(\'${pageContext.request.contextPath}\'+\'/fileDownload.do?method=downloadFile&fileName=${inputFile.filename}&runId=${run.id}&inout=Input\')','${inputFile.filename}');
+                                                      d.add(${inputFileSeq},${runSeq+1},'<i>${inputFile.shortFilename}</i>', 'javascript:gotoPage(\'${pageContext.request.contextPath}\'+\'/fileDownload.do?method=downloadFile&fileName=${inputFile.filename}&runId=${run.id}&inout=Inputa&ssayType=${assay.assayType}&assayName=${assay.assayName}&runName=${run.name}\')','${inputFile.filename}');
                                                    </c:otherwise>                                                   
                                                 </c:choose>
   											</c:forEach>
@@ -85,10 +85,10 @@
   											   <c:set var="outputFileSeq" value="${outputFileSeq+1}"/>    											   
   											   <c:choose>
   	    	      							       <c:when test="${outputFile.fileMaskStatus eq 'Active'}">											
- 								                     d.add(${outputFileSeq},${runSeq+2},'${outputFile.shortFilename}', 'javascript:gotoPage(\'${pageContext.request.contextPath}\'+\'/fileDownload.do?method=downloadFile&fileName=${outputFile.filename}&runId=${run.id}&inout=Output\')','${outputFile.filename}');
+ 								                     d.add(${outputFileSeq},${runSeq+2},'${outputFile.shortFilename}', 'javascript:gotoPage(\'${pageContext.request.contextPath}\'+\'/fileDownload.do?method=downloadFile&fileName=${outputFile.filename}&runId=${run.id}&inout=Output&assayType=${assay.assayType}&assayName=${assay.assayName}&runName=${run.name}\')','${outputFile.filename}');
  								                   </c:when>
  								                   <c:otherwise>
-	  								                 d.add(${outputFileSeq},${runSeq+2},'<i>${outputFile.shortFilename}</i>', 'javascript:gotoPage(\'${pageContext.request.contextPath}\'+\'/fileDownload.do?method=downloadFile&fileName=${outputFile.filename}&runId=${run.id}&inout=Output\')','${outputFile.filename}');
+	  								                 d.add(${outputFileSeq},${runSeq+2},'<i>${outputFile.shortFilename}</i>', 'javascript:gotoPage(\'${pageContext.request.contextPath}\'+\'/fileDownload.do?method=downloadFile&fileName=${outputFile.filename}&runId=${run.id}&inout=Output&assayType=${assay.assayType}&assayName=${assay.assayName}&runName=${run.name}\')','${outputFile.filename}');
  								                   </c:otherwise>
  								               </c:choose>
   											</c:forEach> 
