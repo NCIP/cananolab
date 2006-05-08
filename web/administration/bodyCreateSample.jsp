@@ -39,7 +39,7 @@ function refreshContainers() {
 				<tr>
 					<td class="formLabel">
 						<div align="justify">
-							<strong>Sample ID Prefix* <span class="formField"><span class="formFieldWhite"><html:text property="sampleNamePrefix" size="10" /></span></span> &nbsp; &nbsp; Sample Type <span class="formFieldWhite"> <html:select property="sampleType">
+							<strong>Sample ID Prefix(<bean:write name="createSampleForm" property="configuredSampleNamePrefix" />X) *<span class="formField"><span class="formFieldWhite"><html:text property="sampleNamePrefix" size="10" /></span></span> &nbsp; &nbsp; Sample Type <span class="formFieldWhite"> <html:select property="sampleType">
 										<option value=""></option>
 										<html:options name="allSampleTypes" />
 									</html:select> &nbsp; &nbsp; SOP <html:select property="sampleSOP">
