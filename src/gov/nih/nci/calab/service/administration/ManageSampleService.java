@@ -11,6 +11,7 @@ import gov.nih.nci.calab.dto.administration.ContainerBean;
 import gov.nih.nci.calab.dto.administration.SampleBean;
 import gov.nih.nci.calab.exception.DuplicateEntriesException;
 import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.PropertyReader;
 import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-/* CVS $Id: ManageSampleService.java,v 1.25 2006-05-02 21:35:48 zengje Exp $ 
+/* CVS $Id: ManageSampleService.java,v 1.26 2006-05-08 18:57:40 zengje Exp $ 
  */
 public class ManageSampleService {
 	private static Logger logger = Logger.getLogger(ManageSampleService.class);
@@ -49,7 +50,7 @@ public class ManageSampleService {
 	 */
 	public String getDefaultSampleNamePrefix() throws Exception {
 		// TODO: Get configurable sample format string
-		String sampleNamePrefix = "NCL-";
+		String sampleNamePrefix = PropertyReader.getProperty(CalabConstants.CALAB_PROPERTY,"samplePrefix");
 		long seqId = 0;
 		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
 		try {
