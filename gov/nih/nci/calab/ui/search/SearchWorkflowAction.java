@@ -6,13 +6,14 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchWorkflowAction.java,v 1.10 2006-05-08 14:40:14 pansu Exp $ */
+/* CVS $Id: SearchWorkflowAction.java,v 1.11 2006-05-08 15:08:40 zengje Exp $ */
 
 import gov.nih.nci.calab.dto.search.WorkflowResultBean;
 import gov.nih.nci.calab.service.search.SearchWorkflowService;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -62,6 +63,15 @@ public class SearchWorkflowAction extends AbstractBaseAction {
 		Date fileSubmissionDateEnd = fileSubmissionDateEndStr.length() == 0 ? null
 				: StringUtils.convertToDate(fileSubmissionDateEndStr,
 						"MM/dd/yyyy");
+		
+		// Add one day to the fileSubmissionDateEnd to include all the files files during the day
+		if (fileSubmissionDateEnd != null) {
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(fileSubmissionDateEnd);
+			calendar.add(Calendar.DAY_OF_MONTH, 1);
+			fileSubmissionDateEnd = calendar.getTime();	
+		}
+		
 
 		String fileSubmitter = (String) theForm.get("fileSubmitter");
 		boolean excludeMaskedFiles = ((String) theForm
