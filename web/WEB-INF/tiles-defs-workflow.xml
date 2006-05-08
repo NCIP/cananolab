@@ -53,7 +53,7 @@
 
 	<!-- definitions for the workflow message page -->
 	<definition name="workflow.message.content" extends="workflow.content.home">
-		<put name="workflowContent" value="/bodyMessage.jsp?bundle=workflow" />
+		<put name="workflowContent" value="/workflow/bodyWorkflowInfo.jsp" />
 	</definition>
 	<definition name="workflow.message" extends="calab.home">
 		<put name="calabContent" value="workflow.message.content" />
