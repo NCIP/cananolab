@@ -62,12 +62,15 @@ public class FileUploadAction extends AbstractDispatchAction
  
         String runId = (request.getParameter("runId") == null)? (String)session.getAttribute("runId"): request.getParameter("runId");
         RunBean runBean = workflowService.getAssayInfoByRun((ExecuteWorkflowBean)session.getAttribute("workflow"), runId);
-        
+       
         SpecialCharReplacer specialCharReplacer = new SpecialCharReplacer();
-        
+        String assayType=specialCharReplacer.getReplacedString(runBean.getAssayBean().getAssayType());
+        String assayName=specialCharReplacer.getReplacedString(runBean.getAssayBean().getAssayName());
+        String runName=specialCharReplacer.getReplacedString(runBean.getName());
+
         fileForm.set("assayType", specialCharReplacer.getReplacedString(runBean.getAssayBean().getAssayType()));
-        fileForm.set("assay", specialCharReplacer.getReplacedString(runBean.getAssayBean().getAssayName()));
-        fileForm.set("run", specialCharReplacer.getReplacedString(runBean.getName()));
+        fileForm.set("assay", assayName);
+        fileForm.set("run", runName);
 //        fileForm.set("inout", request.getParameter("inout"));
         String inout=(String)fileForm.get("inout");
         fileForm.set("archiveValue", PropertyReader.getProperty(CalabConstants.FILEUPLOAD_PROPERTY,"archiveValue"));
@@ -84,11 +87,11 @@ public class FileUploadAction extends AbstractDispatchAction
             session.removeAttribute("httpFileUploadSessionData");
         }
         hFileUploadData = new HttpFileUploadSessionData();
-        hFileUploadData.setAssayType(specialCharReplacer.getReplacedString(runBean.getAssayBean().getAssayType()));
-        hFileUploadData.setAssay(specialCharReplacer.getReplacedString(runBean.getAssayBean().getAssayName()));
-        hFileUploadData.setRun(specialCharReplacer.getReplacedString(runBean.getName()));
         hFileUploadData.setInout(inout);
         hFileUploadData.setRunId(runId);
+        hFileUploadData.setAssay(assayName);
+        hFileUploadData.setAssayType(assayType);
+        hFileUploadData.setRun(runName);
         
         // set where this upload from
         hFileUploadData.setFromType(request.getParameter("type"));
