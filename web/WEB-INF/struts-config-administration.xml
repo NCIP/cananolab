@@ -16,6 +16,7 @@
 			<form-property name="numberOfContainers" type="java.lang.String" initial="1" />
 			<form-property name="generalComments" type="java.lang.String" />
 			<form-property name="containers" type="gov.nih.nci.calab.dto.administration.ContainerBean[]" size="100" />
+			<form-property name="configuredSampleNamePrefix" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="createAliquotForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="sampleName" type="java.lang.String" />
