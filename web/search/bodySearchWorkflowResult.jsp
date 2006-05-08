@@ -26,7 +26,7 @@
 				<table border="0" align="right" cellpadding="0" cellspacing="0">
 					<tr valign="bottom">
 						<td align="right">
-							<input type="button" onClick="javascript:history.go(-1);" value="Back">&nbsp; <br>
+							<input type="button" onClick="javascript:location.href='initSession.do?forwardPage=searchWorkflow&rememberSearch=true'" value="Back">&nbsp; <br>
 						</td>
 					</tr>
 				</table>				
