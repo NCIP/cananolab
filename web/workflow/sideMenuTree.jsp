@@ -49,7 +49,7 @@
 
 								    <c:forEach var="assay" items="${sessionScope.workflow.assayBeanMap[assayType]}">
     								    <c:set var="assaySeq" value="${assaySeq+1}"/>
-				 					    d.add(${assaySeq},${assayTypeNum.count},'${assay.assayName}','javascript:gotoPage(\'initSession.do?forwardPage=createAssayRun&assayId=${assay.assayId}&assayName=${assay.assayName}\')', '', '', '');
+				 					    d.add(${assaySeq},${assayTypeNum.count},'${assay.assayName}','javascript:gotoPage(\'initSession.do?forwardPage=createAssayRun&assayId=${assay.assayId}&assayName=${assay.assayName}&assayType=${assay.assayType}\')', '', '', '');
 
 										<c:forEach var="run" items="${assay.runBeans}">																
 										    <c:set var="runSeq" value="${runSeq+1+2}"/>
