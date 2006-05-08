@@ -53,6 +53,8 @@
 			<form-property name="runBy" type="java.lang.String" />
 			<form-property name="runDate" type="java.lang.String" />
 			<form-property name="aliquotComment" type="java.lang.String" />
+			<form-property name="assayType" type="java.lang.String" />
+			<form-property name="assayName" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="editRunForm" type="org.apache.struts.validator.DynaValidatorActionForm">
 			<form-property name="runDate" type="java.lang.String" />
@@ -126,13 +128,13 @@
 		<action name="createRunForm" path="/createRun" type="gov.nih.nci.calab.ui.workflow.CreateRunAction" input="input" scope="request">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="workflow" key="error.createRun" path="workflow.createrun" type="java.lang.Exception" />
 			<forward name="input" path="workflow.createrun" />
-			<forward name="success" path="/initSession.do?forwardPage=fileUploadOption"/>
+			<forward name="success" path="/initSession.do?forwardPage=fileUploadOption" />
 		</action>
 
 		<action name="createAssayRunForm" path="/createAssayRun" type="gov.nih.nci.calab.ui.workflow.CreateRunAction" input="input" scope="request">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="workflow" key="error.createAssayRun" path="workflow.createassayrun" type="java.lang.Exception" />
 			<forward name="input" path="workflow.createassayrun" />
-			<forward name="success" path="/initSession.do?forwardPage=fileUploadOption"/>
+			<forward name="success" path="/initSession.do?forwardPage=fileUploadOption" />
 		</action>
 
 		<action name="fileUploadForm" parameter="method" path="/fileUpload" scope="request" type="gov.nih.nci.calab.ui.workflow.FileUploadAction" input="input">
