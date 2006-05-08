@@ -27,11 +27,11 @@
 			<td valign="top">
 
 				<!-- sidebar begins -->
-				<table summary="" cellpadding="0" cellspacing="0" border="0" height="100%">
+				<table summary="" cellpadding="0" cellspacing="0" border="1" height="100%">
 
 					<!-- login begins -->
 					<tr>
-						<td valign="top" width="250">
+						<td valign="top" width="210">
 							<table summary="" cellpadding="2" cellspacing="0" border="0" class="sidebarSection">
 								<tr>
 									<td class="sidebarTitle" height="20">
@@ -89,7 +89,7 @@
 
 					<!-- what's new begins -->
 					<tr>
-						<td valign="top" width="250">
+						<td valign="top" width="210">
 							<table summary="" cellpadding="0" cellspacing="0" border="0" class="sidebarSection">
 								<tr>
 									<td class="sidebarTitle" height="20">
@@ -123,8 +123,8 @@
 					<!-- did you know? ends -->
 
 					<!-- spacer cell begins (keep for dynamic expanding) -->
-					<tr>
-						<td valign="top" height="100%" width="250">
+					<tr height="100%">
+						<td valign="top" height="100%" width="210">
 							<table summary="" cellpadding="0" cellspacing="0" border="0" width="100%" height="100%" class="sidebarSection">
 								<tr>
 									<td class="sidebarContent" valign="top">
