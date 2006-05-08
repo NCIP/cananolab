@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.39 2006-05-08 14:40:03 pansu Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.40 2006-05-08 15:11:58 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
@@ -304,7 +304,7 @@ public class InitSessionAction extends AbstractDispatchAction {
 		clearSessionData(request, "uploadForward");
 		setWorkflowMessageSession(request);
 		HttpSession session = request.getSession();
-		
+
 		// read HttpFileUploadSessionData from session
 		HttpFileUploadSessionData hFileUploadData = (HttpFileUploadSessionData) request
 				.getSession().getAttribute("httpFileUploadSessionData");
@@ -316,7 +316,7 @@ public class InitSessionAction extends AbstractDispatchAction {
 		String inout = hFileUploadData.getInout();
 		String runName = hFileUploadData.getRun();
 
-		session.removeAttribute("httpFileUploadSessionData");		
+		session.removeAttribute("httpFileUploadSessionData");
 		String urlPrefix = request.getContextPath();
 
 		if (type.equalsIgnoreCase("in") || type.equalsIgnoreCase("out")) {
@@ -330,7 +330,7 @@ public class InitSessionAction extends AbstractDispatchAction {
 			String forwardPage = "fileUploadOption";
 			return mapping.findForward(forwardPage);
 		}
-		
+
 		return null;
 	}
 
@@ -358,9 +358,16 @@ public class InitSessionAction extends AbstractDispatchAction {
 			session.removeAttribute("allSamples");
 			session.removeAttribute("allAliquotContainerTypes");
 		}
+
 		session.removeAttribute("aliquotMatrix");
 		session.removeAttribute("createAliquotForm");
 		session.removeAttribute("createSampleForm");
+		
+		//add a request parameter so the back button from search results don't clear the forms
+		if (request.getParameter("rememberSearch")==null) {
+			session.removeAttribute("searchSampleForm");
+			session.removeAttribute("searchWorkflowForm");
+		}
 
 		if (!forwardPage.equals("createSample")) {
 			// clear session attributes created during create sample
@@ -385,7 +392,7 @@ public class InitSessionAction extends AbstractDispatchAction {
 			// clear session attributes created during execute workflow pages
 			session.removeAttribute("workflow");
 		}
-		
+
 		// get user and date information
 		String creator = "";
 		if (session.getAttribute("user") != null) {
