@@ -48,13 +48,12 @@
 		<form-bean name="createAssayRunForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="assayId" type="java.lang.String" />
 			<form-property name="assayName" type="java.lang.String" />
+			<form-property name="assayType" type="java.lang.String" />
 			<form-property name="availableAliquot" type="java.lang.String[]" />
 			<form-property name="assignedAliquot" type="java.lang.String[]" />
 			<form-property name="runBy" type="java.lang.String" />
 			<form-property name="runDate" type="java.lang.String" />
 			<form-property name="aliquotComment" type="java.lang.String" />
-			<form-property name="assayType" type="java.lang.String" />
-			<form-property name="assayName" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="editRunForm" type="org.apache.struts.validator.DynaValidatorActionForm">
 			<form-property name="runDate" type="java.lang.String" />
