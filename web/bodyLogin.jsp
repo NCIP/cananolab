@@ -39,7 +39,7 @@
 									</td>
 								</tr>
 								<tr>
-									<td>
+									<td class="sidebarContent">
 										<jsp:include page="/bodyMessage.jsp"/>
 									</td>
 								</tr>
