@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.40 2006-05-08 15:11:58 pansu Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.41 2006-05-08 20:23:01 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
@@ -315,6 +315,8 @@ public class InitSessionAction extends AbstractDispatchAction {
 		String runId = hFileUploadData.getRunId();
 		String inout = hFileUploadData.getInout();
 		String runName = hFileUploadData.getRun();
+		String assayName=hFileUploadData.getAssay();
+		String assayType=hFileUploadData.getAssayType();
 
 		session.removeAttribute("httpFileUploadSessionData");
 		String urlPrefix = request.getContextPath();
@@ -323,7 +325,7 @@ public class InitSessionAction extends AbstractDispatchAction {
 			// cannot forward to a page with the request parameter, so
 			// use response
 			response.sendRedirect(urlPrefix + "/workflowForward.do?type="
-					+ type + "&runName=" + runName + "&runId=" + runId
+					+ type + "&assayName="+assayName+"&assayType="+assayType+"&runName=" + runName + "&runId=" + runId
 					+ "&inout=" + inout);
 		} else if (type.equalsIgnoreCase("upload")) {
 			session.setAttribute("runId", runId);
