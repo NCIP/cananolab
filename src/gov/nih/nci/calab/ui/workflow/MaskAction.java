@@ -1,6 +1,5 @@
 package gov.nih.nci.calab.ui.workflow;
 
-import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.workflow.MaskService;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
 
@@ -8,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -32,7 +30,6 @@ public class MaskAction extends AbstractBaseAction {
 		ActionForward forward = null;
 
 		String strId = null;
-		String runId = null;
 
 		HttpSession session = request.getSession();
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
@@ -67,7 +64,6 @@ public class MaskAction extends AbstractBaseAction {
 			forward = mapping.findForward("success");
 		}
 		if (strMaskType.equals("file")) {
-			runId = (String) theForm.get("runId");
 			theForm.set("method", "setup");
 			theForm.set("inout", (String) theForm.get("inout"));
 			request.setAttribute("inout", (String) theForm.get("inout"));
