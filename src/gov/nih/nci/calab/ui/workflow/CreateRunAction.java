@@ -8,6 +8,7 @@ package gov.nih.nci.calab.ui.workflow;
  */
 
 import gov.nih.nci.calab.dto.workflow.RunBean;
+import gov.nih.nci.calab.service.util.SpecialCharReplacer;
 import gov.nih.nci.calab.service.util.file.HttpFileUploadSessionData;
 import gov.nih.nci.calab.service.workflow.ExecuteWorkflowService;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
@@ -53,11 +54,16 @@ public class CreateRunAction extends AbstractBaseAction {
 
 		session.setAttribute("newWorkflowCreated", "true");
 
-		HttpFileUploadSessionData hFileUploadData=new HttpFileUploadSessionData();		
+		HttpFileUploadSessionData hFileUploadData=new HttpFileUploadSessionData();
+		SpecialCharReplacer specialCharReplacer = new SpecialCharReplacer();
+		String assayType = specialCharReplacer.getReplacedString(runBean.getAssayBean().getAssayType());
+		String assayName = specialCharReplacer.getReplacedString(runBean.getAssayBean().getAssayName());
+		String runName = specialCharReplacer.getReplacedString(runBean.getName());
+
 		hFileUploadData.setRunId(runBean.getId());
-		hFileUploadData.setAssay(runBean.getAssayBean().getAssayName());
-		hFileUploadData.setAssayType(runBean.getAssayBean().getAssayType());
-		hFileUploadData.setRun(runBean.getName());
+		hFileUploadData.setAssay(assayName);
+		hFileUploadData.setAssayType(assayType);
+		hFileUploadData.setRun(runName);
 		hFileUploadData.setFromType("upload");
 		session.setAttribute("httpFileUploadSessionData", hFileUploadData);
 
