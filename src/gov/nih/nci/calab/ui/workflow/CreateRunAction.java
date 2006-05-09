@@ -7,6 +7,8 @@ package gov.nih.nci.calab.ui.workflow;
  * @author caLAB Team
  */
 
+import gov.nih.nci.calab.dto.workflow.RunBean;
+import gov.nih.nci.calab.service.util.file.HttpFileUploadSessionData;
 import gov.nih.nci.calab.service.workflow.ExecuteWorkflowService;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
 
@@ -24,7 +26,7 @@ public class CreateRunAction extends AbstractBaseAction {
 	public ActionForward executeTask(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		ActionForward forward = null;
+		
 		HttpSession session = request.getSession();
 		// TODO fill in details for aliquot information */
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
@@ -39,21 +41,29 @@ public class CreateRunAction extends AbstractBaseAction {
 		String creator = (String) session.getAttribute("creator");
 		String creationDate = (String) session.getAttribute("creationDate");
 		ExecuteWorkflowService workflowService = new ExecuteWorkflowService();
-		String runId = workflowService.saveRun(assayId, runBy, runDate,
+		RunBean runBean = workflowService.saveRun(assayId, runBy, runDate,
 				creator, creationDate);
 
 		// Save Aliquots assigned
 		String[] aliquotIds = (String[]) theForm.get("assignedAliquot");
 		String comments = (String) theForm.get("aliquotComment");
 
-		workflowService.saveRunAliquots(runId, aliquotIds, comments, creator,
+		workflowService.saveRunAliquots(runBean.getId(), aliquotIds, comments, creator,
 				creationDate);
 
 		session.setAttribute("newWorkflowCreated", "true");
-		session.setAttribute("runId", runId);
-		// set Forward
-		forward = mapping.findForward("success");
 
+		HttpFileUploadSessionData hFileUploadData=new HttpFileUploadSessionData();		
+		hFileUploadData.setRunId(runBean.getId());
+		hFileUploadData.setAssay(runBean.getAssayBean().getAssayName());
+		hFileUploadData.setAssayType(runBean.getAssayBean().getAssayType());
+		hFileUploadData.setRun(runBean.getName());
+		hFileUploadData.setFromType("upload");
+		session.setAttribute("httpFileUploadSessionData", hFileUploadData);
+
+		// set Forward
+		ActionForward forward= mapping.findForward("success");
+				
 		return forward;
 	}
 
