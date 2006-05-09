@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.41 2006-05-08 20:23:01 pansu Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.42 2006-05-09 18:35:15 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
@@ -274,14 +274,6 @@ public class InitSessionAction extends AbstractDispatchAction {
 		return mapping.findForward("workflowMessage");
 	}
 
-	public ActionForward fileUploadOption(ActionMapping mapping,
-			ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-		clearSessionData(request, "fileUploadOption");
-		setWorkflowMessageSession(request);
-		return mapping.findForward("fileUploadOption");
-	}
-
 	public ActionForward fileDownload(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -295,45 +287,52 @@ public class InitSessionAction extends AbstractDispatchAction {
 			throws Exception {
 		clearSessionData(request, "runFileMask");
 		setWorkflowMessageSession(request);
-		return mapping.findForward("runFileMask");
+		ActionForward forward=mapping.findForward("runFileMask");
+		String newPath=forward.getPath()+constructGetParams(request);
+		ActionForward newForward=new ActionForward();
+		newForward.setPath(newPath);
+		newForward.setRedirect(true);
+		return newForward;
 	}
 
+	private String constructGetParams(HttpServletRequest request) {
+		String params="?menuType="+request.getParameter("menuType")+
+				"&assayType="+request.getParameter("assayType")+
+				"&assayName="+request.getParameter("assayName")+
+				"&runId="+request.getParameter("runId")+
+				"&runName="+request.getParameter("runName")+
+				"&inout="+request.getParameter("inout");				
+		return params;
+	}
+	
+	private String constructGetParams(HttpFileUploadSessionData hFileUploadData) {
+		String menuType=hFileUploadData.getFromType();
+		String inout=(hFileUploadData.getInout()==null||menuType.equals("upload"))?"":"&inout="+hFileUploadData.getInout();
+		String params="?menuType="+hFileUploadData.getFromType()+
+				"&assayType="+hFileUploadData.getAssayType()+
+				"&assayName="+hFileUploadData.getAssay()+
+				"&runId="+hFileUploadData.getRunId()+
+				"&runName="+hFileUploadData.getRun()+
+				inout;				
+		return params;
+	}
+	
 	public ActionForward uploadForward(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		clearSessionData(request, "uploadForward");
-		setWorkflowMessageSession(request);
-		HttpSession session = request.getSession();
-
+		setWorkflowMessageSession(request);		
+		HttpSession session = request.getSession();        
 		// read HttpFileUploadSessionData from session
-		HttpFileUploadSessionData hFileUploadData = (HttpFileUploadSessionData) request
-				.getSession().getAttribute("httpFileUploadSessionData");
-
-		// based on the type=in/out/upload and runId to modify the
-		// forwardPage
-		String type = hFileUploadData.getFromType();
-		String runId = hFileUploadData.getRunId();
-		String inout = hFileUploadData.getInout();
-		String runName = hFileUploadData.getRun();
-		String assayName=hFileUploadData.getAssay();
-		String assayType=hFileUploadData.getAssayType();
-
+		HttpFileUploadSessionData hFileUploadData =(HttpFileUploadSessionData) session.getAttribute("httpFileUploadSessionData");
 		session.removeAttribute("httpFileUploadSessionData");
-		String urlPrefix = request.getContextPath();
-
-		if (type.equalsIgnoreCase("in") || type.equalsIgnoreCase("out")) {
-			// cannot forward to a page with the request parameter, so
-			// use response
-			response.sendRedirect(urlPrefix + "/workflowForward.do?type="
-					+ type + "&assayName="+assayName+"&assayType="+assayType+"&runName=" + runName + "&runId=" + runId
-					+ "&inout=" + inout);
-		} else if (type.equalsIgnoreCase("upload")) {
-			session.setAttribute("runId", runId);
-			String forwardPage = "fileUploadOption";
-			return mapping.findForward(forwardPage);
-		}
-
-		return null;
+		ActionForward forward=mapping.findForward("workflowMessage");
+		
+		String newPath=forward.getPath()+constructGetParams(hFileUploadData);
+		ActionForward newForward=new ActionForward();
+		newForward.setPath(newPath);
+		newForward.setRedirect(true);
+		return newForward;
 	}
 
 	private void setWorkflowMessageSession(HttpServletRequest request)
