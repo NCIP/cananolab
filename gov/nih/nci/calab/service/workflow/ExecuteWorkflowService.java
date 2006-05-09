@@ -167,14 +167,15 @@ public class ExecuteWorkflowService {
 	 * @param runDate
 	 * @param createdBy
 	 * @param createdDate
-	 * @throws Exception
+	 * @throws Exception	 * 
 	 */
-	public String saveRun(String assayId, String runBy, String runDate,String createdBy, String createdDate ) throws Exception {
+	
+	public RunBean saveRun(String assayId, String runBy, String runDate,String createdBy, String createdDate ) throws Exception {
 		// Details of Saving to RUN Table		
 		
 		Long runId; // Run Id is the primary key of the saved Run
 		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
-		
+		RunBean runBean=null;
 		logger.debug("ExecuteWorkflowService.saveRun(): assayId = " + assayId);
 		try {
 			ida.open();
@@ -192,6 +193,8 @@ public class ExecuteWorkflowService {
 			doRun.setAssay((Assay)ida.load(Assay.class, StringUtils.convertToLong(assayId)));
 			
 			runId =  (Long)ida.createObject(doRun);
+			doRun.setId(runId);
+			runBean=new RunBean(doRun);	
 		} catch (Exception e) {
 			e.printStackTrace();
 			ida.rollback();
@@ -200,8 +203,8 @@ public class ExecuteWorkflowService {
 		} finally {
 			ida.close();
 		}
-		return runId.toString();
-	}
+		return runBean;
+	}	
 	
 	private int getLastAssayRunNum(IDataAccess ida, String assayId) {
 		int runNum = 0;
@@ -457,7 +460,8 @@ public class ExecuteWorkflowService {
                     infileBean.setId(doInputFile.getId().toString());
                     infileBean.setPath(doInputFile.getPath());
                     infileBean.setCreatedDate(doInputFile.getCreatedDate());
-                    infileBean.setFileMaskStatus(doInputFile.getDataStatus().getStatus());
+                    String status=(doInputFile.getDataStatus()==null)?"":doInputFile.getDataStatus().getStatus();
+                    infileBean.setFileMaskStatus(status);
                     fileBeans.add(infileBean);
                 }               
             } else if (type.equalsIgnoreCase("output")) {
@@ -468,7 +472,8 @@ public class ExecuteWorkflowService {
                     outfileBean.setId(doOutputFile.getId().toString());
                     outfileBean.setPath(doOutputFile.getPath());
                     outfileBean.setCreatedDate(doOutputFile.getCreatedDate());
-                    outfileBean.setFileMaskStatus(doOutputFile.getDataStatus().getStatus());
+                    String status=(doOutputFile.getDataStatus()==null)?"":doOutputFile.getDataStatus().getStatus();
+                    outfileBean.setFileMaskStatus(status);
                     fileBeans.add(outfileBean);
                 }              
             }            
