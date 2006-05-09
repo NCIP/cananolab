@@ -29,45 +29,53 @@
 				</div>
 			</td>
 		</tr>
-		<tr>
-			<td width="27%" class="formLabelWhite">
-				<div align="left">
-					<strong>Aliquots</strong>
-				</div>
-			</td>
-			<td width="73%" class="formFieldWhite">
-				<strong><span class="mainMenu"> </span></strong>
-				<table width="41%" align="left" cellpadding="0" cellspacing="0">
-					<tr>
-						<td width="28%" height="39" valign="top">
-							<div align="center">
-								<span class="mainMenu"> <span class="formMessage">Aliquots</span> <html:select multiple="true" property="availableAliquot" size="4">
-										<html:options collection="allUnmaskedAliquots" property="aliquotId" labelProperty="aliquotName" />
-									</html:select> </span>
-							</div>
-						</td>
-						<td width="10%" align="center" valign="middle">
-							<table border="0" cellspacing="0" cellpadding="10">
-								<tr>
-									<td>
-										<input type="button" onClick="assignAliquots(document.createAssayRunForm.availableAliquot, document.createAssayRunForm.assignedAliquot)" value=">>" />
-									</td>
-								</tr>
-							</table>
-						</td>
-						<td width="62%" valign="top">
-							<div align="top">
+			<tr>
+				<td width="27%" class="formLabelWhite">
+					<div align="left">
+						<strong>Aliquots</strong>
+					</div>
+				</td>
+				<td width="73%" class="formFieldWhite">
+					<strong><span class="mainMenu"> </span></strong>
+					<table width="60%" align="left" cellpadding="0" cellspacing="0">
+						<tr>
+							<td align="center" width="40%">
+								<span class="formMessage">Aliquots</span>
+							</td>
+							<td>
+								&nbsp;
+							</td>
+							<td width="40%">
 								<span class="formMessage">Use Aliquots</span>
-							</div>
-							<html:select multiple="true" property="assignedAliquot" size="4">
-								<html:options name="allAssignedAliquots" />
-							</html:select>
-						</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-		<tr>
+							</td>
+						</tr>
+						<tr>
+							<td width="40%" height="39" valign="top" rowspan="2">
+								<div align="center">
+									<span class="mainMenu"><html:select multiple="true" property="availableAliquot" size="4">
+											<html:options collection="allUnmaskedAliquots" property="aliquotId" labelProperty="aliquotName" />
+										</html:select> </span>
+								</div>
+							</td>
+							<td align="center">
+								<input type="button" onClick="assignAliquots(document.createAssayRunForm.availableAliquot, document.createAssayRunForm.assignedAliquot)" value=">>" />
+							</td>
+							<td width="40%" valign="top" rowspan="2">
+								<html:select multiple="true" property="assignedAliquot" size="4">
+									<html:options name="allAssignedAliquots" />
+								</html:select>
+							</td>
+						</tr>
+						<tr>
+							<td align="center">
+								<input  type="button" onClick="assignAliquots(document.createAssayRunForm.assignedAliquot, document.createAssayRunForm.availableAliquot)" value=&lt;&lt; />
+							</td>
+						
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
 			<td class="formLabel">
 				<div align="left">
 					<strong>Aliquot Comments </strong>
@@ -150,9 +158,6 @@
   function assignAliquots(fromObj,toObj)
   {
   		moveItems(fromObj, toObj);
-  		for(i = 0; i < toObj.options.length; i++){		
-			toObj.options[i].selected=true;	
-		} 	
   }
   
   
@@ -163,10 +168,10 @@
   function resetObject(fromObj,toObj) 
   {
 		for(i = 0; i < fromObj.options.length; i++){		
-		fromObj.options[i].selected=true;	
+			fromObj.options[i].selected=true;	
 		}
 		moveItems(fromObj,toObj);
-  return true;		
+  		return true;		
   }
 
 //-->
