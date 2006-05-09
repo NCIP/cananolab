@@ -1,8 +1,6 @@
 package gov.nih.nci.calab.ui.workflow;
 
-import gov.nih.nci.calab.dto.workflow.ExecuteWorkflowBean;
 import gov.nih.nci.calab.dto.workflow.FileBean;
-import gov.nih.nci.calab.dto.workflow.RunBean;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.workflow.ExecuteWorkflowService;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
@@ -12,7 +10,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -37,44 +34,24 @@ public class FileMaskAction extends AbstractBaseAction {
 	 * @return mapping forward
 	 */
 	public ActionForward executeTask(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response) {
-		HttpSession session = request.getSession();
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
 		DynaActionForm fileForm = (DynaActionForm) form;
-		ExecuteWorkflowService workflowService = new ExecuteWorkflowService();
 		String runId = (String) fileForm.get("runId");
-		RunBean runBean = workflowService.getAssayInfoByRun(
-				(ExecuteWorkflowBean) session.getAttribute("workflow"), runId);
-
-		fileForm.set("assayType", runBean.getAssayBean().getAssayType());
-		fileForm.set("assayName", runBean.getAssayBean().getAssayName());
-		fileForm.set("runName", runBean.getName());
-
 		String inout = (String) fileForm.get("inout");
-		// getting inout from request attribute when parameter is not available
-		if (request.getAttribute("inout") != null) {
-			inout = (String) request.getAttribute("inout");
-			fileForm.set("inout", (String) request.getAttribute("inout"));
-		}
 
 		// Retrieve filename(not uri) from database
+		ExecuteWorkflowService workflowService = new ExecuteWorkflowService();
 		List<FileBean> fileBeanList = new ArrayList<FileBean>();
-		if (inout.equalsIgnoreCase(CalabConstants.INPUT)) {
-			List<FileBean> allfiles = runBean.getInputFileBeans();
-			for (FileBean fileBean : allfiles) {
-				if (!fileBean.getFileMaskStatus().equals(
-						CalabConstants.MASK_STATUS)) {
-					fileBeanList.add(fileBean);
-				}
-			}
-		} else if (inout.equalsIgnoreCase(CalabConstants.OUTPUT)) {
-			List<FileBean> allfiles = runBean.getOutputFileBeans();
-			for (FileBean fileBean : allfiles) {
-				if (!fileBean.getFileMaskStatus().equals(
-						CalabConstants.MASK_STATUS)) {
-					fileBeanList.add(fileBean);
-				}
+		List<FileBean> files = workflowService.getLastestFileListByRun(runId,
+				inout);
+		for (FileBean fileBean : files) {
+			if (!fileBean.getFileMaskStatus()
+					.equals(CalabConstants.MASK_STATUS)) {
+				fileBeanList.add(fileBean);
 			}
 		}
+
 		if (!fileBeanList.isEmpty()) {
 			request.setAttribute("filesToMask", fileBeanList);
 		}
