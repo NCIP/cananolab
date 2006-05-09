@@ -34,7 +34,6 @@
 						<option value=""></option>
 						<html:options collection="allAssayBeans" property="assayId" labelProperty="assayStr" />
 					</html:select>
-					</span>
 				</td>
 
 			</tr>
@@ -46,32 +45,40 @@
 				</td>
 				<td width="73%" class="formFieldWhite">
 					<strong><span class="mainMenu"> </span></strong>
-					<table width="41%" align="left" cellpadding="0" cellspacing="0">
+					<table width="60%" align="left" cellpadding="0" cellspacing="0">
 						<tr>
-							<td width="28%" height="39" valign="top">
+							<td align="center" width="40%">
+								<span class="formMessage">Aliquots</span>
+							</td>
+							<td>
+								&nbsp;
+							</td>
+							<td width="40%">
+								<span class="formMessage">Use Aliquots</span>
+							</td>
+						</tr>
+						<tr>
+							<td width="40%" height="39" valign="top" rowspan="2">
 								<div align="center">
-									<span class="mainMenu"> <span class="formMessage">Aliquots</span> <html:select multiple="true" property="availableAliquot" size="4">
+									<span class="mainMenu"><html:select multiple="true" property="availableAliquot" size="4">
 											<html:options collection="allUnmaskedAliquots" property="aliquotId" labelProperty="aliquotName" />
 										</html:select> </span>
 								</div>
 							</td>
-							<td width="10%" align="center" valign="middle">
-								<table border="0" cellspacing="0" cellpadding="10">
-									<tr>
-										<td>
-											<input type="button" onClick="assignAliquots(document.createRunForm.availableAliquot, document.createRunForm.assignedAliquot)" value=">>" />
-										</td>
-									</tr>
-								</table>
+							<td align="center">
+								<input type="button" onClick="assignAliquots(document.createRunForm.availableAliquot, document.createRunForm.assignedAliquot)" value=">>" />
 							</td>
-							<td width="62%" valign="top">
-								<div align="top">
-									<span class="formMessage">Use Aliquots</span>
-								</div>
+							<td width="40%" valign="top" rowspan="2">
 								<html:select multiple="true" property="assignedAliquot" size="4">
 									<html:options name="allAssignedAliquots" />
 								</html:select>
 							</td>
+						</tr>
+						<tr>
+							<td align="center">
+								<input  type="button" onClick="assignAliquots(document.createRunForm.assignedAliquot, document.createRunForm.availableAliquot)" value=&lt;&lt; />
+							</td>
+						
 						</tr>
 					</table>
 				</td>
@@ -104,7 +111,7 @@
 					<strong>Run Date* </strong>
 				</td>
 				<td class="formField">
-					<html:text property="runDate" size="10" />
+					<html:text property="runDate" size="10"/>
 					<span class="formFieldWhite"> <a href="javascript:cal.popup();"> <img height="18" src="images/calendar-icon.gif" width="22" border="0" alt="Click Here to Pick up the date"> </a> </span>
 				</td>
 			</tr>
@@ -154,9 +161,6 @@
   function assignAliquots(fromObj,toObj)
   {
   		moveItems(fromObj, toObj);
-  		for(i = 0; i < toObj.options.length; i++){		
-			toObj.options[i].selected=true;	
-		}  	
   }
   
   
@@ -166,11 +170,11 @@
   */ 
   function resetObject(fromObj,toObj) 
   {
-		for(i = 0; i < fromObj.options.length; i++){		
-		fromObj.options[i].selected=true;	
+  		for(i = 0; i < fromObj.options.length; i++){		
+			fromObj.options[i].selected=true;	
 		}
 		moveItems(fromObj,toObj);
-  return true;		
+  		return true;		
   }
 
 //-->
