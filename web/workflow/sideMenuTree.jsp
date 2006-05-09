@@ -73,10 +73,10 @@
   											    <c:set var="inputFileSeq" value="${inputFileSeq+1}"/>
   											    <c:choose>
   	    	      							       <c:when test="${inputFile.fileMaskStatus eq 'Active'}">
-                                                      d.add(${inputFileSeq},${runSeq+1},'${inputFile.shortFilename}', 'javascript:gotoPage(\'${pageContext.request.contextPath}\'+\'/fileDownload.do?method=downloadFile&fileName=${inputFile.filename}&runId=${run.id}&inout=Inputa&ssayType=${assay.assayType}&assayName=${assay.assayName}&runName=${run.name}\')','${inputFile.filename}');
+                                                      d.add(${inputFileSeq},${runSeq+1},'${inputFile.shortFilename}', 'javascript:gotoPage(\'${pageContext.request.contextPath}\'+\'/fileDownload.do?method=downloadFile&fileName=${inputFile.filename}&runId=${run.id}&inout=Input&assayType=${assay.assayType}&assayName=${assay.assayName}&runName=${run.name}\')','${inputFile.filename}');
                                                    </c:when>
                                                    <c:otherwise>
-                                                      d.add(${inputFileSeq},${runSeq+1},'<i>${inputFile.shortFilename}</i>', 'javascript:gotoPage(\'${pageContext.request.contextPath}\'+\'/fileDownload.do?method=downloadFile&fileName=${inputFile.filename}&runId=${run.id}&inout=Inputa&ssayType=${assay.assayType}&assayName=${assay.assayName}&runName=${run.name}\')','${inputFile.filename}');
+                                                      d.add(${inputFileSeq},${runSeq+1},'<i>${inputFile.shortFilename}</i>', 'javascript:gotoPage(\'${pageContext.request.contextPath}\'+\'/fileDownload.do?method=downloadFile&fileName=${inputFile.filename}&runId=${run.id}&inout=Input&assayType=${assay.assayType}&assayName=${assay.assayName}&runName=${run.name}\')','${inputFile.filename}');
                                                    </c:otherwise>                                                   
                                                 </c:choose>
   											</c:forEach>
