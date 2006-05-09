@@ -447,7 +447,16 @@ public class ExecuteWorkflowService {
         List<FileBean> fileBeans = new ArrayList<FileBean>();
         try {
             ida.open();
-            Run doRun = (Run)ida.load(Run.class, StringUtils.convertToLong(runId));
+//            Run doRun = (Run)ida.load(Run.class, StringUtils.convertToLong(runId));
+            Run doRun = null;
+            String hqlString = "from Run run where run.id='" + runId + "'";
+            List results = ida.search(hqlString);
+            for (Object obj: results) {
+            	 doRun = (Run)obj;
+            }    
+            if (doRun == null) {
+            	return fileBeans;
+            }
             if (type.equalsIgnoreCase("input")) {
                 Set inputFiles = (Set)doRun.getInputFileCollection();
                 
