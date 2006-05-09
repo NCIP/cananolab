@@ -1,9 +1,6 @@
 package gov.nih.nci.calab.ui.workflow;
 
-import gov.nih.nci.calab.dto.workflow.ExecuteWorkflowBean;
 import gov.nih.nci.calab.dto.workflow.FileBean;
-import gov.nih.nci.calab.dto.workflow.FileDownloadInfo;
-import gov.nih.nci.calab.dto.workflow.RunBean;
 import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.util.ActionUtil;
 import gov.nih.nci.calab.service.util.CalabConstants;
@@ -13,130 +10,94 @@ import gov.nih.nci.calab.service.workflow.ExecuteWorkflowService;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.validator.DynaValidatorActionForm;
+import org.apache.struts.action.DynaActionForm;
 
 /**
  * This class handle workflow upload process.
  * 
- * @author zhoujim
- *
+ * @author zhoujim, pansu
+ * 
  */
 
-public class FileDownloadAction extends AbstractDispatchAction
-{      
-    private static org.apache.log4j.Logger logger =
-        org.apache.log4j.Logger.getLogger(FileDownloadAction.class);
- 
+public class FileDownloadAction extends AbstractDispatchAction {
 	/**
-     * This method is setting up the parameters for the workflow input upload files
-     * or output upload files.
-     * 
-     * @param mapping
-     * @param form
-     * @param request
-     * @param response
-     * @return mapping forward
-     */
-    public ActionForward setup(ActionMapping mapping, 
-                               ActionForm form,
-                               HttpServletRequest request,
-                               HttpServletResponse response)
-    {
-        HttpSession session = request.getSession();
-        
-        ExecuteWorkflowService workflowService = new ExecuteWorkflowService();
-        String runId = request.getParameter("runId");
-        RunBean runBean = workflowService.getAssayInfoByRun((ExecuteWorkflowBean)session.getAttribute("workflow"), runId);
-        
-        SpecialCharReplacer specialCharReplacer = new SpecialCharReplacer();
-        
-    	DynaValidatorActionForm fileForm = (DynaValidatorActionForm)form;
-        fileForm.set("assayType", specialCharReplacer.getReplacedString(runBean.getAssayBean().getAssayType()));
-        fileForm.set("assay", specialCharReplacer.getReplacedString(runBean.getAssayBean().getAssayName()));
-        fileForm.set("run", specialCharReplacer.getReplacedString(runBean.getName()));
-        String inout=(String)fileForm.get("inout");
-        String contentPath = request.getContextPath();
-        
-        // Retrieve filename(not uri) from database
-        List<FileBean> fileBeanList = new ArrayList<FileBean>();
-        if (inout.equalsIgnoreCase(CalabConstants.INPUT)) {
-            fileBeanList = runBean.getInputFileBeans();
-        } else if (inout.equalsIgnoreCase(CalabConstants.OUTPUT)) {
-            fileBeanList = runBean.getOutputFileBeans();
-        }
-         
-        List<FileDownloadInfo>  fileNameHolder = new ArrayList<FileDownloadInfo>();
-        for(FileBean fileBean: fileBeanList)
-        {
-            FileDownloadInfo fileDownloadInfo = new FileDownloadInfo();
-            fileDownloadInfo.setFileName(fileBean.getFilename());
-            fileDownloadInfo.setUploadDate(fileBean.getCreatedDate());
-            fileDownloadInfo.setAction(contentPath+"/fileDownload.do?method=downloadFile&fileName="+fileBean.getFilename()
-                                                  +"&runId="+runId+"&inout="+fileForm.get("inout"));
-            fileNameHolder.add(fileDownloadInfo);
-        }
-      
-        fileForm.set("fileInfoList", fileNameHolder);
-        fileForm.set("downloadAll", contentPath+"/fileDownload.do?method=downloadFile&runId="+runId+"&inout="
-        									   +fileForm.get("inout")+"&fileName="+CalabConstants.ALL_FILES+".zip");
-        return mapping.findForward("success");
-    }
-    
-    public ActionForward downloadFile(ActionMapping mapping, 
-            ActionForm form,
-            HttpServletRequest request,
-            HttpServletResponse response) throws Exception
-    {
-    	RunBean runBean = null;
-        HttpSession session = request.getSession();
-        DynaValidatorActionForm fileForm = (DynaValidatorActionForm)form;
-        ExecuteWorkflowService workflowService = new ExecuteWorkflowService();
-        String runId = request.getParameter("runId");
-        
-        ExecuteWorkflowBean workflowBean = (ExecuteWorkflowBean)session.getAttribute("workflow");
-        if (workflowBean == null) {
-        	runBean = workflowService.getRunBeanById(runId);
-        } else {
-            runBean = workflowService.getAssayInfoByRun(workflowBean, runId);      	
-        }
-        
-        SpecialCharReplacer specialCharReplacer = new SpecialCharReplacer();
-               
-        fileForm.set("assayType", specialCharReplacer.getReplacedString(runBean.getAssayBean().getAssayType()));
-        fileForm.set("assay", specialCharReplacer.getReplacedString(runBean.getAssayBean().getAssayName()));
-        fileForm.set("run", specialCharReplacer.getReplacedString(runBean.getName()));
-        fileForm.set("inout", request.getParameter("inout"));
+	 * This method is setting up the parameters for the workflow input upload
+	 * files or output upload files.
+	 * 
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return mapping forward
+	 */
+	public ActionForward setup(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+		DynaActionForm fileForm = (DynaActionForm) form;
+		String runId = (String) fileForm.get("runId");
+		String assayType = (String) fileForm.get("assayType");
+		String assayName = (String) fileForm.get("assayName");
+		String runName = (String) fileForm.get("runName");
+		String inout = (String) fileForm.get("inout");
 
-        
-        String fileName = (String)fileForm.get("fileName");
-        String path = PropertyReader.getProperty(CalabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
-        String fullPathName = path + fileForm.get("assayType") + File.separator 
-                                   + fileForm.get("assay") + File.separator
-                                   + fileForm.get("run")   + File.separator
-                                   + fileForm.get("inout") + File.separator
-                                   + CalabConstants.UNCOMPRESSED_FILE_DIRECTORY;
-        File f = new File(fullPathName+File.separator+fileName);
-        if (!f.exists())
-        {
-            throw new CalabException ("File to download doesn't exist on the server");
-        }
-        ActionUtil actionUtil = new ActionUtil();
-        actionUtil.writeBinaryStream(f, response);
-        
-        return null;
-    }
-    
-    public boolean loginRequired() {        
-         return true;
-    }
+		SpecialCharReplacer specialCharReplacer = new SpecialCharReplacer();
+		assayType = specialCharReplacer.getReplacedString(assayType);
+		assayName = specialCharReplacer.getReplacedString(assayName);
+		runName = specialCharReplacer.getReplacedString(runName);
+
+		// Retrieve filename(not uri) from database
+		ExecuteWorkflowService workflowService = new ExecuteWorkflowService();
+		List<FileBean> fileBeanList = workflowService.getLastestFileListByRun(
+				runId, inout);
+
+		if (!fileBeanList.isEmpty()) {
+			request.setAttribute("filesToDownload", fileBeanList);
+		}
+
+		return mapping.findForward("success");
+	}
+
+	public ActionForward downloadFile(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaActionForm fileForm = (DynaActionForm) form;
+		
+		String assayType = (String) fileForm.get("assayType");
+		String assayName = (String) fileForm.get("assayName");
+		String runName = (String) fileForm.get("runName");		
+		String inout = (String) fileForm.get("inout");
+		
+		SpecialCharReplacer specialCharReplacer = new SpecialCharReplacer();
+		assayType = specialCharReplacer.getReplacedString(assayType);
+		assayName = specialCharReplacer.getReplacedString(assayName);
+		runName = specialCharReplacer.getReplacedString(runName);	
+
+		String fileName = (String) fileForm.get("fileName");
+		String path = PropertyReader.getProperty(
+				CalabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
+		String fullPathName = path + assayType + File.separator
+				+ assayName + File.separator + runName
+				+ File.separator + inout + File.separator
+				+ CalabConstants.UNCOMPRESSED_FILE_DIRECTORY;
+		File f = new File(fullPathName + File.separator + fileName);
+		if (!f.exists()) {
+			throw new CalabException(
+					"File to download doesn't exist on the server");
+		}
+		ActionUtil actionUtil = new ActionUtil();
+		actionUtil.writeBinaryStream(f, response);
+
+		return null;
+	}
+
+	public boolean loginRequired() {
+		return true;
+	}
 }
