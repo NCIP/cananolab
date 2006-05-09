@@ -193,7 +193,7 @@ public class FileUploadAction extends AbstractDispatchAction
             //After data persistence, we need to create all.zip for all upload files,
             //which includes previous uploaded file and uploaded files currently.
                       
-            List<FileBean> fileBeans = workflowService.getLastesFileListByRun(runId, inout);
+            List<FileBean> fileBeans = workflowService.getLastestFileListByRun(runId, inout);
                       
             FilePacker fPacker = new FilePacker();
             String uncompressedFileDirecory = fullPathName + File.separator 
