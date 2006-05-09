@@ -21,14 +21,14 @@
 			<item value="Create Assay Run" link="initSession.do?forwardPage=createAssayRun" />
 		</putList>
 		<putList name="uploadActions">
-			<item value="Upload Input File" link="fileUpload.do?method=setup&amp;inout=Input&amp;type=upload" />
-			<item value="Upload Output File" link="fileUpload.do?method=setup&amp;inout=Output&amp;type=upload" />
+			<item value="Upload Input File" link="fileUpload.do?method=setup&amp;inout=Input" />
+			<item value="Upload Output File" link="fileUpload.do?method=setup&amp;inout=Output" />
 		</putList>
 	</definition>
 
 	<!-- definitions for the use aliquot page -->
 	<definition name="workflow.usealiquot.content" extends="workflow.content.home">
-		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp?type=in" />
+		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp?menuType=in" />
 		<put name="workflowContent" value="/workflow/bodyUseAliquot.jsp" />
 	</definition>
 
@@ -37,19 +37,6 @@
 		<put name="calabSidemenu" value="/workflow/sideMenuTree.jsp" />
 		<put name="menu" value="workflow" />
 	</definition>
-	
-	<!-- definitions for the upload input/output option page -->
-	<definition name="workflow.uploadoption.content" extends="workflow.content.home">
-		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp?type=upload" />
-		<put name="workflowContent" value="/workflow/bodyEmpty.jsp" />
-	</definition>
-
-	<definition name="workflow.uploadoption" extends="calab.home">
-		<put name="calabContent" value="workflow.uploadoption.content" />
-		<put name="calabSidemenu" value="/workflow/sideMenuTree.jsp" />
-		<put name="menu" value="workflow" />
-	</definition>
-	
 
 	<!-- definitions for the workflow message page -->
 	<definition name="workflow.message.content" extends="workflow.content.home">
@@ -67,6 +54,7 @@
 	</definition>
 
 	<definition name="workflow.viewaliquot" extends="calab.home">
+		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp?menuType=none" />
 		<put name="calabContent" value="workflow.viewaliquot.content" />
 		<put name="calabSidemenu" value="/workflow/sideMenuTree.jsp" />
 		<put name="menu" value="workflow" />
@@ -74,6 +62,7 @@
 
 	<!-- definitions for the mask aliquot page -->
 	<definition name="workflow.maskaliquot.content" extends="workflow.content.home">
+		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp?menuType=none" />
 		<put name="workflowContent" value="/workflow/bodyMaskAliquot.jsp" />
 	</definition>
 
@@ -82,68 +71,69 @@
 		<put name="calabSidemenu" value="/workflow/sideMenuTree.jsp" />
 		<put name="menu" value="workflow" />
 	</definition>
-	
-    <!-- definitions for the create run page -->    
-    <definition name="workflow.createrun.content" extends="workflow.content.home">
- 		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp"/>
-        <put name="workflowContent" value="/workflow/bodyCreateRun.jsp"/>
-    </definition>
-    
-    <definition name="workflow.createrun" extends="calab.home">
-        <put name="calabContent" value="workflow.createrun.content"/>
-        <put name="calabSidemenu" value="/workflow/sideMenuTree.jsp"/>
-        <put name="menu" value="workflow"/>
-    </definition>
-    <!-- definitions for the create run page -->    
-    <definition name="workflow.createassayrun.content" extends="workflow.content.home">
- 		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp"/>
-        <put name="workflowContent" value="/workflow/bodyCreateAssayRun.jsp"/>
-    </definition>
-    
-    <definition name="workflow.createassayrun" extends="calab.home">
-        <put name="calabContent" value="workflow.createassayrun.content"/>
-        <put name="calabSidemenu" value="/workflow/sideMenuTree.jsp"/>
-        <put name="menu" value="workflow"/>
-    </definition>   
-	    
-    <!-- definitions for the file upload page -->
-    <definition name="workflow.fileupload.content" extends="workflow.content.home">
-		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp"/>
-	    <put name="workflowContent" value="/workflow/bodyWorkflowFileUpload.jsp"/>
-    </definition>
-       
-    <definition name="workflow.fileUpload" extends="calab.home">
-        <put name="calabContent" value="workflow.fileupload.content"/>
-        <put name="calabSidemenu" value="/workflow/sideMenuTree.jsp"/>
-        <put name="menu" value="workflow"/>
-    </definition>
-    
-     <!-- definitions for the file download page -->
-    <definition name="workflow.fileDownload.content" extends="workflow.content.home">
-		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp"/>
-	    <put name="workflowContent" value="/workflow/bodyWorkflowFiledownload.jsp"/>
-    </definition>
 
-    <definition name="workflow.fileDownload" extends="calab.home">
-        <put name="calabContent" value="workflow.fileDownload.content"/>
-        <put name="calabSidemenu" value="/workflow/sideMenuTree.jsp"/>
-        <put name="menu" value="workflow"/>
-    </definition>
-    
-     <!-- definitions for the run file mask page -->
-    <definition name="workflow.runfilemask.content" extends="workflow.content.home">
-		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp"/>
-	    <put name="workflowContent" value="/workflow/bodyWorkflowFileMask.jsp"/>
-    </definition>
-    
-    <definition name="workflow.runfilemask" extends="calab.home">
-        <put name="calabContent" value="workflow.runfilemask.content"/>
-        <put name="calabSidemenu" value="/workflow/sideMenuTree.jsp"/>
-        <put name="menu" value="workflow"/>
-    </definition>
-    
-   	<!-- definitions for the mask file page -->
+	<!-- definitions for the create run page -->
+	<definition name="workflow.createrun.content" extends="workflow.content.home">
+		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp" />
+		<put name="workflowContent" value="/workflow/bodyCreateRun.jsp" />
+	</definition>
+
+	<definition name="workflow.createrun" extends="calab.home">
+		<put name="calabContent" value="workflow.createrun.content" />
+		<put name="calabSidemenu" value="/workflow/sideMenuTree.jsp" />
+		<put name="menu" value="workflow" />
+	</definition>
+	<!-- definitions for the create run page -->
+	<definition name="workflow.createassayrun.content" extends="workflow.content.home">
+		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp?menuType=none" />		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp" />
+		<put name="workflowContent" value="/workflow/bodyCreateAssayRun.jsp" />
+	</definition>
+
+	<definition name="workflow.createassayrun" extends="calab.home">
+		<put name="calabContent" value="workflow.createassayrun.content" />
+		<put name="calabSidemenu" value="/workflow/sideMenuTree.jsp" />
+		<put name="menu" value="workflow" />
+	</definition>
+
+	<!-- definitions for the file upload page -->
+	<definition name="workflow.fileupload.content" extends="workflow.content.home">
+		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp" />
+		<put name="workflowContent" value="/workflow/bodyWorkflowFileUpload.jsp" />
+	</definition>
+
+	<definition name="workflow.fileUpload" extends="calab.home">
+		<put name="calabContent" value="workflow.fileupload.content" />
+		<put name="calabSidemenu" value="/workflow/sideMenuTree.jsp" />
+		<put name="menu" value="workflow" />
+	</definition>
+
+	<!-- definitions for the file download page -->
+	<definition name="workflow.fileDownload.content" extends="workflow.content.home">
+		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp" />
+		<put name="workflowContent" value="/workflow/bodyWorkflowFiledownload.jsp" />
+	</definition>
+
+	<definition name="workflow.fileDownload" extends="calab.home">
+		<put name="calabContent" value="workflow.fileDownload.content" />
+		<put name="calabSidemenu" value="/workflow/sideMenuTree.jsp" />
+		<put name="menu" value="workflow" />
+	</definition>
+
+	<!-- definitions for the run file mask page -->
+	<definition name="workflow.runfilemask.content" extends="workflow.content.home">
+		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp" />
+		<put name="workflowContent" value="/workflow/bodyWorkflowFileMask.jsp" />
+	</definition>
+
+	<definition name="workflow.runfilemask" extends="calab.home">
+		<put name="calabContent" value="workflow.runfilemask.content" />
+		<put name="calabSidemenu" value="/workflow/sideMenuTree.jsp" />
+		<put name="menu" value="workflow" />
+	</definition>
+
+	<!-- definitions for the mask file page -->
 	<definition name="workflow.maskfile.content" extends="workflow.content.home">
+			<put name="workflowActionMenu" value="/workflow/actionMenu.jsp?menuType=none" />
 		<put name="workflowContent" value="/workflow/bodyMaskFile.jsp" />
 	</definition>
 
@@ -152,6 +142,4 @@
 		<put name="calabSidemenu" value="/workflow/sideMenuTree.jsp" />
 		<put name="menu" value="workflow" />
 	</definition>
-	
-    
- </tiles-definitions>
+</tiles-definitions>
