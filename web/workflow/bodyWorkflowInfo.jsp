@@ -29,7 +29,7 @@
 		<logic:present parameter="runName">
 			<tr>
 				<td class="leftBorderedFormFieldGrey">
-					<b>Run</b>
+					<b>Run Name</b>
 				</td>
 				<td class="formFieldGrey">
 					<c:out value="${param.runName}" />
