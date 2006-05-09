@@ -30,6 +30,7 @@
 			<form-property name="description" type="java.lang.String" />
 			<form-property name="assayType" type="java.lang.String" />
 			<form-property name="assayName" type="java.lang.String" />
+			<form-property name="menuType" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="viewAliquotForm" type="org.apache.struts.action.DynaActionForm">
 			<form-property name="aliquotId" type="java.lang.String" />
@@ -61,10 +62,11 @@
 			<form-property name="createdDate" type="java.lang.String" />
 			<form-property name="createdBy" type="java.lang.String" />
 		</form-bean>
-		<form-bean name="fileUploadForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+		<form-bean name="fileUploadForm" type="org.apache.struts.action.DynaActionForm">
 			<form-property name="assayType" type="java.lang.String" />
-			<form-property name="assay" type="java.lang.String" />
-			<form-property name="run" type="java.lang.String" />
+			<form-property name="assayName" type="java.lang.String" />
+			<form-property name="runId" type="java.lang.String" />
+			<form-property name="runName" type="java.lang.String" />
 			<form-property name="runby" type="java.lang.String" />
 			<form-property name="rundate" type="java.lang.String" />
 			<form-property name="inout" type="java.lang.String" />
@@ -77,15 +79,14 @@
 			<form-property name="sid" type="java.lang.String" />
 			<form-property name="permissibleFileExtension" type="java.lang.String" />
 		</form-bean>
-		<form-bean name="fileDownloadForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+		<form-bean name="fileDownloadForm" type="org.apache.struts.action.DynaActionForm">
 			<form-property name="assayType" type="java.lang.String" />
-			<form-property name="assay" type="java.lang.String" />
-			<form-property name="run" type="java.lang.String" />
+			<form-property name="assayName" type="java.lang.String" />
+			<form-property name="runId" type="java.lang.String" />
+			<form-property name="runName" type="java.lang.String" />
 			<form-property name="inout" type="java.lang.String" />
 			<form-property name="method" type="java.lang.String" />
 			<form-property name="fileName" type="java.lang.String" />
-			<form-property name="fileInfoList" type="java.util.ArrayList" />
-			<form-property name="downloadAll" type="java.lang.String" />
 		</form-bean>
 	</form-beans>
 	<global-forwards>
@@ -94,11 +95,9 @@
 		<forward name="maskFile" path="workflow.maskfile" />
 		<forward name="createRun" path="workflow.createrun" />
 		<forward name="createAssayRun" path="workflow.createassayrun" />
-		<forward name="workflowMessage" path="workflow.message" />
-		<forward name="fileUpload" path="/fileUpload.do" />
+		<forward name="workflowMessage" path="/workflowForward.do" />
 		<forward name="fileDownload" path="/fileDownload.do" />
 		<forward name="runFileMask" path="/fileMask.do" />
-		<forward name="fileUploadOption" path="workflow.uploadoption" />
 	</global-forwards>
 	<action-mappings>
 		<action input="input" name="useAliquotForm" path="/useAliquot" scope="request" type="gov.nih.nci.calab.ui.workflow.UseAliquotAction">
@@ -127,13 +126,13 @@
 		<action name="createRunForm" path="/createRun" type="gov.nih.nci.calab.ui.workflow.CreateRunAction" input="input" scope="request">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="workflow" key="error.createRun" path="workflow.createrun" type="java.lang.Exception" />
 			<forward name="input" path="workflow.createrun" />
-			<forward name="success" path="/initSession.do?forwardPage=fileUploadOption" />
+			<forward name="success" path="/initSession.do?forwardPage=uploadForward" />
 		</action>
 
 		<action name="createAssayRunForm" path="/createAssayRun" type="gov.nih.nci.calab.ui.workflow.CreateRunAction" input="input" scope="request">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="workflow" key="error.createAssayRun" path="workflow.createassayrun" type="java.lang.Exception" />
 			<forward name="input" path="workflow.createassayrun" />
-			<forward name="success" path="/initSession.do?forwardPage=fileUploadOption" />
+			<forward name="success" path="/initSession.do?forwardPage=uploadForward" />
 		</action>
 
 		<action name="fileUploadForm" parameter="method" path="/fileUpload" scope="request" type="gov.nih.nci.calab.ui.workflow.FileUploadAction" input="input">
