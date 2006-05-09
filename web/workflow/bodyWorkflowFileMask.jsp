@@ -15,7 +15,7 @@
 				</h3>
 			</td>
 			<td align="right" width="10%">
-				<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=mask_files')" class="helpText">Help</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+				<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=mask_files')" class="helpText">Help</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			</td>
 	</table>
 	<jsp:include page="/workflow/bodyWorkflowInfo.jsp" />
@@ -32,25 +32,34 @@
 				</td>
 			<tr>
 			<tr>
-				<td class="dataTableSecondaryLabel">
+				<td class="formTitle">
 					File Name
 				</td>
-				<td class="dataTableSecondaryLabel">
+				<td class="formTitle">
 					Uploaded Date
 				</td>
-				<td class="dataTableSecondaryLabel" align="right">
+				<td class="formTitle" align="right">
 					Mask Action
 				</td>
 			</tr>
-			<%int i = 0;
-
-			%>
+			<c:set var="rowNum" value="-1" />
 			<logic:iterate id="file" name="filesToMask">
+				<c:set var="rowNum" value="${rowNum+1}" />
+				<c:choose>
+					<c:when test="${rowNum % 2 == 0}">
+						<c:set var="style" value="formFieldGrey" />
+						<c:set var="style0" value="leftBorderedFormFieldGrey" />
+					</c:when>
+					<c:otherwise>
+						<c:set var="style" value="formFieldWhite" />
+						<c:set var="style0" value="leftBorderedFormFieldWhite" />
+					</c:otherwise>
+				</c:choose>
 				<tr>
-					<td class=<%= ((i%2)==0)?"leftBorderedFormFieldWhite":"leftBorderedFormFieldGrey" %>>
+					<td class="${style0}">
 						<bean:write name="file" property="filename" />
 					</td>
-					<td class=<%= ((i%2)==0)?"leftBorderedFormFieldWhite":"leftBorderedFormFieldGrey" %>>
+					<td class="${style}">
 						<bean:write name="file" property="createdDate" />
 					</td>
 					<c:url var="maskFileURL" value="/preMaskFile.do">
@@ -62,8 +71,9 @@
 						<c:param name="runName" value="${param.runName}" />
 						<c:param name="assayName" value="${param.assayName}" />
 						<c:param name="assayType" value="${param.assayType}" />
+						<c:param name="menuType" value="${param.menuType}" />
 					</c:url>
-					<td align="right" class=<%= ((i%2)==0)?"leftBorderedFormFieldWhite":"leftBorderedFormFieldGrey" %>>
+					<td align="right" class="${style}">
 						<b><a href="${maskFileURL}">Mask </a> </b>
 					</td>
 				</tr>
