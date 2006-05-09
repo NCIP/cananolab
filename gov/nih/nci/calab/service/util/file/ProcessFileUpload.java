@@ -100,7 +100,7 @@ public class ProcessFileUpload extends HttpServlet
         
         HttpUploadedFileData data = new HttpUploadedFileData();
         data.setFileName(fileName);
-        data.setType((String)request.getParameter("type"));
+        data.setType((String)request.getParameter("menuType"));
         data.setId((String)request.getParameter("id"));
         data.setValidatorCode((String)request.getParameter("crc32"));
         String module = (String)request.getParameter("module");
