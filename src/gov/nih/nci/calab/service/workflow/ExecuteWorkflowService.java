@@ -442,21 +442,12 @@ public class ExecuteWorkflowService {
 		}
 	}
     
-    public List<FileBean> getLastesFileListByRun(String runId, String type) throws Exception {
+    public List<FileBean> getLastestFileListByRun(String runId, String type) throws Exception {
         IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
         List<FileBean> fileBeans = new ArrayList<FileBean>();
         try {
             ida.open();
-//            Run doRun = (Run)ida.load(Run.class, StringUtils.convertToLong(runId));
-            Run doRun = null;
-            String hqlString = "from Run run where run.id='" + runId + "'";
-            List results = ida.search(hqlString);
-            for (Object obj: results) {
-            	 doRun = (Run)obj;
-            }    
-            if (doRun == null) {
-            	return fileBeans;
-            }
+            Run doRun = (Run)ida.load(Run.class, StringUtils.convertToLong(runId));
             if (type.equalsIgnoreCase("input")) {
                 Set inputFiles = (Set)doRun.getInputFileCollection();
                 
@@ -466,6 +457,7 @@ public class ExecuteWorkflowService {
                     infileBean.setId(doInputFile.getId().toString());
                     infileBean.setPath(doInputFile.getPath());
                     infileBean.setCreatedDate(doInputFile.getCreatedDate());
+                    infileBean.setFileMaskStatus(doInputFile.getDataStatus().getStatus());
                     fileBeans.add(infileBean);
                 }               
             } else if (type.equalsIgnoreCase("output")) {
@@ -476,6 +468,7 @@ public class ExecuteWorkflowService {
                     outfileBean.setId(doOutputFile.getId().toString());
                     outfileBean.setPath(doOutputFile.getPath());
                     outfileBean.setCreatedDate(doOutputFile.getCreatedDate());
+                    outfileBean.setFileMaskStatus(doOutputFile.getDataStatus().getStatus());
                     fileBeans.add(outfileBean);
                 }              
             }            
