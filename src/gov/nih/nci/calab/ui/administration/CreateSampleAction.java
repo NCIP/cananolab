@@ -7,10 +7,11 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: CreateSampleAction.java,v 1.14 2006-05-08 18:58:23 zengje Exp $ */
+/* CVS $Id: CreateSampleAction.java,v 1.15 2006-05-10 14:37:46 zengje Exp $ */
 
 import gov.nih.nci.calab.dto.administration.ContainerBean;
 import gov.nih.nci.calab.dto.administration.SampleBean;
+import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.administration.ManageSampleService;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
@@ -38,7 +39,7 @@ public class CreateSampleAction extends AbstractBaseAction {
 		DynaValidatorActionForm theForm = (DynaValidatorActionForm) form;
 		String sampleNamePrefix = (String) theForm.get("sampleNamePrefix");
 		String preconfiguredPrefix = PropertyReader.getProperty(CalabConstants.CALAB_PROPERTY,"samplePrefix");
-		if (!sampleNamePrefix.equals(preconfiguredPrefix)) {
+		if (!sampleNamePrefix.startsWith(preconfiguredPrefix)) {
 			
 			ActionMessages msgs = new ActionMessages();
 			ActionMessage msg = new ActionMessage("error.createSample.SampleIDFormat", preconfiguredPrefix);
@@ -55,6 +56,19 @@ public class CreateSampleAction extends AbstractBaseAction {
 		String sampleSource = (String) theForm.get("sampleSource");
 		String sourceSampleId = (String) theForm.get("sourceSampleId");
 		String dateReceived = (String) theForm.get("dateReceived");
+		if (!isValidDate(dateReceived)) {
+//			ActionMessages msgs = new ActionMessages();
+//			ActionMessage msg = new ActionMessage("errors.date", "Received Date");
+//			msgs.add("error", msg);
+//			saveMessages(request, msgs);
+//			
+//			forward = mapping.findForward("input");
+//
+//			return forward;
+			throw new CalabException("Year of sample receive date must be in a four digit format");
+
+		}
+
 		String solubility = (String) theForm.get("solubility");
 		String lotId = (String) theForm.get("lotId");
 		String lotDescription = (String) theForm.get("lotDescription");
@@ -92,13 +106,17 @@ public class CreateSampleAction extends AbstractBaseAction {
 	public boolean loginRequired() {
 		return true;
 	}
-	
-	private boolean validateSamplePrefix(String samplePrefix) {
-		if (samplePrefix.equals(PropertyReader.getProperty(CalabConstants.CALAB_PROPERTY,"samplePrefix"))) {
+
+	private boolean isValidDate(String date) {
+		if ((date == null) || (date.length()== 0)) { 
 			return true;
-		}else {
+		}
+		String year = date.substring(date.lastIndexOf("/")+1);
+		if (year.length()<4){
 			return false;
 		}
+		return true;
 	}
+
 	
 }
