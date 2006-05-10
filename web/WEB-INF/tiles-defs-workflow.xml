@@ -8,21 +8,18 @@
 		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp" />
 		<putList name="inActions">
 			<item value="Use Aliquot" link="initSession.do?forwardPage=useAliquot" />
-			<item value="Upload Files" link="fileUpload.do?method=setup" />
-			<item value="Download Files" link="initSession.do?method=setup&amp;forwardPage=fileDownload" />
+			<item value="Upload Files" link="initSession.do?forwardPage=fileUpload" />
+			<item value="Download Files" link="initSession.do?forwardPage=fileDownload" />
 			<item value="Mask Files" link="initSession.do?forwardPage=runFileMask" />
 		</putList>
 		<putList name="outActions">
-			<item value="Upload Files" link="fileUpload.do?method=setup" />
-			<item value="Download Files" link="initSession.do?method=setup&amp;forwardPage=fileDownload" />
+			<item value="Upload Files" link="initSession.do?forwardPage=fileUpload" />
+			<item value="Download Files" link="initSession.do?forwardPage=fileDownload" />
 			<item value="Mask Files" link="initSession.do?forwardPage=runFileMask" />
 		</putList>
-		<putList name="assayActions">
-			<item value="Create Assay Run" link="initSession.do?forwardPage=createAssayRun" />
-		</putList>
 		<putList name="uploadActions">
-			<item value="Upload Input File" link="fileUpload.do?method=setup&amp;inout=Input" />
-			<item value="Upload Output File" link="fileUpload.do?method=setup&amp;inout=Output" />
+			<item value="Upload Input File" link="initSession.do?forwardPage=fileUpload&amp;inout=Input" />
+			<item value="Upload Output File" link="initSession.do?forwardPage=fileUpload&amp;inout=Output" />
 		</putList>
 	</definition>
 
@@ -74,7 +71,7 @@
 
 	<!-- definitions for the create run page -->
 	<definition name="workflow.createrun.content" extends="workflow.content.home">
-		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp" />
+		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp?menuType=none" />
 		<put name="workflowContent" value="/workflow/bodyCreateRun.jsp" />
 	</definition>
 
@@ -101,20 +98,20 @@
 		<put name="workflowContent" value="/workflow/bodyWorkflowFileUpload.jsp" />
 	</definition>
 
-	<definition name="workflow.fileUpload" extends="calab.home">
+	<definition name="workflow.fileupload" extends="calab.home">
 		<put name="calabContent" value="workflow.fileupload.content" />
 		<put name="calabSidemenu" value="/workflow/sideMenuTree.jsp" />
 		<put name="menu" value="workflow" />
 	</definition>
 
 	<!-- definitions for the file download page -->
-	<definition name="workflow.fileDownload.content" extends="workflow.content.home">
+	<definition name="workflow.filedownload.content" extends="workflow.content.home">
 		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp" />
 		<put name="workflowContent" value="/workflow/bodyWorkflowFiledownload.jsp" />
 	</definition>
 
-	<definition name="workflow.fileDownload" extends="calab.home">
-		<put name="calabContent" value="workflow.fileDownload.content" />
+	<definition name="workflow.filedownload" extends="calab.home">
+		<put name="calabContent" value="workflow.filedownload.content" />
 		<put name="calabSidemenu" value="/workflow/sideMenuTree.jsp" />
 		<put name="menu" value="workflow" />
 	</definition>
