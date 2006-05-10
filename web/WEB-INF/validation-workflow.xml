@@ -11,9 +11,6 @@
 			<field property="runId" depends="required">
 				<arg position="0" key="useAliquotForm.runId" bundle="workflow" />
 			</field>
-			<field property="runName" depends="required">
-				<arg position="0" key="useAliquotForm.runName" bundle="workflow" />
-			</field>
 		</form>
 		<form name="createRunForm">
 			<field property="assayId" depends="required">
