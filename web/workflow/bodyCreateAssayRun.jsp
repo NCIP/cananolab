@@ -62,7 +62,6 @@
 							</td>
 							<td width="40%" valign="top" rowspan="2">
 								<html:select multiple="true" property="assignedAliquot" size="4">
-									<html:options name="allAssignedAliquots" />
 								</html:select>
 							</td>
 						</tr>
@@ -128,7 +127,7 @@
 									<html:hidden property="assayName" value="${param.assayName}" />
 									<html:hidden property="assayType" value="${param.assayType}" />
 									<input type="reset" value="Reset" onclick="resetObject(document.createAssayRunForm.assignedAliquot, document.createAssayRunForm.availableAliquot);">
-									<html:submit />
+									<input type="button" value="Submit" onclick="submitAction();" >
 								</div>
 							</div>
 						</td>
@@ -172,6 +171,14 @@
 		}
 		moveItems(fromObj,toObj);
   		return true;		
+  }
+  
+  function submitAction() 
+  {
+  		for(i = 0; i < document.createAssayRunForm.assignedAliquot.options.length; i++){		
+			document.createAssayRunForm.assignedAliquot.options[i].selected=true;	
+		}
+		document.createAssayRunForm.submit();
   }
 
 //-->

@@ -69,8 +69,7 @@
 								<input type="button" onClick="assignAliquots(document.createRunForm.availableAliquot, document.createRunForm.assignedAliquot)" value=">>" />
 							</td>
 							<td width="40%" valign="top" rowspan="2">
-								<html:select multiple="true" property="assignedAliquot" size="4">
-									<html:options name="allAssignedAliquots" />
+								<html:select multiple="true" property="assignedAliquot" size="4">							
 								</html:select>
 							</td>
 						</tr>
@@ -128,7 +127,7 @@
 								<div align="right">
 									<div align="right">
 										<input type="reset" value="Reset" onclick="resetObject(document.createRunForm.assignedAliquot, document.createRunForm.availableAliquot);">
-										<html:submit />
+										<input type="button" value="Submit" onclick="submitAction();" >
 									</div>
 								</div>
 							</td>
@@ -175,6 +174,14 @@
 		}
 		moveItems(fromObj,toObj);
   		return true;		
+  }
+
+  function submitAction() 
+  {
+  		for(i = 0; i < document.createRunForm.assignedAliquot.options.length; i++){		
+			document.createRunForm.assignedAliquot.options[i].selected=true;	
+		}
+		document.createRunForm.submit();
   }
 
 //-->
