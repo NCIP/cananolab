@@ -42,15 +42,7 @@ public class FileDownloadAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		DynaActionForm fileForm = (DynaActionForm) form;
 		String runId = (String) fileForm.get("runId");
-		String assayType = (String) fileForm.get("assayType");
-		String assayName = (String) fileForm.get("assayName");
-		String runName = (String) fileForm.get("runName");
 		String inout = (String) fileForm.get("inout");
-
-		SpecialCharReplacer specialCharReplacer = new SpecialCharReplacer();
-		assayType = specialCharReplacer.getReplacedString(assayType);
-		assayName = specialCharReplacer.getReplacedString(assayName);
-		runName = specialCharReplacer.getReplacedString(runName);
 
 		// Retrieve filename(not uri) from database
 		ExecuteWorkflowService workflowService = new ExecuteWorkflowService();
