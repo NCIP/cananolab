@@ -67,9 +67,6 @@
 									<input type="hidden" name="maskType" value="aliquot">
 									<html:hidden property="aliquotId" />
 									<html:hidden property="aliquotName" />
-									<html:hidden property="runName" />
-									<html:hidden property="assayName" />
-									<html:hidden property="assayType" />
 									<html:submit value="Yes" />
 									<INPUT type="button" value="No " onclick="javascript:history.go(-1)">
 								</DIV>

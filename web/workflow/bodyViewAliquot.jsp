@@ -111,9 +111,6 @@
 					<div align="right">
 						<html:hidden name="aliquot" property="aliquotId" />
 						<input type="hidden" name="aliquotName" value=<bean:write name="aliquot" property="aliquotName" /> />
-						<input type="hidden" name="runName" value="${param.runName}">
-						<input type="hidden" name="assayName" value="${param.assayName}">
-						<input type="hidden" name="assayType" value="${param.assayType}">
 						<html:submit value="Mask Aliquot" />
 					</div>
 				</td>
