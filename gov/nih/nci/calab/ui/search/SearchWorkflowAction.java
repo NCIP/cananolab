@@ -6,9 +6,10 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchWorkflowAction.java,v 1.11 2006-05-08 15:08:40 zengje Exp $ */
+/* CVS $Id: SearchWorkflowAction.java,v 1.12 2006-05-10 14:37:46 zengje Exp $ */
 
 import gov.nih.nci.calab.dto.search.WorkflowResultBean;
+import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.search.SearchWorkflowService;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
@@ -38,7 +39,19 @@ public class SearchWorkflowAction extends AbstractBaseAction {
 		String assayType = ((String) theForm.get("assayType")).trim();
 		String assayRunDateBeginStr = (String) theForm.get("assayRunDateBegin");
 		String assayRunDateEndStr = (String) theForm.get("assayRunDateEnd");
-
+		
+		if (!isValidDate(assayRunDateBeginStr) || !isValidDate(assayRunDateEndStr)) {
+//			ActionMessages msgs = new ActionMessages();
+//			ActionMessage msg = new ActionMessage("errors.date", "Assay Run Date");
+//			msgs.add("error", msg);
+//			saveMessages(request, msgs);
+//			
+//			forward = mapping.findForward("input");
+//
+//			return forward;
+			throw new CalabException("Year of assay run date must be in a four digit format.");
+			
+		}
 		Date assayRunDateBegin = assayRunDateBeginStr.length() == 0 ? null
 				: StringUtils.convertToDate(assayRunDateBeginStr, "MM/dd/yyyy");
 		Date assayRunDateEnd = assayRunDateEndStr.length() == 0 ? null
@@ -57,6 +70,20 @@ public class SearchWorkflowAction extends AbstractBaseAction {
 				.get("fileSubmissionDateBegin");
 		String fileSubmissionDateEndStr = (String) theForm
 				.get("fileSubmissionDateEnd");
+		
+		if (!isValidDate(fileSubmissionDateBeginStr) || !isValidDate(fileSubmissionDateEndStr)) {
+//			ActionMessages msgs = new ActionMessages();
+//			ActionMessage msg = new ActionMessage("errors.date", "File Submission Date");
+//			msgs.add("error", msg);
+//			saveMessages(request, msgs);
+//			
+//			forward = mapping.findForward("input");
+//
+//			return forward;
+			throw new CalabException("Year of File Submission Date must be in a four digit format.");
+
+		}
+		
 		Date fileSubmissionDateBegin = fileSubmissionDateBeginStr.length() == 0 ? null
 				: StringUtils.convertToDate(fileSubmissionDateBeginStr,
 						"MM/dd/yyyy");
@@ -103,5 +130,15 @@ public class SearchWorkflowAction extends AbstractBaseAction {
 	public boolean loginRequired() {
 		return true;
 	}
-
+	
+	private boolean isValidDate(String date) {
+		if ((date == null) || (date.length()== 0)) { 
+			return true;
+		}
+		String year = date.substring(date.lastIndexOf("/")+1);
+		if (year.length()<4){
+			return false;
+		}
+		return true;
+	}
 }
