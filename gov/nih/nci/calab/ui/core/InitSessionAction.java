@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.42 2006-05-09 18:35:15 pansu Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.43 2006-05-10 18:18:59 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
@@ -117,7 +117,8 @@ public class InitSessionAction extends AbstractDispatchAction {
 		session.removeAttribute("newAliquotCreated");
 		// clear the new workflow created flag
 		session.removeAttribute("newWorkflowcreated");
-		return mapping.findForward("useAliquot");
+		ActionForward forward = mapping.findForward("useAliquot");
+		return forward;
 	}
 
 	public ActionForward createSample(ActionMapping mapping, ActionForm form,
@@ -263,7 +264,6 @@ public class InitSessionAction extends AbstractDispatchAction {
 		// clear the new sample created flag
 		session.removeAttribute("newSampleCreated");
 		return mapping.findForward("searchSample");
-
 	}
 
 	public ActionForward workflowMessage(ActionMapping mapping,
@@ -271,7 +271,8 @@ public class InitSessionAction extends AbstractDispatchAction {
 			HttpServletResponse response) throws Exception {
 		clearSessionData(request, "workflowMessage");
 		setWorkflowMessageSession(request);
-		return mapping.findForward("workflowMessage");
+		ActionForward forward = mapping.findForward("workflowMessage");
+		return forward;
 	}
 
 	public ActionForward fileDownload(ActionMapping mapping, ActionForm form,
@@ -279,7 +280,26 @@ public class InitSessionAction extends AbstractDispatchAction {
 			throws Exception {
 		clearSessionData(request, "fileDownload");
 		setWorkflowMessageSession(request);
-		return mapping.findForward("fileDownload");
+		// add inout and run information to parameters
+		String extra = constructFileParams(request);
+		String newPath = mapping.findForward("fileDownload").getPath() + extra;
+		ActionForward forward = new ActionForward();
+		forward.setPath(newPath);
+		return forward;
+	}
+
+	public ActionForward fileUpload(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		clearSessionData(request, "fileUpload");
+		String menuType = (request.getSession().getAttribute("menuType") == null) ? ""
+				: "&menuType=" + request.getSession().getAttribute("menuType");
+		// add inout, run information and menuType to parameters
+		String extra = constructFileParams(request) + menuType;
+		String newPath = mapping.findForward("fileUpload").getPath() + extra;
+		ActionForward forward = new ActionForward();
+		forward.setPath(newPath);
+		return forward;
 	}
 
 	public ActionForward runFileMask(ActionMapping mapping, ActionForm form,
@@ -287,52 +307,76 @@ public class InitSessionAction extends AbstractDispatchAction {
 			throws Exception {
 		clearSessionData(request, "runFileMask");
 		setWorkflowMessageSession(request);
-		ActionForward forward=mapping.findForward("runFileMask");
-		String newPath=forward.getPath()+constructGetParams(request);
-		ActionForward newForward=new ActionForward();
-		newForward.setPath(newPath);
-		newForward.setRedirect(true);
-		return newForward;
+		//add inout and run information to parameters
+		String extra = constructFileParams(request);
+		String newPath = mapping.findForward("runFileMask").getPath() + "?"
+				+ extra;
+		ActionForward forward = new ActionForward();
+		forward.setPath(newPath);
+		return forward;
 	}
 
-	private String constructGetParams(HttpServletRequest request) {
-		String params="?menuType="+request.getParameter("menuType")+
-				"&assayType="+request.getParameter("assayType")+
-				"&assayName="+request.getParameter("assayName")+
-				"&runId="+request.getParameter("runId")+
-				"&runName="+request.getParameter("runName")+
-				"&inout="+request.getParameter("inout");				
+	private String constructFileParams(HttpServletRequest request) {
+		// try getting from session first
+		String inout = (request.getSession().getAttribute("inout") == null) ? ""
+				: "&inout=" + request.getSession().getAttribute("inout");
+		String runId = (request.getSession().getAttribute("runId") == null) ? ""
+				: "&runId=" + request.getSession().getAttribute("runId");
+		String runName = (request.getSession().getAttribute("runName") == null) ? ""
+				: "&runName=" + request.getSession().getAttribute("runName");
+		String assayName = (request.getSession().getAttribute("assayName") == null) ? ""
+				: "&assayName="
+						+ request.getSession().getAttribute("assayName");
+		String assayType = (request.getSession().getAttribute("assayType") == null) ? ""
+				: "&assayType="
+						+ request.getSession().getAttribute("assayType");
+		
+		//then trying getting from request parameters if any
+		inout = (request.getParameter("inout") == null) ? inout
+				: "&inout=" + request.getParameter("inout");
+		runId = (request.getParameter("runId") == null) ? runId
+				: "&runId=" + request.getParameter("runId");
+		runName = (request.getParameter("runName") == null) ? runName
+				: "&runName=" + request.getParameter("runName");
+		assayName = (request.getParameter("assayName") == null) ? assayName
+				: "&assayName="
+						+ request.getParameter("assayName");
+		assayType = (request.getParameter("assayType") == null) ? assayType
+				: "&assayType="
+						+ request.getParameter("assayType");
+		String params = inout + runId + runName + assayName + assayType;
 		return params;
 	}
-	
+
 	private String constructGetParams(HttpFileUploadSessionData hFileUploadData) {
-		String menuType=hFileUploadData.getFromType();
-		String inout=(hFileUploadData.getInout()==null||menuType.equals("upload"))?"":"&inout="+hFileUploadData.getInout();
-		String params="?menuType="+hFileUploadData.getFromType()+
-				"&assayType="+hFileUploadData.getAssayType()+
-				"&assayName="+hFileUploadData.getAssay()+
-				"&runId="+hFileUploadData.getRunId()+
-				"&runName="+hFileUploadData.getRun()+
-				inout;				
+		String menuType = hFileUploadData.getFromType();
+		String inout = (hFileUploadData.getInout() == null || menuType
+				.equals("upload")) ? "" : "&inout="
+				+ hFileUploadData.getInout();
+		String params = "?menuType=" + hFileUploadData.getFromType()
+				+ "&assayType=" + hFileUploadData.getAssayType()
+				+ "&assayName=" + hFileUploadData.getAssay() + "&runId="
+				+ hFileUploadData.getRunId() + "&runName="
+				+ hFileUploadData.getRun() + inout;
 		return params;
 	}
-	
+
 	public ActionForward uploadForward(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		clearSessionData(request, "uploadForward");
-		setWorkflowMessageSession(request);		
-		HttpSession session = request.getSession();        
+		setWorkflowMessageSession(request);
+
+		HttpSession session = request.getSession();
 		// read HttpFileUploadSessionData from session
-		HttpFileUploadSessionData hFileUploadData =(HttpFileUploadSessionData) session.getAttribute("httpFileUploadSessionData");
+		HttpFileUploadSessionData hFileUploadData = (HttpFileUploadSessionData) session
+				.getAttribute("httpFileUploadSessionData");
 		session.removeAttribute("httpFileUploadSessionData");
-		ActionForward forward=mapping.findForward("workflowMessage");
-		
-		String newPath=forward.getPath()+constructGetParams(hFileUploadData);
-		ActionForward newForward=new ActionForward();
-		newForward.setPath(newPath);
-		newForward.setRedirect(true);
-		return newForward;
+		String newPath = mapping.findForward("workflowMessage").getPath()
+				+ constructGetParams(hFileUploadData);
+		ActionForward forward = new ActionForward();
+		forward.setPath(newPath);
+		return forward;
 	}
 
 	private void setWorkflowMessageSession(HttpServletRequest request)
@@ -363,9 +407,10 @@ public class InitSessionAction extends AbstractDispatchAction {
 		session.removeAttribute("aliquotMatrix");
 		session.removeAttribute("createAliquotForm");
 		session.removeAttribute("createSampleForm");
-		
-		//add a request parameter so the back button from search results don't clear the forms
-		if (request.getParameter("rememberSearch")==null) {
+
+		// add a request parameter so the back button from search results don't
+		// clear the forms
+		if (request.getParameter("rememberSearch") == null) {
 			session.removeAttribute("searchSampleForm");
 			session.removeAttribute("searchWorkflowForm");
 		}
@@ -384,14 +429,20 @@ public class InitSessionAction extends AbstractDispatchAction {
 		if (!forwardPage.equals("uploadForward")) {
 			// clear session attributes creatd during fileUpload
 			session.removeAttribute("httpFileUploadSessionData");
-		}
-
+		}		
+	
 		if (forwardPage.equals("createSample")
 				|| forwardPage.equals("createAliquot")
 				|| forwardPage.equals("searchSample")
 				|| forwardPage.equals("searchWorkflow")) {
 			// clear session attributes created during execute workflow pages
 			session.removeAttribute("workflow");
+			session.removeAttribute("runId");
+			session.removeAttribute("runName");
+			session.removeAttribute("assayName");
+			session.removeAttribute("assayType");
+			session.removeAttribute("menuType");
+			session.removeAttribute("inout");
 		}
 
 		// get user and date information
