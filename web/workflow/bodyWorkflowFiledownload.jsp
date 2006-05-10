@@ -66,11 +66,11 @@
 					<c:url var="downloadFileURL" value="/fileDownload.do">
 						<c:param name="runId" value="${param.runId}" />
 						<c:param name="method" value="downloadFile" />
-						<c:param name="inout" value="${param.inout}" />
 						<c:param name="fileName" value="${file.filename}" />
 						<c:param name="runName" value="${param.runName}" />
 						<c:param name="assayName" value="${param.assayName}" />
 						<c:param name="assayType" value="${param.assayType}" />
+						<c:param name="inout" value="${param.inout}" />
 					</c:url>
 					<td align="right" class="${style}">
 						<b><a href="${downloadFileURL}">Download</a> </b>
@@ -81,11 +81,11 @@
 				<c:url var="downloadAllFileURL" value="/fileDownload.do">
 					<c:param name="runId" value="${param.runId}" />
 					<c:param name="method" value="downloadFile" />
-					<c:param name="inout" value="${param.inout}" />
 					<c:param name="fileName" value="ALL_FILES.zip" />
 					<c:param name="runName" value="${param.runName}" />
 					<c:param name="assayName" value="${param.assayName}" />
 					<c:param name="assayType" value="${param.assayType}" />
+					<c:param name="inout" value="${param.inout}" />
 				</c:url>
 				<td align="right" class="${style0}" colspan="3">
 					<b><a href="${downloadAllFileURL}">Download All</a></b>
