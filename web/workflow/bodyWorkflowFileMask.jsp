@@ -65,13 +65,8 @@
 					<c:url var="maskFileURL" value="/preMaskFile.do">
 						<c:param name="runId" value="${param.runId}" />
 						<c:param name="method" value="file" />
-						<c:param name="inout" value="${param.inout}" />
 						<c:param name="fileId" value="${file.id}" />
 						<c:param name="fileName" value="${file.filename}" />
-						<c:param name="runName" value="${param.runName}" />
-						<c:param name="assayName" value="${param.assayName}" />
-						<c:param name="assayType" value="${param.assayType}" />
-						<c:param name="menuType" value="${param.menuType}" />
 					</c:url>
 					<td align="right" class="${style}">
 						<b><a href="${maskFileURL}">Mask </a> </b>

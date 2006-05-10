@@ -56,7 +56,7 @@
 		<tr>
 			<td class="formLabel">
 				<div align="left">
-					<span class="formField"><html:textarea property="comments" rows="3"/></span>
+					<span class="formField"><html:textarea property="comments" cols="60" rows="3" /></span>
 				</div>
 			</td>
 		</tr>
@@ -66,10 +66,7 @@
 					<tr>
 						<td>
 							<div align="left">
-								<input type="hidden" name="runId" value="${param.runId}" />
-								<input type="hidden" name="runName" value="${param.runName}">
-								<input type="hidden" name="assayName" value="${param.assayName}">
-								<input type="hidden" name="assayType" value="${param.assayType}">
+								<input type="hidden" name="runId" value="${sessionScope.runId}" />
 								<html:reset />
 								<html:submit />
 								<input type="button" value="Cancel" onclick="javascript:history.go(-1)">

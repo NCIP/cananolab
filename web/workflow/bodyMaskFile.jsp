@@ -69,10 +69,6 @@
 								<html:hidden property="method" />
 								<html:hidden property="fileId" />
 								<html:hidden property="fileName" />
-								<html:hidden property="runName" />
-								<html:hidden property="assayName" />
-								<html:hidden property="assayType" />
-								<html:hidden property="menuType" />
 								<html:submit value="Yes" />
 								<INPUT type="button" value="No " onclick="javascript:history.go(-1)">
 						</td>
