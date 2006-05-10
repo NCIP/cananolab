@@ -2,7 +2,24 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <br>
 <center>
+	
 	<table width="80%" border="0" align="center" cellpadding="0" cellspacing="0">
+		<tr>
+			<td align="right" colspan="2">
+				<c:choose>
+       				 <c:when test='${param.menuType == "in"}'>
+ 						<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=in_folder')" class="helpText">Help</a>
+			         </c:when>
+			         <c:when test='${param.menuType == "out"}'>
+  						<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=out_folder')" class="helpText">Help</a> 
+			         </c:when>
+			         <c:when test='${param.menuType == "upload"}'>
+   						<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=file_upload')" class="helpText">Help</a>
+			         </c:when>
+			    </c:choose><br>
+			</td>
+		</tr>
+		<tr><td>&nbsp;</td></tr>
 		<tr>
 			<td class="formTitle" colspan="2" align="center">
 				General Information for the workflow
