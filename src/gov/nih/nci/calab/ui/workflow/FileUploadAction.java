@@ -58,7 +58,8 @@ public class FileUploadAction extends AbstractDispatchAction {
 		String assayName = (String) fileForm.get("assayName");
 		String runName = (String) fileForm.get("runName");
 		String inout = (String) fileForm.get("inout");
-
+		String menuType = (String) fileForm.get("menuType");
+		
 		SpecialCharReplacer specialCharReplacer = new SpecialCharReplacer();
 		assayType = specialCharReplacer.getReplacedString(assayType);
 		assayName = specialCharReplacer.getReplacedString(assayName);
@@ -83,7 +84,7 @@ public class FileUploadAction extends AbstractDispatchAction {
 		hFileUploadData.setAssayType(assayType);
 		hFileUploadData.setRun(runName);
 		// set where this upload from
-		hFileUploadData.setFromType(request.getParameter("menuType"));
+		hFileUploadData.setFromType(menuType);
 
 		session.setAttribute("httpFileUploadSessionData", hFileUploadData);
 
