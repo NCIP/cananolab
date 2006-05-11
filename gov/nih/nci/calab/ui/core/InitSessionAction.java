@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.43 2006-05-10 18:18:59 pansu Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.44 2006-05-11 15:14:04 zengje Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
@@ -349,6 +349,9 @@ public class InitSessionAction extends AbstractDispatchAction {
 	}
 
 	private String constructGetParams(HttpFileUploadSessionData hFileUploadData) {
+		if (hFileUploadData == null) {
+			return "";
+		}
 		String menuType = hFileUploadData.getFromType();
 		String inout = (hFileUploadData.getInout() == null || menuType
 				.equals("upload")) ? "" : "&inout="
