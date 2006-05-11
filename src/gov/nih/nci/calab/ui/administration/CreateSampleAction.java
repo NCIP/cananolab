@@ -7,15 +7,17 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: CreateSampleAction.java,v 1.15 2006-05-10 14:37:46 zengje Exp $ */
+/* CVS $Id: CreateSampleAction.java,v 1.16 2006-05-11 21:46:45 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.ContainerBean;
 import gov.nih.nci.calab.dto.administration.SampleBean;
-import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.administration.ManageSampleService;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
+import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
+
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -55,20 +57,9 @@ public class CreateSampleAction extends AbstractBaseAction {
 		String sampleDescription = (String) theForm.get("sampleDescription");
 		String sampleSource = (String) theForm.get("sampleSource");
 		String sourceSampleId = (String) theForm.get("sourceSampleId");
-		String dateReceived = (String) theForm.get("dateReceived");
-		if (!isValidDate(dateReceived)) {
-//			ActionMessages msgs = new ActionMessages();
-//			ActionMessage msg = new ActionMessage("errors.date", "Received Date");
-//			msgs.add("error", msg);
-//			saveMessages(request, msgs);
-//			
-//			forward = mapping.findForward("input");
-//
-//			return forward;
-			throw new CalabException("Year of sample receive date must be in a four digit format");
-
-		}
-
+		String dateReceivedStr = (String) theForm.get("dateReceived");
+		Date dateReceived=StringUtils.convertToDate(dateReceivedStr, CalabConstants.ACCEPT_DATE_FORMAT);
+		String dateReceivedStrFormatted=StringUtils.convertDateToString(dateReceived, CalabConstants.DATE_FORMAT);
 		String solubility = (String) theForm.get("solubility");
 		String lotId = (String) theForm.get("lotId");
 		String lotDescription = (String) theForm.get("lotDescription");
@@ -87,7 +78,7 @@ public class CreateSampleAction extends AbstractBaseAction {
 
 		SampleBean sample = new SampleBean(sampleNamePrefix, sampleName,
 				sampleType, sampleSOP, sampleDescription, sampleSource,
-				sourceSampleId, dateReceived, solubility, lotId,
+				sourceSampleId, dateReceivedStrFormatted, solubility, lotId,
 				lotDescription, numContainers, generalComments,
 				sampleSubmitter, accessionDate, containers);
 
@@ -106,17 +97,4 @@ public class CreateSampleAction extends AbstractBaseAction {
 	public boolean loginRequired() {
 		return true;
 	}
-
-	private boolean isValidDate(String date) {
-		if ((date == null) || (date.length()== 0)) { 
-			return true;
-		}
-		String year = date.substring(date.lastIndexOf("/")+1);
-		if (year.length()<4){
-			return false;
-		}
-		return true;
-	}
-
-	
 }
