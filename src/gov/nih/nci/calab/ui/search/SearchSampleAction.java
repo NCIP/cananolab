@@ -6,13 +6,13 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchSampleAction.java,v 1.10 2006-05-10 14:37:46 zengje Exp $ */
+/* CVS $Id: SearchSampleAction.java,v 1.11 2006-05-11 21:47:04 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.SampleBean;
 import gov.nih.nci.calab.dto.administration.StorageLocation;
-import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.search.SearchSampleService;
+import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
 
@@ -58,28 +58,15 @@ public class SearchSampleAction extends AbstractBaseAction {
 				.get("dateAccessionedBegin");
 		String dateAccessionedEndStr = (String) theForm
 				.get("dateAccessionedEnd");
-		
-		if (!isValidDate(dateAccessionedBeginStr) || !isValidDate(dateAccessionedEndStr)) {
-//			ActionMessages msgs = new ActionMessages();
-//			ActionMessage msg = new ActionMessage("errors.date", "Sample accessioned date");
-//			msgs.add("error", msg);
-//			saveMessages(request, msgs);
-//			
-//			forward = mapping.findForward("input");
-//
-//			return forward;
-			throw new CalabException("Year of sample accessionied date must be in a four digit format.");
-
-		}
 
 		request.setAttribute("showAliquot", showAliquot);
 
 		Date dateAccessionedBegin = dateAccessionedBeginStr.length() == 0 ? null
 				: StringUtils.convertToDate(dateAccessionedBeginStr,
-						"MM/dd/yyyy");
+						CalabConstants.ACCEPT_DATE_FORMAT);
 		Date dateAccessionedEnd = dateAccessionedEndStr.length() == 0 ? null
 				: StringUtils
-						.convertToDate(dateAccessionedEndStr, "MM/dd/yyyy");
+						.convertToDate(dateAccessionedEndStr, CalabConstants.ACCEPT_DATE_FORMAT);
 		String sampleSubmitter = (String) theForm.get("sampleSubmitter");
 		StorageLocation storageLocation = (StorageLocation) theForm
 				.get("storageLocation");
@@ -134,16 +121,4 @@ public class SearchSampleAction extends AbstractBaseAction {
 	public boolean loginRequired() {
 		return true;
 	}
-	
-	private boolean isValidDate(String date) {
-		if ((date == null) || (date.length()== 0)) { 
-			return true;
-		}
-		String year = date.substring(date.lastIndexOf("/")+1);
-		if (year.length()<4){
-			return false;
-		}
-		return true;
-	}
-
 }

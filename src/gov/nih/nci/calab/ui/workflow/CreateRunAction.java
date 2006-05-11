@@ -7,8 +7,12 @@ package gov.nih.nci.calab.ui.workflow;
  * @author caLAB Team
  */
 
+import java.util.Date;
+
 import gov.nih.nci.calab.dto.workflow.RunBean;
 import gov.nih.nci.calab.exception.CalabException;
+import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.service.workflow.ExecuteWorkflowService;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
 
@@ -36,20 +40,8 @@ public class CreateRunAction extends AbstractBaseAction {
 
 		String assayId = (String) theForm.get("assayId");
 		String runBy = (String) theForm.get("runBy");
-		String runDate = (String) theForm.get("runDate");
-		if (!isValidDate(runDate)) {
-			// ActionMessages msgs = new ActionMessages();
-			// ActionMessage msg = new ActionMessage("errors.date", "Run Date");
-			// msgs.add("error", msg);
-			// saveMessages(request, msgs);
-			//			
-			// ActionForward forward = mapping.findForward("input");
-			//
-			// return forward;
-			throw new CalabException(
-					"Year of run date must be in a four digit format.");
-		}
-
+		String runDateStr = (String) theForm.get("runDate");
+		Date runDate=StringUtils.convertToDate(runDateStr, CalabConstants.ACCEPT_DATE_FORMAT);
 		// get user and date information from session
 		String creator = (String) session.getAttribute("creator");
 		String creationDate = (String) session.getAttribute("creationDate");
@@ -94,13 +86,4 @@ public class CreateRunAction extends AbstractBaseAction {
 		String extra = menuType + runId + runName + assayName + assayType;
 		return extra;
 	}
-
-	private boolean isValidDate(String date) {
-		String year = date.substring(date.lastIndexOf("/") + 1);
-		if (year.length() < 4) {
-			return false;
-		}
-		return true;
-	}
-
 }
