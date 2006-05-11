@@ -170,7 +170,7 @@ public class ExecuteWorkflowService {
 	 * @throws Exception	 * 
 	 */
 	
-	public RunBean saveRun(String assayId, String runBy, String runDate,String createdBy, String createdDate ) throws Exception {
+	public RunBean saveRun(String assayId, String runBy, Date runDate,String createdBy, String createdDate ) throws Exception {
 		// Details of Saving to RUN Table		
 		
 		Long runId; // Run Id is the primary key of the saved Run
@@ -189,7 +189,7 @@ public class ExecuteWorkflowService {
 			doRun.setCreatedBy(createdBy);
 			doRun.setCreatedDate(StringUtils.convertToDate(createdDate, CalabConstants.DATE_FORMAT));
 			doRun.setRunBy(runBy);
-			doRun.setRunDate(StringUtils.convertToDate(runDate, CalabConstants.DATE_FORMAT));
+			doRun.setRunDate(runDate);
 			doRun.setAssay((Assay)ida.load(Assay.class, StringUtils.convertToLong(assayId)));
 			
 			runId =  (Long)ida.createObject(doRun);
