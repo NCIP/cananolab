@@ -1,5 +1,6 @@
 package gov.nih.nci.calab.service.util;
 
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -14,31 +15,35 @@ import java.util.List;
  * @author pansu
  * 
  */
-/* CVS $Id: StringUtils.java,v 1.7 2006-04-11 21:02:14 pansu Exp $ */
+/* CVS $Id: StringUtils.java,v 1.8 2006-05-11 21:49:11 pansu Exp $ */
 
 public class StringUtils {
 	private static Logger logger = Logger.getLogger(StringUtils.class);
 
-	public static Date convertToDate(String dateString, String dateFormat) {
+public static Date convertToDate(String dateString, String dateFormat) {
 		if (dateString == null || dateString == "") {
 			return null;
 		}
 		Date theDate = null;
 		try {
+			ParsePosition pos=new ParsePosition(0);
 			SimpleDateFormat format = new SimpleDateFormat(dateFormat);
-			theDate = format.parse(dateString);
+			theDate = format.parse(dateString, pos);
+			// method parse doesn't throw an exception when parsing is partial.
+			// e.g. date 5/11/200w will
+			// be parsed as 5/11/200 !!!
+			if (pos.getIndex()!=dateString.length()) {
+				throw new RuntimeException("The date String is not completely parsed");				
+			}
 			return theDate;
 		} catch (Exception e) {
 			logger
 					.error(
 							"Error parsing the given date String using the given dateFormat",
 							e);
-			throw new RuntimeException("Can't parse the given date String: "
-					+ dateString);
+			throw new RuntimeException("The date String "+dateString+ " can't be parsed against the date format:" +dateFormat);
 		}
-	}
-
-	public static String join(String[] stringArray, String delimiter) {
+	}	public static String join(String[] stringArray, String delimiter) {
 		String joinedStr = "";
 		if (stringArray == null) {
 			return joinedStr;
@@ -57,7 +62,7 @@ public class StringUtils {
 			}
 		}
 		if (joinedStr.endsWith(delimiter)) {
-			joinedStr=joinedStr.substring(0, joinedStr.length()-1);
+			joinedStr = joinedStr.substring(0, joinedStr.length() - 1);
 		}
 		return joinedStr;
 	}
@@ -66,8 +71,8 @@ public class StringUtils {
 		String joinedStr = "";
 		if (stringList == null || stringList.isEmpty()) {
 			return joinedStr;
-		}		
-		//remove null and empty item from the list
+		}
+		// remove null and empty item from the list
 		for (String str : stringList) {
 			if (str == null) {
 				stringList.remove(str);
