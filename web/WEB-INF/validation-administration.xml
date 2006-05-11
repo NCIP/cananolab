@@ -75,7 +75,7 @@
 				<arg position="0" key="createSampleForm.dateReceived" bundle="administration" />
 				<var>
 					<var-name>datePattern</var-name>
-					<var-value>MM/dd/yyyy</var-value>
+					<var-value>MM/dd/yy</var-value>
 				</var>
 			</field>
 			<field property="numberOfContainers" depends="integer,intRange">

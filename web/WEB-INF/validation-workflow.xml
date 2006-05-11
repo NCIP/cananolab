@@ -23,7 +23,7 @@
 				<arg key="createRunForm.runDate" bundle="workflow" position="0" />
 				<var>
 					<var-name>datePattern</var-name>
-					<var-value>MM/dd/yyyy</var-value>
+					<var-value>MM/dd/yy</var-value>
 				</var>
 			</field>
 		</form>
@@ -35,7 +35,7 @@
 				<arg key="createAssayRunForm.runDate" bundle="workflow" position="0" />
 				<var>
 					<var-name>datePattern</var-name>
-					<var-value>MM/dd/yyyy</var-value>
+					<var-value>MM/dd/yy</var-value>
 				</var>
 			</field>
 		</form>
