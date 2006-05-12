@@ -4,18 +4,24 @@
 
 <script type="text/javascript" src="javascript/calendar2.js"></script>
 <html:form action="searchSample">
-<table width="90%" align="center"><tr>
-	<td width="10%">&nbsp;</td>
-	<td>
-		<h3><br>Search Sample Container</h3>
-	</td>
-	<td align="right" width="10%">
-		<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=search_sample_container')" class="helpText">Help</a>
-	</td>
-</table>
+	<table width="90%" align="center">
+		<tr>
+			<td width="10%">
+				&nbsp;
+			</td>
+			<td>
+				<h3>
+					<br>
+					Search Sample Container
+				</h3>
+			</td>
+			<td align="right" width="10%">
+				<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=search_sample_container')" class="helpText">Help</a>
+			</td>
+	</table>
 
 	<blockquote>
-	<jsp:include page="/bodyMessage.jsp?bundle=search"/>
+		<jsp:include page="/bodyMessage.jsp?bundle=search" />
 		<table width="90%" border="0" align="center" cellpadding="3" cellspacing="0" summary="">
 			<TR>
 				<td class="formTitle" width="30%">
@@ -26,16 +32,16 @@
 				</td>
 			</TR>
 			<tr>
-				<td class="formLabel"  width="30%">
+				<td class="formLabel" width="30%">
 					<strong>Search by </strong>
 				</td>
 				<td class="formField">
-					<html:radio property="showAliquot" value="false"/>
+					<html:radio property="showAliquot" value="false" />
 					<strong>Sample &nbsp; &nbsp; <html:radio property="showAliquot" value="true" /> Aliquot</strong>
 				</td>
 			</tr>
 			<tr>
-				<td class="formLabelWhite"  width="30%">
+				<td class="formLabelWhite" width="30%">
 					<strong>Search ID (Sample or Aliquot) 
 				</td>
 				<td class="formFieldWhite">
@@ -43,7 +49,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="formLabel"  width="30%">
+				<td class="formLabel" width="30%">
 					<strong> Sample Type </strong>
 				</td>
 				<td class="formField">
@@ -54,7 +60,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="formLabelWhite"  width="30%">
+				<td class="formLabelWhite" width="30%">
 					<strong>Source</strong>
 				</td>
 				<td class="formFieldWhite">
@@ -65,7 +71,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="formLabel"  width="30%">
+				<td class="formLabel" width="30%">
 					<strong>Source ID</strong>
 				</td>
 				<td class="formField">
@@ -76,7 +82,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="formLabelWhite"  width="30%">
+				<td class="formLabelWhite" width="30%">
 					<strong> Date Accessioned</strong>
 				</td>
 				<td class="formFieldWhite">
@@ -90,14 +96,13 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="formLabel"  width="30%">
+				<td class="formLabel" width="30%">
 					<strong> Creator </strong>
 				</td>
 				<td class="formField">
 					<html:select property="sampleSubmitter">
 						<option value="" />
-							<html:options collection="allUserBeans" property="loginId" labelProperty="fullName"/>
-							
+							<html:options collection="allUserBeans" property="loginId" labelProperty="fullName" />
 					</html:select>
 				</td>
 			</tr>
@@ -130,7 +135,7 @@
 						<tr>
 							<td>
 								<div align="right">
-									<html:reset />
+									<input type="button" value="Reset" onClick="javascript:location.href='initSession.do?forwardPage=searchSample'">
 									<html:submit value="Search" />
 								</div>
 							</td>
