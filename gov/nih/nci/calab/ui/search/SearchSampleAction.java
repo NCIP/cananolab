@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchSampleAction.java,v 1.11 2006-05-11 21:47:04 pansu Exp $ */
+/* CVS $Id: SearchSampleAction.java,v 1.12 2006-05-12 15:38:03 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.SampleBean;
@@ -41,12 +41,12 @@ public class SearchSampleAction extends AbstractBaseAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		// search base on aliquotName if aliquotName is present
 		// otherwise search base sampleName
-		boolean showAliquot = ((String) theForm.get("showAliquot"))
-				.equals("true") ? true : false;
+		boolean isAliquot = ((String) theForm.get("isAliquot")).equals("true") ? true
+				: false;		
 		String searchName = (String) theForm.get("searchName");
 		String sampleName = "";
 		String aliquotName = "";
-		if (showAliquot) {
+		if (isAliquot) {
 			aliquotName = searchName;
 		} else {
 			sampleName = searchName;
@@ -59,14 +59,12 @@ public class SearchSampleAction extends AbstractBaseAction {
 		String dateAccessionedEndStr = (String) theForm
 				.get("dateAccessionedEnd");
 
-		request.setAttribute("showAliquot", showAliquot);
-
 		Date dateAccessionedBegin = dateAccessionedBeginStr.length() == 0 ? null
 				: StringUtils.convertToDate(dateAccessionedBeginStr,
 						CalabConstants.ACCEPT_DATE_FORMAT);
 		Date dateAccessionedEnd = dateAccessionedEndStr.length() == 0 ? null
-				: StringUtils
-						.convertToDate(dateAccessionedEndStr, CalabConstants.ACCEPT_DATE_FORMAT);
+				: StringUtils.convertToDate(dateAccessionedEndStr,
+						CalabConstants.ACCEPT_DATE_FORMAT);
 		String sampleSubmitter = (String) theForm.get("sampleSubmitter");
 		StorageLocation storageLocation = (StorageLocation) theForm
 				.get("storageLocation");
@@ -77,7 +75,7 @@ public class SearchSampleAction extends AbstractBaseAction {
 		List<SampleBean> samples = null;
 		List<AliquotBean> aliquots = null;
 
-		if (showAliquot) {
+		if (isAliquot) {
 			if (aliquotName.equals("all")) {
 				aliquotName = "";
 			}
@@ -99,21 +97,27 @@ public class SearchSampleAction extends AbstractBaseAction {
 					dateAccessionedEnd, sampleSubmitter, storageLocation);
 		}
 
-		if (!showAliquot && (samples == null || samples.isEmpty())
-				|| showAliquot && (aliquots == null || aliquots.isEmpty())) {
+		if (!isAliquot && (samples == null || samples.isEmpty()) || isAliquot
+				&& (aliquots == null || aliquots.isEmpty())) {
 			ActionMessages msgs = new ActionMessages();
 			ActionMessage msg = new ActionMessage(
 					"message.searchSample.noResult");
 			msgs.add("message", msg);
 			saveMessages(request, msgs);
-			forward = mapping.getInputForward();
+			// if the request came from the sample search result page
+			if (request.getParameter("fromSampleResult") != null) {
+				forward = mapping.findForward("sampleResult");
+			} else {
+				forward = mapping.getInputForward();
+			}
 		} else {
-			if (!showAliquot) {
+			if (!isAliquot) {
 				session.setAttribute("samples", samples);
+				forward = mapping.findForward("success");
 			} else {
 				session.setAttribute("aliquots", aliquots);
+				forward = mapping.findForward("successAliquot");
 			}
-			forward = mapping.findForward("success");
 		}
 		return forward;
 	}
