@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: ViewSampleDetailAction.java,v 1.4 2006-05-02 22:27:29 pansu Exp $ */
+/* CVS $Id: ViewSampleDetailAction.java,v 1.5 2006-05-12 15:37:31 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.SampleBean;
@@ -38,13 +38,13 @@ public class ViewSampleDetailAction extends AbstractBaseAction {
 		HttpSession session = request.getSession();
 		ActionMessages messages = new ActionMessages();
 		DynaActionForm theForm = (DynaActionForm) form;
-		boolean showAliquot = false;
-		if (theForm.get("showAliquot") != null) {
-			showAliquot = (Boolean) theForm.get("showAliquot");
+		boolean isAliquot = false;
+		if (theForm.get("isAliquot") != null) {
+			isAliquot = (Boolean) theForm.get("isAliquot");
 		}
 		// if no aliquot information show sample details and its containers
 
-		if (!showAliquot) {
+		if (!isAliquot) {
 			int sampleNum = Integer.parseInt((String) theForm.get("sampleNum"));
 
 			int containerNum = Integer.parseInt((String) theForm
