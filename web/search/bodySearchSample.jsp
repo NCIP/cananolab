@@ -3,6 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 
 <script type="text/javascript" src="javascript/calendar2.js"></script>
+
 <html:form action="searchSample">
 	<table width="90%" align="center">
 		<tr>
@@ -36,8 +37,8 @@
 					<strong>Search by </strong>
 				</td>
 				<td class="formField">
-					<html:radio property="showAliquot" value="false" />
-					<strong>Sample &nbsp; &nbsp; <html:radio property="showAliquot" value="true" /> Aliquot</strong>
+					<html:radio property="isAliquot" value="false" />
+					<strong>Sample &nbsp; &nbsp; <html:radio property="isAliquot" value="true" /> Aliquot</strong>
 				</td>
 			</tr>
 			<tr>
