@@ -35,7 +35,7 @@
 	<br>
 	<%--show sample details --%>
 	<c:choose>
-		<c:when test="${param.showAliquot == null || param.showAliquot=='false'}">
+		<c:when test="${param.isAliquot == null || param.isAliquot=='false'}">
 			<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="90%" align="center" summary="" border="0">
 				<tbody>
 					<tr class="topBorder">
