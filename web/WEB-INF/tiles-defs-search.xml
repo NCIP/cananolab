@@ -4,29 +4,37 @@
        "http://struts.apache.org/dtds/tiles-config_1_1.dtd">
 
 <tiles-definitions>
+	<!-- definition for the search workflow page -->
+	<definition name="search.searchworkflow" extends="calab.home">
+		<put name="calabContent" value="/search/bodySearchWorkflow.jsp" />
+		<put name="menu" value="search" />
+	</definition>
+	
+	<!-- definition for the search workflow result page -->
+	<definition name="search.searchworkflowresult" extends="calab.home">
+		<put name="calabContent" value="/search/bodySearchWorkflowResult.jsp" />
+		<put name="menu" value="search" />
+	</definition>
+
 	<!-- definition for the search sample page -->
 	<definition name="search.searchsample" extends="calab.home">
 		<put name="calabContent" value="/search/bodySearchSample.jsp" />
 		<put name="menu" value="search" />
 	</definition>
 
-	<!-- definition for the search workflow page -->
-	<definition name="search.searchworkflow" extends="calab.home">
-		<put name="calabContent" value="/search/bodySearchWorkflow.jsp" />
-		<put name="menu" value="search" />
-	</definition>
-
-	<!-- definition for the search workflow result page -->
+	<!-- definition for the search sample result page -->
 	<definition name="search.searchsampleresult" extends="calab.home">
 		<put name="calabContent" value="/search/bodySearchSampleResult.jsp" />
 		<put name="menu" value="search" />
 	</definition>
 
-	<!-- definition for the search sample result page -->
-	<definition name="search.searchworkflowresult" extends="calab.home">
-		<put name="calabContent" value="/search/bodySearchWorkflowResult.jsp" />
+	<!-- definition for the search aliquot result page -->
+	<definition name="search.searchaliquotresult" extends="calab.home">
+		<put name="calabContent" value="/search/bodySearchAliquotResult.jsp" />
 		<put name="menu" value="search" />
 	</definition>
+	
+	<!-- definition for the view sample details page -->
 	<definition name="search.viewsampledetails" extends="calab.home">
 		<put name="calabContent" value="/administration/bodySampleDetails.jsp" />
 		<put name="menu" value="search" />
