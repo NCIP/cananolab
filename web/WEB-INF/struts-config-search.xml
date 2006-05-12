@@ -19,7 +19,21 @@
 			<form-property name="criteriaJoin" type="java.lang.String" initial="and" />
 		</form-bean>
 		<form-bean name="searchSampleForm" type="org.apache.struts.validator.DynaValidatorForm">
-			<form-property name="showAliquot" type="java.lang.String" initial="false" />
+			<form-property name="isAliquot" type="java.lang.String" initial="false" />
+			<form-property name="searchName" type="java.lang.String" />
+			<form-property name="sourceSampleId" type="java.lang.String" />
+			<form-property name="sampleSource" type="java.lang.String" />
+			<form-property name="dateAccessionedBegin" type="java.lang.String" />
+			<form-property name="sampleType" type="java.lang.String" />
+			<form-property name="aliquotName" type="java.lang.String" />
+			<form-property name="storageBox" type="java.lang.String" />
+			<form-property name="dateAccessionedEnd" type="java.lang.String" />
+			<form-property name="sampleSubmitter" type="java.lang.String" />
+			<form-property name="lotId" type="java.lang.String" />
+			<form-property name="storageLocation" type="gov.nih.nci.calab.dto.administration.StorageLocation" />
+		</form-bean>
+		<form-bean name="searchAliquotForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="isAliquot" type="java.lang.String" initial="true" />
 			<form-property name="searchName" type="java.lang.String" />
 			<form-property name="sourceSampleId" type="java.lang.String" />
 			<form-property name="sampleSource" type="java.lang.String" />
@@ -36,7 +50,7 @@
 			<form-property name="sampleNum" type="java.lang.String" />
 			<form-property name="containerNum" type="java.lang.String" />
 			<form-property name="aliquotNum" type="java.lang.String" />
-			<form-property name="showAliquot" type="java.lang.Boolean" />
+			<form-property name="isAliquot" type="java.lang.Boolean" />
 		</form-bean>
 	</form-beans>
 	<global-forwards>
@@ -53,6 +67,13 @@
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="search" key="error.searchSample" path="search.searchsample" type="java.lang.Exception" />
 			<forward name="input" path="search.searchsample" />
 			<forward name="success" path="search.searchsampleresult" />
+			<forward name="successAliquot" path="search.searchaliquotresult" />
+		</action>
+		<action input="input" name="searchAliquotForm" path="/searchAliquot" type="gov.nih.nci.calab.ui.search.SearchSampleAction">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="search" key="error.searchAliquot" path="search.searchaliquot" type="java.lang.Exception" />
+			<forward name="input" path="search.searchaliquot" />
+			<forward name="successAliquot" path="search.searchaliquotresult" />
+			<forward name="sampleResult" path="search.searchsampleresult" />
 		</action>
 		<action input="input" name="viewSampleDetailForm" path="/viewSampleDetail" scope="request" type="gov.nih.nci.calab.ui.search.ViewSampleDetailAction">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="search" key="error.viewSampleDetails.noSamples" path="search.searchsampleresult" type="java.lang.Exception" />
@@ -62,8 +83,8 @@
 		</action>
 		<action name="fileDownloadForm" parameter="method" path="/downloadSearchedFile" scope="request" type="gov.nih.nci.calab.ui.workflow.FileDownloadAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="search" key="error.downloadSearchedFile.nofile" path="search.message" type="gov.nih.nci.calab.exception.CalabException" />
-			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="search" key="error.downloadSearchedFile" path="search.message" type="java.lang.Exception" />			
-			<forward name="input" path="search.searchworkflowresult"/>
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="search" key="error.downloadSearchedFile" path="search.message" type="java.lang.Exception" />
+			<forward name="input" path="search.searchworkflowresult" />
 		</action>
 	</action-mappings>
 
