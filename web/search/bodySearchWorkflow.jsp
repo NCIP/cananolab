@@ -5,15 +5,21 @@
 <script type="text/javascript" src="javascript/calendar2.js"></script>
 
 <html:form action="/searchWorkflow">
-<table width="90%" align="center"><tr>
-	<td width="10%">&nbsp;</td>
-	<td>
-		<h3><br>Search Workflow</h3>
-	</td>
-	<td align="right" width="10%">
-		<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=search_workflow')" class="helpText">Help</a>
-	</td>
-</table>
+	<table width="90%" align="center">
+		<tr>
+			<td width="10%">
+				&nbsp;
+			</td>
+			<td>
+				<h3>
+					<br>
+					Search Workflow
+				</h3>
+			</td>
+			<td align="right" width="10%">
+				<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=search_workflow')" class="helpText">Help</a>
+			</td>
+	</table>
 	<blockquote>
 		<jsp:include page="/bodyMessage.jsp?bundle=search" />
 		<table width="90%" border="0" align="center" cellpadding="3" cellspacing="0" summary="">
@@ -129,7 +135,7 @@
 						<tr>
 							<td width="490" height="32">
 								<div align="right">
-									<html:reset />
+									<input type="button" value="Reset" onClick="javascript:location.href='initSession.do?forwardPage=searchWorkflow'">
 									<html:submit value="Search" />
 								</div>
 							</td>
