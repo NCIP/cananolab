@@ -38,7 +38,7 @@
 	</global-forwards>
 
 	<action-mappings>
-		<action name="createSampleForm" path="/preCreateSample" type="gov.nih.nci.calab.ui.administration.PreCreateSampleAction" input="input" scope="session">
+		<action name="createSampleForm" path="/preCreateSample" type="gov.nih.nci.calab.ui.administration.PreCreateSampleAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="administration" key="error.preCreateSample" path="administration.message" type="java.lang.Exception" />
 			<forward name="success" path="administration.createsample" />
 			<forward name="input" path="administration.createsample" />
