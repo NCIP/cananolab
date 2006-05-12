@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.44 2006-05-11 15:14:04 zengje Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.45 2006-05-12 15:52:01 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
@@ -415,6 +415,7 @@ public class InitSessionAction extends AbstractDispatchAction {
 		// clear the forms
 		if (request.getParameter("rememberSearch") == null) {
 			session.removeAttribute("searchSampleForm");
+			session.removeAttribute("searchAliquotForm");
 			session.removeAttribute("searchWorkflowForm");
 		}
 
