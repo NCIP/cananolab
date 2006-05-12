@@ -50,5 +50,21 @@
 				</var>
 			</field>
 		</form>
+		<form name="searchAliquotForm">
+			<field property="dateAccessionedBegin" depends="date">
+				<arg key="searchAliquotForm.dateAccessionedBegin" bundle="search" position="0" />
+				<var>
+					<var-name>datePattern</var-name>
+					<var-value>MM/dd/yy</var-value>
+				</var>
+			</field>
+			<field property="dateAccessionedEnd" depends="date">
+				<arg key="searchAliquotForm.dateAccessionedEnd" bundle="search" position="0" />
+				<var>
+					<var-name>datePattern</var-name>
+					<var-value>MM/dd/yy</var-value>
+				</var>
+			</field>
+		</form>
 	</formset>
 </form-validation>
