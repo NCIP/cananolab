@@ -27,7 +27,13 @@
 					<input type="button" onClick="javascript:location.href='initSession.do?forwardPage=searchSample&rememberSearch=true'" value="Back">
 				</c:when>
 				<c:otherwise>
-					<input type="button" onClick="javascript:history.go(-1)" value="Back">
+					<logic:messagesPresent message="true">
+						<input type="button" onClick="javascript:location.href='initSession.do?forwardPage=searchSample&rememberSearch=true'" value="Back">
+					</logic:messagesPresent>
+					<logic:messagesNotPresent message="true">
+						<input type="button" onClick="javascript:history.go(-1)" value="Back">
+
+					</logic:messagesNotPresent>
 				</c:otherwise>
 			</c:choose>
 		</td>
