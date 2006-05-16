@@ -4,7 +4,6 @@ import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
 import gov.nih.nci.calab.domain.Aliquot;
 import gov.nih.nci.calab.domain.Assay;
-import gov.nih.nci.calab.domain.DataStatus;
 import gov.nih.nci.calab.domain.InputFile;
 import gov.nih.nci.calab.domain.OutputFile;
 import gov.nih.nci.calab.domain.Run;
@@ -294,10 +293,10 @@ public class ExecuteWorkflowService {
 		SortedSet<FileBean> inFiles;
 		SortedSet<FileBean> outFiles;
 
-		int assayCount = 0, typeAssayCount = 0;
-		int runCount = 0, assayRunCount=0;
-		int aliquotCount = 0, runAliquotCount=0;
-		int inFileCount = 0, runInFileCount=0;
+		int assayCount = 0;
+		int runCount = 0;
+		int aliquotCount = 0;
+		int inFileCount = 0;
 
 		try {
 			ida.open();
@@ -373,8 +372,7 @@ public class ExecuteWorkflowService {
 					} else {
 						inFiles = runInFileMap.get(runBean.getId());
 					}
-					inFiles.add(inFileBean);
-					runInFileCount++;					
+					inFiles.add(inFileBean);								
 				}
 
 				if (outFileBean != null) {
