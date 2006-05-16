@@ -3,7 +3,10 @@
  */
 package gov.nih.nci.calab.dto.workflow;
 
+import gov.nih.nci.calab.domain.InputFile;
+import gov.nih.nci.calab.domain.OutputFile;
 import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.Date;
 
@@ -26,9 +29,9 @@ public class FileBean {
 	private String fileMaskStatus = "";
 
 	private Date createdDate;
-	
+
 	private String shortFilename = "";
-	
+
 	private String inoutType = "";
 
 	/**
@@ -40,13 +43,15 @@ public class FileBean {
 	}
 
 	// used in WorkflowResultBean
-	public FileBean(String path, String fileSubmissionDate,
+	public FileBean(String id, String path, String fileSubmissionDate,
 			String fileSubmitter, String fileMaskStatus, String inoutType) {
+		this.id = id;
 		this.path = path;
 		this.createDateStr = fileSubmissionDate;
 		this.fileSubmitter = fileSubmitter;
 		this.filename = getFileName(path);
-		this.fileMaskStatus = (fileMaskStatus.length()==0 && filename.length()>0)?CalabConstants.ACTIVE_STATUS:fileMaskStatus;
+		this.fileMaskStatus = (fileMaskStatus.length() == 0 && filename
+				.length() > 0) ? CalabConstants.ACTIVE_STATUS : fileMaskStatus;
 		this.inoutType = inoutType;
 	}
 
@@ -56,6 +61,28 @@ public class FileBean {
 		this.id = id;
 		this.path = path;
 		this.filename = getFileName(path);
+	}
+
+	public FileBean(InputFile infile) {
+		this.id = StringUtils.convertToString(infile.getId());
+		this.path = infile.getPath();
+		this.fileSubmitter = infile.getCreatedBy();
+		this.filename = getFileName(path);
+		this.shortFilename=infile.getFilename();
+		this.fileMaskStatus = (fileMaskStatus.length() == 0 && filename
+				.length() > 0) ? CalabConstants.ACTIVE_STATUS : fileMaskStatus;
+		this.inoutType = CalabConstants.INPUT;
+	}
+
+	public FileBean(OutputFile outfile) {
+		this.id = StringUtils.convertToString(outfile.getId());
+		this.path = outfile.getPath();
+		this.fileSubmitter = outfile.getCreatedBy();
+		this.fileMaskStatus = (fileMaskStatus.length() == 0 && filename
+				.length() > 0) ? CalabConstants.ACTIVE_STATUS : fileMaskStatus;
+		this.filename = getFileName(path);
+		this.shortFilename=outfile.getFilename();
+		this.inoutType = CalabConstants.OUTPUT;
 	}
 
 	public String getId() {
@@ -86,16 +113,16 @@ public class FileBean {
 
 	private String getFileName(String path) {
 		String[] tokens = path.split("/");
-		return tokens[tokens.length-1];
+		return tokens[tokens.length - 1];
 	}
-	
 
 	public String getFileMaskStatus() {
 		return fileMaskStatus;
 	}
 
 	public void setFileMaskStatus(String fileMaskStatus) {
-		this.fileMaskStatus = (fileMaskStatus.length()==0 && getFilename().length()>0)?CalabConstants.ACTIVE_STATUS:fileMaskStatus;
+		this.fileMaskStatus = (fileMaskStatus.length() == 0 && getFilename()
+				.length() > 0) ? CalabConstants.ACTIVE_STATUS : fileMaskStatus;
 	}
 
 	public String getCreateDateStr() {
@@ -129,6 +156,7 @@ public class FileBean {
 	public void setShortFilename(String shortFileName) {
 		this.shortFilename = shortFileName;
 	}
+
 	public String getInoutType() {
 		return inoutType;
 	}
