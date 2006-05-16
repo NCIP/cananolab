@@ -17,7 +17,7 @@ import java.util.Comparator;
  * 
  */
 
-/* CVS $Id: CalabComparators.java,v 1.4 2006-04-27 14:51:20 pansu Exp $ */
+/* CVS $Id: CalabComparators.java,v 1.5 2006-05-16 18:51:51 pansu Exp $ */
 
 public class CalabComparators {
 
@@ -88,11 +88,11 @@ public class CalabComparators {
 
 	public static class FileBeanComparator implements Comparator<FileBean> {
 		public int compare(FileBean file1, FileBean file2) {
-			// compare file name then file inouttype
-			if (file1.getFilename().compareTo(file2.getFilename()) == 0) {
-				return file1.getInoutType().compareTo(file2.getInoutType());
+			// compare short file name then path
+			if (file1.getShortFilename().compareTo(file2.getShortFilename()) == 0) {
+				return file1.getPath().compareTo(file2.getPath());
 			} else {
-				return file1.getFilename().compareTo(file2.getFilename());
+				return file1.getShortFilename().compareTo(file2.getShortFilename());
 			}
 		}
 	}
@@ -114,11 +114,12 @@ public class CalabComparators {
 			if (assayDiff == 0) {
 				// compare run
 				if (runDiff == 0) {
-					// compare aliquot
-					if (aliquotDiff == 0) {
-						return fileDiff;
-					} else {
+					// compare file
+					if (fileDiff == 0) {
+						//compare aliquot
 						return aliquotDiff;
+					} else {
+						return fileDiff;
 					}
 				} else {
 					return runDiff;
