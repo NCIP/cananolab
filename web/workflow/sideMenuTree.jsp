@@ -30,7 +30,7 @@
 					<table width="100%" height="95%" border="0" cellpadding="2" cellspacing="0">
 						<tr>
 							<td align="left" valign="top" class="formMessage">
-								<div class="dtree" style="white-space: nowrap;">								
+															<div class="dtree" style="white-space: nowrap;">								
 									<script type="text/javascript">
 									
 							<!--
@@ -49,7 +49,7 @@
 
 								    <c:forEach var="assay" items="${sessionScope.workflow.assayBeanMap[assayType]}">
     								    <c:set var="assaySeq" value="${assaySeq+1}"/>
-				 					    d.add(${assaySeq},${assayTypeNum.count},'${assay.assayName}','javascript:gotoPage(\'initSession.do?forwardPage=createAssayRun&menuType=assay&assayId=${assay.assayId}&assayName=${assay.assayName}&assayType=${assay.assayType}\')', '', '', '');
+				 					    d.add(${assaySeq},${assayTypeNum.count},'${assay.assayName}','javascript:gotoPage(\'initSession.do?forwardPage=createAssayRun&menuType=assay&assayId=${assay.assayId}&assayName=${assay.assayName}&assayType=${assay.assayType}\')');
 
 										<c:forEach var="run" items="${assay.runBeans}">																
 										    <c:set var="runSeq" value="${runSeq+1+2}"/>
@@ -61,10 +61,10 @@
   											    <c:set var="aliquotSeq" value="${aliquotSeq+1}"/>  	
   											    <c:choose>
   	    	      							       <c:when test="${aliquot.maskStatus eq 'Active'}">  											    								
-												     d.add(${aliquotSeq}, ${runSeq+1},'${aliquot.aliquotName}','javascript:gotoPage(\'viewAliquot.do?menuType=none&assayType=${assay.assayType}&assayName=${assay.assayName}&runName=${run.name}&aliquotId=${aliquot.aliquotId}\')', '', '', '');
+												     d.add(${aliquotSeq}, ${runSeq+1},'${aliquot.aliquotName}','javascript:gotoPage(\'viewAliquot.do?menuType=none&assayType=${assay.assayType}&assayName=${assay.assayName}&runName=${run.name}&aliquotId=${aliquot.aliquotId}\')', '${aliquot.creator}, ${aliquot.creationDate}');
 												   </c:when>
 												   <c:otherwise>
-  												     d.add(${aliquotSeq}, ${runSeq+1},'<i>${aliquot.aliquotName}</i>','javascript:gotoPage(\'viewAliquot.do?menuType=none&assayType=${assay.assayType}&assayName=${assay.assayName}&runName=${run.name}&aliquotId=${aliquot.aliquotId}\')', '', '', '');
+  												     d.add(${aliquotSeq}, ${runSeq+1},'<i>${aliquot.aliquotName}</i>','javascript:gotoPage(\'viewAliquot.do?menuType=none&assayType=${assay.assayType}&assayName=${assay.assayName}&runName=${run.name}&aliquotId=${aliquot.aliquotId}\')', '${aliquot.creator}, ${aliquot.creationDate}');
 												   </c:otherwise>
 												</c:choose>
   											</c:forEach>
@@ -99,7 +99,7 @@
 								d.config.closeSameLevel=true;
 							//-->
 							</script>
-								</div>
+								</div>								
 								<p>
 									&nbsp;				
 								</p>
