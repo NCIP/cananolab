@@ -28,7 +28,7 @@ public class WorkflowResultBean {
 			String fileMaskStatus, String inoutType) {
 		super();
 		// TODO Auto-generated constructor stub
-		this.file = new FileBean(filePath, fileSubmissionDate, fileSubmitter,
+		this.file = new FileBean("", filePath, fileSubmissionDate, fileSubmitter,
 				fileMaskStatus, inoutType);
 		this.assay = new AssayBean(assayName, assayType);
 		this.run = new RunBean(assayRunId, assayRunName, assayRunDate);
