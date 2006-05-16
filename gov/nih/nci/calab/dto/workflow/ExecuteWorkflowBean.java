@@ -3,38 +3,26 @@
  */
 package gov.nih.nci.calab.dto.workflow;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.Map;
+import java.util.SortedSet;
 
 /**
  * @author zengje
- *
+ * 
  */
 public class ExecuteWorkflowBean {
-	
-	private int assayTypeCount; 
-	private int assayCount;  
-	private int runCount;   
-	private int aliquotCount; 
-	private int inputFileCount; 
-	private HashMap<String, List<AssayBean>> assayBeanMap;
-	
-	// assaySeq = assayTypeCount;
-	// runSeq   = assaySeq + assayCount;
-	// aliquotSeq = runSeq + runCount*3 + 2;
-	// inputFileSeq = aliquotSeq + aliquotCount;
-	// outuputFileSeq = aliquotSeq + inputFileCount;
 
-	public ExecuteWorkflowBean(int assayTypeCount, int assayCount, int runCount, int aliquotCount, int inputFileCount, HashMap<String, List<AssayBean>> assayBeanMap) {
-		super();
-		// TODO Auto-generated constructor stub
-		this.assayTypeCount = assayTypeCount;
-		this.assayCount = assayCount;
-		this.runCount = runCount;
-		this.aliquotCount = aliquotCount;
-		this.inputFileCount = inputFileCount;
-		this.assayBeanMap = assayBeanMap;
-	}
+	private int assayTypeCount;
+
+	private int assayCount;
+
+	private int runCount;
+
+	private int aliquotCount;
+
+	private int inputFileCount;
+
+	private Map<String, SortedSet<AssayBean>> assayBeanMap;
 
 	public int getAliquotCount() {
 		return aliquotCount;
@@ -45,6 +33,7 @@ public class ExecuteWorkflowBean {
 	}
 
 	public int getAssayCount() {
+
 		return assayCount;
 	}
 
@@ -68,7 +57,6 @@ public class ExecuteWorkflowBean {
 		this.inputFileCount = inputFileCount;
 	}
 
-
 	public int getRunCount() {
 		return runCount;
 	}
@@ -85,12 +73,11 @@ public class ExecuteWorkflowBean {
 		// TODO Auto-generated constructor stub
 	}
 
-	public HashMap<String, List<AssayBean>> getAssayBeanMap() {
+	public Map<String, SortedSet<AssayBean>> getAssayBeanMap() {
 		return assayBeanMap;
 	}
 
-	public void setAssayBeanMap(HashMap<String, List<AssayBean>> assayBeanMap) {
+	public void setAssayBeanMap(Map<String, SortedSet<AssayBean>> assayBeanMap) {
 		this.assayBeanMap = assayBeanMap;
 	}
-
 }
