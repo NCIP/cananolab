@@ -84,7 +84,7 @@
 						</c:choose>
 						<tr>
 							<td class="${style0}">
-								<a href="${pageContext.request.contextPath}/downloadSearchedFile.do?method=downloadFile&fileName=${workflow.file.filename}&runId=${workflow.run.id}&inout=${workflow.file.inoutType}"><bean:write name="workflow" property="file.filename" /></a>&nbsp;
+								<a href="${pageContext.request.contextPath}/downloadSearchedFile.do?method=downloadFile&fileName=${workflow.file.filename}&runId=${workflow.run.id}&inout=${workflow.file.inoutType}&assayType=${workflow.assay.assayType}&assayName=${workflow.assay.assayName}"><bean:write name="workflow" property="file.filename" /></a>&nbsp;
 							</td>
 							<td class="${style}">
 								<bean:write name="workflow" property="assay.assayType" />
