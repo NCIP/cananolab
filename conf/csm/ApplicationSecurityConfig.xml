@@ -9,18 +9,18 @@
 				calab
 			</context-name>
 			<authentication>
-				<authentication-provider-class>
-				<!-- Fully qualified class name-->
-				</authentication-provider-class>
-			</authentication>
-			<authorization>
-				<authorization-provider-class>
-					<!-- Fully qualified class name-->
-				</authorization-provider-class>
-				<hibernate-config-file>
-					<!-- Fully qualified file path -->
-				</hibernate-config-file>
-			</authorization>
+                    <authentication-provider-class>
+                    <!-- Fully qualified class name-->
+                    </authentication-provider-class>
+            </authentication>
+            <authorization>
+                    <authorization-provider-class>
+                            <!-- Fully qualified class name-->
+                    </authorization-provider-class>
+                    <hibernate-config-file>
+                            @ABOSULTE_PATH/calab.csm.hibernate.cfg.xml
+                    </hibernate-config-file>
+            </authorization>
 		</application>
 	</application-list>
 </security-config>
