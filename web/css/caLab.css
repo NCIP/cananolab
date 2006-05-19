@@ -217,6 +217,12 @@ a:hover.dataPagingLink{
 	color:#A90101; /* constant: red */
 	text-decoration:underline;
 }
+a:link:register,a:visited.register,a:active.register{ {
+	{ /* for the cell that contains the form elements */
+  font-family:arial,helvetica,verdana,sans-serif;
+  font-size:0.8em;
+  color:#000000; /* constant: black */
+}
 
 /*############### 
 FORM BEGINS 

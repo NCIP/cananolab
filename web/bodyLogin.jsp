@@ -75,8 +75,12 @@
 												</td>
 											</tr>
 											<tr>
-												<td colspan="2">
-
+												<td>
+													&nbsp;
+												</td>
+												<td>
+													<a href="registerSetup.do" class="register">Register</a>
+													
 												</td>
 											</tr>
 										</table>
