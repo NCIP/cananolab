@@ -12,5 +12,29 @@
 				<arg position="0" key="loginForm.password"/>
 			</field>
 		</form>
+		<form name="registerForm">
+			<field property="firstName" depends="required">
+				<arg position="0" key="registerForm.firstName"/>
+			</field>
+			<field property="lastName" depends="required">
+				<arg position="0" key="registerForm.lastName"/>
+			</field>
+			<field property="email" depends="required">
+				<arg position="0" key="registerForm.email"/>
+			</field>
+			<field property="loginId" depends="required">
+				<arg position="0" key="registerForm.loginId"/>
+			</field>
+			<field property="password" depends="required">
+				<arg position="0" key="registerForm.password"/>
+			</field>
+			<field property="password2" depends="validwhenmatch">
+				<arg position="0" key="registerForm.password2"/>
+				<var> 
+					<var-name>test</var-name> 
+					<var-value>((*this* != null) and (password2 == password))</var-value> 
+				</var> 
+			</field>
+		</form>
 	</formset>
 </form-validation>

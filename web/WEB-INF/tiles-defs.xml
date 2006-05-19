@@ -35,4 +35,9 @@
 		<put name="calabContent" value="/bodyWelcome.jsp" />
 		<put name="menu" value="home"/>
 	</definition>
+		<definition name="calab.register" extends="calab.home">
+		<put name="calabContent" value="/bodyRegister.jsp" />
+		<put name="menu" value="home"/>
+	</definition>
+	
 </tiles-definitions>
