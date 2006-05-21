@@ -302,14 +302,14 @@ public class ExecuteWorkflowService {
 			ida.open();
 			// Get all assay for AssayType
 			String hqlStringAliquot = "select assay, run, aliquot, aliquotStatus"
-					+ " from Assay assay join assay.runCollection run left join run.runSampleContainerCollection runSampleContainer left join runSampleContainer.sampleContainer aliquot left join aliquot.dataStatus aliquotStatus";
+					+ " from Assay assay left join assay.runCollection run left join run.runSampleContainerCollection runSampleContainer left join runSampleContainer.sampleContainer aliquot left join aliquot.dataStatus aliquotStatus";
 			List results = ida.search(hqlStringAliquot);
 
 			String hqlStringIn = "select assay, run, file, fileStatus"
-					+ " from Assay assay join assay.runCollection run left join run.inputFileCollection file left join file.dataStatus fileStatus";
+					+ " from Assay assay left join assay.runCollection run left join run.inputFileCollection file left join file.dataStatus fileStatus";
 			List resultsIn = ida.search(hqlStringIn);
 			String hqlStringOut = "select assay, run, file, fileStatus"
-					+ " from Assay assay join assay.runCollection run left join run.outputFileCollection file left join file.dataStatus fileStatus";
+					+ " from Assay assay left join assay.runCollection run left join run.outputFileCollection file left join file.dataStatus fileStatus";
 
 			List resultsOut = ida.search(hqlStringOut);
 			results.addAll(resultsIn);
@@ -318,7 +318,10 @@ public class ExecuteWorkflowService {
 			for (Object obj : results) {
 				Object[] items = (Object[]) obj;
 				AssayBean assayBean = new AssayBean((Assay) items[0]);
-				RunBean runBean = new RunBean((Run) items[1]);
+				RunBean runBean = null;
+				if (items[1] != null){
+					runBean = new RunBean((Run) items[1]);
+				}
 				AliquotBean aliquotBean = null;
 				FileBean inFileBean = null;
 				FileBean outFileBean = null;
@@ -344,14 +347,16 @@ public class ExecuteWorkflowService {
 				}
 				assays.add(assayBean);							
 
-				if (assayRunMap.get(assayBean.getAssayId()) == null) {
-					runs = new TreeSet<RunBean>(
-							new CalabComparators.RunBeanComparator());
-					assayRunMap.put(assayBean.getAssayId(), runs);						
-				} else {
-					runs = assayRunMap.get(assayBean.getAssayId());					
+				if (runBean != null) {
+					if (assayRunMap.get(assayBean.getAssayId()) == null) {
+						runs = new TreeSet<RunBean>(
+								new CalabComparators.RunBeanComparator());
+						assayRunMap.put(assayBean.getAssayId(), runs);						
+					} else {
+						runs = assayRunMap.get(assayBean.getAssayId());					
+					}
+					runs.add(runBean);											
 				}
-				runs.add(runBean);						
 				
 				if (aliquotBean != null) {
 					if (runAliquotMap.get(runBean.getId()) == null) {
@@ -395,26 +400,28 @@ public class ExecuteWorkflowService {
 				for (AssayBean assay : typeAssays) {
 					SortedSet<RunBean> assayRuns = assayRunMap.get(assay
 							.getAssayId());
-					runCount += assayRuns.size();
-					assay.setRunBeans(new ArrayList<RunBean>(assayRuns));
-					for (RunBean run : assayRuns) {
-						SortedSet<AliquotBean> runAliquots = runAliquotMap
-								.get(run.getId());
-						if (runAliquots != null) {
-							aliquotCount += runAliquots.size();
-							run.setAliquotBeans(new ArrayList<AliquotBean>(runAliquots));
-						}
-						SortedSet<FileBean> runInFiles = runInFileMap.get(run
-								.getId());
-						if (runInFiles != null) {
-							inFileCount += runInFiles.size();
-							run.setInputFileBeans(new ArrayList<FileBean>(runInFiles));
-						}
-						SortedSet<FileBean> runOutFiles = runOutFileMap.get(run
-								.getId());
-						if (runOutFiles != null) {
-							run.setOutputFileBeans(new ArrayList<FileBean>(runOutFiles));
-						}
+					if (assayRuns != null) {
+						runCount += assayRuns.size();
+						assay.setRunBeans(new ArrayList<RunBean>(assayRuns));
+						for (RunBean run : assayRuns) {
+							SortedSet<AliquotBean> runAliquots = runAliquotMap
+									.get(run.getId());
+							if (runAliquots != null) {
+								aliquotCount += runAliquots.size();
+								run.setAliquotBeans(new ArrayList<AliquotBean>(runAliquots));
+							}
+							SortedSet<FileBean> runInFiles = runInFileMap.get(run
+									.getId());
+							if (runInFiles != null) {
+								inFileCount += runInFiles.size();
+								run.setInputFileBeans(new ArrayList<FileBean>(runInFiles));
+							}
+							SortedSet<FileBean> runOutFiles = runOutFileMap.get(run
+									.getId());
+							if (runOutFiles != null) {
+								run.setOutputFileBeans(new ArrayList<FileBean>(runOutFiles));
+							}
+						}						
 					}
 				}
 			}
