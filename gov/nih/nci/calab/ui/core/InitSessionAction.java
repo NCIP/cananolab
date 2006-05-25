@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.45 2006-05-12 15:52:01 pansu Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.46 2006-05-25 18:37:56 zengje Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
@@ -85,7 +85,8 @@ public class InitSessionAction extends AbstractDispatchAction {
 					allAssayBeans);
 		}
 
-		if (session.getServletContext().getAttribute("allUserBeans") == null) {
+		if ((session.getAttribute("newUserCreated") != null) 
+				|| (session.getServletContext().getAttribute("allUserBeans") == null)) {
 			List allUserBeans = lookupService.getAllUserBeans();
 			session.getServletContext().setAttribute("allUserBeans",
 					allUserBeans);
@@ -93,6 +94,7 @@ public class InitSessionAction extends AbstractDispatchAction {
 
 		session.removeAttribute("newWorkflowCreated");
 		session.removeAttribute("newAliquotCreated");
+		session.removeAttribute("newUserCreated");
 	}
 
 	public ActionForward useAliquot(ActionMapping mapping, ActionForm form,
@@ -213,11 +215,13 @@ public class InitSessionAction extends AbstractDispatchAction {
 			session.getServletContext().setAttribute("allAssayTypes",
 					assayTypes);
 		}
-		if (session.getServletContext().getAttribute("allUserBeans") == null) {
+		if ((session.getAttribute("newUserCreated") != null) 
+				|| (session.getServletContext().getAttribute("allUserBeans") == null)) {
 			List allUserBeans = lookupService.getAllUserBeans();
 			session.getServletContext().setAttribute("allUserBeans",
 					allUserBeans);
 		}
+		session.removeAttribute("newUserCreated");
 		return mapping.findForward("searchWorkflow");
 	}
 
@@ -244,7 +248,8 @@ public class InitSessionAction extends AbstractDispatchAction {
 			List sourceSampleIds = searchSampleService.getAllSourceSampleIds();
 			session.setAttribute("allSourceSampleIds", sourceSampleIds);
 		}
-		if (session.getServletContext().getAttribute("allUserBeans") == null) {
+		if ((session.getAttribute("newUserCreated") != null) 
+				|| (session.getServletContext().getAttribute("allUserBeans") == null)) {
 			List allUserBeans = lookupService.getAllUserBeans();
 			session.getServletContext().setAttribute("allUserBeans",
 					allUserBeans);
@@ -262,6 +267,7 @@ public class InitSessionAction extends AbstractDispatchAction {
 					containerInfo);
 		}
 		// clear the new sample created flag
+		session.removeAttribute("newUserCreated");
 		session.removeAttribute("newSampleCreated");
 		return mapping.findForward("searchSample");
 	}
