@@ -54,49 +54,51 @@
     <Document title="Welcome to caLAB" href="Welcome to caLAB.1.1.html" />
     <Document title="caLAB Online Help" href="About caLAB.2.1.html" />
     <Document title="caLAB Welcome Login Page" href="About caLAB.2.2.html" />
-    <Document title="caLAB Welcome Workflow Page" href="About caLAB.2.3.html" />
-    <Document title="caLAB Online Help" href="About caLAB.2.4.html" />
-    <Document title="Navigation in caLAB" href="About caLAB.2.5.html" />
-    <Document title="Working in caLAB" href="About caLAB.2.6.html" />
-    <Document title="Executing a caLAB Workflow" href="About caLAB.2.7.html" />
-    <Document title="Creating a Sample" href="About caLAB.2.8.html" />
-    <Document title="Creating Aliquots" href="About caLAB.2.9.html" />
-    <Document title="Editing an Aliquot" href="About caLAB.2.10.html" />
-    <Document title="Aliquot Naming Conventions" href="About caLAB.2.11.html" />
-    <Document title="Viewing an Aliquot" href="About caLAB.2.12.html" />
-    <Document title="Using an Aliquot" href="About caLAB.2.13.html" />
-    <Document title="Masking an Aliquot" href="About caLAB.2.14.html" />
-    <Document title="Creating an Assay Run" href="About caLAB.2.15.html" />
-    <Document title="Creating a Run" href="About caLAB.2.16.html" />
-    <Document title="Assay Run In and Out Folders" href="About caLAB.2.17.html" />
-    <Document title="Working with Files" href="About caLAB.2.18.html" />
-    <Document title="Uploading Input/Output Files" href="About caLAB.2.19.html" />
-    <Document title="caLAB File Naming Conventions" href="About caLAB.2.20.html" />
-    <Document title="Masking a File" href="About caLAB.2.21.html" />
-    <Document title="Downloading Files" href="About caLAB.2.22.html" />
-    <Document title="Launching a caLAB Search" href="About caLAB.2.23.html" />
-    <Document title="Searching a Workflow" href="About caLAB.2.24.html" />
-    <Document title="Workflow Search Results" href="About caLAB.2.25.html" />
-    <Document title="Searching Sample Containers" href="About caLAB.2.26.html" />
-    <Document title="Sample Container Search Results" href="About caLAB.2.27.html" />
-    <Document title="Application Support" href="About caLAB.2.28.html" />
+    <Document title="Registering a New User" href="About caLAB.2.3.html" />
+    <Document title="caLAB Welcome Workflow Page" href="About caLAB.2.4.html" />
+    <Document title="caLAB Online Help" href="About caLAB.2.5.html" />
+    <Document title="Navigation in caLAB" href="About caLAB.2.6.html" />
+    <Document title="Working in caLAB" href="About caLAB.2.7.html" />
+    <Document title="Executing a caLAB Workflow" href="About caLAB.2.8.html" />
+    <Document title="Creating a Sample" href="About caLAB.2.9.html" />
+    <Document title="Creating Aliquots" href="About caLAB.2.10.html" />
+    <Document title="Editing an Aliquot" href="About caLAB.2.11.html" />
+    <Document title="Aliquot Naming Conventions" href="About caLAB.2.12.html" />
+    <Document title="Viewing an Aliquot" href="About caLAB.2.13.html" />
+    <Document title="Using an Aliquot" href="About caLAB.2.14.html" />
+    <Document title="Masking an Aliquot" href="About caLAB.2.15.html" />
+    <Document title="Creating an Assay Run" href="About caLAB.2.16.html" />
+    <Document title="Creating a Run" href="About caLAB.2.17.html" />
+    <Document title="Assay Run In and Out Folders" href="About caLAB.2.18.html" />
+    <Document title="Working with Files" href="About caLAB.2.19.html" />
+    <Document title="Uploading Input/Output Files" href="About caLAB.2.20.html" />
+    <Document title="caLAB File Naming Conventions" href="About caLAB.2.21.html" />
+    <Document title="Masking a File" href="About caLAB.2.22.html" />
+    <Document title="Downloading Files" href="About caLAB.2.23.html" />
+    <Document title="Launching a caLAB Search" href="About caLAB.2.24.html" />
+    <Document title="Searching a Workflow" href="About caLAB.2.25.html" />
+    <Document title="Workflow Search Results" href="About caLAB.2.26.html" />
+    <Document title="Searching Sample Containers" href="About caLAB.2.27.html" />
+    <Document title="Sample Container Search Results" href="About caLAB.2.28.html" />
+    <Document title="Application Support" href="About caLAB.2.29.html" />
   </DocumentInfo>
   <TopicMap>
     <Topic name="welcome_login" href="About caLAB.2.2.html#1069239" />
-    <Topic name="welcome_workflow" href="About caLAB.2.3.html#1079711" />
-    <Topic name="create_sample" href="About caLAB.2.8.html#1069635" />
-    <Topic name="create_aliquot" href="About caLAB.2.9.html#1090167" />
-    <Topic name="edit_aliquot" href="About caLAB.2.10.html#1078187" />
-    <Topic name="view_aliquot" href="About caLAB.2.12.html#1077662" />
-    <Topic name="mask_aliquot" href="About caLAB.2.14.html#1073979" />
-    <Topic name="create_assay_run" href="About caLAB.2.15.html#1078469" />
-    <Topic name="in_folder" href="About caLAB.2.17.html" />
-    <Topic name="file_upload" href="About caLAB.2.19.html#1086942" />
-    <Topic name="mask_files" href="About caLAB.2.21.html#1078900" />
-    <Topic name="download_files" href="About caLAB.2.22.html#1085617" />
-    <Topic name="search_workflow" href="About caLAB.2.24.html#1073772" />
-    <Topic name="workflow_search_results" href="About caLAB.2.25.html#1073690" />
-    <Topic name="search_sample_container" href="About caLAB.2.26.html#1069067" />
-    <Topic name="sample_search_results" href="About caLAB.2.27.html#1085437" />
+    <Topic name="register_user" href="About caLAB.2.3.html#1091033" />
+    <Topic name="welcome_workflow" href="About caLAB.2.4.html#1092139" />
+    <Topic name="create_sample" href="About caLAB.2.9.html#1069635" />
+    <Topic name="create_aliquot" href="About caLAB.2.10.html#1090167" />
+    <Topic name="edit_aliquot" href="About caLAB.2.11.html#1078187" />
+    <Topic name="view_aliquot" href="About caLAB.2.13.html#1077662" />
+    <Topic name="mask_aliquot" href="About caLAB.2.15.html#1073979" />
+    <Topic name="create_assay_run" href="About caLAB.2.16.html#1078469" />
+    <Topic name="in_folder" href="About caLAB.2.18.html" />
+    <Topic name="file_upload" href="About caLAB.2.20.html#1086942" />
+    <Topic name="mask_files" href="About caLAB.2.22.html#1078900" />
+    <Topic name="download_files" href="About caLAB.2.23.html#1085617" />
+    <Topic name="search_workflow" href="About caLAB.2.25.html#1073772" />
+    <Topic name="workflow_search_results" href="About caLAB.2.26.html#1073690" />
+    <Topic name="search_sample_container" href="About caLAB.2.27.html#1069067" />
+    <Topic name="sample_search_results" href="About caLAB.2.28.html#1085437" />
   </TopicMap>
 </WebWorksHelpBook>
