@@ -1,15 +1,14 @@
 package gov.nih.nci.calab.ui.security;
 
 import gov.nih.nci.calab.dto.common.UserBean;
-import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.login.PasswordService;
 import gov.nih.nci.calab.service.login.RegisterService;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import org.apache.struts.action.ActionError;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -30,6 +29,8 @@ public class RegisterAction extends AbstractBaseAction {
 			throws Exception {
 
 		ActionForward forward = null;
+		
+		HttpSession session = request.getSession();
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 
@@ -51,7 +52,7 @@ public class RegisterAction extends AbstractBaseAction {
 		msgs.add("message", msg);
 		saveMessages(request,msgs);
 		forward = mapping.findForward("success");
-	
+		session.setAttribute("newUserCreated", "true");
 		
 		return forward;
 	}
