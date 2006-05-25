@@ -15,7 +15,7 @@
 				</h3>
 			</td>
 			<td align="right" width="10%">
-				<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=create_sample')" class="helpText">Help</a>
+				<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=register_user')" class="helpText">Help</a>
 			</td>
 		</tr>
 		<tr>
