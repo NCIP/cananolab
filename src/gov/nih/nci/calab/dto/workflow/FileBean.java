@@ -22,8 +22,6 @@ public class FileBean {
 
 	private String filename = "";
 
-	private String createDateStr = "";
-
 	private String fileSubmitter = "";
 
 	private String fileMaskStatus = "";
@@ -43,13 +41,14 @@ public class FileBean {
 	}
 
 	// used in WorkflowResultBean
-	public FileBean(String id, String path, String fileSubmissionDate,
+	public FileBean(String id, String path, String shortFileName, Date fileSubmissionDate,
 			String fileSubmitter, String fileMaskStatus, String inoutType) {
 		this.id = id;
 		this.path = path;
-		this.createDateStr = fileSubmissionDate;
+		this.createdDate = fileSubmissionDate;
 		this.fileSubmitter = fileSubmitter;
 		this.filename = getFileName(path);
+		this.shortFilename=shortFileName;
 		this.fileMaskStatus = (fileMaskStatus.length() == 0 && filename
 				.length() > 0) ? CalabConstants.ACTIVE_STATUS : fileMaskStatus;
 		this.inoutType = inoutType;
@@ -123,14 +122,6 @@ public class FileBean {
 	public void setFileMaskStatus(String fileMaskStatus) {
 		this.fileMaskStatus = (fileMaskStatus.length() == 0 && getFilename()
 				.length() > 0) ? CalabConstants.ACTIVE_STATUS : fileMaskStatus;
-	}
-
-	public String getCreateDateStr() {
-		return createDateStr;
-	}
-
-	public void setCreateDateStr(String fileSubmissionDate) {
-		this.createDateStr = fileSubmissionDate;
 	}
 
 	public String getFileSubmitter() {
