@@ -21,7 +21,7 @@
 		</td>
 </table>
 <jsp:include page="/bodyMessage.jsp?bundle=search" />
-<display:table name="sessionScope.aliquots" id="aliquot" class="displaytable" pagesize="100" requestURI="searchSample.do">
+<display:table name="sessionScope.aliquots" id="aliquot" class="displaytable" pagesize="100" requestURI="searchAliquot.do">
 	<display:column title="Sample ID" property="sample.sortableName" sortable="true" />
 	<display:column title="Sample Accession Date" property="sample.accessionDate" sortable="true" format="{0,date,MM-dd-yyyy}" />
 	<display:column title="Sample Submitter" property="sample.sampleSubmitter" sortable="true" />
