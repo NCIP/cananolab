@@ -8,7 +8,6 @@ import gov.nih.nci.calab.domain.SampleContainer;
 import gov.nih.nci.calab.domain.StorageElement;
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerBean;
-import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.exception.DuplicateEntriesException;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
@@ -27,7 +26,7 @@ import org.apache.struts.util.LabelValueBean;
  */
 
 /*
- * CVS $Id: ManageAliquotService.java,v 1.21 2006-05-08 15:11:25 zengje Exp $
+ * CVS $Id: ManageAliquotService.java,v 1.22 2006-05-31 19:18:50 pansu Exp $
  */
 
 public class ManageAliquotService {
@@ -237,7 +236,7 @@ public class ManageAliquotService {
 					doAliquot.setVolumeUnit(containerBean.getVolumeUnit());
 					doAliquot.setCreatedMethod(getCreatedMethod(ida, aliquotBean.getHowCreated()));
 					doAliquot.setCreatedBy(aliquotBean.getCreator());
-					doAliquot.setCreatedDate(StringUtils.convertToDate(aliquotBean.getCreationDate(), CalabConstants.DATE_FORMAT));
+					doAliquot.setCreatedDate(aliquotBean.getCreationDate());
 
 					// Associations
 					// 1. ParentAliquos or Sample
