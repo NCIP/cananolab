@@ -2,6 +2,7 @@ package gov.nih.nci.calab.dto.administration;
 
 import gov.nih.nci.calab.domain.SampleContainer;
 import gov.nih.nci.calab.domain.StorageElement;
+import gov.nih.nci.calab.dto.common.SortableName;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 
@@ -14,7 +15,7 @@ import java.util.Set;
  * @author pansu
  * 
  */
-/* CVS $Id: ContainerBean.java,v 1.8 2006-05-03 17:39:37 pansu Exp $ */
+/* CVS $Id: ContainerBean.java,v 1.9 2006-05-31 19:15:42 pansu Exp $ */
 
 public class ContainerBean {
 	private String containerName = "";
@@ -46,6 +47,18 @@ public class ContainerBean {
 	private String storageLocationStr = "";
 
 	private String containerComments = "";
+
+	private SampleBean sample;
+	
+    private int containerNumber=-1;
+
+	public SampleBean getSample() {
+		return sample;
+	}
+
+	public void setSample(SampleBean sample) {
+		this.sample = sample;
+	}
 
 	public ContainerBean() {
 		storageLocation = new StorageLocation();
@@ -278,20 +291,25 @@ public class ContainerBean {
 	}
 
 	/**
-	 * Assume runName has a sequenceNumber at the end
+	 * Assume containerName has a sequenceNumber at the end
 	 * 
-	 * @return the sequence number for an run
+	 * @return the sequence number for a container
 	 */
 	public Integer getContainerNumber() {
-		Integer containerNumber = -1;
-		if (containerName.matches("\\D+(\\d+)")) {
+		
+		if (containerName.matches("\\D*(\\d+)")) {
 			try {
 				containerNumber = Integer.parseInt(containerName.replaceAll(
-						"\\D+(\\d+)", "$1"));
+						"\\D*(\\d+)", "$1"));
 			} catch (Exception e) {
 				return -1;
 			}
 		}
 		return containerNumber;
+	}
+	
+	//used for display tag
+	public SortableName getSortableName() {
+		return new SortableName(containerName);
 	}
 }
