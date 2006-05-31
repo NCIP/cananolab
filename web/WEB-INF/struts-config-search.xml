@@ -47,7 +47,7 @@
 			<form-property name="storageLocation" type="gov.nih.nci.calab.dto.administration.StorageLocation" />
 		</form-bean>
 		<form-bean name="viewSampleDetailForm" type="org.apache.struts.action.DynaActionForm">
-			<form-property name="sampleNum" type="java.lang.String" />
+			<form-property name="sampleId" type="java.lang.String" />
 			<form-property name="containerNum" type="java.lang.String" />
 			<form-property name="aliquotNum" type="java.lang.String" />
 			<form-property name="isAliquot" type="java.lang.Boolean" />
