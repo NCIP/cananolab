@@ -2,6 +2,8 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
+<link rel="stylesheet" type="text/css" href="css/displaytag.css" />
 
 <table width="90%" align="center">
 	<tr>
@@ -14,19 +16,27 @@
 				Aliquot Search Results
 			</h3>
 		</td>
-		<td align="right" width="10%">
-			<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=sample_search_results')" class="helpText">Help</a>
+		<td align="right" width="20%">
+			<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=sample_search_results')" class="helpText">Help</a> &nbsp;&nbsp; <a href="#" onClick="javascript:history.go(-1)" class="helpText">back</a>
 		</td>
 </table>
 <jsp:include page="/bodyMessage.jsp?bundle=search" />
-<table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
-	<tr valign="bottom">
-		<td align="right">
-			<input type="button" onClick="javascript:history.go(-1)" value="Back">
-		</td>
-	</tr>
-</table>
-<br>
+<display:table name="sessionScope.aliquots" id="aliquot" class="displaytable" pagesize="100" requestURI="searchSample.do">
+	<display:column title="Sample ID" property="sample.sortableName" sortable="true" />
+	<display:column title="Sample Accession Date" property="sample.accessionDate" sortable="true" format="{0,date,MM-dd-yyyy}" />
+	<display:column title="Sample Submitter" property="sample.sampleSubmitter" sortable="true" />
+	<display:column title="Aliquot ID" property="sortableName" sortable="true"/>
+	<display:column title="Aliquoted Date" property="creationDate" sortable="true"  format="{0,date,MM-dd-yyyy}" />
+	<display:column title="Aliquoted Location" property="container.storageLocationStr" sortable="true" />
+	<display:column title="Aliquot Creator" property="creator" sortable="true" />
+	<display:column title="Actions">
+		<c:url var="viewAliquotDetailURL" value="/viewSampleDetail.do">
+			<c:param name="aliquotNum" value="${aliquot_rowNum-1}" />
+			<c:param name="isAliquot" value="true" />
+		</c:url>
+		<a href="${viewAliquotDetailURL}">View Details</a>&nbsp;</display:column>
+</display:table>
+<%--
 <table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
 	<tr>
 		<div align="center">
@@ -112,6 +122,7 @@
 		</tr>
 	</logic:iterate>
 </table>
+--%>
 <br>
 <br>
 

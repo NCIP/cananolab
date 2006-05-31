@@ -2,6 +2,8 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
+<link rel="stylesheet" type="text/css" href="css/displaytag.css" />
 
 <table width="90%" align="center">
 	<tr>
@@ -14,32 +16,46 @@
 				Sample Search Results
 			</h3>
 		</td>
-		<td align="right" width="10%">
-			<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=sample_search_results')" class="helpText">Help</a>
-		</td>
-</table>
-<jsp:include page="/bodyMessage.jsp?bundle=search" />
-<table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
-	<tr valign="bottom">
-		<td align="right">
+		<td align="right" width="20%">
+			<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=sample_search_results')" class="helpText">Help</a>&nbsp;&nbsp;
 			<c:choose>
 				<c:when test="${empty param.fromSampleResult}">
-					<input type="button" onClick="javascript:location.href='initSession.do?forwardPage=searchSample&rememberSearch=true'" value="Back">
+					<a href="initSession.do?forwardPage=searchSample&rememberSearch=true" class="helpText">back</a>
 				</c:when>
 				<c:otherwise>
 					<logic:messagesPresent message="true">
-						<input type="button" onClick="javascript:location.href='initSession.do?forwardPage=searchSample&rememberSearch=true'" value="Back">
+						<a href="initSession.do?forwardPage=searchSample&rememberSearch=true" class="helpText">back</a>
 					</logic:messagesPresent>
 					<logic:messagesNotPresent message="true">
-						<input type="button" onClick="javascript:history.go(-1)" value="Back">
-
+						<a href="#" onClick="javascript:history.go(-1)" class="helpText">back</a>
 					</logic:messagesNotPresent>
 				</c:otherwise>
 			</c:choose>
 		</td>
-	</tr>
 </table>
-<br>
+<jsp:include page="/bodyMessage.jsp?bundle=search" />
+<display:table name="sessionScope.sampleContainers" id="container" requestURI="searchSample.do" pagesize="100" class="displaytable">
+	<display:column title="Sample ID" property="sample.sortableName" sortable="true" />
+	<display:column title="Sample Accessioned Date" property="sample.accessionDate" sortable="true" format="{0,date,MM-dd-yyyy}" />
+	<display:column title="Sample Type" property="sample.sampleType" sortable="true" />
+	<display:column title="Sample Location" property="storageLocationStr" sortable="true"/>
+		<display:column title="Sample Submitter" property="sample.sampleSubmitter" sortable="true" />
+		<display:column title="Actions">
+			<c:url var="viewSampleDetailURL" value="/viewSampleDetail.do">
+				<c:param name="sampleId" value="${container.sample.sampleId}" />
+				<c:param name="containerNum" value="${container.containerNumber}" />
+				<c:param name="isAliquot" value="false" />
+			</c:url>
+			<a href="${viewSampleDetailURL}">View Details</a>
+			<c:url value="/searchAliquot.do" var="showAliquotURL">
+				<c:param name="isAliquot" value="true" />
+				<c:param name="searchName" value="${container.sample.sampleName}-*" />
+				<c:param name="fromSampleResult" value="true" />
+			</c:url>
+			<a href="${showAliquotURL}">Show Aliquots</a> &nbsp;
+	</display:column>
+</display:table>
+<%--
 <table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
 	<tr align="center">
 		<td width="55" class="formTitle">
@@ -118,6 +134,7 @@
 		</logic:iterate>
 	</logic:iterate>
 </table>
+--%>
 <br>
 <br>
 
