@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.46 2006-05-25 18:37:56 zengje Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.47 2006-05-31 19:27:39 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
@@ -432,7 +432,7 @@ public class InitSessionAction extends AbstractDispatchAction {
 
 		if (!forwardPage.equals("searchSample")) {
 			// clear session attributes created during search sample
-			session.removeAttribute("samples");
+			session.removeAttribute("sampleContainers");
 			session.removeAttribute("aliquots");
 		}
 
