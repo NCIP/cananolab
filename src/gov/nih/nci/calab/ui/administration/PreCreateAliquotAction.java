@@ -6,13 +6,14 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: PreCreateAliquotAction.java,v 1.13 2006-05-02 22:27:17 pansu Exp $ */
+/* CVS $Id: PreCreateAliquotAction.java,v 1.14 2006-05-31 19:22:57 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.service.administration.ManageAliquotService;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -60,13 +61,12 @@ public class PreCreateAliquotAction extends AbstractBaseAction {
 					sampleName, parentAliquotName);
 
 			// get user and date from session
-			String creator = (String) session.getAttribute("creator");
-			String creationDate = (String) session.getAttribute("creationDate");
+			String creator = (String) session.getAttribute("creator");			
 
 			// create a 2-D matrix for aliquot
 			List<AliquotBean[]> aliquotMatrix = createAliquotMatrix(colNum,
 					rowNum, numAliquots, aliquotPrefix, firstAliquotNum,
-					template, creator, creationDate);
+					template, creator);
 			session.setAttribute("aliquotMatrix", aliquotMatrix);
 		} else {
 			session.removeAttribute("aliquotMatrix");
@@ -86,7 +86,7 @@ public class PreCreateAliquotAction extends AbstractBaseAction {
 	 */
 	private List<AliquotBean[]> createAliquotMatrix(int colNum, int rowNum,
 			int numAliquots, String aliquotPrefix, int firstAliquotName,
-			AliquotBean template, String aliquotCreator, String creationDate) {
+			AliquotBean template, String aliquotCreator) {
 
 		List<AliquotBean[]> aliquotMatrix = new ArrayList<AliquotBean[]>();
 		int aliquotName = firstAliquotName;
@@ -102,7 +102,7 @@ public class PreCreateAliquotAction extends AbstractBaseAction {
 			for (int j = 0; j < cols; j++) {
 				AliquotBean aliquot = new AliquotBean(aliquotPrefix
 						+ aliquotName, template.getContainer(), template
-						.getHowCreated(), aliquotCreator, creationDate);
+						.getHowCreated(), aliquotCreator, new Date());
 				aliquotRow[j] = aliquot;
 				aliquotName++;
 			}
