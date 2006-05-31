@@ -27,7 +27,7 @@
 	<display:column title="Sample Submitter" property="sample.sampleSubmitter" sortable="true" />
 	<display:column title="Aliquot ID" property="sortableName" sortable="true"/>
 	<display:column title="Aliquoted Date" property="creationDate" sortable="true"  format="{0,date,MM-dd-yyyy}" />
-	<display:column title="Aliquoted Location" property="container.storageLocationStr" sortable="true" />
+	<display:column title="Aliquoted Location" property="container.storageLocation" sortable="true" />
 	<display:column title="Aliquot Creator" property="creator" sortable="true" />
 	<display:column title="Actions">
 		<c:url var="viewAliquotDetailURL" value="/viewSampleDetail.do">
