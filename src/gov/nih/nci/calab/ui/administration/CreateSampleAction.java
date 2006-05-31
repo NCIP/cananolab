@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: CreateSampleAction.java,v 1.16 2006-05-11 21:46:45 pansu Exp $ */
+/* CVS $Id: CreateSampleAction.java,v 1.17 2006-05-31 19:22:22 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.ContainerBean;
 import gov.nih.nci.calab.dto.administration.SampleBean;
@@ -59,7 +59,7 @@ public class CreateSampleAction extends AbstractBaseAction {
 		String sourceSampleId = (String) theForm.get("sourceSampleId");
 		String dateReceivedStr = (String) theForm.get("dateReceived");
 		Date dateReceived=StringUtils.convertToDate(dateReceivedStr, CalabConstants.ACCEPT_DATE_FORMAT);
-		String dateReceivedStrFormatted=StringUtils.convertDateToString(dateReceived, CalabConstants.DATE_FORMAT);
+		
 		String solubility = (String) theForm.get("solubility");
 		String lotId = (String) theForm.get("lotId");
 		String lotDescription = (String) theForm.get("lotDescription");
@@ -69,26 +69,23 @@ public class CreateSampleAction extends AbstractBaseAction {
 		String sampleName = manageSampleService.getSampleName(sampleNamePrefix,
 				lotId);
 
-		// get user and date information from session
+		// get user information from session
 		String sampleSubmitter = (String) session.getAttribute("creator");
-		String accessionDate = (String) session.getAttribute("creationDate");
-
 		ContainerBean[] containers = (ContainerBean[]) theForm
 				.get("containers");
-
+		Date creationDate=new Date();
 		SampleBean sample = new SampleBean(sampleNamePrefix, sampleName,
 				sampleType, sampleSOP, sampleDescription, sampleSource,
-				sourceSampleId, dateReceivedStrFormatted, solubility, lotId,
+				sourceSampleId, dateReceived, solubility, lotId,
 				lotDescription, numContainers, generalComments,
-				sampleSubmitter, accessionDate, containers);
+				sampleSubmitter, creationDate, containers);
 
 		request.setAttribute("sample", sample);
-
 		manageSampleService.saveSample(sample, containers);
 		// set a flag to indicate that new sample have been created so session
 		// can be refreshed in initSession.do
 		session.setAttribute("newSampleCreated", "yes");
-
+		
 		forward = mapping.findForward("success");
 
 		return forward;
