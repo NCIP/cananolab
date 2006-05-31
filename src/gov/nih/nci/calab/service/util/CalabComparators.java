@@ -17,26 +17,89 @@ import java.util.Comparator;
  * 
  */
 
-/* CVS $Id: CalabComparators.java,v 1.5 2006-05-16 18:51:51 pansu Exp $ */
+/* CVS $Id: CalabComparators.java,v 1.6 2006-05-31 19:20:32 pansu Exp $ */
 
 public class CalabComparators {
 
 	public static class RunBeanComparator implements Comparator<RunBean> {
 		public int compare(RunBean run1, RunBean run2) {
-			// if no run number compare by name
-			if (run1.getRunNumber() == -1 || run2.getRunNumber() == -1) {
-				return run1.getName().compareTo(run2.getName());
+			// compare assay first
+			AssayBeanComparator assayComp = new AssayBeanComparator();
+			if (assayComp.compare(run1.getAssayBean(), run2.getAssayBean()) == 0) {
+				// compare runName
+				return new SortableNameComparator().compare(run1.getName(),
+						run2.getName());
 			}
-			return run1.getRunNumber().compareTo(run2.getRunNumber());
+			return assayComp.compare(run1.getAssayBean(), run2.getAssayBean());
 		}
 	}
 
 	public static class AliquotBeanComparator implements
 			Comparator<AliquotBean> {
 		public int compare(AliquotBean aliquot1, AliquotBean aliquot2) {
+			int diff = new SortableNameComparator().compare(aliquot1
+					.getAliquotName(), aliquot2.getAliquotName());
+			return diff;
+		}
+	}
 
-			return aliquot1.getAliquotName().compareTo(
-					aliquot2.getAliquotName());
+	public static class SortableNameComparator implements Comparator<String> {
+		public int compare(String name1, String name2) {
+			// in case of sample name and aliquot name
+			if (name1.matches("\\D+(-(\\d+))+")
+					&& name2.matches("\\D+(-(\\d+))+")) {
+				String[] toks1 = name1.split("-");
+				String[] toks2 = name2.split("-");
+				int num = 0;
+				if (toks1.length >= toks2.length) {
+					num = toks1.length;
+				} else {
+					num = toks2.length;
+				}
+
+				for (int i = 0; i < num; i++) {
+					String str1 = "0", str2 = "0";
+					if (i < toks1.length) {
+						str1 = toks1[i];
+					}
+					if (i < toks2.length) {
+						str2 = toks2[i];
+					}
+					try {
+						int num1 = 0, num2 = 0;
+						num1 = Integer.parseInt(str1);
+						num2 = Integer.parseInt(str2);
+						if (num1 != num2) {
+							return num1 - num2;
+						}
+					} catch (Exception e) {
+						if (!str1.equals(str2)) {
+							return str1.compareTo(str2);
+						}
+					}
+				}
+			}
+			// in case of run name and container name
+			else if (name1.matches("(\\D+)(\\d+)")
+					&& name2.matches("(\\D+)(\\d+)")) {
+				try {
+					String str1 = name1.replaceAll("(\\D+)(\\d+)", "$1");
+					String str2 = name2.replaceAll("(\\D+)(\\d+)", "$1");
+
+					int num1 = Integer.parseInt(name1.replaceAll(
+							"(\\D+)(\\d+)", "$2"));
+					int num2 = Integer.parseInt(name2.replaceAll(
+							"(\\D+)(\\d+)", "$2"));
+					if (str1.equals(str2)) {
+						return num1 - num2;
+					} else {
+						return str1.compareTo(str2);
+					}
+				} catch (Exception e) {
+					return name1.compareTo(name2);
+				}
+			}
+			return name1.compareTo(name2);
 		}
 	}
 
@@ -67,22 +130,16 @@ public class CalabComparators {
 
 	public static class SampleBeanComparator implements Comparator<SampleBean> {
 		public int compare(SampleBean sample1, SampleBean sample2) {
-			return sample1.getSampleName().compareTo(sample2.getSampleName());
+			return new SortableNameComparator().compare(
+					sample1.getSampleName(), sample2.getSampleName());
 		}
 	}
 
 	public static class ContainerBeanComparator implements
 			Comparator<ContainerBean> {
 		public int compare(ContainerBean container1, ContainerBean container2) {
-
-			// if no container number compare by name
-			if (container1.getContainerNumber() == -1
-					&& container2.getContainerNumber() == -1) {
-				return container1.getContainerName().compareTo(
-						container2.getContainerName());
-			}
-			return container1.getContainerNumber().compareTo(
-					container2.getContainerNumber());
+			return new SortableNameComparator().compare(container1
+					.getContainerName(), container2.getContainerName());
 		}
 	}
 
@@ -92,7 +149,8 @@ public class CalabComparators {
 			if (file1.getShortFilename().compareTo(file2.getShortFilename()) == 0) {
 				return file1.getPath().compareTo(file2.getPath());
 			} else {
-				return file1.getShortFilename().compareTo(file2.getShortFilename());
+				return file1.getShortFilename().compareTo(
+						file2.getShortFilename());
 			}
 		}
 	}
@@ -116,7 +174,7 @@ public class CalabComparators {
 				if (runDiff == 0) {
 					// compare file
 					if (fileDiff == 0) {
-						//compare aliquot
+						// compare aliquot
 						return aliquotDiff;
 					} else {
 						return fileDiff;
