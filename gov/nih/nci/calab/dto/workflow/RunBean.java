@@ -5,8 +5,10 @@ package gov.nih.nci.calab.dto.workflow;
 
 import gov.nih.nci.calab.domain.Run;
 import gov.nih.nci.calab.dto.administration.AliquotBean;
+import gov.nih.nci.calab.dto.common.SortableName;
 import gov.nih.nci.calab.service.util.StringUtils;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,7 +21,7 @@ public class RunBean {
 
 	private String name = "";
 
-	private String runDate = "";
+	private Date runDate;
 
 	private List<AliquotBean> aliquotBeans;
 
@@ -45,17 +47,18 @@ public class RunBean {
 	}
 
 	// used in WorkflowResultBean
-	public RunBean(String id, String name, String runDate) {
-		this.id=id;
+	public RunBean(String id, String name, Date runDate) {
+		this.id = id;
 		this.name = name;
 		this.runDate = runDate;
 	}
 
 	public RunBean(Run run) {
-		this.id=StringUtils.convertToString(run.getId());
-		this.name=StringUtils.convertToString(run.getName());
-		this.assayBean=new AssayBean(run.getAssay());
+		this.id = StringUtils.convertToString(run.getId());
+		this.name = StringUtils.convertToString(run.getName());
+		this.assayBean = new AssayBean(run.getAssay());
 	}
+
 	public List<AliquotBean> getAliquotBeans() {
 		return aliquotBeans;
 	}
@@ -104,29 +107,16 @@ public class RunBean {
 		this.assayBean = assayBean;
 	}
 
-	/**
-	 * Assume runName has a sequenceNumber at the end
-	 * 
-	 * @return the sequence number for an run
-	 */
-	public Integer getRunNumber() {
-		Integer runNumber = -1;
-		if (name.matches("\\D+(\\d+)")) {
-			try {
-				runNumber = Integer.parseInt(name
-						.replaceAll("\\D+(\\d+)", "$1"));
-			} catch (Exception e) {
-				return -1;
-			}
-		}
-		return runNumber;
-	}
-
-	public String getRunDate() {
+	public Date getRunDate() {
 		return runDate;
 	}
 
-	public void setRunDate(String runDate) {
+	public void setRunDate(Date runDate) {
 		this.runDate = runDate;
+	}
+
+	//used for display tag
+	public SortableName getSortableName() {
+		return new SortableName(name);
 	}
 }

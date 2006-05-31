@@ -1,8 +1,11 @@
 package gov.nih.nci.calab.dto.administration;
 
 import gov.nih.nci.calab.domain.Aliquot;
+import gov.nih.nci.calab.dto.common.SortableName;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
+
+import java.util.Date;
 
 /**
  * This class includes all properties of an aliquot that need to be viewed and
@@ -12,7 +15,7 @@ import gov.nih.nci.calab.service.util.StringUtils;
  * 
  */
 
-/* CVS $Id: AliquotBean.java,v 1.10 2006-04-25 20:36:26 pansu Exp $ */
+/* CVS $Id: AliquotBean.java,v 1.11 2006-05-31 19:14:49 pansu Exp $ */
 
 public class AliquotBean {
 	private String aliquotId = "";
@@ -25,31 +28,35 @@ public class AliquotBean {
 
 	private String creator = "";
 
-	private String creationDate = "";
+	private Date creationDate;
+
+	private String creationDateStr = "";
 
 	private SampleBean sample;
-	
-	private String maskStatus="";
+
+	private String maskStatus = "";
 
 	public AliquotBean() {
 		container = new ContainerBean();
 		sample = new SampleBean();
 	}
 
-	//used in WorkflowResultBean
+	// used in WorkflowResultBean
 	public AliquotBean(String aliquotName, String maskStatus) {
-		this.aliquotName=aliquotName;
-		this.maskStatus=(maskStatus.length()==0 && aliquotName.length()>0)?CalabConstants.ACTIVE_STATUS:maskStatus;
+		this.aliquotName = aliquotName;
+		this.maskStatus = (maskStatus.length() == 0 && aliquotName.length() > 0) ? CalabConstants.ACTIVE_STATUS
+				: maskStatus;
 	}
-	
+
 	public AliquotBean(String aliquotId, String aliquotName, String maskStatus) {
-		this.aliquotId=aliquotId;
-		this.aliquotName=aliquotName;
-		this.maskStatus=(maskStatus.length()==0 && aliquotName.length()>0)?CalabConstants.ACTIVE_STATUS:maskStatus;
+		this.aliquotId = aliquotId;
+		this.aliquotName = aliquotName;
+		this.maskStatus = (maskStatus.length() == 0 && aliquotName.length() > 0) ? CalabConstants.ACTIVE_STATUS
+				: maskStatus;
 	}
-	
+
 	public AliquotBean(String aliquotName, ContainerBean container,
-			String howCreated, String creator, String creationDate) {
+			String howCreated, String creator, Date creationDate) {
 		// TODO Auto-generated constructor stub
 		this.aliquotName = aliquotName;
 		this.container = container;
@@ -57,11 +64,12 @@ public class AliquotBean {
 		this.creator = creator;
 		this.creationDate = creationDate;
 	}
-	
-	public AliquotBean(String aliquotId, String aliquotName, ContainerBean container,
-			String howCreated, String creator, String creationDate) {
+
+	public AliquotBean(String aliquotId, String aliquotName,
+			ContainerBean container, String howCreated, String creator,
+			Date creationDate) {
 		// TODO Auto-generated constructor stub
-		this.aliquotId=aliquotId;
+		this.aliquotId = aliquotId;
 		this.aliquotName = aliquotName;
 		this.container = container;
 		this.howCreated = howCreated;
@@ -70,7 +78,7 @@ public class AliquotBean {
 	}
 
 	public AliquotBean(String aliquotName, ContainerBean container,
-			String howCreated, String creator, String creationDate,
+			String howCreated, String creator, Date creationDate,
 			SampleBean sample) {
 		// TODO Auto-generated constructor stub
 		this(aliquotName, container, howCreated, creator, creationDate);
@@ -78,14 +86,13 @@ public class AliquotBean {
 	}
 
 	public AliquotBean(Aliquot aliquot) {
-		this.aliquotId=StringUtils.convertToString(aliquot.getId());
+		this.aliquotId = StringUtils.convertToString(aliquot.getId());
 		this.aliquotName = StringUtils.convertToString(aliquot.getName());
 		this.container = new ContainerBean(aliquot);
 		this.howCreated = StringUtils.convertToString(aliquot
 				.getCreatedMethod());
 		this.creator = StringUtils.convertToString(aliquot.getCreatedBy());
-		this.creationDate = StringUtils.convertDateToString(aliquot
-				.getCreatedDate(), CalabConstants.DATE_FORMAT);
+		this.creationDate = aliquot.getCreatedDate();
 		this.sample = new SampleBean(aliquot.getSample());
 	}
 
@@ -105,11 +112,11 @@ public class AliquotBean {
 		this.howCreated = howCreated;
 	}
 
-	public String getCreationDate() {
+	public Date getCreationDate() {
 		return creationDate;
 	}
 
-	public void setCreationDate(String creationDate) {
+	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
 	}
 
@@ -150,6 +157,20 @@ public class AliquotBean {
 	}
 
 	public void setMaskStatus(String maskStatus) {
-		this.maskStatus = (maskStatus.length()==0 && getAliquotName().length()>0)?CalabConstants.ACTIVE_STATUS:maskStatus;
+		this.maskStatus = (maskStatus.length() == 0 && getAliquotName()
+				.length() > 0) ? CalabConstants.ACTIVE_STATUS : maskStatus;
+	}
+
+	public String getCreationDateStr() {
+		if (creationDate != null) {
+			creationDateStr = StringUtils.convertDateToString(creationDate,
+					CalabConstants.DATE_FORMAT);
+		}
+		return creationDateStr;
+	}	
+
+	//used for display tag
+	public SortableName getSortableName() {
+		return new SortableName(aliquotName);
 	}
 }
