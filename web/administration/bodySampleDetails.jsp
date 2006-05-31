@@ -197,7 +197,7 @@
 					<tbody>
 						<tr class="topBorder">
 							<c:choose>
-								<c:when test="${containerNum == cnum}">
+								<c:when test="${containerNum == cnum+1}">
 									<c:set var="style" value="dataTableHighlightLabel" />
 								</c:when>
 								<c:otherwise>
@@ -392,7 +392,7 @@
 						Accessioned by:
 						<bean:write name="sample" property="sampleSubmitter" />
 						Accession Date:
-						<bean:write name="sample" property="accessionDate" />
+						<bean:write name="sample" property="accessionDateStr" />
 					</td>
 				</tr>
 			</table>
@@ -743,7 +743,7 @@
 						Aliquoted by:
 						<bean:write name="aliquot" property="creator" />
 						Aliquoted Date:
-						<bean:write name="aliquot" property="creationDate" />
+						<bean:write name="aliquot" property="creationDateStr" />
 					</td>
 				</tr>
 
