@@ -61,10 +61,10 @@
   											    <c:set var="aliquotSeq" value="${aliquotSeq+1}"/>  	
   											    <c:choose>
   	    	      							       <c:when test="${aliquot.maskStatus eq 'Active'}">  											    								
-												     d.add(${aliquotSeq}, ${runSeq+1},'${aliquot.aliquotName}','javascript:gotoPage(\'viewAliquot.do?menuType=none&assayType=${assay.assayType}&assayName=${assay.assayName}&runName=${run.name}&aliquotId=${aliquot.aliquotId}\')', '${aliquot.creator}, ${aliquot.creationDate}');
+												     d.add(${aliquotSeq}, ${runSeq+1},'${aliquot.aliquotName}','javascript:gotoPage(\'viewAliquot.do?menuType=none&assayType=${assay.assayType}&assayName=${assay.assayName}&runName=${run.name}&aliquotId=${aliquot.aliquotId}\')', '${aliquot.creator}, ${aliquot.creationDateStr}');
 												   </c:when>
 												   <c:otherwise>
-  												     d.add(${aliquotSeq}, ${runSeq+1},'<i>${aliquot.aliquotName}</i>','javascript:gotoPage(\'viewAliquot.do?menuType=none&assayType=${assay.assayType}&assayName=${assay.assayName}&runName=${run.name}&aliquotId=${aliquot.aliquotId}\')', '${aliquot.creator}, ${aliquot.creationDate}');
+  												     d.add(${aliquotSeq}, ${runSeq+1},'<i>${aliquot.aliquotName}</i>','javascript:gotoPage(\'viewAliquot.do?menuType=none&assayType=${assay.assayType}&assayName=${assay.assayName}&runName=${run.name}&aliquotId=${aliquot.aliquotId}\')', '${aliquot.creator}, ${aliquot.creationDateStr}');
 												   </c:otherwise>
 												</c:choose>
   											</c:forEach>
