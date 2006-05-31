@@ -15,7 +15,7 @@ import java.util.Set;
  * @author pansu
  * 
  */
-/* CVS $Id: ContainerBean.java,v 1.9 2006-05-31 19:15:42 pansu Exp $ */
+/* CVS $Id: ContainerBean.java,v 1.10 2006-05-31 21:02:10 pansu Exp $ */
 
 public class ContainerBean {
 	private String containerName = "";
@@ -43,9 +43,7 @@ public class ContainerBean {
 	private String storageCondition = "";
 
 	private StorageLocation storageLocation;
-
-	private String storageLocationStr = "";
-
+	
 	private String containerComments = "";
 
 	private SampleBean sample;
@@ -77,8 +75,7 @@ public class ContainerBean {
 		solvent = container.getSolvent();
 		safetyPrecaution = container.getSafetyPrecaution();
 		storageCondition = container.getStorageCondition();
-		storageLocation=container.getStorageLocation();
-		storageLocationStr = container.getStorageLocationStr();
+		storageLocation=new StorageLocation(container.getStorageLocation());
 		containerComments = container.getContainerComments();
 	}
 
@@ -258,28 +255,6 @@ public class ContainerBean {
 
 	public void setStorageLocation(StorageLocation storageLocation) {
 		this.storageLocation = storageLocation;
-	}
-
-	public String getStorageLocationStr() {
-		String lab = (storageLocation.getLab() == null) ? "" : "Lab"
-				+ storageLocation.getLab();
-		String room = (storageLocation.getRoom() == null) ? "" : "Room"
-				+ storageLocation.getRoom();
-		String freezer = (storageLocation.getFreezer() == null) ? ""
-				: "Freezer" + storageLocation.getFreezer();
-		String shelf = (storageLocation.getShelf() == null) ? "" : "Shelf"
-				+ storageLocation.getShelf();
-		String rack = (storageLocation.getRack() == null) ? "" : "Rack"
-				+ storageLocation.getRack();
-		String box = (storageLocation.getBox() == null) ? "" : "Box"
-				+ storageLocation.getBox();
-		String[] strs = new String[] { lab, room, freezer, shelf, rack, box };
-		storageLocationStr = StringUtils.join(strs, "-");
-		return storageLocationStr;
-	}
-
-	public void setStorageLocationStr(String storageLocationStr) {
-		this.storageLocationStr = storageLocationStr;
 	}
 
 	public String getContainerName() {
