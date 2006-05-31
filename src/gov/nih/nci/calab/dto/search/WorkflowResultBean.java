@@ -1,5 +1,7 @@
 package gov.nih.nci.calab.dto.search;
 
+import java.util.Date;
+
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.workflow.AssayBean;
 import gov.nih.nci.calab.dto.workflow.FileBean;
@@ -21,17 +23,17 @@ public class WorkflowResultBean {
 
 	private RunBean run;
 
-	public WorkflowResultBean(String filePath, String assayType,
-			String assayName, String assayRunId, String assayRunName, String assayRunDate,
+	public WorkflowResultBean(String fileId, String filePath, String shortFileName, String assayType,
+			String assayName, String assayRunId, String assayRunName, Date assayRunDate,
 			String aliquotName, String aliquotStatus,
-			String fileSubmissionDate, String fileSubmitter,
+			Date fileSubmissionDate, String fileSubmitter,
 			String fileMaskStatus, String inoutType) {
-		super();
-		// TODO Auto-generated constructor stub
-		this.file = new FileBean("", filePath, fileSubmissionDate, fileSubmitter,
+		super();		
+		this.file = new FileBean(fileId, filePath, shortFileName, fileSubmissionDate, fileSubmitter,
 				fileMaskStatus, inoutType);
 		this.assay = new AssayBean(assayName, assayType);
 		this.run = new RunBean(assayRunId, assayRunName, assayRunDate);
+		this.run.setAssayBean(this.assay);
 		this.aliquot = new AliquotBean(aliquotName, aliquotStatus);
 	}
 
