@@ -102,7 +102,7 @@ public class ExecuteWorkflowService {
 		}
 	}
 
-	public AliquotBean getAliquot(String aliquotId) throws Exception {
+public AliquotBean getAliquot(String aliquotId) throws Exception {
 		AliquotBean aliquotBean = new AliquotBean();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
@@ -116,9 +116,7 @@ public class ExecuteWorkflowService {
 				aliquotBean.setAliquotId(aliquotId); // name
 				aliquotBean.setAliquotName(doAliquot.getName());
 				aliquotBean
-						.setCreationDate(StringUtils.convertDateToString(
-								doAliquot.getCreatedDate(),
-								CalabConstants.DATE_FORMAT));
+						.setCreationDate(doAliquot.getCreatedDate());
 				aliquotBean.setCreator(doAliquot.getCreatedBy());
 				aliquotBean.setHowCreated(doAliquot.getCreatedMethod());
 
@@ -193,18 +191,16 @@ public class ExecuteWorkflowService {
 			return null;
 		}
 		return aliquotBean;
-	}
-
-	/**
-	 * Save the aliquot IDs to be associated with the given run ID.
-	 * 
-	 * @param assayId
-	 * @param runBy
-	 * @param runDate
-	 * @param createdBy
-	 * @param createdDate
-	 * @throws Exception *
-	 */
+	}	/**
+		 * Save the aliquot IDs to be associated with the given run ID.
+		 * 
+		 * @param assayId
+		 * @param runBy
+		 * @param runDate
+		 * @param createdBy
+		 * @param createdDate
+		 * @throws Exception *
+		 */
 
 	public RunBean saveRun(String assayId, String runBy, Date runDate,
 			String createdBy, String createdDate) throws Exception {
@@ -274,7 +270,7 @@ public class ExecuteWorkflowService {
 	}
 
 	public ExecuteWorkflowBean getExecuteWorkflowBean() throws Exception {
-		//long start = System.currentTimeMillis();
+		// long start = System.currentTimeMillis();
 
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
@@ -319,7 +315,7 @@ public class ExecuteWorkflowService {
 				Object[] items = (Object[]) obj;
 				AssayBean assayBean = new AssayBean((Assay) items[0]);
 				RunBean runBean = null;
-				if (items[1] != null){
+				if (items[1] != null) {
 					runBean = new RunBean((Run) items[1]);
 				}
 				AliquotBean aliquotBean = null;
@@ -341,28 +337,28 @@ public class ExecuteWorkflowService {
 				if (assayTypeAssayMap.get(assayBean.getAssayType()) == null) {
 					assays = new TreeSet<AssayBean>(
 							new CalabComparators.AssayBeanComparator());
-					assayTypeAssayMap.put(assayBean.getAssayType(), assays);					
+					assayTypeAssayMap.put(assayBean.getAssayType(), assays);
 				} else {
 					assays = assayTypeAssayMap.get(assayBean.getAssayType());
 				}
-				assays.add(assayBean);							
+				assays.add(assayBean);
 
 				if (runBean != null) {
 					if (assayRunMap.get(assayBean.getAssayId()) == null) {
 						runs = new TreeSet<RunBean>(
 								new CalabComparators.RunBeanComparator());
-						assayRunMap.put(assayBean.getAssayId(), runs);						
+						assayRunMap.put(assayBean.getAssayId(), runs);
 					} else {
-						runs = assayRunMap.get(assayBean.getAssayId());					
+						runs = assayRunMap.get(assayBean.getAssayId());
 					}
-					runs.add(runBean);											
+					runs.add(runBean);
 				}
-				
+
 				if (aliquotBean != null) {
 					if (runAliquotMap.get(runBean.getId()) == null) {
 						aliquots = new TreeSet<AliquotBean>(
 								new CalabComparators.AliquotBeanComparator());
-						runAliquotMap.put(runBean.getId(), aliquots);											
+						runAliquotMap.put(runBean.getId(), aliquots);
 					} else {
 						aliquots = runAliquotMap.get(runBean.getId());
 					}
@@ -373,11 +369,11 @@ public class ExecuteWorkflowService {
 					if (runInFileMap.get(runBean.getId()) == null) {
 						inFiles = new TreeSet<FileBean>(
 								new CalabComparators.FileBeanComparator());
-						runInFileMap.put(runBean.getId(), inFiles);						
+						runInFileMap.put(runBean.getId(), inFiles);
 					} else {
 						inFiles = runInFileMap.get(runBean.getId());
 					}
-					inFiles.add(inFileBean);								
+					inFiles.add(inFileBean);
 				}
 
 				if (outFileBean != null) {
@@ -388,7 +384,7 @@ public class ExecuteWorkflowService {
 					} else {
 						outFiles = runOutFileMap.get(runBean.getId());
 					}
-					outFiles.add(outFileBean);					
+					outFiles.add(outFileBean);
 				}
 			}
 			// Get all counts and parent child associations
@@ -408,20 +404,23 @@ public class ExecuteWorkflowService {
 									.get(run.getId());
 							if (runAliquots != null) {
 								aliquotCount += runAliquots.size();
-								run.setAliquotBeans(new ArrayList<AliquotBean>(runAliquots));
+								run.setAliquotBeans(new ArrayList<AliquotBean>(
+										runAliquots));
 							}
-							SortedSet<FileBean> runInFiles = runInFileMap.get(run
-									.getId());
+							SortedSet<FileBean> runInFiles = runInFileMap
+									.get(run.getId());
 							if (runInFiles != null) {
 								inFileCount += runInFiles.size();
-								run.setInputFileBeans(new ArrayList<FileBean>(runInFiles));
+								run.setInputFileBeans(new ArrayList<FileBean>(
+										runInFiles));
 							}
-							SortedSet<FileBean> runOutFiles = runOutFileMap.get(run
-									.getId());
+							SortedSet<FileBean> runOutFiles = runOutFileMap
+									.get(run.getId());
 							if (runOutFiles != null) {
-								run.setOutputFileBeans(new ArrayList<FileBean>(runOutFiles));
+								run.setOutputFileBeans(new ArrayList<FileBean>(
+										runOutFiles));
 							}
-						}						
+						}
 					}
 				}
 			}
@@ -437,7 +436,7 @@ public class ExecuteWorkflowService {
 		} finally {
 			ida.close();
 		}
-		//System.out.println(System.currentTimeMillis() - start);
+		// System.out.println(System.currentTimeMillis() - start);
 		return workflowBean;
 	}
 

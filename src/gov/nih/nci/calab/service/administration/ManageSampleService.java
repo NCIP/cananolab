@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-/* CVS $Id: ManageSampleService.java,v 1.26 2006-05-08 18:57:40 zengje Exp $ 
+/* CVS $Id: ManageSampleService.java,v 1.27 2006-05-31 19:19:18 pansu Exp $ 
  */
 public class ManageSampleService {
 	private static Logger logger = Logger.getLogger(ManageSampleService.class);
@@ -157,7 +157,7 @@ public class ManageSampleService {
 			
 			doSample.setComments(sample.getGeneralComments());
 			doSample.setCreatedBy(sample.getSampleSubmitter());
-			doSample.setCreatedDate(StringUtils.convertToDate(sample.getAccessionDate(),CalabConstants.DATE_FORMAT));
+			doSample.setCreatedDate(sample.getAccessionDate());
 			doSample.setDescription(sample.getSampleDescription());
 			doSample.setLotDescription(sample.getLotDescription());
 			doSample.setLotId(sample.getLotId());
@@ -166,7 +166,7 @@ public class ManageSampleService {
 			// TODO: ReceivedBy and Date are not in the wireframe.
 
 			doSample.setReceivedBy("");
-			doSample.setReceivedDate(StringUtils.convertToDate(sample.getDateReceived(), CalabConstants.DATE_FORMAT));
+			doSample.setReceivedDate(sample.getDateReceived());
 			doSample.setSampleSequenceId(getUserDefinedSequenceId(sample.getSampleNamePrefix()));
 			doSample.setSolubility(sample.getSolubility());
 			doSample.setSourceSampleId(sample.getSourceSampleId());
@@ -199,7 +199,7 @@ public class ManageSampleService {
 
 				// Container is created by the same person who creates sample
 				doSampleContainer.setCreatedBy(sample.getSampleSubmitter());
-				doSampleContainer.setCreatedDate(StringUtils.convertToDate(sample.getAccessionDate(), CalabConstants.DATE_FORMAT));
+				doSampleContainer.setCreatedDate(sample.getAccessionDate());
 				doSampleContainer.setDiluentsSolvent(containers[i].getSolvent());
 				doSampleContainer.setQuantity(StringUtils.convertToFloat(containers[i].getQuantity()));
 				doSampleContainer.setQuantityUnit(containers[i].getQuantityUnit());
