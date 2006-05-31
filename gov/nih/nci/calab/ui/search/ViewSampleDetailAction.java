@@ -6,13 +6,15 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: ViewSampleDetailAction.java,v 1.5 2006-05-12 15:37:31 pansu Exp $ */
+/* CVS $Id: ViewSampleDetailAction.java,v 1.6 2006-05-31 19:24:43 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
+import gov.nih.nci.calab.dto.administration.ContainerBean;
 import gov.nih.nci.calab.dto.administration.SampleBean;
 import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,15 +47,25 @@ public class ViewSampleDetailAction extends AbstractBaseAction {
 		// if no aliquot information show sample details and its containers
 
 		if (!isAliquot) {
-			int sampleNum = Integer.parseInt((String) theForm.get("sampleNum"));
+			String sampleId = (String) theForm.get("sampleId");
 
 			int containerNum = Integer.parseInt((String) theForm
 					.get("containerNum"));
-			if (session.getAttribute("samples") != null) {
-				List samples = (List) session.getAttribute("samples");
-				SampleBean sample = ((SampleBean) samples.get(sampleNum));
-				request.setAttribute("sample", sample);
-				request.setAttribute("containerNum", containerNum);
+			if (session.getAttribute("sampleContainers") != null) {
+				List<ContainerBean> sampleContainers = new ArrayList<ContainerBean>(
+						(List<? extends ContainerBean>) session
+								.getAttribute("sampleContainers"));
+				SampleBean sample = null;
+				for (ContainerBean container : sampleContainers) {
+					if (container.getSample().getSampleId().equals(sampleId)
+							&& container.getContainerNumber() == containerNum) {
+						sample = container.getSample();
+						request.setAttribute("sample", sample);
+						request.setAttribute("containerNum", containerNum);
+						break;
+					}
+				}
+
 				forward = mapping.findForward("success");
 			} else {
 				logger

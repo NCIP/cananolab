@@ -6,9 +6,10 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchSampleAction.java,v 1.12 2006-05-12 15:38:03 pansu Exp $ */
+/* CVS $Id: SearchSampleAction.java,v 1.13 2006-05-31 19:24:15 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
+import gov.nih.nci.calab.dto.administration.ContainerBean;
 import gov.nih.nci.calab.dto.administration.SampleBean;
 import gov.nih.nci.calab.dto.administration.StorageLocation;
 import gov.nih.nci.calab.service.search.SearchSampleService;
@@ -16,6 +17,8 @@ import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -112,7 +115,12 @@ public class SearchSampleAction extends AbstractBaseAction {
 			}
 		} else {
 			if (!isAliquot) {
-				session.setAttribute("samples", samples);
+				//create a list of ContainerBeans for use in display tag
+				List<ContainerBean> containers=new ArrayList<ContainerBean>();
+				for (SampleBean sample:samples) {					
+					containers.addAll(Arrays.asList(sample.getContainers()));
+				}
+				session.setAttribute("sampleContainers", containers);				
 				forward = mapping.findForward("success");
 			} else {
 				session.setAttribute("aliquots", aliquots);
