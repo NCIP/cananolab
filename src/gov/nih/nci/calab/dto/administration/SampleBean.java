@@ -2,12 +2,14 @@ package gov.nih.nci.calab.dto.administration;
 
 import gov.nih.nci.calab.domain.Sample;
 import gov.nih.nci.calab.domain.SampleContainer;
-import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.dto.common.SortableName;
 import gov.nih.nci.calab.service.util.CalabComparators;
+import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 
-import java.util.Set;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.Set;
 
 /**
  * This class represents all properties of a sample that need to be viewed and
@@ -17,8 +19,8 @@ import java.util.Arrays;
  * 
  */
 
-/* CVS $Id: SampleBean.java,v 1.12 2006-04-19 19:52:01 pansu Exp $ */
-public class SampleBean {
+/* CVS $Id: SampleBean.java,v 1.13 2006-05-31 19:15:14 pansu Exp $ */
+public class SampleBean{
 	private String sampleId="";
 	
 	private String sampleNamePrefix="";
@@ -35,7 +37,7 @@ public class SampleBean {
 
 	private String sourceSampleId="";
 
-	private String dateReceived="";
+	private Date dateReceived;
 
 	private String lotId="";
 
@@ -49,7 +51,9 @@ public class SampleBean {
 
 	private String sampleSubmitter="";
 
-	private String accessionDate="";
+	private Date accessionDate;
+	
+	private String accessionDateStr;
 
 	private ContainerBean[] containers;
 
@@ -63,9 +67,9 @@ public class SampleBean {
 	
 	public SampleBean(String sampleName, String sampleType, String sampleSOP,
 			String sampleDescription, String sampleSource,
-			String sourceSampleId, String dateReceived, String solubility,
+			String sourceSampleId, Date dateReceived, String solubility,
 			String lotId, String lotDescription, String numberOfContainers,
-			String generalComments, String sampleSubmitter, String accessionDate) {
+			String generalComments, String sampleSubmitter, Date accessionDate) {
 		super();
 		// TODO Auto-generated constructor stub
 		this.sampleName = sampleName;
@@ -86,10 +90,10 @@ public class SampleBean {
 
 	public SampleBean(String sampleNamePrefix, String sampleName,
 			String sampleType, String sampleSOP, String sampleDescription,
-			String sampleSource, String sourceSampleId, String dateReceived,
+			String sampleSource, String sourceSampleId, Date dateReceived,
 			String solubility, String lotId, String lotDescription,
 			String numberOfContainers, String generalComments,
-			String sampleSubmitter, String accessionDate,
+			String sampleSubmitter, Date accessionDate,
 			ContainerBean[] containers) {
 		// TODO Auto-generated constructor stub
 		this(sampleName, sampleType, sampleSOP, sampleDescription, sampleSource,
@@ -110,8 +114,7 @@ public class SampleBean {
 		this.sampleSource = (sample.getSource() == null) ? "" : StringUtils.convertToString(sample
 				.getSource().getOrganizationName());
 		this.sourceSampleId = StringUtils.convertToString(sample.getSourceSampleId());
-		this.dateReceived = StringUtils.convertDateToString(sample
-				.getReceivedDate(), CalabConstants.DATE_FORMAT);
+		this.dateReceived = sample.getReceivedDate();
 		this.solubility = StringUtils.convertToString(sample.getSolubility());
 		this.lotId = StringUtils.convertToString(sample.getLotId());
 		this.lotDescription = StringUtils.convertToString(sample.getLotDescription());
@@ -120,32 +123,32 @@ public class SampleBean {
 		this.numberOfContainers = StringUtils.convertToString(sampleContainers.size());
 		this.generalComments = StringUtils.convertToString(sample.getComments());
 		this.sampleSubmitter = StringUtils.convertToString(sample.getCreatedBy());
-		this.accessionDate = StringUtils.convertDateToString(sample
-				.getCreatedDate(), CalabConstants.DATE_FORMAT);
+		this.accessionDate =sample.getCreatedDate();
 		this.containers = new ContainerBean[sampleContainers.size()];
 	
 		int i = 0;
 		for (Object obj : sampleContainers) {
 			SampleContainer sampleContainer = (SampleContainer) obj;
 			containers[i] = new ContainerBean(sampleContainer);
+			containers[i].setSample(this);
 			i++;
 		}
 		Arrays.sort(containers, new CalabComparators.ContainerBeanComparator());
 	}
 
-	public String getDateReceived() {
+	public Date getDateReceived() {
 		return dateReceived;
 	}
 
-	public String getAccessionDate() {
+	public Date getAccessionDate() {
 		return accessionDate;
 	}
 
-	public void setAccessionDate(String accessionDate) {
+	public void setAccessionDate(Date accessionDate) {
 		this.accessionDate = accessionDate;
 	}
 
-	public void setDateReceived(String dateReceived) {
+	public void setDateReceived(Date dateReceived) {
 		this.dateReceived = dateReceived;
 	}
 
@@ -269,4 +272,14 @@ public class SampleBean {
 		this.sampleId = sampleId;
 	}
 
+	public String getAccessionDateStr() {
+		if (accessionDate!=null) {
+			accessionDateStr=StringUtils.convertDateToString(accessionDate, CalabConstants.DATE_FORMAT);
+		}
+		return accessionDateStr;
+	}
+
+	public SortableName getSortableName() {	
+		return new SortableName(sampleName);
+	}
 }
