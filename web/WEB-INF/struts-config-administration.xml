@@ -5,6 +5,7 @@
 		<form-bean name="createSampleForm" type="org.apache.struts.validator.DynaValidatorActionForm">
 			<form-property name="sampleNamePrefix" type="java.lang.String" />
 			<form-property name="sampleType" type="java.lang.String" />
+			<form-property name="otherSampleType" type="java.lang.String" />
 			<form-property name="sampleSOP" type="java.lang.String" />
 			<form-property name="sampleDescription" type="java.lang.String" />
 			<form-property name="sampleSource" type="java.lang.String" />
