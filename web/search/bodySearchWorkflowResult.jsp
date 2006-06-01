@@ -4,10 +4,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
 <link rel="stylesheet" type="text/css" href="css/displaytag.css" />
-<table width="90%" align="center">
+<table width="100%" align="center">
 	<tr>
-		<td width="10%">
-			&nbsp;
+		<td width="15%">
+			&nbsp
 		</td>
 		<td>
 			<h3>
@@ -15,7 +15,7 @@
 				Search Results
 			</h3>
 		</td>
-		<td align="right" width="20%">
+		<td align="right" width="15%">
 			<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=workflow_search_results')" class="helpText">Help</a> &nbsp; &nbsp;<a href="initSession.do?forwardPage=searchWorkflow&rememberSearch=true"
 				class="helpText">Back</a>
 		</td>
@@ -26,19 +26,24 @@
 		<td>
 			<logic:present name="workflows">
 				<display:table name="workflows" id="workflow" requestURI="searchWorkflow.do" pagesize="100" class="displaytable">
-					<display:column property="file.filename" title="File Name"
+					<display:column title="File<br>Name"
 						href="${pageContext.request.contextPath}/downloadSearchedFile.do?method=downloadFile&fileName=${workflow.file.filename}&runId=${workflow.run.id}&runName=${workflow.run.name}&inout=${workflow.file.inoutType}&assayType=${workflow.assay.assayType}&assayName=${workflow.assay.assayName}"
-						sortable="true"/>
-					<display:column property="assay.assayType" title="Assay Type" sortable="true" />
-					<display:column property="assay.assayName" title="Assay Name" sortable="true" />
-					<display:column property="run.sortableName" title="Assay Run Name" sortable="true" />
-					<display:column property="run.runDate" title="Assay Run Date" sortable="true" format="{0,date,MM-dd-yyyy}" />
-					<display:column property="file.inoutType" title="In or Out File" sortable="true" />
-					<display:column property="file.createdDate" title="File Submission Date" sortable="true" format="{0,date,MM-dd-yyyy}" />
-					<display:column property="file.fileSubmitter" title="File Submitter" sortable="true" />
-					<display:column property="file.fileMaskStatus" title="File Status" sortable="true" />
-					<display:column property="aliquot.sortableName" title="Aliquot ID" sortable="true" />
-					<display:column property="aliquot.maskStatus" title="Aliquot Status" sortable="true" />
+						sortable="true">
+						<%--<c:out value="${pageScope.workflow.file.timestamp}"/>--%>
+						<c:out value="${workflow.file.shortFilename}" />
+						<br>
+						<c:out value="${workflow.file.timePrefix}" />
+					</display:column>
+					<display:column property="assay.assayType" title="Assay<br>Type" sortable="true" />
+					<display:column property="assay.assayName" title="Assay<br>Name" sortable="true" />
+					<display:column property="run.sortableName" title="Assay<br>Run<br>Name" sortable="true" />
+					<display:column property="run.runDate" title="Assay<br>Run<br>Date" sortable="true" format="{0,date,MM-dd-yyyy}" />
+					<display:column property="file.inoutType" title="In/Out<br>File" sortable="true" />
+					<display:column property="file.createdDate" title="File<br>Submission<br>Date" sortable="true" format="{0,date,MM-dd-yyyy}" />
+					<display:column property="file.fileSubmitter" title="File<br>Submitter" sortable="true" />
+					<display:column property="file.fileMaskStatus" title="File<br>Status" sortable="true" />
+					<display:column property="aliquot.sortableName" title="Aliquot<br>ID" sortable="true" />
+					<display:column property="aliquot.maskStatus" title="Aliquot<br>Status" sortable="true" />
 				</display:table>
 				<%--
 				<table border="0" align="center" cellpadding="0" cellspacing="0">
