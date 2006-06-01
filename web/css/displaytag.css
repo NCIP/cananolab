@@ -1,13 +1,14 @@
 table.displaytable {
 	border: 1px solid #666;
 	margin: 20px 0 20px 0 !important;
+	width:100%;
 }
 
 table.displaytable thead tr {
 	background-color: #6a8989;
 	text-align: left;
 	vertical-align: top;
-	font-size: 0.8em;
+	font-size: 0.7em;
 	color: white;
 }
 
