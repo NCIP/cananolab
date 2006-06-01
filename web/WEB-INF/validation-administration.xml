@@ -91,6 +91,13 @@
 					<var-value>100</var-value>
 				</var>
 			</field>
+			<field property="otherSampleType" depends="validwhen">
+				<arg position="0" key="createSampleForm.otherSampleType" bundle="administration" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((sampleType!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
 			<field property="containerType" depends="required" indexedListProperty="containers">
 				<arg position="0" key="createSampleForm.containerType" bundle="administration" />
 			</field>
