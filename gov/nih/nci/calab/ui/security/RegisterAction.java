@@ -58,7 +58,7 @@ public class RegisterAction extends AbstractBaseAction {
 	}
 
 	public boolean loginRequired() {
-		return false;
+		return true;
 	}
 
 }
