@@ -5,10 +5,10 @@
 <%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
 <link rel="stylesheet" type="text/css" href="css/displaytag.css" />
 
-<table width="90%" align="center">
+<table width="100%" align="center">
 	<tr>
-		<td width="10%">
-			&nbsp;
+		<td width="15%">
+			&nbsp
 		</td>
 		<td>
 			<h3>
@@ -16,19 +16,27 @@
 				Aliquot Search Results
 			</h3>
 		</td>
-		<td align="right" width="20%">
-			<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=sample_search_results')" class="helpText">Help</a> &nbsp;&nbsp; <a href="#" onClick="javascript:history.go(-1)" class="helpText">back</a>
+		<td align="right" width="15%">
+			<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=sample_search_results')" class="helpText">Help</a> &nbsp;&nbsp;
+			<c:choose>
+				<c:when test="${empty param.fromSampleResult}">
+					<a href="initSession.do?forwardPage=searchSample&rememberSearch=true" class="helpText">back</a>
+				</c:when>
+				<c:otherwise>
+					<a href="sampleResultForward.do" class="helpText">back</a>
+				</c:otherwise>
+			</c:choose>
 		</td>
 </table>
 <jsp:include page="/bodyMessage.jsp?bundle=search" />
 <display:table name="sessionScope.aliquots" id="aliquot" class="displaytable" pagesize="100" requestURI="searchAliquot.do">
-	<display:column title="Sample ID" property="sample.sortableName" sortable="true" />
-	<display:column title="Sample Accession Date" property="sample.accessionDate" sortable="true" format="{0,date,MM-dd-yyyy}" />
-	<display:column title="Sample Submitter" property="sample.sampleSubmitter" sortable="true" />
-	<display:column title="Aliquot ID" property="sortableName" sortable="true"/>
-	<display:column title="Aliquoted Date" property="creationDate" sortable="true"  format="{0,date,MM-dd-yyyy}" />
-	<display:column title="Aliquoted Location" property="container.storageLocation" sortable="true" />
-	<display:column title="Aliquot Creator" property="creator" sortable="true" />
+	<display:column title="Sample<br>ID" property="sample.sortableName" sortable="true" />
+	<display:column title="Sample<br>Accession<br>Date" property="sample.accessionDate" sortable="true" format="{0,date,MM-dd-yyyy}" />
+	<display:column title="Sample<br>Submitter" property="sample.sampleSubmitter" sortable="true" />
+	<display:column title="Aliquot<br>ID" property="sortableName" sortable="true" />
+	<display:column title="Aliquoted<br>Date" property="creationDate" sortable="true" format="{0,date,MM-dd-yyyy}" />
+	<display:column title="Aliquot<br>Location" property="container.storageLocation" sortable="true" />
+	<display:column title="Aliquot<br>Creator" property="creator" sortable="true" />
 	<display:column title="Actions">
 		<c:url var="viewAliquotDetailURL" value="/viewSampleDetail.do">
 			<c:param name="aliquotNum" value="${aliquot_rowNum-1}" />
