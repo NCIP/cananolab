@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchSampleAction.java,v 1.13 2006-05-31 19:24:15 pansu Exp $ */
+/* CVS $Id: SearchSampleAction.java,v 1.14 2006-06-01 15:37:53 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerBean;
@@ -39,13 +39,14 @@ public class SearchSampleAction extends AbstractBaseAction {
 			throws Exception {
 
 		ActionForward forward = null;
+		ActionMessages msgs = new ActionMessages();
 
 		HttpSession session = request.getSession();
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		// search base on aliquotName if aliquotName is present
 		// otherwise search base sampleName
 		boolean isAliquot = ((String) theForm.get("isAliquot")).equals("true") ? true
-				: false;		
+				: false;
 		String searchName = (String) theForm.get("searchName");
 		String sampleName = "";
 		String aliquotName = "";
@@ -78,6 +79,7 @@ public class SearchSampleAction extends AbstractBaseAction {
 		List<SampleBean> samples = null;
 		List<AliquotBean> aliquots = null;
 
+		// search aliquot
 		if (isAliquot) {
 			if (aliquotName.equals("all")) {
 				aliquotName = "";
@@ -86,45 +88,44 @@ public class SearchSampleAction extends AbstractBaseAction {
 					aliquotName, sampleType, sampleSource, sourceSampleId,
 					dateAccessionedBegin, dateAccessionedEnd, sampleSubmitter,
 					storageLocation);
-		} else if (sampleName.length() >= 0) {
-			if (sampleName.equals("all")) {
-				sampleName = "";
-			}
-			samples = searchSampleService.searchSamplesBySampleName(sampleName,
-					sampleType, sampleSource, sourceSampleId,
-					dateAccessionedBegin, dateAccessionedEnd, sampleSubmitter,
-					storageLocation);
-		} else {
-			samples = searchSampleService.searchSamples(sampleType,
-					sampleSource, sourceSampleId, dateAccessionedBegin,
-					dateAccessionedEnd, sampleSubmitter, storageLocation);
+			if (aliquots == null || aliquots.isEmpty()) {
+				ActionMessage msg = new ActionMessage(
+						"message.searchSample.noResult");
+				msgs.add("message", msg);
+				saveMessages(request, msgs);
+			} 
+			session.setAttribute("aliquots", aliquots);
+			forward = mapping.findForward("successAliquot");
 		}
-
-		if (!isAliquot && (samples == null || samples.isEmpty()) || isAliquot
-				&& (aliquots == null || aliquots.isEmpty())) {
-			ActionMessages msgs = new ActionMessages();
-			ActionMessage msg = new ActionMessage(
-					"message.searchSample.noResult");
-			msgs.add("message", msg);
-			saveMessages(request, msgs);
-			// if the request came from the sample search result page
-			if (request.getParameter("fromSampleResult") != null) {
-				forward = mapping.findForward("sampleResult");
+		// search sample
+		else {
+			if (sampleName.length() >= 0) {
+				if (sampleName.equals("all")) {
+					sampleName = "";
+				}
+				samples = searchSampleService.searchSamplesBySampleName(
+						sampleName, sampleType, sampleSource, sourceSampleId,
+						dateAccessionedBegin, dateAccessionedEnd,
+						sampleSubmitter, storageLocation);
 			} else {
-				forward = mapping.getInputForward();
+				samples = searchSampleService.searchSamples(sampleType,
+						sampleSource, sourceSampleId, dateAccessionedBegin,
+						dateAccessionedEnd, sampleSubmitter, storageLocation);
 			}
-		} else {
-			if (!isAliquot) {
-				//create a list of ContainerBeans for use in display tag
-				List<ContainerBean> containers=new ArrayList<ContainerBean>();
-				for (SampleBean sample:samples) {					
+			if (samples == null || samples.isEmpty()) {
+				ActionMessage msg = new ActionMessage(
+						"message.searchSample.noResult");
+				msgs.add("message", msg);
+				saveMessages(request, msgs);
+				forward = mapping.getInputForward();
+			} else {
+				// create a list of ContainerBeans for use in display tag
+				List<ContainerBean> containers = new ArrayList<ContainerBean>();
+				for (SampleBean sample : samples) {
 					containers.addAll(Arrays.asList(sample.getContainers()));
 				}
-				session.setAttribute("sampleContainers", containers);				
+				session.setAttribute("sampleContainers", containers);
 				forward = mapping.findForward("success");
-			} else {
-				session.setAttribute("aliquots", aliquots);
-				forward = mapping.findForward("successAliquot");
 			}
 		}
 		return forward;
