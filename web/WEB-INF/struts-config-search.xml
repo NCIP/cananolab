@@ -26,10 +26,8 @@
 			<form-property name="dateAccessionedBegin" type="java.lang.String" />
 			<form-property name="sampleType" type="java.lang.String" />
 			<form-property name="aliquotName" type="java.lang.String" />
-			<form-property name="storageBox" type="java.lang.String" />
 			<form-property name="dateAccessionedEnd" type="java.lang.String" />
 			<form-property name="sampleSubmitter" type="java.lang.String" />
-			<form-property name="lotId" type="java.lang.String" />
 			<form-property name="storageLocation" type="gov.nih.nci.calab.dto.administration.StorageLocation" />
 		</form-bean>
 		<form-bean name="searchAliquotForm" type="org.apache.struts.validator.DynaValidatorForm">
@@ -40,10 +38,8 @@
 			<form-property name="dateAccessionedBegin" type="java.lang.String" />
 			<form-property name="sampleType" type="java.lang.String" />
 			<form-property name="aliquotName" type="java.lang.String" />
-			<form-property name="storageBox" type="java.lang.String" />
 			<form-property name="dateAccessionedEnd" type="java.lang.String" />
 			<form-property name="sampleSubmitter" type="java.lang.String" />
-			<form-property name="lotId" type="java.lang.String" />
 			<form-property name="storageLocation" type="gov.nih.nci.calab.dto.administration.StorageLocation" />
 		</form-bean>
 		<form-bean name="viewSampleDetailForm" type="org.apache.struts.action.DynaActionForm">
@@ -73,8 +69,8 @@
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="search" key="error.searchAliquot" path="search.searchaliquot" type="java.lang.Exception" />
 			<forward name="input" path="search.searchaliquot" />
 			<forward name="successAliquot" path="search.searchaliquotresult" />
-			<forward name="sampleResult" path="search.searchsampleresult" />
 		</action>
+		<action path="/sampleResultForward" type="gov.nih.nci.calab.ui.core.BaseForwardAction" parameter="search.searchsampleresult" scope="request" />
 		<action input="input" name="viewSampleDetailForm" path="/viewSampleDetail" scope="request" type="gov.nih.nci.calab.ui.search.ViewSampleDetailAction">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="search" key="error.viewSampleDetails.noSamples" path="search.searchsampleresult" type="java.lang.Exception" />
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="search" key="error.viewSampleDetails" path="search.searchsampleresult" type="java.lang.Exception" />
