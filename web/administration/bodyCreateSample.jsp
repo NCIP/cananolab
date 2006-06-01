@@ -45,17 +45,19 @@ function refreshContainers() {
 			<tr>
 				<td class="formLabel">
 					<div align="justify">
-						<strong>Sample ID Prefix(<bean:write name="createSampleForm" property="configuredSampleNamePrefix" />X) *<span class="formField"><span class="formFieldWhite"><html:text property="sampleNamePrefix" size="15" /></span></span> &nbsp; &nbsp; Sample
-							Type <span class="formFieldWhite"> <html:select property="sampleType">
+						<strong>
+							Sample ID Prefix(<bean:write name="createSampleForm" property="configuredSampleNamePrefix" />X) *<span class="formField"><span class="formFieldWhite"><html:text property="sampleNamePrefix" size="15" /></span></span> &nbsp; &nbsp; 
+							Sample Type <span class="formFieldWhite"> 
+								<html:select property="sampleType">
 									<option value=""></option>
-									<html:options name="allSampleTypes" />
-								</html:select> &nbsp; &nbsp; SOP <html:select property="sampleSOP">
-									<option value=""></option>
-									<html:options name="allSampleSOPs" />
-								</html:select></span></strong>
+									<option value="Other">Other</option>
+										<html:options name="allSampleTypes" />
+								</html:select> &nbsp; &nbsp; &nbsp; 
+							Other Type <span class="formFieldWhite"><html:text property="otherSampleType" size="8" /></span> &nbsp; &nbsp; &nbsp; </strong> 
 					</div>
 				</td>
 			</tr>
+
 
 			<tr>
 				<td class="formLabelWhite">
@@ -85,6 +87,10 @@ function refreshContainers() {
 				<td class="formLabel">
 					<div align="justify">
 						<strong>Lot ID*&nbsp; <html:text property="lotId" size="5" /> &nbsp; &nbsp; &nbsp; Lot Description <span class="formFieldWhite"><html:text property="lotDescription" size="20" /></span> &nbsp; &nbsp; &nbsp; 
+						SOP <html:select property="sampleSOP">
+									<option value=""></option>
+									<html:options name="allSampleSOPs" />
+								</html:select></span></strong>
 					</div>
 				</td>
 			</tr>
@@ -94,7 +100,7 @@ function refreshContainers() {
 						<strong>Number of Containers*<span class="formFieldWhite"> &nbsp; <html:text property="numberOfContainers" size="2" /> &nbsp; </strong>
 					</div>
 				</td>
-			</tr>		
+			</tr>
 			<tr>
 				<td class="formLabel">
 					<div align="left">
@@ -104,7 +110,7 @@ function refreshContainers() {
 					</div>
 				</td>
 			</tr>
-			
+
 		</tbody>
 	</table>
 	<br>
@@ -205,18 +211,19 @@ function refreshContainers() {
 	<table cellspacing="0" cellpadding="3" width="90%" align="center" summary="" border="0">
 		<tbody>
 			<tr>
-				<td width="30%" class="formMessage" valign="bottom">
+				<td width="30%" class="formMessage" valign="top">
 					Accessioned by:
 					<bean:write name="creator" />
 					Accession Date:
 					<bean:write name="creationDate" />
-
-					<table height="32" cellspacing="0" cellpadding="4" align="right" border="0">
+				</td>
+				<td align="right">
+					<table height="32" cellspacing="0" cellpadding="4 align=" right"  order="0">
 						<tbody>
 							<tr>
 								<td height="32">
 									<div align="right">
-									    <input type="button" value="Update Containers" onclick="javascript:refreshContainers();">
+										<input type="button" value="Update Containers" onclick="javascript:refreshContainers();">
 										<input type="button" value="Reset" onClick="javascript:location.href='initSession.do?forwardPage=createSample'">
 										<html:submit />
 									</div>
@@ -225,9 +232,9 @@ function refreshContainers() {
 						</tbody>
 					</table>
 
-					<div align="right"></div>
-				</td>
-			</tr>
+		<div align="right"></div>
+		</td>
+		</tr>
 		</tbody>
 	</table>
 
