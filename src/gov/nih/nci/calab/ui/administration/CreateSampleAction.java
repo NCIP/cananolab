@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: CreateSampleAction.java,v 1.17 2006-05-31 19:22:22 pansu Exp $ */
+/* CVS $Id: CreateSampleAction.java,v 1.18 2006-06-01 17:31:15 zengje Exp $ */
 
 import gov.nih.nci.calab.dto.administration.ContainerBean;
 import gov.nih.nci.calab.dto.administration.SampleBean;
@@ -53,6 +53,7 @@ public class CreateSampleAction extends AbstractBaseAction {
 			return forward;
 		}
 		String sampleType = (String) theForm.get("sampleType");
+		String otherSampleType = (String)theForm.get("otherSampleType");
 		String sampleSOP = (String) theForm.get("sampleSOP");
 		String sampleDescription = (String) theForm.get("sampleDescription");
 		String sampleSource = (String) theForm.get("sampleSource");
@@ -75,7 +76,7 @@ public class CreateSampleAction extends AbstractBaseAction {
 				.get("containers");
 		Date creationDate=new Date();
 		SampleBean sample = new SampleBean(sampleNamePrefix, sampleName,
-				sampleType, sampleSOP, sampleDescription, sampleSource,
+				sampleType, otherSampleType, sampleSOP, sampleDescription, sampleSource,
 				sourceSampleId, dateReceived, solubility, lotId,
 				lotDescription, numContainers, generalComments,
 				sampleSubmitter, creationDate, containers);

@@ -19,7 +19,7 @@ import java.util.Set;
  * 
  */
 
-/* CVS $Id: SampleBean.java,v 1.13 2006-05-31 19:15:14 pansu Exp $ */
+/* CVS $Id: SampleBean.java,v 1.14 2006-06-01 17:30:23 zengje Exp $ */
 public class SampleBean{
 	private String sampleId="";
 	
@@ -28,6 +28,8 @@ public class SampleBean{
 	private String sampleName="";
 
 	private String sampleType="";
+	
+	private String otherSampleType="";
 
 	private String sampleSOP="";
 
@@ -65,7 +67,7 @@ public class SampleBean{
 		this.sampleName=sampleName;
 	}
 	
-	public SampleBean(String sampleName, String sampleType, String sampleSOP,
+	public SampleBean(String sampleName, String sampleType, String otherSampleType, String sampleSOP,
 			String sampleDescription, String sampleSource,
 			String sourceSampleId, Date dateReceived, String solubility,
 			String lotId, String lotDescription, String numberOfContainers,
@@ -74,6 +76,7 @@ public class SampleBean{
 		// TODO Auto-generated constructor stub
 		this.sampleName = sampleName;
 		this.sampleType = sampleType;
+		this.otherSampleType = otherSampleType;
 		this.sampleSOP = sampleSOP;
 		this.sampleDescription = sampleDescription;
 		this.sampleSource = sampleSource;
@@ -89,14 +92,14 @@ public class SampleBean{
 	}
 
 	public SampleBean(String sampleNamePrefix, String sampleName,
-			String sampleType, String sampleSOP, String sampleDescription,
+			String sampleType, String otherSampleType, String sampleSOP, String sampleDescription,
 			String sampleSource, String sourceSampleId, Date dateReceived,
 			String solubility, String lotId, String lotDescription,
 			String numberOfContainers, String generalComments,
 			String sampleSubmitter, Date accessionDate,
 			ContainerBean[] containers) {
 		// TODO Auto-generated constructor stub
-		this(sampleName, sampleType, sampleSOP, sampleDescription, sampleSource,
+		this(sampleName, sampleType, otherSampleType, sampleSOP, sampleDescription, sampleSource,
 				sourceSampleId, dateReceived, solubility, lotId, lotDescription,
 				numberOfContainers, generalComments,
 				sampleSubmitter, accessionDate);
@@ -214,6 +217,14 @@ public class SampleBean{
 
 	public void setSampleType(String sampleType) {
 		this.sampleType = sampleType;
+	}
+
+	public String getOtherSampleType() {
+		return otherSampleType;
+	}
+
+	public void setOtherSampleType(String otherSampleType) {
+		this.otherSampleType = otherSampleType;
 	}
 
 	public String getSolubility() {
