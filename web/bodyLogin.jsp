@@ -74,14 +74,7 @@
 													<html:submit value="Login" />&nbsp;&nbsp;<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=welcome_login')" class="helpText">Help</a>
 												</td>
 											</tr>
-											<tr>
-												<td>
-													&nbsp;
-												</td>
-												<td>
-													<a href="registerSetup.do" class="register">Register</a>
-													
-												</td>
+										
 											</tr>
 										</table>
 									</td>
