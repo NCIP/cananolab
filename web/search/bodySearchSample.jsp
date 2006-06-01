@@ -7,7 +7,7 @@
 <html:form action="searchSample">
 	<table width="90%" align="center">
 		<tr>
-			<td width="10%">
+			<td width="15%">
 				&nbsp;
 			</td>
 			<td>
@@ -16,7 +16,7 @@
 					Search Sample Container
 				</h3>
 			</td>
-			<td align="right" width="10%">
+			<td align="right" width="15%">
 				<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=search_sample_container')" class="helpText">Help</a>
 			</td>
 	</table>
