@@ -35,6 +35,15 @@
 							</c:when>
 						</c:choose>
 					</c:when>
+					<c:when test="${item.value eq 'REGISTRATION'}">
+						<c:choose>
+							<c:when test="${sessionScope.user != null}">
+								<td class="${style}" onmouseover="changeMenuStyle(this,'mainMenuItemOver'),showCursor()" onclick="document.location.href='${item.link}'" onmouseout="changeMenuStyle(this,'${style}'),hideCursor()" height="20">
+									<a class="mainMenuLink" href="${item.link}" onmouseover="s_show('${item.value}',event)" onmouseout="s_hide()">${item.value}</a>
+								</td>
+							</c:when>
+						</c:choose>
+					</c:when>
 					<c:otherwise>
 						<td class="${style}" onmouseover="changeMenuStyle(this,'mainMenuItemOver'),showCursor()" onclick="document.location.href='${item.link}'" onmouseout="changeMenuStyle(this,'${style}'),hideCursor()" height="20">
 							<a class="mainMenuLink" href="${item.link}" onmouseover="s_show('${item.value}',event)" onmouseout="s_hide()">${item.value}</a>
