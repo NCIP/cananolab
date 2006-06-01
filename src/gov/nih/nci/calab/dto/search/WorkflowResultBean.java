@@ -21,16 +21,16 @@ public class WorkflowResultBean {
 
 	private AliquotBean aliquot;
 
-	private RunBean run;
-
-	public WorkflowResultBean(String fileId, String filePath, String shortFileName, String assayType,
-			String assayName, String assayRunId, String assayRunName, Date assayRunDate,
-			String aliquotName, String aliquotStatus,
-			Date fileSubmissionDate, String fileSubmitter,
-			String fileMaskStatus, String inoutType) {
-		super();		
-		this.file = new FileBean(fileId, filePath, shortFileName, fileSubmissionDate, fileSubmitter,
-				fileMaskStatus, inoutType);
+	private RunBean run;	
+	
+	public WorkflowResultBean(String fileId, String filePath,
+			String shortFileName, String assayType, String assayName,
+			String assayRunId, String assayRunName, Date assayRunDate,
+			String aliquotName, String aliquotStatus, Date fileSubmissionDate,
+			String fileSubmitter, String fileMaskStatus, String inoutType) {
+		super();
+		this.file = new FileBean(fileId, filePath, shortFileName,
+				fileSubmissionDate, fileSubmitter, fileMaskStatus, inoutType);
 		this.assay = new AssayBean(assayName, assayType);
 		this.run = new RunBean(assayRunId, assayRunName, assayRunDate);
 		this.run.setAssayBean(this.assay);
@@ -67,5 +67,9 @@ public class WorkflowResultBean {
 
 	public void setRun(RunBean run) {
 		this.run = run;
+	}
+	
+	public WorkflowResultBean getSelf() {
+		return this;
 	}
 }
