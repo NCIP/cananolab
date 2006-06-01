@@ -5,11 +5,13 @@ import gov.nih.nci.calab.db.IDataAccess;
 import gov.nih.nci.calab.domain.Sample;
 import gov.nih.nci.calab.domain.SampleContainer;
 import gov.nih.nci.calab.domain.SampleSOP;
+import gov.nih.nci.calab.domain.SampleType;
 import gov.nih.nci.calab.domain.Source;
 import gov.nih.nci.calab.domain.StorageElement;
 import gov.nih.nci.calab.dto.administration.ContainerBean;
 import gov.nih.nci.calab.dto.administration.SampleBean;
 import gov.nih.nci.calab.exception.DuplicateEntriesException;
+import gov.nih.nci.calab.service.common.LookupService;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
 import gov.nih.nci.calab.service.util.StringUtils;
@@ -20,7 +22,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-/* CVS $Id: ManageSampleService.java,v 1.27 2006-05-31 19:19:18 pansu Exp $ 
+/* CVS $Id: ManageSampleService.java,v 1.28 2006-06-01 17:31:02 zengje Exp $ 
  */
 public class ManageSampleService {
 	private static Logger logger = Logger.getLogger(ManageSampleService.class);
@@ -111,7 +113,12 @@ public class ManageSampleService {
 	 */
 	public void saveSample(SampleBean sample, ContainerBean[] containers)
 	throws Exception{
-	  // TODO fill in details to save the sample and associated containers.
+	  
+		boolean createNewSampleType = false;
+		
+		// Get existing sampleType to compare
+		LookupService lookupService = new LookupService();
+		List<String> existingSampleTypes = lookupService.getAllSampleTypes();
 
 	  // check if the smaple is exist
 	  // For NCL, sampleId + lotId is unique -- in SampleBean, sampleId issampleName
@@ -162,7 +169,14 @@ public class ManageSampleService {
 			doSample.setLotDescription(sample.getLotDescription());
 			doSample.setLotId(sample.getLotId());
 			doSample.setName(sample.getSampleName());
-			doSample.setType(sample.getSampleType());
+			if (sample.getSampleType().equalsIgnoreCase(CalabConstants.OTHER)) {
+				doSample.setType(sample.getOtherSampleType());
+				if (!existingSampleTypes.contains(sample.getOtherSampleType())) {
+					createNewSampleType = true;					
+				}
+			} else {
+				doSample.setType(sample.getSampleType());
+			}
 			// TODO: ReceivedBy and Date are not in the wireframe.
 
 			doSample.setReceivedBy("");
@@ -288,9 +302,16 @@ public class ManageSampleService {
 				doSampleContainer.setSample(doSample);
 				ida.store(doSampleContainer);
 				
-				System.out.println("ManageSampleService.saveSample(): same again with storage info");
+				logger.debug("ManageSampleService.saveSample(): same again with storage info");
 				doSampleContainer.setStorageElementCollection(storages);
 				ida.store(doSampleContainer);
+				
+				// save new sample type info if needed
+				if (createNewSampleType) {
+					SampleType newSampleType = new SampleType();
+					newSampleType.setName(sample.getOtherSampleType());
+					ida.store(newSampleType);
+				}
 			}
 		} catch (DuplicateEntriesException ce) {
     		throw ce; 		
