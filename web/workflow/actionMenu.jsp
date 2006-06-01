@@ -36,14 +36,15 @@
 		<bean:define id="actions" name="uploadActions" type="java.util.List" />
 	</logic:equal>
 	<logic:present name="actions">
-		<table>
+		<table bgcolor="#98B7B7" border="0" >
 			<tr>
 				<logic:iterate name="actions" id="item" type="org.apache.struts.tiles.beans.MenuItem">
-					<td class="formLabelGrey">
-						<a href="${item.link}"><bean:write name="item" property="value" /></a> &nbsp; &nbsp;
+					<td valign="middle" align="center">
+						<a href="${item.link}" class="formMessage"><bean:write name="item" property="value" /></a> &nbsp; &nbsp;
 					</td>
 				</logic:iterate>
 			</tr>
 		</table>
 	</logic:present>
 </logic:present>
+
