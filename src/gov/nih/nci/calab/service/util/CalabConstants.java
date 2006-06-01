@@ -46,9 +46,9 @@ public class CalabConstants {
 	public static final String EMPTY = "N/A";
 
 	// File input/output type
-	public static final String INPUT = "input";
+	public static final String INPUT = "Input";
 
-	public static final String OUTPUT = "output";
+	public static final String OUTPUT = "Output";
 
 	// zip file name
 	public static final String ALL_FILES = "ALL_FILES";
