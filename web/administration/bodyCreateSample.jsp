@@ -45,7 +45,7 @@ function refreshContainers() {
 			<tr>
 				<td class="formLabel">
 					<div align="justify">
-						<strong>Sample ID Prefix(<bean:write name="createSampleForm" property="configuredSampleNamePrefix" />X) *<span class="formField"><span class="formFieldWhite"><html:text property="sampleNamePrefix" size="10" /></span></span> &nbsp; &nbsp; Sample
+						<strong>Sample ID Prefix(<bean:write name="createSampleForm" property="configuredSampleNamePrefix" />X) *<span class="formField"><span class="formFieldWhite"><html:text property="sampleNamePrefix" size="15" /></span></span> &nbsp; &nbsp; Sample
 							Type <span class="formFieldWhite"> <html:select property="sampleType">
 									<option value=""></option>
 									<html:options name="allSampleTypes" />
@@ -68,7 +68,7 @@ function refreshContainers() {
 			<tr>
 				<td class="formLabel">
 					<div align="justify">
-						<strong>Source <span class="formFieldWhite"> <html:text property="sampleSource" size="10" /></span> &nbsp; &nbsp; Source ID <span class="formFieldWhite"><html:text property="sourceSampleId" size="10" /> </span> &nbsp; &nbsp; Date Received <html:text
+						<strong>Source <span class="formFieldWhite"> <html:text property="sampleSource" size="27" /></span> &nbsp; &nbsp; Source ID <span class="formFieldWhite"><html:text property="sourceSampleId" size="10" /> </span> &nbsp; &nbsp; Date Received <html:text
 								property="dateReceived" size="9" /> <span class="formFieldWhite"> <a href="javascript:cal.popup();"><img height="18" src="images/calendar-icon.gif" width="22" border="0" alt="Click Here to Pick up the date"></a></span> </strong>
 					</div>
 				</td>
@@ -91,10 +91,10 @@ function refreshContainers() {
 			<tr>
 				<td class="formLabelWhite">
 					<div align="justify">
-						<strong>Number of Containers*<span class="formFieldWhite"> &nbsp; <html:text property="numberOfContainers" size="2" /> &nbsp; <input type="button" value="Update Containers" onclick="javascript:refreshContainers();"></span></strong>
+						<strong>Number of Containers*<span class="formFieldWhite"> &nbsp; <html:text property="numberOfContainers" size="2" /> &nbsp; </strong>
 					</div>
 				</td>
-			</tr>
+			</tr>		
 			<tr>
 				<td class="formLabel">
 					<div align="left">
@@ -104,6 +104,7 @@ function refreshContainers() {
 					</div>
 				</td>
 			</tr>
+			
 		</tbody>
 	</table>
 	<br>
@@ -201,20 +202,21 @@ function refreshContainers() {
 	</c:forEach>
 	<%--		</logic:iterate>--%>
 
-	<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="90%" align="center" summary="" border="0">
+	<table cellspacing="0" cellpadding="3" width="90%" align="center" summary="" border="0">
 		<tbody>
 			<tr>
-				<td width="30%" class="formMessage">
+				<td width="30%" class="formMessage" valign="bottom">
 					Accessioned by:
 					<bean:write name="creator" />
 					Accession Date:
 					<bean:write name="creationDate" />
 
-					<table height="32" cellspacing="0" cellpadding="4" width="200" align="right" border="0">
+					<table height="32" cellspacing="0" cellpadding="4" align="right" border="0">
 						<tbody>
 							<tr>
-								<td width="198" height="32">
+								<td height="32">
 									<div align="right">
+									    <input type="button" value="Update Containers" onclick="javascript:refreshContainers();">
 										<input type="button" value="Reset" onClick="javascript:location.href='initSession.do?forwardPage=createSample'">
 										<html:submit />
 									</div>

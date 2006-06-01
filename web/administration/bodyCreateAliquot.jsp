@@ -67,7 +67,7 @@ function openLink() {
 		<tr>
 			<td class="formLabelWhite">
 				<div align="justify">
-					<strong><span class="formFieldWhite"> </span>Number of Aliquots *<span class="formFieldWhite"> <html:text property="numberOfAliquots" size="5" /> &nbsp; <input type="button" value="Update Aliquots" onclick="javascript:refreshAliquots();"></span></strong>
+					<strong><span class="formFieldWhite"> </span>Number of Aliquots *<span class="formFieldWhite"> <html:text property="numberOfAliquots" size="5" /> &nbsp; </span></strong>
 				</div>
 			</td>
 		</tr>
@@ -207,8 +207,9 @@ function openLink() {
 				<span class="formMessage"> Aliquoted by: <bean:write name="creator" /> Aliquoted Date: <bean:write name="creationDate" /></span>
 				<table border="0" align="right" cellpadding="4" cellspacing="0">
 					<tr>
-						<td width="198" height="32">
+						<td height="32">
 							<div align="right">
+								<input type="button" value="Update Aliquots" onclick="javascript:refreshAliquots();">
 								<input type="button" value="Reset" onClick="javascript:location.href='initSession.do?forwardPage=createAliquot'">
 								<html:submit />
 							</div>
