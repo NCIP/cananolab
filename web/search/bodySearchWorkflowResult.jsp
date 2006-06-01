@@ -26,13 +26,9 @@
 		<td>
 			<logic:present name="workflows">
 				<display:table name="workflows" id="workflow" requestURI="searchWorkflow.do" pagesize="100" class="displaytable">
-					<display:column title="File<br>Name"
-						href="${pageContext.request.contextPath}/downloadSearchedFile.do?method=downloadFile&fileName=${workflow.file.filename}&runId=${workflow.run.id}&runName=${workflow.run.name}&inout=${workflow.file.inoutType}&assayType=${workflow.assay.assayType}&assayName=${workflow.assay.assayName}"
-						sortable="true">						
-						<c:out value="${workflow.file.shortFilename}" />
-						<br>
-						<c:out value="${workflow.file.timePrefix}" />
-					</display:column>
+					<display:column title="File<br>Name"						
+					    property="self"
+						sortable="true" decorator="gov.nih.nci.calab.dto.search.FileURLDecorator"/>						
 					<display:column property="assay.assayType" title="Assay<br>Type" sortable="true" />
 					<display:column property="assay.assayName" title="Assay<br>Name" sortable="true" />
 					<display:column property="run.sortableName" title="Assay<br>Run<br>Name" sortable="true" />
