@@ -32,6 +32,8 @@ public class FileBean {
 
 	private String inoutType = "";
 
+	private String timePrefix = "";
+
 	/**
 	 * 
 	 */
@@ -41,14 +43,15 @@ public class FileBean {
 	}
 
 	// used in WorkflowResultBean
-	public FileBean(String id, String path, String shortFileName, Date fileSubmissionDate,
-			String fileSubmitter, String fileMaskStatus, String inoutType) {
+	public FileBean(String id, String path, String shortFileName,
+			Date fileSubmissionDate, String fileSubmitter,
+			String fileMaskStatus, String inoutType) {
 		this.id = id;
 		this.path = path;
 		this.createdDate = fileSubmissionDate;
 		this.fileSubmitter = fileSubmitter;
 		this.filename = getFileName(path);
-		this.shortFilename=shortFileName;
+		this.shortFilename = shortFileName;
 		this.fileMaskStatus = (fileMaskStatus.length() == 0 && filename
 				.length() > 0) ? CalabConstants.ACTIVE_STATUS : fileMaskStatus;
 		this.inoutType = inoutType;
@@ -62,12 +65,20 @@ public class FileBean {
 		this.filename = getFileName(path);
 	}
 
+	public String getTimePrefix() {
+		if (filename.length() > 0) {
+			String[] toks = filename.split("_");
+			timePrefix = toks[0] + "-" + toks[1];
+		}
+		return timePrefix;
+	}
+
 	public FileBean(InputFile infile) {
 		this.id = StringUtils.convertToString(infile.getId());
 		this.path = infile.getPath();
 		this.fileSubmitter = infile.getCreatedBy();
 		this.filename = getFileName(path);
-		this.shortFilename=infile.getFilename();
+		this.shortFilename = infile.getFilename();
 		this.fileMaskStatus = (fileMaskStatus.length() == 0 && filename
 				.length() > 0) ? CalabConstants.ACTIVE_STATUS : fileMaskStatus;
 		this.inoutType = CalabConstants.INPUT;
@@ -80,7 +91,7 @@ public class FileBean {
 		this.fileMaskStatus = (fileMaskStatus.length() == 0 && filename
 				.length() > 0) ? CalabConstants.ACTIVE_STATUS : fileMaskStatus;
 		this.filename = getFileName(path);
-		this.shortFilename=outfile.getFilename();
+		this.shortFilename = outfile.getFilename();
 		this.inoutType = CalabConstants.OUTPUT;
 	}
 
