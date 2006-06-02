@@ -98,6 +98,16 @@
 					<var-value>((sampleType!="Other") or (*this*!=null))</var-value>
 				</var>
 			</field>
+
+			<field property="SampleType" depends="validwhen">
+				<arg position="0" key="createSampleForm.sampleType" bundle="administration" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((otherSampleType == null) or (this!=null))</var-value>
+				</var>
+			</field>
+
+
 			<field property="containerType" depends="required" indexedListProperty="containers">
 				<arg position="0" key="createSampleForm.containerType" bundle="administration" />
 			</field>
