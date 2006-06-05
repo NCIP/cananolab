@@ -50,7 +50,6 @@ function refreshContainers() {
 							Sample Type <span class="formFieldWhite"> 
 								<html:select property="sampleType">
 									<option value=""></option>
-									<option value="Other">Other</option>
 										<html:options name="allSampleTypes" />
 								</html:select> &nbsp; &nbsp; &nbsp; 
 							Other Type <span class="formFieldWhite"><html:text property="otherSampleType" size="8" /></span> &nbsp; &nbsp; &nbsp; </strong> 
