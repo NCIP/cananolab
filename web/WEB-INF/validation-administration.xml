@@ -91,19 +91,20 @@
 					<var-value>100</var-value>
 				</var>
 			</field>
+
+			<field property="sampleType" depends="validwhen">
+				<arg position="0" key="createSampleForm.sampleType" bundle="administration" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((otherSampleType==null) or (*this*!=null))</var-value>
+				</var>
+			</field>
+			
 			<field property="otherSampleType" depends="validwhen">
 				<arg position="0" key="createSampleForm.otherSampleType" bundle="administration" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>((sampleType!="Other") or (*this*!=null))</var-value>
-				</var>
-			</field>
-
-			<field property="SampleType" depends="validwhen">
-				<arg position="0" key="createSampleForm.sampleType" bundle="administration" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>((otherSampleType == null) or (this!=null))</var-value>
 				</var>
 			</field>
 
