@@ -5,13 +5,10 @@
 <hibernate-configuration>
     <session-factory>
         <!-- properties  -->
-        <property name="connection.driver_class">oracle.jdbc.driver.OracleDriver</property>
-        <property name="connection.username">@DBUSER@</property>
-        <property name="connection.password">@DBPASSWORD@</property>
-        <property name="connection.url">jdbc:oracle:thin:@@DBSERVER@:1521:@DBSCHEMA@</property>
-
-	<property name="hibernate.show_sql">true</property>
-	<property name="dialect">org.hibernate.dialect.Oracle9Dialect</property>	
+        <property name="connection.datasource">java:@JNDINAME@</property>
+    
+	    <property name="hibernate.show_sql">true</property>
+	    <property name="dialect">org.hibernate.dialect.Oracle9Dialect</property>	
 
 
         <mapping resource="gov/nih/nci/security/authorization/domainobjects/Privilege.hbm.xml"/>
