@@ -28,7 +28,7 @@ import org.apache.log4j.Logger;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.26 2006-05-08 14:05:09 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.27 2006-06-05 14:10:37 zengje Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -106,6 +106,7 @@ public class LookupService {
 		// Detail here
 		// Retrieve data from Sample_Type table
 		List<String> sampleTypes = new ArrayList<String>();
+		sampleTypes.add(CalabConstants.OTHER);
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
