@@ -61,6 +61,8 @@ public class FileDownloadAction extends AbstractDispatchAction {
 			throws Exception {
 		DynaActionForm fileForm = (DynaActionForm) form;
 		
+		response.setHeader("Cache-Control", "Private");
+		
 		String assayType = (String) fileForm.get("assayType");
 		String assayName = (String) fileForm.get("assayName");
 		String runName = (String) fileForm.get("runName");		
