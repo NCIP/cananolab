@@ -52,6 +52,7 @@ public class RegisterAction extends AbstractBaseAction {
 		msgs.add("message", msg);
 		saveMessages(request,msgs);
 		forward = mapping.findForward("success");
+		theForm.initialize(mapping);
 		session.setAttribute("newUserCreated", "true");
 		
 		return forward;
