@@ -11,6 +11,7 @@ import gov.nih.nci.calab.dto.administration.SampleBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.workflow.AssayBean;
 import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.CalabComparators;
 import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ import org.apache.log4j.Logger;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.27 2006-06-05 14:10:37 zengje Exp $ */
+/* CVS $Id: LookupService.java,v 1.28 2006-06-15 20:10:53 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -40,7 +41,7 @@ public class LookupService {
 	 * @return a list of AliquotBeans containing aliquot ID and aliquot name
 	 */
 	public List<AliquotBean> getAliquots() throws Exception {
-		List<AliquotBean> aliquots = new ArrayList<AliquotBean>();
+		SortedSet<AliquotBean> aliquots = new TreeSet<AliquotBean>(new CalabComparators.AliquotBeanComparator());
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
@@ -61,7 +62,7 @@ public class LookupService {
 		} finally {
 			ida.close();
 		}
-		return aliquots;
+		return new ArrayList<AliquotBean>(aliquots);
 	}
 
 	/**
@@ -73,7 +74,7 @@ public class LookupService {
 	 */
 
 	public List<AliquotBean> getUnmaskedAliquots() throws Exception {
-		List<AliquotBean> aliquots = new ArrayList<AliquotBean>();
+		SortedSet<AliquotBean> aliquots = new TreeSet<AliquotBean>(new CalabComparators.AliquotBeanComparator());
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
@@ -94,7 +95,7 @@ public class LookupService {
 		} finally {
 			ida.close();
 		}
-		return aliquots;
+		return new ArrayList<AliquotBean>(aliquots);
 	}
 
 	/**
