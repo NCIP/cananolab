@@ -22,7 +22,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-/* CVS $Id: ManageSampleService.java,v 1.28 2006-06-01 17:31:02 zengje Exp $ 
+/* CVS $Id: ManageSampleService.java,v 1.29 2006-06-19 13:21:31 zengje Exp $ 
  */
 public class ManageSampleService {
 	private static Logger logger = Logger.getLogger(ManageSampleService.class);
@@ -304,15 +304,15 @@ public class ManageSampleService {
 				
 				logger.debug("ManageSampleService.saveSample(): same again with storage info");
 				doSampleContainer.setStorageElementCollection(storages);
-				ida.store(doSampleContainer);
-				
-				// save new sample type info if needed
-				if (createNewSampleType) {
-					SampleType newSampleType = new SampleType();
-					newSampleType.setName(sample.getOtherSampleType());
-					ida.store(newSampleType);
-				}
+				ida.store(doSampleContainer);				
 			}
+			// save new sample type info if needed
+			if (createNewSampleType) {
+				SampleType newSampleType = new SampleType();
+				newSampleType.setName(sample.getOtherSampleType());
+				ida.store(newSampleType);
+			}
+
 		} catch (DuplicateEntriesException ce) {
     		throw ce; 		
     	} catch (Exception e){
