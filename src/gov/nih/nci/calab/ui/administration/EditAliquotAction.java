@@ -6,12 +6,13 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: EditAliquotAction.java,v 1.6 2006-05-02 22:27:17 pansu Exp $ */
+/* CVS $Id: EditAliquotAction.java,v 1.7 2006-06-20 14:45:20 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,6 +32,7 @@ public class EditAliquotAction extends AbstractBaseAction {
 		HttpSession session = request.getSession();
 		DynaValidatorActionForm theForm = (DynaValidatorActionForm) form;
 		AliquotBean aliquot = (AliquotBean) theForm.get("aliquot");
+		aliquot.setCreationDate(new Date());
 		int rowNum = Integer.parseInt((String) theForm.get("rowNum"));
 		int colNum = Integer.parseInt((String) theForm.get("colNum"));
 		if (session.getAttribute("aliquotMatrix") != null) {
