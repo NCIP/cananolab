@@ -15,7 +15,7 @@ import java.util.Date;
  * 
  */
 
-/* CVS $Id: AliquotBean.java,v 1.12 2006-06-20 14:18:10 pansu Exp $ */
+/* CVS $Id: AliquotBean.java,v 1.13 2006-06-20 14:40:50 pansu Exp $ */
 
 public class AliquotBean {
 	private String aliquotId = "";
@@ -172,11 +172,5 @@ public class AliquotBean {
 	// used for display tag
 	public SortableName getSortableName() {
 		return new SortableName(aliquotName);
-	}
-
-	public void setCreationDateStr(String creationDateStr) {
-		this.creationDateStr = creationDateStr;
-		this.creationDate = StringUtils.convertToDate(creationDateStr,
-				CalabConstants.DATE_FORMAT);
 	}
 }
