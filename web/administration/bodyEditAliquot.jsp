@@ -101,8 +101,7 @@
 							<html:hidden property="rowNum" />
 							<html:hidden property="colNum" />
 							<html:hidden property="aliquot.aliquotName" />							
-							<html:hidden property="aliquot.creator"/>
-							<html:hidden property="aliquot.creationDateStr"/>
+							<html:hidden property="aliquot.creator"/>							
 							<input type="reset" value="Reset">
 							<input type="button" value="Cancel" onclick="javascript:history.go(-1)">
 							<html:submit />
