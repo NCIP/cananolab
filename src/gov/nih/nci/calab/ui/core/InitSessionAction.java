@@ -7,23 +7,29 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.48 2006-06-01 17:31:36 zengje Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.49 2006-06-23 19:52:09 pansu Exp $ */
 
-import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
 import gov.nih.nci.calab.dto.common.UserBean;
+import gov.nih.nci.calab.dto.workflow.AssayBean;
 import gov.nih.nci.calab.dto.workflow.ExecuteWorkflowBean;
 import gov.nih.nci.calab.service.administration.ManageAliquotService;
 import gov.nih.nci.calab.service.administration.ManageSampleService;
 import gov.nih.nci.calab.service.common.LookupService;
 import gov.nih.nci.calab.service.search.SearchSampleService;
+import gov.nih.nci.calab.service.util.CalabComparators;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.service.util.file.HttpFileUploadSessionData;
 import gov.nih.nci.calab.service.workflow.ExecuteWorkflowService;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -63,20 +69,35 @@ public class InitSessionAction extends AbstractDispatchAction {
 					assayTypes);
 		}
 
+		if (session.getServletContext().getAttribute("allAssayTypeAssays") == null) {
+			Map<String, SortedSet<AssayBean>> assayTypeAssays = lookupService
+					.getAllAssayTypeAssays();
+			List<String> assayTypes = new ArrayList<String>(assayTypeAssays
+					.keySet());
+			session.getServletContext().setAttribute("allAssayTypeAssays",
+					assayTypeAssays);
+
+			session.getServletContext().setAttribute("allAvailableAssayTypes",
+					assayTypes);
+
+		}
+
 		if (session.getAttribute("workflow") == null
 				|| session.getAttribute("newWorkflowCreated") != null) {
 			ExecuteWorkflowBean workflowBean = executeWorkflowService
 					.getExecuteWorkflowBean();
 			session.setAttribute("workflow", workflowBean);
 		}
-		if (session.getAttribute("allUnmaskedAliquots") == null
+
+		if (session.getAttribute("allUnmaskedSampleAliquots") == null
 				|| session.getAttribute("newAliquotCreated") != null) {
-			List aliquots = lookupService.getUnmaskedAliquots();
-			session.setAttribute("allUnmaskedAliquots", aliquots);
-		}
-		if (session.getAttribute("allAssignedAliquots") == null) {
-			List allAssignedAliquots = lookupService.getAllAssignedAliquots();
-			session.setAttribute("allAssignedAliquots", allAssignedAliquots);
+			Map sampleAliquots = lookupService.getUnmaskedSampleAliquots();
+			List<String> sampleNames = new ArrayList<String>(
+					(Set<? extends String>) sampleAliquots.keySet());
+			Collections.sort(sampleNames,
+					new CalabComparators.SortableNameComparator());
+			session.setAttribute("allUnmaskedSampleAliquots", sampleAliquots);
+			session.setAttribute("allSampleNamesWithAliquots", sampleNames);
 		}
 
 		if (session.getServletContext().getAttribute("allAssayBeans") == null) {
@@ -85,7 +106,7 @@ public class InitSessionAction extends AbstractDispatchAction {
 					allAssayBeans);
 		}
 
-		if ((session.getAttribute("newUserCreated") != null) 
+		if ((session.getAttribute("newUserCreated") != null)
 				|| (session.getServletContext().getAttribute("allUserBeans") == null)) {
 			List allUserBeans = lookupService.getAllUserBeans();
 			session.getServletContext().setAttribute("allUserBeans",
@@ -103,10 +124,15 @@ public class InitSessionAction extends AbstractDispatchAction {
 		clearSessionData(request, "useAliquot");
 		HttpSession session = request.getSession();
 		LookupService lookupService = new LookupService();
-		if (session.getAttribute("allUnmaskedAliquots") == null
+		if (session.getAttribute("allUnmaskedSampleAliquots") == null
 				|| session.getAttribute("newAliquotCreated") != null) {
-			List<AliquotBean> allAliquots = lookupService.getUnmaskedAliquots();
-			session.setAttribute("allUnmaskedAliquots", allAliquots);
+			Map sampleAliquots = lookupService.getUnmaskedSampleAliquots();
+			List<String> sampleNames = new ArrayList<String>(
+					(Set<? extends String>) sampleAliquots.keySet());
+			Collections.sort(sampleNames,
+					new CalabComparators.SortableNameComparator());
+			session.setAttribute("allUnmaskedSampleAliquots", sampleAliquots);
+			session.setAttribute("allSampleNamesWithAliquots", sampleNames);
 		}
 		ExecuteWorkflowService executeWorkflowService = new ExecuteWorkflowService();
 		if (session.getAttribute("workflow") == null
@@ -181,10 +207,15 @@ public class InitSessionAction extends AbstractDispatchAction {
 			session.setAttribute("allAliquotContainerTypes", containerTypes);
 		}
 
-		if (session.getAttribute("allUnmaskedAliquots") == null
+		if (session.getAttribute("allUnmaskedSampleAliquots") == null
 				|| session.getAttribute("newAliquotCreated") != null) {
-			List aliquots = lookupService.getUnmaskedAliquots();
-			session.setAttribute("allUnmaskedAliquots", aliquots);
+			Map sampleAliquots = lookupService.getUnmaskedSampleAliquots();
+			List<String> sampleNames = new ArrayList<String>(
+					(Set<? extends String>) sampleAliquots.keySet());
+			Collections.sort(sampleNames,
+					new CalabComparators.SortableNameComparator());
+			session.setAttribute("allUnmaskedSampleAliquots", sampleAliquots);
+			session.setAttribute("allSampleNamesWithAliquots", sampleNames);
 		}
 		if (session.getServletContext().getAttribute("aliquotContainerInfo") == null) {
 			ContainerInfoBean containerInfo = lookupService
@@ -216,7 +247,7 @@ public class InitSessionAction extends AbstractDispatchAction {
 			session.getServletContext().setAttribute("allAssayTypes",
 					assayTypes);
 		}
-		if ((session.getAttribute("newUserCreated") != null) 
+		if ((session.getAttribute("newUserCreated") != null)
 				|| (session.getServletContext().getAttribute("allUserBeans") == null)) {
 			List allUserBeans = lookupService.getAllUserBeans();
 			session.getServletContext().setAttribute("allUserBeans",
@@ -249,7 +280,7 @@ public class InitSessionAction extends AbstractDispatchAction {
 			List sourceSampleIds = searchSampleService.getAllSourceSampleIds();
 			session.setAttribute("allSourceSampleIds", sourceSampleIds);
 		}
-		if ((session.getAttribute("newUserCreated") != null) 
+		if ((session.getAttribute("newUserCreated") != null)
 				|| (session.getServletContext().getAttribute("allUserBeans") == null)) {
 			List allUserBeans = lookupService.getAllUserBeans();
 			session.getServletContext().setAttribute("allUserBeans",
@@ -314,7 +345,7 @@ public class InitSessionAction extends AbstractDispatchAction {
 			throws Exception {
 		clearSessionData(request, "runFileMask");
 		setWorkflowMessageSession(request);
-		//add inout and run information to parameters
+		// add inout and run information to parameters
 		String extra = constructFileParams(request);
 		String newPath = mapping.findForward("runFileMask").getPath() + "?"
 				+ extra;
@@ -337,20 +368,18 @@ public class InitSessionAction extends AbstractDispatchAction {
 		String assayType = (request.getSession().getAttribute("assayType") == null) ? ""
 				: "&assayType="
 						+ request.getSession().getAttribute("assayType");
-		
-		//then trying getting from request parameters if any
-		inout = (request.getParameter("inout") == null) ? inout
-				: "&inout=" + request.getParameter("inout");
-		runId = (request.getParameter("runId") == null) ? runId
-				: "&runId=" + request.getParameter("runId");
+
+		// then trying getting from request parameters if any
+		inout = (request.getParameter("inout") == null) ? inout : "&inout="
+				+ request.getParameter("inout");
+		runId = (request.getParameter("runId") == null) ? runId : "&runId="
+				+ request.getParameter("runId");
 		runName = (request.getParameter("runName") == null) ? runName
 				: "&runName=" + request.getParameter("runName");
 		assayName = (request.getParameter("assayName") == null) ? assayName
-				: "&assayName="
-						+ request.getParameter("assayName");
+				: "&assayName=" + request.getParameter("assayName");
 		assayType = (request.getParameter("assayType") == null) ? assayType
-				: "&assayType="
-						+ request.getParameter("assayType");
+				: "&assayType=" + request.getParameter("assayType");
 		String params = inout + runId + runName + assayName + assayType;
 		return params;
 	}
@@ -440,8 +469,8 @@ public class InitSessionAction extends AbstractDispatchAction {
 		if (!forwardPage.equals("uploadForward")) {
 			// clear session attributes creatd during fileUpload
 			session.removeAttribute("httpFileUploadSessionData");
-		}		
-	
+		}
+
 		if (forwardPage.equals("createSample")
 				|| forwardPage.equals("createAliquot")
 				|| forwardPage.equals("searchSample")
