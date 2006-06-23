@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: CreateAliquotAction.java,v 1.16 2006-05-03 19:35:20 pansu Exp $ */
+/* CVS $Id: CreateAliquotAction.java,v 1.17 2006-06-23 19:50:50 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.exception.CalabException;
@@ -38,17 +38,20 @@ public class CreateAliquotAction extends AbstractBaseAction {
 		
 		// TODO fill in details for aliquot information */
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		boolean fromAliquot = ((String) theForm.get("fromAliquot")).equals("true") ? true
+				: false;
 		String sampleName = (String) theForm.get("sampleName");
 		String parentAliquotName = (String) theForm.get("parentAliquotName");
-		String parentName = (parentAliquotName.length() == 0) ? "Sample "
+		String parentName=(fromAliquot)?parentAliquotName:sampleName;
+		String fullParentName = (!fromAliquot) ? "Sample "
 				+ sampleName : "Aliquot " + parentAliquotName;
-		request.setAttribute("parentName", parentName);
+		request.setAttribute("fullParentName", fullParentName);
 		if (session.getAttribute("aliquotMatrix") != null) {
 			List<AliquotBean[]> aliquotMatrix = new ArrayList<AliquotBean[]>(
 					(List<? extends AliquotBean[]>) session
 							.getAttribute("aliquotMatrix"));
 			ManageAliquotService manageAliquotService = new ManageAliquotService();
-			manageAliquotService.saveAliquots(sampleName, parentAliquotName,
+			manageAliquotService.saveAliquots(fromAliquot, parentName,
 					aliquotMatrix);
 			ActionMessages msgs = new ActionMessages();
 			ActionMessage msg = new ActionMessage("message.createAliquot");
