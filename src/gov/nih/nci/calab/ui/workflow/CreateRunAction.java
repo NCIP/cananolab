@@ -37,7 +37,7 @@ public class CreateRunAction extends AbstractBaseAction {
 		// Get Prameters from form elements
 		// Run info
 
-		String assayId = (String) theForm.get("assayId");
+		String assayName = (String) theForm.get("assayName");
 		String runBy = (String) theForm.get("runBy");
 		String runDateStr = (String) theForm.get("runDate");
 		Date runDate=StringUtils.convertToDate(runDateStr, CalabConstants.ACCEPT_DATE_FORMAT);
@@ -45,14 +45,14 @@ public class CreateRunAction extends AbstractBaseAction {
 		String creator = (String) session.getAttribute("creator");
 		String creationDate = (String) session.getAttribute("creationDate");
 		ExecuteWorkflowService workflowService = new ExecuteWorkflowService();
-		RunBean runBean = workflowService.saveRun(assayId, runBy, runDate,
+		RunBean runBean = workflowService.saveRun(assayName, runBy, runDate,
 				creator, creationDate);
 
 		// Save Aliquots assigned
-		String[] aliquotIds = (String[]) theForm.get("assignedAliquot");
+		String[] assignedAliquots = (String[]) theForm.get("assignedAliquots");
 		String comments = (String) theForm.get("aliquotComment");
 
-		workflowService.saveRunAliquots(runBean.getId(), aliquotIds, comments,
+		workflowService.saveRunAliquots(runBean.getId(), assignedAliquots, comments,
 				creator, creationDate);
 
 		session.setAttribute("newWorkflowCreated", "true");
