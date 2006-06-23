@@ -26,7 +26,7 @@ import org.apache.struts.util.LabelValueBean;
  */
 
 /*
- * CVS $Id: ManageAliquotService.java,v 1.22 2006-05-31 19:18:50 pansu Exp $
+ * CVS $Id: ManageAliquotService.java,v 1.23 2006-06-23 19:47:59 pansu Exp $
  */
 
 public class ManageAliquotService {
@@ -63,32 +63,26 @@ public class ManageAliquotService {
 	}
 
 	/**
-	 * 
-	 * @param sampleName
-	 * @param parentaliquotName
+	 *  
+	 * @param parentName
 	 * @return the existing prefix for assigning a new aliquot ID.
 	 */
-	public String getAliquotPrefix(String sampleName, String parentaliquotName) {
-
-		if (parentaliquotName.length() == 0) {
-			return sampleName + "-";
-		} else {
-			return parentaliquotName + "-";
-		}
+	public String getAliquotPrefix(String parentName) {
+		return parentName+"-";
 	}
 
 	/**
 	 * 
-	 * @param sampleName
-	 * @param parentaliquotName
+	 * @param fromAliquot
+	 * @param parentName
 	 * @return the first number for assigning a new aliquot IDs.
 	 */
-	public int getFirstAliquotNum(String sampleName, String parentaliquotName) throws Exception {
+	public int getFirstAliquotNum(boolean fromAliquot, String parentName) throws Exception {
 		int aliquotNum = 0;
-		if (parentaliquotName.length() == 0) {
-			aliquotNum = getLastSampleAliquotNum(sampleName) + 1;
+		if (!fromAliquot) {
+			aliquotNum = getLastSampleAliquotNum(parentName) + 1;
 		} else {
-			aliquotNum = getLastAliquotChildAliquotNum(parentaliquotName) + 1;
+			aliquotNum = getLastAliquotChildAliquotNum(parentName) + 1;
 		}
 		return aliquotNum;
 	}
@@ -160,13 +154,13 @@ public class ManageAliquotService {
 	/**
 	 * Save the aliquots into the database
 	 * 
-	 * @param sampleName
-	 * @param parentaliquotName
+	 * @param fromAliquot
+	 * @param parentName
 	 * @param aliquotMatrix
 	 * @throws Exception
 	 */
 
-	public void saveAliquots(String sampleName, String parentAliquotName,
+	public void saveAliquots(boolean fromAliquot, String parentName, 
 			List<AliquotBean[]> aliquotMatrix) throws Exception {
 		// Check to if the aliquot is from Sample or Aliqot
 		IDataAccess ida = (new DataAccessProxy())
@@ -176,17 +170,17 @@ public class ManageAliquotService {
 
 			Aliquot parentAliquot = null;
 			Sample sample = null;
-			if ((parentAliquotName != null) && (parentAliquotName.length() > 0)) {
+			if (fromAliquot) {
 				// Get aliqot ID and load the object
 				List aliquots = ida
 						.search("from Aliquot aliquot where aliquot.name='"
-								+ parentAliquotName + "'");
+								+ parentName + "'");
 				parentAliquot = (Aliquot) aliquots.get(0);
 				sample = parentAliquot.getSample();
 			} else {
 				List samples = ida
 						.search("from Sample sample where sample.name='"
-								+ sampleName + "'");
+								+ parentName + "'");
 				sample = (Sample) samples.get(0);
 			}
 
@@ -240,8 +234,7 @@ public class ManageAliquotService {
 
 					// Associations
 					// 1. ParentAliquos or Sample
-					if ((parentAliquotName != null)
-							&& (parentAliquotName.length() > 0)) {
+					if (fromAliquot) {
 						doAliquot.getParentSampleContainerCollection().add(
 								parentAliquot);
 					} 
