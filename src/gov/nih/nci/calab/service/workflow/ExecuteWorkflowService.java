@@ -45,7 +45,7 @@ public class ExecuteWorkflowService {
 	 * @param aliquotIds
 	 * @throws Exception
 	 */
-	public void saveRunAliquots(String runId, String[] aliquotIds,
+	public void saveRunAliquots(String runId, String[] aliquotNames,
 			String comments, String creator, String creationDate)
 			throws Exception {
 
@@ -60,18 +60,18 @@ public class ExecuteWorkflowService {
 					.convertToLong(runId));
 
 			// Create RunSampleContainer collection
-			for (int i = 0; i < aliquotIds.length; i++) {
+			for (int i = 0; i < aliquotNames.length; i++) {
 				// check if the aliquot has been assigned to the run, if it is,
 				// skip it
 				String hqlString = "select count(runcontainer.id) from RunSampleContainer runcontainer where runcontainer.run.id='"
 						+ runId
-						+ "' and runcontainer.sampleContainer.id='"
-						+ aliquotIds[i] + "'";
+						+ "' and runcontainer.sampleContainer.name='"
+						+ aliquotNames[i] + "'";
 				List results = ida.search(hqlString);
 				if (((Integer) results.get(0)).intValue() > 0) {
 					logger
-							.debug("The aliquot id "
-									+ aliquotIds[i]
+							.debug("The aliquot name "
+									+ aliquotNames[i]
 									+ " is already assigned to this run, continue .... ");
 					continue;
 				}
@@ -79,10 +79,14 @@ public class ExecuteWorkflowService {
 				doRunSC.setComments(comments);
 				doRunSC.setRun(doRun);
 				logger
-						.debug("ExecuteWorkflowService.saveRunAliquots(): aliquot id = "
-								+ aliquotIds[i]);
-				Aliquot doAliquot = (Aliquot) ida.load(Aliquot.class,
-						StringUtils.convertToLong(aliquotIds[i]));
+						.debug("ExecuteWorkflowService.saveRunAliquots(): aliquot name = "
+								+ aliquotNames[i]);				
+				
+				List aliquotResults= ida.search("from Aliquot aliquot where aliquot.name='"+aliquotNames[i]+"'");
+				Aliquot doAliquot=null;
+				for (Object obj : aliquotResults) {
+					doAliquot=(Aliquot)obj;
+				}				
 				logger
 						.debug("ExecuteWorkflowService.saveRunAliquots(): doAliquot = "
 								+ doAliquot);
@@ -202,7 +206,7 @@ public AliquotBean getAliquot(String aliquotId) throws Exception {
 		 * @throws Exception *
 		 */
 
-	public RunBean saveRun(String assayId, String runBy, Date runDate,
+	public RunBean saveRun(String assayName, String runBy, Date runDate,
 			String createdBy, String createdDate) throws Exception {
 		// Details of Saving to RUN Table
 
@@ -210,7 +214,7 @@ public AliquotBean getAliquot(String aliquotId) throws Exception {
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		RunBean runBean = null;
-		logger.debug("ExecuteWorkflowService.saveRun(): assayId = " + assayId);
+		logger.debug("ExecuteWorkflowService.saveRun(): assayName = " + assayName);
 		try {
 			ida.open();
 
@@ -218,7 +222,7 @@ public AliquotBean getAliquot(String aliquotId) throws Exception {
 
 			// Retrieve the max sequence number for assay run
 			String runName = CalabConstants.RUN
-					+ (getLastAssayRunNum(ida, assayId) + 1);
+					+ (getLastAssayRunNum(ida, assayName) + 1);
 			logger.debug("ExecuteWorkflowService.saveRun(): new run name = "
 					+ runName);
 			doRun.setName(runName);
@@ -227,8 +231,13 @@ public AliquotBean getAliquot(String aliquotId) throws Exception {
 					CalabConstants.DATE_FORMAT));
 			doRun.setRunBy(runBy);
 			doRun.setRunDate(runDate);
-			doRun.setAssay((Assay) ida.load(Assay.class, StringUtils
-					.convertToLong(assayId)));
+			
+			Assay assay=null;
+			List assayResults=ida.search("from Assay assay where assay.name='"+assayName+"'");
+		    for (Object obj: assayResults) {
+		    	assay=(Assay)obj;
+		    }
+			doRun.setAssay(assay);
 
 			runId = (Long) ida.createObject(doRun);
 			doRun.setId(runId);
@@ -244,11 +253,11 @@ public AliquotBean getAliquot(String aliquotId) throws Exception {
 		return runBean;
 	}
 
-	private int getLastAssayRunNum(IDataAccess ida, String assayId) {
+	private int getLastAssayRunNum(IDataAccess ida, String assayName) {
 		int runNum = 0;
 		try {
-			String hqlString = "select run.name from Run run join run.assay  assay where assay.id='"
-					+ assayId + "'";
+			String hqlString = "select run.name from Run run join run.assay  assay where assay.name='"
+					+ assayName + "'";
 			List results = ida.search(hqlString);
 			for (Object obj : results) {
 				String runName = (String) obj;
