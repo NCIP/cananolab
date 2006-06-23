@@ -565,3 +565,31 @@ img.img{ /* for images that need a border */
   white-space: nowrap;
 }
 
+.label{
+	font-family:arial,helvetica,verdana,sans-serif;
+	font-size:0.7em;
+	background-color:#F4F4F5;
+	color:#000000;
+	border-bottom:1px solid #5C5C5C;
+	text-align:left;
+}
+
+.rightLabel{
+	font-family:arial,helvetica,verdana,sans-serif;
+	font-size:0.7em;
+	background-color:#F4F4F5;
+	color:#000000;
+	border-bottom:1px solid #5C5C5C;
+	text-align:left;
+	border-right: 1px solid #5C5C5C;*/
+}
+
+.leftLabel{
+	font-family:arial,helvetica,verdana,sans-serif;
+	font-size:0.7em;
+	background-color:#F4F4F5;
+	color:#000000;
+	border-bottom:1px solid #5C5C5C;
+	text-align:left;
+	border-left: 1px solid #5C5C5C;*/
+}
