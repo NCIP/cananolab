@@ -52,16 +52,29 @@ function openLink() {
 			</td>
 		</tr>
 		<tr>
-			<td class="formLabel">
-				<div align="justify">
-					<strong>Sample ID*<span class="formFieldWhite"> <html:select property="sampleName">
-								<option value=""></option>
-								<html:options collection="allSamples" property="sampleName" labelProperty="sampleName" />
-							</html:select></span></strong>&nbsp; &nbsp; or &nbsp; &nbsp; <strong>Aliquot ID*<span class="formFieldWhite"> <html:select property="parentAliquotName">
-								<option value=""></option>
-								<html:options collection="allUnmaskedAliquots" property="aliquotName" labelProperty="aliquotName" />
-							</html:select></span></strong>
-				</div>
+			<td class="formLabel" width="30%">
+				<strong>Create from </strong>
+				<br>
+				<html:radio property="fromAliquot" value="false" />
+				<strong>Sample</strong>&nbsp;&nbsp; <strong>Sample ID*</strong>
+				<html:select property="sampleName">
+					<option value=""></option>
+					<html:options collection="allSamples" property="sampleName" labelProperty="sampleName" />
+				</html:select>
+				<br>
+				<br>
+				<html:radio property="fromAliquot" value="true" />
+				<strong> Aliquot</strong> &nbsp;&nbsp; <strong>Sample ID*</strong>
+				<html:select property="aliquotSampleName" onchange="javascript:filterAliquots();">
+					<option value=""></option>
+					<html:options name="allSampleNamesWithAliquots" />
+				</html:select>
+				<strong>&nbsp; => &nbsp; Aliquot ID*</strong>				
+				<html:select property="parentAliquotName">
+					<option value="${param.parentAliquotName}" selected>
+						${param.parentAliquotName}
+					</option>
+				</html:select>
 			</td>
 		</tr>
 		<tr>
@@ -223,10 +236,24 @@ function openLink() {
 	<p>
 		&nbsp;
 	</p>
-	<p>
-		&nbsp;
-	</p>
-	<p>
-		&nbsp;
-	</p>
 </html:form>
+
+<script language="JavaScript">
+<!--//
+  /* populate a hashtable containing sampleName aliquots */
+  var sampleAliquots=new Array();    
+  <c:forEach var="item" items="${allUnmaskedSampleAliquots}">
+    var aliquots=new Array();
+    <c:forEach var="aliquot" items="${allUnmaskedSampleAliquots[item.key]}" varStatus="count">
+  	    aliquots[${count.index}]=new Option('${aliquot.aliquotName}', '${aliquot.aliquotName}');  	
+    </c:forEach>
+    sampleAliquots['${item.key}']=aliquots;
+  </c:forEach>  
+  
+  function filterAliquots() {
+  	if (document.createAliquotForm.fromAliquot[1].checked) {
+  	   doubleDropdown(document.createAliquotForm.aliquotSampleName, document.createAliquotForm.parentAliquotName, sampleAliquots);
+  	}
+  }
+//-->
+</script>
