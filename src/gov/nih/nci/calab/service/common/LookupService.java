@@ -16,7 +16,10 @@ import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -29,64 +32,41 @@ import org.apache.log4j.Logger;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.28 2006-06-15 20:10:53 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.29 2006-06-23 19:50:02 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
 
 	/**
-	 * Retriving all aliquot in the system, for views view aliquot, create run,
-	 * search sample.
-	 * 
-	 * @return a list of AliquotBeans containing aliquot ID and aliquot name
-	 */
-	public List<AliquotBean> getAliquots() throws Exception {
-		SortedSet<AliquotBean> aliquots = new TreeSet<AliquotBean>(new CalabComparators.AliquotBeanComparator());
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
-		try {
-			ida.open();
-			String hqlString = "select aliquot.id, aliquot.name, status.status from Aliquot aliquot left join aliquot.dataStatus status order by aliquot.name";
-			List results = ida.search(hqlString);
-			for (Object obj : results) {
-				Object[] aliquotInfo = (Object[]) obj;
-				aliquots.add(new AliquotBean(StringUtils
-						.convertToString(aliquotInfo[0]), StringUtils
-						.convertToString(aliquotInfo[1]), StringUtils
-						.convertToString(aliquotInfo[2])));
-			}
-		} catch (Exception e) {
-			logger.error("Error in retrieving all aliquot Ids and names", e);
-			throw new RuntimeException(
-					"Error in retrieving all aliquot Ids and names");
-		} finally {
-			ida.close();
-		}
-		return new ArrayList<AliquotBean>(aliquots);
-	}
-
-	/**
-	 * Retrieving all unmasked aliquots for views use aliquot and create
+	 * Retrieving all unmasked aliquots for use in views create run, create assay run, use aliquot and create
 	 * aliquot.
-	 * 
-	 * @return a list of AliquotBeans containing unmasked aliquot IDs and names.
-	 * 
+	 * @return a Map between sample name and its associated unmasked aliquots
+	 * @throws Exception
 	 */
-
-	public List<AliquotBean> getUnmaskedAliquots() throws Exception {
-		SortedSet<AliquotBean> aliquots = new TreeSet<AliquotBean>(new CalabComparators.AliquotBeanComparator());
+	public Map<String, SortedSet<AliquotBean>> getUnmaskedSampleAliquots() throws Exception {
+		SortedSet<AliquotBean> aliquots = null;
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
+		Map<String, SortedSet<AliquotBean>> sampleAliquots=new HashMap<String, SortedSet<AliquotBean>>();
 		try {
 			ida.open();
-			String hqlString = "select aliquot.id, aliquot.name from Aliquot aliquot where aliquot.dataStatus is null order by aliquot.name";
+			String hqlString = "select aliquot.id, aliquot.name, aliquot.sample.name from Aliquot aliquot where aliquot.dataStatus is null order by aliquot.name";
 			List results = ida.search(hqlString);
 			for (Object obj : results) {
-				Object[] aliquotInfo = (Object[]) obj;
-				aliquots.add(new AliquotBean(StringUtils
-						.convertToString(aliquotInfo[0]), StringUtils
-						.convertToString(aliquotInfo[1]),
-						CalabConstants.ACTIVE_STATUS));
+				Object[] info = (Object[]) obj;
+				AliquotBean aliquot=new AliquotBean(StringUtils
+						.convertToString(info[0]), StringUtils
+						.convertToString(info[1]),
+						CalabConstants.ACTIVE_STATUS);
+				String sampleName=(String)info[2];
+				if (sampleAliquots.get(sampleName)!=null) {
+					aliquots=(SortedSet<AliquotBean>)sampleAliquots.get(sampleName);
+				}
+				else {
+					aliquots = new TreeSet<AliquotBean>(new CalabComparators.AliquotBeanComparator());
+					sampleAliquots.put(sampleName, aliquots);
+				}
+				aliquots.add(aliquot);
 			}
 		} catch (Exception e) {
 			logger.error("Error in retrieving all aliquot Ids and names", e);
@@ -95,7 +75,7 @@ public class LookupService {
 		} finally {
 			ida.close();
 		}
-		return new ArrayList<AliquotBean>(aliquots);
+		return sampleAliquots;
 	}
 
 	/**
@@ -277,7 +257,7 @@ public class LookupService {
 
 		try {
 			ida.open();
-			String hqlString = "select sample.id, sample.name from Sample sample order by sample.name";
+			String hqlString = "select sample.id, sample.name from Sample sample";
 			List results = ida.search(hqlString);
 			for (Object obj : results) {
 				Object[] sampleInfo = (Object[]) obj;
@@ -292,7 +272,7 @@ public class LookupService {
 		} finally {
 			ida.close();
 		}
-
+		Collections.sort(samples, new CalabComparators.SampleBeanComparator());
 		return samples;
 	}
 
@@ -321,6 +301,38 @@ public class LookupService {
 		return assayTypes;
 	}
 
+	public Map<String, SortedSet<AssayBean>> getAllAssayTypeAssays() throws Exception {
+		Map<String, SortedSet<AssayBean>> assayTypeAssays=new HashMap<String, SortedSet<AssayBean>>();
+		IDataAccess ida = (new DataAccessProxy())
+		.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			String hqlString = "select assay.id, assay.name, assay.assayType from Assay assay";
+			List results = ida.search(hqlString);
+			SortedSet<AssayBean> assays=null;
+			for (Object obj : results) {
+				Object[] objArray = (Object[]) obj;
+				AssayBean assay = new AssayBean(
+						((Long) objArray[0]).toString(), (String) objArray[1],
+						(String) objArray[2]);
+				if (assayTypeAssays.get(assay.getAssayType())!=null) {
+					assays=(SortedSet<AssayBean>)assayTypeAssays.get(assay.getAssayType());
+				}
+				else {
+					assays=new TreeSet<AssayBean>(new CalabComparators.AssayBeanComparator());
+					assayTypeAssays.put(assay.getAssayType(), assays);
+				}
+				assays.add(assay);
+			}
+		} catch (Exception e) {
+			logger.error("Error in retrieving all assay beans. ", e);
+			throw new RuntimeException("Error in retrieving all assays beans. ");
+		} finally {
+			ida.close();
+		}
+		return assayTypeAssays;
+	}
+	
 	/**
 	 * Retrieve all assays
 	 * 
