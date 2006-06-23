@@ -20,7 +20,9 @@
 			<form-property name="configuredSampleNamePrefix" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="createAliquotForm" type="org.apache.struts.validator.DynaValidatorForm">
+		    <form-property name="fromAliquot" type="java.lang.String" initial="false" />
 			<form-property name="sampleName" type="java.lang.String" />
+			<form-property name="aliquotSampleName" type="java.lang.String"/>
 			<form-property name="parentAliquotName" type="java.lang.String" />
 			<form-property name="numberOfAliquots" type="java.lang.String" initial="0" />
 			<form-property name="template" type="gov.nih.nci.calab.dto.administration.AliquotBean" />

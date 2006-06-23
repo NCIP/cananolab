@@ -170,14 +170,14 @@
 				<arg position="0" key="createAliquotForm.sampleName" bundle="administration" />
 				<var>
 					<var-name>test</var-name>
-					<var-value>((parentAliquotName!=null) or (*this*!=null))</var-value>
+					<var-value>((fromAliquot=="true") or (*this*!=null))</var-value>
 				</var>
 			</field>
 			<field property="parentAliquotName" depends="validwhen">
 				<arg position="0" key="createAliquotForm.parentAliquotName" bundle="administration" />
 				<var>
 					<var-name>test</var-name>
-					<var-value>((sampleName!=null) or (*this*!=null))</var-value>
+					<var-value>((fromAliquot=="false") or (*this*!=null))</var-value>
 				</var>
 			</field>
 			<field property="numberOfAliquots" depends="integer,intRange">
