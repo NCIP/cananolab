@@ -5,7 +5,7 @@
 <br>
 <h4>
 	The following aliquots are successfully created for
-	<bean:write name="parentName" />
+	<bean:write name="fullParentName" />
 </h4>
 <blockquote>
 	<logic:iterate name="aliquotMatrix" id="aliquotRow" type="gov.nih.nci.calab.dto.administration.AliquotBean[]" indexId="cnum">
