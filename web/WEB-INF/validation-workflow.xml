@@ -6,14 +6,14 @@
 	<formset>
 		<form name="useAliquotForm">
 			<field property="aliquotIds" depends="required">
-				<arg position="0" key="useAliquotForm.aliquotIds" bundle="workflow" />
+				<arg position="0" key="useAliquotForm.assignedAliquots" bundle="workflow" />
 			</field>
 			<field property="runId" depends="required">
 				<arg position="0" key="useAliquotForm.runId" bundle="workflow" />
 			</field>
 		</form>
 		<form name="createRunForm">
-			<field property="assayId" depends="required">
+			<field property="assayName" depends="required">
 				<arg key="createRunForm.assay" bundle="workflow" position="0" />
 			</field>
 			<field property="runBy" depends="required">
