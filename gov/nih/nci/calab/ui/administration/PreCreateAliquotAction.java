@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.administration;
  * @author pansu
  */
 
-/* CVS $Id: PreCreateAliquotAction.java,v 1.14 2006-05-31 19:22:57 pansu Exp $ */
+/* CVS $Id: PreCreateAliquotAction.java,v 1.15 2006-06-23 19:50:59 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.service.administration.ManageAliquotService;
@@ -34,9 +34,12 @@ public class PreCreateAliquotAction extends AbstractBaseAction {
 		HttpSession session = request.getSession();
 		// TODO fill in details for sample information */
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-
+		boolean fromAliquot = ((String) theForm.get("fromAliquot")).equals("true") ? true
+				: false;
 		String sampleName = (String) theForm.get("sampleName");
 		String parentAliquotName = (String) theForm.get("parentAliquotName");
+		String parentName=(fromAliquot)?parentAliquotName:sampleName;
+
 		String numberOfAliquots = (String) theForm.get("numberOfAliquots");
 		int numAliquots;
 		if (numberOfAliquots.length() == 0) {
@@ -56,9 +59,8 @@ public class PreCreateAliquotAction extends AbstractBaseAction {
 
 			// calculate the first aliquot Id to use
 			int firstAliquotNum = manageAliquotService.getFirstAliquotNum(
-					sampleName, parentAliquotName);
-			String aliquotPrefix = manageAliquotService.getAliquotPrefix(
-					sampleName, parentAliquotName);
+					fromAliquot, parentName);
+			String aliquotPrefix = manageAliquotService.getAliquotPrefix(parentName);
 
 			// get user and date from session
 			String creator = (String) session.getAttribute("creator");			
