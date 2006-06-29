@@ -3,7 +3,7 @@
 <struts-config>
 	<form-beans>
 		<form-bean name="useAliquotForm" type="org.apache.struts.validator.DynaValidatorForm">
-			<form-property name="sampleName" type="java.lang.String[]" />
+			<form-property name="sampleNames" type="java.lang.String[]" />
 			<form-property name="runId" type="java.lang.String" />
 			<form-property name="assignedAliquots" type="java.lang.String[]" />
 			<form-property name="comments" type="java.lang.String" />
