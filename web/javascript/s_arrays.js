@@ -121,14 +121,16 @@ P:false,	// menu is PERMANENT (you can only set true if this is LEVEL 1 menu)
 S:s_CSSTop	// STYLE Array to use for this menu
 },
 [		// define items {U:'url',T:'text' ...} look at the Manual for details
-{U:'initSession.do?forwardPage=createRun',T:'Execute Workflow'}
+{U:'manageProject.do',T:'Manage Projects'},
+{U:'initSession.do?forwardPage=createRun',T:'Execute Workflow'},
+{U:'initSession.do?forwardPage=searchWorkflow',T:'Search Workflow'}
 ]
 );
 
-//administration
+//inventory
 s_add(
 {
-N:'ADMINISTRATION',	// NAME
+N:'INVENTORY',	// NAME
 LV:1,		// LEVEL (look at IMPORTANT NOTES 1 in the Manual)
 MinW:130,	// MINIMAL WIDTH
 T:'s_getStart("y",e)+15',	// TOP (look at IMPORTANT HOWTOS 6 in the Manual)
@@ -137,8 +139,11 @@ P:false,	// menu is PERMANENT (you can only set true if this is LEVEL 1 menu)
 S:s_CSSTop	// STYLE Array to use for this menu
 },
 [		// define items {U:'url',T:'text' ...} look at the Manual for details
-{U:'initSession.do?forwardPage=createSample',T:'Manage Samples'},
-{U:'initSession.do?forwardPage=createAliquot',T:'Manage Aliquots'}
+{U:'manageSample.do',T:'Manage Samples'},
+{U:'manageAliquot.do',T:'Manage Aliquots'},
+{U:'manageAssay.do',T:'Manage Assays'},
+{U:'manageInstrument.do',T:'Manage Instruments'},
+{U:'initSession.do?forwardPage=searchSample',T:'Search Inventory'}
 ]
 );
 
@@ -155,8 +160,26 @@ S:s_CSSTop	// STYLE Array to use for this menu
 },
 [		// define items {U:'url',T:'text' ...} look at the Manual for details
 {U:'initSession.do?forwardPage=searchWorkflow',T:'Search Workflow'},
-{U:'initSession.do?forwardPage=searchSample',T:'Search Sample'}
+{U:'initSession.do?forwardPage=searchSample',T:'Search Inventory'},
+{U:'initSession.do?forwardPage=searchAssayResults',T:'Search Assay Results'}
 ]
+);
+
+//administration
+s_add(
+{
+N:'ADMINISTRATION',	// NAME
+LV:1,		// LEVEL (look at IMPORTANT NOTES 1 in the Manual)
+MinW:130,	// MINIMAL WIDTH
+T:'s_getStart("y",e)+15',	// TOP (look at IMPORTANT HOWTOS 6 in the Manual)
+L:'s_getStart("x",e)-12',		// LEFT (look at IMPORTANT HOWTOS 6 in the Manual)
+P:false,	// menu is PERMANENT (you can only set true if this is LEVEL 1 menu)
+S:s_CSSTop	// STYLE Array to use for this menu
+},
+[		// define items {U:'url',T:'text' ...} look at the Manual for details
+{U:'javascript:window.open("/upt", "UPT", "alwaysRaised,toolbar,dependent,status,scrollbars,resizable,width=800,height=500");',T:'Manage Users'}
+]
+
 );
 
 ///////////////////////////////////////////////////////////////////////
