@@ -76,7 +76,7 @@
 			Actions
 		</td>
 	</tr>
-	<logic:iterate name="aliquots" id="aliquot" type="gov.nih.nci.calab.dto.administration.AliquotBean" indexId="aliquotNum">
+	<logic:iterate name="aliquots" id="aliquot" type="gov.nih.nci.calab.dto.inventory.AliquotBean" indexId="aliquotNum">
 		<c:choose>
 			<c:when test="${aliquotNum % 2 == 0}">
 				<c:set var="style" value="formFieldGrey" />
