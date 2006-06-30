@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN"
+       "http://struts.apache.org/dtds/tiles-config_1_1.dtd">
+<tiles-definitions>
+	<!-- definition for the manage sample page -->
+	<definition name="inventory.managesample" extends="calab.home">
+		<put name="calabContent" value="/bodyManageItem.jsp" />
+		<put name="menu" value="inventory" />
+		<put name="item" value="Sample"/>
+		<put name="itemDescription" value="/inventory/bodySampleDescription.jsp"/>
+		<put name="createLink" value="initSession.do?forwardPage=createSample"/>
+		<put name="searchLink" value="initSession.do?forwardPage=searchSample"/>
+	</definition>
+	
+    <!-- definition for the manage aliquot page -->
+	<definition name="inventory.managealiquot" extends="calab.home">
+		<put name="calabContent" value="/bodyManageItem.jsp" />
+		<put name="menu" value="inventory" />
+		<put name="item" value="Aliquot"/>
+		<put name="itemDescription" value="/inventory/bodyAliquotDescription.jsp"/>
+		<put name="createLink" value="initSession.do?forwardPage=createAliquot"/>
+		<put name="searchLink" value="initSession.do?forwardPage=searchSample"/>
+	</definition>
+	
+    <!-- definition for the manage assay page -->
+	<definition name="inventory.manageassay" extends="calab.home">
+		<put name="calabContent" value="/bodyManageItem.jsp" />
+		<put name="menu" value="inventory" />
+		<put name="item" value="Assay"/>
+		<put name="itemDescription" value="/inventory/bodyAssayDescription.jsp"/>
+		<put name="createLink" value="initSession.do?forwardPage=createAssay"/>
+		<put name="searchLink" value="initSession.do?forwardPage=searchAssay"/>
+	</definition>
+	
+	    <!-- definition for the manage instrument page -->
+	<definition name="inventory.manageinstrument" extends="calab.home">
+		<put name="calabContent" value="/bodyManageItem.jsp" />
+		<put name="menu" value="inventory" />
+		<put name="item" value="Instrument"/>
+		<put name="itemDescription" value="/inventory/bodyInstrumentDescription.jsp"/>
+		<put name="createLink" value="initSession.do?forwardPage=createInstrument"/>
+		<put name="searchLink" value="initSession.do?forwardPage=searchInstrument"/>
+	</definition>
+
+	<!-- definition for the create sample page -->
+	<definition name="inventory.createsample" extends="calab.home">
+		<put name="calabContent" value="/inventory/bodyCreateSample.jsp" />
+		<put name="menu" value="inventory" />
+	</definition>
+	<definition name="inventory.sampledetails" extends="calab.home">
+		<put name="calabContent" value="/inventory/bodySampleDetails.jsp" />
+		<put name="menu" value="inventory" />
+	</definition>
+	<definition name="inventory.message" extends="calab.home">
+		<put name="calabContent" value="/bodyMessage.jsp?bundle=inventory" />
+		<put name="menu" value="inventory" />
+	</definition>
+
+	<!-- definition for the create aliquot page -->
+	<definition name="inventory.createaliquot" extends="calab.home">
+		<put name="calabContent" value="/inventory/bodyCreateAliquot.jsp" />
+		<put name="menu" value="inventory" />
+	</definition>
+	<definition name="inventory.aliquotdetails" extends="calab.home">
+		<put name="calabContent" value="/inventory/bodyAliquotDetails.jsp" />
+		<put name="menu" value="inventory" />
+	</definition>
+
+	<!-- definition for the edit aliquot page -->
+	<definition name="inventory.editaliquot" extends="calab.home">
+		<put name="calabContent" value="/inventory/bodyEditAliquot.jsp" />
+		<put name="menu" value="inventory" />
+	</definition>
+
+</tiles-definitions>
