@@ -6,12 +6,12 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchSampleAction.java,v 1.14 2006-06-01 15:37:53 pansu Exp $ */
+/* CVS $Id: SearchSampleAction.java,v 1.15 2006-06-30 21:06:22 pansu Exp $ */
 
-import gov.nih.nci.calab.dto.administration.AliquotBean;
-import gov.nih.nci.calab.dto.administration.ContainerBean;
-import gov.nih.nci.calab.dto.administration.SampleBean;
-import gov.nih.nci.calab.dto.administration.StorageLocation;
+import gov.nih.nci.calab.dto.inventory.AliquotBean;
+import gov.nih.nci.calab.dto.inventory.ContainerBean;
+import gov.nih.nci.calab.dto.inventory.SampleBean;
+import gov.nih.nci.calab.dto.inventory.StorageLocation;
 import gov.nih.nci.calab.service.search.SearchSampleService;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
@@ -43,11 +43,10 @@ public class SearchSampleAction extends AbstractBaseAction {
 
 		HttpSession session = request.getSession();
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		// search base on aliquotName if aliquotName is present
-		// otherwise search base sampleName
-		boolean isAliquot = ((String) theForm.get("isAliquot")).equals("true") ? true
-				: false;
-		String searchName = (String) theForm.get("searchName");
+		// search based on aliquotName if aliquotName is present
+		// otherwise search based on sampleName
+		boolean isAliquot = (Boolean) theForm.get("isAliquot");
+		String searchName = (String) theForm.get("searchName");		
 		String sampleName = "";
 		String aliquotName = "";
 		if (isAliquot) {
@@ -84,16 +83,22 @@ public class SearchSampleAction extends AbstractBaseAction {
 			if (aliquotName.equals("all")) {
 				aliquotName = "";
 			}
-			aliquots = searchSampleService.searchAliquotsByAliquotName(
-					aliquotName, sampleType, sampleSource, sourceSampleId,
-					dateAccessionedBegin, dateAccessionedEnd, sampleSubmitter,
-					storageLocation);
+			String containerId = (String) theForm.get("containerId");
+			if (containerId.length() > 0) {
+				aliquots = searchSampleService
+						.searchAliquotsByContainer(containerId);
+			} else {
+				aliquots = searchSampleService.searchAliquotsByAliquotName(
+						aliquotName, sampleType, sampleSource, sourceSampleId,
+						dateAccessionedBegin, dateAccessionedEnd,
+						sampleSubmitter, storageLocation);
+			}
 			if (aliquots == null || aliquots.isEmpty()) {
 				ActionMessage msg = new ActionMessage(
 						"message.searchSample.noResult");
 				msgs.add("message", msg);
 				saveMessages(request, msgs);
-			} 
+			}
 			session.setAttribute("aliquots", aliquots);
 			forward = mapping.findForward("successAliquot");
 		}

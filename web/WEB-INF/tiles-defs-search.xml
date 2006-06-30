@@ -36,7 +36,7 @@
 	
 	<!-- definition for the view sample details page -->
 	<definition name="search.viewsampledetails" extends="calab.home">
-		<put name="calabContent" value="/administration/bodySampleDetails.jsp" />
+		<put name="calabContent" value="/inventory/bodySampleDetails.jsp" />
 		<put name="menu" value="search" />
 	</definition>
 
