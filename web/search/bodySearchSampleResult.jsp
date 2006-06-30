@@ -17,17 +17,23 @@
 			</h3>
 		</td>
 		<td align="right" width="15%">
-			<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=sample_search_results')" class="helpText">Help</a>&nbsp;&nbsp;
-			<a href="initSession.do?forwardPage=searchSample&rememberSearch=true" class="helpText">back</a>
+			<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=sample_search_results')" class="helpText">Help</a>&nbsp;&nbsp; <a href="initSession.do?forwardPage=searchSample&rememberSearch=true"
+				class="helpText">back</a>
 		</td>
 </table>
-<jsp:include page="/bodyMessage.jsp?bundle=search" />
-<display:table name="sessionScope.sampleContainers" id="container" requestURI="searchSample.do" pagesize="100" class="displaytable">
-	<display:column title="Sample ID" property="sample.sortableName" sortable="true" />
-	<display:column title="Sample Accession<br>Date" property="sample.accessionDate" sortable="true" format="{0,date,MM-dd-yyyy}" />
-	<display:column title="Sample Type" property="sample.sampleType" sortable="true" />
-	<display:column title="Sample Location" property="storageLocation" sortable="true" />
-	<display:column title="Sample Submitter" property="sample.sampleSubmitter" sortable="true" />
+<form name="resultForm">
+	<jsp:include page="/bodyMessage.jsp?bundle=search" />
+	<display:table name="sessionScope.sampleContainers" id="container" requestURI="searchSample.do" pagesize="25" class="displaytable">
+		<display:column title="Select">
+			<input type="radio" name="containerId" value="${container.containerId}">			
+		</display:column>
+		<display:column title="Sample ID" property="sample.sortableName" sortable="true" />
+		<display:column title="Container Name" property="containerName" sortable="true" />
+		<display:column title="Sample Accession<br>Date" property="sample.accessionDate" sortable="true" format="{0,date,MM-dd-yyyy}" />
+		<display:column title="Sample Type" property="sample.sampleType" sortable="true" />
+		<display:column title="Sample Location" property="storageLocation" sortable="true" />
+		<display:column title="Sample Submitter" property="sample.sampleSubmitter" sortable="true" />
+		<%--
 	<display:column title="Actions">
 		<c:url var="viewSampleDetailURL" value="/viewSampleDetail.do">
 			<c:param name="sampleId" value="${container.sample.sampleId}" />
@@ -41,7 +47,14 @@
 		</c:url>
 		<a href="${showAliquotURL}">Show Aliquots</a> &nbsp;
 	</display:column>
-</display:table>
+   --%>
+	</display:table>
+	<div align="right">
+	    <input type="hidden" name="isAliquot" value="${param.isAliquot}">
+		<input type="button" value="View Details" onclick="javascript:submitAction(document.resultForm, 'viewSampleDetail.do')">
+		<input type="button" value="Show Aliquots" onclick="javascript:document.resultForm.isAliquot.value='true';submitAction(document.resultForm, 'searchAliquot.do')">
+	</div>
+</form>
 <%--
 <table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
 	<tr align="center">
@@ -66,8 +79,8 @@
 	</tr>
 
 	<c:set var="rowNum" value="-1" />
-	<logic:iterate name="samples" id="sample" type="gov.nih.nci.calab.dto.administration.SampleBean" indexId="sampleNum">
-		<logic:iterate name="sample" property="containers" id="container" type="gov.nih.nci.calab.dto.administration.ContainerBean" indexId="containerNum">
+	<logic:iterate name="samples" id="sample" type="gov.nih.nci.calab.dto.inventory.SampleBean" indexId="sampleNum">
+		<logic:iterate name="sample" property="containers" id="container" type="gov.nih.nci.calab.dto.inventory.ContainerBean" indexId="containerNum">
 			<c:set var="rowNum" value="${rowNum+1}" />
 			<c:choose>
 				<c:when test="${rowNum % 2 == 0}">
