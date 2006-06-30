@@ -6,11 +6,11 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: ViewSampleDetailAction.java,v 1.6 2006-05-31 19:24:43 pansu Exp $ */
+/* CVS $Id: ViewSampleDetailAction.java,v 1.7 2006-06-30 21:06:22 pansu Exp $ */
 
-import gov.nih.nci.calab.dto.administration.AliquotBean;
-import gov.nih.nci.calab.dto.administration.ContainerBean;
-import gov.nih.nci.calab.dto.administration.SampleBean;
+import gov.nih.nci.calab.dto.inventory.AliquotBean;
+import gov.nih.nci.calab.dto.inventory.ContainerBean;
+import gov.nih.nci.calab.dto.inventory.SampleBean;
 import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
 
@@ -47,25 +47,39 @@ public class ViewSampleDetailAction extends AbstractBaseAction {
 		// if no aliquot information show sample details and its containers
 
 		if (!isAliquot) {
-			String sampleId = (String) theForm.get("sampleId");
+//			String sampleId = (String) theForm.get("sampleId");
+//			
+//			int containerNum = Integer.parseInt((String) theForm
+//					.get("containerNum"));
+//			if (session.getAttribute("sampleContainers") != null) {
+//				List<ContainerBean> sampleContainers = new ArrayList<ContainerBean>(
+//						(List<? extends ContainerBean>) session
+//								.getAttribute("sampleContainers"));
+//				SampleBean sample = null;
+//				for (ContainerBean container : sampleContainers) {
+//					if (container.getSample().getSampleId().equals(sampleId)
+//							&& container.getContainerNumber() == containerNum) {
+//						sample = container.getSample();
+//						request.setAttribute("sample", sample);
+//						request.setAttribute("containerNum", containerNum);
+//						break;
+//					}
+//				}
 
-			int containerNum = Integer.parseInt((String) theForm
-					.get("containerNum"));
+			String containerId=(String)theForm.get("containerId");
 			if (session.getAttribute("sampleContainers") != null) {
-				List<ContainerBean> sampleContainers = new ArrayList<ContainerBean>(
-						(List<? extends ContainerBean>) session
-								.getAttribute("sampleContainers"));
-				SampleBean sample = null;
-				for (ContainerBean container : sampleContainers) {
-					if (container.getSample().getSampleId().equals(sampleId)
-							&& container.getContainerNumber() == containerNum) {
-						sample = container.getSample();
-						request.setAttribute("sample", sample);
-						request.setAttribute("containerNum", containerNum);
-						break;
-					}
+			List<ContainerBean> sampleContainers = new ArrayList<ContainerBean>(
+					(List<? extends ContainerBean>) session
+							.getAttribute("sampleContainers"));
+			SampleBean sample = null;
+			for (ContainerBean container : sampleContainers) {
+				if (container.getContainerId().equals(containerId)) {
+					sample = container.getSample();
+					request.setAttribute("sample", sample);
+					request.setAttribute("containerNum", container.getContainerNumber());
+					break;
 				}
-
+			}
 				forward = mapping.findForward("success");
 			} else {
 				logger
