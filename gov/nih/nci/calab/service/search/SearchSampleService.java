@@ -4,9 +4,9 @@ import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
 import gov.nih.nci.calab.domain.Aliquot;
 import gov.nih.nci.calab.domain.Sample;
-import gov.nih.nci.calab.dto.administration.AliquotBean;
-import gov.nih.nci.calab.dto.administration.SampleBean;
-import gov.nih.nci.calab.dto.administration.StorageLocation;
+import gov.nih.nci.calab.dto.inventory.AliquotBean;
+import gov.nih.nci.calab.dto.inventory.SampleBean;
+import gov.nih.nci.calab.dto.inventory.StorageLocation;
 import gov.nih.nci.calab.service.util.CalabComparators;
 import gov.nih.nci.calab.service.util.StringUtils;
 
@@ -23,7 +23,7 @@ import org.apache.log4j.Logger;
  * @author pansu
  * 
  */
-/* CVS $Id: SearchSampleService.java,v 1.16 2006-04-27 18:58:08 pansu Exp $ */
+/* CVS $Id: SearchSampleService.java,v 1.17 2006-06-30 20:55:19 pansu Exp $ */
 
 public class SearchSampleService {
 	private static Logger logger = Logger.getLogger(SearchSampleService.class);
@@ -34,7 +34,8 @@ public class SearchSampleService {
 	 */
 	public List<String> getAllSampleSources() throws Exception {
 		List<String> sampleSources = new ArrayList<String>();
-		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
 			String hqlString = "select source.organizationName from Source source order by source.organizationName";
@@ -58,7 +59,8 @@ public class SearchSampleService {
 	 */
 	public List<String> getAllSourceSampleIds() throws Exception {
 		List<String> sourceSampleIds = new ArrayList<String>();
-		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
 			String hqlString = "select distinct sample.sourceSampleId from Sample sample order by sample.sourceSampleId";
@@ -93,9 +95,11 @@ public class SearchSampleService {
 	public List<SampleBean> searchSamplesBySampleName(String sampleName,
 			String sampleType, String sampleSource, String sourceSampleId,
 			Date dateAccessionedBegin, Date dateAccessionedEnd,
-			String sampleSubmitter, StorageLocation storageLocation) throws Exception {
+			String sampleSubmitter, StorageLocation storageLocation)
+			throws Exception {
 		List<SampleBean> samples = new ArrayList<SampleBean>();
-		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
 
 		try {
 			List<Object> paramList = new ArrayList<Object>();
@@ -104,7 +108,7 @@ public class SearchSampleService {
 			String where = "";
 			String storageFrom = "";
 
-			if (sampleName.length()>0) {				
+			if (sampleName.length() > 0) {
 				where = "where ";
 				if (sampleName.indexOf("*") != -1) {
 					sampleName = sampleName.replace('*', '%');
@@ -114,19 +118,19 @@ public class SearchSampleService {
 				}
 				paramList.add(sampleName);
 			}
-			if (sampleType.length()>0) {
+			if (sampleType.length() > 0) {
 				paramList.add(sampleType);
 				where = "where ";
 				whereList.add("sample.type=?");
 			}
 
-			if (sampleSource.length()>0) {
+			if (sampleSource.length() > 0) {
 				paramList.add(sampleSource);
 				where = "where ";
 				whereList.add("sample.source.organizationName=?");
 			}
 
-			if (sourceSampleId.length()>0) {
+			if (sourceSampleId.length() > 0) {
 				paramList.add(sourceSampleId);
 				where = "where ";
 				whereList.add("sample.sourceSampleId=?");
@@ -143,34 +147,34 @@ public class SearchSampleService {
 				where = "where ";
 				whereList.add("sample.createdDate<=?");
 			}
-			if (sampleSubmitter.length()>0) {
+			if (sampleSubmitter.length() > 0) {
 				paramList.add(sampleSubmitter);
 				where = "where ";
 				whereList.add("sample.createdBy=?");
 			}
 
-			if (storageLocation.getRoom().length()>0) {
+			if (storageLocation.getRoom().length() > 0) {
 				paramList.add(storageLocation.getRoom());
 				where = "where ";
 				storageFrom = "join sample.sampleContainerCollection container join container.storageElementCollection storage ";
 				whereList.add("storage.type='Room' and storage.location=?");
 			}
 
-			if (storageLocation.getFreezer().length()>0) {
+			if (storageLocation.getFreezer().length() > 0) {
 				paramList.add(storageLocation.getFreezer());
 				where = "where ";
 				storageFrom = "join sample.sampleContainerCollection container join container.storageElementCollection storage ";
 				whereList.add("storage.type='Freezer' and storage.location=?");
 			}
 
-			if (storageLocation.getFreezer().length()>0) {
+			if (storageLocation.getFreezer().length() > 0) {
 				paramList.add(storageLocation.getFreezer());
 				where = "where ";
 				storageFrom = "join sample.sampleContainerCollection container join container.storageElementCollection storage ";
 				whereList.add(" storage.type='Shelf' and storage.location=?");
 			}
 
-			if (storageLocation.getBox().length()>0) {
+			if (storageLocation.getBox().length() > 0) {
 				paramList.add(storageLocation.getBox());
 				where = "where ";
 				storageFrom = "join sample.sampleContainerCollection container join container.storageElementCollection storage ";
@@ -183,7 +187,8 @@ public class SearchSampleService {
 
 			ida.open();
 
-			List<? extends Object> results = (List<? extends Object>)ida.searchByParam(hqlString, paramList);
+			List<? extends Object> results = (List<? extends Object>) ida
+					.searchByParam(hqlString, paramList);
 			for (Object obj : new HashSet<Object>(results)) {
 				Sample sample = (Sample) obj;
 				samples.add(new SampleBean(sample));
@@ -197,7 +202,7 @@ public class SearchSampleService {
 		} finally {
 			ida.close();
 		}
-        
+
 		Collections.sort(samples, new CalabComparators.SampleBeanComparator());
 		return samples;
 	}
@@ -214,19 +219,21 @@ public class SearchSampleService {
 	 * @param storageLocation
 	 * @return
 	 */
-public List<AliquotBean> searchAliquotsByAliquotName(String aliquotName,
+	public List<AliquotBean> searchAliquotsByAliquotName(String aliquotName,
 			String sampleType, String sampleSource, String sourceSampleId,
 			Date dateAccessionedBegin, Date dateAccessionedEnd,
-			String sampleSubmitter, StorageLocation storageLocation) throws Exception {
+			String sampleSubmitter, StorageLocation storageLocation)
+			throws Exception {
 		List<AliquotBean> aliquots = new ArrayList<AliquotBean>();
-		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			List<Object> paramList = new ArrayList<Object>();
 			List<String> whereList = new ArrayList<String>();
 
 			String where = "";
 			String storageFrom = "";
-			if (aliquotName.length()>0) {								
+			if (aliquotName.length() > 0) {
 				where = "where ";
 				if (aliquotName.indexOf("*") != -1) {
 					aliquotName = aliquotName.replace('*', '%');
@@ -236,19 +243,19 @@ public List<AliquotBean> searchAliquotsByAliquotName(String aliquotName,
 				}
 				paramList.add(aliquotName);
 			}
-			if (sampleType.length()>0) {
+			if (sampleType.length() > 0) {
 				paramList.add(sampleType);
 				where = "where ";
 				whereList.add("aliquot.sample.type=?");
 			}
 
-			if (sampleSource.length()>0) {
+			if (sampleSource.length() > 0) {
 				paramList.add(sampleSource);
 				where = "where ";
 				whereList.add("aliquot.sample.source.organizationName=?");
 			}
 
-			if (sourceSampleId.length()>0) {
+			if (sourceSampleId.length() > 0) {
 				paramList.add(sourceSampleId);
 				where = "where ";
 				whereList.add("aliquot.sample.sourceSampleId=?");
@@ -265,34 +272,34 @@ public List<AliquotBean> searchAliquotsByAliquotName(String aliquotName,
 				where = "where ";
 				whereList.add("aliquot.createdDate<=?");
 			}
-			if (sampleSubmitter.length()>0) {
+			if (sampleSubmitter.length() > 0) {
 				paramList.add(sampleSubmitter);
 				where = "where ";
 				whereList.add("aliquot.createdBy=?");
 			}
 
-			if (storageLocation.getRoom().length()>0) {
+			if (storageLocation.getRoom().length() > 0) {
 				paramList.add(storageLocation.getRoom());
 				where = "where ";
 				storageFrom = "join aliquot.storageElementCollection storage ";
 				whereList.add("storage.type='Room' and storage.location=?");
 			}
 
-			if (storageLocation.getFreezer().length()>0) {
+			if (storageLocation.getFreezer().length() > 0) {
 				paramList.add(storageLocation.getFreezer());
 				where = "where ";
 				storageFrom = "join aliquot.storageElementCollection storage ";
 				whereList.add("storage.type='Freezer' and storage.location=?");
 			}
 
-			if (storageLocation.getFreezer().length()>0) {
+			if (storageLocation.getFreezer().length() > 0) {
 				paramList.add(storageLocation.getFreezer());
 				where = "where ";
 				storageFrom = "join aliquot.storageElementCollection storage ";
 				whereList.add(" storage.type='Shelf' and storage.location=?");
 			}
 
-			if (storageLocation.getBox().length()>0) {
+			if (storageLocation.getBox().length() > 0) {
 				paramList.add(storageLocation.getBox());
 				where = "where ";
 				storageFrom = "join aliquot.storageElementCollection storage ";
@@ -305,24 +312,48 @@ public List<AliquotBean> searchAliquotsByAliquotName(String aliquotName,
 
 			ida.open();
 
-			List<? extends Object> results = (List<? extends Object>)ida.searchByParam(hqlString, paramList);
+			List<? extends Object> results = (List<? extends Object>) ida
+					.searchByParam(hqlString, paramList);
 			for (Object obj : new HashSet<Object>(results)) {
 				Aliquot aliquot = (Aliquot) obj;
-				aliquots.add(new AliquotBean(aliquot));				
+				aliquots.add(new AliquotBean(aliquot));
 			}
 		} catch (Exception e) {
-			logger
-					.error("Error in searching aliquots by the given parameters",
-							e);
+			logger.error("Error in searching aliquots by the given parameters",
+					e);
 			throw new RuntimeException(
 					"Error in searching aliquots by the given parameters");
 		} finally {
 			ida.close();
 		}
 
-		Collections.sort(aliquots, new CalabComparators.AliquotBeanComparator());
+		Collections
+				.sort(aliquots, new CalabComparators.AliquotBeanComparator());
 		return aliquots;
 	}
+
+	public List<AliquotBean> searchAliquotsByContainer(String containerId)
+			throws Exception {
+		List<AliquotBean> aliquots = new ArrayList<AliquotBean>();
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			//TODO fill in the detail of getting aliquots from container
+		} catch (Exception e) {
+			logger.error("Error in searching aliquots by the given container ID",
+					e);
+			throw new RuntimeException(
+					"Error in searching aliquots by the given container ID");
+		} finally {
+			ida.close();
+		}
+
+		Collections
+				.sort(aliquots, new CalabComparators.AliquotBeanComparator());
+		return aliquots;
+	}
+
 	/**
 	 * Search database for sample container information based on other
 	 * parameters
@@ -339,7 +370,8 @@ public List<AliquotBean> searchAliquotsByAliquotName(String aliquotName,
 	public List<SampleBean> searchSamples(String sampleType,
 			String sampleSource, String sourceSampleId,
 			Date dateAccessionedBegin, Date dateAccessionedEnd,
-			String sampleSubmitter, StorageLocation storageLocation) throws Exception {
+			String sampleSubmitter, StorageLocation storageLocation)
+			throws Exception {
 
 		return searchSamplesBySampleName("", sampleType, sampleSource,
 				sourceSampleId, dateAccessionedBegin, dateAccessionedEnd,
