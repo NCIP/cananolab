@@ -3,6 +3,16 @@
        "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN"
        "http://struts.apache.org/dtds/tiles-config_1_1.dtd">
 <tiles-definitions>
+	<!-- definition for the manage assay page -->
+	<definition name="workflow.manageproject" extends="calab.home">
+		<put name="calabContent" value="/bodyManageItem.jsp" />
+		<put name="menu" value="workflow" />
+		<put name="item" value="Project" />
+		<put name="itemDescription" value="/workflow/bodyProjectDescription.jsp"/>
+		<put name="createLink" value="initSession.do?forwardPage=createProject" />
+		<put name="searchLink" value="initSession.do?forwardPage=searchProject" />
+	</definition>
+	
 	<!-- main layout definition for the workflow content page inside caLAB -->
 	<definition name="workflow.content.home" path="/layout/workflowLayout.jsp">
 		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp" />
@@ -82,7 +92,8 @@
 	</definition>
 	<!-- definitions for the create run page -->
 	<definition name="workflow.createassayrun.content" extends="workflow.content.home">
-		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp?menuType=none" />		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp" />
+		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp?menuType=none" />
+		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp" />
 		<put name="workflowContent" value="/workflow/bodyCreateAssayRun.jsp" />
 	</definition>
 
@@ -130,7 +141,7 @@
 
 	<!-- definitions for the mask file page -->
 	<definition name="workflow.maskfile.content" extends="workflow.content.home">
-			<put name="workflowActionMenu" value="/workflow/actionMenu.jsp?menuType=none" />
+		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp?menuType=none" />
 		<put name="workflowContent" value="/workflow/bodyMaskFile.jsp" />
 	</definition>
 
