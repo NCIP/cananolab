@@ -138,3 +138,8 @@ function doubleMultibox(selection1, selection2, value1ToValue2) {
     }
 }
 
+function submitAction(form, actionName) {
+   form.action=actionName;
+   form.submit();
+}
+
