@@ -27,11 +27,11 @@
 			<td valign="top">
 
 				<!-- sidebar begins -->
-				<table summary="" cellpadding="0" cellspacing="0" border="0" height="100%">
+				<table summary="" cellpadding="0" cellspacing="0" border="0" width="210" height="100%">
 
 					<!-- login begins -->
 					<tr>
-						<td valign="top" width="210">
+						<td valign="top">
 							<table summary="" cellpadding="2" cellspacing="0" border="0" class="sidebarSection">
 								<tr>
 									<td class="sidebarTitle" height="20">
@@ -40,7 +40,7 @@
 								</tr>
 								<tr>
 									<td class="sidebarContent">
-										<jsp:include page="/bodyMessage.jsp"/>
+										<jsp:include page="/bodyMessage.jsp" />
 									</td>
 								</tr>
 								<tr>
@@ -71,10 +71,9 @@
 													&nbsp;
 												</td>
 												<td>
-													<html:submit value="Login" />&nbsp;&nbsp;<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=welcome_login')" class="helpText">Help</a>
+													<html:submit value="Login" />
+													&nbsp;&nbsp;<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=welcome_login')" class="helpText">Help</a>
 												</td>
-											</tr>
-										
 											</tr>
 										</table>
 									</td>
@@ -86,8 +85,8 @@
 
 					<!-- what's new begins -->
 					<tr>
-						<td valign="top" width="210">
-							<table summary="" cellpadding="0" cellspacing="0" border="0" class="sidebarSection">
+						<td valign="top">
+							<table summary="" cellpadding="0" cellspacing="0" border="0" class="noBottomSidebarSection">
 								<tr>
 									<td class="sidebarTitle" height="20">
 										WHAT'S NEW
@@ -121,8 +120,8 @@
 
 					<!-- spacer cell begins (keep for dynamic expanding) -->
 					<tr height="100%">
-						<td valign="top" height="100%" width="210">
-							<table summary="" cellpadding="0" cellspacing="0" border="0" width="100%" height="100%" class="sidebarSection">
+						<td valign="top" height="100%">
+							<table summary="" cellpadding="0" cellspacing="0" border="0" width="100%" height="100%" class="noTopBottomSidebarSection">
 								<tr>
 									<td class="sidebarContent" valign="top">
 										&nbsp;
@@ -134,9 +133,8 @@
 					<!-- spacer cell ends -->
 
 				</table>
-				<!-- sidebar ends -->
-
 			</td>
 		</tr>
+		<!-- sidebar ends -->
 	</table>
 </html:form>
