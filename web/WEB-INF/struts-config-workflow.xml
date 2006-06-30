@@ -140,5 +140,6 @@
 			<forward name="success" path="workflow.runfilemask" />
 		</action>
 		<action path="/workflowForward" type="gov.nih.nci.calab.ui.core.BaseForwardAction" parameter="workflow.message" scope="request" />
+		<action path="/manageProject" type="gov.nih.nci.calab.ui.core.BaseForwardAction" parameter="workflow.manageproject" scope="request" />
 	</action-mappings>
 </struts-config>
