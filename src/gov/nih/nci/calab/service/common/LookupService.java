@@ -2,13 +2,16 @@ package gov.nih.nci.calab.service.common;
 
 import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
+import gov.nih.nci.calab.domain.Aliquot;
 import gov.nih.nci.calab.domain.MeasureUnit;
 import gov.nih.nci.calab.domain.StorageElement;
 import gov.nih.nci.calab.domain.User;
-import gov.nih.nci.calab.dto.administration.AliquotBean;
-import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
-import gov.nih.nci.calab.dto.administration.SampleBean;
+import gov.nih.nci.calab.domain.SampleContainer;
 import gov.nih.nci.calab.dto.common.UserBean;
+import gov.nih.nci.calab.dto.inventory.AliquotBean;
+import gov.nih.nci.calab.dto.inventory.ContainerBean;
+import gov.nih.nci.calab.dto.inventory.ContainerInfoBean;
+import gov.nih.nci.calab.dto.inventory.SampleBean;
 import gov.nih.nci.calab.dto.workflow.AssayBean;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.CalabComparators;
@@ -32,38 +35,40 @@ import org.apache.log4j.Logger;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.29 2006-06-23 19:50:02 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.30 2006-06-30 20:54:30 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
 
 	/**
-	 * Retrieving all unmasked aliquots for use in views create run, create assay run, use aliquot and create
-	 * aliquot.
+	 * Retrieving all unmasked aliquots for use in views create run, create
+	 * assay run, use aliquot and create aliquot.
+	 * 
 	 * @return a Map between sample name and its associated unmasked aliquots
 	 * @throws Exception
 	 */
-	public Map<String, SortedSet<AliquotBean>> getUnmaskedSampleAliquots() throws Exception {
+	public Map<String, SortedSet<AliquotBean>> getUnmaskedSampleAliquots()
+			throws Exception {
 		SortedSet<AliquotBean> aliquots = null;
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
-		Map<String, SortedSet<AliquotBean>> sampleAliquots=new HashMap<String, SortedSet<AliquotBean>>();
+		Map<String, SortedSet<AliquotBean>> sampleAliquots = new HashMap<String, SortedSet<AliquotBean>>();
 		try {
 			ida.open();
 			String hqlString = "select aliquot.id, aliquot.name, aliquot.sample.name from Aliquot aliquot where aliquot.dataStatus is null order by aliquot.name";
 			List results = ida.search(hqlString);
 			for (Object obj : results) {
 				Object[] info = (Object[]) obj;
-				AliquotBean aliquot=new AliquotBean(StringUtils
+				AliquotBean aliquot = new AliquotBean(StringUtils
 						.convertToString(info[0]), StringUtils
-						.convertToString(info[1]),
-						CalabConstants.ACTIVE_STATUS);
-				String sampleName=(String)info[2];
-				if (sampleAliquots.get(sampleName)!=null) {
-					aliquots=(SortedSet<AliquotBean>)sampleAliquots.get(sampleName);
-				}
-				else {
-					aliquots = new TreeSet<AliquotBean>(new CalabComparators.AliquotBeanComparator());
+						.convertToString(info[1]), CalabConstants.ACTIVE_STATUS);
+				String sampleName = (String) info[2];
+				if (sampleAliquots.get(sampleName) != null) {
+					aliquots = (SortedSet<AliquotBean>) sampleAliquots
+							.get(sampleName);
+				} else {
+					aliquots = new TreeSet<AliquotBean>(
+							new CalabComparators.AliquotBeanComparator());
 					sampleAliquots.put(sampleName, aliquots);
 				}
 				aliquots.add(aliquot);
@@ -76,6 +81,43 @@ public class LookupService {
 			ida.close();
 		}
 		return sampleAliquots;
+	}
+
+	public Map<String, SortedSet<ContainerBean>> getSampleContainers()
+			throws Exception {
+		SortedSet<ContainerBean> containers = null;
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		Map<String, SortedSet<ContainerBean>> sampleContainers = new HashMap<String, SortedSet<ContainerBean>>();
+		try {
+			ida.open();
+			String hqlString = "select container, container.sample.name from SampleContainer container";
+			List results = ida.search(hqlString);
+			for (Object obj : results) {
+				Object[] info = (Object[]) obj;
+				if (!(info[0] instanceof Aliquot)) {
+					ContainerBean container = new ContainerBean(
+							(SampleContainer) info[0]);
+
+					String sampleName = (String) info[1];
+					if (sampleContainers.get(sampleName) != null) {
+						containers = (SortedSet<ContainerBean>) sampleContainers
+								.get(sampleName);
+					} else {
+						containers = new TreeSet<ContainerBean>(
+								new CalabComparators.ContainerBeanComparator());
+						sampleContainers.put(sampleName, containers);
+					}
+					containers.add(container);
+				}
+			}
+		} catch (Exception e) {
+			logger.error("Error in retrieving all containers", e);
+			throw new RuntimeException("Error in retrieving all containers");
+		} finally {
+			ida.close();
+		}
+		return sampleContainers;
 	}
 
 	/**
@@ -165,9 +207,10 @@ public class LookupService {
 		} finally {
 			ida.close();
 		}
-		containerTypes.addAll(Arrays.asList(CalabConstants.DEFAULT_CONTAINER_TYPES));
-		List<String> containerTypeList=new ArrayList<String>(containerTypes);
-		
+		containerTypes.addAll(Arrays
+				.asList(CalabConstants.DEFAULT_CONTAINER_TYPES));
+		List<String> containerTypeList = new ArrayList<String>(containerTypes);
+
 		return containerTypeList;
 	}
 
@@ -189,8 +232,9 @@ public class LookupService {
 		} finally {
 			ida.close();
 		}
-		containerTypes.addAll(Arrays.asList(CalabConstants.DEFAULT_CONTAINER_TYPES));
-		List<String> containerTypeList=new ArrayList<String>(containerTypes);		
+		containerTypes.addAll(Arrays
+				.asList(CalabConstants.DEFAULT_CONTAINER_TYPES));
+		List<String> containerTypeList = new ArrayList<String>(containerTypes);
 		return containerTypeList;
 	}
 
@@ -301,25 +345,27 @@ public class LookupService {
 		return assayTypes;
 	}
 
-	public Map<String, SortedSet<AssayBean>> getAllAssayTypeAssays() throws Exception {
-		Map<String, SortedSet<AssayBean>> assayTypeAssays=new HashMap<String, SortedSet<AssayBean>>();
+	public Map<String, SortedSet<AssayBean>> getAllAssayTypeAssays()
+			throws Exception {
+		Map<String, SortedSet<AssayBean>> assayTypeAssays = new HashMap<String, SortedSet<AssayBean>>();
 		IDataAccess ida = (new DataAccessProxy())
-		.getInstance(IDataAccess.HIBERNATE);
+				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
 			String hqlString = "select assay.id, assay.name, assay.assayType from Assay assay";
 			List results = ida.search(hqlString);
-			SortedSet<AssayBean> assays=null;
+			SortedSet<AssayBean> assays = null;
 			for (Object obj : results) {
 				Object[] objArray = (Object[]) obj;
 				AssayBean assay = new AssayBean(
 						((Long) objArray[0]).toString(), (String) objArray[1],
 						(String) objArray[2]);
-				if (assayTypeAssays.get(assay.getAssayType())!=null) {
-					assays=(SortedSet<AssayBean>)assayTypeAssays.get(assay.getAssayType());
-				}
-				else {
-					assays=new TreeSet<AssayBean>(new CalabComparators.AssayBeanComparator());
+				if (assayTypeAssays.get(assay.getAssayType()) != null) {
+					assays = (SortedSet<AssayBean>) assayTypeAssays.get(assay
+							.getAssayType());
+				} else {
+					assays = new TreeSet<AssayBean>(
+							new CalabComparators.AssayBeanComparator());
 					assayTypeAssays.put(assay.getAssayType(), assays);
 				}
 				assays.add(assay);
@@ -332,7 +378,7 @@ public class LookupService {
 		}
 		return assayTypeAssays;
 	}
-	
+
 	/**
 	 * Retrieve all assays
 	 * 
@@ -377,8 +423,9 @@ public class LookupService {
 			String hqlString = "from User user order by user.lastName";
 			List results = ida.search(hqlString);
 			for (Object obj : results) {
-				User doUser = (User)obj;
-				UserBean user = new UserBean(doUser.getLoginName(),doUser.getFirstName(),doUser.getLastName());
+				User doUser = (User) obj;
+				UserBean user = new UserBean(doUser.getLoginName(), doUser
+						.getFirstName(), doUser.getLastName());
 				userBeans.add(user);
 			}
 		} catch (Exception e) {
