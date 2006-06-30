@@ -7,15 +7,15 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: InitSessionAction.java,v 1.49 2006-06-23 19:52:09 pansu Exp $ */
+/* CVS $Id: InitSessionAction.java,v 1.50 2006-06-30 20:55:58 pansu Exp $ */
 
-import gov.nih.nci.calab.dto.administration.ContainerInfoBean;
 import gov.nih.nci.calab.dto.common.UserBean;
+import gov.nih.nci.calab.dto.inventory.ContainerInfoBean;
 import gov.nih.nci.calab.dto.workflow.AssayBean;
 import gov.nih.nci.calab.dto.workflow.ExecuteWorkflowBean;
-import gov.nih.nci.calab.service.administration.ManageAliquotService;
-import gov.nih.nci.calab.service.administration.ManageSampleService;
 import gov.nih.nci.calab.service.common.LookupService;
+import gov.nih.nci.calab.service.inventory.ManageAliquotService;
+import gov.nih.nci.calab.service.inventory.ManageSampleService;
 import gov.nih.nci.calab.service.search.SearchSampleService;
 import gov.nih.nci.calab.service.util.CalabComparators;
 import gov.nih.nci.calab.service.util.CalabConstants;
@@ -206,7 +206,11 @@ public class InitSessionAction extends AbstractDispatchAction {
 			List containerTypes = lookupService.getAllAliquotContainerTypes();
 			session.setAttribute("allAliquotContainerTypes", containerTypes);
 		}
-
+		if (session.getAttribute("allSampleContainers") == null
+				|| session.getAttribute("newAliquotCreated") != null) {
+			Map sampleContainers = lookupService.getSampleContainers();			
+			session.setAttribute("allSampleContainers", sampleContainers);			
+		}
 		if (session.getAttribute("allUnmaskedSampleAliquots") == null
 				|| session.getAttribute("newAliquotCreated") != null) {
 			Map sampleAliquots = lookupService.getUnmaskedSampleAliquots();
