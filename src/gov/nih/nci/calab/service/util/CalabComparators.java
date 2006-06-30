@@ -1,8 +1,8 @@
 package gov.nih.nci.calab.service.util;
 
-import gov.nih.nci.calab.dto.administration.AliquotBean;
-import gov.nih.nci.calab.dto.administration.ContainerBean;
-import gov.nih.nci.calab.dto.administration.SampleBean;
+import gov.nih.nci.calab.dto.inventory.AliquotBean;
+import gov.nih.nci.calab.dto.inventory.ContainerBean;
+import gov.nih.nci.calab.dto.inventory.SampleBean;
 import gov.nih.nci.calab.dto.search.WorkflowResultBean;
 import gov.nih.nci.calab.dto.workflow.AssayBean;
 import gov.nih.nci.calab.dto.workflow.FileBean;
@@ -17,7 +17,7 @@ import java.util.Comparator;
  * 
  */
 
-/* CVS $Id: CalabComparators.java,v 1.6 2006-05-31 19:20:32 pansu Exp $ */
+/* CVS $Id: CalabComparators.java,v 1.7 2006-06-30 20:55:28 pansu Exp $ */
 
 public class CalabComparators {
 

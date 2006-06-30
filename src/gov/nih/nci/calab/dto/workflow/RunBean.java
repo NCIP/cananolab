@@ -4,8 +4,8 @@
 package gov.nih.nci.calab.dto.workflow;
 
 import gov.nih.nci.calab.domain.Run;
-import gov.nih.nci.calab.dto.administration.AliquotBean;
 import gov.nih.nci.calab.dto.common.SortableName;
+import gov.nih.nci.calab.dto.inventory.AliquotBean;
 import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.Date;
