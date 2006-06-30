@@ -323,6 +323,22 @@ SIDEBAR BEGINS
   background-color:#F4F4F5; /* constant: light gray */
   font-family:verdana, arial, helvetica, sans-serif;
   font-size:0.7em;
+  border:1px solid #CCCCCC; /* constant: medium gray */
+}
+.noBottomSidebarSection{ /* for the individual sidebar sections */
+  background-color:#F4F4F5; /* constant: light gray */
+  font-family:verdana, arial, helvetica, sans-serif;
+  font-size:0.7em;
+  border-top:1px solid #CCCCCC; /* constant: medium gray */
+  border-left:1px solid #CCCCCC; /* constant: medium gray */
+  border-right:1px solid #CCCCCC; /* constant: medium gray */
+}
+.noTopBottomSidebarSection{ /* for the individual sidebar sections */
+  background-color:#F4F4F5; /* constant: light gray */
+  font-family:verdana, arial, helvetica, sans-serif;
+  font-size:0.7em;
+  border-left:1px solid #CCCCCC; /* constant: medium gray */
+  border-right:1px solid #CCCCCC; /* constant: medium gray */
 }
 .sidebarTitle{ /* for the titles of the individual sidebar sections */
   font-size:1em;
@@ -334,9 +350,8 @@ SIDEBAR BEGINS
 .sidebarContent{ /* for the areas under the sidebar titles and requires text */
   font-size:1em;
   padding:0.8em;
-  border-right:1px solid #CCCCCC; /* constant: medium gray */
-  border-left:1px solid #CCCCCC; /* constant: medium gray */
 }
+
 .sidebarLogin{ /* for the sidebar login cells */
   font-size:0.7em;
   padding-left:0.8em;
@@ -525,6 +540,11 @@ h3,.h3{ /* for title of page */
   font-weight:bold;
   color:#5C5C5C; /* constant: dark gray */
   text-align:center;
+}
+h4,.h4{ /* for title of page */
+  font-size:1.1em;
+  font-weight:bold;
+  color:#5C5C5C; /* constant: dark gray */
 }
 p,.p{ /* for paragraphs */
   padding-left:1em;
