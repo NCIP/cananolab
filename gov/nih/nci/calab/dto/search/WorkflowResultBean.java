@@ -2,7 +2,7 @@ package gov.nih.nci.calab.dto.search;
 
 import java.util.Date;
 
-import gov.nih.nci.calab.dto.administration.AliquotBean;
+import gov.nih.nci.calab.dto.inventory.AliquotBean;
 import gov.nih.nci.calab.dto.workflow.AssayBean;
 import gov.nih.nci.calab.dto.workflow.FileBean;
 import gov.nih.nci.calab.dto.workflow.RunBean;
