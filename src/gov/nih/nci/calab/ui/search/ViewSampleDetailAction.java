@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: ViewSampleDetailAction.java,v 1.7 2006-06-30 21:06:22 pansu Exp $ */
+/* CVS $Id: ViewSampleDetailAction.java,v 1.8 2006-07-05 21:22:30 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.inventory.AliquotBean;
 import gov.nih.nci.calab.dto.inventory.ContainerBean;
@@ -33,7 +33,7 @@ public class ViewSampleDetailAction extends AbstractBaseAction {
 	private static Logger logger = Logger
 			.getLogger(ViewSampleDetailAction.class);
 
-	public ActionForward executeTask(ActionMapping mapping, ActionForm form,
+public ActionForward executeTask(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		ActionForward forward = null;
@@ -45,41 +45,42 @@ public class ViewSampleDetailAction extends AbstractBaseAction {
 			isAliquot = (Boolean) theForm.get("isAliquot");
 		}
 		// if no aliquot information show sample details and its containers
-
+		String containerId = (String) theForm.get("containerId");
 		if (!isAliquot) {
-//			String sampleId = (String) theForm.get("sampleId");
-//			
-//			int containerNum = Integer.parseInt((String) theForm
-//					.get("containerNum"));
-//			if (session.getAttribute("sampleContainers") != null) {
-//				List<ContainerBean> sampleContainers = new ArrayList<ContainerBean>(
-//						(List<? extends ContainerBean>) session
-//								.getAttribute("sampleContainers"));
-//				SampleBean sample = null;
-//				for (ContainerBean container : sampleContainers) {
-//					if (container.getSample().getSampleId().equals(sampleId)
-//							&& container.getContainerNumber() == containerNum) {
-//						sample = container.getSample();
-//						request.setAttribute("sample", sample);
-//						request.setAttribute("containerNum", containerNum);
-//						break;
-//					}
-//				}
+			// String sampleId = (String) theForm.get("sampleId");
+			//			
+			// int containerNum = Integer.parseInt((String) theForm
+			// .get("containerNum"));
+			// if (session.getAttribute("sampleContainers") != null) {
+			// List<ContainerBean> sampleContainers = new
+			// ArrayList<ContainerBean>(
+			// (List<? extends ContainerBean>) session
+			// .getAttribute("sampleContainers"));
+			// SampleBean sample = null;
+			// for (ContainerBean container : sampleContainers) {
+			// if (container.getSample().getSampleId().equals(sampleId)
+			// && container.getContainerNumber() == containerNum) {
+			// sample = container.getSample();
+			// request.setAttribute("sample", sample);
+			// request.setAttribute("containerNum", containerNum);
+			// break;
+			// }
+			// }
 
-			String containerId=(String)theForm.get("containerId");
 			if (session.getAttribute("sampleContainers") != null) {
-			List<ContainerBean> sampleContainers = new ArrayList<ContainerBean>(
-					(List<? extends ContainerBean>) session
-							.getAttribute("sampleContainers"));
-			SampleBean sample = null;
-			for (ContainerBean container : sampleContainers) {
-				if (container.getContainerId().equals(containerId)) {
-					sample = container.getSample();
-					request.setAttribute("sample", sample);
-					request.setAttribute("containerNum", container.getContainerNumber());
-					break;
+				List<ContainerBean> sampleContainers = new ArrayList<ContainerBean>(
+						(List<? extends ContainerBean>) session
+								.getAttribute("sampleContainers"));
+				SampleBean sample = null;
+				for (ContainerBean container : sampleContainers) {
+					if (container.getContainerId().equals(containerId)) {
+						sample = container.getSample();
+						request.setAttribute("sample", sample);
+						request.setAttribute("containerNum", container
+								.getContainerNumber());
+						break;
+					}
 				}
-			}
 				forward = mapping.findForward("success");
 			} else {
 				logger
@@ -93,13 +94,13 @@ public class ViewSampleDetailAction extends AbstractBaseAction {
 		}
 		// show aliquot and its container detail
 		else {
-			int aliquotNum = Integer.parseInt((String) theForm
-					.get("aliquotNum"));
 			if (session.getAttribute("aliquots") != null) {
-				List aliquots = (List) session.getAttribute("aliquots");
-				AliquotBean aliquot = ((AliquotBean) aliquots.get(aliquotNum));
-				request.setAttribute("aliquot", aliquot);
-				request.setAttribute("aliquotNum", aliquotNum);
+				List<AliquotBean> aliquots = new ArrayList<AliquotBean>(
+						(List<? extends AliquotBean>) session.getAttribute("aliquots"));
+				for (AliquotBean aliquot : aliquots) {
+					if (aliquot.getAliquotId().equals(containerId)) {
+						request.setAttribute("aliquot", aliquot);					}
+				}								
 				forward = mapping.findForward("success");
 			} else {
 				throw new CalabException(
@@ -107,9 +108,7 @@ public class ViewSampleDetailAction extends AbstractBaseAction {
 			}
 		}
 		return forward;
-	}
-
-	public boolean loginRequired() {
+	}	public boolean loginRequired() {
 		return false;
 	}
 }
