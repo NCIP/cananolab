@@ -29,7 +29,11 @@
 		</td>
 </table>
 <jsp:include page="/bodyMessage.jsp?bundle=search" />
-<display:table name="sessionScope.aliquots" id="aliquot" class="displaytable" pagesize="100" requestURI="searchAliquot.do">
+<form name="resultForm">
+<display:table name="sessionScope.aliquots" id="aliquot" class="displaytable" pagesize="25" requestURI="searchAliquot.do">
+	<display:column title="Select">
+		<input type="radio" name="containerId" value="${aliquot.aliquotId}">
+	</display:column>
 	<display:column title="Sample<br>ID" property="sample.sortableName" sortable="true" />
 	<display:column title="Sample<br>Accession<br>Date" property="sample.accessionDate" sortable="true" format="{0,date,MM-dd-yyyy}" />
 	<display:column title="Sample<br>Submitter" property="sample.sampleSubmitter" sortable="true" />
@@ -37,13 +41,20 @@
 	<display:column title="Aliquoted<br>Date" property="creationDate" sortable="true" format="{0,date,MM-dd-yyyy}" />
 	<display:column title="Aliquot<br>Location" property="container.storageLocation" sortable="true" />
 	<display:column title="Aliquot<br>Creator" property="creator" sortable="true" />
+	<%--
 	<display:column title="Actions">
 		<c:url var="viewAliquotDetailURL" value="/viewSampleDetail.do">
 			<c:param name="aliquotNum" value="${aliquot_rowNum-1}" />
 			<c:param name="isAliquot" value="true" />
 		</c:url>
 		<a href="${viewAliquotDetailURL}">View Details</a>&nbsp;</display:column>
+	--%>
 </display:table>
+<div align="right">
+	<input type="hidden" name="isAliquot" value="${param.isAliquot}">
+	<input type="button" value="View Details" onclick="javascript:submitAction(document.resultForm, 'viewSampleDetail.do')">
+</div>
+</form>
 <%--
 <table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
 	<tr>
