@@ -23,7 +23,7 @@ import org.apache.log4j.Logger;
  * @author pansu
  * 
  */
-/* CVS $Id: SearchSampleService.java,v 1.17 2006-06-30 20:55:19 pansu Exp $ */
+/* CVS $Id: SearchSampleService.java,v 1.18 2006-07-05 21:23:18 pansu Exp $ */
 
 public class SearchSampleService {
 	private static Logger logger = Logger.getLogger(SearchSampleService.class);
@@ -339,10 +339,17 @@ public class SearchSampleService {
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
-			//TODO fill in the detail of getting aliquots from container
+			String hqlString = "select aliquot from Aliquot aliquot join aliquot.parentSampleContainerCollection container where container.id="
+					+ containerId;
+			List results = ida.search(hqlString);
+			for (Object obj : results) {
+				Aliquot aliquot = (Aliquot) obj;
+				aliquots.add(new AliquotBean(aliquot));
+			}
+			// TODO fill in the detail of getting aliquots from container
 		} catch (Exception e) {
-			logger.error("Error in searching aliquots by the given container ID",
-					e);
+			logger.error(
+					"Error in searching aliquots by the given container ID", e);
 			throw new RuntimeException(
 					"Error in searching aliquots by the given container ID");
 		} finally {
