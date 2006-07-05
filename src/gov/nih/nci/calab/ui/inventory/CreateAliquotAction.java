@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.inventory;
  * @author pansu
  */
 
-/* CVS $Id: CreateAliquotAction.java,v 1.1 2006-06-30 20:56:09 pansu Exp $ */
+/* CVS $Id: CreateAliquotAction.java,v 1.2 2006-07-05 21:22:59 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.inventory.AliquotBean;
 import gov.nih.nci.calab.exception.CalabException;
@@ -34,17 +34,17 @@ public class CreateAliquotAction extends AbstractBaseAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		ActionForward forward = null;
-		HttpSession session = request.getSession();
+		HttpSession session = request.getSession();		
 		
-		// TODO fill in details for aliquot information */
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		boolean fromAliquot = ((String) theForm.get("fromAliquot")).equals("true") ? true
 				: false;
 		String sampleName = (String) theForm.get("sampleName");
+		String containerName=sampleName+(String)theForm.get("containerName");
 		String parentAliquotName = (String) theForm.get("parentAliquotName");
-		String parentName=(fromAliquot)?parentAliquotName:sampleName;
-		String fullParentName = (!fromAliquot) ? "Sample "
-				+ sampleName : "Aliquot " + parentAliquotName;
+		String parentName=(fromAliquot)?parentAliquotName:containerName;
+		String fullParentName = (!fromAliquot) ? "Sample Container "
+				+ containerName : "Aliquot " + parentAliquotName;
 		request.setAttribute("fullParentName", fullParentName);
 		if (session.getAttribute("aliquotMatrix") != null) {
 			List<AliquotBean[]> aliquotMatrix = new ArrayList<AliquotBean[]>(
