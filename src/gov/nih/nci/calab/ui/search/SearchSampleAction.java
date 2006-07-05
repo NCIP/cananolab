@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchSampleAction.java,v 1.15 2006-06-30 21:06:22 pansu Exp $ */
+/* CVS $Id: SearchSampleAction.java,v 1.16 2006-07-05 21:13:50 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.inventory.AliquotBean;
 import gov.nih.nci.calab.dto.inventory.ContainerBean;
@@ -83,8 +83,11 @@ public class SearchSampleAction extends AbstractBaseAction {
 			if (aliquotName.equals("all")) {
 				aliquotName = "";
 			}
-			String containerId = (String) theForm.get("containerId");
-			if (containerId.length() > 0) {
+			String containerId = null;
+			if (theForm.getMap().containsKey("containerId")) {
+				containerId=(String) theForm.get("containerId");
+			}
+			if (containerId!=null && containerId.length() > 0) {
 				aliquots = searchSampleService
 						.searchAliquotsByContainer(containerId);
 			} else {
