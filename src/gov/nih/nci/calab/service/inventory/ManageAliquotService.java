@@ -26,7 +26,7 @@ import org.apache.struts.util.LabelValueBean;
  */
 
 /*
- * CVS $Id: ManageAliquotService.java,v 1.1 2006-06-30 20:54:44 pansu Exp $
+ * CVS $Id: ManageAliquotService.java,v 1.2 2006-07-05 21:23:36 pansu Exp $
  */
 
 public class ManageAliquotService {
@@ -80,20 +80,20 @@ public class ManageAliquotService {
 	public int getFirstAliquotNum(boolean fromAliquot, String parentName) throws Exception {
 		int aliquotNum = 0;
 		if (!fromAliquot) {
-			aliquotNum = getLastSampleAliquotNum(parentName) + 1;
+			aliquotNum = getLastSampleContainerAliquotNum(parentName) + 1;
 		} else {
 			aliquotNum = getLastAliquotChildAliquotNum(parentName) + 1;
 		}
 		return aliquotNum;
 	}
 
-	private int getLastSampleAliquotNum(String sampleName) throws Exception {
+	private int getLastSampleContainerAliquotNum(String containerName) throws Exception {
 		int aliquotNum = 0;
 		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
-			String hqlString = "select container from Sample sample join sample.sampleContainerCollection container where sample.name='"
-					+ sampleName + "'";
+			String hqlString = "select child from Aliquot child join child.parentSampleContainerCollection parent where parent.name='"
+				+ containerName + "'";
 			List results = ida.search(hqlString);
 			for (Object obj : results) {
 				SampleContainer container = (SampleContainer) obj;
@@ -108,10 +108,10 @@ public class ManageAliquotService {
 				}
 			}
 		} catch (Exception e) {
-			logger.error("Error in retrieving the last sample aliquot number",
+			logger.error("Error in retrieving the last sample container aliquot number",
 					e);
 			throw new RuntimeException(
-					"Error in retrieving the last sample aliquot number");
+					"Error in retrieving the last sample container aliquot number");
 		} finally {
 			ida.close();
 		}
@@ -169,19 +169,19 @@ public class ManageAliquotService {
 			ida.open();
 
 			Aliquot parentAliquot = null;
-			Sample sample = null;
+			SampleContainer container = null;
 			if (fromAliquot) {
 				// Get aliqot ID and load the object
 				List aliquots = ida
 						.search("from Aliquot aliquot where aliquot.name='"
 								+ parentName + "'");
 				parentAliquot = (Aliquot) aliquots.get(0);
-				sample = parentAliquot.getSample();
+				//container = parentAliquot.getParentSampleContainerCollection();
 			} else {
-				List samples = ida
-						.search("from Sample sample where sample.name='"
+				List containers = ida
+						.search("from SampleContainer container where container.name='"
 								+ parentName + "'");
-				sample = (Sample) samples.get(0);
+				container = (SampleContainer) containers.get(0);
 			}
 
 			for (AliquotBean[] aliquotBeans : aliquotMatrix) {
@@ -237,8 +237,10 @@ public class ManageAliquotService {
 					if (fromAliquot) {
 						doAliquot.getParentSampleContainerCollection().add(
 								parentAliquot);
-					} 
-					doAliquot.setSample(sample);
+					}
+					else {
+						doAliquot.getParentSampleContainerCollection().add(container);
+					}
 
 
 					ida.createObject(doAliquot);
