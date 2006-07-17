@@ -34,13 +34,13 @@
     </set>
     <set name="parentSampleContainerCollection" table="Derived_sample_container" cascade="all-delete-orphan" lazy="true">
       <cache usage="read-write" />
-      <key column="PARENT_CONTAINER_ID" />
-      <many-to-many class="gov.nih.nci.calab.domain.SampleContainer" column="SAMPLE_CONTAINER_PK_ID" />
+      <key column="SAMPLE_CONTAINER_PK_ID" />
+      <many-to-many class="gov.nih.nci.calab.domain.SampleContainer" column="PARENT_CONTAINER_ID" />
     </set>
     <set name="childSampleContainerCollection" table="Derived_sample_container" cascade="all-delete-orphan" lazy="true" inverse="true">
       <cache usage="read-write" />
-      <key column="SAMPLE_CONTAINER_PK_ID" />
-      <many-to-many class="gov.nih.nci.calab.domain.SampleContainer" column="PARENT_CONTAINER_ID" />
+      <key column="PARENT_CONTAINER_ID" />
+      <many-to-many class="gov.nih.nci.calab.domain.SampleContainer" column="SAMPLE_CONTAINER_PK_ID" />
     </set>
     <set name="runSampleContainerCollection" cascade="all-delete-orphan" lazy="true" inverse="true">
       <cache usage="read-write" />
