@@ -15,7 +15,7 @@ import java.util.Set;
  * @author pansu
  * 
  */
-/* CVS $Id: ContainerBean.java,v 1.1 2006-06-30 20:52:51 pansu Exp $ */
+/* CVS $Id: ContainerBean.java,v 1.2 2006-07-31 21:41:23 pansu Exp $ */
 
 public class ContainerBean {
 	private String containerId="";
@@ -48,9 +48,7 @@ public class ContainerBean {
 	
 	private String containerComments = "";
 
-	private SampleBean sample;
-	
-    private int containerNumber=-1;
+	private SampleBean sample;	
 
 	public SampleBean getSample() {
 		return sample;
@@ -266,24 +264,6 @@ public class ContainerBean {
 
 	public void setContainerName(String containerName) {
 		this.containerName = containerName;
-	}
-
-	/**
-	 * Assume containerName has a sequenceNumber at the end
-	 * 
-	 * @return the sequence number for a container
-	 */
-	public Integer getContainerNumber() {
-		
-		if (containerName.matches("\\D*(\\d+)")) {
-			try {
-				containerNumber = Integer.parseInt(containerName.replaceAll(
-						"\\D*(\\d+)", "$1"));
-			} catch (Exception e) {
-				return -1;
-			}
-		}
-		return containerNumber;
 	}
 	
 	//used for display tag
