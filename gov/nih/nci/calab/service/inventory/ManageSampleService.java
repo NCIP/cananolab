@@ -16,35 +16,15 @@ import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
 import gov.nih.nci.calab.service.util.StringUtils;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
-/* CVS $Id: ManageSampleService.java,v 1.1 2006-06-30 20:54:44 pansu Exp $ 
+/* CVS $Id: ManageSampleService.java,v 1.2 2006-07-31 21:44:12 pansu Exp $ 
  */
 public class ManageSampleService {
 	private static Logger logger = Logger.getLogger(ManageSampleService.class);
-
-	public List<String> getAllSampleSOPs() throws Exception {
-		List<String> sampleSOPs = new ArrayList<String>();
-		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
-		try {
-			ida.open();
-			String hqlString = "select sampleSOP.name from SampleSOP sampleSOP where sampleSOP.description='sample creation'";
-			List results = ida.search(hqlString);
-			for (Object obj:results) {
-				sampleSOPs.add((String)obj);
-			}
-		} catch (Exception e) {
-			logger.error("Problem to retrieve all Sample SOPs.");
-			throw new RuntimeException("Problem to retrieve all Sample SOPs. ");
-		} finally {
-			ida.close();
-		}
-		return sampleSOPs;
-	}
 
 	/**
 	 * 
