@@ -4,18 +4,22 @@ import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
 import gov.nih.nci.calab.domain.Aliquot;
 import gov.nih.nci.calab.domain.MeasureUnit;
-import gov.nih.nci.calab.domain.StorageElement;
-import gov.nih.nci.calab.domain.User;
+import gov.nih.nci.calab.domain.Sample;
 import gov.nih.nci.calab.domain.SampleContainer;
+import gov.nih.nci.calab.domain.StorageElement;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.inventory.AliquotBean;
 import gov.nih.nci.calab.dto.inventory.ContainerBean;
 import gov.nih.nci.calab.dto.inventory.ContainerInfoBean;
 import gov.nih.nci.calab.dto.inventory.SampleBean;
 import gov.nih.nci.calab.dto.workflow.AssayBean;
-import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CalabComparators;
+import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
+import gov.nih.nci.security.authorization.domainobjects.User;
+import gov.nih.nci.security.dao.SearchCriteria;
+import gov.nih.nci.security.dao.UserSearchCriteria;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,6 +31,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
+import org.apache.struts.util.LabelValueBean;
 
 /**
  * The service to return prepopulated data that are shared across different
@@ -35,18 +40,20 @@ import org.apache.log4j.Logger;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.30 2006-06-30 20:54:30 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.31 2006-07-31 21:43:36 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
 
 	/**
-	 * Retrieving all unmasked aliquots for use in views create run, create
-	 * assay run, use aliquot and create aliquot.
+	 * Retrieving all unmasked aliquots for use in views create run, use aliquot
+	 * and create aliquot.
 	 * 
 	 * @return a Map between sample name and its associated unmasked aliquots
 	 * @throws Exception
 	 */
+	
+	
 	public Map<String, SortedSet<AliquotBean>> getUnmaskedSampleAliquots()
 			throws Exception {
 		SortedSet<AliquotBean> aliquots = null;
@@ -83,7 +90,12 @@ public class LookupService {
 		return sampleAliquots;
 	}
 
-	public Map<String, SortedSet<ContainerBean>> getSampleContainers()
+	/**
+	 * 
+	 * @return a map between sample name and its sample containers
+	 * @throws Exception
+	 */
+	public Map<String, SortedSet<ContainerBean>> getAllSampleContainers()
 			throws Exception {
 		SortedSet<ContainerBean> containers = null;
 		IDataAccess ida = (new DataAccessProxy())
@@ -292,7 +304,7 @@ public class LookupService {
 	/**
 	 * Get all samples in the database
 	 * 
-	 * @return a list of SampleBean containing sample Ids and names
+	 * @return a list of SampleBean containing sample Ids and names DELETE
 	 */
 	public List<SampleBean> getAllSamples() throws Exception {
 		List<SampleBean> samples = new ArrayList<SampleBean>();
@@ -345,6 +357,11 @@ public class LookupService {
 		return assayTypes;
 	}
 
+	/**
+	 * 
+	 * @return a map between assay type and its assays
+	 * @throws Exception
+	 */
 	public Map<String, SortedSet<AssayBean>> getAllAssayTypeAssays()
 			throws Exception {
 		Map<String, SortedSet<AssayBean>> assayTypeAssays = new HashMap<String, SortedSet<AssayBean>>();
@@ -380,61 +397,176 @@ public class LookupService {
 	}
 
 	/**
-	 * Retrieve all assays
 	 * 
-	 * @return a list of all assays in certain type
+	 * @return a map between assay type and its assays
+	 * @throws Exception
 	 */
-	public List<String> getAllAssignedAliquots() {
-		// Detail here
-		List<String> aliquots = new ArrayList<String>();
-		return aliquots;
+	public Map<String, SortedSet<AssayBean>> getAllAssayTypeAssays(UserBean user)
+			throws Exception {
+		Map<String, SortedSet<AssayBean>> assayTypeAssays = getAllAssayTypeAssays();
+		// filter by user access privileges
+		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
+		Map<String, SortedSet<AssayBean>> filteredAssayTypeAssays = new HashMap<String, SortedSet<AssayBean>>(
+				assayTypeAssays);
+		for (String assayType : filteredAssayTypeAssays.keySet()) {
+			boolean haveAssayTypeAccess = userService.accessProtectionGroup(
+					user, assayType);
+			if (!haveAssayTypeAccess) {
+				filteredAssayTypeAssays.remove(assayType);
+			} else {
+				for (AssayBean assay : filteredAssayTypeAssays.get(assayType)) {
+					boolean haveAssayAccess = userService
+							.accessProtectionGroup(user, assay.getAssayName());
+					if (!haveAssayAccess) {
+						filteredAssayTypeAssays.get(assayType).remove(assay);
+					}
+				}
+			}
+		}
+		return filteredAssayTypeAssays;
 	}
 
-	public List<AssayBean> getAllAssayBeans() throws Exception {
-		List<AssayBean> assayBeans = new ArrayList<AssayBean>();
+	/**
+	 * 
+	 * @return all sample sources
+	 */
+	public List<String> getAllSampleSources() throws Exception {
+		List<String> sampleSources = new ArrayList<String>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
-			String hqlString = "select assay.id, assay.name, assay.assayType from Assay assay";
+			String hqlString = "select source.organizationName from Source source order by source.organizationName";
 			List results = ida.search(hqlString);
 			for (Object obj : results) {
-				Object[] objArray = (Object[]) obj;
-				AssayBean assay = new AssayBean(
-						((Long) objArray[0]).toString(), (String) objArray[1],
-						(String) objArray[2]);
-				assayBeans.add(assay);
+				sampleSources.add((String) obj);
 			}
 		} catch (Exception e) {
-			logger.error("Error in retrieving all assay beans. ", e);
-			throw new RuntimeException("Error in retrieving all assays beans. ");
+			logger.error("Error in retrieving all sample sources", e);
+			throw new RuntimeException("Error in retrieving all sample sources");
 		} finally {
 			ida.close();
 		}
-		return assayBeans;
+
+		return sampleSources;
 	}
 
-	public List<UserBean> getAllUserBeans() throws Exception {
-		List<UserBean> userBeans = new ArrayList<UserBean>();
+	/**
+	 * 
+	 * @return a map between sample source and samples with unmasked aliquots
+	 * @throws Exception
+	 */
+	public Map<String, SortedSet<SampleBean>> getSampleSourceSamplesWithUnmaskedAliquots()
+			throws Exception {
+		Map<String, SortedSet<SampleBean>> sampleSourceSamples = new HashMap<String, SortedSet<SampleBean>>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
-			String hqlString = "from User user order by user.lastName";
+			String hqlString = "select distinct aliquot.sample from Aliquot aliquot where aliquot.dataStatus is null";
 			List results = ida.search(hqlString);
+			SortedSet<SampleBean> samples = null;
 			for (Object obj : results) {
-				User doUser = (User) obj;
-				UserBean user = new UserBean(doUser.getLoginName(), doUser
-						.getFirstName(), doUser.getLastName());
-				userBeans.add(user);
+				SampleBean sample = new SampleBean((Sample) obj);
+				if (sampleSourceSamples.get(sample.getSampleSource()) != null) {
+					// TODO need to make sample source a required field
+					if (sample.getSampleSource().length() > 0) {
+						samples = (SortedSet<SampleBean>) sampleSourceSamples
+								.get(sample.getSampleSource());
+					}
+				} else {
+					samples = new TreeSet<SampleBean>(
+							new CalabComparators.SampleBeanComparator());
+					if (sample.getSampleSource().length() > 0) {
+						sampleSourceSamples.put(sample.getSampleSource(),
+								samples);
+					}
+				}
+				samples.add(sample);
 			}
 		} catch (Exception e) {
-			logger.error("Error in retrieving all aliquot Ids and names", e);
+			logger.error(
+					"Error in retrieving sample beans with unmasked aliquots ",
+					e);
 			throw new RuntimeException(
-					"Error in retrieving all aliquot Ids and names");
+					"Error in retrieving all sample beans with unmasked aliquots. ");
 		} finally {
 			ida.close();
 		}
-		return userBeans;
+		return sampleSourceSamples;
 	}
+
+	public List<String> getAllSampleSOPs() throws Exception {
+		List<String> sampleSOPs = new ArrayList<String>();
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			String hqlString = "select sampleSOP.name from SampleSOP sampleSOP where sampleSOP.description='sample creation'";
+			List results = ida.search(hqlString);
+			for (Object obj : results) {
+				sampleSOPs.add((String) obj);
+			}
+		} catch (Exception e) {
+			logger.error("Problem to retrieve all Sample SOPs.");
+			throw new RuntimeException("Problem to retrieve all Sample SOPs. ");
+		} finally {
+			ida.close();
+		}
+		return sampleSOPs;
+	}
+
+	/**
+	 * 
+	 * @return all methods for creating aliquots
+	 */
+	public List<LabelValueBean> getAliquotCreateMethods() throws Exception {
+		List<LabelValueBean> createMethods = new ArrayList<LabelValueBean>();
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			String hqlString = "select sop.name, file.path from SampleSOP sop join sop.sampleSOPFileCollection file where sop.description='aliquot creation'";
+			List results = ida.search(hqlString);
+			for (Object obj : results) {
+				String sopName = (String) ((Object[]) obj)[0];
+				String sopURI = (String) ((Object[]) obj)[1];
+				String sopURL = (sopURI == null) ? "" : sopURI;
+				createMethods.add(new LabelValueBean(sopName, sopURL));
+			}
+		} catch (Exception e) {
+			logger.error("Error in retrieving all sample sources", e);
+			throw new RuntimeException("Error in retrieving all sample sources");
+		} finally {
+			ida.close();
+		}
+		return createMethods;
+	}
+
+	/**
+	 * 
+	 * @return all source sample IDs
+	 */
+	public List<String> getAllSourceSampleIds() throws Exception {
+		List<String> sourceSampleIds = new ArrayList<String>();
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			String hqlString = "select distinct sample.sourceSampleId from Sample sample order by sample.sourceSampleId";
+			List results = ida.search(hqlString);
+			for (Object obj : results) {
+				sourceSampleIds.add((String) obj);
+			}
+		} catch (Exception e) {
+			logger.error("Error in retrieving all source sample IDs", e);
+			throw new RuntimeException(
+					"Error in retrieving all source sample IDs");
+		} finally {
+			ida.close();
+		}
+
+		return sourceSampleIds;
+	}
+
 }
