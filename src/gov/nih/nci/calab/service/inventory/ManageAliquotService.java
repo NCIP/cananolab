@@ -3,7 +3,6 @@ package gov.nih.nci.calab.service.inventory;
 import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
 import gov.nih.nci.calab.domain.Aliquot;
-import gov.nih.nci.calab.domain.Sample;
 import gov.nih.nci.calab.domain.SampleContainer;
 import gov.nih.nci.calab.domain.StorageElement;
 import gov.nih.nci.calab.dto.inventory.AliquotBean;
@@ -12,12 +11,10 @@ import gov.nih.nci.calab.exception.DuplicateEntriesException;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.apache.struts.util.LabelValueBean;
 
 /**
  * 
@@ -26,37 +23,12 @@ import org.apache.struts.util.LabelValueBean;
  */
 
 /*
- * CVS $Id: ManageAliquotService.java,v 1.2 2006-07-05 21:23:36 pansu Exp $
+ * CVS $Id: ManageAliquotService.java,v 1.3 2006-07-31 21:44:12 pansu Exp $
  */
 
 public class ManageAliquotService {
 	private static Logger logger = Logger.getLogger(ManageAliquotService.class);
 
-	/**
-	 * 
-	 * @return all methods for creating aliquots
-	 */
-	public List<LabelValueBean> getAliquotCreateMethods() throws Exception {
-		List<LabelValueBean> createMethods = new ArrayList<LabelValueBean>();
-		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
-		try {
-			ida.open();
-			String hqlString = "select sop.name, file.path from SampleSOP sop join sop.sampleSOPFileCollection file where sop.description='aliquot creation'";
-			List results = ida.search(hqlString);
-			for (Object obj : results) {
-				String sopName = (String) ((Object[]) obj)[0];
-				String sopURI = (String) ((Object[]) obj)[1];
-				String sopURL = (sopURI == null) ? "" : sopURI;
-				createMethods.add(new LabelValueBean(sopName, sopURL));
-			}
-		} catch (Exception e) {
-			logger.error("Error in retrieving all sample sources", e);
-			throw new RuntimeException("Error in retrieving all sample sources");
-		} finally {
-			ida.close();
-		}
-		return createMethods;
-	}
 
 	public int getDefaultAliquotMatrixColumnNumber() {
 		return 10;
@@ -175,8 +147,7 @@ public class ManageAliquotService {
 				List aliquots = ida
 						.search("from Aliquot aliquot where aliquot.name='"
 								+ parentName + "'");
-				parentAliquot = (Aliquot) aliquots.get(0);
-				//container = parentAliquot.getParentSampleContainerCollection();
+				parentAliquot = (Aliquot) aliquots.get(0);			
 			} else {
 				List containers = ida
 						.search("from SampleContainer container where container.name='"
