@@ -27,17 +27,12 @@ public class FileURLDecorator implements DisplaytagColumnDecorator {
 		assayName = specialCharReplacer.getReplacedString(assayName);
 		runName = specialCharReplacer.getReplacedString(runName);
 
-		String fileURL = "downloadSearchedFile.do?method=downloadFile&fileName="
+		String fileURL = "runFile.do?dispatch=downloadFile&fileName="
 				+ workflow.getFile().getFilename()
 				+ "&runId="
 				+ workflow.getRun().getId()
-				+ "&runName="
-				+ runName
 				+ "&inout="
-				+ workflow.getFile().getInoutType()
-				+ "&assayType="
-				+ assayType
-				+ "&assayName=" + assayName;
+				+ workflow.getFile().getInoutType();
 
 		String link = "<a href=" + fileURL + ">"
 				+ workflow.getFile().getShortFilename() + "<br>"
