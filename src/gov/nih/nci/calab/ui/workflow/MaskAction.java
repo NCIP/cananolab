@@ -69,6 +69,7 @@ public class MaskAction extends AbstractDispatchAction {
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+
 		return mapping.getInputForward();
 	}
 	

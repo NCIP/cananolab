@@ -69,12 +69,14 @@ public class CreateRunAction extends AbstractDispatchAction {
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		HttpSession session=request.getSession();		
+		HttpSession session=request.getSession();	
+		InitSessionSetup.getInstance().clearSearchSession(session);
+		InitSessionSetup.getInstance().clearInventorySession(session);
+
 		InitSessionSetup.getInstance().setAllAssayTypeAssays(session);
-		//User user=(User)session.getAttribute("user");
-		//InitSessionSetup.getInstance().setAllAssayTypeAssays(session, user);
 		InitSessionSetup.getInstance().setAllUsers(session);
-		InitSessionSetup.getInstance().setSampleSourceUnmaskedAliquots(session);
+		InitSessionSetup.getInstance().setSampleSourceUnmaskedAliquots(session);	
+		
 		return mapping.getInputForward();
 	}
 	

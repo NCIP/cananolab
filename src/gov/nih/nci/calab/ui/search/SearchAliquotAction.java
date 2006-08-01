@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchAliquotAction.java,v 1.1 2006-08-01 13:25:47 pansu Exp $ */
+/* CVS $Id: SearchAliquotAction.java,v 1.2 2006-08-01 19:47:13 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.inventory.AliquotBean;
 import gov.nih.nci.calab.dto.inventory.StorageLocation;
@@ -102,6 +102,10 @@ public class SearchAliquotAction extends AbstractDispatchAction {
 		InitSessionSetup.getInstance().setAllAliquotContainerInfo(session);
 		InitSessionSetup.getInstance().setAllSampleSources(session);
 		InitSessionSetup.getInstance().setAllSourceSampleIds(session);
+		
+		InitSessionSetup.getInstance().clearWorkflowSession(session);
+		InitSessionSetup.getInstance().clearInventorySession(session);
+		
 		return mapping.getInputForward();
 	}
 
