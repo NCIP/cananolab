@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchWorkflowAction.java,v 1.14 2006-08-01 13:27:03 pansu Exp $ */
+/* CVS $Id: SearchWorkflowAction.java,v 1.15 2006-08-01 19:47:13 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.search.WorkflowResultBean;
 import gov.nih.nci.calab.service.search.SearchWorkflowService;
@@ -108,9 +108,12 @@ public class SearchWorkflowAction extends AbstractDispatchAction {
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		HttpSession session=request.getSession();
+		HttpSession session=request.getSession();		
+		InitSessionSetup.getInstance().clearWorkflowSession(session);
+		InitSessionSetup.getInstance().clearInventorySession(session);
+		
 		InitSessionSetup.getInstance().setAllAssayTypeAssays(session);
-		InitSessionSetup.getInstance().setAllUsers(session);		
+		InitSessionSetup.getInstance().setAllUsers(session);
 		return mapping.getInputForward();
 	}
 	

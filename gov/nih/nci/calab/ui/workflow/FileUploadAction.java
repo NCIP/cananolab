@@ -96,7 +96,10 @@ public class FileUploadAction extends AbstractDispatchAction {
 		hFileUploadData.setFromType(menuType);
 
 		session.setAttribute("httpFileUploadSessionData", hFileUploadData);
-
+		
+		InitSessionSetup.getInstance().clearSearchSession(session);
+		InitSessionSetup.getInstance().clearInventorySession(session);
+	
 		return mapping.findForward("success");
 	}
 

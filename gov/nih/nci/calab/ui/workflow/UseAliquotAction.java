@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.workflow;
  * @author pansu
  */
 
-/* CVS $Id: UseAliquotAction.java,v 1.15 2006-08-01 13:28:39 pansu Exp $*/
+/* CVS $Id: UseAliquotAction.java,v 1.16 2006-08-01 19:47:24 pansu Exp $*/
 
 import gov.nih.nci.calab.dto.inventory.SampleBean;
 import gov.nih.nci.calab.dto.workflow.RunBean;
@@ -65,7 +65,11 @@ public class UseAliquotAction extends AbstractDispatchAction {
 			throw new InvalidSessionException(
 					"Can't operate outside the run tree");
 		}
+		InitSessionSetup.getInstance().clearSearchSession(session);
+		InitSessionSetup.getInstance().clearInventorySession(session);
+
 		InitSessionSetup.getInstance().setSampleSourceUnmaskedAliquots(session);
+	
 		//initialize sample list
 		Map sampleSources=(Map)session.getAttribute("sampleSourceSamplesWithUnmaskedAliquots");
 		Set samples=(Set)sampleSources.get(currentRun.getSampleSourceName());

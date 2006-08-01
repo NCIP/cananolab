@@ -51,9 +51,14 @@ public class SearchRunAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		HttpSession session=request.getSession();
+		InitSessionSetup.getInstance().clearSearchSession(session);
+		InitSessionSetup.getInstance().clearInventorySession(session);
+
 		InitSessionSetup.getInstance().setAllSampleSources(session);
 		InitSessionSetup.getInstance().setAllAssayTypeAssays(session);
 		InitSessionSetup.getInstance().setAllUsers(session);
+		
+	
 		return mapping.getInputForward();
 	}
 	
