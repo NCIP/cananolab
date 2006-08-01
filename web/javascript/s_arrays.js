@@ -121,9 +121,8 @@ P:false,	// menu is PERMANENT (you can only set true if this is LEVEL 1 menu)
 S:s_CSSTop	// STYLE Array to use for this menu
 },
 [		// define items {U:'url',T:'text' ...} look at the Manual for details
-{U:'manageProject.do',T:'Manage Projects'},
-{U:'initSession.do?forwardPage=createRun',T:'Execute Workflow'},
-{U:'initSession.do?forwardPage=searchWorkflow',T:'Search Workflow'}
+/*{U:'manageProject.do',T:'Manage Projects'},*/
+{U:'executeWorkflow.do',T:'Execute Workflow'}
 ]
 );
 
@@ -140,10 +139,9 @@ S:s_CSSTop	// STYLE Array to use for this menu
 },
 [		// define items {U:'url',T:'text' ...} look at the Manual for details
 {U:'manageSample.do',T:'Manage Samples'},
-{U:'manageAliquot.do',T:'Manage Aliquots'},
+{U:'manageAliquot.do',T:'Manage Aliquots'}/*,
 {U:'manageAssay.do',T:'Manage Assays'},
-{U:'manageInstrument.do',T:'Manage Instruments'},
-{U:'initSession.do?forwardPage=searchSample',T:'Search Inventory'}
+{U:'manageInstrument.do',T:'Manage Instruments'}*/
 ]
 );
 
@@ -159,9 +157,14 @@ P:false,	// menu is PERMANENT (you can only set true if this is LEVEL 1 menu)
 S:s_CSSTop	// STYLE Array to use for this menu
 },
 [		// define items {U:'url',T:'text' ...} look at the Manual for details
-{U:'initSession.do?forwardPage=searchWorkflow',T:'Search Workflow'},
-{U:'initSession.do?forwardPage=searchSample',T:'Search Inventory'},
-{U:'initSession.do?forwardPage=searchAssayResults',T:'Search Assay Results'}
+{U:'searchWorkflow.do?dispatch=setup',T:'Search Workflow'},
+{U:'searchSample.do?dispatch=setup',T:'Search Samples'},
+{U:'searchAliquot.do?dispatch=setup',T:'Search Aliquots'},
+/*
+{U:'initSession.do?forwardPage=searchAssay',T:'Search Assays'},
+{U:'initSession.do?forwardPage=searchInstrument',T:'Search Instruments'},
+*/
+{U:'initSession.do?forwardPage=searchAssayData',T:'Search Assay Data'}
 ]
 );
 
