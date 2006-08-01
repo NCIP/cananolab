@@ -7,14 +7,16 @@ package gov.nih.nci.calab.ui.inventory;
  * @author pansu
  */
 
-/* CVS $Id: CreateAliquotAction.java,v 1.2 2006-07-05 21:22:59 pansu Exp $ */
+/* CVS $Id: CreateAliquotAction.java,v 1.3 2006-08-01 13:25:27 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.inventory.AliquotBean;
 import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.inventory.ManageAliquotService;
-import gov.nih.nci.calab.ui.core.AbstractBaseAction;
+import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
+import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,21 +30,20 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
-public class CreateAliquotAction extends AbstractBaseAction {
-	
-	public ActionForward executeTask(ActionMapping mapping, ActionForm form,
+public class CreateAliquotAction extends AbstractDispatchAction {
+
+	public ActionForward create(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		ActionForward forward = null;
-		HttpSession session = request.getSession();		
-		
+		HttpSession session = request.getSession();
+
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		boolean fromAliquot = ((String) theForm.get("fromAliquot")).equals("true") ? true
-				: false;
-		String sampleName = (String) theForm.get("sampleName");
-		String containerName=sampleName+(String)theForm.get("containerName");
+		boolean fromAliquot = ((String) theForm.get("fromAliquot"))
+				.equals("true") ? true : false;		
+		String containerName = (String) theForm.get("containerName");
 		String parentAliquotName = (String) theForm.get("parentAliquotName");
-		String parentName=(fromAliquot)?parentAliquotName:containerName;
+		String parentName = (fromAliquot) ? parentAliquotName : containerName;
 		String fullParentName = (!fromAliquot) ? "Sample Container "
 				+ containerName : "Aliquot " + parentAliquotName;
 		request.setAttribute("fullParentName", fullParentName);
@@ -65,12 +66,111 @@ public class CreateAliquotAction extends AbstractBaseAction {
 
 			forward = mapping.findForward("success");
 		} else {
-			throw new CalabException("Can't find the aliquot matrix to save.  Please click on 'Update Aliquots' button before submitting");
+			throw new CalabException(
+					"Can't find the aliquot matrix to save.  Please click on 'Update Aliquots' button before submitting");
 		}
 		return forward;
 	}
 
+	public ActionForward setup(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		HttpSession session = request.getSession();
+		InitSessionSetup.getInstance().setAllSampleContainers(session);
+		InitSessionSetup.getInstance().setAllSampleUnmaskedAliquots(session);
+		InitSessionSetup.getInstance().setAllAliquotContainerTypes(session);
+		InitSessionSetup.getInstance().setAllAliquotContainerInfo(session);
+		InitSessionSetup.getInstance().setAllAliquotCreateMethods(session);
+		InitSessionSetup.getInstance().setCurrentUser(session);
+		// TODO fill in details for sample information */
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		boolean fromAliquot = ((String) theForm.get("fromAliquot"))
+				.equals("true") ? true : false;
+		
+		String containerName = (String) theForm.get("containerName");
+		String parentAliquotName = (String) theForm.get("parentAliquotName");
+		String parentName = (fromAliquot) ? parentAliquotName : containerName;
+
+		String numberOfAliquots = (String) theForm.get("numberOfAliquots");
+		int numAliquots;
+		if (numberOfAliquots.length() == 0) {
+			numAliquots = 0;
+		} else {
+			numAliquots = Integer.parseInt(numberOfAliquots);
+		}
+
+		AliquotBean template = (AliquotBean) theForm.get("template");
+
+		// calculate number of rows in the matrix
+		if (numAliquots > 0) {
+			ManageAliquotService manageAliquotService = new ManageAliquotService();
+			int colNum = manageAliquotService
+					.getDefaultAliquotMatrixColumnNumber();
+			int rowNum = (int) Math.ceil((float) numAliquots / colNum);
+
+			// calculate the first aliquot Id to use
+			int firstAliquotNum = manageAliquotService.getFirstAliquotNum(
+					fromAliquot, parentName);
+			String aliquotPrefix = manageAliquotService
+					.getAliquotPrefix(parentName);
+
+			// get user and date from session
+			String creator = (String) session.getAttribute("creator");
+
+			// create a 2-D matrix for aliquot
+			List<AliquotBean[]> aliquotMatrix = createAliquotMatrix(colNum,
+					rowNum, numAliquots, aliquotPrefix, firstAliquotNum,
+					template, creator);
+			session.setAttribute("aliquotMatrix", aliquotMatrix);
+		} else {
+			session.removeAttribute("aliquotMatrix");
+		}
+		return mapping.getInputForward();
+
+	}
+
+	public ActionForward reset(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		HttpSession session = request.getSession();
+		session.removeAttribute("createAliquotForm");
+		session.removeAttribute("aliquotMatrix");
+		return setup(mapping, form, request, response);
+	}
+
 	public boolean loginRequired() {
 		return true;
+	}
+
+	/**
+	 * 
+	 * @return a 2-D matrix of aliquots
+	 */
+	private List<AliquotBean[]> createAliquotMatrix(int colNum, int rowNum,
+			int numAliquots, String aliquotPrefix, int firstAliquotName,
+			AliquotBean template, String aliquotCreator) {
+
+		List<AliquotBean[]> aliquotMatrix = new ArrayList<AliquotBean[]>();
+		int aliquotName = firstAliquotName;
+		for (int i = 0; i < rowNum; i++) {
+			// calculate number of columsn per row
+			int cols = colNum;
+			if (numAliquots % colNum < colNum && numAliquots % colNum > 0
+					&& i == rowNum - 1) {
+				cols = numAliquots % colNum;
+			}
+			AliquotBean[] aliquotRow = new AliquotBean[colNum];
+
+			for (int j = 0; j < cols; j++) {
+				AliquotBean aliquot = new AliquotBean(aliquotPrefix
+						+ aliquotName, template.getContainer(), template
+						.getHowCreated(), aliquotCreator, new Date());
+				aliquotRow[j] = aliquot;
+				aliquotName++;
+			}
+			aliquotMatrix.add(aliquotRow);
+		}
+
+		return aliquotMatrix;
 	}
 }

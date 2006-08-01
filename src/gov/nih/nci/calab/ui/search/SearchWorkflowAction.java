@@ -6,13 +6,14 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchWorkflowAction.java,v 1.13 2006-05-11 21:47:04 pansu Exp $ */
+/* CVS $Id: SearchWorkflowAction.java,v 1.14 2006-08-01 13:27:03 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.search.WorkflowResultBean;
 import gov.nih.nci.calab.service.search.SearchWorkflowService;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
-import gov.nih.nci.calab.ui.core.AbstractBaseAction;
+import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
+import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -20,6 +21,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -28,8 +30,8 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
-public class SearchWorkflowAction extends AbstractBaseAction {
-	public ActionForward executeTask(ActionMapping mapping, ActionForm form,
+public class SearchWorkflowAction extends AbstractDispatchAction {
+	public ActionForward search(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 
@@ -66,7 +68,8 @@ public class SearchWorkflowAction extends AbstractBaseAction {
 				: StringUtils.convertToDate(fileSubmissionDateEndStr,
 						CalabConstants.ACCEPT_DATE_FORMAT);
 		
-		// Add one day to the fileSubmissionDateEnd to include all the files files during the day
+		// Add one day to the fileSubmissionDateEnd to include all the files
+		// files during the day
 		if (fileSubmissionDateEnd != null) {
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(fileSubmissionDateEnd);
@@ -102,6 +105,15 @@ public class SearchWorkflowAction extends AbstractBaseAction {
 		return forward;
 	}
 
+	public ActionForward setup(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		HttpSession session=request.getSession();
+		InitSessionSetup.getInstance().setAllAssayTypeAssays(session);
+		InitSessionSetup.getInstance().setAllUsers(session);		
+		return mapping.getInputForward();
+	}
+	
 	public boolean loginRequired() {
 		return true;
 	}

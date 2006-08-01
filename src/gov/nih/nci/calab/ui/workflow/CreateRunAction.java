@@ -1,17 +1,17 @@
 package gov.nih.nci.calab.ui.workflow;
 
 /**
- * This Action class saves user entered new Run information and the assigned aliquots
- * into the database.
- * 
- * @author caLAB Team
+ * This Action class searches for assay runs for the given parameters.
+ *  
+ * @author pansu
  */
 
 import gov.nih.nci.calab.dto.workflow.RunBean;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.service.workflow.ExecuteWorkflowService;
-import gov.nih.nci.calab.ui.core.AbstractBaseAction;
+import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
+import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
 import java.util.Date;
 
@@ -24,7 +24,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.validator.DynaValidatorForm;
 
-public class CreateRunAction extends AbstractBaseAction {
+public class CreateRunAction extends AbstractDispatchAction {
 
 	public ActionForward executeTask(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
@@ -34,55 +34,51 @@ public class CreateRunAction extends AbstractBaseAction {
 		// TODO fill in details for aliquot information */
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 
-		// Get Prameters from form elements
+		// Get Parameters from form elements
 		// Run info
 
 		String assayName = (String) theForm.get("assayName");
 		String runBy = (String) theForm.get("runBy");
 		String runDateStr = (String) theForm.get("runDate");
-		Date runDate=StringUtils.convertToDate(runDateStr, CalabConstants.ACCEPT_DATE_FORMAT);
+		Date runDate = StringUtils.convertToDate(runDateStr,
+				CalabConstants.ACCEPT_DATE_FORMAT);
 		// get user and date information from session
 		String creator = (String) session.getAttribute("creator");
 		String creationDate = (String) session.getAttribute("creationDate");
-		ExecuteWorkflowService workflowService = new ExecuteWorkflowService();
-		RunBean runBean = workflowService.saveRun(assayName, runBy, runDate,
-				creator, creationDate);
-
+		ExecuteWorkflowService executeWorkflowService = new ExecuteWorkflowService();
+		RunBean runBean = executeWorkflowService.saveRun(assayName, runBy,
+				runDate, creator, creationDate);
 		// Save Aliquots assigned
 		String[] assignedAliquots = (String[]) theForm.get("assignedAliquots");
 		String comments = (String) theForm.get("aliquotComment");
 
-		workflowService.saveRunAliquots(runBean.getId(), assignedAliquots, comments,
-				creator, creationDate);
-
-		session.setAttribute("newWorkflowCreated", "true");
+		executeWorkflowService.saveRunAliquots(runBean.getId(),
+				assignedAliquots, comments, creator, creationDate);
+		session.setAttribute("newRunCreated", "true");
 
 		// add parameters to forward
-		String extra = constructGetParams(runBean);
+
+		String extra = "&menuType=run&runId=" + runBean.getId();
 		String newPath = mapping.findForward("success").getPath() + extra;
 		ActionForward forward = new ActionForward();
 		forward.setPath(newPath);
+
 		return forward;
 	}
 
+	public ActionForward setup(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		HttpSession session=request.getSession();		
+		InitSessionSetup.getInstance().setAllAssayTypeAssays(session);
+		//User user=(User)session.getAttribute("user");
+		//InitSessionSetup.getInstance().setAllAssayTypeAssays(session, user);
+		InitSessionSetup.getInstance().setAllUsers(session);
+		InitSessionSetup.getInstance().setSampleSourceUnmaskedAliquots(session);
+		return mapping.getInputForward();
+	}
+	
 	public boolean loginRequired() {
 		return true;
-	}
-
-	private String constructGetParams(RunBean runBean) {
-		String menuType = "&menuType=upload";
-
-		String runId = "&runId=" + runBean.getId();
-
-		String runName = "&runName=" + runBean.getName();
-
-		String assayName = "&assayName="
-				+ runBean.getAssayBean().getAssayName();
-
-		String assayType = "&assayType="
-				+ runBean.getAssayBean().getAssayType();
-
-		String extra = menuType + runId + runName + assayName + assayType;
-		return extra;
 	}
 }
