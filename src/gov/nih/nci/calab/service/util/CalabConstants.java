@@ -1,7 +1,8 @@
 package gov.nih.nci.calab.service.util;
 
 public class CalabConstants {
-
+	public static final String CSM_APP_NAME="calab";
+	
 	public static final String DATE_FORMAT = "MM/dd/yyyy";
 	
 	public static final String ACCEPT_DATE_FORMAT = "MM/dd/yy";
