@@ -6,7 +6,7 @@
 <script type="text/javascript">
 <!--//
 function refreshAliquots() {
-  document.createAliquotForm.action="createAliquot.do?dispatch=setup";
+  document.createAliquotForm.action="createAliquot.do?dispatch=update";
   document.createAliquotForm.submit();
 }
 
@@ -63,8 +63,8 @@ function openLink() {
 							</html:select>
 							<strong>&nbsp; => &nbsp; Container ID*</strong>
 							<html:select property="containerName">
-								<option value="${param.containerName}" selected>
-									${param.containerName}
+								<option value="${createAliquotForm.map.containerName}" selected>
+									${createAliquotForm.map.containerName}
 								</option>
 							</html:select>
 							<br>
@@ -79,8 +79,8 @@ function openLink() {
 							</html:select>
 							<strong>&nbsp; => &nbsp; Aliquot ID*</strong>
 							<html:select property="parentAliquotName">
-								<option value="${param.parentAliquotName}" selected>
-									${param.parentAliquotName}
+								<option value="${createAliquotForm.map.parentAliquotName}" selected>
+									${createAliquotForm.map.parentAliquotName}
 								</option>
 							</html:select>
 						</td>
@@ -233,7 +233,7 @@ function openLink() {
 									<td height="32">
 										<div align="right">
 											<input type="button" value="Update Aliquots" onclick="javascript:refreshAliquots();">
-											<input type="button" value="Reset" onClick="javascript:location.href='createAliquot.do?dispatch=reset&page=0'">
+											<input type="button" value="Reset" onClick="javascript:location.href='createAliquot.do?dispatch=setup&page=0'">
 											<input type="hidden" name="dispatch" value="create">
 											<input type="hidden" name="page" value="1">
 											<html:submit />

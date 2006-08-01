@@ -7,7 +7,7 @@
 <script type="text/javascript">
 
 function refreshContainers() {
-  document.createSampleForm.action="createSample.do?dispatch=setup&page=0";
+  document.createSampleForm.action="createSample.do?dispatch=update&page=0";
   document.createSampleForm.submit();
 }
 
@@ -218,7 +218,7 @@ function refreshContainers() {
 											<td height="32">
 												<div align="right">
 													<input type="button" value="Update Containers" onClick="javascript:refreshContainers();">
-													<input type="button" value="Reset" onClick="javascript:location.href='createSample.do?dispatch=reset&page=0'">
+													<input type="button" value="Reset" onClick="javascript:location.href='createSample.do?dispatch=setup&page=0'">
 													<input type="hidden" name="dispatch" value="create">
 													<input type="hidden" name="page" value="1">
 													<html:submit />
