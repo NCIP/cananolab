@@ -3,6 +3,7 @@ package gov.nih.nci.calab.service.inventory;
 import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
 import gov.nih.nci.calab.domain.Aliquot;
+import gov.nih.nci.calab.domain.Sample;
 import gov.nih.nci.calab.domain.SampleContainer;
 import gov.nih.nci.calab.domain.StorageElement;
 import gov.nih.nci.calab.dto.inventory.AliquotBean;
@@ -23,7 +24,7 @@ import org.apache.log4j.Logger;
  */
 
 /*
- * CVS $Id: ManageAliquotService.java,v 1.3 2006-07-31 21:44:12 pansu Exp $
+ * CVS $Id: ManageAliquotService.java,v 1.4 2006-08-01 19:46:00 pansu Exp $
  */
 
 public class ManageAliquotService {
@@ -142,17 +143,20 @@ public class ManageAliquotService {
 
 			Aliquot parentAliquot = null;
 			SampleContainer container = null;
+			Sample sample=null;
 			if (fromAliquot) {
 				// Get aliqot ID and load the object
-				List aliquots = ida
-						.search("from Aliquot aliquot where aliquot.name='"
+				List results = ida
+						.search("select aliquot, aliquot.sample from Aliquot aliquot where aliquot.name='"
 								+ parentName + "'");
-				parentAliquot = (Aliquot) aliquots.get(0);			
+				parentAliquot = (Aliquot) ((Object[])results.get(0))[0];
+				sample=(Sample)((Object[])results.get(0))[1];
 			} else {
-				List containers = ida
-						.search("from SampleContainer container where container.name='"
+				List results = ida
+						.search("select container, container.sample from SampleContainer container where container.name='"
 								+ parentName + "'");
-				container = (SampleContainer) containers.get(0);
+				container = (SampleContainer) ((Object[])results.get(0))[0];
+				sample=(Sample)((Object[])results.get(0))[1];
 			}
 
 			for (AliquotBean[] aliquotBeans : aliquotMatrix) {
@@ -202,6 +206,7 @@ public class ManageAliquotService {
 					doAliquot.setCreatedMethod(getCreatedMethod(ida, aliquotBean.getHowCreated()));
 					doAliquot.setCreatedBy(aliquotBean.getCreator());
 					doAliquot.setCreatedDate(aliquotBean.getCreationDate());
+					doAliquot.setSample(sample);
 
 					// Associations
 					// 1. ParentAliquos or Sample
