@@ -1,7 +1,5 @@
 package gov.nih.nci.calab.ui.security;
 
-import java.util.List;
-
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.security.LoginService;
 import gov.nih.nci.calab.service.security.UserService;
@@ -17,7 +15,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
-import org.apache.struts.tiles.beans.MenuItem;
 import org.apache.struts.validator.DynaValidatorForm;
 
 /**
