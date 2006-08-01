@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.inventory;
  * @author pansu
  */
 
-/* CVS $Id: CreateSampleAction.java,v 1.2 2006-08-01 13:25:27 pansu Exp $ */
+/* CVS $Id: CreateSampleAction.java,v 1.3 2006-08-01 19:46:37 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.inventory.ContainerBean;
 import gov.nih.nci.calab.dto.inventory.SampleBean;
@@ -96,34 +96,14 @@ public class CreateSampleAction extends AbstractDispatchAction {
 		return forward;
 	}
 
-	public ActionForward setup(ActionMapping mapping, ActionForm form,
+	public ActionForward update(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		HttpSession session = request.getSession();
-		InitSessionSetup.getInstance().setAllSampleTypes(session);
-		InitSessionSetup.getInstance().setAllSampleSOPs(session);
-		InitSessionSetup.getInstance().setAllSampleContainerTypes(session);
-		InitSessionSetup.getInstance().setAllSampleContainerInfo(session);
-		InitSessionSetup.getInstance().setCurrentUser(session);
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String sampleNamePrefix = (String) theForm.get("sampleNamePrefix");
-		String lotId = (String) theForm.get("lotId");
 		int numContainers = Integer.parseInt((String) theForm
 				.get("numberOfContainers"));
 
-		ManageSampleService mangeSampleService = new ManageSampleService();
-		// set default form values
-		if (sampleNamePrefix.length() == 0) {
-			theForm.set("sampleNamePrefix", mangeSampleService
-					.getDefaultSampleNamePrefix());
-		}
-		theForm.set("configuredSampleNamePrefix", PropertyReader.getProperty(
-				CalabConstants.CALAB_PROPERTY, "samplePrefix"));
-
-		if (lotId.length() == 0) {
-			theForm.set("lotId", mangeSampleService.getDefaultLotId());
-		}
 		ContainerBean[] origContainers = (ContainerBean[]) theForm
 				.get("containers");
 		ContainerBean[] containers = new ContainerBean[numContainers];
@@ -149,17 +129,36 @@ public class CreateSampleAction extends AbstractDispatchAction {
 				containers[i] = new ContainerBean(origContainers[i]);
 			}
 		}
-		theForm.set("containers", containers);
-		session.setAttribute("createSampleForm", theForm);
+		theForm.set("containers", containers);	
 		return mapping.getInputForward();
 	}
 
-	public ActionForward reset(ActionMapping mapping, ActionForm form,
+	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		HttpSession session = request.getSession();
-		session.removeAttribute("createSampleForm");
-		return setup(mapping, form, request, response);
+		InitSessionSetup.getInstance().clearWorkflowSession(session);
+		InitSessionSetup.getInstance().clearSearchSession(session);
+
+		InitSessionSetup.getInstance().setAllSampleTypes(session);
+		InitSessionSetup.getInstance().setAllSampleSOPs(session);
+		InitSessionSetup.getInstance().setAllSampleContainerTypes(session);
+		InitSessionSetup.getInstance().setAllSampleContainerInfo(session);
+		InitSessionSetup.getInstance().setCurrentUser(session);
+		
+		ManageSampleService mangeSampleService = new ManageSampleService();
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		theForm.getMap().clear();
+		
+		theForm.set("lotId", mangeSampleService.getDefaultLotId());
+		theForm.set("numberOfContainers", "1");
+		theForm.set("sampleNamePrefix", mangeSampleService
+				.getDefaultSampleNamePrefix());
+		theForm.set("configuredSampleNamePrefix", PropertyReader.getProperty(
+				CalabConstants.CALAB_PROPERTY, "samplePrefix"));
+		ContainerBean[] containers=new ContainerBean[] {new ContainerBean()};
+		theForm.set("containers", containers);	
+		return mapping.getInputForward();
 	}
 
 	public boolean loginRequired() {
