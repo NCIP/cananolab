@@ -1,3 +1,5 @@
+<h4>Manage Instrument Home</h4>
+
 This is the Instrument section of the Manage Instrument function.  An instrument is a piece of equipment 
 used in a laboratory for processing samples and performing assays. 
 

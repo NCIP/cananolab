@@ -1,3 +1,4 @@
+<table>
 <tr>
 	<td class="welcomeTitle" height="20">
 		WELCOME TO caLAB
@@ -17,3 +18,4 @@
 		</p>
 	</td>
 </tr>
+</table>

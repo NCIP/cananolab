@@ -1,29 +1,29 @@
 <%@ taglib uri="http://struts.apache.org/tags-tiles" prefix="tiles"%>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <html>
-<head>
-<title><tiles:getAsString name="title" ignore="true"/></title>
-<link rel="stylesheet" type="text/css" href="css/caLab.css" />
-<link rel="stylesheet" type="text/css" href="css/menu.css" />
-<link rel="StyleSheet" type="text/css" href="css/dtree.css" >
-<script type="text/javascript" src="javascript/script.js"></script>
-<script type="text/javascript" src="javascript/dtree.js"></script>
-<script type="text/javascript" language="JavaScript">
+	<head>
+		<title><tiles:getAsString name="title" ignore="true" /></title>
+		<link rel="stylesheet" type="text/css" href="css/caLab.css" />
+		<link rel="stylesheet" type="text/css" href="css/menu.css" />
+		<link rel="StyleSheet" type="text/css" href="css/dtree.css">
+		<script type="text/javascript" src="javascript/script.js"></script>
+		<script type="text/javascript" src="javascript/dtree.js"></script>
+		<script type="text/javascript" language="JavaScript">
 <!--
 	function s_show(){return false}
 	function s_hide(){return false}
 	if(window.event+''=='undefined')event=0
 //-->
 </script>
-<script type="text/javascript" language="JavaScript1.2" src="javascript/s_loader.js"></script>
-<script type="text/javascript" language="JavaScript1.2" src="javascript/s_arrays.js"></script>
-<script type="text/javascript" language="JavaScript1.2" src="javascript/s_script_dom.js"></script>
-<script type="text/javascript" language="JavaScript1.2" src="javascript/s_script_ns4.js"></script>
-<script type="text/javascript" language="JavaScript1.2" src="javascript/s_script_old.js"></script>
-<script type="text/javascript" language="JavaScript1.2" src="javascript/script.js"></script>
+		<script type="text/javascript" language="JavaScript1.2" src="javascript/s_loader.js"></script>
+		<script type="text/javascript" language="JavaScript1.2" src="javascript/s_arrays.js"></script>
+		<script type="text/javascript" language="JavaScript1.2" src="javascript/s_script_dom.js"></script>
+		<script type="text/javascript" language="JavaScript1.2" src="javascript/s_script_ns4.js"></script>
+		<script type="text/javascript" language="JavaScript1.2" src="javascript/s_script_old.js"></script>
+		<script type="text/javascript" language="JavaScript1.2" src="javascript/script.js"></script>
 
-</head>
-<tiles:importAttribute scope="session"/>
+	</head>
+	<tiles:importAttribute scope="session" />
 	<body>
 		<table height="100%" cellspacing="0" cellpadding="0" width="100%" summary="" border="0" align="center">
 			<!-- nci hdr begins -->
@@ -62,7 +62,42 @@
 												<tr>
 													<td width="800" valign="top">
 														<%-- include caLAB main content --%>
-														<tiles:insert attribute="calabContent" />
+														<table border="0" width="100%">
+															<tr>
+																<td width="15" height="15">
+																	&nbsp;
+																</td>
+																<td>
+																	&nbsp;
+																</td>
+																<td width="15">
+																	&nbsp;
+																</td>
+															</tr>
+															<tr>
+																<td width="15">
+																	&nbsp;
+																</td>
+																<td>
+																	<%--main content starts --%>
+																	<tiles:insert attribute="calabContent" />
+																</td>
+																<td width="15">
+																	&nbsp;
+																</td>
+															</tr>
+															<tr>
+																<td width="15" height="15">
+																	&nbsp;
+																</td>
+																<td>
+																	&nbsp;
+																</td>
+																<td width="15">
+																	&nbsp;
+																</td>
+															</tr>
+														</table>
 													</td>
 												</tr>
 												<tr>

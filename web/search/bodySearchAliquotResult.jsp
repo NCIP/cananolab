@@ -4,44 +4,43 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
 <link rel="stylesheet" type="text/css" href="css/displaytag.css" />
-
-<table width="100%" align="center">
-	<tr>
-		<td width="15%">
-			&nbsp
-		</td>
-		<td>
-			<h3>
-				<br>
-				Aliquot Search Results
-			</h3>
-		</td>
-		<td align="right" width="15%">
-			<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=sample_search_results')" class="helpText">Help</a> &nbsp;&nbsp;
-			<c:choose>
-				<c:when test="${empty param.fromSampleResult}">
-					<a href="initSession.do?forwardPage=searchSample&rememberSearch=true" class="helpText">back</a>
-				</c:when>
-				<c:otherwise>
-					<a href="sampleResultForward.do" class="helpText">back</a>
-				</c:otherwise>
-			</c:choose>
-		</td>
-</table>
-<jsp:include page="/bodyMessage.jsp?bundle=search" />
 <form name="resultForm">
-<display:table name="sessionScope.aliquots" id="aliquot" class="displaytable" pagesize="25" requestURI="searchAliquot.do">
-	<display:column title="Select">
-		<input type="radio" name="containerId" value="${aliquot.aliquotId}">
-	</display:column>
-	<display:column title="Sample<br>ID" property="sample.sortableName" sortable="true" />
-	<display:column title="Sample<br>Accession<br>Date" property="sample.accessionDate" sortable="true" format="{0,date,MM-dd-yyyy}" />
-	<display:column title="Sample<br>Submitter" property="sample.sampleSubmitter" sortable="true" />
-	<display:column title="Aliquot<br>ID" property="sortableName" sortable="true" />
-	<display:column title="Aliquoted<br>Date" property="creationDate" sortable="true" format="{0,date,MM-dd-yyyy}" />
-	<display:column title="Aliquot<br>Location" property="container.storageLocation" sortable="true" />
-	<display:column title="Aliquot<br>Creator" property="creator" sortable="true" />
-	<%--
+	<table width="100%" align="center">
+		<tr>
+			<td>
+				<h3>
+					<br>
+					Aliquot Search Results
+				</h3>
+			</td>
+			<td align="right" width="15%">
+				<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=sample_search_results')" class="helpText">Help</a> &nbsp;&nbsp;
+				<c:choose>
+					<c:when test="${empty param.fromSampleResult}">
+						<a href="searchAliquot.do?dispatch=setup&page=0&rememberSearch=true" class="helpText">back</a>
+					</c:when>
+					<c:otherwise>
+						<a href="sampleResultForward.do" class="helpText">back</a>
+					</c:otherwise>
+				</c:choose>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<jsp:include page="/bodyMessage.jsp?bundle=search" />
+
+				<display:table name="sessionScope.aliquots" id="aliquot" class="displaytable" pagesize="25" requestURI="searchAliquot.do">
+					<display:column title="Select">
+						<input type="radio" name="aliquotId" value="${aliquot.aliquotId}">
+					</display:column>
+					<display:column title="Sample<br>ID" property="sample.sortableName" sortable="true" />
+					<display:column title="Sample<br>Accession<br>Date" property="sample.accessionDate" sortable="true" format="{0,date,MM-dd-yyyy}" />
+					<display:column title="Sample<br>Submitter" property="sample.sampleSubmitter" sortable="true" />
+					<display:column title="Aliquot<br>ID" property="sortableName" sortable="true" />
+					<display:column title="Aliquoted<br>Date" property="creationDate" sortable="true" format="{0,date,MM-dd-yyyy}" />
+					<display:column title="Aliquot<br>Location" property="container.storageLocation" sortable="true" />
+					<display:column title="Aliquot<br>Creator" property="creator" sortable="true" />
+					<%--
 	<display:column title="Actions">
 		<c:url var="viewAliquotDetailURL" value="/viewSampleDetail.do">
 			<c:param name="aliquotNum" value="${aliquot_rowNum-1}" />
@@ -49,12 +48,16 @@
 		</c:url>
 		<a href="${viewAliquotDetailURL}">View Details</a>&nbsp;</display:column>
 	--%>
-</display:table>
-<div align="right">
-	<input type="hidden" name="isAliquot" value="${param.isAliquot}">
-	<input type="button" value="View Details" onclick="javascript:submitAction(document.resultForm, 'viewSampleDetail.do')">
-</div>
+				</display:table>
+				<div align="right">						    			
+					<input type="button" value="View Details" onclick="javascript:submitAction(document.resultForm, 'viewAliquotDetail.do')">
+				</div>
+
+			</td>
+		</tr>
+	</table>
 </form>
+
 <%--
 <table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
 	<tr>
@@ -142,6 +145,3 @@
 	</logic:iterate>
 </table>
 --%>
-<br>
-<br>
-
