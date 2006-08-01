@@ -8,28 +8,8 @@
 	</c:when>
 </c:choose>
 <c:choose>
-	<c:when test="${!empty param.runId}">
-		<c:set var="runId" value="${param.runId}" scope="session" />
-	</c:when>
-</c:choose>
-<c:choose>
-	<c:when test="${!empty param.assayType}">
-		<c:set var="assayType" value="${param.assayType}" scope="session" />
-	</c:when>
-</c:choose>
-<c:choose>
-	<c:when test="${!empty param.assayName}">
-		<c:set var="assayName" value="${param.assayName}" scope="session" />
-	</c:when>
-</c:choose>
-<c:choose>
-	<c:when test="${!empty param.runName}">
-		<c:set var="runName" value="${param.runName}" scope="session" />
-	</c:when>
-</c:choose>
-<c:choose>
 	<c:when test="${!empty param.inout}">
-		<c:set var="inout" value="${param.inout}" scope="session" />		
+		<c:set var="inout" value="${param.inout}" scope="session" />
 	</c:when>
 </c:choose>
 
@@ -41,7 +21,7 @@
 	</c:when>
 </c:choose>
 <center>
-	<table width="80%" border="0" align="center" cellpadding="0" cellspacing="0">
+	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
 		<tr>
 			<td class="formTitle" colspan="2" align="center">
 				General Information for the workflow
@@ -49,33 +29,41 @@
 		</tr>
 		<tr>
 			<td class="leftBorderedFormFieldGrey">
-				<b>Assay Type</b>
+				<b>Source Name</b>
 			</td>
 			<td class="formFieldGrey">
-				<c:out value="${assayType}" />
+				<c:out value="${currentRun.sampleSourceName}" />
 				&nbsp;
 			</td>
 		</tr>
 		<tr>
 			<td class="leftBorderedFormFieldWhite">
-				<b>Assay Name</b>
+				<b>Assay Type</b>
 			</td>
 			<td class="formFieldWhite">
-				<c:out value="${assayName}" />
+				<c:out value="${currentRun.assayBean.assayType}" />
 				&nbsp;
 			</td>
 		</tr>
-		<logic:present name="runName">
-			<tr>
-				<td class="leftBorderedFormFieldGrey">
-					<b>Run Name</b>
-				</td>
-				<td class="formFieldGrey">
-					<c:out value="${runName}" />
-					&nbsp;
-				</td>
-			</tr>
-		</logic:present>
+		<tr>
+			<td class="leftBorderedFormFieldGrey">
+				<b>Assay Name</b>
+			</td>
+			<td class="formFieldGrey">
+				<c:out value="${currentRun.assayBean.assayName}" />
+				&nbsp;
+			</td>
+		</tr>
+		<tr>
+			<td class="leftBorderedFormFieldWhite">
+				<b>Run Name</b>
+			</td>
+			<td class="formFieldWhite">
+				<c:out value="${currentRun.name}" />
+				&nbsp;
+			</td>
+		</tr>
+
 		<tr>
 			<td colspan="2">
 				<br>

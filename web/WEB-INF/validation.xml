@@ -6,34 +6,32 @@
 	<formset>
 		<form name="loginForm">
 			<field property="loginId" depends="required">
-				<arg position="0" key="loginForm.loginId"/>
+				<arg position="0" key="loginForm.loginId" />
 			</field>
 			<field property="password" depends="required">
-				<arg position="0" key="loginForm.password"/>
+				<arg position="0" key="loginForm.password" />
 			</field>
 		</form>
-		<form name="registerForm">
-			<field property="firstName" depends="required">
-				<arg position="0" key="registerForm.firstName"/>
-			</field>
-			<field property="lastName" depends="required">
-				<arg position="0" key="registerForm.lastName"/>
-			</field>
-			<field property="email" depends="required">
-				<arg position="0" key="registerForm.email"/>
-			</field>
+		<form name="updatePasswordForm">
 			<field property="loginId" depends="required">
-				<arg position="0" key="registerForm.loginId"/>
+				<arg position="0" key="updatePasswordForm.loginId" />
 			</field>
 			<field property="password" depends="required">
-				<arg position="0" key="registerForm.password"/>
+				<arg position="0" key="updatePasswordForm.password" />
 			</field>
-			<field property="password2" depends="validwhenmatch">
-				<arg position="0" key="registerForm.password2"/>
-				<var> 
-					<var-name>test</var-name> 
-					<var-value>((*this* != null) and (password2 == password))</var-value> 
-				</var> 
+			<field property="newPassword" depends="validwhenmatch">
+				<arg position="0" key="updatePasswordForm.newPassword" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((*this* != null) and (newPassword != password))</var-value>
+				</var>
+			</field>
+			<field property="newPassword2" depends="validwhenmatch">
+				<arg position="0" key="updatePasswordForm.newPassword2" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((*this* != null) and (newPassword == newPassword2))</var-value>
+				</var>
 			</field>
 		</form>
 	</formset>

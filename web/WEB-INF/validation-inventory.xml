@@ -4,87 +4,27 @@
 
 <form-validation>
 	<formset>
-		<form name="/preCreateSample">
-			<field property="numberOfContainers" depends="integer,intRange">
-				<arg position="0" key="createSampleForm.numberOfContainers" bundle="inventory" />
-				<arg position="1" name="intRange" key="${var:min}" resource="false" bundle="inventory" />
-				<arg position="2" name="intRange" key="${var:max}" resource="false" bundle="inventory" />
-				<var>
-					<var-name>min</var-name>
-					<var-value>0</var-value>
-				</var>
-				<var>
-					<var-name>max</var-name>
-					<var-value>100</var-value>
-				</var>
-			</field>
-			<field property="solvent" depends="validwhen" indexedListProperty="containers">
-				<arg position="0" key="createSampleForm.concentrationSolvent" bundle="inventory" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>((containers[].concentration==null) or (*this*!=null))</var-value>
-				</var>
-			</field>
-			<field property="concentration" depends="validwhen" indexedListProperty="containers">
-				<arg position="0" key="createSampleForm.solventConcentration" bundle="inventory" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>((containers[].solvent==null) or (*this*!=null))</var-value>
-				</var>
-			</field>
-			<field property="quantity" depends="float" indexedListProperty="containers">
-				<arg position="0" key="createSampleForm.quantity" bundle="inventory" />
-			</field>
-			<field property="concentration" depends="float" indexedListProperty="containers">
-				<arg position="0" key="createSampleForm.concentration" bundle="inventory" />
-			</field>
-			<field property="volume" depends="float" indexedListProperty="containers">
-				<arg position="0" key="createSampleForm.volume" bundle="inventory" />
-			</field>
-			<field property="quantityUnit" depends="validwhen" indexedListProperty="containers">
-				<arg position="0" key="createSampleForm.quantityUnit" bundle="inventory" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>((containers[].quantity==null) or (*this*!=null))</var-value>
-				</var>
-			</field>
-			<field property="concentrationUnit" depends="validwhen" indexedListProperty="containers">
-				<arg position="0" key="createSampleForm.concentrationUnit" bundle="inventory" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>((containers[].concentration==null) or (*this*!=null))</var-value>
-				</var>
-			</field>
-			<field property="volumeUnit" depends="validwhen" indexedListProperty="containers">
-				<arg position="0" key="createSampleForm.volumeUnit" bundle="inventory" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>((containers[].volume==null) or (*this*!=null))</var-value>
-				</var>
-			</field>
-		</form>
-
-		<form name="/createSample">
-			<field property="sampleNamePrefix" depends="required">
+		<form name="createSampleForm">
+			<field property="sampleNamePrefix" page="1" depends="required">
 				<arg position="0" key="createSampleForm.sampleNamePrefix" bundle="inventory" />
 			</field>
-			<field property="lotId" depends="required">
+			<field property="lotId" page="1" depends="required">
 				<arg position="0" key="createSampleForm.lotId" bundle="inventory" />
 			</field>
-			<field property="dateReceived" depends="date">
+			<field property="dateReceived" page="1" depends="date">
 				<arg position="0" key="createSampleForm.dateReceived" bundle="inventory" />
 				<var>
 					<var-name>datePattern</var-name>
 					<var-value>MM/dd/yy</var-value>
 				</var>
 			</field>
-			<field property="numberOfContainers" depends="integer,intRange">
+			<field property="numberOfContainers" page="0" depends="integer,intRange">
 				<arg position="0" key="createSampleForm.numberOfContainers" bundle="inventory" />
 				<arg position="1" name="intRange" key="${var:min}" resource="false" bundle="inventory" />
 				<arg position="2" name="intRange" key="${var:max}" resource="false" bundle="inventory" />
 				<var>
 					<var-name>min</var-name>
-					<var-value>0</var-value>
+					<var-value>1</var-value>
 				</var>
 				<var>
 					<var-name>max</var-name>
@@ -92,7 +32,7 @@
 				</var>
 			</field>
 
-			<field property="sampleType" depends="validwhen">
+			<field property="sampleType" page="1" depends="validwhen">
 				<arg position="0" key="createSampleForm.sampleType" bundle="inventory" />
 				<var>
 					<var-name>test</var-name>
@@ -100,7 +40,7 @@
 				</var>
 			</field>
 			
-			<field property="otherSampleType" depends="validwhen">
+			<field property="otherSampleType" page="1" depends="validwhen">
 				<arg position="0" key="createSampleForm.otherSampleType" bundle="inventory" />
 				<var>
 					<var-name>test</var-name>
@@ -109,54 +49,54 @@
 			</field>
 
 
-			<field property="containerType" depends="required" indexedListProperty="containers">
+			<field property="containerType" page="1" depends="required" indexedListProperty="containers">
 				<arg position="0" key="createSampleForm.containerType" bundle="inventory" />
 			</field>
-			<field property="otherContainerType" depends="validwhen" indexedListProperty="containers">
+			<field property="otherContainerType" page="1" depends="validwhen" indexedListProperty="containers">
 				<arg position="0" key="createSampleForm.otherContainerType" bundle="inventory" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>((containers[].containerType!="Other") or (*this*!=null))</var-value>
 				</var>
 			</field>
-			<field property="solvent" depends="validwhen" indexedListProperty="containers">
+			<field property="solvent" page="0" depends="validwhen" indexedListProperty="containers">
 				<arg position="0" key="createSampleForm.concentrationSolvent" bundle="inventory" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>((containers[].concentration==null) or (*this*!=null))</var-value>
 				</var>
 			</field>
-			<field property="concentration" depends="validwhen" indexedListProperty="containers">
+			<field property="concentration" page="0" depends="validwhen" indexedListProperty="containers">
 				<arg position="0" key="createSampleForm.solventConcentration" bundle="inventory" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>((containers[].solvent==null) or (*this*!=null))</var-value>
 				</var>
 			</field>
-			<field property="quantity" depends="float" indexedListProperty="containers">
+			<field property="quantity" page="0" depends="float" indexedListProperty="containers">
 				<arg position="0" key="createSampleForm.quantity" bundle="inventory" />
 			</field>
-			<field property="concentration" depends="float" indexedListProperty="containers">
+			<field property="concentration" page="0" depends="float" indexedListProperty="containers">
 				<arg position="0" key="createSampleForm.concentration" bundle="inventory" />
 			</field>
-			<field property="volume" depends="float" indexedListProperty="containers">
+			<field property="volume" page="0" depends="float" indexedListProperty="containers">
 				<arg position="0" key="createSampleForm.volume" bundle="inventory" />
 			</field>
-			<field property="quantityUnit" depends="validwhen" indexedListProperty="containers">
+			<field property="quantityUnit" page="0" depends="validwhen" indexedListProperty="containers">
 				<arg position="0" key="createSampleForm.quantityUnit" bundle="inventory" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>((containers[].quantity==null) or (*this*!=null))</var-value>
 				</var>
 			</field>
-			<field property="concentrationUnit" depends="validwhen" indexedListProperty="containers">
+			<field property="concentrationUnit" page="0" depends="validwhen" indexedListProperty="containers">
 				<arg position="0" key="createSampleForm.concentrationUnit" bundle="inventory" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>((containers[].concentration==null) or (*this*!=null))</var-value>
 				</var>
 			</field>
-			<field property="volumeUnit" depends="validwhen" indexedListProperty="containers">
+			<field property="volumeUnit" page="0" depends="validwhen" indexedListProperty="containers">
 				<arg position="0" key="createSampleForm.volumeUnit" bundle="inventory" />
 				<var>
 					<var-name>test</var-name>
@@ -166,21 +106,21 @@
 		</form>
 
 		<form name="createAliquotForm">
-			<field property="containerName" depends="validwhen">
+			<field property="containerName" page="1" depends="validwhen">
 				<arg position="0" key="createAliquotForm.containerName" bundle="inventory" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>((fromAliquot=="true") or (*this*!=null))</var-value>
 				</var>
 			</field>
-			<field property="parentAliquotName" depends="validwhen">
+			<field property="parentAliquotName" page="1" depends="validwhen">
 				<arg position="0" key="createAliquotForm.parentAliquotName" bundle="inventory" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>((fromAliquot=="false") or (*this*!=null))</var-value>
 				</var>
 			</field>
-			<field property="numberOfAliquots" depends="integer,intRange">
+			<field property="numberOfAliquots" page="1" depends="integer,intRange">
 				<arg position="0" key="createAliquotForm.numberOfAliquots" bundle="inventory" />
 				<arg position="1" name="intRange" key="${var:min}" resource="false" />
 				<arg position="2" name="intRange" key="${var:max}" resource="false" />
@@ -193,7 +133,7 @@
 					<var-value>1000</var-value>
 				</var>
 			</field>
-			<field property="template.container.containerType" depends="required">
+			<field property="template.container.containerType" page="1" depends="required">
 				<arg position="0" key="createAliquotForm.containerType" bundle="inventory" />
 			</field>
 			<field property="template.container.otherContainerType" depends="validwhen">
@@ -203,14 +143,14 @@
 					<var-value>((template.container.containerType!="Other") or (*this*!=null))</var-value>
 				</var>
 			</field>
-			<field property="template.container.solvent" depends="validwhen">
+			<field property="template.container.solvent" page="1" depends="validwhen">
 				<arg position="0" key="createAliquotForm.concentrationSolvent" bundle="inventory" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>((template.container.concentration==null) or (*this*!=null))</var-value>
 				</var>
 			</field>
-			<field property="template.container.concentration" depends="validwhen">
+			<field property="template.container.concentration" page="1" depends="validwhen">
 				<arg position="0" key="createAliquotForm.solventConcentration" bundle="inventory" />
 				<var>
 					<var-name>test</var-name>
@@ -218,30 +158,30 @@
 				</var>
 			</field>
 
-			<field property="template.container.quantity" depends="float">
+			<field property="template.container.quantity" page="1" depends="float">
 				<arg position="0" key="createAliquotForm.quantity" bundle="inventory" />
 			</field>
-			<field property="template.container.concentration" depends="float">
+			<field property="template.container.concentration" page="1" depends="float">
 				<arg position="0" key="createAliquotForm.concentration" bundle="inventory" />
 			</field>
-			<field property="template.container.volume" depends="float">
+			<field property="template.container.volume" page="1" depends="float">
 				<arg position="0" key="createAliquotForm.volume" bundle="inventory" />
 			</field>
-			<field property="template.container.quantityUnit" depends="validwhen">
+			<field property="template.container.quantityUnit" page="1" depends="validwhen">
 				<arg position="0" key="createAliquotForm.quantityUnit" bundle="inventory" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>((template.container.quantity==null) or (*this*!=null))</var-value>
 				</var>
 			</field>
-			<field property="template.container.concentrationUnit" depends="validwhen">
+			<field property="template.container.concentrationUnit" page="1" depends="validwhen">
 				<arg position="0" key="createAliquotForm.concentrationUnit" bundle="inventory" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>((template.container.concentration==null) or (*this*!=null))</var-value>
 				</var>
 			</field>
-			<field property="template.container.volumeUnit" depends="validwhen">
+			<field property="template.container.volumeUnit" page="1" depends="validwhen">
 				<arg position="0" key="createAliquotForm.volumeUnit" bundle="inventory" />
 				<var>
 					<var-name>test</var-name>
@@ -250,55 +190,55 @@
 			</field>
 		</form>
 
-		<form name="/editAliquot">
-			<field property="aliquot.container.containerType" depends="required">
+		<form name="editAliquotForm">
+			<field property="aliquot.container.containerType" page="1" depends="required">
 				<arg position="0" key="editAliquotForm.containerType" bundle="inventory" />
 			</field>
-			<field property="aliquot.container.otherContainerType" depends="validwhen">
+			<field property="aliquot.container.otherContainerType" page="1" depends="validwhen">
 				<arg position="0" key="editAliquotForm.otherContainerType" bundle="inventory" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>((aliquot.container.containerType!="Other") or (*this*!=null))</var-value>
 				</var>
 			</field>
-			<field property="aliquot.container.solvent" depends="validwhen">
+			<field property="aliquot.container.solvent" page="1" depends="validwhen">
 				<arg position="0" key="editAliquotForm.concentrationSolvent" bundle="inventory" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>((aliquot.container.concentration==null) or (*this*!=null))</var-value>
 				</var>
 			</field>
-			<field property="aliquot.container.concentration" depends="validwhen">
+			<field property="aliquot.container.concentration" page="1" depends="validwhen">
 				<arg position="0" key="editAliquotForm.solventConcentration" bundle="inventory" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>((aliquot.container.solvent==null) or (*this*!=null))</var-value>
 				</var>
 			</field>
-			<field property="aliquot.container.quantity" depends="float">
+			<field property="aliquot.container.quantity" page="1" depends="float">
 				<arg position="0" key="editAliquotForm.quantity" bundle="inventory" />
 			</field>
-			<field property="aliquot.container.concentration" depends="float">
-				<arg position="0" key="edit" bundle="inventory" />
+			<field property="aliquot.container.concentration" page="1" depends="float">
+				<arg position="0" key="editAliquotForm.concentration" bundle="inventory" />
 			</field>
-			<field property="aliquot.container.volume" depends="float">
+			<field property="aliquot.container.volume" page="1" depends="float">
 				<arg position="0" key="editAliquotForm.volume" bundle="inventory" />
 			</field>
-			<field property="aliquot.container.quantityUnit" depends="validwhen">
+			<field property="aliquot.container.quantityUnit" page="1" depends="validwhen">
 				<arg position="0" key="editAliquotForm.quantityUnit" bundle="inventory" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>((aliquot.container.quantity==null) or (*this*!=null))</var-value>
 				</var>
 			</field>
-			<field property="aliquot.container.concentrationUnit" depends="validwhen">
+			<field property="aliquot.container.concentrationUnit" page="1" depends="validwhen">
 				<arg position="0" key="createAliquotForm.concentrationUnit" bundle="inventory" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>((aliquot.container.concentration==null) or (*this*!=null))</var-value>
 				</var>
 			</field>
-			<field property="aliquot.container.volumeUnit" depends="validwhen">
+			<field property="aliquot.container.volumeUnit" page="1" depends="validwhen">
 				<arg position="0" key="createAliquotForm.volumeUnit" bundle="inventory" />
 				<var>
 					<var-name>test</var-name>

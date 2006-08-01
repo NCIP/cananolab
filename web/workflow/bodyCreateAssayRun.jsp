@@ -36,7 +36,7 @@
 			<td class="label">
 				<html:select property="runBy">
 					<option value=""></option>
-					<html:options collection="allUserBeans" property="loginId" labelProperty="fullName" />
+					<html:options collection="allUsers" property="loginName" labelProperty="fullName" />
 				</html:select>
 			</td>
 			<td class="label">
