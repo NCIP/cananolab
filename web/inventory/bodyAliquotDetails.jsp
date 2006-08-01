@@ -180,14 +180,13 @@
 			<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 				<tbody>
 					<tr class="topBorder">
-						<td class="formTitle" colspan="2">
+						<td class="dataTableHighlightLabel" colspan="2">
 							<div align="justify">
 								Aliquot
 								<bean:write name="aliquot" property="aliquotName" />
 							</div>
 						</td>
 					</tr>
-
 					<tr>
 						<td class="formLabel" width="28%">
 							<div align="left">
@@ -360,7 +359,6 @@
 					</tr>
 				</tbody>
 			</table>
-
 			<br>
 			<table class="topBorderOnly" cellspacing="0" cellpadding="3" align="center" width="100%" summary="" border="0">
 				<tr>
