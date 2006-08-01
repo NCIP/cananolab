@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchSampleAction.java,v 1.17 2006-08-01 13:26:24 pansu Exp $ */
+/* CVS $Id: SearchSampleAction.java,v 1.18 2006-08-01 19:47:13 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.inventory.ContainerBean;
 import gov.nih.nci.calab.dto.inventory.SampleBean;
@@ -102,11 +102,15 @@ public class SearchSampleAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		HttpSession session=request.getSession();
+		InitSessionSetup.getInstance().clearWorkflowSession(session);
+		InitSessionSetup.getInstance().clearInventorySession(session);
+		
 		InitSessionSetup.getInstance().setAllSampleTypes(session);
 		InitSessionSetup.getInstance().setAllUsers(session);
 		InitSessionSetup.getInstance().setAllSampleContainerInfo(session);
 		InitSessionSetup.getInstance().setAllSampleSources(session);
 		InitSessionSetup.getInstance().setAllSourceSampleIds(session);
+		
 		return mapping.getInputForward();
 	}
 
