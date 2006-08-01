@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.workflow;
  * @author pansu
  */
 
-/* CVS $Id: WorkflowMessageAction.java,v 1.1 2006-08-01 13:30:14 pansu Exp $ */
+/* CVS $Id: WorkflowMessageAction.java,v 1.2 2006-08-01 14:03:38 pansu Exp $ */
 
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
@@ -24,7 +24,7 @@ public class WorkflowMessageAction extends AbstractBaseAction {
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {		
 		InitSessionSetup.getInstance().setCurrentRun(request);
-		ActionForward forward = mapping.findForward("workflowMessage");
+		ActionForward forward = mapping.findForward("success");
 		return forward;
 	}
 	
