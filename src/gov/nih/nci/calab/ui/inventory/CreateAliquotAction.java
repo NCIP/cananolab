@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.inventory;
  * @author pansu
  */
 
-/* CVS $Id: CreateAliquotAction.java,v 1.3 2006-08-01 13:25:27 pansu Exp $ */
+/* CVS $Id: CreateAliquotAction.java,v 1.4 2006-08-01 19:46:37 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.inventory.AliquotBean;
 import gov.nih.nci.calab.exception.CalabException;
@@ -40,7 +40,7 @@ public class CreateAliquotAction extends AbstractDispatchAction {
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		boolean fromAliquot = ((String) theForm.get("fromAliquot"))
-				.equals("true") ? true : false;		
+				.equals("true") ? true : false;
 		String containerName = (String) theForm.get("containerName");
 		String parentAliquotName = (String) theForm.get("parentAliquotName");
 		String parentName = (fromAliquot) ? parentAliquotName : containerName;
@@ -72,70 +72,66 @@ public class CreateAliquotAction extends AbstractDispatchAction {
 		return forward;
 	}
 
+	public ActionForward update(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		HttpSession session = request.getSession();
+
+		// TODO fill in details for sample information */
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+
+		boolean fromAliquot = ((String) theForm.get("fromAliquot"))
+				.equals("true") ? true : false;
+
+		String containerName = (String) theForm.get("containerName");
+		String parentAliquotName = (String) theForm.get("parentAliquotName");
+		String parentName = (fromAliquot) ? parentAliquotName : containerName;
+
+		String numberOfAliquots = (String) theForm.get("numberOfAliquots");
+		int numAliquots = Integer.parseInt(numberOfAliquots);
+
+		AliquotBean template = (AliquotBean) theForm.get("template");
+
+		ManageAliquotService manageAliquotService = new ManageAliquotService();
+		int colNum = manageAliquotService.getDefaultAliquotMatrixColumnNumber();
+		int rowNum = (int) Math.ceil((float) numAliquots / colNum);
+
+		// calculate the first aliquot Id to use
+		int firstAliquotNum = manageAliquotService.getFirstAliquotNum(
+				fromAliquot, parentName);
+		String aliquotPrefix = manageAliquotService
+				.getAliquotPrefix(parentName);
+
+		// get user and date from session
+		String creator = (String) session.getAttribute("creator");
+
+		// create a 2-D matrix for aliquot
+		List<AliquotBean[]> aliquotMatrix = createAliquotMatrix(colNum, rowNum,
+				numAliquots, aliquotPrefix, firstAliquotNum, template, creator);
+		session.setAttribute("aliquotMatrix", aliquotMatrix);
+		return mapping.getInputForward();
+
+	}
+
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		HttpSession session = request.getSession();
+		InitSessionSetup.getInstance().clearWorkflowSession(session);
+		InitSessionSetup.getInstance().clearSearchSession(session);
+
 		InitSessionSetup.getInstance().setAllSampleContainers(session);
 		InitSessionSetup.getInstance().setAllSampleUnmaskedAliquots(session);
 		InitSessionSetup.getInstance().setAllAliquotContainerTypes(session);
 		InitSessionSetup.getInstance().setAllAliquotContainerInfo(session);
 		InitSessionSetup.getInstance().setAllAliquotCreateMethods(session);
 		InitSessionSetup.getInstance().setCurrentUser(session);
+
 		// TODO fill in details for sample information */
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		boolean fromAliquot = ((String) theForm.get("fromAliquot"))
-				.equals("true") ? true : false;
-		
-		String containerName = (String) theForm.get("containerName");
-		String parentAliquotName = (String) theForm.get("parentAliquotName");
-		String parentName = (fromAliquot) ? parentAliquotName : containerName;
-
-		String numberOfAliquots = (String) theForm.get("numberOfAliquots");
-		int numAliquots;
-		if (numberOfAliquots.length() == 0) {
-			numAliquots = 0;
-		} else {
-			numAliquots = Integer.parseInt(numberOfAliquots);
-		}
-
-		AliquotBean template = (AliquotBean) theForm.get("template");
-
-		// calculate number of rows in the matrix
-		if (numAliquots > 0) {
-			ManageAliquotService manageAliquotService = new ManageAliquotService();
-			int colNum = manageAliquotService
-					.getDefaultAliquotMatrixColumnNumber();
-			int rowNum = (int) Math.ceil((float) numAliquots / colNum);
-
-			// calculate the first aliquot Id to use
-			int firstAliquotNum = manageAliquotService.getFirstAliquotNum(
-					fromAliquot, parentName);
-			String aliquotPrefix = manageAliquotService
-					.getAliquotPrefix(parentName);
-
-			// get user and date from session
-			String creator = (String) session.getAttribute("creator");
-
-			// create a 2-D matrix for aliquot
-			List<AliquotBean[]> aliquotMatrix = createAliquotMatrix(colNum,
-					rowNum, numAliquots, aliquotPrefix, firstAliquotNum,
-					template, creator);
-			session.setAttribute("aliquotMatrix", aliquotMatrix);
-		} else {
-			session.removeAttribute("aliquotMatrix");
-		}
-		return mapping.getInputForward();
-
-	}
-
-	public ActionForward reset(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		HttpSession session = request.getSession();
 		session.removeAttribute("createAliquotForm");
 		session.removeAttribute("aliquotMatrix");
-		return setup(mapping, form, request, response);
+
+		return mapping.getInputForward();
 	}
 
 	public boolean loginRequired() {
