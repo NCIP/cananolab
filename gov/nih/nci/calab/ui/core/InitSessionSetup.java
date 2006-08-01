@@ -14,7 +14,6 @@ import gov.nih.nci.calab.service.util.CalabComparators;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.service.workflow.ExecuteWorkflowService;
-import gov.nih.nci.security.authorization.domainobjects.User;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,13 +25,21 @@ import java.util.SortedSet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+/**
+ * This class sets up session level or servlet context level variables to be used in
+ * various actions during the setup of query forms.
+ * 
+ * @author pansu
+ *
+ */
 public class InitSessionSetup {
 	private static LookupService lookupService;
+
 	private static UserService userService;
 
 	private InitSessionSetup() throws Exception {
 		lookupService = new LookupService();
-		userService=new UserService(CalabConstants.CSM_APP_NAME);
+		userService = new UserService(CalabConstants.CSM_APP_NAME);
 	}
 
 	public static InitSessionSetup getInstance() throws Exception {
@@ -60,12 +67,15 @@ public class InitSessionSetup {
 		session.removeAttribute("newRunCreated");
 	}
 
+	public void clearRunSession(HttpSession session) {
+		session.removeAttribute("currentRun");
+	}
+
 	public void setAllUsers(HttpSession session) throws Exception {
 		if ((session.getAttribute("newUserCreated") != null)
 				|| (session.getServletContext().getAttribute("allUsers") == null)) {
 			List allUsers = userService.getAllUsers();
-			session.getServletContext().setAttribute("allUsers",
-					allUsers);
+			session.getServletContext().setAttribute("allUsers", allUsers);
 		}
 		session.removeAttribute("newUserCreated");
 	}
@@ -88,6 +98,11 @@ public class InitSessionSetup {
 		session.removeAttribute("newAliquotCreated");
 	}
 
+	public void clearSampleSourcesWithUnmaskedAliquotsSession(
+			HttpSession session) {
+		session.removeAttribute("allSampleSourcesWithUnmaskedAliquots");
+	}
+
 	public void setAllSampleUnmaskedAliquots(HttpSession session)
 			throws Exception {
 		// set map between samples and unmasked aliquots
@@ -103,6 +118,11 @@ public class InitSessionSetup {
 			session.setAttribute("allSampleNamesWithAliquots", sampleNames);
 		}
 		session.removeAttribute("newAliquotCreated");
+	}
+
+	public void clearSampleUnmaskedAliquotsSession(HttpSession session) {
+		session.removeAttribute("allUnmaskedSampleAliquots");
+		session.removeAttribute("allSampleNamesWithAliquots");
 	}
 
 	public void setAllAssayTypeAssays(HttpSession session) throws Exception {
@@ -136,6 +156,10 @@ public class InitSessionSetup {
 		session.removeAttribute("newSampleCreated");
 	}
 
+	public void clearSampleSourcesSession(HttpSession session) {
+		session.removeAttribute("allSampleSources");
+	}
+
 	public void setAllSampleContainerTypes(HttpSession session)
 			throws Exception {
 		if (session.getAttribute("allSampleContainerTypes") == null
@@ -147,6 +171,10 @@ public class InitSessionSetup {
 		session.removeAttribute("newSampleCreated");
 	}
 
+	public void clearSampleContainerTypesSession(HttpSession session) {
+		session.removeAttribute("allSampleContainerTypes");
+	}
+
 	public void setAllSampleTypes(HttpSession session) throws Exception {
 		if (session.getServletContext().getAttribute("allSampleTypes") == null
 				|| session.getAttribute("newSampleCreated") != null) {
@@ -156,6 +184,10 @@ public class InitSessionSetup {
 		}
 		// clear the new sample created flag
 		session.removeAttribute("newSampleCreated");
+	}
+
+	public void clearSampleTypesSession(HttpSession session) {
+		session.removeAttribute("allSampleTypes");
 	}
 
 	public void setAllSampleSOPs(HttpSession session) throws Exception {
@@ -198,6 +230,10 @@ public class InitSessionSetup {
 		}
 	}
 
+	public void clearAliquotContainerTypesSession(HttpSession session) {
+		session.removeAttribute("allAliquotContainerTypes");
+	}
+
 	public void setAllAliquotContainerInfo(HttpSession session)
 			throws Exception {
 		if (session.getServletContext().getAttribute("aliquotContainerInfo") == null) {
@@ -233,6 +269,11 @@ public class InitSessionSetup {
 		session.removeAttribute("newSampleCreated");
 	}
 
+	public void clearSampleContainersSession(HttpSession session) {
+		session.removeAttribute("allSampleContainers");
+		session.removeAttribute("allSampleNames");
+	}
+
 	public void setAllSourceSampleIds(HttpSession session) throws Exception {
 		if (session.getAttribute("allSourceSampleIds") == null
 				|| session.getAttribute("newSampleCreated") != null) {
@@ -241,71 +282,38 @@ public class InitSessionSetup {
 		}
 		// clear the new sample created flag
 		session.removeAttribute("newSampleCreated");
-
 	}
-	
-	private void clearSessionData(HttpServletRequest request, String forwardPage) {
-		HttpSession session = request.getSession();
-		if (!(forwardPage.equals("createAliquot") || forwardPage
-				.equals("createProject"))) {
-			// clear session attributes created during create project or create
-			// aliquot
-			session.removeAttribute("allSamples");
-			session.removeAttribute("allAliquotContainerTypes");
-		}
 
-		session.removeAttribute("aliquotMatrix");
+	public void clearSourceSampleIdsSession(HttpSession session) {
+		session.removeAttribute("allSourceSampleIds");
+	}
+
+	public void clearWorkflowSession(HttpSession session) {
+		clearRunSession(session);
+		clearSampleSourcesWithUnmaskedAliquotsSession(session);
+		clearSampleUnmaskedAliquotsSession(session);	
+		session.removeAttribute("httpFileUploadSessionData");
+	}
+
+	public void clearSearchSession(HttpSession session) {
+		clearSampleTypesSession(session);
+		clearSampleContainerTypesSession(session);
+		clearAliquotContainerTypesSession(session);
+		clearSourceSampleIdsSession(session);
+		clearSampleSourcesSession(session);
+		session.removeAttribute("aliquots");
+		session.removeAttribute("sampleContainers");
+	}
+
+	public void clearInventorySession(HttpSession session) {
+		clearSampleTypesSession(session);
+		clearSampleContainersSession(session);
+		clearSampleContainerTypesSession(session);
+		clearSampleUnmaskedAliquotsSession(session);
+		clearAliquotContainerTypesSession(session);
+		session.removeAttribute("createSampleForm");		
 		session.removeAttribute("createAliquotForm");
-		session.removeAttribute("createSampleForm");
-
-		// add a request parameter so the back button from search results don't
-		// clear the forms
-		if (request.getParameter("rememberSearch") == null) {
-			session.removeAttribute("searchSampleForm");
-			session.removeAttribute("searchAliquotForm");
-			session.removeAttribute("searchWorkflowForm");
-		}
-
-		if (!forwardPage.equals("createSample")) {
-			// clear session attributes created during create sample
-			session.removeAttribute("allSampleContainerTypes");
-		}
-
-		if (!forwardPage.equals("searchSample")) {
-			// clear session attributes created during search sample
-			session.removeAttribute("sampleContainers");
-			session.removeAttribute("aliquots");
-		}
-
-		if (!forwardPage.equals("uploadForward")) {
-			// clear session attributes creatd during fileUpload
-			session.removeAttribute("httpFileUploadSessionData");
-		}
-
-		if (forwardPage.equals("createSample")
-				|| forwardPage.equals("createAliquot")
-				|| forwardPage.equals("searchSample")
-				|| forwardPage.equals("searchWorkflow")) {
-			// clear session attributes created during execute workflow pages
-			session.removeAttribute("workflow");
-			session.removeAttribute("runId");
-			session.removeAttribute("runName");
-			session.removeAttribute("assayName");
-			session.removeAttribute("assayType");
-			session.removeAttribute("menuType");
-			session.removeAttribute("inout");
-		}
-
-		// get user and date information
-		String creator = "";
-		if (session.getAttribute("user") != null) {
-			User user = (User) session.getAttribute("user");
-			creator = user.getLoginName();
-		}
-		String creationDate = StringUtils.convertDateToString(new Date(),
-				CalabConstants.DATE_FORMAT);
-		session.setAttribute("creator", creator);
-		session.setAttribute("creationDate", creationDate);
+		session.removeAttribute("aliquotMatrix");		
 	}
 
 	public static LookupService getLookupService() {
