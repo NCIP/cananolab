@@ -160,11 +160,7 @@ S:s_CSSTop	// STYLE Array to use for this menu
 {U:'searchWorkflow.do?dispatch=setup',T:'Search Workflow'},
 {U:'searchSample.do?dispatch=setup',T:'Search Samples'},
 {U:'searchAliquot.do?dispatch=setup',T:'Search Aliquots'},
-/*
-{U:'initSession.do?forwardPage=searchAssay',T:'Search Assays'},
-{U:'initSession.do?forwardPage=searchInstrument',T:'Search Instruments'},
-*/
-{U:'initSession.do?forwardPage=searchAssayData',T:'Search Assay Data'}
+{U:'searchParticle.do?dispatch=setup',T:'Search Nanoparticles'}
 ]
 );
 
