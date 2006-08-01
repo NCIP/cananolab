@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.inventory;
  * @author pansu
  */
 
-/* CVS $Id: CreateSampleAction.java,v 1.1 2006-06-30 20:56:09 pansu Exp $ */
+/* CVS $Id: CreateSampleAction.java,v 1.2 2006-08-01 13:25:27 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.inventory.ContainerBean;
 import gov.nih.nci.calab.dto.inventory.SampleBean;
@@ -15,7 +15,8 @@ import gov.nih.nci.calab.service.inventory.ManageSampleService;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
 import gov.nih.nci.calab.service.util.StringUtils;
-import gov.nih.nci.calab.ui.core.AbstractBaseAction;
+import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
+import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
 import java.util.Date;
 
@@ -28,39 +29,42 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
-import org.apache.struts.validator.DynaValidatorActionForm;
+import org.apache.struts.validator.DynaValidatorForm;
 
-public class CreateSampleAction extends AbstractBaseAction {
-	public ActionForward executeTask(ActionMapping mapping, ActionForm form,
+public class CreateSampleAction extends AbstractDispatchAction {
+	public ActionForward create(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		ActionForward forward = null;
 		HttpSession session = request.getSession();
 
 		// TODO fill in details for sample information */
-		DynaValidatorActionForm theForm = (DynaValidatorActionForm) form;
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String sampleNamePrefix = (String) theForm.get("sampleNamePrefix");
-		String preconfiguredPrefix = PropertyReader.getProperty(CalabConstants.CALAB_PROPERTY,"samplePrefix");
+		String preconfiguredPrefix = PropertyReader.getProperty(
+				CalabConstants.CALAB_PROPERTY, "samplePrefix");
 		if (!sampleNamePrefix.startsWith(preconfiguredPrefix)) {
-			
+
 			ActionMessages msgs = new ActionMessages();
-			ActionMessage msg = new ActionMessage("error.createSample.SampleIDFormat", preconfiguredPrefix);
+			ActionMessage msg = new ActionMessage(
+					"error.createSample.SampleIDFormat", preconfiguredPrefix);
 			msgs.add("error", msg);
 			saveMessages(request, msgs);
-			
+
 			forward = mapping.findForward("input");
 
 			return forward;
 		}
 		String sampleType = (String) theForm.get("sampleType");
-		String otherSampleType = (String)theForm.get("otherSampleType");
+		String otherSampleType = (String) theForm.get("otherSampleType");
 		String sampleSOP = (String) theForm.get("sampleSOP");
 		String sampleDescription = (String) theForm.get("sampleDescription");
 		String sampleSource = (String) theForm.get("sampleSource");
 		String sourceSampleId = (String) theForm.get("sourceSampleId");
 		String dateReceivedStr = (String) theForm.get("dateReceived");
-		Date dateReceived=StringUtils.convertToDate(dateReceivedStr, CalabConstants.ACCEPT_DATE_FORMAT);
-		
+		Date dateReceived = StringUtils.convertToDate(dateReceivedStr,
+				CalabConstants.ACCEPT_DATE_FORMAT);
+
 		String solubility = (String) theForm.get("solubility");
 		String lotId = (String) theForm.get("lotId");
 		String lotDescription = (String) theForm.get("lotDescription");
@@ -74,10 +78,10 @@ public class CreateSampleAction extends AbstractBaseAction {
 		String sampleSubmitter = (String) session.getAttribute("creator");
 		ContainerBean[] containers = (ContainerBean[]) theForm
 				.get("containers");
-		Date creationDate=new Date();
+		Date creationDate = new Date();
 		SampleBean sample = new SampleBean(sampleNamePrefix, sampleName,
-				sampleType, otherSampleType, sampleSOP, sampleDescription, sampleSource,
-				sourceSampleId, dateReceived, solubility, lotId,
+				sampleType, otherSampleType, sampleSOP, sampleDescription,
+				sampleSource, sourceSampleId, dateReceived, solubility, lotId,
 				lotDescription, numContainers, generalComments,
 				sampleSubmitter, creationDate, containers);
 
@@ -86,10 +90,76 @@ public class CreateSampleAction extends AbstractBaseAction {
 		// set a flag to indicate that new sample have been created so session
 		// can be refreshed in initSession.do
 		session.setAttribute("newSampleCreated", "yes");
-		
+
 		forward = mapping.findForward("success");
 
 		return forward;
+	}
+
+	public ActionForward setup(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		HttpSession session = request.getSession();
+		InitSessionSetup.getInstance().setAllSampleTypes(session);
+		InitSessionSetup.getInstance().setAllSampleSOPs(session);
+		InitSessionSetup.getInstance().setAllSampleContainerTypes(session);
+		InitSessionSetup.getInstance().setAllSampleContainerInfo(session);
+		InitSessionSetup.getInstance().setCurrentUser(session);
+
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		String sampleNamePrefix = (String) theForm.get("sampleNamePrefix");
+		String lotId = (String) theForm.get("lotId");
+		int numContainers = Integer.parseInt((String) theForm
+				.get("numberOfContainers"));
+
+		ManageSampleService mangeSampleService = new ManageSampleService();
+		// set default form values
+		if (sampleNamePrefix.length() == 0) {
+			theForm.set("sampleNamePrefix", mangeSampleService
+					.getDefaultSampleNamePrefix());
+		}
+		theForm.set("configuredSampleNamePrefix", PropertyReader.getProperty(
+				CalabConstants.CALAB_PROPERTY, "samplePrefix"));
+
+		if (lotId.length() == 0) {
+			theForm.set("lotId", mangeSampleService.getDefaultLotId());
+		}
+		ContainerBean[] origContainers = (ContainerBean[]) theForm
+				.get("containers");
+		ContainerBean[] containers = new ContainerBean[numContainers];
+
+		// reuse containers from the previous request
+		// set other containers to have values from the first container
+		if (origContainers.length < numContainers) {
+			for (int i = 0; i < origContainers.length; i++) {
+				containers[i] = new ContainerBean(origContainers[i]);
+			}
+			for (int i = origContainers.length; i < numContainers; i++) {
+				if (origContainers.length > 0) {
+					containers[i] = new ContainerBean(origContainers[0]);
+				}
+				// if no containers from previous request, set them new
+				else {
+					containers[i] = new ContainerBean();
+				}
+			}
+
+		} else {
+			for (int i = 0; i < numContainers; i++) {
+				containers[i] = new ContainerBean(origContainers[i]);
+			}
+		}
+		theForm.set("containers", containers);
+		session.setAttribute("createSampleForm", theForm);
+		return mapping.getInputForward();
+	}
+
+	public ActionForward reset(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		HttpSession session = request.getSession();
+		session.removeAttribute("createSampleForm");
+		return setup(mapping, form, request, response);
 	}
 
 	public boolean loginRequired() {
