@@ -26,7 +26,7 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 public class CreateRunAction extends AbstractDispatchAction {
 
-	public ActionForward executeTask(ActionMapping mapping, ActionForm form,
+	public ActionForward create(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 
@@ -58,7 +58,7 @@ public class CreateRunAction extends AbstractDispatchAction {
 
 		// add parameters to forward
 
-		String extra = "&menuType=run&runId=" + runBean.getId();
+		String extra = "?menuType=run&runId=" + runBean.getId();
 		String newPath = mapping.findForward("success").getPath() + extra;
 		ActionForward forward = new ActionForward();
 		forward.setPath(newPath);
