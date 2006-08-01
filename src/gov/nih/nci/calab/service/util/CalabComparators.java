@@ -17,7 +17,7 @@ import java.util.Comparator;
  * 
  */
 
-/* CVS $Id: CalabComparators.java,v 1.7 2006-06-30 20:55:28 pansu Exp $ */
+/* CVS $Id: CalabComparators.java,v 1.8 2006-08-01 13:21:55 pansu Exp $ */
 
 public class CalabComparators {
 
@@ -45,9 +45,9 @@ public class CalabComparators {
 
 	public static class SortableNameComparator implements Comparator<String> {
 		public int compare(String name1, String name2) {
-			// in case of sample name and aliquot name
-			if (name1.matches("\\D+(-(\\d+))+")
-					&& name2.matches("\\D+(-(\\d+))+")) {
+			// in case of sample name, container name and aliquot name
+			if (name1.matches("\\D+(-(\\d+)(\\D+)*)+")
+					&& name2.matches("\\D+(-(\\d+)(\\D+)*)+")) {
 				String[] toks1 = name1.split("-");
 				String[] toks2 = name2.split("-");
 				int num = 0;
@@ -79,7 +79,7 @@ public class CalabComparators {
 					}
 				}
 			}
-			// in case of run name and container name
+			// in case of run name
 			else if (name1.matches("(\\D+)(\\d+)")
 					&& name2.matches("(\\D+)(\\d+)")) {
 				try {
