@@ -18,7 +18,7 @@
 			<form-property name="solubility" type="java.lang.String" />
 			<form-property name="numberOfContainers" type="java.lang.String" initial="1" />
 			<form-property name="generalComments" type="java.lang.String" />
-			<form-property name="containers" type="gov.nih.nci.calab.dto.inventory.ContainerBean[]" size="1" />
+			<form-property name="containers" type="gov.nih.nci.calab.dto.inventory.ContainerBean[]"/>
 			<form-property name="configuredSampleNamePrefix" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="createAliquotForm" type="org.apache.struts.validator.DynaValidatorForm">
@@ -59,7 +59,7 @@
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="inventory" key="error.createAliquot.duplicate" path="inventory.createaliquot" type="gov.nih.nci.calab.exception.DuplicateEntriesException" />
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="inventory" key="error.createAliquot" path="inventory.message" type="java.lang.Exception" />
 			<forward name="input" path="inventory.createaliquot" />
-			<forward name="success" path="inventory.aliquotdetails" />
+			<forward name="success" path="inventory.createaliquotresult" />
 		</action>
 		<action name="editAliquotForm" parameter="dispatch" path="/editAliquot" scope="request" type="gov.nih.nci.calab.ui.inventory.EditAliquotAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="inventory" key="error.editAliquot.nomatrix" path="inventory.createaliquot" type="gov.nih.nci.calab.exception.CalabException" />
