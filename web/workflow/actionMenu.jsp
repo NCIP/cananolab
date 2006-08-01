@@ -32,8 +32,8 @@
 	<logic:equal name="menuType" value="out">
 		<bean:define id="actions" name="outActions" type="java.util.List" />
 	</logic:equal>
-	<logic:equal name="menuType" value="upload">
-		<bean:define id="actions" name="uploadActions" type="java.util.List" />
+	<logic:equal name="menuType" value="run">
+		<bean:define id="actions" name="runActions" type="java.util.List" />
 	</logic:equal>
 	<logic:present name="actions">
 		<table bgcolor="#98B7B7" border="0" >

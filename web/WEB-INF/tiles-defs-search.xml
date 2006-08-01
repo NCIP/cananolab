@@ -9,7 +9,7 @@
 		<put name="calabContent" value="/search/bodySearchWorkflow.jsp" />
 		<put name="menu" value="search" />
 	</definition>
-	
+
 	<!-- definition for the search workflow result page -->
 	<definition name="search.searchworkflowresult" extends="calab.home">
 		<put name="calabContent" value="/search/bodySearchWorkflowResult.jsp" />
@@ -19,6 +19,12 @@
 	<!-- definition for the search sample page -->
 	<definition name="search.searchsample" extends="calab.home">
 		<put name="calabContent" value="/search/bodySearchSample.jsp" />
+		<put name="menu" value="search" />
+	</definition>
+
+	<!-- definition for the search aliquot page -->
+	<definition name="search.searchaliquot" extends="calab.home">
+		<put name="calabContent" value="/search/bodySearchAliquot.jsp" />
 		<put name="menu" value="search" />
 	</definition>
 
@@ -33,10 +39,16 @@
 		<put name="calabContent" value="/search/bodySearchAliquotResult.jsp" />
 		<put name="menu" value="search" />
 	</definition>
-	
+
 	<!-- definition for the view sample details page -->
 	<definition name="search.viewsampledetails" extends="calab.home">
 		<put name="calabContent" value="/inventory/bodySampleDetails.jsp" />
+		<put name="menu" value="search" />
+	</definition>
+
+	<!-- definition for the view sample details page -->
+	<definition name="search.viewaliquotdetails" extends="calab.home">
+		<put name="calabContent" value="/inventory/bodyAliquotDetails.jsp" />
 		<put name="menu" value="search" />
 	</definition>
 

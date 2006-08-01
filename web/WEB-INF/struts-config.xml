@@ -10,44 +10,32 @@
 			<form-property name="loginId" type="java.lang.String" />
 			<form-property name="password" type="java.lang.String" />
 		</form-bean>
-		<form-bean name="registerForm" type="org.apache.struts.validator.DynaValidatorForm">
-			<form-property name="title" type="java.lang.String" />
-			<form-property name="firstName" type="java.lang.String" />
-			<form-property name="middleName" type="java.lang.String" />
-			<form-property name="lastName" type="java.lang.String" />
-			<form-property name="email" type="java.lang.String" />
-			<form-property name="phoneNumber" type="java.lang.String" />
-			<form-property name="organization" type="java.lang.String" />
-			<form-property name="department" type="java.lang.String" />
+		<form-bean name="updatePasswordForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="loginId" type="java.lang.String" />
 			<form-property name="password" type="java.lang.String" />
-			<form-property name="password2" type="java.lang.String" />
-		</form-bean>		
+			<form-property name="newPassword" type="java.lang.String" />
+			<form-property name="newPassword2" type="java.lang.String" />
+		</form-bean>
 	</form-beans>
 	<global-exceptions>
 		<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.login.required" path="/index.jsp" type="gov.nih.nci.calab.exception.InvalidSessionException" />
 	</global-exceptions>
 	<action-mappings>
-		<action name="initSessionForm" path="/initSession" scope="request" parameter="forwardPage" type="gov.nih.nci.calab.ui.core.InitSessionAction">
-			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.initSession" path="calab.error" type="java.lang.Exception" />
-		</action>
 		<action name="loginForm" path="/login" scope="request" type="gov.nih.nci.calab.ui.security.LoginAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.login" path="/index.jsp" type="java.lang.Exception" />
 			<forward name="success" path="calab.welcome" />
-			<forward name="input" path="calab.home" />
+			<forward name="input" path="calab.index" />
+			<forward name="changePassword" path="calab.password"/>
 		</action>
-		<action name="registerForm" parameter="method" path="/register" scope="request" type="gov.nih.nci.calab.ui.security.RegisterAction" input="input">
-			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.register" path="calab.register" type="java.lang.Exception" />
-			<forward name="registrationSetup" path="calab.register" />
-			<forward name="success" path="calab.register" />
-			<forward name="input" path="calab.register" />
+		<action name="updatePasswordForm" path="/updatePassword" scope="request" type="gov.nih.nci.calab.ui.security.UpdatePasswordAction" input="input">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.password" path="calab.password" type="java.lang.Exception" />
+			<forward name="success" path="calab.index" />
+			<forward name="input" path="calab.password" />
 		</action>
 		<action path="/logout" scope="request" type="gov.nih.nci.calab.ui.security.LogoutAction">
-			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.logout" path="calab.error" type="java.lang.Exception" />
-			<forward name="success" path="calab.home" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.logout" path="home.error" type="java.lang.Exception" />
+			<forward name="success" path="calab.index" />
 		</action>
-		<action path="/registerSetup" type="org.apache.struts.actions.ForwardAction" parameter="calab.register" scope="request" />
-		
 	</action-mappings>
 
 	<controller>

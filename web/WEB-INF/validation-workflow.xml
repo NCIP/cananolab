@@ -5,21 +5,21 @@
 <form-validation>
 	<formset>
 		<form name="useAliquotForm">
-			<field property="assignedAliquots" depends="required">
+			<field property="assignedAliquots"  page="1" depends="required">
 				<arg position="0" key="useAliquotForm.assignedAliquots" bundle="workflow" />
 			</field>
-			<field property="runId" depends="required">
+			<field property="runId"  page="1" depends="required">
 				<arg position="0" key="useAliquotForm.runId" bundle="workflow" />
 			</field>
-		</form>
+		</form>		
 		<form name="createRunForm">
-			<field property="assayName" depends="required">
+			<field property="assayName" page="1" depends="required">
 				<arg key="createRunForm.assay" bundle="workflow" position="0" />
 			</field>
-			<field property="runBy" depends="required">
+			<field property="runBy" page="1" depends="required">
 				<arg key="createRunForm.runBy" bundle="workflow" position="0" />
 			</field>
-			<field property="runDate" depends="date,required">
+			<field property="runDate" page="1" depends="date,required">
 				<arg key="createRunForm.runDate" bundle="workflow" position="0" />
 				<var>
 					<var-name>datePattern</var-name>
@@ -27,28 +27,5 @@
 				</var>
 			</field>
 		</form>
-		<form name="createAssayRunForm">
-			<field property="runBy" depends="required">
-				<arg key="createAssayRunForm.runBy" bundle="workflow" position="0" />
-			</field>
-			<field property="runDate" depends="date,required">
-				<arg key="createAssayRunForm.runDate" bundle="workflow" position="0" />
-				<var>
-					<var-name>datePattern</var-name>
-					<var-value>MM/dd/yy</var-value>
-				</var>
-			</field>
-		</form>
-		<form name="maskFileForm">
-			<field property="description" depends="required">
-				<arg key="maskFileForm.description" bundle="workflow" position="0" />
-			</field>
-		</form>
-		<form name="maskAliquotForm">
-			<field property="description" depends="required">
-				<arg key="maskAliquotForm.description" bundle="workflow" position="0" />
-			</field>
-		</form>
-
 	</formset>
 </form-validation>

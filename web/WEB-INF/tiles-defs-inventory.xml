@@ -7,40 +7,20 @@
 	<definition name="inventory.managesample" extends="calab.home">
 		<put name="calabContent" value="/bodyManageItem.jsp" />
 		<put name="menu" value="inventory" />
-		<put name="item" value="Sample"/>
-		<put name="itemDescription" value="/inventory/bodySampleDescription.jsp"/>
-		<put name="createLink" value="initSession.do?forwardPage=createSample"/>
-		<put name="searchLink" value="initSession.do?forwardPage=searchSample"/>
+		<put name="item" value="Sample" />
+		<put name="itemDescription" value="/inventory/bodySampleDescription.jsp" />
+		<put name="createLink" value="createSample.do?dispatch=reset&amp;page=0" />
+		<put name="searchLink" value="searchSample.do?dispatch=setup" />
 	</definition>
-	
-    <!-- definition for the manage aliquot page -->
+
+	<!-- definition for the manage aliquot page -->
 	<definition name="inventory.managealiquot" extends="calab.home">
 		<put name="calabContent" value="/bodyManageItem.jsp" />
 		<put name="menu" value="inventory" />
-		<put name="item" value="Aliquot"/>
-		<put name="itemDescription" value="/inventory/bodyAliquotDescription.jsp"/>
-		<put name="createLink" value="initSession.do?forwardPage=createAliquot"/>
-		<put name="searchLink" value="initSession.do?forwardPage=searchSample"/>
-	</definition>
-	
-    <!-- definition for the manage assay page -->
-	<definition name="inventory.manageassay" extends="calab.home">
-		<put name="calabContent" value="/bodyManageItem.jsp" />
-		<put name="menu" value="inventory" />
-		<put name="item" value="Assay"/>
-		<put name="itemDescription" value="/inventory/bodyAssayDescription.jsp"/>
-		<put name="createLink" value="initSession.do?forwardPage=createAssay"/>
-		<put name="searchLink" value="initSession.do?forwardPage=searchAssay"/>
-	</definition>
-	
-	    <!-- definition for the manage instrument page -->
-	<definition name="inventory.manageinstrument" extends="calab.home">
-		<put name="calabContent" value="/bodyManageItem.jsp" />
-		<put name="menu" value="inventory" />
-		<put name="item" value="Instrument"/>
-		<put name="itemDescription" value="/inventory/bodyInstrumentDescription.jsp"/>
-		<put name="createLink" value="initSession.do?forwardPage=createInstrument"/>
-		<put name="searchLink" value="initSession.do?forwardPage=searchInstrument"/>
+		<put name="item" value="Aliquot" />
+		<put name="itemDescription" value="/inventory/bodyAliquotDescription.jsp" />
+		<put name="createLink" value="createAliquot.do?dispatch=reset&amp;page=0" />
+		<put name="searchLink" value="searchAliquot.do?dispatch=setup" />
 	</definition>
 
 	<!-- definition for the create sample page -->
@@ -72,5 +52,8 @@
 		<put name="calabContent" value="/inventory/bodyEditAliquot.jsp" />
 		<put name="menu" value="inventory" />
 	</definition>
-
+	<definition name="inventory.createassay" extends="calab.home">
+		<put name="calabContent" value="/inventory/bodyCreateAssay.jsp" />
+		<put name="menu" value="inventory" />
+	</definition>
 </tiles-definitions>
