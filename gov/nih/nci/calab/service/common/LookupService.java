@@ -17,9 +17,6 @@ import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CalabComparators;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
-import gov.nih.nci.security.authorization.domainobjects.User;
-import gov.nih.nci.security.dao.SearchCriteria;
-import gov.nih.nci.security.dao.UserSearchCriteria;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.31 2006-07-31 21:43:36 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.32 2006-08-01 14:22:23 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
