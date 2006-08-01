@@ -6,16 +6,16 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchSampleAction.java,v 1.16 2006-07-05 21:13:50 pansu Exp $ */
+/* CVS $Id: SearchSampleAction.java,v 1.17 2006-08-01 13:26:24 pansu Exp $ */
 
-import gov.nih.nci.calab.dto.inventory.AliquotBean;
 import gov.nih.nci.calab.dto.inventory.ContainerBean;
 import gov.nih.nci.calab.dto.inventory.SampleBean;
 import gov.nih.nci.calab.dto.inventory.StorageLocation;
 import gov.nih.nci.calab.service.search.SearchSampleService;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
-import gov.nih.nci.calab.ui.core.AbstractBaseAction;
+import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
+import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,8 +33,8 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
-public class SearchSampleAction extends AbstractBaseAction {
-	public ActionForward executeTask(ActionMapping mapping, ActionForm form,
+public class SearchSampleAction extends AbstractDispatchAction {
+	public ActionForward search(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 
@@ -43,17 +43,7 @@ public class SearchSampleAction extends AbstractBaseAction {
 
 		HttpSession session = request.getSession();
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		// search based on aliquotName if aliquotName is present
-		// otherwise search based on sampleName
-		boolean isAliquot = (Boolean) theForm.get("isAliquot");
-		String searchName = (String) theForm.get("searchName");		
-		String sampleName = "";
-		String aliquotName = "";
-		if (isAliquot) {
-			aliquotName = searchName;
-		} else {
-			sampleName = searchName;
-		}
+		String sampleName = (String) theForm.get("sampleName");
 		String sampleType = (String) theForm.get("sampleType");
 		String sampleSource = (String) theForm.get("sampleSource");
 		String sourceSampleId = (String) theForm.get("sourceSampleId");
@@ -76,67 +66,48 @@ public class SearchSampleAction extends AbstractBaseAction {
 		SearchSampleService searchSampleService = new SearchSampleService();
 
 		List<SampleBean> samples = null;
-		List<AliquotBean> aliquots = null;
+		if (sampleName.length() >= 0) {
+			if (sampleName.equals("all")) {
+				sampleName = "";
+			}
+			samples = searchSampleService.searchSamplesBySampleName(sampleName,
+					sampleType, sampleSource, sourceSampleId,
+					dateAccessionedBegin, dateAccessionedEnd, sampleSubmitter,
+					storageLocation);
+		} else {
+			samples = searchSampleService.searchSamples(sampleType,
+					sampleSource, sourceSampleId, dateAccessionedBegin,
+					dateAccessionedEnd, sampleSubmitter, storageLocation);
+		}
+		if (samples == null || samples.isEmpty()) {
+			ActionMessage msg = new ActionMessage(
+					"message.searchSample.noResult");
+			msgs.add("message", msg);
+			saveMessages(request, msgs);
+			forward = mapping.getInputForward();
+		} else {
+			// create a list of ContainerBeans for use in display tag
+			List<ContainerBean> containers = new ArrayList<ContainerBean>();
+			for (SampleBean sample : samples) {
+				containers.addAll(Arrays.asList(sample.getContainers()));
+			}
+			session.setAttribute("sampleContainers", containers);
+			forward = mapping.findForward("success");
+		}
 
-		// search aliquot
-		if (isAliquot) {
-			if (aliquotName.equals("all")) {
-				aliquotName = "";
-			}
-			String containerId = null;
-			if (theForm.getMap().containsKey("containerId")) {
-				containerId=(String) theForm.get("containerId");
-			}
-			if (containerId!=null && containerId.length() > 0) {
-				aliquots = searchSampleService
-						.searchAliquotsByContainer(containerId);
-			} else {
-				aliquots = searchSampleService.searchAliquotsByAliquotName(
-						aliquotName, sampleType, sampleSource, sourceSampleId,
-						dateAccessionedBegin, dateAccessionedEnd,
-						sampleSubmitter, storageLocation);
-			}
-			if (aliquots == null || aliquots.isEmpty()) {
-				ActionMessage msg = new ActionMessage(
-						"message.searchSample.noResult");
-				msgs.add("message", msg);
-				saveMessages(request, msgs);
-			}
-			session.setAttribute("aliquots", aliquots);
-			forward = mapping.findForward("successAliquot");
-		}
-		// search sample
-		else {
-			if (sampleName.length() >= 0) {
-				if (sampleName.equals("all")) {
-					sampleName = "";
-				}
-				samples = searchSampleService.searchSamplesBySampleName(
-						sampleName, sampleType, sampleSource, sourceSampleId,
-						dateAccessionedBegin, dateAccessionedEnd,
-						sampleSubmitter, storageLocation);
-			} else {
-				samples = searchSampleService.searchSamples(sampleType,
-						sampleSource, sourceSampleId, dateAccessionedBegin,
-						dateAccessionedEnd, sampleSubmitter, storageLocation);
-			}
-			if (samples == null || samples.isEmpty()) {
-				ActionMessage msg = new ActionMessage(
-						"message.searchSample.noResult");
-				msgs.add("message", msg);
-				saveMessages(request, msgs);
-				forward = mapping.getInputForward();
-			} else {
-				// create a list of ContainerBeans for use in display tag
-				List<ContainerBean> containers = new ArrayList<ContainerBean>();
-				for (SampleBean sample : samples) {
-					containers.addAll(Arrays.asList(sample.getContainers()));
-				}
-				session.setAttribute("sampleContainers", containers);
-				forward = mapping.findForward("success");
-			}
-		}
 		return forward;
+	}
+
+	public ActionForward setup(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		HttpSession session=request.getSession();
+		InitSessionSetup.getInstance().setAllSampleTypes(session);
+		InitSessionSetup.getInstance().setAllUsers(session);
+		InitSessionSetup.getInstance().setAllSampleContainerInfo(session);
+		InitSessionSetup.getInstance().setAllSampleSources(session);
+		InitSessionSetup.getInstance().setAllSourceSampleIds(session);
+		return mapping.getInputForward();
 	}
 
 	public boolean loginRequired() {
