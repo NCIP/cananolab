@@ -103,7 +103,9 @@
 							<html:hidden property="aliquot.aliquotName" />							
 							<html:hidden property="aliquot.creator"/>							
 							<input type="reset" value="Reset">
-							<input type="button" value="Cancel" onclick="javascript:history.go(-1)">
+							<input type="button" value="Cancel" onclick="javascript:location.href='createAliquot.do?dispatch=setup'">
+							<input type="hidden" name="dispatch" value="edit">
+							<input type="hidden" name="page" value="1">
 							<html:submit />
 						</div>
 					</td>

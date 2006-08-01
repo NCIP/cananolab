@@ -1,3 +1,5 @@
+<h4>Manage Assay Home</h4>
+
 This is the Assay section of the Manage Assay function.  An assay is a type of experiment performed in the 
 laboratory.  Assays are contained in projects and can involve multiple samples and instruments.
 
