@@ -29,7 +29,7 @@ public class SelectRunAction extends AbstractBaseAction {
 		String runId= (String) theForm.get("runId");
 		request.getSession().setAttribute("newRunCreated", "true");
 		// add parameters to forward
-		String extra = "&menuType=run&runId="+runId;
+		String extra = "?menuType=run&runId="+runId;
 		String newPath = mapping.findForward("success").getPath() + extra;
 		ActionForward forward = new ActionForward();
 		forward.setPath(newPath);
