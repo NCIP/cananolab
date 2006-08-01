@@ -6,10 +6,17 @@ package gov.nih.nci.calab.ui.workflow;
  * @author pansu
  */
 
-/* CVS $Id: UseAliquotAction.java,v 1.14 2006-06-23 19:52:59 pansu Exp $*/
+/* CVS $Id: UseAliquotAction.java,v 1.15 2006-08-01 13:28:39 pansu Exp $*/
 
+import gov.nih.nci.calab.dto.inventory.SampleBean;
+import gov.nih.nci.calab.dto.workflow.RunBean;
+import gov.nih.nci.calab.exception.InvalidSessionException;
 import gov.nih.nci.calab.service.workflow.ExecuteWorkflowService;
-import gov.nih.nci.calab.ui.core.AbstractBaseAction;
+import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
+import gov.nih.nci.calab.ui.core.InitSessionSetup;
+
+import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,8 +29,8 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
-public class UseAliquotAction extends AbstractBaseAction {
-	public ActionForward executeTask(ActionMapping mapping, ActionForm form,
+public class UseAliquotAction extends AbstractDispatchAction {
+	public ActionForward use(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		ActionForward forward = null;
@@ -32,21 +39,45 @@ public class UseAliquotAction extends AbstractBaseAction {
 		HttpSession session = request.getSession();
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String runId = (String) theForm.get("runId");		
+		String runId = (String) theForm.get("runId");
 		assignedAliquots = (String[]) theForm.get("assignedAliquots");
 		String comments = (String) theForm.get("comments");
 
 		ExecuteWorkflowService executeWorkflowService = new ExecuteWorkflowService();
-		executeWorkflowService.saveRunAliquots(runId, assignedAliquots, comments,
-				(String) session.getAttribute("creator"), (String) session
-						.getAttribute("creationDate"));
+		executeWorkflowService.saveRunAliquots(runId, assignedAliquots,
+				comments, (String) session.getAttribute("creator"),
+				(String) session.getAttribute("creationDate"));
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.useAliquot");
 		msgs.add("message", msg);
 		saveMessages(request, msgs);
-		session.setAttribute("newWorkflowCreated", "true");
+		session.setAttribute("newRunCreated", "true");
 		forward = mapping.findForward("success");
 		return forward;
+	}
+
+	public ActionForward setup(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		HttpSession session=request.getSession();
+		RunBean currentRun = (RunBean) session.getAttribute("currentRun");
+		if (currentRun == null) {
+			throw new InvalidSessionException(
+					"Can't operate outside the run tree");
+		}
+		InitSessionSetup.getInstance().setSampleSourceUnmaskedAliquots(session);
+		//initialize sample list
+		Map sampleSources=(Map)session.getAttribute("sampleSourceSamplesWithUnmaskedAliquots");
+		Set samples=(Set)sampleSources.get(currentRun.getSampleSourceName());
+		String[] sampleNames=new String[samples.size()];
+		int i=0;
+		for (Object obj: samples) {			
+			sampleNames[i]=((SampleBean)obj).getSampleName();
+			i++;
+		}
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		theForm.set("sampleNames", sampleNames);
+		return mapping.getInputForward();
 	}
 
 	public boolean loginRequired() {
