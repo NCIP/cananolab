@@ -1,6 +1,7 @@
 package gov.nih.nci.calab.ui.workflow;
 
 import gov.nih.nci.calab.dto.workflow.FileBean;
+import gov.nih.nci.calab.dto.workflow.RunBean;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
 import gov.nih.nci.calab.service.util.SpecialCharReplacer;
@@ -10,6 +11,7 @@ import gov.nih.nci.calab.service.util.file.HttpFileUploadSessionData;
 import gov.nih.nci.calab.service.util.file.HttpUploadedFileData;
 import gov.nih.nci.calab.service.workflow.ExecuteWorkflowService;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
+import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -28,15 +30,13 @@ import org.apache.struts.action.DynaActionForm;
 /**
  * This class handle workflow upload process.
  * 
- * @author zhoujim
+ * @author zhoujim, pansu
  * 
  */
 
 public class FileUploadAction extends AbstractDispatchAction {
 	private static org.apache.log4j.Logger logger_ = org.apache.log4j.Logger
 			.getLogger(FileUploadAction.class);
-
-	private ExecuteWorkflowService workflowService = new ExecuteWorkflowService();
 
 	/**
 	 * This method is setting up the parameters for the workflow input upload
@@ -49,22 +49,31 @@ public class FileUploadAction extends AbstractDispatchAction {
 	 * @return mapping forward
 	 */
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response) {
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		String inout = (String) request.getParameter("inout");
+		String menuType = (String) request.getParameter("menuType");
+		InitSessionSetup.getInstance().setCurrentRun(request);
 		HttpSession session = request.getSession();
-		DynaActionForm fileForm = (DynaActionForm) form;
+		RunBean currentRun = (RunBean) session.getAttribute("currentRun");
+		if (inout == null) {
+			inout = (String) session.getAttribute("inout");
+		}
+		if (menuType == null) {
+			menuType = (String) session.getAttribute("menuType");
+		}
 
-		String runId = (String) fileForm.get("runId");
-		String assayType = (String) fileForm.get("assayType");
-		String assayName = (String) fileForm.get("assayName");
-		String runName = (String) fileForm.get("runName");
-		String inout = (String) fileForm.get("inout");
-		String menuType = (String) fileForm.get("menuType");
-		
 		SpecialCharReplacer specialCharReplacer = new SpecialCharReplacer();
-		assayType = specialCharReplacer.getReplacedString(assayType);
-		assayName = specialCharReplacer.getReplacedString(assayName);
-		runName = specialCharReplacer.getReplacedString(runName);
+		String assayType = specialCharReplacer.getReplacedString(currentRun
+				.getAssayBean().getAssayType());
+		String assayName = specialCharReplacer.getReplacedString(currentRun
+				.getAssayBean().getAssayName());
+		String runName = specialCharReplacer.getReplacedString(currentRun
+				.getName());
 
+
+		DynaActionForm fileForm = (DynaActionForm) form;
+		
 		fileForm.set("archiveValue", PropertyReader.getProperty(
 				CalabConstants.FILEUPLOAD_PROPERTY, "archiveValue"));
 		fileForm.set("servletURL", PropertyReader.getProperty(
@@ -79,7 +88,7 @@ public class FileUploadAction extends AbstractDispatchAction {
 
 		HttpFileUploadSessionData hFileUploadData = new HttpFileUploadSessionData();
 		hFileUploadData.setInout(inout);
-		hFileUploadData.setRunId(runId);
+		hFileUploadData.setRunId(currentRun.getId());
 		hFileUploadData.setAssay(assayName);
 		hFileUploadData.setAssayType(assayType);
 		hFileUploadData.setRun(runName);
@@ -171,10 +180,11 @@ public class FileUploadAction extends AbstractDispatchAction {
 			String unzipFilePath = CalabConstants.URI_SEPERATOR + uriPathName
 					+ CalabConstants.URI_SEPERATOR
 					+ CalabConstants.UNCOMPRESSED_FILE_DIRECTORY;
+			ExecuteWorkflowService workflowService = new ExecuteWorkflowService();
 			workflowService.saveFile(fileList, unzipFilePath, runId, inout,
 					(String) session.getAttribute("creator"));
 
-			session.setAttribute("newWorkflowCreated", "true");
+			session.setAttribute("newRunCreated", "true");
 			// After data persistence, we need to create all.zip for all upload
 			// files,
 			// which includes previous uploaded file and uploaded files
