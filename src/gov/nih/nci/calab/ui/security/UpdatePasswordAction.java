@@ -51,4 +51,8 @@ public class UpdatePasswordAction extends AbstractBaseAction {
 		return false;
 	}
 
+	/* overwrite parent */
+	public boolean canUserExecute() {
+		return true;
+	}
 }

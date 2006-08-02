@@ -77,5 +77,10 @@ public class LoginAction extends AbstractBaseAction {
 	public boolean loginRequired() {
 		return false;
 	}
+	
+	/* overwrite parent */
+	public boolean canUserExecute() {
+		return true;
+	}
 
 }
