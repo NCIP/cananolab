@@ -14,6 +14,7 @@ import gov.nih.nci.calab.service.util.CalabComparators;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.service.workflow.ExecuteWorkflowService;
+import gov.nih.nci.security.exceptions.CSException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,11 +27,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
- * This class sets up session level or servlet context level variables to be used in
- * various actions during the setup of query forms.
+ * This class sets up session level or servlet context level variables to be
+ * used in various actions during the setup of query forms.
  * 
  * @author pansu
- *
+ * 
  */
 public class InitSessionSetup {
 	private static LookupService lookupService;
@@ -291,7 +292,7 @@ public class InitSessionSetup {
 	public void clearWorkflowSession(HttpSession session) {
 		clearRunSession(session);
 		clearSampleSourcesWithUnmaskedAliquotsSession(session);
-		clearSampleUnmaskedAliquotsSession(session);	
+		clearSampleUnmaskedAliquotsSession(session);
 		session.removeAttribute("httpFileUploadSessionData");
 	}
 
@@ -311,9 +312,9 @@ public class InitSessionSetup {
 		clearSampleContainerTypesSession(session);
 		clearSampleUnmaskedAliquotsSession(session);
 		clearAliquotContainerTypesSession(session);
-		session.removeAttribute("createSampleForm");		
+		session.removeAttribute("createSampleForm");
 		session.removeAttribute("createAliquotForm");
-		session.removeAttribute("aliquotMatrix");		
+		session.removeAttribute("aliquotMatrix");
 	}
 
 	public static LookupService getLookupService() {
@@ -322,5 +323,15 @@ public class InitSessionSetup {
 
 	public static UserService getUserService() {
 		return userService;
+	}
+
+	public boolean canUserExecuteClass(HttpSession session,
+			Class classObj) throws CSException {
+		UserBean user = (UserBean) session.getAttribute("user");
+		//assume the part of the package name containing the function domain 
+		//is the same as the protection element defined in CSM
+		String[] nameStrs = classObj.getName().split("\\.");
+		String domain = nameStrs[nameStrs.length - 2];
+		return userService.checkExecutePermission(user, domain);
 	}
 }
