@@ -181,6 +181,22 @@ S:s_CSSTop	// STYLE Array to use for this menu
 
 );
 
+//Submit
+s_add(
+{
+N:'SUBMIT', //NAME
+LV:1,		// LEVEL (look at IMPORTANT NOTES 1 in the Manual)
+MinW:130,	// MINIMAL WIDTH
+T:'s_getStart("y",e)+15',	// TOP (look at IMPORTANT HOWTOS 6 in the Manual)
+L:'s_getStart("x",e)-12',		// LEFT (look at IMPORTANT HOWTOS 6 in the Manual)
+P:false,	// menu is PERMANENT (you can only set true if this is LEVEL 1 menu)
+S:s_CSSTop	// STYLE Array to use for this menu
+},
+[		// define items {U:'url',T:'text' ...} look at the Manual for details
+{U:'manageNanoparticle.do',T:'Manage Nanoparticle'}
+]
+);
+
 ///////////////////////////////////////////////////////////////////////
 //TOOL TIP
 ///////////////////////////////////////////////////////////////////////
