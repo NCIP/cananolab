@@ -1,6 +1,7 @@
 package gov.nih.nci.calab.service.security;
 
 import gov.nih.nci.calab.dto.common.UserBean;
+import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.security.AuthenticationManager;
 import gov.nih.nci.security.AuthorizationManager;
@@ -8,9 +9,15 @@ import gov.nih.nci.security.SecurityServiceProvider;
 import gov.nih.nci.security.UserProvisioningManager;
 import gov.nih.nci.security.authentication.helper.EncryptedRDBMSHelper;
 import gov.nih.nci.security.authorization.domainobjects.Group;
+import gov.nih.nci.security.authorization.domainobjects.ProtectionElement;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionGroup;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionGroupRoleContext;
+import gov.nih.nci.security.authorization.domainobjects.Role;
 import gov.nih.nci.security.authorization.domainobjects.User;
+import gov.nih.nci.security.dao.GroupSearchCriteria;
+import gov.nih.nci.security.dao.ProtectionElementSearchCriteria;
+import gov.nih.nci.security.dao.ProtectionGroupSearchCriteria;
+import gov.nih.nci.security.dao.RoleSearchCriteria;
 import gov.nih.nci.security.dao.SearchCriteria;
 import gov.nih.nci.security.dao.UserSearchCriteria;
 import gov.nih.nci.security.exceptions.CSException;
@@ -182,5 +189,113 @@ public class UserService {
 
 	public UserProvisioningManager getUserManager() {
 		return userManager;
+	}
+
+	public Group getGroup(String groupName) throws Exception {
+		Group group = new Group();
+		group.setGroupName(groupName);
+		SearchCriteria sc = new GroupSearchCriteria(group);
+		List results = userManager.getObjects(sc);
+		Group doGroup = null;
+		for (Object obj : results) {
+			doGroup = (Group) obj;
+			break;
+		}
+		return doGroup;
+	}
+
+	public Role getRole(String roleName) throws Exception {
+		Role role = new Role();
+		role.setName(roleName);
+		SearchCriteria sc = new RoleSearchCriteria(role);
+		List results = userManager.getObjects(sc);
+		Role doRole = null;
+		for (Object obj : results) {
+			doRole = (Role) obj;
+			break;
+		}
+		return doRole;
+	}
+
+	public ProtectionElement getProtectionElement(String objectId)
+			throws Exception {
+		ProtectionElement pe = new ProtectionElement();
+		pe.setObjectId(objectId);
+		pe.setProtectionElementName(objectId);
+		SearchCriteria sc = new ProtectionElementSearchCriteria(pe);
+		List results = userManager.getObjects(sc);
+		ProtectionElement doPE = null;
+		for (Object obj : results) {
+			doPE = (ProtectionElement) obj;
+			break;
+		}
+		// if not in the database, create one
+		if (doPE == null) {
+			authorizationManager.createProtectionElement(pe);
+			getProtectionElement(objectId);
+		}
+		return doPE;
+	}
+
+	public ProtectionGroup getProtectionGroup(String protectionGroupName)
+			throws Exception {
+		ProtectionGroup pg = new ProtectionGroup();
+		pg.setProtectionGroupName(protectionGroupName);
+		SearchCriteria sc = new ProtectionGroupSearchCriteria(pg);
+		List results = userManager.getObjects(sc);
+		ProtectionGroup doPG = null;
+		for (Object obj : results) {
+			doPG = (ProtectionGroup) obj;
+			break;
+		}
+		// if not in the database, create one
+		if (doPG == null) {
+			userManager.createProtectionGroup(pg);
+			getProtectionGroup(protectionGroupName);
+		}
+		return doPG;
+	}
+
+	public void assignProtectionElementToProtectionGroup(ProtectionElement pe,
+			ProtectionGroup pg) throws Exception {
+		Set assignedPGs = authorizationManager.getProtectionGroups(pe
+				.getProtectionElementId().toString());
+		for (Object obj : assignedPGs) {
+			if (((ProtectionGroup) obj).equals(pg)) {
+				return;
+			}
+		}
+		authorizationManager.assignProtectionElement(pg
+				.getProtectionGroupName(), pe.getObjectId());
+	}
+
+	public void secureObject(String objectName, String groupName,
+			String roleName) throws Exception {
+		// create protection element
+		ProtectionElement pe = getProtectionElement(objectName);
+
+		// create protection group
+		ProtectionGroup pg = getProtectionGroup(objectName);
+
+		// assign protection element to protection group if not already exists
+		assignProtectionElementToProtectionGroup(pe, pg);
+
+		// get group and role
+		Group group = getGroup(groupName);
+		Role role = getRole(roleName);
+		if (group != null && role != null) {
+			String[] roleIds = new String[] { role.getId().toString() };
+			userManager.assignGroupRoleToProtectionGroup(pg
+					.getProtectionGroupId().toString(), group.getGroupId()
+					.toString(), roleIds);
+		} else {
+			if (group == null) {
+				throw new CalabException("No such group defined in CSM: "
+						+ groupName);
+			}
+			if (role == null) {
+				throw new CalabException("No such role defined in CSM: " + roleName);
+			}
+		}
 	}
 }
