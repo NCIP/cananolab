@@ -46,13 +46,15 @@
 	<message-resources key="workflow" parameter="gov.nih.nci.calab.resources.workflow" null="false" />
 	<message-resources key="inventory" parameter="gov.nih.nci.calab.resources.inventory" null="false" />
 	<message-resources key="search" parameter="gov.nih.nci.calab.resources.search" null="false" />
+	<message-resources key="submit" parameter="gov.nih.nci.calab.resources.submit" null="false" />
 
 	<plug-in className="org.apache.struts.tiles.TilesPlugin">
 		<set-property property="definitions-config"
 			value="/WEB-INF/tiles-defs.xml,       												   
 			       /WEB-INF/tiles-defs-workflow.xml,
                    /WEB-INF/tiles-defs-inventory.xml,
-                   /WEB-INF/tiles-defs-search.xml" />
+                   /WEB-INF/tiles-defs-search.xml,
+                   /WEB-INF/tiles-defs-submit.xml" />
 		<set-property property="definitions-debug" value="2" />
 		<set-property property="definitions-parser-details" value="2" />
 		<set-property property="definitions-parser-validate" value="true" />
@@ -63,7 +65,7 @@
 			value="/WEB-INF/validation.xml,
 			      /WEB-INF/validation-workflow.xml , 
 			      /WEB-INF/validation-inventory.xml , 
-                  /WEB-INF/validation-search.xml ,               
+                  /WEB-INF/validation-search.xml,               
                   /WEB-INF/validator-rules.xml" />
 	</plug-in>
 </struts-config>
