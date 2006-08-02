@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+<struts-config>
+	<form-beans>
+		<form-bean name="createNanoparticleForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer" initial="0" />
+			<form-property name="particleNames" type="java.lang.String[]" />
+			<form-property name="visibility" type="java.lang.String" />
+		</form-bean>
+	</form-beans>
+	<action-mappings>
+		<action path="/manageNanoparticle" type="gov.nih.nci.calab.ui.core.BaseForwardAction" parameter="submit.managenanoparticle" scope="request" />
+		<action name="createNanoparticleForm" parameter="dispatch" path="/createNanoparticle" type="gov.nih.nci.calab.ui.submit.CreateNanoparticleAction" input="input">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.createNanoparticle" path="submit.createnanoparticle" type="java.lang.Exception" />
+			<forward name="success" path="submit.message" />
+			<forward name="input" path="submit.createnanoparticle" />
+		</action>
+	</action-mappings>
+</struts-config>
