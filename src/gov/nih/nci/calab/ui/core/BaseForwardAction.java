@@ -16,10 +16,11 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: BaseForwardAction.java,v 1.2 2006-05-02 20:12:17 pansu Exp $ */
+/* CVS $Id: BaseForwardAction.java,v 1.3 2006-08-02 21:27:59 pansu Exp $ */
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -35,6 +36,10 @@ public class BaseForwardAction extends AbstractBaseAction {
 	}
 
 	public boolean loginRequired() {
+		return true;
+	}
+	
+	public boolean canUserExecute(HttpSession session) {
 		return true;
 	}
 }
