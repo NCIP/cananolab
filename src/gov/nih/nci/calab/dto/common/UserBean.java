@@ -4,7 +4,7 @@ import gov.nih.nci.security.authorization.domainobjects.User;
 
 public class UserBean {
 
-	private Long userId;
+	private String userId;
 	/**
 	 * This string is used for login into the application.
 	 */
@@ -82,7 +82,7 @@ public class UserBean {
 	}
 
 
-	public Long getUserId() {
+	public String getUserId() {
 		return userId;
 	}
 	
@@ -100,7 +100,7 @@ public class UserBean {
 		this.password=user.getPassword();
 		this.phoneNumber=user.getPhoneNumber();
 		this.title=user.getTitle();
-		this.userId=user.getUserId();
+		this.userId=user.getUserId().toString();
 		this.fullName=firstName+" "+lastName;		
 	}
 
