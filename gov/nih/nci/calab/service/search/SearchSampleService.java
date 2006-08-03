@@ -21,11 +21,10 @@ import org.apache.log4j.Logger;
  * @author pansu
  * 
  */
-/* CVS $Id: SearchSampleService.java,v 1.19 2006-08-01 13:23:17 pansu Exp $ */
+/* CVS $Id: SearchSampleService.java,v 1.20 2006-08-03 15:23:56 pansu Exp $ */
 
 public class SearchSampleService {
 	private static Logger logger = Logger.getLogger(SearchSampleService.class);
-
 
 	/**
 	 * Search database for sample container information based on sample ID
@@ -56,7 +55,7 @@ public class SearchSampleService {
 			String where = "";
 			String storageFrom = "";
 
-			if (sampleName.length() > 0) {
+			if (sampleName != null && sampleName.length() > 0) {
 				where = "where ";
 				if (sampleName.indexOf("*") != -1) {
 					sampleName = sampleName.replace('*', '%');
@@ -66,19 +65,19 @@ public class SearchSampleService {
 				}
 				paramList.add(sampleName);
 			}
-			if (sampleType.length() > 0) {
+			if (sampleType != null && sampleType.length() > 0) {
 				paramList.add(sampleType);
 				where = "where ";
 				whereList.add("sample.type=?");
 			}
 
-			if (sampleSource.length() > 0) {
+			if (sampleSource != null && sampleSource.length() > 0) {
 				paramList.add(sampleSource);
 				where = "where ";
 				whereList.add("sample.source.organizationName=?");
 			}
 
-			if (sourceSampleId.length() > 0) {
+			if (sourceSampleId != null && sourceSampleId.length() > 0) {
 				paramList.add(sourceSampleId);
 				where = "where ";
 				whereList.add("sample.sourceSampleId=?");
@@ -95,34 +94,38 @@ public class SearchSampleService {
 				where = "where ";
 				whereList.add("sample.createdDate<=?");
 			}
-			if (sampleSubmitter.length() > 0) {
+			if (sampleSubmitter != null && sampleSubmitter.length() > 0) {
 				paramList.add(sampleSubmitter);
 				where = "where ";
 				whereList.add("sample.createdBy=?");
 			}
 
-			if (storageLocation.getRoom().length() > 0) {
+			if (storageLocation != null
+					&& storageLocation.getRoom().length() > 0) {
 				paramList.add(storageLocation.getRoom());
 				where = "where ";
 				storageFrom = "join sample.sampleContainerCollection container join container.storageElementCollection storage ";
 				whereList.add("storage.type='Room' and storage.location=?");
 			}
 
-			if (storageLocation.getFreezer().length() > 0) {
+			if (storageLocation != null
+					&& storageLocation.getFreezer().length() > 0) {
 				paramList.add(storageLocation.getFreezer());
 				where = "where ";
 				storageFrom = "join sample.sampleContainerCollection container join container.storageElementCollection storage ";
 				whereList.add("storage.type='Freezer' and storage.location=?");
 			}
 
-			if (storageLocation.getFreezer().length() > 0) {
+			if (storageLocation != null
+					&& storageLocation.getFreezer().length() > 0) {
 				paramList.add(storageLocation.getFreezer());
 				where = "where ";
 				storageFrom = "join sample.sampleContainerCollection container join container.storageElementCollection storage ";
 				whereList.add(" storage.type='Shelf' and storage.location=?");
 			}
 
-			if (storageLocation.getBox().length() > 0) {
+			if (storageLocation != null
+					&& storageLocation.getBox().length() > 0) {
 				paramList.add(storageLocation.getBox());
 				where = "where ";
 				storageFrom = "join sample.sampleContainerCollection container join container.storageElementCollection storage ";
