@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: CreateNanoparticleAction.java,v 1.1 2006-08-02 21:28:10 pansu Exp $ */
+/* CVS $Id: CreateNanoparticleAction.java,v 1.2 2006-08-03 15:24:47 pansu Exp $ */
 
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CalabConstants;
@@ -36,11 +36,14 @@ public class CreateNanoparticleAction extends AbstractDispatchAction {
 
 		UserService userService=new UserService(CalabConstants.CSM_APP_NAME);
 		for (String particleName: particleNames) {
+			//by default, always set visibility to NCL_PI and NCL_Researcher to be true
+			userService.secureObject(particleName, "NCL_PI", "R");
+			userService.secureObject(particleName, "NCL_Researcher", "R");
 			userService.secureObject(particleName, visibility, "R");
 		}
 		
 		ActionMessages msgs=new ActionMessages();
-		ActionMessage msg=new ActionMessage("message.secure", visibility);
+		ActionMessage msg=new ActionMessage("message.createNanoparticle.secure", visibility);
 		msgs.add("message", msg);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
