@@ -229,10 +229,9 @@ public class UserService {
 			doPE = (ProtectionElement) obj;
 			break;
 		}
-		// if not in the database, create one
 		if (doPE == null) {
 			authorizationManager.createProtectionElement(pe);
-			getProtectionElement(objectId);
+			return pe;
 		}
 		return doPE;
 	}
@@ -248,10 +247,9 @@ public class UserService {
 			doPG = (ProtectionGroup) obj;
 			break;
 		}
-		// if not in the database, create one
 		if (doPG == null) {
 			userManager.createProtectionGroup(pg);
-			getProtectionGroup(protectionGroupName);
+			return pg;
 		}
 		return doPG;
 	}
