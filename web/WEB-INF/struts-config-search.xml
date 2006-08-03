@@ -53,6 +53,9 @@
 			<form-property name="sampleId" type="java.lang.String" />
 			<form-property name="aliquotId" type="java.lang.String" />
 		</form-bean>
+		<form-bean name="searchNanoparticleForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="particleType" type="java.lang.String" />
+		</form-bean>
 	</form-beans>
 	<action-mappings>
 		<action input="input" name="searchWorkflowForm" parameter="dispatch" path="/searchWorkflow" type="gov.nih.nci.calab.ui.search.SearchWorkflowAction" scope="request">
@@ -87,6 +90,11 @@
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="search" key="error.downloadSearchedFile.nofile" path="search.message" type="gov.nih.nci.calab.exception.CalabException" />
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="search" key="error.downloadSearchedFile" path="search.message" type="java.lang.Exception" />
 			<forward name="input" path="search.searchworkflowresult" />
+		</action>
+		<action input="input" name="searchNanoparticleForm" parameter="dispatch" path="/searchNanoparticle" type="gov.nih.nci.calab.ui.search.SearchNanoparticleAction" scope="request">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="search" key="error.searchNanoparticle" path="search.searchnanoparticle" type="java.lang.Exception" />
+			<forward name="input" path="search.searchnanoparticle" />
+			<forward name="success" path="search.message" />
 		</action>
 	</action-mappings>
 
