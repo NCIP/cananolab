@@ -56,4 +56,16 @@
 		<put name="calabContent" value="/bodyMessage.jsp?bundle=search" />
 		<put name="menu" value="search" />
 	</definition>
+
+	<!-- definition for the search nanoparticle page -->
+	<definition name="search.searchnanoparticle" extends="calab.home">
+		<put name="calabContent" value="/search/bodySearchNanoparticle.jsp" />
+		<put name="menu" value="search" />
+	</definition>
+
+	<!-- definition for the search nanoparticle result page -->
+	<definition name="search.searchnanoparticle.result" extends="calab.home">
+		<put name="calabContent" value="/search/bodySearchNanoparticleResult.jsp" />
+		<put name="menu" value="search" />
+	</definition>
 </tiles-definitions>
