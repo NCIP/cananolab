@@ -1,6 +1,7 @@
 package gov.nih.nci.calab.service.security;
 
 import gov.nih.nci.calab.dto.common.UserBean;
+import gov.nih.nci.calab.dto.inventory.SampleBean;
 import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.security.AuthenticationManager;
@@ -70,7 +71,7 @@ public class UserService {
 
 	public boolean isUserInGroup(UserBean user, String groupName)
 			throws Exception {
-		Set groups = userManager.getGroups(user.getUserId() + "");
+		Set groups = userManager.getGroups(user.getUserId());
 		for (Object obj : groups) {
 			Group group = (Group) obj;
 			if (group.getGroupName().equalsIgnoreCase(groupName)
@@ -85,8 +86,7 @@ public class UserService {
 			String protectionGroupName) {
 		try {
 			Set<ProtectionGroupRoleContext> protectionGroupRoleContexts = userManager
-					.getProtectionGroupRoleContextForUser(user.getUserId()
-							.toString());
+					.getProtectionGroupRoleContextForUser(user.getUserId());
 			for (ProtectionGroupRoleContext context : protectionGroupRoleContexts) {
 				ProtectionGroup pg = context.getProtectionGroup();
 				while (pg.getParentProtectionGroup() != null) {
@@ -104,6 +104,24 @@ public class UserService {
 	}
 
 	/**
+	 * Check whether the given user has the given privilege on the given
+	 * protection element
+	 * 
+	 * @param user
+	 * @param protectionElementObjectId
+	 * @param privilege
+	 * @return
+	 * @throws CSException
+	 */
+	public boolean checkPermission(UserBean user,
+			String protectionElementObjectId, String privilege) throws CSException {
+		boolean status = false;
+		status = authorizationManager.checkPermission(user.getLoginName(),
+				protectionElementObjectId, privilege);
+		return status;
+	}
+	
+	/**
 	 * Check whether the given user has execute privilege on the given
 	 * protection element
 	 * 
@@ -114,10 +132,21 @@ public class UserService {
 	 */
 	public boolean checkExecutePermission(UserBean user,
 			String protectionElementObjectId) throws CSException {
-		boolean status = false;
-		status = authorizationManager.checkPermission(user.getLoginName(),
-				protectionElementObjectId.toLowerCase(), "EXECUTE");
-		return status;
+		return checkPermission(user, protectionElementObjectId, "EXECUTE");
+	}
+	
+	/**
+	 * Check whether the given user has read privilege on the given
+	 * protection element
+	 * 
+	 * @param user
+	 * @param protectionElementObjectId
+	 * @return
+	 * @throws CSException
+	 */
+	public boolean checkReadPermission(UserBean user,
+			String protectionElementObjectId) throws CSException {
+		return checkPermission(user, protectionElementObjectId, "READ");
 	}
 
 	/**
@@ -138,6 +167,9 @@ public class UserService {
 		UserBean user = (UserBean) session.getAttribute("user");
 		if (user != null) {
 			for (MenuItem item : items) {
+				//make sure change menu item values to lower case since pre-defined
+				//pes and pgs in the UPT tool are entered as lower case and
+				//CSM API is case sensitive
 				boolean executeStatus = checkExecutePermission(user, item
 						.getValue().toLowerCase());
 				if (executeStatus) {
@@ -295,5 +327,16 @@ public class UserService {
 				throw new CalabException("No such role defined in CSM: " + roleName);
 			}
 		}
+	}
+	
+	public List<SampleBean>getFilteredSamples(UserBean user, List<SampleBean>samples) throws Exception {
+		List<SampleBean>filteredSamples=new ArrayList<SampleBean>();
+		for (SampleBean sample: samples) {
+			boolean status=checkReadPermission(user, sample.getSampleName());
+			if (status) {
+				filteredSamples.add(sample);
+			}
+		}
+		return filteredSamples;
 	}
 }
