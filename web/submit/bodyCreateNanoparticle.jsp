@@ -33,7 +33,7 @@
 								<strong>Particle ID*</strong>
 							</td>
 							<td class="label"">
-								<html:select property="particleNames" multiple="true" size="3">
+								<html:select property="particleName">
 									<option value=""></option>
 									<html:options name="allSampleNames" />
 								</html:select>
@@ -42,10 +42,17 @@
 								<strong>Visibility*</strong>
 							</td>
 							<td class="rightLabel">
-								<html:select property="visibility">
-									<option/>
-									<option value="CCNE_Researcher">CCNE Researchers</option>
-									<option value="Vendor">Vendors</option>
+								<html:select property="visibilities" multiple="true" size="3">
+									<option />
+									<option value="CCNE_Researcher">
+										CCNE Researchers
+									</option>
+									<option value="Public">
+										Public
+									</option>
+									<option value="Vendor">
+										Vendors
+									</option>
 								</html:select>
 							</td>
 						</tr>

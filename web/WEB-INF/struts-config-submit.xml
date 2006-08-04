@@ -5,8 +5,8 @@
 		<form-bean name="createNanoparticleForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="dispatch" type="java.lang.String" />
 			<form-property name="page" type="java.lang.Integer" initial="0" />
-			<form-property name="particleNames" type="java.lang.String[]" />
-			<form-property name="visibility" type="java.lang.String" />
+			<form-property name="particleName" type="java.lang.String" />
+			<form-property name="visibilities" type="java.lang.String[]" />
 		</form-bean>
 	</form-beans>
 	<action-mappings>
