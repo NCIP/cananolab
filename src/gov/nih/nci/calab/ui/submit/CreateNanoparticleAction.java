@@ -6,10 +6,11 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: CreateNanoparticleAction.java,v 1.2 2006-08-03 15:24:47 pansu Exp $ */
+/* CVS $Id: CreateNanoparticleAction.java,v 1.3 2006-08-04 14:08:42 pansu Exp $ */
 
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
@@ -31,11 +32,12 @@ public class CreateNanoparticleAction extends AbstractDispatchAction {
 		ActionForward forward = null;		
 		// TODO fill in details for sample information */
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String[] particleNames = (String[]) theForm.get("particleNames");
-		String visibility = (String)theForm.get("visibility");
+		String particleName = (String) theForm.get("particleName");
+		String[] visibilities = (String[])theForm.get("visibilities");
 
 		UserService userService=new UserService(CalabConstants.CSM_APP_NAME);
-		for (String particleName: particleNames) {
+		http://www.aahealth.org/news.asp?id=145
+		for (String visibility: visibilities) {
 			//by default, always set visibility to NCL_PI and NCL_Researcher to be true
 			userService.secureObject(particleName, "NCL_PI", "R");
 			userService.secureObject(particleName, "NCL_Researcher", "R");
@@ -43,7 +45,7 @@ public class CreateNanoparticleAction extends AbstractDispatchAction {
 		}
 		
 		ActionMessages msgs=new ActionMessages();
-		ActionMessage msg=new ActionMessage("message.createNanoparticle.secure", visibility);
+		ActionMessage msg=new ActionMessage("message.createNanoparticle.secure", StringUtils.join(visibilities, ", "));
 		msgs.add("message", msg);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
