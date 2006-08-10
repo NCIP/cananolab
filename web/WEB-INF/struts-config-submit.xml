@@ -61,6 +61,7 @@
 			<forward name="input" path="submit.addparticle.properties" />
 			<forward name="dendrimer" path="bodyDendrimerInfo.jsp" />
 			<forward name="liposome" path="bodyLiposomeInfo.jsp" />
+			<forward name="polymer" path="bodyPolymerInfo.jsp"/>
 		</action>
 	</action-mappings>
 </struts-config>
