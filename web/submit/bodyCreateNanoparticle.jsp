@@ -9,7 +9,7 @@
 			<td>
 				<h3>
 					<br>
-					Create Nanoparticle Metadata
+					Submit Nanoparticle - General Information
 				</h3>
 			</td>
 			<td align="right" width="15%">
@@ -24,35 +24,49 @@
 						<tr class="topBorder">
 							<td class="formTitle" colspan="4">
 								<div align="justify">
-									Description
+									General Information
 								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="leftLabel">
+								<strong>Particle Type*</strong>
+							</td>
+							<td class="rightLabel">
+								<html:select property="particleType" onchange="javascript:doubleDropdown(document.createNanoparticleForm.particleType, document.createNanoparticleForm.particleName, particleTypeParticles)">
+									<option value=""></option>
+									<html:options name="allParticleTypes" />
+								</html:select>
 							</td>
 						</tr>
 						<tr>
 							<td class="leftLabel">
 								<strong>Particle ID*</strong>
 							</td>
-							<td class="label"">
+							<td class="rightLabel">
 								<html:select property="particleName">
 									<option value=""></option>
-									<html:options name="allSampleNames" />
+									<option value="${createNanoparticleForm.map.particleName}" selected>
+										${createNanoparticleForm.map.particleName}
+									</option>
 								</html:select>
 							</td>
-							<td class="label">
+						</tr>
+						<tr>
+							<td class="leftLabel">
+								<strong>Keywords <em>(one per line)</em></strong>
+							</td>
+							<td class="rightLabel">
+								<html:textarea property="keywords" rows="4"/>
+							</td>
+						</tr>
+						<tr>
+							<td class="leftLabel">
 								<strong>Visibility*</strong>
 							</td>
 							<td class="rightLabel">
 								<html:select property="visibilities" multiple="true" size="3">
-									<option />
-									<option value="CCNE_Researcher">
-										CCNE Researchers
-									</option>
-									<option value="Public">
-										Public
-									</option>
-									<option value="Vendor">
-										Vendors
-									</option>
+									<html:options name="allVisibilityGroups" />
 								</html:select>
 							</td>
 						</tr>
@@ -86,3 +100,17 @@
 		</tr>
 	</table>
 </html:form>
+<script language="JavaScript">
+<!--//
+
+  /* populate a hashtable containing particle type particles */
+  var particleTypeParticles=new Array();    
+  <c:forEach var="item" items="${allParticleTypeParticles}">
+    var particleNames=new Array();
+    <c:forEach var="particleName" items="${allParticleTypeParticles[item.key]}" varStatus="count">
+  		particleNames[${count.index}]=new Option('${particleName}', '${particleName}');  	
+    </c:forEach>
+    particleTypeParticles['${item.key}']=particleNames;
+  </c:forEach> 
+//-->
+</script>

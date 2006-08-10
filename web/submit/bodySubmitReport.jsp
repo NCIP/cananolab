@@ -56,7 +56,7 @@
 						</tr>
 						<tr>
 							<td class="leftLabel">
-								<strong>Report File Description*</strong>
+								<strong>Report File Description</strong>
 							</td>
 							<td class="rightLabel"">
 								<html:textarea property="description" />
