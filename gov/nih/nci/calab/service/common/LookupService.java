@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.33 2006-08-10 16:30:48 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.34 2006-08-10 18:36:22 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -569,18 +569,39 @@ public class LookupService {
 			throws Exception {
 		// TODO fill in actual database query.
 		Map<String, SortedSet<String>> particleTypeParticles = new HashMap<String, SortedSet<String>>();
-		SortedSet<String> dendrimers = new TreeSet<String>(
-				new CalabComparators.SortableNameComparator());
-		dendrimers.add("NCL-3");
-		dendrimers.add("NCL-34");
-		dendrimers.add("NCL-14");
-		SortedSet<String> liposomes = new TreeSet<String>(
-				new CalabComparators.SortableNameComparator());
-		liposomes.add("NCL-11");
-		liposomes.add("NCL-12");
-		liposomes.add("NCL-13");
-		particleTypeParticles.put("Dendrimer", dendrimers);
-		particleTypeParticles.put("Liposome", liposomes);
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			String hqlString = "select sample.type, sample.name from Sample sample";
+			List results = ida.search(hqlString);
+			SortedSet<String> particleNames = null;
+			for (Object obj : results) {
+				Object[] objArray = (Object[]) obj;
+				String particleType = (String) objArray[0];
+				String particleName = (String) objArray[1];
+
+				if (particleType != null) {
+					if (particleTypeParticles.get(particleType) != null) {
+						particleNames = (SortedSet<String>) particleTypeParticles
+								.get(particleType);
+					} else {
+						particleNames = new TreeSet<String>(
+								new CalabComparators.SortableNameComparator());
+						particleTypeParticles.put(particleType, particleNames);
+					}
+					particleNames.add(particleName);
+				}
+			}
+		} catch (Exception e) {
+			logger
+					.error("Error in retrieving all particle type particles. ",
+							e);
+			throw new RuntimeException(
+					"Error in retrieving all particle type particles. ");
+		} finally {
+			ida.close();
+		}
 		return particleTypeParticles;
 	}
 
