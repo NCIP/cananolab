@@ -1,12 +1,12 @@
 package gov.nih.nci.calab.ui.submit;
 
 /**
- * This class creates nanoparticle metadata and assigns visibility  
+ * This class creates nanoparticle general information and assigns visibility  
  *  
  * @author pansu
  */
 
-/* CVS $Id: CreateNanoparticleAction.java,v 1.3 2006-08-04 14:08:42 pansu Exp $ */
+/* CVS $Id: CreateNanoparticleAction.java,v 1.4 2006-08-10 16:33:18 pansu Exp $ */
 
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CalabConstants;
@@ -32,9 +32,16 @@ public class CreateNanoparticleAction extends AbstractDispatchAction {
 		ActionForward forward = null;		
 		// TODO fill in details for sample information */
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		String particleType = (String) theForm.get("particleType");
 		String particleName = (String) theForm.get("particleName");
+		HttpSession session = request.getSession();
+		session.setAttribute("particleName", particleName);
+		session.setAttribute("particleType", particleType);
+		
+		String keywords = (String) theForm.get("keywords");
 		String[] visibilities = (String[])theForm.get("visibilities");
-
+		String[] keywordList=keywords.split("\r\n");
+		
 		UserService userService=new UserService(CalabConstants.CSM_APP_NAME);
 		http://www.aahealth.org/news.asp?id=145
 		for (String visibility: visibilities) {
@@ -61,7 +68,10 @@ public class CreateNanoparticleAction extends AbstractDispatchAction {
 		InitSessionSetup.getInstance().clearSearchSession(session);
 		InitSessionSetup.getInstance().clearInventorySession(session);
 	
-		InitSessionSetup.getInstance().setAllSampleContainers(session);	
+		InitSessionSetup.getInstance().setAllParticleTypeParticles(session);	
+		InitSessionSetup.getInstance().setAllVisibilityGroups(session);	
+		InitSessionSetup.getInstance().setParticleMenu(session);
+		
 		return mapping.getInputForward();
 	}
 
