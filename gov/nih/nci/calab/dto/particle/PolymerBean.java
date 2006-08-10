@@ -12,11 +12,11 @@ public class PolymerBean extends ParticleBean {
 	public PolymerBean() {
 	}
 
-	public String getCrossLinkDegree() {
+	public String getCrosslinkDegree() {
 		return crosslinkDegree;
 	}
 
-	public String getCrossLinked() {
+	public String getCrosslinked() {
 		return crosslinked;
 	}
 
