@@ -5,17 +5,37 @@
 		<form-bean name="createNanoparticleForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="dispatch" type="java.lang.String" />
 			<form-property name="page" type="java.lang.Integer" initial="0" />
+			<form-property name="particleType" type="java.lang.String" />
 			<form-property name="particleName" type="java.lang.String" />
+			<form-property name="keywords" type="java.lang.String" />
 			<form-property name="visibilities" type="java.lang.String[]" />
 		</form-bean>
 		<form-bean name="submitReportForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="dispatch" type="java.lang.String" />
 			<form-property name="page" type="java.lang.Integer" initial="0" />
 			<form-property name="particleNames" type="java.lang.String[]" />
-			<form-property name="reportFile" type="org.apache.struts.upload.FormFile"/>
+			<form-property name="reportFile" type="org.apache.struts.upload.FormFile" />
 			<form-property name="visibilities" type="java.lang.String[]" />
 			<form-property name="title" type="java.lang.String" />
 			<form-property name="description" type="java.lang.String" />
+		</form-bean>
+		<form-bean name="addAssayResultForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer" initial="0" />
+			<form-property name="particleName" type="java.lang.String" />
+			<form-property name="fileId" type="java.lang.String" />
+			<form-property name="title" type="java.lang.String" />
+			<form-property name="description" type="java.lang.String" />
+			<form-property name="comments" type="java.lang.String" />
+			<form-property name="keywords" type="java.lang.String" />
+		</form-bean>
+		<form-bean name="addParticlePropertiesForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer" initial="0" />
+			<form-property name="particleName" type="java.lang.String" />
+			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="particle" type="gov.nih.nci.calab.dto.particle.ParticleBean" />
+			<form-property name="particlePage" type="java.lang.String" />
 		</form-bean>
 	</form-beans>
 	<action-mappings>
@@ -29,6 +49,18 @@
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.submitReport" path="submit.submitreport" type="java.lang.Exception" />
 			<forward name="success" path="submit.message" />
 			<forward name="input" path="submit.submitreport" />
+		</action>
+		<action name="addAssayResultForm" parameter="dispatch" path="/addAssayResult" type="gov.nih.nci.calab.ui.submit.AddAssayResultAction" input="input" scope="request">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addAssayResult" path="submit.addassayresult" type="java.lang.Exception" />
+			<forward name="success" path="submit.message" />
+			<forward name="input" path="submit.addassayresult" />
+		</action>
+		<action name="addParticlePropertiesForm" parameter="dispatch" path="/addParticleProperties" type="gov.nih.nci.calab.ui.submit.AddParticlePropertiesAction" input="input" scope="request">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addParticleProperties" path="submit.addparticle.properties" type="java.lang.Exception" />
+			<forward name="success" path="submit.message" />
+			<forward name="input" path="submit.addparticle.properties" />
+			<forward name="dendrimer" path="bodyDendrimerInfo.jsp" />
+			<forward name="liposome" path="bodyLiposomeInfo.jsp" />
 		</action>
 	</action-mappings>
 </struts-config>
