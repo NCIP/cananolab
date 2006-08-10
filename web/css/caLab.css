@@ -108,7 +108,8 @@ td.subMenu { /* for the basic style of the sub-menu area */
 
 td.sideMenu { /* for the basic style of the sub-menu area */
 	background-color: #98b7b7; /* lighter */
-	font-family: arial, helvetica, verdana, sans-serif;
+	font-family: verdana, geneva, arial, helvetica, sans-serif;
+	font-size: 11px;
 }
 
 td.subMenuPrimaryTitle { /* for the title elements of the sub menu (left-side) */
@@ -681,7 +682,7 @@ img.img { /* for images that need a border */
 	color: #000000;
 	border-bottom: 1px solid #5c5c5c;
 	text-align: left;
-	border-right: 1px solid #5c5c5c;	
+	border-right: 1px solid #5c5c5c;
 }
 
 .leftLabel {
@@ -691,7 +692,7 @@ img.img { /* for images that need a border */
 	color: #000000;
 	border-bottom: 1px solid #5c5c5c;
 	text-align: left;
-	border-left: 1px solid #5c5c5c;	
+	border-left: 1px solid #5c5c5c;
 }
 
 .completeLabel {
@@ -701,7 +702,7 @@ img.img { /* for images that need a border */
 	color: #000000;
 	border-bottom: 1px solid #5c5c5c;
 	border-left: 1px solid #5c5c5c;
-	border-right: 1px solid #5c5c5c;	
+	border-right: 1px solid #5c5c5c;
 }
 
 .labelNoBottom {
@@ -730,4 +731,8 @@ img.img { /* for images that need a border */
 	text-align: left;
 	border-left: 1px solid #5c5c5c;
 	*/
+}
+
+.indented {
+	padding-left: 10pt;
 }
