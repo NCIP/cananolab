@@ -114,13 +114,14 @@ public class UserService {
 	 * @throws CSException
 	 */
 	public boolean checkPermission(UserBean user,
-			String protectionElementObjectId, String privilege) throws CSException {
+			String protectionElementObjectId, String privilege)
+			throws CSException {
 		boolean status = false;
 		status = authorizationManager.checkPermission(user.getLoginName(),
 				protectionElementObjectId, privilege);
 		return status;
 	}
-	
+
 	/**
 	 * Check whether the given user has execute privilege on the given
 	 * protection element
@@ -134,10 +135,10 @@ public class UserService {
 			String protectionElementObjectId) throws CSException {
 		return checkPermission(user, protectionElementObjectId, "EXECUTE");
 	}
-	
+
 	/**
-	 * Check whether the given user has read privilege on the given
-	 * protection element
+	 * Check whether the given user has read privilege on the given protection
+	 * element
 	 * 
 	 * @param user
 	 * @param protectionElementObjectId
@@ -167,9 +168,10 @@ public class UserService {
 		UserBean user = (UserBean) session.getAttribute("user");
 		if (user != null) {
 			for (MenuItem item : items) {
-				//make sure change menu item values to lower case since pre-defined
-				//pes and pgs in the UPT tool are entered as lower case and
-				//CSM API is case sensitive
+				// make sure change menu item values to lower case since
+				// pre-defined
+				// pes and pgs in the UPT tool are entered as lower case and
+				// CSM API is case sensitive
 				boolean executeStatus = checkExecutePermission(user, item
 						.getValue().toLowerCase());
 				if (executeStatus) {
@@ -205,6 +207,37 @@ public class UserService {
 			users.add(new UserBean(doUser));
 		}
 		return users;
+	}
+
+	/*
+	 * return all user groups in the database
+	 */
+	public List<String> getAllGroups() throws Exception {
+		List<String> groups = new ArrayList<String>();
+		Group dummy = new Group();
+		dummy.setGroupName("*");
+		SearchCriteria sc = new GroupSearchCriteria(dummy);
+		List results = userManager.getObjects(sc);
+		for (Object obj : results) {
+			Group doGroup = (Group) obj;
+			groups.add(doGroup.getGroupName());
+		}
+		return groups;
+	}
+
+	/*
+	 * return all user groups in the database
+	 */
+	public List<String> getAllVisibilityGroups() throws Exception {
+		List<String> groups = getAllGroups();
+		//filter out the ones starting with NCL
+		List<String>filteredGroups=new ArrayList<String>();
+		for(String groupName: groups) {
+			if (!groupName.startsWith("NCL")) {
+				filteredGroups.add(groupName);
+			}
+		}
+		return filteredGroups;
 	}
 
 	public String getApplicationName() {
@@ -324,15 +357,17 @@ public class UserService {
 						+ groupName);
 			}
 			if (role == null) {
-				throw new CalabException("No such role defined in CSM: " + roleName);
+				throw new CalabException("No such role defined in CSM: "
+						+ roleName);
 			}
 		}
 	}
-	
-	public List<SampleBean>getFilteredSamples(UserBean user, List<SampleBean>samples) throws Exception {
-		List<SampleBean>filteredSamples=new ArrayList<SampleBean>();
-		for (SampleBean sample: samples) {
-			boolean status=checkReadPermission(user, sample.getSampleName());
+
+	public List<SampleBean> getFilteredSamples(UserBean user,
+			List<SampleBean> samples) throws Exception {
+		List<SampleBean> filteredSamples = new ArrayList<SampleBean>();
+		for (SampleBean sample : samples) {
+			boolean status = checkReadPermission(user, sample.getSampleName());
 			if (status) {
 				filteredSamples.add(sample);
 			}
