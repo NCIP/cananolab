@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.32 2006-08-01 14:22:23 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.33 2006-08-10 16:30:48 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -49,8 +49,7 @@ public class LookupService {
 	 * @return a Map between sample name and its associated unmasked aliquots
 	 * @throws Exception
 	 */
-	
-	
+
 	public Map<String, SortedSet<AliquotBean>> getUnmaskedSampleAliquots()
 			throws Exception {
 		SortedSet<AliquotBean> aliquots = null;
@@ -566,4 +565,51 @@ public class LookupService {
 		return sourceSampleIds;
 	}
 
+	public Map<String, SortedSet<String>> getAllParticleTypeParticles()
+			throws Exception {
+		// TODO fill in actual database query.
+		Map<String, SortedSet<String>> particleTypeParticles = new HashMap<String, SortedSet<String>>();
+		SortedSet<String> dendrimers = new TreeSet<String>(
+				new CalabComparators.SortableNameComparator());
+		dendrimers.add("NCL-3");
+		dendrimers.add("NCL-34");
+		dendrimers.add("NCL-14");
+		SortedSet<String> liposomes = new TreeSet<String>(
+				new CalabComparators.SortableNameComparator());
+		liposomes.add("NCL-11");
+		liposomes.add("NCL-12");
+		liposomes.add("NCL-13");
+		particleTypeParticles.put("Dendrimer", dendrimers);
+		particleTypeParticles.put("Liposome", liposomes);
+		return particleTypeParticles;
+	}
+
+	public String[] getAllParticleFunctions() {
+		String[] functions = new String[] { "Therapeutic Agent",
+				"Image Contrast Agent", "Targeting Agent" };
+		return functions;
+	}
+
+	public String[] getAllCharacterizationTypes() {
+		String[] charTypes = new String[] { "Physical Characterization",
+				"In Vitro Characterization", "In Vivo Characterization" };
+		return charTypes;
+	}
+
+	public Map<String, String[]> getAllParticleCharacterizationTypeCharacterizations() {
+		String[] physicalChars = new String[] { "Size", "Purity", "Stability" };
+		String[] invitroChars = new String[] {};
+		String[] invivoChars = new String[] {};
+		String[][] charArrays = new String[][] { physicalChars, invitroChars,
+				invivoChars };
+
+		Map<String, String[]> charTypeChars = new HashMap<String, String[]>();
+		String[] charTypes = getAllCharacterizationTypes();
+		int i = 0;
+		for (String charType : charTypes) {
+			charTypeChars.put(charType, charArrays[i]);
+			i++;
+		}
+		return charTypeChars;
+	}
 }
