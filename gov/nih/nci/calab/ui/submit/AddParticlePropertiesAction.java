@@ -6,11 +6,12 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: AddParticlePropertiesAction.java,v 1.1 2006-08-10 16:32:50 pansu Exp $ */
+/* CVS $Id: AddParticlePropertiesAction.java,v 1.2 2006-08-10 18:36:10 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.particle.DendrimerBean;
 import gov.nih.nci.calab.dto.particle.LiposomeBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
+import gov.nih.nci.calab.dto.particle.PolymerBean;
 import gov.nih.nci.calab.service.submit.AddParticlePropertiesService;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 
@@ -55,13 +56,18 @@ public class AddParticlePropertiesAction extends AbstractDispatchAction {
 			DendrimerBean particle = new DendrimerBean();
 			particle.setName(particleName);
 			theForm.set("particle", particle);
-			theForm.set("particlePage", mapping.findForward("dendrimer").getPath());
 		} else if (particleType.equalsIgnoreCase("liposome")) {
 			LiposomeBean particle = new LiposomeBean();
 			particle.setName(particleName);
 			theForm.set("particle", particle);
-			theForm.set("particlePage", mapping.findForward("liposome").getPath());
+
+		} else if (particleType.equalsIgnoreCase("polymer")) {
+			PolymerBean particle = new PolymerBean();
+			particle.setName(particleName);
+			theForm.set("particle", particle);
 		}
+		theForm.set("particlePage", mapping.findForward(
+				particleType.toLowerCase()).getPath());
 		return mapping.getInputForward();
 	}
 
