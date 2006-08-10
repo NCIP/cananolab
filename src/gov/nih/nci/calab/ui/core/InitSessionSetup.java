@@ -325,13 +325,55 @@ public class InitSessionSetup {
 		return userService;
 	}
 
-	public boolean canUserExecuteClass(HttpSession session,
-			Class classObj) throws CSException {
+	public boolean canUserExecuteClass(HttpSession session, Class classObj)
+			throws CSException {
 		UserBean user = (UserBean) session.getAttribute("user");
-		//assume the part of the package name containing the function domain 
-		//is the same as the protection element defined in CSM
+		// assume the part of the package name containing the function domain
+		// is the same as the protection element defined in CSM
 		String[] nameStrs = classObj.getName().split("\\.");
 		String domain = nameStrs[nameStrs.length - 2];
 		return userService.checkExecutePermission(user, domain);
+	}
+
+	public void setAllParticleTypeParticles(HttpSession session)
+			throws Exception {
+		if (session.getAttribute("allParticleTypeParticles") == null
+				|| session.getAttribute("newParticleCreated") != null) {
+			Map<String, SortedSet<String>> particleTypeParticles = lookupService
+					.getAllParticleTypeParticles();
+			List<String> particleTypes = new ArrayList<String>(
+					particleTypeParticles.keySet());
+			Collections.sort(particleTypes);
+
+			session.setAttribute("allParticleTypeParticles",
+					particleTypeParticles);
+			session.setAttribute("allParticleTypes", particleTypes);
+		}
+		session.removeAttribute("newParticleCreated");
+	}
+
+	public void setAllVisibilityGroups(HttpSession session) throws Exception {
+		if (session.getServletContext().getAttribute("allVisibilityGroups") == null) {
+			List<String> groupNames = userService.getAllVisibilityGroups();
+			session.getServletContext().setAttribute("allVisibilityGroups", groupNames);
+		}
+	}
+
+	public void setParticleMenu(HttpSession session) throws Exception {
+		if (session.getServletContext().getAttribute("allParticleFunctions") == null) {
+			String[] functions = lookupService.getAllParticleFunctions();
+			session.getServletContext().setAttribute("allParticleFunctions",
+					functions);
+		}
+		if (session.getServletContext().getAttribute(
+				"allParticleCharacterizationTypeCharacterzations") == null) {
+			Map<String, String[]> charTypeChars = lookupService
+					.getAllParticleCharacterizationTypeCharacterizations();
+			String[]charTypes = lookupService.getAllCharacterizationTypes();
+			session.getServletContext().setAttribute(
+					"allParticleCharacterizationTypes", charTypes);
+			session.getServletContext().setAttribute(
+					"allParticleCharacterizationTypeCharacterizations", charTypeChars);
+		}
 	}
 }
