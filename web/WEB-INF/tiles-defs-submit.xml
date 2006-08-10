@@ -20,13 +20,28 @@
 	</definition>
 
 	<definition name="submit.message" extends="calab.home">
+		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
 		<put name="calabContent" value="/bodyMessage.jsp?bundle=submit" />
 		<put name="menu" value="submit" />
 	</definition>
 
+	<!-- definition for the add nanoparticle intrinsic properties page -->
+	<definition name="submit.addparticle.properties" extends="calab.home">
+		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
+		<put name="calabContent" value="/submit/bodyParticleProperties.jsp" />
+		<put name="menu" value="submit" />
+	</definition>
+	
 	<!-- definition for the submit report page -->
 	<definition name="submit.submitreport" extends="calab.home">
 		<put name="calabContent" value="/submit/bodySubmitReport.jsp" />
+		<put name="menu" value="submit" />
+	</definition>
+
+	<!-- definition for the add assay result page -->
+	<definition name="submit.addassayresult" extends="calab.home">
+		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
+		<put name="calabContent" value="/submit/bodyAddAssayResult.jsp" />
 		<put name="menu" value="submit" />
 	</definition>
 </tiles-definitions>
