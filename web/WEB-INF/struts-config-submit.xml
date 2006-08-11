@@ -62,6 +62,10 @@
 			<forward name="dendrimer" path="bodyDendrimerInfo.jsp" />
 			<forward name="liposome" path="bodyLiposomeInfo.jsp" />
 			<forward name="polymer" path="bodyPolymerInfo.jsp"/>
+			<forward name="buckyball" path="bodyBuckyballInfo.jsp"/>
+			<forward name="fullerene" path="bodyFullereneInfo.jsp"/>
+			<forward name="quantum dot" path="bodyQuantumdotInfo.jsp"/>
+			<forward name="gold particle" path="bodyGoldParticleInfo.jsp"/>
 		</action>
 	</action-mappings>
 </struts-config>
