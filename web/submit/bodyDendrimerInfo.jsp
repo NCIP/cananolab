@@ -18,7 +18,14 @@
 				<strong>Core </strong>
 			</td>
 			<td class="label">
-				<html:text property="particle.core" />
+				<html:select property="particle.core">
+					<option name="Diamine">
+						Diamine
+					</option>
+					<option name="Ethyline">
+						Ethyline
+					</option>
+				</html:select>
 			</td>
 			<td class="label">
 				<strong>Branch</strong>
@@ -43,7 +50,7 @@
 		</tr>
 		<tr>
 			<td class="leftLabel">
-				<strong># of Surface Groups</strong>
+				<strong>Number of Surface Groups</strong>
 			</td>
 			<td class="rightLabel" colspan="3">
 				<html:text property="particle.numberOfSurfaceGroups" />
