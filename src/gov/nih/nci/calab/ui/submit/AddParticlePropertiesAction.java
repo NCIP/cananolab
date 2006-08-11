@@ -6,16 +6,16 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: AddParticlePropertiesAction.java,v 1.3 2006-08-11 12:57:01 zengje Exp $ */
+/* CVS $Id: AddParticlePropertiesAction.java,v 1.4 2006-08-11 21:31:53 pansu Exp $ */
 
-import gov.nih.nci.calab.dto.particle.BuckyballBean;
+import gov.nih.nci.calab.dto.particle.BuckeyballBean;
 import gov.nih.nci.calab.dto.particle.DendrimerBean;
 import gov.nih.nci.calab.dto.particle.FullereneBean;
-//import gov.nih.nci.calab.dto.particle.GoldParticleBean;
+// import gov.nih.nci.calab.dto.particle.GoldParticleBean;
 import gov.nih.nci.calab.dto.particle.LiposomeBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.dto.particle.PolymerBean;
-import gov.nih.nci.calab.dto.particle.QuantumdotBean;
+import gov.nih.nci.calab.dto.particle.QuantumDotBean;
 import gov.nih.nci.calab.service.submit.AddParticlePropertiesService;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 
@@ -37,7 +37,20 @@ public class AddParticlePropertiesAction extends AbstractDispatchAction {
 		// TODO fill in details for sample information */
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleType = (String) theForm.get("particleType");
-		ParticleBean particle = (ParticleBean) theForm.get("particle");
+		ParticleBean particle = null;
+		if (particleType.equalsIgnoreCase("dendrimer")) {
+			particle = (DendrimerBean) theForm.get("dendrimer");
+		} else if (particleType.equalsIgnoreCase("polymer")) {
+			particle = (PolymerBean) theForm.get("polymer");
+		} else if (particleType.equalsIgnoreCase("liposome")) {
+			particle = (LiposomeBean) theForm.get("liposome");
+		} else if (particleType.equalsIgnoreCase("buckeyball")) {			
+			particle = (BuckeyballBean) theForm.get("buckyball");
+		} else if (particleType.equalsIgnoreCase("fullerene")) {			
+			particle = (FullereneBean) theForm.get("fullerene");
+		} else if (particleType.equalsIgnoreCase("quantum dot")) {			
+			particle = (QuantumDotBean) theForm.get("quantumDot");
+		}
 		AddParticlePropertiesService service = new AddParticlePropertiesService();
 		service.addParticleProperties(particleType, particle);
 
@@ -55,38 +68,6 @@ public class AddParticlePropertiesAction extends AbstractDispatchAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
-		if (particleType.equalsIgnoreCase("dendrimer")) {
-			DendrimerBean particle = new DendrimerBean();
-			particle.setName(particleName);
-			theForm.set("particle", particle);
-		} else if (particleType.equalsIgnoreCase("liposome")) {
-			LiposomeBean particle = new LiposomeBean();
-			particle.setName(particleName);
-			theForm.set("particle", particle);
-
-		} else if (particleType.equalsIgnoreCase("polymer")) {
-			PolymerBean particle = new PolymerBean();
-			particle.setName(particleName);
-			theForm.set("particle", particle);
-		} else if (particleType.equalsIgnoreCase("buckyball")) {
-			BuckyballBean particle = new BuckyballBean();
-			particle.setName(particleName);
-			theForm.set("particle", particle);
-		} else if (particleType.equalsIgnoreCase("fullerene")) {
-			FullereneBean particle = new FullereneBean();
-			particle.setName(particleName);
-			theForm.set("particle", particle);
-		} else if (particleType.equalsIgnoreCase("quantum dot")) {
-			QuantumdotBean particle = new QuantumdotBean();
-			particle.setName(particleName);
-			theForm.set("particle", particle);
-		} 
-//		else if (particleType.equalsIgnoreCase("gold particle")) {
-//			GoldParticleBean particle = new GoldParticleBean();
-//			particle.setName(particleName);
-//			theForm.set("particle", particle);
-//		}
 		theForm.set("particlePage", mapping.findForward(
 				particleType.toLowerCase()).getPath());
 		return mapping.getInputForward();
