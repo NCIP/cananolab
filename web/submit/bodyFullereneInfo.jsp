@@ -2,7 +2,6 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page import="gov.nih.nci.calab.dto.particle.*"%>
 
 <table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 	<tbody>
@@ -18,13 +17,13 @@
 				<strong>Growth Diameter</strong>
 			</td>
 			<td class="label">
-				<html:text property="particle.growthDiameter" />
+				<html:text property="fullerene.growthDiameter" />
 			</td>
 			<td class="label">
-				<strong>Carnality </strong>
+				<strong>Chirality </strong>
 			</td>
 			<td class="rightLabel">
-				<html:text property="particle.carnality" />
+				<html:text property="fullerene.chirality" />
 			</td>
 			
 		</tr>
@@ -33,7 +32,7 @@
 				<strong>Average Length</strong>
 			</td>
 			<td class="rightLabel" colspan="3" align="left">
-				<html:text property="particle.averageLength" />
+				<html:text property="fullerene.averageLength" />
 			</td>
 		</tr>
 	</tbody>

@@ -2,7 +2,6 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page import="gov.nih.nci.calab.dto.particle.*"%>
 
 <table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 	<tbody>
@@ -18,7 +17,7 @@
 				<strong>Is Crosslinked </strong>
 			</td>
 			<td class="label">
-				<html:select property="particle.crosslinked">
+				<html:select property="polymer.crosslinked">
 					<option value="yes">
 						Yes
 					</option>
@@ -31,7 +30,7 @@
 				<strong>Crosslink Degree</strong>
 			</td>
 			<td class="rightLabel">
-				<html:text property="particle.crosslinkDegree" size="3" />
+				<html:text property="polymer.crosslinkDegree" size="3" />
 				<strong>%</strong>
 			</td>
 		</tr>
@@ -40,7 +39,7 @@
 				<strong>Initiator </strong>
 			</td>
 			<td class="label">
-				<html:select property="particle.initiator">
+				<html:select property="polymer.initiator">
 					<option value="free radicals">
 						Free Radicals
 					</option>
@@ -53,7 +52,7 @@
 				<strong>Number of Monomers</strong>
 			</td>
 			<td class="rightLabel">
-				<html:text property="particle.numberOfMonomers"/>				
+				<html:text property="polymer.numberOfMonomers"/>				
 			</td>
 		</tr>
 	</tbody>
