@@ -14,5 +14,13 @@ public class LiposomeBean extends ParticleBean {
 	public String getPolymerized() {
 		return polymerized;
 	}
+
+	public void setNumberOfComponents(String numberOfComponents) {
+		this.numberOfComponents = numberOfComponents;
+	}
+
+	public void setPolymerized(String polymerized) {
+		this.polymerized = polymerized;
+	}
 	
 }

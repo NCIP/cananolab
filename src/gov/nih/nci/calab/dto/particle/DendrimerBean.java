@@ -10,6 +10,8 @@ public class DendrimerBean extends ParticleBean {
 	private String generation;
 	
 	private String numberOfSurfaceGroups;
+	
+	private String molecularFormula;
 
 	public DendrimerBean() {		
 	}
@@ -32,5 +34,33 @@ public class DendrimerBean extends ParticleBean {
 
 	public String getNumberOfSurfaceGroups() {
 		return numberOfSurfaceGroups;
+	}
+
+	public String getMolecularFormula() {
+		return molecularFormula;
+	}
+
+	public void setBranch(String branch) {
+		this.branch = branch;
+	}
+
+	public void setCore(String core) {
+		this.core = core;
+	}
+
+	public void setGeneration(String generation) {
+		this.generation = generation;
+	}
+
+	public void setMolecularFormula(String molecularFormula) {
+		this.molecularFormula = molecularFormula;
+	}
+
+	public void setNumberOfSurfaceGroups(String numberOfSurfaceGroups) {
+		this.numberOfSurfaceGroups = numberOfSurfaceGroups;
+	}
+
+	public void setRepeatUnit(String repeatUnit) {
+		this.repeatUnit = repeatUnit;
 	}
 }
