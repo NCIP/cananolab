@@ -34,7 +34,12 @@
 			<form-property name="page" type="java.lang.Integer" initial="0" />
 			<form-property name="particleName" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />
-			<form-property name="particle" type="gov.nih.nci.calab.dto.particle.ParticleBean" />
+			<form-property name="dendrimer" type="gov.nih.nci.calab.dto.particle.DendrimerBean" />
+			<form-property name="liposome" type="gov.nih.nci.calab.dto.particle.LiposomeBean" />
+			<form-property name="buckeyball" type="gov.nih.nci.calab.dto.particle.BuckeyballBean" />
+			<form-property name="fullerene" type="gov.nih.nci.calab.dto.particle.FullereneBean" />
+			<form-property name="polymer" type="gov.nih.nci.calab.dto.particle.PolymerBean" />
+			<form-property name="quantumDot" type="gov.nih.nci.calab.dto.particle.QuantumDotBean" />
 			<form-property name="particlePage" type="java.lang.String" />
 		</form-bean>
 	</form-beans>
@@ -61,11 +66,11 @@
 			<forward name="input" path="submit.addparticle.properties" />
 			<forward name="dendrimer" path="bodyDendrimerInfo.jsp" />
 			<forward name="liposome" path="bodyLiposomeInfo.jsp" />
-			<forward name="polymer" path="bodyPolymerInfo.jsp"/>
-			<forward name="buckyball" path="bodyBuckyballInfo.jsp"/>
-			<forward name="fullerene" path="bodyFullereneInfo.jsp"/>
-			<forward name="quantum dot" path="bodyQuantumdotInfo.jsp"/>
-			<forward name="gold particle" path="bodyGoldParticleInfo.jsp"/>
+			<forward name="polymer" path="bodyPolymerInfo.jsp" />
+			<forward name="buckeyball" path="bodyBuckeyballInfo.jsp" />
+			<forward name="fullerene" path="bodyFullereneInfo.jsp" />
+			<forward name="quantum dot" path="bodyQuantumdotInfo.jsp" />
+			<forward name="metal particle" path="bodyMetalParticleInfo.jsp" />
 		</action>
 	</action-mappings>
 </struts-config>
