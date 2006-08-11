@@ -28,4 +28,20 @@ public class PolymerBean extends ParticleBean {
 		return numberOfMonomers;
 	}
 
+	public void setCrosslinkDegree(String crosslinkDegree) {
+		this.crosslinkDegree = crosslinkDegree;
+	}
+
+	public void setCrosslinked(String crosslinked) {
+		this.crosslinked = crosslinked;
+	}
+
+	public void setInitiator(String initiator) {
+		this.initiator = initiator;
+	}
+
+	public void setNumberOfMonomers(String numberOfMonomers) {
+		this.numberOfMonomers = numberOfMonomers;
+	}
+
 }
