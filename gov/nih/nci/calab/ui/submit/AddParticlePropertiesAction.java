@@ -6,12 +6,16 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: AddParticlePropertiesAction.java,v 1.2 2006-08-10 18:36:10 pansu Exp $ */
+/* CVS $Id: AddParticlePropertiesAction.java,v 1.3 2006-08-11 12:57:01 zengje Exp $ */
 
+import gov.nih.nci.calab.dto.particle.BuckyballBean;
 import gov.nih.nci.calab.dto.particle.DendrimerBean;
+import gov.nih.nci.calab.dto.particle.FullereneBean;
+//import gov.nih.nci.calab.dto.particle.GoldParticleBean;
 import gov.nih.nci.calab.dto.particle.LiposomeBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.dto.particle.PolymerBean;
+import gov.nih.nci.calab.dto.particle.QuantumdotBean;
 import gov.nih.nci.calab.service.submit.AddParticlePropertiesService;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 
@@ -65,7 +69,24 @@ public class AddParticlePropertiesAction extends AbstractDispatchAction {
 			PolymerBean particle = new PolymerBean();
 			particle.setName(particleName);
 			theForm.set("particle", particle);
-		}
+		} else if (particleType.equalsIgnoreCase("buckyball")) {
+			BuckyballBean particle = new BuckyballBean();
+			particle.setName(particleName);
+			theForm.set("particle", particle);
+		} else if (particleType.equalsIgnoreCase("fullerene")) {
+			FullereneBean particle = new FullereneBean();
+			particle.setName(particleName);
+			theForm.set("particle", particle);
+		} else if (particleType.equalsIgnoreCase("quantum dot")) {
+			QuantumdotBean particle = new QuantumdotBean();
+			particle.setName(particleName);
+			theForm.set("particle", particle);
+		} 
+//		else if (particleType.equalsIgnoreCase("gold particle")) {
+//			GoldParticleBean particle = new GoldParticleBean();
+//			particle.setName(particleName);
+//			theForm.set("particle", particle);
+//		}
 		theForm.set("particlePage", mapping.findForward(
 				particleType.toLowerCase()).getPath());
 		return mapping.getInputForward();
