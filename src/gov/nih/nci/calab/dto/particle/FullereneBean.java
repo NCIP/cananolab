@@ -8,7 +8,7 @@ package gov.nih.nci.calab.dto.particle;
  *
  */
 public class FullereneBean extends ParticleBean {
-	private String carnality;
+	private String chirality;
 	
 	private String growthDiameter;
 	
@@ -25,20 +25,20 @@ public class FullereneBean extends ParticleBean {
 		this.averageLength = averageLength;
 	}
 
-	public String getCarnality() {
-		return carnality;
-	}
-
-	public void setCarnality(String carnality) {
-		this.carnality = carnality;
-	}
-
 	public String getGrowthDiameter() {
 		return growthDiameter;
 	}
 
 	public void setGrowthDiameter(String growthDiameter) {
 		this.growthDiameter = growthDiameter;
+	}
+
+	public String getChirality() {
+		return chirality;
+	}
+
+	public void setChirality(String chirality) {
+		this.chirality = chirality;
 	}
 	
 	
