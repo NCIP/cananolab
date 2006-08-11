@@ -8,7 +8,7 @@
 			<td>
 				<h3>
 					<br>
-					Nanoparticle Type - ${particleType}
+					Nanoparticle Type - ${addParticlePropertiesForm.map.particleType}
 				</h3>
 			</td>
 			<td align="right" width="15%">
@@ -33,6 +33,7 @@
 												<input type="reset" value="Reset" onclick="javascript:removeSelectOptions(document.createRunForm.assayName);resetSelect(document.createRunForm.sampleNames);removeSelectOptions(document.createRunForm.assignedAliquots);">
 												<input type="hidden" name="dispatch" value="create">
 												<input type="hidden" name="page" value="1">
+												<html:hidden property="particleType"/>
 												<html:submit />
 											</div>
 										</div>

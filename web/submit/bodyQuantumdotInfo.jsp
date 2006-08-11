@@ -2,7 +2,6 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page import="gov.nih.nci.calab.dto.particle.*"%>
 
 <table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 	<tbody>
@@ -18,13 +17,13 @@
 				<strong>Core </strong>
 			</td>
 			<td class="label">
-				<html:text property="particle.core" />
+				<html:text property="quantumDot.core" />
 			</td>
 			<td class="label">
 				<strong>Shell</strong>
 			</td>
 			<td class="rightLabel">
-				<html:text property="particle.shell" />
+				<html:text property="quantumDot.shell" />
 			</td>
 		</tr>
 		<tr>
@@ -32,7 +31,7 @@
 				<strong>Treatment</strong>
 			</td>
 			<td class="rightLabel" colspan="3">
-				<html:text property="particle.treatment" />
+				<html:text property="quantumDot.treatment" />
 			</td>
 		</tr>
 	</tbody>
