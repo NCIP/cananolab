@@ -17,7 +17,7 @@
 				<strong>Structure </strong>
 			</td>
 			<td class="rightLabel" colspan="3">
-				<html:text property="buckyball.structure" />
+				<html:text property="buckeyball.structure" />
 			</td>			
 		</tr>
 	</tbody>
