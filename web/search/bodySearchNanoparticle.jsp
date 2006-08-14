@@ -3,44 +3,75 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 
 <html:form action="searchNanoparticle">
-	<table width="90%" align="center">
+	<table align="center">
 		<tr>
 			<td>
 				<h3>
 					<br>
-					Search Nanoparticle Metadata
+					Search Nanoparticle - Basic Search
 				</h3>
 			</td>
-			<td align="right" width="15%">
-				<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=search_nanoparticle')" class="helpText">Help</a>
+			<td align="right" width="25%">
+				<a href="advancedNanoparticleSearch.do" class="helpText">Advanced Search</a> &nbsp; &nbsp; <a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=search_nanoparticle')" class="helpText">Help</a>
 			</td>
 		</tr>
 		<tr>
 			<td colspan="2">
 				<jsp:include page="/bodyMessage.jsp?bundle=search" />
 				<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" summary="">
-					<TR>
-						<td class="formTitle" width="30%">
-							Search
+					<tr class="topBorder">
+						<td class="formTitle" colspan="4">
+							<div align="justify">
+								Search Criteria
+							</div>
 						</td>
-						<td class="formTitle">
-							* Search for Wildcards
-						</td>
-					</TR>
+					</tr>
 					<tr>
-						<td class="formLabel" width="30%">
+						<td class="leftLabel">
+							<strong> Particle Source </strong>
+						</td>
+						<td class="label">
+							<strong> <html:select property="particleSource">
+									<option value="" />
+										<html:options name="allParticleSources" />
+								</html:select></strong>
+						</td>
+						<td class="label">
 							<strong> Particle Type </strong>
 						</td>
-						<td class="formField">
+						<td class="rightLabel">
 							<strong> <html:select property="particleType">
 									<option value="" />
-										<html:options name="allSampleTypes" />
+										<html:options name="allParticleTypes" />
 								</html:select></strong>
 						</td>
 					</tr>
 					<tr>
-						<td align="center" colspan="3">
-							<!-- action buttons begins -->
+						<td class="leftLabel">
+							<strong> Function Type </strong>
+						</td>
+						<td class="label">
+							<strong> <html:select property="functionType">
+									<option value="" />
+										<html:options name="allParticleFunctionTypes" />
+								</html:select></strong>
+						</td>
+						<td class="label">
+							<strong> Characterization Type </strong>
+						</td>
+						<td class="rightLabel">
+							<strong> <html:select property="characterizationType">
+									<option value="" />
+										<html:options name="allCharacterizationTypes" />
+								</html:select></strong>
+						</td>
+					</tr>
+					<tr>
+						<td class="leftLabel">
+							<strong> Keywords <em>(one per line)</em> </strong>
+						</td>
+						<td class="rightLabel" colspan="3">
+							<html:textarea property="keywords" rows="4" />
 						</td>
 					</tr>
 				</table>
