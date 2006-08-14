@@ -394,4 +394,12 @@ public class InitSessionSetup {
 					surfaceGroupNames);
 		}
 	}
+	
+	public void setAllPolymerInitiators(HttpSession session) throws Exception {
+		if (session.getServletContext().getAttribute("allPolymerInitiators") == null) {
+			String[] initiators = lookupService.getAllPolymerInitiators();
+			session.getServletContext().setAttribute("allPolymerInitiators",
+					initiators);
+		}
+	}
 }
