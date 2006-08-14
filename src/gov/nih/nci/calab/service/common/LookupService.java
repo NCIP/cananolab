@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.37 2006-08-14 18:39:00 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.38 2006-08-14 19:09:31 zengje Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -644,8 +644,14 @@ public class LookupService {
 		return names;
 	}
 	
+	public String[] getAllMetalCompositions() {
+		String[] compositions=new String[] {"Gold", "Sliver", "Iron oxide"};
+		return compositions;
+	}
+
 	public String[] getAllPolymerInitiators() {
 		String[]initiators=new String[] {"Free Radicals", "Peroxide"};
 		return initiators;
 	}
+
 }
