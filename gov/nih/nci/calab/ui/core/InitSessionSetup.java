@@ -394,7 +394,16 @@ public class InitSessionSetup {
 					surfaceGroupNames);
 		}
 	}
+
 	
+	public void setAllMetalCompositions(HttpSession session) throws Exception {
+		if (session.getServletContext().getAttribute("allMetalCompositions") == null) {
+			String[] compositions = lookupService.getAllMetalCompositions();
+			session.getServletContext().setAttribute("allMetalCompositions",
+					compositions);
+		}
+	}
+
 	public void setAllPolymerInitiators(HttpSession session) throws Exception {
 		if (session.getServletContext().getAttribute("allPolymerInitiators") == null) {
 			String[] initiators = lookupService.getAllPolymerInitiators();
@@ -402,4 +411,5 @@ public class InitSessionSetup {
 					initiators);
 		}
 	}
+
 }
