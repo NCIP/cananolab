@@ -394,7 +394,6 @@ public class InitSessionSetup {
 					surfaceGroupNames);
 		}
 	}
-
 	
 	public void setAllMetalCompositions(HttpSession session) throws Exception {
 		if (session.getServletContext().getAttribute("allMetalCompositions") == null) {
@@ -411,5 +410,28 @@ public class InitSessionSetup {
 					initiators);
 		}
 	}
-
+	
+	public void setAllParticleFunctionTypes(HttpSession session) throws Exception {
+		if (session.getServletContext().getAttribute("allParticleFunctionTypes") == null) {
+			String[] functions = lookupService.getAllParticleFunctions();
+			session.getServletContext().setAttribute("allParticleFunctionTypes",
+					functions);
+		}
+	}
+	
+	public void setAllParticleSources(HttpSession session) throws Exception {
+		if (session.getServletContext().getAttribute("allParticleSources") == null) {
+			List<String> sources = lookupService.getAllParticleSources();
+			session.getServletContext().setAttribute("allParticleSources",
+					sources);
+		}
+	}
+	
+	public void setAllParticleCharacterizationTypes(HttpSession session) throws Exception {
+		if (session.getServletContext().getAttribute("allCharacterizationTypes") == null) {
+			String[] charTypes = lookupService.getAllCharacterizationTypes();
+			session.getServletContext().setAttribute("allCharacterizationTypes",
+					charTypes);
+		}
+	}
 }

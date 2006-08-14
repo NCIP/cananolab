@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.38 2006-08-14 19:09:31 zengje Exp $ */
+/* CVS $Id: LookupService.java,v 1.39 2006-08-14 21:08:04 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -606,8 +606,8 @@ public class LookupService {
 	}
 
 	public String[] getAllParticleFunctions() {
-		String[] functions = new String[] { "Therapeutic Agent",
-				"Image Contrast Agent", "Targeting Agent" };
+		String[] functions = new String[] { "Therapeutic", "Targeting",
+				"Diagnostic Imaging", "Diagnostic Reporting" };
 		return functions;
 	}
 
@@ -653,5 +653,9 @@ public class LookupService {
 		String[]initiators=new String[] {"Free Radicals", "Peroxide"};
 		return initiators;
 	}
-
+	
+	public List<String>getAllParticleSources() throws Exception {
+		//TODO fill in db code
+		return getAllSampleSources();
+	}
 }
