@@ -18,13 +18,13 @@
 				<strong>Core </strong>
 			</td>
 			<td class="label">
-				<html:text property="particle.core" />
+				<html:text property="metalParticle.core" />
 			</td>
 			<td class="label">
 				<strong>Shell</strong>
 			</td>
 			<td class="rightLabel">
-				<html:text property="particle.shell" />
+				<html:text property="metalParticle.shell" />
 			</td>
 		</tr>
 		<tr>
@@ -32,7 +32,7 @@
 				<strong>Composition </strong>
 			</td>
 			<td class="label" colspan="3">
-				<html:select property="particle.composition">
+				<html:select property="metalParticle.composition">
 					<option value="Gold">
 						Gold
 					</option>
