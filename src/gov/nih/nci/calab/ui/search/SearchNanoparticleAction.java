@@ -6,12 +6,14 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchNanoparticleAction.java,v 1.1 2006-08-03 15:24:31 pansu Exp $ */
+/* CVS $Id: SearchNanoparticleAction.java,v 1.2 2006-08-14 21:08:54 pansu Exp $ */
 
 import java.util.List;
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.inventory.SampleBean;
+import gov.nih.nci.calab.dto.particle.ParticleBean;
+import gov.nih.nci.calab.service.search.SearchNanoparticleService;
 import gov.nih.nci.calab.service.search.SearchSampleService;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CalabConstants;
@@ -39,18 +41,27 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 		UserBean user = (UserBean) session.getAttribute("user");
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		String particleSource = (String) theForm.get("particleSource");
 		String particleType = (String) theForm.get("particleType");
-
+		String functionType = (String) theForm.get("functionType");
+		String characterizationType = (String) theForm.get("characterizationType");
+		String keywords=(String)theForm.get("keywords");
+		String[]keywordList=keywords.split("\r\n");
+		
 		SearchSampleService searchSampleService = new SearchSampleService();
-		List<SampleBean> samples = searchSampleService.searchSamples(
+		List<SampleBean> samples = searchSampleService.searchSamples(				
 				particleType, null, null, null, null, null, null);
+		
+		SearchNanoparticleService searchParticleService=new SearchNanoparticleService();
+		List<ParticleBean>particles=searchParticleService.basicSearch(particleSource, particleType, functionType, characterizationType, keywordList);
+		
 		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
 
-		List<SampleBean> filteredSamples = userService.getFilteredSamples(user,
-				samples);
+		List<ParticleBean> filteredParticles = userService.getFilteredParticles(user,
+				particles);
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage(
-				"message.searchNanoparticle.secure", filteredSamples.size(),
+				"message.searchNanoparticle.secure", filteredParticles.size(),
 				samples.size(), particleType);
 		msgs.add("message", msg);
 		saveMessages(request, msgs);
@@ -63,8 +74,10 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		HttpSession session = request.getSession();
-		InitSessionSetup.getInstance().setAllSampleTypes(session);
-
+		InitSessionSetup.getInstance().setAllParticleSources(session);
+		InitSessionSetup.getInstance().setAllParticleTypeParticles(session);
+		InitSessionSetup.getInstance().setAllParticleFunctionTypes(session);
+		InitSessionSetup.getInstance().setAllParticleCharacterizationTypes(session);
 		InitSessionSetup.getInstance().clearWorkflowSession(session);
 		InitSessionSetup.getInstance().clearInventorySession(session);
 
