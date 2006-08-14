@@ -27,12 +27,8 @@ function refreshSurfaceGroups() {
 			</td>
 			<td class="label">
 				<html:select property="dendrimer.core">
-					<option name="Diamine">
-						Diamine
-					</option>
-					<option name="Ethyline">
-						Ethyline
-					</option>
+					<option/>
+					<html:options name="allDendrimerCores"/>
 				</html:select>
 			</td>
 			<td class="label">
@@ -63,30 +59,26 @@ function refreshSurfaceGroups() {
 			<td class="rightLabel" colspan="3">
 				<html:text property="dendrimer.molecularFormula" />
 			</td>
-		</tr>		
+		</tr>
 		<tr>
 			<td class="leftLabel">
 				<strong>Number of Surface Groups</strong>
 			</td>
-			<td class="label">
+			<td class="rightLabel" colspan="3">
 				<html:text property="dendrimer.numberOfSurfaceGroups" />
-			</td>
-			<td class="rightLabel" colspan="2">
-				<a href="#" onClick="javascript:refreshSurfaceGroups();">Update Surface Groups</a>
 			</td>
 		</tr>
 	</tbody>
 </table>
 <br>
-<%--
-<c:forEach var="surfaceGroups" items="${addPropertiesForm.map.dendrimer.surfaceGroups}" varStatus="status">
-	<table>
+<c:forEach var="dendrimer.surfaceGroup" items="${addParticlePropertiesForm.map.dendrimer.surfaceGroups}" varStatus="status">
+	<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 		<tbody>
 			<tr class="topBorder">
 				<td class="formTitle" colspan="4">
 					<div align="justify">
-						Dendrimer Surface Group ${status.index+1} Information
-					</div>
+						Dendrimer Surface Group ${status.index+1} Information 
+					</div>					
 				</td>
 			</tr>
 			<tr>
@@ -94,18 +86,20 @@ function refreshSurfaceGroups() {
 					<strong>Name </strong>
 				</td>
 				<td class="label">
-					<html:select name="surfaceGroups" indexed="true" property="name">
+					<html:select name="dendrimer.surfaceGroup" indexed="true" property="name">
+						<option/>
+						<html:options name="allDendrimerSurfaceGroupNames"/>
 					</html:select>
 				</td>
 				<td class="label">
 					<strong>Modifier</strong>
 				</td>
 				<td class="rightLabel">
-					<html:text property="surfaceGroups" index="true" property="modifier" />
+					<html:text name="dendrimer.surfaceGroup" indexed="true" property="modifier" />
 				</td>
-			</tr>
+			</tr>			
 		</tbody>
 	</table>
 	<br>
 </c:forEach>
---%>
+<input type="button" onclick="javascript:refreshSurfaceGroups()" value="Update Surface Groups">
