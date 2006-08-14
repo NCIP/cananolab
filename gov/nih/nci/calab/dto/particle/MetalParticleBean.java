@@ -13,6 +13,8 @@ public class MetalParticleBean extends ParticleBean {
 	private String shell;
 	
 	private String composition;
+	
+	private String coating;
 
 	public MetalParticleBean() {		
 	}
@@ -39,6 +41,14 @@ public class MetalParticleBean extends ParticleBean {
 
 	public void setComposition(String composition) {
 		this.composition = composition;
+	}
+
+	public String getCoating() {
+		return coating;
+	}
+
+	public void setCoating(String coating) {
+		this.coating = coating;
 	}
 	
 	
