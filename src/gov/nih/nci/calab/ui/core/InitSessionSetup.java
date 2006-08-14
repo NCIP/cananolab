@@ -355,7 +355,8 @@ public class InitSessionSetup {
 	public void setAllVisibilityGroups(HttpSession session) throws Exception {
 		if (session.getServletContext().getAttribute("allVisibilityGroups") == null) {
 			List<String> groupNames = userService.getAllVisibilityGroups();
-			session.getServletContext().setAttribute("allVisibilityGroups", groupNames);
+			session.getServletContext().setAttribute("allVisibilityGroups",
+					groupNames);
 		}
 	}
 
@@ -369,11 +370,28 @@ public class InitSessionSetup {
 				"allParticleCharacterizationTypeCharacterzations") == null) {
 			Map<String, String[]> charTypeChars = lookupService
 					.getAllParticleCharacterizationTypeCharacterizations();
-			String[]charTypes = lookupService.getAllCharacterizationTypes();
+			String[] charTypes = lookupService.getAllCharacterizationTypes();
 			session.getServletContext().setAttribute(
 					"allParticleCharacterizationTypes", charTypes);
 			session.getServletContext().setAttribute(
-					"allParticleCharacterizationTypeCharacterizations", charTypeChars);
+					"allParticleCharacterizationTypeCharacterizations",
+					charTypeChars);
+		}
+	}
+
+	public void setAllDendrimerCores(HttpSession session) throws Exception {
+		if (session.getServletContext().getAttribute("allDendrimerCores") == null) {
+			String[] dendrimerCores = lookupService.getAllDendrimerCores();
+			session.getServletContext().setAttribute("allDendrimerCores",
+					dendrimerCores);
+		}
+	}
+	
+	public void setAllDendrimerSurfaceGroupNames(HttpSession session) throws Exception {
+		if (session.getServletContext().getAttribute("allDendrimerSurfaceGroupNames") == null) {
+			String[] surfaceGroupNames = lookupService.getAllDendrimerSurfaceGroupNames();
+			session.getServletContext().setAttribute("allDendrimerSurfaceGroupNames",
+					surfaceGroupNames);
 		}
 	}
 }
