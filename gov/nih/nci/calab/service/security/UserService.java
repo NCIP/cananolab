@@ -1,7 +1,7 @@
 package gov.nih.nci.calab.service.security;
 
 import gov.nih.nci.calab.dto.common.UserBean;
-import gov.nih.nci.calab.dto.inventory.SampleBean;
+import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.security.AuthenticationManager;
@@ -363,15 +363,15 @@ public class UserService {
 		}
 	}
 
-	public List<SampleBean> getFilteredSamples(UserBean user,
-			List<SampleBean> samples) throws Exception {
-		List<SampleBean> filteredSamples = new ArrayList<SampleBean>();
-		for (SampleBean sample : samples) {
-			boolean status = checkReadPermission(user, sample.getSampleName());
+	public List<ParticleBean> getFilteredParticles(UserBean user,
+			List<ParticleBean> particles) throws Exception {
+		List<ParticleBean> filteredParticles = new ArrayList<ParticleBean>();
+		for (ParticleBean particle : particles) {
+			boolean status = checkReadPermission(user, particle.getSampleName());
 			if (status) {
-				filteredSamples.add(sample);
+				filteredParticles.add(particle);
 			}
 		}
-		return filteredSamples;
+		return filteredParticles;
 	}
 }
