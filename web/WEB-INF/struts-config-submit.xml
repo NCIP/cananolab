@@ -40,6 +40,7 @@
 			<form-property name="fullerene" type="gov.nih.nci.calab.dto.particle.FullereneBean" />
 			<form-property name="polymer" type="gov.nih.nci.calab.dto.particle.PolymerBean" />
 			<form-property name="quantumDot" type="gov.nih.nci.calab.dto.particle.QuantumDotBean" />
+			<form-property name="metalParticle" type="gov.nih.nci.calab.dto.particle.MetalParticleBean" />
 			<form-property name="particlePage" type="java.lang.String" />
 		</form-bean>
 	</form-beans>
