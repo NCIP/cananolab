@@ -5,7 +5,7 @@
 
 <script type="text/javascript">
 
-function refreshSurfaceGroups() {
+function update() {
   document.addParticlePropertiesForm.action="addParticleProperties.do?dispatch=update&page=0";
   document.addParticlePropertiesForm.submit();
 }
@@ -102,4 +102,4 @@ function refreshSurfaceGroups() {
 	</table>
 	<br>
 </c:forEach>
-<input type="button" onclick="javascript:refreshSurfaceGroups()" value="Update Surface Groups">
+<input type="button" onclick="javascript:update()" value="Update Surface Groups">
