@@ -54,7 +54,11 @@
 			<form-property name="aliquotId" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="searchNanoparticleForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="particleSource" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="functionType" type="java.lang.String" />
+			<form-property name="characterizationType" type="java.lang.String" />
+			<form-property name="keywords" type="java.lang.String" />
 		</form-bean>
 	</form-beans>
 	<action-mappings>
@@ -94,7 +98,7 @@
 		<action input="input" name="searchNanoparticleForm" parameter="dispatch" path="/searchNanoparticle" type="gov.nih.nci.calab.ui.search.SearchNanoparticleAction" scope="request">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="search" key="error.searchNanoparticle" path="search.searchnanoparticle" type="java.lang.Exception" />
 			<forward name="input" path="search.searchnanoparticle" />
-			<forward name="success" path="search.message" />
+			<forward name="success" path="search.searchnanoparticle.result" />
 		</action>
 	</action-mappings>
 
