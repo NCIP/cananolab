@@ -6,13 +6,14 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: AddParticlePropertiesAction.java,v 1.6 2006-08-14 17:59:23 pansu Exp $ */
+/* CVS $Id: AddParticlePropertiesAction.java,v 1.7 2006-08-14 18:39:35 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.particle.BuckeyballBean;
 import gov.nih.nci.calab.dto.particle.DendrimerBean;
 import gov.nih.nci.calab.dto.particle.FullereneBean;
 import gov.nih.nci.calab.dto.particle.LiposomeBean;
 import gov.nih.nci.calab.dto.particle.MetalParticleBean;
+import gov.nih.nci.calab.dto.particle.MonomerBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.dto.particle.PolymerBean;
 import gov.nih.nci.calab.dto.particle.QuantumDotBean;
@@ -81,6 +82,9 @@ public class AddParticlePropertiesAction extends AbstractDispatchAction {
 			InitSessionSetup.getInstance().setAllDendrimerCores(session);
 			InitSessionSetup.getInstance().setAllDendrimerSurfaceGroupNames(session);
 		}
+		else if (particleType.equalsIgnoreCase("polymer")) {
+			InitSessionSetup.getInstance().setAllPolymerInitiators(session);			
+		}
 		theForm.set("particlePage", mapping.findForward(
 				particleType.toLowerCase()).getPath());
 		return mapping.getInputForward();
@@ -97,8 +101,12 @@ public class AddParticlePropertiesAction extends AbstractDispatchAction {
 			DendrimerBean particle = (DendrimerBean) theForm.get("dendrimer");
 			updateSurfaceGroups(particle);
 			theForm.set("dendrimer", particle);
-			theForm.set("particlePage", mapping.findForward(
-					particleType.toLowerCase()).getPath());
+		}
+		// update monomer info on polymers
+		else if (particleType.equalsIgnoreCase("polymer")) {
+			PolymerBean particle = (PolymerBean) theForm.get("polymer");
+			updateMonomers(particle);
+			theForm.set("polymer", particle);
 		}
 		return mapping.getInputForward();
 	}
@@ -132,6 +140,37 @@ public class AddParticlePropertiesAction extends AbstractDispatchAction {
 			}
 		}
 		particle.setSurfaceGroups(surfaceGroups);
+	}
+
+	private void updateMonomers(PolymerBean particle) {
+		String numberOfMonomers = particle.getNumberOfMonomers();
+		int monomerNum = Integer.parseInt(numberOfMonomers);
+		List<MonomerBean> origMonomers = particle.getMonomers();
+		int origNum = (origMonomers == null) ? 0 : origMonomers
+				.size();
+		List<MonomerBean> monomers = new ArrayList<MonomerBean>();
+		// create new ones
+		if (origNum == 0) {
+
+			for (int i = 0; i < monomerNum; i++) {
+				MonomerBean monomer = new MonomerBean();
+				monomers.add(monomer);
+			}
+		}
+		// use keep original monomer info
+		else if (monomerNum <= origNum) {
+			for (int i = 0; i < monomerNum; i++) {
+				monomers.add((MonomerBean) origMonomers.get(i));
+			}
+		} else {
+			for (int i = 0; i < origNum; i++) {
+				monomers.add((MonomerBean) origMonomers.get(i));
+			}
+			for (int i = origNum; i < monomerNum; i++) {
+				monomers.add(new MonomerBean());
+			}
+		}
+		particle.setMonomers(monomers);
 	}
 
 	public boolean loginRequired() {
