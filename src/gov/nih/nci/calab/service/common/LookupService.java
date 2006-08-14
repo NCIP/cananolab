@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.35 2006-08-14 18:00:06 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.36 2006-08-14 18:08:21 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -640,7 +640,7 @@ public class LookupService {
 	}
 	
 	public String[] getAllDendrimerSurfaceGroupNames() {
-		String[] names=new String[] {"Name1", "Name2"};
+		String[] names=new String[] {"Amine", "Carboxyl", "Hydroxyl"};
 		return names;
 	}
 }
