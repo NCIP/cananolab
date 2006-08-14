@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: AddParticlePropertiesAction.java,v 1.7 2006-08-14 18:39:35 pansu Exp $ */
+/* CVS $Id: AddParticlePropertiesAction.java,v 1.8 2006-08-14 19:12:25 zengje Exp $ */
 
 import gov.nih.nci.calab.dto.particle.BuckeyballBean;
 import gov.nih.nci.calab.dto.particle.DendrimerBean;
@@ -81,6 +81,8 @@ public class AddParticlePropertiesAction extends AbstractDispatchAction {
 		if (particleType.equalsIgnoreCase("dendrimer")) {
 			InitSessionSetup.getInstance().setAllDendrimerCores(session);
 			InitSessionSetup.getInstance().setAllDendrimerSurfaceGroupNames(session);
+		} else if (particleType.equalsIgnoreCase("metal particle")) {
+			InitSessionSetup.getInstance().setAllMetalCompositions(session);
 		}
 		else if (particleType.equalsIgnoreCase("polymer")) {
 			InitSessionSetup.getInstance().setAllPolymerInitiators(session);			
