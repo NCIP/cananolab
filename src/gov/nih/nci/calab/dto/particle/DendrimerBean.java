@@ -1,5 +1,8 @@
 package gov.nih.nci.calab.dto.particle;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DendrimerBean extends ParticleBean {
 	private String core;
 
@@ -13,7 +16,10 @@ public class DendrimerBean extends ParticleBean {
 	
 	private String molecularFormula;
 
-	public DendrimerBean() {		
+	private List<SurfaceGroupBean> surfaceGroups;
+	
+	public DendrimerBean() {
+		surfaceGroups=new ArrayList<SurfaceGroupBean>();
 	}
 	
 	public String getBranch() {
@@ -62,5 +68,21 @@ public class DendrimerBean extends ParticleBean {
 
 	public void setRepeatUnit(String repeatUnit) {
 		this.repeatUnit = repeatUnit;
+	}
+
+	public List<SurfaceGroupBean> getSurfaceGroups() {
+		return surfaceGroups;
+	}
+
+	public void setSurfaceGroups(List<SurfaceGroupBean> surfaceGroups) {
+		this.surfaceGroups = surfaceGroups;
+	}
+	
+	public SurfaceGroupBean getSurfaceGroup(int ind){
+		return surfaceGroups.get(ind);
+	}
+	
+	public void setSurfaceGroup(int ind, SurfaceGroupBean surfaceGroup) {
+		surfaceGroups.set(ind, surfaceGroup);
 	}
 }
