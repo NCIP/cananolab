@@ -6,13 +6,13 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: AddParticlePropertiesAction.java,v 1.4 2006-08-11 21:31:53 pansu Exp $ */
+/* CVS $Id: AddParticlePropertiesAction.java,v 1.5 2006-08-14 13:48:52 zengje Exp $ */
 
 import gov.nih.nci.calab.dto.particle.BuckeyballBean;
 import gov.nih.nci.calab.dto.particle.DendrimerBean;
 import gov.nih.nci.calab.dto.particle.FullereneBean;
-// import gov.nih.nci.calab.dto.particle.GoldParticleBean;
 import gov.nih.nci.calab.dto.particle.LiposomeBean;
+import gov.nih.nci.calab.dto.particle.MetalParticleBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.dto.particle.PolymerBean;
 import gov.nih.nci.calab.dto.particle.QuantumDotBean;
@@ -50,6 +50,8 @@ public class AddParticlePropertiesAction extends AbstractDispatchAction {
 			particle = (FullereneBean) theForm.get("fullerene");
 		} else if (particleType.equalsIgnoreCase("quantum dot")) {			
 			particle = (QuantumDotBean) theForm.get("quantumDot");
+		} else if (particleType.equalsIgnoreCase("metal particle")) {			
+			particle = (MetalParticleBean) theForm.get("metal particle");
 		}
 		AddParticlePropertiesService service = new AddParticlePropertiesService();
 		service.addParticleProperties(particleType, particle);
