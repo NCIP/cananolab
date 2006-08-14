@@ -1,13 +1,17 @@
 package gov.nih.nci.calab.dto.particle;
 
+import java.util.List;
+
 public class PolymerBean extends ParticleBean {
 	private String crosslinked;
 
 	private String crosslinkDegree;
 
 	private String initiator;
-	
+
 	private String numberOfMonomers;
+
+	private List<MonomerBean> monomers;
 
 	public PolymerBean() {
 	}
@@ -44,4 +48,19 @@ public class PolymerBean extends ParticleBean {
 		this.numberOfMonomers = numberOfMonomers;
 	}
 
+	public List<MonomerBean> getMonomers() {
+		return monomers;
+	}
+
+	public void setMonomers(List<MonomerBean> monomers) {
+		this.monomers = monomers;
+	}
+
+	public MonomerBean getMonomer(int ind) {
+		return monomers.get(ind);
+	}
+
+	public void setMonomer(int ind, MonomerBean monomer) {
+		monomers.set(ind, monomer);
+	}
 }
