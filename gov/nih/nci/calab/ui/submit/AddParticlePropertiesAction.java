@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: AddParticlePropertiesAction.java,v 1.8 2006-08-14 19:12:25 zengje Exp $ */
+/* CVS $Id: AddParticlePropertiesAction.java,v 1.9 2006-08-15 19:15:22 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.particle.BuckeyballBean;
 import gov.nih.nci.calab.dto.particle.DendrimerBean;
@@ -18,7 +18,7 @@ import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.dto.particle.PolymerBean;
 import gov.nih.nci.calab.dto.particle.QuantumDotBean;
 import gov.nih.nci.calab.dto.particle.SurfaceGroupBean;
-import gov.nih.nci.calab.service.submit.AddParticlePropertiesService;
+import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
@@ -60,7 +60,7 @@ public class AddParticlePropertiesAction extends AbstractDispatchAction {
 		} else if (particleType.equalsIgnoreCase("metal particle")) {			
 			particle = (MetalParticleBean) theForm.get("metalParticle");
 		}
-		AddParticlePropertiesService service = new AddParticlePropertiesService();
+		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addParticleProperties(particleType, particle);
 
 		ActionMessages msgs = new ActionMessages();
@@ -78,6 +78,7 @@ public class AddParticlePropertiesAction extends AbstractDispatchAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleType = (String) theForm.get("particleType");
 		HttpSession session=request.getSession();
+		InitSessionSetup.getInstance().setParticleMenu(session);
 		if (particleType.equalsIgnoreCase("dendrimer")) {
 			InitSessionSetup.getInstance().setAllDendrimerCores(session);
 			InitSessionSetup.getInstance().setAllDendrimerSurfaceGroupNames(session);
