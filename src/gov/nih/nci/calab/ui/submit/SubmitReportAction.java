@@ -6,10 +6,9 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: SubmitReportAction.java,v 1.1 2006-08-04 20:21:47 pansu Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.2 2006-08-15 19:15:14 pansu Exp $ */
 
-import gov.nih.nci.calab.service.security.UserService;
-import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.submit.SubmitReportService;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
@@ -38,26 +37,15 @@ public class SubmitReportAction extends AbstractDispatchAction {
 		FormFile reportFile = (FormFile) theForm.get("reportFile");
 		String title=(String)theForm.get("title");
 		String description=(String)theForm.get("description");
+		SubmitReportService service=new SubmitReportService();
 		
-		//TODO saves reportFile to the file system
-		//TODO daves reportFile path to the database
-		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
-
-		String fileName=reportFile.getFileName();
-		for (String visibility : visibilities) {
-			// by default, always set visibility to NCL_PI and NCL_Researcher to
-			// be true
-			//TODO once the files is successfully saved, use fileId instead of fileName
-			userService.secureObject(fileName, "NCL_PI", "R");
-			userService.secureObject(fileName, "NCL_Researcher", "R");
-			userService.secureObject(fileName, visibility, "R");
-		}
-
+		service.submit(particleNames, reportFile, title, description, visibilities);
+				
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg1 = new ActionMessage("message.submitReport.secure",
 				StringUtils.join(visibilities, ", "));
 		ActionMessage msg2 = new ActionMessage("message.submitReport.file",
-				fileName);
+				reportFile.getFileName());
 		msgs.add("message", msg1);
 		msgs.add("message", msg2);
 		saveMessages(request, msgs);
