@@ -4,12 +4,10 @@ import gov.nih.nci.calab.dto.inventory.SampleBean;
 
 public class ParticleBean extends SampleBean {
 
-	private String name;
+	private String particleCategory;
 
-	private String particleType;
-	
 	private String functionTypes;
-	
+
 	private String characterizationTypes;
 
 	private String keywords;
@@ -21,20 +19,16 @@ public class ParticleBean extends SampleBean {
 	public ParticleBean() {
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getParticleType() {
-		return particleType;
-	}
-
-	public void setParticleType(String particleType) {
-		this.particleType = particleType;
+	public ParticleBean(String id, String name, String particleSource,
+			String particleType, String particleCategory, String functionTypes,
+			String characterizationTypes, String keywords) {
+		this(id, name);
+		setSampleType(particleType);
+		setSampleSource(particleSource);
+		this.particleCategory = particleCategory;
+		this.functionTypes = functionTypes;
+		this.characterizationTypes = characterizationTypes;
+		this.keywords = keywords;
 	}
 
 	public String getCharacterizationTypes() {
@@ -61,4 +55,11 @@ public class ParticleBean extends SampleBean {
 		this.keywords = keywords;
 	}
 
+	public String getParticleCategory() {
+		return particleCategory;
+	}
+
+	public void setParticleCategory(String particleCategory) {
+		this.particleCategory = particleCategory;
+	}
 }
