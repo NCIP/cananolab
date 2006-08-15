@@ -6,10 +6,10 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: AddAssayResultAction.java,v 1.1 2006-08-10 16:32:50 pansu Exp $ */
+/* CVS $Id: AddAssayResultAction.java,v 1.2 2006-08-15 19:15:14 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.workflow.FileBean;
-import gov.nih.nci.calab.service.submit.SubmitAssayResultService;
+import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 
 import java.util.List;
@@ -39,8 +39,8 @@ public class AddAssayResultAction extends AbstractDispatchAction {
 		String keywords=(String)theForm.get("keywords");
 		String[] keywordList=keywords.split("\r\n");
 		
-		SubmitAssayResultService submitAssayResultService=new SubmitAssayResultService();
-		submitAssayResultService.saveAssayResult(particleName, fileId, title, description, comments, keywordList);
+		SubmitNanoparticleService service=new SubmitNanoparticleService();
+		service.saveAssayResult(particleName, fileId, title, description, comments, keywordList);
 		
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.addAssayResult", fileId);
@@ -54,10 +54,10 @@ public class AddAssayResultAction extends AbstractDispatchAction {
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		SubmitAssayResultService submitAssayResultService=new SubmitAssayResultService();
+		SubmitNanoparticleService service=new SubmitNanoparticleService();
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleName = (String) theForm.get("particleName");
-		List<FileBean> runFiles=submitAssayResultService.getAllRunFiles(particleName);
+		List<FileBean> runFiles=service.getAllRunFiles(particleName);
 		request.setAttribute("particleRunFiles", runFiles);
 		return mapping.getInputForward();
 	}
