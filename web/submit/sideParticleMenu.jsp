@@ -4,6 +4,16 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!-- submenu begins -->
+<c:choose>
+	<c:when test="${!empty param.particleName}">
+		<c:set var="particleName" value="${param.particleName}" scope="session" />
+	</c:when>
+</c:choose>
+<c:choose>
+	<c:when test="${!empty param.particleType}">
+		<c:set var="particleType" value="${param.particleType}" scope="session" />
+	</c:when>
+</c:choose>
 <table summary="" cellpadding="0" cellspacing="0" border="0" width="220" height="100%">
 	<tr>
 		<td class="subMenuPrimaryTitle" height="21">
@@ -55,7 +65,8 @@
 							<li>
 								Assay Results
 								<dl class="indented">
-									-<a href="addAssayResult.do?dispatch=setup&particleName=${particleName}">Add Assay Results</a>
+									-
+									<a href="addAssayResult.do?dispatch=setup&particleName=${particleName}">Add Assay Results</a>
 								</dl>
 							</li>
 							<li>
