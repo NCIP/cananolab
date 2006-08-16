@@ -2,13 +2,13 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<html:form action="/addParticleProperties">
+<html:form action="/nanoparticleProperties">
 	<table width="100%" align="center">
 		<tr>
 			<td>
 				<h3>
 					<br>
-					Nanoparticle Type - ${addParticlePropertiesForm.map.particleType}
+					Nanoparticle Type - ${nanoparticlePropertiesForm.map.particleType}
 				</h3>
 			</td>
 			<td align="right" width="15%">
@@ -18,7 +18,7 @@
 		<tr>
 			<td colspan="4">
 				<jsp:include page="/bodyMessage.jsp?bundle=submit" />
-				<jsp:include page="${addParticlePropertiesForm.map.particlePage}" />
+				<jsp:include page="${nanoparticlePropertiesForm.map.particlePage}" />
 				<br>
 				<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 					<tr>
@@ -30,7 +30,7 @@
 									<td width="490" height="32">
 										<div align="right">
 											<div align="right">
-												<input type="reset" value="Reset" onclick="javascript:removeSelectOptions(document.createRunForm.assayName);resetSelect(document.createRunForm.sampleNames);removeSelectOptions(document.createRunForm.assignedAliquots);">
+												<input type="reset" value="Reset" onclick="">
 												<input type="hidden" name="dispatch" value="create">
 												<input type="hidden" name="page" value="1">
 												<html:hidden property="particleType"/>
