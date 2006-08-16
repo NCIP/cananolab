@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.39 2006-08-14 21:08:04 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.40 2006-08-16 15:47:11 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -633,29 +633,42 @@ public class LookupService {
 		}
 		return charTypeChars;
 	}
-	
+
 	public String[] getAllDendrimerCores() {
-		String[] cores=new String[] {"Diamine", "Ethyline"};
+		String[] cores = new String[] { "Diamine", "Ethyline" };
 		return cores;
 	}
-	
+
 	public String[] getAllDendrimerSurfaceGroupNames() {
-		String[] names=new String[] {"Amine", "Carboxyl", "Hydroxyl"};
+		String[] names = new String[] { "Amine", "Carboxyl", "Hydroxyl" };
 		return names;
 	}
-	
+
 	public String[] getAllMetalCompositions() {
-		String[] compositions=new String[] {"Gold", "Sliver", "Iron oxide"};
+		String[] compositions = new String[] { "Gold", "Sliver", "Iron oxide" };
 		return compositions;
 	}
 
 	public String[] getAllPolymerInitiators() {
-		String[]initiators=new String[] {"Free Radicals", "Peroxide"};
+		String[] initiators = new String[] { "Free Radicals", "Peroxide" };
 		return initiators;
 	}
-	
-	public List<String>getAllParticleSources() throws Exception {
-		//TODO fill in db code
+
+	public List<String> getAllParticleSources() throws Exception {
+		// TODO fill in db code
 		return getAllSampleSources();
+	}
+
+	public Map<String, String> getParticleTypeToParticleCategory() {
+		Map<String, String> type2Category = new HashMap<String, String>();
+		// TODO replaced by database code
+		type2Category.put("polymer", "organic");
+		type2Category.put("dendrimer", "organic");
+		type2Category.put("buckeyball", "carbonbased");
+		type2Category.put("fullerene", "carbonbased");
+		type2Category.put("quantom dot", "hybrid");
+		type2Category.put("metal particle", "inorganic");
+		type2Category.put("liposome", "liposome");
+		return type2Category;
 	}
 }
