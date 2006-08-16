@@ -5,8 +5,8 @@
 <script type="text/javascript">
 
 function update() {
-  document.addParticlePropertiesForm.action="addParticleProperties.do?dispatch=update&page=0";
-  document.addParticlePropertiesForm.submit();
+  document.nanoparticlePropertiesForm.action="nanoparticleProperties.do?dispatch=update&page=0";
+  document.nanoparticlePropertiesForm.submit();
 }
 
 </script>
@@ -61,7 +61,7 @@ function update() {
 	</tbody>
 </table>
 <br>
-<c:forEach var="polymer.monomer" items="${addParticlePropertiesForm.map.polymer.monomers}" varStatus="status">
+<c:forEach var="polymer.monomer" items="${nanoparticlePropertiesForm.map.polymer.monomers}" varStatus="status">
 	<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 		<tbody>
 			<tr class="topBorder">

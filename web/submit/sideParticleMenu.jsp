@@ -37,7 +37,7 @@
 								Nanoparticle Type
 								<dl class="indented">
 									-
-									<a href="addParticleProperties.do?dispatch=setup&particleType=${particleType}&particleName=${particleName}">${particleType}</a>
+									<a href="nanoparticleProperties.do?dispatch=setup&particleType=${particleType}&particleName=${particleName}">${particleType}</a>
 								</dl>
 							</li>
 							<li>

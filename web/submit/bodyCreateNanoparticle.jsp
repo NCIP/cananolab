@@ -3,7 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<html:form action="/createNanoparticle">
+<html:form action="/nanoparticleGeneralInfo">
 	<table width="100%" align="center">
 		<tr>
 			<td>
@@ -33,7 +33,7 @@
 								<strong>Particle Type*</strong>
 							</td>
 							<td class="rightLabel">
-								<html:select property="particleType" onchange="javascript:doubleDropdown(document.createNanoparticleForm.particleType, document.createNanoparticleForm.particleName, particleTypeParticles)">
+								<html:select property="particleType" onchange="javascript:doubleDropdown(document.nanoparticleGeneralInfoForm.particleType, document.nanoparticleGeneralInfoForm.particleName, particleTypeParticles)">
 									<option value=""></option>
 									<html:options name="allParticleTypes" />
 								</html:select>
@@ -46,8 +46,8 @@
 							<td class="rightLabel">
 								<html:select property="particleName">
 									<option value=""></option>
-									<option value="${createNanoparticleForm.map.particleName}" selected>
-										${createNanoparticleForm.map.particleName}
+									<option value="${nanoparticleGeneralInfoForm.map.particleName}" selected>
+										${nanoparticleGeneralInfoForm.map.particleName}
 									</option>
 								</html:select>
 							</td>
@@ -83,7 +83,7 @@
 									<td width="490" height="32">
 										<div align="right">
 											<div align="right">
-												<input type="reset" value="Reset" onclick="javascript:removeSelectOptions(document.createRunForm.assayName);resetSelect(document.createRunForm.sampleNames);removeSelectOptions(document.createRunForm.assignedAliquots);">
+												<input type="reset" value="Reset" onclick="">
 												<input type="hidden" name="dispatch" value="create">
 												<input type="hidden" name="page" value="1">
 												<html:submit />

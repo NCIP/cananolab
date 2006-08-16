@@ -9,7 +9,7 @@
 		<put name="menu" value="submit" />
 		<put name="item" value="Nanoparticle" />
 		<put name="itemDescription" value="/submit/bodyNanoparticleDescription.jsp" />
-		<put name="createLink" value="createNanoparticle.do?dispatch=setup&amp;page=0" />
+		<put name="createLink" value="nanoparticleGeneralInfo.do?dispatch=setup&amp;page=0" />
 		<put name="searchLink" value="searchNanoparticle.do?dispatch=setup" />
 	</definition>
 
