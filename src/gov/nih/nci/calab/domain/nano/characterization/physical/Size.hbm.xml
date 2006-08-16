@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="gov.nih.nci.calab.domain.nano.characterization.physical">
+ <subclass name="Size" discriminator-value="size" extends="gov.nih.nci.calab.domain.nano.characterization.BaseCharacterization">
+    	<join table="PHYSICAL_SIZE">
+    		<key column="CHARACTERIZATION_PK_ID" />
+    		<property name="size" column="SIZE_VALUE" type="java.lang.String" />
+    		<property name="sizeDistribution" column="SIZE_DISTRIBUTION" type="java.lang.String" />
+    		<property name="radiusMoments" column="RADIUS_MOMENTS" type="java.lang.String" />
+    		<property name="polydispersityIndex" column="POLYDISPERSITY_INDEX" type="java.lang.String" />
+	   	</join>	   	
+   </subclass>   
+</hibernate-mapping> 
