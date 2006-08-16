@@ -18,7 +18,7 @@ public class NanoparticleDecorator extends TableDecorator {
 		ParticleBean particle = (ParticleBean) getCurrentRowObject();
 		String particleType = particle.getSampleType();
 		String particleName = particle.getSampleName();
-		String viewParticleURL = "addParticleProperties.do?dispatch=setup&particleType="
+		String viewParticleURL = "nanoparticleProperties.do?dispatch=setup&particleType="
 				+ particleType + "&particleName=" + particleName;
 		String link = "<a href=" + viewParticleURL + ">"
 				+ particle.getSortableName() + "</a>";
@@ -29,7 +29,7 @@ public class NanoparticleDecorator extends TableDecorator {
 		ParticleBean particle = (ParticleBean) getCurrentRowObject();
 		String particleType = particle.getSampleType();
 		String particleName = particle.getSampleName();
-		String viewParticleURL = "viewParticleProperties.do?dispatch=setup&particleType="
+		String viewParticleURL = "nanoparticleProperties.do?dispatch=view&particleType="
 				+ particleType + "&particleName=" + particleName;
 		String link = "<a href=" + viewParticleURL + ">"
 				+ particle.getSortableName() + "</a>";
