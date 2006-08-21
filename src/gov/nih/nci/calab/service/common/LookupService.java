@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.40 2006-08-16 15:47:11 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.41 2006-08-21 21:15:38 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -617,22 +617,6 @@ public class LookupService {
 		return charTypes;
 	}
 
-	public Map<String, String[]> getAllParticleCharacterizationTypeCharacterizations() {
-		String[] physicalChars = new String[] { "Size", "Purity", "Stability" };
-		String[] invitroChars = new String[] {};
-		String[] invivoChars = new String[] {};
-		String[][] charArrays = new String[][] { physicalChars, invitroChars,
-				invivoChars };
-
-		Map<String, String[]> charTypeChars = new HashMap<String, String[]>();
-		String[] charTypes = getAllCharacterizationTypes();
-		int i = 0;
-		for (String charType : charTypes) {
-			charTypeChars.put(charType, charArrays[i]);
-			i++;
-		}
-		return charTypeChars;
-	}
 
 	public String[] getAllDendrimerCores() {
 		String[] cores = new String[] { "Diamine", "Ethyline" };
