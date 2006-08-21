@@ -27,12 +27,12 @@
 			<td valign="top">
 
 				<!-- sidebar begins -->
-				<table summary="" cellpadding="0" cellspacing="0" border="0" width="210" height="100%">
+				<table summary="" cellpadding="0" cellspacing="0" border="0" height="100%">
 
 					<!-- login begins -->
 					<tr>
 						<td valign="top">
-							<table summary="" cellpadding="2" cellspacing="0" border="0" class="sidebarSection">
+							<table summary="" cellpadding="2" cellspacing="0" border="0" class="sidebarSection" width="100%">
 								<tr>
 									<td class="sidebarTitle" height="20">
 										USER LOGIN
@@ -87,7 +87,7 @@
 					<!-- what's new begins -->
 					<tr>
 						<td valign="top">
-							<table summary="" cellpadding="0" cellspacing="0" border="0" class="noBottomSidebarSection">
+							<table summary="" cellpadding="0" cellspacing="0" border="0" class="noBottomSidebarSection" width="100%">
 								<tr>
 									<td class="sidebarTitle" height="20">
 										WHAT'S NEW
