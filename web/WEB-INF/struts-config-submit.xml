@@ -29,12 +29,12 @@
 			<form-property name="comments" type="java.lang.String" />
 			<form-property name="keywords" type="java.lang.String" />
 		</form-bean>
-		<form-bean name="nanoparticlePropertiesForm" type="org.apache.struts.validator.DynaValidatorForm">
+		<form-bean name="nanoparticleCompositionForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="dispatch" type="java.lang.String" />
 			<form-property name="page" type="java.lang.Integer" initial="0" />
 			<form-property name="particleName" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />
-			<form-property name="dendrimer" type="gov.nih.nci.calab.dto.particle.DendrimerBean" />			
+			<form-property name="dendrimer" type="gov.nih.nci.calab.dto.particle.DendrimerBean" />
 			<form-property name="liposome" type="gov.nih.nci.calab.dto.particle.LiposomeBean" />
 			<form-property name="buckeyball" type="gov.nih.nci.calab.dto.particle.BuckeyballBean" />
 			<form-property name="fullerene" type="gov.nih.nci.calab.dto.particle.FullereneBean" />
@@ -61,10 +61,10 @@
 			<forward name="success" path="submit.message" />
 			<forward name="input" path="submit.addassayresult" />
 		</action>
-		<action name="nanoparticlePropertiesForm" parameter="dispatch" path="/nanoparticleProperties" type="gov.nih.nci.calab.ui.submit.NanoparticlePropertiesAction" input="input">
-			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addParticleProperties" path="submit.addparticle.properties" type="java.lang.Exception" />
+		<action name="nanoparticleCompositionForm" parameter="dispatch" path="/nanoparticleComposition" type="gov.nih.nci.calab.ui.submit.NanoparticleCompositionAction" input="input">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addParticleComposition" path="submit.addparticle.composition" type="java.lang.Exception" />
 			<forward name="success" path="submit.message" />
-			<forward name="input" path="submit.addparticle.properties" />
+			<forward name="input" path="submit.addparticle.composition" />
 			<forward name="dendrimer" path="bodyDendrimerInfo.jsp" />
 			<forward name="liposome" path="bodyLiposomeInfo.jsp" />
 			<forward name="polymer" path="bodyPolymerInfo.jsp" />
@@ -73,5 +73,6 @@
 			<forward name="quantum dot" path="bodyQuantumdotInfo.jsp" />
 			<forward name="metal particle" path="bodyMetalParticleInfo.jsp" />
 		</action>
+		<action path="/submitAction" type="gov.nih.nci.calab.ui.core.BaseForwardAction" parameter="submit.action.message" scope="request" />
 	</action-mappings>
 </struts-config>
