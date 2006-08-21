@@ -1,10 +1,10 @@
-/*########## INSTRUCTIONS ##########
-1. comments that start with constant: indicate colors that don't change among the color schemes
-2. comments with the words lighter or darker indicate the colors that do change depending on the color scheme
-For example using the blue color sheme, darker means use the darker blue and lighter means use the lighter blue
-3. ems are used as the unit of measurement to maintain proportional sizing which is important for 508 compliance
+##########
+INSTRUCTIONS      ########## 1. comments that start with constant: indicate colors that don     't change among the color schemes
+     2. comments with the words lighter or darker indicate the colors that do change depending on the color scheme
+For example using the blue color sheme,darker means use the darker blue and lighter means use the lighter blue
+     3. ems are used as the unit of measurement to maintain proportional sizing which is important for      508 compliance
 
-/*########## BLUE COLOR SCHEME ##########
+     /*########## BLUE COLOR SCHEME ##########
  #475B82 = darker blue
  #6E81A6 = lighter blue
 
@@ -31,8 +31,7 @@ For example using the blue color sheme, darker means use the darker blue and lig
  #F4F4F5 = light gray
  #FFFFFF = white
  #000000 = black
-*/
-body {
+*/ body {
 	margin: 0;
 	padding: 0;
 }
@@ -734,5 +733,51 @@ img.img { /* for images that need a border */
 }
 
 .indented {
-	padding-left: 10pt;
+	padding-left: 8pt;
+}
+
+.indented2 {
+	padding-left: 16pt;
+}
+
+.indented3 {
+	padding-left: 24pt;
+}
+
+.indented4 {
+	padding-left: 32pt;
+}
+
+.largerText {
+	font-size: 1.1em;
+	font-weight: bold;
+}
+
+td.secondMenu {
+	background-color: #98b7b7; /* constant: dark gray */
+	font-family: arial, helvetica, verdana, sans-serif;
+	border-bottom: 1px solid #cccccc; /* constant: medium gray */
+	border-top: 1px solid #cccccc; /* constant: medium gray */
+}
+
+td.secondMenuItem { /* for the off state of the main menu (top) cells */
+	font-size: 0.55em;
+	font-weight: bold;
+	background-color: #98b7b7; /* constant: dark gray */
+	padding-left: 1em;
+	padding-right: 1em;
+	text-transform: uppercase;
+}
+
+td.secondMenuItemOver { /* for the over state of the main menu (top) cells */
+	font-size: 0.55em;
+	font-weight: bold;
+	background-color: #98b7b7; /* darker */
+	padding-left: 1em;
+	padding-right: 1em;
+	text-transform: uppercase
+}
+
+.addLink {
+	color: #a90101; /* constant: red */
 }
