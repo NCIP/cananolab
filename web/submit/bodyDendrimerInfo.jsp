@@ -6,8 +6,8 @@
 <script type="text/javascript">
 
 function update() {
-  document.nanoparticlePropertiesForm.action="nanoparticleProperties.do?dispatch=update&page=0";
-  document.nanoparticlePropertiesForm.submit();
+  document.nanoparticleCompositionForm.action="nanoparticleComposition.do?dispatch=update&page=0";
+  document.nanoparticleCompositionForm.submit();
 }
 
 </script>
@@ -17,7 +17,7 @@ function update() {
 		<tr class="topBorder">
 			<td class="formTitle" colspan="4">
 				<div align="justify">
-					Dendrimer Information
+					${particleName}
 				</div>
 			</td>
 		</tr>
@@ -71,7 +71,7 @@ function update() {
 	</tbody>
 </table>
 <br>
-<c:forEach var="dendrimer.surfaceGroup" items="${nanoparticlePropertiesForm.map.dendrimer.surfaceGroups}" varStatus="status">
+<c:forEach var="dendrimer.surfaceGroup" items="${nanoparticleCompositionForm.map.dendrimer.surfaceGroups}" varStatus="status">
 	<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 		<tbody>
 			<tr class="topBorder">

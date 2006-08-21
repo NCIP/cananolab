@@ -8,7 +8,7 @@
 		<tr class="topBorder">
 			<td class="formTitle" colspan="4">
 				<div align="justify">
-					Liposome Information
+					${particleName}
 				</div>
 			</td>
 		</tr>
