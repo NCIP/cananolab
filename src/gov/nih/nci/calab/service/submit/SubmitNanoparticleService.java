@@ -1,16 +1,22 @@
 package gov.nih.nci.calab.service.submit;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import gov.nih.nci.calab.db.DataAccessProxy;
+import gov.nih.nci.calab.db.IDataAccess;
+import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.dto.particle.DendrimerBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.dto.workflow.FileBean;
+import gov.nih.nci.calab.exception.DuplicateEntriesException;
+import gov.nih.nci.calab.service.common.LookupService;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CalabConstants;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 /**
- * This class includes service calls invovled in creating nanoparticles and
+ * This class includes service calls involved in creating nanoparticles and
  * adding properties, functions and characterizations for nanoparticles.
  * 
  * @author pansu
@@ -19,9 +25,35 @@ import gov.nih.nci.calab.service.util.CalabConstants;
 public class SubmitNanoparticleService {
 	public void createNanoparticle(String particleType, String particleName,
 			String[] keywords, String[] visibilities) throws Exception {
-
+		
+		LookupService lookupService=new LookupService();
+		Map<String, String>type2Category=lookupService.getParticleTypeToParticleCategory();
+		
+		// save nanoparticle to the database
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+//		try {
+//			ida.open();
+//			//check if particle already exists in the database			
+//			List results = ida.search("from Nanoparticle where particleName="+particleName);
+//			if (results.size()>0) {
+//				throw new DuplicateEntriesException("Nanoparticle alreay exists in the database");
+//			}
+//			
+//			Nanoparticle particle=new Nanoparticle();			
+//			particle.setParticleCategory(type2Category.get(particleType.toLowerCase()));			
+//			ida.createObject(particle);
+//						
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			ida.rollback();
+//			throw e;
+//		} finally {
+//			ida.close();
+//		}
+		
+		// set visibilities for the nanoparticle
 		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
-		http: // www.aahealth.org/news.asp?id=145
 		for (String visibility : visibilities) {
 			// by default, always set visibility to NCL_PI and NCL_Researcher to
 			// be true
@@ -29,7 +61,7 @@ public class SubmitNanoparticleService {
 			userService.secureObject(particleName, "NCL_Researcher", "R");
 			userService.secureObject(particleName, visibility, "R");
 		}
-		// TODO add database code to save the nanoparticle
+
 	}
 
 	public void addParticleProperties(String particleType, ParticleBean particle) {
