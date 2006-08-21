@@ -28,6 +28,17 @@
 								</div>
 							</td>
 						</tr>
+						<%--
+						<tr>
+							<td class="leftLabel">
+								<strong>Assay Name*</strong>
+							</td>
+							<td class="rightLabel"">
+								<html:select property="fileId">
+									<html:options collection="" property="id" labelProperty="shortFilename" />
+								</html:select>
+						</tr>
+						--%>
 						<tr>
 							<td class="leftLabel">
 								<strong>Assay Result File*</strong>
@@ -50,7 +61,7 @@
 								<strong>Assay Result File Description</strong>
 							</td>
 							<td class="rightLabel"">
-								<html:textarea property="description" rows="3" cols="60"/>
+								<html:textarea property="description" rows="3" cols="60" />
 							</td>
 						</tr>
 						<tr>
@@ -58,7 +69,7 @@
 								<strong>Comments</strong>
 							</td>
 							<td class="rightLabel">
-								<html:textarea property="comments" rows="3" cols="60"/>
+								<html:textarea property="comments" rows="3" cols="60" />
 							</td>
 						</tr>
 						<tr>
@@ -66,9 +77,10 @@
 								<strong>Keywords <em>(one per line)</em></strong>
 							</td>
 							<td class="rightLabel">
-								<html:textarea property="keywords" rows="3"/>
+								<html:textarea property="keywords" rows="3" />
 							</td>
 						</tr>
+						
 					</tbody>
 				</table>
 				<br>
@@ -97,5 +109,6 @@
 				</table>
 			</td>
 		</tr>
+
 	</table>
 </html:form>
