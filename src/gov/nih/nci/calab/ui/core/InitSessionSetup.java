@@ -360,25 +360,6 @@ public class InitSessionSetup {
 		}
 	}
 
-	public void setParticleMenu(HttpSession session) throws Exception {
-		if (session.getServletContext().getAttribute("allParticleFunctions") == null) {
-			String[] functions = lookupService.getAllParticleFunctions();
-			session.getServletContext().setAttribute("allParticleFunctions",
-					functions);
-		}
-		if (session.getServletContext().getAttribute(
-				"allParticleCharacterizationTypeCharacterzations") == null) {
-			Map<String, String[]> charTypeChars = lookupService
-					.getAllParticleCharacterizationTypeCharacterizations();
-			String[] charTypes = lookupService.getAllCharacterizationTypes();
-			session.getServletContext().setAttribute(
-					"allParticleCharacterizationTypes", charTypes);
-			session.getServletContext().setAttribute(
-					"allParticleCharacterizationTypeCharacterizations",
-					charTypeChars);
-		}
-	}
-
 	public void setAllDendrimerCores(HttpSession session) throws Exception {
 		if (session.getServletContext().getAttribute("allDendrimerCores") == null) {
 			String[] dendrimerCores = lookupService.getAllDendrimerCores();
@@ -433,5 +414,12 @@ public class InitSessionSetup {
 			session.getServletContext().setAttribute("allCharacterizationTypes",
 					charTypes);
 		}
+	}
+	
+	public void setSideParticleMenu(HttpSession session) throws Exception {
+		setAllParticleFunctionTypes(session);
+		setAllParticleCharacterizationTypes(session);
+		//TODO set additional data for particle menu
+
 	}
 }
