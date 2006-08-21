@@ -9,7 +9,7 @@
 <!-- submenu begins -->
 <table summary="" cellpadding="0" cellspacing="0" border="0" height="100%">
 	<tr>
-		<td class="subMenuPrimaryTitle" height="21">
+		<td class="subMenuPrimaryTitle" height="21" width="250">
 			WORKFLOW TREE
 		</td>
 	</tr>

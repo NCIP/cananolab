@@ -45,7 +45,7 @@
 									</td>
 								</tr>
 								<tr>
-									<td class="sideMenu" valign="top" width="190">
+									<td class="sideMenu" valign="top" width="250">
 										<%-- include sidemenu on the left --%>
 										<tiles:insert attribute="calabSidemenu" />
 									</td>

@@ -9,7 +9,7 @@
 <tr>
 	<td width="190" valign="top" class="subMenu">
 		<!-- submenu begins -->
-		<table summary="" cellpadding="0" cellspacing="0" border="0" width="220" height="100%">
+		<table summary="" cellpadding="0" cellspacing="0" border="0" height="100%">
 			<tr>
 				<td class="subMenuPrimaryTitle" height="21">
 					ASSAY TEMPLATE
