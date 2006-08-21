@@ -36,11 +36,14 @@
 		<bean:define id="actions" name="runActions" type="java.util.List" />
 	</logic:equal>
 	<logic:present name="actions">
-		<table bgcolor="#98B7B7" border="0" >
+		<table border="0" cellspacing="0" cellpadding="0">
 			<tr>
 				<logic:iterate name="actions" id="item" type="org.apache.struts.tiles.beans.MenuItem">
-					<td valign="middle" align="center">
-						<a href="${item.link}" class="formMessage"><bean:write name="item" property="value" /></a> &nbsp; &nbsp;
+					<td class="secondMenuItem" height="20">
+						<a href="${item.link}" class="secondMenuLink"><bean:write name="item" property="value" /></a>
+					</td>
+					<td>
+						<img height="16" alt="" src="images/mainMenuSeparator.gif" width="1">
 					</td>
 				</logic:iterate>
 			</tr>
