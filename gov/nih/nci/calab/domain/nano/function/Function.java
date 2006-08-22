@@ -3,7 +3,7 @@
  */
 package gov.nih.nci.calab.domain.nano.function;
 
-import gov.nih.nci.calab.domain.nano.particle.BaseNanoParticle;
+import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 
 /**
  * @author zengje
@@ -14,7 +14,7 @@ public class Function {
 	private String functionType;
 	private String activationMethod;
 	
-	private BaseNanoParticle nanoParticle;
+	private Nanoparticle nanoParticle;
 	
 	/**
 	 * 
@@ -48,11 +48,11 @@ public class Function {
 		this.id = id;
 	}
 
-	public BaseNanoParticle getNanoParticle() {
+	public Nanoparticle getNanoParticle() {
 		return nanoParticle;
 	}
 
-	public void setNanoParticle(BaseNanoParticle nanoParticle) {
+	public void setNanoParticle(Nanoparticle nanoParticle) {
 		this.nanoParticle = nanoParticle;
 	}
 

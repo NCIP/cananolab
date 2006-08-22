@@ -14,7 +14,7 @@
     <property name="functionType" type="java.lang.String" column="FUNCTION_TYPE" />
     <property name="activationMethod" type="java.lang.String" column="ACTIVATION_METHOD" />
        
-    <many-to-one name="nanoParticle"  class="gov.nih.nci.calab.domain.nano.particle.BaseNanoParticle" column="PARTICLE_PK_ID" lazy="false" fetch="join"/>
+    <many-to-one name="nanoParticle"  class="gov.nih.nci.calab.domain.nano.particle.Nanoparticle" column="PARTICLE_PK_ID" lazy="false" fetch="join"/>
   </class>
 </hibernate-mapping>
 
