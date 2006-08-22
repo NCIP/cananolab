@@ -367,15 +367,18 @@ public class InitSessionSetup {
 					dendrimerCores);
 		}
 	}
-	
-	public void setAllDendrimerSurfaceGroupNames(HttpSession session) throws Exception {
-		if (session.getServletContext().getAttribute("allDendrimerSurfaceGroupNames") == null) {
-			String[] surfaceGroupNames = lookupService.getAllDendrimerSurfaceGroupNames();
-			session.getServletContext().setAttribute("allDendrimerSurfaceGroupNames",
-					surfaceGroupNames);
+
+	public void setAllDendrimerSurfaceGroupNames(HttpSession session)
+			throws Exception {
+		if (session.getServletContext().getAttribute(
+				"allDendrimerSurfaceGroupNames") == null) {
+			String[] surfaceGroupNames = lookupService
+					.getAllDendrimerSurfaceGroupNames();
+			session.getServletContext().setAttribute(
+					"allDendrimerSurfaceGroupNames", surfaceGroupNames);
 		}
 	}
-	
+
 	public void setAllMetalCompositions(HttpSession session) throws Exception {
 		if (session.getServletContext().getAttribute("allMetalCompositions") == null) {
 			String[] compositions = lookupService.getAllMetalCompositions();
@@ -391,15 +394,17 @@ public class InitSessionSetup {
 					initiators);
 		}
 	}
-	
-	public void setAllParticleFunctionTypes(HttpSession session) throws Exception {
-		if (session.getServletContext().getAttribute("allParticleFunctionTypes") == null) {
+
+	public void setAllParticleFunctionTypes(HttpSession session)
+			throws Exception {
+		if (session.getServletContext()
+				.getAttribute("allParticleFunctionTypes") == null) {
 			String[] functions = lookupService.getAllParticleFunctions();
-			session.getServletContext().setAttribute("allParticleFunctionTypes",
-					functions);
+			session.getServletContext().setAttribute(
+					"allParticleFunctionTypes", functions);
 		}
 	}
-	
+
 	public void setAllParticleSources(HttpSession session) throws Exception {
 		if (session.getServletContext().getAttribute("allParticleSources") == null) {
 			List<String> sources = lookupService.getAllParticleSources();
@@ -407,19 +412,32 @@ public class InitSessionSetup {
 					sources);
 		}
 	}
-	
-	public void setAllParticleCharacterizationTypes(HttpSession session) throws Exception {
-		if (session.getServletContext().getAttribute("allCharacterizationTypes") == null) {
+
+	public void setAllParticleCharacterizationTypes(HttpSession session)
+			throws Exception {
+		if (session.getServletContext()
+				.getAttribute("allCharacterizationTypes") == null) {
 			String[] charTypes = lookupService.getAllCharacterizationTypes();
-			session.getServletContext().setAttribute("allCharacterizationTypes",
-					charTypes);
+			session.getServletContext().setAttribute(
+					"allCharacterizationTypes", charTypes);
 		}
 	}
-	
+
 	public void setSideParticleMenu(HttpSession session) throws Exception {
 		setAllParticleFunctionTypes(session);
 		setAllParticleCharacterizationTypes(session);
-		//TODO set additional data for particle menu
+		// TODO set additional data for particle menu
 
+	}
+
+	public void setCharacterizationTypeCharacterizations(HttpSession session)
+			throws Exception {
+		if (session.getServletContext().getAttribute(
+				"allCharacterizationTypeCharacterizations") == null) {
+			Map<String, String[]> charTypeChars = lookupService
+					.getCharacterizationTypeCharacterizations();
+			session.getServletContext().setAttribute(
+					"allCharacterizationTypeCharacterizations", charTypeChars);
+		}
 	}
 }
