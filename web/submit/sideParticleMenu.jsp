@@ -30,6 +30,7 @@
 								<span class="largerText">General Information</span>
 								<br>
 								<span class="indented"><a href="#">${particleName} (${particleType})</a></span>
+								<br><br>
 							</li>
 							<li>
 								<span class="largerText">Function</span>
@@ -41,6 +42,7 @@
 								<span class="indented">-Diagnostic Imaging &nbsp;&nbsp;</span><a href="submitAction.do?submitType=imaging"><em>add</em></a>
 								<br>
 								<span class="indented">-Diagnostic Reporting &nbsp;&nbsp;</span><a href="submitAction.do?submitType=reporting"><em>add</em></a>
+								<br><br>
 							</li>
 							<li>
 								<span class="largerText">Characterization</span>
@@ -61,15 +63,16 @@
 								<br>
 								<span class="indented2">-Metabolic Stability &nbsp;&nbsp;</span><a href="submitAction.do?submitType=metabolic"><em>add</em></a>
 								<br>
-								<span class="indented">-In Vivo Characterization</span>
+								<span class="indented">-In Vivo Characterization</span>								
+								<br><br>
 							</li>
 							<li>
 								<span class="largerText">Assay Results &nbsp;&nbsp;</span><a href="addAssayResult.do?dispatch=setup&particleName=${particleName}"><em>add</em></a>
+								<br><br>
 							</li>
 							<li>
-								<span class="largerText">Reports</span>
-								<br>
-							</li>
+								<span class="largerText">Reports</span>																
+							</li>							
 						</ul>
 						<p>
 							&nbsp;
