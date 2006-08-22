@@ -1,0 +1,23 @@
+/**
+ * 
+ */
+package gov.nih.nci.calab.domain.nano.characterization;
+
+import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
+
+import java.util.Collection;
+
+/**
+ * @author zengje
+ *
+ */
+public interface Characterization {
+	public void setId(Long id);
+	public Long getId();
+	public void setSource(String source);
+	public String getSource();
+	public void setClassification(String classification);
+	public String getClassification();
+	public void setParticleCollection(Collection<Nanoparticle> particles);
+	public Collection<Nanoparticle> getParticleCollection();
+}
