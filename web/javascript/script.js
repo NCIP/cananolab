@@ -116,6 +116,20 @@ function doubleDropdown(selection1, selection2, value1ToValue2) {
         }
     }
 }
+
+/* filter a drop-down by a value*/
+function dynamicDropdown(value, selection, value1ToValue2) {
+    /* initialize selection options */
+    selection.options.length = 0;
+    selection.options[0]=new Option("", "");
+    var value2Arr = value1ToValue2[value];    
+    if (value2Arr != null) {
+        for (i = 0; i < value2Arr.length; i++) {
+            selection.options[i] = value2Arr[i];
+        }
+    }
+}
+
 /* filter second multi-box by first multi-box selections */
 function doubleMultibox(selection1, selection2, value1ToValue2) {
     selection2.options.length = 0;
