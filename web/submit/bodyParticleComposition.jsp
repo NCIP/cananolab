@@ -7,7 +7,7 @@
 		<tr>
 			<td>				
 				<h4><br>
-					${nanoparticleCompositionForm.map.particleType} Composition
+					${nanoparticleCompositionForm.map.particleType} Physical Characterization: Composition
 				</h4>
 			</td>
 			<td align="right" width="15%">
