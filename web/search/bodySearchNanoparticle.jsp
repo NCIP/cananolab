@@ -1,7 +1,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html:form action="searchNanoparticle">
 	<table align="center">
 		<tr>
@@ -12,7 +12,7 @@
 				</h3>
 			</td>
 			<td align="right" width="25%">
-				<a href="advancedNanoparticleSearch.do" class="helpText">Advanced Search</a> &nbsp; &nbsp; <a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=search_nanoparticle')" class="helpText">Help</a>
+				<%--<a href="advancedNanoparticleSearch.do" class="helpText">Advanced Search</a> &nbsp; &nbsp; --%><a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=search_nanoparticle')" class="helpText">Help</a>
 			</td>
 		</tr>
 		<tr>
@@ -50,19 +50,43 @@
 						<td class="leftLabel">
 							<strong> Function Type </strong>
 						</td>
-						<td class="label">
+						<td class="rightLabel" colspan="3">
 							<strong> <html:select property="functionType">
 									<option value="" />
 										<html:options name="allParticleFunctionTypes" />
 								</html:select></strong>
 						</td>
-						<td class="label">
+					</tr>
+					<tr>
+						<td class="leftLabel" valign="top">
 							<strong> Characterization Type </strong>
 						</td>
-						<td class="rightLabel">
-							<strong> <html:select property="characterizationType">
-									<option value="" />
-										<html:options name="allCharacterizationTypes" />
+						<td class="label">
+							<a href="#" onclick="javascript:dynamicDropdown('physical', document.searchNanoparticleForm.characterization, charTypeChars)">Physical Characterization</a>
+							<br>
+							In Vitro Characterization
+							<br>
+							<span class="indented"><a href="#" onclick="javascript:dynamicDropdown('toxicity', document.searchNanoparticleForm.characterization, charTypeChars)">Toxicity</a> <br> 
+							<span class="indented2"><a href="#"
+									onclick="javascript:dynamicDropdown('cytoTox', document.searchNanoparticleForm.characterization, charTypeChars)">Cytotoxicity</a> </span> <br> 
+							<span class="indented2">Immunotoxicity</span> <br> 
+							<span class="indented3"><a href="#"
+									onclick="javascript:dynamicDropdown('bloodContactTox', document.searchNanoparticleForm.characterization, charTypeChars)">Blood Contact </a></span> <br>
+							<span class="indented3"><a href="#"
+									onclick="javascript:dynamicDropdown('immuneCellFuncTox', document.searchNanoparticleForm.characterization, charTypeChars)">Immune Cell Function </a></span> <br> 
+							<span class="indented2"><a href="#"
+									onclick="javascript:dynamicDropdown('metabolicStabilityTox', document.searchNanoparticleForm.characterization, charTypeChars)">Metabolic Stability </a></span> <br> 
+							<a href="#"
+								onclick="javascript:dynamicDropdown('invivo', document.searchNanoparticleForm.characterization, charTypeChars)">In Vivo Characterization</a> 
+						</td>
+						<td class="label" valign="top">
+							<strong> Characterization </strong>
+						</td>
+						<td class="rightLabel" valign="top">
+							<strong> <html:select property="characterization">
+									<option value="${searchNanoparticleForm.map.characterization}" selected>
+										${searchNanoparticleForm.map.characterization}
+									</option>
 								</html:select></strong>
 						</td>
 					</tr>
@@ -101,4 +125,18 @@
 		</tr>
 	</table>
 </html:form>
+<script language="JavaScript">
+<!--//
+
+/* populate a hashtable containing characterization type characterizations */
+  var charTypeChars=new Array();    
+  <c:forEach var="item" items="${allCharacterizationTypeCharacterizations}">  
+    var chars=new Array();
+   <c:forEach var="char" items="${allCharacterizationTypeCharacterizations[item.key]}" varStatus="count">
+  		chars[${count.index}]=new Option('${char}', '${char}');   		
+    </c:forEach>
+    charTypeChars['${item.key}']=chars;
+  </c:forEach>
+//-->
+</script>
 <!--_____ main content ends _____-->
