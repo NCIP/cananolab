@@ -57,7 +57,7 @@
 			<form-property name="particleSource" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />
 			<form-property name="functionType" type="java.lang.String" />
-			<form-property name="characterizationType" type="java.lang.String" />
+			<form-property name="characterization" type="java.lang.String" />
 			<form-property name="keywords" type="java.lang.String" />
 		</form-bean>
 	</form-beans>
