@@ -1,20 +1,21 @@
 package gov.nih.nci.calab.domain.nano.characterization.physical;
 
-import gov.nih.nci.calab.domain.nano.characterization.BaseCharacterization;
-import gov.nih.nci.calab.domain.nano.particle.BaseNanoParticle;
+import gov.nih.nci.calab.domain.nano.characterization.Characterization;
+import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 
 import java.util.Collection;
 
-public class Size implements BaseCharacterization {
+public class Size implements Characterization {
 	private Long id;
-	private String origin;
-	private String characterizationCategory;
+	private String source;
+	private String classification;
+	private Collection<Nanoparticle> particleCollection;
+	
 	private String size;
 	private String sizeDistribution;
 	private String radiusMoments;
 	private String polydispersityIndex;
-	private Collection<BaseNanoParticle> particleCollection;
-	
+
 	public Size() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -22,28 +23,34 @@ public class Size implements BaseCharacterization {
 
 	public void setId(Long id) {
 		this.id = id;
-
 	}
 
 	public Long getId() {
 		return this.id;
 	}
 
-	public void setOrigin(String origin) {
-		this.origin = origin;
-
+	public void setSource(String source) {
+		this.source = source;
 	}
 
-	public String getOrigin() {
-		return this.origin;
+	public String getSource() {
+		return this.source;
 	}
 
-	public void setCharacterizationCategory(String category) {
-		this.characterizationCategory = category;
+	public void setClassification(String classification) {
+		this.classification = classification;
 	}
 
-	public String getCharacterizationCategory() {
-		return this.characterizationCategory;
+	public String getClassification() {
+		return this.classification;
+	}
+
+	public void setParticleCollection(Collection<Nanoparticle> particles) {
+		this.particleCollection = particles;
+	}
+
+	public Collection<Nanoparticle> getParticleCollection() {
+		return this.particleCollection;
 	}
 
 	public String getPolydispersityIndex() {
@@ -76,15 +83,6 @@ public class Size implements BaseCharacterization {
 
 	public void setSizeDistribution(String sizeDistribution) {
 		this.sizeDistribution = sizeDistribution;
-	}
-
-	public Collection<BaseNanoParticle> getParticleCollection() {
-		return particleCollection;
-	}
-
-	public void setParticleCollection(
-			Collection<BaseNanoParticle> particleCollection) {
-		this.particleCollection = particleCollection;
 	}
 
 }
