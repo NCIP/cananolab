@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchNanoparticleAction.java,v 1.4 2006-08-22 15:07:00 pansu Exp $ */
+/* CVS $Id: SearchNanoparticleAction.java,v 1.5 2006-08-22 17:39:36 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
@@ -39,16 +39,15 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleSource = (String) theForm.get("particleSource");
 		String particleType = (String) theForm.get("particleType");
-		String functionType = (String) theForm.get("functionType");
-		String characterization = (String) theForm
-				.get("characterization");
+		String[] functionTypes = (String[]) theForm.get("functionTypes");
+		String[] characterizations = (String[]) theForm.get("characterizations");
 		String keywords = (String) theForm.get("keywords");
 		String[] keywordList = keywords.split("\r\n");
 
 		SearchNanoparticleService searchParticleService = new SearchNanoparticleService();
 		List<ParticleBean> particles = searchParticleService.basicSearch(
-				particleSource, particleType, functionType,
-				characterization, keywordList, user);
+				particleSource, particleType, functionTypes, characterizations,
+				keywordList, user);
 
 		request.setAttribute("particles", particles);
 		/*
