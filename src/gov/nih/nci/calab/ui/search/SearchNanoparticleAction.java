@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchNanoparticleAction.java,v 1.3 2006-08-15 19:14:36 pansu Exp $ */
+/* CVS $Id: SearchNanoparticleAction.java,v 1.4 2006-08-22 15:07:00 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
@@ -40,15 +40,15 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 		String particleSource = (String) theForm.get("particleSource");
 		String particleType = (String) theForm.get("particleType");
 		String functionType = (String) theForm.get("functionType");
-		String characterizationType = (String) theForm
-				.get("characterizationType");
+		String characterization = (String) theForm
+				.get("characterization");
 		String keywords = (String) theForm.get("keywords");
 		String[] keywordList = keywords.split("\r\n");
 
 		SearchNanoparticleService searchParticleService = new SearchNanoparticleService();
 		List<ParticleBean> particles = searchParticleService.basicSearch(
 				particleSource, particleType, functionType,
-				characterizationType, keywordList, user);
+				characterization, keywordList, user);
 
 		request.setAttribute("particles", particles);
 		/*
@@ -68,8 +68,8 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 		InitSessionSetup.getInstance().setAllParticleSources(session);
 		InitSessionSetup.getInstance().setAllParticleTypeParticles(session);
 		InitSessionSetup.getInstance().setAllParticleFunctionTypes(session);
-		InitSessionSetup.getInstance().setAllParticleCharacterizationTypes(
-				session);
+		InitSessionSetup.getInstance()
+				.setCharacterizationTypeCharacterizations(session);
 		InitSessionSetup.getInstance().clearWorkflowSession(session);
 		InitSessionSetup.getInstance().clearInventorySession(session);
 
