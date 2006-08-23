@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.41 2006-08-21 21:15:38 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.42 2006-08-23 13:24:58 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -617,7 +617,6 @@ public class LookupService {
 		return charTypes;
 	}
 
-
 	public String[] getAllDendrimerCores() {
 		String[] cores = new String[] { "Diamine", "Ethyline" };
 		return cores;
@@ -654,5 +653,35 @@ public class LookupService {
 		type2Category.put("metal particle", "inorganic");
 		type2Category.put("liposome", "liposome");
 		return type2Category;
+	}
+
+	/**
+	 * 
+	 * @return a map between a characterization type and its child characterizations.
+	 */
+	public Map<String, String[]> getCharacterizationTypeCharacterizations() {
+		Map<String, String[]> charTypeChars = new HashMap<String, String[]>();
+		String[] physicalChars = new String[] { "Composition", "Size",
+				"Molecular Weight", "Morphology", "Surface Characteristics",
+				"Solubility", "Purity", "Stability" };
+		charTypeChars.put("physical", physicalChars);
+		String[] toxChars = new String[] { "Oxidative Stress",
+				"Enzyme Function" };
+		charTypeChars.put("toxicity", toxChars);
+		String[] cytoToxChars = new String[] { "MTT", "LDH",
+				"Caspase 3 Activation" };
+		charTypeChars.put("cytoTox", cytoToxChars);
+		String[] bloodContactChars = new String[] { "Plate Aggregation",
+				"Hemolysis", "Plasma Protein Binding", "Coagulation" };
+		charTypeChars.put("bloodContactTox", bloodContactChars);
+		String[] immuneCellFuncChars = new String[] { "Oxidative Burst",
+				"Chemotaxis", "Leukocyte Proliferation", "Phagocytosis",
+				"Cytokine Induction", "CFU-GM", "Complement Activation",
+				"Cytotoxic Activity of NK Cells" };
+		charTypeChars.put("immuneCellFuncTox", immuneCellFuncChars);
+		String[] metabolicChars = new String[] { "CYP450",
+				"Glucuronidation, Sulphation", "ROS" };
+		charTypeChars.put("metabolicStabilityTox", metabolicChars);
+		return charTypeChars;
 	}
 }
