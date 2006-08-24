@@ -90,8 +90,14 @@
 						<td class="leftLabel">
 							<strong> Keywords <em>(one per line)</em> </strong>
 						</td>
-						<td class="rightLabel" colspan="3">
+						<td class="label">
 							<html:textarea property="keywords" rows="4" />
+						</td>
+						<td class="rightLabel" colspan="2"><strong>for<br>
+							<html:radio property="keywordType" value="nanoparticle">Nanoparticle</html:radio>
+							<br>
+							<html:radio property="keywordType" value="assayResult">Assay Result</html:radio>
+							</strong>
 						</td>
 					</tr>
 				</table>
