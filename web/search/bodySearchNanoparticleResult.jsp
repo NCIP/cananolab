@@ -19,10 +19,17 @@
 	</tr>
 	<tr>
 		<td colspan="2">
-
+			<c:choose>
+				<c:when test="${canUserUpdateParticle eq 'true'}">
+					<c:set var="particleURL" value="editParticleURL" />
+				</c:when>
+				<c:otherwise>
+					<c:set var="particleURL" value="viewParticleURL" />
+				</c:otherwise>
+			</c:choose>
 			<jsp:include page="/bodyMessage.jsp?bundle=search" />
 			<display:table name="particles" id="particle" requestURI="searchNanoparticle.do" pagesize="25" class="displaytable" decorator="gov.nih.nci.calab.dto.search.NanoparticleDecorator">
-				<display:column title="Particle ID" property="editParticleURL" sortable="true"/>
+				<display:column title="Particle ID" property="${particleURL}" sortable="true" />
 				<display:column title="Particle Source" property="sampleSource" sortable="true" />
 				<display:column title="Particle Category" property="particleCategory" sortable="true" />
 				<display:column title="Particle Type" property="sampleType" sortable="true" />
