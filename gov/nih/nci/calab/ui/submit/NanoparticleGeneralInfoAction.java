@@ -6,8 +6,10 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.2 2006-08-21 21:17:31 pansu Exp $ */
+/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.3 2006-08-24 17:10:06 pansu Exp $ */
 
+import gov.nih.nci.calab.dto.particle.ParticleBean;
+import gov.nih.nci.calab.service.search.SearchNanoparticleService;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
@@ -38,9 +40,9 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 		String[] visibilities = (String[]) theForm.get("visibilities");
 		String[] keywordList = keywords.split("\r\n");
 		SubmitNanoparticleService submitNanoparticleService = new SubmitNanoparticleService();
-		submitNanoparticleService.createNanoparticle(particleType, particleName,
-				keywordList, visibilities);
-		
+		submitNanoparticleService.createNanoparticle(particleType,
+				particleName, keywordList, visibilities);
+
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage(
 				"message.createNanoparticle.secure", StringUtils.join(
@@ -48,6 +50,7 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 		msgs.add("message", msg);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
+		request.getSession().setAttribute("canUpdateParticle", "true");
 
 		return forward;
 	}
@@ -65,7 +68,45 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 		InitSessionSetup.getInstance().setSideParticleMenu(session);
 		return mapping.getInputForward();
 	}
+	
+	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		HttpSession session = request.getSession();
+		InitSessionSetup.getInstance().clearWorkflowSession(session);
+		InitSessionSetup.getInstance().clearSearchSession(session);
+		InitSessionSetup.getInstance().clearInventorySession(session);
 
+		InitSessionSetup.getInstance().setAllParticleTypeParticles(session);
+		InitSessionSetup.getInstance().setAllVisibilityGroups(session);
+		InitSessionSetup.getInstance().setSideParticleMenu(session);
+		
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		String particleName = (String) theForm.get("particleName");
+		SearchNanoparticleService searchtNanoparticleService = new SearchNanoparticleService();
+		ParticleBean particle=searchtNanoparticleService.getGeneralInfo(particleName);
+		theForm.set("particleType", particle.getSampleType());
+		theForm.set("keywords", particle.getKeywords());
+		theForm.set("visibilities", new String[]{});
+		return mapping.findForward("update");
+	}
+
+	public ActionForward view(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		ActionForward forward = null;
+		// TODO fill in details for sample information */
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		String particleName = (String) theForm.get("particleName");
+		SearchNanoparticleService searchtNanoparticleService = new SearchNanoparticleService();
+		ParticleBean particle=searchtNanoparticleService.getGeneralInfo(particleName);
+		particle.setKeywords(particle.getKeywords().replaceAll("\\\r\\\n", "</br>"));		
+		request.setAttribute("particle", particle);
+		forward = mapping.findForward("view");
+
+		return forward;
+	}
+	
 	public boolean loginRequired() {
 		return true;
 	}
