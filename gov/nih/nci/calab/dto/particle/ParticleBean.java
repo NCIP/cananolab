@@ -10,7 +10,7 @@ public class ParticleBean extends SampleBean {
 
 	private String characterizationTypes;
 
-	private String keywords;
+	private String keywords;	
 
 	public ParticleBean(String id, String name) {
 		super(id, name);
