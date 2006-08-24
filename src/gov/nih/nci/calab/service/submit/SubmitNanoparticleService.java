@@ -2,11 +2,8 @@ package gov.nih.nci.calab.service.submit;
 
 import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
-import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
-import gov.nih.nci.calab.dto.particle.DendrimerBean;
-import gov.nih.nci.calab.dto.particle.ParticleBean;
+import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.workflow.FileBean;
-import gov.nih.nci.calab.exception.DuplicateEntriesException;
 import gov.nih.nci.calab.service.common.LookupService;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CalabConstants;
@@ -64,11 +61,8 @@ public class SubmitNanoparticleService {
 
 	}
 
-	public void addParticleProperties(String particleType, ParticleBean particle) {
-		if (particleType.equalsIgnoreCase("dendrimer")) {
-			DendrimerBean dendrimer = (DendrimerBean) particle;
-			// TODO update the dendrimer object in the db.
-		}
+	public void addParticleComposition(String particleType, CharacterizationBean particle) {
+		//TODO add database code
 	}
 
 	public void saveAssayResult(String particleName, String fileName,
