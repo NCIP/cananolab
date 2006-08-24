@@ -1,11 +1,8 @@
 package gov.nih.nci.calab.dto.search;
 
-import javax.servlet.jsp.PageContext;
-
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 
 import org.displaytag.decorator.TableDecorator;
-import org.displaytag.model.TableModel;
 
 /**
  * This decorator is used to for display a nanoparticle with a URL on the name
@@ -18,7 +15,7 @@ public class NanoparticleDecorator extends TableDecorator {
 		ParticleBean particle = (ParticleBean) getCurrentRowObject();
 		String particleType = particle.getSampleType();
 		String particleName = particle.getSampleName();
-		String viewParticleURL = "nanoparticleProperties.do?dispatch=setup&particleType="
+		String viewParticleURL = "nanoparticleGeneralInfo.do?dispatch=setupUpdate&particleType="
 				+ particleType + "&particleName=" + particleName;
 		String link = "<a href=" + viewParticleURL + ">"
 				+ particle.getSortableName() + "</a>";
@@ -29,7 +26,7 @@ public class NanoparticleDecorator extends TableDecorator {
 		ParticleBean particle = (ParticleBean) getCurrentRowObject();
 		String particleType = particle.getSampleType();
 		String particleName = particle.getSampleName();
-		String viewParticleURL = "nanoparticleProperties.do?dispatch=view&particleType="
+		String viewParticleURL = "nanoparticleGeneralInfo.do?dispatch=view&particleType="
 				+ particleType + "&particleName=" + particleName;
 		String link = "<a href=" + viewParticleURL + ">"
 				+ particle.getSortableName() + "</a>";
