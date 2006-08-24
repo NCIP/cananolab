@@ -6,18 +6,18 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleCompositionAction.java,v 1.1 2006-08-21 21:17:10 pansu Exp $ */
+/* CVS $Id: NanoparticleCompositionAction.java,v 1.2 2006-08-24 20:54:21 pansu Exp $ */
 
-import gov.nih.nci.calab.dto.particle.BuckeyballBean;
-import gov.nih.nci.calab.dto.particle.DendrimerBean;
-import gov.nih.nci.calab.dto.particle.FullereneBean;
-import gov.nih.nci.calab.dto.particle.LiposomeBean;
-import gov.nih.nci.calab.dto.particle.MetalParticleBean;
-import gov.nih.nci.calab.dto.particle.MonomerBean;
-import gov.nih.nci.calab.dto.particle.ParticleBean;
-import gov.nih.nci.calab.dto.particle.PolymerBean;
-import gov.nih.nci.calab.dto.particle.QuantumDotBean;
-import gov.nih.nci.calab.dto.particle.SurfaceGroupBean;
+import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
+import gov.nih.nci.calab.dto.characterization.composition.BuckeyballBean;
+import gov.nih.nci.calab.dto.characterization.composition.DendrimerBean;
+import gov.nih.nci.calab.dto.characterization.composition.FullereneBean;
+import gov.nih.nci.calab.dto.characterization.composition.LiposomeBean;
+import gov.nih.nci.calab.dto.characterization.composition.MetalParticleBean;
+import gov.nih.nci.calab.dto.characterization.composition.MonomerBean;
+import gov.nih.nci.calab.dto.characterization.composition.PolymerBean;
+import gov.nih.nci.calab.dto.characterization.composition.QuantumDotBean;
+import gov.nih.nci.calab.dto.characterization.composition.SurfaceGroupBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
@@ -44,27 +44,27 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		// TODO fill in details for sample information */
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleType = (String) theForm.get("particleType");
-		ParticleBean particle = null;
+		CharacterizationBean composition = null;
 		if (particleType.equalsIgnoreCase("dendrimer")) {
-			particle = (DendrimerBean) theForm.get("dendrimer");
+			composition = (DendrimerBean) theForm.get("dendrimer");
 		} else if (particleType.equalsIgnoreCase("polymer")) {
-			particle = (PolymerBean) theForm.get("polymer");
+			composition = (PolymerBean) theForm.get("polymer");
 		} else if (particleType.equalsIgnoreCase("liposome")) {
-			particle = (LiposomeBean) theForm.get("liposome");
+			composition = (LiposomeBean) theForm.get("liposome");
 		} else if (particleType.equalsIgnoreCase("buckeyball")) {
-			particle = (BuckeyballBean) theForm.get("buckyball");
+			composition = (BuckeyballBean) theForm.get("buckyball");
 		} else if (particleType.equalsIgnoreCase("fullerene")) {
-			particle = (FullereneBean) theForm.get("fullerene");
+			composition = (FullereneBean) theForm.get("fullerene");
 		} else if (particleType.equalsIgnoreCase("quantum dot")) {
-			particle = (QuantumDotBean) theForm.get("quantumDot");
+			composition = (QuantumDotBean) theForm.get("quantumDot");
 		} else if (particleType.equalsIgnoreCase("metal particle")) {			
-			particle = (MetalParticleBean) theForm.get("metalParticle");
+			composition = (MetalParticleBean) theForm.get("metalParticle");
 		}
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		service.addParticleProperties(particleType, particle);
+		service.addParticleComposition(particleType, composition);
 
 		ActionMessages msgs = new ActionMessages();
-		ActionMessage msg = new ActionMessage("message.addParticleProperties");
+		ActionMessage msg = new ActionMessage("message.addParticleComposition");
 		msgs.add("message", msg);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
@@ -101,15 +101,15 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 
 		// update surface group info for dendrimers
 		if (particleType.equalsIgnoreCase("dendrimer")) {
-			DendrimerBean particle = (DendrimerBean) theForm.get("dendrimer");
-			updateSurfaceGroups(particle);
-			theForm.set("dendrimer", particle);
+			DendrimerBean composition = (DendrimerBean) theForm.get("dendrimer");
+			updateSurfaceGroups(composition);
+			theForm.set("dendrimer", composition);
 		}
 		// update monomer info on polymers
 		else if (particleType.equalsIgnoreCase("polymer")) {
-			PolymerBean particle = (PolymerBean) theForm.get("polymer");
-			updateMonomers(particle);
-			theForm.set("polymer", particle);
+			PolymerBean composition = (PolymerBean) theForm.get("polymer");
+			updateMonomers(composition);
+			theForm.set("polymer", composition);
 		}
 		return mapping.getInputForward();
 	}
@@ -145,10 +145,10 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		particle.setSurfaceGroups(surfaceGroups);
 	}
 
-	private void updateMonomers(PolymerBean particle) {
-		String numberOfMonomers = particle.getNumberOfMonomers();
+	private void updateMonomers(PolymerBean composition) {
+		String numberOfMonomers = composition.getNumberOfMonomers();
 		int monomerNum = Integer.parseInt(numberOfMonomers);
-		List<MonomerBean> origMonomers = particle.getMonomers();
+		List<MonomerBean> origMonomers = composition.getMonomers();
 		int origNum = (origMonomers == null) ? 0 : origMonomers
 				.size();
 		List<MonomerBean> monomers = new ArrayList<MonomerBean>();
@@ -173,7 +173,7 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 				monomers.add(new MonomerBean());
 			}
 		}
-		particle.setMonomers(monomers);
+		composition.setMonomers(monomers);
 	}
 
 	public boolean loginRequired() {
