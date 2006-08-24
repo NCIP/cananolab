@@ -49,6 +49,8 @@
 		<action name="nanoparticleGeneralInfoForm" parameter="dispatch" path="/nanoparticleGeneralInfo" type="gov.nih.nci.calab.ui.submit.NanoparticleGeneralInfoAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.nanoparticle.generalInfo" path="submit.createnanoparticle" type="java.lang.Exception" />
 			<forward name="success" path="submit.message" />
+			<forward name="view" path="submit.generalinfo.view"/>
+			<forward name="update" path="submit.generalinfo.update"/>
 			<forward name="input" path="submit.createnanoparticle" />
 		</action>
 		<action name="submitReportForm" parameter="dispatch" path="/submitReport" type="gov.nih.nci.calab.ui.submit.SubmitReportAction" input="input" scope="request">
