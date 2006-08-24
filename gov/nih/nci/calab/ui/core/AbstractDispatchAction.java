@@ -22,12 +22,14 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 
 		if (isCancelled(request))
 			return mapping.findForward("cancel");
-
 		// TODO fill in the common operations */
 		if (!loginRequired() || loginRequired() && isUserLoggedIn(request)) {
 			if (loginRequired()) {
+				String dispatch = request.getParameter("dispatch");
+				// check whether user have access to the class
 				boolean accessStatus = canUserExecute(request.getSession());
-				if (!accessStatus) {
+				//if dispatch is view or accessStatus is true don't throw exception
+				if (!dispatch.equals("view") && !accessStatus) {
 					throw new NoAccessException(
 							"You don't have access to class: "
 									+ this.getClass().getName());
@@ -57,6 +59,7 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 
 	/**
 	 * Check whether the current user in the session can perform the action
+	 * 
 	 * @param session
 	 * @return
 	 * @throws Exception
