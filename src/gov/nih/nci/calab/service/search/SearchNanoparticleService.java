@@ -42,7 +42,7 @@ public class SearchNanoparticleService {
 				"Composition<br>Size", "this<br>is<br> a <br>test");
 		String[] keywords=new String[]{"This", "is"};
 		String[] visibility=new String[]{"CCNE_Researcher"};
-		particle1.setKeywords(StringUtils.join(keywords, "<br>"));		
+		particle1.setKeywords(StringUtils.join(keywords, "\r\n"));		
 		return particle1;
 	}
 }
