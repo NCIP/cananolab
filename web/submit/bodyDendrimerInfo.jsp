@@ -23,12 +23,27 @@ function update() {
 		</tr>
 		<tr>
 			<td class="leftLabel">
+				<strong>Characterization Source </strong>
+			</td>
+			<td class="rightLabel" colspan="3">
+				<html:select property="dendrimer.characterizationSource">
+					<option name="vendor">
+						Vendor
+					</option>
+					<option name="NCL">
+						NCL
+					</option>
+				</html:select>
+			</td>
+		</tr>
+		<tr>
+			<td class="leftLabel">
 				<strong>Core </strong>
 			</td>
 			<td class="label">
 				<html:select property="dendrimer.core">
-					<option/>
-					<html:options name="allDendrimerCores"/>
+					<option />
+						<html:options name="allDendrimerCores" />
 				</html:select>
 			</td>
 			<td class="label">
@@ -77,8 +92,8 @@ function update() {
 			<tr class="topBorder">
 				<td class="formTitle" colspan="4">
 					<div align="justify">
-						Dendrimer Surface Group ${status.index+1} Information 
-					</div>					
+						Dendrimer Surface Group ${status.index+1} Information
+					</div>
 				</td>
 			</tr>
 			<tr>
@@ -87,8 +102,8 @@ function update() {
 				</td>
 				<td class="label">
 					<html:select name="dendrimer.surfaceGroup" indexed="true" property="name">
-						<option/>
-						<html:options name="allDendrimerSurfaceGroupNames"/>
+						<option />
+							<html:options name="allDendrimerSurfaceGroupNames" />
 					</html:select>
 				</td>
 				<td class="label">
@@ -97,7 +112,7 @@ function update() {
 				<td class="rightLabel">
 					<html:text name="dendrimer.surfaceGroup" indexed="true" property="modifier" />
 				</td>
-			</tr>			
+			</tr>
 		</tbody>
 	</table>
 	<br>
