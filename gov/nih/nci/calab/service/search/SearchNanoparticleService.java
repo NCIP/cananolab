@@ -4,7 +4,6 @@ import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CalabConstants;
-import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +17,15 @@ public class SearchNanoparticleService {
 		// TODO fill in database code
 		List<ParticleBean> particles = new ArrayList<ParticleBean>();
 		ParticleBean particle1 = new ParticleBean("1", "NCL-3", "UMD",
-				"Dendrimer", "Organic", "Targeting<br>Therapeutic",
-				"Physical:Composition<br>Physical:Size", "this<br>is<br> a <br>test");
+				"Dendrimer", "Organic", new String[] { "Targeting",
+						"Therapeutic" }, new String[] { "Physical:Composition",
+						"Physical:Size" }, new String[] { "this", "is", "a",
+						"test" });
 		ParticleBean particle2 = new ParticleBean("2", "NCL-14", "UMD",
-				"Dendrimer", "Organic",
-				"Targeting<br>Therapeutic<br>Diagnostic Imaging",
-				"Physical:Composition<br>Physical:Size", "this<br> is<br> another<br> test");
+				"Dendrimer", "Organic", new String[] { "Targeting",
+						"Therapeutic" }, new String[] { "Physical:Composition",
+						"Physical:Size" }, new String[] { "this", "is",
+						"another", "test" });
 		particles.add(particle1);
 		particles.add(particle2);
 
@@ -36,13 +38,15 @@ public class SearchNanoparticleService {
 	}
 
 	public ParticleBean getGeneralInfo(String particleName) {
-		//TODO add database code
+		// TODO add database code
+		String[] keywords = new String[] { "This", "is" };
+		String[] visibilityGroup = new String[] {"CCNE_Researcher" };
 		ParticleBean particle1 = new ParticleBean("1", "NCL-3", "UMD",
-				"Dendrimer", "Organic", "Targeting<br>Therapeutic",
-				"Composition<br>Size", "this<br>is<br> a <br>test");
-		String[] keywords=new String[]{"This", "is"};
-		String[] visibility=new String[]{"CCNE_Researcher"};
-		particle1.setKeywords(StringUtils.join(keywords, "\r\n"));		
+				"Dendrimer", "Organic", new String[] { "Targeting",
+						"Therapeutic" }, new String[] { "Physical:Composition",
+						"Physical:Size" }, keywords);
+		particle1.setVisibilityGroups(visibilityGroup);
+		
 		return particle1;
 	}
 }

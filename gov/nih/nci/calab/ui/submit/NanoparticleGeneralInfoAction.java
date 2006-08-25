@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.4 2006-08-24 20:54:42 pansu Exp $ */
+/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.5 2006-08-25 18:40:09 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
@@ -86,8 +86,8 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 		SearchNanoparticleService searchtNanoparticleService = new SearchNanoparticleService();
 		ParticleBean particle=searchtNanoparticleService.getGeneralInfo(particleName);
 		theForm.set("particleType", particle.getSampleType());
-		theForm.set("keywords", particle.getKeywords());
-		theForm.set("visibilities", new String[]{});
+		theForm.set("keywords", StringUtils.join(particle.getKeywords(), "\r\n"));
+		theForm.set("visibilities", particle.getVisibilityGroups());
 		return mapping.findForward("update");
 	}
 
@@ -99,8 +99,7 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleName = (String) theForm.get("particleName");
 		SearchNanoparticleService searchtNanoparticleService = new SearchNanoparticleService();
-		ParticleBean particle=searchtNanoparticleService.getGeneralInfo(particleName);
-		particle.setKeywords(particle.getKeywords().replaceAll("\\\r\\\n", "</br>"));		
+		ParticleBean particle=searchtNanoparticleService.getGeneralInfo(particleName);				
 		request.setAttribute("particle", particle);
 		forward = mapping.findForward("view");
 
