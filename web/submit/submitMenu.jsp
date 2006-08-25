@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:choose>
 	<c:when test="${!empty param.submitType}">
-		<c:set var="submitType" value="${param.submitType}" />
+		<c:set var="submitType" value="${param.submitType}" scope="session"/>
 	</c:when>
 	<c:otherwise>
 		<c:set var="submitType" value="${sessionScope.submitType}" />
