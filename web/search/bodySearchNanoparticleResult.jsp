@@ -33,9 +33,9 @@
 				<display:column title="Particle Source" property="sampleSource" sortable="true" />
 				<display:column title="Particle Category" property="particleCategory" sortable="true" />
 				<display:column title="Particle Type" property="sampleType" sortable="true" />
-				<display:column title="Particle Functions" property="functionTypes" />
-				<display:column title="Particle Characterization Types" property="characterizationTypes" />
-				<display:column title="Particle Keywords" property="keywords" />
+				<display:column title="Particle Functions" property="functionTypesStr" />
+				<display:column title="Particle Characterization Types" property="characterizationTypesStr" />
+				<display:column title="Particle Keywords" property="keywordsStr" />
 			</display:table>
 			<%--
 				<div align="right">
