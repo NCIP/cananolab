@@ -47,8 +47,11 @@
 						<td class="leftLabel">
 							<strong>Keywords <em>(one per line)</em></strong>
 						</td>
-						<td class="rightLabel">						
-						    <c:out value="${particle.keywords}" escapeXml="false"/>
+						<td class="rightLabel">
+							<c:forEach var="keyword" items="${particle.keywords}">
+								<c:out value="${keyword}" />
+								<br>
+							</c:forEach>
 						</td>
 					</tr>
 					<tr>
@@ -56,7 +59,10 @@
 							<strong>Visibility</strong>
 						</td>
 						<td class="rightLabel">
-							&nbsp;
+							<c:forEach var="visibility" items="${particle.visibilityGroups}">
+								<c:out value="${visibility}"/>&nbsp;
+								<br>
+							</c:forEach>
 						</td>
 					</tr>
 				</tbody>
