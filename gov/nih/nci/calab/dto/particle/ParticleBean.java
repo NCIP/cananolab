@@ -6,12 +6,14 @@ public class ParticleBean extends SampleBean {
 
 	private String particleCategory;
 
-	private String functionTypes;
+	private String[] functionTypes;
 
-	private String characterizationTypes;
+	private String[] characterizationTypes;
 
-	private String keywords;	
+	private String[] keywords;	
 
+	private String[] visibilityGroups;
+	
 	public ParticleBean(String id, String name) {
 		super(id, name);
 	}
@@ -20,38 +22,38 @@ public class ParticleBean extends SampleBean {
 	}
 
 	public ParticleBean(String id, String name, String particleSource,
-			String particleType, String particleCategory, String functionTypes,
-			String characterizationTypes, String keywords) {
+			String particleType, String particleCategory, String[] functionTypes,
+			String[] characterizationTypes, String[] keywords) {
 		this(id, name);
 		setSampleType(particleType);
 		setSampleSource(particleSource);
 		this.particleCategory = particleCategory;
 		this.functionTypes = functionTypes;
 		this.characterizationTypes = characterizationTypes;
-		this.keywords = keywords;
+		this.keywords = keywords;		
 	}
 
-	public String getCharacterizationTypes() {
+	public String[] getCharacterizationTypes() {
 		return characterizationTypes;
 	}
 
-	public void setCharacterizationTypes(String characterizationTypes) {
+	public void setCharacterizationTypes(String[] characterizationTypes) {
 		this.characterizationTypes = characterizationTypes;
 	}
 
-	public String getFunctionTypes() {
+	public String[] getFunctionTypes() {
 		return functionTypes;
 	}
 
-	public void setFunctionTypes(String functionTypes) {
+	public void setFunctionTypes(String[] functionTypes) {
 		this.functionTypes = functionTypes;
 	}
 
-	public String getKeywords() {
+	public String[] getKeywords() {
 		return keywords;
 	}
 
-	public void setKeywords(String keywords) {
+	public void setKeywords(String[] keywords) {
 		this.keywords = keywords;
 	}
 
@@ -62,4 +64,13 @@ public class ParticleBean extends SampleBean {
 	public void setParticleCategory(String particleCategory) {
 		this.particleCategory = particleCategory;
 	}
+	
+	public String[] getVisibilityGroups() {
+		return visibilityGroups;
+	}
+
+	public void setVisibilityGroups(String[] visibilityGroups) {
+		this.visibilityGroups = visibilityGroups;
+	}
+
 }
