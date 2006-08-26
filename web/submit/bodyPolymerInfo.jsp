@@ -45,43 +45,76 @@ function update() {
 			<td class="leftLabel">
 				<strong>Initiator </strong>
 			</td>
-			<td class="label">
+			<td class="rightLabel" colspan="3">
 				<html:select property="polymer.initiator">
-					<option/>
-					<html:options name="allPolymerInitiators"/>
+					<option />
+						<html:options name="allPolymerInitiators" />
 				</html:select>
-			</td>
-			<td class="label">
-				<strong>Number of Monomers</strong>
-			</td>
-			<td class="rightLabel">
-				<html:text property="polymer.numberOfMonomers" />
 			</td>
 		</tr>
 	</tbody>
 </table>
 <br>
-<c:forEach var="polymer.monomer" items="${nanoparticleCompositionForm.map.polymer.monomers}" varStatus="status">
-	<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
-		<tbody>
-			<tr class="topBorder">
-				<td class="formTitle" colspan="2">
-					<div align="justify">
-						Polymer Monomer ${status.index+1} Information
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<td class="leftLabel">
-					<strong>Name </strong>
-				</td>
-				<td class="rightLabel">
-					<html:text name="polymer.monomer" indexed="true" property="name" />
-				</td>
-			</tr>
-		</tbody>
-	</table>
-	<br>
-</c:forEach>
-<input type="button" onclick="javascript:update()" value="Update Monomers">
-
+<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+	<tbody>
+		<tr class="topBorder">
+			<td class="formTitle" colspan="4">
+				<div align="justify">
+					Monomer Information
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td class="leftLabel">
+				<strong>Number of Monomers</strong>
+			</td>
+			<td class="label">
+				<html:text property="polymer.numberOfElements" />
+			</td>
+			<td class="rightLabel" colspan="2">
+				<input type="button" onclick="javascript:update()" value="Update Monomers">
+			</td>
+		</tr>
+		<tr>
+			<td class="completeLabel" colspan="4">
+				<c:forEach var="polymer.element" items="${nanoparticleCompositionForm.map.polymer.composingElements}" varStatus="status">
+					<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+						<tbody>
+							<tr class="topBorder">
+								<td class="formSubTitle" colspan="4">
+									<div align="justify">
+										Monomer ${status.index+1}
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td class="leftLabel">
+									<strong>Chemical Name</strong>
+								</td>
+								<td class="label">
+									<html:text name="polymer.element" indexed="true" property="chemicalName" />
+								</td>
+								<td class="label">
+									<strong>Percent Molecular Weight</strong>
+								</td>
+								<td class="rightLabel">
+									<html:text name="polymer.element" indexed="true" property="percentMolecularWeight" />
+									%
+								</td>
+							</tr>
+							<tr>
+								<td class="leftLabel">
+									<strong>Description</strong>
+								</td>
+								<td class="rightLabel" colspan="3">
+									<html:textarea name="polymer.element" indexed="true" property="description" rows="3" />
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<br>
+					<html:hidden name="polymer.element" indexed="true" property="elementType" value="monomer"/>
+				</c:forEach>
+			</td>
+		</tr>
+</table>
