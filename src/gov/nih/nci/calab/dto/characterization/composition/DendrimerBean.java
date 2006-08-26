@@ -1,35 +1,34 @@
 package gov.nih.nci.calab.dto.characterization.composition;
 
-import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class DendrimerBean extends CharacterizationBean {
-	private String core;
-
+public class DendrimerBean extends CompositionBean {
 	private String branch;
 
 	private String repeatUnit;
 
 	private String generation;
-	
+
 	private String numberOfSurfaceGroups;
-	
+
 	private String molecularFormula;
 
-	private List<SurfaceGroupBean> surfaceGroups;	
-	
+	private List<SurfaceGroupBean> surfaceGroups;
+
 	public DendrimerBean() {
-		surfaceGroups=new ArrayList<SurfaceGroupBean>();
-	}
-	
-	public String getBranch() {
-		return branch;
+		surfaceGroups = new ArrayList<SurfaceGroupBean>();
+		
+		List composingElements = getComposingElements();
+		ComposingElementBean core = new ComposingElementBean();
+		core.setElementType("core");
+		composingElements.add(core);
+		setComposingElements(composingElements);
+		setNumberOfElements("1");
 	}
 
-	public String getCore() {
-		return core;
+	public String getBranch() {
+		return branch;
 	}
 
 	public String getGeneration() {
@@ -50,10 +49,6 @@ public class DendrimerBean extends CharacterizationBean {
 
 	public void setBranch(String branch) {
 		this.branch = branch;
-	}
-
-	public void setCore(String core) {
-		this.core = core;
 	}
 
 	public void setGeneration(String generation) {
@@ -79,11 +74,11 @@ public class DendrimerBean extends CharacterizationBean {
 	public void setSurfaceGroups(List<SurfaceGroupBean> surfaceGroups) {
 		this.surfaceGroups = surfaceGroups;
 	}
-	
-	public SurfaceGroupBean getSurfaceGroup(int ind){
+
+	public SurfaceGroupBean getSurfaceGroup(int ind) {
 		return surfaceGroups.get(ind);
 	}
-	
+
 	public void setSurfaceGroup(int ind, SurfaceGroupBean surfaceGroup) {
 		surfaceGroups.set(ind, surfaceGroup);
 	}

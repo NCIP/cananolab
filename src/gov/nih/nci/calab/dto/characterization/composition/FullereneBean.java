@@ -3,13 +3,12 @@
  */
 package gov.nih.nci.calab.dto.characterization.composition;
 
-import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 
 /**
  * @author Zeng
  *
  */
-public class FullereneBean extends CharacterizationBean {
+public class FullereneBean extends CompositionBean {
 	private String chirality;
 	
 	private String growthDiameter;
