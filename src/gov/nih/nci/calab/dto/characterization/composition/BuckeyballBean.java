@@ -1,19 +1,18 @@
 package gov.nih.nci.calab.dto.characterization.composition;
 
-import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 
-public class BuckeyballBean extends CharacterizationBean {
-	private String structure;
+public class BuckeyballBean extends CompositionBean {
+	private String numberOfCarbons;
 	
 	public BuckeyballBean(){
 	}
 
-	public String getStructure() {
-		return structure;
+	public String getNumberOfCarbons() {
+		return numberOfCarbons;
 	}
 
-	public void setStructure(String structure) {
-		this.structure = structure;
+	public void setNumberOfCarbons(String numberOfCarbons) {
+		this.numberOfCarbons = numberOfCarbons;
 	}
 	
 }

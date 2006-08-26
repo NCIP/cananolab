@@ -3,13 +3,12 @@
  */
 package gov.nih.nci.calab.dto.characterization.composition;
 
-import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 
 /**
  * @author Zeng
  *
  */
-public class MetalParticleBean extends CharacterizationBean {
+public class MetalParticleBean extends CompositionBean {
 	private String core;
 
 	private String shell;

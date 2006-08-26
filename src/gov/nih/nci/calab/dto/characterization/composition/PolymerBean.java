@@ -1,21 +1,16 @@
 package gov.nih.nci.calab.dto.characterization.composition;
 
-import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
-
 import java.util.List;
 
-public class PolymerBean extends CharacterizationBean {
+public class PolymerBean extends CompositionBean {
 	private String crosslinked;
 
 	private String crosslinkDegree;
 
 	private String initiator;
 
-	private String numberOfMonomers;
-
-	private List<MonomerBean> monomers;
-
 	public PolymerBean() {
+		super();				
 	}
 
 	public String getCrosslinkDegree() {
@@ -30,10 +25,6 @@ public class PolymerBean extends CharacterizationBean {
 		return initiator;
 	}
 
-	public String getNumberOfMonomers() {
-		return numberOfMonomers;
-	}
-
 	public void setCrosslinkDegree(String crosslinkDegree) {
 		this.crosslinkDegree = crosslinkDegree;
 	}
@@ -44,25 +35,5 @@ public class PolymerBean extends CharacterizationBean {
 
 	public void setInitiator(String initiator) {
 		this.initiator = initiator;
-	}
-
-	public void setNumberOfMonomers(String numberOfMonomers) {
-		this.numberOfMonomers = numberOfMonomers;
-	}
-
-	public List<MonomerBean> getMonomers() {
-		return monomers;
-	}
-
-	public void setMonomers(List<MonomerBean> monomers) {
-		this.monomers = monomers;
-	}
-
-	public MonomerBean getMonomer(int ind) {
-		return monomers.get(ind);
-	}
-
-	public void setMonomer(int ind, MonomerBean monomer) {
-		monomers.set(ind, monomer);
 	}
 }
