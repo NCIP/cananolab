@@ -6,15 +6,16 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleCompositionAction.java,v 1.2 2006-08-24 20:54:21 pansu Exp $ */
+/* CVS $Id: NanoparticleCompositionAction.java,v 1.3 2006-08-26 01:53:47 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.composition.BuckeyballBean;
+import gov.nih.nci.calab.dto.characterization.composition.ComposingElementBean;
+import gov.nih.nci.calab.dto.characterization.composition.CompositionBean;
 import gov.nih.nci.calab.dto.characterization.composition.DendrimerBean;
 import gov.nih.nci.calab.dto.characterization.composition.FullereneBean;
 import gov.nih.nci.calab.dto.characterization.composition.LiposomeBean;
 import gov.nih.nci.calab.dto.characterization.composition.MetalParticleBean;
-import gov.nih.nci.calab.dto.characterization.composition.MonomerBean;
 import gov.nih.nci.calab.dto.characterization.composition.PolymerBean;
 import gov.nih.nci.calab.dto.characterization.composition.QuantumDotBean;
 import gov.nih.nci.calab.dto.characterization.composition.SurfaceGroupBean;
@@ -108,7 +109,7 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		// update monomer info on polymers
 		else if (particleType.equalsIgnoreCase("polymer")) {
 			PolymerBean composition = (PolymerBean) theForm.get("polymer");
-			updateMonomers(composition);
+			updateComposingElements(composition);
 			theForm.set("polymer", composition);
 		}
 		return mapping.getInputForward();
@@ -145,35 +146,35 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		particle.setSurfaceGroups(surfaceGroups);
 	}
 
-	private void updateMonomers(PolymerBean composition) {
-		String numberOfMonomers = composition.getNumberOfMonomers();
-		int monomerNum = Integer.parseInt(numberOfMonomers);
-		List<MonomerBean> origMonomers = composition.getMonomers();
+	private void updateComposingElements(CompositionBean composition) {
+		String numberOfElements = composition.getNumberOfElements();
+		int elementNum = Integer.parseInt(numberOfElements);
+		List<ComposingElementBean> origMonomers = composition.getComposingElements();
 		int origNum = (origMonomers == null) ? 0 : origMonomers
 				.size();
-		List<MonomerBean> monomers = new ArrayList<MonomerBean>();
+		List<ComposingElementBean> elements = new ArrayList<ComposingElementBean>();
 		// create new ones
 		if (origNum == 0) {
 
-			for (int i = 0; i < monomerNum; i++) {
-				MonomerBean monomer = new MonomerBean();
-				monomers.add(monomer);
+			for (int i = 0; i < elementNum; i++) {
+				ComposingElementBean monomer = new ComposingElementBean();
+				elements.add(monomer);
 			}
 		}
 		// use keep original monomer info
-		else if (monomerNum <= origNum) {
-			for (int i = 0; i < monomerNum; i++) {
-				monomers.add((MonomerBean) origMonomers.get(i));
+		else if (elementNum <= origNum) {
+			for (int i = 0; i < elementNum; i++) {
+				elements.add((ComposingElementBean) origMonomers.get(i));
 			}
 		} else {
 			for (int i = 0; i < origNum; i++) {
-				monomers.add((MonomerBean) origMonomers.get(i));
+				elements.add((ComposingElementBean) origMonomers.get(i));
 			}
-			for (int i = origNum; i < monomerNum; i++) {
-				monomers.add(new MonomerBean());
+			for (int i = origNum; i < elementNum; i++) {
+				elements.add(new ComposingElementBean());
 			}
 		}
-		composition.setMonomers(monomers);
+		composition.setComposingElements(elements);
 	}
 
 	public boolean loginRequired() {
