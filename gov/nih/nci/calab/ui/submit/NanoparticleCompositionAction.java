@@ -1,18 +1,19 @@
 package gov.nih.nci.calab.ui.submit;
 
 /**
- * This class creates nanoparticle general information and assigns visibility  
+ * This class creates nanoparticle composition for different types of particle.  
  *  
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleCompositionAction.java,v 1.3 2006-08-26 01:53:47 pansu Exp $ */
+/* CVS $Id: NanoparticleCompositionAction.java,v 1.4 2006-08-28 18:22:20 pansu Exp $ */
 
-import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.composition.BuckeyballBean;
+import gov.nih.nci.calab.dto.characterization.composition.ComplexParticleBean;
 import gov.nih.nci.calab.dto.characterization.composition.ComposingElementBean;
 import gov.nih.nci.calab.dto.characterization.composition.CompositionBean;
 import gov.nih.nci.calab.dto.characterization.composition.DendrimerBean;
+import gov.nih.nci.calab.dto.characterization.composition.EmulsionBean;
 import gov.nih.nci.calab.dto.characterization.composition.FullereneBean;
 import gov.nih.nci.calab.dto.characterization.composition.LiposomeBean;
 import gov.nih.nci.calab.dto.characterization.composition.MetalParticleBean;
@@ -45,7 +46,7 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		// TODO fill in details for sample information */
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleType = (String) theForm.get("particleType");
-		CharacterizationBean composition = null;
+		CompositionBean composition = null;
 		if (particleType.equalsIgnoreCase("dendrimer")) {
 			composition = (DendrimerBean) theForm.get("dendrimer");
 		} else if (particleType.equalsIgnoreCase("polymer")) {
@@ -53,13 +54,17 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		} else if (particleType.equalsIgnoreCase("liposome")) {
 			composition = (LiposomeBean) theForm.get("liposome");
 		} else if (particleType.equalsIgnoreCase("buckeyball")) {
-			composition = (BuckeyballBean) theForm.get("buckyball");
+			composition = (BuckeyballBean) theForm.get("buckeyball");
 		} else if (particleType.equalsIgnoreCase("fullerene")) {
 			composition = (FullereneBean) theForm.get("fullerene");
 		} else if (particleType.equalsIgnoreCase("quantum dot")) {
 			composition = (QuantumDotBean) theForm.get("quantumDot");
-		} else if (particleType.equalsIgnoreCase("metal particle")) {			
+		} else if (particleType.equalsIgnoreCase("metal particle")) {
 			composition = (MetalParticleBean) theForm.get("metalParticle");
+		} else if (particleType.equalsIgnoreCase("emulsion")) {
+			composition = (EmulsionBean) theForm.get("emulsion");
+		} else if (particleType.equalsIgnoreCase("complex particle")) {
+			composition = (ComplexParticleBean) theForm.get("complexParticle");
 		}
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addParticleComposition(particleType, composition);
@@ -78,16 +83,16 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleType = (String) theForm.get("particleType");
-		HttpSession session=request.getSession();
-		
+		HttpSession session = request.getSession();
+
 		if (particleType.equalsIgnoreCase("dendrimer")) {
 			InitSessionSetup.getInstance().setAllDendrimerCores(session);
-			InitSessionSetup.getInstance().setAllDendrimerSurfaceGroupNames(session);
+			InitSessionSetup.getInstance().setAllDendrimerSurfaceGroupNames(
+					session);
 		} else if (particleType.equalsIgnoreCase("metal particle")) {
 			InitSessionSetup.getInstance().setAllMetalCompositions(session);
-		}
-		else if (particleType.equalsIgnoreCase("polymer")) {
-			InitSessionSetup.getInstance().setAllPolymerInitiators(session);			
+		} else if (particleType.equalsIgnoreCase("polymer")) {
+			InitSessionSetup.getInstance().setAllPolymerInitiators(session);
 		}
 		theForm.set("particlePage", mapping.findForward(
 				particleType.toLowerCase()).getPath());
@@ -100,18 +105,83 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleType = (String) theForm.get("particleType");
 
-		// update surface group info for dendrimers
+		CompositionBean composition = null;
+
 		if (particleType.equalsIgnoreCase("dendrimer")) {
-			DendrimerBean composition = (DendrimerBean) theForm.get("dendrimer");
-			updateSurfaceGroups(composition);
-			theForm.set("dendrimer", composition);
-		}
-		// update monomer info on polymers
-		else if (particleType.equalsIgnoreCase("polymer")) {
-			PolymerBean composition = (PolymerBean) theForm.get("polymer");
+			composition = (DendrimerBean) theForm.get("dendrimer");
+			// update surface group info for dendrimers
+			updateSurfaceGroups((DendrimerBean) composition);
+			theForm.set("dendrimer", (DendrimerBean) composition);
+		} else if (particleType.equalsIgnoreCase("polymer")) {
+			composition = (PolymerBean) theForm.get("polymer");
 			updateComposingElements(composition);
-			theForm.set("polymer", composition);
-		}
+			theForm.set("polymer", (PolymerBean) composition);
+		} else if (particleType.equalsIgnoreCase("liposome")) {
+			composition = (LiposomeBean) theForm.get("liposome");
+			updateComposingElements(composition);
+			theForm.set("liposome", (LiposomeBean) composition);
+		} else if (particleType.equalsIgnoreCase("buckeyball")) {
+			composition = (BuckeyballBean) theForm.get("buckeyball");
+			updateComposingElements(composition);
+			theForm.set("buckeyball", (BuckeyballBean) composition);
+		} else if (particleType.equalsIgnoreCase("fullerene")) {
+			composition = (FullereneBean) theForm.get("fullerene");
+			updateComposingElements(composition);
+			theForm.set("fullerene", (FullereneBean) composition);
+		} else if (particleType.equalsIgnoreCase("emulsion")) {
+			composition = (EmulsionBean) theForm.get("emulsion");
+		} else if (particleType.equalsIgnoreCase("complex particle")) {
+			composition = (ComplexParticleBean) theForm.get("complexParticle");
+			updateComposingElements(composition);
+			theForm.set("complexParticle", (ComplexParticleBean) composition);
+		} else if (particleType.equalsIgnoreCase("quantum dot")) {
+			composition = (QuantumDotBean) theForm.get("quantumDot");
+			String numberOfShells = ((QuantumDotBean) composition)
+					.getNumberOfShells();
+			String numberOfCoatings = ((QuantumDotBean) composition)
+					.getNumberOfCoatings();
+			try {
+				int shellNum = Integer.parseInt(numberOfShells);
+				List<ComposingElementBean> origShells = ((QuantumDotBean) composition)
+						.getShells();
+				List<ComposingElementBean> shells = updateComposingElements(
+						origShells, shellNum);
+				((MetalParticleBean) composition).setShells(shells);
+
+				int coatingNum = Integer.parseInt(numberOfCoatings);
+				List<ComposingElementBean> origCoatings = ((QuantumDotBean) composition)
+						.getCoatings();
+				List<ComposingElementBean> coatings = updateComposingElements(
+						origCoatings, coatingNum);
+				((QuantumDotBean) composition).setCoatings(coatings);
+			} catch (Exception e) {
+			}
+			theForm.set("metalParticle", (MetalParticleBean) composition);
+		} else if (particleType.equalsIgnoreCase("metal particle")) {
+			composition = (MetalParticleBean) theForm.get("metalParticle");
+			String numberOfShells = ((MetalParticleBean) composition)
+					.getNumberOfShells();
+			String numberOfCoatings = ((MetalParticleBean) composition)
+					.getNumberOfCoatings();
+			try {
+				int shellNum = Integer.parseInt(numberOfShells);
+				List<ComposingElementBean> origShells = ((MetalParticleBean) composition)
+						.getShells();
+				List<ComposingElementBean> shells = updateComposingElements(
+						origShells, shellNum);
+				((MetalParticleBean) composition).setShells(shells);
+
+				int coatingNum = Integer.parseInt(numberOfCoatings);
+				List<ComposingElementBean> origCoatings = ((MetalParticleBean) composition)
+						.getCoatings();
+				List<ComposingElementBean> coatings = updateComposingElements(
+						origCoatings, coatingNum);
+				((MetalParticleBean) composition).setCoatings(coatings);
+			} catch (Exception e) {
+			}
+			theForm.set("metalParticle", (MetalParticleBean) composition);
+		} 
+
 		return mapping.getInputForward();
 	}
 
@@ -146,12 +216,9 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		particle.setSurfaceGroups(surfaceGroups);
 	}
 
-	private void updateComposingElements(CompositionBean composition) {
-		String numberOfElements = composition.getNumberOfElements();
-		int elementNum = Integer.parseInt(numberOfElements);
-		List<ComposingElementBean> origMonomers = composition.getComposingElements();
-		int origNum = (origMonomers == null) ? 0 : origMonomers
-				.size();
+	private List<ComposingElementBean> updateComposingElements(
+			List<ComposingElementBean> origElements, int elementNum) {
+		int origNum = (origElements == null) ? 0 : origElements.size();
 		List<ComposingElementBean> elements = new ArrayList<ComposingElementBean>();
 		// create new ones
 		if (origNum == 0) {
@@ -161,19 +228,29 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 				elements.add(monomer);
 			}
 		}
-		// use keep original monomer info
+		// use keep original element info
 		else if (elementNum <= origNum) {
 			for (int i = 0; i < elementNum; i++) {
-				elements.add((ComposingElementBean) origMonomers.get(i));
+				elements.add((ComposingElementBean) origElements.get(i));
 			}
 		} else {
 			for (int i = 0; i < origNum; i++) {
-				elements.add((ComposingElementBean) origMonomers.get(i));
+				elements.add((ComposingElementBean) origElements.get(i));
 			}
 			for (int i = origNum; i < elementNum; i++) {
 				elements.add(new ComposingElementBean());
 			}
 		}
+		return elements;
+	}
+
+	private void updateComposingElements(CompositionBean composition) {
+		String numberOfElements = composition.getNumberOfElements();
+		int elementNum = Integer.parseInt(numberOfElements);
+		List<ComposingElementBean> origElements = composition
+				.getComposingElements();
+		List<ComposingElementBean> elements = updateComposingElements(
+				origElements, elementNum);
 		composition.setComposingElements(elements);
 	}
 
