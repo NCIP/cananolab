@@ -15,12 +15,14 @@ public class DendrimerBean extends CompositionBean {
 	private String molecularFormula;
 
 	private List<SurfaceGroupBean> surfaceGroups;
+	
+	private ComposingElementBean core;
 
 	public DendrimerBean() {
-		surfaceGroups = new ArrayList<SurfaceGroupBean>();
-		
+		super();
+		surfaceGroups = new ArrayList<SurfaceGroupBean>();		
 		List composingElements = getComposingElements();
-		ComposingElementBean core = new ComposingElementBean();
+		core = new ComposingElementBean();
 		core.setElementType("core");
 		composingElements.add(core);
 		setComposingElements(composingElements);
@@ -81,5 +83,13 @@ public class DendrimerBean extends CompositionBean {
 
 	public void setSurfaceGroup(int ind, SurfaceGroupBean surfaceGroup) {
 		surfaceGroups.set(ind, surfaceGroup);
+	}
+
+	public ComposingElementBean getCore() {
+		return core;
+	}
+
+	public void setCore(ComposingElementBean core) {
+		this.core = core;
 	}
 }
