@@ -15,36 +15,181 @@
 		</tr>
 		<tr>
 			<td class="leftLabel">
-				<strong>Core </strong>
+				<strong>Characterization Source </strong>
 			</td>
-			<td class="label">
-				<html:text property="metalParticle.core" />
+			<td class="rightLabel" colspan="3">
+				<html:select property="metalParticle.characterizationSource">
+					<option name="NCL">
+						NCL
+					</option>
+					<option name="vendor">
+						Vendor
+					</option>
+				</html:select>
 			</td>
-			<td class="label">
-				<strong>Shell</strong>
-			</td>
-			<td class="rightLabel">
-				<html:text property="metalParticle.shell" />
+		</tr>
+	</tbody>
+</table>
+<br>
+<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+	<tbody>
+		<tr class="topBorder">
+			<td class="formTitle" colspan="4">
+				<div align="justify">
+					Core Information
+				</div>
 			</td>
 		</tr>
 		<tr>
 			<td class="leftLabel">
-				<strong>Composition </strong>
+				<strong>Chemical Name</strong>
 			</td>
-			<td class="label" colspan="3">
-				<html:select property="metalParticle.composition">
-					<option value="Gold">
-						Gold
-					</option>
-					<option value="Silver">
-						Silver
-					</option>
-					<option value="Iron oxide">
-						Iron oxide
-					</option>
-				</html:select>
+			<td class="label">
+				<html:text property="metalParticle.core.chemicalName" />
 			</td>
-			
+			<td class="label">
+				<strong>Percent Molecular Weight</strong>
+			</td>
+			<td class="rightLabel">
+				<html:text property="metalParticle.core.percentMolecularWeight" />
+				%
+			</td>
 		</tr>
-	</tbody>
+		<tr>
+			<td class="leftLabel">
+				<strong>Description</strong>
+			</td>
+			<td class="rightLabel" colspan="3">
+				<html:textarea property="metalParticle.core.description" rows="3" />
+			</td>
+		</tr>
 </table>
+<br>
+<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+	<tbody>
+		<tr class="topBorder">
+			<td class="formTitle" colspan="4">
+				<div align="justify">
+					Shell Information
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td class="leftLabel">
+				<strong>Number of Shells</strong>
+			</td>
+			<td class="label">
+				<html:text property="metalParticle.numberOfShells" />
+			</td>
+			<td class="rightLabel" colspan="2">
+				<input type="button" onclick="javascript:updateComposition()" value="Update Shells">
+			</td>
+		</tr>
+		<tr>
+			<td class="completeLabel" colspan="4">
+				<c:forEach var="metalParticle.shell" items="${nanoparticleCompositionForm.map.metalParticle.shells}" varStatus="status">
+					<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+						<tbody>
+							<tr class="topBorder">
+								<td class="formSubTitle" colspan="4">
+									<div align="justify">
+										Shell ${status.index+1}
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td class="leftLabel">
+									<strong>Chemical Name</strong>
+								</td>
+								<td class="label">
+									<html:text name="metalParticle.shell" indexed="true" property="chemicalName" />
+								</td>
+								<td class="label">
+									<strong>Percent Molecular Weight</strong>
+								</td>
+								<td class="rightLabel">
+									<html:text name="metalParticle.shell" indexed="true" property="percentMolecularWeight" />
+									%
+								</td>
+							</tr>
+							<tr>
+								<td class="leftLabel">
+									<strong>Description</strong>
+								</td>
+								<td class="rightLabel" colspan="3">
+									<html:textarea name="metalParticle.shell" indexed="true" property="description" rows="3" />
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<br>
+					<html:hidden name="metalParticle.shell" indexed="true" property="elementType" value="shell" />
+				</c:forEach>
+			</td>
+		</tr>
+</table>
+<br>
+<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+	<tbody>
+		<tr class="topBorder">
+			<td class="formTitle" colspan="4">
+				<div align="justify">
+					Coating Information
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td class="leftLabel">
+				<strong>Number of Coatings</strong>
+			</td>
+			<td class="label">
+				<html:text property="metalParticle.numberOfCoatings" />
+			</td>
+			<td class="rightLabel" colspan="2">
+				<input type="button" onclick="javascript:updateComposition()" value="Update Coatings">
+			</td>
+		</tr>
+		<tr>
+			<td class="completeLabel" colspan="4">
+				<c:forEach var="metalParticle.coating" items="${nanoparticleCompositionForm.map.metalParticle.coatings}" varStatus="status">
+					<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+						<tbody>
+							<tr class="topBorder">
+								<td class="formSubTitle" colspan="4">
+									<div align="justify">
+										Coating ${status.index+1}
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td class="leftLabel">
+									<strong>Chemical Name</strong>
+								</td>
+								<td class="label">
+									<html:text name="metalParticle.coating" indexed="true" property="chemicalName" />
+								</td>
+								<td class="label">
+									<strong>Percent Molecular Weight</strong>
+								</td>
+								<td class="rightLabel">
+									<html:text name="metalParticle.coating" indexed="true" property="percentMolecularWeight" />
+									%
+								</td>
+							</tr>
+							<tr>
+								<td class="leftLabel">
+									<strong>Description</strong>
+								</td>
+								<td class="rightLabel" colspan="3">
+									<html:textarea name="metalParticle.coating" indexed="true" property="description" rows="3" />
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<br>
+					<html:hidden name="metalParticle.coating" indexed="true" property="elementType" value="coating" />
+				</c:forEach>
+			</td>
+		</tr>
+</table>
+

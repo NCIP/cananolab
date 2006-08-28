@@ -3,15 +3,6 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<script type="text/javascript">
-
-function update() {
-  document.nanoparticleCompositionForm.action="nanoparticleComposition.do?dispatch=update&page=0";
-  document.nanoparticleCompositionForm.submit();
-}
-
-</script>
-
 <table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 	<tbody>
 		<tr class="topBorder">
@@ -68,42 +59,39 @@ function update() {
 	</tbody>
 </table>
 <br>
-
-<c:forEach var="dendrimer.element" items="${nanoparticleCompositionForm.map.dendrimer.composingElements}" varStatus="status">
-	<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
-		<tbody>
-			<tr class="topBorder">
-				<td class="formTitle" colspan="4">
-					<div align="justify">
-						Core Information
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<td class="leftLabel">
-					<strong>Chemical Name</strong>
-				</td>
-				<td class="label">
-					<html:text name="dendrimer.element" indexed="true" property="chemicalName" />
-				</td>
-				<td class="label">
-					<strong>Percent Molecular Weight</strong>
-				</td>
-				<td class="rightLabel">
-					<html:text name="dendrimer.element" indexed="true" property="percentMolecularWeight" />
-					%
-				</td>
-			</tr>
-			<tr>
-				<td class="leftLabel">
-					<strong>Description</strong>
-				</td>
-				<td class="rightLabel" colspan="3">
-					<html:textarea name="dendrimer.element" indexed="true" property="description" rows="3" />
-				</td>
-			</tr>
-	</table>
-</c:forEach>
+<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+	<tbody>
+		<tr class="topBorder">
+			<td class="formTitle" colspan="4">
+				<div align="justify">
+					Core Information
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td class="leftLabel">
+				<strong>Chemical Name</strong>
+			</td>
+			<td class="label">
+				<html:text property="dendrimer.core.chemicalName" />
+			</td>
+			<td class="label">
+				<strong>Percent Molecular Weight</strong>
+			</td>
+			<td class="rightLabel">
+				<html:text property="dendrimer.core.percentMolecularWeight" />
+				%
+			</td>
+		</tr>
+		<tr>
+			<td class="leftLabel">
+				<strong>Description</strong>
+			</td>
+			<td class="rightLabel" colspan="3">
+				<html:textarea property="dendrimer.core.description" rows="3" />
+			</td>
+		</tr>
+</table>
 
 <br>
 <table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
@@ -123,7 +111,7 @@ function update() {
 				<html:text property="dendrimer.numberOfSurfaceGroups" />
 			</td>
 			<td class="rightLabel" colspan="2">
-				<input type="button" onclick="javascript:update()" value="Update Surface Groups">
+				<input type="button" onclick="javascript:updateComposition()" value="Update Surface Groups">
 			</td>
 		</tr>
 		<tr>
