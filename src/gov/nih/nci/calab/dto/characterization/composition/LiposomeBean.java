@@ -3,10 +3,11 @@ package gov.nih.nci.calab.dto.characterization.composition;
 
 public class LiposomeBean extends CompositionBean {
 	private String polymerized;
+	private String polymerName;
 
 	public LiposomeBean() {
+		super();
 	}
-
 
 	public String getPolymerized() {
 		return polymerized;
@@ -14,6 +15,16 @@ public class LiposomeBean extends CompositionBean {
 
 	public void setPolymerized(String polymerized) {
 		this.polymerized = polymerized;
+	}
+
+
+	public String getPolymerName() {
+		return polymerName;
+	}
+
+
+	public void setPolymerName(String polymerName) {
+		this.polymerName = polymerName;
 	}
 	
 }
