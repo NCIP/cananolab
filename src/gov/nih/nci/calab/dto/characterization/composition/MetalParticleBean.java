@@ -3,54 +3,86 @@
  */
 package gov.nih.nci.calab.dto.characterization.composition;
 
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Zeng
- *
+ * 
  */
 public class MetalParticleBean extends CompositionBean {
-	private String core;
-
-	private String shell;
+	private ComposingElementBean core;
+	private List<ComposingElementBean> shells;
+	private List<ComposingElementBean> coatings;
+	private String numberOfShells;
+	private String numberOfCoatings;
 	
-	private String composition;
-	
-	private String coating;
-
-	public MetalParticleBean() {		
+	public MetalParticleBean() {
+		super();
+		shells=new ArrayList<ComposingElementBean>();
+		coatings=new ArrayList<ComposingElementBean>();
+		List composingElements = getComposingElements();
+		core = new ComposingElementBean();
+		core.setElementType("core");
+		composingElements.add(core);	
+		composingElements.add(shells);
+		composingElements.add(coatings);
+		setComposingElements(composingElements);		
 	}
 
-	public String getCore() {
+	public List<ComposingElementBean> getCoatings() {
+		return coatings;
+	}
+
+	public void setCoatings(List<ComposingElementBean> coatings) {
+		this.coatings = coatings;
+	}
+
+	public ComposingElementBean getCore() {
 		return core;
 	}
 
-	public void setCore(String core) {
+	public void setCore(ComposingElementBean core) {
 		this.core = core;
 	}
 
-	public String getShell() {
-		return shell;
+	public List<ComposingElementBean> getShells() {
+		return shells;
 	}
 
-	public void setShell(String shell) {
-		this.shell = shell;
+	public void setShells(List<ComposingElementBean> shells) {
+		this.shells = shells;
 	}
 
-	public String getComposition() {
-		return composition;
+	public String getNumberOfCoatings() {
+		return numberOfCoatings;
 	}
 
-	public void setComposition(String composition) {
-		this.composition = composition;
+	public void setNumberOfCoatings(String numberOfCoatings) {
+		this.numberOfCoatings = numberOfCoatings;
 	}
 
-	public String getCoating() {
-		return coating;
+	public String getNumberOfShells() {
+		return numberOfShells;
 	}
 
-	public void setCoating(String coating) {
-		this.coating = coating;
+	public void setNumberOfShells(String numberOfShells) {
+		this.numberOfShells = numberOfShells;
 	}
 	
+	public ComposingElementBean getShell(int ind) {
+		return shells.get(ind);
+	}
+
+	public void setShell(int ind, ComposingElementBean shell) {
+		shells.set(ind, shell);
+	}
 	
+	public ComposingElementBean getCoating(int ind) {
+		return coatings.get(ind);
+	}
+
+	public void setCoating(int ind, ComposingElementBean coating) {
+		coatings.set(ind, coating);
+	}
 }
