@@ -157,3 +157,9 @@ function submitAction(form, actionName) {
    form.submit();
 }
 
+function updateComposition() {
+  document.nanoparticleCompositionForm.action="nanoparticleComposition.do?dispatch=update&page=0";
+  document.nanoparticleCompositionForm.submit();
+}
+
+
