@@ -15,7 +15,10 @@ public class FullereneBean extends CompositionBean {
 	
 	private String averageLength;
 	
+	private String wallType;
+	
 	public FullereneBean(){
+		super();
 	}
 
 	public String getAverageLength() {
@@ -40,6 +43,14 @@ public class FullereneBean extends CompositionBean {
 
 	public void setChirality(String chirality) {
 		this.chirality = chirality;
+	}
+
+	public String getWallType() {
+		return wallType;
+	}
+
+	public void setWallType(String wallType) {
+		this.wallType = wallType;
 	}
 	
 	
