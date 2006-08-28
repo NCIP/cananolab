@@ -2,14 +2,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<script type="text/javascript">
 
-function update() {
-  document.nanoparticleCompositionForm.action="nanoparticleComposition.do?dispatch=update&page=0";
-  document.nanoparticleCompositionForm.submit();
-}
-
-</script>
 <table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 	<tbody>
 		<tr class="topBorder">
@@ -17,6 +10,21 @@ function update() {
 				<div align="justify">
 					${particleName}
 				</div>
+			</td>
+		</tr>
+		<tr>
+			<td class="leftLabel">
+				<strong>Characterization Source </strong>
+			</td>
+			<td class="rightLabel" colspan="3">
+				<html:select property="dendrimer.characterizationSource">
+					<option name="NCL">
+						NCL
+					</option>
+					<option name="vendor">
+						Vendor
+					</option>
+				</html:select>
 			</td>
 		</tr>
 		<tr>
@@ -72,7 +80,7 @@ function update() {
 				<html:text property="polymer.numberOfElements" />
 			</td>
 			<td class="rightLabel" colspan="2">
-				<input type="button" onclick="javascript:update()" value="Update Monomers">
+				<input type="button" onclick="javascript:updateComposition()" value="Update Monomers">
 			</td>
 		</tr>
 		<tr>
@@ -113,7 +121,7 @@ function update() {
 						</tbody>
 					</table>
 					<br>
-					<html:hidden name="polymer.element" indexed="true" property="elementType" value="monomer"/>
+					<html:hidden name="polymer.element" indexed="true" property="elementType" value="monomer" />
 				</c:forEach>
 			</td>
 		</tr>
