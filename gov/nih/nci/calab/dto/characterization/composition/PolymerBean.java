@@ -1,6 +1,5 @@
 package gov.nih.nci.calab.dto.characterization.composition;
 
-import java.util.List;
 
 public class PolymerBean extends CompositionBean {
 	private String crosslinked;
