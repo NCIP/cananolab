@@ -2,7 +2,7 @@ package gov.nih.nci.calab.service.submit;
 
 import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
-import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
+import gov.nih.nci.calab.dto.characterization.composition.CompositionBean;
 import gov.nih.nci.calab.dto.workflow.FileBean;
 import gov.nih.nci.calab.service.common.LookupService;
 import gov.nih.nci.calab.service.security.UserService;
@@ -61,7 +61,7 @@ public class SubmitNanoparticleService {
 
 	}
 
-	public void addParticleComposition(String particleType, CharacterizationBean particle) {
+	public void addParticleComposition(String particleType, CompositionBean particle) {
 		//TODO add database code
 	}
 
