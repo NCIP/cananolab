@@ -40,7 +40,9 @@
 			<form-property name="fullerene" type="gov.nih.nci.calab.dto.characterization.composition.FullereneBean" />
 			<form-property name="polymer" type="gov.nih.nci.calab.dto.characterization.composition.PolymerBean" />
 			<form-property name="quantumDot" type="gov.nih.nci.calab.dto.characterization.composition.QuantumDotBean" />
+			<form-property name="emulsion" type="gov.nih.nci.calab.dto.characterization.composition.EmulsionBean" />
 			<form-property name="metalParticle" type="gov.nih.nci.calab.dto.characterization.composition.MetalParticleBean" />
+			<form-property name="complexParticle" type="gov.nih.nci.calab.dto.characterization.composition.ComplexParticleBean" />
 			<form-property name="particlePage" type="java.lang.String" />
 		</form-bean>
 	</form-beans>
@@ -73,7 +75,8 @@
 			<forward name="buckeyball" path="bodyBuckeyballInfo.jsp" />
 			<forward name="fullerene" path="bodyFullereneInfo.jsp" />
 			<forward name="quantum dot" path="bodyQuantumdotInfo.jsp" />
-			<forward name="metal particle" path="bodyMetalParticleInfo.jsp" />
+			<forward name="emulsion" path="bodyEmulsionInfo.jsp" />
+			<forward name="complex particle" path="bodyComplexParticleInfo.jsp" />
 		</action>
 		<action path="/submitAction" type="gov.nih.nci.calab.ui.core.BaseForwardAction" parameter="submit.action.message" scope="request" />
 	</action-mappings>
