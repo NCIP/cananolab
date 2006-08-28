@@ -5,6 +5,7 @@ public class BuckeyballBean extends CompositionBean {
 	private String numberOfCarbons;
 	
 	public BuckeyballBean(){
+		super();
 	}
 
 	public String getNumberOfCarbons() {
