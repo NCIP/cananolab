@@ -22,9 +22,9 @@ import gov.nih.nci.security.dao.RoleSearchCriteria;
 import gov.nih.nci.security.dao.SearchCriteria;
 import gov.nih.nci.security.dao.UserSearchCriteria;
 import gov.nih.nci.security.exceptions.CSException;
-import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -33,7 +33,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts.tiles.beans.MenuItem;
 
 /**
- * This class takes care of authentication and authorization of a user
+ * This class takes care of authentication and authorization of a user and group
  * 
  * @author Pansu
  * 
@@ -63,12 +63,26 @@ public class UserService {
 		// userManger.getUser(userLoginId);
 	}
 
+	/**
+	 * Check whether the given user is the admin of the application.
+	 * 
+	 * @param user
+	 * @return
+	 */
 	public boolean isAdmin(String user) {
 		boolean adminStatus = authorizationManager.checkOwnership(user,
 				applicationName);
 		return adminStatus;
 	}
 
+	/**
+	 * Check whether the given user belongs to the given group.
+	 * 
+	 * @param user
+	 * @param groupName
+	 * @return
+	 * @throws Exception
+	 */
 	public boolean isUserInGroup(UserBean user, String groupName)
 			throws Exception {
 		Set groups = userManager.getGroups(user.getUserId());
@@ -78,27 +92,6 @@ public class UserService {
 					|| group.getGroupName().startsWith(groupName)) {
 				return true;
 			}
-		}
-		return false;
-	}
-
-	public boolean accessProtectionGroup(UserBean user,
-			String protectionGroupName) {
-		try {
-			Set<ProtectionGroupRoleContext> protectionGroupRoleContexts = userManager
-					.getProtectionGroupRoleContextForUser(user.getUserId());
-			for (ProtectionGroupRoleContext context : protectionGroupRoleContexts) {
-				ProtectionGroup pg = context.getProtectionGroup();
-				while (pg.getParentProtectionGroup() != null) {
-					if (pg.getParentProtectionGroup().getProtectionGroupName()
-							.trim().equalsIgnoreCase(protectionGroupName)) {
-						return true;
-					}
-					pg = pg.getParentProtectionGroup();
-				}
-			}
-		} catch (CSObjectNotFoundException e) {
-			return false;
 		}
 		return false;
 	}
@@ -164,7 +157,8 @@ public class UserService {
 		}
 
 		List<MenuItem> filteredItems = new ArrayList<MenuItem>();
-		List<MenuItem> items = (List) session.getAttribute("items");
+		List<MenuItem> items = new ArrayList<MenuItem>(
+				(List<? extends MenuItem>) session.getAttribute("items"));
 		UserBean user = (UserBean) session.getAttribute("user");
 		if (user != null) {
 			for (MenuItem item : items) {
@@ -182,6 +176,13 @@ public class UserService {
 		}
 	}
 
+	/**
+	 * Set a new password for the given user login name
+	 * 
+	 * @param loginName
+	 * @param newPassword
+	 * @throws Exception
+	 */
 	public void updatePassword(String loginName, String newPassword)
 			throws Exception {
 		User user = authorizationManager.getUser(loginName);
@@ -193,8 +194,11 @@ public class UserService {
 		userManager.modifyUser(user);
 	}
 
-	/*
-	 * return all users in the database
+	/**
+	 * Get all users in the application
+	 * 
+	 * @return
+	 * @throws Exception
 	 */
 	public List<UserBean> getAllUsers() throws Exception {
 		List<UserBean> users = new ArrayList<UserBean>();
@@ -209,8 +213,11 @@ public class UserService {
 		return users;
 	}
 
-	/*
-	 * return all user groups in the database
+	/**
+	 * Get all user groups in the application
+	 * 
+	 * @return
+	 * @throws Exception
 	 */
 	public List<String> getAllGroups() throws Exception {
 		List<String> groups = new ArrayList<String>();
@@ -225,14 +232,18 @@ public class UserService {
 		return groups;
 	}
 
-	/*
-	 * return all user groups in the database
+	/**
+	 * Get all user visiblity groups in the application (filtering out all
+	 * groups starting with NCL).
+	 * 
+	 * @return
+	 * @throws Exception
 	 */
 	public List<String> getAllVisibilityGroups() throws Exception {
 		List<String> groups = getAllGroups();
-		//filter out the ones starting with NCL
-		List<String>filteredGroups=new ArrayList<String>();
-		for(String groupName: groups) {
+		// filter out the ones starting with NCL
+		List<String> filteredGroups = new ArrayList<String>();
+		for (String groupName : groups) {
 			if (!groupName.startsWith("NCL")) {
 				filteredGroups.add(groupName);
 			}
@@ -256,6 +267,13 @@ public class UserService {
 		return userManager;
 	}
 
+	/**
+	 * Get a Group object for the given groupName.
+	 * 
+	 * @param groupName
+	 * @return
+	 * @throws Exception
+	 */
 	public Group getGroup(String groupName) throws Exception {
 		Group group = new Group();
 		group.setGroupName(groupName);
@@ -269,6 +287,13 @@ public class UserService {
 		return doGroup;
 	}
 
+	/**
+	 * Get a Role object for the given roleName.
+	 * 
+	 * @param roleName
+	 * @return
+	 * @throws Exception
+	 */
 	public Role getRole(String roleName) throws Exception {
 		Role role = new Role();
 		role.setName(roleName);
@@ -282,6 +307,13 @@ public class UserService {
 		return doRole;
 	}
 
+	/**
+	 * Get a ProtectionElement object for the given objectId.
+	 * 
+	 * @param objectId
+	 * @return
+	 * @throws Exception
+	 */
 	public ProtectionElement getProtectionElement(String objectId)
 			throws Exception {
 		ProtectionElement pe = new ProtectionElement();
@@ -301,6 +333,13 @@ public class UserService {
 		return doPE;
 	}
 
+	/**
+	 * Get a ProtectionGroup object for the given protectionGroupName.
+	 * 
+	 * @param protectionGroupName
+	 * @return
+	 * @throws Exception
+	 */
 	public ProtectionGroup getProtectionGroup(String protectionGroupName)
 			throws Exception {
 		ProtectionGroup pg = new ProtectionGroup();
@@ -319,12 +358,28 @@ public class UserService {
 		return doPG;
 	}
 
+	/**
+	 * Assign a ProtectionElement to a ProtectionGroup if not already assigned.
+	 * 
+	 * @param pe
+	 * @param pg
+	 * @throws Exception
+	 */
 	public void assignProtectionElementToProtectionGroup(ProtectionElement pe,
 			ProtectionGroup pg) throws Exception {
-		Set assignedPGs = authorizationManager.getProtectionGroups(pe
-				.getProtectionElementId().toString());
-		for (Object obj : assignedPGs) {
-			if (((ProtectionGroup) obj).equals(pg)) {
+		Set<ProtectionGroup> assignedPGs = new HashSet<ProtectionGroup>(
+				(Set<? extends ProtectionGroup>) authorizationManager
+						.getProtectionGroups(pe.getProtectionElementId()
+								.toString()));
+		// check to see if the assignment is already made to ignore CSM
+		// exception.
+		
+		//contains doesn't work because CSM didn't implement hashCode in ProtectionGroup.
+//		if (assignedPGs.contains(pg)) {
+//			return;
+//		}
+		for(ProtectionGroup aPg: assignedPGs) {
+			if (aPg.equals(pg)) {
 				return;
 			}
 		}
@@ -332,6 +387,15 @@ public class UserService {
 				.getProtectionGroupName(), pe.getObjectId());
 	}
 
+	/**
+	 * Assign the given objectName to the given groupName with the given
+	 * roleName. Add to existing roles the object has for the group.
+	 * 
+	 * @param objectName
+	 * @param groupName
+	 * @param roleName
+	 * @throws Exception
+	 */
 	public void secureObject(String objectName, String groupName,
 			String roleName) throws Exception {
 		// create protection element
@@ -346,11 +410,34 @@ public class UserService {
 		// get group and role
 		Group group = getGroup(groupName);
 		Role role = getRole(roleName);
+		Set<Role> existingRoles = new HashSet<Role>();
+
 		if (group != null && role != null) {
-			String[] roleIds = new String[] { role.getId().toString() };
+			// get existing roles and add to it
+			Set contexts = userManager
+					.getProtectionGroupRoleContextForGroup(group.getGroupId()
+							.toString());
+			for (Object obj : contexts) {
+				ProtectionGroupRoleContext context = (ProtectionGroupRoleContext) obj;
+				if (context.getProtectionGroup().equals(pg)) {
+					existingRoles = new HashSet<Role>(
+							(Set<? extends Role>) context.getRoles());
+					break;
+				}
+			}
+			existingRoles.add(role);
+			String[] roleIds = new String[existingRoles.size()];
+			int i = 0;
+
+			for (Object obj2 : existingRoles) {
+				Role aRole = (Role) obj2;
+				roleIds[i] = aRole.getId().toString();
+				i++;
+			}
 			userManager.assignGroupRoleToProtectionGroup(pg
 					.getProtectionGroupId().toString(), group.getGroupId()
 					.toString(), roleIds);
+
 		} else {
 			if (group == null) {
 				throw new CalabException("No such group defined in CSM: "
@@ -363,6 +450,14 @@ public class UserService {
 		}
 	}
 
+	/**
+	 * Get a list of particle the user has read permission on.
+	 * 
+	 * @param user
+	 * @param particles
+	 * @return
+	 * @throws Exception
+	 */
 	public List<ParticleBean> getFilteredParticles(UserBean user,
 			List<ParticleBean> particles) throws Exception {
 		List<ParticleBean> filteredParticles = new ArrayList<ParticleBean>();
@@ -373,5 +468,98 @@ public class UserService {
 			}
 		}
 		return filteredParticles;
+	}
+
+	/**
+	 * Get a list of groups the given object is assgined to with the given role
+	 * 
+	 * @param objectName
+	 * @param roleName
+	 * @return
+	 * @throws Exception
+	 */
+	public List<String> getAccessibleGroups(String objectName, String roleName)
+			throws Exception {
+		List<String> groups = new ArrayList<String>();
+		List<String> allGroups = getAllGroups();
+		Role role = getRole(roleName);
+		for (String groupName : allGroups) {
+			Group group = getGroup(groupName);
+			Set contexts = userManager
+					.getProtectionGroupRoleContextForGroup(group.getGroupId()
+							.toString());
+			for (Object obj : contexts) {
+				ProtectionGroupRoleContext context = (ProtectionGroupRoleContext) obj;
+				ProtectionGroup pg = context.getProtectionGroup();
+				Set<Role> roles = new HashSet<Role>(
+						(Set<? extends Role>) context.getRoles());
+				//contains doesn't work because CSM didn't implement hashCode in Role.
+//				if (pg.getProtectionGroupName().equals(objectName)
+//						&& roles.contains(role)) {
+//					groups.add(groupName);
+//				}
+				if (pg.getProtectionGroupName().equals(objectName)) {
+					for(Role aRole:roles) {
+						if (aRole.equals(role)) {
+							groups.add(groupName);
+						}
+					}
+				}
+			}
+		}
+		return groups;
+	}
+
+	/**
+	 * Remove the group the object is assigned to with the given role.
+	 * 
+	 * @param objectName
+	 * @param groupName
+	 * @param roleName
+	 * @throws Exception
+	 */
+	public void removeAccessibleGroup(String objectName, String groupName,
+			String roleName) throws Exception {
+		Group group = getGroup(groupName);
+		Role role = getRole(roleName);
+		ProtectionGroup pg = getProtectionGroup(objectName);
+
+		// this method is not implemented in CSM API, try an alternative
+		// userManager.removeGroupRoleFromProtectionGroup(pg
+		// .getProtectionGroupId().toString(), group.getGroupId()
+		// .toString(), new String[] { role.getId().toString() });
+
+		// get existing roles.
+		Set contexts = userManager.getProtectionGroupRoleContextForGroup(group
+				.getGroupId().toString());
+		Set<Role> existingRoles = null;
+		for (Object obj : contexts) {
+			ProtectionGroupRoleContext context = (ProtectionGroupRoleContext) obj;
+			if (context.getProtectionGroup().equals(pg)) {
+				existingRoles = new HashSet<Role>((Set<? extends Role>) context
+						.getRoles());
+				break;
+			}
+		}
+		// remove role from existing roles
+		//remove doesn't work because CSM didn't implement hashCode for Role
+		//existingRoles.remove(role);
+		
+		Set<Role>updatedRoles=new HashSet<Role>();
+		for(Role aRole:existingRoles) {
+			if (!aRole.equals(role)) {
+				updatedRoles.add(aRole);
+			}
+		}
+		// reassign the roles.
+		String[] roleIds = new String[updatedRoles.size()];
+		int i = 0;
+		for (Object obj : updatedRoles) {
+			Role aRole = (Role) obj;
+			roleIds[i] = aRole.getId().toString();
+			i++;
+		}
+		userManager.assignGroupRoleToProtectionGroup(pg.getProtectionGroupId()
+				.toString(), group.getGroupId().toString(), roleIds);
 	}
 }
