@@ -10,19 +10,21 @@
 			<form-property name="keywords" type="java.lang.String" />
 			<form-property name="visibilities" type="java.lang.String[]" />
 		</form-bean>
-		<form-bean name="submitReportForm" type="org.apache.struts.validator.DynaValidatorForm">
+		<form-bean name="publishReportForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="dispatch" type="java.lang.String" />
 			<form-property name="page" type="java.lang.Integer" initial="0" />
 			<form-property name="particleNames" type="java.lang.String[]" />
+			<form-property name="reportType" type="java.lang.String" />
 			<form-property name="reportFile" type="org.apache.struts.upload.FormFile" />
 			<form-property name="visibilities" type="java.lang.String[]" />
 			<form-property name="title" type="java.lang.String" />
 			<form-property name="description" type="java.lang.String" />
 		</form-bean>
-		<form-bean name="addAssayResultForm" type="org.apache.struts.validator.DynaValidatorForm">
+		<form-bean name="publishAssayResultForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="dispatch" type="java.lang.String" />
 			<form-property name="page" type="java.lang.Integer" initial="0" />
 			<form-property name="particleName" type="java.lang.String" />
+			<form-property name="fileSource" type="java.lang.String"/>
 			<form-property name="fileId" type="java.lang.String" />
 			<form-property name="title" type="java.lang.String" />
 			<form-property name="description" type="java.lang.String" />
@@ -36,7 +38,7 @@
 			<form-property name="particleType" type="java.lang.String" />
 			<form-property name="dendrimer" type="gov.nih.nci.calab.dto.characterization.composition.DendrimerBean" />
 			<form-property name="liposome" type="gov.nih.nci.calab.dto.characterization.composition.LiposomeBean" />
-			<form-property name="buckeyball" type="gov.nih.nci.calab.dto.characterization.composition.BuckeyballBean" />
+			<form-property name="carbonNanotube" type="gov.nih.nci.calab.dto.characterization.composition.CarbonNanotubeBean" />
 			<form-property name="fullerene" type="gov.nih.nci.calab.dto.characterization.composition.FullereneBean" />
 			<form-property name="polymer" type="gov.nih.nci.calab.dto.characterization.composition.PolymerBean" />
 			<form-property name="quantumDot" type="gov.nih.nci.calab.dto.characterization.composition.QuantumDotBean" />
@@ -44,6 +46,7 @@
 			<form-property name="metalParticle" type="gov.nih.nci.calab.dto.characterization.composition.MetalParticleBean" />
 			<form-property name="complexParticle" type="gov.nih.nci.calab.dto.characterization.composition.ComplexParticleBean" />
 			<form-property name="particlePage" type="java.lang.String" />
+			<form-property name="viewTitle" type="java.lang.String" />
 		</form-bean>
 	</form-beans>
 	<action-mappings>
@@ -55,12 +58,12 @@
 			<forward name="update" path="submit.generalinfo.update"/>
 			<forward name="input" path="submit.createnanoparticle" />
 		</action>
-		<action name="submitReportForm" parameter="dispatch" path="/submitReport" type="gov.nih.nci.calab.ui.submit.SubmitReportAction" input="input" scope="request">
+		<action name="publishReportForm" parameter="dispatch" path="/publishReport" type="gov.nih.nci.calab.ui.submit.SubmitReportAction" input="input" scope="request">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.submitReport" path="submit.submitreport" type="java.lang.Exception" />
 			<forward name="success" path="submit.message" />
 			<forward name="input" path="submit.submitreport" />
 		</action>
-		<action name="addAssayResultForm" parameter="dispatch" path="/addAssayResult" type="gov.nih.nci.calab.ui.submit.AddAssayResultAction" input="input" scope="request">
+		<action name="publishAssayResultForm" parameter="dispatch" path="/publishAssayResult" type="gov.nih.nci.calab.ui.submit.AddAssayResultAction" input="input" scope="request">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addAssayResult" path="submit.addassayresult" type="java.lang.Exception" />
 			<forward name="success" path="submit.message" />
 			<forward name="input" path="submit.addassayresult" />
@@ -72,11 +75,12 @@
 			<forward name="dendrimer" path="bodyDendrimerInfo.jsp" />
 			<forward name="liposome" path="bodyLiposomeInfo.jsp" />
 			<forward name="polymer" path="bodyPolymerInfo.jsp" />
-			<forward name="buckeyball" path="bodyBuckeyballInfo.jsp" />
+			<forward name="carbon nanotube" path="bodyCarbonNanotubeInfo.jsp" />
 			<forward name="fullerene" path="bodyFullereneInfo.jsp" />
 			<forward name="quantum dot" path="bodyQuantumdotInfo.jsp" />
 			<forward name="emulsion" path="bodyEmulsionInfo.jsp" />
-			<forward name="complex particle" path="bodyComplexParticleInfo.jsp" />
+			<forward name="metal particle" path="bodyMetalParticleInfo.jsp" />
+			<forward name="complex particle" path="bodyComplexParticleInfo.jsp" />	
 		</action>
 		<action path="/submitAction" type="gov.nih.nci.calab.ui.core.BaseForwardAction" parameter="submit.action.message" scope="request" />
 	</action-mappings>
