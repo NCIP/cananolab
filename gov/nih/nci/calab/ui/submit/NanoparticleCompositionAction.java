@@ -1,20 +1,22 @@
 package gov.nih.nci.calab.ui.submit;
 
 /**
- * This class creates nanoparticle composition for different types of particle.  
+ * This class sets up different input forms for different types of physical composition,
+ * and allow users to submit data for physical compositions and update composing elements of each
+ * physical composition.
  *  
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleCompositionAction.java,v 1.4 2006-08-28 18:22:20 pansu Exp $ */
+/* CVS $Id: NanoparticleCompositionAction.java,v 1.5 2006-08-31 14:07:59 pansu Exp $ */
 
-import gov.nih.nci.calab.dto.characterization.composition.BuckeyballBean;
+import gov.nih.nci.calab.dto.characterization.composition.FullereneBean;
 import gov.nih.nci.calab.dto.characterization.composition.ComplexParticleBean;
 import gov.nih.nci.calab.dto.characterization.composition.ComposingElementBean;
 import gov.nih.nci.calab.dto.characterization.composition.CompositionBean;
 import gov.nih.nci.calab.dto.characterization.composition.DendrimerBean;
 import gov.nih.nci.calab.dto.characterization.composition.EmulsionBean;
-import gov.nih.nci.calab.dto.characterization.composition.FullereneBean;
+import gov.nih.nci.calab.dto.characterization.composition.CarbonNanotubeBean;
 import gov.nih.nci.calab.dto.characterization.composition.LiposomeBean;
 import gov.nih.nci.calab.dto.characterization.composition.MetalParticleBean;
 import gov.nih.nci.calab.dto.characterization.composition.PolymerBean;
@@ -43,7 +45,7 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		ActionForward forward = null;
-		// TODO fill in details for sample information */
+
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleType = (String) theForm.get("particleType");
 		CompositionBean composition = null;
@@ -53,8 +55,8 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 			composition = (PolymerBean) theForm.get("polymer");
 		} else if (particleType.equalsIgnoreCase("liposome")) {
 			composition = (LiposomeBean) theForm.get("liposome");
-		} else if (particleType.equalsIgnoreCase("buckeyball")) {
-			composition = (BuckeyballBean) theForm.get("buckeyball");
+		} else if (particleType.equalsIgnoreCase("carbon nanotube")) {
+			composition = (CarbonNanotubeBean) theForm.get("carbonNanotube");
 		} else if (particleType.equalsIgnoreCase("fullerene")) {
 			composition = (FullereneBean) theForm.get("fullerene");
 		} else if (particleType.equalsIgnoreCase("quantum dot")) {
@@ -120,14 +122,14 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 			composition = (LiposomeBean) theForm.get("liposome");
 			updateComposingElements(composition);
 			theForm.set("liposome", (LiposomeBean) composition);
-		} else if (particleType.equalsIgnoreCase("buckeyball")) {
-			composition = (BuckeyballBean) theForm.get("buckeyball");
-			updateComposingElements(composition);
-			theForm.set("buckeyball", (BuckeyballBean) composition);
 		} else if (particleType.equalsIgnoreCase("fullerene")) {
 			composition = (FullereneBean) theForm.get("fullerene");
 			updateComposingElements(composition);
 			theForm.set("fullerene", (FullereneBean) composition);
+		} else if (particleType.equalsIgnoreCase("carbon nanotube")) {
+			composition = (CarbonNanotubeBean) theForm.get("carbonNanotube");
+			updateComposingElements(composition);
+			theForm.set("carbonNanotube", (CarbonNanotubeBean) composition);
 		} else if (particleType.equalsIgnoreCase("emulsion")) {
 			composition = (EmulsionBean) theForm.get("emulsion");
 		} else if (particleType.equalsIgnoreCase("complex particle")) {
@@ -180,7 +182,7 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 			} catch (Exception e) {
 			}
 			theForm.set("metalParticle", (MetalParticleBean) composition);
-		} 
+		}
 
 		return mapping.getInputForward();
 	}
