@@ -15,10 +15,11 @@
 			</td>
 		</tr>
 		<tr>
-			<td colspan="4">
+			<td colspan="4">			    
 				<jsp:include page="/bodyMessage.jsp?bundle=submit" />
 				<jsp:include page="${nanoparticleCompositionForm.map.particlePage}" />
 				<br>
+				<strong><span class="borderlessLabel">View Title* </span></strong><html:text property="viewTitle"/>
 				<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 					<tr>
 						<td width="30%">
