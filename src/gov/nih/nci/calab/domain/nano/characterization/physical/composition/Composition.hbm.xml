@@ -2,46 +2,55 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping package="gov.nih.nci.calab.domain.nano.characterization.physical.composition">
-<joined-subclass name="Composition" table="COMPOSITION" extends="gov.nih.nci.calab.domain.nano.characterization.Characterization">
+	<joined-subclass name="Composition" table="COMPOSITION" extends="gov.nih.nci.calab.domain.nano.characterization.Characterization">
        		<key column="COMPOSITION_PK_ID" />
-       		<joined-subclass name="BuckeyballComposition" table="BUCKEYBALL" extends="gov.nih.nci.calab.nano.characterization.physical.compostion.Composition">
-       			<key column="COMPOSITION_PK_ID" />
-       			<property name="structuralMolecule" column="STRUCTURE" type="java.lang.String" /> 
+       		<joined-subclass name="FullereneComposition" table="FULLERENE_COMPOSITION" extends="gov.nih.nci.calab.nano.characterization.physical.compostion.Composition">
+       			<key column="F_COMPOSITION_PK_ID" />
+       			<property name="numberOfCarbon" column="NUMBER_OF_CARBON" type="java.lang.String" /> 
        		</joined-subclass>
-       		<joined-subclass name="DendrimerComposition" table="DENDRIMER" extends="gov.nih.nci.calab.nano.characterization.physical.compostion.Composition">
-       			<key column="COMPOSITION_PK_ID" />
+       		<joined-subclass name="DendrimerComposition" table="DENDRIMER_COMPOSITION" extends="gov.nih.nci.calab.nano.characterization.physical.compostion.Composition">
+       			<key column="D_COMPOSITION_PK_ID" />
        			<property name="branch" column="BRANCH" type="java.lang.String" /> 
        			<property name="generation" column="GENERATION" type="java.lang.Float" /> 
        			<property name="molecularFormula" column="MOLECULAR_FORMULA" type="java.lang.String" /> 
        			<property name="repeatUnit" column="REPEAT_UNIT" type="java.lang.String" /> 
        			<set name="surfaceGroupCollection" cascade="all-delete-orphan" lazy="true" inverse="true">
 					 <cache usage="read-write" />
-					 <key column="COMPOSITION_PK_ID" />
+					 <key column="D_COMPOSITION_PK_ID" />
 					 <one-to-many class="gov.nih.nci.calab.domain.nano.characterization.physical.composition.SurfaceGroup"/>
 			    </set>
        		</joined-subclass>
-       		<joined-subclass name="FullereneComposition" table="FULLERENE" extends="gov.nih.nci.calab.nano.characterization.physical.compostion.Composition">
-       			<key column="COMPOSITION_PK_ID" />
+       		<joined-subclass name="CarbonNanotubeComposition" table="CARBON_NANOTUBE_COMPOSITION" extends="gov.nih.nci.calab.nano.characterization.physical.compostion.Composition">
+       			<key column="CN_COMPOSITION_PK_ID" />
        			<property name="chirality" column="CHIRALITY" type="java.lang.Float" /> 
-       			<property name="growthDiameter" column="GROWTH_DIAMETER" type="java.lang.Float" /> 
+       			<property name="growthDiameter" column="GROUTH_DIAMETER" type="java.lang.Float" /> 
        			<property name="averageLength" column="AVERAGE_LENGTH" type="java.lang.Float" /> 
+       			<property name="wallType" column="WALL_TYPE" type="java.lang.String" /> 
        		</joined-subclass>    
-       		<joined-subclass name="LiposomeComposition" table="LIPOSOME" extends="gov.nih.nci.calab.nano.characterization.physical.compostion.Composition">
-       			<key column="COMPOSITION_PK_ID" />
-       			<property name="isPolymerized" column="IS_POLYMERIZED" type="java.lang.Boolean" /> 
+       		<joined-subclass name="LiposomeComposition" table="LIPOSOME_COMPOSITION" extends="gov.nih.nci.calab.nano.characterization.physical.compostion.Composition">
+       			<key column="LC_COMPOSITION_PK_ID" />
+       			<property name="isPolymerized" column="IS_POLYMERIZED" type="java.lang.Integer" /> 
+       			<property name="polymerName" column="POLYMER_NAME" type="java.lang.String" />
        		</joined-subclass>  
-       		<joined-subclass name="PolymerComposition" table="POLYMER" extends="gov.nih.nci.calab.nano.characterization.physical.compostion.Composition">
-       			<key column="COMPOSITION_PK_ID" />
-       			<property name="isCrossLink" column="IS_CROSSLINK" type="java.lang.Boolean" /> 
-       			<property name="crossLinkDegree" column="CROSSLINK_DEGREE" type="java.lang.Float" /> 
+       		<joined-subclass name="PolymerComposition" table="POLYMER_COMPOSITION" extends="gov.nih.nci.calab.nano.characterization.physical.compostion.Composition">
+       			<key column="POLYMER_COMPOSITION_PK_ID" />
+       			<property name="isCrossLink" column="IS_CROSS_LINK" type="java.lang.Integer" /> 
+       			<property name="crossLinkDegree" column="CROSS_LINK_DEGREE" type="java.lang.Float" /> 
        			<property name="initiator" column="INITIATOR" type="java.lang.String" /> 
        		</joined-subclass>  
-       		<joined-subclass name="EmulsionComposition" table="Emulsion" extends="gov.nih.nci.calab.nano.characterization.physical.compostion.Composition">
-       			<key column="COMPOSITION_PK_ID" />
-       			<property name="type" column="TYPE" type="java.lang.String" /> 
+       		<joined-subclass name="EmulsionComposition" table="EMULSION_COMPOSITION" extends="gov.nih.nci.calab.nano.characterization.physical.compostion.Composition">
+       			<key column="EMULSION_COMPOSITION_PK_ID" />
+       			<property name="type" column="EMULSION_TYPE" type="java.lang.String" /> 
        			<property name="molecularFormula" column="MOLECULAR_FORMULA" type="java.lang.String" /> 
        			<property name="dropletSize" column="DROPLET_SIZE" type="java.lang.Float" /> 
-       		</joined-subclass>           		
-       		
-</joined-subclass>
+       			<property name="isPolymerized" column="IS_POLYMERIZED" type="java.lang.Integer" /> 
+       			<property name="polymerName" column="POLYMER_NAME" type="java.lang.String" />
+       		</joined-subclass>           		      		
+       		<joined-subclass name="MetalParticleComposition" table="VIEW_METAL_COMPOSITION" extends="gov.nih.nci.calab.nano.characterization.physical.compostion.Composition">
+       			<key column="METAL_COMPOSITION_PK_ID" />
+       		</joined-subclass>  
+       		<joined-subclass name="QuantumDotComposition" table="VIEW_QUANTUM_DOT_COMPOSITION" extends="gov.nih.nci.calab.nano.characterization.physical.compostion.Composition">
+       			<key column="QUANTUM_DOT_COMPOSITION_PK_ID" />
+       		</joined-subclass>  
+	</joined-subclass>
 </hibernate-mapping> 
