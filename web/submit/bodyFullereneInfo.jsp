@@ -29,38 +29,10 @@
 		</tr>
 		<tr>
 			<td class="leftLabel">
-				<strong>Growth Diameter</strong>
+				<strong>Number of Carbons</strong>
 			</td>
-			<td class="label">
-				<html:text property="fullerene.growthDiameter" />
-			</td>
-			<td class="label">
-				<strong>Chirality </strong>
-			</td>
-			<td class="rightLabel">
-				<html:text property="fullerene.chirality" />
-			</td>
-
-		</tr>
-		<tr>
-			<td class="leftLabel">
-				<strong>Average Length</strong>
-			</td>
-			<td class="label" align="left">
-				<html:text property="fullerene.averageLength" />
-			</td>
-			<td class="label">
-				<strong>wall Type</strong>
-			</td>
-			<td class="rightLabel">
-				<html:select property="fullerene.wallType">
-					<option value="single">
-						Single
-					</option>
-					<option value="multiple">
-						Multiple
-					</option>
-				</html:select>
+			<td class="rightLabel" colspan="3">
+				<html:text property="fullerene.numberOfCarbons" />
 			</td>
 		</tr>
 	</tbody>
@@ -71,19 +43,19 @@
 		<tr class="topBorder">
 			<td class="formTitle" colspan="4">
 				<div align="justify">
-					Non-Carbon Atom Information
+					Modification Information
 				</div>
 			</td>
 		</tr>
 		<tr>
 			<td class="leftLabel">
-				<strong>Number of Non-Carbon Atoms</strong>
+				<strong>Number of Modifications</strong>
 			</td>
 			<td class="label">
 				<html:text property="fullerene.numberOfElements" />
 			</td>
 			<td class="rightLabel" colspan="2">
-				<input type="button" onclick="javascript:updateComposition()" value="Update Non-Carbon Atoms">
+				<input type="button" onclick="javascript:updateComposition()" value="Update Modifications">
 			</td>
 		</tr>
 		<tr>
@@ -94,23 +66,22 @@
 							<tr class="topBorder">
 								<td class="formSubTitle" colspan="4">
 									<div align="justify">
-										Non-Carbon Atoms ${status.index+1}
+										Modification ${status.index+1}
 									</div>
 								</td>
 							</tr>
 							<tr>
 								<td class="leftLabel">
+									<strong>Modification Type</strong>
+								</td>
+								<td class="label">
+									<html:text name="fullerene.element" indexed="true" property="elementType" />
+								</td>
+								<td class="label">
 									<strong>Chemical Name</strong>
 								</td>
-								<td class="label">
-									<html:text name="fullerene.element" indexed="true" property="chemicalName" />
-								</td>
-								<td class="label">
-									<strong>Percent Molecular Weight</strong>
-								</td>
 								<td class="rightLabel">
-									<html:text name="fullerene.element" indexed="true" property="percentMolecularWeight" />
-									%
+									<html:text name="fullerene.element" indexed="true" property="chemicalName" />
 								</td>
 							</tr>
 							<tr>
@@ -124,7 +95,6 @@
 						</tbody>
 					</table>
 					<br>
-					<html:hidden name="fullerene.element" indexed="true" property="elementType" value="non-carbon atom" />
 				</c:forEach>
 			</td>
 		</tr>

@@ -44,15 +44,8 @@
 			<td class="leftLabel">
 				<strong>Chemical Name</strong>
 			</td>
-			<td class="label">
+			<td class="rightLabel" colspan="3">
 				<html:text property="metalParticle.core.chemicalName" />
-			</td>
-			<td class="label">
-				<strong>Percent Molecular Weight</strong>
-			</td>
-			<td class="rightLabel">
-				<html:text property="metalParticle.core.percentMolecularWeight" />
-				%
 			</td>
 		</tr>
 		<tr>
@@ -101,16 +94,9 @@
 								<td class="leftLabel">
 									<strong>Chemical Name</strong>
 								</td>
-								<td class="label">
+								<td class="rightLabel" colspan="3">
 									<html:text name="metalParticle.shell" indexed="true" property="chemicalName" />
-								</td>
-								<td class="label">
-									<strong>Percent Molecular Weight</strong>
-								</td>
-								<td class="rightLabel">
-									<html:text name="metalParticle.shell" indexed="true" property="percentMolecularWeight" />
-									%
-								</td>
+								</td>		
 							</tr>
 							<tr>
 								<td class="leftLabel">
@@ -165,16 +151,9 @@
 								<td class="leftLabel">
 									<strong>Chemical Name</strong>
 								</td>
-								<td class="label">
+								<td class="rightLabel" colspan="3">
 									<html:text name="metalParticle.coating" indexed="true" property="chemicalName" />
-								</td>
-								<td class="label">
-									<strong>Percent Molecular Weight</strong>
-								</td>
-								<td class="rightLabel">
-									<html:text name="metalParticle.coating" indexed="true" property="percentMolecularWeight" />
-									%
-								</td>
+								</td>		
 							</tr>
 							<tr>
 								<td class="leftLabel">

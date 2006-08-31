@@ -44,15 +44,8 @@
 			<td class="leftLabel">
 				<strong>Chemical Name</strong>
 			</td>
-			<td class="label">
+			<td class="rightLabel" colspan="3">
 				<html:text property="quantumDot.core.chemicalName" />
-			</td>
-			<td class="label">
-				<strong>Percent Molecular Weight</strong>
-			</td>
-			<td class="rightLabel">
-				<html:text property="quantumDot.core.percentMolecularWeight" />
-				%
 			</td>
 		</tr>
 		<tr>
@@ -101,15 +94,8 @@
 								<td class="leftLabel">
 									<strong>Chemical Name</strong>
 								</td>
-								<td class="label">
+								<td class="rightLabel" colspan="3">
 									<html:text name="quantumDot.shell" indexed="true" property="chemicalName" />
-								</td>
-								<td class="label">
-									<strong>Percent Molecular Weight</strong>
-								</td>
-								<td class="rightLabel">
-									<html:text name="quantumDot.shell" indexed="true" property="percentMolecularWeight" />
-									%
 								</td>
 							</tr>
 							<tr>
@@ -165,15 +151,8 @@
 								<td class="leftLabel">
 									<strong>Chemical Name</strong>
 								</td>
-								<td class="label">
+								<td class="rightLabel" colspan="3">
 									<html:text name="quantumDot.coating" indexed="true" property="chemicalName" />
-								</td>
-								<td class="label">
-									<strong>Percent Molecular Weight</strong>
-								</td>
-								<td class="rightLabel">
-									<html:text name="quantumDot.coating" indexed="true" property="percentMolecularWeight" />
-									%
 								</td>
 							</tr>
 							<tr>

@@ -3,7 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<html:form action="/submitReport" enctype="multipart/form-data">
+<html:form action="/publishReport" enctype="multipart/form-data">
 	<table width="100%" align="center">
 		<tr>
 			<td>
@@ -33,8 +33,19 @@
 								<strong>Particle ID*</strong>
 							</td>
 							<td class="rightLabel"">
-								<html:select property="particleNames" multiple="true" size="3">									
+								<html:select property="particleNames" multiple="true" size="3">
 									<html:options name="allSampleNames" />
+								</html:select>
+							</td>
+						</tr>
+						<tr>
+							<td class="leftLabel">
+								<strong>Report Type*</strong>
+							</td>
+							<td class="rightLabel"">
+								<html:select property="reportType">
+								   <option value="nclReport">NCL Report</option>
+								   <option value="other">Other Associated File</option>
 								</html:select>
 							</td>
 						</tr>
@@ -67,7 +78,7 @@
 								<strong>Visibility*</strong>
 							</td>
 							<td class="rightLabel">
-								<html:select property="visibilities" multiple="true" size="3">									
+								<html:select property="visibilities" multiple="true" size="3">
 									<option value="CCNE_Researcher">
 										CCNE Researchers
 									</option>
@@ -93,7 +104,7 @@
 									<td width="490" height="32">
 										<div align="right">
 											<div align="right">
-												<input type="reset" value="Reset" onclick="javascript:resetSelect(document.submitReportForm.particleNames));">
+												<input type="reset" value="Reset" onclick="javascript:resetSelect(document.publishReportForm.particleNames));">
 												<input type="hidden" name="dispatch" value="submit">
 												<input type="hidden" name="page" value="1">
 												<html:submit />
