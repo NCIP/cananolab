@@ -4,8 +4,8 @@
 <html:form action="/login" focus="loginID">
 	<table summary="" cellpadding="0" cellspacing="0" border="0" height="100%">
 		<tr>
-			<td valign="top" width=600>
-				<img src="images/bannerhome.jpg" width="600" height="140">
+			<td valign="top" width="450">
+				<img src="images/bannerhome.jpg" width="450">
 				<table summary="" cellpadding="0" cellspacing="0" border="0" height="100%">
 					<tr>
 						<td class="welcomeTitle" height="20">
