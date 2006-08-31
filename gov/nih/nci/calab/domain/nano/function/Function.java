@@ -11,10 +11,10 @@ import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
  */
 public class Function {
 	private Long id;
-	private String functionType;
+	private String type;
 	private String activationMethod;
 	
-	private Nanoparticle nanoParticle;
+	private Nanoparticle nanoparticle;
 	
 	/**
 	 * 
@@ -32,12 +32,12 @@ public class Function {
 		this.activationMethod = activationMethod;
 	}
 
-	public String getFunctionType() {
-		return functionType;
+	public String getType() {
+		return type;
 	}
 
-	public void setFunctionType(String functionType) {
-		this.functionType = functionType;
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public Long getId() {
@@ -48,12 +48,12 @@ public class Function {
 		this.id = id;
 	}
 
-	public Nanoparticle getNanoParticle() {
-		return nanoParticle;
+	public Nanoparticle getNanoparticle() {
+		return nanoparticle;
 	}
 
-	public void setNanoParticle(Nanoparticle nanoParticle) {
-		this.nanoParticle = nanoParticle;
+	public void setNanoparticle(Nanoparticle nanoparticle) {
+		this.nanoparticle = nanoparticle;
 	}
 
 	

@@ -12,7 +12,6 @@ public class ComposingElement {
 	private Long id;
 	private String chemicalName;
 	private String elementType;
-	private Float percentMolecularWeight;
 	private Composition composition;
 	
 	/**
@@ -45,14 +44,6 @@ public class ComposingElement {
 
 	public void setElementType(String elementType) {
 		this.elementType = elementType;
-	}
-
-	public Float getPercentMolecularWeight() {
-		return percentMolecularWeight;
-	}
-
-	public void setPercentMolecularWeight(Float percentMolecularWeight) {
-		this.percentMolecularWeight = percentMolecularWeight;
 	}
 
 	public Composition getComposition() {

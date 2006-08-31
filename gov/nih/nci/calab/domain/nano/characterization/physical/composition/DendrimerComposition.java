@@ -9,7 +9,7 @@ public class DendrimerComposition implements Composition {
 	private Long id;
 	private String source;
 	private String classification;
-	private Collection<Nanoparticle> particleCollection;
+	private Collection<Nanoparticle> nanoparticleCollection;
 	private Collection<ComposingElement> composingElementCollection = new HashSet<ComposingElement>();
 	
 	private String branch;
@@ -88,12 +88,12 @@ public class DendrimerComposition implements Composition {
 		return this.classification;
 	}
 
-	public void setParticleCollection(Collection<Nanoparticle> particles) {
-		this.particleCollection = particles;
+	public void setNanoparticleCollection(Collection<Nanoparticle> particleCollection) {
+		this.nanoparticleCollection = particleCollection;
 	}
 
-	public Collection<Nanoparticle> getParticleCollection() {
-		return this.particleCollection;
+	public Collection<Nanoparticle> getNanoparticleCollection() {
+		return this.nanoparticleCollection;
 	}
 
 	public void setComposingElementCollection(Collection<ComposingElement> element){

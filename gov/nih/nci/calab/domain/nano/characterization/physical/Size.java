@@ -9,7 +9,7 @@ public class Size implements Characterization {
 	private Long id;
 	private String source;
 	private String classification;
-	private Collection<Nanoparticle> particleCollection;
+	private Collection<Nanoparticle> nanoparticleCollection;
 	
 	private String size;
 	private String sizeDistribution;
@@ -45,12 +45,12 @@ public class Size implements Characterization {
 		return this.classification;
 	}
 
-	public void setParticleCollection(Collection<Nanoparticle> particles) {
-		this.particleCollection = particles;
+	public void setNanoparticleCollection(Collection<Nanoparticle> particles) {
+		this.nanoparticleCollection = particles;
 	}
 
-	public Collection<Nanoparticle> getParticleCollection() {
-		return this.particleCollection;
+	public Collection<Nanoparticle> getNanoparticleCollection() {
+		return this.nanoparticleCollection;
 	}
 
 	public String getPolydispersityIndex() {
