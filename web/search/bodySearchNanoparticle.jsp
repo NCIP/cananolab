@@ -66,12 +66,12 @@
 							<br>
 							In Vitro Characterization
 							<br>
-							<span class="indented"><a href="#" onclick="javascript:dynamicDropdown('toxicity', document.searchNanoparticleForm.characterization, charTypeChars)">Toxicity</a> <br> <span class="indented2"><a href="#"
-									onclick="javascript:dynamicDropdown('cytoTox', document.searchNanoparticleForm.characterization, charTypeChars)">Cytotoxicity</a> </span> <br> <span class="indented2">Immunotoxicity</span> <br> <span class="indented3"><a href="#"
-									onclick="javascript:dynamicDropdown('bloodContactTox', document.searchNanoparticleForm.characterization, charTypeChars)">Blood Contact </a></span> <br> <span class="indented3"><a href="#"
-									onclick="javascript:dynamicDropdown('immuneCellFuncTox', document.searchNanoparticleForm.characterization, charTypeChars)">Immune Cell Function </a></span> <br> <span class="indented2"><a href="#"
-									onclick="javascript:dynamicDropdown('metabolicStabilityTox', document.searchNanoparticleForm.characterization, charTypeChars)">Metabolic Stability </a></span> <br> <a href="#"
-								onclick="javascript:dynamicDropdown('invivo', document.searchNanoparticleForm.characterization, charTypeChars)">In Vivo Characterization</a>
+							<span class="indented"> <a href="#" onclick="javascript:dynamicDropdown('toxicity', document.searchNanoparticleForm.characterizations, charTypeChars)">Toxicity</a> <br> <span class="indented2"> <a href="#"
+									onclick="javascript:dynamicDropdown('cytoTox', document.searchNanoparticleForm.characterizations, charTypeChars)">Cytotoxicity</a> </span> <br> <span class="indented2">Immunotoxicity</span> <br> <span class="indented3"><a href="#"
+									onclick="javascript:dynamicDropdown('bloodContactTox', document.searchNanoparticleForm.characterizations, charTypeChars)">Blood Contact </a></span> <br> <span class="indented3"><a href="#"
+									onclick="javascript:dynamicDropdown('immuneCellFuncTox', document.searchNanoparticleForm.characterizations, charTypeChars)">Immune Cell Function </a></span> <br> <span class="indented2"><a href="#"
+									onclick="javascript:dynamicDropdown('metabolicStabilityTox', document.searchNanoparticleForm.characterizations, charTypeChars)">Metabolic Stability </a></span> <br> <a href="#"
+								onclick="javascript:dynamicDropdown('invivo', document.searchNanoparticleForm.characterizations, charTypeChars)">In Vivo Characterization</a>
 						</td>
 						<td class="label" valign="top">
 							<strong> Characterization </strong>
@@ -93,11 +93,8 @@
 						<td class="label">
 							<html:textarea property="keywords" rows="4" />
 						</td>
-						<td class="rightLabel" colspan="2"><strong>for<br>
-							<html:radio property="keywordType" value="nanoparticle">Nanoparticle</html:radio>
-							<br>
-							<html:radio property="keywordType" value="assayResult">Assay Result</html:radio>
-							</strong>
+						<td class="rightLabel" colspan="2">
+							<strong>for<br> <html:radio property="keywordType" value="nanoparticle">Nanoparticle</html:radio> <br> <html:radio property="keywordType" value="assayResult">Assay Result</html:radio> </strong>
 						</td>
 					</tr>
 				</table>
@@ -133,9 +130,9 @@
 /* populate a hashtable containing characterization type characterizations */
   var charTypeChars=new Array();    
   <c:forEach var="item" items="${allCharacterizationTypeCharacterizations}">  
-    var chars=new Array();
+    var chars=new Array();    
    <c:forEach var="char" items="${allCharacterizationTypeCharacterizations[item.key]}" varStatus="count">
-  		chars[${count.index}]=new Option('${char}', '${char}');   		
+  		chars[${count.index}]=new Option('${char}', '${char}'); 
     </c:forEach>
     charTypeChars['${item.key}']=chars;
   </c:forEach>
