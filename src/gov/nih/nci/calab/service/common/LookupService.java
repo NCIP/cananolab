@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.42 2006-08-23 13:24:58 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.43 2006-08-31 14:05:57 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -390,36 +390,6 @@ public class LookupService {
 			ida.close();
 		}
 		return assayTypeAssays;
-	}
-
-	/**
-	 * 
-	 * @return a map between assay type and its assays
-	 * @throws Exception
-	 */
-	public Map<String, SortedSet<AssayBean>> getAllAssayTypeAssays(UserBean user)
-			throws Exception {
-		Map<String, SortedSet<AssayBean>> assayTypeAssays = getAllAssayTypeAssays();
-		// filter by user access privileges
-		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
-		Map<String, SortedSet<AssayBean>> filteredAssayTypeAssays = new HashMap<String, SortedSet<AssayBean>>(
-				assayTypeAssays);
-		for (String assayType : filteredAssayTypeAssays.keySet()) {
-			boolean haveAssayTypeAccess = userService.accessProtectionGroup(
-					user, assayType);
-			if (!haveAssayTypeAccess) {
-				filteredAssayTypeAssays.remove(assayType);
-			} else {
-				for (AssayBean assay : filteredAssayTypeAssays.get(assayType)) {
-					boolean haveAssayAccess = userService
-							.accessProtectionGroup(user, assay.getAssayName());
-					if (!haveAssayAccess) {
-						filteredAssayTypeAssays.get(assayType).remove(assay);
-					}
-				}
-			}
-		}
-		return filteredAssayTypeAssays;
 	}
 
 	/**
