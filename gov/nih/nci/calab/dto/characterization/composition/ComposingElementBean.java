@@ -1,9 +1,13 @@
 package gov.nih.nci.calab.dto.characterization.composition;
 
+/**
+ * This class represents the properties of a ComposingElement to be shown in the view page.
+ * @author pansu
+ *
+ */
 public class ComposingElementBean {
 	private String chemicalName;
 	private String elementType;
-	private String percentMolecularWeight;
 	private String description;
 	
 	public ComposingElementBean(){		
@@ -27,11 +31,4 @@ public class ComposingElementBean {
 	public void setElementType(String elementType) {
 		this.elementType = elementType;
 	}
-	public String getPercentMolecularWeight() {
-		return percentMolecularWeight;
-	}
-	public void setPercentMolecularWeight(String percentMolecularWeight) {
-		this.percentMolecularWeight = percentMolecularWeight;
-	}
-	
 }
