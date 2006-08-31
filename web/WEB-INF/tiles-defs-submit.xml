@@ -23,10 +23,12 @@
 			<item value="Size" link="" />
 			<item value="Molecular Weight" link="" />
 			<item value="Morphology" link="" />
+			<item value="Shape" link="" />
 			<item value="Surface" link="" />
 			<item value="Solubility" link="" />
 			<item value="Purity" link="" />
 			<item value="Stability" link="" />
+			<item value="Functional" link="" />
 		</putList>
 		<putList name="toxActions">
 			<item value="Oxidative Stress" link="" />
@@ -111,8 +113,7 @@
 	</definition>
 
 	<!-- definition for the assay result page -->
-	<definition name="submit.addassayresult" extends="calab.home">
-		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
+	<definition name="submit.addassayresult" extends="calab.home">		
 		<put name="calabContent" value="/submit/bodyAddAssayResult.jsp" />
 		<put name="menu" value="submit" />
 	</definition>
