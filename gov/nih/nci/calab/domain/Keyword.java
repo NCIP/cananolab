@@ -5,15 +5,21 @@ package gov.nih.nci.calab.domain;
 
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 
+import java.util.Collection;
+import java.util.HashSet;
+
 /**
  * @author zengje
  *
  */
 public class Keyword {
+	
+	private static final long serialVersionUID = 1234567890L;
+	
 	private Long id;
 	private String name;
 	
-	private Nanoparticle nanoparticle;
+	private Collection<Nanoparticle> nanoparticleCollection = new HashSet<Nanoparticle>();
 	/**
 	 * 
 	 */
@@ -33,11 +39,11 @@ public class Keyword {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Nanoparticle getNanoparticle() {
-		return nanoparticle;
+	public Collection<Nanoparticle> getNanoparticleCollection() {
+		return nanoparticleCollection;
 	}
-	public void setNanoparticle(Nanoparticle nanoparticle) {
-		this.nanoparticle = nanoparticle;
+	public void setNanoparticleCollection(Collection<Nanoparticle> nanoparticleCollection) {
+		this.nanoparticleCollection = nanoparticleCollection;
 	}
 
 }
