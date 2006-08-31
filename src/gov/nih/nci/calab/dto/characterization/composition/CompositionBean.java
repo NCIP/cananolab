@@ -5,6 +5,12 @@ import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class represents shared properties of phyisical composition characterizations to be shown in
+ * different physical composition view pages.
+ * @author pansu
+ *
+ */
 public class CompositionBean extends CharacterizationBean {
 	private String numberOfElements;
 	

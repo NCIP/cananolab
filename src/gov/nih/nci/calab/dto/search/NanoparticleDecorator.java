@@ -6,7 +6,8 @@ import gov.nih.nci.calab.service.util.StringUtils;
 import org.displaytag.decorator.TableDecorator;
 
 /**
- * This decorator is used to for display a nanoparticle with a URL on the name
+ * This decorator is used to for decorate different properties of a nanoparticle
+ * to be shown properly in the view page using display tag lib.
  * 
  * @author pansu
  * 

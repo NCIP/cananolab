@@ -7,8 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Zeng
- * 
+ * This class represents properties of a Metal Particle composition to be shown in
+ * the view page.
+ * @author zeng, pansu
  */
 public class MetalParticleBean extends CompositionBean {
 	private ComposingElementBean core;
@@ -21,12 +22,12 @@ public class MetalParticleBean extends CompositionBean {
 		super();
 		shells=new ArrayList<ComposingElementBean>();
 		coatings=new ArrayList<ComposingElementBean>();
-		List composingElements = getComposingElements();
+		List<ComposingElementBean> composingElements = getComposingElements();
 		core = new ComposingElementBean();
 		core.setElementType("core");
 		composingElements.add(core);	
-		composingElements.add(shells);
-		composingElements.add(coatings);
+		composingElements.addAll(shells);
+		composingElements.addAll(coatings);
 		setComposingElements(composingElements);		
 	}
 

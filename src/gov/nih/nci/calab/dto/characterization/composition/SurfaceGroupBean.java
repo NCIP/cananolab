@@ -1,5 +1,9 @@
 package gov.nih.nci.calab.dto.characterization.composition;
-
+/**
+ * This class represents properties of a SurfaceGroup to be shown in the view page.
+ * @author pansu
+ *
+ */
 public class SurfaceGroupBean {
 	private String id;
 	private String name;

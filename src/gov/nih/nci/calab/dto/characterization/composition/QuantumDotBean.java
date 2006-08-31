@@ -1,11 +1,10 @@
-/**
- * 
- */
 package gov.nih.nci.calab.dto.characterization.composition;
 
 
 /**
- * @author Zeng
+ * This class represents properties of a Quantum Dot composition to be shown in
+ * the view page.
+ * @author zeng, pansu
  *
  */
 public class QuantumDotBean extends MetalParticleBean {

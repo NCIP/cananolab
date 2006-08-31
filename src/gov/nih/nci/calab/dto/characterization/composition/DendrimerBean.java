@@ -3,6 +3,13 @@ package gov.nih.nci.calab.dto.characterization.composition;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class represents properties of a Dendrimer composition to be shown in
+ * the view page.
+ * @author pansu
+ *
+ */
+
 public class DendrimerBean extends CompositionBean {
 	private String branch;
 
@@ -21,7 +28,7 @@ public class DendrimerBean extends CompositionBean {
 	public DendrimerBean() {
 		super();
 		surfaceGroups = new ArrayList<SurfaceGroupBean>();		
-		List composingElements = getComposingElements();
+		List<ComposingElementBean> composingElements = getComposingElements();
 		core = new ComposingElementBean();
 		core.setElementType("core");
 		composingElements.add(core);
