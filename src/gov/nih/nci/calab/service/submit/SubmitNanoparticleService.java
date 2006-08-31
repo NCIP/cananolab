@@ -49,8 +49,13 @@ public class SubmitNanoparticleService {
 //			ida.close();
 //		}
 		
-		// set visibilities for the nanoparticle
+		//remove existing visiblities for the nanoparticle
 		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
+		List<String> currentVisibilities=userService.getAccessibleGroups(particleName, "R");
+		for (String visiblity: currentVisibilities) {
+			userService.removeAccessibleGroup(particleName, visiblity, "R");
+		}
+		// set new visibilities for the nanoparticle		
 		for (String visibility : visibilities) {
 			// by default, always set visibility to NCL_PI and NCL_Researcher to
 			// be true
@@ -58,7 +63,6 @@ public class SubmitNanoparticleService {
 			userService.secureObject(particleName, "NCL_Researcher", "R");
 			userService.secureObject(particleName, visibility, "R");
 		}
-
 	}
 
 	public void addParticleComposition(String particleType, CompositionBean particle) {
