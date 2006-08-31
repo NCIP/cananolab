@@ -12,7 +12,7 @@
     </id>
     <property name="elementType" type="java.lang.String" column="ELEMENT_TYPE" />
     <property name="chemicalName" type="java.lang.String" column="CHEMICAL_NAME" />
-    <property name="percentMolecularWeight" type="java.lang.String" column="PERCENT_MOLECULARWEIGHT" />
+    <property name="description" type="java.lang.String" column="DESCRIPTION" />
            
     <many-to-one name="composition" class="gov.nih.nci.calab.domain.nano.characterization.physical.composition.Composition" column="COMPOSITION_PK_ID" lazy="false" fetch="join"/>
 
