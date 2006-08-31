@@ -6,6 +6,7 @@ import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CalabConstants;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SearchNanoparticleService {
@@ -37,15 +38,18 @@ public class SearchNanoparticleService {
 		return filteredParticles;
 	}
 
-	public ParticleBean getGeneralInfo(String particleName) {
+	public ParticleBean getGeneralInfo(String particleName) throws Exception {
 		// TODO add database code
 		String[] keywords = new String[] { "This", "is" };
-		String[] visibilityGroup = new String[] {"CCNE_Researcher" };
+		
 		ParticleBean particle1 = new ParticleBean("1", "NCL-3", "UMD",
 				"Dendrimer", "Organic", new String[] { "Targeting",
 						"Therapeutic" }, new String[] { "Physical:Composition",
-						"Physical:Size" }, keywords);
-		particle1.setVisibilityGroups(visibilityGroup);
+						"Physical:Size" }, keywords);		
+		UserService userService=new UserService(CalabConstants.CSM_APP_NAME);
+		List<String>accessibleGroups=userService.getAccessibleGroups(particleName, "R");
+		String[] visibilityGroups=accessibleGroups.toArray(new String[0]);
+		particle1.setVisibilityGroups(visibilityGroups);
 		
 		return particle1;
 	}
