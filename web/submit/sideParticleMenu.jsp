@@ -15,9 +15,9 @@
 	</c:when>
 </c:choose>
 
-<table summary="" cellpadding="0" cellspacing="0" border="0" height="100%">
+<table summary="" cellpadding="0" cellspacing="0" border="0" height="100%" width="250">
 	<tr>
-		<td class="subMenuPrimaryTitle" height="21" width="250">
+		<td class="subMenuPrimaryTitle" height="21">
 			PARTICLE TREE
 		</td>
 	</tr>
@@ -72,14 +72,6 @@
 										<br>
 										<br>
 									</li>
-									<li>
-										<span class="largerText">Assay Results &nbsp;&nbsp;</span><a href="addAssayResult.do?dispatch=setup&particleName=${particleName}"><em>add</em></a>
-										<br>
-										<br>
-									</li>
-									<li>
-										<span class="largerText">Reports</span>
-									</li>
 								</c:when>
 								<c:otherwise>
 									<li>
@@ -125,16 +117,21 @@
 										<br>
 										<br>
 									</li>
-									<li>
-										<span class="largerText">Assay Results &nbsp;&nbsp;</span>
-										<br>
-										<br>
-									</li>
-									<li>
-										<span class="largerText">Reports</span>
-									</li>
 								</c:otherwise>
 							</c:choose>
+							<li>
+								<span class="largerText">Assay Result Files &nbsp;&nbsp;</span>
+								<br>
+								<br>
+							</li>
+							<li>
+								<span class="largerText">Other Associated Files &nbsp;&nbsp;</span>
+								<br>
+								<br>
+							</li>
+							<li>
+								<span class="largerText">Reports</span>
+							</li>
 						</ul>
 						<p>
 							&nbsp;

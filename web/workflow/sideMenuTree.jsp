@@ -1,37 +1,35 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <%@ page import="java.util.*,gov.nih.nci.calab.dto.workflow.*,gov.nih.nci.calab.dto.inventory.*"%>
 
-<tr>
-	<td width="190" valign="top" class="subMenu">
-		<!-- submenu begins -->
-		<table summary="" cellpadding="0" cellspacing="0" border="0" height="100%">
-			<tr>
-				<td class="subMenuPrimaryTitle" height="21">
-					ASSAY TEMPLATE
-				</td>
-			</tr>
-			<tr>
-				<td>
-					&nbsp;
-				</td>
-			</tr>
-			<tr>
-				<td>
-					&nbsp;
-				</td>
-			</tr>
-			<tr>
-				<td class="formMessage" height="100%">
-					<table width="100%" height="95%" border="0" cellpadding="2" cellspacing="0">
-						<tr>
-							<td align="left" valign="top" class="formMessage">
-															<div class="dtree" style="white-space: nowrap;">								
-									<script type="text/javascript">
+<!-- submenu begins -->
+<table summary="" cellpadding="0" cellspacing="0" border="0" height="100%" width="250">
+	<tr>
+		<td class="subMenuPrimaryTitle" height="21">
+			ASSAY TEMPLATE
+		</td>
+	</tr>
+	<tr>
+		<td>
+			&nbsp;
+		</td>
+	</tr>
+	<tr>
+		<td>
+			&nbsp;
+		</td>
+	</tr>
+	<tr>
+		<td class="formMessage" height="100%">
+			<table width="100%" height="95%" border="0" cellpadding="2" cellspacing="0">
+				<tr>
+					<td align="left" valign="top" class="formMessage">
+						<div class="dtree" style="white-space: nowrap;">
+							<script type="text/javascript">
 									
 							<!--
 							    d = new dTree('d');								
@@ -99,19 +97,18 @@
 								d.config.closeSameLevel=true;
 							//-->
 							</script>
-								</div>								
-								<p>
-									&nbsp;				
-								</p>
-							</td>
-						</tr>
-					</table>
-				</td>
-			</tr>
-			<tr>
-				<td class="subMenuFooter" height="22">
-					&nbsp;
-				</td>
-			</tr>
-		</table>
-	</td>
+						</div>
+						<p>
+							&nbsp;
+						</p>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td class="subMenuFooter" height="22">
+			&nbsp;
+		</td>
+	</tr>
+</table>

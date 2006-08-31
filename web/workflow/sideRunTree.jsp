@@ -7,9 +7,9 @@
 <%@ page import="java.util.*,gov.nih.nci.calab.dto.workflow.*,gov.nih.nci.calab.dto.inventory.*"%>
 
 <!-- submenu begins -->
-<table summary="" cellpadding="0" cellspacing="0" border="0" height="100%">
+<table summary="" cellpadding="0" cellspacing="0" border="0" height="100%" width="250">
 	<tr>
-		<td class="subMenuPrimaryTitle" height="21" width="250">
+		<td class="subMenuPrimaryTitle" height="21">
 			WORKFLOW TREE
 		</td>
 	</tr>
