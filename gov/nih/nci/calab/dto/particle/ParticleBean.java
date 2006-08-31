@@ -2,6 +2,11 @@ package gov.nih.nci.calab.dto.particle;
 
 import gov.nih.nci.calab.dto.inventory.SampleBean;
 
+/**
+ * This class represents shared properties of nanoparticles to be shown in the view page.
+ * @author pansu
+ *
+ */
 public class ParticleBean extends SampleBean {
 
 	private String particleCategory;

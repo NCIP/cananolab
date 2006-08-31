@@ -1,6 +1,11 @@
 package gov.nih.nci.calab.dto.characterization.composition;
 
-
+/**
+ * This class represents properties of a Polymer composition to be shown in
+ * the view page.
+ * @author pansu
+ *
+ */
 public class PolymerBean extends CompositionBean {
 	private String crosslinked;
 

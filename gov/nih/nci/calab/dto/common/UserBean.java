@@ -1,7 +1,11 @@
 package gov.nih.nci.calab.dto.common;
 
 import gov.nih.nci.security.authorization.domainobjects.User;
-
+/**
+ * This class represents properties of a user object to be shown in the view page.
+ * @author pansu
+ *
+ */
 public class UserBean {
 
 	private String userId;
