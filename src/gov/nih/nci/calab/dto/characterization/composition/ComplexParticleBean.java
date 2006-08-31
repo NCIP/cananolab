@@ -1,5 +1,11 @@
 package gov.nih.nci.calab.dto.characterization.composition;
 
+/**
+ * This class represents properties of a Complext Nanoparticle composition to be shown in
+ * the view page.
+ * @author pansu
+ *
+ */
 public class ComplexParticleBean extends CompositionBean {
 	private String name;
 
@@ -7,7 +13,6 @@ public class ComplexParticleBean extends CompositionBean {
 
 	public ComplexParticleBean() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public String getDescription() {
