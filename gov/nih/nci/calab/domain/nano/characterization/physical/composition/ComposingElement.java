@@ -13,6 +13,7 @@ public class ComposingElement {
 	private String chemicalName;
 	private String elementType;
 	private Composition composition;
+	private String description;
 	
 	/**
 	 * 
@@ -52,6 +53,14 @@ public class ComposingElement {
 
 	public void setComposition(Composition composition) {
 		this.composition = composition;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	
