@@ -6,18 +6,25 @@ import java.util.Collection;
 import java.util.HashSet;
 
 public class FullereneComposition implements Composition {
-	private Float chirality;
-	private Float growthDiameter;
-	private Float averageLength;
 	private Long id;
 	private String source;
 	private String classification;
-	private Collection<Nanoparticle> particleCollection;
+	private Collection<Nanoparticle> nanoparticleCollection = new HashSet<Nanoparticle>();
 	private Collection<ComposingElement> composingElementCollection = new HashSet<ComposingElement>();
-		
+
+	private String numberOfCarbon;
+	
 	public FullereneComposition() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+
+	public String getNumberOfCarbon() {
+		return numberOfCarbon;
+	}
+
+	public void setNumberOfCarbon(String numberOfCarbon) {
+		this.numberOfCarbon = numberOfCarbon;
 	}
 
 	public void setId(Long id) {
@@ -44,36 +51,12 @@ public class FullereneComposition implements Composition {
 		return this.classification;
 	}
 
-	public Float getAverageLength() {
-		return averageLength;
+	public void setNanoparticleCollection(Collection<Nanoparticle> particleCollection) {
+		this.nanoparticleCollection = particleCollection;
 	}
 
-	public void setAverageLength(Float averageLength) {
-		this.averageLength = averageLength;
-	}
-
-	public Float getChirality() {
-		return chirality;
-	}
-
-	public void setChirality(Float chirality) {
-		this.chirality = chirality;
-	}
-
-	public Float getGrowthDiameter() {
-		return growthDiameter;
-	}
-
-	public void setGrowthDiameter(Float growthDiameter) {
-		this.growthDiameter = growthDiameter;
-	}
-
-	public void setParticleCollection(Collection<Nanoparticle> particles) {
-		this.particleCollection = particles;
-	}
-
-	public Collection<Nanoparticle> getParticleCollection() {
-		return this.particleCollection;
+	public Collection<Nanoparticle> getNanoparticleCollection() {
+		return this.nanoparticleCollection;
 	}
 	
 	public void setComposingElementCollection(Collection<ComposingElement> element){

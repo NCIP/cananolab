@@ -6,6 +6,5 @@ import java.util.Collection;
 
 public interface Composition extends Characterization{
 	public void setComposingElementCollection(Collection<ComposingElement> element);
-	public Collection<ComposingElement> getComposingElementCollection();
-	
+	public Collection<ComposingElement> getComposingElementCollection();	 
 }
