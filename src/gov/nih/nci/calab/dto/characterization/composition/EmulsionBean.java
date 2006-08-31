@@ -1,9 +1,14 @@
 package gov.nih.nci.calab.dto.characterization.composition;
 
+/**
+ * This class represents properties of a Dendrimer composition to be shown in
+ * the view page.
+ * @author pansu
+ *
+ */
 public class EmulsionBean extends CompositionBean {
 	private String emulsionType;
-	private String molecularFormula;
-	private String dropletSize;
+	private String molecularFormula;	
 	private String polymerized;
 	private String polymerName;
 	
@@ -11,12 +16,6 @@ public class EmulsionBean extends CompositionBean {
 		super();
 	}
 	
-	public String getDropletSize() {
-		return dropletSize;
-	}
-	public void setDropletSize(String dropletSize) {
-		this.dropletSize = dropletSize;
-	}
 	public String getEmulsionType() {
 		return emulsionType;
 	}
