@@ -194,7 +194,8 @@ S:s_CSSTop	// STYLE Array to use for this menu
 },
 [		// define items {U:'url',T:'text' ...} look at the Manual for details
 {U:'manageNanoparticle.do',T:'Manage Nanoparticle'},
-{U:'submitReport.do?dispatch=setup&page=0',T:'Submit Report'}
+{U:'publishReport.do?dispatch=setup&page=0',T:'Publish Report'},
+{U:'publishAssayResult.do?dispatch=setup&page=0',T:'Publish Assay Result File'}
 ]
 );
 
