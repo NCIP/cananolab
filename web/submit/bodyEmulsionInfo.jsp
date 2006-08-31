@@ -44,14 +44,6 @@
 		</tr>
 		<tr>
 			<td class="leftLabel">
-				<strong>Droplet Size</strong>
-			</td>
-			<td class="rightLabel" colspan="3">
-				<html:text property="emulsion.dropletSize" />
-			</td>
-		</tr>
-		<tr>
-			<td class="leftLabel">
 				<strong>Is Polymerized </strong>
 			</td>
 			<td class="label">

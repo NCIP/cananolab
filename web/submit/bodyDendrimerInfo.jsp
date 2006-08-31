@@ -72,15 +72,8 @@
 			<td class="leftLabel">
 				<strong>Chemical Name</strong>
 			</td>
-			<td class="label">
+			<td class="rightLabel" colspan="3">
 				<html:text property="dendrimer.core.chemicalName" />
-			</td>
-			<td class="label">
-				<strong>Percent Molecular Weight</strong>
-			</td>
-			<td class="rightLabel">
-				<html:text property="dendrimer.core.percentMolecularWeight" />
-				%
 			</td>
 		</tr>
 		<tr>

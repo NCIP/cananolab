@@ -82,26 +82,17 @@
 								<td class="leftLabel">
 									<strong>Composing Nanoparticle Type</strong>
 								</td>
-								<td class="rightLabel" colspan="3">									
+								<td class="label">									
 									<html:select name="complexParticle.element" indexed="true" property="elementType">
 										<option value=""></option>
 										<html:options name="allParticleTypes" />
 									</html:select>
-								</td>
-							</tr>
-							<tr>
-								<td class="leftLabel">
+								</td>							
+								<td class="label">
 									<strong>Chemical Name</strong>
 								</td>
-								<td class="label">
-									<html:text name="complexParticle.element" indexed="true" property="chemicalName" />
-								</td>
-								<td class="label">
-									<strong>Percent Molecular Weight</strong>
-								</td>
 								<td class="rightLabel">
-									<html:text name="complexParticle.element" indexed="true" property="percentMolecularWeight" />
-									%
+									<html:text name="complexParticle.element" indexed="true" property="chemicalName" />
 								</td>
 							</tr>
 							<tr>
