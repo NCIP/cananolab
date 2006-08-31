@@ -1,12 +1,13 @@
 package gov.nih.nci.calab.ui.submit;
 
 /**
- * This class creates nanoparticle general information and assigns visibility  
+ * This class sets up the nanoparticle general information page and allows users to submit/update
+ * the general information.  
  *  
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.5 2006-08-25 18:40:09 pansu Exp $ */
+/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.6 2006-08-31 14:08:17 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
@@ -27,6 +28,7 @@ import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
 public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
+
 	public ActionForward create(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
