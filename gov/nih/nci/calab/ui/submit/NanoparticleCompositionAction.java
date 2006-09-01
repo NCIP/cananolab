@@ -8,7 +8,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleCompositionAction.java,v 1.5 2006-08-31 14:07:59 pansu Exp $ */
+/* CVS $Id: NanoparticleCompositionAction.java,v 1.6 2006-09-01 21:24:35 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.composition.FullereneBean;
 import gov.nih.nci.calab.dto.characterization.composition.ComplexParticleBean;
@@ -69,7 +69,7 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 			composition = (ComplexParticleBean) theForm.get("complexParticle");
 		}
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		service.addParticleComposition(particleType, composition);
+		service.addParticleComposition(composition);
 
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.addParticleComposition");
