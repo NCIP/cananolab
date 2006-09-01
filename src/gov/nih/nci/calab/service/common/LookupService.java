@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.43 2006-08-31 14:05:57 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.44 2006-09-01 20:41:23 zengje Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -615,13 +615,15 @@ public class LookupService {
 	public Map<String, String> getParticleTypeToParticleCategory() {
 		Map<String, String> type2Category = new HashMap<String, String>();
 		// TODO replaced by database code
-		type2Category.put("polymer", "organic");
-		type2Category.put("dendrimer", "organic");
-		type2Category.put("buckeyball", "carbonbased");
-		type2Category.put("fullerene", "carbonbased");
-		type2Category.put("quantom dot", "hybrid");
+		type2Category.put("polymer", "organic-hydrocarbon");
+		type2Category.put("dendrimer", "organic-hydrocarbon");
+		type2Category.put("carbon nanotube", "organic-carbon");
+		type2Category.put("fullerene", "organic-carbon");
+		type2Category.put("quantom dot", "inorganic");
 		type2Category.put("metal particle", "inorganic");
-		type2Category.put("liposome", "liposome");
+		type2Category.put("liposome", "organic");
+		type2Category.put("emulsion", "organic");
+		type2Category.put("complex particle", "complex");
 		return type2Category;
 	}
 
