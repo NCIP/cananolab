@@ -1,10 +1,13 @@
 package gov.nih.nci.calab.dto.characterization.composition;
 
+import gov.nih.nci.calab.domain.nano.characterization.Characterization;
+
 /**
- * This class represents properties of a Polymer composition to be shown in
- * the view page.
+ * This class represents properties of a Polymer composition to be shown in the
+ * view page.
+ * 
  * @author pansu
- *
+ * 
  */
 public class PolymerBean extends CompositionBean {
 	private String crosslinked;
@@ -14,7 +17,7 @@ public class PolymerBean extends CompositionBean {
 	private String initiator;
 
 	public PolymerBean() {
-		super();				
+		super();
 	}
 
 	public String getCrosslinkDegree() {
@@ -39,5 +42,10 @@ public class PolymerBean extends CompositionBean {
 
 	public void setInitiator(String initiator) {
 		this.initiator = initiator;
+	}
+
+	public Characterization getDomainObj() {
+		// TODO fill in details;
+		return null;
 	}
 }

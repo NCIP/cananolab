@@ -11,7 +11,7 @@ import java.util.List;
  * @author pansu
  *
  */
-public class CompositionBean extends CharacterizationBean {
+public abstract class CompositionBean extends CharacterizationBean {
 	private String numberOfElements;
 	
 	private List<ComposingElementBean> composingElements;
@@ -43,5 +43,4 @@ public class CompositionBean extends CharacterizationBean {
 	public void setNumberOfElements(String numberOfElements) {
 		this.numberOfElements = numberOfElements;
 	}
-
 }
