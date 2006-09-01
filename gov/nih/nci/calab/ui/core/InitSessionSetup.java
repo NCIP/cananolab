@@ -338,7 +338,7 @@ public class InitSessionSetup {
 	public void setAllParticleTypeParticles(HttpSession session)
 			throws Exception {
 		if (session.getAttribute("allParticleTypeParticles") == null
-				|| session.getAttribute("newParticleCreated") != null) {
+				|| session.getAttribute("newSampleCreated") != null) {
 			Map<String, SortedSet<String>> particleTypeParticles = lookupService
 					.getAllParticleTypeParticles();
 			List<String> particleTypes = new ArrayList<String>(
