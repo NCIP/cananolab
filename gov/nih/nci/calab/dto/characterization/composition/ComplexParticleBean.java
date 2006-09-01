@@ -1,5 +1,7 @@
 package gov.nih.nci.calab.dto.characterization.composition;
 
+import gov.nih.nci.calab.domain.nano.characterization.Characterization;
+
 /**
  * This class represents properties of a Complext Nanoparticle composition to be shown in
  * the view page.
@@ -29,5 +31,9 @@ public class ComplexParticleBean extends CompositionBean {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	public Characterization getDomainObj() {
+		//TODO fill in details;
+		return null;
 	}
 }

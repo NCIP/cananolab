@@ -1,5 +1,7 @@
 package gov.nih.nci.calab.dto.characterization.composition;
 
+import gov.nih.nci.calab.domain.nano.characterization.Characterization;
+
 /**
  * This class represents properties of a Dendrimer composition to be shown in
  * the view page.
@@ -40,5 +42,8 @@ public class EmulsionBean extends CompositionBean {
 	public void setPolymerName(String polymerName) {
 		this.polymerName = polymerName;
 	}
-	
+	public Characterization getDomainObj() {
+		//TODO fill in details;
+		return null;
+	}
 }

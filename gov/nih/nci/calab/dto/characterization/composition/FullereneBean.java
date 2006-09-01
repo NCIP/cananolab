@@ -1,5 +1,7 @@
 package gov.nih.nci.calab.dto.characterization.composition;
 
+import gov.nih.nci.calab.domain.nano.characterization.Characterization;
+
 /**
  * This class represents properties of a Fullerene composition to be shown in
  * the view page.
@@ -20,5 +22,8 @@ public class FullereneBean extends CompositionBean {
 	public void setNumberOfCarbons(String numberOfCarbons) {
 		this.numberOfCarbons = numberOfCarbons;
 	}
-	
+	public Characterization getDomainObj() {
+		//TODO fill in details;
+		return null;
+	}
 }

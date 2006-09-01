@@ -1,5 +1,7 @@
 package gov.nih.nci.calab.dto.characterization;
 
+import gov.nih.nci.calab.domain.nano.characterization.Characterization;
+
 /**
  * This class represents shared characterization properties to be shown in
  * characterization view pages.
@@ -7,7 +9,9 @@ package gov.nih.nci.calab.dto.characterization;
  * @author pansu
  * 
  */
-public class CharacterizationBean {
+public abstract class CharacterizationBean {
+	private String id;
+	
 	private String characterizationClassification;
 
 	private String characterizationSource;
@@ -41,5 +45,17 @@ public class CharacterizationBean {
 		this.viewTitle = viewTitle;
 	}
 
+	public String getId() {
+		return id;
+	}
 
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	/**
+	 * Get the domain characterization object from the dto bean properties
+	 * @return
+	 */
+	public abstract Characterization getDomainObj();
 }
