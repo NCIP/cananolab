@@ -2,60 +2,101 @@ package gov.nih.nci.calab.service.submit;
 
 import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
+import gov.nih.nci.calab.domain.Keyword;
+import gov.nih.nci.calab.domain.nano.characterization.Characterization;
+import gov.nih.nci.calab.domain.nano.characterization.physical.composition.CarbonNanotubeComposition;
+import gov.nih.nci.calab.domain.nano.characterization.physical.composition.DendrimerComposition;
+import gov.nih.nci.calab.domain.nano.characterization.physical.composition.EmulsionComposition;
+import gov.nih.nci.calab.domain.nano.characterization.physical.composition.FullereneComposition;
+import gov.nih.nci.calab.domain.nano.characterization.physical.composition.LiposomeComposition;
+import gov.nih.nci.calab.domain.nano.characterization.physical.composition.MetalParticleComposition;
+import gov.nih.nci.calab.domain.nano.characterization.physical.composition.PolymerComposition;
+import gov.nih.nci.calab.domain.nano.characterization.physical.composition.QuantumDotComposition;
+import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
+import gov.nih.nci.calab.dto.characterization.composition.CarbonNanotubeBean;
 import gov.nih.nci.calab.dto.characterization.composition.CompositionBean;
+import gov.nih.nci.calab.dto.characterization.composition.DendrimerBean;
+import gov.nih.nci.calab.dto.characterization.composition.EmulsionBean;
+import gov.nih.nci.calab.dto.characterization.composition.FullereneBean;
+import gov.nih.nci.calab.dto.characterization.composition.LiposomeBean;
+import gov.nih.nci.calab.dto.characterization.composition.MetalParticleBean;
+import gov.nih.nci.calab.dto.characterization.composition.PolymerBean;
+import gov.nih.nci.calab.dto.characterization.composition.QuantumDotBean;
 import gov.nih.nci.calab.dto.workflow.FileBean;
-import gov.nih.nci.calab.service.common.LookupService;
+import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CalabConstants;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+
+import org.apache.log4j.Logger;
 
 /**
  * This class includes service calls involved in creating nanoparticles and
- * adding properties, functions and characterizations for nanoparticles.
+ * adding functions and characterizations for nanoparticles.
  * 
  * @author pansu
  * 
  */
 public class SubmitNanoparticleService {
+	private static Logger logger = Logger
+			.getLogger(SubmitNanoparticleService.class);
+
+	/**
+	 * Update keywords and visibilities for the particle with the given name and
+	 * type
+	 * 
+	 * @param particleType
+	 * @param particleName
+	 * @param keywords
+	 * @param visibilities
+	 * @throws Exception
+	 */
 	public void createNanoparticle(String particleType, String particleName,
 			String[] keywords, String[] visibilities) throws Exception {
-		
-		LookupService lookupService=new LookupService();
-		Map<String, String>type2Category=lookupService.getParticleTypeToParticleCategory();
-		
+
 		// save nanoparticle to the database
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
-//		try {
-//			ida.open();
-//			//check if particle already exists in the database			
-//			List results = ida.search("from Nanoparticle where particleName="+particleName);
-//			if (results.size()>0) {
-//				throw new DuplicateEntriesException("Nanoparticle alreay exists in the database");
-//			}
-//			
-//			Nanoparticle particle=new Nanoparticle();			
-//			particle.setParticleCategory(type2Category.get(particleType.toLowerCase()));			
-//			ida.createObject(particle);
-//						
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			ida.rollback();
-//			throw e;
-//		} finally {
-//			ida.close();
-//		}
-		
-		//remove existing visiblities for the nanoparticle
+		try {
+			ida.open();
+			// get the existing particle from database created during sample
+			// creation
+			List results = ida.search("from Nanoparticle where name='"
+					+ particleName + "' and type='" + particleType + "'");
+			Nanoparticle particle = null;
+			for (Object obj : results) {
+				particle = (Nanoparticle) obj;
+			}
+			if (particle == null) {
+				throw new CalabException("No such particle in the database");
+			}
+
+			particle.getKeywordCollection().clear();
+			for (String keyword : keywords) {
+				Keyword keywordObj = new Keyword();
+				keywordObj.setName(keyword);
+				particle.getKeywordCollection().add(keywordObj);
+			}
+		} catch (Exception e) {
+			ida.rollback();
+			logger
+					.error("Problem updating particle with name: "
+							+ particleName);
+			throw e;
+		} finally {
+			ida.close();
+		}
+
+		// remove existing visiblities for the nanoparticle
 		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
-		List<String> currentVisibilities=userService.getAccessibleGroups(particleName, "R");
-		for (String visiblity: currentVisibilities) {
+		List<String> currentVisibilities = userService.getAccessibleGroups(
+				particleName, "R");
+		for (String visiblity : currentVisibilities) {
 			userService.removeAccessibleGroup(particleName, visiblity, "R");
 		}
-		// set new visibilities for the nanoparticle		
+		// set new visibilities for the nanoparticle
 		for (String visibility : visibilities) {
 			// by default, always set visibility to NCL_PI and NCL_Researcher to
 			// be true
@@ -65,8 +106,49 @@ public class SubmitNanoparticleService {
 		}
 	}
 
-	public void addParticleComposition(String particleType, CompositionBean particle) {
-		//TODO add database code
+	/**
+	 * Saves the particle composition to the database
+	 * 
+	 * @param composition
+	 */
+	public void addParticleComposition(CompositionBean composition)
+			throws Exception {
+		// if ID is not set save to the database otherwise update
+
+		Characterization doComp = null;
+		if (composition instanceof CarbonNanotubeBean) {
+			doComp = (CarbonNanotubeComposition) composition.getDomainObj();
+		} else if (composition instanceof DendrimerBean) {
+			doComp = (DendrimerComposition) composition.getDomainObj();
+		} else if (composition instanceof EmulsionBean) {
+			doComp = (EmulsionComposition) composition.getDomainObj();
+		} else if (composition instanceof FullereneBean) {
+			doComp = (FullereneComposition) composition.getDomainObj();
+		} else if (composition instanceof LiposomeBean) {
+			doComp = (LiposomeComposition) composition.getDomainObj();
+		} else if (composition instanceof MetalParticleBean) {
+			doComp = (MetalParticleComposition) composition.getDomainObj();
+		} else if (composition instanceof PolymerBean) {
+			doComp = (PolymerComposition) composition.getDomainObj();
+		} else if (composition instanceof QuantumDotBean) {
+			doComp = (QuantumDotComposition) composition.getDomainObj();
+		} else {
+			throw new CalabException(
+					"Can't save composition for the given particle type: "
+							+ composition.getClass().getName());
+		}
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			ida.store(doComp);
+		} catch (Exception e) {
+			ida.rollback();
+			logger.error("Problem saving composition: ");
+			throw e;
+		} finally {
+			ida.close();
+		}
 	}
 
 	public void saveAssayResult(String particleName, String fileName,
