@@ -18,6 +18,10 @@ public interface Characterization {
 	public String getSource();
 	public void setClassification(String classification);
 	public String getClassification();
+	public void setIdentificationName(String name);
+	public String getIdentificationName();
+	public void setDescription(String description);
+	public String getDescription();
 	public void setNanoparticleCollection(Collection<Nanoparticle> nanoparticleCollection);
 	public Collection<Nanoparticle> getNanoparticleCollection();
 }
