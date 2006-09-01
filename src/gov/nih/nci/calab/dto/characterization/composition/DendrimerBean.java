@@ -1,5 +1,7 @@
 package gov.nih.nci.calab.dto.characterization.composition;
 
+import gov.nih.nci.calab.domain.nano.characterization.Characterization;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,5 +100,9 @@ public class DendrimerBean extends CompositionBean {
 
 	public void setCore(ComposingElementBean core) {
 		this.core = core;
+	}
+	public Characterization getDomainObj() {
+		//TODO fill in details;
+		return null;
 	}
 }
