@@ -1,5 +1,7 @@
 package gov.nih.nci.calab.dto.characterization.composition;
 
+import gov.nih.nci.calab.domain.nano.characterization.physical.composition.ComposingElement;
+
 /**
  * This class represents the properties of a ComposingElement to be shown in the view page.
  * @author pansu
@@ -30,5 +32,13 @@ public class ComposingElementBean {
 	}
 	public void setElementType(String elementType) {
 		this.elementType = elementType;
+	}
+	
+	public ComposingElement getDomainObj() {
+		ComposingElement element=new ComposingElement();
+		element.setChemicalName(chemicalName);
+		element.setDescription(description);
+		element.setElementType(elementType);
+		return element;
 	}
 }
