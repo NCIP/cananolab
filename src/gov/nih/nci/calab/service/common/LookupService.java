@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.44 2006-09-01 20:41:23 zengje Exp $ */
+/* CVS $Id: LookupService.java,v 1.45 2006-09-01 21:03:42 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -543,7 +543,7 @@ public class LookupService {
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
-			String hqlString = "select sample.type, sample.name from Sample sample";
+			String hqlString = "select particle.type, particle.name from Nanoparticle particle";
 			List results = ida.search(hqlString);
 			SortedSet<String> particleNames = null;
 			for (Object obj : results) {
