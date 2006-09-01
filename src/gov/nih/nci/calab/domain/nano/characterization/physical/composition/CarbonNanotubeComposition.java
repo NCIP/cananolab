@@ -14,6 +14,8 @@ public class CarbonNanotubeComposition implements Composition {
 	private Long id;
 	private String source;
 	private String classification;
+	private String description;
+	private String identificationName;
 	private Collection<Nanoparticle> nanoparticleCollection;
 	private Collection<ComposingElement> composingElementCollection = new HashSet<ComposingElement>();
 		
@@ -44,6 +46,22 @@ public class CarbonNanotubeComposition implements Composition {
 
 	public String getClassification() {
 		return this.classification;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getIdentificationName() {
+		return identificationName;
+	}
+
+	public void setIdentificationName(String identificationName) {
+		this.identificationName = identificationName;
 	}
 
 	public Float getAverageLength() {
