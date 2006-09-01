@@ -8,6 +8,7 @@ import gov.nih.nci.calab.domain.SampleSOP;
 import gov.nih.nci.calab.domain.SampleType;
 import gov.nih.nci.calab.domain.Source;
 import gov.nih.nci.calab.domain.StorageElement;
+import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.dto.inventory.ContainerBean;
 import gov.nih.nci.calab.dto.inventory.SampleBean;
 import gov.nih.nci.calab.exception.DuplicateEntriesException;
@@ -21,7 +22,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-/* CVS $Id: ManageSampleService.java,v 1.2 2006-07-31 21:44:12 pansu Exp $ 
+/* CVS $Id: ManageSampleService.java,v 1.3 2006-09-01 20:41:36 zengje Exp $ 
  */
 public class ManageSampleService {
 	private static Logger logger = Logger.getLogger(ManageSampleService.class);
@@ -123,7 +124,8 @@ public class ManageSampleService {
 			// set storageElement in sampleContainer, save sampleContainer again
 			
 			// Create sample object
-			Sample doSample = new Sample();
+//			Sample doSample = new Sample();
+			Nanoparticle doSample = new Nanoparticle();
 			
 			// Front end source is a plain text, so just save the source object
 			String sampleSourceName = sample.getSampleSource();
@@ -172,7 +174,9 @@ public class ManageSampleService {
 				SampleSOP  sop = (SampleSOP)existedSOP.get(0);
 				doSample.setSampleSOP(sop);	
 			}
-
+			
+			String classification = lookupService.getParticleTypeToParticleCategory().get(doSample.getType().toLowerCase());
+			doSample.setClassification(classification);
 			//Save Sample
 			ida.createObject(doSample);
 
