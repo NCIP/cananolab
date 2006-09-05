@@ -12,10 +12,8 @@ import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 public abstract class CharacterizationBean {
 	private String id;
 	
-	private String characterizationClassification;
-
 	private String characterizationSource;
-
+	
 	// used to distinguish different instances of characterizations, which are
 	// shown as different links on the view pages.
 	private String viewTitle;
@@ -26,15 +24,6 @@ public abstract class CharacterizationBean {
 
 	public void setCharacterizationSource(String characterizationSource) {
 		this.characterizationSource = characterizationSource;
-	}
-
-	public String getCharacterizationClassification() {
-		return characterizationClassification;
-	}
-
-	public void setCharacterizationClassification(
-			String characterizationClassification) {
-		this.characterizationClassification = characterizationClassification;
 	}
 
 	public String getViewTitle() {
@@ -58,4 +47,11 @@ public abstract class CharacterizationBean {
 	 * @return
 	 */
 	public abstract Characterization getDomainObj();
+	
+	/**
+	 * Get the classification of characterization
+	 * @return
+	 */
+	public abstract String getCharacterizationClassification();
+
 }
