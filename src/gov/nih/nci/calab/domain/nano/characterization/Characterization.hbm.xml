@@ -14,11 +14,5 @@
     <property name="classification" type="java.lang.String" column="CLASSIFICATION" />
 	<property name="description" type="java.lang.String" column="DESCRIPTION" />
     <property name="identificationName" type="java.lang.String" column="IDENTIFIER_NAME" />
-      
-    <set name="nanoparticleCollection" table="NANOPARTICLE_CHAR" cascade="all-delete-orphan" lazy="true" inverse="true">
-		 <cache usage="read-write" />
-		 <key column="CHARACTERIZATION_PK_ID" />
-		 <many-to-many class="gov.nih.nci.calab.domain.nano.particle.Nanoparticle" column="NANOPARTICLE_PK_ID"/>
-    </set>
   </class>
 </hibernate-mapping>
