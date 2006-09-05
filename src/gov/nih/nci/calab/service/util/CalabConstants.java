@@ -58,4 +58,6 @@ public class CalabConstants {
 	
 	// caLAB property file
 	public static final String CALAB_PROPERTY = "calab.properties";
+	
+	public static final String PARTICLE_PROPERTY = "particle.properties";
 }
