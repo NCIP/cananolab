@@ -15,11 +15,11 @@ import org.displaytag.decorator.TableDecorator;
 public class NanoparticleDecorator extends TableDecorator {
 	public String getEditParticleURL() {
 		ParticleBean particle = (ParticleBean) getCurrentRowObject();
-		String particleType = particle.getSampleType();
+		String particleType = particle.getSampleType().replace(" ", "%20"); //replace space with special char
 		String particleName = particle.getSampleName();
-		String viewParticleURL = "nanoparticleGeneralInfo.do?dispatch=setupUpdate&particleType="
+		String editParticleURL = "nanoparticleGeneralInfo.do?dispatch=setupUpdate&particleType="
 				+ particleType + "&particleName=" + particleName;
-		String link = "<a href=" + viewParticleURL + ">"
+		String link = "<a href=" + editParticleURL + ">"
 				+ particle.getSortableName() + "</a>";
 		return link;
 	}
