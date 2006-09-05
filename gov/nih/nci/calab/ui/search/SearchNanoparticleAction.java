@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchNanoparticleAction.java,v 1.6 2006-08-24 17:09:53 pansu Exp $ */
+/* CVS $Id: SearchNanoparticleAction.java,v 1.7 2006-09-05 21:31:14 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
@@ -25,6 +25,8 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
 public class SearchNanoparticleAction extends AbstractDispatchAction {
@@ -40,34 +42,42 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 		String particleSource = (String) theForm.get("particleSource");
 		String particleType = (String) theForm.get("particleType");
 		String[] functionTypes = (String[]) theForm.get("functionTypes");
-		String[] characterizations = (String[]) theForm.get("characterizations");
+		String[] characterizations = (String[]) theForm
+				.get("characterizations");
+		String keywordType = (String) theForm.get("keywordType");
 		String keywords = (String) theForm.get("keywords");
-		String[] keywordList = keywords.split("\r\n");
+		String[] keywordList = (keywords.length() == 0) ? null : keywords
+				.split("\r\n");
 
 		SearchNanoparticleService searchParticleService = new SearchNanoparticleService();
 		List<ParticleBean> particles = searchParticleService.basicSearch(
 				particleSource, particleType, functionTypes, characterizations,
-				keywordList, user);
-				
-		//check whether user can edit the search result and set from to either editable
-		//pages or view pages
+				keywordList, keywordType, user);
+
+		// check whether user can edit the search result and set from to either
+		// editable
+		// pages or view pages
 		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
-		boolean editable=userService.checkExecutePermission(user, "submit");
-		if (editable) {			
+		boolean editable = userService.checkExecutePermission(user, "submit");
+		if (editable) {
 			session.setAttribute("canUserUpdateParticle", "true");
+		} else {
+			session.setAttribute("canUserUpdateParticle", "false");
 		}
-		else {
-			session.setAttribute("canUserUpdateParticle", "false");			
+		if (particles != null && !particles.isEmpty()) {
+			request.setAttribute("particles", particles);
+			forward = mapping.findForward("success");
+		} else {
+
+			ActionMessages msgs = new ActionMessages();
+			ActionMessage msg = new ActionMessage(
+					"message.searchNanoparticle.noresult");
+			msgs.add("message", msg);
+			saveMessages(request, msgs);
+
+			forward = mapping.getInputForward();
 		}
-		
-		request.setAttribute("particles", particles);
-		/*
-		 * ActionMessages msgs = new ActionMessages(); ActionMessage msg = new
-		 * ActionMessage( "message.searchNanoparticle.secure",
-		 * filteredParticles.size(), samples.size(), particleType);
-		 * msgs.add("message", msg); saveMessages(request, msgs);
-		 */
-		forward = mapping.findForward("success");
+
 		return forward;
 	}
 
