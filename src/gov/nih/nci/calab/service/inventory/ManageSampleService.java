@@ -19,10 +19,11 @@ import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-/* CVS $Id: ManageSampleService.java,v 1.3 2006-09-01 20:41:36 zengje Exp $ 
+/* CVS $Id: ManageSampleService.java,v 1.4 2006-09-05 05:23:13 zengje Exp $ 
  */
 public class ManageSampleService {
 	private static Logger logger = Logger.getLogger(ManageSampleService.class);
@@ -175,9 +176,9 @@ public class ManageSampleService {
 				doSample.setSampleSOP(sop);	
 			}
 			
-			String classification = lookupService.getParticleTypeToParticleCategory().get(doSample.getType().toLowerCase());
+			
+			String classification = lookupService.getParticleClassification(sample.getSampleType());
 			doSample.setClassification(classification);
-			//Save Sample
 			ida.createObject(doSample);
 
 			// Container list
