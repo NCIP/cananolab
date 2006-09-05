@@ -22,6 +22,4 @@ public interface Characterization {
 	public String getIdentificationName();
 	public void setDescription(String description);
 	public String getDescription();
-	public void setNanoparticleCollection(Collection<Nanoparticle> nanoparticleCollection);
-	public Collection<Nanoparticle> getNanoparticleCollection();
 }

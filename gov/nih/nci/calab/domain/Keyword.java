@@ -19,7 +19,6 @@ public class Keyword {
 	private Long id;
 	private String name;
 	
-	private Collection<Nanoparticle> nanoparticleCollection = new HashSet<Nanoparticle>();
 	/**
 	 * 
 	 */
@@ -39,11 +38,4 @@ public class Keyword {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Collection<Nanoparticle> getNanoparticleCollection() {
-		return nanoparticleCollection;
-	}
-	public void setNanoparticleCollection(Collection<Nanoparticle> nanoparticleCollection) {
-		this.nanoparticleCollection = nanoparticleCollection;
-	}
-
 }
