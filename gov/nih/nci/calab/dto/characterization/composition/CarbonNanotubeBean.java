@@ -73,7 +73,8 @@ public class CarbonNanotubeBean extends CompositionBean {
 			doComp.setGrowthDiameter(new Float(growthDiameter));
 		}
 		doComp.setWallType(wallType);
-		doComp.setIdentificationName(getViewTitle());		
+		doComp.setClassification(getCharacterizationClassification());
+		doComp.setIdentificationName(getViewTitle());
 		for (ComposingElementBean element : getComposingElements()) {
 			doComp.getComposingElementCollection().add(element.getDomainObj());
 		}
