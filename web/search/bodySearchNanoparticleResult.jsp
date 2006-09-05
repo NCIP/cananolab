@@ -31,7 +31,7 @@
 			<display:table name="particles" id="particle" requestURI="searchNanoparticle.do" pagesize="25" class="displaytable" decorator="gov.nih.nci.calab.dto.search.NanoparticleDecorator">
 				<display:column title="Particle ID" property="${particleURL}" sortable="true" />
 				<display:column title="Particle Source" property="sampleSource" sortable="true" />
-				<display:column title="Particle Category" property="particleCategory" sortable="true" />
+				<display:column title="Particle Classification" property="particleClassification" sortable="true" />
 				<display:column title="Particle Type" property="sampleType" sortable="true" />
 				<display:column title="Particle Functions" property="functionTypesStr" />
 				<display:column title="Particle Characterization Types" property="characterizationTypesStr" />
