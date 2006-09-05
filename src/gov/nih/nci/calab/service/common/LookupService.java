@@ -16,6 +16,7 @@ import gov.nih.nci.calab.dto.workflow.AssayBean;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CalabComparators;
 import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.PropertyReader;
 import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.45 2006-09-01 21:03:42 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.46 2006-09-05 05:22:20 zengje Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -612,21 +613,27 @@ public class LookupService {
 		return getAllSampleSources();
 	}
 
-	public Map<String, String> getParticleTypeToParticleCategory() {
-		Map<String, String> type2Category = new HashMap<String, String>();
-		// TODO replaced by database code
-		type2Category.put("polymer", "organic-hydrocarbon");
-		type2Category.put("dendrimer", "organic-hydrocarbon");
-		type2Category.put("carbon nanotube", "organic-carbon");
-		type2Category.put("fullerene", "organic-carbon");
-		type2Category.put("quantom dot", "inorganic");
-		type2Category.put("metal particle", "inorganic");
-		type2Category.put("liposome", "organic");
-		type2Category.put("emulsion", "organic");
-		type2Category.put("complex particle", "complex");
-		return type2Category;
-	}
+//	public Map<String, String> getParticleTypeToParticleCategory() {
+//		Map<String, String> type2Category = new HashMap<String, String>();
+//		// TODO replaced by database code
+//		type2Category.put("polymer", "organic-hydrocarbon");
+//		type2Category.put("dendrimer", "organic-hydrocarbon");
+//		type2Category.put("carbon nanotube", "organic-carbon");
+//		type2Category.put("fullerene", "organic-carbon");
+//		type2Category.put("quantom dot", "inorganic");
+//		type2Category.put("metal particle", "inorganic");
+//		type2Category.put("liposome", "organic");
+//		type2Category.put("emulsion", "organic");
+//		type2Category.put("complex particle", "complex");
+//		return type2Category;
+//	}
 
+	public String getParticleClassification(String particleType) {
+		String key= "classification."+particleType.replaceAll(" ", "_");
+		String classification = PropertyReader.getProperty(CalabConstants.PARTICLE_PROPERTY,key);
+		return classification;
+
+	}
 	/**
 	 * 
 	 * @return a map between a characterization type and its child characterizations.
