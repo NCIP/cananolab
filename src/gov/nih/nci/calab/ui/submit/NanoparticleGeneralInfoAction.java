@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.6 2006-08-31 14:08:17 pansu Exp $ */
+/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.7 2006-09-05 21:32:01 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
@@ -40,7 +40,7 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 
 		String keywords = (String) theForm.get("keywords");
 		String[] visibilities = (String[]) theForm.get("visibilities");
-		String[] keywordList = keywords.split("\r\n");
+		String[] keywordList = (keywords.length()==0)?null:keywords.split("\r\n");
 		SubmitNanoparticleService submitNanoparticleService = new SubmitNanoparticleService();
 		submitNanoparticleService.createNanoparticle(particleType,
 				particleName, keywordList, visibilities);
@@ -85,11 +85,13 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 		
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleName = (String) theForm.get("particleName");
+		String particleType = (String) theForm.get("particleType");
 		SearchNanoparticleService searchtNanoparticleService = new SearchNanoparticleService();
-		ParticleBean particle=searchtNanoparticleService.getGeneralInfo(particleName);
+		ParticleBean particle=searchtNanoparticleService.getGeneralInfo(particleName, particleType);
+		theForm.set("particleName", particle.getSampleName());
 		theForm.set("particleType", particle.getSampleType());
 		theForm.set("keywords", StringUtils.join(particle.getKeywords(), "\r\n"));
-		theForm.set("visibilities", particle.getVisibilityGroups());
+		theForm.set("visibilities", particle.getVisibilityGroups());		
 		return mapping.findForward("update");
 	}
 
@@ -100,8 +102,9 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 		// TODO fill in details for sample information */
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleName = (String) theForm.get("particleName");
+		String particleType = (String) theForm.get("particleType");
 		SearchNanoparticleService searchtNanoparticleService = new SearchNanoparticleService();
-		ParticleBean particle=searchtNanoparticleService.getGeneralInfo(particleName);				
+		ParticleBean particle=searchtNanoparticleService.getGeneralInfo(particleName, particleType);				
 		request.setAttribute("particle", particle);
 		forward = mapping.findForward("view");
 
