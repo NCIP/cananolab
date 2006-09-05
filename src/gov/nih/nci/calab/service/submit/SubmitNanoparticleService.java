@@ -74,11 +74,14 @@ public class SubmitNanoparticleService {
 			}
 
 			particle.getKeywordCollection().clear();
-			for (String keyword : keywords) {
-				Keyword keywordObj = new Keyword();
-				keywordObj.setName(keyword);
-				particle.getKeywordCollection().add(keywordObj);
+			if (keywords != null) {
+				for (String keyword : keywords) {
+					Keyword keywordObj = new Keyword();
+					keywordObj.setName(keyword);
+					particle.getKeywordCollection().add(keywordObj);
+				}
 			}
+
 		} catch (Exception e) {
 			ida.rollback();
 			logger
@@ -109,10 +112,13 @@ public class SubmitNanoparticleService {
 	/**
 	 * Saves the particle composition to the database
 	 * 
+	 * @param particleType
+	 * @param particleName
 	 * @param composition
+	 * @throws Exception
 	 */
-	public void addParticleComposition(CompositionBean composition)
-			throws Exception {
+	public void addParticleComposition(String particleType,
+			String particleName, CompositionBean composition) throws Exception {
 		// if ID is not set save to the database otherwise update
 
 		Characterization doComp = null;
@@ -141,7 +147,22 @@ public class SubmitNanoparticleService {
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
-			ida.store(doComp);
+			// get the existing particle from database created during sample
+			// creation
+			List results = ida
+					.search("from Nanoparticle particle left join fetch particle.characterizationCollection where particle.name='"
+							+ particleName
+							+ "' and particle.type='"
+							+ particleType + "'");
+			Nanoparticle particle = null;
+			for (Object obj : results) {
+				particle = (Nanoparticle) obj;
+			}
+			if (particle == null) {
+				throw new CalabException("No such particle in the database");
+			}
+			particle.getCharacterizationCollection().add(doComp);
+
 		} catch (Exception e) {
 			ida.rollback();
 			logger.error("Problem saving composition: ");
