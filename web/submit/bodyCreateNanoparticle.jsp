@@ -33,10 +33,17 @@
 								<strong>Particle Type*</strong>
 							</td>
 							<td class="rightLabel">
-								<html:select property="particleType" onchange="javascript:doubleDropdown(document.nanoparticleGeneralInfoForm.particleType, document.nanoparticleGeneralInfoForm.particleName, particleTypeParticles)">
-									<option value=""></option>
-									<html:options name="allParticleTypes" />
-								</html:select>
+								<c:choose>
+									<c:when test="${param.dispatch eq 'setupUpdate'}">
+										${nanoparticleGeneralInfoForm.map.particleType}
+									</c:when>
+									<c:otherwise>
+										<html:select property="particleType" onchange="javascript:doubleDropdown(document.nanoparticleGeneralInfoForm.particleType, document.nanoparticleGeneralInfoForm.particleName, particleTypeParticles)">
+											<option value=""></option>
+											<html:options name="allParticleTypes" />
+										</html:select>
+									</c:otherwise>
+								</c:choose>
 							</td>
 						</tr>
 						<tr>
@@ -44,12 +51,19 @@
 								<strong>Particle ID*</strong>
 							</td>
 							<td class="rightLabel">
-								<html:select property="particleName">
-									<option value=""></option>
-									<option value="${nanoparticleGeneralInfoForm.map.particleName}" selected>
-										${nanoparticleGeneralInfoForm.map.particleName}
-									</option>
-								</html:select>
+								<c:choose>
+									<c:when test="${param.dispatch eq 'setupUpdate'}">
+              							${nanoparticleGeneralInfoForm.map.particleName}
+									</c:when>
+									<c:otherwise>
+										<html:select property="particleName">
+											<option value=""></option>
+											<option value="${nanoparticleGeneralInfoForm.map.particleName}" selected>
+												${nanoparticleGeneralInfoForm.map.particleName}
+											</option>
+										</html:select>
+									</c:otherwise>
+								</c:choose>
 							</td>
 						</tr>
 						<tr>
@@ -57,7 +71,7 @@
 								<strong>Keywords <em>(one per line)</em></strong>
 							</td>
 							<td class="rightLabel">
-								<html:textarea property="keywords" rows="4"/>
+								<html:textarea property="keywords" rows="4" />
 							</td>
 						</tr>
 						<tr>
