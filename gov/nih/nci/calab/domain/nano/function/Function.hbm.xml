@@ -11,7 +11,7 @@
 	   </generator>
     </id>
     
-    <property name="Type" type="java.lang.String" column="TYPE" />
+    <property name="type" type="java.lang.String" column="TYPE" />
     <property name="activationMethod" type="java.lang.String" column="ACTIVATION_METHOD" />
        
     <many-to-one name="nanoparticle"  class="gov.nih.nci.calab.domain.nano.particle.Nanoparticle" column="NANOPARTICLE_PK_ID" lazy="false" fetch="join"/>
