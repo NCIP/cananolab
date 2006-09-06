@@ -67,14 +67,15 @@ public class CarbonNanotubeBean extends CompositionBean {
 		if (chirality.length() > 0) {
 			doComp.setChirality(new Float(chirality));
 		}
-		doComp.setSource(getCharacterizationSource());
-
+		
 		if (growthDiameter.length() > 0) {
 			doComp.setGrowthDiameter(new Float(growthDiameter));
 		}
 		doComp.setWallType(wallType);
+		doComp.setSource(getCharacterizationSource());		
 		doComp.setClassification(getCharacterizationClassification());
 		doComp.setIdentificationName(getViewTitle());
+		doComp.setDescription(getDescription());
 		for (ComposingElementBean element : getComposingElements()) {
 			doComp.getComposingElementCollection().add(element.getDomainObj());
 		}
