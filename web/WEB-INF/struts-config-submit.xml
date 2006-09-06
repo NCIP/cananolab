@@ -52,6 +52,8 @@
 			<form-property name="complexParticle" type="gov.nih.nci.calab.dto.characterization.composition.ComplexParticleBean" />
 			<form-property name="particlePage" type="java.lang.String" />
 			<form-property name="viewTitle" type="java.lang.String" />
+			<form-property name="description" type="java.lang.String" />
+			<form-property name="characterizationSource" type="java.lang.String" />
 		</form-bean>
 	</form-beans>
 	<action-mappings>
