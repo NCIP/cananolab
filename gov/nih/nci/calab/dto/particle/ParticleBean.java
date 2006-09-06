@@ -2,7 +2,7 @@ package gov.nih.nci.calab.dto.particle;
 
 import gov.nih.nci.calab.domain.Keyword;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
-import gov.nih.nci.calab.domain.nano.characterization.physical.composition.Composition;
+import gov.nih.nci.calab.domain.nano.characterization.physical.composition.ParticleComposition;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.dto.inventory.SampleBean;
 import gov.nih.nci.calab.service.util.CalabConstants;
@@ -66,7 +66,7 @@ public class ParticleBean extends SampleBean {
 		characterizationTypes = new String[characterizationCol.size()];
 		for (Characterization charObj : characterizationCol) {
 			String charType="";
-			if (charObj instanceof Composition) {
+			if (charObj instanceof ParticleComposition) {
 				charType=CalabConstants.COMPOSITION_CHARACTERIZATION;
 			}
 			//TODO add other types here
