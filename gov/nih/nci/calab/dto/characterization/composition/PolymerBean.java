@@ -1,6 +1,7 @@
 package gov.nih.nci.calab.dto.characterization.composition;
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
+import gov.nih.nci.calab.domain.nano.characterization.physical.composition.PolymerComposition;
 
 /**
  * This class represents properties of a Polymer composition to be shown in the
@@ -45,7 +46,21 @@ public class PolymerBean extends CompositionBean {
 	}
 
 	public Characterization getDomainObj() {
-		// TODO fill in details;
-		return null;
+		PolymerComposition doComp = new PolymerComposition();
+		boolean crosslinkedStatus = (crosslinked.equalsIgnoreCase("yes")) ? true
+				: false;
+		doComp.setCrossLinked(crosslinkedStatus);
+		if(crosslinkDegree.length()>0) {
+			doComp.setCrossLinkDegree(new Float(crosslinkDegree));
+		}
+		doComp.setInitiator(initiator);
+		doComp.setSource(getCharacterizationSource());
+		doComp.setClassification(getCharacterizationClassification());
+		doComp.setIdentificationName(getViewTitle());
+		doComp.setDescription(getDescription());
+		for (ComposingElementBean element : getComposingElements()) {
+			doComp.getComposingElementCollection().add(element.getDomainObj());
+		}
+		return doComp;
 	}
 }

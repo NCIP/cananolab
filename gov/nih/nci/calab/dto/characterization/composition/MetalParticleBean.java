@@ -4,6 +4,7 @@
 package gov.nih.nci.calab.dto.characterization.composition;
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
+import gov.nih.nci.calab.domain.nano.characterization.physical.composition.MetalParticleComposition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,7 +96,10 @@ public class MetalParticleBean extends CompositionBean {
 	}
 
 	public Characterization getDomainObj() {
-		// TODO fill in details;
-		return null;
+		MetalParticleComposition doComp = new MetalParticleComposition();
+		for (ComposingElementBean element : getComposingElements()) {
+			doComp.getComposingElementCollection().add(element.getDomainObj());
+		}
+		return doComp;
 	}
 }

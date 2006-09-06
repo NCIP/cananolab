@@ -1,6 +1,7 @@
 package gov.nih.nci.calab.dto.characterization.composition;
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
+import gov.nih.nci.calab.domain.nano.characterization.physical.composition.DendrimerComposition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,8 +9,9 @@ import java.util.List;
 /**
  * This class represents properties of a Dendrimer composition to be shown in
  * the view page.
+ * 
  * @author pansu
- *
+ * 
  */
 
 public class DendrimerBean extends CompositionBean {
@@ -24,12 +26,12 @@ public class DendrimerBean extends CompositionBean {
 	private String molecularFormula;
 
 	private List<SurfaceGroupBean> surfaceGroups;
-	
+
 	private ComposingElementBean core;
 
 	public DendrimerBean() {
 		super();
-		surfaceGroups = new ArrayList<SurfaceGroupBean>();		
+		surfaceGroups = new ArrayList<SurfaceGroupBean>();
 		List<ComposingElementBean> composingElements = getComposingElements();
 		core = new ComposingElementBean();
 		core.setElementType("core");
@@ -101,8 +103,25 @@ public class DendrimerBean extends CompositionBean {
 	public void setCore(ComposingElementBean core) {
 		this.core = core;
 	}
+
 	public Characterization getDomainObj() {
-		//TODO fill in details;
-		return null;
+		DendrimerComposition doComp = new DendrimerComposition();
+		if (generation.length() > 0) {
+			doComp.setGeneration(new Float(generation));
+		}
+		doComp.setBranch(branch);
+		doComp.setRepeatUnit(repeatUnit);
+		doComp.setMolecularFormula(molecularFormula);
+		for (SurfaceGroupBean surfaceGroup : surfaceGroups) {
+			doComp.getSurfaceGroupCollection().add(surfaceGroup.getDomainObj());
+		}		
+		doComp.setSource(getCharacterizationSource());
+		doComp.setClassification(getCharacterizationClassification());
+		doComp.setIdentificationName(getViewTitle());
+		doComp.setDescription(getDescription());
+		for (ComposingElementBean element : getComposingElements()) {
+			doComp.getComposingElementCollection().add(element.getDomainObj());
+		}
+		return doComp;
 	}
 }
