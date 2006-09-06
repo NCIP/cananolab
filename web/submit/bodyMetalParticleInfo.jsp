@@ -13,21 +13,6 @@
 				</div>
 			</td>
 		</tr>
-		<tr>
-			<td class="leftLabel">
-				<strong>Characterization Source </strong>
-			</td>
-			<td class="rightLabel" colspan="3">
-				<html:select property="metalParticle.characterizationSource">
-					<option name="NCL">
-						NCL
-					</option>
-					<option name="vendor">
-						Vendor
-					</option>
-				</html:select>
-			</td>
-		</tr>
 	</tbody>
 </table>
 <br>

@@ -14,21 +14,6 @@
 		</tr>
 		<tr>
 			<td class="leftLabel">
-				<strong>Characterization Source </strong>
-			</td>
-			<td class="rightLabel" colspan="3">
-				<html:select property="carbonNanotube.characterizationSource">
-					<option name="NCL">
-						NCL
-					</option>
-					<option name="vendor">
-						Vendor
-					</option>
-				</html:select>
-			</td>
-		</tr>
-		<tr>
-			<td class="leftLabel">
 				<strong>Growth Diameter</strong>
 			</td>
 			<td class="label">
