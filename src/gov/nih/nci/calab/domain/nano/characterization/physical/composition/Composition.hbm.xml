@@ -34,12 +34,12 @@
 		</joined-subclass>
 		<joined-subclass name="LiposomeComposition" table="LIPOSOME_COMPOSITION" extends="gov.nih.nci.calab.nano.characterization.physical.compostion.Composition">
 			<key column="LC_COMPOSITION_PK_ID" />
-			<property name="isPolymerized" column="IS_POLYMERIZED" type="java.lang.Integer" />
+			<property name="polymerized" column="IS_POLYMERIZED" type="java.lang.Integer" />
 			<property name="polymerName" column="POLYMER_NAME" type="java.lang.String" />
 		</joined-subclass>
 		<joined-subclass name="PolymerComposition" table="POLYMER_COMPOSITION" extends="gov.nih.nci.calab.nano.characterization.physical.compostion.Composition">
 			<key column="POLYMER_COMPOSITION_PK_ID" />
-			<property name="isCrossLink" column="IS_CROSS_LINK" type="java.lang.Integer" />
+			<property name="crossLinked" column="IS_CROSS_LINK" type="java.lang.Integer" />
 			<property name="crossLinkDegree" column="CROSS_LINK_DEGREE" type="java.lang.Float" />
 			<property name="initiator" column="INITIATOR" type="java.lang.String" />
 		</joined-subclass>
@@ -47,7 +47,7 @@
 			<key column="EMULSION_COMPOSITION_PK_ID" />
 			<property name="type" column="EMULSION_TYPE" type="java.lang.String" />
 			<property name="molecularFormula" column="MOLECULAR_FORMULA" type="java.lang.String" />
-			<property name="isPolymerized" column="IS_POLYMERIZED" type="java.lang.Integer" />
+			<property name="polymerized" column="IS_POLYMERIZED" type="java.lang.Integer" />
 			<property name="polymerName" column="POLYMER_NAME" type="java.lang.String" />
 		</joined-subclass>
 		<joined-subclass name="MetalParticleComposition" table="VIEW_METAL_COMPOSITION" extends="gov.nih.nci.calab.nano.characterization.physical.compostion.Composition">
