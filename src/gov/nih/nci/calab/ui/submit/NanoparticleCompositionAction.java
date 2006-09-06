@@ -8,7 +8,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleCompositionAction.java,v 1.7 2006-09-05 21:31:38 pansu Exp $ */
+/* CVS $Id: NanoparticleCompositionAction.java,v 1.8 2006-09-06 19:00:40 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.composition.FullereneBean;
 import gov.nih.nci.calab.dto.characterization.composition.ComplexParticleBean;
@@ -49,6 +49,9 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleType = (String) theForm.get("particleType");
 		String particleName = (String) theForm.get("particleName");
+		String viewTitle = (String) theForm.get("viewTitle");
+		String description = (String) theForm.get("description");
+		String characterizationSource = (String) theForm.get("characterizationSource");
 		CompositionBean composition = null;
 		if (particleType.equalsIgnoreCase("dendrimer")) {
 			composition = (DendrimerBean) theForm.get("dendrimer");
@@ -69,6 +72,9 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		} else if (particleType.equalsIgnoreCase("complex particle")) {
 			composition = (ComplexParticleBean) theForm.get("complexParticle");
 		}
+		composition.setViewTitle(viewTitle);
+		composition.setDescription(description);
+		composition.setCharacterizationSource(characterizationSource);
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addParticleComposition(particleType, particleName, composition);
 
