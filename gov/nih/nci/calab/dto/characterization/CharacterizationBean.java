@@ -17,6 +17,8 @@ public abstract class CharacterizationBean {
 	// used to distinguish different instances of characterizations, which are
 	// shown as different links on the view pages.
 	private String viewTitle;
+	
+	private String description;
 
 	public String getCharacterizationSource() {
 		return characterizationSource;
@@ -53,5 +55,13 @@ public abstract class CharacterizationBean {
 	 * @return
 	 */
 	public abstract String getCharacterizationClassification();
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
 }
