@@ -14,7 +14,7 @@ public class PolymerComposition implements Composition {
 	private Collection<Nanoparticle> nanoparticleCollection;
 	private Collection<ComposingElement> composingElementCollection = new HashSet<ComposingElement>();
 
-	private Boolean isCrossLink;
+	private boolean crossLinked;
 	private Float crossLinkDegree;
 	private String initiator;
 	
@@ -37,14 +37,6 @@ public class PolymerComposition implements Composition {
 
 	public void setInitiator(String initiator) {
 		this.initiator = initiator;
-	}
-
-	public Boolean getIsCrossLink() {
-		return isCrossLink;
-	}
-
-	public void setIsCrossLink(Boolean isCrossLink) {
-		this.isCrossLink = isCrossLink;
 	}
 
 	public void setId(Long id) {
@@ -101,5 +93,13 @@ public class PolymerComposition implements Composition {
 	
 	public Collection<ComposingElement> getComposingElementCollection(){
 		return this.composingElementCollection;
+	}
+
+	public boolean isCrossLinked() {
+		return crossLinked;
+	}
+
+	public void setCrossLinked(boolean crossLinked) {
+		this.crossLinked = crossLinked;
 	}
 }

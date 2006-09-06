@@ -17,7 +17,7 @@ public class EmulsionComposition implements Composition {
 	private String type;
 	private String molecularFormula;
 	private Float dropletSize;
-	private Boolean isPolymerized;
+	private boolean polymerized;
 	private String polymerName;
 	
 	public EmulsionComposition() {
@@ -47,14 +47,6 @@ public class EmulsionComposition implements Composition {
 
 	public void setMolecularFormula(String molecularFormula) {
 		this.molecularFormula = molecularFormula;
-	}
-
-	public Boolean getIsPolymerized() {
-		return isPolymerized;
-	}
-
-	public void setIsPolymerized(Boolean isPolymerized) {
-		this.isPolymerized = isPolymerized;
 	}
 
 	public String getPolymerName() {
@@ -119,5 +111,13 @@ public class EmulsionComposition implements Composition {
 	
 	public Collection<ComposingElement> getComposingElementCollection(){
 		return this.composingElementCollection;
+	}
+
+	public boolean isPolymerized() {
+		return polymerized;
+	}
+
+	public void setPolymerized(boolean polymerized) {
+		this.polymerized = polymerized;
 	}
 }
