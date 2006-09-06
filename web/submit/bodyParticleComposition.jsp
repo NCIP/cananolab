@@ -5,8 +5,9 @@
 <html:form action="/nanoparticleComposition">
 	<table width="100%" align="center">
 		<tr>
-			<td>				
-				<h4><br>
+			<td>
+				<h4>
+					<br>
 					${nanoparticleCompositionForm.map.particleType} Physical Characterization: Composition
 				</h4>
 			</td>
@@ -15,11 +16,50 @@
 			</td>
 		</tr>
 		<tr>
-			<td colspan="4">			    
+			<td colspan="4">
+				<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
+					<tr>
+					<tr class="topBorder">
+						<td class="formTitle" colspan="4">
+							<div align="justify">
+								&nbsp;
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td class="leftLabel">
+							<strong>Characterization Source* </strong>
+						</td>
+						<td class="label">
+							<html:select property="characterizationSource">
+								<option name="NCL">
+									NCL
+								</option>
+								<option name="vendor">
+									Vendor
+								</option>
+							</html:select>
+						</td>
+						<td class="label">
+							<strong>View Title*</strong>
+						</td>
+						<td class="rightLabel">
+							<html:text property="viewTitle" />
+						</td>
+					</tr>
+					<tr>
+						<td class="leftLabel" valign="top">
+							<strong>General Description</strong>
+						</td>
+						<td class="rightLabel" colspan="3">
+							<html:textarea property="description" rows="3" />
+						</td>
+					</tr>
+				</table>
+				<br>
 				<jsp:include page="/bodyMessage.jsp?bundle=submit" />
 				<jsp:include page="${nanoparticleCompositionForm.map.particlePage}" />
 				<br>
-				<strong><span class="borderlessLabel">View Title* </span></strong><html:text property="viewTitle"/>
 				<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 					<tr>
 						<td width="30%">
