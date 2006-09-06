@@ -14,21 +14,6 @@
 		</tr>
 		<tr>
 			<td class="leftLabel">
-				<strong>Characterization Source </strong>
-			</td>
-			<td class="rightLabel" colspan="3">
-				<html:select property="liposome.characterizationSource">
-					<option name="NCL">
-						NCL
-					</option>
-					<option name="vendor">
-						Vendor
-					</option>
-				</html:select>
-			</td>
-		</tr>
-		<tr>
-			<td class="leftLabel">
 				<strong>Is Polymerized </strong>
 			</td>
 			<td class="label">
