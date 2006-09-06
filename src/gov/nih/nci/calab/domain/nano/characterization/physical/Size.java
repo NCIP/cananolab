@@ -11,6 +11,7 @@ public class Size implements Characterization {
 	private String classification;
 	private String description;
 	private String identificationName;
+	private String name;
 	private Collection<Nanoparticle> nanoparticleCollection;
 	
 	private String size;
@@ -61,6 +62,14 @@ public class Size implements Characterization {
 
 	public void setIdentificationName(String identificationName) {
 		this.identificationName = identificationName;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public void setNanoparticleCollection(Collection<Nanoparticle> particles) {

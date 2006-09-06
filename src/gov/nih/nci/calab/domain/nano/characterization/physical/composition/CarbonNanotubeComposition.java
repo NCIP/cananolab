@@ -5,7 +5,7 @@ import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import java.util.Collection;
 import java.util.HashSet;
 
-public class CarbonNanotubeComposition implements Composition {
+public class CarbonNanotubeComposition implements ParticleComposition {
 	private Float chirality;
 	private Float growthDiameter;
 	private Float averageLength;
@@ -16,6 +16,7 @@ public class CarbonNanotubeComposition implements Composition {
 	private String classification;
 	private String description;
 	private String identificationName;
+	private String name;
 	private Collection<Nanoparticle> nanoparticleCollection;
 	private Collection<ComposingElement> composingElementCollection = new HashSet<ComposingElement>();
 		
@@ -62,6 +63,14 @@ public class CarbonNanotubeComposition implements Composition {
 
 	public void setIdentificationName(String identificationName) {
 		this.identificationName = identificationName;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public Float getAverageLength() {

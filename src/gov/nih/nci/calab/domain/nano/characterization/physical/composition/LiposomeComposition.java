@@ -5,7 +5,7 @@ import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import java.util.Collection;
 import java.util.HashSet;
 
-public class LiposomeComposition implements Composition {
+public class LiposomeComposition implements ParticleComposition {
 	private Long id;
 
 	private String source;
@@ -15,6 +15,8 @@ public class LiposomeComposition implements Composition {
 	private String description;
 
 	private String identificationName;
+	
+	private String name;
 
 	private Collection<Nanoparticle> nanoparticleCollection;
 
@@ -79,6 +81,14 @@ public class LiposomeComposition implements Composition {
 
 	public String getIdentificationName() {
 		return identificationName;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public void setIdentificationName(String identificationName) {

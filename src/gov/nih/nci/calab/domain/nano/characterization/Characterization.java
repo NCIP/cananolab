@@ -19,4 +19,6 @@ public interface Characterization {
 	public String getIdentificationName();
 	public void setDescription(String description);
 	public String getDescription();
+	public void setName(String name);
+	public String getName();
 }
