@@ -5,57 +5,28 @@ import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import java.util.Collection;
 import java.util.HashSet;
 
-public class EmulsionComposition implements ParticleComposition {
+public class ComplexComposition implements ParticleComposition {
 	private Long id;
 	private String source;
 	private String classification;
 	private String description;
 	private String identificationName;
-	private String name;
 	private Collection<Nanoparticle> nanoparticleCollection;
 	private Collection<ComposingElement> composingElementCollection = new HashSet<ComposingElement>();
+
+	private String name;
 	
-	private String type;
-	private String molecularFormula;
-	private Float dropletSize;
-	private boolean polymerized;
-	private String polymerName;
-	
-	public EmulsionComposition() {
+	public ComplexComposition() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Float getDropletSize() {
-		return dropletSize;
+	public String getName() {
+		return name;
 	}
 
-	public void setDropletSize(Float dropletSize) {
-		this.dropletSize = dropletSize;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	public String getMolecularFormula() {
-		return molecularFormula;
-	}
-
-	public void setMolecularFormula(String molecularFormula) {
-		this.molecularFormula = molecularFormula;
-	}
-
-	public String getPolymerName() {
-		return polymerName;
-	}
-
-	public void setPolymerName(String polymerName) {
-		this.polymerName = polymerName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public void setId(Long id) {
@@ -98,14 +69,6 @@ public class EmulsionComposition implements ParticleComposition {
 		this.identificationName = identificationName;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public void setNanoparticleCollection(Collection<Nanoparticle> particleCollection) {
 		this.nanoparticleCollection = particleCollection;
 	}
@@ -120,13 +83,5 @@ public class EmulsionComposition implements ParticleComposition {
 	
 	public Collection<ComposingElement> getComposingElementCollection(){
 		return this.composingElementCollection;
-	}
-
-	public boolean isPolymerized() {
-		return polymerized;
-	}
-
-	public void setPolymerized(boolean polymerized) {
-		this.polymerized = polymerized;
 	}
 }

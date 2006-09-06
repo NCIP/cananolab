@@ -12,7 +12,7 @@ public class ComposingElement {
 	private Long id;
 	private String chemicalName;
 	private String elementType;
-	private Composition composition;
+	private ParticleComposition particleComposition;
 	private String description;
 	
 	/**
@@ -47,12 +47,12 @@ public class ComposingElement {
 		this.elementType = elementType;
 	}
 
-	public Composition getComposition() {
-		return composition;
+	public ParticleComposition getComposition() {
+		return particleComposition;
 	}
 
-	public void setComposition(Composition composition) {
-		this.composition = composition;
+	public void setComposition(ParticleComposition composition) {
+		this.particleComposition = composition;
 	}
 
 	public String getDescription() {
