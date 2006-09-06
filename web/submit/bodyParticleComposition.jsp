@@ -8,7 +8,7 @@
 			<td>
 				<h4>
 					<br>
-					${nanoparticleCompositionForm.map.particleType} Physical Characterization: Composition
+					Physical Characterization - Composition
 				</h4>
 			</td>
 			<td align="right" width="15%">
@@ -16,13 +16,20 @@
 			</td>
 		</tr>
 		<tr>
-			<td colspan="4">
+			<td colspan="2">
+				<h5 align="center">					
+					${nanoparticleCompositionForm.map.particleName} (${nanoparticleCompositionForm.map.particleType})
+				</h5>
+			</td>			
+		</tr>
+		<tr>
+			<td colspan="2">
 				<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 					<tr>
 					<tr class="topBorder">
 						<td class="formTitle" colspan="4">
 							<div align="justify">
-								&nbsp;
+								Summary
 							</div>
 						</td>
 					</tr>
@@ -49,7 +56,7 @@
 					</tr>
 					<tr>
 						<td class="leftLabel" valign="top">
-							<strong>General Description</strong>
+							<strong>Description</strong>
 						</td>
 						<td class="rightLabel" colspan="3">
 							<html:textarea property="description" rows="3" />

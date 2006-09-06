@@ -7,8 +7,7 @@
 	<tbody>
 		<tr class="topBorder">
 			<td class="formTitle" colspan="4">
-				<div align="justify">
-					${particleName}
+				<div align="justify">Composition Properties				
 				</div>
 			</td>
 		</tr>
