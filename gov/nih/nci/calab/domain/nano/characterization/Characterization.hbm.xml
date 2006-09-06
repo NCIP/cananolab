@@ -14,5 +14,6 @@
     <property name="classification" type="java.lang.String" column="CLASSIFICATION" />
 	<property name="description" type="java.lang.String" column="DESCRIPTION" />
     <property name="identificationName" type="java.lang.String" column="IDENTIFIER_NAME" />
+    <property name="name" type="java.lang.String" column="NAME" />
   </class>
 </hibernate-mapping>
