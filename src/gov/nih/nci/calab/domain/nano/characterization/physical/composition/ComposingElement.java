@@ -47,11 +47,11 @@ public class ComposingElement {
 		this.elementType = elementType;
 	}
 
-	public ParticleComposition getComposition() {
+	public ParticleComposition getParticleComposition() {
 		return particleComposition;
 	}
 
-	public void setComposition(ParticleComposition composition) {
+	public void setParticleComposition(ParticleComposition composition) {
 		this.particleComposition = composition;
 	}
 
