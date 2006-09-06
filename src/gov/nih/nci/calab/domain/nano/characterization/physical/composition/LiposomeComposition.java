@@ -7,27 +7,34 @@ import java.util.HashSet;
 
 public class LiposomeComposition implements Composition {
 	private Long id;
+
 	private String source;
+
 	private String classification;
+
 	private String description;
+
 	private String identificationName;
+
 	private Collection<Nanoparticle> nanoparticleCollection;
+
 	private Collection<ComposingElement> composingElementCollection = new HashSet<ComposingElement>();
 
-	private Boolean isPolymerized;
+	private boolean polymerized;
+
 	private String polymerName;
-	
+
 	public LiposomeComposition() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Boolean getIsPolymerized() {
-		return isPolymerized;
+	public boolean isPolymerized() {
+		return polymerized;
 	}
 
-	public void setIsPolymerized(Boolean isPolymerized) {
-		this.isPolymerized = isPolymerized;
+	public void setPolymerized(boolean polymerized) {
+		this.polymerized = polymerized;
 	}
 
 	public String getPolymerName() {
@@ -78,19 +85,21 @@ public class LiposomeComposition implements Composition {
 		this.identificationName = identificationName;
 	}
 
-	public void setNanoparticleCollection(Collection<Nanoparticle> particleCollection) {
+	public void setNanoparticleCollection(
+			Collection<Nanoparticle> particleCollection) {
 		this.nanoparticleCollection = particleCollection;
 	}
 
 	public Collection<Nanoparticle> getNanoparticleCollection() {
 		return this.nanoparticleCollection;
 	}
-	
-	public void setComposingElementCollection(Collection<ComposingElement> element){
+
+	public void setComposingElementCollection(
+			Collection<ComposingElement> element) {
 		this.composingElementCollection = element;
 	}
-	
-	public Collection<ComposingElement> getComposingElementCollection(){
+
+	public Collection<ComposingElement> getComposingElementCollection() {
 		return this.composingElementCollection;
 	}
 }
