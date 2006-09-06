@@ -14,18 +14,18 @@ public class FullereneComposition implements Composition {
 	private Collection<Nanoparticle> nanoparticleCollection = new HashSet<Nanoparticle>();
 	private Collection<ComposingElement> composingElementCollection = new HashSet<ComposingElement>();
 
-	private String numberOfCarbon;
+	private Integer numberOfCarbon;
 	
 	public FullereneComposition() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public String getNumberOfCarbon() {
+	public Integer getNumberOfCarbon() {
 		return numberOfCarbon;
 	}
 
-	public void setNumberOfCarbon(String numberOfCarbon) {
+	public void setNumberOfCarbon(Integer numberOfCarbon) {
 		this.numberOfCarbon = numberOfCarbon;
 	}
 
