@@ -43,9 +43,8 @@ public class SearchNanoparticleService {
 	 */
 	public List<ParticleBean> basicSearch(String particleSource,
 			String particleType, String[] functionTypes,
-			String[] characterizations,
-			String[] keywords, String keywordType, UserBean user)
-			throws Exception {
+			String[] characterizations, String[] keywords, String keywordType,
+			UserBean user) throws Exception {
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		String[] particleKeywords = null;
@@ -122,8 +121,7 @@ public class SearchNanoparticleService {
 						}
 					}
 				}
-				if (matchedCharacterization) {
-
+				if (characterizations.length==0 || matchedCharacterization) {
 					particles.add(particleBean);
 				}
 			}
@@ -167,6 +165,50 @@ public class SearchNanoparticleService {
 							+ particleName
 							+ "' and particle.type='"
 							+ particleType + "'");
+
+			for (Object obj : results) {
+				particle = (Nanoparticle) obj;
+			}
+			if (particle == null) {
+				throw new CalabException("No such particle in the database");
+			}
+		} catch (Exception e) {
+			logger.error("Problem finding particle with name: " + particleName);
+			throw e;
+		} finally {
+			ida.close();
+		}
+
+		ParticleBean particleBean = new ParticleBean(particle);
+		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
+		List<String> accessibleGroups = userService.getAccessibleGroups(
+				particleName, "R");
+		String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
+		particleBean.setVisibilityGroups(visibilityGroups);
+
+		return particleBean;
+	}
+
+	public ParticleBean getCharacterizationInfo(String particleName, String particleType)
+			throws Exception {
+
+		Nanoparticle particle = null;
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			// get the existing particle from database created during sample
+			// creation
+//			List results = ida
+//					.search("from Nanoparticle as particle left join fetch particle.characterizationCollection left join fetch particle.keywordCollection where particle.name='"
+//							+ particleName
+//							+ "' and particle.type='"
+//							+ particleType + "'");
+			List results = ida
+			.search("from Nanoparticle as particle where particle.name='"
+					+ particleName
+					+ "' and particle.type='"
+					+ particleType + "'");
 
 			for (Object obj : results) {
 				particle = (Nanoparticle) obj;
