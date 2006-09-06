@@ -4,7 +4,7 @@ import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 
 import java.util.Collection;
 
-public interface Composition extends Characterization{
+public interface ParticleComposition extends Characterization{
 	public void setComposingElementCollection(Collection<ComposingElement> element);
 	public Collection<ComposingElement> getComposingElementCollection();	 
 }

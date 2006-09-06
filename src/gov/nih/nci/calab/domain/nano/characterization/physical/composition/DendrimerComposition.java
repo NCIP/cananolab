@@ -5,12 +5,13 @@ import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import java.util.Collection;
 import java.util.HashSet;
 
-public class DendrimerComposition implements Composition {
+public class DendrimerComposition implements ParticleComposition {
 	private Long id;
 	private String source;
 	private String classification;
 	private String description;
 	private String identificationName;
+	private String name;
 	private Collection<Nanoparticle> nanoparticleCollection;
 	private Collection<ComposingElement> composingElementCollection = new HashSet<ComposingElement>();
 	
@@ -104,6 +105,14 @@ public class DendrimerComposition implements Composition {
 
 	public void setIdentificationName(String identificationName) {
 		this.identificationName = identificationName;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public void setNanoparticleCollection(Collection<Nanoparticle> particleCollection) {
