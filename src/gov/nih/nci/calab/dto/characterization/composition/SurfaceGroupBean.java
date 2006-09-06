@@ -1,4 +1,7 @@
 package gov.nih.nci.calab.dto.characterization.composition;
+
+import gov.nih.nci.calab.domain.nano.characterization.physical.composition.SurfaceGroup;
+
 /**
  * This class represents properties of a SurfaceGroup to be shown in the view page.
  * @author pansu
@@ -30,5 +33,12 @@ public class SurfaceGroupBean {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public SurfaceGroup getDomainObj() {
+		SurfaceGroup surfaceGroup=new SurfaceGroup();
+		surfaceGroup.setName(name);
+		surfaceGroup.setModifier(modifier);
+		return surfaceGroup;
 	}
 }

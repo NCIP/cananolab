@@ -1,6 +1,7 @@
 package gov.nih.nci.calab.dto.characterization.composition;
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
+import gov.nih.nci.calab.domain.nano.characterization.physical.composition.EmulsionComposition;
 
 /**
  * This class represents properties of a Dendrimer composition to be shown in
@@ -43,7 +44,19 @@ public class EmulsionBean extends CompositionBean {
 		this.polymerName = polymerName;
 	}
 	public Characterization getDomainObj() {
-		//TODO fill in details;
-		return null;
+		EmulsionComposition doComp = new EmulsionComposition();		
+		doComp.setType(emulsionType);		
+		doComp.setMolecularFormula(molecularFormula);
+		boolean polymerizedStatus=(polymerized.equalsIgnoreCase("yes"))?true:false;
+		doComp.setPolymerized(polymerizedStatus);
+		doComp.setPolymerName(polymerName);
+		doComp.setSource(getCharacterizationSource());
+		doComp.setClassification(getCharacterizationClassification());
+		doComp.setIdentificationName(getViewTitle());
+		doComp.setDescription(getDescription());
+		for (ComposingElementBean element : getComposingElements()) {
+			doComp.getComposingElementCollection().add(element.getDomainObj());
+		}
+		return doComp;
 	}
 }
