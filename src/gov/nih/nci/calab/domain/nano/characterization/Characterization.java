@@ -3,9 +3,6 @@
  */
 package gov.nih.nci.calab.domain.nano.characterization;
 
-import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
-
-import java.util.Collection;
 
 /**
  * @author zengje
