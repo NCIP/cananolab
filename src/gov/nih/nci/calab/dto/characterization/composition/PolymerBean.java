@@ -2,7 +2,6 @@ package gov.nih.nci.calab.dto.characterization.composition;
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.PolymerComposition;
-import gov.nih.nci.calab.service.util.CalabConstants;
 
 /**
  * This class represents properties of a Polymer composition to be shown in the
@@ -56,10 +55,8 @@ public class PolymerBean extends CompositionBean {
 		}
 		doComp.setInitiator(initiator);
 		doComp.setSource(getCharacterizationSource());
-		doComp.setClassification(getCharacterizationClassification());
 		doComp.setIdentificationName(getViewTitle());
-		doComp.setDescription(getDescription());
-		doComp.setName(CalabConstants.COMPOSITION_CHARACTERIZATION);
+		doComp.setDescription(getDescription());		
 		for (ComposingElementBean element : getComposingElements()) {
 			doComp.getComposingElementCollection().add(element.getDomainObj());
 		}

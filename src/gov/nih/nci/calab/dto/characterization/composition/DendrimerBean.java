@@ -2,7 +2,6 @@ package gov.nih.nci.calab.dto.characterization.composition;
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.DendrimerComposition;
-import gov.nih.nci.calab.service.util.CalabConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -117,10 +116,8 @@ public class DendrimerBean extends CompositionBean {
 			doComp.getSurfaceGroupCollection().add(surfaceGroup.getDomainObj());
 		}		
 		doComp.setSource(getCharacterizationSource());
-		doComp.setClassification(getCharacterizationClassification());
 		doComp.setIdentificationName(getViewTitle());
 		doComp.setDescription(getDescription());
-		doComp.setName(CalabConstants.COMPOSITION_CHARACTERIZATION);
 		for (ComposingElementBean element : getComposingElements()) {
 			doComp.getComposingElementCollection().add(element.getDomainObj());
 		}
