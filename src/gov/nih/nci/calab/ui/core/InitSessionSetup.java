@@ -1,5 +1,6 @@
 package gov.nih.nci.calab.ui.core;
 
+import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.inventory.AliquotBean;
 import gov.nih.nci.calab.dto.inventory.ContainerBean;
@@ -9,6 +10,7 @@ import gov.nih.nci.calab.dto.workflow.AssayBean;
 import gov.nih.nci.calab.dto.workflow.RunBean;
 import gov.nih.nci.calab.exception.InvalidSessionException;
 import gov.nih.nci.calab.service.common.LookupService;
+import gov.nih.nci.calab.service.search.SearchNanoparticleService;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CalabComparators;
 import gov.nih.nci.calab.service.util.CalabConstants;
@@ -17,8 +19,10 @@ import gov.nih.nci.calab.service.workflow.ExecuteWorkflowService;
 import gov.nih.nci.security.exceptions.CSException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
@@ -423,11 +427,35 @@ public class InitSessionSetup {
 		}
 	}
 
-	public void setSideParticleMenu(HttpSession session) throws Exception {
-		setAllParticleFunctionTypes(session);
-		setAllParticleCharacterizationTypes(session);
-		// TODO set additional data for particle menu
-
+	public void setSideParticleMenu(HttpServletRequest request)
+			throws Exception {
+		HttpSession session = request.getSession();
+		if (session.getAttribute("charTypeChars") == null
+				|| session.getAttribute("newCharacterizationCreated") != null) {
+			String particleType = request.getParameter("particleType");
+			String particleName = request.getParameter("particleName");
+			SearchNanoparticleService service = new SearchNanoparticleService();
+			List<CharacterizationBean> charBeans = service
+					.getCharacterizationInfo(particleName, particleType);
+			Map<String, String[]> charTypeChars = lookupService
+					.getCharacterizationTypeCharacterizations();
+			Map<String, List<CharacterizationBean>> existingCharTypeChars = new HashMap<String, List<CharacterizationBean>>();
+			for (String charType : charTypeChars.keySet()) {
+				List<CharacterizationBean> newCharBeans = new ArrayList<CharacterizationBean>();
+				List<String> charList = Arrays.asList(charTypeChars
+						.get(charType));
+				for (CharacterizationBean charBean : charBeans) {
+					if (charList.contains(charBean.getName())) {
+						newCharBeans.add(charBean);
+					}
+				}
+				if (!newCharBeans.isEmpty()) {
+					existingCharTypeChars.put(charType, newCharBeans);
+				}
+			}
+			session.setAttribute("charTypeChars", existingCharTypeChars);
+		}
+		session.removeAttribute("newCharacterizationCreated");
 	}
 
 	public void setCharacterizationTypeCharacterizations(HttpSession session)
