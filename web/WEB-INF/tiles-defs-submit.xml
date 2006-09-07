@@ -35,8 +35,7 @@
 			<item value="Enzyme Function" link="" />
 		</putList>
 		<putList name="cytoToxActions">
-			<item value="MTT" link="" />
-			<item value="LDH" link="" />
+			<item value="Cell Viability" link="" />
 			<item value="Caspase 3 Activation" link="" />
 		</putList>
 		<putList name="bloodContactActions">
