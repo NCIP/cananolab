@@ -1,6 +1,7 @@
 package gov.nih.nci.calab.domain.nano.characterization.physical.composition;
 
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
+import gov.nih.nci.calab.service.util.CananoConstants;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -8,9 +9,9 @@ import java.util.HashSet;
 public class PolymerComposition implements ParticleComposition {
 	private Long id;
 	private String source;
-	private String classification;
 	private String description;
 	private String identificationName;
+	private String classification;
 	private String name;
 	private Collection<Nanoparticle> nanoparticleCollection;
 	private Collection<ComposingElement> composingElementCollection = new HashSet<ComposingElement>();
@@ -56,12 +57,8 @@ public class PolymerComposition implements ParticleComposition {
 		return this.source;
 	}
 
-	public void setClassification(String classification) {
-		this.classification = classification;
-	}
-
 	public String getClassification() {
-		return this.classification;
+		return CananoConstants.PHYSICAL_CHARACTERIZATION;
 	}
 
 	public String getDescription() {
@@ -77,11 +74,7 @@ public class PolymerComposition implements ParticleComposition {
 	}
 
 	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
+		return CananoConstants.PHYSICAL_COMPOSITION;
 	}
 
 	public void setIdentificationName(String identificationName) {
@@ -110,5 +103,13 @@ public class PolymerComposition implements ParticleComposition {
 
 	public void setCrossLinked(boolean crossLinked) {
 		this.crossLinked = crossLinked;
+	}
+
+	public void setClassification(String classification) {
+		this.classification = classification;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }

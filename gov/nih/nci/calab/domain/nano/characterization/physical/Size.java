@@ -2,6 +2,7 @@ package gov.nih.nci.calab.domain.nano.characterization.physical;
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
+import gov.nih.nci.calab.service.util.CananoConstants;
 
 import java.util.Collection;
 
@@ -45,7 +46,7 @@ public class Size implements Characterization {
 	}
 
 	public String getClassification() {
-		return this.classification;
+		return CananoConstants.PHYSICAL_CHARACTERIZATION;
 	}
 
 	public String getDescription() {
@@ -65,7 +66,7 @@ public class Size implements Characterization {
 	}
 
 	public String getName() {
-		return name;
+		return CananoConstants.PHYSICAL_SIZE;
 	}
 
 	public void setName(String name) {

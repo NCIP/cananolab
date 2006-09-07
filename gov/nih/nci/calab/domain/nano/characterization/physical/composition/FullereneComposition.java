@@ -1,6 +1,7 @@
 package gov.nih.nci.calab.domain.nano.characterization.physical.composition;
 
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
+import gov.nih.nci.calab.service.util.CananoConstants;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -8,9 +9,9 @@ import java.util.HashSet;
 public class FullereneComposition implements ParticleComposition {
 	private Long id;
 	private String source;
-	private String classification;
 	private String description;
 	private String identificationName;
+	private String classification;
 	private String name;
 	private Collection<Nanoparticle> nanoparticleCollection = new HashSet<Nanoparticle>();
 	private Collection<ComposingElement> composingElementCollection = new HashSet<ComposingElement>();
@@ -46,12 +47,8 @@ public class FullereneComposition implements ParticleComposition {
 		return this.source;
 	}
 
-	public void setClassification(String classification) {
-		this.classification = classification;
-	}
-
 	public String getClassification() {
-		return this.classification;
+		return CananoConstants.PHYSICAL_CHARACTERIZATION;
 	}
 
 	public String getDescription() {
@@ -67,12 +64,9 @@ public class FullereneComposition implements ParticleComposition {
 	}
 
 	public String getName() {
-		return name;
+		return CananoConstants.PHYSICAL_COMPOSITION;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
 
 	public void setIdentificationName(String identificationName) {
 		this.identificationName = identificationName;
@@ -92,5 +86,13 @@ public class FullereneComposition implements ParticleComposition {
 	
 	public Collection<ComposingElement> getComposingElementCollection(){
 		return this.composingElementCollection;
+	}
+
+	public void setClassification(String classification) {
+		this.classification = classification;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }
