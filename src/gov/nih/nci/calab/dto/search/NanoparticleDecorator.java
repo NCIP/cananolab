@@ -15,7 +15,8 @@ import org.displaytag.decorator.TableDecorator;
 public class NanoparticleDecorator extends TableDecorator {
 	public String getEditParticleURL() {
 		ParticleBean particle = (ParticleBean) getCurrentRowObject();
-		String particleType = particle.getSampleType().replace(" ", "%20"); //replace space with special char
+		// replace space with special char
+		String particleType = particle.getSampleType().replace(" ", "%20");
 		String particleName = particle.getSampleName();
 		String editParticleURL = "nanoparticleGeneralInfo.do?dispatch=setupUpdate&particleType="
 				+ particleType + "&particleName=" + particleName;
@@ -26,7 +27,8 @@ public class NanoparticleDecorator extends TableDecorator {
 
 	public String getViewParticleURL() {
 		ParticleBean particle = (ParticleBean) getCurrentRowObject();
-		String particleType = particle.getSampleType();
+		// replace space with special char
+		String particleType = particle.getSampleType().replace(" ", "%20");
 		String particleName = particle.getSampleName();
 		String viewParticleURL = "nanoparticleGeneralInfo.do?dispatch=view&particleType="
 				+ particleType + "&particleName=" + particleName;
@@ -45,8 +47,8 @@ public class NanoparticleDecorator extends TableDecorator {
 		return StringUtils.join(particle.getFunctionTypes(), "<br>");
 	}
 
-	public String getCharacterizationTypesStr() {
+	public String getCharacterizationsStr() {
 		ParticleBean particle = (ParticleBean) getCurrentRowObject();
-		return StringUtils.join(particle.getCharacterizationTypes(), "<br>");
+		return StringUtils.join(particle.getCharacterizations(), "<br>");
 	}
 }
