@@ -1,7 +1,6 @@
 package gov.nih.nci.calab.dto.characterization.composition;
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
-import gov.nih.nci.calab.service.util.CalabConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,9 +42,5 @@ public abstract class CompositionBean extends CharacterizationBean {
 
 	public void setNumberOfElements(String numberOfElements) {
 		this.numberOfElements = numberOfElements;
-	}
-	
-	public String getCharacterizationClassification() {
-		return CalabConstants.PHYSICAL_CHARACTERIZATION;
 	}
 }
