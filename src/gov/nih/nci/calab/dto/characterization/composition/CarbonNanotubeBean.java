@@ -5,6 +5,7 @@ package gov.nih.nci.calab.dto.characterization.composition;
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.CarbonNanotubeComposition;
+import gov.nih.nci.calab.service.util.CalabConstants;
 
 /**
  * This class represents properties of a Carbon Nanotube composition to be shown
@@ -76,6 +77,7 @@ public class CarbonNanotubeBean extends CompositionBean {
 		doComp.setClassification(getCharacterizationClassification());
 		doComp.setIdentificationName(getViewTitle());
 		doComp.setDescription(getDescription());
+		doComp.setName(CalabConstants.COMPOSITION_CHARACTERIZATION);
 		for (ComposingElementBean element : getComposingElements()) {
 			doComp.getComposingElementCollection().add(element.getDomainObj());
 		}

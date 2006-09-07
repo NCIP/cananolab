@@ -2,6 +2,7 @@ package gov.nih.nci.calab.dto.characterization.composition;
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.ComplexComposition;
+import gov.nih.nci.calab.service.util.CalabConstants;
 
 /**
  * This class represents properties of a Complext Nanoparticle composition to be
@@ -32,6 +33,7 @@ public class ComplexParticleBean extends CompositionBean {
 		doComp.setClassification(getCharacterizationClassification());
 		doComp.setIdentificationName(getViewTitle());
 		doComp.setDescription(getDescription());
+		doComp.setName(CalabConstants.COMPOSITION_CHARACTERIZATION);
 		for (ComposingElementBean element : getComposingElements()) {
 			doComp.getComposingElementCollection().add(element.getDomainObj());
 		}
