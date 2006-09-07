@@ -50,12 +50,6 @@ public abstract class CharacterizationBean {
 	 */
 	public abstract Characterization getDomainObj();
 	
-	/**
-	 * Get the classification of characterization
-	 * @return
-	 */
-	public abstract String getCharacterizationClassification();
-
 	public String getDescription() {
 		return description;
 	}
