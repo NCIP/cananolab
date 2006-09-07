@@ -1,6 +1,7 @@
 package gov.nih.nci.calab.domain.nano.characterization.physical.composition;
 
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
+import gov.nih.nci.calab.service.util.CananoConstants;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -8,9 +9,9 @@ import java.util.HashSet;
 public class QuantumDotComposition implements ParticleComposition {
 	private Long id;
 	private String source;
-	private String classification;
 	private String description;
 	private String identificationName;
+	private String classification;
 	private String name;
 	private Collection<Nanoparticle> nanoparticleCollection;
 	private Collection<ComposingElement> composingElementCollection = new HashSet<ComposingElement>();
@@ -42,7 +43,7 @@ public class QuantumDotComposition implements ParticleComposition {
 	}
 
 	public String getClassification() {
-		return this.classification;
+		return CananoConstants.PHYSICAL_CHARACTERIZATION;
 	}
 
 	public String getDescription() {
@@ -58,7 +59,7 @@ public class QuantumDotComposition implements ParticleComposition {
 	}
 
 	public String getName() {
-		return name;
+		return CananoConstants.PHYSICAL_COMPOSITION;
 	}
 
 	public void setName(String name) {
