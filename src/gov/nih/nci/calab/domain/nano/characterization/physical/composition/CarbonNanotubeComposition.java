@@ -1,6 +1,7 @@
 package gov.nih.nci.calab.domain.nano.characterization.physical.composition;
 
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
+import gov.nih.nci.calab.service.util.CananoConstants;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -11,12 +12,14 @@ public class CarbonNanotubeComposition implements ParticleComposition {
 	private Float averageLength;
 	private String wallType;
 	
+	private String classification;
+	private String name;
 	private Long id;
 	private String source;
-	private String classification;
+//	private String classification;
 	private String description;
 	private String identificationName;
-	private String name;
+//	private String name;
 	private Collection<Nanoparticle> nanoparticleCollection;
 	private Collection<ComposingElement> composingElementCollection = new HashSet<ComposingElement>();
 		
@@ -41,12 +44,12 @@ public class CarbonNanotubeComposition implements ParticleComposition {
 		return this.source;
 	}
 
-	public void setClassification(String classification) {
-		this.classification = classification;
-	}
+//	public void setClassification(String classification) {
+//		this.classification = classification;
+//	}
 
 	public String getClassification() {
-		return this.classification;
+		return CananoConstants.PHYSICAL_CHARACTERIZATION;
 	}
 
 	public String getDescription() {
@@ -66,11 +69,7 @@ public class CarbonNanotubeComposition implements ParticleComposition {
 	}
 
 	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
+		return CananoConstants.PHYSICAL_COMPOSITION;
 	}
 
 	public Float getAverageLength() {
@@ -119,5 +118,13 @@ public class CarbonNanotubeComposition implements ParticleComposition {
 	
 	public Collection<ComposingElement> getComposingElementCollection(){
 		return this.composingElementCollection;
+	}
+
+	public void setClassification(String classification) {
+		this.classification = classification;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }
