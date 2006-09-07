@@ -17,13 +17,14 @@
 		</tr>
 		<tr>
 			<td colspan="2">
-				<h5 align="center">					
+				<h5 align="center">
 					${nanoparticleCompositionForm.map.particleName} (${nanoparticleCompositionForm.map.particleType})
 				</h5>
-			</td>			
+			</td>
 		</tr>
 		<tr>
-			<td colspan="2">
+			<td colspan="2">				
+				<jsp:include page="/bodyMessage.jsp?bundle=submit" />
 				<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 					<tr>
 					<tr class="topBorder">
@@ -64,7 +65,6 @@
 					</tr>
 				</table>
 				<br>
-				<jsp:include page="/bodyMessage.jsp?bundle=submit" />
 				<jsp:include page="${nanoparticleCompositionForm.map.particlePage}" />
 				<br>
 				<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
