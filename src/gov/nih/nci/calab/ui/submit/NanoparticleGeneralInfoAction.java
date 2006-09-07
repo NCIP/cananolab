@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.7 2006-09-05 21:32:01 pansu Exp $ */
+/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.8 2006-09-07 21:59:33 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
@@ -67,7 +67,7 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 
 		InitSessionSetup.getInstance().setAllParticleTypeParticles(session);
 		InitSessionSetup.getInstance().setAllVisibilityGroups(session);
-		InitSessionSetup.getInstance().setSideParticleMenu(session);
+		InitSessionSetup.getInstance().setSideParticleMenu(request);
 		return mapping.getInputForward();
 	}
 	
@@ -81,7 +81,7 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 
 		InitSessionSetup.getInstance().setAllParticleTypeParticles(session);
 		InitSessionSetup.getInstance().setAllVisibilityGroups(session);
-		InitSessionSetup.getInstance().setSideParticleMenu(session);
+		InitSessionSetup.getInstance().setSideParticleMenu(request);
 		
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleName = (String) theForm.get("particleName");
@@ -98,6 +98,7 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 	public ActionForward view(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		InitSessionSetup.getInstance().setSideParticleMenu(request);
 		ActionForward forward = null;
 		// TODO fill in details for sample information */
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
