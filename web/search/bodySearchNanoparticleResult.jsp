@@ -34,7 +34,7 @@
 				<display:column title="Particle Classification" property="particleClassification" sortable="true" />
 				<display:column title="Particle Type" property="sampleType" sortable="true" />
 				<display:column title="Particle Functions" property="functionTypesStr" />
-				<display:column title="Particle Characterization Types" property="characterizationTypesStr" />
+				<display:column title="Particle Characterizations" property="characterizationsStr" />
 				<display:column title="Particle Keywords" property="keywordsStr" />
 			</display:table>
 			<%--
