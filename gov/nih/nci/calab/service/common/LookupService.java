@@ -36,7 +36,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.47 2006-09-05 21:29:45 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.48 2006-09-07 16:42:52 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -633,7 +633,7 @@ public class LookupService {
 		String[] toxChars = new String[] { "Oxidative Stress",
 				"Enzyme Function" };
 		charTypeChars.put("toxicity", toxChars);
-		String[] cytoToxChars = new String[] { "MTT", "LDH",
+		String[] cytoToxChars = new String[] { "Cell Viability",
 				"Caspase 3 Activation" };
 		charTypeChars.put("cytoTox", cytoToxChars);
 		String[] bloodContactChars = new String[] { "Plate Aggregation",
