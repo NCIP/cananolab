@@ -27,100 +27,117 @@
 				<tr>
 					<td align="left" valign="top" class="formMessage">
 						<ul>
-							<c:choose>
-								<c:when test="${canUserUpdateParticle eq 'true'}">
-									<li>
-										<span class="largerText">General Information</span>
-										<br>
-										<span class="indented"><a href="nanoparticleGeneralInfo.do?dispatch=setupUpdate&particleType=${particleType}&particleName=${particleName}"">${particleName} (${particleType})</a></span>
-										<br>
-										<br>
-									</li>
-									<li>
-										<span class="largerText">Function</span>
-										<br>
-										<span class="indented">-Therapeutics &nbsp;&nbsp;</span><a href="submitAction.do?submitType=therapeutics"><em>add</em></a>
-										<br>
-										<span class="indented">-Targeting &nbsp;&nbsp;</span><a href="submitAction.do?submitType=targeting"><em>add</em></a>
-										<br>
-										<span class="indented">-Diagnostic Imaging &nbsp;&nbsp;</span><a href="submitAction.do?submitType=imaging"><em>add</em></a>
-										<br>
-										<span class="indented">-Diagnostic Reporting &nbsp;&nbsp;</span><a href="submitAction.do?submitType=reporting"><em>add</em></a>
-										<br>
-										<br>
-									</li>
-									<li>
-										<span class="largerText">Characterization</span>
-										<br>
-										<span class="indented">-Physical Characterization &nbsp;&nbsp;</span><a href="submitAction.do?submitType=physical"><em>add</em></a>
-										<br>
-										<span class="indented">-In Vitro Characterization</span>
-										<br>
-										<span class="indented2">-Toxicity &nbsp;&nbsp;</span><a href="submitAction.do?submitType=tox"><em>add</em></a>
-										<br>
-										<span class="indented3">-Cytotoxicity &nbsp;&nbsp;</span><a href="submitAction.do?submitType=cytoTox"><em>add</em></a>
-										<br>
-										<span class="indented3">-Immunotoxicity</span>
-										<br>
-										<span class="indented4">-Blood Contact &nbsp;&nbsp;</span><a href="submitAction.do?submitType=bloodContactTox"><em>add</em></a>
-										<br>
-										<span class="indented4">-Immune Cell Function &nbsp;&nbsp;</span><a href="submitAction.do?submitType=immuneCellFuncTox"><em>add</em></a>
-										<br>
-										<span class="indented2">-Metabolic Stability &nbsp;&nbsp;</span><a href="submitAction.do?submitType=metabolic"><em>add</em></a>
-										<br>
-										<span class="indented">-In Vivo Characterization</span>
-										<br>
-										<br>
-									</li>
-								</c:when>
-								<c:otherwise>
-									<li>
-										<span class="largerText">General Information</span>
-										<br>
-										<span class="indented"><a href="nanoparticleGeneralInfo.do?dispatch=view&particleType=${particleType}&particleName=${particleName}">${particleName} (${particleType})</a></span>
-										<br>
-										<br>
-									</li>
-									<li>
-										<span class="largerText">Function</span>
-										<br>
-										<span class="indented">-Therapeutics &nbsp;&nbsp;</span>
-										<br>
-										<span class="indented">-Targeting &nbsp;&nbsp;</span>
-										<br>
-										<span class="indented">-Diagnostic Imaging &nbsp;&nbsp;</span>
-										<br>
-										<span class="indented">-Diagnostic Reporting &nbsp;&nbsp;</span>
-										<br>
-										<br>
-									</li>
-									<li>
-										<span class="largerText">Characterization</span>
-										<br>
-										<span class="indented">-Physical Characterization &nbsp;&nbsp;</span>
-										<br>
-										<span class="indented">-In Vitro Characterization</span>
-										<br>
-										<span class="indented2">-Toxicity &nbsp;&nbsp;</span>
-										<br>
-										<span class="indented3">-Cytotoxicity &nbsp;&nbsp;</span>
-										<br>
-										<span class="indented3">-Immunotoxicity</span>
-										<br>
-										<span class="indented4">-Blood Contact &nbsp;&nbsp;</span>
-										<br>
-										<span class="indented4">-Immune Cell Function &nbsp;&nbsp;</span>
-										<br>
-										<span class="indented2">-Metabolic Stability &nbsp;&nbsp;</span>
-										<br>
-										<span class="indented">-In Vivo Characterization</span>
-										<br>
-										<br>
-									</li>
-								</c:otherwise>
-							</c:choose>
 							<li>
-								<span class="largerText">Assay Result Files &nbsp;&nbsp;</span>
+								<span class="largerText">General Information</span>
+								<br>
+								<span class="indented"> <c:choose>
+										<c:when test="${canUserUpdateParticle eq 'true'}">
+											<a href="nanoparticleGeneralInfo.do?dispatch=setupUpdate&particleType=${particleType}&particleName=${particleName}"">${particleName} (${particleType})</a>
+										</c:when>
+										<c:otherwise>
+											<a href="nanoparticleGeneralInfo.do?dispatch=view&particleType=${particleType}&particleName=${particleName}"">${particleName} (${particleType})</a>
+										</c:otherwise>
+									</c:choose> </span>
+								<br>
+								<br>
+							</li>
+							<li>
+								<span class="largerText">Function</span>
+								<br>
+								<span class="indented">-Therapeutics &nbsp;&nbsp;</span>
+								<c:choose>
+									<c:when test="${canUserUpdateParticle eq 'true'}">
+										<a href="submitAction.do?submitType=therapeutics"> <em>add</em></a>
+									</c:when>
+								</c:choose>
+								<br>
+								<span class="indented">-Targeting &nbsp;&nbsp;</span>
+								<c:choose>
+									<c:when test="${canUserUpdateParticle eq 'true'}">
+										<a href="submitAction.do?submitType=targeting"> <em>add</em></a>
+									</c:when>
+								</c:choose>
+								<br>
+								<span class="indented">-Diagnostic Imaging &nbsp;&nbsp;</span>
+								<c:choose>
+									<c:when test="${canUserUpdateParticle eq 'true'}">
+										<a href="submitAction.do?submitType=imaging"><em>add</em></a>
+									</c:when>
+								</c:choose>
+								<br>
+								<span class="indented">-Diagnostic Reporting &nbsp;&nbsp;</span>
+								<c:choose>
+									<c:when test="${canUserUpdateParticle eq 'true'}">
+										<a href="submitAction.do?submitType=reporting"> <em>add</em></a>
+									</c:when>
+								</c:choose>
+								<br>
+								<br>
+							</li>
+							<li>
+								<span class="largerText">Characterization</span>
+								<br>
+								<span class="indented">-Physical Characterization &nbsp;&nbsp;</span>
+								<c:choose>
+									<c:when test="${canUserUpdateParticle eq 'true'}">
+										<a href="submitAction.do?submitType=physical"> <em>add</em></a>
+									</c:when>
+								</c:choose>
+								<br>
+								<c:forEach var="aChar" items="${charTypeChars['physical']}">
+								<%java.util.HashMap paramMap = new java.util.HashMap();
+		    paramMap.put("dispatch", "setupUpdate");
+			paramMap.put("particleName", session.getAttribute("particleName"));
+			paramMap.put("particleType", session.getAttribute("particleType"));
+			paramMap.put("characterizationId", ((gov.nih.nci.calab.dto.characterization.CharacterizationBean)pageContext.getAttribute("aChar")).getId());
+			pageContext.setAttribute("paramMap", paramMap);%>
+									<span class="indented2"> <html:link forward="${aChar.name}" name="paramMap">${aChar.name}: ${aChar.viewTitle}</html:link> </span>
+									<br>
+								</c:forEach>
+								<span class="indented">-In Vitro Characterization</span>
+								<br>
+								<span class="indented2">-Toxicity &nbsp;&nbsp;</span>
+								<c:choose>
+									<c:when test="${canUserUpdateParticle eq 'true'}">
+										<a href="submitAction.do?submitType=tox"> <em>add</em></a>
+									</c:when>
+								</c:choose>
+								<c:forEach var="aChar" items="${charTypeChars['toxicity']}">
+									<span class="indented2"><a href="#">${aChar.name}: ${aChar.viewTitle}</a></span>
+									<br>
+								</c:forEach>
+								<br>
+								<span class="indented3">-Cytotoxicity &nbsp;&nbsp;</span>
+								<c:choose>
+									<c:when test="${canUserUpdateParticle eq 'true'}">
+										<a href="submitAction.do?submitType=cytoTox"> <em>add</em></a>
+									</c:when>
+								</c:choose>
+								<br>
+								<span class="indented3">-Immunotoxicity</span>
+								<br>
+								<span class="indented4">-Blood Contact &nbsp;&nbsp;</span>
+								<c:choose>
+									<c:when test="${canUserUpdateParticle eq 'true'}">
+										<a href="submitAction.do?submitType=bloodContactTox"> <em>add</em></a>
+									</c:when>
+								</c:choose>
+								<br>
+								<span class="indented4">-Immune Cell Function &nbsp;&nbsp;</span>
+								<c:choose>
+									<c:when test="${canUserUpdateParticle eq 'true'}">
+										<a href="submitAction.do?submitType=immuneCellFuncTox"> <em>add</em></a>
+									</c:when>
+								</c:choose>
+								<br>
+								<span class="indented2">-Metabolic Stability &nbsp;&nbsp;</span>
+								<c:choose>
+									<c:when test="${canUserUpdateParticle eq 'true'}">
+										<a href="submitAction.do?submitType=metabolic"><em>add</em></a>
+									</c:when>
+								</c:choose>
+								<br>
+								<span class="indented">-In Vivo Characterization</span>
 								<br>
 								<br>
 							</li>
