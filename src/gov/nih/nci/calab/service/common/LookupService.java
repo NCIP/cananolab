@@ -14,6 +14,7 @@ import gov.nih.nci.calab.dto.inventory.SampleBean;
 import gov.nih.nci.calab.dto.workflow.AssayBean;
 import gov.nih.nci.calab.service.util.CalabComparators;
 import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.CananoConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
 import gov.nih.nci.calab.service.util.StringUtils;
 
@@ -36,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.48 2006-09-07 16:42:52 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.49 2006-09-07 21:54:30 zengje Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -626,26 +627,48 @@ public class LookupService {
 	 */
 	public Map<String, String[]> getCharacterizationTypeCharacterizations() {
 		Map<String, String[]> charTypeChars = new HashMap<String, String[]>();
-		String[] physicalChars = new String[] { "Composition", "Size",
-				"Molecular Weight", "Morphology", "Surface Characteristics",
-				"Solubility", "Purity", "Stability" };
+//		String[] physicalChars = new String[] { "Composition", "Size",
+//				"Molecular Weight", "Morphology", "Surface Characteristics",
+//				"Solubility", "Purity", "Stability" };
+		String[] physicalChars = new String[] { CananoConstants.PHYSICAL_COMPOSITION, 
+												CananoConstants.PHYSICAL_SIZE,
+												CananoConstants.PHYSICAL_MOLECULAR_WEIGHT,
+												CananoConstants.PHYSICAL_MORPHOLOGY,
+												CananoConstants.PHYSICAL_SOLUBILITY,
+												CananoConstants.PHYSICAL_SURFACE,
+												CananoConstants.PHYSICAL_PURITY,
+												CananoConstants.PHYSICAL_STABILITY,
+												CananoConstants.PHYSICAL_FUNCTIONAL,
+												CananoConstants.PHYSICAL_SHAPE};
 		charTypeChars.put("physical", physicalChars);
-		String[] toxChars = new String[] { "Oxidative Stress",
-				"Enzyme Function" };
+		String[] toxChars = new String[] { CananoConstants.TOXICITY_OXIDATIVE_STRESS,
+										   CananoConstants.TOXICITY_ENZYME_FUNCTION};
 		charTypeChars.put("toxicity", toxChars);
-		String[] cytoToxChars = new String[] { "Cell Viability",
-				"Caspase 3 Activation" };
+		
+		String[] cytoToxChars = new String[] { CananoConstants.CYTOTOXICITY_CELL_VIABILITY,
+											   CananoConstants.CYTOTOXICITY_CASPASE3_ACTIVIATION};
 		charTypeChars.put("cytoTox", cytoToxChars);
-		String[] bloodContactChars = new String[] { "Plate Aggregation",
-				"Hemolysis", "Plasma Protein Binding", "Coagulation" };
+		
+		String[] bloodContactChars = new String[] { CananoConstants.BLOODCONTACTTOX_PLATE_AGGREGATION,
+													CananoConstants.BLOODCONTACTTOX_HEMOLYSIS,
+													CananoConstants.BLOODCONTACTTOX_PLASMA_PROTEIN_BINDING,
+													CananoConstants.BLOODCONTACTTOX_COAGULATION };
 		charTypeChars.put("bloodContactTox", bloodContactChars);
-		String[] immuneCellFuncChars = new String[] { "Oxidative Burst",
-				"Chemotaxis", "Leukocyte Proliferation", "Phagocytosis",
-				"Cytokine Induction", "CFU-GM", "Complement Activation",
-				"Cytotoxic Activity of NK Cells" };
+		
+		String[] immuneCellFuncChars = new String[] { CananoConstants.IMMUNOCELLFUNCTOX_OXIDATIVE_BURST,
+													  CananoConstants.IMMUNOCELLFUNCTOX_CHEMOTAXIS,
+													  CananoConstants.IMMUNOCELLFUNCTOX_LEUKOCYTE_PROLIFERATION,
+													  CananoConstants.IMMUNOCELLFUNCTOX_PHAGOCYTOSIS,
+													  CananoConstants.IMMUNOCELLFUNCTOX_CYTOKINE_INDUCTION,
+													  CananoConstants.IMMUNOCELLFUNCTOX_CFU_GM,
+													  CananoConstants.IMMUNOCELLFUNCTOX_COMPLEMENT_ACTIVATION,
+													  CananoConstants.IMMUNOCELLFUNCTOX_NKCELL_CYTOTOXIC_ACTIVITY};
+		
 		charTypeChars.put("immuneCellFuncTox", immuneCellFuncChars);
-		String[] metabolicChars = new String[] { "CYP450",
-				"Glucuronidation, Sulphation", "ROS" };
+		
+		String[] metabolicChars = new String[] { CananoConstants.METABOLIC_STABILITY_CYP450,
+												 CananoConstants.METABOLIC_STABILITY_GLUCURONIDATION_SULPHATION,
+												 CananoConstants.METABOLIC_STABILITY_ROS};
 		charTypeChars.put("metabolicStabilityTox", metabolicChars);
 		return charTypeChars;
 	}

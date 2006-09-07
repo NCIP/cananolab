@@ -36,7 +36,7 @@ public class CananoConstants {
 
 	public static final String PHYSICAL_SHAPE = "Shape";
 
-	public static final String PHYSICAL_MOLECULAR_WEIGHT = "MolecularWeight";
+	public static final String PHYSICAL_MOLECULAR_WEIGHT = "Molecular Weight";
 
 	public static final String PHYSICAL_SOLUBILITY = "Solubility";
 
@@ -51,6 +51,44 @@ public class CananoConstants {
 	public static final String PHYSICAL_MORPHOLOGY = "Morphology";
 
 	public static final String PHYSICAL_COMPOSITION = "Composition";
+	
+	public static final String TOXICITY_OXIDATIVE_STRESS = "Oxidative Stress";
+	
+	public static final String TOXICITY_ENZYME_FUNCTION = "Enzyme Function";
+	
+	public static final String CYTOTOXICITY_CELL_VIABILITY = "Cell Viability";	
+	
+	public static final String CYTOTOXICITY_CASPASE3_ACTIVIATION = "Caspase 3 Activation";
+	
+	public static final String BLOODCONTACTTOX_PLATE_AGGREGATION = "Plate Aggregation";
+	
+	public static final String BLOODCONTACTTOX_HEMOLYSIS = "Hemolysis";
+	
+	public static final String BLOODCONTACTTOX_COAGULATION = "Coagulation";
+	
+	public static final String BLOODCONTACTTOX_PLASMA_PROTEIN_BINDING = "Plasma Protein Binding";
+	
+	public static final String IMMUNOCELLFUNCTOX_PHAGOCYTOSIS = "Phagocytosis";
+	
+	public static final String IMMUNOCELLFUNCTOX_OXIDATIVE_BURST = "Oxidative Burst";
+	
+	public static final String IMMUNOCELLFUNCTOX_CHEMOTAXIS = "Chemotaxis";
+	
+	public static final String IMMUNOCELLFUNCTOX_CYTOKINE_INDUCTION = "Cytokine Induction";
+	
+	public static final String IMMUNOCELLFUNCTOX_COMPLEMENT_ACTIVATION = "Complement Activation";
+	
+	public static final String IMMUNOCELLFUNCTOX_LEUKOCYTE_PROLIFERATION = "Leukocyte Proliferation";
+	
+	public static final String IMMUNOCELLFUNCTOX_NKCELL_CYTOTOXIC_ACTIVITY = "Cytotoxic Activity of NK Cells";
+	
+	public static final String METABOLIC_STABILITY_CYP450 = "CYP450";
+	
+	public static final String METABOLIC_STABILITY_ROS = "ROS";
+	
+	public static final String METABOLIC_STABILITY_GLUCURONIDATION_SULPHATION = "Glucuronidation Sulphation";
+	
+	public static final String IMMUNOCELLFUNCTOX_CFU_GM = "CFU_GM";
 
 	public static final String DENDRIMER_TYPE = "Dendrimer";
 
@@ -69,5 +107,6 @@ public class CananoConstants {
 	public static final String EMULSION_TYPE = "Emulsion";
 
 	public static final String COMPLEX_PARTICLE_TYPE = "Complex Particle";
+	
 
 }
