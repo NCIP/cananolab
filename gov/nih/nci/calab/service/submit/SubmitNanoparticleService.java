@@ -27,7 +27,9 @@ import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CalabConstants;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -147,13 +149,16 @@ public class SubmitNanoparticleService {
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
-			// get the existing particle from database created during sample
+
+			// get the existing particle and compositions from database created
+			// during sample
 			// creation
 			List results = ida
-					.search("from Nanoparticle particle left join fetch particle.characterizationCollection where particle.name='"
+					.search("select particle from Nanoparticle particle left join particle.characterizationCollection characterization where particle.name='"
 							+ particleName
 							+ "' and particle.type='"
-							+ particleType + "'");
+							+ particleType
+							+ "' and characterization.name='Composition' ");
 			Nanoparticle particle = null;
 			for (Object obj : results) {
 				particle = (Nanoparticle) obj;
@@ -161,8 +166,24 @@ public class SubmitNanoparticleService {
 			if (particle == null) {
 				throw new CalabException("No such particle in the database");
 			}
-			particle.getCharacterizationCollection().add(doComp);
 
+			Collection<Characterization> existingChars = particle
+					.getCharacterizationCollection();
+
+			boolean hasViewTitle = false;
+			for (Characterization aChar : existingChars) {
+				if (aChar.getIdentificationName().equals(
+						doComp.getIdentificationName())) {
+					hasViewTitle = true;
+					break;
+				}
+			}
+			if (hasViewTitle) {
+				throw new CalabException("The view title is already in use.  Please enter a different one.");				
+			}
+			else {
+				existingChars.add(doComp);
+			}
 		} catch (Exception e) {
 			ida.rollback();
 			logger.error("Problem saving composition: ");
