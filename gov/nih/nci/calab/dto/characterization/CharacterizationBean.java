@@ -9,16 +9,29 @@ import gov.nih.nci.calab.domain.nano.characterization.Characterization;
  * @author pansu
  * 
  */
-public abstract class CharacterizationBean {
+public class CharacterizationBean {
 	private String id;
-	
+
 	private String characterizationSource;
-	
+
 	// used to distinguish different instances of characterizations, which are
 	// shown as different links on the view pages.
 	private String viewTitle;
-	
+
 	private String description;
+
+	private String name;
+
+	private String classification;
+
+	public CharacterizationBean() {
+		
+	}
+	public CharacterizationBean(String id, String name, String viewTitle) {
+		this.id = id;
+		this.name = name;
+		this.viewTitle = viewTitle;
+	}
 
 	public String getCharacterizationSource() {
 		return characterizationSource;
@@ -46,16 +59,27 @@ public abstract class CharacterizationBean {
 
 	/**
 	 * Get the domain characterization object from the dto bean properties
+	 * 
 	 * @return
 	 */
-	public abstract Characterization getDomainObj();
-	
+	public Characterization getDomainObj() {
+		return null;
+	}
+
 	public String getDescription() {
 		return description;
 	}
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getClassification() {
+		return classification;
+	}
+
+	public String getName() {
+		return name;
 	}
 
 }
