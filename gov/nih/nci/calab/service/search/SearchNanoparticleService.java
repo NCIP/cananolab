@@ -2,12 +2,16 @@ package gov.nih.nci.calab.service.search;
 
 import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
+import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
+import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
+import gov.nih.nci.calab.dto.characterization.composition.CompositionBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.CananoConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.ArrayList;
@@ -114,10 +118,7 @@ public class SearchNanoparticleService {
 			}
 			String whereStr = StringUtils.join(whereList, " and ");
 			String hqlString = "select particle from Nanoparticle particle "
-					+ functionFrom
-					+ keywordFrom
-					+ characterizationFrom
-					+ where
+					+ functionFrom + keywordFrom + characterizationFrom + where
 					+ whereStr;
 
 			ida.open();
@@ -192,42 +193,58 @@ public class SearchNanoparticleService {
 		return particleBean;
 	}
 
-	public ParticleBean getCharacterizationInfo(String particleName,
-			String particleType) throws Exception {
-
-		Nanoparticle particle = null;
+	public List<CharacterizationBean> getCharacterizationInfo(
+			String particleName, String particleType) throws Exception {
+		List<CharacterizationBean> charBeans = new ArrayList<CharacterizationBean>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
+
 		try {
+
 			ida.open();
-			// get the existing particle from database created during sample
-			// creation
 			List results = ida
-					.search("from Nanoparticle as particle left join fetch particle.characterizationCollection left join fetch particle.keywordCollection where particle.name='"
+					.search("select chara.id, chara.name, chara.identificationName from Nanoparticle particle left join particle.characterizationCollection chara where particle.name='"
 							+ particleName
 							+ "' and particle.type='"
 							+ particleType + "'");
-
 			for (Object obj : results) {
-				particle = (Nanoparticle) obj;
-			}
-			if (particle == null) {
-				throw new CalabException("No such particle in the database");
+				String charId = ((Object[]) obj)[0].toString();
+				String charName = (String) (((Object[]) obj)[1]);
+				String viewTitle = (String) (((Object[]) obj)[2]);
+				CharacterizationBean charBean = new CharacterizationBean(
+						charId, charName, viewTitle);
+				charBeans.add(charBean);
 			}
 		} catch (Exception e) {
-			logger.error("Problem finding particle with name: " + particleName);
+			logger.error("Problem finding characterization info for particle: "
+					+ particleName);
 			throw e;
 		} finally {
 			ida.close();
 		}
+		return charBeans;
+	}
 
-		ParticleBean particleBean = new ParticleBean(particle);
-		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
-		List<String> accessibleGroups = userService.getAccessibleGroups(
-				particleName, "R");
-		String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
-		particleBean.setVisibilityGroups(visibilityGroups);
+	public CharacterizationBean getCharacterizationBy(String charId)
+			throws Exception {
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		CharacterizationBean charBean=null;
+		try {
 
-		return particleBean;
+			ida.open();
+			List results = ida
+					.search(" from Characterization chara where chara.id="
+							+ charId);
+			for(Object obj: results) {
+				Characterization aChar=(Characterization)obj;				
+			}
+		} catch (Exception e) {
+			logger.error("Problem finding characterization");
+			throw e;
+		} finally {
+			ida.close();
+		}
+		return charBean;
 	}
 }
