@@ -113,7 +113,7 @@ public class SearchNanoparticleService {
 						+ StringUtils.join(inList, ", ") + ") ");
 			}
 			String whereStr = StringUtils.join(whereList, " and ");
-			String hqlString = " from Nanoparticle particle "
+			String hqlString = "select particle from Nanoparticle particle "
 					+ functionFrom
 					+ keywordFrom
 					+ characterizationFrom
