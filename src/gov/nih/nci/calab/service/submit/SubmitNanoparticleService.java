@@ -27,7 +27,6 @@ import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CalabConstants;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -147,6 +146,7 @@ public class SubmitNanoparticleService {
 		}
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
+		boolean hasSameViewTitle = false;
 		try {
 			ida.open();
 
@@ -170,18 +170,14 @@ public class SubmitNanoparticleService {
 			Collection<Characterization> existingChars = particle
 					.getCharacterizationCollection();
 
-			boolean hasViewTitle = false;
 			for (Characterization aChar : existingChars) {
 				if (aChar.getIdentificationName().equals(
 						doComp.getIdentificationName())) {
-					hasViewTitle = true;
+					hasSameViewTitle = true;
 					break;
 				}
 			}
-			if (hasViewTitle) {
-				throw new CalabException("The view title is already in use.  Please enter a different one.");				
-			}
-			else {
+			if (!hasSameViewTitle) {
 				existingChars.add(doComp);
 			}
 		} catch (Exception e) {
@@ -190,6 +186,10 @@ public class SubmitNanoparticleService {
 			throw e;
 		} finally {
 			ida.close();
+		}
+		if (hasSameViewTitle) {
+			throw new CalabException(
+					"The view title is already in use.  Please enter a different one.");
 		}
 	}
 
