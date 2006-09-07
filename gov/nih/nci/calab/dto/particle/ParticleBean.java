@@ -2,12 +2,12 @@ package gov.nih.nci.calab.dto.particle;
 
 import gov.nih.nci.calab.domain.Keyword;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
-import gov.nih.nci.calab.domain.nano.characterization.physical.composition.ParticleComposition;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.dto.inventory.SampleBean;
-import gov.nih.nci.calab.service.util.CalabConstants;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * This class represents shared properties of nanoparticles to be shown in the
@@ -22,7 +22,7 @@ public class ParticleBean extends SampleBean {
 
 	private String[] functionTypes;
 
-	private String[] characterizationTypes;
+	private String[] characterizations;
 
 	private String[] keywords;
 
@@ -37,14 +37,14 @@ public class ParticleBean extends SampleBean {
 
 	public ParticleBean(String id, String name, String particleSource,
 			String particleType, String particleClassification,
-			String[] functionTypes, String[] characterizationTypes,
+			String[] functionTypes, String[] characterizations,
 			String[] keywords) {
 		this(id, name);
 		setSampleType(particleType);
 		setSampleSource(particleSource);
 		this.particleClassification = particleClassification;
 		this.functionTypes = functionTypes;
-		this.characterizationTypes = characterizationTypes;
+		this.characterizations = characterizations;
 		this.keywords = keywords;
 	}
 
@@ -53,34 +53,35 @@ public class ParticleBean extends SampleBean {
 		this.setSampleType(particle.getType());
 		this.setSampleSource(particle.getSource().getOrganizationName());
 		this.particleClassification = particle.getClassification();
-		Collection<Keyword> keywordCol = particle.getKeywordCollection();
-		int i = 0;
-		keywords = new String[keywordCol.size()];
-		for (Keyword keywordObj : keywordCol) {
-			keywords[i] = keywordObj.getName();
-			i++;
-		}
-		Collection<Characterization> characterizationCol = particle
-				.getCharacterizationCollection();
-		int j = 0;
-		characterizationTypes = new String[characterizationCol.size()];
-		for (Characterization charObj : characterizationCol) {
-			String charType="";
-			if (charObj instanceof ParticleComposition) {
-				charType=CalabConstants.COMPOSITION_CHARACTERIZATION;
+		try {
+			Collection<Keyword> keywordCol = particle.getKeywordCollection();
+			// get a unique set of keywords
+			Set<String> keywordSet = new HashSet<String>();
+			for (Keyword keywordObj : keywordCol) {
+				keywordSet.add(keywordObj.getName());
 			}
-			//TODO add other types here
-			characterizationTypes[j] = charObj.getClassification()+":"+charType;
-			j++;
+			keywords = keywordSet.toArray(new String[0]);
+
+			Collection<Characterization> characterizationCol = particle
+					.getCharacterizationCollection();
+			//get a unique list of characterization
+			Set<String> charcterizationSet = new HashSet<String>();
+			for (Characterization charObj : characterizationCol) {
+				charcterizationSet.add(charObj.getClassification() + ":"
+						+ charObj.getName());
+			}
+			characterizations = charcterizationSet.toArray(new String[0]);
+		} catch (org.hibernate.LazyInitializationException e) {
+		    //ignore this exception
 		}
 	}
 
-	public String[] getCharacterizationTypes() {
-		return characterizationTypes;
+	public String[] getCharacterizations() {
+		return characterizations;
 	}
 
-	public void setCharacterizationTypes(String[] characterizationTypes) {
-		this.characterizationTypes = characterizationTypes;
+	public void setCharacterizations(String[] characterizations) {
+		this.characterizations = characterizations;
 	}
 
 	public String[] getFunctionTypes() {
