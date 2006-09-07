@@ -2,6 +2,7 @@ package gov.nih.nci.calab.dto.characterization.composition;
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.FullereneComposition;
+import gov.nih.nci.calab.service.util.CalabConstants;
 
 /**
  * This class represents properties of a Fullerene composition to be shown in
@@ -32,6 +33,7 @@ public class FullereneBean extends CompositionBean {
 		doComp.setClassification(getCharacterizationClassification());
 		doComp.setIdentificationName(getViewTitle());
 		doComp.setDescription(getDescription());
+		doComp.setName(CalabConstants.COMPOSITION_CHARACTERIZATION);
 		for (ComposingElementBean element : getComposingElements()) {
 			doComp.getComposingElementCollection().add(element.getDomainObj());
 		}
