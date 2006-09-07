@@ -63,6 +63,7 @@ public class SearchNanoparticleService {
 			String where = "";
 			String keywordFrom = "";
 			String functionFrom = "";
+			String characterizationFrom = "";
 
 			if (particleSource != null && particleSource.length() > 0) {
 				where = "where ";
@@ -100,9 +101,24 @@ public class SearchNanoparticleService {
 						+ StringUtils.join(inList, ", ") + ") ");
 			}
 
+			if (characterizations != null && characterizations.length > 0) {
+				List<String> inList = new ArrayList<String>();
+				where = "where ";
+				for (String characterization : characterizations) {
+					paramList.add(characterization);
+					inList.add("?");
+				}
+				characterizationFrom = "left join particle.characterizationCollection characterization ";
+				whereList.add("characterization.name in ("
+						+ StringUtils.join(inList, ", ") + ") ");
+			}
 			String whereStr = StringUtils.join(whereList, " and ");
-			String hqlString = "select particle from Nanoparticle as particle left join fetch particle.characterizationCollection "
-					+ functionFrom + keywordFrom + where + whereStr;
+			String hqlString = " from Nanoparticle particle "
+					+ functionFrom
+					+ keywordFrom
+					+ characterizationFrom
+					+ where
+					+ whereStr;
 
 			ida.open();
 
@@ -111,19 +127,7 @@ public class SearchNanoparticleService {
 			for (Object obj : new HashSet<Object>(results)) {
 				Nanoparticle particle = (Nanoparticle) obj;
 				ParticleBean particleBean = new ParticleBean(particle);
-				// filter by characterization types
-				boolean matchedCharacterization = false;
-				for (String chara : characterizations) {
-					for (String charb : particleBean.getCharacterizationTypes()) {
-						if (charb.endsWith(chara)) {
-							matchedCharacterization = true;
-							break;
-						}
-					}
-				}
-				if (characterizations.length==0 || matchedCharacterization) {
-					particles.add(particleBean);
-				}
+				particles.add(particleBean);
 			}
 		} catch (Exception e) {
 			logger
@@ -161,11 +165,10 @@ public class SearchNanoparticleService {
 			// get the existing particle from database created during sample
 			// creation
 			List results = ida
-					.search("from Nanoparticle as particle left join fetch particle.characterizationCollection left join fetch particle.keywordCollection where particle.name='"
+					.search("from Nanoparticle as particle left join fetch particle.keywordCollection where particle.name='"
 							+ particleName
 							+ "' and particle.type='"
 							+ particleType + "'");
-
 			for (Object obj : results) {
 				particle = (Nanoparticle) obj;
 			}
@@ -189,8 +192,8 @@ public class SearchNanoparticleService {
 		return particleBean;
 	}
 
-	public ParticleBean getCharacterizationInfo(String particleName, String particleType)
-			throws Exception {
+	public ParticleBean getCharacterizationInfo(String particleName,
+			String particleType) throws Exception {
 
 		Nanoparticle particle = null;
 		IDataAccess ida = (new DataAccessProxy())
@@ -199,16 +202,11 @@ public class SearchNanoparticleService {
 			ida.open();
 			// get the existing particle from database created during sample
 			// creation
-//			List results = ida
-//					.search("from Nanoparticle as particle left join fetch particle.characterizationCollection left join fetch particle.keywordCollection where particle.name='"
-//							+ particleName
-//							+ "' and particle.type='"
-//							+ particleType + "'");
 			List results = ida
-			.search("from Nanoparticle as particle where particle.name='"
-					+ particleName
-					+ "' and particle.type='"
-					+ particleType + "'");
+					.search("from Nanoparticle as particle left join fetch particle.characterizationCollection left join fetch particle.keywordCollection where particle.name='"
+							+ particleName
+							+ "' and particle.type='"
+							+ particleType + "'");
 
 			for (Object obj : results) {
 				particle = (Nanoparticle) obj;
