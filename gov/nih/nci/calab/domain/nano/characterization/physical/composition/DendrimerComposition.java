@@ -21,7 +21,7 @@ public class DendrimerComposition implements ParticleComposition {
 	private String molecularFormula;
 	private String repeatUnit;
 	
-	private Collection<SurfaceGroup> surfaceGroupCollection;
+	private Collection<SurfaceGroup> surfaceGroupCollection=new HashSet<SurfaceGroup>();
 	public DendrimerComposition() {
 		super();
 		// TODO Auto-generated constructor stub
