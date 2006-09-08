@@ -19,7 +19,7 @@
 			<property name="generation" column="GENERATION" type="java.lang.Float" />
 			<property name="molecularFormula" column="MOLECULAR_FORMULA" type="java.lang.String" />
 			<property name="repeatUnit" column="REPEAT_UNIT" type="java.lang.String" />
-			<set name="surfaceGroupCollection" cascade="all-delete-orphan" lazy="true" inverse="true">
+			<set name="surfaceGroupCollection" cascade="all-delete-orphan" lazy="false">
 				<cache usage="read-write" />
 				<key column="D_COMPOSITION_PK_ID" />
 				<one-to-many class="gov.nih.nci.calab.domain.nano.characterization.physical.composition.SurfaceGroup" />
