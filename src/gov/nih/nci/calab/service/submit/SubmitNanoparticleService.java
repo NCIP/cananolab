@@ -5,6 +5,7 @@ import gov.nih.nci.calab.db.IDataAccess;
 import gov.nih.nci.calab.domain.Keyword;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.CarbonNanotubeComposition;
+import gov.nih.nci.calab.domain.nano.characterization.physical.composition.ComplexComposition;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.DendrimerComposition;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.EmulsionComposition;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.FullereneComposition;
@@ -14,6 +15,7 @@ import gov.nih.nci.calab.domain.nano.characterization.physical.composition.Polym
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.QuantumDotComposition;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.dto.characterization.composition.CarbonNanotubeBean;
+import gov.nih.nci.calab.dto.characterization.composition.ComplexParticleBean;
 import gov.nih.nci.calab.dto.characterization.composition.CompositionBean;
 import gov.nih.nci.calab.dto.characterization.composition.DendrimerBean;
 import gov.nih.nci.calab.dto.characterization.composition.EmulsionBean;
@@ -28,7 +30,6 @@ import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CalabConstants;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -125,6 +126,8 @@ public class SubmitNanoparticleService {
 		Characterization doComp = null;
 		if (composition instanceof CarbonNanotubeBean) {
 			doComp = (CarbonNanotubeComposition) composition.getDomainObj();
+		} else if (composition instanceof ComplexParticleBean) {
+			doComp = (ComplexComposition) composition.getDomainObj();
 		} else if (composition instanceof DendrimerBean) {
 			doComp = (DendrimerComposition) composition.getDomainObj();
 		} else if (composition instanceof EmulsionBean) {
@@ -133,12 +136,12 @@ public class SubmitNanoparticleService {
 			doComp = (FullereneComposition) composition.getDomainObj();
 		} else if (composition instanceof LiposomeBean) {
 			doComp = (LiposomeComposition) composition.getDomainObj();
+		} else if (composition instanceof QuantumDotBean) {
+			doComp = (QuantumDotComposition) composition.getDomainObj();
 		} else if (composition instanceof MetalParticleBean) {
 			doComp = (MetalParticleComposition) composition.getDomainObj();
 		} else if (composition instanceof PolymerBean) {
 			doComp = (PolymerComposition) composition.getDomainObj();
-		} else if (composition instanceof QuantumDotBean) {
-			doComp = (QuantumDotComposition) composition.getDomainObj();
 		} else {
 			throw new CalabException(
 					"Can't save composition for the given particle type: "
@@ -146,39 +149,42 @@ public class SubmitNanoparticleService {
 		}
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
-		boolean hasSameViewTitle = false;
+
+		Nanoparticle particle = null;
+		int existingViewTitleCount = -1;
 		try {
 			ida.open();
+			// if ID exists, do update
+			if (doComp.getId() != null) {
+				ida.store(doComp);
+			} else {
+				// check if viewTitle is already used
+				List viewTitleResult = ida
+						.search("select count(achar) from Characterization achar where achar.identificationName='"
+								+ doComp.getIdentificationName() + "'");
 
-			// get the existing particle and compositions from database created
-			// during sample
-			// creation
-			List results = ida
-					.search("select particle from Nanoparticle particle left join particle.characterizationCollection characterization where particle.name='"
-							+ particleName
-							+ "' and particle.type='"
-							+ particleType
-							+ "' and characterization.name='Composition' ");
-			Nanoparticle particle = null;
-			for (Object obj : results) {
-				particle = (Nanoparticle) obj;
-			}
-			if (particle == null) {
-				throw new CalabException("No such particle in the database");
-			}
-
-			Collection<Characterization> existingChars = particle
-					.getCharacterizationCollection();
-
-			for (Characterization aChar : existingChars) {
-				if (aChar.getIdentificationName().equals(
-						doComp.getIdentificationName())) {
-					hasSameViewTitle = true;
-					break;
+				for (Object obj : viewTitleResult) {
+					existingViewTitleCount = ((Integer) (obj)).intValue();
 				}
-			}
-			if (!hasSameViewTitle) {
-				existingChars.add(doComp);
+				if (existingViewTitleCount == 0) {
+					// get the existing particle and compositions from database
+					// created
+					// during sample
+					// creation
+					List results = ida
+							.search("select particle from Nanoparticle particle left join fetch particle.characterizationCollection where particle.name='"
+									+ particleName
+									+ "' and particle.type='"
+									+ particleType + "'");
+
+					for (Object obj : results) {
+						particle = (Nanoparticle) obj;
+					}
+
+					if (particle != null) {
+						particle.getCharacterizationCollection().add(doComp);
+					}
+				}
 			}
 		} catch (Exception e) {
 			ida.rollback();
@@ -187,7 +193,7 @@ public class SubmitNanoparticleService {
 		} finally {
 			ida.close();
 		}
-		if (hasSameViewTitle) {
+		if (existingViewTitleCount > 0) {
 			throw new CalabException(
 					"The view title is already in use.  Please enter a different one.");
 		}
