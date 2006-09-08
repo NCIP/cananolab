@@ -30,6 +30,7 @@
 							<li>
 								<span class="largerText">General Information</span>
 								<br>
+								<br>
 								<span class="indented"> <c:choose>
 										<c:when test="${canUserUpdateParticle eq 'true'}">
 											<a href="nanoparticleGeneralInfo.do?dispatch=setupUpdate&particleType=${particleType}&particleName=${particleName}"">${particleName} (${particleType})</a>
@@ -43,6 +44,7 @@
 							</li>
 							<li>
 								<span class="largerText">Function</span>
+								<br>
 								<br>
 								<span class="indented">-Therapeutics &nbsp;&nbsp;</span>
 								<c:choose>
@@ -77,6 +79,7 @@
 							<li>
 								<span class="largerText">Characterization</span>
 								<br>
+								<br>
 								<span class="indented">-Physical Characterization &nbsp;&nbsp;</span>
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
@@ -85,15 +88,20 @@
 								</c:choose>
 								<br>
 								<c:forEach var="aChar" items="${charTypeChars['physical']}">
-								<%java.util.HashMap paramMap = new java.util.HashMap();
-		    paramMap.put("dispatch", "setupUpdate");
+									<%java.util.HashMap paramMap = new java.util.HashMap();
+			paramMap.put("dispatch", "setupUpdate");
 			paramMap.put("particleName", session.getAttribute("particleName"));
 			paramMap.put("particleType", session.getAttribute("particleType"));
-			paramMap.put("characterizationId", ((gov.nih.nci.calab.dto.characterization.CharacterizationBean)pageContext.getAttribute("aChar")).getId());
+			paramMap
+					.put(
+							"characterizationId",
+							((gov.nih.nci.calab.dto.characterization.CharacterizationBean) pageContext
+									.getAttribute("aChar")).getId());
 			pageContext.setAttribute("paramMap", paramMap);%>
 									<span class="indented2"> <html:link forward="${aChar.name}" name="paramMap">${aChar.name}: ${aChar.viewTitle}</html:link> </span>
 									<br>
 								</c:forEach>
+								<br>
 								<span class="indented">-In Vitro Characterization</span>
 								<br>
 								<span class="indented2">-Toxicity &nbsp;&nbsp;</span>
@@ -130,14 +138,10 @@
 									</c:when>
 								</c:choose>
 								<br>
-								<span class="indented2">-Metabolic Stability &nbsp;&nbsp;</span>
-								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
-										<a href="submitAction.do?submitType=metabolic"><em>add</em></a>
-									</c:when>
-								</c:choose>
+								<span class="indented2">-<em>Metabolic Stability</em> &nbsp;&nbsp;</span>
 								<br>
-								<span class="indented">-In Vivo Characterization</span>
+								<br>
+								<span class="indented">-<em>In Vivo Characterization</em></span>
 								<br>
 								<br>
 							</li>
