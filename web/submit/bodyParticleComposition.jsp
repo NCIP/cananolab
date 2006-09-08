@@ -23,7 +23,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td colspan="2">				
+			<td colspan="2">
 				<jsp:include page="/bodyMessage.jsp?bundle=submit" />
 				<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 					<tr>
@@ -66,31 +66,35 @@
 				</table>
 				<br>
 				<jsp:include page="${nanoparticleCompositionForm.map.particlePage}" />
-				<br>
-				<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
-					<tr>
-						<td width="30%">
-							<span class="formMessage"> </span>
-							<br>
-							<table width="498" height="32" border="0" align="right" cellpadding="4" cellspacing="0">
-								<tr>
-									<td width="490" height="32">
-										<div align="right">
-											<div align="right">
-												<input type="reset" value="Reset" onclick="">
-												<input type="hidden" name="dispatch" value="create">
-												<input type="hidden" name="page" value="1">
-												<html:hidden property="particleType" />
-												<html:submit />
-											</div>
-										</div>
-									</td>
-								</tr>
-							</table>
-							<div align="right"></div>
-						</td>
-					</tr>
-				</table>
+				<c:choose>
+					<c:when test="${canUserUpdateParticle eq 'true'}">
+						<br>
+						<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
+							<tr>
+								<td width="30%">
+									<span class="formMessage"> </span>
+									<br>
+									<table width="498" height="32" border="0" align="right" cellpadding="4" cellspacing="0">
+										<tr>
+											<td width="490" height="32">
+												<div align="right">
+													<div align="right">
+														<input type="reset" value="Reset" onclick="">
+														<input type="hidden" name="dispatch" value="create">
+														<input type="hidden" name="page" value="1">
+														<html:hidden property="particleType" />
+														<html:submit />
+													</div>
+												</div>
+											</td>
+										</tr>
+									</table>
+									<div align="right"></div>
+								</td>
+							</tr>
+						</table>
+					</c:when>					
+				</c:choose>
 			</td>
 		</tr>
 	</table>

@@ -14,7 +14,14 @@
 		<c:set var="particleType" value="${param.particleType}" scope="session" />
 	</c:when>
 </c:choose>
-
+<c:choose>
+	<c:when test="${canUserUpdateParticle eq 'true'}">
+		<c:set var="dispatchValue" value="setupUpdate" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="dispatchValue" value="view" />
+	</c:otherwise>
+</c:choose>
 <table summary="" cellpadding="0" cellspacing="0" border="0" height="100%" width="250">
 	<tr>
 		<td class="subMenuPrimaryTitle" height="21">
@@ -89,7 +96,7 @@
 								<br>
 								<c:forEach var="aChar" items="${charTypeChars['physical']}">
 									<%java.util.HashMap paramMap = new java.util.HashMap();
-			paramMap.put("dispatch", "setupUpdate");
+			paramMap.put("dispatch", pageContext.getAttribute("dispatchValue"));
 			paramMap.put("particleName", session.getAttribute("particleName"));
 			paramMap.put("particleType", session.getAttribute("particleType"));
 			paramMap
