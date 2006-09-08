@@ -427,30 +427,32 @@ public class InitSessionSetup {
 		}
 	}
 
-	public void setSideParticleMenu(HttpServletRequest request)
-			throws Exception {
+	public void setSideParticleMenu(HttpServletRequest request,
+			String particleName, String particleType) throws Exception {
 		HttpSession session = request.getSession();
 		if (session.getAttribute("charTypeChars") == null
-				|| session.getAttribute("newCharacterizationCreated") != null) {
-			String particleType = request.getParameter("particleType");
-			String particleName = request.getParameter("particleName");
+				|| session.getAttribute("newCharacterizationCreated") != null
+				|| session.getAttribute("newParticleCreated") != null) {
 			SearchNanoparticleService service = new SearchNanoparticleService();
 			List<CharacterizationBean> charBeans = service
 					.getCharacterizationInfo(particleName, particleType);
-			Map<String, String[]> charTypeChars = lookupService
-					.getCharacterizationTypeCharacterizations();
 			Map<String, List<CharacterizationBean>> existingCharTypeChars = new HashMap<String, List<CharacterizationBean>>();
-			for (String charType : charTypeChars.keySet()) {
-				List<CharacterizationBean> newCharBeans = new ArrayList<CharacterizationBean>();
-				List<String> charList = Arrays.asList(charTypeChars
-						.get(charType));
-				for (CharacterizationBean charBean : charBeans) {
-					if (charList.contains(charBean.getName())) {
-						newCharBeans.add(charBean);
+			if (!charBeans.isEmpty()) {
+				Map<String, String[]> charTypeChars = lookupService
+						.getCharacterizationTypeCharacterizations();
+
+				for (String charType : charTypeChars.keySet()) {
+					List<CharacterizationBean> newCharBeans = new ArrayList<CharacterizationBean>();
+					List<String> charList = Arrays.asList(charTypeChars
+							.get(charType));
+					for (CharacterizationBean charBean : charBeans) {
+						if (charList.contains(charBean.getName())) {
+							newCharBeans.add(charBean);
+						}
 					}
-				}
-				if (!newCharBeans.isEmpty()) {
-					existingCharTypeChars.put(charType, newCharBeans);
+					if (!newCharBeans.isEmpty()) {
+						existingCharTypeChars.put(charType, newCharBeans);
+					}
 				}
 			}
 			session.setAttribute("charTypeChars", existingCharTypeChars);
