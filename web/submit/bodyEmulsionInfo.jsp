@@ -14,7 +14,7 @@
 		</tr>
 		<tr>
 			<td class="leftLabel">
-				<strong>emulsionType</strong>
+				<strong>Emulsion Type</strong>
 			</td>
 			<td class="label">
 				<html:text property="emulsion.emulsionType" />
