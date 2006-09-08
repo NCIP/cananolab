@@ -15,6 +15,12 @@ public class ComposingElementBean {
 	public ComposingElementBean(){		
 	}
 	
+	public ComposingElementBean(ComposingElement element) {
+		this.chemicalName=element.getChemicalName();
+		this.elementType=element.getElementType();
+		this.description=element.getDescription();
+	}
+	
 	public String getChemicalName() {
 		return chemicalName;
 	}
