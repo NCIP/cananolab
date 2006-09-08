@@ -51,7 +51,7 @@
 							<c:forEach var="keyword" items="${particle.keywords}">
 								<c:out value="${keyword}" />
 								<br>
-							</c:forEach>
+							</c:forEach>&nbsp;
 						</td>
 					</tr>
 					<tr>
