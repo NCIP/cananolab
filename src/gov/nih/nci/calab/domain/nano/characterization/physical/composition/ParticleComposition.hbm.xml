@@ -4,7 +4,7 @@
 <hibernate-mapping package="gov.nih.nci.calab.domain.nano.characterization.physical.composition">
 	<joined-subclass name="ParticleComposition" table="COMPOSITION" extends="gov.nih.nci.calab.domain.nano.characterization.Characterization">
 		<key column="COMPOSITION_PK_ID" />
-		<set name="composingElementCollection" cascade="all-delete-orphan" lazy="true" inverse="true">
+		<set name="composingElementCollection" cascade="all-delete-orphan" lazy="true">
 			<cache usage="read-write" />
 			<key column="COMPOSITION_PK_ID" />
 			<one-to-many class="gov.nih.nci.calab.domain.nano.characterization.physical.composition.ComposingElement" />
