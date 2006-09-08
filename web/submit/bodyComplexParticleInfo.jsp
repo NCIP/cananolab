@@ -8,34 +8,6 @@
 		<tr class="topBorder">
 			<td class="formTitle" colspan="4">
 				<div align="justify">
-					Composition Properties
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td class="leftLabel">
-				<strong>Name </strong>
-			</td>
-			<td class="rightLabel" colspan="3">
-				<html:text property="complexParticle.name" />
-			</td>
-		</tr>
-		<tr>
-			<td class="leftLabel">
-				<strong>Description</strong>
-			</td>
-			<td class="rightLabel" colspan="3">
-				<html:textarea property="complexParticle.description" rows="4" />
-			</td>
-		</tr>
-	</tbody>
-</table>
-<br>
-<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
-	<tbody>
-		<tr class="topBorder">
-			<td class="formTitle" colspan="4">
-				<div align="justify">
 					Composing Nanoparticle Information
 				</div>
 			</td>
