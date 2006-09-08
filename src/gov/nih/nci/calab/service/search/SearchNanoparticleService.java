@@ -203,7 +203,7 @@ public class SearchNanoparticleService {
 
 			ida.open();
 			List results = ida
-					.search("select chara.id, chara.name, chara.identificationName from Nanoparticle particle left join particle.characterizationCollection chara where particle.name='"
+					.search("select chara.id, chara.name, chara.identificationName from Nanoparticle particle join particle.characterizationCollection chara where particle.name='"
 							+ particleName
 							+ "' and particle.type='"
 							+ particleType + "'");
@@ -225,19 +225,19 @@ public class SearchNanoparticleService {
 		return charBeans;
 	}
 
-	public CharacterizationBean getCharacterizationBy(String charId)
+	public Characterization getCharacterizationBy(String charId)
 			throws Exception {
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
-		CharacterizationBean charBean=null;
+		Characterization aChar=null;
 		try {
 
 			ida.open();
 			List results = ida
-					.search(" from Characterization chara where chara.id="
+					.search(" from Characterization chara left join fetch chara.composingElementCollection where chara.id="
 							+ charId);
 			for(Object obj: results) {
-				Characterization aChar=(Characterization)obj;				
+				aChar=(Characterization)obj;				
 			}
 		} catch (Exception e) {
 			logger.error("Problem finding characterization");
@@ -245,6 +245,6 @@ public class SearchNanoparticleService {
 		} finally {
 			ida.close();
 		}
-		return charBean;
+		return aChar;
 	}
 }
