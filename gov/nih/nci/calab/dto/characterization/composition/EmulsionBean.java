@@ -15,8 +15,14 @@ public class EmulsionBean extends CompositionBean {
 	private String polymerized;
 	private String polymerName;
 	
-	public EmulsionBean() {
-		super();
+	public EmulsionBean() {		
+	}
+	public EmulsionBean(EmulsionComposition emulsion) {
+		this.setId(emulsion.getId().toString());
+		this.emulsionType=emulsion.getType();
+		this.molecularFormula=emulsion.getMolecularFormula();
+		this.polymerized=(emulsion.isPolymerized())?"Yes":"No";
+		this.polymerName=emulsion.getPolymerName();
 	}
 	
 	public String getEmulsionType() {
@@ -53,6 +59,9 @@ public class EmulsionBean extends CompositionBean {
 		doComp.setSource(getCharacterizationSource());
 		doComp.setIdentificationName(getViewTitle());
 		doComp.setDescription(getDescription());	
+		if (getId()!=null&&getId().length() > 0) {
+			doComp.setId(new Long(getId()));
+		}
 		for (ComposingElementBean element : getComposingElements()) {
 			doComp.getComposingElementCollection().add(element.getDomainObj());
 		}

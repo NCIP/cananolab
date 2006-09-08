@@ -3,8 +3,12 @@
  */
 package gov.nih.nci.calab.dto.characterization.composition;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.CarbonNanotubeComposition;
+import gov.nih.nci.calab.domain.nano.characterization.physical.composition.ComposingElement;
 
 /**
  * This class represents properties of a Carbon Nanotube composition to be shown
@@ -22,8 +26,26 @@ public class CarbonNanotubeBean extends CompositionBean {
 
 	private String wallType;
 
-	public CarbonNanotubeBean() {
-		super();
+	public CarbonNanotubeBean() {		
+	}
+
+	public CarbonNanotubeBean(CarbonNanotubeComposition carbonNanotube) {
+		this.setId(carbonNanotube.getId().toString());
+		this.averageLength = (carbonNanotube.getAverageLength() == null) ? ""
+				: carbonNanotube.getAverageLength().toString();
+		this.chirality = (carbonNanotube.getChirality() == null) ? ""
+				: carbonNanotube.getChirality().toString();
+		this.growthDiameter = (carbonNanotube.getGrowthDiameter() == null) ? ""
+				: carbonNanotube.getGrowthDiameter().toString();
+		this.wallType = carbonNanotube.getWallType();
+		List<ComposingElementBean> elementBeans = new ArrayList<ComposingElementBean>();
+		for (ComposingElement element : carbonNanotube
+				.getComposingElementCollection()) {
+			ComposingElementBean elementBean = new ComposingElementBean(element);
+			elementBeans.add(elementBean);
+		}
+		this.setComposingElements(elementBeans);
+		this.setNumberOfElements(elementBeans.size() + "");
 	}
 
 	public String getAverageLength() {
@@ -70,6 +92,9 @@ public class CarbonNanotubeBean extends CompositionBean {
 
 		if (growthDiameter.length() > 0) {
 			doComp.setGrowthDiameter(new Float(growthDiameter));
+		}
+		if (getId()!=null&&getId().length() > 0) {
+			doComp.setId(new Long(getId()));
 		}
 		doComp.setWallType(wallType);
 		doComp.setSource(getCharacterizationSource());

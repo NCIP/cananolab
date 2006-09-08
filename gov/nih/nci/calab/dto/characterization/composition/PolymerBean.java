@@ -20,6 +20,10 @@ public class PolymerBean extends CompositionBean {
 	public PolymerBean() {
 		super();
 	}
+	
+	public PolymerBean(PolymerComposition polymer) {
+		
+	}
 
 	public String getCrosslinkDegree() {
 		return crosslinkDegree;
@@ -57,6 +61,9 @@ public class PolymerBean extends CompositionBean {
 		doComp.setSource(getCharacterizationSource());
 		doComp.setIdentificationName(getViewTitle());
 		doComp.setDescription(getDescription());		
+		if (getId()!=null&&getId().length() > 0) {
+			doComp.setId(new Long(getId()));
+		}
 		for (ComposingElementBean element : getComposingElements()) {
 			doComp.getComposingElementCollection().add(element.getDomainObj());
 		}
