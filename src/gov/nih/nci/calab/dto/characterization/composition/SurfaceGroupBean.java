@@ -15,7 +15,9 @@ public class SurfaceGroupBean {
 	public SurfaceGroupBean() {
 		
 	}
-	
+	public SurfaceGroupBean(SurfaceGroup surfaceGroup) {
+		
+	}
 	public String getId() {
 		return id;
 	}
@@ -39,6 +41,9 @@ public class SurfaceGroupBean {
 		SurfaceGroup surfaceGroup=new SurfaceGroup();
 		surfaceGroup.setName(name);
 		surfaceGroup.setModifier(modifier);
+		if (getId()!=null&&getId().length() > 0) {
+			surfaceGroup.setId(new Long(getId()));
+		}
 		return surfaceGroup;
 	}
 }

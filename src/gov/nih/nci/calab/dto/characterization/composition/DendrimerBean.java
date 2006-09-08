@@ -1,7 +1,10 @@
 package gov.nih.nci.calab.dto.characterization.composition;
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
+import gov.nih.nci.calab.domain.nano.characterization.physical.composition.ComposingElement;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.DendrimerComposition;
+import gov.nih.nci.calab.domain.nano.characterization.physical.composition.SurfaceGroup;
+import gov.nih.nci.calab.service.util.CananoConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,14 +33,36 @@ public class DendrimerBean extends CompositionBean {
 	private ComposingElementBean core;
 
 	public DendrimerBean() {
-		super();
 		surfaceGroups = new ArrayList<SurfaceGroupBean>();
 		List<ComposingElementBean> composingElements = getComposingElements();
 		core = new ComposingElementBean();
-		core.setElementType("core");
+		core.setElementType(CananoConstants.CORE);
 		composingElements.add(core);
 		setComposingElements(composingElements);
 		setNumberOfElements("1");
+	}
+
+	public DendrimerBean(DendrimerComposition dendrimer) {
+		this.setId(dendrimer.getId().toString());
+		this.branch = dendrimer.getBranch();
+		this.generation = (dendrimer.getGeneration() == null) ? "" : dendrimer
+				.getGeneration().toString();
+		this.molecularFormula = dendrimer.getMolecularFormula();
+		this.repeatUnit = dendrimer.getRepeatUnit();
+
+		for (ComposingElement element : dendrimer
+				.getComposingElementCollection()) {
+			core = new ComposingElementBean(element);
+		}		
+		this.setNumberOfElements("1");
+		
+		List<SurfaceGroupBean>surfaceBeans=new ArrayList<SurfaceGroupBean>();
+		for (SurfaceGroup surface: dendrimer.getSurfaceGroupCollection()) {
+			SurfaceGroupBean surfaceBean=new SurfaceGroupBean(surface);
+			surfaceBeans.add(surfaceBean);
+		}
+		this.setSurfaceGroups(surfaceBeans);
+		this.numberOfSurfaceGroups=surfaceBeans.size()+"";		
 	}
 
 	public String getBranch() {
@@ -114,10 +139,13 @@ public class DendrimerBean extends CompositionBean {
 		doComp.setMolecularFormula(molecularFormula);
 		for (SurfaceGroupBean surfaceGroup : surfaceGroups) {
 			doComp.getSurfaceGroupCollection().add(surfaceGroup.getDomainObj());
-		}		
+		}
 		doComp.setSource(getCharacterizationSource());
 		doComp.setIdentificationName(getViewTitle());
 		doComp.setDescription(getDescription());
+		if (getId()!=null&&getId().length() > 0) {
+			doComp.setId(new Long(getId()));
+		}
 		for (ComposingElementBean element : getComposingElements()) {
 			doComp.getComposingElementCollection().add(element.getDomainObj());
 		}
