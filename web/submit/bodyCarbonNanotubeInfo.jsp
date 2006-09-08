@@ -7,7 +7,8 @@
 	<tbody>
 		<tr class="topBorder">
 			<td class="formTitle" colspan="4">
-				<div align="justify">Composition Properties				
+				<div align="justify">
+					Composition Properties
 				</div>
 			</td>
 		</tr>
@@ -16,13 +17,27 @@
 				<strong>Growth Diameter</strong>
 			</td>
 			<td class="label">
-				<html:text property="carbonNanotube.growthDiameter" />
+				<c:choose>
+					<c:when test="${canUserUpdateParticle eq 'true'}">
+						<html:text property="carbonNanotube.growthDiameter" />
+					</c:when>
+					<c:otherwise>
+						${carbonNanotube.growthDiameter}&nbsp;
+					</c:otherwise>
+				</c:choose>
 			</td>
 			<td class="label">
 				<strong>Chirality </strong>
 			</td>
 			<td class="rightLabel">
-				<html:text property="carbonNanotube.chirality" />
+				<c:choose>
+					<c:when test="${canUserUpdateParticle eq 'true'}">
+						<html:text property="carbonNanotube.chirality" />
+					</c:when>
+					<c:otherwise>
+						${carbonNanotube.chirality}&nbsp;
+					</c:otherwise>
+				</c:choose>			
 			</td>
 
 		</tr>
@@ -96,7 +111,7 @@
 									<strong>Chemical Name</strong>
 								</td>
 								<td class="rightLabel">
-									<html:text name="carbonNanotube.element" indexed="true" property="chemicalName" />									
+									<html:text name="carbonNanotube.element" indexed="true" property="chemicalName" />
 								</td>
 							</tr>
 							<tr>
