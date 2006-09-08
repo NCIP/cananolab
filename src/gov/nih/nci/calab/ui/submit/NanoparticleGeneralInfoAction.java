@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.9 2006-09-08 20:28:15 pansu Exp $ */
+/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.10 2006-09-08 21:49:52 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
@@ -45,7 +45,7 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 		submitNanoparticleService.createNanoparticle(particleType,
 				particleName, keywordList, visibilities);
 		HttpSession session=request.getSession();
-		session.setAttribute("newParticleCreated", "true");
+		
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage(
 				"message.createNanoparticle.secure", StringUtils.join(
@@ -54,6 +54,7 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
 		session.setAttribute("canUserUpdateParticle", "true");
+		session.setAttribute("newParticleCreated", "true");
 		InitSessionSetup.getInstance().setSideParticleMenu(request, particleName, particleType);
 		return forward;
 	}
@@ -93,7 +94,9 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 		theForm.set("particleName", particle.getSampleName());
 		theForm.set("particleType", particle.getSampleType());
 		theForm.set("keywords", StringUtils.join(particle.getKeywords(), "\r\n"));
-		theForm.set("visibilities", particle.getVisibilityGroups());		
+		theForm.set("visibilities", particle.getVisibilityGroups());
+		session.setAttribute("newParticleCreated", "true");
+		InitSessionSetup.getInstance().setSideParticleMenu(request, particleName, particleType);
 		return mapping.findForward("update");
 	}
 
@@ -111,7 +114,8 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 		ParticleBean particle=searchtNanoparticleService.getGeneralInfo(particleName, particleType);				
 		request.setAttribute("particle", particle);
 		forward = mapping.findForward("view");
-
+		request.getSession().setAttribute("newParticleCreated", "true");
+		InitSessionSetup.getInstance().setSideParticleMenu(request, particleName, particleType);
 		return forward;
 	}
 	
