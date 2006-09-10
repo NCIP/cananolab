@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.49 2006-09-07 21:54:30 zengje Exp $ */
+/* CVS $Id: LookupService.java,v 1.50 2006-09-10 17:44:58 zengje Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -627,9 +627,6 @@ public class LookupService {
 	 */
 	public Map<String, String[]> getCharacterizationTypeCharacterizations() {
 		Map<String, String[]> charTypeChars = new HashMap<String, String[]>();
-//		String[] physicalChars = new String[] { "Composition", "Size",
-//				"Molecular Weight", "Morphology", "Surface Characteristics",
-//				"Solubility", "Purity", "Stability" };
 		String[] physicalChars = new String[] { CananoConstants.PHYSICAL_COMPOSITION, 
 												CananoConstants.PHYSICAL_SIZE,
 												CananoConstants.PHYSICAL_MOLECULAR_WEIGHT,
