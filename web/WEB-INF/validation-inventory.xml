@@ -8,6 +8,12 @@
 			<field property="sampleNamePrefix" page="1" depends="required">
 				<arg position="0" key="createSampleForm.sampleNamePrefix" bundle="inventory" />
 			</field>
+			<field property="sampleType" page="1" depends="required">
+				<arg position="0" key="createSampleForm.sampleType" bundle="inventory" />
+			</field>
+			<field property="sampleSource" page="1" depends="required">
+				<arg position="0" key="createSampleForm.sampleSource" bundle="inventory" />
+			</field>
 			<field property="lotId" page="1" depends="required">
 				<arg position="0" key="createSampleForm.lotId" bundle="inventory" />
 			</field>
@@ -31,24 +37,6 @@
 					<var-value>100</var-value>
 				</var>
 			</field>
-
-			<field property="sampleType" page="1" depends="validwhen">
-				<arg position="0" key="createSampleForm.sampleType" bundle="inventory" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>((otherSampleType==null) or (*this*!=null))</var-value>
-				</var>
-			</field>
-			
-			<field property="otherSampleType" page="1" depends="validwhen">
-				<arg position="0" key="createSampleForm.otherSampleType" bundle="inventory" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>((sampleType!="Other") or (*this*!=null))</var-value>
-				</var>
-			</field>
-
-
 			<field property="containerType" page="1" depends="required" indexedListProperty="containers">
 				<arg position="0" key="createSampleForm.containerType" bundle="inventory" />
 			</field>

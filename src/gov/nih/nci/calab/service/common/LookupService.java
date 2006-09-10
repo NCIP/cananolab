@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.50 2006-09-10 17:44:58 zengje Exp $ */
+/* CVS $Id: LookupService.java,v 1.51 2006-09-10 18:02:56 zengje Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -137,7 +137,7 @@ public class LookupService {
 		// Detail here
 		// Retrieve data from Sample_Type table
 		List<String> sampleTypes = new ArrayList<String>();
-		sampleTypes.add(CalabConstants.OTHER);
+//		sampleTypes.add(CalabConstants.OTHER);
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		try {

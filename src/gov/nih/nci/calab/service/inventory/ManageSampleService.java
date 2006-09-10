@@ -23,7 +23,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-/* CVS $Id: ManageSampleService.java,v 1.4 2006-09-05 05:23:13 zengje Exp $ 
+/* CVS $Id: ManageSampleService.java,v 1.5 2006-09-10 18:02:56 zengje Exp $ 
  */
 public class ManageSampleService {
 	private static Logger logger = Logger.getLogger(ManageSampleService.class);
@@ -152,14 +152,14 @@ public class ManageSampleService {
 			doSample.setLotDescription(sample.getLotDescription());
 			doSample.setLotId(sample.getLotId());
 			doSample.setName(sample.getSampleName());
-			if (sample.getSampleType().equalsIgnoreCase(CalabConstants.OTHER)) {
-				doSample.setType(sample.getOtherSampleType());
-				if (!existingSampleTypes.contains(sample.getOtherSampleType())) {
-					createNewSampleType = true;					
-				}
-			} else {
+//			if (sample.getSampleType().equalsIgnoreCase(CalabConstants.OTHER)) {
+//				doSample.setType(sample.getOtherSampleType());
+//				if (!existingSampleTypes.contains(sample.getOtherSampleType())) {
+//					createNewSampleType = true;					
+//				}
+//			} else {
 				doSample.setType(sample.getSampleType());
-			}
+//			}
 			// TODO: ReceivedBy and Date are not in the wireframe.
 
 			doSample.setReceivedBy("");
@@ -292,11 +292,11 @@ public class ManageSampleService {
 				ida.store(doSampleContainer);				
 			}
 			// save new sample type info if needed
-			if (createNewSampleType) {
-				SampleType newSampleType = new SampleType();
-				newSampleType.setName(sample.getOtherSampleType());
-				ida.store(newSampleType);
-			}
+//			if (createNewSampleType) {
+//				SampleType newSampleType = new SampleType();
+//				newSampleType.setName(sample.getOtherSampleType());
+//				ida.store(newSampleType);
+//			}
 
 		} catch (DuplicateEntriesException ce) {
     		throw ce; 		

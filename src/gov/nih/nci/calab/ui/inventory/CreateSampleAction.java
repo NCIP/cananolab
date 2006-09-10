@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.inventory;
  * @author pansu
  */
 
-/* CVS $Id: CreateSampleAction.java,v 1.3 2006-08-01 19:46:37 pansu Exp $ */
+/* CVS $Id: CreateSampleAction.java,v 1.4 2006-09-10 18:02:56 zengje Exp $ */
 
 import gov.nih.nci.calab.dto.inventory.ContainerBean;
 import gov.nih.nci.calab.dto.inventory.SampleBean;
@@ -56,7 +56,7 @@ public class CreateSampleAction extends AbstractDispatchAction {
 			return forward;
 		}
 		String sampleType = (String) theForm.get("sampleType");
-		String otherSampleType = (String) theForm.get("otherSampleType");
+//		String otherSampleType = (String) theForm.get("otherSampleType");
 		String sampleSOP = (String) theForm.get("sampleSOP");
 		String sampleDescription = (String) theForm.get("sampleDescription");
 		String sampleSource = (String) theForm.get("sampleSource");
@@ -79,12 +79,16 @@ public class CreateSampleAction extends AbstractDispatchAction {
 		ContainerBean[] containers = (ContainerBean[]) theForm
 				.get("containers");
 		Date creationDate = new Date();
+//		SampleBean sample = new SampleBean(sampleNamePrefix, sampleName,
+//				sampleType, otherSampleType, sampleSOP, sampleDescription,
+//				sampleSource, sourceSampleId, dateReceived, solubility, lotId,
+//				lotDescription, numContainers, generalComments,
+//				sampleSubmitter, creationDate, containers);
 		SampleBean sample = new SampleBean(sampleNamePrefix, sampleName,
-				sampleType, otherSampleType, sampleSOP, sampleDescription,
+				sampleType, sampleSOP, sampleDescription,
 				sampleSource, sourceSampleId, dateReceived, solubility, lotId,
 				lotDescription, numContainers, generalComments,
 				sampleSubmitter, creationDate, containers);
-
 		request.setAttribute("sample", sample);
 		manageSampleService.saveSample(sample, containers);
 		// set a flag to indicate that new sample have been created so session
