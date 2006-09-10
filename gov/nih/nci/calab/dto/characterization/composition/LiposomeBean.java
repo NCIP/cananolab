@@ -15,7 +15,7 @@ import gov.nih.nci.calab.domain.nano.characterization.physical.composition.Lipos
  * 
  */
 public class LiposomeBean extends CompositionBean {
-	private String polymerized;
+	private String polymerized="no";
 
 	private String polymerName;
 
