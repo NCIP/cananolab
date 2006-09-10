@@ -12,7 +12,7 @@ import gov.nih.nci.calab.domain.nano.characterization.physical.composition.Emuls
 public class EmulsionBean extends CompositionBean {
 	private String emulsionType;
 	private String molecularFormula;	
-	private String polymerized;
+	private String polymerized="no";
 	private String polymerName;
 	
 	public EmulsionBean() {		
