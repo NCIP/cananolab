@@ -66,6 +66,7 @@
 			      /WEB-INF/validation-workflow.xml , 
 			      /WEB-INF/validation-inventory.xml , 
                   /WEB-INF/validation-search.xml,               
-                  /WEB-INF/validator-rules.xml" />
+                  /WEB-INF/validator-rules.xml,
+                  /WEB-INF/validation-submit.xml" />
 	</plug-in>
 </struts-config>
