@@ -58,9 +58,6 @@
 						<logic:notEqual name="sample" property="sampleType" value="Other">
 							<bean:write name="sample" property="sampleType" />
 						</logic:notEqual>
-						<logic:equal name="sample" property="sampleType" value="Other">
-							<bean:write name="sample" property="otherSampleType" />
-						</logic:equal>
 					</td>
 				</tr>
 

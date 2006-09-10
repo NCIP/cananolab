@@ -43,10 +43,10 @@ function refreshContainers() {
 							<td class="formLabel">
 								<div align="justify">
 									<strong> Sample ID Prefix(<bean:write name="createSampleForm" property="configuredSampleNamePrefix" />X) *<span class="formField"><span class="formFieldWhite"><html:text property="sampleNamePrefix" size="15" /></span></span> &nbsp; &nbsp; Sample
-										Type <span class="formFieldWhite"> <html:select property="sampleType">
+										Type* <span class="formFieldWhite"> <html:select property="sampleType">
 												<option value=""></option>
 												<html:options name="allSampleTypes" />
-											</html:select> &nbsp; &nbsp; &nbsp; Other Type <span class="formFieldWhite"><html:text property="otherSampleType" size="8" /></span> &nbsp; &nbsp; &nbsp; </strong>
+											</html:select> &nbsp; &nbsp; &nbsp;</strong>
 								</div>
 							</td>
 						</tr>
@@ -63,7 +63,7 @@ function refreshContainers() {
 						<tr>
 							<td class="formLabel">
 								<div align="justify">
-									<strong>Source <span class="formFieldWhite"> <html:text property="sampleSource" size="27" /></span> &nbsp; &nbsp; Source ID <span class="formFieldWhite"><html:text property="sourceSampleId" size="10" /> </span> &nbsp; &nbsp; Date Received <html:text
+									<strong>Source* <span class="formFieldWhite"> <html:text property="sampleSource" size="27" /></span> &nbsp; &nbsp; Source ID <span class="formFieldWhite"><html:text property="sourceSampleId" size="10" /> </span> &nbsp; &nbsp; Date Received <html:text
 											property="dateReceived" size="9" /> <span class="formFieldWhite"> <a href="javascript:cal.popup();"><img height="18" src="images/calendar-icon.gif" width="22" border="0" alt="Click Here to Pick up the date"></a></span> </strong>
 								</div>
 							</td>

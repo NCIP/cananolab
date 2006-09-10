@@ -19,7 +19,7 @@ import java.util.Set;
  * 
  */
 
-/* CVS $Id: SampleBean.java,v 1.1 2006-06-30 20:52:51 pansu Exp $ */
+/* CVS $Id: SampleBean.java,v 1.2 2006-09-10 18:02:56 zengje Exp $ */
 public class SampleBean{
 	private String sampleId="";
 	
@@ -29,7 +29,7 @@ public class SampleBean{
 
 	private String sampleType="";
 	
-	private String otherSampleType="";
+//	private String otherSampleType="";
 
 	private String sampleSOP="";
 
@@ -67,7 +67,12 @@ public class SampleBean{
 		this.sampleName=sampleName;
 	}
 	
-	public SampleBean(String sampleName, String sampleType, String otherSampleType, String sampleSOP,
+//	public SampleBean(String sampleName, String sampleType, String otherSampleType, String sampleSOP,
+//			String sampleDescription, String sampleSource,
+//			String sourceSampleId, Date dateReceived, String solubility,
+//			String lotId, String lotDescription, String numberOfContainers,
+//			String generalComments, String sampleSubmitter, Date accessionDate) {
+	public SampleBean(String sampleName, String sampleType,  String sampleSOP,
 			String sampleDescription, String sampleSource,
 			String sourceSampleId, Date dateReceived, String solubility,
 			String lotId, String lotDescription, String numberOfContainers,
@@ -76,7 +81,7 @@ public class SampleBean{
 		// TODO Auto-generated constructor stub
 		this.sampleName = sampleName;
 		this.sampleType = sampleType;
-		this.otherSampleType = otherSampleType;
+//		this.otherSampleType = otherSampleType;
 		this.sampleSOP = sampleSOP;
 		this.sampleDescription = sampleDescription;
 		this.sampleSource = sampleSource;
@@ -91,15 +96,26 @@ public class SampleBean{
 		this.accessionDate = accessionDate;
 	}
 
+//	public SampleBean(String sampleNamePrefix, String sampleName,
+//			String sampleType, String otherSampleType, String sampleSOP, String sampleDescription,
+//			String sampleSource, String sourceSampleId, Date dateReceived,
+//			String solubility, String lotId, String lotDescription,
+//			String numberOfContainers, String generalComments,
+//			String sampleSubmitter, Date accessionDate,
+//			ContainerBean[] containers) {
 	public SampleBean(String sampleNamePrefix, String sampleName,
-			String sampleType, String otherSampleType, String sampleSOP, String sampleDescription,
+			String sampleType, String sampleSOP, String sampleDescription,
 			String sampleSource, String sourceSampleId, Date dateReceived,
 			String solubility, String lotId, String lotDescription,
 			String numberOfContainers, String generalComments,
 			String sampleSubmitter, Date accessionDate,
 			ContainerBean[] containers) {
 		// TODO Auto-generated constructor stub
-		this(sampleName, sampleType, otherSampleType, sampleSOP, sampleDescription, sampleSource,
+//		this(sampleName, sampleType, otherSampleType, sampleSOP, sampleDescription, sampleSource,
+//				sourceSampleId, dateReceived, solubility, lotId, lotDescription,
+//				numberOfContainers, generalComments,
+//				sampleSubmitter, accessionDate);
+		this(sampleName, sampleType, sampleSOP, sampleDescription, sampleSource,
 				sourceSampleId, dateReceived, solubility, lotId, lotDescription,
 				numberOfContainers, generalComments,
 				sampleSubmitter, accessionDate);
@@ -219,13 +235,13 @@ public class SampleBean{
 		this.sampleType = sampleType;
 	}
 
-	public String getOtherSampleType() {
-		return otherSampleType;
-	}
-
-	public void setOtherSampleType(String otherSampleType) {
-		this.otherSampleType = otherSampleType;
-	}
+//	public String getOtherSampleType() {
+//		return otherSampleType;
+//	}
+//
+//	public void setOtherSampleType(String otherSampleType) {
+//		this.otherSampleType = otherSampleType;
+//	}
 
 	public String getSolubility() {
 		return solubility;
