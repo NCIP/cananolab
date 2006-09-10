@@ -11,7 +11,7 @@ import gov.nih.nci.calab.domain.nano.characterization.physical.composition.Polym
  * 
  */
 public class PolymerBean extends CompositionBean {
-	private String crosslinked;
+	private String crosslinked="no";
 
 	private String crosslinkDegree;
 
