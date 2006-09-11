@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: SubmitReportAction.java,v 1.2 2006-08-15 19:15:14 pansu Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.3 2006-09-11 19:32:58 pansu Exp $ */
 
 import gov.nih.nci.calab.service.submit.SubmitReportService;
 import gov.nih.nci.calab.service.util.StringUtils;
@@ -63,6 +63,7 @@ public class SubmitReportAction extends AbstractDispatchAction {
 		InitSessionSetup.getInstance().clearInventorySession(session);
 
 		InitSessionSetup.getInstance().setAllSampleContainers(session);
+		InitSessionSetup.getInstance().setStaticDropdowns(session);
 		return mapping.getInputForward();
 	}
 
