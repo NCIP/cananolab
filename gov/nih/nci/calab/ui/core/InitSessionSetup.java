@@ -14,6 +14,7 @@ import gov.nih.nci.calab.service.search.SearchNanoparticleService;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CalabComparators;
 import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.CananoConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.service.workflow.ExecuteWorkflowService;
 import gov.nih.nci.security.exceptions.CSException;
@@ -458,6 +459,8 @@ public class InitSessionSetup {
 			session.setAttribute("charTypeChars", existingCharTypeChars);
 		}
 		session.removeAttribute("newCharacterizationCreated");
+		setStaticDropdowns(session);
+
 	}
 
 	public void setCharacterizationTypeCharacterizations(HttpSession session)
@@ -469,5 +472,14 @@ public class InitSessionSetup {
 			session.getServletContext().setAttribute(
 					"allCharacterizationTypeCharacterizations", charTypeChars);
 		}
+	}
+
+	public void setStaticDropdowns(HttpSession session) {
+		// set static boolean yes or no and characterization source choices
+		session.setAttribute("booleanChoices", CananoConstants.BOOLEAN_CHOICES);
+		session.setAttribute("characterizationSources",
+				CananoConstants.CHARACTERIZATION_SOURCES);
+		session.setAttribute("carbonNanotubeWallTypes", CananoConstants.CARBON_NANOTUBE_WALLTYPES);
+		session.setAttribute("allReportTypes", CananoConstants.REPORT_TYPES);
 	}
 }
