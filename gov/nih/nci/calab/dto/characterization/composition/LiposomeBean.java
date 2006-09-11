@@ -1,10 +1,6 @@
 package gov.nih.nci.calab.dto.characterization.composition;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
-import gov.nih.nci.calab.domain.nano.characterization.physical.composition.ComposingElement;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.LiposomeComposition;
 import gov.nih.nci.calab.service.util.CananoConstants;
 
@@ -24,18 +20,10 @@ public class LiposomeBean extends CompositionBean {
 	}
 
 	public LiposomeBean(LiposomeComposition liposome) {
-		this.setId(liposome.getId().toString());
+		super(liposome);
 		this.polymerized = (liposome.isPolymerized()) ? CananoConstants.BOOLEAN_YES
 				: CananoConstants.BOOLEAN_NO;
-		this.polymerName = liposome.getPolymerName();
-		List<ComposingElementBean> elementBeans = new ArrayList<ComposingElementBean>();
-		for (ComposingElement element : liposome
-				.getComposingElementCollection()) {
-			ComposingElementBean elementBean = new ComposingElementBean(element);
-			elementBeans.add(elementBean);
-		}
-		this.setComposingElements(elementBeans);
-		this.setNumberOfElements(elementBeans.size() + "");
+		this.polymerName = liposome.getPolymerName();		
 	}
 
 	public String getPolymerized() {

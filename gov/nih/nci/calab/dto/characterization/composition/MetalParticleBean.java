@@ -4,7 +4,6 @@
 package gov.nih.nci.calab.dto.characterization.composition;
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
-import gov.nih.nci.calab.domain.nano.characterization.physical.composition.ComposingElement;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.MetalParticleComposition;
 import gov.nih.nci.calab.service.util.CananoConstants;
 
@@ -18,49 +17,37 @@ import java.util.List;
  * @author zeng, pansu
  */
 public class MetalParticleBean extends CompositionBean {
-	private ComposingElementBean core;
+	private ComposingElementBean core = new ComposingElementBean();;
 
-	private List<ComposingElementBean> shells;
+	private List<ComposingElementBean> shells = new ArrayList<ComposingElementBean>();
 
-	private List<ComposingElementBean> coatings;
+	private List<ComposingElementBean> coatings = new ArrayList<ComposingElementBean>();
 
 	private String numberOfShells;
 
 	private String numberOfCoatings;
 
 	public MetalParticleBean() {		
-		shells = new ArrayList<ComposingElementBean>();
-		coatings = new ArrayList<ComposingElementBean>();
-		List<ComposingElementBean> composingElements = getComposingElements();
-		core = new ComposingElementBean();
 		core.setElementType(CananoConstants.CORE);
-		composingElements.add(core);
-		composingElements.addAll(shells);
-		composingElements.addAll(coatings);
-		setComposingElements(composingElements);
+		getComposingElements().add(core);
+		getComposingElements().addAll(shells);
+		getComposingElements().addAll(coatings);		
 	}
 
 	public MetalParticleBean(MetalParticleComposition metalParticle) {
-		this.setId(metalParticle.getId().toString());
-		List<ComposingElementBean> shellBeans = new ArrayList<ComposingElementBean>();
-		List<ComposingElementBean> coatingBeans = new ArrayList<ComposingElementBean>();
-		core=new ComposingElementBean();
-		for (ComposingElement element : metalParticle
-				.getComposingElementCollection()) {
+		super(metalParticle);		
+		core = new ComposingElementBean();
+		for (ComposingElementBean element : getComposingElements()) {
 			if (element.getElementType().equals(CananoConstants.CORE)) {
-				core = new ComposingElementBean(element);
+				core = element;
 			} else if (element.getElementType().equals(CananoConstants.COATING)) {
-				coatingBeans.add(new ComposingElementBean(element));
+				coatings.add(element);
 			} else if (element.getElementType().equals(CananoConstants.SHELL)) {
-				shellBeans.add(new ComposingElementBean(element));
+				shells.add(element);
 			}
-		}
-		this.setShells(shellBeans);
-		this.setNumberOfShells(shellBeans.size() + "");
-
-		this.setCoatings(coatingBeans);
-		this.setNumberOfCoatings(coatingBeans.size() + "");
-
+		}		
+		this.setNumberOfShells(shells.size() + "");
+		this.setNumberOfCoatings(coatings.size() + "");
 	}
 
 	public List<ComposingElementBean> getCoatings() {

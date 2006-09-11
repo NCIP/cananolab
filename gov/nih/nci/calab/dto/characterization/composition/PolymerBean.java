@@ -1,10 +1,6 @@
 package gov.nih.nci.calab.dto.characterization.composition;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
-import gov.nih.nci.calab.domain.nano.characterization.physical.composition.ComposingElement;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.PolymerComposition;
 import gov.nih.nci.calab.service.util.CananoConstants;
 
@@ -26,19 +22,12 @@ public class PolymerBean extends CompositionBean {
 	}
 
 	public PolymerBean(PolymerComposition polymer) {
-		this.setId(polymer.getId().toString());
+		super(polymer);
 		this.crosslinked = (polymer.isCrossLinked()) ? CananoConstants.BOOLEAN_YES
 				: CananoConstants.BOOLEAN_NO;
 		this.crosslinkDegree = (polymer.getCrossLinkDegree() == null) ? ""
 				: polymer.getCrossLinkDegree().toString();
-		this.initiator = polymer.getInitiator();
-		List<ComposingElementBean> elementBeans = new ArrayList<ComposingElementBean>();
-		for (ComposingElement element : polymer.getComposingElementCollection()) {
-			ComposingElementBean elementBean = new ComposingElementBean(element);
-			elementBeans.add(elementBean);
-		}
-		this.setComposingElements(elementBeans);
-		this.setNumberOfElements(elementBeans.size() + "");
+		this.initiator = polymer.getInitiator();		
 	}
 
 	public String getCrosslinkDegree() {
