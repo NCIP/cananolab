@@ -24,7 +24,7 @@ public class EmulsionBean extends CompositionBean {
 	}
 
 	public EmulsionBean(EmulsionComposition emulsion) {
-		this.setId(emulsion.getId().toString());
+		super(emulsion);
 		this.emulsionType = emulsion.getType();
 		this.molecularFormula = emulsion.getMolecularFormula();
 		this.polymerized = (emulsion.isPolymerized()) ? CananoConstants.BOOLEAN_YES

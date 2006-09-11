@@ -1,7 +1,6 @@
 package gov.nih.nci.calab.dto.characterization.composition;
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
-import gov.nih.nci.calab.domain.nano.characterization.physical.composition.ComposingElement;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.QuantumDotComposition;
 import gov.nih.nci.calab.service.util.CananoConstants;
 
@@ -15,31 +14,73 @@ import java.util.List;
  * @author zeng, pansu
  * 
  */
-public class QuantumDotBean extends MetalParticleBean {
+public class QuantumDotBean extends CompositionBean {
+	private ComposingElementBean core = new ComposingElementBean();;
+
+	private List<ComposingElementBean> shells = new ArrayList<ComposingElementBean>();
+
+	private List<ComposingElementBean> coatings = new ArrayList<ComposingElementBean>();
+
+	private String numberOfShells;
+
+	private String numberOfCoatings;
 
 	public QuantumDotBean() {
-
 	}
 
 	public QuantumDotBean(QuantumDotComposition quantumDot) {
-		this.setId(quantumDot.getId().toString());
-		List<ComposingElementBean> shellBeans = new ArrayList<ComposingElementBean>();
-		List<ComposingElementBean> coatingBeans = new ArrayList<ComposingElementBean>();
-		for (ComposingElement element : quantumDot
-				.getComposingElementCollection()) {
+		super(quantumDot);
+		for (ComposingElementBean element : getComposingElements()) {
 			if (element.getElementType().equals(CananoConstants.CORE)) {
-				this.setCore(new ComposingElementBean(element));
+				core = element;
 			} else if (element.getElementType().equals(CananoConstants.COATING)) {
-				coatingBeans.add(new ComposingElementBean(element));
+				coatings.add(element);
 			} else if (element.getElementType().equals(CananoConstants.SHELL)) {
-				shellBeans.add(new ComposingElementBean(element));
+				shells.add(element);
 			}
 		}
-		this.setShells(shellBeans);
-		this.setNumberOfShells(shellBeans.size() + "");
+		this.setNumberOfShells(shells.size() + "");
+		this.setNumberOfCoatings(coatings.size() + "");
+	}
 
-		this.setCoatings(coatingBeans);
-		this.setNumberOfCoatings(coatingBeans.size() + "");
+	public List<ComposingElementBean> getCoatings() {
+		return coatings;
+	}
+
+	public void setCoatings(List<ComposingElementBean> coatings) {
+		this.coatings = coatings;
+	}
+
+	public ComposingElementBean getCore() {
+		return core;
+	}
+
+	public void setCore(ComposingElementBean core) {
+		this.core = core;
+	}
+
+	public String getNumberOfCoatings() {
+		return numberOfCoatings;
+	}
+
+	public void setNumberOfCoatings(String numberOfCoatings) {
+		this.numberOfCoatings = numberOfCoatings;
+	}
+
+	public String getNumberOfShells() {
+		return numberOfShells;
+	}
+
+	public void setNumberOfShells(String numberOfShells) {
+		this.numberOfShells = numberOfShells;
+	}
+
+	public List<ComposingElementBean> getShells() {
+		return shells;
+	}
+
+	public void setShells(List<ComposingElementBean> shells) {
+		this.shells = shells;
 	}
 
 	public Characterization getDomainObj() {
