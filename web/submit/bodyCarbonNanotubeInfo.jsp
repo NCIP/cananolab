@@ -62,14 +62,13 @@
 				<c:choose>
 					<c:when test="${canUserUpdateParticle eq 'true'}">
 						<html:select property="carbonNanotube.wallType">
-							<html:options name="allWallTypes"/>
+							<html:options name="allCarbonNanotubeWallTypes"/>
 						</html:select>
 					</c:when>
 					<c:otherwise>
 						${nanoparticleCompositionForm.map.carbonNanotube.wallType}&nbsp;
 					</c:otherwise>
 				</c:choose>
-
 			</td>
 		</tr>
 	</tbody>
