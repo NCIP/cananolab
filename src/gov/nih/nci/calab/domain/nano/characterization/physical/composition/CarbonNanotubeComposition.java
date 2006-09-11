@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 public class CarbonNanotubeComposition implements ParticleComposition {
-	private Float chirality;
+	private String chirality;
 	private Float growthDiameter;
 	private Float averageLength;
 	private String wallType;
@@ -80,11 +80,11 @@ public class CarbonNanotubeComposition implements ParticleComposition {
 		this.averageLength = averageLength;
 	}
 
-	public Float getChirality() {
+	public String getChirality() {
 		return chirality;
 	}
 
-	public void setChirality(Float chirality) {
+	public void setChirality(String chirality) {
 		this.chirality = chirality;
 	}
 
