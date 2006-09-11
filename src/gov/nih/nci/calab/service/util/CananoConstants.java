@@ -1,15 +1,5 @@
 package gov.nih.nci.calab.service.util;
 
-import gov.nih.nci.calab.dto.characterization.composition.CarbonNanotubeBean;
-import gov.nih.nci.calab.dto.characterization.composition.ComplexParticleBean;
-import gov.nih.nci.calab.dto.characterization.composition.DendrimerBean;
-import gov.nih.nci.calab.dto.characterization.composition.EmulsionBean;
-import gov.nih.nci.calab.dto.characterization.composition.FullereneBean;
-import gov.nih.nci.calab.dto.characterization.composition.LiposomeBean;
-import gov.nih.nci.calab.dto.characterization.composition.MetalParticleBean;
-import gov.nih.nci.calab.dto.characterization.composition.PolymerBean;
-import gov.nih.nci.calab.dto.characterization.composition.QuantumDotBean;
-
 public class CananoConstants {
 
 	public static final String PARTICLE_PROPERTY = "particle.properties";
@@ -114,4 +104,19 @@ public class CananoConstants {
 
 	public static final String COATING = "coating";
 
+	public static final String BOOLEAN_YES = "Yes";
+
+	public static final String BOOLEAN_NO = "No";
+
+	public static final String[] BOOLEAN_CHOICES = new String[] { BOOLEAN_YES,
+			BOOLEAN_NO };
+
+	public static final String[] CHARACTERIZATION_SOURCES = new String[] {
+			"NCL", "Vendor" };
+
+	public static final String[] CARBON_NANOTUBE_WALLTYPES = new String[] {
+			"Single", "Double", "Multiple" };
+
+	public static final String[] REPORT_TYPES = new String[] { "NCL Report",
+			"Other Associated File" };
 }
