@@ -479,7 +479,7 @@ public class InitSessionSetup {
 		session.setAttribute("booleanChoices", CananoConstants.BOOLEAN_CHOICES);
 		session.setAttribute("characterizationSources",
 				CananoConstants.CHARACTERIZATION_SOURCES);
-		session.setAttribute("carbonNanotubeWallTypes", CananoConstants.CARBON_NANOTUBE_WALLTYPES);
+		session.setAttribute("allCarbonNanotubeWallTypes", CananoConstants.CARBON_NANOTUBE_WALLTYPES);
 		session.setAttribute("allReportTypes", CananoConstants.REPORT_TYPES);
 	}
 }
