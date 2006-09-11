@@ -8,6 +8,7 @@ import gov.nih.nci.calab.domain.nano.characterization.physical.composition.Compo
  *
  */
 public class ComposingElementBean {
+	private String id;
 	private String chemicalName;
 	private String elementType;
 	private String description;
@@ -16,6 +17,7 @@ public class ComposingElementBean {
 	}
 	
 	public ComposingElementBean(ComposingElement element) {
+		this.id=element.getId().toString();
 		this.chemicalName=element.getChemicalName();
 		this.elementType=element.getElementType();
 		this.description=element.getDescription();
@@ -42,9 +44,20 @@ public class ComposingElementBean {
 	
 	public ComposingElement getDomainObj() {
 		ComposingElement element=new ComposingElement();
+		if (getId()!=null&&getId().length() > 0) {
+			element.setId(new Long(getId()));
+		}		
 		element.setChemicalName(chemicalName);
 		element.setDescription(description);
 		element.setElementType(elementType);
 		return element;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 }
