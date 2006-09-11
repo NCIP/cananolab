@@ -187,6 +187,7 @@ public class SubmitNanoparticleService {
 				}
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			ida.rollback();
 			logger.error("Problem saving composition: ");
 			throw e;
