@@ -8,7 +8,7 @@
 		<tr class="topBorder">
 			<td class="formTitle" colspan="4">
 				<div align="justify">
-					Composition Properties	
+					Composition Properties
 				</div>
 			</td>
 		</tr>
@@ -17,14 +17,28 @@
 				<strong>Emulsion Type</strong>
 			</td>
 			<td class="label">
-				<html:text property="emulsion.emulsionType" />
+				<c:choose>
+					<c:when test="${canUserUpdateParticle eq 'true'}">
+						<html:text property="emulsion.emulsionType" />
+					</c:when>
+					<c:otherwise>
+						${nanoparticleCompositionForm.map.emulsion.emulsionType}&nbsp;
+					</c:otherwise>
+				</c:choose>
 			</td>
 
 			<td class="label">
 				<strong>Molecular Formula</strong>
 			</td>
 			<td class="rightLabel">
-				<html:text property="emulsion.molecularFormula" />
+				<c:choose>
+					<c:when test="${canUserUpdateParticle eq 'true'}">
+						<html:text property="emulsion.molecularFormula" />
+					</c:when>
+					<c:otherwise>
+						${nanoparticleCompositionForm.map.emulsion.molecularFormula}&nbsp;
+					</c:otherwise>
+				</c:choose>
 			</td>
 		</tr>
 		<tr>
@@ -32,20 +46,29 @@
 				<strong>Is Polymerized </strong>
 			</td>
 			<td class="label">
-				<html:select property="emulsion.polymerized">
-					<option value="yes">
-						Yes
-					</option>
-					<option value="no">
-						No
-					</option>
-				</html:select>
+				<c:choose>
+					<c:when test="${canUserUpdateParticle eq 'true'}">
+						<html:select property="emulsion.polymerized">
+							<html:options name="booleanChoices"/>
+						</html:select>
+					</c:when>
+					<c:otherwise>
+						${nanoparticleCompositionForm.map.emulsion.polymerized}&nbsp;
+					</c:otherwise>
+				</c:choose>
 			</td>
 			<td class="label">
 				<strong>Polymer Name</strong>
 			</td>
 			<td class="rightLabel">
-				<html:text property="emulsion.polymerName" />
+				<c:choose>
+					<c:when test="${canUserUpdateParticle eq 'true'}">
+						<html:text property="emulsion.polymerName" />
+					</c:when>
+					<c:otherwise>
+						${nanoparticleCompositionForm.map.emulsion.polymerName}&nbsp;
+					</c:otherwise>
+				</c:choose>				
 			</td>
 		</tr>
 	</tbody>

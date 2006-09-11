@@ -4,17 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page import="gov.nih.nci.calab.dto.particle.*"%>
 
-<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
-	<tbody>
-		<tr class="topBorder">
-			<td class="formTitle" colspan="4">
-				<div align="justify">
-					Composition Properties	
-				</div>
-			</td>
-		</tr>
-	</tbody>
-</table>
 <br>
 <table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 	<tbody>
@@ -30,7 +19,14 @@
 				<strong>Chemical Name</strong>
 			</td>
 			<td class="rightLabel" colspan="3">
-				<html:text property="quantumDot.core.chemicalName" />
+				<c:choose>
+					<c:when test="${canUserUpdateParticle eq 'true'}">
+						<html:text property="quantumDot.core.chemicalName" />
+					</c:when>
+					<c:otherwise>
+						${nanoparticleCompositionForm.map.quantumDot.core.chemicalName}&nbsp;
+					</c:otherwise>
+				</c:choose>
 			</td>
 		</tr>
 		<tr>
@@ -38,7 +34,14 @@
 				<strong>Description</strong>
 			</td>
 			<td class="rightLabel" colspan="3">
-				<html:textarea property="quantumDot.core.description" rows="3" />
+				<c:choose>
+					<c:when test="${canUserUpdateParticle eq 'true'}">
+						<html:textarea property="quantumDot.core.description" rows="3" />
+					</c:when>
+					<c:otherwise>
+						${nanoparticleCompositionForm.map.quantumDot.core.description}&nbsp;
+					</c:otherwise>
+				</c:choose>
 			</td>
 		</tr>
 </table>
@@ -57,10 +60,22 @@
 				<strong>Number of Shells</strong>
 			</td>
 			<td class="label">
-				<html:text property="quantumDot.numberOfShells" />
+				<c:choose>
+					<c:when test="${canUserUpdateParticle eq 'true'}">
+						<html:text property="quantumDot.numberOfShells" />
+					</c:when>
+					<c:otherwise>
+						${nanoparticleCompositionForm.map.quantumDot.numberOfShells}&nbsp;
+					</c:otherwise>
+				</c:choose>
 			</td>
 			<td class="rightLabel" colspan="2">
-				<input type="button" onclick="javascript:updateComposition()" value="Update Shells">
+				&nbsp;
+				<c:choose>
+					<c:when test="${canUserUpdateParticle eq 'true'}">
+						<input type="button" onclick="javascript:updateComposition()" value="Update Shells">
+					</c:when>
+				</c:choose>
 			</td>
 		</tr>
 		<tr>
@@ -80,7 +95,14 @@
 									<strong>Chemical Name</strong>
 								</td>
 								<td class="rightLabel" colspan="3">
-									<html:text name="quantumDot.shell" indexed="true" property="chemicalName" />
+									<c:choose>
+										<c:when test="${canUserUpdateParticle eq 'true'}">
+											<html:text name="quantumDot.shell" indexed="true" property="chemicalName" />
+										</c:when>
+										<c:otherwise>
+						${nanoparticleCompositionForm.map.quantumDot.shells[status.index].chemicalName}&nbsp;
+					</c:otherwise>
+									</c:choose>
 								</td>
 							</tr>
 							<tr>
@@ -88,13 +110,24 @@
 									<strong>Description</strong>
 								</td>
 								<td class="rightLabel" colspan="3">
-									<html:textarea name="quantumDot.shell" indexed="true" property="description" rows="3" />
+									<c:choose>
+										<c:when test="${canUserUpdateParticle eq 'true'}">
+											<html:textarea name="quantumDot.shell" indexed="true" property="description" rows="3" />
+										</c:when>
+										<c:otherwise>
+						${nanoparticleCompositionForm.map.quantumDot.shells[status.index].description}&nbsp;
+					</c:otherwise>
+									</c:choose>
 								</td>
 							</tr>
 						</tbody>
 					</table>
 					<br>
-					<html:hidden name="quantumDot.shell" indexed="true" property="elementType" value="shell" />
+					<c:choose>
+						<c:when test="${canUserUpdateParticle eq 'true'}">
+							<html:hidden name="quantumDot.shell" indexed="true" property="elementType" value="shell" />
+						</c:when>
+					</c:choose>
 				</c:forEach>
 			</td>
 		</tr>
@@ -114,10 +147,23 @@
 				<strong>Number of Coatings</strong>
 			</td>
 			<td class="label">
-				<html:text property="quantumDot.numberOfCoatings" />
+				<c:choose>
+					<c:when test="${canUserUpdateParticle eq 'true'}">
+						<html:text property="quantumDot.numberOfCoatings" size="3" />
+					</c:when>
+					<c:otherwise>
+						${nanoparticleCompositionForm.map.quantumDot.numberOfCoatings}&nbsp;
+					</c:otherwise>
+				</c:choose>
+
 			</td>
 			<td class="rightLabel" colspan="2">
-				<input type="button" onclick="javascript:updateComposition()" value="Update Coatings">
+				&nbsp;
+				<c:choose>
+					<c:when test="${canUserUpdateParticle eq 'true'}">
+						<input type="button" onclick="javascript:updateComposition()" value="Update Coatings">
+					</c:when>
+				</c:choose>
 			</td>
 		</tr>
 		<tr>
@@ -137,7 +183,14 @@
 									<strong>Chemical Name</strong>
 								</td>
 								<td class="rightLabel" colspan="3">
-									<html:text name="quantumDot.coating" indexed="true" property="chemicalName" />
+									<c:choose>
+										<c:when test="${canUserUpdateParticle eq 'true'}">
+											<html:text name="quantumDot.coating" indexed="true" property="chemicalName" />
+										</c:when>
+										<c:otherwise>
+						${nanoparticleCompositionForm.map.quantumDot.coatings[status.index].chemicalName}&nbsp;
+					</c:otherwise>
+									</c:choose>
 								</td>
 							</tr>
 							<tr>
@@ -145,13 +198,24 @@
 									<strong>Description</strong>
 								</td>
 								<td class="rightLabel" colspan="3">
-									<html:textarea name="quantumDot.coating" indexed="true" property="description" rows="3" />
+									<c:choose>
+										<c:when test="${canUserUpdateParticle eq 'true'}">
+											<html:textarea name="quantumDot.coating" indexed="true" property="description" rows="3" />
+										</c:when>
+										<c:otherwise>
+						${nanoparticleCompositionForm.map.quantumDot.coatings[status.index].description}&nbsp;
+					</c:otherwise>
+									</c:choose>
 								</td>
 							</tr>
 						</tbody>
 					</table>
 					<br>
-					<html:hidden name="quantumDot.coating" indexed="true" property="elementType" value="coating" />
+					<c:choose>
+						<c:when test="${canUserUpdateParticle eq 'true'}">
+							<html:hidden name="quantumDot.coating" indexed="true" property="elementType" value="coating" />
+						</c:when>
+					</c:choose>
 				</c:forEach>
 			</td>
 		</tr>

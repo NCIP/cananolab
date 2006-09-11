@@ -8,7 +8,7 @@
 		<tr class="topBorder">
 			<td class="formTitle" colspan="4">
 				<div align="justify">
-					Composition Properties	
+					Composition Properties
 				</div>
 			</td>
 		</tr>
@@ -17,14 +17,28 @@
 				<strong>Branch</strong>
 			</td>
 			<td class="label">
-				<html:text property="dendrimer.branch" />
+				<c:choose>
+					<c:when test="${canUserUpdateParticle eq 'true'}">
+						<html:text property="dendrimer.branch" />
+					</c:when>
+					<c:otherwise>
+						${nanoparticleCompositionForm.map.dendrimer.branch}&nbsp;
+					</c:otherwise>
+				</c:choose>
 			</td>
 
 			<td class="label">
 				<strong>Repeat Unit</strong>
 			</td>
 			<td class="rightLabel">
-				<html:text property="dendrimer.repeatUnit" />
+				<c:choose>
+					<c:when test="${canUserUpdateParticle eq 'true'}">
+						<html:text property="dendrimer.repeatUnit" />
+					</c:when>
+					<c:otherwise>
+						${nanoparticleCompositionForm.map.dendrimer.repeatUnit}&nbsp;
+					</c:otherwise>
+				</c:choose>
 			</td>
 		</tr>
 		<tr>
@@ -32,13 +46,27 @@
 				<strong>Generation</strong>
 			</td>
 			<td class="label">
-				<html:text property="dendrimer.generation" />
+				<c:choose>
+					<c:when test="${canUserUpdateParticle eq 'true'}">
+						<html:text property="dendrimer.generation" />
+					</c:when>
+					<c:otherwise>
+						${nanoparticleCompositionForm.map.dendrimer.generation}&nbsp;
+					</c:otherwise>
+				</c:choose>
 			</td>
 			<td class="label">
 				<strong>Molecular Formula</strong>
 			</td>
-			<td class="rightLabel" colspan="3">
-				<html:text property="dendrimer.molecularFormula" />
+			<td class="rightLabel">
+				<c:choose>
+					<c:when test="${canUserUpdateParticle eq 'true'}">
+						<html:text property="dendrimer.molecularFormula" />
+					</c:when>
+					<c:otherwise>
+						${nanoparticleCompositionForm.map.dendrimer.molecularFormula}&nbsp;
+					</c:otherwise>
+				</c:choose>
 			</td>
 		</tr>
 	</tbody>
@@ -58,7 +86,14 @@
 				<strong>Chemical Name</strong>
 			</td>
 			<td class="rightLabel" colspan="3">
-				<html:text property="dendrimer.core.chemicalName" />
+				<c:choose>
+					<c:when test="${canUserUpdateParticle eq 'true'}">
+						<html:text property="dendrimer.core.chemicalName" />
+					</c:when>
+					<c:otherwise>
+						${nanoparticleCompositionForm.map.dendrimer.core.chemicalName}&nbsp;
+					</c:otherwise>
+				</c:choose>
 			</td>
 		</tr>
 		<tr>
@@ -66,7 +101,14 @@
 				<strong>Description</strong>
 			</td>
 			<td class="rightLabel" colspan="3">
-				<html:textarea property="dendrimer.core.description" rows="3" />
+				<c:choose>
+					<c:when test="${canUserUpdateParticle eq 'true'}">
+						<html:textarea property="dendrimer.core.description" rows="3" />
+					</c:when>
+					<c:otherwise>
+						${nanoparticleCompositionForm.map.dendrimer.core.description}&nbsp;
+					</c:otherwise>
+				</c:choose>
 			</td>
 		</tr>
 </table>
@@ -86,10 +128,22 @@
 				<strong>Number of Surface Groups</strong>
 			</td>
 			<td class="label">
-				<html:text property="dendrimer.numberOfSurfaceGroups" />
+				<c:choose>
+					<c:when test="${canUserUpdateParticle eq 'true'}">
+						<html:text property="dendrimer.numberOfSurfaceGroups" />
+					</c:when>
+					<c:otherwise>
+						${nanoparticleCompositionForm.map.dendrimer.numberOfSurfaceGroups}&nbsp;
+					</c:otherwise>
+				</c:choose>
+
 			</td>
-			<td class="rightLabel" colspan="2">
-				<input type="button" onclick="javascript:updateComposition()" value="Update Surface Groups">
+			<td class="rightLabel" colspan="2">&nbsp;
+				<c:choose>
+					<c:when test="${canUserUpdateParticle eq 'true'}">
+						<input type="button" onclick="javascript:updateComposition()" value="Update Surface Groups">
+					</c:when>
+				</c:choose>
 			</td>
 		</tr>
 		<tr>
@@ -109,16 +163,30 @@
 									<strong>Name </strong>
 								</td>
 								<td class="label">
-									<html:select name="dendrimer.surfaceGroup" indexed="true" property="name">
-										<option />
-											<html:options name="allDendrimerSurfaceGroupNames" />
-									</html:select>
+									<c:choose>
+										<c:when test="${canUserUpdateParticle eq 'true'}">
+											<html:select name="dendrimer.surfaceGroup" indexed="true" property="name">
+												<option />
+													<html:options name="allDendrimerSurfaceGroupNames" />
+											</html:select>
+										</c:when>
+										<c:otherwise>
+						${nanoparticleCompositionForm.map.dendrimer.surfaceGroups[status.index].name}&nbsp;
+					</c:otherwise>
+									</c:choose>
 								</td>
 								<td class="label">
 									<strong>Modifier</strong>
 								</td>
 								<td class="rightLabel">
-									<html:text name="dendrimer.surfaceGroup" indexed="true" property="modifier" />
+									<c:choose>
+										<c:when test="${canUserUpdateParticle eq 'true'}">
+											<html:text name="dendrimer.surfaceGroup" indexed="true" property="modifier" />
+										</c:when>
+										<c:otherwise>
+						${nanoparticleCompositionForm.map.dendrimer.surfaceGroups[status.index].modifier}&nbsp;
+					</c:otherwise>
+									</c:choose>
 								</td>
 							</tr>
 						</tbody>
