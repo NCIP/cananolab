@@ -3,11 +3,12 @@
 
 <hibernate-mapping package="gov.nih.nci.calab.domain.nano.characterization.physical.composition">
 	<subclass name="ParticleComposition" extends="gov.nih.nci.calab.domain.nano.characterization.Characterization" discriminator-value="PC">
-		<set name="composingElementCollection" cascade="all-delete-orphan" lazy="true">
+		<list name="composingElementCollection" cascade="all-delete-orphan" lazy="true">
 			<cache usage="read-write" />
 			<key column="CHARACTERIZATION_PK_ID" />
+			<list-index column="LIST_INDEX" />
 			<one-to-many class="gov.nih.nci.calab.domain.nano.characterization.physical.composition.ComposingElement" />
-		</set>
+		</list>
 		<subclass name="QuantumDotComposition" extends="gov.nih.nci.calab.domain.nano.characterization.physical.composition.ParticleComposition" discriminator-value="QuantumDotComp" />
 		<subclass name="MetalParticleComposition" extends="gov.nih.nci.calab.domain.nano.characterization.physical.composition.ParticleComposition" discriminator-value="MetalComp" />
 		<subclass name="ComplexComposition" extends="gov.nih.nci.calab.domain.nano.characterization.physical.composition.ParticleComposition" discriminator-value="ComplexComp" />
@@ -18,11 +19,12 @@
 			</join>
 		</subclass>
 		<subclass name="DendrimerComposition" extends="gov.nih.nci.calab.domain.nano.characterization.physical.composition.ParticleComposition" discriminator-value="DendrimerComp">
-			<set name="surfaceGroupCollection" cascade="all-delete-orphan" lazy="false">
+			<list name="surfaceGroupCollection" cascade="all-delete-orphan" lazy="false">
 				<cache usage="read-write" />
 				<key column="D_COMPOSITION_PK_ID" />
+				<list-index column="LIST_INDEX" /> 
 				<one-to-many class="gov.nih.nci.calab.domain.nano.characterization.physical.composition.SurfaceGroup" />
-			</set>
+			</list>
 			<join table="DENDRIMER_COMPOSITION">
 				<key column="D_COMPOSITION_PK_ID" />
 				<property name="branch" column="BRANCH" type="java.lang.String" />
