@@ -8,7 +8,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleCompositionAction.java,v 1.11 2006-09-08 21:49:39 pansu Exp $ */
+/* CVS $Id: NanoparticleCompositionAction.java,v 1.12 2006-09-11 19:31:33 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.CarbonNanotubeComposition;
@@ -53,9 +53,10 @@ import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
 public class NanoparticleCompositionAction extends AbstractDispatchAction {
-	
+
 	/**
 	 * Add or update the data to database
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -106,20 +107,22 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		request.getSession().setAttribute("newCharacterizationCreated", "true");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addParticleComposition(particleType, particleName, composition);
-		
+
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.addParticleComposition");
 		msgs.add("message", msg);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
-		
-		InitSessionSetup.getInstance().setSideParticleMenu(request, particleName, particleType);
+
+		InitSessionSetup.getInstance().setSideParticleMenu(request,
+				particleName, particleType);
 
 		return forward;
 	}
 
 	/**
 	 * Set up the input forms for adding data
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -131,44 +134,59 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
+
+		HttpSession session = request.getSession();
+		// clear session data from the input forms
+		clearMap(session, theForm, mapping);
+		initSetup(request, theForm);
+		return mapping.getInputForward();
+	}
+
+	private void clearMap(HttpSession session, DynaValidatorForm theForm,
+			ActionMapping mapping) throws Exception {
 		String particleType = (String) theForm.get("particleType");
 		String particleName = (String) theForm.get("particleName");
-		HttpSession session = request.getSession();
-		InitSessionSetup.getInstance().setSideParticleMenu(request, particleName, particleType);
-		if (particleType.equalsIgnoreCase(CananoConstants.DENDRIMER_TYPE)) {
-			InitSessionSetup.getInstance().setAllDendrimerCores(session);
-			InitSessionSetup.getInstance().setAllDendrimerSurfaceGroupNames(
-					session);
-		} else if (particleType
-				.equalsIgnoreCase(CananoConstants.METAL_PARTICLE_TYPE)) {
-			InitSessionSetup.getInstance().setAllMetalCompositions(session);
-		} else if (particleType.equalsIgnoreCase(CananoConstants.POLYMER_TYPE)) {
-			InitSessionSetup.getInstance().setAllPolymerInitiators(session);
-		}
-		
-		//clear session data from the input forms
+
+		// clear session data from the input forms
 		theForm.getMap().clear();
-		
+		theForm.set("dendrimer", new DendrimerBean());
+		theForm.set("polymer", new PolymerBean());
+		theForm.set("fullerene", new FullereneBean());
+		theForm.set("carbonNanotube", new CarbonNanotubeBean());
+		theForm.set("emulsion", new EmulsionBean());
+		theForm.set("complexParticle", new ComplexParticleBean());
+		theForm.set("liposome", new LiposomeBean());
+		theForm.set("quantumDot", new QuantumDotBean());
+		theForm.set("metalParticle", new MetalParticleBean());
 		theForm.set("particleName", particleName);
 		theForm.set("particleType", particleType);
 		theForm.set("particlePage", mapping.findForward(
 				particleType.toLowerCase()).getPath());
-		theForm.set("carbonNanotube", new CarbonNanotubeBean());
-		theForm.set("complexParticle", new ComplexParticleBean());
-		theForm.set("dendrimer", new DendrimerBean());
-		theForm.set("emulsion", new EmulsionBean());
-		theForm.set("fullerene", new FullereneBean());
-		theForm.set("liposome", new LiposomeBean());
-		theForm.set("metalParticle", new MetalParticleBean());
-		theForm.set("polymer", new PolymerBean());
-		theForm.set("quantumDot", new QuantumDotBean());
-		
-		InitSessionSetup.getInstance().setSideParticleMenu(request, particleName, particleType);
-		return mapping.getInputForward();
+	}
+
+	private void initSetup(HttpServletRequest request, DynaValidatorForm theForm) throws Exception  {
+		HttpSession session=request.getSession();
+		String particleType = (String) theForm.get("particleType");
+		String particleName = (String) theForm.get("particleName");
+		InitSessionSetup.getInstance().setSideParticleMenu(request,
+				particleName, particleType);
+		if (particleType.equalsIgnoreCase(CananoConstants.DENDRIMER_TYPE)) {
+			InitSessionSetup.getInstance().setAllDendrimerCores(session);
+			InitSessionSetup.getInstance().setAllDendrimerSurfaceGroupNames(
+					session);
+		} else if (particleType.equalsIgnoreCase(CananoConstants.POLYMER_TYPE)) {
+			InitSessionSetup.getInstance().setAllPolymerInitiators(session);
+		} else if (particleType
+				.equalsIgnoreCase(CananoConstants.METAL_PARTICLE_TYPE)) {
+			InitSessionSetup.getInstance().setAllMetalCompositions(session);
+		}
+		InitSessionSetup.getInstance().setSideParticleMenu(request,
+				particleName, particleType);
 	}
 
 	/**
 	 * Set up the input forms for updating data
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -179,30 +197,22 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		
+
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
+		String particleType = (String) theForm.get("particleType");		
 		String compositionId = (String) theForm.get("characterizationId");
 
 		SearchNanoparticleService service = new SearchNanoparticleService();
-
 		Characterization aChar = service.getCharacterizationBy(compositionId);
-		theForm.set("characterizationSource", aChar.getSource());
-		theForm.set("viewTitle", aChar.getIdentificationName());
-		theForm.set("description", aChar.getDescription());
 
 		HttpSession session = request.getSession();
-
-		if (particleType.equalsIgnoreCase(CananoConstants.DENDRIMER_TYPE)) {
-			InitSessionSetup.getInstance().setAllDendrimerCores(session);
-			InitSessionSetup.getInstance().setAllDendrimerSurfaceGroupNames(
-					session);
+		// clear session data from the input forms
+		clearMap(session, theForm, mapping);
+		if (particleType.equalsIgnoreCase(CananoConstants.DENDRIMER_TYPE)) {			
 			DendrimerBean dendrimer = new DendrimerBean(
 					(DendrimerComposition) aChar);
 			theForm.set("dendrimer", dendrimer);
-		} else if (particleType.equalsIgnoreCase(CananoConstants.POLYMER_TYPE)) {
-			InitSessionSetup.getInstance().setAllPolymerInitiators(session);
+		} else if (particleType.equalsIgnoreCase(CananoConstants.POLYMER_TYPE)) {			
 			PolymerBean polymer = new PolymerBean((PolymerComposition) aChar);
 			theForm.set("polymer", polymer);
 		} else if (particleType.equalsIgnoreCase(CananoConstants.LIPOSOME_TYPE)) {
@@ -234,21 +244,23 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 					(QuantumDotComposition) aChar);
 			theForm.set("quantumDot", quantumDot);
 		} else if (particleType
-				.equalsIgnoreCase(CananoConstants.METAL_PARTICLE_TYPE)) {
-			InitSessionSetup.getInstance().setAllMetalCompositions(session);
+				.equalsIgnoreCase(CananoConstants.METAL_PARTICLE_TYPE)) {			
 			MetalParticleBean metalParticle = new MetalParticleBean(
 					(MetalParticleComposition) aChar);
 			theForm.set("metalParticle", metalParticle);
 		}
-		theForm.set("particlePage", mapping.findForward(
-				particleType.toLowerCase()).getPath());
+		theForm.set("characterizationId", compositionId);
+		theForm.set("characterizationSource", aChar.getSource());
+		theForm.set("viewTitle", aChar.getIdentificationName());
+		theForm.set("description", aChar.getDescription());
+		initSetup(request, theForm);
 		
-		InitSessionSetup.getInstance().setSideParticleMenu(request, particleName, particleType);
 		return mapping.getInputForward();
 	}
 
 	/**
-	 * Set up the input forms for updating data
+	 * Set up the input fields for read only view data
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -259,76 +271,12 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 	public ActionForward view(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
-		String compositionId = (String) theForm.get("characterizationId");
-
-		SearchNanoparticleService service = new SearchNanoparticleService();
-
-		Characterization aChar = service.getCharacterizationBy(compositionId);
-		theForm.set("characterizationSource", aChar.getSource());
-		theForm.set("viewTitle", aChar.getIdentificationName());
-		theForm.set("description", aChar.getDescription());
-
-		HttpSession session = request.getSession();
-
-		if (particleType.equalsIgnoreCase(CananoConstants.DENDRIMER_TYPE)) {
-			InitSessionSetup.getInstance().setAllDendrimerCores(session);
-			InitSessionSetup.getInstance().setAllDendrimerSurfaceGroupNames(
-					session);
-			DendrimerBean dendrimer = new DendrimerBean(
-					(DendrimerComposition) aChar);
-			request.setAttribute("dendrimer", dendrimer);
-		} else if (particleType.equalsIgnoreCase(CananoConstants.POLYMER_TYPE)) {
-			InitSessionSetup.getInstance().setAllPolymerInitiators(session);
-			PolymerBean polymer = new PolymerBean((PolymerComposition) aChar);
-			request.setAttribute("polymer", polymer);
-		} else if (particleType.equalsIgnoreCase(CananoConstants.LIPOSOME_TYPE)) {
-			LiposomeBean liposome = new LiposomeBean(
-					(LiposomeComposition) aChar);
-			request.setAttribute("liposome", liposome);
-		} else if (particleType
-				.equalsIgnoreCase(CananoConstants.FULLERENE_TYPE)) {
-			FullereneBean fullerene = new FullereneBean(
-					(FullereneComposition) aChar);
-			request.setAttribute("fullerene", fullerene);
-		} else if (particleType
-				.equalsIgnoreCase(CananoConstants.CARBON_NANOTUBE_TYPE)) {
-			CarbonNanotubeBean carbonNanotube = new CarbonNanotubeBean(
-					(CarbonNanotubeComposition) aChar);
-			request.setAttribute("carbonNanotube", carbonNanotube);;
-		} else if (particleType.equalsIgnoreCase(CananoConstants.EMULSION_TYPE)) {
-			EmulsionBean emulsion = new EmulsionBean(
-					(EmulsionComposition) aChar);
-			request.setAttribute("emulsion", emulsion);
-		} else if (particleType
-				.equalsIgnoreCase(CananoConstants.COMPLEX_PARTICLE_TYPE)) {
-			ComplexParticleBean complexParticle = new ComplexParticleBean(
-					(ComplexComposition) aChar);
-			request.setAttribute("complexParticle", complexParticle);
-		} else if (particleType
-				.equalsIgnoreCase(CananoConstants.QUANTUM_DOT_TYPE)) {
-			QuantumDotBean quantumDot = new QuantumDotBean(
-					(QuantumDotComposition) aChar);
-			request.setAttribute("quantumDot", quantumDot);
-		} else if (particleType
-				.equalsIgnoreCase(CananoConstants.METAL_PARTICLE_TYPE)) {
-			InitSessionSetup.getInstance().setAllMetalCompositions(session);
-			MetalParticleBean metalParticle = new MetalParticleBean(
-					(MetalParticleComposition) aChar);
-			request.setAttribute("metalParticle", metalParticle);
-		}
-		theForm.set("particlePage", mapping.findForward(
-				particleType.toLowerCase()).getPath());
-		
-		InitSessionSetup.getInstance().setSideParticleMenu(request, particleName, particleType);
-		return mapping.getInputForward();
+		return setupUpdate(mapping, form, request, response);
 	}
 
 	/**
 	 * Update multiple children on the same form
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -424,12 +372,14 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 			}
 			theForm.set("metalParticle", (MetalParticleBean) composition);
 		}
-		InitSessionSetup.getInstance().setSideParticleMenu(request, particleName, particleType);
+		InitSessionSetup.getInstance().setSideParticleMenu(request,
+				particleName, particleType);
 		return mapping.getInputForward();
 	}
 
 	/**
 	 * Update surface groups for Dendrimer only
+	 * 
 	 * @param particle
 	 */
 	private void updateSurfaceGroups(DendrimerBean particle) {
