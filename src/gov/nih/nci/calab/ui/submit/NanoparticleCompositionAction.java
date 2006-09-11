@@ -8,7 +8,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleCompositionAction.java,v 1.12 2006-09-11 19:31:33 pansu Exp $ */
+/* CVS $Id: NanoparticleCompositionAction.java,v 1.13 2006-09-11 21:18:47 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.CarbonNanotubeComposition;
@@ -336,7 +336,7 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 						.getShells();
 				List<ComposingElementBean> shells = updateComposingElements(
 						origShells, shellNum);
-				((MetalParticleBean) composition).setShells(shells);
+				((QuantumDotBean) composition).setShells(shells);
 
 				int coatingNum = Integer.parseInt(numberOfCoatings);
 				List<ComposingElementBean> origCoatings = ((QuantumDotBean) composition)
@@ -346,7 +346,7 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 				((QuantumDotBean) composition).setCoatings(coatings);
 			} catch (Exception e) {
 			}
-			theForm.set("metalParticle", (MetalParticleBean) composition);
+			theForm.set("quantumDot", (QuantumDotBean) composition);
 		} else if (particleType
 				.equalsIgnoreCase(CananoConstants.METAL_PARTICLE_TYPE)) {
 			composition = (MetalParticleBean) theForm.get("metalParticle");
