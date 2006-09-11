@@ -44,8 +44,7 @@
 							</td>
 							<td class="rightLabel"">
 								<html:select property="reportType">
-								   <option value="nclReport">NCL Report</option>
-								   <option value="other">Other Associated File</option>
+								   <html:options name="allReportTypes"/>
 								</html:select>
 							</td>
 						</tr>
