@@ -13,8 +13,8 @@
 			</h3>
 		</td>
 		<td align="right" width="15%">
-			<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=sample_search_results')" class="helpText">Help</a>&nbsp;&nbsp; <a href="searchSample.do?dispatch=setup&page=0&rememberSearch=true"
-				class="helpText">back</a>
+			<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=sample_search_results')" class="helpText">Help</a>&nbsp;&nbsp; 
+			<a href="searchNanoparticle.do?dispatch=setup" class="helpText">back</a>
 		</td>
 	</tr>
 	<tr>
