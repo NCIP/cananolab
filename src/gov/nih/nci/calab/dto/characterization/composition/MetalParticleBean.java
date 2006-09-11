@@ -28,8 +28,7 @@ public class MetalParticleBean extends CompositionBean {
 
 	private String numberOfCoatings;
 
-	public MetalParticleBean() {
-		super();
+	public MetalParticleBean() {		
 		shells = new ArrayList<ComposingElementBean>();
 		coatings = new ArrayList<ComposingElementBean>();
 		List<ComposingElementBean> composingElements = getComposingElements();
@@ -45,6 +44,7 @@ public class MetalParticleBean extends CompositionBean {
 		this.setId(metalParticle.getId().toString());
 		List<ComposingElementBean> shellBeans = new ArrayList<ComposingElementBean>();
 		List<ComposingElementBean> coatingBeans = new ArrayList<ComposingElementBean>();
+		core=new ComposingElementBean();
 		for (ComposingElement element : metalParticle
 				.getComposingElementCollection()) {
 			if (element.getElementType().equals(CananoConstants.CORE)) {
@@ -68,6 +68,7 @@ public class MetalParticleBean extends CompositionBean {
 	}
 
 	public void setCoatings(List<ComposingElementBean> coatings) {
+		getComposingElements().addAll(coatings);
 		this.coatings = coatings;
 	}
 
@@ -84,6 +85,7 @@ public class MetalParticleBean extends CompositionBean {
 	}
 
 	public void setShells(List<ComposingElementBean> shells) {
+		getComposingElements().addAll(shells);
 		this.shells = shells;
 	}
 

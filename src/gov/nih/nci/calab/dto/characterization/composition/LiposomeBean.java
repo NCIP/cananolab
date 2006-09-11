@@ -6,6 +6,7 @@ import java.util.List;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.ComposingElement;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.LiposomeComposition;
+import gov.nih.nci.calab.service.util.CananoConstants;
 
 /**
  * This class represents properties of a Liposome composition to be shown in the
@@ -15,17 +16,17 @@ import gov.nih.nci.calab.domain.nano.characterization.physical.composition.Lipos
  * 
  */
 public class LiposomeBean extends CompositionBean {
-	private String polymerized="no";
+	private String polymerized = CananoConstants.BOOLEAN_NO;
 
 	private String polymerName;
 
 	public LiposomeBean() {
-		super();
 	}
 
 	public LiposomeBean(LiposomeComposition liposome) {
 		this.setId(liposome.getId().toString());
-		this.polymerized = (liposome.isPolymerized()) ? "Yes" : "No";
+		this.polymerized = (liposome.isPolymerized()) ? CananoConstants.BOOLEAN_YES
+				: CananoConstants.BOOLEAN_NO;
 		this.polymerName = liposome.getPolymerName();
 		List<ComposingElementBean> elementBeans = new ArrayList<ComposingElementBean>();
 		for (ComposingElement element : liposome
