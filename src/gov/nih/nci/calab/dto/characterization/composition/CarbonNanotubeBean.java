@@ -85,10 +85,8 @@ public class CarbonNanotubeBean extends CompositionBean {
 		CarbonNanotubeComposition doComp = new CarbonNanotubeComposition();
 		if (averageLength.length() > 0) {
 			doComp.setAverageLength(new Float(averageLength));
-		}
-		if (chirality.length() > 0) {
-			doComp.setChirality(chirality);
-		}
+		}		
+		doComp.setChirality(chirality);	
 
 		if (growthDiameter.length() > 0) {
 			doComp.setGrowthDiameter(new Float(growthDiameter));
