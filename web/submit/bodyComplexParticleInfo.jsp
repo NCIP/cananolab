@@ -17,10 +17,22 @@
 				<strong>Number of Composing Nanoparticles</strong>
 			</td>
 			<td class="label">
-				<html:text property="complexParticle.numberOfElements" />
+				<c:choose>
+					<c:when test="${canUserUpdateParticle eq 'true'}">
+						<html:text property="complexParticle.numberOfElements" />
+					</c:when>
+					<c:otherwise>
+						${nanoparticleCompositionForm.map.complexParticle.numberOfElements}&nbsp;
+					</c:otherwise>
+				</c:choose>
+
 			</td>
-			<td class="rightLabel" colspan="2">
-				<input type="button" onclick="javascript:updateComposition()" value="Update Composing Nanoparticles">
+			<td class="rightLabel" colspan="2">&nbsp;
+				<c:choose>
+					<c:when test="${canUserUpdateParticle eq 'true'}">
+						<input type="button" onclick="javascript:updateComposition()" value="Update Composing Nanoparticles">
+					</c:when>
+				</c:choose>
 			</td>
 		</tr>
 		<tr>
@@ -39,17 +51,31 @@
 								<td class="leftLabel">
 									<strong>Composing Nanoparticle Type</strong>
 								</td>
-								<td class="label">									
-									<html:select name="complexParticle.element" indexed="true" property="elementType">
-										<option value=""></option>
-										<html:options name="allParticleTypes" />
-									</html:select>
-								</td>							
+								<td class="label">
+									<c:choose>
+										<c:when test="${canUserUpdateParticle eq 'true'}">
+											<html:select name="complexParticle.element" indexed="true" property="elementType">
+												<option value=""></option>
+												<html:options name="allParticleTypes" />
+											</html:select>
+										</c:when>
+										<c:otherwise>
+						${nanoparticleCompositionForm.map.complexParticle.composingElements[status.index].elementType}&nbsp;
+					</c:otherwise>
+									</c:choose>
+								</td>
 								<td class="label">
 									<strong>Chemical Name</strong>
 								</td>
 								<td class="rightLabel">
-									<html:text name="complexParticle.element" indexed="true" property="chemicalName" />
+									<c:choose>
+										<c:when test="${canUserUpdateParticle eq 'true'}">
+											<html:text name="complexParticle.element" indexed="true" property="chemicalName" />
+										</c:when>
+										<c:otherwise>
+						${nanoparticleCompositionForm.map.complexParticle.composingElements[status.index].chemicalName}&nbsp;
+					</c:otherwise>
+									</c:choose>
 								</td>
 							</tr>
 							<tr>
@@ -57,7 +83,14 @@
 									<strong>Description</strong>
 								</td>
 								<td class="rightLabel" colspan="3">
-									<html:textarea name="complexParticle.element" indexed="true" property="description" rows="3" />
+									<c:choose>
+										<c:when test="${canUserUpdateParticle eq 'true'}">
+											<html:textarea name="complexParticle.element" indexed="true" property="description" rows="3" />
+										</c:when>
+										<c:otherwise>
+						${nanoparticleCompositionForm.map.complexParticle.composingElements[status.index].description}&nbsp;
+					</c:otherwise>
+									</c:choose>
 								</td>
 							</tr>
 						</tbody>

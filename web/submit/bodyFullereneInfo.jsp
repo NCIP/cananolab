@@ -8,7 +8,7 @@
 		<tr class="topBorder">
 			<td class="formTitle" colspan="4">
 				<div align="justify">
-					Composition Properties	
+					Composition Properties
 				</div>
 			</td>
 		</tr>
@@ -17,7 +17,14 @@
 				<strong>Number of Carbons</strong>
 			</td>
 			<td class="rightLabel" colspan="3">
-				<html:text property="fullerene.numberOfCarbons" />
+				<c:choose>
+					<c:when test="${canUserUpdateParticle eq 'true'}">
+						<html:text property="fullerene.numberOfCarbons" />
+					</c:when>
+					<c:otherwise>
+						${nanoparticleCompositionForm.map.fullerene.numberOfCarbons}&nbsp;
+					</c:otherwise>
+				</c:choose>
 			</td>
 		</tr>
 	</tbody>
@@ -37,10 +44,22 @@
 				<strong>Number of Modifications</strong>
 			</td>
 			<td class="label">
-				<html:text property="fullerene.numberOfElements" />
+				<c:choose>
+					<c:when test="${canUserUpdateParticle eq 'true'}">
+						<html:text property="fullerene.numberOfElements" />
+					</c:when>
+					<c:otherwise>
+						${nanoparticleCompositionForm.map.fullerene.numberOfElements}&nbsp;
+					</c:otherwise>
+				</c:choose>
 			</td>
 			<td class="rightLabel" colspan="2">
-				<input type="button" onclick="javascript:updateComposition()" value="Update Modifications">
+				&nbsp;
+				<c:choose>
+					<c:when test="${canUserUpdateParticle eq 'true'}">
+						<input type="button" onclick="javascript:updateComposition()" value="Update Modifications">
+					</c:when>
+				</c:choose>
 			</td>
 		</tr>
 		<tr>
@@ -60,13 +79,27 @@
 									<strong>Modification Type</strong>
 								</td>
 								<td class="label">
-									<html:text name="fullerene.element" indexed="true" property="elementType" />
+									<c:choose>
+										<c:when test="${canUserUpdateParticle eq 'true'}">
+											<html:text name="fullerene.element" indexed="true" property="elementType" />
+										</c:when>
+										<c:otherwise>
+						${nanoparticleCompositionForm.map.fullerene.composingElements[status.index].elementType}&nbsp;
+					</c:otherwise>
+									</c:choose>
 								</td>
 								<td class="label">
 									<strong>Chemical Name</strong>
 								</td>
 								<td class="rightLabel">
-									<html:text name="fullerene.element" indexed="true" property="chemicalName" />
+									<c:choose>
+										<c:when test="${canUserUpdateParticle eq 'true'}">
+											<html:text name="fullerene.element" indexed="true" property="chemicalName" />
+										</c:when>
+										<c:otherwise>
+						${nanoparticleCompositionForm.map.fullerene.composingElements[status.index].chemicalName}&nbsp;
+					</c:otherwise>
+									</c:choose>
 								</td>
 							</tr>
 							<tr>
@@ -74,7 +107,14 @@
 									<strong>Description</strong>
 								</td>
 								<td class="rightLabel" colspan="3">
-									<html:textarea name="fullerene.element" indexed="true" property="description" rows="3" />
+									<c:choose>
+										<c:when test="${canUserUpdateParticle eq 'true'}">
+											<html:textarea name="fullerene.element" indexed="true" property="description" rows="3" />
+										</c:when>
+										<c:otherwise>
+						${nanoparticleCompositionForm.map.fullerene.composingElements[status.index].description}&nbsp;
+					</c:otherwise>
+									</c:choose>
 								</td>
 							</tr>
 						</tbody>

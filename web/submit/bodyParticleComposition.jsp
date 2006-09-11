@@ -39,20 +39,29 @@
 							<strong>Characterization Source* </strong>
 						</td>
 						<td class="label">
-							<html:select property="characterizationSource">
-								<option name="NCL">
-									NCL
-								</option>
-								<option name="vendor">
-									Vendor
-								</option>
-							</html:select>
+							<c:choose>
+								<c:when test="${canUserUpdateParticle eq 'true'}">
+									<html:select property="characterizationSource">
+										<html:options name="characterizationSources"/>
+									</html:select>
+								</c:when>
+								<c:otherwise>
+						${nanoparticleCompositionForm.map.characterizationSource}&nbsp;
+					</c:otherwise>
+							</c:choose>
 						</td>
 						<td class="label">
 							<strong>View Title*</strong>
 						</td>
 						<td class="rightLabel">
-							<html:text property="viewTitle" />
+							<c:choose>
+								<c:when test="${canUserUpdateParticle eq 'true'}">
+									<html:text property="viewTitle" />
+								</c:when>
+								<c:otherwise>
+						${nanoparticleCompositionForm.map.viewTitle}&nbsp;
+					</c:otherwise>
+							</c:choose>
 						</td>
 					</tr>
 					<tr>
@@ -60,7 +69,14 @@
 							<strong>Description</strong>
 						</td>
 						<td class="rightLabel" colspan="3">
-							<html:textarea property="description" rows="3" />
+							<c:choose>
+								<c:when test="${canUserUpdateParticle eq 'true'}">
+									<html:textarea property="description" rows="3" />
+								</c:when>
+								<c:otherwise>
+						${nanoparticleCompositionForm.map.description}&nbsp;
+					</c:otherwise>
+							</c:choose>
 						</td>
 					</tr>
 				</table>
@@ -82,7 +98,11 @@
 														<input type="reset" value="Reset" onclick="">
 														<input type="hidden" name="dispatch" value="create">
 														<input type="hidden" name="page" value="1">
-														<html:hidden property="particleType" />
+														<c:choose>
+															<c:when test="${canUserUpdateParticle eq 'true'}">
+																<html:hidden property="particleType" />
+															</c:when>
+														</c:choose>
 														<html:submit />
 													</div>
 												</div>
@@ -93,7 +113,7 @@
 								</td>
 							</tr>
 						</table>
-					</c:when>					
+					</c:when>
 				</c:choose>
 			</td>
 		</tr>

@@ -8,7 +8,7 @@
 		<tr class="topBorder">
 			<td class="formTitle" colspan="4">
 				<div align="justify">
-					Composition Properties	
+					Composition Properties
 				</div>
 			</td>
 		</tr>
@@ -17,20 +17,29 @@
 				<strong>Is Crosslinked </strong>
 			</td>
 			<td class="label">
-				<html:select property="polymer.crosslinked">
-					<option value="yes">
-						Yes
-					</option>
-					<option value="no">
-						No
-					</option>
-				</html:select>
+				<c:choose>
+					<c:when test="${canUserUpdateParticle eq 'true'}">
+						<html:select property="polymer.crosslinked">
+							<html:options name="booleanChoices"/>
+						</html:select>
+					</c:when>
+					<c:otherwise>
+						${nanoparticleCompositionForm.map.polymer.crosslinked}&nbsp;
+					</c:otherwise>
+				</c:choose>
 			</td>
 			<td class="label">
 				<strong>Crosslink Degree</strong>
 			</td>
 			<td class="rightLabel">
-				<html:text property="polymer.crosslinkDegree" size="3" />
+				<c:choose>
+					<c:when test="${canUserUpdateParticle eq 'true'}">
+						<html:text property="polymer.crosslinkDegree" size="3" />
+					</c:when>
+					<c:otherwise>
+						${nanoparticleCompositionForm.map.polymer.crosslinkDegree}&nbsp;
+					</c:otherwise>
+				</c:choose>
 				<strong>%</strong>
 			</td>
 		</tr>
@@ -39,10 +48,18 @@
 				<strong>Initiator </strong>
 			</td>
 			<td class="rightLabel" colspan="3">
-				<html:select property="polymer.initiator">
-					<option />
-						<html:options name="allPolymerInitiators" />
-				</html:select>
+				<c:choose>
+					<c:when test="${canUserUpdateParticle eq 'true'}">
+						<html:select property="polymer.initiator">
+							<option />
+								<html:options name="allPolymerInitiators" />
+						</html:select>
+					</c:when>
+					<c:otherwise>
+						${nanoparticleCompositionForm.map.polymer.initiator}&nbsp;
+					</c:otherwise>
+				</c:choose>
+
 			</td>
 		</tr>
 	</tbody>
@@ -62,10 +79,22 @@
 				<strong>Number of Monomers</strong>
 			</td>
 			<td class="label">
-				<html:text property="polymer.numberOfElements" />
+				<c:choose>
+					<c:when test="${canUserUpdateParticle eq 'true'}">
+						<html:text property="polymer.numberOfElements" />
+					</c:when>
+					<c:otherwise>
+						${nanoparticleCompositionForm.map.polymer.numberOfElements}&nbsp;
+					</c:otherwise>
+				</c:choose>
 			</td>
 			<td class="rightLabel" colspan="2">
-				<input type="button" onclick="javascript:updateComposition()" value="Update Monomers">
+				&nbsp;
+				<c:choose>
+					<c:when test="${canUserUpdateParticle eq 'true'}">
+						<input type="button" onclick="javascript:updateComposition()" value="Update Monomers">
+					</c:when>
+				</c:choose>
 			</td>
 		</tr>
 		<tr>
@@ -85,7 +114,14 @@
 									<strong>Chemical Name</strong>
 								</td>
 								<td class="rightLabel" colspan="3">
-									<html:text name="polymer.element" indexed="true" property="chemicalName" />
+									<c:choose>
+										<c:when test="${canUserUpdateParticle eq 'true'}">
+											<html:text name="polymer.element" indexed="true" property="chemicalName" />
+										</c:when>
+										<c:otherwise>
+						${nanoparticleCompositionForm.map.polymer.composingElements[status.index].chemicalName}&nbsp;
+					</c:otherwise>
+									</c:choose>
 								</td>
 							</tr>
 							<tr>
@@ -93,13 +129,24 @@
 									<strong>Description</strong>
 								</td>
 								<td class="rightLabel" colspan="3">
-									<html:textarea name="polymer.element" indexed="true" property="description" rows="3" />
+									<c:choose>
+										<c:when test="${canUserUpdateParticle eq 'true'}">
+											<html:textarea name="polymer.element" indexed="true" property="description" rows="3" />
+										</c:when>
+										<c:otherwise>
+						${nanoparticleCompositionForm.map.polymer.composingElements[status.index].description}&nbsp;
+					</c:otherwise>
+									</c:choose>
 								</td>
 							</tr>
 						</tbody>
 					</table>
 					<br>
-					<html:hidden name="polymer.element" indexed="true" property="elementType" value="monomer" />
+					<c:choose>
+						<c:when test="${canUserUpdateParticle eq 'true'}">
+							<html:hidden name="polymer.element" indexed="true" property="elementType" value="monomer" />
+						</c:when>
+					</c:choose>
 				</c:forEach>
 			</td>
 		</tr>

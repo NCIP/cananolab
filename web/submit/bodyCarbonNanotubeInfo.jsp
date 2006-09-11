@@ -22,7 +22,7 @@
 						<html:text property="carbonNanotube.growthDiameter" />
 					</c:when>
 					<c:otherwise>
-						${carbonNanotube.growthDiameter}&nbsp;
+						${nanoparticleCompositionForm.map.carbonNanotube.growthDiameter}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>
@@ -35,9 +35,9 @@
 						<html:text property="carbonNanotube.chirality" />
 					</c:when>
 					<c:otherwise>
-						${carbonNanotube.chirality}&nbsp;
+						${nanoparticleCompositionForm.map.carbonNanotube.chirality}&nbsp;
 					</c:otherwise>
-				</c:choose>			
+				</c:choose>
 			</td>
 
 		</tr>
@@ -46,23 +46,30 @@
 				<strong>Average Length</strong>
 			</td>
 			<td class="label" align="left">
-				<html:text property="carbonNanotube.averageLength" />
+				<c:choose>
+					<c:when test="${canUserUpdateParticle eq 'true'}">
+						<html:text property="carbonNanotube.averageLength" />
+					</c:when>
+					<c:otherwise>
+						${nanoparticleCompositionForm.map.carbonNanotube.averageLength}&nbsp;
+					</c:otherwise>
+				</c:choose>
 			</td>
 			<td class="label">
 				<strong>Wall Type</strong>
 			</td>
 			<td class="rightLabel">
-				<html:select property="carbonNanotube.wallType">
-					<option value="single">
-						Single
-					</option>
-					<option value="double">
-						Double
-					</option>
-					<option value="multiple">
-						Multiple
-					</option>
-				</html:select>
+				<c:choose>
+					<c:when test="${canUserUpdateParticle eq 'true'}">
+						<html:select property="carbonNanotube.wallType">
+							<html:options name="allWallTypes"/>
+						</html:select>
+					</c:when>
+					<c:otherwise>
+						${nanoparticleCompositionForm.map.carbonNanotube.wallType}&nbsp;
+					</c:otherwise>
+				</c:choose>
+
 			</td>
 		</tr>
 	</tbody>
@@ -82,10 +89,22 @@
 				<strong>Number of Modifications</strong>
 			</td>
 			<td class="label">
-				<html:text property="carbonNanotube.numberOfElements" />
+				<c:choose>
+					<c:when test="${canUserUpdateParticle eq 'true'}">
+						<html:text property="carbonNanotube.numberOfElements" />
+					</c:when>
+					<c:otherwise>
+						${nanoparticleCompositionForm.map.carbonNanotube.numberOfElements}&nbsp;
+					</c:otherwise>
+				</c:choose>
 			</td>
 			<td class="rightLabel" colspan="2">
-				<input type="button" onclick="javascript:updateComposition()" value="Update Modifications">
+				&nbsp;
+				<c:choose>
+					<c:when test="${canUserUpdateParticle eq 'true'}">
+						<input type="button" onclick="javascript:updateComposition()" value="Update Modifications">
+					</c:when>
+				</c:choose>
 			</td>
 		</tr>
 		<tr>
@@ -105,13 +124,28 @@
 									<strong>Modification Type</strong>
 								</td>
 								<td class="label">
-									<html:text name="carbonNanotube.element" indexed="true" property="elementType" />
+									<c:choose>
+										<c:when test="${canUserUpdateParticle eq 'true'}">
+											<html:text name="carbonNanotube.element" indexed="true" property="elementType" />
+										</c:when>
+										<c:otherwise>
+						${nanoparticleCompositionForm.map.carbonNanotube.composingElements[status.index].elementType}&nbsp;
+					</c:otherwise>
+									</c:choose>
+
 								</td>
 								<td class="label">
 									<strong>Chemical Name</strong>
 								</td>
 								<td class="rightLabel">
-									<html:text name="carbonNanotube.element" indexed="true" property="chemicalName" />
+									<c:choose>
+										<c:when test="${canUserUpdateParticle eq 'true'}">
+											<html:text name="carbonNanotube.element" indexed="true" property="chemicalName" />
+										</c:when>
+										<c:otherwise>
+						${nanoparticleCompositionForm.map.carbonNanotube.composingElements[status.index].chemicalName}&nbsp;
+					</c:otherwise>
+									</c:choose>
 								</td>
 							</tr>
 							<tr>
@@ -119,7 +153,14 @@
 									<strong>Description</strong>
 								</td>
 								<td class="rightLabel" colspan="3">
-									<html:textarea name="carbonNanotube.element" indexed="true" property="description" rows="3" />
+									<c:choose>
+										<c:when test="${canUserUpdateParticle eq 'true'}">
+											<html:textarea name="carbonNanotube.element" indexed="true" property="description" rows="3" />
+										</c:when>
+										<c:otherwise>
+						${nanoparticleCompositionForm.map.carbonNanotube.composingElements[status.index].description}&nbsp;
+					</c:otherwise>
+									</c:choose>
 								</td>
 							</tr>
 						</tbody>

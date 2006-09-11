@@ -8,7 +8,7 @@
 		<tr class="topBorder">
 			<td class="formTitle" colspan="4">
 				<div align="justify">
-					Composition Properties	
+					Composition Properties
 				</div>
 			</td>
 		</tr>
@@ -17,20 +17,29 @@
 				<strong>Is Polymerized </strong>
 			</td>
 			<td class="label">
-				<html:select property="liposome.polymerized">
-					<option value="yes">
-						Yes
-					</option>
-					<option value="no">
-						No
-					</option>
-				</html:select>
+				<c:choose>
+					<c:when test="${canUserUpdateParticle eq 'true'}">
+						<html:select property="liposome.polymerized">
+							<html:options name="booleanChoices" />
+						</html:select>
+					</c:when>
+					<c:otherwise>
+						${nanoparticleCompositionForm.map.liposome.polymerized}&nbsp;
+					</c:otherwise>
+				</c:choose>
 			</td>
 			<td class="label">
 				<strong>Polymer Name</strong>
 			</td>
 			<td class="rightLabel">
-				<html:text property="liposome.polymerName" />
+				<c:choose>
+					<c:when test="${canUserUpdateParticle eq 'true'}">
+						<html:text property="liposome.polymerName" />
+					</c:when>
+					<c:otherwise>
+						${nanoparticleCompositionForm.map.liposome.polymerName}&nbsp;
+					</c:otherwise>
+				</c:choose>
 			</td>
 		</tr>
 	</tbody>
@@ -50,10 +59,22 @@
 				<strong>Number of Lipids</strong>
 			</td>
 			<td class="label">
-				<html:text property="liposome.numberOfElements" />
+				<c:choose>
+					<c:when test="${canUserUpdateParticle eq 'true'}">
+						<html:text property="liposome.numberOfElements" />
+					</c:when>
+					<c:otherwise>
+						${nanoparticleCompositionForm.map.liposome.numberOfElements}&nbsp;
+					</c:otherwise>
+				</c:choose>
 			</td>
 			<td class="rightLabel" colspan="2">
-				<input type="button" onclick="javascript:updateComposition()" value="Update Lipids">
+				&nbsp;
+				<c:choose>
+					<c:when test="${canUserUpdateParticle eq 'true'}">
+						<input type="button" onclick="javascript:updateComposition()" value="Update Lipids">
+					</c:when>
+				</c:choose>
 			</td>
 		</tr>
 		<tr>
@@ -73,7 +94,14 @@
 									<strong>Chemical Name</strong>
 								</td>
 								<td class="rightLabel" colspan="3">
-									<html:text name="liposome.element" indexed="true" property="chemicalName" />
+									<c:choose>
+										<c:when test="${canUserUpdateParticle eq 'true'}">
+											<html:text name="liposome.element" indexed="true" property="chemicalName" />
+										</c:when>
+										<c:otherwise>
+						${nanoparticleCompositionForm.map.liposome.composingElements[status.index].chemicalName}&nbsp;
+					</c:otherwise>
+									</c:choose>
 								</td>
 							</tr>
 							<tr>
@@ -81,13 +109,24 @@
 									<strong>Description</strong>
 								</td>
 								<td class="rightLabel" colspan="3">
-									<html:textarea name="liposome.element" indexed="true" property="description" rows="3" />
+									<c:choose>
+										<c:when test="${canUserUpdateParticle eq 'true'}">
+											<html:textarea name="liposome.element" indexed="true" property="description" rows="3" />
+										</c:when>
+										<c:otherwise>
+						${nanoparticleCompositionForm.map.liposome.composingElements[status.index].description}&nbsp;
+					</c:otherwise>
+									</c:choose>
 								</td>
 							</tr>
 						</tbody>
 					</table>
 					<br>
-					<html:hidden name="liposome.element" indexed="true" property="elementType" value="lipid" />
+					<c:choose>
+						<c:when test="${canUserUpdateParticle eq 'true'}">
+							<html:hidden name="liposome.element" indexed="true" property="elementType" value="lipid" />
+						</c:when>
+					</c:choose>
 				</c:forEach>
 			</td>
 		</tr>
