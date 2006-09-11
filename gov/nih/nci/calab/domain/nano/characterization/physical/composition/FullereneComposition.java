@@ -3,6 +3,7 @@ package gov.nih.nci.calab.domain.nano.characterization.physical.composition;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.service.util.CananoConstants;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -14,7 +15,7 @@ public class FullereneComposition implements ParticleComposition {
 	private String classification;
 	private String name;
 	private Collection<Nanoparticle> nanoparticleCollection = new HashSet<Nanoparticle>();
-	private Collection<ComposingElement> composingElementCollection = new HashSet<ComposingElement>();
+	private Collection<ComposingElement> composingElementCollection = new ArrayList<ComposingElement>();
 
 	private Integer numberOfCarbon;
 	

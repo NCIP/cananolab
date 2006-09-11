@@ -3,8 +3,8 @@ package gov.nih.nci.calab.domain.nano.characterization.physical.composition;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.service.util.CananoConstants;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 
 public class CarbonNanotubeComposition implements ParticleComposition {
 	private String chirality;
@@ -16,13 +16,11 @@ public class CarbonNanotubeComposition implements ParticleComposition {
 	private String name;
 	private Long id;
 	private String source;
-//	private String classification;
 	private String description;
 	private String identificationName;
-//	private String name;
 	private Collection<Nanoparticle> nanoparticleCollection;
-	private Collection<ComposingElement> composingElementCollection = new HashSet<ComposingElement>();
-		
+	private Collection<ComposingElement> composingElementCollection = new ArrayList<ComposingElement>();
+
 	public CarbonNanotubeComposition() {
 		super();
 		// TODO Auto-generated constructor stub
