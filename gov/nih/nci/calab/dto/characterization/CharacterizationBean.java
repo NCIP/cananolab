@@ -20,17 +20,26 @@ public class CharacterizationBean {
 
 	private String description;
 
-	private String name;
+	//not set by application
+	private String name; 
 
+	//not set by application
 	private String classification;
 
 	public CharacterizationBean() {
-		
+
 	}
+
 	public CharacterizationBean(String id, String name, String viewTitle) {
 		this.id = id;
 		this.name = name;
 		this.viewTitle = viewTitle;
+	}
+
+	public CharacterizationBean(Characterization characterization) {
+		this.setId(characterization.getId().toString());
+		this.setViewTitle(characterization.getIdentificationName());
+		this.setCharacterizationSource(characterization.getSource());
 	}
 
 	public String getCharacterizationSource() {
