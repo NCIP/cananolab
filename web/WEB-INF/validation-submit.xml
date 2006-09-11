@@ -39,21 +39,21 @@
 				<arg position="0" key="nanoparticleCompositionForm.liposome.polymerName" bundle="submit" />
 				<var>
 					<var-name>test</var-name>
-					<var-value>((liposome.polymerized=="no") or (*this*!=null))</var-value>
+					<var-value>((liposome.polymerized=="No") or (*this*!=null))</var-value>
 				</var>		
 			</field>
 			<field property="emulsion.polymerName" page="1" depends="validwhen">
 				<arg position="0" key="nanoparticleCompositionForm.emulsion.polymerName" bundle="submit" />
 				<var>
 					<var-name>test</var-name>
-					<var-value>((emulsion.polymerized=="no") or (*this*!=null))</var-value>
+					<var-value>((emulsion.polymerized=="No") or (*this*!=null))</var-value>
 				</var>		
 			</field>
 			<field property="polymer.crosslinkDegree" page="1" depends="validwhen">
 				<arg position="0" key="nanoparticleCompositionForm.polymer.crosslinkDegree" bundle="submit" />
 				<var>
 					<var-name>test</var-name>
-					<var-value>((polymer.crosslinked=="no") or (*this*!=null))</var-value>
+					<var-value>((polymer.crosslinked=="No") or (*this*!=null))</var-value>
 				</var>		
 			</field>
 		</form>
