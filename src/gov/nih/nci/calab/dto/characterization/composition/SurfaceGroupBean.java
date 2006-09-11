@@ -16,7 +16,9 @@ public class SurfaceGroupBean {
 		
 	}
 	public SurfaceGroupBean(SurfaceGroup surfaceGroup) {
-		
+		this.id=surfaceGroup.getId().toString();
+		this.name=surfaceGroup.getName();
+		this.modifier=surfaceGroup.getModifier();		
 	}
 	public String getId() {
 		return id;

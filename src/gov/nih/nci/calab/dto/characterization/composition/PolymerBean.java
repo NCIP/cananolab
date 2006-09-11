@@ -1,7 +1,12 @@
 package gov.nih.nci.calab.dto.characterization.composition;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
+import gov.nih.nci.calab.domain.nano.characterization.physical.composition.ComposingElement;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.PolymerComposition;
+import gov.nih.nci.calab.service.util.CananoConstants;
 
 /**
  * This class represents properties of a Polymer composition to be shown in the
@@ -11,18 +16,29 @@ import gov.nih.nci.calab.domain.nano.characterization.physical.composition.Polym
  * 
  */
 public class PolymerBean extends CompositionBean {
-	private String crosslinked="no";
+	private String crosslinked = CananoConstants.BOOLEAN_NO;
 
 	private String crosslinkDegree;
 
 	private String initiator;
 
 	public PolymerBean() {
-		super();
 	}
-	
+
 	public PolymerBean(PolymerComposition polymer) {
-		
+		this.setId(polymer.getId().toString());
+		this.crosslinked = (polymer.isCrossLinked()) ? CananoConstants.BOOLEAN_YES
+				: CananoConstants.BOOLEAN_NO;
+		this.crosslinkDegree = (polymer.getCrossLinkDegree() == null) ? ""
+				: polymer.getCrossLinkDegree().toString();
+		this.initiator = polymer.getInitiator();
+		List<ComposingElementBean> elementBeans = new ArrayList<ComposingElementBean>();
+		for (ComposingElement element : polymer.getComposingElementCollection()) {
+			ComposingElementBean elementBean = new ComposingElementBean(element);
+			elementBeans.add(elementBean);
+		}
+		this.setComposingElements(elementBeans);
+		this.setNumberOfElements(elementBeans.size() + "");
 	}
 
 	public String getCrosslinkDegree() {
@@ -54,14 +70,14 @@ public class PolymerBean extends CompositionBean {
 		boolean crosslinkedStatus = (crosslinked.equalsIgnoreCase("yes")) ? true
 				: false;
 		doComp.setCrossLinked(crosslinkedStatus);
-		if(crosslinkDegree.length()>0) {
+		if (crosslinkDegree.length() > 0) {
 			doComp.setCrossLinkDegree(new Float(crosslinkDegree));
 		}
 		doComp.setInitiator(initiator);
 		doComp.setSource(getCharacterizationSource());
 		doComp.setIdentificationName(getViewTitle());
-		doComp.setDescription(getDescription());		
-		if (getId()!=null&&getId().length() > 0) {
+		doComp.setDescription(getDescription());
+		if (getId() != null && getId().length() > 0) {
 			doComp.setId(new Long(getId()));
 		}
 		for (ComposingElementBean element : getComposingElements()) {
