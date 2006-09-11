@@ -87,7 +87,7 @@ public class CarbonNanotubeBean extends CompositionBean {
 			doComp.setAverageLength(new Float(averageLength));
 		}
 		if (chirality.length() > 0) {
-			doComp.setChirality(new Float(chirality));
+			doComp.setChirality(chirality);
 		}
 
 		if (growthDiameter.length() > 0) {
