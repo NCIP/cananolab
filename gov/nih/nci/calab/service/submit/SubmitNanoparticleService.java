@@ -119,7 +119,7 @@ public class SubmitNanoparticleService {
 	 * @param composition
 	 * @throws Exception
 	 */
-	public void addParticleComposition(String particleType,
+public void addParticleComposition(String particleType,
 			String particleName, CompositionBean composition) throws Exception {
 		// if ID is not set save to the database otherwise update
 
@@ -154,20 +154,28 @@ public class SubmitNanoparticleService {
 		int existingViewTitleCount = -1;
 		try {
 			ida.open();
-			// if ID exists, do update
-			if (doComp.getId() != null) {
-				ida.store(doComp);
-			} else {
-				// check if viewTitle is already used
-				List viewTitleResult = ida
-						.search("select count(achar) from Characterization achar where achar.identificationName='"
-								+ doComp.getIdentificationName() + "'");
+			// check if viewTitle is already used
+			String viewTitleQuery="";
+			if (doComp.getId()==null){
+				viewTitleQuery="select count(achar) from Characterization achar where achar.identificationName='"+ doComp.getIdentificationName()+"'";
+			}
+			else {
+				viewTitleQuery="select count(achar) from Characterization achar where achar.identificationName='"
+					+ doComp.getIdentificationName() + "' and achar.id!="+
+					doComp.getId();				
+			}
+			List viewTitleResult = ida
+					.search(viewTitleQuery);
 
-				for (Object obj : viewTitleResult) {
-					existingViewTitleCount = ((Integer) (obj)).intValue();
-				}
-				if (existingViewTitleCount == 0) {
-					// get the existing particle and compositions from database
+			for (Object obj : viewTitleResult) {
+				existingViewTitleCount = ((Integer) (obj)).intValue();
+			}
+			if (existingViewTitleCount == 0) {
+				// if ID exists, do update
+				if (doComp.getId() != null) {
+					ida.store(doComp);
+				} else {// get the existing particle and compositions
+					// from database
 					// created
 					// during sample
 					// creation
@@ -199,7 +207,6 @@ public class SubmitNanoparticleService {
 					"The view title is already in use.  Please enter a different one.");
 		}
 	}
-
 	public void saveAssayResult(String particleName, String fileName,
 			String title, String description, String comments, String[] keywords) {
 
