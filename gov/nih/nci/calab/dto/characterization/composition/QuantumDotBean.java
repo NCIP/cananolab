@@ -86,4 +86,10 @@ public class QuantumDotBean extends CompositionBean {
 		getComposingElements().addAll(shells);
 		this.shells = shells;
 	}
+	
+	public QuantumDotComposition getDomainObj() {
+		QuantumDotComposition doComp = new QuantumDotComposition();
+		super.updateDomainObj(doComp);
+		return doComp;
+	}
 }

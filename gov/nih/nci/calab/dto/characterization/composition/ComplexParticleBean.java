@@ -18,4 +18,10 @@ public class ComplexParticleBean extends CompositionBean {
 	public ComplexParticleBean(ComplexComposition complex) {
 		super(complex);
 	}
+	
+	public ComplexComposition getDomainObj() {
+		ComplexComposition doComp = new ComplexComposition();
+		super.updateDomainObj(doComp);
+		return doComp;
+	}
 }

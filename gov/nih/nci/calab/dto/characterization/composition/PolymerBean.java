@@ -53,8 +53,9 @@ public class PolymerBean extends CompositionBean {
 	public void setInitiator(String initiator) {
 		this.initiator = initiator;
 	}
-
-	public void updateDomainObj(PolymerComposition doComp) {
+	
+	public PolymerComposition getDomainObj() {
+		PolymerComposition doComp = new PolymerComposition();
 		super.updateDomainObj(doComp);
 		boolean crosslinkedStatus = (crosslinked.equalsIgnoreCase(CananoConstants.BOOLEAN_YES)) ? true
 				: false;
@@ -63,5 +64,6 @@ public class PolymerBean extends CompositionBean {
 			doComp.setCrossLinkDegree(new Float(crosslinkDegree));
 		}
 		doComp.setInitiator(initiator);
+		return doComp;
 	}
 }

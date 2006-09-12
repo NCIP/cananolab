@@ -14,7 +14,7 @@ import java.util.List;
  * @author pansu
  * 
  */
-public abstract class CompositionBean extends CharacterizationBean {
+public class CompositionBean extends CharacterizationBean {
 	private String numberOfElements;
 
 	private List<ComposingElementBean> composingElements = new ArrayList<ComposingElementBean>();
@@ -56,11 +56,14 @@ public abstract class CompositionBean extends CharacterizationBean {
 	public void setNumberOfElements(String numberOfElements) {
 		this.numberOfElements = numberOfElements;
 	}
-	
+
 	public void updateDomainObj(ParticleComposition doComp) {
 		super.updateDomainObj(doComp);
-		for (ComposingElementBean element : getComposingElements()) {
-			doComp.getComposingElementCollection().add(element.getDomainObj());
+		if (doComp instanceof ParticleComposition) {
+			for (ComposingElementBean element : getComposingElements()) {
+				((ParticleComposition) doComp).getComposingElementCollection()
+						.add(element.getDomainObj());
+			}
 		}
 	}
 }
