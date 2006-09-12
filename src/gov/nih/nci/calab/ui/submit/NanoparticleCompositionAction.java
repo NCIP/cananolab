@@ -8,7 +8,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleCompositionAction.java,v 1.13 2006-09-11 21:18:47 pansu Exp $ */
+/* CVS $Id: NanoparticleCompositionAction.java,v 1.14 2006-09-12 14:45:42 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.CarbonNanotubeComposition;
@@ -32,6 +32,7 @@ import gov.nih.nci.calab.dto.characterization.composition.MetalParticleBean;
 import gov.nih.nci.calab.dto.characterization.composition.PolymerBean;
 import gov.nih.nci.calab.dto.characterization.composition.QuantumDotBean;
 import gov.nih.nci.calab.dto.characterization.composition.SurfaceGroupBean;
+import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.service.util.CananoConstants;
@@ -39,6 +40,7 @@ import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -104,6 +106,13 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		composition.setViewTitle(viewTitle);
 		composition.setDescription(description);
 		composition.setCharacterizationSource(characterizationSource);
+		
+		//set createdBy and createdDate for the composition
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		Date date=new Date();
+		composition.setCreatedBy(user.getLoginName());
+		composition.setCreatedDate(date);
+		
 		request.getSession().setAttribute("newCharacterizationCreated", "true");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addParticleComposition(particleType, particleName, composition);
@@ -166,6 +175,7 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 
 	private void initSetup(HttpServletRequest request, DynaValidatorForm theForm) throws Exception  {
 		HttpSession session=request.getSession();
+		
 		String particleType = (String) theForm.get("particleType");
 		String particleName = (String) theForm.get("particleName");
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
