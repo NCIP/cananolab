@@ -11,9 +11,11 @@
 			<field property="particleName" page="1" depends="required">
 				<arg position="0" key="nanoparticleGeneralInfoForm.particleID" bundle="submit" />
 			</field>
+			<!--
 			<field property="visibilities" page="1" depends="required">
 				<arg position="0" key="nanoparticleGeneralInfoForm.visibilities" bundle="submit" />
 			</field>
+			-->
 		</form>
 
 		<form name="nanoparticleCompositionForm">
