@@ -3,7 +3,6 @@
  */
 package gov.nih.nci.calab.dto.characterization.composition;
 
-import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.CarbonNanotubeComposition;
 
 /**
@@ -22,7 +21,8 @@ public class CarbonNanotubeBean extends CompositionBean {
 
 	private String wallType;
 
-	public CarbonNanotubeBean() {		
+	public CarbonNanotubeBean() {
+		super();
 	}
 
 	public CarbonNanotubeBean(CarbonNanotubeComposition carbonNanotube) {
@@ -69,8 +69,8 @@ public class CarbonNanotubeBean extends CompositionBean {
 		this.wallType = wallType;
 	}
 
-	public Characterization getDomainObj() {
-		CarbonNanotubeComposition doComp = new CarbonNanotubeComposition();
+	public void updateDomainObj(CarbonNanotubeComposition doComp) {
+		super.updateDomainObj(doComp);
 		if (averageLength.length() > 0) {
 			doComp.setAverageLength(new Float(averageLength));
 		}		
@@ -78,17 +78,7 @@ public class CarbonNanotubeBean extends CompositionBean {
 
 		if (growthDiameter.length() > 0) {
 			doComp.setGrowthDiameter(new Float(growthDiameter));
-		}
-		if (getId()!=null&&getId().length() > 0) {
-			doComp.setId(new Long(getId()));
-		}
+		}		
 		doComp.setWallType(wallType);
-		doComp.setSource(getCharacterizationSource());
-		doComp.setIdentificationName(getViewTitle());
-		doComp.setDescription(getDescription());
-		for (ComposingElementBean element : getComposingElements()) {
-			doComp.getComposingElementCollection().add(element.getDomainObj());
-		}
-		return doComp;
 	}
 }
