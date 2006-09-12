@@ -5,6 +5,7 @@ import gov.nih.nci.calab.service.util.CananoConstants;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 public class CarbonNanotubeComposition implements ParticleComposition {
 	private String chirality;
@@ -18,6 +19,8 @@ public class CarbonNanotubeComposition implements ParticleComposition {
 	private String source;
 	private String description;
 	private String identificationName;
+	private String createdBy;
+	private Date createdDate;
 	private Collection<Nanoparticle> nanoparticleCollection;
 	private Collection<ComposingElement> composingElementCollection = new ArrayList<ComposingElement>();
 
@@ -124,5 +127,21 @@ public class CarbonNanotubeComposition implements ParticleComposition {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
 	}
 }

@@ -5,6 +5,7 @@ import gov.nih.nci.calab.service.util.CananoConstants;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 public class LiposomeComposition implements ParticleComposition {
 	private Long id;
@@ -18,6 +19,8 @@ public class LiposomeComposition implements ParticleComposition {
 	private String classification;
 
 	private String name;
+	private String createdBy;
+	private Date createdDate;
 
 	private Collection<Nanoparticle> nanoparticleCollection;
 
@@ -112,5 +115,21 @@ public class LiposomeComposition implements ParticleComposition {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
 	}
 }
