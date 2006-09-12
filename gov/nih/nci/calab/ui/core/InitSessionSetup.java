@@ -358,9 +358,10 @@ public class InitSessionSetup {
 	}
 
 	public void setAllVisibilityGroups(HttpSession session) throws Exception {
-		if (session.getServletContext().getAttribute("allVisibilityGroups") == null) {
+		if (session.getAttribute("allVisibilityGroups") == null ||
+				session.getAttribute("newSampleCreated")!=null) {			
 			List<String> groupNames = userService.getAllVisibilityGroups();
-			session.getServletContext().setAttribute("allVisibilityGroups",
+			session.setAttribute("allVisibilityGroups",
 					groupNames);
 		}
 	}
