@@ -5,6 +5,7 @@ import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.service.util.CananoConstants;
 
 import java.util.Collection;
+import java.util.Date;
 
 public class Size implements Characterization {
 	private Long id;
@@ -13,6 +14,8 @@ public class Size implements Characterization {
 	private String description;
 	private String identificationName;
 	private String name;
+	private String createdBy;
+	private Date createdDate;
 	private Collection<Nanoparticle> nanoparticleCollection;
 	
 	private String size;
@@ -111,6 +114,22 @@ public class Size implements Characterization {
 
 	public void setSizeDistribution(String sizeDistribution) {
 		this.sizeDistribution = sizeDistribution;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
 	}
 
 }

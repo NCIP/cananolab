@@ -3,6 +3,8 @@
  */
 package gov.nih.nci.calab.domain.nano.characterization;
 
+import java.util.Date;
+
 
 /**
  * @author zengje
@@ -21,4 +23,8 @@ public interface Characterization {
 	public String getDescription();
 	public void setName(String name);
 	public String getName();
+	public void setCreatedBy(String createdBy);
+	public String getCreatedBy();
+	public void setCreatedDate(Date createdDate);
+	public Date getCreatedDate();
 }
