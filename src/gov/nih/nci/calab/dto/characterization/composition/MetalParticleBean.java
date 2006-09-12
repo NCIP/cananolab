@@ -105,4 +105,9 @@ public class MetalParticleBean extends CompositionBean {
 	public void setCoating(int ind, ComposingElementBean coating) {
 		coatings.set(ind, coating);
 	}
+	public MetalParticleComposition getDomainObj() {
+		MetalParticleComposition doComp = new MetalParticleComposition();
+		super.updateDomainObj(doComp);
+		return doComp;
+	}
 }

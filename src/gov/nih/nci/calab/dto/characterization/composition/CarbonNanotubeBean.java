@@ -69,16 +69,20 @@ public class CarbonNanotubeBean extends CompositionBean {
 		this.wallType = wallType;
 	}
 
-	public void updateDomainObj(CarbonNanotubeComposition doComp) {
+	public CarbonNanotubeComposition getDomainObj() {
+		CarbonNanotubeComposition doComp = new CarbonNanotubeComposition();
 		super.updateDomainObj(doComp);
+
 		if (averageLength.length() > 0) {
 			doComp.setAverageLength(new Float(averageLength));
-		}		
-		doComp.setChirality(chirality);	
+		}
+		doComp.setChirality(chirality);
 
 		if (growthDiameter.length() > 0) {
 			doComp.setGrowthDiameter(new Float(growthDiameter));
-		}		
+		}
 		doComp.setWallType(wallType);
+
+		return doComp;
 	}
 }
