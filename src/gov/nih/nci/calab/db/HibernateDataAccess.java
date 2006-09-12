@@ -61,8 +61,12 @@ public class HibernateDataAccess implements IDataAccess {
     }
 
     public void close() throws Exception {
-        if(session.isOpen()) 
-            tx.commit();
+        if(session.isOpen()) {
+        	if (!tx.wasRolledBack()){
+        		 tx.commit();
+        	}
+        }
+           
         Session s = (Session) thread.get();
         if ( s != null ) {
             s.close();
