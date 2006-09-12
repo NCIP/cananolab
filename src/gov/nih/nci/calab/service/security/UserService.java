@@ -288,6 +288,21 @@ public class UserService {
 	}
 
 	/**
+	 * Create a user group in the CSM database if it's not already created
+	 * 
+	 * @param groupName
+	 * @throws Exception
+	 */
+	public void createAGroup(String groupName) throws Exception {
+		Group doGroup = getGroup(groupName);
+		if (doGroup == null) {
+			doGroup = new Group();
+			doGroup.setGroupName(groupName);
+			userManager.createGroup(doGroup);
+		}
+	}
+
+	/**
 	 * Get a Role object for the given roleName.
 	 * 
 	 * @param roleName
@@ -373,12 +388,13 @@ public class UserService {
 								.toString()));
 		// check to see if the assignment is already made to ignore CSM
 		// exception.
-		
-		//contains doesn't work because CSM didn't implement hashCode in ProtectionGroup.
-//		if (assignedPGs.contains(pg)) {
-//			return;
-//		}
-		for(ProtectionGroup aPg: assignedPGs) {
+
+		// contains doesn't work because CSM didn't implement hashCode in
+		// ProtectionGroup.
+		// if (assignedPGs.contains(pg)) {
+		// return;
+		// }
+		for (ProtectionGroup aPg : assignedPGs) {
 			if (aPg.equals(pg)) {
 				return;
 			}
@@ -493,13 +509,14 @@ public class UserService {
 				ProtectionGroup pg = context.getProtectionGroup();
 				Set<Role> roles = new HashSet<Role>(
 						(Set<? extends Role>) context.getRoles());
-				//contains doesn't work because CSM didn't implement hashCode in Role.
-//				if (pg.getProtectionGroupName().equals(objectName)
-//						&& roles.contains(role)) {
-//					groups.add(groupName);
-//				}
+				// contains doesn't work because CSM didn't implement hashCode
+				// in Role.
+				// if (pg.getProtectionGroupName().equals(objectName)
+				// && roles.contains(role)) {
+				// groups.add(groupName);
+				// }
 				if (pg.getProtectionGroupName().equals(objectName)) {
-					for(Role aRole:roles) {
+					for (Role aRole : roles) {
 						if (aRole.equals(role)) {
 							groups.add(groupName);
 						}
@@ -542,11 +559,11 @@ public class UserService {
 			}
 		}
 		// remove role from existing roles
-		//remove doesn't work because CSM didn't implement hashCode for Role
-		//existingRoles.remove(role);
-		
-		Set<Role>updatedRoles=new HashSet<Role>();
-		for(Role aRole:existingRoles) {
+		// remove doesn't work because CSM didn't implement hashCode for Role
+		// existingRoles.remove(role);
+
+		Set<Role> updatedRoles = new HashSet<Role>();
+		for (Role aRole : existingRoles) {
 			if (!aRole.equals(role)) {
 				updatedRoles.add(aRole);
 			}
