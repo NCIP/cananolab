@@ -68,7 +68,7 @@ public class EmulsionBean extends CompositionBean {
 		super.updateDomainObj(doComp);
 		doComp.setType(emulsionType);
 		doComp.setMolecularFormula(molecularFormula);
-		boolean polymerizedStatus = (polymerized.equalsIgnoreCase("yes")) ? true
+		boolean polymerizedStatus = (polymerized.equalsIgnoreCase(CananoConstants.BOOLEAN_YES)) ? true
 				: false;
 		doComp.setPolymerized(polymerizedStatus);
 		doComp.setPolymerName(polymerName);

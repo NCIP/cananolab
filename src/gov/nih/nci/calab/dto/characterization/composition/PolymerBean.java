@@ -56,7 +56,7 @@ public class PolymerBean extends CompositionBean {
 
 	public void updateDomainObj(PolymerComposition doComp) {
 		super.updateDomainObj(doComp);
-		boolean crosslinkedStatus = (crosslinked.equalsIgnoreCase("yes")) ? true
+		boolean crosslinkedStatus = (crosslinked.equalsIgnoreCase(CananoConstants.BOOLEAN_YES)) ? true
 				: false;
 		doComp.setCrossLinked(crosslinkedStatus);
 		if (crosslinkDegree.length() > 0) {
