@@ -1,5 +1,7 @@
 package gov.nih.nci.calab.dto.characterization;
 
+import java.util.Date;
+
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 
 /**
@@ -25,6 +27,10 @@ public class CharacterizationBean {
 
 	//not set by application
 	private String classification;
+	
+	private String createdBy;
+	
+	private Date createdDate;
 
 	public CharacterizationBean() {
 
@@ -40,6 +46,8 @@ public class CharacterizationBean {
 		this.setId(characterization.getId().toString());
 		this.setViewTitle(characterization.getIdentificationName());
 		this.setCharacterizationSource(characterization.getSource());
+		this.setCreatedBy(characterization.getCreatedBy());
+		this.setCreatedDate(characterization.getCreatedDate());
 	}
 
 	public String getCharacterizationSource() {
@@ -67,12 +75,19 @@ public class CharacterizationBean {
 	}
 
 	/**
-	 * Get the domain characterization object from the dto bean properties
+	 * Update the domain characterization object from the dto bean properties
 	 * 
 	 * @return
 	 */
-	public Characterization getDomainObj() {
-		return null;
+	public void updateDomainObj(Characterization aChar) {
+		if (getId() != null && getId().length() > 0) {
+			aChar.setId(new Long(getId()));
+		}
+		aChar.setSource(getCharacterizationSource());
+		aChar.setIdentificationName(getViewTitle());
+		aChar.setDescription(getDescription());
+		aChar.setCreatedBy(getCreatedBy());
+		aChar.setCreatedDate(getCreatedDate());
 	}
 
 	public String getDescription() {
@@ -91,4 +106,19 @@ public class CharacterizationBean {
 		return name;
 	}
 
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
 }

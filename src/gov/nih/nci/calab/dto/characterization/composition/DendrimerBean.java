@@ -1,6 +1,5 @@
 package gov.nih.nci.calab.dto.characterization.composition;
 
-import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.DendrimerComposition;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.SurfaceGroup;
 import gov.nih.nci.calab.service.util.CananoConstants;
@@ -32,12 +31,10 @@ public class DendrimerBean extends CompositionBean {
 	private ComposingElementBean core = new ComposingElementBean();
 
 	public DendrimerBean() {
-		surfaceGroups = new ArrayList<SurfaceGroupBean>();
-		List<ComposingElementBean> composingElements = getComposingElements();
+		super();
+		surfaceGroups = new ArrayList<SurfaceGroupBean>();		
 		core.setElementType(CananoConstants.CORE);
-		composingElements.add(core);
-		setComposingElements(composingElements);
-		setNumberOfElements("1");
+		getComposingElements().add(core);			
 	}
 
 	public DendrimerBean(DendrimerComposition dendrimer) {
@@ -122,8 +119,8 @@ public class DendrimerBean extends CompositionBean {
 		this.core = core;
 	}
 
-	public Characterization getDomainObj() {
-		DendrimerComposition doComp = new DendrimerComposition();
+	public void updateDomainObj(DendrimerComposition doComp) {
+		super.updateDomainObj(doComp);
 		if (generation.length() > 0) {
 			doComp.setGeneration(new Float(generation));
 		}
@@ -133,15 +130,5 @@ public class DendrimerBean extends CompositionBean {
 		for (SurfaceGroupBean surfaceGroup : surfaceGroups) {
 			doComp.getSurfaceGroupCollection().add(surfaceGroup.getDomainObj());
 		}
-		doComp.setSource(getCharacterizationSource());
-		doComp.setIdentificationName(getViewTitle());
-		doComp.setDescription(getDescription());
-		if (getId() != null && getId().length() > 0) {
-			doComp.setId(new Long(getId()));
-		}
-		for (ComposingElementBean element : getComposingElements()) {
-			doComp.getComposingElementCollection().add(element.getDomainObj());
-		}
-		return doComp;
 	}
 }

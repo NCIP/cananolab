@@ -1,6 +1,5 @@
 package gov.nih.nci.calab.dto.characterization.composition;
 
-import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.QuantumDotComposition;
 import gov.nih.nci.calab.service.util.CananoConstants;
 
@@ -26,6 +25,9 @@ public class QuantumDotBean extends CompositionBean {
 	private String numberOfCoatings;
 
 	public QuantumDotBean() {
+		super();
+		core.setElementType(CananoConstants.CORE);
+		getComposingElements().add(core);
 	}
 
 	public QuantumDotBean(QuantumDotComposition quantumDot) {
@@ -48,6 +50,7 @@ public class QuantumDotBean extends CompositionBean {
 	}
 
 	public void setCoatings(List<ComposingElementBean> coatings) {
+		getComposingElements().addAll(coatings);
 		this.coatings = coatings;
 	}
 
@@ -80,20 +83,7 @@ public class QuantumDotBean extends CompositionBean {
 	}
 
 	public void setShells(List<ComposingElementBean> shells) {
+		getComposingElements().addAll(shells);
 		this.shells = shells;
-	}
-
-	public Characterization getDomainObj() {
-		QuantumDotComposition doComp = new QuantumDotComposition();
-		doComp.setSource(getCharacterizationSource());
-		doComp.setIdentificationName(getViewTitle());
-		doComp.setDescription(getDescription());
-		if (getId() != null && getId().length() > 0) {
-			doComp.setId(new Long(getId()));
-		}
-		for (ComposingElementBean element : getComposingElements()) {
-			doComp.getComposingElementCollection().add(element.getDomainObj());
-		}
-		return doComp;
 	}
 }

@@ -56,5 +56,11 @@ public abstract class CompositionBean extends CharacterizationBean {
 	public void setNumberOfElements(String numberOfElements) {
 		this.numberOfElements = numberOfElements;
 	}
-
+	
+	public void updateDomainObj(ParticleComposition doComp) {
+		super.updateDomainObj(doComp);
+		for (ComposingElementBean element : getComposingElements()) {
+			doComp.getComposingElementCollection().add(element.getDomainObj());
+		}
+	}
 }

@@ -3,7 +3,6 @@
  */
 package gov.nih.nci.calab.dto.characterization.composition;
 
-import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.MetalParticleComposition;
 import gov.nih.nci.calab.service.util.CananoConstants;
 
@@ -27,11 +26,10 @@ public class MetalParticleBean extends CompositionBean {
 
 	private String numberOfCoatings;
 
-	public MetalParticleBean() {		
+	public MetalParticleBean() {	
+		super();
 		core.setElementType(CananoConstants.CORE);
 		getComposingElements().add(core);
-		getComposingElements().addAll(shells);
-		getComposingElements().addAll(coatings);		
 	}
 
 	public MetalParticleBean(MetalParticleComposition metalParticle) {
@@ -106,19 +104,5 @@ public class MetalParticleBean extends CompositionBean {
 
 	public void setCoating(int ind, ComposingElementBean coating) {
 		coatings.set(ind, coating);
-	}
-
-	public Characterization getDomainObj() {
-		MetalParticleComposition doComp = new MetalParticleComposition();
-		doComp.setSource(getCharacterizationSource());
-		doComp.setIdentificationName(getViewTitle());
-		doComp.setDescription(getDescription());
-		if (getId() != null && getId().length() > 0) {
-			doComp.setId(new Long(getId()));
-		}
-		for (ComposingElementBean element : getComposingElements()) {
-			doComp.getComposingElementCollection().add(element.getDomainObj());
-		}
-		return doComp;
 	}
 }
