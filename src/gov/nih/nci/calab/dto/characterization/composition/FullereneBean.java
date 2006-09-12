@@ -1,6 +1,5 @@
 package gov.nih.nci.calab.dto.characterization.composition;
 
-import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.FullereneComposition;
 
 /**
@@ -14,7 +13,7 @@ public class FullereneBean extends CompositionBean {
 	private String numberOfCarbons;
 
 	public FullereneBean() {
-
+		super();
 	}
 
 	public FullereneBean(FullereneComposition fullerene) {
@@ -31,18 +30,8 @@ public class FullereneBean extends CompositionBean {
 		this.numberOfCarbons = numberOfCarbons;
 	}
 
-	public Characterization getDomainObj() {
-		FullereneComposition doComp = new FullereneComposition();
+	public void updateDomainObj(FullereneComposition doComp) {
+		super.updateDomainObj(doComp);
 		doComp.setNumberOfCarbon(new Integer(numberOfCarbons));
-		doComp.setSource(getCharacterizationSource());
-		doComp.setIdentificationName(getViewTitle());
-		doComp.setDescription(getDescription());
-		if (getId() != null && getId().length() > 0) {
-			doComp.setId(new Long(getId()));
-		}
-		for (ComposingElementBean element : getComposingElements()) {
-			doComp.getComposingElementCollection().add(element.getDomainObj());
-		}
-		return doComp;
 	}
 }

@@ -1,6 +1,5 @@
 package gov.nih.nci.calab.dto.characterization.composition;
 
-import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.PolymerComposition;
 import gov.nih.nci.calab.service.util.CananoConstants;
 
@@ -19,6 +18,7 @@ public class PolymerBean extends CompositionBean {
 	private String initiator;
 
 	public PolymerBean() {
+		super();
 	}
 
 	public PolymerBean(PolymerComposition polymer) {
@@ -54,8 +54,8 @@ public class PolymerBean extends CompositionBean {
 		this.initiator = initiator;
 	}
 
-	public Characterization getDomainObj() {
-		PolymerComposition doComp = new PolymerComposition();
+	public void updateDomainObj(PolymerComposition doComp) {
+		super.updateDomainObj(doComp);
 		boolean crosslinkedStatus = (crosslinked.equalsIgnoreCase("yes")) ? true
 				: false;
 		doComp.setCrossLinked(crosslinkedStatus);
@@ -63,15 +63,5 @@ public class PolymerBean extends CompositionBean {
 			doComp.setCrossLinkDegree(new Float(crosslinkDegree));
 		}
 		doComp.setInitiator(initiator);
-		doComp.setSource(getCharacterizationSource());
-		doComp.setIdentificationName(getViewTitle());
-		doComp.setDescription(getDescription());
-		if (getId() != null && getId().length() > 0) {
-			doComp.setId(new Long(getId()));
-		}
-		for (ComposingElementBean element : getComposingElements()) {
-			doComp.getComposingElementCollection().add(element.getDomainObj());
-		}
-		return doComp;
 	}
 }

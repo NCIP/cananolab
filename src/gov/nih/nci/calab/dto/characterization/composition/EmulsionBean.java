@@ -1,6 +1,5 @@
 package gov.nih.nci.calab.dto.characterization.composition;
 
-import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.EmulsionComposition;
 import gov.nih.nci.calab.service.util.CananoConstants;
 
@@ -21,6 +20,7 @@ public class EmulsionBean extends CompositionBean {
 	private String polymerName;
 
 	public EmulsionBean() {
+		super();
 	}
 
 	public EmulsionBean(EmulsionComposition emulsion) {
@@ -64,23 +64,13 @@ public class EmulsionBean extends CompositionBean {
 		this.polymerName = polymerName;
 	}
 
-	public Characterization getDomainObj() {
-		EmulsionComposition doComp = new EmulsionComposition();
+	public void updateDomainObj(EmulsionComposition doComp) {
+		super.updateDomainObj(doComp);
 		doComp.setType(emulsionType);
 		doComp.setMolecularFormula(molecularFormula);
 		boolean polymerizedStatus = (polymerized.equalsIgnoreCase("yes")) ? true
 				: false;
 		doComp.setPolymerized(polymerizedStatus);
 		doComp.setPolymerName(polymerName);
-		doComp.setSource(getCharacterizationSource());
-		doComp.setIdentificationName(getViewTitle());
-		doComp.setDescription(getDescription());
-		if (getId() != null && getId().length() > 0) {
-			doComp.setId(new Long(getId()));
-		}
-		for (ComposingElementBean element : getComposingElements()) {
-			doComp.getComposingElementCollection().add(element.getDomainObj());
-		}
-		return doComp;
 	}
 }

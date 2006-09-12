@@ -1,6 +1,5 @@
 package gov.nih.nci.calab.dto.characterization.composition;
 
-import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.LiposomeComposition;
 import gov.nih.nci.calab.service.util.CananoConstants;
 
@@ -17,6 +16,7 @@ public class LiposomeBean extends CompositionBean {
 	private String polymerName;
 
 	public LiposomeBean() {
+		super();
 	}
 
 	public LiposomeBean(LiposomeComposition liposome) {
@@ -38,22 +38,12 @@ public class LiposomeBean extends CompositionBean {
 		return polymerName;
 	}
 
-	public Characterization getDomainObj() {
-		LiposomeComposition doComp = new LiposomeComposition();
+	public void updateDomainObj(LiposomeComposition doComp) {
+		super.updateDomainObj(doComp);
 		boolean polymerizedStatus = (polymerized.equalsIgnoreCase("yes")) ? true
 				: false;
 		doComp.setPolymerized(polymerizedStatus);
 		doComp.setPolymerName(polymerName);
-		doComp.setSource(getCharacterizationSource());
-		doComp.setIdentificationName(getViewTitle());
-		doComp.setDescription(getDescription());
-		if (getId() != null && getId().length() > 0) {
-			doComp.setId(new Long(getId()));
-		}
-		for (ComposingElementBean element : getComposingElements()) {
-			doComp.getComposingElementCollection().add(element.getDomainObj());
-		}
-		return doComp;
 	}
 
 	public void setPolymerName(String polymerName) {
