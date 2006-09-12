@@ -67,7 +67,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td class="leftLabel">
+							<td class="leftLabel" valign="top">
 								<strong>Keywords <em>(one per line)</em></strong>
 							</td>
 							<td class="rightLabel">
@@ -75,11 +75,11 @@
 							</td>
 						</tr>
 						<tr>
-							<td class="leftLabel">
+							<td class="leftLabel" valign="top">
 								<strong>Visibility</strong>
 							</td>
 							<td class="rightLabel">
-								<html:select property="visibilities" multiple="true" size="3">
+								<html:select property="visibilities" multiple="true" size="6">
 									<html:options name="allVisibilityGroups" />
 								</html:select>
 							</td>
