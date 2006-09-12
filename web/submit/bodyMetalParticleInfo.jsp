@@ -51,7 +51,7 @@
 		<tr class="topBorder">
 			<td class="formTitle" colspan="4">
 				<div align="justify">
-					Shell Information
+					Shell and Coating Information
 				</div>
 			</td>
 		</tr>
@@ -62,19 +62,32 @@
 			<td class="label">
 				<c:choose>
 					<c:when test="${canUserUpdateParticle eq 'true'}">
-						<html:text property="metalParticle.numberOfShells" />
+						<html:text property="metalParticle.numberOfShells" size="3"/>
 					</c:when>
 					<c:otherwise>
 						${nanoparticleCompositionForm.map.metalParticle.numberOfShells}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>
-			<td class="rightLabel" colspan="2">&nbsp;
+			<td class="label">
+				<strong>Number of Coatings</strong>
+			</td>
+			<td class="rightLabel">
 				<c:choose>
 					<c:when test="${canUserUpdateParticle eq 'true'}">
-						<input type="button" onclick="javascript:updateComposition()" value="Update Shells">
+						<html:text property="metalParticle.numberOfCoatings" size="3"/>
+					</c:when>
+					<c:otherwise>
+						${nanoparticleCompositionForm.map.metalParticle.numberOfCoatings}&nbsp;
+					</c:otherwise>
+				</c:choose>
+				&nbsp;&nbsp;&nbsp;
+				<c:choose>
+					<c:when test="${canUserUpdateParticle eq 'true'}">
+						<input type="button" onclick="javascript:updateComposition()" value="Update Shells and Coatings">
 					</c:when>
 				</c:choose>
+				<br>
 			</td>
 		</tr>
 		<tr>
@@ -128,39 +141,6 @@
 						</c:when>
 					</c:choose>
 				</c:forEach>
-			</td>
-		</tr>
-</table>
-<br>
-<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
-	<tbody>
-		<tr class="topBorder">
-			<td class="formTitle" colspan="4">
-				<div align="justify">
-					Coating Information
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td class="leftLabel">
-				<strong>Number of Coatings</strong>
-			</td>
-			<td class="label">
-				<c:choose>
-					<c:when test="${canUserUpdateParticle eq 'true'}">
-						<html:text property="metalParticle.numberOfCoatings" />
-					</c:when>
-					<c:otherwise>
-						${nanoparticleCompositionForm.map.metalParticle.numberOfCoatings}&nbsp;
-					</c:otherwise>
-				</c:choose>
-			</td>
-			<td class="rightLabel" colspan="2">&nbsp;
-				<c:choose>
-					<c:when test="${canUserUpdateParticle eq 'true'}">
-						<input type="button" onclick="javascript:updateComposition()" value="Update Coatings">
-					</c:when>
-				</c:choose>
 			</td>
 		</tr>
 		<tr>
