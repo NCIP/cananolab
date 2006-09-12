@@ -3,27 +3,9 @@ package gov.nih.nci.calab.service.submit;
 import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
 import gov.nih.nci.calab.domain.Keyword;
-import gov.nih.nci.calab.domain.nano.characterization.physical.composition.CarbonNanotubeComposition;
-import gov.nih.nci.calab.domain.nano.characterization.physical.composition.ComplexComposition;
-import gov.nih.nci.calab.domain.nano.characterization.physical.composition.DendrimerComposition;
-import gov.nih.nci.calab.domain.nano.characterization.physical.composition.EmulsionComposition;
-import gov.nih.nci.calab.domain.nano.characterization.physical.composition.FullereneComposition;
-import gov.nih.nci.calab.domain.nano.characterization.physical.composition.LiposomeComposition;
-import gov.nih.nci.calab.domain.nano.characterization.physical.composition.MetalParticleComposition;
-import gov.nih.nci.calab.domain.nano.characterization.physical.composition.ParticleComposition;
-import gov.nih.nci.calab.domain.nano.characterization.physical.composition.PolymerComposition;
-import gov.nih.nci.calab.domain.nano.characterization.physical.composition.QuantumDotComposition;
+import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
-import gov.nih.nci.calab.dto.characterization.composition.CarbonNanotubeBean;
-import gov.nih.nci.calab.dto.characterization.composition.ComplexParticleBean;
 import gov.nih.nci.calab.dto.characterization.composition.CompositionBean;
-import gov.nih.nci.calab.dto.characterization.composition.DendrimerBean;
-import gov.nih.nci.calab.dto.characterization.composition.EmulsionBean;
-import gov.nih.nci.calab.dto.characterization.composition.FullereneBean;
-import gov.nih.nci.calab.dto.characterization.composition.LiposomeBean;
-import gov.nih.nci.calab.dto.characterization.composition.MetalParticleBean;
-import gov.nih.nci.calab.dto.characterization.composition.PolymerBean;
-import gov.nih.nci.calab.dto.characterization.composition.QuantumDotBean;
 import gov.nih.nci.calab.dto.workflow.FileBean;
 import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.security.UserService;
@@ -123,32 +105,9 @@ public class SubmitNanoparticleService {
 			String particleName, CompositionBean composition) throws Exception {
 		// if ID is not set save to the database otherwise update
 
-		ParticleComposition doComp = null;
-		if (composition instanceof CarbonNanotubeBean) {
-			doComp = new CarbonNanotubeComposition();
-		} else if (composition instanceof ComplexParticleBean) {
-			doComp = new ComplexComposition();
-		} else if (composition instanceof DendrimerBean) {
-			doComp = new DendrimerComposition();
-		} else if (composition instanceof EmulsionBean) {
-			doComp = new EmulsionComposition();
-		} else if (composition instanceof FullereneBean) {
-			doComp = new FullereneComposition();
-		} else if (composition instanceof LiposomeBean) {
-			doComp = new LiposomeComposition();
-		} else if (composition instanceof QuantumDotBean) {
-			doComp = new QuantumDotComposition();
-		} else if (composition instanceof MetalParticleBean) {
-			doComp = new MetalParticleComposition();
-		} else if (composition instanceof PolymerBean) {
-			doComp = new PolymerComposition();
-		} else {
-			throw new CalabException(
-					"Can't save composition for the given particle type: "
-							+ composition.getClass().getName());
-		}
-		composition.updateDomainObj(doComp);
-		
+		Characterization doComp = null;
+		doComp = composition.getDomainObj();
+
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 
@@ -156,14 +115,27 @@ public class SubmitNanoparticleService {
 		int existingViewTitleCount = -1;
 		try {
 			ida.open();
-			// check if viewTitle is already used
+			// check if viewTitle is already used the same type of
+			// characterization for the same particle
 			String viewTitleQuery = "";
 			if (doComp.getId() == null) {
-				viewTitleQuery = "select count(achar) from Characterization achar where achar.identificationName='"
-						+ doComp.getIdentificationName() + "'";
-			} else {
-				viewTitleQuery = "select count(achar) from Characterization achar where achar.identificationName='"
+				viewTitleQuery = "select count(achar.identificationName) from Nanoparticle particle join particle.characterizationCollection achar where particle.name='"
+						+ particleName
+						+ "' and particle.type='"
+						+ particleType
+						+ "' and achar.identificationName='"
 						+ doComp.getIdentificationName()
+						+ "' and achar.name='"
+						+ doComp.getName() + "'";
+			} else {
+				viewTitleQuery = "select count(achar.identificationName) from Nanoparticle particle join particle.characterizationCollection achar where particle.name='"
+						+ particleName
+						+ "' and particle.type='"
+						+ particleType
+						+ "' and achar.identificationName='"
+						+ doComp.getIdentificationName()
+						+ "' and achar.name='"
+						+ doComp.getName()
 						+ "' and achar.id!="
 						+ doComp.getId();
 			}
