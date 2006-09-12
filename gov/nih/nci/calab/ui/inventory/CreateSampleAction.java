@@ -7,11 +7,12 @@ package gov.nih.nci.calab.ui.inventory;
  * @author pansu
  */
 
-/* CVS $Id: CreateSampleAction.java,v 1.4 2006-09-10 18:02:56 zengje Exp $ */
+/* CVS $Id: CreateSampleAction.java,v 1.5 2006-09-12 20:53:27 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.inventory.ContainerBean;
 import gov.nih.nci.calab.dto.inventory.SampleBean;
 import gov.nih.nci.calab.service.inventory.ManageSampleService;
+import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
 import gov.nih.nci.calab.service.util.StringUtils;
@@ -91,6 +92,11 @@ public class CreateSampleAction extends AbstractDispatchAction {
 				sampleSubmitter, creationDate, containers);
 		request.setAttribute("sample", sample);
 		manageSampleService.saveSample(sample, containers);
+		
+		//create a new user group if the source is not already a group
+		UserService userService=new UserService(CalabConstants.CSM_APP_NAME);
+		userService.createAGroup(sample.getSampleSource());
+		
 		// set a flag to indicate that new sample have been created so session
 		// can be refreshed in initSession.do
 		session.setAttribute("newSampleCreated", "yes");
