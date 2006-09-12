@@ -16,5 +16,7 @@
 		<property name="description" type="java.lang.String" column="DESCRIPTION" />
 		<property name="identificationName" type="java.lang.String" column="IDENTIFIER_NAME" />
 		<property name="name" type="java.lang.String" column="NAME" />
+		<property name="createdBy" type="java.lang.String" column="CREATED_BY" />
+		<property name="createdDate" type="java.util.Date" column="CREATED_DATE" />
 	</class>
 </hibernate-mapping>
