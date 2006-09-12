@@ -121,4 +121,8 @@ public class CharacterizationBean {
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
 	}
+	
+	public Characterization getDomainObj() {
+		return null;
+	}
 }
