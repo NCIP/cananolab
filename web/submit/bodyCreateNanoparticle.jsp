@@ -76,7 +76,7 @@
 						</tr>
 						<tr>
 							<td class="leftLabel">
-								<strong>Visibility*</strong>
+								<strong>Visibility</strong>
 							</td>
 							<td class="rightLabel">
 								<html:select property="visibilities" multiple="true" size="3">
