@@ -64,7 +64,8 @@ public class EmulsionBean extends CompositionBean {
 		this.polymerName = polymerName;
 	}
 
-	public void updateDomainObj(EmulsionComposition doComp) {
+	public EmulsionComposition getDomainObj() {
+		EmulsionComposition doComp = new EmulsionComposition();
 		super.updateDomainObj(doComp);
 		doComp.setType(emulsionType);
 		doComp.setMolecularFormula(molecularFormula);
@@ -72,5 +73,6 @@ public class EmulsionBean extends CompositionBean {
 				: false;
 		doComp.setPolymerized(polymerizedStatus);
 		doComp.setPolymerName(polymerName);
+		return doComp;
 	}
 }

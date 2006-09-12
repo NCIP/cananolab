@@ -38,12 +38,14 @@ public class LiposomeBean extends CompositionBean {
 		return polymerName;
 	}
 
-	public void updateDomainObj(LiposomeComposition doComp) {
+	public LiposomeComposition getDomainObj() {
+		LiposomeComposition doComp = new LiposomeComposition();
 		super.updateDomainObj(doComp);
 		boolean polymerizedStatus = (polymerized.equalsIgnoreCase(CananoConstants.BOOLEAN_YES)) ? true
 				: false;
 		doComp.setPolymerized(polymerizedStatus);
 		doComp.setPolymerName(polymerName);
+		return doComp;
 	}
 
 	public void setPolymerName(String polymerName) {
