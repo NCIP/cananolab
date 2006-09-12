@@ -3,7 +3,6 @@ package gov.nih.nci.calab.service.submit;
 import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
 import gov.nih.nci.calab.domain.Keyword;
-import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.CarbonNanotubeComposition;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.ComplexComposition;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.DendrimerComposition;
@@ -11,6 +10,7 @@ import gov.nih.nci.calab.domain.nano.characterization.physical.composition.Emuls
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.FullereneComposition;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.LiposomeComposition;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.MetalParticleComposition;
+import gov.nih.nci.calab.domain.nano.characterization.physical.composition.ParticleComposition;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.PolymerComposition;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.QuantumDotComposition;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
@@ -119,34 +119,36 @@ public class SubmitNanoparticleService {
 	 * @param composition
 	 * @throws Exception
 	 */
-public void addParticleComposition(String particleType,
+	public void addParticleComposition(String particleType,
 			String particleName, CompositionBean composition) throws Exception {
 		// if ID is not set save to the database otherwise update
 
-		Characterization doComp = null;
+		ParticleComposition doComp = null;
 		if (composition instanceof CarbonNanotubeBean) {
-			doComp = (CarbonNanotubeComposition) composition.getDomainObj();
+			doComp = new CarbonNanotubeComposition();
 		} else if (composition instanceof ComplexParticleBean) {
-			doComp = (ComplexComposition) composition.getDomainObj();
+			doComp = new ComplexComposition();
 		} else if (composition instanceof DendrimerBean) {
-			doComp = (DendrimerComposition) composition.getDomainObj();
+			doComp = new DendrimerComposition();
 		} else if (composition instanceof EmulsionBean) {
-			doComp = (EmulsionComposition) composition.getDomainObj();
+			doComp = new EmulsionComposition();
 		} else if (composition instanceof FullereneBean) {
-			doComp = (FullereneComposition) composition.getDomainObj();
+			doComp = new FullereneComposition();
 		} else if (composition instanceof LiposomeBean) {
-			doComp = (LiposomeComposition) composition.getDomainObj();
+			doComp = new LiposomeComposition();
 		} else if (composition instanceof QuantumDotBean) {
-			doComp = (QuantumDotComposition) composition.getDomainObj();
+			doComp = new QuantumDotComposition();
 		} else if (composition instanceof MetalParticleBean) {
-			doComp = (MetalParticleComposition) composition.getDomainObj();
+			doComp = new MetalParticleComposition();
 		} else if (composition instanceof PolymerBean) {
-			doComp = (PolymerComposition) composition.getDomainObj();
+			doComp = new PolymerComposition();
 		} else {
 			throw new CalabException(
 					"Can't save composition for the given particle type: "
 							+ composition.getClass().getName());
 		}
+		composition.updateDomainObj(doComp);
+		
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 
@@ -155,17 +157,17 @@ public void addParticleComposition(String particleType,
 		try {
 			ida.open();
 			// check if viewTitle is already used
-			String viewTitleQuery="";
-			if (doComp.getId()==null){
-				viewTitleQuery="select count(achar) from Characterization achar where achar.identificationName='"+ doComp.getIdentificationName()+"'";
+			String viewTitleQuery = "";
+			if (doComp.getId() == null) {
+				viewTitleQuery = "select count(achar) from Characterization achar where achar.identificationName='"
+						+ doComp.getIdentificationName() + "'";
+			} else {
+				viewTitleQuery = "select count(achar) from Characterization achar where achar.identificationName='"
+						+ doComp.getIdentificationName()
+						+ "' and achar.id!="
+						+ doComp.getId();
 			}
-			else {
-				viewTitleQuery="select count(achar) from Characterization achar where achar.identificationName='"
-					+ doComp.getIdentificationName() + "' and achar.id!="+
-					doComp.getId();				
-			}
-			List viewTitleResult = ida
-					.search(viewTitleQuery);
+			List viewTitleResult = ida.search(viewTitleQuery);
 
 			for (Object obj : viewTitleResult) {
 				existingViewTitleCount = ((Integer) (obj)).intValue();
@@ -207,6 +209,7 @@ public void addParticleComposition(String particleType,
 					"The view title is already in use.  Please enter a different one.");
 		}
 	}
+
 	public void saveAssayResult(String particleName, String fileName,
 			String title, String description, String comments, String[] keywords) {
 
