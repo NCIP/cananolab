@@ -8,7 +8,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleCompositionAction.java,v 1.15 2006-09-12 19:02:20 pansu Exp $ */
+/* CVS $Id: NanoparticleCompositionAction.java,v 1.16 2006-09-14 21:51:31 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.CarbonNanotubeComposition;
@@ -191,9 +191,7 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		} else if (particleType
 				.equalsIgnoreCase(CananoConstants.METAL_PARTICLE_TYPE)) {
 			InitSessionSetup.getInstance().setAllMetalCompositions(session);
-		}
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
+		}		
 	}
 
 	/**
