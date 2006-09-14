@@ -12,6 +12,10 @@ public class InstrumentBean {
 	private String manufacturer;
 	private String abbreviation;
 	
+	public InstrumentBean() {
+		
+	}
+	
 	public InstrumentBean(String type, String description, String manufacturer, String abbreviation) {
 		super();	
 		this.type = type;
