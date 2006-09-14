@@ -84,13 +84,16 @@ public class SubmitNanoparticleService {
 			userService.removeAccessibleGroup(particleName, visiblity, "R");
 		}
 		// set new visibilities for the nanoparticle
-		for (String visibility : visibilities) {
-			// by default, always set visibility to NCL_PI and NCL_Researcher to
-			// be true
-			userService.secureObject(particleName, "NCL_PI", "R");
-			userService.secureObject(particleName, "NCL_Researcher", "R");
-			userService.secureObject(particleName, visibility, "R");
+		// by default, always set visibility to NCL_PI and NCL_Researcher to
+		// be true
+		userService.secureObject(particleName, "NCL_PI", "R");
+		userService.secureObject(particleName, "NCL_Researcher", "R");
+		if (visibilities != null){
+			for (String visibility : visibilities) {				
+				userService.secureObject(particleName, visibility, "R");
+			}
 		}
+		
 	}
 
 	/**
