@@ -28,7 +28,7 @@
 			<form-property name="assayName" type="java.lang.String" />
 			<form-property name="characterizationType" type="java.lang.String" />
 			<form-property name="assayResultFileType" type="java.lang.String" />
-			<form-property name="fileSource" type="java.lang.String"/>
+			<form-property name="fileSource" type="java.lang.String" />
 			<form-property name="fileId" type="java.lang.String" />
 			<form-property name="file" type="org.apache.struts.upload.FormFile" />
 			<form-property name="title" type="java.lang.String" />
@@ -54,20 +54,37 @@
 			<form-property name="viewTitle" type="java.lang.String" />
 			<form-property name="description" type="java.lang.String" />
 			<form-property name="characterizationSource" type="java.lang.String" />
-			<form-property name="characterizationId" type="java.lang.String"/>
+			<form-property name="characterizationId" type="java.lang.String" />
+		</form-bean>
+		<form-bean name="nanoparticleSizeForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer" initial="0" />
+			<form-property name="particleName" type="java.lang.String" />
+			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="viewTitle" type="java.lang.String" />
+			<form-property name="description" type="java.lang.String" />
+			<form-property name="characterizationSource" type="java.lang.String" />
+			<form-property name="characterizationId" type="java.lang.String" />
+			<form-property name="instrument" type="gov.nih.nci.calab.dto.characterization.InstrumentBean"/>
 		</form-bean>
 	</form-beans>
 	<global-forwards>
-		<forward name="Composition" path="nanoparticleComposition.do"/>
+		<forward name="Composition" path="nanoparticleComposition.do" />
+		<forward name="Size" path="nanoparticleSize.do" />
 	</global-forwards>
 	<action-mappings>
 		<action path="/manageNanoparticle" type="gov.nih.nci.calab.ui.core.BaseForwardAction" parameter="submit.managenanoparticle" scope="request" />
 		<action name="nanoparticleGeneralInfoForm" parameter="dispatch" path="/nanoparticleGeneralInfo" type="gov.nih.nci.calab.ui.submit.NanoparticleGeneralInfoAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.nanoparticle.generalInfo" path="submit.createnanoparticle" type="java.lang.Exception" />
 			<forward name="success" path="submit.message" />
-			<forward name="view" path="submit.generalinfo.view"/>
-			<forward name="update" path="submit.generalinfo.update"/>
+			<forward name="view" path="submit.generalinfo.view" />
+			<forward name="update" path="submit.generalinfo.update" />
 			<forward name="input" path="submit.createnanoparticle" />
+		</action>
+		<action name="nanoparticleSizeForm" parameter="dispatch" path="/nanoparticleSize" type="gov.nih.nci.calab.ui.submit.NanoparticleSizeAction" input="input">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addParticleSize" path="submit.addparticle.size" type="java.lang.Exception" />
+			<forward name="success" path="submit.message" />
+			<forward name="input" path="submit.addparticle.size" />
 		</action>
 		<action name="publishReportForm" parameter="dispatch" path="/publishReport" type="gov.nih.nci.calab.ui.submit.SubmitReportAction" input="input" scope="request">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.submitReport" path="submit.submitreport" type="java.lang.Exception" />
@@ -91,7 +108,7 @@
 			<forward name="quantum dot" path="bodyQuantumdotInfo.jsp" />
 			<forward name="emulsion" path="bodyEmulsionInfo.jsp" />
 			<forward name="metal particle" path="bodyMetalParticleInfo.jsp" />
-			<forward name="complex particle" path="bodyComplexParticleInfo.jsp" />	
+			<forward name="complex particle" path="bodyComplexParticleInfo.jsp" />
 		</action>
 		<action path="/submitAction" type="gov.nih.nci.calab.ui.core.BaseForwardAction" parameter="submit.action.message" scope="request" />
 	</action-mappings>
