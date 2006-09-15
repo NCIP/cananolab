@@ -474,7 +474,23 @@ public class InitSessionSetup {
 					"allCharacterizationTypeCharacterizations", charTypeChars);
 		}
 	}
-
+	
+	public void setAllInstrumentTypes(HttpSession session) throws Exception {
+		if (session.getServletContext()
+				.getAttribute("allInstrumentTypes") == null) {
+			String[] instrumentTypes = lookupService.getAllInstrumentTypes();
+			session.getServletContext().setAttribute(
+					"allInstrumentTypes", instrumentTypes);
+		}
+	}
+	public void setAllSizeDistributionGraphTypes(HttpSession session) throws Exception {
+		if (session.getServletContext()
+				.getAttribute("allSizeDistributionGraphTypes") == null) {
+			String[] graphTypes = lookupService.getSizeDistributionGraphTypes();
+			session.getServletContext().setAttribute(
+					"allSizeDistributionGraphTypes", graphTypes);
+		}
+	}
 	public void setStaticDropdowns(HttpSession session) {
 		// set static boolean yes or no and characterization source choices
 		session.setAttribute("booleanChoices", CananoConstants.BOOLEAN_CHOICES);
