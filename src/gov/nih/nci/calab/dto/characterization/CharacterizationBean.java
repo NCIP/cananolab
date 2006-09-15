@@ -1,8 +1,10 @@
 package gov.nih.nci.calab.dto.characterization;
 
-import java.util.Date;
-
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * This class represents shared characterization properties to be shown in
@@ -22,16 +24,22 @@ public class CharacterizationBean {
 
 	private String description;
 
-	//not set by application
-	private String name; 
+	// not set by application
+	private String name;
 
-	//not set by application
+	// not set by application
 	private String classification;
-	
+
 	private String createdBy;
-	
+
 	private Date createdDate;
 
+	private InstrumentBean instrument=new InstrumentBean();
+
+	private List<CharacterizationTableBean> characterizationTables = new ArrayList<CharacterizationTableBean>();
+
+	private String numberOfCharacterizationTables;
+	
 	public CharacterizationBean() {
 
 	}
@@ -121,8 +129,42 @@ public class CharacterizationBean {
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
 	}
-	
+
 	public Characterization getDomainObj() {
 		return null;
+	}
+
+	public List<CharacterizationTableBean> getCharacterizationTables() {
+		return characterizationTables;
+	}
+
+	public void setCharacterizationTables(
+			List<CharacterizationTableBean> characterizationTables) {
+		this.characterizationTables = characterizationTables;
+	}
+
+	public InstrumentBean getInstrument() {
+		return instrument;
+	}
+
+	public void setInstrument(InstrumentBean instrument) {
+		this.instrument = instrument;
+	}
+	
+	public CharacterizationTableBean getTable(int ind) {
+		return characterizationTables.get(ind);
+	}
+
+	public void setTable(int ind, CharacterizationTableBean table) {
+		characterizationTables.set(ind, table);
+	}
+
+	public String getNumberOfCharacterizationTables() {
+		return numberOfCharacterizationTables;
+	}
+
+	public void setNumberOfCharacterizationTables(
+			String numberOfCharacterizationTables) {
+		this.numberOfCharacterizationTables = numberOfCharacterizationTables;
 	}
 }
