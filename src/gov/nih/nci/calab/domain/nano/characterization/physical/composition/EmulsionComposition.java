@@ -1,5 +1,7 @@
 package gov.nih.nci.calab.domain.nano.characterization.physical.composition;
 
+import gov.nih.nci.calab.domain.Instrument;
+import gov.nih.nci.calab.domain.nano.characterization.CharacterizationTable;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.service.util.CananoConstants;
 
@@ -8,23 +10,42 @@ import java.util.Collection;
 import java.util.Date;
 
 public class EmulsionComposition implements ParticleComposition {
+	private static final long serialVersionUID = 1234567890L;
+
 	private Long id;
+
 	private String source;
+
 	private String description;
+
 	private String identificationName;
+
 	private String classification;
+
 	private String name;
+
 	private String createdBy;
+
 	private Date createdDate;
+
 	private Collection<Nanoparticle> nanoparticleCollection;
+
 	private Collection<ComposingElement> composingElementCollection = new ArrayList<ComposingElement>();
+
+	private Collection<CharacterizationTable> characterizationTableCollection = new ArrayList<CharacterizationTable>();
 	
+	private Instrument instrument;
+
 	private String type;
+
 	private String molecularFormula;
+
 	private Float dropletSize;
+
 	private boolean polymerized;
+
 	private String polymerName;
-	
+
 	public EmulsionComposition() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -102,19 +123,21 @@ public class EmulsionComposition implements ParticleComposition {
 		return CananoConstants.PHYSICAL_COMPOSITION;
 	}
 
-	public void setNanoparticleCollection(Collection<Nanoparticle> particleCollection) {
+	public void setNanoparticleCollection(
+			Collection<Nanoparticle> particleCollection) {
 		this.nanoparticleCollection = particleCollection;
 	}
 
 	public Collection<Nanoparticle> getNanoparticleCollection() {
 		return this.nanoparticleCollection;
 	}
-	
-	public void setComposingElementCollection(Collection<ComposingElement> element){
+
+	public void setComposingElementCollection(
+			Collection<ComposingElement> element) {
 		this.composingElementCollection = element;
 	}
-	
-	public Collection<ComposingElement> getComposingElementCollection(){
+
+	public Collection<ComposingElement> getComposingElementCollection() {
 		return this.composingElementCollection;
 	}
 
@@ -148,5 +171,22 @@ public class EmulsionComposition implements ParticleComposition {
 
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
+	}
+
+	public Collection<CharacterizationTable> getCharacterizationTableCollection() {
+		return characterizationTableCollection;
+	}
+
+	public void setCharacterizationTableCollection(
+			Collection<CharacterizationTable> characterizationTableCollection) {
+		this.characterizationTableCollection = characterizationTableCollection;
+	}
+
+	public Instrument getInstrument() {
+		return instrument;
+	}
+
+	public void setInstrument(Instrument instrument) {
+		this.instrument = instrument;
 	}
 }

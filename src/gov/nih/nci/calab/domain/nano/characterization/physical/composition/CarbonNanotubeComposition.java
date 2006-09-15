@@ -1,5 +1,7 @@
 package gov.nih.nci.calab.domain.nano.characterization.physical.composition;
 
+import gov.nih.nci.calab.domain.Instrument;
+import gov.nih.nci.calab.domain.nano.characterization.CharacterizationTable;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.service.util.CananoConstants;
 
@@ -8,6 +10,9 @@ import java.util.Collection;
 import java.util.Date;
 
 public class CarbonNanotubeComposition implements ParticleComposition {
+
+	private static final long serialVersionUID = 1234567890L;
+
 	private String chirality;
 	private Float growthDiameter;
 	private Float averageLength;
@@ -23,7 +28,9 @@ public class CarbonNanotubeComposition implements ParticleComposition {
 	private Date createdDate;
 	private Collection<Nanoparticle> nanoparticleCollection;
 	private Collection<ComposingElement> composingElementCollection = new ArrayList<ComposingElement>();
-
+	private Collection<CharacterizationTable> characterizationTableCollection = new ArrayList<CharacterizationTable>();
+	private Instrument instrument; 
+	
 	public CarbonNanotubeComposition() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -144,4 +151,22 @@ public class CarbonNanotubeComposition implements ParticleComposition {
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
 	}
+
+	public Collection<CharacterizationTable> getCharacterizationTableCollection() {
+		return characterizationTableCollection;
+	}
+
+	public void setCharacterizationTableCollection(
+			Collection<CharacterizationTable> characterizationTableCollection) {
+		this.characterizationTableCollection = characterizationTableCollection;
+	}
+
+	public Instrument getInstrument() {
+		return instrument;
+	}
+
+	public void setInstrument(Instrument instrument) {
+		this.instrument = instrument;
+	}
+
 }

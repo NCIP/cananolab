@@ -8,6 +8,9 @@ package gov.nih.nci.calab.domain.nano.characterization.physical.composition;
  *
  */
 public class SurfaceGroup {
+	
+	private static final long serialVersionUID = 1234567890L;
+
 	private Long id;
 	private String name;
 	private String modifier;
