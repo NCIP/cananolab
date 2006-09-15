@@ -1,5 +1,7 @@
 package gov.nih.nci.calab.domain.nano.characterization.physical.composition;
 
+import gov.nih.nci.calab.domain.Instrument;
+import gov.nih.nci.calab.domain.nano.characterization.CharacterizationTable;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.service.util.CananoConstants;
 
@@ -8,6 +10,8 @@ import java.util.Collection;
 import java.util.Date;
 
 public class DendrimerComposition implements ParticleComposition {
+	private static final long serialVersionUID = 1234567890L;
+
 	private Long id;
 	private String source;
 	private String description;
@@ -18,12 +22,16 @@ public class DendrimerComposition implements ParticleComposition {
 	private Date createdDate;
 	private Collection<Nanoparticle> nanoparticleCollection;
 	private Collection<ComposingElement> composingElementCollection = new ArrayList<ComposingElement>();
+	private Collection<CharacterizationTable> characterizationTableCollection = new ArrayList<CharacterizationTable>();
 	private String branch;
 	private Float generation;
 	private String molecularFormula;
 	private String repeatUnit;
 	
 	private Collection<SurfaceGroup> surfaceGroupCollection=new ArrayList<SurfaceGroup>();
+	
+	private Instrument instrument;
+	
 	public DendrimerComposition() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -148,6 +156,23 @@ public class DendrimerComposition implements ParticleComposition {
 
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
+	}
+
+	public Collection<CharacterizationTable> getCharacterizationTableCollection() {
+		return characterizationTableCollection;
+	}
+
+	public void setCharacterizationTableCollection(
+			Collection<CharacterizationTable> characterizationTableCollection) {
+		this.characterizationTableCollection = characterizationTableCollection;
+	}
+
+	public Instrument getInstrument() {
+		return instrument;
+	}
+
+	public void setInstrument(Instrument instrument) {
+		this.instrument = instrument;
 	}
 
 }
