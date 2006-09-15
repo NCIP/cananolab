@@ -42,12 +42,12 @@
 						<td class="label">
 							<c:choose>
 								<c:when test="${canUserUpdateParticle eq 'true'}">
-									<html:select property="characterizationSource">
+									<html:select property="achar.characterizationSource">
 										<html:options name="characterizationSources" />
 									</html:select>
 								</c:when>
 								<c:otherwise>
-						${nanoparticleSizeForm.map.characterizationSource}&nbsp;
+						${nanoparticleSizeForm.map.achar.characterizationSource}&nbsp;
 					</c:otherwise>
 							</c:choose>
 						</td>
@@ -57,10 +57,10 @@
 						<td class="rightLabel">
 							<c:choose>
 								<c:when test="${canUserUpdateParticle eq 'true'}">
-									<html:text property="viewTitle" />
+									<html:text property="achar.viewTitle" />
 								</c:when>
 								<c:otherwise>
-						${nanoparticleSizeForm.map.viewTitle}&nbsp;
+						${nanoparticleSizeForm.map.achar.viewTitle}&nbsp;
 					</c:otherwise>
 							</c:choose>
 						</td>
@@ -72,10 +72,10 @@
 						<td class="rightLabel" colspan="3">
 							<c:choose>
 								<c:when test="${canUserUpdateParticle eq 'true'}">
-									<html:textarea property="description" rows="3" />
+									<html:textarea property="achar.description" rows="3" />
 								</c:when>
 								<c:otherwise>
-						${nanoparticleSizeForm.map.description}&nbsp;
+						${nanoparticleSizeForm.map.achar.description}&nbsp;
 					</c:otherwise>
 							</c:choose>
 						</td>
@@ -99,12 +99,12 @@
 						<td class="label">
 							<c:choose>
 								<c:when test="${canUserUpdateParticle eq 'true'}">
-									<html:select property="instrument.type">
-										<%--<html:options name="instrumentTypes" />--%>
+									<html:select property="achar.instrument.type">
+										<html:options name="allInstrumentTypes" />
 									</html:select>
 								</c:when>
 								<c:otherwise>
-						${nanoparticleSizeForm.map.instrument.type}&nbsp;
+						${nanoparticleSizeForm.map.achar.instrument.type}&nbsp;
 					</c:otherwise>
 							</c:choose>
 						</td>
@@ -114,10 +114,10 @@
 						<td class="rightLabel">
 							<c:choose>
 								<c:when test="${canUserUpdateParticle eq 'true'}">
-									<html:text property="instrument.manufacturer" />
+									<html:text property="achar.instrument.manufacturer" />
 								</c:when>
 								<c:otherwise>
-						${nanoparticleSizeForm.map.instrument.manufacturer}&nbsp;
+						${nanoparticleSizeForm.map.achar.instrument.manufacturer}&nbsp;
 					</c:otherwise>
 							</c:choose>
 						</td>
@@ -129,10 +129,10 @@
 						<td class="rightLabel" colspan="3">
 							<c:choose>
 								<c:when test="${canUserUpdateParticle eq 'true'}">
-									<html:text property="instrument.abbreviation" />
+									<html:text property="achar.instrument.abbreviation" />
 								</c:when>
 								<c:otherwise>
-						${nanoparticleSizeForm.map.instrument.abbreviation}&nbsp;
+						${nanoparticleSizeForm.map.achar.instrument.abbreviation}&nbsp;
 					</c:otherwise>
 							</c:choose>
 						</td>
@@ -144,16 +144,18 @@
 						<td class="rightLabel" colspan="3">
 							<c:choose>
 								<c:when test="${canUserUpdateParticle eq 'true'}">
-									<html:textarea property="instrument.description" rows="3" />
+									<html:textarea property="achar.instrument.description" rows="3" />
 								</c:when>
 								<c:otherwise>
-						${nanoparticleSizeForm.map.instrument.description}&nbsp;
+						${nanoparticleSizeForm.map.achar.instrument.description}&nbsp;
 					</c:otherwise>
 							</c:choose>
 						</td>
 					</tr>
 				</table>
-
+				<br>
+				<jsp:include page="bodyParticleSizeInfo.jsp" />
+				</br>
 				<c:choose>
 					<c:when test="${canUserUpdateParticle eq 'true'}">
 						<br>
