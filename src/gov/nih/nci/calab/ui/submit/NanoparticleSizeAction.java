@@ -6,18 +6,20 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSizeAction.java,v 1.1 2006-09-14 21:51:46 pansu Exp $ */
+/* CVS $Id: NanoparticleSizeAction.java,v 1.2 2006-09-15 20:36:52 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
-import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
-import gov.nih.nci.calab.dto.characterization.InstrumentBean;
+import gov.nih.nci.calab.dto.characterization.CharacterizationTableBean;
+import gov.nih.nci.calab.dto.characterization.SizeBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -50,24 +52,17 @@ public class NanoparticleSizeAction extends AbstractDispatchAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleType = (String) theForm.get("particleType");
 		String particleName = (String) theForm.get("particleName");
-		String viewTitle = (String) theForm.get("viewTitle");
-		String description = (String) theForm.get("description");
-		String characterizationSource = (String) theForm
-				.get("characterizationSource");
-		CharacterizationBean achar = new CharacterizationBean();
-		achar.setViewTitle(viewTitle);
-		achar.setDescription(description);
-		achar.setCharacterizationSource(characterizationSource);
-
+		SizeBean sizeChar=(SizeBean) theForm.get("achar");
+		
 		// set createdBy and createdDate for the composition
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		Date date = new Date();
-		achar.setCreatedBy(user.getLoginName());
-		achar.setCreatedDate(date);
+		sizeChar.setCreatedBy(user.getLoginName());
+		sizeChar.setCreatedDate(date);
 
 		request.getSession().setAttribute("newCharacterizationCreated", "true");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		//service.addParticleSize(particleType, particleName, achar);
+		service.addParticleSize(particleType, particleName, sizeChar);
 
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.addParticleSize");
@@ -110,10 +105,10 @@ public class NanoparticleSizeAction extends AbstractDispatchAction {
 
 		// clear session data from the input forms
 		theForm.getMap().clear();
-		
+
 		theForm.set("particleName", particleName);
 		theForm.set("particleType", particleType);
-		theForm.set("instrument", new InstrumentBean());
+		theForm.set("achar", new SizeBean());
 	}
 
 	private void initSetup(HttpServletRequest request, DynaValidatorForm theForm)
@@ -121,7 +116,8 @@ public class NanoparticleSizeAction extends AbstractDispatchAction {
 		HttpSession session = request.getSession();
 		String particleType = (String) theForm.get("particleType");
 		String particleName = (String) theForm.get("particleName");
-
+		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
+		InitSessionSetup.getInstance().setAllSizeDistributionGraphTypes(session);
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
 	}
@@ -192,10 +188,43 @@ public class NanoparticleSizeAction extends AbstractDispatchAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleType = (String) theForm.get("particleType");
 		String particleName = (String) theForm.get("particleName");
-
+		SizeBean achar = (SizeBean) theForm.get("achar");
+		updateCharacterizationTables(achar);
+		theForm.set("achar", achar);
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
 		return mapping.getInputForward();
+	}
+
+	public void updateCharacterizationTables(SizeBean achar) {
+		String numberOfCharacterizationTables = achar.getNumberOfCharacterizationTables();
+		int tableNum = Integer.parseInt(numberOfCharacterizationTables);
+		List<CharacterizationTableBean> origTables = achar.getCharacterizationTables();
+		int origNum = (origTables == null) ? 0 : origTables
+				.size();
+		List<CharacterizationTableBean> tables = new ArrayList<CharacterizationTableBean>();
+		// create new ones
+		if (origNum == 0) {
+
+			for (int i = 0; i < tableNum; i++) {
+				CharacterizationTableBean table = new CharacterizationTableBean();
+				tables.add(table);
+			}
+		}
+		// use keep original table info
+		else if (tableNum <= origNum) {
+			for (int i = 0; i < tableNum; i++) {
+				tables.add((CharacterizationTableBean) origTables.get(i));
+			}
+		} else {
+			for (int i = 0; i < origNum; i++) {
+				tables.add((CharacterizationTableBean) origTables.get(i));
+			}
+			for (int i = origNum; i < tableNum; i++) {
+				tables.add(new CharacterizationTableBean());
+			}
+		}
+		achar.setCharacterizationTables(tables);
 	}
 
 	public boolean loginRequired() {
