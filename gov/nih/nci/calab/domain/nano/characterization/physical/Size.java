@@ -1,13 +1,19 @@
 package gov.nih.nci.calab.domain.nano.characterization.physical;
 
+import gov.nih.nci.calab.domain.Instrument;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
+import gov.nih.nci.calab.domain.nano.characterization.CharacterizationTable;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.service.util.CananoConstants;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
 public class Size implements Characterization {
+
+	private static final long serialVersionUID = 1234567890L;
+
 	private Long id;
 	private String source;
 	private String classification;
@@ -17,12 +23,9 @@ public class Size implements Characterization {
 	private String createdBy;
 	private Date createdDate;
 	private Collection<Nanoparticle> nanoparticleCollection;
+	private Collection<CharacterizationTable> characterizationTableCollection = new ArrayList<CharacterizationTable>();
+	private Instrument instrument;
 	
-	private String size;
-	private String sizeDistribution;
-	private String radiusMoments;
-	private String polydispersityIndex;
-
 	public Size() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -84,38 +87,6 @@ public class Size implements Characterization {
 		return this.nanoparticleCollection;
 	}
 
-	public String getPolydispersityIndex() {
-		return polydispersityIndex;
-	}
-
-	public void setPolydispersityIndex(String polydispersityIndex) {
-		this.polydispersityIndex = polydispersityIndex;
-	}
-
-	public String getRadiusMoments() {
-		return radiusMoments;
-	}
-
-	public void setRadiusMoments(String radiusMoments) {
-		this.radiusMoments = radiusMoments;
-	}
-
-	public String getSize() {
-		return size;
-	}
-
-	public void setSize(String size) {
-		this.size = size;
-	}
-
-	public String getSizeDistribution() {
-		return sizeDistribution;
-	}
-
-	public void setSizeDistribution(String sizeDistribution) {
-		this.sizeDistribution = sizeDistribution;
-	}
-
 	public String getCreatedBy() {
 		return createdBy;
 	}
@@ -130,6 +101,23 @@ public class Size implements Characterization {
 
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
+	}
+
+	public Collection<CharacterizationTable> getCharacterizationTableCollection() {
+		return characterizationTableCollection;
+	}
+
+	public void setCharacterizationTableCollection(
+			Collection<CharacterizationTable> characterizationTableCollection) {
+		this.characterizationTableCollection = characterizationTableCollection;
+	}
+
+	public Instrument getInstrument() {
+		return instrument;
+	}
+
+	public void setInstrument(Instrument instrument) {
+		this.instrument = instrument;
 	}
 
 }
