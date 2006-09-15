@@ -3,6 +3,9 @@
  */
 package gov.nih.nci.calab.domain.nano.characterization;
 
+import gov.nih.nci.calab.domain.Instrument;
+
+import java.util.Collection;
 import java.util.Date;
 
 
@@ -27,4 +30,10 @@ public interface Characterization {
 	public String getCreatedBy();
 	public void setCreatedDate(Date createdDate);
 	public Date getCreatedDate();
+	
+	public void setCharacterizationTableCollection(Collection<CharacterizationTable> tableCollection);
+	public Collection<CharacterizationTable> getCharacterizationTableCollection();
+	
+	public void setInstrument(Instrument instrument);
+	public Instrument getInstrument();
 }
