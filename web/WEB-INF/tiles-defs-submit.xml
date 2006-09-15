@@ -112,7 +112,7 @@
 	</definition>
 
 	<!-- definition for the assay result page -->
-	<definition name="submit.addassayresult" extends="calab.home">		
+	<definition name="submit.addassayresult" extends="calab.home">
 		<put name="calabContent" value="/submit/bodyAddAssayResult.jsp" />
 		<put name="menu" value="submit" />
 	</definition>
@@ -140,6 +140,18 @@
 	<definition name="submit.addparticle.size" extends="calab.home">
 		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
 		<put name="calabContent" value="submit.addparticle.size.content" />
+		<put name="menu" value="submit" />
+	</definition>
+
+	<!-- definition for the load characterization table page -->
+	<definition name="submit.load.characterization.table.content" extends="submit.content.home">
+		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
+		<put name="submitContent" value="/submit/bodyLoadCharacterizationTable.jsp" />
+	</definition>
+
+	<definition name="submit.load.characterization.table" extends="calab.home">
+		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
+		<put name="calabContent" value="submit.load.characterization.table.content" />
 		<put name="menu" value="submit" />
 	</definition>
 </tiles-definitions>
