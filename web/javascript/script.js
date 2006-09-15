@@ -162,4 +162,8 @@ function updateComposition() {
   document.nanoparticleCompositionForm.submit();
 }
 
+function updateSize() {
+  document.nanoparticleSizeForm.action="nanoparticleSize.do?dispatch=update&page=0";
+  document.nanoparticleSizeForm.submit();
+}
 
