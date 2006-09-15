@@ -5,6 +5,7 @@ import gov.nih.nci.calab.db.IDataAccess;
 import gov.nih.nci.calab.domain.Keyword;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
+import gov.nih.nci.calab.dto.characterization.SizeBean;
 import gov.nih.nci.calab.dto.characterization.composition.CompositionBean;
 import gov.nih.nci.calab.dto.workflow.FileBean;
 import gov.nih.nci.calab.exception.CalabException;
@@ -185,6 +186,10 @@ public class SubmitNanoparticleService {
 		}
 	}
 
+	public void addParticleSize(String particleType,
+			String particleName, SizeBean size) throws Exception {
+		//TODO add database code, try to reuse code in addParticleComposition
+	}
 	public void saveAssayResult(String particleName, String fileName,
 			String title, String description, String comments, String[] keywords) {
 
