@@ -24,13 +24,18 @@
     <mapping resource="gov/nih/nci/calab/domain/DataStatus.hbm.xml" />
     <mapping resource="gov/nih/nci/calab/domain/SampleType.hbm.xml" />
     <mapping resource="gov/nih/nci/calab/domain/MeasureUnit.hbm.xml" />  
+    <mapping resource="gov/nih/nci/calab/domain/Keyword.hbm.xml" /> 
+    <mapping resource="gov/nih/nci/calab/domain/Instrument.hbm.xml" />  
     <mapping resource="gov/nih/nci/calab/domain/nano/particle/Nanoparticle.hbm.xml" /> 
     <mapping resource="gov/nih/nci/calab/domain/nano/function/Function.hbm.xml" /> 
     <mapping resource="gov/nih/nci/calab/domain/nano/characterization/Characterization.hbm.xml" />
+    <mapping resource="gov/nih/nci/calab/domain/nano/characterization/CharacterizationTable.hbm.xml" />
+    <mapping resource="gov/nih/nci/calab/domain/nano/characterization/physical/PhysicalCharacterization.hbm.xml" />
     <mapping resource="gov/nih/nci/calab/domain/nano/characterization/physical/composition/SurfaceGroup.hbm.xml" />
     <mapping resource="gov/nih/nci/calab/domain/nano/characterization/physical/composition/ComposingElement.hbm.xml" />  
     <mapping resource="gov/nih/nci/calab/domain/nano/characterization/physical/composition/ParticleComposition.hbm.xml" /> 
-    <mapping resource="gov/nih/nci/calab/domain/Keyword.hbm.xml" /> 
+    <mapping resource="gov/nih/nci/calab/domain/nano/characterization/toxicity/Toxicity.hbm.xml" />    
+    <mapping resource="gov/nih/nci/calab/domain/nano/characterization/invitro/InvitroCharacterization.hbm.xml" />    
   </session-factory>
 </hibernate-configuration>
 
