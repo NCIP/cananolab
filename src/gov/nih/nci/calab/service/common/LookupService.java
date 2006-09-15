@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.51 2006-09-10 18:02:56 zengje Exp $ */
+/* CVS $Id: LookupService.java,v 1.52 2006-09-15 20:36:10 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -668,5 +668,17 @@ public class LookupService {
 												 CananoConstants.METABOLIC_STABILITY_ROS};
 		charTypeChars.put("metabolicStabilityTox", metabolicChars);
 		return charTypeChars;
+	}
+	
+	public String[] getAllInstrumentTypes() {
+		//TODO query from database or properties file
+		String[] instrumentTypes=new String[] {"Dynamic Light Scattering", "Spectroscopy"};
+		return instrumentTypes;
+	}
+	
+	public String[] getSizeDistributionGraphTypes() {
+		//TODO query from database or properties file
+		String[] graphTypes=new String[] {"Volume", "Intensity", "Number"};
+		return graphTypes;
 	}
 }
