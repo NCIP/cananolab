@@ -68,13 +68,13 @@
 								<td class="leftLabel">
 									<strong>Characterization File Name</strong>
 								</td>
-								<td class="label">
+								<td class="label">								
 									<c:choose>
 										<c:when test="${canUserUpdateParticle eq 'true'}">
-											<logic:present name="characterizationFile">
-												<a href="${characterizationFile}">${characterizationFile}</a>
+											<logic:present name="characterizationFile${status.index}">
+												<a href="#"><bean:write name="characterizationFile${status.index}"/></a>
 											</logic:present>
-											<logic:notPresent name="characterizationFile">
+											<logic:notPresent name="characterizationFile${status.index}">
 												Click on "Load File" link
 											</logic:notPresent>
 										</c:when>
@@ -84,7 +84,7 @@
 									</c:choose>
 								</td>
 								<td class="rightLabel" colspan="2">
-									<a href="loadFile.do?dispatch=setup&page=0">Load File</a>
+									<a href="loadFile.do?dispatch=setup&page=0&forwardPage=sizeForm&fileNumber=${status.index}">Load File</a>
 								</td>
 							</tr>
 							<tr>
