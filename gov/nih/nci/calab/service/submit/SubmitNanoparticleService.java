@@ -89,29 +89,24 @@ public class SubmitNanoparticleService {
 		// be true
 		userService.secureObject(particleName, "NCL_PI", "R");
 		userService.secureObject(particleName, "NCL_Researcher", "R");
-		if (visibilities != null){
-			for (String visibility : visibilities) {				
+		if (visibilities != null) {
+			for (String visibility : visibilities) {
 				userService.secureObject(particleName, visibility, "R");
 			}
 		}
-		
+
 	}
 
 	/**
-	 * Saves the particle composition to the database
-	 * 
+	 * Save characterization to the database.
 	 * @param particleType
 	 * @param particleName
-	 * @param composition
+	 * @param achar
 	 * @throws Exception
 	 */
-	public void addParticleComposition(String particleType,
-			String particleName, CompositionBean composition) throws Exception {
+	private void addParticleCharacterization(String particleType,
+			String particleName, Characterization achar) throws Exception {
 		// if ID is not set save to the database otherwise update
-
-		Characterization doComp = null;
-		doComp = composition.getDomainObj();
-
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 
@@ -122,26 +117,24 @@ public class SubmitNanoparticleService {
 			// check if viewTitle is already used the same type of
 			// characterization for the same particle
 			String viewTitleQuery = "";
-			if (doComp.getId() == null) {
+			if (achar.getId() == null) {
 				viewTitleQuery = "select count(achar.identificationName) from Nanoparticle particle join particle.characterizationCollection achar where particle.name='"
 						+ particleName
 						+ "' and particle.type='"
 						+ particleType
 						+ "' and achar.identificationName='"
-						+ doComp.getIdentificationName()
+						+ achar.getIdentificationName()
 						+ "' and achar.name='"
-						+ doComp.getName() + "'";
+						+ achar.getName() + "'";
 			} else {
 				viewTitleQuery = "select count(achar.identificationName) from Nanoparticle particle join particle.characterizationCollection achar where particle.name='"
 						+ particleName
 						+ "' and particle.type='"
 						+ particleType
 						+ "' and achar.identificationName='"
-						+ doComp.getIdentificationName()
+						+ achar.getIdentificationName()
 						+ "' and achar.name='"
-						+ doComp.getName()
-						+ "' and achar.id!="
-						+ doComp.getId();
+						+ achar.getName() + "' and achar.id!=" + achar.getId();
 			}
 			List viewTitleResult = ida.search(viewTitleQuery);
 
@@ -150,8 +143,8 @@ public class SubmitNanoparticleService {
 			}
 			if (existingViewTitleCount == 0) {
 				// if ID exists, do update
-				if (doComp.getId() != null) {
-					ida.store(doComp);
+				if (achar.getId() != null) {
+					ida.store(achar);
 				} else {// get the existing particle and compositions
 					// from database
 					// created
@@ -168,14 +161,14 @@ public class SubmitNanoparticleService {
 					}
 
 					if (particle != null) {
-						particle.getCharacterizationCollection().add(doComp);
+						particle.getCharacterizationCollection().add(achar);
 					}
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			ida.rollback();
-			logger.error("Problem saving composition: ");
+			logger.error("Problem saving characterization: ");
 			throw e;
 		} finally {
 			ida.close();
@@ -186,10 +179,34 @@ public class SubmitNanoparticleService {
 		}
 	}
 
-	public void addParticleSize(String particleType,
-			String particleName, SizeBean size) throws Exception {
-		//TODO add database code, try to reuse code in addParticleComposition
+	/**
+	 * Saves the particle composition to the database
+	 * 
+	 * @param particleType
+	 * @param particleName
+	 * @param composition
+	 * @throws Exception
+	 */
+	public void addParticleComposition(String particleType,
+			String particleName, CompositionBean composition) throws Exception {
+
+		Characterization doComp = composition.getDomainObj();
+		addParticleCharacterization(particleType, particleName, doComp);
 	}
+	
+	/**
+	 * Saves the size characterization to the database
+	 * @param particleType
+	 * @param particleName
+	 * @param size
+	 * @throws Exception
+	 */
+	public void addParticleSize(String particleType, String particleName,
+			SizeBean size) throws Exception {
+		Characterization doSize=size.getDomainObj();
+		addParticleCharacterization(particleType, particleName, doSize);
+	}
+
 	public void saveAssayResult(String particleName, String fileName,
 			String title, String description, String comments, String[] keywords) {
 
