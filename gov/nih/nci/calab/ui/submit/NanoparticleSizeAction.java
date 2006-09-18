@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSizeAction.java,v 1.2 2006-09-15 20:36:52 pansu Exp $ */
+/* CVS $Id: NanoparticleSizeAction.java,v 1.3 2006-09-18 16:38:11 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.dto.characterization.CharacterizationTableBean;
@@ -196,6 +196,25 @@ public class NanoparticleSizeAction extends AbstractDispatchAction {
 		return mapping.getInputForward();
 	}
 
+	/**
+	 * Set up information needed for loading a characterization file
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	public ActionForward loadFile(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;		
+		String fileNumber=(String)theForm.get("fileNumber");		
+		request.setAttribute("fileNumber", fileNumber);		
+		request.setAttribute("loadFileForward", "sizeInputForm");
+		return mapping.findForward("loadFile");
+	}
+	
 	public void updateCharacterizationTables(SizeBean achar) {
 		String numberOfCharacterizationTables = achar.getNumberOfCharacterizationTables();
 		int tableNum = Integer.parseInt(numberOfCharacterizationTables);
