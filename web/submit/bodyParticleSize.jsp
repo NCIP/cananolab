@@ -25,170 +25,127 @@
 		</tr>
 		<tr>
 			<td colspan="2">
+				<c:set var="thisForm" value="${nanoparticleSizeForm}" />
 				<jsp:include page="/bodyMessage.jsp?bundle=submit" />
-				<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
-					<tr>
-					<tr class="topBorder">
-						<td class="formTitle" colspan="4">
-							<div align="justify">
-								Summary
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td class="leftLabel">
-							<strong>Characterization Source* </strong>
-						</td>
-						<td class="label">
-							<c:choose>
-								<c:when test="${canUserUpdateParticle eq 'true'}">
-									<html:select property="achar.characterizationSource">
-										<html:options name="characterizationSources" />
-									</html:select>
-								</c:when>
-								<c:otherwise>
-						${nanoparticleSizeForm.map.achar.characterizationSource}&nbsp;
+				<jsp:include page="bodySharedCharacterizationSummary.jsp" />
+				<jsp:include page="bodySharedCharacterizationInstrument.jsp" />
+				<%-- size characterization specific --%>
+				<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+					<tbody>
+						<tr class="topBorder">
+							<td class="formTitle" colspan="4">
+								<div align="justify">
+									Size Distribution Graph Information
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="leftLabel">
+								<strong>Number of Graphs</strong>
+							</td>
+							<td class="label">
+								<c:choose>
+									<c:when test="${canUserUpdateParticle eq 'true'}">
+										<html:text property="achar.numberOfCharacterizationTables" />
+									</c:when>
+									<c:otherwise>
+						${nanoparticleSizeForm.map.achar.numberOfCharacterizationTables}&nbsp;
 					</c:otherwise>
-							</c:choose>
-						</td>
-						<td class="label">
-							<strong>View Title*</strong>
-						</td>
-						<td class="rightLabel">
-							<c:choose>
-								<c:when test="${canUserUpdateParticle eq 'true'}">
-									<html:text property="achar.viewTitle" />
-								</c:when>
-								<c:otherwise>
-						${nanoparticleSizeForm.map.achar.viewTitle}&nbsp;
-					</c:otherwise>
-							</c:choose>
-						</td>
-					</tr>
-					<tr>
-						<td class="leftLabel" valign="top">
-							<strong>Description</strong>
-						</td>
-						<td class="rightLabel" colspan="3">
-							<c:choose>
-								<c:when test="${canUserUpdateParticle eq 'true'}">
-									<html:textarea property="achar.description" rows="3" />
-								</c:when>
-								<c:otherwise>
-						${nanoparticleSizeForm.map.achar.description}&nbsp;
-					</c:otherwise>
-							</c:choose>
-						</td>
-					</tr>
-				</table>
-				<br>
-
-				<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
-					<tr>
-					<tr class="topBorder">
-						<td class="formTitle" colspan="4">
-							<div align="justify">
-								Instrument Information
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td class="leftLabel">
-							<strong>Instrument Type </strong>
-						</td>
-						<td class="label">
-							<c:choose>
-								<c:when test="${canUserUpdateParticle eq 'true'}">
-									<html:select property="achar.instrument.type">
-										<html:options name="allInstrumentTypes" />
-									</html:select>
-								</c:when>
-								<c:otherwise>
-						${nanoparticleSizeForm.map.achar.instrument.type}&nbsp;
-					</c:otherwise>
-							</c:choose>
-						</td>
-						<td class="label">
-							<strong>Instrument Manufacturer</strong>
-						</td>
-						<td class="rightLabel">
-							<c:choose>
-								<c:when test="${canUserUpdateParticle eq 'true'}">
-									<html:text property="achar.instrument.manufacturer" />
-								</c:when>
-								<c:otherwise>
-						${nanoparticleSizeForm.map.achar.instrument.manufacturer}&nbsp;
-					</c:otherwise>
-							</c:choose>
-						</td>
-					</tr>
-					<tr>
-						<td class="leftLabel">
-							<strong>Instrument Abbreviation</strong>
-						</td>
-						<td class="rightLabel" colspan="3">
-							<c:choose>
-								<c:when test="${canUserUpdateParticle eq 'true'}">
-									<html:text property="achar.instrument.abbreviation" />
-								</c:when>
-								<c:otherwise>
-						${nanoparticleSizeForm.map.achar.instrument.abbreviation}&nbsp;
-					</c:otherwise>
-							</c:choose>
-						</td>
-					</tr>
-					<tr>
-						<td class="leftLabel" valign="top">
-							<strong>Instrument Description</strong>
-						</td>
-						<td class="rightLabel" colspan="3">
-							<c:choose>
-								<c:when test="${canUserUpdateParticle eq 'true'}">
-									<html:textarea property="achar.instrument.description" rows="3" />
-								</c:when>
-								<c:otherwise>
-						${nanoparticleSizeForm.map.achar.instrument.description}&nbsp;
-					</c:otherwise>
-							</c:choose>
-						</td>
-					</tr>
-				</table>
-				<br>
-				<jsp:include page="bodyParticleSizeInfo.jsp" />
-				</br>
-				<c:choose>
-					<c:when test="${canUserUpdateParticle eq 'true'}">
-						<br>
-						<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
-							<tr>
-								<td width="30%">
-									<span class="formMessage"> </span>
-									<br>
-									<table width="498" height="32" border="0" align="right" cellpadding="4" cellspacing="0">
-										<tr>
-											<td width="490" height="32">
-												<div align="right">
-													<div align="right">
-														<input type="reset" value="Reset" onclick="">
-														<input type="hidden" name="dispatch" value="create">
-														<input type="hidden" name="page" value="1">
-														<c:choose>
-															<c:when test="${canUserUpdateParticle eq 'true'}">
-																<html:hidden property="particleType" />
-															</c:when>
-														</c:choose>
-														<html:submit />
+								</c:choose>
+							</td>
+							<td class="rightLabel" colspan="2">
+								&nbsp;
+								<c:choose>
+									<c:when test="${canUserUpdateParticle eq 'true'}">
+										<input type="button" onclick="javascript:updateSize()" value="Update Graphs">
+									</c:when>
+								</c:choose>
+							</td>
+						</tr>
+						<tr>
+							<td class="completeLabel" colspan="4">
+								<c:forEach var="achar.table" items="${nanoparticleSizeForm.map.achar.characterizationTables}" varStatus="status">
+									<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+										<tbody>
+											<tr class="topBorder">
+												<td class="formSubTitle" colspan="4">
+													<div align="justify">
+														Graph ${status.index+1}
 													</div>
-												</div>
-											</td>
-										</tr>
+												</td>
+											</tr>
+											<tr>
+												<td class="leftLabel">
+													<strong>Graph Type </strong>
+												</td>
+												<td class="rightLabel" colspan="3">
+													<c:choose>
+														<c:when test="${canUserUpdateParticle eq 'true'}">
+															<html:select name="achar.table" property="type" indexed="true">
+																<html:options name="allSizeDistributionGraphTypes" />
+															</html:select>
+														</c:when>
+														<c:otherwise>
+						${nanoparticleSizeForm.map.achar.characterizationTables[status.index].type}&nbsp;
+					</c:otherwise>
+													</c:choose>
+												</td>
+											</tr>
+											<tr>
+												<td class="leftLabel">
+													<strong>Characterization File Name</strong>
+												</td>
+												<td class="label">
+													<c:choose>
+														<c:when test="${canUserUpdateParticle eq 'true'}">
+															<logic:present name="characterizationFile${status.index}">
+																<a href="#"><bean:write name="characterizationFile${status.index}" /></a>
+															</logic:present>
+															<logic:notPresent name="characterizationFile${status.index}">
+												Click on "Load File" link
+											</logic:notPresent>
+														</c:when>
+														<c:otherwise>
+						${nanoparticleSizeForm.map.achar.characterizationTables[status.index].fileName}&nbsp;
+					</c:otherwise>
+													</c:choose>
+												</td>
+												<td class="rightLabel" colspan="2">
+													<a href="loadFile.do?dispatch=setup&page=0&forwardPage=sizeForm&fileNumber=${status.index}">Load File</a>
+												</td>
+											</tr>
+											<tr>
+												<td class="leftLabel">
+													<strong>Average/Mean</strong>
+												</td>
+												<td class="label">
+													<html:text name="achar.table" indexed="true" property="tableDataList[0].value" />
+													&nbsp; ${nanoparticleSizeForm.map.achar.characterizationTables[status.index].tableDataList[0].valueUnit}
+												</td>
+												<td class="label">
+													<strong>Z-Average</strong>
+												</td>
+												<td class="rightLabel">
+													<html:text name="achar.table" indexed="true" property="tableDataList[1].value" />
+													&nbsp; ${nanoparticleSizeForm.map.achar.characterizationTables[status.index].tableDataList[1].valueUnit}
+												</td>
+											</tr>
+											<tr>
+												<td class="leftLabel">
+													<strong>PDI</strong>
+												</td>
+												<td class="rightLabel" colspan="3">
+													<html:text name="achar.table" indexed="true" property="tableDataList[2].value" />
+												</td>
+											</tr>
+										</tbody>
 									</table>
-									<div align="right"></div>
-								</td>
-							</tr>
-						</table>
-					</c:when>
-				</c:choose>
+								</c:forEach>
+							</td>
+						</tr>
+				</table>
+				<%-- end of size characterization specific --%>
+				<jsp:include page="bodySharedCharacterizationSubmit.jsp" />
 			</td>
 		</tr>
 	</table>
