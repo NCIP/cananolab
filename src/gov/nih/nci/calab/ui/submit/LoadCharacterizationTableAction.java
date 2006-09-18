@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: LoadCharacterizationTableAction.java,v 1.2 2006-09-15 21:06:04 pansu Exp $ */
+/* CVS $Id: LoadCharacterizationTableAction.java,v 1.3 2006-09-18 14:54:04 pansu Exp $ */
 
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
@@ -37,17 +37,19 @@ public class LoadCharacterizationTableAction extends AbstractDispatchAction {
 			//TODO load file from database
 		}
 
-		//TODO get the fileName
-		String fileName="this is a test";
-		request.setAttribute("characterizationFile", fileName);
+		
 		String title = (String) theForm.get("title");
 		String description = (String) theForm.get("description");
 		String comments = (String) theForm.get("comments");
 		String keywords = (String) theForm.get("keywords");
-		String visibilities = (String) theForm.get("visibilities");
+		String[] visibilities = (String[]) theForm.get("visibilities");
 		String[] keywordList = keywords.split("\r\n");
 		
 		String forwardPage = (String) theForm.get("forwardPage");
+		String fileNumber=(String)theForm.get("fileNumber");
+//		TODO get the fileName
+		String fileName="this is a test";
+		request.getSession().setAttribute("characterizationFile"+fileNumber, fileName);
 		// TODO add service codes
 		forward = mapping.findForward(forwardPage);
 
@@ -60,7 +62,7 @@ public class LoadCharacterizationTableAction extends AbstractDispatchAction {
 		HttpSession session = request.getSession();
 		InitSessionSetup.getInstance().clearWorkflowSession(session);
 		InitSessionSetup.getInstance().clearSearchSession(session);
-		InitSessionSetup.getInstance().clearInventorySession(session);		
+		InitSessionSetup.getInstance().clearInventorySession(session);
 		return mapping.getInputForward();
 	}
 
