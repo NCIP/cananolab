@@ -167,3 +167,8 @@ function updateSize() {
   document.nanoparticleSizeForm.submit();
 }
 
+function loadSizeFile(fileNumber) {
+  document.nanoparticleSizeForm.action="nanoparticleSize.do?dispatch=loadFile&page=0&fileNumber="+fileNumber;
+  document.nanoparticleSizeForm.submit();
+}
+
