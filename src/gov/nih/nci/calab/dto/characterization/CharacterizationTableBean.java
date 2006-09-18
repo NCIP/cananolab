@@ -1,8 +1,9 @@
 package gov.nih.nci.calab.dto.characterization;
 
+import gov.nih.nci.calab.domain.nano.characterization.CharacterizationTable;
+
 import java.util.ArrayList;
 import java.util.List;
-
 
 /**
  * This class represents the data files associated with characterizations to be
@@ -60,7 +61,22 @@ public class CharacterizationTableBean {
 		return tableDataList;
 	}
 
-	public void setTableDataList(List<CharacterizationTableDataBean> tableDataList) {
+	public void setTableDataList(
+			List<CharacterizationTableDataBean> tableDataList) {
 		this.tableDataList = tableDataList;
 	}
+
+	public CharacterizationTable getDomainObj() {
+		CharacterizationTable table = new CharacterizationTable();
+		if (getId() != null && getId().length() > 0) {
+			table.setId(new Long(getId()));
+		}
+		table.setType(type);
+		table.setFile(fileName);	
+		for (CharacterizationTableDataBean tableData : this.getTableDataList()) {
+			table.getTableDataCollection().add(tableData.getDomainObj());
+		}
+		return table;
+	}
+
 }

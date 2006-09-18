@@ -1,5 +1,7 @@
 package gov.nih.nci.calab.dto.characterization;
 
+import gov.nih.nci.calab.domain.nano.characterization.physical.Size;
+
 import java.util.List;
 
 
@@ -43,5 +45,11 @@ public class SizeBean extends CharacterizationBean {
 			table.getTableDataList().add(zaverage);
 			table.getTableDataList().add(pdi);
 		}
+	}
+	
+	public Size getDomainObj() {
+		Size size = new Size();
+		super.updateDomainObj(size);
+		return size;
 	}
 }
