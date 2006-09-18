@@ -102,7 +102,7 @@
 																<a href="#"><bean:write name="characterizationFile${status.index}" /></a>
 															</logic:present>
 															<logic:notPresent name="characterizationFile${status.index}">
-												Click on "Load File" link
+												Click on "Load File" button
 											</logic:notPresent>
 														</c:when>
 														<c:otherwise>
@@ -111,7 +111,7 @@
 													</c:choose>
 												</td>
 												<td class="rightLabel" colspan="2">
-													<a href="loadFile.do?dispatch=setup&page=0&forwardPage=sizeForm&fileNumber=${status.index}">Load File</a>
+													<input type="button" onclick="javascript:loadSizeFile(${status.index})" value="Load File">													
 												</td>
 											</tr>
 											<tr>
@@ -156,7 +156,7 @@
 														<c:otherwise>
 						${nanoparticleSizeForm.map.achar.characterizationTables[status.index].tableDataList[2].value}&nbsp;
 					</c:otherwise>
-													</c:choose>													
+													</c:choose>
 												</td>
 											</tr>
 										</tbody>
