@@ -3,7 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<html:form action="/loadFile">
+<html:form action="/loadFile" enctype="multipart/form-data">
 	<table width="100%" align="center">
 		<tr>
 			<td>
@@ -153,6 +153,8 @@
 												<input type="reset" value="Reset" onclick="javascript:resetSelect(document.submitReportForm.particleNames));">
 												<input type="hidden" name="dispatch" value="submit">
 												<input type="hidden" name="page" value="1">
+												<html:hidden property="forwardPage"/>
+												<html:hidden property="fileNumber"/>
 												<html:submit />
 											</div>
 										</div>
