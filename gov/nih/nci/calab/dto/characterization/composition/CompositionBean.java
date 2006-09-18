@@ -59,11 +59,8 @@ public class CompositionBean extends CharacterizationBean {
 
 	public void updateDomainObj(ParticleComposition doComp) {
 		super.updateDomainObj(doComp);
-		if (doComp instanceof ParticleComposition) {
-			for (ComposingElementBean element : getComposingElements()) {
-				((ParticleComposition) doComp).getComposingElementCollection()
-						.add(element.getDomainObj());
-			}
+		for (ComposingElementBean element : getComposingElements()) {
+			doComp.getComposingElementCollection().add(element.getDomainObj());
 		}
 	}
 }

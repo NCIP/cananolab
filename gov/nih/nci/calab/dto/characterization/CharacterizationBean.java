@@ -96,6 +96,11 @@ public class CharacterizationBean {
 		aChar.setDescription(getDescription());
 		aChar.setCreatedBy(getCreatedBy());
 		aChar.setCreatedDate(getCreatedDate());
+		
+		for (CharacterizationTableBean table : getCharacterizationTables()) {
+			aChar.getCharacterizationTableCollection().add(
+					table.getDomainObj());
+		}
 	}
 
 	public String getDescription() {
