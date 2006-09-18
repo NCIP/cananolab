@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: LoadCharacterizationTableAction.java,v 1.3 2006-09-18 14:54:04 pansu Exp $ */
+/* CVS $Id: LoadCharacterizationTableAction.java,v 1.4 2006-09-18 16:38:46 pansu Exp $ */
 
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
@@ -45,12 +45,13 @@ public class LoadCharacterizationTableAction extends AbstractDispatchAction {
 		String[] visibilities = (String[]) theForm.get("visibilities");
 		String[] keywordList = keywords.split("\r\n");
 		
-		String forwardPage = (String) theForm.get("forwardPage");
 		String fileNumber=(String)theForm.get("fileNumber");
 //		TODO get the fileName
 		String fileName="this is a test";
 		request.getSession().setAttribute("characterizationFile"+fileNumber, fileName);
 		// TODO add service codes
+		
+		String forwardPage=(String)theForm.get("forwardPage");
 		forward = mapping.findForward(forwardPage);
 
 		return forward;
@@ -63,6 +64,11 @@ public class LoadCharacterizationTableAction extends AbstractDispatchAction {
 		InitSessionSetup.getInstance().clearWorkflowSession(session);
 		InitSessionSetup.getInstance().clearSearchSession(session);
 		InitSessionSetup.getInstance().clearInventorySession(session);
+		String fileNumber=(String)request.getAttribute("fileNumber");
+		String loadFileForward=(String)request.getAttribute("loadFileForward");
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		theForm.set("fileNumber", fileNumber);	
+		theForm.set("forwardPage", loadFileForward);	
 		return mapping.getInputForward();
 	}
 
