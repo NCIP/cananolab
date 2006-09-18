@@ -119,15 +119,29 @@
 													<strong>Average/Mean</strong>
 												</td>
 												<td class="label">
-													<html:text name="achar.table" indexed="true" property="tableDataList[0].value" />
-													&nbsp; ${nanoparticleSizeForm.map.achar.characterizationTables[status.index].tableDataList[0].valueUnit}
+													<c:choose>
+														<c:when test="${canUserUpdateParticle eq 'true'}">
+															<html:text name="achar.table" indexed="true" property="tableDataList[0].value" />
+													&nbsp; ${nanoparticleSizeForm.map.achar.characterizationTables[status.index].tableDataList[0].valueUnit}	
+														</c:when>
+														<c:otherwise>
+						${nanoparticleSizeForm.map.achar.characterizationTables[status.index].tableDataList[0].value} ${nanoparticleSizeForm.map.achar.characterizationTables[status.index].tableDataList[0].valueUnit}&nbsp;
+					</c:otherwise>
+													</c:choose>
 												</td>
 												<td class="label">
 													<strong>Z-Average</strong>
 												</td>
 												<td class="rightLabel">
-													<html:text name="achar.table" indexed="true" property="tableDataList[1].value" />
+													<c:choose>
+														<c:when test="${canUserUpdateParticle eq 'true'}">
+															<html:text name="achar.table" indexed="true" property="tableDataList[1].value" />
 													&nbsp; ${nanoparticleSizeForm.map.achar.characterizationTables[status.index].tableDataList[1].valueUnit}
+														</c:when>
+														<c:otherwise>
+						${nanoparticleSizeForm.map.achar.characterizationTables[status.index].tableDataList[1].value} ${nanoparticleSizeForm.map.achar.characterizationTables[status.index].tableDataList[1].valueUnit}&nbsp;
+					</c:otherwise>
+													</c:choose>
 												</td>
 											</tr>
 											<tr>
@@ -135,7 +149,14 @@
 													<strong>PDI</strong>
 												</td>
 												<td class="rightLabel" colspan="3">
-													<html:text name="achar.table" indexed="true" property="tableDataList[2].value" />
+													<c:choose>
+														<c:when test="${canUserUpdateParticle eq 'true'}">
+															<html:text name="achar.table" indexed="true" property="tableDataList[2].value" />
+														</c:when>
+														<c:otherwise>
+						${nanoparticleSizeForm.map.achar.characterizationTables[status.index].tableDataList[2].value}&nbsp;
+					</c:otherwise>
+													</c:choose>													
 												</td>
 											</tr>
 										</tbody>
