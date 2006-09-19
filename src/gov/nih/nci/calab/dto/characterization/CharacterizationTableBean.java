@@ -17,7 +17,9 @@ public class CharacterizationTableBean {
 
 	private String type;
 
-	private String fileName;
+	private CharacterizationFileBean file;
+	
+	private String fileId;
 
 	private List<CharacterizationTableDataBean> tableDataList = new ArrayList<CharacterizationTableDataBean>();
 
@@ -26,19 +28,19 @@ public class CharacterizationTableBean {
 		// TODO Auto-generated constructor stub
 	}
 
-	public CharacterizationTableBean(String type, String fileName) {
+	public CharacterizationTableBean(String type, CharacterizationFileBean file) {
 		super();
 		// TODO Auto-generated constructor stub
 		this.type = type;
-		this.fileName = fileName;
+		this.file = file;
 	}
 
-	public String getFileName() {
-		return fileName;
+	public CharacterizationFileBean getFile() {
+		return file;
 	}
 
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
+	public void setFile(CharacterizationFileBean file) {
+		this.file = file;
 	}
 
 	public String getType() {
@@ -66,13 +68,22 @@ public class CharacterizationTableBean {
 		this.tableDataList = tableDataList;
 	}
 
+	public String getFileId() {
+		return fileId;
+	}
+
+	public void setFileId(String fileId) {
+		this.fileId = fileId;
+	}
+
 	public CharacterizationTable getDomainObj() {
 		CharacterizationTable table = new CharacterizationTable();
 		if (getId() != null && getId().length() > 0) {
 			table.setId(new Long(getId()));
 		}
 		table.setType(type);
-		table.setFile(fileName);	
+		//TODO need to decide whether use fileId and file object
+		table.setFile(file.getName());
 		for (CharacterizationTableDataBean tableData : this.getTableDataList()) {
 			table.getTableDataCollection().add(tableData.getDomainObj());
 		}
