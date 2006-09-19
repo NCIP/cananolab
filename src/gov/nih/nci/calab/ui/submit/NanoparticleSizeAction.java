@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSizeAction.java,v 1.3 2006-09-18 16:38:11 pansu Exp $ */
+/* CVS $Id: NanoparticleSizeAction.java,v 1.4 2006-09-19 16:34:07 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.dto.characterization.CharacterizationTableBean;
@@ -208,8 +208,10 @@ public class NanoparticleSizeAction extends AbstractDispatchAction {
 	public ActionForward loadFile(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;		
-		String fileNumber=(String)theForm.get("fileNumber");		
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		String particleName=(String)theForm.get("particleName");
+		String fileNumber=(String)theForm.get("fileNumber");	
+		request.setAttribute("particleName", particleName);	
 		request.setAttribute("fileNumber", fileNumber);		
 		request.setAttribute("loadFileForward", "sizeInputForm");
 		return mapping.findForward("loadFile");
