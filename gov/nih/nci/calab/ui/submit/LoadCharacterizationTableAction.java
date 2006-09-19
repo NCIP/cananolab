@@ -6,8 +6,10 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: LoadCharacterizationTableAction.java,v 1.4 2006-09-18 16:38:46 pansu Exp $ */
+/* CVS $Id: LoadCharacterizationTableAction.java,v 1.5 2006-09-19 16:33:50 pansu Exp $ */
 
+import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
+import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
@@ -28,30 +30,30 @@ public class LoadCharacterizationTableAction extends AbstractDispatchAction {
 		ActionForward forward = null;
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String fileSource = (String) theForm.get("fileSource");
-		if (fileSource.equals("new")) {
-			FormFile file = (FormFile) theForm.get("file");
-			//TODO write file to filesystem and database
-		} else {
-			String fileId = (String) theForm.get("fileId");
-			//TODO load file from database
-		}
-
-		
+		String particleName = (String) theForm.get("particleName");
 		String title = (String) theForm.get("title");
 		String description = (String) theForm.get("description");
 		String comments = (String) theForm.get("comments");
 		String keywords = (String) theForm.get("keywords");
 		String[] visibilities = (String[]) theForm.get("visibilities");
 		String[] keywordList = keywords.split("\r\n");
-		
-		String fileNumber=(String)theForm.get("fileNumber");
-//		TODO get the fileName
-		String fileName="this is a test";
-		request.getSession().setAttribute("characterizationFile"+fileNumber, fileName);
-		// TODO add service codes
-		
-		String forwardPage=(String)theForm.get("forwardPage");
+
+		String fileSource = (String) theForm.get("fileSource");
+		CharacterizationFileBean fileBean = null;
+		SubmitNanoparticleService service = new SubmitNanoparticleService();
+		if (fileSource.equals("new")) {
+			FormFile file = (FormFile) theForm.get("file");
+			fileBean = service.saveCharacterizationFile(particleName, file,
+					title, description, comments, keywordList, visibilities);
+		} else {
+			String fileId = (String) theForm.get("fileId");
+			fileBean = service.getFile(fileId);
+		}
+
+		String fileNumber = (String) theForm.get("fileNumber");
+		request.getSession().setAttribute("characterizationFile" + fileNumber,
+				fileBean);		
+		String forwardPage = (String) theForm.get("forwardPage");
 		forward = mapping.findForward(forwardPage);
 
 		return forward;
@@ -64,11 +66,15 @@ public class LoadCharacterizationTableAction extends AbstractDispatchAction {
 		InitSessionSetup.getInstance().clearWorkflowSession(session);
 		InitSessionSetup.getInstance().clearSearchSession(session);
 		InitSessionSetup.getInstance().clearInventorySession(session);
-		String fileNumber=(String)request.getAttribute("fileNumber");
-		String loadFileForward=(String)request.getAttribute("loadFileForward");
+		InitSessionSetup.getInstance().setAllAssayTypeAssays(session);
+		String particleName = (String) request.getAttribute("particleName");
+		String fileNumber = (String) request.getAttribute("fileNumber");
+		String loadFileForward = (String) request
+				.getAttribute("loadFileForward");
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		theForm.set("fileNumber", fileNumber);	
-		theForm.set("forwardPage", loadFileForward);	
+		theForm.set("particleName", particleName);
+		theForm.set("fileNumber", fileNumber);
+		theForm.set("forwardPage", loadFileForward);
 		return mapping.getInputForward();
 	}
 
