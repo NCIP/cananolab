@@ -5,9 +5,9 @@ import gov.nih.nci.calab.db.IDataAccess;
 import gov.nih.nci.calab.domain.Keyword;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
+import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
 import gov.nih.nci.calab.dto.characterization.SizeBean;
 import gov.nih.nci.calab.dto.characterization.composition.CompositionBean;
-import gov.nih.nci.calab.dto.workflow.FileBean;
 import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CalabConstants;
@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.apache.struts.upload.FormFile;
 
 /**
  * This class includes service calls involved in creating nanoparticles and
@@ -99,6 +100,7 @@ public class SubmitNanoparticleService {
 
 	/**
 	 * Save characterization to the database.
+	 * 
 	 * @param particleType
 	 * @param particleName
 	 * @param achar
@@ -193,9 +195,10 @@ public class SubmitNanoparticleService {
 		Characterization doComp = composition.getDomainObj();
 		addParticleCharacterization(particleType, particleName, doComp);
 	}
-	
+
 	/**
 	 * Saves the size characterization to the database
+	 * 
 	 * @param particleType
 	 * @param particleName
 	 * @param size
@@ -203,21 +206,69 @@ public class SubmitNanoparticleService {
 	 */
 	public void addParticleSize(String particleType, String particleName,
 			SizeBean size) throws Exception {
-		Characterization doSize=size.getDomainObj();
+		Characterization doSize = size.getDomainObj();
+		//TODO think about how to deal with characterization file.
 		addParticleCharacterization(particleType, particleName, doSize);
 	}
 
-	public void saveAssayResult(String particleName, String fileName,
-			String title, String description, String comments, String[] keywords) {
+	/**
+	 * Save the characterization file into the database and file system
+	 * 
+	 * @param particleName
+	 * @param file
+	 * @param title
+	 * @param description
+	 * @param comments
+	 * @param keywords
+	 * @param visibilities
+	 */
+	public CharacterizationFileBean saveCharacterizationFile(
+			String particleName, FormFile file, String title,
+			String description, String comments, String[] keywords,
+			String[] visibilities) throws Exception {
 
+		// TODO saves file to the file system
+		// TODO daves file to the database
+		CharacterizationFileBean fileBean = new CharacterizationFileBean();
+		fileBean.setName("new test file");
+		fileBean.setId("1");
+		fileBean.setVisibilityGroups(visibilities);
+		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
+		String fileName = fileBean.getName();
+		if (visibilities != null) {
+			for (String visibility : visibilities) {
+				// by default, always set visibility to NCL_PI and
+				// NCL_Researcher to
+				// be true
+				// TODO once the files is successfully saved, use fileId instead
+				// of fileName
+				userService.secureObject(fileName, "NCL_PI", "R");
+				userService.secureObject(fileName, "NCL_Researcher", "R");
+				userService.secureObject(fileName, visibility, "R");
+			}
+		}
+		return fileBean;
 	}
 
-	public List<FileBean> getAllRunFiles(String particleName) {
-		List<FileBean> runFiles = new ArrayList<FileBean>();
+	/**
+	 * Load the file for the given fileId from the database
+	 * @param fileId
+	 * @return
+	 */
+	public CharacterizationFileBean getFile(String fileId) throws Exception {
+		// TODO query from database.
+		CharacterizationFileBean fileBean = new CharacterizationFileBean();
+		fileBean.setName("existing test file");
+		fileBean.setId("2");
+		return fileBean;
+	}
+
+	public List<CharacterizationFileBean> getAllRunFiles(String particleName) {
+		List<CharacterizationFileBean> runFiles = new ArrayList<CharacterizationFileBean>();
 		// TODO fill in the database query code
-		FileBean file = new FileBean();
+		CharacterizationFileBean file = new CharacterizationFileBean();
 		file.setId("1");
-		file.setShortFilename("NCL_3_distri.jpg");
+		file.setName("NCL_3_distri.jpg");
 
 		runFiles.add(file);
 		return runFiles;
