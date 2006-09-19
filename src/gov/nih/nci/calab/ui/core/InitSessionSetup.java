@@ -1,6 +1,7 @@
 package gov.nih.nci.calab.ui.core;
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
+import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.inventory.AliquotBean;
 import gov.nih.nci.calab.dto.inventory.ContainerBean;
@@ -12,6 +13,7 @@ import gov.nih.nci.calab.exception.InvalidSessionException;
 import gov.nih.nci.calab.service.common.LookupService;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
 import gov.nih.nci.calab.service.security.UserService;
+import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.service.util.CalabComparators;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.CananoConstants;
@@ -358,11 +360,10 @@ public class InitSessionSetup {
 	}
 
 	public void setAllVisibilityGroups(HttpSession session) throws Exception {
-		if (session.getAttribute("allVisibilityGroups") == null ||
-				session.getAttribute("newSampleCreated")!=null) {			
+		if (session.getAttribute("allVisibilityGroups") == null
+				|| session.getAttribute("newSampleCreated") != null) {
 			List<String> groupNames = userService.getAllVisibilityGroups();
-			session.setAttribute("allVisibilityGroups",
-					groupNames);
+			session.setAttribute("allVisibilityGroups", groupNames);
 		}
 	}
 
@@ -460,8 +461,8 @@ public class InitSessionSetup {
 			session.setAttribute("charTypeChars", existingCharTypeChars);
 		}
 		session.removeAttribute("newCharacterizationCreated");
+		session.removeAttribute("newParticleCreated");
 		setStaticDropdowns(session);
-
 	}
 
 	public void setCharacterizationTypeCharacterizations(HttpSession session)
@@ -474,29 +475,46 @@ public class InitSessionSetup {
 					"allCharacterizationTypeCharacterizations", charTypeChars);
 		}
 	}
-	
+
 	public void setAllInstrumentTypes(HttpSession session) throws Exception {
-		if (session.getServletContext()
-				.getAttribute("allInstrumentTypes") == null) {
+		if (session.getServletContext().getAttribute("allInstrumentTypes") == null) {
 			String[] instrumentTypes = lookupService.getAllInstrumentTypes();
-			session.getServletContext().setAttribute(
-					"allInstrumentTypes", instrumentTypes);
+			session.getServletContext().setAttribute("allInstrumentTypes",
+					instrumentTypes);
 		}
 	}
-	public void setAllSizeDistributionGraphTypes(HttpSession session) throws Exception {
-		if (session.getServletContext()
-				.getAttribute("allSizeDistributionGraphTypes") == null) {
+
+	public void setAllSizeDistributionGraphTypes(HttpSession session)
+			throws Exception {
+		if (session.getServletContext().getAttribute(
+				"allSizeDistributionGraphTypes") == null) {
 			String[] graphTypes = lookupService.getSizeDistributionGraphTypes();
 			session.getServletContext().setAttribute(
 					"allSizeDistributionGraphTypes", graphTypes);
 		}
 	}
+
 	public void setStaticDropdowns(HttpSession session) {
 		// set static boolean yes or no and characterization source choices
 		session.setAttribute("booleanChoices", CananoConstants.BOOLEAN_CHOICES);
 		session.setAttribute("characterizationSources",
 				CananoConstants.CHARACTERIZATION_SOURCES);
-		session.setAttribute("allCarbonNanotubeWallTypes", CananoConstants.CARBON_NANOTUBE_WALLTYPES);
+		session.setAttribute("allCarbonNanotubeWallTypes",
+				CananoConstants.CARBON_NANOTUBE_WALLTYPES);
 		session.setAttribute("allReportTypes", CananoConstants.REPORT_TYPES);
+	}
+
+	public void setAllRunFiles(HttpSession session, String particleName)
+			throws Exception {
+		if (session.getAttribute("allRunFiles") == null
+				|| session.getAttribute("newParticleCreated") != null
+				|| session.getAttribute("newRunCreated") != null) {
+			SubmitNanoparticleService service = new SubmitNanoparticleService();
+			List<CharacterizationFileBean> runFileBeans = service
+					.getAllRunFiles(particleName);
+			session.setAttribute("allRunFiles", runFileBeans);
+		}
+		session.removeAttribute("newParticleCreated");
+		session.removeAttribute("newRunCreated");
 	}
 }
