@@ -39,13 +39,9 @@
 												<strong>Assay Type</strong>
 											</td>
 											<td class="borderlessLabel">
-												<html:select property="assayType">
-													<option value="Prescreening">
-														Pre-Screening
-													</option>
-													<option value="In Vitro">
-														In Vitro
-													</option>
+												<html:select property="assayType" onchange="javascript:doubleDropdown(document.loadCharacterizationTableForm.assayType, document.loadCharacterizationTableForm.assayName, assayTypeAssays);">
+													<option value=""></option>
+													<html:options name="allAvailableAssayTypes" />
 												</html:select>
 											</td>
 											<td class="borderlessLabel">
@@ -53,11 +49,8 @@
 											</td>
 											<td class="borderlessLabel" colspan="3">
 												<html:select property="assayName">
-													<option value="PCC-1">
-														PCC-1
-													</option>
-													<option value="STE-1">
-														STE-1
+													<option value="${loadCharacterizationTableForm.map.assayName}" selected>
+														${loadCharacterizationTableForm.map.assayName}
 													</option>
 												</html:select>
 											</td>
@@ -153,8 +146,9 @@
 												<input type="reset" value="Reset" onclick="javascript:resetSelect(document.submitReportForm.particleNames));">
 												<input type="hidden" name="dispatch" value="submit">
 												<input type="hidden" name="page" value="1">
-												<html:hidden property="forwardPage"/>
-												<html:hidden property="fileNumber"/>
+												<html:hidden property="forwardPage" />
+												<html:hidden property="fileNumber" />
+												<html:hidden property="particleName" />
 												<html:submit />
 											</div>
 										</div>
@@ -169,3 +163,17 @@
 		</tr>
 	</table>
 </html:form>
+<script language="JavaScript">
+<!--//
+
+/* populate a hashtable containing assayType assays */ 
+var assayTypeAssays=new Array();
+<c:forEach var="item" items="${allAssayTypeAssays}">
+    var assays=new Array();
+    <c:forEach var="assay" items="${allAssayTypeAssays[item.key]}" varStatus="count">
+  		assays[${count.index}]=new Option('${assay.assayName}', '${assay.assayName}');  	
+    </c:forEach>
+    assayTypeAssays['${item.key}']=assays;
+  </c:forEach>
+//-->
+</script>
