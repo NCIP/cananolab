@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: LoadCharacterizationTableAction.java,v 1.5 2006-09-19 16:33:50 pansu Exp $ */
+/* CVS $Id: LoadCharacterizationTableAction.java,v 1.6 2006-09-19 21:05:00 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
@@ -68,6 +68,7 @@ public class LoadCharacterizationTableAction extends AbstractDispatchAction {
 		InitSessionSetup.getInstance().clearInventorySession(session);
 		InitSessionSetup.getInstance().setAllAssayTypeAssays(session);
 		String particleName = (String) request.getAttribute("particleName");
+		InitSessionSetup.getInstance().setAllRunFiles(session, particleName);		
 		String fileNumber = (String) request.getAttribute("fileNumber");
 		String loadFileForward = (String) request
 				.getAttribute("loadFileForward");
