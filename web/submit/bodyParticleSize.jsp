@@ -2,6 +2,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <html:form action="/nanoparticleSize">
 	<table width="100%" align="center">
@@ -99,19 +100,21 @@
 													<c:choose>
 														<c:when test="${canUserUpdateParticle eq 'true'}">
 															<logic:present name="characterizationFile${status.index}">
-																<a href="#"><bean:write name="characterizationFile${status.index}" /></a>
+																<a href="#"><bean:write name="characterizationFile${status.index}" property="name" /></a>
+																<bean:define id="fileId" name='characterizationFile${status.index}' property='id' type="java.lang.String"/>
+																<html:hidden name="achar.table" property="fileId" value="${fileId}" indexed="true" />
 															</logic:present>
 															<logic:notPresent name="characterizationFile${status.index}">
 												Click on "Load File" button
 											</logic:notPresent>
 														</c:when>
 														<c:otherwise>
-						${nanoparticleSizeForm.map.achar.characterizationTables[status.index].fileName}&nbsp;
+						${nanoparticleSizeForm.map.achar.characterizationTables[status.index].file.name}&nbsp;
 					</c:otherwise>
-													</c:choose>
+													</c:choose>													
 												</td>
 												<td class="rightLabel" colspan="2">
-													<input type="button" onclick="javascript:loadSizeFile(${status.index})" value="Load File">													
+													<input type="button" onclick="javascript:loadSizeFile('${nanoparticleSizeForm.map.particleName}', ${status.index})" value="Load File">
 												</td>
 											</tr>
 											<tr>
