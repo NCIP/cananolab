@@ -32,9 +32,10 @@
 							<td class="completeLabel" colspan="4">
 								<strong> <html:radio property="fileSource" value="chooseExisting">Choose File From Existing Assays</html:radio>
 									<table cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+										<%--
 										<tr>
 											<td class="borderlessLabel" width="50">
-											</td>
+											</td>										
 											<td class="borderlessLabel">
 												<strong>Assay Type</strong>
 											</td>
@@ -43,10 +44,10 @@
 													<option value=""></option>
 													<html:options name="allAvailableAssayTypes" />
 												</html:select>
-											</td>
+											</td>											
 											<td class="borderlessLabel">
 												<strong>=> Assay Name</strong>
-											</td>
+											</td>											
 											<td class="borderlessLabel" colspan="3">
 												<html:select property="assayName">
 													<option value="${loadCharacterizationTableForm.map.assayName}" selected>
@@ -55,20 +56,16 @@
 												</html:select>
 											</td>
 										</tr>
+										--%>
 										<tr>
 											<td class="borderlessLabel" width="50">
 											</td>
-											<td class="borderlessLabel" width="30%">
+											<td class="borderlessLabel" width="20%">
 												<strong>=>&nbsp; Assay Result File*</strong>
 											</td>
 											<td class="borderlessLabel">
 												<html:select property="fileId">
-													<option value="file1">
-														PCC-1 Output File 1
-													</option>
-													<option value="file2">
-														PCC-1 Output File 2
-													</option>
+													<html:options collection="allRunFiles" property="name" labelProperty="id" />
 												</html:select>
 											</td>
 										</tr>
@@ -77,7 +74,7 @@
 									<tr>
 										<td class="borderlessLabel" width="50">
 										</td>
-										<td class="borderlessLabel" valign="top" width="30%">
+										<td class="borderlessLabel" valign="top" width="20%">
 											<strong>=>&nbsp; Assay Result File*</strong>
 										</td>
 										<td class="borderlessLabel" valign="top">
