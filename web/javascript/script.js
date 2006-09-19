@@ -93,47 +93,44 @@ function moveItems(fbox, tbox) {
     }
 }
 function resetSelect(selectObj) {
-   for (var i=0; i<selectObj.options.length; i++) {
-      if (selectObj.options[i].selected) {
-         selectObj.options[i].selected=false;
-      }
-   }
+    for (var i = 0; i < selectObj.options.length; i++) {
+        if (selectObj.options[i].selected) {
+            selectObj.options[i].selected = false;
+        }
+    }
 }
-
 function removeSelectOptions(selectObj) {
-   selectObj.options.length=0;
+    selectObj.options.length = 0;
 }
 /* filter second drop-down by first drop-down selection*/
 function doubleDropdown(selection1, selection2, value1ToValue2) {
     /* initialize selection2 options */
     selection2.options.length = 0;
-    selection2.options[0]=new Option("", "");
-    var value1 = selection1.options[selection1.selectedIndex].value;    
-    var value2Arr = value1ToValue2[value1];    
+    selection2.options[0] = new Option("", "");
+    var value1 = selection1.options[selection1.selectedIndex].value;
+    var value2Arr = value1ToValue2[value1];
     if (value2Arr != null) {
         for (i = 0; i < value2Arr.length; i++) {
             selection2.options[i] = value2Arr[i];
         }
     }
 }
-
 /* filter a drop-down by a value*/
 function dynamicDropdown(value, selection, value1ToValue2) {
     /* initialize selection options */
     selection.options.length = 0;
-    selection.options[0]=new Option("", "");
-    var value2Arr = value1ToValue2[value];    
+    selection.options[0] = new Option("", "");
+    var value2Arr = value1ToValue2[value];
     if (value2Arr != null) {
         for (i = 0; i < value2Arr.length; i++) {
             selection.options[i] = value2Arr[i];
         }
     }
 }
-
 /* filter second multi-box by first multi-box selections */
 function doubleMultibox(selection1, selection2, value1ToValue2) {
     selection2.options.length = 0;
-    selection2.options[0]=new Option("", "");
+    selection2.options[0] = new Option("", "");
     var value1Arr = new Array();
     for (var i = 0; i < selection1.options.length; i++) {
         if (selection1.options[i].selected) {
@@ -151,24 +148,20 @@ function doubleMultibox(selection1, selection2, value1ToValue2) {
         selection2.options[i] = value2Arr[i];
     }
 }
-
 function submitAction(form, actionName) {
-   form.action=actionName;
-   form.submit();
+    form.action = actionName;
+    form.submit();
 }
-
 function updateComposition() {
-  document.nanoparticleCompositionForm.action="nanoparticleComposition.do?dispatch=update&page=0";
-  document.nanoparticleCompositionForm.submit();
+    document.nanoparticleCompositionForm.action = "nanoparticleComposition.do?dispatch=update&page=0";
+    document.nanoparticleCompositionForm.submit();
 }
-
 function updateSize() {
-  document.nanoparticleSizeForm.action="nanoparticleSize.do?dispatch=update&page=0";
-  document.nanoparticleSizeForm.submit();
+    document.nanoparticleSizeForm.action = "nanoparticleSize.do?dispatch=update&page=0";
+    document.nanoparticleSizeForm.submit();
 }
-
-function loadSizeFile(fileNumber) {
-  document.nanoparticleSizeForm.action="nanoparticleSize.do?dispatch=loadFile&page=0&fileNumber="+fileNumber;
-  document.nanoparticleSizeForm.submit();
+function loadSizeFile(particleName, fileNumber) {
+    document.nanoparticleSizeForm.action = "nanoparticleSize.do?dispatch=loadFile&page=0&particleName=" + particleName + "&fileNumber=" + fileNumber;
+    document.nanoparticleSizeForm.submit();
 }
 
