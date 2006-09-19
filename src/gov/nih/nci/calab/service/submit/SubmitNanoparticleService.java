@@ -3,6 +3,8 @@ package gov.nih.nci.calab.service.submit;
 import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
 import gov.nih.nci.calab.domain.Keyword;
+import gov.nih.nci.calab.domain.OutputFile;
+import gov.nih.nci.calab.domain.Run;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
@@ -207,7 +209,7 @@ public class SubmitNanoparticleService {
 	public void addParticleSize(String particleType, String particleName,
 			SizeBean size) throws Exception {
 		Characterization doSize = size.getDomainObj();
-		//TODO think about how to deal with characterization file.
+		// TODO think about how to deal with characterization file.
 		addParticleCharacterization(particleType, particleName, doSize);
 	}
 
@@ -252,6 +254,7 @@ public class SubmitNanoparticleService {
 
 	/**
 	 * Load the file for the given fileId from the database
+	 * 
 	 * @param fileId
 	 * @return
 	 */
@@ -263,14 +266,47 @@ public class SubmitNanoparticleService {
 		return fileBean;
 	}
 
-	public List<CharacterizationFileBean> getAllRunFiles(String particleName) {
+	/**
+	 * Get the list of all run output files associated with a particle 
+	 * @param particleName
+	 * @return
+	 * @throws Exception
+	 */
+	public List<CharacterizationFileBean> getAllRunFiles(String particleName)
+			throws Exception {
 		List<CharacterizationFileBean> runFiles = new ArrayList<CharacterizationFileBean>();
-		// TODO fill in the database query code
-		CharacterizationFileBean file = new CharacterizationFileBean();
-		file.setId("1");
-		file.setName("NCL_3_distri.jpg");
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			String query = "from Run run join fetch run.outputFileCollection join run.runSampleContainerCollection runContainer where runContainer.sampleContainer.sample.name='"
+					+ particleName + "'";
+			List results = ida.search(query);
 
-		runFiles.add(file);
+			for (Object obj : results) {
+				Run run = (Run) obj;
+				for (Object fileObj : run.getOutputFileCollection()) {
+					OutputFile file = (OutputFile) fileObj;
+					// active status only
+					if (file.getDataStatus() == null) {
+						CharacterizationFileBean fileBean = new CharacterizationFileBean();
+						fileBean.setId(file.getId().toString());
+						fileBean.setName(file.getFilename());
+						fileBean.setPath(file.getPath());
+						runFiles.add(fileBean);
+					}
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			ida.rollback();
+			logger.error("Problem getting run files for particle: "
+					+ particleName);
+			throw e;
+		} finally {
+			ida.close();
+		}
 		return runFiles;
 	}
 }
