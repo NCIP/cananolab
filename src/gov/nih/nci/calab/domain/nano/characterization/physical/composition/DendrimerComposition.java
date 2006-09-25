@@ -1,6 +1,7 @@
 package gov.nih.nci.calab.domain.nano.characterization.physical.composition;
 
 import gov.nih.nci.calab.domain.Instrument;
+import gov.nih.nci.calab.domain.nano.characterization.CharacterizationProtocol;
 import gov.nih.nci.calab.domain.nano.characterization.CharacterizationTable;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.service.util.CananoConstants;
@@ -31,6 +32,7 @@ public class DendrimerComposition implements ParticleComposition {
 	private Collection<SurfaceGroup> surfaceGroupCollection=new ArrayList<SurfaceGroup>();
 	
 	private Instrument instrument;
+	private CharacterizationProtocol characterizationProtocol;
 	
 	public DendrimerComposition() {
 		super();
@@ -173,6 +175,15 @@ public class DendrimerComposition implements ParticleComposition {
 
 	public void setInstrument(Instrument instrument) {
 		this.instrument = instrument;
+	}
+
+	public CharacterizationProtocol getCharacterizationProtocol() {
+		return characterizationProtocol;
+	}
+
+	public void setCharacterizationProtocol(
+			CharacterizationProtocol characterizationProtocol) {
+		this.characterizationProtocol = characterizationProtocol;
 	}
 
 }

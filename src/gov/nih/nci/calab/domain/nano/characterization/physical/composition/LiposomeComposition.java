@@ -1,6 +1,7 @@
 package gov.nih.nci.calab.domain.nano.characterization.physical.composition;
 
 import gov.nih.nci.calab.domain.Instrument;
+import gov.nih.nci.calab.domain.nano.characterization.CharacterizationProtocol;
 import gov.nih.nci.calab.domain.nano.characterization.CharacterizationTable;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.service.util.CananoConstants;
@@ -10,7 +11,7 @@ import java.util.Collection;
 import java.util.Date;
 
 public class LiposomeComposition implements ParticleComposition {
-	
+
 	private static final long serialVersionUID = 1234567890L;
 
 	private Long id;
@@ -36,7 +37,9 @@ public class LiposomeComposition implements ParticleComposition {
 	private Collection<CharacterizationTable> characterizationTableCollection = new ArrayList<CharacterizationTable>();
 
 	private Instrument instrument;
-	
+
+	private CharacterizationProtocol characterizationProtocol;
+
 	private boolean polymerized;
 
 	private String polymerName;
@@ -159,5 +162,14 @@ public class LiposomeComposition implements ParticleComposition {
 
 	public void setInstrument(Instrument instrument) {
 		this.instrument = instrument;
+	}
+
+	public CharacterizationProtocol getCharacterizationProtocol() {
+		return characterizationProtocol;
+	}
+
+	public void setCharacterizationProtocol(
+			CharacterizationProtocol characterizationProtocol) {
+		this.characterizationProtocol = characterizationProtocol;
 	}
 }
