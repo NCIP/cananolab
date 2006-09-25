@@ -1,6 +1,7 @@
 package gov.nih.nci.calab.domain.nano.characterization.physical.composition;
 
 import gov.nih.nci.calab.domain.Instrument;
+import gov.nih.nci.calab.domain.nano.characterization.CharacterizationProtocol;
 import gov.nih.nci.calab.domain.nano.characterization.CharacterizationTable;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.service.util.CananoConstants;
@@ -25,6 +26,7 @@ public class MetalParticleComposition implements ParticleComposition {
 	private Collection<ComposingElement> composingElementCollection = new ArrayList<ComposingElement>();
 	private Collection<CharacterizationTable> characterizationTableCollection = new ArrayList<CharacterizationTable>();
 	private Instrument instrument;
+	private CharacterizationProtocol characterizationProtocol;
 
 	public MetalParticleComposition() {
 		super();
@@ -126,6 +128,15 @@ public class MetalParticleComposition implements ParticleComposition {
 
 	public void setInstrument(Instrument instrument) {
 		this.instrument = instrument;
+	}
+
+	public CharacterizationProtocol getCharacterizationProtocol() {
+		return characterizationProtocol;
+	}
+
+	public void setCharacterizationProtocol(
+			CharacterizationProtocol characterizationProtocol) {
+		this.characterizationProtocol = characterizationProtocol;
 	}
 
 }

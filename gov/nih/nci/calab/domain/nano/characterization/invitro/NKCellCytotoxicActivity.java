@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import gov.nih.nci.calab.domain.Instrument;
+import gov.nih.nci.calab.domain.nano.characterization.CharacterizationProtocol;
 import gov.nih.nci.calab.domain.nano.characterization.CharacterizationTable;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.ComposingElement;
 import gov.nih.nci.calab.domain.nano.characterization.toxicity.ImmunoToxicity;
@@ -30,7 +31,8 @@ public class NKCellCytotoxicActivity implements ImmunoToxicity {
 	private Collection<ComposingElement> composingElementCollection = new ArrayList<ComposingElement>();
 	private Collection<CharacterizationTable> characterizationTableCollection = new ArrayList<CharacterizationTable>();
 	private Instrument instrument;
-	
+	private CharacterizationProtocol characterizationProtocol;
+
 	private String immunotoxicityType;
 
 
@@ -145,6 +147,15 @@ public class NKCellCytotoxicActivity implements ImmunoToxicity {
 
 	public void setInstrument(Instrument instrument) {
 		this.instrument = instrument;
+	}
+
+	public CharacterizationProtocol getCharacterizationProtocol() {
+		return characterizationProtocol;
+	}
+
+	public void setCharacterizationProtocol(
+			CharacterizationProtocol characterizationProtocol) {
+		this.characterizationProtocol = characterizationProtocol;
 	}
 
 

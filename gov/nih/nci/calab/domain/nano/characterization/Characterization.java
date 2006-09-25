@@ -36,4 +36,7 @@ public interface Characterization {
 	
 	public void setInstrument(Instrument instrument);
 	public Instrument getInstrument();
+	
+	public void setCharacterizationProtocol(CharacterizationProtocol protocol);
+	public CharacterizationProtocol getCharacterizationProtocol();
 }

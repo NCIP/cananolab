@@ -6,6 +6,7 @@ package gov.nih.nci.calab.domain.nano.characterization.physical;
 import gov.nih.nci.calab.domain.Instrument;
 import gov.nih.nci.calab.domain.Measurement;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
+import gov.nih.nci.calab.domain.nano.characterization.CharacterizationProtocol;
 import gov.nih.nci.calab.domain.nano.characterization.CharacterizationTable;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.service.util.CananoConstants;
@@ -40,6 +41,7 @@ public class Stability implements Characterization {
 	private Collection<Nanoparticle> nanoparticleCollection;
 	private Collection<CharacterizationTable> characterizationTableCollection = new ArrayList<CharacterizationTable>();
 	private Instrument instrument;
+	private CharacterizationProtocol characterizationProtocol;
 	/**
 	 * 
 	 */
@@ -167,5 +169,12 @@ public class Stability implements Characterization {
 	}
 	public void setInstrument(Instrument instrument) {
 		this.instrument = instrument;
+	}
+	public CharacterizationProtocol getCharacterizationProtocol() {
+		return characterizationProtocol;
+	}
+	public void setCharacterizationProtocol(
+			CharacterizationProtocol characterizationProtocol) {
+		this.characterizationProtocol = characterizationProtocol;
 	}
 }
