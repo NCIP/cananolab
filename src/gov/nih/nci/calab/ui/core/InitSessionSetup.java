@@ -386,6 +386,22 @@ public class InitSessionSetup {
 		}
 	}
 
+	public void setAllDendrimerBranches(HttpSession session) throws Exception {
+		if (session.getServletContext().getAttribute("allDendrimerBranches") == null) {
+			String[] branches = lookupService.getAllDendrimerBranches();
+			session.getServletContext().setAttribute("allDendrimerBranches",
+					branches);
+		}
+	}
+
+	public void setAllDendrimerGenerations(HttpSession session) throws Exception {
+		if (session.getServletContext().getAttribute("allDendrimerGenerations") == null) {
+			String[] generations = lookupService.getAllDendrimerGenerations();
+			session.getServletContext().setAttribute("allDendrimerGenerations",
+					generations);
+		}
+	}
+
 	public void setAllMetalCompositions(HttpSession session) throws Exception {
 		if (session.getServletContext().getAttribute("allMetalCompositions") == null) {
 			String[] compositions = lookupService.getAllMetalCompositions();
