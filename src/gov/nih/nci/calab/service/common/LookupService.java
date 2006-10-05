@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.52 2006-09-15 20:36:10 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.53 2006-10-05 20:11:45 zengje Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -596,15 +596,79 @@ public class LookupService {
 		String[] names = new String[] { "Amine", "Carboxyl", "Hydroxyl" };
 		return names;
 	}
+	
+	public String[] getAllDendrimerBranches() throws Exception{
+		SortedSet<String> branches = new TreeSet<String>();
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			String hqlString = "select distinct dendrimer.branch from DendrimerComposition dendrimer where dendrimer.branch is not null";
+			List results = ida.search(hqlString);
+			for (Object obj : results) {
+				branches.add((String) obj);
+			}
+		} catch (Exception e) {
+			logger.error("Problem to retrieve all Dendrimer Branches.");
+			throw new RuntimeException("Problem to retrieve all Dendrimer Branches. ");
+		} finally {
+			ida.close();
+		}
+		branches.addAll(Arrays
+				.asList(CananoConstants.DEFAULT_DENDRIMER_BRANCHES));
+
+		return (String[])branches.toArray(new String[0]);
+	}
+	
+	public String[] getAllDendrimerGenerations() throws Exception{
+		SortedSet<String> generations = new TreeSet<String>();
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			String hqlString = "select distinct dendrimer.generation from DendrimerComposition dendrimer where dendrimer.generation is not null ";
+			List results = ida.search(hqlString);
+			for (Object obj : results) {
+				generations.add(obj.toString());
+			}
+		} catch (Exception e) {
+			logger.error("Problem to retrieve all Dendrimer Generations.");
+			throw new RuntimeException("Problem to retrieve all Dendrimer Generations. ");
+		} finally {
+			ida.close();
+		}
+		generations.addAll(Arrays
+				.asList(CananoConstants.DEFAULT_DENDRIMER_GENERATIONS));
+
+		return (String[])generations.toArray(new String[0]);
+	}
 
 	public String[] getAllMetalCompositions() {
 		String[] compositions = new String[] { "Gold", "Sliver", "Iron oxide" };
 		return compositions;
 	}
 
-	public String[] getAllPolymerInitiators() {
-		String[] initiators = new String[] { "Free Radicals", "Peroxide" };
-		return initiators;
+	public String[] getAllPolymerInitiators() throws Exception{
+		SortedSet<String> initiators = new TreeSet<String>();
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			String hqlString = "select distinct polymer.initiator from PolymerComposition polymer ";
+			List results = ida.search(hqlString);
+			for (Object obj : results) {
+				initiators.add((String) obj);
+			}
+		} catch (Exception e) {
+			logger.error("Problem to retrieve all Polymer Initiator.");
+			throw new RuntimeException("Problem to retrieve all Polymer Initiator. ");
+		} finally {
+			ida.close();
+		}
+		initiators.addAll(Arrays
+				.asList(CananoConstants.DEFAULT_POLYMER_INITIATORS));
+
+		return (String[])initiators.toArray(new String[0]);
 	}
 
 	public List<String> getAllParticleSources() throws Exception {
