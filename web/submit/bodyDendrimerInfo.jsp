@@ -6,7 +6,7 @@
 <table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 	<tbody>
 		<tr class="topBorder">
-			<td class="formTitle" colspan="4">
+			<td class="formTitle" colspan="6">
 				<div align="justify">
 					Composition Properties
 				</div>
@@ -19,14 +19,32 @@
 			<td class="label">
 				<c:choose>
 					<c:when test="${canUserUpdateParticle eq 'true'}">
-						<html:text property="dendrimer.branch" />
+						<html:select property="dendrimer.branch">
+							<option value=""></option>
+							<html:options name="allDendrimerBranches" />
+							<option value="Other">
+								Other
+							</option>
+						</html:select>
 					</c:when>
 					<c:otherwise>
 						${nanoparticleCompositionForm.map.dendrimer.branch}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>
-
+			<td class="label">
+				<strong>Other Branch</strong>
+			</td>
+			<td class="label">
+				<c:choose>
+					<c:when test="${canUserUpdateParticle eq 'true'}">
+						<html:text property="dendrimer.otherBranch" />
+					</c:when>
+					<c:otherwise>
+						&nbsp;
+					</c:otherwise>
+				</c:choose>
+			</td>
 			<td class="label">
 				<strong>Repeat Unit</strong>
 			</td>
@@ -48,13 +66,33 @@
 			<td class="label">
 				<c:choose>
 					<c:when test="${canUserUpdateParticle eq 'true'}">
-						<html:text property="dendrimer.generation" />
+						<html:select property="dendrimer.generation">
+							<option value=""></option>
+							<html:options name="allDendrimerGenerations" />
+							<option value="Other">
+								Other
+							</option>
+						</html:select>
 					</c:when>
 					<c:otherwise>
 						${nanoparticleCompositionForm.map.dendrimer.generation}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>
+			<td class="label">
+				<strong>Other Generation</strong>
+			</td>
+			<td class="label">
+				<c:choose>
+					<c:when test="${canUserUpdateParticle eq 'true'}">
+						<html:text property="dendrimer.otherGeneration" />
+					</c:when>
+					<c:otherwise>
+						&nbsp;
+					</c:otherwise>
+				</c:choose>
+			</td>
+
 			<td class="label">
 				<strong>Molecular Formula</strong>
 			</td>
@@ -138,7 +176,8 @@
 				</c:choose>
 
 			</td>
-			<td class="rightLabel" colspan="2">&nbsp;
+			<td class="rightLabel" colspan="2">
+				&nbsp;
 				<c:choose>
 					<c:when test="${canUserUpdateParticle eq 'true'}">
 						<input type="button" onclick="javascript:updateComposition()" value="Update Surface Groups">
