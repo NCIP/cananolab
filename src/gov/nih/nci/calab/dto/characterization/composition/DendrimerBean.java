@@ -17,10 +17,14 @@ import java.util.List;
 
 public class DendrimerBean extends CompositionBean {
 	private String branch;
+	
+	private String otherBranch;
 
 	private String repeatUnit;
 
 	private String generation;
+	
+	private String otherGeneration;
 
 	private String numberOfSurfaceGroups;
 
@@ -119,14 +123,38 @@ public class DendrimerBean extends CompositionBean {
 		this.core = core;
 	}
 
+	public String getOtherBranch() {
+		return otherBranch;
+	}
+
+	public void setOtherBranch(String otherBranch) {
+		this.otherBranch = otherBranch;
+	}
+
+	public String getOtherGeneration() {
+		return otherGeneration;
+	}
+
+	public void setOtherGeneration(String otherGeneration) {
+		this.otherGeneration = otherGeneration;
+	}
+
 	public DendrimerComposition getDomainObj() {
 		DendrimerComposition doComp = new DendrimerComposition();
 		super.updateDomainObj(doComp);
 
 		if (generation.length() > 0) {
+			if (generation.equalsIgnoreCase(CananoConstants.OTHER)){
+				generation = otherGeneration;
+			}
 			doComp.setGeneration(new Float(generation));
 		}
-		doComp.setBranch(branch);
+		if (branch.equalsIgnoreCase(CananoConstants.OTHER)) {
+			doComp.setBranch(otherBranch);
+		}
+		else {
+			doComp.setBranch(branch);
+		}
 		doComp.setRepeatUnit(repeatUnit);
 		doComp.setMolecularFormula(molecularFormula);
 		for (SurfaceGroupBean surfaceGroup : surfaceGroups) {
@@ -134,4 +162,5 @@ public class DendrimerBean extends CompositionBean {
 		}
 		return doComp;
 	}
+	
 }
