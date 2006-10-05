@@ -25,6 +25,7 @@
 						${nanoparticleCompositionForm.map.carbonNanotube.growthDiameter}&nbsp;
 					</c:otherwise>
 				</c:choose>
+				&nbsp;nm
 			</td>
 			<td class="label">
 				<strong>Chirality </strong>
@@ -54,6 +55,7 @@
 						${nanoparticleCompositionForm.map.carbonNanotube.averageLength}&nbsp;
 					</c:otherwise>
 				</c:choose>
+				&nbsp;nm
 			</td>
 			<td class="label">
 				<strong>Wall Type</strong>
