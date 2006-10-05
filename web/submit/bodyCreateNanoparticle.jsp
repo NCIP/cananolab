@@ -81,7 +81,8 @@
 							<td class="rightLabel">
 								<html:select property="visibilities" multiple="true" size="6">
 									<html:options name="allVisibilityGroups" />
-								</html:select>
+								</html:select><br>
+								<i>(NCL_Researcher is default if none of above is selected.)</i>
 							</td>
 						</tr>
 					</tbody>
