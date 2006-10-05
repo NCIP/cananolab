@@ -8,7 +8,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleCompositionAction.java,v 1.16 2006-09-14 21:51:31 pansu Exp $ */
+/* CVS $Id: NanoparticleCompositionAction.java,v 1.17 2006-10-05 20:13:29 zengje Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.CarbonNanotubeComposition;
@@ -186,6 +186,8 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 			InitSessionSetup.getInstance().setAllDendrimerCores(session);
 			InitSessionSetup.getInstance().setAllDendrimerSurfaceGroupNames(
 					session);
+			InitSessionSetup.getInstance().setAllDendrimerBranches(session);
+			InitSessionSetup.getInstance().setAllDendrimerGenerations(session);
 		} else if (particleType.equalsIgnoreCase(CananoConstants.POLYMER_TYPE)) {
 			InitSessionSetup.getInstance().setAllPolymerInitiators(session);
 		} else if (particleType
