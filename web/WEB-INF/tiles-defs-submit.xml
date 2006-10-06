@@ -39,10 +39,10 @@
 			<item value="Caspase 3 Activation" link="" />
 		</putList>
 		<putList name="bloodContactActions">
-			<item value="Plate Aggregation" link="" />
-			<item value="Hemolysis" link="" />
-			<item value="Plasma Protein Binding" link="" />
-			<item value="Coagulation" link="" />
+			<item value="Plate Aggregation" link="invitroImmunotoxicityPlateAggregation.do?dispatch=setup&amp;page=0" />
+			<item value="Hemolysis" link="invitroImmunotoxicityHemolysis.do?dispatch=setup&amp;page=0" />
+			<item value="Plasma Protein Binding" link="invitroImmunotoxicityProteinBinding.do?dispatch=setup&amp;page=0" />
+			<item value="Coagulation" link="invitroImmunotoxicityCoagulation.do?dispatch=setup&amp;page=0" />
 		</putList>
 		<putList name="immuneCellFuncActions">
 			<item value="Oxidative Burst" link="" />
@@ -140,6 +140,54 @@
 	<definition name="submit.addparticle.size" extends="calab.home">
 		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
 		<put name="calabContent" value="submit.addparticle.size.content" />
+		<put name="menu" value="submit" />
+	</definition>
+
+	<!-- definition for the invitro immunotoxicity hemology page -->
+	<definition name="submit.addimmunotoxicity.hemolysis.content" extends="submit.content.home">
+		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
+		<put name="submitContent" value="/submit/bodyImmunotoxicityHemolysis.jsp" />
+	</definition>
+
+	<definition name="submit.addimmunotoxicity.hemolysis" extends="calab.home">
+		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
+		<put name="calabContent" value="submit.addimmunotoxicity.hemolysis.content" />
+		<put name="menu" value="submit" />
+	</definition>
+
+	<!-- definition for the invitro immunotoxicity coagulation page -->
+	<definition name="submit.addimmunotoxicity.coagulation.content" extends="submit.content.home">
+		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
+		<put name="submitContent" value="/submit/bodyImmunotoxicityCoagulation.jsp" />
+	</definition>
+
+	<definition name="submit.addimmunotoxicity.coagulation" extends="calab.home">
+		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
+		<put name="calabContent" value="submit.addimmunotoxicity.coagulation.content" />
+		<put name="menu" value="submit" />
+	</definition>
+
+	<!-- definition for the invitro immunotoxicity plate aggregation page -->
+	<definition name="submit.addimmunotoxicity.plateaggregation.content" extends="submit.content.home">
+		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
+		<put name="submitContent" value="/submit/bodyImmunotoxicityPlateAggregation.jsp" />
+	</definition>
+
+	<definition name="submit.addimmunotoxicity.plateaggregation" extends="calab.home">
+		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
+		<put name="calabContent" value="submit.addimmunotoxicity.plateaggregation.content" />
+		<put name="menu" value="submit" />
+	</definition>
+
+	<!-- definition for the invitro immunotoxicity plasma protein binding page -->
+	<definition name="submit.addimmunotoxicity.plasmaproteinbinding.content" extends="submit.content.home">
+		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
+		<put name="submitContent" value="/submit/bodyImmunotoxicityProteinBinding.jsp" />
+	</definition>
+
+	<definition name="submit.addimmunotoxicity.plasmaproteinbinding" extends="calab.home">
+		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
+		<put name="calabContent" value="submit.addimmunotoxicity.plasmaproteinbinding.content" />
 		<put name="menu" value="submit" />
 	</definition>
 
