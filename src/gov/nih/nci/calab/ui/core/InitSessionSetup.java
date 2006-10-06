@@ -499,6 +499,14 @@ public class InitSessionSetup {
 					instrumentTypes);
 		}
 	}
+	
+	public void setManufacturerPerType(HttpSession session) throws Exception {
+		if (session.getServletContext().getAttribute("manufacturerPerType") == null) {
+			String[] manufacturerPerType = new String[] {"Manufacturer#1", "Manufacturer#2"};//lookupService.getAllInstrumentTypes();
+			session.getServletContext().setAttribute("manufacturerPerType",
+					manufacturerPerType);
+		}
+	}
 
 	public void setAllSizeDistributionGraphTypes(HttpSession session)
 			throws Exception {
