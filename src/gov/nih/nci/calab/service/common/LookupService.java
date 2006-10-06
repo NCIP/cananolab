@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.53 2006-10-05 20:11:45 zengje Exp $ */
+/* CVS $Id: LookupService.java,v 1.54 2006-10-06 14:27:44 chand Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -736,7 +736,7 @@ public class LookupService {
 	
 	public String[] getAllInstrumentTypes() {
 		//TODO query from database or properties file
-		String[] instrumentTypes=new String[] {"Dynamic Light Scattering", "Spectroscopy"};
+		String[] instrumentTypes=new String[] {"Dynamic Light Scattering (DLS)", "Spectroscopy"};
 		return instrumentTypes;
 	}
 	
