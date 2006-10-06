@@ -160,6 +160,22 @@ function updateSize() {
     document.nanoparticleSizeForm.action = "nanoparticleSize.do?dispatch=update&page=0";
     document.nanoparticleSizeForm.submit();
 }
+function updateHemolysis() {
+    document.invitroImmunotoxicityHemolysisForm.action = "invitroImmunotoxicityHemolysis.do?dispatch=update&page=0";
+    document.invitroImmunotoxicityHemolysisForm.submit();
+}
+function updateCoagulation() {
+    document.invitroImmunotoxicityCoagulationForm.action = "invitroImmunotoxicityCoagulation.do?dispatch=update&page=0";
+    document.invitroImmunotoxicityCoagulationForm.submit();
+}
+function updatePlateAggregation() {
+    document.invitroImmunotoxicityPlateAggregationForm.action = "invitroImmunotoxicityPlateAggregation.do?dispatch=update&page=0";
+    document.invitroImmunotoxicityPlateAggregationForm.submit();
+}
+function updateProteinBinding() {
+    document.invitroImmunotoxicityProteinBindingForm.action = "invitroImmunotoxicityProteinBinding.do?dispatch=update&page=0";
+    document.invitroImmunotoxicityProteinBindingForm.submit();
+}
 function loadSizeFile(particleName, fileNumber) {
     document.nanoparticleSizeForm.action = "nanoparticleSize.do?dispatch=loadFile&page=0&particleName=" + particleName + "&fileNumber=" + fileNumber;
     document.nanoparticleSizeForm.submit();
