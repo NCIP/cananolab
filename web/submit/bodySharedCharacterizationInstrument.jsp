@@ -34,7 +34,9 @@
 		<td class="rightLabel">
 			<c:choose>
 				<c:when test="${canUserUpdateParticle eq 'true'}">
-					<html:text property="achar.instrument.manufacturer" />
+					<html:select property="achar.instrument.manufacturer" >
+						<html:options name="manufacturerPerType"/>
+					</html:select>
 				</c:when>
 				<c:otherwise>
 						${thisForm.map.achar.instrument.manufacturer}&nbsp;
@@ -42,6 +44,7 @@
 			</c:choose>
 		</td>
 	</tr>
+	<%-- 
 	<tr>
 		<td class="leftLabel">
 			<strong>Instrument Abbreviation</strong>
@@ -57,9 +60,10 @@
 			</c:choose>
 		</td>
 	</tr>
+	--%>
 	<tr>
 		<td class="leftLabel" valign="top">
-			<strong>Instrument Description</strong>
+			<strong>Description</strong>
 		</td>
 		<td class="rightLabel" colspan="3">
 			<c:choose>
