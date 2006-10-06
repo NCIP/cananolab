@@ -9,6 +9,10 @@ import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
 import gov.nih.nci.calab.dto.characterization.SizeBean;
+import gov.nih.nci.calab.dto.characterization.invitro.HemolysisBean;
+import gov.nih.nci.calab.dto.characterization.invitro.CoagulationBean;
+import gov.nih.nci.calab.dto.characterization.invitro.PlateAggregationBean;
+import gov.nih.nci.calab.dto.characterization.invitro.PlasmaProteinBindingBean;
 import gov.nih.nci.calab.dto.characterization.composition.CompositionBean;
 import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.security.UserService;
@@ -211,6 +215,66 @@ public class SubmitNanoparticleService {
 		Characterization doSize = size.getDomainObj();
 		// TODO think about how to deal with characterization file.
 		addParticleCharacterization(particleType, particleName, doSize);
+	}
+
+	/**
+	 * Saves the invitro hemolysis characterization to the database
+	 * 
+	 * @param particleType
+	 * @param particleName
+	 * @param hemolysis
+	 * @throws Exception
+	 */
+	public void addHemolysis(String particleType, String particleName,
+			HemolysisBean hemolysis) throws Exception {
+		Characterization doHemolysis = hemolysis.getDomainObj();
+		// TODO think about how to deal with characterization file.
+		addParticleCharacterization(particleType, particleName, doHemolysis);
+	}
+
+	/**
+	 * Saves the invitro coagulation characterization to the database
+	 * 
+	 * @param particleType
+	 * @param particleName
+	 * @param coagulation
+	 * @throws Exception
+	 */
+	public void addCoagulation(String particleType, String particleName,
+			CoagulationBean coagulation) throws Exception {
+		Characterization doCoagulation = coagulation.getDomainObj();
+		// TODO think about how to deal with characterization file.
+		addParticleCharacterization(particleType, particleName, doCoagulation);
+	}
+
+	/**
+	 * Saves the invitro plate aggregation characterization to the database
+	 * 
+	 * @param particleType
+	 * @param particleName
+	 * @param plateAggregation
+	 * @throws Exception
+	 */
+	public void addPlateAggregation(String particleType, String particleName,
+			PlateAggregationBean plateAggregation) throws Exception {
+		Characterization doPlateAggregation = plateAggregation.getDomainObj();
+		// TODO think about how to deal with characterization file.
+		addParticleCharacterization(particleType, particleName, doPlateAggregation);
+	}
+
+	/**
+	 * Saves the invitro plasma protein binding characterization to the database
+	 * 
+	 * @param particleType
+	 * @param particleName
+	 * @param plasmaProteinBinding
+	 * @throws Exception
+	 */
+	public void addProteinBinding(String particleType, String particleName,
+			PlasmaProteinBindingBean plasmaProteinBinding) throws Exception {
+		Characterization doProteinBinding = plasmaProteinBinding.getDomainObj();
+		// TODO think about how to deal with characterization file.
+		addParticleCharacterization(particleType, particleName, doProteinBinding);
 	}
 
 	/**
