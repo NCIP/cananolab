@@ -22,6 +22,13 @@ public class CharacterizationTableDataBean {
 	public CharacterizationTableDataBean() {
 
 	}
+	
+	public CharacterizationTableDataBean(TableData tableData) {
+		this.id = tableData.getId().toString();
+		this.type = tableData.getType();
+		this.value = tableData.getValue().getValue();
+		this.valueUnit = tableData.getValue().getUnitOfMeasurement();
+	}
 
 	public String getId() {
 		return id;
