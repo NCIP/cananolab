@@ -47,10 +47,10 @@
 							<td class="label">
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
-										<html:text property="achar.numberOfCharacterizationTables" />
+										<html:text property="achar.numberOfDerivedBioAssayData" />
 									</c:when>
 									<c:otherwise>
-						${nanoparticleSizeForm.map.achar.numberOfCharacterizationTables}&nbsp;
+						${nanoparticleSizeForm.map.achar.numberOfDerivedBioAssayData}&nbsp;
 					</c:otherwise>
 								</c:choose>
 							</td>
@@ -65,7 +65,7 @@
 						</tr>
 						<tr>
 							<td class="completeLabel" colspan="4">
-								<c:forEach var="achar.table" items="${nanoparticleSizeForm.map.achar.characterizationTables}" varStatus="status">
+								<c:forEach var="achar.table" items="${nanoparticleSizeForm.map.achar.derivedBioAssayData}" varStatus="status">
 									<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 										<tbody>
 											<tr class="topBorder">
@@ -87,7 +87,7 @@
 															</html:select>
 														</c:when>
 														<c:otherwise>
-						${nanoparticleSizeForm.map.achar.characterizationTables[status.index].type}&nbsp;
+						${nanoparticleSizeForm.map.achar.derivedBioAssayData[status.index].type}&nbsp;
 					</c:otherwise>
 													</c:choose>
 												</td>
@@ -109,7 +109,7 @@
 											</logic:notPresent>
 														</c:when>
 														<c:otherwise>
-						${nanoparticleSizeForm.map.achar.characterizationTables[status.index].file.name}&nbsp;
+						${nanoparticleSizeForm.map.achar.derivedBioAssayData[status.index].file.name}&nbsp;
 					</c:otherwise>
 													</c:choose>													
 												</td>
@@ -124,11 +124,11 @@
 												<td class="label">
 													<c:choose>
 														<c:when test="${canUserUpdateParticle eq 'true'}">
-															<html:text name="achar.table" indexed="true" property="tableDataList[0].value" />
-													&nbsp; ${nanoparticleSizeForm.map.achar.characterizationTables[status.index].tableDataList[0].valueUnit}	
+															<html:text name="achar.table" indexed="true" property="datumList[0].value" />
+													&nbsp; ${nanoparticleSizeForm.map.achar.derivedBioAssayData[status.index].datumList[0].valueUnit}	
 														</c:when>
 														<c:otherwise>
-						${nanoparticleSizeForm.map.achar.characterizationTables[status.index].tableDataList[0].value} ${nanoparticleSizeForm.map.achar.characterizationTables[status.index].tableDataList[0].valueUnit}&nbsp;
+						${nanoparticleSizeForm.map.achar.derivedBioAssayData[status.index].datumList[0].value} ${nanoparticleSizeForm.map.achar.derivedBioAssayData[status.index].datumList[0].valueUnit}&nbsp;
 					</c:otherwise>
 													</c:choose>
 												</td>
@@ -138,11 +138,11 @@
 												<td class="rightLabel">
 													<c:choose>
 														<c:when test="${canUserUpdateParticle eq 'true'}">
-															<html:text name="achar.table" indexed="true" property="tableDataList[1].value" />
-													&nbsp; ${nanoparticleSizeForm.map.achar.characterizationTables[status.index].tableDataList[1].valueUnit}
+															<html:text name="achar.table" indexed="true" property="datumList[1].value" />
+													&nbsp; ${nanoparticleSizeForm.map.achar.derivedBioAssayData[status.index].datumList[1].valueUnit}
 														</c:when>
 														<c:otherwise>
-						${nanoparticleSizeForm.map.achar.characterizationTables[status.index].tableDataList[1].value} ${nanoparticleSizeForm.map.achar.characterizationTables[status.index].tableDataList[1].valueUnit}&nbsp;
+						${nanoparticleSizeForm.map.achar.derivedBioAssayData[status.index].datumList[1].value} ${nanoparticleSizeForm.map.achar.derivedBioAssayData[status.index].datumList[1].valueUnit}&nbsp;
 					</c:otherwise>
 													</c:choose>
 												</td>
@@ -154,10 +154,10 @@
 												<td class="rightLabel" colspan="3">
 													<c:choose>
 														<c:when test="${canUserUpdateParticle eq 'true'}">
-															<html:text name="achar.table" indexed="true" property="tableDataList[2].value" />
+															<html:text name="achar.table" indexed="true" property="datumList[2].value" />
 														</c:when>
 														<c:otherwise>
-						${nanoparticleSizeForm.map.achar.characterizationTables[status.index].tableDataList[2].value}&nbsp;
+						${nanoparticleSizeForm.map.achar.derivedBioAssayData[status.index].datumList[2].value}&nbsp;
 					</c:otherwise>
 													</c:choose>
 												</td>

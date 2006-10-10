@@ -42,9 +42,9 @@ public class CharacterizationBean {
 
 	private InstrumentBean instrument=new InstrumentBean();
 
-	private List<CharacterizationTableBean> characterizationTables = new ArrayList<CharacterizationTableBean>();
+	private List<DerivedBioAssayDataBean> derivedBioAssayData = new ArrayList<DerivedBioAssayDataBean>();
 
-	private String numberOfCharacterizationTables;
+	private String numberOfDerivedBioAssayData;
 	
 	public CharacterizationBean() {
 
@@ -103,8 +103,8 @@ public class CharacterizationBean {
 		aChar.setCreatedBy(getCreatedBy());
 		aChar.setCreatedDate(getCreatedDate());
 		
-		for (CharacterizationTableBean table : getCharacterizationTables()) {
-			aChar.getCharacterizationTableCollection().add(
+		for (DerivedBioAssayDataBean table : getDerivedBioAssayData()) {
+			aChar.getDerivedBioAssayDataCollection().add(
 					table.getDomainObj());
 		}
 
@@ -154,13 +154,13 @@ public class CharacterizationBean {
 		return null;
 	}
 
-	public List<CharacterizationTableBean> getCharacterizationTables() {
-		return characterizationTables;
+	public List<DerivedBioAssayDataBean> getDerivedBioAssayData() {
+		return derivedBioAssayData;
 	}
 
-	public void setCharacterizationTables(
-			List<CharacterizationTableBean> characterizationTables) {
-		this.characterizationTables = characterizationTables;
+	public void setDerivedBioAssayData(
+			List<DerivedBioAssayDataBean> derivedBioAssayData) {
+		this.derivedBioAssayData = derivedBioAssayData;
 	}
 
 	public InstrumentBean getInstrument() {
@@ -171,20 +171,20 @@ public class CharacterizationBean {
 		this.instrument = instrument;
 	}
 	
-	public CharacterizationTableBean getTable(int ind) {
-		return characterizationTables.get(ind);
+	public DerivedBioAssayDataBean getData(int ind) {
+		return derivedBioAssayData.get(ind);
 	}
 
-	public void setTable(int ind, CharacterizationTableBean table) {
-		characterizationTables.set(ind, table);
+	public void setData(int ind, DerivedBioAssayDataBean table) {
+		derivedBioAssayData.set(ind, table);
 	}
 
-	public String getNumberOfCharacterizationTables() {
-		return numberOfCharacterizationTables;
+	public String getNumberOfDerivedBioAssayData() {
+		return numberOfDerivedBioAssayData;
 	}
 
-	public void setNumberOfCharacterizationTables(
-			String numberOfCharacterizationTables) {
-		this.numberOfCharacterizationTables = numberOfCharacterizationTables;
+	public void setNumberOfDerivedBioAssayData(
+			String numberOfDerivedBioAssayData) {
+		this.numberOfDerivedBioAssayData = numberOfDerivedBioAssayData;
 	}
 }

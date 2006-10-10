@@ -6,13 +6,13 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSizeAction.java,v 1.5 2006-10-10 14:05:18 chand Exp $ */
+/* CVS $Id: NanoparticleSizeAction.java,v 1.6 2006-10-10 22:20:00 chand Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
-import gov.nih.nci.calab.domain.nano.characterization.CharacterizationTable;
+import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
-import gov.nih.nci.calab.dto.characterization.CharacterizationTableBean;
+import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.dto.characterization.SizeBean;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.common.UserBean;
@@ -72,7 +72,7 @@ public class NanoparticleSizeAction extends AbstractDispatchAction {
 		}
 		
 		int fileNumber = 0;
-		for (CharacterizationTableBean obj : sizeChar.getCharacterizationTables()) {
+		for (DerivedBioAssayDataBean obj : sizeChar.getDerivedBioAssayData()) {
 			CharacterizationFileBean fileBean = (CharacterizationFileBean) request.getSession().getAttribute("characterizationFile" + fileNumber);
 			if (fileBean != null) {		
 				logger.info("************set fileBean to " + fileNumber);
@@ -184,7 +184,7 @@ public class NanoparticleSizeAction extends AbstractDispatchAction {
 		
 		int fileNumber = 0;
 		
-		for (CharacterizationTable obj : aChar.getCharacterizationTableCollection()) {
+		for (DerivedBioAssayData obj : aChar.getDerivedBioAssayDataCollection()) {
 			
 			if (obj.getFile() != null) {
 				CharacterizationFileBean fileBean = new CharacterizationFileBean();
@@ -273,34 +273,34 @@ public class NanoparticleSizeAction extends AbstractDispatchAction {
 	}
 	
 	public void updateCharacterizationTables(SizeBean achar) {
-		String numberOfCharacterizationTables = achar.getNumberOfCharacterizationTables();
+		String numberOfCharacterizationTables = achar.getNumberOfDerivedBioAssayData();
 		int tableNum = Integer.parseInt(numberOfCharacterizationTables);
-		List<CharacterizationTableBean> origTables = achar.getCharacterizationTables();
+		List<DerivedBioAssayDataBean> origTables = achar.getDerivedBioAssayData();
 		int origNum = (origTables == null) ? 0 : origTables
 				.size();
-		List<CharacterizationTableBean> tables = new ArrayList<CharacterizationTableBean>();
+		List<DerivedBioAssayDataBean> tables = new ArrayList<DerivedBioAssayDataBean>();
 		// create new ones
 		if (origNum == 0) {
 
 			for (int i = 0; i < tableNum; i++) {
-				CharacterizationTableBean table = new CharacterizationTableBean();
+				DerivedBioAssayDataBean table = new DerivedBioAssayDataBean();
 				tables.add(table);
 			}
 		}
 		// use keep original table info
 		else if (tableNum <= origNum) {
 			for (int i = 0; i < tableNum; i++) {
-				tables.add((CharacterizationTableBean) origTables.get(i));
+				tables.add((DerivedBioAssayDataBean) origTables.get(i));
 			}
 		} else {
 			for (int i = 0; i < origNum; i++) {
-				tables.add((CharacterizationTableBean) origTables.get(i));
+				tables.add((DerivedBioAssayDataBean) origTables.get(i));
 			}
 			for (int i = origNum; i < tableNum; i++) {
-				tables.add(new CharacterizationTableBean());
+				tables.add(new DerivedBioAssayDataBean());
 			}
 		}
-		achar.setCharacterizationTables(tables);
+		achar.setDerivedBioAssayData(tables);
 	}
 
 	public boolean loginRequired() {

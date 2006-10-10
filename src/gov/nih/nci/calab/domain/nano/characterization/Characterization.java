@@ -31,8 +31,9 @@ public interface Characterization {
 	public void setCreatedDate(Date createdDate);
 	public Date getCreatedDate();
 	
-	public void setCharacterizationTableCollection(Collection<CharacterizationTable> tableCollection);
-	public Collection<CharacterizationTable> getCharacterizationTableCollection();
+	public void setDerivedBioAssayDataCollection(Collection<DerivedBioAssayData> derivedBioAssayData);
+	public Collection<DerivedBioAssayData> getDerivedBioAssayDataCollection();
+
 	
 	public void setInstrument(Instrument instrument);
 	public Instrument getInstrument();
