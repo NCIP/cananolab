@@ -100,7 +100,7 @@
 			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.PlateAggregationBean" />
 			<form-property name="fileNumber" type="java.lang.String" />
 		</form-bean>
-		<form-bean name="loadCharacterizationTableForm" type="org.apache.struts.validator.DynaValidatorForm">
+		<form-bean name="loadDerivedBioAssayDataForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="dispatch" type="java.lang.String" />
 			<form-property name="page" type="java.lang.Integer" initial="0" />
 			<form-property name="assayType" type="java.lang.String" />
@@ -197,8 +197,8 @@
 			<forward name="input" path="submit.addimmunotoxicity.plasmaproteinbinding" />
 			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
 		</action>
-		<action name="loadCharacterizationTableForm" parameter="dispatch" path="/loadFile" type="gov.nih.nci.calab.ui.submit.LoadCharacterizationTableAction" input="input" scope="request">
-			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.loadCharacterizationTable" path="submit.load.characterization.table" type="java.lang.Exception" />
+		<action name="loadDerivedBioAssayDataForm" parameter="dispatch" path="/loadFile" type="gov.nih.nci.calab.ui.submit.LoadDerivedBioAssayDataAction" input="input" scope="request">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.loadDerivedBioAssayData" path="submit.load.characterization.table" type="java.lang.Exception" />
 			<forward name="input" path="submit.load.characterization.table" />
 		</action>
 		<action path="/submitAction" type="gov.nih.nci.calab.ui.core.BaseForwardAction" parameter="submit.action.message" scope="request" />
