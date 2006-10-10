@@ -2,6 +2,8 @@ package gov.nih.nci.calab.dto.characterization;
 
 import gov.nih.nci.calab.domain.nano.characterization.CharacterizationTable;
 
+import gov.nih.nci.calab.domain.nano.characterization.TableData;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +35,25 @@ public class CharacterizationTableBean {
 		// TODO Auto-generated constructor stub
 		this.type = type;
 		this.file = file;
+	}
+	
+	public CharacterizationTableBean(CharacterizationTable table) {
+		super();
+		this.id = table.getId().toString();
+		this.type = table.getType();
+		
+		this.file = new CharacterizationFileBean();
+		this.file.setName(table.getFile());
+
+		/*
+		for (CharacterizationTableDataBean tableData : this.getTableDataList()) {
+			table.getTableDataCollection().add(tableData.getDomainObj());
+		}
+		*/
+		for (TableData tableData : table.getTableDataCollection()) {
+			CharacterizationTableDataBean ctDataBean = new CharacterizationTableDataBean(tableData);
+			tableDataList.add(ctDataBean);
+		}
 	}
 
 	public CharacterizationFileBean getFile() {
@@ -83,7 +104,8 @@ public class CharacterizationTableBean {
 		}
 		table.setType(type);
 		//TODO need to decide whether use fileId and file object
-		table.setFile(file.getName());
+		if (file != null)
+		    table.setFile(file.getPath() + file.getName());
 		for (CharacterizationTableDataBean tableData : this.getTableDataList()) {
 			table.getTableDataCollection().add(tableData.getDomainObj());
 		}
