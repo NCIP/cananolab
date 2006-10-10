@@ -245,4 +245,29 @@ public class SearchNanoparticleService {
 		}
 		return aChar;
 	}
+	
+	public Characterization getCharacterizationAndTableBy(String charId)
+			throws Exception {
+		IDataAccess ida = (new DataAccessProxy())
+			.getInstance(IDataAccess.HIBERNATE);
+		Characterization aChar=null;
+		try {
+
+			ida.open();
+			List results = ida
+					.search(" from Characterization chara left join fetch chara.characterizationTableCollection" +
+							" left join fetch chara.characterizationTableCollection.tableDataCollection" +
+							" where chara.id="
+							+ charId);
+			for(Object obj: results) {
+				aChar=(Characterization)obj;				
+			}
+		} catch (Exception e) {
+			logger.error("Problem finding characterization");
+			throw e;
+		} finally {
+			ida.close();
+		}
+		return aChar;
+	}
 }
