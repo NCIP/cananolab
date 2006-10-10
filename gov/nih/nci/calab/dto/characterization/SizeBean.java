@@ -1,6 +1,8 @@
 package gov.nih.nci.calab.dto.characterization;
 
 import gov.nih.nci.calab.domain.nano.characterization.physical.Size;
+import gov.nih.nci.calab.domain.nano.characterization.Characterization;
+import gov.nih.nci.calab.domain.nano.characterization.CharacterizationTable;
 
 import java.util.List;
 
@@ -15,23 +17,33 @@ import java.util.List;
 public class SizeBean extends CharacterizationBean {
 	public SizeBean() {
 		super();
-		for (CharacterizationTableBean table: getCharacterizationTables()) {
-			CharacterizationTableDataBean average=new CharacterizationTableDataBean();
-			average.setType("Average");
-			CharacterizationTableDataBean zaverage=new CharacterizationTableDataBean();
-			average.setType("Z-Average");
-			CharacterizationTableDataBean pdi=new CharacterizationTableDataBean();
-			average.setType("PDI");
-			table.getTableDataList().add(average);
-			table.getTableDataList().add(zaverage);
-			table.getTableDataList().add(pdi);
+		initSetup();
+	}
+	
+	public SizeBean(Characterization aChar) {
+		super();
+		this.setCharacterizationSource(aChar.getSource());
+		this.setViewTitle(aChar.getIdentificationName());
+		this.setDescription(aChar.getDescription());
+		if (aChar.getInstrument() != null) {
+			this.getInstrument().setType(aChar.getInstrument().getType());
+			this.getInstrument().setDescription(aChar.getInstrument().getDescription());
+			this.getInstrument().setManufacturer(aChar.getInstrument().getManufacturer());
+		}
+		this.setNumberOfCharacterizationTables(Integer.valueOf(aChar.getCharacterizationTableCollection().size()).toString());
+		for (CharacterizationTable table : aChar.getCharacterizationTableCollection()) {
+			CharacterizationTableBean ctBean = new CharacterizationTableBean(table);
+			this.getCharacterizationTables().add(ctBean);
 		}
 	}
 	
 	public void setCharacterizationTables(
 			List<CharacterizationTableBean> characterizationTables) {
 		super.setCharacterizationTables(characterizationTables);
-		
+		initSetup();
+	}
+	
+	public void initSetup() {
 		for (CharacterizationTableBean table:getCharacterizationTables()) {
 			CharacterizationTableDataBean average=new CharacterizationTableDataBean();
 			average.setType("Average");
