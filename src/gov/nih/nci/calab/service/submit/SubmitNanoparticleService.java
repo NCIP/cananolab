@@ -7,6 +7,7 @@ import gov.nih.nci.calab.domain.OutputFile;
 import gov.nih.nci.calab.domain.Run;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
+import gov.nih.nci.calab.domain.Instrument;
 import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
 import gov.nih.nci.calab.dto.characterization.SizeBean;
 import gov.nih.nci.calab.dto.characterization.invitro.HemolysisBean;
@@ -23,6 +24,13 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.upload.FormFile;
+
+import java.io.OutputStreamWriter;
+import java.io.BufferedWriter;
+import java.io.Writer;
+import java.io.InputStream;
+import java.io.FileOutputStream;
+import java.io.File;
 
 /**
  * This class includes service calls involved in creating nanoparticles and
@@ -114,6 +122,7 @@ public class SubmitNanoparticleService {
 	 */
 	private void addParticleCharacterization(String particleType,
 			String particleName, Characterization achar) throws Exception {
+		
 		// if ID is not set save to the database otherwise update
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
@@ -122,6 +131,9 @@ public class SubmitNanoparticleService {
 		int existingViewTitleCount = -1;
 		try {
 			ida.open();
+			
+			if (achar.getInstrument() != null)
+				ida.store(achar.getInstrument());
 			// check if viewTitle is already used the same type of
 			// characterization for the same particle
 			String viewTitleQuery = "";
@@ -188,6 +200,63 @@ public class SubmitNanoparticleService {
 	}
 
 	/**
+	 * Save Instrument to the database.
+	 * 
+	 * @param particleType
+	 * @param particleName
+	 * @param achar
+	 * @throws Exception
+	 */
+	
+	private Instrument addInstrument(Instrument instrument) throws Exception {
+		Instrument rInstrument = null;
+		
+		// if ID is not set save to the database otherwise update
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+
+		//int existingInstrumentCount = -1;
+		Instrument existingInstrument = null;
+		try {
+			ida.open();
+			// check if instrument is already existed
+			String viewQuery = "";
+			if (instrument.getId() == null) {
+				viewQuery = "select instrument from Instrument instrument where instrument.type='"
+						+ instrument.getType()
+						+ "' and instrument.manufacturer='"
+						+ instrument.getManufacturer()
+						+ "'";
+			} else {
+				viewQuery = "select instrument from Instrument instrument where instrument.type='"
+						+ instrument.getType()
+						+ "' and instrument.manufacturer='"
+						+ instrument.getManufacturer()
+						+ "' and instrument.id!=" + instrument.getId();
+			}
+			List viewTitleResult = ida.search(viewQuery);
+
+			for (Object obj : viewTitleResult) {
+				existingInstrument = (Instrument) obj;
+			}
+			if (existingInstrument == null) {
+				ida.store(instrument);
+				rInstrument = instrument;
+			} else {
+				rInstrument = existingInstrument;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			ida.rollback();
+			logger.error("Problem saving characterization: ");
+			throw e;
+		} finally {
+			ida.close();
+		}
+		return rInstrument;
+	}
+
+	/**
 	 * Saves the particle composition to the database
 	 * 
 	 * @param particleType
@@ -214,6 +283,12 @@ public class SubmitNanoparticleService {
 			SizeBean size) throws Exception {
 		Characterization doSize = size.getDomainObj();
 		// TODO think about how to deal with characterization file.
+		/*
+		if (doSize.getInstrument() != null) {
+			Instrument instrument = addInstrument(doSize.getInstrument());
+			doSize.setInstrument(instrument);
+		}
+		*/
 		addParticleCharacterization(particleType, particleName, doSize);
 	}
 
@@ -291,13 +366,21 @@ public class SubmitNanoparticleService {
 	public CharacterizationFileBean saveCharacterizationFile(
 			String particleName, FormFile file, String title,
 			String description, String comments, String[] keywords,
-			String[] visibilities) throws Exception {
+			String[] visibilities,
+			String path,
+			String fileNumber) throws Exception {
 
 		// TODO saves file to the file system
-		// TODO daves file to the database
+		String outputFilename = path + file.getFileName();
+		FileOutputStream oStream = new FileOutputStream(new File(outputFilename));
+		this.saveFile(file.getInputStream(), oStream);
+		
+		// TODO saves file to the database
+		
 		CharacterizationFileBean fileBean = new CharacterizationFileBean();
-		fileBean.setName("new test file");
-		fileBean.setId("1");
+		fileBean.setName(file.getFileName());
+		fileBean.setPath(path);
+		fileBean.setId(fileNumber);
 		fileBean.setVisibilityGroups(visibilities);
 		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
 		String fileName = fileBean.getName();
@@ -316,6 +399,21 @@ public class SubmitNanoparticleService {
 		return fileBean;
 	}
 
+	public void saveFile(InputStream is, FileOutputStream os) {
+		byte[] bytes = new byte[32768];
+
+		try {
+			int numRead = 0;
+			while ((numRead = is.read(bytes)) > 0) {
+				os.write(bytes, 0, numRead);
+			}
+			os.close();
+			
+		} catch (Exception e) {
+				
+		}
+	}
+	
 	/**
 	 * Load the file for the given fileId from the database
 	 * 
