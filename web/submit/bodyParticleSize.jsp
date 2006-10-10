@@ -36,13 +36,13 @@
 						<tr class="topBorder">
 							<td class="formTitle" colspan="4">
 								<div align="justify">
-									Size Distribution Graph Information
+									Size Distribution
 								</div>
 							</td>
 						</tr>
 						<tr>
 							<td class="leftLabel">
-								<strong>Number of Graphs</strong>
+								<strong>Number of Distributions</strong>
 							</td>
 							<td class="label">
 								<c:choose>
@@ -100,9 +100,9 @@
 													<c:choose>
 														<c:when test="${canUserUpdateParticle eq 'true'}">
 															<logic:present name="characterizationFile${status.index}">
-																<a href="#"><bean:write name="characterizationFile${status.index}" property="name" /></a>
 																<bean:define id="fileId" name='characterizationFile${status.index}' property='id' type="java.lang.String"/>
 																<html:hidden name="achar.table" property="fileId" value="${fileId}" indexed="true" />
+																<a href="nanoparticleSize.do?dispatch=download&amp;fileId=${fileId}"><bean:write name="characterizationFile${status.index}" property="name" /></a>
 															</logic:present>
 															<logic:notPresent name="characterizationFile${status.index}">
 												Click on "Load File" button
@@ -149,7 +149,7 @@
 											</tr>
 											<tr>
 												<td class="leftLabel">
-													<strong>PDI</strong>
+													<strong>Polydispersity Index (PDI)</strong>
 												</td>
 												<td class="rightLabel" colspan="3">
 													<c:choose>
