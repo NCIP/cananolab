@@ -63,6 +63,10 @@
 			<form-property name="particleType" type="java.lang.String" />
 			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.SizeBean" />
 			<form-property name="fileNumber" type="java.lang.String" />
+			<form-property name="characterizationId" type="java.lang.String" />
+			<form-property name="characterizationSource" type="java.lang.String" />
+			<form-property name="viewTitle" type="java.lang.String" />
+			<form-property name="description" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="invitroImmunotoxicityHemolysisForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="dispatch" type="java.lang.String" />
@@ -117,6 +121,7 @@
 	</form-beans>
 	<global-forwards>
 		<forward name="Composition" path="nanoparticleComposition.do" />
+		<forward name="Size" path="nanoparticleSize.do" />
 		<forward name="sizeInputForm" path="submit.addparticle.size" />
 		<forward name="invitroHemolysisForm" path="submit.addimmunotoxicity.hemolysis" />
 		<forward name="invitroCoagulationForm" path="submit.addimmunotoxicity.coagulation" />
