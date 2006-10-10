@@ -30,7 +30,7 @@
 						</tr>
 						<tr>
 							<td class="completeLabel" colspan="4">
-								<strong> <html:radio property="fileSource" value="chooseExisting">Choose File From Existing Assays</html:radio>
+								<strong> <html:radio property="fileSource" value="chooseExisting">Choose File From caLAB workflow</html:radio>
 									<table cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 										<%--
 										<tr>
