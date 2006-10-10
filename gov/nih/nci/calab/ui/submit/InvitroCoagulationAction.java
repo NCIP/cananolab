@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.submit;
  */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
-import gov.nih.nci.calab.dto.characterization.CharacterizationTableBean;
+import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.dto.characterization.invitro.CoagulationBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
@@ -188,7 +188,7 @@ public class InvitroCoagulationAction extends AbstractDispatchAction {
 		String particleType = (String) theForm.get("particleType");
 		String particleName = (String) theForm.get("particleName");
 		CoagulationBean achar = (CoagulationBean) theForm.get("achar");
-		updateCharacterizationTables(achar);
+		updateDerivedBioAssayData(achar);
 		theForm.set("achar", achar);
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
@@ -217,35 +217,35 @@ public class InvitroCoagulationAction extends AbstractDispatchAction {
 		return mapping.findForward("loadFile");
 	}
 	
-	public void updateCharacterizationTables(CoagulationBean achar) {
-		String numberOfCharacterizationTables = achar.getNumberOfCharacterizationTables();
-		int tableNum = Integer.parseInt(numberOfCharacterizationTables);
-		List<CharacterizationTableBean> origTables = achar.getCharacterizationTables();
+	public void updateDerivedBioAssayData(CoagulationBean achar) {
+		String numberOfDerivedBioAssayData = achar.getNumberOfDerivedBioAssayData();
+		int tableNum = Integer.parseInt(numberOfDerivedBioAssayData);
+		List<DerivedBioAssayDataBean> origTables = achar.getDerivedBioAssayData();
 		int origNum = (origTables == null) ? 0 : origTables
 				.size();
-		List<CharacterizationTableBean> tables = new ArrayList<CharacterizationTableBean>();
+		List<DerivedBioAssayDataBean> tables = new ArrayList<DerivedBioAssayDataBean>();
 		// create new ones
 		if (origNum == 0) {
 
 			for (int i = 0; i < tableNum; i++) {
-				CharacterizationTableBean table = new CharacterizationTableBean();
+				DerivedBioAssayDataBean table = new DerivedBioAssayDataBean();
 				tables.add(table);
 			}
 		}
 		// use keep original table info
 		else if (tableNum <= origNum) {
 			for (int i = 0; i < tableNum; i++) {
-				tables.add((CharacterizationTableBean) origTables.get(i));
+				tables.add((DerivedBioAssayDataBean) origTables.get(i));
 			}
 		} else {
 			for (int i = 0; i < origNum; i++) {
-				tables.add((CharacterizationTableBean) origTables.get(i));
+				tables.add((DerivedBioAssayDataBean) origTables.get(i));
 			}
 			for (int i = origNum; i < tableNum; i++) {
-				tables.add(new CharacterizationTableBean());
+				tables.add(new DerivedBioAssayDataBean());
 			}
 		}
-		achar.setCharacterizationTables(tables);
+		achar.setDerivedBioAssayData(tables);
 	}
 
 	public boolean loginRequired() {

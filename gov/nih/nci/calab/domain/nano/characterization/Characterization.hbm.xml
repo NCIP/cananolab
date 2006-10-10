@@ -19,11 +19,11 @@
 		<property name="createdBy" type="java.lang.String" column="CREATED_BY" />
 		<property name="createdDate" type="java.util.Date" column="CREATED_DATE" />
 		
-		<list name="characterizationTableCollection" cascade="all-delete-orphan" lazy="true">
+		<list name="derivedBioAssayDataCollection" cascade="all-delete-orphan" lazy="true">
 			<cache usage="read-write" />
 			<key column="CHARACTERIZATION_PK_ID" />
 			<list-index column="LIST_INDEX" />
-			<one-to-many class="gov.nih.nci.calab.domain.nano.characterization.CharacterizationTable" />
+			<one-to-many class="gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData" />
 		</list>
 		
 		<many-to-one name="instrument"  class="gov.nih.nci.calab.domain.Instrument" column="INSTRUMENT_PK_ID" lazy="false" fetch="join"/> 
