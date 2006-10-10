@@ -6,10 +6,16 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: LoadCharacterizationTableAction.java,v 1.6 2006-09-19 21:05:00 pansu Exp $ */
+/* CVS $Id: LoadCharacterizationTableAction.java,v 1.7 2006-10-10 14:03:52 chand Exp $ */
+
+import java.io.File;
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
+import gov.nih.nci.calab.dto.characterization.CharacterizationTableBean;
+import gov.nih.nci.calab.dto.characterization.SizeBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
+import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.PropertyReader;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
@@ -17,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -24,6 +31,8 @@ import org.apache.struts.upload.FormFile;
 import org.apache.struts.validator.DynaValidatorForm;
 
 public class LoadCharacterizationTableAction extends AbstractDispatchAction {
+	private static Logger logger = Logger.getLogger(LoadCharacterizationTableAction.class);
+	
 	public ActionForward submit(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -41,18 +50,26 @@ public class LoadCharacterizationTableAction extends AbstractDispatchAction {
 		String fileSource = (String) theForm.get("fileSource");
 		CharacterizationFileBean fileBean = null;
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
+
+		String fileNumber = (String) theForm.get("fileNumber");
+		
 		if (fileSource.equals("new")) {
 			FormFile file = (FormFile) theForm.get("file");
+			String path = PropertyReader.getProperty(CalabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
+			path = path + particleName + "\\";
+        	File pathDir = new File (path);
+            if ( !pathDir.exists() ) pathDir.mkdirs();
+
 			fileBean = service.saveCharacterizationFile(particleName, file,
-					title, description, comments, keywordList, visibilities);
+					title, description, comments, keywordList, visibilities, path, fileNumber);
 		} else {
 			String fileId = (String) theForm.get("fileId");
 			fileBean = service.getFile(fileId);
 		}
 
-		String fileNumber = (String) theForm.get("fileNumber");
 		request.getSession().setAttribute("characterizationFile" + fileNumber,
-				fileBean);		
+				fileBean);
+		
 		String forwardPage = (String) theForm.get("forwardPage");
 		forward = mapping.findForward(forwardPage);
 
