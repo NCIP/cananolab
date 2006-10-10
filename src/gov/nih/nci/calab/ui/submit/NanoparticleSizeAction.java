@@ -6,11 +6,15 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSizeAction.java,v 1.4 2006-09-19 16:34:07 pansu Exp $ */
+/* CVS $Id: NanoparticleSizeAction.java,v 1.5 2006-10-10 14:05:18 chand Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
+import gov.nih.nci.calab.domain.nano.characterization.CharacterizationTable;
+
+import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
 import gov.nih.nci.calab.dto.characterization.CharacterizationTableBean;
 import gov.nih.nci.calab.dto.characterization.SizeBean;
+import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
@@ -32,7 +36,14 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
+import org.apache.log4j.Logger;
+
+import java.io.FileInputStream;
+import java.io.File;
+
+
 public class NanoparticleSizeAction extends AbstractDispatchAction {
+	private static Logger logger = Logger.getLogger(NanoparticleSizeAction.class);
 
 	/**
 	 * Add or update the data to database
@@ -53,6 +64,23 @@ public class NanoparticleSizeAction extends AbstractDispatchAction {
 		String particleType = (String) theForm.get("particleType");
 		String particleName = (String) theForm.get("particleName");
 		SizeBean sizeChar=(SizeBean) theForm.get("achar");
+		
+		if (sizeChar.getId() == null || sizeChar.getId() == "") {
+			
+			sizeChar.setId( (String) theForm.get("characterizationId") );
+			
+		}
+		
+		int fileNumber = 0;
+		for (CharacterizationTableBean obj : sizeChar.getCharacterizationTables()) {
+			CharacterizationFileBean fileBean = (CharacterizationFileBean) request.getSession().getAttribute("characterizationFile" + fileNumber);
+			if (fileBean != null) {		
+				logger.info("************set fileBean to " + fileNumber);
+				obj.setFile(fileBean);
+			}
+			fileNumber++;
+		}
+
 		
 		// set createdBy and createdDate for the composition
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
@@ -120,6 +148,7 @@ public class NanoparticleSizeAction extends AbstractDispatchAction {
 		InitSessionSetup.getInstance().setAllSizeDistributionGraphTypes(session);
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
+		InitSessionSetup.getInstance().setManufacturerPerType(session);
 	}
 
 	/**
@@ -139,10 +168,10 @@ public class NanoparticleSizeAction extends AbstractDispatchAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleType = (String) theForm.get("particleType");
 		String compositionId = (String) theForm.get("characterizationId");
-
+		
 		SearchNanoparticleService service = new SearchNanoparticleService();
-		Characterization aChar = service.getCharacterizationBy(compositionId);
-
+		Characterization aChar = service.getCharacterizationAndTableBy(compositionId);
+		
 		HttpSession session = request.getSession();
 		// clear session data from the input forms
 		clearMap(session, theForm, mapping);
@@ -151,6 +180,32 @@ public class NanoparticleSizeAction extends AbstractDispatchAction {
 		theForm.set("characterizationSource", aChar.getSource());
 		theForm.set("viewTitle", aChar.getIdentificationName());
 		theForm.set("description", aChar.getDescription());
+
+		
+		int fileNumber = 0;
+		
+		for (CharacterizationTable obj : aChar.getCharacterizationTableCollection()) {
+			
+			if (obj.getFile() != null) {
+				CharacterizationFileBean fileBean = new CharacterizationFileBean();
+				fileBean.setName(this.getName(obj.getFile()));
+				fileBean.setPath(this.getPath(obj.getFile()));
+				fileBean.setId(Integer.toString(fileNumber)); 
+	
+				request.getSession().setAttribute("characterizationFile" + fileNumber,
+						fileBean);
+			} else {
+				request.getSession().removeAttribute("characterizationFile" + fileNumber);
+			}
+			fileNumber++;
+		}
+			
+		
+	
+		SizeBean sChar = new SizeBean(aChar);
+		
+		theForm.set("achar", sChar);
+		
 		initSetup(request, theForm);
 
 		return mapping.getInputForward();
@@ -251,4 +306,96 @@ public class NanoparticleSizeAction extends AbstractDispatchAction {
 	public boolean loginRequired() {
 		return true;
 	}
+	
+	/**
+	 * Download action to handle download characterization file
+	 * @param 
+	 * @return
+	 */
+	public ActionForward download (ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		String fileId=request.getParameter("fileId");
+
+		/*
+		String filename = null;
+		SizeBean aChar=(SizeBean) theForm.get("achar");
+		for (CharacterizationTableBean obj : aChar.getCharacterizationTables()) {
+			if (obj.getId().toString().equals(fileId)) {
+				filename = obj.getFile().getName();
+			}
+		}
+*/
+		
+		CharacterizationFileBean fileBean = (CharacterizationFileBean) request.getSession().getAttribute("characterizationFile" + fileId);
+		String filename = fileBean.getPath() + fileBean.getName();
+		
+		logger.info("*************filename=" + filename);
+		
+		File dFile = new File(filename);
+		if (dFile.exists()) {
+			response.setContentType("application/octet-stream");
+			response.setHeader("Content-disposition", "attachment;filename=" + this.getName(filename));
+			response.setHeader("Cache-Control", "no-cache");
+		
+			java.io.InputStream in = new FileInputStream (dFile);
+			java.io.OutputStream out = response.getOutputStream();
+
+			byte[] bytes = new byte[32768];
+	
+			int numRead = 0;
+			while ((numRead = in.read(bytes)) > 0) {
+				out.write(bytes, 0, numRead);
+			}
+			out.close();
+		} else {
+			throw new Exception ("ERROR: file not found.");
+		}
+			
+		
+		return null;
+	}
+	
+	/**
+	 * Retrieve the file name from the full path
+	 * @param fullPath
+	 * @return
+	 */
+	private String getName(String fullPath) {
+		String rv = null;
+		
+        String separator = fullPath.indexOf('/') < 0 ? "\\" : "/"; 
+		
+		int idx = fullPath.lastIndexOf(separator);
+		
+		if (idx >= 0)
+			rv = fullPath.substring(idx+1); 
+		else
+			rv = fullPath;
+				
+		return rv;
+	}
+
+	/**
+	 * Retrieve the path from the full path
+	 * @param fullPath
+	 * @return
+	 */
+	private String getPath(String fullPath) {
+		String rv = null;
+		
+        String separator = fullPath.indexOf('/') < 0 ? "\\" : "/"; 
+		
+		int idx = fullPath.lastIndexOf(separator);
+		
+		if (idx >= 0)
+			rv = fullPath.substring(0, idx+1);
+		else
+			rv = fullPath;
+				
+		return rv;
+	}
+	
 }
