@@ -7,6 +7,8 @@ import gov.nih.nci.calab.dto.inventory.SampleBean;
 import gov.nih.nci.calab.dto.inventory.StorageLocation;
 import gov.nih.nci.calab.service.util.CalabComparators;
 import gov.nih.nci.calab.service.util.StringUtils;
+import gov.nih.nci.calab.domain.LabFile;
+import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,7 +23,7 @@ import org.apache.log4j.Logger;
  * @author pansu
  * 
  */
-/* CVS $Id: SearchSampleService.java,v 1.20 2006-08-03 15:23:56 pansu Exp $ */
+/* CVS $Id: SearchSampleService.java,v 1.21 2006-10-10 14:00:39 chand Exp $ */
 
 public class SearchSampleService {
 	private static Logger logger = Logger.getLogger(SearchSampleService.class);
@@ -181,4 +183,64 @@ public class SearchSampleService {
 				sourceSampleId, dateAccessionedBegin, dateAccessionedEnd,
 				sampleSubmitter, storageLocation);
 	}
+	
+	public Sample searchSampleBy(String charId) throws Exception {
+		Sample sample = null;
+		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
+
+		try {
+
+			ida.open();
+			List results = ida
+					.search(" from Nanoparticle nano left join fetch nano.characterizationCollection chara" +
+					" where chara.id="
+					+ charId);
+			for(Object obj: results) {
+				sample=(Sample)obj;
+			}
+		} catch (Exception e) {
+			logger.error("Problem finding characterization");
+			throw e;
+		} finally {
+			ida.close();
+		}
+		
+		return sample;
+	}
+	
+	public List<LabFile> searchLabFilesBy(String charId) throws Exception {
+		Sample sample = this.searchSampleBy(charId);
+
+		List<LabFile> labFiles = new ArrayList<LabFile>();
+		
+		if (sample != null) {
+		
+			IDataAccess ida = (new DataAccessProxy())
+					.getInstance(IDataAccess.HIBERNATE);
+			
+			LabFile labFile;
+			try {
+	
+				ida.open();
+				List results = ida
+						.search(" from Sample sample left join fetch sample.sampleContainerCollection" +
+								" left join fetch sample.sampleContainerCollection.runSampleContainerCollection" +
+								" left join fetch sample.sampleContainerCollection.runSampleContainerCollection.run" +
+								" left join fetch sample.sampleContainerCollection.runSampleContainerCollection.run.outputFileCollection" +
+								" where sample.id="
+								+ sample.getId());
+				for(Object obj: results) {
+					labFile=(LabFile)obj;
+					labFiles.add(labFile);
+				}
+			} catch (Exception e) {
+				logger.error("Problem finding characterization");
+				throw e;
+			} finally {
+				ida.close();
+			}
+		}
+		return labFiles;
+	}
+
 }
