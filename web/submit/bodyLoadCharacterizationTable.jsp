@@ -40,7 +40,7 @@
 												<strong>Assay Type</strong>
 											</td>
 											<td class="borderlessLabel">
-												<html:select property="assayType" onchange="javascript:doubleDropdown(document.loadCharacterizationTableForm.assayType, document.loadCharacterizationTableForm.assayName, assayTypeAssays);">
+												<html:select property="assayType" onchange="javascript:doubleDropdown(document.loadDerivedBioAssayDataForm.assayType, document.loadDerivedBioAssayDataForm.assayName, assayTypeAssays);">
 													<option value=""></option>
 													<html:options name="allAvailableAssayTypes" />
 												</html:select>
@@ -50,8 +50,8 @@
 											</td>											
 											<td class="borderlessLabel" colspan="3">
 												<html:select property="assayName">
-													<option value="${loadCharacterizationTableForm.map.assayName}" selected>
-														${loadCharacterizationTableForm.map.assayName}
+													<option value="${loadDerivedBioAssayDataForm.map.assayName}" selected>
+														${loadDerivedBioAssayDataForm.map.assayName}
 													</option>
 												</html:select>
 											</td>

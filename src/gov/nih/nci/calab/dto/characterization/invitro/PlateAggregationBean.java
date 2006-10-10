@@ -17,35 +17,35 @@ import java.util.List;
 public class PlateAggregationBean extends CharacterizationBean {
 	public PlateAggregationBean() {
 		super();
-		for (CharacterizationTableBean table: getCharacterizationTables()) {
-			CharacterizationTableDataBean average=new CharacterizationTableDataBean();
+		for (DerivedBioAssayDataBean table: getDerivedBioAssayData()) {
+			DatumBean average=new DatumBean();
 			average.setType("Average");
-			CharacterizationTableDataBean zaverage=new CharacterizationTableDataBean();
+			DatumBean zaverage=new DatumBean();
 			average.setType("Z-Average");
-			CharacterizationTableDataBean pdi=new CharacterizationTableDataBean();
+			DatumBean pdi=new DatumBean();
 			average.setType("PDI");
-			table.getTableDataList().add(average);
-			table.getTableDataList().add(zaverage);
-			table.getTableDataList().add(pdi);
+			table.getDatumList().add(average);
+			table.getDatumList().add(zaverage);
+			table.getDatumList().add(pdi);
 		}
 	}
 	
-	public void setCharacterizationTables(
-			List<CharacterizationTableBean> characterizationTables) {
-		super.setCharacterizationTables(characterizationTables);
+	public void setDerivedBioAssayData(
+			List<DerivedBioAssayDataBean> derivedBioAssayData) {
+		super.setDerivedBioAssayData(derivedBioAssayData);
 		
-		for (CharacterizationTableBean table:getCharacterizationTables()) {
-			CharacterizationTableDataBean average=new CharacterizationTableDataBean();
+		for (DerivedBioAssayDataBean table:getDerivedBioAssayData()) {
+			DatumBean average=new DatumBean();
 			average.setType("Average");
 			average.setValueUnit("nm");
-			CharacterizationTableDataBean zaverage=new CharacterizationTableDataBean();
+			DatumBean zaverage=new DatumBean();
 			zaverage.setType("Z-Average");
 			zaverage.setValueUnit("nm");
-			CharacterizationTableDataBean pdi=new CharacterizationTableDataBean();
+			DatumBean pdi=new DatumBean();
 			pdi.setType("PDI");
-			table.getTableDataList().add(average);
-			table.getTableDataList().add(zaverage);
-			table.getTableDataList().add(pdi);
+			table.getDatumList().add(average);
+			table.getDatumList().add(zaverage);
+			table.getDatumList().add(pdi);
 		}
 	}
 	

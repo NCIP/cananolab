@@ -2,7 +2,7 @@ package gov.nih.nci.calab.domain.nano.characterization.physical.composition;
 
 import gov.nih.nci.calab.domain.Instrument;
 import gov.nih.nci.calab.domain.nano.characterization.CharacterizationProtocol;
-import gov.nih.nci.calab.domain.nano.characterization.CharacterizationTable;
+import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.service.util.CananoConstants;
 
@@ -29,7 +29,7 @@ public class CarbonNanotubeComposition implements ParticleComposition {
 	private Date createdDate;
 	private Collection<Nanoparticle> nanoparticleCollection;
 	private Collection<ComposingElement> composingElementCollection = new ArrayList<ComposingElement>();
-	private Collection<CharacterizationTable> characterizationTableCollection = new ArrayList<CharacterizationTable>();
+	private Collection<DerivedBioAssayData> derivedBioAssayDataCollection = new ArrayList<DerivedBioAssayData>();
 	private Instrument instrument; 
 	private CharacterizationProtocol characterizationProtocol;
 	
@@ -154,13 +154,13 @@ public class CarbonNanotubeComposition implements ParticleComposition {
 		this.createdDate = createdDate;
 	}
 
-	public Collection<CharacterizationTable> getCharacterizationTableCollection() {
-		return characterizationTableCollection;
+	public Collection<DerivedBioAssayData> getDerivedBioAssayDataCollection() {
+		return derivedBioAssayDataCollection;
 	}
 
-	public void setCharacterizationTableCollection(
-			Collection<CharacterizationTable> characterizationTableCollection) {
-		this.characterizationTableCollection = characterizationTableCollection;
+	public void setDerivedBioAssayDataCollection(
+			Collection<DerivedBioAssayData> derivedBioAssayDataCollection) {
+		this.derivedBioAssayDataCollection = derivedBioAssayDataCollection;
 	}
 
 	public Instrument getInstrument() {

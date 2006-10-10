@@ -2,7 +2,7 @@ package gov.nih.nci.calab.dto.characterization;
 
 import gov.nih.nci.calab.domain.nano.characterization.physical.Size;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
-import gov.nih.nci.calab.domain.nano.characterization.CharacterizationTable;
+import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 
 import java.util.List;
 
@@ -30,32 +30,32 @@ public class SizeBean extends CharacterizationBean {
 			this.getInstrument().setDescription(aChar.getInstrument().getDescription());
 			this.getInstrument().setManufacturer(aChar.getInstrument().getManufacturer());
 		}
-		this.setNumberOfCharacterizationTables(Integer.valueOf(aChar.getCharacterizationTableCollection().size()).toString());
-		for (CharacterizationTable table : aChar.getCharacterizationTableCollection()) {
-			CharacterizationTableBean ctBean = new CharacterizationTableBean(table);
-			this.getCharacterizationTables().add(ctBean);
+		this.setNumberOfDerivedBioAssayData(Integer.valueOf(aChar.getDerivedBioAssayDataCollection().size()).toString());
+		for (DerivedBioAssayData table : aChar.getDerivedBioAssayDataCollection()) {
+			DerivedBioAssayDataBean ctBean = new DerivedBioAssayDataBean(table);
+			this.getDerivedBioAssayData().add(ctBean);
 		}
 	}
 	
-	public void setCharacterizationTables(
-			List<CharacterizationTableBean> characterizationTables) {
-		super.setCharacterizationTables(characterizationTables);
+	public void setDerivedBioAssayData(
+			List<DerivedBioAssayDataBean> derivedBioAssayData) {
+		super.setDerivedBioAssayData(derivedBioAssayData);
 		initSetup();
 	}
 	
 	public void initSetup() {
-		for (CharacterizationTableBean table:getCharacterizationTables()) {
-			CharacterizationTableDataBean average=new CharacterizationTableDataBean();
+		for (DerivedBioAssayDataBean table:getDerivedBioAssayData()) {
+			DatumBean average=new DatumBean();
 			average.setType("Average");
 			average.setValueUnit("nm");
-			CharacterizationTableDataBean zaverage=new CharacterizationTableDataBean();
+			DatumBean zaverage=new DatumBean();
 			zaverage.setType("Z-Average");
 			zaverage.setValueUnit("nm");
-			CharacterizationTableDataBean pdi=new CharacterizationTableDataBean();
+			DatumBean pdi=new DatumBean();
 			pdi.setType("PDI");
-			table.getTableDataList().add(average);
-			table.getTableDataList().add(zaverage);
-			table.getTableDataList().add(pdi);
+			table.getDatumList().add(average);
+			table.getDatumList().add(zaverage);
+			table.getDatumList().add(pdi);
 		}
 	}
 	
