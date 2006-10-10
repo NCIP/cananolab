@@ -1,10 +1,14 @@
 package gov.nih.nci.calab.dto.characterization;
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
+import gov.nih.nci.calab.service.search.SearchSampleService;
+import gov.nih.nci.calab.domain.Instrument;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import org.apache.log4j.Logger;
 
 /**
  * This class represents shared characterization properties to be shown in
@@ -14,6 +18,8 @@ import java.util.List;
  * 
  */
 public class CharacterizationBean {
+	private static Logger logger = Logger.getLogger(CharacterizationBean.class);
+
 	private String id;
 
 	private String characterizationSource;
@@ -101,6 +107,15 @@ public class CharacterizationBean {
 			aChar.getCharacterizationTableCollection().add(
 					table.getDomainObj());
 		}
+
+		Instrument instrument = new Instrument(); 
+		
+		if (getInstrument().getId() != null)
+			instrument.setId(new Long(getInstrument().getId()));
+		instrument.setDescription(getInstrument().getDescription());
+		instrument.setManufacturer(getInstrument().getManufacturer());
+		instrument.setType(getInstrument().getType());
+		aChar.setInstrument(instrument);
 	}
 
 	public String getDescription() {
