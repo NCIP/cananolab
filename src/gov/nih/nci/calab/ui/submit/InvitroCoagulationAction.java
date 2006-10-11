@@ -118,6 +118,7 @@ public class InvitroCoagulationAction extends AbstractDispatchAction {
 		InitSessionSetup.getInstance().setAllSizeDistributionGraphTypes(session);
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
+		InitSessionSetup.getInstance().setManufacturerPerType(session);
 	}
 
 	/**

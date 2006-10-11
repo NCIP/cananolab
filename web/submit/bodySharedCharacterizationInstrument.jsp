@@ -24,8 +24,8 @@
 					</html:select>
 				</c:when>
 				<c:otherwise>
-						${thisForm.map.achar.instrument.type}&nbsp;
-					</c:otherwise>
+					${thisForm.map.achar.instrument.type}&nbsp;
+				</c:otherwise>
 			</c:choose>
 		</td>
 		<td class="label">
