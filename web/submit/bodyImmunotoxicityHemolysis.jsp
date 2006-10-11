@@ -50,8 +50,8 @@
 										<html:text property="achar.numberOfCharacterizationTables" />
 									</c:when>
 									<c:otherwise>
-						${invitroImmunotoxicityHemolysisForm.map.achar.numberOfCharacterizationTables}&nbsp;
-					</c:otherwise>
+										${invitroImmunotoxicityHemolysisForm.map.achar.numberOfCharacterizationTables}&nbsp;
+									</c:otherwise>
 								</c:choose>
 							</td>
 							<td class="rightLabel" colspan="2">
