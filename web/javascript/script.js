@@ -164,6 +164,10 @@ function updateHemolysis() {
     document.invitroImmunotoxicityHemolysisForm.action = "invitroImmunotoxicityHemolysis.do?dispatch=update&page=0";
     document.invitroImmunotoxicityHemolysisForm.submit();
 }
+function updateHemolysisControlCondition() {
+    document.invitroImmunotoxicityHemolysisForm.action = "invitroImmunotoxicityHemolysis.do?dispatch=update&page=0";
+    document.invitroImmunotoxicityHemolysisForm.submit();
+}
 function updateCoagulation() {
     document.invitroImmunotoxicityCoagulationForm.action = "invitroImmunotoxicityCoagulation.do?dispatch=update&page=0";
     document.invitroImmunotoxicityCoagulationForm.submit();

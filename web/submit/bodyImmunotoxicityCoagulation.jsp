@@ -47,10 +47,10 @@
 							<td class="label">
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
-										<html:text property="achar.numberOfCharacterizationTables" />
+										<html:text property="achar.numberOfDerivedBioAssayData" />
 									</c:when>
 									<c:otherwise>
-						${invitroImmunotoxicityCoagulationForm.map.achar.numberOfCharacterizationTables}&nbsp;
+						${invitroImmunotoxicityCoagulationForm.map.achar.numberOfDerivedBioAssayData}&nbsp;
 					</c:otherwise>
 								</c:choose>
 							</td>
@@ -65,7 +65,7 @@
 						</tr>
 						<tr>
 							<td class="completeLabel" colspan="4">
-								<c:forEach var="achar.table" items="${invitroImmunotoxicityCoagulationForm.map.achar.characterizationTables}" varStatus="status">
+								<c:forEach var="achar.table" items="${invitroImmunotoxicityCoagulationForm.map.achar.derivedBioAssayData}" varStatus="status">
 									<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 										<tbody>
 											<tr class="topBorder">
@@ -111,7 +111,7 @@
 											</logic:notPresent>
 														</c:when>
 														<c:otherwise>
-						${invitroImmunotoxicityCoagulationForm.map.achar.characterizationTables[status.index].file.name}&nbsp;
+						${invitroImmunotoxicityCoagulationForm.map.achar.derivedBioAssayData[status.index].file.name}&nbsp;
 					</c:otherwise>
 													</c:choose>													
 												</td>
@@ -158,10 +158,10 @@
 												<td class="rightLabel" colspan="3">
 													<c:choose>
 														<c:when test="${canUserUpdateParticle eq 'true'}">
-															<html:text name="achar.table" indexed="true" property="tableDataList[2].value" />
+															<html:text name="achar.table" indexed="true" property="datumList[2].value" />
 														</c:when>
 														<c:otherwise>
-						${invitroImmunotoxicityCoagulationForm.map.achar.characterizationTables[status.index].tableDataList[2].value}&nbsp;
+						${invitroImmunotoxicityCoagulationForm.map.achar.derivedBioAssayData[status.index].datumList[2].value}&nbsp;
 					</c:otherwise>
 													</c:choose>
 												</td>
