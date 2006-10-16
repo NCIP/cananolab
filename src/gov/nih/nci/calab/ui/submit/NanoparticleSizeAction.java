@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSizeAction.java,v 1.6 2006-10-10 22:20:00 chand Exp $ */
+/* CVS $Id: NanoparticleSizeAction.java,v 1.7 2006-10-16 16:28:14 chand Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
@@ -65,6 +65,13 @@ public class NanoparticleSizeAction extends AbstractDispatchAction {
 		String particleName = (String) theForm.get("particleName");
 		SizeBean sizeChar=(SizeBean) theForm.get("achar");
 		
+		String viewTitle = (String) theForm.get("viewTitle");
+		String description = (String) theForm.get("description");
+		String characterizationSource = (String) theForm.get("characterizationSource");
+		sizeChar.setCharacterizationSource(characterizationSource);
+		sizeChar.setDescription(description);
+		sizeChar.setViewTitle(viewTitle);
+
 		if (sizeChar.getId() == null || sizeChar.getId() == "") {
 			
 			sizeChar.setId( (String) theForm.get("characterizationId") );
@@ -75,12 +82,11 @@ public class NanoparticleSizeAction extends AbstractDispatchAction {
 		for (DerivedBioAssayDataBean obj : sizeChar.getDerivedBioAssayData()) {
 			CharacterizationFileBean fileBean = (CharacterizationFileBean) request.getSession().getAttribute("characterizationFile" + fileNumber);
 			if (fileBean != null) {		
-				logger.info("************set fileBean to " + fileNumber);
+				//logger.info("************set fileBean to " + fileNumber);
 				obj.setFile(fileBean);
 			}
 			fileNumber++;
 		}
-
 		
 		// set createdBy and createdDate for the composition
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
