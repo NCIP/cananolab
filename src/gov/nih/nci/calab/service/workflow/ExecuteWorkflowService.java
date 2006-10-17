@@ -636,6 +636,7 @@ public class ExecuteWorkflowService {
 		String select = "select run, aliquot, aliquotStatus from Run run left join run.runSampleContainerCollection runSampleContainer left join runSampleContainer.sampleContainer aliquot left join aliquot.dataStatus aliquotStatus ";
 		// String select = "select run from Run run ";
 		String where = "where ";
+		String query = select;
 		List<String> whereList = new ArrayList<String>();
 		List<Object> paramList = new ArrayList<Object>();
 
@@ -652,7 +653,9 @@ public class ExecuteWorkflowService {
 			paramList.add(runDate);
 		}
 		where = where + StringUtils.join(whereList, " and ");
-		String query = select + where;
+		if (whereList.size() > 0) {
+			query = select + where;
+		}
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 
