@@ -74,7 +74,7 @@ public class MolecularWeight implements Characterization {
 	}
 
 	public String getName() {
-		return CananoConstants.PHYSICAL_SIZE;
+		return CananoConstants.PHYSICAL_MOLECULAR_WEIGHT;
 	}
 
 	public void setName(String name) {

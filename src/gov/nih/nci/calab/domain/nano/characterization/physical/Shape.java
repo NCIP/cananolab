@@ -78,7 +78,7 @@ public class Shape implements Characterization {
 	}
 
 	public String getName() {
-		return CananoConstants.PHYSICAL_SIZE;
+		return CananoConstants.PHYSICAL_SHAPE;
 	}
 
 	public void setName(String name) {
