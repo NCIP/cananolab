@@ -79,7 +79,7 @@ public class Purity implements Characterization {
 	}
 
 	public String getName() {
-		return CananoConstants.PHYSICAL_SIZE;
+		return CananoConstants.PHYSICAL_PURITY;
 	}
 
 	public void setName(String name) {

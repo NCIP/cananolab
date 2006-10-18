@@ -84,7 +84,7 @@ public class Surface implements Characterization {
 	}
 
 	public String getName() {
-		return CananoConstants.PHYSICAL_SIZE;
+		return CananoConstants.PHYSICAL_SURFACE;
 	}
 
 	public void setName(String name) {

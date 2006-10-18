@@ -80,7 +80,7 @@ public class Solubility implements Characterization {
 	}
 
 	public String getName() {
-		return CananoConstants.PHYSICAL_SIZE;
+		return CananoConstants.PHYSICAL_SOLUBILITY;
 	}
 
 	public void setName(String name) {

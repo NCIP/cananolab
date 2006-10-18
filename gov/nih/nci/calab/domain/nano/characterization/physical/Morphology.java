@@ -76,7 +76,7 @@ public class Morphology implements Characterization {
 	}
 
 	public String getName() {
-		return CananoConstants.PHYSICAL_SIZE;
+		return CananoConstants.PHYSICAL_MORPHOLOGY;
 	}
 
 	public void setName(String name) {
