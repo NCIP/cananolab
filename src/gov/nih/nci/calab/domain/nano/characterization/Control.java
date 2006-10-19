@@ -1,6 +1,9 @@
 package gov.nih.nci.calab.domain.nano.characterization;
 
 public class Control {
+	
+	private static final long serialVersionUID = 1234567890L;
+	
 	private String name;
 	private String type;
 	
