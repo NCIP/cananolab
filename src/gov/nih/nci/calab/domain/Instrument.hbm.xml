@@ -10,9 +10,8 @@
 				<param name="column">next_hi</param>
 			</generator>
 		</id>
-		<property name="type" type="java.lang.String" column="TYPE" />
-		<property name="manufacturer" type="java.lang.String" column="MANUFACTURER" />
 		<property name="description" type="java.lang.String" column="DESCRIPTION" />
-		<property name="abbreviation" type="java.lang.String" column="ABBREVIATION" />
+		<many-to-one name="manufacturer"  class="gov.nih.nci.calab.domain.Manufacturer" column="MANUFACTURER_PK_ID" lazy="false" fetch="join"/>  
+		<many-to-one name="instrumentType"  class="gov.nih.nci.calab.domain.InstrumentType" column="INSTRUMENT_TYPE_PK_ID" lazy="false" fetch="join"/>  
 	</class>
 </hibernate-mapping>

@@ -13,7 +13,9 @@ import java.util.Collection;
  *
  */
 public class Datum {
-	
+
+	private static final long serialVersionUID = 1234567890L;
+
 	private Long id;
 	private String type;
 //	private Boolean control;

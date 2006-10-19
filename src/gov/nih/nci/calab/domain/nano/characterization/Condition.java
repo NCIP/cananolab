@@ -4,6 +4,8 @@ import gov.nih.nci.calab.domain.Measurement;
 
 public class Condition {
 
+	private static final long serialVersionUID = 1234567890L;
+	
 	private Long id;
 	private String type;
 	private Measurement value;
