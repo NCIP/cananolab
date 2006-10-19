@@ -8,7 +8,7 @@
 
 	<property name="dialect">org.hibernate.dialect.Oracle9Dialect</property>
 		
-    <mapping resource="gov/nih/nci/calab/domain/AssayType.hbm.xml" />
+     <mapping resource="gov/nih/nci/calab/domain/AssayType.hbm.xml" />
     <mapping resource="gov/nih/nci/calab/domain/Assay.hbm.xml" />
     <mapping resource="gov/nih/nci/calab/domain/Run.hbm.xml" />
     <mapping resource="gov/nih/nci/calab/domain/Sample.hbm.xml" />
@@ -26,6 +26,8 @@
     <mapping resource="gov/nih/nci/calab/domain/MeasureUnit.hbm.xml" />  
     <mapping resource="gov/nih/nci/calab/domain/Keyword.hbm.xml" /> 
     <mapping resource="gov/nih/nci/calab/domain/Instrument.hbm.xml" />  
+    <mapping resource="gov/nih/nci/calab/domain/InstrumentType.hbm.xml" /> 
+    <mapping resource="gov/nih/nci/calab/domain/Manufacturer.hbm.xml" /> 
     <mapping resource="gov/nih/nci/calab/domain/nano/particle/Nanoparticle.hbm.xml" /> 
     <mapping resource="gov/nih/nci/calab/domain/nano/function/Function.hbm.xml" /> 
     <mapping resource="gov/nih/nci/calab/domain/nano/characterization/Characterization.hbm.xml" />
