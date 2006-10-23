@@ -19,8 +19,11 @@
 		<td class="label">
 			<c:choose>
 				<c:when test="${canUserUpdateParticle eq 'true'}">
-					<html:select property="achar.instrument.type">
+					<html:select property="achar.instrument.type" onchange="javascript:refreshManufacturers(this.form, 'updateManufacturers')">
 						<html:options name="allInstrumentTypes" />
+						<html:option value="Other">
+								Other
+						</html:option>
 					</html:select>
 				</c:when>
 				<c:otherwise>
@@ -28,19 +31,57 @@
 				</c:otherwise>
 			</c:choose>
 		</td>
-		<td class="label">
-			<strong>Instrument Manufacturer</strong>
+		<td class="leftLabel">
+			<strong>Other Instrument Type </strong>
 		</td>
-		<td class="rightLabel">
+		<td class="rightLabel" colspan="3">
+			<c:choose>
+				<c:when test="${canUserUpdateParticle eq 'true'}">
+					<c:choose>
+						<c:when test="${selectedInstrumentType eq 'Other'}">
+							<html:text property="achar.instrument.otherInstrumentType" disabled='false'/>
+						</c:when>
+						<c:otherwise>
+							<html:text property="achar.instrument.otherInstrumentType" disabled='true'/>
+						</c:otherwise>
+					</c:choose>
+				</c:when>
+				<c:otherwise>
+						${thisForm.map.achar.instrument.otherInstrumentType}&nbsp;
+				</c:otherwise>
+			</c:choose>
+		</td>
+	</tr>
+	<tr>
+		<td class="LeftLabel">
+			<strong>Instrument Manufacturer </strong>
+		</td>
+		<td class="label">
 			<c:choose>
 				<c:when test="${canUserUpdateParticle eq 'true'}">
 					<html:select property="achar.instrument.manufacturer" >
 						<html:options name="manufacturerPerType"/>
+						<html:option value="Other">
+							Other
+						</html:option>
 					</html:select>
 				</c:when>
 				<c:otherwise>
 						${thisForm.map.achar.instrument.manufacturer}&nbsp;
 					</c:otherwise>
+			</c:choose>
+		</td>
+		<td class="leftLabel">
+			<strong>Other Manufacturer </strong>
+		</td>
+		<td class="rightLabel" colspan="3">
+			<c:choose>
+				<c:when test="${canUserUpdateParticle eq 'true'}">
+					<html:text property="achar.instrument.otherManufacturer"/>
+				</c:when>
+				<c:otherwise>
+						${thisForm.map.achar.instrument.otherManufacturer}&nbsp;
+				</c:otherwise>
 			</c:choose>
 		</td>
 	</tr>
