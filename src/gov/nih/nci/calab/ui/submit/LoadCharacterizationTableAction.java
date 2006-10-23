@@ -6,12 +6,11 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: LoadCharacterizationTableAction.java,v 1.7 2006-10-10 14:03:52 chand Exp $ */
+/* CVS $Id: LoadCharacterizationTableAction.java,v 1.8 2006-10-23 16:57:27 chand Exp $ */
 
 import java.io.File;
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
-import gov.nih.nci.calab.dto.characterization.CharacterizationTableBean;
 import gov.nih.nci.calab.dto.characterization.SizeBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.service.util.CalabConstants;
