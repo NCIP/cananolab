@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.54 2006-10-06 14:27:44 chand Exp $ */
+/* CVS $Id: LookupService.java,v 1.55 2006-10-23 16:53:07 chand Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -734,15 +734,82 @@ public class LookupService {
 		return charTypeChars;
 	}
 	
-	public String[] getAllInstrumentTypes() {
+	public String[] getAllInstrumentTypes() throws Exception {
 		//TODO query from database or properties file
-		String[] instrumentTypes=new String[] {"Dynamic Light Scattering (DLS)", "Spectroscopy"};
-		return instrumentTypes;
+		//String[] instrumentTypes=new String[] {"Dynamic Light Scattering (DLS)", "Spectroscopy", "Other"};
+		SortedSet<String> instrumentTypes = new TreeSet<String>();
+		
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			String hqlString = "select distinct instrumentType.name from InstrumentType instrumentType";
+			List results = ida.search(hqlString);
+			for (Object obj : results) {
+				if (obj != null)
+					instrumentTypes.add((String) obj);
+			}
+		} catch (Exception e) {
+			logger.error("Problem to retrieve all instrumentTypes. " + e);
+			throw new RuntimeException("Problem to retrieve all intrument types. ");
+		} finally {
+			ida.close();
+		}
+		
+		return (String[]) instrumentTypes.toArray(new String[0]);
 	}
-	
+
+	public String[] getManufacturers(String instrumentType) throws Exception{
+		SortedSet<String> manufacturers = new TreeSet<String>();
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			/*
+			String hqlString = "select distinct instrument.manufacturer from Instrument instrument";
+			if (!instrumentType.equals(CananoConstants.OTHER))
+				hqlString += " where instrument.type = '" + instrumentType + "'";
+			*/
+			String hqlString = "select distinct manufacturer.name from InstrumentType instrumentType join instrumentType.manufacturerCollection manufacturer ";
+			if (!instrumentType.equals(CananoConstants.OTHER))
+				hqlString += " where instrumentType.name = '" + instrumentType + "'";
+
+			List results = ida.search(hqlString);
+			for (Object obj : results) {
+				if (obj != null)
+					manufacturers.add((String) obj);
+			}
+		} catch (Exception e) {
+			logger.error("Problem to retrieve manufacturers for intrument type " + instrumentType + ". " + e);
+			throw new RuntimeException("Problem to retrieve manufacturers for intrument type " + instrumentType + ".");
+		} finally {
+			ida.close();
+		}
+		//manufacturers.add(CananoConstants.OTHER);
+		
+		return (String[])manufacturers.toArray(new String[0]);
+	}
+
 	public String[] getSizeDistributionGraphTypes() {
 		//TODO query from database or properties file
 		String[] graphTypes=new String[] {"Volume", "Intensity", "Number"};
 		return graphTypes;
+	}
+
+	public String[] getMolecularWeightDistributionGraphTypes() {
+		//TODO query from database or properties file
+		String[] graphTypes=new String[] {"Volume", "Mass", "Number"};
+		return graphTypes;
+	}
+
+	public String[] getMorphologyDistributionGraphTypes() {
+		//TODO query from database or properties file
+		String[] graphTypes=new String[] {"Volume", "Mass", "Number"};
+		return graphTypes;
+	}
+	
+	public String[] getAllMorphologyTypes() {
+		String[] morphologyTypes=new String[] {"Power", "Liquid", "Solid", "Crystalline", "Copolymer", "Fibril", "Colloid", "Oil"};
+		return morphologyTypes;
 	}
 }
