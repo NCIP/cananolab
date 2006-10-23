@@ -43,6 +43,34 @@
 		</td>
 	</tr>
 	<tr>
+		<td class="leftLabel">
+			<strong>Protocol Name </strong>
+		</td>
+		<td class="label">
+			<c:choose>
+				<c:when test="${canUserUpdateParticle eq 'true'}">
+					<html:text property="achar.characterizationProtocol.name" />
+				</c:when>
+				<c:otherwise>
+						${thisForm.map.achar.characterizationProtocol.name}&nbsp;
+				</c:otherwise>
+			</c:choose>
+		</td>
+		<td class="label">
+			<strong>Protocol Version</strong>
+		</td>
+		<td class="rightLabel">
+			<c:choose>
+				<c:when test="${canUserUpdateParticle eq 'true'}">
+					<html:text property="achar.characterizationProtocol.version" />
+				</c:when>
+				<c:otherwise>
+						${thisForm.map.achar.characterizationProtocol.version}&nbsp;
+				</c:otherwise>
+			</c:choose>
+		</td>
+	</tr>
+	<tr>
 		<td class="leftLabel" valign="top">
 			<strong>Description</strong>
 		</td>
