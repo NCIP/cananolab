@@ -160,6 +160,14 @@ function updateSize() {
     document.nanoparticleSizeForm.action = "nanoparticleSize.do?dispatch=update&page=0";
     document.nanoparticleSizeForm.submit();
 }
+function updateMolecularWeight() {
+    document.nanoparticleMolecularWeightForm.action = "nanoparticleMolecularWeight.do?dispatch=update&page=0";
+    document.nanoparticleMolecularWeightForm.submit();
+}
+function updateMorphology() {
+    document.nanoparticleMorphologyForm.action = "nanoparticleMorphology.do?dispatch=update&page=0";
+    document.nanoparticleMorphologyForm.submit();
+}
 function updateHemolysis() {
     document.invitroImmunotoxicityHemolysisForm.action = "invitroImmunotoxicityHemolysis.do?dispatch=update&page=0";
     document.invitroImmunotoxicityHemolysisForm.submit();
@@ -184,4 +192,9 @@ function loadSizeFile(particleName, fileNumber) {
     document.nanoparticleSizeForm.action = "nanoparticleSize.do?dispatch=loadFile&page=0&particleName=" + particleName + "&fileNumber=" + fileNumber;
     document.nanoparticleSizeForm.submit();
 }
+function refreshManufacturers(form, action) {
+    form.dispatch.value = action;
+    form.submit();
+}
+
 
