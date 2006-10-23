@@ -492,20 +492,34 @@ public class InitSessionSetup {
 		}
 	}
 
-	public void setAllInstrumentTypes(HttpSession session) throws Exception {
+	
+	public String setAllInstrumentTypes(HttpSession session) throws Exception {
+		String rv = "";
 		if (session.getServletContext().getAttribute("allInstrumentTypes") == null) {
 			String[] instrumentTypes = lookupService.getAllInstrumentTypes();
 			session.getServletContext().setAttribute("allInstrumentTypes",
 					instrumentTypes);
+			if (instrumentTypes != null && instrumentTypes.length > 0)
+				rv = instrumentTypes[0];
 		}
+		
+		return rv;
 	}
 	
-	public void setManufacturerPerType(HttpSession session) throws Exception {
+	public void setManufacturerPerType(HttpSession session, String instrumentType) throws Exception {
+		/*
 		if (session.getServletContext().getAttribute("manufacturerPerType") == null) {
 			String[] manufacturerPerType = new String[] {"Manufacturer#1", "Manufacturer#2"};//lookupService.getAllInstrumentTypes();
 			session.getServletContext().setAttribute("manufacturerPerType",
 					manufacturerPerType);
 		}
+		*/
+		if (session.getServletContext().getAttribute("manufacturerPerType") != null) {
+			session.getServletContext().removeAttribute("manufacturerPerType");
+		}
+		String[] manufacturerPerType = lookupService.getManufacturers(instrumentType);
+		session.getServletContext().setAttribute("manufacturerPerType",
+				manufacturerPerType);
 	}
 
 	public void setAllSizeDistributionGraphTypes(HttpSession session)
@@ -518,6 +532,35 @@ public class InitSessionSetup {
 		}
 	}
 
+	public void setAllMolecularWeightDistributionGraphTypes(HttpSession session)
+			throws Exception {
+		if (session.getServletContext().getAttribute(
+				"allMolecularWeightDistributionGraphTypes") == null) {
+			String[] graphTypes = lookupService.getMolecularWeightDistributionGraphTypes();
+			session.getServletContext().setAttribute(
+					"allMolecularWeightDistributionGraphTypes", graphTypes);
+		}	
+	}
+	
+	public void setAllMorphologyDistributionGraphTypes(HttpSession session)
+			throws Exception {
+		if (session.getServletContext().getAttribute(
+				"allMorphologyDistributionGraphTypes") == null) {
+			String[] graphTypes = lookupService.getMorphologyDistributionGraphTypes();
+			session.getServletContext().setAttribute(
+					"allMorphologyDistributionGraphTypes", graphTypes);
+		}	
+	}
+	
+	public void setAllMorphologyTypes(HttpSession session) throws Exception {
+		if (session.getServletContext().getAttribute("allMorphologyTypes") == null) {
+			String[] morphologyTypes = lookupService.getAllMorphologyTypes();
+			session.getServletContext().setAttribute("allMorphologyTypes",
+					morphologyTypes);
+		}
+	}
+
+	
 	public void setStaticDropdowns(HttpSession session) {
 		// set static boolean yes or no and characterization source choices
 		session.setAttribute("booleanChoices", CananoConstants.BOOLEAN_CHOICES);
