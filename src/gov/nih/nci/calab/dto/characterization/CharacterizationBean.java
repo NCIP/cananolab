@@ -3,6 +3,11 @@ package gov.nih.nci.calab.dto.characterization;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.service.search.SearchSampleService;
 import gov.nih.nci.calab.domain.Instrument;
+import gov.nih.nci.calab.domain.InstrumentType;
+import gov.nih.nci.calab.domain.Manufacturer;
+
+import gov.nih.nci.calab.service.util.CananoConstants;
+import gov.nih.nci.calab.domain.nano.characterization.CharacterizationProtocol;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,6 +50,8 @@ public class CharacterizationBean {
 	private List<DerivedBioAssayDataBean> derivedBioAssayData = new ArrayList<DerivedBioAssayDataBean>();
 
 	private String numberOfDerivedBioAssayData;
+	
+	private CharacterizationProtocolBean characterizationProtocol = new CharacterizationProtocolBean();
 	
 	public CharacterizationBean() {
 
@@ -112,10 +119,44 @@ public class CharacterizationBean {
 		
 		if (getInstrument().getId() != null)
 			instrument.setId(new Long(getInstrument().getId()));
+		
 		instrument.setDescription(getInstrument().getDescription());
-		instrument.setManufacturer(getInstrument().getManufacturer());
-		instrument.setType(getInstrument().getType());
-		aChar.setInstrument(instrument);
+		
+		String iType = getInstrument().getType();
+		String manuf = getInstrument().getManufacturer();
+
+		if (iType != null && manuf != null) {
+			InstrumentType instrumentType = new InstrumentType();
+			if (iType.equals(CananoConstants.OTHER))
+				instrumentType.setName(getInstrument().getOtherInstrumentType());
+			else
+				instrumentType.setName(getInstrument().getType());
+			
+			Manufacturer manufacturer = new Manufacturer();
+		
+			if (manuf.equals(CananoConstants.OTHER))
+				manufacturer.setName(getInstrument().getOtherManufacturer());
+			else
+				manufacturer.setName(getInstrument().getManufacturer());
+			
+			instrument.setInstrumentType(instrumentType);
+			instrument.setManufacturer(manufacturer);
+
+			aChar.setInstrument(instrument);
+		}		
+
+		CharacterizationProtocolBean characterizationProtocolBean = getCharacterizationProtocol();
+		
+		if (characterizationProtocolBean.getName() != null && characterizationProtocolBean.getName() != "" &&
+			characterizationProtocolBean.getVersion() != null && characterizationProtocolBean.getVersion() != "" ) {
+			
+			CharacterizationProtocol characterizationProtocol  = new CharacterizationProtocol();
+			characterizationProtocol.setName(characterizationProtocolBean.getName());
+			characterizationProtocol.setVersion(characterizationProtocolBean.getVersion());
+			characterizationProtocol.setId(characterizationProtocolBean.getId());
+
+			aChar.setCharacterizationProtocol(characterizationProtocol);
+		}
 	}
 
 	public String getDescription() {
@@ -186,5 +227,14 @@ public class CharacterizationBean {
 	public void setNumberOfDerivedBioAssayData(
 			String numberOfDerivedBioAssayData) {
 		this.numberOfDerivedBioAssayData = numberOfDerivedBioAssayData;
+	}
+
+	public CharacterizationProtocolBean getCharacterizationProtocol() {
+		return characterizationProtocol;
+	}
+
+	public void setCharacterizationProtocol(
+			CharacterizationProtocolBean characterizationProtocol) {
+		this.characterizationProtocol = characterizationProtocol;
 	}
 }

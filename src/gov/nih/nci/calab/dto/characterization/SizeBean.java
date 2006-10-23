@@ -26,14 +26,19 @@ public class SizeBean extends CharacterizationBean {
 		this.setViewTitle(aChar.getIdentificationName());
 		this.setDescription(aChar.getDescription());
 		if (aChar.getInstrument() != null) {
-			this.getInstrument().setType(aChar.getInstrument().getType());
+			this.getInstrument().setType(aChar.getInstrument().getInstrumentType().getName());
 			this.getInstrument().setDescription(aChar.getInstrument().getDescription());
-			this.getInstrument().setManufacturer(aChar.getInstrument().getManufacturer());
+			this.getInstrument().setManufacturer(aChar.getInstrument().getManufacturer().getName());
 		}
 		this.setNumberOfDerivedBioAssayData(Integer.valueOf(aChar.getDerivedBioAssayDataCollection().size()).toString());
 		for (DerivedBioAssayData table : aChar.getDerivedBioAssayDataCollection()) {
 			DerivedBioAssayDataBean ctBean = new DerivedBioAssayDataBean(table);
 			this.getDerivedBioAssayData().add(ctBean);
+		}
+		if (aChar.getCharacterizationProtocol() != null) {
+			this.getCharacterizationProtocol().setId(aChar.getCharacterizationProtocol().getId());
+			this.getCharacterizationProtocol().setName(aChar.getCharacterizationProtocol().getName());
+			this.getCharacterizationProtocol().setVersion(aChar.getCharacterizationProtocol().getVersion());
 		}
 	}
 	
