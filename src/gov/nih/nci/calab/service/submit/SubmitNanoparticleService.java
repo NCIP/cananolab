@@ -8,8 +8,12 @@ import gov.nih.nci.calab.domain.Run;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.domain.Instrument;
+import gov.nih.nci.calab.domain.InstrumentType;
+import gov.nih.nci.calab.domain.Manufacturer;
 import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
 import gov.nih.nci.calab.dto.characterization.SizeBean;
+import gov.nih.nci.calab.dto.characterization.MolecularWeightBean;
+import gov.nih.nci.calab.dto.characterization.MorphologyBean;
 import gov.nih.nci.calab.dto.characterization.invitro.HemolysisBean;
 import gov.nih.nci.calab.dto.characterization.invitro.CoagulationBean;
 import gov.nih.nci.calab.dto.characterization.invitro.PlateAggregationBean;
@@ -21,6 +25,7 @@ import gov.nih.nci.calab.service.util.CalabConstants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashSet;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.upload.FormFile;
@@ -132,8 +137,59 @@ public class SubmitNanoparticleService {
 		try {
 			ida.open();
 			
+			/*
 			if (achar.getInstrument() != null)
 				ida.store(achar.getInstrument());
+			*/
+			
+			if (achar.getInstrument() != null) {
+				Manufacturer manuf = achar.getInstrument().getManufacturer();
+				String manufacturerQuery = " from Manufacturer manufacturer where manufacturer.name = '" + manuf.getName() + "'";
+				List result = ida.search(manufacturerQuery);
+				Manufacturer manufacturer = null;
+				boolean newManufacturer = false;
+				for (Object obj : result) {
+					manufacturer = (Manufacturer) obj;
+				}
+				if (manufacturer == null) {
+					newManufacturer = true;
+					manufacturer = manuf;
+					ida.store(manufacturer);
+				}
+				
+				
+				InstrumentType iType = achar.getInstrument().getInstrumentType();
+				String instrumentTypeQuery = " from InstrumentType instrumentType left join fetch instrumentType.manufacturerCollection where instrumentType.name = '" + iType.getName() + "'";
+				result = ida.search(instrumentTypeQuery);
+				InstrumentType instrumentType = null;
+				for (Object obj : result) {
+					instrumentType = (InstrumentType) obj;
+				}
+				if (instrumentType == null) {
+					instrumentType = iType;
+					
+					ida.createObject(instrumentType);
+					
+					HashSet<Manufacturer> manufacturers = new HashSet<Manufacturer>();
+					manufacturers.add(manufacturer);
+					instrumentType.setManufacturerCollection(manufacturers);
+				} else {
+					if (newManufacturer) {
+						instrumentType.getManufacturerCollection().add(manufacturer);
+					}
+				}
+				ida.store(instrumentType);
+					
+					
+				achar.getInstrument().setInstrumentType(instrumentType);
+				achar.getInstrument().setManufacturer(manufacturer);
+				ida.store(achar.getInstrument());
+			}
+			
+			if (achar.getCharacterizationProtocol() != null) {
+				ida.store(achar.getCharacterizationProtocol());
+			}
+				
 			// check if viewTitle is already used the same type of
 			// characterization for the same particle
 			String viewTitleQuery = "";
@@ -207,7 +263,7 @@ public class SubmitNanoparticleService {
 	 * @param achar
 	 * @throws Exception
 	 */
-	
+	/*
 	private Instrument addInstrument(Instrument instrument) throws Exception {
 		Instrument rInstrument = null;
 		
@@ -255,7 +311,7 @@ public class SubmitNanoparticleService {
 		}
 		return rInstrument;
 	}
-
+    */
 	/**
 	 * Saves the particle composition to the database
 	 * 
@@ -281,6 +337,7 @@ public class SubmitNanoparticleService {
 	 */
 	public void addParticleSize(String particleType, String particleName,
 			SizeBean size) throws Exception {
+		
 		Characterization doSize = size.getDomainObj();
 		// TODO think about how to deal with characterization file.
 		/*
@@ -292,6 +349,47 @@ public class SubmitNanoparticleService {
 		addParticleCharacterization(particleType, particleName, doSize);
 	}
 
+	/**
+	 * Saves the molecular weight characterization to the database
+	 * 
+	 * @param particleType
+	 * @param particleName
+	 * @param molecularWeight
+	 * @throws Exception
+	 */
+	public void addParticleMolecularWeight(String particleType, String particleName,
+			MolecularWeightBean molecularWeight) throws Exception {
+		Characterization doMolecularWeight = molecularWeight.getDomainObj();
+		// TODO think about how to deal with characterization file.
+		/*
+		if (doSize.getInstrument() != null) {
+			Instrument instrument = addInstrument(doSize.getInstrument());
+			doSize.setInstrument(instrument);
+		}
+		*/
+		addParticleCharacterization(particleType, particleName, doMolecularWeight);
+	}
+
+	/**
+	 * Saves the morphology characterization to the database
+	 * 
+	 * @param particleType
+	 * @param particleName
+	 * @param morphology
+	 * @throws Exception
+	 */
+	public void addParticleMorphology(String particleType, String particleName,
+			MorphologyBean morphology) throws Exception {
+		Characterization doMorphology = morphology.getDomainObj();
+		// TODO think about how to deal with characterization file.
+		/*
+		if (doSize.getInstrument() != null) {
+			Instrument instrument = addInstrument(doSize.getInstrument());
+			doSize.setInstrument(instrument);
+		}
+		*/
+		addParticleCharacterization(particleType, particleName, doMorphology);
+	}
 	/**
 	 * Saves the invitro hemolysis characterization to the database
 	 * 
