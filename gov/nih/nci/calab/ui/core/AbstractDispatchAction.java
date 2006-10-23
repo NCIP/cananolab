@@ -1,18 +1,25 @@
 package gov.nih.nci.calab.ui.core;
 
+import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.exception.InvalidSessionException;
 import gov.nih.nci.calab.exception.NoAccessException;
+import gov.nih.nci.calab.ui.submit.NanoparticleSizeAction;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.actions.DispatchAction;
+import org.apache.struts.validator.DynaValidatorForm;
 
 public abstract class AbstractDispatchAction extends DispatchAction {
+	private static Logger logger = Logger.getLogger(AbstractDispatchAction.class);
+
+	
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -68,4 +75,40 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 		return InitSessionSetup.getInstance().canUserExecuteClass(session,
 				this.getClass());
 	}
+	
+	/**
+	 * Update multiple children on the same form
+	 * 
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	public ActionForward updateManufacturers(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+
+		HttpSession session = request.getSession();
+/*
+		SizeBean sizeChar=(SizeBean) theForm.get("achar");
+		if (sizeChar.getInstrument() != null) {
+			String type = sizeChar.getInstrument().getType();
+			logger.info("***************Action: getting manufacturers for " + type);
+			InitSessionSetup.getInstance().setManufacturerPerType(session, sizeChar.getInstrument().getType());
+		}
+*/		
+		CharacterizationBean sizeChar=(CharacterizationBean) theForm.get("achar");
+		if (sizeChar.getInstrument() != null) {
+			String type = sizeChar.getInstrument().getType();
+			session.setAttribute("selectedInstrumentType", type);
+			//logger.info("***************Action: getting manufacturers for " + type);
+			InitSessionSetup.getInstance().setManufacturerPerType(session, sizeChar.getInstrument().getType());
+		}
+
+		return mapping.getInputForward();
+	}
+
 }
