@@ -5,6 +5,7 @@ import gov.nih.nci.calab.service.search.SearchSampleService;
 import gov.nih.nci.calab.domain.Instrument;
 import gov.nih.nci.calab.domain.InstrumentType;
 import gov.nih.nci.calab.domain.Manufacturer;
+import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 
 import gov.nih.nci.calab.service.util.CananoConstants;
 import gov.nih.nci.calab.domain.nano.characterization.CharacterizationProtocol;
@@ -69,6 +70,24 @@ public class CharacterizationBean {
 		this.setCharacterizationSource(characterization.getSource());
 		this.setCreatedBy(characterization.getCreatedBy());
 		this.setCreatedDate(characterization.getCreatedDate());
+		
+		this.setDescription(characterization.getDescription());
+		if (characterization.getInstrument() != null) {
+			this.getInstrument().setType(characterization.getInstrument().getInstrumentType().getName());
+			this.getInstrument().setDescription(characterization.getInstrument().getDescription());
+			this.getInstrument().setManufacturer(characterization.getInstrument().getManufacturer().getName());
+		}
+		this.setNumberOfDerivedBioAssayData(Integer.valueOf(characterization.getDerivedBioAssayDataCollection().size()).toString());
+		for (DerivedBioAssayData table : characterization.getDerivedBioAssayDataCollection()) {
+			DerivedBioAssayDataBean ctBean = new DerivedBioAssayDataBean(table);
+			this.getDerivedBioAssayData().add(ctBean);
+		}
+		if (characterization.getCharacterizationProtocol() != null) {
+			this.getCharacterizationProtocol().setId(characterization.getCharacterizationProtocol().getId());
+			this.getCharacterizationProtocol().setName(characterization.getCharacterizationProtocol().getName());
+			this.getCharacterizationProtocol().setVersion(characterization.getCharacterizationProtocol().getVersion());
+		}
+
 	}
 
 	public String getCharacterizationSource() {
