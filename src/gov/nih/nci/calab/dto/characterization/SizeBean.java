@@ -2,7 +2,7 @@ package gov.nih.nci.calab.dto.characterization;
 
 import gov.nih.nci.calab.domain.nano.characterization.physical.Size;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
-import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
+//import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 
 import java.util.List;
 
@@ -21,7 +21,8 @@ public class SizeBean extends CharacterizationBean {
 	}
 	
 	public SizeBean(Characterization aChar) {
-		super();
+		super(aChar);
+		/*
 		this.setCharacterizationSource(aChar.getSource());
 		this.setViewTitle(aChar.getIdentificationName());
 		this.setDescription(aChar.getDescription());
@@ -40,6 +41,7 @@ public class SizeBean extends CharacterizationBean {
 			this.getCharacterizationProtocol().setName(aChar.getCharacterizationProtocol().getName());
 			this.getCharacterizationProtocol().setVersion(aChar.getCharacterizationProtocol().getVersion());
 		}
+		*/
 	}
 	
 	public void setDerivedBioAssayData(
