@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSizeAction.java,v 1.7 2006-10-16 16:28:14 chand Exp $ */
+/* CVS $Id: NanoparticleSizeAction.java,v 1.8 2006-10-23 16:58:29 chand Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
@@ -18,6 +18,7 @@ import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
+import gov.nih.nci.calab.service.util.CananoConstants;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
@@ -68,9 +69,9 @@ public class NanoparticleSizeAction extends AbstractDispatchAction {
 		String viewTitle = (String) theForm.get("viewTitle");
 		String description = (String) theForm.get("description");
 		String characterizationSource = (String) theForm.get("characterizationSource");
-		sizeChar.setCharacterizationSource(characterizationSource);
-		sizeChar.setDescription(description);
-		sizeChar.setViewTitle(viewTitle);
+		//sizeChar.setCharacterizationSource(characterizationSource);
+		//sizeChar.setDescription(description);
+		//sizeChar.setViewTitle(viewTitle);
 
 		if (sizeChar.getId() == null || sizeChar.getId() == "") {
 			
@@ -106,6 +107,18 @@ public class NanoparticleSizeAction extends AbstractDispatchAction {
 
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
+		
+		HttpSession session = request.getSession();
+		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
+		String selectedInstrumentType = null;
+		
+		if (sizeChar.getInstrument().getOtherInstrumentType() != null && sizeChar.getInstrument().getOtherInstrumentType() != "")
+			selectedInstrumentType = sizeChar.getInstrument().getOtherInstrumentType();
+		else
+			selectedInstrumentType = sizeChar.getInstrument().getType();
+		
+		InitSessionSetup.getInstance().setManufacturerPerType(session, selectedInstrumentType);
+
 
 		return forward;
 	}
@@ -150,11 +163,14 @@ public class NanoparticleSizeAction extends AbstractDispatchAction {
 		HttpSession session = request.getSession();
 		String particleType = (String) theForm.get("particleType");
 		String particleName = (String) theForm.get("particleName");
-		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
+		String firstOption = InitSessionSetup.getInstance().setAllInstrumentTypes(session);
 		InitSessionSetup.getInstance().setAllSizeDistributionGraphTypes(session);
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
-		InitSessionSetup.getInstance().setManufacturerPerType(session);
+		if (firstOption == "")
+			firstOption =  CananoConstants.OTHER;
+		InitSessionSetup.getInstance().setManufacturerPerType(session, firstOption);
+		session.setAttribute("selectedInstrumentType", "");
 	}
 
 	/**
@@ -213,6 +229,11 @@ public class NanoparticleSizeAction extends AbstractDispatchAction {
 		theForm.set("achar", sChar);
 		
 		initSetup(request, theForm);
+
+		if (sChar.getInstrument() != null) {
+			InitSessionSetup.getInstance().setManufacturerPerType(session, sChar.getInstrument().getType());
+			session.setAttribute("selectedInstrumentType", sChar.getInstrument().getType());
+		}
 
 		return mapping.getInputForward();
 	}
@@ -403,5 +424,7 @@ public class NanoparticleSizeAction extends AbstractDispatchAction {
 				
 		return rv;
 	}
+	
+
 	
 }
