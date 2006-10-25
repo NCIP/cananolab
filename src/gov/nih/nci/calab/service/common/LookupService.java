@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.55 2006-10-23 16:53:07 chand Exp $ */
+/* CVS $Id: LookupService.java,v 1.56 2006-10-25 21:14:34 zengje Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -812,4 +812,20 @@ public class LookupService {
 		String[] morphologyTypes=new String[] {"Power", "Liquid", "Solid", "Crystalline", "Copolymer", "Fibril", "Colloid", "Oil"};
 		return morphologyTypes;
 	}
+	
+	public String[] getAllSurfaceTypes() {
+		String[] surfaceTypes = new String[] {"surface type 1", "surface type 2"};
+		return surfaceTypes;
+	}
+	
+	public String[] getAllAreaMeasureUnits() {
+		String[] areaUnit = new String[] {"square nm"};
+		return areaUnit;
+	}
+	
+	public String[] getAllChargeMeasureUnits() {
+		String[] chargeUnit = new String[] {"a.u", "aC", "Ah", "C","esu", "Fr", "statC"};
+		return chargeUnit;
+	}
+	
 }
