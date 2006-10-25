@@ -30,7 +30,7 @@ public class Surface implements Characterization {
 	private CharacterizationProtocol characterizationProtocol;
 	
 	private String type;
-	private Measurement surfaceArrea;
+	private Measurement surfaceArea;
 	private Measurement surfaceCharge;
 	private Measurement zetaPotential;
 	private Measurement charge;
@@ -157,12 +157,12 @@ public class Surface implements Characterization {
 		this.isHydrophobic = isHydrophobic;
 	}
 
-	public Measurement getSurfaceArrea() {
-		return surfaceArrea;
+	public Measurement getSurfaceArea() {
+		return surfaceArea;
 	}
 
-	public void setSurfaceArrea(Measurement surfaceArrea) {
-		this.surfaceArrea = surfaceArrea;
+	public void setSurfaceArea(Measurement surfaceArrea) {
+		this.surfaceArea = surfaceArrea;
 	}
 
 	public Measurement getSurfaceCharge() {
