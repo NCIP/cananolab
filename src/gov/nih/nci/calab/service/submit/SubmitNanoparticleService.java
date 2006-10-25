@@ -2,40 +2,36 @@ package gov.nih.nci.calab.service.submit;
 
 import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
+import gov.nih.nci.calab.domain.InstrumentType;
 import gov.nih.nci.calab.domain.Keyword;
+import gov.nih.nci.calab.domain.Manufacturer;
 import gov.nih.nci.calab.domain.OutputFile;
 import gov.nih.nci.calab.domain.Run;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
-import gov.nih.nci.calab.domain.Instrument;
-import gov.nih.nci.calab.domain.InstrumentType;
-import gov.nih.nci.calab.domain.Manufacturer;
 import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
-import gov.nih.nci.calab.dto.characterization.SizeBean;
 import gov.nih.nci.calab.dto.characterization.MolecularWeightBean;
 import gov.nih.nci.calab.dto.characterization.MorphologyBean;
-import gov.nih.nci.calab.dto.characterization.invitro.HemolysisBean;
-import gov.nih.nci.calab.dto.characterization.invitro.CoagulationBean;
-import gov.nih.nci.calab.dto.characterization.invitro.PlateAggregationBean;
-import gov.nih.nci.calab.dto.characterization.invitro.PlasmaProteinBindingBean;
+import gov.nih.nci.calab.dto.characterization.SizeBean;
 import gov.nih.nci.calab.dto.characterization.composition.CompositionBean;
+import gov.nih.nci.calab.dto.characterization.invitro.CoagulationBean;
+import gov.nih.nci.calab.dto.characterization.invitro.HemolysisBean;
+import gov.nih.nci.calab.dto.characterization.invitro.PlasmaProteinBindingBean;
+import gov.nih.nci.calab.dto.characterization.invitro.PlateAggregationBean;
+import gov.nih.nci.calab.dto.characterization.physical.SurfaceBean;
 import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CalabConstants;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.HashSet;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.upload.FormFile;
-
-import java.io.OutputStreamWriter;
-import java.io.BufferedWriter;
-import java.io.Writer;
-import java.io.InputStream;
-import java.io.FileOutputStream;
-import java.io.File;
 
 /**
  * This class includes service calls involved in creating nanoparticles and
@@ -347,6 +343,28 @@ public class SubmitNanoparticleService {
 		}
 		*/
 		addParticleCharacterization(particleType, particleName, doSize);
+	}
+	
+	/**
+	 * Saves the size characterization to the database
+	 * 
+	 * @param particleType
+	 * @param particleName
+	 * @param size
+	 * @throws Exception
+	 */
+	public void addParticleSurface(String particleType, String particleName,
+			SurfaceBean surface) throws Exception {
+		
+		Characterization doSurface = surface.getDomainObj();
+		// TODO think about how to deal with characterization file.
+		/*
+		if (doSize.getInstrument() != null) {
+			Instrument instrument = addInstrument(doSize.getInstrument());
+			doSize.setInstrument(instrument);
+		}
+		*/
+		addParticleCharacterization(particleType, particleName, doSurface);
 	}
 
 	/**
