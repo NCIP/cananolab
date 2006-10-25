@@ -232,7 +232,7 @@ public class SearchNanoparticleService {
 
 			ida.open();
 			List results = ida
-					.search(" from Characterization chara left join fetch chara.composingElementCollection where chara.id="
+					.search(" from Characterization chara left join fetch chara.composingElementCollection left join fetch chara.derivedBioAssayDataCollection where chara.id="
 							+ charId);
 			for(Object obj: results) {
 				aChar=(Characterization)obj;				
@@ -254,11 +254,16 @@ public class SearchNanoparticleService {
 		try {
 
 			ida.open();
+//			List results = ida
+//					.search(" from Characterization chara left join fetch chara.derivedBioAssayDataCollection" +
+//							" left join fetch chara.derivedBioAssayDataCollection.datumCollection" +
+//							" where chara.id="
+//							+ charId);
 			List results = ida
-					.search(" from Characterization chara left join fetch chara.derivedBioAssayDataCollection" +
-							" left join fetch chara.derivedBioAssayDataCollection.datumCollection" +
-							" where chara.id="
-							+ charId);
+			.search(" from Characterization chara left join fetch chara.derivedBioAssayDataCollection" +
+					" left join fetch chara.derivedBioAssayDataCollection.datumCollection" +
+					" where chara.id="
+					+ charId);
 			for(Object obj: results) {
 				aChar=(Characterization)obj;				
 			}
