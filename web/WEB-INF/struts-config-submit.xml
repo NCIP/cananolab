@@ -68,6 +68,20 @@
 			<form-property name="viewTitle" type="java.lang.String" />
 			<form-property name="description" type="java.lang.String" />
 		</form-bean>
+
+		<form-bean name="nanoparticleSurfaceForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer" initial="0" />
+			<form-property name="particleName" type="java.lang.String" />
+			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.physical.SurfaceBean" />
+			<form-property name="fileNumber" type="java.lang.String" />
+			<form-property name="characterizationId" type="java.lang.String" />
+			<form-property name="characterizationSource" type="java.lang.String" />
+			<form-property name="viewTitle" type="java.lang.String" />
+			<form-property name="description" type="java.lang.String" />
+		</form-bean>
+		
 		<form-bean name="nanoparticleMolecularWeightForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="dispatch" type="java.lang.String" />
 			<form-property name="page" type="java.lang.Integer" initial="0" />
@@ -193,6 +207,12 @@
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addParticleSize" path="submit.addparticle.size" type="java.lang.Exception" />
 			<forward name="success" path="submit.message" />
 			<forward name="input" path="submit.addparticle.size" />
+			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
+		</action>
+		<action name="nanoparticleSurfaceForm" parameter="dispatch" path="/nanoparticleSurface" type="gov.nih.nci.calab.ui.submit.NanoparticleSurfaceAction" input="input">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addParticleSurface" path="submit.addparticle.surface" type="java.lang.Exception" />
+			<forward name="success" path="submit.message" />
+			<forward name="input" path="submit.addparticle.surface" />
 			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
 		</action>
 		<action name="nanoparticleMolecularWeightForm" parameter="dispatch" path="/nanoparticleMolecularWeight" type="gov.nih.nci.calab.ui.submit.NanoparticleMolecularWeightAction" input="input">
