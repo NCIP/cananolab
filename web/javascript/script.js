@@ -160,6 +160,10 @@ function updateSize() {
     document.nanoparticleSizeForm.action = "nanoparticleSize.do?dispatch=update&page=0";
     document.nanoparticleSizeForm.submit();
 }
+function updateSurface() {
+    document.nanoparticleSurfaceForm.action = "nanoparticleSurface.do?dispatch=update&page=0";
+    document.nanoparticleSurfaceForm.submit();
+}
 function updateMolecularWeight() {
     document.nanoparticleMolecularWeightForm.action = "nanoparticleMolecularWeight.do?dispatch=update&page=0";
     document.nanoparticleMolecularWeightForm.submit();
@@ -192,6 +196,22 @@ function loadSizeFile(particleName, fileNumber) {
     document.nanoparticleSizeForm.action = "nanoparticleSize.do?dispatch=loadFile&page=0&particleName=" + particleName + "&fileNumber=" + fileNumber;
     document.nanoparticleSizeForm.submit();
 }
+
+function loadSurfaceFile(particleName, fileNumber) {
+    document.nanoparticleSurfaceForm.action = "nanoparticleSurface.do?dispatch=loadFile&page=0&particleName=" + particleName + "&fileNumber=" + fileNumber;
+    document.nanoparticleSurfaceForm.submit();
+}
+
+
+/*function loadFile(particleName, fileNumber, charType) {
+	var action;
+	if (charType == "size" ) {
+		action="nanoparticleSize.do";
+	} else if (charType == "
+	document.nanoparticleSizeForm.action = "nanoparticleSize.do?dispatch=loadFile&page=0&particleName=" + particleName + "&fileNumber=" + fileNumber;
+    document.nanoparticleSizeForm.submit();
+}*/
+
 function refreshManufacturers(form, action) {
     form.dispatch.value = action;
     form.submit();
