@@ -24,7 +24,7 @@
 			<item value="Molecular Weight" link="nanoparticleMolecularWeight.do?dispatch=setup&amp;page=0" />
 			<item value="Morphology" link="nanoparticleMorphology.do?dispatch=setup&amp;page=0" />
 			<item value="Shape" link="" />
-			<item value="Surface" link="" />
+			<item value="Surface" link="nanoparticleSurface.do?dispatch=setup&amp;page=0" />
 			<item value="Solubility" link="" />
 			<item value="Purity" link="" />
 			<item value="Stability" link="" />
@@ -140,6 +140,18 @@
 	<definition name="submit.addparticle.size" extends="calab.home">
 		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
 		<put name="calabContent" value="submit.addparticle.size.content" />
+		<put name="menu" value="submit" />
+	</definition>
+
+	<!-- definition for the nanoparticle surface page -->
+	<definition name="submit.addparticle.surface.content" extends="submit.content.home">
+		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
+		<put name="submitContent" value="/submit/bodyParticleSurface.jsp" />
+	</definition>
+
+	<definition name="submit.addparticle.surface" extends="calab.home">
+		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
+		<put name="calabContent" value="submit.addparticle.surface.content" />
 		<put name="menu" value="submit" />
 	</definition>
 
