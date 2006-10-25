@@ -22,7 +22,7 @@ public class MorphologyBean extends CharacterizationBean {
 		initSetup();
 	}
 	
-	public MorphologyBean(Characterization aChar) {
+	public MorphologyBean(Morphology aChar) {
 		super(aChar);
 		/*
 		this.setCharacterizationSource(aChar.getSource());
@@ -44,6 +44,7 @@ public class MorphologyBean extends CharacterizationBean {
 			this.getCharacterizationProtocol().setVersion(aChar.getCharacterizationProtocol().getVersion());
 		}
 		*/
+		this.type = aChar.getType();
 	}
 	
 	public void setDerivedBioAssayData(
@@ -71,6 +72,9 @@ public class MorphologyBean extends CharacterizationBean {
 	public Morphology getDomainObj() {
 		Morphology morphology = new Morphology();
 		super.updateDomainObj(morphology);
+		
+		morphology.setType(this.type);
+		
 		return morphology;
 	}
 
