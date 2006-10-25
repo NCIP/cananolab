@@ -394,7 +394,8 @@ public class InitSessionSetup {
 		}
 	}
 
-	public void setAllDendrimerGenerations(HttpSession session) throws Exception {
+	public void setAllDendrimerGenerations(HttpSession session)
+			throws Exception {
 		if (session.getServletContext().getAttribute("allDendrimerGenerations") == null) {
 			String[] generations = lookupService.getAllDendrimerGenerations();
 			session.getServletContext().setAttribute("allDendrimerGenerations",
@@ -492,7 +493,6 @@ public class InitSessionSetup {
 		}
 	}
 
-	
 	public String setAllInstrumentTypes(HttpSession session) throws Exception {
 		String rv = "";
 		if (session.getServletContext().getAttribute("allInstrumentTypes") == null) {
@@ -502,22 +502,25 @@ public class InitSessionSetup {
 			if (instrumentTypes != null && instrumentTypes.length > 0)
 				rv = instrumentTypes[0];
 		}
-		
+
 		return rv;
 	}
-	
-	public void setManufacturerPerType(HttpSession session, String instrumentType) throws Exception {
+
+	public void setManufacturerPerType(HttpSession session,
+			String instrumentType) throws Exception {
 		/*
-		if (session.getServletContext().getAttribute("manufacturerPerType") == null) {
-			String[] manufacturerPerType = new String[] {"Manufacturer#1", "Manufacturer#2"};//lookupService.getAllInstrumentTypes();
-			session.getServletContext().setAttribute("manufacturerPerType",
-					manufacturerPerType);
-		}
-		*/
+		 * if (session.getServletContext().getAttribute("manufacturerPerType") ==
+		 * null) { String[] manufacturerPerType = new String[]
+		 * {"Manufacturer#1",
+		 * "Manufacturer#2"};//lookupService.getAllInstrumentTypes();
+		 * session.getServletContext().setAttribute("manufacturerPerType",
+		 * manufacturerPerType); }
+		 */
 		if (session.getServletContext().getAttribute("manufacturerPerType") != null) {
 			session.getServletContext().removeAttribute("manufacturerPerType");
 		}
-		String[] manufacturerPerType = lookupService.getManufacturers(instrumentType);
+		String[] manufacturerPerType = lookupService
+				.getManufacturers(instrumentType);
 		session.getServletContext().setAttribute("manufacturerPerType",
 				manufacturerPerType);
 	}
@@ -536,22 +539,24 @@ public class InitSessionSetup {
 			throws Exception {
 		if (session.getServletContext().getAttribute(
 				"allMolecularWeightDistributionGraphTypes") == null) {
-			String[] graphTypes = lookupService.getMolecularWeightDistributionGraphTypes();
+			String[] graphTypes = lookupService
+					.getMolecularWeightDistributionGraphTypes();
 			session.getServletContext().setAttribute(
 					"allMolecularWeightDistributionGraphTypes", graphTypes);
-		}	
+		}
 	}
-	
+
 	public void setAllMorphologyDistributionGraphTypes(HttpSession session)
 			throws Exception {
 		if (session.getServletContext().getAttribute(
 				"allMorphologyDistributionGraphTypes") == null) {
-			String[] graphTypes = lookupService.getMorphologyDistributionGraphTypes();
+			String[] graphTypes = lookupService
+					.getMorphologyDistributionGraphTypes();
 			session.getServletContext().setAttribute(
 					"allMorphologyDistributionGraphTypes", graphTypes);
-		}	
+		}
 	}
-	
+
 	public void setAllMorphologyTypes(HttpSession session) throws Exception {
 		if (session.getServletContext().getAttribute("allMorphologyTypes") == null) {
 			String[] morphologyTypes = lookupService.getAllMorphologyTypes();
@@ -560,7 +565,6 @@ public class InitSessionSetup {
 		}
 	}
 
-	
 	public void setStaticDropdowns(HttpSession session) {
 		// set static boolean yes or no and characterization source choices
 		session.setAttribute("booleanChoices", CananoConstants.BOOLEAN_CHOICES);
@@ -583,5 +587,29 @@ public class InitSessionSetup {
 		}
 		session.removeAttribute("newParticleCreated");
 		session.removeAttribute("newRunCreated");
+	}
+
+	public void setAllSurfaceTypes(HttpSession session) throws Exception {
+		if (session.getServletContext().getAttribute("allSurfaceTypes") == null) {
+			String[] surfaceTypes = lookupService.getAllSurfaceTypes();
+			session.getServletContext().setAttribute("allSurfaceTypes",
+					surfaceTypes);
+		}
+	}
+
+	public void setAllAreaMeasureUnits(HttpSession session) throws Exception {
+		if (session.getServletContext().getAttribute("allAreaMeasureUnits") == null) {
+			String[]areaUnits = lookupService.getAllAreaMeasureUnits();
+			session.getServletContext().setAttribute("allAreaMeasureUnits",
+					areaUnits);
+		}
+	}
+
+	public void setAllChargeMeasureUnits(HttpSession session) throws Exception {
+		if (session.getServletContext().getAttribute("allChargeMeasureUnits") == null) {
+			String[] chargeUnits = lookupService.getAllChargeMeasureUnits();
+			session.getServletContext().setAttribute("allChargeMeasureUnits",
+					chargeUnits);
+		}
 	}
 }
