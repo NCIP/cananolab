@@ -12,6 +12,7 @@ import gov.nih.nci.calab.dto.characterization.invitro.CoagulationBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
+import gov.nih.nci.calab.service.util.CananoConstants;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
@@ -118,7 +119,10 @@ public class InvitroCoagulationAction extends AbstractDispatchAction {
 		InitSessionSetup.getInstance().setAllSizeDistributionGraphTypes(session);
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
-		InitSessionSetup.getInstance().setManufacturerPerType(session);
+		String firstOption = InitSessionSetup.getInstance().setAllInstrumentTypes(session);
+		if (firstOption == "")
+			firstOption =  CananoConstants.OTHER;
+		InitSessionSetup.getInstance().setManufacturerPerType(session, firstOption);
 	}
 
 	/**
