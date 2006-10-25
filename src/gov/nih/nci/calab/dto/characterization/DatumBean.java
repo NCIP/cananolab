@@ -2,6 +2,7 @@ package gov.nih.nci.calab.dto.characterization;
 
 import gov.nih.nci.calab.domain.Measurement;
 import gov.nih.nci.calab.domain.nano.characterization.Datum;
+import gov.nih.nci.calab.service.util.StringUtils;
 
 /**
  * This class represents the data within a characterization file to be shown in
@@ -26,8 +27,8 @@ public class DatumBean {
 	public DatumBean(Datum datum) {
 		this.id = datum.getId().toString();
 		this.type = datum.getType();
-		this.value = datum.getValue().getValue();
-		this.valueUnit = datum.getValue().getUnitOfMeasurement();
+		this.value = (datum.getValue()!=null)?StringUtils.convertToString(datum.getValue().getValue()):"";
+		this.valueUnit = (datum.getValue()!=null)?StringUtils.convertToString(datum.getValue().getUnitOfMeasurement()):"";
 	}
 
 	public String getId() {
