@@ -34,7 +34,7 @@
 		<td class="leftLabel">
 			<strong>Other Instrument Type </strong>
 		</td>
-		<td class="rightLabel" colspan="3">
+		<td class="rightLabel">
 			<c:choose>
 				<c:when test="${canUserUpdateParticle eq 'true'}">
 					<c:choose>
@@ -74,7 +74,7 @@
 		<td class="leftLabel">
 			<strong>Other Manufacturer </strong>
 		</td>
-		<td class="rightLabel" colspan="3">
+		<td class="rightLabel">
 			<c:choose>
 				<c:when test="${canUserUpdateParticle eq 'true'}">
 					<html:text property="achar.instrument.otherManufacturer"/>
