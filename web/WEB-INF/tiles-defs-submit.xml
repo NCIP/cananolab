@@ -21,8 +21,8 @@
 		<putList name="physicalActions">
 			<item value="Composition" link="nanoparticleComposition.do?dispatch=setup&amp;page=0" />
 			<item value="Size" link="nanoparticleSize.do?dispatch=setup&amp;page=0" />
-			<item value="Molecular Weight" link="" />
-			<item value="Morphology" link="" />
+			<item value="Molecular Weight" link="nanoparticleMolecularWeight.do?dispatch=setup&amp;page=0" />
+			<item value="Morphology" link="nanoparticleMorphology.do?dispatch=setup&amp;page=0" />
 			<item value="Shape" link="" />
 			<item value="Surface" link="" />
 			<item value="Solubility" link="" />
@@ -140,6 +140,30 @@
 	<definition name="submit.addparticle.size" extends="calab.home">
 		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
 		<put name="calabContent" value="submit.addparticle.size.content" />
+		<put name="menu" value="submit" />
+	</definition>
+
+	<!-- definition for the nanoparticle molecular weight page -->
+	<definition name="submit.addparticle.molecularweight.content" extends="submit.content.home">
+		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
+		<put name="submitContent" value="/submit/bodyParticleMolecularWeight.jsp" />
+	</definition>
+
+	<definition name="submit.addparticle.molecularweight" extends="calab.home">
+		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
+		<put name="calabContent" value="submit.addparticle.molecularweight.content" />
+		<put name="menu" value="submit" />
+	</definition>
+
+	<!-- definition for the nanoparticle morphology page -->
+	<definition name="submit.addparticle.morphology.content" extends="submit.content.home">
+		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
+		<put name="submitContent" value="/submit/bodyParticleMorphology.jsp" />
+	</definition>
+
+	<definition name="submit.addparticle.morphology" extends="calab.home">
+		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
+		<put name="calabContent" value="submit.addparticle.morphology.content" />
 		<put name="menu" value="submit" />
 	</definition>
 
