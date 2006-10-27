@@ -165,6 +165,8 @@
 		<forward name="molecularWeightInputForm" path="submit.addparticle.molecularweight" />
 		<forward name="Morphology" path="nanoparticleMorphology.do" />
 		<forward name="morphologyInputForm" path="submit.addparticle.morphology" />
+		<forward name="Surface" path="nanoparticleSurface.do" />
+		<forward name="surfaceInputForm" path="submit.addparticle.surface" />
 		<forward name="invitroHemolysisForm" path="submit.addimmunotoxicity.hemolysis" />
 		<forward name="invitroCoagulationForm" path="submit.addimmunotoxicity.coagulation" />
 		<forward name="invitroPlateAggregationForm" path="submit.addimmunotoxicity.plateaggregation" />
