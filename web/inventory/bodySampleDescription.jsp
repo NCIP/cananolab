@@ -1,6 +1,0 @@
-<h4>Manage Sample Home</h4>
-
-This is the Sample section of the Manage Sample function.  A sample is ...
-
-In this section, you may create a new Sample, modify existing sample details, and 
-....
