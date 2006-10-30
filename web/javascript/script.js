@@ -172,6 +172,10 @@ function updateMorphology() {
     document.nanoparticleMorphologyForm.action = "nanoparticleMorphology.do?dispatch=update&page=0";
     document.nanoparticleMorphologyForm.submit();
 }
+function updateShape() {
+    document.nanoparticleShapeForm.action = "nanoparticleShape.do?dispatch=update&page=0";
+    document.nanoparticleShapeForm.submit();
+}
 function updateHemolysis() {
     document.invitroImmunotoxicityHemolysisForm.action = "invitroImmunotoxicityHemolysis.do?dispatch=update&page=0";
     document.invitroImmunotoxicityHemolysisForm.submit();
