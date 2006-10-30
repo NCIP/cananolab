@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.56 2006-10-25 21:14:34 zengje Exp $ */
+/* CVS $Id: LookupService.java,v 1.57 2006-10-30 18:05:45 chand Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -808,9 +808,21 @@ public class LookupService {
 		return graphTypes;
 	}
 	
+	public String[] getShapeDistributionGraphTypes() {
+		//TODO query from database or properties file
+		String[] graphTypes=new String[] {"Volume", "Mass", "Number"};
+		return graphTypes;
+	}
+	
 	public String[] getAllMorphologyTypes() {
 		String[] morphologyTypes=new String[] {"Power", "Liquid", "Solid", "Crystalline", "Copolymer", "Fibril", "Colloid", "Oil"};
 		return morphologyTypes;
+	}
+	
+	public String[] getAllShapeTypes() {
+		String[] shapeTypes=new String[] {"Hexagonal", "Irregular", "Needle", "Oblate", "Rod", "Spherical", "Tetrahedral", 
+										  "Tetrapod", "Triangular", "Elliptical", "Composite", "Cylindrical", "Vesicular", "Elliposid"};
+		return shapeTypes;
 	}
 	
 	public String[] getAllSurfaceTypes() {

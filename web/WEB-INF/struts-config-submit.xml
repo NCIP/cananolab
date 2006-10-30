@@ -106,6 +106,18 @@
 			<form-property name="viewTitle" type="java.lang.String" />
 			<form-property name="description" type="java.lang.String" />
 		</form-bean>
+		<form-bean name="nanoparticleShapeForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer" initial="0" />
+			<form-property name="particleName" type="java.lang.String" />
+			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.physical.ShapeBean" />
+			<form-property name="fileNumber" type="java.lang.String" />
+			<form-property name="characterizationId" type="java.lang.String" />
+			<form-property name="characterizationSource" type="java.lang.String" />
+			<form-property name="viewTitle" type="java.lang.String" />
+			<form-property name="description" type="java.lang.String" />
+		</form-bean>
 		<form-bean name="invitroImmunotoxicityHemolysisForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="dispatch" type="java.lang.String" />
 			<form-property name="page" type="java.lang.Integer" initial="0" />
@@ -165,6 +177,8 @@
 		<forward name="molecularWeightInputForm" path="submit.addparticle.molecularweight" />
 		<forward name="Morphology" path="nanoparticleMorphology.do" />
 		<forward name="morphologyInputForm" path="submit.addparticle.morphology" />
+		<forward name="Shape" path="nanoparticleShape.do" />
+		<forward name="shapeInputForm" path="submit.addparticle.shape" />
 		<forward name="Surface" path="nanoparticleSurface.do" />
 		<forward name="surfaceInputForm" path="submit.addparticle.surface" />
 		<forward name="invitroHemolysisForm" path="submit.addimmunotoxicity.hemolysis" />
@@ -227,6 +241,12 @@
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addParticleMorphology" path="submit.addparticle.morphology" type="java.lang.Exception" />
 			<forward name="success" path="submit.message" />
 			<forward name="input" path="submit.addparticle.morphology" />
+			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
+		</action>
+		<action name="nanoparticleShapeForm" parameter="dispatch" path="/nanoparticleShape" type="gov.nih.nci.calab.ui.submit.NanoparticleShapeAction" input="input">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addParticleShape" path="submit.addparticle.shape" type="java.lang.Exception" />
+			<forward name="success" path="submit.message" />
+			<forward name="input" path="submit.addparticle.shape" />
 			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
 		</action>
 		<action name="invitroImmunotoxicityHemolysisForm" parameter="dispatch" path="/invitroImmunotoxicityHemolysis" type="gov.nih.nci.calab.ui.submit.InvitroHemolysisAction" input="input">

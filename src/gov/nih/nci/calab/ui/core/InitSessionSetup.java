@@ -557,11 +557,31 @@ public class InitSessionSetup {
 		}
 	}
 
+	public void setAllShapeDistributionGraphTypes(HttpSession session)
+			throws Exception {
+		if (session.getServletContext().getAttribute(
+				"allShapeDistributionGraphTypes") == null) {
+			String[] graphTypes = lookupService
+					.getShapeDistributionGraphTypes();
+			session.getServletContext().setAttribute(
+					"allShapeDistributionGraphTypes", graphTypes);
+}
+}
+
+
 	public void setAllMorphologyTypes(HttpSession session) throws Exception {
 		if (session.getServletContext().getAttribute("allMorphologyTypes") == null) {
 			String[] morphologyTypes = lookupService.getAllMorphologyTypes();
 			session.getServletContext().setAttribute("allMorphologyTypes",
 					morphologyTypes);
+		}
+	}
+
+	public void setAllShapeTypes(HttpSession session) throws Exception {
+		if (session.getServletContext().getAttribute("allShapeTypes") == null) {
+			String[] shapeTypes = lookupService.getAllShapeTypes();
+			session.getServletContext().setAttribute("allShapeTypes",
+					shapeTypes);
 		}
 	}
 
