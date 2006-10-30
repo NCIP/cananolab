@@ -5,7 +5,7 @@
 <hibernate-configuration>
     <session-factory>
         <!-- properties  -->
-        <property name="connection.datasource">java:@JNDINAME@</property>
+        <property name="connection.datasource">java:calab</property>
     
 	    <property name="hibernate.show_sql">true</property>
 	    <property name="dialect">org.hibernate.dialect.Oracle9Dialect</property>	
