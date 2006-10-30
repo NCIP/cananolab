@@ -13,6 +13,7 @@ import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
 import gov.nih.nci.calab.dto.characterization.MolecularWeightBean;
 import gov.nih.nci.calab.dto.characterization.MorphologyBean;
 import gov.nih.nci.calab.dto.characterization.SizeBean;
+import gov.nih.nci.calab.dto.characterization.physical.ShapeBean;
 import gov.nih.nci.calab.dto.characterization.composition.CompositionBean;
 import gov.nih.nci.calab.dto.characterization.invitro.CoagulationBean;
 import gov.nih.nci.calab.dto.characterization.invitro.HemolysisBean;
@@ -408,6 +409,22 @@ public class SubmitNanoparticleService {
 		*/
 		addParticleCharacterization(particleType, particleName, doMorphology);
 	}
+	
+	/**
+	 * Saves the morphology characterization to the database
+	 * 
+	 * @param particleType
+	 * @param particleName
+	 * @param morphology
+	 * @throws Exception
+	 */
+	public void addParticleShape(String particleType, String particleName,
+			ShapeBean shape) throws Exception {
+		Characterization doShape = shape.getDomainObj();
+		// TODO think about how to deal with characterization file.
+		addParticleCharacterization(particleType, particleName, doShape);
+	}
+
 	/**
 	 * Saves the invitro hemolysis characterization to the database
 	 * 
