@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.57 2006-10-30 18:05:45 chand Exp $ */
+/* CVS $Id: LookupService.java,v 1.58 2006-11-01 20:36:37 zengje Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -771,7 +771,7 @@ public class LookupService {
 				hqlString += " where instrument.type = '" + instrumentType + "'";
 			*/
 			String hqlString = "select distinct manufacturer.name from InstrumentType instrumentType join instrumentType.manufacturerCollection manufacturer ";
-			if (!instrumentType.equals(CananoConstants.OTHER))
+			if ((instrumentType != null) && (!instrumentType.equals(CananoConstants.OTHER)))
 				hqlString += " where instrumentType.name = '" + instrumentType + "'";
 
 			List results = ida.search(hqlString);
@@ -839,5 +839,19 @@ public class LookupService {
 		String[] chargeUnit = new String[] {"a.u", "aC", "Ah", "C","esu", "Fr", "statC"};
 		return chargeUnit;
 	}
+
+	public String[] getAllDensityMeasureUnits() {
+		String[] densityUnits = new String[] {"kg/L"};
+		return densityUnits;
+	}
 	
+	public String[] getAllAgentTypes() {
+		String[] agentTypes = new String[] {"DNA","Peptide", "Small Molecule", "Probe", "Antibody", "Image Contrast Agent"};
+		return agentTypes;
+	}
+	
+	public String[] getAllAgentTargetTypes() {
+		String[] agentTargetTypes = new String[] {"Receptor","Antigen"};
+		return agentTargetTypes;
+	}
 }
