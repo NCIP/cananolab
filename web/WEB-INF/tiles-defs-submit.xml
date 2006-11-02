@@ -25,9 +25,9 @@
 			<item value="Morphology" link="nanoparticleMorphology.do?dispatch=setup&amp;page=0" />
 			<item value="Shape" link="nanoparticleShape.do?dispatch=setup&amp;page=0" />
 			<item value="Surface" link="nanoparticleSurface.do?dispatch=setup&amp;page=0" />
-			<item value="Solubility" link="" />
-			<item value="Purity" link="" />
-			<item value="Stability" link="" />
+			<item value="Solubility" link="nanoparticleSolubility.do?dispatch=setup&amp;page=0" />
+			<item value="Purity" link="nanoparticlePurity.do?dispatch=setup&amp;page=0" />
+			<item value="Stability" link="nanoparticleStability.do?dispatch=setup&amp;page=0" />
 			<item value="Functional" link="" />
 		</putList>
 		<putList name="toxActions">
@@ -188,6 +188,42 @@
 	<definition name="submit.addparticle.shape" extends="calab.home">
 		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
 		<put name="calabContent" value="submit.addparticle.shape.content" />
+		<put name="menu" value="submit" />
+	</definition>
+
+	<!-- definition for the nanoparticle stability page -->
+	<definition name="submit.addparticle.stability.content" extends="submit.content.home">
+		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
+		<put name="submitContent" value="/submit/bodyParticleStability.jsp" />
+	</definition>
+
+	<definition name="submit.addparticle.stability" extends="calab.home">
+		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
+		<put name="calabContent" value="submit.addparticle.stability.content" />
+		<put name="menu" value="submit" />
+	</definition>
+
+	<!-- definition for the nanoparticle purity page -->
+	<definition name="submit.addparticle.purity.content" extends="submit.content.home">
+		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
+		<put name="submitContent" value="/submit/bodyParticlePurity.jsp" />
+	</definition>
+
+	<definition name="submit.addparticle.purity" extends="calab.home">
+		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
+		<put name="calabContent" value="submit.addparticle.purity.content" />
+		<put name="menu" value="submit" />
+	</definition>
+
+	<!-- definition for the nanoparticle solubility page -->
+	<definition name="submit.addparticle.solubility.content" extends="submit.content.home">
+		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
+		<put name="submitContent" value="/submit/bodyParticleSolubility.jsp" />
+	</definition>
+
+	<definition name="submit.addparticle.solubility" extends="calab.home">
+		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
+		<put name="calabContent" value="submit.addparticle.solubility.content" />
 		<put name="menu" value="submit" />
 	</definition>
 
