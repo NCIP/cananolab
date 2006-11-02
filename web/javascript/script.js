@@ -176,6 +176,18 @@ function updateShape() {
     document.nanoparticleShapeForm.action = "nanoparticleShape.do?dispatch=update&page=0";
     document.nanoparticleShapeForm.submit();
 }
+function updateStability() {
+    document.nanoparticleStabilityForm.action = "nanoparticleStability.do?dispatch=update&page=0";
+    document.nanoparticleStabilityForm.submit();
+}
+function updatePurity() {
+    document.nanoparticlePurityForm.action = "nanoparticlePurity.do?dispatch=update&page=0";
+    document.nanoparticlePurityForm.submit();
+}
+function updateSolubility() {
+    document.nanoparticleSolubilityForm.action = "nanoparticleSolubility.do?dispatch=update&page=0";
+    document.nanoparticleSolubilityForm.submit();
+}
 function updateHemolysis() {
     document.invitroImmunotoxicityHemolysisForm.action = "invitroImmunotoxicityHemolysis.do?dispatch=update&page=0";
     document.invitroImmunotoxicityHemolysisForm.submit();
@@ -204,6 +216,30 @@ function loadSizeFile(particleName, fileNumber) {
 function loadSurfaceFile(particleName, fileNumber) {
     document.nanoparticleSurfaceForm.action = "nanoparticleSurface.do?dispatch=loadFile&page=0&particleName=" + particleName + "&fileNumber=" + fileNumber;
     document.nanoparticleSurfaceForm.submit();
+}
+function loadMolecularWeightFile(particleName, fileNumber) {
+    document.nanoparticleMolecularWeightForm.action = "nanoparticleMolecularWeight.do?dispatch=loadFile&page=0&particleName=" + particleName + "&fileNumber=" + fileNumber;
+    document.nanoparticleMolecularWeightForm.submit();
+}
+function loadMorphologyFile(particleName, fileNumber) {
+    document.nanoparticleMorphologyForm.action = "nanoparticleMorphology.do?dispatch=loadFile&page=0&particleName=" + particleName + "&fileNumber=" + fileNumber;
+    document.nanoparticleMorphologyForm.submit();
+}
+function loadShapeFile(particleName, fileNumber) {
+    document.nanoparticleShapeForm.action = "nanoparticleShape.do?dispatch=loadFile&page=0&particleName=" + particleName + "&fileNumber=" + fileNumber;
+    document.nanoparticleShapeForm.submit();
+}
+function loadSolubilityFile(particleName, fileNumber) {
+    document.nanoparticleSolubilityForm.action = "nanoparticleSolubility.do?dispatch=loadFile&page=0&particleName=" + particleName + "&fileNumber=" + fileNumber;
+    document.nanoparticleSolubilityForm.submit();
+}
+function loadPurityFile(particleName, fileNumber) {
+    document.nanoparticlePurityForm.action = "nanoparticlePurity.do?dispatch=loadFile&page=0&particleName=" + particleName + "&fileNumber=" + fileNumber;
+    document.nanoparticlePurityForm.submit();
+}
+function loadStabilityFile(particleName, fileNumber) {
+    document.nanoparticleStabilityForm.action = "nanoparticleStability.do?dispatch=loadFile&page=0&particleName=" + particleName + "&fileNumber=" + fileNumber;
+    document.nanoparticleStabilityForm.submit();
 }
 
 
