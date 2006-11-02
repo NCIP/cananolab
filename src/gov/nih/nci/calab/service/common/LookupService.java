@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.58 2006-11-01 20:36:37 zengje Exp $ */
+/* CVS $Id: LookupService.java,v 1.59 2006-11-02 18:32:42 chand Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -804,13 +804,31 @@ public class LookupService {
 
 	public String[] getMorphologyDistributionGraphTypes() {
 		//TODO query from database or properties file
-		String[] graphTypes=new String[] {"Volume", "Mass", "Number"};
+		String[] graphTypes=new String[] {"Graph", "Image"};
 		return graphTypes;
 	}
 	
 	public String[] getShapeDistributionGraphTypes() {
 		//TODO query from database or properties file
-		String[] graphTypes=new String[] {"Volume", "Mass", "Number"};
+		String[] graphTypes=new String[] {"Graph", "Image"};
+		return graphTypes;
+	}
+
+	public String[] getStabilityDistributionGraphTypes() {
+		//TODO query from database or properties file
+		String[] graphTypes=new String[] {"Graph", "Image"};
+		return graphTypes;
+	}
+
+	public String[] getPurityDistributionGraphTypes() {
+		//TODO query from database or properties file
+		String[] graphTypes=new String[] {"Graph", "Image"};
+		return graphTypes;
+	}
+
+	public String[] getSolubilityDistributionGraphTypes() {
+		//TODO query from database or properties file
+		String[] graphTypes=new String[] {"Graph", "Image"};
 		return graphTypes;
 	}
 	
@@ -823,6 +841,11 @@ public class LookupService {
 		String[] shapeTypes=new String[] {"Hexagonal", "Irregular", "Needle", "Oblate", "Rod", "Spherical", "Tetrahedral", 
 										  "Tetrapod", "Triangular", "Elliptical", "Composite", "Cylindrical", "Vesicular", "Elliposid"};
 		return shapeTypes;
+	}
+	
+	public String[] getAllStressorTypes() {
+		String[] stressorTypes=new String[] {"Thermal", "PH", "Freeze thaw", "Photo", "Centrifugation", "Lyophilization", "Chemical"}; 
+		return stressorTypes;
 	}
 	
 	public String[] getAllSurfaceTypes() {
@@ -853,5 +876,15 @@ public class LookupService {
 	public String[] getAllAgentTargetTypes() {
 		String[] agentTargetTypes = new String[] {"Receptor","Antigen"};
 		return agentTargetTypes;
+	}
+	
+	public String[] getAllTimeUnits() {
+		String[] timeUnits = new String[] {"second", "minute", "hour", "day", "month", "year"};
+		return timeUnits;
+	}
+	
+	public String[] getAllConcentrationUnits() {
+		String[] concentrationUnits = new String[] {"mg/kg"};
+		return concentrationUnits;
 	}
 }
