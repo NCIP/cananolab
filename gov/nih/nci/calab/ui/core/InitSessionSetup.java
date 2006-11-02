@@ -565,6 +565,39 @@ public class InitSessionSetup {
 					.getShapeDistributionGraphTypes();
 			session.getServletContext().setAttribute(
 					"allShapeDistributionGraphTypes", graphTypes);
+		}
+	}
+
+	public void setAllStabilityDistributionGraphTypes(HttpSession session)
+			throws Exception {
+		if (session.getServletContext().getAttribute(
+				"allStabilityDistributionGraphTypes") == null) {
+			String[] graphTypes = lookupService
+					.getStabilityDistributionGraphTypes();
+			session.getServletContext().setAttribute(
+					"allStabilityDistributionGraphTypes", graphTypes);
+		}
+	}
+
+	public void setAllPurityDistributionGraphTypes(HttpSession session)
+			throws Exception {
+		if (session.getServletContext().getAttribute(
+				"allPurityDistributionGraphTypes") == null) {
+			String[] graphTypes = lookupService
+					.getPurityDistributionGraphTypes();
+			session.getServletContext().setAttribute(
+					"allPurityDistributionGraphTypes", graphTypes);
+		}
+	}
+
+	public void setAllSolubilityDistributionGraphTypes(HttpSession session)
+			throws Exception {
+		if (session.getServletContext().getAttribute(
+				"allSolubilityDistributionGraphTypes") == null) {
+			String[] graphTypes = lookupService
+					.getSolubilityDistributionGraphTypes();
+			session.getServletContext().setAttribute(
+					"allSolubilityDistributionGraphTypes", graphTypes);
 }
 }
 
@@ -582,6 +615,14 @@ public class InitSessionSetup {
 			String[] shapeTypes = lookupService.getAllShapeTypes();
 			session.getServletContext().setAttribute("allShapeTypes",
 					shapeTypes);
+		}
+	}
+
+	public void setAllStressorTypes(HttpSession session) throws Exception {
+		if (session.getServletContext().getAttribute("allStessorTypes") == null) {
+			String[] stressorTypes = lookupService.getAllStressorTypes();
+			session.getServletContext().setAttribute("allStressorTypes",
+					stressorTypes);
 		}
 	}
 
@@ -630,6 +671,22 @@ public class InitSessionSetup {
 			String[] chargeUnits = lookupService.getAllChargeMeasureUnits();
 			session.getServletContext().setAttribute("allChargeMeasureUnits",
 					chargeUnits);
+		}
+	}
+	
+	public void setAllTimeUnits(HttpSession session) throws Exception {
+		if (session.getServletContext().getAttribute("allTimeUnits") == null) {
+			String[] timeUnits = lookupService.getAllTimeUnits();
+			session.getServletContext().setAttribute("allTimeUnits",
+					timeUnits);
+		}
+	}
+
+	public void setAllConcentrationUnits(HttpSession session) throws Exception {
+		if (session.getServletContext().getAttribute("allConcentrationUnits") == null) {
+			String[] concentrationUnits = lookupService.getAllConcentrationUnits();
+			session.getServletContext().setAttribute("allConcentrationUnits",
+					concentrationUnits);
 		}
 	}
 }
