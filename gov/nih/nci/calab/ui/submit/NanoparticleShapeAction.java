@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleShapeAction.java,v 1.1 2006-10-30 18:07:33 chand Exp $ */
+/* CVS $Id: NanoparticleShapeAction.java,v 1.2 2006-11-02 18:39:02 chand Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
@@ -195,6 +195,9 @@ public class NanoparticleShapeAction extends AbstractDispatchAction {
 		SearchNanoparticleService service = new SearchNanoparticleService();
 		Characterization aChar = service.getCharacterizationAndTableBy(compositionId);
 		
+		if (aChar == null) 
+			aChar = service.getCharacterizationBy(compositionId);
+	
 		HttpSession session = request.getSession();
 		// clear session data from the input forms
 		clearMap(session, theForm, mapping);

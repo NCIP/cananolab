@@ -6,14 +6,14 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSizeAction.java,v 1.8 2006-10-23 16:58:29 chand Exp $ */
+/* CVS $Id: NanoparticleSizeAction.java,v 1.9 2006-11-02 18:39:02 chand Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
-import gov.nih.nci.calab.dto.characterization.SizeBean;
+import gov.nih.nci.calab.dto.characterization.physical.SizeBean;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
@@ -194,6 +194,9 @@ public class NanoparticleSizeAction extends AbstractDispatchAction {
 		SearchNanoparticleService service = new SearchNanoparticleService();
 		Characterization aChar = service.getCharacterizationAndTableBy(compositionId);
 		
+		if (aChar == null)
+			aChar = service.getCharacterizationBy(compositionId);
+			
 		HttpSession session = request.getSession();
 		// clear session data from the input forms
 		clearMap(session, theForm, mapping);
