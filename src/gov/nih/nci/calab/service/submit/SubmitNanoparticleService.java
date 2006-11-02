@@ -10,10 +10,13 @@ import gov.nih.nci.calab.domain.Run;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
-import gov.nih.nci.calab.dto.characterization.MolecularWeightBean;
-import gov.nih.nci.calab.dto.characterization.MorphologyBean;
-import gov.nih.nci.calab.dto.characterization.SizeBean;
+import gov.nih.nci.calab.dto.characterization.physical.MolecularWeightBean;
+import gov.nih.nci.calab.dto.characterization.physical.MorphologyBean;
+import gov.nih.nci.calab.dto.characterization.physical.SizeBean;
 import gov.nih.nci.calab.dto.characterization.physical.ShapeBean;
+import gov.nih.nci.calab.dto.characterization.physical.StabilityBean;
+import gov.nih.nci.calab.dto.characterization.physical.PurityBean;
+import gov.nih.nci.calab.dto.characterization.physical.SolubilityBean;
 import gov.nih.nci.calab.dto.characterization.composition.CompositionBean;
 import gov.nih.nci.calab.dto.characterization.invitro.CoagulationBean;
 import gov.nih.nci.calab.dto.characterization.invitro.HemolysisBean;
@@ -411,11 +414,11 @@ public class SubmitNanoparticleService {
 	}
 	
 	/**
-	 * Saves the morphology characterization to the database
+	 * Saves the shape characterization to the database
 	 * 
 	 * @param particleType
 	 * @param particleName
-	 * @param morphology
+	 * @param shape
 	 * @throws Exception
 	 */
 	public void addParticleShape(String particleType, String particleName,
@@ -423,6 +426,51 @@ public class SubmitNanoparticleService {
 		Characterization doShape = shape.getDomainObj();
 		// TODO think about how to deal with characterization file.
 		addParticleCharacterization(particleType, particleName, doShape);
+	}
+
+	/**
+	 * Saves the stability characterization to the database
+	 * 
+	 * @param particleType
+	 * @param particleName
+	 * @param stability
+	 * @throws Exception
+	 */
+	public void addParticleStability(String particleType, String particleName,
+			StabilityBean stability) throws Exception {
+		Characterization doStability = stability.getDomainObj();
+		// TODO think about how to deal with characterization file.
+		addParticleCharacterization(particleType, particleName, doStability);
+	}
+
+	/**
+	 * Saves the purity characterization to the database
+	 * 
+	 * @param particleType
+	 * @param particleName
+	 * @param purity
+	 * @throws Exception
+	 */
+	public void addParticlePurity(String particleType, String particleName,
+			PurityBean purity) throws Exception {
+		Characterization doPurity = purity.getDomainObj();
+		// TODO think about how to deal with characterization file.
+		addParticleCharacterization(particleType, particleName, doPurity);
+	}
+
+	/**
+	 * Saves the solubility characterization to the database
+	 * 
+	 * @param particleType
+	 * @param particleName
+	 * @param solubility
+	 * @throws Exception
+	 */
+	public void addParticleSolubility(String particleType, String particleName,
+			SolubilityBean solubility) throws Exception {
+		Characterization doSolubility = solubility.getDomainObj();
+		// TODO think about how to deal with characterization file.
+		addParticleCharacterization(particleType, particleName, doSolubility);
 	}
 
 	/**
