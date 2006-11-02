@@ -45,6 +45,7 @@ public class ShapeBean extends CharacterizationBean {
 	}
 	
 	public void initSetup() {
+		/*
 		for (DerivedBioAssayDataBean table:getDerivedBioAssayData()) {
 			DatumBean average=new DatumBean();
 			average.setType("Average");
@@ -58,6 +59,7 @@ public class ShapeBean extends CharacterizationBean {
 			table.getDatumList().add(zaverage);
 			table.getDatumList().add(pdi);
 		}
+		*/
 	}
 	
 	public Shape getDomainObj() {
