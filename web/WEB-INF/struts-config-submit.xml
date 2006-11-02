@@ -61,7 +61,7 @@
 			<form-property name="page" type="java.lang.Integer" initial="0" />
 			<form-property name="particleName" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />
-			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.SizeBean" />
+			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.physical.SizeBean" />
 			<form-property name="fileNumber" type="java.lang.String" />
 			<form-property name="characterizationId" type="java.lang.String" />
 			<form-property name="characterizationSource" type="java.lang.String" />
@@ -87,7 +87,7 @@
 			<form-property name="page" type="java.lang.Integer" initial="0" />
 			<form-property name="particleName" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />
-			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.MolecularWeightBean" />
+			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.physical.MolecularWeightBean" />
 			<form-property name="fileNumber" type="java.lang.String" />
 			<form-property name="characterizationId" type="java.lang.String" />
 			<form-property name="characterizationSource" type="java.lang.String" />
@@ -99,7 +99,7 @@
 			<form-property name="page" type="java.lang.Integer" initial="0" />
 			<form-property name="particleName" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />
-			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.MorphologyBean" />
+			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.physical.MorphologyBean" />
 			<form-property name="fileNumber" type="java.lang.String" />
 			<form-property name="characterizationId" type="java.lang.String" />
 			<form-property name="characterizationSource" type="java.lang.String" />
@@ -112,6 +112,42 @@
 			<form-property name="particleName" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />
 			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.physical.ShapeBean" />
+			<form-property name="fileNumber" type="java.lang.String" />
+			<form-property name="characterizationId" type="java.lang.String" />
+			<form-property name="characterizationSource" type="java.lang.String" />
+			<form-property name="viewTitle" type="java.lang.String" />
+			<form-property name="description" type="java.lang.String" />
+		</form-bean>
+		<form-bean name="nanoparticleStabilityForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer" initial="0" />
+			<form-property name="particleName" type="java.lang.String" />
+			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.physical.StabilityBean" />
+			<form-property name="fileNumber" type="java.lang.String" />
+			<form-property name="characterizationId" type="java.lang.String" />
+			<form-property name="characterizationSource" type="java.lang.String" />
+			<form-property name="viewTitle" type="java.lang.String" />
+			<form-property name="description" type="java.lang.String" />
+		</form-bean>
+		<form-bean name="nanoparticlePurityForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer" initial="0" />
+			<form-property name="particleName" type="java.lang.String" />
+			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.physical.PurityBean" />
+			<form-property name="fileNumber" type="java.lang.String" />
+			<form-property name="characterizationId" type="java.lang.String" />
+			<form-property name="characterizationSource" type="java.lang.String" />
+			<form-property name="viewTitle" type="java.lang.String" />
+			<form-property name="description" type="java.lang.String" />
+		</form-bean>
+		<form-bean name="nanoparticleSolubilityForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer" initial="0" />
+			<form-property name="particleName" type="java.lang.String" />
+			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.physical.SolubilityBean" />
 			<form-property name="fileNumber" type="java.lang.String" />
 			<form-property name="characterizationId" type="java.lang.String" />
 			<form-property name="characterizationSource" type="java.lang.String" />
@@ -179,6 +215,12 @@
 		<forward name="morphologyInputForm" path="submit.addparticle.morphology" />
 		<forward name="Shape" path="nanoparticleShape.do" />
 		<forward name="shapeInputForm" path="submit.addparticle.shape" />
+		<forward name="Stability" path="nanoparticleStability.do" />
+		<forward name="stabilityInputForm" path="submit.addparticle.stability" />
+		<forward name="Purity" path="nanoparticlePurity.do" />
+		<forward name="purityInputForm" path="submit.addparticle.purity" />
+		<forward name="Solubility" path="nanoparticleSolubility.do" />
+		<forward name="solubilityInputForm" path="submit.addparticle.solubility" />
 		<forward name="Surface" path="nanoparticleSurface.do" />
 		<forward name="surfaceInputForm" path="submit.addparticle.surface" />
 		<forward name="invitroHemolysisForm" path="submit.addimmunotoxicity.hemolysis" />
@@ -247,6 +289,24 @@
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addParticleShape" path="submit.addparticle.shape" type="java.lang.Exception" />
 			<forward name="success" path="submit.message" />
 			<forward name="input" path="submit.addparticle.shape" />
+			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
+		</action>
+		<action name="nanoparticleStabilityForm" parameter="dispatch" path="/nanoparticleStability" type="gov.nih.nci.calab.ui.submit.NanoparticleStabilityAction" input="input">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addParticleStability" path="submit.addparticle.stability" type="java.lang.Exception" />
+			<forward name="success" path="submit.message" />
+			<forward name="input" path="submit.addparticle.stability" />
+			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
+		</action>
+		<action name="nanoparticlePurityForm" parameter="dispatch" path="/nanoparticlePurity" type="gov.nih.nci.calab.ui.submit.NanoparticlePurityAction" input="input">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addParticlePurity" path="submit.addparticle.purity" type="java.lang.Exception" />
+			<forward name="success" path="submit.message" />
+			<forward name="input" path="submit.addparticle.purity" />
+			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
+		</action>
+		<action name="nanoparticleSolubilityForm" parameter="dispatch" path="/nanoparticleSolubility" type="gov.nih.nci.calab.ui.submit.NanoparticleSolubilityAction" input="input">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addParticleSolubility" path="submit.addparticle.solubility" type="java.lang.Exception" />
+			<forward name="success" path="submit.message" />
+			<forward name="input" path="submit.addparticle.solubility" />
 			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
 		</action>
 		<action name="invitroImmunotoxicityHemolysisForm" parameter="dispatch" path="/invitroImmunotoxicityHemolysis" type="gov.nih.nci.calab.ui.submit.InvitroHemolysisAction" input="input">
