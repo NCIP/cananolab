@@ -144,7 +144,7 @@
 											</tr>
 											<tr>
 												<td class="leftLabel">
-													<strong>Graph Type </strong>
+													<strong>Type </strong>
 												</td>
 												<td class="rightLabel" colspan="3">
 													<c:choose>
@@ -182,51 +182,6 @@
 												</td>
 												<td class="rightLabel" colspan="2">
 													<input type="button" onclick="javascript:loadShapeFile('${nanoparticleShapeForm.map.particleName}', ${status.index})" value="Load File">
-												</td>
-											</tr>
-											<tr>
-												<td class="leftLabel">
-													<strong>Average/Mean</strong>
-												</td>
-												<td class="label">
-													<c:choose>
-														<c:when test="${canUserUpdateParticle eq 'true'}">
-															<html:text name="achar.derivedBioAssayData" indexed="true" property="datumList[0].value" />
-													&nbsp; ${nanoparticleShapeForm.map.achar.derivedBioAssayData[status.index].datumList[0].valueUnit}	
-														</c:when>
-														<c:otherwise>
-						${nanoparticleShapeForm.map.achar.derivedBioAssayData[status.index].datumList[0].value} ${nanoparticleShapeForm.map.achar.derivedBioAssayData[status.index].datumList[0].valueUnit}&nbsp;
-					</c:otherwise>
-													</c:choose>
-												</td>
-												<td class="label">
-													<strong>Z-Average</strong>
-												</td>
-												<td class="rightLabel">
-													<c:choose>
-														<c:when test="${canUserUpdateParticle eq 'true'}">
-															<html:text name="achar.derivedBioAssayData" indexed="true" property="datumList[1].value" />
-													&nbsp; ${nanoparticleShapeForm.map.achar.derivedBioAssayData[status.index].datumList[1].valueUnit}
-														</c:when>
-														<c:otherwise>
-						${nanoparticleShapeForm.map.achar.derivedBioAssayData[status.index].datumList[1].value} ${nanoparticleShapeForm.map.achar.derivedBioAssayData[status.index].datumList[1].valueUnit}&nbsp;
-					</c:otherwise>
-													</c:choose>
-												</td>
-											</tr>
-											<tr>
-												<td class="leftLabel">
-													<strong>Polydispersity Index (PDI)</strong>
-												</td>
-												<td class="rightLabel" colspan="3">
-													<c:choose>
-														<c:when test="${canUserUpdateParticle eq 'true'}">
-															<html:text name="achar.derivedBioAssayData" indexed="true" property="datumList[2].value" />
-														</c:when>
-														<c:otherwise>
-						${nanoparticleShapeForm.map.achar.derivedBioAssayData[status.index].datumList[2].value}&nbsp;
-					</c:otherwise>
-													</c:choose>
 												</td>
 											</tr>
 										</tbody>
