@@ -114,7 +114,7 @@
 													</c:choose>													
 												</td>
 												<td class="rightLabel" colspan="2">
-													<input type="button" onclick="javascript:loadSizeFile('${nanoparticleMolecularWeightForm.map.particleName}', ${status.index})" value="Load File">
+													<input type="button" onclick="javascript:loadMolecularWeightFile('${nanoparticleMolecularWeightForm.map.particleName}', ${status.index})" value="Load File">
 												</td>
 											</tr>
 											<tr>
