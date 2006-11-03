@@ -5,8 +5,8 @@ import gov.nih.nci.calab.domain.Measurement;
 public class SurfaceChemistry {
 
 	private Long id;
-	private String molecule;
-	private Measurement density;
+	private String moleculeName;
+	private Integer numberOfMolecule;
 	
 	public SurfaceChemistry() {
 		super();
@@ -21,19 +21,19 @@ public class SurfaceChemistry {
 		this.id = id;
 	}
 
-	public Measurement getDensity() {
-		return density;
+	public String getMoleculeName() {
+		return moleculeName;
 	}
 
-	public void setDensity(Measurement density) {
-		this.density = density;
+	public void setMoleculeName(String molecule) {
+		this.moleculeName = molecule;
 	}
 
-	public String getMolecule() {
-		return molecule;
+	public Integer getNumberOfMolecule() {
+		return numberOfMolecule;
 	}
 
-	public void setMolecule(String molecule) {
-		this.molecule = molecule;
+	public void setNumberOfMolecule(Integer numberOfMolecule) {
+		this.numberOfMolecule = numberOfMolecule;
 	}
 }
