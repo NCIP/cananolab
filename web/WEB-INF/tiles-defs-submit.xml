@@ -7,7 +7,7 @@
 	<definition name="submit.content.home" path="/layout/submitLayout.jsp">
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
 		<putList name="therapeuticsActions">
-			<item value="Linkage" link="" />
+			<item value="Linkage" link="nanoparticleFunction.do?dispatch=setup&amp;page=0" />
 		</putList>
 		<putList name="targetingActions">
 			<item value="Linkage" link="" />
@@ -286,4 +286,17 @@
 		<put name="calabContent" value="submit.load.characterization.table.content" />
 		<put name="menu" value="submit" />
 	</definition>
+	
+	<!-- definition for the nanoparticle surface page -->
+	<definition name="submit.addparticle.function.content" extends="submit.content.home">
+		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
+		<put name="submitContent" value="/submit/function/bodyParticleFunction.jsp" />
+	</definition>
+
+	<definition name="submit.addparticle.function" extends="calab.home">
+		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
+		<put name="calabContent" value="submit.addparticle.function.content" />
+		<put name="menu" value="submit" />
+	</definition>
+
 </tiles-definitions>
