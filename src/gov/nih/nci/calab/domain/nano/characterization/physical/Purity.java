@@ -29,10 +29,6 @@ public class Purity implements Characterization {
 	private Instrument instrument;
 	private CharacterizationProtocol characterizationProtocol;
 	
-	private Float homogeneityInLigand;
-	private String residualSolvents;
-	private Measurement freeComponents;
-	
 	public Purity() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -134,30 +130,6 @@ public class Purity implements Characterization {
 	public void setCharacterizationProtocol(
 			CharacterizationProtocol characterizationProtocol) {
 		this.characterizationProtocol = characterizationProtocol;
-	}
-
-	public Measurement getFreeComponents() {
-		return freeComponents;
-	}
-
-	public void setFreeComponents(Measurement freeComponents) {
-		this.freeComponents = freeComponents;
-	}
-
-	public Float getHomogeneityInLigand() {
-		return homogeneityInLigand;
-	}
-
-	public void setHomogeneityInLigand(Float homogeneityInLigand) {
-		this.homogeneityInLigand = homogeneityInLigand;
-	}
-
-	public String getResidualSolvents() {
-		return residualSolvents;
-	}
-
-	public void setResidualSolvents(String residualSolvents) {
-		this.residualSolvents = residualSolvents;
 	}
 
 }
