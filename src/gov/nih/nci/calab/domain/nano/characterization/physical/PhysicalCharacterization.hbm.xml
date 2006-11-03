@@ -54,7 +54,27 @@
 			</component>
 		</join>
 	</subclass>
-	<subclass name="Surface" extends="gov.nih.nci.calab.domain.nano.characterization.Characterization" discriminator-value="Surface" />
+	<subclass name="Surface" extends="gov.nih.nci.calab.domain.nano.characterization.Characterization" discriminator-value="Surface">
+		<list name="surfaceChemistryCollection" cascade="all-delete-orphan" lazy="false">
+				<cache usage="read-write" />
+				<key column="SURFACE_PK_ID" />
+				<list-index column="LIST_INDEX" /> 
+				<one-to-many class="gov.nih.nci.calab.domain.nano.characterization.physical.SurfaceChemistry" />
+			</list>
+		<join table="SURFACE">
+			<key column="SURFACE_PK_ID" />
+			<component name="surfaceArea" class="gov.nih.nci.calab.domain.Measurement">
+				<property name="value" column="SURFACE_AREA" />
+				<property name="unitOfMeasurement" column="SURFACE_AREA_UNIT" />
+			</component>
+			<component name="charge" class="gov.nih.nci.calab.domain.Measurement">
+				<property name="value" column="CHARGE" />
+				<property name="unitOfMeasurement" column="CHARGE_UNIT" />
+			</component>
+			<property name="isHydrophobic" type="java.lang.Boolean" column="IS_HYDROPHOBIC" />
+			<property name="zetaPotential" type="java.lang.Float" column="ZETA_POTENTIAL" />
+		</join>
+	</subclass>
 	<subclass name="Purity" extends="gov.nih.nci.calab.domain.nano.characterization.Characterization" discriminator-value="Purity" />
 </hibernate-mapping>
 
