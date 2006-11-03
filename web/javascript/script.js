@@ -217,6 +217,11 @@ function loadSurfaceFile(particleName, fileNumber) {
     document.nanoparticleSurfaceForm.action = "nanoparticleSurface.do?dispatch=loadFile&page=0&particleName=" + particleName + "&fileNumber=" + fileNumber;
     document.nanoparticleSurfaceForm.submit();
 }
+
+function updateFunctionLinkage() {
+    document.nanoparticleFunctionForm.action = "nanoparticleFunction.do?dispatch=update&page=0";
+    document.nanoparticleFunctionForm.submit();
+}
 function loadMolecularWeightFile(particleName, fileNumber) {
     document.nanoparticleMolecularWeightForm.action = "nanoparticleMolecularWeight.do?dispatch=loadFile&page=0&particleName=" + particleName + "&fileNumber=" + fileNumber;
     document.nanoparticleMolecularWeightForm.submit();
@@ -241,6 +246,7 @@ function loadStabilityFile(particleName, fileNumber) {
     document.nanoparticleStabilityForm.action = "nanoparticleStability.do?dispatch=loadFile&page=0&particleName=" + particleName + "&fileNumber=" + fileNumber;
     document.nanoparticleStabilityForm.submit();
 }
+
 
 
 /*function loadFile(particleName, fileNumber, charType) {
