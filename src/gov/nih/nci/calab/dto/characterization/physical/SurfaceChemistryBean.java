@@ -18,6 +18,10 @@ public class SurfaceChemistryBean {
 	/**
 	 * 
 	 */
+	public SurfaceChemistryBean(){
+		super();
+	}
+	
 	public SurfaceChemistryBean(SurfaceChemistry surfaceChemistry) {
 		this.id = surfaceChemistry.getId().toString();
 		this.molecule = surfaceChemistry.getMolecule();
