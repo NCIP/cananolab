@@ -1,11 +1,9 @@
 package gov.nih.nci.calab.dto.characterization.physical;
 
 import gov.nih.nci.calab.domain.Measurement;
-import gov.nih.nci.calab.domain.nano.characterization.Characterization;
-import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Surface;
+import gov.nih.nci.calab.domain.nano.characterization.physical.SurfaceChemistry;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
-import gov.nih.nci.calab.dto.characterization.DatumBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.dto.characterization.composition.SurfaceGroupBean;
 import gov.nih.nci.calab.service.util.CananoConstants;
@@ -37,6 +35,8 @@ public class SurfaceBean extends CharacterizationBean {
 	private String chargeUnit;
 
 	private String isHydrophobic;
+	
+	private int numberOfSurfaceChemistry;
 
 	private List<SurfaceChemistryBean> surfaceChemistries = new ArrayList<SurfaceChemistryBean>();;
 
@@ -45,26 +45,33 @@ public class SurfaceBean extends CharacterizationBean {
 		initSetup();
 	}
 
-	public SurfaceBean(Characterization aChar) {
+	public SurfaceBean(Surface aChar) {
 		super();
-		this.setCharacterizationSource(aChar.getSource());
-		this.setViewTitle(aChar.getIdentificationName());
-		this.setDescription(aChar.getDescription());
-		if (aChar.getInstrument() != null) {
-			this.getInstrument().setType(
-					aChar.getInstrument().getInstrumentType().getName());
-			this.getInstrument().setDescription(
-					aChar.getInstrument().getDescription());
-			this.getInstrument().setManufacturer(
-					aChar.getInstrument().getManufacturer().getName());
+//		this.setCharacterizationSource(aChar.getSource());
+//		this.setViewTitle(aChar.getIdentificationName());
+//		this.setDescription(aChar.getDescription());
+//		if (aChar.getInstrument() != null) {
+//			this.getInstrument().setType(
+//					aChar.getInstrument().getInstrumentType().getName());
+//			this.getInstrument().setDescription(
+//					aChar.getInstrument().getDescription());
+//			this.getInstrument().setManufacturer(
+//					aChar.getInstrument().getManufacturer().getName());
+//		}
+//		this.setNumberOfDerivedBioAssayData(Integer.valueOf(
+//				aChar.getDerivedBioAssayDataCollection().size()).toString());
+//		for (DerivedBioAssayData table : aChar
+//				.getDerivedBioAssayDataCollection()) {
+//			DerivedBioAssayDataBean ctBean = new DerivedBioAssayDataBean(table);
+//			this.getDerivedBioAssayData().add(ctBean);
+//		}
+		
+		for (SurfaceChemistry surfaceChemistry : aChar.getSurfaceChemistryCollection()) {
+			SurfaceChemistryBean surfaceChemistryBean = new SurfaceChemistryBean(surfaceChemistry);
+			surfaceChemistries.add(surfaceChemistryBean);
 		}
-		this.setNumberOfDerivedBioAssayData(Integer.valueOf(
-				aChar.getDerivedBioAssayDataCollection().size()).toString());
-		for (DerivedBioAssayData table : aChar
-				.getDerivedBioAssayDataCollection()) {
-			DerivedBioAssayDataBean ctBean = new DerivedBioAssayDataBean(table);
-			this.getDerivedBioAssayData().add(ctBean);
-		}
+		this.numberOfSurfaceChemistry = surfaceChemistries.size();
+		
 	}
 
 	public String getCharge() {
@@ -177,5 +184,13 @@ public class SurfaceBean extends CharacterizationBean {
 
 	public void setOtherSurfaceType(String otherSurfaceType) {
 		this.otherSurfaceType = otherSurfaceType;
+	}
+
+	public int getNumberOfSurfaceChemistry() {
+		return numberOfSurfaceChemistry;
+	}
+
+	public void setNumberOfSurfaceChemistry(int numberOfSurfaceChemistry) {
+		this.numberOfSurfaceChemistry = numberOfSurfaceChemistry;
 	}
 }
