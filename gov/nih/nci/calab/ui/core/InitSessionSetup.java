@@ -673,6 +673,31 @@ public class InitSessionSetup {
 					chargeUnits);
 		}
 	}
+
+	public void setAllDensityMeasureUnits(HttpSession session) throws Exception {
+		if (session.getServletContext().getAttribute("allDensityMeasureUnits") == null) {
+			String[] densityUnits = lookupService.getAllDensityMeasureUnits();
+			session.getServletContext().setAttribute("allDensityMeasureUnits",
+					densityUnits);
+		}
+	}
+	
+	public void setAllAgentTypes(HttpSession session) throws Exception {
+		if (session.getServletContext().getAttribute("allAgentTypes") == null) {
+			String[] agentTypes = lookupService.getAllAgentTypes();
+			session.getServletContext().setAttribute("allAgentTypes",
+					agentTypes);
+		}
+	}
+	
+	public void setAllAgentTargetTypes(HttpSession session) throws Exception {
+		if (session.getServletContext().getAttribute("allAgentTargetTypes") == null) {
+			String[] agentTargetTypes = lookupService.getAllAgentTargetTypes();
+			session.getServletContext().setAttribute("allAgentTargetTypes",
+					agentTargetTypes);
+		}
+	}
+
 	
 	public void setAllTimeUnits(HttpSession session) throws Exception {
 		if (session.getServletContext().getAttribute("allTimeUnits") == null) {
@@ -689,4 +714,5 @@ public class InitSessionSetup {
 					concentrationUnits);
 		}
 	}
+
 }
