@@ -81,7 +81,7 @@
 			<form-property name="viewTitle" type="java.lang.String" />
 			<form-property name="description" type="java.lang.String" />
 		</form-bean>
-		
+
 		<form-bean name="nanoparticleMolecularWeightForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="dispatch" type="java.lang.String" />
 			<form-property name="page" type="java.lang.Integer" initial="0" />
@@ -204,6 +204,14 @@
 			<form-property name="forwardPage" type="java.lang.String" />
 			<form-property name="particleName" type="java.lang.String" />
 		</form-bean>
+		<form-bean name="nanoparticleFunctionForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer" initial="0" />
+			<form-property name="particleName" type="java.lang.String" />
+			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="function" type="gov.nih.nci.calab.dto.function.FunctionBean" />
+			<form-property name="functionId" type="java.lang.String" />			
+		</form-bean>
 	</form-beans>
 	<global-forwards>
 		<forward name="Composition" path="nanoparticleComposition.do" />
@@ -227,6 +235,10 @@
 		<forward name="invitroCoagulationForm" path="submit.addimmunotoxicity.coagulation" />
 		<forward name="invitroPlateAggregationForm" path="submit.addimmunotoxicity.plateaggregation" />
 		<forward name="invitroProteinBindingForm" path="submit.addimmunotoxicity.plasmaproteinbinding" />
+		<forward name="function" path="nanoparticleFunction.do" />
+		<forward name="Solubility" path="nanoparticleSolubility.do" />						
+		<forward name="Purity" path="nanoparticlePurity.do" />
+		<forward name="Stability" path="nanoparticleStability.do" />
 	</global-forwards>
 	<action-mappings>
 		<action path="/manageNanoparticle" type="gov.nih.nci.calab.ui.core.BaseForwardAction" parameter="submit.managenanoparticle" scope="request" />
@@ -343,6 +355,12 @@
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.loadDerivedBioAssayData" path="submit.load.characterization.table" type="java.lang.Exception" />
 			<forward name="input" path="submit.load.characterization.table" />
 		</action>
+		<action name="nanoparticleFunctionForm" parameter="dispatch" path="/nanoparticleFunction" type="gov.nih.nci.calab.ui.submit.NanoparticleFunctionAction" input="input" >
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroPlateAggregation" path="submit.addimmunotoxicity.plateaggregation" type="java.lang.Exception" />
+			<forward name="success" path="submit.message" />
+			<forward name="input" path="submit.addparticle.function" />
+		</action>
 		<action path="/submitAction" type="gov.nih.nci.calab.ui.core.BaseForwardAction" parameter="submit.action.message" scope="request" />
 	</action-mappings>
 </struts-config>
+
