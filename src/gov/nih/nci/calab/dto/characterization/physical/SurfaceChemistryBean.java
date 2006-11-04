@@ -3,8 +3,8 @@
  */
 package gov.nih.nci.calab.dto.characterization.physical;
 
-import gov.nih.nci.calab.domain.Measurement;
 import gov.nih.nci.calab.domain.nano.characterization.physical.SurfaceChemistry;
+import gov.nih.nci.calab.service.util.StringUtils;
 
 /**
  * @author zengje
@@ -19,12 +19,12 @@ public class SurfaceChemistryBean {
 	 * 
 	 */
 	public SurfaceChemistryBean(){
-		super();
 	}
 	
 	public SurfaceChemistryBean(SurfaceChemistry surfaceChemistry) {
 		this.id = surfaceChemistry.getId().toString();
 		this.moleculeName = surfaceChemistry.getMoleculeName();
+		this.numberOfMolecule = surfaceChemistry.getNumberOfMolecule().toString();
 	}
 	
 	public String getId() {
@@ -45,7 +45,7 @@ public class SurfaceChemistryBean {
 	
 	public SurfaceChemistry getDomainObj() {
 		SurfaceChemistry surfaceChemistry = new SurfaceChemistry();
-		surfaceChemistry.setNumberOfMolecule(new Integer(getNumberOfMolecule()));
+		surfaceChemistry.setNumberOfMolecule((getNumberOfMolecule()!= null)?Integer.parseInt(getNumberOfMolecule()):null);
 		surfaceChemistry.setMoleculeName(getMoleculeName());
 		if (getId()!=null&&getId().length() > 0) {
 			surfaceChemistry.setId(new Long(getId()));
