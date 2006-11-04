@@ -20,10 +20,6 @@ import java.util.List;
  */
 public class SurfaceBean extends CharacterizationBean {
 
-	private String type;
-	
-	private String otherSurfaceType;
-
 	private String surfaceArea;
 	
 	private String surfaceAreaUnit;
@@ -38,33 +34,23 @@ public class SurfaceBean extends CharacterizationBean {
 	
 	private int numberOfSurfaceChemistry;
 
-	private List<SurfaceChemistryBean> surfaceChemistries = new ArrayList<SurfaceChemistryBean>();;
+	private List<SurfaceChemistryBean> surfaceChemistries = new ArrayList<SurfaceChemistryBean>();
 
 	public SurfaceBean() {
 		super();
+		surfaceChemistries = new ArrayList<SurfaceChemistryBean>();
 		initSetup();
 	}
 
 	public SurfaceBean(Surface aChar) {
-		super();
-//		this.setCharacterizationSource(aChar.getSource());
-//		this.setViewTitle(aChar.getIdentificationName());
-//		this.setDescription(aChar.getDescription());
-//		if (aChar.getInstrument() != null) {
-//			this.getInstrument().setType(
-//					aChar.getInstrument().getInstrumentType().getName());
-//			this.getInstrument().setDescription(
-//					aChar.getInstrument().getDescription());
-//			this.getInstrument().setManufacturer(
-//					aChar.getInstrument().getManufacturer().getName());
-//		}
-//		this.setNumberOfDerivedBioAssayData(Integer.valueOf(
-//				aChar.getDerivedBioAssayDataCollection().size()).toString());
-//		for (DerivedBioAssayData table : aChar
-//				.getDerivedBioAssayDataCollection()) {
-//			DerivedBioAssayDataBean ctBean = new DerivedBioAssayDataBean(table);
-//			this.getDerivedBioAssayData().add(ctBean);
-//		}
+		super(aChar);
+		
+		this.charge = (aChar.getCharge() != null)?aChar.getCharge().getValue():"";
+		this.chargeUnit = (aChar.getCharge() != null)?aChar.getCharge().getUnitOfMeasurement():"";
+		this.isHydrophobic = aChar.getIsHydrophobic().toString();
+		this.surfaceArea = (aChar.getSurfaceArea() != null)?aChar.getSurfaceArea().getValue().toString():"";
+		this.surfaceAreaUnit = (aChar.getSurfaceArea() != null)?aChar.getSurfaceArea().getUnitOfMeasurement():"";
+		this.zetaPotential = (aChar.getZetaPotential() != null)?aChar.getZetaPotential().getValue():"";
 		
 		for (SurfaceChemistry surfaceChemistry : aChar.getSurfaceChemistryCollection()) {
 			SurfaceChemistryBean surfaceChemistryBean = new SurfaceChemistryBean(surfaceChemistry);
@@ -96,14 +82,6 @@ public class SurfaceBean extends CharacterizationBean {
 
 	public void setSurfaceArea(String surfaceArea) {
 		this.surfaceArea = surfaceArea;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
 	}
 
 	public String getZetaPotential() {
@@ -169,7 +147,6 @@ public class SurfaceBean extends CharacterizationBean {
 		surface.setCharge(new Measurement(charge,chargeUnit));
 		surface.setZetaPotential(new Measurement(zetaPotential, "mV"));
 		
-		surface.setType((this.type == null || this.type.length()<=0)?this.otherSurfaceType:this.type);
 		surface.setSurfaceArea(new Measurement(surfaceArea, surfaceAreaUnit));
 		
 		for (SurfaceChemistryBean surfaceChemistry : surfaceChemistries) {
@@ -178,13 +155,6 @@ public class SurfaceBean extends CharacterizationBean {
 		return surface;
 	}
 
-	public String getOtherSurfaceType() {
-		return otherSurfaceType;
-	}
-
-	public void setOtherSurfaceType(String otherSurfaceType) {
-		this.otherSurfaceType = otherSurfaceType;
-	}
 
 	public int getNumberOfSurfaceChemistry() {
 		return numberOfSurfaceChemistry;
