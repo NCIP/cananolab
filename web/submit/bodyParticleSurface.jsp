@@ -44,21 +44,20 @@
 						<tr>
 							<td class="leftLabel">
 								<div align="justify">
-									<strong>Type</strong>
+									<strong>Surface Area</strong>
 								</div>
 							</td>
 							<td class="label">
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
-										<html:select property="achar.type">
-											<html:options name="allSurfaceTypes" />
+										<html:text property="achar.surfaceArea" />&nbsp;
+										<html:select property="achar.surfaceAreaUnit">
+											<html:options name="allAreaMeasureUnits" />
 										</html:select>
-										&nbsp;
-										<strong> Other </strong>&nbsp;
-										<html:text property="achar.otherSurfaceType" />
 									</c:when>
 									<c:otherwise>
-										${nanoparticleSurfaceForm.achar.type}&nbsp;
+										${nanoparticleSurfaceForm.achar.surfaceArea}&nbsp;
+										${nanoparticleSurfaceForm.achar.surfaceAreaUnit}&nbsp;
 									</c:otherwise>
 								</c:choose>
 							</td>
@@ -83,43 +82,6 @@
 						<tr>
 							<td class="leftLabel">
 								<div align="justify">
-									<strong>Surface Area</strong>
-								</div>
-							</td>
-							<td class="label">
-								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
-										<html:text property="achar.surfaceArea" />&nbsp;
-										<html:select property="achar.surfaceAreaUnit">
-											<html:options name="allAreaMeasureUnits" />
-										</html:select>
-									</c:when>
-									<c:otherwise>
-										${nanoparticleSurfaceForm.achar.surfaceArea}&nbsp;
-										${nanoparticleSurfaceForm.achar.surfaceAreaUnit}&nbsp;
-									</c:otherwise>
-								</c:choose>
-							</td>
-
-							<td class="label">
-								<div align="justify">
-									<strong>Zeta Potential</strong>
-								</div>
-							</td>
-							<td class="rightLabel">
-								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
-										<html:text property="achar.zetaPotential" />&nbsp;mV
-									</c:when>
-									<c:otherwise>
-										${nanoparticleSurfaceForm.achar.zetaPotential}&nbsp;
-									</c:otherwise>
-								</c:choose>
-							</td>
-						</tr>
-						<tr>
-							<td class="leftLabel">
-								<div align="justify">
 									<strong>Charge</strong>
 								</div>
 							</td>
@@ -137,9 +99,20 @@
 									</c:otherwise>
 								</c:choose>
 							</td>
-
-							<td class="rightLabel" colspan="2">
-								&nbsp;
+							<td class="label">
+								<div align="justify">
+									<strong>Zeta Potential</strong>
+								</div>
+							</td>
+							<td class="rightLabel">
+								<c:choose>
+									<c:when test="${canUserUpdateParticle eq 'true'}">
+										<html:text property="achar.zetaPotential" />&nbsp;mV
+									</c:when>
+									<c:otherwise>
+										${nanoparticleSurfaceForm.achar.zetaPotential}&nbsp;
+									</c:otherwise>
+								</c:choose>
 							</td>
 						</tr>
 					</tbody>
@@ -173,7 +146,7 @@
 								&nbsp;
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
-										<input type="button" onclick="javascript:updateSurface()" value="Update Surface Cheimstries">
+										<input type="button" onclick="javascript:updateSurface()" value="Update Surface Chemistries">
 									</c:when>
 								</c:choose>
 							</td>
@@ -197,28 +170,23 @@
 												<td class="label">
 													<c:choose>
 														<c:when test="${canUserUpdateParticle eq 'true'}">
-															<html:text name="achar.surfaceChemistry" indexed="true" property="molecule" />
+															<html:text name="achar.surfaceChemistry" indexed="true" property="moleculeName" />
 														</c:when>
 														<c:otherwise>
-						${nanoparticleSurfaceForm.map.achar.surfaceChemistries[status.index].molecule}&nbsp;
+						${nanoparticleSurfaceForm.map.achar.surfaceChemistries[status.index].moleculeName}&nbsp;
 														</c:otherwise>
 													</c:choose>
 												</td>
 												<td class="label">
-													<strong>Density</strong>
+													<strong>Number of Molecule </strong>
 												</td>
 												<td class="rightLabel" colspan="2">
 													<c:choose>
 														<c:when test="${canUserUpdateParticle eq 'true'}">
-															<html:text name="achar.surfaceChemistry" indexed="true" property="density" /> &nbsp;
-															<html:select name="achar.surfaceChemistry" indexed="true" property="densityUnit">
-																<option />
-																<html:options name="allDensityMeasureUnits" />
-															</html:select>
+															<html:text name="achar.surfaceChemistry" indexed="true" property="numberOfMolecule" /> &nbsp;															
 														</c:when>
 														<c:otherwise>
-															${nanoparticleSurfaceForm.map.achar.surfaceChemistries[status.index].density}&nbsp;
-															${nanoparticleSurfaceForm.map.achar.surfaceChemistries[status.index].densityUnit}
+															${nanoparticleSurfaceForm.map.achar.surfaceChemistries[status.index].numberOfMolecule}&nbsp;
 														</c:otherwise>
 													</c:choose>
 												</td>
