@@ -12,9 +12,9 @@ import gov.nih.nci.calab.domain.nano.characterization.physical.SurfaceChemistry;
  */
 public class SurfaceChemistryBean {
 	private String id;
-	private String molecule;
-	private String density;
-	private String densityUnit;
+	private String moleculeName;
+	private String numberOfMolecule;
+
 	/**
 	 * 
 	 */
@@ -24,9 +24,7 @@ public class SurfaceChemistryBean {
 	
 	public SurfaceChemistryBean(SurfaceChemistry surfaceChemistry) {
 		this.id = surfaceChemistry.getId().toString();
-		this.molecule = surfaceChemistry.getMolecule();
-		this.density = surfaceChemistry.getDensity().getValue().toString();
-		this.densityUnit = surfaceChemistry.getDensity().getUnitOfMeasurement().toString();
+		this.moleculeName = surfaceChemistry.getMoleculeName();
 	}
 	
 	public String getId() {
@@ -37,33 +35,30 @@ public class SurfaceChemistryBean {
 		this.id = id;
 	}
 
-	public String getDensity() {
-		return density;
+	
+	public String getMoleculeName() {
+		return moleculeName;
 	}
-	public void setDensity(String density) {
-		this.density = density;
-	}
-	public String getDensityUnit() {
-		return densityUnit;
-	}
-	public void setDensityUnit(String densityUnit) {
-		this.densityUnit = densityUnit;
-	}
-	public String getMolecule() {
-		return molecule;
-	}
-	public void setMolecule(String molecule) {
-		this.molecule = molecule;
+	public void setMoleculeName(String molecule) {
+		this.moleculeName = molecule;
 	}
 	
 	public SurfaceChemistry getDomainObj() {
 		SurfaceChemistry surfaceChemistry = new SurfaceChemistry();
-		surfaceChemistry.setDensity(new Measurement(getDensity(),getDensityUnit()));
-		surfaceChemistry.setMolecule(getMolecule());
+		surfaceChemistry.setNumberOfMolecule(new Integer(getNumberOfMolecule()));
+		surfaceChemistry.setMoleculeName(getMoleculeName());
 		if (getId()!=null&&getId().length() > 0) {
 			surfaceChemistry.setId(new Long(getId()));
 		}
 		return surfaceChemistry;
+	}
+
+	public String getNumberOfMolecule() {
+		return numberOfMolecule;
+	}
+
+	public void setNumberOfMolecule(String numberOfMolecule) {
+		this.numberOfMolecule = numberOfMolecule;
 	}
 
 }
