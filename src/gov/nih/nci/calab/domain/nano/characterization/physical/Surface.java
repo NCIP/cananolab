@@ -29,7 +29,6 @@ public class Surface implements Characterization {
 	private Instrument instrument;
 	private CharacterizationProtocol characterizationProtocol;
 	
-	private String type;
 	private Measurement surfaceArea;
 	private Measurement surfaceCharge;
 	private Measurement zetaPotential;
@@ -171,14 +170,6 @@ public class Surface implements Characterization {
 
 	public void setSurfaceCharge(Measurement surfaceCharge) {
 		this.surfaceCharge = surfaceCharge;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
 	}
 
 	public Measurement getZetaPotential() {
