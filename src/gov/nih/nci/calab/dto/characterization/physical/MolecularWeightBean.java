@@ -56,17 +56,11 @@ public class MolecularWeightBean extends CharacterizationBean {
 	
 	public void initSetup() {
 		for (DerivedBioAssayDataBean table:getDerivedBioAssayData()) {
-			DatumBean average=new DatumBean();
-			average.setType("Average");
-			average.setValueUnit("nm");
-			DatumBean zaverage=new DatumBean();
-			zaverage.setType("Z-Average");
-			zaverage.setValueUnit("nm");
-			DatumBean pdi=new DatumBean();
-			pdi.setType("PDI");
-			table.getDatumList().add(average);
-			table.getDatumList().add(zaverage);
-			table.getDatumList().add(pdi);
+			DatumBean mw=new DatumBean();
+			mw.setType("Molecular Weight");
+			mw.setValueUnit("kDa");
+			
+			table.getDatumList().add(mw);
 		}
 	}
 	
