@@ -36,8 +36,10 @@ public class SolubilityBean extends CharacterizationBean {
 		super(aChar);
 
 		this.solvent = aChar.getSolvent();
-		this.criticalConcentration = aChar.getCriticalConcentration().getValue();
-		this.criticalConcentrationUnit = aChar.getCriticalConcentration().getUnitOfMeasurement();
+		if (aChar.getCriticalConcentration() != null) {
+			this.criticalConcentration = aChar.getCriticalConcentration().getValue();
+			this.criticalConcentrationUnit = aChar.getCriticalConcentration().getUnitOfMeasurement();
+		}
 		this.isSoluble = aChar.getIsSoluble() ? "true" : "false";
 	}
 	
