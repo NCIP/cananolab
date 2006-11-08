@@ -35,7 +35,7 @@
 						<tr class="topBorder">
 							<td class="formTitle" colspan="6">
 								<div align="justify">
-									Physical Characterization Properties
+									Shape Property
 								</div>
 							</td>
 						</tr>
@@ -74,9 +74,11 @@
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
 										<html:text property="achar.minDimension" />
+										${thisForm.map.achar.minDimensionUnit}&nbsp;
 									</c:when>
 									<c:otherwise>
 										${thisForm.map.achar.minDimension}&nbsp;
+										${thisForm.map.achar.minDimensionUnit}&nbsp;
 									</c:otherwise>
 								</c:choose>
 							</td>
@@ -87,9 +89,11 @@
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
 										<html:text property="achar.maxDimension" />
+										${thisForm.map.achar.maxDimensionUnit}&nbsp;
 									</c:when>
 									<c:otherwise>
-											${thisForm.map.achar.maxDimension}&nbsp;
+										${thisForm.map.achar.maxDimension}&nbsp;
+										${thisForm.map.achar.maxDimensionUnit}&nbsp;
 									</c:otherwise>
 								</c:choose>
 							</td>
@@ -103,13 +107,13 @@
 						<tr class="topBorder">
 							<td class="formTitle" colspan="4">
 								<div align="justify">
-									Shape Distribution
+									Shape Image
 								</div>
 							</td>
 						</tr>
 						<tr>
 							<td class="leftLabel">
-								<strong>Number of Distributions</strong>
+								<strong>Number of Images</strong>
 							</td>
 							<td class="label">
 								<c:choose>
@@ -125,7 +129,7 @@
 								&nbsp;
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
-										<input type="button" onclick="javascript:updateShape()" value="Update Distributions">
+										<input type="button" onclick="javascript:updateShape()" value="Update Images">
 									</c:when>
 								</c:choose>
 							</td>

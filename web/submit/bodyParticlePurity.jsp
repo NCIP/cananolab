@@ -30,82 +30,49 @@
 				<jsp:include page="/bodyMessage.jsp?bundle=submit" />
 				<jsp:include page="bodySharedCharacterizationSummary.jsp" />
 				<jsp:include page="bodySharedCharacterizationInstrument.jsp" />
+				<%-- 
 				<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 					<tbody>
 						<tr class="topBorder">
 							<td class="formTitle" colspan="6">
 								<div align="justify">
-									Physical Characterization Properties
+									Purity Property
 								</div>
 							</td>
 						</tr>
 						<tr>
-							<td class="leftLabel">
-								<strong>Homogeneity In Ligand </strong>
+							<td class="leftLabel" valign="top">
+								<strong>Description</strong>
 							</td>
-							<td class="label">
+							<td class="rightLabel" colspan="3">
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
-										<html:text property="achar.homogeneityInLigand" />
+										<html:textarea property="achar.description" rows="3" />
 									</c:when>
 									<c:otherwise>
-										${thisForm.map.achar.homogeneityInLigand}&nbsp;
+											${thisForm.map.achar.description}&nbsp;
 									</c:otherwise>
 								</c:choose>
-							</td>
-							<td class="leftLabel">
-								<strong>Residual Solvents </strong>
-							</td>
-							<td class="rightLabel">
-								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
-										<html:text property="achar.residualSolvents" />
-									</c:when>
-									<c:otherwise>
-											${thisForm.map.achar.residualSolvents}&nbsp;
-									</c:otherwise>
-								</c:choose>
-							</td>
-						</tr>
-						<tr>
-							<td class="leftLabel">
-								<strong>Free Components</strong>
-							</td>
-							<td class="label">
-								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
-										<html:text property="achar.freeComponents" />
-										<html:select property="achar.freeComponentsUnit">
-											<html:options name="allAreaMeasureUnits" />
-										</html:select>
-									</c:when>
-									<c:otherwise>
-										${thisForm.map.achar.freeComponents}&nbsp;
-										${thisForm.map.achar.freeComponentsUnit}&nbsp;
-									</c:otherwise>
-								</c:choose>
-							</td>
-							<td class="rightLabel" colspan="2">
-								&nbsp;
 							</td>
 						</tr>
 						
 					</tbody>
 				</table>
 				<br/>
+				--%>
 				<%-- size characterization specific --%>
 				<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 					<tbody>
 						<tr class="topBorder">
 							<td class="formTitle" colspan="4">
 								<div align="justify">
-									Purity Distribution
+									Purity Image
 								</div>
 							</td>
 						</tr>
 						<tr>
 							<td class="leftLabel">
-								<strong>Number of Distributions</strong>
+								<strong>Number of Images</strong>
 							</td>
 							<td class="label">
 								<c:choose>
@@ -121,7 +88,7 @@
 								&nbsp;
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
-										<input type="button" onclick="javascript:updatePurity()" value="Update Distributions">
+										<input type="button" onclick="javascript:updatePurity()" value="Update Images">
 									</c:when>
 								</c:choose>
 							</td>

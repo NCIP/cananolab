@@ -35,7 +35,7 @@
 						<tr class="topBorder">
 							<td class="formTitle" colspan="6">
 								<div align="justify">
-									Physical Characterization Properties
+									Morphology Property
 								</div>
 							</td>
 						</tr>
@@ -71,13 +71,13 @@
 						<tr class="topBorder">
 							<td class="formTitle" colspan="4">
 								<div align="justify">
-									Morphology Distribution
+									Morphology Image
 								</div>
 							</td>
 						</tr>
 						<tr>
 							<td class="leftLabel">
-								<strong>Number of Distributions</strong>
+								<strong>Number of Images</strong>
 							</td>
 							<td class="label">
 								<c:choose>
@@ -93,7 +93,7 @@
 								&nbsp;
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
-										<input type="button" onclick="javascript:updateMorphology()" value="Update Distributions">
+										<input type="button" onclick="javascript:updateMorphology()" value="Update Images">
 									</c:when>
 								</c:choose>
 							</td>
