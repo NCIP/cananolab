@@ -22,4 +22,10 @@
 	<subclass name="EnzymeInduction" extends="gov.nih.nci.calab.domain.nano.characterization.toxicity.Toxicity" discriminator-value="EnzymeInduction" />
 	<subclass name="OxidativeStress" extends="gov.nih.nci.calab.domain.nano.characterization.toxicity.Toxicity" discriminator-value="OxidativeStress" />
 	
+	<!-- 
+	<subclass name="CPY450" extends="gov.nih.nci.calab.domain.nano.characterization.invitro.MetabolicStability" discriminator-value="CYP450" />
+	<subclass name="ROS" extends="gov.nih.nci.calab.domain.nano.characterization.invitro.MetabolicStability" discriminator-value="ROS" />
+	<subclass name="GlucuronidationSulphation" extends="gov.nih.nci.calab.domain.nano.characterization.invitro.MetabolicStability" discriminator-value="GlucuronidationSulphation" />
+	-->
+	
 </hibernate-mapping>

@@ -1,5 +1,6 @@
 package gov.nih.nci.calab.dto.characterization.invitro;
 
+import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.invitro.Hemolysis;
 
 import gov.nih.nci.calab.dto.characterization.*;
@@ -17,16 +18,19 @@ import java.util.List;
 public class HemolysisBean extends CharacterizationBean {
 	public HemolysisBean() {
 		super();
+		initSetup();
+	}
+	
+	public HemolysisBean(Characterization aChar) {
+		super(aChar);
+	}
+	
+	public void initSetup() {
 		for (DerivedBioAssayDataBean table: getDerivedBioAssayData()) {
-			DatumBean average=new DatumBean();
-			average.setType("Average");
-			DatumBean zaverage=new DatumBean();
-			average.setType("Z-Average");
-			DatumBean pdi=new DatumBean();
-			average.setType("PDI");
-			table.getDatumList().add(average);
-			table.getDatumList().add(zaverage);
-			table.getDatumList().add(pdi);
+			DatumBean percentHemolysis=new DatumBean();
+			percentHemolysis.setType("Percent Hemolysis");
+			percentHemolysis.setValueUnit("%");
+			table.getDatumList().add(percentHemolysis);
 		}
 	}
 	
@@ -35,17 +39,10 @@ public class HemolysisBean extends CharacterizationBean {
 		super.setDerivedBioAssayData(derivedBioAssayData);
 		
 		for (DerivedBioAssayDataBean table:getDerivedBioAssayData()) {
-			DatumBean average=new DatumBean();
-			average.setType("Average");
-			average.setValueUnit("nm");
-			DatumBean zaverage=new DatumBean();
-			zaverage.setType("Z-Average");
-			zaverage.setValueUnit("nm");
-			DatumBean pdi=new DatumBean();
-			pdi.setType("PDI");
-			table.getDatumList().add(average);
-			table.getDatumList().add(zaverage);
-			table.getDatumList().add(pdi);
+			DatumBean percentHemolysis=new DatumBean();
+			percentHemolysis.setType("Percent Hemolysis");
+			percentHemolysis.setValueUnit("%");
+			table.getDatumList().add(percentHemolysis);
 		}
 	}
 	

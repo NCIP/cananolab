@@ -161,6 +161,10 @@
 			<form-property name="particleType" type="java.lang.String" />
 			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.HemolysisBean" />
 			<form-property name="fileNumber" type="java.lang.String" />
+			<form-property name="characterizationId" type="java.lang.String" />
+			<form-property name="characterizationSource" type="java.lang.String" />
+			<form-property name="viewTitle" type="java.lang.String" />
+			<form-property name="description" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="invitroImmunotoxicityProteinBindingForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="dispatch" type="java.lang.String" />
@@ -169,6 +173,10 @@
 			<form-property name="particleType" type="java.lang.String" />
 			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.PlasmaProteinBindingBean" />
 			<form-property name="fileNumber" type="java.lang.String" />
+			<form-property name="characterizationId" type="java.lang.String" />
+			<form-property name="characterizationSource" type="java.lang.String" />
+			<form-property name="viewTitle" type="java.lang.String" />
+			<form-property name="description" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="invitroImmunotoxicityCoagulationForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="dispatch" type="java.lang.String" />
@@ -177,6 +185,10 @@
 			<form-property name="particleType" type="java.lang.String" />
 			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.CoagulationBean" />
 			<form-property name="fileNumber" type="java.lang.String" />
+			<form-property name="characterizationId" type="java.lang.String" />
+			<form-property name="characterizationSource" type="java.lang.String" />
+			<form-property name="viewTitle" type="java.lang.String" />
+			<form-property name="description" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="invitroImmunotoxicityPlateAggregationForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="dispatch" type="java.lang.String" />
@@ -185,6 +197,190 @@
 			<form-property name="particleType" type="java.lang.String" />
 			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.PlateAggregationBean" />
 			<form-property name="fileNumber" type="java.lang.String" />
+			<form-property name="characterizationId" type="java.lang.String" />
+			<form-property name="characterizationSource" type="java.lang.String" />
+			<form-property name="viewTitle" type="java.lang.String" />
+			<form-property name="description" type="java.lang.String" />
+		</form-bean>
+		<form-bean name="invitroImmunotoxicityComplementActivationForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer" initial="0" />
+			<form-property name="particleName" type="java.lang.String" />
+			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.ComplementActivationBean" />
+			<form-property name="fileNumber" type="java.lang.String" />
+			<form-property name="characterizationId" type="java.lang.String" />
+			<form-property name="characterizationSource" type="java.lang.String" />
+			<form-property name="viewTitle" type="java.lang.String" />
+			<form-property name="description" type="java.lang.String" />
+		</form-bean>
+		<form-bean name="invitroImmunotoxicityCytokineInductionForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer" initial="0" />
+			<form-property name="particleName" type="java.lang.String" />
+			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.CytokineInductionBean" />
+			<form-property name="fileNumber" type="java.lang.String" />
+			<form-property name="characterizationId" type="java.lang.String" />
+			<form-property name="characterizationSource" type="java.lang.String" />
+			<form-property name="viewTitle" type="java.lang.String" />
+			<form-property name="description" type="java.lang.String" />
+		</form-bean>
+		<form-bean name="invitroImmunotoxicityChemotaxisForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer" initial="0" />
+			<form-property name="particleName" type="java.lang.String" />
+			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.ChemotaxisBean" />
+			<form-property name="fileNumber" type="java.lang.String" />
+			<form-property name="characterizationId" type="java.lang.String" />
+			<form-property name="characterizationSource" type="java.lang.String" />
+			<form-property name="viewTitle" type="java.lang.String" />
+			<form-property name="description" type="java.lang.String" />
+		</form-bean>
+		<form-bean name="invitroImmunotoxicityNKCellCytotoxicActivityForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer" initial="0" />
+			<form-property name="particleName" type="java.lang.String" />
+			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.NKCellCytotoxicActivityBean" />
+			<form-property name="fileNumber" type="java.lang.String" />
+			<form-property name="characterizationId" type="java.lang.String" />
+			<form-property name="characterizationSource" type="java.lang.String" />
+			<form-property name="viewTitle" type="java.lang.String" />
+			<form-property name="description" type="java.lang.String" />
+		</form-bean>
+		<form-bean name="invitroImmunotoxicityLeukocyteProliferationForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer" initial="0" />
+			<form-property name="particleName" type="java.lang.String" />
+			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.LeukocyteProliferationBean" />
+			<form-property name="fileNumber" type="java.lang.String" />
+			<form-property name="characterizationId" type="java.lang.String" />
+			<form-property name="characterizationSource" type="java.lang.String" />
+			<form-property name="viewTitle" type="java.lang.String" />
+			<form-property name="description" type="java.lang.String" />
+		</form-bean>
+		<form-bean name="invitroImmunotoxicityCFU_GMForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer" initial="0" />
+			<form-property name="particleName" type="java.lang.String" />
+			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.CFU_GMBean" />
+			<form-property name="fileNumber" type="java.lang.String" />
+			<form-property name="characterizationId" type="java.lang.String" />
+			<form-property name="characterizationSource" type="java.lang.String" />
+			<form-property name="viewTitle" type="java.lang.String" />
+			<form-property name="description" type="java.lang.String" />
+		</form-bean>
+		<form-bean name="invitroImmunotoxicityOxidativeBurstForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer" initial="0" />
+			<form-property name="particleName" type="java.lang.String" />
+			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.OxidativeBurstBean" />
+			<form-property name="fileNumber" type="java.lang.String" />
+			<form-property name="characterizationId" type="java.lang.String" />
+			<form-property name="characterizationSource" type="java.lang.String" />
+			<form-property name="viewTitle" type="java.lang.String" />
+			<form-property name="description" type="java.lang.String" />
+		</form-bean>
+		<form-bean name="invitroImmunotoxicityPhagocytosisForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer" initial="0" />
+			<form-property name="particleName" type="java.lang.String" />
+			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.PhagocytosisBean" />
+			<form-property name="fileNumber" type="java.lang.String" />
+			<form-property name="characterizationId" type="java.lang.String" />
+			<form-property name="characterizationSource" type="java.lang.String" />
+			<form-property name="viewTitle" type="java.lang.String" />
+			<form-property name="description" type="java.lang.String" />
+		</form-bean>
+		<form-bean name="invitroCytotoxicityCaspase3ActivationForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer" initial="0" />
+			<form-property name="particleName" type="java.lang.String" />
+			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.Caspase3ActivationBean" />
+			<form-property name="fileNumber" type="java.lang.String" />
+			<form-property name="characterizationId" type="java.lang.String" />
+			<form-property name="characterizationSource" type="java.lang.String" />
+			<form-property name="viewTitle" type="java.lang.String" />
+			<form-property name="description" type="java.lang.String" />
+		</form-bean>
+		<form-bean name="invitroCytotoxicityCellViabilityForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer" initial="0" />
+			<form-property name="particleName" type="java.lang.String" />
+			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.CellViabilityBean" />
+			<form-property name="fileNumber" type="java.lang.String" />
+			<form-property name="characterizationId" type="java.lang.String" />
+			<form-property name="characterizationSource" type="java.lang.String" />
+			<form-property name="viewTitle" type="java.lang.String" />
+			<form-property name="description" type="java.lang.String" />
+		</form-bean>
+		<form-bean name="invitroToxicityOxidativeStressForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer" initial="0" />
+			<form-property name="particleName" type="java.lang.String" />
+			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.OxidativeStressBean" />
+			<form-property name="fileNumber" type="java.lang.String" />
+			<form-property name="characterizationId" type="java.lang.String" />
+			<form-property name="characterizationSource" type="java.lang.String" />
+			<form-property name="viewTitle" type="java.lang.String" />
+			<form-property name="description" type="java.lang.String" />
+		</form-bean>
+		<form-bean name="invitroToxicityEnzymeInductionForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer" initial="0" />
+			<form-property name="particleName" type="java.lang.String" />
+			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.EnzymeInductionBean" />
+			<form-property name="fileNumber" type="java.lang.String" />
+			<form-property name="characterizationId" type="java.lang.String" />
+			<form-property name="characterizationSource" type="java.lang.String" />
+			<form-property name="viewTitle" type="java.lang.String" />
+			<form-property name="description" type="java.lang.String" />
+		</form-bean>
+		<form-bean name="invitroMetabolicStabilityGlucuronidationSulphationForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer" initial="0" />
+			<form-property name="particleName" type="java.lang.String" />
+			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.GlucuronidationSulphationBean" />
+			<form-property name="fileNumber" type="java.lang.String" />
+			<form-property name="characterizationId" type="java.lang.String" />
+			<form-property name="characterizationSource" type="java.lang.String" />
+			<form-property name="viewTitle" type="java.lang.String" />
+			<form-property name="description" type="java.lang.String" />
+		</form-bean>
+		<form-bean name="invitroMetabolicStabilityROSForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer" initial="0" />
+			<form-property name="particleName" type="java.lang.String" />
+			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.ROSBean" />
+			<form-property name="fileNumber" type="java.lang.String" />
+			<form-property name="characterizationId" type="java.lang.String" />
+			<form-property name="characterizationSource" type="java.lang.String" />
+			<form-property name="viewTitle" type="java.lang.String" />
+			<form-property name="description" type="java.lang.String" />
+		</form-bean>
+		<form-bean name="invitroMetabolicStabilityCYP450Form" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer" initial="0" />
+			<form-property name="particleName" type="java.lang.String" />
+			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.CYP450Bean" />
+			<form-property name="fileNumber" type="java.lang.String" />
+			<form-property name="characterizationId" type="java.lang.String" />
+			<form-property name="characterizationSource" type="java.lang.String" />
+			<form-property name="viewTitle" type="java.lang.String" />
+			<form-property name="description" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="loadDerivedBioAssayDataForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="dispatch" type="java.lang.String" />
@@ -235,6 +431,21 @@
 		<forward name="invitroCoagulationForm" path="submit.addimmunotoxicity.coagulation" />
 		<forward name="invitroPlateAggregationForm" path="submit.addimmunotoxicity.plateaggregation" />
 		<forward name="invitroProteinBindingForm" path="submit.addimmunotoxicity.plasmaproteinbinding" />
+		<forward name="invitroComplementActivationForm" path="submit.addimmunotoxicity.complementactivation" />
+		<forward name="invitroCytokineInductionForm" path="submit.addimmunotoxicity.cytokineinduction" />
+		<forward name="invitroChemotaxisForm" path="submit.addimmunotoxicity.chemotaxis" />
+		<forward name="invitroNKCellCytotoxicActivityForm" path="submit.addimmunotoxicity.nkcellcytotoxicactivity" />
+		<forward name="invitroLeukocyteProliferationForm" path="submit.addimmunotoxicity.leukocyteproliferation" />
+		<forward name="invitroCFU_GMForm" path="submit.addimmunotoxicity.cfu_gm" />
+		<forward name="invitroOxidativeBurstForm" path="submit.addimmunotoxicity.oxidativeburst" />
+		<forward name="invitroPhagocytosisForm" path="submit.addimmunotoxicity.phagocytosis" />
+		<forward name="invitroCellViabilityForm" path="submit.addcytotoxicity.cellviability" />
+		<forward name="invitroCaspase3ActivationForm" path="submit.addcytotoxicity.caspase3activation" />
+		<forward name="invitroOxidativeStressForm" path="submit.addtoxicity.oxidativestress" />
+		<forward name="invitroEnzymeInductionForm" path="submit.addtoxicity.enzymeinduction" />
+		<forward name="invitroROSForm" path="submit.addmetabolicstability.ros" />
+		<forward name="invitroCYP450Form" path="submit.addmetabolicstability.cyp450" />
+		<forward name="invitroGlucuronidationSulphationForm" path="submit.addmetabolicstability.glucuronidationsulphation" />
 		<forward name="function" path="nanoparticleFunction.do" />
 		<forward name="Solubility" path="nanoparticleSolubility.do" />						
 		<forward name="Purity" path="nanoparticlePurity.do" />
@@ -339,16 +550,100 @@
 			<forward name="input" path="submit.addimmunotoxicity.coagulation" />
 			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
 		</action>
-		<action name="invitroImmunotoxicityPlateAggregationForm" parameter="dispatch" path="/invitroImmunotoxicityPlateAggregation" type="gov.nih.nci.calab.ui.submit.InvitroPlateAggregationAction" input="input">
-			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroPlateAggregation" path="submit.addimmunotoxicity.plateaggregation" type="java.lang.Exception" />
-			<forward name="success" path="submit.message" />
-			<forward name="input" path="submit.addimmunotoxicity.plateaggregation" />
-			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
-		</action>
 		<action name="invitroImmunotoxicityProteinBindingForm" parameter="dispatch" path="/invitroImmunotoxicityProteinBinding" type="gov.nih.nci.calab.ui.submit.InvitroProteinBindingAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroProteinBinding" path="submit.addimmunotoxicity.plasmaproteinbinding" type="java.lang.Exception" />
 			<forward name="success" path="submit.message" />
 			<forward name="input" path="submit.addimmunotoxicity.plasmaproteinbinding" />
+			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
+		</action>
+		<action name="invitroImmunotoxicityComplementActivationForm" parameter="dispatch" path="/invitroImmunotoxicityComplementActivation" type="gov.nih.nci.calab.ui.submit.InvitroComplementActivationAction" input="input">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroComplementActivation" path="submit.addimmunotoxicity.complementactivation" type="java.lang.Exception" />
+			<forward name="success" path="submit.message" />
+			<forward name="input" path="submit.addimmunotoxicity.complementactivation" />
+			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
+		</action>
+		<action name="invitroImmunotoxicityCytokineInductionForm" parameter="dispatch" path="/invitroImmunotoxicityCytokineInduction" type="gov.nih.nci.calab.ui.submit.InvitroCytokineInductionAction" input="input">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroCytokineInduction" path="submit.addimmunotoxicity.cytokineinduction" type="java.lang.Exception" />
+			<forward name="success" path="submit.message" />
+			<forward name="input" path="submit.addimmunotoxicity.cytokineinduction" />
+			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
+		</action>
+		<action name="invitroImmunotoxicityChemotaxisForm" parameter="dispatch" path="/invitroImmunotoxicityChemotaxis" type="gov.nih.nci.calab.ui.submit.InvitroChemotaxisAction" input="input">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroChemotaxis" path="submit.addimmunotoxicity.chemotaxis" type="java.lang.Exception" />
+			<forward name="success" path="submit.message" />
+			<forward name="input" path="submit.addimmunotoxicity.chemotaxis" />
+			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
+		</action>
+		<action name="invitroImmunotoxicityNKCellCytotoxicActivityForm" parameter="dispatch" path="/invitroImmunotoxicityNKCellCytotoxicActivity" type="gov.nih.nci.calab.ui.submit.InvitroNKCellCytotoxicActivityAction" input="input">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroNKCellCytotoxicActivity" path="submit.addimmunotoxicity.nkcellcytotoxicactivity" type="java.lang.Exception" />
+			<forward name="success" path="submit.message" />
+			<forward name="input" path="submit.addimmunotoxicity.nkcellcytotoxicactivity" />
+			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
+		</action>
+		<action name="invitroImmunotoxicityLeukocyteProliferationForm" parameter="dispatch" path="/invitroImmunotoxicityLeukocyteProliferation" type="gov.nih.nci.calab.ui.submit.InvitroLeukocyteProliferationAction" input="input">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroLeukocyteProliferation" path="submit.addimmunotoxicity.leukocyteproliferation" type="java.lang.Exception" />
+			<forward name="success" path="submit.message" />
+			<forward name="input" path="submit.addimmunotoxicity.leukocyteproliferation" />
+			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
+		</action>
+		<action name="invitroImmunotoxicityCFU_GMForm" parameter="dispatch" path="/invitroImmunotoxicityCFU_GM" type="gov.nih.nci.calab.ui.submit.InvitroCFU_GMAction" input="input">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroCFU_GM" path="submit.addimmunotoxicity.cfu_gm" type="java.lang.Exception" />
+			<forward name="success" path="submit.message" />
+			<forward name="input" path="submit.addimmunotoxicity.cfu_gm" />
+			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
+		</action>
+		<action name="invitroImmunotoxicityOxidativeBurstForm" parameter="dispatch" path="/invitroImmunotoxicityOxidativeBurst" type="gov.nih.nci.calab.ui.submit.InvitroOxidativeBurstAction" input="input">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroOxidativeBurst" path="submit.addimmunotoxicity.oxidativeburst" type="java.lang.Exception" />
+			<forward name="success" path="submit.message" />
+			<forward name="input" path="submit.addimmunotoxicity.oxidativeburst" />
+			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
+		</action>
+		<action name="invitroImmunotoxicityPhagocytosisForm" parameter="dispatch" path="/invitroImmunotoxicityPhagocytosis" type="gov.nih.nci.calab.ui.submit.InvitroPhagocytosisAction" input="input">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroPhagocytosis" path="submit.addimmunotoxicity.phagocytosis" type="java.lang.Exception" />
+			<forward name="success" path="submit.message" />
+			<forward name="input" path="submit.addimmunotoxicity.phagocytosis" />
+			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
+		</action>
+		<action name="invitroCytotoxicityCellViabilityForm" parameter="dispatch" path="/invitroCytotoxicityCellViability" type="gov.nih.nci.calab.ui.submit.InvitroCellViabilityAction" input="input">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroCellViability" path="submit.addcytotoxicity.cellviability" type="java.lang.Exception" />
+			<forward name="success" path="submit.message" />
+			<forward name="input" path="submit.addcytotoxicity.cellviability" />
+			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
+		</action>
+		<action name="invitroCytotoxicityCaspase3ActivationForm" parameter="dispatch" path="/invitroCytotoxicityCaspase3Activation" type="gov.nih.nci.calab.ui.submit.InvitroCaspase3ActivationAction" input="input">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroCaspase3Activation" path="submit.addcytotoxicity.caspase3activation" type="java.lang.Exception" />
+			<forward name="success" path="submit.message" />
+			<forward name="input" path="submit.addcytotoxicity.caspase3activation" />
+			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
+		</action>
+		<action name="invitroToxicityEnzymeInductionForm" parameter="dispatch" path="/invitroToxicityEnzymeInduction" type="gov.nih.nci.calab.ui.submit.InvitroEnzymeInductionAction" input="input">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroEnzymeInduction" path="submit.addtoxicity.enzymeinduction" type="java.lang.Exception" />
+			<forward name="success" path="submit.message" />
+			<forward name="input" path="submit.addtoxicity.enzymeinduction" />
+			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
+		</action>
+		<action name="invitroToxicityOxidativeStressForm" parameter="dispatch" path="/invitroToxicityOxidativeStress" type="gov.nih.nci.calab.ui.submit.InvitroOxidativeStressAction" input="input">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroOxidativeStress" path="submit.addtoxicity.oxidativestress" type="java.lang.Exception" />
+			<forward name="success" path="submit.message" />
+			<forward name="input" path="submit.addtoxicity.oxidativestress" />
+			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
+		</action>
+		<action name="invitroMetabolicStabilityGlucuronidationSulphationForm" parameter="dispatch" path="/invitroMetabolicStabilityGlucuronidationSulphation" type="gov.nih.nci.calab.ui.submit.InvitroGlucuronidationSulphationAction" input="input">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroGlucuronidationSulphation" path="submit.addmetabolicstability.glucuronidationsulphation" type="java.lang.Exception" />
+			<forward name="success" path="submit.message" />
+			<forward name="input" path="submit.addmetabolicstability.glucuronidationsulphation" />
+			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
+		</action>
+		<action name="invitroMetabolicStabilityCYP450Form" parameter="dispatch" path="/invitroMetabolicStabilityCYP450" type="gov.nih.nci.calab.ui.submit.InvitroCYP450Action" input="input">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroCYP450" path="submit.addmetabolicstability.cyp450" type="java.lang.Exception" />
+			<forward name="success" path="submit.message" />
+			<forward name="input" path="submit.addmetabolicstability.cyp450" />
+			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
+		</action>
+		<action name="invitroMetabolicStabilityROSForm" parameter="dispatch" path="/invitroMetabolicStabilityROS" type="gov.nih.nci.calab.ui.submit.InvitroROSAction" input="input">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroROS" path="submit.addmetabolicstability.ros" type="java.lang.Exception" />
+			<forward name="success" path="submit.message" />
+			<forward name="input" path="submit.addmetabolicstability.ros" />
 			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
 		</action>
 		<action name="loadDerivedBioAssayDataForm" parameter="dispatch" path="/loadFile" type="gov.nih.nci.calab.ui.submit.LoadDerivedBioAssayDataAction" input="input" scope="request">
