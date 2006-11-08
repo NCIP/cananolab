@@ -22,11 +22,12 @@ import java.util.List;
  */
 public class PurityBean extends CharacterizationBean {
 	private String id;
+	/*
 	private String homogeneityInLigand;
 	private String residualSolvents;
 	private String freeComponents;
 	private String freeComponentsUnit;
-
+	*/
 	
 	public PurityBean() {
 		super();
@@ -37,10 +38,15 @@ public class PurityBean extends CharacterizationBean {
 		super(aChar);
 
 		this.id = aChar.getId().toString();
-		this.homogeneityInLigand = aChar.getHomogeneityInLigand().toString();
+		/*
+		if (aChar.getHomogeneityInLigand() != null)
+			this.homogeneityInLigand = aChar.getHomogeneityInLigand().toString();
 		this.residualSolvents = aChar.getResidualSolvents();
-		this.freeComponents = aChar.getFreeComponents().getValue();
-		this.freeComponentsUnit = aChar.getFreeComponents().getUnitOfMeasurement();
+		if (aChar.getFreeComponents() != null) {
+			this.freeComponents = aChar.getFreeComponents().getValue();
+			this.freeComponentsUnit = aChar.getFreeComponents().getUnitOfMeasurement();
+		}
+		*/
 	}
 	
 	public void setDerivedBioAssayData(
@@ -74,10 +80,11 @@ public class PurityBean extends CharacterizationBean {
 		if (this.id != null && !this.id.equals(""))
 			purity.setId(new Long(this.id));
 		
+		/*
 		purity.setHomogeneityInLigand(new Float(this.homogeneityInLigand));
 		purity.setResidualSolvents(this.residualSolvents);
 		purity.setFreeComponents(new Measurement(this.freeComponents, this.freeComponentsUnit));
-		
+		*/
 		return purity;
 	}
 
@@ -88,7 +95,7 @@ public class PurityBean extends CharacterizationBean {
 	public void setId(String id) {
 		this.id = id;
 	}
-
+/*
 	public String getFreeComponents() {
 		return freeComponents;
 	}
@@ -120,6 +127,6 @@ public class PurityBean extends CharacterizationBean {
 	public void setResidualSolvents(String residualSolvents) {
 		this.residualSolvents = residualSolvents;
 	}
-
+*/
 
 }
