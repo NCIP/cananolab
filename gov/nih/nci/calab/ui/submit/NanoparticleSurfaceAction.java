@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSurfaceAction.java,v 1.3 2006-11-03 21:17:09 zengje Exp $ */
+/* CVS $Id: NanoparticleSurfaceAction.java,v 1.4 2006-11-08 16:44:30 chand Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Surface;
@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -154,6 +155,13 @@ public class NanoparticleSurfaceAction extends AbstractDispatchAction {
 		theForm.set("particleName", particleName);
 		theForm.set("particleType", particleType);
 		theForm.set("achar", new SurfaceBean());
+
+	    for (Enumeration e = session.getAttributeNames(); e.hasMoreElements() ;) {
+	    	String element = (String) e.nextElement();
+	        if (element.startsWith(CananoConstants.CHARACTERIZATION_FILE)) {
+	        	session.removeAttribute(element);
+	        }
+	    }
 	}
 
 	private void initSetup(HttpServletRequest request, DynaValidatorForm theForm)
@@ -284,6 +292,7 @@ public class NanoparticleSurfaceAction extends AbstractDispatchAction {
 		return mapping.getInputForward();
 	}
 
+
 	/**
 	 * Set up information needed for loading a characterization file
 	 * @param mapping
@@ -293,6 +302,7 @@ public class NanoparticleSurfaceAction extends AbstractDispatchAction {
 	 * @return
 	 * @throws Exception
 	 */
+
 	public ActionForward loadFile(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -301,39 +311,42 @@ public class NanoparticleSurfaceAction extends AbstractDispatchAction {
 		String fileNumber=(String)theForm.get("fileNumber");	
 		request.setAttribute("particleName", particleName);	
 		request.setAttribute("fileNumber", fileNumber);		
-		request.setAttribute("loadFileForward", "sizeInputForm");
+		request.setAttribute("loadFileForward", "surfaceInputForm");
 		return mapping.findForward("loadFile");
 	}
+
 	
 	public void updateCharacterizationTables(SurfaceBean achar) {
 		String numberOfCharacterizationTables = achar.getNumberOfDerivedBioAssayData();
-		int tableNum = Integer.parseInt(numberOfCharacterizationTables);
-		List<DerivedBioAssayDataBean> origTables = achar.getDerivedBioAssayData();
-		int origNum = (origTables == null) ? 0 : origTables
-				.size();
-		List<DerivedBioAssayDataBean> tables = new ArrayList<DerivedBioAssayDataBean>();
-		// create new ones
-		if (origNum == 0) {
+		if (numberOfCharacterizationTables != null && !numberOfCharacterizationTables.equals("")) {
+			int tableNum = Integer.parseInt(numberOfCharacterizationTables);
+			List<DerivedBioAssayDataBean> origTables = achar.getDerivedBioAssayData();
+			int origNum = (origTables == null) ? 0 : origTables
+					.size();
+			List<DerivedBioAssayDataBean> tables = new ArrayList<DerivedBioAssayDataBean>();
+			// 	create new ones
+			if (origNum == 0) {
 
-			for (int i = 0; i < tableNum; i++) {
-				DerivedBioAssayDataBean table = new DerivedBioAssayDataBean();
-				tables.add(table);
+				for (int i = 0; i < tableNum; i++) {
+					DerivedBioAssayDataBean table = new DerivedBioAssayDataBean();
+					tables.add(table);
+				}
 			}
+			// use keep original table info
+			else if (tableNum <= origNum) {
+				for (int i = 0; i < tableNum; i++) {
+					tables.add((DerivedBioAssayDataBean) origTables.get(i));
+				}
+			} else {
+				for (int i = 0; i < origNum; i++) {
+					tables.add((DerivedBioAssayDataBean) origTables.get(i));
+				}
+				for (int i = origNum; i < tableNum; i++) {
+					tables.add(new DerivedBioAssayDataBean());
+				}
+			}
+			achar.setDerivedBioAssayData(tables);
 		}
-		// use keep original table info
-		else if (tableNum <= origNum) {
-			for (int i = 0; i < tableNum; i++) {
-				tables.add((DerivedBioAssayDataBean) origTables.get(i));
-			}
-		} else {
-			for (int i = 0; i < origNum; i++) {
-				tables.add((DerivedBioAssayDataBean) origTables.get(i));
-			}
-			for (int i = origNum; i < tableNum; i++) {
-				tables.add(new DerivedBioAssayDataBean());
-			}
-		}
-		achar.setDerivedBioAssayData(tables);
 	}
 
 	/**

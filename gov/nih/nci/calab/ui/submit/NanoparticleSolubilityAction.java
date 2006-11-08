@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSolubilityAction.java,v 1.1 2006-11-02 18:36:52 chand Exp $ */
+/* CVS $Id: NanoparticleSolubilityAction.java,v 1.2 2006-11-08 16:43:33 chand Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
@@ -24,6 +24,7 @@ import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -156,6 +157,13 @@ public class NanoparticleSolubilityAction extends AbstractDispatchAction {
 		theForm.set("particleName", particleName);
 		theForm.set("particleType", particleType);
 		theForm.set("achar", new SolubilityBean());
+
+	    for (Enumeration e = session.getAttributeNames(); e.hasMoreElements() ;) {
+	    	String element = (String) e.nextElement();
+	        if (element.startsWith(CananoConstants.CHARACTERIZATION_FILE)) {
+	        	session.removeAttribute(element);
+	        }
+	    }
 	}
 
 	private void initSetup(HttpServletRequest request, DynaValidatorForm theForm)

@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleMolecularWeightAction.java,v 1.2 2006-11-02 18:39:02 chand Exp $ */
+/* CVS $Id: NanoparticleMolecularWeightAction.java,v 1.3 2006-11-08 16:43:33 chand Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
@@ -25,6 +25,7 @@ import gov.nih.nci.calab.ui.core.InitSessionSetup;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -157,6 +158,13 @@ public class NanoparticleMolecularWeightAction extends AbstractDispatchAction {
 		theForm.set("particleName", particleName);
 		theForm.set("particleType", particleType);
 		theForm.set("achar", new MolecularWeightBean());
+		
+	    for (Enumeration e = session.getAttributeNames(); e.hasMoreElements() ;) {
+	    	String element = (String) e.nextElement();
+	        if (element.startsWith(CananoConstants.CHARACTERIZATION_FILE)) {
+	        	session.removeAttribute(element);
+	        }
+	    }
 	}
 
 	private void initSetup(HttpServletRequest request, DynaValidatorForm theForm)
@@ -299,7 +307,7 @@ public class NanoparticleMolecularWeightAction extends AbstractDispatchAction {
 		String fileNumber=(String)theForm.get("fileNumber");	
 		request.setAttribute("particleName", particleName);	
 		request.setAttribute("fileNumber", fileNumber);		
-		request.setAttribute("loadFileForward", "MolecularWeightInputForm");
+		request.setAttribute("loadFileForward", "molecularWeightInputForm");
 		return mapping.findForward("loadFile");
 	}
 	
