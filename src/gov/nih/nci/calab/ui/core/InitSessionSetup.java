@@ -21,6 +21,8 @@ import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.service.workflow.ExecuteWorkflowService;
 import gov.nih.nci.security.exceptions.CSException;
 
+import gov.nih.nci.common.util.StringHelper;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -609,6 +611,15 @@ public class InitSessionSetup {
 					morphologyTypes);
 		}
 	}
+	
+	public void addMorphologyType(HttpSession session, String option) throws Exception {
+		setAllMorphologyTypes(session);
+		String[] morphologyTypes = (String[]) session.getServletContext().getAttribute("allMorphologyTypes");
+		if (!StringHelper.contains(morphologyTypes, option, true)) {
+			session.getServletContext().setAttribute("allMorphologyTypes",
+					StringHelper.add(morphologyTypes, option));
+		}
+	}
 
 	public void setAllShapeTypes(HttpSession session) throws Exception {
 		if (session.getServletContext().getAttribute("allShapeTypes") == null) {
@@ -618,6 +629,15 @@ public class InitSessionSetup {
 		}
 	}
 
+	public void addShapeType(HttpSession session, String option) throws Exception {
+		setAllShapeTypes(session);
+		String[] shapeTypes = (String[]) session.getServletContext().getAttribute("allShapeTypes");
+		if (!StringHelper.contains(shapeTypes, option, true)) {
+			session.getServletContext().setAttribute("allShapeTypes",
+					StringHelper.add(shapeTypes, option));
+		}
+	}
+	
 	public void setAllStressorTypes(HttpSession session) throws Exception {
 		if (session.getServletContext().getAttribute("allStessorTypes") == null) {
 			String[] stressorTypes = lookupService.getAllStressorTypes();
