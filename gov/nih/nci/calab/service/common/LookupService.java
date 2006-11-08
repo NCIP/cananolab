@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.59 2006-11-02 18:32:42 chand Exp $ */
+/* CVS $Id: LookupService.java,v 1.60 2006-11-08 16:39:55 chand Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -804,31 +804,31 @@ public class LookupService {
 
 	public String[] getMorphologyDistributionGraphTypes() {
 		//TODO query from database or properties file
-		String[] graphTypes=new String[] {"Graph", "Image"};
+		String[] graphTypes=new String[] {"Image", "Graph"};
 		return graphTypes;
 	}
 	
 	public String[] getShapeDistributionGraphTypes() {
 		//TODO query from database or properties file
-		String[] graphTypes=new String[] {"Graph", "Image"};
+		String[] graphTypes=new String[] {"Image", "Graph"};
 		return graphTypes;
 	}
 
 	public String[] getStabilityDistributionGraphTypes() {
 		//TODO query from database or properties file
-		String[] graphTypes=new String[] {"Graph", "Image"};
+		String[] graphTypes=new String[] {"Image", "Graph"};
 		return graphTypes;
 	}
 
 	public String[] getPurityDistributionGraphTypes() {
 		//TODO query from database or properties file
-		String[] graphTypes=new String[] {"Graph", "Image"};
+		String[] graphTypes=new String[] {"Image", "Graph"};
 		return graphTypes;
 	}
 
 	public String[] getSolubilityDistributionGraphTypes() {
 		//TODO query from database or properties file
-		String[] graphTypes=new String[] {"Graph", "Image"};
+		String[] graphTypes=new String[] {"Image", "Graph"};
 		return graphTypes;
 	}
 	
@@ -879,12 +879,12 @@ public class LookupService {
 	}
 	
 	public String[] getAllTimeUnits() {
-		String[] timeUnits = new String[] {"second", "minute", "hour", "day", "month", "year"};
+		String[] timeUnits = new String[] {"hours", "days", "months"};
 		return timeUnits;
 	}
 	
 	public String[] getAllConcentrationUnits() {
-		String[] concentrationUnits = new String[] {"mg/kg"};
+		String[] concentrationUnits = new String[] {"g/ml", "mg/ml", "ug/ml", "ug/ul"};
 		return concentrationUnits;
 	}
 }
