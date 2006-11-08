@@ -1,7 +1,7 @@
 package gov.nih.nci.calab.ui.submit;
 
 /**
- * This class sets up input form for nvitro hemolysis characterization. 
+ * This class sets up input form for nvitro cyp450 characterization. 
  *  
  * @author beasleyj
  */
@@ -9,12 +9,11 @@ package gov.nih.nci.calab.ui.submit;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
+import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.dto.characterization.ConditionBean;
 import gov.nih.nci.calab.dto.characterization.ControlBean;
 import gov.nih.nci.calab.dto.characterization.DatumBean;
-import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
-import gov.nih.nci.calab.dto.characterization.invitro.HemolysisBean;
-import gov.nih.nci.calab.dto.characterization.invitro.PlasmaProteinBindingBean;
+import gov.nih.nci.calab.dto.characterization.invitro.CYP450Bean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
@@ -22,6 +21,8 @@ import gov.nih.nci.calab.service.util.CananoConstants;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,7 +38,7 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
-public class InvitroProteinBindingAction extends AbstractDispatchAction {
+public class InvitroCYP450Action extends AbstractDispatchAction {
 
 	/**
 	 * Add or update the data to database
@@ -57,14 +58,14 @@ public class InvitroProteinBindingAction extends AbstractDispatchAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleType = (String) theForm.get("particleType");
 		String particleName = (String) theForm.get("particleName");
-		PlasmaProteinBindingBean proteinBindingChar=(PlasmaProteinBindingBean) theForm.get("achar");
+		CYP450Bean cyp450Char = (CYP450Bean) theForm.get("achar");
 
-		if (proteinBindingChar.getId() == null || proteinBindingChar.getId() == "") {			
-			proteinBindingChar.setId( (String) theForm.get("characterizationId") );			
+		if (cyp450Char.getId() == null || cyp450Char.getId() == "") {			
+			cyp450Char.setId( (String) theForm.get("characterizationId") );			
 		}
 		
 		int fileNumber = 0;
-		for (DerivedBioAssayDataBean obj : proteinBindingChar.getDerivedBioAssayData()) {
+		for (DerivedBioAssayDataBean obj : cyp450Char.getDerivedBioAssayData()) {
 			CharacterizationFileBean fileBean = (CharacterizationFileBean) request.getSession().getAttribute("characterizationFile" + fileNumber);
 			if (fileBean != null) {		
 				obj.setFile(fileBean);
@@ -75,15 +76,15 @@ public class InvitroProteinBindingAction extends AbstractDispatchAction {
 		// set createdBy and createdDate for the composition
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		Date date = new Date();
-		proteinBindingChar.setCreatedBy(user.getLoginName());
-		proteinBindingChar.setCreatedDate(date);
+		cyp450Char.setCreatedBy(user.getLoginName());
+		cyp450Char.setCreatedDate(date);
 
 		request.getSession().setAttribute("newCharacterizationCreated", "true");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		service.addProteinBinding(particleType, particleName, proteinBindingChar);
+		service.addCYP450(particleType, particleName, cyp450Char);
 
 		ActionMessages msgs = new ActionMessages();
-		ActionMessage msg = new ActionMessage("message.addInvitroProteinBinding");
+		ActionMessage msg = new ActionMessage("message.addInvitroCYP450");
 		msgs.add("message", msg);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
@@ -95,13 +96,13 @@ public class InvitroProteinBindingAction extends AbstractDispatchAction {
 		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
 		String selectedInstrumentType = null;
 		
-		if (proteinBindingChar.getInstrument().getOtherInstrumentType() != null && proteinBindingChar.getInstrument().getOtherInstrumentType() != "")
-			selectedInstrumentType = proteinBindingChar.getInstrument().getOtherInstrumentType();
+		if (cyp450Char.getInstrument().getOtherInstrumentType() != null && cyp450Char.getInstrument().getOtherInstrumentType() != "")
+			selectedInstrumentType = cyp450Char.getInstrument().getOtherInstrumentType();
 		else
-			selectedInstrumentType = proteinBindingChar.getInstrument().getType();
+			selectedInstrumentType = cyp450Char.getInstrument().getType();
 		
 		InitSessionSetup.getInstance().setManufacturerPerType(session, selectedInstrumentType);
-		
+
 		return forward;
 	}
 
@@ -137,7 +138,7 @@ public class InvitroProteinBindingAction extends AbstractDispatchAction {
 
 		theForm.set("particleName", particleName);
 		theForm.set("particleType", particleType);
-		theForm.set("achar", new PlasmaProteinBindingBean());
+		theForm.set("achar", new CYP450Bean());
 	}
 
 	private void initSetup(HttpServletRequest request, DynaValidatorForm theForm)
@@ -170,7 +171,6 @@ public class InvitroProteinBindingAction extends AbstractDispatchAction {
 			throws Exception {
 		
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleType = (String) theForm.get("particleType");
 		String compositionId = (String) theForm.get("characterizationId");
 
 		SearchNanoparticleService service = new SearchNanoparticleService();
@@ -203,13 +203,13 @@ public class InvitroProteinBindingAction extends AbstractDispatchAction {
 			fileNumber++;
 		}
 				
-		PlasmaProteinBindingBean pbChar = new PlasmaProteinBindingBean(aChar);		
-		theForm.set("achar", pbChar);		
+		CYP450Bean hChar = new CYP450Bean(aChar);		
+		theForm.set("achar", hChar);		
 		initSetup(request, theForm);
 
-		if (pbChar.getInstrument() != null) {
-			InitSessionSetup.getInstance().setManufacturerPerType(session, pbChar.getInstrument().getType());
-			session.setAttribute("selectedInstrumentType", pbChar.getInstrument().getType());
+		if (hChar.getInstrument() != null) {
+			InitSessionSetup.getInstance().setManufacturerPerType(session, hChar.getInstrument().getType());
+			session.setAttribute("selectedInstrumentType", hChar.getInstrument().getType());
 		}
 
 		return mapping.getInputForward();
@@ -245,14 +245,16 @@ public class InvitroProteinBindingAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		
+		System.out.println("\n\n==> Entering  InvitroCYP450Action::update ...\n\n"); 
+		
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleType = (String) theForm.get("particleType");
 		String particleName = (String) theForm.get("particleName");
-		PlasmaProteinBindingBean achar = (PlasmaProteinBindingBean) theForm.get("achar");
+		CYP450Bean achar = (CYP450Bean) theForm.get("achar");
 		String index=(String)request.getParameter("index");	
 		String type = (String)request.getParameter("type");
 		
-		System.out.println("\n\n==> InvitroHemolysisAction::update  The request is " + type + "\n\n"); 
+		System.out.println("\n\n==> InvitroCYP450Action::update  The request is " + type + "\n\n"); 
 		
 		if ( type != null && !type.equals("") && type.equals("charTables") )
 		{
@@ -291,7 +293,7 @@ public class InvitroProteinBindingAction extends AbstractDispatchAction {
 	 * @return
 	 * @throws Exception
 	 */
-	public void addControl(PlasmaProteinBindingBean achar, String index) {
+	public void addControl(CYP450Bean achar, String index) {
 		int tableIndex = new Integer(index).intValue();
 		DerivedBioAssayDataBean derivedBioAssayData = (DerivedBioAssayDataBean)achar.getDerivedBioAssayData().get(tableIndex);
 		DatumBean datum = (DatumBean)derivedBioAssayData.getDatumList().get(0);
@@ -309,7 +311,7 @@ public class InvitroProteinBindingAction extends AbstractDispatchAction {
 	 * @return
 	 * @throws Exception
 	 */
-	public void updateConditions(PlasmaProteinBindingBean achar, String index) {
+	public void updateConditions(CYP450Bean achar, String index) {
 		int tableIndex = new Integer(index).intValue();
 		System.out.println("==> The table index is " + tableIndex);
 		DerivedBioAssayDataBean derivedBioAssayDataBean = (DerivedBioAssayDataBean)achar.getDerivedBioAssayData().get(tableIndex);
@@ -363,16 +365,15 @@ public class InvitroProteinBindingAction extends AbstractDispatchAction {
 		String fileNumber=(String)theForm.get("fileNumber");	
 		request.setAttribute("particleName", particleName);	
 		request.setAttribute("fileNumber", fileNumber);		
-		request.setAttribute("loadFileForward", "proteinBindingInputForm");
+		request.setAttribute("loadFileForward", "cyp450InputForm");
 		return mapping.findForward("loadFile");
 	}
 	
-	public void updateCharacterizationTables(PlasmaProteinBindingBean achar) {
+	public void updateCharacterizationTables(CYP450Bean achar) {
 		String numberOfDerivedBioAssayData = achar.getNumberOfDerivedBioAssayData();
 		int tableNum = Integer.parseInt(numberOfDerivedBioAssayData);
 		List<DerivedBioAssayDataBean> origTables = achar.getDerivedBioAssayData();
-		int origNum = (origTables == null) ? 0 : origTables
-				.size();
+		int origNum = (origTables == null) ? 0 : origTables.size();
 		List<DerivedBioAssayDataBean> tables = new ArrayList<DerivedBioAssayDataBean>();
 		// create new ones
 		if (origNum == 0) {
@@ -400,6 +401,44 @@ public class InvitroProteinBindingAction extends AbstractDispatchAction {
 
 	public boolean loginRequired() {
 		return true;
+	}
+	/**
+	 * Download action to handle download characterization file
+	 * @param 
+	 * @return
+	 */
+	public ActionForward download (ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		String fileId=request.getParameter("fileId");
+
+		CharacterizationFileBean fileBean = (CharacterizationFileBean) request.getSession().getAttribute("characterizationFile" + fileId);
+		String filename = fileBean.getPath() + fileBean.getName();
+		
+		File dFile = new File(filename);
+		if (dFile.exists()) {
+			response.setContentType("application/octet-stream");
+			response.setHeader("Content-disposition", "attachment;filename=" + this.getName(filename));
+			response.setHeader("Cache-Control", "no-cache");
+		
+			java.io.InputStream in = new FileInputStream (dFile);
+			java.io.OutputStream out = response.getOutputStream();
+
+			byte[] bytes = new byte[32768];
+	
+			int numRead = 0;
+			while ((numRead = in.read(bytes)) > 0) {
+				out.write(bytes, 0, numRead);
+			}
+			out.close();
+		} else {
+			throw new Exception ("ERROR: file not found.");
+		}
+			
+		
+		return null;
 	}
 	
 	/**
