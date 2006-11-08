@@ -31,12 +31,12 @@
 			<item value="Functional" link="" />
 		</putList>
 		<putList name="toxActions">
-			<item value="Oxidative Stress" link="" />
-			<item value="Enzyme Function" link="" />
+			<item value="Oxidative Stress" link="invitroToxicityOxidativeStress.do?dispatch=setup&amp;page=0" />
+			<item value="Enzyme Function" link="invitroToxicityEnzymeInduction.do?dispatch=setup&amp;page=0" />
 		</putList>
 		<putList name="cytoToxActions">
-			<item value="Cell Viability" link="" />
-			<item value="Caspase 3 Activation" link="" />
+			<item value="Cell Viability" link="invitroCytotoxicityCellViability.do?dispatch=setup&amp;page=0" />
+			<item value="Caspase 3 Activation" link="invitroCytotoxicityCaspase3Activation.do?dispatch=setup&amp;page=0" />
 		</putList>
 		<putList name="bloodContactActions">
 			<item value="Plate Aggregation" link="invitroImmunotoxicityPlateAggregation.do?dispatch=setup&amp;page=0" />
@@ -45,19 +45,19 @@
 			<item value="Coagulation" link="invitroImmunotoxicityCoagulation.do?dispatch=setup&amp;page=0" />
 		</putList>
 		<putList name="immuneCellFuncActions">
-			<item value="Oxidative Burst" link="" />
-			<item value="Chemotaxis" link="" />
-			<item value="Leukocyte Proliferation" link="" />
-			<item value="Phagocytosis" link="" />
-			<item value="Cytokine Induction" link="" />
-			<item value="CFU-GM" link="" />
-			<item value="Complement Activation" link="" />
-			<item value="Cytotoxic Activity of NK Cells" link="" />
+			<item value="Oxidative Burst" link="invitroImmunotoxicityOxidativeBurst.do?dispatch=setup&amp;page=0" />
+			<item value="Chemotaxis" link="invitroImmunotoxicityChemotaxis.do?dispatch=setup&amp;page=0" />
+			<item value="Leukocyte Proliferation" link="invitroImmunotoxicityLeukocyteProliferation.do?dispatch=setup&amp;page=0" />
+			<item value="Phagocytosis" link="invitroImmunotoxicityPhagocytosis.do?dispatch=setup&amp;page=0" />
+			<item value="Cytokine Induction" link="invitroImmunotoxicityCytokineInduction.do?dispatch=setup&amp;page=0" />
+			<item value="CFU-GM" link="invitroImmunotoxicityCFU_GM.do?dispatch=setup&amp;page=0" />
+			<item value="Complement Activation" link="invitroImmunotoxicityComplementActivation.do?dispatch=setup&amp;page=0" />
+			<item value="Cytotoxic Activity of NK Cells" link="invitroImmunotoxicityNKCellCytotoxicActivity.do?dispatch=setup&amp;page=0" />
 		</putList>
 		<putList name="metabolicActions">
-			<item value="CYP450" link="" />
-			<item value="Glucuronidation, Sulphation" link="" />
-			<item value="ROS" link="" />
+			<item value="CYP450" link="invitroMetabolicStabilityCYP450.do?dispatch=setup&amp;page=0" />
+			<item value="Glucuronidation, Sulphation" link="invitroMetabolicStabilityGlucuronidationSulphation.do?dispatch=setup&amp;page=0" />
+			<item value="ROS" link="invitroMetabolicStabilityROS.do?dispatch=setup&amp;page=0" />
 		</putList>
 	</definition>
 
@@ -272,6 +272,186 @@
 	<definition name="submit.addimmunotoxicity.plasmaproteinbinding" extends="calab.home">
 		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
 		<put name="calabContent" value="submit.addimmunotoxicity.plasmaproteinbinding.content" />
+		<put name="menu" value="submit" />
+	</definition>
+
+	<!-- definition for the invitro immunotoxicity complement activation page -->
+	<definition name="submit.addimmunotoxicity.complementactivation.content" extends="submit.content.home">
+		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
+		<put name="submitContent" value="/submit/bodyImmunotoxicityComplementActivation.jsp" />
+	</definition>
+
+	<definition name="submit.addimmunotoxicity.complementactivation" extends="calab.home">
+		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
+		<put name="calabContent" value="submit.addimmunotoxicity.complementactivation.content" />
+		<put name="menu" value="submit" />
+	</definition>
+
+	<!-- definition for the invitro immunotoxicity CytokineInduction page -->
+	<definition name="submit.addimmunotoxicity.cytokineinduction.content" extends="submit.content.home">
+		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
+		<put name="submitContent" value="/submit/bodyImmunotoxicityCytokineInduction.jsp" />
+	</definition>
+
+	<definition name="submit.addimmunotoxicity.cytokineinduction" extends="calab.home">
+		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
+		<put name="calabContent" value="submit.addimmunotoxicity.cytokineinduction.content" />
+		<put name="menu" value="submit" />
+	</definition>
+
+	<!-- definition for the invitro immunotoxicity chemotaxis page -->
+	<definition name="submit.addimmunotoxicity.chemotaxis.content" extends="submit.content.home">
+		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
+		<put name="submitContent" value="/submit/bodyImmunotoxicityChemotaxis.jsp" />
+	</definition>
+
+	<definition name="submit.addimmunotoxicity.chemotaxis" extends="calab.home">
+		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
+		<put name="calabContent" value="submit.addimmunotoxicity.chemotaxis.content" />
+		<put name="menu" value="submit" />
+	</definition>
+
+	<!-- definition for the invitro immunotoxicity nkcellcytotoxicactivity page -->
+	<definition name="submit.addimmunotoxicity.nkcellcytotoxicactivity.content" extends="submit.content.home">
+		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
+		<put name="submitContent" value="/submit/bodyImmunotoxicityNKCellCytotoxicActivity.jsp" />
+	</definition>
+
+	<definition name="submit.addimmunotoxicity.nkcellcytotoxicactivity" extends="calab.home">
+		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
+		<put name="calabContent" value="submit.addimmunotoxicity.nkcellcytotoxicactivity.content" />
+		<put name="menu" value="submit" />
+	</definition>
+
+	<!-- definition for the invitro immunotoxicity leukocyteproliferation page -->
+	<definition name="submit.addimmunotoxicity.leukocyteproliferation.content" extends="submit.content.home">
+		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
+		<put name="submitContent" value="/submit/bodyImmunotoxicityLeukocyteProliferation.jsp" />
+	</definition>
+
+	<definition name="submit.addimmunotoxicity.leukocyteproliferation" extends="calab.home">
+		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
+		<put name="calabContent" value="submit.addimmunotoxicity.leukocyteproliferation.content" />
+		<put name="menu" value="submit" />
+	</definition>
+
+	<!-- definition for the invitro immunotoxicity cfu_gm page -->
+	<definition name="submit.addimmunotoxicity.cfu_gm.content" extends="submit.content.home">
+		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
+		<put name="submitContent" value="/submit/bodyImmunotoxicityCFU_GM.jsp" />
+	</definition>
+
+	<definition name="submit.addimmunotoxicity.cfu_gm" extends="calab.home">
+		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
+		<put name="calabContent" value="submit.addimmunotoxicity.cfu_gm.content" />
+		<put name="menu" value="submit" />
+	</definition>
+
+	<!-- definition for the invitro immunotoxicity oxidativeburst page -->
+	<definition name="submit.addimmunotoxicity.oxidativeburst.content" extends="submit.content.home">
+		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
+		<put name="submitContent" value="/submit/bodyImmunotoxicityOxidativeBurst.jsp" />
+	</definition>
+
+	<definition name="submit.addimmunotoxicity.oxidativeburst" extends="calab.home">
+		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
+		<put name="calabContent" value="submit.addimmunotoxicity.oxidativeburst.content" />
+		<put name="menu" value="submit" />
+	</definition>
+
+	<!-- definition for the invitro immunotoxicity phagocytosis page -->
+	<definition name="submit.addimmunotoxicity.phagocytosis.content" extends="submit.content.home">
+		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
+		<put name="submitContent" value="/submit/bodyImmunotoxicityPhagocytosis.jsp" />
+	</definition>
+
+	<definition name="submit.addimmunotoxicity.phagocytosis" extends="calab.home">
+		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
+		<put name="calabContent" value="submit.addimmunotoxicity.phagocytosis.content" />
+		<put name="menu" value="submit" />
+	</definition>
+
+	<!-- definition for the invitro cytotoxicity cellviability page -->
+	<definition name="submit.addcytotoxicity.cellviability.content" extends="submit.content.home">
+		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
+		<put name="submitContent" value="/submit/bodyCytotoxicityCellViability.jsp" />
+	</definition>
+
+	<definition name="submit.addcytotoxicity.cellviability" extends="calab.home">
+		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
+		<put name="calabContent" value="submit.addcytotoxicity.cellviability.content" />
+		<put name="menu" value="submit" />
+	</definition>
+
+	<!-- definition for the invitro cytotoxicity caspase3activation page -->
+	<definition name="submit.addcytotoxicity.caspase3activation.content" extends="submit.content.home">
+		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
+		<put name="submitContent" value="/submit/bodyCytotoxicityCaspase3Activation.jsp" />
+	</definition>
+
+	<definition name="submit.addcytotoxicity.caspase3activation" extends="calab.home">
+		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
+		<put name="calabContent" value="submit.addcytotoxicity.caspase3activation.content" />
+		<put name="menu" value="submit" />
+	</definition>
+
+	<!-- definition for the invitro toxicity enzymeinduction page -->
+	<definition name="submit.addtoxicity.enzymeinduction.content" extends="submit.content.home">
+		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
+		<put name="submitContent" value="/submit/bodyToxicityEnzymeInduction.jsp" />
+	</definition>
+
+	<definition name="submit.addtoxicity.enzymeinduction" extends="calab.home">
+		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
+		<put name="calabContent" value="submit.addtoxicity.enzymeinduction.content" />
+		<put name="menu" value="submit" />
+	</definition>
+
+	<!-- definition for the invitro toxicity oxidativestress page -->
+	<definition name="submit.addtoxicity.oxidativestress.content" extends="submit.content.home">
+		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
+		<put name="submitContent" value="/submit/bodyToxicityOxidativeStress.jsp" />
+	</definition>
+
+	<definition name="submit.addtoxicity.oxidativestress" extends="calab.home">
+		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
+		<put name="calabContent" value="submit.addtoxicity.oxidativestress.content" />
+		<put name="menu" value="submit" />
+	</definition>
+
+	<!-- definition for the invitro metabolic stability CYP450 page -->
+	<definition name="submit.addmetabolicstability.cyp450.content" extends="submit.content.home">
+		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
+		<put name="submitContent" value="/submit/bodyMetabolicStabilityCYP450.jsp" />
+	</definition>
+
+	<definition name="submit.addmetabolicstability.cyp450" extends="calab.home">
+		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
+		<put name="calabContent" value="submit.addmetabolicstability.cyp450.content" />
+		<put name="menu" value="submit" />
+	</definition>
+
+	<!-- definition for the invitro metabolic stability ROS page -->
+	<definition name="submit.addmetabolicstability.ros.content" extends="submit.content.home">
+		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
+		<put name="submitContent" value="/submit/bodyMetabolicStabilityROS.jsp" />
+	</definition>
+
+	<definition name="submit.addmetabolicstability.ros" extends="calab.home">
+		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
+		<put name="calabContent" value="submit.addmetabolicstability.ros.content" />
+		<put name="menu" value="submit" />
+	</definition>
+
+	<!-- definition for the invitro metabolic stability ROS page -->
+	<definition name="submit.addmetabolicstability.glucuronidationsulphation.content" extends="submit.content.home">
+		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
+		<put name="submitContent" value="/submit/bodyMetabolicStabilityGlucuronidationSulphation.jsp" />
+	</definition>
+
+	<definition name="submit.addmetabolicstability.glucuronidationsulphation" extends="calab.home">
+		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
+		<put name="calabContent" value="submit.addmetabolicstability.glucuronidationsulphation.content" />
 		<put name="menu" value="submit" />
 	</definition>
 

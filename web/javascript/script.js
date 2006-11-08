@@ -176,6 +176,28 @@ function updateShape() {
     document.nanoparticleShapeForm.action = "nanoparticleShape.do?dispatch=update&page=0";
     document.nanoparticleShapeForm.submit();
 }
+function update(form, actionName) {
+    form.action = actionName + ".do?dispatch=update&page=0&type=charTables";
+    form.submit();
+}
+function loadFile(form, actionName, particleName, fileNumber) {
+    form.action = actionName + ".do?dispatch=loadFile&page=0&particleName=" + particleName + "&fileNumber=" + fileNumber;
+    form.submit();
+}
+function addControlConditions(form, actionName, index) {
+    if ( form.isControl[0].checked ) {
+    	form.action = actionName + ".do?dispatch=update&page=0&type=addControl&index=" + index;
+    	form.submit();
+    }
+    if ( form.isControl[1].checked ) {
+   		form.action = actionName + ".do?dispatch=update&page=0&type=addConditions&index=" + index;
+    	form.submit();
+    }
+}
+function updateConditions(index) {
+    form.action = actionName + ".do?dispatch=update&page=0&type=updateConditions&index=" + index;
+    form.submit();
+}
 function updateStability() {
     document.nanoparticleStabilityForm.action = "nanoparticleStability.do?dispatch=update&page=0";
     document.nanoparticleStabilityForm.submit();
@@ -189,11 +211,25 @@ function updateSolubility() {
     document.nanoparticleSolubilityForm.submit();
 }
 function updateHemolysis() {
-    document.invitroImmunotoxicityHemolysisForm.action = "invitroImmunotoxicityHemolysis.do?dispatch=update&page=0";
+    document.invitroImmunotoxicityHemolysisForm.action = "invitroImmunotoxicityHemolysis.do?dispatch=update&page=0&type=charTables";
     document.invitroImmunotoxicityHemolysisForm.submit();
 }
-function updateHemolysisControlCondition() {
-    document.invitroImmunotoxicityHemolysisForm.action = "invitroImmunotoxicityHemolysis.do?dispatch=update&page=0";
+function loadHemolysisFile(particleName, fileNumber) {
+    document.invitroImmunotoxicityHemolysisForm.action = "invitroImmunotoxicityHemolysis.do?dispatch=loadFile&page=0&particleName=" + particleName + "&fileNumber=" + fileNumber;
+    document.invitroImmunotoxicityHemolysisForm.submit();
+}
+function addHemolysisControlConditions(index) {
+    if ( document.invitroImmunotoxicityHemolysisForm.isControl[0].checked ) {
+    	document.invitroImmunotoxicityHemolysisForm.action = "invitroImmunotoxicityHemolysis.do?dispatch=update&page=0&type=addControl&index=" + index;
+    	document.invitroImmunotoxicityHemolysisForm.submit();
+    }
+    if ( document.invitroImmunotoxicityHemolysisForm.isControl[1].checked ) {
+   		document.invitroImmunotoxicityHemolysisForm.action = "invitroImmunotoxicityHemolysis.do?dispatch=update&page=0&type=addConditions&index=" + index;
+    	document.invitroImmunotoxicityHemolysisForm.submit();
+    }
+}
+function updateHemolysisConditions(index) {
+    document.invitroImmunotoxicityHemolysisForm.action = "invitroImmunotoxicityHemolysis.do?dispatch=update&page=0&type=updateConditions&index=" + index;
     document.invitroImmunotoxicityHemolysisForm.submit();
 }
 function updateCoagulation() {

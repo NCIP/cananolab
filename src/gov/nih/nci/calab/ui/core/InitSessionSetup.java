@@ -694,6 +694,22 @@ public class InitSessionSetup {
 		}
 	}
 
+	public void setAllControlTypes(HttpSession session) throws Exception {
+		if (session.getServletContext().getAttribute("allControlTypes") == null) {
+			String[] controlTypes = lookupService.getAllControlTypes();
+			session.getServletContext().setAttribute("allControlTypes",
+					controlTypes);
+		}
+	}
+
+	public void setAllConditionTypes(HttpSession session) throws Exception {
+		if (session.getServletContext().getAttribute("allConditionTypes") == null) {
+			String[] conditionTypes = lookupService.getAllConditionTypes();
+			session.getServletContext().setAttribute("allConditionTypes",
+					conditionTypes);
+		}
+	}
+
 	public void setAllDensityMeasureUnits(HttpSession session) throws Exception {
 		if (session.getServletContext().getAttribute("allDensityMeasureUnits") == null) {
 			String[] densityUnits = lookupService.getAllDensityMeasureUnits();

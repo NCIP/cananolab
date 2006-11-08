@@ -1,5 +1,6 @@
 package gov.nih.nci.calab.dto.characterization.invitro;
 
+import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.invitro.PlasmaProteinBinding;
 
 import gov.nih.nci.calab.dto.characterization.*;
@@ -17,16 +18,19 @@ import java.util.List;
 public class PlasmaProteinBindingBean extends CharacterizationBean {
 	public PlasmaProteinBindingBean() {
 		super();
+		initSetup();
+	}
+	
+	public PlasmaProteinBindingBean(Characterization aChar) {
+		super(aChar);
+	}
+
+	public void initSetup() {
 		for (DerivedBioAssayDataBean table: getDerivedBioAssayData()) {
-			DatumBean average=new DatumBean();
-			average.setType("Average");
-			DatumBean zaverage=new DatumBean();
-			average.setType("Z-Average");
-			DatumBean pdi=new DatumBean();
-			average.setType("PDI");
-			table.getDatumList().add(average);
-			table.getDatumList().add(zaverage);
-			table.getDatumList().add(pdi);
+			DatumBean proteinBinding=new DatumBean();
+			proteinBinding.setType("Percent Protein Binding");
+			proteinBinding.setValueUnit("%");
+			table.getDatumList().add(proteinBinding);
 		}
 	}
 	
@@ -34,18 +38,11 @@ public class PlasmaProteinBindingBean extends CharacterizationBean {
 			List<DerivedBioAssayDataBean> derivedBioAssayData) {
 		super.setDerivedBioAssayData(derivedBioAssayData);
 		
-		for (DerivedBioAssayDataBean table:getDerivedBioAssayData()) {
-			DatumBean average=new DatumBean();
-			average.setType("Average");
-			average.setValueUnit("nm");
-			DatumBean zaverage=new DatumBean();
-			zaverage.setType("Z-Average");
-			zaverage.setValueUnit("nm");
-			DatumBean pdi=new DatumBean();
-			pdi.setType("PDI");
-			table.getDatumList().add(average);
-			table.getDatumList().add(zaverage);
-			table.getDatumList().add(pdi);
+		for (DerivedBioAssayDataBean table: getDerivedBioAssayData()) {
+			DatumBean proteinBinding=new DatumBean();
+			proteinBinding.setType("Percent Protein Binding");
+			proteinBinding.setValueUnit("%");
+			table.getDatumList().add(proteinBinding);
 		}
 	}
 	
