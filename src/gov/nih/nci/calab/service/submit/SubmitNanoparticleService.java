@@ -22,6 +22,21 @@ import gov.nih.nci.calab.dto.characterization.invitro.CoagulationBean;
 import gov.nih.nci.calab.dto.characterization.invitro.HemolysisBean;
 import gov.nih.nci.calab.dto.characterization.invitro.PlasmaProteinBindingBean;
 import gov.nih.nci.calab.dto.characterization.invitro.PlateAggregationBean;
+import gov.nih.nci.calab.dto.characterization.invitro.ComplementActivationBean;
+import gov.nih.nci.calab.dto.characterization.invitro.ChemotaxisBean;
+import gov.nih.nci.calab.dto.characterization.invitro.CytokineInductionBean;
+import gov.nih.nci.calab.dto.characterization.invitro.CFU_GMBean;
+import gov.nih.nci.calab.dto.characterization.invitro.NKCellCytotoxicActivityBean;
+import gov.nih.nci.calab.dto.characterization.invitro.LeukocyteProliferationBean;
+import gov.nih.nci.calab.dto.characterization.invitro.OxidativeBurstBean;
+import gov.nih.nci.calab.dto.characterization.invitro.PhagocytosisBean;
+import gov.nih.nci.calab.dto.characterization.invitro.CYP450Bean;
+import gov.nih.nci.calab.dto.characterization.invitro.ROSBean;
+import gov.nih.nci.calab.dto.characterization.invitro.GlucuronidationSulphationBean;
+import gov.nih.nci.calab.dto.characterization.invitro.OxidativeStressBean;
+import gov.nih.nci.calab.dto.characterization.invitro.EnzymeInductionBean;
+import gov.nih.nci.calab.dto.characterization.invitro.Caspase3ActivationBean;
+import gov.nih.nci.calab.dto.characterization.invitro.CellViabilityBean;
 import gov.nih.nci.calab.dto.characterization.physical.SurfaceBean;
 import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.security.UserService;
@@ -519,6 +534,126 @@ public class SubmitNanoparticleService {
 	}
 
 	/**
+	 * Saves the invitro Complement Activation characterization to the database
+	 * 
+	 * @param particleType
+	 * @param particleName
+	 * @param hemolysis
+	 * @throws Exception
+	 */
+	public void addComplementActivation(String particleType, String particleName,
+			ComplementActivationBean complementActivation) throws Exception {
+		Characterization doComplementActivation = complementActivation.getDomainObj();
+		// TODO think about how to deal with characterization file.
+		addParticleCharacterization(particleType, particleName, doComplementActivation);
+	}
+
+	/**
+	 * Saves the invitro chemotaxis characterization to the database
+	 * 
+	 * @param particleType
+	 * @param particleName
+	 * @param hemolysis
+	 * @throws Exception
+	 */
+	public void addChemotaxis(String particleType, String particleName,
+			ChemotaxisBean chemotaxis) throws Exception {
+		Characterization doChemotaxis = chemotaxis.getDomainObj();
+		// TODO think about how to deal with characterization file.
+		addParticleCharacterization(particleType, particleName, doChemotaxis);
+	}
+
+	/**
+	 * Saves the invitro NKCellCytotoxicActivity characterization to the database
+	 * 
+	 * @param particleType
+	 * @param particleName
+	 * @param hemolysis
+	 * @throws Exception
+	 */
+	public void addNKCellCytotoxicActivity(String particleType, String particleName,
+			NKCellCytotoxicActivityBean nkCellCytotoxicActivity) throws Exception {
+		Characterization doNKCellCytotoxicActivity = nkCellCytotoxicActivity.getDomainObj();
+		// TODO think about how to deal with characterization file.
+		addParticleCharacterization(particleType, particleName, doNKCellCytotoxicActivity);
+	}
+
+	/**
+	 * Saves the invitro LeukocyteProliferation characterization to the database
+	 * 
+	 * @param particleType
+	 * @param particleName
+	 * @param hemolysis
+	 * @throws Exception
+	 */
+	public void addLeukocyteProliferation(String particleType, String particleName,
+			LeukocyteProliferationBean leukocyteProliferation) throws Exception {
+		Characterization doLeukocyteProliferation = leukocyteProliferation.getDomainObj();
+		// TODO think about how to deal with characterization file.
+		addParticleCharacterization(particleType, particleName, doLeukocyteProliferation);
+	}
+
+	/**
+	 * Saves the invitro CFU_GM characterization to the database
+	 * 
+	 * @param particleType
+	 * @param particleName
+	 * @param hemolysis
+	 * @throws Exception
+	 */
+	public void addCFU_GM(String particleType, String particleName,
+			CFU_GMBean cfu_gm) throws Exception {
+		Characterization doCFU_GM = cfu_gm.getDomainObj();
+		// TODO think about how to deal with characterization file.
+		addParticleCharacterization(particleType, particleName, doCFU_GM);
+	}
+
+	/**
+	 * Saves the invitro OxidativeBurst characterization to the database
+	 * 
+	 * @param particleType
+	 * @param particleName
+	 * @param hemolysis
+	 * @throws Exception
+	 */
+	public void addOxidativeBurst(String particleType, String particleName,
+			OxidativeBurstBean oxidativeBurst) throws Exception {
+		Characterization doOxidativeBurst = oxidativeBurst.getDomainObj();
+		// TODO think about how to deal with characterization file.
+		addParticleCharacterization(particleType, particleName, doOxidativeBurst);
+	}
+
+	/**
+	 * Saves the invitro Phagocytosis characterization to the database
+	 * 
+	 * @param particleType
+	 * @param particleName
+	 * @param hemolysis
+	 * @throws Exception
+	 */
+	public void addPhagocytosis(String particleType, String particleName,
+			PhagocytosisBean phagocytosis) throws Exception {
+		Characterization doPhagocytosis = phagocytosis.getDomainObj();
+		// TODO think about how to deal with characterization file.
+		addParticleCharacterization(particleType, particleName, doPhagocytosis);
+	}
+
+	/**
+	 * Saves the invitro CytokineInduction characterization to the database
+	 * 
+	 * @param particleType
+	 * @param particleName
+	 * @param hemolysis
+	 * @throws Exception
+	 */
+	public void addCytokineInduction(String particleType, String particleName,
+			CytokineInductionBean cytokineInduction) throws Exception {
+		Characterization doCytokineInduction = cytokineInduction.getDomainObj();
+		// TODO think about how to deal with characterization file.
+		addParticleCharacterization(particleType, particleName, doCytokineInduction);
+	}
+
+	/**
 	 * Saves the invitro plasma protein binding characterization to the database
 	 * 
 	 * @param particleType
@@ -531,6 +666,111 @@ public class SubmitNanoparticleService {
 		Characterization doProteinBinding = plasmaProteinBinding.getDomainObj();
 		// TODO think about how to deal with characterization file.
 		addParticleCharacterization(particleType, particleName, doProteinBinding);
+	}
+
+	/**
+	 * Saves the invitro CellViability binding characterization to the database
+	 * 
+	 * @param particleType
+	 * @param particleName
+	 * @param plasmaProteinBinding
+	 * @throws Exception
+	 */
+	public void addCellViability(String particleType, String particleName,
+			CellViabilityBean cellViability) throws Exception {
+		Characterization doCellViability = cellViability.getDomainObj();
+		// TODO think about how to deal with characterization file.
+		addParticleCharacterization(particleType, particleName, doCellViability);
+	}
+
+	/**
+	 * Saves the invitro EnzymeInduction binding characterization to the database
+	 * 
+	 * @param particleType
+	 * @param particleName
+	 * @param plasmaProteinBinding
+	 * @throws Exception
+	 */
+	public void addEnzymeInduction(String particleType, String particleName,
+			EnzymeInductionBean enzymeInduction) throws Exception {
+		Characterization EnzymeInduction = enzymeInduction.getDomainObj();
+		// TODO think about how to deal with characterization file.
+		addParticleCharacterization(particleType, particleName, EnzymeInduction);
+	}
+
+	/**
+	 * Saves the invitro OxidativeStress characterization to the database
+	 * 
+	 * @param particleType
+	 * @param particleName
+	 * @param hemolysis
+	 * @throws Exception
+	 */
+	public void addOxidativeStress(String particleType, String particleName,
+			OxidativeStressBean oxidativeStress) throws Exception {
+		Characterization doOxidativeStress = oxidativeStress.getDomainObj();
+		// TODO think about how to deal with characterization file.
+		addParticleCharacterization(particleType, particleName, doOxidativeStress);
+	}
+
+	/**
+	 * Saves the invitro Caspase3Activation characterization to the database
+	 * 
+	 * @param particleType
+	 * @param particleName
+	 * @param hemolysis
+	 * @throws Exception
+	 */
+	public void addCaspase3Activation(String particleType, String particleName,
+			Caspase3ActivationBean caspase3Activation) throws Exception {
+		Characterization doCaspase3Activation = caspase3Activation.getDomainObj();
+		// TODO think about how to deal with characterization file.
+		addParticleCharacterization(particleType, particleName, doCaspase3Activation);
+	}
+
+	/**
+	 * Saves the invitro GlucuronidationSulphation characterization to the database
+	 * 
+	 * @param particleType
+	 * @param particleName
+	 * @param hemolysis
+	 * @throws Exception
+	 */
+	public void addGlucuronidationSulphation(String particleType, String particleName,
+			GlucuronidationSulphationBean glucuronidationSulphation) throws Exception {
+		Characterization doGlucuronidationSulphation = glucuronidationSulphation.getDomainObj();
+		// TODO think about how to deal with characterization file.
+		addParticleCharacterization(particleType, particleName, doGlucuronidationSulphation);
+	}
+
+	/**
+	 * Saves the invitro CYP450 characterization to the database
+	 * 
+	 * @param particleType
+	 * @param particleName
+	 * @param hemolysis
+	 * @throws Exception
+	 */
+	public void addCYP450(String particleType, String particleName,
+			CYP450Bean cyp450) throws Exception {
+		Characterization doCYP450 = cyp450.getDomainObj();
+		// TODO think about how to deal with characterization file.
+		addParticleCharacterization(particleType, particleName, doCYP450);
+	}
+
+	/**
+	 * Saves the invitro ROS characterization to the database
+	 * 
+	 * @param particleType
+	 * @param particleName
+	 * @param hemolysis
+	 * @throws Exception
+	 */
+	public void addROS(String particleType, String particleName,
+			ROSBean ros) throws Exception {
+		Characterization doROS = ros.getDomainObj();
+		// TODO think about how to deal with characterization file.
+		addParticleCharacterization(particleType, particleName, doROS);
 	}
 
 	/**
