@@ -40,10 +40,14 @@ public class StabilityBean extends CharacterizationBean {
 		super(aChar);
 
 		this.id = aChar.getId().toString();
-		this.longTermStorage = aChar.getLongTermStorage().getValue();
-		this.longTermStorageUnit = aChar.getLongTermStorage().getUnitOfMeasurement();
-		this.shortTermStorage = aChar.getShortTermStorage().getValue();
-		this.shortTermStorageUnit = aChar.getShortTermStorage().getUnitOfMeasurement();
+		if (aChar.getLongTermStorage() != null) {
+			this.longTermStorage = aChar.getLongTermStorage().getValue();
+			this.longTermStorageUnit = aChar.getLongTermStorage().getUnitOfMeasurement();
+		}
+		if (aChar.getShortTermStorage() != null) {
+			this.shortTermStorage = aChar.getShortTermStorage().getValue();
+			this.shortTermStorageUnit = aChar.getShortTermStorage().getUnitOfMeasurement();
+		}
 		this.stressResult = aChar.getStressResult();
 		this.releaseKineticsDescription = aChar.getReleaseKineticsDescription();
 		this.measurementType = aChar.getMeasurementType();
