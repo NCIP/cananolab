@@ -31,7 +31,8 @@ public class Surface implements Characterization {
 	
 	private Measurement surfaceArea;
 	private Measurement surfaceCharge;
-	private Measurement zetaPotential;
+	//private Measurement zetaPotential;
+	private Float zetaPotential;
 	private Measurement charge;
 	private Boolean isHydrophobic;
 	
@@ -171,7 +172,7 @@ public class Surface implements Characterization {
 	public void setSurfaceCharge(Measurement surfaceCharge) {
 		this.surfaceCharge = surfaceCharge;
 	}
-
+/*
 	public Measurement getZetaPotential() {
 		return zetaPotential;
 	}
@@ -179,7 +180,7 @@ public class Surface implements Characterization {
 	public void setZetaPotential(Measurement zetaPotential) {
 		this.zetaPotential = zetaPotential;
 	}
-
+*/
 	public Collection<SurfaceChemistry> getSurfaceChemistryCollection() {
 		return surfaceChemistryCollection;
 	}
@@ -189,5 +190,12 @@ public class Surface implements Characterization {
 		this.surfaceChemistryCollection = surfaceChemistryCollection;
 	}
 
+	public Float getZetaPotential() {
+		return zetaPotential;
+	}
+
+	public void setZetaPotential(Float zetaPotential) {
+		this.zetaPotential = zetaPotential;
+	}
 }
 
