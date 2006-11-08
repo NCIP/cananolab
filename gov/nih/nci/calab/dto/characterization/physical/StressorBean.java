@@ -36,8 +36,10 @@ public class StressorBean {
 	public StressorBean(Stressor aChar) {
 		this.id = aChar.getId().toString();
 		this.type = aChar.getType();
-		this.value = aChar.getValue().getValue();
-		this.valueUnit = aChar.getValue().getUnitOfMeasurement().toString();
+		if (aChar.getValue() != null) {
+			this.value = aChar.getValue().getValue();
+			this.valueUnit = aChar.getValue().getUnitOfMeasurement().toString();
+		}
 		this.description = aChar.getDescription();
 	}
 
