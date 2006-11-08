@@ -36,13 +36,13 @@
 						<tr class="topBorder">
 							<td class="formTitle" colspan="4">
 								<div align="justify">
-									Molecular Weight Distribution
+									Molecular Weight Graph
 								</div>
 							</td>
 						</tr>
 						<tr>
 							<td class="leftLabel">
-								<strong>Number of Distributions</strong>
+								<strong>Number of Graphs</strong>
 							</td>
 							<td class="label">
 								<c:choose>
@@ -58,7 +58,7 @@
 								&nbsp;
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
-										<input type="button" onclick="javascript:updateMolecularWeight()" value="Update Distributions">
+										<input type="button" onclick="javascript:updateMolecularWeight()" value="Update Graphs">
 									</c:when>
 								</c:choose>
 							</td>
@@ -119,45 +119,16 @@
 											</tr>
 											<tr>
 												<td class="leftLabel">
-													<strong>Average/Mean</strong>
-												</td>
-												<td class="label">
-													<c:choose>
-														<c:when test="${canUserUpdateParticle eq 'true'}">
-															<html:text name="achar.derivedBioAssayData" indexed="true" property="datumList[0].value" />
-													&nbsp; ${nanoparticleMolecularWeightForm.map.achar.derivedBioAssayData[status.index].datumList[0].valueUnit}	
-														</c:when>
-														<c:otherwise>
-						${nanoparticleMolecularWeightForm.map.achar.derivedBioAssayData[status.index].datumList[0].value} ${nanoparticleMolecularWeightForm.map.achar.derivedBioAssayData[status.index].datumList[0].valueUnit}&nbsp;
-					</c:otherwise>
-													</c:choose>
-												</td>
-												<td class="label">
-													<strong>Z-Average</strong>
-												</td>
-												<td class="rightLabel">
-													<c:choose>
-														<c:when test="${canUserUpdateParticle eq 'true'}">
-															<html:text name="achar.derivedBioAssayData" indexed="true" property="datumList[1].value" />
-													&nbsp; ${nanoparticleMolecularWeightForm.map.achar.derivedBioAssayData[status.index].datumList[1].valueUnit}
-														</c:when>
-														<c:otherwise>
-						${nanoparticleMolecularWeightForm.map.achar.derivedBioAssayData[status.index].datumList[1].value} ${nanoparticleMolecularWeightForm.map.achar.derivedBioAssayData[status.index].datumList[1].valueUnit}&nbsp;
-					</c:otherwise>
-													</c:choose>
-												</td>
-											</tr>
-											<tr>
-												<td class="leftLabel">
-													<strong>Polydispersity Index (PDI)</strong>
+													<strong>Molecular Weight </strong>
 												</td>
 												<td class="rightLabel" colspan="3">
 													<c:choose>
 														<c:when test="${canUserUpdateParticle eq 'true'}">
-															<html:text name="achar.derivedBioAssayData" indexed="true" property="datumList[2].value" />
+															<html:text name="achar.derivedBioAssayData" indexed="true" property="datumList[0].value" />
+													&nbsp; ${nanoparticleMolecularWeightForm.map.achar.derivedBioAssayData[status.index].datumList[0].valueUnit}
 														</c:when>
 														<c:otherwise>
-						${nanoparticleMolecularWeightForm.map.achar.derivedBioAssayData[status.index].datumList[2].value}&nbsp;
+						${nanoparticleMolecularWeightForm.map.achar.derivedBioAssayData[status.index].datumList[0].value}${nanoparticleMolecularWeightForm.map.achar.derivedBioAssayData[status.index].datumList[0].valueUnit}&nbsp;
 					</c:otherwise>
 													</c:choose>
 												</td>

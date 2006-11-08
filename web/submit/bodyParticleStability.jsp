@@ -35,10 +35,29 @@
 						<tr class="topBorder">
 							<td class="formTitle" colspan="6">
 								<div align="justify">
-									Physical Characterization Properties
+									Stability Property
 								</div>
 							</td>
 						</tr>
+						<tr>
+							<td class="leftLabel">
+								<strong>Measurement Type </strong>
+							</td>
+							<td class="label">
+								<c:choose>
+									<c:when test="${canUserUpdateParticle eq 'true'}">
+										<html:text property="achar.measurementType" />
+									</c:when>
+									<c:otherwise>
+											${thisForm.map.achar.measurementType}&nbsp;
+									</c:otherwise>
+								</c:choose>
+							</td>
+							<td class="rightLabel" colspan="2">
+								&nbsp;
+							</td>
+						</tr>
+						
 						<tr>
 							<td class="leftLabel">
 								<strong>Short Term Storage </strong>
@@ -77,35 +96,7 @@
 						</tr>
 						<tr>
 							<td class="leftLabel">
-								<strong>Release Kinetics Description </strong>
-							</td>
-							<td class="label">
-								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
-										<html:text property="achar.releaseKineticsDescription" />
-									</c:when>
-									<c:otherwise>
-										${thisForm.map.achar.releaseKineticsDescription}&nbsp;
-									</c:otherwise>
-								</c:choose>
-							</td>
-							<td class="leftLabel">
-								<strong>Measurement Type </strong>
-							</td>
-							<td class="rightLabel">
-								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
-										<html:text property="achar.measurementType" />
-									</c:when>
-									<c:otherwise>
-											${thisForm.map.achar.measurementType}&nbsp;
-									</c:otherwise>
-								</c:choose>
-							</td>
-						</tr>
-						<tr>
-							<td class="leftLabel">
-								<strong>Stress Result</strong>
+								<strong>Stress Result </strong>
 							</td>
 							<td class="label">
 								<c:choose>
@@ -117,11 +108,20 @@
 									</c:otherwise>
 								</c:choose>
 							</td>
-							<td class="rightLabel" colspan="2">
-								&nbsp;
+							<td class="leftLabel">
+								<strong>Release Kinetics Description </strong>
+							</td>
+							<td class="rightLabel">
+								<c:choose>
+									<c:when test="${canUserUpdateParticle eq 'true'}">
+										<html:text property="achar.releaseKineticsDescription" />
+									</c:when>
+									<c:otherwise>
+										${thisForm.map.achar.releaseKineticsDescription}&nbsp;
+									</c:otherwise>
+								</c:choose>
 							</td>
 						</tr>
-						
 						<tr>
 							<td class="leftLabel">
 								<strong>Stressor Type</strong>
@@ -191,13 +191,13 @@
 						<tr class="topBorder">
 							<td class="formTitle" colspan="4">
 								<div align="justify">
-									Stability Distribution
+									Stability Image
 								</div>
 							</td>
 						</tr>
 						<tr>
 							<td class="leftLabel">
-								<strong>Number of Distributions</strong>
+								<strong>Number of Images</strong>
 							</td>
 							<td class="label">
 								<c:choose>
@@ -213,7 +213,7 @@
 								&nbsp;
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
-										<input type="button" onclick="javascript:updateStability()" value="Update Distributions">
+										<input type="button" onclick="javascript:updateStability()" value="Update Images">
 									</c:when>
 								</c:choose>
 							</td>

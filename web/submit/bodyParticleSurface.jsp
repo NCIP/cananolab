@@ -153,7 +153,7 @@
 						</tr>
 						<tr>
 							<td class="completeLabel" colspan="4">
-								<c:forEach var="achar.surfaceChemistry" items="${nanoparticleSurfaceForm.map.achar.surfaceChemistries}" varStatus="status">
+								<c:forEach var="achar.surfaceChemistries" items="${nanoparticleSurfaceForm.map.achar.surfaceChemistries}" varStatus="status">
 									<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 										<tbody>
 											<tr class="topBorder">
@@ -170,7 +170,7 @@
 												<td class="label">
 													<c:choose>
 														<c:when test="${canUserUpdateParticle eq 'true'}">
-															<html:text name="achar.surfaceChemistry" indexed="true" property="moleculeName" />
+															<html:text name="achar.surfaceChemistries" indexed="true" property="moleculeName" />
 														</c:when>
 														<c:otherwise>
 						${nanoparticleSurfaceForm.map.achar.surfaceChemistries[status.index].moleculeName}&nbsp;
@@ -183,7 +183,7 @@
 												<td class="rightLabel" colspan="2">
 													<c:choose>
 														<c:when test="${canUserUpdateParticle eq 'true'}">
-															<html:text name="achar.surfaceChemistry" indexed="true" property="numberOfMolecule" /> &nbsp;															
+															<html:text name="achar.surfaceChemistries" indexed="true" property="numberOfMolecule" /> &nbsp;															
 														</c:when>
 														<c:otherwise>
 															${nanoparticleSurfaceForm.map.achar.surfaceChemistries[status.index].numberOfMolecule}&nbsp;
@@ -267,7 +267,7 @@
 													</c:choose>
 												</td>
 												<td class="rightLabel" colspan="2">
-													<input type="button" onclick="javascript:loadSizeFile('${nanoparticleSizeForm.map.particleName}', ${status.index})" value="Load File">
+													<input type="button" onclick="javascript:loadSurfaceFile('${nanoparticleSurfaceForm.map.particleName}', ${status.index})" value="Load File">
 												</td>
 											</tr>
 										</tbody>
