@@ -70,6 +70,75 @@
 				</var>		
 			</field>
 		</form>
-
+		<form name="nanoparticleSizeForm">
+			<field property="achar.characterizationSource" page="1" depends="required">
+				<arg position="0" key="nanoparticleSizeForm.characterizationSource" bundle="submit" />
+			</field>
+			<field property="achar.viewTitle" page="1" depends="required">
+				<arg position="0" key="nanoparticleSizeForm.viewTitle" bundle="submit" />
+			</field>
+		</form>
+		<form name="nanoparticleMolecularWeightForm">
+			<field property="achar.characterizationSource" page="1" depends="required">
+				<arg position="0" key="nanoparticleMolecularWeightForm.characterizationSource" bundle="submit" />
+			</field>
+			<field property="achar.viewTitle" page="1" depends="required">
+				<arg position="0" key="nanoparticleMolecularWeightForm.viewTitle" bundle="submit" />
+			</field>
+		</form>
+		<form name="nanoparticleMorphologyForm">
+			<field property="achar.characterizationSource" page="1" depends="required">
+				<arg position="0" key="nanoparticleMorphologyForm.characterizationSource" bundle="submit" />
+			</field>
+			<field property="achar.viewTitle" page="1" depends="required">
+				<arg position="0" key="nanoparticleMorphologyForm.viewTitle" bundle="submit" />
+			</field>
+			<field property="achar.type" page="1" depends="required">
+				<arg position="0" key="nanoparticleMorphologyForm.type" bundle="submit" />
+			</field>
+		</form>
+		<form name="nanoparticleShapeForm">
+			<field property="achar.characterizationSource" page="1" depends="required">
+				<arg position="0" key="nanoparticleShapeForm.characterizationSource" bundle="submit" />
+			</field>
+			<field property="achar.viewTitle" page="1" depends="required">
+				<arg position="0" key="nanoparticleShapeForm.viewTitle" bundle="submit" />
+			</field>
+			<field property="achar.type" page="1" depends="required">
+				<arg position="0" key="nanoparticleShapeForm.type" bundle="submit" />
+			</field>
+		</form>
+		<form name="nanoparticleSurfaceForm">
+			<field property="achar.characterizationSource" page="1" depends="required">
+				<arg position="0" key="nanoparticleSurfaceForm.characterizationSource" bundle="submit" />
+			</field>
+			<field property="achar.viewTitle" page="1" depends="required">
+				<arg position="0" key="nanoparticleSurfaceForm.viewTitle" bundle="submit" />
+			</field>
+		</form>
+		<form name="nanoparticleSolubilityForm">
+			<field property="achar.characterizationSource" page="1" depends="required">
+				<arg position="0" key="nanoparticleSolubilityForm.characterizationSource" bundle="submit" />
+			</field>
+			<field property="achar.viewTitle" page="1" depends="required">
+				<arg position="0" key="nanoparticleSolubilityForm.viewTitle" bundle="submit" />
+			</field>
+		</form>
+		<form name="nanoparticlePurityForm">
+			<field property="achar.characterizationSource" page="1" depends="required">
+				<arg position="0" key="nanoparticlePurityForm.characterizationSource" bundle="submit" />
+			</field>
+			<field property="achar.viewTitle" page="1" depends="required">
+				<arg position="0" key="nanoparticlePurityForm.viewTitle" bundle="submit" />
+			</field>
+		</form>
+		<form name="nanoparticleStabilityForm">
+			<field property="achar.characterizationSource" page="1" depends="required">
+				<arg position="0" key="nanoparticleStabilityForm.characterizationSource" bundle="submit" />
+			</field>
+			<field property="achar.viewTitle" page="1" depends="required">
+				<arg position="0" key="nanoparticleStabilityForm.viewTitle" bundle="submit" />
+			</field>
+		</form>
 	</formset>
 </form-validation>
