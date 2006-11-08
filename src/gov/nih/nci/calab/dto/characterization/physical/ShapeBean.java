@@ -23,6 +23,9 @@ public class ShapeBean extends CharacterizationBean {
 	private String maxDimension;
 	private String minDimension;
 	
+	private String minDimensionUnit = "nm";
+	private String maxDimensionUnit = "nm";
+	
 	private String otherShapeType;
 	
 	public ShapeBean() {
@@ -36,6 +39,8 @@ public class ShapeBean extends CharacterizationBean {
 		this.type = aChar.getType();
 		this.minDimension = aChar.getMinDimension().toString();
 		this.maxDimension = aChar.getMaxDimension().toString();
+		this.minDimensionUnit = "nm";
+		this.maxDimensionUnit = "nm";
 	}
 	
 	public void setDerivedBioAssayData(
@@ -106,5 +111,21 @@ public class ShapeBean extends CharacterizationBean {
 
 	public void setOtherShapeType(String otherShapeType) {
 		this.otherShapeType = otherShapeType;
+	}
+
+	public String getMaxDimensionUnit() {
+		return maxDimensionUnit;
+	}
+
+	public void setMaxDimensionUnit(String maxDimensionUnit) {
+		this.maxDimensionUnit = maxDimensionUnit;
+	}
+
+	public String getMinDimensionUnit() {
+		return minDimensionUnit;
+	}
+
+	public void setMinDimensionUnit(String minDimensionUnit) {
+		this.minDimensionUnit = minDimensionUnit;
 	}
 }
