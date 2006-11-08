@@ -50,7 +50,8 @@ public class SurfaceBean extends CharacterizationBean {
 		this.isHydrophobic = aChar.getIsHydrophobic().toString();
 		this.surfaceArea = (aChar.getSurfaceArea() != null)?aChar.getSurfaceArea().getValue().toString():"";
 		this.surfaceAreaUnit = (aChar.getSurfaceArea() != null)?aChar.getSurfaceArea().getUnitOfMeasurement():"";
-		this.zetaPotential = (aChar.getZetaPotential() != null)?aChar.getZetaPotential().getValue():"";
+		//this.zetaPotential = (aChar.getZetaPotential() != null)?aChar.getZetaPotential().getValue():"";
+		this.zetaPotential = (aChar.getZetaPotential() != null) ? aChar.getZetaPotential().toString() : "";
 		
 		for (SurfaceChemistry surfaceChemistry : aChar.getSurfaceChemistryCollection()) {
 			SurfaceChemistryBean surfaceChemistryBean = new SurfaceChemistryBean(surfaceChemistry);
@@ -145,7 +146,8 @@ public class SurfaceBean extends CharacterizationBean {
 				: false;
 		surface.setIsHydrophobic(hycrophobicStatus);
 		surface.setCharge(new Measurement(charge,chargeUnit));
-		surface.setZetaPotential(new Measurement(zetaPotential, "mV"));
+		//surface.setZetaPotential(new Measurement(zetaPotential, "mV"));
+		surface.setZetaPotential(new Float(zetaPotential));
 		
 		surface.setSurfaceArea(new Measurement(surfaceArea, surfaceAreaUnit));
 		
