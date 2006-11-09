@@ -194,7 +194,7 @@ function addControlConditions(form, actionName, index) {
     	form.submit();
     }
 }
-function updateConditions(index) {
+function updateConditions(form, actionName, index) {
     form.action = actionName + ".do?dispatch=update&page=0&type=updateConditions&index=" + index;
     form.submit();
 }
@@ -209,28 +209,6 @@ function updatePurity() {
 function updateSolubility() {
     document.nanoparticleSolubilityForm.action = "nanoparticleSolubility.do?dispatch=update&page=0";
     document.nanoparticleSolubilityForm.submit();
-}
-function updateHemolysis() {
-    document.invitroImmunotoxicityHemolysisForm.action = "invitroImmunotoxicityHemolysis.do?dispatch=update&page=0&type=charTables";
-    document.invitroImmunotoxicityHemolysisForm.submit();
-}
-function loadHemolysisFile(particleName, fileNumber) {
-    document.invitroImmunotoxicityHemolysisForm.action = "invitroImmunotoxicityHemolysis.do?dispatch=loadFile&page=0&particleName=" + particleName + "&fileNumber=" + fileNumber;
-    document.invitroImmunotoxicityHemolysisForm.submit();
-}
-function addHemolysisControlConditions(index) {
-    if ( document.invitroImmunotoxicityHemolysisForm.isControl[0].checked ) {
-    	document.invitroImmunotoxicityHemolysisForm.action = "invitroImmunotoxicityHemolysis.do?dispatch=update&page=0&type=addControl&index=" + index;
-    	document.invitroImmunotoxicityHemolysisForm.submit();
-    }
-    if ( document.invitroImmunotoxicityHemolysisForm.isControl[1].checked ) {
-   		document.invitroImmunotoxicityHemolysisForm.action = "invitroImmunotoxicityHemolysis.do?dispatch=update&page=0&type=addConditions&index=" + index;
-    	document.invitroImmunotoxicityHemolysisForm.submit();
-    }
-}
-function updateHemolysisConditions(index) {
-    document.invitroImmunotoxicityHemolysisForm.action = "invitroImmunotoxicityHemolysis.do?dispatch=update&page=0&type=updateConditions&index=" + index;
-    document.invitroImmunotoxicityHemolysisForm.submit();
 }
 function updateCoagulation() {
     document.invitroImmunotoxicityCoagulationForm.action = "invitroImmunotoxicityCoagulation.do?dispatch=update&page=0";
