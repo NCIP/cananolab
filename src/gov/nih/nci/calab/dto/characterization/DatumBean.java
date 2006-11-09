@@ -50,7 +50,7 @@ public class DatumBean {
 		} 
 		else {
 			conditionList = new ArrayList<ConditionBean>();
-			if ( datum.getConditionCollection() != null ) {
+			if ( datum.getConditionCollection() != null && datum.getConditionCollection().size() > 0 ) {
 				for (Condition conditionData : datum.getConditionCollection()) {
 					ConditionBean cBean = new ConditionBean(conditionData);
 					conditionList.add(cBean);

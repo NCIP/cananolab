@@ -14,6 +14,7 @@ import gov.nih.nci.calab.dto.characterization.ConditionBean;
 import gov.nih.nci.calab.dto.characterization.ControlBean;
 import gov.nih.nci.calab.dto.characterization.DatumBean;
 import gov.nih.nci.calab.dto.characterization.invitro.HemolysisBean;
+import gov.nih.nci.calab.dto.characterization.physical.SizeBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
@@ -59,6 +60,10 @@ public class InvitroHemolysisAction extends AbstractDispatchAction {
 		String particleType = (String) theForm.get("particleType");
 		String particleName = (String) theForm.get("particleName");
 		HemolysisBean hemolysisChar = (HemolysisBean) theForm.get("achar");
+		
+		String viewTitle = (String) theForm.get("viewTitle");
+		String description = (String) theForm.get("description");
+		String characterizationSource = (String) theForm.get("characterizationSource");
 
 		if (hemolysisChar.getId() == null || hemolysisChar.getId() == "") {			
 			hemolysisChar.setId( (String) theForm.get("characterizationId") );			
@@ -156,6 +161,8 @@ public class InvitroHemolysisAction extends AbstractDispatchAction {
 			firstOption =  CananoConstants.OTHER;
 		InitSessionSetup.getInstance().setManufacturerPerType(session, firstOption);
 		session.setAttribute("selectedInstrumentType", "");
+		if ( request.getSession().getAttribute("isControl") != null )
+			request.getSession().removeAttribute("isControl");
 	}
 
 	/**
@@ -173,6 +180,7 @@ public class InvitroHemolysisAction extends AbstractDispatchAction {
 			throws Exception {
 		
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		String particleType = (String) theForm.get("particleType");
 		String compositionId = (String) theForm.get("characterizationId");
 
 		SearchNanoparticleService service = new SearchNanoparticleService();
@@ -258,24 +266,18 @@ public class InvitroHemolysisAction extends AbstractDispatchAction {
 		
 		System.out.println("\n\n==> InvitroHemolysisAction::update  The request is " + type + "\n\n"); 
 		
-		if ( type != null && !type.equals("") && type.equals("charTables") )
-		{
+		if ( type != null && !type.equals("") && type.equals("charTables") ) {
 			updateCharacterizationTables(achar);
-			request.getSession().setAttribute("pageMode", "showCharTableEntry");
 		}
-		if ( type != null && !type.equals("") && type.equals("addControl") )
-		{
+		if ( type != null && !type.equals("") && type.equals("addControl") ) {
 			addControl(achar, index);
-			request.getSession().setAttribute("pageMode", "showControlEntry");
-			}
-		if ( type != null && !type.equals("") && type.equals("addConditions") )
-		{
-			request.getSession().setAttribute("pageMode", "showConditionEntry");
+			request.getSession().setAttribute("isControl", "true");
 		}
-		if ( type != null && !type.equals("") && type.equals("updateConditions") )
-		{
+		if ( type != null && !type.equals("") && type.equals("addConditions") ) {
+			request.getSession().setAttribute("isControl", "false");
+		}
+		if ( type != null && !type.equals("") && type.equals("updateConditions") ) {
 			updateConditions(achar, index);
-			request.getSession().setAttribute("pageMode", "showConditionEntry");
 		}
 		
 		theForm.set("achar", achar);
@@ -322,6 +324,7 @@ public class InvitroHemolysisAction extends AbstractDispatchAction {
 		System.out.println("==> The datum(0) type is " + datumBean.getType());
 		System.out.println("==> The datum(0) value is " + datumBean.getValue());
 		String numberOfConditions = datumBean.getNumberOfConditions();
+		System.out.println("==> The number of Conditions is " + numberOfConditions);
 		int conditionNum = Integer.parseInt(numberOfConditions);
 		List<ConditionBean> origConditions = datumBean.getConditionList();
 		int origNum = (origConditions == null) ? 0 : origConditions.size();
