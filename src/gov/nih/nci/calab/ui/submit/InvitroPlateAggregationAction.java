@@ -1,7 +1,7 @@
 package gov.nih.nci.calab.ui.submit;
 
 /**
- * This class sets up input form for nvitro hemolysis characterization. 
+ * This class sets up input form for nvitro plateAggregation characterization. 
  *  
  * @author beasleyj
  */
@@ -9,11 +9,10 @@ package gov.nih.nci.calab.ui.submit;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
+import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.dto.characterization.ConditionBean;
 import gov.nih.nci.calab.dto.characterization.ControlBean;
 import gov.nih.nci.calab.dto.characterization.DatumBean;
-import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
-import gov.nih.nci.calab.dto.characterization.invitro.HemolysisBean;
 import gov.nih.nci.calab.dto.characterization.invitro.PlateAggregationBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
@@ -22,6 +21,8 @@ import gov.nih.nci.calab.service.util.CananoConstants;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -57,7 +58,11 @@ public class InvitroPlateAggregationAction extends AbstractDispatchAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleType = (String) theForm.get("particleType");
 		String particleName = (String) theForm.get("particleName");
-		PlateAggregationBean plateAggregationChar=(PlateAggregationBean) theForm.get("achar");
+		PlateAggregationBean plateAggregationChar = (PlateAggregationBean) theForm.get("achar");
+		
+		String viewTitle = (String) theForm.get("viewTitle");
+		String description = (String) theForm.get("description");
+		String characterizationSource = (String) theForm.get("characterizationSource");
 
 		if (plateAggregationChar.getId() == null || plateAggregationChar.getId() == "") {			
 			plateAggregationChar.setId( (String) theForm.get("characterizationId") );			
@@ -147,12 +152,16 @@ public class InvitroPlateAggregationAction extends AbstractDispatchAction {
 		String particleName = (String) theForm.get("particleName");
 		String firstOption = InitSessionSetup.getInstance().setAllInstrumentTypes(session);
 		InitSessionSetup.getInstance().setAllSizeDistributionGraphTypes(session);
+		InitSessionSetup.getInstance().setAllControlTypes(session);
+		InitSessionSetup.getInstance().setAllConditionTypes(session);
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
 		if (firstOption == "")
 			firstOption =  CananoConstants.OTHER;
 		InitSessionSetup.getInstance().setManufacturerPerType(session, firstOption);
 		session.setAttribute("selectedInstrumentType", "");
+		if ( request.getSession().getAttribute("isControl") != null )
+			request.getSession().removeAttribute("isControl");
 	}
 
 	/**
@@ -203,13 +212,13 @@ public class InvitroPlateAggregationAction extends AbstractDispatchAction {
 			fileNumber++;
 		}
 				
-		PlateAggregationBean paChar = new PlateAggregationBean(aChar);		
-		theForm.set("achar", paChar);		
+		PlateAggregationBean hChar = new PlateAggregationBean(aChar);		
+		theForm.set("achar", hChar);		
 		initSetup(request, theForm);
 
-		if (paChar.getInstrument() != null) {
-			InitSessionSetup.getInstance().setManufacturerPerType(session, paChar.getInstrument().getType());
-			session.setAttribute("selectedInstrumentType", paChar.getInstrument().getType());
+		if (hChar.getInstrument() != null) {
+			InitSessionSetup.getInstance().setManufacturerPerType(session, hChar.getInstrument().getType());
+			session.setAttribute("selectedInstrumentType", hChar.getInstrument().getType());
 		}
 
 		return mapping.getInputForward();
@@ -245,11 +254,31 @@ public class InvitroPlateAggregationAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		
+		System.out.println("\n\n==> Entering  InvitroPlateAggregationAction::update ...\n\n"); 
+		
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleType = (String) theForm.get("particleType");
 		String particleName = (String) theForm.get("particleName");
 		PlateAggregationBean achar = (PlateAggregationBean) theForm.get("achar");
-		updateCharacterizationTables(achar);
+		String index=(String)request.getParameter("index");	
+		String type = (String)request.getParameter("type");
+		
+		System.out.println("\n\n==> InvitroPlateAggregationAction::update  The request is " + type + "\n\n"); 
+		
+		if ( type != null && !type.equals("") && type.equals("charTables") ) {
+			updateCharacterizationTables(achar);
+		}
+		if ( type != null && !type.equals("") && type.equals("addControl") ) {
+			addControl(achar, index);
+			request.getSession().setAttribute("isControl", "true");
+		}
+		if ( type != null && !type.equals("") && type.equals("addConditions") ) {
+			request.getSession().setAttribute("isControl", "false");
+		}
+		if ( type != null && !type.equals("") && type.equals("updateConditions") ) {
+			updateConditions(achar, index);
+		}
+		
 		theForm.set("achar", achar);
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
@@ -294,6 +323,7 @@ public class InvitroPlateAggregationAction extends AbstractDispatchAction {
 		System.out.println("==> The datum(0) type is " + datumBean.getType());
 		System.out.println("==> The datum(0) value is " + datumBean.getValue());
 		String numberOfConditions = datumBean.getNumberOfConditions();
+		System.out.println("==> The number of Conditions is " + numberOfConditions);
 		int conditionNum = Integer.parseInt(numberOfConditions);
 		List<ConditionBean> origConditions = datumBean.getConditionList();
 		int origNum = (origConditions == null) ? 0 : origConditions.size();
@@ -347,8 +377,7 @@ public class InvitroPlateAggregationAction extends AbstractDispatchAction {
 		String numberOfDerivedBioAssayData = achar.getNumberOfDerivedBioAssayData();
 		int tableNum = Integer.parseInt(numberOfDerivedBioAssayData);
 		List<DerivedBioAssayDataBean> origTables = achar.getDerivedBioAssayData();
-		int origNum = (origTables == null) ? 0 : origTables
-				.size();
+		int origNum = (origTables == null) ? 0 : origTables.size();
 		List<DerivedBioAssayDataBean> tables = new ArrayList<DerivedBioAssayDataBean>();
 		// create new ones
 		if (origNum == 0) {
@@ -376,6 +405,44 @@ public class InvitroPlateAggregationAction extends AbstractDispatchAction {
 
 	public boolean loginRequired() {
 		return true;
+	}
+	/**
+	 * Download action to handle download characterization file
+	 * @param 
+	 * @return
+	 */
+	public ActionForward download (ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		String fileId=request.getParameter("fileId");
+
+		CharacterizationFileBean fileBean = (CharacterizationFileBean) request.getSession().getAttribute("characterizationFile" + fileId);
+		String filename = fileBean.getPath() + fileBean.getName();
+		
+		File dFile = new File(filename);
+		if (dFile.exists()) {
+			response.setContentType("application/octet-stream");
+			response.setHeader("Content-disposition", "attachment;filename=" + this.getName(filename));
+			response.setHeader("Cache-Control", "no-cache");
+		
+			java.io.InputStream in = new FileInputStream (dFile);
+			java.io.OutputStream out = response.getOutputStream();
+
+			byte[] bytes = new byte[32768];
+	
+			int numRead = 0;
+			while ((numRead = in.read(bytes)) > 0) {
+				out.write(bytes, 0, numRead);
+			}
+			out.close();
+		} else {
+			throw new Exception ("ERROR: file not found.");
+		}
+			
+		
+		return null;
 	}
 	
 	/**

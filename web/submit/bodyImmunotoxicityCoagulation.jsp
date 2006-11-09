@@ -8,13 +8,13 @@
 String mode = (String)session.getAttribute("pageMode");
 %>
 
-<html:form action="/invitroImmunotoxicityHemolysis">
+<html:form action="/invitroImmunotoxicityCoagulation">
 	<table width="100%" align="center">
 		<tr>
 			<td>
 				<h4>
 					<br>
-					Invitro Characterization - Immunotoxicity - Hemolysis
+					Invitro Characterization - Immunotoxicity - Coagulation
 				</h4>
 			</td>
 			<td align="right" width="15%">
@@ -24,13 +24,13 @@ String mode = (String)session.getAttribute("pageMode");
 		<tr>
 			<td colspan="2">
 				<h5 align="center">
-					${invitroImmunotoxicityHemolysisForm.map.particleName} (${invitroImmunotoxicityHemolysisForm.map.particleType})
+					${invitroImmunotoxicityCoagulationForm.map.particleName} (${invitroImmunotoxicityCoagulationForm.map.particleType})
 				</h5>
 			</td>
 		</tr>
 		<tr>
 			<td colspan="2">
-				<c:set var="thisForm" value="${invitroImmunotoxicityHemolysisForm}" />
+				<c:set var="thisForm" value="${invitroImmunotoxicityCoagulationForm}" />
 				<jsp:include page="/bodyMessage.jsp?bundle=submit" />
 				<jsp:include page="bodySharedCharacterizationSummary.jsp" />
 				<jsp:include page="bodySharedCharacterizationInstrument.jsp" />
@@ -54,7 +54,7 @@ String mode = (String)session.getAttribute("pageMode");
 										<html:text property="achar.numberOfDerivedBioAssayData" />
 									</c:when>
 									<c:otherwise>
-										${invitroImmunotoxicityHemolysisForm.map.achar.numberOfDerivedBioAssayData}&nbsp;
+										${invitroImmunotoxicityCoagulationForm.map.achar.numberOfDerivedBioAssayData}&nbsp;
 									</c:otherwise>
 								</c:choose>
 							</td>
@@ -62,14 +62,14 @@ String mode = (String)session.getAttribute("pageMode");
 								&nbsp;
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
-										<input type="button" onclick="javascript:update(this.form, 'invitroImmunotoxicityHemolysis')" value="Update">
+										<input type="button" onclick="javascript:update(this.form, 'invitroImmunotoxicityCoagulation')" value="Update">
 									</c:when>
 								</c:choose>
 							</td>
 						</tr>
 						<tr>
 							<td class="completeLabel" colspan="4">
-								<c:forEach var="achar.table" items="${invitroImmunotoxicityHemolysisForm.map.achar.derivedBioAssayData}" varStatus="status">
+								<c:forEach var="achar.table" items="${invitroImmunotoxicityCoagulationForm.map.achar.derivedBioAssayData}" varStatus="status">
 									<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 										<tbody>
 											<tr class="topBorder">
@@ -96,18 +96,18 @@ String mode = (String)session.getAttribute("pageMode");
 															</logic:notPresent>
 														</c:when>
 														<c:otherwise>
-															${invitroImmunotoxicityHemolysisForm.map.achar.derivedBioAssayData[status.index].file.name}&nbsp;
+															${invitroImmunotoxicityCoagulationForm.map.achar.derivedBioAssayData[status.index].file.name}&nbsp;
 														</c:otherwise>
 													</c:choose>													
 												</td>
 												<td class="rightLabel" colspan="2">
-													<input type="button" onclick="javascript:loadFile(this.form, 'invitroImmunotoxicityHemolysis', '${invitroImmunotoxicityHemolysisForm.map.particleName}', ${status.index})" value="Load File">
+													<input type="button" onclick="javascript:loadFile(this.form, 'invitroImmunotoxicityCoagulation', '${invitroImmunotoxicityCoagulationForm.map.particleName}', ${status.index})" value="Load File">
 												</td>
 											</tr>
 											
 											<tr>
 												<td class="leftLabel">
-													<strong>Hemolysis Percentage</strong>
+													<strong>Coagulation Percentage</strong>
 												</td>
 												<td class="rightLabel" colspan="3">
 													<c:choose>
@@ -115,7 +115,7 @@ String mode = (String)session.getAttribute("pageMode");
 															<html:text name="achar.table" indexed="true" property="datumList[0].value" />
 														</c:when>
 														<c:otherwise>
-															${invitroImmunotoxicityHemolysisForm.map.achar.derivedBioAssayData[status.index].datumList[0].value}&nbsp;
+															${invitroImmunotoxicityCoagulationForm.map.achar.derivedBioAssayData[status.index].datumList[0].value}&nbsp;
 														</c:otherwise>
 													</c:choose>
 												</td>
@@ -128,7 +128,7 @@ String mode = (String)session.getAttribute("pageMode");
 													&nbsp;&nbsp;&nbsp;
 													<input type="radio" name="isControl" value="No" />No
 													&nbsp;&nbsp;&nbsp;&nbsp;
-													<input type="button" onclick="javascript:addControlConditions(this.form, 'invitroImmunotoxicityHemolysis', ${status.index})" value="Add">
+													<input type="button" onclick="javascript:addControlConditions(this.form, 'invitroImmunotoxicityCoagulation', ${status.index})" value="Add">
 												</td>
 											</tr>
 											
@@ -154,7 +154,7 @@ String mode = (String)session.getAttribute("pageMode");
 																				<html:text name="achar.table" indexed="true" property="datumList[0].control.name" />
         																	</c:when>
         																	<c:otherwise>
-																				${invitroImmunotoxicityHemolysisForm.map.achar.derivedBioAssayData[status.index].datumList[0].control.name}&nbsp;
+																				${invitroImmunotoxicityCoagulationForm.map.achar.derivedBioAssayData[status.index].datumList[0].control.name}&nbsp;
         																	</c:otherwise>
     																	</c:choose>
 																	</td>
@@ -167,7 +167,7 @@ String mode = (String)session.getAttribute("pageMode");
 																				<html:text name="achar.table" indexed="true" property="datumList[0].control.type" />
         																	</c:when>
         																	<c:otherwise>
-																				${invitroImmunotoxicityHemolysisForm.map.achar.derivedBioAssayData[status.index].datumList[0].control.type}&nbsp;
+																				${invitroImmunotoxicityCoagulationForm.map.achar.derivedBioAssayData[status.index].datumList[0].control.type}&nbsp;
         																	</c:otherwise>
     																	</c:choose>
 																	</td>
@@ -190,7 +190,7 @@ String mode = (String)session.getAttribute("pageMode");
 																<html:text name="achar.table" property="datumList[0].numberOfConditions" />
 															</c:when>
 															<c:otherwise>
-																${invitroImmunotoxicityHemolysisForm.map.achar.derivedBioAssayData[status.index].datumList[0].numberOfConditions}&nbsp;
+																${invitroImmunotoxicityCoagulationForm.map.achar.derivedBioAssayData[status.index].datumList[0].numberOfConditions}&nbsp;
 															</c:otherwise>
 														</c:choose>
 													</td>
@@ -198,7 +198,7 @@ String mode = (String)session.getAttribute("pageMode");
 														&nbsp;
 														<c:choose>
 															<c:when test="${canUserUpdateParticle eq 'true'}">
-																<input type="button" onclick="javascript:updateConditions(this.form, 'invitroImmunotoxicityHemolysis', ${status.index})" value="Update Conditions">
+																<input type="button" onclick="javascript:updateConditions(this.form, 'invitroImmunotoxicityCoagulation', ${status.index})" value="Update Conditions">
 															</c:when>
 														</c:choose>
 													</td>
@@ -209,7 +209,7 @@ String mode = (String)session.getAttribute("pageMode");
 											<logic:present name="achar.table" property="datumList[0].conditionList">
 												<tr>
 													<td class="completeLabel" colspan="4">
-														<c:forEach var="achar.table" items="${invitroImmunotoxicityHemolysisForm.map.achar.derivedBioAssayData[status.index].datumList[0].conditionList}" varStatus="cstatus">
+														<c:forEach var="achar.table" items="${invitroImmunotoxicityCoagulationForm.map.achar.derivedBioAssayData[status.index].datumList[0].conditionList}" varStatus="cstatus">
 															<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 																<tbody>
 																	<tr class="topBorder">
@@ -229,7 +229,7 @@ String mode = (String)session.getAttribute("pageMode");
 																					<html:text name="achar.table" indexed="true" property="datumList[0].condition[cstatus.index].type" />
         																		</c:when>
         																		<c:otherwise>
-																					${invitroImmunotoxicityHemolysisForm.map.achar.derivedBioAssayData[status.index].datumList[0].condition[cstatus.index].type}&nbsp;
+																					${invitroImmunotoxicityCoagulationForm.map.achar.derivedBioAssayData[status.index].datumList[0].condition[cstatus.index].type}&nbsp;
         																		</c:otherwise>
     																		</c:choose>
 																		</td>
@@ -242,7 +242,7 @@ String mode = (String)session.getAttribute("pageMode");
 																					<html:text name="achar.table" indexed="true" property="datumList[0].condition[cstatus.index].value" />
         																		</c:when>
         																		<c:otherwise>
-																					${invitroImmunotoxicityHemolysisForm.map.achar.derivedBioAssayData[status.index].datumList[0].condition[cstatus.index].value}&nbsp;
+																					${invitroImmunotoxicityCoagulationForm.map.achar.derivedBioAssayData[status.index].datumList[0].condition[cstatus.index].value}&nbsp;
         																		</c:otherwise>
     																		</c:choose>
 																		</td>
