@@ -5,7 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <%
-String mode = (String)session.getAttribute("pageMode");
+String isControl = (String)session.getAttribute("isControl");
 %>
 
 <html:form action="/invitroImmunotoxicityOxidativeBurst">
@@ -14,7 +14,7 @@ String mode = (String)session.getAttribute("pageMode");
 			<td>
 				<h4>
 					<br>
-					Invitro Characterization - Immunotoxicity - OxidativeBurst
+					Invitro Characterization - Immunotoxicity - Oxidative Burst
 				</h4>
 			</td>
 			<td align="right" width="15%">
@@ -34,7 +34,7 @@ String mode = (String)session.getAttribute("pageMode");
 				<jsp:include page="/bodyMessage.jsp?bundle=submit" />
 				<jsp:include page="bodySharedCharacterizationSummary.jsp" />
 				<jsp:include page="bodySharedCharacterizationInstrument.jsp" />
-				<%-- OxidativeBurst characterization specific --%>
+				<%-- hemolysis characterization specific --%>
 				<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 					<tbody>
 						<tr class="topBorder">
@@ -90,6 +90,7 @@ String mode = (String)session.getAttribute("pageMode");
 																<a href="#"><bean:write name="characterizationFile${status.index}" property="name" /></a>
 																<bean:define id="fileId" name='characterizationFile${status.index}' property='id' type="java.lang.String"/>
 																<html:hidden name="achar.table" property="fileId" value="${fileId}" indexed="true" />
+																<a href="invitroImmunotoxicityOxidativeBurst.do?dispatch=download&amp;fileId=${fileId}"><bean:write name="characterizationFile${status.index}" property="name" /></a>
 															</logic:present>
 															<logic:notPresent name="characterizationFile${status.index}">
 																Click on "Load File" button
@@ -113,9 +114,10 @@ String mode = (String)session.getAttribute("pageMode");
 													<c:choose>
 														<c:when test="${canUserUpdateParticle eq 'true'}">
 															<html:text name="achar.table" indexed="true" property="datumList[0].value" />
+															&nbsp; ${invitroImmunotoxicityOxidativeBurstForm.map.achar.derivedBioAssayData[status.index].datumList[0].valueUnit}	
 														</c:when>
 														<c:otherwise>
-															${invitroImmunotoxicityOxidativeBurstForm.map.achar.derivedBioAssayData[status.index].datumList[0].value}&nbsp;
+															${invitroImmunotoxicityOxidativeBurstForm.map.achar.derivedBioAssayData[status.index].datumList[0].value} ${invitroImmunotoxicityOxidativeBurstForm.map.achar.derivedBioAssayData[status.index].datumList[0].valueUnit}&nbsp;
 														</c:otherwise>
 													</c:choose>
 												</td>
@@ -123,12 +125,19 @@ String mode = (String)session.getAttribute("pageMode");
 											<tr>
 												<td class="leftLabel">
 													<strong>Is Control?</strong>
+													<% if ( isControl == null ) { %>
 													&nbsp;&nbsp;&nbsp;
-													<input type="radio" name="isControl" value="Yes" />Yes
+													<input type="radio" name="isControl" value="Yes" onclick="javascript:addControlConditions(this.form, 'invitroImmunotoxicityOxidativeBurst', ${status.index})" />Yes
 													&nbsp;&nbsp;&nbsp;
-													<input type="radio" name="isControl" value="No" />No
+													<input type="radio" name="isControl" value="No" onclick="javascript:addControlConditions(this.form, 'invitroImmunotoxicityOxidativeBurst', ${status.index})"  />No
 													&nbsp;&nbsp;&nbsp;&nbsp;
-													<input type="button" onclick="javascript:addControlConditions(this.form, 'invitroImmunotoxicityOxidativeBurst', ${status.index})" value="Add">
+													<% } else {%>
+													&nbsp;&nbsp;&nbsp;
+													<input type="radio" name="isControl" value="Yes" onclick="javascript:addControlConditions(this.form, 'invitroImmunotoxicityOxidativeBurst', ${status.index})" <% if ( isControl.equals("true") ) { %> checked disabled <% } else { %> disabled <% } %> />Yes
+													&nbsp;&nbsp;&nbsp;
+													<input type="radio" name="isControl" value="No" onclick="javascript:addControlConditions(this.form, 'invitroImmunotoxicityOxidativeBurst', ${status.index})"  <% if ( isControl.equals("false") ) { %> checked disabled <% } else { %> disabled <% } %> />No
+													&nbsp;&nbsp;&nbsp;&nbsp;
+													<% } %>
 												</td>
 											</tr>
 											
@@ -164,7 +173,10 @@ String mode = (String)session.getAttribute("pageMode");
 																	<td class="rightLabel">
     																	<c:choose>
         																	<c:when test="${canUserUpdateParticle eq 'true'}">
-																				<html:text name="achar.table" indexed="true" property="datumList[0].control.type" />
+																				<html:select name="achar.table" property="datumList[0].control.type" indexed="true">
+																					<html:options name="allControlTypes" />
+																				</html:select>
+																				<%--<html:text name="achar.table" indexed="true" property="datumList[0].control.type" />--%>
         																	</c:when>
         																	<c:otherwise>
 																				${invitroImmunotoxicityOxidativeBurstForm.map.achar.derivedBioAssayData[status.index].datumList[0].control.type}&nbsp;
@@ -178,7 +190,7 @@ String mode = (String)session.getAttribute("pageMode");
 												</tr>
 											</logic:present>
 											<%
-											if ( mode != null && mode.equals("showConditionEntry") ) {
+											if ( isControl != null && isControl.equals("false") ) {
 											%>
 												<tr>
 													<td class="leftLabel">
@@ -206,53 +218,50 @@ String mode = (String)session.getAttribute("pageMode");
  											<%
 											}
 											%>
-											<logic:present name="achar.table" property="datumList[0].conditionList">
-												<tr>
-													<td class="completeLabel" colspan="4">
-														<c:forEach var="achar.table" items="${invitroImmunotoxicityOxidativeBurstForm.map.achar.derivedBioAssayData[status.index].datumList[0].conditionList}" varStatus="cstatus">
-															<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
-																<tbody>
-																	<tr class="topBorder">
-																		<td class="formSubTitle" colspan="4">
-																			<div align="justify">
-																				Condition ${cstatus.index+1}
-																			</div>
-																		</td>
-																	</tr>
-																	<tr>
-																		<td class="leftLabel">
-																			<strong>Type:</strong>
-																		</td>
-																		<td class="label">
-    																		<c:choose>
-        																		<c:when test="${canUserUpdateParticle eq 'true'}">
-																					<html:text name="achar.table" indexed="true" property="datumList[0].condition[cstatus.index].type" />
-        																		</c:when>
-        																		<c:otherwise>
-																					${invitroImmunotoxicityOxidativeBurstForm.map.achar.derivedBioAssayData[status.index].datumList[0].condition[cstatus.index].type}&nbsp;
-        																		</c:otherwise>
-    																		</c:choose>
-																		</td>
-																		<td class="label">
-																			<strong>Value:</strong>
-																		</td>
-																		<td class="rightLabel">
-    																		<c:choose>
-        																		<c:when test="${canUserUpdateParticle eq 'true'}">
-																					<html:text name="achar.table" indexed="true" property="datumList[0].condition[cstatus.index].value" />
-        																		</c:when>
-        																		<c:otherwise>
-																					${invitroImmunotoxicityOxidativeBurstForm.map.achar.derivedBioAssayData[status.index].datumList[0].condition[cstatus.index].value}&nbsp;
-        																		</c:otherwise>
-    																		</c:choose>
-																		</td>
-																	</tr>
-																</tbody>
-															</table>
-														</c:forEach>
-													</td>
-												</tr>
-											</logic:present>
+											<c:forEach var="achar.table" items="${invitroImmunotoxicityOxidativeBurstForm.map.achar.derivedBioAssayData[status.index].datumList[0].conditionList}" varStatus="cstatus">
+												<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+													<tbody>
+														<tr class="topBorder">
+															<td class="formSubTitle" colspan="4">
+																<div align="justify">
+																	Condition ${cstatus.index+1}
+																</div>
+															</td>
+														</tr>
+														<tr>
+															<td class="leftLabel">
+																<strong>Type:</strong>
+															</td>
+															<td class="label">
+    															<c:choose>
+        															<c:when test="${canUserUpdateParticle eq 'true'}">
+																		<html:select name="achar.table" property="datumList[0].condition[cstatus.index].type" indexed="true">
+																			<html:options name="allConditionTypes" />
+																		</html:select>
+																		<%--<html:text name="achar.table" indexed="true" property="datumList[0].condition[cstatus.index].type" />--%>
+        															</c:when>
+        															<c:otherwise>
+																		${invitroImmunotoxicityOxidativeBurstForm.map.achar.derivedBioAssayData[status.index].datumList[0].condition[cstatus.index].type}&nbsp;
+        															</c:otherwise>
+    															</c:choose>
+															</td>
+															<td class="label">
+																<strong>Value:</strong>
+															</td>
+															<td class="rightLabel">
+    															<c:choose>
+        															<c:when test="${canUserUpdateParticle eq 'true'}">
+																		<html:text name="achar.table" indexed="true" property="datumList[0].condition[cstatus.index].value" />
+        															</c:when>
+        															<c:otherwise>
+																		${invitroImmunotoxicityOxidativeBurstForm.map.achar.derivedBioAssayData[status.index].datumList[0].condition[cstatus.index].value}&nbsp;
+        															</c:otherwise>
+    															</c:choose>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</c:forEach>
 										</tbody>
 									</table>
 								</c:forEach>
