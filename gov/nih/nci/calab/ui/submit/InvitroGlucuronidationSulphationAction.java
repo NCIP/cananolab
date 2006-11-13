@@ -183,7 +183,7 @@ public class InvitroGlucuronidationSulphationAction extends AbstractDispatchActi
 		String compositionId = (String) theForm.get("characterizationId");
 
 		SearchNanoparticleService service = new SearchNanoparticleService();
-		Characterization aChar = service.getCharacterizationBy(compositionId);
+		Characterization aChar = service.getCharacterizationAndTableBy(compositionId);
 
 		HttpSession session = request.getSession();
 		// clear session data from the input forms
