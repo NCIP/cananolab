@@ -4,10 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-<%
-String isControl = (String)session.getAttribute("isControl");
-%>
-
 <html:form action="/invitroImmunotoxicityHemolysis">
 	<table width="100%" align="center">
 		<tr>
@@ -69,7 +65,7 @@ String isControl = (String)session.getAttribute("isControl");
 						</tr>
 						<tr>
 							<td class="completeLabel" colspan="4">
-								<c:forEach var="achar.table" items="${invitroImmunotoxicityHemolysisForm.map.achar.derivedBioAssayData}" varStatus="status">
+								<c:forEach var="achar.derivedBioAssayData" items="${invitroImmunotoxicityHemolysisForm.map.achar.derivedBioAssayData}" varStatus="status">
 									<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 										<tbody>
 											<tr class="topBorder">
@@ -89,7 +85,7 @@ String isControl = (String)session.getAttribute("isControl");
 															<logic:present name="characterizationFile${status.index}">
 																<a href="#"><bean:write name="characterizationFile${status.index}" property="name" /></a>
 																<bean:define id="fileId" name='characterizationFile${status.index}' property='id' type="java.lang.String"/>
-																<html:hidden name="achar.table" property="fileId" value="${fileId}" indexed="true" />
+																<html:hidden name="achar.derivedBioAssayData" property="fileId" value="${fileId}" indexed="true" />
 																<a href="invitroImmunotoxicityHemolysis.do?dispatch=download&amp;fileId=${fileId}"><bean:write name="characterizationFile${status.index}" property="name" /></a>
 															</logic:present>
 															<logic:notPresent name="characterizationFile${status.index}">
@@ -113,7 +109,7 @@ String isControl = (String)session.getAttribute("isControl");
 												<td class="rightLabel" colspan="3">
 													<c:choose>
 														<c:when test="${canUserUpdateParticle eq 'true'}">
-															<html:text name="achar.table" indexed="true" property="datumList[0].value" />
+															<html:text name="achar.derivedBioAssayData" indexed="true" property="datumList[0].value" />
 															&nbsp; ${invitroImmunotoxicityHemolysisForm.map.achar.derivedBioAssayData[status.index].datumList[0].valueUnit}	
 														</c:when>
 														<c:otherwise>
@@ -125,7 +121,10 @@ String isControl = (String)session.getAttribute("isControl");
 											<tr>
 												<td class="leftLabel">
 													<strong>Is Control?</strong>
-													<% if ( isControl == null ) { %>
+													<%
+													String isControl = (String)session.getAttribute("isControl");
+													if ( isControl == null ) { 
+													%>
 													&nbsp;&nbsp;&nbsp;
 													<input type="radio" name="isControl" value="Yes" onclick="javascript:addControlConditions(this.form, 'invitroImmunotoxicityHemolysis', ${status.index})" />Yes
 													&nbsp;&nbsp;&nbsp;
@@ -133,15 +132,15 @@ String isControl = (String)session.getAttribute("isControl");
 													&nbsp;&nbsp;&nbsp;&nbsp;
 													<% } else {%>
 													&nbsp;&nbsp;&nbsp;
-													<input type="radio" name="isControl" value="Yes" onclick="javascript:addControlConditions(this.form, 'invitroImmunotoxicityHemolysis', ${status.index})" <% if ( isControl.equals("true") ) { %> checked disabled <% } else { %> disabled <% } %> />Yes
+													<input type="radio" name="isControl" value="Yes" onclick="javascript:addControlConditions(this.form, 'invitroImmunotoxicityHemolysis', ${status.index})" <% if ( isControl.equals("true") ) { %> checked <% } %> />Yes
 													&nbsp;&nbsp;&nbsp;
-													<input type="radio" name="isControl" value="No" onclick="javascript:addControlConditions(this.form, 'invitroImmunotoxicityHemolysis', ${status.index})"  <% if ( isControl.equals("false") ) { %> checked disabled <% } else { %> disabled <% } %> />No
+													<input type="radio" name="isControl" value="No" onclick="javascript:addControlConditions(this.form, 'invitroImmunotoxicityHemolysis', ${status.index})"  <% if ( isControl.equals("false") ) { %> checked <% } %> />No
 													&nbsp;&nbsp;&nbsp;&nbsp;
 													<% } %>
 												</td>
 											</tr>
 											
-											<logic:present name="achar.table" property="datumList[0].control">
+											<logic:present name="achar.derivedBioAssayData[status.index]" property="datumList[0].control">
 												<tr>
  													<td class="completeLabel" colspan="4">
 														<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
@@ -160,7 +159,7 @@ String isControl = (String)session.getAttribute("isControl");
 																	<td class="label">
     																	<c:choose>
         																	<c:when test="${canUserUpdateParticle eq 'true'}">
-																				<html:text name="achar.table" indexed="true" property="datumList[0].control.name" />
+																				<html:text name="achar.derivedBioAssayData" indexed="true" property="datumList[0].control.name" />
         																	</c:when>
         																	<c:otherwise>
 																				${invitroImmunotoxicityHemolysisForm.map.achar.derivedBioAssayData[status.index].datumList[0].control.name}&nbsp;
@@ -173,7 +172,7 @@ String isControl = (String)session.getAttribute("isControl");
 																	<td class="rightLabel">
     																	<c:choose>
         																	<c:when test="${canUserUpdateParticle eq 'true'}">
-																				<html:select name="achar.table" property="datumList[0].control.type" indexed="true">
+																				<html:select name="achar.derivedBioAssayData" property="datumList[0].control.type" indexed="true">
 																					<html:options name="allControlTypes" />
 																				</html:select>
 																				<%--<html:text name="achar.table" indexed="true" property="datumList[0].control.type" />--%>
@@ -199,7 +198,7 @@ String isControl = (String)session.getAttribute("isControl");
 													<td class="label">
 														<c:choose>
 															<c:when test="${canUserUpdateParticle eq 'true'}">
-																<html:text name="achar.table" property="datumList[0].numberOfConditions" />
+																<html:text name="achar.derivedBioAssayData" indexed="true" property="datumList[0].numberOfConditions" />
 															</c:when>
 															<c:otherwise>
 																${invitroImmunotoxicityHemolysisForm.map.achar.derivedBioAssayData[status.index].datumList[0].numberOfConditions}&nbsp;
@@ -218,7 +217,9 @@ String isControl = (String)session.getAttribute("isControl");
  											<%
 											}
 											%>
-											<c:forEach var="achar.table" items="${invitroImmunotoxicityHemolysisForm.map.achar.derivedBioAssayData[status.index].datumList[0].conditionList}" varStatus="cstatus">
+											<c:forEach var="achar.derivedBioAssayData[status.index].datumList[0].conditionList" items="${invitroImmunotoxicityHemolysisForm.map.achar.derivedBioAssayData[status.index].datumList[0].conditionList}" varStatus="cstatus">
+											<tr>
+											<td>
 												<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 													<tbody>
 														<tr class="topBorder">
@@ -235,13 +236,13 @@ String isControl = (String)session.getAttribute("isControl");
 															<td class="label">
     															<c:choose>
         															<c:when test="${canUserUpdateParticle eq 'true'}">
-																		<html:select name="achar.table" property="datumList[0].condition[cstatus.index].type" indexed="true">
+																		<html:select name="achar.derivedBioAssayData[status.index].datumList[0].conditionList" property="type" indexed="true">
 																			<html:options name="allConditionTypes" />
 																		</html:select>
 																		<%--<html:text name="achar.table" indexed="true" property="datumList[0].condition[cstatus.index].type" />--%>
         															</c:when>
         															<c:otherwise>
-																		${invitroImmunotoxicityHemolysisForm.map.achar.derivedBioAssayData[status.index].datumList[0].condition[cstatus.index].type}&nbsp;
+																		${invitroImmunotoxicityHemolysisForm.map.achar.derivedBioAssayData[status.index].datumList[0].conditionList[cstatus.index].type}&nbsp;
         															</c:otherwise>
     															</c:choose>
 															</td>
@@ -251,22 +252,25 @@ String isControl = (String)session.getAttribute("isControl");
 															<td class="rightLabel">
     															<c:choose>
         															<c:when test="${canUserUpdateParticle eq 'true'}">
-																		<html:text name="achar.table" indexed="true" property="datumList[0].condition[cstatus.index].value" />
+																		<html:text name="achar.derivedBioAssayData[status.index].datumList[0].conditionList" indexed="true" property="value" />
         															</c:when>
         															<c:otherwise>
-																		${invitroImmunotoxicityHemolysisForm.map.achar.derivedBioAssayData[status.index].datumList[0].condition[cstatus.index].value}&nbsp;
+																		${invitroImmunotoxicityHemolysisForm.map.achar.derivedBioAssayData[status.index].datumList[0].conditionList[cstatus.index].value}&nbsp;
         															</c:otherwise>
     															</c:choose>
 															</td>
 														</tr>
 													</tbody>
 												</table>
+												</td>
+												</tr>
 											</c:forEach>
 										</tbody>
 									</table>
 								</c:forEach>
 							</td>
 						</tr>
+					</tbody>
 				</table>
 				<%-- end of size characterization specific --%>
 				<jsp:include page="bodySharedCharacterizationSubmit.jsp" />
