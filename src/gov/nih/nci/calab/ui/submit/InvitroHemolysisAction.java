@@ -272,9 +272,11 @@ public class InvitroHemolysisAction extends AbstractDispatchAction {
 		if ( type != null && !type.equals("") && type.equals("addControl") ) {
 			addControl(achar, index);
 			request.getSession().setAttribute("isControl", "true");
+			request.getSession().setAttribute("graph" + index, "control");
 		}
 		if ( type != null && !type.equals("") && type.equals("addConditions") ) {
 			request.getSession().setAttribute("isControl", "false");
+			request.getSession().setAttribute("graph" + index, "condition");
 		}
 		if ( type != null && !type.equals("") && type.equals("updateConditions") ) {
 			updateConditions(achar, index);
@@ -297,10 +299,35 @@ public class InvitroHemolysisAction extends AbstractDispatchAction {
 	 * @return
 	 * @throws Exception
 	 */
-	public void addControl(HemolysisBean achar, String index) {
+	public void addConditions(HemolysisBean achar, String index) {
+		ControlBean control = null;
 		int tableIndex = new Integer(index).intValue();
+		
 		DerivedBioAssayDataBean derivedBioAssayData = (DerivedBioAssayDataBean)achar.getDerivedBioAssayData().get(tableIndex);
 		DatumBean datum = (DatumBean)derivedBioAssayData.getDatumList().get(0);
+		if ( datum.getControl() != null ) {
+			datum.setControl(control);
+		}			
+	}
+
+	/**
+	 * Update multiple children on the same form
+	 * 
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	public void addControl(HemolysisBean achar, String index) {
+		int tableIndex = new Integer(index).intValue();
+		
+		DerivedBioAssayDataBean derivedBioAssayData = (DerivedBioAssayDataBean)achar.getDerivedBioAssayData().get(tableIndex);
+		DatumBean datum = (DatumBean)derivedBioAssayData.getDatumList().get(0);
+		if ( datum.getConditionList().size() > 0 ) {
+			datum.getConditionList().removeAll(datum.getConditionList());
+		}			
 		ControlBean control = new ControlBean();
 		datum.setControl(control);
 	}
