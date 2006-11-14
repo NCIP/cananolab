@@ -26,6 +26,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -155,14 +156,19 @@ public class InvitroHemolysisAction extends AbstractDispatchAction {
 		InitSessionSetup.getInstance().setAllSizeDistributionGraphTypes(session);
 		InitSessionSetup.getInstance().setAllControlTypes(session);
 		InitSessionSetup.getInstance().setAllConditionTypes(session);
+		InitSessionSetup.getInstance().setAllConcentrationUnits(session);
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
 		if (firstOption == "")
 			firstOption =  CananoConstants.OTHER;
 		InitSessionSetup.getInstance().setManufacturerPerType(session, firstOption);
 		session.setAttribute("selectedInstrumentType", "");
-		if ( request.getSession().getAttribute("isControl") != null )
-			request.getSession().removeAttribute("isControl");
+		String attrStr = null;
+		for (Enumeration e = request.getSession().getAttributeNames(); e.hasMoreElements(); ) {
+			attrStr = (String)e.nextElement();
+			if ( attrStr.contains("Graph") )
+				request.getSession().removeAttribute(attrStr);
+		}
 	}
 
 	/**
@@ -271,12 +277,15 @@ public class InvitroHemolysisAction extends AbstractDispatchAction {
 		}
 		if ( type != null && !type.equals("") && type.equals("addControl") ) {
 			addControl(achar, index);
-			request.getSession().setAttribute("isControl", "true");
-			request.getSession().setAttribute("graph" + index, "control");
+			request.getSession().setAttribute("Graph" + index + "Control", "true");
+			if ( request.getSession().getAttribute("Graph" + index + "Conditions") != null )
+				request.getSession().removeAttribute("Graph" + index + "Conditions");
 		}
 		if ( type != null && !type.equals("") && type.equals("addConditions") ) {
-			request.getSession().setAttribute("isControl", "false");
-			request.getSession().setAttribute("graph" + index, "condition");
+			addConditions(achar, index);
+			request.getSession().setAttribute("Graph" + index + "Conditions", "true");
+			if ( request.getSession().getAttribute("Graph" + index + "Control") != null )
+				request.getSession().removeAttribute("Graph" + index + "Control");
 		}
 		if ( type != null && !type.equals("") && type.equals("updateConditions") ) {
 			updateConditions(achar, index);
