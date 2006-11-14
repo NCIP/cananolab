@@ -7,6 +7,7 @@ package gov.nih.nci.calab.ui.workflow;
  */
 
 import gov.nih.nci.calab.dto.workflow.RunBean;
+import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.service.workflow.ExecuteWorkflowService;
@@ -23,6 +24,8 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
 public class SearchRunAction extends AbstractDispatchAction {
@@ -42,6 +45,14 @@ public class SearchRunAction extends AbstractDispatchAction {
 		Date runDate=StringUtils.convertToDate(runDateStr, CalabConstants.ACCEPT_DATE_FORMAT);
 		ExecuteWorkflowService executeWorkflowService = new ExecuteWorkflowService();
 		List<RunBean>runs = executeWorkflowService.searchRun(sampleSource, assayName, runBy, runDate);
+		ActionMessages msgs = new ActionMessages();
+
+		if (runs.isEmpty()) {
+			ActionMessage msg = new ActionMessage("message.searchRun.empty");
+			msgs.add("message", msg);
+			saveMessages(request, msgs);
+			return mapping.getInputForward();
+		}
 		request.setAttribute("selectedRuns", runs);		
 
 		return mapping.findForward("success");
