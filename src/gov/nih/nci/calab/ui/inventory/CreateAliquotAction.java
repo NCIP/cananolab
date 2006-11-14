@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.inventory;
  * @author pansu
  */
 
-/* CVS $Id: CreateAliquotAction.java,v 1.4 2006-08-01 19:46:37 pansu Exp $ */
+/* CVS $Id: CreateAliquotAction.java,v 1.5 2006-11-14 23:01:15 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.inventory.AliquotBean;
 import gov.nih.nci.calab.exception.CalabException;
@@ -82,10 +82,16 @@ public class CreateAliquotAction extends AbstractDispatchAction {
 
 		boolean fromAliquot = ((String) theForm.get("fromAliquot"))
 				.equals("true") ? true : false;
-
+		String sampleName = (String) theForm.get("sampleName");
+		//check if sample name has lot ID in it.  
+		String[] sampleNameToks=sampleName.split("-");
+		//If not, insert 0 as lot ID
+		if (sampleNameToks.length==2) {
+			sampleName=sampleName+"-0";
+		}
 		String containerName = (String) theForm.get("containerName");
 		String parentAliquotName = (String) theForm.get("parentAliquotName");
-		String parentName = (fromAliquot) ? parentAliquotName : containerName;
+		String parentName = (fromAliquot) ? parentAliquotName : sampleName+"-"+containerName;
 
 		String numberOfAliquots = (String) theForm.get("numberOfAliquots");
 		int numAliquots = Integer.parseInt(numberOfAliquots);
