@@ -184,12 +184,12 @@ function loadFile(form, actionName, particleName, fileNumber) {
     form.action = actionName + ".do?dispatch=loadFile&page=0&particleName=" + particleName + "&fileNumber=" + fileNumber;
     form.submit();
 }
-function addControlConditions(form, actionName, index) {
-    if ( form.isControl[0].checked ) {
+function addControlConditions(form, formObj, actionName, index) {
+    if ( formObj[0].checked ) {
     	form.action = actionName + ".do?dispatch=update&page=0&type=addControl&index=" + index;
     	form.submit();
     }
-    if ( form.isControl[1].checked ) {
+    if ( formObj[1].checked ) {
    		form.action = actionName + ".do?dispatch=update&page=0&type=addConditions&index=" + index;
     	form.submit();
     }
