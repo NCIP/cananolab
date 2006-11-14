@@ -119,28 +119,34 @@
 												</td>
 											</tr>
 											<tr>
-												<td class="leftLabel">
+												<td class="leftLabel" colspan="4">
 													<strong>Is Control?</strong>
-													<%
-													String isControl = (String)session.getAttribute("isControl");
-													if ( isControl == null ) { 
-													%>
-													&nbsp;&nbsp;&nbsp;
-													<input type="radio" name="isControl" value="Yes" onclick="javascript:addControlConditions(this.form, 'invitroImmunotoxicityHemolysis', ${status.index})" />Yes
-													&nbsp;&nbsp;&nbsp;
-													<input type="radio" name="isControl" value="No" onclick="javascript:addControlConditions(this.form, 'invitroImmunotoxicityHemolysis', ${status.index})"  />No
-													&nbsp;&nbsp;&nbsp;&nbsp;
-													<% } else {%>
-													&nbsp;&nbsp;&nbsp;
-													<input type="radio" name="isControl" value="Yes" onclick="javascript:addControlConditions(this.form, 'invitroImmunotoxicityHemolysis', ${status.index})" <% if ( isControl.equals("true") ) { %> checked <% } %> />Yes
-													&nbsp;&nbsp;&nbsp;
-													<input type="radio" name="isControl" value="No" onclick="javascript:addControlConditions(this.form, 'invitroImmunotoxicityHemolysis', ${status.index})"  <% if ( isControl.equals("false") ) { %> checked <% } %> />No
-													&nbsp;&nbsp;&nbsp;&nbsp;
-													<% } %>
+													<logic:present name="Graph${status.index}Control">
+														&nbsp;&nbsp;&nbsp;
+														<input type="radio" name="isControl${status.index}" value="Yes" onclick="javascript:addControlConditions(this.form, this.form.isControl${status.index}, 'invitroImmunotoxicityHemolysis', ${status.index})" checked />Yes
+														&nbsp;&nbsp;&nbsp;
+														<input type="radio" name="isControl${status.index}" value="No" onclick="javascript:addControlConditions(this.form, this.form.isControl${status.index}, 'invitroImmunotoxicityHemolysis', ${status.index})"  />No
+														&nbsp;&nbsp;&nbsp;&nbsp;
+													</logic:present>
+													<logic:notPresent name="Graph${status.index}Control">
+														<logic:present name="Graph${status.index}Conditions">
+															&nbsp;&nbsp;&nbsp;
+															<input type="radio" name="isControl${status.index}" value="Yes" onclick="javascript:addControlConditions(this.form, this.form.isControl${status.index}, 'invitroImmunotoxicityHemolysis', ${status.index})" />Yes
+															&nbsp;&nbsp;&nbsp;
+															<input type="radio" name="isControl${status.index}" value="No" onclick="javascript:addControlConditions(this.form, this.form.isControl${status.index}, 'invitroImmunotoxicityHemolysis', ${status.index})"  checked />No
+															&nbsp;&nbsp;&nbsp;&nbsp;
+														</logic:present>
+														<logic:notPresent name="Graph${status.index}Conditions">
+															&nbsp;&nbsp;&nbsp;
+															<input type="radio" name="isControl${status.index}" value="Yes" onclick="javascript:addControlConditions(this.form, this.form.isControl${status.index}, 'invitroImmunotoxicityHemolysis', ${status.index})" />Yes
+															&nbsp;&nbsp;&nbsp;
+															<input type="radio" name="isControl${status.index}" value="No" onclick="javascript:addControlConditions(this.form, this.form.isControl${status.index}, 'invitroImmunotoxicityHemolysis', ${status.index})"  />No
+															&nbsp;&nbsp;&nbsp;&nbsp;
+														</logic:notPresent>
+													</logic:notPresent>
 												</td>
-											</tr>
-											
-											<logic:present name="achar.derivedBioAssayData[status.index]" property="datumList[0].control">
+											</tr>								
+											<logic:present name="achar.derivedBioAssayData" property="datumList[0].control">
 												<tr>
  													<td class="completeLabel" colspan="4">
 														<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
@@ -188,9 +194,7 @@
 													</td>
 												</tr>
 											</logic:present>
-											<%
-											if ( isControl != null && isControl.equals("false") ) {
-											%>
+											<logic:present name="Graph${status.index}Conditions">
 												<tr>
 													<td class="leftLabel">
 														<strong>Number of Conditions</strong>
@@ -214,12 +218,11 @@
 														</c:choose>
 													</td>
 												</tr>
- 											<%
-											}
-											%>
+											</logic:present>
+											
 											<c:forEach var="achar.derivedBioAssayData[status.index].datumList[0].conditionList" items="${invitroImmunotoxicityHemolysisForm.map.achar.derivedBioAssayData[status.index].datumList[0].conditionList}" varStatus="cstatus">
 											<tr>
-											<td>
+											<td colspan="4">
 												<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 													<tbody>
 														<tr class="topBorder">
@@ -256,6 +259,17 @@
         															</c:when>
         															<c:otherwise>
 																		${invitroImmunotoxicityHemolysisForm.map.achar.derivedBioAssayData[status.index].datumList[0].conditionList[cstatus.index].value}&nbsp;
+        															</c:otherwise>
+    															</c:choose>
+    															&nbsp;&nbsp;&nbsp;
+    															<c:choose>
+        															<c:when test="${canUserUpdateParticle eq 'true'}">
+																		<html:select name="achar.derivedBioAssayData[status.index].datumList[0].conditionList" property="valueUnit" indexed="true">
+																			<html:options name="allConcentrationUnits" />
+																		</html:select>
+        															</c:when>
+        															<c:otherwise>
+																		${invitroImmunotoxicityHemolysisForm.map.achar.derivedBioAssayData[status.index].datumList[0].conditionList[cstatus.index].valueUnit}&nbsp;
         															</c:otherwise>
     															</c:choose>
 															</td>
