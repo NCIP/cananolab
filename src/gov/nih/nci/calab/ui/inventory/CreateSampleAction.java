@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.inventory;
  * @author pansu
  */
 
-/* CVS $Id: CreateSampleAction.java,v 1.5 2006-09-12 20:53:27 pansu Exp $ */
+/* CVS $Id: CreateSampleAction.java,v 1.6 2006-11-15 16:45:15 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.inventory.ContainerBean;
 import gov.nih.nci.calab.dto.inventory.SampleBean;
@@ -74,11 +74,16 @@ public class CreateSampleAction extends AbstractDispatchAction {
 		ManageSampleService manageSampleService = new ManageSampleService();
 		String sampleName = manageSampleService.getSampleName(sampleNamePrefix,
 				lotId);
-
+        
 		// get user information from session
 		String sampleSubmitter = (String) session.getAttribute("creator");
 		ContainerBean[] containers = (ContainerBean[]) theForm
 				.get("containers");
+		//update container name to be full container name
+		String containerPrefix=manageSampleService.getContainerPrefix(sampleNamePrefix, lotId);
+		for (ContainerBean container: containers) {
+			container.setContainerName(containerPrefix+"-"+container.getContainerName());
+		}
 		Date creationDate = new Date();
 //		SampleBean sample = new SampleBean(sampleNamePrefix, sampleName,
 //				sampleType, otherSampleType, sampleSOP, sampleDescription,
