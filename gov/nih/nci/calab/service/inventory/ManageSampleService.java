@@ -23,7 +23,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-/* CVS $Id: ManageSampleService.java,v 1.5 2006-09-10 18:02:56 zengje Exp $ 
+/* CVS $Id: ManageSampleService.java,v 1.6 2006-11-15 16:44:19 pansu Exp $ 
  */
 public class ManageSampleService {
 	private static Logger logger = Logger.getLogger(ManageSampleService.class);
@@ -79,6 +79,20 @@ public class ManageSampleService {
 		return sampleNamePrefix + "-" + lotId;
 	}
 
+	/**
+	 * return the container prefix
+	 * @param sampleNamePrefix
+	 * @param lotId
+	 * @return
+	 */
+	public String getContainerPrefix(String sampleNamePrefix, String lotId) {
+		String containerPrefix=sampleNamePrefix;
+		if (lotId.equals(CalabConstants.EMPTY)) {
+			containerPrefix=sampleNamePrefix+"-0";
+		}
+		return containerPrefix;
+	}
+	
 	/**
 	 * 
 	 * @return the default lot Id
@@ -205,8 +219,7 @@ public class ManageSampleService {
 				doSampleContainer.setSafetyPrecaution(containers[i].getSafetyPrecaution());
 				doSampleContainer.setStorageCondition(containers[i].getStorageCondition());
 				doSampleContainer.setVolume(StringUtils.convertToFloat(containers[i].getVolume()));
-				doSampleContainer.setVolumeUnit(containers[i].getVolumeUnit());
-				// TODO: set name is it suppose to be sequence number?
+				doSampleContainer.setVolumeUnit(containers[i].getVolumeUnit());				
 				doSampleContainer.setName(containers[i].getContainerName());
 				
 				// TODO: relationship with storage need to be added too.
