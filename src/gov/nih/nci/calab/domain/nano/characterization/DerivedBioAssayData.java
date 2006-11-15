@@ -3,6 +3,8 @@
  */
 package gov.nih.nci.calab.domain.nano.characterization;
 
+import gov.nih.nci.calab.domain.DerivedDataFile;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -16,7 +18,7 @@ public class DerivedBioAssayData {
 	
 	private Long id;
 	private String type;
-	private String file;
+	private DerivedDataFile file;
 	
 	private Collection<Datum> datumCollection = new ArrayList<Datum>();
 	/**
@@ -50,11 +52,11 @@ public class DerivedBioAssayData {
 		this.datumCollection = datumCollection;
 	}
 
-	public String getFile() {
+	public DerivedDataFile getFile() {
 		return file;
 	}
 
-	public void setFile(String file) {
+	public void setFile(DerivedDataFile file) {
 		this.file = file;
 	}
 
