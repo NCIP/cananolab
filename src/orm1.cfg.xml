@@ -20,6 +20,7 @@
     <mapping resource="gov/nih/nci/calab/domain/RunSampleContainer.hbm.xml" />
     <mapping resource="gov/nih/nci/calab/domain/StorageElement.hbm.xml" />
     <mapping resource="gov/nih/nci/calab/domain/LabFile.hbm.xml" />
+    <mapping resource="gov/nih/nci/calab/domain/Report.hbm.xml" />
     <mapping resource="gov/nih/nci/calab/domain/SampleSOP.hbm.xml" />
     <mapping resource="gov/nih/nci/calab/domain/DataStatus.hbm.xml" />
     <mapping resource="gov/nih/nci/calab/domain/SampleType.hbm.xml" />

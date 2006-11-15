@@ -2,39 +2,50 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping package="gov.nih.nci.calab.domain">
-  <class name="LabFile" table="Lab_File">
-    <cache usage="read-write" />
-    <id name="id" type="java.lang.Long" column="FILE_PK_ID" unsaved-value="0">
-      <generator class="org.hibernate.id.TableHiLoGenerator">
-  	  			<param name="table">hibernate_unique_key</param>
+	<class name="LabFile" table="Lab_File">
+		<cache usage="read-write" />
+		<id name="id" type="java.lang.Long" column="FILE_PK_ID" unsaved-value="0">
+			<generator class="org.hibernate.id.TableHiLoGenerator">
+				<param name="table">hibernate_unique_key</param>
 				<param name="column">next_hi</param>
-	   </generator>
-    </id>
-    <discriminator column="FILE_SOURCE_TYPE" type="string" />
-	<property name="extension" type="java.lang.String" column="FILE_TYPE_EXTENSION" />
-    <property name="createdBy" type="java.lang.String" column="CREATED_BY" />
-    <property name="createdDate" type="java.util.Date" column="CREATED_DATE" />
-    <property name="version" type="java.lang.String" column="VERSION" />
-    <property name="path" type="java.lang.String" column="FILE_URI" /> 	
-    <property name="filename" type="java.lang.String" column="FILE_NAME" /> 
-    <joined-subclass name="gov.nih.nci.calab.domain.OutputFile" table="RUN_OUTPUT_FILE">
-    	<key column="OUTPUT_FILE_PK_ID" />
-        <many-to-one name="run" class="gov.nih.nci.calab.domain.Run" column="RUN_PK_ID" lazy="true" />
-       <many-to-one name="dataStatus" class="gov.nih.nci.calab.domain.DataStatus" column="DATA_STATUS_PK_ID" lazy="true" />
-    </joined-subclass>
-    <joined-subclass name="gov.nih.nci.calab.domain.SampleSOPFile" table="VIEW_SAMPLE_SOP_FILE">
-    	<key column="SOP_FILE_PK_ID" />
-	    <many-to-one name="sampleSOP" class="gov.nih.nci.calab.domain.SampleSOP" column="SAMPLE_SOP_PK_ID" lazy="true" />
-    </joined-subclass>
-    <joined-subclass name="gov.nih.nci.calab.domain.InputFile" table="RUN_INPUT_FILE">
-    	<key column="INPUT_FILE_PK_ID" />
-        <many-to-one name="run" class="gov.nih.nci.calab.domain.Run" column="RUN_PK_ID" lazy="true" />
-        <many-to-one name="dataStatus" class="gov.nih.nci.calab.domain.DataStatus" column="DATA_STATUS_PK_ID" lazy="true" />
-    </joined-subclass>
-    <joined-subclass name="gov.nih.nci.calab.domain.ProtocolFile" table="VIEW_PROTOCOL_FILE">
-    	<key column="PROTOCOL_FILE_PK_ID" />
-       <many-to-one name="protocol" class="gov.nih.nci.calab.domain.Protocol" column="PROTOCOL_PK_ID" lazy="true" />
-    </joined-subclass>
-  </class>
+			</generator>
+		</id>
+		<discriminator column="FILE_SOURCE_TYPE" type="string" />
+		<property name="extension" type="java.lang.String" column="FILE_TYPE_EXTENSION" />
+		<property name="createdBy" type="java.lang.String" column="CREATED_BY" />
+		<property name="createdDate" type="java.util.Date" column="CREATED_DATE" />
+		<property name="version" type="java.lang.String" column="VERSION" />
+		<property name="path" type="java.lang.String" column="FILE_URI" />
+		<property name="filename" type="java.lang.String" column="FILE_NAME" />
+		<property name="title" type="java.lang.String" column="TITLE" />
+		<property name="description" type="java.lang.String" column="DESCRIPTION" />
+
+		<subclass name="gov.nih.nci.calab.domain.OutputFile" discriminator-value="Output">
+			<join table="RUN_OUTPUT_FILE">
+				<key column="OUTPUT_FILE_PK_ID" />
+				<many-to-one name="run" class="gov.nih.nci.calab.domain.Run" column="RUN_PK_ID" lazy="true" />
+				<many-to-one name="dataStatus" class="gov.nih.nci.calab.domain.DataStatus" column="DATA_STATUS_PK_ID" lazy="true" />
+			</join>
+		</subclass>
+		<subclass name="gov.nih.nci.calab.domain.SampleSOPFile" discriminator-value="SampleSOP">
+			<join table="VIEW_SAMPLE_SOP_FILE">
+				<key column="SOP_FILE_PK_ID" />
+				<many-to-one name="sampleSOP" class="gov.nih.nci.calab.domain.SampleSOP" column="SAMPLE_SOP_PK_ID" lazy="true" />
+			</join>
+		</subclass>
+		<subclass name="gov.nih.nci.calab.domain.InputFile" discriminator-value="Input">
+			<join table="RUN_INPUT_FILE">
+				<key column="INPUT_FILE_PK_ID" />
+				<many-to-one name="run" class="gov.nih.nci.calab.domain.Run" column="RUN_PK_ID" lazy="true" />
+				<many-to-one name="dataStatus" class="gov.nih.nci.calab.domain.DataStatus" column="DATA_STATUS_PK_ID" lazy="true" />
+			</join>
+		</subclass>
+		<subclass name="gov.nih.nci.calab.domain.ProtocolFile" discriminator-value="ProtocolFile">
+			<join table="VIEW_PROTOCOL_FILE">
+				<key column="PROTOCOL_FILE_PK_ID" />
+				<many-to-one name="protocol" class="gov.nih.nci.calab.domain.Protocol" column="PROTOCOL_PK_ID" lazy="true" />
+			</join>
+		</subclass>
+	</class>
 </hibernate-mapping>
 
