@@ -8,35 +8,36 @@ import gov.nih.nci.calab.domain.Manufacturer;
 import gov.nih.nci.calab.domain.OutputFile;
 import gov.nih.nci.calab.domain.Run;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
+import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
-import gov.nih.nci.calab.dto.characterization.physical.MolecularWeightBean;
-import gov.nih.nci.calab.dto.characterization.physical.MorphologyBean;
-import gov.nih.nci.calab.dto.characterization.physical.SizeBean;
-import gov.nih.nci.calab.dto.characterization.physical.ShapeBean;
-import gov.nih.nci.calab.dto.characterization.physical.StabilityBean;
-import gov.nih.nci.calab.dto.characterization.physical.PurityBean;
-import gov.nih.nci.calab.dto.characterization.physical.SolubilityBean;
 import gov.nih.nci.calab.dto.characterization.composition.CompositionBean;
-import gov.nih.nci.calab.dto.characterization.invitro.CoagulationBean;
-import gov.nih.nci.calab.dto.characterization.invitro.HemolysisBean;
-import gov.nih.nci.calab.dto.characterization.invitro.PlasmaProteinBindingBean;
-import gov.nih.nci.calab.dto.characterization.invitro.PlateAggregationBean;
-import gov.nih.nci.calab.dto.characterization.invitro.ComplementActivationBean;
-import gov.nih.nci.calab.dto.characterization.invitro.ChemotaxisBean;
-import gov.nih.nci.calab.dto.characterization.invitro.CytokineInductionBean;
 import gov.nih.nci.calab.dto.characterization.invitro.CFU_GMBean;
-import gov.nih.nci.calab.dto.characterization.invitro.NKCellCytotoxicActivityBean;
-import gov.nih.nci.calab.dto.characterization.invitro.LeukocyteProliferationBean;
-import gov.nih.nci.calab.dto.characterization.invitro.OxidativeBurstBean;
-import gov.nih.nci.calab.dto.characterization.invitro.PhagocytosisBean;
 import gov.nih.nci.calab.dto.characterization.invitro.CYP450Bean;
-import gov.nih.nci.calab.dto.characterization.invitro.ROSBean;
-import gov.nih.nci.calab.dto.characterization.invitro.GlucuronidationSulphationBean;
-import gov.nih.nci.calab.dto.characterization.invitro.OxidativeStressBean;
-import gov.nih.nci.calab.dto.characterization.invitro.EnzymeInductionBean;
 import gov.nih.nci.calab.dto.characterization.invitro.Caspase3ActivationBean;
 import gov.nih.nci.calab.dto.characterization.invitro.CellViabilityBean;
+import gov.nih.nci.calab.dto.characterization.invitro.ChemotaxisBean;
+import gov.nih.nci.calab.dto.characterization.invitro.CoagulationBean;
+import gov.nih.nci.calab.dto.characterization.invitro.ComplementActivationBean;
+import gov.nih.nci.calab.dto.characterization.invitro.CytokineInductionBean;
+import gov.nih.nci.calab.dto.characterization.invitro.EnzymeInductionBean;
+import gov.nih.nci.calab.dto.characterization.invitro.GlucuronidationSulphationBean;
+import gov.nih.nci.calab.dto.characterization.invitro.HemolysisBean;
+import gov.nih.nci.calab.dto.characterization.invitro.LeukocyteProliferationBean;
+import gov.nih.nci.calab.dto.characterization.invitro.NKCellCytotoxicActivityBean;
+import gov.nih.nci.calab.dto.characterization.invitro.OxidativeBurstBean;
+import gov.nih.nci.calab.dto.characterization.invitro.OxidativeStressBean;
+import gov.nih.nci.calab.dto.characterization.invitro.PhagocytosisBean;
+import gov.nih.nci.calab.dto.characterization.invitro.PlasmaProteinBindingBean;
+import gov.nih.nci.calab.dto.characterization.invitro.PlateAggregationBean;
+import gov.nih.nci.calab.dto.characterization.invitro.ROSBean;
+import gov.nih.nci.calab.dto.characterization.physical.MolecularWeightBean;
+import gov.nih.nci.calab.dto.characterization.physical.MorphologyBean;
+import gov.nih.nci.calab.dto.characterization.physical.PurityBean;
+import gov.nih.nci.calab.dto.characterization.physical.ShapeBean;
+import gov.nih.nci.calab.dto.characterization.physical.SizeBean;
+import gov.nih.nci.calab.dto.characterization.physical.SolubilityBean;
+import gov.nih.nci.calab.dto.characterization.physical.StabilityBean;
 import gov.nih.nci.calab.dto.characterization.physical.SurfaceBean;
 import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.security.UserService;
@@ -203,6 +204,14 @@ public class SubmitNanoparticleService {
 			
 			if (achar.getCharacterizationProtocol() != null) {
 				ida.store(achar.getCharacterizationProtocol());
+			}
+			
+			if (achar.getDerivedBioAssayDataCollection()!= null) {
+				for(DerivedBioAssayData data: achar.getDerivedBioAssayDataCollection()){
+					if (data.getFile()!= null) {
+						ida.store(data.getFile());
+					}
+				}
 			}
 				
 			// check if viewTitle is already used the same type of
@@ -802,6 +811,8 @@ public class SubmitNanoparticleService {
 		fileBean.setName(file.getFileName());
 		fileBean.setPath(path);
 		fileBean.setId(fileNumber);
+		fileBean.setDescription(description);
+		fileBean.setTitle(title);
 		fileBean.setVisibilityGroups(visibilities);
 		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
 		String fileName = fileBean.getName();
