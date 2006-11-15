@@ -27,8 +27,8 @@ public class ConditionBean {
 	public ConditionBean(Condition condition) {
 		this.id = condition.getId().toString();
 		this.type = condition.getType();
-		this.value = condition.getValue().getValue();
-		this.valueUnit = condition.getValue().getUnitOfMeasurement();
+		this.value = (condition.getValue()!= null)?condition.getValue().getValue():"";
+		this.valueUnit = (condition.getValue()!= null)?condition.getValue().getUnitOfMeasurement():"";
 	}
 
 	public String getId() {
