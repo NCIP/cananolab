@@ -200,8 +200,10 @@ public class InvitroEnzymeInductionAction extends AbstractDispatchAction {
 			
 			if (obj.getFile() != null) {
 				CharacterizationFileBean fileBean = new CharacterizationFileBean();
-				fileBean.setName(this.getName(obj.getFile()));
-				fileBean.setPath(this.getPath(obj.getFile()));
+//				fileBean.setName(this.getName(obj.getFile()));
+//				fileBean.setPath(this.getPath(obj.getFile()));
+				fileBean.setName(obj.getFile().getFilename());
+				fileBean.setPath(obj.getFile().getPath());
 				fileBean.setId(Integer.toString(fileNumber)); 
 	
 				request.getSession().setAttribute("characterizationFile" + fileNumber,
