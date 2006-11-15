@@ -1,5 +1,8 @@
 package gov.nih.nci.calab.dto.characterization;
 
+import gov.nih.nci.calab.domain.DerivedDataFile;
+import gov.nih.nci.calab.domain.LabFile;
+
 import java.util.Date;
 
 /**
@@ -29,6 +32,16 @@ public class CharacterizationFileBean {
 	private String path;
 
 	private String name;
+	
+	private String fileId;
+
+	public String getFileId() {
+		return fileId;
+	}
+
+	public void setFileId(String fileId) {
+		this.fileId = fileId;
+	}
 
 	public CharacterizationFileBean() {
 		super();
@@ -113,6 +126,21 @@ public class CharacterizationFileBean {
 
 	public void setVisibilityGroups(String[] visibilityGroups) {
 		this.visibilityGroups = visibilityGroups;
+	}
+
+	public DerivedDataFile getDomainObject(){
+		DerivedDataFile labfile = new DerivedDataFile();
+		if (getFileId() != null && getFileId().length() > 0) {
+			labfile.setId(new Long(getFileId()));
+		}
+		labfile.setCreatedBy(createdBy);
+		labfile.setCreatedDate(createdDate);
+		labfile.setDescription(description);
+		labfile.setFilename(name);
+		labfile.setPath(path);
+		labfile.setTitle(title);
+		
+		return labfile;
 	}
 
 }
