@@ -1,8 +1,8 @@
 package gov.nih.nci.calab.dto.characterization;
 
-import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
-
+import gov.nih.nci.calab.domain.LabFile;
 import gov.nih.nci.calab.domain.nano.characterization.Datum;
+import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +43,19 @@ public class DerivedBioAssayDataBean {
 		this.type = table.getType();
 		
 		this.file = new CharacterizationFileBean();
-		this.file.setName(table.getFile());
+//		this.file.setName(table.getFile());
+		LabFile doFile = table.getFile();
+		if (doFile != null) {
+			this.file.setCreatedBy(doFile.getCreatedBy());
+			this.file.setCreatedDate(doFile.getCreatedDate());
+			this.file.setDescription(doFile.getDescription());
+			this.file.setId(doFile.getId().toString());
+			this.file.setName(doFile.getFilename());
+			this.file.setPath(doFile.getPath());
+			this.file.setTitle(doFile.getTitle());
+			
+			// TODO: visibility group
+		}
 
 		/*
 		for (CharacterizationTableDataBean tableData : this.getTableDataList()) {
@@ -105,7 +117,8 @@ public class DerivedBioAssayDataBean {
 		table.setType(type);
 		//TODO need to decide whether use fileId and file object
 		if (file != null)
-		    table.setFile(file.getPath() + file.getName());
+//		    table.setFile(file.getPath() + file.getName());
+			table.setFile(file.getDomainObject());
 		for (DatumBean datum : this.getDatumList()) {
 			table.getDatumCollection().add(datum.getDomainObj());
 		}

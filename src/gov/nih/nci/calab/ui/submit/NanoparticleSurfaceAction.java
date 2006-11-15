@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSurfaceAction.java,v 1.4 2006-11-08 16:44:30 chand Exp $ */
+/* CVS $Id: NanoparticleSurfaceAction.java,v 1.5 2006-11-15 14:51:38 zengje Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Surface;
@@ -222,8 +222,10 @@ public class NanoparticleSurfaceAction extends AbstractDispatchAction {
 			
 			if (obj.getFile() != null) {
 				CharacterizationFileBean fileBean = new CharacterizationFileBean();
-				fileBean.setName(this.getName(obj.getFile()));
-				fileBean.setPath(this.getPath(obj.getFile()));
+//				fileBean.setName(this.getName(obj.getFile()));
+//				fileBean.setPath(this.getPath(obj.getFile()));
+				fileBean.setName(obj.getFile().getFilename());
+				fileBean.setPath(obj.getFile().getPath());
 				fileBean.setId(Integer.toString(fileNumber)); 
 	
 				request.getSession().setAttribute("characterizationFile" + fileNumber,
