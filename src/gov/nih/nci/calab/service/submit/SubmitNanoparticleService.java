@@ -43,6 +43,8 @@ import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CalabConstants;
 
+import gov.nih.nci.calab.service.util.file.HttpFileUploadSessionData;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -798,10 +800,14 @@ public class SubmitNanoparticleService {
 			String description, String comments, String[] keywords,
 			String[] visibilities,
 			String path,
-			String fileNumber) throws Exception {
+			String fileNumber,
+			String rootPath) throws Exception {
 
 		// TODO saves file to the file system
-		String outputFilename = path + file.getFileName();
+		HttpFileUploadSessionData sData = new HttpFileUploadSessionData();
+		String tagFileName = sData.getTimeStamp() + "_" + file.getFileName();
+		String outputFilename = rootPath + path + tagFileName;
+			
 		FileOutputStream oStream = new FileOutputStream(new File(outputFilename));
 		this.saveFile(file.getInputStream(), oStream);
 		
@@ -809,7 +815,7 @@ public class SubmitNanoparticleService {
 		
 		CharacterizationFileBean fileBean = new CharacterizationFileBean();
 		fileBean.setName(file.getFileName());
-		fileBean.setPath(path);
+		fileBean.setPath(path + tagFileName);
 		fileBean.setId(fileNumber);
 		fileBean.setDescription(description);
 		fileBean.setTitle(title);
