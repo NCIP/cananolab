@@ -6,21 +6,17 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSizeAction.java,v 1.12 2006-11-16 15:08:09 chand Exp $ */
+/* CVS $Id: NanoparticleSizeAction.java,v 1.13 2006-11-16 16:38:38 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
-
 import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.dto.characterization.physical.SizeBean;
-import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
-import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.CananoConstants;
-import gov.nih.nci.calab.service.util.PropertyReader;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
@@ -33,17 +29,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
-
-import org.apache.log4j.Logger;
-
-import java.io.FileInputStream;
-import java.io.File;
 
 
 public class NanoparticleSizeAction extends AbstractDispatchAction {
@@ -69,17 +61,8 @@ public class NanoparticleSizeAction extends AbstractDispatchAction {
 		String particleName = (String) theForm.get("particleName");
 		SizeBean sizeChar=(SizeBean) theForm.get("achar");
 		
-		String viewTitle = (String) theForm.get("viewTitle");
-		String description = (String) theForm.get("description");
-		String characterizationSource = (String) theForm.get("characterizationSource");
-		//sizeChar.setCharacterizationSource(characterizationSource);
-		//sizeChar.setDescription(description);
-		//sizeChar.setViewTitle(viewTitle);
-
-		if (sizeChar.getId() == null || sizeChar.getId() == "") {
-			
-			sizeChar.setId( (String) theForm.get("characterizationId") );
-			
+		if (sizeChar.getId() == null || sizeChar.getId() == "") {			
+			sizeChar.setId( (String) theForm.get("characterizationId") );			
 		}
 		
 		int fileNumber = 0;
@@ -196,26 +179,22 @@ public class NanoparticleSizeAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleType = (String) theForm.get("particleType");
+		DynaValidatorForm theForm = (DynaValidatorForm) form;		
 		String compositionId = (String) theForm.get("characterizationId");
 		
 		SearchNanoparticleService service = new SearchNanoparticleService();
 		Characterization aChar = service.getCharacterizationAndTableBy(compositionId);
 		
 		if (aChar == null)
-			aChar = service.getCharacterizationBy(compositionId);
+			//aChar = service.getCharacterizationBy(compositionId);
+			aChar=service.getCharacterizationAndTableBy(compositionId);
 			
 		HttpSession session = request.getSession();
 		// clear session data from the input forms
 		clearMap(session, theForm, mapping);
 
 		theForm.set("characterizationId", compositionId);
-		theForm.set("characterizationSource", aChar.getSource());
-		theForm.set("viewTitle", aChar.getIdentificationName());
-		theForm.set("description", aChar.getDescription());
-
-		
+				
 		int fileNumber = 0;
 		
 		for (DerivedBioAssayData obj : aChar.getDerivedBioAssayDataCollection()) {
@@ -309,6 +288,9 @@ public class NanoparticleSizeAction extends AbstractDispatchAction {
 		request.setAttribute("fileNumber", fileNumber);
 		request.setAttribute("characterization", "size");
 		request.setAttribute("loadFileForward", "sizeInputForm");
+		SubmitNanoparticleService service=new SubmitNanoparticleService();
+		List<CharacterizationFileBean> files=service.getAllRunFiles(particleName);
+		request.setAttribute("allRunFiles", files);
 		return mapping.findForward("loadFile");
 	}
 	
