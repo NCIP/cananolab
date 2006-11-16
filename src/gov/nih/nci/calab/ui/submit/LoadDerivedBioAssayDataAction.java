@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: LoadDerivedBioAssayDataAction.java,v 1.2 2006-11-02 18:35:01 chand Exp $ */
+/* CVS $Id: LoadDerivedBioAssayDataAction.java,v 1.3 2006-11-16 15:04:23 chand Exp $ */
 
 import java.io.File;
 
@@ -51,16 +51,21 @@ public class LoadDerivedBioAssayDataAction extends AbstractDispatchAction {
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 
 		String fileNumber = (String) theForm.get("fileNumber");
-		
+		String characterizationName = (String) theForm.get("characterization");
+
 		if (fileSource.equals("new")) {
 			FormFile file = (FormFile) theForm.get("file");
-			String path = PropertyReader.getProperty(CalabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
-			path = path + particleName + "\\";
-        	File pathDir = new File (path);
+			String rootPath = PropertyReader.getProperty(CalabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
+			if (rootPath.charAt(rootPath.length()-1) == File.separatorChar)
+				rootPath = rootPath.substring(0, rootPath.length()-1);
+
+			String path = File.separator + "particles" + File.separator + particleName + File.separator + characterizationName + File.separator;
+        	
+			File pathDir = new File (rootPath + path);
             if ( !pathDir.exists() ) pathDir.mkdirs();
 
 			fileBean = service.saveCharacterizationFile(particleName, file,
-					title, description, comments, keywordList, visibilities, path, fileNumber);
+					title, description, comments, keywordList, visibilities, path, fileNumber, rootPath);
 		} else {
 			String fileId = (String) theForm.get("fileId");
 			fileBean = service.getFile(fileId);
@@ -92,6 +97,7 @@ public class LoadDerivedBioAssayDataAction extends AbstractDispatchAction {
 		theForm.set("particleName", particleName);
 		theForm.set("fileNumber", fileNumber);
 		theForm.set("forwardPage", loadFileForward);
+		theForm.set("characterization", (String) request.getAttribute("characterization"));
 		return mapping.getInputForward();
 	}
 
