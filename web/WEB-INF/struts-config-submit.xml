@@ -399,6 +399,7 @@
 			<form-property name="fileNumber" type="java.lang.String" />
 			<form-property name="forwardPage" type="java.lang.String" />
 			<form-property name="particleName" type="java.lang.String" />
+			<form-property name="characterization" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="nanoparticleFunctionForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="dispatch" type="java.lang.String" />
