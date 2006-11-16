@@ -100,16 +100,16 @@
 													<c:choose>
 														<c:when test="${canUserUpdateParticle eq 'true'}">
 															<logic:present name="characterizationFile${status.index}">
-																<bean:define id="fileId" name='characterizationFile${status.index}' property='id' type="java.lang.String"/>
-																<html:hidden name="achar.derivedBioAssayData" property="fileId" value="${fileId}" indexed="true" />
-																<a href="nanoparticleSize.do?dispatch=download&amp;fileId=${fileId}"><bean:write name="characterizationFile${status.index}" property="name" /></a>
+																<bean:define id="fileId" name='characterizationFile${status.index}' property='id' type="java.lang.String"/>																
+																<html:hidden name="achar.derivedBioAssayData" property="fileId" value="${fileId}" indexed="true" />																
+																<a href="nanoparticleSize.do?dispatch=download&amp;fileId=${fileId}"><bean:write name="characterizationFile${status.index}" property="displayName" /></a>																
 															</logic:present>
 															<logic:notPresent name="characterizationFile${status.index}">
 												Click on "Load File" button
 											</logic:notPresent>
 														</c:when>
 														<c:otherwise>
-						${nanoparticleSizeForm.map.achar.derivedBioAssayData[status.index].file.name}&nbsp;
+						${nanoparticleSizeForm.map.achar.derivedBioAssayData[status.index].file.displayName}&nbsp;
 					</c:otherwise>
 													</c:choose>													
 												</td>
