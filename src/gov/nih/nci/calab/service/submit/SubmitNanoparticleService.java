@@ -4,9 +4,9 @@ import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
 import gov.nih.nci.calab.domain.InstrumentType;
 import gov.nih.nci.calab.domain.Keyword;
+import gov.nih.nci.calab.domain.LabFile;
 import gov.nih.nci.calab.domain.Manufacturer;
 import gov.nih.nci.calab.domain.OutputFile;
-import gov.nih.nci.calab.domain.Run;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
@@ -42,7 +42,7 @@ import gov.nih.nci.calab.dto.characterization.physical.SurfaceBean;
 import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CalabConstants;
-
+import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.service.util.file.HttpFileUploadSessionData;
 
 import java.io.File;
@@ -852,6 +852,7 @@ public class SubmitNanoparticleService {
 		}
 	}
 	
+
 	/**
 	 * Load the file for the given fileId from the database
 	 * 
@@ -859,15 +860,29 @@ public class SubmitNanoparticleService {
 	 * @return
 	 */
 	public CharacterizationFileBean getFile(String fileId) throws Exception {
-		// TODO query from database.
-		CharacterizationFileBean fileBean = new CharacterizationFileBean();
-		fileBean.setName("existing test file");
-		fileBean.setId("2");
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		CharacterizationFileBean fileBean = null;
+		try {
+			ida.open();
+			LabFile charFile = (LabFile) ida.load(LabFile.class, StringUtils
+					.convertToLong(fileId));
+			fileBean=new CharacterizationFileBean(charFile);
+		} catch (Exception e) {
+			e.printStackTrace();
+			ida.rollback();
+			logger.error("Problem getting file with file ID: "
+					+ fileId);
+			throw e;
+		} finally {
+			ida.close();
+		}
 		return fileBean;
 	}
 
 	/**
-	 * Get the list of all run output files associated with a particle 
+	 * Get the list of all run output files associated with a particle
+	 * 
 	 * @param particleName
 	 * @return
 	 * @throws Exception
@@ -879,25 +894,21 @@ public class SubmitNanoparticleService {
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
-			String query = "from Run run join fetch run.outputFileCollection join run.runSampleContainerCollection runContainer where runContainer.sampleContainer.sample.name='"
+			String query = "select distinct outFile from Run run join run.outputFileCollection outFile join run.runSampleContainerCollection runContainer where runContainer.sampleContainer.sample.name='"
 					+ particleName + "'";
 			List results = ida.search(query);
 
 			for (Object obj : results) {
-				Run run = (Run) obj;
-				for (Object fileObj : run.getOutputFileCollection()) {
-					OutputFile file = (OutputFile) fileObj;
-					// active status only
-					if (file.getDataStatus() == null) {
-						CharacterizationFileBean fileBean = new CharacterizationFileBean();
-						fileBean.setId(file.getId().toString());
-						fileBean.setName(file.getFilename());
-						fileBean.setPath(file.getPath());
-						runFiles.add(fileBean);
-					}
+				OutputFile file = (OutputFile) obj;
+				// active status only
+				if (file.getDataStatus() == null) {
+					CharacterizationFileBean fileBean = new CharacterizationFileBean();
+					fileBean.setId(file.getId().toString());
+					fileBean.setName(file.getFilename());
+					fileBean.setPath(file.getPath());
+					runFiles.add(fileBean);
 				}
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			ida.rollback();
