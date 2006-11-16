@@ -1,8 +1,14 @@
 package gov.nih.nci.calab.ui.core;
 
+import java.io.File;
+import java.io.FileInputStream;
+
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
+import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
 import gov.nih.nci.calab.exception.InvalidSessionException;
 import gov.nih.nci.calab.exception.NoAccessException;
+import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.PropertyReader;
 import gov.nih.nci.calab.ui.submit.NanoparticleSizeAction;
 
 import javax.servlet.http.HttpServletRequest;
@@ -111,4 +117,47 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 		return mapping.getInputForward();
 	}
 
+	/**
+	 * Download action to handle download characterization file
+	 * @param 
+	 * @return
+	 */
+	public ActionForward download (ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		String fileId=request.getParameter("fileId");
+
+		String rootPath = PropertyReader.getProperty(CalabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
+		if (rootPath.charAt(rootPath.length()-1) == File.separatorChar)
+			rootPath = rootPath.substring(0, rootPath.length()-1);
+
+		CharacterizationFileBean fileBean = (CharacterizationFileBean) request.getSession().getAttribute("characterizationFile" + fileId);
+		String filename = rootPath + fileBean.getPath();
+		
+		File dFile = new File(filename);
+		if (dFile.exists()) {
+			response.setContentType("application/octet-stream");
+			response.setHeader("Content-disposition", "attachment;filename=" + fileBean.getName());
+			response.setHeader("Cache-Control", "no-cache");
+		
+			java.io.InputStream in = new FileInputStream (dFile);
+			java.io.OutputStream out = response.getOutputStream();
+
+			byte[] bytes = new byte[32768];
+	
+			int numRead = 0;
+			while ((numRead = in.read(bytes)) > 0) {
+				out.write(bytes, 0, numRead);
+			}
+			out.close();
+		} else {
+			throw new Exception ("ERROR: file not found.");
+		}
+			
+		
+		return null;
+	}
+	
 }
