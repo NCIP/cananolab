@@ -393,7 +393,7 @@ public class InvitroLeukocyteProliferationAction extends AbstractDispatchAction 
 		request.setAttribute("particleName", particleName);	
 		request.setAttribute("fileNumber", fileNumber);		
 		request.setAttribute("characterization", "leukocyteProliferation");
-		request.setAttribute("loadFileForward", "leukocyteProliferationInputForm");
+		request.setAttribute("loadFileForward", "invitroLeukocyteProliferationForm");
 		return mapping.findForward("loadFile");
 	}
 	

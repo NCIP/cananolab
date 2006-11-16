@@ -393,7 +393,7 @@ public class InvitroOxidativeBurstAction extends AbstractDispatchAction {
 		request.setAttribute("particleName", particleName);	
 		request.setAttribute("fileNumber", fileNumber);		
 		request.setAttribute("characterization", "oxidativeBurst");
-		request.setAttribute("loadFileForward", "oxidativeBurstInputForm");
+		request.setAttribute("loadFileForward", "invitroOxidativeBurstForm");
 		return mapping.findForward("loadFile");
 	}
 	

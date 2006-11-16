@@ -393,7 +393,7 @@ public class InvitroEnzymeInductionAction extends AbstractDispatchAction {
 		request.setAttribute("particleName", particleName);	
 		request.setAttribute("fileNumber", fileNumber);		
 		request.setAttribute("characterization", "enzymeInduction");
-		request.setAttribute("loadFileForward", "enzymeInductionInputForm");
+		request.setAttribute("loadFileForward", "invitroEnzymeInductionForm");
 		return mapping.findForward("loadFile");
 	}
 	

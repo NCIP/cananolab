@@ -393,7 +393,7 @@ public class InvitroNKCellCytotoxicActivityAction extends AbstractDispatchAction
 		request.setAttribute("particleName", particleName);	
 		request.setAttribute("fileNumber", fileNumber);		
 		request.setAttribute("characterization", "nkCellCytotoxicActivity");
-		request.setAttribute("loadFileForward", "nkCellCytotoxicActivityInputForm");
+		request.setAttribute("loadFileForward", "invitroNKCellCytotoxicActivityForm");
 		return mapping.findForward("loadFile");
 	}
 	

@@ -393,7 +393,7 @@ public class InvitroHemolysisAction extends AbstractDispatchAction {
 		request.setAttribute("particleName", particleName);	
 		request.setAttribute("fileNumber", fileNumber);		
 		request.setAttribute("characterization", "hemolysis");
-		request.setAttribute("loadFileForward", "hemolysisInputForm");
+		request.setAttribute("loadFileForward", "invitroHemolysisForm");
 		return mapping.findForward("loadFile");
 	}
 	

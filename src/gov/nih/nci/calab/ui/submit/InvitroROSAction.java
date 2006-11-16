@@ -393,7 +393,7 @@ public class InvitroROSAction extends AbstractDispatchAction {
 		request.setAttribute("particleName", particleName);	
 		request.setAttribute("fileNumber", fileNumber);		
 		request.setAttribute("characterization", "ros");
-		request.setAttribute("loadFileForward", "rosInputForm");
+		request.setAttribute("loadFileForward", "invitroROSForm");
 		return mapping.findForward("loadFile");
 	}
 	

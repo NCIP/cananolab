@@ -393,7 +393,7 @@ public class InvitroComplementActivationAction extends AbstractDispatchAction {
 		request.setAttribute("particleName", particleName);	
 		request.setAttribute("fileNumber", fileNumber);		
 		request.setAttribute("characterization", "complementActivation");
-		request.setAttribute("loadFileForward", "complementActivationInputForm");
+		request.setAttribute("loadFileForward", "invitroComplementActivationForm");
 		return mapping.findForward("loadFile");
 	}
 	

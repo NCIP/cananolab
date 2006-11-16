@@ -395,7 +395,7 @@ public class InvitroCaspase3ActivationAction extends AbstractDispatchAction {
 		request.setAttribute("particleName", particleName);	
 		request.setAttribute("fileNumber", fileNumber);		
 		request.setAttribute("characterization", "caspase3Activation");
-		request.setAttribute("loadFileForward", "caspase3ActivityInputForm");
+		request.setAttribute("loadFileForward", "invitroCaspase3ActivationForm");
 		return mapping.findForward("loadFile");
 	}
 	

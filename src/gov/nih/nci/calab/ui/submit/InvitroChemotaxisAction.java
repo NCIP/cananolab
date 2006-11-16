@@ -393,7 +393,7 @@ public class InvitroChemotaxisAction extends AbstractDispatchAction {
 		request.setAttribute("particleName", particleName);	
 		request.setAttribute("fileNumber", fileNumber);		
 		request.setAttribute("characterization", "chemotaxis");
-		request.setAttribute("loadFileForward", "chemotaxisInputForm");
+		request.setAttribute("loadFileForward", "invitroChemotaxisForm");
 		return mapping.findForward("loadFile");
 	}
 	
