@@ -65,7 +65,7 @@
 											</td>
 											<td class="borderlessLabel">
 												<html:select property="fileId">
-													<html:options collection="allRunFiles" property="name" labelProperty="name" />
+													<html:options collection="allRunFiles" property="id" labelProperty="displayName" />
 												</html:select>
 											</td>
 										</tr>
