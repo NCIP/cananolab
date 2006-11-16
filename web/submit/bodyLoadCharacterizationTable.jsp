@@ -146,6 +146,7 @@
 												<html:hidden property="forwardPage" />
 												<html:hidden property="fileNumber" />
 												<html:hidden property="particleName" />
+												<html:hidden property="characterization" />
 												<html:submit />
 											</div>
 										</div>
