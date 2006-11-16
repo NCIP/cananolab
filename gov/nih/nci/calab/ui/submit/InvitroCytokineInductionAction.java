@@ -393,7 +393,7 @@ public class InvitroCytokineInductionAction extends AbstractDispatchAction {
 		request.setAttribute("particleName", particleName);	
 		request.setAttribute("fileNumber", fileNumber);		
 		request.setAttribute("characterization", "cytokineInduction");
-		request.setAttribute("loadFileForward", "cytokineInductionInputForm");
+		request.setAttribute("loadFileForward", "invitroCytokineInductionForm");
 		return mapping.findForward("loadFile");
 	}
 	

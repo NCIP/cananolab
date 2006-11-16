@@ -393,7 +393,7 @@ public class InvitroPhagocytosisAction extends AbstractDispatchAction {
 		request.setAttribute("particleName", particleName);	
 		request.setAttribute("fileNumber", fileNumber);		
 		request.setAttribute("characterization", "phagocytosis");
-		request.setAttribute("loadFileForward", "phagocytosisInputForm");
+		request.setAttribute("loadFileForward", "invitroPhagocytosisForm");
 		return mapping.findForward("loadFile");
 	}
 	

@@ -393,7 +393,7 @@ public class InvitroCFU_GMAction extends AbstractDispatchAction {
 		request.setAttribute("particleName", particleName);	
 		request.setAttribute("fileNumber", fileNumber);		
 		request.setAttribute("characterization", "cfu_gm");
-		request.setAttribute("loadFileForward", "cfu_gmInputForm");
+		request.setAttribute("loadFileForward", "invitroCFU_GMForm");
 		return mapping.findForward("loadFile");
 	}
 	

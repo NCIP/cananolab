@@ -393,7 +393,7 @@ public class InvitroPlateAggregationAction extends AbstractDispatchAction {
 		request.setAttribute("particleName", particleName);	
 		request.setAttribute("fileNumber", fileNumber);		
 		request.setAttribute("characterization", "plateAggregation");
-		request.setAttribute("loadFileForward", "plateAggregationInputForm");
+		request.setAttribute("loadFileForward", "invitroPlateAggregationForm");
 		return mapping.findForward("loadFile");
 	}
 	
