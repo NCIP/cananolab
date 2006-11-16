@@ -41,14 +41,6 @@ public class CompositionBean extends CharacterizationBean {
 		this.composingElements = composingElements;
 	}
 
-	public ComposingElementBean getElement(int ind) {
-		return composingElements.get(ind);
-	}
-
-	public void setElement(int ind, ComposingElementBean composingElement) {
-		composingElements.set(ind, composingElement);
-	}
-
 	public String getNumberOfElements() {
 		return numberOfElements;
 	}

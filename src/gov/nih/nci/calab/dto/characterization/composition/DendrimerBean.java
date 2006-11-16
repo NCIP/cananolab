@@ -107,14 +107,6 @@ public class DendrimerBean extends CompositionBean {
 		this.surfaceGroups = surfaceGroups;
 	}
 
-	public SurfaceGroupBean getSurfaceGroup(int ind) {
-		return surfaceGroups.get(ind);
-	}
-
-	public void setSurfaceGroup(int ind, SurfaceGroupBean surfaceGroup) {
-		surfaceGroups.set(ind, surfaceGroup);
-	}
-
 	public ComposingElementBean getCore() {
 		return core;
 	}
