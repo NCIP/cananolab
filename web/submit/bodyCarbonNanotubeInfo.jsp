@@ -110,7 +110,7 @@
 		</tr>
 		<tr>
 			<td class="completeLabel" colspan="4">
-				<c:forEach var="carbonNanotube.element" items="${nanoparticleCompositionForm.map.carbonNanotube.composingElements}" varStatus="status">
+				<c:forEach var="carbonNanotube.composingElements" items="${nanoparticleCompositionForm.map.carbonNanotube.composingElements}" varStatus="status">
 					<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 						<tbody>
 							<tr class="topBorder">
@@ -127,7 +127,7 @@
 								<td class="label">
 									<c:choose>
 										<c:when test="${canUserUpdateParticle eq 'true'}">
-											<html:text name="carbonNanotube.element" indexed="true" property="elementType" />
+											<html:text name="carbonNanotube.composingElements" indexed="true" property="elementType" />
 										</c:when>
 										<c:otherwise>
 						${nanoparticleCompositionForm.map.carbonNanotube.composingElements[status.index].elementType}&nbsp;
@@ -141,7 +141,7 @@
 								<td class="rightLabel">
 									<c:choose>
 										<c:when test="${canUserUpdateParticle eq 'true'}">
-											<html:text name="carbonNanotube.element" indexed="true" property="chemicalName" />
+											<html:text name="carbonNanotube.composingElements" indexed="true" property="chemicalName" />
 										</c:when>
 										<c:otherwise>
 						${nanoparticleCompositionForm.map.carbonNanotube.composingElements[status.index].chemicalName}&nbsp;
@@ -156,7 +156,7 @@
 								<td class="rightLabel" colspan="3">
 									<c:choose>
 										<c:when test="${canUserUpdateParticle eq 'true'}">
-											<html:textarea name="carbonNanotube.element" indexed="true" property="description" rows="3" />
+											<html:textarea name="carbonNanotube.composingElements" indexed="true" property="description" rows="3" />
 										</c:when>
 										<c:otherwise>
 						${nanoparticleCompositionForm.map.carbonNanotube.composingElements[status.index].description}&nbsp;
