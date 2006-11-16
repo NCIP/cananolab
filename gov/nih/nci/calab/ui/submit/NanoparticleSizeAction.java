@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSizeAction.java,v 1.13 2006-11-16 16:38:38 pansu Exp $ */
+/* CVS $Id: NanoparticleSizeAction.java,v 1.14 2006-11-16 16:55:34 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
@@ -17,7 +17,7 @@ import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.service.util.CananoConstants;
-import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
+import gov.nih.nci.calab.ui.core.BaseCharacterizationAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
 import java.util.ArrayList;
@@ -37,9 +37,9 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
-
-public class NanoparticleSizeAction extends AbstractDispatchAction {
-	private static Logger logger = Logger.getLogger(NanoparticleSizeAction.class);
+public class NanoparticleSizeAction extends BaseCharacterizationAction {
+	private static Logger logger = Logger
+			.getLogger(NanoparticleSizeAction.class);
 
 	/**
 	 * Add or update the data to database
@@ -59,21 +59,23 @@ public class NanoparticleSizeAction extends AbstractDispatchAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleType = (String) theForm.get("particleType");
 		String particleName = (String) theForm.get("particleName");
-		SizeBean sizeChar=(SizeBean) theForm.get("achar");
-		
-		if (sizeChar.getId() == null || sizeChar.getId() == "") {			
-			sizeChar.setId( (String) theForm.get("characterizationId") );			
+		SizeBean sizeChar = (SizeBean) theForm.get("achar");
+
+		if (sizeChar.getId() == null || sizeChar.getId() == "") {
+			sizeChar.setId((String) theForm.get("characterizationId"));
 		}
-		
+
 		int fileNumber = 0;
 		for (DerivedBioAssayDataBean obj : sizeChar.getDerivedBioAssayData()) {
-			CharacterizationFileBean fileBean = (CharacterizationFileBean) request.getSession().getAttribute("characterizationFile" + fileNumber);
-			if (fileBean != null) {		
+			CharacterizationFileBean fileBean = (CharacterizationFileBean) request
+					.getSession().getAttribute(
+							"characterizationFile" + fileNumber);
+			if (fileBean != null) {
 				obj.setFile(fileBean);
 			}
 			fileNumber++;
 		}
-		
+
 		// set createdBy and createdDate for the composition
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		Date date = new Date();
@@ -92,18 +94,20 @@ public class NanoparticleSizeAction extends AbstractDispatchAction {
 
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
-		
+
 		HttpSession session = request.getSession();
 		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
 		String selectedInstrumentType = null;
-		
-		if (sizeChar.getInstrument().getOtherInstrumentType() != null && sizeChar.getInstrument().getOtherInstrumentType() != "")
-			selectedInstrumentType = sizeChar.getInstrument().getOtherInstrumentType();
+
+		if (sizeChar.getInstrument().getOtherInstrumentType() != null
+				&& sizeChar.getInstrument().getOtherInstrumentType() != "")
+			selectedInstrumentType = sizeChar.getInstrument()
+					.getOtherInstrumentType();
 		else
 			selectedInstrumentType = sizeChar.getInstrument().getType();
-		
-		InitSessionSetup.getInstance().setManufacturerPerType(session, selectedInstrumentType);
 
+		InitSessionSetup.getInstance().setManufacturerPerType(session,
+				selectedInstrumentType);
 
 		return forward;
 	}
@@ -141,13 +145,13 @@ public class NanoparticleSizeAction extends AbstractDispatchAction {
 		theForm.set("particleName", particleName);
 		theForm.set("particleType", particleType);
 		theForm.set("achar", new SizeBean());
-		
-	    for (Enumeration e = session.getAttributeNames(); e.hasMoreElements() ;) {
-	    	String element = (String) e.nextElement();
-	        if (element.startsWith(CananoConstants.CHARACTERIZATION_FILE)) {
-	        	session.removeAttribute(element);
-	        }
-	    }
+
+		for (Enumeration e = session.getAttributeNames(); e.hasMoreElements();) {
+			String element = (String) e.nextElement();
+			if (element.startsWith(CananoConstants.CHARACTERIZATION_FILE)) {
+				session.removeAttribute(element);
+			}
+		}
 	}
 
 	private void initSetup(HttpServletRequest request, DynaValidatorForm theForm)
@@ -155,13 +159,16 @@ public class NanoparticleSizeAction extends AbstractDispatchAction {
 		HttpSession session = request.getSession();
 		String particleType = (String) theForm.get("particleType");
 		String particleName = (String) theForm.get("particleName");
-		String firstOption = InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-		InitSessionSetup.getInstance().setAllSizeDistributionGraphTypes(session);
+		String firstOption = InitSessionSetup.getInstance()
+				.setAllInstrumentTypes(session);
+		InitSessionSetup.getInstance()
+				.setAllSizeDistributionGraphTypes(session);
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
 		if (firstOption == "")
-			firstOption =  CananoConstants.OTHER;
-		InitSessionSetup.getInstance().setManufacturerPerType(session, firstOption);
+			firstOption = CananoConstants.OTHER;
+		InitSessionSetup.getInstance().setManufacturerPerType(session,
+				firstOption);
 		session.setAttribute("selectedInstrumentType", "");
 	}
 
@@ -179,51 +186,53 @@ public class NanoparticleSizeAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 
-		DynaValidatorForm theForm = (DynaValidatorForm) form;		
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String compositionId = (String) theForm.get("characterizationId");
-		
+
 		SearchNanoparticleService service = new SearchNanoparticleService();
-		Characterization aChar = service.getCharacterizationAndTableBy(compositionId);
-		
+		Characterization aChar = service
+				.getCharacterizationAndTableBy(compositionId);
+
 		if (aChar == null)
-			//aChar = service.getCharacterizationBy(compositionId);
-			aChar=service.getCharacterizationAndTableBy(compositionId);
-			
+			// aChar = service.getCharacterizationBy(compositionId);
+			aChar = service.getCharacterizationAndTableBy(compositionId);
+
 		HttpSession session = request.getSession();
 		// clear session data from the input forms
 		clearMap(session, theForm, mapping);
 
 		theForm.set("characterizationId", compositionId);
-				
+
 		int fileNumber = 0;
-		
+
 		for (DerivedBioAssayData obj : aChar.getDerivedBioAssayDataCollection()) {
-			
+
 			if (obj.getFile() != null) {
 				CharacterizationFileBean fileBean = new CharacterizationFileBean();
 				fileBean.setName(obj.getFile().getFilename());
 				fileBean.setPath(obj.getFile().getPath());
-				fileBean.setId(Integer.toString(fileNumber)); 
-				
-				request.getSession().setAttribute("characterizationFile" + fileNumber,
-						fileBean);
+				fileBean.setId(Integer.toString(fileNumber));
+
+				request.getSession().setAttribute(
+						"characterizationFile" + fileNumber, fileBean);
 			} else {
-				request.getSession().removeAttribute("characterizationFile" + fileNumber);
+				request.getSession().removeAttribute(
+						"characterizationFile" + fileNumber);
 			}
 			fileNumber++;
 		}
-			
-		
-	
+
 		SizeBean sChar = new SizeBean(aChar);
-		
+
 		theForm.set("achar", sChar);
-		
+
 		initSetup(request, theForm);
 
 		if (sChar.getInstrument() != null) {
-			InitSessionSetup.getInstance().setManufacturerPerType(session, sChar.getInstrument().getType());
-			session.setAttribute("selectedInstrumentType", sChar.getInstrument().getType());
+			InitSessionSetup.getInstance().setManufacturerPerType(session,
+					sChar.getInstrument().getType());
+			session.setAttribute("selectedInstrumentType", sChar
+					.getInstrument().getType());
 		}
 
 		return mapping.getInputForward();
@@ -271,6 +280,7 @@ public class NanoparticleSizeAction extends AbstractDispatchAction {
 
 	/**
 	 * Set up information needed for loading a characterization file
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -282,24 +292,26 @@ public class NanoparticleSizeAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleName=(String)theForm.get("particleName");
-		String fileNumber=(String)theForm.get("fileNumber");	
-		request.setAttribute("particleName", particleName);	
+		String particleName = (String) theForm.get("particleName");
+		String fileNumber = (String) theForm.get("fileNumber");
+		request.setAttribute("particleName", particleName);
 		request.setAttribute("fileNumber", fileNumber);
 		request.setAttribute("characterization", "size");
 		request.setAttribute("loadFileForward", "sizeInputForm");
-		SubmitNanoparticleService service=new SubmitNanoparticleService();
-		List<CharacterizationFileBean> files=service.getAllRunFiles(particleName);
+		SubmitNanoparticleService service = new SubmitNanoparticleService();
+		List<CharacterizationFileBean> files = service
+				.getAllRunFiles(particleName);
 		request.setAttribute("allRunFiles", files);
 		return mapping.findForward("loadFile");
 	}
-	
+
 	public void updateCharacterizationTables(SizeBean achar) {
-		String numberOfCharacterizationTables = achar.getNumberOfDerivedBioAssayData();
+		String numberOfCharacterizationTables = achar
+				.getNumberOfDerivedBioAssayData();
 		int tableNum = Integer.parseInt(numberOfCharacterizationTables);
-		List<DerivedBioAssayDataBean> origTables = achar.getDerivedBioAssayData();
-		int origNum = (origTables == null) ? 0 : origTables
-				.size();
+		List<DerivedBioAssayDataBean> origTables = achar
+				.getDerivedBioAssayData();
+		int origNum = (origTables == null) ? 0 : origTables.size();
 		List<DerivedBioAssayDataBean> tables = new ArrayList<DerivedBioAssayDataBean>();
 		// create new ones
 		if (origNum == 0) {
@@ -324,9 +336,4 @@ public class NanoparticleSizeAction extends AbstractDispatchAction {
 		}
 		achar.setDerivedBioAssayData(tables);
 	}
-
-	public boolean loginRequired() {
-		return true;
-	}
-	
 }
