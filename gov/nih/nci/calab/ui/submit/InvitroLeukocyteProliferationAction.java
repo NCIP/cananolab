@@ -1,7 +1,7 @@
 package gov.nih.nci.calab.ui.submit;
 
 /**
- * This class sets up input form for nvitro leukocyteProliferation characterization. 
+ * This class sets up input form for InVitro LeukocyteProliferation characterization. 
  *  
  * @author beasleyj
  */
@@ -154,14 +154,13 @@ public class InvitroLeukocyteProliferationAction extends AbstractDispatchAction 
 		InitSessionSetup.getInstance().setAllSizeDistributionGraphTypes(session);
 		InitSessionSetup.getInstance().setAllControlTypes(session);
 		InitSessionSetup.getInstance().setAllConditionTypes(session);
+		InitSessionSetup.getInstance().setAllConcentrationUnits(session);
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
 		if (firstOption == "")
 			firstOption =  CananoConstants.OTHER;
 		InitSessionSetup.getInstance().setManufacturerPerType(session, firstOption);
 		session.setAttribute("selectedInstrumentType", "");
-		if ( request.getSession().getAttribute("isControl") != null )
-			request.getSession().removeAttribute("isControl");
 	}
 
 	/**
@@ -200,8 +199,6 @@ public class InvitroLeukocyteProliferationAction extends AbstractDispatchAction 
 			
 			if (obj.getFile() != null) {
 				CharacterizationFileBean fileBean = new CharacterizationFileBean();
-//				fileBean.setName(this.getName(obj.getFile()));
-//				fileBean.setPath(this.getPath(obj.getFile()));
 				fileBean.setName(obj.getFile().getFilename());
 				fileBean.setPath(obj.getFile().getPath());
 				fileBean.setId(Integer.toString(fileNumber)); 
@@ -256,8 +253,6 @@ public class InvitroLeukocyteProliferationAction extends AbstractDispatchAction 
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		
-		System.out.println("\n\n==> Entering  InvitroLeukocyteProliferationAction::update ...\n\n"); 
-		
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleType = (String) theForm.get("particleType");
 		String particleName = (String) theForm.get("particleName");
@@ -265,17 +260,14 @@ public class InvitroLeukocyteProliferationAction extends AbstractDispatchAction 
 		String index=(String)request.getParameter("index");	
 		String type = (String)request.getParameter("type");
 		
-		System.out.println("\n\n==> InvitroLeukocyteProliferationAction::update  The request is " + type + "\n\n"); 
-		
 		if ( type != null && !type.equals("") && type.equals("charTables") ) {
 			updateCharacterizationTables(achar);
 		}
 		if ( type != null && !type.equals("") && type.equals("addControl") ) {
 			addControl(achar, index);
-			request.getSession().setAttribute("isControl", "true");
 		}
 		if ( type != null && !type.equals("") && type.equals("addConditions") ) {
-			request.getSession().setAttribute("isControl", "false");
+			addConditions(achar, index);
 		}
 		if ( type != null && !type.equals("") && type.equals("updateConditions") ) {
 			updateConditions(achar, index);
@@ -298,10 +290,44 @@ public class InvitroLeukocyteProliferationAction extends AbstractDispatchAction 
 	 * @return
 	 * @throws Exception
 	 */
+	public void addConditions(LeukocyteProliferationBean achar, String index) {
+		ControlBean control = null;
+		int tableIndex = new Integer(index).intValue();
+		
+		DerivedBioAssayDataBean derivedBioAssayData = (DerivedBioAssayDataBean)achar.getDerivedBioAssayData().get(tableIndex);
+		DatumBean datum = (DatumBean)derivedBioAssayData.getDatumList().get(0);
+		if ( datum.getControl() != null ) {
+			datum.setControl(control);
+		}
+		List<ConditionBean> conditions = new ArrayList<ConditionBean>();
+		ConditionBean particleConcentrationCondition = new ConditionBean();
+		particleConcentrationCondition.setType("Particle Concentration");
+		conditions.add(particleConcentrationCondition);
+		ConditionBean molecularConcentrationCondition = new ConditionBean();
+		molecularConcentrationCondition.setType("Molecular Concentration");
+		molecularConcentrationCondition.setValueUnit("uM");
+		conditions.add(molecularConcentrationCondition);
+		datum.setConditionList(conditions);
+	}
+
+	/**
+	 * Update multiple children on the same form
+	 * 
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
 	public void addControl(LeukocyteProliferationBean achar, String index) {
+		List<ConditionBean> conditionList = null;
 		int tableIndex = new Integer(index).intValue();
 		DerivedBioAssayDataBean derivedBioAssayData = (DerivedBioAssayDataBean)achar.getDerivedBioAssayData().get(tableIndex);
 		DatumBean datum = (DatumBean)derivedBioAssayData.getDatumList().get(0);
+		if ( datum.getConditionList() != null ) {
+			datum.setConditionList(conditionList);
+		}			
 		ControlBean control = new ControlBean();
 		datum.setControl(control);
 	}
@@ -318,14 +344,9 @@ public class InvitroLeukocyteProliferationAction extends AbstractDispatchAction 
 	 */
 	public void updateConditions(LeukocyteProliferationBean achar, String index) {
 		int tableIndex = new Integer(index).intValue();
-		System.out.println("==> The table index is " + tableIndex);
 		DerivedBioAssayDataBean derivedBioAssayDataBean = (DerivedBioAssayDataBean)achar.getDerivedBioAssayData().get(tableIndex);
 		DatumBean datumBean = (DatumBean)(derivedBioAssayDataBean.getDatumList().get(0));
-		System.out.println("==> The datum is " + datumBean);
-		System.out.println("==> The datum(0) type is " + datumBean.getType());
-		System.out.println("==> The datum(0) value is " + datumBean.getValue());
 		String numberOfConditions = datumBean.getNumberOfConditions();
-		System.out.println("==> The number of Conditions is " + numberOfConditions);
 		int conditionNum = Integer.parseInt(numberOfConditions);
 		List<ConditionBean> origConditions = datumBean.getConditionList();
 		int origNum = (origConditions == null) ? 0 : origConditions.size();
@@ -371,6 +392,7 @@ public class InvitroLeukocyteProliferationAction extends AbstractDispatchAction 
 		String fileNumber=(String)theForm.get("fileNumber");	
 		request.setAttribute("particleName", particleName);	
 		request.setAttribute("fileNumber", fileNumber);		
+		request.setAttribute("characterization", "leukocyteProliferation");
 		request.setAttribute("loadFileForward", "leukocyteProliferationInputForm");
 		return mapping.findForward("loadFile");
 	}
@@ -407,84 +429,6 @@ public class InvitroLeukocyteProliferationAction extends AbstractDispatchAction 
 
 	public boolean loginRequired() {
 		return true;
-	}
-	/**
-	 * Download action to handle download characterization file
-	 * @param 
-	 * @return
-	 */
-	public ActionForward download (ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String fileId=request.getParameter("fileId");
-
-		CharacterizationFileBean fileBean = (CharacterizationFileBean) request.getSession().getAttribute("characterizationFile" + fileId);
-		String filename = fileBean.getPath() + fileBean.getName();
-		
-		File dFile = new File(filename);
-		if (dFile.exists()) {
-			response.setContentType("application/octet-stream");
-			response.setHeader("Content-disposition", "attachment;filename=" + this.getName(filename));
-			response.setHeader("Cache-Control", "no-cache");
-		
-			java.io.InputStream in = new FileInputStream (dFile);
-			java.io.OutputStream out = response.getOutputStream();
-
-			byte[] bytes = new byte[32768];
-	
-			int numRead = 0;
-			while ((numRead = in.read(bytes)) > 0) {
-				out.write(bytes, 0, numRead);
-			}
-			out.close();
-		} else {
-			throw new Exception ("ERROR: file not found.");
-		}
-			
-		
-		return null;
-	}
-	
-	/**
-	 * Retrieve the file name from the full path
-	 * @param fullPath
-	 * @return
-	 */
-	private String getName(String fullPath) {
-		String rv = null;
-		
-        String separator = fullPath.indexOf('/') < 0 ? "\\" : "/"; 
-		
-		int idx = fullPath.lastIndexOf(separator);
-		
-		if (idx >= 0)
-			rv = fullPath.substring(idx+1); 
-		else
-			rv = fullPath;
-				
-		return rv;
-	}
-
-	/**
-	 * Retrieve the path from the full path
-	 * @param fullPath
-	 * @return
-	 */
-	private String getPath(String fullPath) {
-		String rv = null;
-		
-        String separator = fullPath.indexOf('/') < 0 ? "\\" : "/"; 
-		
-		int idx = fullPath.lastIndexOf(separator);
-		
-		if (idx >= 0)
-			rv = fullPath.substring(0, idx+1);
-		else
-			rv = fullPath;
-				
-		return rv;
 	}
 	
 }

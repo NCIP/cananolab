@@ -24,25 +24,23 @@ public class CoagulationBean extends CharacterizationBean {
 	public CoagulationBean(Characterization aChar) {
 		super(aChar);
 	}
-		
+	
 	public void initSetup() {
 		for (DerivedBioAssayDataBean table: getDerivedBioAssayData()) {
-			DatumBean percentCoagulation=new DatumBean();
-			percentCoagulation.setType("Percent Coagulation");
-			percentCoagulation.setValueUnit("%");
-			table.getDatumList().add(percentCoagulation);
+			DatumBean coagulationTime=new DatumBean();
+			coagulationTime.setType("Coagulation Time");
+			table.getDatumList().add(coagulationTime);
 		}
 	}
 	
-	public void setCharacterizationTables(
+	public void setDerivedBioAssayData(
 			List<DerivedBioAssayDataBean> derivedBioAssayData) {
 		super.setDerivedBioAssayData(derivedBioAssayData);
 		
 		for (DerivedBioAssayDataBean table:getDerivedBioAssayData()) {
-			DatumBean coagulation=new DatumBean();
-			coagulation.setType("Percent Coagulation");
-			coagulation.setValueUnit("%");
-			table.getDatumList().add(coagulation);
+			DatumBean coagulationTime=new DatumBean();
+			coagulationTime.setType("Coagulation Time");
+			table.getDatumList().add(coagulationTime);
 		}
 	}
 	

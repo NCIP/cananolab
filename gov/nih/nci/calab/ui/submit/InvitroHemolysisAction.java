@@ -1,7 +1,7 @@
 package gov.nih.nci.calab.ui.submit;
 
 /**
- * This class sets up input form for nvitro hemolysis characterization. 
+ * This class sets up input form for InVitro Hemolysis characterization. 
  *  
  * @author beasleyj
  */
@@ -14,7 +14,6 @@ import gov.nih.nci.calab.dto.characterization.ConditionBean;
 import gov.nih.nci.calab.dto.characterization.ControlBean;
 import gov.nih.nci.calab.dto.characterization.DatumBean;
 import gov.nih.nci.calab.dto.characterization.invitro.HemolysisBean;
-import gov.nih.nci.calab.dto.characterization.physical.SizeBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
@@ -26,7 +25,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -163,12 +161,6 @@ public class InvitroHemolysisAction extends AbstractDispatchAction {
 			firstOption =  CananoConstants.OTHER;
 		InitSessionSetup.getInstance().setManufacturerPerType(session, firstOption);
 		session.setAttribute("selectedInstrumentType", "");
-		String attrStr = null;
-		for (Enumeration e = request.getSession().getAttributeNames(); e.hasMoreElements(); ) {
-			attrStr = (String)e.nextElement();
-			if ( attrStr.contains("Graph") )
-				request.getSession().removeAttribute(attrStr);
-		}
 	}
 
 	/**
@@ -207,8 +199,6 @@ public class InvitroHemolysisAction extends AbstractDispatchAction {
 			
 			if (obj.getFile() != null) {
 				CharacterizationFileBean fileBean = new CharacterizationFileBean();
-//				fileBean.setName(this.getName(obj.getFile()));
-//				fileBean.setPath(this.getPath(obj.getFile()));
 				fileBean.setName(obj.getFile().getFilename());
 				fileBean.setPath(obj.getFile().getPath());
 				fileBean.setId(Integer.toString(fileNumber)); 
@@ -263,8 +253,6 @@ public class InvitroHemolysisAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		
-		System.out.println("\n\n==> Entering  InvitroHemolysisAction::update ...\n\n"); 
-		
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleType = (String) theForm.get("particleType");
 		String particleName = (String) theForm.get("particleName");
@@ -272,22 +260,14 @@ public class InvitroHemolysisAction extends AbstractDispatchAction {
 		String index=(String)request.getParameter("index");	
 		String type = (String)request.getParameter("type");
 		
-		System.out.println("\n\n==> InvitroHemolysisAction::update  The request is " + type + "\n\n"); 
-		
 		if ( type != null && !type.equals("") && type.equals("charTables") ) {
 			updateCharacterizationTables(achar);
 		}
 		if ( type != null && !type.equals("") && type.equals("addControl") ) {
 			addControl(achar, index);
-			request.getSession().setAttribute("Graph" + index + "Control", "true");
-			if ( request.getSession().getAttribute("Graph" + index + "Conditions") != null )
-				request.getSession().removeAttribute("Graph" + index + "Conditions");
 		}
 		if ( type != null && !type.equals("") && type.equals("addConditions") ) {
 			addConditions(achar, index);
-			request.getSession().setAttribute("Graph" + index + "Conditions", "true");
-			if ( request.getSession().getAttribute("Graph" + index + "Control") != null )
-				request.getSession().removeAttribute("Graph" + index + "Control");
 		}
 		if ( type != null && !type.equals("") && type.equals("updateConditions") ) {
 			updateConditions(achar, index);
@@ -318,7 +298,16 @@ public class InvitroHemolysisAction extends AbstractDispatchAction {
 		DatumBean datum = (DatumBean)derivedBioAssayData.getDatumList().get(0);
 		if ( datum.getControl() != null ) {
 			datum.setControl(control);
-		}			
+		}
+		List<ConditionBean> conditions = new ArrayList<ConditionBean>();
+		ConditionBean particleConcentrationCondition = new ConditionBean();
+		particleConcentrationCondition.setType("Particle Concentration");
+		conditions.add(particleConcentrationCondition);
+		ConditionBean molecularConcentrationCondition = new ConditionBean();
+		molecularConcentrationCondition.setType("Molecular Concentration");
+		molecularConcentrationCondition.setValueUnit("uM");
+		conditions.add(molecularConcentrationCondition);
+		datum.setConditionList(conditions);
 	}
 
 	/**
@@ -332,12 +321,12 @@ public class InvitroHemolysisAction extends AbstractDispatchAction {
 	 * @throws Exception
 	 */
 	public void addControl(HemolysisBean achar, String index) {
+		List<ConditionBean> conditionList = null;
 		int tableIndex = new Integer(index).intValue();
-		
 		DerivedBioAssayDataBean derivedBioAssayData = (DerivedBioAssayDataBean)achar.getDerivedBioAssayData().get(tableIndex);
 		DatumBean datum = (DatumBean)derivedBioAssayData.getDatumList().get(0);
-		if ( datum.getConditionList().size() > 0 ) {
-			datum.getConditionList().removeAll(datum.getConditionList());
+		if ( datum.getConditionList() != null ) {
+			datum.setConditionList(conditionList);
 		}			
 		ControlBean control = new ControlBean();
 		datum.setControl(control);
@@ -355,14 +344,9 @@ public class InvitroHemolysisAction extends AbstractDispatchAction {
 	 */
 	public void updateConditions(HemolysisBean achar, String index) {
 		int tableIndex = new Integer(index).intValue();
-		System.out.println("==> The table index is " + tableIndex);
 		DerivedBioAssayDataBean derivedBioAssayDataBean = (DerivedBioAssayDataBean)achar.getDerivedBioAssayData().get(tableIndex);
 		DatumBean datumBean = (DatumBean)(derivedBioAssayDataBean.getDatumList().get(0));
-		System.out.println("==> The datum is " + datumBean);
-		System.out.println("==> The datum(0) type is " + datumBean.getType());
-		System.out.println("==> The datum(0) value is " + datumBean.getValue());
 		String numberOfConditions = datumBean.getNumberOfConditions();
-		System.out.println("==> The number of Conditions is " + numberOfConditions);
 		int conditionNum = Integer.parseInt(numberOfConditions);
 		List<ConditionBean> origConditions = datumBean.getConditionList();
 		int origNum = (origConditions == null) ? 0 : origConditions.size();
@@ -408,6 +392,7 @@ public class InvitroHemolysisAction extends AbstractDispatchAction {
 		String fileNumber=(String)theForm.get("fileNumber");	
 		request.setAttribute("particleName", particleName);	
 		request.setAttribute("fileNumber", fileNumber);		
+		request.setAttribute("characterization", "hemolysis");
 		request.setAttribute("loadFileForward", "hemolysisInputForm");
 		return mapping.findForward("loadFile");
 	}

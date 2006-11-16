@@ -27,10 +27,10 @@ public class ChemotaxisBean extends CharacterizationBean {
 	
 	public void initSetup() {
 		for (DerivedBioAssayDataBean table: getDerivedBioAssayData()) {
-			DatumBean percentChemotaxis=new DatumBean();
-			percentChemotaxis.setType("Percent Chemotaxis");
-			percentChemotaxis.setValueUnit("%");
-			table.getDatumList().add(percentChemotaxis);
+			DatumBean rfu=new DatumBean();
+			rfu.setType("Relative Fluorescent Values");
+			rfu.setValueUnit("RFU");
+			table.getDatumList().add(rfu);
 		}
 	}
 	
@@ -39,10 +39,10 @@ public class ChemotaxisBean extends CharacterizationBean {
 		super.setDerivedBioAssayData(derivedBioAssayData);
 		
 		for (DerivedBioAssayDataBean table:getDerivedBioAssayData()) {
-			DatumBean percentChemotaxis=new DatumBean();
-			percentChemotaxis.setType("Percent Chemotaxis");
-			percentChemotaxis.setValueUnit("%");
-			table.getDatumList().add(percentChemotaxis);
+			DatumBean rfu=new DatumBean();
+			rfu.setType("Relative Fluorescent Values");
+			rfu.setValueUnit("RFU");
+			table.getDatumList().add(rfu);
 		}
 	}
 	

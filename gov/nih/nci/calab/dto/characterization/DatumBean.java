@@ -27,9 +27,10 @@ public class DatumBean {
 
 	private String valueUnit;
 	
-	private ControlBean control;
+	private ControlBean control = null;
 
-	private List<ConditionBean> conditionList = new ArrayList<ConditionBean>();
+	//private List<ConditionBean> conditionList = new ArrayList<ConditionBean>();
+	private List<ConditionBean> conditionList = null;
 
 	private String numberOfConditions;
 
@@ -44,13 +45,13 @@ public class DatumBean {
 		
 		Control controlObj = datum.getControl();
 		if (controlObj != null) {
-			this.getControl().setId(controlObj.getId().toString());
-			this.getControl().setName(controlObj.getName());
-			this.getControl().setType(controlObj.getType());
+			control = new ControlBean();
+			control.setName(controlObj.getName());
+			control.setType(controlObj.getType());
 		} 
 		else {
-			conditionList = new ArrayList<ConditionBean>();
 			if ( datum.getConditionCollection() != null && datum.getConditionCollection().size() > 0 ) {
+				conditionList = new ArrayList<ConditionBean>();
 				for (Condition conditionData : datum.getConditionCollection()) {
 					ConditionBean cBean = new ConditionBean(conditionData);
 					conditionList.add(cBean);
@@ -127,7 +128,7 @@ public class DatumBean {
 		measurement.setUnitOfMeasurement(valueUnit);
 		tableData.setValue(measurement);
 		
-		if ( this.getConditionList().size() > 0 ) {
+		if ( this.getConditionList() != null && this.getConditionList().size() > 0 ) {
 			for (ConditionBean condition : this.getConditionList()) {
 				tableData.getConditionCollection().add(condition.getDomainObj());
 			}

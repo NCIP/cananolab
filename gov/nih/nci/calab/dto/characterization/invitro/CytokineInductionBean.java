@@ -27,10 +27,9 @@ public class CytokineInductionBean extends CharacterizationBean {
 	
 	public void initSetup() {
 		for (DerivedBioAssayDataBean table: getDerivedBioAssayData()) {
-			DatumBean percentCytokineInduction=new DatumBean();
-			percentCytokineInduction.setType("Percent Cytokine Induction");
-			percentCytokineInduction.setValueUnit("%");
-			table.getDatumList().add(percentCytokineInduction);
+			DatumBean cytokineConcentration=new DatumBean();
+			cytokineConcentration.setType("Cytokine Concentration");
+			table.getDatumList().add(cytokineConcentration);
 		}
 	}
 	
@@ -39,10 +38,10 @@ public class CytokineInductionBean extends CharacterizationBean {
 		super.setDerivedBioAssayData(derivedBioAssayData);
 		
 		for (DerivedBioAssayDataBean table:getDerivedBioAssayData()) {
-			DatumBean percentCytokineInduction=new DatumBean();
-			percentCytokineInduction.setType("Percent CytokineInduction");
-			percentCytokineInduction.setValueUnit("%");
-			table.getDatumList().add(percentCytokineInduction);
+			DatumBean cytokineConcentration=new DatumBean();
+			cytokineConcentration.setType("Cytokine Concentration");
+			cytokineConcentration.setValueUnit("%");
+			table.getDatumList().add(cytokineConcentration);
 		}
 	}
 	
