@@ -184,7 +184,11 @@ function loadFile(form, actionName, particleName, fileNumber) {
     form.action = actionName + ".do?dispatch=loadFile&page=0&particleName=" + particleName + "&fileNumber=" + fileNumber;
     form.submit();
 }
-function addControlConditions(form, formObj, actionName, index) {
+function addControlConditions(form, type, actionName, index) {
+    form.action = actionName + ".do?dispatch=update&page=0&type=" + type + "&index=" + index;
+   	form.submit();
+}
+function addControlConditionsOld(form, formObj, actionName, index) {
     if ( formObj[0].checked ) {
     	form.action = actionName + ".do?dispatch=update&page=0&type=addControl&index=" + index;
     	form.submit();

@@ -9,7 +9,7 @@ import java.util.List;
 
 
 /**
- * This class represents the PlateAggregation characterization information to be shown in
+ * This class represents the plateAggregation characterization information to be shown in
  * the view page.
  * 
  * @author beasleyj
@@ -38,7 +38,7 @@ public class PlateAggregationBean extends CharacterizationBean {
 			List<DerivedBioAssayDataBean> derivedBioAssayData) {
 		super.setDerivedBioAssayData(derivedBioAssayData);
 		
-		for (DerivedBioAssayDataBean table: getDerivedBioAssayData()) {
+		for (DerivedBioAssayDataBean table:getDerivedBioAssayData()) {
 			DatumBean percentPlateAggregation=new DatumBean();
 			percentPlateAggregation.setType("Percent Plate Aggregation");
 			percentPlateAggregation.setValueUnit("%");

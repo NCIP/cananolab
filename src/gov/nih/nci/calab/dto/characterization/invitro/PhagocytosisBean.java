@@ -27,10 +27,10 @@ public class PhagocytosisBean extends CharacterizationBean {
 	
 	public void initSetup() {
 		for (DerivedBioAssayDataBean table: getDerivedBioAssayData()) {
-			DatumBean percentPhagocytosis=new DatumBean();
-			percentPhagocytosis.setType("Percent Phagocytosis");
-			percentPhagocytosis.setValueUnit("%");
-			table.getDatumList().add(percentPhagocytosis);
+			DatumBean foldInduction=new DatumBean();
+			foldInduction.setType("Fold Induction");
+			foldInduction.setValueUnit("Fold");
+			table.getDatumList().add(foldInduction);
 		}
 	}
 	
@@ -39,10 +39,10 @@ public class PhagocytosisBean extends CharacterizationBean {
 		super.setDerivedBioAssayData(derivedBioAssayData);
 		
 		for (DerivedBioAssayDataBean table:getDerivedBioAssayData()) {
-			DatumBean percentPhagocytosis=new DatumBean();
-			percentPhagocytosis.setType("Percent Phagocytosis");
-			percentPhagocytosis.setValueUnit("%");
-			table.getDatumList().add(percentPhagocytosis);
+			DatumBean foldInduction=new DatumBean();
+			foldInduction.setType("Fold Induction");
+			foldInduction.setValueUnit("Fold");
+			table.getDatumList().add(foldInduction);
 		}
 	}
 	

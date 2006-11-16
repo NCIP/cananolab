@@ -52,24 +52,43 @@
   <StrutsActivity path="solubilityInputForm;6" location="2450,2550" dimension="202,84" />
   <StrutsActivity path="Surface;6" location="2150,1250" dimension="176,84" />
   <StrutsActivity path="surfaceInputForm;6" location="1850,1450" dimension="195,84" />
+  <StrutsActivity path="Hemolysis;6" location="2750,1550" dimension="240,84" />
   <StrutsActivity path="invitroHemolysisForm;6" location="950,850" dimension="252,84" />
+  <StrutsActivity path="Coagulation;6" location="1250,1650" dimension="250,84" />
   <StrutsActivity path="invitroCoagulationForm;6" location="650,1050" dimension="261,84" />
+  <StrutsActivity path="Plate Aggregation;6" location="3350,2250" dimension="280,84" />
   <StrutsActivity path="invitroPlateAggregationForm;6" location="1250,1050" dimension="292,84" />
+  <StrutsActivity path="Plasma Protein Binding;6" location="3350,2450" dimension="264,84" />
   <StrutsActivity path="invitroProteinBindingForm;6" location="50,1150" dimension="318,84" />
+  <StrutsActivity path="Complement Activation;6" location="3350,2650" dimension="310,84" />
   <StrutsActivity path="invitroComplementActivationForm;6" location="1850,1950" dimension="320,84" />
+  <StrutsActivity path="Cytokine Induction;6" location="3350,2850" dimension="283,84" />
   <StrutsActivity path="invitroCytokineInductionForm;6" location="2450,1950" dimension="293,84" />
+  <StrutsActivity path="Chemotaxis;6" location="950,2950" dimension="249,84" />
   <StrutsActivity path="invitroChemotaxisForm;6" location="50,2150" dimension="260,84" />
+  <StrutsActivity path="Cytotoxic Activity of NK Cells;6" location="1250,2950" dimension="310,84" />
   <StrutsActivity path="invitroNKCellCytotoxicActivityForm;6" location="650,2150" dimension="316,84" />
+  <StrutsActivity path="Leukocyte Proliferation;6" location="1850,2950" dimension="308,84" />
   <StrutsActivity path="invitroLeukocyteProliferationForm;6" location="1250,2150" dimension="318,84" />
+  <StrutsActivity path="CFU-GM;6" location="2450,2950" dimension="231,84" />
   <StrutsActivity path="invitroCFU_GMForm;6" location="1850,2150" dimension="238,84" />
+  <StrutsActivity path="Oxidative Burst;6" location="2750,2950" dimension="264,84" />
   <StrutsActivity path="invitroOxidativeBurstForm;6" location="2150,2150" dimension="275,84" />
+  <StrutsActivity path="Phagocytosis;6" location="3350,3050" dimension="256,84" />
   <StrutsActivity path="invitroPhagocytosisForm;6" location="50,2350" dimension="269,84" />
+  <StrutsActivity path="Cell Viability;6" location="350,1750" dimension="226,84" />
   <StrutsActivity path="invitroCellViabilityForm;6" location="350,2750" dimension="234,84" />
+  <StrutsActivity path="Caspase 3 Activation;6" location="3350,3250" dimension="271,84" />
   <StrutsActivity path="invitroCaspase3ActivationForm;6" location="650,2750" dimension="280,84" />
+  <StrutsActivity path="Oxidative Stress;6" location="1850,3350" dimension="228,84" />
   <StrutsActivity path="invitroOxidativeStressForm;6" location="1250,2750" dimension="234,84" />
+  <StrutsActivity path="Enzyme Function;6" location="2450,3350" dimension="236,84" />
   <StrutsActivity path="invitroEnzymeInductionForm;6" location="1550,2750" dimension="245,84" />
+  <StrutsActivity path="ROS;6" location="350,3450" dimension="221,84" />
   <StrutsActivity path="invitroROSForm;6" location="1850,2750" dimension="227,84" />
+  <StrutsActivity path="CYP450;6" location="950,3450" dimension="239,84" />
   <StrutsActivity path="invitroCYP450Form;6" location="2150,2750" dimension="249,84" />
+  <StrutsActivity path="Glucuronidation, Sulphation;6" location="3350,3450" dimension="344,84" />
   <StrutsActivity path="invitroGlucuronidationSulphationForm;6" location="2450,2750" dimension="354,84" />
   <StrutsActivity path="function;6" location="3050,2750" dimension="180,84" />
   <StrutsActivity path="submit.generalinfo.view" location="3640,506" dimension="170,52" />
@@ -127,13 +146,6 @@
   <StrutsActivity path="nanoparticlePurity.do" location="1250,3350" dimension="164,84" />
   <StrutsActivity path="nanoparticleSolubility.do" location="1550,3350" dimension="183,84" />
   <StrutsActivity path="nanoparticleSurface.do" location="1550,1950" dimension="176,84" />
-  <StrutsActivity path="nanoparticleFunction.do" location="2150,3350" dimension="180,84" />
-  <StrutsActivity path="Hemolysis;6" location="2750,1550" dimension="240,84" />
-  <StrutsActivity path="Coagulation;6" location="1250,1650" dimension="250,84" />
-  <StrutsActivity path="Chemotaxis;6" location="950,2950" dimension="249,84" />
-  <StrutsActivity path="Phagocytosis;6" location="3350,3050" dimension="256,84" />
-  <StrutsActivity path="ROS;6" location="350,3450" dimension="221,84" />
-  <StrutsActivity path="CYP450;6" location="950,3450" dimension="239,84" />
   <StrutsActivity path="invitroImmunotoxicityHemolysis.do" location="650,3550" dimension="240,84" />
   <StrutsActivity path="invitroImmunotoxicityCoagulation.do" location="1250,3550" dimension="250,84" />
   <StrutsActivity path="invitroImmunotoxicityPlateAggregation.do" location="1550,3550" dimension="280,84" />
@@ -153,19 +165,8 @@
   <StrutsActivity path="invitroMetabolicStabilityROS.do" location="1250,3950" dimension="221,84" />
   <StrutsActivity path="invitroMetabolicStabilityCYP450.do" location="1550,3950" dimension="239,84" />
   <StrutsActivity path="invitroMetabolicStabilityGlucuronidationSulphation.do" location="1850,3950" dimension="344,84" />
-  <StrutsActivity path="Oxidative Burst;6" location="2750,2950" dimension="264,84" />
-  <StrutsActivity path="Cell Viability;6" location="350,1750" dimension="226,84" />
-  <StrutsActivity path="Plate Aggregation;6" />
-  <StrutsActivity path="Plasma Protein Binding;6" />
-  <StrutsActivity path="Complement Activation;6" />
-  <StrutsActivity path="Cytokine Induction;6" />
-  <StrutsActivity path="Cytotoxic Activity of NK Cells;6" />
-  <StrutsActivity path="Leukocyte Proliferation;6" />
-  <StrutsActivity path="CFU-GM;6" />
-  <StrutsActivity path="Caspase 3 Activation;6" />
-  <StrutsActivity path="Oxidative Stress;6" />
-  <StrutsActivity path="Enzyme Function;6" />
-  <StrutsActivity path="Glucuronidation, Sulphation;6" />
+  <StrutsActivity path="nanoparticleFunction.do" location="2150,3350" dimension="180,84" />
+  <StrutsActivity path="CFU_GM;6" />
   <StrutsTransition id="/invitroMetabolicStabilityGlucuronidationSulphation.do,success,submit.message,1" routingType="0">
     <AutomaticBendpoints>
       <AbsolutePoint location="3258,1500" />
@@ -203,14 +204,6 @@
       <AbsolutePoint location="1713,440" />
       <AbsolutePoint location="4570,440" />
       <AbsolutePoint location="4570,482" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
-  <StrutsTransition id="LeukocyteProliferation;6,null,invitroImmunotoxicityLeukocyteProliferation.do,1" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="2004,3034" />
-      <AbsolutePoint location="2004,3725" />
-      <AbsolutePoint location="1405,3725" />
-      <AbsolutePoint location="1405,3750" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="purityInputForm;6,null,submit.addparticle.purity,1" routingType="0">
@@ -384,14 +377,6 @@
       <AbsolutePoint location="-7,1792" />
       <AbsolutePoint location="-7,3892" />
       <AbsolutePoint location="50,3892" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
-  <StrutsTransition id="GlucuronidationSulphation;6,null,invitroMetabolicStabilityGlucuronidationSulphation.do,1" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="3350,3495" />
-      <AbsolutePoint location="2620,3495" />
-      <AbsolutePoint location="2620,3965" />
-      <AbsolutePoint location="2194,3965" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="Chemotaxis;6,null,invitroImmunotoxicityChemotaxis.do,1" routingType="0">
@@ -573,13 +558,6 @@
       <AbsolutePoint location="2150,3176" />
     </AutomaticBendpoints>
   </StrutsTransition>
-  <StrutsTransition id="NKCellCytotoxicActivity;6,null,invitroImmunotoxicityNKCellCytotoxicActivity.do,1" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="1507,3034" />
-      <AbsolutePoint location="1507,3673" />
-      <AbsolutePoint location="3350,3673" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
   <StrutsTransition id="Leukocyte Proliferation;6,null,invitroImmunotoxicityLeukocyteProliferation.do,1" routingType="0">
     <AutomaticBendpoints>
       <AbsolutePoint location="0,0" />
@@ -710,14 +688,6 @@
       <AbsolutePoint location="143,3050" />
     </AutomaticBendpoints>
   </StrutsTransition>
-  <StrutsTransition id="Caspase3Activation;6,null,invitroCytotoxicityCaspase3Activation.do,1" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="2585,3350" />
-      <AbsolutePoint location="2585,3341" />
-      <AbsolutePoint location="612,3341" />
-      <AbsolutePoint location="612,3850" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
   <StrutsTransition id="/invitroImmunotoxicityCFU_GM.do,input,submit.addimmunotoxicity.cfu_gm,1" routingType="0">
     <AutomaticBendpoints>
       <AbsolutePoint location="2150,1563" />
@@ -817,14 +787,6 @@
       <AbsolutePoint location="1248,222" />
       <AbsolutePoint location="1201,222" />
       <AbsolutePoint location="1201,506" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
-  <StrutsTransition id="CytokineInduction;6,null,invitroImmunotoxicityCytokineInduction.do,1" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="3491,2934" />
-      <AbsolutePoint location="3491,3041" />
-      <AbsolutePoint location="326,3041" />
-      <AbsolutePoint location="326,3650" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="/invitroImmunotoxicityComplementActivation.do,input,submit.addimmunotoxicity.complementactivation,1" routingType="0">
@@ -933,16 +895,6 @@
       <AbsolutePoint location="1250,3992" />
     </AutomaticBendpoints>
   </StrutsTransition>
-  <StrutsTransition id="ProteinBinding;6,null,invitroImmunotoxicityProteinBinding.do,1" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="3614,2492" />
-      <AbsolutePoint location="4629,2492" />
-      <AbsolutePoint location="4629,3965" />
-      <AbsolutePoint location="2650,3965" />
-      <AbsolutePoint location="2650,3592" />
-      <AbsolutePoint location="2414,3592" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
   <StrutsTransition id="Caspase 3 Activation;6,null,invitroCytotoxicityCaspase3Activation.do,1" routingType="0">
     <AutomaticBendpoints>
       <AbsolutePoint location="0,0" />
@@ -992,14 +944,6 @@
       <AbsolutePoint location="2115,2265" />
       <AbsolutePoint location="827,2265" />
       <AbsolutePoint location="827,2350" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
-  <StrutsTransition id="ComplementActivation;6,null,invitroImmunotoxicityComplementActivation.do,1" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="3660,2692" />
-      <AbsolutePoint location="4451,2692" />
-      <AbsolutePoint location="4451,3565" />
-      <AbsolutePoint location="3060,3565" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="/invitroImmunotoxicityProteinBinding.do,input,submit.addimmunotoxicity.plasmaproteinbinding,1" routingType="0">
@@ -1129,17 +1073,6 @@
       <AbsolutePoint location="1550,2576" />
     </AutomaticBendpoints>
   </StrutsTransition>
-  <StrutsTransition id="PlateAggregation;6,null,invitroImmunotoxicityPlateAggregation.do,1" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="3630,2292" />
-      <AbsolutePoint location="3981,2292" />
-      <AbsolutePoint location="3981,3795" />
-      <AbsolutePoint location="3105,3795" />
-      <AbsolutePoint location="3105,3895" />
-      <AbsolutePoint location="1690,3895" />
-      <AbsolutePoint location="1690,3634" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
   <StrutsTransition id="/nanoparticleSolubility.do,success,submit.message,1" routingType="0">
     <AutomaticBendpoints>
       <AbsolutePoint location="1605,372" />
@@ -1165,16 +1098,16 @@
       <AbsolutePoint location="3209,506" />
     </AutomaticBendpoints>
   </StrutsTransition>
-  <StrutsTransition id="Glucuronidation, Sulphation;6,null,invitroMetabolicStabilityGlucuronidationSulphation.do,1" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="0,0" />
-      <AbsolutePoint location="2022,3992" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
   <StrutsTransition id="Complement Activation;6,null,invitroImmunotoxicityComplementActivation.do,1" routingType="0">
     <AutomaticBendpoints>
       <AbsolutePoint location="0,0" />
       <AbsolutePoint location="2905,3592" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="Glucuronidation, Sulphation;6,null,invitroMetabolicStabilityGlucuronidationSulphation.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="0,0" />
+      <AbsolutePoint location="2022,3992" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="Solubility;6,null,nanoparticleSolubility.do,1" routingType="0">
@@ -1207,10 +1140,8 @@
   </StrutsTransition>
   <StrutsTransition id="CFU_GM;6,null,invitroImmunotoxicityCFU_GM.do,1" routingType="0">
     <AutomaticBendpoints>
-      <AbsolutePoint location="2584,3034" />
-      <AbsolutePoint location="2584,3087" />
-      <AbsolutePoint location="1965,3087" />
-      <AbsolutePoint location="1965,3750" />
+      <AbsolutePoint location="0,0" />
+      <AbsolutePoint location="1965,3792" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="/nanoparticleStability.do,input,submit.addparticle.stability,1" routingType="0">
@@ -1238,13 +1169,6 @@
       <AbsolutePoint location="2308,1600" />
       <AbsolutePoint location="2308,532" />
       <AbsolutePoint location="3160,532" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
-  <StrutsTransition id="OxidativeStress;6,null,invitroToxicityOxidativeStress.do,1" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="3143,3434" />
-      <AbsolutePoint location="3143,3925" />
-      <AbsolutePoint location="1178,3925" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="Stability;6,null,nanoparticleStability.do,1" routingType="0">
@@ -1349,18 +1273,18 @@
       <AbsolutePoint location="4681,482" />
     </AutomaticBendpoints>
   </StrutsTransition>
-  <StrutsTransition id="Cytotoxic Activity of NK Cells;6,null,invitroImmunotoxicityNKCellCytotoxicActivity.do,1" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="0,0" />
-      <AbsolutePoint location="3505,3692" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
   <StrutsTransition id="invitroPlateAggregationForm;6,null,submit.addimmunotoxicity.plateaggregation,1" routingType="0">
     <AutomaticBendpoints>
       <AbsolutePoint location="1485,1134" />
       <AbsolutePoint location="1485,1365" />
       <AbsolutePoint location="791,1365" />
       <AbsolutePoint location="791,1450" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="Cytotoxic Activity of NK Cells;6,null,invitroImmunotoxicityNKCellCytotoxicActivity.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="0,0" />
+      <AbsolutePoint location="3505,3692" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="/invitroImmunotoxicityCytokineInduction.do,loadFile,/loadFile.do,1" routingType="0">
@@ -1675,31 +1599,11 @@
       <AbsolutePoint location="857,3550" />
     </AutomaticBendpoints>
   </StrutsTransition>
-  <StrutsTransition id="OxidativeBurst;6,null,invitroImmunotoxicityOxidativeBurst.do,1" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="3014,2969" />
-      <AbsolutePoint location="3775,2969" />
-      <AbsolutePoint location="3775,3765" />
-      <AbsolutePoint location="3021,3765" />
-      <AbsolutePoint location="3021,3865" />
-      <AbsolutePoint location="2282,3865" />
-      <AbsolutePoint location="2282,3834" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
   <StrutsTransition id="input,null,/nanoparticleFunction.do,2" routingType="0">
     <AutomaticBendpoints>
       <AbsolutePoint location="3625,26" />
       <AbsolutePoint location="3625,2100" />
       <AbsolutePoint location="3226,2100" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
-  <StrutsTransition id="EnzymeInduction;6,null,invitroToxicityEnzymeInduction.do,1" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="168,3534" />
-      <AbsolutePoint location="168,3543" />
-      <AbsolutePoint location="3253,3543" />
-      <AbsolutePoint location="3253,3892" />
-      <AbsolutePoint location="3350,3892" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="invitroChemotaxisForm;6,null,submit.addimmunotoxicity.chemotaxis,1" routingType="0">
@@ -1727,15 +1631,6 @@
       <AbsolutePoint location="3719,489" />
       <AbsolutePoint location="832,489" />
       <AbsolutePoint location="832,450" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
-  <StrutsTransition id="CellViability;6,null,invitroCytotoxicityCellViability.do,1" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="3463,3334" />
-      <AbsolutePoint location="3463,3441" />
-      <AbsolutePoint location="-23,3441" />
-      <AbsolutePoint location="-23,3892" />
-      <AbsolutePoint location="50,3892" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="/nanoparticleComposition.do,metal particle,bodyMetalParticleInfo.jsp,1" routingType="0">

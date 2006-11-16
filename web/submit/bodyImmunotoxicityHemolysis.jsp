@@ -63,6 +63,7 @@
 								</c:choose>
 							</td>
 						</tr>
+						
 						<tr>
 							<td class="completeLabel" colspan="4">
 								<c:forEach var="achar.derivedBioAssayData" items="${invitroImmunotoxicityHemolysisForm.map.achar.derivedBioAssayData}" varStatus="status">
@@ -109,43 +110,70 @@
 												<td class="rightLabel" colspan="3">
 													<c:choose>
 														<c:when test="${canUserUpdateParticle eq 'true'}">
-															<html:text name="achar.derivedBioAssayData" indexed="true" property="datumList[0].value" />
+															<html:text name="achar.derivedBioAssayData" property="datumList[0].value" indexed="true" />
 															&nbsp; ${invitroImmunotoxicityHemolysisForm.map.achar.derivedBioAssayData[status.index].datumList[0].valueUnit}	
 														</c:when>
 														<c:otherwise>
-															${invitroImmunotoxicityHemolysisForm.map.achar.derivedBioAssayData[status.index].datumList[0].value} ${invitroImmunotoxicityHemolysisForm.map.achar.derivedBioAssayData[status.index].datumList[0].valueUnit}&nbsp;
+															${invitroImmunotoxicityHemolysisForm.map.achar.derivedBioAssayData[status.index].datumList[0].value}
+															&nbsp; ${invitroImmunotoxicityHemolysisForm.map.achar.derivedBioAssayData[status.index].datumList[0].valueUnit}
 														</c:otherwise>
 													</c:choose>
 												</td>
 											</tr>
+											
 											<tr>
 												<td class="leftLabel" colspan="4">
 													<strong>Is Control?</strong>
-													<logic:present name="Graph${status.index}Control">
-														&nbsp;&nbsp;&nbsp;
-														<input type="radio" name="isControl${status.index}" value="Yes" onclick="javascript:addControlConditions(this.form, this.form.isControl${status.index}, 'invitroImmunotoxicityHemolysis', ${status.index})" checked />Yes
-														&nbsp;&nbsp;&nbsp;
-														<input type="radio" name="isControl${status.index}" value="No" onclick="javascript:addControlConditions(this.form, this.form.isControl${status.index}, 'invitroImmunotoxicityHemolysis', ${status.index})"  />No
-														&nbsp;&nbsp;&nbsp;&nbsp;
-													</logic:present>
-													<logic:notPresent name="Graph${status.index}Control">
-														<logic:present name="Graph${status.index}Conditions">
-															&nbsp;&nbsp;&nbsp;
-															<input type="radio" name="isControl${status.index}" value="Yes" onclick="javascript:addControlConditions(this.form, this.form.isControl${status.index}, 'invitroImmunotoxicityHemolysis', ${status.index})" />Yes
-															&nbsp;&nbsp;&nbsp;
-															<input type="radio" name="isControl${status.index}" value="No" onclick="javascript:addControlConditions(this.form, this.form.isControl${status.index}, 'invitroImmunotoxicityHemolysis', ${status.index})"  checked />No
-															&nbsp;&nbsp;&nbsp;&nbsp;
-														</logic:present>
-														<logic:notPresent name="Graph${status.index}Conditions">
-															&nbsp;&nbsp;&nbsp;
-															<input type="radio" name="isControl${status.index}" value="Yes" onclick="javascript:addControlConditions(this.form, this.form.isControl${status.index}, 'invitroImmunotoxicityHemolysis', ${status.index})" />Yes
-															&nbsp;&nbsp;&nbsp;
-															<input type="radio" name="isControl${status.index}" value="No" onclick="javascript:addControlConditions(this.form, this.form.isControl${status.index}, 'invitroImmunotoxicityHemolysis', ${status.index})"  />No
-															&nbsp;&nbsp;&nbsp;&nbsp;
-														</logic:notPresent>
-													</logic:notPresent>
+													
+													<c:choose>
+														<c:when test="${canUserUpdateParticle eq 'true'}">
+															<logic:present name="achar.derivedBioAssayData" property="datumList[0].control">
+																&nbsp;&nbsp;&nbsp;
+																<input type="radio" name="isControl${status.index}" value="Yes" onclick="javascript:addControlConditions(this.form, 'addControl', 'invitroImmunotoxicityHemolysis', ${status.index})" checked />Yes
+																&nbsp;&nbsp;&nbsp;
+																<input type="radio" name="isControl${status.index}" value="No" onclick="javascript:addControlConditions(this.form, 'addConditions', 'invitroImmunotoxicityHemolysis', ${status.index})" />No
+															</logic:present>
+															<logic:notPresent name="achar.derivedBioAssayData" property="datumList[0].control">
+																<logic:notPresent name="achar.derivedBioAssayData" property="datumList[0].conditionList">
+																	&nbsp;&nbsp;&nbsp;
+																	<input type="radio" name="isControl${status.index}" value="Yes" onclick="javascript:addControlConditions(this.form, 'addControl', 'invitroImmunotoxicityHemolysis', ${status.index})" />Yes
+																	&nbsp;&nbsp;&nbsp;
+																	<input type="radio" name="isControl${status.index}" value="No" onclick="javascript:addControlConditions(this.form, 'addConditions', 'invitroImmunotoxicityHemolysis', ${status.index})" />No
+																</logic:notPresent>
+																<logic:present name="achar.derivedBioAssayData" property="datumList[0].conditionList">
+																	&nbsp;&nbsp;&nbsp;
+																	<input type="radio" name="isControl${status.index}" value="Yes" onclick="javascript:addControlConditions(this.form, 'addControl', 'invitroImmunotoxicityHemolysis', ${status.index})" />Yes
+																	&nbsp;&nbsp;&nbsp;
+																	<input type="radio" name="isControl${status.index}" value="No" onclick="javascript:addControlConditions(this.form, 'addConditions', 'invitroImmunotoxicityHemolysis', ${status.index})" checked />No
+																</logic:present>
+															</logic:notPresent>
+														</c:when>
+														<c:otherwise>
+															<logic:present name="achar.derivedBioAssayData" property="datumList[0].control">
+																&nbsp;&nbsp;&nbsp;
+																<input type="radio" name="isControl${status.index}" value="Yes" onclick="javascript:addControlConditions(this.form, 'addControl', 'invitroImmunotoxicityHemolysis', ${status.index})" disabled checked />Yes
+																&nbsp;&nbsp;&nbsp;
+																<input type="radio" name="isControl${status.index}" value="No" onclick="javascript:addControlConditions(this.form, 'addConditions', 'invitroImmunotoxicityHemolysis', ${status.index})" disabled />No
+															</logic:present>
+															<logic:notPresent name="achar.derivedBioAssayData" property="datumList[0].control">
+																<logic:notPresent name="achar.derivedBioAssayData" property="datumList[0].conditionList">
+																	&nbsp;&nbsp;&nbsp;
+																	<input type="radio" name="isControl${status.index}" value="Yes" onclick="javascript:addControlConditions(this.form, 'addControl', 'invitroImmunotoxicityHemolysis', ${status.index})" disabled />Yes
+																	&nbsp;&nbsp;&nbsp;
+																	<input type="radio" name="isControl${status.index}" value="No" onclick="javascript:addControlConditions(this.form, 'addConditions', 'invitroImmunotoxicityHemolysis', ${status.index})" disabled />No
+																</logic:notPresent>
+																<logic:present name="achar.derivedBioAssayData" property="datumList[0].conditionList">
+																	&nbsp;&nbsp;&nbsp;
+																	<input type="radio" name="isControl${status.index}" value="Yes" onclick="javascript:addControlConditions(this.form, 'addControl', 'invitroImmunotoxicityHemolysis', ${status.index})" disabled />Yes
+																	&nbsp;&nbsp;&nbsp;
+																	<input type="radio" name="isControl${status.index}" value="No" onclick="javascript:addControlConditions(this.form, 'addConditions', 'invitroImmunotoxicityHemolysis', ${status.index})" disabled checked />No
+																</logic:present>
+															</logic:notPresent>
+														</c:otherwise>
+													</c:choose>
 												</td>
-											</tr>								
+											</tr>
+											
 											<logic:present name="achar.derivedBioAssayData" property="datumList[0].control">
 												<tr>
  													<td class="completeLabel" colspan="4">
@@ -159,10 +187,9 @@
 																	</td>
 																</tr>
 																<tr>
-																	<td class="leftLabel">
+																	<td class="leftLabel" colspan="2">
 																		<strong>Name:</strong>
-																	</td>
-																	<td class="label">
+																		&nbsp;&nbsp;&nbsp;
     																	<c:choose>
         																	<c:when test="${canUserUpdateParticle eq 'true'}">
 																				<html:text name="achar.derivedBioAssayData" indexed="true" property="datumList[0].control.name" />
@@ -172,16 +199,14 @@
         																	</c:otherwise>
     																	</c:choose>
 																	</td>
-																	<td class="label">
+																	<td class="label"  colspan="2">
 																		<strong>Type:</strong>
-																	</td>
-																	<td class="rightLabel">
+																		&nbsp;&nbsp;&nbsp;
     																	<c:choose>
         																	<c:when test="${canUserUpdateParticle eq 'true'}">
 																				<html:select name="achar.derivedBioAssayData" property="datumList[0].control.type" indexed="true">
 																					<html:options name="allControlTypes" />
 																				</html:select>
-																				<%--<html:text name="achar.table" indexed="true" property="datumList[0].control.type" />--%>
         																	</c:when>
         																	<c:otherwise>
 																				${invitroImmunotoxicityHemolysisForm.map.achar.derivedBioAssayData[status.index].datumList[0].control.type}&nbsp;
@@ -194,91 +219,65 @@
 													</td>
 												</tr>
 											</logic:present>
-											<logic:present name="Graph${status.index}Conditions">
+											
+											<logic:present name="achar.derivedBioAssayData" property="datumList[0].conditionList">
 												<tr>
-													<td class="leftLabel">
-														<strong>Number of Conditions</strong>
-													</td>
-													<td class="label">
-														<c:choose>
-															<c:when test="${canUserUpdateParticle eq 'true'}">
-																<html:text name="achar.derivedBioAssayData" indexed="true" property="datumList[0].numberOfConditions" />
-															</c:when>
-															<c:otherwise>
-																${invitroImmunotoxicityHemolysisForm.map.achar.derivedBioAssayData[status.index].datumList[0].numberOfConditions}&nbsp;
-															</c:otherwise>
-														</c:choose>
-													</td>
-													<td class="rightLabel" colspan="2">
-														&nbsp;
-														<c:choose>
-															<c:when test="${canUserUpdateParticle eq 'true'}">
-																<input type="button" onclick="javascript:updateConditions(this.form, 'invitroImmunotoxicityHemolysis', ${status.index})" value="Update Conditions">
-															</c:when>
-														</c:choose>
+ 													<td class="completeLabel" colspan="4">
+														<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+															<tbody>
+																<tr class="topBorder">
+																	<td class="formSubTitle" colspan="4">
+																		<div align="justify">
+																			Condition 
+																		</div>	
+																	</td>
+																</tr>
+																<tr>
+																	<td class="leftLabel">
+																		<strong>Particle Concentration</strong>
+																	</td>
+																	<td class="label">
+    																	<c:choose>
+        																	<c:when test="${canUserUpdateParticle eq 'true'}">
+																				<html:text name="achar.derivedBioAssayData" property="datumList[0].conditionList[0].value" indexed="true"/>
+        																	</c:when>
+        																	<c:otherwise>
+																				${invitroImmunotoxicityHemolysisForm.map.achar.derivedBioAssayData[status.index].datumList[0].conditionList[0].value}&nbsp;
+        																	</c:otherwise>
+    																	</c:choose>
+    																	&nbsp;&nbsp;&nbsp;
+    																	<c:choose>
+        																	<c:when test="${canUserUpdateParticle eq 'true'}">
+																				<html:select name="achar.derivedBioAssayData" property="datumList[0].conditionList[0].valueUnit" indexed="true">
+																					<html:options name="allConcentrationUnits" />
+																				</html:select>
+        																	</c:when>
+        																	<c:otherwise>
+																				${invitroImmunotoxicityHemolysisForm.map.achar.derivedBioAssayData[status.index].datumList[0].conditionList[0].valueUnit}&nbsp;
+        																	</c:otherwise>
+    																	</c:choose>
+																	</td>
+																	<td class="leftLabel">
+																		<strong>Molecular Concentration</strong>
+																	</td>
+																	<td class="label">
+    	    															<c:choose>
+        																	<c:when test="${canUserUpdateParticle eq 'true'}">
+																				<html:text name="achar.derivedBioAssayData" property="datumList[0].conditionList[1].value" indexed="true"/>
+ 																				&nbsp; ${invitroImmunotoxicityHemolysisForm.map.achar.derivedBioAssayData[status.index].datumList[0].conditionList[1].valueUnit}	
+        																	</c:when>
+        																	<c:otherwise>
+																				${invitroImmunotoxicityHemolysisForm.map.achar.derivedBioAssayData[status.index].datumList[0].conditionList[1].value}
+ 																				&nbsp; ${invitroImmunotoxicityHemolysisForm.map.achar.derivedBioAssayData[status.index].datumList[0].conditionList[1].valueUnit}	
+        																	</c:otherwise>
+    																	</c:choose>
+																	</td>
+																</tr>
+															</tbody>
+														</table>
 													</td>
 												</tr>
 											</logic:present>
-											
-											<c:forEach var="achar.derivedBioAssayData[status.index].datumList[0].conditionList" items="${invitroImmunotoxicityHemolysisForm.map.achar.derivedBioAssayData[status.index].datumList[0].conditionList}" varStatus="cstatus">
-											<tr>
-											<td colspan="4">
-												<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
-													<tbody>
-														<tr class="topBorder">
-															<td class="formSubTitle" colspan="4">
-																<div align="justify">
-																	Condition ${cstatus.index+1}
-																</div>
-															</td>
-														</tr>
-														<tr>
-															<td class="leftLabel">
-																<strong>Type:</strong>
-															</td>
-															<td class="label">
-    															<c:choose>
-        															<c:when test="${canUserUpdateParticle eq 'true'}">
-																		<html:select name="achar.derivedBioAssayData[status.index].datumList[0].conditionList" property="type" indexed="true">
-																			<html:options name="allConditionTypes" />
-																		</html:select>
-																		<%--<html:text name="achar.table" indexed="true" property="datumList[0].condition[cstatus.index].type" />--%>
-        															</c:when>
-        															<c:otherwise>
-																		${invitroImmunotoxicityHemolysisForm.map.achar.derivedBioAssayData[status.index].datumList[0].conditionList[cstatus.index].type}&nbsp;
-        															</c:otherwise>
-    															</c:choose>
-															</td>
-															<td class="label">
-																<strong>Value:</strong>
-															</td>
-															<td class="rightLabel">
-    															<c:choose>
-        															<c:when test="${canUserUpdateParticle eq 'true'}">
-																		<html:text name="achar.derivedBioAssayData[status.index].datumList[0].conditionList" indexed="true" property="value" />
-        															</c:when>
-        															<c:otherwise>
-																		${invitroImmunotoxicityHemolysisForm.map.achar.derivedBioAssayData[status.index].datumList[0].conditionList[cstatus.index].value}&nbsp;
-        															</c:otherwise>
-    															</c:choose>
-    															&nbsp;&nbsp;&nbsp;
-    															<c:choose>
-        															<c:when test="${canUserUpdateParticle eq 'true'}">
-																		<html:select name="achar.derivedBioAssayData[status.index].datumList[0].conditionList" property="valueUnit" indexed="true">
-																			<html:options name="allConcentrationUnits" />
-																		</html:select>
-        															</c:when>
-        															<c:otherwise>
-																		${invitroImmunotoxicityHemolysisForm.map.achar.derivedBioAssayData[status.index].datumList[0].conditionList[cstatus.index].valueUnit}&nbsp;
-        															</c:otherwise>
-    															</c:choose>
-															</td>
-														</tr>
-													</tbody>
-												</table>
-												</td>
-												</tr>
-											</c:forEach>
 										</tbody>
 									</table>
 								</c:forEach>

@@ -40,7 +40,7 @@ public class ComplementActivationBean extends CharacterizationBean {
 		
 		for (DerivedBioAssayDataBean table:getDerivedBioAssayData()) {
 			DatumBean percentComplementActivation=new DatumBean();
-			percentComplementActivation.setType("Percent ComplementActivation");
+			percentComplementActivation.setType("Percent Complement Activation");
 			percentComplementActivation.setValueUnit("%");
 			table.getDatumList().add(percentComplementActivation);
 		}
