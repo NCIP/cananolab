@@ -393,7 +393,7 @@ public class InvitroCYP450Action extends AbstractDispatchAction {
 		request.setAttribute("particleName", particleName);	
 		request.setAttribute("fileNumber", fileNumber);		
 		request.setAttribute("characterization", "cyp450");
-		request.setAttribute("loadFileForward", "cyp450InputForm");
+		request.setAttribute("loadFileForward", "invitroCYP450Form");
 		return mapping.findForward("loadFile");
 	}
 	

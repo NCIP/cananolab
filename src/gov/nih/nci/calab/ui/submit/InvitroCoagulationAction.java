@@ -394,7 +394,7 @@ public class InvitroCoagulationAction extends AbstractDispatchAction {
 		request.setAttribute("particleName", particleName);	
 		request.setAttribute("fileNumber", fileNumber);		
 		request.setAttribute("characterization", "coagulation");
-		request.setAttribute("loadFileForward", "coagulationInputForm");
+		request.setAttribute("loadFileForward", "invitroCoagulationForm");
 		return mapping.findForward("loadFile");
 	}
 	

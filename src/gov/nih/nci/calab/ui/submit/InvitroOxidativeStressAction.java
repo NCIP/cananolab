@@ -393,7 +393,7 @@ public class InvitroOxidativeStressAction extends AbstractDispatchAction {
 		request.setAttribute("particleName", particleName);	
 		request.setAttribute("fileNumber", fileNumber);		
 		request.setAttribute("characterization", "oxidativeStress");
-		request.setAttribute("loadFileForward", "oxidativeStressInputForm");
+		request.setAttribute("loadFileForward", "invitroOxidativeStressForm");
 		return mapping.findForward("loadFile");
 	}
 	

@@ -393,7 +393,7 @@ public class InvitroCellViabilityAction extends AbstractDispatchAction {
 		request.setAttribute("particleName", particleName);	
 		request.setAttribute("fileNumber", fileNumber);		
 		request.setAttribute("characterization", "cellViability");
-		request.setAttribute("loadFileForward", "cellViabilityInputForm");
+		request.setAttribute("loadFileForward", "invitroCellViabilityForm");
 		return mapping.findForward("loadFile");
 	}
 	

@@ -393,7 +393,7 @@ public class InvitroProteinBindingAction extends AbstractDispatchAction {
 		request.setAttribute("particleName", particleName);	
 		request.setAttribute("fileNumber", fileNumber);		
 		request.setAttribute("characterization", "plasmaProteinBinding");
-		request.setAttribute("loadFileForward", "plasmaProteinBindingInputForm");
+		request.setAttribute("loadFileForward", "invitroProteinBindingForm");
 		return mapping.findForward("loadFile");
 	}
 	
