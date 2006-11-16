@@ -447,6 +447,7 @@
 		<forward name="Leukocyte Proliferation" path="invitroImmunotoxicityLeukocyteProliferation.do" />
 		<forward name="invitroLeukocyteProliferationForm" path="submit.addimmunotoxicity.leukocyteproliferation" />
 		<forward name="CFU-GM" path="invitroImmunotoxicityCFU_GM.do" />
+		<forward name="CFU_GM" path="invitroImmunotoxicityCFU_GM.do" />
 		<forward name="invitroCFU_GMForm" path="submit.addimmunotoxicity.cfu_gm" />
 		<forward name="Oxidative Burst" path="invitroImmunotoxicityOxidativeBurst.do" />
 		<forward name="invitroOxidativeBurstForm" path="submit.addimmunotoxicity.oxidativeburst" />

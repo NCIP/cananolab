@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.62 2006-11-14 04:14:30 beasleyj Exp $ */
+/* CVS $Id: LookupService.java,v 1.63 2006-11-16 16:41:01 beasleyj Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -888,12 +888,12 @@ public class LookupService {
 	}
 	
 	public String[] getAllTimeUnits() {
-		String[] timeUnits = new String[] {"hours", "days", "months"};
+		String[] timeUnits = new String[] {"seconds", "hours", "days", "months"};
 		return timeUnits;
 	}
 	
 	public String[] getAllConcentrationUnits() {
-		String[] concentrationUnits = new String[] {"g/ml", "mg/ml", "ug/ml", "ug/ul"};
+		String[] concentrationUnits = new String[] {"g/ml", "mg/ml", "ug/ml", "ug/ul", "pg/ml"};
 		return concentrationUnits;
 	}
 }

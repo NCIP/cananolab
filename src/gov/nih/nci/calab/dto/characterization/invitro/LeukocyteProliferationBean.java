@@ -28,7 +28,7 @@ public class LeukocyteProliferationBean extends CharacterizationBean {
 	public void initSetup() {
 		for (DerivedBioAssayDataBean table: getDerivedBioAssayData()) {
 			DatumBean percentLeukocyteProliferation=new DatumBean();
-			percentLeukocyteProliferation.setType("Percent LeukocyteProliferation");
+			percentLeukocyteProliferation.setType("Percent Proliferation");
 			percentLeukocyteProliferation.setValueUnit("%");
 			table.getDatumList().add(percentLeukocyteProliferation);
 		}
@@ -40,7 +40,7 @@ public class LeukocyteProliferationBean extends CharacterizationBean {
 		
 		for (DerivedBioAssayDataBean table:getDerivedBioAssayData()) {
 			DatumBean percentLeukocyteProliferation=new DatumBean();
-			percentLeukocyteProliferation.setType("Percent LeukocyteProliferation");
+			percentLeukocyteProliferation.setType("Percent Proliferation");
 			percentLeukocyteProliferation.setValueUnit("%");
 			table.getDatumList().add(percentLeukocyteProliferation);
 		}

@@ -9,7 +9,7 @@ import java.util.List;
 
 
 /**
- * This class represents the ProteinBinding characterization information to be shown in
+ * This class represents the plasmaProteinBinding characterization information to be shown in
  * the view page.
  * 
  * @author beasleyj
@@ -24,13 +24,13 @@ public class PlasmaProteinBindingBean extends CharacterizationBean {
 	public PlasmaProteinBindingBean(Characterization aChar) {
 		super(aChar);
 	}
-
+	
 	public void initSetup() {
 		for (DerivedBioAssayDataBean table: getDerivedBioAssayData()) {
-			DatumBean proteinBinding=new DatumBean();
-			proteinBinding.setType("Percent Protein Binding");
-			proteinBinding.setValueUnit("%");
-			table.getDatumList().add(proteinBinding);
+			DatumBean percentPlasmaProteinBinding=new DatumBean();
+			percentPlasmaProteinBinding.setType("Percent Plasma Protein Binding");
+			percentPlasmaProteinBinding.setValueUnit("%");
+			table.getDatumList().add(percentPlasmaProteinBinding);
 		}
 	}
 	
@@ -38,17 +38,17 @@ public class PlasmaProteinBindingBean extends CharacterizationBean {
 			List<DerivedBioAssayDataBean> derivedBioAssayData) {
 		super.setDerivedBioAssayData(derivedBioAssayData);
 		
-		for (DerivedBioAssayDataBean table: getDerivedBioAssayData()) {
-			DatumBean proteinBinding=new DatumBean();
-			proteinBinding.setType("Percent Protein Binding");
-			proteinBinding.setValueUnit("%");
-			table.getDatumList().add(proteinBinding);
+		for (DerivedBioAssayDataBean table:getDerivedBioAssayData()) {
+			DatumBean percentPlasmaProteinBinding=new DatumBean();
+			percentPlasmaProteinBinding.setType("Percent Plasma Protein Binding");
+			percentPlasmaProteinBinding.setValueUnit("%");
+			table.getDatumList().add(percentPlasmaProteinBinding);
 		}
 	}
 	
 	public PlasmaProteinBinding getDomainObj() {
-		PlasmaProteinBinding proteinBinding = new PlasmaProteinBinding();
-		super.updateDomainObj(proteinBinding);
-		return proteinBinding;
+		PlasmaProteinBinding plasmaProteinBinding = new PlasmaProteinBinding();
+		super.updateDomainObj(plasmaProteinBinding);
+		return plasmaProteinBinding;
 	}
 }

@@ -27,10 +27,10 @@ public class CFU_GMBean extends CharacterizationBean {
 	
 	public void initSetup() {
 		for (DerivedBioAssayDataBean table: getDerivedBioAssayData()) {
-			DatumBean percentCFU_GM=new DatumBean();
-			percentCFU_GM.setType("Percent CFU_GM");
-			percentCFU_GM.setValueUnit("%");
-			table.getDatumList().add(percentCFU_GM);
+			DatumBean cfu_gm=new DatumBean();
+			cfu_gm.setType("CFU_GM");
+			cfu_gm.setValueUnit("CFU");
+			table.getDatumList().add(cfu_gm);
 		}
 	}
 	
@@ -39,10 +39,10 @@ public class CFU_GMBean extends CharacterizationBean {
 		super.setDerivedBioAssayData(derivedBioAssayData);
 		
 		for (DerivedBioAssayDataBean table:getDerivedBioAssayData()) {
-			DatumBean percentCFU_GM=new DatumBean();
-			percentCFU_GM.setType("Percent CFU_GM");
-			percentCFU_GM.setValueUnit("%");
-			table.getDatumList().add(percentCFU_GM);
+			DatumBean cfu_gm=new DatumBean();
+			cfu_gm.setType("CFU_GM");
+			cfu_gm.setValueUnit("CFU");
+			table.getDatumList().add(cfu_gm);
 		}
 	}
 	
