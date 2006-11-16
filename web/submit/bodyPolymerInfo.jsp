@@ -100,7 +100,7 @@
 		</tr>
 		<tr>
 			<td class="completeLabel" colspan="4">
-				<c:forEach var="polymer.element" items="${nanoparticleCompositionForm.map.polymer.composingElements}" varStatus="status">
+				<c:forEach var="polymer.composingElements" items="${nanoparticleCompositionForm.map.polymer.composingElements}" varStatus="status">
 					<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 						<tbody>
 							<tr class="topBorder">
@@ -117,7 +117,7 @@
 								<td class="rightLabel" colspan="3">
 									<c:choose>
 										<c:when test="${canUserUpdateParticle eq 'true'}">
-											<html:text name="polymer.element" indexed="true" property="chemicalName" />
+											<html:text name="polymer.composingElements" indexed="true" property="chemicalName" />
 										</c:when>
 										<c:otherwise>
 						${nanoparticleCompositionForm.map.polymer.composingElements[status.index].chemicalName}&nbsp;
@@ -132,7 +132,7 @@
 								<td class="rightLabel" colspan="3">
 									<c:choose>
 										<c:when test="${canUserUpdateParticle eq 'true'}">
-											<html:textarea name="polymer.element" indexed="true" property="description" rows="3" />
+											<html:textarea name="polymer.composingElements" indexed="true" property="description" rows="3" />
 										</c:when>
 										<c:otherwise>
 						${nanoparticleCompositionForm.map.polymer.composingElements[status.index].description}&nbsp;
@@ -145,7 +145,7 @@
 					<br>
 					<c:choose>
 						<c:when test="${canUserUpdateParticle eq 'true'}">
-							<html:hidden name="polymer.element" indexed="true" property="elementType" value="monomer" />
+							<html:hidden name="polymer.composingElements" indexed="true" property="elementType" value="monomer" />
 						</c:when>
 					</c:choose>
 				</c:forEach>

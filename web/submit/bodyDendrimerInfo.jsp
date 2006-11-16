@@ -187,7 +187,7 @@
 		</tr>
 		<tr>
 			<td class="completeLabel" colspan="4">
-				<c:forEach var="dendrimer.surfaceGroup" items="${nanoparticleCompositionForm.map.dendrimer.surfaceGroups}" varStatus="status">
+				<c:forEach var="dendrimer.surfaceGroups" items="${nanoparticleCompositionForm.map.dendrimer.surfaceGroups}" varStatus="status">
 					<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 						<tbody>
 							<tr class="topBorder">
@@ -204,7 +204,7 @@
 								<td class="label">
 									<c:choose>
 										<c:when test="${canUserUpdateParticle eq 'true'}">
-											<html:select name="dendrimer.surfaceGroup" indexed="true" property="name">
+											<html:select name="dendrimer.surfaceGroups" indexed="true" property="name">
 												<option />
 													<html:options name="allDendrimerSurfaceGroupNames" />
 											</html:select>
@@ -220,7 +220,7 @@
 								<td class="rightLabel">
 									<c:choose>
 										<c:when test="${canUserUpdateParticle eq 'true'}">
-											<html:text name="dendrimer.surfaceGroup" indexed="true" property="modifier" />
+											<html:text name="dendrimer.surfaceGroups" indexed="true" property="modifier" />
 										</c:when>
 										<c:otherwise>
 						${nanoparticleCompositionForm.map.dendrimer.surfaceGroups[status.index].modifier}&nbsp;

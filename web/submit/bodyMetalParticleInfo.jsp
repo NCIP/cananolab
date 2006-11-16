@@ -92,7 +92,7 @@
 		</tr>
 		<tr>
 			<td class="completeLabel" colspan="4">
-				<c:forEach var="metalParticle.shell" items="${nanoparticleCompositionForm.map.metalParticle.shells}" varStatus="status">
+				<c:forEach var="metalParticle.shells" items="${nanoparticleCompositionForm.map.metalParticle.shells}" varStatus="status">
 					<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 						<tbody>
 							<tr class="topBorder">
@@ -109,7 +109,7 @@
 								<td class="rightLabel" colspan="3">
 									<c:choose>
 										<c:when test="${canUserUpdateParticle eq 'true'}">
-											<html:text name="metalParticle.shell" indexed="true" property="chemicalName" />
+											<html:text name="metalParticle.shells" indexed="true" property="chemicalName" />
 										</c:when>
 										<c:otherwise>
 						${nanoparticleCompositionForm.map.metalParticle.shells[status.index].chemicalName}&nbsp;
@@ -124,7 +124,7 @@
 								<td class="rightLabel" colspan="3">
 									<c:choose>
 										<c:when test="${canUserUpdateParticle eq 'true'}">
-											<html:textarea name="metalParticle.shell" indexed="true" property="description" rows="3" />
+											<html:textarea name="metalParticle.shells" indexed="true" property="description" rows="3" />
 										</c:when>
 										<c:otherwise>
 						${nanoparticleCompositionForm.map.metalParticle.shells[status.index].description}&nbsp;
@@ -137,7 +137,7 @@
 					<br>
 					<c:choose>
 						<c:when test="${canUserUpdateParticle eq 'true'}">
-							<html:hidden name="metalParticle.shell" indexed="true" property="elementType" value="shell" />
+							<html:hidden name="metalParticle.shells" indexed="true" property="elementType" value="shell" />
 						</c:when>
 					</c:choose>
 				</c:forEach>
@@ -145,7 +145,7 @@
 		</tr>
 		<tr>
 			<td class="completeLabel" colspan="4">
-				<c:forEach var="metalParticle.coating" items="${nanoparticleCompositionForm.map.metalParticle.coatings}" varStatus="status">
+				<c:forEach var="metalParticle.coatings" items="${nanoparticleCompositionForm.map.metalParticle.coatings}" varStatus="status">
 					<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 						<tbody>
 							<tr class="topBorder">
@@ -162,7 +162,7 @@
 								<td class="rightLabel" colspan="3">
 									<c:choose>
 										<c:when test="${canUserUpdateParticle eq 'true'}">
-											<html:text name="metalParticle.coating" indexed="true" property="chemicalName" />
+											<html:text name="metalParticle.coatings" indexed="true" property="chemicalName" />
 										</c:when>
 										<c:otherwise>
 						${nanoparticleCompositionForm.map.metalParticle.coatings[status.index].chemicalName}&nbsp;
@@ -177,7 +177,7 @@
 								<td class="rightLabel" colspan="3">
 									<c:choose>
 										<c:when test="${canUserUpdateParticle eq 'true'}">
-											<html:textarea name="metalParticle.coating" indexed="true" property="description" rows="3" />
+											<html:textarea name="metalParticle.coatings" indexed="true" property="description" rows="3" />
 										</c:when>
 										<c:otherwise>
 						${nanoparticleCompositionForm.map.metalParticle.coatings[status.index].description}&nbsp;
@@ -190,7 +190,7 @@
 					<br>
 					<c:choose>
 						<c:when test="${canUserUpdateParticle eq 'true'}">
-							<html:hidden name="metalParticle.coating" indexed="true" property="elementType" value="coating" />
+							<html:hidden name="metalParticle.coatings" indexed="true" property="elementType" value="coating" />
 						</c:when>
 					</c:choose>
 				</c:forEach>
