@@ -2,10 +2,8 @@ package gov.nih.nci.calab.service.inventory;
 
 import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
-import gov.nih.nci.calab.domain.Sample;
 import gov.nih.nci.calab.domain.SampleContainer;
 import gov.nih.nci.calab.domain.SampleSOP;
-import gov.nih.nci.calab.domain.SampleType;
 import gov.nih.nci.calab.domain.Source;
 import gov.nih.nci.calab.domain.StorageElement;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
@@ -19,11 +17,10 @@ import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-/* CVS $Id: ManageSampleService.java,v 1.6 2006-11-15 16:44:19 pansu Exp $ 
+/* CVS $Id: ManageSampleService.java,v 1.7 2006-11-16 16:07:13 pansu Exp $ 
  */
 public class ManageSampleService {
 	private static Logger logger = Logger.getLogger(ManageSampleService.class);
