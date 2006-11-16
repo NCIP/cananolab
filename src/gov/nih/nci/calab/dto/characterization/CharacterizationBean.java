@@ -232,14 +232,6 @@ public class CharacterizationBean {
 		this.instrument = instrument;
 	}
 	
-	public DerivedBioAssayDataBean getData(int ind) {
-		return derivedBioAssayData.get(ind);
-	}
-
-	public void setData(int ind, DerivedBioAssayDataBean table) {
-		derivedBioAssayData.set(ind, table);
-	}
-
 	public String getNumberOfDerivedBioAssayData() {
 		return numberOfDerivedBioAssayData;
 	}
