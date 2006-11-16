@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleMolecularWeightAction.java,v 1.4 2006-11-15 14:51:38 zengje Exp $ */
+/* CVS $Id: NanoparticleMolecularWeightAction.java,v 1.5 2006-11-16 15:08:09 chand Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
@@ -309,6 +309,7 @@ public class NanoparticleMolecularWeightAction extends AbstractDispatchAction {
 		String fileNumber=(String)theForm.get("fileNumber");	
 		request.setAttribute("particleName", particleName);	
 		request.setAttribute("fileNumber", fileNumber);		
+		request.setAttribute("characterization", "molecularWeight");
 		request.setAttribute("loadFileForward", "molecularWeightInputForm");
 		return mapping.findForward("loadFile");
 	}
@@ -347,96 +348,4 @@ public class NanoparticleMolecularWeightAction extends AbstractDispatchAction {
 	public boolean loginRequired() {
 		return true;
 	}
-	
-	/**
-	 * Download action to handle download characterization file
-	 * @param 
-	 * @return
-	 */
-	public ActionForward download (ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String fileId=request.getParameter("fileId");
-
-		/*
-		String filename = null;
-		SizeBean aChar=(SizeBean) theForm.get("achar");
-		for (CharacterizationTableBean obj : aChar.getCharacterizationTables()) {
-			if (obj.getId().toString().equals(fileId)) {
-				filename = obj.getFile().getName();
-			}
-		}
-*/
-		
-		CharacterizationFileBean fileBean = (CharacterizationFileBean) request.getSession().getAttribute("characterizationFile" + fileId);
-		String filename = fileBean.getPath() + fileBean.getName();
-		
-		logger.info("*************filename=" + filename);
-		
-		File dFile = new File(filename);
-		if (dFile.exists()) {
-			response.setContentType("application/octet-stream");
-			response.setHeader("Content-disposition", "attachment;filename=" + this.getName(filename));
-			response.setHeader("Cache-Control", "no-cache");
-		
-			java.io.InputStream in = new FileInputStream (dFile);
-			java.io.OutputStream out = response.getOutputStream();
-
-			byte[] bytes = new byte[32768];
-	
-			int numRead = 0;
-			while ((numRead = in.read(bytes)) > 0) {
-				out.write(bytes, 0, numRead);
-			}
-			out.close();
-		} else {
-			throw new Exception ("ERROR: file not found.");
-		}
-			
-		
-		return null;
-	}
-	
-	/**
-	 * Retrieve the file name from the full path
-	 * @param fullPath
-	 * @return
-	 */
-	private String getName(String fullPath) {
-		String rv = null;
-		
-        String separator = fullPath.indexOf('/') < 0 ? "\\" : "/"; 
-		
-		int idx = fullPath.lastIndexOf(separator);
-		
-		if (idx >= 0)
-			rv = fullPath.substring(idx+1); 
-		else
-			rv = fullPath;
-				
-		return rv;
-	}
-
-	/**
-	 * Retrieve the path from the full path
-	 * @param fullPath
-	 * @return
-	 */
-	private String getPath(String fullPath) {
-		String rv = null;
-		
-        String separator = fullPath.indexOf('/') < 0 ? "\\" : "/"; 
-		
-		int idx = fullPath.lastIndexOf(separator);
-		
-		if (idx >= 0)
-			rv = fullPath.substring(0, idx+1);
-		else
-			rv = fullPath;
-				
-		return rv;
-	}
-	
 }
