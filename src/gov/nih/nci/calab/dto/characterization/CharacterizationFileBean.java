@@ -33,21 +33,26 @@ public class CharacterizationFileBean {
 
 	private String name;
 	
-	private String fileId;
-
-	public String getFileId() {
-		return fileId;
-	}
-
-	public void setFileId(String fileId) {
-		this.fileId = fileId;
-	}
+	/*
+	 * name to be displayed as a part of the drop-down list
+	 */
+	private String displayName;
 
 	public CharacterizationFileBean() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
+	public CharacterizationFileBean(LabFile charFile) {
+		this.id=charFile.getId().toString();
+		this.name=charFile.getFilename();
+		this.path=charFile.getPath();
+		this.title=charFile.getTitle();
+		this.description=charFile.getDescription();
+	    this.createdBy=charFile.getCreatedBy();
+	    this.createdDate=charFile.getCreatedDate();
+	}
+	
 	public String getComments() {
 		return comments;
 	}
@@ -130,8 +135,8 @@ public class CharacterizationFileBean {
 
 	public DerivedDataFile getDomainObject(){
 		DerivedDataFile labfile = new DerivedDataFile();
-		if (getFileId() != null && getFileId().length() > 0) {
-			labfile.setId(new Long(getFileId()));
+		if (id != null && id.length() > 0) {
+			labfile.setId(new Long(id));
 		}
 		labfile.setCreatedBy(createdBy);
 		labfile.setCreatedDate(createdDate);
@@ -143,4 +148,8 @@ public class CharacterizationFileBean {
 		return labfile;
 	}
 
+	public String getDisplayName() {
+		displayName=path.replaceAll("/decompressedFiles", "");
+		return displayName;
+	}
 }
