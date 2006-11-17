@@ -2,10 +2,8 @@ package gov.nih.nci.calab.service.inventory;
 
 import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
-import gov.nih.nci.calab.domain.Sample;
 import gov.nih.nci.calab.domain.SampleContainer;
 import gov.nih.nci.calab.domain.SampleSOP;
-import gov.nih.nci.calab.domain.SampleType;
 import gov.nih.nci.calab.domain.Source;
 import gov.nih.nci.calab.domain.StorageElement;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
@@ -19,11 +17,10 @@ import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-/* CVS $Id: ManageSampleService.java,v 1.5 2006-09-10 18:02:56 zengje Exp $ 
+/* CVS $Id: ManageSampleService.java,v 1.7 2006-11-16 16:07:13 pansu Exp $ 
  */
 public class ManageSampleService {
 	private static Logger logger = Logger.getLogger(ManageSampleService.class);
@@ -79,6 +76,20 @@ public class ManageSampleService {
 		return sampleNamePrefix + "-" + lotId;
 	}
 
+	/**
+	 * return the container prefix
+	 * @param sampleNamePrefix
+	 * @param lotId
+	 * @return
+	 */
+	public String getContainerPrefix(String sampleNamePrefix, String lotId) {
+		String containerPrefix=sampleNamePrefix;
+		if (lotId.equals(CalabConstants.EMPTY)) {
+			containerPrefix=sampleNamePrefix+"-0";
+		}
+		return containerPrefix;
+	}
+	
 	/**
 	 * 
 	 * @return the default lot Id
@@ -205,8 +216,7 @@ public class ManageSampleService {
 				doSampleContainer.setSafetyPrecaution(containers[i].getSafetyPrecaution());
 				doSampleContainer.setStorageCondition(containers[i].getStorageCondition());
 				doSampleContainer.setVolume(StringUtils.convertToFloat(containers[i].getVolume()));
-				doSampleContainer.setVolumeUnit(containers[i].getVolumeUnit());
-				// TODO: set name is it suppose to be sequence number?
+				doSampleContainer.setVolumeUnit(containers[i].getVolumeUnit());				
 				doSampleContainer.setName(containers[i].getContainerName());
 				
 				// TODO: relationship with storage need to be added too.
