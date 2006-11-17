@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.inventory;
  * @author pansu
  */
 
-/* CVS $Id: CreateAliquotAction.java,v 1.4 2006-08-01 19:46:37 pansu Exp $ */
+/* CVS $Id: CreateAliquotAction.java,v 1.6 2006-11-15 16:44:58 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.inventory.AliquotBean;
 import gov.nih.nci.calab.exception.CalabException;
@@ -82,7 +82,6 @@ public class CreateAliquotAction extends AbstractDispatchAction {
 
 		boolean fromAliquot = ((String) theForm.get("fromAliquot"))
 				.equals("true") ? true : false;
-
 		String containerName = (String) theForm.get("containerName");
 		String parentAliquotName = (String) theForm.get("parentAliquotName");
 		String parentName = (fromAliquot) ? parentAliquotName : containerName;
