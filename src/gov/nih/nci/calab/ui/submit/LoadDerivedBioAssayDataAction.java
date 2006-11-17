@@ -6,23 +6,21 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: LoadDerivedBioAssayDataAction.java,v 1.3 2006-11-16 15:04:23 chand Exp $ */
-
-import java.io.File;
+/* CVS $Id: LoadDerivedBioAssayDataAction.java,v 1.4 2006-11-17 22:11:34 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
-import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
+import java.io.File;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -30,8 +28,6 @@ import org.apache.struts.upload.FormFile;
 import org.apache.struts.validator.DynaValidatorForm;
 
 public class LoadDerivedBioAssayDataAction extends AbstractDispatchAction {
-	private static Logger logger = Logger.getLogger(LoadDerivedBioAssayDataAction.class);
-	
 	public ActionForward submit(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
