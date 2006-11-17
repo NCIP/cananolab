@@ -273,6 +273,32 @@
     																	</c:choose>
 																	</td>
 																</tr>
+																<tr>
+																	<td class="leftLabel">
+																		<strong>Time</strong>
+																	</td>
+																	<td class="label">
+    																	<c:choose>
+        																	<c:when test="${canUserUpdateParticle eq 'true'}">
+																				<html:text name="achar.derivedBioAssayData" property="datumList[0].conditionList[2].value" indexed="true"/>
+        																	</c:when>
+        																	<c:otherwise>
+																				${invitroCytotoxicityCaspase3ActivationForm.map.achar.derivedBioAssayData[status.index].datumList[0].conditionList[2].value}&nbsp;
+        																	</c:otherwise>
+    																	</c:choose>
+    																	&nbsp;&nbsp;&nbsp;
+    																	<c:choose>
+        																	<c:when test="${canUserUpdateParticle eq 'true'}">
+																				<html:select name="achar.derivedBioAssayData" property="datumList[0].conditionList[2].valueUnit" indexed="true">
+																					<html:options name="allTimeUnits" />
+																				</html:select>
+        																	</c:when>
+        																	<c:otherwise>
+																				${invitroCytotoxicityCaspase3ActivationForm.map.achar.derivedBioAssayData[status.index].datumList[0].conditionList[2].valueUnit}&nbsp;
+        																	</c:otherwise>
+    																	</c:choose>
+																	</td>
+																</tr>
 															</tbody>
 														</table>
 													</td>
