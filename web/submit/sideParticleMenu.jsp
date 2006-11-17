@@ -19,7 +19,7 @@
 		<c:set var="dispatchValue" value="setupUpdate" />
 	</c:when>
 	<c:otherwise>
-		<c:set var="dispatchValue" value="view" />
+		<c:set var="dispatchValue" value="setupView" />
 	</c:otherwise>
 </c:choose>
 <table summary="" cellpadding="0" cellspacing="0" border="0" height="100%" width="250">

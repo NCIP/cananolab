@@ -29,7 +29,7 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 				// check whether user have access to the class
 				boolean accessStatus = canUserExecute(request.getSession());
 				//if dispatch is view or accessStatus is true don't throw exception
-				if (!dispatch.equals("view") && !accessStatus) {
+				if (!dispatch.equals("setupView") && !accessStatus) {
 					throw new NoAccessException(
 							"You don't have access to class: "
 									+ this.getClass().getName());
