@@ -14,6 +14,7 @@ table.displaytable thead tr {
 
 table.displaytable th,table.displaytable td {
 	padding: 2px 10px 2px 4px;
+	vertical-align: top;
 }
 
 table.displaytable th.sorted {
