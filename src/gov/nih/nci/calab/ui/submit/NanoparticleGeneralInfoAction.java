@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.11 2006-09-11 19:32:42 pansu Exp $ */
+/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.12 2006-11-17 22:35:18 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
@@ -107,7 +107,7 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 		return mapping.findForward("update");
 	}
 
-	public ActionForward view(ActionMapping mapping, ActionForm form,
+	public ActionForward setupView(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 
