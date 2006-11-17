@@ -30,7 +30,7 @@ public class NanoparticleDecorator extends TableDecorator {
 		// replace space with special char
 		String particleType = particle.getSampleType().replace(" ", "%20");
 		String particleName = particle.getSampleName();
-		String viewParticleURL = "nanoparticleGeneralInfo.do?dispatch=view&particleType="
+		String viewParticleURL = "nanoparticleGeneralInfo.do?dispatch=setupView&particleType="
 				+ particleType + "&particleName=" + particleName;
 		String link = "<a href=" + viewParticleURL + ">"
 				+ particle.getSortableName() + "</a>";
