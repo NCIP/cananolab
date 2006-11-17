@@ -36,9 +36,26 @@
 
 							<tr>
 								<td class="sidebarContent">
-									<a href="${createLink}">Create a New <c:out value="${item}" /> </a>
+									<a href="${createLink}"> <c:choose>
+											<c:when test="${item eq 'Nanoparticle'}">
+												Annotate
+											</c:when>
+											<c:otherwise>
+												Create
+											</c:otherwise>
+										</c:choose>
+										a New <c:out value="${item}" /> </a>
 									<br>
-									Click to add a new
+									Click to
+									<c:choose>
+										<c:when test="${item eq 'Nanoparticle'}">
+												annotate
+											</c:when>
+										<c:otherwise>
+												add
+											</c:otherwise>
+									</c:choose>
+									&nbsp;a new
 									<c:out value="${fn:toLowerCase(item)}" />
 									.
 								</td>

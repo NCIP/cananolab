@@ -193,9 +193,8 @@ P:false,	// menu is PERMANENT (you can only set true if this is LEVEL 1 menu)
 S:s_CSSTop	// STYLE Array to use for this menu
 },
 [		// define items {U:'url',T:'text' ...} look at the Manual for details
-{U:'manageNanoparticle.do',T:'Manage Nanoparticle'},
-{U:'publishReport.do?dispatch=setup&page=0',T:'Publish Report'},
-{U:'publishAssayResult.do?dispatch=setup&page=0',T:'Publish Assay Result File'}
+{U:'manageNanoparticle.do',T:'Annotate Nanoparticle'},
+{U:'publishReport.do?dispatch=setup&page=0',T:'Publish Report'}
 ]
 );
 
