@@ -43,7 +43,7 @@
 											<a href="nanoparticleGeneralInfo.do?dispatch=setupUpdate&particleType=${particleType}&particleName=${particleName}"">${particleName} (${particleType})</a>
 										</c:when>
 										<c:otherwise>
-											<a href="nanoparticleGeneralInfo.do?dispatch=view&particleType=${particleType}&particleName=${particleName}"">${particleName} (${particleType})</a>
+											<a href="nanoparticleGeneralInfo.do?dispatch=setupView&particleType=${particleType}&particleName=${particleName}"">${particleName} (${particleType})</a>
 										</c:otherwise>
 									</c:choose> </span>
 								<br>
