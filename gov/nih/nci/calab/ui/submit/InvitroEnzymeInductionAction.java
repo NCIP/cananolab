@@ -155,6 +155,7 @@ public class InvitroEnzymeInductionAction extends AbstractDispatchAction {
 		InitSessionSetup.getInstance().setAllControlTypes(session);
 		InitSessionSetup.getInstance().setAllConditionTypes(session);
 		InitSessionSetup.getInstance().setAllConcentrationUnits(session);
+		InitSessionSetup.getInstance().setAllTimeUnits(session);
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
 		if (firstOption == "")
@@ -307,6 +308,9 @@ public class InvitroEnzymeInductionAction extends AbstractDispatchAction {
 		molecularConcentrationCondition.setType("Molecular Concentration");
 		molecularConcentrationCondition.setValueUnit("uM");
 		conditions.add(molecularConcentrationCondition);
+		ConditionBean timeCondition = new ConditionBean();
+		timeCondition.setType("Time");
+		conditions.add(timeCondition);
 		datum.setConditionList(conditions);
 	}
 
