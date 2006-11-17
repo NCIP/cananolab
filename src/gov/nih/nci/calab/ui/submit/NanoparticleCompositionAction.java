@@ -8,7 +8,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleCompositionAction.java,v 1.17 2006-10-05 20:13:29 zengje Exp $ */
+/* CVS $Id: NanoparticleCompositionAction.java,v 1.18 2006-11-17 22:11:02 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.CarbonNanotubeComposition;
@@ -21,13 +21,13 @@ import gov.nih.nci.calab.domain.nano.characterization.physical.composition.Metal
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.PolymerComposition;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.QuantumDotComposition;
 import gov.nih.nci.calab.dto.characterization.composition.BaseCoreShellCoatingBean;
-import gov.nih.nci.calab.dto.characterization.composition.FullereneBean;
+import gov.nih.nci.calab.dto.characterization.composition.CarbonNanotubeBean;
 import gov.nih.nci.calab.dto.characterization.composition.ComplexParticleBean;
 import gov.nih.nci.calab.dto.characterization.composition.ComposingElementBean;
 import gov.nih.nci.calab.dto.characterization.composition.CompositionBean;
 import gov.nih.nci.calab.dto.characterization.composition.DendrimerBean;
 import gov.nih.nci.calab.dto.characterization.composition.EmulsionBean;
-import gov.nih.nci.calab.dto.characterization.composition.CarbonNanotubeBean;
+import gov.nih.nci.calab.dto.characterization.composition.FullereneBean;
 import gov.nih.nci.calab.dto.characterization.composition.LiposomeBean;
 import gov.nih.nci.calab.dto.characterization.composition.MetalParticleBean;
 import gov.nih.nci.calab.dto.characterization.composition.PolymerBean;
@@ -37,7 +37,7 @@ import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.service.util.CananoConstants;
-import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
+import gov.nih.nci.calab.ui.core.BaseCharacterizationAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
 import java.util.ArrayList;
@@ -55,7 +55,7 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
-public class NanoparticleCompositionAction extends AbstractDispatchAction {
+public class NanoparticleCompositionAction extends BaseCharacterizationAction {
 
 	/**
 	 * Add or update the data to database
@@ -130,29 +130,7 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		return forward;
 	}
 
-	/**
-	 * Set up the input forms for adding data
-	 * 
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws Exception
-	 */
-	public ActionForward setup(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-
-		HttpSession session = request.getSession();
-		// clear session data from the input forms
-		clearMap(session, theForm, mapping);
-		initSetup(request, theForm);
-		return mapping.getInputForward();
-	}
-
-	private void clearMap(HttpSession session, DynaValidatorForm theForm,
+	protected void clearMap(HttpSession session, DynaValidatorForm theForm,
 			ActionMapping mapping) throws Exception {
 		String particleType = (String) theForm.get("particleType");
 		String particleName = (String) theForm.get("particleName");
@@ -174,8 +152,8 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 				particleType.toLowerCase()).getPath());
 	}
 
-	private void initSetup(HttpServletRequest request, DynaValidatorForm theForm)
-			throws Exception {
+	protected void initSetup(HttpServletRequest request,
+			DynaValidatorForm theForm) throws Exception {
 		HttpSession session = request.getSession();
 
 		String particleType = (String) theForm.get("particleType");
@@ -193,11 +171,11 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		} else if (particleType
 				.equalsIgnoreCase(CananoConstants.METAL_PARTICLE_TYPE)) {
 			InitSessionSetup.getInstance().setAllMetalCompositions(session);
-		}		
+		}
 	}
 
 	/**
-	 * Set up the input forms for updating data
+	 * Set up the input forms for updating data, overwrite parent
 	 * 
 	 * @param mapping
 	 * @param form
@@ -271,22 +249,6 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 	}
 
 	/**
-	 * Set up the input fields for read only view data
-	 * 
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws Exception
-	 */
-	public ActionForward view(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		return setupUpdate(mapping, form, request, response);
-	}
-
-	/**
 	 * Update multiple children on the same form
 	 * 
 	 * @param mapping
@@ -338,12 +300,12 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		} else if (particleType
 				.equalsIgnoreCase(CananoConstants.QUANTUM_DOT_TYPE)) {
 			composition = (QuantumDotBean) theForm.get("quantumDot");
-			updateCoreShellsCoatings((QuantumDotBean) composition);			
+			updateCoreShellsCoatings((QuantumDotBean) composition);
 			theForm.set("quantumDot", (QuantumDotBean) composition);
 		} else if (particleType
 				.equalsIgnoreCase(CananoConstants.METAL_PARTICLE_TYPE)) {
 			composition = (MetalParticleBean) theForm.get("metalParticle");
-			updateCoreShellsCoatings((MetalParticleBean) composition);			
+			updateCoreShellsCoatings((MetalParticleBean) composition);
 			theForm.set("metalParticle", (MetalParticleBean) composition);
 		}
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
@@ -405,8 +367,8 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		shells = updateElements(origShells, shellNum);
 		composition.setShells(shells);
 		List<ComposingElementBean> origCoatings = composition.getCoatings();
-		coatings = updateElements(origCoatings, coatingNum);		
-		composition.setCoatings(coatings);		
+		coatings = updateElements(origCoatings, coatingNum);
+		composition.setCoatings(coatings);
 		core = composition.getCore();
 		List<ComposingElementBean> elements = new ArrayList<ComposingElementBean>();
 		elements.add(core);
@@ -453,7 +415,14 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		composition.setComposingElements(elements);
 	}
 
-	public boolean loginRequired() {
-		return true;
+	//not needed for composition		
+	protected void setFormCharacterizationBean(DynaValidatorForm theForm,
+			Characterization aChar) throws Exception {
+		// TODO Auto-generated method stub
+	}
+
+	//not needed for composition
+	protected void setLoadFileRequest(HttpServletRequest request) {
+		// TODO Auto-generated method stub
 	}
 }
