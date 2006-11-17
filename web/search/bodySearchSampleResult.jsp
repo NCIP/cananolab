@@ -28,7 +28,7 @@
 						<input type="radio" name="containerId" value="${container.containerId}">
 					</display:column>
 					<display:column title="Sample ID" property="sample.sortableName" sortable="true" />
-					<display:column title="Container Name" property="containerName" sortable="true" />
+					<display:column title="Container Name" property="sortableName" sortable="true" />
 					<display:column title="Sample Accession<br>Date" property="sample.accessionDate" sortable="true" format="{0,date,MM-dd-yyyy}" />
 					<display:column title="Sample Type" property="sample.sampleType" sortable="true" />
 					<display:column title="Sample Location" property="storageLocation" sortable="true" />
