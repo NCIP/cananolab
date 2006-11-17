@@ -24,7 +24,7 @@ public class SizeBean extends CharacterizationBean {
 		initSetup();
 	}
 	
-	public SizeBean(Characterization aChar) {
+	public SizeBean(Size aChar) {
 		super(aChar);
 		/*
 		this.setCharacterizationSource(aChar.getSource());
