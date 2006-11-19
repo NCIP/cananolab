@@ -294,6 +294,15 @@ public class Sample implements java.io.Serializable {
 		this.projectCollection = projectCollection;
 	}
 
+	private java.util.Collection reportCollection = new java.util.HashSet();
+
+	public java.util.Collection getReportCollection() {
+		return reportCollection;
+	}
+
+	public void setReportCollection(java.util.Collection reportCollection) {
+		this.reportCollection = reportCollection;
+	}
 	public boolean equals(Object obj) {
 		boolean eq = false;
 		if (obj instanceof Sample) {

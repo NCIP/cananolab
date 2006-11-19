@@ -38,6 +38,11 @@
       <key column="SAMPLE_PK_ID" />
       <many-to-many class="gov.nih.nci.calab.domain.Project" column="PROJECT_PK_ID" />
     </set>
+    <set name="reportCollection" table="SAMPLE_REPORT" cascade="all-delete-orphan" lazy="true" inverse="true">
+      <cache usage="read-write" />
+      <key column="SAMPLE_PK_ID" />
+      <many-to-many class="gov.nih.nci.calab.domain.Report" column="FILE_PK_ID" />
+    </set>
   </class>
 </hibernate-mapping>
 
