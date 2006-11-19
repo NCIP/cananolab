@@ -20,6 +20,7 @@
 		<property name="title" type="java.lang.String" column="TITLE" />
 		<property name="description" type="java.lang.String" column="DESCRIPTION" />
 
+
 		<joined-subclass name="gov.nih.nci.calab.domain.OutputFile" table="RUN_OUTPUT_FILE">
 			<key column="OUTPUT_FILE_PK_ID" />
 			<many-to-one name="run" class="gov.nih.nci.calab.domain.Run" column="RUN_PK_ID" lazy="true" />
@@ -38,6 +39,17 @@
 			<key column="PROTOCOL_FILE_PK_ID" />
 			<many-to-one name="protocol" class="gov.nih.nci.calab.domain.Protocol" column="PROTOCOL_PK_ID" lazy="true" />
 		</joined-subclass>
+		<joined-subclass name="gov.nih.nci.calab.domain.DerivedDataFile" table="DERIVED_DATA_FILE">
+			<key column="DERIVED_FILE_PK_ID" />
+		</joined-subclass>
+		<joined-subclass name="gov.nih.nci.calab.domain.AssociatedFile" table="ASSOCIATED_FILE">
+			<key column="ASSOCIATED_FILE_PK_ID" />
+		</joined-subclass>
+		<joined-subclass name="gov.nih.nci.calab.domain.Report" table="REPORT">
+			<key column="REPORT_PK_ID" />
+		</joined-subclass>
+		
+		
 	</class>
 </hibernate-mapping>
 
