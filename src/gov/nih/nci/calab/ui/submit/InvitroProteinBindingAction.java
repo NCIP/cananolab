@@ -110,6 +110,8 @@ public class InvitroProteinBindingAction extends BaseCharacterizationAction {
 		theForm.set("particleName", particleName);
 		theForm.set("particleType", particleType);
 		theForm.set("achar", new PlasmaProteinBindingBean());
+		
+		cleanSessionAttributes(session);
 	}
 
 	protected void initSetup(HttpServletRequest request, DynaValidatorForm theForm)
