@@ -110,6 +110,8 @@ public class InvitroHemolysisAction extends BaseCharacterizationAction {
 		theForm.set("particleName", particleName);
 		theForm.set("particleType", particleType);
 		theForm.set("achar", new HemolysisBean());
+		
+		cleanSessionAttributes(session);
 	}
 
 	protected void initSetup(HttpServletRequest request, DynaValidatorForm theForm)

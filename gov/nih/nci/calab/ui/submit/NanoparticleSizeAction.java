@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSizeAction.java,v 1.15 2006-11-17 22:11:02 pansu Exp $ */
+/* CVS $Id: NanoparticleSizeAction.java,v 1.16 2006-11-19 22:40:40 zengje Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Size;
@@ -142,12 +142,13 @@ public class NanoparticleSizeAction extends BaseCharacterizationAction {
 		theForm.set("particleType", particleType);
 		theForm.set("achar", new SizeBean());
 
-		for (Enumeration e = session.getAttributeNames(); e.hasMoreElements();) {
-			String element = (String) e.nextElement();
-			if (element.startsWith(CananoConstants.CHARACTERIZATION_FILE)) {
-				session.removeAttribute(element);
-			}
-		}
+		cleanSessionAttributes(session);
+//		for (Enumeration e = session.getAttributeNames(); e.hasMoreElements();) {
+//			String element = (String) e.nextElement();
+//			if (element.startsWith(CananoConstants.CHARACTERIZATION_FILE)) {
+//				session.removeAttribute(element);
+//			}
+//		}
 	}
 
 	protected void initSetup(HttpServletRequest request, DynaValidatorForm theForm)

@@ -109,6 +109,8 @@ public class InvitroLeukocyteProliferationAction extends BaseCharacterizationAct
 		theForm.set("particleName", particleName);
 		theForm.set("particleType", particleType);
 		theForm.set("achar", new LeukocyteProliferationBean());
+		
+		cleanSessionAttributes(session);
 	}
 
 	protected void initSetup(HttpServletRequest request, DynaValidatorForm theForm)

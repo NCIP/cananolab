@@ -109,6 +109,8 @@ public class InvitroOxidativeBurstAction extends BaseCharacterizationAction {
 		theForm.set("particleName", particleName);
 		theForm.set("particleType", particleType);
 		theForm.set("achar", new OxidativeBurstBean());
+		
+		cleanSessionAttributes(session);
 	}
 
 	protected void initSetup(HttpServletRequest request, DynaValidatorForm theForm)

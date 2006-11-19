@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleMolecularWeightAction.java,v 1.6 2006-11-17 22:11:02 pansu Exp $ */
+/* CVS $Id: NanoparticleMolecularWeightAction.java,v 1.7 2006-11-19 22:40:40 zengje Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.MolecularWeight;
@@ -120,13 +120,14 @@ public class NanoparticleMolecularWeightAction extends BaseCharacterizationActio
 		theForm.set("particleName", particleName);
 		theForm.set("particleType", particleType);
 		theForm.set("achar", new MolecularWeightBean());
-		
-	    for (Enumeration e = session.getAttributeNames(); e.hasMoreElements() ;) {
-	    	String element = (String) e.nextElement();
-	        if (element.startsWith(CananoConstants.CHARACTERIZATION_FILE)) {
-	        	session.removeAttribute(element);
-	        }
-	    }
+	
+		cleanSessionAttributes(session);
+//	    for (Enumeration e = session.getAttributeNames(); e.hasMoreElements() ;) {
+//	    	String element = (String) e.nextElement();
+//	        if (element.startsWith(CananoConstants.CHARACTERIZATION_FILE)) {
+//	        	session.removeAttribute(element);
+//	        }
+//	    }
 	}
 
 	protected void initSetup(HttpServletRequest request, DynaValidatorForm theForm)
