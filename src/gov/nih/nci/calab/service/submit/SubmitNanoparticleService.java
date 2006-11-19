@@ -2,13 +2,13 @@ package gov.nih.nci.calab.service.submit;
 
 import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
+import gov.nih.nci.calab.domain.DerivedDataFile;
 import gov.nih.nci.calab.domain.InstrumentType;
 import gov.nih.nci.calab.domain.Keyword;
 import gov.nih.nci.calab.domain.LabFile;
 import gov.nih.nci.calab.domain.Manufacturer;
 import gov.nih.nci.calab.domain.OutputFile;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
-import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
 import gov.nih.nci.calab.dto.characterization.composition.CompositionBean;
@@ -145,7 +145,7 @@ public class SubmitNanoparticleService {
 	 */
 	private void addParticleCharacterization(String particleType,
 			String particleName, Characterization achar) throws Exception {
-		
+
 		// if ID is not set save to the database otherwise update
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
@@ -154,15 +154,16 @@ public class SubmitNanoparticleService {
 		int existingViewTitleCount = -1;
 		try {
 			ida.open();
-			
+
 			/*
-			if (achar.getInstrument() != null)
-				ida.store(achar.getInstrument());
-			*/
-			
+			 * if (achar.getInstrument() != null)
+			 * ida.store(achar.getInstrument());
+			 */
+
 			if (achar.getInstrument() != null) {
 				Manufacturer manuf = achar.getInstrument().getManufacturer();
-				String manufacturerQuery = " from Manufacturer manufacturer where manufacturer.name = '" + manuf.getName() + "'";
+				String manufacturerQuery = " from Manufacturer manufacturer where manufacturer.name = '"
+						+ manuf.getName() + "'";
 				List result = ida.search(manufacturerQuery);
 				Manufacturer manufacturer = null;
 				boolean newManufacturer = false;
@@ -174,10 +175,11 @@ public class SubmitNanoparticleService {
 					manufacturer = manuf;
 					ida.store(manufacturer);
 				}
-				
-				
-				InstrumentType iType = achar.getInstrument().getInstrumentType();
-				String instrumentTypeQuery = " from InstrumentType instrumentType left join fetch instrumentType.manufacturerCollection where instrumentType.name = '" + iType.getName() + "'";
+
+				InstrumentType iType = achar.getInstrument()
+						.getInstrumentType();
+				String instrumentTypeQuery = " from InstrumentType instrumentType left join fetch instrumentType.manufacturerCollection where instrumentType.name = '"
+						+ iType.getName() + "'";
 				result = ida.search(instrumentTypeQuery);
 				InstrumentType instrumentType = null;
 				for (Object obj : result) {
@@ -185,37 +187,38 @@ public class SubmitNanoparticleService {
 				}
 				if (instrumentType == null) {
 					instrumentType = iType;
-					
+
 					ida.createObject(instrumentType);
-					
+
 					HashSet<Manufacturer> manufacturers = new HashSet<Manufacturer>();
 					manufacturers.add(manufacturer);
 					instrumentType.setManufacturerCollection(manufacturers);
 				} else {
 					if (newManufacturer) {
-						instrumentType.getManufacturerCollection().add(manufacturer);
+						instrumentType.getManufacturerCollection().add(
+								manufacturer);
 					}
 				}
 				ida.store(instrumentType);
-					
-					
+
 				achar.getInstrument().setInstrumentType(instrumentType);
 				achar.getInstrument().setManufacturer(manufacturer);
 				ida.store(achar.getInstrument());
 			}
-			
+
 			if (achar.getCharacterizationProtocol() != null) {
 				ida.store(achar.getCharacterizationProtocol());
 			}
-			
-			if (achar.getDerivedBioAssayDataCollection()!= null) {
-				for(DerivedBioAssayData data: achar.getDerivedBioAssayDataCollection()){
-					if (data.getFile()!= null) {
-						ida.store(data.getFile());
-					}
-				}
-			}
-				
+
+			// if (achar.getDerivedBioAssayDataCollection()!= null) {
+			// for(DerivedBioAssayData data:
+			// achar.getDerivedBioAssayDataCollection()){
+			// if (data.getFile()!= null) {
+			// ida.store(data.getFile());
+			// }
+			// }
+			// }
+
 			// check if viewTitle is already used the same type of
 			// characterization for the same particle
 			String viewTitleQuery = "";
@@ -290,54 +293,29 @@ public class SubmitNanoparticleService {
 	 * @throws Exception
 	 */
 	/*
-	private Instrument addInstrument(Instrument instrument) throws Exception {
-		Instrument rInstrument = null;
-		
-		// if ID is not set save to the database otherwise update
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
-
-		//int existingInstrumentCount = -1;
-		Instrument existingInstrument = null;
-		try {
-			ida.open();
-			// check if instrument is already existed
-			String viewQuery = "";
-			if (instrument.getId() == null) {
-				viewQuery = "select instrument from Instrument instrument where instrument.type='"
-						+ instrument.getType()
-						+ "' and instrument.manufacturer='"
-						+ instrument.getManufacturer()
-						+ "'";
-			} else {
-				viewQuery = "select instrument from Instrument instrument where instrument.type='"
-						+ instrument.getType()
-						+ "' and instrument.manufacturer='"
-						+ instrument.getManufacturer()
-						+ "' and instrument.id!=" + instrument.getId();
-			}
-			List viewTitleResult = ida.search(viewQuery);
-
-			for (Object obj : viewTitleResult) {
-				existingInstrument = (Instrument) obj;
-			}
-			if (existingInstrument == null) {
-				ida.store(instrument);
-				rInstrument = instrument;
-			} else {
-				rInstrument = existingInstrument;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			ida.rollback();
-			logger.error("Problem saving characterization: ");
-			throw e;
-		} finally {
-			ida.close();
-		}
-		return rInstrument;
-	}
-    */
+	 * private Instrument addInstrument(Instrument instrument) throws Exception {
+	 * Instrument rInstrument = null;
+	 *  // if ID is not set save to the database otherwise update IDataAccess
+	 * ida = (new DataAccessProxy()) .getInstance(IDataAccess.HIBERNATE);
+	 * 
+	 * //int existingInstrumentCount = -1; Instrument existingInstrument = null;
+	 * try { ida.open(); // check if instrument is already existed String
+	 * viewQuery = ""; if (instrument.getId() == null) { viewQuery = "select
+	 * instrument from Instrument instrument where instrument.type='" +
+	 * instrument.getType() + "' and instrument.manufacturer='" +
+	 * instrument.getManufacturer() + "'"; } else { viewQuery = "select
+	 * instrument from Instrument instrument where instrument.type='" +
+	 * instrument.getType() + "' and instrument.manufacturer='" +
+	 * instrument.getManufacturer() + "' and instrument.id!=" +
+	 * instrument.getId(); } List viewTitleResult = ida.search(viewQuery);
+	 * 
+	 * for (Object obj : viewTitleResult) { existingInstrument = (Instrument)
+	 * obj; } if (existingInstrument == null) { ida.store(instrument);
+	 * rInstrument = instrument; } else { rInstrument = existingInstrument; } }
+	 * catch (Exception e) { e.printStackTrace(); ida.rollback();
+	 * logger.error("Problem saving characterization: "); throw e; } finally {
+	 * ida.close(); } return rInstrument; }
+	 */
 	/**
 	 * Saves the particle composition to the database
 	 * 
@@ -363,18 +341,17 @@ public class SubmitNanoparticleService {
 	 */
 	public void addParticleSize(String particleType, String particleName,
 			SizeBean size) throws Exception {
-		
+
 		Characterization doSize = size.getDomainObj();
 		// TODO think about how to deal with characterization file.
 		/*
-		if (doSize.getInstrument() != null) {
-			Instrument instrument = addInstrument(doSize.getInstrument());
-			doSize.setInstrument(instrument);
-		}
-		*/
+		 * if (doSize.getInstrument() != null) { Instrument instrument =
+		 * addInstrument(doSize.getInstrument());
+		 * doSize.setInstrument(instrument); }
+		 */
 		addParticleCharacterization(particleType, particleName, doSize);
 	}
-	
+
 	/**
 	 * Saves the size characterization to the database
 	 * 
@@ -385,15 +362,14 @@ public class SubmitNanoparticleService {
 	 */
 	public void addParticleSurface(String particleType, String particleName,
 			SurfaceBean surface) throws Exception {
-		
+
 		Characterization doSurface = surface.getDomainObj();
 		// TODO think about how to deal with characterization file.
 		/*
-		if (doSize.getInstrument() != null) {
-			Instrument instrument = addInstrument(doSize.getInstrument());
-			doSize.setInstrument(instrument);
-		}
-		*/
+		 * if (doSize.getInstrument() != null) { Instrument instrument =
+		 * addInstrument(doSize.getInstrument());
+		 * doSize.setInstrument(instrument); }
+		 */
 		addParticleCharacterization(particleType, particleName, doSurface);
 	}
 
@@ -405,17 +381,18 @@ public class SubmitNanoparticleService {
 	 * @param molecularWeight
 	 * @throws Exception
 	 */
-	public void addParticleMolecularWeight(String particleType, String particleName,
-			MolecularWeightBean molecularWeight) throws Exception {
+	public void addParticleMolecularWeight(String particleType,
+			String particleName, MolecularWeightBean molecularWeight)
+			throws Exception {
 		Characterization doMolecularWeight = molecularWeight.getDomainObj();
 		// TODO think about how to deal with characterization file.
 		/*
-		if (doSize.getInstrument() != null) {
-			Instrument instrument = addInstrument(doSize.getInstrument());
-			doSize.setInstrument(instrument);
-		}
-		*/
-		addParticleCharacterization(particleType, particleName, doMolecularWeight);
+		 * if (doSize.getInstrument() != null) { Instrument instrument =
+		 * addInstrument(doSize.getInstrument());
+		 * doSize.setInstrument(instrument); }
+		 */
+		addParticleCharacterization(particleType, particleName,
+				doMolecularWeight);
 	}
 
 	/**
@@ -431,14 +408,13 @@ public class SubmitNanoparticleService {
 		Characterization doMorphology = morphology.getDomainObj();
 		// TODO think about how to deal with characterization file.
 		/*
-		if (doSize.getInstrument() != null) {
-			Instrument instrument = addInstrument(doSize.getInstrument());
-			doSize.setInstrument(instrument);
-		}
-		*/
+		 * if (doSize.getInstrument() != null) { Instrument instrument =
+		 * addInstrument(doSize.getInstrument());
+		 * doSize.setInstrument(instrument); }
+		 */
 		addParticleCharacterization(particleType, particleName, doMorphology);
 	}
-	
+
 	/**
 	 * Saves the shape characterization to the database
 	 * 
@@ -541,7 +517,8 @@ public class SubmitNanoparticleService {
 			PlateAggregationBean plateAggregation) throws Exception {
 		Characterization doPlateAggregation = plateAggregation.getDomainObj();
 		// TODO think about how to deal with characterization file.
-		addParticleCharacterization(particleType, particleName, doPlateAggregation);
+		addParticleCharacterization(particleType, particleName,
+				doPlateAggregation);
 	}
 
 	/**
@@ -552,11 +529,14 @@ public class SubmitNanoparticleService {
 	 * @param hemolysis
 	 * @throws Exception
 	 */
-	public void addComplementActivation(String particleType, String particleName,
-			ComplementActivationBean complementActivation) throws Exception {
-		Characterization doComplementActivation = complementActivation.getDomainObj();
+	public void addComplementActivation(String particleType,
+			String particleName, ComplementActivationBean complementActivation)
+			throws Exception {
+		Characterization doComplementActivation = complementActivation
+				.getDomainObj();
 		// TODO think about how to deal with characterization file.
-		addParticleCharacterization(particleType, particleName, doComplementActivation);
+		addParticleCharacterization(particleType, particleName,
+				doComplementActivation);
 	}
 
 	/**
@@ -575,18 +555,23 @@ public class SubmitNanoparticleService {
 	}
 
 	/**
-	 * Saves the invitro NKCellCytotoxicActivity characterization to the database
+	 * Saves the invitro NKCellCytotoxicActivity characterization to the
+	 * database
 	 * 
 	 * @param particleType
 	 * @param particleName
 	 * @param hemolysis
 	 * @throws Exception
 	 */
-	public void addNKCellCytotoxicActivity(String particleType, String particleName,
-			NKCellCytotoxicActivityBean nkCellCytotoxicActivity) throws Exception {
-		Characterization doNKCellCytotoxicActivity = nkCellCytotoxicActivity.getDomainObj();
+	public void addNKCellCytotoxicActivity(String particleType,
+			String particleName,
+			NKCellCytotoxicActivityBean nkCellCytotoxicActivity)
+			throws Exception {
+		Characterization doNKCellCytotoxicActivity = nkCellCytotoxicActivity
+				.getDomainObj();
 		// TODO think about how to deal with characterization file.
-		addParticleCharacterization(particleType, particleName, doNKCellCytotoxicActivity);
+		addParticleCharacterization(particleType, particleName,
+				doNKCellCytotoxicActivity);
 	}
 
 	/**
@@ -597,11 +582,14 @@ public class SubmitNanoparticleService {
 	 * @param hemolysis
 	 * @throws Exception
 	 */
-	public void addLeukocyteProliferation(String particleType, String particleName,
+	public void addLeukocyteProliferation(String particleType,
+			String particleName,
 			LeukocyteProliferationBean leukocyteProliferation) throws Exception {
-		Characterization doLeukocyteProliferation = leukocyteProliferation.getDomainObj();
+		Characterization doLeukocyteProliferation = leukocyteProliferation
+				.getDomainObj();
 		// TODO think about how to deal with characterization file.
-		addParticleCharacterization(particleType, particleName, doLeukocyteProliferation);
+		addParticleCharacterization(particleType, particleName,
+				doLeukocyteProliferation);
 	}
 
 	/**
@@ -631,7 +619,8 @@ public class SubmitNanoparticleService {
 			OxidativeBurstBean oxidativeBurst) throws Exception {
 		Characterization doOxidativeBurst = oxidativeBurst.getDomainObj();
 		// TODO think about how to deal with characterization file.
-		addParticleCharacterization(particleType, particleName, doOxidativeBurst);
+		addParticleCharacterization(particleType, particleName,
+				doOxidativeBurst);
 	}
 
 	/**
@@ -661,7 +650,8 @@ public class SubmitNanoparticleService {
 			CytokineInductionBean cytokineInduction) throws Exception {
 		Characterization doCytokineInduction = cytokineInduction.getDomainObj();
 		// TODO think about how to deal with characterization file.
-		addParticleCharacterization(particleType, particleName, doCytokineInduction);
+		addParticleCharacterization(particleType, particleName,
+				doCytokineInduction);
 	}
 
 	/**
@@ -676,7 +666,8 @@ public class SubmitNanoparticleService {
 			PlasmaProteinBindingBean plasmaProteinBinding) throws Exception {
 		Characterization doProteinBinding = plasmaProteinBinding.getDomainObj();
 		// TODO think about how to deal with characterization file.
-		addParticleCharacterization(particleType, particleName, doProteinBinding);
+		addParticleCharacterization(particleType, particleName,
+				doProteinBinding);
 	}
 
 	/**
@@ -695,7 +686,8 @@ public class SubmitNanoparticleService {
 	}
 
 	/**
-	 * Saves the invitro EnzymeInduction binding characterization to the database
+	 * Saves the invitro EnzymeInduction binding characterization to the
+	 * database
 	 * 
 	 * @param particleType
 	 * @param particleName
@@ -721,7 +713,8 @@ public class SubmitNanoparticleService {
 			OxidativeStressBean oxidativeStress) throws Exception {
 		Characterization doOxidativeStress = oxidativeStress.getDomainObj();
 		// TODO think about how to deal with characterization file.
-		addParticleCharacterization(particleType, particleName, doOxidativeStress);
+		addParticleCharacterization(particleType, particleName,
+				doOxidativeStress);
 	}
 
 	/**
@@ -734,24 +727,31 @@ public class SubmitNanoparticleService {
 	 */
 	public void addCaspase3Activation(String particleType, String particleName,
 			Caspase3ActivationBean caspase3Activation) throws Exception {
-		Characterization doCaspase3Activation = caspase3Activation.getDomainObj();
+		Characterization doCaspase3Activation = caspase3Activation
+				.getDomainObj();
 		// TODO think about how to deal with characterization file.
-		addParticleCharacterization(particleType, particleName, doCaspase3Activation);
+		addParticleCharacterization(particleType, particleName,
+				doCaspase3Activation);
 	}
 
 	/**
-	 * Saves the invitro GlucuronidationSulphation characterization to the database
+	 * Saves the invitro GlucuronidationSulphation characterization to the
+	 * database
 	 * 
 	 * @param particleType
 	 * @param particleName
 	 * @param hemolysis
 	 * @throws Exception
 	 */
-	public void addGlucuronidationSulphation(String particleType, String particleName,
-			GlucuronidationSulphationBean glucuronidationSulphation) throws Exception {
-		Characterization doGlucuronidationSulphation = glucuronidationSulphation.getDomainObj();
+	public void addGlucuronidationSulphation(String particleType,
+			String particleName,
+			GlucuronidationSulphationBean glucuronidationSulphation)
+			throws Exception {
+		Characterization doGlucuronidationSulphation = glucuronidationSulphation
+				.getDomainObj();
 		// TODO think about how to deal with characterization file.
-		addParticleCharacterization(particleType, particleName, doGlucuronidationSulphation);
+		addParticleCharacterization(particleType, particleName,
+				doGlucuronidationSulphation);
 	}
 
 	/**
@@ -777,8 +777,8 @@ public class SubmitNanoparticleService {
 	 * @param hemolysis
 	 * @throws Exception
 	 */
-	public void addROS(String particleType, String particleName,
-			ROSBean ros) throws Exception {
+	public void addROS(String particleType, String particleName, ROSBean ros)
+			throws Exception {
 		Characterization doROS = ros.getDomainObj();
 		// TODO think about how to deal with characterization file.
 		addParticleCharacterization(particleType, particleName, doROS);
@@ -809,17 +809,42 @@ public class SubmitNanoparticleService {
 		String outputFilename = rootPath + path + tagFileName;
 			
 		FileOutputStream oStream = new FileOutputStream(new File(outputFilename));
+
 		this.saveFile(file.getInputStream(), oStream);
-		
+
+		LabFile dataFile = new DerivedDataFile();
+		dataFile.setDescription(description);
+		dataFile.setFilename(file.getFileName());
+
+		// TODO  need to remove the predefine the root path from outputFilename
+		dataFile.setPath(path + tagFileName);
+		dataFile.setTitle(title);
+
+
 		// TODO saves file to the database
-		
-		CharacterizationFileBean fileBean = new CharacterizationFileBean();
-		fileBean.setName(file.getFileName());
-		fileBean.setPath(path + tagFileName);
-		fileBean.setId(fileNumber);
-		fileBean.setDescription(description);
-		fileBean.setTitle(title);
-		fileBean.setVisibilityGroups(visibilities);
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+
+			ida.store(dataFile);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			ida.rollback();
+			logger.error("Problem saving characterization File: ");
+			throw e;
+		} finally {
+			ida.close();
+		}
+		CharacterizationFileBean fileBean = new CharacterizationFileBean(dataFile);
+//		fileBean.setName(file.getFileName());
+//		fileBean.setPath(path);
+//		fileBean.setId(fileNumber);
+//		fileBean.setDescription(description);
+//		fileBean.setTitle(title);
+//		fileBean.setVisibilityGroups(visibilities);
+
 		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
 		String fileName = fileBean.getName();
 		if (visibilities != null) {
@@ -829,9 +854,9 @@ public class SubmitNanoparticleService {
 				// be true
 				// TODO once the files is successfully saved, use fileId instead
 				// of fileName
-				userService.secureObject(fileName, "NCL_PI", "R");
-				userService.secureObject(fileName, "NCL_Researcher", "R");
-				userService.secureObject(fileName, visibility, "R");
+				userService.secureObject(fileBean.getId(), "NCL_PI", "R");
+				userService.secureObject(fileBean.getId(), "NCL_Researcher", "R");
+				userService.secureObject(fileBean.getId(), visibility, "R");
 			}
 		}
 		return fileBean;
@@ -846,12 +871,11 @@ public class SubmitNanoparticleService {
 				os.write(bytes, 0, numRead);
 			}
 			os.close();
-			
+
 		} catch (Exception e) {
-				
+
 		}
 	}
-	
 
 	/**
 	 * Load the file for the given fileId from the database
