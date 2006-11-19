@@ -113,6 +113,8 @@ public class InvitroCFU_GMAction extends BaseCharacterizationAction {
 		theForm.set("particleName", particleName);
 		theForm.set("particleType", particleType);
 		theForm.set("achar", new CFU_GMBean());
+		
+		cleanSessionAttributes(session);
 	}
 
 	protected void initSetup(HttpServletRequest request, DynaValidatorForm theForm)

@@ -109,6 +109,8 @@ public class InvitroCytokineInductionAction extends BaseCharacterizationAction {
 		theForm.set("particleName", particleName);
 		theForm.set("particleType", particleType);
 		theForm.set("achar", new CytokineInductionBean());
+		
+		cleanSessionAttributes(session);
 	}
 
 	protected void initSetup(HttpServletRequest request, DynaValidatorForm theForm)

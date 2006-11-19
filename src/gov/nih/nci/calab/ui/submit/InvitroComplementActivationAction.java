@@ -109,6 +109,8 @@ public class InvitroComplementActivationAction extends BaseCharacterizationActio
 		theForm.set("particleName", particleName);
 		theForm.set("particleType", particleType);
 		theForm.set("achar", new ComplementActivationBean());
+		
+		cleanSessionAttributes(session);
 	}
 
 	protected void initSetup(HttpServletRequest request, DynaValidatorForm theForm)
