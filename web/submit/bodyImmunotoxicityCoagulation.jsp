@@ -87,7 +87,7 @@
 																<a href="#"><bean:write name="characterizationFile${status.index}" property="name" /></a>
 																<bean:define id="fileId" name='characterizationFile${status.index}' property='id' type="java.lang.String"/>
 																<html:hidden name="achar.derivedBioAssayData" property="fileId" value="${fileId}" indexed="true" />
-																<a href="invitroImmunotoxicityCoagulation.do?dispatch=download&amp;fileId=${fileId}"><bean:write name="characterizationFile${status.index}" property="name" /></a>
+																<a href="invitroImmunotoxicityCoagulation.do?dispatch=download&amp;fileId=${fileId}"><bean:write name="characterizationFile${status.index}" property="displayName" /></a>
 															</logic:present>
 															<logic:notPresent name="characterizationFile${status.index}">
 																Click on "Load File" button
