@@ -34,7 +34,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 
-/* CVS $Id: BaseCharacterizationAction.java,v 1.2 2006-11-17 22:09:51 pansu Exp $ */
+/* CVS $Id: BaseCharacterizationAction.java,v 1.3 2006-11-19 20:31:16 zengje Exp $ */
 
 public abstract class BaseCharacterizationAction extends AbstractDispatchAction {
 	/**
@@ -133,7 +133,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 				CharacterizationFileBean fileBean = new CharacterizationFileBean();
 				fileBean.setName(obj.getFile().getFilename());
 				fileBean.setPath(obj.getFile().getPath());
-				fileBean.setId(Integer.toString(fileNumber));
+				fileBean.setId((obj.getFile().getId().toString()));
 
 				request.getSession().setAttribute(
 						"characterizationFile" + fileNumber, fileBean);
