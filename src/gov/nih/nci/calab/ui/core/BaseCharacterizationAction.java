@@ -11,11 +11,13 @@ import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.CananoConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,7 +36,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 
-/* CVS $Id: BaseCharacterizationAction.java,v 1.3 2006-11-19 20:31:16 zengje Exp $ */
+/* CVS $Id: BaseCharacterizationAction.java,v 1.4 2006-11-19 22:39:54 zengje Exp $ */
 
 public abstract class BaseCharacterizationAction extends AbstractDispatchAction {
 	/**
@@ -69,6 +71,19 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			Characterization aChar) throws Exception;	
 	
 	
+	/**
+	 * Clean the session attribture
+	 * @param sessioin
+	 * @throws Exception
+	 */
+	protected void cleanSessionAttributes(HttpSession session) throws Exception {
+		for (Enumeration e = session.getAttributeNames(); e.hasMoreElements();) {
+			String element = (String) e.nextElement();
+			if (element.startsWith(CananoConstants.CHARACTERIZATION_FILE)) {
+				session.removeAttribute(element);
+			}
+		}
+	}
 	/**
 	 * Set up the input form for adding new characterization
 	 * 
