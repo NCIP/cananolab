@@ -2,12 +2,14 @@
 # Directory for storing caLAB data files 
 #fileRepositoryDir=C:\\temp\\calab\\fileupload\\
 fileRepositoryDir=@FILE_REPOSITORY_DIR@
+
 # Directory for storing caLAB files
+particleFileRepositoryDir=@PARTICLEFILE_REPOSITORY_DIR@
 
 # Properties for HTTP-based file upload 
 archiveValue=http://@HOSTNAME@/calab/workflow/SignedHttpUploadApplet.jar
 servletURL=http://@HOSTNAME@/calab/processFileUpload
-notifyURL=http://@HOSTNAME@/calab/fileUpload.do?method=persistFileUploadData
+notifyURL=http://@HOSTNAME@/calab/fileUpload.do?dispatch=persistFileUploadData
 defaultURL=http://@HOSTNAME@/calab/initSession.do?forwardPage=uploadForward
 
 
