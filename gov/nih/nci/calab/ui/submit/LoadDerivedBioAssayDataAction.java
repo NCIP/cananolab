@@ -6,9 +6,10 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: LoadDerivedBioAssayDataAction.java,v 1.4 2006-11-17 22:11:34 pansu Exp $ */
+/* CVS $Id: LoadDerivedBioAssayDataAction.java,v 1.5 2006-11-21 20:36:51 zengje Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
+import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
@@ -64,7 +65,7 @@ public class LoadDerivedBioAssayDataAction extends AbstractDispatchAction {
 					title, description, comments, keywordList, visibilities, path, fileNumber, rootPath);
 		} else {
 			String fileId = (String) theForm.get("fileId");
-			fileBean = service.getFile(fileId);
+			fileBean = service.saveCharacterizationFile(fileId, title, description, keywordList, visibilities);		
 		}
 
 		request.getSession().setAttribute("characterizationFile" + fileNumber,
