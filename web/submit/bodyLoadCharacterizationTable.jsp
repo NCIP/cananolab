@@ -99,15 +99,7 @@
 							<td class="rightLabel" colspan="3">
 								<html:textarea property="description" rows="3" cols="60" />
 							</td>
-						</tr>
-						<tr>
-							<td class="leftLabel">
-								<strong>Comments</strong>
-							</td>
-							<td class="rightLabel" colspan="3">
-								<html:textarea property="comments" rows="3" cols="60" />
-							</td>
-						</tr>
+						</tr>			
 						<tr>
 							<td class="leftLabel">
 								<strong>Keywords <em>(one per line)</em></strong>
