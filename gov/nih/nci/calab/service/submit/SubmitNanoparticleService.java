@@ -862,6 +862,61 @@ public class SubmitNanoparticleService {
 		return fileBean;
 	}
 
+	/**
+	 * Save the characterization file into the database and file system
+	 * 
+	 * @param fileId
+	 * @param title
+	 * @param description
+	 * @param keywords
+	 * @param visibilities
+	 */
+	public CharacterizationFileBean saveCharacterizationFile(
+			String fileId, String title, String description, 
+			String[] keywords, String[] visibilities
+			) throws Exception {
+
+		CharacterizationFileBean fileBean = getFile(fileId);
+		fileBean.setTitle(title);
+		fileBean.setDescription(description);
+		
+		DerivedDataFile dataFile = fileBean.getDomainObject();
+
+
+		// TODO saves file to the database
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+
+			ida.createObject(dataFile);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			ida.rollback();
+			logger.error("Problem saving characterization File: ");
+			throw e;
+		} finally {
+			ida.close();
+		}
+		
+		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
+		fileBean = new CharacterizationFileBean(dataFile);
+		String fileName = fileBean.getName();
+		if (visibilities != null) {
+			for (String visibility : visibilities) {
+				// by default, always set visibility to NCL_PI and
+				// NCL_Researcher to
+				// be true
+				// TODO once the files is successfully saved, use fileId instead
+				// of fileName
+				userService.secureObject(fileBean.getId(), "NCL_PI", "R");
+				userService.secureObject(fileBean.getId(), "NCL_Researcher", "R");
+				userService.secureObject(fileBean.getId(), visibility, "R");
+			}
+		}
+		return fileBean;
+	}
 	public void saveFile(InputStream is, FileOutputStream os) {
 		byte[] bytes = new byte[32768];
 
