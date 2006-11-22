@@ -13,8 +13,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-
 /**
  * This class represents shared characterization properties to be shown in
  * characterization view pages.
@@ -23,8 +21,6 @@ import org.apache.log4j.Logger;
  * 
  */
 public class CharacterizationBean {
-	private static Logger logger = Logger.getLogger(CharacterizationBean.class);
-
 	private String id;
 
 	private String characterizationSource;
@@ -47,7 +43,7 @@ public class CharacterizationBean {
 
 	private InstrumentBean instrument=new InstrumentBean();
 
-	private List<DerivedBioAssayDataBean> derivedBioAssayData = new ArrayList<DerivedBioAssayDataBean>();
+	private List<DerivedBioAssayDataBean> derivedBioAssayDataList = new ArrayList<DerivedBioAssayDataBean>();
 
 	private String numberOfDerivedBioAssayData;
 	
@@ -80,7 +76,7 @@ public class CharacterizationBean {
 		this.setNumberOfDerivedBioAssayData(Integer.valueOf(characterization.getDerivedBioAssayDataCollection().size()).toString());
 		for (DerivedBioAssayData table : characterization.getDerivedBioAssayDataCollection()) {
 			DerivedBioAssayDataBean ctBean = new DerivedBioAssayDataBean(table);
-			this.getDerivedBioAssayData().add(ctBean);
+			this.getDerivedBioAssayDataList().add(ctBean);
 		}
 		CharacterizationProtocol protocol = characterization.getCharacterizationProtocol();
 		if (protocol != null) {
@@ -88,7 +84,7 @@ public class CharacterizationBean {
 			this.getCharacterizationProtocol().setName(protocol.getName());
 			this.getCharacterizationProtocol().setVersion(protocol.getVersion());
 		}
-
+		this.numberOfDerivedBioAssayData=derivedBioAssayDataList.size()+"";
 	}
 
 	public String getCharacterizationSource() {
@@ -130,7 +126,7 @@ public class CharacterizationBean {
 		aChar.setCreatedBy(getCreatedBy());
 		aChar.setCreatedDate(getCreatedDate());
 		
-		for (DerivedBioAssayDataBean table : getDerivedBioAssayData()) {
+		for (DerivedBioAssayDataBean table : getDerivedBioAssayDataList()) {
 			aChar.getDerivedBioAssayDataCollection().add(
 					table.getDomainObj());
 		}
@@ -215,13 +211,13 @@ public class CharacterizationBean {
 		return null;
 	}
 
-	public List<DerivedBioAssayDataBean> getDerivedBioAssayData() {
-		return derivedBioAssayData;
+	public List<DerivedBioAssayDataBean> getDerivedBioAssayDataList() {
+		return derivedBioAssayDataList;
 	}
 
-	public void setDerivedBioAssayData(
+	public void setDerivedBioAssayDataList(
 			List<DerivedBioAssayDataBean> derivedBioAssayData) {
-		this.derivedBioAssayData = derivedBioAssayData;
+		this.derivedBioAssayDataList = derivedBioAssayData;
 	}
 
 	public InstrumentBean getInstrument() {
