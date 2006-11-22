@@ -24,10 +24,10 @@ public class DerivedBioAssayDataBean {
 	private String fileId;
 
 	private List<DatumBean> datumList = new ArrayList<DatumBean>();
+	
+	private String numberOfDataPoints;
 
 	public DerivedBioAssayDataBean() {
-		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public DerivedBioAssayDataBean(String type, CharacterizationFileBean file) {
@@ -66,6 +66,7 @@ public class DerivedBioAssayDataBean {
 			DatumBean ctDataBean = new DatumBean(tableData);
 			datumList.add(ctDataBean);
 		}
+		this.setNumberOfDataPoints(datumList.size() + "");
 	}
 
 	public CharacterizationFileBean getFile() {
@@ -123,6 +124,14 @@ public class DerivedBioAssayDataBean {
 			table.getDatumCollection().add(datum.getDomainObj());
 		}
 		return table;
+	}
+
+	public String getNumberOfDataPoints() {
+		return numberOfDataPoints;
+	}
+
+	public void setNumberOfDataPoints(String numberOfDataPoints) {
+		this.numberOfDataPoints = numberOfDataPoints;
 	}
 
 }
