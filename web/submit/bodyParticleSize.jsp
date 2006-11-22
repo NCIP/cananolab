@@ -58,14 +58,14 @@
 								&nbsp;
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
-										<input type="button" onclick="javascript:updateSize()" value="Update Distributions">
+										<input type="button" onclick="javascript:updateCharts(this.form, 'nanoparticleSize')" value="Update Distributions">
 									</c:when>
 								</c:choose>
 							</td>
 						</tr>
 						<tr>
 							<td class="completeLabel" colspan="4">
-								<c:forEach var="achar.derivedBioAssayData" items="${nanoparticleSizeForm.map.achar.derivedBioAssayData}" varStatus="status">
+								<c:forEach var="achar.derivedBioAssayDataList" items="${nanoparticleSizeForm.map.achar.derivedBioAssayDataList}" varStatus="status">
 									<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 										<tbody>
 											<tr class="topBorder">
@@ -82,12 +82,12 @@
 												<td class="rightLabel" colspan="3">
 													<c:choose>
 														<c:when test="${canUserUpdateParticle eq 'true'}">
-															<html:select name="achar.derivedBioAssayData" property="type" indexed="true">
+															<html:select name="achar.derivedBioAssayDataList" property="type" indexed="true">
 																<html:options name="allSizeDistributionGraphTypes" />
 															</html:select>
 														</c:when>
 														<c:otherwise>
-						${nanoparticleSizeForm.map.achar.derivedBioAssayData[status.index].type}&nbsp;
+						${nanoparticleSizeForm.map.achar.derivedBioAssayDataList[status.index].type}&nbsp;
 					</c:otherwise>
 													</c:choose>
 												</td>
@@ -101,7 +101,7 @@
 														<c:when test="${canUserUpdateParticle eq 'true'}">
 															<logic:present name="characterizationFile${status.index}">
 																<bean:define id="fileId" name='characterizationFile${status.index}' property='id' type="java.lang.String"/>																
-																<html:hidden name="achar.derivedBioAssayData" property="fileId" value="${fileId}" indexed="true" />																
+																<html:hidden name="achar.derivedBioAssayDataList" property="fileId" value="${fileId}" indexed="true" />																
 																<a href="nanoparticleSize.do?dispatch=download&amp;fileId=${fileId}"><bean:write name="characterizationFile${status.index}" property="displayName" /></a>																
 															</logic:present>
 															<logic:notPresent name="characterizationFile${status.index}">
@@ -109,7 +109,7 @@
 											</logic:notPresent>
 														</c:when>
 														<c:otherwise>
-						${nanoparticleSizeForm.map.achar.derivedBioAssayData[status.index].file.displayName}&nbsp;
+						${nanoparticleSizeForm.map.achar.derivedBioAssayDataList[status.index].file.displayName}&nbsp;
 					</c:otherwise>
 													</c:choose>													
 												</td>
@@ -124,11 +124,11 @@
 												<td class="label">
 													<c:choose>
 														<c:when test="${canUserUpdateParticle eq 'true'}">
-															<html:text name="achar.derivedBioAssayData" indexed="true" property="datumList[0].value" />
-													&nbsp; ${nanoparticleSizeForm.map.achar.derivedBioAssayData[status.index].datumList[0].valueUnit}	
+															<html:text name="achar.derivedBioAssayDataList" indexed="true" property="datumList[0].value" />
+													&nbsp; ${nanoparticleSizeForm.map.achar.derivedBioAssayDataList[status.index].datumList[0].valueUnit}	
 														</c:when>
 														<c:otherwise>
-						${nanoparticleSizeForm.map.achar.derivedBioAssayData[status.index].datumList[0].value} ${nanoparticleSizeForm.map.achar.derivedBioAssayData[status.index].datumList[0].valueUnit}&nbsp;
+						${nanoparticleSizeForm.map.achar.derivedBioAssayDataList[status.index].datumList[0].value} ${nanoparticleSizeForm.map.achar.derivedBioAssayDataList[status.index].datumList[0].valueUnit}&nbsp;
 					</c:otherwise>
 													</c:choose>
 												</td>
@@ -138,11 +138,11 @@
 												<td class="rightLabel">
 													<c:choose>
 														<c:when test="${canUserUpdateParticle eq 'true'}">
-															<html:text name="achar.derivedBioAssayData" indexed="true" property="datumList[1].value" />
-													&nbsp; ${nanoparticleSizeForm.map.achar.derivedBioAssayData[status.index].datumList[1].valueUnit}
+															<html:text name="achar.derivedBioAssayDataList" indexed="true" property="datumList[1].value" />
+													&nbsp; ${nanoparticleSizeForm.map.achar.derivedBioAssayDataList[status.index].datumList[1].valueUnit}
 														</c:when>
 														<c:otherwise>
-						${nanoparticleSizeForm.map.achar.derivedBioAssayData[status.index].datumList[1].value} ${nanoparticleSizeForm.map.achar.derivedBioAssayData[status.index].datumList[1].valueUnit}&nbsp;
+						${nanoparticleSizeForm.map.achar.derivedBioAssayDataList[status.index].datumList[1].value} ${nanoparticleSizeForm.map.achar.derivedBioAssayDataList[status.index].datumList[1].valueUnit}&nbsp;
 					</c:otherwise>
 													</c:choose>
 												</td>
@@ -154,10 +154,10 @@
 												<td class="rightLabel" colspan="3">
 													<c:choose>
 														<c:when test="${canUserUpdateParticle eq 'true'}">
-															<html:text name="achar.derivedBioAssayData" indexed="true" property="datumList[2].value" />
+															<html:text name="achar.derivedBioAssayDataList" indexed="true" property="datumList[2].value" />
 														</c:when>
 														<c:otherwise>
-						${nanoparticleSizeForm.map.achar.derivedBioAssayData[status.index].datumList[2].value}&nbsp;
+						${nanoparticleSizeForm.map.achar.derivedBioAssayDataList[status.index].datumList[2].value}&nbsp;
 					</c:otherwise>
 													</c:choose>
 												</td>

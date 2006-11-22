@@ -58,14 +58,14 @@
 								&nbsp;
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
-										<input type="button" onclick="javascript:updateMolecularWeight()" value="Update Graphs">
+										<input type="button" onclick="javascript:updateCharts(this.form, 'nanoparticleMolecularWeight')" value="Update Graphs">
 									</c:when>
 								</c:choose>
 							</td>
 						</tr>
 						<tr>
 							<td class="completeLabel" colspan="4">
-								<c:forEach var="achar.derivedBioAssayData" items="${nanoparticleMolecularWeightForm.map.achar.derivedBioAssayData}" varStatus="status">
+								<c:forEach var="achar.derivedBioAssayDataList" items="${nanoparticleMolecularWeightForm.map.achar.derivedBioAssayDataList}" varStatus="status">
 									<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 										<tbody>
 											<tr class="topBorder">
@@ -82,12 +82,12 @@
 												<td class="rightLabel" colspan="3">
 													<c:choose>
 														<c:when test="${canUserUpdateParticle eq 'true'}">
-															<html:select name="achar.derivedBioAssayData" property="type" indexed="true">
+															<html:select name="achar.derivedBioAssayDataList" property="type" indexed="true">
 																<html:options name="allMolecularWeightDistributionGraphTypes" />
 															</html:select>
 														</c:when>
 														<c:otherwise>
-						${nanoparticleMolecularWeightForm.map.achar.derivedBioAssayData[status.index].type}&nbsp;
+						${nanoparticleMolecularWeightForm.map.achar.derivedBioAssayDataList[status.index].type}&nbsp;
 					</c:otherwise>
 													</c:choose>
 												</td>
@@ -101,7 +101,7 @@
 														<c:when test="${canUserUpdateParticle eq 'true'}">
 															<logic:present name="characterizationFile${status.index}">
 																<bean:define id="fileId" name='characterizationFile${status.index}' property='id' type="java.lang.String"/>
-																<html:hidden name="achar.derivedBioAssayData" property="fileId" value="${fileId}" indexed="true" />
+																<html:hidden name="achar.derivedBioAssayDataList" property="fileId" value="${fileId}" indexed="true" />
 																<a href="nanoparticleMolecularWeight.do?dispatch=download&amp;fileId=${fileId}"><bean:write name="characterizationFile${status.index}" property="displayName" /></a>
 															</logic:present>
 															<logic:notPresent name="characterizationFile${status.index}">
@@ -109,7 +109,7 @@
 											</logic:notPresent>
 														</c:when>
 														<c:otherwise>
-						${nanoparticleMolecularWeightForm.map.achar.derivedBioAssayData[status.index].file.name}&nbsp;
+						${nanoparticleMolecularWeightForm.map.achar.derivedBioAssayDataList[status.index].file.name}&nbsp;
 					</c:otherwise>
 													</c:choose>													
 												</td>
@@ -124,11 +124,11 @@
 												<td class="rightLabel" colspan="3">
 													<c:choose>
 														<c:when test="${canUserUpdateParticle eq 'true'}">
-															<html:text name="achar.derivedBioAssayData" indexed="true" property="datumList[0].value" />
-													&nbsp; ${nanoparticleMolecularWeightForm.map.achar.derivedBioAssayData[status.index].datumList[0].valueUnit}
+															<html:text name="achar.derivedBioAssayDataList" indexed="true" property="datumList[0].value" />
+													&nbsp; ${nanoparticleMolecularWeightForm.map.achar.derivedBioAssayDataList[status.index].datumList[0].valueUnit}
 														</c:when>
 														<c:otherwise>
-						${nanoparticleMolecularWeightForm.map.achar.derivedBioAssayData[status.index].datumList[0].value}${nanoparticleMolecularWeightForm.map.achar.derivedBioAssayData[status.index].datumList[0].valueUnit}&nbsp;
+						${nanoparticleMolecularWeightForm.map.achar.derivedBioAssayDataList[status.index].datumList[0].value}${nanoparticleMolecularWeightForm.map.achar.derivedBioAssayDataList[status.index].datumList[0].valueUnit}&nbsp;
 					</c:otherwise>
 													</c:choose>
 												</td>

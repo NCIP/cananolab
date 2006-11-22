@@ -146,7 +146,7 @@
 								&nbsp;
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
-										<input type="button" onclick="javascript:updateSurface()" value="Update Surface Chemistries">
+										<input type="button" onclick="javascript:updateCharts(this.form, 'nanoparticleSurface')" value="Update Surface Chemistries">
 									</c:when>
 								</c:choose>
 							</td>
@@ -235,7 +235,7 @@
 						</tr>
 						<tr>
 							<td class="completeLabel" colspan="4">
-								<c:forEach var="achar.derivedBioAssayData" items="${nanoparticleSurfaceForm.map.achar.derivedBioAssayData}" varStatus="status">
+								<c:forEach var="achar.derivedBioAssayDataList" items="${nanoparticleSurfaceForm.map.achar.derivedBioAssayDataList}" varStatus="status">
 									<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 										<tbody>
 											<tr class="topBorder">
@@ -254,7 +254,7 @@
 														<c:when test="${canUserUpdateParticle eq 'true'}">
 															<logic:present name="characterizationFile${status.index}">
 																<bean:define id="fileId" name='characterizationFile${status.index}' property='id' type="java.lang.String" />
-																<html:hidden name="achar.derivedBioAssayData" property="fileId" value="${fileId}" indexed="true" />
+																<html:hidden name="achar.derivedBioAssayDataList" property="fileId" value="${fileId}" indexed="true" />
 																<a href="nanoparticleSize.do?dispatch=download&amp;fileId=${fileId}"><bean:write name="characterizationFile${status.index}" property="displayName" /></a>
 															</logic:present>
 															<logic:notPresent name="characterizationFile${status.index}">
@@ -262,7 +262,7 @@
 											</logic:notPresent>
 														</c:when>
 														<c:otherwise>
-						${nanoparticleSurfaceForm.map.achar.derivedBioAssayData[status.index].file.name}&nbsp;
+						${nanoparticleSurfaceForm.map.achar.derivedBioAssayDataList[status.index].file.name}&nbsp;
 														</c:otherwise>
 													</c:choose>
 												</td>
