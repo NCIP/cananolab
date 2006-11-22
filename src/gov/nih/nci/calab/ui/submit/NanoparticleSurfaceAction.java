@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSurfaceAction.java,v 1.8 2006-11-19 22:40:40 zengje Exp $ */
+/* CVS $Id: NanoparticleSurfaceAction.java,v 1.9 2006-11-22 23:19:37 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Surface;
@@ -22,7 +22,6 @@ import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -65,7 +64,7 @@ public class NanoparticleSurfaceAction extends BaseCharacterizationAction {
 		}
 		
 		int fileNumber = 0;
-		for (DerivedBioAssayDataBean obj :surfaceChar.getDerivedBioAssayData()) {
+		for (DerivedBioAssayDataBean obj :surfaceChar.getDerivedBioAssayDataList()) {
 			CharacterizationFileBean fileBean = (CharacterizationFileBean) request.getSession().getAttribute("characterizationFile" + fileNumber);
 			if (fileBean != null) {		
 				//logger.info("************set fileBean to " + fileNumber);
