@@ -57,7 +57,7 @@ public class InvitroEnzymeInductionAction extends BaseCharacterizationAction {
 		}
 		
 		int fileNumber = 0;
-		for (DerivedBioAssayDataBean obj : enzymeInductionChar.getDerivedBioAssayData()) {
+		for (DerivedBioAssayDataBean obj : enzymeInductionChar.getDerivedBioAssayDataList()) {
 			CharacterizationFileBean fileBean = (CharacterizationFileBean) request.getSession().getAttribute("characterizationFile" + fileNumber);
 			if (fileBean != null) {		
 				obj.setFile(fileBean);
@@ -131,48 +131,6 @@ public class InvitroEnzymeInductionAction extends BaseCharacterizationAction {
 			firstOption =  CananoConstants.OTHER;
 		InitSessionSetup.getInstance().setManufacturerPerType(session, firstOption);
 		session.setAttribute("selectedInstrumentType", "");
-	}
-
-
-	/**
-	 * Update multiple children on the same form
-	 * 
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws Exception
-	 */
-	public ActionForward update(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
-		EnzymeInductionBean achar = (EnzymeInductionBean) theForm.get("achar");
-		String index=(String)request.getParameter("index");	
-		String type = (String)request.getParameter("type");
-		
-		if ( type != null && !type.equals("") && type.equals("charTables") ) {
-			updateCharacterizationTables(achar);
-		}
-		if ( type != null && !type.equals("") && type.equals("addControl") ) {
-			addControl(achar, index);
-		}
-		if ( type != null && !type.equals("") && type.equals("addConditions") ) {
-			addConditions(achar, index);
-		}
-		if ( type != null && !type.equals("") && type.equals("updateConditions") ) {
-			updateConditions(achar, index);
-		}
-		
-		theForm.set("achar", achar);
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
-		
-		return mapping.getInputForward();
 	}
 
 	@Override

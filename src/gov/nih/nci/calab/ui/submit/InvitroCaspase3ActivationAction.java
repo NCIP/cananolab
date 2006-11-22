@@ -56,7 +56,7 @@ public class InvitroCaspase3ActivationAction extends BaseCharacterizationAction 
 		}
 		
 		int fileNumber = 0;
-		for (DerivedBioAssayDataBean obj : caspase3ActivityChar.getDerivedBioAssayData()) {
+		for (DerivedBioAssayDataBean obj : caspase3ActivityChar.getDerivedBioAssayDataList()) {
 			CharacterizationFileBean fileBean = (CharacterizationFileBean) request.getSession().getAttribute("characterizationFile" + fileNumber);
 			if (fileBean != null) {		
 				obj.setFile(fileBean);
@@ -142,37 +142,6 @@ public class InvitroCaspase3ActivationAction extends BaseCharacterizationAction 
 	 * @return
 	 * @throws Exception
 	 */
-	public ActionForward update(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
-		Caspase3ActivationBean achar = (Caspase3ActivationBean) theForm.get("achar");
-		String index=(String)request.getParameter("index");	
-		String type = (String)request.getParameter("type");
-		
-		if ( type != null && !type.equals("") && type.equals("charTables") ) {
-			updateCharacterizationTables(achar);
-		}
-		if ( type != null && !type.equals("") && type.equals("addControl") ) {
-			addControl(achar, index);
-		}
-		if ( type != null && !type.equals("") && type.equals("addConditions") ) {
-			addConditions(achar, index);
-		}
-		if ( type != null && !type.equals("") && type.equals("updateConditions") ) {
-			updateConditions(achar, index);
-		}
-		
-		theForm.set("achar", achar);
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
-		
-		return mapping.getInputForward();
-	}
-
 	protected void setLoadFileRequest(HttpServletRequest request) {
 		request.setAttribute("characterization", "caspase3Activation");
 		request.setAttribute("loadFileForward", "invitroCaspase3ActivationForm");		

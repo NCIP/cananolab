@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticlePurityAction.java,v 1.6 2006-11-19 22:40:40 zengje Exp $ */
+/* CVS $Id: NanoparticlePurityAction.java,v 1.7 2006-11-22 23:19:23 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Purity;
@@ -20,7 +20,6 @@ import gov.nih.nci.calab.ui.core.BaseCharacterizationAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
 import java.util.Date;
-import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -65,7 +64,7 @@ public class NanoparticlePurityAction extends BaseCharacterizationAction {
 		}
 		
 		int fileNumber = 0;
-		for (DerivedBioAssayDataBean obj : purityChar.getDerivedBioAssayData()) {
+		for (DerivedBioAssayDataBean obj : purityChar.getDerivedBioAssayDataList()) {
 			CharacterizationFileBean fileBean = (CharacterizationFileBean) request.getSession().getAttribute("characterizationFile" + fileNumber);
 			if (fileBean != null) {		
 				logger.info("************set fileBean to " + fileNumber);
@@ -144,31 +143,6 @@ public class NanoparticlePurityAction extends BaseCharacterizationAction {
 			firstOption =  CananoConstants.OTHER;
 		InitSessionSetup.getInstance().setManufacturerPerType(session, firstOption);
 		session.setAttribute("selectedInstrumentType", "");
-	}
-
-	
-	/**
-	 * Update multiple children on the same form
-	 * 
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws Exception
-	 */
-	public ActionForward update(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
-		PurityBean achar = (PurityBean) theForm.get("achar");
-		updateCharacterizationTables(achar);
-		theForm.set("achar", achar);
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
-		return mapping.getInputForward();
 	}
 
 	protected void setFormCharacterizationBean(DynaValidatorForm theForm, Characterization aChar) throws Exception {

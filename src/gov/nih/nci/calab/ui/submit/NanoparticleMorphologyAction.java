@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleMorphologyAction.java,v 1.7 2006-11-19 22:40:40 zengje Exp $ */
+/* CVS $Id: NanoparticleMorphologyAction.java,v 1.8 2006-11-22 23:19:23 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Morphology;
@@ -20,7 +20,6 @@ import gov.nih.nci.calab.ui.core.BaseCharacterizationAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
 import java.util.Date;
-import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -65,7 +64,7 @@ public class NanoparticleMorphologyAction extends BaseCharacterizationAction {
 
 		int fileNumber = 0;
 		for (DerivedBioAssayDataBean obj : morphologyChar
-				.getDerivedBioAssayData()) {
+				.getDerivedBioAssayDataList()) {
 			CharacterizationFileBean fileBean = (CharacterizationFileBean) request
 					.getSession().getAttribute(
 							"characterizationFile" + fileNumber);
@@ -153,31 +152,6 @@ public class NanoparticleMorphologyAction extends BaseCharacterizationAction {
 		session.setAttribute("selectedInstrumentType", "");
 	}
 
-	/**
-	 * Update multiple children on the same form
-	 * 
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws Exception
-	 */
-	public ActionForward update(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
-		MorphologyBean achar = (MorphologyBean) theForm.get("achar");
-		updateCharacterizationTables(achar);
-		theForm.set("achar", achar);
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
-		return mapping.getInputForward();
-	}
-
-	
 	protected void setFormCharacterizationBean(DynaValidatorForm theForm, Characterization aChar) throws Exception {
 		MorphologyBean morphology=new MorphologyBean((Morphology)aChar);
 		theForm.set("achar", morphology);
