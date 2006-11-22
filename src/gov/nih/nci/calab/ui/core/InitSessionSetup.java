@@ -481,6 +481,7 @@ public class InitSessionSetup {
 		}
 		session.removeAttribute("newCharacterizationCreated");
 		session.removeAttribute("newParticleCreated");
+		session.removeAttribute("detailPage");
 		setStaticDropdowns(session);
 	}
 
