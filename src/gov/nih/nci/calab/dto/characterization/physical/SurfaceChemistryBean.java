@@ -4,7 +4,6 @@
 package gov.nih.nci.calab.dto.characterization.physical;
 
 import gov.nih.nci.calab.domain.nano.characterization.physical.SurfaceChemistry;
-import gov.nih.nci.calab.service.util.StringUtils;
 
 /**
  * @author zengje
