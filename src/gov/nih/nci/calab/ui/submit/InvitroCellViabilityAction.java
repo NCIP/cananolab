@@ -7,6 +7,7 @@ package gov.nih.nci.calab.ui.submit;
  */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
+import gov.nih.nci.calab.domain.nano.characterization.invitro.CellViability;
 import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.dto.characterization.invitro.CellViabilityBean;
@@ -58,7 +59,7 @@ public class InvitroCellViabilityAction extends BaseCharacterizationAction {
 
 		int fileNumber = 0;
 		for (DerivedBioAssayDataBean obj : cellViabilityChar
-				.getDerivedBioAssayData()) {
+				.getDerivedBioAssayDataList()) {
 			CharacterizationFileBean fileBean = (CharacterizationFileBean) request
 					.getSession().getAttribute(
 							"characterizationFile" + fileNumber);
@@ -142,50 +143,9 @@ public class InvitroCellViabilityAction extends BaseCharacterizationAction {
 		session.setAttribute("selectedInstrumentType", "");
 	}
 
-	/**
-	 * Update multiple children on the same form
-	 * 
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws Exception
-	 */
-	public ActionForward update(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
-		CellViabilityBean achar = (CellViabilityBean) theForm.get("achar");
-		String index = (String) request.getParameter("index");
-		String type = (String) request.getParameter("type");
-
-		if (type != null && !type.equals("") && type.equals("charTables")) {
-			updateCharacterizationTables(achar);
-		}
-		if (type != null && !type.equals("") && type.equals("addControl")) {
-			addControl(achar, index);
-		}
-		if (type != null && !type.equals("") && type.equals("addConditions")) {
-			addConditions(achar, index);
-		}
-		if (type != null && !type.equals("") && type.equals("updateConditions")) {
-			updateConditions(achar, index);
-		}
-
-		theForm.set("achar", achar);
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
-
-		return mapping.getInputForward();
-	}
-
 	protected void setFormCharacterizationBean(DynaValidatorForm theForm,
 			Characterization aChar) throws Exception {
-		CellViabilityBean charBean=new CellViabilityBean(aChar);
+		CellViabilityBean charBean=new CellViabilityBean((CellViability)aChar);
 		theForm.set("achar", charBean);
 	}
 
