@@ -1,9 +1,9 @@
 package gov.nih.nci.calab.dto.characterization.invitro;
 
-import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.invitro.CellViability;
-
-import gov.nih.nci.calab.dto.characterization.*;
+import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
+import gov.nih.nci.calab.dto.characterization.DatumBean;
+import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 
 import java.util.List;
 
@@ -16,33 +16,24 @@ import java.util.List;
  * 
  */
 public class CellViabilityBean extends CharacterizationBean {
+
 	public CellViabilityBean() {
 		super();
-		initSetup();
 	}
 	
-	public CellViabilityBean(Characterization aChar) {
+	public CellViabilityBean(CellViability aChar) {
 		super(aChar);
 	}
-	
-	public void initSetup() {
-		for (DerivedBioAssayDataBean table: getDerivedBioAssayData()) {
-			DatumBean percentCellViability=new DatumBean();
-			percentCellViability.setType("Percent Cell Viability");
-			percentCellViability.setValueUnit("%");
-			table.getDatumList().add(percentCellViability);
-		}
-	}
-	
-	public void setDerivedBioAssayData(
+
+	public void setDerivedBioAssayDataList(
 			List<DerivedBioAssayDataBean> derivedBioAssayData) {
-		super.setDerivedBioAssayData(derivedBioAssayData);
+		super.setDerivedBioAssayDataList(derivedBioAssayData);
 		
-		for (DerivedBioAssayDataBean table:getDerivedBioAssayData()) {
-			DatumBean percentCellViability=new DatumBean();
-			percentCellViability.setType("Percent Cell Viability");
-			percentCellViability.setValueUnit("%");
-			table.getDatumList().add(percentCellViability);
+		for (DerivedBioAssayDataBean table:getDerivedBioAssayDataList()) {
+			for (DatumBean datum : table.getDatumList()) {
+				datum.setType("Percent Cell Viability");
+				datum.setValueUnit("%");
+			}			
 		}
 	}
 	

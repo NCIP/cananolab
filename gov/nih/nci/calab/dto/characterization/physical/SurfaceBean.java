@@ -5,7 +5,6 @@ import gov.nih.nci.calab.domain.nano.characterization.physical.Surface;
 import gov.nih.nci.calab.domain.nano.characterization.physical.SurfaceChemistry;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
-import gov.nih.nci.calab.dto.characterization.composition.SurfaceGroupBean;
 import gov.nih.nci.calab.service.util.CananoConstants;
 
 import java.util.ArrayList;
@@ -93,9 +92,9 @@ public class SurfaceBean extends CharacterizationBean {
 		this.zetaPotential = zetaPotential;
 	}
 
-	public void setDerivedBioAssayData(
+	public void setDerivedBioAssayDataList(
 			List<DerivedBioAssayDataBean> derivedBioAssayData) {
-		super.setDerivedBioAssayData(derivedBioAssayData);
+		super.setDerivedBioAssayDataList(derivedBioAssayData);
 		initSetup();
 	}
 

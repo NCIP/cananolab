@@ -2,13 +2,8 @@ package gov.nih.nci.calab.dto.characterization.physical;
 
 import gov.nih.nci.calab.domain.Measurement;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Stability;
-import gov.nih.nci.calab.domain.nano.characterization.physical.Stressor;
-import gov.nih.nci.calab.domain.nano.characterization.Characterization;
-import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
-
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
-import gov.nih.nci.calab.dto.characterization.DatumBean;
 
 import java.util.List;
 
@@ -57,9 +52,9 @@ public class StabilityBean extends CharacterizationBean {
 		
 	}
 	
-	public void setDerivedBioAssayData(
+	public void setDerivedBioAssayDataList(
 			List<DerivedBioAssayDataBean> derivedBioAssayData) {
-		super.setDerivedBioAssayData(derivedBioAssayData);
+		super.setDerivedBioAssayDataList(derivedBioAssayData);
 		initSetup();
 	}
 	
