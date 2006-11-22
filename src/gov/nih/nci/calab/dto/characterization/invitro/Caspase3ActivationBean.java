@@ -26,7 +26,7 @@ public class Caspase3ActivationBean extends CharacterizationBean {
 	}
 	
 	public void initSetup() {
-		for (DerivedBioAssayDataBean table: getDerivedBioAssayData()) {
+		for (DerivedBioAssayDataBean table: getDerivedBioAssayDataList()) {
 			DatumBean percentCaspase3Activation=new DatumBean();
 			percentCaspase3Activation.setType("Percent Caspase 3 Activation");
 			percentCaspase3Activation.setValueUnit("%");
@@ -34,11 +34,11 @@ public class Caspase3ActivationBean extends CharacterizationBean {
 		}
 	}
 	
-	public void setDerivedBioAssayData(
+	public void setDerivedBioAssayDataList(
 			List<DerivedBioAssayDataBean> derivedBioAssayData) {
-		super.setDerivedBioAssayData(derivedBioAssayData);
+		super.setDerivedBioAssayDataList(derivedBioAssayData);
 		
-		for (DerivedBioAssayDataBean table:getDerivedBioAssayData()) {
+		for (DerivedBioAssayDataBean table:getDerivedBioAssayDataList()) {
 			DatumBean percentCaspase3Activation=new DatumBean();
 			percentCaspase3Activation.setType("Percent Caspase 3 Activation");
 			percentCaspase3Activation.setValueUnit("%");

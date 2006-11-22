@@ -17,8 +17,7 @@ import java.util.List;
  */
 public class CFU_GMBean extends CharacterizationBean {
 	public CFU_GMBean() {
-		super();
-		initSetup();
+		super();		
 	}
 	
 	public CFU_GMBean(Characterization aChar) {
@@ -26,7 +25,7 @@ public class CFU_GMBean extends CharacterizationBean {
 	}
 	
 	public void initSetup() {
-		for (DerivedBioAssayDataBean table: getDerivedBioAssayData()) {
+		for (DerivedBioAssayDataBean table: getDerivedBioAssayDataList()) {
 			DatumBean cfu_gm=new DatumBean();
 			cfu_gm.setType("CFU_GM");
 			cfu_gm.setValueUnit("CFU");
@@ -34,11 +33,11 @@ public class CFU_GMBean extends CharacterizationBean {
 		}
 	}
 	
-	public void setDerivedBioAssayData(
+	public void setDerivedBioAssayDataList(
 			List<DerivedBioAssayDataBean> derivedBioAssayData) {
-		super.setDerivedBioAssayData(derivedBioAssayData);
+		super.setDerivedBioAssayDataList(derivedBioAssayData);
 		
-		for (DerivedBioAssayDataBean table:getDerivedBioAssayData()) {
+		for (DerivedBioAssayDataBean table:getDerivedBioAssayDataList()) {
 			DatumBean cfu_gm=new DatumBean();
 			cfu_gm.setType("CFU_GM");
 			cfu_gm.setValueUnit("CFU");
