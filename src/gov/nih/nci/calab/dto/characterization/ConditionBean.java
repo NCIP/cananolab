@@ -1,7 +1,6 @@
 package gov.nih.nci.calab.dto.characterization;
 
 import gov.nih.nci.calab.domain.Measurement;
-import gov.nih.nci.calab.domain.nano.characterization.Datum;
 import gov.nih.nci.calab.domain.nano.characterization.Condition;
 
 /**
