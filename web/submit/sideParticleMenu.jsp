@@ -101,6 +101,7 @@
 									paramMap.put("particleName", session.getAttribute("particleName"));
 									paramMap.put("particleType", session.getAttribute("particleType"));
 									paramMap.put("characterizationId",((gov.nih.nci.calab.dto.characterization.CharacterizationBean) pageContext.getAttribute("aChar")).getId());
+									paramMap.put("submitType", "physical");
 									pageContext.setAttribute("paramMap", paramMap);
 									%>
 									<span class="indented2"> <html:link forward="${aChar.name}" name="paramMap">${aChar.name}: ${aChar.viewTitle}</html:link> </span>
@@ -122,6 +123,7 @@
 									toxicityParamMap.put("particleName", session.getAttribute("particleName"));
 									toxicityParamMap.put("particleType", session.getAttribute("particleType"));
 									toxicityParamMap.put("characterizationId",((gov.nih.nci.calab.dto.characterization.CharacterizationBean) pageContext.getAttribute("aChar")).getId());
+									toxicityParamMap.put("submitType", "tox");
 									pageContext.setAttribute("toxicityParamMap", toxicityParamMap);
 									%>
 									<span class="indented2"> <html:link forward="${aChar.name}" name="toxicityParamMap">${aChar.name}: ${aChar.viewTitle}</html:link> </span>
@@ -142,6 +144,7 @@
 									cytotoxicityParamMap.put("particleType", session.getAttribute("particleType"));
 									cytotoxicityParamMap.put("characterizationId",((gov.nih.nci.calab.dto.characterization.CharacterizationBean) pageContext.getAttribute("aChar")).getId());
 									pageContext.setAttribute("cytotoxicityParamMap", cytotoxicityParamMap);
+									cytotoxicityParamMap.put("submitType", "cytoTox");
 									%>
 									<span class="indented2"> <html:link forward="${aChar.name}" name="cytotoxicityParamMap">${aChar.name}: ${aChar.viewTitle}</html:link> </span>
 									<br>
@@ -163,6 +166,7 @@
 									bloodContactParamMap.put("particleType", session.getAttribute("particleType"));
 									bloodContactParamMap.put("characterizationId",((gov.nih.nci.calab.dto.characterization.CharacterizationBean) pageContext.getAttribute("aChar")).getId());
 									pageContext.setAttribute("bloodContactParamMap", bloodContactParamMap);
+									bloodContactParamMap.put("submitType", "bloodContactTox");
 									%>
 									<span class="indented2"> <html:link forward="${aChar.name}" name="bloodContactParamMap">${aChar.name}: ${aChar.viewTitle}</html:link> </span>
 									<br>
@@ -182,6 +186,7 @@
 									immuneCellParamMap.put("particleType", session.getAttribute("particleType"));
 									immuneCellParamMap.put("characterizationId",((gov.nih.nci.calab.dto.characterization.CharacterizationBean) pageContext.getAttribute("aChar")).getId());
 									pageContext.setAttribute("immuneCellParamMap", immuneCellParamMap);
+									immuneCellParamMap.put("submitType", "immuneCellFuncTox");
 									%>
 									<span class="indented2"> <html:link forward="${aChar.name}" name="immuneCellParamMap">${aChar.name}: ${aChar.viewTitle}</html:link> </span>
 									<br>
