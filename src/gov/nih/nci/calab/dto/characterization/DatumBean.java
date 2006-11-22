@@ -1,14 +1,14 @@
 package gov.nih.nci.calab.dto.characterization;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import gov.nih.nci.calab.domain.Measurement;
-import gov.nih.nci.calab.domain.nano.characterization.CharacterizationProtocol;
 import gov.nih.nci.calab.domain.nano.characterization.Condition;
 import gov.nih.nci.calab.domain.nano.characterization.Control;
 import gov.nih.nci.calab.domain.nano.characterization.Datum;
+import gov.nih.nci.calab.service.util.CananoConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class represents the data within a characterization file to be shown in
@@ -27,11 +27,12 @@ public class DatumBean {
 
 	private String valueUnit;
 	
-	private ControlBean control = null;
+	private String isAControl = CananoConstants.BOOLEAN_NO;
+	
+	private ControlBean control = new ControlBean();
 
-	//private List<ConditionBean> conditionList = new ArrayList<ConditionBean>();
-	private List<ConditionBean> conditionList = null;
-
+	private List<ConditionBean> conditionList = new ArrayList<ConditionBean>();
+	
 	private String numberOfConditions;
 
 	public DatumBean() {
@@ -58,6 +59,7 @@ public class DatumBean {
 				}
 			}
 		}
+		this.numberOfConditions=conditionList.size()+"";
 	}
 
 	public String getId() {
@@ -145,5 +147,13 @@ public class DatumBean {
 		}
 		
 		return tableData;
+	}
+
+	public String getIsAControl() {
+		return isAControl;
+	}
+
+	public void setIsAControl(String isAControl) {
+		this.isAControl = isAControl;
 	}
 }
