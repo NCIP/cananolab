@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSizeAction.java,v 1.16 2006-11-19 22:40:40 zengje Exp $ */
+/* CVS $Id: NanoparticleSizeAction.java,v 1.17 2006-11-22 23:19:23 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Size;
@@ -20,7 +20,6 @@ import gov.nih.nci.calab.ui.core.BaseCharacterizationAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
 import java.util.Date;
-import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -60,7 +59,7 @@ public class NanoparticleSizeAction extends BaseCharacterizationAction {
 		}
 
 		int fileNumber = 0;
-		for (DerivedBioAssayDataBean obj : sizeChar.getDerivedBioAssayData()) {
+		for (DerivedBioAssayDataBean obj : sizeChar.getDerivedBioAssayDataList()) {
 			CharacterizationFileBean fileBean = (CharacterizationFileBean) request
 					.getSession().getAttribute(
 							"characterizationFile" + fileNumber);
@@ -106,30 +105,6 @@ public class NanoparticleSizeAction extends BaseCharacterizationAction {
 		return forward;
 	}
 
-	/**
-	 * Update multiple children on the same form
-	 * 
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws Exception
-	 */
-	public ActionForward update(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
-		SizeBean achar = (SizeBean) theForm.get("achar");
-		updateCharacterizationTables(achar);
-		theForm.set("achar", achar);
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
-		return mapping.getInputForward();
-	}
-
 	protected void clearMap(HttpSession session, DynaValidatorForm theForm,
 			ActionMapping mapping) throws Exception {
 		String particleType = (String) theForm.get("particleType");
@@ -143,16 +118,17 @@ public class NanoparticleSizeAction extends BaseCharacterizationAction {
 		theForm.set("achar", new SizeBean());
 
 		cleanSessionAttributes(session);
-//		for (Enumeration e = session.getAttributeNames(); e.hasMoreElements();) {
-//			String element = (String) e.nextElement();
-//			if (element.startsWith(CananoConstants.CHARACTERIZATION_FILE)) {
-//				session.removeAttribute(element);
-//			}
-//		}
+		// for (Enumeration e = session.getAttributeNames();
+		// e.hasMoreElements();) {
+		// String element = (String) e.nextElement();
+		// if (element.startsWith(CananoConstants.CHARACTERIZATION_FILE)) {
+		// session.removeAttribute(element);
+		// }
+		// }
 	}
 
-	protected void initSetup(HttpServletRequest request, DynaValidatorForm theForm)
-			throws Exception {
+	protected void initSetup(HttpServletRequest request,
+			DynaValidatorForm theForm) throws Exception {
 		HttpSession session = request.getSession();
 		String particleType = (String) theForm.get("particleType");
 		String particleName = (String) theForm.get("particleName");
@@ -169,13 +145,14 @@ public class NanoparticleSizeAction extends BaseCharacterizationAction {
 		session.setAttribute("selectedInstrumentType", "");
 	}
 
-	protected void setLoadFileRequest(HttpServletRequest request){
+	protected void setLoadFileRequest(HttpServletRequest request) {
 		request.setAttribute("characterization", "size");
 		request.setAttribute("loadFileForward", "sizeInputForm");
 	}
-	
-	protected void setFormCharacterizationBean(DynaValidatorForm theForm, Characterization aChar) throws Exception {
-		SizeBean size=new SizeBean((Size)aChar);
-		theForm.set("achar", size);		
+
+	protected void setFormCharacterizationBean(DynaValidatorForm theForm,
+			Characterization aChar) throws Exception {
+		SizeBean size = new SizeBean((Size) aChar);
+		theForm.set("achar", size);
 	}
 }
