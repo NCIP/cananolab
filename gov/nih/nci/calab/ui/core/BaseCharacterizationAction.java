@@ -5,9 +5,9 @@ import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
 import gov.nih.nci.calab.dto.characterization.ConditionBean;
-import gov.nih.nci.calab.dto.characterization.ControlBean;
 import gov.nih.nci.calab.dto.characterization.DatumBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
+import gov.nih.nci.calab.dto.characterization.physical.SizeBean;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.service.util.CalabConstants;
@@ -36,7 +36,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 
-/* CVS $Id: BaseCharacterizationAction.java,v 1.5 2006-11-20 22:29:28 pansu Exp $ */
+/* CVS $Id: BaseCharacterizationAction.java,v 1.6 2006-11-22 23:16:35 pansu Exp $ */
 
 public abstract class BaseCharacterizationAction extends AbstractDispatchAction {
 	/**
@@ -61,18 +61,19 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			DynaValidatorForm theForm) throws Exception;
 
 	/**
-	 * Set the appropriate type of characterization bean in the form 
-	 * from the chararacterization domain obj.
+	 * Set the appropriate type of characterization bean in the form from the
+	 * chararacterization domain obj.
+	 * 
 	 * @param theForm
 	 * @param aChar
 	 * @throws Exception
 	 */
-	protected abstract void setFormCharacterizationBean(DynaValidatorForm theForm,
-			Characterization aChar) throws Exception;	
-	
-	
+	protected abstract void setFormCharacterizationBean(
+			DynaValidatorForm theForm, Characterization aChar) throws Exception;
+
 	/**
 	 * Clean the session attribture
+	 * 
 	 * @param sessioin
 	 * @throws Exception
 	 */
@@ -84,6 +85,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			}
 		}
 	}
+
 	/**
 	 * Set up the input form for adding new characterization
 	 * 
@@ -106,11 +108,13 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 	}
 
 	/**
-	 * Set request attributes required in load file for different types of characterizations
+	 * Set request attributes required in load file for different types of
+	 * characterizations
+	 * 
 	 * @param request
 	 */
 	protected abstract void setLoadFileRequest(HttpServletRequest request);
-		
+
 	/**
 	 * Set up the form for updating existing characterization
 	 * 
@@ -198,7 +202,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 	 * @return
 	 * @throws Exception
 	 */
-	public ActionForward  loadFile(ActionMapping mapping, ActionForm form,
+	public ActionForward loadFile(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
@@ -210,10 +214,10 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		List<CharacterizationFileBean> files = service
 				.getAllRunFiles(particleName);
 		request.setAttribute("allRunFiles", files);
-		setLoadFileRequest(request);		
+		setLoadFileRequest(request);
 		return mapping.findForward("loadFile");
 	}
-	
+
 	/**
 	 * Download action to handle characterization file download and viewing
 	 * 
@@ -262,6 +266,43 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 	 * @return
 	 * @throws Exception
 	 */
+	public ActionForward update(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		CharacterizationBean achar = (CharacterizationBean) theForm.get("achar");
+		String index = (String) request.getParameter("index");
+		String type = (String) request.getParameter("type");
+		String dataPointIndex = (String) request.getParameter("dataPointIndex");
+		if (type != null && !type.equals("") && type.equals("charTables")) {
+			updateCharacterizationTables(achar);
+		}
+		if (type != null && !type.equals("") && type.equals("dataPoints")) {
+			updateChartDataPoints(achar, index);
+		}
+		if (type != null && !type.equals("") && type.equals("conditions")) {
+			updateConditions(achar, index, dataPointIndex);
+		}
+		String particleType = (String) theForm.get("particleType");
+		String particleName = (String) theForm.get("particleName");
+
+		InitSessionSetup.getInstance().setSideParticleMenu(request,
+				particleName, particleType);
+
+		return mapping.getInputForward();
+	}
+	
+	/**
+	 * Update multiple children on the same form
+	 * 
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
 	public ActionForward updateManufacturers(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
@@ -287,7 +328,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 				.getNumberOfDerivedBioAssayData();
 		int tableNum = Integer.parseInt(numberOfCharacterizationTables);
 		List<DerivedBioAssayDataBean> origTables = achar
-				.getDerivedBioAssayData();
+				.getDerivedBioAssayDataList();
 		int origNum = (origTables == null) ? 0 : origTables.size();
 		List<DerivedBioAssayDataBean> tables = new ArrayList<DerivedBioAssayDataBean>();
 		// create new ones
@@ -311,39 +352,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 				tables.add(new DerivedBioAssayDataBean());
 			}
 		}
-		achar.setDerivedBioAssayData(tables);
-	}
-
-
-	/**
-	 * Update multiple children on the same form
-	 * 
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws Exception
-	 */
-	public void addConditions(CharacterizationBean achar, String index) {
-		ControlBean control = null;
-		int tableIndex = new Integer(index).intValue();
-
-		DerivedBioAssayDataBean derivedBioAssayData = (DerivedBioAssayDataBean) achar
-				.getDerivedBioAssayData().get(tableIndex);
-		DatumBean datum = (DatumBean) derivedBioAssayData.getDatumList().get(0);
-		if (datum.getControl() != null) {
-			datum.setControl(control);
-		}
-		List<ConditionBean> conditions = new ArrayList<ConditionBean>();
-		ConditionBean particleConcentrationCondition = new ConditionBean();
-		particleConcentrationCondition.setType("Particle Concentration");
-		conditions.add(particleConcentrationCondition);
-		ConditionBean molecularConcentrationCondition = new ConditionBean();
-		molecularConcentrationCondition.setType("Molecular Concentration");
-		molecularConcentrationCondition.setValueUnit("uM");
-		conditions.add(molecularConcentrationCondition);
-		datum.setConditionList(conditions);
+		achar.setDerivedBioAssayDataList(tables);
 	}
 
 	/**
@@ -356,35 +365,13 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 	 * @return
 	 * @throws Exception
 	 */
-	public void addControl(CharacterizationBean achar, String index) {
-		List<ConditionBean> conditionList = null;
+	public void updateConditions(CharacterizationBean achar, String index, String dataPointIndex) {
 		int tableIndex = new Integer(index).intValue();
-		DerivedBioAssayDataBean derivedBioAssayData = (DerivedBioAssayDataBean) achar
-				.getDerivedBioAssayData().get(tableIndex);
-		DatumBean datum = (DatumBean) derivedBioAssayData.getDatumList().get(0);
-		if (datum.getConditionList() != null) {
-			datum.setConditionList(conditionList);
-		}
-		ControlBean control = new ControlBean();
-		datum.setControl(control);
-	}
-
-	/**
-	 * Update multiple children on the same form
-	 * 
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws Exception
-	 */
-	public void updateConditions(CharacterizationBean achar, String index) {
-		int tableIndex = new Integer(index).intValue();
+		int dataIndex= new Integer(dataPointIndex).intValue();
 		DerivedBioAssayDataBean derivedBioAssayDataBean = (DerivedBioAssayDataBean) achar
-				.getDerivedBioAssayData().get(tableIndex);
+				.getDerivedBioAssayDataList().get(tableIndex);
 		DatumBean datumBean = (DatumBean) (derivedBioAssayDataBean
-				.getDatumList().get(0));
+				.getDatumList().get(dataIndex));
 		String numberOfConditions = datumBean.getNumberOfConditions();
 		int conditionNum = Integer.parseInt(numberOfConditions);
 		List<ConditionBean> origConditions = datumBean.getConditionList();
@@ -412,6 +399,49 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			}
 		}
 		datumBean.setConditionList(conditions);
+	}
+
+	/**
+	 * Update multiple children on the same form
+	 * 
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	public void updateChartDataPoints(CharacterizationBean achar, String index) {
+		int tableIndex = new Integer(index).intValue();
+		DerivedBioAssayDataBean derivedBioAssayDataBean = (DerivedBioAssayDataBean) achar
+				.getDerivedBioAssayDataList().get(tableIndex);
+		String numberOfDataPoints = derivedBioAssayDataBean.getNumberOfDataPoints();
+		int dataPointNum = Integer.parseInt(numberOfDataPoints);
+		List<DatumBean> origDataList = derivedBioAssayDataBean.getDatumList();
+		int origNum = (origDataList == null) ? 0 : origDataList.size();
+		List<DatumBean> dataList = new ArrayList<DatumBean>();
+		// create new ones
+		if (origNum == 0) {
+
+			for (int i = 0; i < dataPointNum; i++) {
+				DatumBean condition = new DatumBean();
+				dataList.add(condition);
+			}
+		}
+		// use keep original table info
+		else if (dataPointNum <= origNum) {
+			for (int i = 0; i < dataPointNum; i++) {
+				dataList.add((DatumBean) origDataList.get(i));
+			}
+		} else {
+			for (int i = 0; i < origNum; i++) {
+				dataList.add((DatumBean) origDataList.get(i));
+			}
+			for (int i = origNum; i < dataPointNum; i++) {
+				dataList.add(new DatumBean());
+			}
+		}
+		derivedBioAssayDataBean.setDatumList(dataList);
 	}
 
 	public boolean loginRequired() {
