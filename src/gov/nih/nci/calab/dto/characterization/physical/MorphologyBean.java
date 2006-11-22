@@ -1,12 +1,9 @@
 package gov.nih.nci.calab.dto.characterization.physical;
 
 import gov.nih.nci.calab.domain.nano.characterization.physical.Morphology;
-import gov.nih.nci.calab.domain.nano.characterization.Characterization;
-import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
-
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
-import gov.nih.nci.calab.dto.characterization.DatumBean;
+
 import java.util.List;
 
 
@@ -59,9 +56,9 @@ public class MorphologyBean extends CharacterizationBean {
 		this.type = aChar.getType();
 	}
 	
-	public void setDerivedBioAssayData(
+	public void setDerivedBioAssayDataList(
 			List<DerivedBioAssayDataBean> derivedBioAssayData) {
-		super.setDerivedBioAssayData(derivedBioAssayData);
+		super.setDerivedBioAssayDataList(derivedBioAssayData);
 		initSetup();
 	}
 	

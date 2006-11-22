@@ -26,7 +26,7 @@ public class OxidativeStressBean extends CharacterizationBean {
 	}
 	
 	public void initSetup() {
-		for (DerivedBioAssayDataBean table: getDerivedBioAssayData()) {
+		for (DerivedBioAssayDataBean table: getDerivedBioAssayDataList()) {
 			DatumBean percentOxidativeStress=new DatumBean();
 			percentOxidativeStress.setType("Percent OxidativeStress");
 			percentOxidativeStress.setValueUnit("%");
@@ -34,11 +34,11 @@ public class OxidativeStressBean extends CharacterizationBean {
 		}
 	}
 	
-	public void setDerivedBioAssayData(
+	public void setDerivedBioAssayDataList(
 			List<DerivedBioAssayDataBean> derivedBioAssayData) {
-		super.setDerivedBioAssayData(derivedBioAssayData);
+		super.setDerivedBioAssayDataList(derivedBioAssayData);
 		
-		for (DerivedBioAssayDataBean table:getDerivedBioAssayData()) {
+		for (DerivedBioAssayDataBean table:getDerivedBioAssayDataList()) {
 			DatumBean percentOxidativeStress=new DatumBean();
 			percentOxidativeStress.setType("Percent OxidativeStress");
 			percentOxidativeStress.setValueUnit("%");

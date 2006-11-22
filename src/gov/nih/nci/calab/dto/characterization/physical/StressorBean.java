@@ -2,9 +2,6 @@ package gov.nih.nci.calab.dto.characterization.physical;
 
 import gov.nih.nci.calab.domain.Measurement;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Stressor;
-import gov.nih.nci.calab.domain.nano.characterization.physical.SurfaceChemistry;
-
-import java.util.List;
 
 
 /**

@@ -26,7 +26,7 @@ public class EnzymeInductionBean extends CharacterizationBean {
 	}
 	
 	public void initSetup() {
-		for (DerivedBioAssayDataBean table: getDerivedBioAssayData()) {
+		for (DerivedBioAssayDataBean table: getDerivedBioAssayDataList()) {
 			DatumBean percentEnzymeInduction=new DatumBean();
 			percentEnzymeInduction.setType("Percent EnzymeInduction");
 			percentEnzymeInduction.setValueUnit("%");
@@ -34,11 +34,11 @@ public class EnzymeInductionBean extends CharacterizationBean {
 		}
 	}
 	
-	public void setDerivedBioAssayData(
+	public void setDerivedBioAssayDataList(
 			List<DerivedBioAssayDataBean> derivedBioAssayData) {
-		super.setDerivedBioAssayData(derivedBioAssayData);
+		super.setDerivedBioAssayDataList(derivedBioAssayData);
 		
-		for (DerivedBioAssayDataBean table:getDerivedBioAssayData()) {
+		for (DerivedBioAssayDataBean table:getDerivedBioAssayDataList()) {
 			DatumBean percentEnzymeInduction=new DatumBean();
 			percentEnzymeInduction.setType("Percent EnzymeInduction");
 			percentEnzymeInduction.setValueUnit("%");

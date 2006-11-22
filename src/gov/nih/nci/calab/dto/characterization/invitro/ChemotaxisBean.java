@@ -26,7 +26,7 @@ public class ChemotaxisBean extends CharacterizationBean {
 	}
 	
 	public void initSetup() {
-		for (DerivedBioAssayDataBean table: getDerivedBioAssayData()) {
+		for (DerivedBioAssayDataBean table: getDerivedBioAssayDataList()) {
 			DatumBean rfu=new DatumBean();
 			rfu.setType("Relative Fluorescent Values");
 			rfu.setValueUnit("RFU");
@@ -34,11 +34,11 @@ public class ChemotaxisBean extends CharacterizationBean {
 		}
 	}
 	
-	public void setDerivedBioAssayData(
+	public void setDerivedBioAssayDataList(
 			List<DerivedBioAssayDataBean> derivedBioAssayData) {
-		super.setDerivedBioAssayData(derivedBioAssayData);
+		super.setDerivedBioAssayDataList(derivedBioAssayData);
 		
-		for (DerivedBioAssayDataBean table:getDerivedBioAssayData()) {
+		for (DerivedBioAssayDataBean table:getDerivedBioAssayDataList()) {
 			DatumBean rfu=new DatumBean();
 			rfu.setType("Relative Fluorescent Values");
 			rfu.setValueUnit("RFU");
