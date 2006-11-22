@@ -185,7 +185,7 @@
 													</c:choose>													
 												</td>
 												<td class="rightLabel" colspan="2">
-													<input type="button" onclick="javascript:loadShapeFile('${nanoparticleShapeForm.map.particleName}', ${status.index})" value="Load File">
+													<input type="button" onclick="javascript:loadFile(this.form, '${nanoparticleShapeForm.map.particleName}', ${status.index})" value="Load File">
 												</td>
 											</tr>
 										</tbody>
