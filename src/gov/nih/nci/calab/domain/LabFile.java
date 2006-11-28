@@ -39,6 +39,18 @@ public class LabFile implements java.io.Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+	private String comments;
+	
+	public String getComments() {
+		return comments;
+	}
+
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
+
+	
 	private java.lang.String extension;
 
 	public java.lang.String getExtension() {
@@ -134,28 +146,5 @@ public class LabFile implements java.io.Serializable {
 	}
 
 
-
-	// public java.lang.Long getId();
-	// public void setId( java.lang.Long id);
-	//
-	// public java.lang.String getPath();
-	// public void setPath( java.lang.String path);
-	//
-	// public java.lang.String getExtension();
-	// public void setExtension( java.lang.String extension);
-	//	   
-	// public java.lang.String getCreatedBy();
-	// public void setCreatedBy( java.lang.String createdBy);
-	//	   
-	// public java.util.Date getCreatedDate();
-	// public void setCreatedDate( java.util.Date createdDate);
-	//
-	// public java.lang.String getVersion();
-	// public void setVersion( java.lang.String version);
-	//	   
-	//
-	// public boolean equals(Object obj);
-	//		
-	// public int hashCode();
 
 }

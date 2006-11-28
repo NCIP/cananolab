@@ -19,6 +19,7 @@
 		<property name="filename" type="java.lang.String" column="FILE_NAME" />
 		<property name="title" type="java.lang.String" column="TITLE" />
 		<property name="description" type="java.lang.String" column="DESCRIPTION" />
+		<property name="comments" type="java.lang.String" column="COMMENTS" />
 
 
 		<joined-subclass name="gov.nih.nci.calab.domain.OutputFile" table="RUN_OUTPUT_FILE">
