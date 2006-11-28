@@ -2,6 +2,7 @@ package gov.nih.nci.calab.domain;
 
 import gov.nih.nci.calab.service.util.CalabConstants;
 
+import java.util.Collection;
 import java.util.HashSet;
 
 /**
@@ -303,6 +304,17 @@ public class Sample implements java.io.Serializable {
 	public void setReportCollection(java.util.Collection reportCollection) {
 		this.reportCollection = reportCollection;
 	}
+	
+	public Collection associatedFileCollection = new HashSet();
+		
+	public Collection getAssociatedFileCollection() {
+		return associatedFileCollection;
+	}
+
+	public void setAssociatedFileCollection(Collection associatedFileCollection) {
+		this.associatedFileCollection = associatedFileCollection;
+	}
+
 	public boolean equals(Object obj) {
 		boolean eq = false;
 		if (obj instanceof Sample) {
