@@ -43,6 +43,11 @@
       <key column="SAMPLE_PK_ID" />
       <many-to-many class="gov.nih.nci.calab.domain.Report" column="FILE_PK_ID" />
     </set>
+    <set name="associatedFileCollection" table="SAMPLE_ASSOCIATED_FILE" cascade="all-delete-orphan" lazy="true" inverse="true">
+      <cache usage="read-write" />
+      <key column="SAMPLE_PK_ID" />
+      <many-to-many class="gov.nih.nci.calab.domain.AssociatedFile" column="ASSOCIATED_FILE_PK_ID" />
+    </set>
   </class>
 </hibernate-mapping>
 
