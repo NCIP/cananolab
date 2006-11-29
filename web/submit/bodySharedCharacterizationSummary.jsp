@@ -29,12 +29,13 @@
 			</c:choose>
 		</td>
 		<td class="label">
-			<strong>View Title*</strong>
+			<strong>View Title*</strong><br>
+			<em>(text will be truncated after 30 characters)</em>
 		</td>
 		<td class="rightLabel">
 			<c:choose>
 				<c:when test="${canUserUpdateParticle eq 'true'}">
-					<html:text property="achar.viewTitle" />
+					<html:text property="achar.viewTitle" size="30"/>
 				</c:when>
 				<c:otherwise>
 						${thisForm.map.achar.viewTitle}&nbsp;
