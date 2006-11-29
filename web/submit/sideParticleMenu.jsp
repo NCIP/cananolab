@@ -75,7 +75,7 @@
 			pageContext.setAttribute("paramMapTf", paramMapTf);
 
 			%>
-									<span class="indented2"> <html:link forward="${aFunc.name}" name="paramMapTf">${aFunc.name}: ${aFunc.viewTitle}</html:link> </span>
+									<span class="indented2"> <html:link forward="function" name="paramMapTf">${aFunc.name}: ${aFunc.viewTitle}</html:link> </span>
 									<br>
 								</c:forEach>
 								<span class="indented">-Targeting &nbsp;&nbsp;</span>
@@ -100,7 +100,7 @@
 			pageContext.setAttribute("paramMapTt", paramMapTt);
 
 			%>
-									<span class="indented2"> <html:link forward="${aFunc.name}" name="paramMapTt">${aFunc.name}: ${aFunc.viewTitle}</html:link> </span>
+									<span class="indented2"> <html:link forward="function" name="paramMapTt">${aFunc.name}: ${aFunc.viewTitle}</html:link> </span>
 									<br>
 								</c:forEach>
 								<span class="indented">-Diagnostic Imaging &nbsp;&nbsp;</span>
@@ -125,7 +125,7 @@
 			pageContext.setAttribute("paramMapTi", paramMapTi);
 
 			%>
-									<span class="indented2"> <html:link forward="${aFunc.name}" name="paramMapTi">${aFunc.name}: ${aFunc.viewTitle}</html:link> </span>
+									<span class="indented2"> <html:link forward="function" name="paramMapTi">${aFunc.name}: ${aFunc.viewTitle}</html:link> </span>
 									<br>
 								</c:forEach>
 								<span class="indented">-Diagnostic Reporting &nbsp;&nbsp;</span>
@@ -150,7 +150,7 @@
 			pageContext.setAttribute("paramMapTr", paramMapTr);
 
 			%>
-									<span class="indented2"> <html:link forward="${aFunc.name}" name="paramMapTr">${aFunc.name}: ${aFunc.viewTitle}</html:link> </span>
+									<span class="indented2"> <html:link forward="function" name="paramMapTr">${aFunc.name}: ${aFunc.viewTitle}</html:link> </span>
 									<br>
 								</c:forEach>
 								<br>
