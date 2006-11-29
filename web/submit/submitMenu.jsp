@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:choose>
 	<c:when test="${!empty param.submitType}">
-		<c:set var="submitType" value="${param.submitType}" scope="session"/>
+		<c:set var="submitType" value="${param.submitType}" scope="session" />
 	</c:when>
 	<c:otherwise>
 		<c:set var="submitType" value="${sessionScope.submitType}" />
@@ -20,20 +20,13 @@
 		<c:set var="particleType" value="${param.particleType}" scope="session" />
 	</c:when>
 </c:choose>
-
 <logic:present name="submitType">
-	<logic:equal name="submitType" value="therapeutics">
-		<bean:define id="actions" name="therapeuticsActions" type="java.util.List" />
-	</logic:equal>
-	<logic:equal name="submitType" value="targeting">
-		<bean:define id="actions" name="targetingActions" type="java.util.List" />
-	</logic:equal>
-	<logic:equal name="submitType" value="imaging">
-		<bean:define id="actions" name="imagingActions" type="java.util.List" />
-	</logic:equal>
-	<logic:equal name="submitType" value="reporting">
-		<bean:define id="actions" name="reportingActions" type="java.util.List" />
-	</logic:equal>
+	<c:choose>
+		<c:when test="${submitType eq 'therapeutics' || submitType eq 'Targeting' || submitType eq 'imaging' || submitType eq 'Reporting'}">
+			<%session.removeAttribute("actions");
+		%>
+		</c:when>
+	</c:choose>
 	<logic:equal name="submitType" value="physical">
 		<bean:define id="actions" name="physicalActions" type="java.util.List" />
 	</logic:equal>
@@ -58,9 +51,9 @@
 				<logic:iterate name="actions" id="item" type="org.apache.struts.tiles.beans.MenuItem">
 					<td class="secondMenuItem" height="20">
 						<c:url var="link" value="${item.link}">
-							<c:param name="particleName" value="${particleName}"/>
-							<c:param name="particleType" value="${particleType}"/>
-							<c:param name="submitType" value="${submitType}"/>
+							<c:param name="particleName" value="${particleName}" />
+							<c:param name="particleType" value="${particleType}" />
+							<c:param name="submitType" value="${submitType}" />
 						</c:url>
 						<a href="${link}" class="secondMenuLink"><bean:write name="item" property="value" /></a>
 					</td>
