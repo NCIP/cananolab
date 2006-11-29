@@ -3,6 +3,8 @@
  */
 package gov.nih.nci.calab.dto.function;
 
+import gov.nih.nci.calab.service.util.CalabConstants;
+
 import java.util.ArrayList;
 import java.util.List;
 
