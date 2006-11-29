@@ -3,14 +3,6 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<script type="text/javascript">
-<!--
-function refreshAgent(form, action,index) {
-    form.action = form.action + '?dispatch='+action+'&index='+index
-    form.submit();
-}
-//-->
-</script>
 
 <html:form action="/nanoparticleFunction">
 	<table width="100%" align="center">
@@ -18,7 +10,7 @@ function refreshAgent(form, action,index) {
 			<td>
 				<h4>
 					<br>
-					Particle Function
+					Particle ${submitType} Function
 				</h4>
 			</td>
 			<td align="right" width="15%">
@@ -34,7 +26,6 @@ function refreshAgent(form, action,index) {
 		</tr>
 		<tr>
 			<td colspan="2">
-				<c:set var="thisForm" value="${nanoparticleFunctionForm}" />
 				<jsp:include page="/bodyMessage.jsp?bundle=submit" />
 				<jsp:include page="bodyFunctionSummary.jsp" />
 
@@ -45,21 +36,21 @@ function refreshAgent(form, action,index) {
 						<tr class="topBorder">
 							<td class="formTitle" colspan="4">
 								<div align="justify">
-									Agent Information
+									Linkage Information
 								</div>
 							</td>
 						</tr>
 						<tr>
 							<td class="leftLabel">
-								<strong>Number of Agent </strong>
+								<strong>Number of Linkages </strong>
 							</td>
 							<td class="label">
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
-										<html:text property="function.numberOfLinkage" />
+										<html:text property="function.numberOfLinkages" />
 									</c:when>
 									<c:otherwise>
-										${thisForm.map.function.numberOfLinkage}&nbsp;
+										${nanoparticleFunctionForm.map.function.numberOfLinkages}&nbsp;
 									</c:otherwise>
 								</c:choose>
 							</td>
@@ -67,64 +58,81 @@ function refreshAgent(form, action,index) {
 								&nbsp;
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
-										<input type="button" onclick="javascript:updateFunctionLinkage()" value="Update Agents">
+										<input type="button" onclick="javascript:updateFunctionLinkages()" value="Update Linkages">
 									</c:when>
 								</c:choose>
 							</td>
 						</tr>
 						<tr>
 							<td class="completeLabel" colspan="4">
-								<c:forEach var="function.linkage" items="${thisForm.map.function.linkages}" varStatus="status">
+								<logic:iterate id="linkage" name="nanoparticleFunctionForm" property="function.linkages" indexId="linkageInd">
 									<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 										<tbody>
 											<tr class="topBorder">
 												<td class="formSubTitle" colspan="4">
 													<div align="justify">
-														Agent ${status.index+1}
+														Linkage ${linkageInd+1}
 													</div>
 												</td>
 											</tr>
 											<tr>
-												<td class="leftLabel" rowspan="2">
+												<td class="leftLabel">
 													<strong>Linkage Type </strong>
 												</td>
-												<td class="leftlabel">
-													<html:radio name="function.linkage" property="type" value="Attachement" />
-													Attachement
-												</td>
-												<td class="label">
-													<strong>Bond Type</strong>
-												</td>
-												<td class="rightLabel" colspan="2">
-													<c:choose>
-														<c:when test="${canUserUpdateParticle eq 'true'}">
-															<html:text name="function.linkage" indexed="true" property="value" /> &nbsp;				
+												<td class="label" colspan="3">
+													<table cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+														<tr>
+															<td class="borderlessLabel">
+																<c:choose>
+																	<c:when test="${canUserUpdateParticle eq 'true'}">
+																		<html:radio property="function.linkages[${linkageInd}].type" value="Attachment" />
+																Attachement
+																</c:when>
+																	<c:otherwise>
+																${linkage.type}
+																</c:otherwise>
+																</c:choose>
+															</td>
+															<td class="borderlessLabel">
+																<strong>Bond Type</strong>
+																<c:choose>
+																	<c:when test="${canUserUpdateParticle eq 'true'}">
+																		<html:text property="function.linkages[${linkageInd}].value" /> &nbsp;				
+																	</c:when>
+																	<c:otherwise>
+																		${linkage.value}&nbsp;
+																	</c:otherwise>
+																</c:choose>
+															</td>
+														</tr>
+														<tr>
+															<td class="borderlessLabel">
+																<c:choose>
+																	<c:when test="${canUserUpdateParticle eq 'true'}">
+																		<html:radio property="function.linkages[${linkageInd}].type" value="Encapsulation" />
+																Encapsulation
+																</c:when>
+																	<c:otherwise>
+																${linkage.type}
+																</c:otherwise>
+																</c:choose>
+															</td>
+															<td class="borderlessLabel">
+																<strong>Localization</strong>
+																<c:choose>
+																	<c:when test="${canUserUpdateParticle eq 'true'}">
+																		<html:text property="function.linkages[${linkageInd}].value" /> &nbsp;
 														</c:when>
-														<c:otherwise>
-															${thisForm.map.function.linkages[status.index].value}&nbsp;
+																	<c:otherwise>
+															${linkage.value}&nbsp;
 														</c:otherwise>
-													</c:choose>
+																</c:choose>
+															</td>
+														</tr>
+													</table>
 												</td>
 											</tr>
-											<tr>
-												<td class="leftlabel">
-													<html:radio name="function.linkage" property="type" value="Encapsulation" />
-													Encapsulation
-												</td>
-												<td class="label">
-													<strong>Localization</strong>
-												</td>
-												<td class="rightLabel" colspan="2">
-													<c:choose>
-														<c:when test="${canUserUpdateParticle eq 'true'}">
-															<html:text name="function.linkage" indexed="true" property="value" /> &nbsp;
-														</c:when>
-														<c:otherwise>
-															${thisForm.map.function.linkages[status.index].value}&nbsp;
-														</c:otherwise>
-													</c:choose>
-												</td>
-											</tr>
+
 											<tr>
 												<td class="leftLabel">
 													<Strong>Linkage Description</Strong>
@@ -132,115 +140,200 @@ function refreshAgent(form, action,index) {
 												<td class="rightLabel" colspan="3">
 													<c:choose>
 														<c:when test="${canUserUpdateParticle eq 'true'}">
-															<html:textarea name="function.linkage" property="description" rows="3" />
+															<html:textarea property="function.linkages[${linkageInd}].description" rows="3" />
 														</c:when>
 														<c:otherwise>
-															${thisForm.map.function.linkages[status.index].description}&nbsp;
+															${linkage.description}&nbsp;
 														</c:otherwise>
 													</c:choose>
 												</td>
 											</tr>
+
 											<tr>
 												<td class="leftLabel">
 													<strong>Agent Type</strong>
 												</td>
-												<td class="lable">
-													<html:select name="function.linkage" property="agent.type" onchange="javascript:refreshAgent(this.form, 'updateAgentForm', ${status.index})">
-														<option />
-															<html:options name="allAgentTypes" />
-													</html:select>
+												<td class="rightLabel" colspan="3">
+													<table cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+														<c:forEach var="agentType" items="${allAgentTypes[submitType]}" varStatus="status">
+															<tr>
+																<td class="borderlessLabel">
+																	<c:choose>
+																		<c:when test="${canUserUpdateParticle eq 'true'}">
+																			<html:radio property="function.linkages[${linkageInd}].agent.type" value="${agentType}" />
+																	${agentType}
+																		</c:when>
+																		<c:otherwise>
+															${linkage.agent.type}&nbsp;
+														</c:otherwise>
+																	</c:choose>
+																	&nbsp;&nbsp;&nbsp;
+																</td>
+																<td class="borderlessLabel">
+																	<c:choose>
+																		<c:when test="${agentType eq 'Peptide' || agentType eq 'DNA'}">
+																			<strong>Sequence</strong>
+																			<c:choose>
+																				<c:when test="${canUserUpdateParticle eq 'true'}">
+																					<html:text property="function.linkages[${linkageInd}].agent.otherValue" />
+																				</c:when>
+																				<c:otherwise>
+															${linkage.agent.otherValue}&nbsp;
+														</c:otherwise>
+																			</c:choose>
+																		</c:when>
+																		<c:otherwise>
+																			<strong>Name</strong>
+																			<c:choose>
+																				<c:when test="${canUserUpdateParticle eq 'true'}">
+																					<html:text property="function.linkages[${linkageInd}].agent.name" />
+																				</c:when>
+																				<c:otherwise>
+															${linkage.agent.name}&nbsp;
+														</c:otherwise>
+																			</c:choose>
+																		</c:otherwise>
+																	</c:choose>
+																</td>
+																<td class="borderlessLabel">
+																	<c:choose>
+																		<c:when test="${canUserUpdateParticle eq 'true'}">
+																			<c:choose>
+																				<c:when test="${agentType eq 'Small Molecule'}">
+																					<strong>Compound Name</strong>
+																				</c:when>
+																				<c:when test="${agentType eq 'Probe'}">
+																					<strong>Probe Type</strong>
+																				</c:when>
+																				<c:when test="${agentType eq 'Antibody'}">
+																					<strong>Species</strong>
+																				</c:when>
+																				<c:when test="${agentType eq 'Image Contrast Agent'}">
+																					<strong>Contrast Agent Type</strong>
+																				</c:when>
+																			</c:choose>
+																			<html:text property="function.linkages[${linkageInd}].agent.otherValue" />
+																		</c:when>
+																		<c:otherwise>																		
+																			${linkage.agent.otherValue}" /> &nbsp;
+																		</c:otherwise>
+																	</c:choose>
+																</td>
+															</tr>
+														</c:forEach>
+													</table>
 												</td>
-												<logic:notEmpty name="function.linkage" property="agent.type">
-													<logic:equal name="function.linkage" property="agent.type" value="DNA">
-														<td class="label">
-															<strong>Sequence</strong>
-														</td>
-														<td class="rightLabel">
-															<html:text name="function.linkage" indexed="true" property="agent.value"/>
-															&nbsp;
-														</td>
-													</logic:equal>
-													<logic:equal name="function.linkage" property="agent.type" value="Peptide">
-														<td class="label">
-															<strong>Sequence</strong>
-														</td>
-														<td class="rightLabel">
-															<html:text name="function.linkage" indexed="true" property="agent.otherValue"/>
-															&nbsp;
-														</td>
-													</logic:equal>
-													<logic:equal name="function.linkage" property="agent.type" value="Samll Molecule">
-														<td class="label">
-															<strong>Name</strong>
-														</td>
-														<td class="label">
-															<html:text name="function.linkage" indexed="true" property="agent.name"/>
-															&nbsp;
-														</td>
-														<td class="label">
-															<strong>Compound Name</strong>
-														</td>
-														<td class="rightLabel">
-															<html:text name="function.linkage" indexed="true" property="agent.otherValue"/>
-															&nbsp;
-														</td>
-													</logic:equal>
-													<logic:equal name="function.linkage.agent.type" value="Probe">
-														<td class="label">
-															<strong>Name</strong>
-														</td>
-														<td class="label">
-															<html:text name="function.linkage" indexed="true" property="agent.name"/>
-															&nbsp;
-														</td>
-														<td class="label">
-															<strong>Type</strong>
-														</td>
-														<td class="rightLabel">
-															<html:text name="function.linkage" indexed="true" property="agent.otherValue"/>
-															&nbsp;
-														</td>
-													</logic:equal>
-													<logic:equal name="function.linkage.agent.type" value="Antibody">
-														<td class="label">
-															<strong>Name</strong>
-														</td>
-														<td class="label">
-															<html:text name="function.linkage" indexed="true" property="agent.name"/>													
-															&nbsp;
-														</td>
-														<td class="label">
-															<strong>Species</strong>
-														</td>
-														<td class="rightLabel">
-															<html:text name="function.linkage" indexed="true" property="agent.otherValue"/>
-															&nbsp;
-														</td>
-													</logic:equal>
-													<logic:equal name="function.linkage.agent.type" value="Image Contrast Agent">
-														<td class="label">
-															<strong>Name</strong>
-														</td>
-														<td class="label">
-															<html:text name="function.linkage" indexed="true" property="agent.name"/>
-															&nbsp;
-														</td>
-														<td class="label">
-															<strong>Type</strong>
-														</td>
-														<td class="rightLabel">
-															<html:text name="function.linkage" indexed="true" property="agent.otherValue"/>
-															&nbsp;
-														</td>
-													</logic:equal>
-												</logic:notEmpty>
 											</tr>
-											<!--   based on the value of function type -->
-											
-											<!--   end of based on the value of function type -->
+											<tr>
+												<td class="leftLabel">
+													<Strong>Agent Description</Strong>
+												</td>
+												<td class="rightLabel" colspan="3">
+													<c:choose>
+														<c:when test="${canUserUpdateParticle eq 'true'}">
+															<html:textarea property="function.linkages[${linkageInd}].agent.description" rows="3" />
+														</c:when>
+														<c:otherwise>
+															${linkage.agent.description}&nbsp;
+														</c:otherwise>
+													</c:choose>
+												</td>
+											</tr>
+
+											<tr>
+												<td class="leftLabel">
+													<strong>Number of Agent Targets </strong>
+												</td>
+												<td class="label">
+													<c:choose>
+														<c:when test="${canUserUpdateParticle eq 'true'}">
+															<html:text property="function.linkages[${linkageInd}].agent.numberOfAgentTargets" />
+														</c:when>
+														<c:otherwise>
+										${linkage.agent.numberOfAgentTargets}&nbsp;
+									</c:otherwise>
+													</c:choose>
+												</td>
+												<td class="rightLabel" colspan="2">
+													&nbsp;
+													<c:choose>
+														<c:when test="${canUserUpdateParticle eq 'true'}">
+															<input type="button" onclick="javascript:updateAgentTargets('${linkageInd}')" value="Update Agent Targets">
+														</c:when>
+													</c:choose>
+												</td>
+											</tr>
+											<tr>
+												<td class="completeLabel" colspan="4">
+													<logic:iterate id="target" name="nanoparticleFunctionForm" property="function.linkages[${linkageInd}].agent.agentTargets" indexId="tIndex">
+														<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+															<tbody>
+																<tr class="topBorder">
+																	<td class="formSubTitle" colspan="4">
+																		<div align="justify">
+																			Agent Target ${tIndex+1}
+																		</div>
+																	</td>
+																</tr>
+																<tr>
+																	<td class="leftLabel">
+																		<strong>Target Type</strong>
+																	</td>
+																	<td class="label">
+																		<c:choose>
+																			<c:when test="${canUserUpdateParticle eq 'true'}">
+																				<html:select property="function.linkages[${linkageInd}].agent.agentTargets[${tIndex}].type">
+																					<c:forEach var="agentTargetType" items="${allAgentTargetTypes[linkage.agent.type]}">
+																						<html:option value="${agentTargetType}" />
+																					</c:forEach>
+																				</html:select>
+																			</c:when>
+																			<c:otherwise>
+																											${linkage.agent.type}&nbsp;
+									</c:otherwise>
+																		</c:choose>
+
+																	</td>
+																	<td class="label">
+																		<strong>Target Name</strong>
+																	</td>
+																	<td class="rightLabel">
+																		<c:choose>
+																			<c:when test="${canUserUpdateParticle eq 'true'}">
+																				<html:text property="function.linkages[${linkageInd}].agent.agentTargets[${tIndex}].name" />
+																			</c:when>
+																			<c:otherwise>
+										${linkage.agent.name}&nbsp;
+									</c:otherwise>
+																		</c:choose>
+
+																	</td>
+																</tr>
+																<tr>
+																	<td class="leftLabel">
+																		<strong>Target Description</strong>
+																	</td>
+																	<td class="rightLabel" colspan="3">
+																		<c:choose>
+																			<c:when test="${canUserUpdateParticle eq 'true'}">
+																				<html:textarea property="function.linkages[${linkageInd}].agent.agentTargets[${tIndex}].description" rows="3" />
+																			</c:when>
+																			<c:otherwise>
+										${linkage.agent.description}&nbsp;
+									</c:otherwise>
+																		</c:choose>
+
+																	</td>
+																</tr>
+														</table>
+														<br>
+													</logic:iterate>
+												</td>
+											</tr>
 										</tbody>
 									</table>
-								</c:forEach>
+									<br>
+								</logic:iterate>
 							</td>
 						</tr>
 				</table>
