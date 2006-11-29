@@ -14,28 +14,28 @@
 	</tr>
 	<tr>
 		<td class="leftLabel">
-			<strong>View Title* </strong>
-		</td>
-		<td class="label">
-			<c:choose>
-				<c:when test="${canUserUpdateParticle eq 'true'}">
-					<html:text property="function.viewTitle" />
-				</c:when>
-				<c:otherwise>
-						${thisForm.map.function.viewTitle}&nbsp;
-					</c:otherwise>
-			</c:choose>
-		</td>
-		<td class="label">
 			<strong>Activation Method*</strong>
 		</td>
-		<td class="rightLabel">
+		<td class="label">
 			<c:choose>
 				<c:when test="${canUserUpdateParticle eq 'true'}">
 					<html:text property="function.activationMethod" />
 				</c:when>
 				<c:otherwise>
 						${thisForm.map.function.activationMethod}&nbsp;
+					</c:otherwise>
+			</c:choose>
+		</td>
+		<td class="label">
+			<strong>View Title* </strong>
+		</td>
+		<td class="rightLabel">
+			<c:choose>
+				<c:when test="${canUserUpdateParticle eq 'true'}">
+					<html:text property="function.viewTitle" />
+				</c:when>
+				<c:otherwise>
+						${thisForm.map.function.viewTitle}&nbsp;
 					</c:otherwise>
 			</c:choose>
 		</td>
