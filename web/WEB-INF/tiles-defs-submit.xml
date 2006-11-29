@@ -6,18 +6,6 @@
 	<!-- main layout definition for the submit content page inside caLAB -->
 	<definition name="submit.content.home" path="/layout/submitLayout.jsp">
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
-		<putList name="therapeuticsActions">
-			<item value="Linkage" link="nanoparticleFunction.do?dispatch=setup&amp;page=0" />
-		</putList>
-		<putList name="targetingActions">
-			<item value="Linkage" link="" />
-		</putList>
-		<putList name="imagingActions">
-			<item value="Linkage" link="" />
-		</putList>
-		<putList name="reportingActions">
-			<item value="Linkage" link="" />
-		</putList>
 		<putList name="physicalActions">
 			<item value="Composition" link="nanoparticleComposition.do?dispatch=setup&amp;page=0" />
 			<item value="Size" link="nanoparticleSize.do?dispatch=setup&amp;page=0" />
