@@ -56,31 +56,103 @@
 								<span class="indented">-Therapeutics &nbsp;&nbsp;</span>
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
-										<a href="submitAction.do?submitType=therapeutics"> <em>add</em></a>
+										<a href="nanoparticleFunction.do?dispatch=setup&page=0&particleType=${particleType}&particleName=${particleName}&submitType=Therapeutics"> <em>add</em></a>
 									</c:when>
 								</c:choose>
 								<br>
+								<c:forEach var="aFunc" items="${funcTypeFuncs['Therapeutics']}">
+									<%java.util.HashMap paramMapTf = new java.util.HashMap();
+			paramMapTf.put("dispatch", pageContext
+					.getAttribute("dispatchValue"));
+			paramMapTf
+					.put("particleName", session.getAttribute("particleName"));
+			paramMapTf
+					.put("particleType", session.getAttribute("particleType"));
+			paramMapTf.put("functionId",
+					((gov.nih.nci.calab.dto.function.FunctionBean) pageContext
+							.getAttribute("aFunc")).getId());
+			paramMapTf.put("submitType", "Therapeutics");
+			pageContext.setAttribute("paramMapTf", paramMapTf);
+
+			%>
+									<span class="indented2"> <html:link forward="${aFunc.name}" name="paramMapTf">${aFunc.name}: ${aFunc.viewTitle}</html:link> </span>
+									<br>
+								</c:forEach>
 								<span class="indented">-Targeting &nbsp;&nbsp;</span>
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
-										<a href="submitAction.do?submitType=targeting"> <em>add</em></a>
+										<a href="nanoparticleFunction.do?dispatch=setup&page=0&particleType=${particleType}&particleName=${particleName}&submitType=Targeting"> <em>add</em></a>
 									</c:when>
 								</c:choose>
 								<br>
+								<c:forEach var="aFunc" items="${funcTypeFuncs['Targeting']}">
+									<%java.util.HashMap paramMapTt = new java.util.HashMap();
+			paramMapTt.put("dispatch", pageContext
+					.getAttribute("dispatchValue"));
+			paramMapTt
+					.put("particleName", session.getAttribute("particleName"));
+			paramMapTt
+					.put("particleType", session.getAttribute("particleType"));
+			paramMapTt.put("functionId",
+					((gov.nih.nci.calab.dto.function.FunctionBean) pageContext
+							.getAttribute("aFunc")).getId());
+			paramMapTt.put("submitType", "Targeting");
+			pageContext.setAttribute("paramMapTt", paramMapTt);
+
+			%>
+									<span class="indented2"> <html:link forward="${aFunc.name}" name="paramMapTt">${aFunc.name}: ${aFunc.viewTitle}</html:link> </span>
+									<br>
+								</c:forEach>
 								<span class="indented">-Diagnostic Imaging &nbsp;&nbsp;</span>
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
-										<a href="submitAction.do?submitType=imaging"><em>add</em></a>
+										<a href="nanoparticleFunction.do?dispatch=setup&page=0&particleType=${particleType}&particleName=${particleName}&submitType=Imaging"> <em>add</em></a>
 									</c:when>
 								</c:choose>
 								<br>
+								<c:forEach var="aFunc" items="${funcTypeFuncs['Imaging']}">
+									<%java.util.HashMap paramMapTi = new java.util.HashMap();
+			paramMapTi.put("dispatch", pageContext
+					.getAttribute("dispatchValue"));
+			paramMapTi
+					.put("particleName", session.getAttribute("particleName"));
+			paramMapTi
+					.put("particleType", session.getAttribute("particleType"));
+			paramMapTi.put("functionId",
+					((gov.nih.nci.calab.dto.function.FunctionBean) pageContext
+							.getAttribute("aFunc")).getId());
+			paramMapTi.put("submitType", "Imaging");
+			pageContext.setAttribute("paramMapTi", paramMapTi);
+
+			%>
+									<span class="indented2"> <html:link forward="${aFunc.name}" name="paramMapTi">${aFunc.name}: ${aFunc.viewTitle}</html:link> </span>
+									<br>
+								</c:forEach>
 								<span class="indented">-Diagnostic Reporting &nbsp;&nbsp;</span>
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
-										<a href="submitAction.do?submitType=reporting"> <em>add</em></a>
+										<a href="nanoparticleFunction.do?dispatch=setup&page=0&particleType=${particleType}&particleName=${particleName}&submitType=Reporting"> <em>add</em></a>
 									</c:when>
 								</c:choose>
 								<br>
+								<c:forEach var="aFunc" items="${funcTypeFuncs['Reporting']}">
+									<%java.util.HashMap paramMapTr = new java.util.HashMap();
+			paramMapTr.put("dispatch", pageContext
+					.getAttribute("dispatchValue"));
+			paramMapTr
+					.put("particleName", session.getAttribute("particleName"));
+			paramMapTr
+					.put("particleType", session.getAttribute("particleType"));
+			paramMapTr.put("functionId",
+					((gov.nih.nci.calab.dto.function.FunctionBean) pageContext
+							.getAttribute("aFunc")).getId());
+			paramMapTr.put("submitType", "Reporting");
+			pageContext.setAttribute("paramMapTr", paramMapTr);
+
+			%>
+									<span class="indented2"> <html:link forward="${aFunc.name}" name="paramMapTr">${aFunc.name}: ${aFunc.viewTitle}</html:link> </span>
+									<br>
+								</c:forEach>
 								<br>
 							</li>
 							<li>
@@ -95,15 +167,19 @@
 								</c:choose>
 								<br>
 								<c:forEach var="aChar" items="${charTypeChars['physical']}">
-									<%
-									java.util.HashMap paramMap = new java.util.HashMap();
-									paramMap.put("dispatch", pageContext.getAttribute("dispatchValue"));
-									paramMap.put("particleName", session.getAttribute("particleName"));
-									paramMap.put("particleType", session.getAttribute("particleType"));
-									paramMap.put("characterizationId",((gov.nih.nci.calab.dto.characterization.CharacterizationBean) pageContext.getAttribute("aChar")).getId());
-									paramMap.put("submitType", "physical");
-									pageContext.setAttribute("paramMap", paramMap);
-									%>
+									<%java.util.HashMap paramMap = new java.util.HashMap();
+			paramMap.put("dispatch", pageContext.getAttribute("dispatchValue"));
+			paramMap.put("particleName", session.getAttribute("particleName"));
+			paramMap.put("particleType", session.getAttribute("particleType"));
+			paramMap
+					.put(
+							"characterizationId",
+							((gov.nih.nci.calab.dto.characterization.CharacterizationBean) pageContext
+									.getAttribute("aChar")).getId());
+			paramMap.put("submitType", "physical");
+			pageContext.setAttribute("paramMap", paramMap);
+
+			%>
 									<span class="indented2"> <html:link forward="${aChar.name}" name="paramMap">${aChar.name}: ${aChar.viewTitle}</html:link> </span>
 									<br>
 								</c:forEach>
@@ -117,15 +193,22 @@
 									</c:when>
 								</c:choose>
 								<c:forEach var="aChar" items="${charTypeChars['tox']}">
-									<%
-									java.util.HashMap toxicityParamMap = new java.util.HashMap();
-									toxicityParamMap.put("dispatch", pageContext.getAttribute("dispatchValue"));
-									toxicityParamMap.put("particleName", session.getAttribute("particleName"));
-									toxicityParamMap.put("particleType", session.getAttribute("particleType"));
-									toxicityParamMap.put("characterizationId",((gov.nih.nci.calab.dto.characterization.CharacterizationBean) pageContext.getAttribute("aChar")).getId());
-									toxicityParamMap.put("submitType", "tox");
-									pageContext.setAttribute("toxicityParamMap", toxicityParamMap);
-									%>
+									<%java.util.HashMap toxicityParamMap = new java.util.HashMap();
+			toxicityParamMap.put("dispatch", pageContext
+					.getAttribute("dispatchValue"));
+			toxicityParamMap.put("particleName", session
+					.getAttribute("particleName"));
+			toxicityParamMap.put("particleType", session
+					.getAttribute("particleType"));
+			toxicityParamMap
+					.put(
+							"characterizationId",
+							((gov.nih.nci.calab.dto.characterization.CharacterizationBean) pageContext
+									.getAttribute("aChar")).getId());
+			toxicityParamMap.put("submitType", "tox");
+			pageContext.setAttribute("toxicityParamMap", toxicityParamMap);
+
+			%>
 									<span class="indented2"> <html:link forward="${aChar.name}" name="toxicityParamMap">${aChar.name}: ${aChar.viewTitle}</html:link> </span>
 									<br>
 								</c:forEach>
@@ -137,15 +220,23 @@
 									</c:when>
 								</c:choose>
 								<c:forEach var="aChar" items="${charTypeChars['cytoTox']}">
-									<%
-									java.util.HashMap cytotoxicityParamMap = new java.util.HashMap();
-									cytotoxicityParamMap.put("dispatch", pageContext.getAttribute("dispatchValue"));
-									cytotoxicityParamMap.put("particleName", session.getAttribute("particleName"));
-									cytotoxicityParamMap.put("particleType", session.getAttribute("particleType"));
-									cytotoxicityParamMap.put("characterizationId",((gov.nih.nci.calab.dto.characterization.CharacterizationBean) pageContext.getAttribute("aChar")).getId());
-									pageContext.setAttribute("cytotoxicityParamMap", cytotoxicityParamMap);
-									cytotoxicityParamMap.put("submitType", "cytoTox");
-									%>
+									<%java.util.HashMap cytotoxicityParamMap = new java.util.HashMap();
+			cytotoxicityParamMap.put("dispatch", pageContext
+					.getAttribute("dispatchValue"));
+			cytotoxicityParamMap.put("particleName", session
+					.getAttribute("particleName"));
+			cytotoxicityParamMap.put("particleType", session
+					.getAttribute("particleType"));
+			cytotoxicityParamMap
+					.put(
+							"characterizationId",
+							((gov.nih.nci.calab.dto.characterization.CharacterizationBean) pageContext
+									.getAttribute("aChar")).getId());
+			pageContext.setAttribute("cytotoxicityParamMap",
+					cytotoxicityParamMap);
+			cytotoxicityParamMap.put("submitType", "cytoTox");
+
+			%>
 									<span class="indented2"> <html:link forward="${aChar.name}" name="cytotoxicityParamMap">${aChar.name}: ${aChar.viewTitle}</html:link> </span>
 									<br>
 								</c:forEach>
@@ -159,15 +250,23 @@
 									</c:when>
 								</c:choose>
 								<c:forEach var="aChar" items="${charTypeChars['bloodContactTox']}">
-									<%
-									java.util.HashMap bloodContactParamMap = new java.util.HashMap();
-									bloodContactParamMap.put("dispatch", pageContext.getAttribute("dispatchValue"));
-									bloodContactParamMap.put("particleName", session.getAttribute("particleName"));
-									bloodContactParamMap.put("particleType", session.getAttribute("particleType"));
-									bloodContactParamMap.put("characterizationId",((gov.nih.nci.calab.dto.characterization.CharacterizationBean) pageContext.getAttribute("aChar")).getId());
-									pageContext.setAttribute("bloodContactParamMap", bloodContactParamMap);
-									bloodContactParamMap.put("submitType", "bloodContactTox");
-									%>
+									<%java.util.HashMap bloodContactParamMap = new java.util.HashMap();
+			bloodContactParamMap.put("dispatch", pageContext
+					.getAttribute("dispatchValue"));
+			bloodContactParamMap.put("particleName", session
+					.getAttribute("particleName"));
+			bloodContactParamMap.put("particleType", session
+					.getAttribute("particleType"));
+			bloodContactParamMap
+					.put(
+							"characterizationId",
+							((gov.nih.nci.calab.dto.characterization.CharacterizationBean) pageContext
+									.getAttribute("aChar")).getId());
+			pageContext.setAttribute("bloodContactParamMap",
+					bloodContactParamMap);
+			bloodContactParamMap.put("submitType", "bloodContactTox");
+
+			%>
 									<span class="indented2"> <html:link forward="${aChar.name}" name="bloodContactParamMap">${aChar.name}: ${aChar.viewTitle}</html:link> </span>
 									<br>
 								</c:forEach>
@@ -179,15 +278,22 @@
 									</c:when>
 								</c:choose>
 								<c:forEach var="aChar" items="${charTypeChars['immuneCellFuncTox']}">
-									<%
-									java.util.HashMap immuneCellParamMap = new java.util.HashMap();
-									immuneCellParamMap.put("dispatch", pageContext.getAttribute("dispatchValue"));
-									immuneCellParamMap.put("particleName", session.getAttribute("particleName"));
-									immuneCellParamMap.put("particleType", session.getAttribute("particleType"));
-									immuneCellParamMap.put("characterizationId",((gov.nih.nci.calab.dto.characterization.CharacterizationBean) pageContext.getAttribute("aChar")).getId());
-									pageContext.setAttribute("immuneCellParamMap", immuneCellParamMap);
-									immuneCellParamMap.put("submitType", "immuneCellFuncTox");
-									%>
+									<%java.util.HashMap immuneCellParamMap = new java.util.HashMap();
+			immuneCellParamMap.put("dispatch", pageContext
+					.getAttribute("dispatchValue"));
+			immuneCellParamMap.put("particleName", session
+					.getAttribute("particleName"));
+			immuneCellParamMap.put("particleType", session
+					.getAttribute("particleType"));
+			immuneCellParamMap
+					.put(
+							"characterizationId",
+							((gov.nih.nci.calab.dto.characterization.CharacterizationBean) pageContext
+									.getAttribute("aChar")).getId());
+			pageContext.setAttribute("immuneCellParamMap", immuneCellParamMap);
+			immuneCellParamMap.put("submitType", "immuneCellFuncTox");
+
+		%>
 									<span class="indented2"> <html:link forward="${aChar.name}" name="immuneCellParamMap">${aChar.name}: ${aChar.viewTitle}</html:link> </span>
 									<br>
 								</c:forEach>
