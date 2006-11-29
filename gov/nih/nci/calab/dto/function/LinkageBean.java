@@ -11,7 +11,7 @@ public class LinkageBean {
 	
 	private String id;
 	private String description;
-	private String type;
+	private String type="Attachment";
 	private String value;
 	
 	private AgentBean agent = new AgentBean();
