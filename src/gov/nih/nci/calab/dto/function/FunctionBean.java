@@ -13,7 +13,7 @@ import java.util.List;
 public class FunctionBean {
 
 	private String id;
-//	private String type;
+	private String type;
 	private String activationMethod;
 	private String description;
 	private String viewTitle;
@@ -29,6 +29,12 @@ public class FunctionBean {
 		// TODO Auto-generated constructor stub
 	}
 
+	public FunctionBean(String id, String type, String viewTitle) {
+		this.id=id;		
+		this.type=type;
+		this.viewTitle=viewTitle;
+	}
+	
 	public String getActivationMethod() {
 		return activationMethod;
 	}
@@ -70,6 +76,10 @@ public class FunctionBean {
 	}
 
 	public String getViewTitle() {
+			// get only the first number of characters of the title
+		if (viewTitle!=null &&viewTitle.length() > CalabConstants.MAX_VIEW_TITLE_LENGTH) {
+			return viewTitle.substring(0, CalabConstants.MAX_VIEW_TITLE_LENGTH);
+		}
 		return viewTitle;
 	}
 
@@ -77,12 +87,12 @@ public class FunctionBean {
 		this.viewTitle = viewTitle;
 	}
 
-//	public String getType() {
-//		return type;
-//	}
-//
-//	public void setType(String type) {
-//		this.type = type;
-//	}
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 
 }
