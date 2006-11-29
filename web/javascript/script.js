@@ -177,10 +177,16 @@ function loadFile(form, actionName, particleName, fileNumber) {
     form.submit();
 }
 
-function updateFunctionLinkage() {
-    document.nanoparticleFunctionForm.action = "nanoparticleFunction.do?dispatch=update&page=0";
+function updateFunctionLinkages() {
+    document.nanoparticleFunctionForm.action = "nanoparticleFunction.do?dispatch=update&page=0&type=linkages";
     document.nanoparticleFunctionForm.submit();
 }
+
+function updateAgentTargets(linkageIndex) {
+    document.nanoparticleFunctionForm.action = "nanoparticleFunction.do?dispatch=update&page=0&type=agentTargets&linkageIndex="+linkageIndex;
+    document.nanoparticleFunctionForm.submit();
+}
+
 
 function refreshManufacturers(form, action) {
     form.dispatch.value = action;
