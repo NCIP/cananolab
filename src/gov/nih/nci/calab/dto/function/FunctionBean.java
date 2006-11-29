@@ -3,8 +3,6 @@
  */
 package gov.nih.nci.calab.dto.function;
 
-import gov.nih.nci.calab.dto.characterization.composition.SurfaceGroupBean;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +19,7 @@ public class FunctionBean {
 	private String viewTitle;
 	
 	private List<LinkageBean> linkages = new ArrayList<LinkageBean>();;
-	private int numberOfLinkage;
+	private int numberOfLinkages;
 	
 	/**
 	 * 
@@ -63,12 +61,12 @@ public class FunctionBean {
 		this.linkages = linkages;
 	}
 
-	public int getNumberOfLinkage() {
-		return numberOfLinkage;
+	public int getNumberOfLinkages() {
+		return numberOfLinkages;
 	}
 
-	public void setNumberOfLinkage(int numberOfLinkage) {
-		this.numberOfLinkage = numberOfLinkage;
+	public void setNumberOfLinkages(int numberOfLinkages) {
+		this.numberOfLinkages = numberOfLinkages;
 	}
 
 	public String getViewTitle() {
