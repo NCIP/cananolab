@@ -78,4 +78,6 @@ public class CalabConstants {
 	public static final String IMMUNE_CELL_FUNCTION_IMMUNOTOXICITY_CHARACTERIZATION = "Immune Cell Function";
 
 	public static final String METABOLIC_STABILITY_TOXICITY_CHARACTERIZATION = "Metabolic Stability";
+	
+	public static final int MAX_VIEW_TITLE_LENGTH=30;
 }
