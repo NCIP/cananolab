@@ -53,7 +53,7 @@
 								<span class="largerText">Function</span>
 								<br>
 								<br>
-								<span class="indented">-Therapeutics &nbsp;&nbsp;</span>
+								<span class="indented"><strong>-Therapeutics</strong> &nbsp;&nbsp;</span>
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
 										<a href="nanoparticleFunction.do?dispatch=setup&page=0&particleType=${particleType}&particleName=${particleName}&submitType=Therapeutics"> <em>add</em></a>
@@ -78,7 +78,7 @@
 									<span class="indented2"> <html:link forward="function" name="paramMapTf">${aFunc.name}: ${aFunc.viewTitle}</html:link> </span>
 									<br>
 								</c:forEach>
-								<span class="indented">-Targeting &nbsp;&nbsp;</span>
+								<span class="indented"><strong>-Targeting</strong> &nbsp;&nbsp;</span>
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
 										<a href="nanoparticleFunction.do?dispatch=setup&page=0&particleType=${particleType}&particleName=${particleName}&submitType=Targeting"> <em>add</em></a>
@@ -103,7 +103,7 @@
 									<span class="indented2"> <html:link forward="function" name="paramMapTt">${aFunc.name}: ${aFunc.viewTitle}</html:link> </span>
 									<br>
 								</c:forEach>
-								<span class="indented">-Diagnostic Imaging &nbsp;&nbsp;</span>
+								<span class="indented"><strong>-Diagnostic Imaging</strong>&nbsp;&nbsp;</span>
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
 										<a href="nanoparticleFunction.do?dispatch=setup&page=0&particleType=${particleType}&particleName=${particleName}&submitType=Imaging"> <em>add</em></a>
@@ -128,7 +128,7 @@
 									<span class="indented2"> <html:link forward="function" name="paramMapTi">${aFunc.name}: ${aFunc.viewTitle}</html:link> </span>
 									<br>
 								</c:forEach>
-								<span class="indented">-Diagnostic Reporting &nbsp;&nbsp;</span>
+								<span class="indented"><strong>-Diagnostic Reporting</strong> &nbsp;&nbsp;</span>
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
 										<a href="nanoparticleFunction.do?dispatch=setup&page=0&particleType=${particleType}&particleName=${particleName}&submitType=Reporting"> <em>add</em></a>
@@ -150,7 +150,7 @@
 			pageContext.setAttribute("paramMapTr", paramMapTr);
 
 			%>
-									<span class="indented2"> <html:link forward="function" name="paramMapTr">${aFunc.name}: ${aFunc.viewTitle}</html:link> </span>
+									<span class="indented2"> <html:link forward="function" name="paramMapTr" >${aFunc.name}: ${aFunc.viewTitle}</html:link> </span>
 									<br>
 								</c:forEach>
 								<br>
@@ -159,7 +159,7 @@
 								<span class="largerText">Characterization</span>
 								<br>
 								<br>
-								<span class="indented">-Physical Characterization &nbsp;&nbsp;</span>
+								<span class="indented"><strong>-Physical Characterization</strong> &nbsp;&nbsp;</span>
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
 										<a href="submitAction.do?submitType=physical"> <em>add</em></a>
@@ -180,13 +180,13 @@
 			pageContext.setAttribute("paramMap", paramMap);
 
 			%>
-									<span class="indented2"> <html:link forward="${aChar.name}" name="paramMap">${aChar.name}: ${aChar.viewTitle}</html:link> </span>
+									<span class="indented2"> <html:link forward="${aChar.name}" name="paramMap" title="${aChar.name}">${aChar.viewTitle}</html:link> </span>
 									<br>
 								</c:forEach>
 								<br>
-								<span class="indented">-In Vitro Characterization</span>
+								<span class="indented"><strong>-In Vitro Characterization</strong></span>
 								<br>
-								<span class="indented2">-Toxicity &nbsp;&nbsp;</span>
+								<span class="indented2"><strong>-Toxicity</strong> &nbsp;&nbsp;</span>
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
 										<a href="submitAction.do?submitType=tox"> <em>add</em></a>
@@ -209,16 +209,17 @@
 			pageContext.setAttribute("toxicityParamMap", toxicityParamMap);
 
 			%>
-									<span class="indented2"> <html:link forward="${aChar.name}" name="toxicityParamMap">${aChar.name}: ${aChar.viewTitle}</html:link> </span>
+									<span class="indented2"> <html:link forward="${aChar.name}" name="toxicityParamMap" title="${aChar.name}">${aChar.viewTitle}</html:link> </span>
 									<br>
 								</c:forEach>
 								<br>
-								<span class="indented3">-Cytotoxicity &nbsp;&nbsp;</span>
+								<span class="indented3"><strong>-Cytotoxicity</strong> &nbsp;&nbsp;</span>
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
 										<a href="submitAction.do?submitType=cytoTox"> <em>add</em></a>
 									</c:when>
 								</c:choose>
+								<br>
 								<c:forEach var="aChar" items="${charTypeChars['cytoTox']}">
 									<%java.util.HashMap cytotoxicityParamMap = new java.util.HashMap();
 			cytotoxicityParamMap.put("dispatch", pageContext
@@ -237,18 +238,18 @@
 			cytotoxicityParamMap.put("submitType", "cytoTox");
 
 			%>
-									<span class="indented2"> <html:link forward="${aChar.name}" name="cytotoxicityParamMap">${aChar.name}: ${aChar.viewTitle}</html:link> </span>
+									<span class="indented4"> <html:link forward="${aChar.name}" name="cytotoxicityParamMap" title="${aChar.name}">${aChar.viewTitle}</html:link> </span>
 									<br>
-								</c:forEach>
+								</c:forEach>								
+								<span class="indented3"><strong>-Immunotoxicity</strong></span>
 								<br>
-								<span class="indented3">-Immunotoxicity</span>
-								<br>
-								<span class="indented4">-Blood Contact &nbsp;&nbsp;</span>
+								<span class="indented4"><strong>-Blood Contact</strong> &nbsp;&nbsp;</span>
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
 										<a href="submitAction.do?submitType=bloodContactTox"> <em>add</em></a>
 									</c:when>
 								</c:choose>
+								<br>
 								<c:forEach var="aChar" items="${charTypeChars['bloodContactTox']}">
 									<%java.util.HashMap bloodContactParamMap = new java.util.HashMap();
 			bloodContactParamMap.put("dispatch", pageContext
@@ -267,11 +268,11 @@
 			bloodContactParamMap.put("submitType", "bloodContactTox");
 
 			%>
-									<span class="indented2"> <html:link forward="${aChar.name}" name="bloodContactParamMap">${aChar.name}: ${aChar.viewTitle}</html:link> </span>
+									<span class="indented5"><html:link forward="${aChar.name}" name="bloodContactParamMap" title="${aChar.name}">${aChar.viewTitle}</html:link></span>
 									<br>
 								</c:forEach>
 								<br>
-								<span class="indented4">-Immune Cell Function &nbsp;&nbsp;</span>
+								<span class="indented4"><strong>-Immune Cell Function </strong>&nbsp;&nbsp;</span>
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
 										<a href="submitAction.do?submitType=immuneCellFuncTox"> <em>add</em></a>
@@ -294,7 +295,7 @@
 			immuneCellParamMap.put("submitType", "immuneCellFuncTox");
 
 		%>
-									<span class="indented2"> <html:link forward="${aChar.name}" name="immuneCellParamMap">${aChar.name}: ${aChar.viewTitle}</html:link> </span>
+									<span class="indented5"> <html:link forward="${aChar.name}" name="immuneCellParamMap" title="${aChar.name}">${aChar.viewTitle}</html:link> </span>
 									<br>
 								</c:forEach>
 								<br>
