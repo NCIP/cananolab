@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.63 2006-11-16 16:41:01 beasleyj Exp $ */
+/* CVS $Id: LookupService.java,v 1.64 2006-11-29 20:07:25 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -137,7 +137,7 @@ public class LookupService {
 		// Detail here
 		// Retrieve data from Sample_Type table
 		List<String> sampleTypes = new ArrayList<String>();
-//		sampleTypes.add(CalabConstants.OTHER);
+		// sampleTypes.add(CalabConstants.OTHER);
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
@@ -596,8 +596,8 @@ public class LookupService {
 		String[] names = new String[] { "Amine", "Carboxyl", "Hydroxyl" };
 		return names;
 	}
-	
-	public String[] getAllDendrimerBranches() throws Exception{
+
+	public String[] getAllDendrimerBranches() throws Exception {
 		SortedSet<String> branches = new TreeSet<String>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
@@ -610,17 +610,18 @@ public class LookupService {
 			}
 		} catch (Exception e) {
 			logger.error("Problem to retrieve all Dendrimer Branches.");
-			throw new RuntimeException("Problem to retrieve all Dendrimer Branches. ");
+			throw new RuntimeException(
+					"Problem to retrieve all Dendrimer Branches. ");
 		} finally {
 			ida.close();
 		}
 		branches.addAll(Arrays
 				.asList(CananoConstants.DEFAULT_DENDRIMER_BRANCHES));
 
-		return (String[])branches.toArray(new String[0]);
+		return (String[]) branches.toArray(new String[0]);
 	}
-	
-	public String[] getAllDendrimerGenerations() throws Exception{
+
+	public String[] getAllDendrimerGenerations() throws Exception {
 		SortedSet<String> generations = new TreeSet<String>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
@@ -633,14 +634,15 @@ public class LookupService {
 			}
 		} catch (Exception e) {
 			logger.error("Problem to retrieve all Dendrimer Generations.");
-			throw new RuntimeException("Problem to retrieve all Dendrimer Generations. ");
+			throw new RuntimeException(
+					"Problem to retrieve all Dendrimer Generations. ");
 		} finally {
 			ida.close();
 		}
 		generations.addAll(Arrays
 				.asList(CananoConstants.DEFAULT_DENDRIMER_GENERATIONS));
 
-		return (String[])generations.toArray(new String[0]);
+		return (String[]) generations.toArray(new String[0]);
 	}
 
 	public String[] getAllMetalCompositions() {
@@ -648,7 +650,7 @@ public class LookupService {
 		return compositions;
 	}
 
-	public String[] getAllPolymerInitiators() throws Exception{
+	public String[] getAllPolymerInitiators() throws Exception {
 		SortedSet<String> initiators = new TreeSet<String>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
@@ -661,14 +663,15 @@ public class LookupService {
 			}
 		} catch (Exception e) {
 			logger.error("Problem to retrieve all Polymer Initiator.");
-			throw new RuntimeException("Problem to retrieve all Polymer Initiator. ");
+			throw new RuntimeException(
+					"Problem to retrieve all Polymer Initiator. ");
 		} finally {
 			ida.close();
 		}
 		initiators.addAll(Arrays
 				.asList(CananoConstants.DEFAULT_POLYMER_INITIATORS));
 
-		return (String[])initiators.toArray(new String[0]);
+		return (String[]) initiators.toArray(new String[0]);
 	}
 
 	public List<String> getAllParticleSources() throws Exception {
@@ -691,54 +694,61 @@ public class LookupService {
 	 */
 	public Map<String, String[]> getCharacterizationTypeCharacterizations() {
 		Map<String, String[]> charTypeChars = new HashMap<String, String[]>();
-		String[] physicalChars = new String[] { CananoConstants.PHYSICAL_COMPOSITION, 
-												CananoConstants.PHYSICAL_SIZE,
-												CananoConstants.PHYSICAL_MOLECULAR_WEIGHT,
-												CananoConstants.PHYSICAL_MORPHOLOGY,
-												CananoConstants.PHYSICAL_SOLUBILITY,
-												CananoConstants.PHYSICAL_SURFACE,
-												CananoConstants.PHYSICAL_PURITY,
-												CananoConstants.PHYSICAL_STABILITY,
-												CananoConstants.PHYSICAL_FUNCTIONAL,
-												CananoConstants.PHYSICAL_SHAPE};
+		String[] physicalChars = new String[] {
+				CananoConstants.PHYSICAL_COMPOSITION,
+				CananoConstants.PHYSICAL_SIZE,
+				CananoConstants.PHYSICAL_MOLECULAR_WEIGHT,
+				CananoConstants.PHYSICAL_MORPHOLOGY,
+				CananoConstants.PHYSICAL_SOLUBILITY,
+				CananoConstants.PHYSICAL_SURFACE,
+				CananoConstants.PHYSICAL_PURITY,
+				CananoConstants.PHYSICAL_STABILITY,
+				CananoConstants.PHYSICAL_FUNCTIONAL,
+				CananoConstants.PHYSICAL_SHAPE };
 		charTypeChars.put("physical", physicalChars);
-		String[] toxChars = new String[] { CananoConstants.TOXICITY_OXIDATIVE_STRESS,
-										   CananoConstants.TOXICITY_ENZYME_FUNCTION};
+		String[] toxChars = new String[] {
+				CananoConstants.TOXICITY_OXIDATIVE_STRESS,
+				CananoConstants.TOXICITY_ENZYME_FUNCTION };
 		charTypeChars.put("toxicity", toxChars);
-		
-		String[] cytoToxChars = new String[] { CananoConstants.CYTOTOXICITY_CELL_VIABILITY,
-											   CananoConstants.CYTOTOXICITY_CASPASE3_ACTIVIATION};
+
+		String[] cytoToxChars = new String[] {
+				CananoConstants.CYTOTOXICITY_CELL_VIABILITY,
+				CananoConstants.CYTOTOXICITY_CASPASE3_ACTIVIATION };
 		charTypeChars.put("cytoTox", cytoToxChars);
-		
-		String[] bloodContactChars = new String[] { CananoConstants.BLOODCONTACTTOX_PLATE_AGGREGATION,
-													CananoConstants.BLOODCONTACTTOX_HEMOLYSIS,
-													CananoConstants.BLOODCONTACTTOX_PLASMA_PROTEIN_BINDING,
-													CananoConstants.BLOODCONTACTTOX_COAGULATION };
+
+		String[] bloodContactChars = new String[] {
+				CananoConstants.BLOODCONTACTTOX_PLATE_AGGREGATION,
+				CananoConstants.BLOODCONTACTTOX_HEMOLYSIS,
+				CananoConstants.BLOODCONTACTTOX_PLASMA_PROTEIN_BINDING,
+				CananoConstants.BLOODCONTACTTOX_COAGULATION };
 		charTypeChars.put("bloodContactTox", bloodContactChars);
-		
-		String[] immuneCellFuncChars = new String[] { CananoConstants.IMMUNOCELLFUNCTOX_OXIDATIVE_BURST,
-													  CananoConstants.IMMUNOCELLFUNCTOX_CHEMOTAXIS,
-													  CananoConstants.IMMUNOCELLFUNCTOX_LEUKOCYTE_PROLIFERATION,
-													  CananoConstants.IMMUNOCELLFUNCTOX_PHAGOCYTOSIS,
-													  CananoConstants.IMMUNOCELLFUNCTOX_CYTOKINE_INDUCTION,
-													  CananoConstants.IMMUNOCELLFUNCTOX_CFU_GM,
-													  CananoConstants.IMMUNOCELLFUNCTOX_COMPLEMENT_ACTIVATION,
-													  CananoConstants.IMMUNOCELLFUNCTOX_NKCELL_CYTOTOXIC_ACTIVITY};
-		
+
+		String[] immuneCellFuncChars = new String[] {
+				CananoConstants.IMMUNOCELLFUNCTOX_OXIDATIVE_BURST,
+				CananoConstants.IMMUNOCELLFUNCTOX_CHEMOTAXIS,
+				CananoConstants.IMMUNOCELLFUNCTOX_LEUKOCYTE_PROLIFERATION,
+				CananoConstants.IMMUNOCELLFUNCTOX_PHAGOCYTOSIS,
+				CananoConstants.IMMUNOCELLFUNCTOX_CYTOKINE_INDUCTION,
+				CananoConstants.IMMUNOCELLFUNCTOX_CFU_GM,
+				CananoConstants.IMMUNOCELLFUNCTOX_COMPLEMENT_ACTIVATION,
+				CananoConstants.IMMUNOCELLFUNCTOX_NKCELL_CYTOTOXIC_ACTIVITY };
+
 		charTypeChars.put("immuneCellFuncTox", immuneCellFuncChars);
-		
-		String[] metabolicChars = new String[] { CananoConstants.METABOLIC_STABILITY_CYP450,
-												 CananoConstants.METABOLIC_STABILITY_GLUCURONIDATION_SULPHATION,
-												 CananoConstants.METABOLIC_STABILITY_ROS};
+
+		String[] metabolicChars = new String[] {
+				CananoConstants.METABOLIC_STABILITY_CYP450,
+				CananoConstants.METABOLIC_STABILITY_GLUCURONIDATION_SULPHATION,
+				CananoConstants.METABOLIC_STABILITY_ROS };
 		charTypeChars.put("metabolicStabilityTox", metabolicChars);
 		return charTypeChars;
 	}
-	
+
 	public String[] getAllInstrumentTypes() throws Exception {
-		//TODO query from database or properties file
-		//String[] instrumentTypes=new String[] {"Dynamic Light Scattering (DLS)", "Spectroscopy", "Other"};
+		// TODO query from database or properties file
+		// String[] instrumentTypes=new String[] {"Dynamic Light Scattering
+		// (DLS)", "Spectroscopy", "Other"};
 		SortedSet<String> instrumentTypes = new TreeSet<String>();
-		
+
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
@@ -751,28 +761,32 @@ public class LookupService {
 			}
 		} catch (Exception e) {
 			logger.error("Problem to retrieve all instrumentTypes. " + e);
-			throw new RuntimeException("Problem to retrieve all intrument types. ");
+			throw new RuntimeException(
+					"Problem to retrieve all intrument types. ");
 		} finally {
 			ida.close();
 		}
-		
+
 		return (String[]) instrumentTypes.toArray(new String[0]);
 	}
 
-	public String[] getManufacturers(String instrumentType) throws Exception{
+	public String[] getManufacturers(String instrumentType) throws Exception {
 		SortedSet<String> manufacturers = new TreeSet<String>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
 			/*
-			String hqlString = "select distinct instrument.manufacturer from Instrument instrument";
-			if (!instrumentType.equals(CananoConstants.OTHER))
-				hqlString += " where instrument.type = '" + instrumentType + "'";
-			*/
+			 * String hqlString = "select distinct instrument.manufacturer from
+			 * Instrument instrument"; if
+			 * (!instrumentType.equals(CananoConstants.OTHER)) hqlString += "
+			 * where instrument.type = '" + instrumentType + "'";
+			 */
 			String hqlString = "select distinct manufacturer.name from InstrumentType instrumentType join instrumentType.manufacturerCollection manufacturer ";
-			if ((instrumentType != null) && (!instrumentType.equals(CananoConstants.OTHER)))
-				hqlString += " where instrumentType.name = '" + instrumentType + "'";
+			if ((instrumentType != null)
+					&& (!instrumentType.equals(CananoConstants.OTHER)))
+				hqlString += " where instrumentType.name = '" + instrumentType
+						+ "'";
 
 			List results = ida.search(hqlString);
 			for (Object obj : results) {
@@ -780,120 +794,155 @@ public class LookupService {
 					manufacturers.add((String) obj);
 			}
 		} catch (Exception e) {
-			logger.error("Problem to retrieve manufacturers for intrument type " + instrumentType + ". " + e);
-			throw new RuntimeException("Problem to retrieve manufacturers for intrument type " + instrumentType + ".");
+			logger
+					.error("Problem to retrieve manufacturers for intrument type "
+							+ instrumentType + ". " + e);
+			throw new RuntimeException(
+					"Problem to retrieve manufacturers for intrument type "
+							+ instrumentType + ".");
 		} finally {
 			ida.close();
 		}
-		//manufacturers.add(CananoConstants.OTHER);
-		
-		return (String[])manufacturers.toArray(new String[0]);
+		// manufacturers.add(CananoConstants.OTHER);
+
+		return (String[]) manufacturers.toArray(new String[0]);
 	}
 
 	public String[] getSizeDistributionGraphTypes() {
-		//TODO query from database or properties file
-		String[] graphTypes=new String[] {"Volume", "Intensity", "Number"};
+		// TODO query from database or properties file
+		String[] graphTypes = new String[] { "Volume", "Intensity", "Number" };
 		return graphTypes;
 	}
 
 	public String[] getMolecularWeightDistributionGraphTypes() {
-		//TODO query from database or properties file
-		String[] graphTypes=new String[] {"Volume", "Mass", "Number"};
+		// TODO query from database or properties file
+		String[] graphTypes = new String[] { "Volume", "Mass", "Number" };
 		return graphTypes;
 	}
 
 	public String[] getMorphologyDistributionGraphTypes() {
-		//TODO query from database or properties file
-		String[] graphTypes=new String[] {"Image", "Graph"};
+		// TODO query from database or properties file
+		String[] graphTypes = new String[] { "Image", "Graph" };
 		return graphTypes;
 	}
-	
+
 	public String[] getShapeDistributionGraphTypes() {
-		//TODO query from database or properties file
-		String[] graphTypes=new String[] {"Image", "Graph"};
+		// TODO query from database or properties file
+		String[] graphTypes = new String[] { "Image", "Graph" };
 		return graphTypes;
 	}
 
 	public String[] getStabilityDistributionGraphTypes() {
-		//TODO query from database or properties file
-		String[] graphTypes=new String[] {"Image", "Graph"};
+		// TODO query from database or properties file
+		String[] graphTypes = new String[] { "Image", "Graph" };
 		return graphTypes;
 	}
 
 	public String[] getPurityDistributionGraphTypes() {
-		//TODO query from database or properties file
-		String[] graphTypes=new String[] {"Image", "Graph"};
+		// TODO query from database or properties file
+		String[] graphTypes = new String[] { "Image", "Graph" };
 		return graphTypes;
 	}
 
 	public String[] getSolubilityDistributionGraphTypes() {
-		//TODO query from database or properties file
-		String[] graphTypes=new String[] {"Image", "Graph"};
+		// TODO query from database or properties file
+		String[] graphTypes = new String[] { "Image", "Graph" };
 		return graphTypes;
 	}
-	
+
 	public String[] getAllMorphologyTypes() {
-		String[] morphologyTypes=new String[] {"Power", "Liquid", "Solid", "Crystalline", "Copolymer", "Fibril", "Colloid", "Oil"};
+		String[] morphologyTypes = new String[] { "Power", "Liquid", "Solid",
+				"Crystalline", "Copolymer", "Fibril", "Colloid", "Oil" };
 		return morphologyTypes;
 	}
-	
+
 	public String[] getAllShapeTypes() {
-		String[] shapeTypes=new String[] {"Hexagonal", "Irregular", "Needle", "Oblate", "Rod", "Spherical", "Tetrahedral", 
-										  "Tetrapod", "Triangular", "Elliptical", "Composite", "Cylindrical", "Vesicular", "Elliposid"};
+		String[] shapeTypes = new String[] { "Hexagonal", "Irregular",
+				"Needle", "Oblate", "Rod", "Spherical", "Tetrahedral",
+				"Tetrapod", "Triangular", "Elliptical", "Composite",
+				"Cylindrical", "Vesicular", "Elliposid" };
 		return shapeTypes;
 	}
-	
+
 	public String[] getAllStressorTypes() {
-		String[] stressorTypes=new String[] {"Thermal", "PH", "Freeze thaw", "Photo", "Centrifugation", "Lyophilization", "Chemical"}; 
+		String[] stressorTypes = new String[] { "Thermal", "PH", "Freeze thaw",
+				"Photo", "Centrifugation", "Lyophilization", "Chemical" };
 		return stressorTypes;
 	}
-	
+
 	public String[] getAllSurfaceTypes() {
-		String[] surfaceTypes = new String[] {"surface type 1", "surface type 2"};
+		String[] surfaceTypes = new String[] { "surface type 1",
+				"surface type 2" };
 		return surfaceTypes;
 	}
-	
+
 	public String[] getAllAreaMeasureUnits() {
-		String[] areaUnit = new String[] {"square nm"};
+		String[] areaUnit = new String[] { "square nm" };
 		return areaUnit;
 	}
-	
+
 	public String[] getAllChargeMeasureUnits() {
-		String[] chargeUnit = new String[] {"a.u", "aC", "Ah", "C","esu", "Fr", "statC"};
+		String[] chargeUnit = new String[] { "a.u", "aC", "Ah", "C", "esu",
+				"Fr", "statC" };
 		return chargeUnit;
 	}
 
 	public String[] getAllDensityMeasureUnits() {
-		String[] densityUnits = new String[] {"kg/L"};
+		String[] densityUnits = new String[] { "kg/L" };
 		return densityUnits;
 	}
-	
+
 	public String[] getAllControlTypes() {
-		String[] chargeUnit = new String[] {"Positive", "Negative"};
+		String[] chargeUnit = new String[] { "Positive", "Negative" };
 		return chargeUnit;
 	}
-	
+
 	public String[] getAllConditionTypes() {
-		String[] chargeUnit = new String[] {"Particle Concentration", "Time", "Temperature"};
+		String[] chargeUnit = new String[] { "Particle Concentration", "Time",
+				"Temperature" };
 		return chargeUnit;
 	}
-	public String[] getAllAgentTypes() {
-		String[] agentTypes = new String[] {"DNA","Peptide", "Small Molecule", "Probe", "Antibody", "Image Contrast Agent"};
+
+	public Map<String, String[]> getAllAgentTypes() {
+		Map<String, String[]> agentTypes = new HashMap<String, String[]>();
+
+		String[] therapeuticsAgentTypes = new String[] { "Peptide",
+				"Small Molecule", "Antibody", "DNA"};
+		agentTypes.put("Therapeutics", therapeuticsAgentTypes);
+		String[] targetingAgentTypes = new String[] { "Peptide",
+				"Small Molecule", "Antibody" };
+		agentTypes.put("Targeting", targetingAgentTypes);
+		String[] imagingAgentTypes = new String[] { "Small Molecule",
+				"Image Contrast Agent" };
+		agentTypes.put("Imaging", imagingAgentTypes);
+		String[] reportingAgentTypes = new String[] { "Peptide",
+				"Small Molecule", "Probe", "DNA"};
+		agentTypes.put("Reporting", reportingAgentTypes);
 		return agentTypes;
 	}
-	
-	public String[] getAllAgentTargetTypes() {
-		String[] agentTargetTypes = new String[] {"Receptor","Antigen"};
+
+	public Map<String,String[]> getAllAgentTargetTypes() {
+		Map<String,String[]> agentTargetTypes=new HashMap<String, String[]>();
+		String[] targetTypes = new String[] { "Receptor", "Antigen" };
+		String[] targetTypes2 = new String[] { "Receptor"};
+		
+		agentTargetTypes.put("Small Molecule", targetTypes2);
+		agentTargetTypes.put("Peptide", targetTypes2);
+		agentTargetTypes.put("Antibody", targetTypes);
+		agentTargetTypes.put("DNA", targetTypes2);
+		agentTargetTypes.put("Probe", targetTypes2);
 		return agentTargetTypes;
 	}
-	
+
 	public String[] getAllTimeUnits() {
-		String[] timeUnits = new String[] {"seconds", "hours", "days", "months"};
+		String[] timeUnits = new String[] { "seconds", "hours", "days",
+				"months" };
 		return timeUnits;
 	}
-	
+
 	public String[] getAllConcentrationUnits() {
-		String[] concentrationUnits = new String[] {"g/ml", "mg/ml", "ug/ml", "ug/ul", "pg/ml"};
+		String[] concentrationUnits = new String[] { "g/ml", "mg/ml", "ug/ml",
+				"ug/ul", "pg/ml" };
 		return concentrationUnits;
 	}
 }
