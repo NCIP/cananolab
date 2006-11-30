@@ -3,6 +3,7 @@
  */
 package gov.nih.nci.calab.dto.function;
 
+import gov.nih.nci.calab.domain.nano.function.Function;
 import gov.nih.nci.calab.service.util.CalabConstants;
 
 import java.util.ArrayList;
@@ -97,4 +98,18 @@ public class FunctionBean {
 		this.type = type;
 	}
 
+	public Function getDomainObj(){
+		Function doFunction = new Function();
+		if (getId() != null && getId().length() > 0) {
+			doFunction.setId(new Long(getId()));
+		}
+		doFunction.setActivationMethod(activationMethod);
+		doFunction.setDescription(description);
+		doFunction.setIdentificationName(viewTitle);
+		doFunction.setType(type);
+		for (LinkageBean linkage: getLinkages()) {
+			doFunction.getLinkageCollection().add(linkage.getDomainObj());
+		}
+		return doFunction;
+	}
 }

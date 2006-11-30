@@ -1,5 +1,14 @@
 package gov.nih.nci.calab.dto.function;
 
+import gov.nih.nci.calab.domain.nano.function.Agent;
+import gov.nih.nci.calab.domain.nano.function.Antibody;
+import gov.nih.nci.calab.domain.nano.function.DNA;
+import gov.nih.nci.calab.domain.nano.function.ImageContrastAgent;
+import gov.nih.nci.calab.domain.nano.function.Peptide;
+import gov.nih.nci.calab.domain.nano.function.Probe;
+import gov.nih.nci.calab.domain.nano.function.SmallMolecule;
+import gov.nih.nci.calab.service.util.CananoConstants;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +23,7 @@ import java.util.List;
 public class AgentBean {
 	
 	private String id;
-	private String type="Peptide";
+	private String type=CananoConstants.PEPTIDE;
 	private String name;
 	private String description;
 	// otherValue can be "compoundName" for SamllMolecule; "type" for Probe and ImageContrastAgent;
@@ -73,5 +82,73 @@ public class AgentBean {
 	}
 	public void setAgentTargets(List<AgentTargetBean> agentTargets) {
 		this.agentTargets = agentTargets;
+	}
+	
+	public Agent getDomainObj(){
+		if (type.equals(CananoConstants.DNA)){
+			DNA doAgent = new DNA();
+			if (getId() != null && getId().length() > 0) {
+				doAgent.setId(new Long(getId()));
+			}
+			doAgent.setDescription(description);
+			doAgent.setSequence(otherValue);
+			for (AgentTargetBean agentTarget: getAgentTargets())
+			doAgent.getAgentTargetCollection().add(agentTarget.getDomainObj());
+			return doAgent;
+		} else if (type.equals(CananoConstants.PEPTIDE)) {
+			Peptide doAgent = new Peptide();
+			if (getId() != null && getId().length() > 0) {
+				doAgent.setId(new Long(getId()));
+			}
+			doAgent.setDescription(description);
+			doAgent.setSequence(otherValue);
+			for (AgentTargetBean agentTarget: getAgentTargets())
+			doAgent.getAgentTargetCollection().add(agentTarget.getDomainObj());	
+			return doAgent;
+		} else if (type.equals(CananoConstants.SMALL_MOLECULE)) {
+			SmallMolecule doAgent = new SmallMolecule();
+			if (getId() != null && getId().length() > 0) {
+				doAgent.setId(new Long(getId()));
+			}
+			doAgent.setDescription(description);
+			doAgent.setName(name);
+			doAgent.setCompoundName(otherValue);
+			for (AgentTargetBean agentTarget: getAgentTargets())
+			doAgent.getAgentTargetCollection().add(agentTarget.getDomainObj());	
+			return doAgent;
+		} else if (type.equals(CananoConstants.PROBE)) {
+			Probe doAgent = new Probe();
+			if (getId() != null && getId().length() > 0) {
+				doAgent.setId(new Long(getId()));
+			}
+			doAgent.setDescription(description);
+			doAgent.setName(name);
+			doAgent.setType(otherValue);
+			for (AgentTargetBean agentTarget: getAgentTargets())
+			doAgent.getAgentTargetCollection().add(agentTarget.getDomainObj());	
+			return doAgent;
+		}else if (type.equals(CananoConstants.ANTIBODY)) {
+			Antibody doAgent = new Antibody();
+			if (getId() != null && getId().length() > 0) {
+				doAgent.setId(new Long(getId()));
+			}
+			doAgent.setDescription(description);
+			doAgent.setName(name);
+			doAgent.setSpecies(otherValue);
+			for (AgentTargetBean agentTarget: getAgentTargets())
+			doAgent.getAgentTargetCollection().add(agentTarget.getDomainObj());	
+			return doAgent;
+		} else {
+			ImageContrastAgent doAgent = new ImageContrastAgent();
+			if (getId() != null && getId().length() > 0) {
+				doAgent.setId(new Long(getId()));
+			}
+			doAgent.setDescription(description);
+			doAgent.setName(name);
+			doAgent.setType(otherValue);
+			for (AgentTargetBean agentTarget: getAgentTargets())
+			doAgent.getAgentTargetCollection().add(agentTarget.getDomainObj());	
+			return doAgent;
+		}	
 	}
 }
