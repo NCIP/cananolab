@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.64 2006-11-29 20:07:25 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.65 2006-11-30 21:06:35 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -682,7 +682,7 @@ public class LookupService {
 	public String getParticleClassification(String particleType) {
 		String key = "classification." + particleType.replaceAll(" ", "_");
 		String classification = PropertyReader.getProperty(
-				CalabConstants.PARTICLE_PROPERTY, key);
+				CananoConstants.PARTICLE_PROPERTY, key);
 		return classification;
 
 	}
