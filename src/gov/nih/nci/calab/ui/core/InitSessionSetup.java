@@ -20,6 +20,7 @@ import gov.nih.nci.calab.service.util.CananoConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.service.workflow.ExecuteWorkflowService;
 import gov.nih.nci.security.exceptions.CSException;
+import gov.nih.nci.calab.dto.LabFileBean;
 
 import gov.nih.nci.common.util.StringHelper;
 
@@ -478,6 +479,9 @@ public class InitSessionSetup {
 				}
 			}
 			session.setAttribute("charTypeChars", existingCharTypeChars);
+			
+			List<LabFileBean> reportBeans = service.getReportInfo(particleName, particleType);
+			session.setAttribute("charTypeReports", reportBeans);
 		}
 		session.removeAttribute("newCharacterizationCreated");
 		session.removeAttribute("newParticleCreated");
