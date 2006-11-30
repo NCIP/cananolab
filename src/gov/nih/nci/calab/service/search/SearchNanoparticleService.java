@@ -7,6 +7,7 @@ import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
+import gov.nih.nci.calab.dto.LabFileBean;
 import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CalabConstants;
@@ -15,6 +16,7 @@ import gov.nih.nci.calab.service.util.StringUtils;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.io.File;
 
 import org.apache.log4j.Logger;
 
@@ -191,6 +193,14 @@ public class SearchNanoparticleService {
 		return particleBean;
 	}
 
+	/**
+	 * Query nanoparticle characterization information such as id, name and identification name
+	 * 
+	 * @param particleName
+	 * @param particleType
+	 * @return List of CharacterizationBean
+	 * @throws Exception
+	 */
 	public List<CharacterizationBean> getCharacterizationInfo(
 			String particleName, String particleType) throws Exception {
 		List<CharacterizationBean> charBeans = new ArrayList<CharacterizationBean>();
@@ -222,7 +232,80 @@ public class SearchNanoparticleService {
 		}
 		return charBeans;
 	}
+	
+	/**
+	 * internal method to retrieve sample report information 
+	 * 
+	 * @param particleName
+	 * @param particleType
+	 * @param wCollection - which collection, reportCollection or AssociatedFileCollection
+	 * @return List of LabFileBean
+	 * @throws Exception
+	 */
+	private List<LabFileBean> getReport(String particleName, String particleType, String wCollection) throws Exception {
+		List<LabFileBean> fileBeans = new ArrayList<LabFileBean>();
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
 
+		try {
+
+			ida.open();
+			List results = ida
+						.search("select report.id, report.filename, report.path from Nanoparticle particle join particle." + wCollection + " report where particle.name='"
+								+ particleName
+								+ "' and particle.type='"
+								+ particleType + "'");
+
+			for (Object obj : results) {
+				String reportId = ((Object[]) obj)[0].toString();
+				String fileName = (String) (((Object[]) obj)[1]);
+				String path = (String) (((Object[]) obj)[2]);
+				String toolTip = "";
+				int idx = path.lastIndexOf(File.separator);
+				if (idx > 0) 
+					toolTip = path.substring(idx+1);
+				
+				LabFileBean fileBean = new LabFileBean();
+				fileBean.setId(reportId);
+				fileBean.setPath(path);
+				fileBean.setName(fileName);
+				fileBean.setToolTip(toolTip);
+				fileBeans.add(fileBean);
+			}
+		} catch (Exception e) {
+			logger.error("Problem finding report info for particle: "
+					+ particleName);
+			throw e;
+		} finally {
+			ida.close();
+		}
+		return fileBeans;
+	}
+	
+	/**
+	 * retrieve sample report information including reportCollection and associatedFileCollection
+	 * 
+	 * @param particleName
+	 * @param particleType
+	 * @return List of LabFileBean
+	 * @throws Exception
+	 */
+	public List<LabFileBean> getReportInfo(
+			String particleName, String particleType) throws Exception {
+		List<LabFileBean> fileBeans = new ArrayList<LabFileBean>();
+		
+		fileBeans.addAll(getReport(particleName, particleType, "reportCollection"));
+		fileBeans.addAll(getReport(particleName, particleType, "associatedFileCollection"));
+		return fileBeans;
+	}
+
+	/**
+	 * retrieve characterization information based on id
+	 * 
+	 * @param charId
+	 * @return characterization 
+	 * @throws Exception
+	 */
 	public Characterization getCharacterizationBy(String charId)
 			throws Exception {
 		IDataAccess ida = (new DataAccessProxy())
@@ -246,6 +329,13 @@ public class SearchNanoparticleService {
 		return aChar;
 	}
 	
+	/**
+	 * Query characterization, datum, condition information  based on id
+	 * 
+	 * @param charId
+	 * @return characterization 
+	 * @throws Exception
+	 */
 	public Characterization getCharacterizationAndTableBy(String charId)
 			throws Exception {
 		IDataAccess ida = (new DataAccessProxy())
