@@ -6,7 +6,6 @@ import gov.nih.nci.calab.domain.Manufacturer;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.CharacterizationProtocol;
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
-import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.CananoConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 
@@ -108,8 +107,8 @@ public class CharacterizationBean {
 
 	public String getViewTitle() {
 		// get only the first number of characters of the title
-		if (viewTitle!=null &&viewTitle.length() > CalabConstants.MAX_VIEW_TITLE_LENGTH) {
-			return viewTitle.substring(0, CalabConstants.MAX_VIEW_TITLE_LENGTH);
+		if (viewTitle!=null &&viewTitle.length() > CananoConstants.MAX_VIEW_TITLE_LENGTH) {
+			return viewTitle.substring(0, CananoConstants.MAX_VIEW_TITLE_LENGTH);
 		}
 		return viewTitle;
 	}
