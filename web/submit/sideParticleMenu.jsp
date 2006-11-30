@@ -278,6 +278,7 @@
 										<a href="submitAction.do?submitType=immuneCellFuncTox"> <em>add</em></a>
 									</c:when>
 								</c:choose>
+								<br>
 								<c:forEach var="aChar" items="${charTypeChars['immuneCellFuncTox']}">
 									<%java.util.HashMap immuneCellParamMap = new java.util.HashMap();
 			immuneCellParamMap.put("dispatch", pageContext
