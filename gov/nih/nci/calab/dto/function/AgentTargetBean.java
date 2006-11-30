@@ -1,5 +1,10 @@
 package gov.nih.nci.calab.dto.function;
 
+import gov.nih.nci.calab.domain.nano.function.AgentTarget;
+import gov.nih.nci.calab.domain.nano.function.Antigen;
+import gov.nih.nci.calab.domain.nano.function.Receptor;
+import gov.nih.nci.calab.service.util.CananoConstants;
+
 /**
  * This class represents the data associated with an agent target be shown in
  * the view page.
@@ -8,6 +13,9 @@ package gov.nih.nci.calab.dto.function;
  *
  */
 public class AgentTargetBean {
+	
+	private String id;
+	
 	private String description;
 
 	private String name;
@@ -42,4 +50,32 @@ public class AgentTargetBean {
 		this.type = type;
 	}
 	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public AgentTarget getDomainObj(){
+		if (type.equals(CananoConstants.RECEPTOR)){
+			Receptor doReceptor = new Receptor();
+			if (getId() != null && getId().length() > 0) {
+				doReceptor.setId(new Long(getId()));
+			}
+			doReceptor.setDescription(description);
+			doReceptor.setName(name);
+			return doReceptor;
+		} else {
+			Antigen doAntigen = new Antigen();
+			if (getId() != null && getId().length() > 0) {
+				doAntigen.setId(new Long(getId()));
+			}
+			doAntigen.setDescription(description);
+			doAntigen.setName(name);
+			return doAntigen;
+		}
+		
+	}
 }
