@@ -733,23 +733,23 @@ img.img { /* for images that need a border */
 }
 
 .indented {
-	padding-left: 5pt;
+	padding-left: 3pt;
 }
 
 .indented2 {
-	padding-left: 10pt;
+	padding-left: 6pt;
 }
 
 .indented3 {
-	padding-left: 15pt;
+	padding-left: 12pt;
 }
 
 .indented4 {
-	padding-left: 20pt;
+	padding-left: 15pt;
 }
 
 .indented5 {
-	padding-left: 25pt;
+	padding-left: 18pt;
 }
 
 .largerText {
