@@ -42,10 +42,10 @@ public class DerivedBioAssayDataBean {
 		this.id = table.getId().toString();
 		this.type = table.getType();
 		
-		this.file = new CharacterizationFileBean();
 //		this.file.setName(table.getFile());
 		LabFile doFile = table.getFile();
 		if (doFile != null) {
+			this.file = new CharacterizationFileBean();
 			this.file.setCreatedBy(doFile.getCreatedBy());
 			this.file.setCreatedDate(doFile.getCreatedDate());
 			this.file.setDescription(doFile.getDescription());
