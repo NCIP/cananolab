@@ -154,5 +154,8 @@ public class CananoConstants {
 	public static final String ANTIGEN = "Antigen";
 	
 	public static final String NCL_REPORT = "NCL Report";
+	
+	public static final int MAX_VIEW_TITLE_LENGTH=25;
+
 
 }
