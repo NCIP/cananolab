@@ -18,6 +18,26 @@
 			-->
 		</form>
 
+		<form name="publishReportForm">
+			<field property="particleNames" page="1" depends="required">
+				<arg position="0" key="publishReportForm.particleID" bundle="submit" />
+			</field>
+			<field property="reportType" page="1" depends="required">
+				<arg position="0" key="publishReportForm.reportType" bundle="submit" />
+			</field>
+			<field property="reportFile" page="1" depends="required">
+				<arg position="0" key="publishReportForm.reportFile" bundle="submit" />
+			</field>
+			<field property="title" page="1" depends="required">
+				<arg position="0" key="publishReportForm.title" bundle="submit" />
+			</field>
+			<!--
+			<field property="visibilities" page="1" depends="required">
+				<arg position="0" key="publishReportForm.visibilities" bundle="submit" />
+			</field>
+			-->
+		</form>
+		
 		<form name="nanoparticleCompositionForm">
 			<field property="characterizationSource" page="1" depends="required">
 				<arg position="0" key="nanoparticleCompositionForm.characterizationSource" bundle="submit" />
