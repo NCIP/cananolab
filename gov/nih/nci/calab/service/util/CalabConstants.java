@@ -58,26 +58,4 @@ public class CalabConstants {
 
 	// caLAB property file
 	public static final String CALAB_PROPERTY = "calab.properties";
-
-	public static final String PARTICLE_PROPERTY = "particle.properties";
-
-	public static final String PHYSICAL_CHARACTERIZATION = "Physical";
-	
-	public static final String COMPOSITION_CHARACTERIZATION = "Composition";
-
-	public static final String INVITRO_CHARACTERIZATION = "In Vitro";
-
-	public static final String INVIVO_CHARACTERIZATION = "In Vivo";
-
-	public static final String TOXICITY_CHARACTERIZATION = "Toxicity";
-
-	public static final String CYTOXICITY_CHARACTERIZATION = "Cytoxicity";
-
-	public static final String BLOOD_CONTACT_IMMUNOTOXICITY_CHARACTERIZATION = "Blood Contact";
-
-	public static final String IMMUNE_CELL_FUNCTION_IMMUNOTOXICITY_CHARACTERIZATION = "Immune Cell Function";
-
-	public static final String METABOLIC_STABILITY_TOXICITY_CHARACTERIZATION = "Metabolic Stability";
-	
-	public static final int MAX_VIEW_TITLE_LENGTH=25;
 }
