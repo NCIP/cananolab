@@ -79,5 +79,5 @@ public class CalabConstants {
 
 	public static final String METABOLIC_STABILITY_TOXICITY_CHARACTERIZATION = "Metabolic Stability";
 	
-	public static final int MAX_VIEW_TITLE_LENGTH=30;
+	public static final int MAX_VIEW_TITLE_LENGTH=25;
 }
