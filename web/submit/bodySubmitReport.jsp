@@ -74,6 +74,14 @@
 						</tr>
 						<tr>
 							<td class="leftLabel">
+								<strong>Comment</strong>
+							</td>
+							<td class="rightLabel"">
+								<html:textarea property="comment" />
+							</td>
+						</tr>
+						<tr>
+							<td class="leftLabel">
 								<strong>Visibility*</strong>
 							</td>
 							<td class="rightLabel">
