@@ -313,6 +313,15 @@
 							</li>
 							<li>
 								<span class="largerText">Reports</span>
+								<br>
+								<c:forEach var="aReport" items="${charTypeReports}">
+									<bean:define id="fileId" name='aReport' property='id' type="java.lang.String"/>
+									<html:hidden name="aReport" property="id" value="${fileId}" indexed="true" />
+									<span class="indented">
+									<a href="publishReport.do?dispatch=download&amp;fileId=${fileId}" title="${aReport.toolTip}">${aReport.name}</a>
+									</span>
+									<br>
+								</c:forEach>
 							</li>
 						</ul>
 						<p>
