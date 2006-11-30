@@ -9,6 +9,10 @@ import gov.nih.nci.calab.domain.LabFile;
 import gov.nih.nci.calab.domain.Manufacturer;
 import gov.nih.nci.calab.domain.OutputFile;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
+import gov.nih.nci.calab.domain.nano.function.Agent;
+import gov.nih.nci.calab.domain.nano.function.AgentTarget;
+import gov.nih.nci.calab.domain.nano.function.Function;
+import gov.nih.nci.calab.domain.nano.function.Linkage;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
 import gov.nih.nci.calab.dto.characterization.composition.CompositionBean;
@@ -39,6 +43,7 @@ import gov.nih.nci.calab.dto.characterization.physical.SizeBean;
 import gov.nih.nci.calab.dto.characterization.physical.SolubilityBean;
 import gov.nih.nci.calab.dto.characterization.physical.StabilityBean;
 import gov.nih.nci.calab.dto.characterization.physical.SurfaceBean;
+import gov.nih.nci.calab.dto.function.FunctionBean;
 import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CalabConstants;
@@ -210,15 +215,6 @@ public class SubmitNanoparticleService {
 				ida.store(achar.getCharacterizationProtocol());
 			}
 
-			// if (achar.getDerivedBioAssayDataCollection()!= null) {
-			// for(DerivedBioAssayData data:
-			// achar.getDerivedBioAssayDataCollection()){
-			// if (data.getFile()!= null) {
-			// ida.store(data.getFile());
-			// }
-			// }
-			// }
-
 			// check if viewTitle is already used the same type of
 			// characterization for the same particle
 			String viewTitleQuery = "";
@@ -294,9 +290,9 @@ public class SubmitNanoparticleService {
 	 */
 	/*
 	 * private Instrument addInstrument(Instrument instrument) throws Exception {
-	 * Instrument rInstrument = null;
-	 *  // if ID is not set save to the database otherwise update IDataAccess
-	 * ida = (new DataAccessProxy()) .getInstance(IDataAccess.HIBERNATE);
+	 * Instrument rInstrument = null; // if ID is not set save to the database
+	 * otherwise update IDataAccess ida = (new DataAccessProxy())
+	 * .getInstance(IDataAccess.HIBERNATE);
 	 * 
 	 * //int existingInstrumentCount = -1; Instrument existingInstrument = null;
 	 * try { ida.open(); // check if instrument is already existed String
@@ -798,17 +794,16 @@ public class SubmitNanoparticleService {
 	public CharacterizationFileBean saveCharacterizationFile(
 			String particleName, FormFile file, String title,
 			String description, String comments, String[] keywords,
-			String[] visibilities,
-			String path,
-			String fileNumber,
+			String[] visibilities, String path, String fileNumber,
 			String rootPath) throws Exception {
 
 		// TODO saves file to the file system
 		HttpFileUploadSessionData sData = new HttpFileUploadSessionData();
 		String tagFileName = sData.getTimeStamp() + "_" + file.getFileName();
 		String outputFilename = rootPath + path + tagFileName;
-			
-		FileOutputStream oStream = new FileOutputStream(new File(outputFilename));
+
+		FileOutputStream oStream = new FileOutputStream(
+				new File(outputFilename));
 
 		this.saveFile(file.getInputStream(), oStream);
 
@@ -816,10 +811,9 @@ public class SubmitNanoparticleService {
 		dataFile.setDescription(description);
 		dataFile.setFilename(file.getFileName());
 
-		// TODO  need to remove the predefine the root path from outputFilename
+		// TODO need to remove the predefine the root path from outputFilename
 		dataFile.setPath(path + tagFileName);
 		dataFile.setTitle(title);
-
 
 		// TODO saves file to the database
 		IDataAccess ida = (new DataAccessProxy())
@@ -837,13 +831,8 @@ public class SubmitNanoparticleService {
 		} finally {
 			ida.close();
 		}
-		CharacterizationFileBean fileBean = new CharacterizationFileBean(dataFile);
-//		fileBean.setName(file.getFileName());
-//		fileBean.setPath(path);
-//		fileBean.setId(fileNumber);
-//		fileBean.setDescription(description);
-//		fileBean.setTitle(title);
-//		fileBean.setVisibilityGroups(visibilities);
+		CharacterizationFileBean fileBean = new CharacterizationFileBean(
+				dataFile);
 
 		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
 		String fileName = fileBean.getName();
@@ -855,7 +844,8 @@ public class SubmitNanoparticleService {
 				// TODO once the files is successfully saved, use fileId instead
 				// of fileName
 				userService.secureObject(fileBean.getId(), "NCL_PI", "R");
-				userService.secureObject(fileBean.getId(), "NCL_Researcher", "R");
+				userService.secureObject(fileBean.getId(), "NCL_Researcher",
+						"R");
 				userService.secureObject(fileBean.getId(), visibility, "R");
 			}
 		}
@@ -871,17 +861,15 @@ public class SubmitNanoparticleService {
 	 * @param keywords
 	 * @param visibilities
 	 */
-	public CharacterizationFileBean saveCharacterizationFile(
-			String fileId, String title, String description, 
-			String[] keywords, String[] visibilities
-			) throws Exception {
+	public CharacterizationFileBean saveCharacterizationFile(String fileId,
+			String title, String description, String[] keywords,
+			String[] visibilities) throws Exception {
 
 		CharacterizationFileBean fileBean = getFile(fileId);
 		fileBean.setTitle(title);
 		fileBean.setDescription(description);
-		
-		DerivedDataFile dataFile = fileBean.getDomainObject();
 
+		DerivedDataFile dataFile = fileBean.getDomainObject();
 
 		// TODO saves file to the database
 		IDataAccess ida = (new DataAccessProxy())
@@ -899,7 +887,7 @@ public class SubmitNanoparticleService {
 		} finally {
 			ida.close();
 		}
-		
+
 		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
 		fileBean = new CharacterizationFileBean(dataFile);
 		String fileName = fileBean.getName();
@@ -911,12 +899,14 @@ public class SubmitNanoparticleService {
 				// TODO once the files is successfully saved, use fileId instead
 				// of fileName
 				userService.secureObject(fileBean.getId(), "NCL_PI", "R");
-				userService.secureObject(fileBean.getId(), "NCL_Researcher", "R");
+				userService.secureObject(fileBean.getId(), "NCL_Researcher",
+						"R");
 				userService.secureObject(fileBean.getId(), visibility, "R");
 			}
 		}
 		return fileBean;
 	}
+
 	public void saveFile(InputStream is, FileOutputStream os) {
 		byte[] bytes = new byte[32768];
 
@@ -929,6 +919,105 @@ public class SubmitNanoparticleService {
 
 		} catch (Exception e) {
 
+		}
+	}
+
+	/**
+	 * 
+	 */
+	public void addParticleFunction(String particleType, String particleName,
+			FunctionBean function) throws Exception {
+		Function doFunction = function.getDomainObj();
+
+		// if ID is not set save to the database otherwise update
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+
+		Nanoparticle particle = null;
+		int existingViewTitleCount = -1;
+		try {
+			ida.open();
+
+			if (doFunction.getLinkageCollection() != null) {
+				for (Linkage linkage : doFunction.getLinkageCollection()){
+					Agent agent = linkage.getAgent();
+					if (agent != null) {
+						for(AgentTarget agentTarget: agent.getAgentTargetCollection()) {
+							ida.store(agentTarget);
+						}
+						ida.store(agent);
+					}
+					ida.store(linkage);
+				}
+			}
+			// check if viewTitle is already used the same type of
+			// characterization for the same particle
+			String viewTitleQuery = "";
+			if (function.getId() == null) {
+				viewTitleQuery = "select count(function.identificationName) from Nanoparticle particle join particle.functionCollection function where particle.name='"
+						+ particleName
+						+ "' and particle.type='"
+						+ particleType
+						+ "' and function.identificationName='"
+						+ doFunction.getIdentificationName() + "' "; // and
+																		// function.type='"
+																		// +
+																		// doFunction.getType()
+																		// +
+																		// "'";
+			} else {
+				viewTitleQuery = "select count(function.identificationName) from Nanoparticle particle join particle.functionCollection function where particle.name='"
+						+ particleName
+						+ "' and particle.type='"
+						+ particleType
+						+ "' and function.identificationName='"
+						+ doFunction.getIdentificationName()
+						+ "' and function.id!=" + function.getId();
+				// + "' and function.type='"
+				// + function.getType()
+
+			}
+			List viewTitleResult = ida.search(viewTitleQuery);
+
+			for (Object obj : viewTitleResult) {
+				existingViewTitleCount = ((Integer) (obj)).intValue();
+			}
+			if (existingViewTitleCount == 0) {
+				// if ID exists, do update
+				if (doFunction.getId() != null) {
+					ida.store(doFunction);
+				} else {// get the existing particle and compositions
+					// from database
+					// created
+					// during sample
+					// creation
+					List results = ida
+							.search("select particle from Nanoparticle particle left join fetch particle.functionCollection where particle.name='"
+									+ particleName
+									+ "' and particle.type='"
+									+ particleType + "'");
+
+					for (Object obj : results) {
+						particle = (Nanoparticle) obj;
+					}
+
+					if (particle != null) {
+//						ida.store(doFunction);
+						particle.getFunctionCollection().add(doFunction);
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			ida.rollback();
+			logger.error("Problem saving characterization: ");
+			throw e;
+		} finally {
+			ida.close();
+		}
+		if (existingViewTitleCount > 0) {
+			throw new CalabException(
+					"The view title is already in use.  Please enter a different one.");
 		}
 	}
 
@@ -946,12 +1035,11 @@ public class SubmitNanoparticleService {
 			ida.open();
 			LabFile charFile = (LabFile) ida.load(LabFile.class, StringUtils
 					.convertToLong(fileId));
-			fileBean=new CharacterizationFileBean(charFile);
+			fileBean = new CharacterizationFileBean(charFile);
 		} catch (Exception e) {
 			e.printStackTrace();
 			ida.rollback();
-			logger.error("Problem getting file with file ID: "
-					+ fileId);
+			logger.error("Problem getting file with file ID: " + fileId);
 			throw e;
 		} finally {
 			ida.close();
