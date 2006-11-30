@@ -3,19 +3,27 @@
  */
 package gov.nih.nci.calab.dto.function;
 
+import gov.nih.nci.calab.domain.nano.function.Attachment;
+import gov.nih.nci.calab.domain.nano.function.Encapsulation;
+import gov.nih.nci.calab.domain.nano.function.Linkage;
+import gov.nih.nci.calab.service.util.CananoConstants;
+
 /**
  * @author zengje
- *
+ * 
  */
 public class LinkageBean {
-	
+
 	private String id;
+
 	private String description;
-	private String type="Attachment";
+
+	private String type = CananoConstants.ATTACHMENT;
+
 	private String value;
-	
+
 	private AgentBean agent = new AgentBean();
-	
+
 	/**
 	 * 
 	 */
@@ -64,4 +72,25 @@ public class LinkageBean {
 		this.agent = agent;
 	}
 
+	public Linkage getDomainObj() {
+		if (type.equals(CananoConstants.ATTACHMENT)) {
+			Attachment doAttach = new Attachment();
+			if (getId() != null && getId().length() > 0) {
+				doAttach.setId(new Long(getId()));
+			}
+			doAttach.setBondType(value);
+			doAttach.setDescription(description);
+			doAttach.setAgent(agent.getDomainObj());
+			return doAttach;
+		} else {
+			Encapsulation doEncap = new Encapsulation();
+			if (getId() != null && getId().length() > 0) {
+				doEncap.setId(new Long(getId()));
+			}
+			doEncap.setLocalization(value);
+			doEncap.setDescription(description);
+			doEncap.setAgent(agent.getDomainObj());
+			return doEncap;
+		}
+	}
 }
