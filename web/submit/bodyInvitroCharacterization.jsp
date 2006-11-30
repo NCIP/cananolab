@@ -119,7 +119,7 @@
 													&nbsp;
 													<c:choose>
 														<c:when test="${canUserUpdateParticle eq 'true'}">
-															<input type="button" onclick="javascript:updateChartDataPoints(this.form, '${actionName}', ${chartInd})" value="Update">
+															<input type="button" onclick="javascript:updateChartDataPoints(this.form, '${actionName}', ${chartInd})" value="Update Data Points">
 														</c:when>
 													</c:choose>
 												</td>
