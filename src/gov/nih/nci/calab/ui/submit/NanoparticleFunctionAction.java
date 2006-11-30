@@ -6,12 +6,13 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleFunctionAction.java,v 1.2 2006-11-29 20:08:07 pansu Exp $ */
+/* CVS $Id: NanoparticleFunctionAction.java,v 1.3 2006-11-30 22:53:18 zengje Exp $ */
 
 import gov.nih.nci.calab.dto.function.AgentBean;
 import gov.nih.nci.calab.dto.function.AgentTargetBean;
 import gov.nih.nci.calab.dto.function.FunctionBean;
 import gov.nih.nci.calab.dto.function.LinkageBean;
+import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
@@ -58,7 +59,9 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 
 		request.getSession().setAttribute("newFunction", "true");
 		// TODO save in database
-
+		SubmitNanoparticleService service = new SubmitNanoparticleService();
+		service.addParticleFunction(particleType, particleName, function);
+		
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.addParticleSurface");
 		msgs.add("message", msg);
