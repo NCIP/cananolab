@@ -133,5 +133,26 @@ public class CananoConstants {
 	
 	public static final String CHARACTERIZATION_FILE = "characterizationFile";
 	
+	public static final String DNA = "DNA";
+	
+	public static final String PEPTIDE = "Peptide";
+	
+	public static final String SMALL_MOLECULE = "SmallMolecule";
+	
+	public static final String PROBE = "Probe";
+	
+	public static final String ANTIBODY = "Antibody";
+	
+	public static final String IMAGE_CONTRAST_AGENT ="ImageContrastAgent";
+	
+	public static final String ATTACHMENT = "Attachment";
+	
+	public static final String ENCAPSULATION = "Encapsulation";
+	
+	public static final String RECEPTOR = "Receptor";
+	
+	public static final String ANTIGEN = "Antigen";
+	
 	public static final String NCL_REPORT = "NCL Report";
+
 }
