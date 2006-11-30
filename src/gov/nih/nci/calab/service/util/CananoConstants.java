@@ -132,4 +132,6 @@ public class CananoConstants {
 	public static final String OTHER = "Other";
 	
 	public static final String CHARACTERIZATION_FILE = "characterizationFile";
+	
+	public static final String NCL_REPORT = "NCL Report";
 }
