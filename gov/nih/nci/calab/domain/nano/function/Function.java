@@ -3,7 +3,8 @@
  */
 package gov.nih.nci.calab.domain.nano.function;
 
-import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * @author zengje
@@ -12,9 +13,11 @@ import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 public class Function {
 	private Long id;
 	private String type;
+	private String description;
 	private String activationMethod;
+	private String identificationName; // view title
 	
-	private Nanoparticle nanoparticle;
+	private Collection<Linkage> linkageCollection = new ArrayList<Linkage>();
 	
 	/**
 	 * 
@@ -48,13 +51,28 @@ public class Function {
 		this.id = id;
 	}
 
-	public Nanoparticle getNanoparticle() {
-		return nanoparticle;
+	public Collection<Linkage> getLinkageCollection() {
+		return linkageCollection;
 	}
 
-	public void setNanoparticle(Nanoparticle nanoparticle) {
-		this.nanoparticle = nanoparticle;
+	public void setLinkageCollection(Collection<Linkage> linkageCollection) {
+		this.linkageCollection = linkageCollection;
 	}
 
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getIdentificationName() {
+		return identificationName;
+	}
+
+	public void setIdentificationName(String identificationName) {
+		this.identificationName = identificationName;
+	}
 	
 }

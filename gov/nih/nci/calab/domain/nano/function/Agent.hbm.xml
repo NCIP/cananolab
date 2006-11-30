@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="gov.nih.nci.calab.domain.nano.function">
+	<class name="Agent" table="AGENT" lazy="true" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="java.lang.Long" column="AGENT_PK_ID" unsaved-value="0">
+			<generator class="org.hibernate.id.TableHiLoGenerator">
+				<param name="table">hibernate_unique_key</param>
+				<param name="column">next_hi</param>
+			</generator>
+		</id>
+		<discriminator column="DISCRIMINATOR" type="java.lang.String" />
+		<property name="description" type="java.lang.String" column="DESCRIPTION" />
+		
+		<list name="agentTargetCollection" cascade="all-delete-orphan" lazy="true">
+			<cache usage="read-write" />
+			<key column="AGENT_PK_ID" />
+			<list-index column="LIST_INDEX" />
+			<one-to-many class="gov.nih.nci.calab.domain.nano.function.AgentTarget" />
+		</list>
+
+		<subclass name="DNA" discriminator-value="DNA">
+			<property name="sequence" column="SEQUENCE" />
+		</subclass>
+
+		<subclass name="Peptide" discriminator-value="Peptide">
+			<property name="sequence" column="SEQUENCE" />
+		</subclass>
+
+		<subclass name="SmallMolecule" discriminator-value="SmallMolecule">
+			<property name="name" column="NAME" />
+			<property name="compoundName" column="OTHER" />
+		</subclass>
+
+		<subclass name="Probe" discriminator-value="Probe">
+			<property name="name" column="NAME" />
+			<property name="type" column="OTHER" />
+		</subclass>
+
+		<subclass name="Antibody" discriminator-value="Antibody">
+			<property name="name" column="NAME" />
+			<property name="species" column="OTHER" />
+		</subclass>
+
+		<subclass name="ImageContrastAgent" discriminator-value="ImageContrastAgent">
+			<property name="name" column="NAME" />
+			<property name="type" column="OTHER" />
+		</subclass>
+	</class>
+</hibernate-mapping>
