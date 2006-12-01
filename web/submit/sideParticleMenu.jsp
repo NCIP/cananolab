@@ -53,14 +53,14 @@
 								<span class="largerText">Function</span>
 								<br>
 								<br>
-								<span class="indented"><strong>-Therapeutics</strong> &nbsp;&nbsp;</span>
+								<span class="indented"><strong>-Therapeutic</strong> &nbsp;&nbsp;</span>
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
-										<a href="nanoparticleFunction.do?dispatch=setup&page=0&particleType=${particleType}&particleName=${particleName}&submitType=Therapeutics"> <em>add</em></a>
+										<a href="nanoparticleFunction.do?dispatch=setup&page=0&particleType=${particleType}&particleName=${particleName}&submitType=Therapeutic"> <em>add</em></a>
 									</c:when>
 								</c:choose>
 								<br>
-								<c:forEach var="aFunc" items="${funcTypeFuncs['Therapeutics']}">
+								<c:forEach var="aFunc" items="${funcTypeFuncs['Therapeutic']}">
 									<%java.util.HashMap paramMapTf = new java.util.HashMap();
 			paramMapTf.put("dispatch", pageContext
 					.getAttribute("dispatchValue"));
@@ -71,13 +71,14 @@
 			paramMapTf.put("functionId",
 					((gov.nih.nci.calab.dto.function.FunctionBean) pageContext
 							.getAttribute("aFunc")).getId());
-			paramMapTf.put("submitType", "Therapeutics");
+			paramMapTf.put("submitType", "Therapeutic");
 			pageContext.setAttribute("paramMapTf", paramMapTf);
 
 			%>
-									<span class="indented2"> <html:link forward="function" name="paramMapTf">${aFunc.viewTitle}</html:link> </span>
+									<span class="indented2"><html:link forward="function" name="paramMapTf">${aFunc.viewTitle}</html:link> </span>
 									<br>
 								</c:forEach>
+								<br>
 								<span class="indented"><strong>-Targeting</strong> &nbsp;&nbsp;</span>
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
@@ -103,6 +104,7 @@
 									<span class="indented2"> <html:link forward="function" name="paramMapTt">${aFunc.viewTitle}</html:link> </span>
 									<br>
 								</c:forEach>
+								<br>
 								<span class="indented"><strong>-Diagnostic Imaging</strong>&nbsp;&nbsp;</span>
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
@@ -128,6 +130,7 @@
 									<span class="indented2"> <html:link forward="function" name="paramMapTi">${aFunc.viewTitle}</html:link> </span>
 									<br>
 								</c:forEach>
+								<br>
 								<span class="indented"><strong>-Diagnostic Reporting</strong> &nbsp;&nbsp;</span>
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
