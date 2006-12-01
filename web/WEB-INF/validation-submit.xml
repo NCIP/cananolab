@@ -90,6 +90,18 @@
 				</var>
 			</field>
 		</form>
+
+		<form name="nanoparticleFunctionForm">
+			<field property="viewTitle" page="1" depends="required">
+				<arg position="0" key="viewTitle" bundle="submit" />
+			</field>
+			<field property="function.numberOfLinkages" page="0" depends="integer">
+				<arg position="0" key="function.numberOfLinkages" bundle="submit" />
+			</field>
+			<field property="numberOfAgentTargets" page="0" depends="integer" indexedListProperty="function.linkages">
+				<arg position="0" key="function.numberOfAgentTargets" bundle="submit" />
+			</field>
+		</form>
 		<form name="nanoparticleSizeForm">
 			<field property="achar.characterizationSource" page="1" depends="required">
 				<arg position="0" key="characterizationSource" bundle="submit" />
