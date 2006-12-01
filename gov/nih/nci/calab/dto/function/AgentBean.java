@@ -1,6 +1,7 @@
 package gov.nih.nci.calab.dto.function;
 
 import gov.nih.nci.calab.domain.nano.function.Agent;
+import gov.nih.nci.calab.domain.nano.function.AgentTarget;
 import gov.nih.nci.calab.domain.nano.function.Antibody;
 import gov.nih.nci.calab.domain.nano.function.DNA;
 import gov.nih.nci.calab.domain.nano.function.ImageContrastAgent;
@@ -23,13 +24,11 @@ import java.util.List;
 public class AgentBean {
 	
 	private String id;
-	private String type=CananoConstants.PEPTIDE;
-	private String name;
+	private String type=CananoConstants.PEPTIDE;	
 	private String description;
 	// otherValue can be "compoundName" for SamllMolecule; "type" for Probe and ImageContrastAgent;
-	//"speicies" for Antibody; or "sequence" for DNA and Peptide
+	//"speicies" for Antibody; or "sequence" for DNA and Peptide	
 	
-	private String otherValue;
 	private String numberOfAgentTargets;
 	
 	private List<AgentTargetBean>agentTargets=new ArrayList<AgentTargetBean>();
@@ -41,18 +40,23 @@ public class AgentBean {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+	public AgentBean(Agent agent) {
+		this.id=agent.getId().toString();
+		this.description=agent.getDescription();
+		for(AgentTarget agentTarget: agent.getAgentTargetCollection()) {
+			agentTargets.add(new AgentTargetBean(agentTarget));
+		}
+		this.numberOfAgentTargets=agentTargets.size()+"";
+	}
+	
 	public String getDescription() {
 		return description;
 	}
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
+
 	public String getType() {
 		return type;
 	}
@@ -65,12 +69,7 @@ public class AgentBean {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getOtherValue() {
-		return otherValue;
-	}
-	public void setOtherValue(String otherValue) {
-		this.otherValue = otherValue;
-	}
+
 	public String getNumberOfAgentTargets() {
 		return numberOfAgentTargets;
 	}
@@ -91,7 +90,7 @@ public class AgentBean {
 				doAgent.setId(new Long(getId()));
 			}
 			doAgent.setDescription(description);
-			doAgent.setSequence(otherValue);
+			doAgent.setSequence(((DNABean)this).getSequence());
 			for (AgentTargetBean agentTarget: getAgentTargets())
 			doAgent.getAgentTargetCollection().add(agentTarget.getDomainObj());
 			return doAgent;
@@ -101,7 +100,7 @@ public class AgentBean {
 				doAgent.setId(new Long(getId()));
 			}
 			doAgent.setDescription(description);
-			doAgent.setSequence(otherValue);
+			doAgent.setSequence(((PeptideBean)this).getSequence());
 			for (AgentTargetBean agentTarget: getAgentTargets())
 			doAgent.getAgentTargetCollection().add(agentTarget.getDomainObj());	
 			return doAgent;
@@ -111,8 +110,8 @@ public class AgentBean {
 				doAgent.setId(new Long(getId()));
 			}
 			doAgent.setDescription(description);
-			doAgent.setName(name);
-			doAgent.setCompoundName(otherValue);
+			doAgent.setName(((SmallMoleculeBean)this).getName());
+			doAgent.setCompoundName(((SmallMoleculeBean)this).getCompoundName());
 			for (AgentTargetBean agentTarget: getAgentTargets())
 			doAgent.getAgentTargetCollection().add(agentTarget.getDomainObj());	
 			return doAgent;
@@ -122,8 +121,8 @@ public class AgentBean {
 				doAgent.setId(new Long(getId()));
 			}
 			doAgent.setDescription(description);
-			doAgent.setName(name);
-			doAgent.setType(otherValue);
+			doAgent.setName(((ProbeBean)this).getName());
+			doAgent.setType(((ProbeBean)this).getType());
 			for (AgentTargetBean agentTarget: getAgentTargets())
 			doAgent.getAgentTargetCollection().add(agentTarget.getDomainObj());	
 			return doAgent;
@@ -133,8 +132,8 @@ public class AgentBean {
 				doAgent.setId(new Long(getId()));
 			}
 			doAgent.setDescription(description);
-			doAgent.setName(name);
-			doAgent.setSpecies(otherValue);
+			doAgent.setName(((AntibodyBean)this).getName());
+			doAgent.setSpecies(((AntibodyBean)this).getSpecies());
 			for (AgentTargetBean agentTarget: getAgentTargets())
 			doAgent.getAgentTargetCollection().add(agentTarget.getDomainObj());	
 			return doAgent;
@@ -144,8 +143,8 @@ public class AgentBean {
 				doAgent.setId(new Long(getId()));
 			}
 			doAgent.setDescription(description);
-			doAgent.setName(name);
-			doAgent.setType(otherValue);
+			doAgent.setName(((ImageContrastAgentBean)this).getName());
+			doAgent.setType(((ImageContrastAgentBean)this).getType());
 			for (AgentTargetBean agentTarget: getAgentTargets())
 			doAgent.getAgentTargetCollection().add(agentTarget.getDomainObj());	
 			return doAgent;
