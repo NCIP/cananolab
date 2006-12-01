@@ -16,6 +16,10 @@ public class CananoConstants {
 
 	public static final String CYTOXICITY_CHARACTERIZATION = "Cytoxicity";
 
+	public static final String APOPTOSIS_CELL_DEATH_METHOD_CYTOXICITY_CHARACTERIZATION = "apoptosis";
+
+	public static final String NECROSIS_CELL_DEATH_METHOD_CYTOXICITY_CHARACTERIZATION = "necrosis";
+
 	public static final String BLOOD_CONTACT_IMMUNOTOXICITY_CHARACTERIZATION = "Blood Contact";
 
 	public static final String IMMUNE_CELL_FUNCTION_IMMUNOTOXICITY_CHARACTERIZATION = "Immune Cell Function";
