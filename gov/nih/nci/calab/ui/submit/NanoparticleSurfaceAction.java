@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSurfaceAction.java,v 1.9 2006-11-22 23:19:37 pansu Exp $ */
+/* CVS $Id: NanoparticleSurfaceAction.java,v 1.10 2006-12-01 21:04:31 zengje Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Surface;
@@ -135,7 +135,6 @@ public class NanoparticleSurfaceAction extends BaseCharacterizationAction {
 		String particleType = (String) theForm.get("particleType");
 		String particleName = (String) theForm.get("particleName");
 		String firstOption = InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-		InitSessionSetup.getInstance().setAllSurfaceTypes(session);
 		InitSessionSetup.getInstance().setAllAreaMeasureUnits(session);
 		InitSessionSetup.getInstance().setAllChargeMeasureUnits(session);
 		InitSessionSetup.getInstance().setAllDensityMeasureUnits(session);
