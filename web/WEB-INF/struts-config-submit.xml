@@ -592,7 +592,7 @@
 			<forward name="input" path="submit.load.characterization.table" />
 		</action>
 		<action name="nanoparticleFunctionForm" parameter="dispatch" path="/nanoparticleFunction" type="gov.nih.nci.calab.ui.submit.NanoparticleFunctionAction" input="input" >
-			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroPlateAggregation" path="submit.addimmunotoxicity.plateaggregation" type="java.lang.Exception" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addparticle.function" path="submit.addparticle.function" type="java.lang.Exception" />
 			<forward name="success" path="submit.message" />
 			<forward name="input" path="submit.addparticle.function" />
 		</action>
