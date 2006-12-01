@@ -160,6 +160,8 @@ public class CananoConstants {
 	public static final String NCL_REPORT = "NCL Report";
 	
 	public static final int MAX_VIEW_TITLE_LENGTH=25;
+	
+	public static final String[] CELLLINES = new String[] {"LLC-PK1", "Hep-G2"};
 
 
 }
