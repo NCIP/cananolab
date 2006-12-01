@@ -38,7 +38,7 @@
 			<item value="Leukocyte Proliferation" link="invitroImmunotoxicityLeukocyteProliferation.do?dispatch=setup&amp;page=0" />
 			<item value="Phagocytosis" link="invitroImmunotoxicityPhagocytosis.do?dispatch=setup&amp;page=0" />
 			<item value="Cytokine Induction" link="invitroImmunotoxicityCytokineInduction.do?dispatch=setup&amp;page=0" />
-			<item value="CFU-GM" link="invitroImmunotoxicityCFU_GM.do?dispatch=setup&amp;page=0" />
+			<item value="CFU-GM" link="invitroImmunotoxicityCFU-GM.do?dispatch=setup&amp;page=0" />
 			<item value="Complement Activation" link="invitroImmunotoxicityComplementActivation.do?dispatch=setup&amp;page=0" />
 			<item value="Cytotoxic Activity of NK Cells" link="invitroImmunotoxicityNKCellCytotoxicActivity.do?dispatch=setup&amp;page=0" />
 		</putList>
@@ -217,6 +217,7 @@
 		<put name="actionName" value="invitroImmunotoxicityHemolysis" />
 		<put name="formName" value="invitroImmunotoxicityHemolysisForm" />
 		<put name="dataLabel" value="Percent Hemolysis" />
+		<put name="dataUnit" value="%" />
 	</definition>
 
 	<definition name="submit.addimmunotoxicity.hemolysis" extends="calab.home">
@@ -233,6 +234,7 @@
 		<put name="actionName" value="invitroImmunotoxicityCoagulation" />
 		<put name="formName" value="invitroImmunotoxicityCoagulationForm" />
 		<put name="dataLabel" value="Coagulation Time" />
+		<put name="dataUnit" value="seconds" />
 
 	</definition>
 
@@ -250,6 +252,7 @@
 		<put name="actionName" value="invitroImmunotoxicityPlateAggregation" />
 		<put name="formName" value="invitroImmunotoxicityPlateAggregationForm" />
 		<put name="dataLabel" value="Platelet Aggregation Percentage" />
+		<put name="dataUnit" value="%" />
 
 	</definition>
 
@@ -267,6 +270,7 @@
 		<put name="actionName" value="invitroImmunotoxicityProteinBinding" />
 		<put name="formName" value="invitroImmunotoxicityProteinBindingForm" />
 		<put name="dataLabel" value="Protein Binding Percentage" />
+		<put name="dataUnit" value="%" />
 
 	</definition>
 
@@ -284,6 +288,7 @@
 		<put name="actionName" value="invitroImmunotoxicityComplementActivation" />
 		<put name="formName" value="invitroImmunotoxicityComplementActivationForm" />
 		<put name="dataLabel" value="Complement Activation Percentage" />
+		<put name="dataUnit" value="%" />
 
 	</definition>
 
@@ -301,6 +306,7 @@
 		<put name="actionName" value="invitroImmunotoxicityCytokineInduction" />
 		<put name="formName" value="invitroImmunotoxicityCytokineInductionForm" />
 		<put name="dataLabel" value="Cytokine Concentraion" />
+		<put name="dataUnit" value="%" />
 
 	</definition>
 
@@ -318,6 +324,7 @@
 		<put name="actionName" value="invitroImmunotoxicityChemotaxis" />
 		<put name="formName" value="invitroImmunotoxicityChemotaxisForm" />
 		<put name="dataLabel" value="Relative Fluorescent Values" />
+		<put name="dataUnit" value="RFU" />
 
 	</definition>
 
@@ -335,6 +342,7 @@
 		<put name="actionName" value="invitroImmunotoxicityNKCellCytotoxicActivity" />
 		<put name="formName" value="invitroImmunotoxicityNKCellCytotoxicActivityForm" />
 		<put name="dataLabel" value="NKCellCytotoxicActivity Percentage" />
+		<put name="dataUnit" value="%" />
 
 	</definition>
 
@@ -351,7 +359,8 @@
 		<put name="pageTitle" value="Invitro Characterization - Immunotoxicity - Leukocyte Proliferation" />
 		<put name="actionName" value="invitroImmunotoxicityLeukocyteProliferation" />
 		<put name="formName" value="invitroImmunotoxicityLeukocyteProliferationForm" />
-		<put name="dataLabel" value="LeukocyteProliferation" />
+		<put name="dataLabel" value="Leukocyte Proliferation Percentage" />
+		<put name="dataUnit" value="%" />
 
 	</definition>
 
@@ -366,9 +375,10 @@
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
 		<put name="submitContent" value="/submit/bodyInvitroCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Immunotoxicity - CFU-GM" />
-		<put name="actionName" value="invitroImmunotoxicityCFU_GM" />
-		<put name="formName" value="invitroImmunotoxicityCFU_GM" />
+		<put name="actionName" value="invitroImmunotoxicityCFU-GM" />
+		<put name="formName" value="invitroImmunotoxicityCFU_GMForm" />
 		<put name="dataLabel" value="CFU_GM" />
+		<put name="dataUnit" value="CFU" />
 
 	</definition>
 
@@ -386,6 +396,7 @@
 		<put name="actionName" value="invitroImmunotoxicityOxidativeBurst" />
 		<put name="formName" value="invitroImmunotoxicityOxidativeBurstForm" />
 		<put name="dataLabel" value="Oxidative Burst Percentage" />
+		<put name="dataUnit" value="%" />
 
 	</definition>
 
@@ -403,6 +414,7 @@
 		<put name="actionName" value="invitroImmunotoxicityPhagocytosis" />
 		<put name="formName" value="invitroImmunotoxicityPhagocytosisForm" />
 		<put name="dataLabel" value="Fold Phagocytosis Induction" />
+		<put name="dataUnit" value="fold" />
 
 	</definition>
 
@@ -420,7 +432,8 @@
 		<put name="actionName" value="invitroCytotoxicityCellViability" />
 		<put name="formName" value="invitroCytotoxicityCellViabilityForm" />
 		<put name="dataLabel" value="Percent Cell Viability" />
-		<put name="detailPage" value="bodyCellViabilityInfo.jsp" />
+		<put name="dataUnit" value="%" />
+		<put name="detailPage" value="bodyCytotoxicityInfo.jsp" />
 	</definition>
 
 	<definition name="submit.addcytotoxicity.cellviability" extends="calab.home">
@@ -433,11 +446,12 @@
 	<definition name="submit.addcytotoxicity.caspase3activation.content" extends="submit.content.home">
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
 		<put name="submitContent" value="/submit/bodyInvitroCharacterization.jsp" />
-		<put name="pageTitle" value="Invitro Characterization - Immunotoxicity - Hemolysis" />
-		<put name="actionName" value="invitroImmunotoxicityHemolysis" />
-		<put name="formName" value="invitroImmunotoxicityHemolysisForm" />
-		<put name="dataLabel" value="Percent Hemolysis" />
-
+		<put name="pageTitle" value="Invitro Characterization - Cytotoxicity - Caspase 3 Activation" />
+		<put name="actionName" value="invitroCytotoxicityCaspase3Activation" />
+		<put name="formName" value="invitroCytotoxicityCaspase3ActivationForm" />
+		<put name="dataLabel" value="Percent Caspase 3 Activation" />
+		<put name="dataUnit" value="%" />
+		<put name="detailPage" value="bodyCytotoxicityInfo.jsp" />
 	</definition>
 
 	<definition name="submit.addcytotoxicity.caspase3activation" extends="calab.home">
@@ -454,6 +468,7 @@
 		<put name="actionName" value="invitroToxicityEnzymeInduction" />
 		<put name="formName" value="invitroToxicityEnzymeInductionForm" />
 		<put name="dataLabel" value="Enzyme Induction Percentage" />
+		<put name="dataUnit" value="%" />
 
 	</definition>
 
@@ -471,6 +486,7 @@
 		<put name="actionName" value="invitroToxicityOxidativeStress" />
 		<put name="formName" value="invitroToxicityOxidativeStressForm" />
 		<put name="dataLabel" value="Oxidative Stress Percentage" />
+		<put name="dataUnit" value="%" />
 
 	</definition>
 
@@ -488,6 +504,7 @@
 		<put name="actionName" value="invitroMetabolicStabilityCYP450" />
 		<put name="formName" value="invitroMetabolicStabilityCYP450Form" />
 		<put name="dataLabel" value="CYP450 Percentage" />
+		<put name="dataUnit" value="%" />
 
 	</definition>
 
@@ -505,6 +522,7 @@
 		<put name="actionName" value="invitroMetabolicStabilityROS" />
 		<put name="formName" value="invitroMetabolicStabilityROSForm" />
 		<put name="dataLabel" value="ROS Percentage" />
+		<put name="dataUnit" value="%" />
 
 	</definition>
 
@@ -522,6 +540,7 @@
 		<put name="actionName" value="invitroMetabolicStabilityGlucuronidationSulphation" />
 		<put name="formName" value="invitroMetabolicStabilityGlucuronidationSulphationForm" />
 		<put name="dataLabel" value="Glucuronidation Sulphation Percentage" />
+		<put name="dataUnit" value="%" />
 	</definition>
 
 	<definition name="submit.addmetabolicstability.glucuronidationsulphation" extends="calab.home">
