@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.67 2006-12-01 14:51:09 beasleyj Exp $ */
+/* CVS $Id: LookupService.java,v 1.68 2006-12-01 20:10:53 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -907,7 +907,7 @@ public class LookupService {
 
 		String[] therapeuticsAgentTypes = new String[] { "Peptide",
 				"Small Molecule", "Antibody", "DNA"};
-		agentTypes.put("Therapeutics", therapeuticsAgentTypes);
+		agentTypes.put("Therapeutic", therapeuticsAgentTypes);
 		String[] targetingAgentTypes = new String[] { "Peptide",
 				"Small Molecule", "Antibody" };
 		agentTypes.put("Targeting", targetingAgentTypes);
