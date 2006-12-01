@@ -3,6 +3,7 @@ package gov.nih.nci.calab.ui.core;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
+import gov.nih.nci.calab.dto.function.FunctionBean;
 import gov.nih.nci.calab.dto.inventory.AliquotBean;
 import gov.nih.nci.calab.dto.inventory.ContainerBean;
 import gov.nih.nci.calab.dto.inventory.ContainerInfoBean;
@@ -484,6 +485,17 @@ public class InitSessionSetup {
 			session.setAttribute("charTypeReports", reportBeans);
 		}
 		session.removeAttribute("newCharacterizationCreated");
+		
+		if (session.getAttribute("funcTypeFuncs") == null
+				|| session.getAttribute("newFunctionCreated") != null
+				|| session.getAttribute("newParticleCreated") != null) {
+			SearchNanoparticleService service = new SearchNanoparticleService();
+			Map<String, List<FunctionBean>> funcTypeFuncs = service
+					.getFunctionInfo(particleName, particleType);
+			session.setAttribute("funcTypeFuncs", funcTypeFuncs);
+		}
+
+		session.removeAttribute("newFunctionCreated");
 		session.removeAttribute("newParticleCreated");
 		session.removeAttribute("detailPage");
 		setStaticDropdowns(session);
@@ -605,9 +617,8 @@ public class InitSessionSetup {
 					.getSolubilityDistributionGraphTypes();
 			session.getServletContext().setAttribute(
 					"allSolubilityDistributionGraphTypes", graphTypes);
-}
-}
-
+		}
+	}
 
 	public void setAllMorphologyTypes(HttpSession session) throws Exception {
 		if (session.getServletContext().getAttribute("allMorphologyTypes") == null) {
@@ -616,10 +627,12 @@ public class InitSessionSetup {
 					morphologyTypes);
 		}
 	}
-	
-	public void addMorphologyType(HttpSession session, String option) throws Exception {
+
+	public void addMorphologyType(HttpSession session, String option)
+			throws Exception {
 		setAllMorphologyTypes(session);
-		String[] morphologyTypes = (String[]) session.getServletContext().getAttribute("allMorphologyTypes");
+		String[] morphologyTypes = (String[]) session.getServletContext()
+				.getAttribute("allMorphologyTypes");
 		if (!StringHelper.contains(morphologyTypes, option, true)) {
 			session.getServletContext().setAttribute("allMorphologyTypes",
 					StringHelper.add(morphologyTypes, option));
@@ -634,15 +647,17 @@ public class InitSessionSetup {
 		}
 	}
 
-	public void addShapeType(HttpSession session, String option) throws Exception {
+	public void addShapeType(HttpSession session, String option)
+			throws Exception {
 		setAllShapeTypes(session);
-		String[] shapeTypes = (String[]) session.getServletContext().getAttribute("allShapeTypes");
+		String[] shapeTypes = (String[]) session.getServletContext()
+				.getAttribute("allShapeTypes");
 		if (!StringHelper.contains(shapeTypes, option, true)) {
 			session.getServletContext().setAttribute("allShapeTypes",
 					StringHelper.add(shapeTypes, option));
 		}
 	}
-	
+
 	public void setAllStressorTypes(HttpSession session) throws Exception {
 		if (session.getServletContext().getAttribute("allStessorTypes") == null) {
 			String[] stressorTypes = lookupService.getAllStressorTypes();
@@ -685,7 +700,7 @@ public class InitSessionSetup {
 
 	public void setAllAreaMeasureUnits(HttpSession session) throws Exception {
 		if (session.getServletContext().getAttribute("allAreaMeasureUnits") == null) {
-			String[]areaUnits = lookupService.getAllAreaMeasureUnits();
+			String[] areaUnits = lookupService.getAllAreaMeasureUnits();
 			session.getServletContext().setAttribute("allAreaMeasureUnits",
 					areaUnits);
 		}
@@ -730,35 +745,35 @@ public class InitSessionSetup {
 					densityUnits);
 		}
 	}
-	
+
 	public void setAllAgentTypes(HttpSession session) throws Exception {
 		if (session.getServletContext().getAttribute("allAgentTypes") == null) {
-			Map<String,String[]> agentTypes = lookupService.getAllAgentTypes();
+			Map<String, String[]> agentTypes = lookupService.getAllAgentTypes();
 			session.getServletContext().setAttribute("allAgentTypes",
 					agentTypes);
 		}
 	}
-	
+
 	public void setAllAgentTargetTypes(HttpSession session) throws Exception {
 		if (session.getServletContext().getAttribute("allAgentTargetTypes") == null) {
-			Map<String,String[]> agentTargetTypes = lookupService.getAllAgentTargetTypes();
+			Map<String, String[]> agentTargetTypes = lookupService
+					.getAllAgentTargetTypes();
 			session.getServletContext().setAttribute("allAgentTargetTypes",
 					agentTargetTypes);
 		}
 	}
 
-	
 	public void setAllTimeUnits(HttpSession session) throws Exception {
 		if (session.getServletContext().getAttribute("allTimeUnits") == null) {
 			String[] timeUnits = lookupService.getAllTimeUnits();
-			session.getServletContext().setAttribute("allTimeUnits",
-					timeUnits);
+			session.getServletContext().setAttribute("allTimeUnits", timeUnits);
 		}
 	}
 
 	public void setAllConcentrationUnits(HttpSession session) throws Exception {
 		if (session.getServletContext().getAttribute("allConcentrationUnits") == null) {
-			String[] concentrationUnits = lookupService.getAllConcentrationUnits();
+			String[] concentrationUnits = lookupService
+					.getAllConcentrationUnits();
 			session.getServletContext().setAttribute("allConcentrationUnits",
 					concentrationUnits);
 		}
