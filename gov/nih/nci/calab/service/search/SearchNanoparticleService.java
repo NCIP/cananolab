@@ -3,22 +3,27 @@ package gov.nih.nci.calab.service.search;
 import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
+import gov.nih.nci.calab.domain.nano.function.Function;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
+import gov.nih.nci.calab.dto.LabFileBean;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.common.UserBean;
+import gov.nih.nci.calab.dto.function.FunctionBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
-import gov.nih.nci.calab.dto.LabFileBean;
 import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.io.File;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
+
+import java.io.File;
 
 /**
  * This class includes methods invovled in searching nanoparticles.
@@ -193,14 +198,6 @@ public class SearchNanoparticleService {
 		return particleBean;
 	}
 
-	/**
-	 * Query nanoparticle characterization information such as id, name and identification name
-	 * 
-	 * @param particleName
-	 * @param particleType
-	 * @return List of CharacterizationBean
-	 * @throws Exception
-	 */
 	public List<CharacterizationBean> getCharacterizationInfo(
 			String particleName, String particleType) throws Exception {
 		List<CharacterizationBean> charBeans = new ArrayList<CharacterizationBean>();
@@ -232,17 +229,128 @@ public class SearchNanoparticleService {
 		}
 		return charBeans;
 	}
-	
+
+	public Characterization getCharacterizationBy(String charId)
+			throws Exception {
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		Characterization aChar = null;
+		try {
+
+			ida.open();
+			List results = ida
+					.search(" from Characterization chara left join fetch chara.composingElementCollection left join fetch chara.derivedBioAssayDataCollection where chara.id="
+							+ charId);
+			for (Object obj : results) {
+				aChar = (Characterization) obj;
+			}
+		} catch (Exception e) {
+			logger.error("Problem finding characterization");
+			throw e;
+		} finally {
+			ida.close();
+		}
+		return aChar;
+	}
+
+	public Characterization getCharacterizationAndTableBy(String charId)
+			throws Exception {
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		Characterization aChar = null;
+		try {
+
+			ida.open();
+			List results = ida
+					.search(" from Characterization chara left join fetch chara.derivedBioAssayDataCollection assayData"
+							+ " left join fetch assayData.datumCollection datum left join fetch datum.conditionCollection"
+							+ " where chara.id=" + charId);
+			for (Object obj : results) {
+				aChar = (Characterization) obj;
+			}
+		} catch (Exception e) {
+			logger.error("Problem finding characterization");
+			throw e;
+		} finally {
+			ida.close();
+		}
+		return aChar;
+	}
+
+	public Map<String, List<FunctionBean>> getFunctionInfo(String particleName,
+			String particleType) throws Exception {
+		Map<String, List<FunctionBean>> funcTypeFuncs = new HashMap<String, List<FunctionBean>>();
+
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+
+			ida.open();
+			List results = ida
+					.search("select func.id, func.type, func.identificationName from Nanoparticle particle join particle.functionCollection func where particle.name='"
+							+ particleName
+							+ "' and particle.type='"
+							+ particleType + "'");
+			List<FunctionBean> funcs = new ArrayList<FunctionBean>();
+			for (Object obj : results) {
+				String funcId = ((Object[]) obj)[0].toString();
+				String funcType = ((Object[]) obj)[1].toString();
+				String viewTitle = (String) (((Object[]) obj)[2]);
+				FunctionBean funcBean = new FunctionBean(funcId, funcType,
+						viewTitle);
+				if (funcTypeFuncs.get(funcType) != null) {
+					funcs = (List<FunctionBean>) (funcTypeFuncs.get(funcType));
+				} else {
+					funcs = new ArrayList<FunctionBean>();
+					funcTypeFuncs.put(funcType, funcs);
+				}
+				funcs.add(funcBean);
+
+			}
+		} catch (Exception e) {
+			logger.error("Problem finding characterization info for particle: "
+					+ particleName);
+			throw e;
+		} finally {
+			ida.close();
+		}
+		return funcTypeFuncs;
+	}
+
+	public Function getFunctionBy(String funcId) throws Exception {
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		Function func = null;
+		try {
+
+			ida.open();
+			List results = ida
+					.search(" from Function func left join fetch func.linkageCollection link left join fetch link.agent.agentTargetCollection where func.id="
+							+ funcId);
+			for (Object obj : results) {
+				func = (Function) obj;
+			}
+		} catch (Exception e) {
+			logger.error("Problem finding functions");
+			throw e;
+		} finally {
+			ida.close();
+		}
+		return func;
+	}
+
 	/**
-	 * internal method to retrieve sample report information 
+	 * internal method to retrieve sample report information
 	 * 
 	 * @param particleName
 	 * @param particleType
-	 * @param wCollection - which collection, reportCollection or AssociatedFileCollection
+	 * @param wCollection -
+	 *            which collection, reportCollection or AssociatedFileCollection
 	 * @return List of LabFileBean
 	 * @throws Exception
 	 */
-	private List<LabFileBean> getReport(String particleName, String particleType, String wCollection) throws Exception {
+	private List<LabFileBean> getReport(String particleName,
+			String particleType, String wCollection) throws Exception {
 		List<LabFileBean> fileBeans = new ArrayList<LabFileBean>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
@@ -251,10 +359,12 @@ public class SearchNanoparticleService {
 
 			ida.open();
 			List results = ida
-						.search("select report.id, report.filename, report.path from Nanoparticle particle join particle." + wCollection + " report where particle.name='"
-								+ particleName
-								+ "' and particle.type='"
-								+ particleType + "'");
+					.search("select report.id, report.filename, report.path from Nanoparticle particle join particle."
+							+ wCollection
+							+ " report where particle.name='"
+							+ particleName
+							+ "' and particle.type='"
+							+ particleType + "'");
 
 			for (Object obj : results) {
 				String reportId = ((Object[]) obj)[0].toString();
@@ -262,9 +372,9 @@ public class SearchNanoparticleService {
 				String path = (String) (((Object[]) obj)[2]);
 				String toolTip = "";
 				int idx = path.lastIndexOf(File.separator);
-				if (idx > 0) 
-					toolTip = path.substring(idx+1);
-				
+				if (idx > 0)
+					toolTip = path.substring(idx + 1);
+
 				LabFileBean fileBean = new LabFileBean();
 				fileBean.setId(reportId);
 				fileBean.setPath(path);
@@ -281,83 +391,24 @@ public class SearchNanoparticleService {
 		}
 		return fileBeans;
 	}
-	
+
 	/**
-	 * retrieve sample report information including reportCollection and associatedFileCollection
+	 * retrieve sample report information including reportCollection and
+	 * associatedFileCollection
 	 * 
 	 * @param particleName
 	 * @param particleType
 	 * @return List of LabFileBean
 	 * @throws Exception
 	 */
-	public List<LabFileBean> getReportInfo(
-			String particleName, String particleType) throws Exception {
+	public List<LabFileBean> getReportInfo(String particleName,
+			String particleType) throws Exception {
 		List<LabFileBean> fileBeans = new ArrayList<LabFileBean>();
-		
-		fileBeans.addAll(getReport(particleName, particleType, "reportCollection"));
-		fileBeans.addAll(getReport(particleName, particleType, "associatedFileCollection"));
+
+		fileBeans.addAll(getReport(particleName, particleType,
+				"reportCollection"));
+		fileBeans.addAll(getReport(particleName, particleType,
+				"associatedFileCollection"));
 		return fileBeans;
-	}
-
-	/**
-	 * retrieve characterization information based on id
-	 * 
-	 * @param charId
-	 * @return characterization 
-	 * @throws Exception
-	 */
-	public Characterization getCharacterizationBy(String charId)
-			throws Exception {
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
-		Characterization aChar=null;
-		try {
-
-			ida.open();
-			List results = ida
-					.search(" from Characterization chara left join fetch chara.composingElementCollection left join fetch chara.derivedBioAssayDataCollection where chara.id="
-							+ charId);
-			for(Object obj: results) {
-				aChar=(Characterization)obj;				
-			}
-		} catch (Exception e) {
-			logger.error("Problem finding characterization");
-			throw e;
-		} finally {
-			ida.close();
-		}
-		return aChar;
-	}
-	
-	/**
-	 * Query characterization, datum, condition information  based on id
-	 * 
-	 * @param charId
-	 * @return characterization 
-	 * @throws Exception
-	 */
-	public Characterization getCharacterizationAndTableBy(String charId)
-			throws Exception {
-		IDataAccess ida = (new DataAccessProxy())
-			.getInstance(IDataAccess.HIBERNATE);
-		Characterization aChar=null;
-		try {
-
-			ida.open();
-			List results = ida
-			.search(" from Characterization chara left join fetch chara.derivedBioAssayDataCollection assayData" +
-					" left join fetch assayData.datumCollection datum left join fetch datum.conditionCollection" +
-					" where chara.id="
-					+ charId);
-			for(Object obj: results) {
-				aChar=(Characterization)obj;				
-			}
-		} catch (Exception e) {
-			logger.error("Problem finding characterization");
-			throw e;
-		} finally {
-			ida.close();
-		}
-		return aChar;
 	}
 }
