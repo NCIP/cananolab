@@ -73,12 +73,7 @@ public class PurityBean extends CharacterizationBean {
 		
 		if (this.id != null && !this.id.equals(""))
 			purity.setId(new Long(this.id));
-		
-		/*
-		purity.setHomogeneityInLigand(new Float(this.homogeneityInLigand));
-		purity.setResidualSolvents(this.residualSolvents);
-		purity.setFreeComponents(new Measurement(this.freeComponents, this.freeComponentsUnit));
-		*/
+
 		return purity;
 	}
 
@@ -89,38 +84,5 @@ public class PurityBean extends CharacterizationBean {
 	public void setId(String id) {
 		this.id = id;
 	}
-/*
-	public String getFreeComponents() {
-		return freeComponents;
-	}
-
-	public void setFreeComponents(String freeComponents) {
-		this.freeComponents = freeComponents;
-	}
-
-	public String getFreeComponentsUnit() {
-		return freeComponentsUnit;
-	}
-
-	public void setFreeComponentsUnit(String freeComponentsUnit) {
-		this.freeComponentsUnit = freeComponentsUnit;
-	}
-
-	public String getHomogeneityInLigand() {
-		return homogeneityInLigand;
-	}
-
-	public void setHomogeneityInLigand(String homogeneityInLigand) {
-		this.homogeneityInLigand = homogeneityInLigand;
-	}
-
-	public String getResidualSolvents() {
-		return residualSolvents;
-	}
-
-	public void setResidualSolvents(String residualSolvents) {
-		this.residualSolvents = residualSolvents;
-	}
-*/
 
 }
