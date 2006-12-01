@@ -18,12 +18,21 @@
 		<td class="label">
 			<c:choose>
 				<c:when test="${canUserUpdateParticle eq 'true'}">
-					<html:text property="achar.cellLine" />
+					<html:select property="achar.cellLine">
+						<option value=""></option>
+						<html:options name="allCellLines" />
+						<option value="Other">
+							Other
+						</option>
+					</html:select>
 				</c:when>
 				<c:otherwise>
 					${achar.cellLine}&nbsp;
 				</c:otherwise>
 			</c:choose>
+		</td>
+		<td class="label" colspan="2">
+			<strong>Other Cell Line</strong>&nbsp;<html:text property="achar.otherCellLine" />
 		</td>
 	</tr>
 </table>
