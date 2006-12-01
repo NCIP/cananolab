@@ -7,6 +7,7 @@ package gov.nih.nci.calab.ui.submit;
  */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
+import gov.nih.nci.calab.domain.nano.characterization.invitro.Caspase3Activation;
 import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.dto.characterization.invitro.Caspase3ActivationBean;
@@ -121,6 +122,7 @@ public class InvitroCaspase3ActivationAction extends BaseCharacterizationAction 
 		InitSessionSetup.getInstance().setAllSizeDistributionGraphTypes(session);
 		InitSessionSetup.getInstance().setAllControlTypes(session);
 		InitSessionSetup.getInstance().setAllConditionTypes(session);
+		InitSessionSetup.getInstance().setAllConditionUnits(session);
 		InitSessionSetup.getInstance().setAllConcentrationUnits(session);
 		InitSessionSetup.getInstance().setAllTimeUnits(session);
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
@@ -148,7 +150,7 @@ public class InvitroCaspase3ActivationAction extends BaseCharacterizationAction 
 	}
 
 	protected void setFormCharacterizationBean(DynaValidatorForm theForm, Characterization aChar) throws Exception {
-		Caspase3ActivationBean charBean=new Caspase3ActivationBean(aChar);
+		Caspase3ActivationBean charBean=new Caspase3ActivationBean((Caspase3Activation)aChar);
 		theForm.set("achar", charBean);		
 	}
 }
