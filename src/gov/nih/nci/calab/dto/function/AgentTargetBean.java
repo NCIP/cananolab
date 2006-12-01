@@ -10,22 +10,37 @@ import gov.nih.nci.calab.service.util.CananoConstants;
  * the view page.
  * 
  * @author pansu
- *
+ * 
  */
 public class AgentTargetBean {
-	
+
 	private String id;
-	
+
 	private String description;
 
 	private String name;
-	
+
 	private String type;
 
 	public AgentTargetBean() {
-		
+		super();
+		// TODO Auto-generated constructor stub
 	}
-	
+
+	public AgentTargetBean(AgentTarget agentTarget) {
+		this.id = agentTarget.getId().toString();
+		this.description = agentTarget.getDescription();
+		if (agentTarget instanceof Antigen) {
+			this.type = CananoConstants.ANTIGEN;
+			this.name = ((Antigen) agentTarget).getName();
+		}
+		if (agentTarget instanceof Receptor) {
+			this.type = CananoConstants.RECEPTOR;
+			this.name = ((Receptor) agentTarget).getName();
+		}
+
+	}
+
 	public String getDescription() {
 		return description;
 	}
@@ -49,7 +64,7 @@ public class AgentTargetBean {
 	public void setType(String type) {
 		this.type = type;
 	}
-	
+
 	public String getId() {
 		return id;
 	}
@@ -58,8 +73,8 @@ public class AgentTargetBean {
 		this.id = id;
 	}
 
-	public AgentTarget getDomainObj(){
-		if (type.equals(CananoConstants.RECEPTOR)){
+	public AgentTarget getDomainObj() {
+		if (type.equals(CananoConstants.RECEPTOR)) {
 			Receptor doReceptor = new Receptor();
 			if (getId() != null && getId().length() > 0) {
 				doReceptor.setId(new Long(getId()));
@@ -76,6 +91,6 @@ public class AgentTargetBean {
 			doAntigen.setName(name);
 			return doAntigen;
 		}
-		
+
 	}
 }
