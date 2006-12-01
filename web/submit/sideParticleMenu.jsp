@@ -75,7 +75,7 @@
 			pageContext.setAttribute("paramMapTf", paramMapTf);
 
 			%>
-									<span class="indented2"> <html:link forward="function" name="paramMapTf">${aFunc.name}: ${aFunc.viewTitle}</html:link> </span>
+									<span class="indented2"> <html:link forward="function" name="paramMapTf">${aFunc.viewTitle}</html:link> </span>
 									<br>
 								</c:forEach>
 								<span class="indented"><strong>-Targeting</strong> &nbsp;&nbsp;</span>
@@ -100,7 +100,7 @@
 			pageContext.setAttribute("paramMapTt", paramMapTt);
 
 			%>
-									<span class="indented2"> <html:link forward="function" name="paramMapTt">${aFunc.name}: ${aFunc.viewTitle}</html:link> </span>
+									<span class="indented2"> <html:link forward="function" name="paramMapTt">${aFunc.viewTitle}</html:link> </span>
 									<br>
 								</c:forEach>
 								<span class="indented"><strong>-Diagnostic Imaging</strong>&nbsp;&nbsp;</span>
@@ -125,7 +125,7 @@
 			pageContext.setAttribute("paramMapTi", paramMapTi);
 
 			%>
-									<span class="indented2"> <html:link forward="function" name="paramMapTi">${aFunc.name}: ${aFunc.viewTitle}</html:link> </span>
+									<span class="indented2"> <html:link forward="function" name="paramMapTi">${aFunc.viewTitle}</html:link> </span>
 									<br>
 								</c:forEach>
 								<span class="indented"><strong>-Diagnostic Reporting</strong> &nbsp;&nbsp;</span>
@@ -150,7 +150,7 @@
 			pageContext.setAttribute("paramMapTr", paramMapTr);
 
 			%>
-									<span class="indented2"> <html:link forward="function" name="paramMapTr" >${aFunc.name}: ${aFunc.viewTitle}</html:link> </span>
+									<span class="indented2"> <html:link forward="function" name="paramMapTr" >${aFunc.viewTitle}</html:link> </span>
 									<br>
 								</c:forEach>
 								<br>
@@ -192,7 +192,8 @@
 										<a href="submitAction.do?submitType=tox"> <em>add</em></a>
 									</c:when>
 								</c:choose>
-								<c:forEach var="aChar" items="${charTypeChars['tox']}">
+								<br>
+								<c:forEach var="aChar" items="${charTypeChars['toxicity']}">
 									<%java.util.HashMap toxicityParamMap = new java.util.HashMap();
 			toxicityParamMap.put("dispatch", pageContext
 					.getAttribute("dispatchValue"));
@@ -206,13 +207,10 @@
 							((gov.nih.nci.calab.dto.characterization.CharacterizationBean) pageContext
 									.getAttribute("aChar")).getId());
 			toxicityParamMap.put("submitType", "tox");
-			pageContext.setAttribute("toxicityParamMap", toxicityParamMap);
-
-			%>
-									<span class="indented2"> <html:link forward="${aChar.name}" name="toxicityParamMap" title="${aChar.name}">${aChar.viewTitle}</html:link> </span>
+			pageContext.setAttribute("toxicityParamMap", toxicityParamMap);			%>
+									<span class="indented3"> <html:link forward="${aChar.name}" name="toxicityParamMap" title="${aChar.name}">${aChar.viewTitle}</html:link></span>
 									<br>
-								</c:forEach>
-								<br>
+								</c:forEach>								
 								<span class="indented3"><strong>-Cytotoxicity</strong> &nbsp;&nbsp;</span>
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
