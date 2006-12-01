@@ -4,6 +4,7 @@ import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.invitro.Caspase3Activation;
 
 import gov.nih.nci.calab.dto.characterization.*;
+import gov.nih.nci.calab.service.util.CananoConstants;
 
 import java.util.List;
 
@@ -18,7 +19,8 @@ import java.util.List;
 public class Caspase3ActivationBean extends CharacterizationBean {
 	
 	private String cellLine;	
-	private String cellDeathMethod;
+	private String otherCellLine;
+//	private String cellDeathMethod;
 	
 	public Caspase3ActivationBean() {
 		super();
@@ -28,7 +30,7 @@ public class Caspase3ActivationBean extends CharacterizationBean {
 		super(aChar);
 
 		this.cellLine = aChar.getCellLine();
-		this.cellDeathMethod = aChar.getCellDeathMethod();
+//		this.cellDeathMethod = aChar.getCellDeathMethod();
 	}
 	
 	public void setDerivedBioAssayDataList(
@@ -54,7 +56,19 @@ public class Caspase3ActivationBean extends CharacterizationBean {
 	public Caspase3Activation getDomainObj() {
 		Caspase3Activation caspase3Activation = new Caspase3Activation();
 		super.updateDomainObj(caspase3Activation);
-		caspase3Activation.setCellLine(this.cellLine);
+		if (cellLine.equals(CananoConstants.OTHER)) {
+			caspase3Activation.setCellLine(this.otherCellLine);
+		} else {
+			caspase3Activation.setCellLine(this.cellLine);
+		}
 		return caspase3Activation;
+	}
+
+	public String getOtherCellLine() {
+		return otherCellLine;
+	}
+
+	public void setOtherCellLine(String otherCellLine) {
+		this.otherCellLine = otherCellLine;
 	}
 }
