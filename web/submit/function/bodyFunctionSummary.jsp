@@ -14,7 +14,7 @@
 	</tr>
 	<tr>
 		<td class="leftLabel">
-			<strong>Activation Method*</strong>
+			<strong>Activation Method</strong>
 		</td>
 		<td class="label">
 			<c:choose>
@@ -27,7 +27,8 @@
 			</c:choose>
 		</td>
 		<td class="label">
-			<strong>View Title* </strong>
+			<strong>View Title* </strong><br>
+			(text will be truncated after 25 characters) 
 		</td>
 		<td class="rightLabel">
 			<c:choose>
