@@ -78,7 +78,11 @@ public class InvitroCellViabilityAction extends BaseCharacterizationAction {
 		request.getSession().setAttribute("newCharacterizationCreated", "true");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addCellViability(particleType, particleName, cellViabilityChar);
-
+		// Update the other cellLine in the session variable
+		if (cellViabilityChar.getCellLine().equals(CananoConstants.OTHER)){
+			InitSessionSetup.getInstance().addCellLine(request.getSession(), cellViabilityChar.getOtherCellLine());	
+		}
+		
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.addInvitroCellViability");
 		msgs.add("message", msg);
@@ -135,6 +139,7 @@ public class InvitroCellViabilityAction extends BaseCharacterizationAction {
 		InitSessionSetup.getInstance().setAllConditionUnits(session);
 		InitSessionSetup.getInstance().setAllConcentrationUnits(session);
 		InitSessionSetup.getInstance().setAllTimeUnits(session);
+		InitSessionSetup.getInstance().setAllCellLines(session);
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
 		if (firstOption == "")
