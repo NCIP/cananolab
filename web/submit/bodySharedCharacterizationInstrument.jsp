@@ -31,7 +31,7 @@
 				</c:otherwise>
 			</c:choose>
 		</td>
-		<td class="leftLabel">
+		<td class="label">
 			<strong>Other Instrument Type </strong>
 		</td>
 		<td class="rightLabel">
@@ -71,7 +71,7 @@
 					</c:otherwise>
 			</c:choose>
 		</td>
-		<td class="leftLabel">
+		<td class="label">
 			<strong>Other Manufacturer </strong>
 		</td>
 		<td class="rightLabel">
