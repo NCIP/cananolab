@@ -70,7 +70,10 @@ public class InvitroCaspase3ActivationAction extends BaseCharacterizationAction 
 		Date date = new Date();
 		caspase3ActivityChar.setCreatedBy(user.getLoginName());
 		caspase3ActivityChar.setCreatedDate(date);
-
+		// Update the other cellLine in the session variable
+		if (caspase3ActivityChar.getCellLine().equals(CananoConstants.OTHER)){
+			InitSessionSetup.getInstance().addCellLine(request.getSession(), caspase3ActivityChar.getOtherCellLine());	
+		}
 		request.getSession().setAttribute("newCharacterizationCreated", "true");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addCaspase3Activation(particleType, particleName, caspase3ActivityChar);
@@ -125,6 +128,7 @@ public class InvitroCaspase3ActivationAction extends BaseCharacterizationAction 
 		InitSessionSetup.getInstance().setAllConditionUnits(session);
 		InitSessionSetup.getInstance().setAllConcentrationUnits(session);
 		InitSessionSetup.getInstance().setAllTimeUnits(session);
+		InitSessionSetup.getInstance().setAllCellLines(session);
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
 		if (firstOption == "")
