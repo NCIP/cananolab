@@ -36,7 +36,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 
-/* CVS $Id: BaseCharacterizationAction.java,v 1.6 2006-11-22 23:16:35 pansu Exp $ */
+/* CVS $Id: BaseCharacterizationAction.java,v 1.7 2006-12-01 14:24:30 beasleyj Exp $ */
 
 public abstract class BaseCharacterizationAction extends AbstractDispatchAction {
 	/**
@@ -424,8 +424,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		if (origNum == 0) {
 
 			for (int i = 0; i < dataPointNum; i++) {
-				DatumBean condition = new DatumBean();
-				dataList.add(condition);
+				DatumBean dataPoint = new DatumBean();
+				dataList.add(dataPoint);
 			}
 		}
 		// use keep original table info
