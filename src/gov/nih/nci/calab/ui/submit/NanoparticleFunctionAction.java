@@ -6,12 +6,14 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleFunctionAction.java,v 1.3 2006-11-30 22:53:18 zengje Exp $ */
+/* CVS $Id: NanoparticleFunctionAction.java,v 1.4 2006-12-01 20:15:06 pansu Exp $ */
 
+import gov.nih.nci.calab.domain.nano.function.Function;
 import gov.nih.nci.calab.dto.function.AgentBean;
 import gov.nih.nci.calab.dto.function.AgentTargetBean;
 import gov.nih.nci.calab.dto.function.FunctionBean;
 import gov.nih.nci.calab.dto.function.LinkageBean;
+import gov.nih.nci.calab.service.search.SearchNanoparticleService;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
@@ -57,7 +59,7 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 
 		}
 
-		request.getSession().setAttribute("newFunction", "true");
+		request.getSession().setAttribute("newFunctionCreated", "true");
 		// TODO save in database
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addParticleFunction(particleType, particleName, function);
@@ -103,7 +105,6 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 
 		// clear session data from the input forms
 		theForm.getMap().clear();
-
 		theForm.set("particleName", particleName);
 		theForm.set("particleType", particleType);
 		theForm.set("function", new FunctionBean());
@@ -119,6 +120,52 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
 	}
+	
+	/**
+	 * Set up the form for updating existing characterization
+	 * 
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		initSetup(request, theForm);
+		String functionId = (String) theForm.get("functionId");
+
+		SearchNanoparticleService service = new SearchNanoparticleService();
+		Function aFunc = service
+				.getFunctionBy(functionId);
+
+		HttpSession session = request.getSession();
+		// clear session data from the input forms
+		clearMap(session, theForm, mapping);	
+		FunctionBean function=new FunctionBean(aFunc);
+		theForm.set("function", function);
+		return mapping.getInputForward();
+	}
+
+	/**
+	 * Prepare the form for viewing existing characterization
+	 * 
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	public ActionForward setupView(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		return setupUpdate(mapping, form, request, response);
+	}
+
 
 	/**
 	 * Set up the input forms for updating data
