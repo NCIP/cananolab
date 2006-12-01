@@ -111,8 +111,8 @@
 															<html:text property="achar.derivedBioAssayDataList[${chartInd}].numberOfDataPoints" />
 														</c:when>
 														<c:otherwise>
-										${derivedBioAssayData.numberOfDataPoints}&nbsp;
-									</c:otherwise>
+															${derivedBioAssayData.numberOfDataPoints}&nbsp;
+														</c:otherwise>
 													</c:choose>
 												</td>
 												<td class="rightLabel" colspan="2">
