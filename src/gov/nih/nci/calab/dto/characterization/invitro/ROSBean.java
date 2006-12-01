@@ -18,31 +18,21 @@ import java.util.List;
 public class ROSBean extends CharacterizationBean {
 	public ROSBean() {
 		super();
-		initSetup();
 	}
 	
 	public ROSBean(Characterization aChar) {
 		super(aChar);
 	}
 	
-	public void initSetup() {
-		for (DerivedBioAssayDataBean table: getDerivedBioAssayDataList()) {
-			DatumBean percentROS=new DatumBean();
-			percentROS.setType("Percent ROS");
-			percentROS.setValueUnit("%");
-			table.getDatumList().add(percentROS);
-		}
-	}
-	
 	public void setDerivedBioAssayDataList(
 			List<DerivedBioAssayDataBean> derivedBioAssayData) {
 		super.setDerivedBioAssayDataList(derivedBioAssayData);
-		
-		for (DerivedBioAssayDataBean table:getDerivedBioAssayDataList()) {
-			DatumBean percentROS=new DatumBean();
-			percentROS.setType("Percent ROS");
-			percentROS.setValueUnit("%");
-			table.getDatumList().add(percentROS);
+
+		for (DerivedBioAssayDataBean table : getDerivedBioAssayDataList()) {
+			for (DatumBean datum : table.getDatumList()) {
+				datum.setType("Percent ROS");
+				datum.setValueUnit("%");
+			}
 		}
 	}
 	

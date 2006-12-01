@@ -18,30 +18,21 @@ import java.util.List;
 public class CytokineInductionBean extends CharacterizationBean {
 	public CytokineInductionBean() {
 		super();
-		initSetup();
 	}
 	
 	public CytokineInductionBean(Characterization aChar) {
 		super(aChar);
 	}
 	
-	public void initSetup() {
-		for (DerivedBioAssayDataBean table: getDerivedBioAssayDataList()) {
-			DatumBean cytokineConcentration=new DatumBean();
-			cytokineConcentration.setType("Cytokine Concentration");
-			table.getDatumList().add(cytokineConcentration);
-		}
-	}
-	
 	public void setDerivedBioAssayDataList(
 			List<DerivedBioAssayDataBean> derivedBioAssayData) {
 		super.setDerivedBioAssayDataList(derivedBioAssayData);
-		
-		for (DerivedBioAssayDataBean table:getDerivedBioAssayDataList()) {
-			DatumBean cytokineConcentration=new DatumBean();
-			cytokineConcentration.setType("Cytokine Concentration");
-			cytokineConcentration.setValueUnit("%");
-			table.getDatumList().add(cytokineConcentration);
+
+		for (DerivedBioAssayDataBean table : getDerivedBioAssayDataList()) {
+			for (DatumBean datum : table.getDatumList()) {
+				datum.setType("Cytokine Concentration");
+				datum.setValueUnit("g/ml");
+			}
 		}
 	}
 	

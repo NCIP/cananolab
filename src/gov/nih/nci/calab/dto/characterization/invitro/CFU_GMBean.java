@@ -24,24 +24,15 @@ public class CFU_GMBean extends CharacterizationBean {
 		super(aChar);
 	}
 	
-	public void initSetup() {
-		for (DerivedBioAssayDataBean table: getDerivedBioAssayDataList()) {
-			DatumBean cfu_gm=new DatumBean();
-			cfu_gm.setType("CFU_GM");
-			cfu_gm.setValueUnit("CFU");
-			table.getDatumList().add(cfu_gm);
-		}
-	}
-	
 	public void setDerivedBioAssayDataList(
 			List<DerivedBioAssayDataBean> derivedBioAssayData) {
 		super.setDerivedBioAssayDataList(derivedBioAssayData);
-		
+				
 		for (DerivedBioAssayDataBean table:getDerivedBioAssayDataList()) {
-			DatumBean cfu_gm=new DatumBean();
-			cfu_gm.setType("CFU_GM");
-			cfu_gm.setValueUnit("CFU");
-			table.getDatumList().add(cfu_gm);
+			for (DatumBean datum : table.getDatumList()) {
+				datum.setType("CFU_GM");
+				datum.setValueUnit("CFU");
+			}			
 		}
 	}
 	

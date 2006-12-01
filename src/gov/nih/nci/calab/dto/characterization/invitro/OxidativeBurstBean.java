@@ -18,31 +18,21 @@ import java.util.List;
 public class OxidativeBurstBean extends CharacterizationBean {
 	public OxidativeBurstBean() {
 		super();
-		initSetup();
 	}
 	
 	public OxidativeBurstBean(Characterization aChar) {
 		super(aChar);
 	}
 	
-	public void initSetup() {
-		for (DerivedBioAssayDataBean table: getDerivedBioAssayDataList()) {
-			DatumBean percentOxidativeBurst=new DatumBean();
-			percentOxidativeBurst.setType("Percent Oxidative Burst");
-			percentOxidativeBurst.setValueUnit("%");
-			table.getDatumList().add(percentOxidativeBurst);
-		}
-	}
-	
 	public void setDerivedBioAssayDataList(
 			List<DerivedBioAssayDataBean> derivedBioAssayData) {
 		super.setDerivedBioAssayDataList(derivedBioAssayData);
-		
-		for (DerivedBioAssayDataBean table:getDerivedBioAssayDataList()) {
-			DatumBean percentOxidativeBurst=new DatumBean();
-			percentOxidativeBurst.setType("Percent Oxidative Burst");
-			percentOxidativeBurst.setValueUnit("%");
-			table.getDatumList().add(percentOxidativeBurst);
+
+		for (DerivedBioAssayDataBean table : getDerivedBioAssayDataList()) {
+			for (DatumBean datum : table.getDatumList()) {
+				datum.setType("Percent Oxidative Burst");
+				datum.setValueUnit("%");
+			}
 		}
 	}
 	

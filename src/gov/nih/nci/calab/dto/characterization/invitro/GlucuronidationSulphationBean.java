@@ -18,31 +18,21 @@ import java.util.List;
 public class GlucuronidationSulphationBean extends CharacterizationBean {
 	public GlucuronidationSulphationBean() {
 		super();
-		initSetup();
 	}
 	
 	public GlucuronidationSulphationBean(Characterization aChar) {
 		super(aChar);
 	}
 	
-	public void initSetup() {
-		for (DerivedBioAssayDataBean table: getDerivedBioAssayDataList()) {
-			DatumBean percentGlucuronidationSulphation=new DatumBean();
-			percentGlucuronidationSulphation.setType("Percent GlucuronidationSulphation");
-			percentGlucuronidationSulphation.setValueUnit("%");
-			table.getDatumList().add(percentGlucuronidationSulphation);
-		}
-	}
-	
 	public void setDerivedBioAssayDataList(
 			List<DerivedBioAssayDataBean> derivedBioAssayData) {
 		super.setDerivedBioAssayDataList(derivedBioAssayData);
-		
-		for (DerivedBioAssayDataBean table:getDerivedBioAssayDataList()) {
-			DatumBean percentGlucuronidationSulphation=new DatumBean();
-			percentGlucuronidationSulphation.setType("Percent GlucuronidationSulphation");
-			percentGlucuronidationSulphation.setValueUnit("%");
-			table.getDatumList().add(percentGlucuronidationSulphation);
+
+		for (DerivedBioAssayDataBean table : getDerivedBioAssayDataList()) {
+			for (DatumBean datum : table.getDatumList()) {
+				datum.setType("Percent Glucuronidation Sulphation");
+				datum.setValueUnit("%");
+			}
 		}
 	}
 	
