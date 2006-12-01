@@ -715,6 +715,14 @@ public class InitSessionSetup {
 		}
 	}
 
+	public void setAllConditionUnits(HttpSession session) throws Exception {
+		if (session.getServletContext().getAttribute("allConditionUnits") == null) {
+			String[] conditionUnits = lookupService.getAllConditionUnits();
+			session.getServletContext().setAttribute("allConditionUnits",
+					conditionUnits);
+		}
+	}
+
 	public void setAllDensityMeasureUnits(HttpSession session) throws Exception {
 		if (session.getServletContext().getAttribute("allDensityMeasureUnits") == null) {
 			String[] densityUnits = lookupService.getAllDensityMeasureUnits();
