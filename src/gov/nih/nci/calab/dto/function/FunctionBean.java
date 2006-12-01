@@ -4,6 +4,7 @@
 package gov.nih.nci.calab.dto.function;
 
 import gov.nih.nci.calab.domain.nano.function.Function;
+import gov.nih.nci.calab.domain.nano.function.Linkage;
 import gov.nih.nci.calab.service.util.CananoConstants;
 
 import java.util.ArrayList;
@@ -36,6 +37,18 @@ public class FunctionBean {
 		this.id=id;		
 		this.type=type;
 		this.viewTitle=viewTitle;
+	}
+	
+	public FunctionBean(Function function) {
+		this.id=function.getId().toString();
+		this.type=function.getType();
+		this.activationMethod=function.getActivationMethod();
+		this.description=function.getDescription();
+		this.viewTitle=function.getIdentificationName();
+		for(Linkage linkage: function.getLinkageCollection()) {
+			linkages.add(new LinkageBean(linkage));
+		}
+		this.numberOfLinkages=linkages.size();
 	}
 	
 	public String getActivationMethod() {
