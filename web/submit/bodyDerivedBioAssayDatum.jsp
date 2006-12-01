@@ -5,7 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <logic:iterate id="ddata" name="${formName}" property="achar.derivedBioAssayDataList[${param.chartNum}].datumList" indexId="dInd">
-	<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+	<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0" rules="none">
 		<tbody>
 			<tr class="topBorder">
 				<td class="formSubTitle" colspan="4">
@@ -19,41 +19,53 @@
 					<strong>${dataLabel}</strong>
 				</td>
 				<td class="rightLabel" colspan="3">
-
 					<c:choose>
 						<c:when test="${canUserUpdateParticle eq 'true'}">
 							<html:text property="achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].value" />
- ${ddata.valueUnit}	
-														</c:when>
+ 							${dataUnit}	
+						</c:when>
 						<c:otherwise>
-															${ddata.value} ${ddata.valueUnit}&nbsp;
-														</c:otherwise>
+							${ddata.value} ${dataUnit}&nbsp;
+						</c:otherwise>
 					</c:choose>
 				</td>
 			</tr>
 			<tr>
-				<td class="completeLabel" colspan="4">
-					<strong>Is Control?</strong>
+				<td class="completeLabel">
+					<strong>Is Control?</strong>&nbsp;&nbsp;
 					<c:choose>
 						<c:when test="${canUserUpdateParticle eq 'true'}">
 							<html:select property="achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].isAControl">
 								<html:options name="booleanChoices" />
 							</html:select>
-						&nbsp;&nbsp;&nbsp;
-						<strong>Control Name:</strong>
-							<html:text property="achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].control.name" />
-						&nbsp;&nbsp;&nbsp;
-						<strong>Control Type:</strong>
-							<html:text property="achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].control.type" />
 						</c:when>
 						<c:otherwise>
-						${ddata.isAControl}&nbsp;
-						&nbsp;&nbsp;&nbsp;
-						<strong>Control Name:</strong>${ddata.isAControl}&nbsp;
-						&nbsp;&nbsp;&nbsp;
-						<strong>Type:</strong>${ddata.isAControl}&nbsp;
-					</c:otherwise>
-
+							${ddata.isAControl}
+						</c:otherwise>
+					</c:choose>
+				</td>
+				<td class="completeLabel">
+					<c:choose>
+						<c:when test="${canUserUpdateParticle eq 'true'}">
+							<strong>Control Name:</strong>
+							<html:text property="achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].control.name" />
+						</c:when>
+						<c:otherwise>
+							<strong>Control Name:</strong>${ddata.isAControl}&nbsp;
+						</c:otherwise>
+					</c:choose>
+				</td>
+				<td class="completeLabel" colspan="2">
+					<c:choose>
+						<c:when test="${canUserUpdateParticle eq 'true'}">
+							<strong>Control Type:</strong>
+							<html:select property="achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].control.type">
+							<html:options name="allControlTypes" />
+							</html:select>
+						</c:when>
+						<c:otherwise>
+							<strong>Type:</strong>${ddata.isAControl}&nbsp;
+						</c:otherwise>
 					</c:choose>
 				</td>
 			</tr>
@@ -117,19 +129,19 @@
 												<html:text property="achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].conditionList[${cInd}].value" />
 											</c:when>
 											<c:otherwise>
-														${cdata.value}&nbsp;
-        											</c:otherwise>
+												${cdata.value}&nbsp;
+        									</c:otherwise>
 										</c:choose>
 										&nbsp;&nbsp;&nbsp;
 										<c:choose>
 											<c:when test="${canUserUpdateParticle eq 'true'}">
 												<html:select property="achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].conditionList[${cInd}].valueUnit">
-													<html:options name="allConcentrationUnits" />
+													<html:options name="allConditionUnits" />
 												</html:select>
 											</c:when>
 											<c:otherwise>
-														${cdata.valueUnit}&nbsp;
-        											</c:otherwise>
+												${cdata.valueUnit}&nbsp;
+        									</c:otherwise>
 										</c:choose>
 									</td>
 								</tr>
