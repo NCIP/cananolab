@@ -36,13 +36,6 @@ public class Caspase3Activation implements Cytotoxicity {
 		// TODO Auto-generated constructor stub
 	}
 
-	/* (non-Javadoc)
-	 * @see gov.nih.nci.calab.domain.nano.characterization.toxicity.ImmunoToxicity#getImmunotoxiticyType()
-	 */
-	public String getImmunotoxiticyType() {
-		return CananoConstants.BLOOD_CONTACT_IMMUNOTOXICITY_CHARACTERIZATION;
-	}
-
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -141,7 +134,7 @@ public class Caspase3Activation implements Cytotoxicity {
 	}
 
 	public String getCellDeathMethod() {
-		return cellDeathMethod;
+		return CananoConstants.NECROSIS_CELL_DEATH_METHOD_CYTOXICITY_CHARACTERIZATION;
 	}
 
 	public void setCellDeathMethod(String cellDeathMethod) {
