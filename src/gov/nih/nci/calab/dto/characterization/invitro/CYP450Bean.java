@@ -18,31 +18,21 @@ import java.util.List;
 public class CYP450Bean extends CharacterizationBean {
 	public CYP450Bean() {
 		super();
-		initSetup();
 	}
 	
 	public CYP450Bean(Characterization aChar) {
 		super(aChar);
 	}
 	
-	public void initSetup() {
-		for (DerivedBioAssayDataBean table: getDerivedBioAssayDataList()) {
-			DatumBean percentCYP450=new DatumBean();
-			percentCYP450.setType("Percent CYP450");
-			percentCYP450.setValueUnit("%");
-			table.getDatumList().add(percentCYP450);
-		}
-	}
-	
 	public void setDerivedBioAssayDataList(
 			List<DerivedBioAssayDataBean> derivedBioAssayData) {
 		super.setDerivedBioAssayDataList(derivedBioAssayData);
-		
-		for (DerivedBioAssayDataBean table:getDerivedBioAssayDataList()) {
-			DatumBean percentCYP450=new DatumBean();
-			percentCYP450.setType("Percent CYP450");
-			percentCYP450.setValueUnit("%");
-			table.getDatumList().add(percentCYP450);
+
+		for (DerivedBioAssayDataBean table : getDerivedBioAssayDataList()) {
+			for (DatumBean datum : table.getDatumList()) {
+				datum.setType("Percent CYP450");
+				datum.setValueUnit("%");
+			}
 		}
 	}
 	

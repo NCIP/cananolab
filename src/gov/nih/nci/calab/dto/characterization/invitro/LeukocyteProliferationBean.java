@@ -18,31 +18,21 @@ import java.util.List;
 public class LeukocyteProliferationBean extends CharacterizationBean {
 	public LeukocyteProliferationBean() {
 		super();
-		initSetup();
 	}
 	
 	public LeukocyteProliferationBean(Characterization aChar) {
 		super(aChar);
 	}
 	
-	public void initSetup() {
-		for (DerivedBioAssayDataBean table: getDerivedBioAssayDataList()) {
-			DatumBean percentLeukocyteProliferation=new DatumBean();
-			percentLeukocyteProliferation.setType("Percent Proliferation");
-			percentLeukocyteProliferation.setValueUnit("%");
-			table.getDatumList().add(percentLeukocyteProliferation);
-		}
-	}
-	
 	public void setDerivedBioAssayDataList(
 			List<DerivedBioAssayDataBean> derivedBioAssayData) {
 		super.setDerivedBioAssayDataList(derivedBioAssayData);
-		
-		for (DerivedBioAssayDataBean table:getDerivedBioAssayDataList()) {
-			DatumBean percentLeukocyteProliferation=new DatumBean();
-			percentLeukocyteProliferation.setType("Percent Proliferation");
-			percentLeukocyteProliferation.setValueUnit("%");
-			table.getDatumList().add(percentLeukocyteProliferation);
+
+		for (DerivedBioAssayDataBean table : getDerivedBioAssayDataList()) {
+			for (DatumBean datum : table.getDatumList()) {
+				datum.setType("Percent Proliferation");
+				datum.setValueUnit("%");
+			}
 		}
 	}
 	

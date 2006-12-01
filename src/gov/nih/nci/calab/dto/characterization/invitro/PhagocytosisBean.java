@@ -18,31 +18,21 @@ import java.util.List;
 public class PhagocytosisBean extends CharacterizationBean {
 	public PhagocytosisBean() {
 		super();
-		initSetup();
 	}
 	
 	public PhagocytosisBean(Characterization aChar) {
 		super(aChar);
 	}
 	
-	public void initSetup() {
-		for (DerivedBioAssayDataBean table: getDerivedBioAssayDataList()) {
-			DatumBean foldInduction=new DatumBean();
-			foldInduction.setType("Fold Induction");
-			foldInduction.setValueUnit("Fold");
-			table.getDatumList().add(foldInduction);
-		}
-	}
-	
 	public void setDerivedBioAssayDataList(
 			List<DerivedBioAssayDataBean> derivedBioAssayData) {
 		super.setDerivedBioAssayDataList(derivedBioAssayData);
-		
-		for (DerivedBioAssayDataBean table:getDerivedBioAssayDataList()) {
-			DatumBean foldInduction=new DatumBean();
-			foldInduction.setType("Fold Induction");
-			foldInduction.setValueUnit("Fold");
-			table.getDatumList().add(foldInduction);
+
+		for (DerivedBioAssayDataBean table : getDerivedBioAssayDataList()) {
+			for (DatumBean datum : table.getDatumList()) {
+				datum.setType("Fold Induction");
+				datum.setValueUnit("Fold");
+			}
 		}
 	}
 	
