@@ -130,6 +130,7 @@ public class InvitroHemolysisAction extends BaseCharacterizationAction {
 				.setAllSizeDistributionGraphTypes(session);
 		InitSessionSetup.getInstance().setAllControlTypes(session);
 		InitSessionSetup.getInstance().setAllConditionTypes(session);
+		InitSessionSetup.getInstance().setAllConditionUnits(session);
 		InitSessionSetup.getInstance().setAllConcentrationUnits(session);
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);

@@ -121,7 +121,7 @@ public class InvitroOxidativeStressAction extends BaseCharacterizationAction {
 		InitSessionSetup.getInstance().setAllSizeDistributionGraphTypes(session);
 		InitSessionSetup.getInstance().setAllControlTypes(session);
 		InitSessionSetup.getInstance().setAllConditionTypes(session);
-		InitSessionSetup.getInstance().setAllConcentrationUnits(session);
+		InitSessionSetup.getInstance().setAllConditionUnits(session);
 		InitSessionSetup.getInstance().setAllTimeUnits(session);
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
