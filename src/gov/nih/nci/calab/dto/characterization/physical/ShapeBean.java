@@ -3,6 +3,7 @@ package gov.nih.nci.calab.dto.characterization.physical;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Shape;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
+import gov.nih.nci.calab.service.util.CananoConstants;
 
 import java.util.List;
 
@@ -67,10 +68,12 @@ public class ShapeBean extends CharacterizationBean {
 		Shape shape = new Shape();
 		super.updateDomainObj(shape);
 		
-		if (this.type == "Other" && this.otherShapeType != "") 
+		if (this.type.equals(CananoConstants.OTHER)) {
 			shape.setType(this.otherShapeType);
-		else
+		} else {
 			shape.setType(this.type);
+		}
+			
 		shape.setMinDimension(Float.valueOf(this.minDimension));
 		shape.setMaxDimension(Float.valueOf(this.maxDimension));
 		
