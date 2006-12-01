@@ -18,31 +18,21 @@ import java.util.List;
 public class ComplementActivationBean extends CharacterizationBean {
 	public ComplementActivationBean() {
 		super();
-		initSetup();
 	}
 	
 	public ComplementActivationBean(Characterization aChar) {
 		super(aChar);
 	}
 	
-	public void initSetup() {
-		for (DerivedBioAssayDataBean table: getDerivedBioAssayDataList()) {
-			DatumBean percentComplementActivation=new DatumBean();
-			percentComplementActivation.setType("Percent Complement Activation");
-			percentComplementActivation.setValueUnit("%");
-			table.getDatumList().add(percentComplementActivation);
-		}
-	}
-	
 	public void setDerivedBioAssayDataList(
 			List<DerivedBioAssayDataBean> derivedBioAssayData) {
 		super.setDerivedBioAssayDataList(derivedBioAssayData);
-		
-		for (DerivedBioAssayDataBean table:getDerivedBioAssayDataList()) {
-			DatumBean percentComplementActivation=new DatumBean();
-			percentComplementActivation.setType("Percent Complement Activation");
-			percentComplementActivation.setValueUnit("%");
-			table.getDatumList().add(percentComplementActivation);
+
+		for (DerivedBioAssayDataBean table : getDerivedBioAssayDataList()) {
+			for (DatumBean datum : table.getDatumList()) {
+				datum.setType("Percent Complement Activation");
+				datum.setValueUnit("%");
+			}
 		}
 	}
 	

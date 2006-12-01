@@ -18,31 +18,21 @@ import java.util.List;
 public class PlasmaProteinBindingBean extends CharacterizationBean {
 	public PlasmaProteinBindingBean() {
 		super();
-		initSetup();
 	}
 	
 	public PlasmaProteinBindingBean(Characterization aChar) {
 		super(aChar);
 	}
 	
-	public void initSetup() {
-		for (DerivedBioAssayDataBean table: getDerivedBioAssayDataList()) {
-			DatumBean percentPlasmaProteinBinding=new DatumBean();
-			percentPlasmaProteinBinding.setType("Percent Plasma Protein Binding");
-			percentPlasmaProteinBinding.setValueUnit("%");
-			table.getDatumList().add(percentPlasmaProteinBinding);
-		}
-	}
-	
 	public void setDerivedBioAssayDataList(
 			List<DerivedBioAssayDataBean> derivedBioAssayData) {
 		super.setDerivedBioAssayDataList(derivedBioAssayData);
-		
-		for (DerivedBioAssayDataBean table:getDerivedBioAssayDataList()) {
-			DatumBean percentPlasmaProteinBinding=new DatumBean();
-			percentPlasmaProteinBinding.setType("Percent Plasma Protein Binding");
-			percentPlasmaProteinBinding.setValueUnit("%");
-			table.getDatumList().add(percentPlasmaProteinBinding);
+
+		for (DerivedBioAssayDataBean table : getDerivedBioAssayDataList()) {
+			for (DatumBean datum : table.getDatumList()) {
+				datum.setType("Percent Plasma Protein Binding");
+				datum.setValueUnit("%");
+			}
 		}
 	}
 	

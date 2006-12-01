@@ -16,22 +16,19 @@ import java.util.List;
  * 
  */
 public class Caspase3ActivationBean extends CharacterizationBean {
+	
+	private String cellLine;	
+	private String cellDeathMethod;
+	
 	public Caspase3ActivationBean() {
 		super();
-		initSetup();
 	}
 	
-	public Caspase3ActivationBean(Characterization aChar) {
+	public Caspase3ActivationBean(Caspase3Activation aChar) {
 		super(aChar);
-	}
-	
-	public void initSetup() {
-		for (DerivedBioAssayDataBean table: getDerivedBioAssayDataList()) {
-			DatumBean percentCaspase3Activation=new DatumBean();
-			percentCaspase3Activation.setType("Percent Caspase 3 Activation");
-			percentCaspase3Activation.setValueUnit("%");
-			table.getDatumList().add(percentCaspase3Activation);
-		}
+
+		this.cellLine = aChar.getCellLine();
+		this.cellDeathMethod = aChar.getCellDeathMethod();
 	}
 	
 	public void setDerivedBioAssayDataList(
@@ -39,16 +36,25 @@ public class Caspase3ActivationBean extends CharacterizationBean {
 		super.setDerivedBioAssayDataList(derivedBioAssayData);
 		
 		for (DerivedBioAssayDataBean table:getDerivedBioAssayDataList()) {
-			DatumBean percentCaspase3Activation=new DatumBean();
-			percentCaspase3Activation.setType("Percent Caspase 3 Activation");
-			percentCaspase3Activation.setValueUnit("%");
-			table.getDatumList().add(percentCaspase3Activation);
+			for (DatumBean datum : table.getDatumList()) {
+				datum.setType("Percent Caspase 3 Activation");
+				datum.setValueUnit("%");
+			}			
 		}
+	}
+
+	public String getCellLine() {
+		return cellLine;
+	}
+
+	public void setCellLine(String cellLine) {
+		this.cellLine = cellLine;
 	}
 	
 	public Caspase3Activation getDomainObj() {
 		Caspase3Activation caspase3Activation = new Caspase3Activation();
 		super.updateDomainObj(caspase3Activation);
+		caspase3Activation.setCellLine(this.cellLine);
 		return caspase3Activation;
 	}
 }

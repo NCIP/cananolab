@@ -16,6 +16,9 @@ import java.util.List;
  * 
  */
 public class CellViabilityBean extends CharacterizationBean {
+	
+	private String cellLine;	
+	private String cellDeathMethod;
 
 	public CellViabilityBean() {
 		super();
@@ -23,6 +26,9 @@ public class CellViabilityBean extends CharacterizationBean {
 	
 	public CellViabilityBean(CellViability aChar) {
 		super(aChar);
+
+		this.cellLine = aChar.getCellLine();
+		this.cellDeathMethod = aChar.getCellDeathMethod();
 	}
 
 	public void setDerivedBioAssayDataList(
@@ -36,10 +42,19 @@ public class CellViabilityBean extends CharacterizationBean {
 			}			
 		}
 	}
+
+	public String getCellLine() {
+		return cellLine;
+	}
+
+	public void setCellLine(String cellLine) {
+		this.cellLine = cellLine;
+	}
 	
 	public CellViability getDomainObj() {
 		CellViability cellViability = new CellViability();
 		super.updateDomainObj(cellViability);
+		cellViability.setCellLine(this.cellLine);
 		return cellViability;
 	}
 }

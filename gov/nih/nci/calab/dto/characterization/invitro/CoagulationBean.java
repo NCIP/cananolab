@@ -18,19 +18,10 @@ import java.util.List;
 public class CoagulationBean extends CharacterizationBean {
 	public CoagulationBean() {
 		super();
-		initSetup();
 	}
 	
 	public CoagulationBean(Characterization aChar) {
 		super(aChar);
-	}
-	
-	public void initSetup() {
-		for (DerivedBioAssayDataBean table: getDerivedBioAssayDataList()) {
-			DatumBean coagulationTime=new DatumBean();
-			coagulationTime.setType("Coagulation Time");
-			table.getDatumList().add(coagulationTime);
-		}
 	}
 	
 	public void setDerivedBioAssayDataList(
@@ -38,9 +29,10 @@ public class CoagulationBean extends CharacterizationBean {
 		super.setDerivedBioAssayDataList(derivedBioAssayData);
 		
 		for (DerivedBioAssayDataBean table:getDerivedBioAssayDataList()) {
-			DatumBean coagulationTime=new DatumBean();
-			coagulationTime.setType("Coagulation Time");
-			table.getDatumList().add(coagulationTime);
+			for (DatumBean datum : table.getDatumList()) {
+				datum.setType("Coagulation Time");
+				datum.setValueUnit("seconds");
+			}			
 		}
 	}
 	

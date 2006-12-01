@@ -18,20 +18,10 @@ import java.util.List;
 public class ChemotaxisBean extends CharacterizationBean {
 	public ChemotaxisBean() {
 		super();
-		initSetup();
 	}
 	
 	public ChemotaxisBean(Characterization aChar) {
 		super(aChar);
-	}
-	
-	public void initSetup() {
-		for (DerivedBioAssayDataBean table: getDerivedBioAssayDataList()) {
-			DatumBean rfu=new DatumBean();
-			rfu.setType("Relative Fluorescent Values");
-			rfu.setValueUnit("RFU");
-			table.getDatumList().add(rfu);
-		}
 	}
 	
 	public void setDerivedBioAssayDataList(
@@ -39,10 +29,10 @@ public class ChemotaxisBean extends CharacterizationBean {
 		super.setDerivedBioAssayDataList(derivedBioAssayData);
 		
 		for (DerivedBioAssayDataBean table:getDerivedBioAssayDataList()) {
-			DatumBean rfu=new DatumBean();
-			rfu.setType("Relative Fluorescent Values");
-			rfu.setValueUnit("RFU");
-			table.getDatumList().add(rfu);
+			for (DatumBean datum : table.getDatumList()) {
+				datum.setType("Relative Fluorescent Values");
+				datum.setValueUnit("RFU");
+			}			
 		}
 	}
 	

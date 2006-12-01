@@ -18,31 +18,21 @@ import java.util.List;
 public class PlateAggregationBean extends CharacterizationBean {
 	public PlateAggregationBean() {
 		super();
-		initSetup();
 	}
 	
 	public PlateAggregationBean(Characterization aChar) {
 		super(aChar);
 	}
 	
-	public void initSetup() {
-		for (DerivedBioAssayDataBean table: getDerivedBioAssayDataList()) {
-			DatumBean percentPlateAggregation=new DatumBean();
-			percentPlateAggregation.setType("Percent Plate Aggregation");
-			percentPlateAggregation.setValueUnit("%");
-			table.getDatumList().add(percentPlateAggregation);
-		}
-	}
-	
 	public void setDerivedBioAssayDataList(
 			List<DerivedBioAssayDataBean> derivedBioAssayData) {
 		super.setDerivedBioAssayDataList(derivedBioAssayData);
-		
-		for (DerivedBioAssayDataBean table:getDerivedBioAssayDataList()) {
-			DatumBean percentPlateAggregation=new DatumBean();
-			percentPlateAggregation.setType("Percent Plate Aggregation");
-			percentPlateAggregation.setValueUnit("%");
-			table.getDatumList().add(percentPlateAggregation);
+
+		for (DerivedBioAssayDataBean table : getDerivedBioAssayDataList()) {
+			for (DatumBean datum : table.getDatumList()) {
+				datum.setType("Percent Plate Aggregation");
+				datum.setValueUnit("%");
+			}
 		}
 	}
 	

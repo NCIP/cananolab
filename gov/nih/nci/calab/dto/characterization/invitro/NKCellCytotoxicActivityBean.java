@@ -18,31 +18,21 @@ import java.util.List;
 public class NKCellCytotoxicActivityBean extends CharacterizationBean {
 	public NKCellCytotoxicActivityBean() {
 		super();
-		initSetup();
 	}
 	
 	public NKCellCytotoxicActivityBean(Characterization aChar) {
 		super(aChar);
 	}
 	
-	public void initSetup() {
-		for (DerivedBioAssayDataBean table: getDerivedBioAssayDataList()) {
-			DatumBean percentNKCellCytotoxicActivity=new DatumBean();
-			percentNKCellCytotoxicActivity.setType("Percent NKCellCytotoxicActivity");
-			percentNKCellCytotoxicActivity.setValueUnit("%");
-			table.getDatumList().add(percentNKCellCytotoxicActivity);
-		}
-	}
-	
 	public void setDerivedBioAssayDataList(
 			List<DerivedBioAssayDataBean> derivedBioAssayData) {
 		super.setDerivedBioAssayDataList(derivedBioAssayData);
-		
-		for (DerivedBioAssayDataBean table:getDerivedBioAssayDataList()) {
-			DatumBean percentNKCellCytotoxicActivity=new DatumBean();
-			percentNKCellCytotoxicActivity.setType("Percent NKCellCytotoxicActivity");
-			percentNKCellCytotoxicActivity.setValueUnit("%");
-			table.getDatumList().add(percentNKCellCytotoxicActivity);
+
+		for (DerivedBioAssayDataBean table : getDerivedBioAssayDataList()) {
+			for (DatumBean datum : table.getDatumList()) {
+				datum.setType("Percent NKCellCytotoxicActivity");
+				datum.setValueUnit("%");
+			}
 		}
 	}
 	
