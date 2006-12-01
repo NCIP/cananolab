@@ -527,7 +527,7 @@
 			<forward name="input" path="submit.addimmunotoxicity.leukocyteproliferation" />
 			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
 		</action>
-		<action name="invitroImmunotoxicityCFU_GMForm" parameter="dispatch" path="/invitroImmunotoxicityCFU_GM" type="gov.nih.nci.calab.ui.submit.InvitroCFU_GMAction" input="input">
+		<action name="invitroImmunotoxicityCFU_GMForm" parameter="dispatch" path="/invitroImmunotoxicityCFU-GM" type="gov.nih.nci.calab.ui.submit.InvitroCFU_GMAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroCFU_GM" path="submit.addimmunotoxicity.cfu_gm" type="java.lang.Exception" />
 			<forward name="success" path="submit.message" />
 			<forward name="input" path="submit.addimmunotoxicity.cfu_gm" />
