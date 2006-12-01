@@ -12,9 +12,9 @@
 				<arg position="0" key="nanoparticleGeneralInfoForm.particleID" bundle="submit" />
 			</field>
 			<!--
-			<field property="visibilities" page="1" depends="required">
+				<field property="visibilities" page="1" depends="required">
 				<arg position="0" key="nanoparticleGeneralInfoForm.visibilities" bundle="submit" />
-			</field>
+				</field>
 			-->
 		</form>
 
@@ -32,18 +32,18 @@
 				<arg position="0" key="publishReportForm.title" bundle="submit" />
 			</field>
 			<!--
-			<field property="visibilities" page="1" depends="required">
+				<field property="visibilities" page="1" depends="required">
 				<arg position="0" key="publishReportForm.visibilities" bundle="submit" />
-			</field>
+				</field>
 			-->
 		</form>
-		
+
 		<form name="nanoparticleCompositionForm">
 			<field property="characterizationSource" page="1" depends="required">
-				<arg position="0" key="nanoparticleCompositionForm.characterizationSource" bundle="submit" />
+				<arg position="0" key="characterizationSource" bundle="submit" />
 			</field>
 			<field property="viewTitle" page="1" depends="required">
-				<arg position="0" key="nanoparticleCompositionForm.viewTitle" bundle="submit" />
+				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
 			<field property="carbonNanotube.growthDiameter" page="1" depends="float">
 				<arg position="0" key="nanoparticleCompositionForm.carbonNanotube.growthDiameter" bundle="submit" />
@@ -73,254 +73,257 @@
 				<var>
 					<var-name>test</var-name>
 					<var-value>((liposome.polymerized=="No") or (*this*!=null))</var-value>
-				</var>		
+				</var>
 			</field>
 			<field property="emulsion.polymerName" page="1" depends="validwhen">
 				<arg position="0" key="nanoparticleCompositionForm.emulsion.polymerName" bundle="submit" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>((emulsion.polymerized=="No") or (*this*!=null))</var-value>
-				</var>		
+				</var>
 			</field>
 			<field property="polymer.crosslinkDegree" page="1" depends="validwhen">
 				<arg position="0" key="nanoparticleCompositionForm.polymer.crosslinkDegree" bundle="submit" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>((polymer.crosslinked=="No") or (*this*!=null))</var-value>
-				</var>		
+				</var>
 			</field>
 		</form>
 		<form name="nanoparticleSizeForm">
 			<field property="achar.characterizationSource" page="1" depends="required">
-				<arg position="0" key="nanoparticleSizeForm.characterizationSource" bundle="submit" />
+				<arg position="0" key="characterizationSource" bundle="submit" />
 			</field>
 			<field property="achar.viewTitle" page="1" depends="required">
-				<arg position="0" key="nanoparticleSizeForm.viewTitle" bundle="submit" />
+				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
 		</form>
 		<form name="invitroImmunotoxicityHemolysisForm">
-			<field property="achar.numberOfDerivedBioAssayData" page="1" depends="integer" >
-				<arg position="0" key="invitroImmunotoxicityHemolysisForm.numberOfDerivedBioAssayData" bundle="submit" />
-			</field>
 			<field property="achar.characterizationSource" page="1" depends="required">
-				<arg position="0" key="invitroImmunotoxicityHemolysisForm.characterizationSource" bundle="submit" />
+				<arg position="0" key="characterizationSource" bundle="submit" />
 			</field>
 			<field property="achar.viewTitle" page="1" depends="required">
-				<arg position="0" key="invitroImmunotoxicityHemolysisForm.viewTitle" bundle="submit" />
+				<arg position="0" key="viewTitle" bundle="submit" />
+			</field>
+			<field property="achar.numberOfDerivedBioAssayData" page="0" depends="integer">
+				<arg position="0" key="numberOfDerivedBioAssayData" bundle="submit" />
+			</field>
+			<field property="numberOfDataPoints" page="0" depends="integer" indexedListProperty="achar.derivedBioAssayDataList">
+				<arg position="0" key="numberOfDataPoints" bundle="submit" />
 			</field>
 		</form>
 		<form name="invitroImmunotoxicityPlateAggregationForm">
-			<field property="achar.numberOfDerivedBioAssayData" page="1" depends="integer" >
-				<arg position="0" key="invitroImmunotoxicityPlateAggregationForm.numberOfDerivedBioAssayData" bundle="submit" />
+			<field property="achar.numberOfDerivedBioAssayData" page="0" depends="integer">
+				<arg position="0" key="numberOfDerivedBioAssayData" bundle="submit" />
 			</field>
 			<field property="achar.characterizationSource" page="1" depends="required">
-				<arg position="0" key="invitroImmunotoxicityPlateAggregationForm.characterizationSource" bundle="submit" />
+				<arg position="0" key="characterizationSource" bundle="submit" />
 			</field>
 			<field property="achar.viewTitle" page="1" depends="required">
-				<arg position="0" key="invitroImmunotoxicityPlateAggregationForm.viewTitle" bundle="submit" />
+				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
 		</form>
 		<form name="invitroImmunotoxicityCoagulationForm">
-			<field property="achar.numberOfDerivedBioAssayData" page="1" depends="integer" >
-				<arg position="0" key="invitroImmunotoxicityCoagulationForm.numberOfDerivedBioAssayData" bundle="submit" />
+			<field property="achar.numberOfDerivedBioAssayData" page="0" depends="integer">
+				<arg position="0" key="numberOfDerivedBioAssayData" bundle="submit" />
 			</field>
 			<field property="achar.characterizationSource" page="1" depends="required">
-				<arg position="0" key="invitroImmunotoxicityCoagulationForm.characterizationSource" bundle="submit" />
+				<arg position="0" key="characterizationSource" bundle="submit" />
 			</field>
 			<field property="achar.viewTitle" page="1" depends="required">
-				<arg position="0" key="invitroImmunotoxicityCoagulationForm.viewTitle" bundle="submit" />
+				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
 		</form>
 		<form name="invitroImmunotoxicityProteinBindingForm">
-			<field property="achar.numberOfDerivedBioAssayData" page="1" depends="integer" >
-				<arg position="0" key="invitroImmunotoxicityProteinBindingForm.numberOfDerivedBioAssayData" bundle="submit" />
+			<field property="achar.numberOfDerivedBioAssayData" page="0" depends="integer">
+				<arg position="0" key="numberOfDerivedBioAssayData" bundle="submit" />
 			</field>
 			<field property="achar.characterizationSource" page="1" depends="required">
-				<arg position="0" key="invitroImmunotoxicityProteinBindingForm.characterizationSource" bundle="submit" />
+				<arg position="0" key="characterizationSource" bundle="submit" />
 			</field>
 			<field property="achar.viewTitle" page="1" depends="required">
-				<arg position="0" key="invitroImmunotoxicityProteinBindingForm.viewTitle" bundle="submit" />
+				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
 		</form>
 		<form name="invitroImmunotoxicityComplementActivationForm">
-			<field property="achar.numberOfDerivedBioAssayData" page="1" depends="integer" >
-				<arg position="0" key="invitroImmunotoxicityComplementActivationForm.numberOfDerivedBioAssayData" bundle="submit" />
+			<field property="achar.numberOfDerivedBioAssayData" page="0" depends="integer">
+				<arg position="0" key="numberOfDerivedBioAssayData" bundle="submit" />
 			</field>
 			<field property="achar.characterizationSource" page="1" depends="required">
-				<arg position="0" key="invitroImmunotoxicityComplementActivationForm.characterizationSource" bundle="submit" />
+				<arg position="0" key="characterizationSource" bundle="submit" />
 			</field>
 			<field property="achar.viewTitle" page="1" depends="required">
-				<arg position="0" key="invitroImmunotoxicityComplementActivationForm.viewTitle" bundle="submit" />
+				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
 		</form>
 		<form name="invitroImmunotoxicityCytokineInductionForm">
-			<field property="achar.numberOfDerivedBioAssayData" page="1" depends="integer" >
-				<arg position="0" key="invitroImmunotoxicityCytokineInductionForm.numberOfDerivedBioAssayData" bundle="submit" />
+			<field property="achar.numberOfDerivedBioAssayData" page="0" depends="integer">
+				<arg position="0" key="numberOfDerivedBioAssayData" bundle="submit" />
 			</field>
 			<field property="achar.characterizationSource" page="1" depends="required">
-				<arg position="0" key="invitroImmunotoxicityCytokineInductionForm.characterizationSource" bundle="submit" />
+				<arg position="0" key="characterizationSource" bundle="submit" />
 			</field>
 			<field property="achar.viewTitle" page="1" depends="required">
-				<arg position="0" key="invitroImmunotoxicityCytokineInductionForm.viewTitle" bundle="submit" />
+				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
 		</form>
 		<form name="invitroImmunotoxicityChemotaxisForm">
-			<field property="achar.numberOfDerivedBioAssayData" page="1" depends="integer" >
-				<arg position="0" key="invitroImmunotoxicityChemotaxisForm.numberOfDerivedBioAssayData" bundle="submit" />
+			<field property="achar.numberOfDerivedBioAssayData" page="0" depends="integer">
+				<arg position="0" key="numberOfDerivedBioAssayData" bundle="submit" />
 			</field>
 			<field property="achar.characterizationSource" page="1" depends="required">
-				<arg position="0" key="invitroImmunotoxicityChemotaxisForm.characterizationSource" bundle="submit" />
+				<arg position="0" key="characterizationSource" bundle="submit" />
 			</field>
 			<field property="achar.viewTitle" page="1" depends="required">
-				<arg position="0" key="invitroImmunotoxicityChemotaxisForm.viewTitle" bundle="submit" />
+				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
 		</form>
 		<form name="invitroImmunotoxicityNKCellCytotoxicActivityForm">
-			<field property="achar.numberOfDerivedBioAssayData" page="1" depends="integer" >
-				<arg position="0" key="invitroImmunotoxicityNKCellCytotoxicActivityForm.numberOfDerivedBioAssayData" bundle="submit" />
+			<field property="achar.numberOfDerivedBioAssayData" page="0" depends="integer">
+				<arg position="0" key="numberOfDerivedBioAssayData" bundle="submit" />
 			</field>
 			<field property="achar.characterizationSource" page="1" depends="required">
-				<arg position="0" key="invitroImmunotoxicityNKCellCytotoxicActivityForm.characterizationSource" bundle="submit" />
+				<arg position="0" key="characterizationSource" bundle="submit" />
 			</field>
 			<field property="achar.viewTitle" page="1" depends="required">
-				<arg position="0" key="invitroImmunotoxicityNKCellCytotoxicActivityForm.viewTitle" bundle="submit" />
+				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
 		</form>
 		<form name="invitroImmunotoxicityLeukocyteProliferationForm">
-			<field property="achar.numberOfDerivedBioAssayData" page="1" depends="integer" >
-				<arg position="0" key="invitroImmunotoxicityLeukocyteProliferationForm.numberOfDerivedBioAssayData" bundle="submit" />
+			<field property="achar.numberOfDerivedBioAssayData" page="0" depends="integer">
+				<arg position="0" key="numberOfDerivedBioAssayData" bundle="submit" />
 			</field>
 			<field property="achar.characterizationSource" page="1" depends="required">
-				<arg position="0" key="invitroImmunotoxicityLeukocyteProliferationForm.characterizationSource" bundle="submit" />
+				<arg position="0" key="characterizationSource" bundle="submit" />
 			</field>
 			<field property="achar.viewTitle" page="1" depends="required">
-				<arg position="0" key="invitroImmunotoxicityLeukocyteProliferationForm.viewTitle" bundle="submit" />
+				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
 		</form>
 		<form name="invitroImmunotoxicityCFU_GMForm">
-			<field property="achar.numberOfDerivedBioAssayData" page="1" depends="integer" >
-				<arg position="0" key="invitroImmunotoxicityCFU_GMForm.numberOfDerivedBioAssayData" bundle="submit" />
+			<field property="achar.numberOfDerivedBioAssayData" page="0" depends="integer">
+				<arg position="0" key="numberOfDerivedBioAssayData" bundle="submit" />
 			</field>
 			<field property="achar.characterizationSource" page="1" depends="required">
-				<arg position="0" key="invitroImmunotoxicityCFU_GMForm.characterizationSource" bundle="submit" />
+				<arg position="0" key="characterizationSource" bundle="submit" />
 			</field>
 			<field property="achar.viewTitle" page="1" depends="required">
-				<arg position="0" key="invitroImmunotoxicityCFU_GMForm.viewTitle" bundle="submit" />
+				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
 		</form>
 		<form name="invitroImmunotoxicityOxidativeBurstForm">
-			<field property="achar.numberOfDerivedBioAssayData" page="1" depends="integer" >
-				<arg position="0" key="invitroImmunotoxicityOxidativeBurstForm.numberOfDerivedBioAssayData" bundle="submit" />
+			<field property="achar.numberOfDerivedBioAssayData" page="0" depends="integer">
+				<arg position="0" key="numberOfDerivedBioAssayData" bundle="submit" />
 			</field>
 			<field property="achar.characterizationSource" page="1" depends="required">
-				<arg position="0" key="invitroImmunotoxicityOxidativeBurstForm.characterizationSource" bundle="submit" />
+				<arg position="0" key="characterizationSource" bundle="submit" />
 			</field>
 			<field property="achar.viewTitle" page="1" depends="required">
-				<arg position="0" key="invitroImmunotoxicityOxidativeBurstForm.viewTitle" bundle="submit" />
+				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
 		</form>
 		<form name="invitroImmunotoxicityPhagocytosisForm">
-			<field property="achar.numberOfDerivedBioAssayData" page="1" depends="integer" >
-				<arg position="0" key="invitroImmunotoxicityPhagocytosisForm.numberOfDerivedBioAssayData" bundle="submit" />
+			<field property="achar.numberOfDerivedBioAssayData" page="0" depends="integer">
+				<arg position="0" key="numberOfDerivedBioAssayData" bundle="submit" />
 			</field>
 			<field property="achar.characterizationSource" page="1" depends="required">
-				<arg position="0" key="invitroImmunotoxicityPhagocytosisForm.characterizationSource" bundle="submit" />
+				<arg position="0" key="characterizationSource" bundle="submit" />
 			</field>
 			<field property="achar.viewTitle" page="1" depends="required">
-				<arg position="0" key="invitroImmunotoxicityPhagocytosisForm.viewTitle" bundle="submit" />
+				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
 		</form>
 		<form name="invitroCytotoxicityCellViabilityForm">
-			<field property="achar.numberOfDerivedBioAssayData" page="1" depends="integer" >
-				<arg position="0" key="invitroCytotoxicityCellViabilityForm.numberOfDerivedBioAssayData" bundle="submit" />
+			<field property="achar.numberOfDerivedBioAssayData" page="0" depends="integer">
+				<arg position="0" key="numberOfDerivedBioAssayData" bundle="submit" />
 			</field>
 			<field property="achar.characterizationSource" page="1" depends="required">
-				<arg position="0" key="invitroCytotoxicityCellViabilityForm.characterizationSource" bundle="submit" />
+				<arg position="0" key="characterizationSource" bundle="submit" />
 			</field>
 			<field property="achar.viewTitle" page="1" depends="required">
-				<arg position="0" key="invitroCytotoxicityCellViabilityForm.viewTitle" bundle="submit" />
+				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
 		</form>
 		<form name="invitroCytotoxicityCaspase3ActivationForm">
-			<field property="achar.numberOfDerivedBioAssayData" page="1" depends="integer" >
-				<arg position="0" key="invitroCytotoxicityCaspase3ActivationForm.numberOfDerivedBioAssayData" bundle="submit" />
+			<field property="achar.numberOfDerivedBioAssayData" page="0" depends="integer">
+				<arg position="0" key="numberOfDerivedBioAssayData" bundle="submit" />
 			</field>
 			<field property="achar.characterizationSource" page="1" depends="required">
-				<arg position="0" key="invitroCytotoxicityCaspase3ActivationForm.characterizationSource" bundle="submit" />
+				<arg position="0" key="characterizationSource" bundle="submit" />
 			</field>
 			<field property="achar.viewTitle" page="1" depends="required">
-				<arg position="0" key="invitroCytotoxicityCaspase3ActivationForm.viewTitle" bundle="submit" />
+				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
 		</form>
 		<form name="invitroToxicityEnzymeInductionForm">
-			<field property="achar.numberOfDerivedBioAssayData" page="1" depends="integer" >
-				<arg position="0" key="invitroToxicityEnzymeInductionForm.numberOfDerivedBioAssayData" bundle="submit" />
+			<field property="achar.numberOfDerivedBioAssayData" page="0" depends="integer">
+				<arg position="0" key="numberOfDerivedBioAssayData" bundle="submit" />
 			</field>
 			<field property="achar.characterizationSource" page="1" depends="required">
-				<arg position="0" key="invitroToxicityEnzymeInductionForm.characterizationSource" bundle="submit" />
+				<arg position="0" key="characterizationSource" bundle="submit" />
 			</field>
 			<field property="achar.viewTitle" page="1" depends="required">
-				<arg position="0" key="invitroToxicityEnzymeInductionForm.viewTitle" bundle="submit" />
+				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
 		</form>
 		<form name="invitroToxicityOxidativeStressForm">
-			<field property="achar.numberOfDerivedBioAssayData" page="1" depends="integer" >
-				<arg position="0" key="invitroToxicityOxidativeStressForm.numberOfDerivedBioAssayData" bundle="submit" />
+			<field property="achar.numberOfDerivedBioAssayData" page="0" depends="integer">
+				<arg position="0" key="numberOfDerivedBioAssayData" bundle="submit" />
 			</field>
 			<field property="achar.characterizationSource" page="1" depends="required">
-				<arg position="0" key="invitroToxicityOxidativeStressForm.characterizationSource" bundle="submit" />
+				<arg position="0" key="characterizationSource" bundle="submit" />
 			</field>
 			<field property="achar.viewTitle" page="1" depends="required">
-				<arg position="0" key="invitroToxicityOxidativeStressForm.viewTitle" bundle="submit" />
+				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
 		</form>
 		<form name="invitroMetabolicStabilityGlucuronidationSulphationForm">
-			<field property="achar.numberOfDerivedBioAssayData" page="1" depends="integer" >
-				<arg position="0" key="invitroMetabolicStabilityGlucuronidationSulphationForm.numberOfDerivedBioAssayData" bundle="submit" />
+			<field property="achar.numberOfDerivedBioAssayData" page="0" depends="integer">
+				<arg position="0" key="numberOfDerivedBioAssayData" bundle="submit" />
 			</field>
 			<field property="achar.characterizationSource" page="1" depends="required">
-				<arg position="0" key="invitroMetabolicStabilityGlucuronidationSulphationForm.characterizationSource" bundle="submit" />
+				<arg position="0" key="characterizationSource" bundle="submit" />
 			</field>
 			<field property="achar.viewTitle" page="1" depends="required">
-				<arg position="0" key="invitroMetabolicStabilityGlucuronidationSulphationForm.viewTitle" bundle="submit" />
+				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
 		</form>
 		<form name="invitroMetabolicStabilityCYP450Form">
-			<field property="achar.numberOfDerivedBioAssayData" page="1" depends="integer" >
-				<arg position="0" key="invitroMetabolicStabilityCYP450Form.numberOfDerivedBioAssayData" bundle="submit" />
+			<field property="achar.numberOfDerivedBioAssayData" page="0" depends="integer">
+				<arg position="0" key="numberOfDerivedBioAssayData" bundle="submit" />
 			</field>
 			<field property="achar.characterizationSource" page="1" depends="required">
-				<arg position="0" key="invitroMetabolicStabilityCYP450Form.characterizationSource" bundle="submit" />
+				<arg position="0" key="characterizationSource" bundle="submit" />
 			</field>
 			<field property="achar.viewTitle" page="1" depends="required">
-				<arg position="0" key="invitroMetabolicStabilityCYP450Form.viewTitle" bundle="submit" />
+				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
 		</form>
 		<form name="invitroMetabolicStabilityROSForm">
-			<field property="achar.numberOfDerivedBioAssayData" page="1" depends="integer" >
-				<arg position="0" key="invitroMetabolicStabilityROSForm.numberOfDerivedBioAssayData" bundle="submit" />
+			<field property="achar.numberOfDerivedBioAssayData" page="0" depends="integer">
+				<arg position="0" key="numberOfDerivedBioAssayData" bundle="submit" />
 			</field>
 			<field property="achar.characterizationSource" page="1" depends="required">
-				<arg position="0" key="invitroMetabolicStabilityROSForm.characterizationSource" bundle="submit" />
+				<arg position="0" key="characterizationSource" bundle="submit" />
 			</field>
 			<field property="achar.viewTitle" page="1" depends="required">
-				<arg position="0" key="invitroMetabolicStabilityROSForm.viewTitle" bundle="submit" />
+				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
 		</form>
 		<form name="nanoparticleMolecularWeightForm">
 			<field property="achar.characterizationSource" page="1" depends="required">
-				<arg position="0" key="nanoparticleMolecularWeightForm.characterizationSource" bundle="submit" />
+				<arg position="0" key="characterizationSource" bundle="submit" />
 			</field>
 			<field property="achar.viewTitle" page="1" depends="required">
-				<arg position="0" key="nanoparticleMolecularWeightForm.viewTitle" bundle="submit" />
+				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
 		</form>
 		<form name="nanoparticleMorphologyForm">
 			<field property="achar.characterizationSource" page="1" depends="required">
-				<arg position="0" key="nanoparticleMorphologyForm.characterizationSource" bundle="submit" />
+				<arg position="0" key="characterizationSource" bundle="submit" />
 			</field>
 			<field property="achar.viewTitle" page="1" depends="required">
-				<arg position="0" key="nanoparticleMorphologyForm.viewTitle" bundle="submit" />
+				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
 			<field property="achar.type" page="1" depends="required">
 				<arg position="0" key="nanoparticleMorphologyForm.type" bundle="submit" />
@@ -328,10 +331,10 @@
 		</form>
 		<form name="nanoparticleShapeForm">
 			<field property="achar.characterizationSource" page="1" depends="required">
-				<arg position="0" key="nanoparticleShapeForm.characterizationSource" bundle="submit" />
+				<arg position="0" key="characterizationSource" bundle="submit" />
 			</field>
 			<field property="achar.viewTitle" page="1" depends="required">
-				<arg position="0" key="nanoparticleShapeForm.viewTitle" bundle="submit" />
+				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
 			<field property="achar.type" page="1" depends="required">
 				<arg position="0" key="nanoparticleShapeForm.type" bundle="submit" />
@@ -339,34 +342,34 @@
 		</form>
 		<form name="nanoparticleSurfaceForm">
 			<field property="achar.characterizationSource" page="1" depends="required">
-				<arg position="0" key="nanoparticleSurfaceForm.characterizationSource" bundle="submit" />
+				<arg position="0" key="characterizationSource" bundle="submit" />
 			</field>
 			<field property="achar.viewTitle" page="1" depends="required">
-				<arg position="0" key="nanoparticleSurfaceForm.viewTitle" bundle="submit" />
+				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
 		</form>
 		<form name="nanoparticleSolubilityForm">
 			<field property="achar.characterizationSource" page="1" depends="required">
-				<arg position="0" key="nanoparticleSolubilityForm.characterizationSource" bundle="submit" />
+				<arg position="0" key="characterizationSource" bundle="submit" />
 			</field>
 			<field property="achar.viewTitle" page="1" depends="required">
-				<arg position="0" key="nanoparticleSolubilityForm.viewTitle" bundle="submit" />
+				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
 		</form>
 		<form name="nanoparticlePurityForm">
 			<field property="achar.characterizationSource" page="1" depends="required">
-				<arg position="0" key="nanoparticlePurityForm.characterizationSource" bundle="submit" />
+				<arg position="0" key="characterizationSource" bundle="submit" />
 			</field>
 			<field property="achar.viewTitle" page="1" depends="required">
-				<arg position="0" key="nanoparticlePurityForm.viewTitle" bundle="submit" />
+				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
 		</form>
 		<form name="nanoparticleStabilityForm">
 			<field property="achar.characterizationSource" page="1" depends="required">
-				<arg position="0" key="nanoparticleStabilityForm.characterizationSource" bundle="submit" />
+				<arg position="0" key="characterizationSource" bundle="submit" />
 			</field>
 			<field property="achar.viewTitle" page="1" depends="required">
-				<arg position="0" key="nanoparticleStabilityForm.viewTitle" bundle="submit" />
+				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
 		</form>
 	</formset>
