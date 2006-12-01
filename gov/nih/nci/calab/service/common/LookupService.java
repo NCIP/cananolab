@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.66 2006-12-01 14:22:45 beasleyj Exp $ */
+/* CVS $Id: LookupService.java,v 1.67 2006-12-01 14:51:09 beasleyj Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -893,14 +893,13 @@ public class LookupService {
 	}
 
 	public String[] getAllControlTypes() {
-		String[] chargeUnit = new String[] {" ", "Positive", "Negative"};
-		String[] chargeUnit = new String[] { "Positive", "Negative" };
-		return chargeUnit;
+		String[] controlTypes = new String[] {" ", "Positive", "Negative"};
+		return controlTypes;
 	}
 
 	public String[] getAllConditionTypes() {
-		String[] chargeUnit = new String[] {" ", "Particle Concentration", "Time", "Temperature"};
-		return chargeUnit;
+		String[] conditionTypes = new String[] {" ", "Particle Concentration", "Time", "Temperature"};
+		return conditionTypes;
 	}
 
 	public Map<String, String[]> getAllAgentTypes() {
