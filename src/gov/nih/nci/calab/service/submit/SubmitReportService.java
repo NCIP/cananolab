@@ -1,29 +1,26 @@
 package gov.nih.nci.calab.service.submit;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-
-import java.util.List;
-import java.util.Date;
-
-import org.apache.log4j.Logger;
-import org.apache.struts.upload.FormFile;
-
 import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
-import gov.nih.nci.calab.domain.DerivedDataFile;
-import gov.nih.nci.calab.domain.LabFile;
 import gov.nih.nci.calab.domain.AssociatedFile;
+import gov.nih.nci.calab.domain.LabFile;
 import gov.nih.nci.calab.domain.Report;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
-import gov.nih.nci.calab.dto.inventory.SampleBean;
+import gov.nih.nci.calab.service.search.SearchSampleService;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.CananoConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
 import gov.nih.nci.calab.service.util.file.HttpFileUploadSessionData;
-import gov.nih.nci.calab.service.search.SearchSampleService;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.util.Date;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.apache.struts.upload.FormFile;
 
 /**
  * This class include services to submit the report to the file system and saves
