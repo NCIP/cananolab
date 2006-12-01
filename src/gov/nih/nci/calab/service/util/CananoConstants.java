@@ -141,13 +141,13 @@ public class CananoConstants {
 	
 	public static final String PEPTIDE = "Peptide";
 	
-	public static final String SMALL_MOLECULE = "SmallMolecule";
+	public static final String SMALL_MOLECULE = "Small Molecule";
 	
 	public static final String PROBE = "Probe";
 	
 	public static final String ANTIBODY = "Antibody";
 	
-	public static final String IMAGE_CONTRAST_AGENT ="ImageContrastAgent";
+	public static final String IMAGE_CONTRAST_AGENT ="Image Contrast Agent";
 	
 	public static final String ATTACHMENT = "Attachment";
 	
