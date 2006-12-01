@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.68 2006-12-01 20:10:53 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.69 2006-12-01 21:08:24 zengje Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -870,14 +870,8 @@ public class LookupService {
 		return stressorTypes;
 	}
 
-	public String[] getAllSurfaceTypes() {
-		String[] surfaceTypes = new String[] { "surface type 1",
-				"surface type 2" };
-		return surfaceTypes;
-	}
-
 	public String[] getAllAreaMeasureUnits() {
-		String[] areaUnit = new String[] { "square nm" };
+		String[] areaUnit = new String[] { "sq nm" };
 		return areaUnit;
 	}
 
@@ -934,8 +928,7 @@ public class LookupService {
 	}
 
 	public String[] getAllTimeUnits() {
-		String[] timeUnits = new String[] { "seconds", "hours", "days",
-				"months" };
+		String[] timeUnits = new String[] { "hours", "days", "months" };
 		return timeUnits;
 	}
 
@@ -948,5 +941,37 @@ public class LookupService {
 	public String[] getAllConditionUnits() {
 		String[] concentrationUnits = new String[] {"g/ml", "mg/ml", "ug/ml", "ug/ul", "pg/ml", "seconds", "hours", "days", "months", "degrees celcius", "degrees fahrenhiet"};
 		return concentrationUnits;
+	}
+	
+	public String[] getAllCellLines()  throws Exception {
+		
+		SortedSet<String> cellLines = new TreeSet<String>();
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			String hqlString = "select distinct cellViability.cellLine, caspase.cellLine from CellViability cellViability, Caspase3Activation caspase";
+			List results = ida.search(hqlString);
+			for (Object obj : results) {
+//				cellLines.add((String) obj);
+				Object[] objects = (Object[])obj;
+				for(Object object: objects){
+					if (object != null){
+						cellLines.add((String)object);		
+					}
+				}
+			}
+		} catch (Exception e) {
+			logger.error("Problem to retrieve all Cell lines.");
+			throw new RuntimeException(
+					"Problem to retrieve all Cell lines.");
+		} finally {
+			ida.close();
+		}
+		cellLines.addAll(Arrays
+				.asList(CananoConstants.CELLLINES));
+
+		return (String[]) cellLines.toArray(new String[0]);
+
 	}
 }
