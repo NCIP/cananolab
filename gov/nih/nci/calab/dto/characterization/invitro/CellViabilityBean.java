@@ -4,6 +4,7 @@ import gov.nih.nci.calab.domain.nano.characterization.invitro.CellViability;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.DatumBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
+import gov.nih.nci.calab.service.util.CananoConstants;
 
 import java.util.List;
 
@@ -18,7 +19,8 @@ import java.util.List;
 public class CellViabilityBean extends CharacterizationBean {
 	
 	private String cellLine;	
-	private String cellDeathMethod;
+	private String otherCellLine;
+//	private String cellDeathMethod;
 
 	public CellViabilityBean() {
 		super();
@@ -28,7 +30,7 @@ public class CellViabilityBean extends CharacterizationBean {
 		super(aChar);
 
 		this.cellLine = aChar.getCellLine();
-		this.cellDeathMethod = aChar.getCellDeathMethod();
+//		this.cellDeathMethod = aChar.getCellDeathMethod();
 	}
 
 	public void setDerivedBioAssayDataList(
@@ -54,7 +56,19 @@ public class CellViabilityBean extends CharacterizationBean {
 	public CellViability getDomainObj() {
 		CellViability cellViability = new CellViability();
 		super.updateDomainObj(cellViability);
-		cellViability.setCellLine(this.cellLine);
+		if (cellLine.equals(CananoConstants.OTHER)) {
+			cellViability.setCellLine(this.otherCellLine);
+		} else {
+			cellViability.setCellLine(this.cellLine);
+		}
 		return cellViability;
+	}
+
+	public String getOtherCellLine() {
+		return otherCellLine;
+	}
+
+	public void setOtherCellLine(String otherCellLine) {
+		this.otherCellLine = otherCellLine;
 	}
 }
