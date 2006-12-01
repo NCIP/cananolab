@@ -98,6 +98,215 @@
 				<arg position="0" key="nanoparticleSizeForm.viewTitle" bundle="submit" />
 			</field>
 		</form>
+		<form name="invitroImmunotoxicityHemolysisForm">
+			<field property="achar.numberOfDerivedBioAssayData" page="1" depends="integer" >
+				<arg position="0" key="invitroImmunotoxicityHemolysisForm.numberOfDerivedBioAssayData" bundle="submit" />
+			</field>
+			<field property="achar.characterizationSource" page="1" depends="required">
+				<arg position="0" key="invitroImmunotoxicityHemolysisForm.characterizationSource" bundle="submit" />
+			</field>
+			<field property="achar.viewTitle" page="1" depends="required">
+				<arg position="0" key="invitroImmunotoxicityHemolysisForm.viewTitle" bundle="submit" />
+			</field>
+		</form>
+		<form name="invitroImmunotoxicityPlateAggregationForm">
+			<field property="achar.numberOfDerivedBioAssayData" page="1" depends="integer" >
+				<arg position="0" key="invitroImmunotoxicityPlateAggregationForm.numberOfDerivedBioAssayData" bundle="submit" />
+			</field>
+			<field property="achar.characterizationSource" page="1" depends="required">
+				<arg position="0" key="invitroImmunotoxicityPlateAggregationForm.characterizationSource" bundle="submit" />
+			</field>
+			<field property="achar.viewTitle" page="1" depends="required">
+				<arg position="0" key="invitroImmunotoxicityPlateAggregationForm.viewTitle" bundle="submit" />
+			</field>
+		</form>
+		<form name="invitroImmunotoxicityCoagulationForm">
+			<field property="achar.numberOfDerivedBioAssayData" page="1" depends="integer" >
+				<arg position="0" key="invitroImmunotoxicityCoagulationForm.numberOfDerivedBioAssayData" bundle="submit" />
+			</field>
+			<field property="achar.characterizationSource" page="1" depends="required">
+				<arg position="0" key="invitroImmunotoxicityCoagulationForm.characterizationSource" bundle="submit" />
+			</field>
+			<field property="achar.viewTitle" page="1" depends="required">
+				<arg position="0" key="invitroImmunotoxicityCoagulationForm.viewTitle" bundle="submit" />
+			</field>
+		</form>
+		<form name="invitroImmunotoxicityProteinBindingForm">
+			<field property="achar.numberOfDerivedBioAssayData" page="1" depends="integer" >
+				<arg position="0" key="invitroImmunotoxicityProteinBindingForm.numberOfDerivedBioAssayData" bundle="submit" />
+			</field>
+			<field property="achar.characterizationSource" page="1" depends="required">
+				<arg position="0" key="invitroImmunotoxicityProteinBindingForm.characterizationSource" bundle="submit" />
+			</field>
+			<field property="achar.viewTitle" page="1" depends="required">
+				<arg position="0" key="invitroImmunotoxicityProteinBindingForm.viewTitle" bundle="submit" />
+			</field>
+		</form>
+		<form name="invitroImmunotoxicityComplementActivationForm">
+			<field property="achar.numberOfDerivedBioAssayData" page="1" depends="integer" >
+				<arg position="0" key="invitroImmunotoxicityComplementActivationForm.numberOfDerivedBioAssayData" bundle="submit" />
+			</field>
+			<field property="achar.characterizationSource" page="1" depends="required">
+				<arg position="0" key="invitroImmunotoxicityComplementActivationForm.characterizationSource" bundle="submit" />
+			</field>
+			<field property="achar.viewTitle" page="1" depends="required">
+				<arg position="0" key="invitroImmunotoxicityComplementActivationForm.viewTitle" bundle="submit" />
+			</field>
+		</form>
+		<form name="invitroImmunotoxicityCytokineInductionForm">
+			<field property="achar.numberOfDerivedBioAssayData" page="1" depends="integer" >
+				<arg position="0" key="invitroImmunotoxicityCytokineInductionForm.numberOfDerivedBioAssayData" bundle="submit" />
+			</field>
+			<field property="achar.characterizationSource" page="1" depends="required">
+				<arg position="0" key="invitroImmunotoxicityCytokineInductionForm.characterizationSource" bundle="submit" />
+			</field>
+			<field property="achar.viewTitle" page="1" depends="required">
+				<arg position="0" key="invitroImmunotoxicityCytokineInductionForm.viewTitle" bundle="submit" />
+			</field>
+		</form>
+		<form name="invitroImmunotoxicityChemotaxisForm">
+			<field property="achar.numberOfDerivedBioAssayData" page="1" depends="integer" >
+				<arg position="0" key="invitroImmunotoxicityChemotaxisForm.numberOfDerivedBioAssayData" bundle="submit" />
+			</field>
+			<field property="achar.characterizationSource" page="1" depends="required">
+				<arg position="0" key="invitroImmunotoxicityChemotaxisForm.characterizationSource" bundle="submit" />
+			</field>
+			<field property="achar.viewTitle" page="1" depends="required">
+				<arg position="0" key="invitroImmunotoxicityChemotaxisForm.viewTitle" bundle="submit" />
+			</field>
+		</form>
+		<form name="invitroImmunotoxicityNKCellCytotoxicActivityForm">
+			<field property="achar.numberOfDerivedBioAssayData" page="1" depends="integer" >
+				<arg position="0" key="invitroImmunotoxicityNKCellCytotoxicActivityForm.numberOfDerivedBioAssayData" bundle="submit" />
+			</field>
+			<field property="achar.characterizationSource" page="1" depends="required">
+				<arg position="0" key="invitroImmunotoxicityNKCellCytotoxicActivityForm.characterizationSource" bundle="submit" />
+			</field>
+			<field property="achar.viewTitle" page="1" depends="required">
+				<arg position="0" key="invitroImmunotoxicityNKCellCytotoxicActivityForm.viewTitle" bundle="submit" />
+			</field>
+		</form>
+		<form name="invitroImmunotoxicityLeukocyteProliferationForm">
+			<field property="achar.numberOfDerivedBioAssayData" page="1" depends="integer" >
+				<arg position="0" key="invitroImmunotoxicityLeukocyteProliferationForm.numberOfDerivedBioAssayData" bundle="submit" />
+			</field>
+			<field property="achar.characterizationSource" page="1" depends="required">
+				<arg position="0" key="invitroImmunotoxicityLeukocyteProliferationForm.characterizationSource" bundle="submit" />
+			</field>
+			<field property="achar.viewTitle" page="1" depends="required">
+				<arg position="0" key="invitroImmunotoxicityLeukocyteProliferationForm.viewTitle" bundle="submit" />
+			</field>
+		</form>
+		<form name="invitroImmunotoxicityCFU_GMForm">
+			<field property="achar.numberOfDerivedBioAssayData" page="1" depends="integer" >
+				<arg position="0" key="invitroImmunotoxicityCFU_GMForm.numberOfDerivedBioAssayData" bundle="submit" />
+			</field>
+			<field property="achar.characterizationSource" page="1" depends="required">
+				<arg position="0" key="invitroImmunotoxicityCFU_GMForm.characterizationSource" bundle="submit" />
+			</field>
+			<field property="achar.viewTitle" page="1" depends="required">
+				<arg position="0" key="invitroImmunotoxicityCFU_GMForm.viewTitle" bundle="submit" />
+			</field>
+		</form>
+		<form name="invitroImmunotoxicityOxidativeBurstForm">
+			<field property="achar.numberOfDerivedBioAssayData" page="1" depends="integer" >
+				<arg position="0" key="invitroImmunotoxicityOxidativeBurstForm.numberOfDerivedBioAssayData" bundle="submit" />
+			</field>
+			<field property="achar.characterizationSource" page="1" depends="required">
+				<arg position="0" key="invitroImmunotoxicityOxidativeBurstForm.characterizationSource" bundle="submit" />
+			</field>
+			<field property="achar.viewTitle" page="1" depends="required">
+				<arg position="0" key="invitroImmunotoxicityOxidativeBurstForm.viewTitle" bundle="submit" />
+			</field>
+		</form>
+		<form name="invitroImmunotoxicityPhagocytosisForm">
+			<field property="achar.numberOfDerivedBioAssayData" page="1" depends="integer" >
+				<arg position="0" key="invitroImmunotoxicityPhagocytosisForm.numberOfDerivedBioAssayData" bundle="submit" />
+			</field>
+			<field property="achar.characterizationSource" page="1" depends="required">
+				<arg position="0" key="invitroImmunotoxicityPhagocytosisForm.characterizationSource" bundle="submit" />
+			</field>
+			<field property="achar.viewTitle" page="1" depends="required">
+				<arg position="0" key="invitroImmunotoxicityPhagocytosisForm.viewTitle" bundle="submit" />
+			</field>
+		</form>
+		<form name="invitroCytotoxicityCellViabilityForm">
+			<field property="achar.numberOfDerivedBioAssayData" page="1" depends="integer" >
+				<arg position="0" key="invitroCytotoxicityCellViabilityForm.numberOfDerivedBioAssayData" bundle="submit" />
+			</field>
+			<field property="achar.characterizationSource" page="1" depends="required">
+				<arg position="0" key="invitroCytotoxicityCellViabilityForm.characterizationSource" bundle="submit" />
+			</field>
+			<field property="achar.viewTitle" page="1" depends="required">
+				<arg position="0" key="invitroCytotoxicityCellViabilityForm.viewTitle" bundle="submit" />
+			</field>
+		</form>
+		<form name="invitroCytotoxicityCaspase3ActivationForm">
+			<field property="achar.numberOfDerivedBioAssayData" page="1" depends="integer" >
+				<arg position="0" key="invitroCytotoxicityCaspase3ActivationForm.numberOfDerivedBioAssayData" bundle="submit" />
+			</field>
+			<field property="achar.characterizationSource" page="1" depends="required">
+				<arg position="0" key="invitroCytotoxicityCaspase3ActivationForm.characterizationSource" bundle="submit" />
+			</field>
+			<field property="achar.viewTitle" page="1" depends="required">
+				<arg position="0" key="invitroCytotoxicityCaspase3ActivationForm.viewTitle" bundle="submit" />
+			</field>
+		</form>
+		<form name="invitroToxicityEnzymeInductionForm">
+			<field property="achar.numberOfDerivedBioAssayData" page="1" depends="integer" >
+				<arg position="0" key="invitroToxicityEnzymeInductionForm.numberOfDerivedBioAssayData" bundle="submit" />
+			</field>
+			<field property="achar.characterizationSource" page="1" depends="required">
+				<arg position="0" key="invitroToxicityEnzymeInductionForm.characterizationSource" bundle="submit" />
+			</field>
+			<field property="achar.viewTitle" page="1" depends="required">
+				<arg position="0" key="invitroToxicityEnzymeInductionForm.viewTitle" bundle="submit" />
+			</field>
+		</form>
+		<form name="invitroToxicityOxidativeStressForm">
+			<field property="achar.numberOfDerivedBioAssayData" page="1" depends="integer" >
+				<arg position="0" key="invitroToxicityOxidativeStressForm.numberOfDerivedBioAssayData" bundle="submit" />
+			</field>
+			<field property="achar.characterizationSource" page="1" depends="required">
+				<arg position="0" key="invitroToxicityOxidativeStressForm.characterizationSource" bundle="submit" />
+			</field>
+			<field property="achar.viewTitle" page="1" depends="required">
+				<arg position="0" key="invitroToxicityOxidativeStressForm.viewTitle" bundle="submit" />
+			</field>
+		</form>
+		<form name="invitroMetabolicStabilityGlucuronidationSulphationForm">
+			<field property="achar.numberOfDerivedBioAssayData" page="1" depends="integer" >
+				<arg position="0" key="invitroMetabolicStabilityGlucuronidationSulphationForm.numberOfDerivedBioAssayData" bundle="submit" />
+			</field>
+			<field property="achar.characterizationSource" page="1" depends="required">
+				<arg position="0" key="invitroMetabolicStabilityGlucuronidationSulphationForm.characterizationSource" bundle="submit" />
+			</field>
+			<field property="achar.viewTitle" page="1" depends="required">
+				<arg position="0" key="invitroMetabolicStabilityGlucuronidationSulphationForm.viewTitle" bundle="submit" />
+			</field>
+		</form>
+		<form name="invitroMetabolicStabilityCYP450Form">
+			<field property="achar.numberOfDerivedBioAssayData" page="1" depends="integer" >
+				<arg position="0" key="invitroMetabolicStabilityCYP450Form.numberOfDerivedBioAssayData" bundle="submit" />
+			</field>
+			<field property="achar.characterizationSource" page="1" depends="required">
+				<arg position="0" key="invitroMetabolicStabilityCYP450Form.characterizationSource" bundle="submit" />
+			</field>
+			<field property="achar.viewTitle" page="1" depends="required">
+				<arg position="0" key="invitroMetabolicStabilityCYP450Form.viewTitle" bundle="submit" />
+			</field>
+		</form>
+		<form name="invitroMetabolicStabilityROSForm">
+			<field property="achar.numberOfDerivedBioAssayData" page="1" depends="integer" >
+				<arg position="0" key="invitroMetabolicStabilityROSForm.numberOfDerivedBioAssayData" bundle="submit" />
+			</field>
+			<field property="achar.characterizationSource" page="1" depends="required">
+				<arg position="0" key="invitroMetabolicStabilityROSForm.characterizationSource" bundle="submit" />
+			</field>
+			<field property="achar.viewTitle" page="1" depends="required">
+				<arg position="0" key="invitroMetabolicStabilityROSForm.viewTitle" bundle="submit" />
+			</field>
+		</form>
 		<form name="nanoparticleMolecularWeightForm">
 			<field property="achar.characterizationSource" page="1" depends="required">
 				<arg position="0" key="nanoparticleMolecularWeightForm.characterizationSource" bundle="submit" />
