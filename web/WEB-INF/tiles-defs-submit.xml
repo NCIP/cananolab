@@ -15,8 +15,8 @@
 			<item value="Surface" link="nanoparticleSurface.do?dispatch=setup&amp;page=0" />
 			<item value="Solubility" link="nanoparticleSolubility.do?dispatch=setup&amp;page=0" />
 			<item value="Purity" link="nanoparticlePurity.do?dispatch=setup&amp;page=0" />
-			<item value="Stability" link="nanoparticleStability.do?dispatch=setup&amp;page=0" />
-			<item value="Functional" link="" />
+	<!-- 		<item value="Stability" link="nanoparticleStability.do?dispatch=setup&amp;page=0" />   -->
+		
 		</putList>
 		<putList name="toxActions">
 			<item value="Oxidative Stress" link="invitroToxicityOxidativeStress.do?dispatch=setup&amp;page=0" />
