@@ -31,7 +31,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="completeLabel">
+				<td class="leftLabel">
 					<strong>Is Control?</strong>&nbsp;&nbsp;
 					<c:choose>
 						<c:when test="${canUserUpdateParticle eq 'true'}">
@@ -44,7 +44,7 @@
 						</c:otherwise>
 					</c:choose>
 				</td>
-				<td class="completeLabel">
+				<td class="label">
 					<c:choose>
 						<c:when test="${canUserUpdateParticle eq 'true'}">
 							<strong>Control Name:</strong>
@@ -55,7 +55,7 @@
 						</c:otherwise>
 					</c:choose>
 				</td>
-				<td class="completeLabel" colspan="2">
+				<td class="rightLabel" colspan="2">
 					<c:choose>
 						<c:when test="${canUserUpdateParticle eq 'true'}">
 							<strong>Control Type:</strong>
