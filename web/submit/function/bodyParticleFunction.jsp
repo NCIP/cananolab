@@ -11,6 +11,7 @@
 				<h4>
 					<br>
 					Particle ${submitType} Function
+					<html:hidden property="function.type" value="${submitType}" />
 				</h4>
 			</td>
 			<td align="right" width="15%">
@@ -97,7 +98,7 @@
 																<strong>Bond Type</strong>
 																<c:choose>
 																	<c:when test="${canUserUpdateParticle eq 'true'}">
-																		<html:text property="function.linkages[${linkageInd}].value" /> &nbsp;				
+																		<html:text property="function.linkages[${linkageInd}].bondType" /> &nbsp;				
 																	</c:when>
 																	<c:otherwise>
 																		${linkage.value}&nbsp;
@@ -121,7 +122,7 @@
 																<strong>Localization</strong>
 																<c:choose>
 																	<c:when test="${canUserUpdateParticle eq 'true'}">
-																		<html:text property="function.linkages[${linkageInd}].value" /> &nbsp;
+																		<html:text property="function.linkages[${linkageInd}].localization" /> &nbsp;
 														</c:when>
 																	<c:otherwise>
 															${linkage.value}&nbsp;
@@ -171,28 +172,72 @@
 																</td>
 																<td class="borderlessLabel">
 																	<c:choose>
-																		<c:when test="${agentType eq 'Peptide' || agentType eq 'DNA'}">
+																		<c:when test="${agentType eq 'Peptide'}">
 																			<strong>Sequence</strong>
 																			<c:choose>
 																				<c:when test="${canUserUpdateParticle eq 'true'}">
-																					<html:text property="function.linkages[${linkageInd}].agent.otherValue" />
+																					<html:text property="function.linkages[${linkageInd}].peptide.sequence" />
 																				</c:when>
 																				<c:otherwise>
-															${linkage.agent.otherValue}&nbsp;
+															${linkage.peptide.sequence}&nbsp;
 														</c:otherwise>
 																			</c:choose>
 																		</c:when>
-																		<c:otherwise>
+																		<c:when test="${agentType eq 'DNA'}">
+																			<strong>Sequence</strong>
+																			<c:choose>
+																				<c:when test="${canUserUpdateParticle eq 'true'}">
+																					<html:text property="function.linkages[${linkageInd}].dna.sequence" />
+																				</c:when>
+																				<c:otherwise>
+															${linkage.dna.sequence}&nbsp;
+														</c:otherwise>
+																			</c:choose>
+																		</c:when>
+																		<c:when test="${agentType eq 'Small Molecule'}">
 																			<strong>Name</strong>
 																			<c:choose>
 																				<c:when test="${canUserUpdateParticle eq 'true'}">
-																					<html:text property="function.linkages[${linkageInd}].agent.name" />
+																					<html:text property="function.linkages[${linkageInd}].smallMolecule.name" />
 																				</c:when>
 																				<c:otherwise>
-															${linkage.agent.name}&nbsp;
+															${linkage.smallMolecule.name}&nbsp;
 														</c:otherwise>
 																			</c:choose>
-																		</c:otherwise>
+																		</c:when>
+																		<c:when test="${agentType eq 'Antibody'}">
+																			<strong>Name</strong>
+																			<c:choose>
+																				<c:when test="${canUserUpdateParticle eq 'true'}">
+																					<html:text property="function.linkages[${linkageInd}].antibody.name" />
+																				</c:when>
+																				<c:otherwise>
+															${linkage.antibody.name}&nbsp;
+														</c:otherwise>
+																			</c:choose>
+																		</c:when>
+																		<c:when test="${agentType eq 'Probe'}">
+																			<strong>Name</strong>
+																			<c:choose>
+																				<c:when test="${canUserUpdateParticle eq 'true'}">
+																					<html:text property="function.linkages[${linkageInd}].probe.name" />
+																				</c:when>
+																				<c:otherwise>
+															${linkage.probe.name}&nbsp;
+														</c:otherwise>
+																			</c:choose>
+																		</c:when>
+																		<c:when test="${agentType eq 'Image Contrast Agent'}">
+																			<strong>Name</strong>
+																			<c:choose>
+																				<c:when test="${canUserUpdateParticle eq 'true'}">
+																					<html:text property="function.linkages[${linkageInd}].imageContrastAgent.name" />
+																				</c:when>
+																				<c:otherwise>
+															${linkage.imageContrastAgent.name}&nbsp;
+														</c:otherwise>
+																			</c:choose>
+																		</c:when>
 																	</c:choose>
 																</td>
 																<td class="borderlessLabel">
@@ -201,21 +246,41 @@
 																			<c:choose>
 																				<c:when test="${agentType eq 'Small Molecule'}">
 																					<strong>Compound Name</strong>
+																					<html:text property="function.linkages[${linkageInd}].smallMolecule.compoundName" />
 																				</c:when>
 																				<c:when test="${agentType eq 'Probe'}">
 																					<strong>Probe Type</strong>
+																					<html:text property="function.linkages[${linkageInd}].probe.type" />
 																				</c:when>
 																				<c:when test="${agentType eq 'Antibody'}">
 																					<strong>Species</strong>
+																					<html:text property="function.linkages[${linkageInd}].antibody.species" />
 																				</c:when>
 																				<c:when test="${agentType eq 'Image Contrast Agent'}">
 																					<strong>Contrast Agent Type</strong>
+																					<html:text property="function.linkages[${linkageInd}].imageContrastAgent.type" />
 																				</c:when>
 																			</c:choose>
-																			<html:text property="function.linkages[${linkageInd}].agent.otherValue" />
 																		</c:when>
-																		<c:otherwise>																		
-																			${linkage.agent.otherValue}" /> &nbsp;
+																		<c:otherwise>
+																			<c:choose>
+																				<c:when test="${agentType eq 'Small Molecule'}">
+																					<strong>Compound Name</strong>
+																					${linkage.smallMolecule.compoundName}&nbsp;
+																				</c:when>
+																				<c:when test="${agentType eq 'Probe'}">
+																					<strong>Probe Type</strong>
+																					${linkage.probe.type}&nbsp;
+																				</c:when>
+																				<c:when test="${agentType eq 'Antibody'}">
+																					<strong>Species</strong>
+																					${linkage.antibody.species}&nbsp;
+																				</c:when>
+																				<c:when test="${agentType eq 'Image Contrast Agent'}">
+																					<strong>Contrast Agent Type</strong>
+																					${linkage.imageContrastAgent.type}&nbsp;
+																				</c:when>
+																			</c:choose>
 																		</c:otherwise>
 																	</c:choose>
 																</td>
