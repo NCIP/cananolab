@@ -381,8 +381,12 @@ public class InitSessionSetup {
 
 	public void setAllDendrimerSurfaceGroupNames(HttpSession session)
 			throws Exception {
+		System.out.println("sesion attribute = " + session.getAttribute("newCharacterizationCreated"));
+		System.out.println("allDendrimerSurfaceGroupNames = " + 
+				session.getServletContext().getAttribute("allDendrimerSurfaceGroupNames"));
 		if (session.getServletContext().getAttribute(
-				"allDendrimerSurfaceGroupNames") == null) {
+				"allDendrimerSurfaceGroupNames") == null 
+				|| session.getAttribute("newCharacterizationCreated") != null) {
 			String[] surfaceGroupNames = lookupService
 					.getAllDendrimerSurfaceGroupNames();
 			session.getServletContext().setAttribute(
@@ -391,7 +395,8 @@ public class InitSessionSetup {
 	}
 
 	public void setAllDendrimerBranches(HttpSession session) throws Exception {
-		if (session.getServletContext().getAttribute("allDendrimerBranches") == null) {
+		if (session.getServletContext().getAttribute("allDendrimerBranches") == null 
+				|| session.getAttribute("newCharacterizationCreated") != null) {
 			String[] branches = lookupService.getAllDendrimerBranches();
 			session.getServletContext().setAttribute("allDendrimerBranches",
 					branches);
@@ -407,6 +412,16 @@ public class InitSessionSetup {
 		}
 	}
 
+	public void addSessionAttributeElement(HttpSession session,
+			String attributeName, String newElement) throws Exception {
+		String[] attributeValues = (String[]) session.getServletContext()
+				.getAttribute(attributeName);
+		if (!StringHelper.contains(attributeValues, newElement, true)) {
+			session.getServletContext().setAttribute(attributeName,
+					StringHelper.add(attributeValues, newElement));
+		}
+	}
+
 	public void setAllMetalCompositions(HttpSession session) throws Exception {
 		if (session.getServletContext().getAttribute("allMetalCompositions") == null) {
 			String[] compositions = lookupService.getAllMetalCompositions();
@@ -416,7 +431,8 @@ public class InitSessionSetup {
 	}
 
 	public void setAllPolymerInitiators(HttpSession session) throws Exception {
-		if (session.getServletContext().getAttribute("allPolymerInitiators") == null) {
+		if ((session.getServletContext().getAttribute("allPolymerInitiators") == null)
+				|| (session.getAttribute("newCharacterizationCreated") != null)) {
 			String[] initiators = lookupService.getAllPolymerInitiators();
 			session.getServletContext().setAttribute("allPolymerInitiators",
 					initiators);
@@ -480,12 +496,13 @@ public class InitSessionSetup {
 				}
 			}
 			session.setAttribute("charTypeChars", existingCharTypeChars);
-			
-			List<LabFileBean> reportBeans = service.getReportInfo(particleName, particleType);
+
+			List<LabFileBean> reportBeans = service.getReportInfo(particleName,
+					particleType);
 			session.setAttribute("charTypeReports", reportBeans);
 		}
 		session.removeAttribute("newCharacterizationCreated");
-		
+
 		if (session.getAttribute("funcTypeFuncs") == null
 				|| session.getAttribute("newFunctionCreated") != null
 				|| session.getAttribute("newParticleCreated") != null) {
@@ -628,33 +645,11 @@ public class InitSessionSetup {
 		}
 	}
 
-	public void addMorphologyType(HttpSession session, String option)
-			throws Exception {
-		setAllMorphologyTypes(session);
-		String[] morphologyTypes = (String[]) session.getServletContext()
-				.getAttribute("allMorphologyTypes");
-		if (!StringHelper.contains(morphologyTypes, option, true)) {
-			session.getServletContext().setAttribute("allMorphologyTypes",
-					StringHelper.add(morphologyTypes, option));
-		}
-	}
-
 	public void setAllShapeTypes(HttpSession session) throws Exception {
 		if (session.getServletContext().getAttribute("allShapeTypes") == null) {
 			String[] shapeTypes = lookupService.getAllShapeTypes();
 			session.getServletContext().setAttribute("allShapeTypes",
 					shapeTypes);
-		}
-	}
-
-	public void addShapeType(HttpSession session, String option)
-			throws Exception {
-		setAllShapeTypes(session);
-		String[] shapeTypes = (String[]) session.getServletContext()
-				.getAttribute("allShapeTypes");
-		if (!StringHelper.contains(shapeTypes, option, true)) {
-			session.getServletContext().setAttribute("allShapeTypes",
-					StringHelper.add(shapeTypes, option));
 		}
 	}
 
@@ -688,14 +683,6 @@ public class InitSessionSetup {
 		}
 		session.removeAttribute("newParticleCreated");
 		session.removeAttribute("newRunCreated");
-	}
-
-	public void setAllSurfaceTypes(HttpSession session) throws Exception {
-		if (session.getServletContext().getAttribute("allSurfaceTypes") == null) {
-			String[] surfaceTypes = lookupService.getAllSurfaceTypes();
-			session.getServletContext().setAttribute("allSurfaceTypes",
-					surfaceTypes);
-		}
 	}
 
 	public void setAllAreaMeasureUnits(HttpSession session) throws Exception {
@@ -738,14 +725,6 @@ public class InitSessionSetup {
 		}
 	}
 
-	public void setAllDensityMeasureUnits(HttpSession session) throws Exception {
-		if (session.getServletContext().getAttribute("allDensityMeasureUnits") == null) {
-			String[] densityUnits = lookupService.getAllDensityMeasureUnits();
-			session.getServletContext().setAttribute("allDensityMeasureUnits",
-					densityUnits);
-		}
-	}
-
 	public void setAllAgentTypes(HttpSession session) throws Exception {
 		if (session.getServletContext().getAttribute("allAgentTypes") == null) {
 			Map<String, String[]> agentTypes = lookupService.getAllAgentTypes();
@@ -778,5 +757,22 @@ public class InitSessionSetup {
 					concentrationUnits);
 		}
 	}
+
+	public void setAllCellLines(HttpSession session) throws Exception {
+		if (session.getServletContext().getAttribute("allCellLines") == null) {
+			String[] cellLines = lookupService.getAllCellLines();
+			session.getServletContext().setAttribute("allCellLines", cellLines);
+		}
+	}
+
+	// public void addCellLine(HttpSession session, String option) throws
+	// Exception {
+	// String[] cellLines = (String[])
+	// session.getServletContext().getAttribute("allCellLines");
+	// if (!StringHelper.contains(cellLines, option, true)) {
+	// session.getServletContext().setAttribute("allCellLines",
+	// StringHelper.add(cellLines, option));
+	// }
+	// }
 
 }
