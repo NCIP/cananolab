@@ -80,7 +80,8 @@ public class InvitroCellViabilityAction extends BaseCharacterizationAction {
 		service.addCellViability(particleType, particleName, cellViabilityChar);
 		// Update the other cellLine in the session variable
 		if (cellViabilityChar.getCellLine().equals(CananoConstants.OTHER)){
-			InitSessionSetup.getInstance().addCellLine(request.getSession(), cellViabilityChar.getOtherCellLine());	
+//			InitSessionSetup.getInstance().addCellLine(request.getSession(), cellViabilityChar.getOtherCellLine());
+			InitSessionSetup.getInstance().addSessionAttributeElement(request.getSession(), "allCellLines", cellViabilityChar.getOtherCellLine());
 		}
 		
 		ActionMessages msgs = new ActionMessages();

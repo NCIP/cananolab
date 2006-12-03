@@ -72,7 +72,7 @@ public class InvitroCaspase3ActivationAction extends BaseCharacterizationAction 
 		caspase3ActivityChar.setCreatedDate(date);
 		// Update the other cellLine in the session variable
 		if (caspase3ActivityChar.getCellLine().equals(CananoConstants.OTHER)){
-			InitSessionSetup.getInstance().addCellLine(request.getSession(), caspase3ActivityChar.getOtherCellLine());	
+			InitSessionSetup.getInstance().addSessionAttributeElement(request.getSession(),"allCellLines", caspase3ActivityChar.getOtherCellLine());	
 		}
 		request.getSession().setAttribute("newCharacterizationCreated", "true");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
