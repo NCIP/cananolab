@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.69 2006-12-01 21:08:24 zengje Exp $ */
+/* CVS $Id: LookupService.java,v 1.70 2006-12-03 17:38:48 zengje Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -592,9 +592,28 @@ public class LookupService {
 		return cores;
 	}
 
-	public String[] getAllDendrimerSurfaceGroupNames() {
-		String[] names = new String[] { "Amine", "Carboxyl", "Hydroxyl" };
-		return names;
+	public String[] getAllDendrimerSurfaceGroupNames() throws Exception {
+		SortedSet<String> names = new TreeSet<String>();
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			String hqlString = "select distinct surfaceGroup.name from SurfaceGroup surfaceGroup where surfaceGroup.name is not null";
+			List results = ida.search(hqlString);
+			for (Object obj : results) {
+				names.add((String) obj);
+			}
+		} catch (Exception e) {
+			logger.error("Problem to retrieve all Surface Group name.");
+			throw new RuntimeException(
+					"Problem to retrieve all Surface Group name. ");
+		} finally {
+			ida.close();
+		}
+		names.addAll(Arrays
+				.asList(CananoConstants.DEFAULT_SURFACE_GROUP_NAMES));
+
+		return (String[]) names.toArray(new String[0]);	
 	}
 
 	public String[] getAllDendrimerBranches() throws Exception {
@@ -803,7 +822,6 @@ public class LookupService {
 		} finally {
 			ida.close();
 		}
-		// manufacturers.add(CananoConstants.OTHER);
 
 		return (String[]) manufacturers.toArray(new String[0]);
 	}
@@ -850,18 +868,53 @@ public class LookupService {
 		return graphTypes;
 	}
 
-	public String[] getAllMorphologyTypes() {
-		String[] morphologyTypes = new String[] { "Power", "Liquid", "Solid",
-				"Crystalline", "Copolymer", "Fibril", "Colloid", "Oil" };
-		return morphologyTypes;
+	public String[] getAllMorphologyTypes() throws Exception {
+		
+		SortedSet<String> morphologyTypes = new TreeSet<String>();
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			String hqlString = "select distinct morphology.type from Morphology morphology";
+			List results = ida.search(hqlString);
+			for (Object obj : results) {
+				morphologyTypes.add((String) obj);
+			}
+		} catch (Exception e) {
+			logger.error("Problem to retrieve all morphology types.");
+			throw new RuntimeException(
+					"Problem to retrieve all morphology types.");
+		} finally {
+			ida.close();
+		}
+		morphologyTypes.addAll(Arrays
+				.asList(CananoConstants.DEFAULT_MORPHOLOGY_TYPES));
+
+		return (String[]) morphologyTypes.toArray(new String[0]);
 	}
 
-	public String[] getAllShapeTypes() {
-		String[] shapeTypes = new String[] { "Hexagonal", "Irregular",
-				"Needle", "Oblate", "Rod", "Spherical", "Tetrahedral",
-				"Tetrapod", "Triangular", "Elliptical", "Composite",
-				"Cylindrical", "Vesicular", "Elliposid" };
-		return shapeTypes;
+	public String[] getAllShapeTypes() throws Exception {
+		SortedSet<String> shapeTypes = new TreeSet<String>();
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			String hqlString = "select distinct shape.type from Shape shape";
+			List results = ida.search(hqlString);
+			for (Object obj : results) {
+				shapeTypes.add((String) obj);
+			}
+		} catch (Exception e) {
+			logger.error("Problem to retrieve all shape types.");
+			throw new RuntimeException(
+					"Problem to retrieve all shape types.");
+		} finally {
+			ida.close();
+		}
+		shapeTypes.addAll(Arrays
+				.asList(CananoConstants.DEFAULT_SHAPE_TYPES));
+
+		return (String[]) shapeTypes.toArray(new String[0]);
 	}
 
 	public String[] getAllStressorTypes() {
@@ -969,7 +1022,7 @@ public class LookupService {
 			ida.close();
 		}
 		cellLines.addAll(Arrays
-				.asList(CananoConstants.CELLLINES));
+				.asList(CananoConstants.DEFAULT_CELLLINES));
 
 		return (String[]) cellLines.toArray(new String[0]);
 
