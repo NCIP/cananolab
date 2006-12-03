@@ -191,7 +191,7 @@
 					<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 						<tbody>
 							<tr class="topBorder">
-								<td class="formSubTitle" colspan="4">
+								<td class="formSubTitle" colspan="6">
 									<div align="justify">
 										Surface Group ${status.index+1}
 									</div>
@@ -207,6 +207,7 @@
 											<html:select name="dendrimer.surfaceGroups" indexed="true" property="name">
 												<option />
 													<html:options name="allDendrimerSurfaceGroupNames" />
+												<option value="Other">Other</option>
 											</html:select>
 										</c:when>
 										<c:otherwise>
@@ -214,19 +215,37 @@
 					</c:otherwise>
 									</c:choose>
 								</td>
-								<td class="label">
-									<strong>Modifier</strong>
-								</td>
-								<td class="rightLabel">
-									<c:choose>
-										<c:when test="${canUserUpdateParticle eq 'true'}">
-											<html:text name="dendrimer.surfaceGroups" indexed="true" property="modifier" />
-										</c:when>
-										<c:otherwise>
+								<c:choose>
+									<c:when test="${canUserUpdateParticle eq 'true'}">
+										<td class="label">
+											<strong>Other name</strong>
+										</td>
+										<td class="label">
+											<html:text name="dendrimer.surfaceGroups" indexed="true" property="otherName" />
+										</td>
+									</c:when>
+									<c:otherwise>
+										<td>
+											&nbsp;
+										</td>
+										<td>
+											&nbsp;
+										</td>
+									</c:otherwise>
+									</c:choose>
+									<td class="label">
+										<strong>Modifier</strong>
+									</td>
+									<td class="rightLabel">
+										<c:choose>
+											<c:when test="${canUserUpdateParticle eq 'true'}">
+												<html:text name="dendrimer.surfaceGroups" indexed="true" property="modifier" />
+											</c:when>
+											<c:otherwise>
 						${nanoparticleCompositionForm.map.dendrimer.surfaceGroups[status.index].modifier}&nbsp;
 					</c:otherwise>
-									</c:choose>
-								</td>
+										</c:choose>
+									</td>
 							</tr>
 						</tbody>
 					</table>
