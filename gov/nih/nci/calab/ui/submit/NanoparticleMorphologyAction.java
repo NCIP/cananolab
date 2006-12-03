@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleMorphologyAction.java,v 1.8 2006-11-22 23:19:23 pansu Exp $ */
+/* CVS $Id: NanoparticleMorphologyAction.java,v 1.9 2006-12-03 17:52:47 zengje Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Morphology;
@@ -69,7 +69,6 @@ public class NanoparticleMorphologyAction extends BaseCharacterizationAction {
 					.getSession().getAttribute(
 							"characterizationFile" + fileNumber);
 			if (fileBean != null) {
-				logger.info("************set fileBean to " + fileNumber);
 				obj.setFile(fileBean);
 			}
 			fileNumber++;
@@ -85,7 +84,9 @@ public class NanoparticleMorphologyAction extends BaseCharacterizationAction {
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addParticleMorphology(particleType, particleName,
 				morphologyChar);
-
+		if (morphologyChar.getType().equals(CananoConstants.OTHER)){
+			InitSessionSetup.getInstance().addSessionAttributeElement(request.getSession(),"allMorphologyTypes", morphologyChar.getOtherType());
+		}
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.addParticleMorphology");
 		msgs.add("message", msg);
