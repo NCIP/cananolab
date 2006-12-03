@@ -1,6 +1,7 @@
 package gov.nih.nci.calab.dto.characterization.composition;
 
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.SurfaceGroup;
+import gov.nih.nci.calab.service.util.CananoConstants;
 
 /**
  * This class represents properties of a SurfaceGroup to be shown in the view page.
@@ -10,6 +11,7 @@ import gov.nih.nci.calab.domain.nano.characterization.physical.composition.Surfa
 public class SurfaceGroupBean {
 	private String id;
 	private String name;
+	private String otherName;
 	private String modifier;
 	
 	public SurfaceGroupBean() {
@@ -40,12 +42,22 @@ public class SurfaceGroupBean {
 	}
 	
 	public SurfaceGroup getDomainObj() {
-		SurfaceGroup surfaceGroup=new SurfaceGroup();
-		surfaceGroup.setName(name);
+		SurfaceGroup surfaceGroup = new SurfaceGroup();
+		if (name.equals(CananoConstants.OTHER)) {
+			surfaceGroup.setName(otherName);
+		} else {
+			surfaceGroup.setName(name);	
+		}
 		surfaceGroup.setModifier(modifier);
 		if (getId()!=null&&getId().length() > 0) {
 			surfaceGroup.setId(new Long(getId()));
 		}
 		return surfaceGroup;
+	}
+	public String getOtherName() {
+		return otherName;
+	}
+	public void setOtherName(String otherName) {
+		this.otherName = otherName;
 	}
 }
