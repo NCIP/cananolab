@@ -8,7 +8,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleCompositionAction.java,v 1.18 2006-11-17 22:11:02 pansu Exp $ */
+/* CVS $Id: NanoparticleCompositionAction.java,v 1.19 2006-12-03 17:45:44 zengje Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.CarbonNanotubeComposition;
@@ -72,6 +72,8 @@ public class NanoparticleCompositionAction extends BaseCharacterizationAction {
 			throws Exception {
 		ActionForward forward = null;
 
+		HttpSession session = request.getSession();
+		
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleType = (String) theForm.get("particleType");
 		String particleName = (String) theForm.get("particleName");
@@ -109,15 +111,31 @@ public class NanoparticleCompositionAction extends BaseCharacterizationAction {
 		composition.setCharacterizationSource(characterizationSource);
 
 		// set createdBy and createdDate for the composition
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		UserBean user = (UserBean) session.getAttribute("user");
 		Date date = new Date();
 		composition.setCreatedBy(user.getLoginName());
 		composition.setCreatedDate(date);
 
-		request.getSession().setAttribute("newCharacterizationCreated", "true");
+		session.setAttribute("newCharacterizationCreated", "true");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addParticleComposition(particleType, particleName, composition);
 
+		// In case there is other type of branch, generation, etc created during the creationg and update
+		// InitSessionSetup.setSideParticleMenu() clear up the session attribute "newCharcterizationCreated"
+		// So, it is better to refresh the particle type related session variable here.
+		if (particleType.equalsIgnoreCase(CananoConstants.DENDRIMER_TYPE)) {
+			InitSessionSetup.getInstance().setAllDendrimerCores(session);
+			InitSessionSetup.getInstance().setAllDendrimerSurfaceGroupNames(
+					session);
+			InitSessionSetup.getInstance().setAllDendrimerBranches(session);
+			InitSessionSetup.getInstance().setAllDendrimerGenerations(session);
+		} else if (particleType.equalsIgnoreCase(CananoConstants.POLYMER_TYPE)) {
+			InitSessionSetup.getInstance().setAllPolymerInitiators(session);
+		} else if (particleType
+				.equalsIgnoreCase(CananoConstants.METAL_PARTICLE_TYPE)) {
+			InitSessionSetup.getInstance().setAllMetalCompositions(session);
+		}
+		
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.addParticleComposition");
 		msgs.add("message", msg);
