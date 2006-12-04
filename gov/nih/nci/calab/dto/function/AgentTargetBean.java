@@ -3,6 +3,7 @@ package gov.nih.nci.calab.dto.function;
 import gov.nih.nci.calab.domain.nano.function.AgentTarget;
 import gov.nih.nci.calab.domain.nano.function.Antigen;
 import gov.nih.nci.calab.domain.nano.function.Receptor;
+import gov.nih.nci.calab.domain.nano.function.UnclassifiedAgentTarget;
 import gov.nih.nci.calab.service.util.CananoConstants;
 
 /**
@@ -38,7 +39,6 @@ public class AgentTargetBean {
 			this.type = CananoConstants.RECEPTOR;
 			this.name = ((Receptor) agentTarget).getName();
 		}
-
 	}
 
 	public String getDescription() {
@@ -82,13 +82,20 @@ public class AgentTargetBean {
 			doReceptor.setDescription(description);
 			doReceptor.setName(name);
 			return doReceptor;
-		} else {
+		} else if (type.equals(CananoConstants.ANTIGEN)) {
 			Antigen doAntigen = new Antigen();
 			if (getId() != null && getId().length() > 0) {
 				doAntigen.setId(new Long(getId()));
 			}
 			doAntigen.setDescription(description);
 			doAntigen.setName(name);
+			return doAntigen;
+		} else {			
+			UnclassifiedAgentTarget doAntigen=new UnclassifiedAgentTarget();
+			if (getId() != null && getId().length() > 0) {
+				doAntigen.setId(new Long(getId()));
+			}
+			doAntigen.setDescription(description);			
 			return doAntigen;
 		}
 
