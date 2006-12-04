@@ -12,9 +12,12 @@
 <tr>
 	<td class="welcomeContent" valign="top">	
 			Welcome to the <strong>cancer Laboratory Analysis Bench (caLAB)! </strong>caLAB is a Laboratory Information Management System (LIMS) designed to facilitate data sharing in laboratories performing nanoparticle assays.  caLAB provides support for the accessioning of samples (nanoparticles), execution of nanoparticle assays, and recording of assay results.  Additionally, caLAB allows for  the  annotation of nanoparticles with characterizations resulting from physical and in vitro nanoparticle assays and the sharing of these characterizations in a secure fashion.
+			The diagram below describes the caLAB functionality and workflow:
 		<p align="center">
 			<img src="images/calabworkflow.gif" alt="caLAB Workflow" width="475" height="348">
 		</p>
+		<br>
+		<br>
 	</td>
 </tr>
 </table>
