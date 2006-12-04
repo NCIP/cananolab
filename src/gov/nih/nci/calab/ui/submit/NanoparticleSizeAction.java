@@ -6,11 +6,12 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSizeAction.java,v 1.17 2006-11-22 23:19:23 pansu Exp $ */
+/* CVS $Id: NanoparticleSizeAction.java,v 1.18 2006-12-04 18:53:53 zengje Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Size;
 import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
+import gov.nih.nci.calab.dto.characterization.DatumBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.dto.characterization.physical.SizeBean;
 import gov.nih.nci.calab.dto.common.UserBean;
@@ -56,6 +57,24 @@ public class NanoparticleSizeAction extends BaseCharacterizationAction {
 
 		if (sizeChar.getId() == null || sizeChar.getId() == "") {
 			sizeChar.setId((String) theForm.get("characterizationId"));
+		}
+		
+		// Validation
+		for (DerivedBioAssayDataBean dataBean:sizeChar.getDerivedBioAssayDataList()) {
+			for(DatumBean datumBean: dataBean.getDatumList()){
+				try {
+					if (datumBean.getValue() != null && datumBean.getValue().trim().length()>0){
+						Float.parseFloat(datumBean.getValue());Float.parseFloat(datumBean.getValue());
+					}
+				} catch (NumberFormatException formatE) {
+					ActionMessages msgs = new ActionMessages();
+					ActionMessage msg = new ActionMessage("errors.float", new String[]{"Average/Mean, Z-Average, and PDI "});
+					msgs.add("message", msg);
+					saveMessages(request, msgs);
+					forward = mapping.findForward("input");
+					return forward;
+				}
+			}
 		}
 
 		int fileNumber = 0;
