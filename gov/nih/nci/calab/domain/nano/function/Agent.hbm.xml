@@ -12,7 +12,7 @@
 		</id>
 		<discriminator column="DISCRIMINATOR" type="java.lang.String" />
 		<property name="description" type="java.lang.String" column="DESCRIPTION" />
-		
+
 		<list name="agentTargetCollection" cascade="all-delete-orphan" lazy="true">
 			<cache usage="read-write" />
 			<key column="AGENT_PK_ID" />
@@ -20,6 +20,7 @@
 			<one-to-many class="gov.nih.nci.calab.domain.nano.function.AgentTarget" />
 		</list>
 
+		<subclass name="UnclassifiedAgent" discriminator-value="Other" />
 		<subclass name="DNA" discriminator-value="DNA">
 			<property name="sequence" column="SEQUENCE" />
 		</subclass>
