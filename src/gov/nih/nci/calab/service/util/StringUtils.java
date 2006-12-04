@@ -15,7 +15,7 @@ import java.util.List;
  * @author pansu
  * 
  */
-/* CVS $Id: StringUtils.java,v 1.8 2006-05-11 21:49:11 pansu Exp $ */
+/* CVS $Id: StringUtils.java,v 1.9 2006-12-04 22:55:10 beasleyj Exp $ */
 
 public class StringUtils {
 	private static Logger logger = Logger.getLogger(StringUtils.class);
@@ -148,6 +148,19 @@ public static Date convertToDate(String dateString, String dateFormat) {
 			return "";
 		} else {
 			return obj.toString();
+		}
+	}
+
+	public static boolean isInteger(String theStr) {
+		if ( theStr == null || theStr.length() == 0 ) {
+			return false;
+		} else {
+			for ( int i = 0; i < theStr.length(); i++ ) {
+				if ( !Character.isDigit(theStr.charAt(i)) ) {
+					return false;
+				}
+			}
+			return true;
 		}
 	}
 }
