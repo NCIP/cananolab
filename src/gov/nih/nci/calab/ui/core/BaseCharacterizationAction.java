@@ -38,7 +38,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 
-/* CVS $Id: BaseCharacterizationAction.java,v 1.9 2006-12-04 22:56:01 beasleyj Exp $ */
+/* CVS $Id: BaseCharacterizationAction.java,v 1.10 2006-12-04 23:44:42 zengje Exp $ */
 
 public abstract class BaseCharacterizationAction extends AbstractDispatchAction {
 	/**
@@ -334,9 +334,10 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 	}
 
 	public void updateCharacterizationTables(CharacterizationBean achar) {
-		String numberOfCharacterizationTables = achar
-				.getNumberOfDerivedBioAssayData();
-		int tableNum = Integer.parseInt(numberOfCharacterizationTables);
+//		String numberOfCharacterizationTables = achar
+//				.getNumberOfDerivedBioAssayData();
+//		int tableNum = Integer.parseInt(numberOfCharacterizationTables);
+		int tableNum = achar.getNumberOfDerivedBioAssayData();
 		List<DerivedBioAssayDataBean> origTables = achar
 				.getDerivedBioAssayDataList();
 		int origNum = (origTables == null) ? 0 : origTables.size();
