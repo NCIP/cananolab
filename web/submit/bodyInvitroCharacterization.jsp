@@ -143,3 +143,18 @@
 		</tr>
 	</table>
 </html:form>
+
+<script language="JavaScript">
+<!--//
+  /* populate a hashtable containing condition type units */
+  var conditionTypeUnits=new Array();    
+  <c:forEach var="item" items="${allConditionTypeUnits}">
+    var conditionUnits=new Array();
+    <c:forEach var="conditionUnit" items="${allConditionTypeUnits[item.key]}" varStatus="count">
+  		conditionUnits[${count.index}]=new Option('${conditionUnit}', '${conditionUnit}');  	
+    </c:forEach>
+    conditionTypeUnits['${item.key}'] = conditionUnits;
+  </c:forEach> 
+//-->
+</script>
+<script language="JavaScript">
