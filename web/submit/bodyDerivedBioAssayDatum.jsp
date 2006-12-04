@@ -110,14 +110,16 @@
 									</td>
 									<td class="label">
 										<c:choose>
-											<c:when test="${canUserUpdateParticle eq 'true'}">
-												<html:select property="achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].conditionList[${cInd}].type">
-													<html:options name="allConditionTypes" />
-												</html:select>
+											<c:when test="${param.dispatch eq 'setupUpdate'}">
+												${cdata.type}&nbsp;
 											</c:when>
 											<c:otherwise>
-														${cdata.type}&nbsp;
-        											</c:otherwise>
+ 												<html:select property="achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].conditionList[${cInd}].type"
+															 onchange="javascript:doubleDropdown(document.${formName}.achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].conditionList[${cInd}].type, document.${formName}.achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].conditionList[${cInd}].valueUnit, conditionTypeUnits)">
+													<option value=""></option>
+													<html:options name="allConditionTypes" />
+												</html:select>
+        									</c:otherwise>
 										</c:choose>
 									</td>
 									<td class="label">
@@ -136,7 +138,12 @@
 										<c:choose>
 											<c:when test="${canUserUpdateParticle eq 'true'}">
 												<html:select property="achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].conditionList[${cInd}].valueUnit">
-													<html:options name="allConditionUnits" />
+													<option value=""></option>
+													<option value="${formName}.map.achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].conditionList[${cInd}].valueUnit" selected>
+														<%-- 
+														${formName}.map.achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].conditionList[${cInd}].valueUnit
+														--%>
+													</option>
 												</html:select>
 											</c:when>
 											<c:otherwise>
@@ -155,4 +162,3 @@
 	</table>
 	<br>
 </logic:iterate>
-
