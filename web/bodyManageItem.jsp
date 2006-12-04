@@ -53,11 +53,10 @@
 											</c:when>
 										<c:otherwise>
 												add
-											</c:otherwise>
+								        </c:otherwise>
 									</c:choose>
 									&nbsp;a new
-									<c:out value="${fn:toLowerCase(item)}" />
-									.
+									<c:out value="${fn:toLowerCase(item)}" />.
 								</td>
 							</tr>
 							<tr>
