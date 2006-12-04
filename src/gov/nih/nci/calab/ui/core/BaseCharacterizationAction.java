@@ -12,6 +12,7 @@ import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.CananoConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
+import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,6 +27,8 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
 /**
@@ -35,7 +38,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 
-/* CVS $Id: BaseCharacterizationAction.java,v 1.8 2006-12-01 20:13:38 pansu Exp $ */
+/* CVS $Id: BaseCharacterizationAction.java,v 1.9 2006-12-04 22:56:01 beasleyj Exp $ */
 
 public abstract class BaseCharacterizationAction extends AbstractDispatchAction {
 	/**
@@ -281,7 +284,15 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			updateChartDataPoints(achar, index);
 		}
 		if (type != null && !type.equals("") && type.equals("conditions")) {
-			updateConditions(achar, index, dataPointIndex);
+			if ( !updateConditions(achar, index, dataPointIndex) ) {
+
+				ActionMessages msgs = new ActionMessages();
+				ActionMessage msg = new ActionMessage("numberOfConditions");
+				msgs.add("message", msg);
+				saveMessages(request, msgs);
+				
+				return mapping.getInputForward();
+			}
 		}
 		String particleType = (String) theForm.get("particleType");
 		String particleName = (String) theForm.get("particleName");
@@ -361,43 +372,50 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 	 * @param form
 	 * @param request
 	 * @param response
-	 * @return
+	 * @return boolean
 	 * @throws Exception
 	 */
-	public void updateConditions(CharacterizationBean achar, String index, String dataPointIndex) {
+	public boolean updateConditions(CharacterizationBean achar, String index, String dataPointIndex) {
 		int tableIndex = new Integer(index).intValue();
 		int dataIndex= new Integer(dataPointIndex).intValue();
 		DerivedBioAssayDataBean derivedBioAssayDataBean = (DerivedBioAssayDataBean) achar
-				.getDerivedBioAssayDataList().get(tableIndex);
+			.getDerivedBioAssayDataList().get(tableIndex);
 		DatumBean datumBean = (DatumBean) (derivedBioAssayDataBean
-				.getDatumList().get(dataIndex));
+			.getDatumList().get(dataIndex));
 		String numberOfConditions = datumBean.getNumberOfConditions();
-		int conditionNum = Integer.parseInt(numberOfConditions);
-		List<ConditionBean> origConditions = datumBean.getConditionList();
-		int origNum = (origConditions == null) ? 0 : origConditions.size();
-		List<ConditionBean> conditions = new ArrayList<ConditionBean>();
-		// create new ones
-		if (origNum == 0) {
+		// Validate the number of conditions entry
+		if ( StringUtils.isInteger(numberOfConditions) ) {
+			int conditionNum = Integer.parseInt(numberOfConditions);
+			List<ConditionBean> origConditions = datumBean.getConditionList();
+			int origNum = (origConditions == null) ? 0 : origConditions.size();
+			List<ConditionBean> conditions = new ArrayList<ConditionBean>();
+			// create new ones
+			if (origNum == 0) {
 
-			for (int i = 0; i < conditionNum; i++) {
-				ConditionBean condition = new ConditionBean();
-				conditions.add(condition);
+				for (int i = 0; i < conditionNum; i++) {
+					ConditionBean condition = new ConditionBean();
+					conditions.add(condition);
+				}
 			}
+			// use keep original table info
+			else if (conditionNum <= origNum) {
+				for (int i = 0; i < conditionNum; i++) {
+					conditions.add((ConditionBean) origConditions.get(i));
+				}
+			} else {
+				for (int i = 0; i < origNum; i++) {
+					conditions.add((ConditionBean) origConditions.get(i));
+				}
+				for (int i = origNum; i < conditionNum; i++) {
+					conditions.add(new ConditionBean());
+				}
+			}
+			datumBean.setConditionList(conditions);
+			 return true;
 		}
-		// use keep original table info
-		else if (conditionNum <= origNum) {
-			for (int i = 0; i < conditionNum; i++) {
-				conditions.add((ConditionBean) origConditions.get(i));
-			}
-		} else {
-			for (int i = 0; i < origNum; i++) {
-				conditions.add((ConditionBean) origConditions.get(i));
-			}
-			for (int i = origNum; i < conditionNum; i++) {
-				conditions.add(new ConditionBean());
-			}
+		else {
+			return false;
 		}
-		datumBean.setConditionList(conditions);
 	}
 
 	/**
@@ -413,7 +431,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 	public void updateChartDataPoints(CharacterizationBean achar, String index) {
 		int tableIndex = new Integer(index).intValue();
 		DerivedBioAssayDataBean derivedBioAssayDataBean = (DerivedBioAssayDataBean) achar
-				.getDerivedBioAssayDataList().get(tableIndex);
+			.getDerivedBioAssayDataList().get(tableIndex);
 		String numberOfDataPoints = derivedBioAssayDataBean.getNumberOfDataPoints();
 		int dataPointNum = Integer.parseInt(numberOfDataPoints);
 		List<DatumBean> origDataList = derivedBioAssayDataBean.getDatumList();
