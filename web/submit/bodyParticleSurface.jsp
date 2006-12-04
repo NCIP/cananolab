@@ -228,7 +228,7 @@
 								&nbsp;
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
-										<input type="button" onclick="javascript:updateSurface()" value="Update Plot Charts">
+										<input type="button" onclick="javascript:updateCharts(this.form, 'nanoparticleSurface')" value="Update Plot Charts">
 									</c:when>
 								</c:choose>
 							</td>
