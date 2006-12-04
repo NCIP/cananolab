@@ -121,18 +121,22 @@
 												<td class="leftLabel">
 													<strong>Average/Mean</strong>
 												</td>
-												<td class="label">
+												<td class="rightlabel" colspan="3">
 													<c:choose>
 														<c:when test="${canUserUpdateParticle eq 'true'}">
 															<html:text name="achar.derivedBioAssayDataList" indexed="true" property="datumList[0].value" />
 													&nbsp; ${nanoparticleSizeForm.map.achar.derivedBioAssayDataList[status.index].datumList[0].valueUnit}	
+															&nbsp;&nbsp;&nbsp;&nbsp;<strong>Z-Average</strong> &nbsp;&nbsp;
+															<html:text name="achar.derivedBioAssayDataList" indexed="true" property="datumList[1].value" />
+													&nbsp; ${nanoparticleSizeForm.map.achar.derivedBioAssayDataList[status.index].datumList[1].valueUnit}
 														</c:when>
 														<c:otherwise>
-						${nanoparticleSizeForm.map.achar.derivedBioAssayDataList[status.index].datumList[0].value} ${nanoparticleSizeForm.map.achar.derivedBioAssayDataList[status.index].datumList[0].valueUnit}&nbsp;
+						${nanoparticleSizeForm.map.achar.derivedBioAssayDataList[status.index].datumList[0].value} ${nanoparticleSizeForm.map.achar.derivedBioAssayDataList[status.index].datumList[0].valueUnit}&nbsp;&nbsp;&nbsp;&nbsp;
+						${nanoparticleSizeForm.map.achar.derivedBioAssayDataList[status.index].datumList[1].value} ${nanoparticleSizeForm.map.achar.derivedBioAssayDataList[status.index].datumList[1].valueUnit}&nbsp;
 					</c:otherwise>
 													</c:choose>
 												</td>
-												<td class="label">
+												<!-- <td class="label">
 													<strong>Z-Average</strong>
 												</td>
 												<td class="rightLabel">
@@ -145,7 +149,7 @@
 						${nanoparticleSizeForm.map.achar.derivedBioAssayDataList[status.index].datumList[1].value} ${nanoparticleSizeForm.map.achar.derivedBioAssayDataList[status.index].datumList[1].valueUnit}&nbsp;
 					</c:otherwise>
 													</c:choose>
-												</td>
+												</td> -->
 											</tr>
 											<tr>
 												<td class="leftLabel">
