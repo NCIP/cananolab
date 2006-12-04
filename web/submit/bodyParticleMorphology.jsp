@@ -53,6 +53,7 @@
 												Other
 											</option>
 										</html:select>
+										&nbsp;&nbsp;
 										<strong> Other </strong>&nbsp;
 										<html:text property="achar.otherType" />
 									</c:when>
