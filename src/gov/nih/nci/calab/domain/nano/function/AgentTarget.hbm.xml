@@ -13,6 +13,8 @@
 		<discriminator column="DISCRIMINATOR" type="java.lang.String" />
 		<property name="description" type="java.lang.String" column="DESCRIPTION" />
 		
+		<subclass name="UnclassifiedAgentTarget" discriminator-value="Other" />
+		
 		<subclass name="Receptor" discriminator-value="Receptor">
 			<property name="name" column="NAME" />
 		</subclass>
