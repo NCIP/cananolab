@@ -153,7 +153,7 @@
 			pageContext.setAttribute("paramMapTr", paramMapTr);
 
 			%>
-									<span class="indented2"> <html:link forward="function" name="paramMapTr" >${aFunc.viewTitle}</html:link> </span>
+									<span class="indented2"> <html:link forward="function" name="paramMapTr">${aFunc.viewTitle}</html:link> </span>
 									<br>
 								</c:forEach>
 								<br>
@@ -210,10 +210,12 @@
 							((gov.nih.nci.calab.dto.characterization.CharacterizationBean) pageContext
 									.getAttribute("aChar")).getId());
 			toxicityParamMap.put("submitType", "tox");
-			pageContext.setAttribute("toxicityParamMap", toxicityParamMap);			%>
+			pageContext.setAttribute("toxicityParamMap", toxicityParamMap);
+
+			%>
 									<span class="indented3"> <html:link forward="${aChar.name}" name="toxicityParamMap" title="${aChar.name}">${aChar.viewTitle}</html:link></span>
 									<br>
-								</c:forEach>								
+								</c:forEach>
 								<span class="indented3"><strong>-Cytotoxicity</strong> &nbsp;&nbsp;</span>
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
@@ -241,7 +243,7 @@
 			%>
 									<span class="indented4"> <html:link forward="${aChar.name}" name="cytotoxicityParamMap" title="${aChar.name}">${aChar.viewTitle}</html:link> </span>
 									<br>
-								</c:forEach>								
+								</c:forEach>
 								<span class="indented3"><strong>-Immunotoxicity</strong></span>
 								<br>
 								<span class="indented4"><strong>-Blood Contact</strong> &nbsp;&nbsp;</span>
@@ -301,12 +303,6 @@
 									<br>
 								</c:forEach>
 								<br>
-								<span class="indented2">-<em>Metabolic Stability</em> &nbsp;&nbsp;</span>
-								<br>
-								<br>
-								<span class="indented">-<em>In Vivo Characterization</em></span>
-								<br>
-								<br>
 							</li>
 							<li>
 								<span class="largerText">Other Associated Files &nbsp;&nbsp;</span>
@@ -317,11 +313,9 @@
 								<span class="largerText">Reports</span>
 								<br>
 								<c:forEach var="aReport" items="${charTypeReports}">
-									<bean:define id="fileId" name='aReport' property='id' type="java.lang.String"/>
+									<bean:define id="fileId" name='aReport' property='id' type="java.lang.String" />
 									<html:hidden name="aReport" property="id" value="${fileId}" indexed="true" />
-									<span class="indented">
-									<a href="publishReport.do?dispatch=download&amp;fileId=${fileId}" title="${aReport.toolTip}">${aReport.name}</a>
-									</span>
+									<span class="indented"> <a href="publishReport.do?dispatch=download&amp;fileId=${fileId}" title="${aReport.toolTip}">${aReport.name}</a> </span>
 									<br>
 								</c:forEach>
 							</li>
