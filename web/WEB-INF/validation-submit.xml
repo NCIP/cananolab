@@ -134,6 +134,9 @@
 			<field property="achar.viewTitle" page="1" depends="required">
 				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
+			<field property="numberOfDataPoints" page="0" depends="integer" indexedListProperty="achar.derivedBioAssayDataList">
+				<arg position="0" key="numberOfDataPoints" bundle="submit" />
+			</field>
 		</form>
 		<form name="invitroImmunotoxicityCoagulationForm">
 			<field property="achar.numberOfDerivedBioAssayData" page="0" depends="integer">
@@ -144,6 +147,9 @@
 			</field>
 			<field property="achar.viewTitle" page="1" depends="required">
 				<arg position="0" key="viewTitle" bundle="submit" />
+			</field>
+			<field property="numberOfDataPoints" page="0" depends="integer" indexedListProperty="achar.derivedBioAssayDataList">
+				<arg position="0" key="numberOfDataPoints" bundle="submit" />
 			</field>
 		</form>
 		<form name="invitroImmunotoxicityProteinBindingForm">
@@ -156,6 +162,9 @@
 			<field property="achar.viewTitle" page="1" depends="required">
 				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
+			<field property="numberOfDataPoints" page="0" depends="integer" indexedListProperty="achar.derivedBioAssayDataList">
+				<arg position="0" key="numberOfDataPoints" bundle="submit" />
+			</field>
 		</form>
 		<form name="invitroImmunotoxicityComplementActivationForm">
 			<field property="achar.numberOfDerivedBioAssayData" page="0" depends="integer">
@@ -166,6 +175,9 @@
 			</field>
 			<field property="achar.viewTitle" page="1" depends="required">
 				<arg position="0" key="viewTitle" bundle="submit" />
+			</field>
+			<field property="numberOfDataPoints" page="0" depends="integer" indexedListProperty="achar.derivedBioAssayDataList">
+				<arg position="0" key="numberOfDataPoints" bundle="submit" />
 			</field>
 		</form>
 		<form name="invitroImmunotoxicityCytokineInductionForm">
@@ -178,6 +190,9 @@
 			<field property="achar.viewTitle" page="1" depends="required">
 				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
+			<field property="numberOfDataPoints" page="0" depends="integer" indexedListProperty="achar.derivedBioAssayDataList">
+				<arg position="0" key="numberOfDataPoints" bundle="submit" />
+			</field>
 		</form>
 		<form name="invitroImmunotoxicityChemotaxisForm">
 			<field property="achar.numberOfDerivedBioAssayData" page="0" depends="integer">
@@ -188,6 +203,9 @@
 			</field>
 			<field property="achar.viewTitle" page="1" depends="required">
 				<arg position="0" key="viewTitle" bundle="submit" />
+			</field>
+			<field property="numberOfDataPoints" page="0" depends="integer" indexedListProperty="achar.derivedBioAssayDataList">
+				<arg position="0" key="numberOfDataPoints" bundle="submit" />
 			</field>
 		</form>
 		<form name="invitroImmunotoxicityNKCellCytotoxicActivityForm">
@@ -200,6 +218,9 @@
 			<field property="achar.viewTitle" page="1" depends="required">
 				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
+			<field property="numberOfDataPoints" page="0" depends="integer" indexedListProperty="achar.derivedBioAssayDataList">
+				<arg position="0" key="numberOfDataPoints" bundle="submit" />
+			</field>
 		</form>
 		<form name="invitroImmunotoxicityLeukocyteProliferationForm">
 			<field property="achar.numberOfDerivedBioAssayData" page="0" depends="integer">
@@ -210,6 +231,9 @@
 			</field>
 			<field property="achar.viewTitle" page="1" depends="required">
 				<arg position="0" key="viewTitle" bundle="submit" />
+			</field>
+			<field property="numberOfDataPoints" page="0" depends="integer" indexedListProperty="achar.derivedBioAssayDataList">
+				<arg position="0" key="numberOfDataPoints" bundle="submit" />
 			</field>
 		</form>
 		<form name="invitroImmunotoxicityCFU_GMForm">
@@ -222,6 +246,9 @@
 			<field property="achar.viewTitle" page="1" depends="required">
 				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
+			<field property="numberOfDataPoints" page="0" depends="integer" indexedListProperty="achar.derivedBioAssayDataList">
+				<arg position="0" key="numberOfDataPoints" bundle="submit" />
+			</field>
 		</form>
 		<form name="invitroImmunotoxicityOxidativeBurstForm">
 			<field property="achar.numberOfDerivedBioAssayData" page="0" depends="integer">
@@ -232,6 +259,9 @@
 			</field>
 			<field property="achar.viewTitle" page="1" depends="required">
 				<arg position="0" key="viewTitle" bundle="submit" />
+			</field>
+			<field property="numberOfDataPoints" page="0" depends="integer" indexedListProperty="achar.derivedBioAssayDataList">
+				<arg position="0" key="numberOfDataPoints" bundle="submit" />
 			</field>
 		</form>
 		<form name="invitroImmunotoxicityPhagocytosisForm">
@@ -244,6 +274,9 @@
 			<field property="achar.viewTitle" page="1" depends="required">
 				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
+			<field property="numberOfDataPoints" page="0" depends="integer" indexedListProperty="achar.derivedBioAssayDataList">
+				<arg position="0" key="numberOfDataPoints" bundle="submit" />
+			</field>
 		</form>
 		<form name="invitroCytotoxicityCellViabilityForm">
 			<field property="achar.numberOfDerivedBioAssayData" page="0" depends="integer">
@@ -254,6 +287,9 @@
 			</field>
 			<field property="achar.viewTitle" page="1" depends="required">
 				<arg position="0" key="viewTitle" bundle="submit" />
+			</field>
+			<field property="numberOfDataPoints" page="0" depends="integer" indexedListProperty="achar.derivedBioAssayDataList">
+				<arg position="0" key="numberOfDataPoints" bundle="submit" />
 			</field>
 		</form>
 		<form name="invitroCytotoxicityCaspase3ActivationForm">
@@ -266,6 +302,9 @@
 			<field property="achar.viewTitle" page="1" depends="required">
 				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
+			<field property="numberOfDataPoints" page="0" depends="integer" indexedListProperty="achar.derivedBioAssayDataList">
+				<arg position="0" key="numberOfDataPoints" bundle="submit" />
+			</field>
 		</form>
 		<form name="invitroToxicityEnzymeInductionForm">
 			<field property="achar.numberOfDerivedBioAssayData" page="0" depends="integer">
@@ -276,6 +315,9 @@
 			</field>
 			<field property="achar.viewTitle" page="1" depends="required">
 				<arg position="0" key="viewTitle" bundle="submit" />
+			</field>
+			<field property="numberOfDataPoints" page="0" depends="integer" indexedListProperty="achar.derivedBioAssayDataList">
+				<arg position="0" key="numberOfDataPoints" bundle="submit" />
 			</field>
 		</form>
 		<form name="invitroToxicityOxidativeStressForm">
@@ -288,6 +330,9 @@
 			<field property="achar.viewTitle" page="1" depends="required">
 				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
+			<field property="numberOfDataPoints" page="0" depends="integer" indexedListProperty="achar.derivedBioAssayDataList">
+				<arg position="0" key="numberOfDataPoints" bundle="submit" />
+			</field>
 		</form>
 		<form name="invitroMetabolicStabilityGlucuronidationSulphationForm">
 			<field property="achar.numberOfDerivedBioAssayData" page="0" depends="integer">
@@ -298,6 +343,9 @@
 			</field>
 			<field property="achar.viewTitle" page="1" depends="required">
 				<arg position="0" key="viewTitle" bundle="submit" />
+			</field>
+			<field property="numberOfDataPoints" page="0" depends="integer" indexedListProperty="achar.derivedBioAssayDataList">
+				<arg position="0" key="numberOfDataPoints" bundle="submit" />
 			</field>
 		</form>
 		<form name="invitroMetabolicStabilityCYP450Form">
@@ -310,6 +358,9 @@
 			<field property="achar.viewTitle" page="1" depends="required">
 				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
+			<field property="numberOfDataPoints" page="0" depends="integer" indexedListProperty="achar.derivedBioAssayDataList">
+				<arg position="0" key="numberOfDataPoints" bundle="submit" />
+			</field>
 		</form>
 		<form name="invitroMetabolicStabilityROSForm">
 			<field property="achar.numberOfDerivedBioAssayData" page="0" depends="integer">
@@ -320,6 +371,9 @@
 			</field>
 			<field property="achar.viewTitle" page="1" depends="required">
 				<arg position="0" key="viewTitle" bundle="submit" />
+			</field>
+			<field property="numberOfDataPoints" page="0" depends="integer" indexedListProperty="achar.derivedBioAssayDataList">
+				<arg position="0" key="numberOfDataPoints" bundle="submit" />
 			</field>
 		</form>
 		<form name="nanoparticleMolecularWeightForm">
