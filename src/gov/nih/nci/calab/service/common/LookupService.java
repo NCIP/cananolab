@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.72 2006-12-04 22:54:22 beasleyj Exp $ */
+/* CVS $Id: LookupService.java,v 1.73 2006-12-04 23:23:47 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -953,30 +953,33 @@ public class LookupService {
 		Map<String, String[]> agentTypes = new HashMap<String, String[]>();
 
 		String[] therapeuticsAgentTypes = new String[] { "Peptide",
-				"Small Molecule", "Antibody", "DNA"};
+				"Small Molecule", "Antibody", "DNA", "Probe", "Image Contrast Agent", "Other"};
 		agentTypes.put("Therapeutic", therapeuticsAgentTypes);
 		String[] targetingAgentTypes = new String[] { "Peptide",
-				"Small Molecule", "Antibody" };
+				"Small Molecule", "Antibody", "DNA", "Probe", "Image Contrast Agent", "Other" };
 		agentTypes.put("Targeting", targetingAgentTypes);
-		String[] imagingAgentTypes = new String[] { "Small Molecule",
-				"Image Contrast Agent" };
+		String[] imagingAgentTypes = new String[] {"Peptide",
+				"Small Molecule", "Antibody", "DNA", "Probe", "Image Contrast Agent", "Other" };
 		agentTypes.put("Imaging", imagingAgentTypes);
-		String[] reportingAgentTypes = new String[] { "Peptide",
-				"Small Molecule", "Probe", "DNA"};
+		String[] reportingAgentTypes = new String[] {"Peptide",
+				"Small Molecule", "Antibody", "DNA", "Probe", "Image Contrast Agent", "Other" };
 		agentTypes.put("Reporting", reportingAgentTypes);
 		return agentTypes;
 	}
 
 	public Map<String,String[]> getAllAgentTargetTypes() {
 		Map<String,String[]> agentTargetTypes=new HashMap<String, String[]>();
-		String[] targetTypes = new String[] { "Receptor", "Antigen" };
-		String[] targetTypes2 = new String[] { "Receptor"};
+		String[] targetTypes = new String[] { "Receptor", "Antigen", "Other" };
+		String[] targetTypes1 = new String[] { "Receptor", "Other"};			
+		String[] targetTypes2 = new String[] { "Other"};
 		
 		agentTargetTypes.put("Small Molecule", targetTypes2);
-		agentTargetTypes.put("Peptide", targetTypes2);
+		agentTargetTypes.put("Peptide", targetTypes1);
 		agentTargetTypes.put("Antibody", targetTypes);
-		agentTargetTypes.put("DNA", targetTypes2);
-		agentTargetTypes.put("Probe", targetTypes2);
+		agentTargetTypes.put("DNA", targetTypes1);
+		agentTargetTypes.put("Probe", targetTypes1);		
+		agentTargetTypes.put("Other", targetTypes2);
+		agentTargetTypes.put("Image Contrast Agent", targetTypes2);
 		return agentTargetTypes;
 	}
 
