@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.70 2006-12-03 17:38:48 zengje Exp $ */
+/* CVS $Id: LookupService.java,v 1.71 2006-12-04 17:01:36 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -1026,5 +1026,10 @@ public class LookupService {
 
 		return (String[]) cellLines.toArray(new String[0]);
 
+	}
+	
+	public String[] getAllActivationMethods() {
+		String[] activationMethods=new String[]{"NMR", "MRI", "heat", "IR", "visible", "ultraviolet light", "ultrasound"};
+		return activationMethods;
 	}
 }
