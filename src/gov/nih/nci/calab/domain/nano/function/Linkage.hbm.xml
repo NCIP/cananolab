@@ -13,11 +13,14 @@
 		<discriminator column="DISCRIMINATOR" type="java.lang.String" />
 		<property name="description" type="java.lang.String" column="DESCRIPTION" />
 
-		<many-to-one name="agent"  class="gov.nih.nci.calab.domain.nano.function.Agent" column="AGENT_PK_ID" lazy="false" fetch="join"/> 
-
+		<many-to-one name="agent" class="gov.nih.nci.calab.domain.nano.function.Agent" column="AGENT_PK_ID" lazy="false" fetch="join" />
+		
+		<subclass name="UnclassifiedLinkage" discriminator-value="Other" />
+		
 		<subclass name="Attachment" discriminator-value="Attachment">
 			<property name="bondType" column="BOND_TYPE" />
 		</subclass>
+		
 		<subclass name="Encapsulation" discriminator-value="Encapsulation">
 			<property name="localization" column="LOCALIZATION" />
 		</subclass>
