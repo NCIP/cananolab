@@ -19,7 +19,12 @@
 		<td class="label">
 			<c:choose>
 				<c:when test="${canUserUpdateParticle eq 'true'}">
-					<html:text property="function.activationMethod" />
+					<html:select property="function.activationMethod">
+						<option />
+							<c:forEach var="method" items="${allActivationMethods}">
+								<html:option value="${method}" />
+							</c:forEach>
+					</html:select>
 				</c:when>
 				<c:otherwise>
 						${thisForm.map.function.activationMethod}&nbsp;
@@ -27,8 +32,9 @@
 			</c:choose>
 		</td>
 		<td class="label">
-			<strong>View Title* </strong><br>
-			(text will be truncated after 25 characters) 
+			<strong>View Title* </strong>
+			<br>
+			(text will be truncated after 25 characters)
 		</td>
 		<td class="rightLabel">
 			<c:choose>
