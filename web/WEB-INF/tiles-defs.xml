@@ -67,5 +67,12 @@
 		<put name="calabContent" value="/bodyUpdatePassword.jsp" />
 		<put name="menu" value="home" />
 	</definition>
-
+	<definition name="calab.disclaimer" path="/layout/disclaimerLayout.jsp">
+		<put name="title" value="caLAB Home" />
+		<put name="nciHeader" value="/html/nciHeader.html" />
+		<put name="calabHeader" value="/html/calabHeader.html" />
+		<put name="calabContent" value="/bodyDisclaimer.jsp" />
+		<put name="calabFooter" value="/html/calabFooter.html" />
+		<put name="nciFooter" value="/html/nciFooter.html" />
+	</definition>
 </tiles-definitions>
