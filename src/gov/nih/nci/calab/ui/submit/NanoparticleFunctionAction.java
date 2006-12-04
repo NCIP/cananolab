@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleFunctionAction.java,v 1.4 2006-12-01 20:15:06 pansu Exp $ */
+/* CVS $Id: NanoparticleFunctionAction.java,v 1.5 2006-12-04 23:24:14 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.function.Function;
 import gov.nih.nci.calab.dto.function.AgentBean;
@@ -117,6 +117,7 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 		String particleName = (String) theForm.get("particleName");
 		InitSessionSetup.getInstance().setAllAgentTypes(session);
 		InitSessionSetup.getInstance().setAllAgentTargetTypes(session);
+		InitSessionSetup.getInstance().setAllActivationMethods(session);
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
 	}
