@@ -720,8 +720,15 @@ public class InitSessionSetup {
 	}
 
 	public void setAllConditionUnits(HttpSession session) throws Exception {
-		if (session.getServletContext().getAttribute("allConditionUnits") == null) {
-			String[] conditionUnits = lookupService.getAllConditionUnits();
+		if (session.getServletContext().getAttribute("allConditionTypeUnits") == null) {
+			Map<String, SortedSet<String>> conditionTypeUnits = lookupService
+				.getAllConditionUnits();
+			List<String> conditionUnits = new ArrayList<String>(
+					conditionTypeUnits.keySet());
+			Collections.sort(conditionUnits);
+
+			session.getServletContext().setAttribute("allConditionTypeUnits",
+					conditionTypeUnits);
 			session.getServletContext().setAttribute("allConditionUnits",
 					conditionUnits);
 		}
