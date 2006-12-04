@@ -381,11 +381,13 @@ public class InitSessionSetup {
 
 	public void setAllDendrimerSurfaceGroupNames(HttpSession session)
 			throws Exception {
-		System.out.println("sesion attribute = " + session.getAttribute("newCharacterizationCreated"));
-		System.out.println("allDendrimerSurfaceGroupNames = " + 
-				session.getServletContext().getAttribute("allDendrimerSurfaceGroupNames"));
+		System.out.println("sesion attribute = "
+				+ session.getAttribute("newCharacterizationCreated"));
+		System.out.println("allDendrimerSurfaceGroupNames = "
+				+ session.getServletContext().getAttribute(
+						"allDendrimerSurfaceGroupNames"));
 		if (session.getServletContext().getAttribute(
-				"allDendrimerSurfaceGroupNames") == null 
+				"allDendrimerSurfaceGroupNames") == null
 				|| session.getAttribute("newCharacterizationCreated") != null) {
 			String[] surfaceGroupNames = lookupService
 					.getAllDendrimerSurfaceGroupNames();
@@ -395,7 +397,7 @@ public class InitSessionSetup {
 	}
 
 	public void setAllDendrimerBranches(HttpSession session) throws Exception {
-		if (session.getServletContext().getAttribute("allDendrimerBranches") == null 
+		if (session.getServletContext().getAttribute("allDendrimerBranches") == null
 				|| session.getAttribute("newCharacterizationCreated") != null) {
 			String[] branches = lookupService.getAllDendrimerBranches();
 			session.getServletContext().setAttribute("allDendrimerBranches",
@@ -765,6 +767,13 @@ public class InitSessionSetup {
 		}
 	}
 
+	public void setAllActivationMethods(HttpSession session) throws Exception {
+		if (session.getServletContext().getAttribute("allActivationMethods") == null) {
+			String[] activationMethods = lookupService.getAllActivationMethods();
+			session.getServletContext().setAttribute("allActivationMethods", activationMethods);
+		}
+	}
+	
 	// public void addCellLine(HttpSession session, String option) throws
 	// Exception {
 	// String[] cellLines = (String[])
