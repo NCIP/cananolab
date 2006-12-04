@@ -51,7 +51,8 @@
 							</c:choose>
 						</td>
 						<td class="label">
-							<strong>View Title*</strong>
+							<strong>View Title*</strong><br>
+							<em>(text will be truncated after 25 characters)</em>
 						</td>
 						<td class="rightLabel">
 							<c:choose>
