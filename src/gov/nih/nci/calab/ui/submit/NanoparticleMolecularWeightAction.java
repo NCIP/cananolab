@@ -6,11 +6,12 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleMolecularWeightAction.java,v 1.8 2006-11-22 23:19:23 pansu Exp $ */
+/* CVS $Id: NanoparticleMolecularWeightAction.java,v 1.9 2006-12-04 23:40:47 zengje Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.MolecularWeight;
 import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
+import gov.nih.nci.calab.dto.characterization.DatumBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.dto.characterization.physical.MolecularWeightBean;
 import gov.nih.nci.calab.dto.common.UserBean;
@@ -57,10 +58,26 @@ public class NanoparticleMolecularWeightAction extends BaseCharacterizationActio
 		String particleName = (String) theForm.get("particleName");
 		MolecularWeightBean molecularWeightChar=(MolecularWeightBean) theForm.get("achar");
 		
-		if (molecularWeightChar.getId() == null || molecularWeightChar.getId() == "") {
-			
+		if (molecularWeightChar.getId() == null || molecularWeightChar.getId() == "") {	
 			molecularWeightChar.setId( (String) theForm.get("characterizationId") );
-			
+		}
+		
+		// Validation
+		for (DerivedBioAssayDataBean dataBean:molecularWeightChar.getDerivedBioAssayDataList()) {
+			for(DatumBean datumBean: dataBean.getDatumList()){
+				try {
+					if (datumBean.getValue() != null && datumBean.getValue().trim().length()>0){
+						Float.parseFloat(datumBean.getValue());Float.parseFloat(datumBean.getValue());
+					}
+				} catch (NumberFormatException formatE) {
+					ActionMessages msgs = new ActionMessages();
+					ActionMessage msg = new ActionMessage("errors.float", new String[]{"PDI "});
+					msgs.add("message", msg);
+					saveMessages(request, msgs);
+					forward = mapping.findForward("input");
+					return forward;
+				}
+			}
 		}
 		
 		int fileNumber = 0;
