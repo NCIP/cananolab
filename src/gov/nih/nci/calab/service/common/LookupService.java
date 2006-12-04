@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.71 2006-12-04 17:01:36 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.72 2006-12-04 22:54:22 beasleyj Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -945,7 +945,7 @@ public class LookupService {
 	}
 
 	public String[] getAllConditionTypes() {
-		String[] conditionTypes = new String[] {" ", "Particle Concentration", "Time", "Temperature"};
+		String[] conditionTypes = new String[] {"Particle Concentration", "Time", "Temperature"};
 		return conditionTypes;
 	}
 
@@ -985,16 +985,56 @@ public class LookupService {
 		return timeUnits;
 	}
 
+	public String[] getAllTemperatureUnits() {
+		String[] temperatureUnits = new String[] {"degrees celcius", "degrees fahrenhiet"};
+		return temperatureUnits;
+	}
+
 	public String[] getAllConcentrationUnits() {
 		String[] concentrationUnits = new String[] { "g/ml", "mg/ml", "ug/ml",
 				"ug/ul", "pg/ml" };
 		return concentrationUnits;
 	}
-	
+/*	
 	public String[] getAllConditionUnits() {
 		String[] concentrationUnits = new String[] {"g/ml", "mg/ml", "ug/ml", "ug/ul", "pg/ml", "seconds", "hours", "days", "months", "degrees celcius", "degrees fahrenhiet"};
 		return concentrationUnits;
 	}
+*/
+	public Map<String, SortedSet<String>> getAllConditionUnits() {
+		Map<String, SortedSet<String>> conditionTypeUnits = new HashMap<String, SortedSet<String>>();
+		SortedSet<String> conditionUnits = new TreeSet<String>(
+				new CalabComparators.SortableNameComparator());
+		
+		String[] conditionTypes = getAllConditionTypes();
+		for ( int i=0; i < conditionTypes.length; i++ )
+		{
+			if ( conditionTypes[i].equals("Particle Concentration") ) {
+				String[] concentrationUnits = getAllConcentrationUnits();
+				for ( int ii=0; ii < concentrationUnits.length; ii++ )
+					conditionUnits.add(concentrationUnits[ii]);
+				conditionTypeUnits.put("Particle Concentration", conditionUnits);
+			}
+			else {
+				if ( conditionTypes[i].equals("Time") ) {
+					String[] timeUnits = getAllTimeUnits();
+					for ( int ii=0; ii < timeUnits.length; ii++ )
+						conditionUnits.add(timeUnits[ii]);
+					conditionTypeUnits.put("Time", conditionUnits);
+				}
+				else {
+					if ( conditionTypes[i].equals("Temperature") ) {
+						String[] temperatureUnits = getAllTemperatureUnits();
+						for ( int ii=0; ii < temperatureUnits.length; ii++ )
+							conditionUnits.add(temperatureUnits[ii]);
+						conditionTypeUnits.put("Temperature", conditionUnits);
+					}
+				}
+			}
+		}						
+		return conditionTypeUnits;
+	}
+
 	
 	public String[] getAllCellLines()  throws Exception {
 		
