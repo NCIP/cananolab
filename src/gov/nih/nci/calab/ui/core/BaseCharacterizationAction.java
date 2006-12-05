@@ -38,7 +38,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 
-/* CVS $Id: BaseCharacterizationAction.java,v 1.12 2006-12-05 23:02:09 pansu Exp $ */
+/* CVS $Id: BaseCharacterizationAction.java,v 1.13 2006-12-05 23:40:58 pansu Exp $ */
 
 public abstract class BaseCharacterizationAction extends AbstractDispatchAction {
 	/**
@@ -59,8 +59,26 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 	 * @param theForm
 	 * @throws Exception
 	 */
-	protected abstract void initSetup(HttpServletRequest request,
-			DynaValidatorForm theForm) throws Exception;
+	protected void initSetup(HttpServletRequest request,
+			DynaValidatorForm theForm) throws Exception {
+		HttpSession session = request.getSession();
+
+		String particleType = (String) theForm.get("particleType");
+		String particleName = (String) theForm.get("particleName");
+
+		InitSessionSetup.getInstance()
+				.setAllSizeDistributionGraphTypes(session);
+		InitSessionSetup.getInstance().setSideParticleMenu(request,
+				particleName, particleType);
+		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
+		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(
+				session);
+		InitSessionSetup.getInstance().setAllControlTypes(session);
+		InitSessionSetup.getInstance().setAllConditionTypes(session);
+		InitSessionSetup.getInstance().setAllConditionUnits(session);
+		InitSessionSetup.getInstance().setAllConcentrationUnits(session);
+		InitSessionSetup.getInstance().setAllTimeUnits(session);		
+	}
 
 	/**
 	 * Set the appropriate type of characterization bean in the form from the
@@ -265,7 +283,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			throws Exception {
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CharacterizationBean achar = (CharacterizationBean) theForm.get("achar");
+		CharacterizationBean achar = (CharacterizationBean) theForm
+				.get("achar");
 		String index = (String) request.getParameter("index");
 		String type = (String) request.getParameter("type");
 		String dataPointIndex = (String) request.getParameter("dataPointIndex");
@@ -276,13 +295,13 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			updateChartDataPoints(achar, index);
 		}
 		if (type != null && !type.equals("") && type.equals("conditions")) {
-			if ( !updateConditions(achar, index, dataPointIndex) ) {
+			if (!updateConditions(achar, index, dataPointIndex)) {
 
 				ActionMessages msgs = new ActionMessages();
 				ActionMessage msg = new ActionMessage("numberOfConditions");
 				msgs.add("message", msg);
 				saveMessages(request, msgs);
-				
+
 				return mapping.getInputForward();
 			}
 		}
@@ -294,11 +313,11 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 
 		return mapping.getInputForward();
 	}
-	
+
 	public void updateCharacterizationTables(CharacterizationBean achar) {
-//		String numberOfCharacterizationTables = achar
-//				.getNumberOfDerivedBioAssayData();
-//		int tableNum = Integer.parseInt(numberOfCharacterizationTables);
+		// String numberOfCharacterizationTables = achar
+		// .getNumberOfDerivedBioAssayData();
+		// int tableNum = Integer.parseInt(numberOfCharacterizationTables);
 		int tableNum = achar.getNumberOfDerivedBioAssayData();
 		List<DerivedBioAssayDataBean> origTables = achar
 				.getDerivedBioAssayDataList();
@@ -338,16 +357,17 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 	 * @return boolean
 	 * @throws Exception
 	 */
-	public boolean updateConditions(CharacterizationBean achar, String index, String dataPointIndex) {
+	public boolean updateConditions(CharacterizationBean achar, String index,
+			String dataPointIndex) {
 		int tableIndex = new Integer(index).intValue();
-		int dataIndex= new Integer(dataPointIndex).intValue();
+		int dataIndex = new Integer(dataPointIndex).intValue();
 		DerivedBioAssayDataBean derivedBioAssayDataBean = (DerivedBioAssayDataBean) achar
-			.getDerivedBioAssayDataList().get(tableIndex);
+				.getDerivedBioAssayDataList().get(tableIndex);
 		DatumBean datumBean = (DatumBean) (derivedBioAssayDataBean
-			.getDatumList().get(dataIndex));
+				.getDatumList().get(dataIndex));
 		String numberOfConditions = datumBean.getNumberOfConditions();
 		// Validate the number of conditions entry
-		if ( StringUtils.isInteger(numberOfConditions) ) {
+		if (StringUtils.isInteger(numberOfConditions)) {
 			int conditionNum = Integer.parseInt(numberOfConditions);
 			List<ConditionBean> origConditions = datumBean.getConditionList();
 			int origNum = (origConditions == null) ? 0 : origConditions.size();
@@ -374,9 +394,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 				}
 			}
 			datumBean.setConditionList(conditions);
-			 return true;
-		}
-		else {
+			return true;
+		} else {
 			return false;
 		}
 	}
@@ -394,8 +413,9 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 	public void updateChartDataPoints(CharacterizationBean achar, String index) {
 		int tableIndex = new Integer(index).intValue();
 		DerivedBioAssayDataBean derivedBioAssayDataBean = (DerivedBioAssayDataBean) achar
-			.getDerivedBioAssayDataList().get(tableIndex);
-		String numberOfDataPoints = derivedBioAssayDataBean.getNumberOfDataPoints();
+				.getDerivedBioAssayDataList().get(tableIndex);
+		String numberOfDataPoints = derivedBioAssayDataBean
+				.getNumberOfDataPoints();
 		int dataPointNum = Integer.parseInt(numberOfDataPoints);
 		List<DatumBean> origDataList = derivedBioAssayDataBean.getDatumList();
 		int origNum = (origDataList == null) ? 0 : origDataList.size();
