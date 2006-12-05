@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.74 2006-12-05 04:10:35 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.75 2006-12-05 17:17:18 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -675,7 +675,7 @@ public class LookupService {
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
-			String hqlString = "select distinct polymer.initiator from PolymerComposition polymer ";
+			String hqlString = "select distinct polymer.initiator from PolymerComposition polymer where polymer.initiator is not null ";
 			List results = ida.search(hqlString);
 			for (Object obj : results) {
 				initiators.add((String) obj);
