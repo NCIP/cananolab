@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleFunctionAction.java,v 1.6 2006-12-05 02:31:54 pansu Exp $ */
+/* CVS $Id: NanoparticleFunctionAction.java,v 1.7 2006-12-05 03:07:39 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.function.Function;
 import gov.nih.nci.calab.dto.function.AgentBean;
@@ -167,67 +167,6 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 		return setupUpdate(mapping, form, request, response);
 	}
 
-
-	/**
-	 * Set up the input forms for updating data
-	 * 
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws Exception
-	 */
-	// public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
-	// HttpServletRequest request, HttpServletResponse response)
-	// throws Exception {
-	//
-	// DynaValidatorForm theForm = (DynaValidatorForm) form;
-	// String particleType = (String) theForm.get("particleType");
-	// String functionId = (String) theForm.get("functionId");
-	//		
-	// // SearchNanoparticleService service = new SearchNanoparticleService();
-	// // Function function = (Surface)service.getFunctionBy(functionId);
-	//		
-	// HttpSession session = request.getSession();
-	// // clear session data from the input forms
-	// clearMap(session, theForm, mapping);
-	//
-	// theForm.set("functionId", functionId);
-	// theForm.set("viewTitle", aChar.getIdentificationName());
-	// theForm.set("description", aChar.getDescription());
-	//
-	//		
-	// FunctionBean sChar = new FunctionBean(aChar);
-	//		
-	// theForm.set("achar", sChar);
-	//		
-	// initSetup(request, theForm);
-	//
-	// if (sChar.getInstrument() != null) {
-	// InitSessionSetup.getInstance().setManufacturerPerType(session,
-	// sChar.getInstrument().getType());
-	// session.setAttribute("selectedInstrumentType",
-	// sChar.getInstrument().getType());
-	// }
-	//
-	// return mapping.getInputForward();
-	// }
-	/**
-	 * Set up the input fields for read only view data
-	 * 
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws Exception
-	 */
-	// public ActionForward view(ActionMapping mapping, ActionForm form,
-	// HttpServletRequest request, HttpServletResponse response)
-	// throws Exception {
-	// return setupUpdate(mapping, form, request, response);
-	// }
 	/**
 	 * Update multiple children on the same form
 	 * 
@@ -265,7 +204,7 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 	 * @param function
 	 */
 	private void updateLinkages(FunctionBean function) {
-		int linkageNum = function.getNumberOfLinkages();
+		int linkageNum = new Integer(function.getNumberOfLinkages());
 		List<LinkageBean> origLinkages = function.getLinkages();
 		int origNum = (origLinkages == null) ? 0 : origLinkages.size();
 		List<LinkageBean> linkages = new ArrayList<LinkageBean>();
@@ -277,7 +216,7 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 				linkages.add(linkage);
 			}
 		}
-		// use keep original surface group info
+		// use keep original linkage info
 		else if (linkageNum <= origNum) {
 			for (int i = 0; i < linkageNum; i++) {
 				linkages.add((LinkageBean) origLinkages.get(i));
