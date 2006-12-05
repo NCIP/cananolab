@@ -24,6 +24,7 @@
 	<c:choose>
 		<c:when test="${submitType eq 'therapeutics' || submitType eq 'Targeting' || submitType eq 'imaging' || submitType eq 'Reporting'}">
 			<%session.removeAttribute("actions");
+
 		%>
 		</c:when>
 	</c:choose>
@@ -46,23 +47,28 @@
 		<bean:define id="actions" name="metabolicActions" type="java.util.List" />
 	</logic:equal>
 	<logic:present name="actions">
-		<table border="0" cellspacing="0" cellpadding="0">
-			<tr>
-				<logic:iterate name="actions" id="item" type="org.apache.struts.tiles.beans.MenuItem">
-					<td class="secondMenuItem" height="20">
-						<c:url var="link" value="${item.link}">
-							<c:param name="particleName" value="${particleName}" />
-							<c:param name="particleType" value="${particleType}" />
-							<c:param name="submitType" value="${submitType}" />
-						</c:url>
-						<a href="${link}" class="secondMenuLink"><bean:write name="item" property="value" /></a>
-					</td>
-					<td>
-						<img height="16" alt="" src="images/mainMenuSeparator.gif" width="1">
-					</td>
-				</logic:iterate>
-			</tr>
-		</table>
+		<c:choose>
+			<c:when test="${canUserUpdateParticle eq 'true'}">
+
+				<table border="0" cellspacing="0" cellpadding="0">
+					<tr>
+						<logic:iterate name="actions" id="item" type="org.apache.struts.tiles.beans.MenuItem">
+							<td class="secondMenuItem" height="20">
+								<c:url var="link" value="${item.link}">
+									<c:param name="particleName" value="${particleName}" />
+									<c:param name="particleType" value="${particleType}" />
+									<c:param name="submitType" value="${submitType}" />
+								</c:url>
+								<a href="${link}" class="secondMenuLink"><bean:write name="item" property="value" /></a>
+							</td>
+							<td>
+								<img height="16" alt="" src="images/mainMenuSeparator.gif" width="1">
+							</td>
+						</logic:iterate>
+					</tr>
+				</table>
+			</c:when>
+		</c:choose>
 	</logic:present>
 </logic:present>
 
