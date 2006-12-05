@@ -544,25 +544,6 @@ public class InitSessionSetup {
 		return rv;
 	}
 
-	public void setManufacturerPerType(HttpSession session,
-			String instrumentType) throws Exception {
-		/*
-		 * if (session.getServletContext().getAttribute("manufacturerPerType") ==
-		 * null) { String[] manufacturerPerType = new String[]
-		 * {"Manufacturer#1",
-		 * "Manufacturer#2"};//lookupService.getAllInstrumentTypes();
-		 * session.getServletContext().setAttribute("manufacturerPerType",
-		 * manufacturerPerType); }
-		 */
-		if (session.getServletContext().getAttribute("manufacturerPerType") != null) {
-			session.getServletContext().removeAttribute("manufacturerPerType");
-		}
-		String[] manufacturerPerType = lookupService
-				.getManufacturers(instrumentType);
-		session.getServletContext().setAttribute("manufacturerPerType",
-				manufacturerPerType);
-	}
-
 	public void setAllInstrumentTypeManufacturers(HttpSession session) throws Exception {
 		if (session.getServletContext().getAttribute(
 				"allInstrumentTypeManufacturers") != null) {
