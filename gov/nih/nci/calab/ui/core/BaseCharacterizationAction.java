@@ -38,7 +38,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 
-/* CVS $Id: BaseCharacterizationAction.java,v 1.10 2006-12-04 23:44:42 zengje Exp $ */
+/* CVS $Id: BaseCharacterizationAction.java,v 1.11 2006-12-05 22:59:31 pansu Exp $ */
 
 public abstract class BaseCharacterizationAction extends AbstractDispatchAction {
 	/**
@@ -303,36 +303,6 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		return mapping.getInputForward();
 	}
 	
-	/**
-	 * Update multiple children on the same form
-	 * 
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws Exception
-	 */
-	public ActionForward updateManufacturers(ActionMapping mapping,
-			ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-
-		HttpSession session = request.getSession();
-		CharacterizationBean aChar = (CharacterizationBean) theForm
-				.get("achar");
-		if (aChar.getInstrument() != null) {
-			String type = aChar.getInstrument().getType();
-			session.setAttribute("selectedInstrumentType", type);
-			// logger.info("***************Action: getting manufacturers for " +
-			// type);
-			InitSessionSetup.getInstance().setManufacturerPerType(session,
-					aChar.getInstrument().getType());
-		}
-
-		return mapping.getInputForward();
-	}
-
 	public void updateCharacterizationTables(CharacterizationBean achar) {
 //		String numberOfCharacterizationTables = achar
 //				.getNumberOfDerivedBioAssayData();
