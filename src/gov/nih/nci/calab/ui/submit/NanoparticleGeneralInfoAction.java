@@ -7,11 +7,12 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.12 2006-11-17 22:35:18 pansu Exp $ */
+/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.13 2006-12-05 17:21:52 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
+import gov.nih.nci.calab.service.util.CananoConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
@@ -46,7 +47,11 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 		submitNanoparticleService.createNanoparticle(particleType,
 				particleName, keywordList, visibilities);
 		HttpSession session = request.getSession();
-
+		
+		//display default visible groups
+		if (visibilities.length==0) {
+			visibilities=CananoConstants.DEFAULT_VISIBLE_GROUPS;
+		}
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage(
 				"message.createNanoparticle.secure", StringUtils.join(
