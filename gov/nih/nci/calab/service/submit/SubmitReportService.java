@@ -27,39 +27,42 @@ import org.apache.struts.upload.FormFile;
  * the path to the database and sets user visibility for the report
  * 
  * @author pansu
- *
+ * 
  */
 public class SubmitReportService {
 	private static Logger logger = Logger.getLogger(SubmitReportService.class);
 
-	
-	public void submit(String[] particleNames, String reportType, FormFile report, String title,
-			String description, String comment, String[] visibilities) throws Exception {
+	public void submit(String[] particleNames, String reportType,
+			FormFile report, String title, String description, String comment,
+			String[] visibilities) throws Exception {
 
 		// TODO saves reportFile to the file system
-		String rootPath = PropertyReader.getProperty(CalabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
-		if (rootPath.charAt(rootPath.length()-1) == File.separatorChar)
-			rootPath = rootPath.substring(0, rootPath.length()-1);
+		String rootPath = PropertyReader.getProperty(
+				CalabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
+		if (rootPath.charAt(rootPath.length() - 1) == File.separatorChar)
+			rootPath = rootPath.substring(0, rootPath.length() - 1);
 
 		String path = File.separator + "reports" + File.separator;
-    	
-		File pathDir = new File (rootPath + path);
-        if ( !pathDir.exists() ) pathDir.mkdirs();
-		
+
+		File pathDir = new File(rootPath + path);
+		if (!pathDir.exists())
+			pathDir.mkdirs();
+
 		HttpFileUploadSessionData sData = new HttpFileUploadSessionData();
 		String tagFileName = sData.getTimeStamp() + "_" + report.getFileName();
 		String outputFilename = rootPath + path + tagFileName;
-		
-		FileOutputStream oStream = new FileOutputStream(new File(outputFilename));
+
+		FileOutputStream oStream = new FileOutputStream(
+				new File(outputFilename));
 
 		this.saveFile(report.getInputStream(), oStream);
-		
+
 		LabFile dataFile = null;
-		if (reportType.equalsIgnoreCase(CananoConstants.NCL_REPORT)) 
+		if (reportType.equalsIgnoreCase(CananoConstants.NCL_REPORT))
 			dataFile = new Report();
 		else
 			dataFile = new AssociatedFile();
-		
+
 		dataFile.setDescription(description);
 		dataFile.setFilename(report.getFileName());
 
@@ -68,17 +71,17 @@ public class SubmitReportService {
 		Date date = new Date();
 		dataFile.setCreatedDate(date);
 		dataFile.setComments(comment);
-		
-		
+
 		// TODO daves reportFile path to the database
 		// look up the samples for each particleNames
-		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
-		
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+
 		try {
 			ida.open();
-			
+
 			ida.store(dataFile);
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			ida.rollback();
@@ -87,31 +90,29 @@ public class SubmitReportService {
 		} finally {
 			ida.close();
 		}
-			
+
 		Nanoparticle particle = null;
 		SearchSampleService service = new SearchSampleService();
-		
-		
+
 		for (String particleName : particleNames) {
 			try {
 				ida.open();
-				
+
 				List results = ida
-				.search("select particle from Nanoparticle particle left join fetch particle.reportCollection where particle.name='"
-						+ particleName
-						+ "'");
+						.search("select particle from Nanoparticle particle left join fetch particle.reportCollection where particle.name='"
+								+ particleName + "'");
 
 				for (Object obj : results) {
 					particle = (Nanoparticle) obj;
 				}
 
 				if (particle != null) {
-					if (reportType.equalsIgnoreCase(CananoConstants.NCL_REPORT))  
+					if (reportType.equalsIgnoreCase(CananoConstants.NCL_REPORT))
 						particle.getReportCollection().add(dataFile);
 					else
 						particle.getAssociatedFileCollection().add(dataFile);
 				}
-		
+
 			} catch (Exception e) {
 				e.printStackTrace();
 				ida.rollback();
@@ -122,18 +123,21 @@ public class SubmitReportService {
 			}
 
 		}
-		
+
 		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
-		String fileName=report.getFileName();
-		
+		String fileName = report.getFileName();
+
 		for (String visibility : visibilities) {
 			// by default, always set visibility to NCL_PI and NCL_Researcher to
 			// be true
 			// TODO once the files is successfully saved, use fileId instead of
 			// fileName
-			userService.secureObject(fileName, "NCL_PI", "R");
-			userService.secureObject(fileName, "NCL_Researcher", "R");
-			userService.secureObject(fileName, visibility, "R");
+			for (String defaultGroup : CananoConstants.DEFAULT_VISIBLE_GROUPS) {
+				userService.secureObject(fileName, defaultGroup,
+						CalabConstants.CSM_READ_ROLE);
+			}
+			userService.secureObject(fileName, visibility,
+					CalabConstants.CSM_READ_ROLE);
 		}
 	}
 
@@ -151,6 +155,5 @@ public class SubmitReportService {
 
 		}
 	}
-
 
 }
