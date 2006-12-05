@@ -58,4 +58,8 @@ public class CalabConstants {
 
 	// caLAB property file
 	public static final String CALAB_PROPERTY = "calab.properties";
+
+	public static final String CSM_READ_ROLE= "R";
+	
+	public static final String CSM_READ_PRIVILEGE="READ";
 }
