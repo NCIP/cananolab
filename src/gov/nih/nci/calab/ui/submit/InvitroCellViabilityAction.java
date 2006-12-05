@@ -79,11 +79,14 @@ public class InvitroCellViabilityAction extends BaseCharacterizationAction {
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addCellViability(particleType, particleName, cellViabilityChar);
 		// Update the other cellLine in the session variable
-		if (cellViabilityChar.getCellLine().equals(CananoConstants.OTHER)){
-//			InitSessionSetup.getInstance().addCellLine(request.getSession(), cellViabilityChar.getOtherCellLine());
-			InitSessionSetup.getInstance().addSessionAttributeElement(request.getSession(), "allCellLines", cellViabilityChar.getOtherCellLine());
+		if (cellViabilityChar.getCellLine().equals(CananoConstants.OTHER)) {
+			// InitSessionSetup.getInstance().addCellLine(request.getSession(),
+			// cellViabilityChar.getOtherCellLine());
+			InitSessionSetup.getInstance().addSessionAttributeElement(
+					request.getSession(), "allCellLines",
+					cellViabilityChar.getOtherCellLine());
 		}
-		
+
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.addInvitroCellViability");
 		msgs.add("message", msg);
@@ -95,19 +98,8 @@ public class InvitroCellViabilityAction extends BaseCharacterizationAction {
 
 		HttpSession session = request.getSession();
 		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-		String selectedInstrumentType = null;
-
-		if (cellViabilityChar.getInstrument().getOtherInstrumentType() != null
-				&& cellViabilityChar.getInstrument().getOtherInstrumentType() != "")
-			selectedInstrumentType = cellViabilityChar.getInstrument()
-					.getOtherInstrumentType();
-		else
-			selectedInstrumentType = cellViabilityChar.getInstrument()
-					.getType();
-
-		InitSessionSetup.getInstance().setManufacturerPerType(session,
-				selectedInstrumentType);
-
+		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(
+				session);
 		return forward;
 	}
 
@@ -122,37 +114,21 @@ public class InvitroCellViabilityAction extends BaseCharacterizationAction {
 		theForm.set("particleName", particleName);
 		theForm.set("particleType", particleType);
 		theForm.set("achar", new CellViabilityBean());
-		
+
 		cleanSessionAttributes(session);
 	}
 
 	protected void initSetup(HttpServletRequest request,
 			DynaValidatorForm theForm) throws Exception {
+		super.initSetup(request, theForm);
 		HttpSession session = request.getSession();
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
-		String firstOption = InitSessionSetup.getInstance()
-				.setAllInstrumentTypes(session);
-		InitSessionSetup.getInstance()
-				.setAllSizeDistributionGraphTypes(session);
-		InitSessionSetup.getInstance().setAllControlTypes(session);
-		InitSessionSetup.getInstance().setAllConditionTypes(session);
-		InitSessionSetup.getInstance().setAllConditionUnits(session);
-		InitSessionSetup.getInstance().setAllConcentrationUnits(session);
-		InitSessionSetup.getInstance().setAllTimeUnits(session);
-		InitSessionSetup.getInstance().setAllCellLines(session);
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
-		if (firstOption == "")
-			firstOption = CananoConstants.OTHER;
-		InitSessionSetup.getInstance().setManufacturerPerType(session,
-				firstOption);
-		session.setAttribute("selectedInstrumentType", "");
+			InitSessionSetup.getInstance().setAllCellLines(session);
 	}
 
 	protected void setFormCharacterizationBean(DynaValidatorForm theForm,
 			Characterization aChar) throws Exception {
-		CellViabilityBean charBean=new CellViabilityBean((CellViability)aChar);
+		CellViabilityBean charBean = new CellViabilityBean(
+				(CellViability) aChar);
 		theForm.set("achar", charBean);
 	}
 

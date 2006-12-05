@@ -13,7 +13,6 @@ import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.dto.characterization.invitro.LeukocyteProliferationBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
-import gov.nih.nci.calab.service.util.CananoConstants;
 import gov.nih.nci.calab.ui.core.BaseCharacterizationAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
@@ -30,7 +29,8 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
-public class InvitroLeukocyteProliferationAction extends BaseCharacterizationAction {
+public class InvitroLeukocyteProliferationAction extends
+		BaseCharacterizationAction {
 
 	/**
 	 * Add or update the data to database
@@ -50,21 +50,27 @@ public class InvitroLeukocyteProliferationAction extends BaseCharacterizationAct
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleType = (String) theForm.get("particleType");
 		String particleName = (String) theForm.get("particleName");
-		LeukocyteProliferationBean leukocyteProliferationChar = (LeukocyteProliferationBean) theForm.get("achar");
+		LeukocyteProliferationBean leukocyteProliferationChar = (LeukocyteProliferationBean) theForm
+				.get("achar");
 
-		if (leukocyteProliferationChar.getId() == null || leukocyteProliferationChar.getId() == "") {			
-			leukocyteProliferationChar.setId( (String) theForm.get("characterizationId") );			
+		if (leukocyteProliferationChar.getId() == null
+				|| leukocyteProliferationChar.getId() == "") {
+			leukocyteProliferationChar.setId((String) theForm
+					.get("characterizationId"));
 		}
-		
+
 		int fileNumber = 0;
-		for (DerivedBioAssayDataBean obj : leukocyteProliferationChar.getDerivedBioAssayDataList()) {
-			CharacterizationFileBean fileBean = (CharacterizationFileBean) request.getSession().getAttribute("characterizationFile" + fileNumber);
-			if (fileBean != null) {		
+		for (DerivedBioAssayDataBean obj : leukocyteProliferationChar
+				.getDerivedBioAssayDataList()) {
+			CharacterizationFileBean fileBean = (CharacterizationFileBean) request
+					.getSession().getAttribute(
+							"characterizationFile" + fileNumber);
+			if (fileBean != null) {
 				obj.setFile(fileBean);
 			}
 			fileNumber++;
 		}
-		
+
 		// set createdBy and createdDate for the composition
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		Date date = new Date();
@@ -73,28 +79,23 @@ public class InvitroLeukocyteProliferationAction extends BaseCharacterizationAct
 
 		request.getSession().setAttribute("newCharacterizationCreated", "true");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		service.addLeukocyteProliferation(particleType, particleName, leukocyteProliferationChar);
+		service.addLeukocyteProliferation(particleType, particleName,
+				leukocyteProliferationChar);
 
 		ActionMessages msgs = new ActionMessages();
-		ActionMessage msg = new ActionMessage("message.addInvitroLeukocyteProliferation");
+		ActionMessage msg = new ActionMessage(
+				"message.addInvitroLeukocyteProliferation");
 		msgs.add("message", msg);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
 
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
-				
+
 		HttpSession session = request.getSession();
 		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-		String selectedInstrumentType = null;
-		
-		if (leukocyteProliferationChar.getInstrument().getOtherInstrumentType() != null && leukocyteProliferationChar.getInstrument().getOtherInstrumentType() != "")
-			selectedInstrumentType = leukocyteProliferationChar.getInstrument().getOtherInstrumentType();
-		else
-			selectedInstrumentType = leukocyteProliferationChar.getInstrument().getType();
-		
-		InitSessionSetup.getInstance().setManufacturerPerType(session, selectedInstrumentType);
-
+		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(
+				session);
 		return forward;
 	}
 
@@ -109,41 +110,24 @@ public class InvitroLeukocyteProliferationAction extends BaseCharacterizationAct
 		theForm.set("particleName", particleName);
 		theForm.set("particleType", particleType);
 		theForm.set("achar", new LeukocyteProliferationBean());
-		
+
 		cleanSessionAttributes(session);
 	}
 
-	protected void initSetup(HttpServletRequest request, DynaValidatorForm theForm)
-			throws Exception {
-		HttpSession session = request.getSession();
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
-		String firstOption = InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-		InitSessionSetup.getInstance().setAllSizeDistributionGraphTypes(session);
-		InitSessionSetup.getInstance().setAllControlTypes(session);
-		InitSessionSetup.getInstance().setAllConditionTypes(session);
-		InitSessionSetup.getInstance().setAllConditionUnits(session);
-		InitSessionSetup.getInstance().setAllConcentrationUnits(session);
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
-		if (firstOption == "")
-			firstOption =  CananoConstants.OTHER;
-		InitSessionSetup.getInstance().setManufacturerPerType(session, firstOption);
-		session.setAttribute("selectedInstrumentType", "");
-	}
-
 	@Override
-	protected void setFormCharacterizationBean(DynaValidatorForm theForm, Characterization aChar) throws Exception {
-		LeukocyteProliferationBean charBean=new LeukocyteProliferationBean((LeukocyteProliferation)aChar);
+	protected void setFormCharacterizationBean(DynaValidatorForm theForm,
+			Characterization aChar) throws Exception {
+		LeukocyteProliferationBean charBean = new LeukocyteProliferationBean(
+				(LeukocyteProliferation) aChar);
 		theForm.set("achar", charBean);
-		
+
 	}
 
 	@Override
 	protected void setLoadFileRequest(HttpServletRequest request) {
 		request.setAttribute("characterization", "leukocyteProliferation");
-		request.setAttribute("loadFileForward", "invitroLeukocyteProliferationForm");
+		request.setAttribute("loadFileForward",
+				"invitroLeukocyteProliferationForm");
 	}
 
-	
 }

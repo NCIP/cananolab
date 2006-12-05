@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSizeAction.java,v 1.19 2006-12-05 23:00:34 pansu Exp $ */
+/* CVS $Id: NanoparticleSizeAction.java,v 1.20 2006-12-05 23:41:51 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Size;
@@ -16,7 +16,6 @@ import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.dto.characterization.physical.SizeBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
-import gov.nih.nci.calab.service.util.CananoConstants;
 import gov.nih.nci.calab.ui.core.BaseCharacterizationAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
@@ -58,17 +57,22 @@ public class NanoparticleSizeAction extends BaseCharacterizationAction {
 		if (sizeChar.getId() == null || sizeChar.getId() == "") {
 			sizeChar.setId((String) theForm.get("characterizationId"));
 		}
-		
+
 		// Validation
-		for (DerivedBioAssayDataBean dataBean:sizeChar.getDerivedBioAssayDataList()) {
-			for(DatumBean datumBean: dataBean.getDatumList()){
+		for (DerivedBioAssayDataBean dataBean : sizeChar
+				.getDerivedBioAssayDataList()) {
+			for (DatumBean datumBean : dataBean.getDatumList()) {
 				try {
-					if (datumBean.getValue() != null && datumBean.getValue().trim().length()>0){
-						Float.parseFloat(datumBean.getValue());Float.parseFloat(datumBean.getValue());
+					if (datumBean.getValue() != null
+							&& datumBean.getValue().trim().length() > 0) {
+						Float.parseFloat(datumBean.getValue());
+						Float.parseFloat(datumBean.getValue());
 					}
 				} catch (NumberFormatException formatE) {
 					ActionMessages msgs = new ActionMessages();
-					ActionMessage msg = new ActionMessage("errors.float", new String[]{"Average/Mean, Z-Average, and PDI "});
+					ActionMessage msg = new ActionMessage(
+							"errors.float",
+							new String[] { "Average/Mean, Z-Average, and PDI " });
 					msgs.add("message", msg);
 					saveMessages(request, msgs);
 					forward = mapping.findForward("input");
@@ -78,7 +82,8 @@ public class NanoparticleSizeAction extends BaseCharacterizationAction {
 		}
 
 		int fileNumber = 0;
-		for (DerivedBioAssayDataBean obj : sizeChar.getDerivedBioAssayDataList()) {
+		for (DerivedBioAssayDataBean obj : sizeChar
+				.getDerivedBioAssayDataList()) {
 			CharacterizationFileBean fileBean = (CharacterizationFileBean) request
 					.getSession().getAttribute(
 							"characterizationFile" + fileNumber);
@@ -109,17 +114,8 @@ public class NanoparticleSizeAction extends BaseCharacterizationAction {
 
 		HttpSession session = request.getSession();
 		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-		String selectedInstrumentType = null;
-
-		if (sizeChar.getInstrument().getOtherInstrumentType() != null
-				&& sizeChar.getInstrument().getOtherInstrumentType() != "")
-			selectedInstrumentType = sizeChar.getInstrument()
-					.getOtherInstrumentType();
-		else
-			selectedInstrumentType = sizeChar.getInstrument().getType();
-
-		InitSessionSetup.getInstance().setManufacturerPerType(session,
-				selectedInstrumentType);
+		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(
+				session);
 
 		return forward;
 	}
@@ -148,18 +144,11 @@ public class NanoparticleSizeAction extends BaseCharacterizationAction {
 
 	protected void initSetup(HttpServletRequest request,
 			DynaValidatorForm theForm) throws Exception {
+
+		super.initSetup(request, theForm);
 		HttpSession session = request.getSession();
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
-		String firstOption = InitSessionSetup.getInstance()
-				.setAllInstrumentTypes(session);
 		InitSessionSetup.getInstance()
-				.setAllSizeDistributionGraphTypes(session);
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
-		if (firstOption == "")
-			firstOption = CananoConstants.OTHER;
-		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(session);		
+				.setAllSizeDistributionGraphTypes(session);		
 	}
 
 	protected void setLoadFileRequest(HttpServletRequest request) {

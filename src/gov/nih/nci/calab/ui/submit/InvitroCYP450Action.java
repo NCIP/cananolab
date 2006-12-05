@@ -13,7 +13,6 @@ import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.dto.characterization.invitro.CYP450Bean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
-import gov.nih.nci.calab.service.util.CananoConstants;
 import gov.nih.nci.calab.ui.core.BaseCharacterizationAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
@@ -51,20 +50,23 @@ public class InvitroCYP450Action extends BaseCharacterizationAction {
 		String particleType = (String) theForm.get("particleType");
 		String particleName = (String) theForm.get("particleName");
 		CYP450Bean cyp450Char = (CYP450Bean) theForm.get("achar");
-		
-		if (cyp450Char.getId() == null || cyp450Char.getId() == "") {			
-			cyp450Char.setId( (String) theForm.get("characterizationId") );			
+
+		if (cyp450Char.getId() == null || cyp450Char.getId() == "") {
+			cyp450Char.setId((String) theForm.get("characterizationId"));
 		}
-		
+
 		int fileNumber = 0;
-		for (DerivedBioAssayDataBean obj : cyp450Char.getDerivedBioAssayDataList()) {
-			CharacterizationFileBean fileBean = (CharacterizationFileBean) request.getSession().getAttribute("characterizationFile" + fileNumber);
-			if (fileBean != null) {		
+		for (DerivedBioAssayDataBean obj : cyp450Char
+				.getDerivedBioAssayDataList()) {
+			CharacterizationFileBean fileBean = (CharacterizationFileBean) request
+					.getSession().getAttribute(
+							"characterizationFile" + fileNumber);
+			if (fileBean != null) {
 				obj.setFile(fileBean);
 			}
 			fileNumber++;
 		}
-		
+
 		// set createdBy and createdDate for the composition
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		Date date = new Date();
@@ -83,21 +85,13 @@ public class InvitroCYP450Action extends BaseCharacterizationAction {
 
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
-				
+
 		HttpSession session = request.getSession();
 		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-		String selectedInstrumentType = null;
-		
-		if (cyp450Char.getInstrument().getOtherInstrumentType() != null && cyp450Char.getInstrument().getOtherInstrumentType() != "")
-			selectedInstrumentType = cyp450Char.getInstrument().getOtherInstrumentType();
-		else
-			selectedInstrumentType = cyp450Char.getInstrument().getType();
-		
-		InitSessionSetup.getInstance().setManufacturerPerType(session, selectedInstrumentType);
-
+		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(
+				session);
 		return forward;
 	}
-	
 
 	protected void clearMap(HttpSession session, DynaValidatorForm theForm,
 			ActionMapping mapping) throws Exception {
@@ -110,35 +104,16 @@ public class InvitroCYP450Action extends BaseCharacterizationAction {
 		theForm.set("particleName", particleName);
 		theForm.set("particleType", particleType);
 		theForm.set("achar", new CYP450Bean());
-		
+
 		cleanSessionAttributes(session);
 	}
 
-	protected void initSetup(HttpServletRequest request, DynaValidatorForm theForm)
-			throws Exception {
-		HttpSession session = request.getSession();
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
-		String firstOption = InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-		InitSessionSetup.getInstance().setAllSizeDistributionGraphTypes(session);
-		InitSessionSetup.getInstance().setAllControlTypes(session);
-		InitSessionSetup.getInstance().setAllConditionTypes(session);
-		InitSessionSetup.getInstance().setAllConditionUnits(session);
-		InitSessionSetup.getInstance().setAllConcentrationUnits(session);
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
-		if (firstOption == "")
-			firstOption =  CananoConstants.OTHER;
-		InitSessionSetup.getInstance().setManufacturerPerType(session, firstOption);
-		session.setAttribute("selectedInstrumentType", "");
-	}
-
 	@Override
-	protected void setFormCharacterizationBean(DynaValidatorForm theForm, Characterization aChar) throws Exception {
-		CYP450Bean charBean=new CYP450Bean((CYP450)aChar);
-		theForm.set("achar", charBean);		
+	protected void setFormCharacterizationBean(DynaValidatorForm theForm,
+			Characterization aChar) throws Exception {
+		CYP450Bean charBean = new CYP450Bean((CYP450) aChar);
+		theForm.set("achar", charBean);
 	}
-
 
 	@Override
 	protected void setLoadFileRequest(HttpServletRequest request) {

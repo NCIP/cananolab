@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleMolecularWeightAction.java,v 1.9 2006-12-04 23:40:47 zengje Exp $ */
+/* CVS $Id: NanoparticleMolecularWeightAction.java,v 1.10 2006-12-05 23:41:51 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.MolecularWeight;
@@ -16,7 +16,6 @@ import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.dto.characterization.physical.MolecularWeightBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
-import gov.nih.nci.calab.service.util.CananoConstants;
 import gov.nih.nci.calab.ui.core.BaseCharacterizationAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
@@ -34,9 +33,10 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
-
-public class NanoparticleMolecularWeightAction extends BaseCharacterizationAction {
-	private static Logger logger = Logger.getLogger(NanoparticleMolecularWeightAction.class);
+public class NanoparticleMolecularWeightAction extends
+		BaseCharacterizationAction {
+	private static Logger logger = Logger
+			.getLogger(NanoparticleMolecularWeightAction.class);
 
 	/**
 	 * Add or update the data to database
@@ -56,22 +56,29 @@ public class NanoparticleMolecularWeightAction extends BaseCharacterizationActio
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleType = (String) theForm.get("particleType");
 		String particleName = (String) theForm.get("particleName");
-		MolecularWeightBean molecularWeightChar=(MolecularWeightBean) theForm.get("achar");
-		
-		if (molecularWeightChar.getId() == null || molecularWeightChar.getId() == "") {	
-			molecularWeightChar.setId( (String) theForm.get("characterizationId") );
+		MolecularWeightBean molecularWeightChar = (MolecularWeightBean) theForm
+				.get("achar");
+
+		if (molecularWeightChar.getId() == null
+				|| molecularWeightChar.getId() == "") {
+			molecularWeightChar.setId((String) theForm
+					.get("characterizationId"));
 		}
-		
+
 		// Validation
-		for (DerivedBioAssayDataBean dataBean:molecularWeightChar.getDerivedBioAssayDataList()) {
-			for(DatumBean datumBean: dataBean.getDatumList()){
+		for (DerivedBioAssayDataBean dataBean : molecularWeightChar
+				.getDerivedBioAssayDataList()) {
+			for (DatumBean datumBean : dataBean.getDatumList()) {
 				try {
-					if (datumBean.getValue() != null && datumBean.getValue().trim().length()>0){
-						Float.parseFloat(datumBean.getValue());Float.parseFloat(datumBean.getValue());
+					if (datumBean.getValue() != null
+							&& datumBean.getValue().trim().length() > 0) {
+						Float.parseFloat(datumBean.getValue());
+						Float.parseFloat(datumBean.getValue());
 					}
 				} catch (NumberFormatException formatE) {
 					ActionMessages msgs = new ActionMessages();
-					ActionMessage msg = new ActionMessage("errors.float", new String[]{"PDI "});
+					ActionMessage msg = new ActionMessage("errors.float",
+							new String[] { "PDI " });
 					msgs.add("message", msg);
 					saveMessages(request, msgs);
 					forward = mapping.findForward("input");
@@ -79,19 +86,23 @@ public class NanoparticleMolecularWeightAction extends BaseCharacterizationActio
 				}
 			}
 		}
-		
+
 		int fileNumber = 0;
-		for (DerivedBioAssayDataBean obj : molecularWeightChar.getDerivedBioAssayDataList()) {
-			logger.info("************************MWAction():char.derivedBioAssayData.type:" + obj.getType());
-			CharacterizationFileBean fileBean = (CharacterizationFileBean) request.getSession().getAttribute("characterizationFile" + fileNumber);
-			if (fileBean != null) {		
+		for (DerivedBioAssayDataBean obj : molecularWeightChar
+				.getDerivedBioAssayDataList()) {
+			logger
+					.info("************************MWAction():char.derivedBioAssayData.type:"
+							+ obj.getType());
+			CharacterizationFileBean fileBean = (CharacterizationFileBean) request
+					.getSession().getAttribute(
+							"characterizationFile" + fileNumber);
+			if (fileBean != null) {
 				logger.info("************set fileBean to " + fileNumber);
 				obj.setFile(fileBean);
 			}
 			fileNumber++;
 		}
 
-		
 		// set createdBy and createdDate for the composition
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		Date date = new Date();
@@ -100,10 +111,12 @@ public class NanoparticleMolecularWeightAction extends BaseCharacterizationActio
 
 		request.getSession().setAttribute("newCharacterizationCreated", "true");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		service.addParticleMolecularWeight(particleType, particleName, molecularWeightChar);
+		service.addParticleMolecularWeight(particleType, particleName,
+				molecularWeightChar);
 
 		ActionMessages msgs = new ActionMessages();
-		ActionMessage msg = new ActionMessage("message.addParticleMolecularWeight");
+		ActionMessage msg = new ActionMessage(
+				"message.addParticleMolecularWeight");
 		msgs.add("message", msg);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
@@ -113,15 +126,9 @@ public class NanoparticleMolecularWeightAction extends BaseCharacterizationActio
 
 		HttpSession session = request.getSession();
 		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-		String selectedInstrumentType = null;
-		
-		if (molecularWeightChar.getInstrument().getOtherInstrumentType() != null && molecularWeightChar.getInstrument().getOtherInstrumentType() != "")
-			selectedInstrumentType = molecularWeightChar.getInstrument().getOtherInstrumentType();
-		else
-			selectedInstrumentType = molecularWeightChar.getInstrument().getType();
-		
-		InitSessionSetup.getInstance().setManufacturerPerType(session, selectedInstrumentType);
 
+		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(
+				session);
 		return forward;
 	}
 
@@ -130,46 +137,42 @@ public class NanoparticleMolecularWeightAction extends BaseCharacterizationActio
 		String particleType = (String) theForm.get("particleType");
 		String particleName = (String) theForm.get("particleName");
 
-		// clear session data from the input forms 
+		// clear session data from the input forms
 		theForm.getMap().clear();
 
 		theForm.set("particleName", particleName);
 		theForm.set("particleType", particleType);
 		theForm.set("achar", new MolecularWeightBean());
-	
+
 		cleanSessionAttributes(session);
-//	    for (Enumeration e = session.getAttributeNames(); e.hasMoreElements() ;) {
-//	    	String element = (String) e.nextElement();
-//	        if (element.startsWith(CananoConstants.CHARACTERIZATION_FILE)) {
-//	        	session.removeAttribute(element);
-//	        }
-//	    }
+		// for (Enumeration e = session.getAttributeNames(); e.hasMoreElements()
+		// ;) {
+		// String element = (String) e.nextElement();
+		// if (element.startsWith(CananoConstants.CHARACTERIZATION_FILE)) {
+		// session.removeAttribute(element);
+		// }
+		// }
 	}
 
-	protected void initSetup(HttpServletRequest request, DynaValidatorForm theForm)
-			throws Exception {
+	protected void initSetup(HttpServletRequest request,
+			DynaValidatorForm theForm) throws Exception {
+		super.initSetup(request, theForm);
 		HttpSession session = request.getSession();
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
-		String firstOption = InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-		InitSessionSetup.getInstance().setAllMolecularWeightDistributionGraphTypes(session);
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
-		if (firstOption == "")
-			firstOption =  CananoConstants.OTHER;
-		InitSessionSetup.getInstance().setManufacturerPerType(session, firstOption);
-		session.setAttribute("selectedInstrumentType", "");
+		InitSessionSetup.getInstance()
+				.setAllMolecularWeightDistributionGraphTypes(session);
 	}
 
 	@Override
-	protected void setFormCharacterizationBean(DynaValidatorForm theForm, Characterization aChar) throws Exception {
-		MolecularWeightBean mweight=new MolecularWeightBean((MolecularWeight)aChar);
+	protected void setFormCharacterizationBean(DynaValidatorForm theForm,
+			Characterization aChar) throws Exception {
+		MolecularWeightBean mweight = new MolecularWeightBean(
+				(MolecularWeight) aChar);
 		theForm.set("achar", mweight);
 	}
 
 	@Override
 	protected void setLoadFileRequest(HttpServletRequest request) {
 		request.setAttribute("characterization", "molecularWeight");
-		request.setAttribute("loadFileForward", "molecularWeightInputForm");		
+		request.setAttribute("loadFileForward", "molecularWeightInputForm");
 	}
 }
