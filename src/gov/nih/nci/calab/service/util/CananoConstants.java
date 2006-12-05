@@ -126,51 +126,59 @@ public class CananoConstants {
 
 	public static final String[] DEFAULT_POLYMER_INITIATORS = new String[] {
 			"Free Radicals", "Peroxide" };
-	
-	public static final String[]DEFAULT_DENDRIMER_BRANCHES = new String[] {
-		    "1-2", "1-3"};
-	
-	public static final String[]DEFAULT_DENDRIMER_GENERATIONS = new String[] {
-	    "0","0.5","1.0","1.5","2.0","2.5","3.0","3.5","4.0","4.5","5.0","5.5","6.0","6.5","7.0","7.5","8.0","8.5","9.0","9.5","10.0"};
+
+	public static final String[] DEFAULT_DENDRIMER_BRANCHES = new String[] {
+			"1-2", "1-3" };
+
+	public static final String[] DEFAULT_DENDRIMER_GENERATIONS = new String[] {
+			"0", "0.5", "1.0", "1.5", "2.0", "2.5", "3.0", "3.5", "4.0", "4.5",
+			"5.0", "5.5", "6.0", "6.5", "7.0", "7.5", "8.0", "8.5", "9.0",
+			"9.5", "10.0" };
 
 	public static final String OTHER = "Other";
-	
+
 	public static final String CHARACTERIZATION_FILE = "characterizationFile";
-	
+
 	public static final String DNA = "DNA";
-	
+
 	public static final String PEPTIDE = "Peptide";
-	
+
 	public static final String SMALL_MOLECULE = "Small Molecule";
-	
+
 	public static final String PROBE = "Probe";
-	
+
 	public static final String ANTIBODY = "Antibody";
-	
-	public static final String IMAGE_CONTRAST_AGENT ="Image Contrast Agent";
-	
+
+	public static final String IMAGE_CONTRAST_AGENT = "Image Contrast Agent";
+
 	public static final String ATTACHMENT = "Attachment";
-	
+
 	public static final String ENCAPSULATION = "Encapsulation";
-	
+
 	public static final String RECEPTOR = "Receptor";
-	
+
 	public static final String ANTIGEN = "Antigen";
-	
+
 	public static final String NCL_REPORT = "NCL Report";
-	
-	public static final int MAX_VIEW_TITLE_LENGTH=25;
-	
-	public static final String[] DEFAULT_CELLLINES = new String[] {"LLC-PK1", "Hep-G2"};
-	
-	public static final String[] DEFAULT_SHAPE_TYPES = new String[] { "Cubic", "Hexagonal", "Irregular",
-															 "Needle", "Oblate", "Rod", "Spherical", "Tetrahedron",
-															 "Tetrapod", "Triangle", "Eliptical", "Composite",
-															 "Cylindrical", "Vesicular", "Elliposid" };
-	
-	public static final String[] DEFAULT_MORPHOLOGY_TYPES = new String[] {"Power", "Liquid", "Solid", "Crystalline", 
-																  "Copolymer", "Fibril", "Colloid", "Oil" };
 
+	public static final int MAX_VIEW_TITLE_LENGTH = 25;
 
-	public static final String[] DEFAULT_SURFACE_GROUP_NAMES = new String[] {"Amine", "Carboxyl", "Hydroxyl" };
+	public static final String[] DEFAULT_CELLLINES = new String[] { "LLC-PK1",
+			"Hep-G2" };
+
+	public static final String[] DEFAULT_SHAPE_TYPES = new String[] { "Cubic",
+			"Hexagonal", "Irregular", "Needle", "Oblate", "Rod", "Spherical",
+			"Tetrahedron", "Tetrapod", "Triangle", "Eliptical", "Composite",
+			"Cylindrical", "Vesicular", "Elliposid" };
+
+	public static final String[] DEFAULT_MORPHOLOGY_TYPES = new String[] {
+			"Power", "Liquid", "Solid", "Crystalline", "Copolymer", "Fibril",
+			"Colloid", "Oil" };
+
+	public static final String[] DEFAULT_SURFACE_GROUP_NAMES = new String[] {
+			"Amine", "Carboxyl", "Hydroxyl" };
+
+	public static final String NCL_PI = "NCL_PI";
+
+	public static final String NCL_RESEARCHER = "NCL_Researcher";
 }
