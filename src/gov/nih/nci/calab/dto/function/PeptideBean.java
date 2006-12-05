@@ -26,4 +26,11 @@ public class PeptideBean extends AgentBean{
 	public void setSequence(String sequence) {
 		this.sequence = sequence;
 	}
+	
+	public Peptide getDomainObj() {
+		Peptide peptide = new Peptide();
+		super.updateDomainObj(peptide);
+		peptide.setSequence(sequence);
+		return peptide;
+	}
 }

@@ -27,4 +27,11 @@ public class DNABean extends AgentBean {
 	public void setSequence(String sequence) {
 		this.sequence = sequence;
 	}
+	
+	public DNA getDomainObj() {
+		DNA dna = new DNA();
+		super.updateDomainObj(dna);
+		dna.setSequence(sequence);
+		return dna;
+	}
 }
