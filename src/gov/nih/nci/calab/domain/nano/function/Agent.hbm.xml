@@ -13,7 +13,7 @@
 		<discriminator column="DISCRIMINATOR" type="java.lang.String" />
 		<property name="description" type="java.lang.String" column="DESCRIPTION" />
 
-		<list name="agentTargetCollection" cascade="all-delete-orphan" lazy="true">
+		<list name="agentTargetCollection" cascade="all-delete-orphan" lazy="false">
 			<cache usage="read-write" />
 			<key column="AGENT_PK_ID" />
 			<list-index column="LIST_INDEX" />
