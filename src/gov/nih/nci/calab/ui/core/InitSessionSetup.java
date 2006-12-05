@@ -546,7 +546,7 @@ public class InitSessionSetup {
 
 	public void setAllInstrumentTypeManufacturers(HttpSession session) throws Exception {
 		if (session.getServletContext().getAttribute(
-				"allInstrumentTypeManufacturers") != null) {
+				"allInstrumentTypeManufacturers") == null) {
 			Map<String, SortedSet<String>> instrumentManufacturers = lookupService.getAllInstrumentManufacturers();
 			session.getServletContext().setAttribute(
 					"allInstrumentTypeManufacturers", instrumentManufacturers);
