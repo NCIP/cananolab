@@ -181,4 +181,6 @@ public class CananoConstants {
 	public static final String NCL_PI = "NCL_PI";
 
 	public static final String NCL_RESEARCHER = "NCL_Researcher";
+	
+	public static final String[] DEFAULT_VISIBLE_GROUPS=new String[]{NCL_PI, NCL_RESEARCHER};
 }
