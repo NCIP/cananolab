@@ -54,6 +54,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
@@ -807,9 +808,16 @@ public class SubmitNanoparticleService {
 
 		this.saveFile(file.getInputStream(), oStream);
 
-		LabFile dataFile = new DerivedDataFile();
+		DerivedDataFile dataFile = new DerivedDataFile();
 		dataFile.setDescription(description);
 		dataFile.setFilename(file.getFileName());
+		if (keywords != null && keywords.length > 0 ) {
+			for (int i =0; i<keywords.length;i++){
+				Keyword keyword = new Keyword();
+				keyword.setName(keywords[i]);
+				dataFile.getKeywordCollection().add(keyword);
+			}	
+		}
 
 		// TODO need to remove the predefine the root path from outputFilename
 		dataFile.setPath(path + tagFileName);
@@ -854,6 +862,7 @@ public class SubmitNanoparticleService {
 
 	/**
 	 * Save the characterization file into the database and file system
+	 * The file is a workflow output file
 	 * 
 	 * @param fileId
 	 * @param title
@@ -870,7 +879,21 @@ public class SubmitNanoparticleService {
 		fileBean.setDescription(description);
 
 		DerivedDataFile dataFile = fileBean.getDomainObject();
-
+		// Retrieve all existing keywords
+		Collection<String> words = new ArrayList<String>();
+		for(Keyword keyword: dataFile.getKeywordCollection()){
+			words.add(keyword.getName());
+		}
+		// only add the new keyword
+		if (keywords != null && keywords.length > 0 ) {
+			for (int i =0; i<keywords.length;i++){
+				if(!words.contains(keywords[i])) {
+					Keyword keyword = new Keyword();
+					keyword.setName(keywords[i]);
+					dataFile.getKeywordCollection().add(keyword);	
+				}				
+			}	
+		}
 		// TODO saves file to the database
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
