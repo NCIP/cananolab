@@ -19,11 +19,9 @@
 		<td class="label">
 			<c:choose>
 				<c:when test="${canUserUpdateParticle eq 'true'}">
-					<html:select property="achar.instrument.type" onchange="javascript:refreshManufacturers(this.form, 'updateManufacturers')">
+					<html:select property="achar.instrument.type" onchange="javascript:doubleDropdownWithExraOption(this.form.elements[5], this.form.elements[7], instrumentTypeManufacturers, 'Other')">
 						<html:options name="allInstrumentTypes" />
-						<html:option value="Other">
-								Other
-						</html:option>
+						<option value="Other">Other</option>
 					</html:select>
 				</c:when>
 				<c:otherwise>
@@ -39,10 +37,10 @@
 				<c:when test="${canUserUpdateParticle eq 'true'}">
 					<c:choose>
 						<c:when test="${selectedInstrumentType eq 'Other'}">
-							<html:text property="achar.instrument.otherInstrumentType" disabled='false'/>
+							<html:text property="achar.instrument.otherInstrumentType" disabled='false' />
 						</c:when>
 						<c:otherwise>
-							<html:text property="achar.instrument.otherInstrumentType" disabled='true'/>
+							<html:text property="achar.instrument.otherInstrumentType" disabled='true' />
 						</c:otherwise>
 					</c:choose>
 				</c:when>
@@ -59,11 +57,11 @@
 		<td class="label">
 			<c:choose>
 				<c:when test="${canUserUpdateParticle eq 'true'}">
-					<html:select property="achar.instrument.manufacturer" >
-						<html:options name="manufacturerPerType"/>
-						<html:option value="Other">
-							Other
-						</html:option>
+					<html:select property="achar.instrument.manufacturer">
+						<option value="Other">Other</option>
+						<option value="${nanoparticleSizeForm.map.achar.instrument.manufacturer}" selected>
+							${nanoparticleSizeForm.map.achar.instrument.manufacturer}
+						</option>
 					</html:select>
 				</c:when>
 				<c:otherwise>
@@ -77,7 +75,7 @@
 		<td class="rightLabel">
 			<c:choose>
 				<c:when test="${canUserUpdateParticle eq 'true'}">
-					<html:text property="achar.instrument.otherManufacturer"/>
+					<html:text property="achar.instrument.otherManufacturer" />
 				</c:when>
 				<c:otherwise>
 						${thisForm.map.achar.instrument.otherManufacturer}&nbsp;
@@ -119,3 +117,18 @@
 	</tr>
 </table>
 <br>
+
+<script language="JavaScript">
+<!--//
+  /* populate a hashtable containing instrument type manufacturers */
+  var instrumentTypeManufacturers=new Array();    
+  <c:forEach var="item" items="${allInstrumentTypeManufacturers}">  	
+    var manufacturers=new Array();
+    <c:forEach var="manufacturer" items="${allInstrumentTypeManufacturers[item.key]}" varStatus="count">
+  		manufacturers[${count.index}]=new Option('${manufacturer}', '${manufacturer}');  	  		
+    </c:forEach>
+    instrumentTypeManufacturers['${item.key}'] = manufacturers;
+  </c:forEach> 
+//-->
+</script>
+
