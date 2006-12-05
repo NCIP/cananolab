@@ -140,7 +140,7 @@ public class UserService {
 	 */
 	public boolean checkReadPermission(UserBean user,
 			String protectionElementObjectId) throws CSException {
-		return checkPermission(user, protectionElementObjectId, "READ");
+		return checkPermission(user, protectionElementObjectId, CalabConstants.CSM_READ_PRIVILEGE);
 	}
 
 	/**
