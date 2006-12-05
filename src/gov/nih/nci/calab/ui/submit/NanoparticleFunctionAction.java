@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleFunctionAction.java,v 1.5 2006-12-04 23:24:14 pansu Exp $ */
+/* CVS $Id: NanoparticleFunctionAction.java,v 1.6 2006-12-05 02:31:54 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.function.Function;
 import gov.nih.nci.calab.dto.function.AgentBean;
@@ -65,7 +65,7 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 		service.addParticleFunction(particleType, particleName, function);
 		
 		ActionMessages msgs = new ActionMessages();
-		ActionMessage msg = new ActionMessage("message.addParticleSurface");
+		ActionMessage msg = new ActionMessage("message.addparticle.function");
 		msgs.add("message", msg);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
