@@ -563,6 +563,15 @@ public class InitSessionSetup {
 				manufacturerPerType);
 	}
 
+	public void setAllInstrumentTypeManufacturers(HttpSession session) throws Exception {
+		if (session.getServletContext().getAttribute(
+				"allInstrumentTypeManufacturers") != null) {
+			Map<String, SortedSet<String>> instrumentManufacturers = lookupService.getAllInstrumentManufacturers();
+			session.getServletContext().setAttribute(
+					"allInstrumentTypeManufacturers", instrumentManufacturers);
+		}
+	}
+
 	public void setAllSizeDistributionGraphTypes(HttpSession session)
 			throws Exception {
 		if (session.getServletContext().getAttribute(
@@ -722,9 +731,9 @@ public class InitSessionSetup {
 	public void setAllConditionUnits(HttpSession session) throws Exception {
 		if (session.getServletContext().getAttribute("allConditionTypeUnits") == null) {
 			Map<String, String[]> conditionTypeUnits = lookupService
-				.getAllConditionUnits();
+					.getAllConditionUnits();
 			session.getServletContext().setAttribute("allConditionTypeUnits",
-					conditionTypeUnits);			
+					conditionTypeUnits);
 		}
 	}
 
@@ -770,11 +779,13 @@ public class InitSessionSetup {
 
 	public void setAllActivationMethods(HttpSession session) throws Exception {
 		if (session.getServletContext().getAttribute("allActivationMethods") == null) {
-			String[] activationMethods = lookupService.getAllActivationMethods();
-			session.getServletContext().setAttribute("allActivationMethods", activationMethods);
+			String[] activationMethods = lookupService
+					.getAllActivationMethods();
+			session.getServletContext().setAttribute("allActivationMethods",
+					activationMethods);
 		}
 	}
-	
+
 	// public void addCellLine(HttpSession session, String option) throws
 	// Exception {
 	// String[] cellLines = (String[])
