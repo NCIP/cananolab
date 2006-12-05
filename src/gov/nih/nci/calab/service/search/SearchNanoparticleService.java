@@ -56,13 +56,6 @@ public class SearchNanoparticleService {
 			UserBean user) throws Exception {
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
-		String[] particleKeywords = null;
-		String[] assayResultKeywords = null;
-		if (keywordType.equals("nanoparticle")) {
-			particleKeywords = keywords;
-		} else {
-			assayResultKeywords = keywords;
-		}
 		List<ParticleBean> particles = new ArrayList<ParticleBean>();
 
 		try {
@@ -107,11 +100,11 @@ public class SearchNanoparticleService {
 				}
 
 				if (keywordType.equals("nanoparticle")){
-					keywordFrom = "left join particle.keywordCollection keyword ";	
+					keywordFrom = "join particle.keywordCollection keyword ";	
 				} else {
-					keywordFrom = "left join particle.characterizationCollection charCollection " + 
-								  "left join charCollection.derivedBioAssayDataCollection  dataCollection " + 
-								  "left join dataCollection.file.keywordCollection keyword ";
+					keywordFrom = "join particle.characterizationCollection characterization " + 
+								  "join characterization.derivedBioAssayDataCollection  dataCollection " + 
+								  "join dataCollection.file.keywordCollection keyword ";
 				}
 				
 				whereList.add("keyword.name in ("
@@ -125,7 +118,10 @@ public class SearchNanoparticleService {
 					paramList.add(characterization);
 					inList.add("?");
 				}
-				characterizationFrom = "join particle.characterizationCollection characterization ";
+				// to have the if statment, the keyword will only apply to the characterization it specified.
+				if (keywords == null || (keywords.length > 0 && keywordType.equals("nanoparticle"))){
+					characterizationFrom = "join particle.characterizationCollection characterization ";
+				}
 				whereList.add("characterization.name in ("
 						+ StringUtils.join(inList, ", ") + ") ");
 			}
