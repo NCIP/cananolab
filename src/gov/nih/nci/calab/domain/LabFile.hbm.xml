@@ -42,6 +42,11 @@
 		</joined-subclass>
 		<joined-subclass name="gov.nih.nci.calab.domain.DerivedDataFile" table="DERIVED_DATA_FILE">
 			<key column="DERIVED_FILE_PK_ID" />
+			<set name="keywordCollection" table="KEYWORD_DERIVED_FILE" cascade="all-delete-orphan" lazy="true" >
+      			<cache usage="read-write" />
+      			<key column="DERIVED_FILE_PK_ID" />
+		      	<many-to-many class="gov.nih.nci.calab.domain.Keyword" column="KEYWORD_PK_ID"/>
+	    </set>
 		</joined-subclass>
 		<joined-subclass name="gov.nih.nci.calab.domain.AssociatedFile" table="ASSOCIATED_FILE">
 			<key column="ASSOCIATED_FILE_PK_ID" />
