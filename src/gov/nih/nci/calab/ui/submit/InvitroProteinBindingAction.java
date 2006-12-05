@@ -13,7 +13,6 @@ import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.dto.characterization.invitro.PlasmaProteinBindingBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
-import gov.nih.nci.calab.service.util.CananoConstants;
 import gov.nih.nci.calab.ui.core.BaseCharacterizationAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
@@ -85,16 +84,8 @@ public class InvitroProteinBindingAction extends BaseCharacterizationAction {
 				particleName, particleType);
 				
 		HttpSession session = request.getSession();
-		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-		String selectedInstrumentType = null;
-		
-		if (plasmaProteinBindingChar.getInstrument().getOtherInstrumentType() != null && plasmaProteinBindingChar.getInstrument().getOtherInstrumentType() != "")
-			selectedInstrumentType = plasmaProteinBindingChar.getInstrument().getOtherInstrumentType();
-		else
-			selectedInstrumentType = plasmaProteinBindingChar.getInstrument().getType();
-		
-		InitSessionSetup.getInstance().setManufacturerPerType(session, selectedInstrumentType);
-
+		InitSessionSetup.getInstance().setAllInstrumentTypes(session);		
+		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(session);	
 		return forward;
 	}
 
@@ -112,24 +103,6 @@ public class InvitroProteinBindingAction extends BaseCharacterizationAction {
 		theForm.set("achar", new PlasmaProteinBindingBean());
 		
 		cleanSessionAttributes(session);
-	}
-
-	protected void initSetup(HttpServletRequest request, DynaValidatorForm theForm)
-			throws Exception {
-		HttpSession session = request.getSession();
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
-		String firstOption = InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-		InitSessionSetup.getInstance().setAllSizeDistributionGraphTypes(session);
-		InitSessionSetup.getInstance().setAllControlTypes(session);
-		InitSessionSetup.getInstance().setAllConditionTypes(session);
-		InitSessionSetup.getInstance().setAllConcentrationUnits(session);
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
-		if (firstOption == "")
-			firstOption =  CananoConstants.OTHER;
-		InitSessionSetup.getInstance().setManufacturerPerType(session, firstOption);
-		session.setAttribute("selectedInstrumentType", "");
 	}
 
 	@Override

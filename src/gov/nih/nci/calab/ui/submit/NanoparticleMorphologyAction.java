@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleMorphologyAction.java,v 1.9 2006-12-03 17:52:47 zengje Exp $ */
+/* CVS $Id: NanoparticleMorphologyAction.java,v 1.10 2006-12-05 23:41:51 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Morphology;
@@ -98,19 +98,7 @@ public class NanoparticleMorphologyAction extends BaseCharacterizationAction {
 
 		HttpSession session = request.getSession();
 		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-		String selectedInstrumentType = null;
-
-		if (morphologyChar.getInstrument().getOtherInstrumentType() != null
-				&& morphologyChar.getInstrument().getOtherInstrumentType() != "")
-			selectedInstrumentType = morphologyChar.getInstrument()
-					.getOtherInstrumentType();
-		else
-			selectedInstrumentType = morphologyChar.getInstrument().getType();
-
-		InitSessionSetup.getInstance().setManufacturerPerType(session,
-				selectedInstrumentType);
-
-		return forward;
+		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(session);			return forward;
 	}
 
 	public void clearMap(HttpSession session, DynaValidatorForm theForm,
@@ -136,21 +124,12 @@ public class NanoparticleMorphologyAction extends BaseCharacterizationAction {
 
 	public void initSetup(HttpServletRequest request, DynaValidatorForm theForm)
 			throws Exception {
+		super.initSetup(request, theForm);
+
 		HttpSession session = request.getSession();
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
-		String firstOption = InitSessionSetup.getInstance()
-				.setAllInstrumentTypes(session);
 		InitSessionSetup.getInstance().setAllMorphologyDistributionGraphTypes(
 				session);
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
 		InitSessionSetup.getInstance().setAllMorphologyTypes(session);
-		if (firstOption == "")
-			firstOption = CananoConstants.OTHER;
-		InitSessionSetup.getInstance().setManufacturerPerType(session,
-				firstOption);
-		session.setAttribute("selectedInstrumentType", "");
 	}
 
 	protected void setFormCharacterizationBean(DynaValidatorForm theForm, Characterization aChar) throws Exception {

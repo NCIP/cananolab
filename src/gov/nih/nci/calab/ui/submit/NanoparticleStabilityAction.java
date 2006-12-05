@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleStabilityAction.java,v 1.7 2006-11-22 23:19:23 pansu Exp $ */
+/* CVS $Id: NanoparticleStabilityAction.java,v 1.8 2006-12-05 23:41:51 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Stability;
@@ -15,7 +15,6 @@ import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.dto.characterization.physical.StabilityBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
-import gov.nih.nci.calab.service.util.CananoConstants;
 import gov.nih.nci.calab.ui.core.BaseCharacterizationAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
@@ -96,18 +95,9 @@ public class NanoparticleStabilityAction extends BaseCharacterizationAction {
 
 		HttpSession session = request.getSession();
 		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-		String selectedInstrumentType = null;
 
-		if (stabilityChar.getInstrument().getOtherInstrumentType() != null
-				&& stabilityChar.getInstrument().getOtherInstrumentType() != "")
-			selectedInstrumentType = stabilityChar.getInstrument()
-					.getOtherInstrumentType();
-		else
-			selectedInstrumentType = stabilityChar.getInstrument().getType();
-
-		InitSessionSetup.getInstance().setManufacturerPerType(session,
-				selectedInstrumentType);
-
+		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(
+				session);
 		return forward;
 	}
 
@@ -124,44 +114,37 @@ public class NanoparticleStabilityAction extends BaseCharacterizationAction {
 		theForm.set("achar", new StabilityBean());
 
 		cleanSessionAttributes(session);
-//		for (Enumeration e = session.getAttributeNames(); e.hasMoreElements();) {
-//			String element = (String) e.nextElement();
-//			if (element.startsWith(CananoConstants.CHARACTERIZATION_FILE)) {
-//				session.removeAttribute(element);
-//			}
-//		}
+		// for (Enumeration e = session.getAttributeNames();
+		// e.hasMoreElements();) {
+		// String element = (String) e.nextElement();
+		// if (element.startsWith(CananoConstants.CHARACTERIZATION_FILE)) {
+		// session.removeAttribute(element);
+		// }
+		// }
 	}
 
 	public void initSetup(HttpServletRequest request, DynaValidatorForm theForm)
 			throws Exception {
+		super.initSetup(request, theForm);
+
 		HttpSession session = request.getSession();
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
-		String firstOption = InitSessionSetup.getInstance()
-				.setAllInstrumentTypes(session);
 		InitSessionSetup.getInstance().setAllStabilityDistributionGraphTypes(
 				session);
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
 		InitSessionSetup.getInstance().setAllStressorTypes(session);
 		InitSessionSetup.getInstance().setAllTimeUnits(session);
 		InitSessionSetup.getInstance().setAllAreaMeasureUnits(session);
-		if (firstOption == "")
-			firstOption = CananoConstants.OTHER;
-		InitSessionSetup.getInstance().setManufacturerPerType(session,
-				firstOption);
-		session.setAttribute("selectedInstrumentType", "");
 	}
 
 	@Override
-	protected void setFormCharacterizationBean(DynaValidatorForm theForm, Characterization aChar) throws Exception {
-		StabilityBean stability=new StabilityBean((Stability)aChar);
+	protected void setFormCharacterizationBean(DynaValidatorForm theForm,
+			Characterization aChar) throws Exception {
+		StabilityBean stability = new StabilityBean((Stability) aChar);
 		theForm.set("achar", stability);
 	}
 
 	@Override
 	protected void setLoadFileRequest(HttpServletRequest request) {
 		request.setAttribute("characterization", "stability");
-		request.setAttribute("loadFileForward", "stabilityInputForm");		
+		request.setAttribute("loadFileForward", "stabilityInputForm");
 	}
 }

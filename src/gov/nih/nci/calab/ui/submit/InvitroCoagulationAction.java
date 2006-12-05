@@ -13,7 +13,6 @@ import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.dto.characterization.invitro.CoagulationBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
-import gov.nih.nci.calab.service.util.CananoConstants;
 import gov.nih.nci.calab.ui.core.BaseCharacterizationAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
@@ -50,21 +49,25 @@ public class InvitroCoagulationAction extends BaseCharacterizationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleType = (String) theForm.get("particleType");
 		String particleName = (String) theForm.get("particleName");
-		CoagulationBean coagulationChar = (CoagulationBean) theForm.get("achar");
-		
-		if (coagulationChar.getId() == null || coagulationChar.getId() == "") {			
-			coagulationChar.setId( (String) theForm.get("characterizationId") );			
+		CoagulationBean coagulationChar = (CoagulationBean) theForm
+				.get("achar");
+
+		if (coagulationChar.getId() == null || coagulationChar.getId() == "") {
+			coagulationChar.setId((String) theForm.get("characterizationId"));
 		}
-		
+
 		int fileNumber = 0;
-		for (DerivedBioAssayDataBean obj : coagulationChar.getDerivedBioAssayDataList()) {
-			CharacterizationFileBean fileBean = (CharacterizationFileBean) request.getSession().getAttribute("characterizationFile" + fileNumber);
-			if (fileBean != null) {		
+		for (DerivedBioAssayDataBean obj : coagulationChar
+				.getDerivedBioAssayDataList()) {
+			CharacterizationFileBean fileBean = (CharacterizationFileBean) request
+					.getSession().getAttribute(
+							"characterizationFile" + fileNumber);
+			if (fileBean != null) {
 				obj.setFile(fileBean);
 			}
 			fileNumber++;
 		}
-		
+
 		// set createdBy and createdDate for the composition
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		Date date = new Date();
@@ -83,22 +86,14 @@ public class InvitroCoagulationAction extends BaseCharacterizationAction {
 
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
-				
+
 		HttpSession session = request.getSession();
 		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-		String selectedInstrumentType = null;
-		
-		if (coagulationChar.getInstrument().getOtherInstrumentType() != null && coagulationChar.getInstrument().getOtherInstrumentType() != "")
-			selectedInstrumentType = coagulationChar.getInstrument().getOtherInstrumentType();
-		else
-			selectedInstrumentType = coagulationChar.getInstrument().getType();
-		
-		InitSessionSetup.getInstance().setManufacturerPerType(session, selectedInstrumentType);
-
+		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(
+				session);
 		return forward;
 	}
 
-	
 	protected void clearMap(HttpSession session, DynaValidatorForm theForm,
 			ActionMapping mapping) throws Exception {
 		String particleType = (String) theForm.get("particleType");
@@ -110,42 +105,22 @@ public class InvitroCoagulationAction extends BaseCharacterizationAction {
 		theForm.set("particleName", particleName);
 		theForm.set("particleType", particleType);
 		theForm.set("achar", new CoagulationBean());
-		
+
 		cleanSessionAttributes(session);
 	}
 
-	protected void initSetup(HttpServletRequest request, DynaValidatorForm theForm)
-			throws Exception {
-		HttpSession session = request.getSession();
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
-		String firstOption = InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-		InitSessionSetup.getInstance().setAllSizeDistributionGraphTypes(session);
-		InitSessionSetup.getInstance().setAllControlTypes(session);
-		InitSessionSetup.getInstance().setAllConditionTypes(session);
-		InitSessionSetup.getInstance().setAllConditionUnits(session);
-		InitSessionSetup.getInstance().setAllConcentrationUnits(session);
-		InitSessionSetup.getInstance().setAllTimeUnits(session);
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
-		if (firstOption == "")
-			firstOption =  CananoConstants.OTHER;
-		InitSessionSetup.getInstance().setManufacturerPerType(session, firstOption);
-		session.setAttribute("selectedInstrumentType", "");
-	}
-
 	@Override
-	protected void setFormCharacterizationBean(DynaValidatorForm theForm, Characterization aChar) throws Exception {
-		CoagulationBean charBean=new CoagulationBean((Coagulation)aChar);
+	protected void setFormCharacterizationBean(DynaValidatorForm theForm,
+			Characterization aChar) throws Exception {
+		CoagulationBean charBean = new CoagulationBean((Coagulation) aChar);
 		theForm.set("achar", charBean);
-		
-	}
 
+	}
 
 	@Override
 	protected void setLoadFileRequest(HttpServletRequest request) {
 		request.setAttribute("characterization", "coagulation");
-		request.setAttribute("loadFileForward", "invitroCoagulationForm");		
+		request.setAttribute("loadFileForward", "invitroCoagulationForm");
 	}
 
 }

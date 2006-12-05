@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleShapeAction.java,v 1.9 2006-12-03 17:52:48 zengje Exp $ */
+/* CVS $Id: NanoparticleShapeAction.java,v 1.10 2006-12-05 23:41:51 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Shape;
@@ -64,7 +64,8 @@ public class NanoparticleShapeAction extends BaseCharacterizationAction {
 		}
 
 		int fileNumber = 0;
-		for (DerivedBioAssayDataBean obj : shapeChar.getDerivedBioAssayDataList()) {
+		for (DerivedBioAssayDataBean obj : shapeChar
+				.getDerivedBioAssayDataList()) {
 			CharacterizationFileBean fileBean = (CharacterizationFileBean) request
 					.getSession().getAttribute(
 							"characterizationFile" + fileNumber);
@@ -85,7 +86,9 @@ public class NanoparticleShapeAction extends BaseCharacterizationAction {
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addParticleShape(particleType, particleName, shapeChar);
 		if (shapeChar.getType().equals(CananoConstants.OTHER)) {
-			InitSessionSetup.getInstance().addSessionAttributeElement(request.getSession(), "allShapeTypes", shapeChar.getOtherShapeType());
+			InitSessionSetup.getInstance().addSessionAttributeElement(
+					request.getSession(), "allShapeTypes",
+					shapeChar.getOtherShapeType());
 		}
 
 		ActionMessages msgs = new ActionMessages();
@@ -99,18 +102,9 @@ public class NanoparticleShapeAction extends BaseCharacterizationAction {
 
 		HttpSession session = request.getSession();
 		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-		String selectedInstrumentType = null;
 
-		if (shapeChar.getInstrument().getOtherInstrumentType() != null
-				&& shapeChar.getInstrument().getOtherInstrumentType() != "")
-			selectedInstrumentType = shapeChar.getInstrument()
-					.getOtherInstrumentType();
-		else
-			selectedInstrumentType = shapeChar.getInstrument().getType();
-
-		InitSessionSetup.getInstance().setManufacturerPerType(session,
-				selectedInstrumentType);
-
+		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(
+				session);
 		return forward;
 	}
 
@@ -127,42 +121,35 @@ public class NanoparticleShapeAction extends BaseCharacterizationAction {
 		theForm.set("achar", new ShapeBean());
 
 		cleanSessionAttributes(session);
-//		for (Enumeration e = session.getAttributeNames(); e.hasMoreElements();) {
-//			String element = (String) e.nextElement();
-//			if (element.startsWith(CananoConstants.CHARACTERIZATION_FILE)) {
-//				session.removeAttribute(element);
-//			}
-//		}
+		// for (Enumeration e = session.getAttributeNames();
+		// e.hasMoreElements();) {
+		// String element = (String) e.nextElement();
+		// if (element.startsWith(CananoConstants.CHARACTERIZATION_FILE)) {
+		// session.removeAttribute(element);
+		// }
+		// }
 	}
 
-	protected void initSetup(HttpServletRequest request, DynaValidatorForm theForm)
-			throws Exception {
+	protected void initSetup(HttpServletRequest request,
+			DynaValidatorForm theForm) throws Exception {
+		super.initSetup(request, theForm);
+
 		HttpSession session = request.getSession();
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
-		String firstOption = InitSessionSetup.getInstance()
-				.setAllInstrumentTypes(session);
 		InitSessionSetup.getInstance().setAllShapeDistributionGraphTypes(
 				session);
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
 		InitSessionSetup.getInstance().setAllShapeTypes(session);
-		if (firstOption == "")
-			firstOption = CananoConstants.OTHER;
-		InitSessionSetup.getInstance().setManufacturerPerType(session,
-				firstOption);
-		session.setAttribute("selectedInstrumentType", "");
 	}
 
 	@Override
-	protected void setFormCharacterizationBean(DynaValidatorForm theForm, Characterization aChar) throws Exception {
-		ShapeBean shape=new ShapeBean((Shape)aChar);
+	protected void setFormCharacterizationBean(DynaValidatorForm theForm,
+			Characterization aChar) throws Exception {
+		ShapeBean shape = new ShapeBean((Shape) aChar);
 		theForm.set("achar", shape);
 	}
 
 	@Override
 	protected void setLoadFileRequest(HttpServletRequest request) {
 		request.setAttribute("characterization", "shape");
-		request.setAttribute("loadFileForward", "shapeInputForm");		
+		request.setAttribute("loadFileForward", "shapeInputForm");
 	}
 }
