@@ -97,32 +97,27 @@ public class SearchNanoparticleService {
 						+ StringUtils.join(inList, ", ") + ") ");
 			}
 
-			if (particleKeywords != null && particleKeywords.length > 0) {
+		
+			if (keywords != null && keywords.length > 0) {
 				List<String> inList = new ArrayList<String>();
 				where = "where ";
-				for (String keyword : particleKeywords) {
+				for (String keyword : keywords) {
 					paramList.add(keyword);
 					inList.add("?");
 				}
-				keywordFrom = "join particle.keywordCollection keyword ";
 
-				whereList.add("keyword.name in ("
-						+ StringUtils.join(inList, ", ") + ") ");
-			}
-/*
-			if (assayResultKeywords != null && assayResultKeywords.length > 0) {
-				List<String> inList = new ArrayList<String>();
-				where = "where ";
-				for (String keyword : assayResultKeywords) {
-					paramList.add(keyword);
-					inList.add("?");
+				if (keywordType.equals("nanoparticle")){
+					keywordFrom = "left join particle.keywordCollection keyword ";	
+				} else {
+					keywordFrom = "left join particle.characterizationCollection charCollection " + 
+								  "left join charCollection.derivedBioAssayDataCollection  dataCollection " + 
+								  "left join dataCollection.file.keywordCollection keyword ";
 				}
-				keywordFrom = "join particle.keywordCollection keyword ";
-
+				
 				whereList.add("keyword.name in ("
 						+ StringUtils.join(inList, ", ") + ") ");
 			}
-*/
+
 			if (characterizations != null && characterizations.length > 0) {
 				List<String> inList = new ArrayList<String>();
 				where = "where ";
