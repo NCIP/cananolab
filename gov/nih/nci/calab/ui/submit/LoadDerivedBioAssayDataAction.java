@@ -6,10 +6,9 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: LoadDerivedBioAssayDataAction.java,v 1.5 2006-11-21 20:36:51 zengje Exp $ */
+/* CVS $Id: LoadDerivedBioAssayDataAction.java,v 1.6 2006-12-05 23:42:09 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
-import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
