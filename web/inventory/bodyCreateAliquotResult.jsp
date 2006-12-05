@@ -122,7 +122,7 @@
 								<tr>
 									<td class="formLabelWhite" colspan="2">
 										<div align="left">
-											<strong>Storage Location...</strong>
+											<strong>Storage Location</strong>
 										</div>
 									</td>
 								</tr>
