@@ -92,7 +92,7 @@ public class SearchNanoparticleService {
 					paramList.add(functionType);
 					inList.add("?");
 				}
-				functionFrom = "left join particle.functionCollection function ";
+				functionFrom = "join particle.functionCollection function ";
 				whereList.add("function.type in ("
 						+ StringUtils.join(inList, ", ") + ") ");
 			}
@@ -104,12 +104,25 @@ public class SearchNanoparticleService {
 					paramList.add(keyword);
 					inList.add("?");
 				}
-				keywordFrom = "left join particle.keywordCollection keyword ";
+				keywordFrom = "join particle.keywordCollection keyword ";
 
 				whereList.add("keyword.name in ("
 						+ StringUtils.join(inList, ", ") + ") ");
 			}
+/*
+			if (assayResultKeywords != null && assayResultKeywords.length > 0) {
+				List<String> inList = new ArrayList<String>();
+				where = "where ";
+				for (String keyword : assayResultKeywords) {
+					paramList.add(keyword);
+					inList.add("?");
+				}
+				keywordFrom = "join particle.keywordCollection keyword ";
 
+				whereList.add("keyword.name in ("
+						+ StringUtils.join(inList, ", ") + ") ");
+			}
+*/
 			if (characterizations != null && characterizations.length > 0) {
 				List<String> inList = new ArrayList<String>();
 				where = "where ";
@@ -117,7 +130,7 @@ public class SearchNanoparticleService {
 					paramList.add(characterization);
 					inList.add("?");
 				}
-				characterizationFrom = "left join particle.characterizationCollection characterization ";
+				characterizationFrom = "join particle.characterizationCollection characterization ";
 				whereList.add("characterization.name in ("
 						+ StringUtils.join(inList, ", ") + ") ");
 			}
