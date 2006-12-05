@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.76 2006-12-05 21:49:44 zengje Exp $ */
+/* CVS $Id: LookupService.java,v 1.77 2006-12-05 22:58:27 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -610,10 +610,11 @@ public class LookupService {
 		} finally {
 			ida.close();
 		}
-		names.addAll(Arrays
-				.asList(CananoConstants.DEFAULT_SURFACE_GROUP_NAMES));
+		names
+				.addAll(Arrays
+						.asList(CananoConstants.DEFAULT_SURFACE_GROUP_NAMES));
 
-		return (String[]) names.toArray(new String[0]);	
+		return (String[]) names.toArray(new String[0]);
 	}
 
 	public String[] getAllDendrimerBranches() throws Exception {
@@ -789,41 +790,39 @@ public class LookupService {
 		return (String[]) instrumentTypes.toArray(new String[0]);
 	}
 
-	public String[] getManufacturers(String instrumentType) throws Exception {
-		SortedSet<String> manufacturers = new TreeSet<String>();
+	public Map<String, SortedSet<String>> getAllInstrumentManufacturers()
+			throws Exception {
+		Map<String, SortedSet<String>> instrumentManufacturers = new HashMap<String, SortedSet<String>>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
-			/*
-			 * String hqlString = "select distinct instrument.manufacturer from
-			 * Instrument instrument"; if
-			 * (!instrumentType.equals(CananoConstants.OTHER)) hqlString += "
-			 * where instrument.type = '" + instrumentType + "'";
-			 */
-			String hqlString = "select distinct manufacturer.name from InstrumentType instrumentType join instrumentType.manufacturerCollection manufacturer ";
-			if ((instrumentType != null)
-					&& (!instrumentType.equals(CananoConstants.OTHER)))
-				hqlString += " where instrumentType.name = '" + instrumentType
-						+ "'";
 
+			String hqlString = "select distinct instrumentType.name, manufacturer.name from InstrumentType instrumentType join instrumentType.manufacturerCollection manufacturer ";
 			List results = ida.search(hqlString);
+			SortedSet<String> manufacturers = null;
 			for (Object obj : results) {
-				if (obj != null)
-					manufacturers.add((String) obj);
+				String instrumentType = ((Object[]) obj)[0].toString();
+				String manufacturer = ((Object[]) obj)[1].toString();
+				if (instrumentManufacturers.get(instrumentType) != null) {
+					manufacturers = (SortedSet<String>) instrumentManufacturers
+							.get(instrumentType);
+				} else {
+					manufacturers = new TreeSet<String>();
+					instrumentManufacturers.put(instrumentType, manufacturers);
+				}
+				manufacturers.add(manufacturer);
 			}
 		} catch (Exception e) {
 			logger
-					.error("Problem to retrieve manufacturers for intrument type "
-							+ instrumentType + ". " + e);
+					.error("Problem to retrieve manufacturers for intrument types "
+							+ e);
 			throw new RuntimeException(
-					"Problem to retrieve manufacturers for intrument type "
-							+ instrumentType + ".");
+					"Problem to retrieve manufacturers for intrument types.");
 		} finally {
 			ida.close();
 		}
-
-		return (String[]) manufacturers.toArray(new String[0]);
+		return instrumentManufacturers;
 	}
 
 	public String[] getSizeDistributionGraphTypes() {
@@ -869,7 +868,7 @@ public class LookupService {
 	}
 
 	public String[] getAllMorphologyTypes() throws Exception {
-		
+
 		SortedSet<String> morphologyTypes = new TreeSet<String>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
@@ -906,13 +905,11 @@ public class LookupService {
 			}
 		} catch (Exception e) {
 			logger.error("Problem to retrieve all shape types.");
-			throw new RuntimeException(
-					"Problem to retrieve all shape types.");
+			throw new RuntimeException("Problem to retrieve all shape types.");
 		} finally {
 			ida.close();
 		}
-		shapeTypes.addAll(Arrays
-				.asList(CananoConstants.DEFAULT_SHAPE_TYPES));
+		shapeTypes.addAll(Arrays.asList(CananoConstants.DEFAULT_SHAPE_TYPES));
 
 		return (String[]) shapeTypes.toArray(new String[0]);
 	}
@@ -940,12 +937,13 @@ public class LookupService {
 	}
 
 	public String[] getAllControlTypes() {
-		String[] controlTypes = new String[] {" ", "Positive", "Negative"};
+		String[] controlTypes = new String[] { " ", "Positive", "Negative" };
 		return controlTypes;
 	}
 
 	public String[] getAllConditionTypes() {
-		String[] conditionTypes = new String[] {"Particle Concentration","Temperature", "Time"};
+		String[] conditionTypes = new String[] { "Particle Concentration",
+				"Temperature", "Time" };
 		return conditionTypes;
 	}
 
@@ -953,31 +951,35 @@ public class LookupService {
 		Map<String, String[]> agentTypes = new HashMap<String, String[]>();
 
 		String[] therapeuticsAgentTypes = new String[] { "Peptide",
-				"Small Molecule", "Antibody", "DNA", "Probe", "Image Contrast Agent", "Other"};
+				"Small Molecule", "Antibody", "DNA", "Probe",
+				"Image Contrast Agent", "Other" };
 		agentTypes.put("Therapeutic", therapeuticsAgentTypes);
 		String[] targetingAgentTypes = new String[] { "Peptide",
-				"Small Molecule", "Antibody", "DNA", "Probe", "Image Contrast Agent", "Other" };
+				"Small Molecule", "Antibody", "DNA", "Probe",
+				"Image Contrast Agent", "Other" };
 		agentTypes.put("Targeting", targetingAgentTypes);
-		String[] imagingAgentTypes = new String[] {"Peptide",
-				"Small Molecule", "Antibody", "DNA", "Probe", "Image Contrast Agent", "Other" };
+		String[] imagingAgentTypes = new String[] { "Peptide",
+				"Small Molecule", "Antibody", "DNA", "Probe",
+				"Image Contrast Agent", "Other" };
 		agentTypes.put("Imaging", imagingAgentTypes);
-		String[] reportingAgentTypes = new String[] {"Peptide",
-				"Small Molecule", "Antibody", "DNA", "Probe", "Image Contrast Agent", "Other" };
+		String[] reportingAgentTypes = new String[] { "Peptide",
+				"Small Molecule", "Antibody", "DNA", "Probe",
+				"Image Contrast Agent", "Other" };
 		agentTypes.put("Reporting", reportingAgentTypes);
 		return agentTypes;
 	}
 
-	public Map<String,String[]> getAllAgentTargetTypes() {
-		Map<String,String[]> agentTargetTypes=new HashMap<String, String[]>();
+	public Map<String, String[]> getAllAgentTargetTypes() {
+		Map<String, String[]> agentTargetTypes = new HashMap<String, String[]>();
 		String[] targetTypes = new String[] { "Receptor", "Antigen", "Other" };
-		String[] targetTypes1 = new String[] { "Receptor", "Other"};			
-		String[] targetTypes2 = new String[] { "Other"};
-		
+		String[] targetTypes1 = new String[] { "Receptor", "Other" };
+		String[] targetTypes2 = new String[] { "Other" };
+
 		agentTargetTypes.put("Small Molecule", targetTypes2);
 		agentTargetTypes.put("Peptide", targetTypes1);
 		agentTargetTypes.put("Antibody", targetTypes);
 		agentTargetTypes.put("DNA", targetTypes1);
-		agentTargetTypes.put("Probe", targetTypes1);		
+		agentTargetTypes.put("Probe", targetTypes1);
 		agentTargetTypes.put("Other", targetTypes2);
 		agentTargetTypes.put("Image Contrast Agent", targetTypes2);
 		return agentTargetTypes;
@@ -989,28 +991,32 @@ public class LookupService {
 	}
 
 	public String[] getAllTemperatureUnits() {
-		String[] temperatureUnits = new String[] {"degrees celcius", "degrees fahrenhiet"};
+		String[] temperatureUnits = new String[] { "degrees celcius",
+				"degrees fahrenhiet" };
 		return temperatureUnits;
 	}
 
 	public String[] getAllConcentrationUnits() {
-		String[] concentrationUnits = new String[] { "g/ml", "mg/ml", "pg/ml", "ug/ml","ug/ul" };
+		String[] concentrationUnits = new String[] { "g/ml", "mg/ml", "pg/ml",
+				"ug/ml", "ug/ul" };
 		return concentrationUnits;
 	}
-	
+
 	public Map<String, String[]> getAllConditionUnits() {
-		Map<String, String[]>conditionTypeUnits = new HashMap<String, String[]>();
-		String[] concentrationUnits = new String[] {"g/ml", "mg/ml", "pg/ml", "ug/ml", "ug/ul",};
-		String[] temperatureUnits = new String[] {"degrees celcius", "degrees fahrenhiet"};
+		Map<String, String[]> conditionTypeUnits = new HashMap<String, String[]>();
+		String[] concentrationUnits = new String[] { "g/ml", "mg/ml", "pg/ml",
+				"ug/ml", "ug/ul", };
+		String[] temperatureUnits = new String[] { "degrees celcius",
+				"degrees fahrenhiet" };
 		String[] timeUnits = new String[] { "hours", "days", "months" };
 		conditionTypeUnits.put("Particle Concentration", concentrationUnits);
 		conditionTypeUnits.put("Time", timeUnits);
 		conditionTypeUnits.put("Temperature", temperatureUnits);
 		return conditionTypeUnits;
 	}
-	
-	public String[] getAllCellLines()  throws Exception {
-		
+
+	public String[] getAllCellLines() throws Exception {
+
 		SortedSet<String> cellLines = new TreeSet<String>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
@@ -1019,30 +1025,29 @@ public class LookupService {
 			String hqlString = "select distinct cellViability.cellLine, caspase.cellLine from CellViability cellViability, Caspase3Activation caspase";
 			List results = ida.search(hqlString);
 			for (Object obj : results) {
-//				cellLines.add((String) obj);
-				Object[] objects = (Object[])obj;
-				for(Object object: objects){
-					if (object != null){
-						cellLines.add((String)object);		
+				// cellLines.add((String) obj);
+				Object[] objects = (Object[]) obj;
+				for (Object object : objects) {
+					if (object != null) {
+						cellLines.add((String) object);
 					}
 				}
 			}
 		} catch (Exception e) {
 			logger.error("Problem to retrieve all Cell lines.");
-			throw new RuntimeException(
-					"Problem to retrieve all Cell lines.");
+			throw new RuntimeException("Problem to retrieve all Cell lines.");
 		} finally {
 			ida.close();
 		}
-		cellLines.addAll(Arrays
-				.asList(CananoConstants.DEFAULT_CELLLINES));
+		cellLines.addAll(Arrays.asList(CananoConstants.DEFAULT_CELLLINES));
 
 		return (String[]) cellLines.toArray(new String[0]);
 
 	}
-	
+
 	public String[] getAllActivationMethods() {
-		String[] activationMethods=new String[]{"NMR", "MRI", "Radiation", "Ultrasound", "Ultraviolet Light"};
+		String[] activationMethods = new String[] { "NMR", "MRI", "Radiation",
+				"Ultrasound", "Ultraviolet Light" };
 		return activationMethods;
 	}
 }
