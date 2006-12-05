@@ -195,7 +195,7 @@ public class SearchNanoparticleService {
 		ParticleBean particleBean = new ParticleBean(particle);
 		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
 		List<String> accessibleGroups = userService.getAccessibleGroups(
-				particleName, "R");
+				particleName, CalabConstants.CSM_READ_ROLE);
 		String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
 		particleBean.setVisibilityGroups(visibilityGroups);
 
