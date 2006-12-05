@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.73 2006-12-04 23:23:47 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.74 2006-12-05 04:10:35 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -998,46 +998,17 @@ public class LookupService {
 				"ug/ul", "pg/ml" };
 		return concentrationUnits;
 	}
-/*	
-	public String[] getAllConditionUnits() {
-		String[] concentrationUnits = new String[] {"g/ml", "mg/ml", "ug/ml", "ug/ul", "pg/ml", "seconds", "hours", "days", "months", "degrees celcius", "degrees fahrenhiet"};
-		return concentrationUnits;
-	}
-*/
-	public Map<String, SortedSet<String>> getAllConditionUnits() {
-		Map<String, SortedSet<String>> conditionTypeUnits = new HashMap<String, SortedSet<String>>();
-		SortedSet<String> conditionUnits = new TreeSet<String>(
-				new CalabComparators.SortableNameComparator());
-		
-		String[] conditionTypes = getAllConditionTypes();
-		for ( int i=0; i < conditionTypes.length; i++ )
-		{
-			if ( conditionTypes[i].equals("Particle Concentration") ) {
-				String[] concentrationUnits = getAllConcentrationUnits();
-				for ( int ii=0; ii < concentrationUnits.length; ii++ )
-					conditionUnits.add(concentrationUnits[ii]);
-				conditionTypeUnits.put("Particle Concentration", conditionUnits);
-			}
-			else {
-				if ( conditionTypes[i].equals("Time") ) {
-					String[] timeUnits = getAllTimeUnits();
-					for ( int ii=0; ii < timeUnits.length; ii++ )
-						conditionUnits.add(timeUnits[ii]);
-					conditionTypeUnits.put("Time", conditionUnits);
-				}
-				else {
-					if ( conditionTypes[i].equals("Temperature") ) {
-						String[] temperatureUnits = getAllTemperatureUnits();
-						for ( int ii=0; ii < temperatureUnits.length; ii++ )
-							conditionUnits.add(temperatureUnits[ii]);
-						conditionTypeUnits.put("Temperature", conditionUnits);
-					}
-				}
-			}
-		}						
+	
+	public Map<String, String[]> getAllConditionUnits() {
+		Map<String, String[]>conditionTypeUnits = new HashMap<String, String[]>();
+		String[] concentrationUnits = new String[] {"g/ml", "mg/ml", "ug/ml", "ug/ul", "pg/ml"};
+		String[] temperatureUnits = new String[] {"degrees celcius", "degrees fahrenhiet"};
+		String[] timeUnits = new String[] { "hours", "days", "months" };
+		conditionTypeUnits.put("Particle Concentration", concentrationUnits);
+		conditionTypeUnits.put("Time", timeUnits);
+		conditionTypeUnits.put("Temperature", temperatureUnits);
 		return conditionTypeUnits;
 	}
-
 	
 	public String[] getAllCellLines()  throws Exception {
 		
