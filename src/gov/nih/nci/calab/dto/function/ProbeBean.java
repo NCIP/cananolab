@@ -34,4 +34,11 @@ public class ProbeBean extends AgentBean{
 		this.type = type;
 	}
 	
+	public Probe getDomainObj() {
+		Probe probe=new Probe();
+		super.updateDomainObj(probe);
+		probe.setName(name);
+		probe.setType(type);
+		return probe;
+	}
 }

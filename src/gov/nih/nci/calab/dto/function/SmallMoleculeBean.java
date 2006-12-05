@@ -32,4 +32,12 @@ public class SmallMoleculeBean extends AgentBean{
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	public SmallMolecule getDomainObj() {
+		SmallMolecule smallMolecule = new SmallMolecule();
+		super.updateDomainObj(smallMolecule);
+		smallMolecule.setName(name);
+		smallMolecule.setCompoundName(compoundName);
+		return smallMolecule;
+	}
 }
