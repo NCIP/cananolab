@@ -2,13 +2,6 @@ package gov.nih.nci.calab.dto.function;
 
 import gov.nih.nci.calab.domain.nano.function.Agent;
 import gov.nih.nci.calab.domain.nano.function.AgentTarget;
-import gov.nih.nci.calab.domain.nano.function.Antibody;
-import gov.nih.nci.calab.domain.nano.function.DNA;
-import gov.nih.nci.calab.domain.nano.function.ImageContrastAgent;
-import gov.nih.nci.calab.domain.nano.function.Peptide;
-import gov.nih.nci.calab.domain.nano.function.Probe;
-import gov.nih.nci.calab.domain.nano.function.SmallMolecule;
-import gov.nih.nci.calab.domain.nano.function.UnclassifiedAgent;
 import gov.nih.nci.calab.service.util.CananoConstants;
 
 import java.util.ArrayList;
@@ -95,100 +88,13 @@ public class AgentBean {
 		this.agentTargets = agentTargets;
 	}
 
-	public Agent getDomainObj() {
-		if (type.equals(CananoConstants.DNA)) {
-			DNA doAgent = new DNA();
-			if (getId() != null && getId().length() > 0) {
-				doAgent.setId(new Long(getId()));
-			}
-			doAgent.setDescription(description);
-			doAgent.setSequence(((DNABean) this).getSequence());
-			for (AgentTargetBean agentTarget : getAgentTargets())
-				doAgent.getAgentTargetCollection().add(
-						agentTarget.getDomainObj());
-			return doAgent;
-		} else if (type.equals(CananoConstants.PEPTIDE)) {
-			Peptide doAgent = new Peptide();
-			if (getId() != null && getId().length() > 0) {
-				doAgent.setId(new Long(getId()));
-			}
-			doAgent.setDescription(description);
-			doAgent.setSequence(((PeptideBean) this).getSequence());
-			for (AgentTargetBean agentTarget : getAgentTargets())
-				doAgent.getAgentTargetCollection().add(
-						agentTarget.getDomainObj());
-			return doAgent;
-		} else if (type.equals(CananoConstants.SMALL_MOLECULE)) {
-			SmallMolecule doAgent = new SmallMolecule();
-			if (getId() != null && getId().length() > 0) {
-				doAgent.setId(new Long(getId()));
-			}
-			doAgent.setDescription(description);
-			doAgent.setName(((SmallMoleculeBean) this).getName());
-			doAgent.setCompoundName(((SmallMoleculeBean) this)
-					.getCompoundName());
-			for (AgentTargetBean agentTarget : getAgentTargets())
-				doAgent.getAgentTargetCollection().add(
-						agentTarget.getDomainObj());
-			return doAgent;
-		} else if (type.equals(CananoConstants.PROBE)) {
-			Probe doAgent = new Probe();
-			if (getId() != null && getId().length() > 0) {
-				doAgent.setId(new Long(getId()));
-			}
-			doAgent.setDescription(description);
-			doAgent.setName(((ProbeBean) this).getName());
-			doAgent.setType(((ProbeBean) this).getType());
-			for (AgentTargetBean agentTarget : getAgentTargets())
-				doAgent.getAgentTargetCollection().add(
-						agentTarget.getDomainObj());
-			return doAgent;
-		} else if (type.equals(CananoConstants.ANTIBODY)) {
-			Antibody doAgent = new Antibody();
-			if (getId() != null && getId().length() > 0) {
-				doAgent.setId(new Long(getId()));
-			}
-			doAgent.setDescription(description);
-			doAgent.setName(((AntibodyBean) this).getName());
-			doAgent.setSpecies(((AntibodyBean) this).getSpecies());
-			for (AgentTargetBean agentTarget : getAgentTargets())
-				doAgent.getAgentTargetCollection().add(
-						agentTarget.getDomainObj());
-			return doAgent;
-		} else if (type.equals(CananoConstants.ANTIBODY)) {
-			Antibody doAgent = new Antibody();
-			if (getId() != null && getId().length() > 0) {
-				doAgent.setId(new Long(getId()));
-			}
-			doAgent.setDescription(description);
-			doAgent.setName(((AntibodyBean) this).getName());
-			doAgent.setSpecies(((AntibodyBean) this).getSpecies());
-			for (AgentTargetBean agentTarget : getAgentTargets())
-				doAgent.getAgentTargetCollection().add(
-						agentTarget.getDomainObj());
-			return doAgent;
-		} else if (type.equals(CananoConstants.IMAGE_CONTRAST_AGENT)) {
-			ImageContrastAgent doAgent = new ImageContrastAgent();
-			if (getId() != null && getId().length() > 0) {
-				doAgent.setId(new Long(getId()));
-			}
-			doAgent.setDescription(description);
-			doAgent.setName(((ImageContrastAgentBean) this).getName());
-			doAgent.setType(((ImageContrastAgentBean) this).getType());
-			for (AgentTargetBean agentTarget : getAgentTargets())
-				doAgent.getAgentTargetCollection().add(
-						agentTarget.getDomainObj());
-			return doAgent;
-		} else {
-			UnclassifiedAgent doAgent = new UnclassifiedAgent();
-			if (getId() != null && getId().length() > 0) {
-				doAgent.setId(new Long(getId()));
-			}
-			doAgent.setDescription(description);
-			for (AgentTargetBean agentTarget : getAgentTargets())
-				doAgent.getAgentTargetCollection().add(
-						agentTarget.getDomainObj());
-			return doAgent;
+	public void updateDomainObj(Agent agent) {
+		for (AgentTargetBean agentTarget : getAgentTargets()) {
+			agent.getAgentTargetCollection().add(agentTarget.getDomainObj());
 		}
+		agent.setDescription(description);
+		if (getId() != null && getId().length() > 0) {
+			agent.setId(new Long(getId()));
+		}		
 	}
 }
