@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSizeAction.java,v 1.18 2006-12-04 18:53:53 zengje Exp $ */
+/* CVS $Id: NanoparticleSizeAction.java,v 1.19 2006-12-05 23:00:34 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Size;
@@ -159,9 +159,7 @@ public class NanoparticleSizeAction extends BaseCharacterizationAction {
 				particleName, particleType);
 		if (firstOption == "")
 			firstOption = CananoConstants.OTHER;
-		InitSessionSetup.getInstance().setManufacturerPerType(session,
-				firstOption);
-		session.setAttribute("selectedInstrumentType", "");
+		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(session);		
 	}
 
 	protected void setLoadFileRequest(HttpServletRequest request) {
