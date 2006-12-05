@@ -12,7 +12,6 @@ import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.dto.characterization.invitro.CFU_GMBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
-import gov.nih.nci.calab.service.util.CananoConstants;
 import gov.nih.nci.calab.ui.core.BaseCharacterizationAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
@@ -56,7 +55,8 @@ public class InvitroCFU_GMAction extends BaseCharacterizationAction {
 		}
 
 		int fileNumber = 0;
-		for (DerivedBioAssayDataBean obj : cfu_gmChar.getDerivedBioAssayDataList()) {
+		for (DerivedBioAssayDataBean obj : cfu_gmChar
+				.getDerivedBioAssayDataList()) {
 			CharacterizationFileBean fileBean = (CharacterizationFileBean) request
 					.getSession().getAttribute(
 							"characterizationFile" + fileNumber);
@@ -87,18 +87,8 @@ public class InvitroCFU_GMAction extends BaseCharacterizationAction {
 
 		HttpSession session = request.getSession();
 		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-		String selectedInstrumentType = null;
-
-		if (cfu_gmChar.getInstrument().getOtherInstrumentType() != null
-				&& cfu_gmChar.getInstrument().getOtherInstrumentType() != "")
-			selectedInstrumentType = cfu_gmChar.getInstrument()
-					.getOtherInstrumentType();
-		else
-			selectedInstrumentType = cfu_gmChar.getInstrument().getType();
-
-		InitSessionSetup.getInstance().setManufacturerPerType(session,
-				selectedInstrumentType);
-
+		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(
+				session);
 		return forward;
 	}
 
@@ -113,35 +103,13 @@ public class InvitroCFU_GMAction extends BaseCharacterizationAction {
 		theForm.set("particleName", particleName);
 		theForm.set("particleType", particleType);
 		theForm.set("achar", new CFU_GMBean());
-		
-		cleanSessionAttributes(session);
-	}
 
-	protected void initSetup(HttpServletRequest request, DynaValidatorForm theForm)
-			throws Exception {
-		HttpSession session = request.getSession();
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
-		String firstOption = InitSessionSetup.getInstance()
-				.setAllInstrumentTypes(session);
-		InitSessionSetup.getInstance()
-				.setAllSizeDistributionGraphTypes(session);
-		InitSessionSetup.getInstance().setAllControlTypes(session);
-		InitSessionSetup.getInstance().setAllConditionTypes(session);
-		InitSessionSetup.getInstance().setAllConditionUnits(session);
-		InitSessionSetup.getInstance().setAllConcentrationUnits(session);
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
-		if (firstOption == "")
-			firstOption = CananoConstants.OTHER;
-		InitSessionSetup.getInstance().setManufacturerPerType(session,
-				firstOption);
-		session.setAttribute("selectedInstrumentType", "");
+		cleanSessionAttributes(session);
 	}
 
 	protected void setFormCharacterizationBean(DynaValidatorForm theForm,
 			Characterization aChar) throws Exception {
-		CFU_GMBean charBean=new CFU_GMBean(aChar);
+		CFU_GMBean charBean = new CFU_GMBean(aChar);
 		theForm.set("achar", charBean);
 	}
 

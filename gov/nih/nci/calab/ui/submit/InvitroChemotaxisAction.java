@@ -12,7 +12,6 @@ import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.dto.characterization.invitro.ChemotaxisBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
-import gov.nih.nci.calab.service.util.CananoConstants;
 import gov.nih.nci.calab.ui.core.BaseCharacterizationAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
@@ -88,21 +87,10 @@ public class InvitroChemotaxisAction extends BaseCharacterizationAction {
 
 		HttpSession session = request.getSession();
 		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-		String selectedInstrumentType = null;
-
-		if (chemotaxisChar.getInstrument().getOtherInstrumentType() != null
-				&& chemotaxisChar.getInstrument().getOtherInstrumentType() != "")
-			selectedInstrumentType = chemotaxisChar.getInstrument()
-					.getOtherInstrumentType();
-		else
-			selectedInstrumentType = chemotaxisChar.getInstrument().getType();
-
-		InitSessionSetup.getInstance().setManufacturerPerType(session,
-				selectedInstrumentType);
-
+		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(
+				session);
 		return forward;
 	}
-
 
 	protected void clearMap(HttpSession session, DynaValidatorForm theForm,
 			ActionMapping mapping) throws Exception {
@@ -115,40 +103,19 @@ public class InvitroChemotaxisAction extends BaseCharacterizationAction {
 		theForm.set("particleName", particleName);
 		theForm.set("particleType", particleType);
 		theForm.set("achar", new ChemotaxisBean());
-		
+
 		cleanSessionAttributes(session);
 	}
 
-	protected void initSetup(HttpServletRequest request, DynaValidatorForm theForm)
-			throws Exception {
-		HttpSession session = request.getSession();
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
-		String firstOption = InitSessionSetup.getInstance()
-				.setAllInstrumentTypes(session);
-		InitSessionSetup.getInstance()
-				.setAllSizeDistributionGraphTypes(session);
-		InitSessionSetup.getInstance().setAllControlTypes(session);
-		InitSessionSetup.getInstance().setAllConditionTypes(session);
-		InitSessionSetup.getInstance().setAllConditionUnits(session);
-		InitSessionSetup.getInstance().setAllConcentrationUnits(session);
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
-		if (firstOption == "")
-			firstOption = CananoConstants.OTHER;
-		InitSessionSetup.getInstance().setManufacturerPerType(session,
-				firstOption);
-		session.setAttribute("selectedInstrumentType", "");
-	}
-
-	protected void setFormCharacterizationBean(DynaValidatorForm theForm, Characterization aChar) throws Exception {
+	protected void setFormCharacterizationBean(DynaValidatorForm theForm,
+			Characterization aChar) throws Exception {
 		// TODO Auto-generated method stub
-		ChemotaxisBean charBean=new ChemotaxisBean(aChar);
+		ChemotaxisBean charBean = new ChemotaxisBean(aChar);
 		theForm.set("achar", charBean);
 	}
 
 	protected void setLoadFileRequest(HttpServletRequest request) {
 		request.setAttribute("characterization", "chemotaxis");
-		request.setAttribute("loadFileForward", "invitroChemotaxisForm");	
+		request.setAttribute("loadFileForward", "invitroChemotaxisForm");
 	}
 }

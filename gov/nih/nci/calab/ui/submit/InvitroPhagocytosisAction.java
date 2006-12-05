@@ -13,7 +13,6 @@ import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.dto.characterization.invitro.PhagocytosisBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
-import gov.nih.nci.calab.service.util.CananoConstants;
 import gov.nih.nci.calab.ui.core.BaseCharacterizationAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
@@ -50,21 +49,25 @@ public class InvitroPhagocytosisAction extends BaseCharacterizationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleType = (String) theForm.get("particleType");
 		String particleName = (String) theForm.get("particleName");
-		PhagocytosisBean phagocytosisChar = (PhagocytosisBean) theForm.get("achar");
-		
-		if (phagocytosisChar.getId() == null || phagocytosisChar.getId() == "") {			
-			phagocytosisChar.setId( (String) theForm.get("characterizationId") );			
+		PhagocytosisBean phagocytosisChar = (PhagocytosisBean) theForm
+				.get("achar");
+
+		if (phagocytosisChar.getId() == null || phagocytosisChar.getId() == "") {
+			phagocytosisChar.setId((String) theForm.get("characterizationId"));
 		}
-		
+
 		int fileNumber = 0;
-		for (DerivedBioAssayDataBean obj : phagocytosisChar.getDerivedBioAssayDataList()) {
-			CharacterizationFileBean fileBean = (CharacterizationFileBean) request.getSession().getAttribute("characterizationFile" + fileNumber);
-			if (fileBean != null) {		
+		for (DerivedBioAssayDataBean obj : phagocytosisChar
+				.getDerivedBioAssayDataList()) {
+			CharacterizationFileBean fileBean = (CharacterizationFileBean) request
+					.getSession().getAttribute(
+							"characterizationFile" + fileNumber);
+			if (fileBean != null) {
 				obj.setFile(fileBean);
 			}
 			fileNumber++;
 		}
-		
+
 		// set createdBy and createdDate for the composition
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		Date date = new Date();
@@ -83,18 +86,11 @@ public class InvitroPhagocytosisAction extends BaseCharacterizationAction {
 
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
-				
+
 		HttpSession session = request.getSession();
 		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-		String selectedInstrumentType = null;
-		
-		if (phagocytosisChar.getInstrument().getOtherInstrumentType() != null && phagocytosisChar.getInstrument().getOtherInstrumentType() != "")
-			selectedInstrumentType = phagocytosisChar.getInstrument().getOtherInstrumentType();
-		else
-			selectedInstrumentType = phagocytosisChar.getInstrument().getType();
-		
-		InitSessionSetup.getInstance().setManufacturerPerType(session, selectedInstrumentType);
-
+		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(
+				session);
 		return forward;
 	}
 
@@ -109,33 +105,15 @@ public class InvitroPhagocytosisAction extends BaseCharacterizationAction {
 		theForm.set("particleName", particleName);
 		theForm.set("particleType", particleType);
 		theForm.set("achar", new PhagocytosisBean());
-		
+
 		cleanSessionAttributes(session);
 	}
 
-	protected void initSetup(HttpServletRequest request, DynaValidatorForm theForm)
-			throws Exception {
-		HttpSession session = request.getSession();
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
-		String firstOption = InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-		InitSessionSetup.getInstance().setAllSizeDistributionGraphTypes(session);
-		InitSessionSetup.getInstance().setAllControlTypes(session);
-		InitSessionSetup.getInstance().setAllConditionTypes(session);
-		InitSessionSetup.getInstance().setAllConditionUnits(session);
-		InitSessionSetup.getInstance().setAllConcentrationUnits(session);
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
-		if (firstOption == "")
-			firstOption =  CananoConstants.OTHER;
-		InitSessionSetup.getInstance().setManufacturerPerType(session, firstOption);
-		session.setAttribute("selectedInstrumentType", "");
-	}
-
 	@Override
-	protected void setFormCharacterizationBean(DynaValidatorForm theForm, Characterization aChar) throws Exception {
-		PhagocytosisBean charBean=new PhagocytosisBean((Phagocytosis)aChar);
-		theForm.set("achar", charBean);		
+	protected void setFormCharacterizationBean(DynaValidatorForm theForm,
+			Characterization aChar) throws Exception {
+		PhagocytosisBean charBean = new PhagocytosisBean((Phagocytosis) aChar);
+		theForm.set("achar", charBean);
 	}
 
 	@Override
@@ -143,5 +121,5 @@ public class InvitroPhagocytosisAction extends BaseCharacterizationAction {
 		request.setAttribute("characterization", "phagocytosis");
 		request.setAttribute("loadFileForward", "invitroPhagocytosisForm");
 	}
-	
+
 }

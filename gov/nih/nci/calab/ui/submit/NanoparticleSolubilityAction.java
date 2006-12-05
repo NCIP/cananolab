@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSolubilityAction.java,v 1.7 2006-11-22 23:19:23 pansu Exp $ */
+/* CVS $Id: NanoparticleSolubilityAction.java,v 1.8 2006-12-05 23:41:51 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Solubility;
@@ -33,9 +33,9 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
-
 public class NanoparticleSolubilityAction extends BaseCharacterizationAction {
-	private static Logger logger = Logger.getLogger(NanoparticleSolubilityAction.class);
+	private static Logger logger = Logger
+			.getLogger(NanoparticleSolubilityAction.class);
 
 	/**
 	 * Add or update the data to database
@@ -55,25 +55,27 @@ public class NanoparticleSolubilityAction extends BaseCharacterizationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleType = (String) theForm.get("particleType");
 		String particleName = (String) theForm.get("particleName");
-		SolubilityBean solubilityChar=(SolubilityBean) theForm.get("achar");
+		SolubilityBean solubilityChar = (SolubilityBean) theForm.get("achar");
 
 		if (solubilityChar.getId() == null || solubilityChar.getId() == "") {
-			
-			solubilityChar.setId( (String) theForm.get("characterizationId") );
-			
+
+			solubilityChar.setId((String) theForm.get("characterizationId"));
+
 		}
-		
+
 		int fileNumber = 0;
-		for (DerivedBioAssayDataBean obj : solubilityChar.getDerivedBioAssayDataList()) {
-			CharacterizationFileBean fileBean = (CharacterizationFileBean) request.getSession().getAttribute("characterizationFile" + fileNumber);
-			if (fileBean != null) {		
+		for (DerivedBioAssayDataBean obj : solubilityChar
+				.getDerivedBioAssayDataList()) {
+			CharacterizationFileBean fileBean = (CharacterizationFileBean) request
+					.getSession().getAttribute(
+							"characterizationFile" + fileNumber);
+			if (fileBean != null) {
 				logger.info("************set fileBean to " + fileNumber);
 				obj.setFile(fileBean);
 			}
 			fileNumber++;
 		}
 
-		
 		// set createdBy and createdDate for the composition
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		Date date = new Date();
@@ -82,7 +84,8 @@ public class NanoparticleSolubilityAction extends BaseCharacterizationAction {
 
 		request.getSession().setAttribute("newCharacterizationCreated", "true");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		service.addParticleSolubility(particleType, particleName, solubilityChar);
+		service.addParticleSolubility(particleType, particleName,
+				solubilityChar);
 
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.addParticleSolubility");
@@ -95,15 +98,8 @@ public class NanoparticleSolubilityAction extends BaseCharacterizationAction {
 
 		HttpSession session = request.getSession();
 		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-		String selectedInstrumentType = null;
-		
-		if (solubilityChar.getInstrument().getOtherInstrumentType() != null && solubilityChar.getInstrument().getOtherInstrumentType() != "")
-			selectedInstrumentType = solubilityChar.getInstrument().getOtherInstrumentType();
-		else
-			selectedInstrumentType = solubilityChar.getInstrument().getType();
-		
-		InitSessionSetup.getInstance().setManufacturerPerType(session, selectedInstrumentType);
-
+		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(
+				session);
 		return forward;
 	}
 
@@ -120,35 +116,30 @@ public class NanoparticleSolubilityAction extends BaseCharacterizationAction {
 		theForm.set("achar", new SolubilityBean());
 
 		cleanSessionAttributes(session);
-//	    for (Enumeration e = session.getAttributeNames(); e.hasMoreElements() ;) {
-//	    	String element = (String) e.nextElement();
-//	        if (element.startsWith(CananoConstants.CHARACTERIZATION_FILE)) {
-//	        	session.removeAttribute(element);
-//	        }
-//	    }
+		// for (Enumeration e = session.getAttributeNames(); e.hasMoreElements()
+		// ;) {
+		// String element = (String) e.nextElement();
+		// if (element.startsWith(CananoConstants.CHARACTERIZATION_FILE)) {
+		// session.removeAttribute(element);
+		// }
+		// }
 	}
 
-	protected void initSetup(HttpServletRequest request, DynaValidatorForm theForm)
-			throws Exception {
+	protected void initSetup(HttpServletRequest request,
+			DynaValidatorForm theForm) throws Exception {
+		super.initSetup(request, theForm);
+
 		HttpSession session = request.getSession();
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
-		String firstOption = InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-		InitSessionSetup.getInstance().setAllSolubilityDistributionGraphTypes(session);
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
+		InitSessionSetup.getInstance().setAllSolubilityDistributionGraphTypes(
+				session);
 		InitSessionSetup.getInstance().setAllConcentrationUnits(session);
 		session.setAttribute("booleanChoices", CananoConstants.BOOLEAN_CHOICES);
-
-		if (firstOption == "")
-			firstOption =  CananoConstants.OTHER;
-		InitSessionSetup.getInstance().setManufacturerPerType(session, firstOption);
-		session.setAttribute("selectedInstrumentType", "");
 	}
 
 	@Override
-	protected void setFormCharacterizationBean(DynaValidatorForm theForm, Characterization aChar) throws Exception {
-		SolubilityBean solubility=new SolubilityBean((Solubility)aChar);
+	protected void setFormCharacterizationBean(DynaValidatorForm theForm,
+			Characterization aChar) throws Exception {
+		SolubilityBean solubility = new SolubilityBean((Solubility) aChar);
 		theForm.set("achar", solubility);
 	}
 
