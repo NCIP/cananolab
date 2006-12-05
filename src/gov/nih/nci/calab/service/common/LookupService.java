@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.75 2006-12-05 17:17:18 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.76 2006-12-05 21:49:44 zengje Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -945,7 +945,7 @@ public class LookupService {
 	}
 
 	public String[] getAllConditionTypes() {
-		String[] conditionTypes = new String[] {"Particle Concentration", "Time", "Temperature"};
+		String[] conditionTypes = new String[] {"Particle Concentration","Temperature", "Time"};
 		return conditionTypes;
 	}
 
@@ -994,14 +994,13 @@ public class LookupService {
 	}
 
 	public String[] getAllConcentrationUnits() {
-		String[] concentrationUnits = new String[] { "g/ml", "mg/ml", "ug/ml",
-				"ug/ul", "pg/ml" };
+		String[] concentrationUnits = new String[] { "g/ml", "mg/ml", "pg/ml", "ug/ml","ug/ul" };
 		return concentrationUnits;
 	}
 	
 	public Map<String, String[]> getAllConditionUnits() {
 		Map<String, String[]>conditionTypeUnits = new HashMap<String, String[]>();
-		String[] concentrationUnits = new String[] {"g/ml", "mg/ml", "ug/ml", "ug/ul", "pg/ml"};
+		String[] concentrationUnits = new String[] {"g/ml", "mg/ml", "pg/ml", "ug/ml", "ug/ul",};
 		String[] temperatureUnits = new String[] {"degrees celcius", "degrees fahrenhiet"};
 		String[] timeUnits = new String[] { "hours", "days", "months" };
 		conditionTypeUnits.put("Particle Concentration", concentrationUnits);
@@ -1043,7 +1042,7 @@ public class LookupService {
 	}
 	
 	public String[] getAllActivationMethods() {
-		String[] activationMethods=new String[]{"NMR", "MRI", "heat", "IR", "visible", "ultraviolet light", "ultrasound"};
+		String[] activationMethods=new String[]{"NMR", "MRI", "Radiation", "Ultrasound", "Ultraviolet Light"};
 		return activationMethods;
 	}
 }
