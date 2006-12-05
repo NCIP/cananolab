@@ -2,6 +2,7 @@ package gov.nih.nci.calab.dto.particle;
 
 import gov.nih.nci.calab.domain.Keyword;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
+import gov.nih.nci.calab.domain.nano.function.Function;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.dto.inventory.SampleBean;
 
@@ -64,15 +65,24 @@ public class ParticleBean extends SampleBean {
 
 			Collection<Characterization> characterizationCol = particle
 					.getCharacterizationCollection();
-			//get a unique list of characterization
+			// get a unique list of characterization
 			Set<String> charcterizationSet = new HashSet<String>();
 			for (Characterization charObj : characterizationCol) {
 				charcterizationSet.add(charObj.getClassification() + ":"
 						+ charObj.getName());
 			}
 			characterizations = charcterizationSet.toArray(new String[0]);
+			
+			Collection<Function> functionCol = particle
+					.getFunctionCollection();
+			// get a unique list of function
+			Set<String> functionTypeSet = new HashSet<String>();
+			for (Function funcObj : functionCol) {
+				functionTypeSet.add(funcObj.getType());
+			}
+			functionTypes = functionTypeSet.toArray(new String[0]);
 		} catch (org.hibernate.LazyInitializationException e) {
-		    //ignore this exception
+			// ignore this exception
 		}
 	}
 
