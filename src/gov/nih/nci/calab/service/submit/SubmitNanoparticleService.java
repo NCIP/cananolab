@@ -47,6 +47,7 @@ import gov.nih.nci.calab.dto.function.FunctionBean;
 import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.CananoConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.service.util.file.HttpFileUploadSessionData;
 
@@ -124,18 +125,23 @@ public class SubmitNanoparticleService {
 		// remove existing visiblities for the nanoparticle
 		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
 		List<String> currentVisibilities = userService.getAccessibleGroups(
-				particleName, "R");
+				particleName, CalabConstants.CSM_READ_ROLE);
 		for (String visiblity : currentVisibilities) {
-			userService.removeAccessibleGroup(particleName, visiblity, "R");
+			userService.removeAccessibleGroup(particleName, visiblity,
+					CalabConstants.CSM_READ_ROLE);
 		}
 		// set new visibilities for the nanoparticle
 		// by default, always set visibility to NCL_PI and NCL_Researcher to
 		// be true
-		userService.secureObject(particleName, "NCL_PI", "R");
-		userService.secureObject(particleName, "NCL_Researcher", "R");
+		for (String defaultGroup : CananoConstants.DEFAULT_VISIBLE_GROUPS) {
+			userService.secureObject(particleName, defaultGroup,
+					CalabConstants.CSM_READ_ROLE);
+		}
+
 		if (visibilities != null) {
 			for (String visibility : visibilities) {
-				userService.secureObject(particleName, visibility, "R");
+				userService.secureObject(particleName, visibility,
+						CalabConstants.CSM_READ_ROLE);
 			}
 		}
 
@@ -811,12 +817,12 @@ public class SubmitNanoparticleService {
 		DerivedDataFile dataFile = new DerivedDataFile();
 		dataFile.setDescription(description);
 		dataFile.setFilename(file.getFileName());
-		if (keywords != null && keywords.length > 0 ) {
-			for (int i =0; i<keywords.length;i++){
+		if (keywords != null && keywords.length > 0) {
+			for (int i = 0; i < keywords.length; i++) {
 				Keyword keyword = new Keyword();
 				keyword.setName(keywords[i]);
 				dataFile.getKeywordCollection().add(keyword);
-			}	
+			}
 		}
 
 		// TODO need to remove the predefine the root path from outputFilename
@@ -843,7 +849,7 @@ public class SubmitNanoparticleService {
 				dataFile);
 
 		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
-		String fileName = fileBean.getName();
+		
 		if (visibilities != null) {
 			for (String visibility : visibilities) {
 				// by default, always set visibility to NCL_PI and
@@ -851,18 +857,20 @@ public class SubmitNanoparticleService {
 				// be true
 				// TODO once the files is successfully saved, use fileId instead
 				// of fileName
-				userService.secureObject(fileBean.getId(), "NCL_PI", "R");
-				userService.secureObject(fileBean.getId(), "NCL_Researcher",
-						"R");
-				userService.secureObject(fileBean.getId(), visibility, "R");
+				for (String defaultGroup : CananoConstants.DEFAULT_VISIBLE_GROUPS) {
+					userService.secureObject(fileBean.getId(), defaultGroup,
+							CalabConstants.CSM_READ_ROLE);
+				}
+				userService.secureObject(fileBean.getId(), visibility,
+						CalabConstants.CSM_READ_ROLE);
 			}
 		}
 		return fileBean;
 	}
 
 	/**
-	 * Save the characterization file into the database and file system
-	 * The file is a workflow output file
+	 * Save the characterization file into the database and file system The file
+	 * is a workflow output file
 	 * 
 	 * @param fileId
 	 * @param title
@@ -881,18 +889,18 @@ public class SubmitNanoparticleService {
 		DerivedDataFile dataFile = fileBean.getDomainObject();
 		// Retrieve all existing keywords
 		Collection<String> words = new ArrayList<String>();
-		for(Keyword keyword: dataFile.getKeywordCollection()){
+		for (Keyword keyword : dataFile.getKeywordCollection()) {
 			words.add(keyword.getName());
 		}
 		// only add the new keyword
-		if (keywords != null && keywords.length > 0 ) {
-			for (int i =0; i<keywords.length;i++){
-				if(!words.contains(keywords[i])) {
+		if (keywords != null && keywords.length > 0) {
+			for (int i = 0; i < keywords.length; i++) {
+				if (!words.contains(keywords[i])) {
 					Keyword keyword = new Keyword();
 					keyword.setName(keywords[i]);
-					dataFile.getKeywordCollection().add(keyword);	
-				}				
-			}	
+					dataFile.getKeywordCollection().add(keyword);
+				}
+			}
 		}
 		// TODO saves file to the database
 		IDataAccess ida = (new DataAccessProxy())
@@ -912,8 +920,7 @@ public class SubmitNanoparticleService {
 		}
 
 		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
-		fileBean = new CharacterizationFileBean(dataFile);
-		String fileName = fileBean.getName();
+		fileBean = new CharacterizationFileBean(dataFile);		
 		if (visibilities != null) {
 			for (String visibility : visibilities) {
 				// by default, always set visibility to NCL_PI and
@@ -921,10 +928,12 @@ public class SubmitNanoparticleService {
 				// be true
 				// TODO once the files is successfully saved, use fileId instead
 				// of fileName
-				userService.secureObject(fileBean.getId(), "NCL_PI", "R");
-				userService.secureObject(fileBean.getId(), "NCL_Researcher",
-						"R");
-				userService.secureObject(fileBean.getId(), visibility, "R");
+				for (String defaultGroup : CananoConstants.DEFAULT_VISIBLE_GROUPS) {
+					userService.secureObject(fileBean.getId(), defaultGroup,
+							CalabConstants.CSM_READ_ROLE);
+				}
+				userService.secureObject(fileBean.getId(), visibility,
+						CalabConstants.CSM_READ_ROLE);
 			}
 		}
 		return fileBean;
@@ -962,10 +971,11 @@ public class SubmitNanoparticleService {
 			ida.open();
 
 			if (doFunction.getLinkageCollection() != null) {
-				for (Linkage linkage : doFunction.getLinkageCollection()){
+				for (Linkage linkage : doFunction.getLinkageCollection()) {
 					Agent agent = linkage.getAgent();
 					if (agent != null) {
-						for(AgentTarget agentTarget: agent.getAgentTargetCollection()) {
+						for (AgentTarget agentTarget : agent
+								.getAgentTargetCollection()) {
 							ida.store(agentTarget);
 						}
 						ida.store(agent);
@@ -983,11 +993,11 @@ public class SubmitNanoparticleService {
 						+ particleType
 						+ "' and function.identificationName='"
 						+ doFunction.getIdentificationName() + "' "; // and
-																		// function.type='"
-																		// +
-																		// doFunction.getType()
-																		// +
-																		// "'";
+				// function.type='"
+				// +
+				// doFunction.getType()
+				// +
+				// "'";
 			} else {
 				viewTitleQuery = "select count(function.identificationName) from Nanoparticle particle join particle.functionCollection function where particle.name='"
 						+ particleName
@@ -1025,7 +1035,7 @@ public class SubmitNanoparticleService {
 					}
 
 					if (particle != null) {
-//						ida.store(doFunction);
+						// ida.store(doFunction);
 						particle.getFunctionCollection().add(doFunction);
 					}
 				}
