@@ -38,7 +38,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 
-/* CVS $Id: BaseCharacterizationAction.java,v 1.11 2006-12-05 22:59:31 pansu Exp $ */
+/* CVS $Id: BaseCharacterizationAction.java,v 1.12 2006-12-05 23:02:09 pansu Exp $ */
 
 public abstract class BaseCharacterizationAction extends AbstractDispatchAction {
 	/**
@@ -164,14 +164,6 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 						"characterizationFile" + fileNumber);
 			}
 			fileNumber++;
-		}
-
-		if (aChar.getInstrument() != null) {
-			String instrumentType = aChar.getInstrument().getInstrumentType()
-					.getName();
-			InitSessionSetup.getInstance().setManufacturerPerType(session,
-					instrumentType);
-			session.setAttribute("selectedInstrumentType", instrumentType);
 		}
 		initSetup(request, theForm);
 		setFormCharacterizationBean(theForm, aChar);
