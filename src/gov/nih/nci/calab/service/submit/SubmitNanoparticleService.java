@@ -849,7 +849,7 @@ public class SubmitNanoparticleService {
 				dataFile);
 
 		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
-		
+
 		if (visibilities != null) {
 			for (String visibility : visibilities) {
 				// by default, always set visibility to NCL_PI and
@@ -920,7 +920,7 @@ public class SubmitNanoparticleService {
 		}
 
 		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
-		fileBean = new CharacterizationFileBean(dataFile);		
+		fileBean = new CharacterizationFileBean(dataFile);
 		if (visibilities != null) {
 			for (String visibility : visibilities) {
 				// by default, always set visibility to NCL_PI and
@@ -984,7 +984,7 @@ public class SubmitNanoparticleService {
 				}
 			}
 			// check if viewTitle is already used the same type of
-			// characterization for the same particle
+			// function for the same particle
 			String viewTitleQuery = "";
 			if (function.getId() == null) {
 				viewTitleQuery = "select count(function.identificationName) from Nanoparticle particle join particle.functionCollection function where particle.name='"
@@ -992,12 +992,8 @@ public class SubmitNanoparticleService {
 						+ "' and particle.type='"
 						+ particleType
 						+ "' and function.identificationName='"
-						+ doFunction.getIdentificationName() + "' "; // and
-				// function.type='"
-				// +
-				// doFunction.getType()
-				// +
-				// "'";
+						+ doFunction.getIdentificationName()
+						+ "' and function.type='" + doFunction.getType() + "'";
 			} else {
 				viewTitleQuery = "select count(function.identificationName) from Nanoparticle particle join particle.functionCollection function where particle.name='"
 						+ particleName
@@ -1005,9 +1001,9 @@ public class SubmitNanoparticleService {
 						+ particleType
 						+ "' and function.identificationName='"
 						+ doFunction.getIdentificationName()
-						+ "' and function.id!=" + function.getId();
-				// + "' and function.type='"
-				// + function.getType()
+						+ "' and function.id!="
+						+ function.getId()
+						+ "' and function.type='" + doFunction.getType() + "'";
 
 			}
 			List viewTitleResult = ida.search(viewTitleQuery);
