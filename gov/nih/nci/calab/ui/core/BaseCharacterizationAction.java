@@ -38,7 +38,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 
-/* CVS $Id: BaseCharacterizationAction.java,v 1.13 2006-12-05 23:40:58 pansu Exp $ */
+/* CVS $Id: BaseCharacterizationAction.java,v 1.14 2006-12-06 17:23:05 beasleyj Exp $ */
 
 public abstract class BaseCharacterizationAction extends AbstractDispatchAction {
 	/**
@@ -297,12 +297,10 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		if (type != null && !type.equals("") && type.equals("conditions")) {
 			if (!updateConditions(achar, index, dataPointIndex)) {
 
-				ActionMessages msgs = new ActionMessages();
-				ActionMessage msg = new ActionMessage("numberOfConditions");
-				msgs.add("message", msg);
-				saveMessages(request, msgs);
-
-				return mapping.getInputForward();
+				Exception updateConditionsException = new Exception(PropertyReader.getProperty(
+							CalabConstants.SUBMISSION_PROPERTY, "numberOfConditions"));							
+				throw updateConditionsException;
+				
 			}
 		}
 		String particleType = (String) theForm.get("particleType");

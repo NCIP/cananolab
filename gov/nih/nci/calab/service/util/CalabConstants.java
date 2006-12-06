@@ -62,4 +62,7 @@ public class CalabConstants {
 	public static final String CSM_READ_ROLE= "R";
 	
 	public static final String CSM_READ_PRIVILEGE="READ";
+
+	// caLAB Submission property file
+	public static final String SUBMISSION_PROPERTY = "exception.properties";
 }
