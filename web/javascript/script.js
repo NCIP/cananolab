@@ -111,11 +111,10 @@ function doubleDropdown(selection1, selection2, value1ToValue2) {
     var value2Arr = value1ToValue2[value1];
     if (value2Arr != null) {
         for (i = 0; i < value2Arr.length; i++) {
-            selection2.options[i] = value2Arr[i];
+            selection2.options[i] = new Option(value2Arr[i], value2Arr[i]);
         }
     }
 }
-
 /* filter second drop-down by first drop-down selection, add an extra option at the end*/
 function doubleDropdownWithExraOption(selection1, selection2, value1ToValue2, extraOptionName) {
     /* initialize selection2 options */
@@ -123,15 +122,14 @@ function doubleDropdownWithExraOption(selection1, selection2, value1ToValue2, ex
     selection2.options[0] = new Option("", "");
     var value1 = selection1.options[selection1.selectedIndex].value;
     var value2Arr = value1ToValue2[value1];
-    var last=1;
+    var last = 1;
     if (value2Arr != null) {
         for (i = 0; i < value2Arr.length; i++) {
-            selection2.options[i] = value2Arr[i];
-            last=i+1;
-        }        
+            selection2.options[i] = new Option(value2Arr[i], value2Arr[i]);
+            last = i + 1;
+        }
     }
-    selection2.options[last]=new Option(extraOptionName, extraOptionName);
-    
+    selection2.options[last] = new Option(extraOptionName, extraOptionName);
 }
 /* filter a drop-down by a value*/
 function dynamicDropdown(value, selection, value1ToValue2) {
@@ -141,7 +139,7 @@ function dynamicDropdown(value, selection, value1ToValue2) {
     var value2Arr = value1ToValue2[value];
     if (value2Arr != null) {
         for (i = 0; i < value2Arr.length; i++) {
-            selection.options[i] = value2Arr[i];
+            selection.options[i] = new Option(value2Arr[i], value2Arr[i]);
         }
     }
 }
@@ -163,7 +161,7 @@ function doubleMultibox(selection1, selection2, value1ToValue2) {
         }
     }
     for (var i = 0; i < value2Arr.length; i++) {
-        selection2.options[i] = value2Arr[i];
+        selection2.options[i] = new Option(value2Arr[i], value2Arr[i]);
     }
 }
 function submitAction(form, actionName) {
@@ -201,5 +199,18 @@ function updateAgentTargets(linkageIndex) {
 function refreshManufacturers(form, action) {
     form.dispatch.value = action;
     form.submit();
+}
+/* form has "." in the property names */
+function doubleDropdownWithNestedProperties(form, elementName1, elementName2, value1ToValue2) {
+    var select1, select2;
+    for (var i = 0; i < form.elements.length; i++) {
+        if (form.elements[i].name.indexOf(elementName1) != -1) {
+            select1 = form.elements[i];
+        }
+        if (form.elements[i].name.indexOf(elementName2) != -1) {
+            select2 = form.elements[i];
+        }
+    }
+    doubleDropdown(select1, select2, value1ToValue2);
 }
 
