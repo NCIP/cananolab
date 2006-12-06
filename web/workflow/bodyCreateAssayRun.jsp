@@ -123,7 +123,7 @@
   <c:forEach var="item" items="${allUnmaskedSampleAliquots}">
     var aliquots=new Array();
     <c:forEach var="aliquot" items="${allUnmaskedSampleAliquots[item.key]}" varStatus="count">
-  	    aliquots[${count.index}]=new Option('${aliquot.aliquotName}', '${aliquot.aliquotName}');  	
+  	    aliquots[${count.index}]='${aliquot.aliquotName}';  	
     </c:forEach>
     sampleAliquots['${item.key}']=aliquots;
   </c:forEach>

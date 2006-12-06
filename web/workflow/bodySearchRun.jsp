@@ -44,7 +44,7 @@
 							<strong>Assay Type </strong>
 						</td>
 						<td class="rightLabel">
-							<html:select property="assayType" onchange="javascript:doubleDropdown(document.searchRunForm.assayType, document.searchRunForm.assayName, assayTypeAssays);">
+							<html:select property="assayType" onchange="javascript:doubleDropdownWithExraOption(document.searchRunForm.assayType, document.searchRunForm.assayName, assayTypeAssays, '');">
 								<option value=""></option>
 								<html:options name="allAvailableAssayTypes" />
 							</html:select>
@@ -129,7 +129,7 @@
     var assays=new Array();
     /* add an empty one */
     <c:forEach var="assay" items="${allAssayTypeAssays[item.key]}" varStatus="count">
-  		assays[${count.index}]=new Option('${assay.assayName}', '${assay.assayName}');  	
+  		assays[${count.index}]='${assay.assayName}';  	
     </c:forEach>
     assayTypeAssays['${item.key}']=assays;
   </c:forEach>

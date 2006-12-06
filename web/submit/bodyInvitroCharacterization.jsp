@@ -19,17 +19,18 @@
 		<tr>
 			<td colspan="2">
 				<h5 align="center">
-					<bean:write name="${formName}" property="particleName"/> <bean:write name="${formName}" property="particleType"/>							
+					<bean:write name="${formName}" property="particleName" />
+					<bean:write name="${formName}" property="particleType" />
 				</h5>
 			</td>
 		</tr>
 		<tr>
-			<td colspan="2">				
+			<td colspan="2">
 				<jsp:include page="/bodyMessage.jsp?bundle=submit" />
 				<jsp:include page="bodySharedCharacterizationSummary.jsp" />
 				<jsp:include page="bodySharedCharacterizationInstrument.jsp" />
-				<logic:present name="detailPage">				
-				   <jsp:include page="${detailPage}"/>
+				<logic:present name="detailPage">
+					<jsp:include page="${detailPage}" />
 				</logic:present>
 				<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 					<tbody>
@@ -50,7 +51,7 @@
 										<html:text property="achar.numberOfDerivedBioAssayData" />
 									</c:when>
 									<c:otherwise>
-										<bean:write name="${formName}" property="achar.numberOfDerivedBioAssayData"/>&nbsp;
+										<bean:write name="${formName}" property="achar.numberOfDerivedBioAssayData" />&nbsp;
 									</c:otherwise>
 								</c:choose>
 							</td>
@@ -65,7 +66,7 @@
 						</tr>
 						<tr>
 							<td class="completeLabel" colspan="4">
-							    <logic:iterate name="${formName}" property="achar.derivedBioAssayDataList" id="derivedBioAssayData" indexId="chartInd">								
+								<logic:iterate name="${formName}" property="achar.derivedBioAssayDataList" id="derivedBioAssayData" indexId="chartInd">
 									<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 										<tbody>
 											<tr class="topBorder">
@@ -127,7 +128,7 @@
 											<tr>
 												<td class="completeLabel" colspan="4">
 													<jsp:include page="bodyDerivedBioAssayDatum.jsp">
-														<jsp:param name="chartNum" value="${chartInd}" />						
+														<jsp:param name="chartNum" value="${chartInd}" />
 													</jsp:include>
 												</td>
 											</tr>
@@ -137,7 +138,7 @@
 								</logic:iterate>
 							</td>
 						</tr>
-				</table>				
+				</table>
 				<jsp:include page="bodySharedCharacterizationSubmit.jsp" />
 			</td>
 		</tr>
@@ -150,8 +151,8 @@
   var conditionTypeUnits=new Array();    
   <c:forEach var="item" items="${allConditionTypeUnits}">
     var conditionUnits=new Array();
-    <c:forEach var="conditionUnit" items="${allConditionTypeUnits[item.key]}" varStatus="count">
-  		conditionUnits[${count.index}]=new Option('${conditionUnit}', '${conditionUnit}');  	
+    <c:forEach var="conditionUnit" items="${allConditionTypeUnits[item.key]}" varStatus="count">  		
+  		conditionUnits[${count.index}]='${conditionUnit}';
     </c:forEach>
     conditionTypeUnits['${item.key}'] = conditionUnits;
   </c:forEach> 
