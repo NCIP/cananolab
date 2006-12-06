@@ -60,7 +60,7 @@
 						<c:when test="${canUserUpdateParticle eq 'true'}">
 							<strong>Control Type:</strong>
 							<html:select property="achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].control.type">
-							<html:options name="allControlTypes" />
+								<html:options name="allControlTypes" />
 							</html:select>
 						</c:when>
 						<c:otherwise>
@@ -114,12 +114,12 @@
 												${cdata.type}&nbsp;
 											</c:when>
 											<c:otherwise>
- 												<html:select property="achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].conditionList[${cInd}].type"
-															 onchange="javascript:doubleDropdown(document.${formName}.achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].conditionList[${cInd}].type, document.${formName}.achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].conditionList[${cInd}].valueUnit, conditionTypeUnits)">
+												<html:select property="achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].conditionList[${cInd}].type"
+													onchange="javascript:doubleDropdownWithNestedProperties(this.form, 'achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].conditionList[${cInd}].type', 'achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].conditionList[${cInd}].valueUnit', conditionTypeUnits)">
 													<option value=""></option>
 													<html:options name="allConditionTypes" />
 												</html:select>
-        									</c:otherwise>
+											</c:otherwise>
 										</c:choose>
 									</td>
 									<td class="label">
@@ -140,9 +140,7 @@
 												<html:select property="achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].conditionList[${cInd}].valueUnit">
 													<option value=""></option>
 													<option value="${formName}.map.achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].conditionList[${cInd}].valueUnit" selected>
-														<%-- 
-														${formName}.map.achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].conditionList[${cInd}].valueUnit
-														--%>
+														${this.form.map.achar.derivedBioAssayDataList[param.chartNum].datumList[dInd].conditionList[cInd].valueUnit}
 													</option>
 												</html:select>
 											</c:when>

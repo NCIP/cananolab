@@ -257,7 +257,7 @@ function openLink() {
   <c:forEach var="item" items="${allUnmaskedSampleAliquots}">
     var aliquots=new Array();
     <c:forEach var="aliquot" items="${allUnmaskedSampleAliquots[item.key]}" varStatus="count">
-  	    aliquots[${count.index}]=new Option('${aliquot.aliquotName}', '${aliquot.aliquotName}');  	
+  	    aliquots[${count.index}]='${aliquot.aliquotName}';  	
     </c:forEach>
     sampleAliquots['${item.key}']=aliquots;
   </c:forEach>  
@@ -267,7 +267,7 @@ function openLink() {
   <c:forEach var="item" items="${allSampleContainers}">
     var containers=new Array();
     <c:forEach var="container" items="${allSampleContainers[item.key]}" varStatus="count">
-  	    containers[${count.index}]=new Option('${container.containerName}', '${container.containerName}');  	
+  	    containers[${count.index}]='${container.containerName}';  	
     </c:forEach>
     sampleContainers['${item.key}']=containers;
   </c:forEach>  

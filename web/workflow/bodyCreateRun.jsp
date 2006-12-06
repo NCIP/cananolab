@@ -163,7 +163,7 @@
   <c:forEach var="item" items="${allAssayTypeAssays}">
     var assays=new Array();
     <c:forEach var="assay" items="${allAssayTypeAssays[item.key]}" varStatus="count">
-  		assays[${count.index}]=new Option('${assay.assayName}', '${assay.assayName}');  	
+  		assays[${count.index}]='${assay.assayName}';  	
     </c:forEach>
     assayTypeAssays['${item.key}']=assays;
   </c:forEach>
@@ -173,7 +173,7 @@
   <c:forEach var="item" items="${allUnmaskedSampleAliquots}">
     var aliquots=new Array();
     <c:forEach var="aliquot" items="${allUnmaskedSampleAliquots[item.key]}" varStatus="count">
-  	    aliquots[${count.index}]=new Option('${aliquot.aliquotName}', '${aliquot.aliquotName}');  	
+  	    aliquots[${count.index}]='${aliquot.aliquotName}';  	
     </c:forEach>
     sampleAliquots['${item.key}']=aliquots;
   </c:forEach>
@@ -183,7 +183,7 @@
   <c:forEach var="item" items="${sampleSourceSamplesWithUnmaskedAliquots}">
     var samples=new Array();
     <c:forEach var="sample" items="${sampleSourceSamplesWithUnmaskedAliquots[item.key]}" varStatus="count">
-  	    samples[${count.index}]=new Option('${sample.sampleName}', '${sample.sampleName}');  	
+  	    samples[${count.index}]='${sample.sampleName}';  	
     </c:forEach>
     sampleSourceSamples['${item.key}']=samples;
   </c:forEach>

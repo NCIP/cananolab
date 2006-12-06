@@ -130,7 +130,7 @@
   <c:forEach var="item" items="${allInstrumentTypeManufacturers}">  	
     var manufacturers=new Array();
     <c:forEach var="manufacturer" items="${allInstrumentTypeManufacturers[item.key]}" varStatus="count">
-  		manufacturers[${count.index}]=new Option('${manufacturer}', '${manufacturer}');  	  		
+  		manufacturers[${count.index}]='${manufacturer}';  	  		
     </c:forEach>
     instrumentTypeManufacturers['${item.key}'] = manufacturers;
   </c:forEach> 

@@ -123,7 +123,7 @@
   <c:forEach var="item" items="${allParticleTypeParticles}">
     var particleNames=new Array();
     <c:forEach var="particleName" items="${allParticleTypeParticles[item.key]}" varStatus="count">
-  		particleNames[${count.index}]=new Option('${particleName}', '${particleName}');  	
+  		particleNames[${count.index}]='${particleName}';  	
     </c:forEach>
     particleTypeParticles['${item.key}']=particleNames;
   </c:forEach> 

@@ -161,7 +161,7 @@ var assayTypeAssays=new Array();
 <c:forEach var="item" items="${allAssayTypeAssays}">
     var assays=new Array();
     <c:forEach var="assay" items="${allAssayTypeAssays[item.key]}" varStatus="count">
-  		assays[${count.index}]=new Option('${assay.assayName}', '${assay.assayName}');  	
+  		assays[${count.index}]='${assay.assayName}';  	
     </c:forEach>
     assayTypeAssays['${item.key}']=assays;
   </c:forEach>

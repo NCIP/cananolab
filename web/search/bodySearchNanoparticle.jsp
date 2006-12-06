@@ -132,7 +132,7 @@
   <c:forEach var="item" items="${allCharacterizationTypeCharacterizations}">  
     var chars=new Array();    
    <c:forEach var="char" items="${allCharacterizationTypeCharacterizations[item.key]}" varStatus="count">
-  		chars[${count.index}]=new Option('${char}', '${char}'); 
+  		chars[${count.index}]='${char}'; 
     </c:forEach>
     charTypeChars['${item.key}']=chars;
   </c:forEach>
