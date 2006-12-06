@@ -20,8 +20,11 @@
 			<c:choose>
 				<c:when test="${canUserUpdateParticle eq 'true'}">
 					<html:select property="achar.instrument.type" onchange="javascript:doubleDropdownWithExraOption(this.form.elements[5], this.form.elements[7], instrumentTypeManufacturers, 'Other')">
+						<option value=""/>
 						<html:options name="allInstrumentTypes" />
-						<option value="Other">Other</option>
+						<option value="Other">
+							Other
+						</option>
 					</html:select>
 				</c:when>
 				<c:otherwise>
@@ -58,7 +61,9 @@
 			<c:choose>
 				<c:when test="${canUserUpdateParticle eq 'true'}">
 					<html:select property="achar.instrument.manufacturer">
-						<option value="Other">Other</option>
+						<option value="Other">
+							Other
+						</option>
 						<option value="${nanoparticleSizeForm.map.achar.instrument.manufacturer}" selected>
 							${nanoparticleSizeForm.map.achar.instrument.manufacturer}
 						</option>
