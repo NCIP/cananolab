@@ -125,7 +125,7 @@ public class SubmitReportService {
 		}
 
 		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
-		String fileName = report.getFileName();
+//		String fileName = report.getFileName();
 
 		for (String visibility : visibilities) {
 			// by default, always set visibility to NCL_PI and NCL_Researcher to
@@ -133,10 +133,10 @@ public class SubmitReportService {
 			// TODO once the files is successfully saved, use fileId instead of
 			// fileName
 			for (String defaultGroup : CananoConstants.DEFAULT_VISIBLE_GROUPS) {
-				userService.secureObject(fileName, defaultGroup,
+				userService.secureObject(dataFile.getId().toString(), defaultGroup,
 						CalabConstants.CSM_READ_ROLE);
 			}
-			userService.secureObject(fileName, visibility,
+			userService.secureObject(dataFile.getId().toString(), visibility,
 					CalabConstants.CSM_READ_ROLE);
 		}
 	}
