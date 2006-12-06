@@ -1,10 +1,12 @@
-##########
-INSTRUCTIONS      ########## 1. comments that start with constant: indicate colors that don     't change among the color schemes
-     2. comments with the words lighter or darker indicate the colors that do change depending on the color scheme
-For example using the blue color sheme,darker means use the darker blue and lighter means use the lighter blue
-     3. ems are used as the unit of measurement to maintain proportional sizing which is important for      508 compliance
+/*##########
+INSTRUCTIONS      
+/*##########
+#1. comments that start with constant: indicate colors that don     't change among the color schemes
+#2. comments with the words lighter or darker indicate the colors that do change depending on the color scheme
+#For example using the blue color sheme,darker means use the darker blue and lighter means use the lighter blue
+#3. ems are used as the unit of measurement to maintain proportional sizing which is important for      508 compliance
 
-     /*########## BLUE COLOR SCHEME ##########
+/*########## BLUE COLOR SCHEME ##########
  #475B82 = darker blue
  #6E81A6 = lighter blue
 
@@ -718,8 +720,7 @@ img.img { /* for images that need a border */
 	background-color: #f4f4f5;
 	color: #000000;
 	text-align: left;
-	border-right: 1px solid #5c5c5c;
-	*/
+	border-right: 1px solid #5c5c5c;	
 }
 
 .leftLabelNoBottom {
@@ -728,8 +729,7 @@ img.img { /* for images that need a border */
 	background-color: #f4f4f5;
 	color: #000000;
 	text-align: left;
-	border-left: 1px solid #5c5c5c;
-	*/
+	border-left: 1px solid #5c5c5c;	
 }
 
 .indented {
