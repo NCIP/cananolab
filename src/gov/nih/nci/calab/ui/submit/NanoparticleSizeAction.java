@@ -6,14 +6,14 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSizeAction.java,v 1.20 2006-12-05 23:41:51 pansu Exp $ */
+/* CVS $Id: NanoparticleSizeAction.java,v 1.21 2006-12-07 17:48:00 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Size;
-import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
 import gov.nih.nci.calab.dto.characterization.DatumBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.dto.characterization.physical.SizeBean;
+import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.ui.core.BaseCharacterizationAction;
@@ -84,7 +84,7 @@ public class NanoparticleSizeAction extends BaseCharacterizationAction {
 		int fileNumber = 0;
 		for (DerivedBioAssayDataBean obj : sizeChar
 				.getDerivedBioAssayDataList()) {
-			CharacterizationFileBean fileBean = (CharacterizationFileBean) request
+			LabFileBean fileBean = (LabFileBean) request
 					.getSession().getAttribute(
 							"characterizationFile" + fileNumber);
 			if (fileBean != null) {

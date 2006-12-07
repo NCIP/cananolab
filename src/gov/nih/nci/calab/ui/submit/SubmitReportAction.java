@@ -6,19 +6,18 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: SubmitReportAction.java,v 1.5 2006-12-05 23:42:09 pansu Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.6 2006-12-07 17:48:00 pansu Exp $ */
 
-import gov.nih.nci.calab.domain.nano.characterization.Characterization;
-import gov.nih.nci.calab.service.submit.SubmitReportService;
+import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
+import gov.nih.nci.calab.service.util.CananoConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
-import gov.nih.nci.calab.ui.core.BaseCharacterizationAction;
+import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -27,8 +26,7 @@ import org.apache.struts.action.ActionMessages;
 import org.apache.struts.upload.FormFile;
 import org.apache.struts.validator.DynaValidatorForm;
 
-public class SubmitReportAction extends BaseCharacterizationAction {
-	private static Logger logger = Logger.getLogger(SubmitReportAction.class);
+public class SubmitReportAction extends AbstractDispatchAction {
 
 	public ActionForward submit(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
@@ -44,10 +42,15 @@ public class SubmitReportAction extends BaseCharacterizationAction {
 		String reportType = (String) theForm.get("reportType");
 		String comment = (String) theForm.get("comment");
 		
-		SubmitReportService service=new SubmitReportService();
+		SubmitNanoparticleService service=new SubmitNanoparticleService();
 		
-		service.submit(particleNames, reportType, reportFile, title, description, comment, visibilities);
-				
+		service.createReport(particleNames, reportType, reportFile, title, description, comment, visibilities);
+		
+		//display default visible groups
+		if (visibilities.length==0) {
+			visibilities=CananoConstants.DEFAULT_VISIBLE_GROUPS;
+		}
+		
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg1 = new ActionMessage("message.submitReport.secure",
 				StringUtils.join(visibilities, ", "));
@@ -70,26 +73,17 @@ public class SubmitReportAction extends BaseCharacterizationAction {
 		InitSessionSetup.getInstance().clearInventorySession(session);
 
 		InitSessionSetup.getInstance().setAllSampleContainers(session);
-		InitSessionSetup.getInstance().setStaticDropdowns(session);
+		InitSessionSetup.getInstance().setStaticDropdowns(session);		
+		InitSessionSetup.getInstance().setAllVisibilityGroups(session);
+		// clear session data from the input forms
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		theForm.getMap().clear();
+
+
 		return mapping.getInputForward();
 	}
 
 	public boolean loginRequired() {
 		return true;
 	}
-	
-	protected void clearMap(HttpSession session, DynaValidatorForm theForm,
-			ActionMapping mapping) throws Exception {
-	}
-
-	protected void initSetup(HttpServletRequest request, DynaValidatorForm theForm)
-		throws Exception {
-	}
-
-	protected void setLoadFileRequest(HttpServletRequest request) {
-	}
-
-	protected void setFormCharacterizationBean(DynaValidatorForm theForm, Characterization aChar) throws Exception {
-	}
-
 }
