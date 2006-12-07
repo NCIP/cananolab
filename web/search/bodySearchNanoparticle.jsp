@@ -43,7 +43,7 @@
 						<td class="rightLabel">
 							<strong> <html:select property="particleType">
 									<option value="" />
-										<html:options name="allParticleTypes" />
+										<html:options name="allSampleTypes" />
 								</html:select></strong>
 						</td>
 					</tr>
