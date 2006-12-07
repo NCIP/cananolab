@@ -111,7 +111,7 @@
 		</action>
 		<action name="runFileForm" parameter="dispatch" path="/runFile" scope="request" type="gov.nih.nci.calab.ui.workflow.RunFileAction" validate="false">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="workflow" key="error.runFile" path="/workflowMessage.do" type="java.lang.Exception" />
-			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="workflow" key="error.fileDownload.nofile" path="/workflowMessage.do" type="gov.nih.nci.calab.exception.CalabException" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.download.file" path="home.error" type="gov.nih.nci.calab.exception.CalabException" />
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="workflow" key="error.fileDownload" path="/workflowMessage.do" type="java.lang.Exception" />
 			<forward name="mask" path="workflow.runfilemask" />
 			<forward name="download" path="workflow.filedownload" />
