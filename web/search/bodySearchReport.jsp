@@ -21,9 +21,14 @@
 				<jsp:include page="/bodyMessage.jsp?bundle=search" />
 				<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" summary="">
 					<tr class="topBorder">
-						<td class="formTitle" colspan="4">
+						<td class="formTitle">
 							<div align="justify">
 								Search Criteria
+							</div>
+						</td>
+						<td class="formTitle" colspan="3">
+							<div align="justify">
+								* for Search Wildcards
 							</div>
 						</td>
 					</tr>
