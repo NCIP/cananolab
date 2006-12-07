@@ -80,74 +80,78 @@
 												<td class="leftLabel">
 													<strong>Linkage Type </strong>
 												</td>
-												<td class="label" colspan="3">
+												<td class="rightlabel" colspan="3">
 													<table cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
-														<tr>
-															<td class="borderlessLabel">
-																<c:choose>
-																	<c:when test="${canUserUpdateParticle eq 'true'}">
+														<c:choose>
+															<c:when test="${canUserUpdateParticle eq 'true'}">
+																<tr>
+																	<td class="borderlessLabel">
 																		<html:radio property="function.linkages[${linkageInd}].type" value="Attachment" />
-																Attachement
-																</c:when>
-																	<c:otherwise>
-																${linkage.type}
-																</c:otherwise>
-																</c:choose>
-															</td>
-															<td class="borderlessLabel">
-																<strong>Bond Type</strong>
-																<c:choose>
-																	<c:when test="${canUserUpdateParticle eq 'true'}">
-																		<html:text property="function.linkages[${linkageInd}].bondType" /> &nbsp;				
-																	</c:when>
-																	<c:otherwise>
-																		${linkage.value}&nbsp;
-																	</c:otherwise>
-																</c:choose>
-															</td>
-														</tr>
-														<tr>
-															<td class="borderlessLabel">
-																<c:choose>
-																	<c:when test="${canUserUpdateParticle eq 'true'}">
+																		Attachement
+																	</td>
+																	<td class="borderlessLabel">
+																		<strong>Bond Type</strong>
+																		<html:text property="function.linkages[${linkageInd}].bondType" />
+																		&nbsp;
+																	</td>
+																</tr>
+																<tr>
+																	<td class="borderlessLabel">
 																		<html:radio property="function.linkages[${linkageInd}].type" value="Encapsulation" />
-																Encapsulation
-																</c:when>
-																	<c:otherwise>
-																${linkage.type}
-																</c:otherwise>
-																</c:choose>
-															</td>
-															<td class="borderlessLabel">
-																<strong>Localization</strong>
-																<c:choose>
-																	<c:when test="${canUserUpdateParticle eq 'true'}">
-																		<html:text property="function.linkages[${linkageInd}].localization" /> &nbsp;
-														</c:when>
-																	<c:otherwise>
-															${linkage.value}&nbsp;
-														</c:otherwise>
-																</c:choose>
-															</td>
-														</tr>
-														<tr>
-															<td class="borderlessLabel">
-																<c:choose>
-																	<c:when test="${canUserUpdateParticle eq 'true'}">
+																		Encapsulation
+																	</td>
+																	<td class="borderlessLabel">
+																		<strong>Localization</strong>
+																		<html:text property="function.linkages[${linkageInd}].localization" />
+																		&nbsp;
+																	</td>
+																</tr>
+																<tr>
+																	<td class="borderlessLabel">
 																		<html:radio property="function.linkages[${linkageInd}].type" value="Other" />
-																Other
-																</c:when>
-																	<c:otherwise>
-																${linkage.type}
-																</c:otherwise>
-																</c:choose>
-															</td>
-															<td></td>
-														</tr>
+																		Other
+																	</td>
+																	<td></td>
+																</tr>
+															</c:when>
+															<%--  read only view --%>
+															<c:otherwise>
+																<tr>
+																	<td class="borderlessLabel">
+																		${linkage.type}&nbsp;
+																	</td>
+																	<c:choose>
+																		<c:when test="${linkage.type eq 'Attachment'}">
+																			<td class="borderlessLabel">
+																				<strong>Bond Type</strong>&nbsp;
+																			</td>
+																			<td class="borderlessLabel">
+																				${linkage.bondType}&nbsp;
+																			</td>
+																		</c:when>
+																		<c:when test="${linkage.type eq 'Encapsulation'}">
+																			<td class="borderlessLabel">
+																				<strong>Localization</strong>&nbsp;
+																			</td>
+																			<td class="rightLabel">
+																				${linkage.localization}&nbsp;
+																			</td>
+																		</c:when>
+																		<c:when test="${agentType eq 'Other'}">
+																			<td class="borderlessLabel">
+																				<strong>Other</strong>&nbsp;
+																			</td>
+																			<td class="borderlessLabel">
+																				&nbsp;
+																			</td>
+																		</c:when>
+																	</c:choose>
+																</tr>
+															</c:otherwise>
+														</c:choose>
 													</table>
 												</td>
 											</tr>
-
 											<tr>
 												<td class="leftLabel">
 													<Strong>Linkage Description</Strong>
@@ -163,17 +167,16 @@
 													</c:choose>
 												</td>
 											</tr>
-
 											<tr>
 												<td class="leftLabel" width="15%">
 													<strong>Agent Type</strong>
 												</td>
 												<td class="rightLabel" colspan="3">
 													<table cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
-														<c:forEach var="agentType" items="${allAgentTypes[submitType]}" varStatus="status">
-															<c:choose>
-																<%-- read and write view --%>
-																<c:when test="${canUserUpdateParticle eq 'true'}">
+														<c:choose>
+															<%-- read and write view --%>
+															<c:when test="${canUserUpdateParticle eq 'true'}">
+																<c:forEach var="agentType" items="${allAgentTypes[submitType]}" varStatus="status">
 																	<tr>
 																		<td class="borderlessLabel">
 																			<html:radio property="function.linkages[${linkageInd}].agent.type" value="${agentType}" />
@@ -236,61 +239,62 @@
 																			</c:when>
 																		</c:choose>
 																	</tr>
-																</c:when>
-																<%--  read only view --%>
-																<c:otherwise>
-																	<tr>
-																		<td class="borderlessLabel">
-																			${linkage.agent.type}&nbsp;
-																		</td>
-																		<c:choose>
-																			<c:when test="${agentType eq 'Peptide'}">
-																				<td class="borderlessLabel" colspan="2">
-																					<strong>Sequence</strong> ${linkage.peptide.sequence}&nbsp;
-																				</td>
-																			</c:when>
-																			<c:when test="${agentType eq 'DNA'}">
-																				<td class="borderlessLabel" colspan="2">
-																					<strong>Sequence</strong> ${linkage.dna.sequence}&nbsp;
-																				</td>
-																			</c:when>
-																			<c:when test="${agentType eq 'Small Molecule'}">
-																				<td class="borderlessLabel">
-																					<strong>Name</strong> ${linkage.smallMolecule.name}&nbsp;
-																				</td>
-																				<td class="borderlessLabel">
-																					<strong>Compound Name</strong>${linkage.smallMolecule.compoundName}&nbsp;
-																				</td>
-																			</c:when>
-																			<c:when test="${agentType eq 'Antibody'}">
-																				<td class="borderlessLabel">
-																					<strong>Name</strong>${linkage.antibody.name}&nbsp;
-																				</td>
-																				<td class="borderlessLabel">
-																					<strong>Species</strong> ${linkage.antibody.species}&nbsp;
-																				</td>
-																			</c:when>
-																			<c:when test="${agentType eq 'Probe'}">
-																				<td class="borderlessLabel">
-																					<strong>Name</strong> ${linkage.probe.name}&nbsp;
-																				</td>
-																				<td class="borderlessLabel">
-																					${linkage.probe.type}&nbsp;
-																				</td>
-																			</c:when>
-																			<c:when test="${agentType eq 'Image Contrast Agent'}">
-																				<td class="borderlessLabel">
-																					<strong>Name</strong> ${linkage.imageContrastAgent.name}&nbsp;
-																				</td>
-																				<td class="borderlessLabel">
-																					<strong>Contrast Agent Type</strong> ${linkage.imageContrastAgent.type}&nbsp;
-																				</td>
-																			</c:when>
-																		</c:choose>
-																	</tr>
-																</c:otherwise>
-															</c:choose>
-														</c:forEach>
+																</c:forEach>
+															</c:when>
+
+															<%--  read only view --%>
+															<c:otherwise>
+																<tr>
+																	<td class="borderlessLabel">
+																		${linkage.agent.type}&nbsp;
+																	</td>
+																	<c:choose>
+																		<c:when test="${linkage.agent.type eq 'Peptide'}">
+																			<td class="borderlessLabel" colspan="2">
+																				<strong>Sequence</strong> ${linkage.peptide.sequence}&nbsp;
+																			</td>
+																		</c:when>
+																		<c:when test="${linkage.agent.type eq 'DNA'}">
+																			<td class="borderlessLabel" colspan="2">
+																				<strong>Sequence</strong> ${linkage.dna.sequence}&nbsp;
+																			</td>
+																		</c:when>
+																		<c:when test="${linkage.agent.type eq 'Small Molecule'}">
+																			<td class="borderlessLabel">
+																				<strong>Name</strong> ${linkage.smallMolecule.name}&nbsp;
+																			</td>
+																			<td class="borderlessLabel">
+																				<strong>Compound Name</strong>${linkage.smallMolecule.compoundName}&nbsp;
+																			</td>
+																		</c:when>
+																		<c:when test="${linkage.agent.type eq 'Antibody'}">
+																			<td class="borderlessLabel">
+																				<strong>Name</strong>${linkage.antibody.name}&nbsp;
+																			</td>
+																			<td class="borderlessLabel">
+																				<strong>Species</strong> ${linkage.antibody.species}&nbsp;
+																			</td>
+																		</c:when>
+																		<c:when test="${linkage.agent.type eq 'Probe'}">
+																			<td class="borderlessLabel">
+																				<strong>Name</strong> ${linkage.probe.name}&nbsp;
+																			</td>
+																			<td class="borderlessLabel">
+																				${linkage.probe.type}&nbsp;
+																			</td>
+																		</c:when>
+																		<c:when test="${linkage.agent.type eq 'Image Contrast Agent'}">
+																			<td class="borderlessLabel">
+																				<strong>Name</strong> ${linkage.imageContrastAgent.name}&nbsp;
+																			</td>
+																			<td class="borderlessLabel">
+																				<strong>Contrast Agent Type</strong> ${linkage.imageContrastAgent.type}&nbsp;
+																			</td>
+																		</c:when>
+																	</c:choose>
+																</tr>
+															</c:otherwise>
+														</c:choose>
 													</table>
 												</td>
 											</tr>
@@ -309,29 +313,26 @@
 													</c:choose>
 												</td>
 											</tr>
-
 											<tr>
-												<td class="leftLabel">
-													<strong>Number of Agent Targets </strong>
-												</td>
-												<td class="label">
-													<c:choose>
-														<c:when test="${canUserUpdateParticle eq 'true'}">
+												<c:choose>
+													<c:when test="${canUserUpdateParticle eq 'true'}">
+														<td class="leftLabel">
+															<strong>Number of Agent Targets </strong>
+														</td>
+														<td class="label">
 															<html:text property="function.linkages[${linkageInd}].agent.numberOfAgentTargets" />
-														</c:when>
-														<c:otherwise>
-										${linkage.agent.numberOfAgentTargets}&nbsp;
-									</c:otherwise>
-													</c:choose>
-												</td>
-												<td class="rightLabel" colspan="2">
-													&nbsp;
-													<c:choose>
-														<c:when test="${canUserUpdateParticle eq 'true'}">
+														</td>
+														<td class="rightLabel" colspan="2">
+															&nbsp;
 															<input type="button" onclick="javascript:updateAgentTargets('${linkageInd}')" value="Update Agent Targets">
-														</c:when>
-													</c:choose>
-												</td>
+														</td>
+													</c:when>
+													<c:otherwise>
+														<td class="leftLabel" colspan="4">
+															<strong>Number of Agent Targets </strong> &nbsp;&nbsp;&nbsp;${linkage.agent.numberOfAgentTargets}&nbsp;
+														</td>
+													</c:otherwise>
+												</c:choose>
 											</tr>
 											<tr>
 												<td class="completeLabel" colspan="4">
@@ -359,8 +360,8 @@
 																				</html:select>
 																			</c:when>
 																			<c:otherwise>
-																											${linkage.agent.type}&nbsp;
-									</c:otherwise>
+																				${linkage.agent.agentTargets[tIndex].type}&nbsp;
+																			</c:otherwise>
 																		</c:choose>
 
 																	</td>
@@ -373,8 +374,8 @@
 																				<html:text property="function.linkages[${linkageInd}].agent.agentTargets[${tIndex}].name" />
 																			</c:when>
 																			<c:otherwise>
-										${linkage.agent.name}&nbsp;
-									</c:otherwise>
+																				${linkage.agent.agentTargets[tIndex].name}&nbsp;
+																			</c:otherwise>
 																		</c:choose>
 
 																	</td>
@@ -389,10 +390,9 @@
 																				<html:textarea property="function.linkages[${linkageInd}].agent.agentTargets[${tIndex}].description" rows="3" />
 																			</c:when>
 																			<c:otherwise>
-										${linkage.agent.description}&nbsp;
-									</c:otherwise>
+																				${linkage.agent.agentTargets[tIndex].description}&nbsp;
+																			</c:otherwise>
 																		</c:choose>
-
 																	</td>
 																</tr>
 														</table>
@@ -407,7 +407,6 @@
 							</td>
 						</tr>
 				</table>
-
 				<%-- end of Function Linkage Agent  --%>
 				<jsp:include page="../bodySharedCharacterizationSubmit.jsp" />
 			</td>
