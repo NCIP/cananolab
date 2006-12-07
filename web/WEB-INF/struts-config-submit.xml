@@ -21,22 +21,6 @@
 			<form-property name="description" type="java.lang.String" />
 			<form-property name="comment" type="java.lang.String" />
 		</form-bean>
-		<form-bean name="publishAssayResultForm" type="org.apache.struts.validator.DynaValidatorForm">
-			<form-property name="dispatch" type="java.lang.String" />
-			<form-property name="page" type="java.lang.Integer" initial="0" />
-			<form-property name="particleNames" type="java.lang.String[]" />
-			<form-property name="assayType" type="java.lang.String" />
-			<form-property name="assayName" type="java.lang.String" />
-			<form-property name="characterizationType" type="java.lang.String" />
-			<form-property name="assayResultFileType" type="java.lang.String" />
-			<form-property name="fileSource" type="java.lang.String" />
-			<form-property name="fileId" type="java.lang.String" />
-			<form-property name="file" type="org.apache.struts.upload.FormFile" />
-			<form-property name="title" type="java.lang.String" />
-			<form-property name="description" type="java.lang.String" />
-			<form-property name="comments" type="java.lang.String" />
-			<form-property name="keywords" type="java.lang.String" />
-		</form-bean>
 		<form-bean name="nanoparticleCompositionForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="dispatch" type="java.lang.String" />
 			<form-property name="page" type="java.lang.Integer" initial="0" />
@@ -403,13 +387,8 @@
 		</action>
 		<action name="publishReportForm" parameter="dispatch" path="/publishReport" type="gov.nih.nci.calab.ui.submit.SubmitReportAction" input="input" scope="request">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.submitReport" path="submit.submitreport" type="java.lang.Exception" />
-			<forward name="success" path="submit.message" />
+			<forward name="success" path="submit.report.message" />
 			<forward name="input" path="submit.submitreport" />
-		</action>
-		<action name="publishAssayResultForm" parameter="dispatch" path="/publishAssayResult" type="gov.nih.nci.calab.ui.submit.AddAssayResultAction" input="input" scope="request">
-			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addAssayResult" path="submit.addassayresult" type="java.lang.Exception" />
-			<forward name="success" path="submit.message" />
-			<forward name="input" path="submit.addassayresult" />
 		</action>
 		<action name="nanoparticleCompositionForm" parameter="dispatch" path="/nanoparticleComposition" type="gov.nih.nci.calab.ui.submit.NanoparticleCompositionAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addParticleComposition" path="submit.addparticle.composition" type="java.lang.Exception" />
