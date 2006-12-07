@@ -6,10 +6,11 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchReportAction.java,v 1.1 2006-12-07 17:47:38 pansu Exp $ */
+/* CVS $Id: SearchReportAction.java,v 1.2 2006-12-07 22:20:51 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
+import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
@@ -44,12 +45,13 @@ public class SearchReportAction extends AbstractDispatchAction {
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String reportTitle = (String) theForm.get("reportTitle");
+		String reportType = (String) theForm.get("reportType");
 		String particleType = (String) theForm.get("particleType");
 		String[] functionTypes = (String[]) theForm.get("functionTypes");
 
 		SearchNanoparticleService searchParticleService = new SearchNanoparticleService();
 		List<LabFileBean> reports = searchParticleService.searchReports(
-				reportTitle, particleType, functionTypes, user);
+				reportTitle, reportType, particleType, functionTypes, user);
 
 		if (reports != null && !reports.isEmpty()) {
 			request.setAttribute("reports", reports);
@@ -64,7 +66,6 @@ public class SearchReportAction extends AbstractDispatchAction {
 
 			forward = mapping.getInputForward();
 		}
-
 		return forward;
 	}
 
@@ -74,6 +75,7 @@ public class SearchReportAction extends AbstractDispatchAction {
 		HttpSession session = request.getSession();
 		InitSessionSetup.getInstance().setAllParticleTypeParticles(session);
 		InitSessionSetup.getInstance().setAllParticleFunctionTypes(session);
+		InitSessionSetup.getInstance().setStaticDropdowns(session);
 		InitSessionSetup.getInstance().clearWorkflowSession(session);
 		InitSessionSetup.getInstance().clearInventorySession(session);
 
@@ -117,13 +119,13 @@ public class SearchReportAction extends AbstractDispatchAction {
 			}
 			out.close();
 		} else {
-			throw new Exception("ERROR: file not found.");
+			throw new CalabException(
+					"File to download doesn't exist on the server");
 		}
 		return null;
 	}
 
 	/*
-	 * overwrite the one in AbstractDispatchAction because the tab 'Nanoparticle
 	 * Search' also links to this action
 	 */
 
@@ -133,7 +135,7 @@ public class SearchReportAction extends AbstractDispatchAction {
 		UserBean user = (UserBean) session.getAttribute("user");
 		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
 		boolean nanoSearchStatus = userService.checkExecutePermission(user,
-				"public search");
+				"search characterizations");
 		boolean searchStatus = InitSessionSetup.getInstance()
 				.canUserExecuteClass(session, this.getClass());
 		if (nanoSearchStatus || searchStatus) {

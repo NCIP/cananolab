@@ -165,10 +165,10 @@ S:s_CSSTop	// STYLE Array to use for this menu
 ]
 );
 
-//Pubilc Search
+//Search Characterizations
 s_add(
 {
-N:'PUBLIC SEARCH',	// NAME
+N:'SEARCH CHARACTERIZATIONS',	// NAME
 LV:1,		// LEVEL (look at IMPORTANT NOTES 1 in the Manual)
 MinW:130,	// MINIMAL WIDTH
 T:'s_getStart("y",e)+15',	// TOP (look at IMPORTANT HOWTOS 6 in the Manual)
