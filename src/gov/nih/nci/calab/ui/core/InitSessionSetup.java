@@ -1,7 +1,7 @@
 package gov.nih.nci.calab.ui.core;
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
-import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
+import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.function.FunctionBean;
 import gov.nih.nci.calab.dto.inventory.AliquotBean;
@@ -20,10 +20,8 @@ import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.CananoConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.service.workflow.ExecuteWorkflowService;
-import gov.nih.nci.security.exceptions.CSException;
-import gov.nih.nci.calab.dto.LabFileBean;
-
 import gov.nih.nci.common.util.StringHelper;
+import gov.nih.nci.security.exceptions.CSException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -669,7 +667,7 @@ public class InitSessionSetup {
 				|| session.getAttribute("newParticleCreated") != null
 				|| session.getAttribute("newRunCreated") != null) {
 			SubmitNanoparticleService service = new SubmitNanoparticleService();
-			List<CharacterizationFileBean> runFileBeans = service
+			List<LabFileBean> runFileBeans = service
 					.getAllRunFiles(particleName);
 			session.setAttribute("allRunFiles", runFileBeans);
 		}

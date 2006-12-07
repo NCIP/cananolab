@@ -3,10 +3,10 @@ package gov.nih.nci.calab.ui.core;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
-import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
 import gov.nih.nci.calab.dto.characterization.ConditionBean;
 import gov.nih.nci.calab.dto.characterization.DatumBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
+import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.service.util.CalabConstants;
@@ -27,8 +27,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
 /**
@@ -38,7 +36,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 
-/* CVS $Id: BaseCharacterizationAction.java,v 1.14 2006-12-06 17:23:05 beasleyj Exp $ */
+/* CVS $Id: BaseCharacterizationAction.java,v 1.15 2006-12-07 17:46:31 pansu Exp $ */
 
 public abstract class BaseCharacterizationAction extends AbstractDispatchAction {
 	/**
@@ -170,7 +168,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		for (DerivedBioAssayData obj : aChar.getDerivedBioAssayDataCollection()) {
 
 			if (obj.getFile() != null) {
-				CharacterizationFileBean fileBean = new CharacterizationFileBean();
+				LabFileBean fileBean = new LabFileBean();
 				fileBean.setName(obj.getFile().getFilename());
 				fileBean.setPath(obj.getFile().getPath());
 				fileBean.setId((obj.getFile().getId().toString()));
@@ -223,7 +221,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		request.setAttribute("particleName", particleName);
 		request.setAttribute("fileNumber", fileNumber);
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		List<CharacterizationFileBean> files = service
+		List<LabFileBean> files = service
 				.getAllRunFiles(particleName);
 		request.setAttribute("allRunFiles", files);
 		setLoadFileRequest(request);
@@ -242,7 +240,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 
 		String fileId = request.getParameter("fileId");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		CharacterizationFileBean fileBean = service.getFile(fileId);
+		LabFileBean fileBean = service.getFile(fileId);
 		String fileRoot = PropertyReader.getProperty(
 				CalabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
 		File dFile = new File(fileRoot + File.separator + fileBean.getPath());
