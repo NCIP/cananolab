@@ -160,7 +160,25 @@ S:s_CSSTop	// STYLE Array to use for this menu
 {U:'searchWorkflow.do?dispatch=setup',T:'Search Workflow'},
 {U:'searchSample.do?dispatch=setup',T:'Search Samples'},
 {U:'searchAliquot.do?dispatch=setup',T:'Search Aliquots'},
-{U:'searchNanoparticle.do?dispatch=setup',T:'Search Nanoparticles'}
+{U:'searchNanoparticle.do?dispatch=setup',T:'Search Nanoparticles'},
+{U:'searchReport.do?dispatch=setup',T:'Search Reports'}
+]
+);
+
+//Pubilc Search
+s_add(
+{
+N:'PUBLIC SEARCH',	// NAME
+LV:1,		// LEVEL (look at IMPORTANT NOTES 1 in the Manual)
+MinW:130,	// MINIMAL WIDTH
+T:'s_getStart("y",e)+15',	// TOP (look at IMPORTANT HOWTOS 6 in the Manual)
+L:'s_getStart("x",e)-12',		// LEFT (look at IMPORTANT HOWTOS 6 in the Manual)
+P:false,	// menu is PERMANENT (you can only set true if this is LEVEL 1 menu)
+S:s_CSSTop	// STYLE Array to use for this menu
+},
+[		// define items {U:'url',T:'text' ...} look at the Manual for details
+{U:'searchNanoparticle.do?dispatch=setup',T:'Search Nanoparticles'},
+{U:'searchReport.do?dispatch=setup',T:'Search Reports'}
 ]
 );
 
