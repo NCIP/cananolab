@@ -3,7 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html:form action="searchReport">
-	<table align="center">
+	<table align="center" width="100%" >
 		<tr>
 			<td>
 				<h3>
