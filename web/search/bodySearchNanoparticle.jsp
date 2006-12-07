@@ -8,7 +8,7 @@
 			<td>
 				<h3>
 					<br>
-					Search Nanoparticle
+					Search Nanoparticles
 				</h3>
 			</td>
 			<td align="right" width="25%">
