@@ -8,9 +8,9 @@ package gov.nih.nci.calab.ui.submit;
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.invitro.CYP450;
-import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.dto.characterization.invitro.CYP450Bean;
+import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.ui.core.BaseCharacterizationAction;
@@ -58,7 +58,7 @@ public class InvitroCYP450Action extends BaseCharacterizationAction {
 		int fileNumber = 0;
 		for (DerivedBioAssayDataBean obj : cyp450Char
 				.getDerivedBioAssayDataList()) {
-			CharacterizationFileBean fileBean = (CharacterizationFileBean) request
+			LabFileBean fileBean = (LabFileBean) request
 					.getSession().getAttribute(
 							"characterizationFile" + fileNumber);
 			if (fileBean != null) {

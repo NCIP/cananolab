@@ -8,9 +8,9 @@ package gov.nih.nci.calab.ui.submit;
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.invitro.PlasmaProteinBinding;
-import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.dto.characterization.invitro.PlasmaProteinBindingBean;
+import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.ui.core.BaseCharacterizationAction;
@@ -57,7 +57,7 @@ public class InvitroProteinBindingAction extends BaseCharacterizationAction {
 		
 		int fileNumber = 0;
 		for (DerivedBioAssayDataBean obj : plasmaProteinBindingChar.getDerivedBioAssayDataList()) {
-			CharacterizationFileBean fileBean = (CharacterizationFileBean) request.getSession().getAttribute("characterizationFile" + fileNumber);
+			LabFileBean fileBean = (LabFileBean) request.getSession().getAttribute("characterizationFile" + fileNumber);
 			if (fileBean != null) {		
 				obj.setFile(fileBean);
 			}

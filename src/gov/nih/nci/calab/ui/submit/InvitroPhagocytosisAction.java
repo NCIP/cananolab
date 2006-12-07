@@ -8,9 +8,9 @@ package gov.nih.nci.calab.ui.submit;
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.invitro.Phagocytosis;
-import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.dto.characterization.invitro.PhagocytosisBean;
+import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.ui.core.BaseCharacterizationAction;
@@ -59,7 +59,7 @@ public class InvitroPhagocytosisAction extends BaseCharacterizationAction {
 		int fileNumber = 0;
 		for (DerivedBioAssayDataBean obj : phagocytosisChar
 				.getDerivedBioAssayDataList()) {
-			CharacterizationFileBean fileBean = (CharacterizationFileBean) request
+			LabFileBean fileBean = (LabFileBean) request
 					.getSession().getAttribute(
 							"characterizationFile" + fileNumber);
 			if (fileBean != null) {

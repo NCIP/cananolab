@@ -6,14 +6,14 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleMolecularWeightAction.java,v 1.10 2006-12-05 23:41:51 pansu Exp $ */
+/* CVS $Id: NanoparticleMolecularWeightAction.java,v 1.11 2006-12-07 17:48:00 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.MolecularWeight;
-import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
 import gov.nih.nci.calab.dto.characterization.DatumBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.dto.characterization.physical.MolecularWeightBean;
+import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.ui.core.BaseCharacterizationAction;
@@ -93,7 +93,7 @@ public class NanoparticleMolecularWeightAction extends
 			logger
 					.info("************************MWAction():char.derivedBioAssayData.type:"
 							+ obj.getType());
-			CharacterizationFileBean fileBean = (CharacterizationFileBean) request
+			LabFileBean fileBean = (LabFileBean) request
 					.getSession().getAttribute(
 							"characterizationFile" + fileNumber);
 			if (fileBean != null) {
