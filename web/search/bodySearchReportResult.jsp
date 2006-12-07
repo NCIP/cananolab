@@ -13,15 +13,15 @@
 			</h3>
 		</td>
 		<td align="right" width="15%">
-			<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=sample_search_results')" class="helpText">Help</a>&nbsp;&nbsp; 
-			<a href="searchReport.do?dispatch=setup" class="helpText">back</a>
+			<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=sample_search_results')" class="helpText">Help</a>&nbsp;&nbsp; <a href="searchReport.do?dispatch=setup" class="helpText">back</a>
 		</td>
 	</tr>
 	<tr>
 		<td colspan="2">
 			<jsp:include page="/bodyMessage.jsp?bundle=search" />
 			<display:table name="reports" id="report" requestURI="searchReport.do" pagesize="25" class="displaytable">
-				<display:column title="Report Title" property="title" sortable="true" href="searchReport.do?dispatch=download" paramId="fileId" paramProperty="id"/>
+				<display:column title="Report Title" property="title" sortable="true" href="searchReport.do?dispatch=download" paramId="fileId" paramProperty="id" />
+				<display:column title="Report Type" property="type" sortable="true" />
 				<display:column title="Report Description" property="description" sortable="true" />
 			</display:table>
 		</td>
