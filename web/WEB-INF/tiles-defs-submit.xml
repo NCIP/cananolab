@@ -70,6 +70,8 @@
 		<put name="calabContent" value="/bodyMessage.jsp?bundle=submit" />
 		<put name="menu" value="submit" />
 	</definition>
+	
+	
 
 	<definition name="submit.action.message.content" extends="submit.content.home">
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
@@ -99,6 +101,11 @@
 		<put name="menu" value="submit" />
 	</definition>
 
+	<definition name="submit.report.message" extends="calab.home">
+		<put name="calabContent" value="/bodyMessage.jsp?bundle=submit" />
+		<put name="menu" value="submit" />
+	</definition>
+	
 	<!-- definition for the particle general info view page -->
 	<definition name="submit.generalinfo.view" extends="calab.home">
 		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
