@@ -3,12 +3,12 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html:form action="searchReport">
-	<table align="center" width="100%" >
+	<table align="center" width="100%">
 		<tr>
 			<td>
 				<h3>
 					<br>
-					Search Nanoparticle Report
+					Search Reports
 				</h3>
 			</td>
 			<td align="right" width="25%">
@@ -38,6 +38,17 @@
 						</td>
 						<td class="rightLabel" colspan="3">
 							<html:text property="reportTitle" size="50" />
+						</td>
+					</tr>
+					<tr>
+						<td class="leftLabel">
+							<strong>Report Type</strong>
+						</td>
+						<td class="rightLabel"">
+							<html:select property="reportType">
+								<option value=""/>
+								<html:options name="allReportTypes" />
+							</html:select>
 						</td>
 					</tr>
 					<tr>
