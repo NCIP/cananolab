@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.77 2006-12-05 22:58:27 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.78 2006-12-07 14:31:19 zengje Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -722,8 +722,8 @@ public class LookupService {
 				CananoConstants.PHYSICAL_SOLUBILITY,
 				CananoConstants.PHYSICAL_SURFACE,
 				CananoConstants.PHYSICAL_PURITY,
-				CananoConstants.PHYSICAL_STABILITY,
-				CananoConstants.PHYSICAL_FUNCTIONAL,
+//				CananoConstants.PHYSICAL_STABILITY,
+//				CananoConstants.PHYSICAL_FUNCTIONAL,
 				CananoConstants.PHYSICAL_SHAPE };
 		charTypeChars.put("physical", physicalChars);
 		String[] toxChars = new String[] {
@@ -755,11 +755,11 @@ public class LookupService {
 
 		charTypeChars.put("immuneCellFuncTox", immuneCellFuncChars);
 
-		String[] metabolicChars = new String[] {
-				CananoConstants.METABOLIC_STABILITY_CYP450,
-				CananoConstants.METABOLIC_STABILITY_GLUCURONIDATION_SULPHATION,
-				CananoConstants.METABOLIC_STABILITY_ROS };
-		charTypeChars.put("metabolicStabilityTox", metabolicChars);
+//		String[] metabolicChars = new String[] {
+//				CananoConstants.METABOLIC_STABILITY_CYP450,
+//				CananoConstants.METABOLIC_STABILITY_GLUCURONIDATION_SULPHATION,
+//				CananoConstants.METABOLIC_STABILITY_ROS };
+//		charTypeChars.put("metabolicStabilityTox", metabolicChars);
 		return charTypeChars;
 	}
 
