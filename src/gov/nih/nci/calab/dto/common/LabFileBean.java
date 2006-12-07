@@ -33,6 +33,8 @@ public class LabFileBean {
 
 	private String name;
 	
+	private String type;
+	
 	/*
 	 * name to be displayed as a part of the drop-down list
 	 */
@@ -151,5 +153,13 @@ public class LabFileBean {
 	public String getDisplayName() {
 		displayName=path.replaceAll("/decompressedFiles", "");
 		return displayName;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 }
