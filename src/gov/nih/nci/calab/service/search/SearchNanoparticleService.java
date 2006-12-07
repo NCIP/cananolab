@@ -373,7 +373,7 @@ public class SearchNanoparticleService {
 							+ particleType + "'");
 
 			for (Object obj : results) {
-				LabFileBean fileBean=new LabFileBean((LabFile)obj);
+				LabFileBean fileBean = new LabFileBean((LabFile) obj);
 				fileBeans.add(fileBean);
 			}
 		} catch (Exception e) {
@@ -421,9 +421,14 @@ public class SearchNanoparticleService {
 			String functionTypeFrom = "";
 
 			if (reportTitle.length() > 0) {
-				paramList.add(reportTitle.toUpperCase());
 				where = "where ";
-				whereList.add("report.title=? ");
+				if (reportTitle.indexOf("*") != -1) {
+					reportTitle = reportTitle.replace('*', '%');
+					whereList.add("report.title like ?");
+				} else {
+					whereList.add("report.title=? ");
+				}
+				paramList.add(reportTitle.toUpperCase());
 			}
 			if (particleType.length() > 0) {
 				paramList.add(particleType);
@@ -448,7 +453,7 @@ public class SearchNanoparticleService {
 			List results = ida.searchByParam(hqlString, paramList);
 
 			for (Object obj : results) {
-				LabFileBean fileBean = new LabFileBean((Report)obj);
+				LabFileBean fileBean = new LabFileBean((Report) obj);
 				reports.add(fileBean);
 			}
 		} catch (Exception e) {
@@ -457,11 +462,11 @@ public class SearchNanoparticleService {
 		} finally {
 			ida.close();
 		}
-		
+
 		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
 
-		List<LabFileBean> filteredReports = userService
-				.getFilteredReports(user, reports);
+		List<LabFileBean> filteredReports = userService.getFilteredReports(
+				user, reports);
 
 		return filteredReports;
 	}
