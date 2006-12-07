@@ -1,5 +1,6 @@
 package gov.nih.nci.calab.service.security;
 
+import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.exception.CalabException;
@@ -140,7 +141,8 @@ public class UserService {
 	 */
 	public boolean checkReadPermission(UserBean user,
 			String protectionElementObjectId) throws CSException {
-		return checkPermission(user, protectionElementObjectId, CalabConstants.CSM_READ_PRIVILEGE);
+		return checkPermission(user, protectionElementObjectId,
+				CalabConstants.CSM_READ_PRIVILEGE);
 	}
 
 	/**
@@ -484,6 +486,26 @@ public class UserService {
 			}
 		}
 		return filteredParticles;
+	}
+
+	/**
+	 * Get a list of reports the user has read permission on.
+	 * 
+	 * @param user
+	 * @param particles
+	 * @return
+	 * @throws Exception
+	 */
+	public List<LabFileBean> getFilteredReports(UserBean user,
+			List<LabFileBean> reports) throws Exception {
+		List<LabFileBean> filteredReports = new ArrayList<LabFileBean>();
+		for (LabFileBean report : reports) {
+			boolean status = checkReadPermission(user, report.getId());
+			if (status) {
+				filteredReports.add(report);
+			}
+		}
+		return filteredReports;
 	}
 
 	/**
