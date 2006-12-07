@@ -69,9 +69,7 @@
 							<span class="indented"> <a href="#" onclick="javascript:dynamicDropdown('toxicity', document.searchNanoparticleForm.characterizations, charTypeChars)">Toxicity</a> <br> <span class="indented2"> <a href="#"
 									onclick="javascript:dynamicDropdown('cytoTox', document.searchNanoparticleForm.characterizations, charTypeChars)">Cytotoxicity</a> </span> <br> <span class="indented2">Immunotoxicity</span> <br> <span class="indented3"><a href="#"
 									onclick="javascript:dynamicDropdown('bloodContactTox', document.searchNanoparticleForm.characterizations, charTypeChars)">Blood Contact </a></span> <br> <span class="indented3"><a href="#"
-									onclick="javascript:dynamicDropdown('immuneCellFuncTox', document.searchNanoparticleForm.characterizations, charTypeChars)">Immune Cell Function </a></span> <br> <span class="indented2"><a href="#"
-									onclick="javascript:dynamicDropdown('metabolicStabilityTox', document.searchNanoparticleForm.characterizations, charTypeChars)">Metabolic Stability </a></span> <br> <a href="#"
-								onclick="javascript:dynamicDropdown('invivo', document.searchNanoparticleForm.characterizations, charTypeChars)">In Vivo Characterization</a>
+									onclick="javascript:dynamicDropdown('immuneCellFuncTox', document.searchNanoparticleForm.characterizations, charTypeChars)">Immune Cell Function </a></span> 									
 						</td>
 						<td class="label" valign="top">
 							<strong> Characterization </strong>
