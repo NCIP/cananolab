@@ -29,11 +29,11 @@
 							</td>
 						</tr>
 						<tr>
-							<td class="leftLabel">
+							<td class="leftLabel" valign="top">
 								<strong>Particle ID*</strong>
 							</td>
 							<td class="rightLabel"">
-								<html:select property="particleNames" multiple="true" size="3">
+								<html:select property="particleNames" multiple="true" size="5">
 									<html:options name="allSampleNames" />
 								</html:select>
 							</td>
@@ -44,7 +44,7 @@
 							</td>
 							<td class="rightLabel"">
 								<html:select property="reportType">
-								   <html:options name="allReportTypes"/>
+									<html:options name="allReportTypes" />
 								</html:select>
 							</td>
 						</tr>
@@ -82,20 +82,14 @@
 						</tr>
 						<tr>
 							<td class="leftLabel">
-								<strong>Visibility*</strong>
+								<strong>Visibility</strong>
 							</td>
 							<td class="rightLabel">
-								<html:select property="visibilities" multiple="true" size="3">
-									<option value="CCNE_Researcher">
-										CCNE Researchers
-									</option>
-									<option value="Public">
-										Public
-									</option>
-									<option value="Vendor">
-										Vendors
-									</option>
+								<html:select property="visibilities" multiple="true" size="6">
+									<html:options name="allVisibilityGroups" />
 								</html:select>
+								<br>
+								<i>(NCL_Researcher and NCL_PI are defaults if none of above is selected.)</i>								
 							</td>
 						</tr>
 					</tbody>
