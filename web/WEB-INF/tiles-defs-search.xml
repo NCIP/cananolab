@@ -68,4 +68,16 @@
 		<put name="calabContent" value="/search/bodySearchNanoparticleResult.jsp" />
 		<put name="menu" value="search" />
 	</definition>
+
+	<!-- definition for the search report page -->
+	<definition name="search.searchreport" extends="calab.home">
+		<put name="calabContent" value="/search/bodySearchReport.jsp" />
+		<put name="menu" value="search" />
+	</definition>
+
+	<!-- definition for the search report result page -->
+	<definition name="search.searchreport.result" extends="calab.home">
+		<put name="calabContent" value="/search/bodySearchReportResult.jsp" />
+		<put name="menu" value="search" />
+	</definition>
 </tiles-definitions>
