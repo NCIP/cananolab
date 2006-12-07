@@ -3,6 +3,7 @@ package gov.nih.nci.calab.dto.characterization;
 import gov.nih.nci.calab.domain.LabFile;
 import gov.nih.nci.calab.domain.nano.characterization.Datum;
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
+import gov.nih.nci.calab.dto.common.LabFileBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,7 @@ public class DerivedBioAssayDataBean {
 
 	private String type;
 
-	private CharacterizationFileBean file;
+	private LabFileBean file;
 	
 	private String fileId;
 
@@ -30,7 +31,7 @@ public class DerivedBioAssayDataBean {
 	public DerivedBioAssayDataBean() {
 	}
 
-	public DerivedBioAssayDataBean(String type, CharacterizationFileBean file) {
+	public DerivedBioAssayDataBean(String type, LabFileBean file) {
 		super();
 		// TODO Auto-generated constructor stub
 		this.type = type;
@@ -45,7 +46,7 @@ public class DerivedBioAssayDataBean {
 //		this.file.setName(table.getFile());
 		LabFile doFile = table.getFile();
 		if (doFile != null) {
-			this.file = new CharacterizationFileBean();
+			this.file = new LabFileBean();
 			this.file.setCreatedBy(doFile.getCreatedBy());
 			this.file.setCreatedDate(doFile.getCreatedDate());
 			this.file.setDescription(doFile.getDescription());
@@ -69,11 +70,11 @@ public class DerivedBioAssayDataBean {
 		this.setNumberOfDataPoints(datumList.size() + "");
 	}
 
-	public CharacterizationFileBean getFile() {
+	public LabFileBean getFile() {
 		return file;
 	}
 
-	public void setFile(CharacterizationFileBean file) {
+	public void setFile(LabFileBean file) {
 		this.file = file;
 	}
 
