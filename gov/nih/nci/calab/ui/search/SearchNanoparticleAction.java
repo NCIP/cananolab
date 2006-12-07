@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchNanoparticleAction.java,v 1.8 2006-12-07 17:47:28 pansu Exp $ */
+/* CVS $Id: SearchNanoparticleAction.java,v 1.9 2006-12-07 22:20:51 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
@@ -111,7 +111,7 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 		UserBean user = (UserBean) session.getAttribute("user");
 		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
 		boolean nanoSearchStatus = userService.checkExecutePermission(user,
-				"public search");
+				"search characterizations");
 		boolean searchStatus = InitSessionSetup.getInstance()
 				.canUserExecuteClass(session, this.getClass());
 		if (nanoSearchStatus || searchStatus) {
