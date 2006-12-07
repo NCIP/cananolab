@@ -2,11 +2,13 @@ package gov.nih.nci.calab.service.search;
 
 import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
+import gov.nih.nci.calab.domain.LabFile;
+import gov.nih.nci.calab.domain.Report;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.function.Function;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
-import gov.nih.nci.calab.dto.LabFileBean;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
+import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.function.FunctionBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
@@ -23,10 +25,8 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import java.io.File;
-
 /**
- * This class includes methods invovled in searching nanoparticles.
+ * This class includes methods invovled in searching nanoparticles and reports.
  * 
  * @author pansu
  * 
@@ -90,7 +90,6 @@ public class SearchNanoparticleService {
 						+ StringUtils.join(inList, ", ") + ") ");
 			}
 
-		
 			if (keywords != null && keywords.length > 0) {
 				List<String> inList = new ArrayList<String>();
 				where = "where ";
@@ -99,14 +98,14 @@ public class SearchNanoparticleService {
 					inList.add("?");
 				}
 
-				if (keywordType.equals("nanoparticle")){
-					keywordFrom = "join particle.keywordCollection keyword ";	
+				if (keywordType.equals("nanoparticle")) {
+					keywordFrom = "join particle.keywordCollection keyword ";
 				} else {
-					keywordFrom = "join particle.characterizationCollection characterization " + 
-								  "join characterization.derivedBioAssayDataCollection  dataCollection " + 
-								  "join dataCollection.file.keywordCollection keyword ";
+					keywordFrom = "join particle.characterizationCollection characterization "
+							+ "join characterization.derivedBioAssayDataCollection  dataCollection "
+							+ "join dataCollection.file.keywordCollection keyword ";
 				}
-				
+
 				whereList.add("keyword.name in ("
 						+ StringUtils.join(inList, ", ") + ") ");
 			}
@@ -118,8 +117,11 @@ public class SearchNanoparticleService {
 					paramList.add(characterization);
 					inList.add("?");
 				}
-				// to have the if statment, the keyword will only apply to the characterization it specified.
-				if (keywords == null || (keywords.length > 0 && keywordType.equals("nanoparticle"))){
+				// to have the if statment, the keyword will only apply to the
+				// characterization it specified.
+				if (keywords == null
+						|| (keywords.length > 0 && keywordType
+								.equals("nanoparticle"))) {
 					characterizationFrom = "join particle.characterizationCollection characterization ";
 				}
 				whereList.add("characterization.name in ("
@@ -363,7 +365,7 @@ public class SearchNanoparticleService {
 
 			ida.open();
 			List results = ida
-					.search("select report.id, report.filename, report.path from Nanoparticle particle join particle."
+					.search("select report from Nanoparticle particle join particle."
 							+ wCollection
 							+ " report where particle.name='"
 							+ particleName
@@ -371,19 +373,7 @@ public class SearchNanoparticleService {
 							+ particleType + "'");
 
 			for (Object obj : results) {
-				String reportId = ((Object[]) obj)[0].toString();
-				String fileName = (String) (((Object[]) obj)[1]);
-				String path = (String) (((Object[]) obj)[2]);
-				String toolTip = "";
-				int idx = path.lastIndexOf(File.separator);
-				if (idx > 0)
-					toolTip = path.substring(idx + 1);
-
-				LabFileBean fileBean = new LabFileBean();
-				fileBean.setId(reportId);
-				fileBean.setPath(path);
-				fileBean.setName(fileName);
-				fileBean.setToolTip(toolTip);
+				LabFileBean fileBean=new LabFileBean((LabFile)obj);
 				fileBeans.add(fileBean);
 			}
 		} catch (Exception e) {
@@ -415,4 +405,65 @@ public class SearchNanoparticleService {
 				"associatedFileCollection"));
 		return fileBeans;
 	}
+
+	public List<LabFileBean> searchReports(String reportTitle,
+			String particleType, String[] functionTypes, UserBean user)
+			throws Exception {
+		List<LabFileBean> reports = new ArrayList<LabFileBean>();
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+
+			ida.open();
+			List<Object> paramList = new ArrayList<Object>();
+			List<String> whereList = new ArrayList<String>();
+			String where = "";
+			String functionTypeFrom = "";
+
+			if (reportTitle.length() > 0) {
+				paramList.add(reportTitle.toUpperCase());
+				where = "where ";
+				whereList.add("report.title=? ");
+			}
+			if (particleType.length() > 0) {
+				paramList.add(particleType);
+				where = "where ";
+				whereList.add("particle.type=? ");
+			}
+			if (functionTypes != null && functionTypes.length > 0) {
+				List<String> inList = new ArrayList<String>();
+				where = "where ";
+				for (String functionType : functionTypes) {
+					paramList.add(functionType);
+					inList.add("?");
+				}
+				functionTypeFrom = "join particle.functionCollection function ";
+				whereList.add("function.type in ("
+						+ StringUtils.join(inList, ", ") + ") ");
+			}
+			String whereStr = StringUtils.join(whereList, " and ");
+			String hqlString = "select distinct report from Nanoparticle particle join particle.reportCollection report "
+					+ functionTypeFrom + where + whereStr;
+
+			List results = ida.searchByParam(hqlString, paramList);
+
+			for (Object obj : results) {
+				LabFileBean fileBean = new LabFileBean((Report)obj);
+				reports.add(fileBean);
+			}
+		} catch (Exception e) {
+			logger.error("Problem finding report info.");
+			throw e;
+		} finally {
+			ida.close();
+		}
+		
+		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
+
+		List<LabFileBean> filteredReports = userService
+				.getFilteredReports(user, reports);
+
+		return filteredReports;
+	}
+
 }
