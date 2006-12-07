@@ -2,19 +2,20 @@ package gov.nih.nci.calab.service.submit;
 
 import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
+import gov.nih.nci.calab.domain.AssociatedFile;
 import gov.nih.nci.calab.domain.DerivedDataFile;
 import gov.nih.nci.calab.domain.InstrumentType;
 import gov.nih.nci.calab.domain.Keyword;
 import gov.nih.nci.calab.domain.LabFile;
 import gov.nih.nci.calab.domain.Manufacturer;
 import gov.nih.nci.calab.domain.OutputFile;
+import gov.nih.nci.calab.domain.Report;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.function.Agent;
 import gov.nih.nci.calab.domain.nano.function.AgentTarget;
 import gov.nih.nci.calab.domain.nano.function.Function;
 import gov.nih.nci.calab.domain.nano.function.Linkage;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
-import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
 import gov.nih.nci.calab.dto.characterization.composition.CompositionBean;
 import gov.nih.nci.calab.dto.characterization.invitro.CFU_GMBean;
 import gov.nih.nci.calab.dto.characterization.invitro.CYP450Bean;
@@ -43,11 +44,14 @@ import gov.nih.nci.calab.dto.characterization.physical.SizeBean;
 import gov.nih.nci.calab.dto.characterization.physical.SolubilityBean;
 import gov.nih.nci.calab.dto.characterization.physical.StabilityBean;
 import gov.nih.nci.calab.dto.characterization.physical.SurfaceBean;
+import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.function.FunctionBean;
 import gov.nih.nci.calab.exception.CalabException;
+import gov.nih.nci.calab.service.search.SearchSampleService;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.CananoConstants;
+import gov.nih.nci.calab.service.util.PropertyReader;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.service.util.file.HttpFileUploadSessionData;
 
@@ -56,6 +60,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
@@ -64,7 +69,8 @@ import org.apache.struts.upload.FormFile;
 
 /**
  * This class includes service calls involved in creating nanoparticles and
- * adding functions and characterizations for nanoparticles.
+ * adding functions and characterizations for nanoparticles, as well as
+ * creating reports.
  * 
  * @author pansu
  * 
@@ -798,7 +804,7 @@ public class SubmitNanoparticleService {
 	 * @param keywords
 	 * @param visibilities
 	 */
-	public CharacterizationFileBean saveCharacterizationFile(
+	public LabFileBean saveCharacterizationFile(
 			String particleName, FormFile file, String title,
 			String description, String comments, String[] keywords,
 			String[] visibilities, String path, String fileNumber,
@@ -845,7 +851,7 @@ public class SubmitNanoparticleService {
 		} finally {
 			ida.close();
 		}
-		CharacterizationFileBean fileBean = new CharacterizationFileBean(
+		LabFileBean fileBean = new LabFileBean(
 				dataFile);
 
 		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
@@ -878,11 +884,11 @@ public class SubmitNanoparticleService {
 	 * @param keywords
 	 * @param visibilities
 	 */
-	public CharacterizationFileBean saveCharacterizationFile(String fileId,
+	public LabFileBean saveCharacterizationFile(String fileId,
 			String title, String description, String[] keywords,
 			String[] visibilities) throws Exception {
 
-		CharacterizationFileBean fileBean = getFile(fileId);
+		LabFileBean fileBean = getFile(fileId);
 		fileBean.setTitle(title);
 		fileBean.setDescription(description);
 
@@ -920,7 +926,7 @@ public class SubmitNanoparticleService {
 		}
 
 		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
-		fileBean = new CharacterizationFileBean(dataFile);
+		fileBean = new LabFileBean(dataFile);
 		if (visibilities != null) {
 			for (String visibility : visibilities) {
 				// by default, always set visibility to NCL_PI and
@@ -1056,15 +1062,15 @@ public class SubmitNanoparticleService {
 	 * @param fileId
 	 * @return
 	 */
-	public CharacterizationFileBean getFile(String fileId) throws Exception {
+	public LabFileBean getFile(String fileId) throws Exception {
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
-		CharacterizationFileBean fileBean = null;
+		LabFileBean fileBean = null;
 		try {
 			ida.open();
 			LabFile charFile = (LabFile) ida.load(LabFile.class, StringUtils
 					.convertToLong(fileId));
-			fileBean = new CharacterizationFileBean(charFile);
+			fileBean = new LabFileBean(charFile);
 		} catch (Exception e) {
 			e.printStackTrace();
 			ida.rollback();
@@ -1083,9 +1089,9 @@ public class SubmitNanoparticleService {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<CharacterizationFileBean> getAllRunFiles(String particleName)
+	public List<LabFileBean> getAllRunFiles(String particleName)
 			throws Exception {
-		List<CharacterizationFileBean> runFiles = new ArrayList<CharacterizationFileBean>();
+		List<LabFileBean> runFiles = new ArrayList<LabFileBean>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
@@ -1098,7 +1104,7 @@ public class SubmitNanoparticleService {
 				OutputFile file = (OutputFile) obj;
 				// active status only
 				if (file.getDataStatus() == null) {
-					CharacterizationFileBean fileBean = new CharacterizationFileBean();
+					LabFileBean fileBean = new LabFileBean();
 					fileBean.setId(file.getId().toString());
 					fileBean.setName(file.getFilename());
 					fileBean.setPath(file.getPath());
@@ -1116,4 +1122,113 @@ public class SubmitNanoparticleService {
 		}
 		return runFiles;
 	}
+	
+	public void createReport(String[] particleNames, String reportType,
+			FormFile report, String title, String description, String comment,
+			String[] visibilities) throws Exception {
+
+		// TODO saves reportFile to the file system
+		String rootPath = PropertyReader.getProperty(
+				CalabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
+		if (rootPath.charAt(rootPath.length() - 1) == File.separatorChar)
+			rootPath = rootPath.substring(0, rootPath.length() - 1);
+
+		String path = File.separator + "reports" + File.separator;
+
+		File pathDir = new File(rootPath + path);
+		if (!pathDir.exists())
+			pathDir.mkdirs();
+
+		HttpFileUploadSessionData sData = new HttpFileUploadSessionData();
+		String tagFileName = sData.getTimeStamp() + "_" + report.getFileName();
+		String outputFilename = rootPath + path + tagFileName;
+
+		FileOutputStream oStream = new FileOutputStream(
+				new File(outputFilename));
+
+		this.saveFile(report.getInputStream(), oStream);
+
+		LabFile dataFile = null;
+		if (reportType.equalsIgnoreCase(CananoConstants.NCL_REPORT))
+			dataFile = new Report();
+		else
+			dataFile = new AssociatedFile();
+
+		dataFile.setDescription(description);
+		dataFile.setFilename(report.getFileName());
+
+		dataFile.setPath(path + tagFileName);
+		dataFile.setTitle(title.toUpperCase()); //convert to upper case
+		Date date = new Date();
+		dataFile.setCreatedDate(date);
+		dataFile.setComments(comment);
+
+		// TODO daves reportFile path to the database
+		// look up the samples for each particleNames
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+
+		try {
+			ida.open();
+
+			ida.store(dataFile);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			ida.rollback();
+			logger.error("Problem saving report File: ");
+			throw e;
+		} finally {
+			ida.close();
+		}
+
+		Nanoparticle particle = null;
+
+		for (String particleName : particleNames) {
+			try {
+				ida.open();
+
+				List results = ida
+						.search("select particle from Nanoparticle particle left join fetch particle.reportCollection where particle.name='"
+								+ particleName + "'");
+
+				for (Object obj : results) {
+					particle = (Nanoparticle) obj;
+				}
+
+				if (particle != null) {
+					if (reportType.equalsIgnoreCase(CananoConstants.NCL_REPORT))
+						particle.getReportCollection().add(dataFile);
+					else
+						particle.getAssociatedFileCollection().add(dataFile);
+				}
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				ida.rollback();
+				logger.error("Problem saving report File: ");
+				throw e;
+			} finally {
+				ida.close();
+			}
+
+		}
+
+		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
+//		String fileName = report.getFileName();
+
+		for (String visibility : visibilities) {
+			// by default, always set visibility to NCL_PI and NCL_Researcher to
+			// be true
+			// TODO once the files is successfully saved, use fileId instead of
+			// fileName
+			for (String defaultGroup : CananoConstants.DEFAULT_VISIBLE_GROUPS) {
+				userService.secureObject(dataFile.getId().toString(), defaultGroup,
+						CalabConstants.CSM_READ_ROLE);
+			}
+			userService.secureObject(dataFile.getId().toString(), visibility,
+					CalabConstants.CSM_READ_ROLE);
+		}
+	}
+
 }
