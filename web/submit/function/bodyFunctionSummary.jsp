@@ -27,7 +27,7 @@
 					</html:select>
 				</c:when>
 				<c:otherwise>
-						${thisForm.map.function.activationMethod}&nbsp;
+						${nanoparticleFunctionForm.map.function.activationMethod}&nbsp;
 					</c:otherwise>
 			</c:choose>
 		</td>
@@ -42,7 +42,7 @@
 					<html:text property="function.viewTitle" />
 				</c:when>
 				<c:otherwise>
-						${thisForm.map.function.viewTitle}&nbsp;
+						${nanoparticleFunctionForm.map.function.viewTitle}&nbsp;
 					</c:otherwise>
 			</c:choose>
 		</td>
@@ -57,7 +57,7 @@
 					<html:textarea property="function.description" rows="3" />
 				</c:when>
 				<c:otherwise>
-						${thisForm.map.function.description}&nbsp;
+						${nanoparticleFunctionForm.map.function.description}&nbsp;
 					</c:otherwise>
 			</c:choose>
 		</td>
