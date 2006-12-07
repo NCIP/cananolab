@@ -1008,7 +1008,7 @@ public class SubmitNanoparticleService {
 						+ doFunction.getIdentificationName()
 						+ "' and function.id!="
 						+ function.getId()
-						+ "' and function.type='" + doFunction.getType() + "'";
+						+ " and function.type='" + doFunction.getType() + "'";
 
 			}
 			List viewTitleResult = ida.search(viewTitleQuery);
