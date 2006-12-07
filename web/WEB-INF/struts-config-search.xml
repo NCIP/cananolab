@@ -61,6 +61,11 @@
 			<form-property name="keywords" type="java.lang.String" />
 			<form-property name="keywordType" type="java.lang.String" initial="nanoparticle" />
 		</form-bean>
+		<form-bean name="searchReportForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="functionTypes" type="java.lang.String[]" />
+			<form-property name="reportTitle" type="java.lang.String" />
+		</form-bean>
 	</form-beans>
 	<action-mappings>
 		<action input="input" name="searchWorkflowForm" parameter="dispatch" path="/searchWorkflow" type="gov.nih.nci.calab.ui.search.SearchWorkflowAction" scope="request">
@@ -100,6 +105,11 @@
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="search" key="error.searchNanoparticle" path="search.searchnanoparticle" type="java.lang.Exception" />
 			<forward name="input" path="search.searchnanoparticle" />
 			<forward name="success" path="search.searchnanoparticle.result" />
+		</action>
+		<action input="input" name="searchReportForm" parameter="dispatch" path="/searchReport" type="gov.nih.nci.calab.ui.search.SearchReportAction" scope="request">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="search" key="error.searchReport" path="search.searchreport" type="java.lang.Exception" />
+			<forward name="input" path="search.searchreport" />
+			<forward name="success" path="search.searchreport.result" />
 		</action>
 	</action-mappings>
 
