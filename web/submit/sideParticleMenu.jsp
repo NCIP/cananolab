@@ -315,7 +315,7 @@
 								<c:forEach var="aReport" items="${charTypeReports}">
 									<bean:define id="fileId" name='aReport' property='id' type="java.lang.String" />
 									<html:hidden name="aReport" property="id" value="${fileId}" indexed="true" />
-									<span class="indented"> <a href="publishReport.do?dispatch=download&amp;fileId=${fileId}" title="${aReport.toolTip}">${aReport.name}</a> </span>
+									<span class="indented"> <a href="searchReport.do?dispatch=download&amp;fileId=${fileId}" title="${aReport.displayName}">${aReport.name}</a> </span>
 									<br>
 								</c:forEach>
 							</li>
