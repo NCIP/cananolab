@@ -23,7 +23,7 @@
 			<item value="WORKFLOW" link="" />
 			<item value="INVENTORY" link="" />
 			<item value="SEARCH" link="" />
-			<item value="NANOPARTICLE SEARCH" link="searchNanoparticle.do?dispatch=setup&amp;page=0" />
+			<item value="PUBLIC SEARCH" link=""/>
 			<item value="SUBMIT" link="" />
 			<item value="ADMINISTRATION" link="" />
 		</putList>
