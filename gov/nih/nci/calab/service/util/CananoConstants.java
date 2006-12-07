@@ -121,8 +121,11 @@ public class CananoConstants {
 	public static final String[] CARBON_NANOTUBE_WALLTYPES = new String[] {
 			"Single (SWNT)", "Double (DWMT)", "Multiple (MWNT)" };
 
-	public static final String[] REPORT_TYPES = new String[] { "NCL Report",
-			"Other Associated File" };
+	public static final String NCL_REPORT = "NCL Report";
+	
+	public static final String ASSOCIATED_FILE= "Other Associated File";
+
+	public static final String[] REPORT_TYPES = new String[] { NCL_REPORT, ASSOCIATED_FILE };
 
 	public static final String[] DEFAULT_POLYMER_INITIATORS = new String[] {
 			"Free Radicals", "Peroxide" };
@@ -158,8 +161,6 @@ public class CananoConstants {
 	public static final String RECEPTOR = "Receptor";
 
 	public static final String ANTIGEN = "Antigen";
-
-	public static final String NCL_REPORT = "NCL Report";
 
 	public static final int MAX_VIEW_TITLE_LENGTH = 25;
 
