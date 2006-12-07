@@ -5,7 +5,7 @@
 <script type="text/javascript" src="javascript/calendar2.js"></script>
 
 <html:form action="searchAliquot">
-	<table width="90%" align="center">
+	<table width="100%" align="center">
 		<tr>
 			<td>
 				<h3>
