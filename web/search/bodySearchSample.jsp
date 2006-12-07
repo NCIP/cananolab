@@ -26,7 +26,7 @@
 							Search
 						</td>
 						<td class="formTitle">
-							* Search for Wildcards
+							* for Search Wildcards
 						</td>
 					</TR>
 					<tr>
