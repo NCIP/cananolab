@@ -2,7 +2,6 @@ package gov.nih.nci.calab.service.search;
 
 import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
-import gov.nih.nci.calab.domain.AssociatedFile;
 import gov.nih.nci.calab.domain.LabFile;
 import gov.nih.nci.calab.domain.Report;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
@@ -19,6 +18,7 @@ import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.CananoConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -398,19 +398,65 @@ public class SearchNanoparticleService {
 	 * @throws Exception
 	 */
 	public List<LabFileBean> getReportInfo(String particleName,
-			String particleType) throws Exception {
-		List<LabFileBean> fileBeans = new ArrayList<LabFileBean>();
+			String particleType, String reportType, UserBean user) throws Exception {
+		List<LabFileBean> reports = new ArrayList<LabFileBean>();
 
-		fileBeans.addAll(getReport(particleName, particleType,
-				"reportCollection"));
-		fileBeans.addAll(getReport(particleName, particleType,
-				"associatedFileCollection"));
+		if (reportType.equals(CananoConstants.NCL_REPORT)){
+			reports.addAll(getReport(particleName, particleType,"reportCollection"));
+		} else {
+			reports.addAll(getReport(particleName, particleType,"associatedFileCollection"));
+		}
+		
+		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
+
+		List<LabFileBean> filteredReports = userService
+				.getFilteredReports(user, reports);
+		return filteredReports;
+	}
+	
+	public List<LabFileBean> getReportByParticle(String particleName,String particleType) throws Exception {
+		List<LabFileBean> fileBeans = new ArrayList<LabFileBean>();
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+
+		try {
+
+			ida.open();
+			List results = ida
+					.search("select report.id, report.filename, report.path from Nanoparticle particle join particle.reportCollection "
+							+ " report where particle.name='"
+							+ particleName
+							+ "' and particle.type='"
+							+ particleType + "'");
+
+			for (Object obj : results) {
+				String reportId = ((Object[]) obj)[0].toString();
+				String fileName = (String) (((Object[]) obj)[1]);
+				String path = (String) (((Object[]) obj)[2]);
+				String toolTip = "";
+				int idx = path.lastIndexOf(File.separator);
+				if (idx > 0)
+					toolTip = path.substring(idx + 1);
+
+				LabFileBean fileBean = new LabFileBean();
+				fileBean.setId(reportId);
+				fileBean.setPath(path);
+				fileBean.setName(fileName);
+				fileBeans.add(fileBean);
+			}
+		} catch (Exception e) {
+			logger.error("Problem finding report info for particle: "
+					+ particleName);
+			throw e;
+		} finally {
+			ida.close();
+		}
 		return fileBeans;
 	}
 
 	public List<LabFileBean> searchReports(String reportTitle,
-			String reportType, String particleType, String[] functionTypes,
-			UserBean user) throws Exception {
+			String reportType, String particleType, String[] functionTypes, UserBean user)
+			throws Exception {
 		List<LabFileBean> reports = new ArrayList<LabFileBean>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
@@ -449,39 +495,13 @@ public class SearchNanoparticleService {
 						+ StringUtils.join(inList, ", ") + ") ");
 			}
 			String whereStr = StringUtils.join(whereList, " and ");
+			String hqlString = "select distinct report from Nanoparticle particle join particle.reportCollection report "
+					+ functionTypeFrom + where + whereStr;
 
-			String hqlString = "select distinct report from Nanoparticle particle ";
-			List results = null;
-			if (reportType.length() == 0) {
-				String hqlString1 = hqlString
-						+ "join particle.reportCollection report "
-						+ functionTypeFrom + where + whereStr;
-				results = ida.searchByParam(hqlString1, paramList);
-				String hqlString2 = hqlString
-						+ "join particle.associatedFileCollection report "
-						+ functionTypeFrom + where + whereStr;
-				List results2 = ida.searchByParam(hqlString2, paramList);
-				if (results2 != null) {
-					results.addAll(results2);
-				}
-			} else {
-				if (reportType.equals(CananoConstants.NCL_REPORT)) {
-					hqlString += "join particle.reportCollection report ";
-				} else if (reportType.equals(CananoConstants.ASSOCIATED_FILE)) {
-					hqlString += "join particle.associatedFileCollection report ";
-				}
-				hqlString += functionTypeFrom + where + whereStr;
-				results = ida.searchByParam(hqlString, paramList);
-			}
+			List results = ida.searchByParam(hqlString, paramList);
 
 			for (Object obj : results) {
-				LabFileBean fileBean = new LabFileBean((LabFile) obj);
-				if (obj instanceof Report) {
-					fileBean.setType(CananoConstants.NCL_REPORT);
-				}
-				if (obj instanceof AssociatedFile) {
-					fileBean.setType(CananoConstants.ASSOCIATED_FILE);
-				}
+				LabFileBean fileBean = new LabFileBean((Report) obj);
 				reports.add(fileBean);
 			}
 		} catch (Exception e) {
