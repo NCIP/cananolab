@@ -54,7 +54,7 @@ public class CananoConstants {
 
 	public static final String CYTOTOXICITY_CASPASE3_ACTIVIATION = "Caspase 3 Activation";
 
-	public static final String BLOODCONTACTTOX_PLATE_AGGREGATION = "Plate Aggregation";
+	public static final String BLOODCONTACTTOX_PLATE_AGGREGATION = "Platelet Aggregation";
 
 	public static final String BLOODCONTACTTOX_HEMOLYSIS = "Hemolysis";
 
