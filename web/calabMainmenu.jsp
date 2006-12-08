@@ -3,11 +3,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ page import="gov.nih.nci.calab.ui.core.InitSessionSetup,gov.nih.nci.calab.service.security.UserService"%>
-<%
-UserService userService = 
-	InitSessionSetup.getInstance().getUserService();
-userService.setFilteredMenuItem(session);
-%>
+<%UserService userService = InitSessionSetup.getInstance()
+					.getUserService();
+			userService.setFilteredMenuItem(session);
+
+		%>
 <table cellspacing="0" cellpadding="0" summary="" border="0">
 	<tbody>
 		<tr>
@@ -18,10 +18,10 @@ userService.setFilteredMenuItem(session);
 			</td>
         --%>
 			<logic:present name="filteredItems">
-				<logic:iterate name="filteredItems" id="item" type="org.apache.struts.tiles.beans.MenuItem">
+				<logic:iterate name="filteredItems" id="item" type="org.apache.struts.tiles.beans.MenuItem">				
 					<c:choose>
-						<c:when test="${fn:toUpperCase(menu) eq item.value}">
-							<c:set var="style" value="mainMenuItemOver" />
+						<c:when test="${fn:toUpperCase(menu) eq item.value || (menu eq 'search' && item.value eq 'SEARCH CHARACTERIZATIONS')}">
+							<c:set var="style" value="mainMenuItemOver" />							
 						</c:when>
 						<c:otherwise>
 							<c:set var="style" value="mainMenuItem" />
