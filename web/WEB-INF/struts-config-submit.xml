@@ -382,6 +382,7 @@
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.nanoparticle.generalInfo" path="submit.createnanoparticle" type="java.lang.Exception" />
 			<forward name="success" path="submit.message" />
 			<forward name="view" path="submit.generalinfo.view" />
+			<forward name="viewDisclaimer" path="submit.viewParticleDisclaimer" />
 			<forward name="update" path="submit.generalinfo.update" />
 			<forward name="input" path="submit.createnanoparticle" />
 		</action>
