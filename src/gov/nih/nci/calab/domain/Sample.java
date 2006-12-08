@@ -295,23 +295,23 @@ public class Sample implements java.io.Serializable {
 		this.projectCollection = projectCollection;
 	}
 
-	private java.util.Collection reportCollection = new java.util.HashSet();
+	private java.util.Collection<Report> reportCollection = new java.util.HashSet<Report>();
 
-	public java.util.Collection getReportCollection() {
+	public java.util.Collection<Report> getReportCollection() {
 		return reportCollection;
 	}
 
-	public void setReportCollection(java.util.Collection reportCollection) {
+	public void setReportCollection(java.util.Collection<Report> reportCollection) {
 		this.reportCollection = reportCollection;
 	}
 	
-	public Collection associatedFileCollection = new HashSet();
+	public Collection<AssociatedFile> associatedFileCollection = new HashSet<AssociatedFile>();
 		
-	public Collection getAssociatedFileCollection() {
+	public Collection<AssociatedFile> getAssociatedFileCollection() {
 		return associatedFileCollection;
 	}
 
-	public void setAssociatedFileCollection(Collection associatedFileCollection) {
+	public void setAssociatedFileCollection(Collection<AssociatedFile> associatedFileCollection) {
 		this.associatedFileCollection = associatedFileCollection;
 	}
 
