@@ -861,12 +861,12 @@ public class SubmitNanoparticleService {
 				// NCL_Researcher to
 				// be true
 				// TODO once the files is successfully saved, use fileId instead
-				// of fileName
-				for (String defaultGroup : CananoConstants.DEFAULT_VISIBLE_GROUPS) {
-					userService.secureObject(fileBean.getId(), defaultGroup,
-							CalabConstants.CSM_READ_ROLE);
-				}
+				// of fileName				
 				userService.secureObject(fileBean.getId(), visibility,
+						CalabConstants.CSM_READ_ROLE);
+			}
+			for (String defaultGroup : CananoConstants.DEFAULT_VISIBLE_GROUPS) {
+				userService.secureObject(fileBean.getId(), defaultGroup,
 						CalabConstants.CSM_READ_ROLE);
 			}
 		}
@@ -932,12 +932,12 @@ public class SubmitNanoparticleService {
 				// NCL_Researcher to
 				// be true
 				// TODO once the files is successfully saved, use fileId instead
-				// of fileName
-				for (String defaultGroup : CananoConstants.DEFAULT_VISIBLE_GROUPS) {
-					userService.secureObject(fileBean.getId(), defaultGroup,
-							CalabConstants.CSM_READ_ROLE);
-				}
+				// of fileName				
 				userService.secureObject(fileBean.getId(), visibility,
+						CalabConstants.CSM_READ_ROLE);
+			}
+			for (String defaultGroup : CananoConstants.DEFAULT_VISIBLE_GROUPS) {
+				userService.secureObject(fileBean.getId(), defaultGroup,
 						CalabConstants.CSM_READ_ROLE);
 			}
 		}
