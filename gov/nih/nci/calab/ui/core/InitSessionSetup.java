@@ -497,9 +497,14 @@ public class InitSessionSetup {
 			}
 			session.setAttribute("charTypeChars", existingCharTypeChars);
 
+			UserBean user = (UserBean) session.getAttribute("user");
 			List<LabFileBean> reportBeans = service.getReportInfo(particleName,
-					particleType);
+					particleType, CananoConstants.NCL_REPORT, user);
 			session.setAttribute("charTypeReports", reportBeans);
+			
+			List<LabFileBean> associatedBeans = service.getReportInfo(particleName,
+					particleType, CananoConstants.ASSOCIATED_FILE, user);
+			session.setAttribute("charTypeAssociatedFiles", associatedBeans);
 		}
 		session.removeAttribute("newCharacterizationCreated");
 
