@@ -1,94 +1,93 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <project name="caLAB" default="" basedir=".">
-	<property file="build.properties"/>
-	<property name="src.java.dir" value="src"/>
-	<property name="src.webroot.dir" value="web"/>
-	<property name="src.lib.dir" value="web/WEB-INF/lib"/>
+	<property file="build.properties" />
+	<property name="src.java.dir" value="src" />
+	<property name="src.webroot.dir" value="web" />
+	<property name="src.lib.dir" value="web/WEB-INF/lib" />
 	<property name="src.webinf.dir" value="web/WEB-INF" />
-	<property name="build.webroot.dir" value="output/"/>
-	<property name="build.webinf.dir" value="output/WEB-INF"/>
-	<property name="build.classes.dir" value="output/WEB-INF/classes"/>
+	<property name="build.webroot.dir" value="output/" />
+	<property name="build.webinf.dir" value="output/WEB-INF" />
+	<property name="build.classes.dir" value="output/WEB-INF/classes" />
 	<property name="build.war.dir" value="output/war" />
-	
+
 	<target name="clean">
-		<delete dir="output" quiet="true"/>
+		<delete dir="output" quiet="true" />
 	</target>
-	
+
 	<target name="init-project">
 		<!-- create the necessary folders -->
-		<mkdir dir="${build.webroot.dir}"/>
-		<mkdir dir="${build.webinf.dir}"/>
-		<mkdir dir="${build.classes.dir}"/>
-		<mkdir dir="${build.webinf.dir}/lib"/>
+		<mkdir dir="${build.webroot.dir}" />
+		<mkdir dir="${build.webinf.dir}" />
+		<mkdir dir="${build.classes.dir}" />
+		<mkdir dir="${build.webinf.dir}/lib" />
 		<mkdir dir="${build.war.dir}" />
 		<mkdir dir="${build.classes.dir}/gov/nih/nci/calab/resources" />
-		
+
 	</target>
 
 	<target name="compile" depends="init-project">
-		<echo message="*****************************************************"/>
-		<echo message="**   Compiling Java Classes ...          		  **"/>
-		<echo message="*****************************************************"/>
+		<echo message="*****************************************************" />
+		<echo message="**   Compiling Java Classes ...          		  **" />
+		<echo message="*****************************************************" />
 		<path id="cp">
 			<fileset dir="${src.lib.dir}">
-				<include name="*.jar"/>
+				<include name="*.jar" />
 			</fileset>
 			<fileset dir="lib">
-				<include name="*.jar"/>
+				<include name="*.jar" />
 			</fileset>
 		</path>
 		<javac srcdir="${src.java.dir}" destdir="${build.classes.dir}" debug="true">
-			<classpath refid="cp"/>
-		</javac>	
+			<classpath refid="cp" />
+		</javac>
 	</target>
-	
-	
+
+
 	<target name="build-application" depends="compile">
-		<!--  copy web files and lib files for the war file -->	
+		<!--  copy web files and lib files for the war file -->
 		<copy todir="${build.webroot.dir}">
 			<fileset dir="${src.webroot.dir}">
 				<exclude name="**/*.mex" />
-				<exclude name="**/WEB-INF/classes/**"/>
+				<exclude name="**/WEB-INF/classes/**" />
 			</fileset>
 		</copy>
 		<copy todir="${build.classes.dir}">
 			<fileset dir="${src.java.dir}">
-				<include name="**/*.hbm.xml"/>
+				<include name="**/*.hbm.xml" />
 			</fileset>
 		</copy>
-		
-		<copy todir="${build.classes.dir}/gov/nih/nci/calab/resources" >
+
+		<copy todir="${build.classes.dir}/gov/nih/nci/calab/resources">
 			<fileset dir="${src.java.dir}/gov/nih/nci/calab/resources">
 				<include name="*.properties" />
 			</fileset>
 		</copy>
-		
-		<copy todir="${build.classes.dir}"> 
+
+		<copy todir="${build.classes.dir}">
 			<fileset dir="${src.java.dir}">
-				<include name="*.xml"/>
+				<include name="*.xml" />
 				<include name="*.properties" />
 				<include name="*.template" />
 			</fileset>
 			<filterset>
-							
-				<filter token="JNDINAME" value="${database.jndi.name}"/>				
-				
-				<filter token="HOSTNAME" value="${hostname}"/>
-				
-				<filter token="FILE_REPOSITORY_DIR" value="${file.repository.dir}" />
-		</filterset>
+
+				<filter token="JNDINAME" value="${database.jndi.name}" />
+
+				<filter token="HOSTNAME" value="${hostname}" />
+
+				<filter token="FILE_REPOSITORY_DIR" value="${file.repository.dir}" />				
+			</filterset>
 		</copy>
-		<move file="${build.classes.dir}/orm1.cfg.xml.template" tofile="${build.classes.dir}/orm1.cfg.xml"/>
-		<move file="${build.classes.dir}/fileupload.properties.template" tofile="${build.classes.dir}/fileupload.properties"/>
+		<move file="${build.classes.dir}/orm1.cfg.xml.template" tofile="${build.classes.dir}/orm1.cfg.xml" />
+		<move file="${build.classes.dir}/fileupload.properties.template" tofile="${build.classes.dir}/fileupload.properties" />
 
-		
 		<!-- Pack WAR file -->
-		<war destfile="${build.war.dir}/calab.war"
-			webxml="${build.webinf.dir}/web.xml"
-			basedir="${build.webroot.dir}"
-			compress="false"
-			excludes="*.war"/>
-			
+		<war destfile="${build.webroot.dir}/war/calab.war" webxml="${build.webinf.dir}/web.xml" basedir="${build.webroot.dir}" compress="true" />
+		<copy todir="${build.webroot.dir}/war">
+			<fileset dir="conf/csm/">
+				<include name="*.war" />
+			</fileset>
+		</copy>
 	</target>
-
+	
 </project>
