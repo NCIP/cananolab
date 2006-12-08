@@ -1197,9 +1197,9 @@ public class SubmitNanoparticleService {
 
 				if (particle != null) {
 					if (reportType.equalsIgnoreCase(CananoConstants.NCL_REPORT))
-						particle.getReportCollection().add(dataFile);
+						particle.getReportCollection().add((Report)dataFile);
 					else
-						particle.getAssociatedFileCollection().add(dataFile);
+						particle.getAssociatedFileCollection().add((AssociatedFile)dataFile);
 				}
 
 			} catch (Exception e) {
@@ -1221,11 +1221,12 @@ public class SubmitNanoparticleService {
 			// be true
 			// TODO once the files is successfully saved, use fileId instead of
 			// fileName
-			for (String defaultGroup : CananoConstants.DEFAULT_VISIBLE_GROUPS) {
-				userService.secureObject(dataFile.getId().toString(), defaultGroup,
-						CalabConstants.CSM_READ_ROLE);
-			}
+		
 			userService.secureObject(dataFile.getId().toString(), visibility,
+					CalabConstants.CSM_READ_ROLE);
+		}
+		for (String defaultGroup : CananoConstants.DEFAULT_VISIBLE_GROUPS) {
+			userService.secureObject(dataFile.getId().toString(), defaultGroup,
 					CalabConstants.CSM_READ_ROLE);
 		}
 	}
