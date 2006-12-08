@@ -203,14 +203,18 @@ function refreshManufacturers(form, action) {
 /* form has "." in the property names */
 function doubleDropdownWithNestedProperties(form, elementName1, elementName2, value1ToValue2) {
     var select1, select2;
-    for (var i = 0; i < form.elements.length; i++) {
-        if (form.elements[i].name.indexOf(elementName1) != -1) {
-            select1 = form.elements[i];
-        }
-        if (form.elements[i].name.indexOf(elementName2) != -1) {
-            select2 = form.elements[i];
-        }
-    }
+    select1 = getElement(form, elementName1);
+    select2 = getElement(form, elementName2);
     doubleDropdown(select1, select2, value1ToValue2);
 }
+function getElement(form, elementName) {
+    var element;
+    for (var i = 0; i < form.elements.length; i++) {
+        if (form.elements[i].name.indexOf(elementName) != -1) {
+            element = form.elements[i];
+        }
+    }
+    return element;
+}
+
 
