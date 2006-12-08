@@ -336,7 +336,7 @@
 		<forward name="invitroHemolysisForm" path="submit.addimmunotoxicity.hemolysis" />
 		<forward name="Coagulation" path="invitroImmunotoxicityCoagulation.do" />
 		<forward name="invitroCoagulationForm" path="submit.addimmunotoxicity.coagulation" />
-		<forward name="Plate Aggregation" path="invitroImmunotoxicityPlateAggregation.do" />
+		<forward name="Platelet Aggregation" path="invitroImmunotoxicityPlateAggregation.do" />
 		<forward name="invitroPlateAggregationForm" path="submit.addimmunotoxicity.plateaggregation" />
 		<forward name="Plasma Protein Binding" path="invitroImmunotoxicityProteinBinding.do" />
 		<forward name="invitroProteinBindingForm" path="submit.addimmunotoxicity.plasmaproteinbinding" />
