@@ -1,7 +1,7 @@
 package gov.nih.nci.calab.domain;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 public class InstrumentType {
 
@@ -12,7 +12,7 @@ public class InstrumentType {
 	private String description;
 	private String abbreviation;
 	
-	private Collection<Manufacturer> manufacturerCollection = new ArrayList<Manufacturer>();
+	private Collection<Manufacturer> manufacturerCollection = new HashSet<Manufacturer>();
 	
 	public InstrumentType() {
 		super();
