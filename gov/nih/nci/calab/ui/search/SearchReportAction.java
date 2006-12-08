@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchReportAction.java,v 1.2 2006-12-07 22:20:51 pansu Exp $ */
+/* CVS $Id: SearchReportAction.java,v 1.3 2006-12-08 14:24:55 zengje Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
@@ -73,7 +73,8 @@ public class SearchReportAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		HttpSession session = request.getSession();
-		InitSessionSetup.getInstance().setAllParticleTypeParticles(session);
+//		InitSessionSetup.getInstance().setAllParticleTypeParticles(session);
+		InitSessionSetup.getInstance().setAllSampleTypes(session);
 		InitSessionSetup.getInstance().setAllParticleFunctionTypes(session);
 		InitSessionSetup.getInstance().setStaticDropdowns(session);
 		InitSessionSetup.getInstance().clearWorkflowSession(session);
