@@ -113,6 +113,11 @@
 		<put name="menu" value="submit" />
 	</definition>
 
+	<definition name="submit.viewParticleDisclaimer" extends="calab.home">
+		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
+		<put name="calabContent" value="/submit/bodyNanoparticleDisclaimer.jsp" />
+		<put name="menu" value="submit" />
+	</definition>
 	<!-- definition for the particle general info update page -->
 	<definition name="submit.generalinfo.update" extends="calab.home">
 		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
