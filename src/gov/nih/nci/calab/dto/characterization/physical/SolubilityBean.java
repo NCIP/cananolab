@@ -67,7 +67,7 @@ public class SolubilityBean extends CharacterizationBean {
 		Solubility solubility = new Solubility();
 		super.updateDomainObj(solubility);
 		
-		solubility.setSolvent(this.criticalConcentration);
+		solubility.setSolvent(this.solvent);
 		solubility.setCriticalConcentration(new Measurement(this.criticalConcentration, this.criticalConcentrationUnit));
 		solubility.setIsSoluble((this.isSoluble.equalsIgnoreCase(CananoConstants.BOOLEAN_YES)) ? true : false);
 		
