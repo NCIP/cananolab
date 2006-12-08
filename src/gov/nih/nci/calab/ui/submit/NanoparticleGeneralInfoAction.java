@@ -7,8 +7,9 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.13 2006-12-05 17:21:52 pansu Exp $ */
+/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.14 2006-12-08 20:44:00 zengje Exp $ */
 
+import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
@@ -16,6 +17,8 @@ import gov.nih.nci.calab.service.util.CananoConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
+
+import java.util.Collection;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -49,7 +52,7 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 		HttpSession session = request.getSession();
 		
 		//display default visible groups
-		if (visibilities.length==0) {
+		if (visibilities == null || visibilities.length==0) {
 			visibilities=CananoConstants.DEFAULT_VISIBLE_GROUPS;
 		}
 		ActionMessages msgs = new ActionMessages();
@@ -131,6 +134,25 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 		request.getSession().setAttribute("newParticleCreated", "true");
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
+		return forward;
+	}
+	
+	public ActionForward viewDisclaimer(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+
+		ActionForward forward = null;
+		// TODO fill in details for sample information */
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		String particleName = (String) theForm.get("particleName");
+		String particleType = (String) theForm.get("particleType");
+		InitSessionSetup.getInstance().setSideParticleMenu(request,
+				particleName, particleType);
+		SearchNanoparticleService searchtNanoparticleService = new SearchNanoparticleService();
+		
+		Collection<LabFileBean> reports = searchtNanoparticleService.getReportByParticle(particleName,particleType);
+		request.setAttribute("particleReports", reports);
+		forward = mapping.findForward("viewDisclaimer");
 		return forward;
 	}
 
