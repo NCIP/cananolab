@@ -5,6 +5,17 @@ import gov.nih.nci.calab.domain.nano.function.Antibody;
 public class AntibodyBean extends AgentBean {
 	private String name;
 	private String species;
+
+	public AntibodyBean() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public AntibodyBean(Antibody antibody) {
+		super(antibody);
+		this.name = antibody.getName();
+		this.species = antibody.getSpecies();
+	}
+	
 	public String getName() {
 		return name;
 	}
