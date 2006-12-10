@@ -122,10 +122,11 @@ public class CananoConstants {
 			"Single (SWNT)", "Double (DWMT)", "Multiple (MWNT)" };
 
 	public static final String NCL_REPORT = "NCL Report";
-	
-	public static final String ASSOCIATED_FILE= "Other Associated File";
 
-	public static final String[] REPORT_TYPES = new String[] { NCL_REPORT, ASSOCIATED_FILE };
+	public static final String ASSOCIATED_FILE = "Other Associated File";
+
+	public static final String[] REPORT_TYPES = new String[] { NCL_REPORT,
+			ASSOCIATED_FILE };
 
 	public static final String[] DEFAULT_POLYMER_INITIATORS = new String[] {
 			"Free Radicals", "Peroxide" };
@@ -158,6 +159,12 @@ public class CananoConstants {
 
 	public static final String ENCAPSULATION = "Encapsulation";
 
+	public static final String[] FUNCTION_AGENT_TYPES = new String[] { DNA,
+			PEPTIDE, SMALL_MOLECULE, PROBE, ANTIBODY, IMAGE_CONTRAST_AGENT };
+
+	public static final String[] FUNCTION_LINKAGE_TYPES = new String[] {
+			ATTACHMENT, ENCAPSULATION };
+
 	public static final String RECEPTOR = "Receptor";
 
 	public static final String ANTIGEN = "Antigen";
@@ -182,6 +189,7 @@ public class CananoConstants {
 	public static final String NCL_PI = "NCL_PI";
 
 	public static final String NCL_RESEARCHER = "NCL_Researcher";
-	
-	public static final String[] DEFAULT_VISIBLE_GROUPS=new String[]{NCL_PI, NCL_RESEARCHER};
+
+	public static final String[] DEFAULT_VISIBLE_GROUPS = new String[] {
+			NCL_PI, NCL_RESEARCHER };
 }
