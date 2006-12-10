@@ -664,6 +664,8 @@ public class InitSessionSetup {
 		session.setAttribute("allCarbonNanotubeWallTypes",
 				CananoConstants.CARBON_NANOTUBE_WALLTYPES);
 		session.setAttribute("allReportTypes", CananoConstants.REPORT_TYPES);
+		session.setAttribute("allFunctionLinkageTypes", CananoConstants.FUNCTION_LINKAGE_TYPES);
+		session.setAttribute("allFunctionAgentTypes", CananoConstants.FUNCTION_AGENT_TYPES);
 	}
 
 	public void setAllRunFiles(HttpSession session, String particleName)
