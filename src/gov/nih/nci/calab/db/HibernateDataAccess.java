@@ -119,7 +119,8 @@ public class HibernateDataAccess implements IDataAccess {
     
     public void removeObject(Object obj) throws Exception
     {
-    	throw new Exception ("Not supported yet");
+    	session.delete(obj);
+//    	throw new Exception ("Not supported yet");
     }
     
 
