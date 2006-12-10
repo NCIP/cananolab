@@ -84,7 +84,6 @@
 													<c:choose>
 														<c:when test="${canUserUpdateParticle eq 'true'}">
 															<logic:present name="characterizationFile${chartInd}">
-																<a href="#"><bean:write name="characterizationFile${chartInd}" property="name" /></a>
 																<bean:define id="fileId" name='characterizationFile${chartInd}' property='id' type="java.lang.String" />
 																<html:hidden name="achar.derivedBioAssayDataList" property="fileId" value="${fileId}" indexed="true" />
 																<a href="${actionName}.do?dispatch=download&amp;fileId=${fileId}"><bean:write name="characterizationFile${chartInd}" property="name" /></a>
