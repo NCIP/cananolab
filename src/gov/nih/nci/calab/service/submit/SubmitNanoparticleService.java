@@ -13,6 +13,8 @@ import gov.nih.nci.calab.domain.Report;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.function.Agent;
 import gov.nih.nci.calab.domain.nano.function.AgentTarget;
+import gov.nih.nci.calab.domain.nano.function.Attachment;
+import gov.nih.nci.calab.domain.nano.function.Encapsulation;
 import gov.nih.nci.calab.domain.nano.function.Function;
 import gov.nih.nci.calab.domain.nano.function.Linkage;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
@@ -973,8 +975,28 @@ public class SubmitNanoparticleService {
 		Nanoparticle particle = null;
 		int existingViewTitleCount = -1;
 		try {
+			// Have to seperate this section out in a different hibernate session.
+			// check linkage id object type
 			ida.open();
-
+			if (doFunction.getLinkageCollection() != null) {
+				for (Linkage linkage : doFunction.getLinkageCollection()) {
+					// check linkage id object type
+					if (linkage.getId() != null) {
+						List result = ida.search("from Linkage linkage where linkage.id = " + linkage.getId());
+						if (result!=null && result.size()>0){
+							Linkage existingObj = (Linkage)result.get(0);
+							// the the type is different, 
+							if (existingObj.getClass() != linkage.getClass()) {
+								linkage.setId(null);
+								ida.removeObject(existingObj);
+							}
+						}
+					} 
+				}
+			}
+			ida.close();
+			
+			ida.open();
 			if (doFunction.getLinkageCollection() != null) {
 				for (Linkage linkage : doFunction.getLinkageCollection()) {
 					Agent agent = linkage.getAgent();
@@ -1021,10 +1043,7 @@ public class SubmitNanoparticleService {
 				if (doFunction.getId() != null) {
 					ida.store(doFunction);
 				} else {// get the existing particle and compositions
-					// from database
-					// created
-					// during sample
-					// creation
+					// from database created during sample creation
 					List results = ida
 							.search("select particle from Nanoparticle particle left join fetch particle.functionCollection where particle.name='"
 									+ particleName
@@ -1036,7 +1055,6 @@ public class SubmitNanoparticleService {
 					}
 
 					if (particle != null) {
-						// ida.store(doFunction);
 						particle.getFunctionCollection().add(doFunction);
 					}
 				}
