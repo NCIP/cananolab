@@ -157,4 +157,4 @@
   </c:forEach> 
 //-->
 </script>
-<script language="JavaScript">
+
