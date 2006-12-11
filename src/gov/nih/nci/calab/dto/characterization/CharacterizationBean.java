@@ -48,8 +48,7 @@ public class CharacterizationBean {
 
 	private List<DerivedBioAssayDataBean> derivedBioAssayDataList = new ArrayList<DerivedBioAssayDataBean>();
 
-//	private String numberOfDerivedBioAssayData;
-	private int numberOfDerivedBioAssayData;
+	private String numberOfDerivedBioAssayData;
 
 	private CharacterizationProtocolBean characterizationProtocol = new CharacterizationProtocolBean();
 
@@ -83,10 +82,9 @@ public class CharacterizationBean {
 					(instrument.getManufacturer() != null) ? instrument
 							.getManufacturer().getName() : "");
 		}
-//		this.setNumberOfDerivedBioAssayData(Integer.valueOf(
-//				characterization.getDerivedBioAssayDataCollection().size())
-//				.toString());
-		this.setNumberOfDerivedBioAssayData(characterization.getDerivedBioAssayDataCollection().size());
+		this.setNumberOfDerivedBioAssayData(Integer.valueOf(
+				characterization.getDerivedBioAssayDataCollection().size())
+				.toString());
 		for (DerivedBioAssayData table : characterization
 				.getDerivedBioAssayDataCollection()) {
 			DerivedBioAssayDataBean ctBean = new DerivedBioAssayDataBean(table);
@@ -100,8 +98,8 @@ public class CharacterizationBean {
 			this.getCharacterizationProtocol()
 					.setVersion(protocol.getVersion());
 		}
-//		this.numberOfDerivedBioAssayData = derivedBioAssayDataList.size() + "";
-		this.numberOfDerivedBioAssayData = derivedBioAssayDataList.size();
+		this.numberOfDerivedBioAssayData = derivedBioAssayDataList.size() + "";
+
 	}
 
 	public String getCharacterizationSource() {
@@ -311,12 +309,12 @@ public class CharacterizationBean {
 		this.instrument = instrument;
 	}
 
-	public int getNumberOfDerivedBioAssayData() {
+	public String getNumberOfDerivedBioAssayData() {
 		return numberOfDerivedBioAssayData;
 	}
 
 	public void setNumberOfDerivedBioAssayData(
-			int numberOfDerivedBioAssayData) {
+			String numberOfDerivedBioAssayData) {
 		this.numberOfDerivedBioAssayData = numberOfDerivedBioAssayData;
 	}
 
