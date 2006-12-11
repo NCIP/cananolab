@@ -292,7 +292,7 @@
 			<form-property name="assayType" type="java.lang.String" />
 			<form-property name="assayName" type="java.lang.String" />
 			<form-property name="assayResultFileType" type="java.lang.String" />
-			<form-property name="fileSource" type="java.lang.String" initial="chooseExisting" />
+			<form-property name="fileSource" type="java.lang.String" initial="new" />
 			<form-property name="fileId" type="java.lang.String" />
 			<form-property name="file" type="org.apache.struts.upload.FormFile" />
 			<form-property name="title" type="java.lang.String" />
