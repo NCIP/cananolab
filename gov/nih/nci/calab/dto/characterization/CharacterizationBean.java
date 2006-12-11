@@ -228,6 +228,8 @@ public class CharacterizationBean {
 			this.abbr =   CananoConstants.ABBR_SHAPE;
 		} else if (name.equals(CananoConstants.PHYSICAL_SOLUBILITY)) {
 			this.abbr =   CananoConstants.ABBR_SOLUBILITY;
+		} else if (name.equals(CananoConstants.PHYSICAL_SURFACE)) {
+			this.abbr =   CananoConstants.ABBR_SURFACE;
 		} else if (name.equals(CananoConstants.PHYSICAL_PURITY)) {
 			this.abbr =   CananoConstants.ABBR_PURITY;
 		} else if (name.equals(CananoConstants.TOXICITY_OXIDATIVE_STRESS)) {
