@@ -30,9 +30,28 @@
 						</tr>
 						<tr>
 							<td class="completeLabel" colspan="4">
-								<strong> <html:radio property="fileSource" value="chooseExisting">Choose File From caLAB workflow</html:radio>
-									<table cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
-										<%--
+								<html:radio property="fileSource" value="new">
+									<strong> Upload New File</strong>
+								</html:radio>
+								<table cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+									<tr>
+										<td class="borderlessLabel" width="50">
+										</td>
+										<td class="borderlessLabel" valign="top" width="20%">
+											<strong>=>&nbsp; Assay Result File*</strong>
+										</td>
+										<td class="borderlessLabel" valign="top">
+											<html:file property="file" />
+										</td>
+									</tr>
+								</table>
+								<br>
+								<br>
+								<html:radio property="fileSource" value="chooseExisting">
+									<strong> Choose File From caLAB workflow</strong>
+								</html:radio>
+								<table cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+									<%--
 										<tr>
 											<td class="borderlessLabel" width="50">
 											</td>										
@@ -57,28 +76,16 @@
 											</td>
 										</tr>
 										--%>
-										<tr>
-											<td class="borderlessLabel" width="50">
-											</td>
-											<td class="borderlessLabel" width="20%">
-												<strong>=>&nbsp; Assay Result File*</strong>
-											</td>
-											<td class="borderlessLabel">
-												<html:select property="fileId">
-													<html:options collection="allRunFiles" property="id" labelProperty="displayName" />
-												</html:select>
-											</td>
-										</tr>
-									</table> <br> <br> <html:radio property="fileSource" value="new">Upload New File</html:radio> </strong>
-								<table cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 									<tr>
 										<td class="borderlessLabel" width="50">
 										</td>
-										<td class="borderlessLabel" valign="top" width="20%">
+										<td class="borderlessLabel" width="20%">
 											<strong>=>&nbsp; Assay Result File*</strong>
 										</td>
-										<td class="borderlessLabel" valign="top">
-											<html:file property="file" />
+										<td class="borderlessLabel">
+											<html:select property="fileId">
+												<html:options collection="allRunFiles" property="id" labelProperty="displayName" />
+											</html:select>
 										</td>
 									</tr>
 								</table>
@@ -99,7 +106,7 @@
 							<td class="rightLabel" colspan="3">
 								<html:textarea property="description" rows="3" cols="60" />
 							</td>
-						</tr>			
+						</tr>
 						<tr>
 							<td class="leftLabel">
 								<strong>Keywords <em>(one per line)</em></strong>
@@ -115,7 +122,8 @@
 							<td class="rightLabel" colspan="3">
 								<html:select property="visibilities" multiple="true" size="6">
 									<html:options name="allVisibilityGroups" />
-								</html:select><br>
+								</html:select>
+								<br>
 								<i>(NCL_Researcher and NCL_PI are defaults if none of above is selected.)</i>
 							</td>
 						</tr>
