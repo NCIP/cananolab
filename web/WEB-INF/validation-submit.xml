@@ -118,6 +118,20 @@
 			<field property="achar.viewTitle" page="1" depends="required">
 				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
+			<field property="achar.instrument.otherInstrumentType" page="1" depends="validwhen">
+				<arg position="0" key="otherInstrumentType" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.type!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
+			<field property="achar.instrument.otherManufacturer" page="1" depends="validwhen">
+				<arg position="0" key="otherManufacturer" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.manufacturer!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
 		</form>
 		<form name="invitroImmunotoxicityHemolysisForm">
 			<field property="achar.characterizationSource" page="1" depends="required">
@@ -131,6 +145,20 @@
 			</field>
 			<field property="numberOfDataPoints" page="0" depends="integer" indexedListProperty="achar.derivedBioAssayDataList">
 				<arg position="0" key="numberOfDataPoints" bundle="submit" />
+			</field>
+			<field property="achar.instrument.otherInstrumentType" page="1" depends="validwhen">
+				<arg position="0" key="otherInstrumentType" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.type!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
+			<field property="achar.instrument.otherManufacturer" page="1" depends="validwhen">
+				<arg position="0" key="otherManufacturer" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.manufacturer!="Other") or (*this*!=null))</var-value>
+				</var>
 			</field>
 		</form>
 		<form name="invitroImmunotoxicityPlateAggregationForm">
@@ -146,6 +174,20 @@
 			<field property="numberOfDataPoints" page="0" depends="integer" indexedListProperty="achar.derivedBioAssayDataList">
 				<arg position="0" key="numberOfDataPoints" bundle="submit" />
 			</field>
+			<field property="achar.instrument.otherInstrumentType" page="1" depends="validwhen">
+				<arg position="0" key="otherInstrumentType" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.type!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
+			<field property="achar.instrument.otherManufacturer" page="1" depends="validwhen">
+				<arg position="0" key="otherManufacturer" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.manufacturer!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
 		</form>
 		<form name="invitroImmunotoxicityCoagulationForm">
 			<field property="achar.numberOfDerivedBioAssayData" page="0" depends="integer">
@@ -159,6 +201,20 @@
 			</field>
 			<field property="numberOfDataPoints" page="0" depends="integer" indexedListProperty="achar.derivedBioAssayDataList">
 				<arg position="0" key="numberOfDataPoints" bundle="submit" />
+			</field>
+			<field property="achar.instrument.otherInstrumentType" page="1" depends="validwhen">
+				<arg position="0" key="otherInstrumentType" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.type!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
+			<field property="achar.instrument.otherManufacturer" page="1" depends="validwhen">
+				<arg position="0" key="otherManufacturer" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.manufacturer!="Other") or (*this*!=null))</var-value>
+				</var>
 			</field>
 		</form>
 		<form name="invitroImmunotoxicityProteinBindingForm">
@@ -174,6 +230,20 @@
 			<field property="numberOfDataPoints" page="0" depends="integer" indexedListProperty="achar.derivedBioAssayDataList">
 				<arg position="0" key="numberOfDataPoints" bundle="submit" />
 			</field>
+			<field property="achar.instrument.otherInstrumentType" page="1" depends="validwhen">
+				<arg position="0" key="otherInstrumentType" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.type!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
+			<field property="achar.instrument.otherManufacturer" page="1" depends="validwhen">
+				<arg position="0" key="otherManufacturer" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.manufacturer!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
 		</form>
 		<form name="invitroImmunotoxicityComplementActivationForm">
 			<field property="achar.numberOfDerivedBioAssayData" page="0" depends="integer">
@@ -187,6 +257,20 @@
 			</field>
 			<field property="numberOfDataPoints" page="0" depends="integer" indexedListProperty="achar.derivedBioAssayDataList">
 				<arg position="0" key="numberOfDataPoints" bundle="submit" />
+			</field>
+			<field property="achar.instrument.otherInstrumentType" page="1" depends="validwhen">
+				<arg position="0" key="otherInstrumentType" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.type!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
+			<field property="achar.instrument.otherManufacturer" page="1" depends="validwhen">
+				<arg position="0" key="otherManufacturer" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.manufacturer!="Other") or (*this*!=null))</var-value>
+				</var>
 			</field>
 		</form>
 		<form name="invitroImmunotoxicityCytokineInductionForm">
@@ -202,6 +286,20 @@
 			<field property="numberOfDataPoints" page="0" depends="integer" indexedListProperty="achar.derivedBioAssayDataList">
 				<arg position="0" key="numberOfDataPoints" bundle="submit" />
 			</field>
+			<field property="achar.instrument.otherInstrumentType" page="1" depends="validwhen">
+				<arg position="0" key="otherInstrumentType" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.type!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
+			<field property="achar.instrument.otherManufacturer" page="1" depends="validwhen">
+				<arg position="0" key="otherManufacturer" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.manufacturer!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
 		</form>
 		<form name="invitroImmunotoxicityChemotaxisForm">
 			<field property="achar.numberOfDerivedBioAssayData" page="0" depends="integer">
@@ -215,6 +313,20 @@
 			</field>
 			<field property="numberOfDataPoints" page="0" depends="integer" indexedListProperty="achar.derivedBioAssayDataList">
 				<arg position="0" key="numberOfDataPoints" bundle="submit" />
+			</field>
+			<field property="achar.instrument.otherInstrumentType" page="1" depends="validwhen">
+				<arg position="0" key="otherInstrumentType" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.type!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
+			<field property="achar.instrument.otherManufacturer" page="1" depends="validwhen">
+				<arg position="0" key="otherManufacturer" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.manufacturer!="Other") or (*this*!=null))</var-value>
+				</var>
 			</field>
 		</form>
 		<form name="invitroImmunotoxicityNKCellCytotoxicActivityForm">
@@ -230,6 +342,20 @@
 			<field property="numberOfDataPoints" page="0" depends="integer" indexedListProperty="achar.derivedBioAssayDataList">
 				<arg position="0" key="numberOfDataPoints" bundle="submit" />
 			</field>
+			<field property="achar.instrument.otherInstrumentType" page="1" depends="validwhen">
+				<arg position="0" key="otherInstrumentType" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.type!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
+			<field property="achar.instrument.otherManufacturer" page="1" depends="validwhen">
+				<arg position="0" key="otherManufacturer" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.manufacturer!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
 		</form>
 		<form name="invitroImmunotoxicityLeukocyteProliferationForm">
 			<field property="achar.numberOfDerivedBioAssayData" page="0" depends="integer">
@@ -243,6 +369,20 @@
 			</field>
 			<field property="numberOfDataPoints" page="0" depends="integer" indexedListProperty="achar.derivedBioAssayDataList">
 				<arg position="0" key="numberOfDataPoints" bundle="submit" />
+			</field>
+			<field property="achar.instrument.otherInstrumentType" page="1" depends="validwhen">
+				<arg position="0" key="otherInstrumentType" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.type!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
+			<field property="achar.instrument.otherManufacturer" page="1" depends="validwhen">
+				<arg position="0" key="otherManufacturer" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.manufacturer!="Other") or (*this*!=null))</var-value>
+				</var>
 			</field>
 		</form>
 		<form name="invitroImmunotoxicityCFU_GMForm">
@@ -258,6 +398,20 @@
 			<field property="numberOfDataPoints" page="0" depends="integer" indexedListProperty="achar.derivedBioAssayDataList">
 				<arg position="0" key="numberOfDataPoints" bundle="submit" />
 			</field>
+			<field property="achar.instrument.otherInstrumentType" page="1" depends="validwhen">
+				<arg position="0" key="otherInstrumentType" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.type!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
+			<field property="achar.instrument.otherManufacturer" page="1" depends="validwhen">
+				<arg position="0" key="otherManufacturer" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.manufacturer!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
 		</form>
 		<form name="invitroImmunotoxicityOxidativeBurstForm">
 			<field property="achar.numberOfDerivedBioAssayData" page="0" depends="integer">
@@ -271,6 +425,20 @@
 			</field>
 			<field property="numberOfDataPoints" page="0" depends="integer" indexedListProperty="achar.derivedBioAssayDataList">
 				<arg position="0" key="numberOfDataPoints" bundle="submit" />
+			</field>
+			<field property="achar.instrument.otherInstrumentType" page="1" depends="validwhen">
+				<arg position="0" key="otherInstrumentType" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.type!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
+			<field property="achar.instrument.otherManufacturer" page="1" depends="validwhen">
+				<arg position="0" key="otherManufacturer" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.manufacturer!="Other") or (*this*!=null))</var-value>
+				</var>
 			</field>
 		</form>
 		<form name="invitroImmunotoxicityPhagocytosisForm">
@@ -286,6 +454,20 @@
 			<field property="numberOfDataPoints" page="0" depends="integer" indexedListProperty="achar.derivedBioAssayDataList">
 				<arg position="0" key="numberOfDataPoints" bundle="submit" />
 			</field>
+			<field property="achar.instrument.otherInstrumentType" page="1" depends="validwhen">
+				<arg position="0" key="otherInstrumentType" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.type!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
+			<field property="achar.instrument.otherManufacturer" page="1" depends="validwhen">
+				<arg position="0" key="otherManufacturer" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.manufacturer!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
 		</form>
 		<form name="invitroCytotoxicityCellViabilityForm">
 			<field property="achar.numberOfDerivedBioAssayData" page="0" depends="integer">
@@ -299,6 +481,20 @@
 			</field>
 			<field property="numberOfDataPoints" page="0" depends="integer" indexedListProperty="achar.derivedBioAssayDataList">
 				<arg position="0" key="numberOfDataPoints" bundle="submit" />
+			</field>
+			<field property="achar.instrument.otherInstrumentType" page="1" depends="validwhen">
+				<arg position="0" key="otherInstrumentType" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.type!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
+			<field property="achar.instrument.otherManufacturer" page="1" depends="validwhen">
+				<arg position="0" key="otherManufacturer" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.manufacturer!="Other") or (*this*!=null))</var-value>
+				</var>
 			</field>
 		</form>
 		<form name="invitroCytotoxicityCaspase3ActivationForm">
@@ -314,6 +510,20 @@
 			<field property="numberOfDataPoints" page="0" depends="integer" indexedListProperty="achar.derivedBioAssayDataList">
 				<arg position="0" key="numberOfDataPoints" bundle="submit" />
 			</field>
+			<field property="achar.instrument.otherInstrumentType" page="1" depends="validwhen">
+				<arg position="0" key="otherInstrumentType" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.type!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
+			<field property="achar.instrument.otherManufacturer" page="1" depends="validwhen">
+				<arg position="0" key="otherManufacturer" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.manufacturer!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
 		</form>
 		<form name="invitroToxicityEnzymeInductionForm">
 			<field property="achar.numberOfDerivedBioAssayData" page="0" depends="integer">
@@ -327,6 +537,20 @@
 			</field>
 			<field property="numberOfDataPoints" page="0" depends="integer" indexedListProperty="achar.derivedBioAssayDataList">
 				<arg position="0" key="numberOfDataPoints" bundle="submit" />
+			</field>
+			<field property="achar.instrument.otherInstrumentType" page="1" depends="validwhen">
+				<arg position="0" key="otherInstrumentType" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.type!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
+			<field property="achar.instrument.otherManufacturer" page="1" depends="validwhen">
+				<arg position="0" key="otherManufacturer" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.manufacturer!="Other") or (*this*!=null))</var-value>
+				</var>
 			</field>
 		</form>
 		<form name="invitroToxicityOxidativeStressForm">
@@ -342,6 +566,20 @@
 			<field property="numberOfDataPoints" page="0" depends="integer" indexedListProperty="achar.derivedBioAssayDataList">
 				<arg position="0" key="numberOfDataPoints" bundle="submit" />
 			</field>
+			<field property="achar.instrument.otherInstrumentType" page="1" depends="validwhen">
+				<arg position="0" key="otherInstrumentType" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.type!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
+			<field property="achar.instrument.otherManufacturer" page="1" depends="validwhen">
+				<arg position="0" key="otherManufacturer" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.manufacturer!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
 		</form>
 		<form name="invitroMetabolicStabilityGlucuronidationSulphationForm">
 			<field property="achar.numberOfDerivedBioAssayData" page="0" depends="integer">
@@ -355,6 +593,20 @@
 			</field>
 			<field property="numberOfDataPoints" page="0" depends="integer" indexedListProperty="achar.derivedBioAssayDataList">
 				<arg position="0" key="numberOfDataPoints" bundle="submit" />
+			</field>
+			<field property="achar.instrument.otherInstrumentType" page="1" depends="validwhen">
+				<arg position="0" key="otherInstrumentType" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.type!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
+			<field property="achar.instrument.otherManufacturer" page="1" depends="validwhen">
+				<arg position="0" key="otherManufacturer" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.manufacturer!="Other") or (*this*!=null))</var-value>
+				</var>
 			</field>
 		</form>
 		<form name="invitroMetabolicStabilityCYP450Form">
@@ -370,6 +622,20 @@
 			<field property="numberOfDataPoints" page="0" depends="integer" indexedListProperty="achar.derivedBioAssayDataList">
 				<arg position="0" key="numberOfDataPoints" bundle="submit" />
 			</field>
+			<field property="achar.instrument.otherInstrumentType" page="1" depends="validwhen">
+				<arg position="0" key="otherInstrumentType" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.type!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
+			<field property="achar.instrument.otherManufacturer" page="1" depends="validwhen">
+				<arg position="0" key="otherManufacturer" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.manufacturer!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
 		</form>
 		<form name="invitroMetabolicStabilityROSForm">
 			<field property="achar.numberOfDerivedBioAssayData" page="0" depends="integer">
@@ -384,6 +650,20 @@
 			<field property="numberOfDataPoints" page="0" depends="integer" indexedListProperty="achar.derivedBioAssayDataList">
 				<arg position="0" key="numberOfDataPoints" bundle="submit" />
 			</field>
+			<field property="achar.instrument.otherInstrumentType" page="1" depends="validwhen">
+				<arg position="0" key="otherInstrumentType" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.type!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
+			<field property="achar.instrument.otherManufacturer" page="1" depends="validwhen">
+				<arg position="0" key="otherManufacturer" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.manufacturer!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
 		</form>
 		<form name="nanoparticleMolecularWeightForm">
 			<field property="achar.characterizationSource" page="1" depends="required">
@@ -391,6 +671,20 @@
 			</field>
 			<field property="achar.viewTitle" page="1" depends="required">
 				<arg position="0" key="viewTitle" bundle="submit" />
+			</field>
+			<field property="achar.instrument.otherInstrumentType" page="1" depends="validwhen">
+				<arg position="0" key="otherInstrumentType" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.type!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
+			<field property="achar.instrument.otherManufacturer" page="1" depends="validwhen">
+				<arg position="0" key="otherManufacturer" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.manufacturer!="Other") or (*this*!=null))</var-value>
+				</var>
 			</field>
 		</form>
 		<form name="nanoparticleMorphologyForm">
@@ -403,6 +697,20 @@
 			<field property="achar.type" page="1" depends="required">
 				<arg position="0" key="nanoparticleMorphologyForm.type" bundle="submit" />
 			</field>
+			<field property="achar.instrument.otherInstrumentType" page="1" depends="validwhen">
+				<arg position="0" key="otherInstrumentType" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.type!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
+			<field property="achar.instrument.otherManufacturer" page="1" depends="validwhen">
+				<arg position="0" key="otherManufacturer" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.manufacturer!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
 		</form>
 		<form name="nanoparticleShapeForm">
 			<field property="achar.characterizationSource" page="1" depends="required">
@@ -413,6 +721,20 @@
 			</field>
 			<field property="achar.type" page="1" depends="required">
 				<arg position="0" key="nanoparticleShapeForm.type" bundle="submit" />
+			</field>
+			<field property="achar.instrument.otherInstrumentType" page="1" depends="validwhen">
+				<arg position="0" key="otherInstrumentType" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.type!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
+			<field property="achar.instrument.otherManufacturer" page="1" depends="validwhen">
+				<arg position="0" key="otherManufacturer" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.manufacturer!="Other") or (*this*!=null))</var-value>
+				</var>
 			</field>
 		</form>
 		<form name="nanoparticleSurfaceForm">
@@ -431,6 +753,20 @@
 			<field property="numberOfMolecules" page="0" depends="integer" indexedListProperty="achar.surfaceChemistries">
 				<arg position="0" key="nanoparticleSurfaceForm.numberOfMolecules" bundle="submit" />
 			</field>
+			<field property="achar.instrument.otherInstrumentType" page="1" depends="validwhen">
+				<arg position="0" key="otherInstrumentType" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.type!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
+			<field property="achar.instrument.otherManufacturer" page="1" depends="validwhen">
+				<arg position="0" key="otherManufacturer" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.manufacturer!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
 		</form>
 		<form name="nanoparticleSolubilityForm">
 			<field property="achar.characterizationSource" page="1" depends="required">
@@ -438,6 +774,20 @@
 			</field>
 			<field property="achar.viewTitle" page="1" depends="required">
 				<arg position="0" key="viewTitle" bundle="submit" />
+			</field>
+			<field property="achar.instrument.otherInstrumentType" page="1" depends="validwhen">
+				<arg position="0" key="otherInstrumentType" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.type!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
+			<field property="achar.instrument.otherManufacturer" page="1" depends="validwhen">
+				<arg position="0" key="otherManufacturer" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.manufacturer!="Other") or (*this*!=null))</var-value>
+				</var>
 			</field>
 		</form>
 		<form name="nanoparticlePurityForm">
@@ -447,6 +797,20 @@
 			<field property="achar.viewTitle" page="1" depends="required">
 				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
+			<field property="achar.instrument.otherInstrumentType" page="1" depends="validwhen">
+				<arg position="0" key="otherInstrumentType" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.type!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
+			<field property="achar.instrument.otherManufacturer" page="1" depends="validwhen">
+				<arg position="0" key="otherManufacturer" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.manufacturer!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
 		</form>
 		<form name="nanoparticleStabilityForm">
 			<field property="achar.characterizationSource" page="1" depends="required">
@@ -454,6 +818,20 @@
 			</field>
 			<field property="achar.viewTitle" page="1" depends="required">
 				<arg position="0" key="viewTitle" bundle="submit" />
+			</field>
+			<field property="achar.instrument.otherInstrumentType" page="1" depends="validwhen">
+				<arg position="0" key="otherInstrumentType" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.type!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
+			<field property="achar.instrument.otherManufacturer" page="1" depends="validwhen">
+				<arg position="0" key="otherManufacturer" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.instrument.manufacturer!="Other") or (*this*!=null))</var-value>
+				</var>
 			</field>
 		</form>
 	</formset>
