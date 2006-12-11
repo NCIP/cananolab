@@ -217,4 +217,14 @@ function getElement(form, elementName) {
     return element;
 }
 
+function disableTextElement(form, elementName) {
+   var element=getElement(form, elementName);
+   element.value="";
+   element.disabled=true;
+}
 
+
+function enableTextElement(form, elementName) {
+   var element=getElement(form, elementName);
+   element.disabled=false;  
+}
