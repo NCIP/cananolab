@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSurfaceAction.java,v 1.13 2006-12-07 17:48:00 pansu Exp $ */
+/* CVS $Id: NanoparticleSurfaceAction.java,v 1.14 2006-12-11 20:43:37 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Surface;
@@ -149,8 +149,13 @@ public class NanoparticleSurfaceAction extends BaseCharacterizationAction {
 		String particleType = (String) theForm.get("particleType");
 		String particleName = (String) theForm.get("particleName");
 		SurfaceBean achar = (SurfaceBean) theForm.get("achar");
-		updateCharacterizationTables(achar);
-		updateSurfaceChemistries(achar);
+		String type = (String) request.getParameter("type");
+		if (type != null && !type.equals("") && type.equals("charTables")) {
+			updateCharacterizationTables(achar);
+		}
+		if (type != null && !type.equals("") && type.equals("surfaceChemistries")) {
+			updateSurfaceChemistries(achar);;
+		}				
 		theForm.set("achar", achar);
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
@@ -163,8 +168,7 @@ public class NanoparticleSurfaceAction extends BaseCharacterizationAction {
 	 * @param particle
 	 */
 	private void updateSurfaceChemistries(SurfaceBean surface) {
-		int surfaceChemistryNum = surface.getNumberOfSurfaceChemistry();
-		// int surfaceGroupNum = Integer.parseInt(numberOfSurfaceGroups);
+		int surfaceChemistryNum = Integer.parseInt(surface.getNumberOfSurfaceChemistries());
 		List<SurfaceChemistryBean> origSurfaceChemistries = surface
 				.getSurfaceChemistries();
 		int origNum = (origSurfaceChemistries == null) ? 0
