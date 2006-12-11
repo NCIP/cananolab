@@ -413,6 +413,15 @@
 			<field property="achar.viewTitle" page="1" depends="required">
 				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
+			<field property="achar.numberOfDerivedBioAssayData" page="0" depends="integer">
+				<arg position="0" key="numberOfDerivedBioAssayData" bundle="submit" />
+			</field>
+			<field property="achar.numberOfSurfaceChemistries" page="0" depends="integer">
+				<arg position="0" key="nanoparticleSurfaceForm.numberOfSurfaceChemistries" bundle="submit" />
+			</field>
+			<field property="numberOfMolecules" page="0" depends="integer" indexedListProperty="achar.surfaceChemistries">
+				<arg position="0" key="nanoparticleSurfaceForm.numberOfMolecules" bundle="submit" />
+			</field>
 		</form>
 		<form name="nanoparticleSolubilityForm">
 			<field property="achar.characterizationSource" page="1" depends="required">
