@@ -135,10 +135,10 @@
 							<td class="label">
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
-										<html:text property="achar.numberOfSurfaceChemistry" />
+										<html:text property="achar.numberOfSurfaceChemistries" />
 									</c:when>
 									<c:otherwise>
-						${nanoparticleSurfaceForm.map.achar.numberOfSurfaceChemistry}&nbsp;
+						${nanoparticleSurfaceForm.map.achar.numberOfSurfaceChemistries}&nbsp;
 									</c:otherwise>
 								</c:choose>
 							</td>
@@ -146,7 +146,7 @@
 								&nbsp;
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
-										<input type="button" onclick="javascript:updateCharts(this.form, 'nanoparticleSurface')" value="Update Surface Chemistries">
+										<input type="button" onclick="javascript:updateSurfaceChemistries(this.form, 'nanoparticleSurface')" value="Update Surface Chemistries">
 									</c:when>
 								</c:choose>
 							</td>
@@ -180,13 +180,13 @@
 												<td class="label">
 													<strong>Number of Molecule </strong>
 												</td>
-												<td class="rightLabel" colspan="2">
+												<td class="rightLabel">
 													<c:choose>
 														<c:when test="${canUserUpdateParticle eq 'true'}">
-															<html:text name="achar.surfaceChemistries" indexed="true" property="numberOfMolecule" /> &nbsp;															
+															<html:text name="achar.surfaceChemistries" indexed="true" property="numberOfMolecules" /> &nbsp;															
 														</c:when>
 														<c:otherwise>
-															${nanoparticleSurfaceForm.map.achar.surfaceChemistries[status.index].numberOfMolecule}&nbsp;
+															${nanoparticleSurfaceForm.map.achar.surfaceChemistries[status.index].numberOfMolecules}&nbsp;
 														</c:otherwise>
 													</c:choose>
 												</td>
