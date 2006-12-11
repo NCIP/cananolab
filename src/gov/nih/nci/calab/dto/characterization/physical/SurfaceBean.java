@@ -31,7 +31,7 @@ public class SurfaceBean extends CharacterizationBean {
 
 	private String isHydrophobic;
 	
-	private int numberOfSurfaceChemistry;
+	private String numberOfSurfaceChemistries;
 
 	private List<SurfaceChemistryBean> surfaceChemistries = new ArrayList<SurfaceChemistryBean>();
 
@@ -46,7 +46,7 @@ public class SurfaceBean extends CharacterizationBean {
 		
 		this.charge = (aChar.getCharge() != null)?aChar.getCharge().getValue():"";
 		this.chargeUnit = (aChar.getCharge() != null)?aChar.getCharge().getUnitOfMeasurement():"";
-		this.isHydrophobic = aChar.getIsHydrophobic().toString();
+		this.isHydrophobic = (aChar.getIsHydrophobic()!=null)?aChar.getIsHydrophobic().toString():"";
 		this.surfaceArea = (aChar.getSurfaceArea() != null)?aChar.getSurfaceArea().getValue().toString():"";
 		this.surfaceAreaUnit = (aChar.getSurfaceArea() != null)?aChar.getSurfaceArea().getUnitOfMeasurement():"";
 		//this.zetaPotential = (aChar.getZetaPotential() != null)?aChar.getZetaPotential().getValue():"";
@@ -56,7 +56,7 @@ public class SurfaceBean extends CharacterizationBean {
 			SurfaceChemistryBean surfaceChemistryBean = new SurfaceChemistryBean(surfaceChemistry);
 			surfaceChemistries.add(surfaceChemistryBean);
 		}
-		this.numberOfSurfaceChemistry = surfaceChemistries.size();
+		this.numberOfSurfaceChemistries = surfaceChemistries.size()+"";
 		
 	}
 
@@ -157,11 +157,11 @@ public class SurfaceBean extends CharacterizationBean {
 	}
 
 
-	public int getNumberOfSurfaceChemistry() {
-		return numberOfSurfaceChemistry;
+	public String getNumberOfSurfaceChemistries() {
+		return numberOfSurfaceChemistries;
 	}
 
-	public void setNumberOfSurfaceChemistry(int numberOfSurfaceChemistry) {
-		this.numberOfSurfaceChemistry = numberOfSurfaceChemistry;
+	public void setNumberOfSurfaceChemistries(String numberOfSurfaceChemistry) {
+		this.numberOfSurfaceChemistries = numberOfSurfaceChemistry;
 	}
 }
