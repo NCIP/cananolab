@@ -7,9 +7,10 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.14 2006-12-08 20:44:00 zengje Exp $ */
+/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.15 2006-12-11 22:26:45 zengje Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
+import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
@@ -129,6 +130,11 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 		SearchNanoparticleService searchtNanoparticleService = new SearchNanoparticleService();
 		ParticleBean particle = searchtNanoparticleService.getGeneralInfo(
 				particleName, particleType);
+		// for disclaimer report list
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		Collection<LabFileBean> reports = searchtNanoparticleService.getReportByParticle(particleName,particleType, user);
+		request.setAttribute("particleReports", reports);
+		
 		request.setAttribute("particle", particle);
 		forward = mapping.findForward("view");
 		request.getSession().setAttribute("newParticleCreated", "true");
@@ -149,8 +155,8 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
 		SearchNanoparticleService searchtNanoparticleService = new SearchNanoparticleService();
-		
-		Collection<LabFileBean> reports = searchtNanoparticleService.getReportByParticle(particleName,particleType);
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		Collection<LabFileBean> reports = searchtNanoparticleService.getReportByParticle(particleName,particleType, user);
 		request.setAttribute("particleReports", reports);
 		forward = mapping.findForward("viewDisclaimer");
 		return forward;
