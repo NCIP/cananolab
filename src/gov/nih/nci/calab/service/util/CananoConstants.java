@@ -198,6 +198,7 @@ public class CananoConstants {
 	public static final String ABBR_MOLECULAR_WEIGHT = "MW";
 	public static final String ABBR_MORPHOLOGY = "MP";
 	public static final String ABBR_SHAPE = "SH";
+	public static final String ABBR_SURFACE = "SF";
 	public static final String ABBR_SOLUBILITY ="SL";
 	public static final String ABBR_PURITY = "PT";
 	public static final String ABBR_OXIDATIVE_STRESS = "OS";
