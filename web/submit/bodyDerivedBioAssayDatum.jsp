@@ -139,7 +139,7 @@
 											<c:when test="${canUserUpdateParticle eq 'true'}">
 												<html:select property="achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].conditionList[${cInd}].valueUnit">
 													<option value=""></option>
-													<option value="${this.form.map.achar.derivedBioAssayDataList[param.chartNum].datumList[dInd].conditionList[cInd].valueUnit" selected>
+													<option value="${this.form.map.achar.derivedBioAssayDataList[param.chartNum].datumList[dInd].conditionList[cInd].valueUnit}" selected>
 														${cdata.valueUnit}
 													</option>
 												</html:select>
