@@ -4,6 +4,50 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
+<script language="JavaScript">
+<!--
+function clearOtherAgents(agentType, elementPrefix) {
+	var sequenceTypes=new Array('peptide', 'dna');
+	var nameTypes=new Array('smallMolecule', 'antibody', 'probe', 'imageContrastAgent');
+	var typeTypes=new Array('probe', 'imageContrastAgent');
+	
+	for (var i=0; i<sequenceTypes.length; i++) {
+	  disableTextElement(nanoparticleFunctionForm, elementPrefix+'.'+sequenceTypes[i]+'.sequence');	  
+	}	
+	for (var i=0; i<nameTypes.length; i++) {
+	  disableTextElement(nanoparticleFunctionForm, elementPrefix+'.'+nameTypes[i]+'.name');
+	}
+	for (var i=0; i<typeTypes.length; i++) {
+	  disableTextElement(nanoparticleFunctionForm, elementPrefix+'.'+typeTypes[i]+'.type');
+	}	
+	disableTextElement(nanoparticleFunctionForm, elementPrefix+'.antibody.species');
+	disableTextElement(nanoparticleFunctionForm, elementPrefix+'.smallMolecule.compoundName');
+	
+	if (agentType =='Peptide') {
+	  enableTextElement(nanoparticleFunctionForm, elementPrefix+'.peptide.sequence');
+	}
+	else if (agentType=='DNA') {
+	  enableTextElement(nanoparticleFunctionForm, elementPrefix+'.dna.sequence');
+	}
+	else if (agentType=='Antibody') {
+	  enableTextElement(nanoparticleFunctionForm, elementPrefix+'.antibody.name');
+	  enableTextElement(nanoparticleFunctionForm, elementPrefix+'.antibody.species');
+	}
+	else if (agentType=='Small Molecule') {
+	  enableTextElement(nanoparticleFunctionForm, elementPrefix+'.smallMolecule.name');
+	  enableTextElement(nanoparticleFunctionForm, elementPrefix+'.smallMolecule.compoundName');
+	}
+	else if (agentType=='Probe') {
+	  enableTextElement(nanoparticleFunctionForm, elementPrefix+'.probe.name');
+	  enableTextElement(nanoparticleFunctionForm, elementPrefix+'.probe.type');
+	}
+	else if (agentType=='Image Contrast Agent') {
+	  enableTextElement(nanoparticleFunctionForm, elementPrefix+'.imageContrastAgent.name');
+	  enableTextElement(nanoparticleFunctionForm, elementPrefix+'.imageContrastAgent.type');
+	}
+}
+//-->
+</script>
 <html:form action="/nanoparticleFunction">
 	<table width="100%" align="center">
 		<tr>
@@ -86,7 +130,8 @@
 															<c:when test="${canUserUpdateParticle eq 'true'}">
 																<tr>
 																	<td class="borderlessLabel">
-																		<html:radio property="function.linkages[${linkageInd}].type" value="Attachment" />
+																		<html:radio property="function.linkages[${linkageInd}].type" value="Attachment"
+																			onclick="javascript:disableTextElement(this.form, 'function.linkages[${linkageInd}].localization');enableTextElement(this.form, 'function.linkages[${linkageInd}].bondType');" />
 																		Attachement
 																	</td>
 																	<td class="borderlessLabel">
@@ -97,7 +142,8 @@
 																</tr>
 																<tr>
 																	<td class="borderlessLabel">
-																		<html:radio property="function.linkages[${linkageInd}].type" value="Encapsulation" />
+																		<html:radio property="function.linkages[${linkageInd}].type" value="Encapsulation"
+																			onclick="javascript:disableTextElement(this.form, 'function.linkages[${linkageInd}].bondType');enableTextElement(this.form, 'function.linkages[${linkageInd}].localization');" />
 																		Encapsulation
 																	</td>
 																	<td class="borderlessLabel">
@@ -108,7 +154,8 @@
 																</tr>
 																<tr>
 																	<td class="borderlessLabel">
-																		<html:radio property="function.linkages[${linkageInd}].type" value="Other" />
+																		<html:radio property="function.linkages[${linkageInd}].type" value="Other"
+																			onclick="javascript:disableTextElement(this.form, 'function.linkages[${linkageInd}].localization');disableTextElement(this.form, 'function.linkages[${linkageInd}].bondType');" />
 																		Other
 																	</td>
 																	<td></td>
@@ -179,7 +226,7 @@
 																<c:forEach var="agentType" items="${allAgentTypes[submitType]}" varStatus="status">
 																	<tr>
 																		<td class="borderlessLabel">
-																			<html:radio property="function.linkages[${linkageInd}].agent.type" value="${agentType}" />
+																			<html:radio property="function.linkages[${linkageInd}].agent.type" value="${agentType}" onclick="javascript:clearOtherAgents('${agentType}', 'function.linkages[${linkageInd}]')" />
 																			${agentType}
 																		</td>
 																		<c:choose>
