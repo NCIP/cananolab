@@ -172,6 +172,10 @@ function updateComposition() {
     document.nanoparticleCompositionForm.action = "nanoparticleComposition.do?dispatch=update&page=0";
     document.nanoparticleCompositionForm.submit();
 }
+function updateSurfaceChemistries(form, actionName) {
+    form.action = actionName + ".do?dispatch=update&page=0&type=surfaceChemistries";
+    form.submit();
+}
 function updateCharts(form, actionName) {
     form.action = actionName + ".do?dispatch=update&page=0&type=charTables";
     form.submit();
