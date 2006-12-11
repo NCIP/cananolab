@@ -486,15 +486,15 @@ insert into NANOPARTICLE(NANOPARTICLE_PK_ID, CLASSIFICATION) select sample_pk_id
 -- insert instrumentType/manufacturer data
 INSERT INTO INSTRUMENT_TYPE ( INSTRUMENT_TYPE_PK_ID, NAME, DESCRIPTION,
 ABBREVIATION ) VALUES ( 
-15, 'Asymmetrical Flow Field Fractionation with Multi-Angle Light Scattering', NULL
+15, 'Asymmetrical Flow Field-Flow Fractionation with Multi-Angle Light Scattering', NULL
 , 'AFFF-MALLS'); 
 INSERT INTO INSTRUMENT_TYPE ( INSTRUMENT_TYPE_PK_ID, NAME, DESCRIPTION,
 ABBREVIATION ) VALUES ( 
-16, 'Size Exclusion Chromatography with Multi-ngle Light Scattering', NULL, 'SEC-MALLS'); 
+16, 'Size Exclusion Chromatography with Multi-Angle Light Scattering', NULL, 'SEC-MALLS'); 
 INSERT INTO INSTRUMENT_TYPE ( INSTRUMENT_TYPE_PK_ID, NAME, DESCRIPTION,
 ABBREVIATION ) VALUES ( 
-17, 'Matrix-Assisted Laser Desorption/Ionisation-Time of Flight Mass Spectrometry '
-, NULL, 'MALDI-TOF MS'); 
+17, 'Matrix-Assisted Laser Desorption/Ionisation-Time of Flight'
+, NULL, 'MALDI-TOF'); 
 INSERT INTO INSTRUMENT_TYPE ( INSTRUMENT_TYPE_PK_ID, NAME, DESCRIPTION,
 ABBREVIATION ) VALUES ( 
 2, 'Refractometer', NULL, NULL); 
@@ -624,3 +624,9 @@ INSTRUMENT_TYPE_PK_ID ) VALUES (
 INSERT INTO INSTRUMENT_TYPE_MANUFACTURER ( MANUFACTURER_PK_ID,
 INSTRUMENT_TYPE_PK_ID ) VALUES ( 
 16, 14); 
+INSERT INTO INSTRUMENT_TYPE_MANUFACTURER ( MANUFACTURER_PK_ID,
+INSTRUMENT_TYPE_PK_ID ) VALUES ( 
+9, 16); 
+INSERT INTO INSTRUMENT_TYPE_MANUFACTURER ( MANUFACTURER_PK_ID,
+INSTRUMENT_TYPE_PK_ID ) VALUES ( 
+13, 1); 
