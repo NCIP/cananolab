@@ -415,7 +415,7 @@ public class SearchNanoparticleService {
 		return filteredReports;
 	}
 	
-	public List<LabFileBean> getReportByParticle(String particleName,String particleType) throws Exception {
+	public List<LabFileBean> getReportByParticle(String particleName,String particleType, UserBean user) throws Exception {
 		List<LabFileBean> fileBeans = new ArrayList<LabFileBean>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
@@ -445,6 +445,11 @@ public class SearchNanoparticleService {
 				fileBean.setName(fileName);
 				fileBeans.add(fileBean);
 			}
+			
+			UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
+
+			fileBeans = userService.getFilteredReports(
+					user, fileBeans);
 		} catch (Exception e) {
 			logger.error("Problem finding report info for particle: "
 					+ particleName);
