@@ -183,7 +183,7 @@
 			pageContext.setAttribute("paramMap", paramMap);
 
 			%>
-									<span class="indented2"> <html:link forward="${aChar.name}" name="paramMap" title="${aChar.name}">${aChar.viewTitle}</html:link> </span>
+									<span class="indented2"> <html:link forward="${aChar.name}" name="paramMap" title="${aChar.name}">${aChar.abbr}:${aChar.viewTitle}</html:link> </span>
 									<br>
 								</c:forEach>
 								<br>
@@ -213,7 +213,7 @@
 			pageContext.setAttribute("toxicityParamMap", toxicityParamMap);
 
 			%>
-									<span class="indented3"> <html:link forward="${aChar.name}" name="toxicityParamMap" title="${aChar.name}">${aChar.viewTitle}</html:link></span>
+									<span class="indented3"> <html:link forward="${aChar.name}" name="toxicityParamMap" title="${aChar.name}">${aChar.abbr}:${aChar.viewTitle}</html:link></span>
 									<br>
 								</c:forEach>
 								<span class="indented3"><strong>-Cytotoxicity</strong> &nbsp;&nbsp;</span>
@@ -241,7 +241,7 @@
 			cytotoxicityParamMap.put("submitType", "cytoTox");
 
 			%>
-									<span class="indented4"> <html:link forward="${aChar.name}" name="cytotoxicityParamMap" title="${aChar.name}">${aChar.viewTitle}</html:link> </span>
+									<span class="indented4"> <html:link forward="${aChar.name}" name="cytotoxicityParamMap" title="${aChar.name}">${aChar.abbr}:${aChar.viewTitle}</html:link> </span>
 									<br>
 								</c:forEach>
 								<span class="indented3"><strong>-Immunotoxicity</strong></span>
@@ -271,7 +271,7 @@
 			bloodContactParamMap.put("submitType", "bloodContactTox");
 
 			%>
-									<span class="indented5"><html:link forward="${aChar.name}" name="bloodContactParamMap" title="${aChar.name}">${aChar.viewTitle}</html:link></span>
+									<span class="indented5"><html:link forward="${aChar.name}" name="bloodContactParamMap" title="${aChar.name}">${aChar.abbr}:${aChar.viewTitle}</html:link></span>
 									<br>
 								</c:forEach>
 								<br>
@@ -299,7 +299,7 @@
 			immuneCellParamMap.put("submitType", "immuneCellFuncTox");
 
 		%>
-									<span class="indented5"> <html:link forward="${aChar.name}" name="immuneCellParamMap" title="${aChar.name}">${aChar.viewTitle}</html:link> </span>
+									<span class="indented5"> <html:link forward="${aChar.name}" name="immuneCellParamMap" title="${aChar.name}">${aChar.abbr}:${aChar.viewTitle}</html:link> </span>
 									<br>
 								</c:forEach>
 								<br>
