@@ -18,7 +18,7 @@ import java.util.List;
  * 
  */
 public class DatumBean {
-	
+
 	private String id;
 
 	private String type;
@@ -26,40 +26,45 @@ public class DatumBean {
 	private String value;
 
 	private String valueUnit;
-	
+
 	private String isAControl = CananoConstants.BOOLEAN_NO;
-	
+
 	private ControlBean control = new ControlBean();
 
 	private List<ConditionBean> conditionList = new ArrayList<ConditionBean>();
-	
+
 	private String numberOfConditions;
 
 	public DatumBean() {
 	}
-	
+
 	public DatumBean(Datum datum) {
 		this.id = datum.getId().toString();
 		this.type = datum.getType();
-		this.value = (datum.getValue()!=null)?StringUtils.convertToString(datum.getValue().getValue()):"";
-		this.valueUnit = (datum.getValue()!=null)?StringUtils.convertToString(datum.getValue().getUnitOfMeasurement()):"";
-		
+		this.value = (datum.getValue() != null) ? StringUtils
+				.convertToString(datum.getValue().getValue()) : "";
+		this.valueUnit = (datum.getValue() != null) ? StringUtils
+				.convertToString(datum.getValue().getUnitOfMeasurement()) : "";
+
 		Control controlObj = datum.getControl();
 		if (controlObj != null) {
 			control = new ControlBean();
 			control.setName(controlObj.getName());
 			control.setType(controlObj.getType());
-		} 
-		else {
-			if ( datum.getConditionCollection() != null && datum.getConditionCollection().size() > 0 ) {
-				conditionList = new ArrayList<ConditionBean>();
-				for (Condition conditionData : datum.getConditionCollection()) {
-					ConditionBean cBean = new ConditionBean(conditionData);
-					conditionList.add(cBean);
-				}
+			isAControl = CananoConstants.BOOLEAN_YES;
+		} else {
+			isAControl = CananoConstants.BOOLEAN_NO;
+		}
+		if (datum.getConditionCollection() != null
+				&& datum.getConditionCollection().size() > 0) {
+			conditionList = new ArrayList<ConditionBean>();
+			for (Condition conditionData : datum.getConditionCollection()) {
+				ConditionBean cBean = new ConditionBean(conditionData);
+				conditionList.add(cBean);
 			}
 		}
-		this.numberOfConditions=conditionList.size()+"";
+
+		this.numberOfConditions = conditionList.size() + "";
 	}
 
 	public String getId() {
@@ -106,8 +111,7 @@ public class DatumBean {
 		return conditionList;
 	}
 
-	public void setConditionList(
-			List<ConditionBean> conditionList) {
+	public void setConditionList(List<ConditionBean> conditionList) {
 		this.conditionList = conditionList;
 	}
 
@@ -125,17 +129,20 @@ public class DatumBean {
 			tableData.setId(new Long(getId()));
 		}
 		tableData.setType(type);
-		Measurement measurement=new Measurement();
+		Measurement measurement = new Measurement();
 		measurement.setValue(value);
 		measurement.setUnitOfMeasurement(valueUnit);
 		tableData.setValue(measurement);
-		
-		if ( this.getConditionList() != null && this.getConditionList().size() > 0 ) {
+
+		if (this.getConditionList() != null
+				&& this.getConditionList().size() > 0) {
 			for (ConditionBean condition : this.getConditionList()) {
-				tableData.getConditionCollection().add(condition.getDomainObj());
+				tableData.getConditionCollection()
+						.add(condition.getDomainObj());
 			}
 		}
-		else {		
+
+		if (isAControl.equals(CananoConstants.BOOLEAN_YES)) {
 			Control control = new Control();
 			if (getControl() != null) {
 				if (getControl().getId() != null)
@@ -145,7 +152,7 @@ public class DatumBean {
 				tableData.setControl(control);
 			}
 		}
-		
+
 		return tableData;
 	}
 
