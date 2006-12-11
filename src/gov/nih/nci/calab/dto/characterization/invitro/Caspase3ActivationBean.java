@@ -1,9 +1,9 @@
 package gov.nih.nci.calab.dto.characterization.invitro;
 
-import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.invitro.Caspase3Activation;
-
-import gov.nih.nci.calab.dto.characterization.*;
+import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
+import gov.nih.nci.calab.dto.characterization.DatumBean;
+import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.service.util.CananoConstants;
 
 import java.util.List;
