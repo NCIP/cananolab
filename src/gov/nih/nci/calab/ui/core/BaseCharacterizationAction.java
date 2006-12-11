@@ -36,7 +36,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 
-/* CVS $Id: BaseCharacterizationAction.java,v 1.15 2006-12-07 17:46:31 pansu Exp $ */
+/* CVS $Id: BaseCharacterizationAction.java,v 1.16 2006-12-11 20:43:28 pansu Exp $ */
 
 public abstract class BaseCharacterizationAction extends AbstractDispatchAction {
 	/**
@@ -75,7 +75,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		InitSessionSetup.getInstance().setAllConditionTypes(session);
 		InitSessionSetup.getInstance().setAllConditionUnits(session);
 		InitSessionSetup.getInstance().setAllConcentrationUnits(session);
-		InitSessionSetup.getInstance().setAllTimeUnits(session);		
+		InitSessionSetup.getInstance().setAllTimeUnits(session);
 	}
 
 	/**
@@ -221,8 +221,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		request.setAttribute("particleName", particleName);
 		request.setAttribute("fileNumber", fileNumber);
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		List<LabFileBean> files = service
-				.getAllRunFiles(particleName);
+		List<LabFileBean> files = service.getAllRunFiles(particleName);
 		request.setAttribute("allRunFiles", files);
 		setLoadFileRequest(request);
 		return mapping.findForward("loadFile");
@@ -295,10 +294,12 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		if (type != null && !type.equals("") && type.equals("conditions")) {
 			if (!updateConditions(achar, index, dataPointIndex)) {
 
-				Exception updateConditionsException = new Exception(PropertyReader.getProperty(
-							CalabConstants.SUBMISSION_PROPERTY, "numberOfConditions"));							
+				Exception updateConditionsException = new Exception(
+						PropertyReader.getProperty(
+								CalabConstants.SUBMISSION_PROPERTY,
+								"numberOfConditions"));
 				throw updateConditionsException;
-				
+
 			}
 		}
 		String particleType = (String) theForm.get("particleType");
@@ -311,10 +312,10 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 	}
 
 	public void updateCharacterizationTables(CharacterizationBean achar) {
-		// String numberOfCharacterizationTables = achar
-		// .getNumberOfDerivedBioAssayData();
-		// int tableNum = Integer.parseInt(numberOfCharacterizationTables);
-		int tableNum = achar.getNumberOfDerivedBioAssayData();
+		String numberOfCharacterizationTables = achar
+				.getNumberOfDerivedBioAssayData();
+		int tableNum = Integer.parseInt(numberOfCharacterizationTables);
+
 		List<DerivedBioAssayDataBean> origTables = achar
 				.getDerivedBioAssayDataList();
 		int origNum = (origTables == null) ? 0 : origTables.size();
