@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.79 2006-12-07 19:34:00 zengje Exp $ */
+/* CVS $Id: LookupService.java,v 1.80 2006-12-11 22:24:45 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -786,9 +786,12 @@ public class LookupService {
 					"Problem to retrieve all intrument types. ");
 		} finally {
 			ida.close();
-		}
-
-		return (String[]) instrumentTypes.toArray(new String[0]);
+		}		
+		//add Other to the end
+		List<String>instrumentTypeList=new ArrayList<String>(instrumentTypes);
+		instrumentTypeList.add("Other");
+		
+		return (String[]) instrumentTypeList.toArray(new String[0]);
 	}
 
 	public Map<String, SortedSet<String>> getAllInstrumentManufacturers()
