@@ -12,7 +12,7 @@ import gov.nih.nci.calab.domain.nano.characterization.physical.SurfaceChemistry;
 public class SurfaceChemistryBean {
 	private String id;
 	private String moleculeName;
-	private String numberOfMolecule;
+	private String numberOfMolecules;
 
 	/**
 	 * 
@@ -23,7 +23,7 @@ public class SurfaceChemistryBean {
 	public SurfaceChemistryBean(SurfaceChemistry surfaceChemistry) {
 		this.id = surfaceChemistry.getId().toString();
 		this.moleculeName = surfaceChemistry.getMoleculeName();
-		this.numberOfMolecule = surfaceChemistry.getNumberOfMolecule().toString();
+		this.numberOfMolecules = surfaceChemistry.getNumberOfMolecule().toString();
 	}
 	
 	public String getId() {
@@ -44,7 +44,7 @@ public class SurfaceChemistryBean {
 	
 	public SurfaceChemistry getDomainObj() {
 		SurfaceChemistry surfaceChemistry = new SurfaceChemistry();
-		surfaceChemistry.setNumberOfMolecule((getNumberOfMolecule()!= null)?Integer.parseInt(getNumberOfMolecule()):null);
+		surfaceChemistry.setNumberOfMolecule((getNumberOfMolecules()!= null)?Integer.parseInt(getNumberOfMolecules()):null);
 		surfaceChemistry.setMoleculeName(getMoleculeName());
 		if (getId()!=null&&getId().length() > 0) {
 			surfaceChemistry.setId(new Long(getId()));
@@ -52,12 +52,12 @@ public class SurfaceChemistryBean {
 		return surfaceChemistry;
 	}
 
-	public String getNumberOfMolecule() {
-		return numberOfMolecule;
+	public String getNumberOfMolecules() {
+		return numberOfMolecules;
 	}
 
-	public void setNumberOfMolecule(String numberOfMolecule) {
-		this.numberOfMolecule = numberOfMolecule;
+	public void setNumberOfMolecules(String numberOfMolecule) {
+		this.numberOfMolecules = numberOfMolecule;
 	}
 
 }
