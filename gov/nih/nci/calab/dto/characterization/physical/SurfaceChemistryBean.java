@@ -23,7 +23,7 @@ public class SurfaceChemistryBean {
 	public SurfaceChemistryBean(SurfaceChemistry surfaceChemistry) {
 		this.id = surfaceChemistry.getId().toString();
 		this.moleculeName = surfaceChemistry.getMoleculeName();
-		this.numberOfMolecules = surfaceChemistry.getNumberOfMolecule().toString();
+		this.numberOfMolecules = (surfaceChemistry.getNumberOfMolecule()==null)?"0":surfaceChemistry.getNumberOfMolecule().toString();
 	}
 	
 	public String getId() {
@@ -44,7 +44,7 @@ public class SurfaceChemistryBean {
 	
 	public SurfaceChemistry getDomainObj() {
 		SurfaceChemistry surfaceChemistry = new SurfaceChemistry();
-		surfaceChemistry.setNumberOfMolecule((getNumberOfMolecules()!= null)?Integer.parseInt(getNumberOfMolecules()):null);
+		surfaceChemistry.setNumberOfMolecule((getNumberOfMolecules().length()>0)?Integer.parseInt(getNumberOfMolecules()):null);
 		surfaceChemistry.setMoleculeName(getMoleculeName());
 		if (getId()!=null&&getId().length() > 0) {
 			surfaceChemistry.setId(new Long(getId()));
