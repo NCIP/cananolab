@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleMolecularWeightAction.java,v 1.11 2006-12-07 17:48:00 pansu Exp $ */
+/* CVS $Id: NanoparticleMolecularWeightAction.java,v 1.12 2006-12-12 00:01:08 zengje Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.MolecularWeight;
@@ -16,6 +16,7 @@ import gov.nih.nci.calab.dto.characterization.physical.MolecularWeightBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
+import gov.nih.nci.calab.service.util.CananoConstants;
 import gov.nih.nci.calab.ui.core.BaseCharacterizationAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
@@ -78,7 +79,7 @@ public class NanoparticleMolecularWeightAction extends
 				} catch (NumberFormatException formatE) {
 					ActionMessages msgs = new ActionMessages();
 					ActionMessage msg = new ActionMessage("errors.float",
-							new String[] { "PDI " });
+							new String[] { CananoConstants.PHYSICAL_MOLECULAR_WEIGHT });
 					msgs.add("message", msg);
 					saveMessages(request, msgs);
 					forward = mapping.findForward("input");
