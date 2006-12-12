@@ -25,8 +25,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td colspan="2">
-				<c:set var="thisForm" value="${nanoparticleSurfaceForm}" />
+			<td colspan="2">				
 				<jsp:include page="/bodyMessage.jsp?bundle=submit" />
 				<jsp:include page="bodySharedCharacterizationSummary.jsp?formName=nanoparticleSurfaceForm" />
 				<jsp:include page="bodySharedCharacterizationInstrument.jsp?formName=nanoparticleSurfaceForm" />
