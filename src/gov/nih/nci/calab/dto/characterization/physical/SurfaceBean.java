@@ -146,7 +146,7 @@ public class SurfaceBean extends CharacterizationBean {
 		surface.setIsHydrophobic(hycrophobicStatus);
 		surface.setCharge(new Measurement(charge,chargeUnit));
 		//surface.setZetaPotential(new Measurement(zetaPotential, "mV"));
-		surface.setZetaPotential(new Float(zetaPotential));
+		surface.setZetaPotential((zetaPotential.length()==0)?null:new Float(zetaPotential));
 		
 		surface.setSurfaceArea(new Measurement(surfaceArea, surfaceAreaUnit));
 		
