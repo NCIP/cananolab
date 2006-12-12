@@ -34,8 +34,8 @@ public class ShapeBean extends CharacterizationBean {
 		super(aChar);
 
 		this.type = aChar.getType();
-		this.minDimension = aChar.getMinDimension().toString();
-		this.maxDimension = aChar.getMaxDimension().toString();
+		this.minDimension = (aChar.getMinDimension()!=null)?aChar.getMinDimension().toString():"";
+		this.maxDimension = (aChar.getMaxDimension()!=null)?aChar.getMaxDimension().toString():"";
 		this.minDimensionUnit = "nm";
 		this.maxDimensionUnit = "nm";
 	}
@@ -73,9 +73,9 @@ public class ShapeBean extends CharacterizationBean {
 		} else {
 			shape.setType(this.type);
 		}
-			
-		shape.setMinDimension(Float.valueOf(this.minDimension));
-		shape.setMaxDimension(Float.valueOf(this.maxDimension));
+		
+		shape.setMinDimension((this.minDimension.length()==0)?null:Float.valueOf(this.minDimension));
+		shape.setMaxDimension((this.maxDimension.length()==0)?null:Float.valueOf(this.maxDimension));
 		
 		return shape;
 	}
