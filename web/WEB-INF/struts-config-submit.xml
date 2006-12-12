@@ -222,7 +222,7 @@
 			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.PhagocytosisBean" />
 			<form-property name="fileNumber" type="java.lang.String" />
 			<form-property name="characterizationId" type="java.lang.String" />
-	</form-bean>
+		</form-bean>
 		<form-bean name="invitroCytotoxicityCaspase3ActivationForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="dispatch" type="java.lang.String" />
 			<form-property name="page" type="java.lang.Integer" initial="0" />
@@ -311,7 +311,7 @@
 			<form-property name="particleName" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />
 			<form-property name="function" type="gov.nih.nci.calab.dto.function.FunctionBean" />
-			<form-property name="functionId" type="java.lang.String" />			
+			<form-property name="functionId" type="java.lang.String" />
 		</form-bean>
 	</form-beans>
 	<global-forwards>
@@ -372,7 +372,7 @@
 		<forward name="Glucuronidation, Sulphation" path="invitroMetabolicStabilityGlucuronidationSulphation.do?page=0" />
 		<forward name="invitroGlucuronidationSulphationForm" path="submit.addmetabolicstability.glucuronidationsulphation" />
 		<forward name="function" path="nanoparticleFunction.do?page=0" />
-		<forward name="Solubility" path="nanoparticleSolubility.do?page=0" />						
+		<forward name="Solubility" path="nanoparticleSolubility.do?page=0" />
 		<forward name="Purity" path="nanoparticlePurity.do?page=0" />
 		<forward name="Stability" path="nanoparticleStability.do?page=0" />
 	</global-forwards>
@@ -407,176 +407,207 @@
 		</action>
 		<action name="nanoparticleSizeForm" parameter="dispatch" path="/nanoparticleSize" type="gov.nih.nci.calab.ui.submit.NanoparticleSizeAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addParticleSize" path="submit.addparticle.size" type="java.lang.Exception" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.download.file" path="home.error" type="gov.nih.nci.calab.exception.CalabException" />
 			<forward name="success" path="submit.message" />
 			<forward name="input" path="submit.addparticle.size" />
 			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
 		</action>
 		<action name="nanoparticleSurfaceForm" parameter="dispatch" path="/nanoparticleSurface" type="gov.nih.nci.calab.ui.submit.NanoparticleSurfaceAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addParticleSurface" path="submit.addparticle.surface" type="java.lang.Exception" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.download.file" path="home.error" type="gov.nih.nci.calab.exception.CalabException" />
 			<forward name="success" path="submit.message" />
 			<forward name="input" path="submit.addparticle.surface" />
 			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
 		</action>
 		<action name="nanoparticleMolecularWeightForm" parameter="dispatch" path="/nanoparticleMolecularWeight" type="gov.nih.nci.calab.ui.submit.NanoparticleMolecularWeightAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addParticleMolecularWeight" path="submit.addparticle.molecularweight" type="java.lang.Exception" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.download.file" path="home.error" type="gov.nih.nci.calab.exception.CalabException" />
 			<forward name="success" path="submit.message" />
 			<forward name="input" path="submit.addparticle.molecularweight" />
 			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
 		</action>
 		<action name="nanoparticleMorphologyForm" parameter="dispatch" path="/nanoparticleMorphology" type="gov.nih.nci.calab.ui.submit.NanoparticleMorphologyAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addParticleMorphology" path="submit.addparticle.morphology" type="java.lang.Exception" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.download.file" path="home.error" type="gov.nih.nci.calab.exception.CalabException" />
 			<forward name="success" path="submit.message" />
 			<forward name="input" path="submit.addparticle.morphology" />
 			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
 		</action>
 		<action name="nanoparticleShapeForm" parameter="dispatch" path="/nanoparticleShape" type="gov.nih.nci.calab.ui.submit.NanoparticleShapeAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addParticleShape" path="submit.addparticle.shape" type="java.lang.Exception" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.download.file" path="home.error" type="gov.nih.nci.calab.exception.CalabException" />
 			<forward name="success" path="submit.message" />
 			<forward name="input" path="submit.addparticle.shape" />
 			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
 		</action>
 		<action name="nanoparticleStabilityForm" parameter="dispatch" path="/nanoparticleStability" type="gov.nih.nci.calab.ui.submit.NanoparticleStabilityAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addParticleStability" path="submit.addparticle.stability" type="java.lang.Exception" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.download.file" path="home.error" type="gov.nih.nci.calab.exception.CalabException" />
 			<forward name="success" path="submit.message" />
 			<forward name="input" path="submit.addparticle.stability" />
 			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
 		</action>
 		<action name="nanoparticlePurityForm" parameter="dispatch" path="/nanoparticlePurity" type="gov.nih.nci.calab.ui.submit.NanoparticlePurityAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addParticlePurity" path="submit.addparticle.purity" type="java.lang.Exception" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.download.file" path="home.error" type="gov.nih.nci.calab.exception.CalabException" />
 			<forward name="success" path="submit.message" />
 			<forward name="input" path="submit.addparticle.purity" />
 			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
 		</action>
 		<action name="nanoparticleSolubilityForm" parameter="dispatch" path="/nanoparticleSolubility" type="gov.nih.nci.calab.ui.submit.NanoparticleSolubilityAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addParticleSolubility" path="submit.addparticle.solubility" type="java.lang.Exception" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.download.file" path="home.error" type="gov.nih.nci.calab.exception.CalabException" />
 			<forward name="success" path="submit.message" />
 			<forward name="input" path="submit.addparticle.solubility" />
 			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
 		</action>
 		<action name="invitroImmunotoxicityHemolysisForm" parameter="dispatch" path="/invitroImmunotoxicityHemolysis" type="gov.nih.nci.calab.ui.submit.InvitroHemolysisAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroHemolysis" path="submit.addimmunotoxicity.hemolysis" type="java.lang.Exception" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.download.file" path="home.error" type="gov.nih.nci.calab.exception.CalabException" />
 			<forward name="success" path="submit.message" />
 			<forward name="input" path="submit.addimmunotoxicity.hemolysis" />
 			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
 		</action>
 		<action name="invitroImmunotoxicityPlateAggregationForm" parameter="dispatch" path="/invitroImmunotoxicityPlateAggregation" type="gov.nih.nci.calab.ui.submit.InvitroPlateAggregationAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroPlateAggregation" path="submit.addimmunotoxicity.plateaggregation" type="java.lang.Exception" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.download.file" path="home.error" type="gov.nih.nci.calab.exception.CalabException" />
 			<forward name="success" path="submit.message" />
 			<forward name="input" path="submit.addimmunotoxicity.plateaggregation" />
 			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
 		</action>
 		<action name="invitroImmunotoxicityCoagulationForm" parameter="dispatch" path="/invitroImmunotoxicityCoagulation" type="gov.nih.nci.calab.ui.submit.InvitroCoagulationAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroCoagulation" path="submit.addimmunotoxicity.coagulation" type="java.lang.Exception" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.download.file" path="home.error" type="gov.nih.nci.calab.exception.CalabException" />
 			<forward name="success" path="submit.message" />
 			<forward name="input" path="submit.addimmunotoxicity.coagulation" />
 			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
 		</action>
 		<action name="invitroImmunotoxicityProteinBindingForm" parameter="dispatch" path="/invitroImmunotoxicityProteinBinding" type="gov.nih.nci.calab.ui.submit.InvitroProteinBindingAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroProteinBinding" path="submit.addimmunotoxicity.plasmaproteinbinding" type="java.lang.Exception" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.download.file" path="home.error" type="gov.nih.nci.calab.exception.CalabException" />
 			<forward name="success" path="submit.message" />
 			<forward name="input" path="submit.addimmunotoxicity.plasmaproteinbinding" />
 			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
 		</action>
 		<action name="invitroImmunotoxicityComplementActivationForm" parameter="dispatch" path="/invitroImmunotoxicityComplementActivation" type="gov.nih.nci.calab.ui.submit.InvitroComplementActivationAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroComplementActivation" path="submit.addimmunotoxicity.complementactivation" type="java.lang.Exception" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.download.file" path="home.error" type="gov.nih.nci.calab.exception.CalabException" />
 			<forward name="success" path="submit.message" />
 			<forward name="input" path="submit.addimmunotoxicity.complementactivation" />
 			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
 		</action>
 		<action name="invitroImmunotoxicityCytokineInductionForm" parameter="dispatch" path="/invitroImmunotoxicityCytokineInduction" type="gov.nih.nci.calab.ui.submit.InvitroCytokineInductionAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroCytokineInduction" path="submit.addimmunotoxicity.cytokineinduction" type="java.lang.Exception" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.download.file" path="home.error" type="gov.nih.nci.calab.exception.CalabException" />
 			<forward name="success" path="submit.message" />
 			<forward name="input" path="submit.addimmunotoxicity.cytokineinduction" />
 			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
 		</action>
 		<action name="invitroImmunotoxicityChemotaxisForm" parameter="dispatch" path="/invitroImmunotoxicityChemotaxis" type="gov.nih.nci.calab.ui.submit.InvitroChemotaxisAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroChemotaxis" path="submit.addimmunotoxicity.chemotaxis" type="java.lang.Exception" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.download.file" path="home.error" type="gov.nih.nci.calab.exception.CalabException" />
 			<forward name="success" path="submit.message" />
 			<forward name="input" path="submit.addimmunotoxicity.chemotaxis" />
 			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
 		</action>
 		<action name="invitroImmunotoxicityNKCellCytotoxicActivityForm" parameter="dispatch" path="/invitroImmunotoxicityNKCellCytotoxicActivity" type="gov.nih.nci.calab.ui.submit.InvitroNKCellCytotoxicActivityAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroNKCellCytotoxicActivity" path="submit.addimmunotoxicity.nkcellcytotoxicactivity" type="java.lang.Exception" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.download.file" path="home.error" type="gov.nih.nci.calab.exception.CalabException" />
 			<forward name="success" path="submit.message" />
 			<forward name="input" path="submit.addimmunotoxicity.nkcellcytotoxicactivity" />
 			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
 		</action>
 		<action name="invitroImmunotoxicityLeukocyteProliferationForm" parameter="dispatch" path="/invitroImmunotoxicityLeukocyteProliferation" type="gov.nih.nci.calab.ui.submit.InvitroLeukocyteProliferationAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroLeukocyteProliferation" path="submit.addimmunotoxicity.leukocyteproliferation" type="java.lang.Exception" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.download.file" path="home.error" type="gov.nih.nci.calab.exception.CalabException" />
 			<forward name="success" path="submit.message" />
 			<forward name="input" path="submit.addimmunotoxicity.leukocyteproliferation" />
 			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
 		</action>
 		<action name="invitroImmunotoxicityCFU_GMForm" parameter="dispatch" path="/invitroImmunotoxicityCFU-GM" type="gov.nih.nci.calab.ui.submit.InvitroCFU_GMAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroCFU_GM" path="submit.addimmunotoxicity.cfu_gm" type="java.lang.Exception" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.download.file" path="home.error" type="gov.nih.nci.calab.exception.CalabException" />
 			<forward name="success" path="submit.message" />
 			<forward name="input" path="submit.addimmunotoxicity.cfu_gm" />
 			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
 		</action>
 		<action name="invitroImmunotoxicityOxidativeBurstForm" parameter="dispatch" path="/invitroImmunotoxicityOxidativeBurst" type="gov.nih.nci.calab.ui.submit.InvitroOxidativeBurstAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroOxidativeBurst" path="submit.addimmunotoxicity.oxidativeburst" type="java.lang.Exception" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.download.file" path="home.error" type="gov.nih.nci.calab.exception.CalabException" />
 			<forward name="success" path="submit.message" />
 			<forward name="input" path="submit.addimmunotoxicity.oxidativeburst" />
 			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
 		</action>
 		<action name="invitroImmunotoxicityPhagocytosisForm" parameter="dispatch" path="/invitroImmunotoxicityPhagocytosis" type="gov.nih.nci.calab.ui.submit.InvitroPhagocytosisAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroPhagocytosis" path="submit.addimmunotoxicity.phagocytosis" type="java.lang.Exception" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.download.file" path="home.error" type="gov.nih.nci.calab.exception.CalabException" />
 			<forward name="success" path="submit.message" />
 			<forward name="input" path="submit.addimmunotoxicity.phagocytosis" />
 			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
 		</action>
 		<action name="invitroCytotoxicityCellViabilityForm" parameter="dispatch" path="/invitroCytotoxicityCellViability" type="gov.nih.nci.calab.ui.submit.InvitroCellViabilityAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroCellViability" path="submit.addcytotoxicity.cellviability" type="java.lang.Exception" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.download.file" path="home.error" type="gov.nih.nci.calab.exception.CalabException" />
 			<forward name="success" path="submit.message" />
 			<forward name="input" path="submit.addcytotoxicity.cellviability" />
 			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
 		</action>
 		<action name="invitroCytotoxicityCaspase3ActivationForm" parameter="dispatch" path="/invitroCytotoxicityCaspase3Activation" type="gov.nih.nci.calab.ui.submit.InvitroCaspase3ActivationAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroCaspase3Activation" path="submit.addcytotoxicity.caspase3activation" type="java.lang.Exception" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.download.file" path="home.error" type="gov.nih.nci.calab.exception.CalabException" />
 			<forward name="success" path="submit.message" />
 			<forward name="input" path="submit.addcytotoxicity.caspase3activation" />
 			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
 		</action>
 		<action name="invitroToxicityEnzymeInductionForm" parameter="dispatch" path="/invitroToxicityEnzymeInduction" type="gov.nih.nci.calab.ui.submit.InvitroEnzymeInductionAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroEnzymeInduction" path="submit.addtoxicity.enzymeinduction" type="java.lang.Exception" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.download.file" path="home.error" type="gov.nih.nci.calab.exception.CalabException" />
 			<forward name="success" path="submit.message" />
 			<forward name="input" path="submit.addtoxicity.enzymeinduction" />
 			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
 		</action>
 		<action name="invitroToxicityOxidativeStressForm" parameter="dispatch" path="/invitroToxicityOxidativeStress" type="gov.nih.nci.calab.ui.submit.InvitroOxidativeStressAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroOxidativeStress" path="submit.addtoxicity.oxidativestress" type="java.lang.Exception" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.download.file" path="home.error" type="gov.nih.nci.calab.exception.CalabException" />
 			<forward name="success" path="submit.message" />
 			<forward name="input" path="submit.addtoxicity.oxidativestress" />
 			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
 		</action>
 		<action name="invitroMetabolicStabilityGlucuronidationSulphationForm" parameter="dispatch" path="/invitroMetabolicStabilityGlucuronidationSulphation" type="gov.nih.nci.calab.ui.submit.InvitroGlucuronidationSulphationAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroGlucuronidationSulphation" path="submit.addmetabolicstability.glucuronidationsulphation" type="java.lang.Exception" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.download.file" path="home.error" type="gov.nih.nci.calab.exception.CalabException" />
 			<forward name="success" path="submit.message" />
 			<forward name="input" path="submit.addmetabolicstability.glucuronidationsulphation" />
 			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
 		</action>
 		<action name="invitroMetabolicStabilityCYP450Form" parameter="dispatch" path="/invitroMetabolicStabilityCYP450" type="gov.nih.nci.calab.ui.submit.InvitroCYP450Action" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroCYP450" path="submit.addmetabolicstability.cyp450" type="java.lang.Exception" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.download.file" path="home.error" type="gov.nih.nci.calab.exception.CalabException" />
 			<forward name="success" path="submit.message" />
 			<forward name="input" path="submit.addmetabolicstability.cyp450" />
 			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
 		</action>
 		<action name="invitroMetabolicStabilityROSForm" parameter="dispatch" path="/invitroMetabolicStabilityROS" type="gov.nih.nci.calab.ui.submit.InvitroROSAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroROS" path="submit.addmetabolicstability.ros" type="java.lang.Exception" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.download.file" path="home.error" type="gov.nih.nci.calab.exception.CalabException" />
 			<forward name="success" path="submit.message" />
 			<forward name="input" path="submit.addmetabolicstability.ros" />
 			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
 		</action>
 		<action name="loadDerivedBioAssayDataForm" parameter="dispatch" path="/loadFile" type="gov.nih.nci.calab.ui.submit.LoadDerivedBioAssayDataAction" input="input" scope="request">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.loadDerivedBioAssayData" path="submit.load.characterization.table" type="java.lang.Exception" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.download.file" path="home.error" type="gov.nih.nci.calab.exception.CalabException" />
 			<forward name="input" path="submit.load.characterization.table" />
 		</action>
-		<action name="nanoparticleFunctionForm" parameter="dispatch" path="/nanoparticleFunction" type="gov.nih.nci.calab.ui.submit.NanoparticleFunctionAction" input="input" >
+		<action name="nanoparticleFunctionForm" parameter="dispatch" path="/nanoparticleFunction" type="gov.nih.nci.calab.ui.submit.NanoparticleFunctionAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addparticle.function" path="submit.addparticle.function" type="java.lang.Exception" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.download.file" path="home.error" type="gov.nih.nci.calab.exception.CalabException" />
 			<forward name="success" path="submit.message" />
 			<forward name="input" path="submit.addparticle.function" />
 		</action>
 		<action path="/submitAction" type="gov.nih.nci.calab.ui.core.BaseForwardAction" parameter="submit.action.message" scope="request" />
+		<action path="/viewAssayResultFile" type="gov.nih.nci.calab.ui.core.BaseForwardAction" parameter="submit.assayresult.file.view" scope="request" />
+		<action path="/viewReportFile" type="gov.nih.nci.calab.ui.core.BaseForwardAction" parameter="submit.report.view" scope="request" />
 	</action-mappings>
 </struts-config>
 
