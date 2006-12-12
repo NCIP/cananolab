@@ -597,4 +597,16 @@
 		<put name="menu" value="submit" />
 	</definition>
 
+	<!-- definition for the view report/associated file page -->
+	<definition name="submit.report.view.content" extends="submit.content.home">
+		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
+		<put name="submitContent" value="/submit/bodyViewReportFile.jsp" />
+	</definition>
+
+	<definition name="submit.report.view" extends="calab.home">
+		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
+		<put name="calabContent" value="submit.report.view.content" />
+		<put name="menu" value="submit" />
+	</definition>
+
 </tiles-definitions>
