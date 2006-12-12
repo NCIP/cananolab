@@ -25,41 +25,10 @@
 			</td>
 		</tr>
 		<tr>
-			<td colspan="2">
-				<c:set var="thisForm" value="${nanoparticlePurityForm}" />
+			<td colspan="2">				
 				<jsp:include page="/bodyMessage.jsp?bundle=submit" />
-				<jsp:include page="bodySharedCharacterizationSummary.jsp" />
-				<jsp:include page="bodySharedCharacterizationInstrument.jsp" />
-				<%-- 
-				<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
-					<tbody>
-						<tr class="topBorder">
-							<td class="formTitle" colspan="6">
-								<div align="justify">
-									Purity Property
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td class="leftLabel" valign="top">
-								<strong>Description</strong>
-							</td>
-							<td class="rightLabel" colspan="3">
-								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
-										<html:textarea property="achar.description" rows="3" />
-									</c:when>
-									<c:otherwise>
-											${thisForm.map.achar.description}&nbsp;
-									</c:otherwise>
-								</c:choose>
-							</td>
-						</tr>
-						
-					</tbody>
-				</table>
-				<br/>
-				--%>
+				<jsp:include page="bodySharedCharacterizationSummary.jsp?formName=nanoparticlePurityForm" />
+				<jsp:include page="bodySharedCharacterizationInstrument.jsp?formName=nanoparticlePurityForm" />
 				<%-- size characterization specific --%>
 				<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 					<tbody>
@@ -95,13 +64,13 @@
 						</tr>
 						<tr>
 							<td class="completeLabel" colspan="4">
-								<c:forEach var="achar.derivedBioAssayDataList" items="${nanoparticlePurityForm.map.achar.derivedBioAssayDataList}" varStatus="status">
+								<logic:iterate name="nanoparticlePurityForm" property="achar.derivedBioAssayDataList" id="derivedBioAssayData" indexId="chartInd">
 									<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 										<tbody>
 											<tr class="topBorder">
 												<td class="formSubTitle" colspan="4">
 													<div align="justify">
-														Graph ${status.index+1}
+														Graph ${chartInd+1}
 													</div>
 												</td>
 											</tr>
@@ -112,44 +81,21 @@
 												<td class="rightLabel" colspan="3">
 													<c:choose>
 														<c:when test="${canUserUpdateParticle eq 'true'}">
-															<html:select name="achar.derivedBioAssayDataList" property="type" indexed="true">
+															<html:select property="achar.derivedBioAssayDataList[${chartInd}].type" indexed="true">
 																<html:options name="allPurityDistributionGraphTypes" />
 															</html:select>
 														</c:when>
 														<c:otherwise>
-						${nanoparticlePurityForm.map.achar.derivedBioAssayDataList[status.index].type}&nbsp;
+						${nanoparticlePurityForm.map.achar.derivedBioAssayDataList[chartInd].type}&nbsp;
 					</c:otherwise>
 													</c:choose>
 												</td>
 											</tr>
-											<tr>
-												<td class="leftLabel">
-													<strong>Characterization File Name</strong>
-												</td>
-												<td class="label">
-													<c:choose>
-														<c:when test="${canUserUpdateParticle eq 'true'}">
-															<logic:present name="characterizationFile${status.index}">
-																<bean:define id="fileId" name='characterizationFile${status.index}' property='id' type="java.lang.String"/>
-																<html:hidden name="achar.derivedBioAssayDataList" property="fileId" value="${fileId}" indexed="true" />
-																<a href="nanoparticlePurity.do?dispatch=download&amp;fileId=${fileId}"><bean:write name="characterizationFile${status.index}" property="displayName" /></a>
-															</logic:present>
-															<logic:notPresent name="characterizationFile${status.index}">
-												Click on "Load File" button
-											</logic:notPresent>
-														</c:when>
-														<c:otherwise>
-						${nanoparticlePurityForm.map.achar.derivedBioAssayDataList[status.index].file.name}&nbsp;
-					</c:otherwise>
-													</c:choose>													
-												</td>
-												<td class="rightLabel" colspan="2">
-													<input type="button" onclick="javascript:loadFile(this.form, 'nanoparticlePurity', '${nanoparticlePurityForm.map.particleName}', ${status.index})" value="Load File">
-												</td>
-											</tr>
+											<jsp:include page="bodySharedCharacterizationFile.jsp?chartInd=${chartInd}&formName=nanoparticlePurityForm&actionName=nanoparticlePurity" />
 										</tbody>
 									</table>
-								</c:forEach>
+									<br>
+								</logic:iterate>
 							</td>
 						</tr>
 				</table>
