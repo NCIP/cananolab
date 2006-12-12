@@ -30,7 +30,7 @@
 					</tr>
 					<tr>
 						<td class="leftLabel">
-							<strong>Assay Result File Name*</strong>
+							<strong>Assay Result File Name</strong>
 						</td>
 						<td class="rightLabel" colspan="3">
 							<logic:present name="characterizationFile${param.chartInd}">
@@ -40,7 +40,7 @@
 						</td>
 					<tr>
 						<td class="leftLabel">
-							<strong>Assay Result File Title*</strong>
+							<strong>Assay Result File Title</strong>
 						</td>
 						<td class="rightLabel" colspan="3">
 							<bean:write name="characterizationFile${param.chartInd}" property="title" />
