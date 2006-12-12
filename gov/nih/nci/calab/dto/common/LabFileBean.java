@@ -2,6 +2,7 @@ package gov.nih.nci.calab.dto.common;
 
 import gov.nih.nci.calab.domain.DerivedDataFile;
 import gov.nih.nci.calab.domain.LabFile;
+import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.Date;
 
@@ -34,6 +35,10 @@ public class LabFileBean {
 	private String name;
 	
 	private String type;
+	
+	private String keywordsStr;
+	
+	private String visibilityStr;
 	
 	/*
 	 * name to be displayed as a part of the drop-down list
@@ -161,5 +166,15 @@ public class LabFileBean {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public String getKeywordsStr() {
+		keywordsStr=StringUtils.join(keywords, "<br>");
+		return keywordsStr;
+	}
+
+	public String getVisibilityStr() {
+		visibilityStr=StringUtils.join(visibilityGroups, "<br>");
+		return visibilityStr;
 	}
 }
