@@ -41,7 +41,7 @@
 						</tr>
 						<tr>
 							<td class="leftLabel">
-								<strong>Type</strong>
+								<strong>Type *</strong>
 							</td>
 							<td class="label">
 								<c:choose>
