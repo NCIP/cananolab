@@ -31,6 +31,7 @@
 		</td>
 		<td class="label">
 			<strong>Other Instrument Type </strong>
+			
 		</td>
 		<td class="rightLabel">
 			<c:choose>
@@ -51,8 +52,8 @@
 			<c:choose>
 				<c:when test="${canUserUpdateParticle eq 'true'}">
 					<html:select property="achar.instrument.manufacturer">
-						<option value="${nanoparticleSizeForm.map.achar.instrument.manufacturer}" selected>
-							${nanoparticleSizeForm.map.achar.instrument.manufacturer}
+						<option value="${thisForm.map.achar.instrument.manufacturer}" selected>
+							${thisForm.map.achar.instrument.manufacturer}
 						</option>
 					</html:select>
 				</c:when>
@@ -75,23 +76,6 @@
 			</c:choose>
 		</td>
 	</tr>
-	<%-- 
-	<tr>
-		<td class="leftLabel">
-			<strong>Instrument Abbreviation</strong>
-		</td>
-		<td class="rightLabel" colspan="3">
-			<c:choose>
-				<c:when test="${canUserUpdateParticle eq 'true'}">
-					<html:text property="achar.instrument.abbreviation" />
-				</c:when>
-				<c:otherwise>
-						${thisForm.map.achar.instrument.abbreviation}&nbsp;
-					</c:otherwise>
-			</c:choose>
-		</td>
-	</tr>
-	--%>
 	<tr>
 		<td class="leftLabel" valign="top">
 			<strong>Description</strong>
