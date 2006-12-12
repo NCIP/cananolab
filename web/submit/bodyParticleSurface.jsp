@@ -50,10 +50,10 @@
 							<td class="label">
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
-										<html:text property="achar.surfaceArea" />&nbsp;
-										<html:select property="achar.surfaceAreaUnit">
+										<html:text property="achar.surfaceArea" />&nbsp;sq nm
+										<!-- <html:select property="achar.surfaceAreaUnit">
 											<html:options name="allAreaMeasureUnits" />
-										</html:select>
+										</html:select> -->
 									</c:when>
 									<c:otherwise>
 										${nanoparticleSurfaceForm.achar.surfaceArea}&nbsp;
