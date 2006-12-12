@@ -20,11 +20,8 @@
 			<c:choose>
 				<c:when test="${canUserUpdateParticle eq 'true'}">
 					<html:select property="achar.instrument.type" onchange="javascript:doubleDropdownWithExraOption(this.form.elements[5], this.form.elements[7], instrumentTypeManufacturers, 'Other')">
-						<option value=""/>
-						<html:options name="allInstrumentTypes" />
-						<option value="Other">
-							Other
-						</option>
+						<option value="" />
+							<html:options name="allInstrumentTypes" />				
 					</html:select>
 				</c:when>
 				<c:otherwise>
@@ -34,21 +31,15 @@
 		</td>
 		<td class="label">
 			<strong>Other Instrument Type </strong>
+			
 		</td>
 		<td class="rightLabel">
 			<c:choose>
 				<c:when test="${canUserUpdateParticle eq 'true'}">
-					<c:choose>
-						<c:when test="${selectedInstrumentType eq 'Other'}">
-							<html:text property="achar.instrument.otherInstrumentType" disabled='false' />
-						</c:when>
-						<c:otherwise>
-							<html:text property="achar.instrument.otherInstrumentType" disabled='true' />
-						</c:otherwise>
-					</c:choose>
+					<html:text property="achar.instrument.otherInstrumentType" />
 				</c:when>
 				<c:otherwise>
-						${thisForm.map.achar.instrument.otherInstrumentType}&nbsp;
+					${thisForm.map.achar.instrument.otherInstrumentType}&nbsp;
 				</c:otherwise>
 			</c:choose>
 		</td>
@@ -61,11 +52,8 @@
 			<c:choose>
 				<c:when test="${canUserUpdateParticle eq 'true'}">
 					<html:select property="achar.instrument.manufacturer">
-						<option value="Other">
-							Other
-						</option>
-						<option value="${nanoparticleSizeForm.map.achar.instrument.manufacturer}" selected>
-							${nanoparticleSizeForm.map.achar.instrument.manufacturer}
+						<option value="${thisForm.map.achar.instrument.manufacturer}" selected>
+							${thisForm.map.achar.instrument.manufacturer}
 						</option>
 					</html:select>
 				</c:when>
@@ -88,23 +76,6 @@
 			</c:choose>
 		</td>
 	</tr>
-	<%-- 
-	<tr>
-		<td class="leftLabel">
-			<strong>Instrument Abbreviation</strong>
-		</td>
-		<td class="rightLabel" colspan="3">
-			<c:choose>
-				<c:when test="${canUserUpdateParticle eq 'true'}">
-					<html:text property="achar.instrument.abbreviation" />
-				</c:when>
-				<c:otherwise>
-						${thisForm.map.achar.instrument.abbreviation}&nbsp;
-					</c:otherwise>
-			</c:choose>
-		</td>
-	</tr>
-	--%>
 	<tr>
 		<td class="leftLabel" valign="top">
 			<strong>Description</strong>
