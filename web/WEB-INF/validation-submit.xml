@@ -722,6 +722,12 @@
 			<field property="achar.type" page="1" depends="required">
 				<arg position="0" key="nanoparticleShapeForm.type" bundle="submit" />
 			</field>
+			<field property="achar.maxDimension" page="1" depends="float">
+				<arg position="0" key="nanoparticleShapeForm.maxDimension" bundle="submit" />
+			</field>
+			<field property="achar.minDimension" page="1" depends="float">
+				<arg position="0" key="nanoparticleShapeForm.minDimension" bundle="submit" />
+			</field>
 			<field property="achar.instrument.otherInstrumentType" page="1" depends="validwhen">
 				<arg position="0" key="otherInstrumentType" bundle="submit" />
 				<var>
@@ -743,6 +749,15 @@
 			</field>
 			<field property="achar.viewTitle" page="1" depends="required">
 				<arg position="0" key="viewTitle" bundle="submit" />
+			</field>
+			<field property="achar.surfaceArea" page="1" depends="float">
+				<arg position="0" key="nanoparticleSurfaceForm.surfaceAreaValue" bundle="submit" />
+			</field>
+			<field property="achar.zetaPotential" page="1" depends="float">
+				<arg position="0" key="nanoparticleSurfaceForm.zetaPotentialValue" bundle="submit" />
+			</field>
+			<field property="achar.charge" page="1" depends="float">
+				<arg position="0" key="nanoparticleSurfaceForm.chargeValue" bundle="submit" />
 			</field>
 			<field property="achar.numberOfDerivedBioAssayData" page="0" depends="integer">
 				<arg position="0" key="numberOfDerivedBioAssayData" bundle="submit" />
@@ -774,6 +789,9 @@
 			</field>
 			<field property="achar.viewTitle" page="1" depends="required">
 				<arg position="0" key="viewTitle" bundle="submit" />
+			</field>
+			<field property="achar.criticalConcentration" page="1" depends="float">
+				<arg position="0" key="nanoparticleSolubilityForm.criticalConcentrationValue" bundle="submit" />
 			</field>
 			<field property="achar.instrument.otherInstrumentType" page="1" depends="validwhen">
 				<arg position="0" key="otherInstrumentType" bundle="submit" />
