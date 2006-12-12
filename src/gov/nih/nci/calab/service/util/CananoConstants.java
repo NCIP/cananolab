@@ -180,7 +180,7 @@ public class CananoConstants {
 			"Cylindrical", "Vesicular", "Elliposid" };
 
 	public static final String[] DEFAULT_MORPHOLOGY_TYPES = new String[] {
-			"Power", "Liquid", "Solid", "Crystalline", "Copolymer", "Fibril",
+			"Powder", "Liquid", "Solid", "Crystalline", "Copolymer", "Fibril",
 			"Colloid", "Oil" };
 
 	public static final String[] DEFAULT_SURFACE_GROUP_NAMES = new String[] {
