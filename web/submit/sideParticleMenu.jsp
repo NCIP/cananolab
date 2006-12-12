@@ -306,10 +306,8 @@
 							</li>
 							<li>
 								<span class="largerText">Other Associated Files &nbsp;&nbsp;</span>
-								<c:forEach var="aReport" items="${charTypeAssociatedFiles}">
-									<bean:define id="fileId" name='aReport' property='id' type="java.lang.String" />
-									<html:hidden name="aReport" property="id" value="${fileId}" indexed="true" />
-									<span class="indented"> <a href="searchReport.do?dispatch=download&amp;fileId=${fileId}" title="${aReport.displayName}">${aReport.name}</a> </span>
+								<c:forEach var="aReport" items="${charTypeAssociatedFiles}" varStatus="associatedFileCount">									
+									<span class="indented"> <a href="/calab/viewReportFile.do?type=Other Associated File&fileInd=${associatedFileCount.index}" title="${aReport.displayName}">${aReport.name}</a> </span>
 									<br>
 								</c:forEach>
 								<br>
@@ -318,10 +316,8 @@
 							<li>
 								<span class="largerText">Reports</span>
 								<br>
-								<c:forEach var="aReport" items="${charTypeReports}">
-									<bean:define id="fileId" name='aReport' property='id' type="java.lang.String" />
-									<html:hidden name="aReport" property="id" value="${fileId}" indexed="true" />
-									<span class="indented"> <a href="searchReport.do?dispatch=download&amp;fileId=${fileId}" title="${aReport.displayName}">${aReport.name}</a> </span>
+								<c:forEach var="aReport" items="${charTypeReports}" varStatus="reportCount">
+									<span class="indented"> <a href="/calab/viewReportFile.do?type=NCL Report&fileInd=${reportCount.index}" title="${aReport.displayName}">${aReport.name}</a> </span>
 									<br>
 								</c:forEach>
 							</li>
