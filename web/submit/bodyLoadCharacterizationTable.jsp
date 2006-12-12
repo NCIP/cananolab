@@ -96,7 +96,7 @@
 								<strong>Assay Result File Title*</strong>
 							</td>
 							<td class="rightLabel" colspan="3">
-								<html:text property="title" />
+								<html:text property="title" size="80"/>
 							</td>
 						</tr>
 						<tr>
