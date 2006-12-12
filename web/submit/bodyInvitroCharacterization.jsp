@@ -25,10 +25,10 @@
 			</td>
 		</tr>
 		<tr>
-			<td colspan="2">
+			<td colspan="2">			
 				<jsp:include page="/bodyMessage.jsp?bundle=submit" />
-				<jsp:include page="bodySharedCharacterizationSummary.jsp" />
-				<jsp:include page="bodySharedCharacterizationInstrument.jsp" />
+				<jsp:include page="bodySharedCharacterizationSummary.jsp?formName=${formName}" />
+				<jsp:include page="bodySharedCharacterizationInstrument.jsp?formName=${formName}" />				
 				<logic:present name="detailPage">
 					<jsp:include page="${detailPage}" />
 				</logic:present>
@@ -75,32 +75,8 @@
 														Histogram/Bar Chart ${chartInd+1}
 													</div>
 												</td>
-											</tr>
-											<tr>
-												<td class="leftLabel">
-													<strong>Characterization File Name</strong>
-												</td>
-												<td class="label">
-													<c:choose>
-														<c:when test="${canUserUpdateParticle eq 'true'}">
-															<logic:present name="characterizationFile${chartInd}">
-																<bean:define id="fileId" name='characterizationFile${chartInd}' property='id' type="java.lang.String" />
-																<html:hidden name="achar.derivedBioAssayDataList" property="fileId" value="${fileId}" indexed="true" />
-																<a href="${actionName}.do?dispatch=download&amp;fileId=${fileId}"><bean:write name="characterizationFile${chartInd}" property="name" /></a>
-															</logic:present>
-															<logic:notPresent name="characterizationFile${chartInd}">
-																Click on "Load File" button
-															</logic:notPresent>
-														</c:when>
-														<c:otherwise>
-															${derivedBioAssayData.file.name}&nbsp;
-														</c:otherwise>
-													</c:choose>
-												</td>
-												<td class="rightLabel" colspan="2">
-													<input type="button" onclick="javascript:loadFile(this.form, '${actionName}', '<bean:write name="${formName}" property="particleName"/>', ${chartInd})" value="Load File">
-												</td>
-											</tr>
+											</tr>											
+											<jsp:include page="bodySharedCharacterizationFile.jsp?chartInd=${chartInd}&formName=${formName}&actionName=${actionName}" />
 											<tr>
 												<td class="leftLabel">
 													<strong>Number of Data Points</strong>

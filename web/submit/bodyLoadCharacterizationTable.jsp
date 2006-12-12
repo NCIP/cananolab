@@ -13,7 +13,8 @@
 				</h3>
 			</td>
 			<td align="right" width="15%">
-				<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=create_nanoparticle')" class="helpText">Help</a>
+				<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=create_nanoparticle')" class="helpText">Help</a> &nbsp;&nbsp; 
+				<a href="javascript:history.go(-1)" class="helpText">back</a>
 			</td>
 		</tr>
 		<tr>
@@ -96,7 +97,7 @@
 								<strong>Assay Result File Title*</strong>
 							</td>
 							<td class="rightLabel" colspan="3">
-								<html:text property="title" size="80"/>
+								<html:text property="title" size="80" />
 							</td>
 						</tr>
 						<tr>

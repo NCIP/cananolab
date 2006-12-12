@@ -26,10 +26,9 @@
 		</tr>
 		<tr>
 			<td colspan="2">
-				<c:set var="thisForm" value="${nanoparticleMolecularWeightForm}" />
 				<jsp:include page="/bodyMessage.jsp?bundle=submit" />
-				<jsp:include page="bodySharedCharacterizationSummary.jsp" />
-				<jsp:include page="bodySharedCharacterizationInstrument.jsp" />
+				<jsp:include page="bodySharedCharacterizationSummary.jsp?formName=nanoparticleMolecularWeightForm" />
+				<jsp:include page="bodySharedCharacterizationInstrument.jsp?formName=nanoparticleMolecularWeightForm" />
 				<%-- molecular weight characterization specific --%>
 				<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 					<tbody>
@@ -65,13 +64,13 @@
 						</tr>
 						<tr>
 							<td class="completeLabel" colspan="4">
-								<c:forEach var="achar.derivedBioAssayDataList" items="${nanoparticleMolecularWeightForm.map.achar.derivedBioAssayDataList}" varStatus="status">
+								<logic:iterate name="nanoparticleMolecularWeightForm" property="achar.derivedBioAssayDataList" id="derivedBioAssayData" indexId="chartInd">
 									<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 										<tbody>
 											<tr class="topBorder">
 												<td class="formSubTitle" colspan="4">
 													<div align="justify">
-														Graph ${status.index+1}
+														Graph ${chartInd+1}
 													</div>
 												</td>
 											</tr>
@@ -82,41 +81,17 @@
 												<td class="rightLabel" colspan="3">
 													<c:choose>
 														<c:when test="${canUserUpdateParticle eq 'true'}">
-															<html:select name="achar.derivedBioAssayDataList" property="type" indexed="true">
+															<html:select property="achar.derivedBioAssayDataList[${chartInd}].type">
 																<html:options name="allMolecularWeightDistributionGraphTypes" />
 															</html:select>
 														</c:when>
 														<c:otherwise>
-						${nanoparticleMolecularWeightForm.map.achar.derivedBioAssayDataList[status.index].type}&nbsp;
+						${nanoparticleMolecularWeightForm.map.achar.derivedBioAssayDataList[chartInd].type}&nbsp;
 					</c:otherwise>
 													</c:choose>
 												</td>
 											</tr>
-											<tr>
-												<td class="leftLabel">
-													<strong>Characterization File Name</strong>
-												</td>
-												<td class="label">
-													<c:choose>
-														<c:when test="${canUserUpdateParticle eq 'true'}">
-															<logic:present name="characterizationFile${status.index}">
-																<bean:define id="fileId" name='characterizationFile${status.index}' property='id' type="java.lang.String"/>
-																<html:hidden name="achar.derivedBioAssayDataList" property="fileId" value="${fileId}" indexed="true" />
-																<a href="nanoparticleMolecularWeight.do?dispatch=download&amp;fileId=${fileId}"><bean:write name="characterizationFile${status.index}" property="displayName" /></a>
-															</logic:present>
-															<logic:notPresent name="characterizationFile${status.index}">
-												Click on "Load File" button
-											</logic:notPresent>
-														</c:when>
-														<c:otherwise>
-						${nanoparticleMolecularWeightForm.map.achar.derivedBioAssayDataList[status.index].file.name}&nbsp;
-					</c:otherwise>
-													</c:choose>													
-												</td>
-												<td class="rightLabel" colspan="2">
-													<input type="button" onclick="javascript:loadFile(this.form, 'nanoparticleMolecularWeight', '${nanoparticleMolecularWeightForm.map.particleName}', ${status.index})" value="Load File">
-												</td>
-											</tr>
+											<jsp:include page="bodySharedCharacterizationFile.jsp?chartInd=${chartInd}&formName=nanoparticleMolecularWeightForm&actionName=nanoparticleMolecularWeight" />
 											<tr>
 												<td class="leftLabel">
 													<strong>Molecular Weight </strong>
@@ -124,18 +99,19 @@
 												<td class="rightLabel" colspan="3">
 													<c:choose>
 														<c:when test="${canUserUpdateParticle eq 'true'}">
-															<html:text name="achar.derivedBioAssayDataList" indexed="true" property="datumList[0].value" />
-													&nbsp; ${nanoparticleMolecularWeightForm.map.achar.derivedBioAssayDataList[status.index].datumList[0].valueUnit}
+															<html:text property="achar.derivedBioAssayDataList[${chartInd}].datumList[0].value" />
+													&nbsp; ${nanoparticleMolecularWeightForm.map.achar.derivedBioAssayDataList[chartInd].datumList[0].valueUnit}
 														</c:when>
 														<c:otherwise>
-						${nanoparticleMolecularWeightForm.map.achar.derivedBioAssayDataList[status.index].datumList[0].value}${nanoparticleMolecularWeightForm.map.achar.derivedBioAssayDataList[status.index].datumList[0].valueUnit}&nbsp;
+						${nanoparticleMolecularWeightForm.map.achar.derivedBioAssayDataList[chartInd].datumList[0].value}${nanoparticleMolecularWeightForm.map.achar.derivedBioAssayDataList[chartInd].datumList[0].valueUnit}&nbsp;
 					</c:otherwise>
 													</c:choose>
 												</td>
 											</tr>
 										</tbody>
 									</table>
-								</c:forEach>
+									<br>
+									</logic:iterate>
 							</td>
 						</tr>
 				</table>
