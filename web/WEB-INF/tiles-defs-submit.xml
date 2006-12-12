@@ -15,8 +15,8 @@
 			<item value="Surface" link="nanoparticleSurface.do?dispatch=setup&amp;page=0" />
 			<item value="Solubility" link="nanoparticleSolubility.do?dispatch=setup&amp;page=0" />
 			<item value="Purity" link="nanoparticlePurity.do?dispatch=setup&amp;page=0" />
-	<!-- 		<item value="Stability" link="nanoparticleStability.do?dispatch=setup&amp;page=0" />   -->
-		
+			<!-- 		<item value="Stability" link="nanoparticleStability.do?dispatch=setup&amp;page=0" />   -->
+
 		</putList>
 		<putList name="toxActions">
 			<item value="Oxidative Stress" link="invitroToxicityOxidativeStress.do?dispatch=setup&amp;page=0" />
@@ -70,8 +70,8 @@
 		<put name="calabContent" value="/bodyMessage.jsp?bundle=submit" />
 		<put name="menu" value="submit" />
 	</definition>
-	
-	
+
+
 
 	<definition name="submit.action.message.content" extends="submit.content.home">
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
@@ -105,7 +105,7 @@
 		<put name="calabContent" value="/bodyMessage.jsp?bundle=submit" />
 		<put name="menu" value="submit" />
 	</definition>
-	
+
 	<!-- definition for the particle general info view page -->
 	<definition name="submit.generalinfo.view" extends="calab.home">
 		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
@@ -547,7 +547,7 @@
 	<!-- definition for the invitro metabolic stability ROS page -->
 	<definition name="submit.addmetabolicstability.glucuronidationsulphation.content" extends="submit.content.home">
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
-				<put name="submitContent" value="/submit/bodyInvitroCharacterization.jsp" />
+		<put name="submitContent" value="/submit/bodyInvitroCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Metabolic Stability - Glucuronidation Sulphation" />
 		<put name="actionName" value="invitroMetabolicStabilityGlucuronidationSulphation" />
 		<put name="formName" value="invitroMetabolicStabilityGlucuronidationSulphationForm" />
@@ -570,6 +570,18 @@
 	<definition name="submit.load.characterization.table" extends="calab.home">
 		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
 		<put name="calabContent" value="submit.load.characterization.table.content" />
+		<put name="menu" value="submit" />
+	</definition>
+
+	<!-- definition for the view characterization table page -->
+	<definition name="submit.assayresult.file.view.content" extends="submit.content.home">
+		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
+		<put name="submitContent" value="/submit/bodyViewAssayResultFile.jsp" />
+	</definition>
+
+	<definition name="submit.assayresult.file.view" extends="calab.home">
+		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
+		<put name="calabContent" value="submit.assayresult.file.view.content" />
 		<put name="menu" value="submit" />
 	</definition>
 
