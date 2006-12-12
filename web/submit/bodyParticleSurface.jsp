@@ -56,8 +56,8 @@
 										</html:select> -->
 									</c:when>
 									<c:otherwise>
-										${nanoparticleSurfaceForm.achar.surfaceArea}&nbsp;
-										${nanoparticleSurfaceForm.achar.surfaceAreaUnit}&nbsp;
+										${nanoparticleSurfaceForm.map.achar.surfaceArea}&nbsp;
+										${nanoparticleSurfaceForm.map.achar.surfaceAreaUnit}&nbsp;
 									</c:otherwise>
 								</c:choose>
 							</td>
@@ -74,7 +74,7 @@
 										</html:select>
 									</c:when>
 									<c:otherwise>
-										${nanoparticleSurfaceForm.achar.isHydrophobic}&nbsp;
+										${nanoparticleSurfaceForm.map.achar.isHydrophobic}&nbsp;
 									</c:otherwise>
 								</c:choose>
 							</td>
@@ -94,8 +94,8 @@
 										</html:select>
 									</c:when>
 									<c:otherwise>
-										${nanoparticleSurfaceForm.achar.charge}&nbsp;
-										${nanoparticleSurfaceForm.achar.chargeUnit}&nbsp;
+										${nanoparticleSurfaceForm.map.achar.charge}&nbsp;
+										${nanoparticleSurfaceForm.map.achar.chargeUnit}&nbsp;
 									</c:otherwise>
 								</c:choose>
 							</td>
@@ -110,7 +110,7 @@
 										<html:text property="achar.zetaPotential" />&nbsp;mV
 									</c:when>
 									<c:otherwise>
-										${nanoparticleSurfaceForm.achar.zetaPotential}&nbsp;
+										${nanoparticleSurfaceForm.map.achar.zetaPotential}&nbsp;
 									</c:otherwise>
 								</c:choose>
 							</td>
