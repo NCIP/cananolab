@@ -113,7 +113,7 @@
 						<td colspan="4" class="formLabel">
 							<strong>Comments </strong>&nbsp;&nbsp;
 							<div align="justify">
-								<span class="formFieldWhite"><html:textarea property="aliquotComment" cols="60" /></span>
+								<span class="formFieldWhite"><html:textarea property="aliquotComment" cols="80" /></span>
 							</div>
 						</td>
 					</tr>
