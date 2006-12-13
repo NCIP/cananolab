@@ -21,9 +21,6 @@
 					<html:select property="achar.cellLine">
 						<option value=""></option>
 						<html:options name="allCellLines" />
-						<option value="Other">
-							Other
-						</option>
 					</html:select>
 				</c:when>
 				<c:otherwise>

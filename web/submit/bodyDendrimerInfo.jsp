@@ -22,9 +22,6 @@
 						<html:select property="dendrimer.branch">
 							<option value=""></option>
 							<html:options name="allDendrimerBranches" />
-							<option value="Other">
-								Other
-							</option>
 						</html:select>
 					</c:when>
 					<c:otherwise>

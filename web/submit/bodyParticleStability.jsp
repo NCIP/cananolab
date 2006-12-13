@@ -131,9 +131,6 @@
 										<html:select property="achar.stressor.type">
 											<option value=""></option>
 											<html:options name="allStressorTypes" />
-											<option value="Other">
-												Other
-											</option>
 										</html:select>
 										&nbsp;
 										<strong> Other </strong>&nbsp;
