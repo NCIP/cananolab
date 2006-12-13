@@ -52,7 +52,7 @@
 						</c:choose>
 						<tr>
 							<td class="${style0}">
-								<bean:write name="file" property="filename" />
+								<bean:write name="file" property="shortFilename" />
 							</td>
 							<td class="${style}">
 								<bean:write name="file" property="createdDate" />
