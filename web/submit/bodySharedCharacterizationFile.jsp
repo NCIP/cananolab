@@ -11,7 +11,7 @@
 		<c:when test="${canUserUpdateParticle eq 'true'}">
 			<td class="label">
 				<logic:present name="characterizationFile${param.chartInd}">
-					<html:link page="/viewAssayResultFile.do?chartInd=${param.chartInd}">
+					<html:link page="/viewAssayResultFile.do?chartInd=${param.chartInd}&actionName=${param.actionName}">
 						<bean:write name="characterizationFile${param.chartInd}" property="displayName" />
 					</html:link>
 				</logic:present>
@@ -26,7 +26,7 @@
 		<c:otherwise>
 			<td class="rightLabel" colspan="3">
 				<logic:present name="characterizationFile${param.chartInd}">
-					<html:link page="/viewAssayResultFile.do?chartInd=${param.chartInd}">
+					<html:link page="/viewAssayResultFile.do?chartInd=${param.chartInd}&actionName=${param.actionName}">
 						<bean:write name="characterizationFile${param.chartInd}" property="displayName" />
 					</html:link>
 				</logic:present>
