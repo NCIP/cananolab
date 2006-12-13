@@ -1,5 +1,7 @@
 package gov.nih.nci.calab.ui.core;
 
+import gov.nih.nci.calab.domain.DerivedDataFile;
+import gov.nih.nci.calab.domain.Keyword;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
@@ -9,6 +11,7 @@ import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
+import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.CananoConstants;
@@ -37,7 +40,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 
-/* CVS $Id: BaseCharacterizationAction.java,v 1.17 2006-12-12 22:17:11 pansu Exp $ */
+/* CVS $Id: BaseCharacterizationAction.java,v 1.18 2006-12-13 00:51:59 zengje Exp $ */
 
 public abstract class BaseCharacterizationAction extends AbstractDispatchAction {
 	/**
@@ -169,11 +172,13 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		for (DerivedBioAssayData obj : aChar.getDerivedBioAssayDataCollection()) {
 
 			if (obj.getFile() != null) {
-				LabFileBean fileBean = new LabFileBean();
-				fileBean.setName(obj.getFile().getFilename());
-				fileBean.setPath(obj.getFile().getPath());
-				fileBean.setId((obj.getFile().getId().toString()));
-
+				LabFileBean fileBean = new LabFileBean(obj.getFile());
+		        UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
+				List<String> accessibleGroups = userService.getAccessibleGroups(
+						fileBean.getId(), CalabConstants.CSM_READ_ROLE);
+				String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
+				fileBean.setVisibilityGroups(visibilityGroups);
+				
 				request.getSession().setAttribute(
 						"characterizationFile" + fileNumber, fileBean);
 			} else {
