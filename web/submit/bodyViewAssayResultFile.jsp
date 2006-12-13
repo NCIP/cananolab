@@ -35,7 +35,7 @@
 						<td class="rightLabel" colspan="3">
 							<logic:present name="characterizationFile${param.chartInd}">
 								<bean:define id="fileId" name='characterizationFile${param.chartInd}' property='id' type="java.lang.String" />
-								<a href="${actionName}.do?dispatch=download&amp;fileId=${fileId}"><bean:write name="characterizationFile${param.chartInd}" property="name" /></a>
+								<a href="${param.actionName}.do?dispatch=download&amp;fileId=${fileId}"><bean:write name="characterizationFile${param.chartInd}" property="displayName" /></a>
 							</logic:present>
 						</td>
 					<tr>
@@ -61,7 +61,7 @@
 							<strong>Keywords <em>(one per line)</em></strong>
 						</td>
 						<td class="rightLabel" colspan="3">
-							<bean:write name="characterizationFile${param.chartInd}" property="keywordsStr" />
+							<bean:write name="characterizationFile${param.chartInd}" property="keywordsStr"  filter="false"/>
 							&nbsp;
 						</td>
 					</tr>
@@ -70,7 +70,7 @@
 							<strong>Visibility</strong>
 						</td>
 						<td class="rightLabel" colspan="3">
-							<bean:write name="characterizationFile${param.chartInd}" property="visibilityStr" />
+							<bean:write name="characterizationFile${param.chartInd}" property="visibilityStr"  filter="false"/>
 							&nbsp;
 						</td>
 					</tr>
