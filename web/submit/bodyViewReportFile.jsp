@@ -78,7 +78,7 @@
 							&nbsp;
 						</td>
 					</tr>
-					<tr>
+					<!--  <tr>
 						<td class="leftLabel">
 							<strong>Keywords <em>(one per line)</em></strong>
 						</td>
@@ -86,7 +86,7 @@
 							<bean:write name="theFile" property="keywordsStr" />
 							&nbsp;
 						</td>
-					</tr>
+					</tr>  -->
 					<tr>
 						<td class="leftLabel" valign="top">
 							<strong>Visibility</strong>
