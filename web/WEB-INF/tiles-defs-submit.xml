@@ -38,7 +38,7 @@
 			<item value="Leukocyte Proliferation" link="invitroImmunotoxicityLeukocyteProliferation.do?dispatch=setup&amp;page=0" />
 			<item value="Phagocytosis" link="invitroImmunotoxicityPhagocytosis.do?dispatch=setup&amp;page=0" />
 			<item value="Cytokine Induction" link="invitroImmunotoxicityCytokineInduction.do?dispatch=setup&amp;page=0" />
-			<item value="CFU-GM" link="invitroImmunotoxicityCFU-GM.do?dispatch=setup&amp;page=0" />
+			<item value="CFU_GM" link="invitroImmunotoxicityCFU_GM.do?dispatch=setup&amp;page=0" />
 			<item value="Complement Activation" link="invitroImmunotoxicityComplementActivation.do?dispatch=setup&amp;page=0" />
 			<item value="Cytotoxic Activity of NK Cells" link="invitroImmunotoxicityNKCellCytotoxicActivity.do?dispatch=setup&amp;page=0" />
 		</putList>
@@ -387,7 +387,7 @@
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
 		<put name="submitContent" value="/submit/bodyInvitroCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Immunotoxicity - CFU-GM" />
-		<put name="actionName" value="invitroImmunotoxicityCFU-GM" />
+		<put name="actionName" value="invitroImmunotoxicityCFU_GM" />
 		<put name="formName" value="invitroImmunotoxicityCFU_GMForm" />
 		<put name="dataLabel" value="CFU_GM" />
 		<put name="dataUnit" value="CFU" />
