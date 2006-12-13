@@ -75,7 +75,7 @@ public class DataAccessProxy implements IDataAccess {
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.ncia.db.IDataAccess#store(java.lang.Object)
 	 */
-	public void store(Object o) {
+	public void store(Object o) throws Exception {
 		
 		access.store(o);
 	}
