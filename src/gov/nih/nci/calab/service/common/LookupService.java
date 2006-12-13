@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.81 2006-12-13 00:45:19 zengje Exp $ */
+/* CVS $Id: LookupService.java,v 1.82 2006-12-13 18:05:44 zengje Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -1056,4 +1056,25 @@ public class LookupService {
 				"Ultrasound", "Ultraviolet Light" };
 		return activationMethods;
 	}
+	
+	public List<LabelValueBean> getAllSpecies() throws Exception {
+		List<LabelValueBean> species = new ArrayList<LabelValueBean>();
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			for (int i=0;i<CananoConstants.SPECIES_COMMON.length;i++) {
+				String specie = CananoConstants.SPECIES_COMMON[i];
+				species.add(new LabelValueBean(specie,specie));
+			}
+		} catch (Exception e) {
+			logger.error("Problem to retrieve all species. " + e);
+			throw new RuntimeException(
+					"Problem to retrieve all intrument types. ");
+		} finally {
+			ida.close();
+		}		
+	
+		return species;
+	}
+
 }
