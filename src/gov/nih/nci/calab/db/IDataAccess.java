@@ -34,7 +34,7 @@ public interface IDataAccess {
 	 * SaveOrUpdate for Hibernate Access
 	 * @param o The object to persist or update
 	 */
-	public abstract void store( Object o );
+	public abstract void store( Object o ) throws Exception;
 	/**
 	 * Save for either Hibernate access or Toolkit access
 	 * @param obj The object instance to persist
