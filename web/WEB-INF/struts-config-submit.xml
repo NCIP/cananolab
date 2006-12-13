@@ -350,7 +350,6 @@
 		<forward name="invitroNKCellCytotoxicActivityForm" path="submit.addimmunotoxicity.nkcellcytotoxicactivity" />
 		<forward name="Leukocyte Proliferation" path="invitroImmunotoxicityLeukocyteProliferation.do?page=0" />
 		<forward name="invitroLeukocyteProliferationForm" path="submit.addimmunotoxicity.leukocyteproliferation" />
-		<forward name="CFU-GM" path="invitroImmunotoxicityCFU_GM.do?page=0" />
 		<forward name="CFU_GM" path="invitroImmunotoxicityCFU_GM.do?page=0" />
 		<forward name="invitroCFU_GMForm" path="submit.addimmunotoxicity.cfu_gm" />
 		<forward name="Oxidative Burst" path="invitroImmunotoxicityOxidativeBurst.do?page=0" />
@@ -524,7 +523,7 @@
 			<forward name="input" path="submit.addimmunotoxicity.leukocyteproliferation" />
 			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
 		</action>
-		<action name="invitroImmunotoxicityCFU_GMForm" parameter="dispatch" path="/invitroImmunotoxicityCFU-GM" type="gov.nih.nci.calab.ui.submit.InvitroCFU_GMAction" input="input">
+		<action name="invitroImmunotoxicityCFU_GMForm" parameter="dispatch" path="/invitroImmunotoxicityCFU_GM" type="gov.nih.nci.calab.ui.submit.InvitroCFU_GMAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroCFU_GM" path="submit.addimmunotoxicity.cfu_gm" type="java.lang.Exception" />
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.download.file" path="home.error" type="gov.nih.nci.calab.exception.CalabException" />
 			<forward name="success" path="submit.message" />
