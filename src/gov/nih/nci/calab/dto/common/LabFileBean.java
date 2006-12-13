@@ -1,10 +1,14 @@
 package gov.nih.nci.calab.dto.common;
 
 import gov.nih.nci.calab.domain.DerivedDataFile;
+import gov.nih.nci.calab.domain.Keyword;
 import gov.nih.nci.calab.domain.LabFile;
 import gov.nih.nci.calab.service.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 
 /**
  * This class represents attributes of a lab file to be
@@ -20,7 +24,7 @@ public class LabFileBean {
 
 	private String comments;
 
-	private String[] keywords;
+	private String[] keywords = new String[0];
 
 	private String[] visibilityGroups;
 
@@ -58,6 +62,14 @@ public class LabFileBean {
 		this.description=charFile.getDescription();
 	    this.createdBy=charFile.getCreatedBy();
 	    this.createdDate=charFile.getCreatedDate();
+	    if (charFile instanceof DerivedDataFile){
+	    	List<String> allkeywords = new ArrayList<String>();
+	    	for (Keyword keyword: ((DerivedDataFile)charFile).getKeywordCollection()) {
+	    		allkeywords.add(keyword.getName());
+	    	}
+	        allkeywords.toArray(this.keywords);
+	    }
+	    
 	}
 	
 	public String getComments() {
@@ -174,7 +186,7 @@ public class LabFileBean {
 	}
 
 	public String getVisibilityStr() {
-		visibilityStr=StringUtils.join(visibilityGroups, "<br>");
+		visibilityStr=StringUtils.join(visibilityGroups, ", ");	
 		return visibilityStr;
 	}
 }
