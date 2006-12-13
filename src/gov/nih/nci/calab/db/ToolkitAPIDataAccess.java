@@ -56,8 +56,8 @@ public class ToolkitAPIDataAccess implements IDataAccess {
             return null;
 	}
 
-	public void store(Object o) {
-		
+	public void store(Object o) throws Exception {
+		System.out.println("Not supported.");
 	}
 	
 	public Object createObject(Object obj) throws Exception

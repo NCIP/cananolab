@@ -57,15 +57,15 @@ public class HibernateDataAccess implements IDataAccess {
             session = sessionFactory.openSession();
             thread.set(session);
         }
-        tx = session.beginTransaction();
+//        tx = session.beginTransaction();
     }
 
     public void close() throws Exception {
-        if(session.isOpen()) {
-        	if (!tx.wasRolledBack()){
-        		 tx.commit();
-        	}
-        }
+//        if(session.isOpen()) {
+//        	if (!tx.wasRolledBack()){
+//        		 tx.commit();
+//        	}
+//        }
            
         Session s = (Session) thread.get();
         if ( s != null ) {
@@ -108,7 +108,10 @@ public class HibernateDataAccess implements IDataAccess {
     public Object createObject(Object obj) throws Exception
     {
     	// check if the obj exist in database, if it is, return the serializable id
-    	return session.save(obj);
+    	tx = session.beginTransaction();
+    	Object returnObj = session.save(obj);
+    	tx.commit();
+    	return returnObj;
 //    	throw new Exception ("Not supported yet");
     }
     
@@ -124,9 +127,10 @@ public class HibernateDataAccess implements IDataAccess {
     }
     
 
-    public void store(Object o) {
-
+    public void store(Object o) throws Exception {
+    	tx = session.beginTransaction();
         session.saveOrUpdate(o);
+        tx.commit();
 
     }
     
