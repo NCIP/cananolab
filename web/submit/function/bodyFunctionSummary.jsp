@@ -34,7 +34,7 @@
 		<td class="label">
 			<strong>View Title* </strong>
 			<br>
-			(text will be truncated after 25 characters)
+			(text will be truncated after 20 characters)
 		</td>
 		<td class="rightLabel">
 			<c:choose>
