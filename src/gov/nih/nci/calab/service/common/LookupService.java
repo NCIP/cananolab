@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.80 2006-12-11 22:24:45 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.81 2006-12-13 00:45:19 zengje Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -764,21 +764,25 @@ public class LookupService {
 		return charTypeChars;
 	}
 
-	public String[] getAllInstrumentTypes() throws Exception {
-		// TODO query from database or properties file
-		// String[] instrumentTypes=new String[] {"Dynamic Light Scattering
-		// (DLS)", "Spectroscopy", "Other"};
-		SortedSet<String> instrumentTypes = new TreeSet<String>();
-
+	public List<LabelValueBean> getAllInstrumentTypeAbbrs() throws Exception {
+		List<LabelValueBean> instrumentTypeAbbrs = new ArrayList<LabelValueBean>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
-			String hqlString = "select distinct instrumentType.name from InstrumentType instrumentType";
+			String hqlString = "select distinct instrumentType.name, instrumentType.abbreviation from InstrumentType instrumentType where instrumentType.name is not null";
 			List results = ida.search(hqlString);
 			for (Object obj : results) {
-				if (obj != null)
-					instrumentTypes.add((String) obj);
+				if (obj != null){
+					Object[] objs = (Object[])obj;	
+					String label = "";
+					if (objs[1] != null){
+						label = (String)objs[0] + "(" + objs[1] + ")";
+					} else {
+						label = (String)objs[0];
+					}								
+					instrumentTypeAbbrs.add(new LabelValueBean(label, (String)objs[0]));
+				}					
 			}
 		} catch (Exception e) {
 			logger.error("Problem to retrieve all instrumentTypes. " + e);
@@ -787,11 +791,9 @@ public class LookupService {
 		} finally {
 			ida.close();
 		}		
-		//add Other to the end
-		List<String>instrumentTypeList=new ArrayList<String>(instrumentTypes);
-		instrumentTypeList.add("Other");
+		instrumentTypeAbbrs.add(new LabelValueBean(CananoConstants.OTHER, CananoConstants.OTHER));
 		
-		return (String[]) instrumentTypeList.toArray(new String[0]);
+		return instrumentTypeAbbrs;
 	}
 
 	public Map<String, SortedSet<String>> getAllInstrumentManufacturers()
