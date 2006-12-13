@@ -71,11 +71,9 @@
 		<put name="menu" value="submit" />
 	</definition>
 
-
-
 	<definition name="submit.action.message.content" extends="submit.content.home">
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
-		<put name="submitContent" value="bodyMessage.jsp?bundle=submit" />
+		<put name="submitContent" value="/bodyMessage.jsp?bundle=submit" />
 	</definition>
 	<definition name="submit.action.message" extends="calab.home">
 		<put name="calabContent" value="submit.action.message.content" />
