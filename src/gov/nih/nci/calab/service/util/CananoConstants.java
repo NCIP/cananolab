@@ -192,30 +192,64 @@ public class CananoConstants {
 
 	public static final String[] DEFAULT_VISIBLE_GROUPS = new String[] {
 			NCL_PI, NCL_RESEARCHER };
-	
+
 	public static final String ABBR_COMPOSITION = "CP";
+
 	public static final String ABBR_SIZE = "SZ";
+
 	public static final String ABBR_MOLECULAR_WEIGHT = "MW";
+
 	public static final String ABBR_MORPHOLOGY = "MP";
+
 	public static final String ABBR_SHAPE = "SH";
+
 	public static final String ABBR_SURFACE = "SF";
-	public static final String ABBR_SOLUBILITY ="SL";
+
+	public static final String ABBR_SOLUBILITY = "SL";
+
 	public static final String ABBR_PURITY = "PT";
+
 	public static final String ABBR_OXIDATIVE_STRESS = "OS";
+
 	public static final String ABBR_ENZYME_FUNCTION = "EF";
+
 	public static final String ABBR_CELL_VIABILITY = "CV";
+
 	public static final String ABBR_CASPASE3_ACTIVATION = "C3";
+
 	public static final String ABBR_PLATELET_AGGREGATION = "PA";
+
 	public static final String ABBR_HEMOLYSIS = "HM";
+
 	public static final String ABBR_PLASMA_PROTEIN_BINDING = "PB";
+
 	public static final String ABBR_COAGULATION = "CG";
-	public static final String ABBR_OXIDATIVE_BURST ="OB";
-	public static final String ABBR_CHEMOTAXIS ="CT";
+
+	public static final String ABBR_OXIDATIVE_BURST = "OB";
+
+	public static final String ABBR_CHEMOTAXIS = "CT";
+
 	public static final String ABBR_LEUKOCYTE_PROLIFERATION = "LP";
+
 	public static final String ABBR_PHAGOCYTOSIS = "PC";
+
 	public static final String ABBR_CYTOKINE_INDUCTION = "IC";
+
 	public static final String ABBR_CFU_GM = "CU";
+
 	public static final String ABBR_COMPLEMENT_ACTIVATION = "CA";
+
 	public static final String ABBR_NKCELL_CYTOTOXIC_ACTIVITY = "NK";
-	
+
+	public static final String[] SPECIES_SCIENTIFIC = { "Mus musculus",
+			"Homo sapiens", "Rattus rattus", "Sus scrofa",
+			"Meriones unguiculatus", "Mesocricetus auratus", "Cavia porcellus",
+			"Bos taurus", "Canis familiaris", "Capra hircus", "Equus Caballus",
+			"Ovis aries", "Felis catus", "Saccharomyces cerevisiae",
+			"Danio rerio" };
+
+	public static final String[] SPECIES_COMMON = { "Mouse", "Human", "Rat",
+			"Pig", "Mongolian Gerbil", "Hamster", "Guinea pig", "Cattle",
+			"Dog", "Goat", "Horse", "Sheep", "Cat", "Yeast", "Zebrafish" };
+
 }
