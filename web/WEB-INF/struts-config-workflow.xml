@@ -124,7 +124,7 @@
 			<forward name="success" path="workflow.searchrunresult" />
 		</action>
 		<action name="selectRunForm" path="/selectRun" type="gov.nih.nci.calab.ui.workflow.SelectRunAction" input="input" scope="request">
-			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="workflow" key="error.selectRun" path="workflow.selectrun" type="java.lang.Exception" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="workflow" key="error.selectRun" path="workflow.searchrunresult" type="java.lang.Exception" />
 			<forward name="input" path="workflow.searchrunresult" />
 			<forward name="success" path="/workflowMessage.do" />
 		</action>
