@@ -22,7 +22,7 @@
 				<c:when test="${canUserUpdateParticle eq 'true'}">
 					<html:select property="achar.instrument.type" onchange="javascript:doubleDropdownWithExraOption(this.form.elements[5], this.form.elements[7], instrumentTypeManufacturers, 'Other')">
 						<option value="" />
-							<html:options name="allInstrumentTypes" />				
+							<html:options collection="allInstrumentTypes" property="value" labelProperty="label" />	
 					</html:select>
 				</c:when>
 				<c:otherwise>
