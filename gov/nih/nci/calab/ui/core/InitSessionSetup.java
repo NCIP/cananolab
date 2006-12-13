@@ -407,7 +407,8 @@ public class InitSessionSetup {
 
 	public void setAllDendrimerGenerations(HttpSession session)
 			throws Exception {
-		if (session.getServletContext().getAttribute("allDendrimerGenerations") == null) {
+		if (session.getServletContext().getAttribute("allDendrimerGenerations") == null 
+			    || session.getAttribute("newCharacterizationCreated") != null) {
 			String[] generations = lookupService.getAllDendrimerGenerations();
 			session.getServletContext().setAttribute("allDendrimerGenerations",
 					generations);
