@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: SubmitReportAction.java,v 1.6 2006-12-07 17:48:00 pansu Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.7 2006-12-13 22:56:27 pansu Exp $ */
 
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.service.util.CananoConstants;
@@ -59,6 +59,8 @@ public class SubmitReportAction extends AbstractDispatchAction {
 		msgs.add("message", msg1);
 		msgs.add("message", msg2);
 		saveMessages(request, msgs);
+		
+		request.getSession().setAttribute("newReportCreated", "true");
 		forward = mapping.findForward("success");
 
 		return forward;
