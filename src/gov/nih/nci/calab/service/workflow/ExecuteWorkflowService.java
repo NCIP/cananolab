@@ -622,9 +622,11 @@ public class ExecuteWorkflowService {
 		} finally {
 			ida.close();
 		}
-		runBean.setAliquotBeans(new ArrayList<AliquotBean>(aliquots));
-		runBean.setInputFileBeans(new ArrayList<FileBean>(inFiles));
-		runBean.setOutputFileBeans(new ArrayList<FileBean>(outFiles));
+		if (runBean != null) {
+			runBean.setAliquotBeans(new ArrayList<AliquotBean>(aliquots));
+			runBean.setInputFileBeans(new ArrayList<FileBean>(inFiles));
+			runBean.setOutputFileBeans(new ArrayList<FileBean>(outFiles));
+		}
 
 		// System.out.println(System.currentTimeMillis() - start);
 		return runBean;
