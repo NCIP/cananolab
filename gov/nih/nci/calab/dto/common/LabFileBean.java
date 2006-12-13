@@ -186,7 +186,7 @@ public class LabFileBean {
 	}
 
 	public String getVisibilityStr() {
-		visibilityStr=StringUtils.join(visibilityGroups, ", ");	
+		visibilityStr=StringUtils.join(visibilityGroups, "<br>");	
 		return visibilityStr;
 	}
 }
