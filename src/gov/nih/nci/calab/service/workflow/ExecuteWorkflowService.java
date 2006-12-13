@@ -477,19 +477,23 @@ public class ExecuteWorkflowService {
 
 				for (Object infile : inputFiles) {
 					InputFile doInputFile = (InputFile) infile;
-					FileBean infileBean = new FileBean();
+					/*
+					FileBean infileBean = new FileBean();					
 					infileBean.setId(doInputFile.getId().toString());
 					infileBean.setPath(doInputFile.getPath());
 					infileBean.setCreatedDate(doInputFile.getCreatedDate());
 					String status = (doInputFile.getDataStatus() == null) ? ""
 							: doInputFile.getDataStatus().getStatus();
 					infileBean.setFileMaskStatus(status);
+					*/
+					FileBean infileBean=new FileBean(doInputFile);
 					fileBeans.add(infileBean);
 				}
 			} else if (type.equalsIgnoreCase("output")) {
 				Set outputFiles = (Set) doRun.getOutputFileCollection();
 				for (Object outfile : outputFiles) {
 					OutputFile doOutputFile = (OutputFile) outfile;
+					/*
 					FileBean outfileBean = new FileBean();
 					outfileBean.setId(doOutputFile.getId().toString());
 					outfileBean.setPath(doOutputFile.getPath());
@@ -497,6 +501,8 @@ public class ExecuteWorkflowService {
 					String status = (doOutputFile.getDataStatus() == null) ? ""
 							: doOutputFile.getDataStatus().getStatus();
 					outfileBean.setFileMaskStatus(status);
+					*/
+					FileBean outfileBean=new FileBean(doOutputFile);
 					fileBeans.add(outfileBean);
 				}
 			}
