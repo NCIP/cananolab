@@ -35,6 +35,8 @@ import java.util.SortedSet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.struts.util.LabelValueBean;
+
 /**
  * This class sets up session level or servlet context level variables to be
  * used in various actions during the setup of query forms.
@@ -534,17 +536,13 @@ public class InitSessionSetup {
 		}
 	}
 
-	public String setAllInstrumentTypes(HttpSession session) throws Exception {
+	public void setAllInstrumentTypes(HttpSession session) throws Exception {
 		String rv = "";
 		if (session.getServletContext().getAttribute("allInstrumentTypes") == null) {
-			String[] instrumentTypes = lookupService.getAllInstrumentTypes();
+			List<LabelValueBean> instrumentTypes = lookupService.getAllInstrumentTypeAbbrs();
 			session.getServletContext().setAttribute("allInstrumentTypes",
 					instrumentTypes);
-			if (instrumentTypes != null && instrumentTypes.length > 0)
-				rv = instrumentTypes[0];
 		}
-
-		return rv;
 	}
 
 	public void setAllInstrumentTypeManufacturers(HttpSession session) throws Exception {
