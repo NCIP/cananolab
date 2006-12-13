@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.workflow;
  * @author pansu
  */
 
-/* CVS $Id: WorkflowMessageAction.java,v 1.2 2006-08-01 14:03:38 pansu Exp $ */
+/* CVS $Id: WorkflowMessageAction.java,v 1.3 2006-12-13 19:33:09 pansu Exp $ */
 
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
@@ -22,7 +22,8 @@ public class WorkflowMessageAction extends AbstractBaseAction {
 
 	public ActionForward executeTask(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {		
+			HttpServletResponse response) throws Exception {	
+		response.setHeader("Cache-Control", "no-cache"); //fix for IE only
 		InitSessionSetup.getInstance().setCurrentRun(request);
 		ActionForward forward = mapping.findForward("success");
 		return forward;
