@@ -407,8 +407,8 @@ public class InitSessionSetup {
 
 	public void setAllDendrimerGenerations(HttpSession session)
 			throws Exception {
-		if (session.getServletContext().getAttribute("allDendrimerGenerations") == null 
-			    || session.getAttribute("newCharacterizationCreated") != null) {
+		if (session.getServletContext().getAttribute("allDendrimerGenerations") == null
+				|| session.getAttribute("newCharacterizationCreated") != null) {
 			String[] generations = lookupService.getAllDendrimerGenerations();
 			session.getServletContext().setAttribute("allDendrimerGenerations",
 					generations);
@@ -473,10 +473,11 @@ public class InitSessionSetup {
 	public void setSideParticleMenu(HttpServletRequest request,
 			String particleName, String particleType) throws Exception {
 		HttpSession session = request.getSession();
+		SearchNanoparticleService service = new SearchNanoparticleService();
 		if (session.getAttribute("charTypeChars") == null
 				|| session.getAttribute("newCharacterizationCreated") != null
 				|| session.getAttribute("newParticleCreated") != null) {
-			SearchNanoparticleService service = new SearchNanoparticleService();
+
 			List<CharacterizationBean> charBeans = service
 					.getCharacterizationInfo(particleName, particleType);
 			Map<String, List<CharacterizationBean>> existingCharTypeChars = new HashMap<String, List<CharacterizationBean>>();
@@ -499,29 +500,38 @@ public class InitSessionSetup {
 				}
 			}
 			session.setAttribute("charTypeChars", existingCharTypeChars);
-
-			UserBean user = (UserBean) session.getAttribute("user");
-			List<LabFileBean> reportBeans = service.getReportInfo(particleName,
-					particleType, CananoConstants.NCL_REPORT, user);
-			session.setAttribute("charTypeReports", reportBeans);
-			
-			List<LabFileBean> associatedBeans = service.getReportInfo(particleName,
-					particleType, CananoConstants.ASSOCIATED_FILE, user);
-			session.setAttribute("charTypeAssociatedFiles", associatedBeans);
 		}
-		session.removeAttribute("newCharacterizationCreated");
 
 		if (session.getAttribute("funcTypeFuncs") == null
 				|| session.getAttribute("newFunctionCreated") != null
 				|| session.getAttribute("newParticleCreated") != null) {
-			SearchNanoparticleService service = new SearchNanoparticleService();
 			Map<String, List<FunctionBean>> funcTypeFuncs = service
 					.getFunctionInfo(particleName, particleType);
 			session.setAttribute("funcTypeFuncs", funcTypeFuncs);
 		}
 
+		UserBean user = (UserBean) session.getAttribute("user");
+		if (session.getAttribute("particleReports") == null
+				|| session.getAttribute("newReportCreated") != null
+				|| session.getAttribute("newParticleCreated") != null) {
+			List<LabFileBean> reportBeans = service.getReportInfo(particleName,
+					particleType, CananoConstants.NCL_REPORT, user);
+			session.setAttribute("particleReports", reportBeans);
+		}
+
+		if (session.getAttribute("particleAssociatedFiles") == null
+				|| session.getAttribute("newReportCreated") != null
+				|| session.getAttribute("newParticleCreated") != null) {
+			List<LabFileBean> associatedBeans = service.getReportInfo(
+					particleName, particleType,
+					CananoConstants.ASSOCIATED_FILE, user);
+			session.setAttribute("particleAssociatedFiles", associatedBeans);
+		}
+
+		session.removeAttribute("newCharacterizationCreated");
 		session.removeAttribute("newFunctionCreated");
 		session.removeAttribute("newParticleCreated");
+		session.removeAttribute("newReportCreated");
 		session.removeAttribute("detailPage");
 		setStaticDropdowns(session);
 	}
@@ -540,16 +550,19 @@ public class InitSessionSetup {
 	public void setAllInstrumentTypes(HttpSession session) throws Exception {
 		String rv = "";
 		if (session.getServletContext().getAttribute("allInstrumentTypes") == null) {
-			List<LabelValueBean> instrumentTypes = lookupService.getAllInstrumentTypeAbbrs();
+			List<LabelValueBean> instrumentTypes = lookupService
+					.getAllInstrumentTypeAbbrs();
 			session.getServletContext().setAttribute("allInstrumentTypes",
 					instrumentTypes);
 		}
 	}
 
-	public void setAllInstrumentTypeManufacturers(HttpSession session) throws Exception {
+	public void setAllInstrumentTypeManufacturers(HttpSession session)
+			throws Exception {
 		if (session.getServletContext().getAttribute(
 				"allInstrumentTypeManufacturers") == null) {
-			Map<String, SortedSet<String>> instrumentManufacturers = lookupService.getAllInstrumentManufacturers();
+			Map<String, SortedSet<String>> instrumentManufacturers = lookupService
+					.getAllInstrumentManufacturers();
 			session.getServletContext().setAttribute(
 					"allInstrumentTypeManufacturers", instrumentManufacturers);
 		}
@@ -663,8 +676,10 @@ public class InitSessionSetup {
 		session.setAttribute("allCarbonNanotubeWallTypes",
 				CananoConstants.CARBON_NANOTUBE_WALLTYPES);
 		session.setAttribute("allReportTypes", CananoConstants.REPORT_TYPES);
-		session.setAttribute("allFunctionLinkageTypes", CananoConstants.FUNCTION_LINKAGE_TYPES);
-		session.setAttribute("allFunctionAgentTypes", CananoConstants.FUNCTION_AGENT_TYPES);
+		session.setAttribute("allFunctionLinkageTypes",
+				CananoConstants.FUNCTION_LINKAGE_TYPES);
+		session.setAttribute("allFunctionAgentTypes",
+				CananoConstants.FUNCTION_AGENT_TYPES);
 	}
 
 	public void setAllRunFiles(HttpSession session, String particleName)
@@ -774,11 +789,10 @@ public class InitSessionSetup {
 	public void setAllSpecies(HttpSession session) throws Exception {
 		if (session.getServletContext().getAttribute("allSpecies") == null) {
 			List<LabelValueBean> species = lookupService.getAllSpecies();
-			session.getServletContext().setAttribute("allSpecies",
-					species);
+			session.getServletContext().setAttribute("allSpecies", species);
 		}
 	}
-	
+
 	// public void addCellLine(HttpSession session, String option) throws
 	// Exception {
 	// String[] cellLines = (String[])
