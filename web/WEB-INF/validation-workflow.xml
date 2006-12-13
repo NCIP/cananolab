@@ -5,19 +5,22 @@
 <form-validation>
 	<formset>
 		<form name="useAliquotForm">
-			<field property="assignedAliquots"  page="1" depends="required">
+			<field property="assignedAliquots" page="1" depends="required">
 				<arg position="0" key="useAliquotForm.assignedAliquots" bundle="workflow" />
 			</field>
-			<field property="runId"  page="1" depends="required">
+			<field property="runId" page="1" depends="required">
 				<arg position="0" key="useAliquotForm.runId" bundle="workflow" />
 			</field>
-		</form>		
+		</form>
 		<form name="createRunForm">
 			<field property="assayName" page="1" depends="required">
 				<arg key="createRunForm.assay" bundle="workflow" position="0" />
 			</field>
 			<field property="runBy" page="1" depends="required">
 				<arg key="createRunForm.runBy" bundle="workflow" position="0" />
+			</field>
+			<field property="assignedAliquots" page="1" depends="required">
+				<arg key="createRunForm.assignedAliquots" bundle="workflow" position="0" />
 			</field>
 			<field property="runDate" page="1" depends="date,required">
 				<arg key="createRunForm.runDate" bundle="workflow" position="0" />
