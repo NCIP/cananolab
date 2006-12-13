@@ -259,7 +259,9 @@ function clearOtherAgents(agentType, elementPrefix) {
 																				</td>
 																				<td class="borderlessLabel">
 																					<strong>Species</strong>
-																					<html:text property="function.linkages[${linkageInd}].antibody.species" />
+																					<html:select property="function.linkages[${linkageInd}].antibody.species">
+																						<html:options collection="allSpecies" property="value" labelProperty="label" />
+																					</html:select>
 																				</td>
 																			</c:when>
 																			<c:when test="${agentType eq 'Probe'}">
