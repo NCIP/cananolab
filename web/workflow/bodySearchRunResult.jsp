@@ -21,7 +21,7 @@
 			<td colspan="2">
 				<display:table name="selectedRuns" id="run" requestURI="selectRun.do" pagesize="25" class="displaytable">
 					<display:column title="Select">
-						<input type="radio" name="runId" value="${run.id}">
+						<input type="radio" name="runId" value="${run.id}" checked>
 					</display:column>
 					<display:column title="Sample Source" property="sampleSourceName" sortable="true" />
 					<display:column title="Assay Type" property="assayBean.assayType" sortable="true" />
