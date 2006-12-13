@@ -5,14 +5,14 @@
 
 <c:choose>
 	<c:when test="${param.type eq 'NCL Report'}">
-		<c:forEach var="aReport" items="${charTypeReports}" varStatus="count">
+		<c:forEach var="aReport" items="${particleReports}" varStatus="count">
 			<logic:equal parameter="fileInd" value="${count.index}">
 				<bean:define id="theFile" name="aReport" />
 			</logic:equal>
 		</c:forEach>
 	</c:when>
 	<c:otherwise>
-		<c:forEach var="aReport" items="${charTypeAssociatedFiles}" varStatus="count">
+		<c:forEach var="aReport" items="${particleAssociatedFiles}" varStatus="count">
 			<logic:equal parameter="fileInd" value="${count.index}">
 				<bean:define id="theFile" name="aReport" />
 			</logic:equal>
