@@ -82,6 +82,7 @@ public class FileBean {
 		this.fileMaskStatus = (fileMaskStatus.length() == 0 && filename
 				.length() > 0) ? CalabConstants.ACTIVE_STATUS : fileMaskStatus;
 		this.inoutType = CalabConstants.INPUT;
+		this.createdDate=infile.getCreatedDate();
 	}
 
 	public FileBean(OutputFile outfile) {
@@ -93,6 +94,7 @@ public class FileBean {
 		this.filename = getFileName(path);
 		this.shortFilename = outfile.getFilename();
 		this.inoutType = CalabConstants.OUTPUT;
+		this.createdDate=outfile.getCreatedDate();
 	}
 
 	public String getId() {
