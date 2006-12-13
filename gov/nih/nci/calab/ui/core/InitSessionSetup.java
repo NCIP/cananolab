@@ -770,6 +770,14 @@ public class InitSessionSetup {
 		}
 	}
 
+	public void setAllSpecies(HttpSession session) throws Exception {
+		if (session.getServletContext().getAttribute("allSpecies") == null) {
+			List<LabelValueBean> species = lookupService.getAllSpecies();
+			session.getServletContext().setAttribute("allSpecies",
+					species);
+		}
+	}
+	
 	// public void addCellLine(HttpSession session, String option) throws
 	// Exception {
 	// String[] cellLines = (String[])
