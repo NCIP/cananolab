@@ -377,6 +377,11 @@ public class SearchNanoparticleService {
 
 			for (Object obj : results) {
 				LabFileBean fileBean = new LabFileBean((LabFile) obj);
+				UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
+				List<String> accessibleGroups = userService.getAccessibleGroups(
+						fileBean.getId(), CalabConstants.CSM_READ_ROLE);
+				String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
+				fileBean.setVisibilityGroups(visibilityGroups);
 				fileBeans.add(fileBean);
 			}
 		} catch (Exception e) {
