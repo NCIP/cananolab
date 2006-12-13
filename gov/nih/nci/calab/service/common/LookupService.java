@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.82 2006-12-13 18:05:44 zengje Exp $ */
+/* CVS $Id: LookupService.java,v 1.83 2006-12-13 21:09:08 zengje Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -384,6 +384,8 @@ public class LookupService {
 				assays.add(assay);
 			}
 		} catch (Exception e) {
+		// TODO: temp for debuging use. remove later
+			e.printStackTrace();
 			logger.error("Error in retrieving all assay beans. ", e);
 			throw new RuntimeException("Error in retrieving all assays beans. ");
 		} finally {
@@ -638,6 +640,7 @@ public class LookupService {
 		}
 		branches.addAll(Arrays
 				.asList(CananoConstants.DEFAULT_DENDRIMER_BRANCHES));
+		branches.add(CananoConstants.OTHER);
 
 		return (String[]) branches.toArray(new String[0]);
 	}
@@ -691,6 +694,7 @@ public class LookupService {
 		}
 		initiators.addAll(Arrays
 				.asList(CananoConstants.DEFAULT_POLYMER_INITIATORS));
+		initiators.add(CananoConstants.OTHER);
 
 		return (String[]) initiators.toArray(new String[0]);
 	}
@@ -894,6 +898,7 @@ public class LookupService {
 		}
 		morphologyTypes.addAll(Arrays
 				.asList(CananoConstants.DEFAULT_MORPHOLOGY_TYPES));
+		morphologyTypes.add(CananoConstants.OTHER);
 
 		return (String[]) morphologyTypes.toArray(new String[0]);
 	}
@@ -922,7 +927,7 @@ public class LookupService {
 
 	public String[] getAllStressorTypes() {
 		String[] stressorTypes = new String[] { "Thermal", "PH", "Freeze thaw",
-				"Photo", "Centrifugation", "Lyophilization", "Chemical" };
+				"Photo", "Centrifugation", "Lyophilization", "Chemical", "Other" };
 		return stressorTypes;
 	}
 
@@ -1046,6 +1051,7 @@ public class LookupService {
 			ida.close();
 		}
 		cellLines.addAll(Arrays.asList(CananoConstants.DEFAULT_CELLLINES));
+		cellLines.add(CananoConstants.OTHER);
 
 		return (String[]) cellLines.toArray(new String[0]);
 
