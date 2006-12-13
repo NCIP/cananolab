@@ -5,7 +5,7 @@
 
 <c:choose>
 	<c:when test="${param.type eq 'NCL Report'}">
-		<c:forEach var="aReport" items="${charTypeReports}" varStatus="count">	
+		<c:forEach var="aReport" items="${charTypeReports}" varStatus="count">
 			<logic:equal parameter="fileInd" value="${count.index}">
 				<bean:define id="theFile" name="aReport" />
 			</logic:equal>
@@ -54,7 +54,7 @@
 					</tr>
 					<tr>
 						<td class="leftLabel">
-							<strong>Report File Name</strong>
+							<strong>File Name</strong>
 						</td>
 						<td class="rightLabel" colspan="3">
 							<a href="searchReport.do?dispatch=download&amp;fileId=${theFile.id}"><bean:write name="theFile" property="displayName" /></a>
@@ -62,7 +62,7 @@
 					</tr>
 					<tr>
 						<td class="leftLabel">
-							<strong>Report File Title</strong>
+							<strong>File Title</strong>
 						</td>
 						<td class="rightLabel" colspan="3">
 							<bean:write name="theFile" property="title" />
@@ -71,28 +71,28 @@
 					</tr>
 					<tr>
 						<td class="leftLabel">
-							<strong>Report File Description</strong>
+							<strong>File Description</strong>
 						</td>
 						<td class="rightLabel" colspan="3">
 							<bean:write name="theFile" property="description" />
 							&nbsp;
 						</td>
 					</tr>
-					<!--  <tr>
+					<tr>
 						<td class="leftLabel">
-							<strong>Keywords <em>(one per line)</em></strong>
+							<strong>File Comments</strong>
 						</td>
 						<td class="rightLabel" colspan="3">
-							<bean:write name="theFile" property="keywordsStr" />
+							<bean:write name="theFile" property="comments" />
 							&nbsp;
 						</td>
-					</tr>  -->
+					</tr>					
 					<tr>
 						<td class="leftLabel" valign="top">
 							<strong>Visibility</strong>
 						</td>
 						<td class="rightLabel" colspan="3">
-							<bean:write name="theFile" property="visibilityStr" />
+							<bean:write name="theFile" property="visibilityStr" filter="false"/>
 							&nbsp;
 						</td>
 					</tr>
