@@ -53,7 +53,6 @@
 						<html:select property="polymer.initiator">
 							<option />
 								<html:options name="allPolymerInitiators" />
-								<option value="Other">Other</option>
 						</html:select>
 					</c:when>
 					<c:otherwise>

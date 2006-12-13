@@ -48,9 +48,6 @@
 										<html:select property="achar.type">
 											<option value=""></option>
 											<html:options name="allMorphologyTypes" />
-											<option value="Other">
-												Other
-											</option>
 										</html:select>
 										&nbsp;&nbsp;
 										<strong> Other </strong>&nbsp;
