@@ -10,7 +10,7 @@ particleFileRepositoryDir=@FILE_REPOSITORY_DIR@
 archiveValue=http://@HOSTNAME@/calab/workflow/SignedHttpUploadApplet.jar
 servletURL=http://@HOSTNAME@/calab/processFileUpload
 notifyURL=http://@HOSTNAME@/calab/fileUpload.do?dispatch=persistFileUploadData
-defaultURL=http://@HOSTNAME@/calab/initSession.do?forwardPage=uploadForward
+defaultURL=http://@HOSTNAME@/calab/workflowMessage.do
 
 
 # Properties to specify what file extensions are allowed for each type. They must be in upercase.
