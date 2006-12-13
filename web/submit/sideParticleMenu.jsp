@@ -306,7 +306,7 @@
 							</li>
 							<li>
 								<span class="largerText">Other Associated Files &nbsp;&nbsp;</span>
-								<c:forEach var="aReport" items="${charTypeAssociatedFiles}" varStatus="associatedFileCount">									
+								<c:forEach var="aReport" items="${particleAssociatedFiles}" varStatus="associatedFileCount">									
 									<span class="indented"> <a href="/calab/viewReportFile.do?type=Other Associated File&fileInd=${associatedFileCount.index}" title="${aReport.displayName}">${aReport.name}</a> </span>
 									<br>
 								</c:forEach>
@@ -316,7 +316,7 @@
 							<li>
 								<span class="largerText">Reports</span>
 								<br>
-								<c:forEach var="aReport" items="${charTypeReports}" varStatus="reportCount">
+								<c:forEach var="aReport" items="${particleReports}" varStatus="reportCount">
 									<span class="indented"> <a href="/calab/viewReportFile.do?type=NCL Report&fileInd=${reportCount.index}" title="${aReport.displayName}">${aReport.name}</a> </span>
 									<br>
 								</c:forEach>
