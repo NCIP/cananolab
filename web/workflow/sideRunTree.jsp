@@ -55,7 +55,7 @@ d.add(5,3,'Out','javascript:gotoPage(\'workflowForward.do?menuType=out&inout=Out
               d.add(${inputFileSeq},4,'${inputFile.shortFilename}', 'javascript:gotoPage(\'${pageContext.request.contextPath}\'+\'/runFile.do?dispatch=downloadFile&fileName=${inputFile.filename}&inout=Input\')','${inputFile.filename}');
            </c:when>
            <c:otherwise>
-              d.add(${inputFileSeq},4,'<i>${inputFile.shortFilename}</i>', 'javascript:gotoPage(\'${pageContext.request.contextPath}\'+\'/runFile.do?dispatch=downloadFile&fileName=${inputFile.filename}&inout=Input\')','${inputFile.filename}');
+              d.add(${inputFileSeq},4,'<i>${inputFile.shortFilename}</i>', 'javascript:gotoPage(\'${pageContext.request.contextPath}\'+\'/runFile.do?dispatch=downloadFile&fileName=${inputFile.filename}&inout=Input\')','(Masked) ${inputFile.filename}');
            </c:otherwise>                                                   
         </c:choose>
 </c:forEach>
@@ -68,7 +68,7 @@ d.add(5,3,'Out','javascript:gotoPage(\'workflowForward.do?menuType=out&inout=Out
               d.add(${outputFileSeq},5,'${outputFile.shortFilename}', 'javascript:gotoPage(\'${pageContext.request.contextPath}\'+\'/runFile.do?dispatch=downloadFile&fileName=${outputFile.filename}&inout=Output\')','${outputFile.filename}');
            </c:when>
 	       <c:otherwise>
-    	      d.add(${outputFileSeq},5, '<i>${outputFile.shortFilename}</i>', 'javascript:gotoPage(\'${pageContext.request.contextPath}\'+\'/runFile.do?dispatch=downloadFile&fileName=${outputFile.filename}&inout=Output\')','${outputFile.filename}');
+    	      d.add(${outputFileSeq},5, '<i>${outputFile.shortFilename}</i>', 'javascript:gotoPage(\'${pageContext.request.contextPath}\'+\'/runFile.do?dispatch=downloadFile&fileName=${outputFile.filename}&inout=Output\')','(Masked) ${outputFile.filename}');
  		   </c:otherwise>
 	   </c:choose>
 </c:forEach> 
