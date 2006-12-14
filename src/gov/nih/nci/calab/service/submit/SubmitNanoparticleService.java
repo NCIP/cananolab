@@ -181,50 +181,48 @@ public class SubmitNanoparticleService {
 
 			if (achar.getInstrument() != null) {
 				Manufacturer manuf = achar.getInstrument().getManufacturer();
-				InstrumentType iType = achar.getInstrument().getInstrumentType();
-				if ( manuf != null && !manuf.getName().equals("") &&
-					 iType != null && !iType.getName().equals("") ) {
-					String manufacturerQuery = " from Manufacturer manufacturer where manufacturer.name = '"
+				String manufacturerQuery = " from Manufacturer manufacturer where manufacturer.name = '"
 						+ manuf.getName() + "'";
-					List result = ida.search(manufacturerQuery);
-					Manufacturer manufacturer = null;
-					boolean newManufacturer = false;
-					for (Object obj : result) {
-						manufacturer = (Manufacturer) obj;
-					}
-					if (manufacturer == null) {
-						newManufacturer = true;
-						manufacturer = manuf;
-						ida.store(manufacturer);
-					}
-
-					String instrumentTypeQuery = " from InstrumentType instrumentType left join fetch instrumentType.manufacturerCollection where instrumentType.name = '"
-						+ iType.getName() + "'";
-					result = ida.search(instrumentTypeQuery);
-					InstrumentType instrumentType = null;
-					for (Object obj : result) {
-						instrumentType = (InstrumentType) obj;
-					}
-					if (instrumentType == null) {
-						instrumentType = iType;
-
-						ida.createObject(instrumentType);
-
-						HashSet<Manufacturer> manufacturers = new HashSet<Manufacturer>();
-						manufacturers.add(manufacturer);
-						instrumentType.setManufacturerCollection(manufacturers);
-					} else {
-						if (newManufacturer) {
-							instrumentType.getManufacturerCollection().add(
-								manufacturer);
-						}
-					}
-					ida.store(instrumentType);
-
-					achar.getInstrument().setInstrumentType(instrumentType);
-					achar.getInstrument().setManufacturer(manufacturer);
-					ida.store(achar.getInstrument());
+				List result = ida.search(manufacturerQuery);
+				Manufacturer manufacturer = null;
+				boolean newManufacturer = false;
+				for (Object obj : result) {
+					manufacturer = (Manufacturer) obj;
 				}
+				if (manufacturer == null) {
+					newManufacturer = true;
+					manufacturer = manuf;
+					ida.store(manufacturer);
+				}
+
+				InstrumentType iType = achar.getInstrument()
+						.getInstrumentType();
+				String instrumentTypeQuery = " from InstrumentType instrumentType left join fetch instrumentType.manufacturerCollection where instrumentType.name = '"
+						+ iType.getName() + "'";
+				result = ida.search(instrumentTypeQuery);
+				InstrumentType instrumentType = null;
+				for (Object obj : result) {
+					instrumentType = (InstrumentType) obj;
+				}
+				if (instrumentType == null) {
+					instrumentType = iType;
+
+					ida.createObject(instrumentType);
+
+					HashSet<Manufacturer> manufacturers = new HashSet<Manufacturer>();
+					manufacturers.add(manufacturer);
+					instrumentType.setManufacturerCollection(manufacturers);
+				} else {
+					if (newManufacturer) {
+						instrumentType.getManufacturerCollection().add(
+								manufacturer);
+					}
+				}
+				ida.store(instrumentType);
+
+				achar.getInstrument().setInstrumentType(instrumentType);
+				achar.getInstrument().setManufacturer(manufacturer);
+				ida.store(achar.getInstrument());
 			}
 
 			if (achar.getCharacterizationProtocol() != null) {
@@ -980,7 +978,7 @@ public class SubmitNanoparticleService {
 			// Have to seperate this section out in a different hibernate session.
 			// check linkage id object type
 			ida.open();
-			if (doFunction.getLinkageCollection() != null) {
+			if (doFunction.getId() != null && doFunction.getLinkageCollection() != null) {
 				for (Linkage linkage : doFunction.getLinkageCollection()) {
 					// check linkage id object type
 					if (linkage.getId() != null) {
