@@ -79,7 +79,7 @@
 		<td class="rightLabel" colspan="3">
 			<c:choose>
 				<c:when test="${canUserUpdateParticle eq 'true'}">
-					<html:textarea property="achar.description" rows="3" />
+					<html:textarea property="achar.description" rows="3" cols="80" />
 				</c:when>
 				<c:otherwise>
 						${thisForm.map.achar.description}&nbsp;
