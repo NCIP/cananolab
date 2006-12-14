@@ -25,7 +25,7 @@
 				<jsp:include page="/bodyMessage.jsp?bundle=search" />
 				<display:table name="sessionScope.sampleContainers" id="container" requestURI="searchSample.do" pagesize="25" class="displaytable">
 					<display:column title="Select">
-						<input type="radio" name="containerId" value="${container.containerId}">
+						<input type="radio" name="containerId" value="${container.containerId}" checked>
 					</display:column>
 					<display:column title="Sample ID" property="sample.sortableName" sortable="true" />
 					<display:column title="Container Name" property="sortableName" sortable="true" />
