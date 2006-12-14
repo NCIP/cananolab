@@ -8,12 +8,17 @@ package gov.nih.nci.calab.ui.submit;
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.invitro.Caspase3Activation;
+import gov.nih.nci.calab.dto.characterization.ConditionBean;
+import gov.nih.nci.calab.dto.characterization.DatumBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.dto.characterization.invitro.Caspase3ActivationBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
+import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.CananoConstants;
+import gov.nih.nci.calab.service.util.PropertyReader;
+import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.ui.core.BaseCharacterizationAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
@@ -62,6 +67,33 @@ public class InvitroCaspase3ActivationAction extends BaseCharacterizationAction 
 		int fileNumber = 0;
 		for (DerivedBioAssayDataBean obj : caspase3ActivityChar
 				.getDerivedBioAssayDataList()) {
+			
+			// Vaidate the the nested data point entries
+			for ( DatumBean dataPoint : obj.getDatumList() ) {
+				if ( dataPoint.getValue() != null && dataPoint.getValue().equals("") ) {
+					Exception updateConditionsException = new Exception(PropertyReader.getProperty(
+							CalabConstants.SUBMISSION_PROPERTY, "capase3ActivationPercentageRequired"));							
+					throw updateConditionsException;
+				}
+				else {
+					if ( !StringUtils.isDouble(dataPoint.getValue()) ) {
+						Exception updateConditionsException = new Exception(PropertyReader.getProperty(
+							CalabConstants.SUBMISSION_PROPERTY, "capase3ActivationPercentageDouble"));							
+						throw updateConditionsException;
+					}
+				}
+				
+				if ( dataPoint.getIsAControl().equals(CananoConstants.BOOLEAN_NO) ) {
+					for ( ConditionBean condition : dataPoint.getConditionList() ) {
+						if ( !StringUtils.isInteger(condition.getValue()) ) {
+							Exception updateConditionsException = new Exception(PropertyReader.getProperty(
+									CalabConstants.SUBMISSION_PROPERTY, "conditionValues"));							
+							throw updateConditionsException;
+						}
+					}
+				} 
+			}
+			
 			LabFileBean fileBean = (LabFileBean) request
 					.getSession().getAttribute(
 							"characterizationFile" + fileNumber);
