@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchAliquotAction.java,v 1.2 2006-08-01 19:47:13 pansu Exp $ */
+/* CVS $Id: SearchAliquotAction.java,v 1.3 2006-12-14 22:14:00 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.inventory.AliquotBean;
 import gov.nih.nci.calab.dto.inventory.StorageLocation;
@@ -85,27 +85,28 @@ public class SearchAliquotAction extends AbstractDispatchAction {
 			ActionMessage msg = new ActionMessage(
 					"message.searchSample.noResult");
 			msgs.add("message", msg);
-			saveMessages(request, msgs);
+			saveMessages(request, msgs);	
+			session.removeAttribute("aliquots");
+		} else {
+			session.setAttribute("aliquots", aliquots);			
 		}
-		session.setAttribute("aliquots", aliquots);
 		forward = mapping.findForward("success");
-
 		return forward;
 	}
 
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		HttpSession session=request.getSession();
+		HttpSession session = request.getSession();
 		InitSessionSetup.getInstance().setAllSampleTypes(session);
 		InitSessionSetup.getInstance().setAllUsers(session);
 		InitSessionSetup.getInstance().setAllAliquotContainerInfo(session);
 		InitSessionSetup.getInstance().setAllSampleSources(session);
 		InitSessionSetup.getInstance().setAllSourceSampleIds(session);
-		
+
 		InitSessionSetup.getInstance().clearWorkflowSession(session);
 		InitSessionSetup.getInstance().clearInventorySession(session);
-		
+
 		return mapping.getInputForward();
 	}
 
