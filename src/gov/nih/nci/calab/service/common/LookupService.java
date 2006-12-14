@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.83 2006-12-13 21:09:08 zengje Exp $ */
+/* CVS $Id: LookupService.java,v 1.84 2006-12-14 19:43:11 zengje Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -1067,6 +1067,7 @@ public class LookupService {
 		List<LabelValueBean> species = new ArrayList<LabelValueBean>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
+		species.add(new LabelValueBean("",""));
 		try {
 			for (int i=0;i<CananoConstants.SPECIES_COMMON.length;i++) {
 				String specie = CananoConstants.SPECIES_COMMON[i];
