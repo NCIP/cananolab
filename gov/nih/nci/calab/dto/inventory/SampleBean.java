@@ -19,7 +19,7 @@ import java.util.Set;
  * 
  */
 
-/* CVS $Id: SampleBean.java,v 1.2 2006-09-10 18:02:56 zengje Exp $ */
+/* CVS $Id: SampleBean.java,v 1.3 2006-12-14 22:13:42 pansu Exp $ */
 public class SampleBean{
 	private String sampleId="";
 	
@@ -40,6 +40,8 @@ public class SampleBean{
 	private String sourceSampleId="";
 
 	private Date dateReceived;
+	
+	private String dateReceivedStr;
 
 	private String lotId="";
 
@@ -56,6 +58,8 @@ public class SampleBean{
 	private Date accessionDate;
 	
 	private String accessionDateStr;
+	
+	
 
 	private ContainerBean[] containers;
 
@@ -304,6 +308,13 @@ public class SampleBean{
 			accessionDateStr=StringUtils.convertDateToString(accessionDate, CalabConstants.DATE_FORMAT);
 		}
 		return accessionDateStr;
+	}
+	
+	public String getDateReceivedStr() {
+		if (dateReceived!=null) {
+			dateReceivedStr=StringUtils.convertDateToString(dateReceived, CalabConstants.DATE_FORMAT);
+		}
+		return dateReceivedStr;
 	}
 
 	public SortableName getSortableName() {	
