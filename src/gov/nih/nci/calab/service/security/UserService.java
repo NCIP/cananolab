@@ -1,10 +1,12 @@
 package gov.nih.nci.calab.service.security;
 
+import gov.nih.nci.calab.db.HibernateDataAccess;
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.security.AuthenticationManager;
 import gov.nih.nci.security.AuthorizationManager;
 import gov.nih.nci.security.SecurityServiceProvider;
@@ -24,6 +26,8 @@ import gov.nih.nci.security.dao.SearchCriteria;
 import gov.nih.nci.security.dao.UserSearchCriteria;
 import gov.nih.nci.security.exceptions.CSException;
 
+import java.sql.Connection;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -32,6 +36,8 @@ import java.util.Set;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts.tiles.beans.MenuItem;
+import org.hibernate.Hibernate;
+import org.hibernate.SQLQuery;
 
 /**
  * This class takes care of authentication and authorization of a user and group
@@ -406,6 +412,72 @@ public class UserService {
 	}
 
 	/**
+	 * Direct CSM schema query to improve performance. Get the existing role IDs
+	 * from database
+	 * 
+	 * @param objectName
+	 * @param groupName
+	 * @return
+	 * @throws Exception
+	 */
+	public List<String> getExistingRoleIds(ProtectionGroup pg, Group group)
+			throws Exception {
+		List<String> roleIds = new ArrayList<String>();		
+		HibernateDataAccess hda = HibernateDataAccess.getInstance();
+		String query = "select distinct role_id from csm_user_group_role_pg "
+				+ "where protection_group_id=" + pg.getProtectionGroupId()
+				+ " and group_id=" + group.getGroupId();
+		try {
+			hda.open();
+			SQLQuery queryObj = hda.getNativeQuery(query);
+			queryObj.addScalar("ROLE_ID", Hibernate.STRING);
+			List results = queryObj.list();
+			for (Object obj : results) {
+				String roleId = (String) obj;
+				roleIds.add(roleId);
+			}
+		} catch (Exception e) {
+			throw new Exception(
+					"error getting existing roles from CSM database:" + e);
+
+		} finally {
+			hda.close();
+		}
+
+		return roleIds;
+	}
+
+	/**
+	 * Get the existing role IDs from database
+	 * 
+	 * @param objectName
+	 * @param groupName
+	 * @return
+	 * @throws Exception
+	 */
+	public List<String> getExistingRoleIdsSlow(ProtectionGroup pg, Group group)
+			throws Exception {
+		List<String> roleIds = new ArrayList<String>();
+		Set existingRoles = null;
+		Set contexts = userManager.getProtectionGroupRoleContextForGroup(group
+				.getGroupId().toString());
+		for (Object obj : contexts) {
+			ProtectionGroupRoleContext context = (ProtectionGroupRoleContext) obj;
+			if (context.getProtectionGroup().equals(pg)) {
+				existingRoles = context.getRoles();
+				break;
+			}
+		}
+		if (existingRoles != null) {
+			for (Object obj : existingRoles) {
+				Role aRole = (Role) obj;
+				roleIds.add(aRole.getId().toString());
+			}
+		}
+		return roleIds;
+	}
+
+	/**
 	 * Assign the given objectName to the given groupName with the given
 	 * roleName. Add to existing roles the object has for the group.
 	 * 
@@ -428,44 +500,24 @@ public class UserService {
 		// get group and role
 		Group group = getGroup(groupName);
 		Role role = getRole(roleName);
-		Set<Role> existingRoles = new HashSet<Role>();
 
-		if (group != null && role != null) {
-			// get existing roles and add to it
-			Set contexts = userManager
-					.getProtectionGroupRoleContextForGroup(group.getGroupId()
-							.toString());
-			for (Object obj : contexts) {
-				ProtectionGroupRoleContext context = (ProtectionGroupRoleContext) obj;
-				if (context.getProtectionGroup().equals(pg)) {
-					existingRoles = new HashSet<Role>(
-							(Set<? extends Role>) context.getRoles());
-					break;
-				}
-			}
-			existingRoles.add(role);
-			String[] roleIds = new String[existingRoles.size()];
-			int i = 0;
-
-			for (Object obj2 : existingRoles) {
-				Role aRole = (Role) obj2;
-				roleIds[i] = aRole.getId().toString();
-				i++;
-			}
-			userManager.assignGroupRoleToProtectionGroup(pg
-					.getProtectionGroupId().toString(), group.getGroupId()
-					.toString(), roleIds);
-
-		} else {
-			if (group == null) {
-				throw new CalabException("No such group defined in CSM: "
-						+ groupName);
-			}
-			if (role == null) {
-				throw new CalabException("No such role defined in CSM: "
-						+ roleName);
-			}
+		if (group == null) {
+			throw new CalabException("No such group defined in CSM: "
+					+ groupName);
 		}
+		if (role == null) {
+			throw new CalabException("No such role defined in CSM: " + roleName);
+		}
+
+		List<String> existingRoleIds = getExistingRoleIds(pg, group);
+		List<String> allRoleIds = new ArrayList<String>(existingRoleIds);
+		if (!existingRoleIds.contains(role.getId().toString())) {
+			allRoleIds.add(role.getId().toString());
+		}
+		userManager.assignGroupRoleToProtectionGroup(pg.getProtectionGroupId()
+				.toString(), group.getGroupId().toString(), allRoleIds
+				.toArray(new String[0]));
+
 	}
 
 	/**
@@ -516,8 +568,8 @@ public class UserService {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<String> getAccessibleGroups(String objectName, String roleName)
-			throws Exception {
+	public List<String> getAccessibleGroupsSlow(String objectName,
+			String roleName) throws Exception {
 		List<String> groups = new ArrayList<String>();
 		List<String> allGroups = getAllGroups();
 		Role role = getRole(roleName);
@@ -550,6 +602,41 @@ public class UserService {
 	}
 
 	/**
+	 * Directly query CSM schema to improve performance
+	 * 
+	 * @param objectName
+	 * @param roleName
+	 * @return
+	 */
+	public List<String> getAccessibleGroups(String objectName, String roleName)
+			throws Exception {
+		List<String> groups = new ArrayList<String>();
+		HibernateDataAccess hda = HibernateDataAccess.getInstance();
+		String query = "select d.GROUP_NAME GROUP_NAME from csm_protection_group a, csm_role b, csm_user_group_role_pg c, csm_group d	"
+				+ "where a.PROTECTION_GROUP_ID=c.PROTECTION_GROUP_ID and b.ROLE_ID=c.ROLE_ID and c.GROUP_ID=d.GROUP_ID and "
+				+ "a.PROTECTION_GROUP_NAME='"
+				+ objectName
+				+ "' and b.ROLE_NAME='" + roleName + "'";
+		try {
+			hda.open();
+			SQLQuery queryObj = hda.getNativeQuery(query);
+			queryObj.addScalar("GROUP_NAME", Hibernate.STRING);
+			List results = queryObj.list();
+			for (Object obj : results) {
+				String group = (String) obj;
+				groups.add(group);
+			}
+		} catch (Exception e) {
+			throw new Exception(
+					"error getting accessible groups from CSM database:" + e);
+
+		} finally {
+			hda.close();
+		}
+		return groups;
+	}
+
+	/**
 	 * Remove the group the object is assigned to with the given role.
 	 * 
 	 * @param objectName
@@ -557,7 +644,7 @@ public class UserService {
 	 * @param roleName
 	 * @throws Exception
 	 */
-	public void removeAccessibleGroup(String objectName, String groupName,
+	public void removeAccessibleGroupSlow(String objectName, String groupName,
 			String roleName) throws Exception {
 		Group group = getGroup(groupName);
 		Role role = getRole(roleName);
@@ -600,5 +687,78 @@ public class UserService {
 		}
 		userManager.assignGroupRoleToProtectionGroup(pg.getProtectionGroupId()
 				.toString(), group.getGroupId().toString(), roleIds);
+	}
+
+	/**
+	 * Direct CSM schema query to improve performance
+	 * 
+	 * @param objectName
+	 * @param groupName
+	 * @param roleName
+	 * @throws Exception
+	 */
+	public void removeAccessibleGroup(String objectName, String groupName,
+			String roleName) throws Exception {
+		ProtectionGroup pg = this.getProtectionGroup(objectName);
+		Role role = this.getRole(roleName);
+		Group group = this.getGroup(groupName);
+
+		HibernateDataAccess hda = HibernateDataAccess.getInstance();
+		String query = "delete from csm_user_group_role_pg "
+				+ "where PROTECTION_GROUP_ID=" + pg.getProtectionGroupId()
+				+ "and ROLE_ID=" + role.getId() + " and GROUP_ID="
+				+ group.getGroupId();
+		try {
+			hda.open();
+			Connection connection = hda.getConnection();
+			Statement stmt = connection.createStatement();
+			stmt.execute(query);
+		} catch (Exception e) {
+			throw new Exception(
+					"error getting accessible groups from CSM database:" + e);
+		} finally {
+			hda.close();
+		}
+	}
+
+	/**
+	 * Direct CSM schema query to improve performance
+	 * 
+	 * @param objectName
+	 * @param groupName
+	 * @param roleName
+	 * @throws Exception
+	 */
+	public void removeAllAccessibleGroups(String objectName, String roleName,
+			String[] exceptionGroupNames) throws Exception {
+		ProtectionGroup pg = this.getProtectionGroup(objectName);
+		Role role = this.getRole(roleName);
+		List<String> exceptionGroupIds = new ArrayList<String>();
+		if (exceptionGroupNames != null) {
+			for (String groupName : exceptionGroupNames) {
+				Group group = getGroup(groupName);
+				exceptionGroupIds.add(group.getGroupId().toString());
+			}
+		}
+
+		HibernateDataAccess hda = HibernateDataAccess.getInstance();
+		String query = "delete from csm_user_group_role_pg "
+				+ "where PROTECTION_GROUP_ID=" + pg.getProtectionGroupId()
+				+ "and ROLE_ID=" + role.getId();
+		if (!exceptionGroupIds.isEmpty()) {
+			query += " and GROUP_ID not in ("
+					+ StringUtils.join(exceptionGroupIds, ",") + ")";
+		}
+		try {
+			hda.open();
+			Connection connection = hda.getConnection();
+			Statement stmt = connection.createStatement();
+			stmt.execute(query);
+		} catch (Exception e) {
+			throw new Exception(
+					"error getting accessible groups from CSM database:" + e);
+		} finally {
+			hda.close();
+		}
 	}
 }
