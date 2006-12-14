@@ -108,7 +108,7 @@
 					</td>
 
 					<td class="formFieldWhite">
-						<bean:write name="sample" property="dateReceived" />
+						<bean:write name="sample" property="dateReceivedStr" />
 						&nbsp;
 					</td>
 				</tr>
