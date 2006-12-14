@@ -13,8 +13,6 @@ import gov.nih.nci.calab.domain.Report;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.function.Agent;
 import gov.nih.nci.calab.domain.nano.function.AgentTarget;
-import gov.nih.nci.calab.domain.nano.function.Attachment;
-import gov.nih.nci.calab.domain.nano.function.Encapsulation;
 import gov.nih.nci.calab.domain.nano.function.Function;
 import gov.nih.nci.calab.domain.nano.function.Linkage;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
@@ -70,8 +68,8 @@ import org.apache.struts.upload.FormFile;
 
 /**
  * This class includes service calls involved in creating nanoparticles and
- * adding functions and characterizations for nanoparticles, as well as
- * creating reports.
+ * adding functions and characterizations for nanoparticles, as well as creating
+ * reports.
  * 
  * @author pansu
  * 
@@ -129,29 +127,19 @@ public class SubmitNanoparticleService {
 			ida.close();
 		}
 
-		// remove existing visiblities for the nanoparticle
-		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
-		List<String> currentVisibilities = userService.getAccessibleGroups(
-				particleName, CalabConstants.CSM_READ_ROLE);
-		for (String visiblity : currentVisibilities) {
-			userService.removeAccessibleGroup(particleName, visiblity,
-					CalabConstants.CSM_READ_ROLE);
-		}
-		// set new visibilities for the nanoparticle
-		// by default, always set visibility to NCL_PI and NCL_Researcher to
-		// be true
-		for (String defaultGroup : CananoConstants.DEFAULT_VISIBLE_GROUPS) {
-			userService.secureObject(particleName, defaultGroup,
-					CalabConstants.CSM_READ_ROLE);
-		}
+		// remove existing visibilities (except the default groups) for the
+		// nanoparticle
+		if (visibilities != null || visibilities.length==0) {
+			UserService userService = new UserService(
+					CalabConstants.CSM_APP_NAME);
+			userService.removeAllAccessibleGroups(particleName,
+					CalabConstants.CSM_READ_ROLE, CananoConstants.DEFAULT_VISIBLE_GROUPS);
 
-		if (visibilities != null) {
 			for (String visibility : visibilities) {
 				userService.secureObject(particleName, visibility,
 						CalabConstants.CSM_READ_ROLE);
 			}
 		}
-
 	}
 
 	/**
@@ -805,11 +793,10 @@ public class SubmitNanoparticleService {
 	 * @param keywords
 	 * @param visibilities
 	 */
-	public LabFileBean saveCharacterizationFile(
-			String particleName, FormFile file, String title,
-			String description, String comments, String[] keywords,
-			String[] visibilities, String path, String fileNumber,
-			String rootPath) throws Exception {
+	public LabFileBean saveCharacterizationFile(String particleName,
+			FormFile file, String title, String description, String comments,
+			String[] keywords, String[] visibilities, String path,
+			String fileNumber, String rootPath) throws Exception {
 
 		// TODO saves file to the file system
 		HttpFileUploadSessionData sData = new HttpFileUploadSessionData();
@@ -852,26 +839,22 @@ public class SubmitNanoparticleService {
 		} finally {
 			ida.close();
 		}
-		LabFileBean fileBean = new LabFileBean(
-				dataFile);
+		LabFileBean fileBean = new LabFileBean(dataFile);	
 
-		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
+		// remove existing visibilities (except the default groups) for the
+		// file
+		if (visibilities != null || visibilities.length==0) {
+			UserService userService = new UserService(
+					CalabConstants.CSM_APP_NAME);
+			userService.removeAllAccessibleGroups(fileBean.getId(),
+					CalabConstants.CSM_READ_ROLE, CananoConstants.DEFAULT_VISIBLE_GROUPS);
 
-		if (visibilities != null) {
 			for (String visibility : visibilities) {
-				// by default, always set visibility to NCL_PI and
-				// NCL_Researcher to
-				// be true
-				// TODO once the files is successfully saved, use fileId instead
-				// of fileName				
 				userService.secureObject(fileBean.getId(), visibility,
 						CalabConstants.CSM_READ_ROLE);
 			}
-			for (String defaultGroup : CananoConstants.DEFAULT_VISIBLE_GROUPS) {
-				userService.secureObject(fileBean.getId(), defaultGroup,
-						CalabConstants.CSM_READ_ROLE);
-			}
 		}
+	
 		return fileBean;
 	}
 
@@ -885,9 +868,9 @@ public class SubmitNanoparticleService {
 	 * @param keywords
 	 * @param visibilities
 	 */
-	public LabFileBean saveCharacterizationFile(String fileId,
-			String title, String description, String[] keywords,
-			String[] visibilities) throws Exception {
+	public LabFileBean saveCharacterizationFile(String fileId, String title,
+			String description, String[] keywords, String[] visibilities)
+			throws Exception {
 
 		LabFileBean fileBean = getFile(fileId);
 		fileBean.setTitle(title);
@@ -924,25 +907,22 @@ public class SubmitNanoparticleService {
 			throw e;
 		} finally {
 			ida.close();
-		}
+		}		
+		
+		// remove existing visibilities (except the default groups) for the
+		// file
+		if (visibilities != null || visibilities.length==0) {
+			UserService userService = new UserService(
+					CalabConstants.CSM_APP_NAME);
+			userService.removeAllAccessibleGroups(dataFile.getId().toString(),
+					CalabConstants.CSM_READ_ROLE, CananoConstants.DEFAULT_VISIBLE_GROUPS);
 
-		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
-		fileBean = new LabFileBean(dataFile);
-		if (visibilities != null) {
 			for (String visibility : visibilities) {
-				// by default, always set visibility to NCL_PI and
-				// NCL_Researcher to
-				// be true
-				// TODO once the files is successfully saved, use fileId instead
-				// of fileName				
-				userService.secureObject(fileBean.getId(), visibility,
-						CalabConstants.CSM_READ_ROLE);
-			}
-			for (String defaultGroup : CananoConstants.DEFAULT_VISIBLE_GROUPS) {
-				userService.secureObject(fileBean.getId(), defaultGroup,
+				userService.secureObject(dataFile.getId().toString(), visibility,
 						CalabConstants.CSM_READ_ROLE);
 			}
 		}
+		fileBean = new LabFileBean(dataFile);
 		return fileBean;
 	}
 
@@ -975,27 +955,30 @@ public class SubmitNanoparticleService {
 		Nanoparticle particle = null;
 		int existingViewTitleCount = -1;
 		try {
-			// Have to seperate this section out in a different hibernate session.
+			// Have to seperate this section out in a different hibernate
+			// session.
 			// check linkage id object type
 			ida.open();
 			if (doFunction.getId() != null && doFunction.getLinkageCollection() != null) {
 				for (Linkage linkage : doFunction.getLinkageCollection()) {
 					// check linkage id object type
 					if (linkage.getId() != null) {
-						List result = ida.search("from Linkage linkage where linkage.id = " + linkage.getId());
-						if (result!=null && result.size()>0){
-							Linkage existingObj = (Linkage)result.get(0);
-							// the the type is different, 
+						List result = ida
+								.search("from Linkage linkage where linkage.id = "
+										+ linkage.getId());
+						if (result != null && result.size() > 0) {
+							Linkage existingObj = (Linkage) result.get(0);
+							// the the type is different,
 							if (existingObj.getClass() != linkage.getClass()) {
 								linkage.setId(null);
 								ida.removeObject(existingObj);
 							}
 						}
-					} 
+					}
 				}
 			}
 			ida.close();
-			
+
 			ida.open();
 			if (doFunction.getLinkageCollection() != null) {
 				for (Linkage linkage : doFunction.getLinkageCollection()) {
@@ -1139,7 +1122,7 @@ public class SubmitNanoparticleService {
 		}
 		return runFiles;
 	}
-	
+
 	public void createReport(String[] particleNames, String reportType,
 			FormFile report, String title, String description, String comment,
 			String[] visibilities) throws Exception {
@@ -1175,7 +1158,7 @@ public class SubmitNanoparticleService {
 		dataFile.setFilename(report.getFileName());
 
 		dataFile.setPath(path + tagFileName);
-		dataFile.setTitle(title.toUpperCase()); //convert to upper case
+		dataFile.setTitle(title.toUpperCase()); // convert to upper case
 		Date date = new Date();
 		dataFile.setCreatedDate(date);
 		dataFile.setComments(comment);
@@ -1215,9 +1198,10 @@ public class SubmitNanoparticleService {
 
 				if (particle != null) {
 					if (reportType.equalsIgnoreCase(CananoConstants.NCL_REPORT))
-						particle.getReportCollection().add((Report)dataFile);
+						particle.getReportCollection().add((Report) dataFile);
 					else
-						particle.getAssociatedFileCollection().add((AssociatedFile)dataFile);
+						particle.getAssociatedFileCollection().add(
+								(AssociatedFile) dataFile);
 				}
 
 			} catch (Exception e) {
@@ -1231,21 +1215,18 @@ public class SubmitNanoparticleService {
 
 		}
 
-		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
-//		String fileName = report.getFileName();
+		// remove existing visibilities (except the default groups) for the
+		// file
+		if (visibilities != null || visibilities.length==0) {
+			UserService userService = new UserService(
+					CalabConstants.CSM_APP_NAME);
+			userService.removeAllAccessibleGroups(dataFile.getId().toString(),
+					CalabConstants.CSM_READ_ROLE, CananoConstants.DEFAULT_VISIBLE_GROUPS);
 
-		for (String visibility : visibilities) {
-			// by default, always set visibility to NCL_PI and NCL_Researcher to
-			// be true
-			// TODO once the files is successfully saved, use fileId instead of
-			// fileName
-		
-			userService.secureObject(dataFile.getId().toString(), visibility,
-					CalabConstants.CSM_READ_ROLE);
-		}
-		for (String defaultGroup : CananoConstants.DEFAULT_VISIBLE_GROUPS) {
-			userService.secureObject(dataFile.getId().toString(), defaultGroup,
-					CalabConstants.CSM_READ_ROLE);
+			for (String visibility : visibilities) {
+				userService.secureObject(dataFile.getId().toString(), visibility,
+						CalabConstants.CSM_READ_ROLE);
+			}
 		}
 	}
 
