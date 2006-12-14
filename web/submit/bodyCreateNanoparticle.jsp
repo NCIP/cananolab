@@ -36,6 +36,7 @@
 								<c:choose>
 									<c:when test="${param.dispatch eq 'setupUpdate'}">
 										${nanoparticleGeneralInfoForm.map.particleType}
+										<html:hidden property="particleType"/>
 									</c:when>
 									<c:otherwise>
 										<html:select property="particleType" onchange="javascript:doubleDropdown(document.nanoparticleGeneralInfoForm.particleType, document.nanoparticleGeneralInfoForm.particleName, particleTypeParticles)">
@@ -54,6 +55,7 @@
 								<c:choose>
 									<c:when test="${param.dispatch eq 'setupUpdate'}">
               							${nanoparticleGeneralInfoForm.map.particleName}
+              							<html:hidden property="particleName"/>
 									</c:when>
 									<c:otherwise>
 										<html:select property="particleName">
