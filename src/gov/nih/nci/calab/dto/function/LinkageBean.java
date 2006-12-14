@@ -69,30 +69,32 @@ public class LinkageBean {
 			this.type = CananoConstants.OTHER;
 		}
 		Agent theAgent = linkage.getAgent();
-		agent = new AgentBean(theAgent);
-		if (theAgent instanceof DNA) {
-			dna = new DNABean((DNA) theAgent);
-			agent.setType(CananoConstants.DNA);
-		} else if (theAgent instanceof Peptide) {
-			peptide = new PeptideBean((Peptide) theAgent);
-			agent.setType(CananoConstants.PEPTIDE);
-		} else if (theAgent instanceof SmallMolecule) {
-			smallMolecule = new SmallMoleculeBean((SmallMolecule) theAgent);
-			agent.setType(CananoConstants.SMALL_MOLECULE);
-		} else if (theAgent instanceof Probe) {
-			probe = new ProbeBean((Probe) theAgent);
-			agent.setType(CananoConstants.PROBE);
-		} else if (theAgent instanceof Antibody) {
-			antibody = new AntibodyBean((Antibody) theAgent);
-			agent.setType(CananoConstants.ANTIBODY);
-		} else if (theAgent instanceof ImageContrastAgent) {
-			imageContrastAgent = new ImageContrastAgentBean(
-					(ImageContrastAgent) theAgent);
-			agent.setType(CananoConstants.IMAGE_CONTRAST_AGENT);
-		} else if (theAgent instanceof UnclassifiedAgent) {
-			agent.setType(CananoConstants.OTHER);
+		if (theAgent != null) // shouldn't happen{
+			agent = new AgentBean(theAgent);
+			if (theAgent instanceof DNA) {
+				dna = new DNABean((DNA) theAgent);
+				agent.setType(CananoConstants.DNA);
+			} else if (theAgent instanceof Peptide) {
+				peptide = new PeptideBean((Peptide) theAgent);
+				agent.setType(CananoConstants.PEPTIDE);
+			} else if (theAgent instanceof SmallMolecule) {
+				smallMolecule = new SmallMoleculeBean((SmallMolecule) theAgent);
+				agent.setType(CananoConstants.SMALL_MOLECULE);
+			} else if (theAgent instanceof Probe) {
+				probe = new ProbeBean((Probe) theAgent);
+				agent.setType(CananoConstants.PROBE);
+			} else if (theAgent instanceof Antibody) {
+				antibody = new AntibodyBean((Antibody) theAgent);
+				agent.setType(CananoConstants.ANTIBODY);
+			} else if (theAgent instanceof ImageContrastAgent) {
+				imageContrastAgent = new ImageContrastAgentBean(
+						(ImageContrastAgent) theAgent);
+				agent.setType(CananoConstants.IMAGE_CONTRAST_AGENT);
+			} else if (theAgent instanceof UnclassifiedAgent) {
+				agent.setType(CananoConstants.OTHER);
+			}
 		}
-	}
+
 
 	public String getDescription() {
 		return description;
