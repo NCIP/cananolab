@@ -194,6 +194,7 @@ public class LinkageBean {
 				doLink.setId(new Long(getId()));
 			}
 			doLink.setDescription(description);
+			doLink.setAgent(theAgent);
 			return doLink;
 		}
 	}
