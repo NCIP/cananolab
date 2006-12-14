@@ -31,7 +31,7 @@
 
 				<display:table name="sessionScope.aliquots" id="aliquot" class="displaytable" pagesize="25" requestURI="searchAliquot.do">
 					<display:column title="Select">
-						<input type="radio" name="aliquotId" value="${aliquot.aliquotId}">
+						<input type="radio" name="aliquotId" value="${aliquot.aliquotId}" checked>
 					</display:column>
 					<display:column title="Sample<br>ID" property="sample.sortableName" sortable="true" />
 					<display:column title="Sample<br>Accession<br>Date" property="sample.accessionDate" sortable="true" format="{0,date,MM-dd-yyyy}" />
@@ -49,10 +49,11 @@
 		<a href="${viewAliquotDetailURL}">View Details</a>&nbsp;</display:column>
 	--%>
 				</display:table>
-				<div align="right">						    			
-					<input type="button" value="View Details" onclick="javascript:submitAction(document.resultForm, 'viewAliquotDetail.do')">
-				</div>
-
+				<logic:present name="aliquots">
+					<div align="right">
+						<input type="button" value="View Details" onclick="javascript:submitAction(document.resultForm, 'viewAliquotDetail.do')">
+					</div>
+				</logic:present>
 			</td>
 		</tr>
 	</table>
