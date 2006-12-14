@@ -377,7 +377,7 @@
 	</global-forwards>
 	<action-mappings>
 		<action path="/manageNanoparticle" type="gov.nih.nci.calab.ui.core.BaseForwardAction" parameter="submit.managenanoparticle" scope="request" />
-		<action name="nanoparticleGeneralInfoForm" parameter="dispatch" path="/nanoparticleGeneralInfo" type="gov.nih.nci.calab.ui.submit.NanoparticleGeneralInfoAction" input="input">
+		<action name="nanoparticleGeneralInfoForm" parameter="dispatch" path="/nanoparticleGeneralInfo" type="gov.nih.nci.calab.ui.submit.NanoparticleGeneralInfoAction" input="input" scope="request">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.nanoparticle.generalInfo" path="submit.createnanoparticle" type="java.lang.Exception" />
 			<forward name="success" path="submit.message" />
 			<forward name="view" path="submit.generalinfo.view" />
