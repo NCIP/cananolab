@@ -132,7 +132,7 @@ function clearOtherAgents(agentType, elementPrefix) {
 																	<td class="borderlessLabel">
 																		<html:radio property="function.linkages[${linkageInd}].type" value="Attachment"
 																			onclick="javascript:disableTextElement(this.form, 'function.linkages[${linkageInd}].localization');enableTextElement(this.form, 'function.linkages[${linkageInd}].bondType');" />
-																		Attachement
+																		Attachment
 																	</td>
 																	<td class="borderlessLabel">
 																		<strong>Bond Type</strong>
