@@ -15,12 +15,14 @@ import gov.nih.nci.calab.dto.function.FunctionBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.security.UserService;
+import gov.nih.nci.calab.service.util.CalabComparators;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.CananoConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -157,6 +159,8 @@ public class SearchNanoparticleService {
 		List<ParticleBean> filteredParticles = userService
 				.getFilteredParticles(user, particles);
 
+		// sort the list by IDs
+		Collections.sort(filteredParticles, new CalabComparators.SampleBeanComparator());		
 		return filteredParticles;
 	}
 
@@ -377,10 +381,13 @@ public class SearchNanoparticleService {
 
 			for (Object obj : results) {
 				LabFileBean fileBean = new LabFileBean((LabFile) obj);
-				UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
-				List<String> accessibleGroups = userService.getAccessibleGroups(
-						fileBean.getId(), CalabConstants.CSM_READ_ROLE);
-				String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
+				UserService userService = new UserService(
+						CalabConstants.CSM_APP_NAME);
+				List<String> accessibleGroups = userService
+						.getAccessibleGroups(fileBean.getId(),
+								CalabConstants.CSM_READ_ROLE);
+				String[] visibilityGroups = accessibleGroups
+						.toArray(new String[0]);
 				fileBean.setVisibilityGroups(visibilityGroups);
 				fileBeans.add(fileBean);
 			}
@@ -404,23 +411,27 @@ public class SearchNanoparticleService {
 	 * @throws Exception
 	 */
 	public List<LabFileBean> getReportInfo(String particleName,
-			String particleType, String reportType, UserBean user) throws Exception {
+			String particleType, String reportType, UserBean user)
+			throws Exception {
 		List<LabFileBean> reports = new ArrayList<LabFileBean>();
 
-		if (reportType.equals(CananoConstants.NCL_REPORT)){
-			reports.addAll(getReport(particleName, particleType,"reportCollection"));
+		if (reportType.equals(CananoConstants.NCL_REPORT)) {
+			reports.addAll(getReport(particleName, particleType,
+					"reportCollection"));
 		} else {
-			reports.addAll(getReport(particleName, particleType,"associatedFileCollection"));
+			reports.addAll(getReport(particleName, particleType,
+					"associatedFileCollection"));
 		}
-		
+
 		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
 
-		List<LabFileBean> filteredReports = userService
-				.getFilteredReports(user, reports);
+		List<LabFileBean> filteredReports = userService.getFilteredReports(
+				user, reports);
 		return filteredReports;
 	}
-	
-	public List<LabFileBean> getReportByParticle(String particleName,String particleType, UserBean user) throws Exception {
+
+	public List<LabFileBean> getReportByParticle(String particleName,
+			String particleType, UserBean user) throws Exception {
 		List<LabFileBean> fileBeans = new ArrayList<LabFileBean>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
@@ -432,8 +443,7 @@ public class SearchNanoparticleService {
 					.search("select report.id, report.filename, report.path from Nanoparticle particle join particle.reportCollection "
 							+ " report where particle.name='"
 							+ particleName
-							+ "' and particle.type='"
-							+ particleType + "'");
+							+ "' and particle.type='" + particleType + "'");
 
 			for (Object obj : results) {
 				String reportId = ((Object[]) obj)[0].toString();
@@ -450,11 +460,11 @@ public class SearchNanoparticleService {
 				fileBean.setName(fileName);
 				fileBeans.add(fileBean);
 			}
-			
-			UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
 
-			fileBeans = userService.getFilteredReports(
-					user, fileBeans);
+			UserService userService = new UserService(
+					CalabConstants.CSM_APP_NAME);
+
+			fileBeans = userService.getFilteredReports(user, fileBeans);
 		} catch (Exception e) {
 			logger.error("Problem finding report info for particle: "
 					+ particleName);
