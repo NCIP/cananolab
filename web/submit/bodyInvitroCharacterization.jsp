@@ -30,7 +30,9 @@
 				<jsp:include page="bodySharedCharacterizationSummary.jsp?formName=${formName}" />
 				<jsp:include page="bodySharedCharacterizationInstrument.jsp?formName=${formName}" />				
 				<logic:present name="detailPage">
-					<jsp:include page="${detailPage}" />
+					<jsp:include page="${detailPage}">
+						<jsp:param name="formName" value="${formName}"/>
+					</jsp:include>
 				</logic:present>
 				<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 					<tbody>

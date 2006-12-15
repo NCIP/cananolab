@@ -111,7 +111,7 @@
 								<td class="rightLabel" colspan="3">
 									<c:choose>
 										<c:when test="${canUserUpdateParticle eq 'true'}">
-											<html:textarea name="liposome.composingElements" indexed="true" property="description" rows="3" />
+											<html:textarea name="liposome.composingElements" indexed="true" property="description" rows="3" cols="80" />
 										</c:when>
 										<c:otherwise>
 						${nanoparticleCompositionForm.map.liposome.composingElements[status.index].description}&nbsp;
