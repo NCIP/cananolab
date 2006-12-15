@@ -12,6 +12,7 @@ import gov.nih.nci.calab.dto.inventory.ContainerBean;
 import gov.nih.nci.calab.dto.inventory.ContainerInfoBean;
 import gov.nih.nci.calab.dto.inventory.SampleBean;
 import gov.nih.nci.calab.dto.workflow.AssayBean;
+import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CalabComparators;
 import gov.nih.nci.calab.service.util.CalabConstants;
 import gov.nih.nci.calab.service.util.CananoConstants;
@@ -37,7 +38,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.84 2006-12-14 19:43:11 zengje Exp $ */
+/* CVS $Id: LookupService.java,v 1.85 2006-12-15 20:32:22 zengje Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -543,6 +544,8 @@ public class LookupService {
 		Map<String, SortedSet<String>> particleTypeParticles = new HashMap<String, SortedSet<String>>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
+		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
+		
 		try {
 			ida.open();
 //			String hqlString = "select particle.type, particle.name from Nanoparticle particle";
@@ -555,15 +558,19 @@ public class LookupService {
 				String particleName = (String) objArray[1];
 
 				if (particleType != null) {
-					if (particleTypeParticles.get(particleType) != null) {
-						particleNames = (SortedSet<String>) particleTypeParticles
-								.get(particleType);
-					} else {
-						particleNames = new TreeSet<String>(
-								new CalabComparators.SortableNameComparator());
-						particleTypeParticles.put(particleType, particleNames);
-					}
-					particleNames.add(particleName);
+					// check if the particle already has visibility group assigned, if yes, do NOT add to the list
+					List<String> groups = userService.getAccessibleGroups(particleName, CalabConstants.CSM_READ_ROLE);
+					if (groups.size() == 0){
+						if (particleTypeParticles.get(particleType) != null) {
+							particleNames = (SortedSet<String>) particleTypeParticles
+									.get(particleType);
+						} else {
+							particleNames = new TreeSet<String>(
+									new CalabComparators.SortableNameComparator());
+							particleTypeParticles.put(particleType, particleNames);
+						}
+						particleNames.add(particleName);		
+					}					
 				}
 			}
 		} catch (Exception e) {
@@ -1002,7 +1009,7 @@ public class LookupService {
 	}
 
 	public String[] getAllTemperatureUnits() {
-		String[] temperatureUnits = new String[] { "degrees celcius",
+		String[] temperatureUnits = new String[] { "degrees celsius",
 				"degrees fahrenhiet" };
 		return temperatureUnits;
 	}
