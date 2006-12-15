@@ -233,7 +233,7 @@ public class CananoConstants {
 
 	public static final String ABBR_PHAGOCYTOSIS = "PC";
 
-	public static final String ABBR_CYTOKINE_INDUCTION = "IC";
+	public static final String ABBR_CYTOKINE_INDUCTION = "CI";
 
 	public static final String ABBR_CFU_GM = "CU";
 
