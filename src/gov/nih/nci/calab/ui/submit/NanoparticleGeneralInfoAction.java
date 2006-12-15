@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.15 2006-12-11 22:26:45 zengje Exp $ */
+/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.16 2006-12-15 20:36:03 zengje Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
@@ -78,7 +78,7 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 		InitSessionSetup.getInstance().clearSearchSession(session);
 		InitSessionSetup.getInstance().clearInventorySession(session);
 
-		InitSessionSetup.getInstance().setAllParticleTypeParticles(session);
+		InitSessionSetup.getInstance().setParticleTypeParticles(session);
 		InitSessionSetup.getInstance().setAllVisibilityGroups(session);
 		// clear session data from the input forms
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
@@ -94,7 +94,7 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 		InitSessionSetup.getInstance().clearSearchSession(session);
 		InitSessionSetup.getInstance().clearInventorySession(session);
 
-		InitSessionSetup.getInstance().setAllParticleTypeParticles(session);
+		InitSessionSetup.getInstance().setParticleTypeParticles(session);
 		InitSessionSetup.getInstance().setAllVisibilityGroups(session);
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
