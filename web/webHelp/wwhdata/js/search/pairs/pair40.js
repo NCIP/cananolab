@@ -1,0 +1,27 @@
+function FileData_Pairs(x)
+{
+x.t("publishing","nanoparticle");
+x.t("discussed","section");
+x.t("characterization","publishing");
+x.t("include:","submitting");
+x.t("annotating","nanoparticles");
+x.t("annotating","nanoparticle");
+x.t("allows","submit");
+x.t("nanoparticles","annotating");
+x.t("nanoparticles","generate");
+x.t("nanoparticles","submit");
+x.t("feature","calab");
+x.t("annotations","nanoparticles");
+x.t("calab","allows");
+x.t("section","include:");
+x.t("submitting","annotations");
+x.t("reports","calab.");
+x.t("generate","reports");
+x.t("submit","feature");
+x.t("submit","annotations");
+x.t("topics","discussed");
+x.t("nanoparticle","characterization");
+x.t("nanoparticle","report");
+x.t("nanoparticle","nanoparticle");
+x.t("calab.","topics");
+}
