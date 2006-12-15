@@ -1,5 +1,6 @@
 package gov.nih.nci.calab.dto.search;
 
+import gov.nih.nci.calab.dto.common.SortableName;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.service.util.StringUtils;
 
@@ -13,7 +14,7 @@ import org.displaytag.decorator.TableDecorator;
  * 
  */
 public class NanoparticleDecorator extends TableDecorator {
-	public String getEditParticleURL() {
+	public SortableName getEditParticleURL() {
 		ParticleBean particle = (ParticleBean) getCurrentRowObject();
 		// replace space with special char
 		String particleType = particle.getSampleType().replace(" ", "%20");
@@ -21,11 +22,12 @@ public class NanoparticleDecorator extends TableDecorator {
 		String editParticleURL = "nanoparticleGeneralInfo.do?dispatch=setupUpdate&particleType="
 				+ particleType + "&particleName=" + particleName;
 		String link = "<a href=" + editParticleURL + ">"
-				+ particle.getSortableName() + "</a>";
-		return link;
+				+ particle.getSampleName() + "</a>";
+		SortableName sortableLink=new SortableName(particle.getSampleName(), link);
+		return sortableLink;
 	}
 
-	public String getViewParticleURL() {
+	public SortableName getViewParticleURL() {
 		ParticleBean particle = (ParticleBean) getCurrentRowObject();
 		// replace space with special char
 		String particleType = particle.getSampleType().replace(" ", "%20");
@@ -33,8 +35,9 @@ public class NanoparticleDecorator extends TableDecorator {
 		String viewParticleURL = "nanoparticleGeneralInfo.do?dispatch=setupView&particleType="
 				+ particleType + "&particleName=" + particleName;
 		String link = "<a href=" + viewParticleURL + ">"
-				+ particle.getSortableName() + "</a>";
-		return link;
+				+ particle.getSampleName() + "</a>";
+		SortableName sortableLink=new SortableName(particle.getSampleName(), link);
+		return sortableLink;		
 	}
 
 	public String getKeywordsStr() {
