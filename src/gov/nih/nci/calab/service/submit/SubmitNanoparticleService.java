@@ -133,17 +133,15 @@ public class SubmitNanoparticleService {
 
 		if (visibilities != null || visibilities.length > 0) {
 			userService.removeAllAccessibleGroups(particleName,
-					CalabConstants.CSM_READ_ROLE,
-					CananoConstants.DEFAULT_VISIBLE_GROUPS);
+					CalabConstants.CSM_READ_ROLE, null);
 			for (String visibility : visibilities) {
 				userService.secureObject(particleName, visibility,
 						CalabConstants.CSM_READ_ROLE);
 			}
-		} else {
-			for (String visibility : CananoConstants.DEFAULT_VISIBLE_GROUPS) {
-				userService.secureObject(particleName, visibility,
-						CalabConstants.CSM_READ_ROLE);
-			}
+		}
+		for (String visibility : CananoConstants.DEFAULT_VISIBLE_GROUPS) {
+			userService.secureObject(particleName, visibility,
+					CalabConstants.CSM_READ_ROLE);
 		}
 	}
 
@@ -852,19 +850,16 @@ public class SubmitNanoparticleService {
 
 		if (visibilities != null || visibilities.length > 0) {
 			userService.removeAllAccessibleGroups(dataFile.getId().toString(),
-					CalabConstants.CSM_READ_ROLE,
-					CananoConstants.DEFAULT_VISIBLE_GROUPS);
+					CalabConstants.CSM_READ_ROLE, null);
 			for (String visibility : visibilities) {
-				userService.secureObject(dataFile.getId().toString(),
-						visibility, CalabConstants.CSM_READ_ROLE);
-			}
-		} else {
-			for (String visibility : CananoConstants.DEFAULT_VISIBLE_GROUPS) {
-				userService.secureObject(dataFile.getId().toString(),
-						visibility, CalabConstants.CSM_READ_ROLE);
+				userService.secureObject(dataFile.getId().toString(), visibility,
+						CalabConstants.CSM_READ_ROLE);
 			}
 		}
-
+		for (String visibility : CananoConstants.DEFAULT_VISIBLE_GROUPS) {
+			userService.secureObject(dataFile.getId().toString(), visibility,
+					CalabConstants.CSM_READ_ROLE);
+		}
 		return fileBean;
 	}
 
@@ -925,17 +920,15 @@ public class SubmitNanoparticleService {
 
 		if (visibilities != null || visibilities.length > 0) {
 			userService.removeAllAccessibleGroups(dataFile.getId().toString(),
-					CalabConstants.CSM_READ_ROLE,
-					CananoConstants.DEFAULT_VISIBLE_GROUPS);
+					CalabConstants.CSM_READ_ROLE, null);
 			for (String visibility : visibilities) {
-				userService.secureObject(dataFile.getId().toString(),
-						visibility, CalabConstants.CSM_READ_ROLE);
+				userService.secureObject(dataFile.getId().toString(), visibility,
+						CalabConstants.CSM_READ_ROLE);
 			}
-		} else {
-			for (String visibility : CananoConstants.DEFAULT_VISIBLE_GROUPS) {
-				userService.secureObject(dataFile.getId().toString(),
-						visibility, CalabConstants.CSM_READ_ROLE);
-			}
+		}
+		for (String visibility : CananoConstants.DEFAULT_VISIBLE_GROUPS) {
+			userService.secureObject(dataFile.getId().toString(), visibility,
+					CalabConstants.CSM_READ_ROLE);
 		}
 
 		fileBean = new LabFileBean(dataFile);
@@ -1238,17 +1231,15 @@ public class SubmitNanoparticleService {
 
 		if (visibilities != null || visibilities.length > 0) {
 			userService.removeAllAccessibleGroups(dataFile.getId().toString(),
-					CalabConstants.CSM_READ_ROLE,
-					CananoConstants.DEFAULT_VISIBLE_GROUPS);
+					CalabConstants.CSM_READ_ROLE, null);
 			for (String visibility : visibilities) {
-				userService.secureObject(dataFile.getId().toString(),
-						visibility, CalabConstants.CSM_READ_ROLE);
+				userService.secureObject(dataFile.getId().toString(), visibility,
+						CalabConstants.CSM_READ_ROLE);
 			}
-		} else {
-			for (String visibility : CananoConstants.DEFAULT_VISIBLE_GROUPS) {
-				userService.secureObject(dataFile.getId().toString(),
-						visibility, CalabConstants.CSM_READ_ROLE);
-			}
+		}
+		for (String visibility : CananoConstants.DEFAULT_VISIBLE_GROUPS) {
+			userService.secureObject(dataFile.getId().toString(), visibility,
+					CalabConstants.CSM_READ_ROLE);
 		}
 
 	}
