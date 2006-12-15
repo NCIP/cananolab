@@ -56,7 +56,7 @@
 										<c:when test="${canUserUpdateParticle eq 'true'}">
 											<html:select name="complexParticle.composingElements" indexed="true" property="elementType">
 												<option value=""></option>
-												<html:options name="allParticleTypes" />
+												<html:options name="allSampleTypes" />
 											</html:select>
 										</c:when>
 										<c:otherwise>
