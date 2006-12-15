@@ -21,13 +21,6 @@
 	</c:when>
 </c:choose>
 <logic:present name="submitType">
-	<c:choose>
-		<c:when test="${submitType eq 'therapeutics' || submitType eq 'Targeting' || submitType eq 'imaging' || submitType eq 'Reporting'}">
-			<%session.removeAttribute("actions");
-
-		%>
-		</c:when>
-	</c:choose>
 	<logic:equal name="submitType" value="physical">
 		<bean:define id="actions" name="physicalActions" type="java.util.List" />
 	</logic:equal>
