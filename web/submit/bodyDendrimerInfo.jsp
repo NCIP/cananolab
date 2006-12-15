@@ -222,10 +222,10 @@
 										</td>
 									</c:when>
 									<c:otherwise>
-										<td>
+										<td class="label">
 											&nbsp;
 										</td>
-										<td>
+										<td class="label">
 											&nbsp;
 										</td>
 									</c:otherwise>
