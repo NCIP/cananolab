@@ -21,7 +21,7 @@
 			<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 				<tbody>
 					<tr class="topBorder">
-						<td class="formTitle" colspan="4">
+						<td class="formTitle" colspan="2">
 							<div align="justify">
 								General Information
 							</div>
