@@ -1,0 +1,24 @@
+function FileData_Pairs(x)
+{
+x.t("managing","calab");
+x.t("aliquots","using");
+x.t("inventory","manage");
+x.t("getting","started");
+x.t("assay","run.");
+x.t("assay","run");
+x.t("creating","assay");
+x.t("aliquot","getting");
+x.t("aliquot","aliquot");
+x.t("aliquot","include");
+x.t("aliquot","using");
+x.t("part","assay");
+x.t("started","calab");
+x.t("1.0","managing");
+x.t("calab","inventory");
+x.t("calab","1.0");
+x.t("run.","information");
+x.t("include","part");
+x.t("information","creating");
+x.t("manage","aliquots");
+x.t("using","aliquot");
+}
