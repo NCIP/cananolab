@@ -124,7 +124,7 @@
 								<td class="rightLabel" colspan="3">
 									<c:choose>
 										<c:when test="${canUserUpdateParticle eq 'true'}">
-											<html:textarea name="metalParticle.shells" indexed="true" property="description" rows="3" />
+											<html:textarea name="metalParticle.shells" indexed="true" property="description" rows="3" cols="80" />
 										</c:when>
 										<c:otherwise>
 						${nanoparticleCompositionForm.map.metalParticle.shells[status.index].description}&nbsp;
@@ -177,7 +177,7 @@
 								<td class="rightLabel" colspan="3">
 									<c:choose>
 										<c:when test="${canUserUpdateParticle eq 'true'}">
-											<html:textarea name="metalParticle.coatings" indexed="true" property="description" rows="3" />
+											<html:textarea name="metalParticle.coatings" indexed="true" property="description" rows="3" cols="80" />
 										</c:when>
 										<c:otherwise>
 						${nanoparticleCompositionForm.map.metalParticle.coatings[status.index].description}&nbsp;

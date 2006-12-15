@@ -105,7 +105,7 @@
 								<strong>Assay Result File Description</strong>
 							</td>
 							<td class="rightLabel" colspan="3">
-								<html:textarea property="description" rows="3" cols="60" />
+								<html:textarea property="description" rows="3" cols="80" />
 							</td>
 						</tr>
 						<tr>

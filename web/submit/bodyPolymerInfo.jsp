@@ -131,7 +131,7 @@
 								<td class="rightLabel" colspan="3">
 									<c:choose>
 										<c:when test="${canUserUpdateParticle eq 'true'}">
-											<html:textarea name="polymer.composingElements" indexed="true" property="description" rows="3" />
+											<html:textarea name="polymer.composingElements" indexed="true" property="description" rows="3" cols="80" />
 										</c:when>
 										<c:otherwise>
 						${nanoparticleCompositionForm.map.polymer.composingElements[status.index].description}&nbsp;

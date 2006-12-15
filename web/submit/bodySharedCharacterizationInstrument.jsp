@@ -3,16 +3,16 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<bean:define id="thisForm" name="${param.formName}"/>
+<bean:define id="thisForm" name="${param.formName}" />
 <table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 	<tr>
 	<tr class="topBorder">
 		<td class="formTitle" colspan="4">
 			<div align="justify">
-				Instrument Information 
+				Instrument Information
 			</div>
 		</td>
-	</tr>	
+	</tr>
 	<tr>
 		<td class="leftLabel">
 			<strong>Instrument Type </strong>
@@ -22,7 +22,7 @@
 				<c:when test="${canUserUpdateParticle eq 'true'}">
 					<html:select property="achar.instrument.type" onchange="javascript:doubleDropdownWithExraOption(this.form.elements[5], this.form.elements[7], instrumentTypeManufacturers, 'Other')">
 						<option value="" />
-							<html:options collection="allInstrumentTypes" property="value" labelProperty="label" />	
+							<html:options collection="allInstrumentTypes" property="value" labelProperty="label" />
 					</html:select>
 				</c:when>
 				<c:otherwise>
@@ -30,20 +30,25 @@
 				</c:otherwise>
 			</c:choose>
 		</td>
-		<td class="label">
-			<strong>Other Instrument Type </strong>
-			
-		</td>
-		<td class="rightLabel">
-			<c:choose>
-				<c:when test="${canUserUpdateParticle eq 'true'}">
+		<c:choose>
+			<c:when test="${canUserUpdateParticle eq 'true'}">
+				<td class="label">
+					<strong>Other Instrument Type </strong>
+				</td>
+				<td class="rightLabel">
 					<html:text property="achar.instrument.otherInstrumentType" />
-				</c:when>
-				<c:otherwise>
-					${thisForm.map.achar.instrument.otherInstrumentType}&nbsp;
-				</c:otherwise>
-			</c:choose>
-		</td>
+				</td>
+			</c:when>
+			<c:otherwise>
+				<td class="label">
+					&nbsp;
+				</td>
+				<td class="rightLabel">
+					&nbsp;
+				</td>
+			</c:otherwise>
+		</c:choose>
+
 	</tr>
 	<tr>
 		<td class="LeftLabel">
@@ -63,19 +68,24 @@
 					</c:otherwise>
 			</c:choose>
 		</td>
-		<td class="label">
-			<strong>Other Manufacturer </strong>
-		</td>
-		<td class="rightLabel">
-			<c:choose>
-				<c:when test="${canUserUpdateParticle eq 'true'}">
+		<c:choose>
+			<c:when test="${canUserUpdateParticle eq 'true'}">
+				<td class="label">
+					<strong>Other Manufacturer </strong>
+				</td>
+				<td class="rightLabel">
 					<html:text property="achar.instrument.otherManufacturer" />
-				</c:when>
-				<c:otherwise>
-						${thisForm.map.achar.instrument.otherManufacturer}&nbsp;
-				</c:otherwise>
-			</c:choose>
-		</td>
+				</td>
+			</c:when>
+			<c:otherwise>
+				<td class="label">
+					&nbsp;
+				</td>
+				<td class="rightLabel">
+					&nbsp;
+				</td>
+			</c:otherwise>
+		</c:choose>
 	</tr>
 	<tr>
 		<td class="leftLabel" valign="top">

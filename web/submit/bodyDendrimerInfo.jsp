@@ -29,19 +29,24 @@
 					</c:otherwise>
 				</c:choose>
 			</td>
-			<td class="label">
-				<strong>Other Branch</strong>
-			</td>
-			<td class="label">
-				<c:choose>
-					<c:when test="${canUserUpdateParticle eq 'true'}">
+			<c:choose>
+				<c:when test="${canUserUpdateParticle eq 'true'}">
+					<td class="label">
+						<strong>Other Branch</strong>
+					</td>
+					<td class="label">
 						<html:text property="dendrimer.otherBranch" />
-					</c:when>
-					<c:otherwise>
+					</td>
+				</c:when>
+				<c:otherwise>
+					<td class="label">
 						&nbsp;
-					</c:otherwise>
-				</c:choose>
-			</td>
+					</td>
+					<td class="label">
+						&nbsp;
+					</td>
+				</c:otherwise>
+			</c:choose>
 			<td class="label">
 				<strong>Repeat Unit</strong>
 			</td>
@@ -76,20 +81,24 @@
 					</c:otherwise>
 				</c:choose>
 			</td>
-			<td class="label">
-				<strong>Other Generation</strong>
-			</td>
-			<td class="label">
-				<c:choose>
-					<c:when test="${canUserUpdateParticle eq 'true'}">
+			<c:choose>
+				<c:when test="${canUserUpdateParticle eq 'true'}">
+					<td class="label">
+						<strong>Other Generation</strong>
+					</td>
+					<td class="label">
 						<html:text property="dendrimer.otherGeneration" />
-					</c:when>
-					<c:otherwise>
+					</td>
+				</c:when>
+				<c:otherwise>
+					<td class="label">
 						&nbsp;
-					</c:otherwise>
-				</c:choose>
-			</td>
-
+					</td>
+					<td class="label">
+						&nbsp;
+					</td>
+				</c:otherwise>
+			</c:choose>
 			<td class="label">
 				<strong>Molecular Formula</strong>
 			</td>
@@ -138,7 +147,7 @@
 			<td class="rightLabel" colspan="3">
 				<c:choose>
 					<c:when test="${canUserUpdateParticle eq 'true'}">
-						<html:textarea property="dendrimer.core.description" rows="3" />
+						<html:textarea property="dendrimer.core.description" rows="3" cols="80" />
 					</c:when>
 					<c:otherwise>
 						${nanoparticleCompositionForm.map.dendrimer.core.description}&nbsp;
@@ -204,7 +213,9 @@
 											<html:select name="dendrimer.surfaceGroups" indexed="true" property="name">
 												<option />
 													<html:options name="allDendrimerSurfaceGroupNames" />
-												<option value="Other">Other</option>
+												<option value="Other">
+													Other
+												</option>
 											</html:select>
 										</c:when>
 										<c:otherwise>
@@ -229,20 +240,20 @@
 											&nbsp;
 										</td>
 									</c:otherwise>
-									</c:choose>
-									<td class="label">
-										<strong>Modifier</strong>
-									</td>
-									<td class="rightLabel">
-										<c:choose>
-											<c:when test="${canUserUpdateParticle eq 'true'}">
-												<html:text name="dendrimer.surfaceGroups" indexed="true" property="modifier" />
-											</c:when>
-											<c:otherwise>
+								</c:choose>
+								<td class="label">
+									<strong>Modifier</strong>
+								</td>
+								<td class="rightLabel">
+									<c:choose>
+										<c:when test="${canUserUpdateParticle eq 'true'}">
+											<html:text name="dendrimer.surfaceGroups" indexed="true" property="modifier" />
+										</c:when>
+										<c:otherwise>
 						${nanoparticleCompositionForm.map.dendrimer.surfaceGroups[status.index].modifier}&nbsp;
 					</c:otherwise>
-										</c:choose>
-									</td>
+									</c:choose>
+								</td>
 							</tr>
 						</tbody>
 					</table>

@@ -42,7 +42,7 @@
 							<td class="leftLabel">
 								<strong>Type *</strong>
 							</td>
-							<td class="label">
+							<td class="rightLabel">
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
 										<html:select property="achar.type">
