@@ -346,10 +346,11 @@ public class InitSessionSetup {
 		return userService.checkExecutePermission(user, domain);
 	}
 
-	public void setAllParticleTypeParticles(HttpSession session)
+	public void setParticleTypeParticles(HttpSession session)
 			throws Exception {
-		if (session.getAttribute("allParticleTypeParticles") == null
-				|| session.getAttribute("newSampleCreated") != null) {
+		if (session.getAttribute("particleTypeParticles") == null
+				|| session.getAttribute("newSampleCreated") != null 
+				|| session.getAttribute("newParticleCreated") != null) {
 			Map<String, SortedSet<String>> particleTypeParticles = lookupService
 					.getAllParticleTypeParticles();
 			List<String> particleTypes = new ArrayList<String>(
@@ -527,7 +528,10 @@ public class InitSessionSetup {
 					CananoConstants.ASSOCIATED_FILE, user);
 			session.setAttribute("particleAssociatedFiles", associatedBeans);
 		}
-
+		// not part of the side menu, but need to up
+		if ( session.getAttribute("newParticleCreated") != null) {
+			setParticleTypeParticles(session);
+		}
 		session.removeAttribute("newCharacterizationCreated");
 		session.removeAttribute("newFunctionCreated");
 		session.removeAttribute("newParticleCreated");
