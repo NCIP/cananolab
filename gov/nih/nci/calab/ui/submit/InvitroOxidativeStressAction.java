@@ -69,28 +69,27 @@ public class InvitroOxidativeStressAction extends BaseCharacterizationAction {
 			
 			// Vaidate the the nested data point entries
 			for ( DatumBean dataPoint : obj.getDatumList() ) {
-				if ( dataPoint.getValue() != null && dataPoint.getValue().equals("") ) {
-					Exception updateConditionsException = new Exception(PropertyReader.getProperty(
-							CalabConstants.SUBMISSION_PROPERTY, "oxidativeStressPercentageRequired"));							
-					throw updateConditionsException;
-				}
-				else {
-					if ( !StringUtils.isDouble(dataPoint.getValue()) ) {
-						Exception updateConditionsException = new Exception(PropertyReader.getProperty(
-							CalabConstants.SUBMISSION_PROPERTY, "oxidativeStressPercentageDouble"));							
-						throw updateConditionsException;
-					}
-				}
-				
-				if ( dataPoint.getIsAControl().equals(CananoConstants.BOOLEAN_NO) ) {
-					for ( ConditionBean condition : dataPoint.getConditionList() ) {
-						if ( !StringUtils.isInteger(condition.getValue()) ) {
-							Exception updateConditionsException = new Exception(PropertyReader.getProperty(
-									CalabConstants.SUBMISSION_PROPERTY, "conditionValues"));							
-							throw updateConditionsException;
-						}
-					}
+				try {
+				   Float.parseFloat(dataPoint.getValue());
 				} 
+				catch (NumberFormatException nfe) {
+					Exception dataPointException = new Exception(PropertyReader.getProperty(
+							CalabConstants.SUBMISSION_PROPERTY, "oxidativeStressPercentage"));							
+						throw dataPointException;
+				}
+
+				try {
+					if ( dataPoint.getIsAControl().equals(CananoConstants.BOOLEAN_NO) ) {
+						for ( ConditionBean condition : dataPoint.getConditionList() ) {
+							Float.parseFloat(condition.getValue());
+						}
+					} 
+				} 
+				catch (NumberFormatException nfe) {
+					Exception conditionsException = new Exception(PropertyReader.getProperty(
+							CalabConstants.SUBMISSION_PROPERTY, "conditionValues"));							
+						throw conditionsException;
+				}
 			}
 			
 			LabFileBean fileBean = (LabFileBean) request
