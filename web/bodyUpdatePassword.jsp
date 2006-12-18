@@ -4,6 +4,10 @@
 <html:form action="/updatePassword">
 	<table class="topBorderOnly" cellspacing="0" cellpadding="3" width=100% align="center" summary="" border="0">
 		<tr>
+			<td align="right" width="15%" colspan="2">
+				<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caLAB_1.0_OH&amp;topic=update_password_help')" class="helpText">Help</a>
+			</td>
+		</tr>
 		<tr>
 			<td class="sidebarContent" colspan="2">
 				<jsp:include page="/bodyMessage.jsp" />

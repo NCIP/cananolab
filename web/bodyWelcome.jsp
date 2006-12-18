@@ -6,7 +6,7 @@
 </tr>
 <tr>
  	<td align="right">
- 		<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caLAB_1.0&amp;topic=welcome_workflow')" class="helpText">Help</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ 		<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caLAB_1.0_OH&amp;topic=welcome_workflow')" class="helpText">Help</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
  	</td>
 </tr>
 <tr>

@@ -71,7 +71,7 @@
 												</td>
 												<td>
 													<html:submit value="Login" />													
-													&nbsp;&nbsp;<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caLAB_1.0&amp;topic=welcome_login')" class="helpText">Help</a>
+													&nbsp;&nbsp;<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caLAB_1.0_OH&amp;topic=welcome_login')" class="helpText">Help</a>
 													<br><br><input type="button" value="Update Password" onClick="javascript:location.href='changePassword.jsp'">
 												</td>
 											</tr>

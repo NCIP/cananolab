@@ -28,12 +28,15 @@
 <logic:present name="menuType">
 	<logic:equal name="menuType" value="in">
 		<bean:define id="actions" name="inActions" type="java.util.List" />
+		<c:set var="help_topic" scope="session" value="in_folder"/>
 	</logic:equal>
 	<logic:equal name="menuType" value="out">
 		<bean:define id="actions" name="outActions" type="java.util.List" />
+		<c:set var="help_topic" scope="session" value="out_folder"/>
 	</logic:equal>
 	<logic:equal name="menuType" value="run">
 		<bean:define id="actions" name="runActions" type="java.util.List" />
+		<c:set var="help_topic" scope="session" value="upload_files"/>
 	</logic:equal>
 	<logic:present name="actions">
 		<table border="0" cellspacing="0" cellpadding="0">
@@ -46,6 +49,13 @@
 						<img height="16" alt="" src="images/mainMenuSeparator.gif" width="1">
 					</td>
 				</logic:iterate>
+			</tr>
+		</table>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0">
+			<tr>
+				<td align="right">
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caLAB_1.0_OH&amp;topic=${help_topic}')" class="helpText">Help</a>&nbsp;
+			</td>
 			</tr>
 		</table>
 	</logic:present>
