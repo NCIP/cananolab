@@ -19,47 +19,45 @@ import java.util.Set;
  * 
  */
 
-/* CVS $Id: SampleBean.java,v 1.3 2006-12-14 22:13:42 pansu Exp $ */
-public class SampleBean{
-	private String sampleId="";
-	
-	private String sampleNamePrefix="";
+/* CVS $Id: SampleBean.java,v 1.4 2006-12-18 22:40:54 pansu Exp $ */
+public class SampleBean {
+	private String sampleId = "";
 
-	private String sampleName="";
+	private String sampleNamePrefix = "";
 
-	private String sampleType="";
-	
-//	private String otherSampleType="";
+	private String sampleName = "";
 
-	private String sampleSOP="";
+	private String sampleType = "";
 
-	private String sampleDescription="";
+	// private String otherSampleType="";
 
-	private String sampleSource="";
+	private String sampleSOP = "";
 
-	private String sourceSampleId="";
+	private String sampleDescription = "";
+
+	private String sampleSource = "";
+
+	private String sourceSampleId = "";
 
 	private Date dateReceived;
-	
+
 	private String dateReceivedStr;
 
-	private String lotId="";
+	private String lotId = "";
 
-	private String lotDescription="";
+	private String lotDescription = "";
 
-	private String solubility="";
+	private String solubility = "";
 
-	private String numberOfContainers="";
+	private String numberOfContainers = "";
 
-	private String generalComments="";
+	private String generalComments = "";
 
-	private String sampleSubmitter="";
+	private String sampleSubmitter = "";
 
 	private Date accessionDate;
-	
+
 	private String accessionDateStr;
-	
-	
 
 	private ContainerBean[] containers;
 
@@ -67,16 +65,17 @@ public class SampleBean{
 	}
 
 	public SampleBean(String sampleId, String sampleName) {
-		this.sampleId=sampleId;
-		this.sampleName=sampleName;
+		this.sampleId = sampleId;
+		this.sampleName = sampleName;
 	}
-	
-//	public SampleBean(String sampleName, String sampleType, String otherSampleType, String sampleSOP,
-//			String sampleDescription, String sampleSource,
-//			String sourceSampleId, Date dateReceived, String solubility,
-//			String lotId, String lotDescription, String numberOfContainers,
-//			String generalComments, String sampleSubmitter, Date accessionDate) {
-	public SampleBean(String sampleName, String sampleType,  String sampleSOP,
+
+	// public SampleBean(String sampleName, String sampleType, String
+	// otherSampleType, String sampleSOP,
+	// String sampleDescription, String sampleSource,
+	// String sourceSampleId, Date dateReceived, String solubility,
+	// String lotId, String lotDescription, String numberOfContainers,
+	// String generalComments, String sampleSubmitter, Date accessionDate) {
+	public SampleBean(String sampleName, String sampleType, String sampleSOP,
 			String sampleDescription, String sampleSource,
 			String sourceSampleId, Date dateReceived, String solubility,
 			String lotId, String lotDescription, String numberOfContainers,
@@ -85,7 +84,7 @@ public class SampleBean{
 		// TODO Auto-generated constructor stub
 		this.sampleName = sampleName;
 		this.sampleType = sampleType;
-//		this.otherSampleType = otherSampleType;
+		// this.otherSampleType = otherSampleType;
 		this.sampleSOP = sampleSOP;
 		this.sampleDescription = sampleDescription;
 		this.sampleSource = sampleSource;
@@ -100,13 +99,14 @@ public class SampleBean{
 		this.accessionDate = accessionDate;
 	}
 
-//	public SampleBean(String sampleNamePrefix, String sampleName,
-//			String sampleType, String otherSampleType, String sampleSOP, String sampleDescription,
-//			String sampleSource, String sourceSampleId, Date dateReceived,
-//			String solubility, String lotId, String lotDescription,
-//			String numberOfContainers, String generalComments,
-//			String sampleSubmitter, Date accessionDate,
-//			ContainerBean[] containers) {
+	// public SampleBean(String sampleNamePrefix, String sampleName,
+	// String sampleType, String otherSampleType, String sampleSOP, String
+	// sampleDescription,
+	// String sampleSource, String sourceSampleId, Date dateReceived,
+	// String solubility, String lotId, String lotDescription,
+	// String numberOfContainers, String generalComments,
+	// String sampleSubmitter, Date accessionDate,
+	// ContainerBean[] containers) {
 	public SampleBean(String sampleNamePrefix, String sampleName,
 			String sampleType, String sampleSOP, String sampleDescription,
 			String sampleSource, String sourceSampleId, Date dateReceived,
@@ -115,40 +115,48 @@ public class SampleBean{
 			String sampleSubmitter, Date accessionDate,
 			ContainerBean[] containers) {
 		// TODO Auto-generated constructor stub
-//		this(sampleName, sampleType, otherSampleType, sampleSOP, sampleDescription, sampleSource,
-//				sourceSampleId, dateReceived, solubility, lotId, lotDescription,
-//				numberOfContainers, generalComments,
-//				sampleSubmitter, accessionDate);
-		this(sampleName, sampleType, sampleSOP, sampleDescription, sampleSource,
-				sourceSampleId, dateReceived, solubility, lotId, lotDescription,
-				numberOfContainers, generalComments,
+		// this(sampleName, sampleType, otherSampleType, sampleSOP,
+		// sampleDescription, sampleSource,
+		// sourceSampleId, dateReceived, solubility, lotId, lotDescription,
+		// numberOfContainers, generalComments,
+		// sampleSubmitter, accessionDate);
+		this(sampleName, sampleType, sampleSOP, sampleDescription,
+				sampleSource, sourceSampleId, dateReceived, solubility, lotId,
+				lotDescription, numberOfContainers, generalComments,
 				sampleSubmitter, accessionDate);
 		this.sampleNamePrefix = sampleNamePrefix;
 		this.containers = containers;
 	}
 
 	public SampleBean(Sample sample) {
-		this.sampleId=StringUtils.convertToString(sample.getId());
+		this.sampleId = StringUtils.convertToString(sample.getId());
 		this.sampleName = StringUtils.convertToString(sample.getName());
 		this.sampleType = StringUtils.convertToString(sample.getType());
-		this.sampleSOP = (sample.getSampleSOP() == null) ? "" : StringUtils.convertToString(sample
-				.getSampleSOP().getName());
-		this.sampleDescription = StringUtils.convertToString(sample.getDescription());
-		this.sampleSource = (sample.getSource() == null) ? "" : StringUtils.convertToString(sample
-				.getSource().getOrganizationName());
-		this.sourceSampleId = StringUtils.convertToString(sample.getSourceSampleId());
+		this.sampleSOP = (sample.getSampleSOP() == null) ? "" : StringUtils
+				.convertToString(sample.getSampleSOP().getName());
+		this.sampleDescription = StringUtils.convertToString(sample
+				.getDescription());
+		this.sampleSource = (sample.getSource() == null) ? "" : StringUtils
+				.convertToString(sample.getSource().getOrganizationName());
+		this.sourceSampleId = StringUtils.convertToString(sample
+				.getSourceSampleId());
 		this.dateReceived = sample.getReceivedDate();
 		this.solubility = StringUtils.convertToString(sample.getSolubility());
 		this.lotId = StringUtils.convertToString(sample.getLotId());
-		this.lotDescription = StringUtils.convertToString(sample.getLotDescription());
+		this.lotDescription = StringUtils.convertToString(sample
+				.getLotDescription());
 		// exclude aliquots
-		Set sampleContainers = (Set) sample.getSampleContainerCollection(CalabConstants.SAMPLE_CONTAINER);
-		this.numberOfContainers = StringUtils.convertToString(sampleContainers.size());
-		this.generalComments = StringUtils.convertToString(sample.getComments());
-		this.sampleSubmitter = StringUtils.convertToString(sample.getCreatedBy());
-		this.accessionDate =sample.getCreatedDate();
+		Set sampleContainers = (Set) sample
+				.getSampleContainerCollection(CalabConstants.SAMPLE_CONTAINER);
+		this.numberOfContainers = StringUtils.convertToString(sampleContainers
+				.size());
+		this.generalComments = StringUtils
+				.convertToString(sample.getComments());
+		this.sampleSubmitter = StringUtils.convertToString(sample
+				.getCreatedBy());
+		this.accessionDate = sample.getCreatedDate();
 		this.containers = new ContainerBean[sampleContainers.size()];
-	
+
 		int i = 0;
 		for (Object obj : sampleContainers) {
 			SampleContainer sampleContainer = (SampleContainer) obj;
@@ -239,13 +247,13 @@ public class SampleBean{
 		this.sampleType = sampleType;
 	}
 
-//	public String getOtherSampleType() {
-//		return otherSampleType;
-//	}
-//
-//	public void setOtherSampleType(String otherSampleType) {
-//		this.otherSampleType = otherSampleType;
-//	}
+	// public String getOtherSampleType() {
+	// return otherSampleType;
+	// }
+	//
+	// public void setOtherSampleType(String otherSampleType) {
+	// this.otherSampleType = otherSampleType;
+	// }
 
 	public String getSolubility() {
 		return solubility;
@@ -304,20 +312,45 @@ public class SampleBean{
 	}
 
 	public String getAccessionDateStr() {
-		if (accessionDate!=null) {
-			accessionDateStr=StringUtils.convertDateToString(accessionDate, CalabConstants.DATE_FORMAT);
+		if (accessionDate != null) {
+			accessionDateStr = StringUtils.convertDateToString(accessionDate,
+					CalabConstants.DATE_FORMAT);
 		}
 		return accessionDateStr;
 	}
-	
+
 	public String getDateReceivedStr() {
-		if (dateReceived!=null) {
-			dateReceivedStr=StringUtils.convertDateToString(dateReceived, CalabConstants.DATE_FORMAT);
+		if (dateReceived != null) {
+			dateReceivedStr = StringUtils.convertDateToString(dateReceived,
+					CalabConstants.DATE_FORMAT);
 		}
 		return dateReceivedStr;
 	}
 
-	public SortableName getSortableName() {	
+	public SortableName getSortableName() {
 		return new SortableName(sampleName);
 	}
+
+	public boolean equals(Object obj) {
+		boolean eq = false;
+		if (obj instanceof SampleBean) {
+			SampleBean c = (SampleBean) obj;
+			String thisId = getSampleId();
+
+			if (thisId != null && thisId.equals(c.getSampleId())) {
+				eq = true;
+			}
+
+		}
+		return eq;
+	}
+
+	public int hashCode() {
+		int h = 0;
+		if (getSampleId() != null) {
+			h += getSampleId().hashCode();
+		}
+		return h;
+	}
+
 }
