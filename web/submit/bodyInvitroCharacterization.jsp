@@ -14,13 +14,13 @@
 			</td>
 			<td align="right" width="15%">
 				<logic:equal name="formType" value="Toxicity">
-					<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_1.0_OH&amp;topic=toxicity_help')" class="helpText">Help</a>
+					<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caLAB_1.0_OH&amp;topic=toxicity_help')" class="helpText">Help</a>
 				</logic:equal>
 				<logic:equal name="formType" value="Cytotoxicity">
-					<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_1.0_OH&amp;topic=cytoxicity_help')" class="helpText">Help</a>
+					<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caLAB_1.0_OH&amp;topic=cytoxicity_help')" class="helpText">Help</a>
 				</logic:equal>
 				<logic:equal name="formType" value="Immunotoxicity">
-					<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_1.0_OH&amp;topic=immunotoxicity_help')" class="helpText">Help</a>
+					<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caLAB_1.0_OH&amp;topic=immunotoxicity_help')" class="helpText">Help</a>
 				</logic:equal>
 			</td>
 		</tr>
