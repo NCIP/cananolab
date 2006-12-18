@@ -66,28 +66,27 @@ public class InvitroComplementActivationAction extends BaseCharacterizationActio
 			
 			// Vaidate the the nested data point entries
 			for ( DatumBean dataPoint : obj.getDatumList() ) {
-				if ( dataPoint.getValue() != null && dataPoint.getValue().equals("") ) {
-					Exception updateConditionsException = new Exception(PropertyReader.getProperty(
-							CalabConstants.SUBMISSION_PROPERTY, "complementActivationPercentageRequired"));							
-					throw updateConditionsException;
-				}
-				else {
-					if ( !StringUtils.isDouble(dataPoint.getValue()) ) {
-						Exception updateConditionsException = new Exception(PropertyReader.getProperty(
-							CalabConstants.SUBMISSION_PROPERTY, "complementActivationPercentageDouble"));							
-						throw updateConditionsException;
-					}
-				}
-				
-				if ( dataPoint.getIsAControl().equals(CananoConstants.BOOLEAN_NO) ) {
-					for ( ConditionBean condition : dataPoint.getConditionList() ) {
-						if ( !StringUtils.isInteger(condition.getValue()) ) {
-							Exception updateConditionsException = new Exception(PropertyReader.getProperty(
-									CalabConstants.SUBMISSION_PROPERTY, "conditionValues"));							
-							throw updateConditionsException;
-						}
-					}
+				try {
+				   Float.parseFloat(dataPoint.getValue());
 				} 
+				catch (NumberFormatException nfe) {
+					Exception dataPointException = new Exception(PropertyReader.getProperty(
+							CalabConstants.SUBMISSION_PROPERTY, "complementActivationPercentage"));							
+						throw dataPointException;
+				}
+
+				try {
+					if ( dataPoint.getIsAControl().equals(CananoConstants.BOOLEAN_NO) ) {
+						for ( ConditionBean condition : dataPoint.getConditionList() ) {
+							Float.parseFloat(condition.getValue());
+						}
+					} 
+				} 
+				catch (NumberFormatException nfe) {
+					Exception conditionsException = new Exception(PropertyReader.getProperty(
+							CalabConstants.SUBMISSION_PROPERTY, "conditionValues"));							
+						throw conditionsException;
+				}
 			}
 			
 			LabFileBean fileBean = (LabFileBean) request.getSession().getAttribute("characterizationFile" + fileNumber);
