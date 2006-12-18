@@ -10,6 +10,7 @@ import gov.nih.nci.calab.domain.nano.function.Function;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
+import gov.nih.nci.calab.dto.common.SearchableBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.function.FunctionBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
@@ -27,6 +28,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -160,7 +162,8 @@ public class SearchNanoparticleService {
 				.getFilteredParticles(user, particles);
 
 		// sort the list by IDs
-		Collections.sort(filteredParticles, new CalabComparators.SampleBeanComparator());		
+		Collections.sort(filteredParticles,
+				new CalabComparators.SampleBeanComparator());
 		return filteredParticles;
 	}
 
@@ -564,5 +567,91 @@ public class SearchNanoparticleService {
 				user, reports);
 
 		return filteredReports;
+	}
+
+	/**
+	 * Avanced nanoparticle search based on more detailed meta data.
+	 * 
+	 * @param particleType
+	 * @param functionTypes
+	 * @param searchCriteria
+	 * @return
+	 */
+	public List<ParticleBean> advancedSearch(String particleType,
+			String[] functionTypes, List<SearchableBean> searchCriteria,
+			UserBean user) throws Exception {
+
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		List<ParticleBean> particleList = null;
+
+		try {
+			// query by particle type and function types first
+			particleList = this.basicSearch(null, particleType, functionTypes,
+					null, null, null, user);
+			// return if no particles found or no other search criteria entered
+			if (searchCriteria.isEmpty() || particleList.isEmpty()) {
+				return particleList;
+			}
+			ida.open();
+			for (SearchableBean searchBean : searchCriteria) {
+				List<ParticleBean> theParticles = searchParticlesBy(ida,
+						searchBean);
+				particleList.retainAll(theParticles);
+			}
+
+		} catch (Exception e) {
+			logger.error("Problem finding particles.");
+			throw e;
+		} finally {
+			ida.close();
+		}
+		return particleList;
+	}
+
+	/**
+	 * Return particles based on search criteria defined in SearchableBean. Used
+	 * in the advanced search function.
+	 * 
+	 * @param ida
+	 * @param charInfo
+	 * @return
+	 * @throws Exception
+	 */
+	public List<ParticleBean> searchParticlesBy(IDataAccess ida,
+			SearchableBean charInfo) throws Exception {
+		List<ParticleBean> particles = new ArrayList<ParticleBean>();
+		// if no value range, don't query
+		if (charInfo.getLowValue().length() == 0
+				&& charInfo.getHighValue().length() == 0) {
+			return particles;
+		}
+		String hqlSelect = "select distinct particle from Nanoparticle particle "
+				+ "join particle.characterizationCollection char join char.derivedBioAssayDataCollection chart "
+				+ "join chart.datumCollection data ";
+		String hqlWhere = "where char.name=? and data.type=?";
+		List<Object> paramList = new ArrayList<Object>();
+		paramList.add(charInfo.getClassification());
+		paramList.add(charInfo.getType());
+
+		if (charInfo.getLowValue().length() > 0) {
+			hqlWhere += " and data.value.value>=?";
+			paramList.add(charInfo.getLowValue());
+		}
+		if (charInfo.getHighValue().length() > 0) {
+			hqlWhere += " and data.value.value<=?";
+			paramList.add(charInfo.getHighValue());
+		}
+
+		String hqlString = hqlSelect + hqlWhere;
+
+		List results = ida.searchByParam(hqlString, paramList);
+		for (Object obj : results) {
+			Nanoparticle particle = (Nanoparticle) obj;
+			ParticleBean particleBean = new ParticleBean(particle);
+			particles.add(particleBean);
+		}
+
+		return particles;
 	}
 }

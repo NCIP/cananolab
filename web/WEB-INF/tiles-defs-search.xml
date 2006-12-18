@@ -80,4 +80,16 @@
 		<put name="calabContent" value="/search/bodySearchReportResult.jsp" />
 		<put name="menu" value="search" />
 	</definition>
+
+	<!-- definition for the advanced search nanoparticle page -->
+	<definition name="search.searchnanoparticle.advanced" extends="calab.home">
+		<put name="calabContent" value="/search/bodySearchNanoparticleAdvanced.jsp" />
+		<put name="menu" value="search" />
+	</definition>
+
+	<!-- definition for the advanced search nanoparticle result page -->
+	<definition name="search.searchnanoparticle.advanced.result" extends="calab.home">
+		<put name="calabContent" value="/search/bodySearchNanoparticleAdvancedResult.jsp" />
+		<put name="menu" value="search" />
+	</definition>
 </tiles-definitions>

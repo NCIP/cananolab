@@ -67,6 +67,14 @@
 			<form-property name="reportTitle" type="java.lang.String" />
 			<form-property name="reportType" type="java.lang.String" />
 		</form-bean>
+		<form-bean name="searchNanoparticleAdvancedForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="functionTypes" type="java.lang.String[]" />
+			<form-property name="size1" type="gov.nih.nci.calab.dto.common.SearchableBean" />
+			<form-property name="size2" type="gov.nih.nci.calab.dto.common.SearchableBean" />
+			<form-property name="molecularWeight" type="gov.nih.nci.calab.dto.common.SearchableBean" />
+			<form-property name="cellViability" type="gov.nih.nci.calab.dto.common.SearchableBean" />
+		</form-bean>
 	</form-beans>
 	<action-mappings>
 		<action input="input" name="searchWorkflowForm" parameter="dispatch" path="/searchWorkflow" type="gov.nih.nci.calab.ui.search.SearchWorkflowAction" scope="request">
@@ -112,6 +120,11 @@
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="search" key="error.searchReport" path="search.searchreport" type="java.lang.Exception" />
 			<forward name="input" path="search.searchreport" />
 			<forward name="success" path="search.searchreport.result" />
+		</action>
+		<action input="input" name="searchNanoparticleAdvancedForm" parameter="dispatch" path="/searchNanoparticleAdvanced" type="gov.nih.nci.calab.ui.search.SearchNanoparticleAdvancedAction" scope="request">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="search" key="error.searchNanoparticleAdvanced" path="search.searchnanoparticle.advanced" type="java.lang.Exception" />
+			<forward name="input" path="search.searchnanoparticle.advanced" />
+			<forward name="success" path="search.searchnanoparticle.advanced.result" />
 		</action>
 	</action-mappings>
 
