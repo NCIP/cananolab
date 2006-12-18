@@ -23,6 +23,11 @@
 <center>
 	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
 		<tr>
+			<td align="right" width="15%" colspan="2">
+				&nbsp;
+			</td>
+		</tr>
+		<tr>
 			<td class="formTitle" colspan="2" align="center">
 				General Information for the workflow
 			</td>
