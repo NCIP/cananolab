@@ -16,7 +16,7 @@
 		<put name="menu" value="home" />
 		<putList name="alwaysShowItems">
 			<item value="HOME" link="index.jsp" />
-			<item value="HELP" link="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html')" />
+			<item value="HELP" link="javascript:openHelpWindow('webHelp/index.html')" />
 			<item value="LOGOUT" link="logout.do" />
 		</putList>
 		<putList name="items">
