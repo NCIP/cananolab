@@ -59,7 +59,7 @@ function clearOtherAgents(agentType, elementPrefix) {
 				</h4>
 			</td>
 			<td align="right" width="15%">
-				<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=create_nanoparticle')" class="helpText">Help</a>
+				<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_1.0_OH&amp;topic=particle_function_help')" class="helpText">Help</a>
 			</td>
 		</tr>
 		<tr>
