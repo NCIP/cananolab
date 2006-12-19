@@ -126,6 +126,7 @@
 			<forward name="input" path="search.searchnanoparticle.advanced" />
 			<forward name="success" path="search.searchnanoparticle.advanced.result" />
 		</action>
+		<action path="/reportResults" type="gov.nih.nci.calab.ui.core.BaseForwardAction" parameter="search.searchreport.result" scope="request" />
 	</action-mappings>
 
 </struts-config>
