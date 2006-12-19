@@ -20,7 +20,7 @@
 	<tr>
 		<td colspan="2">
 			<c:choose>
-				<c:when test="${canUserUpdateParticle eq 'true'}">
+				<c:when test="${canUserSubmit eq 'true'}">
 					<c:set var="particleURL" value="editParticleURL" />
 				</c:when>
 				<c:otherwise>

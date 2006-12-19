@@ -18,7 +18,7 @@
 			</td>
 			<td class="label">
 				<c:choose>
-					<c:when test="${canUserUpdateParticle eq 'true'}">
+					<c:when test="${canUserSubmit eq 'true'}">
 						<html:text property="emulsion.emulsionType" />
 					</c:when>
 					<c:otherwise>
@@ -32,7 +32,7 @@
 			</td>
 			<td class="rightLabel">
 				<c:choose>
-					<c:when test="${canUserUpdateParticle eq 'true'}">
+					<c:when test="${canUserSubmit eq 'true'}">
 						<html:text property="emulsion.molecularFormula" />
 					</c:when>
 					<c:otherwise>
@@ -47,7 +47,7 @@
 			</td>
 			<td class="label">
 				<c:choose>
-					<c:when test="${canUserUpdateParticle eq 'true'}">
+					<c:when test="${canUserSubmit eq 'true'}">
 						<html:select property="emulsion.polymerized">
 							<html:options name="booleanChoices"/>
 						</html:select>
@@ -62,7 +62,7 @@
 			</td>
 			<td class="rightLabel">
 				<c:choose>
-					<c:when test="${canUserUpdateParticle eq 'true'}">
+					<c:when test="${canUserSubmit eq 'true'}">
 						<html:text property="emulsion.polymerName" />
 					</c:when>
 					<c:otherwise>

@@ -91,7 +91,7 @@ function clearOtherAgents(agentType, elementPrefix) {
 							</td>
 							<td class="label">
 								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
+									<c:when test="${canUserSubmit eq 'true'}">
 										<html:text property="function.numberOfLinkages" />
 									</c:when>
 									<c:otherwise>
@@ -102,7 +102,7 @@ function clearOtherAgents(agentType, elementPrefix) {
 							<td class="rightLabel" colspan="2">
 								&nbsp;
 								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
+									<c:when test="${canUserSubmit eq 'true'}">
 										<input type="button" onclick="javascript:updateFunctionLinkages()" value="Update Linkages">
 									</c:when>
 								</c:choose>
@@ -127,7 +127,7 @@ function clearOtherAgents(agentType, elementPrefix) {
 												<td class="rightlabel" colspan="3">
 													<table cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 														<c:choose>
-															<c:when test="${canUserUpdateParticle eq 'true'}">
+															<c:when test="${canUserSubmit eq 'true'}">
 																<tr>
 																	<td class="borderlessLabel">
 																		<html:radio property="function.linkages[${linkageInd}].type" value="Attachment"
@@ -205,7 +205,7 @@ function clearOtherAgents(agentType, elementPrefix) {
 												</td>
 												<td class="rightLabel" colspan="3">
 													<c:choose>
-														<c:when test="${canUserUpdateParticle eq 'true'}">
+														<c:when test="${canUserSubmit eq 'true'}">
 															<html:textarea property="function.linkages[${linkageInd}].description" rows="3" cols="50" />
 														</c:when>
 														<c:otherwise>
@@ -222,7 +222,7 @@ function clearOtherAgents(agentType, elementPrefix) {
 													<table cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 														<c:choose>
 															<%-- read and write view --%>
-															<c:when test="${canUserUpdateParticle eq 'true'}">
+															<c:when test="${canUserSubmit eq 'true'}">
 																<c:forEach var="agentType" items="${allAgentTypes[submitType]}" varStatus="status">
 																	<tr>
 																		<td class="borderlessLabel">
@@ -353,7 +353,7 @@ function clearOtherAgents(agentType, elementPrefix) {
 												</td>
 												<td class="rightLabel" colspan="3">
 													<c:choose>
-														<c:when test="${canUserUpdateParticle eq 'true'}">
+														<c:when test="${canUserSubmit eq 'true'}">
 															<html:textarea property="function.linkages[${linkageInd}].agent.description" rows="3" cols="50" />
 														</c:when>
 														<c:otherwise>
@@ -364,7 +364,7 @@ function clearOtherAgents(agentType, elementPrefix) {
 											</tr>
 											<tr>
 												<c:choose>
-													<c:when test="${canUserUpdateParticle eq 'true'}">
+													<c:when test="${canUserSubmit eq 'true'}">
 														<td class="leftLabel">
 															<strong>Number of Agent Targets </strong>
 														</td>
@@ -401,7 +401,7 @@ function clearOtherAgents(agentType, elementPrefix) {
 																	</td>
 																	<td class="label">
 																		<c:choose>
-																			<c:when test="${canUserUpdateParticle eq 'true'}">
+																			<c:when test="${canUserSubmit eq 'true'}">
 																				<html:select property="function.linkages[${linkageInd}].agent.agentTargets[${tIndex}].type">
 																					<c:forEach var="agentTargetType" items="${allAgentTargetTypes[linkage.agent.type]}">
 																						<html:option value="${agentTargetType}" />
@@ -419,7 +419,7 @@ function clearOtherAgents(agentType, elementPrefix) {
 																	</td>
 																	<td class="rightLabel">
 																		<c:choose>
-																			<c:when test="${canUserUpdateParticle eq 'true'}">
+																			<c:when test="${canUserSubmit eq 'true'}">
 																				<html:text property="function.linkages[${linkageInd}].agent.agentTargets[${tIndex}].name" />
 																			</c:when>
 																			<c:otherwise>
@@ -435,7 +435,7 @@ function clearOtherAgents(agentType, elementPrefix) {
 																	</td>
 																	<td class="rightLabel" colspan="3">
 																		<c:choose>
-																			<c:when test="${canUserUpdateParticle eq 'true'}">
+																			<c:when test="${canUserSubmit eq 'true'}">
 																				<html:textarea property="function.linkages[${linkageInd}].agent.agentTargets[${tIndex}].description" rows="3" />
 																			</c:when>
 																			<c:otherwise>

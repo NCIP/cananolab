@@ -41,7 +41,7 @@
 	</logic:equal>
 	<logic:present name="actions">
 		<c:choose>
-			<c:when test="${canUserUpdateParticle eq 'true'}">
+			<c:when test="${canUserSubmit eq 'true'}">
 
 				<table border="0" cellspacing="0" cellpadding="0">
 					<tr>

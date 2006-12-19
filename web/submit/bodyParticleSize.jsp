@@ -45,7 +45,7 @@
 							</td>
 							<td class="label">
 								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
+									<c:when test="${canUserSubmit eq 'true'}">
 										<html:text property="achar.numberOfDerivedBioAssayData" />
 									</c:when>
 									<c:otherwise>
@@ -56,7 +56,7 @@
 							<td class="rightLabel" colspan="2">
 								&nbsp;
 								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
+									<c:when test="${canUserSubmit eq 'true'}">
 										<input type="button" onclick="javascript:updateCharts(this.form, 'nanoparticleSize')" value="Update Distributions">
 									</c:when>
 								</c:choose>
@@ -80,7 +80,7 @@
 												</td>
 												<td class="rightLabel" colspan="3">
 													<c:choose>
-														<c:when test="${canUserUpdateParticle eq 'true'}">
+														<c:when test="${canUserSubmit eq 'true'}">
 															<html:select property="achar.derivedBioAssayDataList[${chartInd}].type">
 																<html:options name="allSizeDistributionGraphTypes" />
 															</html:select>
@@ -98,7 +98,7 @@
 												</td>
 												<td class="rightlabel" colspan="3">
 													<c:choose>
-														<c:when test="${canUserUpdateParticle eq 'true'}">
+														<c:when test="${canUserSubmit eq 'true'}">
 															<html:text property="achar.derivedBioAssayDataList[${chartInd}].datumList[0].value" />
 													&nbsp; ${nanoparticleSizeForm.map.achar.derivedBioAssayDataList[chartInd].datumList[0].valueUnit}	
 															&nbsp;&nbsp;&nbsp;&nbsp;<strong>Z-Average</strong> &nbsp;&nbsp;
@@ -119,7 +119,7 @@
 												</td>
 												<td class="rightLabel" colspan="3">
 													<c:choose>
-														<c:when test="${canUserUpdateParticle eq 'true'}">
+														<c:when test="${canUserSubmit eq 'true'}">
 															<html:text property="achar.derivedBioAssayDataList[${chartInd}].datumList[2].value" />
 														</c:when>
 														<c:otherwise>

@@ -48,7 +48,7 @@
 							</td>
 							<td class="label">
 								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
+									<c:when test="${canUserSubmit eq 'true'}">
 										<html:text property="achar.surfaceArea" />&nbsp;sq nm
 										<!-- <html:select property="achar.surfaceAreaUnit">
 											<html:options name="allAreaMeasureUnits" />
@@ -67,7 +67,7 @@
 							</td>
 							<td class="rightLabel">
 								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
+									<c:when test="${canUserSubmit eq 'true'}">
 										<html:select property="achar.isHydrophobic">
 											<html:options name="booleanChoices" />
 										</html:select>
@@ -86,7 +86,7 @@
 							</td>
 							<td class="label">
 								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
+									<c:when test="${canUserSubmit eq 'true'}">
 										<html:text property="achar.charge" />&nbsp;
 										<html:select property="achar.chargeUnit">
 											<html:options name="allChargeMeasureUnits" />
@@ -105,7 +105,7 @@
 							</td>
 							<td class="rightLabel">
 								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
+									<c:when test="${canUserSubmit eq 'true'}">
 										<html:text property="achar.zetaPotential" />&nbsp;mV
 									</c:when>
 									<c:otherwise>
@@ -133,7 +133,7 @@
 							</td>
 							<td class="label">
 								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
+									<c:when test="${canUserSubmit eq 'true'}">
 										<html:text property="achar.numberOfSurfaceChemistries" />
 									</c:when>
 									<c:otherwise>
@@ -144,7 +144,7 @@
 							<td class="rightLabel" colspan="2">
 								&nbsp;
 								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
+									<c:when test="${canUserSubmit eq 'true'}">
 										<input type="button" onclick="javascript:updateSurfaceChemistries(this.form, 'nanoparticleSurface')" value="Update Surface Chemistries">
 									</c:when>
 								</c:choose>
@@ -168,7 +168,7 @@
 												</td>
 												<td class="label">
 													<c:choose>
-														<c:when test="${canUserUpdateParticle eq 'true'}">
+														<c:when test="${canUserSubmit eq 'true'}">
 															<html:text name="achar.surfaceChemistries" indexed="true" property="moleculeName" />
 														</c:when>
 														<c:otherwise>
@@ -181,7 +181,7 @@
 												</td>
 												<td class="rightLabel">
 													<c:choose>
-														<c:when test="${canUserUpdateParticle eq 'true'}">
+														<c:when test="${canUserSubmit eq 'true'}">
 															<html:text name="achar.surfaceChemistries" indexed="true" property="numberOfMolecules" /> &nbsp;															
 														</c:when>
 														<c:otherwise>
@@ -212,7 +212,7 @@
 							</td>
 							<td class="label">
 								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
+									<c:when test="${canUserSubmit eq 'true'}">
 										<html:text property="achar.numberOfDerivedBioAssayData" />
 									</c:when>
 									<c:otherwise>
@@ -223,7 +223,7 @@
 							<td class="rightLabel" colspan="2">
 								&nbsp;
 								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
+									<c:when test="${canUserSubmit eq 'true'}">
 										<input type="button" onclick="javascript:updateCharts(this.form, 'nanoparticleSurface')" value="Update Plot Charts">
 									</c:when>
 								</c:choose>

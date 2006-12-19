@@ -44,7 +44,7 @@
 							</td>
 							<td class="label">
 								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
+									<c:when test="${canUserSubmit eq 'true'}">
 										<html:select property="achar.type" onchange="javascript:updateOtherField(nanoparticleShapeForm, 'achar.type', 'achar.otherShapeType')" >
 											<option value=""></option>
 											<html:options name="allShapeTypes" />
@@ -68,7 +68,7 @@
 							</td>
 							<td class="label">
 								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
+									<c:when test="${canUserSubmit eq 'true'}">
 										<html:text property="achar.minDimension" />
 										${nanoparticleShapeForm.map.achar.minDimensionUnit}&nbsp;
 									</c:when>
@@ -83,7 +83,7 @@
 							</td>
 							<td class="rightLabel">
 								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
+									<c:when test="${canUserSubmit eq 'true'}">
 										<html:text property="achar.maxDimension" />
 										${nanoparticleShapeForm.map.achar.maxDimensionUnit}&nbsp;
 									</c:when>
@@ -113,7 +113,7 @@
 							</td>
 							<td class="label">
 								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
+									<c:when test="${canUserSubmit eq 'true'}">
 										<html:text property="achar.numberOfDerivedBioAssayData" />
 									</c:when>
 									<c:otherwise>
@@ -124,7 +124,7 @@
 							<td class="rightLabel" colspan="2">
 								&nbsp;
 								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
+									<c:when test="${canUserSubmit eq 'true'}">
 										<input type="button" onclick="javascript:updateCharts(this.form, 'nanoparticleShape')" value="Update Images">
 									</c:when>
 								</c:choose>
@@ -148,7 +148,7 @@
 												</td>
 												<td class="rightLabel" colspan="3">
 													<c:choose>
-														<c:when test="${canUserUpdateParticle eq 'true'}">
+														<c:when test="${canUserSubmit eq 'true'}">
 															<html:select property="achar.derivedBioAssayDataList[${chartInd}].type">
 																<html:options name="allShapeDistributionGraphTypes" />
 															</html:select>

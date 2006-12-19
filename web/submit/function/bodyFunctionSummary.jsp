@@ -18,7 +18,7 @@
 		</td>
 		<td class="label">
 			<c:choose>
-				<c:when test="${canUserUpdateParticle eq 'true'}">
+				<c:when test="${canUserSubmit eq 'true'}">
 					<html:select property="function.activationMethod">
 						<option />
 							<c:forEach var="method" items="${allActivationMethods}">
@@ -38,7 +38,7 @@
 		</td>
 		<td class="rightLabel">
 			<c:choose>
-				<c:when test="${canUserUpdateParticle eq 'true'}">
+				<c:when test="${canUserSubmit eq 'true'}">
 					<html:text property="function.viewTitle" />
 				</c:when>
 				<c:otherwise>
@@ -53,7 +53,7 @@
 		</td>
 		<td class="rightLabel" colspan="3">
 			<c:choose>
-				<c:when test="${canUserUpdateParticle eq 'true'}">
+				<c:when test="${canUserSubmit eq 'true'}">
 					<html:textarea property="function.description" rows="3" />
 				</c:when>
 				<c:otherwise>

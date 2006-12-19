@@ -17,7 +17,7 @@
 			<strong>Cell Line</strong>
 		</td>
 		<c:choose>
-			<c:when test="${canUserUpdateParticle eq 'true'}">
+			<c:when test="${canUserSubmit eq 'true'}">
 				<td class="label">
 					<html:select property="achar.cellLine" onchange="javascript:updateOtherField(this.form,'achar.cellLine','achar.otherCellLine')">
 						<option value=""></option>

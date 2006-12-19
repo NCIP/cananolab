@@ -40,7 +40,7 @@
 						</td>
 						<td class="label">
 							<c:choose>
-								<c:when test="${canUserUpdateParticle eq 'true'}">
+								<c:when test="${canUserSubmit eq 'true'}">
 									<html:select property="characterizationSource">
 										<html:options name="characterizationSources"/>
 									</html:select>
@@ -56,7 +56,7 @@
 						</td>
 						<td class="rightLabel">
 							<c:choose>
-								<c:when test="${canUserUpdateParticle eq 'true'}">
+								<c:when test="${canUserSubmit eq 'true'}">
 									<html:text property="viewTitle" />
 								</c:when>
 								<c:otherwise>
@@ -71,7 +71,7 @@
 						</td>
 						<td class="rightLabel" colspan="3">
 							<c:choose>
-								<c:when test="${canUserUpdateParticle eq 'true'}">
+								<c:when test="${canUserSubmit eq 'true'}">
 									<html:textarea property="description" rows="3" cols="80" />
 								</c:when>
 								<c:otherwise>
@@ -84,7 +84,7 @@
 				<br>
 				<jsp:include page="${nanoparticleCompositionForm.map.particlePage}" />
 				<c:choose>
-					<c:when test="${canUserUpdateParticle eq 'true'}">
+					<c:when test="${canUserSubmit eq 'true'}">
 						<br>
 						<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 							<tr>
@@ -100,7 +100,7 @@
 														<input type="hidden" name="dispatch" value="create">
 														<input type="hidden" name="page" value="1">
 														<c:choose>
-															<c:when test="${canUserUpdateParticle eq 'true'}">
+															<c:when test="${canUserSubmit eq 'true'}">
 																<html:hidden property="particleType" />
 															</c:when>
 														</c:choose>

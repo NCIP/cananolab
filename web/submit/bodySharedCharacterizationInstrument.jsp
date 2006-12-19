@@ -19,7 +19,7 @@
 		</td>
 		<td class="label">
 			<c:choose>
-				<c:when test="${canUserUpdateParticle eq 'true'}">
+				<c:when test="${canUserSubmit eq 'true'}">
 					<html:select property="achar.instrument.type" onchange="javascript:doubleDropdownWithExraOption(this.form.elements[5], this.form.elements[7], instrumentTypeManufacturers, 'Other');updateOtherField(this.form, this.form.elements[5].name, this.form.elements[6].name)">
 						<option value="" />
 							<html:options collection="allInstrumentTypes" property="value" labelProperty="label" />
@@ -31,7 +31,7 @@
 			</c:choose>
 		</td>
 		<c:choose>
-			<c:when test="${canUserUpdateParticle eq 'true'}">
+			<c:when test="${canUserSubmit eq 'true'}">
 				<td class="label">
 					<strong>Other Instrument Type </strong>
 				</td>
@@ -56,7 +56,7 @@
 		</td>
 		<td class="label">
 			<c:choose>
-				<c:when test="${canUserUpdateParticle eq 'true'}">
+				<c:when test="${canUserSubmit eq 'true'}">
 					<html:select property="achar.instrument.manufacturer" onchange="javascript:updateOtherField(this.form, this.form.elements[7].name, this.form.elements[8].name)">
 						<option value="${thisForm.map.achar.instrument.manufacturer}" selected>
 							${thisForm.map.achar.instrument.manufacturer}
@@ -69,7 +69,7 @@
 			</c:choose>
 		</td>
 		<c:choose>
-			<c:when test="${canUserUpdateParticle eq 'true'}">
+			<c:when test="${canUserSubmit eq 'true'}">
 				<td class="label">
 					<strong>Other Manufacturer </strong>
 				</td>
@@ -93,7 +93,7 @@
 		</td>
 		<td class="rightLabel" colspan="3">
 			<c:choose>
-				<c:when test="${canUserUpdateParticle eq 'true'}">
+				<c:when test="${canUserSubmit eq 'true'}">
 					<html:textarea property="achar.instrument.description" rows="3" />
 				</c:when>
 				<c:otherwise>
