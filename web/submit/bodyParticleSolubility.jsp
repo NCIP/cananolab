@@ -53,7 +53,7 @@
 								</c:choose>
 							</td>
 							<td class="leftLabel">
-								<strong>isSoluble </strong>
+								<strong>Is Soluble </strong>
 							</td>
 							<td class="rightLabel">
 								<c:choose>
