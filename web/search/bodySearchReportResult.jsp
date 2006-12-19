@@ -19,8 +19,16 @@
 	<tr>
 		<td colspan="2">
 			<jsp:include page="/bodyMessage.jsp?bundle=search" />
-			<display:table name="reports" id="report" requestURI="searchReport.do" pagesize="25" class="displaytable">
-				<display:column title="Report Title" property="title" sortable="true" href="searchReport.do?dispatch=download" paramId="fileId" paramProperty="id" />
+			<c:choose>
+				<c:when test="${canUserSubmit eq 'true'}">
+					<c:set var="link" value="editReportURL" />
+				</c:when>
+				<c:otherwise>
+					<c:set var="link" value="viewReportURL" />
+				</c:otherwise>
+			</c:choose>
+			<display:table name="reports" id="report" requestURI="searchReport.do" pagesize="25" class="displaytable" decorator="gov.nih.nci.calab.dto.search.ReportDecorator">
+				<display:column title="Report Title" property="${link}" sortable="true" />
 				<display:column title="Report Type" property="type" sortable="true" />
 				<display:column title="Report Description" property="description" sortable="true" />
 			</display:table>
