@@ -1,5 +1,7 @@
 package gov.nih.nci.calab.dto.characterization.invitro;
 
+import gov.nih.nci.calab.domain.nano.characterization.Datum;
+import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.domain.nano.characterization.invitro.CellViability;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.DatumBean;
@@ -56,6 +58,14 @@ public class CellViabilityBean extends CharacterizationBean {
 	public CellViability getDomainObj() {
 		CellViability cellViability = new CellViability();
 		super.updateDomainObj(cellViability);
+		for (DerivedBioAssayData chart: cellViability.getDerivedBioAssayDataCollection()){
+			for (Datum data: chart.getDatumCollection()){
+				data.setType(CananoConstants.CYTOTOXICITY_CELL_VIABILITY_DATA_TYPE);
+				if (data.getValue() != null) {
+					data.getValue().setUnitOfMeasurement(CananoConstants.UNIT_PERCENT);
+				}			
+			}
+		}
 		if (cellLine.equals(CananoConstants.OTHER)) {
 			cellViability.setCellLine(this.otherCellLine);
 		} else {

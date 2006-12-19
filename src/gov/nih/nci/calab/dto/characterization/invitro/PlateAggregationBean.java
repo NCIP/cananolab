@@ -1,9 +1,12 @@
 package gov.nih.nci.calab.dto.characterization.invitro;
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
+import gov.nih.nci.calab.domain.nano.characterization.Datum;
+import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.domain.nano.characterization.invitro.PlateAggregation;
 
 import gov.nih.nci.calab.dto.characterization.*;
+import gov.nih.nci.calab.service.util.CananoConstants;
 
 import java.util.List;
 
@@ -30,8 +33,8 @@ public class PlateAggregationBean extends CharacterizationBean {
 
 		for (DerivedBioAssayDataBean table : getDerivedBioAssayDataList()) {
 			for (DatumBean datum : table.getDatumList()) {
-				datum.setType("Percent Plate Aggregation");
-				datum.setValueUnit("%");
+				datum.setType(CananoConstants.BLOODCONTACTTOX_PLATE_AGGREGATION_DATA_TYPE);
+				datum.setValueUnit(CananoConstants.UNIT_PERCENT);
 			}
 		}
 	}
@@ -39,6 +42,14 @@ public class PlateAggregationBean extends CharacterizationBean {
 	public PlateAggregation getDomainObj() {
 		PlateAggregation plateAggregation = new PlateAggregation();
 		super.updateDomainObj(plateAggregation);
-		return plateAggregation;
+		for (DerivedBioAssayData chart: plateAggregation.getDerivedBioAssayDataCollection()){
+			for (Datum data: chart.getDatumCollection()){
+				data.setType(CananoConstants.BLOODCONTACTTOX_PLATE_AGGREGATION_DATA_TYPE);
+				if (data.getValue() != null) {
+					data.getValue().setUnitOfMeasurement(CananoConstants.UNIT_PERCENT);
+				}			
+			}
+		}
+	return plateAggregation;
 	}
 }

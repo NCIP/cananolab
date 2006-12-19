@@ -1,9 +1,12 @@
 package gov.nih.nci.calab.dto.characterization.invitro;
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
+import gov.nih.nci.calab.domain.nano.characterization.Datum;
+import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.domain.nano.characterization.invitro.Phagocytosis;
 
 import gov.nih.nci.calab.dto.characterization.*;
+import gov.nih.nci.calab.service.util.CananoConstants;
 
 import java.util.List;
 
@@ -30,8 +33,8 @@ public class PhagocytosisBean extends CharacterizationBean {
 
 		for (DerivedBioAssayDataBean table : getDerivedBioAssayDataList()) {
 			for (DatumBean datum : table.getDatumList()) {
-				datum.setType("Fold Induction");
-				datum.setValueUnit("Fold");
+				datum.setType(CananoConstants.IMMUNOCELLFUNCTOX_PHAGOCYTOSIS_DATA_TYPE);
+				datum.setValueUnit(CananoConstants.UNIT_FOLD);
 			}
 		}
 	}
@@ -39,6 +42,14 @@ public class PhagocytosisBean extends CharacterizationBean {
 	public Phagocytosis getDomainObj() {
 		Phagocytosis phagocytosis = new Phagocytosis();
 		super.updateDomainObj(phagocytosis);
+		for (DerivedBioAssayData chart: phagocytosis.getDerivedBioAssayDataCollection()){
+			for (Datum data: chart.getDatumCollection()){
+				data.setType(CananoConstants.IMMUNOCELLFUNCTOX_PHAGOCYTOSIS_DATA_TYPE);
+				if (data.getValue() != null) {
+					data.getValue().setUnitOfMeasurement(CananoConstants.UNIT_FOLD);
+				}			
+			}
+		}
 		return phagocytosis;
 	}
 }

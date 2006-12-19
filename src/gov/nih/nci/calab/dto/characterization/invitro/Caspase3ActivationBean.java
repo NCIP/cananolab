@@ -1,5 +1,7 @@
 package gov.nih.nci.calab.dto.characterization.invitro;
 
+import gov.nih.nci.calab.domain.nano.characterization.Datum;
+import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.domain.nano.characterization.invitro.Caspase3Activation;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.DatumBean;
@@ -56,6 +58,14 @@ public class Caspase3ActivationBean extends CharacterizationBean {
 	public Caspase3Activation getDomainObj() {
 		Caspase3Activation caspase3Activation = new Caspase3Activation();
 		super.updateDomainObj(caspase3Activation);
+		for (DerivedBioAssayData chart: caspase3Activation.getDerivedBioAssayDataCollection()){
+			for (Datum data: chart.getDatumCollection()){
+				data.setType(CananoConstants.CYTOTOXICITY_CASPASE3_ACTIVIATION_DATA_TYPE);
+				if (data.getValue() != null) {
+					data.getValue().setUnitOfMeasurement(CananoConstants.UNIT_PERCENT);
+				}			
+			}
+		}
 		if (cellLine.equals(CananoConstants.OTHER)) {
 			caspase3Activation.setCellLine(this.otherCellLine);
 		} else {

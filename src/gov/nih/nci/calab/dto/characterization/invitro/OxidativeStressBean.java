@@ -1,9 +1,12 @@
 package gov.nih.nci.calab.dto.characterization.invitro;
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
+import gov.nih.nci.calab.domain.nano.characterization.Datum;
+import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.domain.nano.characterization.invitro.OxidativeStress;
 
 import gov.nih.nci.calab.dto.characterization.*;
+import gov.nih.nci.calab.service.util.CananoConstants;
 
 import java.util.List;
 
@@ -30,8 +33,8 @@ public class OxidativeStressBean extends CharacterizationBean {
 
 		for (DerivedBioAssayDataBean table : getDerivedBioAssayDataList()) {
 			for (DatumBean datum : table.getDatumList()) {
-				datum.setType("Percent Oxidative Stress");
-				datum.setValueUnit("%");
+				datum.setType(CananoConstants.TOXICITY_OXIDATIVE_STRESS_DATA_TYPE);
+				datum.setValueUnit(CananoConstants.UNIT_PERCENT);
 			}
 		}
 	}
@@ -39,6 +42,14 @@ public class OxidativeStressBean extends CharacterizationBean {
 	public OxidativeStress getDomainObj() {
 		OxidativeStress oxidativeStress = new OxidativeStress();
 		super.updateDomainObj(oxidativeStress);
+		for (DerivedBioAssayData chart: oxidativeStress.getDerivedBioAssayDataCollection()){
+			for (Datum data: chart.getDatumCollection()){
+				data.setType(CananoConstants.TOXICITY_OXIDATIVE_STRESS_DATA_TYPE);
+				if (data.getValue() != null) {
+					data.getValue().setUnitOfMeasurement(CananoConstants.UNIT_PERCENT);
+				}			
+			}
+		}
 		return oxidativeStress;
 	}
 }
