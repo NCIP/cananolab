@@ -15,7 +15,7 @@
 	</c:when>
 </c:choose>
 <c:choose>
-	<c:when test="${canUserUpdateParticle eq 'true'}">
+	<c:when test="${canUserSubmit eq 'true'}">
 		<c:set var="dispatchValue" value="setupUpdate" />
 	</c:when>
 	<c:otherwise>
@@ -39,7 +39,7 @@
 								<br>
 								<br>
 								<span class="indented"> <c:choose>
-										<c:when test="${canUserUpdateParticle eq 'true'}">
+										<c:when test="${canUserSubmit eq 'true'}">
 											<a href="nanoparticleGeneralInfo.do?dispatch=setupUpdate&particleType=${particleType}&particleName=${particleName}"">${particleName} (${particleType})</a>
 										</c:when>
 										<c:otherwise>
@@ -55,7 +55,7 @@
 								<br>
 								<span class="indented"><strong>-Therapeutic</strong> &nbsp;&nbsp;</span>
 								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
+									<c:when test="${canUserSubmit eq 'true'}">
 										<a href="nanoparticleFunction.do?dispatch=setup&page=0&particleType=${particleType}&particleName=${particleName}&submitType=Therapeutic"> <em>add</em></a>
 									</c:when>
 								</c:choose>
@@ -81,7 +81,7 @@
 								<br>
 								<span class="indented"><strong>-Targeting</strong> &nbsp;&nbsp;</span>
 								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
+									<c:when test="${canUserSubmit eq 'true'}">
 										<a href="nanoparticleFunction.do?dispatch=setup&page=0&particleType=${particleType}&particleName=${particleName}&submitType=Targeting"> <em>add</em></a>
 									</c:when>
 								</c:choose>
@@ -107,7 +107,7 @@
 								<br>
 								<span class="indented"><strong>-Diagnostic Imaging</strong>&nbsp;&nbsp;</span>
 								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
+									<c:when test="${canUserSubmit eq 'true'}">
 										<a href="nanoparticleFunction.do?dispatch=setup&page=0&particleType=${particleType}&particleName=${particleName}&submitType=Imaging"> <em>add</em></a>
 									</c:when>
 								</c:choose>
@@ -133,7 +133,7 @@
 								<br>
 								<span class="indented"><strong>-Diagnostic Reporting</strong> &nbsp;&nbsp;</span>
 								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
+									<c:when test="${canUserSubmit eq 'true'}">
 										<a href="nanoparticleFunction.do?dispatch=setup&page=0&particleType=${particleType}&particleName=${particleName}&submitType=Reporting"> <em>add</em></a>
 									</c:when>
 								</c:choose>
@@ -164,7 +164,7 @@
 								<br>
 								<span class="indented"><strong>-Physical Characterization</strong> &nbsp;&nbsp;</span>
 								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
+									<c:when test="${canUserSubmit eq 'true'}">
 										<a href="submitAction.do?submitType=physical"> <em>add</em></a>
 									</c:when>
 								</c:choose>
@@ -191,7 +191,7 @@
 								<br>
 								<span class="indented2"><strong>-Toxicity</strong> &nbsp;&nbsp;</span>
 								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
+									<c:when test="${canUserSubmit eq 'true'}">
 										<a href="submitAction.do?submitType=tox"> <em>add</em></a>
 									</c:when>
 								</c:choose>
@@ -218,7 +218,7 @@
 								</c:forEach>
 								<span class="indented3"><strong>-Cytotoxicity</strong> &nbsp;&nbsp;</span>
 								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
+									<c:when test="${canUserSubmit eq 'true'}">
 										<a href="submitAction.do?submitType=cytoTox"> <em>add</em></a>
 									</c:when>
 								</c:choose>
@@ -248,7 +248,7 @@
 								<br>
 								<span class="indented4"><strong>-Blood Contact</strong> &nbsp;&nbsp;</span>
 								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
+									<c:when test="${canUserSubmit eq 'true'}">
 										<a href="submitAction.do?submitType=bloodContactTox"> <em>add</em></a>
 									</c:when>
 								</c:choose>
@@ -277,7 +277,7 @@
 								<br>
 								<span class="indented4"><strong>-Immune Cell Function </strong>&nbsp;&nbsp;</span>
 								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
+									<c:when test="${canUserSubmit eq 'true'}">
 										<a href="submitAction.do?submitType=immuneCellFuncTox"> <em>add</em></a>
 									</c:when>
 								</c:choose>
@@ -306,8 +306,8 @@
 							</li>
 							<li>
 								<span class="largerText">Other Associated Files &nbsp;&nbsp;</span>
-								<c:forEach var="aReport" items="${particleAssociatedFiles}" varStatus="associatedFileCount">									
-									<span class="indented"> <a href="/calab/viewReportFile.do?submitType=none&type=Other Associated File&fileInd=${associatedFileCount.index}" title="${aReport.displayName}">${aReport.name}</a> </span>
+								<c:forEach var="aReport" items="${particleAssociatedFiles}">									
+									<span class="indented"> <a href="/calab/updateReportForParticle.do?page=0&dispatch=${dispatchValue}&submitType=none&fileId=${aReport.id}&fileType=${aReport.type}" title="${aReport.displayName}">${aReport.name}</a> </span>
 									<br>
 								</c:forEach>
 								<br>
@@ -316,8 +316,8 @@
 							<li>
 								<span class="largerText">Reports</span>
 								<br>
-								<c:forEach var="aReport" items="${particleReports}" varStatus="reportCount">
-									<span class="indented"> <a href="/calab/viewReportFile.do?submitType=none&type=NCL Report&fileInd=${reportCount.index}" title="${aReport.displayName}">${aReport.name}</a> </span>
+								<c:forEach var="aReport" items="${particleReports}">
+									<span class="indented"> <a href="/calab/updateReportForParticle.do?page=0&dispatch=${dispatchValue}&submitType=none&fileId=${aReport.id}&fileType=${aReport.type}" title="${aReport.displayName}">${aReport.name}</a> </span>
 									<br>
 								</c:forEach>
 							</li>
