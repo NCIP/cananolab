@@ -18,7 +18,7 @@
 			</td>
 			<td class="label">
 				<c:choose>
-					<c:when test="${canUserUpdateParticle eq 'true'}">
+					<c:when test="${canUserSubmit eq 'true'}">
 						<html:text property="complexParticle.numberOfElements" />
 					</c:when>
 					<c:otherwise>
@@ -29,7 +29,7 @@
 			</td>
 			<td class="rightLabel" colspan="2">&nbsp;
 				<c:choose>
-					<c:when test="${canUserUpdateParticle eq 'true'}">
+					<c:when test="${canUserSubmit eq 'true'}">
 						<input type="button" onclick="javascript:updateComposition()" value="Update Composing Nanoparticles">
 					</c:when>
 				</c:choose>
@@ -53,7 +53,7 @@
 								</td>
 								<td class="label">
 									<c:choose>
-										<c:when test="${canUserUpdateParticle eq 'true'}">
+										<c:when test="${canUserSubmit eq 'true'}">
 											<html:select name="complexParticle.composingElements" indexed="true" property="elementType">
 												<option value=""></option>
 												<html:options name="allSampleTypes" />
@@ -69,7 +69,7 @@
 								</td>
 								<td class="rightLabel">
 									<c:choose>
-										<c:when test="${canUserUpdateParticle eq 'true'}">
+										<c:when test="${canUserSubmit eq 'true'}">
 											<html:text name="complexParticle.composingElements" indexed="true" property="chemicalName" />
 										</c:when>
 										<c:otherwise>
@@ -84,7 +84,7 @@
 								</td>
 								<td class="rightLabel" colspan="3">
 									<c:choose>
-										<c:when test="${canUserUpdateParticle eq 'true'}">
+										<c:when test="${canUserSubmit eq 'true'}">
 											<html:textarea name="complexParticle.composingElements" indexed="true" property="description" rows="3" cols="80"/>
 										</c:when>
 										<c:otherwise>

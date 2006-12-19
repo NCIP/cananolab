@@ -24,7 +24,7 @@
 			</td>
 			<td class="label">
 				<c:choose>
-					<c:when test="${canUserUpdateParticle eq 'true'}">
+					<c:when test="${canUserSubmit eq 'true'}">
 						<html:select property="dendrimer.branch" onchange="javascript:updateOtherField(nanoparticleCompositionForm, 'dendrimer.branch', 'dendrimer.otherBranch');">
 							<option value=""></option>
 							<html:options name="allDendrimerBranches"/>
@@ -36,7 +36,7 @@
 				</c:choose>
 			</td>
 			<c:choose>
-				<c:when test="${canUserUpdateParticle eq 'true'}">
+				<c:when test="${canUserSubmit eq 'true'}">
 					<td class="label">
 						<strong>Other Branch</strong>
 					</td>
@@ -58,7 +58,7 @@
 			</td>
 			<td class="rightLabel">
 				<c:choose>
-					<c:when test="${canUserUpdateParticle eq 'true'}">
+					<c:when test="${canUserSubmit eq 'true'}">
 						<html:text property="dendrimer.repeatUnit" />
 					</c:when>
 					<c:otherwise>
@@ -73,7 +73,7 @@
 			</td>
 			<td class="label">
 				<c:choose>
-					<c:when test="${canUserUpdateParticle eq 'true'}">
+					<c:when test="${canUserSubmit eq 'true'}">
 						<html:select property="dendrimer.generation" onchange="javascript:updateOtherField(nanoparticleCompositionForm, 'dendrimer.generation', 'dendrimer.otherGeneration')">
 							<option value=""></option>
 							<html:options name="allDendrimerGenerations" />
@@ -88,7 +88,7 @@
 				</c:choose>
 			</td>
 			<c:choose>
-				<c:when test="${canUserUpdateParticle eq 'true'}">
+				<c:when test="${canUserSubmit eq 'true'}">
 					<td class="label">
 						<strong>Other Generation</strong>
 					</td>
@@ -110,7 +110,7 @@
 			</td>
 			<td class="rightLabel">
 				<c:choose>
-					<c:when test="${canUserUpdateParticle eq 'true'}">
+					<c:when test="${canUserSubmit eq 'true'}">
 						<html:text property="dendrimer.molecularFormula" />
 					</c:when>
 					<c:otherwise>
@@ -137,7 +137,7 @@
 			</td>
 			<td class="rightLabel" colspan="3">
 				<c:choose>
-					<c:when test="${canUserUpdateParticle eq 'true'}">
+					<c:when test="${canUserSubmit eq 'true'}">
 						<html:text property="dendrimer.core.chemicalName" />
 					</c:when>
 					<c:otherwise>
@@ -152,7 +152,7 @@
 			</td>
 			<td class="rightLabel" colspan="3">
 				<c:choose>
-					<c:when test="${canUserUpdateParticle eq 'true'}">
+					<c:when test="${canUserSubmit eq 'true'}">
 						<html:textarea property="dendrimer.core.description" rows="3" cols="80" />
 					</c:when>
 					<c:otherwise>
@@ -179,7 +179,7 @@
 			</td>
 			<td class="label">
 				<c:choose>
-					<c:when test="${canUserUpdateParticle eq 'true'}">
+					<c:when test="${canUserSubmit eq 'true'}">
 						<html:text property="dendrimer.numberOfSurfaceGroups" />
 					</c:when>
 					<c:otherwise>
@@ -191,7 +191,7 @@
 			<td class="rightLabel" colspan="2">
 				&nbsp;
 				<c:choose>
-					<c:when test="${canUserUpdateParticle eq 'true'}">
+					<c:when test="${canUserSubmit eq 'true'}">
 						<input type="button" onclick="javascript:updateComposition()" value="Update Surface Groups">
 					</c:when>
 				</c:choose>
@@ -215,7 +215,7 @@
 								</td>
 								<td class="label">
 									<c:choose>
-										<c:when test="${canUserUpdateParticle eq 'true'}">
+										<c:when test="${canUserSubmit eq 'true'}">
 											<html:select name="dendrimer.surfaceGroups" indexed="true" property="name" onchange="javascript:updateOtherField(nanoparticleCompositionForm, 'dendrimer.surfaceGroups[${status.index}].name', 'dendrimer.surfaceGroups[${status.index}].otherName')">
 												<option />
 													<html:options name="allDendrimerSurfaceGroupNames" />
@@ -230,7 +230,7 @@
 									</c:choose>
 								</td>
 								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
+									<c:when test="${canUserSubmit eq 'true'}">
 										<td class="label">
 											<strong>Other name</strong>
 										</td>
@@ -252,7 +252,7 @@
 								</td>
 								<td class="rightLabel">
 									<c:choose>
-										<c:when test="${canUserUpdateParticle eq 'true'}">
+										<c:when test="${canUserSubmit eq 'true'}">
 											<html:text name="dendrimer.surfaceGroups" indexed="true" property="modifier" />
 										</c:when>
 										<c:otherwise>

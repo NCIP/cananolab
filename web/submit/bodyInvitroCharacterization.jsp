@@ -57,7 +57,7 @@
 							</td>
 							<td class="label">
 								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
+									<c:when test="${canUserSubmit eq 'true'}">
 										<html:text property="achar.numberOfDerivedBioAssayData" />
 									</c:when>
 									<c:otherwise>
@@ -68,7 +68,7 @@
 							<td class="rightLabel" colspan="2">
 								&nbsp;
 								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
+									<c:when test="${canUserSubmit eq 'true'}">
 										<input type="button" onclick="javascript:updateCharts(this.form, '${actionName}')" value="Update Charts">
 									</c:when>
 								</c:choose>
@@ -93,7 +93,7 @@
 												</td>
 												<td class="label">
 													<c:choose>
-														<c:when test="${canUserUpdateParticle eq 'true'}">
+														<c:when test="${canUserSubmit eq 'true'}">
 															<html:text property="achar.derivedBioAssayDataList[${chartInd}].numberOfDataPoints" />
 														</c:when>
 														<c:otherwise>
@@ -104,7 +104,7 @@
 												<td class="rightLabel" colspan="2">
 													&nbsp;
 													<c:choose>
-														<c:when test="${canUserUpdateParticle eq 'true'}">
+														<c:when test="${canUserSubmit eq 'true'}">
 															<input type="button" onclick="javascript:updateChartDataPoints(this.form, '${actionName}', ${chartInd})" value="Update Data Points">
 														</c:when>
 													</c:choose>

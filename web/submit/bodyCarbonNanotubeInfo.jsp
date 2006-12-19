@@ -18,7 +18,7 @@
 			</td>
 			<td class="label">
 				<c:choose>
-					<c:when test="${canUserUpdateParticle eq 'true'}">
+					<c:when test="${canUserSubmit eq 'true'}">
 						<html:text property="carbonNanotube.growthDiameter" />
 					</c:when>
 					<c:otherwise>
@@ -32,7 +32,7 @@
 			</td>
 			<td class="rightLabel">
 				<c:choose>
-					<c:when test="${canUserUpdateParticle eq 'true'}">
+					<c:when test="${canUserSubmit eq 'true'}">
 						<html:text property="carbonNanotube.chirality" />
 					</c:when>
 					<c:otherwise>
@@ -48,7 +48,7 @@
 			</td>
 			<td class="label" align="left">
 				<c:choose>
-					<c:when test="${canUserUpdateParticle eq 'true'}">
+					<c:when test="${canUserSubmit eq 'true'}">
 						<html:text property="carbonNanotube.averageLength" />
 					</c:when>
 					<c:otherwise>
@@ -62,7 +62,7 @@
 			</td>
 			<td class="rightLabel">
 				<c:choose>
-					<c:when test="${canUserUpdateParticle eq 'true'}">
+					<c:when test="${canUserSubmit eq 'true'}">
 						<html:select property="carbonNanotube.wallType">
 							<html:options name="allCarbonNanotubeWallTypes"/>
 						</html:select>
@@ -91,7 +91,7 @@
 			</td>
 			<td class="label">
 				<c:choose>
-					<c:when test="${canUserUpdateParticle eq 'true'}">
+					<c:when test="${canUserSubmit eq 'true'}">
 						<html:text property="carbonNanotube.numberOfElements" />
 					</c:when>
 					<c:otherwise>
@@ -102,7 +102,7 @@
 			<td class="rightLabel" colspan="2">
 				&nbsp;
 				<c:choose>
-					<c:when test="${canUserUpdateParticle eq 'true'}">
+					<c:when test="${canUserSubmit eq 'true'}">
 						<input type="button" onclick="javascript:updateComposition()" value="Update Modifications">
 					</c:when>
 				</c:choose>
@@ -126,7 +126,7 @@
 								</td>
 								<td class="label">
 									<c:choose>
-										<c:when test="${canUserUpdateParticle eq 'true'}">
+										<c:when test="${canUserSubmit eq 'true'}">
 											<html:text name="carbonNanotube.composingElements" indexed="true" property="elementType" />
 										</c:when>
 										<c:otherwise>
@@ -140,7 +140,7 @@
 								</td>
 								<td class="rightLabel">
 									<c:choose>
-										<c:when test="${canUserUpdateParticle eq 'true'}">
+										<c:when test="${canUserSubmit eq 'true'}">
 											<html:text name="carbonNanotube.composingElements" indexed="true" property="chemicalName" />
 										</c:when>
 										<c:otherwise>
@@ -155,7 +155,7 @@
 								</td>
 								<td class="rightLabel" colspan="3">
 									<c:choose>
-										<c:when test="${canUserUpdateParticle eq 'true'}">
+										<c:when test="${canUserSubmit eq 'true'}">
 											<html:textarea name="carbonNanotube.composingElements" indexed="true" property="description" rows="3" cols="80"/>
 										</c:when>
 										<c:otherwise>

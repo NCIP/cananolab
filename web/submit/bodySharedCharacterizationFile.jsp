@@ -8,7 +8,7 @@
 		<strong>Characterization File Name</strong>
 	</td>
 	<c:choose>
-		<c:when test="${canUserUpdateParticle eq 'true'}">
+		<c:when test="${canUserSubmit eq 'true'}">
 			<td class="label">
 				<logic:present name="characterizationFile${param.chartInd}">
 					<html:link page="/viewAssayResultFile.do?chartInd=${param.chartInd}&actionName=${param.actionName}">

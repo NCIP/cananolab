@@ -44,7 +44,7 @@
 							</td>
 							<td class="label">
 								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
+									<c:when test="${canUserSubmit eq 'true'}">
 										<html:text property="achar.measurementType" />
 									</c:when>
 									<c:otherwise>
@@ -63,7 +63,7 @@
 							</td>
 							<td class="label">
 								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
+									<c:when test="${canUserSubmit eq 'true'}">
 										<html:text property="achar.shortTermStorage" />
 										<html:select property="achar.shortTermStorageUnit">
 											<html:options name="allTimeUnits" />
@@ -80,7 +80,7 @@
 							</td>
 							<td class="rightLabel">
 								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
+									<c:when test="${canUserSubmit eq 'true'}">
 										<html:text property="achar.longTermStorage" />
 										<html:select property="achar.longTermStorageUnit">
 											<html:options name="allTimeUnits" />
@@ -99,7 +99,7 @@
 							</td>
 							<td class="label">
 								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
+									<c:when test="${canUserSubmit eq 'true'}">
 										<html:text property="achar.stressResult" />
 									</c:when>
 									<c:otherwise>
@@ -112,7 +112,7 @@
 							</td>
 							<td class="rightLabel">
 								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
+									<c:when test="${canUserSubmit eq 'true'}">
 										<html:text property="achar.releaseKineticsDescription" />
 									</c:when>
 									<c:otherwise>
@@ -127,7 +127,7 @@
 							</td>
 							<td class="label">
 								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
+									<c:when test="${canUserSubmit eq 'true'}">
 										<html:select property="achar.stressor.type">
 											<option value=""></option>
 											<html:options name="allStressorTypes" />
@@ -146,7 +146,7 @@
 							</td>
 							<td class="rightLabel">
 								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
+									<c:when test="${canUserSubmit eq 'true'}">
 										<html:text property="achar.stressor.value" />
 										<html:select property="achar.stressor.valueUnit">
 											<html:options name="allAreaMeasureUnits" />
@@ -165,7 +165,7 @@
 							</td>
 							<td class="label">
 								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
+									<c:when test="${canUserSubmit eq 'true'}">
 										<html:text property="achar.stressor.description" />
 									</c:when>
 									<c:otherwise>
@@ -197,7 +197,7 @@
 							</td>
 							<td class="label">
 								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
+									<c:when test="${canUserSubmit eq 'true'}">
 										<html:text property="achar.numberOfDerivedBioAssayData" />
 									</c:when>
 									<c:otherwise>
@@ -208,7 +208,7 @@
 							<td class="rightLabel" colspan="2">
 								&nbsp;
 								<c:choose>
-									<c:when test="${canUserUpdateParticle eq 'true'}">
+									<c:when test="${canUserSubmit eq 'true'}">
 										<input type="button" onclick="javascript:updateCharts(this.form, 'nanoparticleStability')" value="Update Images">
 									</c:when>
 								</c:choose>
@@ -232,7 +232,7 @@
 												</td>
 												<td class="rightLabel" colspan="3">
 													<c:choose>
-														<c:when test="${canUserUpdateParticle eq 'true'}">
+														<c:when test="${canUserSubmit eq 'true'}">
 															<html:select property="achar.derivedBioAssayDataList[${chartInd}].type">
 																<html:options name="allStabilityDistributionGraphTypes" />
 															</html:select>

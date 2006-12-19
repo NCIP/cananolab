@@ -18,7 +18,7 @@
 			</td>
 			<td class="label">
 				<c:choose>
-					<c:when test="${canUserUpdateParticle eq 'true'}">
+					<c:when test="${canUserSubmit eq 'true'}">
 						<html:select property="polymer.crosslinked">
 							<html:options name="booleanChoices" />
 						</html:select>
@@ -33,7 +33,7 @@
 			</td>
 			<td class="rightLabel">
 				<c:choose>
-					<c:when test="${canUserUpdateParticle eq 'true'}">
+					<c:when test="${canUserSubmit eq 'true'}">
 						<html:text property="polymer.crosslinkDegree" size="3" />
 					</c:when>
 					<c:otherwise>
@@ -49,7 +49,7 @@
 			</td>
 			<td class="label">
 				<c:choose>
-					<c:when test="${canUserUpdateParticle eq 'true'}">
+					<c:when test="${canUserSubmit eq 'true'}">
 						<html:select property="polymer.initiator" onchange="javascript:updateOtherField(nanoparticleCompositionForm, 'polymer.initiator', 'polymer.otherInitiator')">
 							<option />
 								<html:options name="allPolymerInitiators" />
@@ -61,7 +61,7 @@
 				</c:choose>
 			</td>
 			<c:choose>
-				<c:when test="${canUserUpdateParticle eq 'true'}">
+				<c:when test="${canUserSubmit eq 'true'}">
 					<td class="label">
 						<strong>Other Initiator </strong>
 					</td>
@@ -94,7 +94,7 @@
 			</td>
 			<td class="label">
 				<c:choose>
-					<c:when test="${canUserUpdateParticle eq 'true'}">
+					<c:when test="${canUserSubmit eq 'true'}">
 						<html:text property="polymer.numberOfElements" />
 					</c:when>
 					<c:otherwise>
@@ -105,7 +105,7 @@
 			<td class="rightLabel" colspan="2">
 				&nbsp;
 				<c:choose>
-					<c:when test="${canUserUpdateParticle eq 'true'}">
+					<c:when test="${canUserSubmit eq 'true'}">
 						<input type="button" onclick="javascript:updateComposition()" value="Update Monomers">
 					</c:when>
 				</c:choose>
@@ -129,7 +129,7 @@
 								</td>
 								<td class="rightLabel" colspan="3">
 									<c:choose>
-										<c:when test="${canUserUpdateParticle eq 'true'}">
+										<c:when test="${canUserSubmit eq 'true'}">
 											<html:text name="polymer.composingElements" indexed="true" property="chemicalName" />
 										</c:when>
 										<c:otherwise>
@@ -144,7 +144,7 @@
 								</td>
 								<td class="rightLabel" colspan="3">
 									<c:choose>
-										<c:when test="${canUserUpdateParticle eq 'true'}">
+										<c:when test="${canUserSubmit eq 'true'}">
 											<html:textarea name="polymer.composingElements" indexed="true" property="description" rows="3" cols="80" />
 										</c:when>
 										<c:otherwise>
@@ -157,7 +157,7 @@
 					</table>
 					<br>
 					<c:choose>
-						<c:when test="${canUserUpdateParticle eq 'true'}">
+						<c:when test="${canUserSubmit eq 'true'}">
 							<html:hidden name="polymer.composingElements" indexed="true" property="elementType" value="monomer" />
 						</c:when>
 					</c:choose>

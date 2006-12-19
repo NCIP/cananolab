@@ -18,7 +18,7 @@
 			</td>
 			<td class="label">
 				<c:choose>
-					<c:when test="${canUserUpdateParticle eq 'true'}">
+					<c:when test="${canUserSubmit eq 'true'}">
 						<html:select property="liposome.polymerized">
 							<html:options name="booleanChoices" />
 						</html:select>
@@ -33,7 +33,7 @@
 			</td>
 			<td class="rightLabel">
 				<c:choose>
-					<c:when test="${canUserUpdateParticle eq 'true'}">
+					<c:when test="${canUserSubmit eq 'true'}">
 						<html:text property="liposome.polymerName" />
 					</c:when>
 					<c:otherwise>
@@ -60,7 +60,7 @@
 			</td>
 			<td class="label">
 				<c:choose>
-					<c:when test="${canUserUpdateParticle eq 'true'}">
+					<c:when test="${canUserSubmit eq 'true'}">
 						<html:text property="liposome.numberOfElements" />
 					</c:when>
 					<c:otherwise>
@@ -71,7 +71,7 @@
 			<td class="rightLabel" colspan="2">
 				&nbsp;
 				<c:choose>
-					<c:when test="${canUserUpdateParticle eq 'true'}">
+					<c:when test="${canUserSubmit eq 'true'}">
 						<input type="button" onclick="javascript:updateComposition()" value="Update Lipids">
 					</c:when>
 				</c:choose>
@@ -95,7 +95,7 @@
 								</td>
 								<td class="rightLabel" colspan="3">
 									<c:choose>
-										<c:when test="${canUserUpdateParticle eq 'true'}">
+										<c:when test="${canUserSubmit eq 'true'}">
 											<html:text name="liposome.composingElements" indexed="true" property="chemicalName" />
 										</c:when>
 										<c:otherwise>
@@ -110,7 +110,7 @@
 								</td>
 								<td class="rightLabel" colspan="3">
 									<c:choose>
-										<c:when test="${canUserUpdateParticle eq 'true'}">
+										<c:when test="${canUserSubmit eq 'true'}">
 											<html:textarea name="liposome.composingElements" indexed="true" property="description" rows="3" cols="80" />
 										</c:when>
 										<c:otherwise>
@@ -123,7 +123,7 @@
 					</table>
 					<br>
 					<c:choose>
-						<c:when test="${canUserUpdateParticle eq 'true'}">
+						<c:when test="${canUserSubmit eq 'true'}">
 							<html:hidden name="liposome.composingElements" indexed="true" property="elementType" value="lipid" />
 						</c:when>
 					</c:choose>

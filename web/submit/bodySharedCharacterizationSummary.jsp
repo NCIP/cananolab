@@ -19,7 +19,7 @@
 		</td>
 		<td class="label">
 			<c:choose>
-				<c:when test="${canUserUpdateParticle eq 'true'}">
+				<c:when test="${canUserSubmit eq 'true'}">
 					<html:select property="achar.characterizationSource">
 						<html:options name="characterizationSources" />
 					</html:select>
@@ -35,7 +35,7 @@
 		</td>
 		<td class="rightLabel">
 			<c:choose>
-				<c:when test="${canUserUpdateParticle eq 'true'}">
+				<c:when test="${canUserSubmit eq 'true'}">
 					<html:text property="achar.viewTitle" size="30"/>
 				</c:when>
 				<c:otherwise>
@@ -50,7 +50,7 @@
 		</td>
 		<td class="label">
 			<c:choose>
-				<c:when test="${canUserUpdateParticle eq 'true'}">
+				<c:when test="${canUserSubmit eq 'true'}">
 					<html:text property="achar.characterizationProtocol.name" />
 				</c:when>
 				<c:otherwise>
@@ -63,7 +63,7 @@
 		</td>
 		<td class="rightLabel">
 			<c:choose>
-				<c:when test="${canUserUpdateParticle eq 'true'}">
+				<c:when test="${canUserSubmit eq 'true'}">
 					<html:text property="achar.characterizationProtocol.version" />
 				</c:when>
 				<c:otherwise>
@@ -78,7 +78,7 @@
 		</td>
 		<td class="rightLabel" colspan="3">
 			<c:choose>
-				<c:when test="${canUserUpdateParticle eq 'true'}">
+				<c:when test="${canUserSubmit eq 'true'}">
 					<html:textarea property="achar.description" rows="3" cols="80" />
 				</c:when>
 				<c:otherwise>

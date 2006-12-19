@@ -3,7 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:choose>
-	<c:when test="${canUserUpdateParticle eq 'true'}">
+	<c:when test="${canUserSubmit eq 'true'}">
 		<br>
 		<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 			<tr>
@@ -19,7 +19,7 @@
 										<input type="hidden" name="dispatch" value="create">
 										<input type="hidden" name="page" value="1">
 										<c:choose>
-											<c:when test="${canUserUpdateParticle eq 'true'}">
+											<c:when test="${canUserSubmit eq 'true'}">
 												<html:hidden property="particleType" />
 											</c:when>
 										</c:choose>

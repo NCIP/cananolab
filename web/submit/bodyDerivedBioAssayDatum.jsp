@@ -20,7 +20,7 @@
 				</td>
 				<td class="rightLabel" colspan="3">
 					<c:choose>
-						<c:when test="${canUserUpdateParticle eq 'true'}">
+						<c:when test="${canUserSubmit eq 'true'}">
 							<html:text property="achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].value" />&nbsp;
  							${dataUnit}	
 						</c:when>
@@ -34,7 +34,7 @@
 				<td class="leftLabel">
 					<strong>Is Control?</strong>&nbsp;&nbsp;
 					<c:choose>
-						<c:when test="${canUserUpdateParticle eq 'true'}">
+						<c:when test="${canUserSubmit eq 'true'}">
 							<html:select property="achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].isAControl">
 								<html:options name="booleanChoices" />
 							</html:select>
@@ -46,7 +46,7 @@
 				</td>
 				<td class="label">
 					<c:choose>
-						<c:when test="${canUserUpdateParticle eq 'true'}">
+						<c:when test="${canUserSubmit eq 'true'}">
 							<strong>Control Name:</strong>
 							<html:text property="achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].control.name" />
 						</c:when>
@@ -57,7 +57,7 @@
 				</td>
 				<td class="rightLabel" colspan="2">
 					<c:choose>
-						<c:when test="${canUserUpdateParticle eq 'true'}">
+						<c:when test="${canUserSubmit eq 'true'}">
 							<strong>Control Type:</strong>
 							<html:select property="achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].control.type">
 								<html:options name="allControlTypes" />
@@ -75,7 +75,7 @@
 				</td>
 				<td class="label">
 					<c:choose>
-						<c:when test="${canUserUpdateParticle eq 'true'}">
+						<c:when test="${canUserSubmit eq 'true'}">
 							<html:text property="achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].numberOfConditions" />
 						</c:when>
 						<c:otherwise>
@@ -86,7 +86,7 @@
 				<td class="rightLabel" colspan="2">
 					&nbsp;
 					<c:choose>
-						<c:when test="${canUserUpdateParticle eq 'true'}">
+						<c:when test="${canUserSubmit eq 'true'}">
 							<input type="button" onclick="javascript:updateConditions(this.form, '${actionName}', ${param.chartNum}, ${dInd})" value="Update Conditions">
 						</c:when>
 					</c:choose>
@@ -110,7 +110,7 @@
 									</td>
 									<td class="label">
 										<c:choose>
-											<c:when test="${canUserUpdateParticle eq 'true'}">
+											<c:when test="${canUserSubmit eq 'true'}">
 												<html:select property="achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].conditionList[${cInd}].type"
 													onchange="javascript:doubleDropdownWithNestedProperties(this.form, 'achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].conditionList[${cInd}].type', 'achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].conditionList[${cInd}].valueUnit', conditionTypeUnits)">
 													<option value=""></option>
@@ -127,7 +127,7 @@
 									</td>
 									<td class="rightLabel">
 										<c:choose>
-											<c:when test="${canUserUpdateParticle eq 'true'}">
+											<c:when test="${canUserSubmit eq 'true'}">
 												<html:text property="achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].conditionList[${cInd}].value" />
 											</c:when>
 											<c:otherwise>
@@ -136,7 +136,7 @@
 										</c:choose>
 										&nbsp;&nbsp;&nbsp;
 										<c:choose>
-											<c:when test="${canUserUpdateParticle eq 'true'}">
+											<c:when test="${canUserSubmit eq 'true'}">
 												<html:select property="achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].conditionList[${cInd}].valueUnit">
 													<option value=""></option>
 													<option value="${this.form.map.achar.derivedBioAssayDataList[param.chartNum].datumList[dInd].conditionList[cInd].valueUnit}" selected>

@@ -20,7 +20,7 @@
 			</td>
 			<td class="rightLabel" colspan="3">
 				<c:choose>
-					<c:when test="${canUserUpdateParticle eq 'true'}">
+					<c:when test="${canUserSubmit eq 'true'}">
 						<html:text property="quantumDot.core.chemicalName" />
 					</c:when>
 					<c:otherwise>
@@ -35,7 +35,7 @@
 			</td>
 			<td class="rightLabel" colspan="3">
 				<c:choose>
-					<c:when test="${canUserUpdateParticle eq 'true'}">
+					<c:when test="${canUserSubmit eq 'true'}">
 						<html:textarea property="quantumDot.core.description" rows="3" />
 					</c:when>
 					<c:otherwise>
@@ -61,7 +61,7 @@
 			</td>
 			<td class="label">
 				<c:choose>
-					<c:when test="${canUserUpdateParticle eq 'true'}">
+					<c:when test="${canUserSubmit eq 'true'}">
 						<html:text property="quantumDot.numberOfShells" size="3"/>
 					</c:when>
 					<c:otherwise>
@@ -74,7 +74,7 @@
 			</td>
 			<td class="rightLabel">
 				<c:choose>
-					<c:when test="${canUserUpdateParticle eq 'true'}">
+					<c:when test="${canUserSubmit eq 'true'}">
 						<html:text property="quantumDot.numberOfCoatings" size="3"/>
 					</c:when>
 					<c:otherwise>
@@ -83,7 +83,7 @@
 				</c:choose>
 				&nbsp;&nbsp;&nbsp;
 				<c:choose>
-					<c:when test="${canUserUpdateParticle eq 'true'}">
+					<c:when test="${canUserSubmit eq 'true'}">
 						<input type="button" onclick="javascript:updateComposition()" value="Update Shells and Coatings">
 					</c:when>
 				</c:choose>
@@ -108,7 +108,7 @@
 								</td>
 								<td class="rightLabel" colspan="3">
 									<c:choose>
-										<c:when test="${canUserUpdateParticle eq 'true'}">
+										<c:when test="${canUserSubmit eq 'true'}">
 											<html:text name="quantumDot.shells" indexed="true" property="chemicalName" />
 										</c:when>
 										<c:otherwise>
@@ -123,7 +123,7 @@
 								</td>
 								<td class="rightLabel" colspan="3">
 									<c:choose>
-										<c:when test="${canUserUpdateParticle eq 'true'}">
+										<c:when test="${canUserSubmit eq 'true'}">
 											<html:textarea name="quantumDot.shells" indexed="true" property="description" rows="3" cols="80" />
 										</c:when>
 										<c:otherwise>
@@ -136,7 +136,7 @@
 					</table>
 					<br>
 					<c:choose>
-						<c:when test="${canUserUpdateParticle eq 'true'}">
+						<c:when test="${canUserSubmit eq 'true'}">
 							<html:hidden name="quantumDot.shells" indexed="true" property="elementType" value="shell" />
 						</c:when>
 					</c:choose>
@@ -161,7 +161,7 @@
 								</td>
 								<td class="rightLabel" colspan="3">
 									<c:choose>
-										<c:when test="${canUserUpdateParticle eq 'true'}">
+										<c:when test="${canUserSubmit eq 'true'}">
 											<html:text name="quantumDot.coatings" indexed="true" property="chemicalName" />
 										</c:when>
 										<c:otherwise>
@@ -176,7 +176,7 @@
 								</td>
 								<td class="rightLabel" colspan="3">
 									<c:choose>
-										<c:when test="${canUserUpdateParticle eq 'true'}">
+										<c:when test="${canUserSubmit eq 'true'}">
 											<html:textarea name="quantumDot.coatings" indexed="true" property="description" rows="3" cols="80" />
 										</c:when>
 										<c:otherwise>
@@ -189,7 +189,7 @@
 					</table>
 					<br>
 					<c:choose>
-						<c:when test="${canUserUpdateParticle eq 'true'}">
+						<c:when test="${canUserSubmit eq 'true'}">
 							<html:hidden name="quantumDot.coatings" indexed="true" property="elementType" value="coating" />
 						</c:when>
 					</c:choose>
