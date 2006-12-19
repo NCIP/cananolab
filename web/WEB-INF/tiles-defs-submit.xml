@@ -621,9 +621,17 @@
 	</definition>
 
 	<definition name="submit.report.view" extends="calab.home">
+		<put name="calabContent" value="submit.report.view.content" />
+		<put name="menu" value="submit" />
+		<put name="reportActionName" value="updateReport"/>
+	</definition>
+
+	<!-- definition for the view report/associated file for particle page -->
+	<definition name="submit.report.particle.view" extends="calab.home">
 		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
 		<put name="calabContent" value="submit.report.view.content" />
 		<put name="menu" value="submit" />
+		<put name="reportActionName" value="updateReportForParticle"/>
 	</definition>
 
 </tiles-definitions>
