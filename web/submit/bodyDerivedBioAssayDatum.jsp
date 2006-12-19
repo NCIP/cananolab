@@ -16,12 +16,12 @@
 			</tr>
 			<tr>
 				<td class="leftLabel">
-					<strong>${dataLabel}</strong>
+					<strong>${dataLabel} *</strong>
 				</td>
 				<td class="rightLabel" colspan="3">
 					<c:choose>
 						<c:when test="${canUserUpdateParticle eq 'true'}">
-							<html:text property="achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].value" />
+							<html:text property="achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].value" />&nbsp;
  							${dataUnit}	
 						</c:when>
 						<c:otherwise>
