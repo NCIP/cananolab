@@ -232,3 +232,12 @@ function enableTextElement(form, elementName) {
    var element=getElement(form, elementName);
    element.disabled=false;  
 }
+
+function updateOtherField(form, elementName, otherElementName){
+  var element=getElement(form, elementName);
+  if (element.value == 'Other') {
+     enableTextElement(form, otherElementName);
+  } else {
+     disableTextElement(form, otherElementName);
+  }
+}
