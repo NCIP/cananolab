@@ -131,7 +131,7 @@ public class SubmitNanoparticleService {
 		// nanoparticle
 		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
 
-		if (visibilities != null || visibilities.length > 0) {
+		if (visibilities != null && visibilities.length > 0) {
 			userService.removeAllAccessibleGroups(particleName,
 					CalabConstants.CSM_READ_ROLE, null);
 			for (String visibility : visibilities) {
@@ -842,18 +842,18 @@ public class SubmitNanoparticleService {
 		} finally {
 			ida.close();
 		}
-		LabFileBean fileBean = new LabFileBean(dataFile);
+		LabFileBean fileBean = new LabFileBean(dataFile, CalabConstants.OUTPUT);
 
 		// remove existing visibilities (except the default groups) for the
 		// file
 		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
 
-		if (visibilities != null || visibilities.length > 0) {
+		if (visibilities != null && visibilities.length > 0) {
 			userService.removeAllAccessibleGroups(dataFile.getId().toString(),
 					CalabConstants.CSM_READ_ROLE, null);
 			for (String visibility : visibilities) {
-				userService.secureObject(dataFile.getId().toString(), visibility,
-						CalabConstants.CSM_READ_ROLE);
+				userService.secureObject(dataFile.getId().toString(),
+						visibility, CalabConstants.CSM_READ_ROLE);
 			}
 		}
 		for (String visibility : CananoConstants.DEFAULT_VISIBLE_GROUPS) {
@@ -877,7 +877,7 @@ public class SubmitNanoparticleService {
 			String description, String[] keywords, String[] visibilities)
 			throws Exception {
 
-		LabFileBean fileBean = getFile(fileId);
+		LabFileBean fileBean = getFile(fileId, CalabConstants.OUTPUT);
 		fileBean.setTitle(title);
 		fileBean.setDescription(description);
 
@@ -922,8 +922,8 @@ public class SubmitNanoparticleService {
 			userService.removeAllAccessibleGroups(dataFile.getId().toString(),
 					CalabConstants.CSM_READ_ROLE, null);
 			for (String visibility : visibilities) {
-				userService.secureObject(dataFile.getId().toString(), visibility,
-						CalabConstants.CSM_READ_ROLE);
+				userService.secureObject(dataFile.getId().toString(),
+						visibility, CalabConstants.CSM_READ_ROLE);
 			}
 		}
 		for (String visibility : CananoConstants.DEFAULT_VISIBLE_GROUPS) {
@@ -931,7 +931,7 @@ public class SubmitNanoparticleService {
 					CalabConstants.CSM_READ_ROLE);
 		}
 
-		fileBean = new LabFileBean(dataFile);
+		fileBean = new LabFileBean(dataFile, CalabConstants.OUTPUT);
 		return fileBean;
 	}
 
@@ -1072,15 +1072,16 @@ public class SubmitNanoparticleService {
 	 * @param fileId
 	 * @return
 	 */
-	public LabFileBean getFile(String fileId) throws Exception {
+	public LabFileBean getFile(String fileId, String fileType) throws Exception {
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		LabFileBean fileBean = null;
 		try {
 			ida.open();
-			LabFile charFile = (LabFile) ida.load(LabFile.class, StringUtils
+
+			LabFile file = (LabFile) ida.load(LabFile.class, StringUtils
 					.convertToLong(fileId));
-			fileBean = new LabFileBean(charFile);
+			fileBean = new LabFileBean(file, fileType);
 		} catch (Exception e) {
 			e.printStackTrace();
 			ida.rollback();
@@ -1133,9 +1134,8 @@ public class SubmitNanoparticleService {
 		return runFiles;
 	}
 
-	public void createReport(String[] particleNames, String reportType,
-			FormFile report, String title, String description, String comment,
-			String[] visibilities) throws Exception {
+	public void createReport(String[] particleNames, FormFile report,
+			LabFileBean fileBean) throws Exception {
 
 		// TODO saves reportFile to the file system
 		String rootPath = PropertyReader.getProperty(
@@ -1159,19 +1159,20 @@ public class SubmitNanoparticleService {
 		this.saveFile(report.getInputStream(), oStream);
 
 		LabFile dataFile = null;
-		if (reportType.equalsIgnoreCase(CananoConstants.NCL_REPORT))
+		if (fileBean.getType().equalsIgnoreCase(CananoConstants.NCL_REPORT))
 			dataFile = new Report();
 		else
 			dataFile = new AssociatedFile();
 
-		dataFile.setDescription(description);
+		dataFile.setDescription(fileBean.getDescription());
 		dataFile.setFilename(report.getFileName());
 
 		dataFile.setPath(path + tagFileName);
-		dataFile.setTitle(title.toUpperCase()); // convert to upper case
+		dataFile.setTitle(fileBean.getTitle().toUpperCase()); // convert to
+		// upper case
 		Date date = new Date();
 		dataFile.setCreatedDate(date);
-		dataFile.setComments(comment);
+		dataFile.setComments(fileBean.getComments());
 
 		// TODO daves reportFile path to the database
 		// look up the samples for each particleNames
@@ -1207,7 +1208,8 @@ public class SubmitNanoparticleService {
 				}
 
 				if (particle != null) {
-					if (reportType.equalsIgnoreCase(CananoConstants.NCL_REPORT))
+					if (fileBean.getType().equalsIgnoreCase(
+							CananoConstants.NCL_REPORT))
 						particle.getReportCollection().add((Report) dataFile);
 					else
 						particle.getAssociatedFileCollection().add(
@@ -1229,12 +1231,13 @@ public class SubmitNanoparticleService {
 		// file
 		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
 
-		if (visibilities != null || visibilities.length > 0) {
+		if (fileBean.getVisibilityGroups() != null
+				&& fileBean.getVisibilityGroups().length > 0) {
 			userService.removeAllAccessibleGroups(dataFile.getId().toString(),
 					CalabConstants.CSM_READ_ROLE, null);
-			for (String visibility : visibilities) {
-				userService.secureObject(dataFile.getId().toString(), visibility,
-						CalabConstants.CSM_READ_ROLE);
+			for (String visibility : fileBean.getVisibilityGroups()) {
+				userService.secureObject(dataFile.getId().toString(),
+						visibility, CalabConstants.CSM_READ_ROLE);
 			}
 		}
 		for (String visibility : CananoConstants.DEFAULT_VISIBLE_GROUPS) {
@@ -1242,6 +1245,52 @@ public class SubmitNanoparticleService {
 					CalabConstants.CSM_READ_ROLE);
 		}
 
+	}
+
+	/**
+	 * Update the meta data associated with a file stored in the database
+	 * 
+	 * @param fileBean
+	 * @throws Exception
+	 */
+	public void updateFileMetaData(LabFileBean fileBean) throws Exception {
+
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			LabFile file = (LabFile) ida.load(LabFile.class, StringUtils
+					.convertToLong(fileBean.getId()));
+
+			file.setTitle(fileBean.getTitle().toUpperCase());
+			file.setDescription(fileBean.getDescription());
+			file.setComments(fileBean.getComments());
+		} catch (Exception e) {
+			e.printStackTrace();
+			ida.rollback();
+			logger.error("Problem updating file meta data: ");
+			throw e;
+		} finally {
+			ida.close();
+		}
+
+		// remove existing visibilities (except the default groups) for the
+		// file
+		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
+
+		if (fileBean.getVisibilityGroups() != null
+				&& fileBean.getVisibilityGroups().length > 0) {
+			userService.removeAllAccessibleGroups(fileBean.getId(),
+					CalabConstants.CSM_READ_ROLE, null);
+			for (String visibility : fileBean.getVisibilityGroups()) {
+				userService.secureObject(fileBean.getId(), visibility,
+						CalabConstants.CSM_READ_ROLE);
+			}
+		}
+		for (String visibility : CananoConstants.DEFAULT_VISIBLE_GROUPS) {
+			userService.secureObject(fileBean.getId(), visibility,
+					CalabConstants.CSM_READ_ROLE);
+		}
 	}
 
 }
