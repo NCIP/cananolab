@@ -89,7 +89,7 @@ function refreshContainers() {
 						<tr>
 							<td class="formLabelWhite">
 								<div align="justify">
-									<strong>Number of Containers*<span class="formFieldWhite"> &nbsp; <html:text property="numberOfContainers" size="2" /> &nbsp; </strong>
+									<strong>Number of Containers*<span class="formFieldWhite"> &nbsp; <html:text property="numberOfContainers" size="2" /> &nbsp;</strong>(Please click on "Update Sample Containers" button below if number of containers has been changed.) 
 								</div>
 							</td>
 						</tr>
@@ -127,10 +127,11 @@ function refreshContainers() {
 							<tr>
 								<td class="formLabel">
 									<div align="justify">
-										<strong>Container Type* <span class="formFieldWhite"> <html:select name="containers" indexed="true" property="containerType">
+										<strong>Container Type* <span class="formFieldWhite"> <html:select name="containers" indexed="true" property="containerType"
+													onchange="javascript:updateOtherField(createSampleForm, 'containers[${status.index}].containerType', 'containers[${status.index}].otherContainerType')">
 													<option value=""></option>
 													<html:options name="allSampleContainerTypes" />
-												</html:select></span> &nbsp; &nbsp; &nbsp; Other <span class="formFieldWhite"><html:text name="containers" indexed="true" property="otherContainerType" size="8" /></span> &nbsp; &nbsp; &nbsp; </strong>
+												</html:select></span> &nbsp; &nbsp; &nbsp; Other <span class="formFieldWhite"><html:text name="containers" indexed="true" property="otherContainerType" size="8" disabled="true"/></span> &nbsp; &nbsp; &nbsp; </strong>
 									</div>
 								</td>
 							</tr>
