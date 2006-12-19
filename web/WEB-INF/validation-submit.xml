@@ -19,16 +19,16 @@
 		</form>
 
 		<form name="publishReportForm">
-			<field property="particleNames" page="1" depends="required">
+			<field property="particleNames" page="2" depends="required">
 				<arg position="0" key="publishReportForm.particleID" bundle="submit" />
 			</field>
-			<field property="reportType" page="1" depends="required">
+			<field property="file.type" page="2" depends="required">
 				<arg position="0" key="publishReportForm.reportType" bundle="submit" />
 			</field>
-			<field property="reportFile" page="1" depends="required">
+			<field property="uploadedFile" page="2" depends="required">
 				<arg position="0" key="publishReportForm.reportFile" bundle="submit" />
 			</field>
-			<field property="title" page="1" depends="required">
+			<field property="file.title" page="1" depends="required">
 				<arg position="0" key="publishReportForm.title" bundle="submit" />
 			</field>
 			<!--
