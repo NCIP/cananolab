@@ -16,6 +16,8 @@ public class PolymerBean extends CompositionBean {
 	private String crosslinkDegree;
 
 	private String initiator;
+	
+	private String otherInitiator;
 
 	public PolymerBean() {
 		super();
@@ -63,7 +65,20 @@ public class PolymerBean extends CompositionBean {
 		if (crosslinkDegree.length() > 0) {
 			doComp.setCrossLinkDegree(new Float(crosslinkDegree));
 		}
-		doComp.setInitiator(initiator);
+		if (initiator.length() > 0) {
+			if (initiator.equalsIgnoreCase(CananoConstants.OTHER)){
+				initiator = otherInitiator;
+			}
+			doComp.setInitiator(initiator);
+		}
 		return doComp;
+	}
+
+	public String getOtherInitiator() {
+		return otherInitiator;
+	}
+
+	public void setOtherInitiator(String otherInitiator) {
+		this.otherInitiator = otherInitiator;
 	}
 }
