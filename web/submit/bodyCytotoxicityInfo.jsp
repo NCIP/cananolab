@@ -19,14 +19,14 @@
 		<c:choose>
 			<c:when test="${canUserUpdateParticle eq 'true'}">
 				<td class="label">
-					<html:select property="achar.cellLine">
+					<html:select property="achar.cellLine" onchange="javascript:updateOtherField(this.form,'achar.cellLine','achar.otherCellLine')">
 						<option value=""></option>
 						<html:options name="allCellLines" />
 					</html:select>
 				</td>
 				<td class="rightLabel" colspan="2">
 					<strong>Other Cell Line</strong>&nbsp;
-					<html:text property="achar.otherCellLine" />
+					<html:text property="achar.otherCellLine" disabled="true"/>
 				</td>
 			</c:when>
 			<c:otherwise>

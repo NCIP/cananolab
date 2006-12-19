@@ -20,7 +20,7 @@
 		<td class="label">
 			<c:choose>
 				<c:when test="${canUserUpdateParticle eq 'true'}">
-					<html:select property="achar.instrument.type" onchange="javascript:doubleDropdownWithExraOption(this.form.elements[5], this.form.elements[7], instrumentTypeManufacturers, 'Other')">
+					<html:select property="achar.instrument.type" onchange="javascript:doubleDropdownWithExraOption(this.form.elements[5], this.form.elements[7], instrumentTypeManufacturers, 'Other');updateOtherField(this.form, this.form.elements[5].name, this.form.elements[6].name)">
 						<option value="" />
 							<html:options collection="allInstrumentTypes" property="value" labelProperty="label" />
 					</html:select>
@@ -36,7 +36,7 @@
 					<strong>Other Instrument Type </strong>
 				</td>
 				<td class="rightLabel">
-					<html:text property="achar.instrument.otherInstrumentType" />
+					<html:text property="achar.instrument.otherInstrumentType" disabled="true"/>
 				</td>
 			</c:when>
 			<c:otherwise>
@@ -57,7 +57,7 @@
 		<td class="label">
 			<c:choose>
 				<c:when test="${canUserUpdateParticle eq 'true'}">
-					<html:select property="achar.instrument.manufacturer">
+					<html:select property="achar.instrument.manufacturer" onchange="javascript:updateOtherField(this.form, this.form.elements[7].name, this.form.elements[8].name)">
 						<option value="${thisForm.map.achar.instrument.manufacturer}" selected>
 							${thisForm.map.achar.instrument.manufacturer}
 						</option>

@@ -45,7 +45,7 @@
 							<td class="label">
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
-										<html:select property="achar.type">
+										<html:select property="achar.type" onchange="javascript:updateOtherField(nanoparticleShapeForm, 'achar.type', 'achar.otherShapeType')" >
 											<option value=""></option>
 											<html:options name="allShapeTypes" />
 										</html:select>

@@ -3,6 +3,12 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
+<script language="JavaScript">
+<!--
+
+//-->
+</script>
+
 <table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 	<tbody>
 		<tr class="topBorder">
@@ -19,9 +25,9 @@
 			<td class="label">
 				<c:choose>
 					<c:when test="${canUserUpdateParticle eq 'true'}">
-						<html:select property="dendrimer.branch">
+						<html:select property="dendrimer.branch" onchange="javascript:updateOtherField(nanoparticleCompositionForm, 'dendrimer.branch', 'dendrimer.otherBranch');">
 							<option value=""></option>
-							<html:options name="allDendrimerBranches" />
+							<html:options name="allDendrimerBranches"/>
 						</html:select>
 					</c:when>
 					<c:otherwise>
@@ -35,7 +41,7 @@
 						<strong>Other Branch</strong>
 					</td>
 					<td class="label">
-						<html:text property="dendrimer.otherBranch" />
+						<html:text property="dendrimer.otherBranch" disabled="true"/>
 					</td>
 				</c:when>
 				<c:otherwise>
@@ -68,7 +74,7 @@
 			<td class="label">
 				<c:choose>
 					<c:when test="${canUserUpdateParticle eq 'true'}">
-						<html:select property="dendrimer.generation">
+						<html:select property="dendrimer.generation" onchange="javascript:updateOtherField(nanoparticleCompositionForm, 'dendrimer.generation', 'dendrimer.otherGeneration')">
 							<option value=""></option>
 							<html:options name="allDendrimerGenerations" />
 							<option value="Other">
@@ -87,7 +93,7 @@
 						<strong>Other Generation</strong>
 					</td>
 					<td class="label">
-						<html:text property="dendrimer.otherGeneration" />
+						<html:text property="dendrimer.otherGeneration" disabled="true"/>
 					</td>
 				</c:when>
 				<c:otherwise>
@@ -210,7 +216,7 @@
 								<td class="label">
 									<c:choose>
 										<c:when test="${canUserUpdateParticle eq 'true'}">
-											<html:select name="dendrimer.surfaceGroups" indexed="true" property="name">
+											<html:select name="dendrimer.surfaceGroups" indexed="true" property="name" onchange="javascript:updateOtherField(nanoparticleCompositionForm, 'dendrimer.surfaceGroups[${status.index}].name', 'dendrimer.surfaceGroups[${status.index}].otherName')">
 												<option />
 													<html:options name="allDendrimerSurfaceGroupNames" />
 												<option value="Other">
@@ -229,7 +235,7 @@
 											<strong>Other name</strong>
 										</td>
 										<td class="label">
-											<html:text name="dendrimer.surfaceGroups" indexed="true" property="otherName" />
+											<html:text name="dendrimer.surfaceGroups" indexed="true" property="otherName" disabled="true"/>
 										</td>
 									</c:when>
 									<c:otherwise>

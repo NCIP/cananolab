@@ -45,13 +45,13 @@
 							<td class="rightLabel">
 								<c:choose>
 									<c:when test="${canUserUpdateParticle eq 'true'}">
-										<html:select property="achar.type">
+										<html:select property="achar.type" onchange="javascript:updateOtherField(nanoparticleMorphologyForm, 'achar.type', 'achar.otherType')" >
 											<option value=""></option>
 											<html:options name="allMorphologyTypes" />
 										</html:select>
 										&nbsp;&nbsp;
 										<strong> Other </strong>&nbsp;
-										<html:text property="achar.otherType" />
+										<html:text property="achar.otherType" disabled="true"/>
 									</c:when>
 									<c:otherwise>
 										${nanoparticleMorphologyForm.map.morphology.type}&nbsp;

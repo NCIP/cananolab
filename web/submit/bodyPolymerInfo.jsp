@@ -20,7 +20,7 @@
 				<c:choose>
 					<c:when test="${canUserUpdateParticle eq 'true'}">
 						<html:select property="polymer.crosslinked">
-							<html:options name="booleanChoices"/>
+							<html:options name="booleanChoices" />
 						</html:select>
 					</c:when>
 					<c:otherwise>
@@ -47,10 +47,10 @@
 			<td class="leftLabel">
 				<strong>Initiator </strong>
 			</td>
-			<td class="rightLabel" colspan="3">
+			<td class="label">
 				<c:choose>
 					<c:when test="${canUserUpdateParticle eq 'true'}">
-						<html:select property="polymer.initiator">
+						<html:select property="polymer.initiator" onchange="javascript:updateOtherField(nanoparticleCompositionForm, 'polymer.initiator', 'polymer.otherInitiator')">
 							<option />
 								<html:options name="allPolymerInitiators" />
 						</html:select>
@@ -59,8 +59,22 @@
 						${nanoparticleCompositionForm.map.polymer.initiator}&nbsp;
 					</c:otherwise>
 				</c:choose>
-
 			</td>
+			<c:choose>
+				<c:when test="${canUserUpdateParticle eq 'true'}">
+					<td class="label">
+						<strong>Other Initiator </strong>
+					</td>
+					<td class="rightLabel">
+						<html:text property="polymer.otherInitiator" disabled="true"/>
+					</td>
+				</c:when>
+				<c:otherwise>
+					<td class="rightlabel" colspan="2">
+						&nbsp;
+					</td>
+				</c:otherwise>
+			</c:choose>
 		</tr>
 	</tbody>
 </table>
