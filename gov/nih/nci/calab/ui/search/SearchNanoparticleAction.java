@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchNanoparticleAction.java,v 1.10 2006-12-08 00:22:45 zengje Exp $ */
+/* CVS $Id: SearchNanoparticleAction.java,v 1.11 2006-12-19 23:25:43 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
@@ -54,16 +54,6 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 				particleSource, particleType, functionTypes, characterizations,
 				keywordList, keywordType, user);
 
-		// check whether user can edit the search result and set from to either
-		// editable
-		// pages or view pages
-		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
-		boolean editable = userService.checkExecutePermission(user, "submit");
-		if (editable) {
-			session.setAttribute("canUserUpdateParticle", "true");
-		} else {
-			session.setAttribute("canUserUpdateParticle", "false");
-		}
 		if (particles != null && !particles.isEmpty()) {
 			request.setAttribute("particles", particles);
 			forward = mapping.findForward("success");
