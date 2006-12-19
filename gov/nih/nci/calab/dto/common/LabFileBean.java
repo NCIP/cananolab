@@ -1,18 +1,21 @@
 package gov.nih.nci.calab.dto.common;
 
+import gov.nih.nci.calab.domain.AssociatedFile;
 import gov.nih.nci.calab.domain.DerivedDataFile;
 import gov.nih.nci.calab.domain.Keyword;
 import gov.nih.nci.calab.domain.LabFile;
+import gov.nih.nci.calab.domain.OutputFile;
+import gov.nih.nci.calab.domain.Report;
+import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.CananoConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
 /**
- * This class represents attributes of a lab file to be
- * viewed in a view page.
+ * This class represents attributes of a lab file to be viewed in a view page.
  * 
  * @author pansu
  * 
@@ -37,13 +40,13 @@ public class LabFileBean {
 	private String path;
 
 	private String name;
-	
+
 	private String type;
-	
+
 	private String keywordsStr;
-	
+
 	private String visibilityStr;
-	
+
 	/*
 	 * name to be displayed as a part of the drop-down list
 	 */
@@ -54,24 +57,25 @@ public class LabFileBean {
 		// TODO Auto-generated constructor stub
 	}
 
-	public LabFileBean(LabFile charFile) {
-		this.id=charFile.getId().toString();
-		this.name=charFile.getFilename();
-		this.path=charFile.getPath();
-		this.title=charFile.getTitle();
-		this.description=charFile.getDescription();
-	    this.createdBy=charFile.getCreatedBy();
-	    this.createdDate=charFile.getCreatedDate();
-	    if (charFile instanceof DerivedDataFile){
-	    	List<String> allkeywords = new ArrayList<String>();
-	    	for (Keyword keyword: ((DerivedDataFile)charFile).getKeywordCollection()) {
-	    		allkeywords.add(keyword.getName());
-	    	}
-	        allkeywords.toArray(this.keywords);
-	    }
-	    
+	public LabFileBean(LabFile charFile, String fileType) {
+		this.id = charFile.getId().toString();
+		this.name = charFile.getFilename();
+		this.path = charFile.getPath();
+		this.title = charFile.getTitle();
+		this.description = charFile.getDescription();
+		this.createdBy = charFile.getCreatedBy();
+		this.createdDate = charFile.getCreatedDate();
+		if (charFile instanceof DerivedDataFile) {
+			List<String> allkeywords = new ArrayList<String>();
+			for (Keyword keyword : ((DerivedDataFile) charFile)
+					.getKeywordCollection()) {
+				allkeywords.add(keyword.getName());
+			}
+			allkeywords.toArray(this.keywords);
+		}
+		this.type = fileType;
 	}
-	
+
 	public String getComments() {
 		return comments;
 	}
@@ -152,7 +156,7 @@ public class LabFileBean {
 		this.visibilityGroups = visibilityGroups;
 	}
 
-	public DerivedDataFile getDomainObject(){
+	public DerivedDataFile getDomainObject() {
 		DerivedDataFile labfile = new DerivedDataFile();
 		if (id != null && id.length() > 0) {
 			labfile.setId(new Long(id));
@@ -163,12 +167,12 @@ public class LabFileBean {
 		labfile.setFilename(name);
 		labfile.setPath(path);
 		labfile.setTitle(title);
-		
+
 		return labfile;
 	}
 
 	public String getDisplayName() {
-		displayName=path.replaceAll("/decompressedFiles", "");
+		displayName = path.replaceAll("/decompressedFiles", "");
 		return displayName;
 	}
 
@@ -181,12 +185,12 @@ public class LabFileBean {
 	}
 
 	public String getKeywordsStr() {
-		keywordsStr=StringUtils.join(keywords, "<br>");
+		keywordsStr = StringUtils.join(keywords, "<br>");
 		return keywordsStr;
 	}
 
 	public String getVisibilityStr() {
-		visibilityStr=StringUtils.join(visibilityGroups, "<br>");	
+		visibilityStr = StringUtils.join(visibilityGroups, "<br>");
 		return visibilityStr;
 	}
 }
