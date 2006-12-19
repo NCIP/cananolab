@@ -38,7 +38,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 
-/* CVS $Id: BaseCharacterizationAction.java,v 1.19 2006-12-14 19:51:12 pansu Exp $ */
+/* CVS $Id: BaseCharacterizationAction.java,v 1.20 2006-12-19 23:23:51 pansu Exp $ */
 
 public abstract class BaseCharacterizationAction extends AbstractDispatchAction {
 	/**
@@ -170,7 +170,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		for (DerivedBioAssayData obj : aChar.getDerivedBioAssayDataCollection()) {
 
 			if (obj.getFile() != null) {
-				LabFileBean fileBean = new LabFileBean(obj.getFile());
+				LabFileBean fileBean = new LabFileBean(obj.getFile(),  CalabConstants.OUTPUT);
 		        UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
 				List<String> accessibleGroups = userService.getAccessibleGroups(
 						fileBean.getId(), CalabConstants.CSM_READ_ROLE);
@@ -243,7 +243,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 
 		String fileId = request.getParameter("fileId");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		LabFileBean fileBean = service.getFile(fileId);
+		LabFileBean fileBean = service.getFile(fileId, CalabConstants.OUTPUT);
 		String fileRoot = PropertyReader.getProperty(
 				CalabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
 		File dFile = new File(fileRoot + File.separator + fileBean.getPath());
