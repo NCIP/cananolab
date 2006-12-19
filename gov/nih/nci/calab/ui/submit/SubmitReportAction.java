@@ -6,13 +6,17 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: SubmitReportAction.java,v 1.7 2006-12-13 22:56:27 pansu Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.8 2006-12-19 23:27:15 pansu Exp $ */
 
+import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.service.util.CananoConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,31 +39,27 @@ public class SubmitReportAction extends AbstractDispatchAction {
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String[] particleNames = (String[]) theForm.get("particleNames");
-		String[] visibilities = (String[]) theForm.get("visibilities");
-		FormFile reportFile = (FormFile) theForm.get("reportFile");
-		String title=(String)theForm.get("title");
-		String description=(String)theForm.get("description");
-		String reportType = (String) theForm.get("reportType");
-		String comment = (String) theForm.get("comment");
-		
-		SubmitNanoparticleService service=new SubmitNanoparticleService();
-		
-		service.createReport(particleNames, reportType, reportFile, title, description, comment, visibilities);
-		
-		//display default visible groups
-		if (visibilities.length==0) {
-			visibilities=CananoConstants.DEFAULT_VISIBLE_GROUPS;
+		LabFileBean fileBean = (LabFileBean) theForm.get("file");
+		FormFile uploadedFile = (FormFile) theForm.get("uploadedFile");
+		SubmitNanoparticleService service = new SubmitNanoparticleService();
+
+		service.createReport(particleNames, uploadedFile, fileBean);
+
+		// display default visible groups
+		if (fileBean.getVisibilityGroups().length == 0) {
+			fileBean
+					.setVisibilityGroups(CananoConstants.DEFAULT_VISIBLE_GROUPS);
 		}
-		
+
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg1 = new ActionMessage("message.submitReport.secure",
-				StringUtils.join(visibilities, ", "));
+				StringUtils.join(fileBean.getVisibilityGroups(), ", "));
 		ActionMessage msg2 = new ActionMessage("message.submitReport.file",
-				reportFile.getFileName());
+				uploadedFile.getFileName());
 		msgs.add("message", msg1);
 		msgs.add("message", msg2);
 		saveMessages(request, msgs);
-		
+
 		request.getSession().setAttribute("newReportCreated", "true");
 		forward = mapping.findForward("success");
 
@@ -72,17 +72,61 @@ public class SubmitReportAction extends AbstractDispatchAction {
 		HttpSession session = request.getSession();
 		InitSessionSetup.getInstance().clearWorkflowSession(session);
 		InitSessionSetup.getInstance().clearSearchSession(session);
-		InitSessionSetup.getInstance().clearInventorySession(session);
 
 		InitSessionSetup.getInstance().setAllSampleContainers(session);
-		InitSessionSetup.getInstance().setStaticDropdowns(session);		
+		InitSessionSetup.getInstance().setStaticDropdowns(session);
 		InitSessionSetup.getInstance().setAllVisibilityGroups(session);
 		// clear session data from the input forms
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		theForm.getMap().clear();
 
-
 		return mapping.getInputForward();
+	}
+
+	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		HttpSession session = request.getSession();
+		InitSessionSetup.getInstance().clearWorkflowSession(session);
+		InitSessionSetup.getInstance().clearSearchSession(session);
+		InitSessionSetup.getInstance().setAllSampleContainers(session);
+		InitSessionSetup.getInstance().setStaticDropdowns(session);
+		InitSessionSetup.getInstance().setAllVisibilityGroups(session);
+
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		String fileId = request.getParameter("fileId");
+		String fileType = request.getParameter("fileType");
+		SubmitNanoparticleService service = new SubmitNanoparticleService();
+		LabFileBean fileBean=service.getFile(fileId, fileType);
+		theForm.set("file", fileBean);
+		return mapping.getInputForward();
+	}
+
+	public ActionForward setupView(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		return setupUpdate(mapping, form, request, response);
+	}
+
+	public ActionForward update(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		LabFileBean fileBean = (LabFileBean) theForm.get("file");
+		SubmitNanoparticleService service = new SubmitNanoparticleService();
+		service.updateFileMetaData(fileBean);
+
+		ActionMessages msgs = new ActionMessages();
+		ActionMessage msg = new ActionMessage("message.updateReport", fileBean
+				.getPath());
+
+		msgs.add("message", msg);
+		saveMessages(request, msgs);
+
+		request.getSession().setAttribute("newReportCreated", "true");
+
+		return mapping.findForward("success");
 	}
 
 	public boolean loginRequired() {
