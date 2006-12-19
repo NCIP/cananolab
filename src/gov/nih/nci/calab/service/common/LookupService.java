@@ -38,7 +38,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.86 2006-12-19 15:39:38 zengje Exp $ */
+/* CVS $Id: LookupService.java,v 1.87 2006-12-19 20:50:14 zengje Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -929,6 +929,7 @@ public class LookupService {
 		}
 		shapeTypes.addAll(Arrays.asList(CananoConstants.DEFAULT_SHAPE_TYPES));
 
+		shapeTypes.add(CananoConstants.OTHER);
 		return (String[]) shapeTypes.toArray(new String[0]);
 	}
 
