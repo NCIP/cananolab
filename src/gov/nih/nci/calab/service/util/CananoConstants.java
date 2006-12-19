@@ -47,34 +47,64 @@ public class CananoConstants {
 	public static final String PHYSICAL_COMPOSITION = "Composition";
 
 	public static final String TOXICITY_OXIDATIVE_STRESS = "Oxidative Stress";
+	
+	public static final String TOXICITY_OXIDATIVE_STRESS_DATA_TYPE = "Percent Oxidative Stress";
 
 	public static final String TOXICITY_ENZYME_FUNCTION = "Enzyme Function";
+	
+	public static final String TOXICITY_ENZYME_FUNCTION_DATA_TYPE = "Percent Enzyme Induction";
 
 	public static final String CYTOTOXICITY_CELL_VIABILITY = "Cell Viability";
 
+	public static final String CYTOTOXICITY_CELL_VIABILITY_DATA_TYPE = "Percent Cell Viability";
+		
 	public static final String CYTOTOXICITY_CASPASE3_ACTIVIATION = "Caspase 3 Activation";
 
+	public static final String CYTOTOXICITY_CASPASE3_ACTIVIATION_DATA_TYPE = "Percent Caspase 3 Activation";
+	
 	public static final String BLOODCONTACTTOX_PLATE_AGGREGATION = "Platelet Aggregation";
+	
+	public static final String BLOODCONTACTTOX_PLATE_AGGREGATION_DATA_TYPE = "Percent Platelet Aggregation";
 
 	public static final String BLOODCONTACTTOX_HEMOLYSIS = "Hemolysis";
+	
+	public static final String BLOODCONTACTTOX_HEMOLYSIS_DATA_TYPE = "Percent Hemolysis";
 
 	public static final String BLOODCONTACTTOX_COAGULATION = "Coagulation";
+	
+	public static final String BLOODCONTACTTOX_COAGULATION_DATA_TYPE = "Coagulation Time";
 
 	public static final String BLOODCONTACTTOX_PLASMA_PROTEIN_BINDING = "Plasma Protein Binding";
+	
+	public static final String BLOODCONTACTTOX_PLASMA_PROTEIN_BINDING_DATA_TYPE = "Percent Plasma Protein Binding";
 
 	public static final String IMMUNOCELLFUNCTOX_PHAGOCYTOSIS = "Phagocytosis";
+	
+	public static final String IMMUNOCELLFUNCTOX_PHAGOCYTOSIS_DATA_TYPE = "Fold Induction";
 
 	public static final String IMMUNOCELLFUNCTOX_OXIDATIVE_BURST = "Oxidative Burst";
+	
+	public static final String IMMUNOCELLFUNCTOX_OXIDATIVE_BURST_DATA_TYPE = "Percent Oxidative Burst"; 
 
 	public static final String IMMUNOCELLFUNCTOX_CHEMOTAXIS = "Chemotaxis";
+	
+	public static final String IMMUNOCELLFUNCTOX_CHEMOTAXIS_DATA_TYPE = "Relative Fluorescent Values";
 
 	public static final String IMMUNOCELLFUNCTOX_CYTOKINE_INDUCTION = "Cytokine Induction";
-
+	
+	public static final String IMMUNOCELLFUNCTOX_CYTOKINE_INDUCTION_DATA_TYPE = "Cytokine Concentration";
+	
 	public static final String IMMUNOCELLFUNCTOX_COMPLEMENT_ACTIVATION = "Complement Activation";
+	
+	public static final String IMMUNOCELLFUNCTOX_COMPLEMENT_ACTIVATION_DATA_TYPE = "Percent Complement Activation";
 
 	public static final String IMMUNOCELLFUNCTOX_LEUKOCYTE_PROLIFERATION = "Leukocyte Proliferation";
-
+	
+	public static final String IMMUNOCELLFUNCTOX_LEUKOCYTE_PROLIFERATION_DATA_TYPE = "Percent Leukocyte Proliferation";
+	
 	public static final String IMMUNOCELLFUNCTOX_NKCELL_CYTOTOXIC_ACTIVITY = "Cytotoxic Activity of NK Cells";
+	
+	public static final String IMMUNOCELLFUNCTOX_NKCELL_CYTOTOXIC_ACTIVITY_DATA_TYPE = "Percent Cytotoxic Activity";
 
 	public static final String METABOLIC_STABILITY_CYP450 = "CYP450";
 
@@ -84,6 +114,8 @@ public class CananoConstants {
 
 	public static final String IMMUNOCELLFUNCTOX_CFU_GM = "CFU_GM";
 
+	public static final String IMMUNOCELLFUNCTOX_CFU_GM_DATA_TYPE = "CFU_GM";
+	
 	public static final String DENDRIMER_TYPE = "Dendrimer";
 
 	public static final String POLYMER_TYPE = "Polymer";
@@ -252,4 +284,16 @@ public class CananoConstants {
 			"Pig", "Mongolian Gerbil", "Hamster", "Guinea pig", "Cattle",
 			"Dog", "Goat", "Horse", "Sheep", "Cat", "Yeast", "Zebrafish" };
 
+	public static final String UNIT_PERCENT = "%";
+	
+	public static final String UNIT_CFU = "CFU";
+	
+	public static final String UNIT_RFU = "RFU";
+	
+	public static final String UNIT_SECOND = "SECOND";
+	
+	public static final String UNIT_MG_ML = "mg/ml";
+	
+	public static final String UNIT_FOLD = "Fold";
+		
 }
