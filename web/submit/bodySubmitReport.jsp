@@ -43,7 +43,7 @@
 								<strong>Report Type*</strong>
 							</td>
 							<td class="rightLabel"">
-								<html:select property="reportType">
+								<html:select property="file.type">
 									<html:options name="allReportTypes" />
 								</html:select>
 							</td>
@@ -53,7 +53,7 @@
 								<strong>Report File*</strong>
 							</td>
 							<td class="rightLabel"">
-								<html:file property="reportFile" />
+								<html:file property="uploadedFile" />
 							</td>
 						</tr>
 						<tr>
@@ -61,7 +61,7 @@
 								<strong>Report File Title*</strong>
 							</td>
 							<td class="rightLabel"">
-								<html:text property="title" />
+								<html:text property="file.title" size="80"/>
 							</td>
 						</tr>
 						<tr>
@@ -69,15 +69,15 @@
 								<strong>Report File Description</strong>
 							</td>
 							<td class="rightLabel"">
-								<html:textarea property="description" />
+								<html:textarea property="file.description" rows="3" cols="80" />
 							</td>
 						</tr>
 						<tr>
 							<td class="leftLabel">
-								<strong>Comment</strong>
+								<strong>Comments</strong>
 							</td>
 							<td class="rightLabel"">
-								<html:textarea property="comment" />
+								<html:textarea property="file.comments"  rows="3" cols="80" />
 							</td>
 						</tr>
 						<tr>
@@ -85,7 +85,7 @@
 								<strong>Visibility</strong>
 							</td>
 							<td class="rightLabel">
-								<html:select property="visibilities" multiple="true" size="6">
+								<html:select property="file.visibilityGroups" multiple="true" size="6">
 									<html:options name="allVisibilityGroups" />
 								</html:select>
 								<br>
@@ -107,7 +107,7 @@
 											<div align="right">
 												<input type="reset" value="Reset" onclick="javascript:resetSelect(document.publishReportForm.particleNames));">
 												<input type="hidden" name="dispatch" value="submit">
-												<input type="hidden" name="page" value="1">
+												<input type="hidden" name="page" value="2">
 												<html:submit />
 											</div>
 										</div>

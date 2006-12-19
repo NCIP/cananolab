@@ -3,102 +3,162 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<c:choose>
-	<c:when test="${param.type eq 'NCL Report'}">
-		<c:forEach var="aReport" items="${particleReports}" varStatus="count">
-			<logic:equal parameter="fileInd" value="${count.index}">
-				<bean:define id="theFile" name="aReport" />
-			</logic:equal>
-		</c:forEach>
-	</c:when>
-	<c:otherwise>
-		<c:forEach var="aReport" items="${particleAssociatedFiles}" varStatus="count">
-			<logic:equal parameter="fileInd" value="${count.index}">
-				<bean:define id="theFile" name="aReport" />
-			</logic:equal>
-		</c:forEach>
-	</c:otherwise>
-</c:choose>
-
-<table width="100%" align="center">
-	<tr>
-		<td>
-			<h3>
+<html:form action="/${reportActionName}">
+	<table width="100%" align="center">
+		<tr>
+			<td>
+				<h3>
+					<br>
+					Report File
+				</h3>
+			</td>
+			<td align="right" width="15%">
+				<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=create_nanoparticle')" class="helpText">Help</a>
+				&nbsp;&nbsp;<a href="/calab/reportResults.do" class="helpText">Back</a>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<jsp:include page="/bodyMessage.jsp?bundle=submit" />
+				<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+					<tbody>
+						<tr class="topBorder">
+							<td class="formTitle" colspan="4">
+								<div align="justify">
+									File Information
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="leftLabel">
+								<strong>Report File Type</strong>
+							</td>
+							<td class="rightLabel" colspan="3">
+								<bean:write name="publishReportForm" property="file.type"/>&nbsp;
+							</td>
+						</tr>
+						<tr>
+							<td class="leftLabel">
+								<strong>File Name</strong>
+							</td>
+							<td class="rightLabel" colspan="3">
+								<a href="searchReport.do?dispatch=download&amp;fileId=${publishReportForm.map.file.id}"> 
+								<bean:write name="publishReportForm" property="file.path" /></a>
+							</td>
+						</tr>
+						<c:choose>
+							<c:when test="${canUserSubmit eq 'true'}">
+								<tr>
+									<td class="leftLabel">
+										<strong>File Title*</strong>
+									</td>
+									<td class="rightLabel"">
+										<html:text property="file.title" size="80" />
+										<html:hidden property="file.id" />
+										<html:hidden property="file.type" />
+										<html:hidden property="file.path" />
+									</td>
+								</tr>
+								<tr>
+									<td class="leftLabel">
+										<strong>File Description</strong>
+									</td>
+									<td class="rightLabel"">
+										<html:textarea property="file.description" rows="3" cols="80" />
+									</td>
+								</tr>
+								<tr>
+									<td class="leftLabel">
+										<strong>Comments</strong>
+									</td>
+									<td class="rightLabel"">
+										<html:textarea property="file.comments" rows="3" cols="80" />
+									</td>
+								</tr>
+								<tr>
+									<td class="leftLabel">
+										<strong>Visibility</strong>
+									</td>
+									<td class="rightLabel">
+										<html:select property="file.visibilityGroups" multiple="true" size="6">
+											<html:options name="allVisibilityGroups" />
+										</html:select>
+										<br>
+										<i>(NCL_Researcher and NCL_PI are defaults if none of above is selected.)</i>
+									</td>
+								</tr>
+							</c:when>
+							<c:otherwise>
+								<tr>
+									<td class="leftLabel">
+										<strong>Title</strong>
+									</td>
+									<td class="rightLabel" colspan="3">
+										<bean:write name="publishReportForm" property="file.title" />
+										&nbsp;
+									</td>
+								</tr>
+								<tr>
+									<td class="leftLabel">
+										<strong>Description</strong>
+									</td>
+									<td class="rightLabel" colspan="3">
+										<bean:write name="publishReportForm" property="file.description" />
+										&nbsp;
+									</td>
+								</tr>
+								<tr>
+									<td class="leftLabel">
+										<strong>Comments</strong>
+									</td>
+									<td class="rightLabel" colspan="3">
+										<bean:write name="publishReportForm" property="file.comments" />
+										&nbsp;
+									</td>
+								</tr>
+								<tr>
+									<td class="leftLabel" valign="top">
+										<strong>Visibility</strong>
+									</td>
+									<td class="rightLabel" colspan="3">
+										<bean:write name="publishReportForm" property="file.visibilityStr" filter="false" />
+										&nbsp;
+									</td>
+								</tr>
+							</c:otherwise>
+						</c:choose>
+					</tbody>
+				</table>
 				<br>
-				Report File
-			</h3>
-		</td>
-		<td align="right" width="15%">
-			<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=create_nanoparticle')" class="helpText">Help</a>&nbsp;&nbsp; <a href="javascript:history.go(-1)" class="helpText">back</a>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="2">
-			<jsp:include page="/bodyMessage.jsp?bundle=submit" />
-			<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
-				<tbody>
-					<tr class="topBorder">
-						<td class="formTitle" colspan="4">
-							<div align="justify">
-								File Information
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td class="leftLabel">
-							<strong>Report File Type</strong>
-						</td>
-						<td class="rightLabel" colspan="3">
-							${param.type}&nbsp;
-						</td>
-					</tr>
-					<tr>
-						<td class="leftLabel">
-							<strong>File Name</strong>
-						</td>
-						<td class="rightLabel" colspan="3">
-							<a href="searchReport.do?dispatch=download&amp;fileId=${theFile.id}"><bean:write name="theFile" property="displayName" /></a>
-						</td>
-					</tr>
-					<tr>
-						<td class="leftLabel">
-							<strong>File Title</strong>
-						</td>
-						<td class="rightLabel" colspan="3">
-							<bean:write name="theFile" property="title" />
-							&nbsp;
-						</td>
-					</tr>
-					<tr>
-						<td class="leftLabel">
-							<strong>File Description</strong>
-						</td>
-						<td class="rightLabel" colspan="3">
-							<bean:write name="theFile" property="description" />
-							&nbsp;
-						</td>
-					</tr>
-					<tr>
-						<td class="leftLabel">
-							<strong>File Comments</strong>
-						</td>
-						<td class="rightLabel" colspan="3">
-							<bean:write name="theFile" property="comments" />
-							&nbsp;
-						</td>
-					</tr>					
-					<tr>
-						<td class="leftLabel" valign="top">
-							<strong>Visibility</strong>
-						</td>
-						<td class="rightLabel" colspan="3">
-							<bean:write name="theFile" property="visibilityStr" filter="false"/>
-							&nbsp;
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			</td>
+		</tr>
+	</table>
+	<c:choose>
+		<c:when test="${canUserSubmit eq 'true'}">
 			<br>
-		</td>
-	</tr>
-</table>
+			<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
+				<tr>
+					<td width="30%">
+						<span class="formMessage"> </span>
+						<br>
+						<table width="498" height="32" border="0" align="right" cellpadding="4" cellspacing="0">
+							<tr>
+								<td width="490" height="32">
+									<div align="right">
+										<div align="right">
+											<input type="reset" value="Reset" onclick="javascript:resetSelect(document.publishReportForm.particleNames));">
+											<input type="hidden" name="dispatch" value="update">
+											<input type="hidden" name="page" value="1">
+											<html:submit />
+										</div>
+									</div>
+								</td>
+							</tr>
+						</table>
+						<div align="right"></div>
+					</td>
+				</tr>
+			</table>
+		</c:when>
+	</c:choose>
+</html:form>
