@@ -72,12 +72,19 @@ public class LoginAction extends AbstractBaseAction {
 		UserBean user = userService.getUserBean(loginName);
 		session.setAttribute("user", user);
 		session.setAttribute("userService", userService);
+		
+		boolean canSubmit = userService.checkExecutePermission(user, "submit");
+		if (canSubmit) {
+			session.setAttribute("canUserSubmit", "true");
+		} else {
+			session.setAttribute("canUserSubmit", "false");
+		}
 	}
 
 	public boolean loginRequired() {
 		return false;
 	}
-	
+
 	/* overwrite parent */
 	public boolean canUserExecute() {
 		return true;
