@@ -1,9 +1,12 @@
 package gov.nih.nci.calab.dto.characterization.invitro;
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
+import gov.nih.nci.calab.domain.nano.characterization.Datum;
+import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.domain.nano.characterization.invitro.Coagulation;
 
 import gov.nih.nci.calab.dto.characterization.*;
+import gov.nih.nci.calab.service.util.CananoConstants;
 
 import java.util.List;
 
@@ -39,6 +42,14 @@ public class CoagulationBean extends CharacterizationBean {
 	public Coagulation getDomainObj() {
 		Coagulation coagulation = new Coagulation();
 		super.updateDomainObj(coagulation);
+		for (DerivedBioAssayData chart: coagulation.getDerivedBioAssayDataCollection()){
+			for (Datum data: chart.getDatumCollection()){
+				data.setType(CananoConstants.BLOODCONTACTTOX_COAGULATION);
+				if (data.getValue() != null) {
+					data.getValue().setUnitOfMeasurement(CananoConstants.UNIT_SECOND);
+				}			
+			}
+		}
 		return coagulation;
 	}
 }

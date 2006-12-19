@@ -1,9 +1,12 @@
 package gov.nih.nci.calab.dto.characterization.invitro;
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
+import gov.nih.nci.calab.domain.nano.characterization.Datum;
+import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.domain.nano.characterization.invitro.Chemotaxis;
 
 import gov.nih.nci.calab.dto.characterization.*;
+import gov.nih.nci.calab.service.util.CananoConstants;
 
 import java.util.List;
 
@@ -39,6 +42,14 @@ public class ChemotaxisBean extends CharacterizationBean {
 	public Chemotaxis getDomainObj() {
 		Chemotaxis chemotaxis = new Chemotaxis();
 		super.updateDomainObj(chemotaxis);
+		for (DerivedBioAssayData chart: chemotaxis.getDerivedBioAssayDataCollection()){
+			for (Datum data: chart.getDatumCollection()){
+				data.setType(CananoConstants.IMMUNOCELLFUNCTOX_CHEMOTAXIS_DATA_TYPE);
+				if (data.getValue() != null) {
+					data.getValue().setUnitOfMeasurement(CananoConstants.UNIT_RFU);
+				}			
+			}
+		}
 		return chemotaxis;
 	}
 }

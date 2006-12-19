@@ -1,9 +1,12 @@
 package gov.nih.nci.calab.dto.characterization.invitro;
 
+import gov.nih.nci.calab.domain.nano.characterization.Datum;
+import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.domain.nano.characterization.invitro.Hemolysis;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.DatumBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
+import gov.nih.nci.calab.service.util.CananoConstants;
 
 import java.util.List;
 
@@ -30,8 +33,8 @@ public class HemolysisBean extends CharacterizationBean {
 
 		for (DerivedBioAssayDataBean table : getDerivedBioAssayDataList()) {
 			for (DatumBean datum : table.getDatumList()) {
-				datum.setType("Percent Hemolysis");
-				datum.setValueUnit("%");
+				datum.setType(CananoConstants.BLOODCONTACTTOX_HEMOLYSIS_DATA_TYPE);
+				datum.setValueUnit(CananoConstants.UNIT_PERCENT);
 			}
 		}
 	}
@@ -39,6 +42,14 @@ public class HemolysisBean extends CharacterizationBean {
 	public Hemolysis getDomainObj() {
 		Hemolysis hemolysis = new Hemolysis();
 		super.updateDomainObj(hemolysis);
+		for (DerivedBioAssayData chart: hemolysis.getDerivedBioAssayDataCollection()){
+			for (Datum data: chart.getDatumCollection()){
+				data.setType(CananoConstants.BLOODCONTACTTOX_HEMOLYSIS_DATA_TYPE);
+				if (data.getValue() != null) {
+					data.getValue().setUnitOfMeasurement(CananoConstants.UNIT_PERCENT);
+				}			
+			}
+		}
 		return hemolysis;
 	}
 }
