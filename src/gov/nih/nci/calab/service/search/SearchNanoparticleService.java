@@ -356,34 +356,38 @@ public class SearchNanoparticleService {
 	}
 
 	/**
-	 * internal method to retrieve sample report information
+	 * retrieve sample report information including reportCollection and
+	 * associatedFileCollection
 	 * 
 	 * @param particleName
 	 * @param particleType
-	 * @param wCollection -
-	 *            which collection, reportCollection or AssociatedFileCollection
 	 * @return List of LabFileBean
 	 * @throws Exception
 	 */
-	private List<LabFileBean> getReport(String particleName,
-			String particleType, String wCollection) throws Exception {
+	public List<LabFileBean> getReportInfo(String particleName,
+			String particleType, String reportType, UserBean user)
+			throws Exception {
 		List<LabFileBean> fileBeans = new ArrayList<LabFileBean>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
+		String reportJoin = "reportCollection";
+		String associatedFileJoin = "associatedFileCollection";
 
+		String hql = "select report from Nanoparticle particle join particle.reportType"
+				+ " report where particle.name='"
+				+ particleName
+				+ "' and partile.type='" + particleType + "'";
+		if (reportType.equals(CananoConstants.NCL_REPORT)) {
+			hql.replaceAll(reportType, reportJoin);
+		} else if (reportType.equals(CananoConstants.ASSOCIATED_FILE)) {
+			hql.replaceAll(reportType, associatedFileJoin);
+		}
 		try {
-
 			ida.open();
-			List results = ida
-					.search("select report from Nanoparticle particle join particle."
-							+ wCollection
-							+ " report where particle.name='"
-							+ particleName
-							+ "' and particle.type='"
-							+ particleType + "'");
-
+			List results = ida.search(hql);
 			for (Object obj : results) {
-				LabFileBean fileBean = new LabFileBean((LabFile) obj);
+				LabFileBean fileBean = new LabFileBean((LabFile) obj,
+						reportType);
 				UserService userService = new UserService(
 						CalabConstants.CSM_APP_NAME);
 				List<String> accessibleGroups = userService
@@ -401,35 +405,11 @@ public class SearchNanoparticleService {
 		} finally {
 			ida.close();
 		}
-		return fileBeans;
-	}
-
-	/**
-	 * retrieve sample report information including reportCollection and
-	 * associatedFileCollection
-	 * 
-	 * @param particleName
-	 * @param particleType
-	 * @return List of LabFileBean
-	 * @throws Exception
-	 */
-	public List<LabFileBean> getReportInfo(String particleName,
-			String particleType, String reportType, UserBean user)
-			throws Exception {
-		List<LabFileBean> reports = new ArrayList<LabFileBean>();
-
-		if (reportType.equals(CananoConstants.NCL_REPORT)) {
-			reports.addAll(getReport(particleName, particleType,
-					"reportCollection"));
-		} else {
-			reports.addAll(getReport(particleName, particleType,
-					"associatedFileCollection"));
-		}
 
 		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
 
 		List<LabFileBean> filteredReports = userService.getFilteredReports(
-				user, reports);
+				user, fileBeans);
 		return filteredReports;
 	}
 
@@ -461,6 +441,7 @@ public class SearchNanoparticleService {
 				fileBean.setId(reportId);
 				fileBean.setPath(path);
 				fileBean.setName(fileName);
+				fileBean.setType(CananoConstants.NCL_REPORT);
 				fileBeans.add(fileBean);
 			}
 
@@ -545,12 +526,12 @@ public class SearchNanoparticleService {
 			}
 
 			for (Object obj : results) {
-				LabFileBean fileBean = new LabFileBean((LabFile) obj);
+				LabFileBean fileBean =null;
 				if (obj instanceof Report) {
-					fileBean.setType(CananoConstants.NCL_REPORT);
+					fileBean=new LabFileBean((Report)obj, CananoConstants.NCL_REPORT);
 				}
-				if (obj instanceof AssociatedFile) {
-					fileBean.setType(CananoConstants.ASSOCIATED_FILE);
+				else {
+					fileBean=new LabFileBean((AssociatedFile)obj, CananoConstants.ASSOCIATED_FILE);
 				}
 				reports.add(fileBean);
 			}
