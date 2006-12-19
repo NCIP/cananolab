@@ -322,7 +322,7 @@
 		<put name="formName" value="invitroImmunotoxicityCytokineInductionForm" />
 		<put name="formType" value="Immunotoxicity" />
 		<put name="dataLabel" value="Cytokine Concentraion" />
-		<put name="dataUnit" value="%" />
+		<put name="dataUnit" value="mg/ml" />
 
 	</definition>
 
@@ -359,7 +359,7 @@
 		<put name="actionName" value="invitroImmunotoxicityNKCellCytotoxicActivity" />
 		<put name="formName" value="invitroImmunotoxicityNKCellCytotoxicActivityForm" />
 		<put name="formType" value="Immunotoxicity" />
-		<put name="dataLabel" value="NKCellCytotoxicActivity Percentage" />
+		<put name="dataLabel" value="NK Cell Cytotoxicity Activity Percentage" />
 		<put name="dataUnit" value="%" />
 
 	</definition>
