@@ -53,7 +53,9 @@ function openLink() {
 						<td class="formLabel" width="30%">
 							<strong>Create from </strong>
 							<br>
-							<html:radio property="fromAliquot" value="false" />
+							<html:radio property="fromAliquot" value="false" 
+							  onclick="javascript:disableTextElement(createAliquotForm, 'aliquotSampleName');disableTextElement(createAliquotForm, 'parentAliquotName');
+							  					  enableTextElement(createAliquotForm, 'sampleName');enableTextElement(createAliquotForm, 'containerName');"/>
 							<strong>Sample Container</strong>&nbsp;&nbsp;
 							<br>
 							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Sample ID*</strong>
@@ -69,16 +71,18 @@ function openLink() {
 							</html:select>
 							<br>
 							<br>
-							<html:radio property="fromAliquot" value="true" />
+							<html:radio property="fromAliquot" value="true"  
+							onclick="javascript:enableTextElement(createAliquotForm, 'aliquotSampleName');enableTextElement(createAliquotForm, 'parentAliquotName');
+							     				disableTextElement(createAliquotForm, 'sampleName');disableTextElement(createAliquotForm, 'containerName');"/>
 							<strong> Aliquot</strong> &nbsp;&nbsp;
 							<br>
 							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Sample ID*</strong>
-							<html:select property="aliquotSampleName" onchange="javascript:filterAliquots();">
+							<html:select property="aliquotSampleName" onchange="javascript:filterAliquots();" disabled="true">
 								<option value=""></option>
 								<html:options name="allSampleNamesWithAliquots" />
 							</html:select>
 							<strong>&nbsp; => &nbsp; Aliquot ID*</strong>
-							<html:select property="parentAliquotName">
+							<html:select property="parentAliquotName" disabled="true">
 								<option value="${createAliquotForm.map.parentAliquotName}" selected>
 									${createAliquotForm.map.parentAliquotName}
 								</option>
@@ -107,10 +111,10 @@ function openLink() {
 						<tr>
 							<td class="formLabel">
 								<div align="justify">
-									<strong>Container Type* <span class="formFieldWhite"> <html:select property="template.container.containerType">
+									<strong>Container Type* <span class="formFieldWhite"> <html:select property="template.container.containerType" onchange="javascript:updateOtherField(createAliquotForm, 'template.container.containerType', 'template.container.otherContainerType')">
 												<option value=""></option>
 												<html:options name="allAliquotContainerTypes" />
-											</html:select></span> &nbsp; &nbsp; &nbsp; Other <span class="formFieldWhite"><html:text property="template.container.otherContainerType" size="8" /></span> &nbsp; &nbsp; &nbsp; </strong>
+											</html:select></span> &nbsp; &nbsp; &nbsp; Other <span class="formFieldWhite"><html:text property="template.container.otherContainerType" size="8" disabled="true"/></span> &nbsp; &nbsp; &nbsp; </strong>
 								</div>
 							</td>
 						</tr>
