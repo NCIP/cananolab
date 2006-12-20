@@ -42,7 +42,7 @@
 											<strong>=>&nbsp; Assay Result File*</strong>
 										</td>
 										<td class="borderlessLabel" valign="top">
-											<html:file property="file" />
+											<html:file property="uploadedFile" />
 										</td>
 									</tr>
 								</table>
@@ -51,32 +51,7 @@
 								<html:radio property="fileSource" value="chooseExisting">
 									<strong> Choose File From caLAB workflow</strong>
 								</html:radio>
-								<table cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
-									<%--
-										<tr>
-											<td class="borderlessLabel" width="50">
-											</td>										
-											<td class="borderlessLabel">
-												<strong>Assay Type</strong>
-											</td>
-											<td class="borderlessLabel">
-												<html:select property="assayType" onchange="javascript:doubleDropdown(document.loadDerivedBioAssayDataForm.assayType, document.loadDerivedBioAssayDataForm.assayName, assayTypeAssays);">
-													<option value=""></option>
-													<html:options name="allAvailableAssayTypes" />
-												</html:select>
-											</td>											
-											<td class="borderlessLabel">
-												<strong>=> Assay Name</strong>
-											</td>											
-											<td class="borderlessLabel" colspan="3">
-												<html:select property="assayName">
-													<option value="${loadDerivedBioAssayDataForm.map.assayName}" selected>
-														${loadDerivedBioAssayDataForm.map.assayName}
-													</option>
-												</html:select>
-											</td>
-										</tr>
-										--%>
+								<table cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">									
 									<tr>
 										<td class="borderlessLabel" width="50">
 										</td>
@@ -84,7 +59,7 @@
 											<strong>=>&nbsp; Assay Result File*</strong>
 										</td>
 										<td class="borderlessLabel">
-											<html:select property="fileId">
+											<html:select property="file.id">
 												<html:options collection="allRunFiles" property="id" labelProperty="displayName" />
 											</html:select>
 										</td>
@@ -97,7 +72,7 @@
 								<strong>Assay Result File Title*</strong>
 							</td>
 							<td class="rightLabel" colspan="3">
-								<html:text property="title" size="80" />
+								<html:text property="file.title" size="80" />
 							</td>
 						</tr>
 						<tr>
@@ -105,7 +80,7 @@
 								<strong>Assay Result File Description</strong>
 							</td>
 							<td class="rightLabel" colspan="3">
-								<html:textarea property="description" rows="3" cols="80" />
+								<html:textarea property="file.description" rows="3" cols="80" />
 							</td>
 						</tr>
 						<tr>
@@ -113,7 +88,7 @@
 								<strong>Keywords <em>(one per line)</em></strong>
 							</td>
 							<td class="rightLabel" colspan="3">
-								<html:textarea property="keywords" rows="3" />
+								<html:textarea property="file.keywordsStr" rows="3" />
 							</td>
 						</tr>
 						<tr>
@@ -121,7 +96,7 @@
 								<strong>Visibility</strong>
 							</td>
 							<td class="rightLabel" colspan="3">
-								<html:select property="visibilities" multiple="true" size="6">
+								<html:select property="file.visibilityGroups" multiple="true" size="6">
 									<html:options name="allVisibilityGroups" />
 								</html:select>
 								<br>
@@ -144,11 +119,11 @@
 												<input type="button" value="Cancel" onclick="javascript:history.go(-1);">
 												<input type="reset" value="Reset" onclick="javascript:resetSelect(document.submitReportForm.particleNames));">
 												<input type="hidden" name="dispatch" value="submit">
-												<input type="hidden" name="page" value="1">
+												<input type="hidden" name="page" value="2">
 												<html:hidden property="forwardPage" />
 												<html:hidden property="fileNumber" />
 												<html:hidden property="particleName" />
-												<html:hidden property="characterization" />
+												<html:hidden property="characterizationName" />
 												<html:submit />
 											</div>
 										</div>

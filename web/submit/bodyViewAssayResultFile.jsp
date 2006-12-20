@@ -3,7 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<html:form action="/loadFile">
+<html:form action="/updateAssayFile">
 	<table width="100%" align="center">
 		<tr>
 			<td>
@@ -33,21 +33,19 @@
 								<strong>Assay Result File Name</strong>
 							</td>
 							<td class="rightLabel" colspan="3">
-								<logic:present name="characterizationFile${param.chartInd}">
-									<bean:define id="fileId" name='characterizationFile${param.chartInd}' property='id' type="java.lang.String" />
-									<a href="${param.actionName}.do?dispatch=download&amp;fileId=${fileId}"><bean:write name="characterizationFile${param.chartInd}" property="displayName" /></a>
-								</logic:present>
+								<a href="${actionName}.do?dispatch=download&amp;fileId=<bean:write name="loadDerivedBioAssayDataForm" property="file.id"/>"><bean:write name="loadDerivedBioAssayDataForm" property="file.displayName" /></a>
 							</td>
 						</tr>
 						<c:choose>
 							<c:when test="${canUserSubmit eq 'true'}">
 								<tr>
 									<td class="leftLabel">
-										<strong>Assay Result File Title</strong>
+										<strong>Assay Result File Title*</strong>
 									</td>
 									<td class="rightLabel" colspan="3">
-										<bean:write name="characterizationFile${param.chartInd}" property="title" />
-										&nbsp;
+										<html:text property="file.title" size="80" />
+										<html:hidden property="file.id" />
+										<html:hidden property="file.path" />
 									</td>
 								</tr>
 								<tr>
@@ -55,8 +53,7 @@
 										<strong>Assay Result File Description</strong>
 									</td>
 									<td class="rightLabel" colspan="3">
-										<bean:write name="characterizationFile${param.chartInd}" property="description" />
-										&nbsp;
+										<html:textarea property="file.description" rows="3" cols="80" />
 									</td>
 								</tr>
 								<tr>
@@ -64,8 +61,7 @@
 										<strong>Keywords <em>(one per line)</em></strong>
 									</td>
 									<td class="rightLabel" colspan="3">
-										<bean:write name="characterizationFile${param.chartInd}" property="keywordsStr" filter="false" />
-										&nbsp;
+										<html:textarea property="file.keywordsStr" rows="3" />
 									</td>
 								</tr>
 								<tr>
@@ -73,18 +69,22 @@
 										<strong>Visibility</strong>
 									</td>
 									<td class="rightLabel" colspan="3">
-										<bean:write name="characterizationFile${param.chartInd}" property="visibilityStr" filter="false" />
-										&nbsp;
+										<html:select property="file.visibilityGroups" multiple="true" size="6">
+											<html:options name="allVisibilityGroups" />
+										</html:select>
+										<br>
+										<i>(NCL_Researcher and NCL_PI are defaults if none of above is selected.)</i>
 									</td>
 								</tr>
 							</c:when>
 							<c:otherwise>
 								<tr>
 									<td class="leftLabel">
-										<strong>Assay Result File Title*</strong>
+										<strong>Assay Result File Title</strong>
 									</td>
 									<td class="rightLabel" colspan="3">
-										<html:text property="title" size="80" />
+										<bean:write name="loadDerivedBioAssayDataForm" property="file.title" />
+										&nbsp;
 									</td>
 								</tr>
 								<tr>
@@ -92,15 +92,19 @@
 										<strong>Assay Result File Description</strong>
 									</td>
 									<td class="rightLabel" colspan="3">
-										<html:textarea property="description" rows="3" cols="80" />
+										<bean:write name="loadDerivedBioAssayDataForm" property="file.description" />
+										&nbsp;
 									</td>
 								</tr>
 								<tr>
-									<td class="leftLabel">
+									<td class="leftLabel" valign="top">						
 										<strong>Keywords <em>(one per line)</em></strong>
 									</td>
 									<td class="rightLabel" colspan="3">
-										<html:textarea property="keywords" rows="3" />
+										<c:forEach var="keyword" items="${loadDerivedBioAssayDataForm.map.file.keywords}">
+											<c:out value="${keyword}" />
+											<br>
+										</c:forEach>&nbsp;										
 									</td>
 								</tr>
 								<tr>
@@ -108,11 +112,8 @@
 										<strong>Visibility</strong>
 									</td>
 									<td class="rightLabel" colspan="3">
-										<html:select property="visibilities" multiple="true" size="6">
-											<html:options name="allVisibilityGroups" />
-										</html:select>
-										<br>
-										<i>(NCL_Researcher and NCL_PI are defaults if none of above is selected.)</i>
+										<bean:write name="loadDerivedBioAssayDataForm" property="file.visibilityStr" filter="false" />
+										&nbsp;
 									</td>
 								</tr>
 							</c:otherwise>
@@ -123,4 +124,33 @@
 			</td>
 		</tr>
 	</table>
+	<c:choose>
+		<c:when test="${canUserSubmit eq 'true'}">
+			<br>
+			<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
+				<tr>
+					<td width="30%">
+						<span class="formMessage"> </span>
+						<br>
+						<table width="498" height="32" border="0" align="right" cellpadding="4" cellspacing="0">
+							<tr>
+								<td width="490" height="32">
+									<div align="right">
+										<div align="right">
+											<input type="button" value="Cancel" onclick="javascript:history.go(-1);">
+											<input type="reset" value="Reset">
+											<input type="hidden" name="dispatch" value="update">
+											<input type="hidden" name="page" value="1">
+											<html:submit />
+										</div>
+									</div>
+								</td>
+							</tr>
+						</table>
+						<div align="right"></div>
+					</td>
+				</tr>
+			</table>
+		</c:when>
+	</c:choose>
 </html:form>
