@@ -289,6 +289,7 @@ public class SearchNanoparticleService {
 		} finally {
 			ida.close();
 		}
+		
 		return aChar;
 	}
 
@@ -407,7 +408,7 @@ public class SearchNanoparticleService {
 
 		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
 
-		List<LabFileBean> filteredReports = userService.getFilteredReports(
+		List<LabFileBean> filteredReports = userService.getFilteredFiles(
 				user, fileBeans);
 		return filteredReports;
 	}
@@ -447,7 +448,7 @@ public class SearchNanoparticleService {
 			UserService userService = new UserService(
 					CalabConstants.CSM_APP_NAME);
 
-			fileBeans = userService.getFilteredReports(user, fileBeans);
+			fileBeans = userService.getFilteredFiles(user, fileBeans);
 		} catch (Exception e) {
 			logger.error("Problem finding report info for particle: "
 					+ particleName);
@@ -543,7 +544,7 @@ public class SearchNanoparticleService {
 
 		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
 
-		List<LabFileBean> filteredReports = userService.getFilteredReports(
+		List<LabFileBean> filteredReports = userService.getFilteredFiles(
 				user, reports);
 
 		return filteredReports;
