@@ -120,7 +120,7 @@ public class DerivedBioAssayDataBean {
 		//TODO need to decide whether use fileId and file object
 		if (file != null)
 //		    table.setFile(file.getPath() + file.getName());
-			table.setFile(file.getDomainObject());
+			table.setFile(file.getDomainObjectDerivedDataFile());
 		for (DatumBean datum : this.getDatumList()) {
 			table.getDatumCollection().add(datum.getDomainObj());
 		}
