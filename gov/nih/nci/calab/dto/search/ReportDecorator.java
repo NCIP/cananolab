@@ -2,8 +2,6 @@ package gov.nih.nci.calab.dto.search;
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.SortableName;
-import gov.nih.nci.calab.dto.particle.ParticleBean;
-import gov.nih.nci.calab.service.util.StringUtils;
 
 import org.displaytag.decorator.TableDecorator;
 
