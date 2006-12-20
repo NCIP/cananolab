@@ -24,7 +24,7 @@ public class LabFileBean {
 
 	private String[] keywords = new String[0];
 
-	private String[] visibilityGroups=new String[0];
+	private String[] visibilityGroups = new String[0];
 
 	private Date createdDate;
 
@@ -36,7 +36,7 @@ public class LabFileBean {
 
 	private String name;
 
-	private String type = "";
+	private String type;
 
 	private String keywordsStr;
 
@@ -47,7 +47,7 @@ public class LabFileBean {
 	 */
 	private String displayName;
 
-	public LabFileBean() {		
+	public LabFileBean() {
 	}
 
 	public LabFileBean(LabFile charFile, String fileType) {
@@ -64,7 +64,7 @@ public class LabFileBean {
 					.getKeywordCollection()) {
 				allkeywords.add(keyword.getName());
 			}
-			allkeywords.toArray(this.keywords);
+			keywords=allkeywords.toArray(new String[0]);
 		}
 		this.type = fileType;
 	}
@@ -149,19 +149,39 @@ public class LabFileBean {
 		this.visibilityGroups = visibilityGroups;
 	}
 
-	public DerivedDataFile getDomainObject() {
-		DerivedDataFile labfile = new DerivedDataFile();
+	public LabFile getDomainObject() {
+		LabFile labfile = new LabFile();
 		if (id != null && id.length() > 0) {
 			labfile.setId(new Long(id));
 		}
 		labfile.setCreatedBy(createdBy);
 		labfile.setCreatedDate(createdDate);
 		labfile.setDescription(description);
+		labfile.setComments(comments);
 		labfile.setFilename(name);
 		labfile.setPath(path);
 		labfile.setTitle(title);
-
 		return labfile;
+	}
+
+	public DerivedDataFile getDomainObjectDerivedDataFile() {
+		DerivedDataFile dataFile = new DerivedDataFile();
+		if (id != null && id.length() > 0) {
+			dataFile.setId(new Long(id));
+		}
+		dataFile.setCreatedBy(createdBy);
+		dataFile.setCreatedDate(createdDate);
+		dataFile.setDescription(description);
+		dataFile.setComments(comments);
+		dataFile.setFilename(name);
+		dataFile.setPath(path);
+		dataFile.setTitle(title);
+		for (String keywordValue : keywords) {
+			Keyword keyword = new Keyword();
+			keyword.setName(keywordValue);
+			dataFile.getKeywordCollection().add(keyword);
+		}
+		return dataFile;
 	}
 
 	public String getDisplayName() {
@@ -178,8 +198,14 @@ public class LabFileBean {
 	}
 
 	public String getKeywordsStr() {
-		keywordsStr = StringUtils.join(keywords, "<br>");
+		keywordsStr = StringUtils.join(keywords, "\r\n");
 		return keywordsStr;
+	}
+
+	public void setKeywordsStr(String keywordsStr) {
+		this.keywordsStr = keywordsStr;
+		if (keywordsStr.length() > 0)
+			this.keywords = keywordsStr.split("\r\n");
 	}
 
 	public String getVisibilityStr() {
