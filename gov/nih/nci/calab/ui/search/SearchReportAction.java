@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchReportAction.java,v 1.4 2006-12-19 23:25:25 pansu Exp $ */
+/* CVS $Id: SearchReportAction.java,v 1.5 2006-12-20 15:54:41 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
@@ -54,7 +54,7 @@ public class SearchReportAction extends AbstractDispatchAction {
 				reportTitle, reportType, particleType, functionTypes, user);
 
 		if (reports != null && !reports.isEmpty()) {
-			request.setAttribute("reports", reports);
+			request.getSession().setAttribute("reports", reports);
 			forward = mapping.findForward("success");
 		} else {
 
