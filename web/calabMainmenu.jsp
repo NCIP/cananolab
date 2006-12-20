@@ -5,7 +5,7 @@
 <%@ page import="gov.nih.nci.calab.ui.core.InitSessionSetup,gov.nih.nci.calab.service.security.UserService"%>
 <%UserService userService = InitSessionSetup.getInstance()
 					.getUserService();
-			userService.setFilteredMenuItem(session);
+			userService.setFilteredMenuItem(request.getSession());
 
 		%>
 <table cellspacing="0" cellpadding="0" summary="" border="0">
