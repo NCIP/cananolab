@@ -44,7 +44,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td class="leftLabel">
+						<td class="leftLabel" valign="top">
 							<strong>Keywords <em>(one per line)</em></strong>
 						</td>
 						<td class="rightLabel">
@@ -56,7 +56,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td class="leftLabel">
+						<td class="leftLabel" valign="top">
 							<strong>Visibility</strong>
 						</td>
 						<td class="rightLabel">
