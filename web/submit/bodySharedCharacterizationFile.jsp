@@ -3,6 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
+<bean:define id="fileId" name='characterizationFile${param.chartInd}' property='id' type="java.lang.String" />
 <tr>
 	<td class="leftLabel">
 		<strong>Characterization File Name</strong>
@@ -10,8 +11,8 @@
 	<c:choose>
 		<c:when test="${canUserSubmit eq 'true'}">
 			<td class="label">
-				<logic:present name="characterizationFile${param.chartInd}">
-					<html:link page="/viewAssayResultFile.do?chartInd=${param.chartInd}&actionName=${param.actionName}">
+				<logic:present name="characterizationFile${param.chartInd}">				    
+					<html:link page="/updateAssayFile.do?page=0&dispatch=setupUpdate&fileId=${fileId}&actionName=${param.actionName}">
 						<bean:write name="characterizationFile${param.chartInd}" property="displayName" />
 					</html:link>
 				</logic:present>
@@ -26,7 +27,7 @@
 		<c:otherwise>
 			<td class="rightLabel" colspan="3">
 				<logic:present name="characterizationFile${param.chartInd}">
-					<html:link page="/viewAssayResultFile.do?chartInd=${param.chartInd}&actionName=${param.actionName}">
+					<html:link page="/updateAssayFile.do?page=0&dispatch=setupView&fileId=${fileId}&actionName=${param.actionName}">
 						<bean:write name="characterizationFile${param.chartInd}" property="displayName" />
 					</html:link>
 				</logic:present>
@@ -36,7 +37,6 @@
 	</c:choose>
 </tr>
 <logic:present name="characterizationFile${chartInd}">
-	<bean:define id="fileId" name='characterizationFile${chartInd}' property='id' type="java.lang.String" />
 	<html:hidden property="achar.derivedBioAssayDataList[${chartInd}].fileId" value="${fileId}" />
 </logic:present>
 
