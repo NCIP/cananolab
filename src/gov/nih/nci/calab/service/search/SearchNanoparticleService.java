@@ -376,11 +376,11 @@ public class SearchNanoparticleService {
 		String hql = "select report from Nanoparticle particle join particle.reportType"
 				+ " report where particle.name='"
 				+ particleName
-				+ "' and partile.type='" + particleType + "'";
+				+ "' and particle.type='" + particleType + "'";
 		if (reportType.equals(CananoConstants.NCL_REPORT)) {
-			hql.replaceAll(reportType, reportJoin);
+			hql=hql.replaceAll("reportType", reportJoin);
 		} else if (reportType.equals(CananoConstants.ASSOCIATED_FILE)) {
-			hql.replaceAll(reportType, associatedFileJoin);
+			hql=hql.replaceAll("reportType", associatedFileJoin);
 		}
 		try {
 			ida.open();
