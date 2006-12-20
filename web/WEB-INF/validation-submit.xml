@@ -103,8 +103,12 @@
 			</field>
 		</form>
 		<form name="loadDerivedBioAssayDataForm">
-			<field property="uploadedFile" page="2" depends="required">
+			<field property="uploadedFile" page="2" depends="validwhen">
 				<arg position="0" key="loadDerivedBioAssayDataForm.file" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((fileSource!="new") or (*this*!=null))</var-value>
+				</var>
 			</field>
 			<field property="file.title" page="1" depends="required">
 				<arg position="0" key="loadDerivedBioAssayDataForm.title" bundle="submit" />
