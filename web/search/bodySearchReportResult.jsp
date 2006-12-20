@@ -27,7 +27,7 @@
 					<c:set var="link" value="viewReportURL" />
 				</c:otherwise>
 			</c:choose>
-			<display:table name="reports" id="report" requestURI="searchReport.do" pagesize="25" class="displaytable" decorator="gov.nih.nci.calab.dto.search.ReportDecorator">
+			<display:table name="sessionScope.reports" id="report" requestURI="searchReport.do" pagesize="25" class="displaytable" decorator="gov.nih.nci.calab.dto.search.ReportDecorator">
 				<display:column title="Report Title" property="${link}" sortable="true" />
 				<display:column title="Report Type" property="type" sortable="true" />
 				<display:column title="Report Description" property="description" sortable="true" />
