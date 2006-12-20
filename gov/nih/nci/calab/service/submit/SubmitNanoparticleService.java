@@ -852,7 +852,7 @@ public class SubmitNanoparticleService {
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
-			ida.store(dataFile);
+			ida.createObject(dataFile);
 		} catch (Exception e) {
 			e.printStackTrace();
 			ida.rollback();
