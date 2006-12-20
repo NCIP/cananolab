@@ -37,7 +37,7 @@
 					<tr>
 						<td class="formLabel" width="28%">
 							<div align="left">
-								<strong>Sample ID*</strong>
+								<strong>Sample ID</strong>
 							</div>
 						</td>
 
@@ -107,7 +107,7 @@
 						</td>
 
 						<td class="formFieldWhite">
-							<bean:write name="aliquot" property="sample.dateReceived" />
+							<bean:write name="aliquot" property="sample.dateReceivedStr" />
 							&nbsp;
 						</td>
 					</tr>
@@ -128,7 +128,7 @@
 					<tr>
 						<td class="formLabelWhite">
 							<div align="left">
-								<strong>Lot ID*</strong>
+								<strong>Lot ID</strong>
 							</div>
 						</td>
 

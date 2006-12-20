@@ -37,7 +37,7 @@
 				<tr>
 					<td class="formLabel" width="28%">
 						<div align="left">
-							<strong>Sample ID*</strong>
+							<strong>Sample ID</strong>
 						</div>
 					</td>
 
@@ -130,7 +130,7 @@
 				<tr>
 					<td class="formLabelWhite">
 						<div align="left">
-							<strong>Lot ID*</strong>
+							<strong>Lot ID</strong>
 						</div>
 					</td>
 
