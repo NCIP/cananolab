@@ -1,13 +1,8 @@
 package gov.nih.nci.calab.dto.common;
 
-import gov.nih.nci.calab.domain.AssociatedFile;
 import gov.nih.nci.calab.domain.DerivedDataFile;
 import gov.nih.nci.calab.domain.Keyword;
 import gov.nih.nci.calab.domain.LabFile;
-import gov.nih.nci.calab.domain.OutputFile;
-import gov.nih.nci.calab.domain.Report;
-import gov.nih.nci.calab.service.util.CalabConstants;
-import gov.nih.nci.calab.service.util.CananoConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.ArrayList;
@@ -29,7 +24,7 @@ public class LabFileBean {
 
 	private String[] keywords = new String[0];
 
-	private String[] visibilityGroups;
+	private String[] visibilityGroups=new String[0];
 
 	private Date createdDate;
 
@@ -41,7 +36,7 @@ public class LabFileBean {
 
 	private String name;
 
-	private String type;
+	private String type = "";
 
 	private String keywordsStr;
 
@@ -52,9 +47,7 @@ public class LabFileBean {
 	 */
 	private String displayName;
 
-	public LabFileBean() {
-		super();
-		// TODO Auto-generated constructor stub
+	public LabFileBean() {		
 	}
 
 	public LabFileBean(LabFile charFile, String fileType) {
