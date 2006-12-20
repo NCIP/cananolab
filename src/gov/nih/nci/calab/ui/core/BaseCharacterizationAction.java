@@ -7,6 +7,7 @@ import gov.nih.nci.calab.dto.characterization.ConditionBean;
 import gov.nih.nci.calab.dto.characterization.DatumBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
+import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
 import gov.nih.nci.calab.service.security.UserService;
@@ -38,7 +39,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 
-/* CVS $Id: BaseCharacterizationAction.java,v 1.20 2006-12-19 23:23:51 pansu Exp $ */
+/* CVS $Id: BaseCharacterizationAction.java,v 1.21 2006-12-20 23:20:52 pansu Exp $ */
 
 public abstract class BaseCharacterizationAction extends AbstractDispatchAction {
 	/**
@@ -156,29 +157,30 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		Characterization aChar = service
 				.getCharacterizationAndTableBy(characterizationId);
 
-		if (aChar == null)
-			// aChar = service.getCharacterizationBy(compositionId);
-			aChar = service.getCharacterizationAndTableBy(characterizationId);
-
 		HttpSession session = request.getSession();
 		// clear session data from the input forms
 		clearMap(session, theForm, mapping);
 		theForm.set("characterizationId", characterizationId);
 
+		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+
 		int fileNumber = 0;
-
 		for (DerivedBioAssayData obj : aChar.getDerivedBioAssayDataCollection()) {
-
 			if (obj.getFile() != null) {
-				LabFileBean fileBean = new LabFileBean(obj.getFile(),  CalabConstants.OUTPUT);
-		        UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
-				List<String> accessibleGroups = userService.getAccessibleGroups(
-						fileBean.getId(), CalabConstants.CSM_READ_ROLE);
-				String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
-				fileBean.setVisibilityGroups(visibilityGroups);
-				
-				request.getSession().setAttribute(
-						"characterizationFile" + fileNumber, fileBean);
+				LabFileBean fileBean = new LabFileBean(obj.getFile(),
+						CalabConstants.OUTPUT);
+				boolean status = userService.checkReadPermission(user, fileBean
+						.getId());
+				if (status) {
+					List<String> accessibleGroups = userService
+							.getAccessibleGroups(fileBean.getId(),
+									CalabConstants.CSM_READ_ROLE);
+					String[] visibilityGroups = accessibleGroups
+							.toArray(new String[0]);
+					fileBean.setVisibilityGroups(visibilityGroups);
+					request.getSession().setAttribute(
+							"characterizationFile" + fileNumber, fileBean);				}
 			} else {
 				request.getSession().removeAttribute(
 						"characterizationFile" + fileNumber);
@@ -264,7 +266,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			}
 			out.close();
 		} else {
-			throw new CalabException("File to download doesn't exist on the server");
+			throw new CalabException(
+					"File to download doesn't exist on the server");
 		}
 		return null;
 	}
