@@ -103,10 +103,10 @@
 			</field>
 		</form>
 		<form name="loadDerivedBioAssayDataForm">
-			<field property="file" page="1" depends="required">
+			<field property="uploadedFile" page="2" depends="required">
 				<arg position="0" key="loadDerivedBioAssayDataForm.file" bundle="submit" />
 			</field>
-			<field property="title" page="1" depends="required">
+			<field property="file.title" page="1" depends="required">
 				<arg position="0" key="loadDerivedBioAssayDataForm.title" bundle="submit" />
 			</field>
 		</form>
