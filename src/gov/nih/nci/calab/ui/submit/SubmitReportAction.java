@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: SubmitReportAction.java,v 1.8 2006-12-19 23:27:15 pansu Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.9 2006-12-20 17:15:00 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
@@ -14,9 +14,6 @@ import gov.nih.nci.calab.service.util.CananoConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -76,10 +73,6 @@ public class SubmitReportAction extends AbstractDispatchAction {
 		InitSessionSetup.getInstance().setAllSampleContainers(session);
 		InitSessionSetup.getInstance().setStaticDropdowns(session);
 		InitSessionSetup.getInstance().setAllVisibilityGroups(session);
-		// clear session data from the input forms
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		theForm.getMap().clear();
-
 		return mapping.getInputForward();
 	}
 
