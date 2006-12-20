@@ -14,7 +14,9 @@
 			</td>
 			<td align="right" width="15%">
 				<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=create_nanoparticle')" class="helpText">Help</a>
+				<logic:equal name="reportActionName" value="updateReport">
 				&nbsp;&nbsp;<a href="/calab/reportResults.do" class="helpText">Back</a>
+				</logic:equal>
 			</td>
 		</tr>
 		<tr>
@@ -34,7 +36,8 @@
 								<strong>Report File Type</strong>
 							</td>
 							<td class="rightLabel" colspan="3">
-								<bean:write name="publishReportForm" property="file.type"/>&nbsp;
+								<bean:write name="publishReportForm" property="file.type" />
+								&nbsp;
 							</td>
 						</tr>
 						<tr>
@@ -42,8 +45,7 @@
 								<strong>File Name</strong>
 							</td>
 							<td class="rightLabel" colspan="3">
-								<a href="searchReport.do?dispatch=download&amp;fileId=${publishReportForm.map.file.id}"> 
-								<bean:write name="publishReportForm" property="file.path" /></a>
+								<a href="searchReport.do?dispatch=download&amp;fileId=${publishReportForm.map.file.id}"> <bean:write name="publishReportForm" property="file.displayName" /></a>
 							</td>
 						</tr>
 						<c:choose>
