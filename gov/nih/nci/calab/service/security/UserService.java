@@ -541,20 +541,20 @@ public class UserService {
 	}
 
 	/**
-	 * Get a list of reports the user has read permission on.
+	 * Get a list of files the user has read permission on.
 	 * 
 	 * @param user
 	 * @param particles
 	 * @return
 	 * @throws Exception
 	 */
-	public List<LabFileBean> getFilteredReports(UserBean user,
-			List<LabFileBean> reports) throws Exception {
+	public List<LabFileBean> getFilteredFiles(UserBean user,
+			List<LabFileBean> files) throws Exception {
 		List<LabFileBean> filteredReports = new ArrayList<LabFileBean>();
-		for (LabFileBean report : reports) {
-			boolean status = checkReadPermission(user, report.getId());
+		for (LabFileBean file : files) {
+			boolean status = checkReadPermission(user, file.getId());
 			if (status) {
-				filteredReports.add(report);
+				filteredReports.add(file);
 			}
 		}
 		return filteredReports;
