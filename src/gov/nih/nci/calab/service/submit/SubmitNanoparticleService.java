@@ -58,7 +58,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -773,7 +772,7 @@ public class SubmitNanoparticleService {
 	 * Save the characterization file into the database and file system
 	 * 
 	 * @param particleName
-	 * @param file
+	 * @param uploadedFile
 	 * @param title
 	 * @param description
 	 * @param comments
@@ -781,41 +780,43 @@ public class SubmitNanoparticleService {
 	 * @param visibilities
 	 */
 	public LabFileBean saveCharacterizationFile(String particleName,
-			FormFile file, String title, String description, String comments,
-			String[] keywords, String[] visibilities, String path,
-			String fileNumber, String rootPath) throws Exception {
+			FormFile uploadedFile, String characterizationName,
+			LabFileBean fileBean) throws Exception {
 
-		// TODO saves file to the file system
+		// TODO write file to the file system
+		String rootPath = PropertyReader.getProperty(
+				CalabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
+		if (rootPath.charAt(rootPath.length() - 1) == File.separatorChar)
+			rootPath = rootPath.substring(0, rootPath.length() - 1);
+		// add charaterizationName to the path
+		String path = File.separator + "particles" + File.separator
+				+ particleName + File.separator + characterizationName
+				+ File.separator;
+		File pathDir = new File(rootPath + path);
+		if (!pathDir.exists())
+			pathDir.mkdirs();
+
 		HttpFileUploadSessionData sData = new HttpFileUploadSessionData();
-		String tagFileName = sData.getTimeStamp() + "_" + file.getFileName();
+		String tagFileName = sData.getTimeStamp() + "_"
+				+ uploadedFile.getFileName();
 		String outputFilename = rootPath + path + tagFileName;
 
 		FileOutputStream oStream = new FileOutputStream(
 				new File(outputFilename));
 
-		this.saveFile(file.getInputStream(), oStream);
+		this.writeFile(uploadedFile.getInputStream(), oStream);
 
-		DerivedDataFile dataFile = new DerivedDataFile();
-		dataFile.setDescription(description);
-		dataFile.setFilename(file.getFileName());
-		if (keywords != null && keywords.length > 0) {
-			for (int i = 0; i < keywords.length; i++) {
-				Keyword keyword = new Keyword();
-				keyword.setName(keywords[i]);
-				dataFile.getKeywordCollection().add(keyword);
-			}
-		}
-
+		DerivedDataFile dataFile = fileBean.getDomainObjectDerivedDataFile();
+		// set file name, path and keywords for DerivedDataFile specific
+		dataFile.setFilename(uploadedFile.getFileName());
 		// TODO need to remove the predefine the root path from outputFilename
 		dataFile.setPath(path + tagFileName);
-		dataFile.setTitle(title);
 
 		// TODO saves file to the database
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
-
 			ida.store(dataFile);
 
 		} catch (Exception e) {
@@ -826,14 +827,15 @@ public class SubmitNanoparticleService {
 		} finally {
 			ida.close();
 		}
-		LabFileBean fileBean = new LabFileBean(dataFile, CalabConstants.OUTPUT);
-		setVisiblity(fileBean.getId(), visibilities);
-		return fileBean;
+		LabFileBean savedFileBean = new LabFileBean(dataFile,
+				CalabConstants.OUTPUT);
+		setVisiblity(savedFileBean.getId(), savedFileBean.getVisibilityGroups());
+		return savedFileBean;
 	}
 
 	/**
-	 * Save the characterization file into the database and file system The file
-	 * is a workflow output file
+	 * Save the characterization file into the database and file system. The
+	 * file is a workflow output file
 	 * 
 	 * @param fileId
 	 * @param title
@@ -841,38 +843,16 @@ public class SubmitNanoparticleService {
 	 * @param keywords
 	 * @param visibilities
 	 */
-	public LabFileBean saveCharacterizationFile(String fileId, String title,
-			String description, String[] keywords, String[] visibilities)
+	public LabFileBean saveCharacterizationFile(LabFileBean fileBean)
 			throws Exception {
 
-		LabFileBean fileBean = getFile(fileId, CalabConstants.OUTPUT);
-		fileBean.setTitle(title);
-		fileBean.setDescription(description);
-
-		DerivedDataFile dataFile = fileBean.getDomainObject();
-		// Retrieve all existing keywords
-		Collection<String> words = new ArrayList<String>();
-		for (Keyword keyword : dataFile.getKeywordCollection()) {
-			words.add(keyword.getName());
-		}
-		// only add the new keyword
-		if (keywords != null && keywords.length > 0) {
-			for (int i = 0; i < keywords.length; i++) {
-				if (!words.contains(keywords[i])) {
-					Keyword keyword = new Keyword();
-					keyword.setName(keywords[i]);
-					dataFile.getKeywordCollection().add(keyword);
-				}
-			}
-		}
+		DerivedDataFile dataFile = fileBean.getDomainObjectDerivedDataFile();		
 		// TODO saves file to the database
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
-
-			ida.createObject(dataFile);
-
+			ida.store(dataFile);
 		} catch (Exception e) {
 			e.printStackTrace();
 			ida.rollback();
@@ -881,12 +861,13 @@ public class SubmitNanoparticleService {
 		} finally {
 			ida.close();
 		}
-		fileBean = new LabFileBean(dataFile, CalabConstants.OUTPUT);
-		setVisiblity(fileBean.getId(), visibilities);
-		return fileBean;
+		LabFileBean savedFileBean = new LabFileBean(dataFile,
+				CalabConstants.OUTPUT);
+		setVisiblity(savedFileBean.getId(), savedFileBean.getVisibilityGroups());
+		return savedFileBean;
 	}
 
-	public void saveFile(InputStream is, FileOutputStream os) {
+	private void writeFile(InputStream is, FileOutputStream os) {
 		byte[] bytes = new byte[32768];
 
 		try {
@@ -1051,6 +1032,41 @@ public class SubmitNanoparticleService {
 	}
 
 	/**
+	 * Load the derived data file for the given fileId from the database
+	 * 
+	 * @param fileId
+	 * @return
+	 */
+	public LabFileBean getDerivedDataFile(String fileId) throws Exception {
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		LabFileBean fileBean = null;
+		try {
+			ida.open();
+
+			DerivedDataFile file = (DerivedDataFile) ida.load(
+					DerivedDataFile.class, StringUtils.convertToLong(fileId));
+			//load keywords
+			file.getKeywordCollection();
+			fileBean = new LabFileBean(file, CalabConstants.OUTPUT);
+		} catch (Exception e) {
+			e.printStackTrace();
+			ida.rollback();
+			logger.error("Problem getting file with file ID: " + fileId);
+			throw e;
+		} finally {
+			ida.close();
+		}
+		// get visibilities
+		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
+		List<String> accessibleGroups = userService.getAccessibleGroups(
+				fileBean.getId(), CalabConstants.CSM_READ_ROLE);
+		String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
+		fileBean.setVisibilityGroups(visibilityGroups);
+		return fileBean;
+	}
+
+	/**
 	 * Get the list of all run output files associated with a particle
 	 * 
 	 * @param particleName
@@ -1091,7 +1107,7 @@ public class SubmitNanoparticleService {
 		return runFiles;
 	}
 
-	public void createReport(String[] particleNames, FormFile report,
+	public void createReport(String[] particleNames, FormFile uploadedReport,
 			LabFileBean fileBean) throws Exception {
 
 		// TODO saves reportFile to the file system
@@ -1107,13 +1123,14 @@ public class SubmitNanoparticleService {
 			pathDir.mkdirs();
 
 		HttpFileUploadSessionData sData = new HttpFileUploadSessionData();
-		String tagFileName = sData.getTimeStamp() + "_" + report.getFileName();
+		String tagFileName = sData.getTimeStamp() + "_"
+				+ uploadedReport.getFileName();
 		String outputFilename = rootPath + path + tagFileName;
 
 		FileOutputStream oStream = new FileOutputStream(
 				new File(outputFilename));
 
-		this.saveFile(report.getInputStream(), oStream);
+		this.writeFile(uploadedReport.getInputStream(), oStream);
 
 		LabFile dataFile = null;
 		if (fileBean.getType().equalsIgnoreCase(CananoConstants.NCL_REPORT))
@@ -1122,7 +1139,7 @@ public class SubmitNanoparticleService {
 			dataFile = new AssociatedFile();
 
 		dataFile.setDescription(fileBean.getDescription());
-		dataFile.setFilename(report.getFileName());
+		dataFile.setFilename(uploadedReport.getFileName());
 
 		dataFile.setPath(path + tagFileName);
 		dataFile.setTitle(fileBean.getTitle().toUpperCase()); // convert to
@@ -1138,9 +1155,7 @@ public class SubmitNanoparticleService {
 
 		try {
 			ida.open();
-
 			ida.store(dataFile);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			ida.rollback();
@@ -1212,6 +1227,44 @@ public class SubmitNanoparticleService {
 			ida.close();
 		}
 
+		setVisiblity(fileBean.getId(), fileBean.getVisibilityGroups());
+	}
+
+	/**
+	 * Update the meta data associated with a file stored in the database
+	 * 
+	 * @param fileBean
+	 * @throws Exception
+	 */
+	public void updateDerivedDataFileMetaData(LabFileBean fileBean)
+			throws Exception {
+
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			DerivedDataFile file = (DerivedDataFile) ida.load(
+					DerivedDataFile.class, StringUtils.convertToLong(fileBean
+							.getId()));
+
+			file.setTitle(fileBean.getTitle().toUpperCase());
+			file.setDescription(fileBean.getDescription());			
+			file.getKeywordCollection().clear();
+			if (fileBean.getKeywords() != null) {
+				for (String keyword : fileBean.getKeywords()) {
+					Keyword keywordObj = new Keyword();
+					keywordObj.setName(keyword);
+					file.getKeywordCollection().add(keywordObj);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			ida.rollback();
+			logger.error("Problem updating derived data file meta data: ");
+			throw e;
+		} finally {
+			ida.close();
+		}
 		setVisiblity(fileBean.getId(), fileBean.getVisibilityGroups());
 	}
 
