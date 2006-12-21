@@ -18,7 +18,7 @@ public class ReportDecorator extends TableDecorator {
 		// replace space with special char
 		String fileType = file.getType().replace(" ", "%20");
 		String fileId = file.getId();
-		String editReportURL = "updateReport.do?page=0&dispatch=setupUpdate&fileType="
+		String editReportURL = "updateReport.do?submitType=none&page=0&dispatch=setupUpdate&fileType="
 				+ fileType + "&fileId=" + fileId;
 		String link = "<a href=" + editReportURL + ">"
 				+ file.getTitle() + "</a>";
@@ -31,7 +31,7 @@ public class ReportDecorator extends TableDecorator {
 		// replace space with special char
 		String fileType = file.getType().replace(" ", "%20");
 		String fileId = file.getId();
-		String editReportURL = "updateReport.do?page=0&dispatch=setupView&fileType="
+		String editReportURL = "updateReport.do?submitType=none&page=0&dispatch=setupView&fileType="
 				+ fileType + "&fileId=" + fileId;
 		String link = "<a href=" + editReportURL + ">"
 				+ file.getTitle() + "</a>";
