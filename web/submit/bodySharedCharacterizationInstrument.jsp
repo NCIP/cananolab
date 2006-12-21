@@ -94,7 +94,7 @@
 		<td class="rightLabel" colspan="3">
 			<c:choose>
 				<c:when test="${canUserSubmit eq 'true'}">
-					<html:textarea property="achar.instrument.description" rows="3" />
+					<html:textarea property="achar.instrument.description" rows="3" cols="80"/>
 				</c:when>
 				<c:otherwise>
 						${thisForm.map.achar.instrument.description}&nbsp;
