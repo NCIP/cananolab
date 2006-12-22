@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.17 2006-12-19 23:26:51 pansu Exp $ */
+/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.18 2006-12-22 20:50:30 zengje Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
@@ -19,7 +19,10 @@ import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -53,13 +56,13 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 		HttpSession session = request.getSession();
 		
 		//display default visible groups
-		if (visibilities == null || visibilities.length==0) {
-			visibilities=CananoConstants.DEFAULT_VISIBLE_GROUPS;
-		}
+		List<String > visList = new ArrayList<String>();
+		visList.addAll(Arrays.asList(CananoConstants.DEFAULT_VISIBLE_GROUPS));
+		visList.addAll(Arrays.asList(visibilities));	
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage(
 				"message.createNanoparticle.secure", StringUtils.join(
-						visibilities, ", "));
+						visList, ", "));
 		msgs.add("message", msg);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
