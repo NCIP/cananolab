@@ -38,7 +38,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.87 2006-12-19 20:50:14 zengje Exp $ */
+/* CVS $Id: LookupService.java,v 1.88 2006-12-22 21:35:29 zengje Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -814,7 +814,7 @@ public class LookupService {
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
-
+			
 			String hqlString = "select distinct instrumentType.name, manufacturer.name from InstrumentType instrumentType join instrumentType.manufacturerCollection manufacturer ";
 			List results = ida.search(hqlString);
 			SortedSet<String> manufacturers = null;
@@ -830,6 +830,15 @@ public class LookupService {
 				}
 				manufacturers.add(manufacturer);
 			}
+			List allResult = ida.search("select manufacturer.name from Manufacturer manufacturer where manufacturer.name is not null");
+			SortedSet<String> allManufacturers = null;
+			allManufacturers = new TreeSet<String>();
+			for(Object obj : allResult) {
+				String name = (String)obj;
+				allManufacturers.add(name);
+			}
+			instrumentManufacturers.put(CananoConstants.OTHER,allManufacturers);
+			
 		} catch (Exception e) {
 			logger
 					.error("Problem to retrieve manufacturers for intrument types "
