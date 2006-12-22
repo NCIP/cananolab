@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: LoadDerivedBioAssayDataAction.java,v 1.8 2006-12-20 22:19:33 pansu Exp $ */
+/* CVS $Id: LoadDerivedBioAssayDataAction.java,v 1.9 2006-12-22 18:21:29 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
@@ -69,15 +69,14 @@ public ActionForward submit(ActionMapping mapping, ActionForm form,
 		InitSessionSetup.getInstance().clearInventorySession(session);		
 		String particleName = request.getParameter("particleName");
 		InitSessionSetup.getInstance().setAllRunFiles(session, particleName);
-		String fileNumber = request.getParameter("fileNumber");
-		String loadFileForward = (String) request
-				.getAttribute("loadFileForward");
+		String fileNumber = request.getParameter("fileNumber");		
 		DynaValidatorForm theForm = (DynaValidatorForm) form;	
 		theForm.set("particleName", particleName);
 		theForm.set("fileNumber", fileNumber);
-		theForm.set("forwardPage", loadFileForward);
+		theForm.set("forwardPage", (String) request
+				.getAttribute("loadFileForward"));
 		theForm.set("characterizationName", (String) request
-				.getAttribute("characterizationName"));
+				.getAttribute("characterization"));
 		return mapping.getInputForward();
 	}
 
