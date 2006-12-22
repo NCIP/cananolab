@@ -43,7 +43,6 @@
 			<form-property name="particleName" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />
 			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.physical.SizeBean" />
-			<form-property name="fileNumber" type="java.lang.String" />
 			<form-property name="characterizationId" type="java.lang.String" />
 		</form-bean>
 
@@ -53,7 +52,6 @@
 			<form-property name="particleName" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />
 			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.physical.SurfaceBean" />
-			<form-property name="fileNumber" type="java.lang.String" />
 			<form-property name="characterizationId" type="java.lang.String" />
 		</form-bean>
 
@@ -63,7 +61,6 @@
 			<form-property name="particleName" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />
 			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.physical.MolecularWeightBean" />
-			<form-property name="fileNumber" type="java.lang.String" />
 			<form-property name="characterizationId" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="nanoparticleMorphologyForm" type="org.apache.struts.validator.DynaValidatorForm">
@@ -72,7 +69,6 @@
 			<form-property name="particleName" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />
 			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.physical.MorphologyBean" />
-			<form-property name="fileNumber" type="java.lang.String" />
 			<form-property name="characterizationId" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="nanoparticleShapeForm" type="org.apache.struts.validator.DynaValidatorForm">
@@ -81,7 +77,6 @@
 			<form-property name="particleName" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />
 			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.physical.ShapeBean" />
-			<form-property name="fileNumber" type="java.lang.String" />
 			<form-property name="characterizationId" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="nanoparticleStabilityForm" type="org.apache.struts.validator.DynaValidatorForm">
@@ -90,7 +85,6 @@
 			<form-property name="particleName" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />
 			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.physical.StabilityBean" />
-			<form-property name="fileNumber" type="java.lang.String" />
 			<form-property name="characterizationId" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="nanoparticlePurityForm" type="org.apache.struts.validator.DynaValidatorForm">
@@ -99,7 +93,6 @@
 			<form-property name="particleName" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />
 			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.physical.PurityBean" />
-			<form-property name="fileNumber" type="java.lang.String" />
 			<form-property name="characterizationId" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="nanoparticleSolubilityForm" type="org.apache.struts.validator.DynaValidatorForm">
@@ -108,7 +101,6 @@
 			<form-property name="particleName" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />
 			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.physical.SolubilityBean" />
-			<form-property name="fileNumber" type="java.lang.String" />
 			<form-property name="characterizationId" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="invitroImmunotoxicityHemolysisForm" type="org.apache.struts.validator.DynaValidatorForm">
@@ -117,7 +109,6 @@
 			<form-property name="particleName" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />
 			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.HemolysisBean" />
-			<form-property name="fileNumber" type="java.lang.String" />
 			<form-property name="characterizationId" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="invitroImmunotoxicityProteinBindingForm" type="org.apache.struts.validator.DynaValidatorForm">
@@ -126,7 +117,6 @@
 			<form-property name="particleName" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />
 			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.PlasmaProteinBindingBean" />
-			<form-property name="fileNumber" type="java.lang.String" />
 			<form-property name="characterizationId" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="invitroImmunotoxicityCoagulationForm" type="org.apache.struts.validator.DynaValidatorForm">
@@ -135,7 +125,6 @@
 			<form-property name="particleName" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />
 			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.CoagulationBean" />
-			<form-property name="fileNumber" type="java.lang.String" />
 			<form-property name="characterizationId" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="invitroImmunotoxicityPlateAggregationForm" type="org.apache.struts.validator.DynaValidatorForm">
@@ -144,7 +133,6 @@
 			<form-property name="particleName" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />
 			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.PlateAggregationBean" />
-			<form-property name="fileNumber" type="java.lang.String" />
 			<form-property name="characterizationId" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="invitroImmunotoxicityComplementActivationForm" type="org.apache.struts.validator.DynaValidatorForm">
@@ -153,7 +141,6 @@
 			<form-property name="particleName" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />
 			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.ComplementActivationBean" />
-			<form-property name="fileNumber" type="java.lang.String" />
 			<form-property name="characterizationId" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="invitroImmunotoxicityCytokineInductionForm" type="org.apache.struts.validator.DynaValidatorForm">
@@ -162,7 +149,6 @@
 			<form-property name="particleName" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />
 			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.CytokineInductionBean" />
-			<form-property name="fileNumber" type="java.lang.String" />
 			<form-property name="characterizationId" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="invitroImmunotoxicityChemotaxisForm" type="org.apache.struts.validator.DynaValidatorForm">
@@ -171,7 +157,6 @@
 			<form-property name="particleName" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />
 			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.ChemotaxisBean" />
-			<form-property name="fileNumber" type="java.lang.String" />
 			<form-property name="characterizationId" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="invitroImmunotoxicityNKCellCytotoxicActivityForm" type="org.apache.struts.validator.DynaValidatorForm">
@@ -180,7 +165,6 @@
 			<form-property name="particleName" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />
 			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.NKCellCytotoxicActivityBean" />
-			<form-property name="fileNumber" type="java.lang.String" />
 			<form-property name="characterizationId" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="invitroImmunotoxicityLeukocyteProliferationForm" type="org.apache.struts.validator.DynaValidatorForm">
@@ -189,7 +173,6 @@
 			<form-property name="particleName" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />
 			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.LeukocyteProliferationBean" />
-			<form-property name="fileNumber" type="java.lang.String" />
 			<form-property name="characterizationId" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="invitroImmunotoxicityCFU_GMForm" type="org.apache.struts.validator.DynaValidatorForm">
@@ -198,7 +181,6 @@
 			<form-property name="particleName" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />
 			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.CFU_GMBean" />
-			<form-property name="fileNumber" type="java.lang.String" />
 			<form-property name="characterizationId" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="invitroImmunotoxicityOxidativeBurstForm" type="org.apache.struts.validator.DynaValidatorForm">
@@ -207,7 +189,6 @@
 			<form-property name="particleName" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />
 			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.OxidativeBurstBean" />
-			<form-property name="fileNumber" type="java.lang.String" />
 			<form-property name="characterizationId" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="invitroImmunotoxicityPhagocytosisForm" type="org.apache.struts.validator.DynaValidatorForm">
@@ -216,7 +197,6 @@
 			<form-property name="particleName" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />
 			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.PhagocytosisBean" />
-			<form-property name="fileNumber" type="java.lang.String" />
 			<form-property name="characterizationId" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="invitroCytotoxicityCaspase3ActivationForm" type="org.apache.struts.validator.DynaValidatorForm">
@@ -225,7 +205,6 @@
 			<form-property name="particleName" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />
 			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.Caspase3ActivationBean" />
-			<form-property name="fileNumber" type="java.lang.String" />
 			<form-property name="characterizationId" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="invitroCytotoxicityCellViabilityForm" type="org.apache.struts.validator.DynaValidatorForm">
@@ -234,7 +213,6 @@
 			<form-property name="particleName" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />
 			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.CellViabilityBean" />
-			<form-property name="fileNumber" type="java.lang.String" />
 			<form-property name="characterizationId" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="invitroToxicityOxidativeStressForm" type="org.apache.struts.validator.DynaValidatorForm">
@@ -243,7 +221,6 @@
 			<form-property name="particleName" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />
 			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.OxidativeStressBean" />
-			<form-property name="fileNumber" type="java.lang.String" />
 			<form-property name="characterizationId" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="invitroToxicityEnzymeInductionForm" type="org.apache.struts.validator.DynaValidatorForm">
@@ -252,7 +229,6 @@
 			<form-property name="particleName" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />
 			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.EnzymeInductionBean" />
-			<form-property name="fileNumber" type="java.lang.String" />
 			<form-property name="characterizationId" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="invitroMetabolicStabilityGlucuronidationSulphationForm" type="org.apache.struts.validator.DynaValidatorForm">
@@ -261,7 +237,6 @@
 			<form-property name="particleName" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />
 			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.GlucuronidationSulphationBean" />
-			<form-property name="fileNumber" type="java.lang.String" />
 			<form-property name="characterizationId" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="invitroMetabolicStabilityROSForm" type="org.apache.struts.validator.DynaValidatorForm">
@@ -270,7 +245,6 @@
 			<form-property name="particleName" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />
 			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.ROSBean" />
-			<form-property name="fileNumber" type="java.lang.String" />
 			<form-property name="characterizationId" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="invitroMetabolicStabilityCYP450Form" type="org.apache.struts.validator.DynaValidatorForm">
@@ -279,7 +253,6 @@
 			<form-property name="particleName" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />
 			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.CYP450Bean" />
-			<form-property name="fileNumber" type="java.lang.String" />
 			<form-property name="characterizationId" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="loadDerivedBioAssayDataForm" type="org.apache.struts.validator.DynaValidatorForm">
