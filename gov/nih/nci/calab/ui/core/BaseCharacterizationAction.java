@@ -39,7 +39,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 
-/* CVS $Id: BaseCharacterizationAction.java,v 1.21 2006-12-20 23:20:52 pansu Exp $ */
+/* CVS $Id: BaseCharacterizationAction.java,v 1.22 2006-12-22 18:20:37 pansu Exp $ */
 
 public abstract class BaseCharacterizationAction extends AbstractDispatchAction {
 	/**
@@ -221,14 +221,6 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 	public ActionForward loadFile(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleName = (String) theForm.get("particleName");
-		String fileNumber = (String) theForm.get("fileNumber");
-		request.setAttribute("particleName", particleName);
-		request.setAttribute("fileNumber", fileNumber);
-		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		List<LabFileBean> files = service.getAllRunFiles(particleName);
-		request.setAttribute("allRunFiles", files);
 		setLoadFileRequest(request);
 		return mapping.findForward("loadFile");
 	}
