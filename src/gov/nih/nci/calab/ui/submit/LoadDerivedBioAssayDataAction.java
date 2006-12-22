@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: LoadDerivedBioAssayDataAction.java,v 1.9 2006-12-22 18:21:29 pansu Exp $ */
+/* CVS $Id: LoadDerivedBioAssayDataAction.java,v 1.10 2006-12-22 19:59:50 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
@@ -27,7 +27,7 @@ import org.apache.struts.upload.FormFile;
 import org.apache.struts.validator.DynaValidatorForm;
 
 public class LoadDerivedBioAssayDataAction extends AbstractDispatchAction {
-public ActionForward submit(ActionMapping mapping, ActionForm form,
+	public ActionForward submit(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		ActionForward forward = null;
@@ -37,20 +37,30 @@ public ActionForward submit(ActionMapping mapping, ActionForm form,
 		String fileSource = (String) theForm.get("fileSource");
 		LabFileBean fileBean = (LabFileBean) theForm.get("file");
 		String fileNumber = (String) theForm.get("fileNumber");
-		String characterizationName = (String) theForm.get("characterizationName");
+		String characterizationName = (String) theForm
+				.get("characterizationName");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		LabFileBean savedFileBean=null;
+		LabFileBean savedFileBean = null;
 		if (fileSource.equals("new")) {
 			FormFile uploadedFile = (FormFile) theForm.get("uploadedFile");
-			savedFileBean = service.saveCharacterizationFile(particleName, uploadedFile, characterizationName, fileBean);					
+			savedFileBean = service.saveCharacterizationFile(particleName,
+					uploadedFile, characterizationName, fileBean);
 		} else {
-			//updating existingFileBean with form data
-			LabFileBean existingFileBean=service.getFile(fileBean.getId(), CalabConstants.OUTPUT);
-			existingFileBean.setTitle(fileBean.getTitle());
-			existingFileBean.setDescription(fileBean.getDescription());
-			existingFileBean.setVisibilityGroups(fileBean.getVisibilityGroups());
-			existingFileBean.setKeywords(fileBean.getKeywords());			
-			savedFileBean = service.saveCharacterizationFile(existingFileBean);			
+			// updating existingFileBean with form data
+			if (fileBean.getId() != null) {
+				LabFileBean existingFileBean = service.getFile(
+						fileBean.getId(), CalabConstants.OUTPUT);
+				existingFileBean.setTitle(fileBean.getTitle());
+				existingFileBean.setDescription(fileBean.getDescription());
+				existingFileBean.setVisibilityGroups(fileBean
+						.getVisibilityGroups());
+				existingFileBean.setKeywords(fileBean.getKeywords());
+				savedFileBean = service
+						.saveCharacterizationFile(existingFileBean);
+			}
+			else {
+				throw new Exception("Please upload a new file if existing file drop-down list is empty or select a file from the drop-down list.");
+			}
 		}
 		request.getSession().setAttribute("characterizationFile" + fileNumber,
 				savedFileBean);
@@ -60,17 +70,18 @@ public ActionForward submit(ActionMapping mapping, ActionForm form,
 
 		return forward;
 	}
+
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		HttpSession session = request.getSession();
 		InitSessionSetup.getInstance().clearWorkflowSession(session);
 		InitSessionSetup.getInstance().clearSearchSession(session);
-		InitSessionSetup.getInstance().clearInventorySession(session);		
+		InitSessionSetup.getInstance().clearInventorySession(session);
 		String particleName = request.getParameter("particleName");
 		InitSessionSetup.getInstance().setAllRunFiles(session, particleName);
-		String fileNumber = request.getParameter("fileNumber");		
-		DynaValidatorForm theForm = (DynaValidatorForm) form;	
+		String fileNumber = request.getParameter("fileNumber");
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		theForm.set("particleName", particleName);
 		theForm.set("fileNumber", fileNumber);
 		theForm.set("forwardPage", (String) request
@@ -86,17 +97,17 @@ public ActionForward submit(ActionMapping mapping, ActionForm form,
 		HttpSession session = request.getSession();
 		InitSessionSetup.getInstance().clearWorkflowSession(session);
 		InitSessionSetup.getInstance().clearSearchSession(session);
-		InitSessionSetup.getInstance().clearInventorySession(session);		
-		String fileId=request.getParameter("fileId");
+		InitSessionSetup.getInstance().clearInventorySession(session);
+		String fileId = request.getParameter("fileId");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		LabFileBean fileBean=service.getDerivedDataFile(fileId);
-		DynaValidatorForm theForm = (DynaValidatorForm) form;	
+		LabFileBean fileBean = service.getDerivedDataFile(fileId);
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		theForm.set("file", fileBean);
-		String actionName=request.getParameter("actionName");
-		String formName=request.getParameter("formName");
+		String actionName = request.getParameter("actionName");
+		String formName = request.getParameter("formName");
 		request.setAttribute("actionName", actionName);
 		request.setAttribute("formName", formName);
-		return mapping.getInputForward();		
+		return mapping.getInputForward();
 	}
 
 	public ActionForward setupView(ActionMapping mapping, ActionForm form,
@@ -115,8 +126,8 @@ public ActionForward submit(ActionMapping mapping, ActionForm form,
 		service.updateDerivedDataFileMetaData(fileBean);
 
 		ActionMessages msgs = new ActionMessages();
-		ActionMessage msg = new ActionMessage("message.updateDerivedBioAssayData", fileBean
-				.getPath());
+		ActionMessage msg = new ActionMessage(
+				"message.updateDerivedBioAssayData", fileBean.getPath());
 
 		msgs.add("message", msg);
 		saveMessages(request, msgs);
