@@ -10,7 +10,7 @@
 <table summary="" cellpadding="0" cellspacing="0" border="0" height="100%" width="250">
 	<tr>
 		<td class="subMenuPrimaryTitle" height="21">
-			WORKFLOW TREE
+			RUN TREE
 		</td>
 	</tr>
 	<tr>
