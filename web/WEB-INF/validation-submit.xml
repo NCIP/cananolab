@@ -52,17 +52,24 @@
 				<arg position="0" key="nanoparticleCompositionForm.carbonNanotube.averageLength" bundle="submit" />
 			</field>
 			<field property="dendrimer.otherBranch" page="1" depends="validwhen">
-				<arg position="0" key="nanoparticleCompositionForm.otherBranch" bundle="submit" />
+				<arg position="0" key="nanoparticleCompositionForm.dendrimer.otherBranch" bundle="submit" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>((dendrimer.branch!="Other") or (*this*!=null))</var-value>
 				</var>
 			</field>
 			<field property="dendrimer.otherGeneration" page="1" depends="validwhen, float">
-				<arg position="0" key="nanoparticleCompositionForm.otherGeneration" bundle="submit" />
+				<arg position="0" key="nanoparticleCompositionForm.dendrimer.otherGeneration" bundle="submit" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>((dendrimer.generation!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
+			<field property="otherName" page="1" depends="validwhen" indexedListProperty="dendrimer.surfaceGroups">
+				<arg position="0" key="nanoparticleCompositionForm.dendrimer.surfaceGroupOtherName" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((dendrimer.surfaceGroups[].name!="Other") or (*this*!=null))</var-value>
 				</var>
 			</field>
 			<field property="fullerene.numberOfCarbons" page="1" depends="integer">
@@ -87,6 +94,13 @@
 				<var>
 					<var-name>test</var-name>
 					<var-value>((polymer.crosslinked=="No") or (*this*!=null))</var-value>
+				</var>
+			</field>
+			<field property="polymer.otherInitiator" page="1" depends="validwhen, float">
+				<arg position="0" key="nanoparticleCompositionForm.polymer.otherInitiator" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((polymer.initiator!="Other") or (*this*!=null))</var-value>
 				</var>
 			</field>
 		</form>
@@ -500,6 +514,13 @@
 					<var-value>((achar.instrument.manufacturer!="Other") or (*this*!=null))</var-value>
 				</var>
 			</field>
+			<field property="achar.otherCellLine" page="1" depends="validwhen">
+				<arg position="0" key="invitroCytotoxicityCellViabilityForm.otherCellLine" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.cellLine!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
 		</form>
 		<form name="invitroCytotoxicityCaspase3ActivationForm">
 			<field property="achar.numberOfDerivedBioAssayData" page="0" depends="integer">
@@ -715,6 +736,13 @@
 					<var-value>((achar.instrument.manufacturer!="Other") or (*this*!=null))</var-value>
 				</var>
 			</field>
+			<field property="achar.otherType" page="1" depends="validwhen">
+				<arg position="0" key="otherType" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.type!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
 		</form>
 		<form name="nanoparticleShapeForm">
 			<field property="achar.characterizationSource" page="1" depends="required">
@@ -744,6 +772,13 @@
 				<var>
 					<var-name>test</var-name>
 					<var-value>((achar.instrument.manufacturer!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
+			<field property="achar.otherShapeType" page="1" depends="validwhen">
+				<arg position="0" key="otherType" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((achar.type!="Other") or (*this*!=null))</var-value>
 				</var>
 			</field>
 		</form>
