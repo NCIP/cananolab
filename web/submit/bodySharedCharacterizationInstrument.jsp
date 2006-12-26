@@ -20,7 +20,8 @@
 		<td class="label">
 			<c:choose>
 				<c:when test="${canUserSubmit eq 'true'}">
-					<html:select property="achar.instrument.type" onchange="javascript:doubleDropdownWithExraOption(this.form.elements[5], this.form.elements[7], instrumentTypeManufacturers, 'Other');updateOtherField(this.form, this.form.elements[5].name, this.form.elements[6].name)">
+					<html:select property="achar.instrument.type"
+						onchange="javascript:doubleDropdownWithExraOption(this.form.elements[5], this.form.elements[7], instrumentTypeManufacturers, 'Other');updateOtherField(this.form, this.form.elements[5].name, this.form.elements[6].name)">
 						<option value="" />
 							<html:options collection="allInstrumentTypes" property="value" labelProperty="label" />
 					</html:select>
@@ -36,7 +37,14 @@
 					<strong>Other Instrument Type </strong>
 				</td>
 				<td class="rightLabel">
-					<html:text property="achar.instrument.otherInstrumentType" disabled="true"/>
+					<c:choose>
+						<c:when test="${thisForm.map.achar.instrument.type eq 'Other'}">
+							<html:text property="achar.instrument.otherInstrumentType" disabled="false" />
+						</c:when>
+						<c:otherwise>
+							<html:text property="achar.instrument.otherInstrumentType" disabled="true" />
+						</c:otherwise>
+					</c:choose>
 				</td>
 			</c:when>
 			<c:otherwise>
@@ -74,7 +82,14 @@
 					<strong>Other Manufacturer </strong>
 				</td>
 				<td class="rightLabel">
-					<html:text property="achar.instrument.otherManufacturer" />
+				<c:choose>
+						<c:when test="${thisForm.map.achar.instrument.manufacturer eq 'Other'}">
+							<html:text property="achar.instrument.otherManufacturer" disabled="false" />
+						</c:when>
+						<c:otherwise>
+							<html:text property="achar.instrument.otherManufacturer" disabled="true" />
+						</c:otherwise>
+					</c:choose>
 				</td>
 			</c:when>
 			<c:otherwise>
@@ -94,7 +109,7 @@
 		<td class="rightLabel" colspan="3">
 			<c:choose>
 				<c:when test="${canUserSubmit eq 'true'}">
-					<html:textarea property="achar.instrument.description" rows="3" cols="80"/>
+					<html:textarea property="achar.instrument.description" rows="3" cols="80" />
 				</c:when>
 				<c:otherwise>
 						${thisForm.map.achar.instrument.description}&nbsp;

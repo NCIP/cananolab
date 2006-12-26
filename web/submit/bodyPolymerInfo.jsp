@@ -66,7 +66,14 @@
 						<strong>Other Initiator </strong>
 					</td>
 					<td class="rightLabel">
-						<html:text property="polymer.otherInitiator" disabled="true"/>
+						<c:choose>
+							<c:when test="${nanoparticleCompositionForm.map.polymer.initiator eq 'Other'}">
+								<html:text property="polymer.otherInitiator" disabled="false" />
+							</c:when>
+							<c:otherwise>
+								<html:text property="polymer.otherInitiator" disabled="true" />
+							</c:otherwise>
+						</c:choose>
 					</td>
 				</c:when>
 				<c:otherwise>
