@@ -382,11 +382,6 @@ public class InitSessionSetup {
 
 	public void setAllDendrimerSurfaceGroupNames(HttpSession session)
 			throws Exception {
-		System.out.println("sesion attribute = "
-				+ session.getAttribute("newCharacterizationCreated"));
-		System.out.println("allDendrimerSurfaceGroupNames = "
-				+ session.getServletContext().getAttribute(
-						"allDendrimerSurfaceGroupNames"));
 		if (session.getServletContext().getAttribute(
 				"allDendrimerSurfaceGroupNames") == null
 				|| session.getAttribute("newCharacterizationCreated") != null) {
