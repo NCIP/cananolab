@@ -38,7 +38,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.88 2006-12-22 21:35:29 zengje Exp $ */
+/* CVS $Id: LookupService.java,v 1.89 2006-12-26 21:30:07 zengje Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -623,6 +623,7 @@ public class LookupService {
 		names
 				.addAll(Arrays
 						.asList(CananoConstants.DEFAULT_SURFACE_GROUP_NAMES));
+		names.add(CananoConstants.OTHER);
 
 		return (String[]) names.toArray(new String[0]);
 	}
@@ -672,6 +673,7 @@ public class LookupService {
 		}
 		generations.addAll(Arrays
 				.asList(CananoConstants.DEFAULT_DENDRIMER_GENERATIONS));
+		generations.add(CananoConstants.OTHER);
 
 		return (String[]) generations.toArray(new String[0]);
 	}
@@ -925,7 +927,7 @@ public class LookupService {
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
-			String hqlString = "select distinct shape.type from Shape shape";
+			String hqlString = "select distinct shape.type from Shape shape where shape.type is not null";
 			List results = ida.search(hqlString);
 			for (Object obj : results) {
 				shapeTypes.add((String) obj);
