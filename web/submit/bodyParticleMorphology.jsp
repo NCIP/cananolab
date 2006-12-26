@@ -51,10 +51,17 @@
 										</html:select>
 										&nbsp;&nbsp;
 										<strong> Other </strong>&nbsp;
-										<html:text property="achar.otherType" disabled="true"/>
+										<c:choose>
+											<c:when test="${nanoparticleMorphologyForm.map.achar.type eq 'Other'}">
+												<html:text property="achar.otherType" disabled="false" />
+											</c:when>
+											<c:otherwise>
+												<html:text property="achar.otherType" disabled="true" />
+											</c:otherwise>
+										</c:choose>
 									</c:when>
 									<c:otherwise>
-										${nanoparticleMorphologyForm.map.morphology.type}&nbsp;
+										${nanoparticleMorphologyForm.map.achar.type}&nbsp;
 									</c:otherwise>
 								</c:choose>
 							</td>

@@ -26,7 +26,14 @@
 				</td>
 				<td class="rightLabel" colspan="2">
 					<strong>Other Cell Line</strong>&nbsp;
-					<html:text property="achar.otherCellLine" disabled="true"/>
+					<c:choose>
+						<c:when test="${thisForm.map.achar.cellLine eq 'Other'}">
+							<html:text property="achar.otherCellLine"  disabled="false" />
+						</c:when>
+						<c:otherwise>
+							<html:text property="achar.otherCellLine"  disabled="true" />
+						</c:otherwise>
+					</c:choose>
 				</td>
 			</c:when>
 			<c:otherwise>

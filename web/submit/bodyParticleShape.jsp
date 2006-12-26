@@ -45,16 +45,24 @@
 							<td class="label">
 								<c:choose>
 									<c:when test="${canUserSubmit eq 'true'}">
-										<html:select property="achar.type" onchange="javascript:updateOtherField(nanoparticleShapeForm, 'achar.type', 'achar.otherShapeType')" >
+										<html:select property="achar.type" onchange="javascript:updateOtherField(nanoparticleShapeForm, 'achar.type', 'achar.otherShapeType')">
 											<option value=""></option>
 											<html:options name="allShapeTypes" />
 										</html:select>
 										&nbsp;
 										<strong> Other </strong>&nbsp;
-										<html:text property="achar.otherShapeType" />
+										
+										<c:choose>
+											<c:when test="${nanoparticleShapeForm.map.achar.type eq 'Other'}">
+												<html:text property="achar.otherShapeType" disabled="false" />
+											</c:when>
+											<c:otherwise>
+												<html:text property="achar.otherShapeType" disabled="true" />
+											</c:otherwise>
+										</c:choose>
 									</c:when>
 									<c:otherwise>
-										${nanoparticleShapeForm.map.shape.type}&nbsp;
+										${nanoparticleShapeForm.map.achar.type}&nbsp;
 									</c:otherwise>
 								</c:choose>
 							</td>
@@ -163,7 +171,7 @@
 										</tbody>
 									</table>
 									<br>
-									</logic:iterate>
+								</logic:iterate>
 							</td>
 						</tr>
 				</table>
