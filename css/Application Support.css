@@ -2650,7 +2650,7 @@ span.Note
   left: -20px;
   position: relative;
   text-transform: none;
-  top: 5px;
+  top: 10px;
   vertical-align: baseline;
 }
 
@@ -2725,6 +2725,10 @@ table.Mapping_Table
 
 table.Table_-_No_Border
 {
+  border-bottom-color: White;
+  border-left-color: White;
+  border-right-color: White;
+  border-top-color: White;
   padding-bottom: 4pt;
   padding-left: 6pt;
   padding-right: 4pt;
