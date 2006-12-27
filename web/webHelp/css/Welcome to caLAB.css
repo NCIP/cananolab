@@ -2136,6 +2136,10 @@ table.Table_-_Column_Header
 
 table.Table_-_No_Border
 {
+  border-bottom-color: White;
+  border-left-color: White;
+  border-right-color: White;
+  border-top-color: White;
   padding-bottom: 4pt;
   padding-left: 6pt;
   padding-right: 4pt;
