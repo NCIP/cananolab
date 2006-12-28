@@ -29,12 +29,15 @@ public class LogoutAction extends AbstractBaseAction {
 
 		HttpSession session = request.getSession(false);
 		if (session != null) {
+			//invalidate the old one
 			session.invalidate();
+			//create a new one
+			session=request.getSession();
 			ActionMessages msgs = new ActionMessages();
 			ActionMessage error = new ActionMessage("msg.logout");
 			msgs.add("msg", error);
 			saveMessages(request, msgs);
-		}
+		}		
 		forward = mapping.findForward("success");
 		return forward;
 	}
