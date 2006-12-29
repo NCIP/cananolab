@@ -1378,7 +1378,7 @@ div.Heading3
   font-style: normal;
   font-variant: normal;
   font-weight: bold;
-  margin-bottom: 0.0pt;
+  margin-bottom: 10pt;
   margin-left: 0pt;
   margin-right: 0pt;
   margin-top: 12.0pt;
@@ -1390,7 +1390,7 @@ div.Heading3
 
 .Heading3_outer
 {
-  margin-bottom: 0.0pt;
+  margin-bottom: 10pt;
   margin-right: 0pt;
   margin-top: 12.0pt;
 }

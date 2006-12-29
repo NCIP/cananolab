@@ -1,111 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WebWorksHelpTOC version="5.0" xmlns="urn:WebWorks-Help-TOC-Schema">
-  <i t="Welcome to caLAB 1.0" l="0" />
-  <i t="Getting Started with caLAB 1.0" l="1">
-    <i t="About caLAB" l="2">
-      <i t="Introduction to caLAB" l="2#1085961" />
-      <i t="caLAB Welcome Login Page" l="3" />
-      <i t="Logging into caLAB" l="4" />
-      <i t="caLAB Welcome Main Page" l="5" />
+  <i t="Welcome to caNanoLab 1.0" l="0" />
+  <i t="Getting Started with caNanoLab 1.0" l="1">
+    <i t="About caNanoLab" l="2">
+      <i t="Introduction to caNanoLab" l="2#1085961" />
+      <i t="caNanoLab Welcome Login Page" l="3" />
+      <i t="Registering a New User" l="4" />
+      <i t="Logging into caNanoLab/Updating Password" l="5" />
+      <i t="caNanoLab Welcome Main Page" l="6" />
     </i>
-    <i t="Using caLAB Online Help" l="6" />
-    <i t="Navigation in caLAB" l="7">
-      <i t="caLAB Functionality Overview" l="8" />
+    <i t="Using caNanoLab Online Help" l="7" />
+    <i t="Navigation in caNanoLab" l="8">
+      <i t="caNanoLab Functionality Overview" l="9" />
     </i>
-    <i t="Managing caLAB Inventory" l="9">
-      <i t="Managing Samples" l="10">
-        <i t="caLAB Sample Overview" l="11" />
-        <i t="Creating a New Sample" l="12" />
+    <i t="Managing caNanoLab Inventory" l="10">
+      <i t="Managing Samples" l="11">
+        <i t="caNanoLab Sample Overview" l="12" />
+        <i t="Creating a New Sample" l="13" />
       </i>
-      <i t="Manage Aliquots" l="13">
-        <i t="Creating A New Aliquot" l="14" />
-        <i t="Editing an Aliquot" l="15" />
-        <i t="Aliquot Naming Conventions" l="16" />
-        <i t="Viewing an Aliquot" l="17" />
-        <i t="Using an Aliquot" l="18" />
-        <i t="Masking an Aliquot" l="19" />
-      </i>
-    </i>
-    <i t="Working With a caLAB Workflow" l="20">
-      <i t="Workflow Overview" l="21" />
-      <i t="Executing a caLAB Workflow" l="22">
-        <i t="Creating an Assay Run" l="23" />
-        <i t="Searching Runs" l="24" />
-        <i t="Search Run Results" l="25" />
-        <i t="Run Details Page" l="26" />
-        <i t="Assay Run In and Out Folders" l="27" />
+      <i t="Manage Aliquots" l="14">
+        <i t="Creating A New Aliquot" l="15" />
+        <i t="Editing an Aliquot" l="16" />
+        <i t="Aliquot Naming Conventions" l="17" />
+        <i t="Viewing an Aliquot" l="18" />
+        <i t="Using an Aliquot" l="19" />
+        <i t="Masking an Aliquot" l="20" />
       </i>
     </i>
-    <i t="Working with Files" l="28">
-      <i t="Uploading Input/Output Files" l="29" />
-      <i t="caLAB File Naming Conventions" l="30" />
-      <i t="Masking a File" l="31" />
-      <i t="Downloading Files" l="32" />
+    <i t="Working With a caNanoLab Workflow" l="21">
+      <i t="Workflow Overview" l="22" />
+      <i t="Executing a caNanoLab Workflow" l="23">
+        <i t="Creating an Assay Run" l="24" />
+        <i t="Searching Runs" l="25" />
+        <i t="Search Run Results" l="26" />
+        <i t="Run Details - Workflow General Information" l="27" />
+        <i t="Assay Run In and Out Folders" l="28" />
+      </i>
     </i>
-  </i>
-  <i t="Searching the caLAB Database" l="33">
-    <i t="Launching a caLAB Search" l="34">
-      <i t="Searching a Workflow" l="35">
-        <i t="Workflow Search Results" l="36" />
-      </i>
-      <i t="Searching Samples" l="37">
-        <i t="Sample Search Results" l="38" />
-        <i t="Sample Details Page" l="39" />
-      </i>
-      <i t="Searching Aliquots" l="40">
-        <i t="Aliquot Search Results" l="41" />
-        <i t="Aliquot Details Page" l="42" />
-      </i>
-      <i t="Searching Nanoparticles" l="43">
-        <i t="Nanoparticle Search Results" l="44" />
-        <i t="Nanoparticle Details" l="45" />
-      </i>
-      <i t="Searching Reports" l="46">
-        <i t="Reports Search Results" l="47" />
-      </i>
+    <i t="Working with Files" l="29">
+      <i t="Uploading Input/Output Files" l="30" />
+      <i t="caNanoLab File Naming Conventions" l="31" />
+      <i t="Masking a File" l="32" />
+      <i t="Downloading Files" l="33" />
     </i>
   </i>
-  <i t="Annotating Nanoparticles" l="48">
-    <i t="Submitting Annotations for Nanoparticles" l="49">
-      <i t="Annotating a Nanoparticle" l="50">
-        <i t="Nanoparticle General Information" l="51" />
-        <i t="Particle Tree" l="52" />
+  <i t="Annotating Nanoparticles" l="34">
+    <i t="Submitting Annotations for Nanoparticles" l="35">
+      <i t="Annotating a Nanoparticle" l="36">
+        <i t="Nanoparticle General Information" l="37" />
+        <i t="Particle Tree" l="38" />
       </i>
     </i>
-    <i t="Nanoparticle Function" l="53">
-      <i t="Nanoparticle Function Page" l="54" />
+    <i t="Nanoparticle Function" l="39">
+      <i t="Nanoparticle Function Page" l="40" />
     </i>
-    <i t="Nanoparticle Characterization" l="55">
-      <i t="Physical Characterization" l="56">
-        <i t="Composition" l="57">
-          <i t="Carbon Nanotube" l="58" />
-          <i t="Complex Particle" l="59" />
-          <i t="Dendrimer" l="60" />
-          <i t="Emulsion" l="61" />
-          <i t="Fullerene" l="62" />
-          <i t="Liposome" l="63" />
-          <i t="Metal Particle" l="64" />
-          <i t="Polymer" l="65" />
-          <i t="Quantum Dot" l="66" />
+    <i t="Nanoparticle Characterization" l="41">
+      <i t="Physical Characterization" l="42">
+        <i t="Composition" l="43">
+          <i t="Carbon Nanotube" l="44" />
+          <i t="Complex Particle" l="45" />
+          <i t="Dendrimer" l="46" />
+          <i t="Emulsion" l="47" />
+          <i t="Fullerene" l="48" />
+          <i t="Liposome" l="49" />
+          <i t="Metal Particle" l="50" />
+          <i t="Polymer" l="51" />
+          <i t="Quantum Dot" l="52" />
         </i>
-        <i t="Loading Characterization Files" l="67" />
-        <i t="Nanoparticle Size" l="68" />
-        <i t="Nanoparticle Molecular Weight" l="69" />
-        <i t="Nanoparticle Morphology" l="70" />
-        <i t="Nanoparticle Shape" l="71" />
-        <i t="Nanoparticle Surface" l="72" />
-        <i t="Nanoparticle Solubility" l="73" />
-        <i t="Nanoparticle Purity" l="74" />
+        <i t="Loading Characterization Files" l="53" />
+        <i t="Size" l="54" />
+        <i t="Molecular Weight" l="55" />
+        <i t="Morphology" l="56" />
+        <i t="Shape" l="57" />
+        <i t="Surface" l="58" />
+        <i t="Solubility" l="59" />
+        <i t="Purity" l="60" />
       </i>
-      <i t="In Vitro Characterization" l="75">
-        <i t="In Vitro Characterization Forms" l="76" />
-        <i t="Toxicity" l="77">
-          <i t="Cytotoxicity" l="78" />
-          <i t="Immunotoxicity" l="79" />
+      <i t="In Vitro Characterization" l="61">
+        <i t="In Vitro Characterization Forms" l="62" />
+        <i t="Toxicity" l="63">
+          <i t="Cytotoxicity" l="64" />
+          <i t="Immunotoxicity" l="65" />
         </i>
       </i>
     </i>
-    <i t="Publishing a Nanoparticle Report" l="80" />
+    <i t="Publishing a Nanoparticle Report" l="66" />
   </i>
-  <i t="Application Support" l="81" />
+  <i t="Searching the caNanoLab Data­base" l="67">
+    <i t="Launching a caNanoLab Search" l="68">
+      <i t="Searching a Workflow" l="69">
+        <i t="Workflow Search Results" l="70" />
+      </i>
+      <i t="Searching Samples" l="71">
+        <i t="Sample Search Results" l="72" />
+        <i t="Sample Details Page" l="73" />
+      </i>
+      <i t="Searching Aliquots" l="74">
+        <i t="Aliquot Search Results" l="75" />
+        <i t="Aliquot Details Page" l="76" />
+      </i>
+      <i t="Searching Nanoparticles" l="77">
+        <i t="Nanoparticle Search Results" l="78" />
+        <i t="Nanoparticle Details" l="79" />
+      </i>
+      <i t="Searching Nanoparticle Reports" l="80">
+        <i t="Nanoparticle Reports Search Results" l="81" />
+        <i t="Nanoparticle Report Details Page" l="82" />
+      </i>
+    </i>
+  </i>
+  <i t="Application Support" l="83" />
 </WebWorksHelpTOC>
