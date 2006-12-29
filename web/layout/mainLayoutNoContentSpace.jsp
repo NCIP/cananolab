@@ -39,7 +39,7 @@
 							<tbody>
 								<tr>
 									<td colspan="2" height="50">
-										<%-- include caLAB header --%>
+										<%-- include caNanoLab header --%>
 										<tiles:insert attribute="calabHeader" />
 									</td>
 								</tr>
@@ -54,20 +54,20 @@
 											<tbody>
 												<tr>
 													<td class="mainMenu" width="100%" height="20">
-														<%-- include caLAB main menu --%>
+														<%-- include caNanoLab main menu --%>
 														<tiles:insert attribute="calabMainmenu" />
 													</td>
 												</tr>
 												<tr>
 													<td width="800" valign="top">
-														<%-- include caLAB main content --%>
+														<%-- include caNanoLab main content --%>
 														<%--main content starts --%>
 														<tiles:insert attribute="calabContent" />
 													</td>
 												</tr>
 												<tr>
 													<td class="footerMenu" width="100%" height="20">
-														<%-- include caLAB footer --%>
+														<%-- include caNanoLab footer --%>
 														<tiles:insert attribute="calabFooter" />
 													</td>
 												</tr>

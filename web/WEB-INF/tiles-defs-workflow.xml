@@ -23,9 +23,9 @@
 		<put name="searchLink" value="searchRun.do?dispatch=setup" />
 	</definition>
 
-	<!-- main layout definition for the workflow content page inside caLAB -->
+	<!-- main layout definition for the workflow content page inside caNanoLab -->
 	<definition name="workflow.content.home" path="/layout/workflowLayout.jsp">
-		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp" />
+		<put name="workflowActionMenu" value="/workflow/actionMenu.jsp?helpFlag=on" />
 		<putList name="inActions">
 			<item value="Use Aliquot" link="useAliquot.do?dispatch=setup" />
 			<item value="Upload Files" link="fileUpload.do?dispatch=setup" />

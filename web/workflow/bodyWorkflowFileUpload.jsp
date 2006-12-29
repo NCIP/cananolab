@@ -40,7 +40,7 @@
 								<jsp:param name="permissibleFileExtension" value="${fileUploadForm.map.permissibleFileExtension}" />
 							</jsp:params>
 							<jsp:fallback>
-		<p> The file upload applet couldn't be loaded correctly, please contact caLAB administrator </p>
+		<p> The file upload applet couldn't be loaded correctly, please contact caNanoLab administrator </p>
 					</jsp:fallback>
 						</jsp:plugin>
 					</td>

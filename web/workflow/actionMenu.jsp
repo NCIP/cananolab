@@ -12,6 +12,7 @@
 		<c:set var="menuType" value="${sessionScope.menuType}" />
 	</c:otherwise>
 </c:choose>
+<c:set var="helpFlag" value="${param.helpFlag}" />
 <%-- for debug use
 <c:out value="${pageContext.request.method}" /><br>
 <c:forEach var="paramItem" items="${paramValues}" varStatus="ind">
@@ -50,7 +51,8 @@
 					</td>
 				</logic:iterate>
 			</tr>
-		</table>
+		</table><br>
+		<logic:present name="helpFlag">
 		<table width="100%" border="0" cellspacing="0" cellpadding="0">
 			<tr>
 				<td align="right">
@@ -58,6 +60,7 @@
 			</td>
 			</tr>
 		</table>
+		</logic:present>
 	</logic:present>
 </logic:present>
 

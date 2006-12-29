@@ -3,7 +3,7 @@
        "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN"
        "http://struts.apache.org/dtds/tiles-config_1_1.dtd">
 <tiles-definitions>
-	<!-- main layout definition for the submit content page inside caLAB -->
+	<!-- main layout definition for the submit content page inside caNanoLab -->
 	<definition name="submit.content.home" path="/layout/submitLayout.jsp">
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
 		<putList name="physicalActions">

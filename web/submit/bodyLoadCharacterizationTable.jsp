@@ -49,7 +49,7 @@
 								<br>
 								<br>
 								<html:radio property="fileSource" value="chooseExisting">
-									<strong> Choose File From caLAB workflow</strong>
+									<strong> Choose File From caNanoLab workflow</strong>
 								</html:radio>
 								<table cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">									
 									<tr>

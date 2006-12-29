@@ -9,12 +9,12 @@
 				<table summary="" cellpadding="0" cellspacing="0" border="0" height="100%">
 					<tr>
 						<td class="welcomeTitle" height="20">
-							WELCOME TO caLAB
+							WELCOME TO caNanoLab
 						</td>
 					</tr>
 					<tr>
 						<td class="welcomeContent" valign="top">
-							Welcome to the cancer Laboratory Analysis Bench (caLAB)! caLAB is a Laboratory Information Management System (LIMS) designed to facilitate data sharing in laboratories performing nanoparticle assays.  caLAB provides support for the accessioning of samples (nanoparticles), execution of nanoparticle assays, and recording of assay results.  Additionally, caLAB allows for  the  annotation of nanoparticles with characterizations resulting from physical and in vitro nanoparticle assays and the sharing of these characterizations in a secure fashion.
+							Welcome to the cancer Nanotechnology Laboratory Analysis Bench (caNanoLab)! caNanoLab is a Laboratory Information Management System (LIMS) designed to facilitate data sharing in laboratories performing nanoparticle assays.  caNanoLab provides support for the accessioning of samples (nanoparticles), execution of nanoparticle assays, and recording of assay results.  Additionally, caNanoLab allows for  the  annotation of nanoparticles with characterizations resulting from physical and in vitro nanoparticle assays and the sharing of these characterizations in a secure fashion.
 						</td>
 					</tr>
 				</table>
@@ -94,9 +94,9 @@
 								</tr>
 								<tr>
 									<td class="sidebarContent">
-										<strong>caLAB 1.0 is now available!</strong>
+										<strong>caNanoLab 1.0 is now available!</strong>
 										<br>
-										caLAB 1.0 contains the following features:
+										caNanoLab 1.0 contains the following features:
 										<br>
 										<ul>
 											<li>

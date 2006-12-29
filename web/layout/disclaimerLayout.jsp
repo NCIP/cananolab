@@ -23,7 +23,7 @@
 							<tbody>
 								<tr>
 									<td height="50">
-										<%-- include caLAB header --%>
+										<%-- include caNanoLab header --%>
 										<tiles:insert attribute="calabHeader" />
 									</td>
 								</tr>
@@ -38,7 +38,7 @@
 				</tr>
 				<tr>
 					<td class="footerMenu" width="100%" height="20">
-						<%-- include caLAB footer --%>
+						<%-- include caNanoLab footer --%>
 						<tiles:insert attribute="calabFooter" />
 					</td>
 				</tr>
