@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
 <struts-config>
-	<display-name>caLAB</display-name>
+	<display-name>caNanoLab</display-name>
 	<form-beans>
 		<form-bean name="initSessionForm" type="org.apache.struts.action.DynaActionForm">
 			<form-property name="forwardPage" type="java.lang.String" />

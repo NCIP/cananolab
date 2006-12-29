@@ -13,7 +13,7 @@
 				</h3>
 			</td>
 			<td align="right" width="15%">
-				<a href="javascript:openHelpWindow('webHelp/caLAB_0.5/index.html?single=true&amp;context=caLAB_0.5&amp;topic=create_nanoparticle')" class="helpText">Help</a>
+	
 				<logic:equal name="reportActionName" value="updateReport">
 				&nbsp;&nbsp;<a href="/calab/reportResults.do" class="helpText">Back</a>
 				</logic:equal>
