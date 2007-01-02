@@ -26,7 +26,7 @@
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.login" path="/index.jsp" type="java.lang.Exception" />
 			<forward name="success" path="calab.welcome" />
 			<forward name="input" path="calab.index" />
-			<forward name="changePassword" path="calab.password"/>
+			<forward name="changePassword" path="calab.password" />
 		</action>
 		<action name="updatePasswordForm" path="/updatePassword" scope="request" type="gov.nih.nci.calab.ui.security.UpdatePasswordAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.password" path="calab.password" type="java.lang.Exception" />
@@ -41,6 +41,7 @@
 
 	<controller>
 		<set-property value="true" property="inputForward" />
+		<set-property property="processorClass" value="gov.nih.nci.calab.ui.core.CustomRequestProcessor" />
 	</controller>
 	<message-resources parameter="gov.nih.nci.calab.resources.application" null="false" />
 	<message-resources key="workflow" parameter="gov.nih.nci.calab.resources.workflow" null="false" />
