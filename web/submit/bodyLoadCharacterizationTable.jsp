@@ -117,7 +117,7 @@
 										<div align="right">
 											<div align="right">
 												<input type="button" value="Cancel" onclick="javascript:history.go(-1);">
-												<input type="reset" value="Reset" onclick="javascript:resetSelect(document.submitReportForm.particleNames));">
+												<input type="reset" value="Reset">
 												<input type="hidden" name="dispatch" value="submit">
 												<input type="hidden" name="page" value="2">
 												<html:hidden property="forwardPage" />
