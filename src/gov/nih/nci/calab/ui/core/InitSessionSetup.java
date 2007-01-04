@@ -15,7 +15,7 @@ import gov.nih.nci.calab.service.common.LookupService;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
-import gov.nih.nci.calab.service.util.CalabComparators;
+import gov.nih.nci.calab.service.util.CaNanoLabComparators;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
@@ -125,7 +125,7 @@ public class InitSessionSetup {
 			List<String> sampleNames = new ArrayList<String>(sampleAliquots
 					.keySet());
 			Collections.sort(sampleNames,
-					new CalabComparators.SortableNameComparator());
+					new CaNanoLabComparators.SortableNameComparator());
 			session.setAttribute("allUnmaskedSampleAliquots", sampleAliquots);
 			session.setAttribute("allSampleNamesWithAliquots", sampleNames);
 		}
@@ -273,7 +273,7 @@ public class InitSessionSetup {
 			List<String> sampleNames = new ArrayList<String>(sampleContainers
 					.keySet());
 			Collections.sort(sampleNames,
-					new CalabComparators.SortableNameComparator());
+					new CaNanoLabComparators.SortableNameComparator());
 
 			session.setAttribute("allSampleContainers", sampleContainers);
 			session.setAttribute("allSampleNames", sampleNames);

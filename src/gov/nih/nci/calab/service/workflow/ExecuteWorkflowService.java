@@ -15,7 +15,7 @@ import gov.nih.nci.calab.dto.inventory.StorageLocation;
 import gov.nih.nci.calab.dto.workflow.AssayBean;
 import gov.nih.nci.calab.dto.workflow.FileBean;
 import gov.nih.nci.calab.dto.workflow.RunBean;
-import gov.nih.nci.calab.service.util.CalabComparators;
+import gov.nih.nci.calab.service.util.CaNanoLabComparators;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.service.util.file.FileNameConvertor;
@@ -338,31 +338,31 @@ public class ExecuteWorkflowService {
 	 * outFileBean.setFileMaskStatus(statusStr); }
 	 * 
 	 * if (assayTypeAssayMap.get(assayBean.getAssayType()) == null) { assays =
-	 * new TreeSet<AssayBean>( new CalabComparators.AssayBeanComparator());
+	 * new TreeSet<AssayBean>( new CaNanoLabComparators.AssayBeanComparator());
 	 * assayTypeAssayMap.put(assayBean.getAssayType(), assays); } else { assays =
 	 * assayTypeAssayMap.get(assayBean.getAssayType()); } assays.add(assayBean);
 	 * 
 	 * if (runBean != null) { if (assayRunMap.get(assayBean.getAssayId()) ==
 	 * null) { runs = new TreeSet<RunBean>( new
-	 * CalabComparators.RunBeanComparator());
+	 * CaNanoLabComparators.RunBeanComparator());
 	 * assayRunMap.put(assayBean.getAssayId(), runs); } else { runs =
 	 * assayRunMap.get(assayBean.getAssayId()); } runs.add(runBean); }
 	 * 
 	 * if (aliquotBean != null) { if (runAliquotMap.get(runBean.getId()) ==
 	 * null) { aliquots = new TreeSet<AliquotBean>( new
-	 * CalabComparators.AliquotBeanComparator());
+	 * CaNanoLabComparators.AliquotBeanComparator());
 	 * runAliquotMap.put(runBean.getId(), aliquots); } else { aliquots =
 	 * runAliquotMap.get(runBean.getId()); } aliquots.add(aliquotBean); }
 	 * 
 	 * if (inFileBean != null) { if (runInFileMap.get(runBean.getId()) == null) {
 	 * inFiles = new TreeSet<FileBean>( new
-	 * CalabComparators.FileBeanComparator()); runInFileMap.put(runBean.getId(),
+	 * CaNanoLabComparators.FileBeanComparator()); runInFileMap.put(runBean.getId(),
 	 * inFiles); } else { inFiles = runInFileMap.get(runBean.getId()); }
 	 * inFiles.add(inFileBean); }
 	 * 
 	 * if (outFileBean != null) { if (runOutFileMap.get(runBean.getId()) ==
 	 * null) { outFiles = new TreeSet<FileBean>( new
-	 * CalabComparators.FileBeanComparator());
+	 * CaNanoLabComparators.FileBeanComparator());
 	 * runOutFileMap.put(runBean.getId(), outFiles); } else { outFiles =
 	 * runOutFileMap.get(runBean.getId()); } outFiles.add(outFileBean); } } //
 	 * Get all counts and parent child associations
@@ -561,13 +561,13 @@ public class ExecuteWorkflowService {
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		SortedSet<AliquotBean> aliquots = new TreeSet<AliquotBean>(
-				new CalabComparators.AliquotBeanComparator());
+				new CaNanoLabComparators.AliquotBeanComparator());
 
 		SortedSet<FileBean> inFiles = new TreeSet<FileBean>(
-				new CalabComparators.FileBeanComparator());
+				new CaNanoLabComparators.FileBeanComparator());
 		;
 		SortedSet<FileBean> outFiles = new TreeSet<FileBean>(
-				new CalabComparators.FileBeanComparator());
+				new CaNanoLabComparators.FileBeanComparator());
 		RunBean runBean = null;
 		try {
 			ida.open();
@@ -690,7 +690,7 @@ public class ExecuteWorkflowService {
 							.getId());
 				} else {
 					aliquots = new TreeSet<AliquotBean>(
-							new CalabComparators.AliquotBeanComparator());
+							new CaNanoLabComparators.AliquotBeanComparator());
 					runAliquotMap.put(run.getId(), aliquots);
 				}
 				if (aliquotBean != null) {
@@ -724,7 +724,7 @@ public class ExecuteWorkflowService {
 			ida.close();
 		}
 
-		Collections.sort(runs, new CalabComparators.RunBeanComparator());
+		Collections.sort(runs, new CaNanoLabComparators.RunBeanComparator());
 		return runs;
 	}
 }

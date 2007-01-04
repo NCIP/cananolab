@@ -17,9 +17,9 @@ import java.util.Comparator;
  * 
  */
 
-/* CVS $Id: CalabComparators.java,v 1.8 2006-08-01 13:21:55 pansu Exp $ */
+/* CVS $Id: CaNanoLabComparators.java,v 1.1 2007-01-04 23:31:01 pansu Exp $ */
 
-public class CalabComparators {
+public class CaNanoLabComparators {
 
 	public static class RunBeanComparator implements Comparator<RunBean> {
 		public int compare(RunBean run1, RunBean run2) {

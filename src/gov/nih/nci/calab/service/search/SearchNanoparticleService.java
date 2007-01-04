@@ -17,7 +17,7 @@ import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
-import gov.nih.nci.calab.service.util.CalabComparators;
+import gov.nih.nci.calab.service.util.CaNanoLabComparators;
 import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.io.File;
@@ -161,7 +161,7 @@ public class SearchNanoparticleService {
 
 		// sort the list by IDs
 		Collections.sort(filteredParticles,
-				new CalabComparators.SampleBeanComparator());
+				new CaNanoLabComparators.SampleBeanComparator());
 		return filteredParticles;
 	}
 

@@ -7,7 +7,7 @@ import gov.nih.nci.calab.domain.Run;
 import gov.nih.nci.calab.dto.common.SortableName;
 import gov.nih.nci.calab.dto.inventory.AliquotBean;
 import gov.nih.nci.calab.dto.inventory.SampleBean;
-import gov.nih.nci.calab.service.util.CalabComparators;
+import gov.nih.nci.calab.service.util.CaNanoLabComparators;
 import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.ArrayList;
@@ -144,7 +144,7 @@ public class RunBean {
 			return null;
 		}
 		sampleBeans = new TreeSet<SampleBean>(
-				new CalabComparators.SampleBeanComparator());
+				new CaNanoLabComparators.SampleBeanComparator());
 		for (AliquotBean aliquot : aliquotBeans) {
 			sampleBeans.add(aliquot.getSample());
 		}

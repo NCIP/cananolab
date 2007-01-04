@@ -5,7 +5,7 @@ import gov.nih.nci.calab.db.IDataAccess;
 import gov.nih.nci.calab.domain.Aliquot;
 import gov.nih.nci.calab.dto.inventory.AliquotBean;
 import gov.nih.nci.calab.dto.inventory.StorageLocation;
-import gov.nih.nci.calab.service.util.CalabComparators;
+import gov.nih.nci.calab.service.util.CaNanoLabComparators;
 import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import org.apache.log4j.Logger;
  * @author pansu
  * 
  */
-/* CVS $Id: SearchAliquotService.java,v 1.1 2006-08-01 13:22:58 pansu Exp $ */
+/* CVS $Id: SearchAliquotService.java,v 1.2 2007-01-04 23:31:01 pansu Exp $ */
 
 public class SearchAliquotService {
 	private static Logger logger = Logger.getLogger(SearchAliquotService.class);
@@ -147,7 +147,7 @@ public class SearchAliquotService {
 		}
 
 		Collections
-				.sort(aliquots, new CalabComparators.AliquotBeanComparator());
+				.sort(aliquots, new CaNanoLabComparators.AliquotBeanComparator());
 		return aliquots;
 	}
 
@@ -176,7 +176,7 @@ public class SearchAliquotService {
 		}
 
 		Collections
-				.sort(aliquots, new CalabComparators.AliquotBeanComparator());
+				.sort(aliquots, new CaNanoLabComparators.AliquotBeanComparator());
 		return aliquots;
 	}
 }
