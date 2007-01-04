@@ -3,7 +3,7 @@ package gov.nih.nci.calab.dto.inventory;
 import gov.nih.nci.calab.domain.Sample;
 import gov.nih.nci.calab.domain.SampleContainer;
 import gov.nih.nci.calab.dto.common.SortableName;
-import gov.nih.nci.calab.service.util.CalabComparators;
+import gov.nih.nci.calab.service.util.CaNanoLabComparators;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 
@@ -19,7 +19,7 @@ import java.util.Set;
  * 
  */
 
-/* CVS $Id: SampleBean.java,v 1.5 2007-01-04 23:20:56 pansu Exp $ */
+/* CVS $Id: SampleBean.java,v 1.6 2007-01-04 23:31:01 pansu Exp $ */
 public class SampleBean {
 	private String sampleId = "";
 
@@ -164,7 +164,7 @@ public class SampleBean {
 			containers[i].setSample(this);
 			i++;
 		}
-		Arrays.sort(containers, new CalabComparators.ContainerBeanComparator());
+		Arrays.sort(containers, new CaNanoLabComparators.ContainerBeanComparator());
 	}
 
 	public Date getDateReceived() {

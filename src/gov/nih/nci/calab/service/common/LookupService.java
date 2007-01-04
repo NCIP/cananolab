@@ -14,7 +14,7 @@ import gov.nih.nci.calab.dto.inventory.SampleBean;
 import gov.nih.nci.calab.dto.workflow.AssayBean;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
-import gov.nih.nci.calab.service.util.CalabComparators;
+import gov.nih.nci.calab.service.util.CaNanoLabComparators;
 import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.90 2007-01-04 23:23:13 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.91 2007-01-04 23:31:01 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -70,7 +70,7 @@ public class LookupService {
 							.get(sampleName);
 				} else {
 					aliquots = new TreeSet<AliquotBean>(
-							new CalabComparators.AliquotBeanComparator());
+							new CaNanoLabComparators.AliquotBeanComparator());
 					sampleAliquots.put(sampleName, aliquots);
 				}
 				aliquots.add(aliquot);
@@ -112,7 +112,7 @@ public class LookupService {
 								.get(sampleName);
 					} else {
 						containers = new TreeSet<ContainerBean>(
-								new CalabComparators.ContainerBeanComparator());
+								new CaNanoLabComparators.ContainerBeanComparator());
 						sampleContainers.put(sampleName, containers);
 					}
 					containers.add(container);
@@ -323,7 +323,7 @@ public class LookupService {
 		} finally {
 			ida.close();
 		}
-		Collections.sort(samples, new CalabComparators.SampleBeanComparator());
+		Collections.sort(samples, new CaNanoLabComparators.SampleBeanComparator());
 		return samples;
 	}
 
@@ -377,7 +377,7 @@ public class LookupService {
 							.getAssayType());
 				} else {
 					assays = new TreeSet<AssayBean>(
-							new CalabComparators.AssayBeanComparator());
+							new CaNanoLabComparators.AssayBeanComparator());
 					assayTypeAssays.put(assay.getAssayType(), assays);
 				}
 				assays.add(assay);
@@ -443,7 +443,7 @@ public class LookupService {
 					}
 				} else {
 					samples = new TreeSet<SampleBean>(
-							new CalabComparators.SampleBeanComparator());
+							new CaNanoLabComparators.SampleBeanComparator());
 					if (sample.getSampleSource().length() > 0) {
 						sampleSourceSamples.put(sample.getSampleSource(),
 								samples);
@@ -567,7 +567,7 @@ public class LookupService {
 									.get(particleType);
 						} else {
 							particleNames = new TreeSet<String>(
-									new CalabComparators.SortableNameComparator());
+									new CaNanoLabComparators.SortableNameComparator());
 							particleTypeParticles.put(particleType,
 									particleNames);
 						}
