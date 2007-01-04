@@ -3,7 +3,7 @@ package gov.nih.nci.calab.dto.inventory;
 import gov.nih.nci.calab.domain.SampleContainer;
 import gov.nih.nci.calab.domain.StorageElement;
 import gov.nih.nci.calab.dto.common.SortableName;
-import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.Set;
@@ -15,7 +15,7 @@ import java.util.Set;
  * @author pansu
  * 
  */
-/* CVS $Id: ContainerBean.java,v 1.2 2006-07-31 21:41:23 pansu Exp $ */
+/* CVS $Id: ContainerBean.java,v 1.3 2007-01-04 23:20:56 pansu Exp $ */
 
 public class ContainerBean {
 	private String containerId="";
@@ -131,21 +131,21 @@ public class ContainerBean {
 			for (Object obj : storageElements) {
 				StorageElement element = (StorageElement) obj;
 				String location = element.getLocation();
-				if (element.getType().equals(CalabConstants.STORAGE_LAB)) {
+				if (element.getType().equals(CaNanoLabConstants.STORAGE_LAB)) {
 					lab = location;
 				} else if (element.getType()
-						.equals(CalabConstants.STORAGE_ROOM)) {
+						.equals(CaNanoLabConstants.STORAGE_ROOM)) {
 					room = location;
 				} else if (element.getType().equals(
-						CalabConstants.STORAGE_FREEZER)) {
+						CaNanoLabConstants.STORAGE_FREEZER)) {
 					freezer = location;
 				} else if (element.getType().equals(
-						CalabConstants.STORAGE_SHELF)) {
+						CaNanoLabConstants.STORAGE_SHELF)) {
 					shelf = location;
 				} else if (element.getType()
-						.equals(CalabConstants.STORAGE_RACK)) {
+						.equals(CaNanoLabConstants.STORAGE_RACK)) {
 					rack = location;
-				} else if (element.getType().equals(CalabConstants.STORAGE_BOX)) {
+				} else if (element.getType().equals(CaNanoLabConstants.STORAGE_BOX)) {
 					box = location;
 				}
 			}

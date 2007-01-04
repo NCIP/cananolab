@@ -16,8 +16,8 @@ import gov.nih.nci.calab.service.search.SearchNanoparticleService;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.service.util.CalabComparators;
-import gov.nih.nci.calab.service.util.CalabConstants;
-import gov.nih.nci.calab.service.util.CananoConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.service.workflow.ExecuteWorkflowService;
 import gov.nih.nci.common.util.StringHelper;
@@ -51,7 +51,7 @@ public class InitSessionSetup {
 
 	private InitSessionSetup() throws Exception {
 		lookupService = new LookupService();
-		userService = new UserService(CalabConstants.CSM_APP_NAME);
+		userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
 	}
 
 	public static InitSessionSetup getInstance() throws Exception {
@@ -228,7 +228,7 @@ public class InitSessionSetup {
 			creator = user.getLoginName();
 		}
 		String creationDate = StringUtils.convertDateToString(new Date(),
-				CalabConstants.DATE_FORMAT);
+				CaNanoLabConstants.DATE_FORMAT);
 		session.setAttribute("creator", creator);
 		session.setAttribute("creationDate", creationDate);
 	}
@@ -346,10 +346,9 @@ public class InitSessionSetup {
 		return userService.checkExecutePermission(user, domain);
 	}
 
-	public void setParticleTypeParticles(HttpSession session)
-			throws Exception {
+	public void setParticleTypeParticles(HttpSession session) throws Exception {
 		if (session.getAttribute("particleTypeParticles") == null
-				|| session.getAttribute("newSampleCreated") != null 
+				|| session.getAttribute("newSampleCreated") != null
 				|| session.getAttribute("newParticleCreated") != null) {
 			Map<String, SortedSet<String>> particleTypeParticles = lookupService
 					.getAllParticleTypeParticles();
@@ -510,8 +509,9 @@ public class InitSessionSetup {
 		if (session.getAttribute("particleReports") == null
 				|| session.getAttribute("newReportCreated") != null
 				|| session.getAttribute("newParticleCreated") != null) {
+
 			List<LabFileBean> reportBeans = service.getReportInfo(particleName,
-					particleType, CananoConstants.NCL_REPORT, user);
+					particleType, CaNanoLabConstants.REPORT, user);
 			session.setAttribute("particleReports", reportBeans);
 		}
 
@@ -520,11 +520,11 @@ public class InitSessionSetup {
 				|| session.getAttribute("newParticleCreated") != null) {
 			List<LabFileBean> associatedBeans = service.getReportInfo(
 					particleName, particleType,
-					CananoConstants.ASSOCIATED_FILE, user);
+					CaNanoLabConstants.ASSOCIATED_FILE, user);
 			session.setAttribute("particleAssociatedFiles", associatedBeans);
 		}
 		// not part of the side menu, but need to up
-		if ( session.getAttribute("newParticleCreated") != null) {
+		if (session.getAttribute("newParticleCreated") != null) {
 			setParticleTypeParticles(session);
 		}
 		session.removeAttribute("newCharacterizationCreated");
@@ -669,16 +669,20 @@ public class InitSessionSetup {
 
 	public void setStaticDropdowns(HttpSession session) {
 		// set static boolean yes or no and characterization source choices
-		session.setAttribute("booleanChoices", CananoConstants.BOOLEAN_CHOICES);
+		session.setAttribute("booleanChoices",
+				CaNanoLabConstants.BOOLEAN_CHOICES);
 		session.setAttribute("characterizationSources",
-				CananoConstants.CHARACTERIZATION_SOURCES);
+				CaNanoLabConstants.CHARACTERIZATION_SOURCES);
 		session.setAttribute("allCarbonNanotubeWallTypes",
-				CananoConstants.CARBON_NANOTUBE_WALLTYPES);
-		session.setAttribute("allReportTypes", CananoConstants.REPORT_TYPES);
+				CaNanoLabConstants.CARBON_NANOTUBE_WALLTYPES);
+		if (session.getAttribute("allReportTypes") == null) {
+			String[] allReportTypes = lookupService.getAllReportTypes();
+			session.setAttribute("allReportTypes", allReportTypes);
+		}
 		session.setAttribute("allFunctionLinkageTypes",
-				CananoConstants.FUNCTION_LINKAGE_TYPES);
+				CaNanoLabConstants.FUNCTION_LINKAGE_TYPES);
 		session.setAttribute("allFunctionAgentTypes",
-				CananoConstants.FUNCTION_AGENT_TYPES);
+				CaNanoLabConstants.FUNCTION_AGENT_TYPES);
 	}
 
 	public void setAllRunFiles(HttpSession session, String particleName)
@@ -789,6 +793,13 @@ public class InitSessionSetup {
 		if (session.getServletContext().getAttribute("allSpecies") == null) {
 			List<LabelValueBean> species = lookupService.getAllSpecies();
 			session.getServletContext().setAttribute("allSpecies", species);
+		}
+	}
+
+	public void setApplicationOwner(HttpSession session) {
+		if (session.getServletContext().getAttribute("applicationOwner") == null) {
+			session.getServletContext().setAttribute("applicationOwner",
+					CaNanoLabConstants.APP_OWNER);
 		}
 	}
 

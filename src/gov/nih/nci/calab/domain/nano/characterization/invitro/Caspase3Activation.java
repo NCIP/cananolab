@@ -10,7 +10,7 @@ import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.ComposingElement;
 import gov.nih.nci.calab.domain.nano.characterization.toxicity.Cytotoxicity;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
-import gov.nih.nci.calab.service.util.CananoConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 public class Caspase3Activation implements Cytotoxicity {
 
@@ -57,7 +57,7 @@ public class Caspase3Activation implements Cytotoxicity {
 	}
 
 	public String getClassification() {
-		return CananoConstants.INVITRO_CHARACTERIZATION;
+		return CaNanoLabConstants.INVITRO_CHARACTERIZATION;
 	}
 
 	public String getDescription() {
@@ -73,7 +73,7 @@ public class Caspase3Activation implements Cytotoxicity {
 	}
 
 	public String getName() {
-		return CananoConstants.CYTOTOXICITY_CASPASE3_ACTIVIATION;
+		return CaNanoLabConstants.CYTOTOXICITY_CASPASE3_ACTIVIATION;
 	}
 
 	public void setName(String name) {
@@ -134,7 +134,7 @@ public class Caspase3Activation implements Cytotoxicity {
 	}
 
 	public String getCellDeathMethod() {
-		return CananoConstants.NECROSIS_CELL_DEATH_METHOD_CYTOXICITY_CHARACTERIZATION;
+		return CaNanoLabConstants.NECROSIS_CELL_DEATH_METHOD_CYTOXICITY_CHARACTERIZATION;
 	}
 
 	public void setCellDeathMethod(String cellDeathMethod) {

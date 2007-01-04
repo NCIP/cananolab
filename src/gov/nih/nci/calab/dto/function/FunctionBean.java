@@ -5,7 +5,7 @@ package gov.nih.nci.calab.dto.function;
 
 import gov.nih.nci.calab.domain.nano.function.Function;
 import gov.nih.nci.calab.domain.nano.function.Linkage;
-import gov.nih.nci.calab.service.util.CananoConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,8 +93,8 @@ public class FunctionBean {
 
 	public String getViewTitle() {
 			// get only the first number of characters of the title
-		if (viewTitle!=null &&viewTitle.length() > CananoConstants.MAX_VIEW_TITLE_LENGTH) {
-			return viewTitle.substring(0, CananoConstants.MAX_VIEW_TITLE_LENGTH);
+		if (viewTitle!=null &&viewTitle.length() > CaNanoLabConstants.MAX_VIEW_TITLE_LENGTH) {
+			return viewTitle.substring(0, CaNanoLabConstants.MAX_VIEW_TITLE_LENGTH);
 		}
 		return viewTitle;
 	}

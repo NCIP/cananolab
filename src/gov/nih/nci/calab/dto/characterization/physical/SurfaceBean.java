@@ -5,7 +5,7 @@ import gov.nih.nci.calab.domain.nano.characterization.physical.Surface;
 import gov.nih.nci.calab.domain.nano.characterization.physical.SurfaceChemistry;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
-import gov.nih.nci.calab.service.util.CananoConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -141,7 +141,7 @@ public class SurfaceBean extends CharacterizationBean {
 	public Surface getDomainObj() {
 		Surface surface = new Surface();
 		super.updateDomainObj(surface);
-		boolean hycrophobicStatus = (isHydrophobic.equalsIgnoreCase(CananoConstants.BOOLEAN_YES)) ? true
+		boolean hycrophobicStatus = (isHydrophobic.equalsIgnoreCase(CaNanoLabConstants.BOOLEAN_YES)) ? true
 				: false;
 		surface.setIsHydrophobic(hycrophobicStatus);
 		surface.setCharge(new Measurement(charge,chargeUnit));

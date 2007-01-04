@@ -2,7 +2,7 @@ package gov.nih.nci.calab.ui.workflow;
 
 import gov.nih.nci.calab.dto.workflow.FileBean;
 import gov.nih.nci.calab.dto.workflow.RunBean;
-import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
 import gov.nih.nci.calab.service.util.SpecialCharReplacer;
 import gov.nih.nci.calab.service.util.file.FileNameConvertor;
@@ -75,13 +75,13 @@ public class FileUploadAction extends AbstractDispatchAction {
 		DynaActionForm fileForm = (DynaActionForm) form;
 		
 		fileForm.set("archiveValue", PropertyReader.getProperty(
-				CalabConstants.FILEUPLOAD_PROPERTY, "archiveValue"));
+				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "archiveValue"));
 		fileForm.set("servletURL", PropertyReader.getProperty(
-				CalabConstants.FILEUPLOAD_PROPERTY, "servletURL"));
+				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "servletURL"));
 		fileForm.set("notifyURL", PropertyReader.getProperty(
-				CalabConstants.FILEUPLOAD_PROPERTY, "notifyURL"));
+				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "notifyURL"));
 		fileForm.set("defaultURL", PropertyReader.getProperty(
-				CalabConstants.FILEUPLOAD_PROPERTY, "defaultURL"));
+				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "defaultURL"));
 		fileForm.set("sid", session.getId());
 		fileForm.set("module", "calab");
 		fileForm.set("permissibleFileExtension", "*");
@@ -110,7 +110,7 @@ public class FileUploadAction extends AbstractDispatchAction {
 		HttpFileUploadSessionData mySessionData = (HttpFileUploadSessionData) request
 				.getSession().getAttribute("httpFileUploadSessionData");
 		String path = PropertyReader.getProperty(
-				CalabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
+				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
 		String relativePathName = mySessionData.getAssayType() + File.separator
 				+ mySessionData.getAssay() + File.separator
 				+ mySessionData.getRun() + File.separator
@@ -174,15 +174,15 @@ public class FileUploadAction extends AbstractDispatchAction {
 			String runId = mySessionData.getRunId();
 
 			logger_.info("Persist file upload data to database ");
-			// use CalabConstants.URI_SEPERATOR to save in the database, which
+			// use CaNanoLabConstants.URI_SEPERATOR to save in the database, which
 			// might be different from physical file structure/seperator
 			String uriPathName = mySessionData.getAssayType()
-					+ CalabConstants.URI_SEPERATOR + mySessionData.getAssay()
-					+ CalabConstants.URI_SEPERATOR + mySessionData.getRun()
-					+ CalabConstants.URI_SEPERATOR + mySessionData.getInout();
-			String unzipFilePath = CalabConstants.URI_SEPERATOR + uriPathName
-					+ CalabConstants.URI_SEPERATOR
-					+ CalabConstants.UNCOMPRESSED_FILE_DIRECTORY;
+					+ CaNanoLabConstants.URI_SEPERATOR + mySessionData.getAssay()
+					+ CaNanoLabConstants.URI_SEPERATOR + mySessionData.getRun()
+					+ CaNanoLabConstants.URI_SEPERATOR + mySessionData.getInout();
+			String unzipFilePath = CaNanoLabConstants.URI_SEPERATOR + uriPathName
+					+ CaNanoLabConstants.URI_SEPERATOR
+					+ CaNanoLabConstants.UNCOMPRESSED_FILE_DIRECTORY;
 			ExecuteWorkflowService workflowService = new ExecuteWorkflowService();
 			workflowService.saveFile(fileList, unzipFilePath, runId, inout,
 					(String) session.getAttribute("creator"));
@@ -198,7 +198,7 @@ public class FileUploadAction extends AbstractDispatchAction {
 
 			FilePacker fPacker = new FilePacker();
 			String uncompressedFileDirecory = fullPathName + File.separator
-					+ CalabConstants.UNCOMPRESSED_FILE_DIRECTORY;
+					+ CaNanoLabConstants.UNCOMPRESSED_FILE_DIRECTORY;
 			fPacker.removeOldZipFile(uncompressedFileDirecory);
 
 			List<String> fileNameHolder = new ArrayList<String>();

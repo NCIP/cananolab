@@ -15,10 +15,8 @@ import gov.nih.nci.calab.dto.characterization.invitro.CellViabilityBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
-import gov.nih.nci.calab.service.util.CalabConstants;
-import gov.nih.nci.calab.service.util.CananoConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
-import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.ui.core.BaseCharacterizationAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
@@ -73,12 +71,12 @@ public class InvitroCellViabilityAction extends BaseCharacterizationAction {
 				} 
 				catch (NumberFormatException nfe) {
 					Exception dataPointException = new Exception(PropertyReader.getProperty(
-							CalabConstants.SUBMISSION_PROPERTY, "cellViabilityPercentage"));							
+							CaNanoLabConstants.SUBMISSION_PROPERTY, "cellViabilityPercentage"));							
 						throw dataPointException;
 				}
 
 				try {
-					if ( dataPoint.getIsAControl().equals(CananoConstants.BOOLEAN_NO) ) {
+					if ( dataPoint.getIsAControl().equals(CaNanoLabConstants.BOOLEAN_NO) ) {
 						for ( ConditionBean condition : dataPoint.getConditionList() ) {
 							Float.parseFloat(condition.getValue());
 						}
@@ -86,7 +84,7 @@ public class InvitroCellViabilityAction extends BaseCharacterizationAction {
 				} 
 				catch (NumberFormatException nfe) {
 					Exception conditionsException = new Exception(PropertyReader.getProperty(
-							CalabConstants.SUBMISSION_PROPERTY, "conditionValues"));							
+							CaNanoLabConstants.SUBMISSION_PROPERTY, "conditionValues"));							
 						throw conditionsException;
 				}
 			}
@@ -110,7 +108,7 @@ public class InvitroCellViabilityAction extends BaseCharacterizationAction {
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addCellViability(particleType, particleName, cellViabilityChar);
 		// Update the other cellLine in the session variable
-		if (cellViabilityChar.getCellLine().equals(CananoConstants.OTHER)) {
+		if (cellViabilityChar.getCellLine().equals(CaNanoLabConstants.OTHER)) {
 			// InitSessionSetup.getInstance().addCellLine(request.getSession(),
 			// cellViabilityChar.getOtherCellLine());
 			InitSessionSetup.getInstance().addSessionAttributeElement(

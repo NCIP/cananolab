@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.workflow;
  */
 
 import gov.nih.nci.calab.dto.workflow.RunBean;
-import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.service.workflow.ExecuteWorkflowService;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
@@ -41,7 +41,7 @@ public class CreateRunAction extends AbstractDispatchAction {
 		String runBy = (String) theForm.get("runBy");
 		String runDateStr = (String) theForm.get("runDate");
 		Date runDate = StringUtils.convertToDate(runDateStr,
-				CalabConstants.ACCEPT_DATE_FORMAT);
+				CaNanoLabConstants.ACCEPT_DATE_FORMAT);
 		// get user and date information from session
 		String creator = (String) session.getAttribute("creator");
 		String creationDate = (String) session.getAttribute("creationDate");

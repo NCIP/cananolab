@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleMorphologyAction.java,v 1.11 2006-12-07 17:48:00 pansu Exp $ */
+/* CVS $Id: NanoparticleMorphologyAction.java,v 1.12 2007-01-04 23:21:58 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Morphology;
@@ -15,7 +15,7 @@ import gov.nih.nci.calab.dto.characterization.physical.MorphologyBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
-import gov.nih.nci.calab.service.util.CananoConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.ui.core.BaseCharacterizationAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
@@ -81,7 +81,7 @@ public class NanoparticleMorphologyAction extends BaseCharacterizationAction {
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addParticleMorphology(particleType, particleName,
 				morphologyChar);
-		if (morphologyChar.getType().equals(CananoConstants.OTHER)){
+		if (morphologyChar.getType().equals(CaNanoLabConstants.OTHER)){
 			InitSessionSetup.getInstance().addSessionAttributeElement(request.getSession(),"allMorphologyTypes", morphologyChar.getOtherType());
 		}
 		ActionMessages msgs = new ActionMessages();
@@ -113,7 +113,7 @@ public class NanoparticleMorphologyAction extends BaseCharacterizationAction {
 		cleanSessionAttributes(session);
 //		for (Enumeration e = session.getAttributeNames(); e.hasMoreElements();) {
 //			String element = (String) e.nextElement();
-//			if (element.startsWith(CananoConstants.CHARACTERIZATION_FILE)) {
+//			if (element.startsWith(CaNanoLabConstants.CHARACTERIZATION_FILE)) {
 //				session.removeAttribute(element);
 //			}
 //		}

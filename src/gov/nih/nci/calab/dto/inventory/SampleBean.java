@@ -4,7 +4,7 @@ import gov.nih.nci.calab.domain.Sample;
 import gov.nih.nci.calab.domain.SampleContainer;
 import gov.nih.nci.calab.dto.common.SortableName;
 import gov.nih.nci.calab.service.util.CalabComparators;
-import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.Arrays;
@@ -19,7 +19,7 @@ import java.util.Set;
  * 
  */
 
-/* CVS $Id: SampleBean.java,v 1.4 2006-12-18 22:40:54 pansu Exp $ */
+/* CVS $Id: SampleBean.java,v 1.5 2007-01-04 23:20:56 pansu Exp $ */
 public class SampleBean {
 	private String sampleId = "";
 
@@ -147,7 +147,7 @@ public class SampleBean {
 				.getLotDescription());
 		// exclude aliquots
 		Set sampleContainers = (Set) sample
-				.getSampleContainerCollection(CalabConstants.SAMPLE_CONTAINER);
+				.getSampleContainerCollection(CaNanoLabConstants.SAMPLE_CONTAINER);
 		this.numberOfContainers = StringUtils.convertToString(sampleContainers
 				.size());
 		this.generalComments = StringUtils
@@ -314,7 +314,7 @@ public class SampleBean {
 	public String getAccessionDateStr() {
 		if (accessionDate != null) {
 			accessionDateStr = StringUtils.convertDateToString(accessionDate,
-					CalabConstants.DATE_FORMAT);
+					CaNanoLabConstants.DATE_FORMAT);
 		}
 		return accessionDateStr;
 	}
@@ -322,7 +322,7 @@ public class SampleBean {
 	public String getDateReceivedStr() {
 		if (dateReceived != null) {
 			dateReceivedStr = StringUtils.convertDateToString(dateReceived,
-					CalabConstants.DATE_FORMAT);
+					CaNanoLabConstants.DATE_FORMAT);
 		}
 		return dateReceivedStr;
 	}

@@ -1,7 +1,7 @@
 package gov.nih.nci.calab.dto.characterization.composition;
 
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.EmulsionComposition;
-import gov.nih.nci.calab.service.util.CananoConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 /**
  * This class represents properties of a Dendrimer composition to be shown in
@@ -15,7 +15,7 @@ public class EmulsionBean extends CompositionBean {
 
 	private String molecularFormula;
 
-	private String polymerized = CananoConstants.BOOLEAN_NO;
+	private String polymerized = CaNanoLabConstants.BOOLEAN_NO;
 
 	private String polymerName;
 
@@ -27,8 +27,8 @@ public class EmulsionBean extends CompositionBean {
 		super(emulsion);
 		this.emulsionType = emulsion.getType();
 		this.molecularFormula = emulsion.getMolecularFormula();
-		this.polymerized = (emulsion.isPolymerized()) ? CananoConstants.BOOLEAN_YES
-				: CananoConstants.BOOLEAN_NO;
+		this.polymerized = (emulsion.isPolymerized()) ? CaNanoLabConstants.BOOLEAN_YES
+				: CaNanoLabConstants.BOOLEAN_NO;
 		this.polymerName = emulsion.getPolymerName();
 	}
 
@@ -69,7 +69,7 @@ public class EmulsionBean extends CompositionBean {
 		super.updateDomainObj(doComp);
 		doComp.setType(emulsionType);
 		doComp.setMolecularFormula(molecularFormula);
-		boolean polymerizedStatus = (polymerized.equalsIgnoreCase(CananoConstants.BOOLEAN_YES)) ? true
+		boolean polymerizedStatus = (polymerized.equalsIgnoreCase(CaNanoLabConstants.BOOLEAN_YES)) ? true
 				: false;
 		doComp.setPolymerized(polymerizedStatus);
 		doComp.setPolymerName(polymerName);

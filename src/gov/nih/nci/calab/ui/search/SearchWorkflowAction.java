@@ -6,11 +6,11 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchWorkflowAction.java,v 1.15 2006-08-01 19:47:13 pansu Exp $ */
+/* CVS $Id: SearchWorkflowAction.java,v 1.16 2007-01-04 23:21:58 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.search.WorkflowResultBean;
 import gov.nih.nci.calab.service.search.SearchWorkflowService;
-import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
@@ -43,9 +43,9 @@ public class SearchWorkflowAction extends AbstractDispatchAction {
 		String assayRunDateEndStr = (String) theForm.get("assayRunDateEnd");
 		
 		Date assayRunDateBegin = assayRunDateBeginStr.length() == 0 ? null
-				: StringUtils.convertToDate(assayRunDateBeginStr, CalabConstants.ACCEPT_DATE_FORMAT);
+				: StringUtils.convertToDate(assayRunDateBeginStr, CaNanoLabConstants.ACCEPT_DATE_FORMAT);
 		Date assayRunDateEnd = assayRunDateEndStr.length() == 0 ? null
-				: StringUtils.convertToDate(assayRunDateEndStr, CalabConstants.ACCEPT_DATE_FORMAT);
+				: StringUtils.convertToDate(assayRunDateEndStr, CaNanoLabConstants.ACCEPT_DATE_FORMAT);
 
 		String aliquotName = (String) theForm.get("aliquotName");
 		boolean excludeMaskedAliquots = ((String) theForm
@@ -63,10 +63,10 @@ public class SearchWorkflowAction extends AbstractDispatchAction {
 		
 		Date fileSubmissionDateBegin = fileSubmissionDateBeginStr.length() == 0 ? null
 				: StringUtils.convertToDate(fileSubmissionDateBeginStr,
-						CalabConstants.ACCEPT_DATE_FORMAT);
+						CaNanoLabConstants.ACCEPT_DATE_FORMAT);
 		Date fileSubmissionDateEnd = fileSubmissionDateEndStr.length() == 0 ? null
 				: StringUtils.convertToDate(fileSubmissionDateEndStr,
-						CalabConstants.ACCEPT_DATE_FORMAT);
+						CaNanoLabConstants.ACCEPT_DATE_FORMAT);
 		
 		// Add one day to the fileSubmissionDateEnd to include all the files
 		// files during the day

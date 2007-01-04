@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSolubilityAction.java,v 1.9 2006-12-07 17:48:00 pansu Exp $ */
+/* CVS $Id: NanoparticleSolubilityAction.java,v 1.10 2007-01-04 23:21:58 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Solubility;
@@ -15,7 +15,7 @@ import gov.nih.nci.calab.dto.characterization.physical.SolubilityBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
-import gov.nih.nci.calab.service.util.CananoConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.ui.core.BaseCharacterizationAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
@@ -119,7 +119,7 @@ public class NanoparticleSolubilityAction extends BaseCharacterizationAction {
 		// for (Enumeration e = session.getAttributeNames(); e.hasMoreElements()
 		// ;) {
 		// String element = (String) e.nextElement();
-		// if (element.startsWith(CananoConstants.CHARACTERIZATION_FILE)) {
+		// if (element.startsWith(CaNanoLabConstants.CHARACTERIZATION_FILE)) {
 		// session.removeAttribute(element);
 		// }
 		// }
@@ -133,7 +133,7 @@ public class NanoparticleSolubilityAction extends BaseCharacterizationAction {
 		InitSessionSetup.getInstance().setAllSolubilityDistributionGraphTypes(
 				session);
 		InitSessionSetup.getInstance().setAllConcentrationUnits(session);
-		session.setAttribute("booleanChoices", CananoConstants.BOOLEAN_CHOICES);
+		session.setAttribute("booleanChoices", CaNanoLabConstants.BOOLEAN_CHOICES);
 	}
 
 	@Override

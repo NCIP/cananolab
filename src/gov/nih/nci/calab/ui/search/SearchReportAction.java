@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchReportAction.java,v 1.5 2006-12-20 15:54:41 pansu Exp $ */
+/* CVS $Id: SearchReportAction.java,v 1.6 2007-01-04 23:21:58 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
@@ -14,7 +14,7 @@ import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
-import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
@@ -76,7 +76,8 @@ public class SearchReportAction extends AbstractDispatchAction {
 //		InitSessionSetup.getInstance().setAllParticleTypeParticles(session);
 		InitSessionSetup.getInstance().setAllSampleTypes(session);
 		InitSessionSetup.getInstance().setAllParticleFunctionTypes(session);
-		InitSessionSetup.getInstance().setStaticDropdowns(session);
+		InitSessionSetup.getInstance().setApplicationOwner(session);
+		InitSessionSetup.getInstance().setStaticDropdowns(session);		
 		InitSessionSetup.getInstance().clearWorkflowSession(session);
 		InitSessionSetup.getInstance().clearInventorySession(session);
 
@@ -101,7 +102,7 @@ public class SearchReportAction extends AbstractDispatchAction {
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		LabFileBean fileBean = service.getFile(fileId, null);
 		String fileRoot = PropertyReader.getProperty(
-				CalabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
+				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
 		File dFile = new File(fileRoot + File.separator + fileBean.getPath());
 		if (dFile.exists()) {
 			response.setContentType("application/octet-stream");
@@ -134,7 +135,7 @@ public class SearchReportAction extends AbstractDispatchAction {
 		// check whether user has privilege to execute nanoparticle search pe or
 		// execute search pe
 		UserBean user = (UserBean) session.getAttribute("user");
-		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
+		UserService userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
 		boolean nanoSearchStatus = userService.checkExecutePermission(user,
 				"search characterizations");
 		boolean searchStatus = InitSessionSetup.getInstance()

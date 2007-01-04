@@ -15,7 +15,8 @@ import gov.nih.nci.calab.domain.nano.function.Probe;
 import gov.nih.nci.calab.domain.nano.function.SmallMolecule;
 import gov.nih.nci.calab.domain.nano.function.UnclassifiedAgent;
 import gov.nih.nci.calab.domain.nano.function.UnclassifiedLinkage;
-import gov.nih.nci.calab.service.util.CananoConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 /**
  * @author zengje
@@ -27,7 +28,7 @@ public class LinkageBean {
 
 	private String description;
 
-	private String type = CananoConstants.ATTACHMENT;
+	private String type = CaNanoLabConstants.ATTACHMENT;
 
 	private AgentBean agent = new AgentBean();
 
@@ -64,34 +65,34 @@ public class LinkageBean {
 			bondType = ((Attachment) linkage).getBondType();
 		} else if (linkage instanceof Encapsulation) {
 			localization = ((Encapsulation) linkage).getLocalization();
-			this.type = CananoConstants.ENCAPSULATION;
+			this.type = CaNanoLabConstants.ENCAPSULATION;
 		} else if (linkage instanceof UnclassifiedLinkage) {
-			this.type = CananoConstants.OTHER;
+			this.type = CaNanoLabConstants.OTHER;
 		}
 		Agent theAgent = linkage.getAgent();
 		if (theAgent != null) // shouldn't happen{
 			agent = new AgentBean(theAgent);
 			if (theAgent instanceof DNA) {
 				dna = new DNABean((DNA) theAgent);
-				agent.setType(CananoConstants.DNA);
+				agent.setType(CaNanoLabConstants.DNA);
 			} else if (theAgent instanceof Peptide) {
 				peptide = new PeptideBean((Peptide) theAgent);
-				agent.setType(CananoConstants.PEPTIDE);
+				agent.setType(CaNanoLabConstants.PEPTIDE);
 			} else if (theAgent instanceof SmallMolecule) {
 				smallMolecule = new SmallMoleculeBean((SmallMolecule) theAgent);
-				agent.setType(CananoConstants.SMALL_MOLECULE);
+				agent.setType(CaNanoLabConstants.SMALL_MOLECULE);
 			} else if (theAgent instanceof Probe) {
 				probe = new ProbeBean((Probe) theAgent);
-				agent.setType(CananoConstants.PROBE);
+				agent.setType(CaNanoLabConstants.PROBE);
 			} else if (theAgent instanceof Antibody) {
 				antibody = new AntibodyBean((Antibody) theAgent);
-				agent.setType(CananoConstants.ANTIBODY);
+				agent.setType(CaNanoLabConstants.ANTIBODY);
 			} else if (theAgent instanceof ImageContrastAgent) {
 				imageContrastAgent = new ImageContrastAgentBean(
 						(ImageContrastAgent) theAgent);
-				agent.setType(CananoConstants.IMAGE_CONTRAST_AGENT);
+				agent.setType(CaNanoLabConstants.IMAGE_CONTRAST_AGENT);
 			} else if (theAgent instanceof UnclassifiedAgent) {
-				agent.setType(CananoConstants.OTHER);
+				agent.setType(CaNanoLabConstants.OTHER);
 			}
 		}
 
@@ -142,37 +143,37 @@ public class LinkageBean {
 
 	public Linkage getDomainObj() {
 		Agent theAgent = null;
-		if (agent.getType().equals(CananoConstants.DNA)) {
+		if (agent.getType().equals(CaNanoLabConstants.DNA)) {
 			dna.setAgentTargets(agent.getAgentTargets());
 			dna.setNumberOfAgentTargets(agent.getNumberOfAgentTargets());
 			theAgent = dna.getDomainObj();
-		} else if (agent.getType().equals(CananoConstants.PEPTIDE)) {
+		} else if (agent.getType().equals(CaNanoLabConstants.PEPTIDE)) {
 			peptide.setAgentTargets(agent.getAgentTargets());
 			peptide.setNumberOfAgentTargets(agent.getNumberOfAgentTargets());
 			theAgent = peptide.getDomainObj();
-		} else if (agent.getType().equals(CananoConstants.ANTIBODY)) {
+		} else if (agent.getType().equals(CaNanoLabConstants.ANTIBODY)) {
 			antibody.setAgentTargets(agent.getAgentTargets());
 			antibody.setNumberOfAgentTargets(agent.getNumberOfAgentTargets());
 			theAgent = antibody.getDomainObj();
-		} else if (agent.getType().equals(CananoConstants.PROBE)) {
+		} else if (agent.getType().equals(CaNanoLabConstants.PROBE)) {
 			probe.setAgentTargets(agent.getAgentTargets());
 			probe.setNumberOfAgentTargets(agent.getNumberOfAgentTargets());
 			theAgent = probe.getDomainObj();
-		} else if (agent.getType().equals(CananoConstants.IMAGE_CONTRAST_AGENT)) {
+		} else if (agent.getType().equals(CaNanoLabConstants.IMAGE_CONTRAST_AGENT)) {
 			imageContrastAgent.setAgentTargets(agent.getAgentTargets());
 			imageContrastAgent.setNumberOfAgentTargets(agent.getNumberOfAgentTargets());
 			theAgent = imageContrastAgent.getDomainObj();
-		} else if (agent.getType().equals(CananoConstants.SMALL_MOLECULE)) {
+		} else if (agent.getType().equals(CaNanoLabConstants.SMALL_MOLECULE)) {
 			smallMolecule.setAgentTargets(agent.getAgentTargets());
 			smallMolecule.setNumberOfAgentTargets(agent.getNumberOfAgentTargets());
 			theAgent = smallMolecule.getDomainObj();
-		} else if (agent.getType().equals(CananoConstants.OTHER)) {
+		} else if (agent.getType().equals(CaNanoLabConstants.OTHER)) {
 			other.setAgentTargets(agent.getAgentTargets());
 			other.setNumberOfAgentTargets(agent.getNumberOfAgentTargets());
 			theAgent = other.getDomainObj();
 		}
 
-		if (type.equals(CananoConstants.ATTACHMENT)) {
+		if (type.equals(CaNanoLabConstants.ATTACHMENT)) {
 			Attachment doAttach = new Attachment();
 			if (getId() != null && getId().length() > 0) {
 				doAttach.setId(new Long(getId()));
@@ -181,7 +182,7 @@ public class LinkageBean {
 			doAttach.setDescription(description);
 			doAttach.setAgent(theAgent);
 			return doAttach;
-		} else if (type.equals(CananoConstants.ENCAPSULATION)) {
+		} else if (type.equals(CaNanoLabConstants.ENCAPSULATION)) {
 			Encapsulation doEncap = new Encapsulation();
 			if (getId() != null && getId().length() > 0) {
 				doEncap.setId(new Long(getId()));

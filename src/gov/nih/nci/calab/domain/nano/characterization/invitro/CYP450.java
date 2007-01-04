@@ -10,7 +10,7 @@ import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.ComposingElement;
 import gov.nih.nci.calab.domain.nano.characterization.toxicity.ImmunoToxicity;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
-import gov.nih.nci.calab.service.util.CananoConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 public class CYP450 implements MetabolicStability {
 
@@ -53,7 +53,7 @@ public class CYP450 implements MetabolicStability {
 	}
 
 	public String getClassification() {
-		return CananoConstants.INVITRO_CHARACTERIZATION;
+		return CaNanoLabConstants.INVITRO_CHARACTERIZATION;
 	}
 
 	public String getDescription() {

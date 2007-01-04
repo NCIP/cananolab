@@ -4,7 +4,7 @@ import gov.nih.nci.calab.domain.Instrument;
 import gov.nih.nci.calab.domain.nano.characterization.CharacterizationProtocol;
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
-import gov.nih.nci.calab.service.util.CananoConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -82,7 +82,7 @@ public class LiposomeComposition implements ParticleComposition {
 	}
 
 	public String getClassification() {
-		return CananoConstants.PHYSICAL_CHARACTERIZATION;
+		return CaNanoLabConstants.PHYSICAL_CHARACTERIZATION;
 	}
 
 	public String getDescription() {
@@ -98,7 +98,7 @@ public class LiposomeComposition implements ParticleComposition {
 	}
 
 	public String getName() {
-		return CananoConstants.PHYSICAL_COMPOSITION;
+		return CaNanoLabConstants.PHYSICAL_COMPOSITION;
 	}
 
 	public void setIdentificationName(String identificationName) {
