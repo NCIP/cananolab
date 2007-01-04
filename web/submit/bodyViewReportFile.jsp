@@ -86,7 +86,7 @@
 											<html:options name="allVisibilityGroups" />
 										</html:select>
 										<br>
-										<i>(NCL_Researcher and NCL_PI are defaults if none of above is selected.)</i>
+										<i>(${applicationOwner}_Researcher and ${applicationOwner}_PI are defaults if none of above is selected.)</i>
 									</td>
 								</tr>
 							</c:when>
