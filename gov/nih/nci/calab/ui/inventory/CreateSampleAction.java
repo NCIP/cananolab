@@ -7,13 +7,13 @@ package gov.nih.nci.calab.ui.inventory;
  * @author pansu
  */
 
-/* CVS $Id: CreateSampleAction.java,v 1.6 2006-11-15 16:45:15 pansu Exp $ */
+/* CVS $Id: CreateSampleAction.java,v 1.7 2007-01-04 23:21:58 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.inventory.ContainerBean;
 import gov.nih.nci.calab.dto.inventory.SampleBean;
 import gov.nih.nci.calab.service.inventory.ManageSampleService;
 import gov.nih.nci.calab.service.security.UserService;
-import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
@@ -42,13 +42,19 @@ public class CreateSampleAction extends AbstractDispatchAction {
 		// TODO fill in details for sample information */
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String sampleNamePrefix = (String) theForm.get("sampleNamePrefix");
-		String preconfiguredPrefix = PropertyReader.getProperty(
-				CalabConstants.CALAB_PROPERTY, "samplePrefix");
-		if (!sampleNamePrefix.startsWith(preconfiguredPrefix)) {
-
+		
+		// read from properties file first
+		String samplePrefix = PropertyReader.getProperty(
+				CaNanoLabConstants.CANANOLAB_PROPERTY, "samplePrefix");
+		// if not available, use the default
+		if (samplePrefix == null)
+			samplePrefix = CaNanoLabConstants.DEFAULT_SAMPLE_PREFIX;
+		
+		//throw an error is the sample name prefix doesn't start with the preconfigured prefix.
+		if (!sampleNamePrefix.startsWith(samplePrefix)) {
 			ActionMessages msgs = new ActionMessages();
 			ActionMessage msg = new ActionMessage(
-					"error.createSample.SampleIDFormat", preconfiguredPrefix);
+					"error.createSample.SampleIDFormat", samplePrefix);
 			msgs.add("error", msg);
 			saveMessages(request, msgs);
 
@@ -64,7 +70,7 @@ public class CreateSampleAction extends AbstractDispatchAction {
 		String sourceSampleId = (String) theForm.get("sourceSampleId");
 		String dateReceivedStr = (String) theForm.get("dateReceived");
 		Date dateReceived = StringUtils.convertToDate(dateReceivedStr,
-				CalabConstants.ACCEPT_DATE_FORMAT);
+				CaNanoLabConstants.ACCEPT_DATE_FORMAT);
 
 		String solubility = (String) theForm.get("solubility");
 		String lotId = (String) theForm.get("lotId");
@@ -99,7 +105,7 @@ public class CreateSampleAction extends AbstractDispatchAction {
 		manageSampleService.saveSample(sample, containers);
 		
 		//create a new user group if the source is not already a group
-		UserService userService=new UserService(CalabConstants.CSM_APP_NAME);
+		UserService userService=new UserService(CaNanoLabConstants.CSM_APP_NAME);
 		userService.createAGroup(sample.getSampleSource());
 		
 		// set a flag to indicate that new sample have been created so session
@@ -170,7 +176,7 @@ public class CreateSampleAction extends AbstractDispatchAction {
 		theForm.set("sampleNamePrefix", mangeSampleService
 				.getDefaultSampleNamePrefix());
 		theForm.set("configuredSampleNamePrefix", PropertyReader.getProperty(
-				CalabConstants.CALAB_PROPERTY, "samplePrefix"));
+				CaNanoLabConstants.CANANOLAB_PROPERTY, "samplePrefix"));
 		ContainerBean[] containers=new ContainerBean[] {new ContainerBean()};
 		theForm.set("containers", containers);	
 		return mapping.getInputForward();

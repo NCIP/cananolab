@@ -12,8 +12,8 @@ import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
-import gov.nih.nci.calab.service.util.CalabConstants;
-import gov.nih.nci.calab.service.util.CananoConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
 import gov.nih.nci.calab.service.util.StringUtils;
 
@@ -39,7 +39,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 
-/* CVS $Id: BaseCharacterizationAction.java,v 1.22 2006-12-22 18:20:37 pansu Exp $ */
+/* CVS $Id: BaseCharacterizationAction.java,v 1.23 2007-01-04 23:21:58 pansu Exp $ */
 
 public abstract class BaseCharacterizationAction extends AbstractDispatchAction {
 	/**
@@ -69,6 +69,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 
 		InitSessionSetup.getInstance()
 				.setAllSizeDistributionGraphTypes(session);
+		InitSessionSetup.getInstance().setApplicationOwner(session);
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
 		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
@@ -101,7 +102,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 	protected void cleanSessionAttributes(HttpSession session) throws Exception {
 		for (Enumeration e = session.getAttributeNames(); e.hasMoreElements();) {
 			String element = (String) e.nextElement();
-			if (element.startsWith(CananoConstants.CHARACTERIZATION_FILE)) {
+			if (element.startsWith(CaNanoLabConstants.CHARACTERIZATION_FILE)) {
 				session.removeAttribute(element);
 			}
 		}
@@ -162,20 +163,20 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		clearMap(session, theForm, mapping);
 		theForm.set("characterizationId", characterizationId);
 
-		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
+		UserService userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 
 		int fileNumber = 0;
 		for (DerivedBioAssayData obj : aChar.getDerivedBioAssayDataCollection()) {
 			if (obj.getFile() != null) {
 				LabFileBean fileBean = new LabFileBean(obj.getFile(),
-						CalabConstants.OUTPUT);
+						CaNanoLabConstants.OUTPUT);
 				boolean status = userService.checkReadPermission(user, fileBean
 						.getId());
 				if (status) {
 					List<String> accessibleGroups = userService
 							.getAccessibleGroups(fileBean.getId(),
-									CalabConstants.CSM_READ_ROLE);
+									CaNanoLabConstants.CSM_READ_ROLE);
 					String[] visibilityGroups = accessibleGroups
 							.toArray(new String[0]);
 					fileBean.setVisibilityGroups(visibilityGroups);
@@ -237,9 +238,9 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 
 		String fileId = request.getParameter("fileId");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		LabFileBean fileBean = service.getFile(fileId, CalabConstants.OUTPUT);
+		LabFileBean fileBean = service.getFile(fileId, CaNanoLabConstants.OUTPUT);
 		String fileRoot = PropertyReader.getProperty(
-				CalabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
+				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
 		File dFile = new File(fileRoot + File.separator + fileBean.getPath());
 		if (dFile.exists()) {
 			response.setContentType("application/octet-stream");
@@ -295,7 +296,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 
 				Exception updateConditionsException = new Exception(
 						PropertyReader.getProperty(
-								CalabConstants.SUBMISSION_PROPERTY,
+								CaNanoLabConstants.SUBMISSION_PROPERTY,
 								"numberOfConditions"));
 				throw updateConditionsException;
 

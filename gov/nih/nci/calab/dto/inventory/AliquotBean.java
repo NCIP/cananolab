@@ -2,7 +2,7 @@ package gov.nih.nci.calab.dto.inventory;
 
 import gov.nih.nci.calab.domain.Aliquot;
 import gov.nih.nci.calab.dto.common.SortableName;
-import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.Date;
@@ -15,7 +15,7 @@ import java.util.Date;
  * 
  */
 
-/* CVS $Id: AliquotBean.java,v 1.1 2006-06-30 20:52:51 pansu Exp $ */
+/* CVS $Id: AliquotBean.java,v 1.2 2007-01-04 23:20:56 pansu Exp $ */
 
 public class AliquotBean {
 	private String aliquotId = "";
@@ -44,14 +44,14 @@ public class AliquotBean {
 	// used in WorkflowResultBean
 	public AliquotBean(String aliquotName, String maskStatus) {
 		this.aliquotName = aliquotName;
-		this.maskStatus = (maskStatus.length() == 0 && aliquotName.length() > 0) ? CalabConstants.ACTIVE_STATUS
+		this.maskStatus = (maskStatus.length() == 0 && aliquotName.length() > 0) ? CaNanoLabConstants.ACTIVE_STATUS
 				: maskStatus;
 	}
 
 	public AliquotBean(String aliquotId, String aliquotName, String maskStatus) {
 		this.aliquotId = aliquotId;
 		this.aliquotName = aliquotName;
-		this.maskStatus = (maskStatus.length() == 0 && aliquotName.length() > 0) ? CalabConstants.ACTIVE_STATUS
+		this.maskStatus = (maskStatus.length() == 0 && aliquotName.length() > 0) ? CaNanoLabConstants.ACTIVE_STATUS
 				: maskStatus;
 	}
 
@@ -158,13 +158,13 @@ public class AliquotBean {
 
 	public void setMaskStatus(String maskStatus) {
 		this.maskStatus = (maskStatus.length() == 0 && getAliquotName()
-				.length() > 0) ? CalabConstants.ACTIVE_STATUS : maskStatus;
+				.length() > 0) ? CaNanoLabConstants.ACTIVE_STATUS : maskStatus;
 	}
 
 	public String getCreationDateStr() {
 		if (creationDate != null) {
 			creationDateStr = StringUtils.convertDateToString(creationDate,
-					CalabConstants.DATE_FORMAT);
+					CaNanoLabConstants.DATE_FORMAT);
 		}
 		return creationDateStr;
 	}

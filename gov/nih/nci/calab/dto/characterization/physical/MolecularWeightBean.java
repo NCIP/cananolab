@@ -5,7 +5,7 @@ import gov.nih.nci.calab.domain.nano.characterization.physical.MolecularWeight;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.DatumBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
-import gov.nih.nci.calab.service.util.CananoConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 import java.util.List;
 
@@ -36,7 +36,7 @@ public class MolecularWeightBean extends CharacterizationBean {
 		for (DerivedBioAssayDataBean table : getDerivedBioAssayDataList()) {
 			if (table.getDatumList().isEmpty()) {
 				DatumBean mw = new DatumBean();
-				mw.setType(CananoConstants.PHYSICAL_MOLECULAR_WEIGHT);
+				mw.setType(CaNanoLabConstants.PHYSICAL_MOLECULAR_WEIGHT);
 				mw.setValueUnit("kDa");
 
 				table.getDatumList().add(mw);

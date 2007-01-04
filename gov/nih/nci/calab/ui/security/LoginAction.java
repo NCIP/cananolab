@@ -3,7 +3,7 @@ package gov.nih.nci.calab.ui.security;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.security.LoginService;
 import gov.nih.nci.calab.service.security.UserService;
-import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,7 +41,7 @@ public class LoginAction extends AbstractBaseAction {
 
 		// Call CSM to authenticate the user.
 		LoginService loginservice = new LoginService(
-				CalabConstants.CSM_APP_NAME);
+				CaNanoLabConstants.CSM_APP_NAME);
 		Boolean blnAuthenticated = loginservice.login(strLoginId, strPassword);
 		// strEncryptedPass);
 		if (blnAuthenticated == true) {
@@ -68,7 +68,7 @@ public class LoginAction extends AbstractBaseAction {
 
 	private void setUserSessionInfo(HttpSession session, String loginName)
 			throws Exception {
-		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
+		UserService userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
 		UserBean user = userService.getUserBean(loginName);
 		session.setAttribute("user", user);
 		session.setAttribute("userService", userService);

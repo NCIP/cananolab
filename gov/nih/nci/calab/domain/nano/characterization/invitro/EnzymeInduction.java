@@ -9,7 +9,7 @@ import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.CharacterizationProtocol;
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
-import gov.nih.nci.calab.service.util.CananoConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 public class EnzymeInduction implements Characterization {
 
@@ -53,7 +53,7 @@ public class EnzymeInduction implements Characterization {
 	}
 
 	public String getClassification() {
-		return CananoConstants.INVITRO_CHARACTERIZATION;
+		return CaNanoLabConstants.INVITRO_CHARACTERIZATION;
 	}
 
 	public String getDescription() {
@@ -73,7 +73,7 @@ public class EnzymeInduction implements Characterization {
 	}
 
 	public String getName() {
-		return CananoConstants.TOXICITY_ENZYME_FUNCTION;
+		return CaNanoLabConstants.TOXICITY_ENZYME_FUNCTION;
 	}
 
 	public void setName(String name) {

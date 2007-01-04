@@ -4,7 +4,7 @@ import gov.nih.nci.calab.dto.workflow.FileBean;
 import gov.nih.nci.calab.dto.workflow.RunBean;
 import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.util.ActionUtil;
-import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
 import gov.nih.nci.calab.service.util.SpecialCharReplacer;
 import gov.nih.nci.calab.service.workflow.ExecuteWorkflowService;
@@ -51,7 +51,7 @@ public class RunFileAction extends AbstractDispatchAction {
 		InitSessionSetup.getInstance().setCurrentRun(request);
 		for (FileBean fileBean : files) {
 			if (!fileBean.getFileMaskStatus()
-					.equals(CalabConstants.MASK_STATUS)) {
+					.equals(CaNanoLabConstants.MASK_STATUS)) {
 				unmaskedFiles.add(fileBean);
 			}
 		}
@@ -109,10 +109,10 @@ public class RunFileAction extends AbstractDispatchAction {
 
 		String fileName = (String) fileForm.get("fileName");
 		String path = PropertyReader.getProperty(
-				CalabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
+				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
 		String fullPathName = path + assayType + File.separator + assayName
 				+ File.separator + runName + File.separator + inout
-				+ File.separator + CalabConstants.UNCOMPRESSED_FILE_DIRECTORY;
+				+ File.separator + CaNanoLabConstants.UNCOMPRESSED_FILE_DIRECTORY;
 		File f = new File(fullPathName + File.separator + fileName);
 		if (!f.exists()) {
 			throw new CalabException(

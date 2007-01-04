@@ -50,7 +50,7 @@
  */
 package gov.nih.nci.calab.service.util.file;
 
-import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
 
 import java.io.File;
@@ -171,7 +171,7 @@ public class ProcessFileUpload extends HttpServlet
                 String fullPathName = null;
                 
                 //TODO: set path here
-                String path = PropertyReader.getProperty(CalabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
+                String path = PropertyReader.getProperty(CaNanoLabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
                 
                
                 fullPathName = path + sessionData.getAssayType() + File.separator 
@@ -202,7 +202,7 @@ public class ProcessFileUpload extends HttpServlet
                 
                 //uncompress file here
                 String unzipFilePath = fullPathName + File.separator
-                                       + CalabConstants.UNCOMPRESSED_FILE_DIRECTORY;
+                                       + CaNanoLabConstants.UNCOMPRESSED_FILE_DIRECTORY;
                 File unzipFile = new File(unzipFilePath);
                 if (!unzipFile.exists())
                 {

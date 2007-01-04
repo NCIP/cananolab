@@ -5,7 +5,7 @@ import gov.nih.nci.calab.db.IDataAccess;
 import gov.nih.nci.calab.domain.Aliquot;
 import gov.nih.nci.calab.domain.DataStatus;
 import gov.nih.nci.calab.domain.LabFile;
-import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 
 /**
@@ -34,7 +34,7 @@ public class MaskService
 				Aliquot aliquot = (Aliquot)ida.load(Aliquot.class, StringUtils.convertToLong(strId));
 				DataStatus maskStatus = new DataStatus();
 				maskStatus.setReason(strDescription);
-				maskStatus.setStatus(CalabConstants.MASK_STATUS);
+				maskStatus.setStatus(CaNanoLabConstants.MASK_STATUS);
 				ida.createObject(maskStatus);
 				
 				aliquot.setDataStatus(maskStatus);
@@ -45,7 +45,7 @@ public class MaskService
 				LabFile file = (LabFile)ida.load(LabFile.class, StringUtils.convertToLong(strId));
 				DataStatus maskStatus = new DataStatus();
 				maskStatus.setReason(strDescription);
-				maskStatus.setStatus(CalabConstants.MASK_STATUS);
+				maskStatus.setStatus(CaNanoLabConstants.MASK_STATUS);
 				ida.createObject(maskStatus);
 				
 				file.setDataStatus(maskStatus);

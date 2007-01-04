@@ -6,13 +6,13 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchSampleAction.java,v 1.18 2006-08-01 19:47:13 pansu Exp $ */
+/* CVS $Id: SearchSampleAction.java,v 1.19 2007-01-04 23:21:58 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.inventory.ContainerBean;
 import gov.nih.nci.calab.dto.inventory.SampleBean;
 import gov.nih.nci.calab.dto.inventory.StorageLocation;
 import gov.nih.nci.calab.service.search.SearchSampleService;
-import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
@@ -54,10 +54,10 @@ public class SearchSampleAction extends AbstractDispatchAction {
 
 		Date dateAccessionedBegin = dateAccessionedBeginStr.length() == 0 ? null
 				: StringUtils.convertToDate(dateAccessionedBeginStr,
-						CalabConstants.ACCEPT_DATE_FORMAT);
+						CaNanoLabConstants.ACCEPT_DATE_FORMAT);
 		Date dateAccessionedEnd = dateAccessionedEndStr.length() == 0 ? null
 				: StringUtils.convertToDate(dateAccessionedEndStr,
-						CalabConstants.ACCEPT_DATE_FORMAT);
+						CaNanoLabConstants.ACCEPT_DATE_FORMAT);
 		String sampleSubmitter = (String) theForm.get("sampleSubmitter");
 		StorageLocation storageLocation = (StorageLocation) theForm
 				.get("storageLocation");

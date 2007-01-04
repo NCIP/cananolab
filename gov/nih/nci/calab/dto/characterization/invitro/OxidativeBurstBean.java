@@ -6,7 +6,7 @@ import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.domain.nano.characterization.invitro.OxidativeBurst;
 
 import gov.nih.nci.calab.dto.characterization.*;
-import gov.nih.nci.calab.service.util.CananoConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 import java.util.List;
 
@@ -33,8 +33,8 @@ public class OxidativeBurstBean extends CharacterizationBean {
 
 		for (DerivedBioAssayDataBean table : getDerivedBioAssayDataList()) {
 			for (DatumBean datum : table.getDatumList()) {
-				datum.setType(CananoConstants.IMMUNOCELLFUNCTOX_OXIDATIVE_BURST_DATA_TYPE);
-				datum.setValueUnit(CananoConstants.UNIT_PERCENT);
+				datum.setType(CaNanoLabConstants.IMMUNOCELLFUNCTOX_OXIDATIVE_BURST_DATA_TYPE);
+				datum.setValueUnit(CaNanoLabConstants.UNIT_PERCENT);
 			}
 		}
 	}
@@ -44,9 +44,9 @@ public class OxidativeBurstBean extends CharacterizationBean {
 		super.updateDomainObj(oxidativeBurst);
 		for (DerivedBioAssayData chart: oxidativeBurst.getDerivedBioAssayDataCollection()){
 			for (Datum data: chart.getDatumCollection()){
-				data.setType(CananoConstants.IMMUNOCELLFUNCTOX_OXIDATIVE_BURST_DATA_TYPE);
+				data.setType(CaNanoLabConstants.IMMUNOCELLFUNCTOX_OXIDATIVE_BURST_DATA_TYPE);
 				if (data.getValue() != null) {
-					data.getValue().setUnitOfMeasurement(CananoConstants.UNIT_PERCENT);
+					data.getValue().setUnitOfMeasurement(CaNanoLabConstants.UNIT_PERCENT);
 				}			
 			}
 		}

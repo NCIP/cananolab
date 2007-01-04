@@ -6,7 +6,7 @@ import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.domain.nano.characterization.invitro.ComplementActivation;
 
 import gov.nih.nci.calab.dto.characterization.*;
-import gov.nih.nci.calab.service.util.CananoConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 import java.util.List;
 
@@ -44,9 +44,9 @@ public class ComplementActivationBean extends CharacterizationBean {
 		for (DerivedBioAssayData chart : complementActivation
 				.getDerivedBioAssayDataCollection()) {
 			for (Datum data : chart.getDatumCollection()) {
-				data.setType(CananoConstants.IMMUNOCELLFUNCTOX_COMPLEMENT_ACTIVATION_DATA_TYPE);
+				data.setType(CaNanoLabConstants.IMMUNOCELLFUNCTOX_COMPLEMENT_ACTIVATION_DATA_TYPE);
 				if (data.getValue() != null) {
-					data.getValue().setUnitOfMeasurement(CananoConstants.UNIT_PERCENT);
+					data.getValue().setUnitOfMeasurement(CaNanoLabConstants.UNIT_PERCENT);
 				}
 			}
 		}

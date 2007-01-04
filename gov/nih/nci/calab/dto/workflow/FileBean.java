@@ -5,7 +5,7 @@ package gov.nih.nci.calab.dto.workflow;
 
 import gov.nih.nci.calab.domain.InputFile;
 import gov.nih.nci.calab.domain.OutputFile;
-import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.Date;
@@ -53,7 +53,7 @@ public class FileBean {
 		this.filename = getFileName(path);
 		this.shortFilename = shortFileName;
 		this.fileMaskStatus = (fileMaskStatus.length() == 0 && filename
-				.length() > 0) ? CalabConstants.ACTIVE_STATUS : fileMaskStatus;
+				.length() > 0) ? CaNanoLabConstants.ACTIVE_STATUS : fileMaskStatus;
 		this.inoutType = inoutType;
 	}
 
@@ -80,8 +80,8 @@ public class FileBean {
 		this.filename = getFileName(path);
 		this.shortFilename = infile.getFilename();
 		this.fileMaskStatus = (fileMaskStatus.length() == 0 && filename
-				.length() > 0) ? CalabConstants.ACTIVE_STATUS : fileMaskStatus;
-		this.inoutType = CalabConstants.INPUT;
+				.length() > 0) ? CaNanoLabConstants.ACTIVE_STATUS : fileMaskStatus;
+		this.inoutType = CaNanoLabConstants.INPUT;
 		this.createdDate=infile.getCreatedDate();
 	}
 
@@ -90,10 +90,10 @@ public class FileBean {
 		this.path = outfile.getPath();
 		this.fileSubmitter = outfile.getCreatedBy();
 		this.fileMaskStatus = (fileMaskStatus.length() == 0 && filename
-				.length() > 0) ? CalabConstants.ACTIVE_STATUS : fileMaskStatus;
+				.length() > 0) ? CaNanoLabConstants.ACTIVE_STATUS : fileMaskStatus;
 		this.filename = getFileName(path);
 		this.shortFilename = outfile.getFilename();
-		this.inoutType = CalabConstants.OUTPUT;
+		this.inoutType = CaNanoLabConstants.OUTPUT;
 		this.createdDate=outfile.getCreatedDate();
 	}
 
@@ -134,7 +134,7 @@ public class FileBean {
 
 	public void setFileMaskStatus(String fileMaskStatus) {
 		this.fileMaskStatus = (fileMaskStatus.length() == 0 && getFilename()
-				.length() > 0) ? CalabConstants.ACTIVE_STATUS : fileMaskStatus;
+				.length() > 0) ? CaNanoLabConstants.ACTIVE_STATUS : fileMaskStatus;
 	}
 
 	public String getFileSubmitter() {

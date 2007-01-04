@@ -6,7 +6,7 @@ import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.domain.nano.characterization.invitro.PlasmaProteinBinding;
 
 import gov.nih.nci.calab.dto.characterization.*;
-import gov.nih.nci.calab.service.util.CananoConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 import java.util.List;
 
@@ -33,8 +33,8 @@ public class PlasmaProteinBindingBean extends CharacterizationBean {
 
 		for (DerivedBioAssayDataBean table : getDerivedBioAssayDataList()) {
 			for (DatumBean datum : table.getDatumList()) {
-				datum.setType(CananoConstants.BLOODCONTACTTOX_PLASMA_PROTEIN_BINDING_DATA_TYPE);
-				datum.setValueUnit(CananoConstants.UNIT_PERCENT);
+				datum.setType(CaNanoLabConstants.BLOODCONTACTTOX_PLASMA_PROTEIN_BINDING_DATA_TYPE);
+				datum.setValueUnit(CaNanoLabConstants.UNIT_PERCENT);
 			}
 		}
 	}
@@ -44,9 +44,9 @@ public class PlasmaProteinBindingBean extends CharacterizationBean {
 		super.updateDomainObj(plasmaProteinBinding);
 		for (DerivedBioAssayData chart: plasmaProteinBinding.getDerivedBioAssayDataCollection()){
 			for (Datum data: chart.getDatumCollection()){
-				data.setType(CananoConstants.BLOODCONTACTTOX_PLASMA_PROTEIN_BINDING_DATA_TYPE);
+				data.setType(CaNanoLabConstants.BLOODCONTACTTOX_PLASMA_PROTEIN_BINDING_DATA_TYPE);
 				if (data.getValue() != null) {
-					data.getValue().setUnitOfMeasurement(CananoConstants.UNIT_PERCENT);
+					data.getValue().setUnitOfMeasurement(CaNanoLabConstants.UNIT_PERCENT);
 				}			
 			}
 		}

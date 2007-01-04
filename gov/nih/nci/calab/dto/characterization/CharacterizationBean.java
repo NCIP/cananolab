@@ -6,7 +6,7 @@ import gov.nih.nci.calab.domain.Manufacturer;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.CharacterizationProtocol;
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
-import gov.nih.nci.calab.service.util.CananoConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.ArrayList;
@@ -112,8 +112,8 @@ public class CharacterizationBean {
 
 	public String getViewTitle() {
 		// get only the first number of characters of the title
-		if (viewTitle!=null &&viewTitle.length() > CananoConstants.MAX_VIEW_TITLE_LENGTH) {
-			return viewTitle.substring(0, CananoConstants.MAX_VIEW_TITLE_LENGTH);
+		if (viewTitle!=null &&viewTitle.length() > CaNanoLabConstants.MAX_VIEW_TITLE_LENGTH) {
+			return viewTitle.substring(0, CaNanoLabConstants.MAX_VIEW_TITLE_LENGTH);
 		}
 		return viewTitle;
 	}
@@ -161,7 +161,7 @@ public class CharacterizationBean {
 
 		if (iType != null && manuf != null) {
 			InstrumentType instrumentType = new InstrumentType();
-			if (iType.equals(CananoConstants.OTHER))
+			if (iType.equals(CaNanoLabConstants.OTHER))
 				instrumentType
 						.setName(getInstrument().getOtherInstrumentType());
 			else
@@ -169,7 +169,7 @@ public class CharacterizationBean {
 
 			Manufacturer manufacturer = new Manufacturer();
 
-			if (manuf.equals(CananoConstants.OTHER))
+			if (manuf.equals(CaNanoLabConstants.OTHER))
 				manufacturer.setName(getInstrument().getOtherManufacturer());
 			else
 				manufacturer.setName(getInstrument().getManufacturer());
@@ -216,56 +216,56 @@ public class CharacterizationBean {
 	}
 
 	private void setAbbr(String name){
-		if (name.equals(CananoConstants.PHYSICAL_COMPOSITION)) {
-			this.abbr =  CananoConstants.ABBR_COMPOSITION;
-		} else if (name.equals(CananoConstants.PHYSICAL_SIZE)) {
-			this.abbr =   CananoConstants.ABBR_SIZE;
-		} else if (name.equals(CananoConstants.PHYSICAL_MOLECULAR_WEIGHT)) {
-			this.abbr =   CananoConstants.ABBR_MOLECULAR_WEIGHT;
-		} else if (name.equals(CananoConstants.PHYSICAL_MORPHOLOGY)) {
-			this.abbr =   CananoConstants.ABBR_MORPHOLOGY;
-		} else if (name.equals(CananoConstants.PHYSICAL_SHAPE)) {
-			this.abbr =   CananoConstants.ABBR_SHAPE;
-		} else if (name.equals(CananoConstants.PHYSICAL_SOLUBILITY)) {
-			this.abbr =   CananoConstants.ABBR_SOLUBILITY;
-		} else if (name.equals(CananoConstants.PHYSICAL_SURFACE)) {
-			this.abbr =   CananoConstants.ABBR_SURFACE;
-		} else if (name.equals(CananoConstants.PHYSICAL_PURITY)) {
-			this.abbr =   CananoConstants.ABBR_PURITY;
-		} else if (name.equals(CananoConstants.TOXICITY_OXIDATIVE_STRESS)) {
-			this.abbr =   CananoConstants.ABBR_OXIDATIVE_STRESS;
-		} else if (name.equals(CananoConstants.TOXICITY_ENZYME_FUNCTION)) {
-			this.abbr =   CananoConstants.ABBR_ENZYME_FUNCTION;
-		} else if (name.equals(CananoConstants.CYTOTOXICITY_CELL_VIABILITY)) {
-			this.abbr =   CananoConstants.ABBR_CELL_VIABILITY;
-		} else if (name.equals(CananoConstants.CYTOTOXICITY_CASPASE3_ACTIVIATION)) {
-			this.abbr =   CananoConstants.ABBR_CASPASE3_ACTIVATION;
-		} else if (name.equals(CananoConstants.BLOODCONTACTTOX_PLATE_AGGREGATION)) {
-			this.abbr =   CananoConstants.ABBR_PLATELET_AGGREGATION;
-		} else if (name.equals(CananoConstants.BLOODCONTACTTOX_HEMOLYSIS)) {
-			this.abbr =   CananoConstants.ABBR_HEMOLYSIS;
-		} else if (name.equals(CananoConstants.BLOODCONTACTTOX_PLASMA_PROTEIN_BINDING)) {
-			this.abbr =   CananoConstants.ABBR_PLASMA_PROTEIN_BINDING;
-		} else if (name.equals(CananoConstants.BLOODCONTACTTOX_COAGULATION)) {
-			this.abbr =   CananoConstants.ABBR_COAGULATION;
-		} else if (name.equals(CananoConstants.IMMUNOCELLFUNCTOX_OXIDATIVE_BURST)) {
-			this.abbr =   CananoConstants.ABBR_OXIDATIVE_BURST;
-		} else if (name.equals(CananoConstants.IMMUNOCELLFUNCTOX_CHEMOTAXIS)) {
-			this.abbr =   CananoConstants.ABBR_CHEMOTAXIS;
-		} else if (name.equals(CananoConstants.IMMUNOCELLFUNCTOX_LEUKOCYTE_PROLIFERATION)) {
-			this.abbr =   CananoConstants.ABBR_LEUKOCYTE_PROLIFERATION;
-		} else if (name.equals(CananoConstants.IMMUNOCELLFUNCTOX_PHAGOCYTOSIS)) {
-			this.abbr =   CananoConstants.ABBR_PHAGOCYTOSIS;
-		} else if (name.equals(CananoConstants.IMMUNOCELLFUNCTOX_CYTOKINE_INDUCTION)) {
-			this.abbr =   CananoConstants.ABBR_CYTOKINE_INDUCTION;
-		} else if (name.equals(CananoConstants.IMMUNOCELLFUNCTOX_CFU_GM)) {
-			this.abbr =   CananoConstants.ABBR_CFU_GM;
-		} else if (name.equals(CananoConstants.IMMUNOCELLFUNCTOX_COMPLEMENT_ACTIVATION)) {
-			this.abbr =   CananoConstants.ABBR_COMPLEMENT_ACTIVATION;
-		} else if (name.equals(CananoConstants.IMMUNOCELLFUNCTOX_NKCELL_CYTOTOXIC_ACTIVITY)) {
-			this.abbr =   CananoConstants.ABBR_NKCELL_CYTOTOXIC_ACTIVITY;
+		if (name.equals(CaNanoLabConstants.PHYSICAL_COMPOSITION)) {
+			this.abbr =  CaNanoLabConstants.ABBR_COMPOSITION;
+		} else if (name.equals(CaNanoLabConstants.PHYSICAL_SIZE)) {
+			this.abbr =   CaNanoLabConstants.ABBR_SIZE;
+		} else if (name.equals(CaNanoLabConstants.PHYSICAL_MOLECULAR_WEIGHT)) {
+			this.abbr =   CaNanoLabConstants.ABBR_MOLECULAR_WEIGHT;
+		} else if (name.equals(CaNanoLabConstants.PHYSICAL_MORPHOLOGY)) {
+			this.abbr =   CaNanoLabConstants.ABBR_MORPHOLOGY;
+		} else if (name.equals(CaNanoLabConstants.PHYSICAL_SHAPE)) {
+			this.abbr =   CaNanoLabConstants.ABBR_SHAPE;
+		} else if (name.equals(CaNanoLabConstants.PHYSICAL_SOLUBILITY)) {
+			this.abbr =   CaNanoLabConstants.ABBR_SOLUBILITY;
+		} else if (name.equals(CaNanoLabConstants.PHYSICAL_SURFACE)) {
+			this.abbr =   CaNanoLabConstants.ABBR_SURFACE;
+		} else if (name.equals(CaNanoLabConstants.PHYSICAL_PURITY)) {
+			this.abbr =   CaNanoLabConstants.ABBR_PURITY;
+		} else if (name.equals(CaNanoLabConstants.TOXICITY_OXIDATIVE_STRESS)) {
+			this.abbr =   CaNanoLabConstants.ABBR_OXIDATIVE_STRESS;
+		} else if (name.equals(CaNanoLabConstants.TOXICITY_ENZYME_FUNCTION)) {
+			this.abbr =   CaNanoLabConstants.ABBR_ENZYME_FUNCTION;
+		} else if (name.equals(CaNanoLabConstants.CYTOTOXICITY_CELL_VIABILITY)) {
+			this.abbr =   CaNanoLabConstants.ABBR_CELL_VIABILITY;
+		} else if (name.equals(CaNanoLabConstants.CYTOTOXICITY_CASPASE3_ACTIVIATION)) {
+			this.abbr =   CaNanoLabConstants.ABBR_CASPASE3_ACTIVATION;
+		} else if (name.equals(CaNanoLabConstants.BLOODCONTACTTOX_PLATE_AGGREGATION)) {
+			this.abbr =   CaNanoLabConstants.ABBR_PLATELET_AGGREGATION;
+		} else if (name.equals(CaNanoLabConstants.BLOODCONTACTTOX_HEMOLYSIS)) {
+			this.abbr =   CaNanoLabConstants.ABBR_HEMOLYSIS;
+		} else if (name.equals(CaNanoLabConstants.BLOODCONTACTTOX_PLASMA_PROTEIN_BINDING)) {
+			this.abbr =   CaNanoLabConstants.ABBR_PLASMA_PROTEIN_BINDING;
+		} else if (name.equals(CaNanoLabConstants.BLOODCONTACTTOX_COAGULATION)) {
+			this.abbr =   CaNanoLabConstants.ABBR_COAGULATION;
+		} else if (name.equals(CaNanoLabConstants.IMMUNOCELLFUNCTOX_OXIDATIVE_BURST)) {
+			this.abbr =   CaNanoLabConstants.ABBR_OXIDATIVE_BURST;
+		} else if (name.equals(CaNanoLabConstants.IMMUNOCELLFUNCTOX_CHEMOTAXIS)) {
+			this.abbr =   CaNanoLabConstants.ABBR_CHEMOTAXIS;
+		} else if (name.equals(CaNanoLabConstants.IMMUNOCELLFUNCTOX_LEUKOCYTE_PROLIFERATION)) {
+			this.abbr =   CaNanoLabConstants.ABBR_LEUKOCYTE_PROLIFERATION;
+		} else if (name.equals(CaNanoLabConstants.IMMUNOCELLFUNCTOX_PHAGOCYTOSIS)) {
+			this.abbr =   CaNanoLabConstants.ABBR_PHAGOCYTOSIS;
+		} else if (name.equals(CaNanoLabConstants.IMMUNOCELLFUNCTOX_CYTOKINE_INDUCTION)) {
+			this.abbr =   CaNanoLabConstants.ABBR_CYTOKINE_INDUCTION;
+		} else if (name.equals(CaNanoLabConstants.IMMUNOCELLFUNCTOX_CFU_GM)) {
+			this.abbr =   CaNanoLabConstants.ABBR_CFU_GM;
+		} else if (name.equals(CaNanoLabConstants.IMMUNOCELLFUNCTOX_COMPLEMENT_ACTIVATION)) {
+			this.abbr =   CaNanoLabConstants.ABBR_COMPLEMENT_ACTIVATION;
+		} else if (name.equals(CaNanoLabConstants.IMMUNOCELLFUNCTOX_NKCELL_CYTOTOXIC_ACTIVITY)) {
+			this.abbr =   CaNanoLabConstants.ABBR_NKCELL_CYTOTOXIC_ACTIVITY;
 		} else {
-			this.abbr = CananoConstants.OTHER; // shouldn't happen at all.
+			this.abbr = CaNanoLabConstants.OTHER; // shouldn't happen at all.
 		}
 	}
 	

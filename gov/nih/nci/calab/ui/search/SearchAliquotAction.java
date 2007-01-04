@@ -6,12 +6,12 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchAliquotAction.java,v 1.3 2006-12-14 22:14:00 pansu Exp $ */
+/* CVS $Id: SearchAliquotAction.java,v 1.4 2007-01-04 23:21:58 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.inventory.AliquotBean;
 import gov.nih.nci.calab.dto.inventory.StorageLocation;
 import gov.nih.nci.calab.service.search.SearchAliquotService;
-import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
@@ -51,10 +51,10 @@ public class SearchAliquotAction extends AbstractDispatchAction {
 
 		Date dateAccessionedBegin = dateAccessionedBeginStr.length() == 0 ? null
 				: StringUtils.convertToDate(dateAccessionedBeginStr,
-						CalabConstants.ACCEPT_DATE_FORMAT);
+						CaNanoLabConstants.ACCEPT_DATE_FORMAT);
 		Date dateAccessionedEnd = dateAccessionedEndStr.length() == 0 ? null
 				: StringUtils.convertToDate(dateAccessionedEndStr,
-						CalabConstants.ACCEPT_DATE_FORMAT);
+						CaNanoLabConstants.ACCEPT_DATE_FORMAT);
 		String sampleSubmitter = (String) theForm.get("sampleSubmitter");
 		StorageLocation storageLocation = (StorageLocation) theForm
 				.get("storageLocation");

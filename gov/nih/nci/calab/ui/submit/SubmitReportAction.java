@@ -6,11 +6,11 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: SubmitReportAction.java,v 1.9 2006-12-20 17:15:00 pansu Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.10 2007-01-04 23:21:58 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
-import gov.nih.nci.calab.service.util.CananoConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
@@ -45,7 +45,7 @@ public class SubmitReportAction extends AbstractDispatchAction {
 		// display default visible groups
 		if (fileBean.getVisibilityGroups().length == 0) {
 			fileBean
-					.setVisibilityGroups(CananoConstants.DEFAULT_VISIBLE_GROUPS);
+					.setVisibilityGroups(CaNanoLabConstants.VISIBLE_GROUPS);
 		}
 
 		ActionMessages msgs = new ActionMessages();
@@ -69,7 +69,7 @@ public class SubmitReportAction extends AbstractDispatchAction {
 		HttpSession session = request.getSession();
 		InitSessionSetup.getInstance().clearWorkflowSession(session);
 		InitSessionSetup.getInstance().clearSearchSession(session);
-
+		InitSessionSetup.getInstance().setApplicationOwner(session);
 		InitSessionSetup.getInstance().setAllSampleContainers(session);
 		InitSessionSetup.getInstance().setStaticDropdowns(session);
 		InitSessionSetup.getInstance().setAllVisibilityGroups(session);

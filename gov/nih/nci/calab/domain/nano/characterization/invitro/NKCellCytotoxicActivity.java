@@ -10,7 +10,7 @@ import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.ComposingElement;
 import gov.nih.nci.calab.domain.nano.characterization.toxicity.ImmunoToxicity;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
-import gov.nih.nci.calab.service.util.CananoConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 public class NKCellCytotoxicActivity implements ImmunoToxicity {
 
@@ -40,7 +40,7 @@ public class NKCellCytotoxicActivity implements ImmunoToxicity {
 	 * @see gov.nih.nci.calab.domain.nano.characterization.toxicity.ImmunoToxicity#getImmunotoxiticyType()
 	 */
 	public String getImmunotoxiticyType() {
-		return CananoConstants.IMMUNE_CELL_FUNCTION_IMMUNOTOXICITY_CHARACTERIZATION;
+		return CaNanoLabConstants.IMMUNE_CELL_FUNCTION_IMMUNOTOXICITY_CHARACTERIZATION;
 	}
 
 	/* (non-Javadoc)
@@ -73,7 +73,7 @@ public class NKCellCytotoxicActivity implements ImmunoToxicity {
 	}
 
 	public String getClassification() {
-		return CananoConstants.INVITRO_CHARACTERIZATION;
+		return CaNanoLabConstants.INVITRO_CHARACTERIZATION;
 	}
 
 	public String getDescription() {
@@ -89,7 +89,7 @@ public class NKCellCytotoxicActivity implements ImmunoToxicity {
 	}
 
 	public String getName() {
-		return CananoConstants.IMMUNOCELLFUNCTOX_NKCELL_CYTOTOXIC_ACTIVITY;
+		return CaNanoLabConstants.IMMUNOCELLFUNCTOX_NKCELL_CYTOTOXIC_ACTIVITY;
 	}
 
 	public void setName(String name) {

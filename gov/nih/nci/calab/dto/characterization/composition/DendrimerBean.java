@@ -2,7 +2,8 @@ package gov.nih.nci.calab.dto.characterization.composition;
 
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.DendrimerComposition;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.SurfaceGroup;
-import gov.nih.nci.calab.service.util.CananoConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,7 @@ public class DendrimerBean extends CompositionBean {
 	public DendrimerBean() {
 		super();
 		surfaceGroups = new ArrayList<SurfaceGroupBean>();		
-		core.setElementType(CananoConstants.CORE);
+		core.setElementType(CaNanoLabConstants.CORE);
 		getComposingElements().add(core);			
 	}
 
@@ -136,12 +137,12 @@ public class DendrimerBean extends CompositionBean {
 		super.updateDomainObj(doComp);
 
 		if (generation.length() > 0) {
-			if (generation.equalsIgnoreCase(CananoConstants.OTHER)){
+			if (generation.equalsIgnoreCase(CaNanoLabConstants.OTHER)){
 				generation = otherGeneration;
 			}
 			doComp.setGeneration(new Float(generation));
 		}
-		if (branch.equalsIgnoreCase(CananoConstants.OTHER)) {
+		if (branch.equalsIgnoreCase(CaNanoLabConstants.OTHER)) {
 			doComp.setBranch(otherBranch);
 		}
 		else {

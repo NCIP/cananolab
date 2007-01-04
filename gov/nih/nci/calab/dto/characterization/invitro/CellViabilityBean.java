@@ -6,7 +6,8 @@ import gov.nih.nci.calab.domain.nano.characterization.invitro.CellViability;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.DatumBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
-import gov.nih.nci.calab.service.util.CananoConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 import java.util.List;
 
@@ -60,13 +61,13 @@ public class CellViabilityBean extends CharacterizationBean {
 		super.updateDomainObj(cellViability);
 		for (DerivedBioAssayData chart: cellViability.getDerivedBioAssayDataCollection()){
 			for (Datum data: chart.getDatumCollection()){
-				data.setType(CananoConstants.CYTOTOXICITY_CELL_VIABILITY_DATA_TYPE);
+				data.setType(CaNanoLabConstants.CYTOTOXICITY_CELL_VIABILITY_DATA_TYPE);
 				if (data.getValue() != null) {
-					data.getValue().setUnitOfMeasurement(CananoConstants.UNIT_PERCENT);
+					data.getValue().setUnitOfMeasurement(CaNanoLabConstants.UNIT_PERCENT);
 				}			
 			}
 		}
-		if (cellLine.equals(CananoConstants.OTHER)) {
+		if (cellLine.equals(CaNanoLabConstants.OTHER)) {
 			cellViability.setCellLine(this.otherCellLine);
 		} else {
 			cellViability.setCellLine(this.cellLine);
