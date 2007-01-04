@@ -7,10 +7,10 @@ fileRepositoryDir=@FILE_REPOSITORY_DIR@/workflowdata
 particleFileRepositoryDir=@FILE_REPOSITORY_DIR@
 
 # Properties for HTTP-based file upload 
-archiveValue=http://@HOSTNAME@/calab/workflow/SignedHttpUploadApplet.jar
-servletURL=http://@HOSTNAME@/calab/processFileUpload
-notifyURL=http://@HOSTNAME@/calab/fileUpload.do?dispatch=persistFileUploadData
-defaultURL=http://@HOSTNAME@/calab/workflowMessage.do
+archiveValue=http://@HOSTNAME@/workflow/SignedHttpUploadApplet.jar
+servletURL=http://@HOSTNAME@/processFileUpload
+notifyURL=http://@HOSTNAME@/fileUpload.do?dispatch=persistFileUploadData
+defaultURL=http://@HOSTNAME@/workflowMessage.do
 
 
 # Properties to specify what file extensions are allowed for each type. They must be in upercase.
