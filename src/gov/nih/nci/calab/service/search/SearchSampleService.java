@@ -2,13 +2,12 @@ package gov.nih.nci.calab.service.search;
 
 import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
+import gov.nih.nci.calab.domain.LabFile;
 import gov.nih.nci.calab.domain.Sample;
 import gov.nih.nci.calab.dto.inventory.SampleBean;
 import gov.nih.nci.calab.dto.inventory.StorageLocation;
 import gov.nih.nci.calab.service.util.CalabComparators;
 import gov.nih.nci.calab.service.util.StringUtils;
-import gov.nih.nci.calab.domain.LabFile;
-import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,7 +22,7 @@ import org.apache.log4j.Logger;
  * @author pansu
  * 
  */
-/* CVS $Id: SearchSampleService.java,v 1.21 2006-10-10 14:00:39 chand Exp $ */
+/* CVS $Id: SearchSampleService.java,v 1.22 2007-01-04 23:23:34 pansu Exp $ */
 
 public class SearchSampleService {
 	private static Logger logger = Logger.getLogger(SearchSampleService.class);

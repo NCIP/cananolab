@@ -48,8 +48,7 @@ import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.function.FunctionBean;
 import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.security.UserService;
-import gov.nih.nci.calab.service.util.CalabConstants;
-import gov.nih.nci.calab.service.util.CananoConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.service.util.file.HttpFileUploadSessionData;
@@ -785,7 +784,7 @@ public class SubmitNanoparticleService {
 
 		// TODO write file to the file system
 		String rootPath = PropertyReader.getProperty(
-				CalabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
+				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
 		if (rootPath.charAt(rootPath.length() - 1) == File.separatorChar)
 			rootPath = rootPath.substring(0, rootPath.length() - 1);
 		// add charaterizationName to the path
@@ -828,7 +827,7 @@ public class SubmitNanoparticleService {
 			ida.close();
 		}
 		LabFileBean savedFileBean = new LabFileBean(dataFile,
-				CalabConstants.OUTPUT);
+				CaNanoLabConstants.OUTPUT);
 		setVisiblity(savedFileBean.getId(), savedFileBean.getVisibilityGroups());
 		return savedFileBean;
 	}
@@ -862,7 +861,7 @@ public class SubmitNanoparticleService {
 			ida.close();
 		}
 		LabFileBean savedFileBean = new LabFileBean(dataFile,
-				CalabConstants.OUTPUT);
+				CaNanoLabConstants.OUTPUT);
 		setVisiblity(savedFileBean.getId(), savedFileBean.getVisibilityGroups());
 		return savedFileBean;
 	}
@@ -1023,9 +1022,9 @@ public class SubmitNanoparticleService {
 			ida.close();
 		}
 		// get visibilities
-		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
+		UserService userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
 		List<String> accessibleGroups = userService.getAccessibleGroups(
-				fileBean.getId(), CalabConstants.CSM_READ_ROLE);
+				fileBean.getId(), CaNanoLabConstants.CSM_READ_ROLE);
 		String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
 		fileBean.setVisibilityGroups(visibilityGroups);
 		return fileBean;
@@ -1048,7 +1047,7 @@ public class SubmitNanoparticleService {
 					DerivedDataFile.class, StringUtils.convertToLong(fileId));
 			//load keywords
 			file.getKeywordCollection();
-			fileBean = new LabFileBean(file, CalabConstants.OUTPUT);
+			fileBean = new LabFileBean(file, CaNanoLabConstants.OUTPUT);
 		} catch (Exception e) {
 			e.printStackTrace();
 			ida.rollback();
@@ -1058,9 +1057,9 @@ public class SubmitNanoparticleService {
 			ida.close();
 		}
 		// get visibilities
-		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
+		UserService userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
 		List<String> accessibleGroups = userService.getAccessibleGroups(
-				fileBean.getId(), CalabConstants.CSM_READ_ROLE);
+				fileBean.getId(), CaNanoLabConstants.CSM_READ_ROLE);
 		String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
 		fileBean.setVisibilityGroups(visibilityGroups);
 		return fileBean;
@@ -1112,7 +1111,7 @@ public class SubmitNanoparticleService {
 
 		// TODO saves reportFile to the file system
 		String rootPath = PropertyReader.getProperty(
-				CalabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
+				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
 		if (rootPath.charAt(rootPath.length() - 1) == File.separatorChar)
 			rootPath = rootPath.substring(0, rootPath.length() - 1);
 
@@ -1133,7 +1132,7 @@ public class SubmitNanoparticleService {
 		this.writeFile(uploadedReport.getInputStream(), oStream);
 
 		LabFile dataFile = null;
-		if (fileBean.getType().equalsIgnoreCase(CananoConstants.NCL_REPORT))
+		if (fileBean.getType().equalsIgnoreCase(CaNanoLabConstants.REPORT))
 			dataFile = new Report();
 		else
 			dataFile = new AssociatedFile();
@@ -1181,7 +1180,7 @@ public class SubmitNanoparticleService {
 
 				if (particle != null) {
 					if (fileBean.getType().equalsIgnoreCase(
-							CananoConstants.NCL_REPORT))
+							CaNanoLabConstants.REPORT))
 						particle.getReportCollection().add((Report) dataFile);
 					else
 						particle.getAssociatedFileCollection().add(
@@ -1271,20 +1270,20 @@ public class SubmitNanoparticleService {
 	private void setVisiblity(String dataToProtect, String[] visibilities)
 			throws Exception {
 		// remove existing visibilities for the data
-		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
+		UserService userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
 		userService.removeAllAccessibleGroups(dataToProtect,
-				CalabConstants.CSM_READ_ROLE, null);
+				CaNanoLabConstants.CSM_READ_ROLE, null);
 
 		// set new visibilities
 		for (String visibility : visibilities) {
 			userService.secureObject(dataToProtect, visibility,
-					CalabConstants.CSM_READ_ROLE);
+					CaNanoLabConstants.CSM_READ_ROLE);
 		}
 
 		// set default visibilities
-		for (String visibility : CananoConstants.DEFAULT_VISIBLE_GROUPS) {
+		for (String visibility : CaNanoLabConstants.VISIBLE_GROUPS) {
 			userService.secureObject(dataToProtect, visibility,
-					CalabConstants.CSM_READ_ROLE);
+					CaNanoLabConstants.CSM_READ_ROLE);
 		}
 	}
 }

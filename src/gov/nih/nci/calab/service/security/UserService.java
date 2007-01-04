@@ -5,7 +5,7 @@ import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.exception.CalabException;
-import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.security.AuthenticationManager;
 import gov.nih.nci.security.AuthorizationManager;
@@ -148,7 +148,7 @@ public class UserService {
 	public boolean checkReadPermission(UserBean user,
 			String protectionElementObjectId) throws CSException {
 		return checkPermission(user, protectionElementObjectId,
-				CalabConstants.CSM_READ_PRIVILEGE);
+				CaNanoLabConstants.CSM_READ_PRIVILEGE);
 	}
 
 	/**
@@ -195,7 +195,7 @@ public class UserService {
 			throws Exception {
 		User user = authorizationManager.getUser(loginName);
 		java.util.Map options = SecurityServiceProvider
-				.getLoginModuleOptions(CalabConstants.CSM_APP_NAME);
+				.getLoginModuleOptions(CaNanoLabConstants.CSM_APP_NAME);
 		String encryptedPassword = EncryptedRDBMSHelper.encrypt(newPassword,
 				(String) options.get("hashAlgorithm"));
 		user.setPassword(encryptedPassword);
