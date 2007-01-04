@@ -1,6 +1,6 @@
 package gov.nih.nci.calab.domain;
 
-import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -250,9 +250,9 @@ public class Sample implements java.io.Serializable {
 		HashSet typedContainer = new HashSet();
 		for (Object obj : sampleContainerCollection) {
 			SampleContainer container = (SampleContainer) obj;
-			if ((type.equals(CalabConstants.ALIQUOT) && (container instanceof Aliquot))) {
+			if ((type.equals(CaNanoLabConstants.ALIQUOT) && (container instanceof Aliquot))) {
 				typedContainer.add(container);
-			} else if ((type.equals(CalabConstants.SAMPLE_CONTAINER) && !(container instanceof Aliquot))) {
+			} else if ((type.equals(CaNanoLabConstants.SAMPLE_CONTAINER) && !(container instanceof Aliquot))) {
 				typedContainer.add(container);
 			}
 		}

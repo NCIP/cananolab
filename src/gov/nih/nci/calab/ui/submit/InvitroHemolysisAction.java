@@ -8,17 +8,15 @@ package gov.nih.nci.calab.ui.submit;
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.invitro.Hemolysis;
-import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.dto.characterization.ConditionBean;
 import gov.nih.nci.calab.dto.characterization.DatumBean;
+import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.dto.characterization.invitro.HemolysisBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
-import gov.nih.nci.calab.service.util.CalabConstants;
-import gov.nih.nci.calab.service.util.CananoConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
-import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.ui.core.BaseCharacterizationAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
@@ -72,12 +70,12 @@ public class InvitroHemolysisAction extends BaseCharacterizationAction {
 				} 
 				catch (NumberFormatException nfe) {
 					Exception dataPointException = new Exception(PropertyReader.getProperty(
-							CalabConstants.SUBMISSION_PROPERTY, "hemolysisPercentage"));							
+							CaNanoLabConstants.SUBMISSION_PROPERTY, "hemolysisPercentage"));							
 						throw dataPointException;
 				}
 
 				try {
-					if ( dataPoint.getIsAControl().equals(CananoConstants.BOOLEAN_NO) ) {
+					if ( dataPoint.getIsAControl().equals(CaNanoLabConstants.BOOLEAN_NO) ) {
 						for ( ConditionBean condition : dataPoint.getConditionList() ) {
 							Float.parseFloat(condition.getValue());
 						}
@@ -85,7 +83,7 @@ public class InvitroHemolysisAction extends BaseCharacterizationAction {
 				} 
 				catch (NumberFormatException nfe) {
 					Exception conditionsException = new Exception(PropertyReader.getProperty(
-							CalabConstants.SUBMISSION_PROPERTY, "conditionValues"));							
+							CaNanoLabConstants.SUBMISSION_PROPERTY, "conditionValues"));							
 						throw conditionsException;
 				}
 			}

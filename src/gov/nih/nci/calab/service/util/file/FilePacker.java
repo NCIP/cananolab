@@ -50,7 +50,7 @@ INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIM
 */
 package gov.nih.nci.calab.service.util.file;
 
-import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -154,17 +154,17 @@ public class FilePacker
      */
     public void removeOldZipFile(String path)
     {
-        File f = new File(path + File.separator + CalabConstants.ALL_FILES + ".zip");
+        File f = new File(path + File.separator + CaNanoLabConstants.ALL_FILES + ".zip");
         if(f.exists())
         {
 	        boolean isDeleted = f.delete();
 	        if(isDeleted)
 	        {
-	            log_.info("File " + CalabConstants.ALL_FILES + ".zip has been deleted");
+	            log_.info("File " + CaNanoLabConstants.ALL_FILES + ".zip has been deleted");
 	        }
 	        else
 	        {
-	            log_.debug("File " + CalabConstants.ALL_FILES + ".zip cannot be deleted");
+	            log_.debug("File " + CaNanoLabConstants.ALL_FILES + ".zip cannot be deleted");
 	        }
         }
     }
@@ -178,7 +178,7 @@ public class FilePacker
     throws Exception
     {
         byte[] buf = new byte[1024];
-        String outFileName = path + File.separator + CalabConstants.ALL_FILES + ".zip";
+        String outFileName = path + File.separator + CaNanoLabConstants.ALL_FILES + ".zip";
         ZipOutputStream out = null;        
         
         List existingFiles = new ArrayList(); 

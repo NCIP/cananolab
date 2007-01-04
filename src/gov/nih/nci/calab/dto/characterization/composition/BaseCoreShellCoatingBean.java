@@ -1,7 +1,7 @@
 package gov.nih.nci.calab.dto.characterization.composition;
 
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.ParticleComposition;
-import gov.nih.nci.calab.service.util.CananoConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ public class BaseCoreShellCoatingBean extends CompositionBean {
 
 	public BaseCoreShellCoatingBean() {
 		super();
-		core.setElementType(CananoConstants.CORE);
+		core.setElementType(CaNanoLabConstants.CORE);
 		getComposingElements().add(core);
 	}
 
@@ -34,11 +34,11 @@ public class BaseCoreShellCoatingBean extends CompositionBean {
 		super(doComp);
 		core = new ComposingElementBean();
 		for (ComposingElementBean element : getComposingElements()) {
-			if (element.getElementType().equals(CananoConstants.CORE)) {
+			if (element.getElementType().equals(CaNanoLabConstants.CORE)) {
 				core = element;
-			} else if (element.getElementType().equals(CananoConstants.COATING)) {
+			} else if (element.getElementType().equals(CaNanoLabConstants.COATING)) {
 				coatings.add(element);
-			} else if (element.getElementType().equals(CananoConstants.SHELL)) {
+			} else if (element.getElementType().equals(CaNanoLabConstants.SHELL)) {
 				shells.add(element);
 			}
 		}

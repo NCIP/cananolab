@@ -3,7 +3,7 @@ package gov.nih.nci.calab.dto.characterization.physical;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Morphology;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
-import gov.nih.nci.calab.service.util.CananoConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 import java.util.List;
 
@@ -77,7 +77,7 @@ public Morphology getDomainObj() {
 		Morphology morphology = new Morphology();
 		super.updateDomainObj(morphology);
 		
-		if (this.type.equals(CananoConstants.OTHER) && !this.otherType.equalsIgnoreCase("")){
+		if (this.type.equals(CaNanoLabConstants.OTHER) && !this.otherType.equalsIgnoreCase("")){
 			morphology.setType(this.otherType);
 		} else {
 			morphology.setType(this.type);

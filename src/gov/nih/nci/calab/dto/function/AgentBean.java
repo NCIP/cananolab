@@ -2,7 +2,7 @@ package gov.nih.nci.calab.dto.function;
 
 import gov.nih.nci.calab.domain.nano.function.Agent;
 import gov.nih.nci.calab.domain.nano.function.AgentTarget;
-import gov.nih.nci.calab.service.util.CananoConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ public class AgentBean {
 
 	private String id;
 
-	private String type = CananoConstants.PEPTIDE;
+	private String type = CaNanoLabConstants.PEPTIDE;
 
 	private String description;
 

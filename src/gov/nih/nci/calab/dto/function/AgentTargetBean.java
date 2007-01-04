@@ -4,7 +4,7 @@ import gov.nih.nci.calab.domain.nano.function.AgentTarget;
 import gov.nih.nci.calab.domain.nano.function.Antigen;
 import gov.nih.nci.calab.domain.nano.function.Receptor;
 import gov.nih.nci.calab.domain.nano.function.UnclassifiedAgentTarget;
-import gov.nih.nci.calab.service.util.CananoConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 /**
  * This class represents the data associated with an agent target be shown in
@@ -32,11 +32,11 @@ public class AgentTargetBean {
 		this.id = agentTarget.getId().toString();
 		this.description = agentTarget.getDescription();
 		if (agentTarget instanceof Antigen) {
-			this.type = CananoConstants.ANTIGEN;
+			this.type = CaNanoLabConstants.ANTIGEN;
 			this.name = ((Antigen) agentTarget).getName();
 		}
 		if (agentTarget instanceof Receptor) {
-			this.type = CananoConstants.RECEPTOR;
+			this.type = CaNanoLabConstants.RECEPTOR;
 			this.name = ((Receptor) agentTarget).getName();
 		}
 	}
@@ -74,7 +74,7 @@ public class AgentTargetBean {
 	}
 
 	public AgentTarget getDomainObj() {
-		if (type.equals(CananoConstants.RECEPTOR)) {
+		if (type.equals(CaNanoLabConstants.RECEPTOR)) {
 			Receptor doReceptor = new Receptor();
 			if (getId() != null && getId().length() > 0) {
 				doReceptor.setId(new Long(getId()));
@@ -82,7 +82,7 @@ public class AgentTargetBean {
 			doReceptor.setDescription(description);
 			doReceptor.setName(name);
 			return doReceptor;
-		} else if (type.equals(CananoConstants.ANTIGEN)) {
+		} else if (type.equals(CaNanoLabConstants.ANTIGEN)) {
 			Antigen doAntigen = new Antigen();
 			if (getId() != null && getId().length() > 0) {
 				doAntigen.setId(new Long(getId()));

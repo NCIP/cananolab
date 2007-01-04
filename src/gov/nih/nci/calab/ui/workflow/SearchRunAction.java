@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.workflow;
  */
 
 import gov.nih.nci.calab.dto.workflow.RunBean;
-import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.service.workflow.ExecuteWorkflowService;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
@@ -41,7 +41,7 @@ public class SearchRunAction extends AbstractDispatchAction {
 		String assayName = (String) theForm.get("assayName");
 		String runBy = (String) theForm.get("runBy");
 		String runDateStr = (String) theForm.get("runDate");
-		Date runDate=StringUtils.convertToDate(runDateStr, CalabConstants.ACCEPT_DATE_FORMAT);
+		Date runDate=StringUtils.convertToDate(runDateStr, CaNanoLabConstants.ACCEPT_DATE_FORMAT);
 		ExecuteWorkflowService executeWorkflowService = new ExecuteWorkflowService();
 		List<RunBean>runs = executeWorkflowService.searchRun(sampleSource, assayName, runBy, runDate);
 		ActionMessages msgs = new ActionMessages();

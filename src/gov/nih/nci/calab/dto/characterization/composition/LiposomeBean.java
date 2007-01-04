@@ -1,7 +1,7 @@
 package gov.nih.nci.calab.dto.characterization.composition;
 
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.LiposomeComposition;
-import gov.nih.nci.calab.service.util.CananoConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 /**
  * This class represents properties of a Liposome composition to be shown in the
@@ -11,7 +11,7 @@ import gov.nih.nci.calab.service.util.CananoConstants;
  * 
  */
 public class LiposomeBean extends CompositionBean {
-	private String polymerized = CananoConstants.BOOLEAN_NO;
+	private String polymerized = CaNanoLabConstants.BOOLEAN_NO;
 
 	private String polymerName;
 
@@ -21,8 +21,8 @@ public class LiposomeBean extends CompositionBean {
 
 	public LiposomeBean(LiposomeComposition liposome) {
 		super(liposome);
-		this.polymerized = (liposome.isPolymerized()) ? CananoConstants.BOOLEAN_YES
-				: CananoConstants.BOOLEAN_NO;
+		this.polymerized = (liposome.isPolymerized()) ? CaNanoLabConstants.BOOLEAN_YES
+				: CaNanoLabConstants.BOOLEAN_NO;
 		this.polymerName = liposome.getPolymerName();		
 	}
 
@@ -41,7 +41,7 @@ public class LiposomeBean extends CompositionBean {
 	public LiposomeComposition getDomainObj() {
 		LiposomeComposition doComp = new LiposomeComposition();
 		super.updateDomainObj(doComp);
-		boolean polymerizedStatus = (polymerized.equalsIgnoreCase(CananoConstants.BOOLEAN_YES)) ? true
+		boolean polymerizedStatus = (polymerized.equalsIgnoreCase(CaNanoLabConstants.BOOLEAN_YES)) ? true
 				: false;
 		doComp.setPolymerized(polymerizedStatus);
 		doComp.setPolymerName(polymerName);

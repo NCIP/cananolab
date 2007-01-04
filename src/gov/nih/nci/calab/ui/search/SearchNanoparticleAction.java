@@ -6,13 +6,13 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchNanoparticleAction.java,v 1.11 2006-12-19 23:25:43 pansu Exp $ */
+/* CVS $Id: SearchNanoparticleAction.java,v 1.12 2007-01-04 23:21:58 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
 import gov.nih.nci.calab.service.security.UserService;
-import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
@@ -99,7 +99,7 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 		// check whether user has privilege to execute nanoparticle search pe or
 		// execute search pe
 		UserBean user = (UserBean) session.getAttribute("user");
-		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
+		UserService userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
 		boolean nanoSearchStatus = userService.checkExecutePermission(user,
 				"search characterizations");
 		boolean searchStatus = InitSessionSetup.getInstance()

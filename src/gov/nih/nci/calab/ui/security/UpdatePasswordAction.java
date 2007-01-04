@@ -2,7 +2,7 @@ package gov.nih.nci.calab.ui.security;
 
 import gov.nih.nci.calab.service.security.LoginService;
 import gov.nih.nci.calab.service.security.UserService;
-import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,12 +32,12 @@ public class UpdatePasswordAction extends AbstractBaseAction {
 		String newPassword = (String) theForm.get("newPassword");
 
 		LoginService loginservice = new LoginService(
-				CalabConstants.CSM_APP_NAME);
+				CaNanoLabConstants.CSM_APP_NAME);
 		Boolean isAuthenticated = loginservice.login(loginId, password);
 
 		if (isAuthenticated) {
 			UserService userService = new UserService(
-					CalabConstants.CSM_APP_NAME);
+					CaNanoLabConstants.CSM_APP_NAME);
 			userService.updatePassword(loginId, newPassword);	
 			ActionMessages messages=new ActionMessages();
 			ActionMessage message=new ActionMessage("message.password");

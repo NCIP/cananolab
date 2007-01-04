@@ -16,7 +16,7 @@ import gov.nih.nci.calab.dto.workflow.AssayBean;
 import gov.nih.nci.calab.dto.workflow.FileBean;
 import gov.nih.nci.calab.dto.workflow.RunBean;
 import gov.nih.nci.calab.service.util.CalabComparators;
-import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.service.util.file.FileNameConvertor;
 import gov.nih.nci.calab.service.util.file.HttpUploadedFileData;
@@ -95,7 +95,7 @@ public class ExecuteWorkflowService {
 				doRunSC.setSampleContainer(doAliquot);
 				doRunSC.setCreatedBy(creator);
 				doRunSC.setCreatedDate(StringUtils.convertToDate(creationDate,
-						CalabConstants.DATE_FORMAT));
+						CaNanoLabConstants.DATE_FORMAT));
 				ida.createObject(doRunSC);
 			}
 			ida.close();
@@ -125,8 +125,8 @@ public class ExecuteWorkflowService {
 				aliquotBean.setCreator(doAliquot.getCreatedBy());
 				aliquotBean.setHowCreated(doAliquot.getCreatedMethod());
 
-				String maskStatus = (doAliquot.getDataStatus() == null) ? CalabConstants.ACTIVE_STATUS
-						: CalabConstants.MASK_STATUS;
+				String maskStatus = (doAliquot.getDataStatus() == null) ? CaNanoLabConstants.ACTIVE_STATUS
+						: CaNanoLabConstants.MASK_STATUS;
 				aliquotBean.setMaskStatus(maskStatus);
 
 				// ContainerBean
@@ -160,22 +160,22 @@ public class ExecuteWorkflowService {
 						.getStorageElementCollection();
 				for (Object storageObj : storageElements) {
 					StorageElement element = (StorageElement) storageObj;
-					if (element.getType().equals(CalabConstants.STORAGE_ROOM)) {
+					if (element.getType().equals(CaNanoLabConstants.STORAGE_ROOM)) {
 						location.setRoom(element.getLocation());
 					} else if (element.getType().equals(
-							CalabConstants.STORAGE_FREEZER)) {
+							CaNanoLabConstants.STORAGE_FREEZER)) {
 						location.setFreezer(element.getLocation());
 					} else if (element.getType().equals(
-							CalabConstants.STORAGE_SHELF)) {
+							CaNanoLabConstants.STORAGE_SHELF)) {
 						location.setShelf(element.getLocation());
 					} else if (element.getType().equals(
-							CalabConstants.STORAGE_BOX)) {
+							CaNanoLabConstants.STORAGE_BOX)) {
 						location.setBox(element.getLocation());
 					} else if (element.getType().equals(
-							CalabConstants.STORAGE_RACK)) {
+							CaNanoLabConstants.STORAGE_RACK)) {
 						location.setRack(element.getLocation());
 					} else if (element.getType().equals(
-							CalabConstants.STORAGE_LAB)) {
+							CaNanoLabConstants.STORAGE_LAB)) {
 						location.setLab(element.getLocation());
 					}
 				}
@@ -225,14 +225,14 @@ public class ExecuteWorkflowService {
 			Run doRun = new Run();
 
 			// Retrieve the max sequence number for assay run
-			String runName = CalabConstants.RUN
+			String runName = CaNanoLabConstants.RUN
 					+ (getLastAssayRunNum(ida, assayName) + 1);
 			logger.debug("ExecuteWorkflowService.saveRun(): new run name = "
 					+ runName);
 			doRun.setName(runName);
 			doRun.setCreatedBy(createdBy);
 			doRun.setCreatedDate(StringUtils.convertToDate(createdDate,
-					CalabConstants.DATE_FORMAT));
+					CaNanoLabConstants.DATE_FORMAT));
 			doRun.setRunBy(runBy);
 			doRun.setRunDate(runDate);
 
@@ -268,7 +268,7 @@ public class ExecuteWorkflowService {
 			for (Object obj : results) {
 				String runName = (String) obj;
 				int runSeqNum = Integer.parseInt(runName.substring(
-						CalabConstants.RUN.length()).trim());
+						CaNanoLabConstants.RUN.length()).trim());
 				if (runSeqNum > runNum) {
 					runNum = runSeqNum;
 				}
@@ -329,7 +329,7 @@ public class ExecuteWorkflowService {
 	 * (items[1] != null) { runBean = new RunBean((Run) items[1]); } AliquotBean
 	 * aliquotBean = null; FileBean inFileBean = null; FileBean outFileBean =
 	 * null; String statusStr = (items[3] == null) ?
-	 * CalabConstants.ACTIVE_STATUS : CalabConstants.MASK_STATUS; if (items[2]
+	 * CaNanoLabConstants.ACTIVE_STATUS : CaNanoLabConstants.MASK_STATUS; if (items[2]
 	 * instanceof Aliquot) { aliquotBean = new AliquotBean((Aliquot) items[2]);
 	 * aliquotBean.setMaskStatus(statusStr); } else if (items[2] instanceof
 	 * InputFile) { inFileBean = new FileBean((InputFile) items[2]);
@@ -417,7 +417,7 @@ public class ExecuteWorkflowService {
 
 			for (HttpUploadedFileData fileData : fileList) {
 
-				if (inout.equalsIgnoreCase(CalabConstants.INPUT)) {
+				if (inout.equalsIgnoreCase(CaNanoLabConstants.INPUT)) {
 					InputFile doInputFile = new InputFile();
 					doInputFile.setRun(doRun);
 					doInputFile.setCreatedBy(creator);
@@ -425,14 +425,14 @@ public class ExecuteWorkflowService {
 					FileNameConvertor fconvertor = new FileNameConvertor();
 					String filename = fconvertor.getConvertedFileName(fileData
 							.getFileName());
-					doInputFile.setPath(filepath + CalabConstants.URI_SEPERATOR
+					doInputFile.setPath(filepath + CaNanoLabConstants.URI_SEPERATOR
 							+ filename);
 					doInputFile.setFilename(getShortFilename(filename));
 
 					ida.store(doInputFile);
 					// logger.info("Object object retruned from inputfile = " +
 					// object);
-				} else if (inout.equalsIgnoreCase(CalabConstants.OUTPUT)) {
+				} else if (inout.equalsIgnoreCase(CaNanoLabConstants.OUTPUT)) {
 					OutputFile doOutputFile = new OutputFile();
 					doOutputFile.setRun(doRun);
 					doOutputFile.setCreatedBy(creator);
@@ -444,7 +444,7 @@ public class ExecuteWorkflowService {
 					String filename = fconvertor.getConvertedFileName(fileData
 							.getFileName());
 					doOutputFile.setPath(filepath
-							+ CalabConstants.URI_SEPERATOR
+							+ CaNanoLabConstants.URI_SEPERATOR
 							+ fconvertor.getConvertedFileName(fileData
 									.getFileName()));
 					doOutputFile.setFilename(getShortFilename(filename));
@@ -595,8 +595,8 @@ public class ExecuteWorkflowService {
 				AliquotBean aliquotBean = null;
 				FileBean inFileBean = null;
 				FileBean outFileBean = null;
-				String statusStr = (items[2] == null) ? CalabConstants.ACTIVE_STATUS
-						: CalabConstants.MASK_STATUS;
+				String statusStr = (items[2] == null) ? CaNanoLabConstants.ACTIVE_STATUS
+						: CaNanoLabConstants.MASK_STATUS;
 				if (items[1] instanceof Aliquot) {
 					aliquotBean = new AliquotBean((Aliquot) items[1]);
 					aliquotBean.setMaskStatus(statusStr);
@@ -679,8 +679,8 @@ public class ExecuteWorkflowService {
 				RunBean run = new RunBean((Run) items[0]);
 				runMap.put(run.getId(), run);
 				AliquotBean aliquotBean = null;
-				String statusStr = (items[2] == null) ? CalabConstants.ACTIVE_STATUS
-						: CalabConstants.MASK_STATUS;
+				String statusStr = (items[2] == null) ? CaNanoLabConstants.ACTIVE_STATUS
+						: CaNanoLabConstants.MASK_STATUS;
 				if (items[1] instanceof Aliquot) {
 					aliquotBean = new AliquotBean((Aliquot) items[1]);
 					aliquotBean.setMaskStatus(statusStr);

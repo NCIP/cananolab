@@ -4,7 +4,7 @@ import gov.nih.nci.calab.domain.Measurement;
 import gov.nih.nci.calab.domain.nano.characterization.Condition;
 import gov.nih.nci.calab.domain.nano.characterization.Control;
 import gov.nih.nci.calab.domain.nano.characterization.Datum;
-import gov.nih.nci.calab.service.util.CananoConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class DatumBean {
 
 	private String valueUnit;
 
-	private String isAControl = CananoConstants.BOOLEAN_NO;
+	private String isAControl = CaNanoLabConstants.BOOLEAN_NO;
 
 	private ControlBean control = new ControlBean();
 
@@ -51,9 +51,9 @@ public class DatumBean {
 			control = new ControlBean();
 			control.setName(controlObj.getName());
 			control.setType(controlObj.getType());
-			isAControl = CananoConstants.BOOLEAN_YES;
+			isAControl = CaNanoLabConstants.BOOLEAN_YES;
 		} else {
-			isAControl = CananoConstants.BOOLEAN_NO;
+			isAControl = CaNanoLabConstants.BOOLEAN_NO;
 		}
 		if (datum.getConditionCollection() != null
 				&& datum.getConditionCollection().size() > 0) {
@@ -142,7 +142,7 @@ public class DatumBean {
 			}
 		}
 
-		if (isAControl.equals(CananoConstants.BOOLEAN_YES)) {
+		if (isAControl.equals(CaNanoLabConstants.BOOLEAN_YES)) {
 			Control control = new Control();
 			if (getControl() != null) {
 				if (getControl().getId() != null)

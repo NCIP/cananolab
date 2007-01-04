@@ -6,7 +6,7 @@ import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.domain.nano.characterization.invitro.CytokineInduction;
 
 import gov.nih.nci.calab.dto.characterization.*;
-import gov.nih.nci.calab.service.util.CananoConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 import java.util.List;
 
@@ -44,9 +44,9 @@ public class CytokineInductionBean extends CharacterizationBean {
 		super.updateDomainObj(cytokineInduction);
 		for (DerivedBioAssayData chart: cytokineInduction.getDerivedBioAssayDataCollection()){
 			for (Datum data: chart.getDatumCollection()){
-				data.setType(CananoConstants.IMMUNOCELLFUNCTOX_CYTOKINE_INDUCTION_DATA_TYPE);
+				data.setType(CaNanoLabConstants.IMMUNOCELLFUNCTOX_CYTOKINE_INDUCTION_DATA_TYPE);
 				if (data.getValue() != null) {
-					data.getValue().setUnitOfMeasurement(CananoConstants.UNIT_MG_ML);
+					data.getValue().setUnitOfMeasurement(CaNanoLabConstants.UNIT_MG_ML);
 				}			
 			}
 		}

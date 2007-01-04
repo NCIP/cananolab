@@ -10,7 +10,7 @@ import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.ComposingElement;
 import gov.nih.nci.calab.domain.nano.characterization.toxicity.Cytotoxicity;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
-import gov.nih.nci.calab.service.util.CananoConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 public class CellViability implements Cytotoxicity {
  
@@ -57,7 +57,7 @@ public class CellViability implements Cytotoxicity {
 	}
 
 	public String getClassification() {
-		return CananoConstants.INVITRO_CHARACTERIZATION;
+		return CaNanoLabConstants.INVITRO_CHARACTERIZATION;
 	}
 
 	public String getDescription() {
@@ -73,7 +73,7 @@ public class CellViability implements Cytotoxicity {
 	}
 
 	public String getName() {
-		return CananoConstants.CYTOTOXICITY_CELL_VIABILITY;
+		return CaNanoLabConstants.CYTOTOXICITY_CELL_VIABILITY;
 	}
 
 	public void setName(String name) {
@@ -134,7 +134,7 @@ public class CellViability implements Cytotoxicity {
 	}
 
 	public String getCellDeathMethod() {
-		return CananoConstants.APOPTOSIS_CELL_DEATH_METHOD_CYTOXICITY_CHARACTERIZATION;
+		return CaNanoLabConstants.APOPTOSIS_CELL_DEATH_METHOD_CYTOXICITY_CHARACTERIZATION;
 	}
 
 	public void setCellDeathMethod(String cellDeathMethod) {

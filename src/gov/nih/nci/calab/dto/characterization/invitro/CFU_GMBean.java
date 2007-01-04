@@ -6,7 +6,7 @@ import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.domain.nano.characterization.invitro.CFU_GM;
 
 import gov.nih.nci.calab.dto.characterization.*;
-import gov.nih.nci.calab.service.util.CananoConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 import java.util.List;
 
@@ -44,9 +44,9 @@ public class CFU_GMBean extends CharacterizationBean {
 		super.updateDomainObj(cfu_gm);
 		for (DerivedBioAssayData chart: cfu_gm.getDerivedBioAssayDataCollection()){
 			for (Datum data: chart.getDatumCollection()){
-				data.setType(CananoConstants.IMMUNOCELLFUNCTOX_CFU_GM_DATA_TYPE);
+				data.setType(CaNanoLabConstants.IMMUNOCELLFUNCTOX_CFU_GM_DATA_TYPE);
 				if (data.getValue() != null) {
-					data.getValue().setUnitOfMeasurement(CananoConstants.UNIT_CFU);
+					data.getValue().setUnitOfMeasurement(CaNanoLabConstants.UNIT_CFU);
 				}			
 			}
 		}

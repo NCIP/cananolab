@@ -9,7 +9,7 @@ import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.CharacterizationProtocol;
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
-import gov.nih.nci.calab.service.util.CananoConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 public class OxidativeStress implements Characterization {
 
@@ -54,7 +54,7 @@ public class OxidativeStress implements Characterization {
 	}
 
 	public String getClassification() {
-		return CananoConstants.INVITRO_CHARACTERIZATION;
+		return CaNanoLabConstants.INVITRO_CHARACTERIZATION;
 	}
 
 	public String getDescription() {
@@ -74,7 +74,7 @@ public class OxidativeStress implements Characterization {
 	}
 
 	public String getName() {
-		return CananoConstants.TOXICITY_OXIDATIVE_STRESS;
+		return CaNanoLabConstants.TOXICITY_OXIDATIVE_STRESS;
 	}
 
 	public void setName(String name) {

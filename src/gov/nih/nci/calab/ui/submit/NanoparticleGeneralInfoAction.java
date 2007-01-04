@@ -7,14 +7,14 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.18 2006-12-22 20:50:30 zengje Exp $ */
+/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.19 2007-01-04 23:21:58 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
-import gov.nih.nci.calab.service.util.CananoConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
@@ -57,7 +57,7 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 		
 		//display default visible groups
 		List<String > visList = new ArrayList<String>();
-		visList.addAll(Arrays.asList(CananoConstants.DEFAULT_VISIBLE_GROUPS));
+		visList.addAll(Arrays.asList(CaNanoLabConstants.VISIBLE_GROUPS));
 		visList.addAll(Arrays.asList(visibilities));	
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage(
@@ -82,6 +82,7 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 
 		InitSessionSetup.getInstance().setParticleTypeParticles(session);
 		InitSessionSetup.getInstance().setAllVisibilityGroups(session);
+		InitSessionSetup.getInstance().setApplicationOwner(session);
 		// clear session data from the input forms
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		theForm.getMap().clear();
