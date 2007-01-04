@@ -1,10 +1,6 @@
 package gov.nih.nci.calab.service.util;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.InputStream;
-import java.io.PrintWriter;
-import java.net.URL;
 import java.util.Properties;
 /**
  * This class is caLab Util class. It will read user property file, and fetch 
