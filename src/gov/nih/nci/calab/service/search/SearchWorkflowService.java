@@ -4,7 +4,7 @@ import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
 import gov.nih.nci.calab.dto.search.WorkflowResultBean;
 import gov.nih.nci.calab.service.util.CalabComparators;
-import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ import org.apache.log4j.Logger;
  * 
  */
 
-/* CVS $Id: SearchWorkflowService.java,v 1.26 2006-05-31 19:19:59 pansu Exp $ */
+/* CVS $Id: SearchWorkflowService.java,v 1.27 2007-01-04 23:23:34 pansu Exp $ */
 
 public class SearchWorkflowService {
 	private static Logger logger = Logger
@@ -50,7 +50,7 @@ public class SearchWorkflowService {
 				new CalabComparators.WorkflowResultBeanComparator());
 		String inHqlString = hqlString
 				+ ", '"
-				+ CalabConstants.INPUT
+				+ CaNanoLabConstants.INPUT
 				+ "' from Assay assay join assay.runCollection run left join run.inputFileCollection file left join file.dataStatus fileStatus left join run.runSampleContainerCollection runSampleContainer left join runSampleContainer.sampleContainer aliquot left join aliquot.dataStatus aliquotStatus ";
 
 		inHqlString += whereParams[0];
@@ -61,7 +61,7 @@ public class SearchWorkflowService {
 		// get outputFile workflows next
 		String outHqlString = hqlString
 				+ ", '"
-				+ CalabConstants.OUTPUT
+				+ CaNanoLabConstants.OUTPUT
 				+ "' from Assay assay join assay.runCollection run left join run.outputFileCollection file left join file.dataStatus fileStatus left join run.runSampleContainerCollection runSampleContainer left join runSampleContainer.sampleContainer aliquot left join aliquot.dataStatus aliquotStatus  ";
 		outHqlString += whereParams[0];
 		List<WorkflowResultBean> outWorkflows = getWorkflows(outHqlString,
@@ -200,7 +200,7 @@ public class SearchWorkflowService {
 				String theFileInoutType = StringUtils
 						.convertToString(items[13]);
 				// filter out rows with inouttype=out and empty file path
-				if (!theFileInoutType.equals(CalabConstants.OUTPUT)
+				if (!theFileInoutType.equals(CaNanoLabConstants.OUTPUT)
 						|| theFilePath.length() > 0) {
 					// set inout type=in to empty when no filePath
 					theFileInoutType = (theFilePath.length() == 0) ? ""
@@ -238,9 +238,9 @@ public class SearchWorkflowService {
 		if (isFileIn && isFileOut) {
 			selectFileType = "both";
 		} else if (isFileIn) {
-			selectFileType = CalabConstants.INPUT;
+			selectFileType = CaNanoLabConstants.INPUT;
 		} else if (isFileOut) {
-			selectFileType = CalabConstants.OUTPUT;
+			selectFileType = CaNanoLabConstants.OUTPUT;
 		} else {
 			selectFileType = "";
 		}
@@ -253,16 +253,16 @@ public class SearchWorkflowService {
 
 			// filter out workflows when not satisfying masking criteria
 			if (excludeMaskedFiles
-					&& (fileStatus.equals(CalabConstants.MASK_STATUS))
+					&& (fileStatus.equals(CaNanoLabConstants.MASK_STATUS))
 					|| excludeMaskedAliquots
-					&& aliquotStatus.equals(CalabConstants.MASK_STATUS)) {
+					&& aliquotStatus.equals(CaNanoLabConstants.MASK_STATUS)) {
 			}
 			// and filter out workflows when not satisfying in out criteria
 			else if (selectFileType.equals("both")
 					&& fileInOut.length() > 0
 					|| selectFileType.equals("")
-					|| (selectFileType.equals(CalabConstants.INPUT) || selectFileType
-							.equals(CalabConstants.OUTPUT))
+					|| (selectFileType.equals(CaNanoLabConstants.INPUT) || selectFileType
+							.equals(CaNanoLabConstants.OUTPUT))
 					&& selectFileType.equals(fileInOut)
 					&& fileInOut.length() > 0) {
 				workflows.add(workflow);

@@ -9,7 +9,7 @@ import gov.nih.nci.calab.domain.StorageElement;
 import gov.nih.nci.calab.dto.inventory.AliquotBean;
 import gov.nih.nci.calab.dto.inventory.ContainerBean;
 import gov.nih.nci.calab.exception.DuplicateEntriesException;
-import gov.nih.nci.calab.service.util.CalabConstants;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.HashSet;
@@ -24,7 +24,7 @@ import org.apache.log4j.Logger;
  */
 
 /*
- * CVS $Id: ManageAliquotService.java,v 1.4 2006-08-01 19:46:00 pansu Exp $
+ * CVS $Id: ManageAliquotService.java,v 1.5 2007-01-04 23:23:34 pansu Exp $
  */
 
 public class ManageAliquotService {
@@ -182,7 +182,7 @@ public class ManageAliquotService {
 					doAliquot.setConcentrationUnit(containerBean
 							.getConcentrationUnit());
 					if (containerBean.getContainerType().equals(
-							CalabConstants.OTHER)) {
+							CaNanoLabConstants.OTHER)) {
 						doAliquot.setContainerType(containerBean
 								.getOtherContainerType());
 					} else {
@@ -229,7 +229,7 @@ public class ManageAliquotService {
 					if ((boxValue != null) && (boxValue.length() > 0)) {
 						List existedSE = ida
 								.search("from StorageElement se where se.type = '"
-										+ CalabConstants.STORAGE_BOX
+										+ CaNanoLabConstants.STORAGE_BOX
 										+ "' and se.location = '"
 										+ boxValue
 										+ "'");
@@ -239,7 +239,7 @@ public class ManageAliquotService {
 						} else {
 							box = new StorageElement();
 							box.setLocation(boxValue);
-							box.setType(CalabConstants.STORAGE_BOX);
+							box.setType(CaNanoLabConstants.STORAGE_BOX);
 							ida.store(box);
 						}
 						storages.add(box);
@@ -250,7 +250,7 @@ public class ManageAliquotService {
 					if ((shelfValue != null) && (shelfValue.length() > 0)) {
 						List existedSE = ida
 								.search("from StorageElement se where se.type = '"
-										+ CalabConstants.STORAGE_SHELF
+										+ CaNanoLabConstants.STORAGE_SHELF
 										+ "' and se.location = '"
 										+ shelfValue
 										+ "'");
@@ -260,7 +260,7 @@ public class ManageAliquotService {
 						} else {
 							shelf = new StorageElement();
 							shelf.setLocation(shelfValue);
-							shelf.setType(CalabConstants.STORAGE_SHELF);
+							shelf.setType(CaNanoLabConstants.STORAGE_SHELF);
 							ida.store(shelf);
 						}
 						storages.add(shelf);
@@ -271,7 +271,7 @@ public class ManageAliquotService {
 					if ((freezerValue != null) && (freezerValue.length() > 0)) {
 						List existedSE = ida
 								.search("from StorageElement se where se.type = '"
-										+ CalabConstants.STORAGE_FREEZER
+										+ CaNanoLabConstants.STORAGE_FREEZER
 										+ "' and se.location = '"
 										+ freezerValue + "'");
 						StorageElement freezer = null;
@@ -280,7 +280,7 @@ public class ManageAliquotService {
 						} else {
 							freezer = new StorageElement();
 							freezer.setLocation(freezerValue);
-							freezer.setType(CalabConstants.STORAGE_FREEZER);
+							freezer.setType(CaNanoLabConstants.STORAGE_FREEZER);
 							ida.store(freezer);
 						}
 						storages.add(freezer);
@@ -291,7 +291,7 @@ public class ManageAliquotService {
 					if ((roomValue != null) && (roomValue.length() > 0)) {
 						List existedSE = ida
 								.search("from StorageElement se where se.type = '"
-										+ CalabConstants.STORAGE_ROOM
+										+ CaNanoLabConstants.STORAGE_ROOM
 										+ "' and se.location = '"
 										+ roomValue
 										+ "'");
@@ -301,7 +301,7 @@ public class ManageAliquotService {
 						} else {
 							room = new StorageElement();
 							room.setLocation(roomValue);
-							room.setType(CalabConstants.STORAGE_ROOM);
+							room.setType(CaNanoLabConstants.STORAGE_ROOM);
 							ida.store(room);
 						}
 						storages.add(room);

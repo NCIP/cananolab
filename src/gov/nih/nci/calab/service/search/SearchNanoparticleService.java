@@ -16,9 +16,8 @@ import gov.nih.nci.calab.dto.function.FunctionBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.security.UserService;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.CalabComparators;
-import gov.nih.nci.calab.service.util.CalabConstants;
-import gov.nih.nci.calab.service.util.CananoConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.io.File;
@@ -39,7 +38,7 @@ import org.apache.log4j.Logger;
  */
 public class SearchNanoparticleService {
 	private static Logger logger = Logger
-			.getLogger(SearchNanoparticleService.class);
+			.getLogger(SearchNanoparticleService.class);	
 
 	/**
 	 * Search for nanoparticles based on particle source, type, function types,
@@ -155,7 +154,7 @@ public class SearchNanoparticleService {
 			ida.close();
 		}
 
-		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
+		UserService userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
 
 		List<ParticleBean> filteredParticles = userService
 				.getFilteredParticles(user, particles);
@@ -204,9 +203,9 @@ public class SearchNanoparticleService {
 		}
 
 		ParticleBean particleBean = new ParticleBean(particle);
-		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
+		UserService userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
 		List<String> accessibleGroups = userService.getAccessibleGroups(
-				particleName, CalabConstants.CSM_READ_ROLE);
+				particleName, CaNanoLabConstants.CSM_READ_ROLE);
 		String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
 		particleBean.setVisibilityGroups(visibilityGroups);
 
@@ -377,9 +376,9 @@ public class SearchNanoparticleService {
 				+ " report where particle.name='"
 				+ particleName
 				+ "' and particle.type='" + particleType + "'";
-		if (reportType.equals(CananoConstants.NCL_REPORT)) {
+		if (reportType.equals(CaNanoLabConstants.REPORT)) {
 			hql=hql.replaceAll("reportType", reportJoin);
-		} else if (reportType.equals(CananoConstants.ASSOCIATED_FILE)) {
+		} else if (reportType.equals(CaNanoLabConstants.ASSOCIATED_FILE)) {
 			hql=hql.replaceAll("reportType", associatedFileJoin);
 		}
 		try {
@@ -389,10 +388,10 @@ public class SearchNanoparticleService {
 				LabFileBean fileBean = new LabFileBean((LabFile) obj,
 						reportType);
 				UserService userService = new UserService(
-						CalabConstants.CSM_APP_NAME);
+						CaNanoLabConstants.CSM_APP_NAME);
 				List<String> accessibleGroups = userService
 						.getAccessibleGroups(fileBean.getId(),
-								CalabConstants.CSM_READ_ROLE);
+								CaNanoLabConstants.CSM_READ_ROLE);
 				String[] visibilityGroups = accessibleGroups
 						.toArray(new String[0]);
 				fileBean.setVisibilityGroups(visibilityGroups);
@@ -406,7 +405,7 @@ public class SearchNanoparticleService {
 			ida.close();
 		}
 
-		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
+		UserService userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
 
 		List<LabFileBean> filteredReports = userService.getFilteredFiles(
 				user, fileBeans);
@@ -441,12 +440,12 @@ public class SearchNanoparticleService {
 				fileBean.setId(reportId);
 				fileBean.setPath(path);
 				fileBean.setName(fileName);
-				fileBean.setType(CananoConstants.NCL_REPORT);
+				fileBean.setType(CaNanoLabConstants.REPORT);
 				fileBeans.add(fileBean);
 			}
 
 			UserService userService = new UserService(
-					CalabConstants.CSM_APP_NAME);
+					CaNanoLabConstants.CSM_APP_NAME);
 
 			fileBeans = userService.getFilteredFiles(user, fileBeans);
 		} catch (Exception e) {
@@ -516,9 +515,9 @@ public class SearchNanoparticleService {
 					results.addAll(results2);
 				}
 			} else {
-				if (reportType.equals(CananoConstants.NCL_REPORT)) {
+				if (reportType.equals(CaNanoLabConstants.REPORT)) {
 					hqlString += "join particle.reportCollection report ";
-				} else if (reportType.equals(CananoConstants.ASSOCIATED_FILE)) {
+				} else if (reportType.equals(CaNanoLabConstants.ASSOCIATED_FILE)) {
 					hqlString += "join particle.associatedFileCollection report ";
 				}
 				hqlString += functionTypeFrom + where + whereStr;
@@ -528,10 +527,10 @@ public class SearchNanoparticleService {
 			for (Object obj : results) {
 				LabFileBean fileBean =null;
 				if (obj instanceof Report) {
-					fileBean=new LabFileBean((Report)obj, CananoConstants.NCL_REPORT);
+					fileBean=new LabFileBean((Report)obj, CaNanoLabConstants.REPORT);
 				}
 				else {
-					fileBean=new LabFileBean((AssociatedFile)obj, CananoConstants.ASSOCIATED_FILE);
+					fileBean=new LabFileBean((AssociatedFile)obj, CaNanoLabConstants.ASSOCIATED_FILE);
 				}
 				reports.add(fileBean);
 			}
@@ -542,7 +541,7 @@ public class SearchNanoparticleService {
 			ida.close();
 		}
 
-		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
+		UserService userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
 
 		List<LabFileBean> filteredReports = userService.getFilteredFiles(
 				user, reports);

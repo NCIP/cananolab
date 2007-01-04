@@ -13,10 +13,8 @@ import gov.nih.nci.calab.dto.inventory.ContainerInfoBean;
 import gov.nih.nci.calab.dto.inventory.SampleBean;
 import gov.nih.nci.calab.dto.workflow.AssayBean;
 import gov.nih.nci.calab.service.security.UserService;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.CalabComparators;
-import gov.nih.nci.calab.service.util.CalabConstants;
-import gov.nih.nci.calab.service.util.CananoConstants;
-import gov.nih.nci.calab.service.util.PropertyReader;
 import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.ArrayList;
@@ -38,7 +36,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.89 2006-12-26 21:30:07 zengje Exp $ */
+/* CVS $Id: LookupService.java,v 1.90 2007-01-04 23:23:13 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -65,7 +63,7 @@ public class LookupService {
 				Object[] info = (Object[]) obj;
 				AliquotBean aliquot = new AliquotBean(StringUtils
 						.convertToString(info[0]), StringUtils
-						.convertToString(info[1]), CalabConstants.ACTIVE_STATUS);
+						.convertToString(info[1]), CaNanoLabConstants.ACTIVE_STATUS);
 				String sampleName = (String) info[2];
 				if (sampleAliquots.get(sampleName) != null) {
 					aliquots = (SortedSet<AliquotBean>) sampleAliquots
@@ -138,7 +136,7 @@ public class LookupService {
 		// Detail here
 		// Retrieve data from Sample_Type table
 		List<String> sampleTypes = new ArrayList<String>();
-		// sampleTypes.add(CalabConstants.OTHER);
+		// sampleTypes.add(CaNanoLabConstants.OTHER);
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
@@ -217,7 +215,7 @@ public class LookupService {
 			ida.close();
 		}
 		containerTypes.addAll(Arrays
-				.asList(CalabConstants.DEFAULT_CONTAINER_TYPES));
+				.asList(CaNanoLabConstants.DEFAULT_CONTAINER_TYPES));
 		List<String> containerTypeList = new ArrayList<String>(containerTypes);
 
 		return containerTypeList;
@@ -242,7 +240,7 @@ public class LookupService {
 			ida.close();
 		}
 		containerTypes.addAll(Arrays
-				.asList(CalabConstants.DEFAULT_CONTAINER_TYPES));
+				.asList(CaNanoLabConstants.DEFAULT_CONTAINER_TYPES));
 		List<String> containerTypeList = new ArrayList<String>(containerTypes);
 		return containerTypeList;
 	}
@@ -385,7 +383,7 @@ public class LookupService {
 				assays.add(assay);
 			}
 		} catch (Exception e) {
-		// TODO: temp for debuging use. remove later
+			// TODO: temp for debuging use. remove later
 			e.printStackTrace();
 			logger.error("Error in retrieving all assay beans. ", e);
 			throw new RuntimeException("Error in retrieving all assays beans. ");
@@ -544,11 +542,12 @@ public class LookupService {
 		Map<String, SortedSet<String>> particleTypeParticles = new HashMap<String, SortedSet<String>>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
-		UserService userService = new UserService(CalabConstants.CSM_APP_NAME);
-		
+		UserService userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
+
 		try {
 			ida.open();
-//			String hqlString = "select particle.type, particle.name from Nanoparticle particle";
+			// String hqlString = "select particle.type, particle.name from
+			// Nanoparticle particle";
 			String hqlString = "select particle.type, particle.name from Nanoparticle particle where size(particle.characterizationCollection) = 0";
 			List results = ida.search(hqlString);
 			SortedSet<String> particleNames = null;
@@ -558,19 +557,22 @@ public class LookupService {
 				String particleName = (String) objArray[1];
 
 				if (particleType != null) {
-					// check if the particle already has visibility group assigned, if yes, do NOT add to the list
-					List<String> groups = userService.getAccessibleGroups(particleName, CalabConstants.CSM_READ_ROLE);
-					if (groups.size() == 0){
+					// check if the particle already has visibility group
+					// assigned, if yes, do NOT add to the list
+					List<String> groups = userService.getAccessibleGroups(
+							particleName, CaNanoLabConstants.CSM_READ_ROLE);
+					if (groups.size() == 0) {
 						if (particleTypeParticles.get(particleType) != null) {
 							particleNames = (SortedSet<String>) particleTypeParticles
 									.get(particleType);
 						} else {
 							particleNames = new TreeSet<String>(
 									new CalabComparators.SortableNameComparator());
-							particleTypeParticles.put(particleType, particleNames);
+							particleTypeParticles.put(particleType,
+									particleNames);
 						}
-						particleNames.add(particleName);		
-					}					
+						particleNames.add(particleName);
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -620,10 +622,8 @@ public class LookupService {
 		} finally {
 			ida.close();
 		}
-		names
-				.addAll(Arrays
-						.asList(CananoConstants.DEFAULT_SURFACE_GROUP_NAMES));
-		names.add(CananoConstants.OTHER);
+		names.addAll(Arrays.asList(CaNanoLabConstants.DEFAULT_SURFACE_GROUP_NAMES));
+		names.add(CaNanoLabConstants.OTHER);
 
 		return (String[]) names.toArray(new String[0]);
 	}
@@ -647,8 +647,8 @@ public class LookupService {
 			ida.close();
 		}
 		branches.addAll(Arrays
-				.asList(CananoConstants.DEFAULT_DENDRIMER_BRANCHES));
-		branches.add(CananoConstants.OTHER);
+				.asList(CaNanoLabConstants.DEFAULT_DENDRIMER_BRANCHES));
+		branches.add(CaNanoLabConstants.OTHER);
 
 		return (String[]) branches.toArray(new String[0]);
 	}
@@ -672,8 +672,8 @@ public class LookupService {
 			ida.close();
 		}
 		generations.addAll(Arrays
-				.asList(CananoConstants.DEFAULT_DENDRIMER_GENERATIONS));
-		generations.add(CananoConstants.OTHER);
+				.asList(CaNanoLabConstants.DEFAULT_DENDRIMER_GENERATIONS));
+		generations.add(CaNanoLabConstants.OTHER);
 
 		return (String[]) generations.toArray(new String[0]);
 	}
@@ -702,8 +702,8 @@ public class LookupService {
 			ida.close();
 		}
 		initiators.addAll(Arrays
-				.asList(CananoConstants.DEFAULT_POLYMER_INITIATORS));
-		initiators.add(CananoConstants.OTHER);
+				.asList(CaNanoLabConstants.DEFAULT_POLYMER_INITIATORS));
+		initiators.add(CaNanoLabConstants.OTHER);
 
 		return (String[]) initiators.toArray(new String[0]);
 	}
@@ -714,11 +714,9 @@ public class LookupService {
 	}
 
 	public String getParticleClassification(String particleType) {
-		String key = "classification." + particleType.replaceAll(" ", "_");
-		String classification = PropertyReader.getProperty(
-				CananoConstants.PARTICLE_PROPERTY, key);
+		String classification = CaNanoLabConstants.PARTICLE_CLASSIFICATION_MAP
+				.get(particleType);
 		return classification;
-
 	}
 
 	/**
@@ -729,51 +727,51 @@ public class LookupService {
 	public Map<String, String[]> getCharacterizationTypeCharacterizations() {
 		Map<String, String[]> charTypeChars = new HashMap<String, String[]>();
 		String[] physicalChars = new String[] {
-				CananoConstants.PHYSICAL_COMPOSITION,
-				CananoConstants.PHYSICAL_SIZE,
-				CananoConstants.PHYSICAL_MOLECULAR_WEIGHT,
-				CananoConstants.PHYSICAL_MORPHOLOGY,
-				CananoConstants.PHYSICAL_SOLUBILITY,
-				CananoConstants.PHYSICAL_SURFACE,
-				CananoConstants.PHYSICAL_PURITY,
-//				CananoConstants.PHYSICAL_STABILITY,
-//				CananoConstants.PHYSICAL_FUNCTIONAL,
-				CananoConstants.PHYSICAL_SHAPE };
+				CaNanoLabConstants.PHYSICAL_COMPOSITION,
+				CaNanoLabConstants.PHYSICAL_SIZE,
+				CaNanoLabConstants.PHYSICAL_MOLECULAR_WEIGHT,
+				CaNanoLabConstants.PHYSICAL_MORPHOLOGY,
+				CaNanoLabConstants.PHYSICAL_SOLUBILITY,
+				CaNanoLabConstants.PHYSICAL_SURFACE,
+				CaNanoLabConstants.PHYSICAL_PURITY,
+				// CaNanoLabConstants.PHYSICAL_STABILITY,
+				// CaNanoLabConstants.PHYSICAL_FUNCTIONAL,
+				CaNanoLabConstants.PHYSICAL_SHAPE };
 		charTypeChars.put("physical", physicalChars);
 		String[] toxChars = new String[] {
-				CananoConstants.TOXICITY_OXIDATIVE_STRESS,
-				CananoConstants.TOXICITY_ENZYME_FUNCTION };
+				CaNanoLabConstants.TOXICITY_OXIDATIVE_STRESS,
+				CaNanoLabConstants.TOXICITY_ENZYME_FUNCTION };
 		charTypeChars.put("toxicity", toxChars);
 
 		String[] cytoToxChars = new String[] {
-				CananoConstants.CYTOTOXICITY_CELL_VIABILITY,
-				CananoConstants.CYTOTOXICITY_CASPASE3_ACTIVIATION };
+				CaNanoLabConstants.CYTOTOXICITY_CELL_VIABILITY,
+				CaNanoLabConstants.CYTOTOXICITY_CASPASE3_ACTIVIATION };
 		charTypeChars.put("cytoTox", cytoToxChars);
 
 		String[] bloodContactChars = new String[] {
-				CananoConstants.BLOODCONTACTTOX_PLATE_AGGREGATION,
-				CananoConstants.BLOODCONTACTTOX_HEMOLYSIS,
-				CananoConstants.BLOODCONTACTTOX_PLASMA_PROTEIN_BINDING,
-				CananoConstants.BLOODCONTACTTOX_COAGULATION };
+				CaNanoLabConstants.BLOODCONTACTTOX_PLATE_AGGREGATION,
+				CaNanoLabConstants.BLOODCONTACTTOX_HEMOLYSIS,
+				CaNanoLabConstants.BLOODCONTACTTOX_PLASMA_PROTEIN_BINDING,
+				CaNanoLabConstants.BLOODCONTACTTOX_COAGULATION };
 		charTypeChars.put("bloodContactTox", bloodContactChars);
 
 		String[] immuneCellFuncChars = new String[] {
-				CananoConstants.IMMUNOCELLFUNCTOX_OXIDATIVE_BURST,
-				CananoConstants.IMMUNOCELLFUNCTOX_CHEMOTAXIS,
-				CananoConstants.IMMUNOCELLFUNCTOX_LEUKOCYTE_PROLIFERATION,
-				CananoConstants.IMMUNOCELLFUNCTOX_PHAGOCYTOSIS,
-				CananoConstants.IMMUNOCELLFUNCTOX_CYTOKINE_INDUCTION,
-				CananoConstants.IMMUNOCELLFUNCTOX_CFU_GM,
-				CananoConstants.IMMUNOCELLFUNCTOX_COMPLEMENT_ACTIVATION,
-				CananoConstants.IMMUNOCELLFUNCTOX_NKCELL_CYTOTOXIC_ACTIVITY };
+				CaNanoLabConstants.IMMUNOCELLFUNCTOX_OXIDATIVE_BURST,
+				CaNanoLabConstants.IMMUNOCELLFUNCTOX_CHEMOTAXIS,
+				CaNanoLabConstants.IMMUNOCELLFUNCTOX_LEUKOCYTE_PROLIFERATION,
+				CaNanoLabConstants.IMMUNOCELLFUNCTOX_PHAGOCYTOSIS,
+				CaNanoLabConstants.IMMUNOCELLFUNCTOX_CYTOKINE_INDUCTION,
+				CaNanoLabConstants.IMMUNOCELLFUNCTOX_CFU_GM,
+				CaNanoLabConstants.IMMUNOCELLFUNCTOX_COMPLEMENT_ACTIVATION,
+				CaNanoLabConstants.IMMUNOCELLFUNCTOX_NKCELL_CYTOTOXIC_ACTIVITY };
 
 		charTypeChars.put("immuneCellFuncTox", immuneCellFuncChars);
 
-//		String[] metabolicChars = new String[] {
-//				CananoConstants.METABOLIC_STABILITY_CYP450,
-//				CananoConstants.METABOLIC_STABILITY_GLUCURONIDATION_SULPHATION,
-//				CananoConstants.METABOLIC_STABILITY_ROS };
-//		charTypeChars.put("metabolicStabilityTox", metabolicChars);
+		// String[] metabolicChars = new String[] {
+		// CaNanoLabConstants.METABOLIC_STABILITY_CYP450,
+		// CaNanoLabConstants.METABOLIC_STABILITY_GLUCURONIDATION_SULPHATION,
+		// CaNanoLabConstants.METABOLIC_STABILITY_ROS };
+		// charTypeChars.put("metabolicStabilityTox", metabolicChars);
 		return charTypeChars;
 	}
 
@@ -786,16 +784,17 @@ public class LookupService {
 			String hqlString = "select distinct instrumentType.name, instrumentType.abbreviation from InstrumentType instrumentType where instrumentType.name is not null";
 			List results = ida.search(hqlString);
 			for (Object obj : results) {
-				if (obj != null){
-					Object[] objs = (Object[])obj;	
+				if (obj != null) {
+					Object[] objs = (Object[]) obj;
 					String label = "";
-					if (objs[1] != null){
-						label = (String)objs[0] + "(" + objs[1] + ")";
+					if (objs[1] != null) {
+						label = (String) objs[0] + "(" + objs[1] + ")";
 					} else {
-						label = (String)objs[0];
-					}								
-					instrumentTypeAbbrs.add(new LabelValueBean(label, (String)objs[0]));
-				}					
+						label = (String) objs[0];
+					}
+					instrumentTypeAbbrs.add(new LabelValueBean(label,
+							(String) objs[0]));
+				}
 			}
 		} catch (Exception e) {
 			logger.error("Problem to retrieve all instrumentTypes. " + e);
@@ -803,9 +802,10 @@ public class LookupService {
 					"Problem to retrieve all intrument types. ");
 		} finally {
 			ida.close();
-		}		
-		instrumentTypeAbbrs.add(new LabelValueBean(CananoConstants.OTHER, CananoConstants.OTHER));
-		
+		}
+		instrumentTypeAbbrs.add(new LabelValueBean(CaNanoLabConstants.OTHER,
+				CaNanoLabConstants.OTHER));
+
 		return instrumentTypeAbbrs;
 	}
 
@@ -816,7 +816,7 @@ public class LookupService {
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
-			
+
 			String hqlString = "select distinct instrumentType.name, manufacturer.name from InstrumentType instrumentType join instrumentType.manufacturerCollection manufacturer ";
 			List results = ida.search(hqlString);
 			SortedSet<String> manufacturers = null;
@@ -832,15 +832,16 @@ public class LookupService {
 				}
 				manufacturers.add(manufacturer);
 			}
-			List allResult = ida.search("select manufacturer.name from Manufacturer manufacturer where manufacturer.name is not null");
+			List allResult = ida
+					.search("select manufacturer.name from Manufacturer manufacturer where manufacturer.name is not null");
 			SortedSet<String> allManufacturers = null;
 			allManufacturers = new TreeSet<String>();
-			for(Object obj : allResult) {
-				String name = (String)obj;
+			for (Object obj : allResult) {
+				String name = (String) obj;
 				allManufacturers.add(name);
 			}
-			instrumentManufacturers.put(CananoConstants.OTHER,allManufacturers);
-			
+			instrumentManufacturers.put(CaNanoLabConstants.OTHER, allManufacturers);
+
 		} catch (Exception e) {
 			logger
 					.error("Problem to retrieve manufacturers for intrument types "
@@ -915,8 +916,8 @@ public class LookupService {
 			ida.close();
 		}
 		morphologyTypes.addAll(Arrays
-				.asList(CananoConstants.DEFAULT_MORPHOLOGY_TYPES));
-		morphologyTypes.add(CananoConstants.OTHER);
+				.asList(CaNanoLabConstants.DEFAULT_MORPHOLOGY_TYPES));
+		morphologyTypes.add(CaNanoLabConstants.OTHER);
 
 		return (String[]) morphologyTypes.toArray(new String[0]);
 	}
@@ -938,15 +939,16 @@ public class LookupService {
 		} finally {
 			ida.close();
 		}
-		shapeTypes.addAll(Arrays.asList(CananoConstants.DEFAULT_SHAPE_TYPES));
+		shapeTypes.addAll(Arrays.asList(CaNanoLabConstants.DEFAULT_SHAPE_TYPES));
 
-		shapeTypes.add(CananoConstants.OTHER);
+		shapeTypes.add(CaNanoLabConstants.OTHER);
 		return (String[]) shapeTypes.toArray(new String[0]);
 	}
 
 	public String[] getAllStressorTypes() {
 		String[] stressorTypes = new String[] { "Thermal", "PH", "Freeze thaw",
-				"Photo", "Centrifugation", "Lyophilization", "Chemical", "Other" };
+				"Photo", "Centrifugation", "Lyophilization", "Chemical",
+				"Other" };
 		return stressorTypes;
 	}
 
@@ -1069,8 +1071,8 @@ public class LookupService {
 		} finally {
 			ida.close();
 		}
-		cellLines.addAll(Arrays.asList(CananoConstants.DEFAULT_CELLLINES));
-		cellLines.add(CananoConstants.OTHER);
+		cellLines.addAll(Arrays.asList(CaNanoLabConstants.DEFAULT_CELLLINES));
+		cellLines.add(CaNanoLabConstants.OTHER);
 
 		return (String[]) cellLines.toArray(new String[0]);
 
@@ -1081,16 +1083,16 @@ public class LookupService {
 				"Ultrasound", "Ultraviolet Light" };
 		return activationMethods;
 	}
-	
+
 	public List<LabelValueBean> getAllSpecies() throws Exception {
 		List<LabelValueBean> species = new ArrayList<LabelValueBean>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
-		species.add(new LabelValueBean("",""));
+		species.add(new LabelValueBean("", ""));
 		try {
-			for (int i=0;i<CananoConstants.SPECIES_COMMON.length;i++) {
-				String specie = CananoConstants.SPECIES_COMMON[i];
-				species.add(new LabelValueBean(specie,specie));
+			for (int i = 0; i < CaNanoLabConstants.SPECIES_COMMON.length; i++) {
+				String specie = CaNanoLabConstants.SPECIES_COMMON[i];
+				species.add(new LabelValueBean(specie, specie));
 			}
 		} catch (Exception e) {
 			logger.error("Problem to retrieve all species. " + e);
@@ -1098,9 +1100,16 @@ public class LookupService {
 					"Problem to retrieve all intrument types. ");
 		} finally {
 			ida.close();
-		}		
-	
+		}
+
 		return species;
 	}
 
+	public String[] getAllReportTypes() {
+		String[] allReportTypes = new String[] { CaNanoLabConstants.REPORT,
+				CaNanoLabConstants.ASSOCIATED_FILE };
+		return allReportTypes;
+	}
+	
+	
 }
