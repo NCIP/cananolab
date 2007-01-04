@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<project name="caLAB" default="" basedir=".">
+<project name="caNanoLab" default="" basedir=".">
 	<property file="build.properties" />
 	<property name="src.java.dir" value="src" />
 	<property name="src.webroot.dir" value="web" />
@@ -82,7 +82,7 @@
 		<move file="${build.classes.dir}/fileupload.properties.template" tofile="${build.classes.dir}/fileupload.properties" />
 
 		<!-- Pack WAR file -->
-		<war destfile="${build.webroot.dir}/war/calab.war" webxml="${build.webinf.dir}/web.xml" basedir="${build.webroot.dir}" compress="true" />
+		<war destfile="${build.webroot.dir}/war/caNanoLab.war" webxml="${build.webinf.dir}/web.xml" basedir="${build.webroot.dir}" compress="true" />
 		<copy todir="${build.webroot.dir}/war">
 			<fileset dir="conf/csm/">
 				<include name="*.war" />
