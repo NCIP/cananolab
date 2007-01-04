@@ -3,7 +3,7 @@ package gov.nih.nci.calab.service.search;
 import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
 import gov.nih.nci.calab.dto.search.WorkflowResultBean;
-import gov.nih.nci.calab.service.util.CalabComparators;
+import gov.nih.nci.calab.service.util.CaNanoLabComparators;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 
@@ -23,7 +23,7 @@ import org.apache.log4j.Logger;
  * 
  */
 
-/* CVS $Id: SearchWorkflowService.java,v 1.27 2007-01-04 23:23:34 pansu Exp $ */
+/* CVS $Id: SearchWorkflowService.java,v 1.28 2007-01-04 23:31:01 pansu Exp $ */
 
 public class SearchWorkflowService {
 	private static Logger logger = Logger
@@ -47,7 +47,7 @@ public class SearchWorkflowService {
 
 		// get inputFile workflows first
 		SortedSet<WorkflowResultBean> workflowSet = new TreeSet<WorkflowResultBean>(
-				new CalabComparators.WorkflowResultBeanComparator());
+				new CaNanoLabComparators.WorkflowResultBeanComparator());
 		String inHqlString = hqlString
 				+ ", '"
 				+ CaNanoLabConstants.INPUT
@@ -70,7 +70,7 @@ public class SearchWorkflowService {
 		workflows = filterWorkflows(new ArrayList<WorkflowResultBean>(
 				workflowSet), isFileIn, isFileOut, excludeMaskedAliquots,
 				excludeMaskedFiles);
-		Collections.sort(workflows, new CalabComparators.WorkflowResultBeanComparator());
+		Collections.sort(workflows, new CaNanoLabComparators.WorkflowResultBeanComparator());
 		return workflows;
 	}
 

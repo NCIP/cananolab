@@ -1,6 +1,6 @@
 package gov.nih.nci.calab.dto.common;
 
-import gov.nih.nci.calab.service.util.CalabComparators;
+import gov.nih.nci.calab.service.util.CaNanoLabComparators;
 
 /**
  * This wrapper class represents an String (with optional url value) that is
@@ -30,7 +30,7 @@ public class SortableName implements Comparable {
 	public int compareTo(Object obj) {
 		if (obj instanceof SortableName) {
 			SortableName sortableName2 = (SortableName) obj;
-			return (new CalabComparators.SortableNameComparator()).compare(
+			return (new CaNanoLabComparators.SortableNameComparator()).compare(
 					name, sortableName2.getName());
 		}
 		return 0;

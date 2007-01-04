@@ -6,7 +6,7 @@ import gov.nih.nci.calab.domain.LabFile;
 import gov.nih.nci.calab.domain.Sample;
 import gov.nih.nci.calab.dto.inventory.SampleBean;
 import gov.nih.nci.calab.dto.inventory.StorageLocation;
-import gov.nih.nci.calab.service.util.CalabComparators;
+import gov.nih.nci.calab.service.util.CaNanoLabComparators;
 import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ import org.apache.log4j.Logger;
  * @author pansu
  * 
  */
-/* CVS $Id: SearchSampleService.java,v 1.22 2007-01-04 23:23:34 pansu Exp $ */
+/* CVS $Id: SearchSampleService.java,v 1.23 2007-01-04 23:31:01 pansu Exp $ */
 
 public class SearchSampleService {
 	private static Logger logger = Logger.getLogger(SearchSampleService.class);
@@ -155,7 +155,7 @@ public class SearchSampleService {
 			ida.close();
 		}
 
-		Collections.sort(samples, new CalabComparators.SampleBeanComparator());
+		Collections.sort(samples, new CaNanoLabComparators.SampleBeanComparator());
 		return samples;
 	}
 
