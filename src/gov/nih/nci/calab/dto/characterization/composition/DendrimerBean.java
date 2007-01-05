@@ -3,7 +3,6 @@ package gov.nih.nci.calab.dto.characterization.composition;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.DendrimerComposition;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.SurfaceGroup;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
-import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 import java.util.ArrayList;
 import java.util.List;
