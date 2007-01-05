@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CaNanoLabConstants {
-	public static final String CSM_APP_NAME = "calab";
+	public static final String CSM_APP_NAME = "caNanoLab";
 
 	public static final String DATE_FORMAT = "MM/dd/yyyy";
 
