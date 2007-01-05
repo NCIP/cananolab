@@ -102,7 +102,6 @@ public class CaNanoLabConstants {
 	 * The following Strings are nano specific
 	 * 
 	 */
-	public static final String PARTICLE_PROPERTY = "particle.properties";
 
 	public static final String PHYSICAL_CHARACTERIZATION = "Physical";
 
