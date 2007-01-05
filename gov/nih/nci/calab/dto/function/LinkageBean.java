@@ -16,7 +16,6 @@ import gov.nih.nci.calab.domain.nano.function.SmallMolecule;
 import gov.nih.nci.calab.domain.nano.function.UnclassifiedAgent;
 import gov.nih.nci.calab.domain.nano.function.UnclassifiedLinkage;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
-import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 /**
  * @author zengje
