@@ -4,7 +4,7 @@
 <hibernate-configuration>
   <session-factory>
   
-    <property name="connection.datasource">java:calab-dev</property>
+    <property name="connection.datasource">java:caNanoLab-dev</property>
 
 	<property name="dialect">org.hibernate.dialect.Oracle9Dialect</property>	
 	
