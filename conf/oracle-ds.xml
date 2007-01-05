@@ -4,7 +4,7 @@
 <!--  JBoss Server Configuration                                           -->
 <!--                                                                       -->
 <!-- ===================================================================== -->
-<!-- $Id: oracle-ds.xml,v 1.1 2006-06-05 14:07:15 zengje Exp $ -->
+<!-- $Id: oracle-ds.xml,v 1.2 2007-01-05 22:04:21 pansu Exp $ -->
 <!-- ==================================================================== -->
 <!--  Datasource config for Oracle originally from Steven Coy             -->
 <!-- ==================================================================== -->
@@ -12,7 +12,7 @@
 
 <!-- Start caLAB Data source info -->
   <local-tx-datasource>
-	    <jndi-name>calab-dev</jndi-name>
+	    <jndi-name>caNanoLab-dev</jndi-name>
 	    <connection-url>jdbc:oracle:thin:@@DBSERVER@:1521:@DBSCHEMA@</connection-url>
 	    <driver-class>oracle.jdbc.driver.OracleDriver</driver-class>
 	    <user-name>@DBUSER@</user-name>
