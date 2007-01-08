@@ -407,4 +407,6 @@ public class CaNanoLabConstants {
 
 	public static final String[] VISIBLE_GROUPS = new String[] {
 			APP_OWNER + "_" + PI, APP_OWNER + "_" + RESEARCHER };
+	
+	public static final String CSM_ADMIN=APP_OWNER+"_Administrator";	
 }
