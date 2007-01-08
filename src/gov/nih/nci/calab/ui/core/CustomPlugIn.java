@@ -22,8 +22,7 @@ public class CustomPlugIn implements PlugIn {
 	public void init(ActionServlet actionServlet, ModuleConfig config)
 			throws ServletException {
 		System.out.println("Entering CustomPlugIn.init()");
-		System.out.println("Creating default visible groups...");
-		// create default visible groups in CSM
+		// set all sample types and create default visible groups in CSM
 		try {
 			InitSessionSetup.getInstance().setAllSampleTypes(
 					actionServlet.getServletContext());
