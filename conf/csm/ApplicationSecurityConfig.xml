@@ -1,5 +1,5 @@
 <security-config>
-	<upt-context-name>calab-upt</upt-context-name>
+	<upt-context-name>caNanoLab-upt</upt-context-name>
 	<application-list>
 		<!-- For every application using the security api an entry should be made here -->
 		<application>
@@ -13,11 +13,11 @@
 				<authorization-provider-class>
 					<!-- Fully qualified class name-->
 				</authorization-provider-class>
-				<hibernate-config-file>@ABOSULTE_PATH/calab.csm.hibernate.cfg.xml</hibernate-config-file>
+				<hibernate-config-file>@ABOSULTE_PATH/caNanoLab.csm.hibernate.cfg.xml</hibernate-config-file>
 			</authorization>
 		</application>
 		<application>
-			<context-name>calab-upt</context-name>
+			<context-name>caNanoLab-upt</context-name>
 			<authentication>
 				<authentication-provider-class>
 					<!-- Fully qualified class name-->
@@ -27,7 +27,7 @@
 				<authorization-provider-class>
 					<!-- Fully qualified class name-->
 				</authorization-provider-class>
-				<hibernate-config-file>@ABOSULTE_PATH/calab.csm.hibernate.cfg.xml</hibernate-config-file>
+				<hibernate-config-file>@ABOSULTE_PATH/caNanoLab.csm.hibernate.cfg.xml</hibernate-config-file>
 			</authorization>
 		</application>
 	</application-list>
