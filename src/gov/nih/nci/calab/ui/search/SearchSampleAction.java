@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchSampleAction.java,v 1.19 2007-01-04 23:21:58 pansu Exp $ */
+/* CVS $Id: SearchSampleAction.java,v 1.20 2007-01-08 21:49:33 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.inventory.ContainerBean;
 import gov.nih.nci.calab.dto.inventory.SampleBean;
@@ -105,7 +105,6 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		InitSessionSetup.getInstance().clearWorkflowSession(session);
 		InitSessionSetup.getInstance().clearInventorySession(session);
 		
-		InitSessionSetup.getInstance().setAllSampleTypes(session);
 		InitSessionSetup.getInstance().setAllUsers(session);
 		InitSessionSetup.getInstance().setAllSampleContainerInfo(session);
 		InitSessionSetup.getInstance().setAllSampleSources(session);
