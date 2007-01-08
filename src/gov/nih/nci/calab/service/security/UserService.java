@@ -242,17 +242,17 @@ public class UserService {
 
 	/**
 	 * Get all user visiblity groups in the application (filtering out all
-	 * groups starting with NCL).
+	 * groups starting with APP_OWNER).
 	 * 
 	 * @return
 	 * @throws Exception
 	 */
 	public List<String> getAllVisibilityGroups() throws Exception {
 		List<String> groups = getAllGroups();
-		// filter out the ones starting with NCL
+		// filter out the ones starting with APP_OWNER
 		List<String> filteredGroups = new ArrayList<String>();
 		for (String groupName : groups) {
-			if (!groupName.startsWith("NCL")) {
+			if (!groupName.startsWith(CaNanoLabConstants.APP_OWNER)) {
 				filteredGroups.add(groupName);
 			}
 		}
