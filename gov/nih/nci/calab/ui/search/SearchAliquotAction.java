@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchAliquotAction.java,v 1.4 2007-01-04 23:21:58 pansu Exp $ */
+/* CVS $Id: SearchAliquotAction.java,v 1.5 2007-01-08 21:49:33 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.inventory.AliquotBean;
 import gov.nih.nci.calab.dto.inventory.StorageLocation;
@@ -98,7 +98,6 @@ public class SearchAliquotAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		HttpSession session = request.getSession();
-		InitSessionSetup.getInstance().setAllSampleTypes(session);
 		InitSessionSetup.getInstance().setAllUsers(session);
 		InitSessionSetup.getInstance().setAllAliquotContainerInfo(session);
 		InitSessionSetup.getInstance().setAllSampleSources(session);
