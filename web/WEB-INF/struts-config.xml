@@ -70,4 +70,7 @@
                   /WEB-INF/validator-rules.xml,
                   /WEB-INF/validation-submit.xml" />
 	</plug-in>
+	<plug-in className="gov.nih.nci.calab.ui.core.CustomPlugIn">
+	</plug-in>
+
 </struts-config>
