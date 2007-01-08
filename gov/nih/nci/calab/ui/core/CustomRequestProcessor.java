@@ -5,12 +5,13 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.tiles.TilesRequestProcessor;
- 
+
 /**
  * 
- * This class extends the default Tiles RequesetProcessor to check and make sure session is not expired
- * before every request.  This is useful for directing requests to the log in page when action forms involve 
- * indexed properties and session is expired.
+ * This class extends the default Tiles RequesetProcessor to check and make sure
+ * session is not expired before every request. This is useful for directing
+ * requests to the log in page when action forms involve indexed properties and
+ * session is expired.
  * 
  * @author pansu
  */
@@ -20,12 +21,14 @@ public class CustomRequestProcessor extends TilesRequestProcessor {
 			javax.servlet.http.HttpServletResponse response,
 			ActionMapping mapping) {
 		HttpSession session = request.getSession(false);
-		if (session == null || session != null
+		if (session == null
+				|| session != null
 				&& session.getAttribute("user") == null
-				&& !request.getServletPath().equals("/login.do")) {
+				&& !(request.getServletPath().equals("/login.do") || request
+						.getServletPath().equals("/updatePassword.do"))) {
 			return null;
 		} else {
 			return super.processActionForm(request, response, mapping);
-		}		
+		}
 	}
 }
