@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -186,15 +187,12 @@ public class InitSessionSetup {
 		session.removeAttribute("allSampleContainerTypes");
 	}
 
-	public void setAllSampleTypes(HttpSession session) throws Exception {
-		if (session.getServletContext().getAttribute("allSampleTypes") == null
-				|| session.getAttribute("newSampleCreated") != null) {
+	public void setAllSampleTypes(ServletContext appContext) throws Exception {
+		if (appContext.getAttribute("allSampleTypes") == null) {
 			List sampleTypes = lookupService.getAllSampleTypes();
-			session.getServletContext().setAttribute("allSampleTypes",
+			appContext.setAttribute("allSampleTypes",
 					sampleTypes);
 		}
-		// clear the new sample created flag
-		session.removeAttribute("newSampleCreated");
 	}
 
 	public void clearSampleTypesSession(HttpSession session) {
@@ -812,4 +810,14 @@ public class InitSessionSetup {
 	// }
 	// }
 
+	/**
+	 * Create default CSM groups for default visible groups and admin
+	 *  
+	 */
+	public void createDefaultCSMGroups() throws Exception {
+		for (String groupName : CaNanoLabConstants.VISIBLE_GROUPS) {
+			userService.createAGroup(groupName);
+		}
+		userService.createAGroup(CaNanoLabConstants.CSM_ADMIN);		
+	}
 }
