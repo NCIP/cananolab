@@ -305,10 +305,6 @@ public class CaNanoLabConstants {
 	public static final String[] DEFAULT_SURFACE_GROUP_NAMES = new String[] {
 			"Amine", "Carboxyl", "Hydroxyl" };
 
-	public static final String PI = "PI";
-
-	public static final String RESEARCHER = "Researcher";
-
 	public static final String ABBR_COMPOSITION = "CP";
 
 	public static final String ABBR_SIZE = "SZ";
@@ -405,8 +401,14 @@ public class CaNanoLabConstants {
 		PARTICLE_CLASSIFICATION_MAP.put(COMPLEX_PARTICLE_TYPE, COMPLEX);
 	}
 
-	public static final String[] VISIBLE_GROUPS = new String[] {
-			APP_OWNER + "_" + PI, APP_OWNER + "_" + RESEARCHER };
+	public static final String CSM_PI = APP_OWNER+"_PI";
+
+	public static final String CSM_RESEARCHER = APP_OWNER+"_Researcher";
 	
 	public static final String CSM_ADMIN=APP_OWNER+"_Administrator";	
+
+	public static final String[] VISIBLE_GROUPS = new String[] {
+			CSM_PI, CSM_RESEARCHER };
+	
+	
 }
