@@ -14,6 +14,13 @@
 			<field property="sampleSource" page="1" depends="required">
 				<arg position="0" key="createSampleForm.sampleSource" bundle="inventory" />
 			</field>
+			<field property="otherSampleSource" page="1" depends="validwhen">
+				<arg position="0" key="createSampleForm.otherSampleSource" bundle="inventory" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((sampleSource!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
 			<field property="lotId" page="1" depends="required">
 				<arg position="0" key="createSampleForm.lotId" bundle="inventory" />
 			</field>
@@ -89,6 +96,34 @@
 				<var>
 					<var-name>test</var-name>
 					<var-value>((containers[].volume==null) or (*this*!=null))</var-value>
+				</var>
+			</field>
+			<field property="storageLocation.otherRoom" page="1" depends="validwhen" indexedListProperty="containers">
+				<arg position="0" key="createSampleForm.otherRoom" bundle="inventory" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((containers[].storageLocation.room!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
+			<field property="storageLocation.otherFreezer" page="1" depends="validwhen" indexedListProperty="containers">
+				<arg position="0" key="createSampleForm.otherFreezer" bundle="inventory" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((containers[].storageLocation.freezer!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
+			<field property="storageLocation.otherShelf" page="1" depends="validwhen" indexedListProperty="containers">
+				<arg position="0" key="createSampleForm.otherShelf" bundle="inventory" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((containers[].storageLocation.shelf!="Other") or (*this*!=null))</var-value>
+				</var>
+			</field>
+			<field property="storageLocation.otherBox" page="1" depends="validwhen" indexedListProperty="containers">
+				<arg position="0" key="createSampleForm.otherBox" bundle="inventory" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((containers[].storageLocation.box!="Other") or (*this*!=null))</var-value>
 				</var>
 			</field>
 		</form>
