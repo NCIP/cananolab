@@ -211,8 +211,29 @@ public class InitSessionSetup {
 				|| session.getAttribute("newSampleCreated") != null) {
 			ContainerInfoBean containerInfo = lookupService
 					.getSampleContainerInfo();
-			session.getServletContext().setAttribute("sampleContainerInfo",
-					containerInfo);
+			session.setAttribute("sampleContainerInfo", containerInfo);
+
+			// exclude Other in the lists for search samples drop-down
+			List<String> rooms = new ArrayList<String>(containerInfo
+					.getStorageRooms());
+			rooms.remove(CaNanoLabConstants.OTHER);
+			List<String> freezers = new ArrayList<String>(containerInfo
+					.getStorageFreezers());
+			freezers.remove(CaNanoLabConstants.OTHER);
+			List<String> shelves = new ArrayList<String>(containerInfo
+					.getStorageShelves());
+			shelves.remove(CaNanoLabConstants.OTHER);
+			List<String> boxes = new ArrayList<String>(containerInfo
+					.getStorageBoxes());
+			boxes.remove(CaNanoLabConstants.OTHER);
+
+			ContainerInfoBean containerInfoExcludeOther = new ContainerInfoBean(
+					containerInfo.getQuantityUnits(), containerInfo
+							.getConcentrationUnits(), containerInfo
+							.getVolumeUnits(), containerInfo.getStorageLabs(),
+					rooms, freezers, shelves, boxes);
+			session.setAttribute("sampleContainerInfoExcludeOther",
+					containerInfoExcludeOther);
 		}
 		// clear the new sample created flag
 		session.removeAttribute("newSampleCreated");
@@ -239,6 +260,7 @@ public class InitSessionSetup {
 			List containerTypes = lookupService.getAllAliquotContainerTypes();
 			session.setAttribute("allAliquotContainerTypes", containerTypes);
 		}
+		session.removeAttribute("newAliquotCreated");
 	}
 
 	public void clearAliquotContainerTypesSession(HttpSession session) {
@@ -247,12 +269,34 @@ public class InitSessionSetup {
 
 	public void setAllAliquotContainerInfo(HttpSession session)
 			throws Exception {
-		if (session.getServletContext().getAttribute("aliquotContainerInfo") == null) {
+		if (session.getAttribute("aliquotContainerInfo") == null
+				|| session.getAttribute("newAliquotCreated") != null) {
 			ContainerInfoBean containerInfo = lookupService
 					.getAliquotContainerInfo();
-			session.getServletContext().setAttribute("aliquotContainerInfo",
-					containerInfo);
+			session.setAttribute("aliquotContainerInfo", containerInfo);
+			// exclude Other in the lists for search aliquots drop-down
+			List<String> rooms = new ArrayList<String>(containerInfo
+					.getStorageRooms());
+			rooms.remove(CaNanoLabConstants.OTHER);
+			List<String> freezers = new ArrayList<String>(containerInfo
+					.getStorageFreezers());
+			freezers.remove(CaNanoLabConstants.OTHER);
+			List<String> shelves = new ArrayList<String>(containerInfo
+					.getStorageShelves());
+			shelves.remove(CaNanoLabConstants.OTHER);
+			List<String> boxes = new ArrayList<String>(containerInfo
+					.getStorageBoxes());
+			boxes.remove(CaNanoLabConstants.OTHER);
+
+			ContainerInfoBean containerInfoExcludeOther = new ContainerInfoBean(
+					containerInfo.getQuantityUnits(), containerInfo
+							.getConcentrationUnits(), containerInfo
+							.getVolumeUnits(), containerInfo.getStorageLabs(),
+					rooms, freezers, shelves, boxes);
+			session.setAttribute("aliquotContainerInfoExcludeOther",
+					containerInfoExcludeOther);
 		}
+		session.removeAttribute("newAliquotCreated");
 	}
 
 	public void setAllAliquotCreateMethods(HttpSession session)
