@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-/* CVS $Id: ManageSampleService.java,v 1.8 2007-01-04 23:23:34 pansu Exp $ 
+/* CVS $Id: ManageSampleService.java,v 1.9 2007-01-09 20:14:04 pansu Exp $ 
  */
 public class ManageSampleService {
 	private static Logger logger = Logger.getLogger(ManageSampleService.class);
@@ -161,19 +161,25 @@ public class ManageSampleService {
 			Nanoparticle doSample = new Nanoparticle();
 
 			// Front end source is a plain text, so just save the source object
-			String sampleSourceName = sample.getSampleSource();
+			String sampleSourceName = null;
+			if ((sample.getSampleSource()
+					.equals(CaNanoLabConstants.OTHER))) {
+				sampleSourceName = sample.getOtherSampleSource();
+			} else {
+				sampleSourceName = sample.getSampleSource();
+			}
 			if ((sampleSourceName != null)
 					&& (sampleSourceName.trim().length() > 0)) {
 				List existedSources = ida
 						.search("from Source source where source.organizationName = '"
-								+ sample.getSampleSource() + "'");
+								+ sampleSourceName + "'");
 
 				Source source = null;
 				if (existedSources.size() > 0) {
 					source = (Source) existedSources.get(0);
 				} else {
 					source = new Source();
-					source.setOrganizationName(sample.getSampleSource());
+					source.setOrganizationName(sampleSourceName);
 					ida.store(source);
 				}
 				// Create releationship between this source and this sample
@@ -261,7 +267,13 @@ public class ManageSampleService {
 				// TODO: relationship with storage need to be added too.
 				HashSet<StorageElement> storages = new HashSet<StorageElement>();
 
-				String boxValue = containers[i].getStorageLocation().getBox();
+				String boxValue = null;
+				if ((containers[i].getStorageLocation().getBox()
+						.equals(CaNanoLabConstants.OTHER))) {
+					boxValue=containers[i].getStorageLocation().getOtherBox();
+				} else {
+					boxValue=containers[i].getStorageLocation().getBox();
+				}
 				if ((boxValue != null) && (boxValue.trim().length() > 0)) {
 					List existedSE = ida
 							.search("from StorageElement se where se.type = '"
@@ -280,8 +292,14 @@ public class ManageSampleService {
 					storages.add(box);
 				}
 
-				String shelfValue = containers[i].getStorageLocation()
-						.getShelf();
+				String shelfValue = null;
+				if ((containers[i].getStorageLocation().getShelf()
+						.equals(CaNanoLabConstants.OTHER))) {
+					shelfValue=containers[i].getStorageLocation().getOtherShelf();
+				} else {
+					shelfValue=containers[i].getStorageLocation().getShelf();
+				}
+
 				if ((shelfValue != null) && (shelfValue.trim().length() > 0)) {
 					List existedSE = ida
 							.search("from StorageElement se where se.type = '"
@@ -300,9 +318,15 @@ public class ManageSampleService {
 					// Create releationship between this source and this sample
 					storages.add(shelf);
 				}
+			
+				String freezerValue = null;
+				if ((containers[i].getStorageLocation().getFreezer()
+						.equals(CaNanoLabConstants.OTHER))) {
+					freezerValue=containers[i].getStorageLocation().getOtherFreezer();
+				} else {
+					freezerValue=containers[i].getStorageLocation().getFreezer();
+				}
 
-				String freezerValue = containers[i].getStorageLocation()
-						.getFreezer();
 				if ((freezerValue != null) && (freezerValue.length() > 0)) {
 					List existedSE = ida
 							.search("from StorageElement se where se.type = '"
@@ -321,8 +345,14 @@ public class ManageSampleService {
 					// Create releationship between this source and this sample
 					storages.add(freezer);
 				}
-
-				String roomValue = containers[i].getStorageLocation().getRoom();
+				 
+				String roomValue = null;
+				if ((containers[i].getStorageLocation().getRoom()
+						.equals(CaNanoLabConstants.OTHER))) {
+					roomValue=containers[i].getStorageLocation().getOtherRoom();
+				} else {
+					roomValue=containers[i].getStorageLocation().getRoom();
+				}
 				if ((roomValue != null) && (roomValue.length() > 0)) {
 					List existedSE = ida
 							.search("from StorageElement se where se.type = '"
