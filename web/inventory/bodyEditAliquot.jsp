@@ -1,7 +1,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <table width="100%" align="center">
 	<tr>
 		<td>
@@ -32,10 +32,14 @@
 						<tr>
 							<td class="formLabel">
 								<div align="justify">
-									<strong>Container Type* <span class="formFieldWhite"> <html:select property="aliquot.container.containerType">
+									<strong>Container Type* <span class="formFieldWhite"> <html:select property="aliquot.container.containerType" onchange="javascript:updateOtherField(editAliquotForm, 'aliquot.container.containerType', 'aliquot.container.otherContainerType')">
 												<option value=""></option>
 												<html:options name="allAliquotContainerTypes" />
-											</html:select></span> &nbsp; &nbsp; &nbsp; Other <span class="formFieldWhite"><html:text property="aliquot.container.otherContainerType" size="8" /></span> &nbsp; &nbsp; &nbsp; </strong>
+											</html:select></span> &nbsp; &nbsp; &nbsp; Other <span class="formFieldWhite"> <c:choose>
+												<c:when test="${editAliquotForm.map.aliquot.container.containerType eq 'Other'}">
+													<html:text property="aliquot.container.otherContainerType" size="8" disabled="false" /></span> </c:when> <c:otherwise>
+											<html:text property="aliquot.container.otherContainerType" size="8" disabled="true" />
+										</c:otherwise> </c:choose> </strong>
 								</div>
 							</td>
 						</tr>
@@ -79,15 +83,98 @@
 						</tr>
 						<tr>
 							<td class="formLabel">
-								<div align="left">
-									<strong>Storage Location<br> <br> Room&nbsp; <html:select property="aliquot.container.storageLocation.room">
-											<option value=""></option>
-											<html:options name="aliquotContainerInfo" property="storageRooms" />
-										</html:select> &nbsp; Freezer&nbsp; <html:select property="aliquot.container.storageLocation.freezer">
-											<option value=""></option>
-											<html:options name="aliquotContainerInfo" property="storageFreezers" />
-										</html:select> &nbsp;Shelf &nbsp; <html:text property="aliquot.container.storageLocation.shelf" size="5" /> &nbsp; Box &nbsp; <html:text property="aliquot.container.storageLocation.box" size="5" /> &nbsp;</strong>
-								</div>
+								<strong>Storage Location<br> <br>
+									<table class="topBorderOnly" cellspacing="0" cellpadding="3" align="left" summary="" border="0">
+										<strong>
+										<tr>
+											<td class="borderlessLabel" width="20%">
+												<strong>Room</strong>
+											</td>
+											<td class="borderlessLabel">
+												<html:select property="aliquot.container.storageLocation.room" onchange="javascript:updateOtherField(editAliquotForm, 'aliquot.container.storageLocation.room', 'aliquot.container.storageLocation.otherRoom')">
+													<option value=""></option>
+													<html:options name="aliquotContainerInfo" property="storageRooms" />
+												</html:select>
+											</td>
+											<td class="borderlessLabel">
+												<strong>Other</strong>&nbsp;
+												<c:choose>
+													<c:when test="${editAliquotForm.map.aliquot.container.storageLocation.room eq 'Other'}">
+														<html:text property="aliquot.container.storageLocation.otherRoom" disabled="false" />
+													</c:when>
+													<c:otherwise>
+														<html:text property="aliquot.container.storageLocation.otherRoom" disabled="true" />
+													</c:otherwise>
+												</c:choose>
+											</td>
+										</tr>
+										<tr>
+											<td class="borderlessLabel">
+												<strong>Freezer</strong>
+											</td>
+											<td class="borderlessLabel">
+												<html:select property="aliquot.container.storageLocation.freezer" onchange="javascript:updateOtherField(editAliquotForm, 'aliquot.container.storageLocation.freezer', 'aliquot.container.storageLocation.otherFreezer')">
+													<option value=""></option>
+													<html:options name="aliquotContainerInfo" property="storageFreezers" />
+												</html:select>
+											</td>
+											<td class="borderlessLabel">
+												<strong>Other</strong>&nbsp;
+												<c:choose>
+													<c:when test="${editAliquotForm.map.aliquot.container.storageLocation.freezer eq 'Other'}">
+														<html:text property="aliquot.container.storageLocation.otherFreezer" disabled="false" />
+													</c:when>
+													<c:otherwise>
+														<html:text property="aliquot.container.storageLocation.otherFreezer" disabled="true" />
+													</c:otherwise>
+												</c:choose>
+											</td>
+										</tr>
+										<tr>
+											<td class="borderlessLabel">
+												<strong>Shelf</strong>
+											</td>
+											<td class="borderlessLabel">
+												<html:select property="aliquot.container.storageLocation.shelf" onchange="javascript:updateOtherField(editAliquotForm, 'aliquot.container.storageLocation.shelf', 'aliquot.container.storageLocation.otherShelf')">
+													<option value=""></option>
+													<html:options name="aliquotContainerInfo" property="storageShelves" />
+												</html:select>
+											</td>
+											<td class="borderlessLabel">
+												<strong>Other</strong>&nbsp;
+												<c:choose>
+													<c:when test="${editAliquotForm.map.aliquot.container.storageLocation.shelf eq 'Other'}">
+														<html:text property="aliquot.container.storageLocation.otherShelf" disabled="false" />
+													</c:when>
+													<c:otherwise>
+														<html:text property="aliquot.container.storageLocation.otherShelf" disabled="true" />
+													</c:otherwise>
+												</c:choose>
+											</td>
+										</tr>
+										<tr>
+											<td class="borderlessLabel">
+												<strong>Box</strong>
+											</td>
+											<td class="borderlessLabel">
+												<html:select property="aliquot.container.storageLocation.box" onchange="javascript:updateOtherField(editAliquotForm, 'aliquot.container.storageLocation.box', 'aliquot.container.storageLocation.otherBox')">
+													<option value=""></option>
+													<html:options name="aliquotContainerInfo" property="storageBoxes" />
+												</html:select>
+											</td>
+											<td class="borderlessLabel">
+												<strong>Other</strong>&nbsp;
+												<c:choose>
+													<c:when test="${editAliquotForm.map.aliquot.container.storageLocation.box eq 'Other'}">
+														<html:text property="aliquot.container.storageLocation.otherBox" disabled="false" />
+													</c:when>
+													<c:otherwise>
+														<html:text property="aliquot.container.storageLocation.otherBox" disabled="true" />
+													</c:otherwise>
+												</c:choose>
+											</td>
+										</tr>
+									</table>
 							</td>
 						</tr>
 						<tr>
