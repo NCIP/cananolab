@@ -190,8 +190,7 @@ public class InitSessionSetup {
 	public void setAllSampleTypes(ServletContext appContext) throws Exception {
 		if (appContext.getAttribute("allSampleTypes") == null) {
 			List sampleTypes = lookupService.getAllSampleTypes();
-			appContext.setAttribute("allSampleTypes",
-					sampleTypes);
+			appContext.setAttribute("allSampleTypes", sampleTypes);
 		}
 	}
 
@@ -208,12 +207,15 @@ public class InitSessionSetup {
 	}
 
 	public void setAllSampleContainerInfo(HttpSession session) throws Exception {
-		if (session.getServletContext().getAttribute("sampleContainerInfo") == null) {
+		if (session.getAttribute("sampleContainerInfo") == null
+				|| session.getAttribute("newSampleCreated") != null) {
 			ContainerInfoBean containerInfo = lookupService
 					.getSampleContainerInfo();
 			session.getServletContext().setAttribute("sampleContainerInfo",
 					containerInfo);
 		}
+		// clear the new sample created flag
+		session.removeAttribute("newSampleCreated");
 	}
 
 	public void setCurrentUser(HttpSession session) throws Exception {
@@ -812,12 +814,12 @@ public class InitSessionSetup {
 
 	/**
 	 * Create default CSM groups for default visible groups and admin
-	 *  
+	 * 
 	 */
 	public void createDefaultCSMGroups() throws Exception {
 		for (String groupName : CaNanoLabConstants.VISIBLE_GROUPS) {
 			userService.createAGroup(groupName);
 		}
-		userService.createAGroup(CaNanoLabConstants.CSM_ADMIN);		
+		userService.createAGroup(CaNanoLabConstants.CSM_ADMIN);
 	}
 }
