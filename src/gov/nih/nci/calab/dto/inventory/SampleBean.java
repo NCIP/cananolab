@@ -19,7 +19,7 @@ import java.util.Set;
  * 
  */
 
-/* CVS $Id: SampleBean.java,v 1.6 2007-01-04 23:31:01 pansu Exp $ */
+/* CVS $Id: SampleBean.java,v 1.7 2007-01-09 20:12:36 pansu Exp $ */
 public class SampleBean {
 	private String sampleId = "";
 
@@ -36,6 +36,8 @@ public class SampleBean {
 	private String sampleDescription = "";
 
 	private String sampleSource = "";
+
+	private String otherSampleSource = "";
 
 	private String sourceSampleId = "";
 
@@ -69,17 +71,12 @@ public class SampleBean {
 		this.sampleName = sampleName;
 	}
 
-	// public SampleBean(String sampleName, String sampleType, String
-	// otherSampleType, String sampleSOP,
-	// String sampleDescription, String sampleSource,
-	// String sourceSampleId, Date dateReceived, String solubility,
-	// String lotId, String lotDescription, String numberOfContainers,
-	// String generalComments, String sampleSubmitter, Date accessionDate) {
 	public SampleBean(String sampleName, String sampleType, String sampleSOP,
 			String sampleDescription, String sampleSource,
-			String sourceSampleId, Date dateReceived, String solubility,
-			String lotId, String lotDescription, String numberOfContainers,
-			String generalComments, String sampleSubmitter, Date accessionDate) {
+			String otherSampleSource, String sourceSampleId, Date dateReceived,
+			String solubility, String lotId, String lotDescription,
+			String numberOfContainers, String generalComments,
+			String sampleSubmitter, Date accessionDate) {
 		super();
 		// TODO Auto-generated constructor stub
 		this.sampleName = sampleName;
@@ -88,6 +85,7 @@ public class SampleBean {
 		this.sampleSOP = sampleSOP;
 		this.sampleDescription = sampleDescription;
 		this.sampleSource = sampleSource;
+		this.otherSampleSource = otherSampleSource;
 		this.sourceSampleId = sourceSampleId;
 		this.dateReceived = dateReceived;
 		this.lotId = lotId;
@@ -99,31 +97,18 @@ public class SampleBean {
 		this.accessionDate = accessionDate;
 	}
 
-	// public SampleBean(String sampleNamePrefix, String sampleName,
-	// String sampleType, String otherSampleType, String sampleSOP, String
-	// sampleDescription,
-	// String sampleSource, String sourceSampleId, Date dateReceived,
-	// String solubility, String lotId, String lotDescription,
-	// String numberOfContainers, String generalComments,
-	// String sampleSubmitter, Date accessionDate,
-	// ContainerBean[] containers) {
 	public SampleBean(String sampleNamePrefix, String sampleName,
 			String sampleType, String sampleSOP, String sampleDescription,
-			String sampleSource, String sourceSampleId, Date dateReceived,
-			String solubility, String lotId, String lotDescription,
-			String numberOfContainers, String generalComments,
-			String sampleSubmitter, Date accessionDate,
+			String sampleSource, String otherSampleSource,
+			String sourceSampleId, Date dateReceived, String solubility,
+			String lotId, String lotDescription, String numberOfContainers,
+			String generalComments, String sampleSubmitter, Date accessionDate,
 			ContainerBean[] containers) {
-		// TODO Auto-generated constructor stub
-		// this(sampleName, sampleType, otherSampleType, sampleSOP,
-		// sampleDescription, sampleSource,
-		// sourceSampleId, dateReceived, solubility, lotId, lotDescription,
-		// numberOfContainers, generalComments,
-		// sampleSubmitter, accessionDate);
+
 		this(sampleName, sampleType, sampleSOP, sampleDescription,
-				sampleSource, sourceSampleId, dateReceived, solubility, lotId,
-				lotDescription, numberOfContainers, generalComments,
-				sampleSubmitter, accessionDate);
+				sampleSource, otherSampleSource, sourceSampleId, dateReceived,
+				solubility, lotId, lotDescription, numberOfContainers,
+				generalComments, sampleSubmitter, accessionDate);
 		this.sampleNamePrefix = sampleNamePrefix;
 		this.containers = containers;
 	}
@@ -164,7 +149,8 @@ public class SampleBean {
 			containers[i].setSample(this);
 			i++;
 		}
-		Arrays.sort(containers, new CaNanoLabComparators.ContainerBeanComparator());
+		Arrays.sort(containers,
+				new CaNanoLabComparators.ContainerBeanComparator());
 	}
 
 	public Date getDateReceived() {
@@ -325,6 +311,14 @@ public class SampleBean {
 					CaNanoLabConstants.DATE_FORMAT);
 		}
 		return dateReceivedStr;
+	}
+
+	public String getOtherSampleSource() {
+		return otherSampleSource;
+	}
+
+	public void setOtherSampleSource(String otherSampleSource) {
+		this.otherSampleSource = otherSampleSource;
 	}
 
 	public SortableName getSortableName() {
