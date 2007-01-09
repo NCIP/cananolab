@@ -36,7 +36,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.91 2007-01-04 23:31:01 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.92 2007-01-09 20:13:44 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -63,7 +63,8 @@ public class LookupService {
 				Object[] info = (Object[]) obj;
 				AliquotBean aliquot = new AliquotBean(StringUtils
 						.convertToString(info[0]), StringUtils
-						.convertToString(info[1]), CaNanoLabConstants.ACTIVE_STATUS);
+						.convertToString(info[1]),
+						CaNanoLabConstants.ACTIVE_STATUS);
 				String sampleName = (String) info[2];
 				if (sampleAliquots.get(sampleName) != null) {
 					aliquots = (SortedSet<AliquotBean>) sampleAliquots
@@ -164,12 +165,14 @@ public class LookupService {
 	public ContainerInfoBean getSampleContainerInfo() throws Exception {
 
 		List<MeasureUnit> units = getAllMeasureUnits();
-		List<StorageElement> storageElements = getAllRoomAndFreezers();
+		List<StorageElement> storageElements = getAllStorageElements();
 		List<String> quantityUnits = new ArrayList<String>();
 		List<String> concentrationUnits = new ArrayList<String>();
 		List<String> volumeUnits = new ArrayList<String>();
 		List<String> rooms = new ArrayList<String>();
 		List<String> freezers = new ArrayList<String>();
+		List<String> shelves = new ArrayList<String>();
+		List<String> boxes = new ArrayList<String>();
 
 		for (MeasureUnit unit : units) {
 			if (unit.getType().equalsIgnoreCase("Quantity")) {
@@ -182,16 +185,29 @@ public class LookupService {
 		}
 
 		for (StorageElement storageElement : storageElements) {
-			if (storageElement.getType().equalsIgnoreCase("Room")) {
+			if (storageElement.getType().equalsIgnoreCase("Room")
+					&& !rooms.contains(storageElement.getLocation())) {
 				rooms.add((storageElement.getLocation()));
-			} else if (storageElement.getType().equalsIgnoreCase("Freezer")) {
+			} else if (storageElement.getType().equalsIgnoreCase("Freezer")
+					&& !freezers.contains(storageElement.getLocation())) {
 				freezers.add((storageElement.getLocation()));
+			} else if (storageElement.getType().equalsIgnoreCase("Shelf")
+					&& !shelves.contains(storageElement.getLocation())) {
+				shelves.add((storageElement.getLocation()));
+			} else if (storageElement.getType().equalsIgnoreCase("Box")
+					&& !boxes.contains(storageElement.getLocation())) {
+				boxes.add((storageElement.getLocation()));
 			}
 		}
+		rooms.add(CaNanoLabConstants.OTHER);
+		freezers.add(CaNanoLabConstants.OTHER);
+		shelves.add(CaNanoLabConstants.OTHER);
+		boxes.add(CaNanoLabConstants.OTHER);
 
 		// set labs and racks to null for now
 		ContainerInfoBean containerInfo = new ContainerInfoBean(quantityUnits,
-				concentrationUnits, volumeUnits, null, rooms, freezers);
+				concentrationUnits, volumeUnits, null, rooms, freezers,
+				shelves, boxes);
 
 		return containerInfo;
 	}
@@ -266,13 +282,13 @@ public class LookupService {
 		return units;
 	}
 
-	private List<StorageElement> getAllRoomAndFreezers() throws Exception {
+	private List<StorageElement> getAllStorageElements() throws Exception {
 		List<StorageElement> storageElements = new ArrayList<StorageElement>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
-			String hqlString = "from StorageElement where type in ('Room', 'Freezer')";
+			String hqlString = "from StorageElement where type in ('Room', 'Freezer', 'Shelf', 'Box') and location!='Other'";
 			List results = ida.search(hqlString);
 			for (Object obj : results) {
 				storageElements.add((StorageElement) obj);
@@ -323,7 +339,8 @@ public class LookupService {
 		} finally {
 			ida.close();
 		}
-		Collections.sort(samples, new CaNanoLabComparators.SampleBeanComparator());
+		Collections.sort(samples,
+				new CaNanoLabComparators.SampleBeanComparator());
 		return samples;
 	}
 
@@ -414,7 +431,7 @@ public class LookupService {
 		} finally {
 			ida.close();
 		}
-
+		sampleSources.add(CaNanoLabConstants.OTHER);
 		return sampleSources;
 	}
 
@@ -542,7 +559,8 @@ public class LookupService {
 		Map<String, SortedSet<String>> particleTypeParticles = new HashMap<String, SortedSet<String>>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
-		UserService userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
+		UserService userService = new UserService(
+				CaNanoLabConstants.CSM_APP_NAME);
 
 		try {
 			ida.open();
@@ -622,7 +640,8 @@ public class LookupService {
 		} finally {
 			ida.close();
 		}
-		names.addAll(Arrays.asList(CaNanoLabConstants.DEFAULT_SURFACE_GROUP_NAMES));
+		names.addAll(Arrays
+				.asList(CaNanoLabConstants.DEFAULT_SURFACE_GROUP_NAMES));
 		names.add(CaNanoLabConstants.OTHER);
 
 		return (String[]) names.toArray(new String[0]);
@@ -840,7 +859,8 @@ public class LookupService {
 				String name = (String) obj;
 				allManufacturers.add(name);
 			}
-			instrumentManufacturers.put(CaNanoLabConstants.OTHER, allManufacturers);
+			instrumentManufacturers.put(CaNanoLabConstants.OTHER,
+					allManufacturers);
 
 		} catch (Exception e) {
 			logger
@@ -939,7 +959,8 @@ public class LookupService {
 		} finally {
 			ida.close();
 		}
-		shapeTypes.addAll(Arrays.asList(CaNanoLabConstants.DEFAULT_SHAPE_TYPES));
+		shapeTypes
+				.addAll(Arrays.asList(CaNanoLabConstants.DEFAULT_SHAPE_TYPES));
 
 		shapeTypes.add(CaNanoLabConstants.OTHER);
 		return (String[]) shapeTypes.toArray(new String[0]);
@@ -1110,6 +1131,5 @@ public class LookupService {
 				CaNanoLabConstants.ASSOCIATED_FILE };
 		return allReportTypes;
 	}
-	
-	
+
 }
