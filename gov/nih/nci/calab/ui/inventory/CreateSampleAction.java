@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.inventory;
  * @author pansu
  */
 
-/* CVS $Id: CreateSampleAction.java,v 1.8 2007-01-08 21:49:51 pansu Exp $ */
+/* CVS $Id: CreateSampleAction.java,v 1.9 2007-01-09 20:16:01 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.inventory.ContainerBean;
 import gov.nih.nci.calab.dto.inventory.SampleBean;
@@ -42,15 +42,16 @@ public class CreateSampleAction extends AbstractDispatchAction {
 		// TODO fill in details for sample information */
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String sampleNamePrefix = (String) theForm.get("sampleNamePrefix");
-		
+
 		// read from properties file first
 		String samplePrefix = PropertyReader.getProperty(
 				CaNanoLabConstants.CANANOLAB_PROPERTY, "samplePrefix");
 		// if not available, use the default
 		if (samplePrefix == null)
 			samplePrefix = CaNanoLabConstants.DEFAULT_SAMPLE_PREFIX;
-		
-		//throw an error is the sample name prefix doesn't start with the preconfigured prefix.
+
+		// throw an error is the sample name prefix doesn't start with the
+		// preconfigured prefix.
 		if (!sampleNamePrefix.startsWith(samplePrefix)) {
 			ActionMessages msgs = new ActionMessages();
 			ActionMessage msg = new ActionMessage(
@@ -63,10 +64,11 @@ public class CreateSampleAction extends AbstractDispatchAction {
 			return forward;
 		}
 		String sampleType = (String) theForm.get("sampleType");
-//		String otherSampleType = (String) theForm.get("otherSampleType");
+		// String otherSampleType = (String) theForm.get("otherSampleType");
 		String sampleSOP = (String) theForm.get("sampleSOP");
 		String sampleDescription = (String) theForm.get("sampleDescription");
 		String sampleSource = (String) theForm.get("sampleSource");
+		String otherSampleSource = (String) theForm.get("otherSampleSource");
 		String sourceSampleId = (String) theForm.get("sourceSampleId");
 		String dateReceivedStr = (String) theForm.get("dateReceived");
 		Date dateReceived = StringUtils.convertToDate(dateReceivedStr,
@@ -80,34 +82,34 @@ public class CreateSampleAction extends AbstractDispatchAction {
 		ManageSampleService manageSampleService = new ManageSampleService();
 		String sampleName = manageSampleService.getSampleName(sampleNamePrefix,
 				lotId);
-        
+
 		// get user information from session
 		String sampleSubmitter = (String) session.getAttribute("creator");
 		ContainerBean[] containers = (ContainerBean[]) theForm
 				.get("containers");
-		//update container name to be full container name
-		String containerPrefix=manageSampleService.getContainerPrefix(sampleNamePrefix, lotId);
-		for (ContainerBean container: containers) {
-			container.setContainerName(containerPrefix+"-"+container.getContainerName());
+		// update container name to be full container name
+		String containerPrefix = manageSampleService.getContainerPrefix(
+				sampleNamePrefix, lotId);
+		for (ContainerBean container : containers) {
+			container.setContainerName(containerPrefix + "-"
+					+ container.getContainerName());
 		}
 		Date creationDate = new Date();
-//		SampleBean sample = new SampleBean(sampleNamePrefix, sampleName,
-//				sampleType, otherSampleType, sampleSOP, sampleDescription,
-//				sampleSource, sourceSampleId, dateReceived, solubility, lotId,
-//				lotDescription, numContainers, generalComments,
-//				sampleSubmitter, creationDate, containers);
 		SampleBean sample = new SampleBean(sampleNamePrefix, sampleName,
-				sampleType, sampleSOP, sampleDescription,
-				sampleSource, sourceSampleId, dateReceived, solubility, lotId,
-				lotDescription, numContainers, generalComments,
+				sampleType, sampleSOP, sampleDescription, sampleSource,
+				otherSampleSource, sourceSampleId, dateReceived, solubility,
+				lotId, lotDescription, numContainers, generalComments,
 				sampleSubmitter, creationDate, containers);
 		request.setAttribute("sample", sample);
 		manageSampleService.saveSample(sample, containers);
-		
-		//create a new user group if the source is not already a group
-		UserService userService=new UserService(CaNanoLabConstants.CSM_APP_NAME);
-		userService.createAGroup(sample.getSampleSource());
-		
+
+		// create a new user group if other is specified
+		if (sampleSource.equals(CaNanoLabConstants.OTHER)) {
+			UserService userService = new UserService(
+					CaNanoLabConstants.CSM_APP_NAME);
+			userService.createAGroup(otherSampleSource);
+		}
+
 		// set a flag to indicate that new sample have been created so session
 		// can be refreshed in initSession.do
 		session.setAttribute("newSampleCreated", "yes");
@@ -150,7 +152,7 @@ public class CreateSampleAction extends AbstractDispatchAction {
 				containers[i] = new ContainerBean(origContainers[i]);
 			}
 		}
-		theForm.set("containers", containers);	
+		theForm.set("containers", containers);
 		return mapping.getInputForward();
 	}
 
@@ -160,24 +162,24 @@ public class CreateSampleAction extends AbstractDispatchAction {
 		HttpSession session = request.getSession();
 		InitSessionSetup.getInstance().clearWorkflowSession(session);
 		InitSessionSetup.getInstance().clearSearchSession(session);
-
+		InitSessionSetup.getInstance().setAllSampleSources(session);
 		InitSessionSetup.getInstance().setAllSampleSOPs(session);
 		InitSessionSetup.getInstance().setAllSampleContainerTypes(session);
 		InitSessionSetup.getInstance().setAllSampleContainerInfo(session);
 		InitSessionSetup.getInstance().setCurrentUser(session);
-		
+
 		ManageSampleService mangeSampleService = new ManageSampleService();
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		theForm.getMap().clear();
-		
+
 		theForm.set("lotId", mangeSampleService.getDefaultLotId());
 		theForm.set("numberOfContainers", "1");
 		theForm.set("sampleNamePrefix", mangeSampleService
 				.getDefaultSampleNamePrefix());
 		theForm.set("configuredSampleNamePrefix", PropertyReader.getProperty(
 				CaNanoLabConstants.CANANOLAB_PROPERTY, "samplePrefix"));
-		ContainerBean[] containers=new ContainerBean[] {new ContainerBean()};
-		theForm.set("containers", containers);	
+		ContainerBean[] containers = new ContainerBean[] { new ContainerBean() };
+		theForm.set("containers", containers);
 		return mapping.getInputForward();
 	}
 
