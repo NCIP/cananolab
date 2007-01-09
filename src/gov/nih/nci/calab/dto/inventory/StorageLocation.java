@@ -8,22 +8,62 @@ import gov.nih.nci.calab.service.util.StringUtils;
  * @author pansu
  * 
  */
-/* CVS $Id: StorageLocation.java,v 1.1 2006-06-30 20:52:51 pansu Exp $ */
+/* CVS $Id: StorageLocation.java,v 1.2 2007-01-09 20:12:54 pansu Exp $ */
 
 public class StorageLocation {
 	private String lab = "";
 
 	private String room = "";
 
+	private String otherRoom = "";
+
 	private String freezer = "";
 
+	private String otherFreezer = "";
+
 	private String shelf = "";
+
+	private String otherShelf = "";
 
 	private String rack = "";
 
 	private String box = "";
 
+	private String otherBox = "";
+
 	public StorageLocation() {
+	}
+
+	public String getOtherBox() {
+		return otherBox;
+	}
+
+	public void setOtherBox(String otherBox) {
+		this.otherBox = otherBox;
+	}
+
+	public String getOtherFreezer() {
+		return otherFreezer;
+	}
+
+	public void setOtherFreezer(String otherFreezer) {
+		this.otherFreezer = otherFreezer;
+	}
+
+	public String getOtherRoom() {
+		return otherRoom;
+	}
+
+	public void setOtherRoom(String otherRoom) {
+		this.otherRoom = otherRoom;
+	}
+
+	public String getOtherShelf() {
+		return otherShelf;
+	}
+
+	public void setOtherShelf(String otherShelf) {
+		this.otherShelf = otherShelf;
 	}
 
 	public StorageLocation(StorageLocation loc) {
@@ -33,6 +73,10 @@ public class StorageLocation {
 		shelf = loc.getShelf();
 		rack = loc.getRack();
 		box = loc.getBox();
+		otherRoom=loc.getOtherRoom();
+		otherFreezer=loc.getOtherFreezer();
+		otherShelf=loc.getOtherShelf();
+		otherBox=loc.getOtherBox();
 	}
 
 	public StorageLocation(String lab, String room, String freezer,
@@ -45,6 +89,21 @@ public class StorageLocation {
 		this.shelf = shelf;
 		this.rack = rack;
 		this.box = box;
+	}
+
+	public StorageLocation(String room, String otherRoom, String freezer,
+			String otherFreezer, String shelf, String otherShelf, String box,
+			String otherBox) {
+		super();
+		// TODO Auto-generated constructor stub
+		this.room = room;
+		this.otherRoom = otherRoom;
+		this.freezer = freezer;
+		this.otherFreezer = otherFreezer;
+		this.shelf = shelf;
+		this.otherShelf = otherShelf;
+		this.box = box;
+		this.otherBox = otherBox;
 	}
 
 	public String getBox() {
