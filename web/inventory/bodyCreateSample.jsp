@@ -50,8 +50,6 @@ function refreshContainers() {
 								</div>
 							</td>
 						</tr>
-
-
 						<tr>
 							<td class="formLabelWhite">
 								<div align="justify">
@@ -59,15 +57,42 @@ function refreshContainers() {
 								</div>
 							</td>
 						</tr>
-
 						<tr>
 							<td class="formLabel">
 								<div align="justify">
-									<strong>Source* <span class="formFieldWhite"> <html:text property="sampleSource" size="27" /></span> &nbsp; &nbsp; Source ID <span class="formFieldWhite"><html:text property="sourceSampleId" size="10" /> </span> &nbsp; &nbsp; Date Received <html:text
-											property="dateReceived" size="9" /> <span class="formFieldWhite"> <a href="javascript:cal.popup();"><img height="18" src="images/calendar-icon.gif" width="22" border="0" alt="Click Here to Pick up the date"></a></span> </strong>
+									<strong>Source* <span class="formFieldWhite"> <html:select property="sampleSource" onchange="javascript:updateOtherField(createSampleForm, 'sampleSource', 'otherSampleSource')">
+												<option />
+													<html:options name="allSampleSources" />
+											</html:select> &nbsp; &nbsp; Other Source <c:choose>
+												<c:when test="${createSampleForm.map.sampleSource eq 'Other'}">
+													<html:text property="otherSampleSource" disabled="false" />
+												</c:when>
+												<c:otherwise>
+													<html:text property="otherSampleSource" disabled="true" />
+												</c:otherwise>
+											</c:choose> &nbsp; &nbsp;Source ID <span class="formFieldWhite"><html:text property="sourceSampleId" size="10" /> </span> &nbsp; &nbsp; </strong>
 								</div>
 							</td>
 						</tr>
+						<tr>
+							<td class="formLabelWhite">
+								<div align="justify">
+									<strong>Date Received <html:text property="dateReceived" size="9" /> <span class="formFieldWhite"> <a href="javascript:cal.popup();"><img height="18" src="images/calendar-icon.gif" width="22" border="0" alt="Click Here to Pick up the date"></a></span>&nbsp;
+										&nbsp; &nbsp; SOP <html:select property="sampleSOP">
+											<option value=""></option>
+											<html:options name="allSampleSOPs" />
+										</html:select></strong>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="formLabel">
+								<div align="justify">
+									<strong>Lot ID*&nbsp; <html:text property="lotId" size="5" /> &nbsp; &nbsp; &nbsp; Lot Description <span class="formFieldWhite"><html:text property="lotDescription" size="50" /></span> </strong>
+								</div>
+							</td>
+						</tr>
+
 						<tr>
 							<td class="formLabelWhite">
 								<div align="justify">
@@ -76,25 +101,16 @@ function refreshContainers() {
 							</td>
 						</tr>
 
+
 						<tr>
 							<td class="formLabel">
 								<div align="justify">
-									<strong>Lot ID*&nbsp; <html:text property="lotId" size="5" /> &nbsp; &nbsp; &nbsp; Lot Description <span class="formFieldWhite"><html:text property="lotDescription" size="20" /></span> &nbsp; &nbsp; &nbsp; SOP <html:select property="sampleSOP">
-											<option value=""></option>
-											<html:options name="allSampleSOPs" />
-										</html:select></strong>
+									<strong>Number of Containers*<span class="formFieldWhite"> &nbsp; <html:text property="numberOfContainers" size="2" /> &nbsp;</strong>(Please click on "Update Sample Containers" button below if number of containers has been changed.)
 								</div>
 							</td>
 						</tr>
 						<tr>
 							<td class="formLabelWhite">
-								<div align="justify">
-									<strong>Number of Containers*<span class="formFieldWhite"> &nbsp; <html:text property="numberOfContainers" size="2" /> &nbsp;</strong>(Please click on "Update Sample Containers" button below if number of containers has been changed.) 
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td class="formLabel">
 								<div align="left">
 									<strong>General Comments</strong>
 									<br>
@@ -131,7 +147,15 @@ function refreshContainers() {
 													onchange="javascript:updateOtherField(createSampleForm, 'containers[${status.index}].containerType', 'containers[${status.index}].otherContainerType')">
 													<option value=""></option>
 													<html:options name="allSampleContainerTypes" />
-												</html:select></span> &nbsp; &nbsp; &nbsp; Other <span class="formFieldWhite"><html:text name="containers" indexed="true" property="otherContainerType" size="8" disabled="true"/></span> &nbsp; &nbsp; &nbsp; </strong>
+												</html:select></span> &nbsp; &nbsp; &nbsp; Other <span class="formFieldWhite"> <c:choose>
+													<c:when test="${createSampleForm.map.containers[status.index].containerType eq 'Other'}">
+														<html:text name="containers" indexed="true" property="otherContainerType" size="8" disabled="false" /></span> &nbsp; &nbsp; &nbsp; </strong>
+										</c:when>
+										<c:otherwise>
+											<html:text name="containers" indexed="true" property="otherContainerType" size="8" disabled="true" />
+											</span> &nbsp; &nbsp; &nbsp; </strong>
+										</c:otherwise>
+										</c:choose>
 									</div>
 								</td>
 							</tr>
@@ -172,18 +196,102 @@ function refreshContainers() {
 									<div align="justify"></div>
 								</td>
 							</tr>
-
 							<tr>
 								<td class="formLabel">
-									<div align="left">
-										<strong>Storage Location<br> <br> Room&nbsp; <html:select name="containers" indexed="true" property="storageLocation.room">
-												<option value=""></option>
-												<html:options name="sampleContainerInfo" property="storageRooms" />
-											</html:select> &nbsp; Freezer&nbsp; <html:select name="containers" indexed="true" property="storageLocation.freezer">
-												<option value=""></option>
-												<html:options name="sampleContainerInfo" property="storageFreezers" />
-											</html:select> &nbsp;Shelf &nbsp; <html:text name="containers" indexed="true" property="storageLocation.shelf" size="5" /> &nbsp; Box &nbsp; <html:text name="containers" indexed="true" property="storageLocation.box" size="5" /> &nbsp;</strong>
-									</div>
+									<strong>Storage Location<br> <br>
+										<table class="topBorderOnly" cellspacing="0" cellpadding="3" align="left" summary="" border="0">
+											<strong>
+											<tr>
+												<td class="borderlessLabel" width="20%">
+													<strong>Room</strong>
+												</td>
+												<td class="borderlessLabel">
+													<html:select name="containers" indexed="true" property="storageLocation.room" onchange="javascript:updateOtherField(createSampleForm, 'containers[${status.index}].storageLocation.room', 'containers[${status.index}].storageLocation.otherRoom')">
+														<option value=""></option>
+														<html:options name="sampleContainerInfo" property="storageRooms" />
+													</html:select>
+												</td>
+												<td class="borderlessLabel">
+													<strong>Other</strong>&nbsp;
+													<c:choose>
+														<c:when test="${createSampleForm.map.containers[status.index].storageLocation.room eq 'Other'}">
+															<html:text name="containers" indexed="true" property="storageLocation.otherRoom" disabled="false" />
+														</c:when>
+														<c:otherwise>
+															<html:text name="containers" indexed="true" property="storageLocation.otherRoom" disabled="true" />
+														</c:otherwise>
+													</c:choose>
+												</td>
+											</tr>
+											<tr>
+												<td class="borderlessLabel">
+													<strong>Freezer</strong>
+												</td>
+												<td class="borderlessLabel">
+													<html:select name="containers" indexed="true" property="storageLocation.freezer"
+														onchange="javascript:updateOtherField(createSampleForm, 'containers[${status.index}].storageLocation.freezer', 'containers[${status.index}].storageLocation.otherFreezer')">
+														<option value=""></option>
+														<html:options name="sampleContainerInfo" property="storageFreezers" />
+													</html:select>
+												</td>
+												<td class="borderlessLabel">
+													<strong>Other</strong>&nbsp;
+													<c:choose>
+														<c:when test="${createSampleForm.map.containers[status.index].storageLocation.freezer eq 'Other'}">
+															<html:text name="containers" indexed="true" property="storageLocation.otherFreezer" disabled="false" />
+														</c:when>
+														<c:otherwise>
+															<html:text name="containers" indexed="true" property="storageLocation.otherFreezer" disabled="true" />
+														</c:otherwise>
+													</c:choose>
+												</td>
+											</tr>
+											<tr>
+												<td class="borderlessLabel">
+													<strong>Shelf</strong>
+												</td>
+												<td class="borderlessLabel">
+													<html:select name="containers" indexed="true" property="storageLocation.shelf"
+														onchange="javascript:updateOtherField(createSampleForm, 'containers[${status.index}].storageLocation.shelf', 'containers[${status.index}].storageLocation.otherShelf')">
+														<option value=""></option>
+														<html:options name="sampleContainerInfo" property="storageShelves" />
+													</html:select>
+												</td>
+												<td class="borderlessLabel">
+													<strong>Other</strong>&nbsp;
+													<c:choose>
+														<c:when test="${createSampleForm.map.containers[status.index].storageLocation.shelf eq 'Other'}">
+															<html:text name="containers" indexed="true" property="storageLocation.otherShelf" disabled="false" />
+														</c:when>
+														<c:otherwise>
+															<html:text name="containers" indexed="true" property="storageLocation.otherShelf" disabled="true" />
+														</c:otherwise>
+													</c:choose>
+												</td>
+											</tr>
+											<tr>
+												<td class="borderlessLabel">
+													<strong>Box</strong>
+												</td>
+												<td class="borderlessLabel">
+													<html:select name="containers" indexed="true" property="storageLocation.box" onchange="javascript:updateOtherField(createSampleForm, 'containers[${status.index}].storageLocation.box', 'containers[${status.index}].storageLocation.otherBox')">
+														<option value=""></option>
+														<html:options name="sampleContainerInfo" property="storageBoxes" />
+													</html:select>
+												</td>
+												<td class="borderlessLabel">
+													<strong>Other</strong>&nbsp;
+													<c:choose>
+														<c:when test="${createSampleForm.map.containers[status.index].storageLocation.box eq 'Other'}">
+															<html:text name="containers" indexed="true" property="storageLocation.otherBox" disabled="false" />
+														</c:when>
+														<c:otherwise>
+															<html:text name="containers" indexed="true" property="storageLocation.otherBox" disabled="true" />
+														</c:otherwise>
+													</c:choose>
+												</td>
+											</tr>
+										</table>
 								</td>
 							</tr>
 							<tr>
@@ -213,7 +321,8 @@ function refreshContainers() {
 								<bean:write name="creationDate" />
 							</td>
 							<td align="right">
-								<table height="32" cellspacing="0" cellpadding="4 align=" right"  order="0">
+								<table height="32" cellspacing="0" cellpadding="4 align=" right"
+															order="0">
 									<tbody>
 										<tr>
 											<td height="32">
@@ -234,10 +343,11 @@ function refreshContainers() {
 						</tr>
 					</tbody>
 				</table>
-			</td>
+		</td>
 		</tr>
 	</table>
 </html:form>
+
 <script language="JavaScript">
 <!-- //
  var cal = new calendar2(document.forms['createSampleForm'].elements['dateReceived']);

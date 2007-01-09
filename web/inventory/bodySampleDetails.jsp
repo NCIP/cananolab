@@ -83,7 +83,12 @@
 					</td>
 
 					<td class="formFieldWhite">
-						<bean:write name="sample" property="sampleSource" />
+						<logic:notEqual name="sample" property="sampleSource" value="Other">
+							<bean:write name="sample" property="sampleSource" />
+						</logic:notEqual>
+						<logic:equal name="sample" property="sampleSource" value="Other">
+							<bean:write name="sample" property="otherSampleSource" />
+						</logic:equal>
 						&nbsp;
 					</td>
 				</tr>
@@ -176,7 +181,7 @@
 						<bean:write name="sample" property="generalComments" />
 						&nbsp;
 					</td>
-				</tr>				
+				</tr>
 			</table>
 			<br>
 
@@ -315,7 +320,12 @@
 							</td>
 
 							<td class="formField">
-								<bean:write name="container" property="storageLocation.room" />
+								<logic:notEqual name="container" property="storageLocation.room" value="Other">
+									<bean:write name="container" property="storageLocation.room" />
+								</logic:notEqual>
+								<logic:equal name="container" property="storageLocation.room" value="Other">
+									<bean:write name="container" property="storageLocation.otherRoom" />
+								</logic:equal>
 								&nbsp;
 							</td>
 						</tr>
@@ -328,7 +338,12 @@
 							</td>
 
 							<td class="formFieldWhite">
-								<bean:write name="container" property="storageLocation.freezer" />
+								<logic:notEqual name="container" property="storageLocation.freezer" value="Other">
+									<bean:write name="container" property="storageLocation.freezer" />
+								</logic:notEqual>
+								<logic:equal name="container" property="storageLocation.freezer" value="Other">
+									<bean:write name="container" property="storageLocation.otherFreezer" />
+								</logic:equal>
 								&nbsp;
 							</td>
 						</tr>
@@ -341,7 +356,12 @@
 							</td>
 
 							<td class="formField">
-								<bean:write name="container" property="storageLocation.shelf" />
+								<logic:notEqual name="container" property="storageLocation.shelf" value="Other">
+									<bean:write name="container" property="storageLocation.shelf" />
+								</logic:notEqual>
+								<logic:equal name="container" property="storageLocation.shelf" value="Other">
+									<bean:write name="container" property="storageLocation.otherShelf" />
+								</logic:equal>
 								&nbsp;
 							</td>
 						</tr>
@@ -354,7 +374,12 @@
 							</td>
 
 							<td class="formFieldWhite">
-								<bean:write name="container" property="storageLocation.box" />
+								<logic:notEqual name="container" property="storageLocation.box" value="Other">
+									<bean:write name="container" property="storageLocation.box" />
+								</logic:notEqual>
+								<logic:equal name="container" property="storageLocation.box" value="Other">
+									<bean:write name="container" property="storageLocation.otherBox" />
+								</logic:equal>
 								&nbsp;
 							</td>
 						</tr>
