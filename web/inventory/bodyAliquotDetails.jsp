@@ -15,16 +15,17 @@
 			</c:choose>
 		</td>
 		<td align="right" width="15%">
-		<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caLAB_1.0_OH&amp;topic=aliquot_details_help')" class="helpText">Help</a>
+			<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caLAB_1.0_OH&amp;topic=aliquot_details_help')" class="helpText">Help</a>&nbsp;&nbsp;
 			<c:choose>
 				<c:when test="${not empty param.aliquotId}">
-					<input type="button" onClick="javascript:history.go(-1);" value="Back">
+					<a href="javascript:history.go(-1)" class="helpText">back</a>
 				</c:when>
 			</c:choose>
 		</td>
 	</tr>
 	<tr>
 		<td colspan="2">
+			<jsp:include page="/bodyMessage.jsp?bundle=inventory" />
 			<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 				<tbody>
 					<tr class="topBorder">

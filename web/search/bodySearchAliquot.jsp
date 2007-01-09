@@ -31,7 +31,7 @@
 					</TR>
 					<tr>
 						<td class="formLabelWhite" width="30%">
-							<strong>Aliquot ID
+							<strong>Aliquot ID 
 						</td>
 						<td class="formFieldWhite">
 							<html:text property="aliquotName" size="15" />
@@ -100,11 +100,17 @@
 							<div align="center">
 								<strong>Storage Location<br> <br> Room&nbsp; <html:select property="storageLocation.room">
 										<option value="" />
-											<html:options name="aliquotContainerInfo" property="storageRooms" />
+											<html:options name="aliquotContainerInfoExcludeOther" property="storageRooms" />
 									</html:select> &nbsp; Freezer&nbsp; <html:select property="storageLocation.freezer">
 										<option value="" />
-											<html:options name="aliquotContainerInfo" property="storageFreezers" />
-									</html:select> &nbsp; &nbsp; Shelf &nbsp; <html:text property="storageLocation.shelf" size="8" /> &nbsp; Box &nbsp; <html:text property="storageLocation.box" size="8" /> &nbsp; <label for="label2"></label> </strong>
+											<html:options name="aliquotContainerInfoExcludeOther" property="storageFreezers" />
+									</html:select> &nbsp; &nbsp; Shelf &nbsp; <html:select property="storageLocation.shelf">
+										<option value="" />
+											<html:options name="aliquotContainerInfoExcludeOther" property="storageShelves" />
+									</html:select> &nbsp; &nbsp; Box &nbsp;<html:select property="storageLocation.box">
+										<option value="" />
+											<html:options name="aliquotContainerInfoExcludeOther" property="storageBoxes" />
+									</html:select> </strong>
 							</div>
 						</td>
 					</tr>

@@ -31,7 +31,7 @@
 					</TR>
 					<tr>
 						<td class="formLabelWhite" width="30%">
-							<strong>Sample ID
+							<strong>Sample ID 
 						</td>
 						<td class="formFieldWhite">
 							<html:text property="sampleName" size="15" />
@@ -99,12 +99,18 @@
 						<td colspan="2" class="formLabelWhite">
 							<div align="center">
 								<strong>Storage Location<br> <br> Room&nbsp; <html:select property="storageLocation.room">
-										<option value="" />
-											<html:options name="sampleContainerInfo" property="storageRooms" />
+										<option value="" />									
+											<html:options name="sampleContainerInfoExcludeOther" property="storageRooms" />
 									</html:select> &nbsp; Freezer&nbsp; <html:select property="storageLocation.freezer">
 										<option value="" />
-											<html:options name="sampleContainerInfo" property="storageFreezers" />
-									</html:select> &nbsp; &nbsp; Shelf &nbsp; <html:text property="storageLocation.shelf" size="8" /> &nbsp; Box &nbsp; <html:text property="storageLocation.box" size="8" /> &nbsp; <label for="label2"></label> </strong>
+											<html:options name="sampleContainerInfoExcludeOther" property="storageFreezers" />
+									</html:select> &nbsp; &nbsp; Shelf &nbsp; <html:select property="storageLocation.shelf">
+										<option value="" />
+											<html:options name="sampleContainerInfoExcludeOther" property="storageShelves" />
+									</html:select> &nbsp; Box &nbsp; <html:select property="storageLocation.box">
+										<option value="" />
+											<html:options name="sampleContainerInfoExcludeOther" property="storageBoxes" />
+									</html:select></strong>
 							</div>
 						</td>
 					</tr>

@@ -53,9 +53,9 @@ function openLink() {
 						<td class="formLabel" width="30%">
 							<strong>Create from </strong>
 							<br>
-							<html:radio property="fromAliquot" value="false" 
-							  onclick="javascript:disableTextElement(createAliquotForm, 'aliquotSampleName');disableTextElement(createAliquotForm, 'parentAliquotName');
-							  					  enableTextElement(createAliquotForm, 'sampleName');enableTextElement(createAliquotForm, 'containerName');"/>
+							<html:radio property="fromAliquot" value="false"
+								onclick="javascript:disableTextElement(createAliquotForm, 'aliquotSampleName');disableTextElement(createAliquotForm, 'parentAliquotName');
+							  					  enableTextElement(createAliquotForm, 'sampleName');enableTextElement(createAliquotForm, 'containerName');" />
 							<strong>Sample Container</strong>&nbsp;&nbsp;
 							<br>
 							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Sample ID*</strong>
@@ -71,9 +71,9 @@ function openLink() {
 							</html:select>
 							<br>
 							<br>
-							<html:radio property="fromAliquot" value="true"  
-							onclick="javascript:enableTextElement(createAliquotForm, 'aliquotSampleName');enableTextElement(createAliquotForm, 'parentAliquotName');
-							     				disableTextElement(createAliquotForm, 'sampleName');disableTextElement(createAliquotForm, 'containerName');"/>
+							<html:radio property="fromAliquot" value="true"
+								onclick="javascript:enableTextElement(createAliquotForm, 'aliquotSampleName');enableTextElement(createAliquotForm, 'parentAliquotName');
+							     				disableTextElement(createAliquotForm, 'sampleName');disableTextElement(createAliquotForm, 'containerName');" />
 							<strong> Aliquot</strong> &nbsp;&nbsp;
 							<br>
 							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Sample ID*</strong>
@@ -114,7 +114,11 @@ function openLink() {
 									<strong>Container Type* <span class="formFieldWhite"> <html:select property="template.container.containerType" onchange="javascript:updateOtherField(createAliquotForm, 'template.container.containerType', 'template.container.otherContainerType')">
 												<option value=""></option>
 												<html:options name="allAliquotContainerTypes" />
-											</html:select></span> &nbsp; &nbsp; &nbsp; Other <span class="formFieldWhite"><html:text property="template.container.otherContainerType" size="8" disabled="true"/></span> &nbsp; &nbsp; &nbsp; </strong>
+											</html:select></span> &nbsp; &nbsp; &nbsp; Other <span class="formFieldWhite"> <c:choose>
+												<c:when test="${createAliquotForm.map.template.container.containerType eq 'Other'}">
+													<html:text property="template.container.otherContainerType" size="8" disabled="false" /></span> </c:when> <c:otherwise>
+											<html:text property="template.container.otherContainerType" size="8" disabled="true" />
+										</c:otherwise> </c:choose> </strong>
 								</div>
 							</td>
 						</tr>
@@ -159,15 +163,98 @@ function openLink() {
 						</tr>
 						<tr>
 							<td class="formLabel">
-								<div align="left">
-									<strong>Storage Location<br> <br> Room&nbsp; <html:select property="template.container.storageLocation.room">
-											<option value=""></option>
-											<html:options name="aliquotContainerInfo" property="storageRooms" />
-										</html:select> &nbsp; Freezer&nbsp; <html:select property="template.container.storageLocation.freezer">
-											<option value=""></option>
-											<html:options name="aliquotContainerInfo" property="storageFreezers" />
-										</html:select> &nbsp;Shelf &nbsp; <html:text property="template.container.storageLocation.shelf" size="5" /> &nbsp; Box &nbsp; <html:text property="template.container.storageLocation.box" size="5" /> &nbsp;</strong>
-								</div>
+								<strong>Storage Location<br> <br>
+									<table class="topBorderOnly" cellspacing="0" cellpadding="3" align="left" summary="" border="0">
+										<strong>
+										<tr>
+											<td class="borderlessLabel" width="20%">
+												<strong>Room</strong>
+											</td>
+											<td class="borderlessLabel">
+												<html:select property="template.container.storageLocation.room" onchange="javascript:updateOtherField(createAliquotForm, 'template.container.storageLocation.room', 'template.container.storageLocation.otherRoom')">
+													<option value=""></option>
+													<html:options name="aliquotContainerInfo" property="storageRooms" />
+												</html:select>
+											</td>
+											<td class="borderlessLabel">
+												<strong>Other</strong>&nbsp;
+												<c:choose>
+													<c:when test="${createAliquotForm.map.template.container.storageLocation.room eq 'Other'}">
+														<html:text property="template.container.storageLocation.otherRoom" disabled="false" />
+													</c:when>
+													<c:otherwise>
+														<html:text property="template.container.storageLocation.otherRoom" disabled="true" />
+													</c:otherwise>
+												</c:choose>
+											</td>
+										</tr>
+										<tr>
+											<td class="borderlessLabel">
+												<strong>Freezer</strong>
+											</td>
+											<td class="borderlessLabel">
+												<html:select property="template.container.storageLocation.freezer" onchange="javascript:updateOtherField(createAliquotForm, 'template.container.storageLocation.freezer', 'template.container.storageLocation.otherFreezer')">
+													<option value=""></option>
+													<html:options name="aliquotContainerInfo" property="storageFreezers" />
+												</html:select>
+											</td>
+											<td class="borderlessLabel">
+												<strong>Other</strong>&nbsp;
+												<c:choose>
+													<c:when test="${createAliquotForm.map.template.container.storageLocation.freezer eq 'Other'}">
+														<html:text property="template.container.storageLocation.otherFreezer" disabled="false" />
+													</c:when>
+													<c:otherwise>
+														<html:text property="template.container.storageLocation.otherFreezer" disabled="true" />
+													</c:otherwise>
+												</c:choose>
+											</td>
+										</tr>
+										<tr>
+											<td class="borderlessLabel">
+												<strong>Shelf</strong>
+											</td>
+											<td class="borderlessLabel">
+												<html:select property="template.container.storageLocation.shelf" onchange="javascript:updateOtherField(createAliquotForm, 'template.container.storageLocation.shelf', 'template.container.storageLocation.otherShelf')">
+													<option value=""></option>
+													<html:options name="aliquotContainerInfo" property="storageShelves" />
+												</html:select>
+											</td>
+											<td class="borderlessLabel">
+												<strong>Other</strong>&nbsp;
+												<c:choose>
+													<c:when test="${createAliquotForm.map.template.container.storageLocation.shelf eq 'Other'}">
+														<html:text property="template.container.storageLocation.otherShelf" disabled="false" />
+													</c:when>
+													<c:otherwise>
+														<html:text property="template.container.storageLocation.otherShelf" disabled="true" />
+													</c:otherwise>
+												</c:choose>
+											</td>
+										</tr>
+										<tr>
+											<td class="borderlessLabel">
+												<strong>Box</strong>
+											</td>
+											<td class="borderlessLabel">
+												<html:select property="template.container.storageLocation.box" onchange="javascript:updateOtherField(createAliquotForm, 'template.container.storageLocation.box', 'template.container.storageLocation.otherBox')">
+													<option value=""></option>
+													<html:options name="aliquotContainerInfo" property="storageBoxes" />
+												</html:select>
+											</td>
+											<td class="borderlessLabel">
+												<strong>Other</strong>&nbsp;
+												<c:choose>
+													<c:when test="${createAliquotForm.map.template.container.storageLocation.box eq 'Other'}">
+														<html:text property="template.container.storageLocation.otherBox" disabled="false" />
+													</c:when>
+													<c:otherwise>
+														<html:text property="template.container.storageLocation.otherBox" disabled="true" />
+													</c:otherwise>
+												</c:choose>
+											</td>
+										</tr>
+									</table>
 							</td>
 						</tr>
 						<tr>
