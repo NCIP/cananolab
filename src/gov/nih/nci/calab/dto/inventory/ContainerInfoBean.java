@@ -9,7 +9,7 @@ import java.util.List;
  * @author pansu
  * 
  */
-/* CVS $Id: ContainerInfoBean.java,v 1.1 2006-06-30 20:52:51 pansu Exp $ */
+/* CVS $Id: ContainerInfoBean.java,v 1.2 2007-01-09 20:12:19 pansu Exp $ */
 
 public class ContainerInfoBean {
 
@@ -25,10 +25,31 @@ public class ContainerInfoBean {
 
 	private List<String> storageFreezers;
 
+	private List<String> storageShelves;
+
+	private List<String> storageBoxes;
+
+	public List<String> getStorageBoxes() {
+		return storageBoxes;
+	}
+
+	public void setStorageBoxes(List<String> storageBoxes) {
+		this.storageBoxes = storageBoxes;
+	}
+
+	public List<String> getStorageShelves() {
+		return storageShelves;
+	}
+
+	public void setStorageShelves(List<String> storageShelves) {
+		this.storageShelves = storageShelves;
+	}
+
 	public ContainerInfoBean(List<String> quantityUnits,
 			List<String> concentrationUnits, List<String> volumeUnits,
 			List<String> storageLabs, List<String> storeageRooms,
-			List<String> storageFreezers) {
+			List<String> storageFreezers, List<String> storageShelves,
+			List<String> storageBoxes) {
 		super();
 		// TODO Auto-generated constructor stub
 		this.quantityUnits = quantityUnits;
@@ -37,6 +58,8 @@ public class ContainerInfoBean {
 		this.storageLabs = storageLabs;
 		this.storeageRooms = storeageRooms;
 		this.storageFreezers = storageFreezers;
+		this.storageShelves = storageShelves;
+		this.storageBoxes = storageBoxes;
 	}
 
 	public List<String> getConcentrationUnits() {
@@ -94,5 +117,4 @@ public class ContainerInfoBean {
 	public void setStoreageRooms(List<String> storeageRooms) {
 		this.storeageRooms = storeageRooms;
 	}
-
 }
