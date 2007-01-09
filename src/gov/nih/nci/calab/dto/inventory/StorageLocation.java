@@ -8,7 +8,7 @@ import gov.nih.nci.calab.service.util.StringUtils;
  * @author pansu
  * 
  */
-/* CVS $Id: StorageLocation.java,v 1.2 2007-01-09 20:12:54 pansu Exp $ */
+/* CVS $Id: StorageLocation.java,v 1.3 2007-01-09 22:53:58 pansu Exp $ */
 
 public class StorageLocation {
 	private String lab = "";
@@ -156,12 +156,12 @@ public class StorageLocation {
 
 	public String toString() {
 		String locationStr = "";
-		String lab = (getLab() == null) ? "" : "Lab" + getLab();
-		String room = (getRoom() == null) ? "" : "Room" + getRoom();
-		String freezer = (getFreezer() == null) ? "" : "Freezer" + getFreezer();
-		String shelf = (getShelf() == null) ? "" : "Shelf" + getShelf();
-		String rack = (getRack() == null) ? "" : "Rack" + getRack();
-		String box = (getBox() == null) ? "" : "Box" + getBox();
+		String lab = (getLab() == null) ? "" : "Lab " + getLab();
+		String room = (getRoom() == null) ? "" : "Room " + getRoom();
+		String freezer = (getFreezer() == null) ? "" : "Freezer " + getFreezer();
+		String shelf = (getShelf() == null) ? "" : "Shelf " + getShelf();
+		String rack = (getRack() == null) ? "" : "Rack " + getRack();
+		String box = (getBox() == null) ? "" : "Box " + getBox();
 		String[] strs = new String[] { lab, room, freezer, shelf, rack, box };
 		locationStr = StringUtils.join(strs, "-");
 		return locationStr;
