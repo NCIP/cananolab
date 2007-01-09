@@ -24,7 +24,7 @@ import org.apache.log4j.Logger;
  */
 
 /*
- * CVS $Id: ManageAliquotService.java,v 1.5 2007-01-04 23:23:34 pansu Exp $
+ * CVS $Id: ManageAliquotService.java,v 1.6 2007-01-09 22:54:36 pansu Exp $
  */
 
 public class ManageAliquotService {
@@ -224,8 +224,13 @@ public class ManageAliquotService {
 					// 3. StorageElement
 					HashSet<StorageElement> storages = new HashSet<StorageElement>();
 
-					String boxValue = containerBean.getStorageLocation()
-							.getBox();
+					String boxValue = null;
+					if ((containerBean.getStorageLocation().getBox()
+							.equals(CaNanoLabConstants.OTHER))) {
+						boxValue=containerBean.getStorageLocation().getOtherBox();
+					} else {
+						boxValue=containerBean.getStorageLocation().getBox();
+					}
 					if ((boxValue != null) && (boxValue.length() > 0)) {
 						List existedSE = ida
 								.search("from StorageElement se where se.type = '"
@@ -245,8 +250,13 @@ public class ManageAliquotService {
 						storages.add(box);
 					}
 
-					String shelfValue = containerBean.getStorageLocation()
-							.getShelf();
+					String shelfValue = null;
+					if ((containerBean.getStorageLocation().getShelf()
+							.equals(CaNanoLabConstants.OTHER))) {
+						shelfValue=containerBean.getStorageLocation().getOtherShelf();
+					} else {
+						shelfValue=containerBean.getStorageLocation().getShelf();
+					}
 					if ((shelfValue != null) && (shelfValue.length() > 0)) {
 						List existedSE = ida
 								.search("from StorageElement se where se.type = '"
@@ -266,8 +276,13 @@ public class ManageAliquotService {
 						storages.add(shelf);
 					}
 
-					String freezerValue = containerBean.getStorageLocation()
-							.getFreezer();
+					String freezerValue = null;
+					if ((containerBean.getStorageLocation().getFreezer()
+							.equals(CaNanoLabConstants.OTHER))) {
+						freezerValue=containerBean.getStorageLocation().getOtherFreezer();
+					} else {
+						freezerValue=containerBean.getStorageLocation().getFreezer();
+					}
 					if ((freezerValue != null) && (freezerValue.length() > 0)) {
 						List existedSE = ida
 								.search("from StorageElement se where se.type = '"
@@ -286,8 +301,13 @@ public class ManageAliquotService {
 						storages.add(freezer);
 					}
 
-					String roomValue = containerBean.getStorageLocation()
-							.getRoom();
+					String roomValue = null;
+					if ((containerBean.getStorageLocation().getRoom()
+							.equals(CaNanoLabConstants.OTHER))) {
+						roomValue=containerBean.getStorageLocation().getOtherRoom();
+					} else {
+						roomValue=containerBean.getStorageLocation().getRoom();
+					}
 					if ((roomValue != null) && (roomValue.length() > 0)) {
 						List existedSE = ida
 								.search("from StorageElement se where se.type = '"
