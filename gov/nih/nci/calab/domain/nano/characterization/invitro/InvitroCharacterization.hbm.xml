@@ -3,7 +3,7 @@
 
 <hibernate-mapping package="gov.nih.nci.calab.domain.nano.characterization.invitro">
 
-	<subclass name="PlateAggregation" extends="gov.nih.nci.calab.domain.nano.characterization.toxicity.ImmunoToxicity" discriminator-value="PlateAggregation" />
+	<subclass name="PlateletAggregation" extends="gov.nih.nci.calab.domain.nano.characterization.toxicity.ImmunoToxicity" discriminator-value="PlateletAggregation" />
 	<subclass name="Hemolysis" extends="gov.nih.nci.calab.domain.nano.characterization.toxicity.ImmunoToxicity" discriminator-value="Hemolysis" />
 	<subclass name="Coagulation" extends="gov.nih.nci.calab.domain.nano.characterization.toxicity.ImmunoToxicity" discriminator-value="Coagulation" />
 	<subclass name="PlasmaProteinBinding" extends="gov.nih.nci.calab.domain.nano.characterization.toxicity.ImmunoToxicity" discriminator-value="PlasmaProteinBinding" />

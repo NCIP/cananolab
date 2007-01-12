@@ -1,7 +1,7 @@
 package gov.nih.nci.calab.ui.submit;
 
 /**
- * This class sets up input form for InVitro PlateAggregation characterization. 
+ * This class sets up input form for InVitro PlateletAggregation characterization. 
  *  
  * @author beasleyj
  */
@@ -11,7 +11,7 @@ import gov.nih.nci.calab.domain.nano.characterization.invitro.PlateletAggregatio
 import gov.nih.nci.calab.dto.characterization.ConditionBean;
 import gov.nih.nci.calab.dto.characterization.DatumBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
-import gov.nih.nci.calab.dto.characterization.invitro.PlateAggregationBean;
+import gov.nih.nci.calab.dto.characterization.invitro.PlateletAggregationBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
@@ -33,7 +33,7 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
-public class InvitroPlateAggregationAction extends BaseCharacterizationAction {
+public class InvitroPlateletAggregationAction extends BaseCharacterizationAction {
 
 	/**
 	 * Add or update the data to database
@@ -53,17 +53,17 @@ public class InvitroPlateAggregationAction extends BaseCharacterizationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleType = (String) theForm.get("particleType");
 		String particleName = (String) theForm.get("particleName");
-		PlateAggregationBean plateAggregationChar = (PlateAggregationBean) theForm
+		PlateletAggregationBean plateletAggregationChar = (PlateletAggregationBean) theForm
 				.get("achar");
 
-		if (plateAggregationChar.getId() == null
-				|| plateAggregationChar.getId() == "") {
-			plateAggregationChar.setId((String) theForm
+		if (plateletAggregationChar.getId() == null
+				|| plateletAggregationChar.getId() == "") {
+			plateletAggregationChar.setId((String) theForm
 					.get("characterizationId"));
 		}
 
 		int fileNumber = 0;
-		for (DerivedBioAssayDataBean obj : plateAggregationChar
+		for (DerivedBioAssayDataBean obj : plateletAggregationChar
 				.getDerivedBioAssayDataList()) {
 			
 			// Vaidate the the nested data point entries
@@ -103,17 +103,17 @@ public class InvitroPlateAggregationAction extends BaseCharacterizationAction {
 		// set createdBy and createdDate for the composition
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		Date date = new Date();
-		plateAggregationChar.setCreatedBy(user.getLoginName());
-		plateAggregationChar.setCreatedDate(date);
+		plateletAggregationChar.setCreatedBy(user.getLoginName());
+		plateletAggregationChar.setCreatedDate(date);
 
 		request.getSession().setAttribute("newCharacterizationCreated", "true");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		service.addPlateAggregation(particleType, particleName,
-				plateAggregationChar);
+		service.addPlateletAggregation(particleType, particleName,
+				plateletAggregationChar);
 
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage(
-				"message.addInvitroPlateAggregation");
+				"message.addInvitroPlateletAggregation");
 		msgs.add("message", msg);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
@@ -138,7 +138,7 @@ public class InvitroPlateAggregationAction extends BaseCharacterizationAction {
 
 		theForm.set("particleName", particleName);
 		theForm.set("particleType", particleType);
-		theForm.set("achar", new PlateAggregationBean());
+		theForm.set("achar", new PlateletAggregationBean());
 
 		cleanSessionAttributes(session);
 	}
@@ -150,15 +150,15 @@ public class InvitroPlateAggregationAction extends BaseCharacterizationAction {
 	@Override
 	protected void setFormCharacterizationBean(DynaValidatorForm theForm,
 			Characterization aChar) throws Exception {
-		PlateAggregationBean charBean = new PlateAggregationBean(
+		PlateletAggregationBean charBean = new PlateletAggregationBean(
 				(PlateletAggregation) aChar);
 		theForm.set("achar", charBean);
 	}
 
 	@Override
 	protected void setLoadFileRequest(HttpServletRequest request) {
-		request.setAttribute("characterization", "plateAggregation");
-		request.setAttribute("loadFileForward", "invitroPlateAggregationForm");
+		request.setAttribute("characterization", "plateletAggregation");
+		request.setAttribute("loadFileForward", "invitroPlateletAggregationForm");
 
 	}
 }

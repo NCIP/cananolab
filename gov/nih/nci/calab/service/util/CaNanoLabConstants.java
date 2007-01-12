@@ -163,7 +163,7 @@ public class CaNanoLabConstants {
 
 	public static final String BLOODCONTACTTOX_PLATE_AGGREGATION = "Platelet Aggregation";
 
-	public static final String BLOODCONTACTTOX_PLATE_AGGREGATION_DATA_TYPE = "Percent Platelet Aggregation";
+	public static final String BLOODCONTACTTOX_PLATELET_AGGREGATION_DATA_TYPE = "Percent Platelet Aggregation";
 
 	public static final String BLOODCONTACTTOX_HEMOLYSIS = "Hemolysis";
 

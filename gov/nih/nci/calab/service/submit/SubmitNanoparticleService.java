@@ -34,7 +34,7 @@ import gov.nih.nci.calab.dto.characterization.invitro.OxidativeBurstBean;
 import gov.nih.nci.calab.dto.characterization.invitro.OxidativeStressBean;
 import gov.nih.nci.calab.dto.characterization.invitro.PhagocytosisBean;
 import gov.nih.nci.calab.dto.characterization.invitro.PlasmaProteinBindingBean;
-import gov.nih.nci.calab.dto.characterization.invitro.PlateAggregationBean;
+import gov.nih.nci.calab.dto.characterization.invitro.PlateletAggregationBean;
 import gov.nih.nci.calab.dto.characterization.invitro.ROSBean;
 import gov.nih.nci.calab.dto.characterization.physical.MolecularWeightBean;
 import gov.nih.nci.calab.dto.characterization.physical.MorphologyBean;
@@ -493,15 +493,15 @@ public class SubmitNanoparticleService {
 	 * 
 	 * @param particleType
 	 * @param particleName
-	 * @param plateAggregation
+	 * @param plateletAggregation
 	 * @throws Exception
 	 */
-	public void addPlateAggregation(String particleType, String particleName,
-			PlateAggregationBean plateAggregation) throws Exception {
-		Characterization doPlateAggregation = plateAggregation.getDomainObj();
+	public void addPlateletAggregation(String particleType, String particleName,
+			PlateletAggregationBean plateletAggregation) throws Exception {
+		Characterization doPlateletAggregation = plateletAggregation.getDomainObj();
 		// TODO think about how to deal with characterization file.
 		addParticleCharacterization(particleType, particleName,
-				doPlateAggregation);
+				doPlateletAggregation);
 	}
 
 	/**
