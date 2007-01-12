@@ -27,7 +27,7 @@
 			<item value="Caspase 3 Activation" link="invitroCytotoxicityCaspase3Activation.do?dispatch=setup&amp;page=0" />
 		</putList>
 		<putList name="bloodContactActions">
-			<item value="Platelet Aggregation" link="invitroImmunotoxicityPlateAggregation.do?dispatch=setup&amp;page=0" />
+			<item value="Platelet Aggregation" link="invitroImmunotoxicityPlateletAggregation.do?dispatch=setup&amp;page=0" />
 			<item value="Hemolysis" link="invitroImmunotoxicityHemolysis.do?dispatch=setup&amp;page=0" />
 			<item value="Plasma Protein Binding" link="invitroImmunotoxicityProteinBinding.do?dispatch=setup&amp;page=0" />
 			<item value="Coagulation" link="invitroImmunotoxicityCoagulation.do?dispatch=setup&amp;page=0" />
@@ -257,21 +257,21 @@
 	</definition>
 
 	<!-- definition for the invitro immunotoxicity plate aggregation page -->
-	<definition name="submit.addimmunotoxicity.plateaggregation.content" extends="submit.content.home">
+	<definition name="submit.addimmunotoxicity.plateletaggregation.content" extends="submit.content.home">
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
 		<put name="submitContent" value="/submit/bodyInvitroCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Immunotoxicity - Platelet Aggregation" />
-		<put name="actionName" value="invitroImmunotoxicityPlateAggregation" />
-		<put name="formName" value="invitroImmunotoxicityPlateAggregationForm" />
+		<put name="actionName" value="invitroImmunotoxicityPlateletAggregation" />
+		<put name="formName" value="invitroImmunotoxicityPlateletAggregationForm" />
 		<put name="formType" value="Immunotoxicity" />
 		<put name="dataLabel" value="Platelet Aggregation Percentage" />
 		<put name="dataUnit" value="%" />
 
 	</definition>
 
-	<definition name="submit.addimmunotoxicity.plateaggregation" extends="calab.home">
+	<definition name="submit.addimmunotoxicity.plateletaggregation" extends="calab.home">
 		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
-		<put name="calabContent" value="submit.addimmunotoxicity.plateaggregation.content" />
+		<put name="calabContent" value="submit.addimmunotoxicity.plateletaggregation.content" />
 		<put name="menu" value="submit" />
 	</definition>
 

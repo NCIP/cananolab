@@ -127,12 +127,12 @@
 			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.CoagulationBean" />
 			<form-property name="characterizationId" type="java.lang.String" />
 		</form-bean>
-		<form-bean name="invitroImmunotoxicityPlateAggregationForm" type="org.apache.struts.validator.DynaValidatorForm">
+		<form-bean name="invitroImmunotoxicityPlateletAggregationForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="dispatch" type="java.lang.String" />
 			<form-property name="page" type="java.lang.Integer" initial="0" />
 			<form-property name="particleName" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />
-			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.PlateAggregationBean" />
+			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.invitro.PlateletAggregationBean" />
 			<form-property name="characterizationId" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="invitroImmunotoxicityComplementActivationForm" type="org.apache.struts.validator.DynaValidatorForm">
@@ -297,8 +297,8 @@
 		<forward name="invitroHemolysisForm" path="submit.addimmunotoxicity.hemolysis" />
 		<forward name="Coagulation" path="invitroImmunotoxicityCoagulation.do?page=0" />
 		<forward name="invitroCoagulationForm" path="submit.addimmunotoxicity.coagulation" />
-		<forward name="Platelet Aggregation" path="invitroImmunotoxicityPlateAggregation.do?page=0" />
-		<forward name="invitroPlateAggregationForm" path="submit.addimmunotoxicity.plateaggregation" />
+		<forward name="Platelet Aggregation" path="invitroImmunotoxicityPlateletAggregation.do?page=0" />
+		<forward name="invitroPlateletAggregationForm" path="submit.addimmunotoxicity.platealetggregation" />
 		<forward name="Plasma Protein Binding" path="invitroImmunotoxicityProteinBinding.do?page=0" />
 		<forward name="invitroProteinBindingForm" path="submit.addimmunotoxicity.plasmaproteinbinding" />
 		<forward name="Complement Activation" path="invitroImmunotoxicityComplementActivation.do?page=0" />
@@ -437,11 +437,11 @@
 			<forward name="input" path="submit.addimmunotoxicity.hemolysis" />
 			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
 		</action>
-		<action name="invitroImmunotoxicityPlateAggregationForm" parameter="dispatch" path="/invitroImmunotoxicityPlateAggregation" type="gov.nih.nci.calab.ui.submit.InvitroPlateAggregationAction" input="input">
-			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroPlateAggregation" path="submit.addimmunotoxicity.plateaggregation" type="java.lang.Exception" />
+		<action name="invitroImmunotoxicityPlateletAggregationForm" parameter="dispatch" path="/invitroImmunotoxicityPlateletAggregation" type="gov.nih.nci.calab.ui.submit.InvitroPlateletAggregationAction" input="input">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroPlateletAggregation" path="submit.addimmunotoxicity.plateletaggregation" type="java.lang.Exception" />
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.download.file" path="home.error" type="gov.nih.nci.calab.exception.CalabException" />
 			<forward name="success" path="submit.action.message" />
-			<forward name="input" path="submit.addimmunotoxicity.plateaggregation" />
+			<forward name="input" path="submit.addimmunotoxicity.plateletaggregation" />
 			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
 		</action>
 		<action name="invitroImmunotoxicityCoagulationForm" parameter="dispatch" path="/invitroImmunotoxicityCoagulation" type="gov.nih.nci.calab.ui.submit.InvitroCoagulationAction" input="input">
