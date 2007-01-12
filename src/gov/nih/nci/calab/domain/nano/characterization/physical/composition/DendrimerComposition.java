@@ -4,7 +4,6 @@ import gov.nih.nci.calab.domain.Instrument;
 import gov.nih.nci.calab.domain.nano.characterization.CharacterizationProtocol;
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
-import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -97,7 +96,7 @@ public class DendrimerComposition implements ParticleComposition {
 	}
 
 	public String getClassification() {
-		return CaNanoLabConstants.PHYSICAL_CHARACTERIZATION;
+		return PHYSICAL_CHARACTERIZATION;
 	}
 
 	public String getDescription() {
@@ -117,7 +116,7 @@ public class DendrimerComposition implements ParticleComposition {
 	}
 
 	public String getName() {
-		return CaNanoLabConstants.PHYSICAL_COMPOSITION;
+		return PHYSICAL_COMPOSITION;
 	}
 
 	public void setNanoparticleCollection(Collection<Nanoparticle> particleCollection) {
