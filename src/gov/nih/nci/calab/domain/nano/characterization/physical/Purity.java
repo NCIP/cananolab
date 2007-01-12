@@ -1,12 +1,10 @@
 package gov.nih.nci.calab.domain.nano.characterization.physical;
 
 import gov.nih.nci.calab.domain.Instrument;
-import gov.nih.nci.calab.domain.Measurement;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.CharacterizationProtocol;
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
-import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -55,7 +53,7 @@ public class Purity implements Characterization {
 	}
 
 	public String getClassification() {
-		return CaNanoLabConstants.PHYSICAL_CHARACTERIZATION;
+		return PHYSICAL_CHARACTERIZATION;
 	}
 
 	public String getDescription() {
@@ -75,7 +73,7 @@ public class Purity implements Characterization {
 	}
 
 	public String getName() {
-		return CaNanoLabConstants.PHYSICAL_PURITY;
+		return PHYSICAL_PURITY;
 	}
 
 	public void setName(String name) {

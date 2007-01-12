@@ -1,16 +1,15 @@
 package gov.nih.nci.calab.domain.nano.characterization.invitro;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-
 import gov.nih.nci.calab.domain.Instrument;
 import gov.nih.nci.calab.domain.nano.characterization.CharacterizationProtocol;
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.ComposingElement;
 import gov.nih.nci.calab.domain.nano.characterization.toxicity.ImmunoToxicity;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
-import gov.nih.nci.calab.service.util.CaNanoLabConstants;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 
 public class CFU_GM implements ImmunoToxicity {
 
@@ -39,7 +38,7 @@ public class CFU_GM implements ImmunoToxicity {
 	 * @see gov.nih.nci.calab.domain.nano.characterization.toxicity.ImmunoToxicity#getImmunotoxiticyType()
 	 */
 	public String getImmunotoxiticyType() {
-		return CaNanoLabConstants.IMMUNE_CELL_FUNCTION_IMMUNOTOXICITY_CHARACTERIZATION;
+		return IMMUNE_CELL_FUNCTION_IMMUNOTOXICITY_CHARACTERIZATION;
 	}
 
 	/* (non-Javadoc)
@@ -72,7 +71,7 @@ public class CFU_GM implements ImmunoToxicity {
 	}
 
 	public String getClassification() {
-		return CaNanoLabConstants.INVITRO_CHARACTERIZATION;
+		return INVITRO_CHARACTERIZATION;
 	}
 
 	public String getDescription() {
@@ -88,7 +87,7 @@ public class CFU_GM implements ImmunoToxicity {
 	}
 
 	public String getName() {
-		return CaNanoLabConstants.IMMUNOCELLFUNCTOX_CFU_GM;
+		return IMMUNOCELLFUNCTOX_CFU_GM;
 	}
 
 	public void setName(String name) {
