@@ -3,7 +3,7 @@ package gov.nih.nci.calab.dto.characterization.invitro;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.Datum;
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
-import gov.nih.nci.calab.domain.nano.characterization.invitro.PlateAggregation;
+import gov.nih.nci.calab.domain.nano.characterization.invitro.PlateletAggregation;
 
 import gov.nih.nci.calab.dto.characterization.*;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
@@ -12,18 +12,18 @@ import java.util.List;
 
 
 /**
- * This class represents the plateAggregation characterization information to be shown in
+ * This class represents the plateletAggregation characterization information to be shown in
  * the view page.
  * 
  * @author beasleyj
  * 
  */
-public class PlateAggregationBean extends CharacterizationBean {
-	public PlateAggregationBean() {
+public class PlateletAggregationBean extends CharacterizationBean {
+	public PlateletAggregationBean() {
 		super();
 	}
 	
-	public PlateAggregationBean(Characterization aChar) {
+	public PlateletAggregationBean(Characterization aChar) {
 		super(aChar);
 	}
 	
@@ -33,23 +33,23 @@ public class PlateAggregationBean extends CharacterizationBean {
 
 		for (DerivedBioAssayDataBean table : getDerivedBioAssayDataList()) {
 			for (DatumBean datum : table.getDatumList()) {
-				datum.setType(CaNanoLabConstants.BLOODCONTACTTOX_PLATE_AGGREGATION_DATA_TYPE);
+				datum.setType(CaNanoLabConstants.BLOODCONTACTTOX_PLATELET_AGGREGATION_DATA_TYPE);
 				datum.setValueUnit(CaNanoLabConstants.UNIT_PERCENT);
 			}
 		}
 	}
 	
-	public PlateAggregation getDomainObj() {
-		PlateAggregation plateAggregation = new PlateAggregation();
-		super.updateDomainObj(plateAggregation);
-		for (DerivedBioAssayData chart: plateAggregation.getDerivedBioAssayDataCollection()){
+	public PlateletAggregation getDomainObj() {
+		PlateletAggregation plateletAggregation = new PlateletAggregation();
+		super.updateDomainObj(plateletAggregation);
+		for (DerivedBioAssayData chart: plateletAggregation.getDerivedBioAssayDataCollection()){
 			for (Datum data: chart.getDatumCollection()){
-				data.setType(CaNanoLabConstants.BLOODCONTACTTOX_PLATE_AGGREGATION_DATA_TYPE);
+				data.setType(CaNanoLabConstants.BLOODCONTACTTOX_PLATELET_AGGREGATION_DATA_TYPE);
 				if (data.getValue() != null) {
 					data.getValue().setUnitOfMeasurement(CaNanoLabConstants.UNIT_PERCENT);
 				}			
 			}
 		}
-	return plateAggregation;
+	return plateletAggregation;
 	}
 }

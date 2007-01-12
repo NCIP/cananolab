@@ -179,7 +179,7 @@
 				</var>
 			</field>
 		</form>
-		<form name="invitroImmunotoxicityPlateAggregationForm">
+		<form name="invitroImmunotoxicityPlateletAggregationForm">
 			<field property="achar.numberOfDerivedBioAssayData" page="0" depends="integer">
 				<arg position="0" key="numberOfDerivedBioAssayData" bundle="submit" />
 			</field>
