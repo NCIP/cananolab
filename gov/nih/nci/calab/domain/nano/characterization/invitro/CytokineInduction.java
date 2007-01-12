@@ -9,7 +9,6 @@ import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.ComposingElement;
 import gov.nih.nci.calab.domain.nano.characterization.toxicity.ImmunoToxicity;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
-import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -51,7 +50,7 @@ public class CytokineInduction implements ImmunoToxicity {
 	 * @see gov.nih.nci.calab.domain.nano.characterization.toxicity.ImmunoToxicity#getImmunotoxiticyType()
 	 */
 	public String getImmunotoxiticyType() {
-		return CaNanoLabConstants.IMMUNE_CELL_FUNCTION_IMMUNOTOXICITY_CHARACTERIZATION;
+		return IMMUNE_CELL_FUNCTION_IMMUNOTOXICITY_CHARACTERIZATION;
 	}
 
 	/* (non-Javadoc)
@@ -84,7 +83,7 @@ public class CytokineInduction implements ImmunoToxicity {
 	}
 
 	public String getClassification() {
-		return CaNanoLabConstants.INVITRO_CHARACTERIZATION;
+		return INVITRO_CHARACTERIZATION;
 	}
 
 	public String getDescription() {
@@ -100,7 +99,7 @@ public class CytokineInduction implements ImmunoToxicity {
 	}
 
 	public String getName() {
-		return CaNanoLabConstants.IMMUNOCELLFUNCTOX_CYTOKINE_INDUCTION;
+		return IMMUNOCELLFUNCTOX_CYTOKINE_INDUCTION;
 	}
 
 	public void setName(String name) {

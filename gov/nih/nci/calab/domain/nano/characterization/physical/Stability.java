@@ -9,7 +9,6 @@ import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.CharacterizationProtocol;
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
-import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -105,7 +104,7 @@ public class Stability implements Characterization {
 	}
 
 	public String getClassification() {
-		return CaNanoLabConstants.PHYSICAL_CHARACTERIZATION;
+		return PHYSICAL_CHARACTERIZATION;
 	}
 
 	public String getDescription() {
@@ -125,7 +124,7 @@ public class Stability implements Characterization {
 	}
 
 	public String getName() {
-		return CaNanoLabConstants.PHYSICAL_STABILITY;
+		return PHYSICAL_STABILITY;
 	}
 
 	public void setName(String name) {

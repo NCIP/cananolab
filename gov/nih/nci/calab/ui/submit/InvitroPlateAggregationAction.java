@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.submit;
  */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
-import gov.nih.nci.calab.domain.nano.characterization.invitro.PlateAggregation;
+import gov.nih.nci.calab.domain.nano.characterization.invitro.PlateletAggregation;
 import gov.nih.nci.calab.dto.characterization.ConditionBean;
 import gov.nih.nci.calab.dto.characterization.DatumBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
@@ -151,7 +151,7 @@ public class InvitroPlateAggregationAction extends BaseCharacterizationAction {
 	protected void setFormCharacterizationBean(DynaValidatorForm theForm,
 			Characterization aChar) throws Exception {
 		PlateAggregationBean charBean = new PlateAggregationBean(
-				(PlateAggregation) aChar);
+				(PlateletAggregation) aChar);
 		theForm.set("achar", charBean);
 	}
 

@@ -1,15 +1,14 @@
 package gov.nih.nci.calab.domain.nano.characterization.invitro;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-
 import gov.nih.nci.calab.domain.Instrument;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.CharacterizationProtocol;
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
-import gov.nih.nci.calab.service.util.CaNanoLabConstants;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 
 public class EnzymeInduction implements Characterization {
 
@@ -53,7 +52,7 @@ public class EnzymeInduction implements Characterization {
 	}
 
 	public String getClassification() {
-		return CaNanoLabConstants.INVITRO_CHARACTERIZATION;
+		return INVITRO_CHARACTERIZATION;
 	}
 
 	public String getDescription() {
@@ -73,7 +72,7 @@ public class EnzymeInduction implements Characterization {
 	}
 
 	public String getName() {
-		return CaNanoLabConstants.TOXICITY_ENZYME_FUNCTION;
+		return TOXICITY_ENZYME_FUNCTION;
 	}
 
 	public void setName(String name) {
