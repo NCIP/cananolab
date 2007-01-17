@@ -589,8 +589,7 @@ public class InitSessionSetup {
 		}
 	}
 
-	public void setAllInstrumentTypes(HttpSession session) throws Exception {
-		String rv = "";
+	public void setAllInstrumentTypes(HttpSession session) throws Exception {	
 		if (session.getServletContext().getAttribute("allInstrumentTypes") == null) {
 			List<LabelValueBean> instrumentTypes = lookupService
 					.getAllInstrumentTypeAbbrs();
