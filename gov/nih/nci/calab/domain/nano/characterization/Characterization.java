@@ -5,6 +5,7 @@ package gov.nih.nci.calab.domain.nano.characterization;
 
 import gov.nih.nci.calab.domain.Instrument;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 
@@ -14,7 +15,7 @@ import java.util.Date;
  * @author zengje
  *
  */
-public interface Characterization {
+public interface Characterization extends Serializable{
 	public void setId(Long id);
 	public Long getId();
 	public void setSource(String source);
