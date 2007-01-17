@@ -16,27 +16,38 @@ public class Surface implements Characterization {
 	private static final long serialVersionUID = 1234567890L;
 
 	private Long id;
+
 	private String source;
-	private String classification;
+
 	private String description;
+
 	private String identificationName;
-	private String name;
+
 	private String createdBy;
+
 	private Date createdDate;
+
 	private Collection<Nanoparticle> nanoparticleCollection;
+
 	private Collection<DerivedBioAssayData> derivedBioAssayDataCollection = new ArrayList<DerivedBioAssayData>();
+
 	private Instrument instrument;
+
 	private CharacterizationProtocol characterizationProtocol;
-	
+
 	private Measurement surfaceArea;
+
 	private Measurement surfaceCharge;
-	//private Measurement zetaPotential;
+
+	// private Measurement zetaPotential;
 	private Float zetaPotential;
+
 	private Measurement charge;
+
 	private Boolean isHydrophobic;
-	
+
 	private Collection<SurfaceChemistry> surfaceChemistryCollection = new ArrayList<SurfaceChemistry>();
-	
+
 	public Surface() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -56,10 +67,6 @@ public class Surface implements Characterization {
 
 	public String getSource() {
 		return this.source;
-	}
-
-	public void setClassification(String classification) {
-		this.classification = classification;
 	}
 
 	public String getClassification() {
@@ -84,10 +91,6 @@ public class Surface implements Characterization {
 
 	public String getName() {
 		return PHYSICAL_SURFACE;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public void setNanoparticleCollection(Collection<Nanoparticle> particles) {
@@ -171,15 +174,13 @@ public class Surface implements Characterization {
 	public void setSurfaceCharge(Measurement surfaceCharge) {
 		this.surfaceCharge = surfaceCharge;
 	}
-/*
-	public Measurement getZetaPotential() {
-		return zetaPotential;
-	}
 
-	public void setZetaPotential(Measurement zetaPotential) {
-		this.zetaPotential = zetaPotential;
-	}
-*/
+	/*
+	 * public Measurement getZetaPotential() { return zetaPotential; }
+	 * 
+	 * public void setZetaPotential(Measurement zetaPotential) {
+	 * this.zetaPotential = zetaPotential; }
+	 */
 	public Collection<SurfaceChemistry> getSurfaceChemistryCollection() {
 		return surfaceChemistryCollection;
 	}
@@ -197,4 +198,3 @@ public class Surface implements Characterization {
 		this.zetaPotential = zetaPotential;
 	}
 }
-

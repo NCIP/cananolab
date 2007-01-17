@@ -15,21 +15,29 @@ public class FullereneComposition implements ParticleComposition {
 	private static final long serialVersionUID = 1234567890L;
 
 	private Long id;
+
 	private String source;
+
 	private String description;
+
 	private String identificationName;
-	private String classification;
-	private String name;
+
 	private String createdBy;
+
 	private Date createdDate;
+
 	private Collection<Nanoparticle> nanoparticleCollection = new HashSet<Nanoparticle>();
+
 	private Collection<ComposingElement> composingElementCollection = new ArrayList<ComposingElement>();
+
 	private Collection<DerivedBioAssayData> derivedBioAssayDataCollection = new ArrayList<DerivedBioAssayData>();
+
 	private Instrument instrument;
+
 	private CharacterizationProtocol characterizationProtocol;
 
 	private Integer numberOfCarbon;
-	
+
 	public FullereneComposition() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -79,33 +87,26 @@ public class FullereneComposition implements ParticleComposition {
 		return PHYSICAL_COMPOSITION;
 	}
 
-
 	public void setIdentificationName(String identificationName) {
 		this.identificationName = identificationName;
 	}
 
-	public void setNanoparticleCollection(Collection<Nanoparticle> particleCollection) {
+	public void setNanoparticleCollection(
+			Collection<Nanoparticle> particleCollection) {
 		this.nanoparticleCollection = particleCollection;
 	}
 
 	public Collection<Nanoparticle> getNanoparticleCollection() {
 		return this.nanoparticleCollection;
 	}
-	
-	public void setComposingElementCollection(Collection<ComposingElement> element){
+
+	public void setComposingElementCollection(
+			Collection<ComposingElement> element) {
 		this.composingElementCollection = element;
 	}
-	
-	public Collection<ComposingElement> getComposingElementCollection(){
+
+	public Collection<ComposingElement> getComposingElementCollection() {
 		return this.composingElementCollection;
-	}
-
-	public void setClassification(String classification) {
-		this.classification = classification;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public String getCreatedBy() {

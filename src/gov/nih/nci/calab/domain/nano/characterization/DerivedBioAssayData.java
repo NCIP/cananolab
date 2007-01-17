@@ -5,22 +5,26 @@ package gov.nih.nci.calab.domain.nano.characterization;
 
 import gov.nih.nci.calab.domain.DerivedDataFile;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
 /**
  * @author zengje
- *
+ * 
  */
-public class DerivedBioAssayData {
+public class DerivedBioAssayData implements Serializable {
 
 	private static final long serialVersionUID = 1234567890L;
-	
+
 	private Long id;
+
 	private String type;
+
 	private DerivedDataFile file;
-	
+
 	private Collection<Datum> datumCollection = new ArrayList<Datum>();
+
 	/**
 	 * 
 	 */
@@ -40,6 +44,7 @@ public class DerivedBioAssayData {
 	public String getType() {
 		return type;
 	}
+
 	public void setType(String type) {
 		this.type = type;
 	}

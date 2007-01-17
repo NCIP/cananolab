@@ -1,13 +1,17 @@
 package gov.nih.nci.calab.domain.nano.characterization;
 
-public class Control {
-	
+import java.io.Serializable;
+
+public class Control implements Serializable {
+
 	private static final long serialVersionUID = 1234567890L;
-	
+
 	private Long id;
+
 	private String name;
+
 	private String type;
-	
+
 	public Control() {
 		super();
 		// TODO Auto-generated constructor stub

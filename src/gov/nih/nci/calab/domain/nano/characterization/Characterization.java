@@ -9,40 +9,52 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 
-
-
 /**
  * @author zengje
- *
+ * 
  */
-public interface Characterization extends Serializable{
+public interface Characterization extends Serializable {
 	public void setId(Long id);
+
 	public Long getId();
+
 	public void setSource(String source);
+
 	public String getSource();
-	public void setClassification(String classification);
+
 	public String getClassification();
+
 	public void setIdentificationName(String name);
+
 	public String getIdentificationName();
+
 	public void setDescription(String description);
+
 	public String getDescription();
-	public void setName(String name);
+
 	public String getName();
+
 	public void setCreatedBy(String createdBy);
+
 	public String getCreatedBy();
+
 	public void setCreatedDate(Date createdDate);
+
 	public Date getCreatedDate();
-	
-	public void setDerivedBioAssayDataCollection(Collection<DerivedBioAssayData> derivedBioAssayData);
+
+	public void setDerivedBioAssayDataCollection(
+			Collection<DerivedBioAssayData> derivedBioAssayData);
+
 	public Collection<DerivedBioAssayData> getDerivedBioAssayDataCollection();
 
-	
 	public void setInstrument(Instrument instrument);
+
 	public Instrument getInstrument();
-	
+
 	public void setCharacterizationProtocol(CharacterizationProtocol protocol);
+
 	public CharacterizationProtocol getCharacterizationProtocol();
-	
+
 	public static final String PHYSICAL_CHARACTERIZATION = "Physical";
 
 	public static final String COMPOSITION_CHARACTERIZATION = "Composition";
@@ -95,19 +107,25 @@ public interface Characterization extends Serializable{
 
 	public static final String CYTOTOXICITY_CELL_VIABILITY = "Cell Viability";
 
-//	public static final String DOMAIN_CYTOTOXICITY_CELL_VIABILITY_DATA_TYPE = "Percent Cell Viability";
+	// public static final String DOMAIN_CYTOTOXICITY_CELL_VIABILITY_DATA_TYPE =
+	// "Percent Cell Viability";
 
 	public static final String CYTOTOXICITY_CASPASE3_ACTIVIATION = "Caspase 3 Activation";
 
-//	public static final String DOMAIN_CYTOTOXICITY_CASPASE3_ACTIVIATION_DATA_TYPE = "Percent Caspase 3 Activation";
+	// public static final String
+	// DOMAIN_CYTOTOXICITY_CASPASE3_ACTIVIATION_DATA_TYPE = "Percent Caspase 3
+	// Activation";
 
 	public static final String BLOODCONTACTTOX_PLATE_AGGREGATION = "Platelet Aggregation";
 
-//	public static final String DOMAIN_BLOODCONTACTTOX_PLATE_AGGREGATION_DATA_TYPE = "Percent Platelet Aggregation";
+	// public static final String
+	// DOMAIN_BLOODCONTACTTOX_PLATE_AGGREGATION_DATA_TYPE = "Percent Platelet
+	// Aggregation";
 
 	public static final String BLOODCONTACTTOX_HEMOLYSIS = "Hemolysis";
 
-//	public static final String DOMAIN_BLOODCONTACTTOX_HEMOLYSIS_DATA_TYPE = "Percent Hemolysis";
+	// public static final String DOMAIN_BLOODCONTACTTOX_HEMOLYSIS_DATA_TYPE =
+	// "Percent Hemolysis";
 
 	public static final String BLOODCONTACTTOX_COAGULATION = "Coagulation";
 

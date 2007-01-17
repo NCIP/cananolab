@@ -16,31 +16,44 @@ import java.util.Date;
 
 /**
  * @author zengje
- *
+ * 
  */
 public class Stability implements Characterization {
 
 	private static final long serialVersionUID = 1234567890L;
 
 	private Long id;
+
 	private Measurement longTermStorage;
+
 	private Measurement shortTermStorage;
+
 	private String stressResult;
+
 	private String releaseKineticsDescription;
+
 	private String measurementType;
+
 	private Stressor stressor;
-	
+
 	private String source;
-	private String classification;
+
 	private String description;
+
 	private String identificationName;
-	private String name;
+
 	private String createdBy;
+
 	private Date createdDate;
+
 	private Collection<Nanoparticle> nanoparticleCollection;
+
 	private Collection<DerivedBioAssayData> derivedBioAssayDataCollection = new ArrayList<DerivedBioAssayData>();
+
 	private Instrument instrument;
+
 	private CharacterizationProtocol characterizationProtocol;
+
 	/**
 	 * 
 	 */
@@ -48,45 +61,59 @@ public class Stability implements Characterization {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
 	public Long getId() {
 		return id;
 	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
+
 	public Measurement getLongTermStorage() {
 		return longTermStorage;
 	}
+
 	public void setLongTermStorage(Measurement longTermStorage) {
 		this.longTermStorage = longTermStorage;
 	}
+
 	public String getMeasurementType() {
 		return measurementType;
 	}
+
 	public void setMeasurementType(String measurementType) {
 		this.measurementType = measurementType;
 	}
+
 	public String getReleaseKineticsDescription() {
 		return releaseKineticsDescription;
 	}
+
 	public void setReleaseKineticsDescription(String releaseKineticsDescription) {
 		this.releaseKineticsDescription = releaseKineticsDescription;
 	}
+
 	public Measurement getShortTermStorage() {
 		return shortTermStorage;
 	}
+
 	public void setShortTermStorage(Measurement shortTermStorage) {
 		this.shortTermStorage = shortTermStorage;
 	}
+
 	public Stressor getStressor() {
 		return stressor;
 	}
+
 	public void setStressor(Stressor stressor) {
 		this.stressor = stressor;
 	}
+
 	public String getStressResult() {
 		return stressResult;
 	}
+
 	public void setStressResult(String stressResult) {
 		this.stressResult = stressResult;
 	}
@@ -97,10 +124,6 @@ public class Stability implements Characterization {
 
 	public String getSource() {
 		return this.source;
-	}
-
-	public void setClassification(String classification) {
-		this.classification = classification;
 	}
 
 	public String getClassification() {
@@ -125,10 +148,6 @@ public class Stability implements Characterization {
 
 	public String getName() {
 		return PHYSICAL_STABILITY;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public void setNanoparticleCollection(Collection<Nanoparticle> particles) {
@@ -163,15 +182,19 @@ public class Stability implements Characterization {
 			Collection<DerivedBioAssayData> derivedBioAssayDataCollection) {
 		this.derivedBioAssayDataCollection = derivedBioAssayDataCollection;
 	}
+
 	public Instrument getInstrument() {
 		return instrument;
 	}
+
 	public void setInstrument(Instrument instrument) {
 		this.instrument = instrument;
 	}
+
 	public CharacterizationProtocol getCharacterizationProtocol() {
 		return characterizationProtocol;
 	}
+
 	public void setCharacterizationProtocol(
 			CharacterizationProtocol characterizationProtocol) {
 		this.characterizationProtocol = characterizationProtocol;

@@ -1,15 +1,19 @@
 package gov.nih.nci.calab.domain.nano.characterization;
 
+import java.io.Serializable;
+
 import gov.nih.nci.calab.domain.Measurement;
 
-public class Condition {
+public class Condition implements Serializable {
 
 	private static final long serialVersionUID = 1234567890L;
-	
+
 	private Long id;
+
 	private String type;
+
 	private Measurement value;
-	
+
 	public Condition() {
 		super();
 		// TODO Auto-generated constructor stub

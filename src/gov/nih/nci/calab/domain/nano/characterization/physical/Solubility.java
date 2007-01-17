@@ -16,23 +16,31 @@ public class Solubility implements Characterization {
 	private static final long serialVersionUID = 1234567890L;
 
 	private Long id;
+
 	private String source;
-	private String classification;
+
 	private String description;
+
 	private String identificationName;
-	private String name;
+
 	private String createdBy;
+
 	private Date createdDate;
+
 	private Collection<Nanoparticle> nanoparticleCollection;
+
 	private Collection<DerivedBioAssayData> derivedBioAssayDataCollection = new ArrayList<DerivedBioAssayData>();
+
 	private Instrument instrument;
+
 	private CharacterizationProtocol characterizationProtocol;
-	
+
 	private String solvent;
+
 	private Measurement criticalConcentration;
+
 	private Boolean isSoluble;
-	
-	
+
 	public Solubility() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -52,10 +60,6 @@ public class Solubility implements Characterization {
 
 	public String getSource() {
 		return this.source;
-	}
-
-	public void setClassification(String classification) {
-		this.classification = classification;
 	}
 
 	public String getClassification() {
@@ -80,10 +84,6 @@ public class Solubility implements Characterization {
 
 	public String getName() {
 		return PHYSICAL_SOLUBILITY;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public void setNanoparticleCollection(Collection<Nanoparticle> particles) {
