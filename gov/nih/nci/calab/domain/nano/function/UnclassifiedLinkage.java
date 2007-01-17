@@ -1,11 +1,14 @@
 package gov.nih.nci.calab.domain.nano.function;
 
 public class UnclassifiedLinkage implements Linkage {
-	
+	private static final long serialVersionUID = 1234567890L;
+
 	private Long id;
+
 	private String description;
+
 	private Agent agent;
-	
+
 	public Agent getAgent() {
 		return agent;
 	}

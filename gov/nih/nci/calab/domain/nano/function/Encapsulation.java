@@ -1,12 +1,16 @@
 package gov.nih.nci.calab.domain.nano.function;
 
 public class Encapsulation implements Linkage {
+	private static final long serialVersionUID = 1234567890L;
 
 	private Long id;
+
 	private String description;
+
 	private String localization;
+
 	private Agent agent;
-	
+
 	public Encapsulation() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -43,6 +47,5 @@ public class Encapsulation implements Linkage {
 	public void setAgent(Agent agent) {
 		this.agent = agent;
 	}
-
 
 }

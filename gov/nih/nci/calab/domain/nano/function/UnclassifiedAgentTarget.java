@@ -1,8 +1,10 @@
 package gov.nih.nci.calab.domain.nano.function;
 
 public class UnclassifiedAgentTarget implements AgentTarget {
+	private static final long serialVersionUID = 1234567890L;
 
 	private Long id;
+
 	private String description;
 
 	public UnclassifiedAgentTarget() {

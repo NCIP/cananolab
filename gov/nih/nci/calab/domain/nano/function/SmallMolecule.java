@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class SmallMolecule implements Agent {
+	private static final long serialVersionUID = 1234567890L;
 
 	private Long id;
 
@@ -12,9 +13,9 @@ public class SmallMolecule implements Agent {
 	private String name;
 
 	private String compoundName;
-	
+
 	private Collection<AgentTarget> agentTargetCollection = new ArrayList<AgentTarget>();
-	
+
 	public SmallMolecule() {
 		super();
 		// TODO Auto-generated constructor stub
