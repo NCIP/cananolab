@@ -3,20 +3,23 @@
  */
 package gov.nih.nci.calab.domain.nano.characterization.physical.composition;
 
-
 /**
  * @author Zeng
- *
+ * 
  */
 public class ComposingElement {
 	private static final long serialVersionUID = 1234567890L;
 
 	private Long id;
+
 	private String chemicalName;
+
 	private String elementType;
+
 	private ParticleComposition particleComposition;
+
 	private String description;
-	
+
 	/**
 	 * 
 	 */
@@ -65,5 +68,4 @@ public class ComposingElement {
 		this.description = description;
 	}
 
-	
 }

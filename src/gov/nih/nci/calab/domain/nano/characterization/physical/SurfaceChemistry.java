@@ -1,13 +1,14 @@
 package gov.nih.nci.calab.domain.nano.characterization.physical;
 
-import gov.nih.nci.calab.domain.Measurement;
 
 public class SurfaceChemistry {
 
 	private Long id;
+
 	private String moleculeName;
+
 	private Integer numberOfMolecule;
-	
+
 	public SurfaceChemistry() {
 		super();
 		// TODO Auto-generated constructor stub
