@@ -10,6 +10,8 @@ package gov.nih.nci.calab.domain;
  */
 
 public class LabFile implements java.io.Serializable {
+	private static final long serialVersionUID = 1234567890L;
+
 	private java.lang.Long id;
 
 	public java.lang.Long getId() {
@@ -31,7 +33,7 @@ public class LabFile implements java.io.Serializable {
 	}
 
 	private String description;
-	
+
 	public String getDescription() {
 		return description;
 	}
@@ -41,7 +43,7 @@ public class LabFile implements java.io.Serializable {
 	}
 
 	private String comments;
-	
+
 	public String getComments() {
 		return comments;
 	}
@@ -50,7 +52,6 @@ public class LabFile implements java.io.Serializable {
 		this.comments = comments;
 	}
 
-	
 	private java.lang.String extension;
 
 	public java.lang.String getExtension() {
@@ -144,7 +145,5 @@ public class LabFile implements java.io.Serializable {
 
 		return h;
 	}
-
-
 
 }
