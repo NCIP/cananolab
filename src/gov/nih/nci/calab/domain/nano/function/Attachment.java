@@ -1,13 +1,16 @@
 package gov.nih.nci.calab.domain.nano.function;
 
 public class Attachment implements Linkage {
+	private static final long serialVersionUID = 1234567890L;
 
 	private Long id;
+
 	private String description;
+
 	private String bondType;
-	
+
 	private Agent agent;
-	
+
 	public Attachment() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -44,6 +47,5 @@ public class Attachment implements Linkage {
 	public void setAgent(Agent agent) {
 		this.agent = agent;
 	}
-
 
 }

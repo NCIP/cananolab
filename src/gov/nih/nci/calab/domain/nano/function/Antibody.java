@@ -4,15 +4,18 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class Antibody implements Agent {
+	private static final long serialVersionUID = 1234567890L;
 
 	private Long id;
+
 	private String description;
 
 	private String name;
+
 	private String species;
-	
+
 	private Collection<AgentTarget> agentTargetCollection = new ArrayList<AgentTarget>();
-	
+
 	public Antibody() {
 		super();
 		// TODO Auto-generated constructor stub

@@ -8,17 +8,23 @@ import java.util.Collection;
 
 /**
  * @author zengje
- *
+ * 
  */
-public class Function {
+public class Function implements java.io.Serializable {
+	private static final long serialVersionUID = 1234567890L;
+
 	private Long id;
+
 	private String type;
+
 	private String description;
+
 	private String activationMethod;
+
 	private String identificationName; // view title
-	
+
 	private Collection<Linkage> linkageCollection = new ArrayList<Linkage>();
-	
+
 	/**
 	 * 
 	 */
@@ -74,5 +80,5 @@ public class Function {
 	public void setIdentificationName(String identificationName) {
 		this.identificationName = identificationName;
 	}
-	
+
 }

@@ -4,11 +4,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class DNA implements Agent {
+	private static final long serialVersionUID = 1234567890L;
 
 	private Long id;
+
 	private String description;
+
 	private String sequence;
-	private Collection<AgentTarget> agentTargetCollection = new ArrayList<AgentTarget>();	
+
+	private Collection<AgentTarget> agentTargetCollection = new ArrayList<AgentTarget>();
+
 	public DNA() {
 		super();
 		// TODO Auto-generated constructor stub
