@@ -13,26 +13,37 @@ public class DendrimerComposition implements ParticleComposition {
 	private static final long serialVersionUID = 1234567890L;
 
 	private Long id;
+
 	private String source;
+
 	private String description;
+
 	private String identificationName;
-	private String classification;
-	private String name;
+
 	private String createdBy;
+
 	private Date createdDate;
+
 	private Collection<Nanoparticle> nanoparticleCollection;
+
 	private Collection<ComposingElement> composingElementCollection = new ArrayList<ComposingElement>();
+
 	private Collection<DerivedBioAssayData> derivedBioAssayDataCollection = new ArrayList<DerivedBioAssayData>();
+
 	private String branch;
+
 	private Float generation;
+
 	private String molecularFormula;
+
 	private String repeatUnit;
-	
-	private Collection<SurfaceGroup> surfaceGroupCollection=new ArrayList<SurfaceGroup>();
-	
+
+	private Collection<SurfaceGroup> surfaceGroupCollection = new ArrayList<SurfaceGroup>();
+
 	private Instrument instrument;
+
 	private CharacterizationProtocol characterizationProtocol;
-	
+
 	public DendrimerComposition() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -119,7 +130,8 @@ public class DendrimerComposition implements ParticleComposition {
 		return PHYSICAL_COMPOSITION;
 	}
 
-	public void setNanoparticleCollection(Collection<Nanoparticle> particleCollection) {
+	public void setNanoparticleCollection(
+			Collection<Nanoparticle> particleCollection) {
 		this.nanoparticleCollection = particleCollection;
 	}
 
@@ -127,20 +139,13 @@ public class DendrimerComposition implements ParticleComposition {
 		return this.nanoparticleCollection;
 	}
 
-	public void setComposingElementCollection(Collection<ComposingElement> element){
+	public void setComposingElementCollection(
+			Collection<ComposingElement> element) {
 		this.composingElementCollection = element;
 	}
-	
-	public Collection<ComposingElement> getComposingElementCollection(){
+
+	public Collection<ComposingElement> getComposingElementCollection() {
 		return this.composingElementCollection;
-	}
-
-	public void setClassification(String classification) {
-		this.classification = classification;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public String getCreatedBy() {

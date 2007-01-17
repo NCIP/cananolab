@@ -14,24 +14,35 @@ public class CarbonNanotubeComposition implements ParticleComposition {
 	private static final long serialVersionUID = 1234567890L;
 
 	private String chirality;
+
 	private Float growthDiameter;
+
 	private Float averageLength;
+
 	private String wallType;
-	
-	private String classification;
-	private String name;
+
 	private Long id;
+
 	private String source;
+
 	private String description;
+
 	private String identificationName;
+
 	private String createdBy;
+
 	private Date createdDate;
+
 	private Collection<Nanoparticle> nanoparticleCollection;
+
 	private Collection<ComposingElement> composingElementCollection = new ArrayList<ComposingElement>();
+
 	private Collection<DerivedBioAssayData> derivedBioAssayDataCollection = new ArrayList<DerivedBioAssayData>();
-	private Instrument instrument; 
+
+	private Instrument instrument;
+
 	private CharacterizationProtocol characterizationProtocol;
-	
+
 	public CarbonNanotubeComposition() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -53,9 +64,9 @@ public class CarbonNanotubeComposition implements ParticleComposition {
 		return this.source;
 	}
 
-//	public void setClassification(String classification) {
-//		this.classification = classification;
-//	}
+	// public void setClassification(String classification) {
+	// this.classification = classification;
+	// }
 
 	public String getClassification() {
 		return PHYSICAL_CHARACTERIZATION;
@@ -113,28 +124,22 @@ public class CarbonNanotubeComposition implements ParticleComposition {
 		this.growthDiameter = growthDiameter;
 	}
 
-	public void setNanoparticleCollection(Collection<Nanoparticle> particleCollcection) {
+	public void setNanoparticleCollection(
+			Collection<Nanoparticle> particleCollcection) {
 		this.nanoparticleCollection = particleCollcection;
 	}
 
 	public Collection<Nanoparticle> getNanoparticleCollection() {
 		return this.nanoparticleCollection;
 	}
-	
-	public void setComposingElementCollection(Collection<ComposingElement> element){
+
+	public void setComposingElementCollection(
+			Collection<ComposingElement> element) {
 		this.composingElementCollection = element;
 	}
-	
-	public Collection<ComposingElement> getComposingElementCollection(){
+
+	public Collection<ComposingElement> getComposingElementCollection() {
 		return this.composingElementCollection;
-	}
-
-	public void setClassification(String classification) {
-		this.classification = classification;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public String getCreatedBy() {

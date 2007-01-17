@@ -3,11 +3,13 @@
  */
 package gov.nih.nci.calab.domain.nano.characterization;
 
+import java.io.Serializable;
+
 /**
  * @author zengje
  *
  */
-public class CharacterizationProtocol {
+public class CharacterizationProtocol implements Serializable{
 	
 	private static final long serialVersionUID = 1234567890L;
 	

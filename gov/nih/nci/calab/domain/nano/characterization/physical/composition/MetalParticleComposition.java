@@ -10,21 +10,29 @@ import java.util.Collection;
 import java.util.Date;
 
 public class MetalParticleComposition implements ParticleComposition {
-	
+
 	private static final long serialVersionUID = 1234567890L;
 
 	private Long id;
+
 	private String source;
+
 	private String description;
+
 	private String identificationName;
-	private String classification;
-	private String name;
+
 	private String createdBy;
+
 	private Date createdDate;
+
 	private Collection<Nanoparticle> nanoparticleCollection;
+
 	private Collection<ComposingElement> composingElementCollection = new ArrayList<ComposingElement>();
+
 	private Collection<DerivedBioAssayData> derivedBioAssayDataCollection = new ArrayList<DerivedBioAssayData>();
+
 	private Instrument instrument;
+
 	private CharacterizationProtocol characterizationProtocol;
 
 	public MetalParticleComposition() {
@@ -72,28 +80,22 @@ public class MetalParticleComposition implements ParticleComposition {
 		this.identificationName = identificationName;
 	}
 
-	public void setNanoparticleCollection(Collection<Nanoparticle> particleCollection) {
+	public void setNanoparticleCollection(
+			Collection<Nanoparticle> particleCollection) {
 		this.nanoparticleCollection = particleCollection;
 	}
 
 	public Collection<Nanoparticle> getNanoparticleCollection() {
 		return this.nanoparticleCollection;
 	}
-	
-	public void setComposingElementCollection(Collection<ComposingElement> element){
+
+	public void setComposingElementCollection(
+			Collection<ComposingElement> element) {
 		this.composingElementCollection = element;
 	}
-	
-	public Collection<ComposingElement> getComposingElementCollection(){
+
+	public Collection<ComposingElement> getComposingElementCollection() {
 		return this.composingElementCollection;
-	}
-
-	public void setClassification(String classification) {
-		this.classification = classification;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public String getCreatedBy() {
@@ -111,7 +113,7 @@ public class MetalParticleComposition implements ParticleComposition {
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
 	}
-	
+
 	public Collection<DerivedBioAssayData> getDerivedBioAssayDataCollection() {
 		return derivedBioAssayDataCollection;
 	}

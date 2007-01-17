@@ -21,9 +21,6 @@ public class ComplexComposition implements ParticleComposition {
 
 	private String identificationName;
 
-	private String classification;
-
-	private String name;
 
 	private String createdBy;
 
@@ -108,14 +105,6 @@ public class ComplexComposition implements ParticleComposition {
 
 	public Collection<ComposingElement> getComposingElementCollection() {
 		return this.composingElementCollection;
-	}
-
-	public void setClassification(String classification) {
-		this.classification = classification;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public String getCreatedBy() {

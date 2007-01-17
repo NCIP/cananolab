@@ -20,10 +20,6 @@ public class EmulsionComposition implements ParticleComposition {
 
 	private String identificationName;
 
-	private String classification;
-
-	private String name;
-
 	private String createdBy;
 
 	private Date createdDate;
@@ -149,14 +145,6 @@ public class EmulsionComposition implements ParticleComposition {
 
 	public void setPolymerized(boolean polymerized) {
 		this.polymerized = polymerized;
-	}
-
-	public void setClassification(String classification) {
-		this.classification = classification;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public String getCreatedBy() {
