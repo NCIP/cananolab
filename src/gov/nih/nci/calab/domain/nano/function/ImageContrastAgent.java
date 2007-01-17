@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class ImageContrastAgent implements Agent {
+	private static final long serialVersionUID = 1234567890L;
 
 	private Long id;
 
@@ -14,7 +15,7 @@ public class ImageContrastAgent implements Agent {
 	private String type;
 
 	private Collection<AgentTarget> agentTargetCollection = new ArrayList<AgentTarget>();
-	
+
 	public ImageContrastAgent() {
 		super();
 		// TODO Auto-generated constructor stub
