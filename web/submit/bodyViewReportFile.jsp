@@ -15,7 +15,7 @@
 			<td align="right" width="15%">
 	<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caLAB_1.0_OH&amp;topic=nano_report_help')" class="helpText">Help</a>
 				<logic:equal name="reportActionName" value="updateReport">
-				&nbsp;&nbsp;<a href="/calab/reportResults.do" class="helpText">Back</a>
+				&nbsp;&nbsp;<a href="reportResults.do" class="helpText">Back</a>
 				</logic:equal>
 			</td>
 		</tr>
