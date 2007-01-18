@@ -307,7 +307,7 @@
 							<li>
 								<span class="largerText">Other Associated Files &nbsp;&nbsp;</span>
 								<c:forEach var="aReport" items="${particleAssociatedFiles}">									
-									<span class="indented"> <a href="/calab/updateReportForParticle.do?page=0&dispatch=${dispatchValue}&submitType=none&fileId=${aReport.id}&fileType=${aReport.type}" title="${aReport.displayName}">${aReport.name}</a> </span>
+									<span class="indented"> <a href="updateReportForParticle.do?page=0&dispatch=${dispatchValue}&submitType=none&fileId=${aReport.id}&fileType=${aReport.type}" title="${aReport.displayName}">${aReport.name}</a> </span>
 									<br>
 								</c:forEach>
 								<br>
@@ -317,7 +317,7 @@
 								<span class="largerText">Reports</span>
 								<br>
 								<c:forEach var="aReport" items="${particleReports}">
-									<span class="indented"> <a href="/calab/updateReportForParticle.do?page=0&dispatch=${dispatchValue}&submitType=none&fileId=${aReport.id}&fileType=${aReport.type}" title="${aReport.displayName}">${aReport.name}</a> </span>
+									<span class="indented"> <a href="updateReportForParticle.do?page=0&dispatch=${dispatchValue}&submitType=none&fileId=${aReport.id}&fileType=${aReport.type}" title="${aReport.displayName}">${aReport.name}</a> </span>
 									<br>
 								</c:forEach>
 							</li>
