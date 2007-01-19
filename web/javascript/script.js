@@ -145,6 +145,7 @@ function dynamicDropdown(value, selection, value1ToValue2) {
 }
 /* filter second multi-box by first multi-box selections */
 function doubleMultibox(selection1, selection2, value1ToValue2) {
+
     selection2.options.length = 0;
     selection2.options[0] = new Option("", "");
     var value1Arr = new Array();
@@ -156,14 +157,25 @@ function doubleMultibox(selection1, selection2, value1ToValue2) {
     var value2Arr = new Array();
     for (var i = 0; i < value1Arr.length; i++) {
         var value2s = value1ToValue2[value1Arr[i]];
-        for (var j = 0; j < value2s.length; j++) {
+        if (value2s!=null) {
+          for (var j = 0; j < value2s.length; j++) {
             value2Arr.push(value2s[j]);
+          }
         }
     }
     for (var i = 0; i < value2Arr.length; i++) {
         selection2.options[i] = new Option(value2Arr[i], value2Arr[i]);
     }
+    
 }
+
+function clearMultibox(selection) {
+   for (var i = 0; i < selection.options.length; i++) {
+      selection.options[i].text="";	
+      selection.options[i].value="";	
+   }
+}
+
 function submitAction(form, actionName) {
     form.action = actionName;
     form.submit();
