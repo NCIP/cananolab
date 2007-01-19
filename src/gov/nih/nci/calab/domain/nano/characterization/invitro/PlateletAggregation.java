@@ -19,6 +19,7 @@ import java.util.Date;
  *
  */
 public class PlateletAggregation implements ImmunoToxicity {
+	private static final long serialVersionUID = 1234567890L;
 	private Long id;
 	private String source;
 	private String description;

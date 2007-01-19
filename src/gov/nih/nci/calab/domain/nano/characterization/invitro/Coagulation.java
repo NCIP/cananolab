@@ -19,7 +19,7 @@ import java.util.Date;
  *
  */
 public class Coagulation implements ImmunoToxicity {
-
+	private static final long serialVersionUID = 1234567890L;
 	/**
 	 * 
 	 */
