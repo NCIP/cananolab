@@ -54,6 +54,10 @@ public class Stability implements Characterization {
 
 	private CharacterizationProtocol characterizationProtocol;
 
+	private String classification;
+
+	private String name;
+
 	/**
 	 * 
 	 */
@@ -199,4 +203,13 @@ public class Stability implements Characterization {
 			CharacterizationProtocol characterizationProtocol) {
 		this.characterizationProtocol = characterizationProtocol;
 	}
+
+	public void setClassification(String classification) {
+		this.classification = classification;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 }

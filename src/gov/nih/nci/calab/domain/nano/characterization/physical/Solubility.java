@@ -41,6 +41,10 @@ public class Solubility implements Characterization {
 
 	private Boolean isSoluble;
 
+	private String classification;
+
+	private String name;
+
 	public Solubility() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -158,6 +162,14 @@ public class Solubility implements Characterization {
 
 	public void setSolvent(String solvent) {
 		this.solvent = solvent;
+	}
+
+	public void setClassification(String classification) {
+		this.classification = classification;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

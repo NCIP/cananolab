@@ -35,6 +35,10 @@ public class QuantumDotComposition implements ParticleComposition {
 
 	private CharacterizationProtocol characterizationProtocol;
 
+	private String classification;
+
+	private String name;
+
 	public QuantumDotComposition() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -139,4 +143,13 @@ public class QuantumDotComposition implements ParticleComposition {
 			CharacterizationProtocol characterizationProtocol) {
 		this.characterizationProtocol = characterizationProtocol;
 	}
+
+	public void setClassification(String classification) {
+		this.classification = classification;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 }

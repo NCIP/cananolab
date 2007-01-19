@@ -1,6 +1,5 @@
 package gov.nih.nci.calab.domain.nano.characterization.physical;
 
-
 public class SurfaceChemistry {
 
 	private Long id;

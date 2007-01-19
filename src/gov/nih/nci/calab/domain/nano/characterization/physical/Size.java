@@ -34,6 +34,10 @@ public class Size implements Characterization {
 
 	private CharacterizationProtocol characterizationProtocol;
 
+	private String classification;
+
+	private String name;
+
 	public Size() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -127,6 +131,14 @@ public class Size implements Characterization {
 	public void setCharacterizationProtocol(
 			CharacterizationProtocol characterizationProtocol) {
 		this.characterizationProtocol = characterizationProtocol;
+	}
+
+	public void setClassification(String classification) {
+		this.classification = classification;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

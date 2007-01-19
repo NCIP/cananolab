@@ -35,6 +35,10 @@ public class MetalParticleComposition implements ParticleComposition {
 
 	private CharacterizationProtocol characterizationProtocol;
 
+	private String classification;
+
+	private String name;
+
 	public MetalParticleComposition() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -138,6 +142,14 @@ public class MetalParticleComposition implements ParticleComposition {
 	public void setCharacterizationProtocol(
 			CharacterizationProtocol characterizationProtocol) {
 		this.characterizationProtocol = characterizationProtocol;
+	}
+
+	public void setClassification(String classification) {
+		this.classification = classification;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

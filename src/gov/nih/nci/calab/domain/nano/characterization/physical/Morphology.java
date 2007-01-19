@@ -36,6 +36,10 @@ public class Morphology implements Characterization {
 
 	private String type;
 
+	private String classification;
+
+	private String name;
+
 	public Morphology() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -137,6 +141,14 @@ public class Morphology implements Characterization {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public void setClassification(String classification) {
+		this.classification = classification;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

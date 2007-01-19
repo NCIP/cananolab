@@ -40,6 +40,10 @@ public class Shape implements Characterization {
 
 	private Float minDimension;
 
+	private String classification;
+
+	private String name;
+
 	public Shape() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -157,6 +161,14 @@ public class Shape implements Characterization {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public void setClassification(String classification) {
+		this.classification = classification;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

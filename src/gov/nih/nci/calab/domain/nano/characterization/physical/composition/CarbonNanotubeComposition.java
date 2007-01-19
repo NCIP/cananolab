@@ -43,6 +43,10 @@ public class CarbonNanotubeComposition implements ParticleComposition {
 
 	private CharacterizationProtocol characterizationProtocol;
 
+	private String classification;
+
+	private String name;
+
 	public CarbonNanotubeComposition() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -182,6 +186,14 @@ public class CarbonNanotubeComposition implements ParticleComposition {
 	public void setCharacterizationProtocol(
 			CharacterizationProtocol characterizationProtocol) {
 		this.characterizationProtocol = characterizationProtocol;
+	}
+
+	public void setClassification(String classification) {
+		this.classification = classification;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

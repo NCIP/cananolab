@@ -7,17 +7,19 @@ import gov.nih.nci.calab.domain.Measurement;
 
 /**
  * @author zengje
- *
+ * 
  */
 public class Stressor {
 
 	private static final long serialVersionUID = 1234567890L;
 
 	private Long id;
+
 	private String type;
+
 	private Measurement value;
+
 	private String description;
-	
 
 	/**
 	 * 
@@ -50,6 +52,7 @@ public class Stressor {
 	public void setValue(Measurement value) {
 		this.value = value;
 	}
+
 	public String getDescription() {
 		return description;
 	}
