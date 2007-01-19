@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.Date;
 
 public class ROS implements MetabolicStability {
-
+	private static final long serialVersionUID = 1234567890L;
 	private Long id;
 	private String source;
 	private String description;
@@ -67,7 +67,7 @@ public class ROS implements MetabolicStability {
 	}
 
 	public String getName() {
-		return this.name;
+		return METABOLIC_STABILITY_ROS;
 	}
 
 	public void setName(String name) {

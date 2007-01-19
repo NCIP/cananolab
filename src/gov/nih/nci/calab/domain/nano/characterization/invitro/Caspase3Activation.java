@@ -7,13 +7,12 @@ import gov.nih.nci.calab.domain.nano.characterization.physical.composition.Compo
 import gov.nih.nci.calab.domain.nano.characterization.toxicity.Cytotoxicity;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
 public class Caspase3Activation implements Cytotoxicity {
-	
+	private static final long serialVersionUID = 1234567890L;
 	private Long id;
 	private String source;
 	private String description;
