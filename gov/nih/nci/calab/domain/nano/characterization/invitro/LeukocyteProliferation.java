@@ -12,7 +12,7 @@ import java.util.Collection;
 import java.util.Date;
 
 public class LeukocyteProliferation implements ImmunoToxicity {
-
+	private static final long serialVersionUID = 1234567890L;
 	public LeukocyteProliferation() {
 		super();
 		// TODO Auto-generated constructor stub
