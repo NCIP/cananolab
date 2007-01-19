@@ -72,7 +72,7 @@
 							<strong>Source Name</strong>
 						</td>
 						<td class="label" valign="top">
-							<html:select property="sourceName" onchange="javascript:doubleMultibox(document.createRunForm.sourceName, document.createRunForm.sampleNames, sampleSourceSamples)">
+							<html:select property="sourceName" onchange="javascript:doubleMultibox(document.createRunForm.sourceName, document.createRunForm.sampleNames, sampleSourceSamples); clearMultibox(document.createRunForm.assignedAliquots);">
 								<option />
 									<html:options name="allSampleSourcesWithUnmaskedAliquots" />
 							</html:select>
