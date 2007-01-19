@@ -44,6 +44,10 @@ public class DendrimerComposition implements ParticleComposition {
 
 	private CharacterizationProtocol characterizationProtocol;
 
+	private String classification;
+
+	private String name;
+
 	public DendrimerComposition() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -188,6 +192,14 @@ public class DendrimerComposition implements ParticleComposition {
 	public void setCharacterizationProtocol(
 			CharacterizationProtocol characterizationProtocol) {
 		this.characterizationProtocol = characterizationProtocol;
+	}
+
+	public void setClassification(String classification) {
+		this.classification = classification;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

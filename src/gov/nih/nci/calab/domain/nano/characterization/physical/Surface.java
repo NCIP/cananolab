@@ -48,6 +48,10 @@ public class Surface implements Characterization {
 
 	private Collection<SurfaceChemistry> surfaceChemistryCollection = new ArrayList<SurfaceChemistry>();
 
+	private String classification;
+
+	private String name;
+
 	public Surface() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -197,4 +201,13 @@ public class Surface implements Characterization {
 	public void setZetaPotential(Float zetaPotential) {
 		this.zetaPotential = zetaPotential;
 	}
+
+	public void setClassification(String classification) {
+		this.classification = classification;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 }
