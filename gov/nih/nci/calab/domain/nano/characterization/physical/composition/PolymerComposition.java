@@ -41,6 +41,10 @@ public class PolymerComposition implements ParticleComposition {
 
 	private String initiator;
 
+	private String classification;
+
+	private String name;
+
 	public PolymerComposition() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -169,4 +173,13 @@ public class PolymerComposition implements ParticleComposition {
 			CharacterizationProtocol characterizationProtocol) {
 		this.characterizationProtocol = characterizationProtocol;
 	}
+
+	public void setClassification(String classification) {
+		this.classification = classification;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 }

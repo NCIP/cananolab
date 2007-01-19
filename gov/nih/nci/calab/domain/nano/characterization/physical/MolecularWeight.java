@@ -34,6 +34,10 @@ public class MolecularWeight implements Characterization {
 
 	private CharacterizationProtocol characterizationProtocol;
 
+	private String classification;
+
+	private String name;
+
 	public MolecularWeight() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -127,6 +131,14 @@ public class MolecularWeight implements Characterization {
 	public void setCharacterizationProtocol(
 			CharacterizationProtocol characterizationProtocol) {
 		this.characterizationProtocol = characterizationProtocol;
+	}
+
+	public void setClassification(String classification) {
+		this.classification = classification;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

@@ -21,6 +21,9 @@ public class ComplexComposition implements ParticleComposition {
 
 	private String identificationName;
 
+	private String classification;
+
+	private String name;
 
 	private String createdBy;
 
@@ -33,6 +36,7 @@ public class ComplexComposition implements ParticleComposition {
 	private Collection<DerivedBioAssayData> derivedBioAssayDataCollection = new ArrayList<DerivedBioAssayData>();
 
 	private Instrument instrument;
+
 	private CharacterizationProtocol characterizationProtocol;
 
 	public Collection<DerivedBioAssayData> getDerivedBioAssayDataCollection() {
@@ -139,4 +143,13 @@ public class ComplexComposition implements ParticleComposition {
 			CharacterizationProtocol characterizationProtocol) {
 		this.characterizationProtocol = characterizationProtocol;
 	}
+
+	public void setClassification(String classification) {
+		this.classification = classification;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 }

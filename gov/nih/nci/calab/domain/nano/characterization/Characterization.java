@@ -22,6 +22,8 @@ public interface Characterization extends Serializable {
 
 	public String getSource();
 
+	public void setClassification(String classification);
+
 	public String getClassification();
 
 	public void setIdentificationName(String name);
@@ -31,6 +33,8 @@ public interface Characterization extends Serializable {
 	public void setDescription(String description);
 
 	public String getDescription();
+
+	public void setName(String name);
 
 	public String getName();
 

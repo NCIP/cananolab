@@ -39,6 +39,10 @@ public class LiposomeComposition implements ParticleComposition {
 
 	private String polymerName;
 
+	private String classification;
+
+	private String name;
+
 	public LiposomeComposition() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -159,4 +163,13 @@ public class LiposomeComposition implements ParticleComposition {
 			CharacterizationProtocol characterizationProtocol) {
 		this.characterizationProtocol = characterizationProtocol;
 	}
+
+	public void setClassification(String classification) {
+		this.classification = classification;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 }
