@@ -20,6 +20,16 @@
 		<tr>
 			<td colspan="2">
 				<jsp:include page="/bodyMessage.jsp?bundle=workflow" />
+				<c:choose>
+					<c:when test="${empty allSampleSourcesWithUnmaskedAliquots}">
+						<font color="blue"><b>MESSAGE</b>
+							<ul>
+								<li>
+									Please create aliquots first before creating runs.
+								</li>
+							</ul> </font>
+					</c:when>
+				</c:choose>
 				<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 					<tr class="topBorder">
 						<td colspan="4" class="formTitle">
@@ -101,7 +111,7 @@
 													<option value="${aliquot}" selected>
 														${aliquot}
 													</option>
-												</c:forEach>												
+												</c:forEach>
 											</html:select> </span>
 
 									</td>
