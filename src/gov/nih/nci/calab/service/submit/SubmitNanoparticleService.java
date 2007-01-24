@@ -1196,7 +1196,7 @@ public class SubmitNanoparticleService {
 				ida.close();
 			}
 		}
-		setVisiblity(fileBean.getId(), fileBean.getVisibilityGroups());
+		setVisiblity(dataFile.getId().toString(), fileBean.getVisibilityGroups());
 	}
 
 	/**
