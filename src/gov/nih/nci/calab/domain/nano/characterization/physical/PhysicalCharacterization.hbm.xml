@@ -4,30 +4,7 @@
 <hibernate-mapping package="gov.nih.nci.calab.domain.nano.characterization.physical">
 	<subclass name="Size" extends="gov.nih.nci.calab.domain.nano.characterization.Characterization" discriminator-value="Size" />
 
-	<subclass name="Stability" extends="gov.nih.nci.calab.domain.nano.characterization.Characterization" discriminator-value="Stability">
-		<join table="STABILITY">
-			<key column="STABILITY_PK_ID" />
-			<property name="stressResult" type="java.lang.String" column="STRESS_RESULT" />
-			<property name="releaseKineticsDescription" type="java.lang.String" column="RELEASE_KINETICS_DESCRIPTION" />
-			<property name="measurementType" type="java.lang.String" column="MEASUREMENT_TYPE" />
-			<component name="longTermStorage" class="gov.nih.nci.calab.domain.Measurement">
-				<property name="value" column="LONG_TERM_STORAGE" />
-				<property name="unitOfMeasurement" column="LONG_TERM_STORAGE_UNIT" />
-			</component>
-			<component name="shortTermStorage" class="gov.nih.nci.calab.domain.Measurement">
-				<property name="value" column="SHORT_TERM_STORAGE" />
-				<property name="unitOfMeasurement" column="SHORT_TERM_STORAGE_UNIT" />
-			</component>
-			<component name="stressor" class="gov.nih.nci.calab.domain.nano.characterization.physical.Stressor">
-				<property name="type" column="STRESSOR_TYPE" />
-				<property name="description" column="STRESSOR_DESC" />
-				<component name="value" class="gov.nih.nci.calab.domain.Measurement">
-					<property name="value" column="STRESSOR_VALUE" />
-					<property name="unitOfMeasurement" column="STRESSOR_VALUE_UNIT" />
-				</component>
-			</component>
-		</join>
-	</subclass>
+
 	<subclass name="MolecularWeight" extends="gov.nih.nci.calab.domain.nano.characterization.Characterization" discriminator-value="MolecularWeight" />
 	<subclass name="Morphology" extends="gov.nih.nci.calab.domain.nano.characterization.Characterization" discriminator-value="Morphology">
 		<join table="MORPHOLOGY">
@@ -78,4 +55,30 @@
 	<subclass name="Purity" extends="gov.nih.nci.calab.domain.nano.characterization.Characterization" discriminator-value="Purity" />
 </hibernate-mapping>
 
-<!--  	<subclass name="Functional" extends="gov.nih.nci.calab.domain.nano.characterization.Characterization" discriminator-value="Functional" />  -->
+<!--  	
+    <subclass name="Functional" extends="gov.nih.nci.calab.domain.nano.characterization.Characterization" discriminator-value="Functional" />  
+	<subclass name="Stability" extends="gov.nih.nci.calab.domain.nano.characterization.Characterization" discriminator-value="Stability">
+		<join table="STABILITY">
+			<key column="STABILITY_PK_ID" />
+			<property name="stressResult" type="java.lang.String" column="STRESS_RESULT" />
+			<property name="releaseKineticsDescription" type="java.lang.String" column="RELEASE_KINETICS_DESCRIPTION" />
+			<property name="measurementType" type="java.lang.String" column="MEASUREMENT_TYPE" />
+			<component name="longTermStorage" class="gov.nih.nci.calab.domain.Measurement">
+				<property name="value" column="LONG_TERM_STORAGE" />
+				<property name="unitOfMeasurement" column="LONG_TERM_STORAGE_UNIT" />
+			</component>
+			<component name="shortTermStorage" class="gov.nih.nci.calab.domain.Measurement">
+				<property name="value" column="SHORT_TERM_STORAGE" />
+				<property name="unitOfMeasurement" column="SHORT_TERM_STORAGE_UNIT" />
+			</component>
+			<component name="stressor" class="gov.nih.nci.calab.domain.nano.characterization.physical.Stressor">
+				<property name="type" column="STRESSOR_TYPE" />
+				<property name="description" column="STRESSOR_DESC" />
+				<component name="value" class="gov.nih.nci.calab.domain.Measurement">
+					<property name="value" column="STRESSOR_VALUE" />
+					<property name="unitOfMeasurement" column="STRESSOR_VALUE_UNIT" />
+				</component>
+			</component>
+		</join>
+	</subclass>
+-->
