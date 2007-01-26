@@ -13,5 +13,7 @@
     <property name="name" type="java.lang.String" column="NAME" />
     <property name="modifier" type="java.lang.String" column="MODIFIER" />
            
+    <many-to-one name="dendrimerComposition" class="gov.nih.nci.calab.domain.nano.characterization.physical.composition.DendrimerComposition" column="D_COMPOSITION_PK_ID" lazy="false" fetch="join"/>
+
   </class>
 </hibernate-mapping>
