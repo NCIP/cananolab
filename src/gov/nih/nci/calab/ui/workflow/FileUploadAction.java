@@ -187,7 +187,7 @@ public class FileUploadAction extends AbstractDispatchAction {
 			workflowService.saveFile(fileList, unzipFilePath, runId, inout,
 					(String) session.getAttribute("creator"));
 
-			session.setAttribute("newRunCreated", "true");
+			session.setAttribute("newFileLoaded", "true");
 			// After data persistence, we need to create all.zip for all upload
 			// files,
 			// which includes previous uploaded file and uploaded files
