@@ -14,7 +14,7 @@
 		</td>
 		<td align="right" width="15%">
 			<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caLAB_1.0_OH&amp;topic=workflow_search_results')" class="helpText">Help</a> &nbsp; &nbsp;
-			<a href="searchWorkflow.do?dispatch=setup&page=0&rememberSearch=true"
+			<a href="searchWorkflow.do?dispatch=setup&page=0"
 				class="helpText">Back</a>
 		</td>
 	</tr>
