@@ -731,14 +731,14 @@ public class InitSessionSetup {
 			throws Exception {
 		if (session.getAttribute("allRunFiles") == null
 				|| session.getAttribute("newParticleCreated") != null
-				|| session.getAttribute("newRunCreated") != null) {
+				|| session.getAttribute("newFileLoaded") != null) {
 			SubmitNanoparticleService service = new SubmitNanoparticleService();
 			List<LabFileBean> runFileBeans = service
 					.getAllRunFiles(particleName);
 			session.setAttribute("allRunFiles", runFileBeans);
 		}
 		session.removeAttribute("newParticleCreated");
-		session.removeAttribute("newRunCreated");
+		session.removeAttribute("newFileLoaded");
 	}
 
 	public void setAllAreaMeasureUnits(HttpSession session) throws Exception {
