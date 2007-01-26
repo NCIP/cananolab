@@ -161,8 +161,7 @@ S:s_CSSTop	// STYLE Array to use for this menu
 {U:'searchSample.do?dispatch=setup',T:'Search Samples'},
 {U:'searchAliquot.do?dispatch=setup',T:'Search Aliquots'},
 {U:'searchNanoparticle.do?dispatch=setup',T:'Search Nanoparticles'},
-{U:'searchReport.do?dispatch=setup',T:'Search Reports'},
-{U:'searchNanoparticleAdvanced.do?dispatch=setup',T:'Advanced Nanoparticle Search'}
+{U:'searchReport.do?dispatch=setup',T:'Search Reports'}
 ]
 );
 
