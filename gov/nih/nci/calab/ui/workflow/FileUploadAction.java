@@ -115,7 +115,7 @@ public class FileUploadAction extends AbstractDispatchAction {
 				+ mySessionData.getAssay() + File.separator
 				+ mySessionData.getRun() + File.separator
 				+ mySessionData.getInout();
-		String fullPathName = path + relativePathName;
+		String fullPathName = path +  File.separator + "workflowdata" + File.separator + relativePathName;
 
 		String mode = (String) request.getParameter("mode");
 		HttpSession session = request.getSession();
