@@ -188,6 +188,7 @@ public class FileUploadAction extends AbstractDispatchAction {
 					(String) session.getAttribute("creator"));
 
 			session.setAttribute("newFileLoaded", "true");
+			session.setAttribute("newRunCreated", "true");
 			// After data persistence, we need to create all.zip for all upload
 			// files,
 			// which includes previous uploaded file and uploaded files
