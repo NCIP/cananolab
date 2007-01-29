@@ -96,6 +96,7 @@ public class InitSessionSetup {
 			throws Exception {
 		// set map between sample source and samples that have unmasked aliquots
 		if (session.getAttribute("sampleSourceSamplesWithUnmaskedAliquots") == null
+				|| session.getAttribute("allSampleSourcesWithUnmaskedAliquots") == null
 				|| session.getAttribute("newAliquotCreated") != null) {
 			Map<String, SortedSet<SampleBean>> sampleSourceSamples = lookupService
 					.getSampleSourceSamplesWithUnmaskedAliquots();
