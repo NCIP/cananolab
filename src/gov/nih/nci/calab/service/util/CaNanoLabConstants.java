@@ -248,6 +248,8 @@ public class CaNanoLabConstants {
 	public static final String REPORT = APP_OWNER + " Report";
 
 	public static final String ASSOCIATED_FILE = "Other Associated File";
+	
+	public static final String WORKFLOW_DATA = "workflow_data";
 
 	public static final String[] DEFAULT_POLYMER_INITIATORS = new String[] {
 			"Free Radicals", "Peroxide" };
