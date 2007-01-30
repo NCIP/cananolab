@@ -110,7 +110,8 @@ public class RunFileAction extends AbstractDispatchAction {
 		String fileName = (String) fileForm.get("fileName");
 		String path = PropertyReader.getProperty(
 				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
-		String fullPathName = path + assayType + File.separator + assayName
+		String fullPathName = path + File.separator + CaNanoLabConstants.WORKFLOW_DATA 
+		        + File.separator + assayType + File.separator + assayName
 				+ File.separator + runName + File.separator + inout
 				+ File.separator + CaNanoLabConstants.UNCOMPRESSED_FILE_DIRECTORY;
 		File f = new File(fullPathName + File.separator + fileName);
