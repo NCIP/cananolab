@@ -177,7 +177,7 @@ public class FileUploadAction extends AbstractDispatchAction {
 			logger_.info("Persist file upload data to database ");
 			// use CaNanoLabConstants.URI_SEPERATOR to save in the database, which
 			// might be different from physical file structure/seperator
-			String uriPathName = "workflowdata" + CaNanoLabConstants.URI_SEPERATOR + mySessionData.getAssayType()
+			String uriPathName = CaNanoLabConstants.WORKFLOW_DATA + CaNanoLabConstants.URI_SEPERATOR + mySessionData.getAssayType()
 					+ CaNanoLabConstants.URI_SEPERATOR + mySessionData.getAssay()
 					+ CaNanoLabConstants.URI_SEPERATOR + mySessionData.getRun()
 					+ CaNanoLabConstants.URI_SEPERATOR + mySessionData.getInout();
