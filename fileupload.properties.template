@@ -1,6 +1,6 @@
 # For File input and output
 # Directory for storing caLAB data files 
-#fileRepositoryDir=C:\\temp\\caNanoLab\\fileupload\\
+#fileRepositoryDir=C:\\temp\\caNanoLab\\fileupload
 fileRepositoryDir=@FILE_REPOSITORY_DIR@
 
 # Properties for HTTP-based file upload 
