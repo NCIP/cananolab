@@ -174,7 +174,7 @@ public class ProcessFileUpload extends HttpServlet
                 String path = PropertyReader.getProperty(CaNanoLabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
                 
                
-                fullPathName = path + File.separator + "workflowdata" + File.separator
+                fullPathName = path + File.separator + CaNanoLabConstants.WORKFLOW_DATA + File.separator
                 					+ sessionData.getAssayType() + File.separator 
                                     + sessionData.getAssay() + File.separator
                                     + sessionData.getRun()   + File.separator
