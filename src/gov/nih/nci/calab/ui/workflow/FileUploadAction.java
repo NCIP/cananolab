@@ -111,11 +111,12 @@ public class FileUploadAction extends AbstractDispatchAction {
 				.getSession().getAttribute("httpFileUploadSessionData");
 		String path = PropertyReader.getProperty(
 				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
-		String relativePathName = mySessionData.getAssayType() + File.separator
+		String relativePathName = File.separator + CaNanoLabConstants.WORKFLOW_DATA + File.separator 
+				+ mySessionData.getAssayType() + File.separator
 				+ mySessionData.getAssay() + File.separator
 				+ mySessionData.getRun() + File.separator
 				+ mySessionData.getInout();
-		String fullPathName = path +  File.separator + "workflowdata" + File.separator + relativePathName;
+		String fullPathName = path + relativePathName;
 
 		String mode = (String) request.getParameter("mode");
 		HttpSession session = request.getSession();
@@ -176,7 +177,7 @@ public class FileUploadAction extends AbstractDispatchAction {
 			logger_.info("Persist file upload data to database ");
 			// use CaNanoLabConstants.URI_SEPERATOR to save in the database, which
 			// might be different from physical file structure/seperator
-			String uriPathName = mySessionData.getAssayType()
+			String uriPathName = "workflowdata" + CaNanoLabConstants.URI_SEPERATOR + mySessionData.getAssayType()
 					+ CaNanoLabConstants.URI_SEPERATOR + mySessionData.getAssay()
 					+ CaNanoLabConstants.URI_SEPERATOR + mySessionData.getRun()
 					+ CaNanoLabConstants.URI_SEPERATOR + mySessionData.getInout();
