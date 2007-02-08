@@ -298,25 +298,25 @@ public class Sample implements java.io.Serializable {
 		this.projectCollection = projectCollection;
 	}
 
-	private java.util.Collection<Report> reportCollection = new java.util.HashSet<Report>();
-
-	public java.util.Collection<Report> getReportCollection() {
-		return reportCollection;
-	}
-
-	public void setReportCollection(java.util.Collection<Report> reportCollection) {
-		this.reportCollection = reportCollection;
-	}
-	
-	public Collection<AssociatedFile> associatedFileCollection = new HashSet<AssociatedFile>();
-		
-	public Collection<AssociatedFile> getAssociatedFileCollection() {
-		return associatedFileCollection;
-	}
-
-	public void setAssociatedFileCollection(Collection<AssociatedFile> associatedFileCollection) {
-		this.associatedFileCollection = associatedFileCollection;
-	}
+//	private java.util.Collection<Report> reportCollection = new java.util.HashSet<Report>();
+//
+//	public java.util.Collection<Report> getReportCollection() {
+//		return reportCollection;
+//	}
+//
+//	public void setReportCollection(java.util.Collection<Report> reportCollection) {
+//		this.reportCollection = reportCollection;
+//	}
+//	
+//	public Collection<AssociatedFile> associatedFileCollection = new HashSet<AssociatedFile>();
+//		
+//	public Collection<AssociatedFile> getAssociatedFileCollection() {
+//		return associatedFileCollection;
+//	}
+//
+//	public void setAssociatedFileCollection(Collection<AssociatedFile> associatedFileCollection) {
+//		this.associatedFileCollection = associatedFileCollection;
+//	}
 
 	public boolean equals(Object obj) {
 		boolean eq = false;

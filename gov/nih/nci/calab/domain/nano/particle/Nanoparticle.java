@@ -1,6 +1,8 @@
 package gov.nih.nci.calab.domain.nano.particle;
 
+import gov.nih.nci.calab.domain.AssociatedFile;
 import gov.nih.nci.calab.domain.Keyword;
+import gov.nih.nci.calab.domain.Report;
 import gov.nih.nci.calab.domain.Sample;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.function.Function;
@@ -19,6 +21,10 @@ public class Nanoparticle extends Sample {
 	private Collection<Function> functionCollection = new HashSet<Function>();
 	
 	private Collection<Characterization> characterizationCollection = new HashSet<Characterization>();
+	
+	private Collection<Report> reportCollection = new HashSet<Report>();
+	
+	private Collection<AssociatedFile> associatedFileCollection = new HashSet<AssociatedFile>();
 	
 	public Nanoparticle() {
 		super();
@@ -56,6 +62,23 @@ public class Nanoparticle extends Sample {
 	public void setCharacterizationCollection(
 			Collection<Characterization> characterizationCollection) {
 		this.characterizationCollection = characterizationCollection;
+	}
+
+	public Collection<AssociatedFile> getAssociatedFileCollection() {
+		return associatedFileCollection;
+	}
+
+	public void setAssociatedFileCollection(
+			Collection<AssociatedFile> associatedFileCollection) {
+		this.associatedFileCollection = associatedFileCollection;
+	}
+
+	public Collection<Report> getReportCollection() {
+		return reportCollection;
+	}
+
+	public void setReportCollection(Collection<Report> reportCollection) {
+		this.reportCollection = reportCollection;
 	}
 	
 	
