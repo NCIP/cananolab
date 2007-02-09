@@ -24,21 +24,21 @@
 
 		<joined-subclass name="gov.nih.nci.calab.domain.OutputFile" table="RUN_OUTPUT_FILE">
 			<key column="OUTPUT_FILE_PK_ID" />
-			<many-to-one name="run" class="gov.nih.nci.calab.domain.Run" column="RUN_PK_ID" lazy="true" />
-			<many-to-one name="dataStatus" class="gov.nih.nci.calab.domain.DataStatus" column="DATA_STATUS_PK_ID" lazy="true" />
+			<many-to-one name="run" class="gov.nih.nci.calab.domain.Run" column="RUN_PK_ID" />
+			<many-to-one name="dataStatus" class="gov.nih.nci.calab.domain.DataStatus" column="DATA_STATUS_PK_ID"/>
 		</joined-subclass>
 		<joined-subclass name="gov.nih.nci.calab.domain.SampleSOPFile" table="VIEW_SAMPLE_SOP_FILE">
 			<key column="SOP_FILE_PK_ID" />
-			<many-to-one name="sampleSOP" class="gov.nih.nci.calab.domain.SampleSOP" column="SAMPLE_SOP_PK_ID" lazy="true" />
+			<many-to-one name="sampleSOP" class="gov.nih.nci.calab.domain.SampleSOP" column="SAMPLE_SOP_PK_ID"/>
 		</joined-subclass>
 		<joined-subclass name="gov.nih.nci.calab.domain.InputFile" table="RUN_INPUT_FILE">
 			<key column="INPUT_FILE_PK_ID" />
-			<many-to-one name="run" class="gov.nih.nci.calab.domain.Run" column="RUN_PK_ID" lazy="true" />
-			<many-to-one name="dataStatus" class="gov.nih.nci.calab.domain.DataStatus" column="DATA_STATUS_PK_ID" lazy="true" />
+			<many-to-one name="run" class="gov.nih.nci.calab.domain.Run" column="RUN_PK_ID" />
+			<many-to-one name="dataStatus" class="gov.nih.nci.calab.domain.DataStatus" column="DATA_STATUS_PK_ID" />
 		</joined-subclass>
 		<joined-subclass name="gov.nih.nci.calab.domain.ProtocolFile" table="VIEW_PROTOCOL_FILE">
 			<key column="PROTOCOL_FILE_PK_ID" />
-			<many-to-one name="protocol" class="gov.nih.nci.calab.domain.Protocol" column="PROTOCOL_PK_ID" lazy="true" />
+			<many-to-one name="protocol" class="gov.nih.nci.calab.domain.Protocol" column="PROTOCOL_PK_ID"/>
 		</joined-subclass>
 		<joined-subclass name="gov.nih.nci.calab.domain.DerivedDataFile" table="DERIVED_DATA_FILE">
 			<key column="DERIVED_FILE_PK_ID" />
@@ -52,7 +52,7 @@
 			<key column="ASSOCIATED_FILE_PK_ID" />
 			<set name="particleCollection" table="SAMPLE_ASSOCIATED_FILE" cascade="all-delete-orphan" lazy="true">
 				<cache usage="read-write" />
-				<key column="ASSOCIATED_FILE_PK_ID" />
+				<key column="FILE_PK_ID" />
 				<many-to-many class="gov.nih.nci.calab.domain.nano.particle.Nanoparticle" column="SAMPLE_PK_ID" />
 			</set>
 		</joined-subclass>
@@ -60,7 +60,7 @@
 			<key column="REPORT_PK_ID" />
 			<set name="particleCollection" table="SAMPLE_REPORT" cascade="all-delete-orphan" lazy="true">
 				<cache usage="read-write" />
-				<key column="REPORT_PK_ID" />
+				<key column="FILE_PK_ID" />
 				<many-to-many class="gov.nih.nci.calab.domain.nano.particle.Nanoparticle" column="SAMPLE_PK_ID" />
 			</set>
 		</joined-subclass>
