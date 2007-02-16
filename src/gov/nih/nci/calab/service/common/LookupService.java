@@ -36,7 +36,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.92 2007-01-09 20:13:44 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.93 2007-02-16 22:56:56 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -604,13 +604,22 @@ public class LookupService {
 		}
 		return particleTypeParticles;
 	}
-
+/*
 	public String[] getAllParticleFunctions() {
 		String[] functions = new String[] { "Therapeutic", "Targeting",
 				"Diagnostic Imaging", "Diagnostic Reporting" };
 		return functions;
 	}
-
+*/
+	public Map<String, String> getAllParticleFunctions() {
+		Map<String, String> functionsMap=new HashMap<String, String>();
+		functionsMap.put("Therapeutic", "Therapeutic");
+		functionsMap.put("Targeting", "Targeting");
+		functionsMap.put("Diagnostic Imaging", "Imaging");
+		functionsMap.put("Diagnostic Reporting", "Reporting");
+		return functionsMap;
+	}
+	
 	public String[] getAllCharacterizationTypes() {
 		String[] charTypes = new String[] { "Physical Characterization",
 				"In Vitro Characterization", "In Vivo Characterization" };
