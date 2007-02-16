@@ -485,7 +485,7 @@ public class InitSessionSetup {
 			throws Exception {
 		if (session.getServletContext()
 				.getAttribute("allParticleFunctionTypes") == null) {
-			String[] functions = lookupService.getAllParticleFunctions();
+			Map<String, String>functions = lookupService.getAllParticleFunctions();
 			session.getServletContext().setAttribute(
 					"allParticleFunctionTypes", functions);
 		}

@@ -53,7 +53,7 @@
 						</td>
 						<td class="rightLabel" colspan="3">
 							<strong> <html:select property="functionTypes" multiple="true" size="4">
-									<html:options name="allParticleFunctionTypes" />
+									<html:options collection="allParticleFunctionTypes" property="value" labelProperty="key"/>
 								</html:select></strong>
 						</td>
 					</tr>
