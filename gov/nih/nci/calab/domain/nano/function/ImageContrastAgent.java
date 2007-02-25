@@ -3,7 +3,7 @@ package gov.nih.nci.calab.domain.nano.function;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class ImageContrastAgent implements Agent {
+public class ImageContrastAgent extends Agent {
 	private static final long serialVersionUID = 1234567890L;
 
 	private Long id;
