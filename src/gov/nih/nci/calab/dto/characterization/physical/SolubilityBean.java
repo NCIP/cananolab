@@ -5,6 +5,8 @@ import gov.nih.nci.calab.domain.nano.characterization.physical.Solubility;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
+import gov.nih.nci.calab.service.util.StringUtils;
+
 import java.util.List;
 
 
@@ -32,7 +34,7 @@ public class SolubilityBean extends CharacterizationBean {
 
 		this.solvent = aChar.getSolvent();
 		if (aChar.getCriticalConcentration() != null) {
-			this.criticalConcentration = aChar.getCriticalConcentration().getValue();
+			this.criticalConcentration = StringUtils.convertToString(aChar.getCriticalConcentration().getValue());
 			this.criticalConcentrationUnit = aChar.getCriticalConcentration().getUnitOfMeasurement();
 		}
 		this.isSoluble = aChar.getIsSoluble() ? "true" : "false";
@@ -67,7 +69,7 @@ public class SolubilityBean extends CharacterizationBean {
 		super.updateDomainObj(solubility);
 		
 		solubility.setSolvent(this.solvent);
-		solubility.setCriticalConcentration(new Measurement(this.criticalConcentration, this.criticalConcentrationUnit));
+		solubility.setCriticalConcentration(new Measurement(new Float(this.criticalConcentration), this.criticalConcentrationUnit));
 		solubility.setIsSoluble((this.isSoluble.equalsIgnoreCase(CaNanoLabConstants.BOOLEAN_YES)) ? true : false);
 		
 		return solubility;
