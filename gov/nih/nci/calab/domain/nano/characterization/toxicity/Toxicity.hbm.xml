@@ -4,6 +4,6 @@
 <hibernate-mapping package="gov.nih.nci.calab.domain.nano.characterization.toxicity">
 	<subclass name="Toxicity" extends="gov.nih.nci.calab.domain.nano.characterization.Characterization" discriminator-value="Toxicity">
 		<subclass name="ImmunoToxicity" extends="gov.nih.nci.calab.domain.nano.characterization.characterization.toxicity.Toxicity" discriminator-value="ImmunoTox" />
-		<subclass name="Cytotoxicity" extends="gov.nih.nci.calab.domain.nano.characterization.physical.composition.ParticleComposition" discriminator-value="CytoTox" />
+		<subclass name="Cytotoxicity" extends="gov.nih.nci.calab.domain.nano.characterization.characterization.toxicity.Toxicity" discriminator-value="CytoTox" />
 	</subclass>
 </hibernate-mapping>
