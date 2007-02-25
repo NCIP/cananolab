@@ -4,8 +4,10 @@
 package gov.nih.nci.calab.domain.nano.characterization;
 
 import gov.nih.nci.calab.domain.Instrument;
+import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -13,51 +15,181 @@ import java.util.Date;
  * @author zengje
  * 
  */
-public interface Characterization extends Serializable {
-	public void setId(Long id);
+public class Characterization implements Serializable {
+//	public void setId(Long id);
+//
+//	public Long getId();
+//
+//	public void setSource(String source);
+//
+//	public String getSource();
+//
+//	public void setClassification(String classification);
+//
+//	public String getClassification();
+//
+//	public void setIdentificationName(String name);
+//
+//	public String getIdentificationName();
+//
+//	public void setDescription(String description);
+//
+//	public String getDescription();
+//
+//	public void setName(String name);
+//
+//	public String getName();
+//
+//	public void setCreatedBy(String createdBy);
+//
+//	public String getCreatedBy();
+//
+//	public void setCreatedDate(Date createdDate);
+//
+//	public Date getCreatedDate();
+//
+//	public void setDerivedBioAssayDataCollection(
+//			Collection<DerivedBioAssayData> derivedBioAssayData);
+//
+//	public Collection<DerivedBioAssayData> getDerivedBioAssayDataCollection();
+//
+//	public void setInstrument(Instrument instrument);
+//
+//	public Instrument getInstrument();
+//
+//	public void setCharacterizationProtocol(CharacterizationProtocol protocol);
+//
+//	public CharacterizationProtocol getCharacterizationProtocol();
 
-	public Long getId();
+	
+	private static final long serialVersionUID = 1234567890L;
 
-	public void setSource(String source);
+	private Long id;
 
-	public String getSource();
+	private String source;
 
-	public void setClassification(String classification);
+	private String description;
 
-	public String getClassification();
+	private String identificationName;
 
-	public void setIdentificationName(String name);
+	private String createdBy;
 
-	public String getIdentificationName();
+	private Date createdDate;
 
-	public void setDescription(String description);
+	private Collection<Nanoparticle> nanoparticleCollection;
 
-	public String getDescription();
+	private Collection<DerivedBioAssayData> derivedBioAssayDataCollection = new ArrayList<DerivedBioAssayData>();
 
-	public void setName(String name);
+	private Instrument instrument;
 
-	public String getName();
+	private CharacterizationProtocol characterizationProtocol;
 
-	public void setCreatedBy(String createdBy);
+	private String classification;
 
-	public String getCreatedBy();
+	private String name;
 
-	public void setCreatedDate(Date createdDate);
+	public Characterization() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
-	public Date getCreatedDate();
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getId() {
+		return this.id;
+	}
+
+	public void setSource(String source) {
+		this.source = source;
+	}
+
+	public String getSource() {
+		return this.source;
+	}
+
+	public String getClassification() {
+		return PHYSICAL_CHARACTERIZATION;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getIdentificationName() {
+		return identificationName;
+	}
+
+	public void setIdentificationName(String identificationName) {
+		this.identificationName = identificationName;
+	}
+
+	public String getName() {
+		return PHYSICAL_SIZE;
+	}
+
+	public void setNanoparticleCollection(Collection<Nanoparticle> particles) {
+		this.nanoparticleCollection = particles;
+	}
+
+	public Collection<Nanoparticle> getNanoparticleCollection() {
+		return this.nanoparticleCollection;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public Collection<DerivedBioAssayData> getDerivedBioAssayDataCollection() {
+		return derivedBioAssayDataCollection;
+	}
 
 	public void setDerivedBioAssayDataCollection(
-			Collection<DerivedBioAssayData> derivedBioAssayData);
+			Collection<DerivedBioAssayData> derivedBioAssayDataCollection) {
+		this.derivedBioAssayDataCollection = derivedBioAssayDataCollection;
+	}
 
-	public Collection<DerivedBioAssayData> getDerivedBioAssayDataCollection();
+	public Instrument getInstrument() {
+		return instrument;
+	}
 
-	public void setInstrument(Instrument instrument);
+	public void setInstrument(Instrument instrument) {
+		this.instrument = instrument;
+	}
 
-	public Instrument getInstrument();
+	public CharacterizationProtocol getCharacterizationProtocol() {
+		return characterizationProtocol;
+	}
 
-	public void setCharacterizationProtocol(CharacterizationProtocol protocol);
+	public void setCharacterizationProtocol(
+			CharacterizationProtocol characterizationProtocol) {
+		this.characterizationProtocol = characterizationProtocol;
+	}
 
-	public CharacterizationProtocol getCharacterizationProtocol();
+	public void setClassification(String classification) {
+		this.classification = classification;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 
 	public static final String PHYSICAL_CHARACTERIZATION = "Physical";
 

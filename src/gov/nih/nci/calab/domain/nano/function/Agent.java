@@ -1,19 +1,46 @@
 package gov.nih.nci.calab.domain.nano.function;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
-public interface Agent extends java.io.Serializable {
+public class Agent implements java.io.Serializable {
 
-	public void setDescription(String description);
+	private static final long serialVersionUID = 1234567890L;
 
-	public String getDescription();
+	private Long id;
 
-	public void setId(Long id);
+	private String description;
 
-	public Long getId();
+	private Collection<AgentTarget> agentTargetCollection = new ArrayList<AgentTarget>();
+
+	public Agent() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Collection<AgentTarget> getAgentTargetCollection() {
+		return agentTargetCollection;
+	}
 
 	public void setAgentTargetCollection(
-			Collection<AgentTarget> agentTargetCollection);
+			Collection<AgentTarget> agentTargetCollection) {
+		this.agentTargetCollection = agentTargetCollection;
+	}
 
-	public Collection<AgentTarget> getAgentTargetCollection();
 }
