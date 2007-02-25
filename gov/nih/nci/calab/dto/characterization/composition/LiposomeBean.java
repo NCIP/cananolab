@@ -21,7 +21,7 @@ public class LiposomeBean extends CompositionBean {
 
 	public LiposomeBean(LiposomeComposition liposome) {
 		super(liposome);
-		this.polymerized = (liposome.isPolymerized()) ? CaNanoLabConstants.BOOLEAN_YES
+		this.polymerized = (liposome.getPolymerized()) ? CaNanoLabConstants.BOOLEAN_YES
 				: CaNanoLabConstants.BOOLEAN_NO;
 		this.polymerName = liposome.getPolymerName();		
 	}
