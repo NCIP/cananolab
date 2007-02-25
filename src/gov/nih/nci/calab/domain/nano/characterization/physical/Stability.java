@@ -18,7 +18,7 @@ import java.util.Date;
  * @author zengje
  * 
  */
-public class Stability implements Characterization {
+public class Stability extends Characterization {
 
 	private static final long serialVersionUID = 1234567890L;
 

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-public class OxidativeBurst implements ImmunoToxicity {
+public class OxidativeBurst extends ImmunoToxicity {
 
 	public OxidativeBurst() {
 		super();

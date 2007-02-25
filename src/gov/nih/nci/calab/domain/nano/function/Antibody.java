@@ -3,7 +3,7 @@ package gov.nih.nci.calab.domain.nano.function;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class Antibody implements Agent {
+public class Antibody extends Agent {
 	private static final long serialVersionUID = 1234567890L;
 
 	private Long id;

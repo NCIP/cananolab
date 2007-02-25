@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-public class NKCellCytotoxicActivity implements ImmunoToxicity {
+public class NKCellCytotoxicActivity extends ImmunoToxicity {
 
 	public NKCellCytotoxicActivity() {
 		super();

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-public class Morphology implements Characterization {
+public class Morphology extends Characterization {
 
 	private static final long serialVersionUID = 1234567890L;
 

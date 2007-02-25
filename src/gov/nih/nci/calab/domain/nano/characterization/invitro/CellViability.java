@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-public class CellViability implements Cytotoxicity {
+public class CellViability extends Cytotoxicity {
 	private static final long serialVersionUID = 1234567890L;
 	private Long id;
 	private String source;
