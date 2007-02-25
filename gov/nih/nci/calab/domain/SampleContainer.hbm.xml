@@ -47,7 +47,7 @@
       <key column="SAMPLE_CONTAINER_PK_ID" />
       <one-to-many class="gov.nih.nci.calab.domain.RunSampleContainer" />
     </set>
-    <many-to-one name="sample" class="gov.nih.nci.calab.domain.Sample" column="SAMPLE_PK_ID" lazy="true" />
+    <many-to-one name="sample" class="gov.nih.nci.calab.domain.Sample" column="SAMPLE_PK_ID" />
     <many-to-one name="dataStatus" class="gov.nih.nci.calab.domain.DataStatus" column="DATA_STATUS_PK_ID" lazy="false" />
     <subclass name="gov.nih.nci.calab.domain.Aliquot" discriminator-value="true">
     </subclass>

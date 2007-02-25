@@ -27,7 +27,7 @@
     <property name="receivedDate" type="java.util.Date" column="RECEIVED_DATE" />
     
     <many-to-one name="source"  class="gov.nih.nci.calab.domain.Source" column="SOURCE_PK_ID" lazy="false" fetch="join"/>
-    <many-to-one name="sampleSOP" class="gov.nih.nci.calab.domain.SampleSOP" column="SAMPLE_SOP_PK_ID" lazy="true" fetch="join" />
+    <many-to-one name="sampleSOP" class="gov.nih.nci.calab.domain.SampleSOP" column="SAMPLE_SOP_PK_ID" />
     <set name="sampleContainerCollection" cascade="all-delete-orphan" lazy="true" inverse="true">
       <cache usage="read-write" />
       <key column="SAMPLE_PK_ID" />
