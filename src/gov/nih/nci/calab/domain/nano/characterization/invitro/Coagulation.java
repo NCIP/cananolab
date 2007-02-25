@@ -18,7 +18,7 @@ import java.util.Date;
  * @author zengje
  *
  */
-public class Coagulation implements ImmunoToxicity {
+public class Coagulation extends ImmunoToxicity {
 	private static final long serialVersionUID = 1234567890L;
 	/**
 	 * 

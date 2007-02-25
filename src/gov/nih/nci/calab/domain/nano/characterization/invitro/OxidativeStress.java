@@ -1,16 +1,16 @@
 package gov.nih.nci.calab.domain.nano.characterization.invitro;
 
 import gov.nih.nci.calab.domain.Instrument;
-import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.CharacterizationProtocol;
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
+import gov.nih.nci.calab.domain.nano.characterization.toxicity.Toxicity;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-public class OxidativeStress implements Characterization {
+public class OxidativeStress extends Toxicity {
 
 	private static final long serialVersionUID = 1234567890L;
 

@@ -18,7 +18,7 @@ import java.util.Date;
  * @author zengje
  *
  */
-public class CytokineInduction implements ImmunoToxicity {
+public class CytokineInduction extends ImmunoToxicity {
 	private static final long serialVersionUID = 1234567890L;
 	private Long id;
 	private String source;

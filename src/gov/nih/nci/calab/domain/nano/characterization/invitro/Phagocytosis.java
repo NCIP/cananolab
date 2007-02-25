@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-public class Phagocytosis implements ImmunoToxicity {
+public class Phagocytosis extends ImmunoToxicity {
 
 	public Phagocytosis() {
 		super();

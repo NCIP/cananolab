@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-public class LeukocyteProliferation implements ImmunoToxicity {
+public class LeukocyteProliferation extends ImmunoToxicity {
 	private static final long serialVersionUID = 1234567890L;
 	public LeukocyteProliferation() {
 		super();

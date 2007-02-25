@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-public class CYP450 implements MetabolicStability {
+public class CYP450 extends MetabolicStability {
 	private static final long serialVersionUID = 1234567890L;
 	private Long id;
 	private String source;
