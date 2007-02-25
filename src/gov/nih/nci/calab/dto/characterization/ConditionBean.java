@@ -2,6 +2,7 @@ package gov.nih.nci.calab.dto.characterization;
 
 import gov.nih.nci.calab.domain.Measurement;
 import gov.nih.nci.calab.domain.nano.characterization.Condition;
+import gov.nih.nci.calab.service.util.StringUtils;
 
 /**
  * This class represents the data within a characterization file to be shown in
@@ -26,7 +27,7 @@ public class ConditionBean {
 	public ConditionBean(Condition condition) {
 		this.id = condition.getId().toString();
 		this.type = condition.getType();
-		this.value = (condition.getValue()!= null)?condition.getValue().getValue():"";
+		this.value = (condition.getValue()!= null)?StringUtils.convertToString(condition.getValue().getValue()):"";
 		this.valueUnit = (condition.getValue()!= null)?condition.getValue().getUnitOfMeasurement():"";
 	}
 
@@ -69,7 +70,7 @@ public class ConditionBean {
 		}
 		tableData.setType(type);
 		Measurement measurement=new Measurement();
-		measurement.setValue(value);
+		measurement.setValue(new Float(value));
 		measurement.setUnitOfMeasurement(valueUnit);
 		tableData.setValue(measurement);
 		return tableData;

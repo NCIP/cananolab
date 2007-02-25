@@ -2,6 +2,8 @@ package gov.nih.nci.calab.dto.characterization.physical;
 
 import gov.nih.nci.calab.domain.Measurement;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Stressor;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
+import gov.nih.nci.calab.service.util.StringUtils;
 
 
 /**
@@ -34,7 +36,7 @@ public class StressorBean {
 		this.id = aChar.getId().toString();
 		this.type = aChar.getType();
 		if (aChar.getValue() != null) {
-			this.value = aChar.getValue().getValue();
+			this.value = StringUtils.convertToString(aChar.getValue().getValue());
 			this.valueUnit = aChar.getValue().getUnitOfMeasurement().toString();
 		}
 		this.description = aChar.getDescription();
@@ -90,7 +92,7 @@ public class StressorBean {
 			stressor.setType(this.otherType);
 		else
 			stressor.setType(this.type);
-		stressor.setValue(new Measurement(this.value, this.valueUnit));
+		stressor.setValue(new Measurement(new Float(this.value), this.valueUnit));
 		stressor.setDescription(this.description);
 		
 		return stressor;

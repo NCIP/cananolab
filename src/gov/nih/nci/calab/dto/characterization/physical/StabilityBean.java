@@ -4,6 +4,8 @@ import gov.nih.nci.calab.domain.Measurement;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Stability;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
+import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.List;
 
@@ -36,11 +38,11 @@ public class StabilityBean extends CharacterizationBean {
 
 		this.id = aChar.getId().toString();
 		if (aChar.getLongTermStorage() != null) {
-			this.longTermStorage = aChar.getLongTermStorage().getValue();
+			this.longTermStorage = StringUtils.convertToString(aChar.getLongTermStorage().getValue());
 			this.longTermStorageUnit = aChar.getLongTermStorage().getUnitOfMeasurement();
 		}
 		if (aChar.getShortTermStorage() != null) {
-			this.shortTermStorage = aChar.getShortTermStorage().getValue();
+			this.shortTermStorage = StringUtils.convertToString(aChar.getShortTermStorage().getValue());
 			this.shortTermStorageUnit = aChar.getShortTermStorage().getUnitOfMeasurement();
 		}
 		this.stressResult = aChar.getStressResult();
@@ -82,8 +84,8 @@ public class StabilityBean extends CharacterizationBean {
 		
 	    if (this.id != null && !this.id.equals(""))
 	    	stability.setId(new Long(id));
-		stability.setLongTermStorage(new Measurement(this.longTermStorage, this.longTermStorageUnit));
-		stability.setShortTermStorage(new Measurement(this.shortTermStorage, this.shortTermStorageUnit));
+		stability.setLongTermStorage(new Measurement(new Float(this.longTermStorage), this.longTermStorageUnit));
+		stability.setShortTermStorage(new Measurement(new Float(this.shortTermStorage), this.shortTermStorageUnit));
 		stability.setStressResult(this.stressResult);
 		stability.setReleaseKineticsDescription(this.releaseKineticsDescription);
 		stability.setMeasurementType(this.measurementType);
