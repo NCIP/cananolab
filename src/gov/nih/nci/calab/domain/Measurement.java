@@ -3,11 +3,13 @@
  */
 package gov.nih.nci.calab.domain;
 
+import java.io.Serializable;
+
 /**
  * @author zengje
  *
  */
-public class Measurement {
+public class Measurement implements Serializable {
 
 	private static final long serialVersionUID = 1234567890L;
 
@@ -19,7 +21,7 @@ public class Measurement {
 		// TODO Auto-generated constructor stub
 	}
 	 
-	public Measurement(String value, String unit) {
+	public Measurement(Float value, String unit) {
 		this.setValue(value);
 		this.setUnitOfMeasurement(unit);
 	}
@@ -33,11 +35,11 @@ public class Measurement {
 	   }
 	
 	   
-	   private java.lang.String value;
-	   public  java.lang.String getValue(){
+	   private java.lang.Float value;
+	   public  java.lang.Float getValue(){
 	      return value;
 	   }
-	   public void setValue( java.lang.String value){
+	   public void setValue( java.lang.Float value){
 	      this.value = value;
 	   }
 	

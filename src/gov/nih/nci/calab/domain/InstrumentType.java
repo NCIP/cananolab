@@ -1,9 +1,10 @@
 package gov.nih.nci.calab.domain;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 
-public class InstrumentType {
+public class InstrumentType implements Serializable{
 
 	private static final long serialVersionUID = 1234567890L;
 	

@@ -1,6 +1,8 @@
 package gov.nih.nci.calab.domain;
 
-public class Manufacturer {
+import java.io.Serializable;
+
+public class Manufacturer implements Serializable{
 
 	private static final long serialVersionUID = 1234567890L;
 	
