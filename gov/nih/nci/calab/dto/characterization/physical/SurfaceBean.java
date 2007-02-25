@@ -6,6 +6,7 @@ import gov.nih.nci.calab.domain.nano.characterization.physical.SurfaceChemistry;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
+import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +45,7 @@ public class SurfaceBean extends CharacterizationBean {
 	public SurfaceBean(Surface aChar) {
 		super(aChar);
 		
-		this.charge = (aChar.getCharge() != null)?aChar.getCharge().getValue():"";
+		this.charge = (aChar.getCharge() != null)?StringUtils.convertToString(aChar.getCharge().getValue()):"";
 		this.chargeUnit = (aChar.getCharge() != null)?aChar.getCharge().getUnitOfMeasurement():"";
 		this.isHydrophobic = (aChar.getIsHydrophobic()!=null)?aChar.getIsHydrophobic().toString():"";
 		this.surfaceArea = (aChar.getSurfaceArea() != null)?aChar.getSurfaceArea().getValue().toString():"";
@@ -144,11 +145,11 @@ public class SurfaceBean extends CharacterizationBean {
 		boolean hycrophobicStatus = (isHydrophobic.equalsIgnoreCase(CaNanoLabConstants.BOOLEAN_YES)) ? true
 				: false;
 		surface.setIsHydrophobic(hycrophobicStatus);
-		surface.setCharge(new Measurement(charge,chargeUnit));
+		surface.setCharge(new Measurement(new Float(charge),chargeUnit));
 		//surface.setZetaPotential(new Measurement(zetaPotential, "mV"));
 		surface.setZetaPotential((zetaPotential.length()==0)?null:new Float(zetaPotential));
 		
-		surface.setSurfaceArea(new Measurement(surfaceArea, surfaceAreaUnit));
+		surface.setSurfaceArea(new Measurement(new Float(surfaceArea), surfaceAreaUnit));
 		
 		for (SurfaceChemistryBean surfaceChemistry : surfaceChemistries) {
 			surface.getSurfaceChemistryCollection().add(surfaceChemistry.getDomainObj());
