@@ -25,7 +25,7 @@ public class PolymerBean extends CompositionBean {
 
 	public PolymerBean(PolymerComposition polymer) {
 		super(polymer);
-		this.crosslinked = (polymer.isCrossLinked()) ? CaNanoLabConstants.BOOLEAN_YES
+		this.crosslinked = (polymer.getCrossLinked()) ? CaNanoLabConstants.BOOLEAN_YES
 				: CaNanoLabConstants.BOOLEAN_NO;
 		this.crosslinkDegree = (polymer.getCrossLinkDegree() == null) ? ""
 				: polymer.getCrossLinkDegree().toString();
