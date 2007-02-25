@@ -3,11 +3,13 @@
  */
 package gov.nih.nci.calab.domain;
 
+import java.io.Serializable;
+
 /**
  * @author zengje
  *
  */
-public class Instrument {
+public class Instrument implements Serializable{
 	private static final long serialVersionUID = 1234567890L;
 
 	private Long id;
