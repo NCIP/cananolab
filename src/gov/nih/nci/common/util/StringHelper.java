@@ -343,33 +343,6 @@ public final class StringHelper {
 		}
 
 	}
-	
-	public static boolean contains(String[] array, String aString, boolean ignoreCase)
-	{
-		boolean containsString = false;
-		
-		for (int i=0; i < array.length; i++) {
-			if (ignoreCase) {
-				if (array[i].equalsIgnoreCase(aString))
-					containsString = true;
-			} else {
-				if (array[i].equals(aString))
-					containsString = true;
-			}
-		}
-		
-		return containsString;
-	}
-	
-	public static String[] add(String[] x, String aString) {
-		String[] result = new String[ x.length + 1 ];
-		for ( int i=0; i<x.length; i++ ) {
-			result[i] = x[i];
-		}
-		result[x.length] = aString;
-		
-		return result;
-	}
 }
 
 
