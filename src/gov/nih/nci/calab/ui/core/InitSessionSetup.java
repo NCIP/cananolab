@@ -196,7 +196,7 @@ public class InitSessionSetup {
 	}
 
 	public void clearSampleTypesSession(HttpSession session) {
-		session.removeAttribute("allSampleTypes");
+//		session.removeAttribute("allSampleTypes");
 	}
 
 	public void setAllSampleSOPs(HttpSession session) throws Exception {
@@ -458,9 +458,9 @@ public class InitSessionSetup {
 			String attributeName, String newElement) throws Exception {
 		String[] attributeValues = (String[]) session.getServletContext()
 				.getAttribute(attributeName);
-		if (!StringHelper.contains(attributeValues, newElement, true)) {
+		if (!StringUtils.contains(attributeValues, newElement, true)) {
 			session.getServletContext().setAttribute(attributeName,
-					StringHelper.add(attributeValues, newElement));
+					StringUtils.add(attributeValues, newElement));
 		}
 	}
 
