@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CaNanoLabConstants {
+	public static final String DOMAIN_MODEL_NAME = "caNanoLab";
+
 	public static final String CSM_APP_NAME = "caNanoLab";
 
 	public static final String DATE_FORMAT = "MM/dd/yyyy";
@@ -96,6 +98,13 @@ public class CaNanoLabConstants {
 		if (samplePrefix == null || samplePrefix.length() == 0)
 			samplePrefix = DEFAULT_SAMPLE_PREFIX;
 		SAMPLE_PREFIX = samplePrefix;
+	}
+
+	public static final String GRID_INDEX_SERVICE_URL;
+	static {
+		String gridIndexServiceURL = PropertyReader.getProperty(
+				CANANOLAB_PROPERTY, "gridIndexServiceURL");
+		GRID_INDEX_SERVICE_URL = gridIndexServiceURL;
 	}
 
 	/*
@@ -245,10 +254,10 @@ public class CaNanoLabConstants {
 	public static final String[] CARBON_NANOTUBE_WALLTYPES = new String[] {
 			"Single (SWNT)", "Double (DWMT)", "Multiple (MWNT)" };
 
-	public static final String REPORT = APP_OWNER + " Report";
+	public static final String REPORT = "Report";
 
 	public static final String ASSOCIATED_FILE = "Other Associated File";
-	
+
 	public static final String WORKFLOW_DATA = "workflow_data";
 
 	public static final String[] DEFAULT_POLYMER_INITIATORS = new String[] {
@@ -403,14 +412,13 @@ public class CaNanoLabConstants {
 		PARTICLE_CLASSIFICATION_MAP.put(COMPLEX_PARTICLE_TYPE, COMPLEX);
 	}
 
-	public static final String CSM_PI = APP_OWNER+"_PI";
+	public static final String CSM_PI = APP_OWNER + "_PI";
 
-	public static final String CSM_RESEARCHER = APP_OWNER+"_Researcher";
-	
-	public static final String CSM_ADMIN=APP_OWNER+"_Administrator";	
+	public static final String CSM_RESEARCHER = APP_OWNER + "_Researcher";
 
-	public static final String[] VISIBLE_GROUPS = new String[] {
-			CSM_PI, CSM_RESEARCHER };
-	
-	
+	public static final String CSM_ADMIN = APP_OWNER + "_Administrator";
+
+	public static final String[] VISIBLE_GROUPS = new String[] { CSM_PI,
+			CSM_RESEARCHER };
+
 }
