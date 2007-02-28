@@ -40,6 +40,18 @@ public class NanoparticleDecorator extends TableDecorator {
 		return sortableLink;		
 	}
 
+	public SortableName getRemoteViewURL() {
+		ParticleBean particle = (ParticleBean) getCurrentRowObject();
+		// replace space with special char
+		String particleType = particle.getSampleType().replace(" ", "%20");
+		String particleName = particle.getSampleName();
+		String remoteViewURL = "";
+		String link = "<a href=" + remoteViewURL + ">"
+				+ particle.getSampleName() + "</a>";
+		SortableName sortableLink=new SortableName(particle.getSampleName(), link);
+		return sortableLink;		
+	}
+	
 	public String getKeywordsStr() {
 		ParticleBean particle = (ParticleBean) getCurrentRowObject();
 		return StringUtils.join(particle.getKeywords(), "<br>");
