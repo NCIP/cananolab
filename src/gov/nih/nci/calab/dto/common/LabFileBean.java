@@ -41,6 +41,8 @@ public class LabFileBean {
 	private String keywordsStr;
 
 	private String visibilityStr;
+	
+	private String gridNode;
 
 	/*
 	 * name to be displayed as a part of the drop-down list
@@ -69,6 +71,10 @@ public class LabFileBean {
 		this.type = fileType;
 	}
 
+	public LabFileBean(LabFile charFile, String fileType, String gridNodeHost) {
+		this(charFile, fileType);
+		this.gridNode=gridNodeHost;
+	}
 	public String getComments() {
 		return comments;
 	}
@@ -211,5 +217,13 @@ public class LabFileBean {
 	public String getVisibilityStr() {
 		visibilityStr = StringUtils.join(visibilityGroups, "<br>");
 		return visibilityStr;
+	}
+
+	public String getGridNode() {
+		return gridNode;
+	}
+
+	public void setGridNode(String gridNode) {
+		this.gridNode = gridNode;
 	}
 }

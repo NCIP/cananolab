@@ -29,6 +29,8 @@ public class ParticleBean extends SampleBean {
 
 	private String[] visibilityGroups;
 
+	private String gridNode;
+
 	public ParticleBean(String id, String name) {
 		super(id, name);
 	}
@@ -52,7 +54,12 @@ public class ParticleBean extends SampleBean {
 	public ParticleBean(Nanoparticle particle) {
 		this(particle.getId().toString(), particle.getName());
 		this.setSampleType(particle.getType());
-		this.setSampleSource(particle.getSource().getOrganizationName());
+		if (particle.getSource() != null) {
+			this.setSampleSource(particle.getSource().getOrganizationName());
+		}
+		else {
+			this.setSampleSource("");
+		}
 		this.particleClassification = particle.getClassification();
 		try {
 			Collection<Keyword> keywordCol = particle.getKeywordCollection();
@@ -72,9 +79,8 @@ public class ParticleBean extends SampleBean {
 						+ charObj.getName());
 			}
 			characterizations = charcterizationSet.toArray(new String[0]);
-			
-			Collection<Function> functionCol = particle
-					.getFunctionCollection();
+
+			Collection<Function> functionCol = particle.getFunctionCollection();
 			// get a unique list of function
 			Set<String> functionTypeSet = new HashSet<String>();
 			for (Function funcObj : functionCol) {
@@ -84,6 +90,11 @@ public class ParticleBean extends SampleBean {
 		} catch (org.hibernate.LazyInitializationException e) {
 			// ignore this exception
 		}
+	}
+
+	public ParticleBean(Nanoparticle particle, String gridNode) {
+		this(particle);
+		this.gridNode = gridNode;
 	}
 
 	public String[] getCharacterizations() {
@@ -124,6 +135,14 @@ public class ParticleBean extends SampleBean {
 
 	public void setVisibilityGroups(String[] visibilityGroups) {
 		this.visibilityGroups = visibilityGroups;
+	}
+
+	public String getGridNode() {
+		return gridNode;
+	}
+
+	public void setGridNode(String gridNode) {
+		this.gridNode = gridNode;
 	}
 
 }
