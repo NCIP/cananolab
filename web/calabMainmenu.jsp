@@ -20,7 +20,7 @@ userService.setFilteredMenuItem(session);
 			<logic:present name="filteredItems">
 				<logic:iterate name="filteredItems" id="item" type="org.apache.struts.tiles.beans.MenuItem">
 					<c:choose>
-						<c:when test="${fn:toUpperCase(menu) eq item.value || (menu eq 'search' && item.value eq 'SEARCH CHARACTERIZATIONS')}">
+						<c:when test="${fn:toUpperCase(menu) eq item.value}">
 							<c:set var="style" value="mainMenuItemOver" />
 						</c:when>
 						<c:otherwise>
