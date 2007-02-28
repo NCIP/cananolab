@@ -3,10 +3,10 @@ package gov.nih.nci.calab.service.util;
 import gov.nih.nci.calab.dto.inventory.AliquotBean;
 import gov.nih.nci.calab.dto.inventory.ContainerBean;
 import gov.nih.nci.calab.dto.inventory.SampleBean;
-import gov.nih.nci.calab.dto.search.WorkflowResultBean;
 import gov.nih.nci.calab.dto.workflow.AssayBean;
 import gov.nih.nci.calab.dto.workflow.FileBean;
 import gov.nih.nci.calab.dto.workflow.RunBean;
+import gov.nih.nci.calab.dto.workflow.WorkflowResultBean;
 
 import java.util.Comparator;
 
@@ -17,7 +17,7 @@ import java.util.Comparator;
  * 
  */
 
-/* CVS $Id: CaNanoLabComparators.java,v 1.1 2007-01-04 23:31:01 pansu Exp $ */
+/* CVS $Id: CaNanoLabComparators.java,v 1.2 2007-02-28 21:52:12 pansu Exp $ */
 
 public class CaNanoLabComparators {
 
