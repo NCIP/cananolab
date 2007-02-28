@@ -38,4 +38,14 @@ public class ReportDecorator extends TableDecorator {
 		SortableName sortableLink=new SortableName(file.getTitle(), link);
 		return sortableLink;
 	}
+	
+	public SortableName getRemoteDownloadURL() {
+		LabFileBean file = (LabFileBean) getCurrentRowObject();
+		//TODO add URL
+		String downloadURL = "";
+		String link = "<a href=" + downloadURL + ">"
+				+ file.getTitle() + "</a>";
+		SortableName sortableLink=new SortableName(file.getTitle(), link);
+		return sortableLink;
+	}
 }
