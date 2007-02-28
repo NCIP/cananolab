@@ -6,13 +6,11 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchNanoparticleAction.java,v 1.13 2007-01-08 21:49:33 pansu Exp $ */
+/* CVS $Id: SearchNanoparticleAction.java,v 1.14 2007-02-28 21:55:09 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
-import gov.nih.nci.calab.service.security.UserService;
-import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
@@ -58,7 +56,6 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 			request.setAttribute("particles", particles);
 			forward = mapping.findForward("success");
 		} else {
-
 			ActionMessages msgs = new ActionMessages();
 			ActionMessage msg = new ActionMessage(
 					"message.searchNanoparticle.noresult");
@@ -89,24 +86,4 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 		return true;
 	}
 
-	/*
-	 * overwrite the one in AbstractDispatchAction because the tab 'Nanoparticle
-	 * Search' also links to this action
-	 */
-
-	public boolean canUserExecute(HttpSession session) throws Exception {
-		// check whether user has privilege to execute nanoparticle search pe or
-		// execute search pe
-		UserBean user = (UserBean) session.getAttribute("user");
-		UserService userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
-		boolean nanoSearchStatus = userService.checkExecutePermission(user,
-				"search characterizations");
-		boolean searchStatus = InitSessionSetup.getInstance()
-				.canUserExecuteClass(session, this.getClass());
-		if (nanoSearchStatus || searchStatus) {
-			return true;
-		} else {
-			return false;
-		}
-	}
 }
