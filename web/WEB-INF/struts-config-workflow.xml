@@ -77,6 +77,24 @@
 			<form-property name="instrument" type="java.lang.String" />
 			<form-property name="assaySummary" type="java.lang.String" />
 		</form-bean>
+		<form-bean name="searchWorkflowForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer" initial="0" />
+			<form-property name="fileName" type="java.lang.String" />
+			<form-property name="assayRunDateBegin" type="java.lang.String" />
+			<form-property name="assayRunDateEnd" type="java.lang.String" />
+			<form-property name="assayName" type="java.lang.String" />
+			<form-property name="fileSubmissionDateEnd" type="java.lang.String" />
+			<form-property name="isFileIn" type="java.lang.String" initial="in" />
+			<form-property name="isFileOut" type="java.lang.String" initial="out" />
+			<form-property name="aliquotName" type="java.lang.String" />
+			<form-property name="excludeMaskedAliquots" type="java.lang.String" />
+			<form-property name="assayType" type="java.lang.String" />
+			<form-property name="fileSubmissionDateBegin" type="java.lang.String" />
+			<form-property name="fileSubmitter" type="java.lang.String" />
+			<form-property name="excludeMaskedFiles" type="java.lang.String" />
+			<form-property name="criteriaJoin" type="java.lang.String" initial="and" />
+		</form-bean>
 	</form-beans>
 	<action-mappings>
 		<action name="createRunForm" parameter="dispatch" path="/createRun" scope="request" type="gov.nih.nci.calab.ui.workflow.CreateRunAction" input="input">
@@ -131,6 +149,11 @@
 		<action name="selectRunForm" path="/workflowMessage" type="gov.nih.nci.calab.ui.workflow.WorkflowMessageAction" scope="request" validate="false">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="workflow" key="error.workflowMessage" path="workflow.message" type="java.lang.Exception" />
 			<forward name="success" path="/workflowForward.do" />
+		</action>
+		<action input="input" name="searchWorkflowForm" parameter="dispatch" path="/searchWorkflow" type="gov.nih.nci.calab.ui.workflow.SearchWorkflowAction" scope="request">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="workflow" key="error.searchWorkflow" path="workflow.searchworkflow" type="java.lang.Exception" />
+			<forward name="input" path="workflow.searchworkflow" />
+			<forward name="success" path="workflow.searchworkflowresult" />
 		</action>
 	</action-mappings>
 </struts-config>
