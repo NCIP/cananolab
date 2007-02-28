@@ -63,7 +63,7 @@
 							<c:forEach var="visibility" items="${particle.visibilityGroups}">
 								<c:out value="${visibility}" />&nbsp;
 								<br>
-							</c:forEach>
+							</c:forEach>&nbsp;
 						</td>
 					</tr>
 				</tbody>
