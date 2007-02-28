@@ -22,8 +22,9 @@
 		<putList name="items">
 			<item value="WORKFLOW" link="" />
 			<item value="INVENTORY" link="" />
+			<item value="LAB SEARCH" link="" />
 			<item value="SEARCH" link="" />
-			<item value="SEARCH CHARACTERIZATIONS" link=""/>
+			<item value="REMOTE SEARCH" link="" />
 			<item value="SUBMIT" link="" />
 			<item value="ADMINISTRATION" link="" />
 		</putList>
@@ -45,15 +46,16 @@
 		<putList name="items">
 			<item value="WORKFLOW" link="" />
 			<item value="INVENTORY" link="" />
+			<item value="LAB SEARCH" link="" />
 			<item value="SEARCH" link="" />
-			<item value="NANOPARTICLE SEARCH" link="" />
+			<item value="REMOTE SEARCH" link="" />
 			<item value="SUBMIT" link="" />
 			<item value="ADMINISTRATION" link="" />
 		</putList>
 	</definition>
 	<definition name="home.error" extends="calab.index">
 		<put name="calabContent" value="/bodyMessage.jsp" />
-		<put name="menu" value="HOME" />
+		<put name="menu" value="home" />
 	</definition>
 	<definition name="calab.help" extends="calab.index">
 		<put name="calabContent" value="/help/bodyOnlineHelp.jsp" />

@@ -60,4 +60,42 @@
 		<put name="calabContent" value="/inventory/bodyCreateAssay.jsp" />
 		<put name="menu" value="inventory" />
 	</definition>
+
+
+	<!-- definition for the search sample page -->
+	<definition name="inventory.searchsample" extends="calab.home">
+		<put name="calabContent" value="/inventory/bodySearchSample.jsp" />
+		<put name="menu" value="inventory" />
+	</definition>
+
+	<!-- definition for the search aliquot page -->
+	<definition name="inventory.searchaliquot" extends="calab.home">
+		<put name="calabContent" value="/inventory/bodySearchAliquot.jsp" />
+		<put name="menu" value="inventory" />
+	</definition>
+
+	<!-- definition for the search sample result page -->
+	<definition name="inventory.searchsampleresult" extends="calab.home">
+		<put name="calabContent" value="/inventory/bodySearchSampleResult.jsp" />
+		<put name="menu" value="inventory" />
+	</definition>
+
+	<!-- definition for the search aliquot result page -->
+	<definition name="inventory.searchaliquotresult" extends="calab.home">
+		<put name="calabContent" value="/inventory/bodySearchAliquotResult.jsp" />
+		<put name="menu" value="inventory" />
+	</definition>
+
+	<!-- definition for the view sample details page -->
+	<definition name="inventory.viewsampledetails" extends="calab.home">
+		<put name="calabContent" value="/inventory/bodySampleDetails.jsp" />
+		<put name="menu" value="inventory" />
+	</definition>
+
+	<!-- definition for the view sample details page -->
+	<definition name="inventory.viewaliquotdetails" extends="calab.home">
+		<put name="calabContent" value="/inventory/bodyAliquotDetails.jsp" />
+		<put name="menu" value="inventory" />
+	</definition>
+
 </tiles-definitions>

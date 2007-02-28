@@ -186,4 +186,17 @@
 		<put name="calabContent" value="/bodyMessage.jsp?bundle=workflow" />
 		<put name="menu" value="workflow" />
 	</definition>
+
+	<!-- definition for the search workflow page -->
+	<definition name="workflow.searchworkflow" extends="calab.home">
+		<put name="calabContent" value="/workflow/bodySearchWorkflow.jsp" />
+		<put name="menu" value="workflow" />
+	</definition>
+
+	<!-- definition for the search workflow result page -->
+	<definition name="workflow.searchworkflowresult" extends="calab.home">
+		<put name="calabContent" value="/workflow/bodySearchWorkflowResult.jsp" />
+		<put name="menu" value="workflow" />
+	</definition>
+
 </tiles-definitions>
