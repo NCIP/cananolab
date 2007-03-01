@@ -325,5 +325,37 @@
 				</var>
 			</field>
 		</form>
+		<form name="searchSampleForm">
+			<field property="dateAccessionedBegin" page="1" depends="date">
+				<arg key="searchSampleForm.dateAccessionedBegin" bundle="inventory" position="0" />
+				<var>
+					<var-name>datePattern</var-name>
+					<var-value>MM/dd/yy</var-value>
+				</var>
+			</field>
+			<field property="dateAccessionedEnd" page="1" depends="date">
+				<arg key="searchSampleForm.dateAccessionedEnd" bundle="inventory" position="0" />
+				<var>
+					<var-name>datePattern</var-name>
+					<var-value>MM/dd/yy</var-value>
+				</var>
+			</field>
+		</form>
+		<form name="searchAliquotForm">
+			<field property="dateAccessionedBegin" page="1" depends="date">
+				<arg key="searchAliquotForm.dateAccessionedBegin" bundle="inventory" position="0" />
+				<var>
+					<var-name>datePattern</var-name>
+					<var-value>MM/dd/yy</var-value>
+				</var>
+			</field>
+			<field property="dateAccessionedEnd" page="1" depends="date">
+				<arg key="searchAliquotForm.dateAccessionedEnd" bundle="inventory" position="0" />
+				<var>
+					<var-name>datePattern</var-name>
+					<var-value>MM/dd/yy</var-value>
+				</var>
+			</field>
+		</form>
 	</formset>
 </form-validation>
