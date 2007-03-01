@@ -30,5 +30,35 @@
 				</var>
 			</field>
 		</form>
+		<form name="searchWorkflowForm">
+			<field property="assayRunDateBegin" page="1" depends="date">
+				<arg key="searchWorkflowForm.assayRunDateBegin" bundle="workflow" position="0" />
+				<var>
+					<var-name>datePattern</var-name>
+					<var-value>MM/dd/yy</var-value>
+				</var>
+			</field>
+			<field property="assayRunDateEnd" page="1" depends="date">
+				<arg key="searchWorkflowForm.assayRunDateEnd" bundle="workflow" position="0" />
+				<var>
+					<var-name>datePattern</var-name>
+					<var-value>MM/dd/yy</var-value>
+				</var>
+			</field>
+			<field property="fileSubmissionDateBegin" page="1" depends="date">
+				<arg key="searchWorkflowForm.fileSubmissionDateBegin" bundle="workflow" position="0" />
+				<var>
+					<var-name>datePattern</var-name>
+					<var-value>MM/dd/yy</var-value>
+				</var>
+			</field>
+			<field property="fileSubmissionDateEnd" page="1" depends="date">
+				<arg key="searchWorkflowForm.fileSubmissionDateEnd" bundle="workflow" position="0" />
+				<var>
+					<var-name>datePattern</var-name>
+					<var-value>MM/dd/yy</var-value>
+				</var>
+			</field>
+		</form>
 	</formset>
 </form-validation>
