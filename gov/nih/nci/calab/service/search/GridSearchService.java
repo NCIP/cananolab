@@ -3,6 +3,7 @@ package gov.nih.nci.calab.service.search;
 import gov.nih.nci.cagrid.cananolab.client.CaNanoLabSvcClient;
 import gov.nih.nci.calab.domain.AssociatedFile;
 import gov.nih.nci.calab.domain.Report;
+import gov.nih.nci.calab.domain.Source;
 import gov.nih.nci.calab.domain.nano.function.Function;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.dto.common.GridNodeBean;
@@ -16,8 +17,9 @@ import java.util.List;
 
 /**
  * Remote search calls across the grid.
+ * 
  * @author pansu
- *
+ * 
  */
 public class GridSearchService {
 
@@ -113,11 +115,23 @@ public class GridSearchService {
 						particle.setFunctionCollection(Arrays
 								.asList(gridFunctions));
 					}
+					Source gridSource = gridClient
+							.getSourceByParticleName(particle.getName());
+					if (gridSource != null)
+						particle.setSource(gridSource);
 					particles.add(new ParticleBean(particle, gridNode
 							.getHostName()));
 				}
 			}
 		}
 		return particles;
+	}
+
+	public byte[] getRemoteFileContent(String fileId, GridNodeBean gridNode)
+			throws Exception {
+		CaNanoLabSvcClient gridClient = new CaNanoLabSvcClient(gridNode
+				.getAddress());
+		byte[] fileContent = gridClient.getFileContent(Long.parseLong(fileId));
+		return fileContent;
 	}
 }
