@@ -6,11 +6,11 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: RemoteSearchNanoparticleAction.java,v 1.1 2007-02-28 21:55:30 pansu Exp $ */
+/* CVS $Id: RemoteSearchNanoparticleAction.java,v 1.2 2007-03-08 16:48:58 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.GridNodeBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
-import gov.nih.nci.calab.service.common.GridService;
+import gov.nih.nci.calab.service.remote.GridService;
 import gov.nih.nci.calab.service.search.GridSearchService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
