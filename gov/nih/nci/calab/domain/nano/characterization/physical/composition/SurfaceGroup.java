@@ -7,7 +7,7 @@ package gov.nih.nci.calab.domain.nano.characterization.physical.composition;
  * @author Zeng
  * 
  */
-public class SurfaceGroup {
+public class SurfaceGroup implements Serializable {
 
 	private static final long serialVersionUID = 1234567890L;
 
