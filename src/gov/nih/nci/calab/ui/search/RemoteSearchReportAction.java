@@ -6,21 +6,17 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: RemoteSearchReportAction.java,v 1.1 2007-02-28 21:55:28 pansu Exp $ */
+/* CVS $Id: RemoteSearchReportAction.java,v 1.2 2007-03-08 16:49:14 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.GridNodeBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.exception.CalabException;
-import gov.nih.nci.calab.service.common.GridService;
+import gov.nih.nci.calab.service.remote.GridService;
 import gov.nih.nci.calab.service.search.GridSearchService;
-import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
-import gov.nih.nci.calab.service.util.PropertyReader;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -108,30 +104,30 @@ public class RemoteSearchReportAction extends AbstractDispatchAction {
 			throws Exception {
 
 		String fileId = request.getParameter("fileId");
-		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		LabFileBean fileBean = service.getFile(fileId, null);
-		String fileRoot = PropertyReader.getProperty(
-				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
-		File dFile = new File(fileRoot + File.separator + fileBean.getPath());
-		if (dFile.exists()) {
-			response.setContentType("application/octet-stream");
-			response.setHeader("Content-disposition", "attachment;filename="
-					+ fileBean.getName());
-			response.setHeader("Cache-Control", "no-cache");
+		String fileName = request.getParameter("fileName");
+		Map<String, GridNodeBean> gridNodeMap = new HashMap<String, GridNodeBean>(
+				(Map<? extends String, ? extends GridNodeBean>) request
+						.getSession().getAttribute("allGridNodes"));
+		GridNodeBean gridNode = gridNodeMap.get(CaNanoLabConstants.APP_OWNER);
+		GridSearchService searchService = new GridSearchService();
+		try {
+			byte[] fileData = searchService.getRemoteFileContent(fileId,
+					gridNode);
 
-			java.io.InputStream in = new FileInputStream(dFile);
-			java.io.OutputStream out = response.getOutputStream();
-
-			byte[] bytes = new byte[32768];
-
-			int numRead = 0;
-			while ((numRead = in.read(bytes)) > 0) {
-				out.write(bytes, 0, numRead);
+			if (fileData != null) {
+				response.setContentType("application/octet-stream");
+				response.setHeader("Content-disposition",
+						"attachment;filename=" + fileName);
+				response.setHeader("Cache-Control", "no-cache");
+				java.io.OutputStream out = response.getOutputStream();
+				out.write(fileData);
+				out.close();
+			} else {
+				throw new CalabException(
+						"File to download doesn't exist on the server");
 			}
-			out.close();
-		} else {
-			throw new CalabException(
-					"File to download doesn't exist on the server");
+		} catch (Exception e) {
+			throw new CalabException("Error retrieving remote file");
 		}
 		return null;
 	}
