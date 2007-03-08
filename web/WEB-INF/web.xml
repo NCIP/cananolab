@@ -23,6 +23,11 @@
 		<servlet-class>gov.nih.nci.calab.service.util.file.ProcessFileUpload</servlet-class>
 		<load-on-startup>2</load-on-startup>
 	</servlet>
+	<servlet>
+		<servlet-name>httpinvoker</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<load-on-startup>3</load-on-startup>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>action</servlet-name>
 		<url-pattern>*.do</url-pattern>
@@ -30,6 +35,10 @@
 	<servlet-mapping>
 		<servlet-name>processFileUpload</servlet-name>
 		<url-pattern>/processFileUpload</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>httpinvoker</servlet-name>
+		<url-pattern>/http/*</url-pattern>
 	</servlet-mapping>
 	<welcome-file-list>
 		<welcome-file>disclaimer.jsp</welcome-file>
