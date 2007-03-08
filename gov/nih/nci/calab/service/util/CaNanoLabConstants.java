@@ -418,6 +418,8 @@ public class CaNanoLabConstants {
 
 	public static final String CSM_ADMIN = APP_OWNER + "_Administrator";
 
+	public static final String CSM_PUBLIC_GROUP="Public";
+	
 	public static final String[] VISIBLE_GROUPS = new String[] { CSM_PI,
 			CSM_RESEARCHER };
 
