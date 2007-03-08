@@ -65,12 +65,9 @@
 		<set-property property="pathnames"
 			value="/WEB-INF/validation.xml,
 			      /WEB-INF/validation-workflow.xml , 
-			      /WEB-INF/validation-inventory.xml , 
-                  /WEB-INF/validation-search.xml,               
+			      /WEB-INF/validation-inventory.xml ,             
                   /WEB-INF/validator-rules.xml,
                   /WEB-INF/validation-submit.xml" />
 	</plug-in>
-	<plug-in className="gov.nih.nci.calab.ui.core.CustomPlugIn">
-	</plug-in>
-
+	<plug-in className="gov.nih.nci.calab.ui.core.CustomPlugIn"/>	
 </struts-config>
