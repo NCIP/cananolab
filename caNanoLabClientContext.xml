@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<bean id="propertyConfigurer" class="gov.nih.nci.calab.service.remote.RemoteQuerySystemPropertyConfigurer" />
+
+	<bean id="remoteQueryProxy" class="org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean">
+		<property name="serviceUrl" value="${remote.codebase}/caNanoLab/http/remoteQuery" />
+		<property name="serviceInterface" value="gov.nih.nci.calab.service.remote.RemoteQueryFacade" />
+	</bean>
+</beans>
