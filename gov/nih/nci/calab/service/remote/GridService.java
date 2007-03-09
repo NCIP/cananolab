@@ -3,7 +3,7 @@ package gov.nih.nci.calab.service.remote;
 import gov.nih.nci.cagrid.discovery.client.DiscoveryClient;
 import gov.nih.nci.cagrid.metadata.MetadataUtils;
 import gov.nih.nci.cagrid.metadata.ServiceMetadata;
-import gov.nih.nci.calab.dto.common.GridNodeBean;
+import gov.nih.nci.calab.dto.remote.GridNodeBean;
 
 import java.util.Collection;
 import java.util.Map;
@@ -31,9 +31,11 @@ public class GridService {
 
 		Map<String, GridNodeBean> gridNodeMap = new TreeMap<String, GridNodeBean>();
 		GridNodeBean nclNode = new GridNodeBean("NCL",
-				"http://6116-pansu-2.nci.nih.gov:8880/wsrf/services/cagrid/CaNanoLabSvc");
+				"http://6116-pansu-2.nci.nih.gov:8880/wsrf/services/cagrid/CaNanoLabSvc",
+				"http://6116-pansu-2.nci.nih.gov:8080/caNanoLabSDK/http/remoteService");
 		GridNodeBean washUNode = new GridNodeBean("WashU",
-				"http://6116-zengje-1.nci.nih.gov:8880/wsrf/services/cagrid/CaNanoLabSvc");
+				"http://6116-zengje-1.nci.nih.gov:8880/wsrf/services/cagrid/CaNanoLabSvc",
+				"http://6116-zengje-1.nci.nih.gov:8080/caNanoLabSDK/http/remoteService");
 		gridNodeMap.put("NCL", nclNode);
 		gridNodeMap.put("WashU", washUNode);
 		return gridNodeMap;
