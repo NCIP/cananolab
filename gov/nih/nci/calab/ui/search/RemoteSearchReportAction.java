@@ -6,10 +6,10 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: RemoteSearchReportAction.java,v 1.2 2007-03-08 16:49:14 pansu Exp $ */
+/* CVS $Id: RemoteSearchReportAction.java,v 1.3 2007-03-09 22:39:54 pansu Exp $ */
 
-import gov.nih.nci.calab.dto.common.GridNodeBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
+import gov.nih.nci.calab.dto.remote.GridNodeBean;
 import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.remote.GridService;
 import gov.nih.nci.calab.service.search.GridSearchService;
@@ -91,6 +91,45 @@ public class RemoteSearchReportAction extends AbstractDispatchAction {
 
 	public boolean loginRequired() {
 		return true;
+	}
+
+	/**
+	 * Download action to handle report downloading and viewing through caGrid
+	 * 
+	 * @param
+	 * @return
+	 */
+	public ActionForward download0(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+
+		String fileId = request.getParameter("fileId");
+		String fileName = request.getParameter("fileName");
+		Map<String, GridNodeBean> gridNodeMap = new HashMap<String, GridNodeBean>(
+				(Map<? extends String, ? extends GridNodeBean>) request
+						.getSession().getAttribute("allGridNodes"));
+		GridNodeBean gridNode = gridNodeMap.get(CaNanoLabConstants.APP_OWNER);
+		GridSearchService searchService = new GridSearchService();
+		try {
+			byte[] fileData = searchService.getRemoteFileContent(fileId,
+					gridNode);
+
+			if (fileData != null) {
+				response.setContentType("application/octet-stream");
+				response.setHeader("Content-disposition",
+						"attachment;filename=" + fileName);
+				response.setHeader("Cache-Control", "no-cache");
+				java.io.OutputStream out = response.getOutputStream();
+				out.write(fileData);
+				out.close();
+			} else {
+				throw new CalabException(
+						"File to download doesn't exist on the server");
+			}
+		} catch (Exception e) {
+			throw new CalabException("Error retrieving remote file");
+		}
+		return null;
 	}
 
 	/**
