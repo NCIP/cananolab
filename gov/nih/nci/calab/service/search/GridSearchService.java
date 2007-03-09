@@ -6,14 +6,19 @@ import gov.nih.nci.calab.domain.Report;
 import gov.nih.nci.calab.domain.Source;
 import gov.nih.nci.calab.domain.nano.function.Function;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
-import gov.nih.nci.calab.dto.common.GridNodeBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
+import gov.nih.nci.calab.dto.remote.GridNodeBean;
+import gov.nih.nci.calab.service.remote.RemoteQueryFacade;
+import gov.nih.nci.calab.service.remote.RemoteQuerySystemPropertyConfigurer;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * Remote search calls across the grid.
@@ -127,11 +132,35 @@ public class GridSearchService {
 		return particles;
 	}
 
-	public byte[] getRemoteFileContent(String fileId, GridNodeBean gridNode)
+	/**
+	 * Get the remote file content from the grid
+	 * 
+	 * @param fileId
+	 * @param gridNode
+	 * @return
+	 * @throws Exception
+	 */
+	public byte[] getRemoteFileContent0(String fileId, GridNodeBean gridNode)
 			throws Exception {
 		CaNanoLabSvcClient gridClient = new CaNanoLabSvcClient(gridNode
 				.getAddress());
 		byte[] fileContent = gridClient.getFileContent(Long.parseLong(fileId));
+		return fileContent;
+	}
+
+	public byte[] getRemoteFileContent(String fileId, GridNodeBean gridNode)
+			throws Exception {
+		String remoteCodeBase = RemoteQuerySystemPropertyConfigurer
+				.getRemoteServiceUrlCodebase(gridNode.getAppServiceURL());
+		//dynamically set system property to contain the remote caNanoLab hostname
+		System.getProperties().put("remote.codebase", remoteCodeBase);
+		
+		ApplicationContext ctx = new ClassPathXmlApplicationContext(
+				"caNanoLabClientContext.xml");
+		RemoteQueryFacade remoteQueryFacade = (RemoteQueryFacade) ctx
+				.getBean("remoteQueryProxy");
+		byte[] fileContent = remoteQueryFacade.retrievePublicFileContent(Long
+				.parseLong(fileId));
 		return fileContent;
 	}
 }
