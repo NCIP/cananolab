@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: RemoteSearchNanoparticleAction.java,v 1.4 2007-03-12 16:39:17 pansu Exp $ */
+/* CVS $Id: RemoteSearchNanoparticleAction.java,v 1.5 2007-03-12 18:49:47 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.dto.remote.GridNodeBean;
@@ -53,21 +53,20 @@ public class RemoteSearchNanoparticleAction extends AbstractDispatchAction {
 				gridNodeMap, gridNodeHosts);
 		GridSearchService searchService = new GridSearchService();
 		List<ParticleBean> particles = new ArrayList<ParticleBean>();
+		ActionMessages msgs = new ActionMessages();
 		for (GridNodeBean gridNode : gridNodes) {
 			try {
 				List<ParticleBean> gridParticles = searchService
 						.getRemoteNanoparticles(particleType, functionTypes,
 								characterizations, gridNode);
 				particles.addAll(gridParticles);
-			} catch (RemoteException e) {
-				ActionMessages msgs = new ActionMessages();
+			} catch (RemoteException e) {				
 				ActionMessage msg = new ActionMessage(
 						"message.searchNanoparticle.grid.notAvailable",
 						gridNode.getHostName(), e.getMessage());
 				msgs.add("message", msg);
 				saveMessages(request, msgs);
-			} catch (MalformedURLException e) {
-				ActionMessages msgs = new ActionMessages();
+			} catch (MalformedURLException e) {				
 				ActionMessage msg = new ActionMessage(
 						"message.searchNanoparticle.grid.notAvailable", gridNode
 								.getHostName(), e.getMessage());
@@ -76,8 +75,7 @@ public class RemoteSearchNanoparticleAction extends AbstractDispatchAction {
 			}
 		}
 
-		ActionForward forward = null;
-		ActionMessages msgs = new ActionMessages();
+		ActionForward forward = null;		
 		if (!particles.isEmpty()) {
 			request.setAttribute("remoteParticles", particles);
 			forward = mapping.findForward("success");
