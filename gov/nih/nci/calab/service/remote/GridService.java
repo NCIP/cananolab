@@ -1,5 +1,6 @@
 package gov.nih.nci.calab.service.remote;
 
+import gov.nih.nci.cagrid.cadsr.service.ServiceConfiguration;
 import gov.nih.nci.cagrid.discovery.client.DiscoveryClient;
 import gov.nih.nci.cagrid.metadata.MetadataUtils;
 import gov.nih.nci.cagrid.metadata.ServiceMetadata;
@@ -63,7 +64,8 @@ public class GridService {
 					.getServiceMetadata(service);
 			String hostName = serviceMetaData.getHostingResearchCenter()
 					.getResearchCenter().getDisplayName();
-			GridNodeBean gridNode = new GridNodeBean(hostName, address);
+			String appServiceURL=ServiceConfiguration.getConfiguration().getCaCOREServiceURL();
+			GridNodeBean gridNode = new GridNodeBean(hostName, address, appServiceURL);
 			gridNodeMap.put(hostName, gridNode);
 		}
 		return gridNodeMap;
