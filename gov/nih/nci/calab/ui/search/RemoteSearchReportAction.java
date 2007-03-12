@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: RemoteSearchReportAction.java,v 1.3 2007-03-09 22:39:54 pansu Exp $ */
+/* CVS $Id: RemoteSearchReportAction.java,v 1.4 2007-03-12 16:39:17 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.remote.GridNodeBean;
@@ -17,6 +17,9 @@ import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
+import java.net.MalformedURLException;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,14 +55,33 @@ public class RemoteSearchReportAction extends AbstractDispatchAction {
 		GridNodeBean[] gridNodes = GridService.getGridNodesFromHostNames(
 				gridNodeMap, gridNodeHosts);
 		GridSearchService searchService = new GridSearchService();
-		List<LabFileBean> reports = searchService.getRemoteReports(reportType,
-				reportTitle, particleType, functionTypes, gridNodes);
-
-		if (reports != null && !reports.isEmpty()) {
+		List<LabFileBean> reports = new ArrayList<LabFileBean>();
+		for (GridNodeBean gridNode : gridNodes) {
+			try {
+				List<LabFileBean> gridReports = searchService.getRemoteReports(
+						reportType, reportTitle, particleType, functionTypes,
+						gridNode);
+				reports.addAll(gridReports);
+			} catch (RemoteException e) {
+				ActionMessages msgs = new ActionMessages();
+				ActionMessage msg = new ActionMessage(
+						"message.searchReport.grid.notAvailable", gridNode
+								.getHostName(), e.getMessage());
+				msgs.add("message", msg);
+				saveMessages(request, msgs);
+			} catch (MalformedURLException e) {
+				ActionMessages msgs = new ActionMessages();
+				ActionMessage msg = new ActionMessage(
+						"message.searchReport.grid.notAvailable", gridNode
+								.getHostName(), e.getMessage());
+				msgs.add("message", msg);
+				saveMessages(request, msgs);
+			}
+		}
+		if (!reports.isEmpty()) {
 			request.setAttribute("remoteReports", reports);
 			forward = mapping.findForward("success");
 		} else {
-
 			ActionMessages msgs = new ActionMessages();
 			ActionMessage msg = new ActionMessage(
 					"message.searchReport.noresult");
