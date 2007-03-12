@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: RemoteSearchNanoparticleAction.java,v 1.3 2007-03-09 22:39:37 pansu Exp $ */
+/* CVS $Id: RemoteSearchNanoparticleAction.java,v 1.4 2007-03-12 16:39:17 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.dto.remote.GridNodeBean;
@@ -16,6 +16,9 @@ import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
+import java.net.MalformedURLException;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,11 +52,33 @@ public class RemoteSearchNanoparticleAction extends AbstractDispatchAction {
 		GridNodeBean[] gridNodes = GridService.getGridNodesFromHostNames(
 				gridNodeMap, gridNodeHosts);
 		GridSearchService searchService = new GridSearchService();
-		List<ParticleBean> particles = searchService.getRemoteNanoparticles(
-				particleType, functionTypes, characterizations, gridNodes);
+		List<ParticleBean> particles = new ArrayList<ParticleBean>();
+		for (GridNodeBean gridNode : gridNodes) {
+			try {
+				List<ParticleBean> gridParticles = searchService
+						.getRemoteNanoparticles(particleType, functionTypes,
+								characterizations, gridNode);
+				particles.addAll(gridParticles);
+			} catch (RemoteException e) {
+				ActionMessages msgs = new ActionMessages();
+				ActionMessage msg = new ActionMessage(
+						"message.searchNanoparticle.grid.notAvailable",
+						gridNode.getHostName(), e.getMessage());
+				msgs.add("message", msg);
+				saveMessages(request, msgs);
+			} catch (MalformedURLException e) {
+				ActionMessages msgs = new ActionMessages();
+				ActionMessage msg = new ActionMessage(
+						"message.searchNanoparticle.grid.notAvailable", gridNode
+								.getHostName(), e.getMessage());
+				msgs.add("message", msg);
+				saveMessages(request, msgs);
+			}
+		}
+
 		ActionForward forward = null;
 		ActionMessages msgs = new ActionMessages();
-		if (particles != null && !particles.isEmpty()) {
+		if (!particles.isEmpty()) {
 			request.setAttribute("remoteParticles", particles);
 			forward = mapping.findForward("success");
 		} else {
