@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: RemoteSearchReportAction.java,v 1.5 2007-03-12 18:49:47 pansu Exp $ */
+/* CVS $Id: RemoteSearchReportAction.java,v 1.6 2007-03-12 18:54:09 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.remote.GridNodeBean;
@@ -66,13 +66,13 @@ public class RemoteSearchReportAction extends AbstractDispatchAction {
 			} catch (RemoteException e) {				
 				ActionMessage msg = new ActionMessage(
 						"message.searchReport.grid.notAvailable", gridNode
-								.getHostName(), e.getMessage());
+								.getHostName(), e);
 				msgs.add("message", msg);
 				saveMessages(request, msgs);
 			} catch (MalformedURLException e) {				
 				ActionMessage msg = new ActionMessage(
 						"message.searchReport.grid.notAvailable", gridNode
-								.getHostName(), e.getMessage());
+								.getHostName(), e);
 				msgs.add("message", msg);
 				saveMessages(request, msgs);
 			}
