@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: RemoteSearchReportAction.java,v 1.4 2007-03-12 16:39:17 pansu Exp $ */
+/* CVS $Id: RemoteSearchReportAction.java,v 1.5 2007-03-12 18:49:47 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.remote.GridNodeBean;
@@ -56,21 +56,20 @@ public class RemoteSearchReportAction extends AbstractDispatchAction {
 				gridNodeMap, gridNodeHosts);
 		GridSearchService searchService = new GridSearchService();
 		List<LabFileBean> reports = new ArrayList<LabFileBean>();
+		ActionMessages msgs = new ActionMessages();
 		for (GridNodeBean gridNode : gridNodes) {
 			try {
 				List<LabFileBean> gridReports = searchService.getRemoteReports(
 						reportType, reportTitle, particleType, functionTypes,
 						gridNode);
 				reports.addAll(gridReports);
-			} catch (RemoteException e) {
-				ActionMessages msgs = new ActionMessages();
+			} catch (RemoteException e) {				
 				ActionMessage msg = new ActionMessage(
 						"message.searchReport.grid.notAvailable", gridNode
 								.getHostName(), e.getMessage());
 				msgs.add("message", msg);
 				saveMessages(request, msgs);
-			} catch (MalformedURLException e) {
-				ActionMessages msgs = new ActionMessages();
+			} catch (MalformedURLException e) {				
 				ActionMessage msg = new ActionMessage(
 						"message.searchReport.grid.notAvailable", gridNode
 								.getHostName(), e.getMessage());
@@ -81,8 +80,7 @@ public class RemoteSearchReportAction extends AbstractDispatchAction {
 		if (!reports.isEmpty()) {
 			request.setAttribute("remoteReports", reports);
 			forward = mapping.findForward("success");
-		} else {
-			ActionMessages msgs = new ActionMessages();
+		} else {			
 			ActionMessage msg = new ActionMessage(
 					"message.searchReport.noresult");
 			msgs.add("message", msg);
