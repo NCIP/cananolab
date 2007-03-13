@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.19 2007-01-04 23:21:58 pansu Exp $ */
+/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.20 2007-03-13 15:02:44 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
@@ -130,12 +130,12 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 		String particleType = (String) theForm.get("particleType");
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
-		SearchNanoparticleService searchtNanoparticleService = new SearchNanoparticleService();
-		ParticleBean particle = searchtNanoparticleService.getGeneralInfo(
+		SearchNanoparticleService searchNanoparticleService = new SearchNanoparticleService();
+		ParticleBean particle = searchNanoparticleService.getGeneralInfo(
 				particleName, particleType);
 		// for disclaimer report list
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		Collection<LabFileBean> reports = searchtNanoparticleService.getReportByParticle(particleName,particleType, user);
+		Collection<LabFileBean> reports = searchNanoparticleService.getReportByParticle(particleName,particleType, user);
 		request.setAttribute("particleReports", reports);
 		
 		request.setAttribute("particle", particle);
