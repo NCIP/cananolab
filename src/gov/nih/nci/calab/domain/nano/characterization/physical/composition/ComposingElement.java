@@ -7,7 +7,7 @@ package gov.nih.nci.calab.domain.nano.characterization.physical.composition;
  * @author Zeng
  * 
  */
-public class ComposingElement {
+public class ComposingElement implements java.io.Serializable {
 	private static final long serialVersionUID = 1234567890L;
 
 	private Long id;
