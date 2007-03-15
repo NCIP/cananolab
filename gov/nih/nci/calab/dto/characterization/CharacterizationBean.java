@@ -69,6 +69,8 @@ public class CharacterizationBean {
 		this.setCharacterizationSource(characterization.getSource());
 		this.setCreatedBy(characterization.getCreatedBy());
 		this.setCreatedDate(characterization.getCreatedDate());		
+		this.name=characterization.getName();
+		setAbbr(name);
 
 		this.setDescription(characterization.getDescription());
 		Instrument instrument = characterization.getInstrument();
