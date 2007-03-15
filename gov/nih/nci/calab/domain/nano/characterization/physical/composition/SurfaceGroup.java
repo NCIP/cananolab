@@ -1,11 +1,11 @@
 /**
- * 
+ *
  */
 package gov.nih.nci.calab.domain.nano.characterization.physical.composition;
 
 /**
  * @author Zeng
- * 
+ *
  */
 public class SurfaceGroup implements java.io.Serializable {
 
@@ -20,7 +20,7 @@ public class SurfaceGroup implements java.io.Serializable {
 	private DendrimerComposition dendrimerComposition;
 
 	/**
-	 * 
+	 *
 	 */
 	public SurfaceGroup() {
 		super();

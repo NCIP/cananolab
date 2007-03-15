@@ -80,5 +80,27 @@ public class Function implements java.io.Serializable {
 	public void setIdentificationName(String identificationName) {
 		this.identificationName = identificationName;
 	}
+	
+	public boolean equals(Object obj) {
+		boolean eq = false;
+		if (obj instanceof Function) {
+			Function function = (Function) obj;
+			Long thisId = getId();
+			if (thisId != null && thisId.equals(function.getId())) {
+				eq = true;
+			}
+		}
+		return eq;
+	}
+
+	public int hashCode() {
+		int h = 0;
+
+		if (getId() != null) {
+			h += getId().hashCode();
+		}
+
+		return h;
+	}
 
 }

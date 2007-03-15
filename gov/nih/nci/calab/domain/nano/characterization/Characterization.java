@@ -307,4 +307,26 @@ public class Characterization implements Serializable {
 
 	public static final String COMPLEX_PARTICLE_TYPE = "Complex Particle";
 
+	public boolean equals(Object obj) {
+		boolean eq = false;
+		if (obj instanceof Characterization) {
+			Characterization c = (Characterization) obj;
+			Long thisId = getId();
+			if (thisId != null && thisId.equals(c.getId())) {
+				eq = true;
+			}
+		}
+		return eq;
+	}
+
+	public int hashCode() {
+		int h = 0;
+
+		if (getId() != null) {
+			h += getId().hashCode();
+		}
+
+		return h;
+	}
+
 }
