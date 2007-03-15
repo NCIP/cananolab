@@ -1,6 +1,6 @@
 package gov.nih.nci.calab.domain.nano.characterization.physical;
 
-public class SurfaceChemistry implements Serializable {
+public class SurfaceChemistry implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1234567890L;
 
