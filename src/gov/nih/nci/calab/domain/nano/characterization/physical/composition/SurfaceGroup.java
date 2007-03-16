@@ -17,8 +17,6 @@ public class SurfaceGroup implements java.io.Serializable {
 
 	private String modifier;
 
-	private DendrimerComposition dendrimerComposition;
-
 	/**
 	 *
 	 */
@@ -49,15 +47,6 @@ public class SurfaceGroup implements java.io.Serializable {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public DendrimerComposition getDendrimerComposition() {
-		return dendrimerComposition;
-	}
-
-	public void setDendrimerComposition(
-			DendrimerComposition dendrimerComposition) {
-		this.dendrimerComposition = dendrimerComposition;
 	}
 
 }
