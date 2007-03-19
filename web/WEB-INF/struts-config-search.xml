@@ -37,7 +37,18 @@
 			<form-property name="reportType" type="java.lang.String" />
 			<form-property name="gridNodes" type="java.lang.String[]" />
 		</form-bean>
+		<form-bean name="remoteNanoparticleGeneralInfoForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer" initial="0" />
+			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="particleName" type="java.lang.String" />
+		</form-bean>
 	</form-beans>
+	<global-forwards>
+		<forward name="remoteComposition" path="remoteNanoparticleComposition.do" />
+		<forward name="construction" path="underConstruction.do" />
+		<forward name="remoteSearchMessage" path="search.remote.message"/>
+	</global-forwards>
 	<action-mappings>
 		<action input="input" name="searchNanoparticleForm" parameter="dispatch" path="/searchNanoparticle" type="gov.nih.nci.calab.ui.search.SearchNanoparticleAction" scope="request">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="search" key="error.searchNanoparticle" path="search.searchnanoparticle" type="java.lang.Exception" />
@@ -66,6 +77,24 @@
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="search" key="error.searchReport" path="search.remote.searchreport" type="java.lang.Exception" />
 			<forward name="input" path="search.remote.searchreport" />
 			<forward name="success" path="search.remote.searchreport.result" />
+		</action>
+		<action name="remoteNanoparticleGeneralInfoForm" parameter="dispatch" path="/remoteNanoparticleGeneralInfo" type="gov.nih.nci.calab.ui.search.RemoteNanoparticleGeneralInfoAction" input="success" scope="request">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="search" key="error.nanoparticle.generalInfo" path="search.remote.nanoparticle.generalinfo" type="java.lang.Exception" />
+			<forward name="success" path="search.remote.nanoparticle.generalinfo" />
+			<forward name="viewDisclaimer" path="submit.viewParticleDisclaimer" />
+		</action>
+		<action name="nanoparticleCompositionForm" parameter="dispatch" path="/remoteNanoparticleComposition" type="gov.nih.nci.calab.ui.search.RemoteNanoparticleCompositionAction" input="success">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="search" key="error.particle.composition.view" path="search.remote.particle.composition" type="java.lang.Exception" />
+			<forward name="success" path="search.remote.particle.composition" />
+			<forward name="dendrimer" path="bodyDendrimerInfo.jsp" />
+			<forward name="liposome" path="bodyLiposomeInfo.jsp" />
+			<forward name="polymer" path="bodyPolymerInfo.jsp" />
+			<forward name="carbon nanotube" path="bodyCarbonNanotubeInfo.jsp" />
+			<forward name="fullerene" path="bodyFullereneInfo.jsp" />
+			<forward name="quantum dot" path="bodyQuantumdotInfo.jsp" />
+			<forward name="emulsion" path="bodyEmulsionInfo.jsp" />
+			<forward name="metal particle" path="bodyMetalParticleInfo.jsp" />
+			<forward name="complex particle" path="bodyComplexParticleInfo.jsp" />
 		</action>
 	</action-mappings>
 </struts-config>
