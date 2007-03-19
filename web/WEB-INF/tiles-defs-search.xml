@@ -8,7 +8,11 @@
 		<put name="calabContent" value="/bodyMessage.jsp?bundle=search" />
 		<put name="menu" value="search" />
 	</definition>
-
+	
+	<definition name="search.remote.message" extends="calab.home">
+		<put name="calabContent" value="/bodyMessage.jsp?bundle=search" />
+		<put name="menu" value="remote search" />
+	</definition>
 	<!-- definition for the search nanoparticle page -->
 	<definition name="search.searchnanoparticle" extends="calab.home">
 		<put name="calabContent" value="/search/bodySearchNanoparticle.jsp" />
@@ -66,6 +70,32 @@
 	<!-- definition for the remote search report result page -->
 	<definition name="search.remote.searchreport.result" extends="calab.home">
 		<put name="calabContent" value="/search/bodyRemoteSearchReportResult.jsp" />
+		<put name="menu" value="remote search" />
+	</definition>
+
+	<!-- definition for remote nanoparticle detail page -->
+	<definition name="search.remote.nanoparticle.generalinfo" extends="calab.home">
+		<put name="calabSidemenu" value="/search/remoteSideParticleMenu.jsp" />
+		<put name="calabContent" value="/search/bodyRemoteNanoparticleGeneralInfo.jsp" />
+		<put name="menu" value="remote search" />
+	</definition>
+
+	<definition name="search.remote.viewParticleDisclaimer" extends="calab.home">
+		<put name="calabSidemenu" value="/search/remoteSideParticleMenu.jsp" />
+		<put name="calabContent" value="/search/bodyRemoteNanoparticleDisclaimer.jsp" />
+		<put name="menu" value="remote search" />
+	</definition>
+
+	<!-- definition for the remote nanoparticle composition page -->
+	<definition name="search.remote.particle.composition" extends="calab.home">
+		<put name="calabSidemenu" value="/search/remoteSideParticleMenu.jsp" />
+		<put name="calabContent" value="/search/composition/bodyParticleComposition.jsp"/>
+		<put name="menu" value="remote search" />
+	</definition>
+
+	<definition name="search.remote.under.construction" extends="calab.home">
+		<put name="calabSidemenu" value="/search/remoteSideParticleMenu.jsp" />
+		<put name="calabContent" value="/search/bodyRemoteUnderConstruction.jsp" />
 		<put name="menu" value="remote search" />
 	</definition>
 </tiles-definitions>
