@@ -23,7 +23,8 @@ public class NanoparticleDecorator extends TableDecorator {
 				+ particleType + "&particleName=" + particleName;
 		String link = "<a href=" + editParticleURL + ">"
 				+ particle.getSampleName() + "</a>";
-		SortableName sortableLink=new SortableName(particle.getSampleName(), link);
+		SortableName sortableLink = new SortableName(particle.getSampleName(),
+				link);
 		return sortableLink;
 	}
 
@@ -36,8 +37,9 @@ public class NanoparticleDecorator extends TableDecorator {
 				+ particleType + "&particleName=" + particleName;
 		String link = "<a href=" + viewParticleURL + ">"
 				+ particle.getSampleName() + "</a>";
-		SortableName sortableLink=new SortableName(particle.getSampleName(), link);
-		return sortableLink;		
+		SortableName sortableLink = new SortableName(particle.getSampleName(),
+				link);
+		return sortableLink;
 	}
 
 	public SortableName getRemoteViewURL() {
@@ -45,13 +47,15 @@ public class NanoparticleDecorator extends TableDecorator {
 		// replace space with special char
 		String particleType = particle.getSampleType().replace(" ", "%20");
 		String particleName = particle.getSampleName();
-		String remoteViewURL = "";
+		String remoteViewURL = "remoteNanoparticleGeneralInfo.do?dispatch=view&particleType="
+				+ particleType + "&particleName=" + particleName+"&gridNodeHost="+particle.getGridNode();
 		String link = "<a href=" + remoteViewURL + ">"
 				+ particle.getSampleName() + "</a>";
-		SortableName sortableLink=new SortableName(particle.getSampleName(), link);
-		return sortableLink;		
+		SortableName sortableLink = new SortableName(particle.getSampleName(),
+				link);
+		return sortableLink;
 	}
-	
+
 	public String getKeywordsStr() {
 		ParticleBean particle = (ParticleBean) getCurrentRowObject();
 		return StringUtils.join(particle.getKeywords(), "<br>");
