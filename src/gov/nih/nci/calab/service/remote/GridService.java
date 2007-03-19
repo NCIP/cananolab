@@ -14,8 +14,9 @@ import org.apache.axis.message.addressing.EndpointReferenceType;
 
 /**
  * Grid service utils for grid node discovery and grid node URL lookup.
+ * 
  * @author pansu
- *
+ * 
  */
 public class GridService {
 
@@ -31,14 +32,22 @@ public class GridService {
 			String indexServiceURL, String domainModelName) throws Exception {
 
 		Map<String, GridNodeBean> gridNodeMap = new TreeMap<String, GridNodeBean>();
-		GridNodeBean nclNode = new GridNodeBean("NCL",
-				"http://6116-pansu-2.nci.nih.gov:8880/wsrf/services/cagrid/CaNanoLabSvc",
-				"http://6116-pansu-2.nci.nih.gov:8080/caNanoLabSDK/http/remoteService");
-		GridNodeBean washUNode = new GridNodeBean("WashU",
-				"http://6116-zengje-1.nci.nih.gov:8880/wsrf/services/cagrid/CaNanoLabSvc",
-				"http://6116-zengje-1.nci.nih.gov:8080/caNanoLabSDK/http/remoteService");
-		gridNodeMap.put("NCL", nclNode);
-		gridNodeMap.put("WashU", washUNode);
+		GridNodeBean qaNode = new GridNodeBean(
+				"caNanoLab-QA",
+				"http://cananolab-qa.nci.nih.gov:8080/wsrf/services/cagrid/CaNanoLabSvc",
+				"http://cananolab-qa.nci.nih.gov/caNanoLabSDK/http/remoteService");
+		GridNodeBean devNode = new GridNodeBean(
+				"caNanoLab-DEV",
+				"http://cananolab-dev.nci.nih.gov:8080/wsrf/services/cagrid/CaNanoLabSvc",
+				"http://cananolab-dev.nci.nih.gov/caNanoLabSDK/http/remoteService");
+		GridNodeBean testNode = new GridNodeBean(
+				"caNanoLab-TEST",
+				"http://localhost:8880/wsrf/services/cagrid/CaNanoLabSvc",
+				"http://localhost:8880/caNanoLabSDK/http/remoteService");
+
+		gridNodeMap.put("caNanoLab-QA", qaNode);
+		gridNodeMap.put("caNanoLab-DEV", devNode);
+		gridNodeMap.put("caNanoLab-TEST", testNode);
 		return gridNodeMap;
 	}
 
@@ -51,7 +60,7 @@ public class GridService {
 	 * @return
 	 * @throws Exception
 	 */
-	public static Map<String, GridNodeBean> discoverServicesToKeep(
+	public static Map<String, GridNodeBean> discoverServicesKeep(
 			String indexServiceURL, String domainModelName) throws Exception {
 
 		Map<String, GridNodeBean> gridNodeMap = new TreeMap<String, GridNodeBean>();
@@ -64,8 +73,10 @@ public class GridService {
 					.getServiceMetadata(service);
 			String hostName = serviceMetaData.getHostingResearchCenter()
 					.getResearchCenter().getDisplayName();
-			String appServiceURL=ServiceConfiguration.getConfiguration().getCaCOREServiceURL();
-			GridNodeBean gridNode = new GridNodeBean(hostName, address, appServiceURL);
+			String appServiceURL = ServiceConfiguration.getConfiguration()
+					.getCaCOREServiceURL();
+			GridNodeBean gridNode = new GridNodeBean(hostName, address,
+					appServiceURL);
 			gridNodeMap.put(hostName, gridNode);
 		}
 		return gridNodeMap;
@@ -78,15 +89,15 @@ public class GridService {
 	 * @param gridNodeHosts
 	 * @return
 	 */
-public static GridNodeBean[] getGridNodesFromHostNames(
+	public static GridNodeBean[] getGridNodesFromHostNames(
 			Map<String, GridNodeBean> gridNodeMap, String[] gridNodeHosts) {
 		GridNodeBean[] gridNodes = null;
 		if (gridNodeHosts.length == 0) {
 			Collection<GridNodeBean> selectedGrids = gridNodeMap.values();
-			gridNodes=new GridNodeBean[selectedGrids.size()];
+			gridNodes = new GridNodeBean[selectedGrids.size()];
 			selectedGrids.toArray(gridNodes);
 		} else {
-			gridNodes=new GridNodeBean[gridNodeHosts.length];
+			gridNodes = new GridNodeBean[gridNodeHosts.length];
 			int i = 0;
 			for (String host : gridNodeHosts) {
 				gridNodes[i] = gridNodeMap.get(host);
@@ -94,4 +105,5 @@ public static GridNodeBean[] getGridNodesFromHostNames(
 			}
 		}
 		return gridNodes;
-	}}
+	}
+}
