@@ -1,5 +1,6 @@
 package gov.nih.nci.calab.ui.core;
 
+import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
@@ -8,10 +9,12 @@ import gov.nih.nci.calab.dto.inventory.AliquotBean;
 import gov.nih.nci.calab.dto.inventory.ContainerBean;
 import gov.nih.nci.calab.dto.inventory.ContainerInfoBean;
 import gov.nih.nci.calab.dto.inventory.SampleBean;
+import gov.nih.nci.calab.dto.remote.GridNodeBean;
 import gov.nih.nci.calab.dto.workflow.AssayBean;
 import gov.nih.nci.calab.dto.workflow.RunBean;
 import gov.nih.nci.calab.exception.InvalidSessionException;
 import gov.nih.nci.calab.service.common.LookupService;
+import gov.nih.nci.calab.service.search.GridSearchService;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
@@ -19,7 +22,6 @@ import gov.nih.nci.calab.service.util.CaNanoLabComparators;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.service.workflow.ExecuteWorkflowService;
-import gov.nih.nci.common.util.StringHelper;
 import gov.nih.nci.security.exceptions.CSException;
 
 import java.util.ArrayList;
@@ -196,7 +198,7 @@ public class InitSessionSetup {
 	}
 
 	public void clearSampleTypesSession(HttpSession session) {
-//		session.removeAttribute("allSampleTypes");
+		// session.removeAttribute("allSampleTypes");
 	}
 
 	public void setAllSampleSOPs(HttpSession session) throws Exception {
@@ -485,7 +487,8 @@ public class InitSessionSetup {
 			throws Exception {
 		if (session.getServletContext()
 				.getAttribute("allParticleFunctionTypes") == null) {
-			Map<String, String>functions = lookupService.getAllParticleFunctions();
+			Map<String, String> functions = lookupService
+					.getAllParticleFunctions();
 			session.getServletContext().setAttribute(
 					"allParticleFunctionTypes", functions);
 		}
@@ -579,6 +582,55 @@ public class InitSessionSetup {
 		setStaticDropdowns(session);
 	}
 
+	public void setRemoteSideParticleMenu(HttpServletRequest request,
+			String particleName, GridNodeBean gridNode) throws Exception {
+		HttpSession session = request.getSession();
+		GridSearchService service = new GridSearchService();
+		if (session.getAttribute("charTypeChars") == null
+				|| session.getAttribute("newCharacterizationCreated") != null
+				|| session.getAttribute("newParticleCreated") != null) {
+
+			Map<String, List<CharacterizationBean>> charTypeChars = service
+					.getRemoteCharacterizationMap(particleName, gridNode);
+			session.setAttribute("charTypeChars", charTypeChars);
+		}
+
+		if (session.getAttribute("funcTypeFuncs") == null
+				|| session.getAttribute("newFunctionCreated") != null
+				|| session.getAttribute("newParticleCreated") != null) {
+			Map<String, List<FunctionBean>> funcTypeFuncs = service
+					.getRemoteFunctionMap(particleName, gridNode);
+			session.setAttribute("funcTypeFuncs", funcTypeFuncs);
+		}
+		
+		if (session.getAttribute("particleReports") == null
+				|| session.getAttribute("newReportCreated") != null
+				|| session.getAttribute("newParticleCreated") != null) {
+
+			List<LabFileBean> reportBeans = service.getRemoteReports(
+					particleName, gridNode);
+			session.setAttribute("particleReports", reportBeans);
+		}
+
+		if (session.getAttribute("particleAssociatedFiles") == null
+				|| session.getAttribute("newReportCreated") != null
+				|| session.getAttribute("newParticleCreated") != null) {
+			List<LabFileBean> associatedBeans = service
+					.getRemoteAssociatedFiles(particleName, gridNode);
+			session.setAttribute("particleAssociatedFiles", associatedBeans);
+		}
+		// not part of the side menu, but need to up
+		if (session.getAttribute("newParticleCreated") != null) {
+			setParticleTypeParticles(session);
+		}
+		session.removeAttribute("newCharacterizationCreated");
+		session.removeAttribute("newFunctionCreated");
+		session.removeAttribute("newParticleCreated");
+		session.removeAttribute("newReportCreated");
+		session.removeAttribute("detailPage");
+		setStaticDropdowns(session);
+	}
+
 	public void setCharacterizationTypeCharacterizations(HttpSession session)
 			throws Exception {
 		if (session.getServletContext().getAttribute(
@@ -590,7 +642,7 @@ public class InitSessionSetup {
 		}
 	}
 
-	public void setAllInstrumentTypes(HttpSession session) throws Exception {	
+	public void setAllInstrumentTypes(HttpSession session) throws Exception {
 		if (session.getServletContext().getAttribute("allInstrumentTypes") == null) {
 			List<LabelValueBean> instrumentTypes = lookupService
 					.getAllInstrumentTypeAbbrs();
