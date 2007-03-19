@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: RemoteSearchNanoparticleAction.java,v 1.6 2007-03-12 18:54:09 pansu Exp $ */
+/* CVS $Id: RemoteSearchNanoparticleAction.java,v 1.7 2007-03-19 17:32:32 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.dto.remote.GridNodeBean;
@@ -51,6 +51,7 @@ public class RemoteSearchNanoparticleAction extends AbstractDispatchAction {
 						.getSession().getAttribute("allGridNodes"));
 		GridNodeBean[] gridNodes = GridService.getGridNodesFromHostNames(
 				gridNodeMap, gridNodeHosts);
+
 		GridSearchService searchService = new GridSearchService();
 		List<ParticleBean> particles = new ArrayList<ParticleBean>();
 		ActionMessages msgs = new ActionMessages();
@@ -60,22 +61,22 @@ public class RemoteSearchNanoparticleAction extends AbstractDispatchAction {
 						.getRemoteNanoparticles(particleType, functionTypes,
 								characterizations, gridNode);
 				particles.addAll(gridParticles);
-			} catch (RemoteException e) {				
+			} catch (RemoteException e) {
 				ActionMessage msg = new ActionMessage(
 						"message.searchNanoparticle.grid.notAvailable",
 						gridNode.getHostName(), e);
 				msgs.add("message", msg);
 				saveMessages(request, msgs);
-			} catch (MalformedURLException e) {				
+			} catch (MalformedURLException e) {
 				ActionMessage msg = new ActionMessage(
-						"message.searchNanoparticle.grid.notAvailable", gridNode
-								.getHostName(), e);
+						"message.searchNanoparticle.grid.notAvailable",
+						gridNode.getHostName(), e);
 				msgs.add("message", msg);
 				saveMessages(request, msgs);
 			}
 		}
 
-		ActionForward forward = null;		
+		ActionForward forward = null;
 		if (!particles.isEmpty()) {
 			request.setAttribute("remoteParticles", particles);
 			forward = mapping.findForward("success");
@@ -95,17 +96,25 @@ public class RemoteSearchNanoparticleAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		HttpSession session = request.getSession();
-
-		Map<String, GridNodeBean> gridNodes = GridService.discoverServices(
-				CaNanoLabConstants.GRID_INDEX_SERVICE_URL,
-				CaNanoLabConstants.DOMAIN_MODEL_NAME);
-		request.getSession().setAttribute("allGridNodes", gridNodes);
 		InitSessionSetup.getInstance().setAllParticleFunctionTypes(session);
 		InitSessionSetup.getInstance()
 				.setCharacterizationTypeCharacterizations(session);
 		InitSessionSetup.getInstance().clearWorkflowSession(session);
 		InitSessionSetup.getInstance().clearInventorySession(session);
 
+		ActionMessages msgs = new ActionMessages();
+		try {
+			Map<String, GridNodeBean> gridNodes = GridService.discoverServices(
+					CaNanoLabConstants.GRID_INDEX_SERVICE_URL,
+					CaNanoLabConstants.DOMAIN_MODEL_NAME);
+			request.getSession().setAttribute("allGridNodes", gridNodes);
+		} catch (Exception e) {
+			ActionMessage msg = new ActionMessage("message.grid.discovery",
+					CaNanoLabConstants.DOMAIN_MODEL_NAME, e);
+			msgs.add("message", msg);
+			saveMessages(request, msgs);
+			return mapping.findForward("remoteSearchMessage");
+		}
 		return mapping.getInputForward();
 	}
 
