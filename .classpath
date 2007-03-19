@@ -120,5 +120,13 @@
 	<classpathentry kind="lib" path="web/WEB-INF/lib/mobius_tools-1.1.jar"/>
 	<classpathentry kind="lib" path="web/WEB-INF/lib/commons-lang-2.1.jar"/>
 	<classpathentry kind="lib" path="web/WEB-INF/lib/antlr.jar"/>
+	<classpathentry kind="lib" path="web/WEB-INF/lib/wsrf_core_samples_mgmt_stubs.jar"/>
+	<classpathentry kind="lib" path="web/WEB-INF/lib/wsrf_core_stubs.jar"/>
+	<classpathentry kind="lib" path="web/WEB-INF/lib/wsrf_provider_jce.jar"/>
+	<classpathentry kind="lib" path="web/WEB-INF/lib/wsrf_tools.jar"/>
+	<classpathentry kind="lib" path="web/WEB-INF/lib/wss4j.jar"/>
+	<classpathentry kind="lib" path="web/WEB-INF/lib/xalan.jar"/>
+	<classpathentry kind="lib" path="web/WEB-INF/lib/xercesImpl.jar"/>
+	<classpathentry kind="lib" path="web/WEB-INF/lib/xmlsec.jar"/>
 	<classpathentry kind="output" path="web/WEB-INF/classes"/>
 </classpath>
