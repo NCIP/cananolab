@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: RemoteSearchReportAction.java,v 1.6 2007-03-12 18:54:09 pansu Exp $ */
+/* CVS $Id: RemoteSearchReportAction.java,v 1.7 2007-03-19 17:32:32 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.remote.GridNodeBean;
@@ -63,13 +63,13 @@ public class RemoteSearchReportAction extends AbstractDispatchAction {
 						reportType, reportTitle, particleType, functionTypes,
 						gridNode);
 				reports.addAll(gridReports);
-			} catch (RemoteException e) {				
+			} catch (RemoteException e) {
 				ActionMessage msg = new ActionMessage(
 						"message.searchReport.grid.notAvailable", gridNode
 								.getHostName(), e);
 				msgs.add("message", msg);
 				saveMessages(request, msgs);
-			} catch (MalformedURLException e) {				
+			} catch (MalformedURLException e) {
 				ActionMessage msg = new ActionMessage(
 						"message.searchReport.grid.notAvailable", gridNode
 								.getHostName(), e);
@@ -80,7 +80,7 @@ public class RemoteSearchReportAction extends AbstractDispatchAction {
 		if (!reports.isEmpty()) {
 			request.setAttribute("remoteReports", reports);
 			forward = mapping.findForward("success");
-		} else {			
+		} else {
 			ActionMessage msg = new ActionMessage(
 					"message.searchReport.noresult");
 			msgs.add("message", msg);
@@ -95,17 +95,25 @@ public class RemoteSearchReportAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		HttpSession session = request.getSession();
-
-		Map<String, GridNodeBean> gridNodes = GridService.discoverServices(
-				CaNanoLabConstants.GRID_INDEX_SERVICE_URL,
-				CaNanoLabConstants.DOMAIN_MODEL_NAME);
-		request.getSession().setAttribute("allGridNodes", gridNodes);
 		InitSessionSetup.getInstance().setAllParticleFunctionTypes(session);
 		InitSessionSetup.getInstance().setApplicationOwner(session);
 		InitSessionSetup.getInstance().setStaticDropdowns(session);
 		InitSessionSetup.getInstance().clearWorkflowSession(session);
 		InitSessionSetup.getInstance().clearInventorySession(session);
 
+		ActionMessages msgs = new ActionMessages();
+		try {
+			Map<String, GridNodeBean> gridNodes = GridService.discoverServices(
+					CaNanoLabConstants.GRID_INDEX_SERVICE_URL,
+					CaNanoLabConstants.DOMAIN_MODEL_NAME);
+			request.getSession().setAttribute("allGridNodes", gridNodes);
+		} catch (Exception e) {
+			ActionMessage msg = new ActionMessage("message.grid.discovery",
+					CaNanoLabConstants.DOMAIN_MODEL_NAME, e);
+			msgs.add("message", msg);
+			saveMessages(request, msgs);
+			return mapping.findForward("remoteSearchMessage");
+		}
 		return mapping.getInputForward();
 	}
 
