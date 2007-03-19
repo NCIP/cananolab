@@ -77,7 +77,7 @@
 							<strong> Grid Node Host </strong>
 						</td>
 						<td class="rightLabel" colspan="3">
-							<strong> <html:select property="gridNodes" multiple="true" size="2">
+							<strong> <html:select property="gridNodes" multiple="true" size="3">
 									<html:options collection="allGridNodes" property="key" labelProperty="key" />
 								</html:select></strong>
 						</td>
