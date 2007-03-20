@@ -255,7 +255,7 @@
 							<li>
 								<span class="largerText">Other Associated Files &nbsp;&nbsp;</span>
 								<c:forEach var="aFile" items="${particleAssociatedFiles}">
-									<span class="indented"> <a href="remoteSearchReport.do?dispatch=download&fileId=${aFile.id}&fileName=${aFile.name}" title="${aFile.displayName}">${aFile.name}</a> </span>
+									<span class="indented"> <a href="remoteSearchReport.do?dispatch=download&fileId=${aFile.id}&fileName=${aFile.name}&gridNodeHost=${gridNodeHost}" title="${aFile.displayName}">${aFile.name}</a> </span>
 									<br>
 								</c:forEach>
 								<br>
@@ -265,7 +265,7 @@
 								<span class="largerText">Reports</span>
 								<br>
 								<c:forEach var="aReport" items="${particleReports}">
-									<span class="indented"> <a href="remoteSearchReport.do?dispatch=download&fileId=${aReport.id}&fileName=${aFile.name}" title="${aReport.displayName}">${aReport.name}</a> </span>
+									<span class="indented"> <a href="remoteSearchReport.do?dispatch=download&fileId=${aReport.id}&fileName=${aFile.name}&gridNodeHost=${gridNodeHost}" title="${aReport.displayName}">${aReport.name}</a> </span>
 									<br>
 								</c:forEach>
 							</li>
