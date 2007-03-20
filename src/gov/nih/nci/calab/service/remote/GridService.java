@@ -43,7 +43,7 @@ public class GridService {
 		GridNodeBean testNode = new GridNodeBean(
 				"caNanoLab-TEST",
 				"http://localhost:8880/wsrf/services/cagrid/CaNanoLabSvc",
-				"http://localhost:8880/caNanoLabSDK/http/remoteService");
+				"http://localhost:8080/caNanoLabSDK/http/remoteService");
 
 		gridNodeMap.put("caNanoLab-QA", qaNode);
 		gridNodeMap.put("caNanoLab-DEV", devNode);
