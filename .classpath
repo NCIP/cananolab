@@ -82,7 +82,6 @@
 	<classpathentry kind="lib" path="web/WEB-INF/lib/CaNanoLabSvc-common.jar"/>
 	<classpathentry kind="lib" path="web/WEB-INF/lib/CaNanoLabSvc-service.jar"/>
 	<classpathentry kind="lib" path="web/WEB-INF/lib/CaNanoLabSvc-stubs.jar"/>
-	<classpathentry kind="lib" path="web/WEB-INF/lib/CaNanoLabSvc-tests.jar"/>
 	<classpathentry kind="lib" path="web/WEB-INF/lib/ant-contrib.jar"/>
 	<classpathentry kind="lib" path="web/WEB-INF/lib/caGrid-1.0-ServiceSecurityProvider-common.jar"/>
 	<classpathentry kind="lib" path="web/WEB-INF/lib/caGrid-1.0-ServiceSecurityProvider-service.jar"/>
