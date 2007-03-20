@@ -39,13 +39,12 @@ public class ReportDecorator extends TableDecorator {
 		return sortableLink;
 	}
 
-	public SortableName getRemoteDownloadURL() {
+public SortableName getRemoteDownloadURL() {
 		LabFileBean file = (LabFileBean) getCurrentRowObject();
 		// TODO add URL
-		String downloadURL = "remoteSearchReport.do?dispatch=download&fileId="
+		String downloadURL = "remoteSearchReport.do?dispatch=download&gridNodeHost="+file.getGridNode()+"&fileId="
 				+ file.getId() + "&fileName=" + file.getName();
 		String link = "<a href=" + downloadURL + ">" + file.getTitle() + "</a>";
 		SortableName sortableLink = new SortableName(file.getTitle(), link);
 		return sortableLink;
-	}
-}
+	}}
