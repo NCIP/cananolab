@@ -265,7 +265,7 @@
 								<span class="largerText">Reports</span>
 								<br>
 								<c:forEach var="aReport" items="${particleReports}">
-									<span class="indented"> <a href="remoteSearchReport.do?dispatch=download&fileId=${aReport.id}&fileName=${aFile.name}&gridNodeHost=${gridNodeHost}" title="${aReport.displayName}">${aReport.name}</a> </span>
+									<span class="indented"> <a href="remoteSearchReport.do?dispatch=download&fileId=${aReport.id}&fileName=${aReport.name}&gridNodeHost=${gridNodeHost}" title="${aReport.displayName}">${aReport.name}</a> </span>
 									<br>
 								</c:forEach>
 							</li>
