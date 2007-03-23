@@ -95,7 +95,7 @@
 					<c:forEach var="aReport" items="${particleReports}">
 						<bean:define id="fileId" name='aReport' property='id' type="java.lang.String" />
 						<html:hidden name="aReport" property="id" value="${fileId}" indexed="true" />
-						<span class="indented"> <a href="remoteSearchReport.do?dispatch=download&amp;fileId=${fileId}">${aReport.name}</a> </span>
+						<span class="indented"> <a href="remoteSearchReport.do?dispatch=download&amp;fileId=${fileId}&amp;fileName=${aReport.name}&amp;gridNodeHost=${param.gridNodeHost}">${aReport.name}</a> </span>
 											&nbsp;&nbsp;
 						</c:forEach>
 				</c:otherwise>
