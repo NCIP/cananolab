@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: RemoteSearchReportAction.java,v 1.8 2007-03-20 14:22:46 pansu Exp $ */
+/* CVS $Id: RemoteSearchReportAction.java,v 1.9 2007-03-26 17:29:16 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.remote.GridNodeBean;
@@ -106,7 +106,16 @@ public class RemoteSearchReportAction extends AbstractDispatchAction {
 			Map<String, GridNodeBean> gridNodes = GridService.discoverServices(
 					CaNanoLabConstants.GRID_INDEX_SERVICE_URL,
 					CaNanoLabConstants.DOMAIN_MODEL_NAME);
-			request.getSession().setAttribute("allGridNodes", gridNodes);
+			if (gridNodes == null) {
+				ActionMessage msg = new ActionMessage(
+						"message.grid.discovery.none",
+						CaNanoLabConstants.DOMAIN_MODEL_NAME);
+				msgs.add("message", msg);
+				saveMessages(request, msgs);
+				return mapping.findForward("remoteSearchMessage");
+			} else {
+				request.getSession().setAttribute("allGridNodes", gridNodes);
+			}
 		} catch (Exception e) {
 			ActionMessage msg = new ActionMessage("message.grid.discovery",
 					CaNanoLabConstants.DOMAIN_MODEL_NAME, e);
@@ -133,7 +142,7 @@ public class RemoteSearchReportAction extends AbstractDispatchAction {
 
 		String fileId = request.getParameter("fileId");
 		String fileName = request.getParameter("fileName");
-		String gridNodeHost=request.getParameter("gridNodeHost");
+		String gridNodeHost = request.getParameter("gridNodeHost");
 		Map<String, GridNodeBean> gridNodeMap = new HashMap<String, GridNodeBean>(
 				(Map<? extends String, ? extends GridNodeBean>) request
 						.getSession().getAttribute("allGridNodes"));
@@ -173,7 +182,7 @@ public class RemoteSearchReportAction extends AbstractDispatchAction {
 
 		String fileId = request.getParameter("fileId");
 		String fileName = request.getParameter("fileName");
-		String gridNodeHost=request.getParameter("gridNodeHost");
+		String gridNodeHost = request.getParameter("gridNodeHost");
 		Map<String, GridNodeBean> gridNodeMap = new HashMap<String, GridNodeBean>(
 				(Map<? extends String, ? extends GridNodeBean>) request
 						.getSession().getAttribute("allGridNodes"));
@@ -196,7 +205,7 @@ public class RemoteSearchReportAction extends AbstractDispatchAction {
 						"File to download doesn't exist on the server");
 			}
 		} catch (Exception e) {
-			throw new CalabException("Error retrieving remote file:"+e);
+			throw new CalabException("Error retrieving remote file:" + e);
 		}
 		return null;
 	}
