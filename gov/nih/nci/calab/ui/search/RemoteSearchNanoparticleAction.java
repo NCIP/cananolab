@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: RemoteSearchNanoparticleAction.java,v 1.7 2007-03-19 17:32:32 pansu Exp $ */
+/* CVS $Id: RemoteSearchNanoparticleAction.java,v 1.8 2007-03-26 17:29:16 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.dto.remote.GridNodeBean;
@@ -107,7 +107,16 @@ public class RemoteSearchNanoparticleAction extends AbstractDispatchAction {
 			Map<String, GridNodeBean> gridNodes = GridService.discoverServices(
 					CaNanoLabConstants.GRID_INDEX_SERVICE_URL,
 					CaNanoLabConstants.DOMAIN_MODEL_NAME);
-			request.getSession().setAttribute("allGridNodes", gridNodes);
+			if (gridNodes == null) {
+				ActionMessage msg = new ActionMessage(
+						"message.grid.discovery.none",
+						CaNanoLabConstants.DOMAIN_MODEL_NAME);
+				msgs.add("message", msg);
+				saveMessages(request, msgs);
+				return mapping.findForward("remoteSearchMessage");
+			} else {
+				request.getSession().setAttribute("allGridNodes", gridNodes);
+			}
 		} catch (Exception e) {
 			ActionMessage msg = new ActionMessage("message.grid.discovery",
 					CaNanoLabConstants.DOMAIN_MODEL_NAME, e);
