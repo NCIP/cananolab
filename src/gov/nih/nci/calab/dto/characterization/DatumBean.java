@@ -41,8 +41,10 @@ public class DatumBean {
 	public DatumBean(Datum datum) {
 		this.id = datum.getId().toString();
 		this.type = datum.getType();
-		this.value = (datum.getValue() != null) ? StringUtils.convertToString(datum.getValue().getValue()) : "";
-		this.valueUnit = (datum.getValue() != null) ? StringUtils.convertToString(datum.getValue().getUnitOfMeasurement()) : "";
+		this.value = (datum.getValue() != null) ? StringUtils
+				.convertToString(datum.getValue().getValue()) : "";
+		this.valueUnit = (datum.getValue() != null) ? StringUtils
+				.convertToString(datum.getValue().getUnitOfMeasurement()) : "";
 
 		Control controlObj = datum.getControl();
 		if (controlObj != null) {
@@ -128,7 +130,8 @@ public class DatumBean {
 		}
 		tableData.setType(type);
 		Measurement measurement = new Measurement();
-		measurement.setValue(new Float(value));
+		if (value.length() > 0)
+			measurement.setValue(new Float(value));
 		measurement.setUnitOfMeasurement(valueUnit);
 		tableData.setValue(measurement);
 
