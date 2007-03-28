@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: RemoteNanoparticleGeneralInfoAction.java,v 1.1 2007-03-19 17:32:06 pansu Exp $ */
+/* CVS $Id: RemoteNanoparticleGeneralInfoAction.java,v 1.2 2007-03-28 16:18:28 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
@@ -46,7 +46,7 @@ public class RemoteNanoparticleGeneralInfoAction extends AbstractDispatchAction 
 
 		ActionForward forward = mapping.findForward("success");
 		//force data refresh on the side menu
-		request.getSession().setAttribute("newParticleCreated", "true");
+		request.getSession().setAttribute("newRemoteParticleCreated", "true");
 		return forward;
 	}
 
