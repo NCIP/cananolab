@@ -88,11 +88,11 @@
 		<TD class=welcomeContent vAlign=top align="left" colspan="2">
 			The Final Characterization Report(s) for this particle is
 			<c:choose>
-				<c:when test="${empty particleReports}">																		
+				<c:when test="${empty remoteParticleReports}">																		
 								currently not availabe.
 					</c:when>
 				<c:otherwise>
-					<c:forEach var="aReport" items="${particleReports}">
+					<c:forEach var="aReport" items="${remoteParticleReports}">
 						<bean:define id="fileId" name='aReport' property='id' type="java.lang.String" />
 						<html:hidden name="aReport" property="id" value="${fileId}" indexed="true" />
 						<span class="indented"> <a href="remoteSearchReport.do?dispatch=download&amp;fileId=${fileId}&amp;fileName=${aReport.name}&amp;gridNodeHost=${param.gridNodeHost}">${aReport.name}</a> </span>

@@ -46,7 +46,7 @@
 								<br>
 								<span class="indented"><strong>-Therapeutic</strong> &nbsp;&nbsp;</span>
 								<br>
-								<c:forEach var="aFunc" items="${funcTypeFuncs['Therapeutic']}">
+								<c:forEach var="aFunc" items="${remoteFuncTypeFuncs['Therapeutic']}">
 									<%java.util.HashMap paramMapTf = new java.util.HashMap();
 			paramMapTf.put("dispatch", "view");
 			paramMapTf
@@ -58,7 +58,6 @@
 							.getAttribute("aFunc")).getId());
 			paramMapTf.put("submitType", "Therapeutic");
 			pageContext.setAttribute("paramMapTf", paramMapTf);
-
 			%>
 									<span class="indented2"><html:link forward="construction" name="paramMapTf">${aFunc.viewTitle}</html:link> </span>
 									<br>
@@ -66,7 +65,7 @@
 								<br>
 								<span class="indented"><strong>-Targeting</strong> &nbsp;&nbsp;</span>
 								<br>
-								<c:forEach var="aFunc" items="${funcTypeFuncs['Targeting']}">
+								<c:forEach var="aFunc" items="${remoteFuncTypeFuncs['Targeting']}">
 									<%java.util.HashMap paramMapTt = new java.util.HashMap();
 			paramMapTt.put("dispatch", "view");
 			paramMapTt
@@ -86,7 +85,7 @@
 								<br>
 								<span class="indented"><strong>-Diagnostic Imaging</strong>&nbsp;&nbsp;</span>
 								<br>
-								<c:forEach var="aFunc" items="${funcTypeFuncs['Imaging']}">
+								<c:forEach var="aFunc" items="${remoteFuncTypeFuncs['Imaging']}">
 									<%java.util.HashMap paramMapTi = new java.util.HashMap();
 			paramMapTi.put("dispatch", "view");
 			paramMapTi
@@ -106,7 +105,7 @@
 								<br>
 								<span class="indented"><strong>-Diagnostic Reporting</strong> &nbsp;&nbsp;</span>
 								<br>
-								<c:forEach var="aFunc" items="${funcTypeFuncs['Reporting']}">
+								<c:forEach var="aFunc" items="${remoteFuncTypeFuncs['Reporting']}">
 									<%java.util.HashMap paramMapTr = new java.util.HashMap();
 			paramMapTr.put("dispatch", "view");
 			paramMapTr
@@ -131,7 +130,7 @@
 								<br>
 								<span class="indented"><strong>-Physical Characterization</strong> &nbsp;&nbsp;</span>
 								<br>
-								<c:forEach var="aChar" items="${charTypeChars['physical']}">
+								<c:forEach var="aChar" items="${remoteCharTypeChars['physical']}">
 									<%java.util.HashMap paramMap = new java.util.HashMap();
 			paramMap.put("dispatch", "view");
 			paramMap.put("particleName", session.getAttribute("particleName"));
@@ -163,7 +162,7 @@
 								<br>
 								<span class="indented2"><strong>-Toxicity</strong> &nbsp;&nbsp;</span>
 								<br>
-								<c:forEach var="aChar" items="${charTypeChars['toxicity']}">
+								<c:forEach var="aChar" items="${remoteCharTypeChars['toxicity']}">
 									<%java.util.HashMap toxicityParamMap = new java.util.HashMap();
 			toxicityParamMap.put("dispatch", "view");
 			toxicityParamMap.put("particleName", session
@@ -184,7 +183,7 @@
 								</c:forEach>
 								<span class="indented3"><strong>-Cytotoxicity</strong> &nbsp;&nbsp;</span>
 								<br>
-								<c:forEach var="aChar" items="${charTypeChars['cytoTox']}">
+								<c:forEach var="aChar" items="${remoteCharTypeChars['cytoTox']}">
 									<%java.util.HashMap cytotoxicityParamMap = new java.util.HashMap();
 			cytotoxicityParamMap.put("dispatch", "view");
 			cytotoxicityParamMap.put("particleName", session
@@ -208,7 +207,7 @@
 								<br>
 								<span class="indented4"><strong>-Blood Contact</strong> &nbsp;&nbsp;</span>
 								<br>
-								<c:forEach var="aChar" items="${charTypeChars['bloodContactTox']}">
+								<c:forEach var="aChar" items="${remoteCharTypeChars['bloodContactTox']}">
 									<%java.util.HashMap bloodContactParamMap = new java.util.HashMap();
 			bloodContactParamMap.put("dispatch", "view");
 			bloodContactParamMap.put("particleName", session
@@ -231,7 +230,7 @@
 								<br>
 								<span class="indented4"><strong>-Immune Cell Function </strong>&nbsp;&nbsp;</span>
 								<br>
-								<c:forEach var="aChar" items="${charTypeChars['immuneCellFuncTox']}">
+								<c:forEach var="aChar" items="${remoteCharTypeChars['immuneCellFuncTox']}">
 									<%java.util.HashMap immuneCellParamMap = new java.util.HashMap();
 			immuneCellParamMap.put("dispatch", "view");
 			immuneCellParamMap.put("particleName", session
@@ -254,7 +253,7 @@
 							</li>
 							<li>
 								<span class="largerText">Other Associated Files &nbsp;&nbsp;</span>
-								<c:forEach var="aFile" items="${particleAssociatedFiles}">
+								<c:forEach var="aFile" items="${remoteParticleAssociatedFiles}">
 									<span class="indented"> <a href="remoteSearchReport.do?dispatch=download&fileId=${aFile.id}&fileName=${aFile.name}&gridNodeHost=${gridNodeHost}" title="${aFile.displayName}">${aFile.name}</a> </span>
 									<br>
 								</c:forEach>
@@ -264,7 +263,7 @@
 							<li>
 								<span class="largerText">Reports</span>
 								<br>
-								<c:forEach var="aReport" items="${particleReports}">
+								<c:forEach var="aReport" items="${remoteParticleReports}">
 									<span class="indented"> <a href="remoteSearchReport.do?dispatch=download&fileId=${aReport.id}&fileName=${aReport.name}&gridNodeHost=${gridNodeHost}" title="${aReport.displayName}">${aReport.name}</a> </span>
 									<br>
 								</c:forEach>
