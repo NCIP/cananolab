@@ -1,6 +1,5 @@
 package gov.nih.nci.calab.ui.core;
 
-import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
@@ -586,46 +585,46 @@ public class InitSessionSetup {
 			String particleName, GridNodeBean gridNode) throws Exception {
 		HttpSession session = request.getSession();
 		GridSearchService service = new GridSearchService();
-		if (session.getAttribute("charTypeChars") == null
+		if (session.getAttribute("remoteCharTypeChars") == null
 				|| session.getAttribute("newCharacterizationCreated") != null
-				|| session.getAttribute("newParticleCreated") != null) {
+				|| session.getAttribute("newRemoteParticleCreated") != null) {
 
 			Map<String, List<CharacterizationBean>> charTypeChars = service
 					.getRemoteCharacterizationMap(particleName, gridNode);
-			session.setAttribute("charTypeChars", charTypeChars);
+			session.setAttribute("remoteCharTypeChars", charTypeChars);
 		}
 
-		if (session.getAttribute("funcTypeFuncs") == null
+		if (session.getAttribute("remoteFuncTypeFuncs") == null
 				|| session.getAttribute("newFunctionCreated") != null
-				|| session.getAttribute("newParticleCreated") != null) {
+				|| session.getAttribute("newRemoteParticleCreated") != null) {
 			Map<String, List<FunctionBean>> funcTypeFuncs = service
 					.getRemoteFunctionMap(particleName, gridNode);
-			session.setAttribute("funcTypeFuncs", funcTypeFuncs);
+			session.setAttribute("remoteFuncTypeFuncs", funcTypeFuncs);
 		}
 		
-		if (session.getAttribute("particleReports") == null
+		if (session.getAttribute("remoteParticleReports") == null
 				|| session.getAttribute("newReportCreated") != null
-				|| session.getAttribute("newParticleCreated") != null) {
+				|| session.getAttribute("newRemoteParticleCreated") != null) {
 
 			List<LabFileBean> reportBeans = service.getRemoteReports(
 					particleName, gridNode);
-			session.setAttribute("particleReports", reportBeans);
+			session.setAttribute("remoteParticleReports", reportBeans);
 		}
 
-		if (session.getAttribute("particleAssociatedFiles") == null
+		if (session.getAttribute("remoteParticleAssociatedFiles") == null
 				|| session.getAttribute("newReportCreated") != null
-				|| session.getAttribute("newParticleCreated") != null) {
+				|| session.getAttribute("newRemoteParticleCreated") != null) {
 			List<LabFileBean> associatedBeans = service
 					.getRemoteAssociatedFiles(particleName, gridNode);
-			session.setAttribute("particleAssociatedFiles", associatedBeans);
+			session.setAttribute("remoteParticleAssociatedFiles", associatedBeans);
 		}
 		// not part of the side menu, but need to up
-		if (session.getAttribute("newParticleCreated") != null) {
+		if (session.getAttribute("newRemoteParticleCreated") != null) {
 			setParticleTypeParticles(session);
 		}
 		session.removeAttribute("newCharacterizationCreated");
 		session.removeAttribute("newFunctionCreated");
-		session.removeAttribute("newParticleCreated");
+		session.removeAttribute("newRemoteParticleCreated");
 		session.removeAttribute("newReportCreated");
 		session.removeAttribute("detailPage");
 		setStaticDropdowns(session);
