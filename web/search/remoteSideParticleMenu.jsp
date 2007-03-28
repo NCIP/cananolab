@@ -36,7 +36,7 @@
 								<span class="largerText">General Information</span>
 								<br>
 								<br>
-								<span class="indented"> <a href="remoteNanoparticleDetail.do?dispatch=view&particleType=${particleType}&particleName=${particleName}&gridNodeHost=${gridNodeHost}">${particleName} (${particleType})</a> </span>
+								<span class="indented"> <a href="remoteNanoparticleGeneralInfo.do?dispatch=view&particleType=${particleType}&particleName=${particleName}&gridNodeHost=${gridNodeHost}">${particleName} (${particleType})</a> </span>
 								<br>
 								<br>
 							</li>
