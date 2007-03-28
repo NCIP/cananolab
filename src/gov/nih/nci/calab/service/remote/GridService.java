@@ -68,40 +68,33 @@ public class GridService {
 		DiscoveryClient discoveryClient = new DiscoveryClient(indexServiceURL);
 		EndpointReferenceType[] services = discoveryClient
 				.discoverDataServicesByDomainModel(domainModelName);
-		if (services != null) {
-			for (EndpointReferenceType service : services) {
-				String address = service.getAddress().toString();
-				String hostName = "", appServiceURL = "";
-				ServiceMetadata serviceMetaData = MetadataUtils
-						.getServiceMetadata(service);
-				if (serviceMetaData != null) {
-					if (serviceMetaData.getHostingResearchCenter() != null) {
-						if (serviceMetaData.getHostingResearchCenter()
-								.getResearchCenter() != null) {
-							hostName = serviceMetaData
-									.getHostingResearchCenter()
-									.getResearchCenter().getDisplayName();
-						}
+		for (EndpointReferenceType service : services) {
+			String address = service.getAddress().toString();
+			String hostName = "", appServiceURL = "";
+			ServiceMetadata serviceMetaData = MetadataUtils
+					.getServiceMetadata(service);
+			if (serviceMetaData != null) {
+				if (serviceMetaData.getHostingResearchCenter() != null) {
+					if (serviceMetaData.getHostingResearchCenter()
+							.getResearchCenter() != null) {
+						hostName = serviceMetaData.getHostingResearchCenter()
+								.getResearchCenter().getDisplayName();
 					}
 				}
-
-				// retrieve customized metadata
-				Element resourceProp = ResourcePropertyHelper
-						.getResourceProperty(service,
-								ResourceConstants.APPLICATIONSERVICEURL_MD_RP);
-				Reader xmlReader = new StringReader(XmlUtils
-						.toString(resourceProp));
-				appServiceURL = (String) Utils.deserializeObject(xmlReader,
-						String.class);
-
-				GridNodeBean gridNode = new GridNodeBean(hostName, address,
-						appServiceURL);
-				gridNodeMap.put(hostName, gridNode);
 			}
-			return gridNodeMap;
-		} else {
-			return null;
+
+			// retrieve customized metadata
+			Element resourceProp = ResourcePropertyHelper.getResourceProperty(
+					service, ResourceConstants.APPLICATIONSERVICEURL_MD_RP);
+			Reader xmlReader = new StringReader(XmlUtils.toString(resourceProp));
+			appServiceURL = (String) Utils.deserializeObject(xmlReader,
+					String.class);
+
+			GridNodeBean gridNode = new GridNodeBean(hostName, address,
+					appServiceURL);
+			gridNodeMap.put(hostName, gridNode);
 		}
+		return gridNodeMap;
 	}
 
 	/**
