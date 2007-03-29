@@ -3,11 +3,15 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ page import="gov.nih.nci.calab.ui.core.InitSessionSetup,gov.nih.nci.calab.service.security.UserService"%>
-<%
-UserService userService = InitSessionSetup.getInstance()
-					.getUserService();
-userService.setFilteredMenuItem(session);
-%>
+<%try {
+				UserService userService = InitSessionSetup.getInstance()
+						.getUserService();
+				userService.setFilteredMenuItem(session);
+			} catch (Exception e) {
+
+			}
+
+		%>
 <table cellspacing="0" cellpadding="0" summary="" border="0">
 	<tbody>
 		<tr>
