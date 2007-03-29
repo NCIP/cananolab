@@ -13,7 +13,7 @@
 				</h3>
 			</td>
 			<td align="right" width="15%">
-	<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caLAB_1.0_OH&amp;topic=nano_report_help')" class="helpText">Help</a>
+	<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=nano_report_help')" class="helpText">Help</a>
 				<logic:equal name="reportActionName" value="updateReport">
 				&nbsp;&nbsp;<a href="reportResults.do" class="helpText">Back</a>
 				</logic:equal>

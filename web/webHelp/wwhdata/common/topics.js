@@ -9,6 +9,7 @@ if(P=="create_sample")C="About%20caLAB.2.13.html#1108744";
 if(P=="create_aliquot")C="About%20caLAB.2.15.html#1108888";
 if(P=="edit_aliquot")C="About%20caLAB.2.16.html#1108983";
 if(P=="view_aliquot")C="About%20caLAB.2.18.html#1109027";
+if(P=="use_aliquot_help")C="About%20caLAB.2.19.html#1109062";
 if(P=="mask_aliquot")C="About%20caLAB.2.20.html#1109071";
 if(P=="create_assay_run")C="About%20caLAB.2.24.html#1097500";
 if(P=="search_runs_help")C="About%20caLAB.2.25.html#1104001";
@@ -50,5 +51,9 @@ if(P=="search_nano_help")C="Searching%20caLAB.4.11.html#1102681";
 if(P=="nano_search_results_help")C="Searching%20caLAB.4.12.html#1102726";
 if(P=="search_reports_help")C="Searching%20caLAB.4.14.html#1111098";
 if(P=="search_reports_results_help")C="Searching%20caLAB.4.15.html#1104802";
+if(P=="remote_nanoparticle_search_help")C="Searching%20caLAB.4.18.html#1114175";
+if(P=="remote_nanoparticle_search_results_help")C="Searching%20caLAB.4.19.html#1114478";
+if(P=="remote_reports_search_help")C="Searching%20caLAB.4.20.html#1114922";
+if(P=="remote_reports_search_results_help")C="Searching%20caLAB.4.21.html#1115292";
 return C;
 }

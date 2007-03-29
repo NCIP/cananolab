@@ -1,7 +1,7 @@
 function  WWHBookData_AddTOCEntries(P)
 {
-var A=P.fN("Welcome to caNanoLab 1.0","0");
-A=P.fN("Getting Started with caNanoLab 1.0","1");
+var A=P.fN("Welcome to caNanoLab 1.1","0");
+A=P.fN("Getting Started with caNanoLab 1.1","1");
 var B=A.fN("About caNanoLab","2");
 var C=B.fN("Introduction to caNanoLab","2#1085961");
 C=B.fN("caNanoLab Welcome Login Page","3");
@@ -84,5 +84,10 @@ D=C.fN("Nanoparticle Details","79");
 C=B.fN("Searching Nanoparticle Reports","80");
 D=C.fN("Nanoparticle Reports Search Results","81");
 D=C.fN("Nanoparticle Report Details Page","82");
-A=P.fN("Application Support","83");
+B=A.fN("Remote Searches","83");
+C=B.fN("Remote Nanoparticle Search","84");
+D=C.fN("Remote Nanoparticle Search Results","85");
+C=B.fN("Remote Reports Search","86");
+D=C.fN("Remote Report Search Results","87");
+A=P.fN("Application Support","88");
 }

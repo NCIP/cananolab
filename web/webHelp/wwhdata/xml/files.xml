@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<WebWorksHelpBook version="5.0" name="caLAB 1.0 OH" context="caLAB_1.0_OH" locale="en" xmlns="urn:WebWorks-Help-Book-Files-Schema">
+<WebWorksHelpBook version="5.0" name="caNanoLab" context="caNanoLab" locale="en" xmlns="urn:WebWorks-Help-Book-Files-Schema">
   <CommonWordsToSkip minlen="3">
     a about after all also am an and another any are as at
     be because been before being between both but by
@@ -38,8 +38,8 @@
     <h7 weight="2" />
   </ScoringPrefs>
   <DocumentInfo>
-    <Document title="Welcome to caNanoLab 1.0" href="Welcome%20to%20caLAB.1.1.html" />
-    <Document title="Getting Started with caNanoLab 1.0" href="About%20caLAB.2.1.html" />
+    <Document title="Welcome to caNanoLab 1.1" href="Welcome%20to%20caLAB.1.1.html" />
+    <Document title="Getting Started with caNanoLab 1.1" href="About%20caLAB.2.1.html" />
     <Document title="About caNanoLab" href="About%20caLAB.2.2.html" />
     <Document title="caNanoLab Welcome Login Page" href="About%20caLAB.2.3.html" />
     <Document title="Registering a New User" href="About%20caLAB.2.4.html" />
@@ -121,6 +121,11 @@
     <Document title="Searching Nanoparticle Reports" href="Searching%20caLAB.4.14.html" />
     <Document title="Nanoparticle Reports Search Results" href="Searching%20caLAB.4.15.html" />
     <Document title="Nanoparticle Report Details Page" href="Searching%20caLAB.4.16.html" />
+    <Document title="Remote Searches" href="Searching%20caLAB.4.17.html" />
+    <Document title="Remote Nanoparticle Search" href="Searching%20caLAB.4.18.html" />
+    <Document title="Remote Nanoparticle Search Results" href="Searching%20caLAB.4.19.html" />
+    <Document title="Remote Reports Search" href="Searching%20caLAB.4.20.html" />
+    <Document title="Remote Report Search Results" href="Searching%20caLAB.4.21.html" />
     <Document title="Application Support" href="Application%20Support.5.1.html" />
   </DocumentInfo>
   <TopicMap>
@@ -132,6 +137,7 @@
     <Topic name="create_aliquot" href="About%20caLAB.2.15.html#1108888" />
     <Topic name="edit_aliquot" href="About%20caLAB.2.16.html#1108983" />
     <Topic name="view_aliquot" href="About%20caLAB.2.18.html#1109027" />
+    <Topic name="use_aliquot_help" href="About%20caLAB.2.19.html#1109062" />
     <Topic name="mask_aliquot" href="About%20caLAB.2.20.html#1109071" />
     <Topic name="create_assay_run" href="About%20caLAB.2.24.html#1097500" />
     <Topic name="search_runs_help" href="About%20caLAB.2.25.html#1104001" />
@@ -173,5 +179,9 @@
     <Topic name="nano_search_results_help" href="Searching%20caLAB.4.12.html#1102726" />
     <Topic name="search_reports_help" href="Searching%20caLAB.4.14.html#1111098" />
     <Topic name="search_reports_results_help" href="Searching%20caLAB.4.15.html#1104802" />
+    <Topic name="remote_nanoparticle_search_help" href="Searching%20caLAB.4.18.html#1114175" />
+    <Topic name="remote_nanoparticle_search_results_help" href="Searching%20caLAB.4.19.html#1114478" />
+    <Topic name="remote_reports_search_help" href="Searching%20caLAB.4.20.html#1114922" />
+    <Topic name="remote_reports_search_results_help" href="Searching%20caLAB.4.21.html#1115292" />
   </TopicMap>
 </WebWorksHelpBook>
