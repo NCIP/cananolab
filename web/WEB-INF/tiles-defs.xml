@@ -44,7 +44,7 @@
 			<item value="ADMINISTRATION" link="" />
 		</putList>
 	</definition>
-	<definition name="home.error" extends="calab.index">
+	<definition name="home.error" extends="calab.home">
 		<put name="calabContent" value="/bodyMessage.jsp" />
 		<put name="menu" value="home" />
 	</definition>
@@ -52,7 +52,7 @@
 		<put name="calabContent" value="/help/bodyOnlineHelp.jsp" />
 		<put name="menu" value="help" />
 	</definition>
-	<definition name="calab.welcome" extends="calab.index">
+	<definition name="calab.welcome" extends="calab.home">
 		<put name="calabContent" value="/bodyWelcome.jsp" />
 		<put name="menu" value="home" />
 	</definition>
