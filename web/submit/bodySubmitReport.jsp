@@ -105,7 +105,7 @@
 									<td width="490" height="32">
 										<div align="right">
 											<div align="right">
-												<input type="reset" value="Reset" onclick="javascript:resetSelect(document.publishReportForm.particleNames));">
+												<input type="reset" value="Reset" onclick="javascript:location.href='publishReport.do?dispatch=setup&page=0'">
 												<input type="hidden" name="dispatch" value="submit">
 												<input type="hidden" name="page" value="2">
 												<html:submit />

@@ -139,7 +139,7 @@
 									<td width="490" height="32">
 										<div align="right">
 											<div align="right">
-												<input type="reset" value="Reset" onclick="javascript:removeSelectOptions(document.createRunForm.assayName);resetSelect(document.createRunForm.sampleNames);removeSelectOptions(document.createRunForm.assignedAliquots);">
+												<input type="reset" value="Reset" onClick="javascript:location.href='createRun.do?dispatch=setup&page=0'">
 												<input type="hidden" name="dispatch" value="create">
 												<input type="hidden" name="page" value="1">
 												<html:submit />
