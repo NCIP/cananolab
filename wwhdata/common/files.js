@@ -1,7 +1,7 @@
 function  WWHBookData_Files(P)
 {
-P.fA("Welcome to caNanoLab 1.0","Welcome%20to%20caLAB.1.1.html");
-P.fA("Getting Started with caNanoLab 1.0","About%20caLAB.2.1.html");
+P.fA("Welcome to caNanoLab 1.1","Welcome%20to%20caLAB.1.1.html");
+P.fA("Getting Started with caNanoLab 1.1","About%20caLAB.2.1.html");
 P.fA("About caNanoLab","About%20caLAB.2.2.html");
 P.fA("caNanoLab Welcome Login Page","About%20caLAB.2.3.html");
 P.fA("Registering a New User","About%20caLAB.2.4.html");
@@ -83,5 +83,10 @@ P.fA("Nanoparticle Details","Searching%20caLAB.4.13.html");
 P.fA("Searching Nanoparticle Reports","Searching%20caLAB.4.14.html");
 P.fA("Nanoparticle Reports Search Results","Searching%20caLAB.4.15.html");
 P.fA("Nanoparticle Report Details Page","Searching%20caLAB.4.16.html");
+P.fA("Remote Searches","Searching%20caLAB.4.17.html");
+P.fA("Remote Nanoparticle Search","Searching%20caLAB.4.18.html");
+P.fA("Remote Nanoparticle Search Results","Searching%20caLAB.4.19.html");
+P.fA("Remote Reports Search","Searching%20caLAB.4.20.html");
+P.fA("Remote Report Search Results","Searching%20caLAB.4.21.html");
 P.fA("Application Support","Application%20Support.5.1.html");
 }
