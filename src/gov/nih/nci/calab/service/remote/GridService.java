@@ -6,6 +6,7 @@ import gov.nih.nci.cagrid.discovery.client.DiscoveryClient;
 import gov.nih.nci.cagrid.metadata.MetadataUtils;
 import gov.nih.nci.cagrid.metadata.ResourcePropertyHelper;
 import gov.nih.nci.cagrid.metadata.ServiceMetadata;
+import gov.nih.nci.cagrid.metadata.exceptions.RemoteResourcePropertyRetrievalException;
 import gov.nih.nci.calab.dto.remote.GridNodeBean;
 
 import java.io.Reader;
@@ -15,6 +16,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
+import org.apache.log4j.Logger;
 import org.globus.wsrf.utils.XmlUtils;
 import org.w3c.dom.Element;
 
@@ -25,6 +27,7 @@ import org.w3c.dom.Element;
  * 
  */
 public class GridService {
+	private static Logger logger = Logger.getLogger(GridService.class);
 
 	/**
 	 * Temp code to be replaced
@@ -72,31 +75,41 @@ public class GridService {
 			for (EndpointReferenceType service : services) {
 				String address = service.getAddress().toString();
 				String hostName = "", appServiceURL = "";
-				ServiceMetadata serviceMetaData = MetadataUtils
-						.getServiceMetadata(service);
-				if (serviceMetaData != null) {
-					if (serviceMetaData.getHostingResearchCenter() != null) {
-						if (serviceMetaData.getHostingResearchCenter()
-								.getResearchCenter() != null) {
-							hostName = serviceMetaData
-									.getHostingResearchCenter()
-									.getResearchCenter().getDisplayName();
+				// catch RemoteResourcePropertyRetrievalException in case
+				// service is not successfully deregistered from the index
+				// server when the service is shut down.
+				try {
+					ServiceMetadata serviceMetaData = MetadataUtils
+							.getServiceMetadata(service);
+					if (serviceMetaData != null) {
+						if (serviceMetaData.getHostingResearchCenter() != null) {
+							if (serviceMetaData.getHostingResearchCenter()
+									.getResearchCenter() != null) {
+								hostName = serviceMetaData
+										.getHostingResearchCenter()
+										.getResearchCenter().getDisplayName();
+							}
 						}
 					}
+
+					// retrieve customized metadata
+					Element resourceProp = ResourcePropertyHelper
+							.getResourceProperty(
+									service,
+									ResourceConstants.APPLICATIONSERVICEURL_MD_RP);
+					Reader xmlReader = new StringReader(XmlUtils
+							.toString(resourceProp));
+					appServiceURL = (String) Utils.deserializeObject(xmlReader,
+							String.class);
+
+					GridNodeBean gridNode = new GridNodeBean(hostName, address,
+							appServiceURL);
+					gridNodeMap.put(hostName, gridNode);
+				} catch (RemoteResourcePropertyRetrievalException e) {
+					logger
+							.error("Can't successfully obtain grid service metadata: "
+									+ address);
 				}
-
-				// retrieve customized metadata
-				Element resourceProp = ResourcePropertyHelper
-						.getResourceProperty(service,
-								ResourceConstants.APPLICATIONSERVICEURL_MD_RP);
-				Reader xmlReader = new StringReader(XmlUtils
-						.toString(resourceProp));
-				appServiceURL = (String) Utils.deserializeObject(xmlReader,
-						String.class);
-
-				GridNodeBean gridNode = new GridNodeBean(hostName, address,
-						appServiceURL);
-				gridNodeMap.put(hostName, gridNode);
 			}
 			return gridNodeMap;
 		} else {
