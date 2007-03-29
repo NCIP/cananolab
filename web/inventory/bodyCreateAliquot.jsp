@@ -92,7 +92,7 @@ function openLink() {
 					<tr>
 						<td class="formLabelWhite">
 							<div align="justify">
-								<strong><span class="formFieldWhite"> </span>Number of Aliquots *<span class="formFieldWhite"> <html:text property="numberOfAliquots" size="5" /> &nbsp; </span></strong>
+								<strong><span class="formFieldWhite"> </span>Number of Aliquots *<span class="formFieldWhite"> <html:text property="numberOfAliquots" size="5" /> &nbsp; </span></strong>(Please click on "Update Aliquots" button below if number of aliquots has been changed.)
 							</div>
 						</td>
 					</tr>
