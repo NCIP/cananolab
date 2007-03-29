@@ -11,7 +11,7 @@
 			</h4>
 		</td>
 		<td align="right" width="15%">
-			<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caLAB_1.0_OH&amp;topic=composition_help')" class="helpText">Help</a>
+			<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=composition_help')" class="helpText">Help</a>
 		</td>
 	</tr>
 	<tr>

@@ -3,11 +3,11 @@
 
 function  WWHCommonSettings_Object()
 {
-  this.mTitle = "caLAB 1.0 OH";
+  this.mTitle = "caNanoLab";
 
   this.mbCookies            = true;
   this.mCookiesDaysToExpire = 30;
-  this.mCookiesID           = "5C4999B0D2755A58";
+  this.mCookiesID           = "91A87432A2AB8A1";
 
   this.mAccessible = "false";
 
