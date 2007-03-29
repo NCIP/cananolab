@@ -73,7 +73,7 @@
 									<td>
 										<div align="left">
 											<input type="hidden" name="runId" value="${currentRun.id}" />
-											<input type="reset" value="Reset" onclick="resetSelect(document.createRunForm.sampleNames);resetSelect(document.useAliquotForm.assignedAliquots);">
+											<input type="reset" value="Reset" onclick="javascript:location.href='useAliquot.do?dispatch=setup&page=0'">
 											<input type="button" value="Cancel" onclick="javascript:history.go(-1)">
 											<input type="hidden" name="dispatch" value="use" />
 											<input type="hidden" name="page" value="1" />
