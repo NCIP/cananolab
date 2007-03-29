@@ -9,7 +9,7 @@
 		<put name="nciHeader" value="/html/nciHeader.html" />
 		<put name="calabHeader" value="/html/calabHeader.html" />
 		<put name="calabSidemenu" value="/html/calabBaseSidemenu.html" />
-		<put name="calabMainmenu" value="/calabMainmenu.jsp" />
+		<put name="calabMainmenu" value="/calabBaseMainmenu.jsp" />
 		<put name="calabContent" value="/bodyLogin.jsp" />
 		<put name="calabFooter" value="/html/calabFooter.html" />
 		<put name="nciFooter" value="/html/nciFooter.html" />
@@ -18,15 +18,6 @@
 			<item value="HOME" link="index.jsp" />
 			<item value="HELP" link="javascript:openHelpWindow('webHelp/index.html')" />
 			<item value="LOGOUT" link="logout.do" />
-		</putList>
-		<putList name="items">
-			<item value="WORKFLOW" link="" />
-			<item value="INVENTORY" link="" />
-			<item value="LAB SEARCH" link="" />
-			<item value="SEARCH" link="" />
-			<item value="REMOTE SEARCH" link="" />
-			<item value="SUBMIT" link="" />
-			<item value="ADMINISTRATION" link="" />
 		</putList>
 	</definition>
 	<definition name="calab.home" path="/layout/mainLayout.jsp">
