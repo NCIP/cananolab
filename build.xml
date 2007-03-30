@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<project name="caNanoLab" default="" basedir=".">
+<project name="caNanoLab" default="build-application" basedir=".">
 	<property file="build.properties" />
 	<property name="src.java.dir" value="src" />
 	<property name="src.webroot.dir" value="web" />
