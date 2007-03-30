@@ -17,9 +17,7 @@
 				<strong>Is Crosslinked </strong>
 			</td>
 			<td class="label">
-				<c:choose>
-						${nanoparticleCompositionForm.map.polymer.crosslinked}&nbsp;
-			
+				${nanoparticleCompositionForm.map.polymer.crosslinked}&nbsp;
 			</td>
 			<td class="label">
 				<strong>Crosslink Degree</strong>
