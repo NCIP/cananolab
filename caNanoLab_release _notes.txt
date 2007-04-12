@@ -1,8 +1,8 @@
                            Release Notes
     
    cancer Nanotechnology Laboratory Analysis Bench (caNanoLab)
-                          Version 1.0
-                         Dec 31, 2006
+                          Version 1.1
+                         April 12, 2007
 
        National Cancer Institute Center for Bioinformatics
 
@@ -40,7 +40,16 @@ the sharing of these characterizations in a secure fashion.
 ================================================================
                            2.0 Features
 ================================================================
-
+    =====================
+    1.1 Functionalities:
+    =====================
+     *  Grid-enabled caNanoLab domain model and custom operations.
+     *  Implemented auto-discovery of caGrid data services hosting 
+        caNanoLab domain models
+     *  Implemented remote nanoparticle search, remote report search,
+        and remote physical composition characterization data search
+        against auto-discovered caNanoLab grid services
+     
     =====================
     1.0 Functionalities:
     =====================
@@ -78,9 +87,9 @@ the sharing of these characterizations in a secure fashion.
          o Therapeutic
          o Diagnostic Imaging
          o Diagnostic Reporting   
-     *  Implemented Search nanaoparticles
+     *  Implemented Search nanoparticles
      *  Implemented Search Reports
-     *  Implemented role-base security for submission and retrival
+     *  Implemented role-based security for submission and retrieval
      
     =====================
     0.5 Functionalities:
@@ -106,7 +115,7 @@ the sharing of these characterizations in a secure fashion.
                          3.0 Known Issues
 ================================================================
 1. Does not support adaptive workflow and requires customizations 
-   to meet laboratory specific requirments
+   to meet laboratory specific requirements
 
 
 
@@ -131,7 +140,7 @@ There is no major functional bugs in caLAB 0.5 release.
 
     caNanoLab users
 
-    --  http://list.nih.gov/archives/calab_users.html
+    --  https://list.nih.gov/archives/cananolab-users-l.html
     
     caNanoLab Gforge Site
 
@@ -179,6 +188,10 @@ There is no major functional bugs in caLAB 0.5 release.
     Common Security Module (CSM)
     
     --  http://ncicb.nci.nih.gov/NCICB/infrastructure/cacore_overview/csm
-
+    
+    caGrid 
+    
+    --  http://gforge.nci.nih.gov/projects/cagrid-1-0/
+    
 //end
 
