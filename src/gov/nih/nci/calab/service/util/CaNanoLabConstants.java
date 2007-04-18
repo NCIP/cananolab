@@ -67,6 +67,8 @@ public class CaNanoLabConstants {
 	public static final String CSM_READ_ROLE = "R";
 
 	public static final String CSM_READ_PRIVILEGE = "READ";
+	
+	public static final String CSM_EXECUTE_PRIVILEGE = "EXECUTE";
 
 	// caLAB Submission property file
 	public static final String SUBMISSION_PROPERTY = "exception.properties";
