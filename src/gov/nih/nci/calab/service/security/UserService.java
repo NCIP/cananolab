@@ -133,7 +133,7 @@ public class UserService {
 	 */
 	public boolean checkExecutePermission(UserBean user,
 			String protectionElementObjectId) throws CSException {
-		return checkPermission(user, protectionElementObjectId, "EXECUTE");
+		return checkPermission(user, protectionElementObjectId, CaNanoLabConstants.CSM_EXECUTE_PRIVILEGE);
 	}
 
 	/**
