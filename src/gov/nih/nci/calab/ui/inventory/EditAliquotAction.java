@@ -6,9 +6,10 @@ package gov.nih.nci.calab.ui.inventory;
  * @author pansu
  */
 
-/* CVS $Id: EditAliquotAction.java,v 1.2 2006-08-01 13:25:27 pansu Exp $ */
+/* CVS $Id: EditAliquotAction.java,v 1.3 2007-05-07 18:55:56 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.inventory.AliquotBean;
+import gov.nih.nci.calab.dto.inventory.ContainerInfoBean;
 import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 
@@ -42,10 +43,11 @@ public class EditAliquotAction extends AbstractDispatchAction {
 			forward = mapping.findForward("success");
 		} else {
 			throw new CalabException(
-					"Session containing the aliquot matrix either is expired or doesn't exist");			
+					"Session containing the aliquot matrix either is expired or doesn't exist");
 		}
 		return forward;
 	}
+
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -64,10 +66,52 @@ public class EditAliquotAction extends AbstractDispatchAction {
 			throw new CalabException(
 					"Session containing the aliquot matrix either is expired or doesn't exist");
 		}
+
+		// update editable drop-down to include new entry
+		updateEditableDropDownList(request, theForm);
 		return forward;
 	}
 
 	public boolean loginRequired() {
 		return true;
+	}
+
+	private void updateEditableDropDownList(HttpServletRequest request,
+			DynaValidatorForm theForm) {
+		HttpSession session = request.getSession();
+		// update container type drop-down list to include the new entry
+		List allAliquotContainerTypes = (List) session
+				.getAttribute("allAliquotContainerTypes");
+		AliquotBean aliquot = ((AliquotBean) theForm.get("aliquot"));
+		String newContainerType = aliquot.getContainer().getContainerType();
+		if (!allAliquotContainerTypes.contains(newContainerType)
+				&&newContainerType.length()>0) {
+			allAliquotContainerTypes.add(newContainerType);
+		}
+		// update storage location drop-down list to include the new
+		String newRoom = aliquot.getContainer().getStorageLocation().getRoom();
+		String newFreezer = aliquot.getContainer().getStorageLocation()
+				.getFreezer();
+		String newShelf = aliquot.getContainer().getStorageLocation()
+				.getShelf();
+		String newBox = aliquot.getContainer().getStorageLocation().getBox();
+		ContainerInfoBean containerInfo = (ContainerInfoBean) session
+				.getAttribute("aliquotContainerInfo");
+		if (!containerInfo.getStorageRooms().contains(newRoom)
+				&& newRoom.length() > 0) {
+			containerInfo.getStorageRooms().add(newRoom);
+		}
+		if (!containerInfo.getStorageFreezers().contains(newFreezer)
+				&& newFreezer.length() > 0) {
+			containerInfo.getStorageFreezers().add(newFreezer);
+		}
+		if (!containerInfo.getStorageShelves().contains(newShelf)
+				&& newShelf.length() > 0) {
+			containerInfo.getStorageShelves().add(newShelf);
+		}
+		if (!containerInfo.getStorageBoxes().contains(newBox)
+				&& newBox.length() > 0) {
+			containerInfo.getStorageBoxes().add(newBox);
+		}
 	}
 }
