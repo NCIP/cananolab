@@ -99,6 +99,12 @@
 		<put name="menu" value="submit" />
 	</definition>
 
+	<!-- definition for the submit protocol page -->
+	<definition name="submit.submitprotocol" extends="calab.home">
+		<put name="calabContent" value="/submit/bodySubmitProtocol.jsp" />
+		<put name="menu" value="submit" />
+	</definition>
+
 	<definition name="submit.report.message" extends="calab.home">
 		<put name="calabContent" value="/bodyMessage.jsp?bundle=submit" />
 		<put name="menu" value="submit" />
