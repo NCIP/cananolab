@@ -17,6 +17,18 @@
 			<form-property name="uploadedFile" type="org.apache.struts.upload.FormFile" />
 			<form-property name="file" type="gov.nih.nci.calab.dto.common.LabFileBean" />
 		</form-bean>
+		<form-bean name="submitProtocolForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer" initial="0" />
+			<form-property name="nameSource" type="java.lang.String" />
+			<form-property name="otherNameSource" type="java.lang.String" />
+			<form-property name="protocolType" type="java.lang.String" />
+			<form-property name="uploadedFile" type="org.apache.struts.upload.FormFile" />
+			<form-property name="fileTitle" type="java.lang.String" />	
+			<form-property name="description" type="java.lang.String" />  
+			<form-property name="visibility" type="java.lang.String" />
+			<form-property name="protocolVersion" type="java.lang.String" />
+		</form-bean>
 		<form-bean name="nanoparticleCompositionForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="dispatch" type="java.lang.String" />
 			<form-property name="page" type="java.lang.Integer" initial="0" />
@@ -345,6 +357,11 @@
 			<forward name="viewDisclaimer" path="submit.viewParticleDisclaimer" />
 			<forward name="update" path="submit.generalinfo.update" />
 			<forward name="input" path="submit.createnanoparticle" />
+		</action>
+		<action name="submitProtocolForm" parameter="dispatch" path="/submitProtocol" type="gov.nih.nci.calab.ui.submit.SubmitProtocolAction" input="input" scope="request">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.submitProtocol" path="submit.submitprotocol" type="java.lang.Exception" />
+			<forward name="success" path="submit.report.message" />
+			<forward name="input" path="submit.submitprotocol" />
 		</action>
 		<action name="publishReportForm" parameter="dispatch" path="/publishReport" type="gov.nih.nci.calab.ui.submit.SubmitReportAction" input="input" scope="request">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.submitReport" path="submit.submitreport" type="java.lang.Exception" />
