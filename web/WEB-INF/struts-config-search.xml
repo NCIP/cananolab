@@ -16,6 +16,11 @@
 			<form-property name="reportTitle" type="java.lang.String" />
 			<form-property name="reportType" type="java.lang.String" />
 		</form-bean>
+		<form-bean name="searchProtocolForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="fileTitle" type="java.lang.String" />
+			<form-property name="protocolType" type="java.lang.String" />
+			<form-property name="description" type="java.lang.String" />
+		</form-bean>
 		<form-bean name="searchNanoparticleAdvancedForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="particleType" type="java.lang.String" />
 			<form-property name="functionTypes" type="java.lang.String[]" />
@@ -60,6 +65,12 @@
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="search" key="error.searchReport" path="search.searchreport" type="java.lang.Exception" />
 			<forward name="input" path="search.searchreport" />
 			<forward name="success" path="search.searchreport.result" />
+		</action>
+		<action input="input" name="searchProtocolForm" parameter="dispatch" path="/searchProtocol" type="gov.nih.nci.calab.ui.search.SearchProtocolAction" scope="request">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.download.file" path="home.error" type="gov.nih.nci.calab.exception.CalabException" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="search" key="error.searchProtocol" path="search.searchprotocol" type="java.lang.Exception" />
+			<forward name="input" path="search.searchprotocol" />
+			<forward name="success" path="search.searchprotocol.result" />
 		</action>
 		<action input="input" name="searchNanoparticleAdvancedForm" parameter="dispatch" path="/searchNanoparticleAdvanced" type="gov.nih.nci.calab.ui.search.SearchNanoparticleAdvancedAction" scope="request">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="search" key="error.searchNanoparticleAdvanced" path="search.searchnanoparticle.advanced" type="java.lang.Exception" />
