@@ -15,7 +15,9 @@
 			</c:choose>
 		</td>
 		<td align="right" width="15%">
-			<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=aliquot_details_help')" class="helpText">Help</a>&nbsp;&nbsp;
+			<a
+				href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=aliquot_details_help')"
+				class="helpText">Help</a>&nbsp;&nbsp;
 			<c:choose>
 				<c:when test="${not empty param.aliquotId}">
 					<a href="javascript:history.go(-1)" class="helpText">back</a>
@@ -26,7 +28,8 @@
 	<tr>
 		<td colspan="2">
 			<jsp:include page="/bodyMessage.jsp?bundle=inventory" />
-			<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+			<table class="topBorderOnly" cellspacing="0" cellpadding="3"
+				width="100%" align="center" summary="" border="0">
 				<tbody>
 					<tr class="topBorder">
 						<td class="formTitle" colspan="2">
@@ -103,7 +106,8 @@
 					<tr>
 						<td class="formLabelWhite">
 							<div align="left">
-								<strong><strong>Date Received</strong></strong>
+								<strong><strong>Date Received</strong>
+								</strong>
 							</div>
 						</td>
 
@@ -116,7 +120,8 @@
 					<tr>
 						<td class="formLabel">
 							<div align="left">
-								<span class="formField"><strong>Solubility</strong></span>
+								<span class="formField"><strong>Solubility</strong>
+								</span>
 							</div>
 						</td>
 
@@ -142,7 +147,8 @@
 					<tr>
 						<td class="formLabel">
 							<div align="left">
-								<span class="formField"><strong>Lot Description</strong></span>
+								<span class="formField"><strong>Lot Description</strong>
+								</span>
 							</div>
 						</td>
 
@@ -179,7 +185,8 @@
 				</tbody>
 			</table>
 			<br>
-			<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+			<table class="topBorderOnly" cellspacing="0" cellpadding="3"
+				width="100%" align="center" summary="" border="0">
 				<tbody>
 					<tr class="topBorder">
 						<td class="dataTableHighlightLabel" colspan="2">
@@ -196,12 +203,7 @@
 							</div>
 						</td>
 						<td class="formField" width="72%">
-							<logic:notEqual name="aliquot" property="container.containerType" value="Other">
-								<bean:write name="aliquot" property="container.containerType" />
-							</logic:notEqual>
-							<logic:equal name="aliquot" property="container.containerType" value="Other">
-								<bean:write name="aliquot" property="container.otherContainerType" />
-							</logic:equal>
+							<bean:write name="aliquot" property="container.containerType" />
 							&nbsp;
 						</td>
 					</tr>
@@ -304,7 +306,8 @@
 						</td>
 
 						<td class="formField">
-							<bean:write name="aliquot" property="container.storageLocation.room" />
+							<bean:write name="aliquot"
+								property="container.storageLocation.room" />
 							&nbsp;
 						</td>
 					</tr>
@@ -317,7 +320,8 @@
 						</td>
 
 						<td class="formFieldWhite">
-							<bean:write name="aliquot" property="container.storageLocation.freezer" />
+							<bean:write name="aliquot"
+								property="container.storageLocation.freezer" />
 							&nbsp;
 						</td>
 					</tr>
@@ -330,7 +334,8 @@
 						</td>
 
 						<td class="formField">
-							<bean:write name="aliquot" property="container.storageLocation.shelf" />
+							<bean:write name="aliquot"
+								property="container.storageLocation.shelf" />
 							&nbsp;
 						</td>
 					</tr>
@@ -343,7 +348,8 @@
 						</td>
 
 						<td class="formFieldWhite">
-							<bean:write name="aliquot" property="container.storageLocation.box" />
+							<bean:write name="aliquot"
+								property="container.storageLocation.box" />
 							&nbsp;
 						</td>
 					</tr>
@@ -362,7 +368,8 @@
 				</tbody>
 			</table>
 			<br>
-			<table class="topBorderOnly" cellspacing="0" cellpadding="3" align="center" width="100%" summary="" border="0">
+			<table class="topBorderOnly" cellspacing="0" cellpadding="3"
+				align="center" width="100%" summary="" border="0">
 				<tr>
 					<td width="30%" class="formMessage">
 						Aliquoted by:
