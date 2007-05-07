@@ -37,6 +37,18 @@
 		<put name="menu" value="search" />
 	</definition>
 
+	<!-- definition for the search protocol page -->
+	<definition name="search.searchprotocol" extends="calab.home">
+		<put name="calabContent" value="/search/bodySearchProtocol.jsp" />
+		<put name="menu" value="search" />
+	</definition>
+
+	<!-- definition for the search protocol result page -->
+	<definition name="search.searchprotocol.result" extends="calab.home">
+		<put name="calabContent" value="/search/bodySearchProtocolResult.jsp" />
+		<put name="menu" value="search" />
+	</definition>
+
 	<!-- definition for the advanced search nanoparticle page -->
 	<definition name="search.searchnanoparticle.advanced" extends="calab.home">
 		<put name="calabContent" value="/search/bodySearchNanoparticleAdvanced.jsp" />
