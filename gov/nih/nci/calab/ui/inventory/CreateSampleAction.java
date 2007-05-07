@@ -7,12 +7,12 @@ package gov.nih.nci.calab.ui.inventory;
  * @author pansu
  */
 
-/* CVS $Id: CreateSampleAction.java,v 1.9 2007-01-09 20:16:01 pansu Exp $ */
+/* CVS $Id: CreateSampleAction.java,v 1.10 2007-05-07 18:55:56 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.inventory.ContainerBean;
+import gov.nih.nci.calab.dto.inventory.ContainerInfoBean;
 import gov.nih.nci.calab.dto.inventory.SampleBean;
 import gov.nih.nci.calab.service.inventory.ManageSampleService;
-import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
 import gov.nih.nci.calab.service.util.StringUtils;
@@ -20,6 +20,7 @@ import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -64,11 +65,9 @@ public class CreateSampleAction extends AbstractDispatchAction {
 			return forward;
 		}
 		String sampleType = (String) theForm.get("sampleType");
-		// String otherSampleType = (String) theForm.get("otherSampleType");
 		String sampleSOP = (String) theForm.get("sampleSOP");
 		String sampleDescription = (String) theForm.get("sampleDescription");
 		String sampleSource = (String) theForm.get("sampleSource");
-		String otherSampleSource = (String) theForm.get("otherSampleSource");
 		String sourceSampleId = (String) theForm.get("sourceSampleId");
 		String dateReceivedStr = (String) theForm.get("dateReceived");
 		Date dateReceived = StringUtils.convertToDate(dateReceivedStr,
@@ -97,18 +96,16 @@ public class CreateSampleAction extends AbstractDispatchAction {
 		Date creationDate = new Date();
 		SampleBean sample = new SampleBean(sampleNamePrefix, sampleName,
 				sampleType, sampleSOP, sampleDescription, sampleSource,
-				otherSampleSource, sourceSampleId, dateReceived, solubility,
-				lotId, lotDescription, numContainers, generalComments,
+				sourceSampleId, dateReceived, solubility, lotId,
+				lotDescription, numContainers, generalComments,
 				sampleSubmitter, creationDate, containers);
 		request.setAttribute("sample", sample);
 		manageSampleService.saveSample(sample, containers);
 
-		// create a new user group if other is specified
-		if (sampleSource.equals(CaNanoLabConstants.OTHER)) {
-			UserService userService = new UserService(
-					CaNanoLabConstants.CSM_APP_NAME);
-			userService.createAGroup(otherSampleSource);
-		}
+		// create a new user group for the source specified
+		// UserService userService = new UserService(
+		// CaNanoLabConstants.CSM_APP_NAME);
+		// userService.createAGroup(sampleSource);
 
 		// set a flag to indicate that new sample have been created so session
 		// can be refreshed in initSession.do
@@ -126,7 +123,6 @@ public class CreateSampleAction extends AbstractDispatchAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		int numContainers = Integer.parseInt((String) theForm
 				.get("numberOfContainers"));
-
 		ContainerBean[] origContainers = (ContainerBean[]) theForm
 				.get("containers");
 		ContainerBean[] containers = new ContainerBean[numContainers];
@@ -153,7 +149,9 @@ public class CreateSampleAction extends AbstractDispatchAction {
 			}
 		}
 		theForm.set("containers", containers);
-		return mapping.getInputForward();
+		// update editable drop-down lists to include new entries.
+		updateEditableDropDownList(request, theForm);
+		return mapping.findForward("setup");
 	}
 
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
@@ -180,10 +178,68 @@ public class CreateSampleAction extends AbstractDispatchAction {
 				CaNanoLabConstants.CANANOLAB_PROPERTY, "samplePrefix"));
 		ContainerBean[] containers = new ContainerBean[] { new ContainerBean() };
 		theForm.set("containers", containers);
-		return mapping.getInputForward();
+		return mapping.findForward("setup");
+	}
+
+	public ActionForward input(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		updateEditableDropDownList(request, theForm);
+		return mapping.findForward("setup");
 	}
 
 	public boolean loginRequired() {
 		return true;
+	}
+
+	private void updateEditableDropDownList(HttpServletRequest request,
+			DynaValidatorForm theForm) {
+		HttpSession session = request.getSession();
+		// update sample source drop-down list to include the new entry
+		String newSampleSource = (String) theForm.get("sampleSource");
+		List sampleSources = (List) session.getAttribute("allSampleSources");
+		if (!sampleSources.contains(newSampleSource)
+				&&newSampleSource.length()>0) {
+			sampleSources.add(newSampleSource);
+		}
+		// update container type drop-down list to include the new entry
+		List sampleContainerTypes = (List) session
+				.getAttribute("allSampleContainerTypes");
+		ContainerBean[] origContainers = (ContainerBean[]) theForm
+				.get("containers");
+		for (int i = 0; i < origContainers.length; i++) {
+			String newContainerType = origContainers[i].getContainerType();
+			if (!sampleContainerTypes.contains(newContainerType)
+					&& newContainerType.length() > 0) {
+				sampleContainerTypes.add(newContainerType);
+			}
+		}
+		// update storage location drop-down list to include the new
+		ContainerInfoBean containerInfo = (ContainerInfoBean) session
+				.getAttribute("sampleContainerInfo");
+		for (int i = 0; i < origContainers.length; i++) {
+			String newRoom = origContainers[i].getStorageLocation().getRoom();
+			String newFreezer = origContainers[i].getStorageLocation()
+					.getFreezer();
+			String newShelf = origContainers[i].getStorageLocation().getShelf();
+			String newBox = origContainers[i].getStorageLocation().getBox();
+			if (!containerInfo.getStorageRooms().contains(newRoom)
+					&& newRoom.length() > 0) {
+				containerInfo.getStorageRooms().add(newRoom);
+			}
+			if (!containerInfo.getStorageFreezers().contains(newFreezer)
+					&& newFreezer.length() > 0) {
+				containerInfo.getStorageFreezers().add(newFreezer);
+			}
+			if (!containerInfo.getStorageShelves().contains(newShelf)
+					&& newShelf.length() > 0) {
+				containerInfo.getStorageShelves().add(newShelf);
+			}
+			if (!containerInfo.getStorageBoxes().contains(newBox)
+					&& newBox.length() > 0) {
+				containerInfo.getStorageBoxes().add(newBox);
+			}
+		}
 	}
 }
