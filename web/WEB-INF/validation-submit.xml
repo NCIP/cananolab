@@ -37,7 +37,23 @@
 				</field>
 			-->
 		</form>
-
+		<form name="submitProtocolForm">
+			<field property="nameSource" page="2" depends="required">
+				<arg position="0" key="submitProtocolForm.nameSource" bundle="submit" />
+			</field>
+			<field property="protocolType" page="2" depends="required">
+				<arg position="0" key="submitProtocolForm.protocolType" bundle="submit" />
+			</field>
+			<field property="uploadedFile" page="2" depends="required">
+				<arg position="0" key="submitProtocolForm.uploadedFile" bundle="submit" />
+			</field>
+			<field property="fileTitle" page="1" depends="required">
+				<arg position="0" key="submitProtocolForm.fileTitle" bundle="submit" />
+			</field>
+			<field property="protocolVersion" page="1" depends="required">
+				<arg position="0" key="submitProtocolForm.protocolVersion" bundle="submit" />
+			</field>
+		</form>
 		<form name="nanoparticleCompositionForm">
 			<field property="characterizationSource" page="1" depends="required">
 				<arg position="0" key="characterizationSource" bundle="submit" />
