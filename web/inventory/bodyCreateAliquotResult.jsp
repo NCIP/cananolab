@@ -10,7 +10,8 @@
 			<logic:iterate name="aliquotMatrix" id="aliquotRow">
 				<logic:iterate name="aliquotRow" id="aliquot">
 					<logic:present name="aliquot">
-						<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+						<table class="topBorderOnly" cellspacing="0" cellpadding="3"
+							width="100%" align="center" summary="" border="0">
 							<tbody>
 								<tr class="topBorder">
 									<td class="formTitle" colspan="2">
@@ -27,12 +28,7 @@
 										</div>
 									</td>
 									<td class="formField" width="72%">
-										<logic:notEqual name="aliquot" property="container.containerType" value="Other">
-											<bean:write name="aliquot" property="container.containerType" />
-										</logic:notEqual>
-										<logic:equal name="aliquot" property="container.containerType" value="Other">
-											<bean:write name="aliquot" property="container.otherContainerType" />
-										</logic:equal>
+										<bean:write name="aliquot" property="container.containerType" />
 										&nbsp;
 									</td>
 								</tr>
@@ -60,7 +56,8 @@
 									<td class="formField">
 										<bean:write name="aliquot" property="container.concentration" />
 										&nbsp;
-										<bean:write name="aliquot" property="container.concentrationUnit" />
+										<bean:write name="aliquot"
+											property="container.concentrationUnit" />
 										&nbsp;
 									</td>
 								</tr>
@@ -101,7 +98,8 @@
 									</td>
 
 									<td class="formFieldWhite">
-										<bean:write name="aliquot" property="container.safetyPrecaution" />
+										<bean:write name="aliquot"
+											property="container.safetyPrecaution" />
 										&nbsp;
 									</td>
 								</tr>
@@ -114,7 +112,8 @@
 									</td>
 
 									<td class="formField">
-										<bean:write name="aliquot" property="container.storageCondition" />
+										<bean:write name="aliquot"
+											property="container.storageCondition" />
 										&nbsp;
 									</td>
 								</tr>
@@ -135,12 +134,8 @@
 									</td>
 
 									<td class="formField">
-										<logic:notEqual name="aliquot" property="container.storageLocation.room" value="Other">
-											<bean:write name="aliquot" property="container.storageLocation.room" />
-										</logic:notEqual>
-										<logic:equal name="aliquot" property="container.storageLocation.room" value="Other">
-											<bean:write name="aliquot" property="container.storageLocation.otherRoom" />
-										</logic:equal>
+										<bean:write name="aliquot"
+											property="container.storageLocation.room" />
 										&nbsp;
 									</td>
 								</tr>
@@ -153,12 +148,8 @@
 									</td>
 
 									<td class="formFieldWhite">
-										<logic:notEqual name="aliquot" property="container.storageLocation.freezer" value="Other">
-											<bean:write name="aliquot" property="container.storageLocation.freezer" />
-										</logic:notEqual>
-										<logic:equal name="aliquot" property="container.storageLocation.freezer" value="Other">
-											<bean:write name="aliquot" property="container.storageLocation.otherFreezer" />
-										</logic:equal>
+										<bean:write name="aliquot"
+											property="container.storageLocation.freezer" />
 										&nbsp;
 									</td>
 								</tr>
@@ -171,12 +162,8 @@
 									</td>
 
 									<td class="formField">
-										<logic:notEqual name="aliquot" property="container.storageLocation.shelf" value="Other">
-											<bean:write name="aliquot" property="container.storageLocation.shelf" />
-										</logic:notEqual>
-										<logic:equal name="aliquot" property="container.storageLocation.shelf" value="Other">
-											<bean:write name="aliquot" property="container.storageLocation.otherShelf" />
-										</logic:equal>
+										<bean:write name="aliquot"
+											property="container.storageLocation.shelf" />
 										&nbsp;
 									</td>
 								</tr>
@@ -189,12 +176,8 @@
 									</td>
 
 									<td class="formFieldWhite">
-										<logic:notEqual name="aliquot" property="container.storageLocation.box" value="Other">
-											<bean:write name="aliquot" property="container.storageLocation.box" />
-										</logic:notEqual>
-										<logic:equal name="aliquot" property="container.storageLocation.box" value="Other">
-											<bean:write name="aliquot" property="container.storageLocation.otherBox" />
-										</logic:equal>
+										<bean:write name="aliquot"
+											property="container.storageLocation.box" />
 										&nbsp;
 									</td>
 								</tr>
@@ -206,7 +189,8 @@
 									</td>
 
 									<td class="formField">
-										<bean:write name="aliquot" property="container.containerComments" />
+										<bean:write name="aliquot"
+											property="container.containerComments" />
 										&nbsp;
 									</td>
 								</tr>
