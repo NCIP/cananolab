@@ -14,13 +14,6 @@
 			<field property="sampleSource" page="1" depends="required">
 				<arg position="0" key="createSampleForm.sampleSource" bundle="inventory" />
 			</field>
-			<field property="otherSampleSource" page="1" depends="validwhen">
-				<arg position="0" key="createSampleForm.otherSampleSource" bundle="inventory" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>((sampleSource!="Other") or (*this*!=null))</var-value>
-				</var>
-			</field>
 			<field property="lotId" page="1" depends="required">
 				<arg position="0" key="createSampleForm.lotId" bundle="inventory" />
 			</field>
@@ -46,13 +39,6 @@
 			</field>
 			<field property="containerType" page="1" depends="required" indexedListProperty="containers">
 				<arg position="0" key="createSampleForm.containerType" bundle="inventory" />
-			</field>
-			<field property="otherContainerType" page="1" depends="validwhen" indexedListProperty="containers">
-				<arg position="0" key="createSampleForm.otherContainerType" bundle="inventory" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>((containers[].containerType!="Other") or (*this*!=null))</var-value>
-				</var>
 			</field>
 			<field property="solvent" page="0" depends="validwhen" indexedListProperty="containers">
 				<arg position="0" key="createSampleForm.concentrationSolvent" bundle="inventory" />
@@ -98,36 +84,7 @@
 					<var-value>((containers[].volume==null) or (*this*!=null))</var-value>
 				</var>
 			</field>
-			<field property="storageLocation.otherRoom" page="1" depends="validwhen" indexedListProperty="containers">
-				<arg position="0" key="createSampleForm.otherRoom" bundle="inventory" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>((containers[].storageLocation.room!="Other") or (*this*!=null))</var-value>
-				</var>
-			</field>
-			<field property="storageLocation.otherFreezer" page="1" depends="validwhen" indexedListProperty="containers">
-				<arg position="0" key="createSampleForm.otherFreezer" bundle="inventory" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>((containers[].storageLocation.freezer!="Other") or (*this*!=null))</var-value>
-				</var>
-			</field>
-			<field property="storageLocation.otherShelf" page="1" depends="validwhen" indexedListProperty="containers">
-				<arg position="0" key="createSampleForm.otherShelf" bundle="inventory" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>((containers[].storageLocation.shelf!="Other") or (*this*!=null))</var-value>
-				</var>
-			</field>
-			<field property="storageLocation.otherBox" page="1" depends="validwhen" indexedListProperty="containers">
-				<arg position="0" key="createSampleForm.otherBox" bundle="inventory" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>((containers[].storageLocation.box!="Other") or (*this*!=null))</var-value>
-				</var>
-			</field>
 		</form>
-
 		<form name="createAliquotForm">
 			<field property="containerName" page="1" depends="validwhen">
 				<arg position="0" key="createAliquotForm.containerName" bundle="inventory" />
@@ -158,13 +115,6 @@
 			</field>
 			<field property="template.container.containerType" page="1" depends="required">
 				<arg position="0" key="createAliquotForm.containerType" bundle="inventory" />
-			</field>
-			<field property="template.container.otherContainerType" depends="validwhen">
-				<arg position="0" key="createAliquotForm.otherContainerType" bundle="inventory" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>((template.container.containerType!="Other") or (*this*!=null))</var-value>
-				</var>
 			</field>
 			<field property="template.container.solvent" page="1" depends="validwhen">
 				<arg position="0" key="createAliquotForm.concentrationSolvent" bundle="inventory" />
@@ -211,46 +161,11 @@
 					<var-value>((template.container.volume==null) or (*this*!=null))</var-value>
 				</var>
 			</field>
-			<field property="template.container.storageLocation.otherRoom" page="1" depends="validwhen">
-				<arg position="0" key="createAliquotForm.otherRoom" bundle="inventory" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>((template.container.storageLocation.room!="Other") or (*this*!=null))</var-value>
-				</var>
-			</field>
-			<field property="template.container.storageLocation.otherFreezer" page="1" depends="validwhen">
-				<arg position="0" key="createAliquotForm.otherFreezer" bundle="inventory" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>((template.container.storageLocation.freezer!="Other") or (*this*!=null))</var-value>
-				</var>
-			</field>
-			<field property="template.container.storageLocation.otherShelf" page="1" depends="validwhen">
-				<arg position="0" key="createAliquotForm.otherShelf" bundle="inventory" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>((template.container.storageLocation.shelf!="Other") or (*this*!=null))</var-value>
-				</var>
-			</field>
-			<field property="template.container.storageLocation.otherBox" page="1" depends="validwhen">
-				<arg position="0" key="createAliquotForm.otherBox" bundle="inventory" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>((template.container.storageLocation.box!="Other") or (*this*!=null))</var-value>
-				</var>
-			</field>
 		</form>
 
 		<form name="editAliquotForm">
 			<field property="aliquot.container.containerType" page="1" depends="required">
 				<arg position="0" key="editAliquotForm.containerType" bundle="inventory" />
-			</field>
-			<field property="aliquot.container.otherContainerType" page="1" depends="validwhen">
-				<arg position="0" key="editAliquotForm.otherContainerType" bundle="inventory" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>((aliquot.container.containerType!="Other") or (*this*!=null))</var-value>
-				</var>
 			</field>
 			<field property="aliquot.container.solvent" page="1" depends="validwhen">
 				<arg position="0" key="editAliquotForm.concentrationSolvent" bundle="inventory" />
@@ -294,34 +209,6 @@
 				<var>
 					<var-name>test</var-name>
 					<var-value>((aliquot.container.volume==null) or (*this*!=null))</var-value>
-				</var>
-			</field>
-			<field property="aliquot.container.storageLocation.otherRoom" page="1" depends="validwhen">
-				<arg position="0" key="editAliquotForm.otherRoom" bundle="inventory" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>((aliquot.container.storageLocation.room!="Other") or (*this*!=null))</var-value>
-				</var>
-			</field>
-			<field property="aliquot.container.storageLocation.otherFreezer" page="1" depends="validwhen">
-				<arg position="0" key="editAliquotForm.otherFreezer" bundle="inventory" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>((aliquot.container.storageLocation.freezer!="Other") or (*this*!=null))</var-value>
-				</var>
-			</field>
-			<field property="aliquot.container.storageLocation.otherShelf" page="1" depends="validwhen">
-				<arg position="0" key="editAliquotForm.otherShelf" bundle="inventory" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>((aliquot.container.storageLocation.shelf!="Other") or (*this*!=null))</var-value>
-				</var>
-			</field>
-			<field property="aliquot.container.storageLocation.otherBox" page="1" depends="validwhen">
-				<arg position="0" key="editAliquotForm.otherBox" bundle="inventory" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>((aliquot.container.storageLocation.box!="Other") or (*this*!=null))</var-value>
 				</var>
 			</field>
 		</form>
