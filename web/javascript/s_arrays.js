@@ -162,7 +162,8 @@ S:s_CSSTop	// STYLE Array to use for this menu
 },
 [		// define items {U:'url',T:'text' ...} look at the Manual for details
 {U:'searchNanoparticle.do?dispatch=setup',T:'Search Nanoparticles'},
-{U:'searchReport.do?dispatch=setup',T:'Search Reports'}
+{U:'searchReport.do?dispatch=setup',T:'Search Reports'},
+{U:'searchProtocol.do?dispatch=setup',T:'Search Protocols'},
 ]
 );
 
@@ -213,7 +214,8 @@ S:s_CSSTop	// STYLE Array to use for this menu
 },
 [		// define items {U:'url',T:'text' ...} look at the Manual for details
 {U:'manageNanoparticle.do',T:'Annotate Nanoparticle'},
-{U:'publishReport.do?dispatch=setup&page=0',T:'Publish Report'}
+{U:'publishReport.do?dispatch=setup&page=0',T:'Publish Report'},
+{U:'submitProtocol.do?dispatch=setup&page=0',T:'Submit Protocol'}
 ]
 );
 
