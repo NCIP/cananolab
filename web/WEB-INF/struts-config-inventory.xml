@@ -10,7 +10,6 @@
 			<form-property name="sampleSOP" type="java.lang.String" />
 			<form-property name="sampleDescription" type="java.lang.String" />
 			<form-property name="sampleSource" type="java.lang.String" />
-			<form-property name="otherSampleSource" type="java.lang.String" />
 			<form-property name="sourceSampleId" type="java.lang.String" />
 			<form-property name="dateReceived" type="java.lang.String" />
 			<form-property name="lotId" type="java.lang.String" initial="N/A" />
@@ -85,13 +84,15 @@
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="inventory" key="error.createSample" path="inventory.message" type="java.lang.Exception" />
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="inventory" key="error.createSample.duplicate" path="inventory.createsample" type="gov.nih.nci.calab.exception.DuplicateEntriesException" />
 			<forward name="success" path="inventory.sampledetails" />
-			<forward name="input" path="inventory.createsample" />
+			<forward name="input" path="/createSample.do?dispatch=input&amp;page=0" />
+			<forward name="setup" path="inventory.createsample"/>
 		</action>
 		<action name="createAliquotForm" parameter="dispatch" path="/createAliquot" type="gov.nih.nci.calab.ui.inventory.CreateAliquotAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="inventory" key="error.createAliquot.nomatrix" path="inventory.createaliquot" type="gov.nih.nci.calab.exception.CalabException" />
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="inventory" key="error.createAliquot.duplicate" path="inventory.createaliquot" type="gov.nih.nci.calab.exception.DuplicateEntriesException" />
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="inventory" key="error.createAliquot" path="inventory.message" type="java.lang.Exception" />
-			<forward name="input" path="inventory.createaliquot" />
+			<forward name="setup" path="inventory.createaliquot" />
+			<forward name="input" path="/createAliquot.do?dispatch=input&amp;page=0" />
 			<forward name="success" path="inventory.createaliquotresult" />
 		</action>
 		<action name="editAliquotForm" parameter="dispatch" path="/editAliquot" scope="request" type="gov.nih.nci.calab.ui.inventory.EditAliquotAction" input="input">
