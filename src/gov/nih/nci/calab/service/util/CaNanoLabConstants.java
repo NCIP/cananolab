@@ -259,6 +259,8 @@ public class CaNanoLabConstants {
 	public static final String REPORT = "Report";
 
 	public static final String ASSOCIATED_FILE = "Other Associated File";
+	
+	public static final String PROTOCOL_FILE="Protocol File";
 
 	public static final String WORKFLOW_DATA = "workflow_data";
 
