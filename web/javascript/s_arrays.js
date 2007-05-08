@@ -163,11 +163,11 @@ S:s_CSSTop	// STYLE Array to use for this menu
 [		// define items {U:'url',T:'text' ...} look at the Manual for details
 {U:'searchNanoparticle.do?dispatch=setup',T:'Search Nanoparticles'},
 {U:'searchReport.do?dispatch=setup',T:'Search Reports'},
-{U:'searchProtocol.do?dispatch=setup',T:'Search Protocols'},
+{U:'searchProtocol.do?dispatch=setup',T:'Search Protocols'}
 ]
 );
 
-//Search
+//Remote Search
 s_add(
 {
 N:'REMOTE SEARCH',	// NAME
