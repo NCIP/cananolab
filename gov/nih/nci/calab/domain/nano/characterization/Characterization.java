@@ -4,6 +4,7 @@
 package gov.nih.nci.calab.domain.nano.characterization;
 
 import gov.nih.nci.calab.domain.Instrument;
+import gov.nih.nci.calab.domain.ProtocolFile;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 
 import java.io.Serializable;
@@ -82,7 +83,7 @@ public class Characterization implements Serializable {
 
 	private Instrument instrument;
 
-	private CharacterizationProtocol characterizationProtocol;
+	private ProtocolFile protocolFile;
 
 	private String classification;
 
@@ -172,15 +173,6 @@ public class Characterization implements Serializable {
 
 	public void setInstrument(Instrument instrument) {
 		this.instrument = instrument;
-	}
-
-	public CharacterizationProtocol getCharacterizationProtocol() {
-		return characterizationProtocol;
-	}
-
-	public void setCharacterizationProtocol(
-			CharacterizationProtocol characterizationProtocol) {
-		this.characterizationProtocol = characterizationProtocol;
 	}
 
 	public void setClassification(String classification) {
@@ -329,4 +321,11 @@ public class Characterization implements Serializable {
 		return h;
 	}
 
+	public ProtocolFile getProtocolFile() {
+		return protocolFile;
+	}
+
+	public void setProtocolFile(ProtocolFile protocolFile) {
+		this.protocolFile = protocolFile;
+	}
 }
