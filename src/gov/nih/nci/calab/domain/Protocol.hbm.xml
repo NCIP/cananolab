@@ -10,7 +10,7 @@
 				<param name="column">next_hi</param>
 	   </generator>
     </id>
-    <property name="description" type="java.lang.String" column="DESCRIPTION" />
+    <property name="type" type="java.lang.String" column="PROTOCOL_TYPE" />
     <property name="name" type="java.lang.String" column="PROTOCOL_NAME" />
     <set name="protocolFileCollection" cascade="all-delete-orphan" lazy="true" inverse="true">
       <cache usage="read-write" />
