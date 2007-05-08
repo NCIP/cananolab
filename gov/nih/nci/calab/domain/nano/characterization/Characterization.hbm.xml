@@ -28,7 +28,7 @@
 		
 		<many-to-one name="instrument"  class="gov.nih.nci.calab.domain.Instrument" column="INSTRUMENT_PK_ID" lazy="false" fetch="join"/> 
 		
-		<many-to-one name="characterizationProtocol"  class="gov.nih.nci.calab.domain.nano.characterization.CharacterizationProtocol" column="CHAR_PROTOCOL_PK_ID" lazy="false" fetch="join"/> 
+		<many-to-one name="protocolFile"  class="gov.nih.nci.calab.domain.ProtocolFile" column="PROTOCOL_FILE_PK_ID" lazy="false" fetch="join"/> 
 		
 	</class>
 </hibernate-mapping>
