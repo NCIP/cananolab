@@ -198,8 +198,8 @@ public class SubmitNanoparticleService {
 				ida.store(achar.getInstrument());
 			}
 
-			if (achar.getCharacterizationProtocol() != null) {
-				ida.store(achar.getCharacterizationProtocol());
+			if (achar.getProtocolFile() != null) {
+				ida.store(achar.getProtocolFile());
 			}
 
 			// check if viewTitle is already used the same type of
