@@ -15,6 +15,8 @@ public class Protocol implements java.io.Serializable {
 
 	private java.lang.Long id;
 
+	private String type;
+	
 	public java.lang.Long getId() {
 		return id;
 	}
@@ -23,17 +25,15 @@ public class Protocol implements java.io.Serializable {
 		this.id = id;
 	}
 
-	private java.lang.String description;
-
-	public java.lang.String getDescription() {
-		return description;
-	}
-
-	public void setDescription(java.lang.String description) {
-		this.description = description;
-	}
-
 	private java.lang.String name;
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 
 	public java.lang.String getName() {
 		return name;
