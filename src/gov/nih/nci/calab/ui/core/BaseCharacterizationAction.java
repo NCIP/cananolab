@@ -38,7 +38,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 
-/* CVS $Id: BaseCharacterizationAction.java,v 1.24 2007-01-05 19:15:45 pansu Exp $ */
+/* CVS $Id: BaseCharacterizationAction.java,v 1.25 2007-05-10 17:23:32 pansu Exp $ */
 
 public abstract class BaseCharacterizationAction extends AbstractDispatchAction {
 	/**
@@ -245,7 +245,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			response.setContentType("application/octet-stream");
 			response.setHeader("Content-disposition", "attachment;filename="
 					+ fileBean.getName());
-			response.setHeader("Cache-Control", "no-cache");
+			response.setHeader("cache-control", "Private");
 
 			java.io.InputStream in = new FileInputStream(dFile);
 			java.io.OutputStream out = response.getOutputStream();
