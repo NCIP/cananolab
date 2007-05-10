@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: RemoteSearchReportAction.java,v 1.10 2007-03-26 20:36:32 pansu Exp $ */
+/* CVS $Id: RemoteSearchReportAction.java,v 1.11 2007-05-10 17:23:32 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.remote.GridNodeBean;
@@ -155,8 +155,9 @@ public class RemoteSearchReportAction extends AbstractDispatchAction {
 			if (fileData != null) {
 				response.setContentType("application/octet-stream");
 				response.setHeader("Content-disposition",
-						"attachment;filename=" + fileName);
-				response.setHeader("Cache-Control", "no-cache");
+						"attachment;filename=" + fileName);		
+				response.setHeader("cache-control", "Private");
+
 				java.io.OutputStream out = response.getOutputStream();
 				out.write(fileData);
 				out.close();
