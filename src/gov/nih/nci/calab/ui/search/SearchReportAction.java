@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchReportAction.java,v 1.8 2007-02-28 21:55:09 pansu Exp $ */
+/* CVS $Id: SearchReportAction.java,v 1.9 2007-05-10 17:23:32 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
@@ -105,8 +105,8 @@ public class SearchReportAction extends AbstractDispatchAction {
 		if (dFile.exists()) {
 			response.setContentType("application/octet-stream");
 			response.setHeader("Content-disposition", "attachment;filename="
-					+ fileBean.getName());
-			response.setHeader("Cache-Control", "no-cache");
+					+ fileBean.getName());			
+			response.setHeader("cache-control", "Private");
 
 			java.io.InputStream in = new FileInputStream(dFile);
 			java.io.OutputStream out = response.getOutputStream();
