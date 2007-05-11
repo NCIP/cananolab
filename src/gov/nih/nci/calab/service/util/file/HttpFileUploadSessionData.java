@@ -51,6 +51,8 @@ INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIM
 package gov.nih.nci.calab.service.util.file;
 
 
+import gov.nih.nci.calab.service.util.StringUtils;
+
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
@@ -151,30 +153,12 @@ public class HttpFileUploadSessionData implements Serializable
         
         if(timeStamp == null)
         {
-            timeStamp = getTimeAsString();
+            timeStamp = StringUtils.getTimeAsString();
         }
         
         return timeStamp;
     }
-    
-    private String getTimeAsString()
-    {
-        String time = null;
-        Calendar calendar = Calendar.getInstance();
-        time = "" + calendar.get(Calendar.YEAR);
-        time = time + (calendar.get(Calendar.MONTH) < 9 ? "0"+(calendar.get(Calendar.MONTH)+1) : ""+(calendar.get(Calendar.MONTH)+1));
-
-        time = time + (calendar.get(Calendar.DAY_OF_MONTH) < 10 ? "0"+calendar.get(Calendar.DAY_OF_MONTH) : ""+calendar.get(Calendar.DAY_OF_MONTH)) + "_";
-        time = time + calendar.get(Calendar.HOUR_OF_DAY) + "-";
-        time = time + (calendar.get(Calendar.MINUTE) < 10 ? "0"+calendar.get(Calendar.MINUTE)
-            : ""+calendar.get(Calendar.MINUTE)) +  "-";
-        time = time + (calendar.get(Calendar.SECOND)  < 10 ? "0" +calendar.get(Calendar.SECOND)
-            : ""+calendar.get(Calendar.SECOND)) + "-";
-        time = time + calendar.get(Calendar.MILLISECOND);
-
-        return time;
-    }
-    
+      
     /**
      * 
      * To return the size of the fileList.
