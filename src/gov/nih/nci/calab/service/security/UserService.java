@@ -133,7 +133,8 @@ public class UserService {
 	 */
 	public boolean checkExecutePermission(UserBean user,
 			String protectionElementObjectId) throws CSException {
-		return checkPermission(user, protectionElementObjectId, CaNanoLabConstants.CSM_EXECUTE_PRIVILEGE);
+		return checkPermission(user, protectionElementObjectId,
+				CaNanoLabConstants.CSM_EXECUTE_PRIVILEGE);
 	}
 
 	/**
@@ -422,7 +423,7 @@ public class UserService {
 	 */
 	public List<String> getExistingRoleIds(ProtectionGroup pg, Group group)
 			throws Exception {
-		List<String> roleIds = new ArrayList<String>();		
+		List<String> roleIds = new ArrayList<String>();
 		HibernateDataAccess hda = HibernateDataAccess.getInstance();
 		String query = "select distinct role_id from csm_user_group_role_pg "
 				+ "where protection_group_id=" + pg.getProtectionGroupId()
@@ -759,6 +760,24 @@ public class UserService {
 					"error getting accessible groups from CSM database:" + e);
 		} finally {
 			hda.close();
+		}
+	}
+
+	public void setVisiblity(String dataToProtect, String[] visibilities)
+			throws Exception {
+		removeAllAccessibleGroups(dataToProtect,
+				CaNanoLabConstants.CSM_READ_ROLE, null);
+
+		// set new visibilities
+		for (String visibility : visibilities) {
+			secureObject(dataToProtect, visibility,
+					CaNanoLabConstants.CSM_READ_ROLE);
+		}
+
+		// set default visibilities
+		for (String visibility : CaNanoLabConstants.VISIBLE_GROUPS) {
+			secureObject(dataToProtect, visibility,
+					CaNanoLabConstants.CSM_READ_ROLE);
 		}
 	}
 }
