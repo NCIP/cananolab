@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchProtocolAction.java,v 1.1 2007-05-07 12:24:36 chenhang Exp $ */
+/* CVS $Id: SearchProtocolAction.java,v 1.2 2007-05-11 19:47:01 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
@@ -106,7 +106,7 @@ public class SearchProtocolAction extends AbstractDispatchAction {
 			response.setContentType("application/octet-stream");
 			response.setHeader("Content-disposition", "attachment;filename="
 					+ fileBean.getName());
-			response.setHeader("Cache-Control", "no-cache");
+			response.setHeader("cache-control", "Private");
 
 			java.io.InputStream in = new FileInputStream(dFile);
 			java.io.OutputStream out = response.getOutputStream();
