@@ -94,7 +94,7 @@
 			table="PROTOCOL_FILE">
 			<key column="PROTOCOL_FILE_PK_ID" />
 			<many-to-one name="protocol"
-				class="gov.nih.nci.calab.domain.Protocol" column="PROTOCOL_PK_ID" />
+				class="gov.nih.nci.calab.domain.Protocol" column="PROTOCOL_PK_ID" not-null="true"/>
 		</joined-subclass>
 	</class>
 </hibernate-mapping>
