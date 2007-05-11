@@ -2,6 +2,7 @@ package gov.nih.nci.calab.service.util;
 
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.log4j.Logger;
@@ -15,25 +16,26 @@ import java.util.List;
  * @author pansu
  * 
  */
-/* CVS $Id: StringUtils.java,v 1.12 2007-02-26 16:06:27 zengje Exp $ */
+/* CVS $Id: StringUtils.java,v 1.13 2007-05-11 20:44:03 pansu Exp $ */
 
 public class StringUtils {
 	private static Logger logger = Logger.getLogger(StringUtils.class);
 
-public static Date convertToDate(String dateString, String dateFormat) {
+	public static Date convertToDate(String dateString, String dateFormat) {
 		if (dateString == null || dateString == "") {
 			return null;
 		}
 		Date theDate = null;
 		try {
-			ParsePosition pos=new ParsePosition(0);
+			ParsePosition pos = new ParsePosition(0);
 			SimpleDateFormat format = new SimpleDateFormat(dateFormat);
 			theDate = format.parse(dateString, pos);
 			// method parse doesn't throw an exception when parsing is partial.
 			// e.g. date 5/11/200w will
 			// be parsed as 5/11/200 !!!
-			if (pos.getIndex()!=dateString.length()) {
-				throw new RuntimeException("The date String is not completely parsed");				
+			if (pos.getIndex() != dateString.length()) {
+				throw new RuntimeException(
+						"The date String is not completely parsed");
 			}
 			return theDate;
 		} catch (Exception e) {
@@ -41,9 +43,12 @@ public static Date convertToDate(String dateString, String dateFormat) {
 					.error(
 							"Error parsing the given date String using the given dateFormat",
 							e);
-			throw new RuntimeException("The date String "+dateString+ " can't be parsed against the date format:" +dateFormat);
+			throw new RuntimeException("The date String " + dateString
+					+ " can't be parsed against the date format:" + dateFormat);
 		}
-	}	public static String join(String[] stringArray, String delimiter) {
+	}
+
+	public static String join(String[] stringArray, String delimiter) {
 		String joinedStr = "";
 		if (stringArray == null) {
 			return joinedStr;
@@ -151,13 +156,12 @@ public static Date convertToDate(String dateString, String dateFormat) {
 		}
 	}
 
-
 	public static boolean isInteger(String theStr) {
-		if ( theStr == null || theStr.length() == 0 ) {
+		if (theStr == null || theStr.length() == 0) {
 			return false;
 		} else {
-			for ( int i = 0; i < theStr.length(); i++ ) {
-				if ( !Character.isDigit(theStr.charAt(i)) ) {
+			for (int i = 0; i < theStr.length(); i++) {
+				if (!Character.isDigit(theStr.charAt(i))) {
 					return false;
 				}
 			}
@@ -167,35 +171,33 @@ public static Date convertToDate(String dateString, String dateFormat) {
 
 	public static boolean isDouble(String theStr) {
 		int decimalCount = 0;
-		
-		if ( theStr == null || theStr.length() == 0 ) {
+
+		if (theStr == null || theStr.length() == 0) {
 			return false;
 		} else {
-			for ( int i = 0; i < theStr.length(); i++ ) {
-				if ( !Character.isDigit(theStr.charAt(i)) ) {
-					if ( theStr.charAt(i) == ('.') ) {
+			for (int i = 0; i < theStr.length(); i++) {
+				if (!Character.isDigit(theStr.charAt(i))) {
+					if (theStr.charAt(i) == ('.')) {
 						decimalCount++;
 						continue;
-					} 
-					else {
+					} else {
 						return false;
 					}
 				}
 			}
-			
-			if ( decimalCount == 1 )
+
+			if (decimalCount == 1)
 				return true;
 			else
 				return false;
 		}
 	}
-	
-	
-	public static boolean contains(String[] array, String aString, boolean ignoreCase)
-	{
+
+	public static boolean contains(String[] array, String aString,
+			boolean ignoreCase) {
 		boolean containsString = false;
-		
-		for (int i=0; i < array.length; i++) {
+
+		for (int i = 0; i < array.length; i++) {
 			if (ignoreCase) {
 				if (array[i].equalsIgnoreCase(aString))
 					containsString = true;
@@ -204,17 +206,43 @@ public static Date convertToDate(String dateString, String dateFormat) {
 					containsString = true;
 			}
 		}
-		
+
 		return containsString;
 	}
-	
+
 	public static String[] add(String[] x, String aString) {
-		String[] result = new String[ x.length + 1 ];
-		for ( int i=0; i<x.length; i++ ) {
+		String[] result = new String[x.length + 1];
+		for (int i = 0; i < x.length; i++) {
 			result[i] = x[i];
 		}
 		result[x.length] = aString;
-		
+
 		return result;
+	}
+
+	public static String getTimeAsString() {
+		String time = null;
+		Calendar calendar = Calendar.getInstance();
+		time = "" + calendar.get(Calendar.YEAR);
+		time = time
+				+ (calendar.get(Calendar.MONTH) < 9 ? "0"
+						+ (calendar.get(Calendar.MONTH) + 1) : ""
+						+ (calendar.get(Calendar.MONTH) + 1));
+
+		time = time
+				+ (calendar.get(Calendar.DAY_OF_MONTH) < 10 ? "0"
+						+ calendar.get(Calendar.DAY_OF_MONTH) : ""
+						+ calendar.get(Calendar.DAY_OF_MONTH)) + "_";
+		time = time + calendar.get(Calendar.HOUR_OF_DAY) + "-";
+		time = time
+				+ (calendar.get(Calendar.MINUTE) < 10 ? "0"
+						+ calendar.get(Calendar.MINUTE) : ""
+						+ calendar.get(Calendar.MINUTE)) + "-";
+		time = time
+				+ (calendar.get(Calendar.SECOND) < 10 ? "0"
+						+ calendar.get(Calendar.SECOND) : ""
+						+ calendar.get(Calendar.SECOND)) + "-";
+		time = time + calendar.get(Calendar.MILLISECOND);
+		return time;
 	}
 }
