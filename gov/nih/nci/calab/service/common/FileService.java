@@ -4,15 +4,18 @@ import gov.nih.nci.calab.db.HibernateDataAccess;
 import gov.nih.nci.calab.domain.LabFile;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
+import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.SQLException;
 
 import org.apache.log4j.Logger;
+import org.apache.struts.upload.FormFile;
 
 /**
  * Utility service for file retrieving and writing.
@@ -123,4 +126,37 @@ public class FileService {
 			hda.close();
 		}
 	}
+
+	public String writeUploadedFile(FormFile uploadedFile, String filePath,
+			boolean addTimeStampPrefix) throws IOException {
+		File pathDir = new File(filePath);
+		if (!pathDir.exists())
+			pathDir.mkdirs();
+		
+		String fileName=uploadedFile.getFileName();
+		if (addTimeStampPrefix) {
+			fileName = prefixFileNameWithTimeStamp(fileName);
+		}
+		String fullFileName = filePath + File.separator + fileName;
+		FileOutputStream oStream = new FileOutputStream(new File(fullFileName));		
+		writeFile(uploadedFile.getInputStream(), oStream);
+		return fullFileName;
+	}
+
+	public void writeFile(InputStream is, FileOutputStream os)
+			throws IOException {
+		byte[] bytes = new byte[32768];
+
+		int numRead = 0;
+		while ((numRead = is.read(bytes)) > 0) {
+			os.write(bytes, 0, numRead);
+		}
+		os.close();
+	}
+
+	public String prefixFileNameWithTimeStamp(String fileName) {
+		String newFileName = StringUtils.getTimeAsString() + "_" + fileName;
+		return newFileName;
+	}
+
 }
