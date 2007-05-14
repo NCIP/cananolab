@@ -80,6 +80,9 @@ public class CaNanoLabConstants {
 	public static final String[] BOOLEAN_CHOICES = new String[] { BOOLEAN_YES,
 			BOOLEAN_NO };
 
+	public static final String[] PROTOCOL_TYPES = new String[] { "Physical assay", "Synthesis",
+		"In vitro assay", "In vivo assay", "Sample preparation", "Safety", "Radiolabeling" };
+	
 	public static final String DEFAULT_SAMPLE_PREFIX = "NANO-";
 
 	public static final String DEFAULT_APP_OWNER = "NCICB";
