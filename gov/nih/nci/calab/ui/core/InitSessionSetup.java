@@ -757,6 +757,34 @@ public class InitSessionSetup {
 				CaNanoLabConstants.FUNCTION_AGENT_TYPES);
 	}
 
+	public void setProtocolSubmitPage(HttpSession session) throws Exception {
+		// set protocol types as given in the constant file
+		List<String> protocolTypes = lookupService.getAllProtocolTypes();
+		for (int i = 0; i < CaNanoLabConstants.PROTOCOL_TYPES.length; i++){
+			if (!protocolTypes.contains(CaNanoLabConstants.PROTOCOL_TYPES[i]))
+				protocolTypes.add(CaNanoLabConstants.PROTOCOL_TYPES[i]);
+		}
+		session.setAttribute("protocolTypes", protocolTypes);
+		setAllProtocolNameTypes(session);
+		//Get available protocol names from PROTOCOL table
+		//setProtocolNamesDropdownList(session);
+	}
+	public void setAllProtocolNameVersion(HttpSession session) throws Exception {
+		// set protocol types as given in the constant file
+		Map<String, List<String>> nameVersions = lookupService.getAllProtocolNameVersion();
+		session.setAttribute("AllProtocolNameVersions", nameVersions);
+	}
+	public void setAllProtocolNameTypes(HttpSession session) throws Exception {
+		// set protocol types as given in the constant file
+		Map<String, List<String>> nameTypes = lookupService.getAllProtocolNameTypes();
+		session.setAttribute("AllProtocolNameTypes", nameTypes);
+	}
+	public void setProtocolNamesDropdownList(HttpSession session) throws Exception {
+		//Get available protocol names from PROTOCOL table
+		List<String> protocolNames = lookupService.getAllProtocolNames();
+		session.setAttribute("protocolNames", protocolNames);
+	}
+	
 	public void setAllRunFiles(HttpSession session, String particleName)
 			throws Exception {
 		if (session.getAttribute("allRunFiles") == null
