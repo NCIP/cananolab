@@ -3,6 +3,8 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
+<script type="text/javascript" src="javascript/editableDropDown.js"></script>
+
 <html:form action="/submitProtocol" enctype="multipart/form-data">
 	<table width="100%" align="center">
 		<tr>
@@ -33,11 +35,15 @@
 								<strong>Protocol Type*</strong>
 							</td>
 							<td class="rightLabel">
-								<html:select property="protocolType">
-									<option value="physical assay">Physical Assay</option>
-									<option value="invitro assay">In Vitro Assay</option>
-									<option value="invivo array">In Vivo Assay</option>
-									<option value="safety">Safety</option>
+								<html:select property="protocolType"
+									onchange="javascript:filterContainers();"
+									onkeydown="javascript:fnKeyDownHandler(this, event);"
+									onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
+									onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
+									onchange="fnChangeHandler_A(this, event);">
+									<!-- option/ -->
+									<option value="">--?--</option>
+									<html:options name="protocolTypes" />
 								</html:select>
 							</td>
 						</tr>
@@ -46,18 +52,28 @@
 								<strong>Protocol Name* </strong>
 							</td>
 							<td class="rightLabel">
-								<html:select property="nameSource" onchange="javascript:updateOtherField(submitProtocolForm, 'nameSource', 'otherNameSource')">
+								<html:select property="protocolName" 
+									onkeydown="javascript:fnKeyDownHandler(this, event);"
+									onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
+									onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
+									onchange="fnChangeHandler_A(this, event);">
+									<option value="">--?--</option>
+									<option value="${createAliquotForm.map.containerName}" selected>
+										${createAliquotForm.map.containerName}
+									</option>
+									<%--
+									<html:options name="protocolNames" />
 									<option value="GTA-3">GTA-3</option>
 									<option value="ITA-6"> ITA-6</option>
 									<option value="STE-3">STE-3</option>
-									<option value="other">Other</option>
-								</html:select> &nbsp; &nbsp; Other Name
-								<html:text property="otherNameSource" disabled="true" /> &nbsp; &nbsp; &nbsp; Protocol Version* &nbsp; <html:text property="protocolVersion" size="10"/>
+									--%>
+								</html:select> &nbsp; &nbsp; <strong>Protocol Version* </strong>&nbsp; 
+									<html:text property="file.version" size="10"/>
 							</td>
 						</tr>
 						<tr>
 							<td class="leftLabel">
-								<strong>Protocol File*</strong>
+								<strong>Protocol File</strong>
 							</td>
 							<td class="rightLabel">
 								<html:file property="uploadedFile" />
@@ -65,10 +81,10 @@
 						</tr>
 						<tr>
 							<td class="leftLabel">
-								<strong>File Title*</strong>
+								<strong>File Title</strong>
 							</td>
 							<td class="rightLabel">
-								<html:text property="fileTitle" size="80"/>
+								<html:text property="file.title" size="80"/>
 							</td>
 						</tr>
 						<tr>
@@ -76,7 +92,7 @@
 								<strong>Description</strong>
 							</td>
 							<td class="rightLabel">
-								<html:textarea property="description" rows="3" cols="80" />
+								<html:textarea property="file.description" rows="3" cols="80" />
 							</td>
 						</tr>
 						<tr>
@@ -84,7 +100,7 @@
 								<strong>Visibility</strong>
 							</td>
 							<td class="rightLabel">
-								<html:select property="visibility" multiple="true" size="6">
+								<html:select property="file.visibilityGroups" multiple="true" size="6">
 									<html:options name="allVisibilityGroups" />
 								</html:select>
 								<br>
