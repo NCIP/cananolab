@@ -127,7 +127,7 @@ public class FileService {
 		}
 	}
 
-	public void writeUploadedFile(FormFile uploadedFile, String filePath,
+	public String writeUploadedFile(FormFile uploadedFile, String filePath,
 			boolean addTimeStampPrefix) throws IOException {
 		File pathDir = new File(filePath);
 		if (!pathDir.exists())
@@ -139,7 +139,8 @@ public class FileService {
 		}
 		String fullFileName = filePath + File.separator + fileName;
 		FileOutputStream oStream = new FileOutputStream(new File(fullFileName));		
-		writeFile(uploadedFile.getInputStream(), oStream);		
+		writeFile(uploadedFile.getInputStream(), oStream);
+		return fileName;
 	}
 
 	public void writeFile(InputStream is, FileOutputStream os)
