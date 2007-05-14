@@ -2,14 +2,12 @@ package gov.nih.nci.calab.service.submit;
 
 import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
-import gov.nih.nci.calab.domain.AssociatedFile;
 import gov.nih.nci.calab.domain.DerivedDataFile;
 import gov.nih.nci.calab.domain.InstrumentType;
 import gov.nih.nci.calab.domain.Keyword;
 import gov.nih.nci.calab.domain.LabFile;
 import gov.nih.nci.calab.domain.Manufacturer;
 import gov.nih.nci.calab.domain.OutputFile;
-import gov.nih.nci.calab.domain.Report;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.function.Agent;
 import gov.nih.nci.calab.domain.nano.function.AgentTarget;
@@ -47,17 +45,14 @@ import gov.nih.nci.calab.dto.characterization.physical.SurfaceBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.function.FunctionBean;
 import gov.nih.nci.calab.exception.CalabException;
+import gov.nih.nci.calab.service.common.FileService;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
 import gov.nih.nci.calab.service.util.StringUtils;
-import gov.nih.nci.calab.service.util.file.HttpFileUploadSessionData;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
@@ -65,9 +60,9 @@ import org.apache.log4j.Logger;
 import org.apache.struts.upload.FormFile;
 
 /**
- * This class includes service calls involved in creating nanoparticles and
- * adding functions and characterizations for nanoparticles, as well as creating
- * reports.
+ * This class includes service calls involved in creating nanoparticle general
+ * info and adding functions and characterizations for nanoparticles, as well as
+ * creating reports.
  * 
  * @author pansu
  * 
@@ -75,6 +70,13 @@ import org.apache.struts.upload.FormFile;
 public class SubmitNanoparticleService {
 	private static Logger logger = Logger
 			.getLogger(SubmitNanoparticleService.class);
+
+	// remove existing visibilities for the data
+	private UserService userService;
+
+	public SubmitNanoparticleService() throws Exception {
+		userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
+	}
 
 	/**
 	 * Update keywords and visibilities for the particle with the given name and
@@ -86,8 +88,9 @@ public class SubmitNanoparticleService {
 	 * @param visibilities
 	 * @throws Exception
 	 */
-	public void createNanoparticle(String particleType, String particleName,
-			String[] keywords, String[] visibilities) throws Exception {
+	public void addParticleGeneralInfo(String particleType,
+			String particleName, String[] keywords, String[] visibilities)
+			throws Exception {
 
 		// save nanoparticle to the database
 		IDataAccess ida = (new DataAccessProxy())
@@ -124,7 +127,7 @@ public class SubmitNanoparticleService {
 		} finally {
 			ida.close();
 		}
-		setVisiblity(particleName, visibilities);
+		userService.setVisiblity(particleName, visibilities);
 	}
 
 	/**
@@ -267,38 +270,6 @@ public class SubmitNanoparticleService {
 		}
 	}
 
-	/**
-	 * Save Instrument to the database.
-	 * 
-	 * @param particleType
-	 * @param particleName
-	 * @param achar
-	 * @throws Exception
-	 */
-	/*
-	 * private Instrument addInstrument(Instrument instrument) throws Exception {
-	 * Instrument rInstrument = null; // if ID is not set save to the database
-	 * otherwise update IDataAccess ida = (new DataAccessProxy())
-	 * .getInstance(IDataAccess.HIBERNATE);
-	 * 
-	 * //int existingInstrumentCount = -1; Instrument existingInstrument = null;
-	 * try { ida.open(); // check if instrument is already existed String
-	 * viewQuery = ""; if (instrument.getId() == null) { viewQuery = "select
-	 * instrument from Instrument instrument where instrument.type='" +
-	 * instrument.getType() + "' and instrument.manufacturer='" +
-	 * instrument.getManufacturer() + "'"; } else { viewQuery = "select
-	 * instrument from Instrument instrument where instrument.type='" +
-	 * instrument.getType() + "' and instrument.manufacturer='" +
-	 * instrument.getManufacturer() + "' and instrument.id!=" +
-	 * instrument.getId(); } List viewTitleResult = ida.search(viewQuery);
-	 * 
-	 * for (Object obj : viewTitleResult) { existingInstrument = (Instrument)
-	 * obj; } if (existingInstrument == null) { ida.store(instrument);
-	 * rInstrument = instrument; } else { rInstrument = existingInstrument; } }
-	 * catch (Exception e) { e.printStackTrace(); ida.rollback();
-	 * logger.error("Problem saving characterization: "); throw e; } finally {
-	 * ida.close(); } return rInstrument; }
-	 */
 	/**
 	 * Saves the particle composition to the database
 	 * 
@@ -496,9 +467,11 @@ public class SubmitNanoparticleService {
 	 * @param plateletAggregation
 	 * @throws Exception
 	 */
-	public void addPlateletAggregation(String particleType, String particleName,
-			PlateletAggregationBean plateletAggregation) throws Exception {
-		Characterization doPlateletAggregation = plateletAggregation.getDomainObj();
+	public void addPlateletAggregation(String particleType,
+			String particleName, PlateletAggregationBean plateletAggregation)
+			throws Exception {
+		Characterization doPlateletAggregation = plateletAggregation
+				.getDomainObj();
 		// TODO think about how to deal with characterization file.
 		addParticleCharacterization(particleType, particleName,
 				doPlateletAggregation);
@@ -782,36 +755,29 @@ public class SubmitNanoparticleService {
 			FormFile uploadedFile, String characterizationName,
 			LabFileBean fileBean) throws Exception {
 
-		// TODO write file to the file system
+		// write file to the file system
 		String rootPath = PropertyReader.getProperty(
 				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
+		// get rid of trailing file separator
 		if (rootPath.charAt(rootPath.length() - 1) == File.separatorChar)
 			rootPath = rootPath.substring(0, rootPath.length() - 1);
+
 		// add charaterizationName to the path
-		String path = File.separator + "particles" + File.separator
-				+ particleName + File.separator + characterizationName
-				+ File.separator;
-		File pathDir = new File(rootPath + path);
-		if (!pathDir.exists())
-			pathDir.mkdirs();
+		String filePath = File.separator + CaNanoLabConstants.FOLDER_PARTICLE
+				+ File.separator + particleName + File.separator
+				+ characterizationName;
 
-		HttpFileUploadSessionData sData = new HttpFileUploadSessionData();
-		String tagFileName = sData.getTimeStamp() + "_"
-				+ uploadedFile.getFileName();
-		String outputFilename = rootPath + path + tagFileName;
-
-		FileOutputStream oStream = new FileOutputStream(
-				new File(outputFilename));
-
-		this.writeFile(uploadedFile.getInputStream(), oStream);
+		FileService fileService = new FileService();
+		String fileName = fileService.writeUploadedFile(uploadedFile, rootPath
+				+ filePath, true);
 
 		DerivedDataFile dataFile = fileBean.getDomainObjectDerivedDataFile();
 		// set file name, path and keywords for DerivedDataFile specific
 		dataFile.setFilename(uploadedFile.getFileName());
 		// TODO need to remove the predefine the root path from outputFilename
-		dataFile.setPath(path + tagFileName);
+		dataFile.setPath(filePath + File.separator + fileName);
 
-		// TODO saves file to the database
+		// save file to the database
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
@@ -828,13 +794,14 @@ public class SubmitNanoparticleService {
 		}
 		LabFileBean savedFileBean = new LabFileBean(dataFile,
 				CaNanoLabConstants.OUTPUT);
-		setVisiblity(savedFileBean.getId(), savedFileBean.getVisibilityGroups());
+		userService.setVisiblity(savedFileBean.getId(), savedFileBean
+				.getVisibilityGroups());
 		return savedFileBean;
 	}
 
 	/**
-	 * Save the characterization file into the database and file system. The
-	 * file is a workflow output file
+	 * Save the characterization file into the database. The file is a workflow
+	 * output file
 	 * 
 	 * @param fileId
 	 * @param title
@@ -845,7 +812,7 @@ public class SubmitNanoparticleService {
 	public LabFileBean saveCharacterizationFile(LabFileBean fileBean)
 			throws Exception {
 
-		DerivedDataFile dataFile = fileBean.getDomainObjectDerivedDataFile();		
+		DerivedDataFile dataFile = fileBean.getDomainObjectDerivedDataFile();
 		// TODO saves file to the database
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
@@ -862,23 +829,9 @@ public class SubmitNanoparticleService {
 		}
 		LabFileBean savedFileBean = new LabFileBean(dataFile,
 				CaNanoLabConstants.OUTPUT);
-		setVisiblity(savedFileBean.getId(), savedFileBean.getVisibilityGroups());
+		userService.setVisiblity(savedFileBean.getId(), savedFileBean
+				.getVisibilityGroups());
 		return savedFileBean;
-	}
-
-	private void writeFile(InputStream is, FileOutputStream os) {
-		byte[] bytes = new byte[32768];
-
-		try {
-			int numRead = 0;
-			while ((numRead = is.read(bytes)) > 0) {
-				os.write(bytes, 0, numRead);
-			}
-			os.close();
-
-		} catch (Exception e) {
-
-		}
 	}
 
 	/**
@@ -1022,7 +975,8 @@ public class SubmitNanoparticleService {
 			ida.close();
 		}
 		// get visibilities
-		UserService userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
+		UserService userService = new UserService(
+				CaNanoLabConstants.CSM_APP_NAME);
 		List<String> accessibleGroups = userService.getAccessibleGroups(
 				fileBean.getId(), CaNanoLabConstants.CSM_READ_ROLE);
 		String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
@@ -1045,7 +999,7 @@ public class SubmitNanoparticleService {
 
 			DerivedDataFile file = (DerivedDataFile) ida.load(
 					DerivedDataFile.class, StringUtils.convertToLong(fileId));
-			//load keywords
+			// load keywords
 			file.getKeywordCollection();
 			fileBean = new LabFileBean(file, CaNanoLabConstants.OUTPUT);
 		} catch (Exception e) {
@@ -1057,7 +1011,8 @@ public class SubmitNanoparticleService {
 			ida.close();
 		}
 		// get visibilities
-		UserService userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
+		UserService userService = new UserService(
+				CaNanoLabConstants.CSM_APP_NAME);
 		List<String> accessibleGroups = userService.getAccessibleGroups(
 				fileBean.getId(), CaNanoLabConstants.CSM_READ_ROLE);
 		String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
@@ -1106,99 +1061,6 @@ public class SubmitNanoparticleService {
 		return runFiles;
 	}
 
-	public void createReport(String[] particleNames, FormFile uploadedReport,
-			LabFileBean fileBean) throws Exception {
-
-		// TODO saves reportFile to the file system
-		String rootPath = PropertyReader.getProperty(
-				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
-		if (rootPath.charAt(rootPath.length() - 1) == File.separatorChar)
-			rootPath = rootPath.substring(0, rootPath.length() - 1);
-
-		String path = File.separator + "reports" + File.separator;
-
-		File pathDir = new File(rootPath + path);
-		if (!pathDir.exists())
-			pathDir.mkdirs();
-
-		HttpFileUploadSessionData sData = new HttpFileUploadSessionData();
-		String tagFileName = sData.getTimeStamp() + "_"
-				+ uploadedReport.getFileName();
-		String outputFilename = rootPath + path + tagFileName;
-
-		FileOutputStream oStream = new FileOutputStream(
-				new File(outputFilename));
-
-		this.writeFile(uploadedReport.getInputStream(), oStream);
-
-		LabFile dataFile = null;
-		if (fileBean.getType().equalsIgnoreCase(CaNanoLabConstants.REPORT))
-			dataFile = new Report();
-		else
-			dataFile = new AssociatedFile();
-
-		dataFile.setDescription(fileBean.getDescription());
-		dataFile.setFilename(uploadedReport.getFileName());
-
-		dataFile.setPath(path + tagFileName);
-		dataFile.setTitle(fileBean.getTitle().toUpperCase()); // convert to
-		// upper case
-		Date date = new Date();
-		dataFile.setCreatedDate(date);
-		dataFile.setComments(fileBean.getComments());
-
-		// TODO daves reportFile path to the database
-		// look up the samples for each particleNames
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
-
-		try {
-			ida.open();
-			ida.store(dataFile);
-		} catch (Exception e) {
-			e.printStackTrace();
-			ida.rollback();
-			logger.error("Problem saving report File: ");
-			throw e;
-		} finally {
-			ida.close();
-		}
-
-		Nanoparticle particle = null;
-
-		for (String particleName : particleNames) {
-			try {
-				ida.open();
-
-				List results = ida
-						.search("select particle from Nanoparticle particle left join fetch particle.reportCollection where particle.name='"
-								+ particleName + "'");
-
-				for (Object obj : results) {
-					particle = (Nanoparticle) obj;
-				}
-
-				if (particle != null) {
-					if (fileBean.getType().equalsIgnoreCase(
-							CaNanoLabConstants.REPORT))
-						particle.getReportCollection().add((Report) dataFile);
-					else
-						particle.getAssociatedFileCollection().add(
-								(AssociatedFile) dataFile);
-				}
-
-			} catch (Exception e) {
-				e.printStackTrace();
-				ida.rollback();
-				logger.error("Problem saving report File: ");
-				throw e;
-			} finally {
-				ida.close();
-			}
-		}
-		setVisiblity(dataFile.getId().toString(), fileBean.getVisibilityGroups());
-	}
-
 	/**
 	 * Update the meta data associated with a file stored in the database
 	 * 
@@ -1226,7 +1088,8 @@ public class SubmitNanoparticleService {
 			ida.close();
 		}
 
-		setVisiblity(fileBean.getId(), fileBean.getVisibilityGroups());
+		userService.setVisiblity(fileBean.getId(), fileBean
+				.getVisibilityGroups());
 	}
 
 	/**
@@ -1247,7 +1110,7 @@ public class SubmitNanoparticleService {
 							.getId()));
 
 			file.setTitle(fileBean.getTitle().toUpperCase());
-			file.setDescription(fileBean.getDescription());			
+			file.setDescription(fileBean.getDescription());
 			file.getKeywordCollection().clear();
 			if (fileBean.getKeywords() != null) {
 				for (String keyword : fileBean.getKeywords()) {
@@ -1264,26 +1127,7 @@ public class SubmitNanoparticleService {
 		} finally {
 			ida.close();
 		}
-		setVisiblity(fileBean.getId(), fileBean.getVisibilityGroups());
-	}
-
-	private void setVisiblity(String dataToProtect, String[] visibilities)
-			throws Exception {
-		// remove existing visibilities for the data
-		UserService userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
-		userService.removeAllAccessibleGroups(dataToProtect,
-				CaNanoLabConstants.CSM_READ_ROLE, null);
-
-		// set new visibilities
-		for (String visibility : visibilities) {
-			userService.secureObject(dataToProtect, visibility,
-					CaNanoLabConstants.CSM_READ_ROLE);
-		}
-
-		// set default visibilities
-		for (String visibility : CaNanoLabConstants.VISIBLE_GROUPS) {
-			userService.secureObject(dataToProtect, visibility,
-					CaNanoLabConstants.CSM_READ_ROLE);
-		}
+		userService.setVisiblity(fileBean.getId(), fileBean
+				.getVisibilityGroups());
 	}
 }
