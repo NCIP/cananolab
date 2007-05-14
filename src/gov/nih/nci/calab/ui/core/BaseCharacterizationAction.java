@@ -38,7 +38,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 
-/* CVS $Id: BaseCharacterizationAction.java,v 1.25 2007-05-10 17:23:32 pansu Exp $ */
+/* CVS $Id: BaseCharacterizationAction.java,v 1.26 2007-05-14 14:18:02 chenhang Exp $ */
 
 public abstract class BaseCharacterizationAction extends AbstractDispatchAction {
 	/**
@@ -79,6 +79,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		InitSessionSetup.getInstance().setAllConditionUnits(session);
 		InitSessionSetup.getInstance().setAllConcentrationUnits(session);
 		InitSessionSetup.getInstance().setAllTimeUnits(session);
+		InitSessionSetup.getInstance().setProtocolNamesDropdownList(session);
 	}
 
 	/**
