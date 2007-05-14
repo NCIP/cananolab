@@ -765,7 +765,17 @@ public class InitSessionSetup {
 				protocolTypes.add(CaNanoLabConstants.PROTOCOL_TYPES[i]);
 		}
 		session.setAttribute("protocolTypes", protocolTypes);
-		setAllProtocolNameTypes(session);
+		//setAllProtocolNameTypes(session);
+		Map<String, List<String>> nameTypes = lookupService.getAllProtocolNameTypes();
+		for (String type : protocolTypes){
+			List<String> localList = nameTypes.get(type);
+			if (localList == null){
+				localList = new ArrayList<String>();
+				nameTypes.put(type, localList);
+			}
+		}
+		session.setAttribute("AllProtocolNameTypes", nameTypes);
+		session.setAttribute("protocolNames", new ArrayList<String>());
 		//Get available protocol names from PROTOCOL table
 		//setProtocolNamesDropdownList(session);
 	}
