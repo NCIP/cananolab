@@ -266,13 +266,13 @@ public class CaNanoLabConstants {
 
 	public static final String PROTOCOL_FILE = "Protocol File";
 
-	public static final String FOLDER_WORKFLOW_DATA = File.separator+"workflow_data";
+	public static final String FOLDER_WORKFLOW_DATA = "workflow_data";
 
-	public static final String FOLDER_PARTICLE = File.separator+"particles";
+	public static final String FOLDER_PARTICLE = "particles";
 
-	public static final String FOLDER_REPORT = File.separator+"reports";
+	public static final String FOLDER_REPORT = "reports";
 
-	public static final String FOLDER_PROTOCOLE = File.separator+"protocols";
+	public static final String FOLDER_PROTOCOL = "protocols";
 
 	public static final String[] DEFAULT_POLYMER_INITIATORS = new String[] {
 			"Free Radicals", "Peroxide" };
