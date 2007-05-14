@@ -115,6 +115,20 @@ function doubleDropdown(selection1, selection2, value1ToValue2) {
         }
     }
 }
+/* filter second drop-down by first drop-down selection*/
+function doubleDropdownForTheEditable(selection1, selection2, value1ToValue2) {
+    /* initialize selection2 options */
+    selection2.options.length = 0;
+    selection2.options[0] = new Option("--?--", "");
+    var value1 = selection1.options[selection1.selectedIndex].value;
+    var value2Arr = value1ToValue2[value1];
+    if (value2Arr != null) {
+        for (i = 0; i < value2Arr.length; i++) {
+            selection2.options[i + 1] = new Option(value2Arr[i], value2Arr[i]);
+        }
+    }
+}
+
 /* filter second drop-down by first drop-down selection, add an extra option at the end*/
 function doubleDropdownWithExraOption(selection1, selection2, value1ToValue2, extraOptionName) {
     /* initialize selection2 options */
