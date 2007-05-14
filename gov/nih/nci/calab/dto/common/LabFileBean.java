@@ -44,6 +44,8 @@ public class LabFileBean {
 	
 	private String gridNode;
 
+	private String version;
+	
 	/*
 	 * name to be displayed as a part of the drop-down list
 	 */
@@ -153,6 +155,13 @@ public class LabFileBean {
 
 	public void setVisibilityGroups(String[] visibilityGroups) {
 		this.visibilityGroups = visibilityGroups;
+	}
+
+	public String getVersion() {
+		return version;
+	}
+	public void setVersion(String version) {
+		this.version = version;
 	}
 
 	public LabFile getDomainObject() {
