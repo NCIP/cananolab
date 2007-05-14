@@ -6,10 +6,11 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: SubmitReportAction.java,v 1.10 2007-01-04 23:21:58 pansu Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.11 2007-05-14 15:05:09 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
+import gov.nih.nci.calab.service.submit.SubmitReportService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
@@ -38,7 +39,7 @@ public class SubmitReportAction extends AbstractDispatchAction {
 		String[] particleNames = (String[]) theForm.get("particleNames");
 		LabFileBean fileBean = (LabFileBean) theForm.get("file");
 		FormFile uploadedFile = (FormFile) theForm.get("uploadedFile");
-		SubmitNanoparticleService service = new SubmitNanoparticleService();
+		SubmitReportService service = new SubmitReportService();
 
 		service.createReport(particleNames, uploadedFile, fileBean);
 
