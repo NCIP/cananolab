@@ -16,7 +16,8 @@ import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.CaNanoLabComparators;
 import gov.nih.nci.calab.service.util.StringUtils;
-
+import gov.nih.nci.calab.domain.ProtocolFile;
+import gov.nih.nci.calab.domain.Protocol;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -36,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.94 2007-05-07 18:52:47 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.95 2007-05-14 13:00:50 chenhang Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -970,6 +971,114 @@ public class LookupService {
 		return (String[]) shapeTypes.toArray(new String[0]);
 	}
 
+	public List<String> getAllProtocolNames() throws Exception {
+		List<String> protocolNames = new ArrayList<String>();
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			String hqlString = "select protocol.name from Protocol protocol where protocol.name is not null";
+			List results = ida.search(hqlString);
+			for (Object obj : results) {
+				protocolNames.add((String) obj);
+			}
+		} catch (Exception e) {
+			logger.error("Problem to retrieve all protocol names.");
+			throw new RuntimeException("Problem to retrieve all protocol names.");
+		} finally {
+			ida.close();
+		}
+		return protocolNames;
+	}
+	public Map<String, List<String>>  getAllProtocolNameVersion() throws Exception{
+		Map<String, List<String>> nameVersions = new HashMap<String, List<String>>();
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			String hqlString = "select protocolFile, protocolFile.protocol.name from ProtocolFile protocolFile";
+			List results = ida.search(hqlString);
+			for (Object obj : results) {
+				Object[] array = (Object[])obj;
+				Object key = null;
+				Object value = null;
+				for (int i = 0; i < array.length; i++){
+					if (array[i] instanceof String){
+						key = array[i];
+					}
+					else if (array[i] instanceof ProtocolFile){
+						value = array[i];
+					}
+				}
+				if (nameVersions.containsKey(key)){
+					List<String> localList = nameVersions.get(key);
+					localList.add(((ProtocolFile)value).getVersion());
+				}
+				else {
+					List<String> localList = new ArrayList<String>();
+					localList.add(((ProtocolFile)value).getVersion());
+					nameVersions.put((String)key, localList);
+				}
+				//protocolNames.add((String) obj);
+			}
+		} catch (Exception e) {
+			logger.error("Problem to retrieve all protocol names.");
+			throw new RuntimeException("Problem to retrieve all protocol names.");
+		} finally {
+			ida.close();
+		}
+		return nameVersions;	
+	}
+	public List<String> getAllProtocolTypes() throws Exception {
+		List<String> protocolTypes = new ArrayList<String>();
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			String hqlString = "select distinct protocol.type from Protocol protocol where protocol.type is not null";
+			List results = ida.search(hqlString);
+			for (Object obj : results) {
+				protocolTypes.add((String) obj);
+			}
+		} catch (Exception e) {
+			logger.error("Problem to retrieve all protocol types.");
+			throw new RuntimeException("Problem to retrieve all protocol types.");
+		} finally {
+			ida.close();
+		}
+		return protocolTypes;
+	}
+
+	public Map<String, List<String>> getAllProtocolNameTypes() throws Exception {
+		Map<String, List<String>> protocolNameTypes = new HashMap<String, List<String>>();
+		IDataAccess ida = (new DataAccessProxy())
+		.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			String hqlString = "select protocol from Protocol protocol";
+			List results = ida.search(hqlString);
+			for (Object obj : results) {
+				Protocol protocol = (Protocol)obj;
+				if (protocolNameTypes.containsKey(protocol.getType())){
+					List<String> list = protocolNameTypes.get(protocol.getType());
+					list.add(protocol.getName());
+				}
+				else {
+					
+					List<String> list = new ArrayList<String>();
+					list.add(protocol.getName());
+					protocolNameTypes.put(protocol.getType(), list);
+				}
+				//protocolNames.add((String) obj);
+			}
+		} catch (Exception e) {
+			logger.error("Problem to retrieve all protocol names and types.");
+			throw new RuntimeException("Problem to retrieve all protocol names and types.");
+		} finally {
+			ida.close();
+		}
+		return protocolNameTypes;
+	}
 	public String[] getAllStressorTypes() {
 		String[] stressorTypes = new String[] { "Thermal", "PH", "Freeze thaw",
 				"Photo", "Centrifugation", "Lyophilization", "Chemical",
