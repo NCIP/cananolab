@@ -34,7 +34,7 @@ public class CaNanoLabConstants {
 	public static final String OTHER = "Other";
 
 	public static final String[] DEFAULT_CONTAINER_TYPES = new String[] {
-			"Tube", "Vial"};
+			"Tube", "Vial" };
 
 	// Sample Container type
 	public static final String ALIQUOT = "Aliquot";
@@ -67,7 +67,7 @@ public class CaNanoLabConstants {
 	public static final String CSM_READ_ROLE = "R";
 
 	public static final String CSM_READ_PRIVILEGE = "READ";
-	
+
 	public static final String CSM_EXECUTE_PRIVILEGE = "EXECUTE";
 
 	// caLAB Submission property file
@@ -80,9 +80,6 @@ public class CaNanoLabConstants {
 	public static final String[] BOOLEAN_CHOICES = new String[] { BOOLEAN_YES,
 			BOOLEAN_NO };
 
-	public static final String[] PROTOCOL_TYPES = new String[] { "Physical assay", "Synthesis",
-		"In vitro assay", "In vivo assay", "Sample preparation", "Safety", "Radiolabeling" };
-	
 	public static final String DEFAULT_SAMPLE_PREFIX = "NANO-";
 
 	public static final String DEFAULT_APP_OWNER = "NCICB";
@@ -262,10 +259,16 @@ public class CaNanoLabConstants {
 	public static final String REPORT = "Report";
 
 	public static final String ASSOCIATED_FILE = "Other Associated File";
-	
-	public static final String PROTOCOL_FILE="Protocol File";
 
-	public static final String WORKFLOW_DATA = "workflow_data";
+	public static final String PROTOCOL_FILE = "Protocol File";
+
+	public static final String FOLDER_WORKFLOW_DATA = "/workflow_data";
+
+	public static final String FOLDER_PARTICLE = "/particles";
+
+	public static final String FOLDER_REPORT = "/reports";
+
+	public static final String FOLDER_PROTOCOLE = "/protocols";
 
 	public static final String[] DEFAULT_POLYMER_INITIATORS = new String[] {
 			"Free Radicals", "Peroxide" };
@@ -425,8 +428,8 @@ public class CaNanoLabConstants {
 
 	public static final String CSM_ADMIN = APP_OWNER + "_Administrator";
 
-	public static final String CSM_PUBLIC_GROUP="Public";
-	
+	public static final String CSM_PUBLIC_GROUP = "Public";
+
 	public static final String[] VISIBLE_GROUPS = new String[] { CSM_PI,
 			CSM_RESEARCHER };
 
