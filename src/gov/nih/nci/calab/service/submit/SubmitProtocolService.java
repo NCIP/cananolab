@@ -8,6 +8,7 @@ import gov.nih.nci.calab.dto.common.ProtocolFileBean;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
+import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.service.util.file.HttpFileUploadSessionData;
 import gov.nih.nci.calab.service.common.FileService;
 import java.io.File;
@@ -26,64 +27,55 @@ import org.apache.struts.upload.FormFile;
  */
 
 /*
- * CVS $Id: SubmitProtocolService.java,v 1.1 2007-05-14 14:16:05 chenhang Exp $
+ * CVS $Id: SubmitProtocolService.java,v 1.2 2007-05-14 15:03:42 pansu Exp $
  */
 
 public class SubmitProtocolService {
-	private static Logger logger = Logger.getLogger(SubmitProtocolService.class);
+	private static Logger logger = Logger
+			.getLogger(SubmitProtocolService.class);
 
 	/**
-	 * Create a brand new protocol based on user input 
+	 * Create a brand new protocol based on user input
 	 * 
-	 * @param fileBean, the ProtocolFileBean
-	 * @param uploadedFile, the FormFile
+	 * @param fileBean,
+	 *            the ProtocolFileBean
+	 * @param uploadedFile,
+	 *            the FormFile
 	 * @throws Exception
 	 */
-	public void createProtocol(ProtocolFileBean fileBean, FormFile uploadedFile,
-		boolean isNew) throws Exception {
-		
-		String path = null;
-		String tagFileName = null;
+	public void createProtocol(ProtocolFileBean fileBean,
+			FormFile uploadedFile, boolean isNew) throws Exception {
+
 		// TODO saves protocol file to the file system
-		if (uploadedFile != null){
-			
+		String fileName = null;
+		if (uploadedFile != null) {
+
 			FileService fileService = new FileService();
-			
-			String rootPath = PropertyReader.getProperty(
-				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
+
+			String rootPath = PropertyReader
+					.getProperty(CaNanoLabConstants.FILEUPLOAD_PROPERTY,
+							"fileRepositoryDir");
 			if (rootPath.charAt(rootPath.length() - 1) == File.separatorChar)
 				rootPath = rootPath.substring(0, rootPath.length() - 1);
-			path = File.separator + "protocols" + File.separator;
-			fileService.writeUploadedFile(uploadedFile, rootPath + path, true);
-/*
-			File pathDir = new File(rootPath + path);
-			if (!pathDir.exists())
-				pathDir.mkdirs();
 
-			HttpFileUploadSessionData sData = new HttpFileUploadSessionData();
-			tagFileName = sData.getTimeStamp() + "_"
-				+ uploadedFile.getFileName();
-			String outputFilename = rootPath + path + tagFileName;
-
-			FileOutputStream oStream = new FileOutputStream(
-				new File(outputFilename));
-
-			this.writeFile(uploadedFile.getInputStream(), oStream);
-			*/
+			fileName = fileService
+					.writeUploadedFile(uploadedFile, rootPath + File.separator
+							+ CaNanoLabConstants.FOLDER_PROTOCOL, true);
 		}
 		ProtocolFile dataFile = new ProtocolFile();
 
 		dataFile.setDescription(fileBean.getDescription());
-		if (uploadedFile != null){
+		if (uploadedFile != null) {
 			dataFile.setFilename(uploadedFile.getFileName());
-			dataFile.setPath(path + tagFileName);
+			dataFile.setPath(CaNanoLabConstants.FOLDER_PROTOCOL
+					+ File.separator + fileName);
 		}
 		dataFile.setTitle(fileBean.getTitle().toUpperCase()); // convert to
 		// upper case
 		Date date = new Date();
 		dataFile.setCreatedDate(date);
 		dataFile.setVersion(fileBean.getVersion());
-		//dataFile.setComments(fileBean.getComments());
+		// dataFile.setComments(fileBean.getComments());
 
 		Protocol protocol = new Protocol();
 		protocol.setName(fileBean.getProtocolBean().getName());
@@ -95,11 +87,11 @@ public class SubmitProtocolService {
 
 		try {
 			ida.open();
-			if (isNew){
+			if (isNew) {
 				ida.store(protocol);
-			}
-			else {
-				List results = ida.search("from Protocol where name='" + protocol.getName() + "'");
+			} else {
+				List results = ida.search("from Protocol where name='"
+						+ protocol.getName() + "'");
 				Protocol pl = null;
 				for (Object obj : results) {
 					pl = (Protocol) obj;
@@ -107,8 +99,8 @@ public class SubmitProtocolService {
 				protocol.setId(pl.getId());
 			}
 			dataFile.setProtocol(protocol);
-			//protocol.getProtocolFileCollection().add(dataFile);
-			//ida.store(protocol);
+			// protocol.getProtocolFileCollection().add(dataFile);
+			// ida.store(protocol);
 			ida.store(dataFile);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -118,44 +110,30 @@ public class SubmitProtocolService {
 		} finally {
 			ida.close();
 		}
-/*
-		Nanoparticle particle = null;
+		/*
+		 * Nanoparticle particle = null;
+		 * 
+		 * for (String particleName : particleNames) { try { ida.open();
+		 * 
+		 * List results = ida .search("select particle from Nanoparticle
+		 * particle left join fetch particle.reportCollection where
+		 * particle.name='" + particleName + "'");
+		 * 
+		 * for (Object obj : results) { particle = (Nanoparticle) obj; }
+		 * 
+		 * if (particle != null) { if (fileBean.getType().equalsIgnoreCase(
+		 * CaNanoLabConstants.REPORT))
+		 * particle.getReportCollection().add((Report) dataFile); else
+		 * particle.getAssociatedFileCollection().add( (AssociatedFile)
+		 * dataFile); } } catch (Exception e) { e.printStackTrace();
+		 * ida.rollback(); logger.error("Problem saving report File: "); throw
+		 * e; } finally { ida.close(); } }
+		 */
+		setVisiblity(protocol.getId().toString(), fileBean
+				.getVisibilityGroups());
 
-		for (String particleName : particleNames) {
-			try {
-				ida.open();
-
-				List results = ida
-						.search("select particle from Nanoparticle particle left join fetch particle.reportCollection where particle.name='"
-								+ particleName + "'");
-
-				for (Object obj : results) {
-					particle = (Nanoparticle) obj;
-				}
-
-				if (particle != null) {
-					if (fileBean.getType().equalsIgnoreCase(
-							CaNanoLabConstants.REPORT))
-						particle.getReportCollection().add((Report) dataFile);
-					else
-						particle.getAssociatedFileCollection().add(
-								(AssociatedFile) dataFile);
-				}
-
-			} catch (Exception e) {
-				e.printStackTrace();
-				ida.rollback();
-				logger.error("Problem saving report File: ");
-				throw e;
-			} finally {
-				ida.close();
-			}
-		}
-		*/
-		setVisiblity(protocol.getId().toString(), fileBean.getVisibilityGroups());
-		
 	}
-	
+
 	private void writeFile(InputStream is, FileOutputStream os) {
 		byte[] bytes = new byte[32768];
 
@@ -170,24 +148,25 @@ public class SubmitProtocolService {
 
 		}
 	}
-	
+
 	private void setVisiblity(String dataToProtect, String[] visibilities)
-		throws Exception {
+			throws Exception {
 		// remove existing visibilities for the data
-		UserService userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
+		UserService userService = new UserService(
+				CaNanoLabConstants.CSM_APP_NAME);
 		userService.removeAllAccessibleGroups(dataToProtect,
-		CaNanoLabConstants.CSM_READ_ROLE, null);
+				CaNanoLabConstants.CSM_READ_ROLE, null);
 
 		// set new visibilities
 		for (String visibility : visibilities) {
 			userService.secureObject(dataToProtect, visibility,
-			CaNanoLabConstants.CSM_READ_ROLE);
+					CaNanoLabConstants.CSM_READ_ROLE);
 		}
 
 		// set default visibilities
 		for (String visibility : CaNanoLabConstants.VISIBLE_GROUPS) {
 			userService.secureObject(dataToProtect, visibility,
-			CaNanoLabConstants.CSM_READ_ROLE);
+					CaNanoLabConstants.CSM_READ_ROLE);
 		}
 	}
 }
