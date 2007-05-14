@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: SubmitProtocolAction.java,v 1.2 2007-05-14 13:10:25 chenhang Exp $ */
+/* CVS $Id: SubmitProtocolAction.java,v 1.3 2007-05-14 17:13:17 chenhang Exp $ */
 
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
 import gov.nih.nci.calab.dto.common.ProtocolBean;
@@ -47,6 +47,7 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		//Check for name and version
 		//setAllProtocolNameVersion(request);
 		if (isNameVersionConflict(request, protocolName, version)){
+			updateEditableDropDownList(request, theForm);
 			ActionMessage msg = new ActionMessage("message.submitProtocol.nameVersionConflict");
 			msgs.add("message", msg);
 			saveMessages(request, msgs);
@@ -121,18 +122,29 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		HttpSession session = request.getSession();
 		// update sample source drop-down list to include the new entry
 		String protocolType = (String) theForm.get("protocolType");
-		List protocolTypes = (List) session.getAttribute("protocolTypes");
+		List<String> protocolTypes = (List) session.getAttribute("protocolTypes");
 
 		String protocolName = (String) theForm.get("protocolName");
-		List protocolNames = (List) session.getAttribute("protocolNames");
+		List<String> protocolNames = (List) session.getAttribute("protocolNames");
+		if (protocolNames == null){
+			protocolNames = new ArrayList<String>();
+		}
+		else
+			protocolNames.clear();
 		
-		if (!protocolTypes.contains(protocolType)
-				&&protocolType.length()>0) {
+		if (protocolType != null && protocolType.length()>0 
+				&& !protocolTypes.contains(protocolType)) {
 			protocolTypes.add(protocolType);
 		}
-		
-		if (!protocolNames.contains(protocolName)
-				&&protocolName.length()>0) {
+		else if (protocolType != null && protocolType.length()>0 
+				&& protocolTypes.contains(protocolType)){
+			Map<String, List<String>> map = (Map)session.getAttribute("AllProtocolNameTypes");
+			List<String> list = map.get(protocolType);
+			protocolNames.addAll(list);
+		}
+			
+		if (protocolName != null && protocolName.length()>0 
+				&& !protocolNames.contains(protocolName)) {
 			protocolNames.add(protocolName);
 		}
 	}
