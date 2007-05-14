@@ -69,217 +69,201 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * This servlet is called up by the HttpFileUploadApplet to process files
- * that are sent from the client machines. It does several things.  First
- * it extracts meta data about the incoming file, and converts them into
- * a HttpUploadedFileData object. It then reads file and writes them to 
- * the designated directory on the file server.  Thirdly, depending on 
- * a boolean setting of the HttpFileUploadCache object, it deletes the files
- * it just wrote if isStopped flag is set to true, otherwise do nothing. Lastly
- * if the isStopped flag is set to false, it adds HttpUploadedFileData object
- * to the HttpFileUploadCache object to be used by the subsequent file
- * parsing service.
- *
- * @author zhoujim 
+ * This servlet is called up by the HttpFileUploadApplet to process files that
+ * are sent from the client machines. It does several things. First it extracts
+ * meta data about the incoming file, and converts them into a
+ * HttpUploadedFileData object. It then reads file and writes them to the
+ * designated directory on the file server. Thirdly, depending on a boolean
+ * setting of the HttpFileUploadCache object, it deletes the files it just wrote
+ * if isStopped flag is set to true, otherwise do nothing. Lastly if the
+ * isStopped flag is set to false, it adds HttpUploadedFileData object to the
+ * HttpFileUploadCache object to be used by the subsequent file parsing service.
+ * 
+ * @author zhoujim
  */
-public class ProcessFileUpload extends HttpServlet
-{
-    private Log log_ = LogFactory.getLog(this.getClass());
+public class ProcessFileUpload extends HttpServlet {
+	private Log log_ = LogFactory.getLog(this.getClass());
 
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException
-    {
-        String query = request.getQueryString();
-        log_.debug("doPost..." + query);
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
+		String query = request.getQueryString();
+		log_.debug("doPost..." + query);
 
-        //Retrieve the cache object for this upload session.
-        HttpFileUploadSessionData sessionData 
-            = (HttpFileUploadSessionData)request.getSession().getAttribute("httpFileUploadSessionData");
-        
-        String fileName = (String)request.getParameter("fileName");
-        fileName = sessionData.getTimeStamp()+"_"+fileName;
-        
-        HttpUploadedFileData data = new HttpUploadedFileData();
-        data.setFileName(fileName);
-        data.setType((String)request.getParameter("menuType"));
-        data.setId((String)request.getParameter("id"));
-        data.setValidatorCode((String)request.getParameter("crc32"));
-        String module = (String)request.getParameter("module");
-        
-        String token = (String)request.getParameter("mode");
-        log_.info("Mode is " + token);
-        
-        
-        //This should not happen since it must be first created just before 
-        //launching the applet. But it will happen if the session is expired.
-        if (sessionData == null)
-        {
-            log_.debug("sessionData is null, exit by sending an expiration message to applet");
-            try
-            {
-                response.setContentType("text/html");
-                PrintWriter out = response.getWriter();
-                //response.sendRedirect()
-                //It is important to have "expired" in this message.
-                //This word is an indicator of session expiration for
-                //the applet.
-                out.println("Your session is expired.  Please login again to complete your file upload.");
-            }
-            catch (IOException ie)
-            {
-                log_.error("IOException occured: " + ie.getMessage());
-            }
-            return;
-        }       
-        //It is important to check that the incoming file is the first in a roll 
-        //for reason: the upload process could have been stopped by the user
-        //previously, so HttpFileUploadCache object's isStopped flag is true.
-        //If it is a new upload process, we must set isStopped to false
-        //to make sure that incoming file will not be deleted upon writing.
-        else
-        {
-            if ("first".equals(token))
-            {
-            	sessionData.setIsStopped(false);
-            }
-        }
-        
-        //If this comes after user presses the stop button, then delete it.
-        //It seems to be case when the HttpFileUploadThread is stopped upon 
-        //user's click, the ongoing uploading process performed by the 
-        //HttpFileUploader is continuing. As a result, the files coming in
-        //after stop action should not be saved. 
-        if (sessionData.getIsStopped())
-        {
-            log_.debug("Module " + module + ": File " + data.getFileName() + " is not saved");
-            return;
-        }
-        String errorMessage = null;
-        DiskFileUpload fu = new DiskFileUpload();
-        // If file size exceeds, a FileUploadException will be thrown
-        fu.setSizeMax(2100000000);
-        File fNew = null;
-        boolean isSaved = false;
-        try
-        {
-            List fileItems = fu.parseRequest(request);
-            Iterator itr = fileItems.iterator();
-            log_.debug("itr count " + itr.toString());    
-            while (itr.hasNext())
-            {
-                FileItem fi = (FileItem)itr.next();
-                
-                String fullPathName = null;
-                
-                //TODO: set path here
-                String path = PropertyReader.getProperty(CaNanoLabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
-                
-               
-                fullPathName = path +  CaNanoLabConstants.FOLDER_WORKFLOW_DATA + File.separator
-                					+ sessionData.getAssayType() + File.separator 
-                                    + sessionData.getAssay() + File.separator
-                                    + sessionData.getRun()   + File.separator
-                                    + sessionData.getInout();
+		// Retrieve the cache object for this upload session.
+		HttpFileUploadSessionData sessionData = (HttpFileUploadSessionData) request
+				.getSession().getAttribute("httpFileUploadSessionData");
 
-                //check directory is existing or not.
-                File fPath = new File(fullPathName);
-                if (!fPath.exists())
-                {
-                    fPath.mkdirs();
-                }
+		String fileName = (String) request.getParameter("fileName");
+		fileName = sessionData.getTimeStamp() + "_" + fileName;
 
-                //If failed to get the 
-                if (fullPathName == null || fullPathName.length() == 0)
-                {
-                	log_.debug("Failed to get the file path to the file system.");
-                	break;
-                }
-                log_.debug("The file Path is " + fullPathName);
-                
-                String uploadFileName = sessionData.getTimeStamp()+"_"+fi.getName();
-                fNew = new File(fullPathName, uploadFileName);
-                fi.write(fNew);
-                isSaved = true;
-                log_.debug("Module " + module + ": File " + fNew.getName() + " saved");
-                
-                //uncompress file here
-                String unzipFilePath = fullPathName + File.separator
-                                       + CaNanoLabConstants.UNCOMPRESSED_FILE_DIRECTORY;
-                File unzipFile = new File(unzipFilePath);
-                if (!unzipFile.exists())
-                {
-                    unzipFile.mkdirs();
-                }
-                
-                FileUnzipper fUnzipper = new FileUnzipper();
-                fUnzipper.unzip(fullPathName + File.separator+ uploadFileName,
-                                unzipFilePath);
-                
-            }
-        }    
-        catch (Exception e)
-        {
-        	errorMessage = "Cannot write files into File System. sending a message to applet";
-            log_.error(errorMessage);
-            throw new IOException("Error in writing files into File system, " + e.getMessage());
-        }
-        //Get zip file's original name, which is embedded
-        //in the zip file.
-        if (isSaved)
-        {
-            ReadZipFileContent zipReader = new ReadZipFileContent();
-            try
-            {
-                String original = zipReader.getFileName(fNew);
-                log_.debug("The original file name is " + original);
-                data.setOriginalFileName(original);
-                sessionData.addToList(data);
-            }
-            catch (Exception e)
-            {
-            	errorMessage = "cannot get original file name from the zip file";
-        	    log_.error(errorMessage);
-        	    
-        	    //If failed to get the original file name, we treat
-        	    //it like file upload failure.
-        	    isSaved = false;
-        	    //Also delete the file fNew
-        	    try
-        	    {
-        	        fNew.delete();
-        	    }
-        	    catch (Exception ee)
-        	    {
-        	    	log_.error("Failed to delete the file just saved: " + ee.getMessage());
-        	    }
-            }
-        }
-        
-        //If the file is not saved, send a message to the applet.
-        //if (!isSaved)
-        if (!isSaved)
-        {
-            try
-            {
-                response.setContentType("text/html");
-                PrintWriter out = response.getWriter();
+		HttpUploadedFileData data = new HttpUploadedFileData();
+		data.setFileName(fileName);
+		data.setType((String) request.getParameter("menuType"));
+		data.setId((String) request.getParameter("id"));
+		data.setValidatorCode((String) request.getParameter("crc32"));
+		String module = (String) request.getParameter("module");
 
-                out.println("Your file was uploaded successfully, but the system failed to save it.  You may try again.");
-            }
-            catch (IOException ie)
-            {
-                log_.error("IOException occured: " + ie.getMessage());
-            }
-        	//write a messge to db for record.
-       
-            if (data.getOriginalFileName() == null)
-            {
-            	data.setOriginalFileName("lost");
-            }
-        }
-        
-    }
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException
-    {
-        doPost(request, response);
-    }
+		String token = (String) request.getParameter("mode");
+		log_.info("Mode is " + token);
+
+		// This should not happen since it must be first created just before
+		// launching the applet. But it will happen if the session is expired.
+		if (sessionData == null) {
+			log_
+					.debug("sessionData is null, exit by sending an expiration message to applet");
+			try {
+				response.setContentType("text/html");
+				PrintWriter out = response.getWriter();
+				// response.sendRedirect()
+				// It is important to have "expired" in this message.
+				// This word is an indicator of session expiration for
+				// the applet.
+				out
+						.println("Your session is expired.  Please login again to complete your file upload.");
+			} catch (IOException ie) {
+				log_.error("IOException occured: " + ie.getMessage());
+			}
+			return;
+		}
+		// It is important to check that the incoming file is the first in a
+		// roll
+		// for reason: the upload process could have been stopped by the user
+		// previously, so HttpFileUploadCache object's isStopped flag is true.
+		// If it is a new upload process, we must set isStopped to false
+		// to make sure that incoming file will not be deleted upon writing.
+		else {
+			if ("first".equals(token)) {
+				sessionData.setIsStopped(false);
+			}
+		}
+
+		// If this comes after user presses the stop button, then delete it.
+		// It seems to be case when the HttpFileUploadThread is stopped upon
+		// user's click, the ongoing uploading process performed by the
+		// HttpFileUploader is continuing. As a result, the files coming in
+		// after stop action should not be saved.
+		if (sessionData.getIsStopped()) {
+			log_.debug("Module " + module + ": File " + data.getFileName()
+					+ " is not saved");
+			return;
+		}
+		String errorMessage = null;
+		DiskFileUpload fu = new DiskFileUpload();
+		// If file size exceeds, a FileUploadException will be thrown
+		fu.setSizeMax(2100000000);
+		File fNew = null;
+		boolean isSaved = false;
+		try {
+			List fileItems = fu.parseRequest(request);
+			Iterator itr = fileItems.iterator();
+			log_.debug("itr count " + itr.toString());
+			while (itr.hasNext()) {
+				FileItem fi = (FileItem) itr.next();
+
+				String fullPathName = null;
+
+				// TODO: set path here
+				String path = PropertyReader.getProperty(
+						CaNanoLabConstants.FILEUPLOAD_PROPERTY,
+						"fileRepositoryDir");
+
+				fullPathName = path + File.separator
+						+ CaNanoLabConstants.FOLDER_WORKFLOW_DATA
+						+ File.separator + sessionData.getAssayType()
+						+ File.separator + sessionData.getAssay()
+						+ File.separator + sessionData.getRun()
+						+ File.separator + sessionData.getInout();
+
+				// check directory is existing or not.
+				File fPath = new File(fullPathName);
+				if (!fPath.exists()) {
+					fPath.mkdirs();
+				}
+
+				// If failed to get the
+				if (fullPathName == null || fullPathName.length() == 0) {
+					log_
+							.debug("Failed to get the file path to the file system.");
+					break;
+				}
+				log_.debug("The file Path is " + fullPathName);
+
+				String uploadFileName = sessionData.getTimeStamp() + "_"
+						+ fi.getName();
+				fNew = new File(fullPathName, uploadFileName);
+				fi.write(fNew);
+				isSaved = true;
+				log_.debug("Module " + module + ": File " + fNew.getName()
+						+ " saved");
+
+				// uncompress file here
+				String unzipFilePath = fullPathName + File.separator
+						+ CaNanoLabConstants.UNCOMPRESSED_FILE_DIRECTORY;
+				File unzipFile = new File(unzipFilePath);
+				if (!unzipFile.exists()) {
+					unzipFile.mkdirs();
+				}
+
+				FileUnzipper fUnzipper = new FileUnzipper();
+				fUnzipper.unzip(fullPathName + File.separator + uploadFileName,
+						unzipFilePath);
+
+			}
+		} catch (Exception e) {
+			errorMessage = "Cannot write files into File System. sending a message to applet";
+			log_.error(errorMessage);
+			throw new IOException("Error in writing files into File system, "
+					+ e.getMessage());
+		}
+		// Get zip file's original name, which is embedded
+		// in the zip file.
+		if (isSaved) {
+			ReadZipFileContent zipReader = new ReadZipFileContent();
+			try {
+				String original = zipReader.getFileName(fNew);
+				log_.debug("The original file name is " + original);
+				data.setOriginalFileName(original);
+				sessionData.addToList(data);
+			} catch (Exception e) {
+				errorMessage = "cannot get original file name from the zip file";
+				log_.error(errorMessage);
+
+				// If failed to get the original file name, we treat
+				// it like file upload failure.
+				isSaved = false;
+				// Also delete the file fNew
+				try {
+					fNew.delete();
+				} catch (Exception ee) {
+					log_.error("Failed to delete the file just saved: "
+							+ ee.getMessage());
+				}
+			}
+		}
+
+		// If the file is not saved, send a message to the applet.
+		// if (!isSaved)
+		if (!isSaved) {
+			try {
+				response.setContentType("text/html");
+				PrintWriter out = response.getWriter();
+
+				out
+						.println("Your file was uploaded successfully, but the system failed to save it.  You may try again.");
+			} catch (IOException ie) {
+				log_.error("IOException occured: " + ie.getMessage());
+			}
+			// write a messge to db for record.
+
+			if (data.getOriginalFileName() == null) {
+				data.setOriginalFileName("lost");
+			}
+		}
+
+	}
+
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
+		doPost(request, response);
+	}
 }
