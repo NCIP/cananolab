@@ -6,10 +6,11 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: SubmitProtocolAction.java,v 1.1 2007-05-07 12:24:11 chenhang Exp $ */
+/* CVS $Id: SubmitProtocolAction.java,v 1.2 2007-05-14 13:10:25 chenhang Exp $ */
 
-import gov.nih.nci.calab.dto.common.LabFileBean;
-import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
+import gov.nih.nci.calab.dto.common.ProtocolFileBean;
+import gov.nih.nci.calab.dto.common.ProtocolBean;
+import gov.nih.nci.calab.service.submit.SubmitProtocolService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
@@ -26,6 +27,9 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.upload.FormFile;
 import org.apache.struts.validator.DynaValidatorForm;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
 
 public class SubmitProtocolAction extends AbstractDispatchAction {
 
@@ -33,25 +37,49 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		ActionForward forward = null;
-
+		ActionMessages msgs = new ActionMessages();
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String[] particleNames = (String[]) theForm.get("particleNames");
-		LabFileBean fileBean = (LabFileBean) theForm.get("file");
+		String protocolName = (String)theForm.get("protocolName");
+		String protocolType = (String)theForm.get("protocolType");
+		ProtocolFileBean fileBean = (ProtocolFileBean) theForm.get("file");
+		String version = fileBean.getVersion();
+		
+		//Check for name and version
+		//setAllProtocolNameVersion(request);
+		if (isNameVersionConflict(request, protocolName, version)){
+			ActionMessage msg = new ActionMessage("message.submitProtocol.nameVersionConflict");
+			msgs.add("message", msg);
+			saveMessages(request, msgs);
+			return mapping.findForward("setup");	
+		}
+		
+		ProtocolBean pBean = new ProtocolBean();
+		
+		pBean.setName(protocolName);
+		pBean.setType(protocolType);
+		
+		
 		FormFile uploadedFile = (FormFile) theForm.get("uploadedFile");
-		SubmitNanoparticleService service = new SubmitNanoparticleService();
+		fileBean.setProtocolBean(pBean);
+		SubmitProtocolService service = new SubmitProtocolService();
 
-		service.createReport(particleNames, uploadedFile, fileBean);
-
+		if (uploadedFile.getFileName() == null 
+				|| uploadedFile.getFileName().length() == 0){
+			uploadedFile = null;
+		}
+		if (isNameConflict(request, protocolName))
+			service.createProtocol(fileBean, uploadedFile, false);
+		else
+			service.createProtocol(fileBean, uploadedFile, true);
 		// display default visible groups
 		if (fileBean.getVisibilityGroups().length == 0) {
 			fileBean
 					.setVisibilityGroups(CaNanoLabConstants.VISIBLE_GROUPS);
 		}
-
-		ActionMessages msgs = new ActionMessages();
-		ActionMessage msg1 = new ActionMessage("message.submitReport.secure",
+		request.getSession().removeAttribute("AllProtocolNameVersions");
+		ActionMessage msg1 = new ActionMessage("message.submitProtocol.secure",
 				StringUtils.join(fileBean.getVisibilityGroups(), ", "));
-		ActionMessage msg2 = new ActionMessage("message.submitReport.file",
+		ActionMessage msg2 = new ActionMessage("message.submitProtocol.file",
 				uploadedFile.getFileName());
 		msgs.add("message", msg1);
 		msgs.add("message", msg2);
@@ -69,60 +97,69 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		HttpSession session = request.getSession();
 		InitSessionSetup.getInstance().clearWorkflowSession(session);
 		InitSessionSetup.getInstance().clearSearchSession(session);
+		InitSessionSetup.getInstance().clearInventorySession(session);
 		InitSessionSetup.getInstance().setApplicationOwner(session);
-		InitSessionSetup.getInstance().setAllSampleContainers(session);
-		InitSessionSetup.getInstance().setStaticDropdowns(session);
+		InitSessionSetup.getInstance().setProtocolSubmitPage(session);
 		InitSessionSetup.getInstance().setAllVisibilityGroups(session);
-		return mapping.getInputForward();
+		ActionForward forward = mapping.findForward("setup");
+		return forward;
 	}
-
-	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
+	
+	public ActionForward reSetup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		HttpSession session = request.getSession();
-		InitSessionSetup.getInstance().clearWorkflowSession(session);
-		InitSessionSetup.getInstance().clearSearchSession(session);
-		InitSessionSetup.getInstance().setAllSampleContainers(session);
-		InitSessionSetup.getInstance().setStaticDropdowns(session);
-		InitSessionSetup.getInstance().setAllVisibilityGroups(session);
-
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String fileId = request.getParameter("fileId");
-		String fileType = request.getParameter("fileType");
-		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		LabFileBean fileBean=service.getFile(fileId, fileType);
-		theForm.set("file", fileBean);
-		return mapping.getInputForward();
-	}
-
-	public ActionForward setupView(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		return setupUpdate(mapping, form, request, response);
-	}
-
-	public ActionForward update(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		LabFileBean fileBean = (LabFileBean) theForm.get("file");
-		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		service.updateFileMetaData(fileBean);
-
-		ActionMessages msgs = new ActionMessages();
-		ActionMessage msg = new ActionMessage("message.updateReport", fileBean
-				.getPath());
-
-		msgs.add("message", msg);
-		saveMessages(request, msgs);
-
-		request.getSession().setAttribute("newReportCreated", "true");
-
-		return mapping.findForward("success");
+		updateEditableDropDownList(request, theForm);
+		return mapping.findForward("setup");
 	}
 
 	public boolean loginRequired() {
 		return true;
+	}
+	private void updateEditableDropDownList(HttpServletRequest request,
+			DynaValidatorForm theForm) {
+		HttpSession session = request.getSession();
+		// update sample source drop-down list to include the new entry
+		String protocolType = (String) theForm.get("protocolType");
+		List protocolTypes = (List) session.getAttribute("protocolTypes");
+
+		String protocolName = (String) theForm.get("protocolName");
+		List protocolNames = (List) session.getAttribute("protocolNames");
+		
+		if (!protocolTypes.contains(protocolType)
+				&&protocolType.length()>0) {
+			protocolTypes.add(protocolType);
+		}
+		
+		if (!protocolNames.contains(protocolName)
+				&&protocolName.length()>0) {
+			protocolNames.add(protocolName);
+		}
+	}
+
+	private  void setAllProtocolNameVersion(HttpServletRequest request) throws Exception{
+		HttpSession session = request.getSession();
+		InitSessionSetup.getInstance().setAllProtocolNameVersion(session);
+	}
+	
+	private boolean isNameVersionConflict(HttpServletRequest request, 
+		String protocolName, String version) throws Exception{
+		HttpSession session = request.getSession();
+		InitSessionSetup.getInstance().setAllProtocolNameVersion(session);
+		Map<String, List<String>> map = (Map)request.getSession().getAttribute("AllProtocolNameVersions");
+		if (!map.containsKey(protocolName))
+			return false;
+		
+		List<String> list = map.get(protocolName);
+		if (!list.contains(version))
+			return false;
+		return true;
+	}
+	private boolean isNameConflict(HttpServletRequest request, String name){
+		Map<String, List<String>> map = (Map)request.getSession().getAttribute("AllProtocolNameVersions");
+		if (map.containsKey(name)){
+			return true;
+		}
+		return false;
 	}
 }
