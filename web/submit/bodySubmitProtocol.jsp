@@ -35,13 +35,11 @@
 								<strong>Protocol Type*</strong>
 							</td>
 							<td class="rightLabel">
-								<html:select property="protocolType"
-									onchange="javascript:filterContainers();"
+								<html:select property="protocolType" 
 									onkeydown="javascript:fnKeyDownHandler(this, event);"
 									onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
 									onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-									onchange="fnChangeHandler_A(this, event);">
-									<!-- option/ -->
+									onchange="fnChangeHandler_A(this, event); javascript:filterProtocolNames();">
 									<option value="">--?--</option>
 									<html:options name="protocolTypes" />
 								</html:select>
@@ -58,15 +56,7 @@
 									onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
 									onchange="fnChangeHandler_A(this, event);">
 									<option value="">--?--</option>
-									<option value="${createAliquotForm.map.containerName}" selected>
-										${createAliquotForm.map.containerName}
-									</option>
-									<%--
 									<html:options name="protocolNames" />
-									<option value="GTA-3">GTA-3</option>
-									<option value="ITA-6"> ITA-6</option>
-									<option value="STE-3">STE-3</option>
-									--%>
 								</html:select> &nbsp; &nbsp; <strong>Protocol Version* </strong>&nbsp; 
 									<html:text property="file.version" size="10"/>
 							</td>
@@ -137,3 +127,23 @@
 		</tr>
 	</table>
 </html:form>
+
+<script language="JavaScript">
+<!--//
+  /* populate a hashtable containing sampleName aliquots */
+  var typeNames=new Array();    
+  <c:forEach var="item" items="${AllProtocolNameTypes}">
+    var names=new Array();
+    <c:forEach var="name" items="${AllProtocolNameTypes[item.key]}" varStatus="count">
+  	    names[${count.index}]='${name}';  	
+    </c:forEach>
+    typeNames['${item.key}']=names;
+  </c:forEach>  
+  
+  function filterProtocolNames() {
+  	if (!document.submitProtocolForm.protocolType[1].checked) {
+  	   doubleDropdownForTheEditable(document.submitProtocolForm.protocolType, document.submitProtocolForm.protocolName, typeNames);	
+  	}
+  }
+//-->
+</script>
