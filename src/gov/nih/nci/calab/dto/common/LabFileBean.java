@@ -61,6 +61,7 @@ public class LabFileBean {
 		this.title = charFile.getTitle();
 		this.description = charFile.getDescription();
 		this.createdBy = charFile.getCreatedBy();
+		this.version = charFile.getVersion();
 		this.createdDate = charFile.getCreatedDate();
 		if (charFile instanceof DerivedDataFile) {
 			List<String> allkeywords = new ArrayList<String>();
@@ -176,6 +177,7 @@ public class LabFileBean {
 		labfile.setFilename(name);
 		labfile.setPath(path);
 		labfile.setTitle(title);
+		labfile.setVersion(version);
 		return labfile;
 	}
 
@@ -191,6 +193,7 @@ public class LabFileBean {
 		dataFile.setFilename(name);
 		dataFile.setPath(path);
 		dataFile.setTitle(title);
+		dataFile.setVersion(version);
 		for (String keywordValue : keywords) {
 			Keyword keyword = new Keyword();
 			keyword.setName(keywordValue);
