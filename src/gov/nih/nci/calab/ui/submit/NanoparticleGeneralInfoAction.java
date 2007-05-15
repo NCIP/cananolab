@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.20 2007-03-13 15:02:44 pansu Exp $ */
+/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.21 2007-05-15 14:50:56 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
@@ -51,7 +51,7 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 		String[] keywordList = (keywords.length() == 0) ? null : keywords
 				.split("\r\n");
 		SubmitNanoparticleService submitNanoparticleService = new SubmitNanoparticleService();
-		submitNanoparticleService.createNanoparticle(particleType,
+		submitNanoparticleService.addParticleGeneralInfo(particleType,
 				particleName, keywordList, visibilities);
 		HttpSession session = request.getSession();
 		
