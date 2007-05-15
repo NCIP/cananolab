@@ -6,12 +6,13 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchProtocolAction.java,v 1.2 2007-05-11 19:47:01 pansu Exp $ */
+/* CVS $Id: SearchProtocolAction.java,v 1.3 2007-05-15 18:19:56 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
+import gov.nih.nci.calab.service.search.SearchReportService;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
@@ -48,8 +49,8 @@ public class SearchProtocolAction extends AbstractDispatchAction {
 		String particleType = (String) theForm.get("particleType");
 		String[] functionTypes = (String[]) theForm.get("functionTypes");
 
-		SearchNanoparticleService searchParticleService = new SearchNanoparticleService();
-		List<LabFileBean> reports = searchParticleService.searchReports(
+		SearchReportService searchProtocolService = new SearchReportService();
+		List<LabFileBean> reports = searchProtocolService.searchReports(
 				reportTitle, reportType, particleType, functionTypes, user);
 
 		if (reports != null && !reports.isEmpty()) {
@@ -72,10 +73,10 @@ public class SearchProtocolAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		HttpSession session = request.getSession();
-//		InitSessionSetup.getInstance().setAllParticleTypeParticles(session);
+		// InitSessionSetup.getInstance().setAllParticleTypeParticles(session);
 		InitSessionSetup.getInstance().setAllParticleFunctionTypes(session);
 		InitSessionSetup.getInstance().setApplicationOwner(session);
-		InitSessionSetup.getInstance().setStaticDropdowns(session);		
+		InitSessionSetup.getInstance().setStaticDropdowns(session);
 		InitSessionSetup.getInstance().clearWorkflowSession(session);
 		InitSessionSetup.getInstance().clearInventorySession(session);
 
