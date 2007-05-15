@@ -180,23 +180,25 @@ public class CharacterizationBean {
 
 			aChar.setInstrument(instrument);
 		}
+/*
+		CharacterizationProtocolBean characterizationProtocolBean = getCharacterizationProtocol();
 
-		ProtocolFile protocolFile = new ProtocolFile();
+		if (characterizationProtocolBean.getName() != null
+				&& characterizationProtocolBean.getName() != ""
+				&& characterizationProtocolBean.getVersion() != null
+				&& characterizationProtocolBean.getVersion() != "") {
 
-		if (protocolFileBean.getProtocolBean().getName() != null
-				&& protocolFileBean.getProtocolBean().getName() != ""
-				&& protocolFileBean.getVersion() != null
-				&& protocolFileBean.getVersion() != "") {
+			CharacterizationProtocol characterizationProtocol = new CharacterizationProtocol();
+			characterizationProtocol.setName(characterizationProtocolBean
+					.getName());
+			characterizationProtocol.setVersion(characterizationProtocolBean
+					.getVersion());
+			characterizationProtocol
+					.setId(characterizationProtocolBean.getId());
 
-			Protocol protocol = new Protocol();
-			protocol.setName(protocolFileBean.getProtocolBean().getName());
-			protocol.setId(protocolFileBean.getProtocolBean().getId());
-			protocolFile.setVersion(protocolFileBean.getVersion());
-			protocolFile.setId(Long.parseLong(protocolFileBean.getId()));
-			protocolFile.setProtocol(protocol);
-			aChar.setProtocolFile(protocolFile);
+			aChar.setCharacterizationProtocol(characterizationProtocol);
 		}
-		
+		*/
 	}
 
 	public String getDescription() {
