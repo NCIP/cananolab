@@ -38,7 +38,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 
-/* CVS $Id: BaseCharacterizationAction.java,v 1.26 2007-05-14 14:18:02 chenhang Exp $ */
+/* CVS $Id: BaseCharacterizationAction.java,v 1.27 2007-05-15 13:33:05 chenhang Exp $ */
 
 public abstract class BaseCharacterizationAction extends AbstractDispatchAction {
 	/**
@@ -62,7 +62,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 	protected void initSetup(HttpServletRequest request,
 			DynaValidatorForm theForm) throws Exception {
 		HttpSession session = request.getSession();
-
+		
+		String submitType = (String)request.getParameter("submitType");
 		String particleType = (String) theForm.get("particleType");
 		String particleName = (String) theForm.get("particleName");
 
@@ -79,7 +80,13 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		InitSessionSetup.getInstance().setAllConditionUnits(session);
 		InitSessionSetup.getInstance().setAllConcentrationUnits(session);
 		InitSessionSetup.getInstance().setAllTimeUnits(session);
-		InitSessionSetup.getInstance().setProtocolNamesDropdownList(session);
+		//TODO If there are more types of charactizations, add their corresponding
+		//protocol type here.
+		if (submitType.equalsIgnoreCase("physical"))
+			InitSessionSetup.getInstance().setAllProtocolNameVersionsByType(session, "Physical assay");
+		else
+			InitSessionSetup.getInstance().setAllProtocolNameVersionsByType(session, "In vitro assay");
+			
 	}
 
 	/**
