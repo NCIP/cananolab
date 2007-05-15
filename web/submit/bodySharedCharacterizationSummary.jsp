@@ -52,7 +52,7 @@
 			<c:choose>
 				<c:when test="${canUserSubmit eq 'true'}">
 					<!-- html:text property="achar.characterizationProtocol.name" / -->
-					<html:select styleId="protocolName" property="achar.protocolFileBean.protocolBean.name"
+					<html:select styleId="protocolName" property="achar.protocolFileBean.protocolBean.id"
 						onchange="javascript:filterProtocolVersions();">
 						<html:option value=""></html:option>
 						<%-- 
