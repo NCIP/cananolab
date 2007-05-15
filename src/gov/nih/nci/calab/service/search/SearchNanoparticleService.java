@@ -352,65 +352,6 @@ public class SearchNanoparticleService {
 	}
 
 	/**
-	 * retrieve sample report information including reportCollection and
-	 * associatedFileCollection
-	 * 
-	 * @param particleName
-	 * @param particleType
-	 * @return List of LabFileBean
-	 * @throws Exception
-	 */
-	public List<LabFileBean> getReportInfo(String particleName,
-			String particleType, String reportType, UserBean user)
-			throws Exception {
-		List<LabFileBean> fileBeans = new ArrayList<LabFileBean>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
-		String reportJoin = "reportCollection";
-		String associatedFileJoin = "associatedFileCollection";
-
-		String hql = "select report from Nanoparticle particle join particle.reportType"
-				+ " report where particle.name='"
-				+ particleName
-				+ "' and particle.type='" + particleType + "'";
-		if (reportType.equals(CaNanoLabConstants.REPORT)) {
-			hql=hql.replaceAll("reportType", reportJoin);
-		} else if (reportType.equals(CaNanoLabConstants.ASSOCIATED_FILE)) {
-			hql=hql.replaceAll("reportType", associatedFileJoin);
-		}
-		try {
-			ida.open();
-			List results = ida.search(hql);
-			for (Object obj : results) {
-				LabFileBean fileBean = new LabFileBean((LabFile) obj,
-						reportType);
-				UserService userService = new UserService(
-						CaNanoLabConstants.CSM_APP_NAME);
-				List<String> accessibleGroups = userService
-						.getAccessibleGroups(fileBean.getId(),
-								CaNanoLabConstants.CSM_READ_ROLE);
-				String[] visibilityGroups = accessibleGroups
-						.toArray(new String[0]);
-				fileBean.setVisibilityGroups(visibilityGroups);
-				fileBeans.add(fileBean);
-			}
-		} catch (Exception e) {
-			logger.error("Problem finding report info for particle: "
-					+ particleName);
-			throw e;
-		} finally {
-			ida.close();
-		}
-
-		UserService userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
-
-		List<LabFileBean> filteredReports = userService.getFilteredFiles(
-				user, fileBeans);
-		return filteredReports;
-	}
-
-
-	/**
 	 * Avanced nanoparticle search based on more detailed meta data.
 	 * 
 	 * @param particleType
