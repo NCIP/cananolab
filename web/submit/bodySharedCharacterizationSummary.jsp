@@ -52,7 +52,7 @@
 			<c:choose>
 				<c:when test="${canUserSubmit eq 'true'}">
 					<!-- html:text property="achar.characterizationProtocol.name" / -->
-					<html:select styleId="protocolName" property="achar.protocolFileBean.protocolBean.id"
+					<html:select styleId="protocolIds" property="achar.protocolFileBean.protocolBean.id"
 						onchange="javascript:filterProtocolVersions();">
 						<html:option value=""></html:option>
 						<%-- 
@@ -73,7 +73,7 @@
 		<td class="rightLabel">
 			<c:choose>
 				<c:when test="${canUserSubmit eq 'true'}">
-					<html:select styleId="protocolVersion" property="achar.protocolFileBean.version">
+					<html:select styleId="protocolVersions" property="achar.protocolFileBean.version">
 						<option/>
 					</html:select>
 				</c:when>
@@ -114,8 +114,8 @@
   </c:forEach>  
   
   function filterProtocolVersions() {
-  	var name = document.getElementById("protocolName");
-  	var version = document.getElementById("protocolVersion");
+  	var name = document.getElementById("protocolIds");
+  	var version = document.getElementById("protocolVersions");
   	if (!name[1].checked) {
   	   doubleDropdown(name, version, versionNames);	
   	}
