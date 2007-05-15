@@ -16,6 +16,7 @@ import gov.nih.nci.calab.exception.InvalidSessionException;
 import gov.nih.nci.calab.service.common.LookupService;
 import gov.nih.nci.calab.service.search.GridSearchService;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
+import gov.nih.nci.calab.service.search.SearchReportService;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.service.util.CaNanoLabComparators;
@@ -532,11 +533,12 @@ public class InitSessionSetup {
 		}
 
 		UserBean user = (UserBean) session.getAttribute("user");
+		SearchReportService searchReportService=new SearchReportService();
 		if (session.getAttribute("particleReports") == null
 				|| session.getAttribute("newReportCreated") != null
 				|| session.getAttribute("newParticleCreated") != null) {
 
-			List<LabFileBean> reportBeans = service.getReportInfo(particleName,
+			List<LabFileBean> reportBeans = searchReportService.getReportInfo(particleName,
 					particleType, CaNanoLabConstants.REPORT, user);
 			session.setAttribute("particleReports", reportBeans);
 		}
@@ -544,7 +546,7 @@ public class InitSessionSetup {
 		if (session.getAttribute("particleAssociatedFiles") == null
 				|| session.getAttribute("newReportCreated") != null
 				|| session.getAttribute("newParticleCreated") != null) {
-			List<LabFileBean> associatedBeans = service.getReportInfo(
+			List<LabFileBean> associatedBeans = searchReportService.getReportInfo(
 					particleName, particleType,
 					CaNanoLabConstants.ASSOCIATED_FILE, user);
 			session.setAttribute("particleAssociatedFiles", associatedBeans);
