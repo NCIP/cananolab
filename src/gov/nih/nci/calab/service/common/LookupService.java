@@ -8,6 +8,7 @@ import gov.nih.nci.calab.domain.Sample;
 import gov.nih.nci.calab.domain.SampleContainer;
 import gov.nih.nci.calab.domain.StorageElement;
 import gov.nih.nci.calab.dto.common.ProtocolBean;
+import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.inventory.AliquotBean;
 import gov.nih.nci.calab.dto.inventory.ContainerBean;
 import gov.nih.nci.calab.dto.inventory.ContainerInfoBean;
@@ -38,7 +39,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.97 2007-05-15 18:03:00 chenhang Exp $ */
+/* CVS $Id: LookupService.java,v 1.98 2007-05-15 18:24:34 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -1350,6 +1351,53 @@ public class LookupService {
 		String[] allReportTypes = new String[] { CaNanoLabConstants.REPORT,
 				CaNanoLabConstants.ASSOCIATED_FILE };
 		return allReportTypes;
+	}
+	/**
+	 * Get other particles from the given particle source
+	 * 
+	 * @param particleSource
+	 * @param particleName
+	 * @param user
+	 * @return
+	 * @throws Exception
+	 */
+	public SortedSet<String> getOtherParticles(String particleSource,
+			String particleName, UserBean user) throws Exception {
+
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		UserService userService = new UserService(
+				CaNanoLabConstants.CSM_APP_NAME);
+		SortedSet<String> otherParticleNames = new TreeSet<String>();
+		try {
+			ida.open();
+			String hqlString = "select particle.name from Nanoparticle particle where particle.source.organizationName='"
+					+ particleSource
+					+ "' and particle.name !='"
+					+ particleName
+					+ "'";
+
+			List results = ida.search(hqlString);
+
+			for (Object obj : results) {
+				String otherParticleName = (String) obj;
+				// check if user can see the particle
+				boolean status = userService.checkReadPermission(user,
+						otherParticleName);
+				if (status) {
+					otherParticleNames.add(otherParticleName);
+				}
+			}
+		} catch (Exception e) {
+			logger
+					.error("Error in retrieving all particle type particles. ",
+							e);
+			throw new RuntimeException(
+					"Error in retrieving all particle type particles. ");
+		} finally {
+			ida.close();
+		}
+		return otherParticleNames;
 	}
 
 }
