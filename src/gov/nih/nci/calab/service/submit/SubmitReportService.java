@@ -11,7 +11,6 @@ import gov.nih.nci.calab.service.common.FileService;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
-import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.io.File;
 import java.util.Date;
