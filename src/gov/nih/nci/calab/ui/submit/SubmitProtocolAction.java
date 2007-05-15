@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: SubmitProtocolAction.java,v 1.3 2007-05-14 17:13:17 chenhang Exp $ */
+/* CVS $Id: SubmitProtocolAction.java,v 1.4 2007-05-15 18:05:24 chenhang Exp $ */
 
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
 import gov.nih.nci.calab.dto.common.ProtocolBean;
@@ -45,7 +45,6 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		String version = fileBean.getVersion();
 		
 		//Check for name and version
-		//setAllProtocolNameVersion(request);
 		if (isNameVersionConflict(request, protocolName, version)){
 			updateEditableDropDownList(request, theForm);
 			ActionMessage msg = new ActionMessage("message.submitProtocol.nameVersionConflict");
@@ -64,15 +63,8 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		fileBean.setProtocolBean(pBean);
 		SubmitProtocolService service = new SubmitProtocolService();
 
-		if (uploadedFile.getFileName() == null 
-				|| uploadedFile.getFileName().length() == 0){
-			uploadedFile = null;
-		}
-		if (isNameConflict(request, protocolName))
-			service.createProtocol(fileBean, uploadedFile, false);
-		else
-			service.createProtocol(fileBean, uploadedFile, true);
-		// display default visible groups
+		service.createProtocol(fileBean, uploadedFile);
+
 		if (fileBean.getVisibilityGroups().length == 0) {
 			fileBean
 					.setVisibilityGroups(CaNanoLabConstants.VISIBLE_GROUPS);
@@ -149,16 +141,11 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		}
 	}
 
-	private  void setAllProtocolNameVersion(HttpServletRequest request) throws Exception{
-		HttpSession session = request.getSession();
-		InitSessionSetup.getInstance().setAllProtocolNameVersion(session);
-	}
-	
 	private boolean isNameVersionConflict(HttpServletRequest request, 
 		String protocolName, String version) throws Exception{
 		HttpSession session = request.getSession();
-		InitSessionSetup.getInstance().setAllProtocolNameVersion(session);
-		Map<String, List<String>> map = (Map)request.getSession().getAttribute("AllProtocolNameVersions");
+		InitSessionSetup.getInstance().setAllProtocolNamesWithVersion(session);
+		Map<String, List<String>> map = (Map)request.getSession().getAttribute("AllProtocolNamesWithVersions");
 		if (!map.containsKey(protocolName))
 			return false;
 		
@@ -166,12 +153,5 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		if (!list.contains(version))
 			return false;
 		return true;
-	}
-	private boolean isNameConflict(HttpServletRequest request, String name){
-		Map<String, List<String>> map = (Map)request.getSession().getAttribute("AllProtocolNameVersions");
-		if (map.containsKey(name)){
-			return true;
-		}
-		return false;
 	}
 }
