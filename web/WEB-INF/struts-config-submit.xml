@@ -345,9 +345,6 @@
 		<forward name="Glucuronidation, Sulphation" path="invitroMetabolicStabilityGlucuronidationSulphation.do?page=0" />
 		<forward name="invitroGlucuronidationSulphationForm" path="submit.addmetabolicstability.glucuronidationsulphation" />
 		<forward name="function" path="nanoparticleFunction.do?page=0" />
-		<forward name="Solubility" path="nanoparticleSolubility.do?page=0" />
-		<forward name="Purity" path="nanoparticlePurity.do?page=0" />
-		<forward name="Stability" path="nanoparticleStability.do?page=0" />
 	</global-forwards>
 	<action-mappings>
 		<action path="/manageNanoparticle" type="gov.nih.nci.calab.ui.core.BaseForwardAction" parameter="submit.managenanoparticle" scope="request" />
