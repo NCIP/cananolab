@@ -24,7 +24,7 @@ import org.apache.struts.upload.FormFile;
  */
 
 /*
- * CVS $Id: SubmitProtocolService.java,v 1.3 2007-05-15 15:23:49 pansu Exp $
+ * CVS $Id: SubmitProtocolService.java,v 1.4 2007-05-15 18:06:12 chenhang Exp $
  */
 
 public class SubmitProtocolService {
@@ -46,10 +46,14 @@ public class SubmitProtocolService {
 	 * @throws Exception
 	 */
 	public void createProtocol(ProtocolFileBean fileBean,
-			FormFile uploadedFile, boolean isNew) throws Exception {
+			FormFile uploadedFile) throws Exception {
 
 		// TODO saves protocol file to the file system
 		String fileName = null;
+		if (uploadedFile.getFileName() == null 
+				|| uploadedFile.getFileName().length() == 0){
+			uploadedFile = null;
+		}
 		if (uploadedFile != null) {
 
 			FileService fileService = new FileService();
@@ -77,31 +81,30 @@ public class SubmitProtocolService {
 		Date date = new Date();
 		dataFile.setCreatedDate(date);
 		dataFile.setVersion(fileBean.getVersion());
-		// dataFile.setComments(fileBean.getComments());
 
 		Protocol protocol = new Protocol();
 		protocol.setName(fileBean.getProtocolBean().getName());
 		protocol.setType(fileBean.getProtocolBean().getType());
-		// TODO daves reportFile path to the database
-		// look up the samples for each particleNames
+
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 
 		try {
 			ida.open();
-			if (isNew) {
-				ida.store(protocol);
-			} else {
-				List results = ida.search("from Protocol where name='"
-						+ protocol.getName() + "'");
-				Protocol pl = null;
-				for (Object obj : results) {
-					pl = (Protocol) obj;
-				}
-				protocol.setId(pl.getId());
+			List results = ida.search("from Protocol where name='"
+					+ protocol.getName() + "'");
+			Protocol pl = null;
+			for (Object obj : results) {
+				pl = (Protocol) obj;
 			}
+			if (pl == null){
+				ida.store(protocol);
+			}
+			else
+				protocol.setId(pl.getId());
+
 			dataFile.setProtocol(protocol);
-			// protocol.getProtocolFileCollection().add(dataFile);
+			//protocol.getProtocolFileCollection().add(dataFile);
 			// ida.store(protocol);
 			ida.store(dataFile);
 		} catch (Exception e) {
