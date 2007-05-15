@@ -54,8 +54,11 @@
 					<!-- html:text property="achar.characterizationProtocol.name" / -->
 					<html:select styleId="protocolName" property="achar.protocolFileBean.protocolBean.name"
 						onchange="javascript:filterProtocolVersions();">
-						<option/>
+						<html:option value=""></html:option>
+						<%-- 
 						<html:options name="AllProtocolNameByType" />
+						--%>
+						<html:optionsCollection name="AllProtocolNameByType" label="name" value="id"/>
 					</html:select>
 				</c:when>
 				<c:otherwise>
