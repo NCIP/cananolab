@@ -2,6 +2,7 @@ package gov.nih.nci.calab.ui.core;
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
+import gov.nih.nci.calab.dto.common.ProtocolBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.function.FunctionBean;
 import gov.nih.nci.calab.dto.inventory.AliquotBean;
@@ -778,20 +779,25 @@ public class InitSessionSetup {
 	}
 	public void setAllProtocolNameVersionsByType(HttpSession session, String type) throws Exception {
 		// set protocol name and its versions for a given protocol type.
-		Map<String, List<String>> nameVersions = lookupService.getAllProtocolNameVersionByType(type);
+		Map<ProtocolBean, List<String>> nameVersions = lookupService.getAllProtocolNameVersionByType(type);
 		
 		session.setAttribute("AllProtocolNameVersionsByType", nameVersions);
-		session.setAttribute("AllProtocolNameByType", new ArrayList<String>(nameVersions
+		session.setAttribute("AllProtocolNameByType", new ArrayList<ProtocolBean>(nameVersions
 				.keySet()));
 	}
 
 	public void setAllProtocolNameVersion(HttpSession session) throws Exception {
 		// set protocol name and its versions for all protocol types.
-		Map<String, List<String>> nameVersions = lookupService.getAllProtocolNameVersion();
+		Map<ProtocolBean, List<String>> nameVersions = lookupService.getAllProtocolNameVersion();
 		
 		session.setAttribute("AllProtocolNameVersions", nameVersions);
 	}
-	
+	public void setAllProtocolNamesWithVersion(HttpSession session) throws Exception {
+		// set protocol name and its versions for all protocol types.
+		Map<String, List<String>> nameVersions = lookupService.getAllProtocolNamesWithVersions();
+		
+		session.setAttribute("AllProtocolNamesWithVersions", nameVersions);
+	}
 	public void setAllRunFiles(HttpSession session, String particleName)
 			throws Exception {
 		if (session.getAttribute("allRunFiles") == null
