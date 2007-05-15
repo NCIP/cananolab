@@ -5,15 +5,12 @@ import gov.nih.nci.calab.db.IDataAccess;
 import gov.nih.nci.calab.domain.Protocol;
 import gov.nih.nci.calab.domain.ProtocolFile;
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
+import gov.nih.nci.calab.service.common.FileService;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
-import gov.nih.nci.calab.service.util.StringUtils;
-import gov.nih.nci.calab.service.util.file.HttpFileUploadSessionData;
-import gov.nih.nci.calab.service.common.FileService;
+
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -22,17 +19,22 @@ import org.apache.struts.upload.FormFile;
 
 /**
  * 
- * @author pansu
+ * @author chenhang 
  * 
  */
 
 /*
- * CVS $Id: SubmitProtocolService.java,v 1.2 2007-05-14 15:03:42 pansu Exp $
+ * CVS $Id: SubmitProtocolService.java,v 1.3 2007-05-15 15:23:49 pansu Exp $
  */
 
 public class SubmitProtocolService {
 	private static Logger logger = Logger
 			.getLogger(SubmitProtocolService.class);
+	private UserService userService;
+	
+	public SubmitProtocolService() throws Exception {
+		userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
+	}
 
 	/**
 	 * Create a brand new protocol based on user input
@@ -110,63 +112,9 @@ public class SubmitProtocolService {
 		} finally {
 			ida.close();
 		}
-		/*
-		 * Nanoparticle particle = null;
-		 * 
-		 * for (String particleName : particleNames) { try { ida.open();
-		 * 
-		 * List results = ida .search("select particle from Nanoparticle
-		 * particle left join fetch particle.reportCollection where
-		 * particle.name='" + particleName + "'");
-		 * 
-		 * for (Object obj : results) { particle = (Nanoparticle) obj; }
-		 * 
-		 * if (particle != null) { if (fileBean.getType().equalsIgnoreCase(
-		 * CaNanoLabConstants.REPORT))
-		 * particle.getReportCollection().add((Report) dataFile); else
-		 * particle.getAssociatedFileCollection().add( (AssociatedFile)
-		 * dataFile); } } catch (Exception e) { e.printStackTrace();
-		 * ida.rollback(); logger.error("Problem saving report File: "); throw
-		 * e; } finally { ida.close(); } }
-		 */
-		setVisiblity(protocol.getId().toString(), fileBean
+
+		userService.setVisiblity(protocol.getId().toString(), fileBean
 				.getVisibilityGroups());
 
-	}
-
-	private void writeFile(InputStream is, FileOutputStream os) {
-		byte[] bytes = new byte[32768];
-
-		try {
-			int numRead = 0;
-			while ((numRead = is.read(bytes)) > 0) {
-				os.write(bytes, 0, numRead);
-			}
-			os.close();
-
-		} catch (Exception e) {
-
-		}
-	}
-
-	private void setVisiblity(String dataToProtect, String[] visibilities)
-			throws Exception {
-		// remove existing visibilities for the data
-		UserService userService = new UserService(
-				CaNanoLabConstants.CSM_APP_NAME);
-		userService.removeAllAccessibleGroups(dataToProtect,
-				CaNanoLabConstants.CSM_READ_ROLE, null);
-
-		// set new visibilities
-		for (String visibility : visibilities) {
-			userService.secureObject(dataToProtect, visibility,
-					CaNanoLabConstants.CSM_READ_ROLE);
-		}
-
-		// set default visibilities
-		for (String visibility : CaNanoLabConstants.VISIBLE_GROUPS) {
-			userService.secureObject(dataToProtect, visibility,
-					CaNanoLabConstants.CSM_READ_ROLE);
-		}
 	}
 }
