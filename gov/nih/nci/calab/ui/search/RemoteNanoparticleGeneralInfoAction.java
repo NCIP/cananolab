@@ -7,12 +7,12 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: RemoteNanoparticleGeneralInfoAction.java,v 1.2 2007-03-28 16:18:28 pansu Exp $ */
+/* CVS $Id: RemoteNanoparticleGeneralInfoAction.java,v 1.3 2007-05-15 18:19:56 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.remote.GridNodeBean;
-import gov.nih.nci.calab.service.search.SearchNanoparticleService;
+import gov.nih.nci.calab.service.search.SearchReportService;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
@@ -61,9 +61,9 @@ public class RemoteNanoparticleGeneralInfoAction extends AbstractDispatchAction 
 		String particleType = (String) theForm.get("particleType");
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
-		SearchNanoparticleService searchtNanoparticleService = new SearchNanoparticleService();
+		SearchReportService searchReportService = new SearchReportService();
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		Collection<LabFileBean> reports = searchtNanoparticleService
+		Collection<LabFileBean> reports = searchReportService
 				.getReportByParticle(particleName, particleType, user);
 		request.setAttribute("particleReports", reports);
 		forward = mapping.findForward("viewDisclaimer");

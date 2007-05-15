@@ -6,12 +6,13 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchReportAction.java,v 1.9 2007-05-10 17:23:32 pansu Exp $ */
+/* CVS $Id: SearchReportAction.java,v 1.10 2007-05-15 18:19:56 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
+import gov.nih.nci.calab.service.search.SearchReportService;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
@@ -48,8 +49,8 @@ public class SearchReportAction extends AbstractDispatchAction {
 		String particleType = (String) theForm.get("particleType");
 		String[] functionTypes = (String[]) theForm.get("functionTypes");
 
-		SearchNanoparticleService searchParticleService = new SearchNanoparticleService();
-		List<LabFileBean> reports = searchParticleService.searchReports(
+		SearchReportService searchReportService = new SearchReportService();
+		List<LabFileBean> reports = searchReportService.searchReports(
 				reportTitle, reportType, particleType, functionTypes, user);
 
 		if (reports != null && !reports.isEmpty()) {
