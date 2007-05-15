@@ -785,6 +785,13 @@ public class InitSessionSetup {
 				.keySet()));
 	}
 
+	public void setAllProtocolNameVersion(HttpSession session) throws Exception {
+		// set protocol name and its versions for all protocol types.
+		Map<String, List<String>> nameVersions = lookupService.getAllProtocolNameVersion();
+		
+		session.setAttribute("AllProtocolNameVersions", nameVersions);
+	}
+	
 	public void setAllRunFiles(HttpSession session, String particleName)
 			throws Exception {
 		if (session.getAttribute("allRunFiles") == null
