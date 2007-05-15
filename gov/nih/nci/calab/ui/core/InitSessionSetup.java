@@ -758,14 +758,13 @@ public class InitSessionSetup {
 	}
 
 	public void setProtocolSubmitPage(HttpSession session) throws Exception {
-		// set protocol types as given in the constant file
+		// set protocol types, and protocol names for all these types
 		List<String> protocolTypes = lookupService.getAllProtocolTypes();
 		for (int i = 0; i < CaNanoLabConstants.PROTOCOL_TYPES.length; i++){
 			if (!protocolTypes.contains(CaNanoLabConstants.PROTOCOL_TYPES[i]))
 				protocolTypes.add(CaNanoLabConstants.PROTOCOL_TYPES[i]);
 		}
 		session.setAttribute("protocolTypes", protocolTypes);
-		//setAllProtocolNameTypes(session);
 		Map<String, List<String>> nameTypes = lookupService.getAllProtocolNameTypes();
 		for (String type : protocolTypes){
 			List<String> localList = nameTypes.get(type);
@@ -776,25 +775,16 @@ public class InitSessionSetup {
 		}
 		session.setAttribute("AllProtocolNameTypes", nameTypes);
 		session.setAttribute("protocolNames", new ArrayList<String>());
-		//Get available protocol names from PROTOCOL table
-		//setProtocolNamesDropdownList(session);
 	}
-	public void setAllProtocolNameVersion(HttpSession session) throws Exception {
-		// set protocol types as given in the constant file
-		Map<String, List<String>> nameVersions = lookupService.getAllProtocolNameVersion();
-		session.setAttribute("AllProtocolNameVersions", nameVersions);
+	public void setAllProtocolNameVersionsByType(HttpSession session, String type) throws Exception {
+		// set protocol name and its versions for a given protocol type.
+		Map<String, List<String>> nameVersions = lookupService.getAllProtocolNameVersionByType(type);
+		
+		session.setAttribute("AllProtocolNameVersionsByType", nameVersions);
+		session.setAttribute("AllProtocolNameByType", new ArrayList<String>(nameVersions
+				.keySet()));
 	}
-	public void setAllProtocolNameTypes(HttpSession session) throws Exception {
-		// set protocol types as given in the constant file
-		Map<String, List<String>> nameTypes = lookupService.getAllProtocolNameTypes();
-		session.setAttribute("AllProtocolNameTypes", nameTypes);
-	}
-	public void setProtocolNamesDropdownList(HttpSession session) throws Exception {
-		//Get available protocol names from PROTOCOL table
-		List<String> protocolNames = lookupService.getAllProtocolNames();
-		session.setAttribute("protocolNames", protocolNames);
-	}
-	
+
 	public void setAllRunFiles(HttpSession session, String particleName)
 			throws Exception {
 		if (session.getAttribute("allRunFiles") == null
