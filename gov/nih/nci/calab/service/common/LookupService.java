@@ -37,7 +37,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.95 2007-05-14 13:00:50 chenhang Exp $ */
+/* CVS $Id: LookupService.java,v 1.96 2007-05-15 13:27:20 chenhang Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -1029,6 +1029,48 @@ public class LookupService {
 		}
 		return nameVersions;	
 	}
+	
+	public Map<String, List<String>>  getAllProtocolNameVersionByType(String type) throws Exception{
+		Map<String, List<String>> nameVersions = new HashMap<String, List<String>>();
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			String hqlString = "select protocolFile, protocolFile.protocol.name from ProtocolFile protocolFile" +
+					" where protocolFile.protocol.type = '" + type + "'";
+			List results = ida.search(hqlString);
+			for (Object obj : results) {
+				Object[] array = (Object[])obj;
+				Object key = null;
+				Object value = null;
+				for (int i = 0; i < array.length; i++){
+					if (array[i] instanceof String){
+						key = array[i];
+					}
+					else if (array[i] instanceof ProtocolFile){
+						value = array[i];
+					}
+				}
+				if (nameVersions.containsKey(key)){
+					List<String> localList = nameVersions.get(key);
+					localList.add(((ProtocolFile)value).getVersion());
+				}
+				else {
+					List<String> localList = new ArrayList<String>();
+					localList.add(((ProtocolFile)value).getVersion());
+					nameVersions.put((String)key, localList);
+				}
+				//protocolNames.add((String) obj);
+			}
+		} catch (Exception e) {
+			logger.error("Problem to retrieve all protocol names.");
+			throw new RuntimeException("Problem to retrieve all protocol names.");
+		} finally {
+			ida.close();
+		}
+		return nameVersions;	
+	}
+	
 	public List<String> getAllProtocolTypes() throws Exception {
 		List<String> protocolTypes = new ArrayList<String>();
 		IDataAccess ida = (new DataAccessProxy())
