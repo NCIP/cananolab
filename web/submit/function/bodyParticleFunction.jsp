@@ -457,7 +457,7 @@ function clearOtherAgents(agentType, elementPrefix) {
 						</tr>
 				</table>
 				<%-- end of Function Linkage Agent  --%>
-				<jsp:include page="../bodySharedCharacterizationSubmit.jsp" />
+				<jsp:include page="/submit/bodySharedCharacterizationSubmit.jsp" />
 			</td>
 		</tr>
 	</table>
