@@ -51,23 +51,32 @@
 		<td class="label">
 			<c:choose>
 				<c:when test="${canUserSubmit eq 'true'}">
-					<html:text property="achar.characterizationProtocol.name" />
+					<!-- html:text property="achar.characterizationProtocol.name" / -->
+					<html:select styleId="protocolName" property="achar.protocolFileBean.protocolBean.name"
+						onchange="javascript:filterProtocolVersions();">
+						<option/>
+						<html:options name="AllProtocolNameByType" />
+					</html:select>
 				</c:when>
 				<c:otherwise>
-						${thisForm.map.achar.characterizationProtocol.name}&nbsp;
+						${thisForm.map.achar.protocolFileBean.protocolBean.name}&nbsp;
 				</c:otherwise>
 			</c:choose>
 		</td>
 		<td class="label">
 			<strong>Protocol Version</strong>
 		</td>
+		<%-- html:options name="AllProtocolNameByType" / --%>
 		<td class="rightLabel">
 			<c:choose>
 				<c:when test="${canUserSubmit eq 'true'}">
-					<html:text property="achar.characterizationProtocol.version" />
+					<html:select styleId="protocolVersion" property="achar.protocolFileBean.version">
+						<option/>
+					</html:select>
 				</c:when>
 				<c:otherwise>
-						${thisForm.map.achar.characterizationProtocol.version}&nbsp;
+				<html:text property="achar.protocolFileBean.version" />
+						${thisForm.map.achar.protocolFileBean.version}&nbsp;
 				</c:otherwise>
 			</c:choose>
 		</td>
@@ -89,3 +98,24 @@
 	</tr>
 </table>
 <br>
+<script language="JavaScript">
+<!--//
+  /* populate a hashtable containing sampleName aliquots */
+  var versionNames=new Array();    
+  <c:forEach var="item" items="${AllProtocolNameVersionsByType}">
+    var versions=new Array();
+    <c:forEach var="version" items="${AllProtocolNameVersionsByType[item.key]}" varStatus="count">
+  	    versions[${count.index}]='${version}';  	
+    </c:forEach>
+    versionNames['${item.key}']=versions;
+  </c:forEach>  
+  
+  function filterProtocolVersions() {
+  	var name = document.getElementById("protocolName");
+  	var version = document.getElementById("protocolVersion");
+  	if (!name[1].checked) {
+  	   doubleDropdown(name, version, versionNames);	
+  	}
+  }
+//-->
+</script>
