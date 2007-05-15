@@ -32,7 +32,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
-
+import java.util.Set;
+import java.util.Iterator;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -780,8 +781,13 @@ public class InitSessionSetup {
 	public void setAllProtocolNameVersionsByType(HttpSession session, String type) throws Exception {
 		// set protocol name and its versions for a given protocol type.
 		Map<ProtocolBean, List<String>> nameVersions = lookupService.getAllProtocolNameVersionByType(type);
-		
-		session.setAttribute("AllProtocolNameVersionsByType", nameVersions);
+		Map<String, List<String>> tempMap = new HashMap<String, List<String>>();
+		Set keySet = nameVersions.keySet();
+		for (Iterator it = keySet.iterator(); it.hasNext();){
+			ProtocolBean pb = (ProtocolBean)it.next();
+			tempMap.put(pb.getId().toString(), nameVersions.get(pb));
+		}
+		session.setAttribute("AllProtocolNameVersionsByType", tempMap);
 		session.setAttribute("AllProtocolNameByType", new ArrayList<ProtocolBean>(nameVersions
 				.keySet()));
 	}
