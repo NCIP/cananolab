@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * @author zengje
  *
  */
-public class ProtocolBean {
+public class ProtocolBean implements Comparable{
 	private Long id;
 	private String name;
 	private String type;
@@ -46,5 +46,25 @@ public class ProtocolBean {
 	public void setFileBeanList(List<ProtocolFileBean> fileBeanList) {
 		this.fileBeanList = fileBeanList;
 	}
-
+	public int compareTo(Object obj){
+		if(obj instanceof ProtocolBean){
+			ProtocolBean inPb = (ProtocolBean)obj;
+			int comparison = this.getName().compareTo(inPb.getName());
+			return comparison;
+		}
+		return -1;
+	}
+	public boolean equals(Object obj){
+		boolean eq = false;
+		if(obj instanceof ProtocolBean) {
+			ProtocolBean c =(ProtocolBean)obj; 			 
+			Long thisId = this.getId();
+			//String name = this.getName();
+			if(thisId != null && thisId.equals(c.getId())){ // &&
+				//name != null && name.equals(c.getName())) {
+				eq = true;
+			}		
+		}
+		return eq;
+	}
 }
