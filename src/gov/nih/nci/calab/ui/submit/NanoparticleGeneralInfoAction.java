@@ -7,12 +7,13 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.21 2007-05-15 14:50:56 pansu Exp $ */
+/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.22 2007-05-17 16:23:59 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
+import gov.nih.nci.calab.service.search.SearchReportService;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
@@ -135,7 +136,8 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 				particleName, particleType);
 		// for disclaimer report list
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		Collection<LabFileBean> reports = searchNanoparticleService.getReportByParticle(particleName,particleType, user);
+		SearchReportService searchReportService = new SearchReportService();
+		Collection<LabFileBean> reports = searchReportService.getReportByParticle(particleName,particleType, user);
 		request.setAttribute("particleReports", reports);
 		
 		request.setAttribute("particle", particle);
@@ -157,9 +159,9 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 		String particleType = (String) theForm.get("particleType");
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
-		SearchNanoparticleService searchtNanoparticleService = new SearchNanoparticleService();
+		SearchReportService searchReportService = new SearchReportService();
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		Collection<LabFileBean> reports = searchtNanoparticleService.getReportByParticle(particleName,particleType, user);
+		Collection<LabFileBean> reports = searchReportService.getReportByParticle(particleName,particleType, user);
 		request.setAttribute("particleReports", reports);
 		forward = mapping.findForward("viewDisclaimer");
 		return forward;
