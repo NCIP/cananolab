@@ -48,17 +48,18 @@
 		<td class="leftLabel">
 			<strong>Protocol Name </strong>
 		</td>
-		<td class="label">
+		<td class="label" colspan="3">
 			<c:choose>
 				<c:when test="${canUserSubmit eq 'true'}">
-					<!-- html:text property="achar.characterizationProtocol.name" / -->
+					<%-- html:text property="achar.characterizationProtocol.name" / 
 					<html:select styleId="protocolIds" property="achar.protocolFileBean.protocolBean.id"
-						onchange="javascript:filterProtocolVersions();">
+						onchange="javascript:filterProtocolVersions();"> --%>
+					<html:select property="achar.protocolFileBean.id">
 						<html:option value=""></html:option>
 						<%-- 
 						<html:options name="AllProtocolNameByType" />
 						--%>
-						<html:optionsCollection name="AllProtocolNameByType" label="name" value="id"/>
+						<html:optionsCollection name="AllProtocolNameVersionsByType" label="label" value="value"/>
 					</html:select>
 				</c:when>
 				<c:otherwise>
@@ -66,10 +67,13 @@
 				</c:otherwise>
 			</c:choose>
 		</td>
+		<%--
 		<td class="label">
 			<strong>Protocol Version</strong>
 		</td>
+		--%>
 		<%-- html:options name="AllProtocolNameByType" / --%>
+		<%--
 		<td class="rightLabel">
 			<c:choose>
 				<c:when test="${canUserSubmit eq 'true'}">
@@ -83,6 +87,7 @@
 				</c:otherwise>
 			</c:choose>
 		</td>
+		--%>
 	</tr>
 	<tr>
 		<td class="leftLabel" valign="top">
@@ -101,6 +106,7 @@
 	</tr>
 </table>
 <br>
+<%--
 <script language="JavaScript">
 <!--//
   /* populate a hashtable containing sampleName aliquots */
@@ -122,3 +128,4 @@
   }
 //-->
 </script>
+--%>
