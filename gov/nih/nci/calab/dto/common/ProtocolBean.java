@@ -10,7 +10,7 @@ import java.util.ArrayList;
  *
  */
 public class ProtocolBean implements Comparable{
-	private Long id;
+	private String id;
 	private String name;
 	private String type;
 	
@@ -22,10 +22,10 @@ public class ProtocolBean implements Comparable{
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getName() {
@@ -58,7 +58,7 @@ public class ProtocolBean implements Comparable{
 		boolean eq = false;
 		if(obj instanceof ProtocolBean) {
 			ProtocolBean c =(ProtocolBean)obj; 			 
-			Long thisId = this.getId();
+			String thisId = this.getId();
 			//String name = this.getName();
 			if(thisId != null && thisId.equals(c.getId())){ // &&
 				//name != null && name.equals(c.getName())) {
