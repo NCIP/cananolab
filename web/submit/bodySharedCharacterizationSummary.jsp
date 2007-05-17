@@ -55,8 +55,8 @@
 					<html:select styleId="protocolIds" property="achar.protocolFileBean.protocolBean.id"
 						onchange="javascript:filterProtocolVersions();"> --%>
 					<html:select property="achar.protocolFileBean.id">
-						<html:option value=""></html:option>
 						<%-- 
+						<html:option value=""></html:option>
 						<html:options name="AllProtocolNameByType" />
 						--%>
 						<html:optionsCollection name="AllProtocolNameVersionsByType" label="label" value="value"/>
