@@ -8,6 +8,7 @@ import gov.nih.nci.calab.domain.Sample;
 import gov.nih.nci.calab.domain.SampleContainer;
 import gov.nih.nci.calab.domain.StorageElement;
 import gov.nih.nci.calab.dto.common.ProtocolBean;
+import gov.nih.nci.calab.dto.common.ProtocolFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.inventory.AliquotBean;
 import gov.nih.nci.calab.dto.inventory.ContainerBean;
@@ -39,7 +40,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.98 2007-05-15 18:24:34 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.99 2007-05-17 18:56:42 chenhang Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -1086,8 +1087,8 @@ public class LookupService {
 		return nameVersions;	
 	}
 	
-	public Map<ProtocolBean, List<String>>  getAllProtocolNameVersionByType(String type) throws Exception{
-		Map<ProtocolBean, List<String>> nameVersions = new HashMap<ProtocolBean, List<String>>();
+	public Map<ProtocolBean, List<ProtocolFileBean>>  getAllProtocolNameVersionByType(String type) throws Exception{
+		Map<ProtocolBean, List<ProtocolFileBean>> nameVersions = new HashMap<ProtocolBean, List<ProtocolFileBean>>();
 		Map<Protocol, ProtocolBean> keyMap = new HashMap<Protocol, ProtocolBean>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
@@ -1111,12 +1112,18 @@ public class LookupService {
 
 				if (keyMap.containsKey((Protocol)key)){
 					ProtocolBean pb = keyMap.get((Protocol)key);
-					List<String> localList = nameVersions.get(pb);
-					localList.add(((ProtocolFile)value).getVersion());
+					List<ProtocolFileBean> localList = nameVersions.get(pb);
+					ProtocolFileBean fb = new ProtocolFileBean();
+					fb.setVersion(((ProtocolFile)value).getVersion());
+					fb.setId(((ProtocolFile)value).getId().toString());
+					localList.add(fb);
 				}
 				else {
-					List<String> localList = new ArrayList<String>();
-					localList.add(((ProtocolFile)value).getVersion());
+					List<ProtocolFileBean> localList = new ArrayList<ProtocolFileBean>();
+					ProtocolFileBean fb = new ProtocolFileBean();
+					fb.setVersion(((ProtocolFile)value).getVersion());
+					fb.setId(((ProtocolFile)value).getId().toString());
+					localList.add(fb);
 					ProtocolBean protocolBean= new ProtocolBean();
 					Protocol protocol = (Protocol)key;
 					protocolBean.setId(protocol.getId());
@@ -1129,8 +1136,8 @@ public class LookupService {
 				//protocolNames.add((String) obj);
 			}
 		} catch (Exception e) {
-			logger.error("Problem to retrieve all protocol names and their versions by type.");
-			throw new RuntimeException("Problem to retrieve all protocol names and their versions by type.");
+			logger.error("Problem to retrieve all protocol names and their versions by type " + type);
+			throw new RuntimeException("Problem to retrieve all protocol names and their versions by type " + type);
 		} finally {
 			ida.close();
 		}
