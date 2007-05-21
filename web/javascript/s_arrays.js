@@ -161,9 +161,9 @@ P:false,	// menu is PERMANENT (you can only set true if this is LEVEL 1 menu)
 S:s_CSSTop	// STYLE Array to use for this menu
 },
 [		// define items {U:'url',T:'text' ...} look at the Manual for details
-{U:'searchNanoparticle.do?dispatch=setup',T:'Search Nanoparticles'},
-{U:'searchReport.do?dispatch=setup',T:'Search Reports'},
-{U:'searchProtocol.do?dispatch=setup',T:'Search Protocols'}
+{U:'searchNanoparticle.do?dispatch=setup',T:'Nanoparticles'},
+{U:'searchReport.do?dispatch=setup',T:'Reports'},
+{U:'searchProtocol.do?dispatch=setup',T:'Protocols'}
 ]
 );
 
@@ -179,8 +179,8 @@ P:false,	// menu is PERMANENT (you can only set true if this is LEVEL 1 menu)
 S:s_CSSTop	// STYLE Array to use for this menu
 },
 [		// define items {U:'url',T:'text' ...} look at the Manual for details
-{U:'remoteSearchNanoparticle.do?dispatch=setup',T:'Remote Search Nanoparticles'},
-{U:'remoteSearchReport.do?dispatch=setup',T:'Remote Search Reports'}
+{U:'remoteSearchNanoparticle.do?dispatch=setup',T:'Nanoparticles'},
+{U:'remoteSearchReport.do?dispatch=setup',T:'Reports'}
 ]
 );
 
@@ -213,9 +213,9 @@ P:false,	// menu is PERMANENT (you can only set true if this is LEVEL 1 menu)
 S:s_CSSTop	// STYLE Array to use for this menu
 },
 [		// define items {U:'url',T:'text' ...} look at the Manual for details
-{U:'manageNanoparticle.do',T:'Annotate Nanoparticle'},
-{U:'publishReport.do?dispatch=setup&page=0',T:'Publish Report'},
-{U:'submitProtocol.do?dispatch=setup&page=0',T:'Submit Protocol'}
+{U:'manageNanoparticle.do',T:'Nanoparticles'},
+{U:'publishReport.do?dispatch=setup&page=0',T:'Reports'},
+{U:'submitProtocol.do?dispatch=setup&page=0',T:'Protocols'}
 ]
 );
 
