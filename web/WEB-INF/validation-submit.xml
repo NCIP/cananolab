@@ -38,13 +38,13 @@
 			-->
 		</form>
 		<form name="submitProtocolForm">
-			<field property="protocolName" page="2" depends="required">
+			<field property="protocolId" page="1" depends="required">
 				<arg position="0" key="submitProtocolForm.protocolName" bundle="submit" />
 			</field>
-			<field property="protocolType" page="2" depends="required">
+			<field property="protocolType" page="1" depends="required">
 				<arg position="0" key="submitProtocolForm.protocolType" bundle="submit" />
 			</field>
-			<field property="file.version" page="1" depends="required">
+			<field property="file.id" page="1" depends="required">
 				<arg position="0" key="submitProtocolForm.protocolVersion" bundle="submit" />
 			</field>
 		</form>
