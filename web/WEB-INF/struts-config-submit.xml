@@ -20,7 +20,7 @@
 		<form-bean name="submitProtocolForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="dispatch" type="java.lang.String" />
 			<form-property name="page" type="java.lang.Integer" initial="0" />
-			<form-property name="protocolName" type="java.lang.String" />
+			<form-property name="protocolId" type="java.lang.String" />
 			<form-property name="protocolType" type="java.lang.String" />
 			<form-property name="uploadedFile" type="org.apache.struts.upload.FormFile" />
 			<form-property name="file" type="gov.nih.nci.calab.dto.common.ProtocolFileBean" />
@@ -361,6 +361,7 @@
 			<forward name="success" path="submit.protocol.message" />
 			<forward name="input" path="/submitProtocol.do?dispatch=reSetup&amp;page=0" />
 			<forward name="setup" path="submit.submitprotocol" />
+			<forward name="resetProtocolPage" path="submit.submitprotocol" />
 		</action>
 		<action name="publishReportForm" parameter="dispatch" path="/publishReport" type="gov.nih.nci.calab.ui.submit.SubmitReportAction" input="input" scope="request">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.submitReport" path="submit.submitreport" type="java.lang.Exception" />
