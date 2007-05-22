@@ -767,23 +767,65 @@ public class InitSessionSetup {
 
 	public void setProtocolSubmitPage(HttpSession session) throws Exception {
 		// set protocol types, and protocol names for all these types
-		List<String> protocolTypes = lookupService.getAllProtocolTypes();
+		SortedSet<String> protocolTypes = lookupService.getAllProtocolTypes();
 		for (int i = 0; i < CaNanoLabConstants.PROTOCOL_TYPES.length; i++){
 			if (!protocolTypes.contains(CaNanoLabConstants.PROTOCOL_TYPES[i]))
 				protocolTypes.add(CaNanoLabConstants.PROTOCOL_TYPES[i]);
 		}
 		session.setAttribute("protocolTypes", protocolTypes);
-		Map<String, List<String>> nameTypes = lookupService.getAllProtocolNameTypes();
+		//SortedSet<ProtocolBean> nameTypes = lookupService.getAllProtocolNameTypes();
+		
+		SortedSet<ProtocolBean> pbs = lookupService.getAllProtocols();
+		//Now generate two maps: one for type and nameList, 
+		//and one for type and protocolIdList (for the protocol name dropdown box)
+		Map<String, List<String>> typeNamesMap = new HashMap<String, List<String>>();
+		Map<String, List<String>> typeIdsMap = new HashMap<String, List<String>>();
+		Map<String, List<String>> nameVersionsMap = new HashMap<String, List<String>>();
+		Map<String, List<String>> nameIdsMap = new HashMap<String, List<String>>();
 		for (String type : protocolTypes){
-			List<String> localList = nameTypes.get(type);
-			if (localList == null){
-				localList = new ArrayList<String>();
-				nameTypes.put(type, localList);
+			for (ProtocolBean pb : pbs){
+				if (type.equals(pb.getType())){
+					List<String> nameList = typeNamesMap.get(type);
+					List<String> idList = typeIdsMap.get(type);
+					if (nameList == null){
+						nameList = new ArrayList<String>();
+						nameList.add(pb.getName());
+						typeNamesMap.put(type, nameList);
+					}
+					else {
+						nameList.add(pb.getName());
+					}
+					if (idList == null){
+						idList = new ArrayList<String>();
+						idList.add(pb.getId().toString());
+						typeIdsMap.put(type, idList);
+					}
+					else {
+						idList.add(pb.getId().toString());
+					}	
+				}
 			}
 		}
-		session.setAttribute("AllProtocolNameTypes", nameTypes);
+		for (ProtocolBean pb : pbs){
+			String id = pb.getId();
+			List<String> versionList = new ArrayList<String>();
+			List<String> idList = new ArrayList<String>();
+			List<ProtocolFileBean> fileBeanList = pb.getFileBeanList();
+			for (ProtocolFileBean fb : fileBeanList){
+				versionList.add(fb.getVersion());
+				idList.add(fb.getId());
+			}
+			nameVersionsMap.put(id, versionList);
+			nameIdsMap.put(id, idList);
+		}
+		session.setAttribute("AllProtocolTypeNames", typeNamesMap);
+		session.setAttribute("AllProtocolTypeIds", typeIdsMap);
 		session.setAttribute("protocolNames", new ArrayList<String>());
+		session.setAttribute("AllProtocolNameVersions", nameVersionsMap);
+		session.setAttribute("AllProtocolNameFileIds", nameIdsMap);
+		session.setAttribute("protocolVersions", new ArrayList<String>());
 	}
+
 	public void setAllProtocolNameVersionsByType(HttpSession session, String type) throws Exception {
 		// set protocol name and its versions for a given protocol type.
 		Map<ProtocolBean, List<ProtocolFileBean>> nameVersions = lookupService.getAllProtocolNameVersionByType(type);
@@ -794,27 +836,13 @@ public class InitSessionSetup {
 			ProtocolBean pb = (ProtocolBean)it.next();
 			List<ProtocolFileBean> fbList = nameVersions.get(pb);
 			for (ProtocolFileBean fb : fbList){
-				set.add(new LabelValueBean(appendNameVersion(pb, fb), fb.getId()));
+				set.add(new LabelValueBean(pb.getName() + " - " + fb.getVersion(), fb.getId()));
 			}
 		}
-		session.setAttribute("AllProtocolNameVersionsByType", set);
-		//session.setAttribute("AllProtocolNameByType", new ArrayList<ProtocolBean>(nameVersions
-				//.keySet()));
+		session.setAttribute("protocolNameVersionsByType", set);
 	}
 	
-	
-	public void setAllProtocolNameVersion(HttpSession session) throws Exception {
-		// set protocol name and its versions for all protocol types.
-		Map<ProtocolBean, List<String>> nameVersions = lookupService.getAllProtocolNameVersion();
-		
-		session.setAttribute("AllProtocolNameVersions", nameVersions);
-	}
-	public void setAllProtocolNamesWithVersion(HttpSession session) throws Exception {
-		// set protocol name and its versions for all protocol types.
-		Map<String, List<String>> nameVersions = lookupService.getAllProtocolNamesWithVersions();
-		
-		session.setAttribute("AllProtocolNamesWithVersions", nameVersions);
-	}
+
 	public void setAllRunFiles(HttpSession session, String particleName)
 			throws Exception {
 		if (session.getAttribute("allRunFiles") == null
@@ -952,8 +980,5 @@ public class InitSessionSetup {
 			userService.createAGroup(groupName);
 		}
 		userService.createAGroup(CaNanoLabConstants.CSM_ADMIN);
-	}
-	private String appendNameVersion(ProtocolBean pb, ProtocolFileBean fb){
-		return pb.getName() + " - " + fb.getVersion();
 	}
 }
