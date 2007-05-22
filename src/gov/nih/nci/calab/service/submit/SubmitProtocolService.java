@@ -2,6 +2,7 @@ package gov.nih.nci.calab.service.submit;
 
 import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
+import gov.nih.nci.calab.domain.LabFile;
 import gov.nih.nci.calab.domain.Protocol;
 import gov.nih.nci.calab.domain.ProtocolFile;
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
@@ -9,6 +10,7 @@ import gov.nih.nci.calab.service.common.FileService;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
+import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.io.File;
 import java.util.Date;
@@ -24,7 +26,7 @@ import org.apache.struts.upload.FormFile;
  */
 
 /*
- * CVS $Id: SubmitProtocolService.java,v 1.4 2007-05-15 18:06:12 chenhang Exp $
+ * CVS $Id: SubmitProtocolService.java,v 1.5 2007-05-22 18:59:16 chenhang Exp $
  */
 
 public class SubmitProtocolService {
@@ -80,10 +82,31 @@ public class SubmitProtocolService {
 		// upper case
 		Date date = new Date();
 		dataFile.setCreatedDate(date);
-		dataFile.setVersion(fileBean.getVersion());
-
+		//If the id is 
+		Long fileId = null;
+		Long protocolId = null;
+		//It might be new or old
+		if (isLong(fileBean.getId())){
+			fileId = new Long(fileBean.getId());
+			dataFile.setId(fileId);
+		}
+		//It's a new version
+		else {
+			dataFile.setVersion(fileBean.getId());
+		}
+		//dataFile.setVersion(fileBean.getVersion());
+		
 		Protocol protocol = new Protocol();
-		protocol.setName(fileBean.getProtocolBean().getName());
+		//It can be a new name (numeric name) or an old id.
+		if (isLong(fileBean.getProtocolBean().getId())){
+			protocolId = new Long(fileBean.getProtocolBean().getId());
+			protocol.setId(protocolId);
+		}
+		//It's a new name
+		else {
+			protocol.setName(fileBean.getProtocolBean().getId());
+		}
+		//protocol.setName(fileBean.getProtocolBean().getName());
 		protocol.setType(fileBean.getProtocolBean().getType());
 
 		IDataAccess ida = (new DataAccessProxy())
@@ -91,22 +114,57 @@ public class SubmitProtocolService {
 
 		try {
 			ida.open();
-			List results = ida.search("from Protocol where name='"
-					+ protocol.getName() + "'");
-			Protocol pl = null;
-			for (Object obj : results) {
-				pl = (Protocol) obj;
+			if (protocol.getId() != null){
+				List results = ida.search("from Protocol where id='" + protocol.getId() + "'");
+				Protocol pl = null;
+				for (Object obj : results) {
+					pl = (Protocol) obj;
+				}
+				if (pl == null){
+					protocol.setName(protocol.getId().toString());
+					protocol.setId(null);
+					ida.store(protocol);
+				}
 			}
-			if (pl == null){
+			else {
 				ida.store(protocol);
 			}
-			else
-				protocol.setId(pl.getId());
+			//Check datafile
+			if (dataFile.getId() != null){
+				List results = ida.search("from ProtocolFile where id='" + dataFile.getId() + "'");
+				ProtocolFile pf = null;
+				for (Object obj : results) {
+					pf = (ProtocolFile) obj;
+				}
+				if (pf == null){
+					dataFile.setVersion(dataFile.getId().toString());
+					dataFile.setId(null);
+					//ida.store(protocol);
+					dataFile.setProtocol(protocol);
+					ida.store(dataFile);
+				}
+				else {
+					//dataFile.setProtocol(protocol);
+					LabFile file = (LabFile) ida.load(LabFile.class, dataFile.getId());
 
-			dataFile.setProtocol(protocol);
-			//protocol.getProtocolFileCollection().add(dataFile);
-			// ida.store(protocol);
-			ida.store(dataFile);
+					file.setTitle(dataFile.getTitle().toUpperCase());
+					file.setDescription(dataFile.getDescription());
+					file.setVersion(dataFile.getVersion());
+					if (dataFile.getFilename() != null && dataFile.getFilename().length() > 0)
+						file.setFilename(dataFile.getFilename());
+					if (dataFile.getPath() != null && dataFile.getPath().length() > 0)
+						file.setPath(dataFile.getPath());
+				}
+			}
+			else {
+				//else {
+				//ida.store(protocol);
+				//}
+				dataFile.setProtocol(protocol);
+				//protocol.getProtocolFileCollection().add(dataFile);
+				// ida.store(protocol);
+				ida.store(dataFile);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			ida.rollback();
@@ -119,5 +177,14 @@ public class SubmitProtocolService {
 		userService.setVisiblity(protocol.getId().toString(), fileBean
 				.getVisibilityGroups());
 
+	}
+	private boolean isLong(String value){
+		boolean isLong = true;
+		try {
+			double d = Long.parseLong(value);
+		}catch (NumberFormatException nfe){
+			isLong = false;
+		}
+		return isLong;
 	}
 }
