@@ -477,11 +477,13 @@ public class InitSessionSetup {
 	}
 
 	public void setAllParticleSources(HttpSession session) throws Exception {
-		if (session.getServletContext().getAttribute("allParticleSources") == null) {
-			List<String> sources = lookupService.getAllParticleSources();
-			session.getServletContext().setAttribute("allParticleSources",
-					sources);
+		if (session.getAttribute("allParticleSources") == null
+				|| session.getAttribute("newSampleCreated") != null) {
+			List particleSources = lookupService.getAllParticleSources();
+			session.setAttribute("allParticleSources", particleSources);
 		}
+		// clear the new sample created flag
+		session.removeAttribute("newSampleCreated");
 	}
 
 	public void setAllParticleCharacterizationTypes(HttpSession session)
