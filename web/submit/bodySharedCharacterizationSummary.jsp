@@ -59,7 +59,7 @@
 						<html:option value=""></html:option>
 						<html:options name="AllProtocolNameByType" />
 						--%>
-						<html:optionsCollection name="AllProtocolNameVersionsByType" label="label" value="value"/>
+						<html:optionsCollection name="protocolNameVersionsByType" label="label" value="value"/>
 					</html:select>
 				</c:when>
 				<c:otherwise>
