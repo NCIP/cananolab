@@ -27,8 +27,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.util.LabelValueBean;
@@ -40,7 +42,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.100 2007-05-17 20:23:56 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.101 2007-05-22 18:58:40 chenhang Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -973,175 +975,63 @@ public class LookupService {
 		return (String[]) shapeTypes.toArray(new String[0]);
 	}
 
-	public List<ProtocolBean> getAllProtocolNames() throws Exception {
-		List<ProtocolBean> protocols = new ArrayList<ProtocolBean>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
-		try {
-			ida.open();
-			String hqlString = "select protocol from Protocol protocol where protocol.name is not null";
-			List results = ida.search(hqlString);
-			for (Object obj : results) {
-				Protocol protocol = (Protocol) obj;
-				ProtocolBean protocolBean = new ProtocolBean(protocol);
-				protocols.add(protocolBean);
-			}
-		} catch (Exception e) {
-			logger.error("Problem to retrieve all protocol names.");
-			throw new RuntimeException(
-					"Problem to retrieve all protocol names.");
-		} finally {
-			ida.close();
-		}
-		return protocols;
-	}
-
-	public Map<String, List<String>> getAllProtocolNamesWithVersions()
-			throws Exception {
-		Map<String, List<String>> nameVersions = new HashMap<String, List<String>>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
-		try {
-			ida.open();
-			String hqlString = "select protocolFile, protocolFile.protocol.name from ProtocolFile protocolFile";
-			List results = ida.search(hqlString);
-			for (Object obj : results) {
-				Object[] array = (Object[]) obj;
-				Object key = null;
-				Object value = null;
-				for (int i = 0; i < array.length; i++) {
-					if (array[i] instanceof String) {
-						key = array[i];
-					} else if (array[i] instanceof ProtocolFile) {
-						value = array[i];
-					}
-				}
-				if (nameVersions.containsKey((String) key)) {
-					List<String> localList = nameVersions.get((String) key);
-					localList.add(((ProtocolFile) value).getVersion());
-				} else {
-					List<String> localList = new ArrayList<String>();
-					localList.add(((ProtocolFile) value).getVersion());
-					nameVersions.put((String) key, localList);
-				}
-				// protocolNames.add((String) obj);
-			}
-		} catch (Exception e) {
-			logger
-					.error("Problem to retrieve all protocol names and their versions.");
-			throw new RuntimeException(
-					"Problem to retrieve all protocol names and their versions.");
-		} finally {
-			ida.close();
-		}
-		return nameVersions;
-	}
-
-	public Map<ProtocolBean, List<String>> getAllProtocolNameVersion()
-			throws Exception {
-		Map<ProtocolBean, List<String>> nameVersions = new HashMap<ProtocolBean, List<String>>();
-		Map<Protocol, ProtocolBean> keyMap = new HashMap<Protocol, ProtocolBean>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
-		try {
-			ida.open();
-			String hqlString = "select protocolFile, protocolFile.protocol from ProtocolFile protocolFile";
-			List results = ida.search(hqlString);
-			for (Object obj : results) {
-				Object[] array = (Object[]) obj;
-				Object key = null;
-				Object value = null;
-				for (int i = 0; i < array.length; i++) {
-					if (array[i] instanceof Protocol) {
-						key = array[i];
-					} else if (array[i] instanceof ProtocolFile) {
-						value = array[i];
-					}
-				}
-				if (keyMap.containsKey((Protocol) key)) {
-					ProtocolBean pb = keyMap.get((Protocol) key);
-					List<String> localList = nameVersions.get(pb);
-					localList.add(((ProtocolFile) value).getVersion());
-				} else {
-					List<String> localList = new ArrayList<String>();
-					localList.add(((ProtocolFile) value).getVersion());
-					Protocol protocol = (Protocol) key;
-					ProtocolBean protocolBean = new ProtocolBean(protocol);
-					nameVersions.put(protocolBean, localList);
-					keyMap.put((Protocol) key, protocolBean);
-				}
-				// protocolNames.add((String) obj);
-			}
-		} catch (Exception e) {
-			logger
-					.error("Problem to retrieve all protocol names and their versions.");
-			throw new RuntimeException(
-					"Problem to retrieve all protocol names and their versions.");
-		} finally {
-			ida.close();
-		}
-		return nameVersions;
-	}
-
-	public Map<ProtocolBean, List<ProtocolFileBean>> getAllProtocolNameVersionByType(
-			String type) throws Exception {
+	public Map<ProtocolBean, List<ProtocolFileBean>>  getAllProtocolNameVersionByType(String type) throws Exception{
 		Map<ProtocolBean, List<ProtocolFileBean>> nameVersions = new HashMap<ProtocolBean, List<ProtocolFileBean>>();
 		Map<Protocol, ProtocolBean> keyMap = new HashMap<Protocol, ProtocolBean>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
-			String hqlString = "select protocolFile, protocolFile.protocol from ProtocolFile protocolFile"
-					+ " where protocolFile.protocol.type = '" + type + "'";
+			String hqlString = "select protocolFile, protocolFile.protocol from ProtocolFile protocolFile" +
+					" where protocolFile.protocol.type = '" + type + "'";
 			List results = ida.search(hqlString);
 			for (Object obj : results) {
-				Object[] array = (Object[]) obj;
+				Object[] array = (Object[])obj;
 				Object key = null;
 				Object value = null;
-				for (int i = 0; i < array.length; i++) {
-					if (array[i] instanceof Protocol) {
+				for (int i = 0; i < array.length; i++){
+					if (array[i] instanceof Protocol){
 						key = array[i];
-					} else if (array[i] instanceof ProtocolFile) {
+					}
+					else if (array[i] instanceof ProtocolFile){
 						value = array[i];
 					}
 				}
 
-				if (keyMap.containsKey((Protocol) key)) {
-					ProtocolBean pb = keyMap.get((Protocol) key);
+				if (keyMap.containsKey((Protocol)key)){
+					ProtocolBean pb = keyMap.get((Protocol)key);
 					List<ProtocolFileBean> localList = nameVersions.get(pb);
 					ProtocolFileBean fb = new ProtocolFileBean();
-					fb.setVersion(((ProtocolFile) value).getVersion());
-					fb.setId(((ProtocolFile) value).getId().toString());
+					fb.setVersion(((ProtocolFile)value).getVersion());
+					fb.setId(((ProtocolFile)value).getId().toString());
 					localList.add(fb);
-				} else {
+				}
+				else {
 					List<ProtocolFileBean> localList = new ArrayList<ProtocolFileBean>();
 					ProtocolFileBean fb = new ProtocolFileBean();
-					fb.setVersion(((ProtocolFile) value).getVersion());
-					fb.setId(((ProtocolFile) value).getId().toString());
+					fb.setVersion(((ProtocolFile)value).getVersion());
+					fb.setId(((ProtocolFile)value).getId().toString());
 					localList.add(fb);
-					Protocol protocol = (Protocol) key;
-					ProtocolBean protocolBean = new ProtocolBean(protocol);
+					ProtocolBean protocolBean= new ProtocolBean();
+					Protocol protocol = (Protocol)key;
+					protocolBean.setId(protocol.getId().toString());
+					protocolBean.setName(protocol.getName());
+					protocolBean.setType(protocol.getType());
 					nameVersions.put(protocolBean, localList);
-					keyMap.put((Protocol) key, protocolBean);
+					keyMap.put((Protocol)key, protocolBean);
 				}
-
-				// protocolNames.add((String) obj);
 			}
 		} catch (Exception e) {
-			logger
-					.error("Problem to retrieve all protocol names and their versions by type "
-							+ type);
-			throw new RuntimeException(
-					"Problem to retrieve all protocol names and their versions by type "
-							+ type);
+			logger.error("Problem to retrieve all protocol names and their versions by type " + type);
+			throw new RuntimeException("Problem to retrieve all protocol names and their versions by type " + type);
 		} finally {
 			ida.close();
 		}
-		return nameVersions;
+		return nameVersions;	
 	}
-
-	public List<String> getAllProtocolTypes() throws Exception {
-		List<String> protocolTypes = new ArrayList<String>();
+	
+	public SortedSet<String> getAllProtocolTypes() throws Exception {
+		SortedSet<String> protocolTypes = new TreeSet<String>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
@@ -1153,46 +1043,76 @@ public class LookupService {
 			}
 		} catch (Exception e) {
 			logger.error("Problem to retrieve all protocol types.");
-			throw new RuntimeException(
-					"Problem to retrieve all protocol types.");
+			throw new RuntimeException("Problem to retrieve all protocol types.");
 		} finally {
 			ida.close();
 		}
 		return protocolTypes;
 	}
 
-	public Map<String, List<String>> getAllProtocolNameTypes() throws Exception {
-		Map<String, List<String>> protocolNameTypes = new HashMap<String, List<String>>();
+	public SortedSet<ProtocolBean> getAllProtocols() throws Exception{
+		//List<ProtocolBean> nameVersions = new ArrayList<ProtocolBean>();
+		SortedSet<ProtocolBean> protocolBeans = new TreeSet<ProtocolBean>();
 		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
+		.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
-			String hqlString = "select protocol from Protocol protocol";
+			String hqlString = "select protocol, protocol.protocolFileCollection from Protocol protocol";
 			List results = ida.search(hqlString);
+			
+			Map<String, List<ProtocolFileBean>> map = new HashMap<String, List<ProtocolFileBean>>();
+			Map<String, ProtocolBean> nameMap = new HashMap<String, ProtocolBean>();
 			for (Object obj : results) {
-				Protocol protocol = (Protocol) obj;
-				if (protocolNameTypes.containsKey(protocol.getType())) {
-					List<String> list = protocolNameTypes.get(protocol
-							.getType());
-					list.add(protocol.getName());
-				} else {
-
-					List<String> list = new ArrayList<String>();
-					list.add(protocol.getName());
-					protocolNameTypes.put(protocol.getType(), list);
+				Object[] array = (Object[])obj;
+				String name = null;
+				for (int i = 0; i < array.length; i++){
+					Object object = array[i];
+					
+					if (i == 0){
+						Protocol p = (Protocol)object;
+						name = p.getName();
+						ProtocolBean pb = nameMap.get(name);
+						if (pb == null){
+							pb = new ProtocolBean();
+							pb.setId(p.getId().toString());
+							pb.setName(p.getName());
+							pb.setType(p.getType());
+							nameMap.put(name, pb);
+						}
+					}
+					else {
+						ProtocolFile pf = (ProtocolFile)object;
+						List<ProtocolFileBean> list = map.get(name);
+						ProtocolFileBean pfb = new ProtocolFileBean();
+						pfb.setId(pf.getId().toString());
+						pfb.setVersion(pf.getVersion());
+						if (list == null){
+							list = new ArrayList<ProtocolFileBean>();
+							list.add(pfb);
+							map.put(name, list);
+						}
+						else
+							list.add(pfb);
+					}
 				}
-				// protocolNames.add((String) obj);
+			}
+			
+			Set<String> keySet = nameMap.keySet();
+			for (Iterator it = keySet.iterator(); it.hasNext();){
+				String key = (String)it.next();
+				ProtocolBean pb = nameMap.get(key);
+				List<ProtocolFileBean> list = map.get(key);
+				pb.setFileBeanList(list);
+				protocolBeans.add(pb);
 			}
 		} catch (Exception e) {
 			logger.error("Problem to retrieve all protocol names and types.");
-			throw new RuntimeException(
-					"Problem to retrieve all protocol names and types.");
+			throw new RuntimeException("Problem to retrieve all protocol names and types.");
 		} finally {
 			ida.close();
 		}
-		return protocolNameTypes;
+		return protocolBeans;	
 	}
-
 	public String[] getAllStressorTypes() {
 		String[] stressorTypes = new String[] { "Thermal", "PH", "Freeze thaw",
 				"Photo", "Centrifugation", "Lyophilization", "Chemical",
