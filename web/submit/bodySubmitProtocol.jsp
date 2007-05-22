@@ -39,7 +39,7 @@
 									onkeydown="javascript:fnKeyDownHandler(this, event);"
 									onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
 									onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-									onchange="fnChangeHandler_A(this, event); javascript:filterProtocolNames();">
+									onchange="fnChangeHandler_A(this, event); filterProtocolNames();">
 									<option value="">--?--</option>
 									<html:options name="protocolTypes" />
 								</html:select>
@@ -50,15 +50,23 @@
 								<strong>Protocol Name* </strong>
 							</td>
 							<td class="rightLabel">
-								<html:select property="protocolName" 
+								<html:select styleId="pName" property="protocolId" 
 									onkeydown="javascript:fnKeyDownHandler(this, event);"
 									onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
 									onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-									onchange="fnChangeHandler_A(this, event);">
+									onchange="fnChangeHandler_A(this, event); javascript:filterProtocolVersions();">
 									<option value="">--?--</option>
-									<html:options name="protocolNames" />
+									<html:optionsCollection name="protocolNames" label="name" value="id"/>
 								</html:select> &nbsp; &nbsp; <strong>Protocol Version* </strong>&nbsp; 
-									<html:text property="file.version" size="10"/>
+								<html:select styleId="protocolVersion" property="file.id" 
+									onkeydown="javascript:fnKeyDownHandler(this, event);"
+									onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
+									onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
+									onchange="fnChangeHandler_A(this, event); javascript:getProtocolFileData();">
+									<option value="">--?--</option>
+									<html:optionsCollection name="protocolVersions" label="label" value="value"/>
+								</html:select> &nbsp; &nbsp;  
+									<!-- html:text property="file.version" size="10"/ -->
 							</td>
 						</tr>
 						<tr>
@@ -74,7 +82,7 @@
 								<strong>File Title</strong>
 							</td>
 							<td class="rightLabel">
-								<html:text property="file.title" size="80"/>
+								<html:text styleId="fileTitle" property="file.title" size="80"/>
 							</td>
 						</tr>
 						<tr>
@@ -82,7 +90,7 @@
 								<strong>Description</strong>
 							</td>
 							<td class="rightLabel">
-								<html:textarea property="file.description" rows="3" cols="80" />
+								<html:textarea styleId="fileDescription" property="file.description" rows="3" cols="80" />
 							</td>
 						</tr>
 						<tr>
@@ -132,18 +140,93 @@
 <!--//
   /* populate a hashtable containing sampleName aliquots */
   var typeNames=new Array();    
-  <c:forEach var="item" items="${AllProtocolNameTypes}">
+  <c:forEach var="item" items="${AllProtocolTypeNames}">
     var names=new Array();
-    <c:forEach var="name" items="${AllProtocolNameTypes[item.key]}" varStatus="count">
+    <c:forEach var="name" items="${AllProtocolTypeNames[item.key]}" varStatus="count">
   	    names[${count.index}]='${name}';  	
     </c:forEach>
     typeNames['${item.key}']=names;
   </c:forEach>  
+
+  var typeIds=new Array();    
+  <c:forEach var="item" items="${AllProtocolTypeIds}">
+    var ids=new Array();
+    <c:forEach var="id" items="${AllProtocolTypeIds[item.key]}" varStatus="count">
+  	    ids[${count.index}]='${id}';  	
+    </c:forEach>
+    typeIds['${item.key}']=ids;
+  </c:forEach> 
   
   function filterProtocolNames() {
   	if (!document.submitProtocolForm.protocolType[1].checked) {
-  	   doubleDropdownForTheEditable(document.submitProtocolForm.protocolType, document.submitProtocolForm.protocolName, typeNames);	
+		doubleDropdownForNameValuePairs(document.submitProtocolForm.protocolType, document.submitProtocolForm.protocolId, typeNames, typeIds);	
+  		var theVersion = document.getElementById("protocolVersion");
+  		var theName = document.getElementById("pName");
+		var fileTitle = document.getElementById("fileTitle");
+		var fileDescription = document.getElementById("fileDescription");
+		fileTitle.value = "";
+		fileDescription.value = "";
+  		doubleDropdownForNameValuePairs(theName, theVersion, null, null);
+	}
+  }
+  
+  var nameVersions=new Array();    
+  <c:forEach var="item" items="${AllProtocolNameVersions}">
+    var versions=new Array();
+    <c:forEach var="version" items="${AllProtocolNameVersions[item.key]}" varStatus="count">
+  	    versions[${count.index}]='${version}';  	
+    </c:forEach>
+    nameVersions['${item.key}']=versions;
+  </c:forEach>  
+
+  var nameIds=new Array();    
+  <c:forEach var="item" items="${AllProtocolNameFileIds}">
+    var fileIds=new Array();
+    <c:forEach var="fileId" items="${AllProtocolNameFileIds[item.key]}" varStatus="count">
+  	    fileIds[${count.index}]='${fileId}';  	
+    </c:forEach>
+    nameIds['${item.key}']=fileIds;
+  </c:forEach> 
+  
+  function filterProtocolVersions() {
+  	var theVersion = document.getElementById("protocolVersion");
+  	var theName = document.getElementById("pName");
+   	var fileTitle = document.getElementById("fileTitle");
+  	var fileDescription = document.getElementById("fileDescription");
+  	fileTitle.value = "";
+  	fileDescription.value = "";
+  	if (!theName[1].checked) {
+  	   doubleDropdownForNameValuePairs(theName, theVersion, nameVersions, nameIds);	
   	}
+  }
+  function getProtocolFileData(){
+  	var version = document.getElementById("protocolVersion");
+    var i;
+  	for (i = version.length - 1; i>=0; i--) {
+    	if (version.options[i].selected){
+    		if (version.options[i].value == ""){
+  				var fileTitle = document.getElementById("fileTitle");
+  				var fileDescription = document.getElementById("fileDescription");
+  				//alert("fileTitle = " + fileTitle.value);
+  				//alert("fileDescription = " + fileDescription.value);
+  				fileTitle.value = "";
+  				fileDescription.value = "";
+  			}
+  			else{
+  				document.submitProtocolForm.dispatch.value = "getFileData";
+  				document.submitProtocolForm.submit();
+  			}
+  		}
+  	}
+  }
+  function resetRest(){
+  alert(" resetRest called");
+  	var fileTitle = document.getElementById("fileTitle");
+  	var fileDescription = document.getElementById("fileDescription");
+  	alert("fileTitle = " + fileTitle.value);
+  	alert("fileDescription = " + fileDescription.value);
+  	fileTitle.text.value = "";
+  	fileDescription.text.value = "";
   }
 //-->
 </script>
