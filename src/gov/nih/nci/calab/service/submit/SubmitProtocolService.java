@@ -26,7 +26,7 @@ import org.apache.struts.upload.FormFile;
  */
 
 /*
- * CVS $Id: SubmitProtocolService.java,v 1.5 2007-05-22 18:59:16 chenhang Exp $
+ * CVS $Id: SubmitProtocolService.java,v 1.6 2007-05-23 18:57:23 chenhang Exp $
  */
 
 public class SubmitProtocolService {
@@ -174,7 +174,7 @@ public class SubmitProtocolService {
 			ida.close();
 		}
 
-		userService.setVisiblity(protocol.getId().toString(), fileBean
+		userService.setVisiblity(dataFile.getId().toString(), fileBean
 				.getVisibilityGroups());
 
 	}
