@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: SubmitProtocolAction.java,v 1.5 2007-05-22 19:00:26 chenhang Exp $ */
+/* CVS $Id: SubmitProtocolAction.java,v 1.6 2007-05-23 18:57:53 chenhang Exp $ */
 
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
 import gov.nih.nci.calab.dto.common.ProtocolBean;
@@ -105,9 +105,10 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		fileBean.setTitle(anotherBean.getTitle());
 		fileBean.setVersion(anotherBean.getVersion());
 		fileBean.setVisibilityGroups(anotherBean.getVisibilityGroups());
+		request.setAttribute("filename", anotherBean.getName());
 		updateAfterFileDataRetrieval(request, theForm);
 		forward = mapping.findForward("resetProtocolPage");
-
+		
 		return forward;
 	}
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
