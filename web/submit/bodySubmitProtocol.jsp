@@ -24,7 +24,7 @@
 				<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 					<tbody>
 						<tr class="topBorder">
-							<td class="formTitle" colspan="4">
+							<td class="formTitle" colspan="2">
 								<div align="justify">
 									Description
 								</div>
@@ -73,7 +73,15 @@
 							<td class="leftLabel">
 								<strong>Protocol File</strong>
 							</td>
+							<!-- td class="rightLabel" nowrap-->
 							<td class="rightLabel">
+								<span id="filenameDiv">
+									<c:choose>
+										<c:when test="${not empty filename}">
+											<strong>Uploaded File:&nbsp; &nbsp; </strong><c:out value="${filename}"/> &nbsp; &nbsp; 
+										</c:when>
+									</c:choose>
+								</span>
 								<html:file property="uploadedFile" />
 							</td>
 						</tr>
@@ -166,6 +174,7 @@
 		var fileDescription = document.getElementById("fileDescription");
 		fileTitle.value = "";
 		fileDescription.value = "";
+		document.getElementById('filenameDiv').innerHTML = '';
   		doubleDropdownForNameValuePairs(theName, theVersion, null, null);
 	}
   }
@@ -195,6 +204,7 @@
   	var fileDescription = document.getElementById("fileDescription");
   	fileTitle.value = "";
   	fileDescription.value = "";
+  	document.getElementById('filenameDiv').innerHTML = '';
   	if (!theName[1].checked) {
   	   doubleDropdownForNameValuePairs(theName, theVersion, nameVersions, nameIds);	
   	}
@@ -211,6 +221,7 @@
   				//alert("fileDescription = " + fileDescription.value);
   				fileTitle.value = "";
   				fileDescription.value = "";
+  				document.getElementById('filenameDiv').innerHTML = '';
   			}
   			else{
   				document.submitProtocolForm.dispatch.value = "getFileData";
