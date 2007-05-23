@@ -29,8 +29,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
+import java.util.HashSet;
 import java.util.TreeSet;
 import java.util.Iterator;
+import org.hibernate.collection.PersistentSet;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.util.LabelValueBean;
@@ -42,7 +44,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.101 2007-05-22 18:58:40 chenhang Exp $ */
+/* CVS $Id: LookupService.java,v 1.102 2007-05-23 18:56:17 chenhang Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -1051,58 +1053,33 @@ public class LookupService {
 	}
 
 	public SortedSet<ProtocolBean> getAllProtocols() throws Exception{
-		//List<ProtocolBean> nameVersions = new ArrayList<ProtocolBean>();
 		SortedSet<ProtocolBean> protocolBeans = new TreeSet<ProtocolBean>();
 		IDataAccess ida = (new DataAccessProxy())
 		.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
-			String hqlString = "select protocol, protocol.protocolFileCollection from Protocol protocol";
+			String hqlString =  "from Protocol as protocol left join fetch protocol.protocolFileCollection";
+
 			List results = ida.search(hqlString);
-			
-			Map<String, List<ProtocolFileBean>> map = new HashMap<String, List<ProtocolFileBean>>();
-			Map<String, ProtocolBean> nameMap = new HashMap<String, ProtocolBean>();
 			for (Object obj : results) {
-				Object[] array = (Object[])obj;
-				String name = null;
-				for (int i = 0; i < array.length; i++){
-					Object object = array[i];
-					
-					if (i == 0){
-						Protocol p = (Protocol)object;
-						name = p.getName();
-						ProtocolBean pb = nameMap.get(name);
-						if (pb == null){
-							pb = new ProtocolBean();
-							pb.setId(p.getId().toString());
-							pb.setName(p.getName());
-							pb.setType(p.getType());
-							nameMap.put(name, pb);
-						}
-					}
-					else {
-						ProtocolFile pf = (ProtocolFile)object;
-						List<ProtocolFileBean> list = map.get(name);
+				Protocol p = (Protocol)obj;
+				ProtocolBean pb = new ProtocolBean();
+				pb.setId(p.getId().toString());
+				pb.setName(p.getName());
+				pb.setType(p.getType());
+				PersistentSet set = (PersistentSet)p.getProtocolFileCollection();
+				//HashSet hashSet = set.
+				if (!set.isEmpty()){
+					List<ProtocolFileBean> list = new ArrayList<ProtocolFileBean>();
+					for (Iterator it = set.iterator(); it.hasNext();){
+						ProtocolFile pf = (ProtocolFile)it.next();
 						ProtocolFileBean pfb = new ProtocolFileBean();
 						pfb.setId(pf.getId().toString());
 						pfb.setVersion(pf.getVersion());
-						if (list == null){
-							list = new ArrayList<ProtocolFileBean>();
-							list.add(pfb);
-							map.put(name, list);
-						}
-						else
-							list.add(pfb);
+						list.add(pfb);
 					}
+					pb.setFileBeanList(list);
 				}
-			}
-			
-			Set<String> keySet = nameMap.keySet();
-			for (Iterator it = keySet.iterator(); it.hasNext();){
-				String key = (String)it.next();
-				ProtocolBean pb = nameMap.get(key);
-				List<ProtocolFileBean> list = map.get(key);
-				pb.setFileBeanList(list);
 				protocolBeans.add(pb);
 			}
 		} catch (Exception e) {
