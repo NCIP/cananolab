@@ -261,7 +261,8 @@
     // (you need to know the keycode/ASCII value of the  character to be allowed/disallowed.
     // - Subrata Chakrabarty
 
-    if ((keycode>47 && keycode<59)||(keycode>62 && keycode<127) ||(keycode==32))
+//added - and . by Sue Pan
+    if ((keycode>47 && keycode<59)||(keycode>62 && keycode<127) ||(keycode==32) || (keycode==45) || (keycode==46))
     {
       var vAllowableCharacter = "yes";
     }
