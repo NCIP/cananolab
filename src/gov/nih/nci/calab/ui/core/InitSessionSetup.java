@@ -811,10 +811,21 @@ public class InitSessionSetup {
 			List<String> versionList = new ArrayList<String>();
 			List<String> idList = new ArrayList<String>();
 			List<ProtocolFileBean> fileBeanList = pb.getFileBeanList();
+			Map<String, ProtocolFileBean> map = new HashMap<String, ProtocolFileBean>();
+
 			for (ProtocolFileBean fb : fileBeanList){
+				versionList.add(fb.getVersion());
+				map.put(fb.getVersion(), fb);
+			}
+			String[] vlist = versionList.toArray(new String[0]);
+			Arrays.sort(vlist);
+			versionList.clear();
+			for (int i = 0; i < vlist.length; i++){
+				ProtocolFileBean fb = map.get(vlist[i]);
 				versionList.add(fb.getVersion());
 				idList.add(fb.getId());
 			}
+			
 			nameVersionsMap.put(id, versionList);
 			nameIdsMap.put(id, idList);
 		}
