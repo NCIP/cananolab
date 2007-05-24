@@ -44,12 +44,12 @@ public class SearchProtocolService {
 
 			ida.open();
 			List results = ida
-					.search("select protocolFile.title, protocolFile.description, " +
-							"protocolFile.filename, protocolFile.version from ProtocolFile protocolFile " +
+					.search("select protocolFile.title, protocolFile.description, protocolFile.filename, " +
+							"protocolFile.version from ProtocolFile protocolFile " +
 							"where protocolFile.id='" + fileBeanId + "'");
 
 			for (Object obj : results) {
-				String title = ((Object[]) obj)[0].toString();
+				String title = (String)(((Object[]) obj)[0]);
 				String description = (String) (((Object[]) obj)[1]);
 				String fileName = (String) (((Object[]) obj)[2]);
 				String version = (String) (((Object[]) obj)[3]);
