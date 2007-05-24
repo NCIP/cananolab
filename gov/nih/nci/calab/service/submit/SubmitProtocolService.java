@@ -26,7 +26,7 @@ import org.apache.struts.upload.FormFile;
  */
 
 /*
- * CVS $Id: SubmitProtocolService.java,v 1.6 2007-05-23 18:57:23 chenhang Exp $
+ * CVS $Id: SubmitProtocolService.java,v 1.7 2007-05-24 13:46:34 chenhang Exp $
  */
 
 public class SubmitProtocolService {
@@ -149,7 +149,8 @@ public class SubmitProtocolService {
 
 					file.setTitle(dataFile.getTitle().toUpperCase());
 					file.setDescription(dataFile.getDescription());
-					file.setVersion(dataFile.getVersion());
+					if (dataFile.getVersion() != null && dataFile.getVersion().length() > 0)
+						file.setVersion(dataFile.getVersion());
 					if (dataFile.getFilename() != null && dataFile.getFilename().length() > 0)
 						file.setFilename(dataFile.getFilename());
 					if (dataFile.getPath() != null && dataFile.getPath().length() > 0)
