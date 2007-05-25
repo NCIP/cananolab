@@ -26,7 +26,7 @@ import org.apache.struts.upload.FormFile;
  */
 
 /*
- * CVS $Id: SubmitProtocolService.java,v 1.7 2007-05-24 13:46:34 chenhang Exp $
+ * CVS $Id: SubmitProtocolService.java,v 1.8 2007-05-25 18:06:23 chenhang Exp $
  */
 
 public class SubmitProtocolService {
@@ -52,8 +52,8 @@ public class SubmitProtocolService {
 
 		// TODO saves protocol file to the file system
 		String fileName = null;
-		if (uploadedFile.getFileName() == null 
-				|| uploadedFile.getFileName().length() == 0){
+		if (uploadedFile != null && (uploadedFile.getFileName() == null 
+				|| uploadedFile.getFileName().length() == 0)){
 			uploadedFile = null;
 		}
 		if (uploadedFile != null) {
@@ -94,8 +94,6 @@ public class SubmitProtocolService {
 		else {
 			dataFile.setVersion(fileBean.getId());
 		}
-		//dataFile.setVersion(fileBean.getVersion());
-		
 		Protocol protocol = new Protocol();
 		//It can be a new name (numeric name) or an old id.
 		if (isLong(fileBean.getProtocolBean().getId())){
@@ -139,12 +137,10 @@ public class SubmitProtocolService {
 				if (pf == null){
 					dataFile.setVersion(dataFile.getId().toString());
 					dataFile.setId(null);
-					//ida.store(protocol);
 					dataFile.setProtocol(protocol);
 					ida.store(dataFile);
 				}
 				else {
-					//dataFile.setProtocol(protocol);
 					LabFile file = (LabFile) ida.load(LabFile.class, dataFile.getId());
 
 					file.setTitle(dataFile.getTitle().toUpperCase());
@@ -158,12 +154,7 @@ public class SubmitProtocolService {
 				}
 			}
 			else {
-				//else {
-				//ida.store(protocol);
-				//}
 				dataFile.setProtocol(protocol);
-				//protocol.getProtocolFileCollection().add(dataFile);
-				// ida.store(protocol);
 				ida.store(dataFile);
 			}
 		} catch (Exception e) {
@@ -176,6 +167,57 @@ public class SubmitProtocolService {
 		}
 
 		userService.setVisiblity(dataFile.getId().toString(), fileBean
+				.getVisibilityGroups());
+
+	}
+	public void updateProtocol(ProtocolFileBean fileBean,
+			FormFile uploadedFile) throws Exception {
+
+		// TODO saves protocol file to the file system
+		String fileName = null;
+		if (uploadedFile != null && (uploadedFile.getFileName() == null 
+				|| uploadedFile.getFileName().length() == 0)){
+			uploadedFile = null;
+		}
+		if (uploadedFile != null) {
+
+			FileService fileService = new FileService();
+
+			String rootPath = PropertyReader
+					.getProperty(CaNanoLabConstants.FILEUPLOAD_PROPERTY,
+							"fileRepositoryDir");
+			if (rootPath.charAt(rootPath.length() - 1) == File.separatorChar)
+				rootPath = rootPath.substring(0, rootPath.length() - 1);
+
+			fileName = fileService
+					.writeUploadedFile(uploadedFile, rootPath + File.separator
+							+ CaNanoLabConstants.FOLDER_PROTOCOL, true);
+		}
+
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+
+		try {
+			ida.open();
+
+			LabFile file = (LabFile) ida.load(LabFile.class, Long.parseLong(fileBean.getId()));
+			file.setTitle(fileBean.getTitle().toUpperCase());
+			file.setDescription(fileBean.getDescription());
+			if (fileName != null && fileName.length() > 0) {
+				file.setFilename(fileName);
+				file.setPath(CaNanoLabConstants.FOLDER_PROTOCOL
+						+ File.separator + fileName);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			ida.rollback();
+			logger.error("Problem saving protocol data: ");
+			throw e;
+		} finally {
+			ida.close();
+		}
+
+		userService.setVisiblity(fileBean.getId().toString(), fileBean
 				.getVisibilityGroups());
 
 	}
