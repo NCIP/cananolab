@@ -19,7 +19,7 @@
 		<form-bean name="searchProtocolForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="fileTitle" type="java.lang.String" />
 			<form-property name="protocolType" type="java.lang.String" />
-			<form-property name="description" type="java.lang.String" />
+			<form-property name="protocolName" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="searchNanoparticleAdvancedForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="particleType" type="java.lang.String" />
@@ -72,6 +72,7 @@
 			<forward name="input" path="search.searchprotocol" />
 			<forward name="success" path="search.searchprotocol.result" />
 		</action>
+		<action path="/protocolResults" type="gov.nih.nci.calab.ui.core.BaseForwardAction" parameter="search.searchprotocol.result" scope="request" />
 		<action input="input" name="searchNanoparticleAdvancedForm" parameter="dispatch" path="/searchNanoparticleAdvanced" type="gov.nih.nci.calab.ui.search.SearchNanoparticleAdvancedAction" scope="request">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="search" key="error.searchNanoparticleAdvanced" path="search.searchnanoparticle.advanced" type="java.lang.Exception" />
 			<forward name="input" path="search.searchnanoparticle.advanced" />
