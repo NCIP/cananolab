@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: SubmitProtocolAction.java,v 1.6 2007-05-23 18:57:53 chenhang Exp $ */
+/* CVS $Id: SubmitProtocolAction.java,v 1.7 2007-05-25 18:07:37 chenhang Exp $ */
 
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
 import gov.nih.nci.calab.dto.common.ProtocolBean;
@@ -124,7 +124,69 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		ActionForward forward = mapping.findForward("setup");
 		return forward;
 	}
-	
+
+	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		HttpSession session = request.getSession();
+		InitSessionSetup.getInstance().clearSearchSession(session);
+		InitSessionSetup.getInstance().setAllVisibilityGroups(session);
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		String fileId = request.getParameter("fileId");
+		if (fileId == null)
+			fileId = (String)request.getAttribute("fileId");
+		SearchProtocolService service = new SearchProtocolService();
+		ProtocolFileBean fileBean=service.getWholeProtocolFileBean(fileId);
+		theForm.set("file", fileBean);
+		theForm.set("protocolName", fileBean.getProtocolBean().getName());
+		theForm.set("protocolType", fileBean.getProtocolBean().getType());
+		request.setAttribute("filename", fileBean.getName());
+		return mapping.findForward("setup");
+	}
+
+	public ActionForward setupView(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		return setupUpdate(mapping, form, request, response);
+	}
+
+	public ActionForward update(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		ActionMessages msgs = new ActionMessages();
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		ProtocolFileBean fileBean = (ProtocolFileBean) theForm.get("file");
+		
+		FormFile uploadedFile = (FormFile) theForm.get("uploadedFile");
+
+		SubmitProtocolService service = new SubmitProtocolService();
+
+		try{
+			service.updateProtocol(fileBean, uploadedFile);
+
+			if (fileBean.getVisibilityGroups().length == 0) {
+				fileBean
+						.setVisibilityGroups(CaNanoLabConstants.VISIBLE_GROUPS);
+			}
+		}catch (Exception e){
+			ActionMessage msg = new ActionMessage("error.updateProtocol", e.getMessage());
+			msgs.add("message", msg);
+			saveMessages(request, msgs);
+			request.setAttribute("fileId", fileBean.getId());
+			return setupUpdate(mapping, form, request, response);
+		}
+
+		ActionMessage msg = new ActionMessage("message.updateProtocol", fileBean
+				.getTitle());
+
+		msgs.add("message", msg);
+		saveMessages(request, msgs);
+
+		//request.getSession().setAttribute("newProtocolCreated", "true");
+
+		return mapping.findForward("success");
+	}
+
 	public ActionForward reSetup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
