@@ -32,33 +32,32 @@
 							</div>
 						</td>
 					</tr>
+
+					<tr>
+						<td class="leftLabel">
+							<strong>Protocol Type</strong>
+						</td>
+						<td class="rightLabel"">
+								<html:select property="protocolType" >
+									<option value="">All</option>
+									<html:options name="protocolTypes" />
+								</html:select>
+						</td>
+					</tr>
+					<tr>
+						<td class="leftLabel" valign="top">
+							<strong> Protocol Name </strong>
+						</td>
+						<td class="rightLabel" colspan="3">
+							<html:text property="protocolName" size="50" />
+						</td>
+					</tr>
 					<tr>
 						<td class="leftLabel">
 							<strong>Protocol File Title</strong>
 						</td>
 						<td class="rightLabel" colspan="3">
 							<html:text property="fileTitle" size="50" />
-						</td>
-					</tr>
-					<tr>
-						<td class="leftLabel">
-							<strong>Protocol Type</strong>
-						</td>
-						<td class="rightLabel"">
-							<html:select property="protocolType">
-								<option value=""/>
-								<option value="characterization">Characterization</option>
-								<option value="pk">Pharmacokinetics</option>
-								<option value="toxicology">Toxicology</option>
-							</html:select>
-						</td>
-					</tr>
-					<tr>
-						<td class="leftLabel" valign="top">
-							<strong> Protocol Description </strong>
-						</td>
-						<td class="rightLabel" colspan="3">
-							<html:text property="description" size="50" />
 						</td>
 					</tr>
 				</table>
