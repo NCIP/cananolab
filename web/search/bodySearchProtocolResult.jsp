@@ -9,11 +9,11 @@
 		<td>
 			<h3>
 				<br>
-				Nanoparticle Protocol Search Results
+				Protocol Search Results
 			</h3>
 		</td>
 		<td align="right" width="15%">
-			<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=search_protocols_results_help')" class="helpText">Help</a>&nbsp;&nbsp; <a href="searchReport.do?dispatch=setup" class="helpText">back</a>
+			<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=search_protocols_results_help')" class="helpText">Help</a>&nbsp;&nbsp; <a href="searchProtocol.do?dispatch=setup" class="helpText">back</a>
 		</td>
 	</tr>
 	<tr>
@@ -21,16 +21,23 @@
 			<jsp:include page="/bodyMessage.jsp?bundle=search" />
 			<c:choose>
 				<c:when test="${canUserSubmit eq 'true'}">
-					<c:set var="link" value="editReportURL" />
+					<!-- c:set var="link" value="editProtocolURL" /-->
+					<c:set var="link" value="editProtocolURL" />
 				</c:when>
 				<c:otherwise>
-					<c:set var="link" value="viewReportURL" />
+					<c:set var="link" value="viewProtocolURL" />
 				</c:otherwise>
 			</c:choose>
-			<display:table name="sessionScope.protocols" id="protocol" requestURI="searchProtocol.do" pagesize="25" class="displaytable" decorator="gov.nih.nci.calab.dto.search.ReportDecorator">
-				<display:column title="Protocol Name" property="${link}" sortable="true" />
-				<display:column title="Protocol Type" property="type" sortable="true" />
+			<display:table name="sessionScope.protocols" id="protocol" requestURI="searchProtocol.do" pagesize="25" class="displaytable" decorator="gov.nih.nci.calab.dto.search.ProtocolDecorator">
+				<!-- display:column title="Protocol Name" property="${link}" sortable="true" /-->
+				<display:column title="Protocol Name" property="protocolBean.name" sortable="true" />
+				<display:column title="Protocol Type" property="protocolBean.type" sortable="true" />
+				<display:column title="Version" property="version" sortable="false" />
+				<display:column title="File Title" property="${link}" sortable="true" />
+				<display:column title="Description" property="description" sortable="false" />
+				<%--
 				<display:column title="Protocol Description" property="description" sortable="true" />
+				--%>
 			</display:table>
 		</td>
 	</tr>
