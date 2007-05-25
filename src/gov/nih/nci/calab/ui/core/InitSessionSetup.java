@@ -764,8 +764,7 @@ public class InitSessionSetup {
 		session.setAttribute("allFunctionAgentTypes",
 				CaNanoLabConstants.FUNCTION_AGENT_TYPES);
 	}
-
-	public void setProtocolSubmitPage(HttpSession session) throws Exception {
+	public void setProtocolType(HttpSession session) throws Exception {
 		// set protocol types, and protocol names for all these types
 		SortedSet<String> protocolTypes = lookupService.getAllProtocolTypes();
 		for (int i = 0; i < CaNanoLabConstants.PROTOCOL_TYPES.length; i++){
@@ -773,8 +772,11 @@ public class InitSessionSetup {
 				protocolTypes.add(CaNanoLabConstants.PROTOCOL_TYPES[i]);
 		}
 		session.setAttribute("protocolTypes", protocolTypes);
-		//SortedSet<ProtocolBean> nameTypes = lookupService.getAllProtocolNameTypes();
-		
+	}
+	public void setProtocolSubmitPage(HttpSession session) throws Exception {
+		// set protocol types, and protocol names for all these types
+		setProtocolType(session);
+		SortedSet<String> protocolTypes = (SortedSet<String>)session.getAttribute("protocolTypes");
 		SortedSet<ProtocolBean> pbs = lookupService.getAllProtocols();
 		//Now generate two maps: one for type and nameList, 
 		//and one for type and protocolIdList (for the protocol name dropdown box)
