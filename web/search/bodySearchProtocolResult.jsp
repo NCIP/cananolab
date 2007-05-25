@@ -30,10 +30,10 @@
 			</c:choose>
 			<display:table name="sessionScope.protocols" id="protocol" requestURI="searchProtocol.do" pagesize="25" class="displaytable" decorator="gov.nih.nci.calab.dto.search.ProtocolDecorator">
 				<!-- display:column title="Protocol Name" property="${link}" sortable="true" /-->
-				<display:column title="Protocol Name" property="protocolBean.name" sortable="true" />
+				<display:column title="Protocol Name" property="${link}" sortable="true" />
 				<display:column title="Protocol Type" property="protocolBean.type" sortable="true" />
 				<display:column title="Version" property="version" sortable="false" />
-				<display:column title="File Title" property="${link}" sortable="true" />
+				<display:column title="File Title" property="title" sortable="true" />
 				<display:column title="Description" property="description" sortable="false" />
 				<%--
 				<display:column title="Protocol Description" property="description" sortable="true" />
