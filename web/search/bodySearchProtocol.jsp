@@ -39,7 +39,7 @@
 						</td>
 						<td class="rightLabel"">
 								<html:select property="protocolType" >
-									<option value="">All</option>
+									<option/>
 									<html:options name="protocolTypes" />
 								</html:select>
 						</td>
@@ -71,7 +71,7 @@
 								<tr>
 									<td>
 										<div align="right">
-											<input type="button" value="Reset" onClick="javascript:location.href='searchReport.do?dispatch=setup&page=0'">
+											<input type="reset" value="Reset" >
 											<input type="hidden" name="dispatch" value="search">
 											<input type="hidden" name="page" value="1">
 											<html:submit value="Search" />
