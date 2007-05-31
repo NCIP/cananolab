@@ -773,11 +773,11 @@ public class InitSessionSetup {
 		}
 		session.setAttribute("protocolTypes", protocolTypes);
 	}
-	public void setProtocolSubmitPage(HttpSession session) throws Exception {
+	public void setProtocolSubmitPage(HttpSession session, UserBean user) throws Exception {
 		// set protocol types, and protocol names for all these types
 		setProtocolType(session);
 		SortedSet<String> protocolTypes = (SortedSet<String>)session.getAttribute("protocolTypes");
-		SortedSet<ProtocolBean> pbs = lookupService.getAllProtocols();
+		SortedSet<ProtocolBean> pbs = lookupService.getAllProtocols(user);
 		//Now generate two maps: one for type and nameList, 
 		//and one for type and protocolIdList (for the protocol name dropdown box)
 		Map<String, List<String>> typeNamesMap = new HashMap<String, List<String>>();
