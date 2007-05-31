@@ -79,7 +79,7 @@
 									<c:choose>
 										<c:when test="${not empty filename}">
 											<strong>Uploaded File:&nbsp; &nbsp; </strong><!-- c:out value="${filename}"/> &nbsp; &nbsp; -->
-											<a href="searchProtocol.do?dispatch=download&amp;fileId=<bean:write name="submitProtocolForm" property="file.id" />"> <bean:write name="submitProtocolForm" property="file.name" /></a>&nbsp; &nbsp;
+											<a href="searchProtocol.do?dispatch=download&amp;fileId=<bean:write name="submitProtocolForm" property="file.id" />"> /protocol/<bean:write name="submitProtocolForm" property="file.name" /></a>&nbsp; &nbsp;
 										</c:when>
 									</c:choose>
 								</span>
