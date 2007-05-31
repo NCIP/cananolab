@@ -1,6 +1,5 @@
 package gov.nih.nci.calab.domain;
 
-import java.util.Collection;
 import java.util.HashSet;
 
 /**
