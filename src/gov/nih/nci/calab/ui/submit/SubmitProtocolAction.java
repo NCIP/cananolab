@@ -6,10 +6,11 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: SubmitProtocolAction.java,v 1.8 2007-05-31 13:08:45 chenhang Exp $ */
+/* CVS $Id: SubmitProtocolAction.java,v 1.9 2007-05-31 14:55:39 chenhang Exp $ */
 
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
 import gov.nih.nci.calab.dto.common.ProtocolBean;
+import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.submit.SubmitProtocolService;
 import gov.nih.nci.calab.service.search.SearchProtocolService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
@@ -114,12 +115,14 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		
 		HttpSession session = request.getSession();
+		UserBean user = (UserBean) session.getAttribute("user");
 		InitSessionSetup.getInstance().clearWorkflowSession(session);
 		InitSessionSetup.getInstance().clearSearchSession(session);
 		InitSessionSetup.getInstance().clearInventorySession(session);
 		InitSessionSetup.getInstance().setApplicationOwner(session);
-		InitSessionSetup.getInstance().setProtocolSubmitPage(session);
+		InitSessionSetup.getInstance().setProtocolSubmitPage(session, user);
 		InitSessionSetup.getInstance().setAllVisibilityGroups(session);
 		ActionForward forward = mapping.findForward("setup");
 		return forward;

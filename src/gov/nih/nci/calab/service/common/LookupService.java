@@ -7,6 +7,7 @@ import gov.nih.nci.calab.domain.MeasureUnit;
 import gov.nih.nci.calab.domain.Sample;
 import gov.nih.nci.calab.domain.SampleContainer;
 import gov.nih.nci.calab.domain.StorageElement;
+import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.ProtocolBean;
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
@@ -44,7 +45,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.102 2007-05-23 18:56:17 chenhang Exp $ */
+/* CVS $Id: LookupService.java,v 1.103 2007-05-31 14:55:08 chenhang Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -1052,7 +1053,7 @@ public class LookupService {
 		return protocolTypes;
 	}
 
-	public SortedSet<ProtocolBean> getAllProtocols() throws Exception{
+	public SortedSet<ProtocolBean> getAllProtocols(UserBean user) throws Exception{
 		SortedSet<ProtocolBean> protocolBeans = new TreeSet<ProtocolBean>();
 		IDataAccess ida = (new DataAccessProxy())
 		.getInstance(IDataAccess.HIBERNATE);
@@ -1078,9 +1079,10 @@ public class LookupService {
 						pfb.setVersion(pf.getVersion());
 						list.add(pfb);
 					}
-					pb.setFileBeanList(list);
+					pb.setFileBeanList(filterProtocols(list, user));
 				}
-				protocolBeans.add(pb);
+				if (!pb.getFileBeanList().isEmpty())
+					protocolBeans.add(pb);
 			}
 		} catch (Exception e) {
 			logger.error("Problem to retrieve all protocol names and types.");
@@ -1090,6 +1092,26 @@ public class LookupService {
 		}
 		return protocolBeans;	
 	}
+	private List<ProtocolFileBean> filterProtocols(List<ProtocolFileBean> protocolFiles, 
+			UserBean user) throws Exception{
+		UserService userService = new UserService(
+				CaNanoLabConstants.CSM_APP_NAME);
+		List<LabFileBean> tempList = new ArrayList<LabFileBean>();
+		for (ProtocolFileBean pfb : protocolFiles){
+			tempList.add((LabFileBean)pfb);
+		}
+		List<LabFileBean> filteredProtocols = userService.getFilteredFiles(
+			user, tempList);
+		protocolFiles.clear();
+		
+		if (filteredProtocols == null || filteredProtocols.isEmpty())
+			return protocolFiles;
+		for (LabFileBean lfb : filteredProtocols){
+			protocolFiles.add((ProtocolFileBean)lfb);
+		}		
+		return protocolFiles;
+	}
+	
 	public String[] getAllStressorTypes() {
 		String[] stressorTypes = new String[] { "Thermal", "PH", "Freeze thaw",
 				"Photo", "Centrifugation", "Lyophilization", "Chemical",
