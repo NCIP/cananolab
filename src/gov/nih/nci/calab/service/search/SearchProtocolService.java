@@ -166,9 +166,9 @@ public class SearchProtocolService {
 			String whereStr = StringUtils.join(whereList, " and ");
 
 			String hqlString = "select protocolFile from ProtocolFile protocolFile join fetch " +
-								"protocolFile.protocol p order by protocolFile.protocol.name, protocolFile.version ";
+								"protocolFile.protocol p  ";
 			
-			hqlString = hqlString + where + whereStr;
+			hqlString = hqlString + where + whereStr + " order by protocolFile.protocol.name, protocolFile.version ";
 			List results = ida.searchByParam(hqlString, paramList);
 
 			for (Object obj : results) {
