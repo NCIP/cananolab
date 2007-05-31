@@ -114,9 +114,10 @@
 									<td class="rightLabel">
 										<c:choose>
 											<c:when test="${not empty filename}">
-												<strong>Uploaded File:&nbsp; &nbsp; </strong><!-- c:out value="${filename}"/> &nbsp; &nbsp; -->
-												<bean:write name="updateProtocolForm" property="file.name" />&nbsp; &nbsp;
+												<!-- <strong>Uploaded File:&nbsp; &nbsp; </strong> c:out value="${filename}"/> &nbsp; &nbsp; -->
+												<a href="searchProtocol.do?dispatch=download&amp;fileId=<bean:write name="updateProtocolForm" property="file.id" />"> /protocol/<bean:write name="updateProtocolForm" property="file.name" /></a>&nbsp; &nbsp;
 											</c:when>
+											<c:otherwise>No file uploaded.</c:otherwise>
 										</c:choose>
 									</td>
 								</tr>
