@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: SubmitProtocolAction.java,v 1.7 2007-05-25 18:07:37 chenhang Exp $ */
+/* CVS $Id: SubmitProtocolAction.java,v 1.8 2007-05-31 13:08:45 chenhang Exp $ */
 
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
 import gov.nih.nci.calab.dto.common.ProtocolBean;
@@ -157,12 +157,12 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ProtocolFileBean fileBean = (ProtocolFileBean) theForm.get("file");
 		
-		FormFile uploadedFile = (FormFile) theForm.get("uploadedFile");
+		//FormFile uploadedFile = (FormFile) theForm.get("uploadedFile");
 
 		SubmitProtocolService service = new SubmitProtocolService();
 
 		try{
-			service.updateProtocol(fileBean, uploadedFile);
+			service.updateProtocol(fileBean, null);
 
 			if (fileBean.getVisibilityGroups().length == 0) {
 				fileBean
