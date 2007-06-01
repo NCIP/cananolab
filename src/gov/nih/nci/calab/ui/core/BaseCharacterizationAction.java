@@ -6,9 +6,15 @@ import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.ConditionBean;
 import gov.nih.nci.calab.dto.characterization.DatumBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
+import gov.nih.nci.calab.dto.characterization.invitro.CytotoxicityBean;
+import gov.nih.nci.calab.dto.characterization.physical.MorphologyBean;
+import gov.nih.nci.calab.dto.characterization.physical.ShapeBean;
+import gov.nih.nci.calab.dto.characterization.physical.SolubilityBean;
+import gov.nih.nci.calab.dto.characterization.physical.SurfaceBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.exception.CalabException;
+import gov.nih.nci.calab.service.common.LookupService;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
@@ -19,8 +25,10 @@ import gov.nih.nci.calab.service.util.StringUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,6 +37,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.validator.DynaValidatorActionForm;
 import org.apache.struts.validator.DynaValidatorForm;
 
 /**
@@ -38,9 +47,45 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 
-/* CVS $Id: BaseCharacterizationAction.java,v 1.27 2007-05-15 13:33:05 chenhang Exp $ */
+/*
+ * CVS $Id: BaseCharacterizationAction.java,v 1.27 2007/05/15 13:33:05 chenhang
+ * Exp $
+ */
 
 public abstract class BaseCharacterizationAction extends AbstractDispatchAction {
+	protected CharacterizationBean prepareCreate(HttpServletRequest request,
+			DynaValidatorForm theForm) throws Exception {
+		HttpSession session = request.getSession();
+		CharacterizationBean charBean = (CharacterizationBean) theForm
+				.get("achar");
+		String particleName = theForm.getString("particleName");
+		String particleType = theForm.getString("particleType");
+
+		// set createdBy and createdDate for the characterization
+		UserBean user = (UserBean) session.getAttribute("user");
+		Date date = new Date();
+		charBean.setCreatedBy(user.getLoginName());
+		charBean.setCreatedDate(date);
+
+		// set characterization files
+		int fileNumber = 0;
+		for (DerivedBioAssayDataBean obj : charBean
+				.getDerivedBioAssayDataList()) {
+			LabFileBean fileBean = (LabFileBean) request.getSession()
+					.getAttribute("characterizationFile" + fileNumber);
+			if (fileBean != null) {
+				obj.setFile(fileBean);
+			}
+			fileNumber++;
+		}
+
+		InitSessionSetup.getInstance().setSideParticleMenu(request,
+				particleName, particleType);
+		// InitSessionSetup.getInstance().setAllInstruments(session);
+		request.getSession().setAttribute("newCharacterizationCreated", "true");
+		return charBean;
+	}
+
 	/**
 	 * clear session data from the input form
 	 * 
@@ -49,11 +94,21 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 	 * @param mapping
 	 * @throws Exception
 	 */
-	protected abstract void clearMap(HttpSession session,
-			DynaValidatorForm theForm, ActionMapping mapping) throws Exception;
+	protected void clearMap(HttpSession session, DynaValidatorForm theForm,
+			ActionMapping mapping) throws Exception {
+		// reset achar and otherParticles
+		theForm.set("otherParticles", new String[0]);
+		theForm.set("achar", new CharacterizationBean());
+		theForm.set("morphology", new MorphologyBean());
+		theForm.set("shape", new ShapeBean());
+		theForm.set("surface", new SurfaceBean());
+		theForm.set("solubility", new SolubilityBean());
+		theForm.set("cytotoxicity", new CytotoxicityBean());
+		cleanSessionAttributes(session);
+	}
 
 	/**
-	 * Pepopulate data for the form
+	 * Prepopulate data for the input form
 	 * 
 	 * @param request
 	 * @param theForm
@@ -62,31 +117,54 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 	protected void initSetup(HttpServletRequest request,
 			DynaValidatorForm theForm) throws Exception {
 		HttpSession session = request.getSession();
-		
-		String submitType = (String)request.getParameter("submitType");
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
 
-		InitSessionSetup.getInstance()
-				.setAllSizeDistributionGraphTypes(session);
+		String submitType = (String) request.getParameter("submitType");
+		String particleName = theForm.getString("particleName");
+		String particleType = theForm.getString("particleType");
+		String particleSource = request.getParameter("particleSource");
 		InitSessionSetup.getInstance().setApplicationOwner(session);
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
-		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(
+		// TODO to be replaced
+		InitSessionSetup.getInstance()
+				.setAllSizeDistributionGraphTypes(session);
+		InitSessionSetup.getInstance().setAllMorphologyTypes(session);
+		InitSessionSetup.getInstance()
+				.setAllMolecularWeightDistributionGraphTypes(session);
+		InitSessionSetup.getInstance().setAllShapeTypes(session);
+		InitSessionSetup.getInstance().setAllPurityDistributionGraphTypes(
 				session);
-		InitSessionSetup.getInstance().setAllControlTypes(session);
+		InitSessionSetup.getInstance().setAllAreaMeasureUnits(session);
+		InitSessionSetup.getInstance().setAllChargeMeasureUnits(session);
+		
+		InitSessionSetup.getInstance().setAllConcentrationUnits(session);
+		InitSessionSetup.getInstance().setAllCellLines(session);
 		InitSessionSetup.getInstance().setAllConditionTypes(session);
 		InitSessionSetup.getInstance().setAllConditionUnits(session);
-		InitSessionSetup.getInstance().setAllConcentrationUnits(session);
-		InitSessionSetup.getInstance().setAllTimeUnits(session);
-		//TODO If there are more types of charactizations, add their corresponding
-		//protocol type here.
+		InitSessionSetup.getInstance().setAllControlTypes(session);
+
+		InitSessionSetup.getInstance().setAllInstruments(session);
+
+		// InitSessionSetup.getInstance().setAllInstruments(session);
+		// InitSessionSetup.getInstance().setAllDerivedDataFileTypes(session);
+		// TODO If there are more types of charactizations, add their
+		// corresponding
+		// protocol type here.
 		if (submitType.equalsIgnoreCase("physical"))
-			InitSessionSetup.getInstance().setAllProtocolNameVersionsByType(session, "Physical assay");
+			InitSessionSetup.getInstance().setAllProtocolNameVersionsByType(
+					session, "Physical assay");
 		else
-			InitSessionSetup.getInstance().setAllProtocolNameVersionsByType(session, "In vitro assay");
-			
+			InitSessionSetup.getInstance().setAllProtocolNameVersionsByType(
+					session, "In vitro assay");
+
+		// set up other particle names from the same source
+		LookupService service = new LookupService();
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+
+		particleSource = "DNT";
+		SortedSet<String> allOtherParticleNames = service.getOtherParticles(
+				particleSource, particleName, user);
+		session.setAttribute("allOtherParticleNames", allOtherParticleNames);
 	}
 
 	/**
@@ -97,8 +175,11 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 	 * @param aChar
 	 * @throws Exception
 	 */
-	protected abstract void setFormCharacterizationBean(
-			DynaValidatorForm theForm, Characterization aChar) throws Exception;
+	protected void setFormCharacterizationBean(DynaValidatorForm theForm,
+			Characterization aChar) throws Exception {
+		CharacterizationBean aCharBean = new CharacterizationBean(aChar);
+		theForm.set("achar", aCharBean);
+	}
 
 	/**
 	 * Clean the session attribture
@@ -128,7 +209,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		DynaValidatorActionForm theForm = (DynaValidatorActionForm) form;
 
 		HttpSession session = request.getSession();
 		clearMap(session, theForm, mapping);
@@ -158,21 +239,17 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		initSetup(request, theForm);
-		String characterizationId = (String) theForm.get("characterizationId");
-
+		String characterizationId = request.getParameter("characterizationId");
 		SearchNanoparticleService service = new SearchNanoparticleService();
 		Characterization aChar = service
 				.getCharacterizationAndTableBy(characterizationId);
+		theForm.set("achar", new CharacterizationBean(aChar));
 
-		HttpSession session = request.getSession();
-		// clear session data from the input forms
-		clearMap(session, theForm, mapping);
-		theForm.set("characterizationId", characterizationId);
-
-		UserService userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
+		UserService userService = new UserService(
+				CaNanoLabConstants.CSM_APP_NAME);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 
+		// set up charaterization files in the session
 		int fileNumber = 0;
 		for (DerivedBioAssayData obj : aChar.getDerivedBioAssayDataCollection()) {
 			if (obj.getFile() != null) {
@@ -188,7 +265,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 							.toArray(new String[0]);
 					fileBean.setVisibilityGroups(visibilityGroups);
 					request.getSession().setAttribute(
-							"characterizationFile" + fileNumber, fileBean);				}
+							"characterizationFile" + fileNumber, fileBean);
+				}
 			} else {
 				request.getSession().removeAttribute(
 						"characterizationFile" + fileNumber);
@@ -196,7 +274,6 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			fileNumber++;
 		}
 		initSetup(request, theForm);
-		setFormCharacterizationBean(theForm, aChar);
 		return mapping.getInputForward();
 	}
 
@@ -245,7 +322,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 
 		String fileId = request.getParameter("fileId");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		LabFileBean fileBean = service.getFile(fileId, CaNanoLabConstants.OUTPUT);
+		LabFileBean fileBean = service.getFile(fileId,
+				CaNanoLabConstants.OUTPUT);
 		String fileRoot = PropertyReader.getProperty(
 				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
 		File dFile = new File(fileRoot + File.separator + fileBean.getPath());
@@ -271,6 +349,123 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		}
 		return null;
 	}
+
+	public ActionForward addFile(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		CharacterizationBean achar = (CharacterizationBean) theForm
+				.get("achar");
+		List<DerivedBioAssayDataBean> origTables = achar
+				.getDerivedBioAssayDataList();
+		int origNum = (origTables == null) ? 0 : origTables.size();
+		List<DerivedBioAssayDataBean> tables = new ArrayList<DerivedBioAssayDataBean>();
+		for (int i = 0; i < origNum; i++) {
+			tables.add((DerivedBioAssayDataBean) origTables.get(i));
+		}
+		// add a new one
+		tables.add(new DerivedBioAssayDataBean());
+		achar.setDerivedBioAssayDataList(tables);
+		String particleName = theForm.getString("particleName");
+		String particleType = theForm.getString("particleType");
+		InitSessionSetup.getInstance().setSideParticleMenu(request,
+				particleName, particleType);
+
+		return mapping.getInputForward();
+	}
+
+	public ActionForward removeFile(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		String findIndexStr = (String) request.getParameter("fileInd");
+		int fileInd = Integer.parseInt(findIndexStr);
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		CharacterizationBean achar = (CharacterizationBean) theForm
+				.get("achar");
+		List<DerivedBioAssayDataBean> origTables = achar
+				.getDerivedBioAssayDataList();
+		int origNum = (origTables == null) ? 0 : origTables.size();
+		List<DerivedBioAssayDataBean> tables = new ArrayList<DerivedBioAssayDataBean>();
+		for (int i = 0; i < origNum; i++) {
+			tables.add((DerivedBioAssayDataBean) origTables.get(i));
+		}
+		// remove the one at findInd
+		if (origNum > 0) {
+			tables.remove(fileInd);
+		}
+		achar.setDerivedBioAssayDataList(tables);
+		String particleName = theForm.getString("particleName");
+		String particleType = theForm.getString("particleType");
+		InitSessionSetup.getInstance().setSideParticleMenu(request,
+				particleName, particleType);
+
+		return mapping.getInputForward();
+	}
+
+	public ActionForward addData(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		CharacterizationBean achar = (CharacterizationBean) theForm
+				.get("achar");
+		String fileIndexStr = (String) request.getParameter("fileInd");
+		int fileInd = Integer.parseInt(fileIndexStr);
+		DerivedBioAssayDataBean derivedBioAssayDataBean = (DerivedBioAssayDataBean) achar
+				.getDerivedBioAssayDataList().get(fileInd);
+		List<DatumBean> origDataList = derivedBioAssayDataBean.getDatumList();
+		int origNum = (origDataList == null) ? 0 : origDataList.size();
+		List<DatumBean> dataList = new ArrayList<DatumBean>();
+		for (int i = 0; i < origNum; i++) {
+			DatumBean dataPoint = (DatumBean) origDataList.get(i);
+			dataList.add(dataPoint);
+		}
+		dataList.add(new DatumBean());
+		derivedBioAssayDataBean.setDatumList(dataList);
+		String particleName = theForm.getString("particleName");
+		String particleType = theForm.getString("particleType");
+		InitSessionSetup.getInstance().setSideParticleMenu(request,
+				particleName, particleType);
+
+		return mapping.getInputForward();
+	}
+
+	public ActionForward removeData(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		CharacterizationBean achar = (CharacterizationBean) theForm
+				.get("achar");
+		String fileIndexStr = (String) request.getParameter("fileInd");
+		int fileInd = Integer.parseInt(fileIndexStr);
+		String dataIndexStr = (String) request.getParameter("dataInd");
+		int dataInd = Integer.parseInt(dataIndexStr);
+		DerivedBioAssayDataBean derivedBioAssayDataBean = (DerivedBioAssayDataBean) achar
+				.getDerivedBioAssayDataList().get(fileInd);
+		List<DatumBean> origDataList = derivedBioAssayDataBean.getDatumList();
+		int origNum = (origDataList == null) ? 0 : origDataList.size();
+		List<DatumBean> dataList = new ArrayList<DatumBean>();
+		for (int i = 0; i < origNum; i++) {
+			DatumBean dataPoint = (DatumBean) origDataList.get(i);
+			dataList.add(dataPoint);
+		}
+		if (origNum > 0)
+			dataList.remove(dataInd);
+		derivedBioAssayDataBean.setDatumList(dataList);
+		String particleName = theForm.getString("particleName");
+		String particleType = theForm.getString("particleType");
+		InitSessionSetup.getInstance().setSideParticleMenu(request,
+				particleName, particleType);
+
+		return mapping.getInputForward();
+	}
+
+	/**
+	 * Pepopulate data for the form
+	 * 
+	 * @param request
+	 * @param theForm
+	 * @throws Exception
+	 */
 
 	/**
 	 * Update multiple children on the same form
