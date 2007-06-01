@@ -3,8 +3,6 @@
 
 <hibernate-mapping package="gov.nih.nci.calab.domain.nano.characterization.physical">
 	<subclass name="Size" extends="gov.nih.nci.calab.domain.nano.characterization.Characterization" discriminator-value="Size" />
-
-
 	<subclass name="MolecularWeight" extends="gov.nih.nci.calab.domain.nano.characterization.Characterization" discriminator-value="MolecularWeight" />
 	<subclass name="Morphology" extends="gov.nih.nci.calab.domain.nano.characterization.Characterization" discriminator-value="Morphology">
 		<join table="MORPHOLOGY">
