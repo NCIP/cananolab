@@ -6,13 +6,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class ParticleComposition extends Characterization {
-//	public void setComposingElementCollection(
-//			Collection<ComposingElement> element);
-//
-//	public Collection<ComposingElement> getComposingElementCollection();
-	
+
+	private static final long serialVersionUID = 123456789L;
+
 	private Collection<ComposingElement> composingElementCollection = new ArrayList<ComposingElement>();
-	
+
 	public void setComposingElementCollection(
 			Collection<ComposingElement> element) {
 		this.composingElementCollection = element;
