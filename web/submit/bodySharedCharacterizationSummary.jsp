@@ -46,19 +46,13 @@
 	</tr>
 	<tr>
 		<td class="leftLabel">
-			<strong>Protocol Name </strong>
+			<strong>Protocol Name - Version</strong>
 		</td>
 		<td class="label" colspan="3">
 			<c:choose>
 				<c:when test="${canUserSubmit eq 'true'}">
-					<%-- html:text property="achar.characterizationProtocol.name" / 
-					<html:select styleId="protocolIds" property="achar.protocolFileBean.protocolBean.id"
-						onchange="javascript:filterProtocolVersions();"> --%>
 					<html:select property="achar.protocolFileBean.id">
-						<%-- 
-						<html:option value=""></html:option>
-						<html:options name="AllProtocolNameByType" />
-						--%>
+						<option/>
 						<html:optionsCollection name="protocolNameVersionsByType" label="label" value="value"/>
 					</html:select>
 				</c:when>
