@@ -1,0 +1,30 @@
+<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
+<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<table class="topBorderOnly" cellspacing="0" cellpadding="3"
+	width="100%" align="center" summary="" border="0">
+	<tbody>
+		<tr>
+			<td class="formTitle" colspan="3">
+				<div align="justify">
+					&nbsp;
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td class="leftLabel" valign="top" width="30%">
+				<strong>Copy to Other DNT ${param.particleSource} Particles</strong>
+			</td>
+			<td class="label">
+				<html:select property="otherParticles" size="6" multiple="true">
+					<html:options name="allOtherParticleNames" />
+				</html:select>
+			</td>
+			<td class="rightLabel" valign="top">
+				<html:checkbox property="copyData" />
+				<strong>Also copy derived data?</strong>
+			</td>
+		</tr>
+	</tbody>
+</table>
