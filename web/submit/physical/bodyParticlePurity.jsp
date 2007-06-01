@@ -20,15 +20,15 @@
 		<tr>
 			<td colspan="2">
 				<h5 align="center">
-					${nanoparticlePurityForm.map.particleName} (${nanoparticlePurityForm.map.particleType})
+					${nanoparticleCharacterizationForm.map.particleType})
 				</h5>
 			</td>
 		</tr>
 		<tr>
 			<td colspan="2">				
 				<jsp:include page="/bodyMessage.jsp?bundle=submit" />
-				<jsp:include page="/submit/bodySharedCharacterizationSummary.jsp?formName=nanoparticlePurityForm" />
-				<jsp:include page="/submit/bodySharedCharacterizationInstrument.jsp?formName=nanoparticlePurityForm" />
+				<jsp:include page="/submit/bodySharedCharacterizationSummary.jsp" />
+				<jsp:include page="/submit/bodySharedCharacterizationInstrument.jsp" />
 				<%-- size characterization specific --%>
 				<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 					<tbody>
@@ -49,7 +49,7 @@
 										<html:text property="achar.numberOfDerivedBioAssayData" />
 									</c:when>
 									<c:otherwise>
-										${nanoparticlePurityForm.map.achar.numberOfDerivedBioAssayData}&nbsp;
+										${nanoparticleCharacterizationForm.map.achar.numberOfDerivedBioAssayData}&nbsp;
 									</c:otherwise>
 								</c:choose>
 							</td>
@@ -64,7 +64,7 @@
 						</tr>
 						<tr>
 							<td class="completeLabel" colspan="4">
-								<logic:iterate name="nanoparticlePurityForm" property="achar.derivedBioAssayDataList" id="derivedBioAssayData" indexId="chartInd">
+								<logic:iterate name="nanoparticleCharacterizationForm" property="achar.derivedBioAssayDataList" id="derivedBioAssayData" indexId="chartInd">
 									<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 										<tbody>
 											<tr class="topBorder">
@@ -86,12 +86,12 @@
 															</html:select>
 														</c:when>
 														<c:otherwise>
-						${nanoparticlePurityForm.map.achar.derivedBioAssayDataList[chartInd].type}&nbsp;
+						${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[chartInd].type}&nbsp;
 					</c:otherwise>
 													</c:choose>
 												</td>
 											</tr>
-											<jsp:include page="/submit/bodySharedCharacterizationFile.jsp?chartInd=${chartInd}&formName=nanoparticlePurityForm&actionName=nanoparticlePurity" />
+											<jsp:include page="/submit/bodySharedCharacterizationFile.jsp?chartInd=${chartInd}&actionName=nanoparticlePurity" />
 										</tbody>
 									</table>
 									<br>
@@ -100,6 +100,8 @@
 						</tr>
 				</table>
 				<%-- end of size characterization specific --%>
+				<br>
+				<jsp:include page="/submit/bodySharedCharacterizationCopy.jsp" />
 				<jsp:include page="/submit/bodySharedCharacterizationSubmit.jsp" />
 			</td>
 		</tr>

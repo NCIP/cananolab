@@ -27,20 +27,18 @@
 		<tr>
 			<td colspan="2">
 				<h5 align="center">
-					<bean:write name="${formName}" property="particleName" />
-					<bean:write name="${formName}" property="particleType" />
+					<bean:write name="nanoparticleCharacterizationForm" property="particleName" />
+					<bean:write name="nanoparticleCharacterizationForm" property="particleType" />
 				</h5>
 			</td>
 		</tr>
 		<tr>
 			<td colspan="2">			
 				<jsp:include page="/bodyMessage.jsp?bundle=submit" />
-				<jsp:include page="/submit/bodySharedCharacterizationSummary.jsp?formName=${formName}" />
-				<jsp:include page="/submit/bodySharedCharacterizationInstrument.jsp?formName=${formName}" />				
+				<jsp:include page="/submit/bodySharedCharacterizationSummary.jsp" />
+				<jsp:include page="/submit/bodySharedCharacterizationInstrument.jsp" />				
 				<logic:present name="detailPage">
-					<jsp:include page="${detailPage}">
-						<jsp:param name="formName" value="${formName}"/>
-					</jsp:include>
+					<jsp:include page="${detailPage}"/>
 				</logic:present>
 				<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 					<tbody>
@@ -61,7 +59,7 @@
 										<html:text property="achar.numberOfDerivedBioAssayData" />
 									</c:when>
 									<c:otherwise>
-										<bean:write name="${formName}" property="achar.numberOfDerivedBioAssayData" />&nbsp;
+										<bean:write name="nanoparticleCharacterizationForm" property="achar.numberOfDerivedBioAssayData" />&nbsp;
 									</c:otherwise>
 								</c:choose>
 							</td>
@@ -76,7 +74,7 @@
 						</tr>
 						<tr>
 							<td class="completeLabel" colspan="4">
-								<logic:iterate name="${formName}" property="achar.derivedBioAssayDataList" id="derivedBioAssayData" indexId="chartInd">
+								<logic:iterate name="nanoparticleCharacterizationForm" property="achar.derivedBioAssayDataList" id="derivedBioAssayData" indexId="chartInd">
 									<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 										<tbody>
 											<tr class="topBorder">
@@ -86,7 +84,7 @@
 													</div>
 												</td>
 											</tr>											
-											<jsp:include page="/submit/bodySharedCharacterizationFile.jsp?chartInd=${chartInd}&formName=${formName}&actionName=${actionName}" />
+											<jsp:include page="/submit/bodySharedCharacterizationFile.jsp?chartInd=${chartInd}&actionName=${actionName}" />
 											<tr>
 												<td class="leftLabel">
 													<strong>Number of Data Points</strong>

@@ -20,15 +20,15 @@
 		<tr>
 			<td colspan="2">
 				<h5 align="center">
-					${nanoparticleShapeForm.map.particleName} (${nanoparticleShapeForm.map.particleType})
+					${nanoparticleCharacterizationForm.map.particleType})
 				</h5>
 			</td>
 		</tr>
 		<tr>
 			<td colspan="2">
 				<jsp:include page="/bodyMessage.jsp?bundle=submit" />
-				<jsp:include page="/submit/bodySharedCharacterizationSummary.jsp?formName=nanoparticleShapeForm" />
-				<jsp:include page="/submit/bodySharedCharacterizationInstrument.jsp?formName=nanoparticleShapeForm" />
+				<jsp:include page="/submit/bodySharedCharacterizationSummary.jsp" />
+				<jsp:include page="/submit/bodySharedCharacterizationInstrument.jsp" />
 				<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 					<tbody>
 						<tr class="topBorder">
@@ -45,7 +45,7 @@
 							<td class="label">
 								<c:choose>
 									<c:when test="${canUserSubmit eq 'true'}">
-										<html:select property="achar.type" onchange="javascript:updateOtherField(nanoparticleShapeForm, 'achar.type', 'achar.otherShapeType')">
+										<html:select property="shape.type" onchange="javascript:updateOtherField(nanoparticleCharacterizationForm, 'shape.type', 'shape.otherShapeType')">
 											<option value=""></option>
 											<html:options name="allShapeTypes" />
 										</html:select>
@@ -53,16 +53,16 @@
 										<strong> Other </strong>&nbsp;
 										
 										<c:choose>
-											<c:when test="${nanoparticleShapeForm.map.achar.type eq 'Other'}">
-												<html:text property="achar.otherShapeType" disabled="false" />
+											<c:when test="${nanoparticleCharacterizationForm.map.shape.type eq 'Other'}">
+												<html:text property="shape.otherShapeType" disabled="false" />
 											</c:when>
 											<c:otherwise>
-												<html:text property="achar.otherShapeType" disabled="true" />
+												<html:text property="shape.otherShapeType" disabled="true" />
 											</c:otherwise>
 										</c:choose>
 									</c:when>
 									<c:otherwise>
-										${nanoparticleShapeForm.map.achar.type}&nbsp;
+										${nanoparticleCharacterizationForm.map.shape.type}&nbsp;
 									</c:otherwise>
 								</c:choose>
 							</td>
@@ -77,12 +77,12 @@
 							<td class="label">
 								<c:choose>
 									<c:when test="${canUserSubmit eq 'true'}">
-										<html:text property="achar.minDimension" />
-										${nanoparticleShapeForm.map.achar.minDimensionUnit}&nbsp;
+										<html:text property="shape.minDimension" />
+										${nanoparticleCharacterizationForm.map.shape.minDimensionUnit}&nbsp;
 									</c:when>
 									<c:otherwise>
-										${nanoparticleShapeForm.map.achar.minDimension}&nbsp;
-										${nanoparticleShapeForm.map.achar.minDimensionUnit}&nbsp;
+										${nanoparticleCharacterizationForm.map.shape.minDimension}&nbsp;
+										${nanoparticleCharacterizationForm.map.shape.minDimensionUnit}&nbsp;
 									</c:otherwise>
 								</c:choose>
 							</td>
@@ -92,12 +92,12 @@
 							<td class="rightLabel">
 								<c:choose>
 									<c:when test="${canUserSubmit eq 'true'}">
-										<html:text property="achar.maxDimension" />
-										${nanoparticleShapeForm.map.achar.maxDimensionUnit}&nbsp;
+										<html:text property="shape.maxDimension" />
+										${nanoparticleCharacterizationForm.map.shape.maxDimensionUnit}&nbsp;
 									</c:when>
 									<c:otherwise>
-										${nanoparticleShapeForm.map.achar.maxDimension}&nbsp;
-										${nanoparticleShapeForm.map.achar.maxDimensionUnit}&nbsp;
+										${nanoparticleCharacterizationForm.map.shape.maxDimension}&nbsp;
+										${nanoparticleCharacterizationForm.map.shape.maxDimensionUnit}&nbsp;
 									</c:otherwise>
 								</c:choose>
 							</td>
@@ -125,7 +125,7 @@
 										<html:text property="achar.numberOfDerivedBioAssayData" />
 									</c:when>
 									<c:otherwise>
-										${nanoparticleShapeForm.map.achar.numberOfDerivedBioAssayData}&nbsp;
+										${nanoparticleCharacterizationForm.map.achar.numberOfDerivedBioAssayData}&nbsp;
 									</c:otherwise>
 								</c:choose>
 							</td>
@@ -140,7 +140,7 @@
 						</tr>
 						<tr>
 							<td class="completeLabel" colspan="4">
-								<logic:iterate name="nanoparticleShapeForm" property="achar.derivedBioAssayDataList" id="derivedBioAssayData" indexId="chartInd">
+								<logic:iterate name="nanoparticleCharacterizationForm" property="achar.derivedBioAssayDataList" id="derivedBioAssayData" indexId="chartInd">
 									<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 										<tbody>
 											<tr class="topBorder">
@@ -162,12 +162,12 @@
 															</html:select>
 														</c:when>
 														<c:otherwise>
-						${nanoparticleShapeForm.map.achar.derivedBioAssayDataList[chartInd].type}&nbsp;
+						${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[chartInd].type}&nbsp;
 					</c:otherwise>
 													</c:choose>
 												</td>
 											</tr>
-											<jsp:include page="/submit/bodySharedCharacterizationFile.jsp?chartInd=${chartInd}&formName=nanoparticleShapeForm&actionName=nanoparticleShape" />
+											<jsp:include page="/submit/bodySharedCharacterizationFile.jsp?chartInd=${chartInd}&actionName=nanoparticleShape" />
 										</tbody>
 									</table>
 									<br>
@@ -176,6 +176,8 @@
 						</tr>
 				</table>
 				<%-- end of size characterization specific --%>
+				<br>
+				<jsp:include page="/submit/bodySharedCharacterizationCopy.jsp" />
 				<jsp:include page="/submit/bodySharedCharacterizationSubmit.jsp" />
 			</td>
 		</tr>

@@ -20,15 +20,15 @@
 		<tr>
 			<td colspan="2">
 				<h5 align="center">
-					${nanoparticleMorphologyForm.map.particleName} (${nanoparticleMorphologyForm.map.particleType})
+					${nanoparticleCharacterizationForm.map.particleType})
 				</h5>
 			</td>
 		</tr>
 		<tr>
 			<td colspan="2">				
 				<jsp:include page="/bodyMessage.jsp?bundle=submit" />
-				<jsp:include page="/submit/bodySharedCharacterizationSummary.jsp?formName=nanoparticleMorphologyForm" />
-				<jsp:include page="/submit/bodySharedCharacterizationInstrument.jsp?formName=nanoparticleMorphologyForm" />
+				<jsp:include page="/submit/bodySharedCharacterizationSummary.jsp" />
+				<jsp:include page="/submit/bodySharedCharacterizationInstrument.jsp" />
 				<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 					<tbody>
 						<tr class="topBorder">
@@ -45,23 +45,23 @@
 							<td class="rightLabel">
 								<c:choose>
 									<c:when test="${canUserSubmit eq 'true'}">
-										<html:select property="achar.type" onchange="javascript:updateOtherField(nanoparticleMorphologyForm, 'achar.type', 'achar.otherType')" >
+										<html:select property="morphology.type" onchange="javascript:updateOtherField(nanoparticleCharacterizationForm, 'morphology.type', 'morphology.otherType')" >
 											<option value=""></option>
 											<html:options name="allMorphologyTypes" />
 										</html:select>
 										&nbsp;&nbsp;
 										<strong> Other </strong>&nbsp;
 										<c:choose>
-											<c:when test="${nanoparticleMorphologyForm.map.achar.type eq 'Other'}">
-												<html:text property="achar.otherType" disabled="false" />
+											<c:when test="${nanoparticleCharacterizationForm.map.morphology.type eq 'Other'}">
+												<html:text property="morphology.otherType" disabled="false" />
 											</c:when>
 											<c:otherwise>
-												<html:text property="achar.otherType" disabled="true" />
+												<html:text property="morphology.otherType" disabled="true" />
 											</c:otherwise>
 										</c:choose>
 									</c:when>
 									<c:otherwise>
-										${nanoparticleMorphologyForm.map.achar.type}&nbsp;
+										${nanoparticleCharacterizationForm.map.morphology.type}&nbsp;
 									</c:otherwise>
 								</c:choose>
 							</td>
@@ -89,7 +89,7 @@
 										<html:text property="achar.numberOfDerivedBioAssayData" />
 									</c:when>
 									<c:otherwise>
-						${nanoparticleMorphologyForm.map.achar.numberOfDerivedBioAssayData}&nbsp;
+						${nanoparticleCharacterizationForm.map.achar.numberOfDerivedBioAssayData}&nbsp;
 					</c:otherwise>
 								</c:choose>
 							</td>
@@ -104,7 +104,7 @@
 						</tr>
 						<tr>
 							<td class="completeLabel" colspan="4">
-								<logic:iterate name="nanoparticleMorphologyForm" property="achar.derivedBioAssayDataList" id="derivedBioAssayData" indexId="chartInd">
+								<logic:iterate name="nanoparticleCharacterizationForm" property="achar.derivedBioAssayDataList" id="derivedBioAssayData" indexId="chartInd">
 									<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 										<tbody>
 											<tr class="topBorder">
@@ -126,12 +126,12 @@
 															</html:select>
 														</c:when>
 														<c:otherwise>
-						${nanoparticleMorphologyForm.map.achar.derivedBioAssayDataList[chartInd].type}&nbsp;
+						${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[chartInd].type}&nbsp;
 					</c:otherwise>
 													</c:choose>
 												</td>
 											</tr>
-											<jsp:include page="/submit/bodySharedCharacterizationFile.jsp?chartInd=${chartInd}&formName=nanoparticleMorphologyForm&actionName=nanoparticleMorphology" />
+											<jsp:include page="/submit/bodySharedCharacterizationFile.jsp?chartInd=${chartInd}&actionName=nanoparticleMorphology" />
 										</tbody>
 									</table>
 									<br>
@@ -140,6 +140,8 @@
 						</tr>
 				</table>
 				<%-- end of size characterization specific --%>
+				<br>
+				<jsp:include page="/submit/bodySharedCharacterizationCopy.jsp" />
 				<jsp:include page="/submit/bodySharedCharacterizationSubmit.jsp" />
 			</td>
 		</tr>
