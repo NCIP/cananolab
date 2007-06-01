@@ -3,13 +3,12 @@ package gov.nih.nci.calab.service.submit;
 import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
 import gov.nih.nci.calab.domain.DerivedDataFile;
-import gov.nih.nci.calab.domain.InstrumentType;
 import gov.nih.nci.calab.domain.Keyword;
 import gov.nih.nci.calab.domain.LabFile;
-import gov.nih.nci.calab.domain.Manufacturer;
 import gov.nih.nci.calab.domain.OutputFile;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Size;
+import gov.nih.nci.calab.domain.nano.characterization.physical.Surface;
 import gov.nih.nci.calab.domain.nano.function.Agent;
 import gov.nih.nci.calab.domain.nano.function.AgentTarget;
 import gov.nih.nci.calab.domain.nano.function.Function;
@@ -17,31 +16,10 @@ import gov.nih.nci.calab.domain.nano.function.Linkage;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.composition.CompositionBean;
-import gov.nih.nci.calab.dto.characterization.invitro.CFU_GMBean;
-import gov.nih.nci.calab.dto.characterization.invitro.CYP450Bean;
-import gov.nih.nci.calab.dto.characterization.invitro.Caspase3ActivationBean;
-import gov.nih.nci.calab.dto.characterization.invitro.CellViabilityBean;
-import gov.nih.nci.calab.dto.characterization.invitro.ChemotaxisBean;
-import gov.nih.nci.calab.dto.characterization.invitro.CoagulationBean;
-import gov.nih.nci.calab.dto.characterization.invitro.ComplementActivationBean;
-import gov.nih.nci.calab.dto.characterization.invitro.CytokineInductionBean;
-import gov.nih.nci.calab.dto.characterization.invitro.EnzymeInductionBean;
-import gov.nih.nci.calab.dto.characterization.invitro.GlucuronidationSulphationBean;
-import gov.nih.nci.calab.dto.characterization.invitro.HemolysisBean;
-import gov.nih.nci.calab.dto.characterization.invitro.LeukocyteProliferationBean;
-import gov.nih.nci.calab.dto.characterization.invitro.NKCellCytotoxicActivityBean;
-import gov.nih.nci.calab.dto.characterization.invitro.OxidativeBurstBean;
-import gov.nih.nci.calab.dto.characterization.invitro.OxidativeStressBean;
-import gov.nih.nci.calab.dto.characterization.invitro.PhagocytosisBean;
-import gov.nih.nci.calab.dto.characterization.invitro.PlasmaProteinBindingBean;
-import gov.nih.nci.calab.dto.characterization.invitro.PlateletAggregationBean;
-import gov.nih.nci.calab.dto.characterization.invitro.ROSBean;
-import gov.nih.nci.calab.dto.characterization.physical.MolecularWeightBean;
+import gov.nih.nci.calab.dto.characterization.invitro.CytotoxicityBean;
 import gov.nih.nci.calab.dto.characterization.physical.MorphologyBean;
-import gov.nih.nci.calab.dto.characterization.physical.PurityBean;
 import gov.nih.nci.calab.dto.characterization.physical.ShapeBean;
 import gov.nih.nci.calab.dto.characterization.physical.SolubilityBean;
-import gov.nih.nci.calab.dto.characterization.physical.StabilityBean;
 import gov.nih.nci.calab.dto.characterization.physical.SurfaceBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.function.FunctionBean;
@@ -54,7 +32,6 @@ import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -311,15 +288,11 @@ public class SubmitNanoparticleService {
 	 * @throws Exception
 	 */
 	public void addParticleSurface(String particleType, String particleName,
-			SurfaceBean surface) throws Exception {
+			SurfaceBean surfaceBean) throws Exception {
 
-		Characterization doSurface = surface.getDomainObj();
-		// TODO think about how to deal with characterization file.
-		/*
-		 * if (doSize.getInstrument() != null) { Instrument instrument =
-		 * addInstrument(doSize.getInstrument());
-		 * doSize.setInstrument(instrument); }
-		 */
+		Surface doSurface = new Surface();
+		surfaceBean.updateDomainObj(doSurface);
+
 		addParticleCharacterization(particleType, particleName, doSurface);
 	}
 
@@ -332,7 +305,7 @@ public class SubmitNanoparticleService {
 	 * @throws Exception
 	 */
 	public void addParticleMolecularWeight(String particleType,
-			String particleName, MolecularWeightBean molecularWeight)
+			String particleName, CharacterizationBean molecularWeight)
 			throws Exception {
 		Characterization doMolecularWeight = molecularWeight.getDomainObj();
 		// TODO think about how to deal with characterization file.
@@ -381,21 +354,6 @@ public class SubmitNanoparticleService {
 	}
 
 	/**
-	 * Saves the stability characterization to the database
-	 * 
-	 * @param particleType
-	 * @param particleName
-	 * @param stability
-	 * @throws Exception
-	 */
-	public void addParticleStability(String particleType, String particleName,
-			StabilityBean stability) throws Exception {
-		Characterization doStability = stability.getDomainObj();
-		// TODO think about how to deal with characterization file.
-		addParticleCharacterization(particleType, particleName, doStability);
-	}
-
-	/**
 	 * Saves the purity characterization to the database
 	 * 
 	 * @param particleType
@@ -404,7 +362,7 @@ public class SubmitNanoparticleService {
 	 * @throws Exception
 	 */
 	public void addParticlePurity(String particleType, String particleName,
-			PurityBean purity) throws Exception {
+			CharacterizationBean purity) throws Exception {
 		Characterization doPurity = purity.getDomainObj();
 		// TODO think about how to deal with characterization file.
 		addParticleCharacterization(particleType, particleName, doPurity);
@@ -434,7 +392,7 @@ public class SubmitNanoparticleService {
 	 * @throws Exception
 	 */
 	public void addHemolysis(String particleType, String particleName,
-			HemolysisBean hemolysis) throws Exception {
+			CharacterizationBean hemolysis) throws Exception {
 		Characterization doHemolysis = hemolysis.getDomainObj();
 		// TODO think about how to deal with characterization file.
 		addParticleCharacterization(particleType, particleName, doHemolysis);
@@ -449,7 +407,7 @@ public class SubmitNanoparticleService {
 	 * @throws Exception
 	 */
 	public void addCoagulation(String particleType, String particleName,
-			CoagulationBean coagulation) throws Exception {
+			CharacterizationBean coagulation) throws Exception {
 		Characterization doCoagulation = coagulation.getDomainObj();
 		// TODO think about how to deal with characterization file.
 		addParticleCharacterization(particleType, particleName, doCoagulation);
@@ -464,7 +422,7 @@ public class SubmitNanoparticleService {
 	 * @throws Exception
 	 */
 	public void addPlateletAggregation(String particleType,
-			String particleName, PlateletAggregationBean plateletAggregation)
+			String particleName, CharacterizationBean plateletAggregation)
 			throws Exception {
 		Characterization doPlateletAggregation = plateletAggregation
 				.getDomainObj();
@@ -482,7 +440,7 @@ public class SubmitNanoparticleService {
 	 * @throws Exception
 	 */
 	public void addComplementActivation(String particleType,
-			String particleName, ComplementActivationBean complementActivation)
+			String particleName, CharacterizationBean complementActivation)
 			throws Exception {
 		Characterization doComplementActivation = complementActivation
 				.getDomainObj();
@@ -500,7 +458,7 @@ public class SubmitNanoparticleService {
 	 * @throws Exception
 	 */
 	public void addChemotaxis(String particleType, String particleName,
-			ChemotaxisBean chemotaxis) throws Exception {
+			CharacterizationBean chemotaxis) throws Exception {
 		Characterization doChemotaxis = chemotaxis.getDomainObj();
 		// TODO think about how to deal with characterization file.
 		addParticleCharacterization(particleType, particleName, doChemotaxis);
@@ -517,7 +475,7 @@ public class SubmitNanoparticleService {
 	 */
 	public void addNKCellCytotoxicActivity(String particleType,
 			String particleName,
-			NKCellCytotoxicActivityBean nkCellCytotoxicActivity)
+			CharacterizationBean nkCellCytotoxicActivity)
 			throws Exception {
 		Characterization doNKCellCytotoxicActivity = nkCellCytotoxicActivity
 				.getDomainObj();
@@ -536,7 +494,7 @@ public class SubmitNanoparticleService {
 	 */
 	public void addLeukocyteProliferation(String particleType,
 			String particleName,
-			LeukocyteProliferationBean leukocyteProliferation) throws Exception {
+			CharacterizationBean leukocyteProliferation) throws Exception {
 		Characterization doLeukocyteProliferation = leukocyteProliferation
 				.getDomainObj();
 		// TODO think about how to deal with characterization file.
@@ -553,7 +511,7 @@ public class SubmitNanoparticleService {
 	 * @throws Exception
 	 */
 	public void addCFU_GM(String particleType, String particleName,
-			CFU_GMBean cfu_gm) throws Exception {
+			CharacterizationBean cfu_gm) throws Exception {
 		Characterization doCFU_GM = cfu_gm.getDomainObj();
 		// TODO think about how to deal with characterization file.
 		addParticleCharacterization(particleType, particleName, doCFU_GM);
@@ -568,7 +526,7 @@ public class SubmitNanoparticleService {
 	 * @throws Exception
 	 */
 	public void addOxidativeBurst(String particleType, String particleName,
-			OxidativeBurstBean oxidativeBurst) throws Exception {
+			CharacterizationBean oxidativeBurst) throws Exception {
 		Characterization doOxidativeBurst = oxidativeBurst.getDomainObj();
 		// TODO think about how to deal with characterization file.
 		addParticleCharacterization(particleType, particleName,
@@ -584,7 +542,7 @@ public class SubmitNanoparticleService {
 	 * @throws Exception
 	 */
 	public void addPhagocytosis(String particleType, String particleName,
-			PhagocytosisBean phagocytosis) throws Exception {
+			CharacterizationBean phagocytosis) throws Exception {
 		Characterization doPhagocytosis = phagocytosis.getDomainObj();
 		// TODO think about how to deal with characterization file.
 		addParticleCharacterization(particleType, particleName, doPhagocytosis);
@@ -599,7 +557,7 @@ public class SubmitNanoparticleService {
 	 * @throws Exception
 	 */
 	public void addCytokineInduction(String particleType, String particleName,
-			CytokineInductionBean cytokineInduction) throws Exception {
+			CharacterizationBean cytokineInduction) throws Exception {
 		Characterization doCytokineInduction = cytokineInduction.getDomainObj();
 		// TODO think about how to deal with characterization file.
 		addParticleCharacterization(particleType, particleName,
@@ -615,7 +573,7 @@ public class SubmitNanoparticleService {
 	 * @throws Exception
 	 */
 	public void addProteinBinding(String particleType, String particleName,
-			PlasmaProteinBindingBean plasmaProteinBinding) throws Exception {
+			CharacterizationBean plasmaProteinBinding) throws Exception {
 		Characterization doProteinBinding = plasmaProteinBinding.getDomainObj();
 		// TODO think about how to deal with characterization file.
 		addParticleCharacterization(particleType, particleName,
@@ -631,7 +589,7 @@ public class SubmitNanoparticleService {
 	 * @throws Exception
 	 */
 	public void addCellViability(String particleType, String particleName,
-			CellViabilityBean cellViability) throws Exception {
+			CytotoxicityBean cellViability) throws Exception {
 		Characterization doCellViability = cellViability.getDomainObj();
 		// TODO think about how to deal with characterization file.
 		addParticleCharacterization(particleType, particleName, doCellViability);
@@ -647,7 +605,7 @@ public class SubmitNanoparticleService {
 	 * @throws Exception
 	 */
 	public void addEnzymeInduction(String particleType, String particleName,
-			EnzymeInductionBean enzymeInduction) throws Exception {
+			CharacterizationBean enzymeInduction) throws Exception {
 		Characterization EnzymeInduction = enzymeInduction.getDomainObj();
 		// TODO think about how to deal with characterization file.
 		addParticleCharacterization(particleType, particleName, EnzymeInduction);
@@ -662,7 +620,7 @@ public class SubmitNanoparticleService {
 	 * @throws Exception
 	 */
 	public void addOxidativeStress(String particleType, String particleName,
-			OxidativeStressBean oxidativeStress) throws Exception {
+			CharacterizationBean oxidativeStress) throws Exception {
 		Characterization doOxidativeStress = oxidativeStress.getDomainObj();
 		// TODO think about how to deal with characterization file.
 		addParticleCharacterization(particleType, particleName,
@@ -678,7 +636,7 @@ public class SubmitNanoparticleService {
 	 * @throws Exception
 	 */
 	public void addCaspase3Activation(String particleType, String particleName,
-			Caspase3ActivationBean caspase3Activation) throws Exception {
+			CytotoxicityBean caspase3Activation) throws Exception {
 		Characterization doCaspase3Activation = caspase3Activation
 				.getDomainObj();
 		// TODO think about how to deal with characterization file.
@@ -697,7 +655,7 @@ public class SubmitNanoparticleService {
 	 */
 	public void addGlucuronidationSulphation(String particleType,
 			String particleName,
-			GlucuronidationSulphationBean glucuronidationSulphation)
+			CharacterizationBean glucuronidationSulphation)
 			throws Exception {
 		Characterization doGlucuronidationSulphation = glucuronidationSulphation
 				.getDomainObj();
@@ -715,7 +673,7 @@ public class SubmitNanoparticleService {
 	 * @throws Exception
 	 */
 	public void addCYP450(String particleType, String particleName,
-			CYP450Bean cyp450) throws Exception {
+			CharacterizationBean cyp450) throws Exception {
 		Characterization doCYP450 = cyp450.getDomainObj();
 		// TODO think about how to deal with characterization file.
 		addParticleCharacterization(particleType, particleName, doCYP450);
@@ -729,7 +687,7 @@ public class SubmitNanoparticleService {
 	 * @param hemolysis
 	 * @throws Exception
 	 */
-	public void addROS(String particleType, String particleName, ROSBean ros)
+	public void addROS(String particleType, String particleName, CharacterizationBean ros)
 			throws Exception {
 		Characterization doROS = ros.getDomainObj();
 		// TODO think about how to deal with characterization file.
