@@ -42,7 +42,7 @@ public class Caspase3ActivationBean extends CharacterizationBean {
 		for (DerivedBioAssayDataBean table:getDerivedBioAssayDataList()) {
 			for (DatumBean datum : table.getDatumList()) {
 				datum.setType("Percent Caspase 3 Activation");
-				datum.setValueUnit("%");
+				datum.setUnit("%");
 			}			
 		}
 	}
