@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-<logic:iterate id="ddata" name="${formName}" property="achar.derivedBioAssayDataList[${param.chartNum}].datumList" indexId="dInd">
+<logic:iterate id="ddata" name="nanoparticleCharacterizationForm" property="achar.derivedBioAssayDataList[${param.chartNum}].datumList" indexId="dInd">
 	<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0" rules="none">
 		<tbody>
 			<tr class="topBorder">

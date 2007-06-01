@@ -20,15 +20,15 @@
 		<tr>
 			<td colspan="2">
 				<h5 align="center">
-					${nanoparticleSurfaceForm.map.particleName} (${nanoparticleSurfaceForm.map.particleType})
+					${nanoparticleCharacterizationForm.map.particleType})
 				</h5>
 			</td>
 		</tr>
 		<tr>
 			<td colspan="2">				
 				<jsp:include page="/bodyMessage.jsp?bundle=submit" />
-				<jsp:include page="/submit/bodySharedCharacterizationSummary.jsp?formName=nanoparticleSurfaceForm" />
-				<jsp:include page="/submit/bodySharedCharacterizationInstrument.jsp?formName=nanoparticleSurfaceForm" />
+				<jsp:include page="/submit/bodySharedCharacterizationSummary.jsp" />
+				<jsp:include page="/submit/bodySharedCharacterizationInstrument.jsp" />
 
 				<%-- Surface characterization specific --%>
 				<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
@@ -49,14 +49,14 @@
 							<td class="label">
 								<c:choose>
 									<c:when test="${canUserSubmit eq 'true'}">
-										<html:text property="achar.surfaceArea" />&nbsp;sq nm
-										<!-- <html:select property="achar.surfaceAreaUnit">
+										<html:text property="surface.surfaceArea" />&nbsp;sq nm
+										<!-- <html:select property="surface.surfaceAreaUnit">
 											<html:options name="allAreaMeasureUnits" />
 										</html:select> -->
 									</c:when>
 									<c:otherwise>
-										${nanoparticleSurfaceForm.map.achar.surfaceArea}&nbsp;
-										${nanoparticleSurfaceForm.map.achar.surfaceAreaUnit}&nbsp;
+										${nanoparticleCharacterizationForm.map.surface.surfaceArea}&nbsp;
+										${nanoparticleCharacterizationForm.map.surface.surfaceAreaUnit}&nbsp;
 									</c:otherwise>
 								</c:choose>
 							</td>
@@ -68,12 +68,12 @@
 							<td class="rightLabel">
 								<c:choose>
 									<c:when test="${canUserSubmit eq 'true'}">
-										<html:select property="achar.isHydrophobic">
+										<html:select property="surface.isHydrophobic">
 											<html:options name="booleanChoices" />
 										</html:select>
 									</c:when>
 									<c:otherwise>
-										${nanoparticleSurfaceForm.map.achar.isHydrophobic}&nbsp;
+										${nanoparticleCharacterizationForm.map.surface.isHydrophobic}&nbsp;
 									</c:otherwise>
 								</c:choose>
 							</td>
@@ -87,14 +87,14 @@
 							<td class="label">
 								<c:choose>
 									<c:when test="${canUserSubmit eq 'true'}">
-										<html:text property="achar.charge" />&nbsp;
-										<html:select property="achar.chargeUnit">
+										<html:text property="surface.charge" />&nbsp;
+										<html:select property="surface.chargeUnit">
 											<html:options name="allChargeMeasureUnits" />
 										</html:select>
 									</c:when>
 									<c:otherwise>
-										${nanoparticleSurfaceForm.map.achar.charge}&nbsp;
-										${nanoparticleSurfaceForm.map.achar.chargeUnit}&nbsp;
+										${nanoparticleCharacterizationForm.map.surface.charge}&nbsp;
+										${nanoparticleCharacterizationForm.map.surface.chargeUnit}&nbsp;
 									</c:otherwise>
 								</c:choose>
 							</td>
@@ -106,10 +106,10 @@
 							<td class="rightLabel">
 								<c:choose>
 									<c:when test="${canUserSubmit eq 'true'}">
-										<html:text property="achar.zetaPotential" />&nbsp;mV
+										<html:text property="surface.zetaPotential" />&nbsp;mV
 									</c:when>
 									<c:otherwise>
-										${nanoparticleSurfaceForm.map.achar.zetaPotential}&nbsp;
+										${nanoparticleCharacterizationForm.map.surface.zetaPotential}&nbsp;
 									</c:otherwise>
 								</c:choose>
 							</td>
@@ -134,10 +134,10 @@
 							<td class="label">
 								<c:choose>
 									<c:when test="${canUserSubmit eq 'true'}">
-										<html:text property="achar.numberOfSurfaceChemistries" />
+										<html:text property="surface.numberOfSurfaceChemistries" />
 									</c:when>
 									<c:otherwise>
-						${nanoparticleSurfaceForm.map.achar.numberOfSurfaceChemistries}&nbsp;
+						${nanoparticleCharacterizationForm.map.surface.numberOfSurfaceChemistries}&nbsp;
 									</c:otherwise>
 								</c:choose>
 							</td>
@@ -152,7 +152,7 @@
 						</tr>
 						<tr>
 							<td class="completeLabel" colspan="4">
-								<c:forEach var="achar.surfaceChemistries" items="${nanoparticleSurfaceForm.map.achar.surfaceChemistries}" varStatus="status">
+								<c:forEach var="achar.surfaceChemistries" items="${nanoparticleCharacterizationForm.map.surface.surfaceChemistries}" varStatus="status">
 									<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 										<tbody>
 											<tr class="topBorder">
@@ -172,7 +172,7 @@
 															<html:text name="achar.surfaceChemistries" indexed="true" property="moleculeName" />
 														</c:when>
 														<c:otherwise>
-						${nanoparticleSurfaceForm.map.achar.surfaceChemistries[status.index].moleculeName}&nbsp;
+						${nanoparticleCharacterizationForm.map.surface.surfaceChemistries[status.index].moleculeName}&nbsp;
 														</c:otherwise>
 													</c:choose>
 												</td>
@@ -182,10 +182,10 @@
 												<td class="rightLabel">
 													<c:choose>
 														<c:when test="${canUserSubmit eq 'true'}">
-															<html:text name="achar.surfaceChemistries" indexed="true" property="numberOfMolecules" /> &nbsp;															
+															<html:text name="surface.surfaceChemistries" indexed="true" property="numberOfMolecules" /> &nbsp;															
 														</c:when>
 														<c:otherwise>
-															${nanoparticleSurfaceForm.map.achar.surfaceChemistries[status.index].numberOfMolecules}&nbsp;
+															${nanoparticleCharacterizationForm.map.surface.surfaceChemistries[status.index].numberOfMolecules}&nbsp;
 														</c:otherwise>
 													</c:choose>
 												</td>
@@ -216,7 +216,7 @@
 										<html:text property="achar.numberOfDerivedBioAssayData" />
 									</c:when>
 									<c:otherwise>
-						${nanoparticleSurfaceForm.map.achar.numberOfDerivedBioAssayData}&nbsp;
+						${nanoparticleCharacterizationForm.map.achar.numberOfDerivedBioAssayData}&nbsp;
 									</c:otherwise>
 								</c:choose>
 							</td>
@@ -231,7 +231,7 @@
 						</tr>
 						<tr>
 							<td class="completeLabel" colspan="4">
-								<logic:iterate name="nanoparticleSurfaceForm" property="achar.derivedBioAssayDataList" id="derivedBioAssayData" indexId="chartInd">
+								<logic:iterate name="nanoparticleCharacterizationForm" property="achar.derivedBioAssayDataList" id="derivedBioAssayData" indexId="chartInd">
 									<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 										<tbody>
 											<tr class="topBorder">
@@ -241,7 +241,7 @@
 													</div>
 												</td>
 											</tr>
-											<jsp:include page="/submit/bodySharedCharacterizationFile.jsp?chartInd=${chartInd}&formName=nanoparticleSurfaceForm&actionName=nanoparticleSurface" />
+											<jsp:include page="/submit/bodySharedCharacterizationFile.jsp?chartInd=${chartInd}&actionName=nanoparticleSurface" />
 
 										</tbody>
 									</table>
@@ -249,9 +249,10 @@
 								</logic:iterate>
 							</td>
 						</tr>
-				</table>
-				
+				</table>				
 				<%-- end of Surface characterization specific --%>
+				<br>
+				<jsp:include page="/submit/bodySharedCharacterizationCopy.jsp" />
 				<jsp:include page="/submit/bodySharedCharacterizationSubmit.jsp" />
 			</td>
 		</tr>

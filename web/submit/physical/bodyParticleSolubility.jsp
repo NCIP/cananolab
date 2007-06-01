@@ -20,15 +20,15 @@
 		<tr>
 			<td colspan="2">
 				<h5 align="center">
-					${nanoparticleSolubilityForm.map.particleName} (${nanoparticleSolubilityForm.map.particleType})
+					${nanoparticleCharacterizationForm.map.particleType})
 				</h5>
 			</td>
 		</tr>
 		<tr>
 			<td colspan="2">
 				<jsp:include page="/bodyMessage.jsp?bundle=submit" />
-				<jsp:include page="/submit/bodySharedCharacterizationSummary.jsp?formName=nanoparticleSolubilityForm" />
-				<jsp:include page="/submit/bodySharedCharacterizationInstrument.jsp?formName=nanoparticleSolubilityForm" />
+				<jsp:include page="/submit/bodySharedCharacterizationSummary.jsp" />
+				<jsp:include page="/submit/bodySharedCharacterizationInstrument.jsp" />
 				<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 					<tbody>
 						<tr class="topBorder">
@@ -45,10 +45,10 @@
 							<td class="label">
 								<c:choose>
 									<c:when test="${canUserSubmit eq 'true'}">
-										<html:text property="achar.solvent" />
+										<html:text property="solubility.solvent" />
 									</c:when>
 									<c:otherwise>
-										${nanoparticleSolubilityForm.map.achar.solvent}&nbsp;
+										${nanoparticleCharacterizationForm.map.solubility.solvent}&nbsp;
 									</c:otherwise>
 								</c:choose>
 							</td>
@@ -58,12 +58,12 @@
 							<td class="rightLabel">
 								<c:choose>
 									<c:when test="${canUserSubmit eq 'true'}">
-										<html:select property="achar.isSoluble">
+										<html:select property="solubility.isSoluble">
 											<html:options name="booleanChoices" />
 										</html:select>
 									</c:when>
 									<c:otherwise>
-											${nanoparticleSolubilityForm.map.achar.isSoluble}&nbsp;
+											${nanoparticleCharacterizationForm.map.solubility.isSoluble}&nbsp;
 									</c:otherwise>
 								</c:choose>
 							</td>
@@ -75,14 +75,14 @@
 							<td class="label">
 								<c:choose>
 									<c:when test="${canUserSubmit eq 'true'}">
-										<html:text property="achar.criticalConcentration" />
-										<html:select property="achar.criticalConcentrationUnit">
+										<html:text property="solubility.criticalConcentration" />
+										<html:select property="solubility.criticalConcentrationUnit">
 											<html:options name="allConcentrationUnits" />
 										</html:select>
 									</c:when>
 									<c:otherwise>
-										${nanoparticleSolubilityForm.map.achar.criticalConcentration}&nbsp;
-										${nanoparticleSolubilityForm.map.achar.criticalConcentrationUnit}&nbsp;
+										${nanoparticleCharacterizationForm.map.solubility.criticalConcentration}&nbsp;
+										${nanoparticleCharacterizationForm.map.solubility.criticalConcentrationUnit}&nbsp;
 									</c:otherwise>
 								</c:choose>
 							</td>
@@ -114,7 +114,7 @@
 										<html:text property="achar.numberOfDerivedBioAssayData" />
 									</c:when>
 									<c:otherwise>
-										${nanoparticleSolubilityForm.map.achar.numberOfDerivedBioAssayData}&nbsp;
+										${nanoparticleCharacterizationForm.map.achar.numberOfDerivedBioAssayData}&nbsp;
 									</c:otherwise>
 								</c:choose>
 							</td>
@@ -129,7 +129,7 @@
 						</tr>
 						<tr>
 							<td class="completeLabel" colspan="4">
-								<logic:iterate name="nanoparticleSolubilityForm" property="achar.derivedBioAssayDataList" id="derivedBioAssayData" indexId="chartInd">
+								<logic:iterate name="nanoparticleCharacterizationForm" property="achar.derivedBioAssayDataList" id="derivedBioAssayData" indexId="chartInd">
 									<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 										<tbody>
 											<tr class="topBorder">
@@ -151,12 +151,12 @@
 															</html:select>
 														</c:when>
 														<c:otherwise>
-						${nanoparticleSolubilityForm.map.achar.derivedBioAssayDataList[chartInd].type}&nbsp;
+						${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[chartInd].type}&nbsp;
 					</c:otherwise>
 													</c:choose>
 												</td>
 											</tr>
-											<jsp:include page="/submit/bodySharedCharacterizationFile.jsp?chartInd=${chartInd}&formName=nanoparticleSolubilityForm&actionName=nanoparticleSolubility" />
+											<jsp:include page="/submit/bodySharedCharacterizationFile.jsp?chartInd=${chartInd}&actionName=nanoparticleSolubility" />
 										</tbody>
 									</table>
 									<br>
@@ -165,6 +165,8 @@
 						</tr>
 				</table>
 				<%-- end of size characterization specific --%>
+				<br>
+				<jsp:include page="/submit/bodySharedCharacterizationCopy.jsp" />
 				<jsp:include page="/submit/bodySharedCharacterizationSubmit.jsp" />
 			</td>
 		</tr>

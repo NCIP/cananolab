@@ -23,7 +23,6 @@
 				</logic:notPresent>
 			</td>
 			<td class="rightLabel" colspan="2">
-				<input type="button" onclick="javascript:loadFile(this.form, '${param.actionName}', '<bean:write name="${param.formName}" property="particleName"/>', ${param.chartInd})" value="Load File">
 			</td>
 		</c:when>
 		<c:otherwise>
