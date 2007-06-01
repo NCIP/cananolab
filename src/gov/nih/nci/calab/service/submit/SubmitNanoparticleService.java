@@ -9,11 +9,13 @@ import gov.nih.nci.calab.domain.LabFile;
 import gov.nih.nci.calab.domain.Manufacturer;
 import gov.nih.nci.calab.domain.OutputFile;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
+import gov.nih.nci.calab.domain.nano.characterization.physical.Size;
 import gov.nih.nci.calab.domain.nano.function.Agent;
 import gov.nih.nci.calab.domain.nano.function.AgentTarget;
 import gov.nih.nci.calab.domain.nano.function.Function;
 import gov.nih.nci.calab.domain.nano.function.Linkage;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
+import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.composition.CompositionBean;
 import gov.nih.nci.calab.dto.characterization.invitro.CFU_GMBean;
 import gov.nih.nci.calab.dto.characterization.invitro.CYP450Bean;
@@ -38,7 +40,6 @@ import gov.nih.nci.calab.dto.characterization.physical.MolecularWeightBean;
 import gov.nih.nci.calab.dto.characterization.physical.MorphologyBean;
 import gov.nih.nci.calab.dto.characterization.physical.PurityBean;
 import gov.nih.nci.calab.dto.characterization.physical.ShapeBean;
-import gov.nih.nci.calab.dto.characterization.physical.SizeBean;
 import gov.nih.nci.calab.dto.characterization.physical.SolubilityBean;
 import gov.nih.nci.calab.dto.characterization.physical.StabilityBean;
 import gov.nih.nci.calab.dto.characterization.physical.SurfaceBean;
@@ -155,51 +156,51 @@ public class SubmitNanoparticleService {
 			 * ida.store(achar.getInstrument());
 			 */
 
-			if (achar.getInstrument() != null) {
-				Manufacturer manuf = achar.getInstrument().getManufacturer();
-				String manufacturerQuery = " from Manufacturer manufacturer where manufacturer.name = '"
-						+ manuf.getName() + "'";
-				List result = ida.search(manufacturerQuery);
-				Manufacturer manufacturer = null;
-				boolean newManufacturer = false;
-				for (Object obj : result) {
-					manufacturer = (Manufacturer) obj;
-				}
-				if (manufacturer == null) {
-					newManufacturer = true;
-					manufacturer = manuf;
-					ida.store(manufacturer);
-				}
-
-				InstrumentType iType = achar.getInstrument()
-						.getInstrumentType();
-				String instrumentTypeQuery = " from InstrumentType instrumentType left join fetch instrumentType.manufacturerCollection where instrumentType.name = '"
-						+ iType.getName() + "'";
-				result = ida.search(instrumentTypeQuery);
-				InstrumentType instrumentType = null;
-				for (Object obj : result) {
-					instrumentType = (InstrumentType) obj;
-				}
-				if (instrumentType == null) {
-					instrumentType = iType;
-
-					ida.createObject(instrumentType);
-
-					HashSet<Manufacturer> manufacturers = new HashSet<Manufacturer>();
-					manufacturers.add(manufacturer);
-					instrumentType.setManufacturerCollection(manufacturers);
-				} else {
-					if (newManufacturer) {
-						instrumentType.getManufacturerCollection().add(
-								manufacturer);
-					}
-				}
-				ida.store(instrumentType);
-
-				achar.getInstrument().setInstrumentType(instrumentType);
-				achar.getInstrument().setManufacturer(manufacturer);
-				ida.store(achar.getInstrument());
-			}
+//			if (achar.getInstrument() != null) {
+//				Manufacturer manuf = achar.getInstrument().getManufacturer();
+//				String manufacturerQuery = " from Manufacturer manufacturer where manufacturer.name = '"
+//						+ manuf.getName() + "'";
+//				List result = ida.search(manufacturerQuery);
+//				Manufacturer manufacturer = null;
+//				boolean newManufacturer = false;
+//				for (Object obj : result) {
+//					manufacturer = (Manufacturer) obj;
+//				}
+//				if (manufacturer == null) {
+//					newManufacturer = true;
+//					manufacturer = manuf;
+//					ida.store(manufacturer);
+//				}
+//
+//				InstrumentType iType = achar.getInstrument()
+//						.getInstrumentType();
+//				String instrumentTypeQuery = " from InstrumentType instrumentType left join fetch instrumentType.manufacturerCollection where instrumentType.name = '"
+//						+ iType.getName() + "'";
+//				result = ida.search(instrumentTypeQuery);
+//				InstrumentType instrumentType = null;
+//				for (Object obj : result) {
+//					instrumentType = (InstrumentType) obj;
+//				}
+//				if (instrumentType == null) {
+//					instrumentType = iType;
+//
+//					ida.createObject(instrumentType);
+//
+//					HashSet<Manufacturer> manufacturers = new HashSet<Manufacturer>();
+//					manufacturers.add(manufacturer);
+//					instrumentType.setManufacturerCollection(manufacturers);
+//				} else {
+//					if (newManufacturer) {
+//						instrumentType.getManufacturerCollection().add(
+//								manufacturer);
+//					}
+//				}
+//				ida.store(instrumentType);
+//
+//				achar.getInstrument().setInstrumentType(instrumentType);
+//				achar.getInstrument().setManufacturer(manufacturer);
+//				ida.store(achar.getInstrument());
+//			}
 
 //			if (achar.getProtocolFile() != null) {
 //				ida.store(achar.getProtocolFile());
@@ -290,19 +291,14 @@ public class SubmitNanoparticleService {
 	 * 
 	 * @param particleType
 	 * @param particleName
-	 * @param size
+	 * @param sizeBean
 	 * @throws Exception
 	 */
 	public void addParticleSize(String particleType, String particleName,
-			SizeBean size) throws Exception {
+			CharacterizationBean sizeBean) throws Exception {
 
-		Characterization doSize = size.getDomainObj();
-		// TODO think about how to deal with characterization file.
-		/*
-		 * if (doSize.getInstrument() != null) { Instrument instrument =
-		 * addInstrument(doSize.getInstrument());
-		 * doSize.setInstrument(instrument); }
-		 */
+		Size doSize = new Size();
+		sizeBean.updateDomainObj(doSize);
 		addParticleCharacterization(particleType, particleName, doSize);
 	}
 
