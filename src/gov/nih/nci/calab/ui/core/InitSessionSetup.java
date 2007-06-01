@@ -1,6 +1,7 @@
 package gov.nih.nci.calab.ui.core;
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
+import gov.nih.nci.calab.dto.common.InstrumentBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.ProtocolBean;
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
@@ -31,12 +32,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.Set;
-import java.util.Iterator;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -993,5 +995,37 @@ public class InitSessionSetup {
 			userService.createAGroup(groupName);
 		}
 		userService.createAGroup(CaNanoLabConstants.CSM_ADMIN);
+	}
+	
+	public void setAllInstruments(HttpSession session) throws Exception {
+		if (session.getAttribute("allInstruments") == null
+				|| session.getAttribute("newParticleCreated") != null) {
+			List<InstrumentBean> instruments = lookupService
+					.getAllInstruments();
+			List<String> manufacturers = new ArrayList<String>();
+			Map<String, List<String>> typeToManufacturers = new HashMap<String, List<String>>();
+			Map<String, String> typeToAbbreviation = new HashMap<String, String>();
+			for (InstrumentBean instrument : instruments) {
+				if (typeToManufacturers.get(instrument.getType()) != null) {
+					manufacturers = (List<String>) typeToManufacturers
+							.get(instrument.getType());
+				} else {
+					manufacturers = new ArrayList<String>();
+					typeToManufacturers
+							.put(instrument.getType(), manufacturers);
+				}
+				manufacturers.add(instrument.getManufacturer());
+				typeToAbbreviation.put(instrument.getType(), instrument
+						.getAbbreviation());
+			}
+			List<String> sortedTypes = new ArrayList<String>(
+					typeToManufacturers.keySet());
+			Collections.sort(sortedTypes);
+			session.setAttribute("allInstrumentTypes", sortedTypes);
+			session.setAttribute("allInstrumentTypeToManufacturers",
+					typeToManufacturers);
+			session.setAttribute("allInstrumentTypeToAbbreviation",
+					typeToAbbreviation);
+		}
 	}
 }
