@@ -6,25 +6,13 @@ package gov.nih.nci.calab.ui.submit;
  * @author beasleyj
  */
 
-import gov.nih.nci.calab.domain.nano.characterization.Characterization;
-import gov.nih.nci.calab.domain.nano.characterization.invitro.Caspase3Activation;
-import gov.nih.nci.calab.dto.characterization.ConditionBean;
-import gov.nih.nci.calab.dto.characterization.DatumBean;
-import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
-import gov.nih.nci.calab.dto.characterization.invitro.Caspase3ActivationBean;
-import gov.nih.nci.calab.dto.common.LabFileBean;
-import gov.nih.nci.calab.dto.common.UserBean;
+import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
+import gov.nih.nci.calab.dto.characterization.invitro.CytotoxicityBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
-import gov.nih.nci.calab.service.util.CaNanoLabConstants;
-import gov.nih.nci.calab.service.util.PropertyReader;
 import gov.nih.nci.calab.ui.core.BaseCharacterizationAction;
-import gov.nih.nci.calab.ui.core.InitSessionSetup;
-
-import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -53,68 +41,12 @@ public class InvitroCaspase3ActivationAction extends BaseCharacterizationAction 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleType = (String) theForm.get("particleType");
 		String particleName = (String) theForm.get("particleName");
-		Caspase3ActivationBean caspase3ActivityChar = (Caspase3ActivationBean) theForm
-				.get("achar");
-
-		if (caspase3ActivityChar.getId() == null
-				|| caspase3ActivityChar.getId() == "") {
-			caspase3ActivityChar.setId((String) theForm
-					.get("characterizationId"));
-		}
-
-		int fileNumber = 0;
-		for (DerivedBioAssayDataBean obj : caspase3ActivityChar
-				.getDerivedBioAssayDataList()) {
-			
-			// Vaidate the the nested data point entries
-			for ( DatumBean dataPoint : obj.getDatumList() ) {
-				try {
-				   Float.parseFloat(dataPoint.getValue());
-				} 
-				catch (NumberFormatException nfe) {
-					Exception dataPointException = new Exception(PropertyReader.getProperty(
-							CaNanoLabConstants.SUBMISSION_PROPERTY, "capase3ActivationPercentage"));							
-						throw dataPointException;
-				}
-
-				try {
-					if ( dataPoint.getIsAControl().equals(CaNanoLabConstants.BOOLEAN_NO) ) {
-						for ( ConditionBean condition : dataPoint.getConditionList() ) {
-							Float.parseFloat(condition.getValue());
-						}
-					} 
-				} 
-				catch (NumberFormatException nfe) {
-					Exception conditionsException = new Exception(PropertyReader.getProperty(
-							CaNanoLabConstants.SUBMISSION_PROPERTY, "conditionValues"));							
-						throw conditionsException;
-				}
-			}
-			
-			LabFileBean fileBean = (LabFileBean) request
-					.getSession().getAttribute(
-							"characterizationFile" + fileNumber);
-			if (fileBean != null) {
-				obj.setFile(fileBean);
-			}
-			fileNumber++;
-		}
-
-		// set createdBy and createdDate for the composition
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		Date date = new Date();
-		caspase3ActivityChar.setCreatedBy(user.getLoginName());
-		caspase3ActivityChar.setCreatedDate(date);
-		// Update the other cellLine in the session variable
-		if (caspase3ActivityChar.getCellLine().equals(CaNanoLabConstants.OTHER)) {
-			InitSessionSetup.getInstance().addSessionAttributeElement(
-					request.getSession(), "allCellLines",
-					caspase3ActivityChar.getOtherCellLine());
-		}
-		request.getSession().setAttribute("newCharacterizationCreated", "true");
+		CharacterizationBean charBean = super.prepareCreate(request, theForm);
+		CytotoxicityBean propBean = (CytotoxicityBean) theForm
+				.get("cytotoxicity");
+		CytotoxicityBean cytoBean = new CytotoxicityBean(propBean, charBean);
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		service.addCaspase3Activation(particleType, particleName,
-				caspase3ActivityChar);
+		service.addCaspase3Activation(particleType, particleName, cytoBean);
 
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage(
@@ -122,61 +54,11 @@ public class InvitroCaspase3ActivationAction extends BaseCharacterizationAction 
 		msgs.add("message", msg);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
-
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
-
-		HttpSession session = request.getSession();
-		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(
-				session);
-
 		return forward;
 	}
-
-	protected void clearMap(HttpSession session, DynaValidatorForm theForm,
-			ActionMapping mapping) throws Exception {
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
-
-		// clear session data from the input forms
-		theForm.getMap().clear();
-
-		theForm.set("particleName", particleName);
-		theForm.set("particleType", particleType);
-		theForm.set("achar", new Caspase3ActivationBean());
-
-		cleanSessionAttributes(session);
-	}
-
-	protected void initSetup(HttpServletRequest request,
-			DynaValidatorForm theForm) throws Exception {
-		super.initSetup(request, theForm);
-		HttpSession session = request.getSession();
-		InitSessionSetup.getInstance().setAllCellLines(session);
-	}
-
-	/**
-	 * Update multiple children on the same form
-	 * 
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws Exception
-	 */
 	protected void setLoadFileRequest(HttpServletRequest request) {
-		request.setAttribute("characterization", "caspase3Activation");
-		request
-				.setAttribute("loadFileForward",
-						"invitroCaspase3ActivationForm");
-	}
+		request.setAttribute("characterization", "caspase3Activity");
+		request.setAttribute("loadFileForward", "invitroCaspase3ActivityForm");
 
-	protected void setFormCharacterizationBean(DynaValidatorForm theForm,
-			Characterization aChar) throws Exception {
-		Caspase3ActivationBean charBean = new Caspase3ActivationBean(
-				(Caspase3Activation) aChar);
-		theForm.set("achar", charBean);
 	}
 }
