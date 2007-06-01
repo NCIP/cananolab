@@ -42,7 +42,7 @@ public class CellViabilityBean extends CharacterizationBean {
 		for (DerivedBioAssayDataBean table:getDerivedBioAssayDataList()) {
 			for (DatumBean datum : table.getDatumList()) {
 				datum.setType("Percent Cell Viability");
-				datum.setValueUnit("%");
+				datum.setUnit("%");
 			}			
 		}
 	}
