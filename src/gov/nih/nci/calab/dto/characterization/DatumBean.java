@@ -39,6 +39,9 @@ public class DatumBean {
 
 	private String numberOfConditions;
 
+	//TODO to be removed
+	private String valueUnit;
+	
 	public DatumBean() {
 	}
 
@@ -183,5 +186,13 @@ public class DatumBean {
 
 	public void setCategory(String category) {
 		this.category = category;
+	}
+
+	public String getValueUnit() {
+		return valueUnit;
+	}
+
+	public void setValueUnit(String valueUnit) {
+		this.valueUnit = valueUnit;
 	}
 }
