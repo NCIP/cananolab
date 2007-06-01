@@ -3,10 +3,12 @@ package gov.nih.nci.calab.service.common;
 import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
 import gov.nih.nci.calab.domain.Aliquot;
+import gov.nih.nci.calab.domain.Instrument;
 import gov.nih.nci.calab.domain.MeasureUnit;
 import gov.nih.nci.calab.domain.Sample;
 import gov.nih.nci.calab.domain.SampleContainer;
 import gov.nih.nci.calab.domain.StorageElement;
+import gov.nih.nci.calab.dto.common.InstrumentBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.ProtocolBean;
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
@@ -45,7 +47,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.103 2007-05-31 14:55:08 chenhang Exp $ */
+/* CVS $Id: LookupService.java,v 1.104 2007-06-01 21:22:40 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -978,61 +980,64 @@ public class LookupService {
 		return (String[]) shapeTypes.toArray(new String[0]);
 	}
 
-	public Map<ProtocolBean, List<ProtocolFileBean>>  getAllProtocolNameVersionByType(String type) throws Exception{
+	public Map<ProtocolBean, List<ProtocolFileBean>> getAllProtocolNameVersionByType(
+			String type) throws Exception {
 		Map<ProtocolBean, List<ProtocolFileBean>> nameVersions = new HashMap<ProtocolBean, List<ProtocolFileBean>>();
 		Map<Protocol, ProtocolBean> keyMap = new HashMap<Protocol, ProtocolBean>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
-			String hqlString = "select protocolFile, protocolFile.protocol from ProtocolFile protocolFile" +
-					" where protocolFile.protocol.type = '" + type + "'";
+			String hqlString = "select protocolFile, protocolFile.protocol from ProtocolFile protocolFile"
+					+ " where protocolFile.protocol.type = '" + type + "'";
 			List results = ida.search(hqlString);
 			for (Object obj : results) {
-				Object[] array = (Object[])obj;
+				Object[] array = (Object[]) obj;
 				Object key = null;
 				Object value = null;
-				for (int i = 0; i < array.length; i++){
-					if (array[i] instanceof Protocol){
+				for (int i = 0; i < array.length; i++) {
+					if (array[i] instanceof Protocol) {
 						key = array[i];
-					}
-					else if (array[i] instanceof ProtocolFile){
+					} else if (array[i] instanceof ProtocolFile) {
 						value = array[i];
 					}
 				}
 
-				if (keyMap.containsKey((Protocol)key)){
-					ProtocolBean pb = keyMap.get((Protocol)key);
+				if (keyMap.containsKey((Protocol) key)) {
+					ProtocolBean pb = keyMap.get((Protocol) key);
 					List<ProtocolFileBean> localList = nameVersions.get(pb);
 					ProtocolFileBean fb = new ProtocolFileBean();
-					fb.setVersion(((ProtocolFile)value).getVersion());
-					fb.setId(((ProtocolFile)value).getId().toString());
+					fb.setVersion(((ProtocolFile) value).getVersion());
+					fb.setId(((ProtocolFile) value).getId().toString());
 					localList.add(fb);
-				}
-				else {
+				} else {
 					List<ProtocolFileBean> localList = new ArrayList<ProtocolFileBean>();
 					ProtocolFileBean fb = new ProtocolFileBean();
-					fb.setVersion(((ProtocolFile)value).getVersion());
-					fb.setId(((ProtocolFile)value).getId().toString());
+					fb.setVersion(((ProtocolFile) value).getVersion());
+					fb.setId(((ProtocolFile) value).getId().toString());
 					localList.add(fb);
-					ProtocolBean protocolBean= new ProtocolBean();
-					Protocol protocol = (Protocol)key;
+					ProtocolBean protocolBean = new ProtocolBean();
+					Protocol protocol = (Protocol) key;
 					protocolBean.setId(protocol.getId().toString());
 					protocolBean.setName(protocol.getName());
 					protocolBean.setType(protocol.getType());
 					nameVersions.put(protocolBean, localList);
-					keyMap.put((Protocol)key, protocolBean);
+					keyMap.put((Protocol) key, protocolBean);
 				}
 			}
 		} catch (Exception e) {
-			logger.error("Problem to retrieve all protocol names and their versions by type " + type);
-			throw new RuntimeException("Problem to retrieve all protocol names and their versions by type " + type);
+			logger
+					.error("Problem to retrieve all protocol names and their versions by type "
+							+ type);
+			throw new RuntimeException(
+					"Problem to retrieve all protocol names and their versions by type "
+							+ type);
 		} finally {
 			ida.close();
 		}
-		return nameVersions;	
+		return nameVersions;
 	}
-	
+
 	public SortedSet<String> getAllProtocolTypes() throws Exception {
 		SortedSet<String> protocolTypes = new TreeSet<String>();
 		IDataAccess ida = (new DataAccessProxy())
@@ -1046,34 +1051,37 @@ public class LookupService {
 			}
 		} catch (Exception e) {
 			logger.error("Problem to retrieve all protocol types.");
-			throw new RuntimeException("Problem to retrieve all protocol types.");
+			throw new RuntimeException(
+					"Problem to retrieve all protocol types.");
 		} finally {
 			ida.close();
 		}
 		return protocolTypes;
 	}
 
-	public SortedSet<ProtocolBean> getAllProtocols(UserBean user) throws Exception{
+	public SortedSet<ProtocolBean> getAllProtocols(UserBean user)
+			throws Exception {
 		SortedSet<ProtocolBean> protocolBeans = new TreeSet<ProtocolBean>();
 		IDataAccess ida = (new DataAccessProxy())
-		.getInstance(IDataAccess.HIBERNATE);
+				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
-			String hqlString =  "from Protocol as protocol left join fetch protocol.protocolFileCollection";
+			String hqlString = "from Protocol as protocol left join fetch protocol.protocolFileCollection";
 
 			List results = ida.search(hqlString);
 			for (Object obj : results) {
-				Protocol p = (Protocol)obj;
+				Protocol p = (Protocol) obj;
 				ProtocolBean pb = new ProtocolBean();
 				pb.setId(p.getId().toString());
 				pb.setName(p.getName());
 				pb.setType(p.getType());
-				PersistentSet set = (PersistentSet)p.getProtocolFileCollection();
-				//HashSet hashSet = set.
-				if (!set.isEmpty()){
+				PersistentSet set = (PersistentSet) p
+						.getProtocolFileCollection();
+				// HashSet hashSet = set.
+				if (!set.isEmpty()) {
 					List<ProtocolFileBean> list = new ArrayList<ProtocolFileBean>();
-					for (Iterator it = set.iterator(); it.hasNext();){
-						ProtocolFile pf = (ProtocolFile)it.next();
+					for (Iterator it = set.iterator(); it.hasNext();) {
+						ProtocolFile pf = (ProtocolFile) it.next();
 						ProtocolFileBean pfb = new ProtocolFileBean();
 						pfb.setId(pf.getId().toString());
 						pfb.setVersion(pf.getVersion());
@@ -1086,32 +1094,35 @@ public class LookupService {
 			}
 		} catch (Exception e) {
 			logger.error("Problem to retrieve all protocol names and types.");
-			throw new RuntimeException("Problem to retrieve all protocol names and types.");
+			throw new RuntimeException(
+					"Problem to retrieve all protocol names and types.");
 		} finally {
 			ida.close();
 		}
-		return protocolBeans;	
+		return protocolBeans;
 	}
-	private List<ProtocolFileBean> filterProtocols(List<ProtocolFileBean> protocolFiles, 
-			UserBean user) throws Exception{
+
+	private List<ProtocolFileBean> filterProtocols(
+			List<ProtocolFileBean> protocolFiles, UserBean user)
+			throws Exception {
 		UserService userService = new UserService(
 				CaNanoLabConstants.CSM_APP_NAME);
 		List<LabFileBean> tempList = new ArrayList<LabFileBean>();
-		for (ProtocolFileBean pfb : protocolFiles){
-			tempList.add((LabFileBean)pfb);
+		for (ProtocolFileBean pfb : protocolFiles) {
+			tempList.add((LabFileBean) pfb);
 		}
 		List<LabFileBean> filteredProtocols = userService.getFilteredFiles(
-			user, tempList);
+				user, tempList);
 		protocolFiles.clear();
-		
+
 		if (filteredProtocols == null || filteredProtocols.isEmpty())
 			return protocolFiles;
-		for (LabFileBean lfb : filteredProtocols){
-			protocolFiles.add((ProtocolFileBean)lfb);
-		}		
+		for (LabFileBean lfb : filteredProtocols) {
+			protocolFiles.add((ProtocolFileBean) lfb);
+		}
 		return protocolFiles;
 	}
-	
+
 	public String[] getAllStressorTypes() {
 		String[] stressorTypes = new String[] { "Thermal", "PH", "Freeze thaw",
 				"Photo", "Centrifugation", "Lyophilization", "Chemical",
@@ -1324,6 +1335,27 @@ public class LookupService {
 			ida.close();
 		}
 		return otherParticleNames;
+	}
+
+	public List<InstrumentBean> getAllInstruments() throws Exception {
+		List<InstrumentBean> instruments = new ArrayList<InstrumentBean>();
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			String hqlString = "from Instrument instrument where instrument.type is not null and instrument.manufacturer is not null";
+			List results = ida.search(hqlString);
+			for (Object obj : results) {
+				Instrument instrument = (Instrument) obj;
+				instruments.add(new InstrumentBean(instrument));
+			}
+		} catch (Exception e) {
+			logger.error("Problem to retrieve all instruments. " + e);
+			throw new RuntimeException("Problem to retrieve all intruments. ");
+		} finally {
+			ida.close();
+		}
+		return instruments;
 	}
 
 }
