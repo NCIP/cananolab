@@ -57,6 +57,24 @@ public class CharacterizationBean {
 
 	}
 
+	/**
+	 * Copy constructor
+	 * @param charBean
+	 */
+	public CharacterizationBean(CharacterizationBean charBean) {
+		this.id=charBean.getId();
+		this.name=charBean.getName();
+		this.viewTitle=charBean.getViewTitle();
+		this.characterizationSource=charBean.getCharacterizationSource();
+		this.classification=charBean.getClassification();
+		this.createdBy=charBean.getCreatedBy();
+		this.createdDate=charBean.getCreatedDate();
+		this.derivedBioAssayDataList=charBean.getDerivedBioAssayDataList();
+		this.description=charBean.getDescription();
+		this.instrumentConfigBean=charBean.getInstrumentConfigBean();
+		this.protocolFileBean=charBean.getProtocolFileBean();		
+	}
+	
 	public CharacterizationBean(String id, String name, String viewTitle) {
 		this.id = id;
 		this.name = name;
