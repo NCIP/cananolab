@@ -3,7 +3,7 @@
  */
 package gov.nih.nci.calab.domain.nano.characterization;
 
-import gov.nih.nci.calab.domain.Instrument;
+import gov.nih.nci.calab.domain.InstrumentConfiguration;
 import gov.nih.nci.calab.domain.ProtocolFile;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 
@@ -17,52 +17,7 @@ import java.util.Date;
  * 
  */
 public class Characterization implements Serializable {
-//	public void setId(Long id);
-//
-//	public Long getId();
-//
-//	public void setSource(String source);
-//
-//	public String getSource();
-//
-//	public void setClassification(String classification);
-//
-//	public String getClassification();
-//
-//	public void setIdentificationName(String name);
-//
-//	public String getIdentificationName();
-//
-//	public void setDescription(String description);
-//
-//	public String getDescription();
-//
-//	public void setName(String name);
-//
-//	public String getName();
-//
-//	public void setCreatedBy(String createdBy);
-//
-//	public String getCreatedBy();
-//
-//	public void setCreatedDate(Date createdDate);
-//
-//	public Date getCreatedDate();
-//
-//	public void setDerivedBioAssayDataCollection(
-//			Collection<DerivedBioAssayData> derivedBioAssayData);
-//
-//	public Collection<DerivedBioAssayData> getDerivedBioAssayDataCollection();
-//
-//	public void setInstrument(Instrument instrument);
-//
-//	public Instrument getInstrument();
-//
-//	public void setCharacterizationProtocol(CharacterizationProtocol protocol);
-//
-//	public CharacterizationProtocol getCharacterizationProtocol();
 
-	
 	private static final long serialVersionUID = 1234567890L;
 
 	private Long id;
@@ -81,18 +36,13 @@ public class Characterization implements Serializable {
 
 	private Collection<DerivedBioAssayData> derivedBioAssayDataCollection = new ArrayList<DerivedBioAssayData>();
 
-	private Instrument instrument;
+	private InstrumentConfiguration instrumentConfiguration;
 
 	private ProtocolFile protocolFile;
 
 	private String classification;
 
 	private String name;
-
-	public Characterization() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
 
 	public void setId(Long id) {
 		this.id = id;
@@ -111,7 +61,7 @@ public class Characterization implements Serializable {
 	}
 
 	public String getClassification() {
-		return PHYSICAL_CHARACTERIZATION;
+		return classification;
 	}
 
 	public String getDescription() {
@@ -131,7 +81,7 @@ public class Characterization implements Serializable {
 	}
 
 	public String getName() {
-		return PHYSICAL_SIZE;
+		return name;
 	}
 
 	public void setNanoparticleCollection(Collection<Nanoparticle> particles) {
@@ -139,7 +89,7 @@ public class Characterization implements Serializable {
 	}
 
 	public Collection<Nanoparticle> getNanoparticleCollection() {
-		return this.nanoparticleCollection;
+		return nanoparticleCollection;
 	}
 
 	public String getCreatedBy() {
@@ -167,20 +117,18 @@ public class Characterization implements Serializable {
 		this.derivedBioAssayDataCollection = derivedBioAssayDataCollection;
 	}
 
-	public Instrument getInstrument() {
-		return instrument;
+	public InstrumentConfiguration getInstrumentConfiguration() {
+		return instrumentConfiguration;
 	}
 
-	public void setInstrument(Instrument instrument) {
-		this.instrument = instrument;
+	public void setInstrumentConfiguration(InstrumentConfiguration instrumentConfiguration) {
+		this.instrumentConfiguration = instrumentConfiguration;
 	}
 
 	public void setClassification(String classification) {
-		this.classification = classification;
 	}
 
 	public void setName(String name) {
-		this.name = name;
 	}
 
 	public static final String PHYSICAL_CHARACTERIZATION = "Physical";
@@ -225,6 +173,10 @@ public class Characterization implements Serializable {
 
 	public static final String PHYSICAL_COMPOSITION = "Composition";
 
+	public static final String TOXICITY = "Toxicity";
+
+	public static final String IMMUNOTOXICITY = "Immunotoxicity";
+
 	public static final String TOXICITY_OXIDATIVE_STRESS = "Oxidative Stress";
 
 	public static final String TOXICITY_OXIDATIVE_STRESS_DATA_TYPE = "Percent Oxidative Stress";
@@ -232,6 +184,8 @@ public class Characterization implements Serializable {
 	public static final String TOXICITY_ENZYME_FUNCTION = "Enzyme Function";
 
 	public static final String TOXICITY_ENZYME_FUNCTION_DATA_TYPE = "Percent Enzyme Induction";
+
+	public static final String CYTOXICITY = "Cytoxicity";
 
 	public static final String CYTOTOXICITY_CELL_VIABILITY = "Cell Viability";
 
