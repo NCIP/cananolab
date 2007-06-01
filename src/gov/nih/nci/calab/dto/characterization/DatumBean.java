@@ -14,7 +14,7 @@ import java.util.List;
  * This class represents the data within a characterization file to be shown in
  * the view page.
  * 
- * @author chand, beasleyj
+ * @author chand, beasleyj, pansu
  * 
  */
 public class DatumBean {
@@ -25,8 +25,12 @@ public class DatumBean {
 
 	private String value;
 
-	private String valueUnit;
+	private String unit;
+	
+	private String std;
 
+	private String category;
+	
 	private String isAControl = CaNanoLabConstants.BOOLEAN_NO;
 
 	private ControlBean control = new ControlBean();
@@ -43,7 +47,7 @@ public class DatumBean {
 		this.type = datum.getType();
 		this.value = (datum.getValue() != null) ? StringUtils
 				.convertToString(datum.getValue().getValue()) : "";
-		this.valueUnit = (datum.getValue() != null) ? StringUtils
+		this.unit = (datum.getValue() != null) ? StringUtils
 				.convertToString(datum.getValue().getUnitOfMeasurement()) : "";
 
 		Control controlObj = datum.getControl();
@@ -91,12 +95,12 @@ public class DatumBean {
 		this.value = value;
 	}
 
-	public String getValueUnit() {
-		return valueUnit;
+	public String getUnit() {
+		return unit;
 	}
 
-	public void setValueUnit(String valueUnit) {
-		this.valueUnit = valueUnit;
+	public void setUnit(String valueUnit) {
+		this.unit = valueUnit;
 	}
 
 	public ControlBean getControl() {
@@ -132,7 +136,7 @@ public class DatumBean {
 		Measurement measurement = new Measurement();
 		if (value.length() > 0)
 			measurement.setValue(new Float(value));
-		measurement.setUnitOfMeasurement(valueUnit);
+		measurement.setUnitOfMeasurement(unit);
 		tableData.setValue(measurement);
 
 		if (this.getConditionList() != null
@@ -163,5 +167,21 @@ public class DatumBean {
 
 	public void setIsAControl(String isAControl) {
 		this.isAControl = isAControl;
+	}
+
+	public String getStd() {
+		return std;
+	}
+
+	public void setStd(String std) {
+		this.std = std;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
 	}
 }
