@@ -7,7 +7,6 @@ import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 import java.util.List;
 
-
 /**
  * This class represents the Shape characterization information to be shown in
  * the view page.
@@ -17,67 +16,56 @@ import java.util.List;
  */
 public class ShapeBean extends CharacterizationBean {
 	private String type;
+
 	private String maxDimension;
+
 	private String minDimension;
-	
+
 	private String minDimensionUnit = "nm";
+
 	private String maxDimensionUnit = "nm";
-	
+
 	private String otherShapeType;
-	
+
 	public ShapeBean() {
 		super();
-		initSetup();
 	}
-	
+
+	public ShapeBean(ShapeBean propBean, CharacterizationBean charBean) {
+		super(charBean);
+		this.type = propBean.getType();
+		this.maxDimension = propBean.getMaxDimension();
+		this.minDimension = propBean.getMinDimension();
+		this.minDimensionUnit = propBean.getMinDimensionUnit();
+		this.maxDimensionUnit = propBean.getMaxDimensionUnit();
+		this.otherShapeType = propBean.getOtherShapeType();
+	}
+
 	public ShapeBean(Shape aChar) {
 		super(aChar);
 
 		this.type = aChar.getType();
-		this.minDimension = (aChar.getMinDimension()!=null)?aChar.getMinDimension().toString():"";
-		this.maxDimension = (aChar.getMaxDimension()!=null)?aChar.getMaxDimension().toString():"";
+		this.minDimension = (aChar.getMinDimension() != null) ? aChar
+				.getMinDimension().toString() : "";
+		this.maxDimension = (aChar.getMaxDimension() != null) ? aChar
+				.getMaxDimension().toString() : "";
 		this.minDimensionUnit = "nm";
 		this.maxDimensionUnit = "nm";
 	}
-	
-	public void setDerivedBioAssayDataList(
-			List<DerivedBioAssayDataBean> derivedBioAssayData) {
-		super.setDerivedBioAssayDataList(derivedBioAssayData);
-		initSetup();
-	}
-	
-	public void initSetup() {
-		/*
-		for (DerivedBioAssayDataBean table:getDerivedBioAssayData()) {
-			DatumBean average=new DatumBean();
-			average.setType("Average");
-			average.setValueUnit("nm");
-			DatumBean zaverage=new DatumBean();
-			zaverage.setType("Z-Average");
-			zaverage.setValueUnit("nm");
-			DatumBean pdi=new DatumBean();
-			pdi.setType("PDI");
-			table.getDatumList().add(average);
-			table.getDatumList().add(zaverage);
-			table.getDatumList().add(pdi);
-		}
-		*/
-	}
-	
-	public Shape getDomainObj() {
-		Shape shape = new Shape();
+
+	public void updateDomainObj(Shape shape) {
 		super.updateDomainObj(shape);
-		
+
 		if (this.type.equals(CaNanoLabConstants.OTHER)) {
 			shape.setType(this.otherShapeType);
 		} else {
 			shape.setType(this.type);
 		}
-		
-		shape.setMinDimension((this.minDimension.length()==0)?null:Float.valueOf(this.minDimension));
-		shape.setMaxDimension((this.maxDimension.length()==0)?null:Float.valueOf(this.maxDimension));
-		
-		return shape;
+
+		shape.setMinDimension((this.minDimension.length() == 0) ? null : Float
+				.valueOf(this.minDimension));
+		shape.setMaxDimension((this.maxDimension.length() == 0) ? null : Float
+				.valueOf(this.maxDimension));
 	}
 
 	public String getType() {
