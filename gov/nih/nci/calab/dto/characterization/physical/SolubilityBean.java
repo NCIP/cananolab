@@ -3,76 +3,67 @@ package gov.nih.nci.calab.dto.characterization.physical;
 import gov.nih.nci.calab.domain.Measurement;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Solubility;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
-import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 
-import java.util.List;
-
-
 /**
- * This class represents the Solubility characterization information to be shown in
- * the view page.
+ * This class represents the Solubility characterization information to be shown
+ * in the view page.
  * 
  * @author chande
  * 
  */
 public class SolubilityBean extends CharacterizationBean {
 	private String solvent;
+
 	private String criticalConcentration;
+
 	private String criticalConcentrationUnit;
+
 	private String isSoluble;
-	
-	
+
 	public SolubilityBean() {
 		super();
-		initSetup();
 	}
-	
+
+	/**
+	 * User to create a new solubilityBean from partial solubilityBean and a
+	 * characterizationBean
+	 * 
+	 * @param solubilityBean
+	 * @param charBean
+	 */
+	public SolubilityBean(SolubilityBean solubilityPropBean,
+			CharacterizationBean charBean) {
+		super(charBean);
+		this.solvent=solubilityPropBean.getSolvent();
+		this.criticalConcentration=solubilityPropBean.getCriticalConcentration();
+		this.criticalConcentrationUnit=solubilityPropBean.getCriticalConcentrationUnit();
+		this.isSoluble=solubilityPropBean.getIsSoluble();		
+	}
+
 	public SolubilityBean(Solubility aChar) {
 		super(aChar);
 
 		this.solvent = aChar.getSolvent();
 		if (aChar.getCriticalConcentration() != null) {
-			this.criticalConcentration = StringUtils.convertToString(aChar.getCriticalConcentration().getValue());
-			this.criticalConcentrationUnit = aChar.getCriticalConcentration().getUnitOfMeasurement();
+			this.criticalConcentration = StringUtils.convertToString(aChar
+					.getCriticalConcentration().getValue());
+			this.criticalConcentrationUnit = aChar.getCriticalConcentration()
+					.getUnitOfMeasurement();
 		}
 		this.isSoluble = aChar.getIsSoluble() ? "true" : "false";
 	}
-	
-	public void setDerivedBioAssayDataList(
-			List<DerivedBioAssayDataBean> derivedBioAssayData) {
-		super.setDerivedBioAssayDataList(derivedBioAssayData);
-		initSetup();
-	}
-	
-	public void initSetup() {
-		/*
-		for (DerivedBioAssayDataBean table:getDerivedBioAssayData()) {
-			DatumBean average=new DatumBean();
-			average.setType("Average");
-			average.setValueUnit("nm");
-			DatumBean zaverage=new DatumBean();
-			zaverage.setType("Z-Average");
-			zaverage.setValueUnit("nm");
-			DatumBean pdi=new DatumBean();
-			pdi.setType("PDI");
-			table.getDatumList().add(average);
-			table.getDatumList().add(zaverage);
-			table.getDatumList().add(pdi);
-		}
-		*/
-	}
-	
-	public Solubility getDomainObj() {
-		Solubility solubility = new Solubility();
+
+	public void updateDomainObj(Solubility solubility) {
 		super.updateDomainObj(solubility);
-		
+
 		solubility.setSolvent(this.solvent);
-		solubility.setCriticalConcentration(new Measurement(new Float(this.criticalConcentration), this.criticalConcentrationUnit));
-		solubility.setIsSoluble((this.isSoluble.equalsIgnoreCase(CaNanoLabConstants.BOOLEAN_YES)) ? true : false);
-		
-		return solubility;
+		solubility.setCriticalConcentration(new Measurement(new Float(
+				this.criticalConcentration), this.criticalConcentrationUnit));
+		solubility.setIsSoluble((this.isSoluble
+				.equalsIgnoreCase(CaNanoLabConstants.BOOLEAN_YES)) ? true
+				: false);
 	}
 
 	public String getCriticalConcentration() {
@@ -106,5 +97,4 @@ public class SolubilityBean extends CharacterizationBean {
 	public void setCriticalConcentrationUnit(String criticalConcentrationUnit) {
 		this.criticalConcentrationUnit = criticalConcentrationUnit;
 	}
-
 }
