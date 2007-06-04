@@ -58,8 +58,9 @@
 			<form-property name="characterizationSource" type="java.lang.String" />
 			<form-property name="characterizationId" type="java.lang.String" />
 		</form-bean>
-		<form-bean name="nanoparticleCharacterizationForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+		<form-bean name="nanoparticleCharacterizationForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="dispatch" type="java.lang.String" />			
+			<form-property name="page" type="java.lang.Integer" initial="0" />
 			<form-property name="particleName" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />			
 			<form-property name="otherParticles" type="java.lang.String[]"/>
