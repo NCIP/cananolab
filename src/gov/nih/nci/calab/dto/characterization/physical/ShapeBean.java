@@ -22,8 +22,6 @@ public class ShapeBean extends CharacterizationBean {
 
 	private String maxDimensionUnit = "nm";
 
-	private String otherShapeType;
-
 	public ShapeBean() {
 		super();
 	}
@@ -35,7 +33,6 @@ public class ShapeBean extends CharacterizationBean {
 		this.minDimension = propBean.getMinDimension();
 		this.minDimensionUnit = propBean.getMinDimensionUnit();
 		this.maxDimensionUnit = propBean.getMaxDimensionUnit();
-		this.otherShapeType = propBean.getOtherShapeType();
 	}
 
 	public ShapeBean(Shape aChar) {
@@ -53,12 +50,7 @@ public class ShapeBean extends CharacterizationBean {
 	public void updateDomainObj(Shape shape) {
 		super.updateDomainObj(shape);
 
-		if (this.type.equals(CaNanoLabConstants.OTHER)) {
-			shape.setType(this.otherShapeType);
-		} else {
-			shape.setType(this.type);
-		}
-
+		shape.setType(this.type);
 		shape.setMinDimension((this.minDimension.length() == 0) ? null : Float
 				.valueOf(this.minDimension));
 		shape.setMaxDimension((this.maxDimension.length() == 0) ? null : Float
@@ -87,14 +79,6 @@ public class ShapeBean extends CharacterizationBean {
 
 	public void setMinDimension(String minDimension) {
 		this.minDimension = minDimension;
-	}
-
-	public String getOtherShapeType() {
-		return otherShapeType;
-	}
-
-	public void setOtherShapeType(String otherShapeType) {
-		this.otherShapeType = otherShapeType;
 	}
 
 	public String getMaxDimensionUnit() {
