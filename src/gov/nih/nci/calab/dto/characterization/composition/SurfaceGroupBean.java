@@ -15,8 +15,6 @@ public class SurfaceGroupBean {
 
 	private String name;
 
-	private String otherName;
-
 	private String modifier;
 
 	public SurfaceGroupBean() {
@@ -63,13 +61,5 @@ public class SurfaceGroupBean {
 			surfaceGroup.setId(new Long(getId()));
 		}
 		return surfaceGroup;
-	}
-
-	public String getOtherName() {
-		return otherName;
-	}
-
-	public void setOtherName(String otherName) {
-		this.otherName = otherName;
 	}
 }
