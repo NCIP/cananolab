@@ -260,28 +260,7 @@ public class InitSessionSetup {
 				|| session.getAttribute("newAliquotCreated") != null) {
 			ContainerInfoBean containerInfo = lookupService
 					.getAliquotContainerInfo();
-			session.setAttribute("aliquotContainerInfo", containerInfo);
-			// exclude Other in the lists for search aliquots drop-down
-			List<String> rooms = new ArrayList<String>(containerInfo
-					.getStorageRooms());
-			rooms.remove(CaNanoLabConstants.OTHER);
-			List<String> freezers = new ArrayList<String>(containerInfo
-					.getStorageFreezers());
-			freezers.remove(CaNanoLabConstants.OTHER);
-			List<String> shelves = new ArrayList<String>(containerInfo
-					.getStorageShelves());
-			shelves.remove(CaNanoLabConstants.OTHER);
-			List<String> boxes = new ArrayList<String>(containerInfo
-					.getStorageBoxes());
-			boxes.remove(CaNanoLabConstants.OTHER);
-
-			ContainerInfoBean containerInfoExcludeOther = new ContainerInfoBean(
-					containerInfo.getQuantityUnits(), containerInfo
-							.getConcentrationUnits(), containerInfo
-							.getVolumeUnits(), containerInfo.getStorageLabs(),
-					rooms, freezers, shelves, boxes);
-			session.setAttribute("aliquotContainerInfoExcludeOther",
-					containerInfoExcludeOther);
+			session.setAttribute("aliquotContainerInfo", containerInfo);			
 		}
 		session.removeAttribute("newAliquotCreated");
 	}
