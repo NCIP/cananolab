@@ -15,8 +15,6 @@ public class CytotoxicityBean extends CharacterizationBean {
 
 	private String cellLine;
 
-	private String otherCellLine;
-
 	// private String cellDeathMethod;
 
 	public CytotoxicityBean() {
@@ -27,7 +25,6 @@ public class CytotoxicityBean extends CharacterizationBean {
 			CharacterizationBean charBean) {
 		super(charBean);
 		this.cellLine = propBean.getCellLine();
-		this.otherCellLine = propBean.getOtherCellLine();
 	}
 
 	public CytotoxicityBean(Cytotoxicity aChar) {
@@ -48,13 +45,5 @@ public class CytotoxicityBean extends CharacterizationBean {
 	public void getDomainObj(Cytotoxicity cytotoxicity) {
 		super.updateDomainObj(cytotoxicity);
 		cytotoxicity.setCellLine(this.cellLine);
-	}
-
-	public String getOtherCellLine() {
-		return otherCellLine;
-	}
-
-	public void setOtherCellLine(String otherCellLine) {
-		this.otherCellLine = otherCellLine;
 	}
 }

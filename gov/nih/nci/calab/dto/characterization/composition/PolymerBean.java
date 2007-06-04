@@ -17,8 +17,6 @@ public class PolymerBean extends CompositionBean {
 
 	private String initiator;
 	
-	private String otherInitiator;
-
 	public PolymerBean() {
 		super();
 	}
@@ -69,13 +67,5 @@ public class PolymerBean extends CompositionBean {
 			doComp.setInitiator(initiator);
 		}
 		return doComp;
-	}
-
-	public String getOtherInitiator() {
-		return otherInitiator;
-	}
-
-	public void setOtherInitiator(String otherInitiator) {
-		this.otherInitiator = otherInitiator;
 	}
 }
