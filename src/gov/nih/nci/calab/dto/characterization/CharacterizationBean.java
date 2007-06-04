@@ -59,22 +59,23 @@ public class CharacterizationBean {
 
 	/**
 	 * Copy constructor
+	 * 
 	 * @param charBean
 	 */
 	public CharacterizationBean(CharacterizationBean charBean) {
-		this.id=charBean.getId();
-		this.name=charBean.getName();
-		this.viewTitle=charBean.getViewTitle();
-		this.characterizationSource=charBean.getCharacterizationSource();
-		this.classification=charBean.getClassification();
-		this.createdBy=charBean.getCreatedBy();
-		this.createdDate=charBean.getCreatedDate();
-		this.derivedBioAssayDataList=charBean.getDerivedBioAssayDataList();
-		this.description=charBean.getDescription();
-		this.instrumentConfigBean=charBean.getInstrumentConfigBean();
-		this.protocolFileBean=charBean.getProtocolFileBean();		
+		this.id = charBean.getId();
+		this.name = charBean.getName();
+		this.viewTitle = charBean.getViewTitle();
+		this.characterizationSource = charBean.getCharacterizationSource();
+		this.classification = charBean.getClassification();
+		this.createdBy = charBean.getCreatedBy();
+		this.createdDate = charBean.getCreatedDate();
+		this.derivedBioAssayDataList = charBean.getDerivedBioAssayDataList();
+		this.description = charBean.getDescription();
+		this.instrumentConfigBean = charBean.getInstrumentConfigBean();
+		this.protocolFileBean = charBean.getProtocolFileBean();
 	}
-	
+
 	public CharacterizationBean(String id, String name, String viewTitle) {
 		this.id = id;
 		this.name = name;
@@ -179,7 +180,9 @@ public class CharacterizationBean {
 			}
 			// set instrument only if type and manufacturer information are not
 			// empty
-			if (instrumentBean.getType().length() > 0
+			if (instrumentBean.getType() != null
+					&& instrumentBean.getType().length() > 0
+					&& instrumentBean.getManufacturer() != null
 					&& instrumentBean.getManufacturer().length() > 0) {
 
 				instrument.setAbbreviation(instrumentBean.getAbbreviation());
@@ -188,7 +191,7 @@ public class CharacterizationBean {
 				instrumentConfig.setInstrument(instrument);
 			}
 		}
-		if (instrumentConfig.getInstrument()!=null) {
+		if (instrumentConfig.getInstrument() != null) {
 			aChar.setInstrumentConfiguration(instrumentConfig);
 		}
 
