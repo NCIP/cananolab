@@ -47,7 +47,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.104 2007-06-01 21:22:40 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.105 2007-06-04 19:08:59 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -656,7 +656,6 @@ public class LookupService {
 		}
 		names.addAll(Arrays
 				.asList(CaNanoLabConstants.DEFAULT_SURFACE_GROUP_NAMES));
-		names.add(CaNanoLabConstants.OTHER);
 
 		return (String[]) names.toArray(new String[0]);
 	}
@@ -681,7 +680,6 @@ public class LookupService {
 		}
 		branches.addAll(Arrays
 				.asList(CaNanoLabConstants.DEFAULT_DENDRIMER_BRANCHES));
-		branches.add(CaNanoLabConstants.OTHER);
 
 		return (String[]) branches.toArray(new String[0]);
 	}
@@ -706,7 +704,6 @@ public class LookupService {
 		}
 		generations.addAll(Arrays
 				.asList(CaNanoLabConstants.DEFAULT_DENDRIMER_GENERATIONS));
-		generations.add(CaNanoLabConstants.OTHER);
 
 		return (String[]) generations.toArray(new String[0]);
 	}
@@ -736,7 +733,6 @@ public class LookupService {
 		}
 		initiators.addAll(Arrays
 				.asList(CaNanoLabConstants.DEFAULT_POLYMER_INITIATORS));
-		initiators.add(CaNanoLabConstants.OTHER);
 
 		return (String[]) initiators.toArray(new String[0]);
 	}
@@ -951,8 +947,6 @@ public class LookupService {
 		}
 		morphologyTypes.addAll(Arrays
 				.asList(CaNanoLabConstants.DEFAULT_MORPHOLOGY_TYPES));
-		morphologyTypes.add(CaNanoLabConstants.OTHER);
-
 		return (String[]) morphologyTypes.toArray(new String[0]);
 	}
 
@@ -976,7 +970,6 @@ public class LookupService {
 		shapeTypes
 				.addAll(Arrays.asList(CaNanoLabConstants.DEFAULT_SHAPE_TYPES));
 
-		shapeTypes.add(CaNanoLabConstants.OTHER);
 		return (String[]) shapeTypes.toArray(new String[0]);
 	}
 
@@ -1250,8 +1243,6 @@ public class LookupService {
 			ida.close();
 		}
 		cellLines.addAll(Arrays.asList(CaNanoLabConstants.DEFAULT_CELLLINES));
-		cellLines.add(CaNanoLabConstants.OTHER);
-
 		return (String[]) cellLines.toArray(new String[0]);
 
 	}
