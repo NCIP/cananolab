@@ -60,7 +60,7 @@
 			</table>
 			<br>
 			<jsp:include page="${nanoparticleCompositionForm.map.particlePage}" />
-
+			<jsp:include page="/submit/bodySharedCharacterizationSubmit.jsp" />
 		</td>
 	</tr>
 </table>
