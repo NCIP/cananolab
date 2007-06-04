@@ -37,7 +37,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.validator.DynaValidatorActionForm;
 import org.apache.struts.validator.DynaValidatorForm;
 
 /**
@@ -209,7 +208,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		DynaValidatorActionForm theForm = (DynaValidatorActionForm) form;
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
 
 		HttpSession session = request.getSession();
 		clearMap(session, theForm, mapping);
