@@ -17,7 +17,7 @@
 									<div align="right">
 										<input type="reset" value="Reset" onclick="">
 										<input type="hidden" name="dispatch" value="create">
-										<input type="hidden" name="page" value="1">
+										<input type="hidden" name="page" value="2">
 										<c:choose>
 											<c:when test="${canUserSubmit eq 'true'}">
 												<html:hidden property="particleType" />
