@@ -18,29 +18,22 @@
 		<c:choose>
 			<c:when test="${canUserSubmit eq 'true'}">
 				<td class="label">
-					<html:select property="cytotoxicity.cellLine" onchange="javascript:updateOtherField(this.form,'cytotoxicity.cellLine','cytotoxicity.otherCellLine')">
-						<option value=""></option>
+					<html:select property="cytotoxicity.cellLine" onkeydown="javascript:fnKeyDownHandler(this, event);"
+											onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
+											onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
+											onchange="fnChangeHandler_A(this, event);">
+						<option value="">--?--</option>
 						<html:options name="allCellLines" />
 					</html:select>
 				</td>
-				<td class="rightLabel" colspan="2">
-					<strong>Other Cell Line</strong>&nbsp;
-					<c:choose>
-						<c:when test="${nanoparticleCharacterizationForm.map.cytotoxicity.cellLine eq 'Other'}">
-							<html:text property="cytotoxicity.otherCellLine"  disabled="false" />
-						</c:when>
-						<c:otherwise>
-							<html:text property="cytotoxicity.otherCellLine"  disabled="true" />
-						</c:otherwise>
-					</c:choose>
-				</td>
 			</c:when>
 			<c:otherwise>
-				<td class="rightLabel" colspan="3">
+				<td class="label">
 					${nanoparticleCharacterizationForm.map.cytotoxicity.cellLine}&nbsp;
 				</td>
 			</c:otherwise>
 		</c:choose>
+		<td class="rightLabel" colspan="2">&nbsp;</td>
 	</tr>
 </table>
 <br>

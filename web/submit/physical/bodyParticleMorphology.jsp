@@ -14,7 +14,9 @@
 				</h4>
 			</td>
 			<td align="right" width="15%">
-				<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=nano_morphology_help')" class="helpText">Help</a>
+				<a
+					href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=nano_morphology_help')"
+					class="helpText">Help</a>
 			</td>
 		</tr>
 		<tr>
@@ -25,11 +27,12 @@
 			</td>
 		</tr>
 		<tr>
-			<td colspan="2">				
+			<td colspan="2">
 				<jsp:include page="/bodyMessage.jsp?bundle=submit" />
 				<jsp:include page="/submit/bodySharedCharacterizationSummary.jsp" />
 				<jsp:include page="/submit/bodySharedCharacterizationInstrument.jsp" />
-				<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+				<table class="topBorderOnly" cellspacing="0" cellpadding="3"
+					width="100%" align="center" summary="" border="0">
 					<tbody>
 						<tr class="topBorder">
 							<td class="formTitle" colspan="6">
@@ -45,21 +48,14 @@
 							<td class="rightLabel">
 								<c:choose>
 									<c:when test="${canUserSubmit eq 'true'}">
-										<html:select property="morphology.type" onchange="javascript:updateOtherField(nanoparticleCharacterizationForm, 'morphology.type', 'morphology.otherType')" >
-											<option value=""></option>
+										<html:select property="morphology.type"
+											onkeydown="javascript:fnKeyDownHandler(this, event);"
+											onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
+											onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
+											onchange="fnChangeHandler_A(this, event);">
+											<option value="">--?--</option>
 											<html:options name="allMorphologyTypes" />
-										</html:select>
-										&nbsp;&nbsp;
-										<strong> Other </strong>&nbsp;
-										<c:choose>
-											<c:when test="${nanoparticleCharacterizationForm.map.morphology.type eq 'Other'}">
-												<html:text property="morphology.otherType" disabled="false" />
-											</c:when>
-											<c:otherwise>
-												<html:text property="morphology.otherType" disabled="true" />
-											</c:otherwise>
-										</c:choose>
-									</c:when>
+										</html:select>									</c:when>
 									<c:otherwise>
 										${nanoparticleCharacterizationForm.map.morphology.type}&nbsp;
 									</c:otherwise>
