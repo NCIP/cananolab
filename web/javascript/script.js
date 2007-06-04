@@ -209,23 +209,23 @@ function submitAction(form, actionName) {
     form.submit();
 }
 function updateComposition() {
-    document.nanoparticleCompositionForm.action = "nanoparticleComposition.do?dispatch=update&page=0";
+    document.nanoparticleCompositionForm.action = "nanoparticleComposition.do?dispatch=update&page=1";
     document.nanoparticleCompositionForm.submit();
 }
 function updateSurfaceChemistries(form, actionName) {
-    form.action = actionName + ".do?dispatch=update&page=0&type=surfaceChemistries";
+    form.action = actionName + ".do?dispatch=update&page=1&type=surfaceChemistries";
     form.submit();
 }
 function updateCharts(form, actionName) {
-    form.action = actionName + ".do?dispatch=update&page=0&type=charTables";
+    form.action = actionName + ".do?dispatch=update&page=1&type=charTables";
     form.submit();
 }
 function updateChartDataPoints(form, actionName, index) {
-    form.action = actionName + ".do?dispatch=update&page=0&type=dataPoints&index=" + index;
+    form.action = actionName + ".do?dispatch=update&page=1&type=dataPoints&index=" + index;
     form.submit();
 }
 function updateConditions(form, actionName, chartIndex, dataPointIndex) {
-    form.action = actionName + ".do?dispatch=update&page=0&type=conditions&index=" + chartIndex + "&dataPointIndex=" + dataPointIndex;
+    form.action = actionName + ".do?dispatch=update&page=1&type=conditions&index=" + chartIndex + "&dataPointIndex=" + dataPointIndex;
     form.submit();
 }
 function loadFile(form, actionName, particleName, fileNumber) {
@@ -233,11 +233,11 @@ function loadFile(form, actionName, particleName, fileNumber) {
     form.submit();
 }
 function updateFunctionLinkages() {
-    document.nanoparticleFunctionForm.action = "nanoparticleFunction.do?dispatch=update&page=0&type=linkages";
+    document.nanoparticleFunctionForm.action = "nanoparticleFunction.do?dispatch=update&page=1&type=linkages";
     document.nanoparticleFunctionForm.submit();
 }
 function updateAgentTargets(linkageIndex) {
-    document.nanoparticleFunctionForm.action = "nanoparticleFunction.do?dispatch=update&page=0&type=agentTargets&linkageIndex=" + linkageIndex;
+    document.nanoparticleFunctionForm.action = "nanoparticleFunction.do?dispatch=update&page=1&type=agentTargets&linkageIndex=" + linkageIndex;
     document.nanoparticleFunctionForm.submit();
 }
 function refreshManufacturers(form, action) {
