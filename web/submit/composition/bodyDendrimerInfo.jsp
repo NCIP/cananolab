@@ -12,7 +12,7 @@
 <table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 	<tbody>
 		<tr class="topBorder">
-			<td class="formTitle" colspan="6">
+			<td class="formTitle" colspan="4">
 				<div align="justify">
 					Composition Properties
 				</div>
@@ -25,8 +25,11 @@
 			<td class="label">
 				<c:choose>
 					<c:when test="${canUserSubmit eq 'true'}">
-						<html:select property="dendrimer.branch" onchange="javascript:updateOtherField(nanoparticleCompositionForm, 'dendrimer.branch', 'dendrimer.otherBranch');">
-							<option value=""></option>
+						<html:select property="dendrimer.branch" onkeydown="javascript:fnKeyDownHandler(this, event);"
+											onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
+											onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
+											onchange="fnChangeHandler_A(this, event);">
+							<option value="">--?--</option>
 							<html:options name="allDendrimerBranches" />
 						</html:select>
 					</c:when>
@@ -35,31 +38,6 @@
 					</c:otherwise>
 				</c:choose>
 			</td>
-			<c:choose>
-				<c:when test="${canUserSubmit eq 'true'}">
-					<td class="label">
-						<strong>Other Branch</strong>
-					</td>
-					<td class="label">
-						<c:choose>
-							<c:when test="${nanoparticleCompositionForm.map.dendrimer.branch eq 'Other'}">
-								<html:text property="dendrimer.otherBranch" disabled="false" />
-							</c:when>
-							<c:otherwise>
-								<html:text property="dendrimer.otherBranch" disabled="true" />
-							</c:otherwise>
-						</c:choose>
-					</td>
-				</c:when>
-				<c:otherwise>
-					<td class="label">
-						&nbsp;
-					</td>
-					<td class="label">
-						&nbsp;
-					</td>
-				</c:otherwise>
-			</c:choose>
 			<td class="label">
 				<strong>Repeat Unit</strong>
 			</td>
@@ -81,8 +59,11 @@
 			<td class="label">
 				<c:choose>
 					<c:when test="${canUserSubmit eq 'true'}">
-						<html:select property="dendrimer.generation" onchange="javascript:updateOtherField(nanoparticleCompositionForm, 'dendrimer.generation', 'dendrimer.otherGeneration')">
-							<option value=""></option>
+						<html:select property="dendrimer.generation" onkeydown="javascript:fnKeyDownHandler(this, event);"
+											onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
+											onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
+											onchange="fnChangeHandler_A(this, event);">
+							<option value="">--?--</option>
 							<html:options name="allDendrimerGenerations" />
 						</html:select>
 					</c:when>
@@ -91,31 +72,6 @@
 					</c:otherwise>
 				</c:choose>
 			</td>
-			<c:choose>
-				<c:when test="${canUserSubmit eq 'true'}">
-					<td class="label">
-						<strong>Other Generation</strong>
-					</td>
-					<td class="label">
-						<c:choose>
-							<c:when test="${nanoparticleCompositionForm.map.dendrimer.generation eq 'Other'}">
-								<html:text property="dendrimer.otherGeneration" disabled="false" />
-							</c:when>
-							<c:otherwise>
-								<html:text property="dendrimer.otherGeneration" disabled="true" />
-							</c:otherwise>
-						</c:choose>
-					</td>
-				</c:when>
-				<c:otherwise>
-					<td class="label">
-						&nbsp;
-					</td>
-					<td class="label">
-						&nbsp;
-					</td>
-				</c:otherwise>
-			</c:choose>
 			<td class="label">
 				<strong>Molecular Formula</strong>
 			</td>
@@ -214,7 +170,7 @@
 					<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 						<tbody>
 							<tr class="topBorder">
-								<td class="formSubTitle" colspan="6">
+								<td class="formSubTitle" colspan="4">
 									<div align="justify">
 										Surface Group ${status.index+1}
 									</div>
@@ -227,8 +183,11 @@
 								<td class="label">
 									<c:choose>
 										<c:when test="${canUserSubmit eq 'true'}">
-											<html:select name="dendrimer.surfaceGroups" indexed="true" property="name" onchange="javascript:updateOtherField(nanoparticleCompositionForm, 'dendrimer.surfaceGroups[${status.index}].name', 'dendrimer.surfaceGroups[${status.index}].otherName')">
-												<option />
+											<html:select name="dendrimer.surfaceGroups" indexed="true" property="name" onkeydown="javascript:fnKeyDownHandler(this, event);"
+											onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
+											onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
+											onchange="fnChangeHandler_A(this, event);">
+												<option value="">--?--</option>
 													<html:options name="allDendrimerSurfaceGroupNames" />
 											</html:select>
 										</c:when>
@@ -237,31 +196,6 @@
 					</c:otherwise>
 									</c:choose>
 								</td>
-								<c:choose>
-									<c:when test="${canUserSubmit eq 'true'}">
-										<td class="label">
-											<strong>Other name</strong>
-										</td>
-										<td class="label">
-											<c:choose>
-												<c:when test="${nanoparticleCompositionForm.map.dendrimer.surfaceGroups[status.index].name eq 'Other'}">
-													<html:text name="dendrimer.surfaceGroups" indexed="true" property="otherName" disabled="false" />
-												</c:when>
-												<c:otherwise>
-													<html:text name="dendrimer.surfaceGroups" indexed="true" property="otherName" disabled="true" />
-												</c:otherwise>
-											</c:choose>
-										</td>
-									</c:when>
-									<c:otherwise>
-										<td class="label">
-											&nbsp;
-										</td>
-										<td class="label">
-											&nbsp;
-										</td>
-									</c:otherwise>
-								</c:choose>
 								<td class="label">
 									<strong>Modifier</strong>
 								</td>

@@ -42,32 +42,21 @@
 							<td class="leftLabel">
 								<strong>Type *</strong>
 							</td>
-							<td class="label">
+							<td class="rightLabel" colspan="3">
 								<c:choose>
 									<c:when test="${canUserSubmit eq 'true'}">
-										<html:select property="shape.type" onchange="javascript:updateOtherField(nanoparticleCharacterizationForm, 'shape.type', 'shape.otherShapeType')">
-											<option value=""></option>
+										<html:select property="shape.type" onkeydown="javascript:fnKeyDownHandler(this, event);"
+											onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
+											onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
+											onchange="fnChangeHandler_A(this, event);">
+											<option value="">--?--</option>
 											<html:options name="allShapeTypes" />
 										</html:select>
-										&nbsp;
-										<strong> Other </strong>&nbsp;
-										
-										<c:choose>
-											<c:when test="${nanoparticleCharacterizationForm.map.shape.type eq 'Other'}">
-												<html:text property="shape.otherShapeType" disabled="false" />
-											</c:when>
-											<c:otherwise>
-												<html:text property="shape.otherShapeType" disabled="true" />
-											</c:otherwise>
-										</c:choose>
 									</c:when>
 									<c:otherwise>
 										${nanoparticleCharacterizationForm.map.shape.type}&nbsp;
 									</c:otherwise>
 								</c:choose>
-							</td>
-							<td class="rightLabel" colspan="2">
-								&nbsp;
 							</td>
 						</tr>
 						<tr>
@@ -86,7 +75,7 @@
 									</c:otherwise>
 								</c:choose>
 							</td>
-							<td class="leftLabel">
+							<td class="label">
 								<strong>Maximum Dimension </strong>
 							</td>
 							<td class="rightLabel">
