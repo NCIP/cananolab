@@ -2,10 +2,7 @@ package gov.nih.nci.calab.dto.characterization.physical;
 
 import gov.nih.nci.calab.domain.nano.characterization.physical.Shape;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
-import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
-
-import java.util.List;
 
 /**
  * This class represents the Shape characterization information to be shown in

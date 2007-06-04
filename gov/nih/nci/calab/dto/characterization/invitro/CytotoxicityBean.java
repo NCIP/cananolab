@@ -47,11 +47,7 @@ public class CytotoxicityBean extends CharacterizationBean {
 
 	public void getDomainObj(Cytotoxicity cytotoxicity) {
 		super.updateDomainObj(cytotoxicity);
-		if (cellLine.equals(CaNanoLabConstants.OTHER)) {
-			cytotoxicity.setCellLine(this.otherCellLine);
-		} else {
-			cytotoxicity.setCellLine(this.cellLine);
-		}
+		cytotoxicity.setCellLine(this.cellLine);
 	}
 
 	public String getOtherCellLine() {
