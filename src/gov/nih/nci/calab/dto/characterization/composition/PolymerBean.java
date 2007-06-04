@@ -65,10 +65,7 @@ public class PolymerBean extends CompositionBean {
 		if (crosslinkDegree.length() > 0) {
 			doComp.setCrossLinkDegree(new Float(crosslinkDegree));
 		}
-		if (initiator.length() > 0) {
-			if (initiator.equalsIgnoreCase(CaNanoLabConstants.OTHER)){
-				initiator = otherInitiator;
-			}
+		if (initiator.length() > 0) {			
 			doComp.setInitiator(initiator);
 		}
 		return doComp;
