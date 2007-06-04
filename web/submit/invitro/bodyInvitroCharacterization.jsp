@@ -122,6 +122,8 @@
 							</td>
 						</tr>
 				</table>
+				<br>
+				<jsp:include page="/submit/bodySharedCharacterizationCopy.jsp" />
 				<jsp:include page="/submit/bodySharedCharacterizationSubmit.jsp" />
 			</td>
 		</tr>
