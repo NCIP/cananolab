@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSizeAction.java,v 1.23 2007-06-01 21:24:40 pansu Exp $ */
+/* CVS $Id: NanoparticleSizeAction.java,v 1.24 2007-06-04 21:29:09 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
@@ -21,7 +21,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
-import org.apache.struts.validator.DynaValidatorActionForm;
 import org.apache.struts.validator.DynaValidatorForm;
 
 public class NanoparticleSizeAction extends BaseCharacterizationAction {
@@ -41,7 +40,7 @@ public class NanoparticleSizeAction extends BaseCharacterizationAction {
 			throws Exception {
 		ActionForward forward = null;
 
-		DynaValidatorActionForm theForm = (DynaValidatorActionForm) form;
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleName=theForm.getString("particleName");
 		String particleType=theForm.getString("particleType");		
 
