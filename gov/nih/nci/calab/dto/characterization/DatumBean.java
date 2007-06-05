@@ -38,9 +38,6 @@ public class DatumBean {
 	private List<ConditionBean> conditionList = new ArrayList<ConditionBean>();
 
 	private String numberOfConditions;
-
-	//TODO to be removed
-	private String valueUnit;
 	
 	public DatumBean() {
 	}
@@ -102,8 +99,8 @@ public class DatumBean {
 		return unit;
 	}
 
-	public void setUnit(String valueUnit) {
-		this.unit = valueUnit;
+	public void setUnit(String unit) {
+		this.unit = unit;
 	}
 
 	public ControlBean getControl() {
@@ -186,13 +183,5 @@ public class DatumBean {
 
 	public void setCategory(String category) {
 		this.category = category;
-	}
-
-	public String getValueUnit() {
-		return valueUnit;
-	}
-
-	public void setValueUnit(String valueUnit) {
-		this.valueUnit = valueUnit;
 	}
 }
