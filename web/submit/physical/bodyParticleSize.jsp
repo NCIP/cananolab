@@ -100,15 +100,15 @@
 													<c:choose>
 														<c:when test="${canUserSubmit eq 'true'}">
 															<html:text property="achar.derivedBioAssayDataList[${chartInd}].datumList[0].value" />
-													&nbsp; ${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[chartInd].datumList[0].valueUnit}	
+													&nbsp; ${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[chartInd].datumList[0].unit}	
 															&nbsp;&nbsp;&nbsp;&nbsp;<strong>Z-Average</strong> &nbsp;&nbsp;
 															<html:text property="achar.derivedBioAssayDataList[${chartInd}].datumList[1].value" />
-													&nbsp; ${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[chartInd].datumList[1].valueUnit}
+													&nbsp; ${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[chartInd].datumList[1].unit}
 														</c:when>
 														<c:otherwise>
-						${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[chartInd].datumList[0].value} ${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[chartInd].datumList[0].valueUnit}
+						${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[chartInd].datumList[0].value} ${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[chartInd].datumList[0].unit}
 &nbsp;&nbsp;&nbsp;&nbsp;<strong>Z-Average</strong> &nbsp;&nbsp;
-						${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[chartInd].datumList[1].value} ${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[chartInd].datumList[1].valueUnit}&nbsp;
+						${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[chartInd].datumList[1].value} ${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[chartInd].datumList[1].unit}&nbsp;
 					</c:otherwise>
 													</c:choose>
 												</td>

@@ -100,10 +100,10 @@
 													<c:choose>
 														<c:when test="${canUserSubmit eq 'true'}">
 															<html:text property="achar.derivedBioAssayDataList[${chartInd}].datumList[0].value" />
-													&nbsp; ${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[chartInd].datumList[0].valueUnit}
+													&nbsp; ${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[chartInd].datumList[0].unit}
 														</c:when>
 														<c:otherwise>
-						${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[chartInd].datumList[0].valueUnit}&nbsp;
+						${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[chartInd].datumList[0].unit}&nbsp;
 					</c:otherwise>
 													</c:choose>
 												</td>
