@@ -16,7 +16,7 @@ import java.util.List;
  * @author pansu
  * 
  */
-/* CVS $Id: StringUtils.java,v 1.13 2007-05-11 20:44:03 pansu Exp $ */
+/* CVS $Id: StringUtils.java,v 1.14 2007-06-05 20:10:02 pansu Exp $ */
 
 public class StringUtils {
 	private static Logger logger = Logger.getLogger(StringUtils.class);
@@ -244,5 +244,23 @@ public class StringUtils {
 						+ calendar.get(Calendar.SECOND)) + "-";
 		time = time + calendar.get(Calendar.MILLISECOND);
 		return time;
+	}
+	
+	public static String getDateAsString() {
+		
+		Calendar calendar = Calendar.getInstance();
+		String month=calendar.get(Calendar.MONTH) < 9 ? "0"
+				+ (calendar.get(Calendar.MONTH) + 1) : ""
+					+ (calendar.get(Calendar.MONTH) + 1);
+		String day=calendar.get(Calendar.DAY_OF_MONTH) < 10 ? "0"
+				+ calendar.get(Calendar.DAY_OF_MONTH) : ""
+					+ calendar.get(Calendar.DAY_OF_MONTH);
+		String year=calendar.get(Calendar.YEAR)+"";
+		return month+day+year;		
+	}
+	
+	public static void main(String[] args) {
+		String dateString=StringUtils.getDateAsString();
+		System.out.println(dateString);
 	}
 }
