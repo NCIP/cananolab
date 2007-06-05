@@ -1,9 +1,8 @@
 package gov.nih.nci.calab.dto.characterization;
 
-import gov.nih.nci.calab.domain.LabFile;
+import gov.nih.nci.calab.domain.DerivedDataFile;
 import gov.nih.nci.calab.domain.nano.characterization.Datum;
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
-import gov.nih.nci.calab.dto.common.LabFileBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,33 +19,31 @@ public class DerivedBioAssayDataBean {
 
 	private String type;
 
-	private LabFileBean file;
-	
-	private String fileId;
+	private CharacterizationFileBean file;
 
 	private List<DatumBean> datumList = new ArrayList<DatumBean>();
-	
+
 	private String numberOfDataPoints;
 
 	public DerivedBioAssayDataBean() {
 	}
 
-	public DerivedBioAssayDataBean(String type, LabFileBean file) {
+	public DerivedBioAssayDataBean(String type, CharacterizationFileBean file) {
 		super();
 		// TODO Auto-generated constructor stub
 		this.type = type;
 		this.file = file;
 	}
-	
+
 	public DerivedBioAssayDataBean(DerivedBioAssayData table) {
 		super();
 		this.id = table.getId().toString();
 		this.type = table.getType();
-		
-//		this.file.setName(table.getFile());
-		LabFile doFile = table.getFile();
+
+		// this.file.setName(table.getFile());
+		DerivedDataFile doFile = table.getFile();
 		if (doFile != null) {
-			this.file = new LabFileBean();
+			this.file = new CharacterizationFileBean();
 			this.file.setCreatedBy(doFile.getCreatedBy());
 			this.file.setCreatedDate(doFile.getCreatedDate());
 			this.file.setDescription(doFile.getDescription());
@@ -54,15 +51,15 @@ public class DerivedBioAssayDataBean {
 			this.file.setName(doFile.getFilename());
 			this.file.setPath(doFile.getPath());
 			this.file.setTitle(doFile.getTitle());
-			
+
 			// TODO: visibility group
 		}
 
 		/*
-		for (CharacterizationTableDataBean tableData : this.getTableDataList()) {
-			table.getTableDataCollection().add(tableData.getDomainObj());
-		}
-		*/
+		 * for (CharacterizationTableDataBean tableData :
+		 * this.getTableDataList()) {
+		 * table.getTableDataCollection().add(tableData.getDomainObj()); }
+		 */
 		for (Datum tableData : table.getDatumCollection()) {
 			DatumBean ctDataBean = new DatumBean(tableData);
 			datumList.add(ctDataBean);
@@ -70,11 +67,11 @@ public class DerivedBioAssayDataBean {
 		this.setNumberOfDataPoints(datumList.size() + "");
 	}
 
-	public LabFileBean getFile() {
+	public CharacterizationFileBean getFile() {
 		return file;
 	}
 
-	public void setFile(LabFileBean file) {
+	public void setFile(CharacterizationFileBean file) {
 		this.file = file;
 	}
 
@@ -98,17 +95,8 @@ public class DerivedBioAssayDataBean {
 		return datumList;
 	}
 
-	public void setDatumList(
-			List<DatumBean> datumList) {
+	public void setDatumList(List<DatumBean> datumList) {
 		this.datumList = datumList;
-	}
-
-	public String getFileId() {
-		return fileId;
-	}
-
-	public void setFileId(String fileId) {
-		this.fileId = fileId;
 	}
 
 	public DerivedBioAssayData getDomainObj() {
@@ -117,10 +105,10 @@ public class DerivedBioAssayDataBean {
 			table.setId(new Long(getId()));
 		}
 		table.setType(type);
-		//TODO need to decide whether use fileId and file object
+		// TODO need to decide whether use fileId and file object
 		if (file != null)
-//		    table.setFile(file.getPath() + file.getName());
-			table.setFile(file.getDomainObjectDerivedDataFile());
+			// table.setFile(file.getPath() + file.getName());
+			table.setFile(file.getDomainObject());
 		for (DatumBean datum : this.getDatumList()) {
 			table.getDatumCollection().add(datum.getDomainObj());
 		}
@@ -135,4 +123,34 @@ public class DerivedBioAssayDataBean {
 		this.numberOfDataPoints = numberOfDataPoints;
 	}
 
+	/**
+	 * Create a new instance that has the same metadata and a new File instance
+	 * 
+	 * @return
+	 */
+	public DerivedBioAssayDataBean copy(boolean copyData) {
+		DerivedBioAssayDataBean newDerivedBioAssayDataBean = new DerivedBioAssayDataBean();
+		newDerivedBioAssayDataBean.setType(type);
+		CharacterizationFileBean newCharFileBean = file.copy();
+		newDerivedBioAssayDataBean.setFile(newCharFileBean);
+		if (copyData) {
+			List<DatumBean> newDatumList = new ArrayList<DatumBean>();
+			for (DatumBean datum: datumList) {
+				DatumBean newDatum=new DatumBean();
+				newDatum.setCategory(datum.getCategory());
+				newDatum.setStd(datum.getStd());
+				newDatum.setType(datum.getType());
+				newDatum.setValue(datum.getValue());
+				newDatum.setUnit(datum.getUnit());
+				newDatumList.add(newDatum);
+			}
+			newDerivedBioAssayDataBean.setDatumList(newDatumList);
+			newDerivedBioAssayDataBean.setNumberOfDataPoints(newDatumList
+					.size()
+					+ "");
+		} else {
+			newDerivedBioAssayDataBean.setNumberOfDataPoints("0");
+		}
+		return newDerivedBioAssayDataBean;
+	}
 }

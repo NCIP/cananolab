@@ -50,4 +50,11 @@ public class InstrumentConfigBean {
 		this.instrumentBean = instrumentBean;
 	}
 
+	public InstrumentConfigBean copy() {
+		InstrumentConfigBean newInstrumentConfigBean = new InstrumentConfigBean();
+		//do not copy id
+		newInstrumentConfigBean.setDescription(description);
+		newInstrumentConfigBean.setInstrumentBean(instrumentBean);
+		return newInstrumentConfigBean;
+	}
 }
