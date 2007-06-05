@@ -1,13 +1,11 @@
 package gov.nih.nci.calab.dto.common;
 
-import gov.nih.nci.calab.domain.DerivedDataFile;
-import gov.nih.nci.calab.domain.Keyword;
 import gov.nih.nci.calab.domain.LabFile;
 import gov.nih.nci.calab.service.util.StringUtils;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+
+import org.apache.struts.upload.FormFile;
 
 /**
  * This class represents attributes of a lab file to be viewed in a view page.
@@ -21,8 +19,6 @@ public class LabFileBean {
 	private String description;
 
 	private String comments;
-
-	private String[] keywords = new String[0];
 
 	private String[] visibilityGroups = new String[0];
 
@@ -38,13 +34,15 @@ public class LabFileBean {
 
 	private String type;
 
-	private String keywordsStr;
-
 	private String visibilityStr;
 	
 	private String gridNode;
 
 	private String version;
+	
+	private String fileSystemRoot;
+	
+	private FormFile uploadedFile;
 	
 	/*
 	 * name to be displayed as a part of the drop-down list
@@ -63,14 +61,6 @@ public class LabFileBean {
 		this.createdBy = charFile.getCreatedBy();
 		this.version = charFile.getVersion();
 		this.createdDate = charFile.getCreatedDate();
-		if (charFile instanceof DerivedDataFile) {
-			List<String> allkeywords = new ArrayList<String>();
-			for (Keyword keyword : ((DerivedDataFile) charFile)
-					.getKeywordCollection()) {
-				allkeywords.add(keyword.getName());
-			}
-			keywords=allkeywords.toArray(new String[0]);
-		}
 		this.type = fileType;
 	}
 
@@ -116,14 +106,6 @@ public class LabFileBean {
 
 	public void setId(String id) {
 		this.id = id;
-	}
-
-	public String[] getKeywords() {
-		return keywords;
-	}
-
-	public void setKeywords(String[] keywords) {
-		this.keywords = keywords;
 	}
 
 	public String getName() {
@@ -181,27 +163,6 @@ public class LabFileBean {
 		return labfile;
 	}
 
-	public DerivedDataFile getDomainObjectDerivedDataFile() {
-		DerivedDataFile dataFile = new DerivedDataFile();
-		if (id != null && id.length() > 0) {
-			dataFile.setId(new Long(id));
-		}
-		dataFile.setCreatedBy(createdBy);
-		dataFile.setCreatedDate(createdDate);
-		dataFile.setDescription(description);
-		dataFile.setComments(comments);
-		dataFile.setFilename(name);
-		dataFile.setPath(path);
-		dataFile.setTitle(title);
-		dataFile.setVersion(version);
-		for (String keywordValue : keywords) {
-			Keyword keyword = new Keyword();
-			keyword.setName(keywordValue);
-			dataFile.getKeywordCollection().add(keyword);
-		}
-		return dataFile;
-	}
-
 	public String getDisplayName() {
 		displayName = path.replaceAll("/decompressedFiles", "");
 		return displayName;
@@ -213,17 +174,6 @@ public class LabFileBean {
 
 	public void setType(String type) {
 		this.type = type;
-	}
-
-	public String getKeywordsStr() {
-		keywordsStr = StringUtils.join(keywords, "\r\n");
-		return keywordsStr;
-	}
-
-	public void setKeywordsStr(String keywordsStr) {
-		this.keywordsStr = keywordsStr;
-		if (keywordsStr.length() > 0)
-			this.keywords = keywordsStr.split("\r\n");
 	}
 
 	public String getVisibilityStr() {
@@ -238,4 +188,30 @@ public class LabFileBean {
 	public void setGridNode(String gridNode) {
 		this.gridNode = gridNode;
 	}
+
+	public String getFileSystemRoot() {
+		return fileSystemRoot;
+	}
+
+	public void setFileSystemRoot(String pathRoot) {
+		this.fileSystemRoot = pathRoot;
+	}
+
+	public FormFile getUploadedFile() {
+		return uploadedFile;
+	}
+
+	public void setUploadedFile(FormFile uploadedFile) {
+		this.uploadedFile = uploadedFile;
+	}
+
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
+	}
+
+	public void setVisibilityStr(String visibilityStr) {
+		this.visibilityStr = visibilityStr;
+	}
+	
+	
 }
