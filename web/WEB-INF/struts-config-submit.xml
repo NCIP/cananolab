@@ -78,7 +78,7 @@
 			<form-property name="page" type="java.lang.Integer" initial="0" />
 			<form-property name="fileSource" type="java.lang.String" initial="new" />
 			<form-property name="uploadedFile" type="org.apache.struts.upload.FormFile" />
-			<form-property name="file" type="gov.nih.nci.calab.dto.common.LabFileBean" />
+			<form-property name="file" type="gov.nih.nci.calab.dto.characterization.CharacterizationFileBean" />
 			<form-property name="fileNumber" type="java.lang.String" />
 			<form-property name="forwardPage" type="java.lang.String" />
 			<form-property name="particleName" type="java.lang.String" />
@@ -372,9 +372,9 @@
 			<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
 		</action>
 		<action name="loadDerivedBioAssayDataForm" parameter="dispatch" path="/loadFile" type="gov.nih.nci.calab.ui.submit.LoadDerivedBioAssayDataAction" input="input" scope="request">
-			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.loadDerivedBioAssayData" path="submit.load.characterization.table" type="java.lang.Exception" />
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.loadDerivedBioAssayData" path="submit.load.characterization.file" type="java.lang.Exception" />
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.download.file" path="home.error" type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="input" path="submit.load.characterization.table" />
+			<forward name="input" path="submit.load.characterization.file" />
 		</action>
 		<action name="loadDerivedBioAssayDataForm" parameter="dispatch" path="/updateAssayFile" type="gov.nih.nci.calab.ui.submit.LoadDerivedBioAssayDataAction" input="input" scope="request">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.updateDerivedBioAssayData" path="submit.assayresult.file.view" type="java.lang.Exception" />
