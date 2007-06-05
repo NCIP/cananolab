@@ -594,15 +594,15 @@
 		<put name="menu" value="submit" />
 	</definition>
 
-	<!-- definition for the load characterization table page -->
-	<definition name="submit.load.characterization.table.content" extends="submit.content.home">
+	<!-- definition for the load characterization file page -->
+	<definition name="submit.load.characterization.file.content" extends="submit.content.home">
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
-		<put name="submitContent" value="/submit/bodyLoadCharacterizationTable.jsp" />
+		<put name="submitContent" value="/submit/bodyLoadCharacterizationFile.jsp" />
 	</definition>
 
-	<definition name="submit.load.characterization.table" extends="calab.home">
+	<definition name="submit.load.characterization.file" extends="calab.home">
 		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
-		<put name="calabContent" value="submit.load.characterization.table.content" />
+		<put name="calabContent" value="submit.load.characterization.file.content" />
 		<put name="menu" value="submit" />
 	</definition>
 
