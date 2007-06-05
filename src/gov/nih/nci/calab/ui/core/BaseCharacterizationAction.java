@@ -3,6 +3,7 @@ package gov.nih.nci.calab.ui.core;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
+import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
 import gov.nih.nci.calab.dto.characterization.ConditionBean;
 import gov.nih.nci.calab.dto.characterization.DatumBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
@@ -70,8 +71,9 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		int fileNumber = 0;
 		for (DerivedBioAssayDataBean obj : charBean
 				.getDerivedBioAssayDataList()) {
-			LabFileBean fileBean = (LabFileBean) request.getSession()
-					.getAttribute("characterizationFile" + fileNumber);
+			CharacterizationFileBean fileBean = (CharacterizationFileBean) request
+					.getSession().getAttribute(
+							"characterizationFile" + fileNumber);
 			if (fileBean != null) {
 				obj.setFile(fileBean);
 			}
@@ -83,6 +85,42 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		// InitSessionSetup.getInstance().setAllInstruments(session);
 		request.getSession().setAttribute("newCharacterizationCreated", "true");
 		return charBean;
+	}
+
+	protected CharacterizationBean[] prepareCopy(HttpServletRequest request,
+			DynaValidatorForm theForm, SubmitNanoparticleService service)
+			throws Exception {
+		CharacterizationBean charBean = (CharacterizationBean) theForm
+				.get("achar");		
+		String[] otherParticles = (String[]) theForm.get("otherParticles");
+		Boolean copyData = (Boolean) theForm.get("copyData");
+
+		CharacterizationBean[] charBeans = new CharacterizationBean[otherParticles.length];
+		int i = 0;
+		for (String particleName : otherParticles) {
+			CharacterizationBean newCharBean = charBean.copy(copyData
+					.booleanValue());
+			// reset view title
+			String autoTitle = particleName
+					+ "_"
+					+ CaNanoLabConstants.AUTO_COPY_CHARACTERIZATION_VIEW_TITLE_SUFFIX;
+			String autoColor = CaNanoLabConstants.AUTO_COPY_CHARACTERIZATION_VIEW_COLOR;
+			newCharBean.setViewTitle(autoTitle);
+			newCharBean.setViewColor(autoColor);
+			// save the files to the database and file system
+			if (!copyData) {
+				List<DerivedBioAssayDataBean> dataList = newCharBean
+						.getDerivedBioAssayDataList();
+				for (DerivedBioAssayDataBean derivedBioAssayData : dataList) {
+					CharacterizationFileBean fileBean = derivedBioAssayData
+							.getFile();
+					service.saveCharacterizationFile(fileBean);
+				}
+			}
+			charBeans[i] = newCharBean;
+			i++;
+		}
+		return charBeans;
 	}
 
 	/**
@@ -135,7 +173,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 				session);
 		InitSessionSetup.getInstance().setAllAreaMeasureUnits(session);
 		InitSessionSetup.getInstance().setAllChargeMeasureUnits(session);
-		
+
 		InitSessionSetup.getInstance().setAllConcentrationUnits(session);
 		InitSessionSetup.getInstance().setAllCellLines(session);
 		InitSessionSetup.getInstance().setAllConditionTypes(session);
