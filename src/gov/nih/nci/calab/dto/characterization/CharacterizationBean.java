@@ -30,6 +30,9 @@ public class CharacterizationBean {
 	// shown as different links on the view pages.
 	private String viewTitle;
 
+	// used for link color on the side menu
+	private String viewColor;
+
 	private String description;
 
 	// not set by application
@@ -340,5 +343,36 @@ public class CharacterizationBean {
 
 	public void setProtocolFileBean(ProtocolFileBean protocolFileBean) {
 		this.protocolFileBean = protocolFileBean;
+	}
+
+	public String getViewColor() {
+		return viewColor;
+	}
+
+	public void setViewColor(String viewColor) {
+		this.viewColor = viewColor;
+	}
+
+	/**
+	 * Create a new instance of CharacterizationBean with the same metadata
+	 * except DerivedBioAssayDataList and InstrumentConfig.
+	 * 
+	 * @return
+	 */
+	public CharacterizationBean copy(boolean copyData) {
+		CharacterizationBean newCharBean = new CharacterizationBean(this);
+		// set InstrumentConfig, DerivedBioAssayDataList
+		InstrumentConfigBean newInstrumentConfigBean = instrumentConfigBean
+				.copy();
+		newCharBean.setInstrumentConfigBean(newInstrumentConfigBean);
+
+		List<DerivedBioAssayDataBean> newDerivedBioAssayDataList = new ArrayList<DerivedBioAssayDataBean>();
+		for (DerivedBioAssayDataBean derivedBioAssayDataBean : derivedBioAssayDataList) {
+			DerivedBioAssayDataBean newDerivedBioAssayDataBean = derivedBioAssayDataBean
+					.copy(copyData);
+			newDerivedBioAssayDataList.add(newDerivedBioAssayDataBean);
+		}
+		newCharBean.setDerivedBioAssayDataList(newDerivedBioAssayDataList);
+		return newCharBean;
 	}
 }
