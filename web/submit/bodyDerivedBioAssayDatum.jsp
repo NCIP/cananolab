@@ -112,7 +112,7 @@
 										<c:choose>
 											<c:when test="${canUserSubmit eq 'true'}">
 												<html:select property="achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].conditionList[${cInd}].type"
-													onchange="javascript:doubleDropdownWithNestedProperties(this.form, 'achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].conditionList[${cInd}].type', 'achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].conditionList[${cInd}].valueUnit', conditionTypeUnits)">
+													onchange="javascript:doubleDropdownWithNestedProperties(this.form, 'achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].conditionList[${cInd}].type', 'achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].conditionList[${cInd}].unit', conditionTypeUnits)">
 													<option value=""></option>
 													<html:options name="allConditionTypes" />
 												</html:select>
@@ -137,15 +137,15 @@
 										&nbsp;&nbsp;&nbsp;
 										<c:choose>
 											<c:when test="${canUserSubmit eq 'true'}">
-												<html:select property="achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].conditionList[${cInd}].valueUnit">
+												<html:select property="achar.derivedBioAssayDataList[${param.chartNum}].datumList[${dInd}].conditionList[${cInd}].unit">
 													<option value=""></option>
-													<option value="${this.form.map.achar.derivedBioAssayDataList[param.chartNum].datumList[dInd].conditionList[cInd].valueUnit}" selected>
-														${cdata.valueUnit}
+													<option value="${this.form.map.achar.derivedBioAssayDataList[param.chartNum].datumList[dInd].conditionList[cInd].unit}" selected>
+														${cdata.unit}
 													</option>
 												</html:select>
 											</c:when>
 											<c:otherwise>
-												${cdata.valueUnit}&nbsp;
+												${cdata.unit}&nbsp;
         									</c:otherwise>
 										</c:choose>
 									</td>
