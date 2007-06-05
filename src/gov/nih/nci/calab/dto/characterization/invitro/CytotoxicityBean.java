@@ -2,7 +2,6 @@ package gov.nih.nci.calab.dto.characterization.invitro;
 
 import gov.nih.nci.calab.domain.nano.characterization.toxicity.Cytotoxicity;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
-import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 /**
  * This class represents the cytotoxicity characterization information to be
