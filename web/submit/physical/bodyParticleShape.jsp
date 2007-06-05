@@ -165,6 +165,7 @@
 						</tr>
 				</table>
 				<%-- end of size characterization specific --%>
+				<input type="hidden" name="shape.validateValue" value="shape"/>
 				<br>
 				<jsp:include page="/submit/bodySharedCharacterizationCopy.jsp" />
 				<jsp:include page="/submit/bodySharedCharacterizationSubmit.jsp" />
