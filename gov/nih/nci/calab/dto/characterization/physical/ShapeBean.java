@@ -2,7 +2,6 @@ package gov.nih.nci.calab.dto.characterization.physical;
 
 import gov.nih.nci.calab.domain.nano.characterization.physical.Shape;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
-import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 /**
  * This class represents the Shape characterization information to be shown in
@@ -21,6 +20,17 @@ public class ShapeBean extends CharacterizationBean {
 	private String minDimensionUnit = "nm";
 
 	private String maxDimensionUnit = "nm";
+
+	//this is used for validation only
+	private String validateValue;
+	
+	public String getValidateValue() {
+		return validateValue;
+	}
+
+	public void setValidateValue(String validateValue) {
+		this.validateValue = validateValue;
+	}
 
 	public ShapeBean() {
 		super();
