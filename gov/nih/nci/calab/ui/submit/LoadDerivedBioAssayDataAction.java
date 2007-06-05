@@ -6,8 +6,9 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: LoadDerivedBioAssayDataAction.java,v 1.11 2007-01-04 23:21:58 pansu Exp $ */
+/* CVS $Id: LoadDerivedBioAssayDataAction.java,v 1.12 2007-06-05 20:10:44 pansu Exp $ */
 
+import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
@@ -35,31 +36,37 @@ public class LoadDerivedBioAssayDataAction extends AbstractDispatchAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleName = (String) theForm.get("particleName");
 		String fileSource = (String) theForm.get("fileSource");
-		LabFileBean fileBean = (LabFileBean) theForm.get("file");
+		CharacterizationFileBean fileBean = (CharacterizationFileBean) theForm
+				.get("file");
 		String fileNumber = (String) theForm.get("fileNumber");
 		String characterizationName = (String) theForm
 				.get("characterizationName");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		LabFileBean savedFileBean = null;
+		fileBean.setCharacterizationName(characterizationName);
+		fileBean.setParticleName(particleName);
+		
+		CharacterizationFileBean savedFileBean = null;
 		if (fileSource.equals("new")) {
 			FormFile uploadedFile = (FormFile) theForm.get("uploadedFile");
-			savedFileBean = service.saveCharacterizationFile(particleName,
-					uploadedFile, characterizationName, fileBean);
+			fileBean.setUploadedFile(uploadedFile);		
+			savedFileBean = service.saveCharacterizationFile(fileBean);
 		} else {
 			// updating existingFileBean with form data
 			if (fileBean.getId() != null) {
-				LabFileBean existingFileBean = service.getFile(
-						fileBean.getId(), CaNanoLabConstants.OUTPUT);
+				CharacterizationFileBean existingFileBean = (CharacterizationFileBean) service
+						.getFile(fileBean.getId(), CaNanoLabConstants.OUTPUT);
+
 				existingFileBean.setTitle(fileBean.getTitle());
 				existingFileBean.setDescription(fileBean.getDescription());
 				existingFileBean.setVisibilityGroups(fileBean
 						.getVisibilityGroups());
+
 				existingFileBean.setKeywords(fileBean.getKeywords());
 				savedFileBean = service
 						.saveCharacterizationFile(existingFileBean);
-			}
-			else {
-				throw new Exception("Please upload a new file if existing file drop-down list is empty or select a file from the drop-down list.");
+			} else {
+				throw new Exception(
+						"Please upload a new file if existing file drop-down list is empty or select a file from the drop-down list.");
 			}
 		}
 		request.getSession().setAttribute("characterizationFile" + fileNumber,
@@ -121,7 +128,8 @@ public class LoadDerivedBioAssayDataAction extends AbstractDispatchAction {
 			throws Exception {
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		LabFileBean fileBean = (LabFileBean) theForm.get("file");
+		CharacterizationFileBean fileBean = (CharacterizationFileBean) theForm
+				.get("file");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.updateDerivedDataFileMetaData(fileBean);
 
