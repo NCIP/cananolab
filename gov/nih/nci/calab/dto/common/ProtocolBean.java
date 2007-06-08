@@ -5,8 +5,8 @@ package gov.nih.nci.calab.dto.common;
 
 import gov.nih.nci.calab.domain.Protocol;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author zengje
