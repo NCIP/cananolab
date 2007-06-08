@@ -306,10 +306,6 @@ public class CharacterizationBean {
 		this.createdDate = createdDate;
 	}
 
-	public Characterization getDomainObj() {
-		return null;
-	}
-
 	public List<DerivedBioAssayDataBean> getDerivedBioAssayDataList() {
 		return derivedBioAssayDataList;
 	}
