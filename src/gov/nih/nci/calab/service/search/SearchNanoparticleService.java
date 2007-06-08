@@ -2,12 +2,10 @@ package gov.nih.nci.calab.service.search;
 
 import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
-import gov.nih.nci.calab.domain.LabFile;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.function.Function;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
-import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.SearchableBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.function.FunctionBean;
