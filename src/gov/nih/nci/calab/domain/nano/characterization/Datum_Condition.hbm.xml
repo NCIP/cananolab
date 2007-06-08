@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="gov.nih.nci.calab.domain.nano.characterization">
+	<class name="Datum" table="DATUM" lazy="true" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="java.lang.Long" column="DATUM_PK_ID" unsaved-value="0">
+			<generator class="org.hibernate.id.TableHiLoGenerator">
+				<param name="table">hibernate_unique_key</param>
+				<param name="column">next_hi</param>
+			</generator>
+		</id>
+		<property name="name" type="java.lang.String" column="NAME" />		
+		<component name="value" class="gov.nih.nci.calab.domain.Measurement">
+			<property name="value" column="VALUE" />
+			<property name="unitOfMeasurement" column="VALUE_UNIT" />
+			<property name="standardDeviation" column="STANDARD_DEVIATION" />
+		</component>
+		<component name="control" class="gov.nih.nci.calab.domain.nano.characterization.Control">
+			<property name="name" column="CONTROL_NAME" />
+			<property name="type" column="CONTROL_TYPE" />
+		</component>
+		
+		<list name="conditionCollection" cascade="all-delete-orphan" lazy="true">
+			<cache usage="read-write" />
+			<key column="DATUM_PK_ID" />
+			<list-index column="LIST_INDEX" />
+			<one-to-many class="gov.nih.nci.calab.domain.nano.characterization.Condition" />
+		</list>
+	</class>
+	
+	<class name="Condition" table="DATUM_CONDITION" lazy="true" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="java.lang.Long" column="DATUM_CONDITION_PK_ID" unsaved-value="0">
+			<generator class="org.hibernate.id.TableHiLoGenerator">
+				<param name="table">hibernate_unique_key</param>
+				<param name="column">next_hi</param>
+			</generator>
+		</id>
+		<property name="name" type="java.lang.String" column="NAME" />
+		<component name="value" class="gov.nih.nci.calab.domain.Measurement">
+			<property name="value" column="VALUE" />
+			<property name="unitOfMeasurement" column="VALUE_UNIT" />
+		</component>
+	</class>
+</hibernate-mapping>

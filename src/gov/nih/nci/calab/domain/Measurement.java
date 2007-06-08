@@ -12,6 +12,15 @@ import java.io.Serializable;
 public class Measurement implements Serializable {
 
 	private static final long serialVersionUID = 1234567890L;
+	private Float standardDeviation;
+	
+	public Float getStandardDeviation() {
+		return standardDeviation;
+	}
+
+	public void setStandardDeviation(Float standardDeviation) {
+		this.standardDeviation = standardDeviation;
+	}
 
 	/**
 	 * 

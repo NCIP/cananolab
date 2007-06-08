@@ -2,11 +2,11 @@ package gov.nih.nci.calab.service.submit;
 
 import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
-import gov.nih.nci.calab.domain.DerivedDataFile;
 import gov.nih.nci.calab.domain.Keyword;
 import gov.nih.nci.calab.domain.LabFile;
 import gov.nih.nci.calab.domain.OutputFile;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
+import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.domain.nano.characterization.invitro.CFU_GM;
 import gov.nih.nci.calab.domain.nano.characterization.invitro.Caspase3Activation;
 import gov.nih.nci.calab.domain.nano.characterization.invitro.CellViability;
@@ -37,7 +37,7 @@ import gov.nih.nci.calab.domain.nano.function.Function;
 import gov.nih.nci.calab.domain.nano.function.Linkage;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
-import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
+import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.dto.characterization.composition.CompositionBean;
 import gov.nih.nci.calab.dto.characterization.invitro.CytotoxicityBean;
 import gov.nih.nci.calab.dto.characterization.physical.MorphologyBean;
@@ -681,11 +681,11 @@ public class SubmitNanoparticleService {
 	 * @param keywords
 	 * @param visibilities
 	 */
-	public CharacterizationFileBean saveCharacterizationFile(
-			CharacterizationFileBean fileBean) throws Exception {
+	public DerivedBioAssayDataBean saveCharacterizationFile(
+			DerivedBioAssayDataBean fileBean) throws Exception {
 
 		FormFile uploadedFile = fileBean.getUploadedFile();
-		DerivedDataFile dataFile = null;
+		DerivedBioAssayData dataFile = null;
 		if (uploadedFile != null) {
 			// write file to the file system
 			String rootPath = PropertyReader
@@ -728,7 +728,7 @@ public class SubmitNanoparticleService {
 		} finally {
 			ida.close();
 		}
-		CharacterizationFileBean savedFileBean = new CharacterizationFileBean(
+		DerivedBioAssayDataBean savedFileBean = new DerivedBioAssayDataBean(
 				dataFile);
 		userService.setVisiblity(savedFileBean.getId(), savedFileBean
 				.getVisibilityGroups());
@@ -891,18 +891,18 @@ public class SubmitNanoparticleService {
 	 * @param fileId
 	 * @return
 	 */
-	public LabFileBean getDerivedDataFile(String fileId) throws Exception {
+	public DerivedBioAssayDataBean getDerivedBioAssayData(String fileId) throws Exception {
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
-		LabFileBean fileBean = null;
+		DerivedBioAssayDataBean fileBean = null;
 		try {
 			ida.open();
 
-			DerivedDataFile file = (DerivedDataFile) ida.load(
-					DerivedDataFile.class, StringUtils.convertToLong(fileId));
+			DerivedBioAssayData file = (DerivedBioAssayData) ida.load(
+					DerivedBioAssayData.class, StringUtils.convertToLong(fileId));
 			// load keywords
 			file.getKeywordCollection();
-			fileBean = new LabFileBean(file, CaNanoLabConstants.OUTPUT);
+			fileBean = new DerivedBioAssayDataBean(file, CaNanoLabConstants.OUTPUT);
 		} catch (Exception e) {
 			e.printStackTrace();
 			ida.rollback();
@@ -999,15 +999,15 @@ public class SubmitNanoparticleService {
 	 * @param fileBean
 	 * @throws Exception
 	 */
-	public void updateDerivedDataFileMetaData(CharacterizationFileBean fileBean)
+	public void updateDerivedBioAssayDataMetaData(DerivedBioAssayDataBean fileBean)
 			throws Exception {
 
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
-			DerivedDataFile file = (DerivedDataFile) ida.load(
-					DerivedDataFile.class, StringUtils.convertToLong(fileBean
+			DerivedBioAssayData file = (DerivedBioAssayData) ida.load(
+					DerivedBioAssayData.class, StringUtils.convertToLong(fileBean
 							.getId()));
 
 			file.setTitle(fileBean.getTitle().toUpperCase());

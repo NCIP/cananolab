@@ -10,7 +10,6 @@ import gov.nih.nci.calab.service.common.FileService;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
-import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.io.File;
 import java.util.Date;
@@ -26,7 +25,7 @@ import org.apache.struts.upload.FormFile;
  */
 
 /*
- * CVS $Id: SubmitProtocolService.java,v 1.8 2007-05-25 18:06:23 chenhang Exp $
+ * CVS $Id: SubmitProtocolService.java,v 1.9 2007-06-08 22:15:48 pansu Exp $
  */
 
 public class SubmitProtocolService {
