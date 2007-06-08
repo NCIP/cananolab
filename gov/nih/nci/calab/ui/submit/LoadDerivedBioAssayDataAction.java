@@ -6,10 +6,9 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: LoadDerivedBioAssayDataAction.java,v 1.12 2007-06-05 20:10:44 pansu Exp $ */
+/* CVS $Id: LoadDerivedBioAssayDataAction.java,v 1.13 2007-06-08 22:15:48 pansu Exp $ */
 
-import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
-import gov.nih.nci.calab.dto.common.LabFileBean;
+import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
@@ -36,7 +35,7 @@ public class LoadDerivedBioAssayDataAction extends AbstractDispatchAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleName = (String) theForm.get("particleName");
 		String fileSource = (String) theForm.get("fileSource");
-		CharacterizationFileBean fileBean = (CharacterizationFileBean) theForm
+		DerivedBioAssayDataBean fileBean = (DerivedBioAssayDataBean) theForm
 				.get("file");
 		String fileNumber = (String) theForm.get("fileNumber");
 		String characterizationName = (String) theForm
@@ -44,16 +43,16 @@ public class LoadDerivedBioAssayDataAction extends AbstractDispatchAction {
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		fileBean.setCharacterizationName(characterizationName);
 		fileBean.setParticleName(particleName);
-		
-		CharacterizationFileBean savedFileBean = null;
+
+		DerivedBioAssayDataBean savedFileBean = null;
 		if (fileSource.equals("new")) {
 			FormFile uploadedFile = (FormFile) theForm.get("uploadedFile");
-			fileBean.setUploadedFile(uploadedFile);		
+			fileBean.setUploadedFile(uploadedFile);
 			savedFileBean = service.saveCharacterizationFile(fileBean);
 		} else {
 			// updating existingFileBean with form data
 			if (fileBean.getId() != null) {
-				CharacterizationFileBean existingFileBean = (CharacterizationFileBean) service
+				DerivedBioAssayDataBean existingFileBean = (DerivedBioAssayDataBean) service
 						.getFile(fileBean.getId(), CaNanoLabConstants.OUTPUT);
 
 				existingFileBean.setTitle(fileBean.getTitle());
@@ -107,7 +106,8 @@ public class LoadDerivedBioAssayDataAction extends AbstractDispatchAction {
 		InitSessionSetup.getInstance().clearInventorySession(session);
 		String fileId = request.getParameter("fileId");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		LabFileBean fileBean = service.getDerivedDataFile(fileId);
+		DerivedBioAssayDataBean fileBean = service
+				.getDerivedBioAssayData(fileId);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		theForm.set("file", fileBean);
 		String actionName = request.getParameter("actionName");
@@ -128,10 +128,10 @@ public class LoadDerivedBioAssayDataAction extends AbstractDispatchAction {
 			throws Exception {
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CharacterizationFileBean fileBean = (CharacterizationFileBean) theForm
+		DerivedBioAssayDataBean fileBean = (DerivedBioAssayDataBean) theForm
 				.get("file");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		service.updateDerivedDataFileMetaData(fileBean);
+		service.updateDerivedBioAssayDataMetaData(fileBean);
 
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage(

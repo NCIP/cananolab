@@ -3,27 +3,29 @@
  */
 package gov.nih.nci.calab.domain.nano.characterization;
 
-import gov.nih.nci.calab.domain.DerivedDataFile;
+import gov.nih.nci.calab.domain.Keyword;
+import gov.nih.nci.calab.domain.LabFile;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * @author zengje
  * 
  */
-public class DerivedBioAssayData implements Serializable {
+public class DerivedBioAssayData extends LabFile implements Serializable {
 
 	private static final long serialVersionUID = 1234567890L;
 
 	private Long id;
 
-	private String type;
-
-	private DerivedDataFile file;
+	private String category;
 
 	private Collection<Datum> datumCollection = new ArrayList<Datum>();
+
+	private Collection<Keyword> keywordCollection = new HashSet<Keyword>();
 
 	/**
 	 * 
@@ -41,12 +43,12 @@ public class DerivedBioAssayData implements Serializable {
 		this.id = id;
 	}
 
-	public String getType() {
-		return type;
+	public String getCategory() {
+		return category;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setCategory(String type) {
+		this.category = type;
 	}
 
 	public Collection<Datum> getDatumCollection() {
@@ -57,12 +59,11 @@ public class DerivedBioAssayData implements Serializable {
 		this.datumCollection = datumCollection;
 	}
 
-	public DerivedDataFile getFile() {
-		return file;
+	public Collection<Keyword> getKeywordCollection() {
+		return keywordCollection;
 	}
 
-	public void setFile(DerivedDataFile file) {
-		this.file = file;
+	public void setKeywordCollection(Collection<Keyword> keywordCollection) {
+		this.keywordCollection = keywordCollection;
 	}
-
 }

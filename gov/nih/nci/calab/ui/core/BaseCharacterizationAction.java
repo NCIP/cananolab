@@ -3,7 +3,7 @@ package gov.nih.nci.calab.ui.core;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
-import gov.nih.nci.calab.dto.characterization.CharacterizationFileBean;
+import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.dto.characterization.ConditionBean;
 import gov.nih.nci.calab.dto.characterization.DatumBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
@@ -71,12 +71,10 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		int fileNumber = 0;
 		for (DerivedBioAssayDataBean obj : charBean
 				.getDerivedBioAssayDataList()) {
-			CharacterizationFileBean fileBean = (CharacterizationFileBean) request
+			DerivedBioAssayDataBean fileBean = (DerivedBioAssayDataBean) request
 					.getSession().getAttribute(
 							"characterizationFile" + fileNumber);
-			if (fileBean != null) {
-				obj.setFile(fileBean);
-			}
+			obj=fileBean;
 			fileNumber++;
 		}
 
@@ -91,7 +89,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			DynaValidatorForm theForm, SubmitNanoparticleService service)
 			throws Exception {
 		CharacterizationBean charBean = (CharacterizationBean) theForm
-				.get("achar");		
+				.get("achar");
 		String[] otherParticles = (String[]) theForm.get("otherParticles");
 		Boolean copyData = (Boolean) theForm.get("copyData");
 
@@ -111,10 +109,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			if (!copyData) {
 				List<DerivedBioAssayDataBean> dataList = newCharBean
 						.getDerivedBioAssayDataList();
-				for (DerivedBioAssayDataBean derivedBioAssayData : dataList) {
-					CharacterizationFileBean fileBean = derivedBioAssayData
-							.getFile();
-					service.saveCharacterizationFile(fileBean);
+				for (DerivedBioAssayDataBean derivedBioAssayData : dataList) {					
+					service.saveCharacterizationFile(derivedBioAssayData);
 				}
 			}
 			charBeans[i] = newCharBean;
@@ -289,24 +285,20 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		// set up charaterization files in the session
 		int fileNumber = 0;
 		for (DerivedBioAssayData obj : aChar.getDerivedBioAssayDataCollection()) {
-			if (obj.getFile() != null) {
-				CharacterizationFileBean fileBean = new CharacterizationFileBean(obj.getFile());
-				boolean status = userService.checkReadPermission(user, fileBean
-						.getId());
-				if (status) {
-					List<String> accessibleGroups = userService
-							.getAccessibleGroups(fileBean.getId(),
-									CaNanoLabConstants.CSM_READ_ROLE);
-					String[] visibilityGroups = accessibleGroups
-							.toArray(new String[0]);
-					fileBean.setVisibilityGroups(visibilityGroups);
-					request.getSession().setAttribute(
-							"characterizationFile" + fileNumber, fileBean);
-				}
-			} else {
-				request.getSession().removeAttribute(
-						"characterizationFile" + fileNumber);
+			DerivedBioAssayDataBean fileBean = new DerivedBioAssayDataBean(obj);
+			boolean status = userService.checkReadPermission(user, fileBean
+					.getId());
+			if (status) {
+				List<String> accessibleGroups = userService
+						.getAccessibleGroups(fileBean.getId(),
+								CaNanoLabConstants.CSM_READ_ROLE);
+				String[] visibilityGroups = accessibleGroups
+						.toArray(new String[0]);
+				fileBean.setVisibilityGroups(visibilityGroups);
+				request.getSession().setAttribute(
+						"characterizationFile" + fileNumber, fileBean);
 			}
+
 			fileNumber++;
 		}
 		initSetup(request, theForm);

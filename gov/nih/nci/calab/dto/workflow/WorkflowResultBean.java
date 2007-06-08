@@ -1,8 +1,8 @@
 package gov.nih.nci.calab.dto.workflow;
 
-import java.util.Date;
-
 import gov.nih.nci.calab.dto.inventory.AliquotBean;
+
+import java.util.Date;
 
 /**
  * This class includes all properties of a workflow to be displayed in the

@@ -132,13 +132,13 @@ public class FileService {
 		File pathDir = new File(filePath);
 		if (!pathDir.exists())
 			pathDir.mkdirs();
-		
-		String fileName=uploadedFile.getFileName();
+
+		String fileName = uploadedFile.getFileName();
 		if (addTimeStampPrefix) {
 			fileName = prefixFileNameWithTimeStamp(fileName);
 		}
 		String fullFileName = filePath + File.separator + fileName;
-		FileOutputStream oStream = new FileOutputStream(new File(fullFileName));		
+		FileOutputStream oStream = new FileOutputStream(new File(fullFileName));
 		writeFile(uploadedFile.getInputStream(), oStream);
 		return fileName;
 	}

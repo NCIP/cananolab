@@ -6,8 +6,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.zip.CRC32;
 
-import org.apache.log4j.Logger;
-
 public class AppletValidatorCodeGenerator
 {
 		

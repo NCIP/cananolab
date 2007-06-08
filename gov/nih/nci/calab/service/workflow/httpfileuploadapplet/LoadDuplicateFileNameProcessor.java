@@ -1,7 +1,5 @@
 package gov.nih.nci.calab.service.workflow.httpfileuploadapplet;
 
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.ArrayList;
