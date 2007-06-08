@@ -20,7 +20,7 @@
 		</putList>
 		<putList name="toxActions">
 			<item value="Oxidative Stress" link="invitroToxicityOxidativeStress.do?dispatch=setup&amp;page=0" />
-			<item value="Enzyme Function" link="invitroToxicityEnzymeInduction.do?dispatch=setup&amp;page=0" />
+			<item value="Enzyme Induction" link="invitroToxicityEnzymeInduction.do?dispatch=setup&amp;page=0" />
 		</putList>
 		<putList name="cytoToxActions">
 			<item value="Cell Viability" link="invitroCytotoxicityCellViability.do?dispatch=setup&amp;page=0" />
@@ -241,7 +241,6 @@
 		<put name="submitContent" value="/submit/invitro/bodyInvitroCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Immunotoxicity - Hemolysis" />
 		<put name="actionName" value="invitroImmunotoxicityHemolysis" />
-		<put name="formName" value="invitroImmunotoxicityHemolysisForm" />
 		<put name="formType" value="Immunotoxicity" />
 		<put name="dataLabel" value="Percent Hemolysis" />
 		<put name="dataUnit" value="%" />
@@ -259,7 +258,6 @@
 		<put name="submitContent" value="/submit/invitro/bodyInvitroCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Immunotoxicity - Coagulation" />
 		<put name="actionName" value="invitroImmunotoxicityCoagulation" />
-		<put name="formName" value="invitroImmunotoxicityCoagulationForm" />
 		<put name="formType" value="Immunotoxicity" />
 		<put name="dataLabel" value="Coagulation Time" />
 		<put name="dataUnit" value="seconds" />
@@ -278,7 +276,6 @@
 		<put name="submitContent" value="/submit/invitro/bodyInvitroCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Immunotoxicity - Platelet Aggregation" />
 		<put name="actionName" value="invitroImmunotoxicityPlateletAggregation" />
-		<put name="formName" value="invitroImmunotoxicityPlateletAggregationForm" />
 		<put name="formType" value="Immunotoxicity" />
 		<put name="dataLabel" value="Platelet Aggregation Percentage" />
 		<put name="dataUnit" value="%" />
@@ -297,7 +294,6 @@
 		<put name="submitContent" value="/submit/invitro/bodyInvitroCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Immunotoxicity - Protein Binding" />
 		<put name="actionName" value="invitroImmunotoxicityProteinBinding" />
-		<put name="formName" value="invitroImmunotoxicityProteinBindingForm" />
 		<put name="formType" value="Immunotoxicity" />
 		<put name="dataLabel" value="Protein Binding Percentage" />
 		<put name="dataUnit" value="%" />
@@ -316,7 +312,6 @@
 		<put name="submitContent" value="/submit/invitro/bodyInvitroCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Immunotoxicity - Complement Activation" />
 		<put name="actionName" value="invitroImmunotoxicityComplementActivation" />
-		<put name="formName" value="invitroImmunotoxicityComplementActivationForm" />
 		<put name="formType" value="Immunotoxicity" />
 		<put name="dataLabel" value="Complement Activation Percentage" />
 		<put name="dataUnit" value="%" />
@@ -335,7 +330,6 @@
 		<put name="submitContent" value="/submit/invitro/bodyInvitroCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Immunotoxicity - Cytokine Induction" />
 		<put name="actionName" value="invitroImmunotoxicityCytokineInduction" />
-		<put name="formName" value="invitroImmunotoxicityCytokineInductionForm" />
 		<put name="formType" value="Immunotoxicity" />
 		<put name="dataLabel" value="Cytokine Concentraion" />
 		<put name="dataUnit" value="mg/ml" />
@@ -354,7 +348,6 @@
 		<put name="submitContent" value="/submit/invitro/bodyInvitroCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Immunotoxicity - Chemotaxis" />
 		<put name="actionName" value="invitroImmunotoxicityChemotaxis" />
-		<put name="formName" value="invitroImmunotoxicityChemotaxisForm" />
 		<put name="formType" value="Immunotoxicity" />
 		<put name="dataLabel" value="Relative Fluorescent Values" />
 		<put name="dataUnit" value="RFU" />
@@ -373,7 +366,6 @@
 		<put name="submitContent" value="/submit/invitro/bodyInvitroCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Immunotoxicity - NK Cell Cytotoxic Activity" />
 		<put name="actionName" value="invitroImmunotoxicityNKCellCytotoxicActivity" />
-		<put name="formName" value="invitroImmunotoxicityNKCellCytotoxicActivityForm" />
 		<put name="formType" value="Immunotoxicity" />
 		<put name="dataLabel" value="NK Cell Cytotoxicity Activity Percentage" />
 		<put name="dataUnit" value="%" />
@@ -392,7 +384,6 @@
 		<put name="submitContent" value="/submit/invitro/invitro/bodyInvitroCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Immunotoxicity - Leukocyte Proliferation" />
 		<put name="actionName" value="invitroImmunotoxicityLeukocyteProliferation" />
-		<put name="formName" value="invitroImmunotoxicityLeukocyteProliferationForm" />
 		<put name="formType" value="Immunotoxicity" />
 		<put name="dataLabel" value="Leukocyte Proliferation Percentage" />
 		<put name="dataUnit" value="%" />
@@ -411,7 +402,6 @@
 		<put name="submitContent" value="/submit/invitro/bodyInvitroCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Immunotoxicity - CFU-GM" />
 		<put name="actionName" value="invitroImmunotoxicityCFU_GM" />
-		<put name="formName" value="invitroImmunotoxicityCFU_GMForm" />
 		<put name="formType" value="Immunotoxicity" />
 		<put name="dataLabel" value="CFU_GM" />
 		<put name="dataUnit" value="CFU" />
@@ -430,7 +420,6 @@
 		<put name="submitContent" value="/submit/invitro/bodyInvitroCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Immunotoxicity - Oxidative Burst" />
 		<put name="actionName" value="invitroImmunotoxicityOxidativeBurst" />
-		<put name="formName" value="invitroImmunotoxicityOxidativeBurstForm" />
 		<put name="formType" value="Immunotoxicity" />
 		<put name="dataLabel" value="Oxidative Burst Percentage" />
 		<put name="dataUnit" value="%" />
@@ -449,7 +438,6 @@
 		<put name="submitContent" value="/submit/invitro/bodyInvitroCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Immunotoxicity - Phagocytosis" />
 		<put name="actionName" value="invitroImmunotoxicityPhagocytosis" />
-		<put name="formName" value="invitroImmunotoxicityPhagocytosisForm" />
 		<put name="formType" value="Immunotoxicity" />
 		<put name="dataLabel" value="Fold Phagocytosis Induction" />
 		<put name="dataUnit" value="fold" />
@@ -468,7 +456,6 @@
 		<put name="submitContent" value="/submit/invitro/bodyInvitroCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Cytotoxicity - Cell Viability" />
 		<put name="actionName" value="invitroCytotoxicityCellViability" />
-		<put name="formName" value="invitroCytotoxicityCellViabilityForm" />
 		<put name="formType" value="Cytotoxicity" />
 		<put name="dataLabel" value="Percent Cell Viability" />
 		<put name="dataUnit" value="%" />
@@ -487,7 +474,6 @@
 		<put name="submitContent" value="/submit/invitro/bodyInvitroCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Cytotoxicity - Caspase 3 Activation" />
 		<put name="actionName" value="invitroCytotoxicityCaspase3Activation" />
-		<put name="formName" value="invitroCytotoxicityCaspase3ActivationForm" />
 		<put name="formType" value="Cytotoxicity" />
 		<put name="dataLabel" value="Percent Caspase 3 Activation" />
 		<put name="dataUnit" value="%" />
@@ -506,7 +492,6 @@
 		<put name="submitContent" value="/submit/invitro/bodyInvitroCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Toxicity - Enzyme Induction" />
 		<put name="actionName" value="invitroToxicityEnzymeInduction" />
-		<put name="formName" value="invitroToxicityEnzymeInductionForm" />
 		<put name="formType" value="Toxicity" />
 		<put name="dataLabel" value="Enzyme Induction Percentage" />
 		<put name="dataUnit" value="%" />
@@ -525,7 +510,6 @@
 		<put name="submitContent" value="/submit/invitro/bodyInvitroCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Toxicity - Oxidative Stress" />
 		<put name="actionName" value="invitroToxicityOxidativeStress" />
-		<put name="formName" value="invitroToxicityOxidativeStressForm" />
 		<put name="formType" value="Toxicity" />
 		<put name="dataLabel" value="Oxidative Stress Percentage" />
 		<put name="dataUnit" value="%" />
@@ -544,7 +528,6 @@
 		<put name="submitContent" value="/submit/invitro/bodyInvitroCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Metabolic Stability - CYP450" />
 		<put name="actionName" value="invitroMetabolicStabilityCYP450" />
-		<put name="formName" value="invitroMetabolicStabilityCYP450Form" />
 		<put name="formType" value="MetabolicStability" />
 		<put name="dataLabel" value="CYP450 Percentage" />
 		<put name="dataUnit" value="%" />
@@ -563,7 +546,6 @@
 		<put name="submitContent" value="/submit/invitro/bodyInvitroCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - MetabolicStability - ROS" />
 		<put name="actionName" value="invitroMetabolicStabilityROS" />
-		<put name="formName" value="invitroMetabolicStabilityROSForm" />
 		<put name="formType" value="MetabolicStability" />
 		<put name="dataLabel" value="ROS Percentage" />
 		<put name="dataUnit" value="%" />
@@ -573,24 +555,6 @@
 	<definition name="submit.addmetabolicstability.ros" extends="calab.home">
 		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
 		<put name="calabContent" value="submit.addmetabolicstability.ros.content" />
-		<put name="menu" value="submit" />
-	</definition>
-
-	<!-- definition for the invitro metabolic stability ROS page -->
-	<definition name="submit.addmetabolicstability.glucuronidationsulphation.content" extends="submit.content.home">
-		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
-		<put name="submitContent" value="/submit/invitro/bodyInvitroCharacterization.jsp" />
-		<put name="pageTitle" value="Invitro Characterization - Metabolic Stability - Glucuronidation Sulphation" />
-		<put name="actionName" value="invitroMetabolicStabilityGlucuronidationSulphation" />
-		<put name="formName" value="invitroMetabolicStabilityGlucuronidationSulphationForm" />
-		<put name="formType" value="MetabolicStability" />
-		<put name="dataLabel" value="Glucuronidation Sulphation Percentage" />
-		<put name="dataUnit" value="%" />
-	</definition>
-
-	<definition name="submit.addmetabolicstability.glucuronidationsulphation" extends="calab.home">
-		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
-		<put name="calabContent" value="submit.addmetabolicstability.glucuronidationsulphation.content" />
 		<put name="menu" value="submit" />
 	</definition>
 
