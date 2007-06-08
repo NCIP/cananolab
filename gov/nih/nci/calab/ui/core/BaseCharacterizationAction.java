@@ -290,8 +290,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		int fileNumber = 0;
 		for (DerivedBioAssayData obj : aChar.getDerivedBioAssayDataCollection()) {
 			if (obj.getFile() != null) {
-				LabFileBean fileBean = new LabFileBean(obj.getFile(),
-						CaNanoLabConstants.OUTPUT);
+				CharacterizationFileBean fileBean = new CharacterizationFileBean(obj.getFile());
 				boolean status = userService.checkReadPermission(user, fileBean
 						.getId());
 				if (status) {
