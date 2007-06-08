@@ -54,10 +54,8 @@ package gov.nih.nci.calab.service.util.file;
 import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.io.Serializable;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class serves as a container for hybridization file annotation data 

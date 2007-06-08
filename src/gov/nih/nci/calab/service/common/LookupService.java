@@ -5,6 +5,8 @@ import gov.nih.nci.calab.db.IDataAccess;
 import gov.nih.nci.calab.domain.Aliquot;
 import gov.nih.nci.calab.domain.Instrument;
 import gov.nih.nci.calab.domain.MeasureUnit;
+import gov.nih.nci.calab.domain.Protocol;
+import gov.nih.nci.calab.domain.ProtocolFile;
 import gov.nih.nci.calab.domain.Sample;
 import gov.nih.nci.calab.domain.SampleContainer;
 import gov.nih.nci.calab.domain.StorageElement;
@@ -19,26 +21,23 @@ import gov.nih.nci.calab.dto.inventory.ContainerInfoBean;
 import gov.nih.nci.calab.dto.inventory.SampleBean;
 import gov.nih.nci.calab.dto.workflow.AssayBean;
 import gov.nih.nci.calab.service.security.UserService;
-import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.CaNanoLabComparators;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
-import gov.nih.nci.calab.domain.ProtocolFile;
-import gov.nih.nci.calab.domain.Protocol;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.SortedSet;
-import java.util.HashSet;
 import java.util.TreeSet;
-import java.util.Iterator;
-import org.hibernate.collection.PersistentSet;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.util.LabelValueBean;
+import org.hibernate.collection.PersistentSet;
 
 /**
  * The service to return prepopulated data that are shared across different
@@ -47,7 +46,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.105 2007-06-04 19:08:59 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.106 2007-06-08 22:15:48 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);

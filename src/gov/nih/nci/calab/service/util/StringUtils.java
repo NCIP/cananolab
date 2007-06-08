@@ -4,10 +4,9 @@ import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.log4j.Logger;
-
-import java.util.List;
 
 /**
  * This class contains a set of utilities for converting Strings to other
@@ -16,7 +15,7 @@ import java.util.List;
  * @author pansu
  * 
  */
-/* CVS $Id: StringUtils.java,v 1.14 2007-06-05 20:10:02 pansu Exp $ */
+/* CVS $Id: StringUtils.java,v 1.15 2007-06-08 22:15:48 pansu Exp $ */
 
 public class StringUtils {
 	private static Logger logger = Logger.getLogger(StringUtils.class);

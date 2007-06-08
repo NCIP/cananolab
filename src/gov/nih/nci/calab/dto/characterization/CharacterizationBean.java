@@ -162,7 +162,7 @@ public class CharacterizationBean {
 		aChar.setCreatedDate(getCreatedDate());
 
 		for (DerivedBioAssayDataBean table : getDerivedBioAssayDataList()) {
-			aChar.getDerivedBioAssayDataCollection().add(table.getDomainObj());
+			aChar.getDerivedBioAssayDataCollection().add(table.getDomainObject());
 		}
 
 		InstrumentConfiguration instrumentConfig = new InstrumentConfiguration();

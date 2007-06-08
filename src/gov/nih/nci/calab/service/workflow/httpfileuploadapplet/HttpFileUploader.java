@@ -52,23 +52,24 @@ INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIM
 package gov.nih.nci.calab.service.workflow.httpfileuploadapplet;
 
 
-import java.util.Vector;
-import java.util.Iterator;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
-import java.util.zip.ZipInputStream;
-import java.io.IOException;
-import java.io.File;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.BufferedOutputStream;
-import java.io.DataOutputStream;
-import java.net.URLConnection;
-import java.net.URL;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.Socket;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.NumberFormat;
+import java.util.Iterator;
+import java.util.Vector;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
+
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.MultipartPostMethod;
 

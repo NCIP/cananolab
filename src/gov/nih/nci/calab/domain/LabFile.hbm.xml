@@ -54,13 +54,20 @@
 				class="gov.nih.nci.calab.domain.DataStatus"
 				column="DATA_STATUS_PK_ID" />
 		</joined-subclass>
-		<joined-subclass name="gov.nih.nci.calab.domain.DerivedDataFile"
-			table="DERIVED_DATA_FILE">
-			<key column="DERIVED_FILE_PK_ID" />
-			<set name="keywordCollection" table="KEYWORD_DERIVED_FILE"
+		<joined-subclass name="gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData"
+			table="DERVIED_BIOASSAY_DATA">
+			<key column="DERIVED_BIOASSAY_DATA_PK_ID" />
+			<property name="category" type="java.lang.String" column="CATEGORY" />
+			<list name="datumCollection" cascade="all-delete-orphan" lazy="true">
+			<cache usage="read-write" />
+			<key column="DERIVED_BIOASSAY_DATA_PK_ID" />
+			<list-index column="LIST_INDEX" />
+			<one-to-many class="gov.nih.nci.calab.domain.nano.characterization.Datum" />
+		    </list>
+			<set name="keywordCollection" table="KEYWORD_BIOASSAY_DATA"
 				cascade="all-delete-orphan" lazy="false">
 				<cache usage="read-write" />
-				<key column="DERIVED_FILE_PK_ID" />
+				<key column="DERIVED_BIOASSAY_DATA_PK_ID" />
 				<many-to-many class="gov.nih.nci.calab.domain.Keyword"
 					column="KEYWORD_PK_ID" />
 			</set>

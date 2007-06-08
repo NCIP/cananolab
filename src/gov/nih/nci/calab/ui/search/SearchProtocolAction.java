@@ -6,10 +6,9 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchProtocolAction.java,v 1.4 2007-05-25 18:07:12 chenhang Exp $ */
+/* CVS $Id: SearchProtocolAction.java,v 1.5 2007-06-08 22:15:48 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
-import gov.nih.nci.calab.dto.common.ProtocolBean;
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.exception.CalabException;

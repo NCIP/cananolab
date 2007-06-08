@@ -6,17 +6,23 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: SubmitProtocolAction.java,v 1.9 2007-05-31 14:55:39 chenhang Exp $ */
+/* CVS $Id: SubmitProtocolAction.java,v 1.10 2007-06-08 22:15:48 pansu Exp $ */
 
-import gov.nih.nci.calab.dto.common.ProtocolFileBean;
 import gov.nih.nci.calab.dto.common.ProtocolBean;
+import gov.nih.nci.calab.dto.common.ProtocolFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
-import gov.nih.nci.calab.service.submit.SubmitProtocolService;
 import gov.nih.nci.calab.service.search.SearchProtocolService;
+import gov.nih.nci.calab.service.submit.SubmitProtocolService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,13 +36,6 @@ import org.apache.struts.action.ActionMessages;
 import org.apache.struts.upload.FormFile;
 import org.apache.struts.util.LabelValueBean;
 import org.apache.struts.validator.DynaValidatorForm;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 public class SubmitProtocolAction extends AbstractDispatchAction {
 
