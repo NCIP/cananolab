@@ -41,7 +41,7 @@ public class CytotoxicityBean extends CharacterizationBean {
 		this.cellLine = cellLine;
 	}
 
-	public void getDomainObj(Cytotoxicity cytotoxicity) {
+	public void updateDomainObj(Cytotoxicity cytotoxicity) {
 		super.updateDomainObj(cytotoxicity);
 		cytotoxicity.setCellLine(this.cellLine);
 	}
