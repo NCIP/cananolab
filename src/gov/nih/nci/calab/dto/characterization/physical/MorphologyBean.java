@@ -2,7 +2,6 @@ package gov.nih.nci.calab.dto.characterization.physical;
 
 import gov.nih.nci.calab.domain.nano.characterization.physical.Morphology;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
-import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 /**
  * This class represents the Morphology characterization information to be shown

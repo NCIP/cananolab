@@ -1,12 +1,10 @@
 package gov.nih.nci.calab.dto.search;
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
-import gov.nih.nci.calab.dto.common.SortableName;
-import java.util.List;
-import java.util.ArrayList;
-import org.displaytag.decorator.TableDecorator;
-import gov.nih.nci.calab.dto.common.ProtocolBean;
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
+import gov.nih.nci.calab.dto.common.SortableName;
+
+import org.displaytag.decorator.TableDecorator;
 /**
  * This decorator is used to for decorate different properties of a report to be
  * shown properly in the view page using display tag lib.
