@@ -8,7 +8,7 @@
 		<td>
 			<center>
 				<h3>
-					Paritle Disclaimer
+					Particle Disclaimer
 				</h3>
 			</center>
 			Please do not make conclusion with individual data and graph for this particle.  Please review the final report
