@@ -1,8 +1,8 @@
 package gov.nih.nci.calab.domain.nano.characterization;
 
-import java.io.Serializable;
-
 import gov.nih.nci.calab.domain.Measurement;
+
+import java.io.Serializable;
 
 public class Condition implements Serializable {
 
