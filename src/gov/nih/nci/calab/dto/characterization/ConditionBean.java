@@ -18,7 +18,7 @@ public class ConditionBean {
 
 	private String value;
 
-	private String valueUnit;
+	private String unit;
 
 	public ConditionBean() {
 
@@ -28,7 +28,7 @@ public class ConditionBean {
 		this.id = condition.getId().toString();
 		this.type = condition.getType();
 		this.value = (condition.getValue()!= null)?StringUtils.convertToString(condition.getValue().getValue()):"";
-		this.valueUnit = (condition.getValue()!= null)?condition.getValue().getUnitOfMeasurement():"";
+		this.unit = (condition.getValue()!= null)?condition.getValue().getUnitOfMeasurement():"";
 	}
 
 	public String getId() {
@@ -55,12 +55,12 @@ public class ConditionBean {
 		this.value = value;
 	}
 
-	public String getValueUnit() {
-		return valueUnit;
+	public String getUnit() {
+		return unit;
 	}
 
-	public void setValueUnit(String valueUnit) {
-		this.valueUnit = valueUnit;
+	public void setUnit(String unit) {
+		this.unit = unit;
 	}
 
 	public Condition getDomainObj() {
@@ -71,7 +71,7 @@ public class ConditionBean {
 		tableData.setType(type);
 		Measurement measurement=new Measurement();
 		measurement.setValue(new Float(value));
-		measurement.setUnitOfMeasurement(valueUnit);
+		measurement.setUnitOfMeasurement(unit);
 		tableData.setValue(measurement);
 		return tableData;
 	}
