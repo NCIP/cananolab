@@ -55,7 +55,7 @@
 				column="DATA_STATUS_PK_ID" />
 		</joined-subclass>
 		<joined-subclass name="gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData"
-			table="DERVIED_BIOASSAY_DATA">
+			table="DERIVED_BIOASSAY_DATA">
 			<key column="DERIVED_BIOASSAY_DATA_PK_ID" />
 			<property name="category" type="java.lang.String" column="CATEGORY" />
 			<list name="datumCollection" cascade="all-delete-orphan" lazy="true">
