@@ -19,7 +19,7 @@ public class Datum implements Serializable {
 
 	private Long id;
 
-	private String type;
+	private String name;
 
 	// private Boolean control;
 	private Measurement value;
@@ -44,12 +44,12 @@ public class Datum implements Serializable {
 		this.id = id;
 	}
 
-	public String getType() {
-		return type;
+	public String getName() {
+		return name;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setName(String type) {
+		this.name = type;
 	}
 
 	// public Boolean getControl() {

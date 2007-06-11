@@ -21,7 +21,7 @@ public class DatumBean {
 
 	private String id;
 
-	private String type;
+	private String name;
 
 	private String value;
 
@@ -44,7 +44,7 @@ public class DatumBean {
 
 	public DatumBean(Datum datum) {
 		this.id = datum.getId().toString();
-		this.type = datum.getType();
+		this.name = datum.getName();
 		this.value = (datum.getValue() != null) ? StringUtils
 				.convertToString(datum.getValue().getValue()) : "";
 		this.unit = (datum.getValue() != null) ? StringUtils
@@ -79,12 +79,12 @@ public class DatumBean {
 		this.id = id;
 	}
 
-	public String getType() {
-		return type;
+	public String getName() {
+		return name;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setName(String type) {
+		this.name = type;
 	}
 
 	public String getValue() {
@@ -132,7 +132,7 @@ public class DatumBean {
 		if (getId() != null && getId().length() > 0) {
 			tableData.setId(new Long(getId()));
 		}
-		tableData.setType(type);
+		tableData.setName(name);
 		Measurement measurement = new Measurement();
 		if (value.length() > 0)
 			measurement.setValue(new Float(value));

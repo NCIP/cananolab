@@ -26,7 +26,7 @@ public class ConditionBean {
 	
 	public ConditionBean(Condition condition) {
 		this.id = condition.getId().toString();
-		this.type = condition.getType();
+		this.type = condition.getName();
 		this.value = (condition.getValue()!= null)?StringUtils.convertToString(condition.getValue().getValue()):"";
 		this.unit = (condition.getValue()!= null)?condition.getValue().getUnitOfMeasurement():"";
 	}
@@ -68,7 +68,7 @@ public class ConditionBean {
 		if (getId() != null && getId().length() > 0) {
 			tableData.setId(new Long(getId()));
 		}
-		tableData.setType(type);
+		tableData.setName(type);
 		Measurement measurement=new Measurement();
 		measurement.setValue(new Float(value));
 		measurement.setUnitOfMeasurement(unit);
