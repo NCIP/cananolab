@@ -10,7 +10,7 @@ public class Condition implements Serializable {
 
 	private Long id;
 
-	private String type;
+	private String name;
 
 	private Measurement value;
 
@@ -27,12 +27,12 @@ public class Condition implements Serializable {
 		this.id = id;
 	}
 
-	public String getType() {
-		return type;
+	public String getName() {
+		return name;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setName(String type) {
+		this.name = type;
 	}
 
 	public Measurement getValue() {
