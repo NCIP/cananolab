@@ -165,7 +165,8 @@
 								<span class="indented"><strong>-Physical Characterization</strong> &nbsp;&nbsp;</span>
 								<c:choose>
 									<c:when test="${canUserSubmit eq 'true'}">
-										<a href="submitAction.do?submitType=physical"> <em>add</em></a>
+										<a href="submitAction.do?submitType=physical"> <em>add</em></a>&nbsp;
+										<a href="deleteAction.do?charCategory=Physical&dispatch=setup&particleType=${particleType}&particleName=${particleName}"> <em>delete</em></a>
 									</c:when>
 								</c:choose>
 								<br>
@@ -193,6 +194,7 @@
 								<c:choose>
 									<c:when test="${canUserSubmit eq 'true'}">
 										<a href="submitAction.do?submitType=tox"> <em>add</em></a>
+										<a href="deleteAction.do?charCategory=Toxicity&dispatch=setup&particleType=${particleType}&particleName=${particleName}"> <em>delete</em></a>
 									</c:when>
 								</c:choose>
 								<br>
@@ -220,6 +222,7 @@
 								<c:choose>
 									<c:when test="${canUserSubmit eq 'true'}">
 										<a href="submitAction.do?submitType=cytoTox"> <em>add</em></a>
+										<a href="deleteAction.do?charCategory=Cytotoxicity&dispatch=setup&particleType=${particleType}&particleName=${particleName}"> <em>delete</em></a>
 									</c:when>
 								</c:choose>
 								<br>
@@ -250,6 +253,7 @@
 								<c:choose>
 									<c:when test="${canUserSubmit eq 'true'}">
 										<a href="submitAction.do?submitType=bloodContactTox"> <em>add</em></a>
+										<a href="deleteAction.do?charCategory=BloodContact&dispatch=setup&particleType=${particleType}&particleName=${particleName}"> <em>delete</em></a>
 									</c:when>
 								</c:choose>
 								<br>
@@ -279,6 +283,7 @@
 								<c:choose>
 									<c:when test="${canUserSubmit eq 'true'}">
 										<a href="submitAction.do?submitType=immuneCellFuncTox"> <em>add</em></a>
+										<a href="deleteAction.do?charCategory=ImmuneCellFuntion&dispatch=setup&particleType=${particleType}&particleName=${particleName}"> <em>delete</em></a>
 									</c:when>
 								</c:choose>
 								<br>
