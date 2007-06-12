@@ -181,9 +181,9 @@ public class Characterization implements Serializable {
 
 	public static final String TOXICITY_OXIDATIVE_STRESS_DATA_TYPE = "Percent Oxidative Stress";
 
-	public static final String TOXICITY_ENZYME_FUNCTION = "Enzyme Function";
+	public static final String TOXICITY_ENZYME_INDUCTION = "Enzyme Induction";
 
-	public static final String TOXICITY_ENZYME_FUNCTION_DATA_TYPE = "Percent Enzyme Induction";
+	public static final String TOXICITY_ENZYME_INDUCTION_DATA_TYPE = "Percent Enzyme Induction";
 
 	public static final String CYTOXICITY = "Cytoxicity";
 

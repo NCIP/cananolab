@@ -11,6 +11,6 @@ public class EnzymeInduction extends Toxicity {
 	}
 
 	public String getName() {
-		return TOXICITY_ENZYME_FUNCTION;
+		return TOXICITY_ENZYME_INDUCTION;
 	}
 }
