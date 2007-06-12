@@ -260,7 +260,7 @@ public class InitSessionSetup {
 				|| session.getAttribute("newAliquotCreated") != null) {
 			ContainerInfoBean containerInfo = lookupService
 					.getAliquotContainerInfo();
-			session.setAttribute("aliquotContainerInfo", containerInfo);			
+			session.setAttribute("aliquotContainerInfo", containerInfo);
 		}
 		session.removeAttribute("newAliquotCreated");
 	}
@@ -518,22 +518,23 @@ public class InitSessionSetup {
 		}
 
 		UserBean user = (UserBean) session.getAttribute("user");
-		SearchReportService searchReportService=new SearchReportService();
+		SearchReportService searchReportService = new SearchReportService();
 		if (session.getAttribute("particleReports") == null
 				|| session.getAttribute("newReportCreated") != null
 				|| session.getAttribute("newParticleCreated") != null) {
 
-			List<LabFileBean> reportBeans = searchReportService.getReportInfo(particleName,
-					particleType, CaNanoLabConstants.REPORT, user);
+			List<LabFileBean> reportBeans = searchReportService
+					.getReportInfo(particleName, particleType,
+							CaNanoLabConstants.REPORT, user);
 			session.setAttribute("particleReports", reportBeans);
 		}
 
 		if (session.getAttribute("particleAssociatedFiles") == null
 				|| session.getAttribute("newReportCreated") != null
 				|| session.getAttribute("newParticleCreated") != null) {
-			List<LabFileBean> associatedBeans = searchReportService.getReportInfo(
-					particleName, particleType,
-					CaNanoLabConstants.ASSOCIATED_FILE, user);
+			List<LabFileBean> associatedBeans = searchReportService
+					.getReportInfo(particleName, particleType,
+							CaNanoLabConstants.ASSOCIATED_FILE, user);
 			session.setAttribute("particleAssociatedFiles", associatedBeans);
 		}
 		// not part of the side menu, but need to up
@@ -568,7 +569,7 @@ public class InitSessionSetup {
 					.getRemoteFunctionMap(particleName, gridNode);
 			session.setAttribute("remoteFuncTypeFuncs", funcTypeFuncs);
 		}
-		
+
 		if (session.getAttribute("remoteParticleReports") == null
 				|| session.getAttribute("newReportCreated") != null
 				|| session.getAttribute("newRemoteParticleCreated") != null) {
@@ -583,7 +584,8 @@ public class InitSessionSetup {
 				|| session.getAttribute("newRemoteParticleCreated") != null) {
 			List<LabFileBean> associatedBeans = service
 					.getRemoteAssociatedFiles(particleName, gridNode);
-			session.setAttribute("remoteParticleAssociatedFiles", associatedBeans);
+			session.setAttribute("remoteParticleAssociatedFiles",
+					associatedBeans);
 		}
 		// not part of the side menu, but need to up
 		if (session.getAttribute("newRemoteParticleCreated") != null) {
@@ -745,70 +747,73 @@ public class InitSessionSetup {
 		session.setAttribute("allFunctionAgentTypes",
 				CaNanoLabConstants.FUNCTION_AGENT_TYPES);
 	}
+
 	public void setProtocolType(HttpSession session) throws Exception {
 		// set protocol types, and protocol names for all these types
 		SortedSet<String> protocolTypes = lookupService.getAllProtocolTypes();
-		for (int i = 0; i < CaNanoLabConstants.PROTOCOL_TYPES.length; i++){
+		for (int i = 0; i < CaNanoLabConstants.PROTOCOL_TYPES.length; i++) {
 			if (!protocolTypes.contains(CaNanoLabConstants.PROTOCOL_TYPES[i]))
 				protocolTypes.add(CaNanoLabConstants.PROTOCOL_TYPES[i]);
 		}
 		session.setAttribute("protocolTypes", protocolTypes);
 	}
-	public void setProtocolSubmitPage(HttpSession session, UserBean user) throws Exception {
+
+	public void setProtocolSubmitPage(HttpSession session, UserBean user)
+			throws Exception {
 		// set protocol types, and protocol names for all these types
 		setProtocolType(session);
-		SortedSet<String> protocolTypes = (SortedSet<String>)session.getAttribute("protocolTypes");
+		SortedSet<String> protocolTypes = (SortedSet<String>) session
+				.getAttribute("protocolTypes");
 		SortedSet<ProtocolBean> pbs = lookupService.getAllProtocols(user);
-		//Now generate two maps: one for type and nameList, 
-		//and one for type and protocolIdList (for the protocol name dropdown box)
+		// Now generate two maps: one for type and nameList,
+		// and one for type and protocolIdList (for the protocol name dropdown
+		// box)
 		Map<String, List<String>> typeNamesMap = new HashMap<String, List<String>>();
 		Map<String, List<String>> typeIdsMap = new HashMap<String, List<String>>();
 		Map<String, List<String>> nameVersionsMap = new HashMap<String, List<String>>();
 		Map<String, List<String>> nameIdsMap = new HashMap<String, List<String>>();
-		for (String type : protocolTypes){
-			for (ProtocolBean pb : pbs){
-				if (type.equals(pb.getType())){
+		for (String type : protocolTypes) {
+			for (ProtocolBean pb : pbs) {
+				if (type.equals(pb.getType())) {
 					List<String> nameList = typeNamesMap.get(type);
 					List<String> idList = typeIdsMap.get(type);
-					if (nameList == null){
+					if (nameList == null) {
 						nameList = new ArrayList<String>();
 						nameList.add(pb.getName());
 						typeNamesMap.put(type, nameList);
-					}
-					else {
+					} else {
 						nameList.add(pb.getName());
 					}
-					if (idList == null){
+					if (idList == null) {
 						idList = new ArrayList<String>();
 						idList.add(pb.getId().toString());
 						typeIdsMap.put(type, idList);
-					}
-					else {
+					} else {
 						idList.add(pb.getId().toString());
-					}	
+					}
 				}
 			}
 		}
-		for (ProtocolBean pb : pbs){
+		for (ProtocolBean pb : pbs) {
 			String id = pb.getId();
 			List<String> versionList = new ArrayList<String>();
 			List<String> idList = new ArrayList<String>();
 			List<ProtocolFileBean> fileBeanList = pb.getFileBeanList();
 			Map<String, ProtocolFileBean> map = new HashMap<String, ProtocolFileBean>();
 
-			for (ProtocolFileBean fb : fileBeanList){
+			for (ProtocolFileBean fb : fileBeanList) {
 				versionList.add(fb.getVersion());
 				map.put(fb.getVersion(), fb);
 			}
 			String[] vlist = versionList.toArray(new String[0]);
 			Arrays.sort(vlist);
 			versionList.clear();
-			for (int i = 0; i < vlist.length; i++){
+			for (int i = 0; i < vlist.length; i++) {
 				ProtocolFileBean fb = map.get(vlist[i]);
 				versionList.add(fb.getVersion());
 				idList.add(fb.getId());
 			}
-			
+
 			nameVersionsMap.put(id, versionList);
 			nameIdsMap.put(id, idList);
 		}
@@ -820,22 +825,24 @@ public class InitSessionSetup {
 		session.setAttribute("protocolVersions", new ArrayList<String>());
 	}
 
-	public void setAllProtocolNameVersionsByType(HttpSession session, String type) throws Exception {
+	public void setAllProtocolNameVersionsByType(HttpSession session,
+			String type) throws Exception {
 		// set protocol name and its versions for a given protocol type.
-		Map<ProtocolBean, List<ProtocolFileBean>> nameVersions = lookupService.getAllProtocolNameVersionByType(type);
+		Map<ProtocolBean, List<ProtocolFileBean>> nameVersions = lookupService
+				.getAllProtocolNameVersionByType(type);
 		SortedSet<LabelValueBean> set = new TreeSet<LabelValueBean>();
 		Set keySet = nameVersions.keySet();
 
-		for (Iterator it = keySet.iterator(); it.hasNext();){
-			ProtocolBean pb = (ProtocolBean)it.next();
+		for (Iterator it = keySet.iterator(); it.hasNext();) {
+			ProtocolBean pb = (ProtocolBean) it.next();
 			List<ProtocolFileBean> fbList = nameVersions.get(pb);
-			for (ProtocolFileBean fb : fbList){
-				set.add(new LabelValueBean(pb.getName() + " - " + fb.getVersion(), fb.getId()));
+			for (ProtocolFileBean fb : fbList) {
+				set.add(new LabelValueBean(pb.getName() + " - "
+						+ fb.getVersion(), fb.getId()));
 			}
 		}
 		session.setAttribute("protocolNameVersionsByType", set);
 	}
-	
 
 	public void setAllRunFiles(HttpSession session, String particleName)
 			throws Exception {
@@ -975,7 +982,7 @@ public class InitSessionSetup {
 		}
 		userService.createAGroup(CaNanoLabConstants.CSM_ADMIN);
 	}
-	
+
 	public void setAllInstruments(HttpSession session) throws Exception {
 		if (session.getAttribute("allInstruments") == null
 				|| session.getAttribute("newParticleCreated") != null) {
@@ -1006,5 +1013,16 @@ public class InitSessionSetup {
 			session.setAttribute("allInstrumentTypeToAbbreviation",
 					typeToAbbreviation);
 		}
+	}
+
+	public void setAllDerivedDataFileTypes(HttpSession session)
+			throws Exception {
+		if (session.getAttribute("allDerivedDataFileTypes") == null
+				|| session.getAttribute("newCharacterizationCreated") != null) {
+
+			List<String> fileTypes = lookupService.getAllDerivedDataFileTypes();
+			session.setAttribute("allDerivedDataFileTypes", fileTypes);
+		}
+		session.removeAttribute("newCharacterizationCreated");
 	}
 }
