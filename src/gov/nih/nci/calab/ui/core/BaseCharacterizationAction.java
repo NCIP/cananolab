@@ -157,28 +157,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		InitSessionSetup.getInstance().setApplicationOwner(session);
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
-		// TODO to be replaced
-		InitSessionSetup.getInstance()
-				.setAllSizeDistributionGraphTypes(session);
-		InitSessionSetup.getInstance().setAllMorphologyTypes(session);
-		InitSessionSetup.getInstance()
-				.setAllMolecularWeightDistributionGraphTypes(session);
-		InitSessionSetup.getInstance().setAllShapeTypes(session);
-		InitSessionSetup.getInstance().setAllPurityDistributionGraphTypes(
-				session);
-		InitSessionSetup.getInstance().setAllAreaMeasureUnits(session);
-		InitSessionSetup.getInstance().setAllChargeMeasureUnits(session);
-
-		InitSessionSetup.getInstance().setAllConcentrationUnits(session);
-		InitSessionSetup.getInstance().setAllCellLines(session);
-		InitSessionSetup.getInstance().setAllConditionTypes(session);
-		InitSessionSetup.getInstance().setAllConditionUnits(session);
-		InitSessionSetup.getInstance().setAllControlTypes(session);
-
 		InitSessionSetup.getInstance().setAllInstruments(session);
-
-		// InitSessionSetup.getInstance().setAllInstruments(session);
-		// InitSessionSetup.getInstance().setAllDerivedDataFileTypes(session);
+		InitSessionSetup.getInstance().setAllDerivedDataFileTypes(session);
 		// TODO If there are more types of charactizations, add their
 		// corresponding
 		// protocol type here.
