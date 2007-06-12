@@ -1,6 +1,7 @@
 package gov.nih.nci.calab.service.submit;
 
 import gov.nih.nci.calab.db.DataAccessProxy;
+import gov.nih.nci.calab.db.HibernateDataAccess;
 import gov.nih.nci.calab.db.IDataAccess;
 import gov.nih.nci.calab.domain.Keyword;
 import gov.nih.nci.calab.domain.LabFile;
@@ -1031,4 +1032,94 @@ public class SubmitNanoparticleService {
 		userService.setVisiblity(fileBean.getId(), fileBean
 				.getVisibilityGroups());
 	}
+	
+	/**
+	 * Delete the characterization
+	 */
+	 public void deleteCharacterization(String strCharId) throws Exception {
+			// if ID is not set save to the database otherwise update
+			HibernateDataAccess ida = (HibernateDataAccess)(new DataAccessProxy())
+					.getInstance(IDataAccess.HIBERNATE);
+			try {
+				ida.open();
+
+				// Get ID
+				Long charId = Long.parseLong(strCharId);
+				
+				Object charObj = ida.load(Characterization.class, charId);
+				
+				ida.delete(charObj);
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				ida.rollback();
+				logger.error("Problem saving characterization: ");
+				throw e;
+			} finally {
+				ida.close();
+			}
+	 }
+	 
+	 /**
+	 * Delete the characterization
+	 */
+	 public void deleteCharacterizations(CharacterizationBean[] charBeans) throws Exception {
+			// if ID is not set save to the database otherwise update
+			HibernateDataAccess ida = (HibernateDataAccess)(new DataAccessProxy())
+					.getInstance(IDataAccess.HIBERNATE);
+			try {
+				ida.open();	
+				// Get ID
+				for (CharacterizationBean charBean:charBeans){
+					
+					Long charId = Long.parseLong(charBean.getId());
+					
+					Object charObj = ida.load(Characterization.class, charId);
+					
+					ida.delete(charObj);
+				}				
+			} catch (Exception e) {
+				e.printStackTrace();
+				ida.rollback();
+				logger.error("Problem saving characterization: ");
+				throw e;
+			} finally {
+				ida.close();
+			}
+	 }
+	 /**
+	  * Retrieve all the characterization id and title for a certain type(physical, blood contact)
+	  */
+	 public List<CharacterizationBean> getAllCharacterizationByType(String particleName, String particleType, String charCategory) throws Exception {
+		 List<CharacterizationBean> beanList = new ArrayList<CharacterizationBean>();
+		 
+		 IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
+		 
+		 try {
+			 ida.open();
+			 String hqlString = "select char.id, char.name, char.identificationName from Nanoparticle particle join particle.characterizationCollection char " + 
+			 					"where particle.name='" + particleName + "' and particle.type='" + particleType + "' and char.classification='" + charCategory + "' " +
+			 					"order by char.name, char.identificationName";
+			 if (!charCategory.equals("Physical")){
+				 hqlString = "select char.id, char.name, char.identificationName from Nanoparticle particle join particle.characterizationCollection char " + 
+			 					"where particle.name='" + particleName + "' and particle.type='" + particleType + "' and char.name in " + 
+			 					"(select charCategory.name from CharacterizationCategory charCategory where charCategory.category = '" + 
+			 					charCategory + "') order by char.name, char.identificationName";
+			 }
+			 
+			 List results = ida.search(hqlString);
+			 for (Object obj: results) {
+				 Object[] result = (Object[])obj;
+				 CharacterizationBean charBean = new CharacterizationBean(result[0].toString(), (String)result[1], (String)result[2]);
+				 beanList.add(charBean);
+			 }			 
+		 } catch (Exception e){
+			 e.printStackTrace();
+			 beanList = null;
+		 }
+		 finally {
+			 ida.close();
+		 }
+		 return beanList;
+	 }
 }
