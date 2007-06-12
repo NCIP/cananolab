@@ -32,7 +32,7 @@ public class DerivedBioAssayDataBean extends LabFileBean {
 	private List<DatumBean> datumList = new ArrayList<DatumBean>();
 
 	private String numberOfDataPoints;
-	
+
 	public String getCharacterizationName() {
 		return characterizationName;
 	}
@@ -61,10 +61,12 @@ public class DerivedBioAssayDataBean extends LabFileBean {
 		}
 		keywords = allkeywords.toArray(new String[0]);
 		for (Datum tableData : charFile.getDatumCollection()) {
-			DatumBean ctDataBean = new DatumBean(tableData);
-			datumList.add(ctDataBean);
+			if (tableData != null) {
+				DatumBean ctDataBean = new DatumBean(tableData);
+				datumList.add(ctDataBean);
+			}
 		}
-		numberOfDataPoints=datumList.size()+"";
+		numberOfDataPoints = datumList.size() + "";
 	}
 
 	public String getNumberOfDataPoints() {
@@ -82,8 +84,18 @@ public class DerivedBioAssayDataBean extends LabFileBean {
 	}
 
 	public DerivedBioAssayData getDomainObject() {
-		DerivedBioAssayData charFile = (DerivedBioAssayData) super
-				.getDomainObject();
+		DerivedBioAssayData charFile = new DerivedBioAssayData();
+		if (getId() != null && getId().length() > 0) {
+			charFile.setId(new Long(getId()));
+		}
+		charFile.setCreatedBy(getCreatedBy());
+		charFile.setCreatedDate(getCreatedDate());
+		charFile.setDescription(getDescription());
+		charFile.setComments(getComments());
+		charFile.setFilename(getName());
+		charFile.setPath(getPath());
+		charFile.setTitle(getTitle());
+		charFile.setVersion(getVersion());
 
 		for (String keywordValue : keywords) {
 			Keyword keyword = new Keyword();
