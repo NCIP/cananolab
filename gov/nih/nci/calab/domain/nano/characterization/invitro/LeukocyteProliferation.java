@@ -17,4 +17,8 @@ public class LeukocyteProliferation extends ImmunoToxicity {
 	public String getClassification() {
 		return INVITRO_CHARACTERIZATION;
 	}
+	
+	public String getName() {
+		return IMMUNOCELLFUNCTOX_LEUKOCYTE_PROLIFERATION;
+	}
 }
