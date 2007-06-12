@@ -20,7 +20,7 @@
 		</putList>
 		<putList name="toxActions">
 			<item value="Oxidative Stress" link="invitroToxicityOxidativeStress.do?dispatch=setup&amp;page=0" />
-			<item value="Enzyme Induction" link="invitroToxicityEnzymeInduction.do?dispatch=setup&amp;page=0" />
+			<item value="Enzyme Function" link="invitroToxicityEnzymeInduction.do?dispatch=setup&amp;page=0" />
 		</putList>
 		<putList name="cytoToxActions">
 			<item value="Cell Viability" link="invitroCytotoxicityCellViability.do?dispatch=setup&amp;page=0" />
@@ -95,13 +95,13 @@
 
 	<!-- definition for the submit report page -->
 	<definition name="submit.submitreport" extends="calab.home">
-		<put name="calabContent" value="/submit/bodySubmitReport.jsp" />
+		<put name="calabContent" value="/submit/report/bodySubmitReport.jsp" />
 		<put name="menu" value="submit" />
 	</definition>
 
 	<!-- definition for the submit protocol page -->
 	<definition name="submit.submitprotocol" extends="calab.home">
-		<put name="calabContent" value="/submit/bodySubmitProtocol.jsp" />
+		<put name="calabContent" value="/submit/protocol/bodySubmitProtocol.jsp" />
 		<put name="menu" value="submit" />
 	</definition>
 
@@ -116,7 +116,7 @@
 		
 	<!-- definition for the submit protocol page -->
 	<definition name="submit.updateprotocol" extends="calab.home">
-		<put name="calabContent" value="/submit/bodyViewProtocolFile.jsp" />
+		<put name="calabContent" value="/submit/protocol/bodyViewProtocolFile.jsp" />
 		<put name="menu" value="submit" />
 		<put name="protocolActionName" value="updateProtocol"/>
 	</definition>
@@ -142,7 +142,9 @@
 	<!-- definition for the nanoparticle size page -->
 	<definition name="submit.addparticle.size.content" extends="submit.content.home">
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
-		<put name="submitContent" value="/submit/physical/bodyParticleSize.jsp" />
+		<put name="submitContent" value="/submit/bodyCharacterization.jsp" />
+		<put name="actionName" value="nanoparticleSize"/>
+		<put name="pageTitle" value="Physical Characterization - Size" />
 	</definition>
 
 	<definition name="submit.addparticle.size" extends="calab.home">
@@ -154,7 +156,7 @@
 	<!-- definition for the nanoparticle surface page -->
 	<definition name="submit.addparticle.surface.content" extends="submit.content.home">
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
-		<put name="submitContent" value="/submit/physical/bodyParticleSurface.jsp" />
+		<put name="submitContent" value="/submit/bodyCharacterization.jsp" />
 	</definition>
 
 	<definition name="submit.addparticle.surface" extends="calab.home">
@@ -166,7 +168,7 @@
 	<!-- definition for the nanoparticle molecular weight page -->
 	<definition name="submit.addparticle.molecularweight.content" extends="submit.content.home">
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
-		<put name="submitContent" value="/submit/physical/bodyParticleMolecularWeight.jsp" />
+		<put name="submitContent" value="/submit/bodyCharacterization.jsp" />
 	</definition>
 
 	<definition name="submit.addparticle.molecularweight" extends="calab.home">
@@ -178,43 +180,33 @@
 	<!-- definition for the nanoparticle morphology page -->
 	<definition name="submit.addparticle.morphology.content" extends="submit.content.home">
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
-		<put name="submitContent" value="/submit/physical/bodyParticleMorphology.jsp" />
+		<put name="submitContent" value="/submit/bodyCharacterization.jsp" />
 	</definition>
 
 	<definition name="submit.addparticle.morphology" extends="calab.home">
 		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
 		<put name="calabContent" value="submit.addparticle.morphology.content" />
 		<put name="menu" value="submit" />
+		<put name="detailPage" value="/submit/physical/bodyMorphologyInfo.jsp" />
 	</definition>
 
 	<!-- definition for the nanoparticle shape page -->
 	<definition name="submit.addparticle.shape.content" extends="submit.content.home">
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
-		<put name="submitContent" value="/submit/physical/bodyParticleShape.jsp" />
+		<put name="submitContent" value="/submit/bodyCharacterization.jsp" />
 	</definition>
 
 	<definition name="submit.addparticle.shape" extends="calab.home">
 		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
 		<put name="calabContent" value="submit.addparticle.shape.content" />
 		<put name="menu" value="submit" />
-	</definition>
-
-	<!-- definition for the nanoparticle stability page -->
-	<definition name="submit.addparticle.stability.content" extends="submit.content.home">
-		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
-		<put name="submitContent" value="/submit/physical/bodyParticleStability.jsp" />
-	</definition>
-
-	<definition name="submit.addparticle.stability" extends="calab.home">
-		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
-		<put name="calabContent" value="submit.addparticle.stability.content" />
-		<put name="menu" value="submit" />
+		<put name="detailPage" value="/submit/physical/bodyShapeInfo.jsp" />
 	</definition>
 
 	<!-- definition for the nanoparticle purity page -->
 	<definition name="submit.addparticle.purity.content" extends="submit.content.home">
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
-		<put name="submitContent" value="/submit/physical/bodyParticlePurity.jsp" />
+		<put name="submitContent" value="/submit/bodyCharacterization.jsp" />
 	</definition>
 
 	<definition name="submit.addparticle.purity" extends="calab.home">
@@ -226,24 +218,23 @@
 	<!-- definition for the nanoparticle solubility page -->
 	<definition name="submit.addparticle.solubility.content" extends="submit.content.home">
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
-		<put name="submitContent" value="/submit/physical/bodyParticleSolubility.jsp" />
+		<put name="submitContent" value="/submit/bodyCharacterization.jsp" />
 	</definition>
 
 	<definition name="submit.addparticle.solubility" extends="calab.home">
 		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
 		<put name="calabContent" value="submit.addparticle.solubility.content" />
 		<put name="menu" value="submit" />
+		<put name="detailPage" value="/submit/physical/bodySolubilityInfo.jsp" />
 	</definition>
 
 	<!-- definition for the invitro immunotoxicity hemology page -->
 	<definition name="submit.addimmunotoxicity.hemolysis.content" extends="submit.content.home">
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
-		<put name="submitContent" value="/submit/invitro/bodyInvitroCharacterization.jsp" />
+		<put name="submitContent" value="/submit/bodyCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Immunotoxicity - Hemolysis" />
 		<put name="actionName" value="invitroImmunotoxicityHemolysis" />
 		<put name="formType" value="Immunotoxicity" />
-		<put name="dataLabel" value="Percent Hemolysis" />
-		<put name="dataUnit" value="%" />
 	</definition>
 
 	<definition name="submit.addimmunotoxicity.hemolysis" extends="calab.home">
@@ -255,13 +246,10 @@
 	<!-- definition for the invitro immunotoxicity coagulation page -->
 	<definition name="submit.addimmunotoxicity.coagulation.content" extends="submit.content.home">
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
-		<put name="submitContent" value="/submit/invitro/bodyInvitroCharacterization.jsp" />
+		<put name="submitContent" value="/submit/bodyCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Immunotoxicity - Coagulation" />
 		<put name="actionName" value="invitroImmunotoxicityCoagulation" />
 		<put name="formType" value="Immunotoxicity" />
-		<put name="dataLabel" value="Coagulation Time" />
-		<put name="dataUnit" value="seconds" />
-
 	</definition>
 
 	<definition name="submit.addimmunotoxicity.coagulation" extends="calab.home">
@@ -273,13 +261,10 @@
 	<!-- definition for the invitro immunotoxicity plate aggregation page -->
 	<definition name="submit.addimmunotoxicity.plateletaggregation.content" extends="submit.content.home">
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
-		<put name="submitContent" value="/submit/invitro/bodyInvitroCharacterization.jsp" />
+		<put name="submitContent" value="/submit/bodyCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Immunotoxicity - Platelet Aggregation" />
 		<put name="actionName" value="invitroImmunotoxicityPlateletAggregation" />
 		<put name="formType" value="Immunotoxicity" />
-		<put name="dataLabel" value="Platelet Aggregation Percentage" />
-		<put name="dataUnit" value="%" />
-
 	</definition>
 
 	<definition name="submit.addimmunotoxicity.plateletaggregation" extends="calab.home">
@@ -291,13 +276,10 @@
 	<!-- definition for the invitro immunotoxicity plasma protein binding page -->
 	<definition name="submit.addimmunotoxicity.plasmaproteinbinding.content" extends="submit.content.home">
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
-		<put name="submitContent" value="/submit/invitro/bodyInvitroCharacterization.jsp" />
+		<put name="submitContent" value="/submit/bodyCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Immunotoxicity - Protein Binding" />
 		<put name="actionName" value="invitroImmunotoxicityProteinBinding" />
 		<put name="formType" value="Immunotoxicity" />
-		<put name="dataLabel" value="Protein Binding Percentage" />
-		<put name="dataUnit" value="%" />
-
 	</definition>
 
 	<definition name="submit.addimmunotoxicity.plasmaproteinbinding" extends="calab.home">
@@ -309,13 +291,10 @@
 	<!-- definition for the invitro immunotoxicity complement activation page -->
 	<definition name="submit.addimmunotoxicity.complementactivation.content" extends="submit.content.home">
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
-		<put name="submitContent" value="/submit/invitro/bodyInvitroCharacterization.jsp" />
+		<put name="submitContent" value="/submit/bodyCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Immunotoxicity - Complement Activation" />
 		<put name="actionName" value="invitroImmunotoxicityComplementActivation" />
 		<put name="formType" value="Immunotoxicity" />
-		<put name="dataLabel" value="Complement Activation Percentage" />
-		<put name="dataUnit" value="%" />
-
 	</definition>
 
 	<definition name="submit.addimmunotoxicity.complementactivation" extends="calab.home">
@@ -327,13 +306,10 @@
 	<!-- definition for the invitro immunotoxicity CytokineInduction page -->
 	<definition name="submit.addimmunotoxicity.cytokineinduction.content" extends="submit.content.home">
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
-		<put name="submitContent" value="/submit/invitro/bodyInvitroCharacterization.jsp" />
+		<put name="submitContent" value="/submit/bodyCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Immunotoxicity - Cytokine Induction" />
 		<put name="actionName" value="invitroImmunotoxicityCytokineInduction" />
 		<put name="formType" value="Immunotoxicity" />
-		<put name="dataLabel" value="Cytokine Concentraion" />
-		<put name="dataUnit" value="mg/ml" />
-
 	</definition>
 
 	<definition name="submit.addimmunotoxicity.cytokineinduction" extends="calab.home">
@@ -345,13 +321,10 @@
 	<!-- definition for the invitro immunotoxicity chemotaxis page -->
 	<definition name="submit.addimmunotoxicity.chemotaxis.content" extends="submit.content.home">
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
-		<put name="submitContent" value="/submit/invitro/bodyInvitroCharacterization.jsp" />
+		<put name="submitContent" value="/submit/bodyCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Immunotoxicity - Chemotaxis" />
 		<put name="actionName" value="invitroImmunotoxicityChemotaxis" />
 		<put name="formType" value="Immunotoxicity" />
-		<put name="dataLabel" value="Relative Fluorescent Values" />
-		<put name="dataUnit" value="RFU" />
-
 	</definition>
 
 	<definition name="submit.addimmunotoxicity.chemotaxis" extends="calab.home">
@@ -363,13 +336,10 @@
 	<!-- definition for the invitro immunotoxicity nkcellcytotoxicactivity page -->
 	<definition name="submit.addimmunotoxicity.nkcellcytotoxicactivity.content" extends="submit.content.home">
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
-		<put name="submitContent" value="/submit/invitro/bodyInvitroCharacterization.jsp" />
+		<put name="submitContent" value="/submit/bodyCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Immunotoxicity - NK Cell Cytotoxic Activity" />
 		<put name="actionName" value="invitroImmunotoxicityNKCellCytotoxicActivity" />
 		<put name="formType" value="Immunotoxicity" />
-		<put name="dataLabel" value="NK Cell Cytotoxicity Activity Percentage" />
-		<put name="dataUnit" value="%" />
-
 	</definition>
 
 	<definition name="submit.addimmunotoxicity.nkcellcytotoxicactivity" extends="calab.home">
@@ -381,13 +351,10 @@
 	<!-- definition for the invitro immunotoxicity leukocyteproliferation page -->
 	<definition name="submit.addimmunotoxicity.leukocyteproliferation.content" extends="submit.content.home">
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
-		<put name="submitContent" value="/submit/invitro/invitro/bodyInvitroCharacterization.jsp" />
+		<put name="submitContent" value="/submit/bodyCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Immunotoxicity - Leukocyte Proliferation" />
 		<put name="actionName" value="invitroImmunotoxicityLeukocyteProliferation" />
 		<put name="formType" value="Immunotoxicity" />
-		<put name="dataLabel" value="Leukocyte Proliferation Percentage" />
-		<put name="dataUnit" value="%" />
-
 	</definition>
 
 	<definition name="submit.addimmunotoxicity.leukocyteproliferation" extends="calab.home">
@@ -399,13 +366,10 @@
 	<!-- definition for the invitro immunotoxicity cfu_gm page -->
 	<definition name="submit.addimmunotoxicity.cfu_gm.content" extends="submit.content.home">
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
-		<put name="submitContent" value="/submit/invitro/bodyInvitroCharacterization.jsp" />
+		<put name="submitContent" value="/submit/bodyCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Immunotoxicity - CFU-GM" />
 		<put name="actionName" value="invitroImmunotoxicityCFU_GM" />
 		<put name="formType" value="Immunotoxicity" />
-		<put name="dataLabel" value="CFU_GM" />
-		<put name="dataUnit" value="CFU" />
-
 	</definition>
 
 	<definition name="submit.addimmunotoxicity.cfu_gm" extends="calab.home">
@@ -417,13 +381,10 @@
 	<!-- definition for the invitro immunotoxicity oxidativeburst page -->
 	<definition name="submit.addimmunotoxicity.oxidativeburst.content" extends="submit.content.home">
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
-		<put name="submitContent" value="/submit/invitro/bodyInvitroCharacterization.jsp" />
+		<put name="submitContent" value="/submit/bodyCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Immunotoxicity - Oxidative Burst" />
 		<put name="actionName" value="invitroImmunotoxicityOxidativeBurst" />
 		<put name="formType" value="Immunotoxicity" />
-		<put name="dataLabel" value="Oxidative Burst Percentage" />
-		<put name="dataUnit" value="%" />
-
 	</definition>
 
 	<definition name="submit.addimmunotoxicity.oxidativeburst" extends="calab.home">
@@ -435,13 +396,10 @@
 	<!-- definition for the invitro immunotoxicity phagocytosis page -->
 	<definition name="submit.addimmunotoxicity.phagocytosis.content" extends="submit.content.home">
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
-		<put name="submitContent" value="/submit/invitro/bodyInvitroCharacterization.jsp" />
+		<put name="submitContent" value="/submit/bodyCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Immunotoxicity - Phagocytosis" />
 		<put name="actionName" value="invitroImmunotoxicityPhagocytosis" />
 		<put name="formType" value="Immunotoxicity" />
-		<put name="dataLabel" value="Fold Phagocytosis Induction" />
-		<put name="dataUnit" value="fold" />
-
 	</definition>
 
 	<definition name="submit.addimmunotoxicity.phagocytosis" extends="calab.home">
@@ -453,13 +411,11 @@
 	<!-- definition for the invitro cytotoxicity cellviability page -->
 	<definition name="submit.addcytotoxicity.cellviability.content" extends="submit.content.home">
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
-		<put name="submitContent" value="/submit/invitro/bodyInvitroCharacterization.jsp" />
+		<put name="submitContent" value="/submit/bodyCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Cytotoxicity - Cell Viability" />
 		<put name="actionName" value="invitroCytotoxicityCellViability" />
 		<put name="formType" value="Cytotoxicity" />
-		<put name="dataLabel" value="Percent Cell Viability" />
-		<put name="dataUnit" value="%" />
-		<put name="detailPage" value="bodyCytotoxicityInfo.jsp" />
+		<put name="detailPage" value="/submit/invitro/bodyCytotoxicityInfo.jsp" />
 	</definition>
 
 	<definition name="submit.addcytotoxicity.cellviability" extends="calab.home">
@@ -471,13 +427,11 @@
 	<!-- definition for the invitro cytotoxicity caspase3activation page -->
 	<definition name="submit.addcytotoxicity.caspase3activation.content" extends="submit.content.home">
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
-		<put name="submitContent" value="/submit/invitro/bodyInvitroCharacterization.jsp" />
+		<put name="submitContent" value="/submit/bodyCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Cytotoxicity - Caspase 3 Activation" />
 		<put name="actionName" value="invitroCytotoxicityCaspase3Activation" />
 		<put name="formType" value="Cytotoxicity" />
-		<put name="dataLabel" value="Percent Caspase 3 Activation" />
-		<put name="dataUnit" value="%" />
-		<put name="detailPage" value="bodyCytotoxicityInfo.jsp" />
+		<put name="detailPage" value="/submit/invitro/bodyCytotoxicityInfo.jsp" />
 	</definition>
 
 	<definition name="submit.addcytotoxicity.caspase3activation" extends="calab.home">
@@ -489,13 +443,10 @@
 	<!-- definition for the invitro toxicity enzymeinduction page -->
 	<definition name="submit.addtoxicity.enzymeinduction.content" extends="submit.content.home">
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
-		<put name="submitContent" value="/submit/invitro/bodyInvitroCharacterization.jsp" />
+		<put name="submitContent" value="/submit/bodyCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Toxicity - Enzyme Induction" />
 		<put name="actionName" value="invitroToxicityEnzymeInduction" />
 		<put name="formType" value="Toxicity" />
-		<put name="dataLabel" value="Enzyme Induction Percentage" />
-		<put name="dataUnit" value="%" />
-
 	</definition>
 
 	<definition name="submit.addtoxicity.enzymeinduction" extends="calab.home">
@@ -507,54 +458,15 @@
 	<!-- definition for the invitro toxicity oxidativestress page -->
 	<definition name="submit.addtoxicity.oxidativestress.content" extends="submit.content.home">
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
-		<put name="submitContent" value="/submit/invitro/bodyInvitroCharacterization.jsp" />
+		<put name="submitContent" value="/submit/bodyCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Toxicity - Oxidative Stress" />
 		<put name="actionName" value="invitroToxicityOxidativeStress" />
 		<put name="formType" value="Toxicity" />
-		<put name="dataLabel" value="Oxidative Stress Percentage" />
-		<put name="dataUnit" value="%" />
-
 	</definition>
 
 	<definition name="submit.addtoxicity.oxidativestress" extends="calab.home">
 		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
 		<put name="calabContent" value="submit.addtoxicity.oxidativestress.content" />
-		<put name="menu" value="submit" />
-	</definition>
-
-	<!-- definition for the invitro metabolic stability CYP450 page -->
-	<definition name="submit.addmetabolicstability.cyp450.content" extends="submit.content.home">
-		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
-		<put name="submitContent" value="/submit/invitro/bodyInvitroCharacterization.jsp" />
-		<put name="pageTitle" value="Invitro Characterization - Metabolic Stability - CYP450" />
-		<put name="actionName" value="invitroMetabolicStabilityCYP450" />
-		<put name="formType" value="MetabolicStability" />
-		<put name="dataLabel" value="CYP450 Percentage" />
-		<put name="dataUnit" value="%" />
-
-	</definition>
-
-	<definition name="submit.addmetabolicstability.cyp450" extends="calab.home">
-		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
-		<put name="calabContent" value="submit.addmetabolicstability.cyp450.content" />
-		<put name="menu" value="submit" />
-	</definition>
-
-	<!-- definition for the invitro metabolic stability ROS page -->
-	<definition name="submit.addmetabolicstability.ros.content" extends="submit.content.home">
-		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
-		<put name="submitContent" value="/submit/invitro/bodyInvitroCharacterization.jsp" />
-		<put name="pageTitle" value="Invitro Characterization - MetabolicStability - ROS" />
-		<put name="actionName" value="invitroMetabolicStabilityROS" />
-		<put name="formType" value="MetabolicStability" />
-		<put name="dataLabel" value="ROS Percentage" />
-		<put name="dataUnit" value="%" />
-
-	</definition>
-
-	<definition name="submit.addmetabolicstability.ros" extends="calab.home">
-		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
-		<put name="calabContent" value="submit.addmetabolicstability.ros.content" />
 		<put name="menu" value="submit" />
 	</definition>
 
@@ -570,7 +482,7 @@
 		<put name="menu" value="submit" />
 	</definition>
 
-	<!-- definition for the view characterization table page -->
+	<!-- definition for the view characterization file page -->
 	<definition name="submit.assayresult.file.view.content" extends="submit.content.home">
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
 		<put name="submitContent" value="/submit/bodyViewAssayResultFile.jsp" />
@@ -592,12 +504,13 @@
 		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
 		<put name="calabContent" value="submit.addparticle.function.content" />
 		<put name="menu" value="submit" />
+		<put name="detailPage" value="/submit/physical/bodySurfaceInfo.jsp" />
 	</definition>
 
 	<!-- definition for the view report/associated file page -->
 	<definition name="submit.report.view.content" extends="submit.content.home">
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
-		<put name="submitContent" value="/submit/bodyViewReportFile.jsp" />
+		<put name="submitContent" value="/submit/report/bodyViewReportFile.jsp" />
 	</definition>
 
 	<definition name="submit.report.view" extends="calab.home">
