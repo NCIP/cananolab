@@ -2,6 +2,20 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<script type="text/javascript">
+<!--//
+function confirmDeletion()
+{
+	answer = confirm("Are you sure you want to delete the composition?")
+	if (answer !=0)
+	{
+		this.document.forms[0].dispatch.value="deleteConfirmed";
+		this.document.forms[0].submit(); 
+		return true;
+	}
+}
+//-->
+</script>
 <html:form action="/nanoparticleComposition">
 	<table width="100%" align="center">
 		<tr>
@@ -42,7 +56,7 @@
 							<c:choose>
 								<c:when test="${canUserSubmit eq 'true'}">
 									<html:select property="characterizationSource">
-										<html:options name="characterizationSources"/>
+										<html:options name="characterizationSources" />
 									</html:select>
 								</c:when>
 								<c:otherwise>
@@ -51,7 +65,8 @@
 							</c:choose>
 						</td>
 						<td class="label">
-							<strong>View Title*</strong><br>
+							<strong>View Title*</strong>
+							<br>
 							<em>(text will be truncated after 20 characters)</em>
 						</td>
 						<td class="rightLabel">
@@ -91,6 +106,19 @@
 								<td width="30%">
 									<span class="formMessage"> </span>
 									<br>
+									<c:choose>
+										<c:when test="${param.dispatch ne 'setup'}">
+											<table height="32" border="0" align="left" cellpadding="4" cellspacing="0">
+												<tr>
+													<td height="32">
+														<div align="left">
+															<input type="button" value="Delete" onclick="confirmDeletion();">
+														</div>
+													</td>
+												</tr>
+											</table>
+										</c:when>
+									</c:choose>
 									<table width="498" height="32" border="0" align="right" cellpadding="4" cellspacing="0">
 										<tr>
 											<td width="490" height="32">
