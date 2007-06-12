@@ -254,7 +254,7 @@ public class CaNanoLabConstants {
 	public static final String COATING = "coating";
 
 	public static final String[] CHARACTERIZATION_SOURCES = new String[] {
-			"NCL", "Vendor" };
+			APP_OWNER, "Vendor" };
 
 	public static final String[] CARBON_NANOTUBE_WALLTYPES = new String[] {
 			"Single (SWNT)", "Double (DWMT)", "Multiple (MWNT)" };
