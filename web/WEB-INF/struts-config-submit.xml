@@ -92,6 +92,12 @@
 			<form-property name="function" type="gov.nih.nci.calab.dto.function.FunctionBean" />
 			<form-property name="functionId" type="java.lang.String" />
 		</form-bean>
+		<form-bean name="characterizationMultiDeletionForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="particleName" type="java.lang.String" />
+			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="charBeans" type="gov.nih.nci.calab.dto.characterization.CharacterizationBean[]" />
+		</form-bean>
 	</form-beans>
 	<global-forwards>
 		<forward name="Composition" path="nanoparticleComposition.do?page=0" />
@@ -201,6 +207,10 @@
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.download.file" path="home.error" type="gov.nih.nci.calab.exception.CalabException" />
 			<forward name="success" path="submit.action.message" />
 			<forward name="input" path="submit.addparticle.size" />
+<<<<<<< struts-config-submit.xml
+			<forward name="deleteConfirm" path="submit.action.message" />
+=======
+>>>>>>> 1.63
 		</action>
 		<action name="nanoparticleCharacterizationForm" parameter="dispatch" path="/nanoparticleSurface" type="gov.nih.nci.calab.ui.submit.NanoparticleSurfaceAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addParticleSurface" path="submit.addparticle.surface" type="java.lang.Exception" />
@@ -357,6 +367,9 @@
 			<forward name="input" path="submit.addparticle.function" />
 		</action>
 		<action path="/submitAction" type="gov.nih.nci.calab.ui.core.BaseForwardAction" parameter="submit.action.message" scope="request" />
+		<action name="characterizationMultiDeletionForm" path="/deleteAction" type="gov.nih.nci.calab.ui.submit.DeleteMultiCharacterizationAction" parameter="dispatch" scope="request" >
+			<forward name="success" path="submit.delete.characterizations" />
+		</action>
 	</action-mappings>
 </struts-config>
 
