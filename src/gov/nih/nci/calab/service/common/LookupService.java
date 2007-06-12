@@ -10,6 +10,7 @@ import gov.nih.nci.calab.domain.ProtocolFile;
 import gov.nih.nci.calab.domain.Sample;
 import gov.nih.nci.calab.domain.SampleContainer;
 import gov.nih.nci.calab.domain.StorageElement;
+import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayDataCategory;
 import gov.nih.nci.calab.dto.common.InstrumentBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.ProtocolBean;
@@ -46,7 +47,7 @@ import org.hibernate.collection.PersistentSet;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.106 2007-06-08 22:15:48 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.107 2007-06-12 14:42:24 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -1347,5 +1348,12 @@ public class LookupService {
 		}
 		return instruments;
 	}
-
+	
+	public List<String> getAllDerivedDataFileTypes() throws Exception {
+		List<String> fileTypes = new ArrayList<String>();
+		// TODO query from database
+		fileTypes.addAll(Arrays
+				.asList(CaNanoLabConstants.DEFAULT_DERIVED_DATA_FILE_TYPES));
+		return fileTypes;
+	}
 }
