@@ -209,35 +209,41 @@ function submitAction(form, actionName) {
     form.submit();
 }
 function updateComposition() {
-    document.nanoparticleCompositionForm.action = "nanoparticleComposition.do?dispatch=update&page=1";
+    document.nanoparticleCompositionForm.action = "nanoparticleComposition.do?dispatch=update&page=0";
     document.nanoparticleCompositionForm.submit();
 }
 function updateSurfaceChemistries(form, actionName) {
-    form.action = actionName + ".do?dispatch=update&page=1&type=surfaceChemistries";
+    form.action = actionName + ".do?dispatch=update&page=0&type=surfaceChemistries";
     form.submit();
 }
-function updateCharts(form, actionName) {
-    form.action = actionName + ".do?dispatch=update&page=1&type=charTables";
+function addCharacterizationFile(form, actionName) {
+    form.action = actionName + ".do?dispatch=addFile&page=0";
     form.submit();
 }
-function updateChartDataPoints(form, actionName, index) {
-    form.action = actionName + ".do?dispatch=update&page=1&type=dataPoints&index=" + index;
+
+function removeCharacterizationFile(form, actionName, fileInd) {
+    form.action = actionName + ".do?dispatch=removeFile&page=0&fileInd="+fileInd;
     form.submit();
 }
-function updateConditions(form, actionName, chartIndex, dataPointIndex) {
-    form.action = actionName + ".do?dispatch=update&page=1&type=conditions&index=" + chartIndex + "&dataPointIndex=" + dataPointIndex;
+function addCharacterizationData(form, actionName, fileInd) {
+    form.action = actionName + ".do?dispatch=addData&page=0&fileInd=" + fileInd;
     form.submit();
 }
+function removeCharacterizationData(form, actionName, fileInd,dataInd) {
+    form.action = actionName + ".do?dispatch=removeData&page=0&fileInd=" + fileInd+"&dataInd="+dataInd;
+    form.submit();
+}
+
 function loadFile(form, actionName, particleName, fileNumber) {
     form.action = actionName + ".do?dispatch=loadFile&page=0&particleName=" + particleName + "&fileNumber=" + fileNumber;
     form.submit();
 }
 function updateFunctionLinkages() {
-    document.nanoparticleFunctionForm.action = "nanoparticleFunction.do?dispatch=update&page=1&type=linkages";
+    document.nanoparticleFunctionForm.action = "nanoparticleFunction.do?dispatch=update&page=0&type=linkages";
     document.nanoparticleFunctionForm.submit();
 }
 function updateAgentTargets(linkageIndex) {
-    document.nanoparticleFunctionForm.action = "nanoparticleFunction.do?dispatch=update&page=1&type=agentTargets&linkageIndex=" + linkageIndex;
+    document.nanoparticleFunctionForm.action = "nanoparticleFunction.do?dispatch=update&page=0&type=agentTargets&linkageIndex=" + linkageIndex;
     document.nanoparticleFunctionForm.submit();
 }
 function refreshManufacturers(form, action) {
@@ -280,4 +286,4 @@ function updateOtherField(form, elementName, otherElementName){
   } else {
      disableTextElement(form, otherElementName);
   }
-}
+} 
