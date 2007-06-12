@@ -9,18 +9,21 @@
 			<td>
 				<h3>
 					<br>
-					Load Characterization File
+					Load Charaterization File
 				</h3>
 			</td>
 			<td align="right" width="15%">
-				<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=load_characterization_file_help')" class="helpText">Help</a> &nbsp;&nbsp; 
+				<a
+					href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=load_characterization_file_help')"
+					class="helpText">Help</a> &nbsp;&nbsp;
 				<a href="javascript:history.go(-1)" class="helpText">back</a>
 			</td>
 		</tr>
 		<tr>
 			<td colspan="2">
 				<jsp:include page="/bodyMessage.jsp?bundle=submit" />
-				<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+				<table class="topBorderOnly" cellspacing="0" cellpadding="3"
+					width="100%" align="center" summary="" border="0">
 					<tbody>
 						<tr class="topBorder">
 							<td class="formTitle" colspan="4">
@@ -30,64 +33,43 @@
 							</td>
 						</tr>
 						<tr>
-							<td class="completeLabel" colspan="4">
+							<td class="completeLabel" colspan="2">
 								<html:radio property="fileSource" value="new">
 									<strong> Upload New File</strong>
 								</html:radio>
-								<table cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
-									<tr>
-										<td class="borderlessLabel" width="50">
-										</td>
-										<td class="borderlessLabel" valign="top" width="20%">
-											<strong>=>&nbsp; Assay Result File*</strong>
-										</td>
-										<td class="borderlessLabel" valign="top">
-											<html:file property="uploadedFile" />
-										</td>
-									</tr>
-								</table>
-								<br>
+								&nbsp; &nbsp;
+								<html:file size="60" property="uploadedFile" />
 								<br>
 								<html:radio property="fileSource" value="chooseExisting">
-									<strong> Choose File From caNanoLab workflow</strong>
-								</html:radio>
-								<table cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">									
-									<tr>
-										<td class="borderlessLabel" width="50">
-										</td>
-										<td class="borderlessLabel" width="20%">
-											<strong>=>&nbsp; Assay Result File*</strong>
-										</td>
-										<td class="borderlessLabel">
-											<html:select property="file.id">
-												<html:options collection="allRunFiles" property="id" labelProperty="displayName" />
-											</html:select>
-										</td>
-									</tr>
-								</table>
+									<strong> Choose File from the caNanoLab workflow</strong>
+								</html:radio>&nbsp;&nbsp;
+								<html:select property="file.id">
+									<html:options collection="allRunFiles" property="id"
+										labelProperty="displayName" />
+								</html:select>	
 							</td>
 						</tr>
 						<tr>
 							<td class="leftLabel">
-								<strong>Assay Result File Title*</strong>
+								<strong>File Title*</strong>
 							</td>
-							<td class="rightLabel" colspan="3">
-								<html:text property="file.title" size="80" />
-							</td>
-						</tr>
-						<tr>
-							<td class="leftLabel">
-								<strong>Assay Result File Description</strong>
-							</td>
-							<td class="rightLabel" colspan="3">
-								<html:textarea property="file.description" rows="3" cols="80" />
+							<td class="rightLabel">
+								<html:text property="file.title" size="60" />
 							</td>
 						</tr>
 						<tr>
-							<td class="leftLabel">
-								<strong>Keywords <em>(one per line)</em></strong>
+							<td class="leftLabel" valign="top">
+								<strong>File Description</strong>
 							</td>
-							<td class="rightLabel" colspan="3">
+							<td class="rightLabel">
+								<html:textarea property="file.description" rows="3" cols="50" />
+							</td>
+						</tr>
+						<tr>
+							<td class="leftLabel" valign="top">
+								<strong>Keywords <em>(one per line)</em> </strong>
+							</td>
+							<td class="rightLabel">
 								<html:textarea property="file.keywordsStr" rows="3" />
 							</td>
 						</tr>
@@ -95,28 +77,34 @@
 							<td class="leftLabel" valign="top">
 								<strong>Visibility</strong>
 							</td>
-							<td class="rightLabel" colspan="3">
-								<html:select property="file.visibilityGroups" multiple="true" size="6">
+							<td class="rightLabel">
+								<html:select property="file.visibilityGroups" multiple="true"
+									size="6">
 									<html:options name="allVisibilityGroups" />
 								</html:select>
 								<br>
-								<i>(${applicationOwner}_Researcher and ${applicationOwner}_PI are defaults if none of above is selected.)</i>
+								<i>(${applicationOwner}_Researcher and
+									${applicationOwner}_PI are defaults if none of above is
+									selected.)</i>
 							</td>
-						</tr>
+						</tr>										
 					</tbody>
 				</table>
 				<br>
-				<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
+				<table width="100%" border="0" align="center" cellpadding="3"
+					cellspacing="0" class="topBorderOnly" summary="">
 					<tr>
 						<td width="30%">
 							<span class="formMessage"> </span>
 							<br>
-							<table width="498" height="32" border="0" align="right" cellpadding="4" cellspacing="0">
+							<table width="498" height="32" border="0" align="right"
+								cellpadding="4" cellspacing="0">
 								<tr>
 									<td width="490" height="32">
 										<div align="right">
 											<div align="right">
-												<input type="button" value="Cancel" onclick="javascript:history.go(-1);">
+												<input type="button" value="Cancel"
+													onclick="javascript:history.go(-1);">
 												<input type="reset" value="Reset">
 												<input type="hidden" name="dispatch" value="submit">
 												<input type="hidden" name="page" value="2">
