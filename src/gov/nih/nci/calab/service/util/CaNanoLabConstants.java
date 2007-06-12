@@ -438,4 +438,14 @@ public class CaNanoLabConstants {
 
 	public static final String AUTO_COPY_CHARACTERIZATION_VIEW_TITLE_SUFFIX="auto_init_copy"+StringUtils.getDateAsString();
 	public static final String AUTO_COPY_CHARACTERIZATION_VIEW_COLOR="red";
+	
+
+	public static final String IMAGE_TYPE = "Image";
+
+	public static final String GRAPH_TYPE = "Graph";
+
+	public static final String SPREADSHEET_TYPE = "Spreadsheet";
+
+	public static final String[] DEFAULT_DERIVED_DATA_FILE_TYPES = new String[] {
+		IMAGE_TYPE, GRAPH_TYPE, SPREADSHEET_TYPE };
 }
