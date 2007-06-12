@@ -649,7 +649,28 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		}
 		derivedBioAssayDataBean.setDatumList(dataList);
 	}
-
+	
+	public ActionForward deleteConfirmed(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		System.out.println(" deleteConfirmed ......");
+		DynaValidatorForm theForm = (DynaValidatorForm)form;
+		String particleName = theForm.getString("particleName");
+		String particleType = theForm.getString("particleType");
+		String strCharId = theForm.getString("characterizationId");
+		
+		SubmitNanoparticleService service = new SubmitNanoparticleService();
+		service.deleteCharacterization(strCharId);
+		
+		// signal the session that characterization has been changed
+		request.getSession().setAttribute("newCharacterizationCreated", "true");
+		
+		InitSessionSetup.getInstance().setSideParticleMenu(request,
+				particleName, particleType);
+		
+		return mapping.findForward("success");
+	}
+	
 	public boolean loginRequired() {
 		return true;
 	}
