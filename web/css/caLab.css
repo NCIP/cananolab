@@ -696,6 +696,40 @@ img.img { /* for images that need a border */
 	border-left: 1px solid #5c5c5c;
 }
 
+.leftLabelWithTop {
+	font-family: arial, helvetica, verdana, sans-serif;
+	font-size: 0.7em;
+	background-color: #f4f4f5;
+	color: #000000;
+	border-top: 1px solid #5c5c5c;
+	border-bottom: 1px solid #5c5c5c;
+	text-align: left;
+	border-left: 1px solid #5c5c5c;
+}
+
+.labelWithTop {
+	font-family: arial, helvetica, verdana, sans-serif;
+	font-size: 0.7em;
+	background-color: #f4f4f5;
+	color: #000000;
+	border-top: 1px solid #5c5c5c;
+	border-bottom: 1px solid #5c5c5c;
+	text-align: left;
+}
+
+
+.rightLabelWithTop {
+	font-family: arial, helvetica, verdana, sans-serif;
+	font-size: 0.7em;
+	background-color: #f4f4f5;
+	color: #000000;
+	border-top: 1px solid #5c5c5c;
+	border-bottom: 1px solid #5c5c5c;
+	text-align: left;
+	border-right: 1px solid #5c5c5c;
+}
+
+
 .completeLabel {
 	font-family: arial, helvetica, verdana, sans-serif;
 	font-size: 0.7em;
@@ -706,6 +740,16 @@ img.img { /* for images that need a border */
 	border-right: 1px solid #5c5c5c;
 }
 
+.completeLabelWithTop {
+	font-family: arial, helvetica, verdana, sans-serif;
+	font-size: 0.7em;
+	background-color: #f4f4f5;
+	color: #000000;
+	border-top: 1px solid #5c5c5c;
+	border-bottom: 1px solid #5c5c5c;
+	border-left: 1px solid #5c5c5c;
+	border-right: 1px solid #5c5c5c;
+}
 .labelNoBottom {
 	font-family: arial, helvetica, verdana, sans-serif;
 	font-size: 0.7em;
@@ -784,6 +828,13 @@ td.secondMenuItemOver { /* for the over state of the main menu (top) cells */
 
 .addLink {
 	color: #a90101; /* constant: red */
+	font-weight: bold;
+	font-size: 0.7em;
+}
+
+.removeLink {
+	color: #a90101; /* constant: red */
+	font-size: 0.8em;
 }
 
 .formSubTitle { /* for header cells (top) of forms */
@@ -792,7 +843,7 @@ td.secondMenuItemOver { /* for the over state of the main menu (top) cells */
 	font-weight: bold;
 	padding-left: 0.8em;
 	background-color: #AAAAAB; /* constant: lighter gray */
-	color: #ffffff; /* constant: white */
+	color: #000000; /* constant: black */
 	border-top: 1px solid #5c5c5c; /* constant: dark gray */
 	border-left: 1px solid #5c5c5c; /* constant: dark gray */
 	border-right: 1px solid #5c5c5c; /* constant: dark gray */
