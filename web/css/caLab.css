@@ -776,23 +776,23 @@ img.img { /* for images that need a border */
 	border-left: 1px solid #5c5c5c;	
 }
 
-.indented {
+.indented0 {
 	padding-left: 3pt;
 }
 
-.indented2 {
+.indented1 {
 	padding-left: 6pt;
 }
 
-.indented3 {
-	padding-left: 12pt;
+.indented2 {
+	padding-left: 9pt;
 }
 
-.indented4 {
+.indented3 {
 	padding-left: 15pt;
 }
 
-.indented5 {
+.indented4 {
 	padding-left: 18pt;
 }
 
