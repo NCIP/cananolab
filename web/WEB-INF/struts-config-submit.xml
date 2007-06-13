@@ -207,10 +207,7 @@
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.download.file" path="home.error" type="gov.nih.nci.calab.exception.CalabException" />
 			<forward name="success" path="submit.action.message" />
 			<forward name="input" path="submit.addparticle.size" />
-<<<<<<< struts-config-submit.xml
 			<forward name="deleteConfirm" path="submit.action.message" />
-=======
->>>>>>> 1.63
 		</action>
 		<action name="nanoparticleCharacterizationForm" parameter="dispatch" path="/nanoparticleSurface" type="gov.nih.nci.calab.ui.submit.NanoparticleSurfaceAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addParticleSurface" path="submit.addparticle.surface" type="java.lang.Exception" />
@@ -368,7 +365,7 @@
 		</action>
 		<action path="/submitAction" type="gov.nih.nci.calab.ui.core.BaseForwardAction" parameter="submit.action.message" scope="request" />
 		<action name="characterizationMultiDeletionForm" path="/deleteAction" type="gov.nih.nci.calab.ui.submit.DeleteMultiCharacterizationAction" parameter="dispatch" scope="request" >
-			<forward name="success" path="submit.delete.characterizations" />
+			<forward name="success" path="submit.delete.characterization" />
 		</action>
 	</action-mappings>
 </struts-config>
