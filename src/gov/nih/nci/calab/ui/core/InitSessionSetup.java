@@ -1,6 +1,7 @@
 package gov.nih.nci.calab.ui.core;
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
+import gov.nih.nci.calab.dto.characterization.CharacterizationTypeBean;
 import gov.nih.nci.calab.dto.common.InstrumentBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.ProtocolBean;
@@ -467,56 +468,9 @@ public class InitSessionSetup {
 		session.removeAttribute("newSampleCreated");
 	}
 
-	public void setAllParticleCharacterizationTypes(HttpSession session)
-			throws Exception {
-		if (session.getServletContext()
-				.getAttribute("allCharacterizationTypes") == null) {
-			String[] charTypes = lookupService.getAllCharacterizationTypes();
-			session.getServletContext().setAttribute(
-					"allCharacterizationTypes", charTypes);
-		}
-	}
-
 	public void setSideParticleMenu(HttpServletRequest request,
 			String particleName, String particleType) throws Exception {
 		HttpSession session = request.getSession();
-		SearchNanoparticleService service = new SearchNanoparticleService();
-		if (session.getAttribute("charTypeChars") == null
-				|| session.getAttribute("newCharacterizationCreated") != null
-				|| session.getAttribute("newParticleCreated") != null) {
-
-			List<CharacterizationBean> charBeans = service
-					.getCharacterizationInfo(particleName, particleType);
-			Map<String, List<CharacterizationBean>> existingCharTypeChars = new HashMap<String, List<CharacterizationBean>>();
-			if (!charBeans.isEmpty()) {
-				Map<String, String[]> charTypeChars = lookupService
-						.getCharacterizationTypeCharacterizations();
-
-				for (String charType : charTypeChars.keySet()) {
-					List<CharacterizationBean> newCharBeans = new ArrayList<CharacterizationBean>();
-					List<String> charList = Arrays.asList(charTypeChars
-							.get(charType));
-					for (CharacterizationBean charBean : charBeans) {
-						if (charList.contains(charBean.getName())) {
-							newCharBeans.add(charBean);
-						}
-					}
-					if (!newCharBeans.isEmpty()) {
-						existingCharTypeChars.put(charType, newCharBeans);
-					}
-				}
-			}
-			session.setAttribute("charTypeChars", existingCharTypeChars);
-		}
-
-		if (session.getAttribute("funcTypeFuncs") == null
-				|| session.getAttribute("newFunctionCreated") != null
-				|| session.getAttribute("newParticleCreated") != null) {
-			Map<String, List<FunctionBean>> funcTypeFuncs = service
-					.getFunctionInfo(particleName, particleType);
-			session.setAttribute("funcTypeFuncs", funcTypeFuncs);
-		}
-
 		UserBean user = (UserBean) session.getAttribute("user");
 		SearchReportService searchReportService = new SearchReportService();
 		if (session.getAttribute("particleReports") == null
@@ -541,12 +495,58 @@ public class InitSessionSetup {
 		if (session.getAttribute("newParticleCreated") != null) {
 			setParticleTypeParticles(session);
 		}
-		session.removeAttribute("newCharacterizationCreated");
-		session.removeAttribute("newFunctionCreated");
 		session.removeAttribute("newParticleCreated");
 		session.removeAttribute("newReportCreated");
 		session.removeAttribute("detailPage");
 		setStaticDropdowns(session);
+		setAllFunctionTypes(session);
+		setFunctionTypeFunctions(session, particleName, particleType);
+		setAllCharacterizationTypes(session);
+		setAllCharacterizations(session, particleName, particleType);
+	}
+
+	public void setAllCharacterizations(HttpSession session, String particleName,
+			String particleType) throws Exception {
+		if (session.getAttribute("allCharacterizations") == null
+				|| session.getAttribute("newCharacterizationCreated") != null
+				|| session.getAttribute("newParticleCreated") != null) {
+			SearchNanoparticleService service = new SearchNanoparticleService();
+			List<CharacterizationBean> charBeans = service
+					.getCharacterizationInfo(particleName, particleType);
+			Map<String, List<CharacterizationBean>> existingCharTypeChars = new HashMap<String, List<CharacterizationBean>>();
+			if (!charBeans.isEmpty()) {
+				Map<String, List<String>> charTypeChars = lookupService
+						.getCharacterizationTypeCharacterizations();
+				for (String charType : charTypeChars.keySet()) {
+					List<CharacterizationBean> newCharBeans = new ArrayList<CharacterizationBean>();
+					List<String> charList = (List<String>)charTypeChars
+							.get(charType);
+					for (CharacterizationBean charBean : charBeans) {
+						if (charList.contains(charBean.getName())) {
+							newCharBeans.add(charBean);
+						}
+					}
+					if (!newCharBeans.isEmpty()) {
+						existingCharTypeChars.put(charType, newCharBeans);
+					}
+				}
+			}
+			session.setAttribute("allCharacterizations", existingCharTypeChars);
+		}
+		session.removeAttribute("newCharacterizationCreated");
+		session.removeAttribute("newParticleCreated");
+	}
+
+	public void setFunctionTypeFunctions(HttpSession session,
+			String particleName, String particleType) throws Exception {
+		if (session.getAttribute("allFuncTypeFuncs") == null
+				|| session.getAttribute("newFunctionCreated") != null) {
+			SearchNanoparticleService service = new SearchNanoparticleService();
+			Map<String, List<FunctionBean>> funcTypeFuncs = service
+					.getFunctionInfo(particleName, particleType);
+			session.setAttribute("allFuncTypeFuncs", funcTypeFuncs);
+		}
+		session.removeAttribute("newFunctionCreated");
 	}
 
 	public void setRemoteSideParticleMenu(HttpServletRequest request,
@@ -603,7 +603,7 @@ public class InitSessionSetup {
 			throws Exception {
 		if (session.getServletContext().getAttribute(
 				"allCharacterizationTypeCharacterizations") == null) {
-			Map<String, String[]> charTypeChars = lookupService
+			Map<String, List<String>> charTypeChars = lookupService
 					.getCharacterizationTypeCharacterizations();
 			session.getServletContext().setAttribute(
 					"allCharacterizationTypeCharacterizations", charTypeChars);
@@ -627,82 +627,6 @@ public class InitSessionSetup {
 					.getAllInstrumentManufacturers();
 			session.getServletContext().setAttribute(
 					"allInstrumentTypeManufacturers", instrumentManufacturers);
-		}
-	}
-
-	public void setAllSizeDistributionGraphTypes(HttpSession session)
-			throws Exception {
-		if (session.getServletContext().getAttribute(
-				"allSizeDistributionGraphTypes") == null) {
-			String[] graphTypes = lookupService.getSizeDistributionGraphTypes();
-			session.getServletContext().setAttribute(
-					"allSizeDistributionGraphTypes", graphTypes);
-		}
-	}
-
-	public void setAllMolecularWeightDistributionGraphTypes(HttpSession session)
-			throws Exception {
-		if (session.getServletContext().getAttribute(
-				"allMolecularWeightDistributionGraphTypes") == null) {
-			String[] graphTypes = lookupService
-					.getMolecularWeightDistributionGraphTypes();
-			session.getServletContext().setAttribute(
-					"allMolecularWeightDistributionGraphTypes", graphTypes);
-		}
-	}
-
-	public void setAllMorphologyDistributionGraphTypes(HttpSession session)
-			throws Exception {
-		if (session.getServletContext().getAttribute(
-				"allMorphologyDistributionGraphTypes") == null) {
-			String[] graphTypes = lookupService
-					.getMorphologyDistributionGraphTypes();
-			session.getServletContext().setAttribute(
-					"allMorphologyDistributionGraphTypes", graphTypes);
-		}
-	}
-
-	public void setAllShapeDistributionGraphTypes(HttpSession session)
-			throws Exception {
-		if (session.getServletContext().getAttribute(
-				"allShapeDistributionGraphTypes") == null) {
-			String[] graphTypes = lookupService
-					.getShapeDistributionGraphTypes();
-			session.getServletContext().setAttribute(
-					"allShapeDistributionGraphTypes", graphTypes);
-		}
-	}
-
-	public void setAllStabilityDistributionGraphTypes(HttpSession session)
-			throws Exception {
-		if (session.getServletContext().getAttribute(
-				"allStabilityDistributionGraphTypes") == null) {
-			String[] graphTypes = lookupService
-					.getStabilityDistributionGraphTypes();
-			session.getServletContext().setAttribute(
-					"allStabilityDistributionGraphTypes", graphTypes);
-		}
-	}
-
-	public void setAllPurityDistributionGraphTypes(HttpSession session)
-			throws Exception {
-		if (session.getServletContext().getAttribute(
-				"allPurityDistributionGraphTypes") == null) {
-			String[] graphTypes = lookupService
-					.getPurityDistributionGraphTypes();
-			session.getServletContext().setAttribute(
-					"allPurityDistributionGraphTypes", graphTypes);
-		}
-	}
-
-	public void setAllSolubilityDistributionGraphTypes(HttpSession session)
-			throws Exception {
-		if (session.getServletContext().getAttribute(
-				"allSolubilityDistributionGraphTypes") == null) {
-			String[] graphTypes = lookupService
-					.getSolubilityDistributionGraphTypes();
-			session.getServletContext().setAttribute(
-					"allSolubilityDistributionGraphTypes", graphTypes);
 		}
 	}
 
@@ -1024,5 +948,25 @@ public class InitSessionSetup {
 			session.setAttribute("allDerivedDataFileTypes", fileTypes);
 		}
 		session.removeAttribute("newCharacterizationCreated");
+	}
+
+	public void setAllFunctionTypes(HttpSession session) throws Exception {
+		// set in application context
+		if (session.getServletContext().getAttribute("allFunctionTypes") == null) {
+			List<String> types = lookupService.getAllFunctionTypes();
+			session.getServletContext().setAttribute("allFunctionTypes", types);
+		}
+	}
+
+	public void setAllCharacterizationTypes(HttpSession session)
+			throws Exception {
+		// set in application context
+		if (session.getServletContext()
+				.getAttribute("allCharacterizationTypes") == null) {
+			List<CharacterizationTypeBean> types = lookupService
+					.getAllCharacterizationTypes();
+			session.getServletContext().setAttribute(
+					"allCharacterizationTypes", types);
+		}
 	}
 }
