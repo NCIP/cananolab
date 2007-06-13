@@ -1,6 +1,7 @@
 package gov.nih.nci.calab.service.common;
 
 import gov.nih.nci.calab.db.DataAccessProxy;
+import gov.nih.nci.calab.db.HibernateDataAccess;
 import gov.nih.nci.calab.db.IDataAccess;
 import gov.nih.nci.calab.domain.Aliquot;
 import gov.nih.nci.calab.domain.Instrument;
@@ -11,6 +12,7 @@ import gov.nih.nci.calab.domain.Sample;
 import gov.nih.nci.calab.domain.SampleContainer;
 import gov.nih.nci.calab.domain.StorageElement;
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayDataCategory;
+import gov.nih.nci.calab.dto.characterization.CharacterizationTypeBean;
 import gov.nih.nci.calab.dto.common.InstrumentBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.ProtocolBean;
@@ -38,6 +40,8 @@ import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.util.LabelValueBean;
+import org.hibernate.Hibernate;
+import org.hibernate.SQLQuery;
 import org.hibernate.collection.PersistentSet;
 
 /**
@@ -47,7 +51,7 @@ import org.hibernate.collection.PersistentSet;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.107 2007-06-12 14:42:24 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.108 2007-06-13 21:24:59 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -625,12 +629,6 @@ public class LookupService {
 		return functionsMap;
 	}
 
-	public String[] getAllCharacterizationTypes() {
-		String[] charTypes = new String[] { "Physical Characterization",
-				"In Vitro Characterization", "In Vivo Characterization" };
-		return charTypes;
-	}
-
 	public String[] getAllDendrimerCores() {
 		String[] cores = new String[] { "Diamine", "Ethyline" };
 		return cores;
@@ -753,54 +751,41 @@ public class LookupService {
 	 * @return a map between a characterization type and its child
 	 *         characterizations.
 	 */
-	public Map<String, String[]> getCharacterizationTypeCharacterizations() {
-		Map<String, String[]> charTypeChars = new HashMap<String, String[]>();
-		String[] physicalChars = new String[] {
-				CaNanoLabConstants.PHYSICAL_COMPOSITION,
-				CaNanoLabConstants.PHYSICAL_SIZE,
-				CaNanoLabConstants.PHYSICAL_MOLECULAR_WEIGHT,
-				CaNanoLabConstants.PHYSICAL_MORPHOLOGY,
-				CaNanoLabConstants.PHYSICAL_SOLUBILITY,
-				CaNanoLabConstants.PHYSICAL_SURFACE,
-				CaNanoLabConstants.PHYSICAL_PURITY,
-				// CaNanoLabConstants.PHYSICAL_STABILITY,
-				// CaNanoLabConstants.PHYSICAL_FUNCTIONAL,
-				CaNanoLabConstants.PHYSICAL_SHAPE };
-		charTypeChars.put("physical", physicalChars);
-		String[] toxChars = new String[] {
-				CaNanoLabConstants.TOXICITY_OXIDATIVE_STRESS,
-				CaNanoLabConstants.TOXICITY_ENZYME_FUNCTION };
-		charTypeChars.put("toxicity", toxChars);
-
-		String[] cytoToxChars = new String[] {
-				CaNanoLabConstants.CYTOTOXICITY_CELL_VIABILITY,
-				CaNanoLabConstants.CYTOTOXICITY_CASPASE3_ACTIVIATION };
-		charTypeChars.put("cytoTox", cytoToxChars);
-
-		String[] bloodContactChars = new String[] {
-				CaNanoLabConstants.BLOODCONTACTTOX_PLATE_AGGREGATION,
-				CaNanoLabConstants.BLOODCONTACTTOX_HEMOLYSIS,
-				CaNanoLabConstants.BLOODCONTACTTOX_PLASMA_PROTEIN_BINDING,
-				CaNanoLabConstants.BLOODCONTACTTOX_COAGULATION };
-		charTypeChars.put("bloodContactTox", bloodContactChars);
-
-		String[] immuneCellFuncChars = new String[] {
-				CaNanoLabConstants.IMMUNOCELLFUNCTOX_OXIDATIVE_BURST,
-				CaNanoLabConstants.IMMUNOCELLFUNCTOX_CHEMOTAXIS,
-				CaNanoLabConstants.IMMUNOCELLFUNCTOX_LEUKOCYTE_PROLIFERATION,
-				CaNanoLabConstants.IMMUNOCELLFUNCTOX_PHAGOCYTOSIS,
-				CaNanoLabConstants.IMMUNOCELLFUNCTOX_CYTOKINE_INDUCTION,
-				CaNanoLabConstants.IMMUNOCELLFUNCTOX_CFU_GM,
-				CaNanoLabConstants.IMMUNOCELLFUNCTOX_COMPLEMENT_ACTIVATION,
-				CaNanoLabConstants.IMMUNOCELLFUNCTOX_NKCELL_CYTOTOXIC_ACTIVITY };
-
-		charTypeChars.put("immuneCellFuncTox", immuneCellFuncChars);
-
-		// String[] metabolicChars = new String[] {
-		// CaNanoLabConstants.METABOLIC_STABILITY_CYP450,
-		// CaNanoLabConstants.METABOLIC_STABILITY_GLUCURONIDATION_SULPHATION,
-		// CaNanoLabConstants.METABOLIC_STABILITY_ROS };
-		// charTypeChars.put("metabolicStabilityTox", metabolicChars);
+	public Map<String, List<String>> getCharacterizationTypeCharacterizations()
+			throws Exception {
+		Map<String, List<String>> charTypeChars = new HashMap<String, List<String>>();
+		HibernateDataAccess hda = HibernateDataAccess.getInstance();
+		try {
+			hda.open();
+			List<String> chars = null;
+			String query = "select distinct a.category, a.name from characterization_category a "
+					+ "where a.name not in (select distinct b.category from characterization_category b) "
+					+ "order by a.category, a.name";
+			SQLQuery queryObj = hda.getNativeQuery(query);
+			queryObj.addScalar("CATEGORY", Hibernate.STRING);
+			queryObj.addScalar("NAME", Hibernate.STRING);
+			List results = queryObj.list();
+			for (Object obj : results) {
+				Object[] objarr = (Object[]) obj;
+				String type = objarr[0].toString();
+				String name = objarr[1].toString();
+				if (charTypeChars.get(type) != null) {
+					chars = (List<String>) charTypeChars.get(type);
+				} else {
+					chars = new ArrayList<String>();
+					charTypeChars.put(type, chars);
+				}
+				chars.add(name);
+			}
+		} catch (Exception e) {
+			logger
+					.error("Problem to retrieve all characterization type characterizations. "
+							+ e);
+			throw new RuntimeException(
+					"Problem to retrieve all characteriztaion type characterizations. ");
+		} finally {
+			hda.close();
+		}
 		return charTypeChars;
 	}
 
@@ -882,48 +867,6 @@ public class LookupService {
 			ida.close();
 		}
 		return instrumentManufacturers;
-	}
-
-	public String[] getSizeDistributionGraphTypes() {
-		// TODO query from database or properties file
-		String[] graphTypes = new String[] { "Volume", "Intensity", "Number" };
-		return graphTypes;
-	}
-
-	public String[] getMolecularWeightDistributionGraphTypes() {
-		// TODO query from database or properties file
-		String[] graphTypes = new String[] { "Volume", "Mass", "Number" };
-		return graphTypes;
-	}
-
-	public String[] getMorphologyDistributionGraphTypes() {
-		// TODO query from database or properties file
-		String[] graphTypes = new String[] { "Image", "Graph" };
-		return graphTypes;
-	}
-
-	public String[] getShapeDistributionGraphTypes() {
-		// TODO query from database or properties file
-		String[] graphTypes = new String[] { "Image", "Graph" };
-		return graphTypes;
-	}
-
-	public String[] getStabilityDistributionGraphTypes() {
-		// TODO query from database or properties file
-		String[] graphTypes = new String[] { "Image", "Graph" };
-		return graphTypes;
-	}
-
-	public String[] getPurityDistributionGraphTypes() {
-		// TODO query from database or properties file
-		String[] graphTypes = new String[] { "Image", "Graph" };
-		return graphTypes;
-	}
-
-	public String[] getSolubilityDistributionGraphTypes() {
-		// TODO query from database or properties file
-		String[] graphTypes = new String[] { "Image", "Graph" };
-		return graphTypes;
 	}
 
 	public String[] getAllMorphologyTypes() throws Exception {
@@ -1348,12 +1291,68 @@ public class LookupService {
 		}
 		return instruments;
 	}
-	
+
 	public List<String> getAllDerivedDataFileTypes() throws Exception {
 		List<String> fileTypes = new ArrayList<String>();
 		// TODO query from database
 		fileTypes.addAll(Arrays
 				.asList(CaNanoLabConstants.DEFAULT_DERIVED_DATA_FILE_TYPES));
 		return fileTypes;
+	}
+
+	public Map<String, List<String>> getAllDerivedDataCategories()
+			throws Exception {
+		Map<String, List<String>> categoryMap = new HashMap<String, List<String>>();
+		// TODO query from database
+		List<String> categories = new ArrayList<String>();
+		categories.add("Volume Distribution");
+		categories.add("Intensity Distribution");
+		categories.add("Number Distribution");
+		categoryMap.put("Size", categories);
+		return categoryMap;
+	}
+
+	public List<String> getAllFunctionTypes() throws Exception {
+		List<String> types = new ArrayList<String>();
+		// TODO query from database
+		types.add("Theraputiccs");
+		types.add("Targeting");
+		types.add("Diagnostic Imaging");
+		types.add("Diagnostic Reporting");
+		return types;
+	}
+
+	public List<CharacterizationTypeBean> getAllCharacterizationTypes()
+			throws Exception {
+		List<CharacterizationTypeBean> charTypes = new ArrayList<CharacterizationTypeBean>();
+		HibernateDataAccess hda = HibernateDataAccess.getInstance();
+		try {
+			hda.open();
+			String query = "select distinct category, has_action, indent_level, category_order from characterization_category order by category_order";
+			SQLQuery queryObj = hda.getNativeQuery(query);
+			queryObj.addScalar("CATEGORY", Hibernate.STRING);
+			queryObj.addScalar("HAS_ACTION", Hibernate.INTEGER);
+			queryObj.addScalar("INDENT_LEVEL", Hibernate.INTEGER);
+			queryObj.addScalar("CATEGORY_ORDER", Hibernate.INTEGER);
+			List results = queryObj.list();
+			for (Object obj : results) {
+				Object[] objarr = (Object[]) obj;
+				String type = objarr[0].toString();
+				boolean hasAction = ((Integer) objarr[1] == 0) ? false : true;
+				int indentLevel = (Integer) objarr[2];
+				CharacterizationTypeBean charType = new CharacterizationTypeBean(
+						type, indentLevel, hasAction);
+				charTypes.add(charType);
+			}
+		} catch (Exception e) {
+			logger
+					.error("Problem to retrieve all characterization types. "
+							+ e);
+			throw new RuntimeException(
+					"Problem to retrieve all characteriztaion types. ");
+		} finally {
+			hda.close();
+		}
+		return charTypes;
 	}
 }
