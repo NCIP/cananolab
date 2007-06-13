@@ -12,6 +12,16 @@ import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
  */
 public class MorphologyBean extends CharacterizationBean {
 	private String type;
+	//this is used for validation only
+	private String validateValue;
+
+	public String getValidateValue() {
+		return validateValue;
+	}
+
+	public void setValidateValue(String validateValue) {
+		this.validateValue = validateValue;
+	}
 
 	public MorphologyBean() {
 		super();
