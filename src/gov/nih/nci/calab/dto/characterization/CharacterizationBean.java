@@ -56,6 +56,15 @@ public class CharacterizationBean {
 
 	private ProtocolFileBean protocolFileBean = new ProtocolFileBean();
 
+	private String actionName;
+	
+	public String getActionName() {
+		//remove space in name and make the first letter lower case.		
+		String firstLetter=name.substring(0, 1);
+		actionName=name.replaceFirst(firstLetter, firstLetter.toLowerCase()).replace(" ", "");
+		return actionName;
+	}
+
 	public CharacterizationBean() {
 
 	}
