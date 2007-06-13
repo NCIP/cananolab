@@ -37,7 +37,11 @@
 					<c:choose>
 						<c:when test="${canUserSubmit eq 'true'}">
 							<html:select
-								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].name">
+								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].name"
+								onkeydown="javascript:fnKeyDownHandler(this, event);"
+											onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
+											onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
+											onchange="fnChangeHandler_A(this, event);">
 								<option value="">
 									--?--
 								</option>
