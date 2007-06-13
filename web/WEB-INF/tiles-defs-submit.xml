@@ -527,11 +527,4 @@
 		<put name="reportActionName" value="updateReportForParticle"/>
 	</definition>
 
-    <!-- definition for the multiple characterization deletion page -->
-	<definition name="submit.delete.characterization" extends="calab.home">
-		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
-		<put name="calabContent" value="/submit/bodyDeleteCharacterizations.jsp" />
-		<put name="menu" value="submit" />
-	</definition>
-
 </tiles-definitions>
