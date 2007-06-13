@@ -159,6 +159,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 				particleName, particleType);
 		InitSessionSetup.getInstance().setAllInstruments(session);
 		InitSessionSetup.getInstance().setAllDerivedDataFileTypes(session);
+		InitSessionSetup.getInstance().setAllMorphologyTypes(session);
+		InitSessionSetup.getInstance().setAllCellLines(session);
 		// TODO If there are more types of charactizations, add their
 		// corresponding
 		// protocol type here.
