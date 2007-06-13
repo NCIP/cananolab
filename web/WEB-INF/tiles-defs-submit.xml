@@ -7,45 +7,38 @@
 	<definition name="submit.content.home" path="/layout/submitLayout.jsp">
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
 		<putList name="physicalActions">
-			<item value="Composition" link="nanoparticleComposition.do?dispatch=setup&amp;page=0" />
-			<item value="Size" link="nanoparticleSize.do?dispatch=setup&amp;page=0" />
-			<item value="Molecular Weight" link="nanoparticleMolecularWeight.do?dispatch=setup&amp;page=0" />
-			<item value="Morphology" link="nanoparticleMorphology.do?dispatch=setup&amp;page=0" />
-			<item value="Shape" link="nanoparticleShape.do?dispatch=setup&amp;page=0" />
-			<item value="Surface" link="nanoparticleSurface.do?dispatch=setup&amp;page=0" />
-			<item value="Solubility" link="nanoparticleSolubility.do?dispatch=setup&amp;page=0" />
-			<item value="Purity" link="nanoparticlePurity.do?dispatch=setup&amp;page=0" />
-			<!-- 		<item value="Stability" link="nanoparticleStability.do?dispatch=setup&amp;page=0" />   -->
-
+			<item value="Composition" link="composition.do?dispatch=setup&amp;page=0" />
+			<item value="Size" link="size.do?dispatch=setup&amp;page=0" />
+			<item value="Molecular Weight" link="molecularWeight.do?dispatch=setup&amp;page=0" />
+			<item value="Morphology" link="morphology.do?dispatch=setup&amp;page=0" />
+			<item value="Shape" link="shape.do?dispatch=setup&amp;page=0" />
+			<item value="Surface" link="surface.do?dispatch=setup&amp;page=0" />
+			<item value="Solubility" link="solubility.do?dispatch=setup&amp;page=0" />
+			<item value="Purity" link="purity.do?dispatch=setup&amp;page=0" />
 		</putList>
 		<putList name="toxActions">
-			<item value="Oxidative Stress" link="invitroToxicityOxidativeStress.do?dispatch=setup&amp;page=0" />
-			<item value="Enzyme Function" link="invitroToxicityEnzymeInduction.do?dispatch=setup&amp;page=0" />
+			<item value="Oxidative Stress" link="oxidativeStress.do?dispatch=setup&amp;page=0" />
+			<item value="Enzyme Induction" link="enzymeInduction.do?dispatch=setup&amp;page=0" />
 		</putList>
 		<putList name="cytoToxActions">
-			<item value="Cell Viability" link="invitroCytotoxicityCellViability.do?dispatch=setup&amp;page=0" />
-			<item value="Caspase 3 Activation" link="invitroCytotoxicityCaspase3Activation.do?dispatch=setup&amp;page=0" />
+			<item value="Cell Viability" link="cellViability.do?dispatch=setup&amp;page=0" />
+			<item value="Caspase 3 Activation" link="caspase3Activation.do?dispatch=setup&amp;page=0" />
 		</putList>
 		<putList name="bloodContactActions">
-			<item value="Platelet Aggregation" link="invitroImmunotoxicityPlateletAggregation.do?dispatch=setup&amp;page=0" />
-			<item value="Hemolysis" link="invitroImmunotoxicityHemolysis.do?dispatch=setup&amp;page=0" />
-			<item value="Plasma Protein Binding" link="invitroImmunotoxicityProteinBinding.do?dispatch=setup&amp;page=0" />
-			<item value="Coagulation" link="invitroImmunotoxicityCoagulation.do?dispatch=setup&amp;page=0" />
+			<item value="Platelet Aggregation" link="plateletAggregation.do?dispatch=setup&amp;page=0" />
+			<item value="Hemolysis" link="hemolysis.do?dispatch=setup&amp;page=0" />
+			<item value="Plasma Protein Binding" link="proteinBinding.do?dispatch=setup&amp;page=0" />
+			<item value="Coagulation" link="coagulation.do?dispatch=setup&amp;page=0" />
 		</putList>
 		<putList name="immuneCellFuncActions">
-			<item value="Oxidative Burst" link="invitroImmunotoxicityOxidativeBurst.do?dispatch=setup&amp;page=0" />
-			<item value="Chemotaxis" link="invitroImmunotoxicityChemotaxis.do?dispatch=setup&amp;page=0" />
-			<item value="Leukocyte Proliferation" link="invitroImmunotoxicityLeukocyteProliferation.do?dispatch=setup&amp;page=0" />
-			<item value="Phagocytosis" link="invitroImmunotoxicityPhagocytosis.do?dispatch=setup&amp;page=0" />
-			<item value="Cytokine Induction" link="invitroImmunotoxicityCytokineInduction.do?dispatch=setup&amp;page=0" />
-			<item value="CFU_GM" link="invitroImmunotoxicityCFU_GM.do?dispatch=setup&amp;page=0" />
-			<item value="Complement Activation" link="invitroImmunotoxicityComplementActivation.do?dispatch=setup&amp;page=0" />
-			<item value="Cytotoxic Activity of NK Cells" link="invitroImmunotoxicityNKCellCytotoxicActivity.do?dispatch=setup&amp;page=0" />
-		</putList>
-		<putList name="metabolicActions">
-			<item value="CYP450" link="invitroMetabolicStabilityCYP450.do?dispatch=setup&amp;page=0" />
-			<item value="Glucuronidation, Sulphation" link="invitroMetabolicStabilityGlucuronidationSulphation.do?dispatch=setup&amp;page=0" />
-			<item value="ROS" link="invitroMetabolicStabilityROS.do?dispatch=setup&amp;page=0" />
+			<item value="Oxidative Burst" link="oxidativeBurst.do?dispatch=setup&amp;page=0" />
+			<item value="Chemotaxis" link="chemotaxis.do?dispatch=setup&amp;page=0" />
+			<item value="Leukocyte Proliferation" link="leukocyteProliferation.do?dispatch=setup&amp;page=0" />
+			<item value="Phagocytosis" link="phagocytosis.do?dispatch=setup&amp;page=0" />
+			<item value="Cytokine Induction" link="cytokineInduction.do?dispatch=setup&amp;page=0" />
+			<item value="CFU_GM" link="cFU_GM.do?dispatch=setup&amp;page=0" />
+			<item value="Complement Activation" link="complementActivation.do?dispatch=setup&amp;page=0" />
+			<item value="Cytotoxic Activity of NK Cells" link="nKCellCytotoxicActivity.do?dispatch=setup&amp;page=0" />
 		</putList>
 	</definition>
 
@@ -143,7 +136,6 @@
 	<definition name="submit.addparticle.size.content" extends="submit.content.home">
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
 		<put name="submitContent" value="/submit/bodyCharacterization.jsp" />
-		<put name="actionName" value="nanoparticleSize"/>
 		<put name="pageTitle" value="Physical Characterization - Size" />
 	</definition>
 
@@ -232,8 +224,7 @@
 	<definition name="submit.addimmunotoxicity.hemolysis.content" extends="submit.content.home">
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
 		<put name="submitContent" value="/submit/bodyCharacterization.jsp" />
-		<put name="pageTitle" value="Invitro Characterization - Immunotoxicity - Hemolysis" />
-		<put name="actionName" value="invitroImmunotoxicityHemolysis" />
+		<put name="pageTitle" value="Invitro Characterization - Immunotoxicity - Hemolysis" />		
 		<put name="formType" value="Immunotoxicity" />
 	</definition>
 
@@ -248,7 +239,6 @@
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
 		<put name="submitContent" value="/submit/bodyCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Immunotoxicity - Coagulation" />
-		<put name="actionName" value="invitroImmunotoxicityCoagulation" />
 		<put name="formType" value="Immunotoxicity" />
 	</definition>
 
@@ -263,7 +253,6 @@
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
 		<put name="submitContent" value="/submit/bodyCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Immunotoxicity - Platelet Aggregation" />
-		<put name="actionName" value="invitroImmunotoxicityPlateletAggregation" />
 		<put name="formType" value="Immunotoxicity" />
 	</definition>
 
@@ -278,7 +267,6 @@
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
 		<put name="submitContent" value="/submit/bodyCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Immunotoxicity - Protein Binding" />
-		<put name="actionName" value="invitroImmunotoxicityProteinBinding" />
 		<put name="formType" value="Immunotoxicity" />
 	</definition>
 
@@ -293,7 +281,6 @@
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
 		<put name="submitContent" value="/submit/bodyCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Immunotoxicity - Complement Activation" />
-		<put name="actionName" value="invitroImmunotoxicityComplementActivation" />
 		<put name="formType" value="Immunotoxicity" />
 	</definition>
 
@@ -308,7 +295,6 @@
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
 		<put name="submitContent" value="/submit/bodyCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Immunotoxicity - Cytokine Induction" />
-		<put name="actionName" value="invitroImmunotoxicityCytokineInduction" />
 		<put name="formType" value="Immunotoxicity" />
 	</definition>
 
@@ -323,7 +309,6 @@
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
 		<put name="submitContent" value="/submit/bodyCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Immunotoxicity - Chemotaxis" />
-		<put name="actionName" value="invitroImmunotoxicityChemotaxis" />
 		<put name="formType" value="Immunotoxicity" />
 	</definition>
 
@@ -338,7 +323,6 @@
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
 		<put name="submitContent" value="/submit/bodyCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Immunotoxicity - NK Cell Cytotoxic Activity" />
-		<put name="actionName" value="invitroImmunotoxicityNKCellCytotoxicActivity" />
 		<put name="formType" value="Immunotoxicity" />
 	</definition>
 
@@ -353,7 +337,6 @@
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
 		<put name="submitContent" value="/submit/bodyCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Immunotoxicity - Leukocyte Proliferation" />
-		<put name="actionName" value="invitroImmunotoxicityLeukocyteProliferation" />
 		<put name="formType" value="Immunotoxicity" />
 	</definition>
 
@@ -368,7 +351,6 @@
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
 		<put name="submitContent" value="/submit/bodyCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Immunotoxicity - CFU-GM" />
-		<put name="actionName" value="invitroImmunotoxicityCFU_GM" />
 		<put name="formType" value="Immunotoxicity" />
 	</definition>
 
@@ -383,7 +365,6 @@
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
 		<put name="submitContent" value="/submit/bodyCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Immunotoxicity - Oxidative Burst" />
-		<put name="actionName" value="invitroImmunotoxicityOxidativeBurst" />
 		<put name="formType" value="Immunotoxicity" />
 	</definition>
 
@@ -398,7 +379,6 @@
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
 		<put name="submitContent" value="/submit/bodyCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Immunotoxicity - Phagocytosis" />
-		<put name="actionName" value="invitroImmunotoxicityPhagocytosis" />
 		<put name="formType" value="Immunotoxicity" />
 	</definition>
 
@@ -413,7 +393,6 @@
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
 		<put name="submitContent" value="/submit/bodyCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Cytotoxicity - Cell Viability" />
-		<put name="actionName" value="invitroCytotoxicityCellViability" />
 		<put name="formType" value="Cytotoxicity" />
 		<put name="detailPage" value="/submit/invitro/bodyCytotoxicityInfo.jsp" />
 	</definition>
@@ -429,7 +408,6 @@
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
 		<put name="submitContent" value="/submit/bodyCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Cytotoxicity - Caspase 3 Activation" />
-		<put name="actionName" value="invitroCytotoxicityCaspase3Activation" />
 		<put name="formType" value="Cytotoxicity" />
 		<put name="detailPage" value="/submit/invitro/bodyCytotoxicityInfo.jsp" />
 	</definition>
@@ -445,7 +423,6 @@
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
 		<put name="submitContent" value="/submit/bodyCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Toxicity - Enzyme Induction" />
-		<put name="actionName" value="invitroToxicityEnzymeInduction" />
 		<put name="formType" value="Toxicity" />
 	</definition>
 
@@ -460,7 +437,6 @@
 		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
 		<put name="submitContent" value="/submit/bodyCharacterization.jsp" />
 		<put name="pageTitle" value="Invitro Characterization - Toxicity - Oxidative Stress" />
-		<put name="actionName" value="invitroToxicityOxidativeStress" />
 		<put name="formType" value="Toxicity" />
 	</definition>
 
