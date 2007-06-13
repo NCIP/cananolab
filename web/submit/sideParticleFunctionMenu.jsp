@@ -5,17 +5,15 @@
 <br>
 <br>
 <c:forEach var="funcType" items="${allFunctionTypes}">
-	<span class="indented"><strong>-${funcType}</strong></span>
+	<span class="indented0"><strong>-${funcType}</strong></span>
 	<c:choose>
-		<c:when test="${canUserSubmit eq 'true'}">
-			<a
-				href="nanoparticleFunction.do?dispatch=setup&page=0&particleType=${particleType}&particleName=${particleName}&submitType=${funcType}">
-				<em>add</em> </a>
+		<c:when test="${canUserSubmit eq 'true'}">&nbsp;&nbsp;<a
+				href="nanoparticleFunction.do?dispatch=setup&page=0&particleType=${particleType}&particleName=${particleName}&submitType=${funcType}"><em>add</em></a>
 		</c:when>
 	</c:choose>
 	<br>
 	<c:forEach var="aFunc" items="${allFuncTypeFuncs[funcType]}">
-		<span class="indented2"><a
+		<span class="indented1"><a
 			href="nanoparticleFunction.do?dispatch=${dispatchValue}&page=0&particleType=${particleType}&particleName=${particleName}&functionId=${aFunc.id}&submitType=${funcType}">${aFunc.viewTitle}</a>
 		</span>
 		<br>
