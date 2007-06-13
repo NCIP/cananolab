@@ -16,7 +16,7 @@ function confirmDeletion()
 }
 //-->
 </script>
-<html:form action="/nanoparticleComposition">
+<html:form action="/composition">
 	<table width="100%" align="center">
 		<tr>
 			<td>
