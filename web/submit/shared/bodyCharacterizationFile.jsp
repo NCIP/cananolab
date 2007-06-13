@@ -25,10 +25,12 @@
 			</td>
 			<td class="labelWithTop" valign="top">
 				<html:select
-					property="achar.derivedBioAssayDataList[${param.fileInd}].type">
-					<option value="">
-						--?--
-					</option>
+					property="achar.derivedBioAssayDataList[${param.fileInd}].type"
+					onkeydown="javascript:fnKeyDownHandler(this, event);"
+											onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
+											onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
+											onchange="fnChangeHandler_A(this, event);">
+					<option value="">--?--</option>
 					<html:options name="allDerivedDataFileTypes" />
 				</html:select>
 			</td>
@@ -38,7 +40,11 @@
 			<td class="rightLabelWithTop" valign="top">
 				<html:select
 					property="achar.derivedBioAssayDataList[${param.fileInd}].type"
-					multiple="yes" size="4">
+					multiple="yes" size="4"
+					onkeydown="javascript:fnKeyDownHandler(this, event);"
+											onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
+											onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
+											onchange="fnChangeHandler_A(this, event);">
 					<option value="">
 						--?--
 					</option>
