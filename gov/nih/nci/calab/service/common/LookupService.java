@@ -11,7 +11,6 @@ import gov.nih.nci.calab.domain.ProtocolFile;
 import gov.nih.nci.calab.domain.Sample;
 import gov.nih.nci.calab.domain.SampleContainer;
 import gov.nih.nci.calab.domain.StorageElement;
-import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayDataCategory;
 import gov.nih.nci.calab.dto.characterization.CharacterizationTypeBean;
 import gov.nih.nci.calab.dto.common.InstrumentBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
@@ -51,7 +50,7 @@ import org.hibernate.collection.PersistentSet;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.108 2007-06-13 21:24:59 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.109 2007-06-14 18:00:09 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -1314,11 +1313,23 @@ public class LookupService {
 
 	public List<String> getAllFunctionTypes() throws Exception {
 		List<String> types = new ArrayList<String>();
-		// TODO query from database
-		types.add("Theraputiccs");
-		types.add("Targeting");
-		types.add("Diagnostic Imaging");
-		types.add("Diagnostic Reporting");
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			String hqlString = "select funcType.name from FunctionType funcType order by funcType.name";
+			List results = ida.search(hqlString);
+			for (Object obj : results) {
+				String type = (String) obj;
+				types.add(type);
+			}
+		} catch (Exception e) {
+			logger.error("Problem to retrieve all function types. " + e);
+			throw new RuntimeException(
+					"Problem to retrieve all function types. ");
+		} finally {
+			ida.close();
+		}
 		return types;
 	}
 
