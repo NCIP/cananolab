@@ -50,7 +50,7 @@ import org.hibernate.collection.PersistentSet;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.109 2007-06-14 18:00:09 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.110 2007-06-14 21:24:56 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -1276,7 +1276,7 @@ public class LookupService {
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
-			String hqlString = "from Instrument instrument where instrument.type is not null and instrument.manufacturer is not null";
+			String hqlString = "from Instrument instrument where instrument.type is not null and instrument.manufacturer is not null order by instrument.type";
 			List results = ida.search(hqlString);
 			for (Object obj : results) {
 				Instrument instrument = (Instrument) obj;
