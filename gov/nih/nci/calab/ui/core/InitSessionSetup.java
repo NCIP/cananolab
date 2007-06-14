@@ -519,7 +519,7 @@ public class InitSessionSetup {
 						.getCharacterizationTypeCharacterizations();
 				for (String charType : charTypeChars.keySet()) {
 					List<CharacterizationBean> newCharBeans = new ArrayList<CharacterizationBean>();
-					List<String> charList = (List<String>)charTypeChars
+					List<String> charList = charTypeChars
 							.get(charType);
 					for (CharacterizationBean charBean : charBeans) {
 						if (charList.contains(charBean.getName())) {
