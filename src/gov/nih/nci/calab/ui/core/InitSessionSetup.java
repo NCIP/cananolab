@@ -505,8 +505,8 @@ public class InitSessionSetup {
 		setAllCharacterizations(session, particleName, particleType);
 	}
 
-	public void setAllCharacterizations(HttpSession session, String particleName,
-			String particleType) throws Exception {
+	public void setAllCharacterizations(HttpSession session,
+			String particleName, String particleType) throws Exception {
 		if (session.getAttribute("allCharacterizations") == null
 				|| session.getAttribute("newCharacterizationCreated") != null
 				|| session.getAttribute("newParticleCreated") != null) {
@@ -519,7 +519,7 @@ public class InitSessionSetup {
 						.getCharacterizationTypeCharacterizations();
 				for (String charType : charTypeChars.keySet()) {
 					List<CharacterizationBean> newCharBeans = new ArrayList<CharacterizationBean>();
-					List<String> charList = charTypeChars
+					List<String> charList = (List<String>) charTypeChars
 							.get(charType);
 					for (CharacterizationBean charBean : charBeans) {
 						if (charList.contains(charBean.getName())) {
@@ -607,26 +607,6 @@ public class InitSessionSetup {
 					.getCharacterizationTypeCharacterizations();
 			session.getServletContext().setAttribute(
 					"allCharacterizationTypeCharacterizations", charTypeChars);
-		}
-	}
-
-	public void setAllInstrumentTypes(HttpSession session) throws Exception {
-		if (session.getServletContext().getAttribute("allInstrumentTypes") == null) {
-			List<LabelValueBean> instrumentTypes = lookupService
-					.getAllInstrumentTypeAbbrs();
-			session.getServletContext().setAttribute("allInstrumentTypes",
-					instrumentTypes);
-		}
-	}
-
-	public void setAllInstrumentTypeManufacturers(HttpSession session)
-			throws Exception {
-		if (session.getServletContext().getAttribute(
-				"allInstrumentTypeManufacturers") == null) {
-			Map<String, SortedSet<String>> instrumentManufacturers = lookupService
-					.getAllInstrumentManufacturers();
-			session.getServletContext().setAttribute(
-					"allInstrumentTypeManufacturers", instrumentManufacturers);
 		}
 	}
 
@@ -914,28 +894,26 @@ public class InitSessionSetup {
 					.getAllInstruments();
 			List<String> manufacturers = new ArrayList<String>();
 			Map<String, List<String>> typeToManufacturers = new HashMap<String, List<String>>();
-			Map<String, String> typeToAbbreviation = new HashMap<String, String>();
+			List<String> instrumentTypes = new ArrayList<String>();
 			for (InstrumentBean instrument : instruments) {
-				if (typeToManufacturers.get(instrument.getType()) != null) {
+				String type=instrument.getType();
+				if (typeToManufacturers.get(type) != null) {
 					manufacturers = (List<String>) typeToManufacturers
-							.get(instrument.getType());
+							.get(type);
 				} else {
 					manufacturers = new ArrayList<String>();
 					typeToManufacturers
-							.put(instrument.getType(), manufacturers);
+							.put(type, manufacturers);
 				}
 				manufacturers.add(instrument.getManufacturer());
-				typeToAbbreviation.put(instrument.getType(), instrument
-						.getAbbreviation());
+				if (!instrumentTypes.contains(type)){
+					instrumentTypes.add(type);
+				}
 			}
-			List<String> sortedTypes = new ArrayList<String>(
-					typeToManufacturers.keySet());
-			Collections.sort(sortedTypes);
-			session.setAttribute("allInstrumentTypes", sortedTypes);
+			session.setAttribute("allInstrumentTypes", instrumentTypes);
+			session.setAttribute("allInstruments", instruments);
 			session.setAttribute("allInstrumentTypeToManufacturers",
 					typeToManufacturers);
-			session.setAttribute("allInstrumentTypeToAbbreviation",
-					typeToAbbreviation);
 		}
 	}
 

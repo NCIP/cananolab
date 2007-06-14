@@ -25,11 +25,12 @@
 						onkeydown="javascript:fnKeyDownHandler(this, event);"
 						onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
 						onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-						onchange="fnChangeHandler_A(this, event);doubleDropdownForTheEditable(document.getElementById('instrumentType'), document.getElementById('instrumentManufacturer'), instrumentTypeManufacturers); ">
+						onchange="fnChangeHandler_A(this, event);doubleDropdownForTheEditable(document.getElementById('instrumentType'), document.getElementById('instrumentManufacturer'), instrumentTypeManufacturers); filterAbbreviation();">
 						<option value="">
 							--?--
 						</option>
-						<html:options name="allInstrumentTypes" />
+						<html:options collection="allInstruments" property="type"
+							labelProperty="type" />
 					</html:select>
 				</c:when>
 				<c:otherwise>
@@ -41,7 +42,8 @@
 			<strong>Instrument Type Abbreviation </strong>
 		</td>
 		<td class="rightLabel">
-			${nanoparticleCharacterizationForm.map.achar.instrumentConfigBean.instrumentBean.abbreviation}			
+			<html:text styleId="instrumentAbbr"
+				property="achar.instrumentConfigBean.instrumentBean.abbreviation" />
 			&nbsp;
 		</td>
 	</tr>
@@ -99,6 +101,18 @@
     </c:forEach>
     instrumentTypeManufacturers['${item.key}'] = manufacturers;
   </c:forEach> 
+  
+    
+  function filterAbbreviation() {  
+    var instrumentType=document.getElementById("instrumentType");
+    var instrumentAbbr=document.getElementById("instrumentAbbr");
+    var allInstruments=new Array();    
+    <c:forEach var="instrument" items="${allInstruments}">  	    
+     if (instrumentType.value=="${instrument.type}") {
+          instrumentAbbr.value="${instrument.abbreviation}";
+      }
+    </c:forEach> 
+  }
 //-->
 </script>
 
