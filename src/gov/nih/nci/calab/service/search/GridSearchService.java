@@ -190,13 +190,12 @@ public class GridSearchService {
 		// characterizations types in order as in lookupService.
 		if (gridCharacterizations != null) {
 			LookupService lookupService = new LookupService();
-			Map<String, String[]> orderedCharTypeCharStrings = lookupService
+			Map<String, List<String>> orderedCharTypeCharStrings = lookupService
 					.getCharacterizationTypeCharacterizations();
 
 			for (String charType : orderedCharTypeCharStrings.keySet()) {
 				List<CharacterizationBean> newCharBeans = new ArrayList<CharacterizationBean>();
-				List<String> charStringList = Arrays
-						.asList(orderedCharTypeCharStrings.get(charType));
+				List<String> charStringList = orderedCharTypeCharStrings.get(charType);
 				for (Characterization chara : gridCharacterizations) {
 					if (charStringList.contains(chara.getName())) {
 						newCharBeans.add(new CharacterizationBean(chara));
