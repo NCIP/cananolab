@@ -1,9 +1,10 @@
 package gov.nih.nci.calab.domain.nano.characterization;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class DerivedBioAssayDataCategory {
+public class DerivedBioAssayDataCategory implements Serializable {
 	private static final long serialVersionUID = 1234567890L;
 
 	private Long id;
