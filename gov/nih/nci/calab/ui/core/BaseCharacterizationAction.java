@@ -73,7 +73,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			DerivedBioAssayDataBean fileBean = (DerivedBioAssayDataBean) request
 					.getSession().getAttribute(
 							"characterizationFile" + fileNumber);
-			obj=fileBean;
+			obj = fileBean;
 			fileNumber++;
 		}
 
@@ -108,7 +108,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			if (!copyData) {
 				List<DerivedBioAssayDataBean> dataList = newCharBean
 						.getDerivedBioAssayDataList();
-				for (DerivedBioAssayDataBean derivedBioAssayData : dataList) {					
+				for (DerivedBioAssayDataBean derivedBioAssayData : dataList) {
 					service.saveCharacterizationFile(derivedBioAssayData);
 				}
 			}
@@ -126,8 +126,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 	 * @param mapping
 	 * @throws Exception
 	 */
-	protected void clearMap(HttpSession session, DynaValidatorForm theForm,
-			ActionMapping mapping) throws Exception {
+	protected void clearMap(HttpSession session, DynaValidatorForm theForm)
+			throws Exception {
 		// reset achar and otherParticles
 		theForm.set("otherParticles", new String[0]);
 		theForm.set("achar", new CharacterizationBean());
@@ -149,7 +149,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 	protected void initSetup(HttpServletRequest request,
 			DynaValidatorForm theForm) throws Exception {
 		HttpSession session = request.getSession();
-
+		clearMap(session, theForm);
 		String submitType = (String) request.getParameter("submitType");
 		String particleName = theForm.getString("particleName");
 		String particleType = theForm.getString("particleType");
@@ -225,10 +225,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-
-		HttpSession session = request.getSession();
-		clearMap(session, theForm, mapping);
+		DynaValidatorForm theForm = (DynaValidatorForm) form;	
 		initSetup(request, theForm);
 		return mapping.getInputForward();
 	}
@@ -653,28 +650,28 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		}
 		derivedBioAssayDataBean.setDatumList(dataList);
 	}
-	
-	public ActionForward deleteConfirmed(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
+
+	public ActionForward deleteConfirmed(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
 		System.out.println(" deleteConfirmed ......");
-		DynaValidatorForm theForm = (DynaValidatorForm)form;
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleName = theForm.getString("particleName");
 		String particleType = theForm.getString("particleType");
 		String strCharId = theForm.getString("characterizationId");
-		
+
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.deleteCharacterization(strCharId);
-		
+
 		// signal the session that characterization has been changed
 		request.getSession().setAttribute("newCharacterizationCreated", "true");
-		
+
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
-		
+
 		return mapping.findForward("success");
 	}
-	
+
 	public boolean loginRequired() {
 		return true;
 	}
