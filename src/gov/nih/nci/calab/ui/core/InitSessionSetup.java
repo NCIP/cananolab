@@ -501,37 +501,43 @@ public class InitSessionSetup {
 		setStaticDropdowns(session);
 		setAllFunctionTypes(session);
 		setFunctionTypeFunctions(session, particleName, particleType);
-		setAllCharacterizationTypes(session);
 		setAllCharacterizations(session, particleName, particleType);
 	}
 
+	/**
+	 * Set characterizations stored in the database
+	 * 
+	 * @param session
+	 * @param particleName
+	 * @param particleType
+	 * @throws Exception
+	 */
 	public void setAllCharacterizations(HttpSession session,
 			String particleName, String particleType) throws Exception {
+		setAllCharacterizationTypes(session);
+		Map<String, List<String>> charTypeChars = (Map<String, List<String>>) session
+				.getServletContext().getAttribute("allCharTypeChars");
 		if (session.getAttribute("allCharacterizations") == null
 				|| session.getAttribute("newCharacterizationCreated") != null
 				|| session.getAttribute("newParticleCreated") != null) {
 			SearchNanoparticleService service = new SearchNanoparticleService();
 			List<CharacterizationBean> charBeans = service
 					.getCharacterizationInfo(particleName, particleType);
-			Map<String, List<CharacterizationBean>> existingCharTypeChars = new HashMap<String, List<CharacterizationBean>>();
-			if (!charBeans.isEmpty()) {
-				Map<String, List<String>> charTypeChars = lookupService
-						.getCharacterizationTypeCharacterizations();
-				for (String charType : charTypeChars.keySet()) {
-					List<CharacterizationBean> newCharBeans = new ArrayList<CharacterizationBean>();
-					List<String> charList = (List<String>) charTypeChars
-							.get(charType);
-					for (CharacterizationBean charBean : charBeans) {
-						if (charList.contains(charBean.getName())) {
-							newCharBeans.add(charBean);
-						}
-					}
-					if (!newCharBeans.isEmpty()) {
-						existingCharTypeChars.put(charType, newCharBeans);
+			Map<String, List<CharacterizationBean>> charMap = new HashMap<String, List<CharacterizationBean>>();
+			for (String charType : charTypeChars.keySet()) {
+				List<CharacterizationBean> newCharBeans = new ArrayList<CharacterizationBean>();
+				List<String> charList = (List<String>) charTypeChars
+						.get(charType);
+				for (CharacterizationBean charBean : charBeans) {
+					if (charList.contains(charBean.getName())) {
+						newCharBeans.add(charBean);
 					}
 				}
+				if (!newCharBeans.isEmpty()) {
+					charMap.put(charType, newCharBeans);
+				}
 			}
-			session.setAttribute("allCharacterizations", existingCharTypeChars);
+			session.setAttribute("allCharacterizations", charMap);
 		}
 		session.removeAttribute("newCharacterizationCreated");
 		session.removeAttribute("newParticleCreated");
@@ -896,17 +902,16 @@ public class InitSessionSetup {
 			Map<String, List<String>> typeToManufacturers = new HashMap<String, List<String>>();
 			List<String> instrumentTypes = new ArrayList<String>();
 			for (InstrumentBean instrument : instruments) {
-				String type=instrument.getType();
+				String type = instrument.getType();
 				if (typeToManufacturers.get(type) != null) {
 					manufacturers = (List<String>) typeToManufacturers
 							.get(type);
 				} else {
 					manufacturers = new ArrayList<String>();
-					typeToManufacturers
-							.put(type, manufacturers);
+					typeToManufacturers.put(type, manufacturers);
 				}
 				manufacturers.add(instrument.getManufacturer());
-				if (!instrumentTypes.contains(type)){
+				if (!instrumentTypes.contains(type)) {
 					instrumentTypes.add(type);
 				}
 			}
@@ -945,6 +950,15 @@ public class InitSessionSetup {
 					.getAllCharacterizationTypes();
 			session.getServletContext().setAttribute(
 					"allCharacterizationTypes", types);
+		}
+
+		// set in application context mapping between characterization type and
+		// child characterization names
+		if (session.getServletContext().getAttribute("allCharTypeChars") == null) {
+			Map<String, List<String>> charTypeChars = lookupService
+					.getCharacterizationTypeCharacterizations();
+			session.getServletContext().setAttribute("allCharTypeChars",
+					charTypeChars);
 		}
 	}
 }
