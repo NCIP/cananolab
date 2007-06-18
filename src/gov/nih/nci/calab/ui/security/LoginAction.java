@@ -79,6 +79,13 @@ public class LoginAction extends AbstractBaseAction {
 		} else {
 			session.setAttribute("canUserSubmit", "false");
 		}
+		
+		boolean canDelete = userService.checkDeletePermission(user, "characterization");
+		if (canDelete) {
+			session.setAttribute("canUserDeleteChars", "true");
+		} else {
+			session.setAttribute("canUserDeleteChars", "false");
+		}
 	}
 
 	public boolean loginRequired() {
