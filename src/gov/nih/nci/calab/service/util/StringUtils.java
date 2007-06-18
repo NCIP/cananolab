@@ -15,7 +15,7 @@ import org.apache.log4j.Logger;
  * @author pansu
  * 
  */
-/* CVS $Id: StringUtils.java,v 1.15 2007-06-08 22:15:48 pansu Exp $ */
+/* CVS $Id: StringUtils.java,v 1.16 2007-06-18 19:19:12 pansu Exp $ */
 
 public class StringUtils {
 	private static Logger logger = Logger.getLogger(StringUtils.class);
@@ -256,6 +256,34 @@ public class StringUtils {
 					+ calendar.get(Calendar.DAY_OF_MONTH);
 		String year=calendar.get(Calendar.YEAR)+"";
 		return month+day+year;		
+	}
+	
+    /**
+     * Convert a string with multiple words separated by space to
+     * one word, with first letter as lower case.
+     * @param words
+     * @return
+     */
+	public static String getOneWordLowerCaseFirstLetter(String words) {
+		// remove space in words and make the first letter lower case.
+		String firstLetter = words.substring(0, 1);
+		String oneWord = words.replaceFirst(firstLetter,
+				firstLetter.toLowerCase()).replace(" ", "");
+		return oneWord;
+	}
+	
+	   /**
+     * Convert a string with multiple words separated by space to
+     * one word, with first letter as lower case.
+     * @param words
+     * @return
+     */
+	public static String getOneWordUpperCaseFirstLetter(String words) {
+		// remove space in words and make the first letter lower case.
+		String firstLetter = words.substring(0, 1);
+		String oneWord = words.replaceFirst(firstLetter,
+				firstLetter.toUpperCase()).replace(" ", "");
+		return oneWord;
 	}
 	
 	public static void main(String[] args) {
