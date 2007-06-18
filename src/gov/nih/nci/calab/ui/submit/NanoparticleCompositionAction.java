@@ -8,7 +8,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleCompositionAction.java,v 1.20 2007-01-04 23:21:58 pansu Exp $ */
+/* CVS $Id: NanoparticleCompositionAction.java,v 1.21 2007-06-18 19:19:57 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.CarbonNanotubeComposition;
@@ -148,13 +148,8 @@ public class NanoparticleCompositionAction extends BaseCharacterizationAction {
 		return forward;
 	}
 
-	protected void clearMap(HttpSession session, DynaValidatorForm theForm,
-			ActionMapping mapping) throws Exception {
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
-
-		// clear session data from the input forms
-		theForm.getMap().clear();
+	protected void clearMap(HttpSession session, DynaValidatorForm theForm) throws Exception {
+		// clear session data from the input forms		
 		theForm.set("dendrimer", new DendrimerBean());
 		theForm.set("polymer", new PolymerBean());
 		theForm.set("fullerene", new FullereneBean());
@@ -164,16 +159,12 @@ public class NanoparticleCompositionAction extends BaseCharacterizationAction {
 		theForm.set("liposome", new LiposomeBean());
 		theForm.set("quantumDot", new QuantumDotBean());
 		theForm.set("metalParticle", new MetalParticleBean());
-		theForm.set("particleName", particleName);
-		theForm.set("particleType", particleType);
-		theForm.set("particlePage", mapping.findForward(
-				particleType.toLowerCase()).getPath());
 	}
 
 	protected void initSetup(HttpServletRequest request,
 			DynaValidatorForm theForm) throws Exception {
 		HttpSession session = request.getSession();
-
+		clearMap(session, theForm);
 		String particleType = (String) theForm.get("particleType");
 		String particleName = (String) theForm.get("particleName");
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
@@ -215,7 +206,7 @@ public class NanoparticleCompositionAction extends BaseCharacterizationAction {
 
 		HttpSession session = request.getSession();
 		// clear session data from the input forms
-		clearMap(session, theForm, mapping);
+		clearMap(session, theForm);
 		if (particleType.equalsIgnoreCase(CaNanoLabConstants.DENDRIMER_TYPE)) {
 			DendrimerBean dendrimer = new DendrimerBean(
 					(DendrimerComposition) aChar);
