@@ -57,11 +57,9 @@ public class CharacterizationBean {
 	private ProtocolFileBean protocolFileBean = new ProtocolFileBean();
 
 	private String actionName;
-	
+
 	public String getActionName() {
-		//remove space in name and make the first letter lower case.		
-		String firstLetter=name.substring(0, 1);
-		actionName=name.replaceFirst(firstLetter, firstLetter.toLowerCase()).replace(" ", "");
+		actionName= getActionNameFromCharName(name);
 		return actionName;
 	}
 
@@ -170,9 +168,9 @@ public class CharacterizationBean {
 		aChar.setCreatedBy(getCreatedBy());
 		aChar.setCreatedDate(getCreatedDate());
 
-		for (DerivedBioAssayDataBean table : getDerivedBioAssayDataList()) {
-			aChar.getDerivedBioAssayDataCollection().add(table.getDomainObject());
-		}
+		// for (DerivedBioAssayDataBean table : getDerivedBioAssayDataList()) {
+		// aChar.getDerivedBioAssayDataCollection().add(table.getDomainObject());
+		// }
 
 		InstrumentConfiguration instrumentConfig = new InstrumentConfiguration();
 		if (instrumentConfigBean.getId() != null
@@ -379,5 +377,13 @@ public class CharacterizationBean {
 		}
 		newCharBean.setDerivedBioAssayDataList(newDerivedBioAssayDataList);
 		return newCharBean;
+	}
+
+	public static String getActionNameFromCharName(String name) {
+		// remove space in name and make the first letter lower case.
+		String firstLetter = name.substring(0, 1);
+		String actionName = name.replaceFirst(firstLetter,
+				firstLetter.toLowerCase()).replace(" ", "");
+		return actionName;
 	}
 }
