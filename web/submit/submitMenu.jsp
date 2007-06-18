@@ -1,8 +1,9 @@
+
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page import="gov.nih.nci.calab.dto.characterization.CharacterizationBean"%>
+<%@ page import="gov.nih.nci.calab.service.util.StringUtils"%>
 <c:choose>
 	<c:when test="${!empty param.submitType}">
 		<c:set var="submitType" value="${param.submitType}" scope="session" />
@@ -30,7 +31,7 @@
 				<c:forEach var="charName" items="${allCharTypeChars[submitType]}">
 				    <jsp:useBean id="charName" type="java.lang.String" />
 				    <%
-				       String actionName=CharacterizationBean.getActionNameFromCharName(charName);
+				       String actionName=StringUtils.getOneWordLowerCaseFirstLetter(charName);
 				       pageContext.setAttribute("actionName", actionName);
 				     %>
 					<td class="secondMenuItem" height="20">
