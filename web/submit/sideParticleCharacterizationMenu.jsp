@@ -19,7 +19,7 @@
 			<c:param name="particleName" value="${particleName}" />
 			<c:param name="particleType" value="${particleType}" />
 			<c:param name="characterizationId" value="${aChar.id}"/>
-			<c:param name="submitType" value="${charType}"/>
+			<c:param name="submitType" value="${charType.type}"/>
 			<c:param name="actionName" value="${aChar.actionName}"/>
 		</c:url>
 		<span class="indented${charType.indentLevel+1}"><a href="${url}" title="${aChar.name}">
