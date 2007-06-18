@@ -60,6 +60,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.upload.FormFile;
+import org.hibernate.Hibernate;
+import org.hibernate.SQLQuery;
 
 /**
  * This class includes service calls involved in creating nanoparticle general
@@ -1063,16 +1065,16 @@ public class SubmitNanoparticleService {
 	 /**
 	 * Delete the characterization
 	 */
-	 public void deleteCharacterizations(CharacterizationBean[] charBeans) throws Exception {
+	 public void deleteCharacterizations(String[] charIds) throws Exception {
 			// if ID is not set save to the database otherwise update
 			HibernateDataAccess ida = (HibernateDataAccess)(new DataAccessProxy())
 					.getInstance(IDataAccess.HIBERNATE);
 			try {
 				ida.open();	
 				// Get ID
-				for (CharacterizationBean charBean:charBeans){
+				for (String strCharId:charIds){
 					
-					Long charId = Long.parseLong(charBean.getId());
+					Long charId = Long.parseLong(strCharId);
 					
 					Object charObj = ida.load(Characterization.class, charId);
 					
@@ -1093,21 +1095,25 @@ public class SubmitNanoparticleService {
 	 public List<CharacterizationBean> getAllCharacterizationByType(String particleName, String particleType, String charCategory) throws Exception {
 		 List<CharacterizationBean> beanList = new ArrayList<CharacterizationBean>();
 		 
-		 IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
+		 HibernateDataAccess ida = (HibernateDataAccess)(new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
 		 
 		 try {
 			 ida.open();
-			 String hqlString = "select char.id, char.name, char.identificationName from Nanoparticle particle join particle.characterizationCollection char " + 
-			 					"where particle.name='" + particleName + "' and particle.type='" + particleType + "' and char.classification='" + charCategory + "' " +
-			 					"order by char.name, char.identificationName";
-			 if (!charCategory.equals("Physical")){
-				 hqlString = "select char.id, char.name, char.identificationName from Nanoparticle particle join particle.characterizationCollection char " + 
-			 					"where particle.name='" + particleName + "' and particle.type='" + particleType + "' and char.name in " + 
-			 					"(select charCategory.name from CharacterizationCategory charCategory where charCategory.category = '" + 
-			 					charCategory + "') order by char.name, char.identificationName";
-			 }
+			 String sqlString = "select chars.CHARACTERIZATION_PK_ID, chars.NAME, chars.IDENTIFIER_NAME " + 
+				 			 "from characterization chars, nanoparticle particle, nanoparticle_char particle_char, sample sam " +  
+			 				 "where chars.CHARACTERIZATION_PK_ID = particle_char.CHARACTERIZATION_PK_ID " +
+			 				 "and particle_char.NANOPARTICLE_PK_ID = particle.NANOPARTICLE_PK_ID " + 
+			 				 "and particle.NANOPARTICLE_PK_ID = sam.SAMPLE_PK_ID " + 
+			 				 "and sam.SAMPLE_TYPE = '" + particleType + "' and sam.SAMPLE_NAME = '" + particleName + "'" +
+			 				 "and chars.NAME in (select cc.NAME from characterization_category cc where cc.CATEGORY='" + charCategory + "') " + 
+			 				 "order by chars.NAME, chars.IDENTIFIER_NAME";
+
+			 SQLQuery queryObj = ida.getNativeQuery(sqlString);
+			 queryObj.addScalar("CHARACTERIZATION_PK_ID", Hibernate.LONG);
+			 queryObj.addScalar("NAME",Hibernate.STRING);
+			 queryObj.addScalar("IDENTIFIER_NAME", Hibernate.STRING);
 			 
-			 List results = ida.search(hqlString);
+			 List results = queryObj.list();
 			 for (Object obj: results) {
 				 Object[] result = (Object[])obj;
 				 CharacterizationBean charBean = new CharacterizationBean(result[0].toString(), (String)result[1], (String)result[2]);
