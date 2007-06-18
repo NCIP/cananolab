@@ -8,8 +8,10 @@
 	<span class="indented${charType.indentLevel}"><strong>-${charType.type}</strong> </span>
 	<c:choose>
 		<c:when test="${canUserSubmit eq 'true' && charType.hasAction}">
-			&nbsp;&nbsp;<a href="submitAction.do?submitType=${charType.type}"><em>add</em></a>
-			&nbsp;<a href="deleteAction.do?charCategory=${charType.type}&dispatch=setup&particleType=${particleType}&particleName=${particleName}"><em>delete</em></a>
+			&nbsp;&nbsp;<a href="submitAction.do?submitType=${charType.type}"><em>add</em></a>		
+		</c:when>
+		<c:when test="${canUserDeleteChars eq 'true' && charType.hasAction}">
+			&nbsp;<a href="deleteSetupAction.do?charCategory=${charType.type}&dispatch=setup&particleType=${particleType}&particleName=${particleName}"><em>delete</em></a>
 		</c:when>
 	</c:choose>
 	<br>
