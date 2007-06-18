@@ -51,8 +51,7 @@
 			<form-property name="quantumDot" type="gov.nih.nci.calab.dto.characterization.composition.QuantumDotBean" />
 			<form-property name="emulsion" type="gov.nih.nci.calab.dto.characterization.composition.EmulsionBean" />
 			<form-property name="metalParticle" type="gov.nih.nci.calab.dto.characterization.composition.MetalParticleBean" />
-			<form-property name="complexParticle" type="gov.nih.nci.calab.dto.characterization.composition.ComplexParticleBean" />
-			<form-property name="particlePage" type="java.lang.String" />
+			<form-property name="complexParticle" type="gov.nih.nci.calab.dto.characterization.composition.ComplexParticleBean" />			
 			<form-property name="viewTitle" type="java.lang.String" />
 			<form-property name="description" type="java.lang.String" />
 			<form-property name="characterizationSource" type="java.lang.String" />
@@ -174,15 +173,6 @@
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addParticleComposition" path="submit.addparticle.composition" type="java.lang.Exception" />
 			<forward name="success" path="submit.action.message" />
 			<forward name="input" path="submit.addparticle.composition" />
-			<forward name="dendrimer" path="bodyDendrimerInfo.jsp" />
-			<forward name="liposome" path="bodyLiposomeInfo.jsp" />
-			<forward name="polymer" path="bodyPolymerInfo.jsp" />
-			<forward name="carbon nanotube" path="bodyCarbonNanotubeInfo.jsp" />
-			<forward name="fullerene" path="bodyFullereneInfo.jsp" />
-			<forward name="quantum dot" path="bodyQuantumdotInfo.jsp" />
-			<forward name="emulsion" path="bodyEmulsionInfo.jsp" />
-			<forward name="metal particle" path="bodyMetalParticleInfo.jsp" />
-			<forward name="complex particle" path="bodyComplexParticleInfo.jsp" />
 		</action>
 		<action name="nanoparticleCharacterizationForm" parameter="dispatch" path="/size" type="gov.nih.nci.calab.ui.submit.NanoparticleSizeAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addParticleSize" path="submit.addparticle.size" type="java.lang.Exception" />
