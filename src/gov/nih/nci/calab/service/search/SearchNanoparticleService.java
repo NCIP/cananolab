@@ -212,7 +212,6 @@ public class SearchNanoparticleService {
 		List<CharacterizationBean> charBeans = new ArrayList<CharacterizationBean>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
-
 		try {
 
 			ida.open();
@@ -220,7 +219,7 @@ public class SearchNanoparticleService {
 					.search("select chara.id, chara.name, chara.identificationName from Nanoparticle particle join particle.characterizationCollection chara where particle.name='"
 							+ particleName
 							+ "' and particle.type='"
-							+ particleType + "'");
+							+ particleType + "' order by chara.name");
 			for (Object obj : results) {
 				String charId = ((Object[]) obj)[0].toString();
 				String charName = (String) (((Object[]) obj)[1]);
