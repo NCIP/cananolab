@@ -153,6 +153,20 @@ public class UserService {
 	}
 
 	/**
+	 * Check whether the given user has delete privilege on the given protection
+	 * element
+	 * 
+	 * @param user
+	 * @param protectionElementObjectId
+	 * @return
+	 * @throws CSException
+	 */
+	public boolean checkDeletePermission(UserBean user,
+			String protectionElementObjectId) throws CSException {
+		return checkPermission(user, protectionElementObjectId,
+				CaNanoLabConstants.CSM_DELETE_PRIVILEGE);
+	}
+	/**
 	 * Check whether user can execute the menuItems in session, each defined as
 	 * a protection element using UPT tool. The excluded menuItems are not
 	 * checked.
