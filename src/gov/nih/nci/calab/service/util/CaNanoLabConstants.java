@@ -70,6 +70,8 @@ public class CaNanoLabConstants {
 
 	public static final String CSM_EXECUTE_PRIVILEGE = "EXECUTE";
 
+	public static final String CSM_DELETE_PRIVILEGE = "DELETE";
+
 	// caLAB Submission property file
 	public static final String SUBMISSION_PROPERTY = "exception.properties";
 
