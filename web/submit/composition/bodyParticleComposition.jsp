@@ -2,6 +2,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page import="gov.nih.nci.calab.service.util.StringUtils"%>
 <script type="text/javascript">
 <!--//
 function confirmDeletion()
@@ -26,20 +27,24 @@ function confirmDeletion()
 				</h4>
 			</td>
 			<td align="right" width="15%">
-				<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=composition_help')" class="helpText">Help</a>
+				<a
+					href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=composition_help')"
+					class="helpText">Help</a>
 			</td>
 		</tr>
 		<tr>
 			<td colspan="2">
 				<h5 align="center">
-					${nanoparticleCompositionForm.map.particleName} (${nanoparticleCompositionForm.map.particleType})
+					${nanoparticleCompositionForm.map.particleName}
+					(${nanoparticleCompositionForm.map.particleType})
 				</h5>
 			</td>
 		</tr>
 		<tr>
 			<td colspan="2">
 				<jsp:include page="/bodyMessage.jsp?bundle=submit" />
-				<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
+				<table width="100%" border="0" align="center" cellpadding="3"
+					cellspacing="0" class="topBorderOnly" summary="">
 					<tr>
 					<tr class="topBorder">
 						<td class="formTitle" colspan="4">
@@ -97,29 +102,41 @@ function confirmDeletion()
 					</tr>
 				</table>
 				<br>
-				<jsp:include page="${nanoparticleCompositionForm.map.particlePage}" />
+				<c:set var="particleType" value="${param.particleType}" scope="page" />
+				<jsp:useBean id="particleType" type="java.lang.String" />
+				<%
+							String includePage = StringUtils
+							.getOneWordUpperCaseFirstLetter(particleType);
+					pageContext.setAttribute("includePage", includePage);
+				%>
+				<jsp:include page="/submit/composition/body${includePage}Info.jsp" />
+
 				<c:choose>
 					<c:when test="${canUserSubmit eq 'true'}">
 						<br>
-						<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
+						<table width="100%" border="0" align="center" cellpadding="3"
+							cellspacing="0" class="topBorderOnly" summary="">
 							<tr>
 								<td width="30%">
 									<span class="formMessage"> </span>
 									<br>
 									<c:choose>
 										<c:when test="${param.dispatch ne 'setup'}">
-											<table height="32" border="0" align="left" cellpadding="4" cellspacing="0">
+											<table height="32" border="0" align="left" cellpadding="4"
+												cellspacing="0">
 												<tr>
 													<td height="32">
 														<div align="left">
-															<input type="button" value="Delete" onclick="confirmDeletion();">
+															<input type="button" value="Delete"
+																onclick="confirmDeletion();">
 														</div>
 													</td>
 												</tr>
 											</table>
 										</c:when>
 									</c:choose>
-									<table width="498" height="32" border="0" align="right" cellpadding="4" cellspacing="0">
+									<table width="498" height="32" border="0" align="right"
+										cellpadding="4" cellspacing="0">
 										<tr>
 											<td width="490" height="32">
 												<div align="right">
