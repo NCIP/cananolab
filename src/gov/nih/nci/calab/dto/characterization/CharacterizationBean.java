@@ -9,6 +9,7 @@ import gov.nih.nci.calab.dto.common.InstrumentBean;
 import gov.nih.nci.calab.dto.common.InstrumentConfigBean;
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
+import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -59,7 +60,7 @@ public class CharacterizationBean {
 	private String actionName;
 
 	public String getActionName() {
-		actionName= getActionNameFromCharName(name);
+		actionName= StringUtils.getOneWordLowerCaseFirstLetter(name);
 		return actionName;
 	}
 
@@ -377,13 +378,5 @@ public class CharacterizationBean {
 		}
 		newCharBean.setDerivedBioAssayDataList(newDerivedBioAssayDataList);
 		return newCharBean;
-	}
-
-	public static String getActionNameFromCharName(String name) {
-		// remove space in name and make the first letter lower case.
-		String firstLetter = name.substring(0, 1);
-		String actionName = name.replaceFirst(firstLetter,
-				firstLetter.toLowerCase()).replace(" ", "");
-		return actionName;
 	}
 }
