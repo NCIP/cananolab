@@ -4,8 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:choose>
 	<c:when test="${!empty param.actionName}">
-		<c:set var="actionName" value="${param.actionName}"
-			scope="session" />
+		<c:set var="actionName" value="${param.actionName}" scope="session" />
 	</c:when>
 </c:choose>
 <html:form action="/${actionName}">
@@ -18,21 +17,8 @@
 				</h4>
 			</td>
 			<td align="right" width="15%">
-				<logic:equal name="formType" value="Toxicity">
-					<a
-						href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=toxicity_help')"
-						class="helpText">Help</a>
-				</logic:equal>
-				<logic:equal name="formType" value="Cytotoxicity">
-					<a
-						href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=cytoxicity_help')"
-						class="helpText">Help</a>
-				</logic:equal>
-				<logic:equal name="formType" value="Immunotoxicity">
-					<a
-						href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=immunotoxicity_help')"
-						class="helpText">Help</a>
-				</logic:equal>
+				<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=${submitType}_help')"
+				class="helpText">Help</a>
 			</td>
 		</tr>
 		<tr>
@@ -49,7 +35,8 @@
 
 				<jsp:include page="/submit/shared/bodyCharacterizationSummary.jsp" />
 
-				<jsp:include page="/submit/shared/bodyCharacterizationInstrument.jsp" />
+				<jsp:include
+					page="/submit/shared/bodyCharacterizationInstrument.jsp" />
 
 				<logic:present name="detailPage">
 					<jsp:include page="${detailPage}" />
@@ -71,7 +58,8 @@
 									<tr>
 										<td valign="bottom">
 											<img src="images/Plus.gif">
-											&nbsp;<a href="#"
+											&nbsp;
+											<a href="#"
 												onclick="javascript:addCharacterizationFile(nanoparticleCharacterizationForm, '${actionName}')"><span
 												class="addLink">Add File</span> </a>
 										</td>
