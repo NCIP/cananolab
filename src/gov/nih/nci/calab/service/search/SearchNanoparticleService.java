@@ -219,7 +219,7 @@ public class SearchNanoparticleService {
 					.search("select chara.id, chara.name, chara.identificationName from Nanoparticle particle join particle.characterizationCollection chara where particle.name='"
 							+ particleName
 							+ "' and particle.type='"
-							+ particleType + "' order by chara.name");
+							+ particleType + "' order by chara.name, chara.identificationName");
 			for (Object obj : results) {
 				String charId = ((Object[]) obj)[0].toString();
 				String charName = (String) (((Object[]) obj)[1]);
