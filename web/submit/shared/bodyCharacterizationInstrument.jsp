@@ -29,8 +29,7 @@
 						<option value="">
 							--?--
 						</option>
-						<html:options collection="allInstruments" property="type"
-							labelProperty="type" />
+						<html:options name="allInstrumentTypes"/>
 					</html:select>
 				</c:when>
 				<c:otherwise>
