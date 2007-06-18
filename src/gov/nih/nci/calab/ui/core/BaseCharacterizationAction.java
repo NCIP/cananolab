@@ -160,6 +160,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		InitSessionSetup.getInstance().setAllInstruments(session);
 		InitSessionSetup.getInstance().setAllDerivedDataFileTypes(session);
 		InitSessionSetup.getInstance().setAllMorphologyTypes(session);
+		InitSessionSetup.getInstance().setAllShapeTypes(session);
+		InitSessionSetup.getInstance().setAllConcentrationUnits(session);
 		InitSessionSetup.getInstance().setAllCellLines(session);
 		// TODO If there are more types of charactizations, add their
 		// corresponding
