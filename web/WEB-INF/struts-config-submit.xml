@@ -24,11 +24,11 @@
 			<form-property name="protocolType" type="java.lang.String" />
 			<form-property name="uploadedFile" type="org.apache.struts.upload.FormFile" />
 			<form-property name="file" type="gov.nih.nci.calab.dto.common.ProtocolFileBean" />
-				
-		<!--	<form-property name="fileTitle" type="java.lang.String" />	-->
-		<!--	<form-property name="description" type="java.lang.String" />   -->
-		<!--	<form-property name="visibility" type="java.lang.String" /> -->
-		<!--	<form-property name="protocolVersion" type="java.lang.String" /> -->
+
+			<!--	<form-property name="fileTitle" type="java.lang.String" />	-->
+			<!--	<form-property name="description" type="java.lang.String" />   -->
+			<!--	<form-property name="visibility" type="java.lang.String" /> -->
+			<!--	<form-property name="protocolVersion" type="java.lang.String" /> -->
 		</form-bean>
 		<form-bean name="updateProtocolForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="dispatch" type="java.lang.String" />
@@ -59,14 +59,14 @@
 			<form-property name="characterizationId" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="nanoparticleCharacterizationForm" type="org.apache.struts.validator.DynaValidatorForm">
-			<form-property name="dispatch" type="java.lang.String" />			
+			<form-property name="dispatch" type="java.lang.String" />
 			<form-property name="page" type="java.lang.Integer" initial="0" />
 			<form-property name="particleName" type="java.lang.String" />
-			<form-property name="particleType" type="java.lang.String" />			
-			<form-property name="otherParticles" type="java.lang.String[]"/>
-			<form-property name="copyData" type="java.lang.Boolean" initial="false"/>
+			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="otherParticles" type="java.lang.String[]" />
+			<form-property name="copyData" type="java.lang.Boolean" initial="false" />
 			<form-property name="characterizationId" type="java.lang.String" />
-			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.CharacterizationBean" />			
+			<form-property name="achar" type="gov.nih.nci.calab.dto.characterization.CharacterizationBean" />
 			<form-property name="surface" type="gov.nih.nci.calab.dto.characterization.physical.SurfaceBean" />
 			<form-property name="morphology" type="gov.nih.nci.calab.dto.characterization.physical.MorphologyBean" />
 			<form-property name="shape" type="gov.nih.nci.calab.dto.characterization.physical.ShapeBean" />
@@ -92,11 +92,17 @@
 			<form-property name="function" type="gov.nih.nci.calab.dto.function.FunctionBean" />
 			<form-property name="functionId" type="java.lang.String" />
 		</form-bean>
-		<form-bean name="characterizationMultiDeletionForm" type="org.apache.struts.validator.DynaValidatorForm">
+		<form-bean name="multipCharacterizationDeleteSetupForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="dispatch" type="java.lang.String" />
 			<form-property name="particleName" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />
 			<form-property name="charBeans" type="gov.nih.nci.calab.dto.characterization.CharacterizationBean[]" />
+		</form-bean>
+		<form-bean name="characterizationMultiDeletionForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="particleName" type="java.lang.String" />
+			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="charIds" type="java.lang.String[]" />
 		</form-bean>
 	</form-beans>
 	<global-forwards>
@@ -267,7 +273,7 @@
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroNKCellCytotoxicActivity" path="submit.addimmunotoxicity.nkcellcytotoxicactivity" type="java.lang.Exception" />
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.download.file" path="home.error" type="gov.nih.nci.calab.exception.CalabException" />
 			<forward name="success" path="submit.action.message" />
-			<forward name="input" path="submit.addimmunotoxicity.nkcellcytotoxicactivity" />	
+			<forward name="input" path="submit.addimmunotoxicity.nkcellcytotoxicactivity" />
 		</action>
 		<action name="nanoparticleCharacterizationForm" parameter="dispatch" path="/leukocyteProliferation" type="gov.nih.nci.calab.ui.submit.InvitroLeukocyteProliferationAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addInvitroLeukocyteProliferation" path="submit.addimmunotoxicity.leukocyteproliferation" type="java.lang.Exception" />
@@ -334,8 +340,11 @@
 			<forward name="input" path="submit.addparticle.function" />
 		</action>
 		<action path="/submitAction" type="gov.nih.nci.calab.ui.core.BaseForwardAction" parameter="submit.action.message" scope="request" />
-		<action name="characterizationMultiDeletionForm" path="/deleteAction" type="gov.nih.nci.calab.ui.submit.DeleteMultiCharacterizationAction" parameter="dispatch" scope="request" >
+		<action name="multipCharacterizationDeleteSetupForm" path="/deleteSetupAction" type="gov.nih.nci.calab.ui.submit.DeleteMultiCharacterizationAction" parameter="dispatch" scope="request">
 			<forward name="success" path="submit.delete.characterization" />
+		</action>
+		<action name="characterizationMultiDeletionForm" path="/deleteAction" type="gov.nih.nci.calab.ui.submit.DeleteMultiCharacterizationAction" parameter="dispatch" scope="request">
+			<forward name="success" path="submit.action.message" />
 		</action>
 	</action-mappings>
 </struts-config>
