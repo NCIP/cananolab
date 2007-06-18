@@ -60,7 +60,7 @@ public class CharacterizationBean {
 	private String actionName;
 
 	public String getActionName() {
-		actionName= StringUtils.getOneWordLowerCaseFirstLetter(name);
+		actionName = StringUtils.getOneWordLowerCaseFirstLetter(name);
 		return actionName;
 	}
 
@@ -169,9 +169,10 @@ public class CharacterizationBean {
 		aChar.setCreatedBy(getCreatedBy());
 		aChar.setCreatedDate(getCreatedDate());
 
-		// for (DerivedBioAssayDataBean table : getDerivedBioAssayDataList()) {
-		// aChar.getDerivedBioAssayDataCollection().add(table.getDomainObject());
-		// }
+		for (DerivedBioAssayDataBean table : getDerivedBioAssayDataList()) {
+			aChar.getDerivedBioAssayDataCollection().add(
+					table.getDomainObject());
+		}
 
 		InstrumentConfiguration instrumentConfig = new InstrumentConfiguration();
 		if (instrumentConfigBean.getId() != null
