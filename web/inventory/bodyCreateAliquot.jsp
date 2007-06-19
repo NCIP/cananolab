@@ -71,9 +71,12 @@ function openLink() {
 							</html:select>
 							<strong>&nbsp; => &nbsp; Container ID*</strong>
 							<html:select property="containerName">
-								<option value="${createAliquotForm.map.containerName}" selected>
-									${createAliquotForm.map.containerName}
-								</option>
+								<c:forEach var="container"
+								items="${allSampleContainers[createAliquotForm.map.sampleName]}">
+									<html:option value="${container.containerName}">
+										${container.containerName}
+									</html:option>
+								</c:forEach>							
 							</html:select>
 							<br>
 							<br>
@@ -85,16 +88,18 @@ function openLink() {
 							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 							<strong>Sample ID*</strong>
 							<html:select property="aliquotSampleName"
-								onchange="javascript:filterAliquots();" disabled="true">
+								onchange="javascript:filterAliquots();">
 								<option/>
 								<html:options name="allSampleNamesWithAliquots" />
 							</html:select>
 							<strong>&nbsp; => &nbsp; Aliquot ID*</strong>
-							<html:select property="parentAliquotName" disabled="true">
-								<option value="${createAliquotForm.map.parentAliquotName}"
-									selected>
-									${createAliquotForm.map.parentAliquotName}
-								</option>
+							<html:select property="parentAliquotName">
+								<c:forEach var="aliquot"
+								items="${allUnmaskedSampleAliquots[createAliquotForm.map.aliquotSampleName]}">
+									<html:option value="${aliquot.aliquotName}">
+										${aliquot.aliquotName}
+									</html:option>
+								</c:forEach>							
 							</html:select>
 						</td>
 					</tr>

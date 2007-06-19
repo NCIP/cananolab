@@ -55,10 +55,13 @@
 							<strong>Assay Name</strong>
 						</td>
 						<td class="rightLabel">
-							<html:select property="assayName">								    					
-								<option value="${searchRunForm.map.assayName}" selected>
-									${searchRunForm.map.assayName}
-								</option>
+							<html:select property="assayName">	
+ 								<c:forEach var="assay"
+									items="${allAssayTypeAssays[searchRunForm.map.assayType]}">
+									<html:option value="${assay}">
+										${assay}
+	 								</html:option>
+								</c:forEach>					
 							</html:select>
 						</td>
 					</tr>

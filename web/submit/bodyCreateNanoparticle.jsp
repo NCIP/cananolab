@@ -13,13 +13,16 @@
 				</h3>
 			</td>
 			<td align="right" width="15%">
-				<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=nano_general_info_help')" class="helpText">Help</a>
+				<a
+					href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=nano_general_info_help')"
+					class="helpText">Help</a>
 			</td>
 		</tr>
 		<tr>
 			<td colspan="2">
 				<jsp:include page="/bodyMessage.jsp?bundle=submit" />
-				<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+				<table class="topBorderOnly" cellspacing="0" cellpadding="3"
+					width="100%" align="center" summary="" border="0">
 					<tbody>
 						<tr class="topBorder">
 							<td class="formTitle" colspan="2">
@@ -36,10 +39,11 @@
 								<c:choose>
 									<c:when test="${param.dispatch eq 'setupUpdate'}">
 										${nanoparticleGeneralInfoForm.map.particleType}
-										<html:hidden property="particleType"/>
+										<html:hidden property="particleType" />
 									</c:when>
 									<c:otherwise>
-										<html:select property="particleType" onchange="javascript:doubleDropdown(document.nanoparticleGeneralInfoForm.particleType, document.nanoparticleGeneralInfoForm.particleName, particleTypeParticles)">
+										<html:select property="particleType"
+											onchange="javascript:doubleDropdown(document.nanoparticleGeneralInfoForm.particleType, document.nanoparticleGeneralInfoForm.particleName, particleTypeParticles)">
 											<option value=""></option>
 											<html:options name="allParticleTypes" />
 										</html:select>
@@ -55,14 +59,15 @@
 								<c:choose>
 									<c:when test="${param.dispatch eq 'setupUpdate'}">
               							${nanoparticleGeneralInfoForm.map.particleName}
-              							<html:hidden property="particleName"/>
+              							<html:hidden property="particleName" />
 									</c:when>
 									<c:otherwise>
 										<html:select property="particleName">
 											<option value=""></option>
-											<option value="${nanoparticleGeneralInfoForm.map.particleName}" selected>
-												${nanoparticleGeneralInfoForm.map.particleName}
-											</option>
+											<c:forEach var="name"
+												items="${allParticleTypeParticles[nanoparticleGeneralInfoForm.map.particleType]}">
+												<html:option value="${name}">${name}</html:option>
+											</c:forEach>
 										</html:select>
 									</c:otherwise>
 								</c:choose>
@@ -70,7 +75,8 @@
 						</tr>
 						<tr>
 							<td class="leftLabel" valign="top">
-								<strong>Keywords <em>(one per line)</em></strong>
+								<strong>Keywords <em>(one per line)</em>
+								</strong>
 							</td>
 							<td class="rightLabel">
 								<html:textarea property="keywords" rows="4" />
@@ -83,19 +89,24 @@
 							<td class="rightLabel">
 								<html:select property="visibilities" multiple="true" size="6">
 									<html:options name="allVisibilityGroups" />
-								</html:select><br>
-								<i>(${applicationOwner}_Researcher and ${applicationOwner}_PI are defaults if none of above is selected.)</i>
+								</html:select>
+								<br>
+								<i>(${applicationOwner}_Researcher and
+									${applicationOwner}_PI are defaults if none of above is
+									selected.)</i>
 							</td>
 						</tr>
 					</tbody>
 				</table>
 				<br>
-				<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
+				<table width="100%" border="0" align="center" cellpadding="3"
+					cellspacing="0" class="topBorderOnly" summary="">
 					<tr>
 						<td width="30%">
 							<span class="formMessage"> </span>
 							<br>
-							<table width="498" height="32" border="0" align="right" cellpadding="4" cellspacing="0">
+							<table width="498" height="32" border="0" align="right"
+								cellpadding="4" cellspacing="0">
 								<tr>
 									<td width="490" height="32">
 										<div align="right">
