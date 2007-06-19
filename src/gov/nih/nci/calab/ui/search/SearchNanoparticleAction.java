@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchNanoparticleAction.java,v 1.14 2007-02-28 21:55:09 pansu Exp $ */
+/* CVS $Id: SearchNanoparticleAction.java,v 1.15 2007-06-19 20:14:57 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
@@ -73,9 +73,8 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 			throws Exception {
 		HttpSession session = request.getSession();
 		InitSessionSetup.getInstance().setAllParticleSources(session);
-		InitSessionSetup.getInstance().setAllParticleFunctionTypes(session);
-		InitSessionSetup.getInstance()
-				.setCharacterizationTypeCharacterizations(session);
+		InitSessionSetup.getInstance().setAllFunctionTypes(session);
+		InitSessionSetup.getInstance().setAllCharacterizationTypes(session);
 		InitSessionSetup.getInstance().clearWorkflowSession(session);
 		InitSessionSetup.getInstance().clearInventorySession(session);
 
