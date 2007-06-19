@@ -44,6 +44,7 @@ public class InvitroPlateletAggregationAction extends
 		CharacterizationBean charBean = super.prepareCreate(request, theForm);
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addPlateletAggregation(particleType, particleName, charBean);
+		super.postCreate(request, theForm);
 
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage(

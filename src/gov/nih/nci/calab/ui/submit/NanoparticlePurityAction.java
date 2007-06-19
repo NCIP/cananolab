@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticlePurityAction.java,v 1.11 2007-06-01 21:24:40 pansu Exp $ */
+/* CVS $Id: NanoparticlePurityAction.java,v 1.12 2007-06-19 15:20:04 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
@@ -45,6 +45,7 @@ public class NanoparticlePurityAction extends BaseCharacterizationAction {
 		CharacterizationBean charBean = super.prepareCreate(request, theForm);
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addParticlePurity(particleType, particleName, charBean);
+		super.postCreate(request, theForm);
 
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.addParticlePurity");
