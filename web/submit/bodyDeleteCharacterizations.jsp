@@ -30,16 +30,17 @@ function confirmDeletion()
 				<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=nano_general_info_help')" class="helpText">Help</a>
 			</td>
 		</tr>
-		<tr>
-			<td class="formTitle" colspan="2">
-				Please select the characterizations you wish to delete.
-			</td>
-		</tr>
+
 		<tr>
 			<td colspan="2">
 				<jsp:include page="/bodyMessage.jsp?bundle=submit" />
 				<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 					<tbody>
+						<tr>
+							<td class="formTitle" colspan="2">
+								Please select characterizations you wish to delete:
+							</td>
+						</tr>
 						<logic:iterate name="multipCharacterizationDeleteSetupForm" property="charBeans" id="achar" indexId="charInd">
 							<tr>
 								<td class="leftBorderedFormFieldWhite">
@@ -53,7 +54,7 @@ function confirmDeletion()
 					</tbody>
 				</table>
 				<br>
-				<table width="100%" border="1" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
+				<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
 					<tr>
 						<td width="30%">
 							<span class="formMessage"> </span>
