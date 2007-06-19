@@ -17,8 +17,9 @@
 				</h4>
 			</td>
 			<td align="right" width="15%">
-				<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=${submitType}_help')"
-				class="helpText">Help</a>
+				<a
+					href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=${submitType}_help')"
+					class="helpText">Help</a>
 			</td>
 		</tr>
 		<tr>
@@ -56,13 +57,20 @@
 							<td class="completeLabel" colspan="4">
 								<table border="0" width="100%">
 									<tr>
-										<td valign="bottom">
-											<img src="images/Plus.gif">
-											&nbsp;
-											<a href="#"
-												onclick="javascript:addCharacterizationFile(nanoparticleCharacterizationForm, '${actionName}')"><span
-												class="addLink">Add File</span> </a>
-										</td>
+										<c:choose>
+											<c:when test="${canUserSubmit eq 'true'}">
+												<td valign="bottom">
+													<img src="images/Plus.gif">
+													&nbsp;
+													<a href="#"
+														onclick="javascript:addCharacterizationFile(nanoparticleCharacterizationForm, '${actionName}')"><span
+														class="addLink">Add File</span> </a>
+												</td>
+											</c:when>
+											<c:otherwise>
+												<td></td>
+											</c:otherwise>
+										</c:choose>
 										<td>
 											<logic:iterate name="nanoparticleCharacterizationForm"
 												property="achar.derivedBioAssayDataList"
