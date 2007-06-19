@@ -1,11 +1,9 @@
 package gov.nih.nci.calab.dto.characterization;
 
-import gov.nih.nci.calab.domain.Instrument;
 import gov.nih.nci.calab.domain.InstrumentConfiguration;
 import gov.nih.nci.calab.domain.ProtocolFile;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
-import gov.nih.nci.calab.dto.common.InstrumentBean;
 import gov.nih.nci.calab.dto.common.InstrumentConfigBean;
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
