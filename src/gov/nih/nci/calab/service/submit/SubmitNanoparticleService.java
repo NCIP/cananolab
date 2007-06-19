@@ -1036,36 +1036,17 @@ public class SubmitNanoparticleService {
 	}
 	
 	/**
-	 * Delete the characterization
+	 *  Removed the association between paraticle and characterization 
 	 */
-	 public void deleteCharacterization(String strCharId) throws Exception {
-			// if ID is not set save to the database otherwise update
-			HibernateDataAccess ida = (HibernateDataAccess)(new DataAccessProxy())
-					.getInstance(IDataAccess.HIBERNATE);
-			try {
-				ida.open();
+	private void removeParticleCharacterization(String particleName, String particleType,Characterization charObj) {
+		
+	}
+	
 
-				// Get ID
-				Long charId = Long.parseLong(strCharId);
-				
-				Object charObj = ida.load(Characterization.class, charId);
-				
-				ida.delete(charObj);
-				
-			} catch (Exception e) {
-				e.printStackTrace();
-				ida.rollback();
-				logger.error("Problem saving characterization: ");
-				throw e;
-			} finally {
-				ida.close();
-			}
-	 }
-	 
 	 /**
-	 * Delete the characterization
+	 * Delete the characterizations
 	 */
-	 public void deleteCharacterizations(String[] charIds) throws Exception {
+	 public void deleteCharacterizations(String particleName, String particleType, String[] charIds) throws Exception {
 			// if ID is not set save to the database otherwise update
 			HibernateDataAccess ida = (HibernateDataAccess)(new DataAccessProxy())
 					.getInstance(IDataAccess.HIBERNATE);
@@ -1077,14 +1058,22 @@ public class SubmitNanoparticleService {
 					Long charId = Long.parseLong(strCharId);
 					
 					Object charObj = ida.load(Characterization.class, charId);
-					
+					// deassociate first
+					String hqlString = "from Nanoparticle particle where particle.characterizationCollection.id = '" + strCharId + "'";
+					List results = ida.search(hqlString);
+					for (Object obj: results) {
+						Nanoparticle particle = (Nanoparticle)obj;
+						particle.getCharacterizationCollection().remove(charObj);
+					}
+					// then delete
 					ida.delete(charObj);
+										
 				}				
 			} catch (Exception e) {
 				e.printStackTrace();
 				ida.rollback();
-				logger.error("Problem saving characterization: ");
-				throw e;
+				logger.error("Problem deleting characterization: ");
+				throw new Exception("The characterization is no longer exist in the database, please login again to refresh the view.");
 			} finally {
 				ida.close();
 			}
