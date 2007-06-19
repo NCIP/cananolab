@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleMolecularWeightAction.java,v 1.14 2007-06-01 21:24:41 pansu Exp $ */
+/* CVS $Id: NanoparticleMolecularWeightAction.java,v 1.15 2007-06-19 15:20:04 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
@@ -48,6 +48,7 @@ public class NanoparticleMolecularWeightAction extends
 		service
 				.addParticleMolecularWeight(particleType, particleName,
 						charBean);
+		super.postCreate(request, theForm);
 
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage(
