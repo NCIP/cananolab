@@ -14,6 +14,8 @@ public class LabFile implements java.io.Serializable {
 
 	private java.lang.Long id;
 
+	private String type;
+	
 	public java.lang.Long getId() {
 		return id;
 	}
@@ -120,6 +122,14 @@ public class LabFile implements java.io.Serializable {
 
 	public void setDataStatus(DataStatus dataStatus) {
 		this.dataStatus = dataStatus;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public boolean equals(Object obj) {
