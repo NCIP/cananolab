@@ -13,13 +13,16 @@
 			</td>
 			<td align="right" width="25%">
 				<%--<a href="advancedNanoparticleSearch.do" class="helpText">Advanced Search</a> &nbsp; &nbsp; --%>
-				<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=search_nano_help')" class="helpText">Help</a>
+				<a
+					href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=search_nano_help')"
+					class="helpText">Help</a>
 			</td>
 		</tr>
 		<tr>
 			<td colspan="2">
 				<jsp:include page="/bodyMessage.jsp?bundle=search" />
-				<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" summary="">
+				<table width="100%" border="0" align="center" cellpadding="3"
+					cellspacing="0" summary="">
 					<tr class="topBorder">
 						<td class="formTitle" colspan="4">
 							<div align="justify">
@@ -35,7 +38,7 @@
 							<strong> <html:select property="particleSource">
 									<option value="" />
 										<html:options name="allParticleSources" />
-								</html:select></strong>
+								</html:select> </strong>
 						</td>
 						<td class="label">
 							<strong> Particle Type </strong>
@@ -44,7 +47,7 @@
 							<strong> <html:select property="particleType">
 									<option value="" />
 										<html:options name="allSampleTypes" />
-								</html:select></strong>
+								</html:select> </strong>
 						</td>
 					</tr>
 					<tr>
@@ -52,36 +55,44 @@
 							<strong> Function Type </strong>
 						</td>
 						<td class="rightLabel" colspan="3">
-							<strong> <html:select property="functionTypes" multiple="true" size="4">
-									<html:options collection="allParticleFunctionTypes" property="value" labelProperty="key"/>
-								</html:select></strong>
+							<strong> <html:select property="functionTypes"
+									multiple="true" size="4">
+									<html:options name="allFunctionTypes" />
+								</html:select> </strong>
 						</td>
 					</tr>
 					<tr>
 						<td class="leftLabel" valign="top">
-							<strong> Characterization Type </strong>
-						</td>
+							<strong> Characterization Type </strong>							
+						</td>						
 						<td class="label">
-							<a href="#" onclick="javascript:dynamicDropdown('physical', document.searchNanoparticleForm.characterizations, charTypeChars)">Physical Characterization</a>
-							<br>
-							In Vitro Characterization
-							<br>
-							<span class="indented"> <a href="#" onclick="javascript:dynamicDropdown('toxicity', document.searchNanoparticleForm.characterizations, charTypeChars)">Toxicity</a> <br> <span class="indented2"> <a href="#"
-									onclick="javascript:dynamicDropdown('cytoTox', document.searchNanoparticleForm.characterizations, charTypeChars)">Cytotoxicity</a> </span> <br> <span class="indented2">Immunotoxicity</span> <br> <span class="indented3"><a href="#"
-									onclick="javascript:dynamicDropdown('bloodContactTox', document.searchNanoparticleForm.characterizations, charTypeChars)">Blood Contact </a></span> <br> <span class="indented3"><a href="#"
-									onclick="javascript:dynamicDropdown('immuneCellFuncTox', document.searchNanoparticleForm.characterizations, charTypeChars)">Immune Cell Function </a></span> 									
+							<c:forEach var="charType" items="${allCharacterizationTypes}">
+								<c:choose>
+									<c:when test="${charType.hasAction}">
+										<span class="indented${charType.indentLevel}"><a href="#"
+											onclick="javascript:dynamicDropdown('${charType.type}', document.searchNanoparticleForm.characterizations, charTypeChars); setHiddenCharType('${charType.type}')">${charType.type}
+										</a></span>
+									</c:when>
+									<c:otherwise>
+										<span class="indented${charType.indentLevel}">${charType.type}</span>
+									</c:otherwise>
+								</c:choose>
+								<br>
+							</c:forEach>
+							<html:hidden styleId="characterizationType" property="characterizationType"/>
 						</td>
+
 						<td class="label" valign="top">
 							<strong> Characterization </strong>
 						</td>
 						<td class="rightLabel" valign="top">
-							<strong> <html:select property="characterizations" multiple="true" size="4">
-									<c:forEach var="char" items="${searchNanoparticleForm.map.characterizations}">
-										<option value="${char}" selected>
-											${char}
-										</option>
+							<strong> <html:select property="characterizations"
+									multiple="true" size="4">
+									<c:forEach var="char"
+										items="${allCharTypeChars[searchNanoparticleForm.map.characterizationType]}">
+										<html:option value="${char}">${char}</html:option>
 									</c:forEach>
-								</html:select></strong>
+								</html:select> </strong>
 						</td>
 					</tr>
 					<tr>
@@ -92,12 +103,16 @@
 							<html:textarea property="keywords" rows="4" />
 						</td>
 						<td class="rightLabel" colspan="2">
-							<strong>for<br> <html:radio property="keywordType" value="nanoparticle">Nanoparticle</html:radio> <br> <html:radio property="keywordType" value="assayResult">Assay Result</html:radio> </strong>
+							<strong>for<br> <html:radio property="keywordType"
+									value="nanoparticle">Nanoparticle</html:radio> <br> <html:radio
+									property="keywordType" value="assayResult">Assay Result</html:radio>
+							</strong>
 						</td>
 					</tr>
 				</table>
 				<br>
-				<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
+				<table width="100%" border="0" align="center" cellpadding="3"
+					cellspacing="0" class="topBorderOnly" summary="">
 					<tr>
 						<td>
 							<span class="formMessage"> </span>
@@ -106,7 +121,8 @@
 								<tr>
 									<td>
 										<div align="right">
-											<input type="button" value="Reset" onClick="javascript:location.href='searchNanoparticle.do?dispatch=setup&page=0'">
+											<input type="button" value="Reset"
+												onClick="javascript:location.href='searchNanoparticle.do?dispatch=setup&page=0'">
 											<input type="hidden" name="dispatch" value="search">
 											<input type="hidden" name="page" value="1">
 											<html:submit value="Search" />
@@ -127,13 +143,17 @@
 
 /* populate a hashtable containing characterization type characterizations */
   var charTypeChars=new Array();    
-  <c:forEach var="item" items="${allCharacterizationTypeCharacterizations}">  
+  <c:forEach var="item" items="${allCharTypeChars}">  
     var chars=new Array();    
-   <c:forEach var="char" items="${allCharacterizationTypeCharacterizations[item.key]}" varStatus="count">
+   <c:forEach var="char" items="${allCharTypeChars[item.key]}" varStatus="count">
   		chars[${count.index}]='${char}'; 
     </c:forEach>
     charTypeChars['${item.key}']=chars;
   </c:forEach>
+  
+  function setHiddenCharType(charType) { 
+     document.getElementById("characterizationType").value=charType;          
+  }
 //-->
 </script>
 <!--_____ main content ends _____-->
