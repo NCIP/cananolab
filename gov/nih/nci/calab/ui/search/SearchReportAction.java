@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchReportAction.java,v 1.11 2007-06-08 22:15:48 pansu Exp $ */
+/* CVS $Id: SearchReportAction.java,v 1.12 2007-06-19 20:15:22 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
@@ -73,7 +73,7 @@ public class SearchReportAction extends AbstractDispatchAction {
 			throws Exception {
 		HttpSession session = request.getSession();
 //		InitSessionSetup.getInstance().setAllParticleTypeParticles(session);
-		InitSessionSetup.getInstance().setAllParticleFunctionTypes(session);
+		InitSessionSetup.getInstance().setAllFunctionTypes(session);
 		InitSessionSetup.getInstance().setApplicationOwner(session);
 		InitSessionSetup.getInstance().setStaticDropdowns(session);		
 		InitSessionSetup.getInstance().clearWorkflowSession(session);
@@ -98,7 +98,7 @@ public class SearchReportAction extends AbstractDispatchAction {
 
 		String fileId = request.getParameter("fileId");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		LabFileBean fileBean = service.getFile(fileId, null);
+		LabFileBean fileBean = service.getFile(fileId);
 		String fileRoot = PropertyReader.getProperty(
 				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
 		File dFile = new File(fileRoot + File.separator + fileBean.getPath());

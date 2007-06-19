@@ -4,7 +4,6 @@ import gov.nih.nci.calab.domain.Keyword;
 import gov.nih.nci.calab.domain.nano.characterization.Datum;
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.dto.common.LabFileBean;
-import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.ArrayList;
@@ -53,7 +52,7 @@ public class DerivedBioAssayDataBean extends LabFileBean {
 	}
 
 	public DerivedBioAssayDataBean(DerivedBioAssayData charFile) {
-		super(charFile, CaNanoLabConstants.CHARACTERIZATION_FILE);
+		super(charFile);
 		List<String> allkeywords = new ArrayList<String>();
 		for (Keyword keyword : ((DerivedBioAssayData) charFile)
 				.getKeywordCollection()) {

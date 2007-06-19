@@ -61,8 +61,10 @@ public class GridSearchService {
 					particleType, functionTypes);
 			if (gridReports != null) {
 				for (Report report : gridReports) {
-					reports.add(new LabFileBean(report,
-							CaNanoLabConstants.REPORT, gridNode.getHostName()));
+					LabFileBean fileBean=new LabFileBean(report,
+							gridNode.getHostName());
+					fileBean.setInstanceType(CaNanoLabConstants.REPORT);
+					reports.add(fileBean);
 				}
 			}
 		} else if (reportType.equals(CaNanoLabConstants.ASSOCIATED_FILE)) {
@@ -71,9 +73,10 @@ public class GridSearchService {
 							functionTypes);
 			if (gridAssociatedFiles != null) {
 				for (AssociatedFile report : gridAssociatedFiles) {
-					reports.add(new LabFileBean(report,
-							CaNanoLabConstants.ASSOCIATED_FILE, gridNode
-									.getHostName()));
+					LabFileBean fileBean=new LabFileBean(report,
+							gridNode.getHostName());
+					fileBean.setInstanceType(CaNanoLabConstants.ASSOCIATED_FILE);
+					reports.add(fileBean);
 				}
 			}
 		} else {
@@ -81,8 +84,10 @@ public class GridSearchService {
 					particleType, functionTypes);
 			if (gridReports != null) {
 				for (Report report : gridReports) {
-					reports.add(new LabFileBean(report,
-							CaNanoLabConstants.REPORT, gridNode.getHostName()));
+					LabFileBean fileBean=new LabFileBean(report,
+							gridNode.getHostName());
+					fileBean.setInstanceType(CaNanoLabConstants.REPORT);
+					reports.add(fileBean);
 				}
 			}
 			AssociatedFile[] gridAssociatedFiles = gridClient
@@ -90,9 +95,10 @@ public class GridSearchService {
 							functionTypes);
 			if (gridAssociatedFiles != null) {
 				for (AssociatedFile report : gridAssociatedFiles) {
-					reports.add(new LabFileBean(report,
-							CaNanoLabConstants.ASSOCIATED_FILE, gridNode
-									.getHostName()));
+					LabFileBean fileBean=new LabFileBean(report,
+							gridNode.getHostName());
+					fileBean.setInstanceType(CaNanoLabConstants.ASSOCIATED_FILE);
+					reports.add(fileBean);
 				}
 			}
 		}
@@ -243,8 +249,10 @@ public class GridSearchService {
 				.getReportsByParticleName(particleName);
 		if (gridReports != null) {
 			for (Report report : gridReports) {
-				reports.add(new LabFileBean(report, CaNanoLabConstants.REPORT,
-						gridNode.getHostName()));
+				LabFileBean fileBean=new LabFileBean(report,
+						gridNode.getHostName());
+				fileBean.setInstanceType(CaNanoLabConstants.REPORT);
+				reports.add(fileBean);
 			}
 		}
 		return reports;
@@ -260,9 +268,10 @@ public class GridSearchService {
 				.getOtherAssociatedFilesByParticleName(particleName);
 		if (gridFiles != null) {
 			for (AssociatedFile file : gridFiles) {
-				files.add(new LabFileBean(file,
-						CaNanoLabConstants.ASSOCIATED_FILE, gridNode
-								.getHostName()));
+				LabFileBean fileBean=new LabFileBean(file,
+						gridNode.getHostName());
+				fileBean.setInstanceType(CaNanoLabConstants.ASSOCIATED_FILE);
+				files.add(fileBean);
 			}
 		}
 		return files;
