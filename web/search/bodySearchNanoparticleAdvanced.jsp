@@ -53,7 +53,7 @@
 							</td>
 							<td class="rightLabel" colspan="3">
 								<strong> <html:select property="functionTypes" multiple="true" size="4">
-										<html:options collection="allParticleFunctionTypes" property="value" labelProperty="key"/>
+										<html:options name="allFunctionTypes"/>
 									</html:select></strong>
 							</td>
 						</tr>
@@ -163,9 +163,9 @@
 
 /* populate a hashtable containing characterization type characterizations */
   var charTypeChars=new Array();    
-  <c:forEach var="item" items="${allCharacterizationTypeCharacterizations}">  
+  <c:forEach var="item" items="${allCharTypeChars}">  
     var chars=new Array();    
-   <c:forEach var="char" items="${allCharacterizationTypeCharacterizations[item.key]}" varStatus="count">
+   <c:forEach var="char" items="${allCharTypeChars[item.key]}" varStatus="count">
   		chars[${count.index}]='${char}'; 
     </c:forEach>
     charTypeChars['${item.key}']=chars;
