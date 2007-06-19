@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: RemoteSearchReportAction.java,v 1.11 2007-05-10 17:23:32 pansu Exp $ */
+/* CVS $Id: RemoteSearchReportAction.java,v 1.12 2007-06-19 20:14:29 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.remote.GridNodeBean;
@@ -95,7 +95,7 @@ public class RemoteSearchReportAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		HttpSession session = request.getSession();
-		InitSessionSetup.getInstance().setAllParticleFunctionTypes(session);
+		InitSessionSetup.getInstance().setAllFunctionTypes(session);
 		InitSessionSetup.getInstance().setApplicationOwner(session);
 		InitSessionSetup.getInstance().setStaticDropdowns(session);
 		InitSessionSetup.getInstance().clearWorkflowSession(session);
@@ -197,7 +197,7 @@ public class RemoteSearchReportAction extends AbstractDispatchAction {
 				response.setContentType("application/octet-stream");
 				response.setHeader("Content-disposition",
 						"attachment;filename=" + fileName);
-				response.setHeader("Cache-Control", "no-cache");
+				response.setHeader("cache-control", "Private");
 				java.io.OutputStream out = response.getOutputStream();
 				out.write(fileData);
 				out.close();
