@@ -37,6 +37,8 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
 /**
@@ -654,21 +656,24 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 	public ActionForward deleteConfirmed(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		System.out.println(" deleteConfirmed ......");
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleName = theForm.getString("particleName");
 		String particleType = theForm.getString("particleType");
 		String strCharId = theForm.getString("characterizationId");
 
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		service.deleteCharacterization(strCharId);
+		service.deleteCharacterizations(particleName, particleType,new String[]{strCharId});
 
 		// signal the session that characterization has been changed
 		request.getSession().setAttribute("newCharacterizationCreated", "true");
 
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
-
+		ActionMessages msgs = new ActionMessages();
+		ActionMessage msg = new ActionMessage("message.delete.characterization");
+		msgs.add("message", msg);
+		saveMessages(request, msgs);
+		
 		return mapping.findForward("success");
 	}
 
