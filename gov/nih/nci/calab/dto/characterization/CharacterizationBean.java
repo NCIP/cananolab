@@ -174,36 +174,10 @@ public class CharacterizationBean {
 					table.getDomainObject());
 		}
 
-		InstrumentConfiguration instrumentConfig = new InstrumentConfiguration();
-		if (instrumentConfigBean.getId() != null
-				&& instrumentConfigBean.getId().length() > 0) {
-			instrumentConfig.setId(new Long(instrumentConfigBean.getId()));
-		}
-
-		instrumentConfig.setDescription(instrumentConfigBean.getDescription());
-
-		InstrumentBean instrumentBean = instrumentConfigBean
-				.getInstrumentBean();
-		if (instrumentConfigBean.getInstrumentBean() != null) {
-			Instrument instrument = new Instrument();
-			if (instrumentBean.getId() != null
-					&& instrumentBean.getId().length() > 0) {
-				instrument.setId(new Long(instrumentBean.getId()));
-			}
-			// set instrument only if type and manufacturer information are not
-			// empty
-			if (instrumentBean.getType() != null
-					&& instrumentBean.getType().length() > 0
-					&& instrumentBean.getManufacturer() != null
-					&& instrumentBean.getManufacturer().length() > 0) {
-
-				instrument.setAbbreviation(instrumentBean.getAbbreviation());
-				instrument.setManufacturer(instrumentBean.getManufacturer());
-				instrument.setType(instrumentBean.getType());
-				instrumentConfig.setInstrument(instrument);
-			}
-		}
-		if (instrumentConfig.getInstrument() != null) {
+		InstrumentConfiguration instrumentConfig = instrumentConfigBean
+				.getDomainObject();
+		//only set instrument config if instrument is selected.
+		if (instrumentConfig.getInstrument().getType().length() > 0) {
 			aChar.setInstrumentConfiguration(instrumentConfig);
 		}
 
