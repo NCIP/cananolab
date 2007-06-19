@@ -28,8 +28,9 @@
 						onchange="fnChangeHandler_A(this, event);doubleDropdownForTheEditable(document.getElementById('instrumentType'), document.getElementById('instrumentManufacturer'), instrumentTypeManufacturers); filterAbbreviation();">
 						<option value="">
 							--?--
-						</option>
-						<html:options name="allInstrumentTypes"/>
+						</option>						
+						<html:options collection="allInstrumentTypeToManufacturers"
+							property="key" labelProperty="key" />
 					</html:select>
 				</c:when>
 				<c:otherwise>
@@ -59,9 +60,13 @@
 						onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
 						onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
 						onchange="fnChangeHandler_A(this, event);">
-						<option value="">
-							--?--
-						</option>
+						<option value="">--?--</option>
+						<c:forEach var="manufacturer"
+							items="${allInstrumentTypeToManufacturers[nanoparticleCharacterizationForm.map.achar.instrumentConfigBean.instrumentBean.type]}">
+							<html:option value="${manufacturer}">
+								${manufacturer}
+							</html:option>
+						</c:forEach>
 					</html:select>
 				</c:when>
 				<c:otherwise>
