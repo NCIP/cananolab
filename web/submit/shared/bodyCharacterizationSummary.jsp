@@ -78,26 +78,4 @@
 	</tr>
 </table>
 <br>
-<%--
-<script language="JavaScript">
-<!--//
-  /* populate a hashtable containing sampleName aliquots */
-  var versionNames=new Array();    
-  <c:forEach var="item" items="${AllProtocolNameVersionsByType}">
-    var versions=new Array();
-    <c:forEach var="version" items="${AllProtocolNameVersionsByType[item.key]}" varStatus="count">
-  	    versions[${count.index}]='${version}';  	
-    </c:forEach>
-    versionNames['${item.key}']=versions;
-  </c:forEach>  
-  
-  function filterProtocolVersions() {
-  	var name = document.getElementById("protocolIds");
-  	var version = document.getElementById("protocolVersions");
-  	if (!name[1].checked) {
-  	   doubleDropdown(name, version, versionNames);	
-  	}
-  }
-//-->
-</script>
---%>
+
