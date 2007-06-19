@@ -1,5 +1,6 @@
 package gov.nih.nci.calab.dto.common;
 
+import gov.nih.nci.calab.domain.Instrument;
 import gov.nih.nci.calab.domain.InstrumentConfiguration;
 import gov.nih.nci.calab.service.util.StringUtils;
 
@@ -56,5 +57,16 @@ public class InstrumentConfigBean {
 		newInstrumentConfigBean.setDescription(description);
 		newInstrumentConfigBean.setInstrumentBean(instrumentBean);
 		return newInstrumentConfigBean;
+	}
+	
+	public InstrumentConfiguration getDomainObject() {
+		InstrumentConfiguration instrumentConfig = new InstrumentConfiguration();
+		if (id != null && id.length() > 0) {
+			instrumentConfig.setId(new Long(id));
+		}
+		Instrument instrument=instrumentBean.getDomainObject();
+		instrumentConfig.setDescription(description);
+		instrumentConfig.setInstrument(instrument);
+		return instrumentConfig;
 	}
 }

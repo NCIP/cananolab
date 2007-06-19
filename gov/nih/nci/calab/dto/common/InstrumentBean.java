@@ -1,6 +1,7 @@
 package gov.nih.nci.calab.dto.common;
 
 import gov.nih.nci.calab.domain.Instrument;
+import gov.nih.nci.calab.domain.LabFile;
 import gov.nih.nci.calab.service.util.StringUtils;
 
 /**
@@ -31,6 +32,7 @@ public class InstrumentBean {
 	}
 
 	public InstrumentBean(Instrument instrument) {
+		this.id=StringUtils.convertToString(instrument.getId());
 		this.type = StringUtils.convertToString(instrument.getType());
 		this.manufacturer = StringUtils.convertToString(instrument
 				.getManufacturer());
@@ -69,5 +71,15 @@ public class InstrumentBean {
 	public void setId(String id) {
 		this.id = id;
 	}
-
+	
+	public Instrument getDomainObject() {
+		Instrument instrument = new Instrument();
+		if (id != null && id.length() > 0) {
+			instrument.setId(new Long(id));
+		}
+		instrument.setType(type);
+		instrument.setManufacturer(manufacturer);
+		instrument.setAbbreviation(abbreviation);
+		return instrument;
+	}
 }
