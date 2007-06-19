@@ -5,6 +5,7 @@ package gov.nih.nci.calab.ui.submit;
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
+import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
@@ -16,6 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
 /**
@@ -43,7 +46,7 @@ public class DeleteMultiCharacterizationAction extends AbstractDispatchAction {
 		// convert charBeans to array due to the struts-config
 		theForm.set("charBeans", charBeans
 				.toArray(new CharacterizationBean[charBeans.size()]));
-
+		
 		forward = mapping.findForward("success");
 
 		return forward;
@@ -61,13 +64,18 @@ public class DeleteMultiCharacterizationAction extends AbstractDispatchAction {
 		
 		// setCharacterizationTypeCharacterizations
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		service.deleteCharacterizations(charIds);
+		service.deleteCharacterizations(particleName, particleType, charIds);
 
 		// signal the session that characterization has been changed
 		request.getSession().setAttribute("newCharacterizationCreated", "true");
 		
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
+		
+		ActionMessages msgs = new ActionMessages();
+		ActionMessage msg = new ActionMessage("message.delete.characterization");
+		msgs.add("message", msg);
+		saveMessages(request, msgs);
 
 		forward = mapping.findForward("success");
 
