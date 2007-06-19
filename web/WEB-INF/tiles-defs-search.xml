@@ -63,51 +63,51 @@
 
 	<!-- definition for the remote search nanoparticle page -->
 	<definition name="search.remote.searchnanoparticle" extends="calab.home">
-		<put name="calabContent" value="/search/bodyRemoteSearchNanoparticle.jsp" />
+		<put name="calabContent" value="/search/remote/bodyRemoteSearchNanoparticle.jsp" />
 		<put name="menu" value="remote search" />
 	</definition>
 
 	<!-- definition for the remote search nanoparticle result page -->
 	<definition name="search.remote.searchnanoparticle.result" extends="calab.home">
-		<put name="calabContent" value="/search/bodyRemoteSearchNanoparticleResult.jsp" />
+		<put name="calabContent" value="/search/remote/bodyRemoteSearchNanoparticleResult.jsp" />
 		<put name="menu" value="remote search" />
 	</definition>
 
 	<!-- definition for the remote search report page -->
 	<definition name="search.remote.searchreport" extends="calab.home">
-		<put name="calabContent" value="/search/bodyRemoteSearchReport.jsp" />
+		<put name="calabContent" value="/search/remote/bodyRemoteSearchReport.jsp" />
 		<put name="menu" value="remote search" />
 	</definition>
 
 	<!-- definition for the remote search report result page -->
 	<definition name="search.remote.searchreport.result" extends="calab.home">
-		<put name="calabContent" value="/search/bodyRemoteSearchReportResult.jsp" />
+		<put name="calabContent" value="/search/remote/bodyRemoteSearchReportResult.jsp" />
 		<put name="menu" value="remote search" />
 	</definition>
 
 	<!-- definition for remote nanoparticle detail page -->
 	<definition name="search.remote.nanoparticle.generalinfo" extends="calab.home">
-		<put name="calabSidemenu" value="/search/remoteSideParticleMenu.jsp" />
-		<put name="calabContent" value="/search/bodyRemoteNanoparticleGeneralInfo.jsp" />
+		<put name="calabSidemenu" value="/search/remote/remoteSideParticleMenu.jsp" />
+		<put name="calabContent" value="/search/remote/bodyRemoteNanoparticleGeneralInfo.jsp" />
 		<put name="menu" value="remote search" />
 	</definition>
 
 	<definition name="search.remote.viewParticleDisclaimer" extends="calab.home">
-		<put name="calabSidemenu" value="/search/remoteSideParticleMenu.jsp" />
-		<put name="calabContent" value="/search/bodyRemoteNanoparticleDisclaimer.jsp" />
+		<put name="calabSidemenu" value="/search/remote/remoteSideParticleMenu.jsp" />
+		<put name="calabContent" value="/search/remote/bodyRemoteNanoparticleDisclaimer.jsp" />
 		<put name="menu" value="remote search" />
 	</definition>
 
 	<!-- definition for the remote nanoparticle composition page -->
 	<definition name="search.remote.particle.composition" extends="calab.home">
-		<put name="calabSidemenu" value="/search/remoteSideParticleMenu.jsp" />
+		<put name="calabSidemenu" value="/search/remote/remoteSideParticleMenu.jsp" />
 		<put name="calabContent" value="/search/composition/bodyParticleComposition.jsp"/>
 		<put name="menu" value="remote search" />
 	</definition>
 
 	<definition name="search.remote.under.construction" extends="calab.home">
-		<put name="calabSidemenu" value="/search/remoteSideParticleMenu.jsp" />
-		<put name="calabContent" value="/search/bodyRemoteUnderConstruction.jsp" />
+		<put name="calabSidemenu" value="/search/remote/remoteSideParticleMenu.jsp" />
+		<put name="calabContent" value="/search/remote/bodyRemoteUnderConstruction.jsp" />
 		<put name="menu" value="remote search" />
 	</definition>
 </tiles-definitions>
