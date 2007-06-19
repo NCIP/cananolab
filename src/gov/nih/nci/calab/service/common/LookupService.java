@@ -50,7 +50,7 @@ import org.hibernate.collection.PersistentSet;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.110 2007-06-14 21:24:56 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.111 2007-06-19 20:12:53 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -612,20 +612,6 @@ public class LookupService {
 			ida.close();
 		}
 		return particleTypeParticles;
-	}
-
-	/*
-	 * public String[] getAllParticleFunctions() { String[] functions = new
-	 * String[] { "Therapeutic", "Targeting", "Diagnostic Imaging", "Diagnostic
-	 * Reporting" }; return functions; }
-	 */
-	public Map<String, String> getAllParticleFunctions() {
-		Map<String, String> functionsMap = new HashMap<String, String>();
-		functionsMap.put("Therapeutic", "Therapeutic");
-		functionsMap.put("Targeting", "Targeting");
-		functionsMap.put("Diagnostic Imaging", "Imaging");
-		functionsMap.put("Diagnostic Reporting", "Reporting");
-		return functionsMap;
 	}
 
 	public String[] getAllDendrimerCores() {

@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: SubmitReportAction.java,v 1.11 2007-05-14 15:05:09 pansu Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.12 2007-06-19 20:15:51 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
@@ -91,7 +91,8 @@ public class SubmitReportAction extends AbstractDispatchAction {
 		String fileId = request.getParameter("fileId");
 		String fileType = request.getParameter("fileType");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		LabFileBean fileBean=service.getFile(fileId, fileType);
+		LabFileBean fileBean=service.getFile(fileId);
+		fileBean.setInstanceType(fileType);
 		theForm.set("file", fileBean);
 		return mapping.getInputForward();
 	}

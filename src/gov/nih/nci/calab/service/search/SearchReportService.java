@@ -146,10 +146,12 @@ public class SearchReportService {
 			for (Object obj : results) {
 				LabFileBean fileBean =null;
 				if (obj instanceof Report) {
-					fileBean=new LabFileBean((Report)obj, CaNanoLabConstants.REPORT);
+					fileBean=new LabFileBean((Report)obj);
+					fileBean.setInstanceType(CaNanoLabConstants.REPORT);
 				}
 				else {
-					fileBean=new LabFileBean((AssociatedFile)obj, CaNanoLabConstants.ASSOCIATED_FILE);
+					fileBean=new LabFileBean((AssociatedFile)obj);
+					fileBean.setInstanceType(CaNanoLabConstants.ASSOCIATED_FILE);
 				}
 				reports.add(fileBean);
 			}
@@ -197,8 +199,8 @@ public class SearchReportService {
 			ida.open();
 			List results = ida.search(hql);
 			for (Object obj : results) {
-				LabFileBean fileBean = new LabFileBean((LabFile) obj,
-						reportType);
+				LabFileBean fileBean = new LabFileBean((LabFile) obj);
+				fileBean.setInstanceType(reportType);
 				UserService userService = new UserService(
 						CaNanoLabConstants.CSM_APP_NAME);
 				List<String> accessibleGroups = userService

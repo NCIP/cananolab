@@ -841,7 +841,7 @@ public class SubmitNanoparticleService {
 	 * @param fileId
 	 * @return
 	 */
-	public LabFileBean getFile(String fileId, String fileType) throws Exception {
+	public LabFileBean getFile(String fileId) throws Exception {
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		LabFileBean fileBean = null;
@@ -850,7 +850,7 @@ public class SubmitNanoparticleService {
 
 			LabFile file = (LabFile) ida.load(LabFile.class, StringUtils
 					.convertToLong(fileId));
-			fileBean = new LabFileBean(file, fileType);
+			fileBean = new LabFileBean(file);
 		} catch (Exception e) {
 			e.printStackTrace();
 			ida.rollback();
