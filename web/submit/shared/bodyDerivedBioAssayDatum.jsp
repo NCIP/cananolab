@@ -39,9 +39,9 @@
 							<html:select
 								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].name"
 								onkeydown="javascript:fnKeyDownHandler(this, event);"
-											onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-											onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-											onchange="fnChangeHandler_A(this, event);">
+								onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
+								onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
+								onchange="fnChangeHandler_A(this, event);">
 								<option value="">
 									--?--
 								</option>
@@ -126,11 +126,20 @@
 						</c:otherwise>
 					</c:choose>
 				</td>
-				<td class="rightLabel">
-					<img src="images/Minus.gif" border="0" alt="remove this data">
-					&nbsp;<a href="#" class="removeLink"
-						onclick="javascript:removeCharacterizationData(nanoparticleCharacterizationForm, '${actionName}', ${param.fileInd}, ${dInd})">remove</a>
-				</td>
+				<c:choose>
+					<c:when test="${canUserSubmit eq 'true'}">
+
+						<td class="rightLabel">
+							<img src="images/Minus.gif" border="0" alt="remove this data">
+							&nbsp;
+							<a href="#" class="removeLink"
+								onclick="javascript:removeCharacterizationData(nanoparticleCharacterizationForm, '${actionName}', ${param.fileInd}, ${dInd})">remove</a>
+						</td>
+					</c:when>
+					<c:otherwise>
+						<td class="rightLabel"></td>
+					</c:otherwise>
+				</c:choose>
 			</tr>
 		</logic:iterate>
 	</tbody>

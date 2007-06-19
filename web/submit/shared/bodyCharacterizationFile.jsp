@@ -12,54 +12,81 @@
 	width="100%" align="center" summary="" border="0">
 	<tbody>
 		<tr>
-			<td class="formSubTitle" colspan="4" align="right">
-				<a href="#"
-					onclick="javascript:removeCharacterizationFile(nanoparticleCharacterizationForm, '${param.actionName}', ${param.fileInd})">
-					<img src="images/delete.gif" border="0" alt="remove this file">
-				</a>
-			</td>
+			<c:choose>
+				<c:when test="${canUserSubmit eq 'true'}">
+					<td class="formSubTitle" colspan="4" align="right">
+						<a href="#"
+							onclick="javascript:removeCharacterizationFile(nanoparticleCharacterizationForm, '${param.actionName}', ${param.fileInd})">
+							<img src="images/delete.gif" border="0" alt="remove this file">
+						</a>
+					</td>
+				</c:when>
+				<c:otherwise>
+					<td></td>
+				</c:otherwise>
+			</c:choose>
 		</tr>
 		<tr>
 			<td class="leftLabelWithTop" valign="top" width="10%">
 				<strong>File Type</strong>
 			</td>
-			<td class="labelWithTop" valign="top">
-				<html:select
-					property="achar.derivedBioAssayDataList[${param.fileInd}].type"
-					onkeydown="javascript:fnKeyDownHandler(this, event);"
-											onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-											onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-											onchange="fnChangeHandler_A(this, event);">
-					<option value="">--?--</option>
-					<html:options name="allDerivedDataFileTypes" />
-				</html:select>
-			</td>
+			<c:choose>
+				<c:when test="${canUserSubmit eq 'true'}">
+					<td class="labelWithTop" valign="top">
+						<html:select
+							property="achar.derivedBioAssayDataList[${param.fileInd}].type"
+							onkeydown="javascript:fnKeyDownHandler(this, event);"
+							onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
+							onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
+							onchange="fnChangeHandler_A(this, event);">
+							<option value="">
+								--?--
+							</option>
+							<html:options name="allDerivedDataFileTypes" />
+						</html:select>
+					</td>
+				</c:when>
+				<c:otherwise>
+					<td class="labelWithTop">
+						${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].type}&nbsp;
+					</td>
+				</c:otherwise>
+			</c:choose>
 			<td class="labelWithTop" valign="top">
 				<strong>Data Category</strong>
 			</td>
-			<td class="rightLabelWithTop" valign="top">
-				<html:select
-					property="achar.derivedBioAssayDataList[${param.fileInd}].type"
-					multiple="yes" size="4"
-					onkeydown="javascript:fnKeyDownHandler(this, event);"
-											onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-											onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-											onchange="fnChangeHandler_A(this, event);">
-					<option value="">
-						--?--
-					</option>
-					<option value="Volume Distribution">
-						Volume Distribution
-					</option>
-					<option value="Number Distribution">
-						Number Distribution
-					</option>
-					<option value="Intensity Distribution">
-						Intensity Distribution
-					</option>
-					<%--<html:options name="allFileCategories" />--%>
-				</html:select>
-			</td>
+			<c:choose>
+				<c:when test="${canUserSubmit eq 'true'}">
+					<td class="rightLabelWithTop" valign="top">
+						<html:select
+							property="achar.derivedBioAssayDataList[${param.fileInd}].category"
+							multiple="yes" size="4"
+							onkeydown="javascript:fnKeyDownHandler(this, event);"
+							onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
+							onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
+							onchange="fnChangeHandler_A(this, event);">
+							<option value="">
+								--?--
+							</option>
+							<option value="Volume Distribution">
+								Volume Distribution
+							</option>
+							<option value="Number Distribution">
+								Number Distribution
+							</option>
+							<option value="Intensity Distribution">
+								Intensity Distribution
+							</option>
+							<%--<html:options name="allFileCategories" />--%>
+						</html:select>
+					</td>
+				</c:when>
+				<c:otherwise>
+					<td class="rightLabelWithTop">
+						${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].category}&nbsp;
+					</td>
+				</c:otherwise>
+			</c:choose>
 		</tr>
 		<tr>
 			<td class="completeLabel" valign="top" colspan="4">
@@ -97,12 +124,20 @@
 			<td class="completeLabel" colspan="4">
 				<table border="0" width="100%">
 					<tr>
-						<td valign="bottom">
-							<img src="images/Plus.gif">
-							&nbsp;<a href="#"
-								onclick="javascript:addCharacterizationData(nanoparticleCharacterizationForm, '${param.actionName}', ${param.fileInd})"><span
-								class="addLink">Add Derived Data</span> </a>
-						</td>
+						<c:choose>
+							<c:when test="${canUserSubmit eq 'true'}">
+								<td valign="bottom">
+									<img src="images/Plus.gif">
+									&nbsp;
+									<a href="#"
+										onclick="javascript:addCharacterizationData(nanoparticleCharacterizationForm, '${param.actionName}', ${param.fileInd})"><span
+										class="addLink">Add Derived Data</span> </a>
+								</td>
+							</c:when>
+							<c:otherwise>
+								<td></td>
+							</c:otherwise>
+						</c:choose>
 						<td>
 							<jsp:include page="/submit/shared/bodyDerivedBioAssayDatum.jsp">
 								<jsp:param name="fileInd" value="${param.fileInd}" />
