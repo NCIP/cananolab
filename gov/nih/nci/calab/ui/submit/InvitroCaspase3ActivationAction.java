@@ -47,7 +47,8 @@ public class InvitroCaspase3ActivationAction extends BaseCharacterizationAction 
 		CytotoxicityBean cytoBean = new CytotoxicityBean(propBean, charBean);
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addCaspase3Activation(particleType, particleName, cytoBean);
-
+		super.postCreate(request, theForm);
+		
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage(
 				"message.addInvitroCaspase3Activation");

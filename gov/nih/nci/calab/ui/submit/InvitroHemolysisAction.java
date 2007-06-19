@@ -43,6 +43,7 @@ public class InvitroHemolysisAction extends BaseCharacterizationAction {
 		CharacterizationBean charBean = super.prepareCreate(request, theForm);
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addHemolysis(particleType, particleName, charBean);
+		super.postCreate(request, theForm);
 
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.addInvitroHemolysis");

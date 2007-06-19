@@ -43,6 +43,7 @@ public class InvitroPhagocytosisAction extends BaseCharacterizationAction {
 		CharacterizationBean charBean = super.prepareCreate(request, theForm);
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addPhagocytosis(particleType, particleName, charBean);
+		super.postCreate(request, theForm);
 
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.addInvitroPhagocytosis");
