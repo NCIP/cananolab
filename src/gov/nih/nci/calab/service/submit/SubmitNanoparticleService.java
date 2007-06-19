@@ -3,6 +3,8 @@ package gov.nih.nci.calab.service.submit;
 import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.HibernateDataAccess;
 import gov.nih.nci.calab.db.IDataAccess;
+import gov.nih.nci.calab.domain.Instrument;
+import gov.nih.nci.calab.domain.InstrumentConfiguration;
 import gov.nih.nci.calab.domain.Keyword;
 import gov.nih.nci.calab.domain.LabFile;
 import gov.nih.nci.calab.domain.OutputFile;
@@ -153,64 +155,6 @@ public class SubmitNanoparticleService {
 		int existingViewTitleCount = -1;
 		try {
 			ida.open();
-
-			/*
-			 * if (achar.getInstrument() != null)
-			 * ida.store(achar.getInstrument());
-			 */
-
-			// if (achar.getInstrument() != null) {
-			// Manufacturer manuf = achar.getInstrument().getManufacturer();
-			// String manufacturerQuery = " from Manufacturer manufacturer where
-			// manufacturer.name = '"
-			// + manuf.getName() + "'";
-			// List result = ida.search(manufacturerQuery);
-			// Manufacturer manufacturer = null;
-			// boolean newManufacturer = false;
-			// for (Object obj : result) {
-			// manufacturer = (Manufacturer) obj;
-			// }
-			// if (manufacturer == null) {
-			// newManufacturer = true;
-			// manufacturer = manuf;
-			// ida.store(manufacturer);
-			// }
-			//
-			// InstrumentType iType = achar.getInstrument()
-			// .getInstrumentType();
-			// String instrumentTypeQuery = " from InstrumentType instrumentType
-			// left join fetch instrumentType.manufacturerCollection where
-			// instrumentType.name = '"
-			// + iType.getName() + "'";
-			// result = ida.search(instrumentTypeQuery);
-			// InstrumentType instrumentType = null;
-			// for (Object obj : result) {
-			// instrumentType = (InstrumentType) obj;
-			// }
-			// if (instrumentType == null) {
-			// instrumentType = iType;
-			//
-			// ida.createObject(instrumentType);
-			//
-			// HashSet<Manufacturer> manufacturers = new
-			// HashSet<Manufacturer>();
-			// manufacturers.add(manufacturer);
-			// instrumentType.setManufacturerCollection(manufacturers);
-			// } else {
-			// if (newManufacturer) {
-			// instrumentType.getManufacturerCollection().add(
-			// manufacturer);
-			// }
-			// }
-			// ida.store(instrumentType);
-			//
-			// achar.getInstrument().setInstrumentType(instrumentType);
-			// achar.getInstrument().setManufacturer(manufacturer);
-			// ida.store(achar.getInstrument());
-			// }
-			// if (achar.getProtocolFile() != null) {
-			// ida.store(achar.getProtocolFile());
-			// }
 			// check if viewTitle is already used the same type of
 			// characterization for the same particle
 			String viewTitleQuery = "";
@@ -239,14 +183,22 @@ public class SubmitNanoparticleService {
 				existingViewTitleCount = ((Integer) (obj)).intValue();
 			}
 			if (existingViewTitleCount == 0) {
+				if (achar.getInstrumentConfiguration() != null) {
+					addInstrumentConfig(achar.getInstrumentConfiguration(), ida);
+				}
 				// if ID exists, do update
 				if (achar.getId() != null) {
+					// check if ID is still valid
+					try {
+						Characterization storedChara = (Characterization) ida
+								.load(Characterization.class, achar.getId());
+					} catch (Exception e) {
+						throw new Exception(
+								"This characterization is no longer in the database.  Please log in again to refresh.");
+					}
 					ida.store(achar);
-				} else {// get the existing particle and compositions
-					// from database
-					// created
-					// during sample
-					// creation
+				} else {// get the existing particle and characterizations
+					// from database created during sample creation
 					List results = ida
 							.search("select particle from Nanoparticle particle left join fetch particle.characterizationCollection where particle.name='"
 									+ particleName
@@ -262,6 +214,10 @@ public class SubmitNanoparticleService {
 					}
 				}
 			}
+			if (existingViewTitleCount > 0) {
+				throw new Exception(
+						"The view title is already in use.  Please enter a different one.");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			ida.rollback();
@@ -270,9 +226,39 @@ public class SubmitNanoparticleService {
 		} finally {
 			ida.close();
 		}
-		if (existingViewTitleCount > 0) {
-			throw new CalabException(
-					"The view title is already in use.  Please enter a different one.");
+
+	}
+
+	private void addInstrumentConfig(InstrumentConfiguration instrumentConfig,
+			IDataAccess ida) throws Exception {
+		Instrument instrument = instrumentConfig.getInstrument();
+
+		// check if instrument is already in database
+		List instrumentResults = ida
+				.search("select instrument from Instrument instrument where instrument.type='"
+						+ instrument.getType()
+						+ "' and instrument.manufacturer='"
+						+ instrument.getManufacturer() + "'");
+
+		for (Object obj : instrumentResults) {
+			Instrument storedInstrument = (Instrument) obj;
+			if (storedInstrument != null) {
+				instrument.setId(storedInstrument.getId());
+			} else {
+				ida.createObject(instrument);
+			}
+		}
+
+		// if new instrumentConfig, save it
+		if (instrumentConfig.getId() == null) {
+			ida.createObject(instrumentConfig);
+		} else {
+			InstrumentConfiguration storedInstrumentConfig = (InstrumentConfiguration) ida
+					.load(InstrumentConfiguration.class, instrumentConfig
+							.getId());
+			storedInstrumentConfig.setDescription(instrumentConfig
+					.getDescription());
+			storedInstrumentConfig.setInstrument(instrument);
 		}
 	}
 
@@ -285,14 +271,13 @@ public class SubmitNanoparticleService {
 	 * @throws Exception
 	 */
 	public void addParticleComposition(String particleType,
-			String particleName, CompositionBean composition)
-			throws Exception {		
-		ParticleComposition doComp=composition.getDomainObj();
+			String particleName, CompositionBean composition) throws Exception {
+		ParticleComposition doComp = composition.getDomainObj();
 		addParticleCharacterization(particleType, particleName, doComp);
 	}
 
-	/**O
-	 * Saves the size characterization to the database
+	/**
+	 * O Saves the size characterization to the database
 	 * 
 	 * @param particleType
 	 * @param particleName
@@ -367,7 +352,7 @@ public class SubmitNanoparticleService {
 	public void addParticleShape(String particleType, String particleName,
 			ShapeBean shape) throws Exception {
 		Shape doShape = new Shape();
-		shape.updateDomainObj(doShape);	
+		shape.updateDomainObj(doShape);
 		addParticleCharacterization(particleType, particleName, doShape);
 	}
 
@@ -397,7 +382,7 @@ public class SubmitNanoparticleService {
 	 */
 	public void addParticleSolubility(String particleType, String particleName,
 			SolubilityBean solubility) throws Exception {
-		Solubility doSolubility=new Solubility();
+		Solubility doSolubility = new Solubility();
 		solubility.updateDomainObj(doSolubility);
 		// TODO think about how to deal with characterization file.
 		addParticleCharacterization(particleType, particleName, doSolubility);
@@ -446,8 +431,7 @@ public class SubmitNanoparticleService {
 			String particleName, CharacterizationBean plateletAggregation)
 			throws Exception {
 		PlateletAggregation doPlateletAggregation = new PlateletAggregation();
-		plateletAggregation
-				.updateDomainObj(doPlateletAggregation);
+		plateletAggregation.updateDomainObj(doPlateletAggregation);
 		addParticleCharacterization(particleType, particleName,
 				doPlateletAggregation);
 	}
@@ -464,8 +448,7 @@ public class SubmitNanoparticleService {
 			String particleName, CharacterizationBean complementActivation)
 			throws Exception {
 		ComplementActivation doComplementActivation = new ComplementActivation();
-		complementActivation
-				.updateDomainObj(doComplementActivation);		
+		complementActivation.updateDomainObj(doComplementActivation);
 		addParticleCharacterization(particleType, particleName,
 				doComplementActivation);
 	}
@@ -480,7 +463,7 @@ public class SubmitNanoparticleService {
 	 */
 	public void addChemotaxis(String particleType, String particleName,
 			CharacterizationBean chemotaxis) throws Exception {
-		
+
 		Chemotaxis doChemotaxis = new Chemotaxis();
 		chemotaxis.updateDomainObj(doChemotaxis);
 		addParticleCharacterization(particleType, particleName, doChemotaxis);
@@ -498,10 +481,9 @@ public class SubmitNanoparticleService {
 	public void addNKCellCytotoxicActivity(String particleType,
 			String particleName, CharacterizationBean nkCellCytotoxicActivity)
 			throws Exception {
-		
+
 		NKCellCytotoxicActivity doNKCellCytotoxicActivity = new NKCellCytotoxicActivity();
-		nkCellCytotoxicActivity
-				.updateDomainObj(doNKCellCytotoxicActivity);		
+		nkCellCytotoxicActivity.updateDomainObj(doNKCellCytotoxicActivity);
 		addParticleCharacterization(particleType, particleName,
 				doNKCellCytotoxicActivity);
 	}
@@ -518,8 +500,7 @@ public class SubmitNanoparticleService {
 			String particleName, CharacterizationBean leukocyteProliferation)
 			throws Exception {
 		LeukocyteProliferation doLeukocyteProliferation = new LeukocyteProliferation();
-		leukocyteProliferation
-				.updateDomainObj(doLeukocyteProliferation);		
+		leukocyteProliferation.updateDomainObj(doLeukocyteProliferation);
 		addParticleCharacterization(particleType, particleName,
 				doLeukocyteProliferation);
 	}
@@ -535,7 +516,7 @@ public class SubmitNanoparticleService {
 	public void addCFU_GM(String particleType, String particleName,
 			CharacterizationBean cfu_gm) throws Exception {
 		CFU_GM doCFU_GM = new CFU_GM();
-		cfu_gm.updateDomainObj(doCFU_GM);		
+		cfu_gm.updateDomainObj(doCFU_GM);
 		addParticleCharacterization(particleType, particleName, doCFU_GM);
 	}
 
@@ -550,7 +531,7 @@ public class SubmitNanoparticleService {
 	public void addOxidativeBurst(String particleType, String particleName,
 			CharacterizationBean oxidativeBurst) throws Exception {
 		OxidativeBurst doOxidativeBurst = new OxidativeBurst();
-		oxidativeBurst.updateDomainObj(doOxidativeBurst);	
+		oxidativeBurst.updateDomainObj(doOxidativeBurst);
 		addParticleCharacterization(particleType, particleName,
 				doOxidativeBurst);
 	}
@@ -582,7 +563,7 @@ public class SubmitNanoparticleService {
 			CharacterizationBean cytokineInduction) throws Exception {
 		CytokineInduction doCytokineInduction = new CytokineInduction();
 		cytokineInduction.updateDomainObj(doCytokineInduction);
-		
+
 		addParticleCharacterization(particleType, particleName,
 				doCytokineInduction);
 	}
@@ -631,7 +612,8 @@ public class SubmitNanoparticleService {
 			CharacterizationBean enzymeInduction) throws Exception {
 		EnzymeInduction doEnzymeInduction = new EnzymeInduction();
 		enzymeInduction.updateDomainObj(doEnzymeInduction);
-		addParticleCharacterization(particleType, particleName, doEnzymeInduction);
+		addParticleCharacterization(particleType, particleName,
+				doEnzymeInduction);
 	}
 
 	/**
@@ -661,8 +643,7 @@ public class SubmitNanoparticleService {
 	public void addCaspase3Activation(String particleType, String particleName,
 			CytotoxicityBean caspase3Activation) throws Exception {
 		Caspase3Activation doCaspase3Activation = new Caspase3Activation();
-		caspase3Activation
-				.updateDomainObj(doCaspase3Activation);
+		caspase3Activation.updateDomainObj(doCaspase3Activation);
 		addParticleCharacterization(particleType, particleName,
 				doCaspase3Activation);
 	}
@@ -894,7 +875,8 @@ public class SubmitNanoparticleService {
 	 * @param fileId
 	 * @return
 	 */
-	public DerivedBioAssayDataBean getDerivedBioAssayData(String fileId) throws Exception {
+	public DerivedBioAssayDataBean getDerivedBioAssayData(String fileId)
+			throws Exception {
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		DerivedBioAssayDataBean fileBean = null;
@@ -902,10 +884,12 @@ public class SubmitNanoparticleService {
 			ida.open();
 
 			DerivedBioAssayData file = (DerivedBioAssayData) ida.load(
-					DerivedBioAssayData.class, StringUtils.convertToLong(fileId));
+					DerivedBioAssayData.class, StringUtils
+							.convertToLong(fileId));
 			// load keywords
 			file.getKeywordCollection();
-			fileBean = new DerivedBioAssayDataBean(file, CaNanoLabConstants.OUTPUT);
+			fileBean = new DerivedBioAssayDataBean(file,
+					CaNanoLabConstants.OUTPUT);
 		} catch (Exception e) {
 			e.printStackTrace();
 			ida.rollback();
@@ -1002,16 +986,16 @@ public class SubmitNanoparticleService {
 	 * @param fileBean
 	 * @throws Exception
 	 */
-	public void updateDerivedBioAssayDataMetaData(DerivedBioAssayDataBean fileBean)
-			throws Exception {
+	public void updateDerivedBioAssayDataMetaData(
+			DerivedBioAssayDataBean fileBean) throws Exception {
 
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
 			DerivedBioAssayData file = (DerivedBioAssayData) ida.load(
-					DerivedBioAssayData.class, StringUtils.convertToLong(fileBean
-							.getId()));
+					DerivedBioAssayData.class, StringUtils
+							.convertToLong(fileBean.getId()));
 
 			file.setTitle(fileBean.getTitle().toUpperCase());
 			file.setDescription(fileBean.getDescription());
@@ -1034,87 +1018,70 @@ public class SubmitNanoparticleService {
 		userService.setVisiblity(fileBean.getId(), fileBean
 				.getVisibilityGroups());
 	}
-	
-	/**
-	 *  Removed the association between paraticle and characterization 
-	 */
-	private void removeParticleCharacterization(String particleName, String particleType,Characterization charObj) {
-		
-	}
-	
 
-	 /**
+	/**
+	 * Delete the characterization
+	 */
+	public void deleteCharacterization(String strCharId) throws Exception {
+		// if ID is not set save to the database otherwise update
+		HibernateDataAccess ida = (HibernateDataAccess) (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+
+			// Get ID
+			Long charId = Long.parseLong(strCharId);
+
+			Object charObj = ida.load(Characterization.class, charId);
+
+			ida.delete(charObj);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			ida.rollback();
+			logger.error("Problem saving characterization: ");
+			throw e;
+		} finally {
+			ida.close();
+		}
+	}
+
+	/**
 	 * Delete the characterizations
 	 */
-	 public void deleteCharacterizations(String particleName, String particleType, String[] charIds) throws Exception {
-			// if ID is not set save to the database otherwise update
-			HibernateDataAccess ida = (HibernateDataAccess)(new DataAccessProxy())
-					.getInstance(IDataAccess.HIBERNATE);
-			try {
-				ida.open();	
-				// Get ID
-				for (String strCharId:charIds){
-					
-					Long charId = Long.parseLong(strCharId);
-					
-					Object charObj = ida.load(Characterization.class, charId);
-					// deassociate first
-					String hqlString = "from Nanoparticle particle where particle.characterizationCollection.id = '" + strCharId + "'";
-					List results = ida.search(hqlString);
-					for (Object obj: results) {
-						Nanoparticle particle = (Nanoparticle)obj;
-						particle.getCharacterizationCollection().remove(charObj);
-					}
-					// then delete
-					ida.delete(charObj);
-										
-				}				
-			} catch (Exception e) {
-				e.printStackTrace();
-				ida.rollback();
-				logger.error("Problem deleting characterization: ");
-				throw new Exception("The characterization is no longer exist in the database, please login again to refresh the view.");
-			} finally {
-				ida.close();
-			}
-	 }
-	 /**
-	  * Retrieve all the characterization id and title for a certain type(physical, blood contact)
-	  */
-	 public List<CharacterizationBean> getAllCharacterizationByType(String particleName, String particleType, String charCategory) throws Exception {
-		 List<CharacterizationBean> beanList = new ArrayList<CharacterizationBean>();
-		 
-		 HibernateDataAccess ida = (HibernateDataAccess)(new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
-		 
-		 try {
-			 ida.open();
-			 String sqlString = "select chars.CHARACTERIZATION_PK_ID, chars.NAME, chars.IDENTIFIER_NAME " + 
-				 			 "from characterization chars, nanoparticle particle, nanoparticle_char particle_char, sample sam " +  
-			 				 "where chars.CHARACTERIZATION_PK_ID = particle_char.CHARACTERIZATION_PK_ID " +
-			 				 "and particle_char.NANOPARTICLE_PK_ID = particle.NANOPARTICLE_PK_ID " + 
-			 				 "and particle.NANOPARTICLE_PK_ID = sam.SAMPLE_PK_ID " + 
-			 				 "and sam.SAMPLE_TYPE = '" + particleType + "' and sam.SAMPLE_NAME = '" + particleName + "'" +
-			 				 "and chars.NAME in (select cc.NAME from characterization_category cc where cc.CATEGORY='" + charCategory + "') " + 
-			 				 "order by chars.NAME, chars.IDENTIFIER_NAME";
+	public void deleteCharacterizations(String particleName,
+			String particleType, String[] charIds) throws Exception {
+		// if ID is not set save to the database otherwise update
+		HibernateDataAccess ida = (HibernateDataAccess) (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			// Get ID
+			for (String strCharId : charIds) {
 
-			 SQLQuery queryObj = ida.getNativeQuery(sqlString);
-			 queryObj.addScalar("CHARACTERIZATION_PK_ID", Hibernate.LONG);
-			 queryObj.addScalar("NAME",Hibernate.STRING);
-			 queryObj.addScalar("IDENTIFIER_NAME", Hibernate.STRING);
-			 
-			 List results = queryObj.list();
-			 for (Object obj: results) {
-				 Object[] result = (Object[])obj;
-				 CharacterizationBean charBean = new CharacterizationBean(result[0].toString(), (String)result[1], (String)result[2]);
-				 beanList.add(charBean);
-			 }			 
-		 } catch (Exception e){
-			 e.printStackTrace();
-			 beanList = null;
-		 }
-		 finally {
-			 ida.close();
-		 }
-		 return beanList;
-	 }
+				Long charId = Long.parseLong(strCharId);
+
+				Object charObj = ida.load(Characterization.class, charId);
+				// deassociate first
+				String hqlString = "from Nanoparticle particle where particle.characterizationCollection.id = '"
+						+ strCharId + "'";
+				List results = ida.search(hqlString);
+				for (Object obj : results) {
+					Nanoparticle particle = (Nanoparticle) obj;
+					particle.getCharacterizationCollection().remove(charObj);
+				}
+				// then delete
+				ida.delete(charObj);
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			ida.rollback();
+			logger.error("Problem deleting characterization: ");
+			throw new Exception(
+					"The characterization is no longer exist in the database, please login again to refresh the view.");
+		} finally {
+			ida.close();
+		}
+	}
 }
