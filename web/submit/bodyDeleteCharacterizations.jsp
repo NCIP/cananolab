@@ -17,71 +17,80 @@ function confirmDeletion()
 //-->
 </script>
 <html:form action="/deleteAction">
-	<table width="100%" align="center" border="0">
-		<tr>
-			<td>
-				<h3>
-					<br>
-					Delete Characterizations
-					<br>
-				</h3>
-			</td>
-			<td align="right" width="15%">
-				<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=nano_general_info_help')" class="helpText">Help</a>
-			</td>
-		</tr>
-
-		<tr>
-			<td colspan="2">
-				<jsp:include page="/bodyMessage.jsp?bundle=submit" />
-				<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
-					<tbody>
-						<tr>
-							<td class="formTitle" colspan="2">
-								Please select characterizations you wish to delete:
-							</td>
-						</tr>
-						<logic:iterate name="multipCharacterizationDeleteSetupForm" property="charBeans" id="achar" indexId="charInd">
-							<tr>
-								<td class="leftBorderedFormFieldWhite">
-									<input type="checkbox" name="charIds" value="${achar.id}" />
-									<bean:write name="achar" property="name" />
-									--
-									<bean:write name="achar" property="viewTitle" />
-								</td>
-							</tr>
-						</logic:iterate>
-					</tbody>
-				</table>
-				<br>
-				<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
-					<tr>
-						<td width="30%">
-							<span class="formMessage"> </span>
+	<c:choose>
+		<c:when test="${charBeansValue != null}">
+			<table width="100%" align="center" border="0">
+				<tr>
+					<td>
+						<h3>
 							<br>
-							<table width="498" height="32" border="0" align="right" cellpadding="4" cellspacing="0">
-								<tr>
+							Delete Characterizations
+							<br>
+						</h3>
+					</td>
+					<td align="right" width="15%">
+						<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=nano_general_info_help')" class="helpText">Help</a>
+					</td>
+				</tr>
 
-									<td width="490" height="32">
-										<div align="right">
-											<div align="right">
-												<input type="reset" value="Reset" onclick="">
-												<input type="hidden" name="dispatch" value="delete">
-												<input type="hidden" name="particleType" value="${param.particleType}">
-												<input type="hidden" name="particleName" value="${param.particleName}">
-												<input type="button" value="Delete" onclick="confirmDeletion();" />
-											</div>
-										</div>
+				<tr>
+					<td colspan="2">
+						<jsp:include page="/bodyMessage.jsp?bundle=submit" />
+						<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+							<tbody>
+								<tr>
+									<td class="formTitle" colspan="2">
+										Please select characterizations you wish to delete:
 									</td>
 								</tr>
-							</table>
-							<div align="right"></div>
-						</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-	</table>
+								<logic:iterate name="multipCharacterizationDeleteSetupForm" property="charBeans" id="achar" indexId="charInd">
+									<tr>
+										<td class="leftBorderedFormFieldWhite">
+											<input type="checkbox" name="charIds" value="${achar.id}" />
+											<bean:write name="achar" property="name" />
+											--
+											<bean:write name="achar" property="viewTitle" />
+										</td>
+									</tr>
+								</logic:iterate>
+							</tbody>
+						</table>
+						<br>
+						<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
+							<tr>
+								<td width="30%">
+									<span class="formMessage"> </span>
+									<br>
+									<table width="498" height="32" border="0" align="right" cellpadding="4" cellspacing="0">
+										<tr>
+
+											<td width="490" height="32">
+												<div align="right">
+													<div align="right">
+														<input type="reset" value="Reset" onclick="">
+														<input type="hidden" name="dispatch" value="delete">
+														<input type="hidden" name="particleType" value="${param.particleType}">
+														<input type="hidden" name="particleName" value="${param.particleName}">
+														<input type="button" value="Delete" onclick="confirmDeletion();" />
+													</div>
+												</div>
+											</td>
+										</tr>
+									</table>
+									<div align="right"></div>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</c:when>
+		<c:otherwise>
+			<h4>
+				No Characterization exists under this category.
+			</h4>
+		</c:otherwise>
+	</c:choose>
 </html:form>
 <script language="JavaScript">
 <!--//
