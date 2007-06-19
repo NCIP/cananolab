@@ -8,7 +8,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: RemoteNanoparticleCompositionAction.java,v 1.1 2007-03-19 17:32:06 pansu Exp $ */
+/* CVS $Id: RemoteNanoparticleCompositionAction.java,v 1.2 2007-06-19 20:13:50 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.CarbonNanotubeComposition;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.ComplexComposition;
@@ -49,8 +49,8 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 public class RemoteNanoparticleCompositionAction extends AbstractDispatchAction{
 
-	private void clearMap(HttpSession session, DynaValidatorForm theForm,
-			ActionMapping mapping) throws Exception {
+	private void clearMap(HttpSession session, DynaValidatorForm theForm
+			) throws Exception {
 		String particleType = (String) theForm.get("particleType");
 		String particleName = (String) theForm.get("particleName");
 
@@ -66,9 +66,7 @@ public class RemoteNanoparticleCompositionAction extends AbstractDispatchAction{
 		theForm.set("quantumDot", new QuantumDotBean());
 		theForm.set("metalParticle", new MetalParticleBean());
 		theForm.set("particleName", particleName);
-		theForm.set("particleType", particleType);
-		theForm.set("particlePage", mapping.findForward(
-				particleType.toLowerCase()).getPath());
+		theForm.set("particleType", particleType);		
 	}
 
 	public ActionForward view(ActionMapping mapping, ActionForm form,
@@ -93,7 +91,7 @@ public class RemoteNanoparticleCompositionAction extends AbstractDispatchAction{
 				particleName, gridNode);
 
 		// clear session data from the input forms
-		clearMap(session, theForm, mapping);
+		clearMap(session, theForm);
 		if (particleType.equalsIgnoreCase(CaNanoLabConstants.DENDRIMER_TYPE)) {
 			DendrimerBean dendrimer = new DendrimerBean(
 					(DendrimerComposition) comp);
