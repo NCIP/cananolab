@@ -2,6 +2,8 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page import="gov.nih.nci.calab.service.util.StringUtils"%>
+
 <table width="100%" align="center">
 	<tr>
 		<td>
@@ -59,7 +61,14 @@
 				</tr>
 			</table>
 			<br>
-			<jsp:include page="${nanoparticleCompositionForm.map.particlePage}" />
+			<c:set var="particleType" value="${param.particleType}" scope="page" />
+				<jsp:useBean id="particleType" type="java.lang.String" />
+				<%
+					String includePage = StringUtils
+							.getOneWordUpperCaseFirstLetter(particleType);
+					pageContext.setAttribute("includePage", includePage);
+				%>
+			<jsp:include page="/search/composition/body${includePage}Info.jsp" />			
 			<jsp:include page="/submit/bodySharedCharacterizationSubmit.jsp" />
 		</td>
 	</tr>
