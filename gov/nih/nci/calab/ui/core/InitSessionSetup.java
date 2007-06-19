@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 import javax.servlet.ServletContext;
@@ -899,7 +900,7 @@ public class InitSessionSetup {
 			List<InstrumentBean> instruments = lookupService
 					.getAllInstruments();
 			List<String> manufacturers = new ArrayList<String>();
-			Map<String, List<String>> typeToManufacturers = new HashMap<String, List<String>>();
+			Map<String, List<String>> typeToManufacturers = new TreeMap<String, List<String>>();
 			List<String> instrumentTypes = new ArrayList<String>();
 			for (InstrumentBean instrument : instruments) {
 				String type = instrument.getType();
@@ -914,8 +915,7 @@ public class InitSessionSetup {
 				if (!instrumentTypes.contains(type)) {
 					instrumentTypes.add(type);
 				}
-			}
-			session.setAttribute("allInstrumentTypes", instrumentTypes);
+			}			
 			session.setAttribute("allInstruments", instruments);
 			session.setAttribute("allInstrumentTypeToManufacturers",
 					typeToManufacturers);
