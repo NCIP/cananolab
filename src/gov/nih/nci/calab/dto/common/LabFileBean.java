@@ -48,11 +48,21 @@ public class LabFileBean {
 	 * name to be displayed as a part of the drop-down list
 	 */
 	private String displayName;
+	
+	private String instanceType; //type of instance, protocol, output, report, associatedFile, etc
+
+	public String getInstanceType() {
+		return instanceType;
+	}
+
+	public void setInstanceType(String instanceType) {
+		this.instanceType = instanceType;
+	}
 
 	public LabFileBean() {
 	}
 
-	public LabFileBean(LabFile charFile, String fileType) {
+	public LabFileBean(LabFile charFile) {
 		this.id = charFile.getId().toString();
 		this.name = charFile.getFilename();
 		this.path = charFile.getPath();
@@ -61,11 +71,11 @@ public class LabFileBean {
 		this.createdBy = charFile.getCreatedBy();
 		this.version = charFile.getVersion();
 		this.createdDate = charFile.getCreatedDate();
-		this.type = fileType;
+		this.type = charFile.getType();
 	}
 
-	public LabFileBean(LabFile charFile, String fileType, String gridNodeHost) {
-		this(charFile, fileType);
+	public LabFileBean(LabFile charFile, String gridNodeHost) {
+		this(charFile);
 		this.gridNode=gridNodeHost;
 	}
 	public String getComments() {
