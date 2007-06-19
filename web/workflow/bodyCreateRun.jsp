@@ -14,7 +14,9 @@
 				</h3>
 			</td>
 			<td align="right" width="10%">
-				<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=create_assay_run')" class="helpText">Help</a>
+				<a
+					href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=create_assay_run')"
+					class="helpText">Help</a>
 			</td>
 		</tr>
 		<tr>
@@ -30,7 +32,8 @@
 							</ul> </font>
 					</c:when>
 				</c:choose>
-				<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
+				<table width="100%" border="0" align="center" cellpadding="3"
+					cellspacing="0" class="topBorderOnly" summary="">
 					<tr class="topBorder">
 						<td colspan="4" class="formTitle">
 							<div align="justify">
@@ -43,7 +46,8 @@
 							<strong>Assay Type </strong>
 						</td>
 						<td class="label" width="20%">
-							<html:select property="assayType" onchange="javascript:doubleDropdown(document.createRunForm.assayType, document.createRunForm.assayName, assayTypeAssays);">
+							<html:select property="assayType"
+								onchange="javascript:doubleDropdown(document.createRunForm.assayType, document.createRunForm.assayName, assayTypeAssays);">
 								<option value=""></option>
 								<html:options name="allAvailableAssayTypes" />
 							</html:select>
@@ -53,9 +57,12 @@
 						</td>
 						<td class="rightLabel" width="40%">
 							<html:select property="assayName">
-								<option value="${createRunForm.map.assayName}" selected>
-									${createRunForm.map.assayName}
-								</option>
+								<c:forEach var="assay"
+									items="${allAssayTypeAssays[createRunForm.map.assayType]}">
+									<html:option value="${assay.assayName}">
+										${assay.assayName}
+									</html:option>
+								</c:forEach>
 							</html:select>
 						</td>
 					</tr>
@@ -66,7 +73,8 @@
 						<td class="label">
 							<html:select property="runBy">
 								<option value=""></option>
-								<html:options collection="allUsers" property="loginName" labelProperty="fullName" />
+								<html:options collection="allUsers" property="loginName"
+									labelProperty="fullName" />
 							</html:select>
 						</td>
 						<td class="label">
@@ -74,7 +82,10 @@
 						</td>
 						<td class="rightLabel">
 							<html:text property="runDate" size="10" />
-							<span class="formFieldWhite"> <a href="javascript:cal.popup();"> <img height="18" src="images/calendar-icon.gif" width="22" border="0" alt="Click Here to Pick up the date"> </a> </span>
+							<span class="formFieldWhite"> <a
+								href="javascript:cal.popup();"> <img height="18"
+										src="images/calendar-icon.gif" width="22" border="0"
+										alt="Click Here to Pick up the date"> </a> </span>
 						</td>
 					</tr>
 					<tr>
@@ -82,7 +93,8 @@
 							<strong>Source Name</strong>
 						</td>
 						<td class="label" valign="top">
-							<html:select property="sourceName" onchange="javascript:doubleMultibox(document.createRunForm.sourceName, document.createRunForm.sampleNames, sampleSourceSamples); clearMultibox(document.createRunForm.assignedAliquots);">
+							<html:select property="sourceName"
+								onchange="javascript:doubleMultibox(document.createRunForm.sourceName, document.createRunForm.sampleNames, sampleSourceSamples); clearMultibox(document.createRunForm.assignedAliquots);">
 								<option />
 									<html:options name="allSampleSourcesWithUnmaskedAliquots" />
 							</html:select>
@@ -94,11 +106,13 @@
 										<strong>Sample ID </strong>
 									</td>
 									<td class="borderlessLabel">
-										<html:select property="sampleNames" multiple="true" size="8" onchange="javascript:doubleMultibox(document.createRunForm.sampleNames, document.createRunForm.assignedAliquots, sampleAliquots)">
-											<c:forEach var="sample" items="${createRunForm.map.sampleNames}">
-												<option value="${sample}" selected>
-													${sample}
-												</option>
+										<html:select property="sampleNames" multiple="true" size="8"
+											onchange="javascript:doubleMultibox(document.createRunForm.sampleNames, document.createRunForm.assignedAliquots, sampleAliquots)">
+											<c:forEach var="sample"
+												items="${sampleSourceSamplesWithUnmaskedAliquots[createRunForm.map.sourceName]}">
+												<html:option value="${sample.sampleName}">
+													${sample.sampleName}
+												</html:option>
 											</c:forEach>
 										</html:select>
 									</td>
@@ -106,12 +120,16 @@
 										<strong>Aliquot ID*</strong>
 									</td>
 									<td class="borderlessLabel">
-										<span class="mainMenu"><html:select multiple="true" property="assignedAliquots" size="8">
-												<c:forEach var="aliquot" items="${createRunForm.map.assignedAliquots}">
-													<option value="${aliquot}" selected>
-														${aliquot}
-													</option>
+										<span class="mainMenu"><html:select multiple="true"
+												property="assignedAliquots" size="8">
+											<c:forEach var="sampleName" items="${createRunForm.map.sampleNames}">
+										      <c:forEach var="aliquot"
+													items="${allUnmaskedSampleAliquots[sampleName]}">
+													<html:option value="${aliquot.aliquotName}">
+													${aliquot.aliquotName}
+													</html:option>
 												</c:forEach>
+											</c:forEach>
 											</html:select> </span>
 
 									</td>
@@ -123,23 +141,28 @@
 						<td colspan="4" class="formLabel">
 							<strong>Comments </strong>&nbsp;&nbsp;
 							<div align="justify">
-								<span class="formFieldWhite"><html:textarea property="aliquotComment" cols="80" /></span>
+								<span class="formFieldWhite"><html:textarea
+										property="aliquotComment" cols="80" />
+								</span>
 							</div>
 						</td>
 					</tr>
 				</table>
 				<br>
-				<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
+				<table width="100%" border="0" align="center" cellpadding="3"
+					cellspacing="0" class="topBorderOnly" summary="">
 					<tr>
 						<td width="30%">
 							<span class="formMessage"> </span>
 							<br>
-							<table width="498" height="32" border="0" align="right" cellpadding="4" cellspacing="0">
+							<table width="498" height="32" border="0" align="right"
+								cellpadding="4" cellspacing="0">
 								<tr>
 									<td width="490" height="32">
 										<div align="right">
 											<div align="right">
-												<input type="reset" value="Reset" onClick="javascript:location.href='createRun.do?dispatch=setup&page=0'">
+												<input type="reset" value="Reset"
+													onClick="javascript:location.href='createRun.do?dispatch=setup&page=0'">
 												<input type="hidden" name="dispatch" value="create">
 												<input type="hidden" name="page" value="1">
 												<html:submit />
