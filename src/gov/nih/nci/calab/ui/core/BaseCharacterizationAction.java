@@ -59,8 +59,6 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		HttpSession session = request.getSession();
 		CharacterizationBean charBean = (CharacterizationBean) theForm
 				.get("achar");
-		String particleName = theForm.getString("particleName");
-		String particleType = theForm.getString("particleType");
 
 		// set createdBy and createdDate for the characterization
 		UserBean user = (UserBean) session.getAttribute("user");
@@ -78,12 +76,18 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			obj = fileBean;
 			fileNumber++;
 		}
+		return charBean;
+	}
 
+	protected void postCreate(HttpServletRequest request,
+			DynaValidatorForm theForm) throws Exception {
+		String particleName = theForm.getString("particleName");
+		String particleType = theForm.getString("particleType");
+
+		request.getSession().setAttribute("newCharacterizationCreated", "true");
+		request.getSession().setAttribute("newInstrumentCreated", "true");
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
-		// InitSessionSetup.getInstance().setAllInstruments(session);
-		request.getSession().setAttribute("newCharacterizationCreated", "true");
-		return charBean;
 	}
 
 	protected CharacterizationBean[] prepareCopy(HttpServletRequest request,
@@ -227,7 +231,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;	
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		initSetup(request, theForm);
 		return mapping.getInputForward();
 	}
@@ -254,10 +258,15 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		initSetup(request, theForm);
 		String characterizationId = request.getParameter("characterizationId");
 		SearchNanoparticleService service = new SearchNanoparticleService();
 		Characterization aChar = service
 				.getCharacterizationAndTableBy(characterizationId);
+		if (aChar == null) {
+			throw new Exception(
+					"This characterization no longer exists in the database.  Please log in again to refresh.");
+		}
 		theForm.set("achar", new CharacterizationBean(aChar));
 
 		UserService userService = new UserService(
@@ -283,7 +292,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 
 			fileNumber++;
 		}
-		initSetup(request, theForm);
+
 		return mapping.getInputForward();
 	}
 
@@ -662,7 +671,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		String strCharId = theForm.getString("characterizationId");
 
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		service.deleteCharacterizations(particleName, particleType,new String[]{strCharId});
+		service.deleteCharacterizations(particleName, particleType,
+				new String[] { strCharId });
 
 		// signal the session that characterization has been changed
 		request.getSession().setAttribute("newCharacterizationCreated", "true");
@@ -673,7 +683,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		ActionMessage msg = new ActionMessage("message.delete.characterization");
 		msgs.add("message", msg);
 		saveMessages(request, msgs);
-		
+
 		return mapping.findForward("success");
 	}
 
