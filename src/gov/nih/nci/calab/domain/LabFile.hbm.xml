@@ -28,7 +28,7 @@
 			column="DESCRIPTION" />
 		<property name="comments" type="java.lang.String"
 			column="COMMENTS" />
-
+		<property name="type" type="java.lang.String" column="TYPE" />
 		<joined-subclass name="gov.nih.nci.calab.domain.OutputFile"
 			table="RUN_OUTPUT_FILE">
 			<key column="OUTPUT_FILE_PK_ID" />
