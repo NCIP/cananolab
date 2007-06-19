@@ -4,7 +4,6 @@
 package gov.nih.nci.calab.dto.common;
 
 import gov.nih.nci.calab.domain.ProtocolFile;
-import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 /**
  * @author zengje
@@ -21,7 +20,7 @@ public class ProtocolFileBean extends LabFileBean {
 	}
 
 	public ProtocolFileBean(ProtocolFile protocolFile) {
-		super(protocolFile, CaNanoLabConstants.PROTOCOL_FILE);
+		super(protocolFile);
 		protocolBean=new ProtocolBean(protocolFile.getProtocol());
 	}
 

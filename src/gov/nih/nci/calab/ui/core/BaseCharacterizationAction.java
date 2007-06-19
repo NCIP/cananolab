@@ -341,8 +341,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 
 		String fileId = request.getParameter("fileId");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		LabFileBean fileBean = service.getFile(fileId,
-				CaNanoLabConstants.OUTPUT);
+		LabFileBean fileBean = service.getFile(fileId);
 		String fileRoot = PropertyReader.getProperty(
 				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
 		File dFile = new File(fileRoot + File.separator + fileBean.getPath());

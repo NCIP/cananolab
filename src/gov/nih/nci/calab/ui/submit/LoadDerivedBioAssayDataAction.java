@@ -6,11 +6,10 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: LoadDerivedBioAssayDataAction.java,v 1.13 2007-06-08 22:15:48 pansu Exp $ */
+/* CVS $Id: LoadDerivedBioAssayDataAction.java,v 1.14 2007-06-19 20:15:51 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
-import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
@@ -53,7 +52,7 @@ public class LoadDerivedBioAssayDataAction extends AbstractDispatchAction {
 			// updating existingFileBean with form data
 			if (fileBean.getId() != null) {
 				DerivedBioAssayDataBean existingFileBean = (DerivedBioAssayDataBean) service
-						.getFile(fileBean.getId(), CaNanoLabConstants.OUTPUT);
+						.getFile(fileBean.getId());
 
 				existingFileBean.setTitle(fileBean.getTitle());
 				existingFileBean.setDescription(fileBean.getDescription());
