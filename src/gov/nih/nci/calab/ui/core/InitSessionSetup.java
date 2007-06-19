@@ -448,17 +448,6 @@ public class InitSessionSetup {
 		}
 	}
 
-	public void setAllParticleFunctionTypes(HttpSession session)
-			throws Exception {
-		if (session.getServletContext()
-				.getAttribute("allParticleFunctionTypes") == null) {
-			Map<String, String> functions = lookupService
-					.getAllParticleFunctions();
-			session.getServletContext().setAttribute(
-					"allParticleFunctionTypes", functions);
-		}
-	}
-
 	public void setAllParticleSources(HttpSession session) throws Exception {
 		if (session.getAttribute("allParticleSources") == null
 				|| session.getAttribute("newSampleCreated") != null) {
@@ -604,17 +593,6 @@ public class InitSessionSetup {
 		session.removeAttribute("newReportCreated");
 		session.removeAttribute("detailPage");
 		setStaticDropdowns(session);
-	}
-
-	public void setCharacterizationTypeCharacterizations(HttpSession session)
-			throws Exception {
-		if (session.getServletContext().getAttribute(
-				"allCharacterizationTypeCharacterizations") == null) {
-			Map<String, List<String>> charTypeChars = lookupService
-					.getCharacterizationTypeCharacterizations();
-			session.getServletContext().setAttribute(
-					"allCharacterizationTypeCharacterizations", charTypeChars);
-		}
 	}
 
 	public void setAllMorphologyTypes(HttpSession session) throws Exception {
