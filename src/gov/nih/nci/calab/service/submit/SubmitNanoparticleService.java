@@ -62,8 +62,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.upload.FormFile;
-import org.hibernate.Hibernate;
-import org.hibernate.SQLQuery;
 
 /**
  * This class includes service calls involved in creating nanoparticle general
@@ -240,13 +238,15 @@ public class SubmitNanoparticleService {
 						+ "' and instrument.manufacturer='"
 						+ instrument.getManufacturer() + "'");
 
+		Instrument storedInstrument=null;
 		for (Object obj : instrumentResults) {
-			Instrument storedInstrument = (Instrument) obj;
-			if (storedInstrument != null) {
-				instrument.setId(storedInstrument.getId());
-			} else {
-				ida.createObject(instrument);
-			}
+			storedInstrument = (Instrument) obj;			
+		}
+		if (storedInstrument != null) {
+			instrument.setId(storedInstrument.getId());
+		}
+		else {
+			ida.createObject(instrument);
 		}
 
 		// if new instrumentConfig, save it
