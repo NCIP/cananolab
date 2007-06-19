@@ -896,7 +896,7 @@ public class InitSessionSetup {
 
 	public void setAllInstruments(HttpSession session) throws Exception {
 		if (session.getAttribute("allInstruments") == null
-				|| session.getAttribute("newParticleCreated") != null) {
+				|| session.getAttribute("newInstrumentCreated") != null) {
 			List<InstrumentBean> instruments = lookupService
 					.getAllInstruments();
 			List<String> manufacturers = new ArrayList<String>();
@@ -920,6 +920,7 @@ public class InitSessionSetup {
 			session.setAttribute("allInstrumentTypeToManufacturers",
 					typeToManufacturers);
 		}
+		session.removeAttribute("newInstrumentCreated");
 	}
 
 	public void setAllDerivedDataFileTypes(HttpSession session)
