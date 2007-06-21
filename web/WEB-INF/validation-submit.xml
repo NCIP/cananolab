@@ -179,21 +179,19 @@
 					<var-name>test</var-name>
 					<var-value>
 						((achar.instrumentConfigBean.description==null)
-						or
-						(achar.instrumentConfigBean.instrumentBean.manufacturer==null)
 						or (*this*!=null))
 					</var-value>
-				</var>
+				</var>				
 			</field>
 			<field
-				property="achar.instrumentConfigBean.instrumentBean.manufacturer" page="2"
-				depends="validwhen">
+				property="achar.instrumentConfigBean.instrumentBean.manufacturer"
+				page="2" depends="validwhen">
 				<arg position="0" key="achar.instrument.manufacturer"
 					bundle="submit" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((achar.instrumentConfigBean.instrumentBean.type==null)						
+						((achar.instrumentConfigBean.instrumentBean.type==null)
 						or (*this*!=null))
 					</var-value>
 				</var>
