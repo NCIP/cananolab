@@ -40,5 +40,5 @@
 		</tr>
 	</tbody>
 </table>
-<html:hidden property="validateValue" value="morphology"/>
+<html:hidden property="morphology.validateValue" value="morphology"/>
 <br>
