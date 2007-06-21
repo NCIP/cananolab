@@ -5,11 +5,15 @@
 <form-validation>
 	<formset>
 		<form name="nanoparticleGeneralInfoForm">
-			<field property="particleType" page="1" depends="required">
-				<arg position="0" key="nanoparticleGeneralInfoForm.particleType" bundle="submit" />
+			<field property="particleType" page="1"
+				depends="required">
+				<arg position="0"
+					key="nanoparticleGeneralInfoForm.particleType" bundle="submit" />
 			</field>
-			<field property="particleName" page="1" depends="required">
-				<arg position="0" key="nanoparticleGeneralInfoForm.particleID" bundle="submit" />
+			<field property="particleName" page="1"
+				depends="required">
+				<arg position="0"
+					key="nanoparticleGeneralInfoForm.particleID" bundle="submit" />
 			</field>
 			<!--
 				<field property="visibilities" page="1" depends="required">
@@ -19,17 +23,23 @@
 		</form>
 
 		<form name="publishReportForm">
-			<field property="particleNames" page="2" depends="required">
-				<arg position="0" key="publishReportForm.particleID" bundle="submit" />
+			<field property="particleNames" page="2"
+				depends="required">
+				<arg position="0" key="publishReportForm.particleID"
+					bundle="submit" />
 			</field>
 			<field property="file.type" page="2" depends="required">
-				<arg position="0" key="publishReportForm.reportType" bundle="submit" />
+				<arg position="0" key="publishReportForm.reportType"
+					bundle="submit" />
 			</field>
-			<field property="uploadedFile" page="2" depends="required">
-				<arg position="0" key="publishReportForm.reportFile" bundle="submit" />
+			<field property="uploadedFile" page="2"
+				depends="required">
+				<arg position="0" key="publishReportForm.reportFile"
+					bundle="submit" />
 			</field>
 			<field property="file.title" page="1" depends="required">
-				<arg position="0" key="publishReportForm.title" bundle="submit" />
+				<arg position="0" key="publishReportForm.title"
+					bundle="submit" />
 			</field>
 			<!--
 				<field property="visibilities" page="1" depends="required">
@@ -39,120 +49,214 @@
 		</form>
 		<form name="submitProtocolForm">
 			<field property="protocolId" page="1" depends="required">
-				<arg position="0" key="submitProtocolForm.protocolName" bundle="submit" />
+				<arg position="0" key="submitProtocolForm.protocolName"
+					bundle="submit" />
 			</field>
-			<field property="protocolType" page="1" depends="required">
-				<arg position="0" key="submitProtocolForm.protocolType" bundle="submit" />
+			<field property="protocolType" page="1"
+				depends="required">
+				<arg position="0" key="submitProtocolForm.protocolType"
+					bundle="submit" />
 			</field>
 			<field property="file.id" page="1" depends="required">
-				<arg position="0" key="submitProtocolForm.protocolVersion" bundle="submit" />
+				<arg position="0"
+					key="submitProtocolForm.protocolVersion" bundle="submit" />
 			</field>
 		</form>
 		<form name="nanoparticleCompositionForm">
-			<field property="characterizationSource" page="2" depends="required">
-				<arg position="0" key="characterizationSource" bundle="submit" />
+			<field property="characterizationSource" page="2"
+				depends="required">
+				<arg position="0" key="characterizationSource"
+					bundle="submit" />
 			</field>
 			<field property="viewTitle" page="2" depends="required">
 				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
-			<field property="carbonNanotube.growthDiameter" page="2" depends="float">
-				<arg position="0" key="nanoparticleCompositionForm.carbonNanotube.growthDiameter" bundle="submit" />
+			<field property="carbonNanotube.growthDiameter" page="2"
+				depends="float">
+				<arg position="0"
+					key="nanoparticleCompositionForm.carbonNanotube.growthDiameter"
+					bundle="submit" />
 			</field>
-			<field property="carbonNanotube.averageLength" page="2" depends="float">
-				<arg position="0" key="nanoparticleCompositionForm.carbonNanotube.averageLength" bundle="submit" />
+			<field property="carbonNanotube.averageLength" page="2"
+				depends="float">
+				<arg position="0"
+					key="nanoparticleCompositionForm.carbonNanotube.averageLength"
+					bundle="submit" />
 			</field>
-			<field property="fullerene.numberOfCarbons" page="2" depends="integer">
-				<arg position="0" key="nanoparticleCompositionForm.fullerene.numberOfCarbon" bundle="submit" />
+			<field property="fullerene.numberOfCarbons" page="2"
+				depends="integer">
+				<arg position="0"
+					key="nanoparticleCompositionForm.fullerene.numberOfCarbon"
+					bundle="submit" />
 			</field>
-			<field property="liposome.polymerName" page="2" depends="validwhen">
-				<arg position="0" key="nanoparticleCompositionForm.liposome.polymerName" bundle="submit" />
+			<field property="liposome.polymerName" page="2"
+				depends="validwhen">
+				<arg position="0"
+					key="nanoparticleCompositionForm.liposome.polymerName"
+					bundle="submit" />
 				<var>
 					<var-name>test</var-name>
-					<var-value>((liposome.polymerized=="No") or (*this*!=null))</var-value>
+					<var-value>
+						((liposome.polymerized=="No") or (*this*!=null))
+					</var-value>
 				</var>
 			</field>
-			<field property="emulsion.polymerName" page="2" depends="validwhen">
-				<arg position="0" key="nanoparticleCompositionForm.emulsion.polymerName" bundle="submit" />
+			<field property="emulsion.polymerName" page="2"
+				depends="validwhen">
+				<arg position="0"
+					key="nanoparticleCompositionForm.emulsion.polymerName"
+					bundle="submit" />
 				<var>
 					<var-name>test</var-name>
-					<var-value>((emulsion.polymerized=="No") or (*this*!=null))</var-value>
+					<var-value>
+						((emulsion.polymerized=="No") or (*this*!=null))
+					</var-value>
 				</var>
 			</field>
-			<field property="polymer.crosslinkDegree" page="2" depends="validwhen">
-				<arg position="0" key="nanoparticleCompositionForm.polymer.crosslinkDegree" bundle="submit" />
+			<field property="polymer.crosslinkDegree" page="2"
+				depends="validwhen">
+				<arg position="0"
+					key="nanoparticleCompositionForm.polymer.crosslinkDegree"
+					bundle="submit" />
 				<var>
 					<var-name>test</var-name>
-					<var-value>((polymer.crosslinked=="No") or (*this*!=null))</var-value>
+					<var-value>
+						((polymer.crosslinked=="No") or (*this*!=null))
+					</var-value>
 				</var>
 			</field>
 		</form>
 
 		<form name="nanoparticleFunctionForm">
-			<field property="function.viewTitle" page="2" depends="required">
+			<field property="function.viewTitle" page="2"
+				depends="required">
 				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
-			<field property="function.numberOfLinkages" page="1" depends="integer">
-				<arg position="0" key="function.numberOfLinkages" bundle="submit" />
+			<field property="function.numberOfLinkages" page="1"
+				depends="integer">
+				<arg position="0" key="function.numberOfLinkages"
+					bundle="submit" />
 			</field>
-			<field property="agent.numberOfAgentTargets" page="1" depends="integer" indexedListProperty="function.linkages">
-				<arg position="0" key="function.numberOfAgentTargets" bundle="submit" />
+			<field property="agent.numberOfAgentTargets" page="1"
+				depends="integer" indexedListProperty="function.linkages">
+				<arg position="0" key="function.numberOfAgentTargets"
+					bundle="submit" />
 			</field>
 		</form>
 		<form name="loadDerivedBioAssayDataForm">
-			<field property="uploadedFile" page="2" depends="validwhen">
-				<arg position="0" key="loadDerivedBioAssayDataForm.file" bundle="submit" />
+			<field property="uploadedFile" page="2"
+				depends="validwhen">
+				<arg position="0" key="loadDerivedBioAssayDataForm.file"
+					bundle="submit" />
 				<var>
 					<var-name>test</var-name>
-					<var-value>((fileSource!="new") or (*this*!=null))</var-value>
+					<var-value>
+						((fileSource!="new") or (*this*!=null))
+					</var-value>
 				</var>
 			</field>
 			<field property="file.title" page="1" depends="required">
-				<arg position="0" key="loadDerivedBioAssayDataForm.title" bundle="submit" />
+				<arg position="0"
+					key="loadDerivedBioAssayDataForm.title" bundle="submit" />
 			</field>
-		</form>	
+		</form>
 		<form name="nanoparticleCharacterizationForm">
-			<field property="achar.characterizationSource" page="2" depends="required">
-				<arg position="0" key="characterizationSource" bundle="submit" />
+			<field property="achar.characterizationSource" page="2"
+				depends="required">
+				<arg position="0" key="characterizationSource"
+					bundle="submit" />
 			</field>
-			<field property="achar.viewTitle" page="2" depends="required">
+			<field property="achar.viewTitle" page="2"
+				depends="required">
 				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
-			<field property="achar.numberOfDerivedBioAssayData" page="1" depends="integer">
-				<arg position="0" key="numberOfDerivedBioAssayData" bundle="submit" />
+			<field
+				property="achar.instrumentConfigBean.instrumentBean.type" page="2"
+				depends="validwhen">
+				<arg position="0" key="achar.instrument.type"
+					bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						((achar.instrumentConfigBean.description==null)
+						or
+						(achar.instrumentConfigBean.instrumentBean.manufacturer==null)
+						or (*this*!=null))
+					</var-value>
+				</var>
 			</field>
-			<field property="numberOfDataPoints" page="1" depends="integer" indexedListProperty="achar.derivedBioAssayDataList">
-				<arg position="0" key="numberOfDataPoints" bundle="submit" />
+			<field
+				property="achar.instrumentConfigBean.instrumentBean.manufacturer" page="2"
+				depends="validwhen">
+				<arg position="0" key="achar.instrument.manufacturer"
+					bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						((achar.instrumentConfigBean.instrumentBean.type==null)						
+						or (*this*!=null))
+					</var-value>
+				</var>
 			</field>
 			<field property="shape.type" page="2" depends="validwhen">
 				<arg position="0" key="shape.type" bundle="submit" />
 				<var>
 					<var-name>test</var-name>
-					<var-value>((shape.validateValue==null) or (*this*!=null))</var-value>
+					<var-value>
+						((shape.validateValue==null) or (*this*!=null))
+					</var-value>
 				</var>
 			</field>
-			<field property="shape.maxDimension" page="2" depends="float">
-				<arg position="0" key="shape.maxDimension" bundle="submit" />
+			<field property="morphology.type" page="2"
+				depends="validwhen">
+				<arg position="0" key="morphology.type" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						((morphology.validateValue==null) or
+						(*this*!=null))
+					</var-value>
+				</var>
 			</field>
-			<field property="shape.minDimension" page="2" depends="float">
-				<arg position="0" key="shape.minDimension" bundle="submit" />
+			<field property="shape.maxDimension" page="2"
+				depends="float">
+				<arg position="0" key="shape.maxDimension"
+					bundle="submit" />
 			</field>
-			<field property="surface.surfaceArea" page="2" depends="float">
-				<arg position="0" key="surface.surfaceAreaValue" bundle="submit" />
+			<field property="shape.minDimension" page="2"
+				depends="float">
+				<arg position="0" key="shape.minDimension"
+					bundle="submit" />
 			</field>
-			<field property="surface.zetaPotential" page="2" depends="float">
-				<arg position="0" key="surface.zetaPotentialValue" bundle="submit" />
+			<field property="surface.surfaceArea" page="2"
+				depends="float">
+				<arg position="0" key="surface.surfaceAreaValue"
+					bundle="submit" />
+			</field>
+			<field property="surface.zetaPotential" page="2"
+				depends="float">
+				<arg position="0" key="surface.zetaPotentialValue"
+					bundle="submit" />
 			</field>
 			<field property="surface.charge" page="2" depends="float">
-				<arg position="0" key="surface.chargeValue" bundle="submit" />
+				<arg position="0" key="surface.chargeValue"
+					bundle="submit" />
 			</field>
-			<field property="surface.numberOfSurfaceChemistries" page="1" depends="integer">
-				<arg position="0" key="surface.numberOfSurfaceChemistries" bundle="submit" />
+			<field property="surface.numberOfSurfaceChemistries"
+				page="1" depends="integer">
+				<arg position="0"
+					key="surface.numberOfSurfaceChemistries" bundle="submit" />
 			</field>
-			<field property="numberOfMolecules" page="1" depends="integer" indexedListProperty="surface.surfaceChemistries">
-				<arg position="0" key="surface.numberOfMolecules" bundle="submit" />
+			<field property="numberOfMolecules" page="1"
+				depends="integer"
+				indexedListProperty="surface.surfaceChemistries">
+				<arg position="0" key="surface.numberOfMolecules"
+					bundle="submit" />
 			</field>
-			<field property="solubility.criticalConcentration" page="2" depends="float">
-				<arg position="0" key="solubility.criticalConcentrationValue" bundle="submit" />
+			<field property="solubility.criticalConcentration" page="2"
+				depends="float">
+				<arg position="0"
+					key="solubility.criticalConcentrationValue" bundle="submit" />
 			</field>
 		</form>
 	</formset>
