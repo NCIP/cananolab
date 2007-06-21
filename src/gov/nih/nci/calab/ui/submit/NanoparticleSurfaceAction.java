@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSurfaceAction.java,v 1.18 2007-06-19 15:20:04 pansu Exp $ */
+/* CVS $Id: NanoparticleSurfaceAction.java,v 1.19 2007-06-21 20:41:30 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.physical.SurfaceBean;
@@ -81,9 +81,6 @@ public class NanoparticleSurfaceAction extends BaseCharacterizationAction {
 		String particleName = (String) theForm.get("particleName");
 		SurfaceBean achar = (SurfaceBean) theForm.get("achar");
 		String type = (String) request.getParameter("type");
-		if (type != null && !type.equals("") && type.equals("charTables")) {
-			updateCharacterizationTables(achar);
-		}
 		if (type != null && !type.equals("") && type.equals("surfaceChemistries")) {
 			updateSurfaceChemistries(achar);;
 		}				
