@@ -3,7 +3,6 @@ package gov.nih.nci.calab.ui.core;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
-import gov.nih.nci.calab.dto.characterization.ConditionBean;
 import gov.nih.nci.calab.dto.characterization.DatumBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.dto.characterization.invitro.CytotoxicityBean;
@@ -20,7 +19,6 @@ import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
-import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
