@@ -336,6 +336,7 @@ IS_DATUM_PARSED ) VALUES (
 -- insert_csm.sql
 
 
+
 insert into csm_protection_element
 (protection_element_id, protection_element_name, object_id, application_id, update_date) 
 select csm_protectio_protection_e_seq.nextval, file_pk_id, file_pk_id, 2, sysdate
@@ -359,16 +360,9 @@ and b.PROTECTION_ELEMENT_NAME=d.PROTECTION_GROUP_NAME;
 
 select csm_pg_pe_pg_pe_id_seq.currval from dual;
 
+-- update csm_user_group_role_pg for protocle file and new protected group "characterization"
+@update_csm_user_group_role_pg
 
-insert into csm_user_group_role_pg
-select csm_user_grou_user_group_r_seq.nextval, null, 6, 10, PROTECTION_GROUP_ID, sysdate
-from lab_file a, csm_protection_group b
-where a.created_by='data_migration'
-and to_char(a.FILE_PK_ID)=b.PROTECTION_GROUP_NAME;
 
-insert into csm_user_group_role_pg
-select csm_user_grou_user_group_r_seq.nextval, null, 7, 10, PROTECTION_GROUP_ID, sysdate
-from lab_file a, csm_protection_group b
-where a.created_by='data_migration'
-and to_char(a.FILE_PK_ID)=b.PROTECTION_GROUP_NAME;
+
 
