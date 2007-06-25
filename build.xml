@@ -72,9 +72,13 @@
 			<filterset>
 				<filter token="HOSTNAME" value="${hostname}" />
 				<filter token="FILE_REPOSITORY_DIR" value="${file.repository.dir}" />				
+				<filter token="SAMPLE_PREFIX" value="${sample.prefix}" />
+				<filter token="APP_OWNER" value="${application.owner}" />	
+				<filter token="GRID_INDEX_SERVER" value="${grid.indexserver}" />
 			</filterset>
 		</copy>
 		<move file="${build.classes.dir}/fileupload.properties.template" tofile="${build.classes.dir}/fileupload.properties" />
+		<move file="${build.classes.dir}/caNanoLab.properties.template" tofile="${build.classes.dir}/caNanoLab.properties" />
 
 		<!-- Pack WAR file -->
 		<war destfile="${build.webroot.dir}/war/caNanoLab.war" webxml="${build.webinf.dir}/web.xml" basedir="${build.webroot.dir}" compress="true" />
