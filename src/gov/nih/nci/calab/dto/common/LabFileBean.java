@@ -35,21 +35,22 @@ public class LabFileBean {
 	private String type;
 
 	private String visibilityStr;
-	
+
 	private String gridNode;
 
 	private String version;
-	
+
 	private String fileSystemRoot;
-	
+
 	private FormFile uploadedFile;
-	
+
 	/*
 	 * name to be displayed as a part of the drop-down list
 	 */
 	private String displayName;
-	
-	private String instanceType; //type of instance, protocol, output, report, associatedFile, etc
+
+	private String instanceType; // type of instance, protocol, output,
+									// report, associatedFile, etc
 
 	public String getInstanceType() {
 		return instanceType;
@@ -76,8 +77,9 @@ public class LabFileBean {
 
 	public LabFileBean(LabFile charFile, String gridNodeHost) {
 		this(charFile);
-		this.gridNode=gridNodeHost;
+		this.gridNode = gridNodeHost;
 	}
+
 	public String getComments() {
 		return comments;
 	}
@@ -153,6 +155,7 @@ public class LabFileBean {
 	public String getVersion() {
 		return version;
 	}
+
 	public void setVersion(String version) {
 		this.version = version;
 	}
@@ -174,7 +177,11 @@ public class LabFileBean {
 	}
 
 	public String getDisplayName() {
-		displayName = path.replaceAll("/decompressedFiles", "");
+		if (path != null) {
+			displayName = path.replaceAll("/decompressedFiles", "");
+		} else {
+			displayName = "";
+		}
 		return displayName;
 	}
 
@@ -222,6 +229,5 @@ public class LabFileBean {
 	public void setVisibilityStr(String visibilityStr) {
 		this.visibilityStr = visibilityStr;
 	}
-	
-	
+
 }
