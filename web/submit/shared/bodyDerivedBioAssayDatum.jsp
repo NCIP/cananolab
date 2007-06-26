@@ -39,7 +39,7 @@
 				<td class="leftLabel">
 					<c:choose>
 						<c:when test="${canUserSubmit eq 'true'}">
-							<html:select styleId="datumName"
+							<html:select
 								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].name"
 								onkeydown="javascript:fnKeyDownHandler(this, event);"
 								onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
@@ -48,7 +48,7 @@
 								<option value="">
 									--?--
 								</option>
-								<html:options name="datumNames"/>
+								<html:options name="datumNames" />
 							</html:select>&nbsp; 	
 						</c:when>
 						<c:otherwise>
@@ -76,7 +76,7 @@
 								<option value="">
 									--?--
 								</option>
-								<html:options name="charMeasureTypes"/>
+								<html:options name="charMeasureTypes" />
 							</html:select>&nbsp; 						
 						</c:when>
 						<c:otherwise>
@@ -104,7 +104,7 @@
 								<option value="">
 									--?--
 								</option>
-								<html:options name="charMeasureUnits"/>
+								<html:options name="charMeasureUnits" />
 							</html:select>&nbsp; 						
 						</c:when>
 						<c:otherwise>
@@ -117,8 +117,10 @@
 						<c:when test="${canUserSubmit eq 'true'}">
 							<html:select
 								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].category">
-								<option />
-								<html:options name="derivedDataCategories"/>
+								 <option/>
+								<c:forEach var="category" items="${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].categories}">														   
+								    <html:option value="${category}">${category}</html:option>
+								</c:forEach>
 							</html:select>&nbsp; 						
 						</c:when>
 						<c:otherwise>
@@ -129,7 +131,7 @@
 				<c:choose>
 					<c:when test="${canUserSubmit eq 'true'}">
 
-						<td class="rightLabel">							
+						<td class="rightLabel">
 							<a href="#" class="removeLink"
 								onclick="javascript:removeCharacterizationData(nanoparticleCharacterizationForm, '${actionName}', ${param.fileInd}, ${dInd})">remove</a>
 						</td>
@@ -143,3 +145,33 @@
 	</tbody>
 </table>
 <br>
+
+
+<script language="JavaScript">
+<!--//
+  function filterDatumCategories(fileInd, datumCount) {            
+    var categorySelection=getElement(nanoparticleCharacterizationForm, 'achar.derivedBioAssayDataList['+fileInd+'].categories');
+	var categories = new Array();
+	for (var i = 0; i<categorySelection.options.length; i++) {
+		if (categorySelection.options[i].selected) {
+			categories.push(categorySelection[i].value);
+		}
+	}
+	for (var i=0; i<datumCount; i++) {
+	  var datumCategorySelection=getElement(nanoparticleCharacterizationForm, 'achar.derivedBioAssayDataList['+fileInd+'].datumList['+i+'].category');	    	  
+	  datumCategorySelection.length=0;
+   	  if (categories.length>1) {
+		datumCategorySelection.options[0]=new Option("", "");
+	    for (var j = 0; j < categories.length; j++) {
+		  datumCategorySelection.options[j+1] = new Option(categories[j], categories[j]);
+	    }
+	  }	  
+	  else {	  
+		for (var j = 0; j < categories.length; j++) {
+		  datumCategorySelection.options[j] = new Option(categories[j], categories[j]);
+		}	
+	  }	  
+	}
+  }
+//-->
+</script>
