@@ -64,13 +64,11 @@
 							onkeydown="javascript:fnKeyDownHandler(this, event);"
 							onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
 							onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-							onchange="fnChangeHandler_A(this, event);
-							multiboxToDropDownWithEditableOption(document.getElementById('category'), document.getElementById('datumName'), categoryDatumNames);">
+							onchange="fnChangeHandler_A(this, event);">
 							<option value="">
 								--?--
 							</option>
-							<html:options collection="derivedDataCategoryMap" property="key"
-								labelProperty="key" />
+							<html:options name="derivedDataCategories"/>
 						</html:select>
 					</td>
 				</c:when>
@@ -119,9 +117,7 @@
 					<tr>
 						<c:choose>
 							<c:when test="${canUserSubmit eq 'true'}">
-								<td valign="bottom">
-									<img src="images/Plus.gif">
-									&nbsp;
+								<td valign="bottom">									
 									<a href="#"
 										onclick="javascript:addCharacterizationData(nanoparticleCharacterizationForm, '${param.actionName}', ${param.fileInd})"><span
 										class="addLink">Add Derived Data</span> </a>

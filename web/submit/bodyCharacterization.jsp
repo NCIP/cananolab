@@ -59,9 +59,7 @@
 									<tr>
 										<c:choose>
 											<c:when test="${canUserSubmit eq 'true'}">
-												<td valign="bottom">
-													<img src="images/Plus.gif">
-													&nbsp;
+												<td valign="bottom">													
 													<a href="#"
 														onclick="javascript:addCharacterizationFile(nanoparticleCharacterizationForm, '${actionName}')"><span
 														class="addLink">Add File</span> </a>

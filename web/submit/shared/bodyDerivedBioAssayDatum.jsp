@@ -48,13 +48,7 @@
 								<option value="">
 									--?--
 								</option>
-								<c:forEach var="category"
-									items="${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].categories}">
-									<c:forEach var="datumName"
-										items="${derivedDataCategoryMap[category]}">
-										<html:option value="${datumName}">${datumName}</html:option>
-									</c:forEach>
-								</c:forEach>
+								<html:options name="datumNames"/>
 							</html:select>&nbsp; 	
 						</c:when>
 						<c:otherwise>
@@ -82,8 +76,7 @@
 								<option value="">
 									--?--
 								</option>
-								<html:options collection="allMeasureTypes" property="name"
-									labelProperty="name" />
+								<html:options name="charMeasureTypes"/>
 							</html:select>&nbsp; 						
 						</c:when>
 						<c:otherwise>
@@ -111,8 +104,7 @@
 								<option value="">
 									--?--
 								</option>
-								<html:options collection="allMeasureUnits" property="name"
-									labelProperty="name" />
+								<html:options name="charMeasureUnits"/>
 							</html:select>&nbsp; 						
 						</c:when>
 						<c:otherwise>
@@ -126,17 +118,7 @@
 							<html:select
 								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].category">
 								<option />
-								<option value="Volume Distribution">
-									Volume Distribution
-								</option>
-								<option value="Number Distribution">
-									Number Distribution
-								</option>
-								<option value="Intensity Distribution">
-									Intensity Distribution
-								</option>
-
-								<%--						<html:options name="allCategories" />--%>
+								<html:options name="derivedDataCategories"/>
 							</html:select>&nbsp; 						
 						</c:when>
 						<c:otherwise>
@@ -147,9 +129,7 @@
 				<c:choose>
 					<c:when test="${canUserSubmit eq 'true'}">
 
-						<td class="rightLabel">
-							<img src="images/Minus.gif" border="0" alt="remove this data">
-							&nbsp;
+						<td class="rightLabel">							
 							<a href="#" class="removeLink"
 								onclick="javascript:removeCharacterizationData(nanoparticleCharacterizationForm, '${actionName}', ${param.fileInd}, ${dInd})">remove</a>
 						</td>
