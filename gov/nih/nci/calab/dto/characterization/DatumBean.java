@@ -1,7 +1,6 @@
 package gov.nih.nci.calab.dto.characterization;
 
 import gov.nih.nci.calab.domain.Measurement;
-import gov.nih.nci.calab.domain.nano.characterization.Condition;
 import gov.nih.nci.calab.domain.nano.characterization.Control;
 import gov.nih.nci.calab.domain.nano.characterization.Datum;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
@@ -24,6 +23,8 @@ public class DatumBean {
 	private String name;
 
 	private String value;
+	
+	private String valueType;
 
 	private String unit;
 	
@@ -50,23 +51,23 @@ public class DatumBean {
 		this.unit = (datum.getValue() != null) ? StringUtils
 				.convertToString(datum.getValue().getUnitOfMeasurement()) : "";
 
-		Control controlObj = datum.getControl();
-		if (controlObj != null) {
-			control = new ControlBean();
-			control.setName(controlObj.getName());
-			control.setType(controlObj.getType());
-			isAControl = CaNanoLabConstants.BOOLEAN_YES;
-		} else {
-			isAControl = CaNanoLabConstants.BOOLEAN_NO;
-		}
-		if (datum.getConditionCollection() != null
-				&& datum.getConditionCollection().size() > 0) {
-			conditionList = new ArrayList<ConditionBean>();
-			for (Condition conditionData : datum.getConditionCollection()) {
-				ConditionBean cBean = new ConditionBean(conditionData);
-				conditionList.add(cBean);
-			}
-		}
+//		Control controlObj = datum.getControl();
+//		if (controlObj != null) {
+//			control = new ControlBean();
+//			control.setName(controlObj.getName());
+//			control.setType(controlObj.getType());
+//			isAControl = CaNanoLabConstants.BOOLEAN_YES;
+//		} else {
+//			isAControl = CaNanoLabConstants.BOOLEAN_NO;
+//		}		
+//		if (datum.getConditionCollection() != null
+//				&& datum.getConditionCollection().size() > 0) {
+//			conditionList = new ArrayList<ConditionBean>();
+//			for (Condition conditionData : datum.getConditionCollection()) {
+//				ConditionBean cBean = new ConditionBean(conditionData);
+//				conditionList.add(cBean);
+//			}
+//		}
 
 		this.numberOfConditions = conditionList.size() + "";
 	}
@@ -183,5 +184,13 @@ public class DatumBean {
 
 	public void setCategory(String category) {
 		this.category = category;
+	}
+
+	public String getValueType() {
+		return valueType;
+	}
+
+	public void setValueType(String valueType) {
+		this.valueType = valueType;
 	}
 }
