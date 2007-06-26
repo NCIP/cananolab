@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping package="gov.nih.nci.calab.domain.nano.characterization">
-	<class name="DerivedBioAssayDataCategory" table="BIOASSAY_DATA_CATEGORY" lazy="true" polymorphism="explicit">
+	<class name="DerivedBioAssayDataCategory" table="DEF_BIOASSAY_DATA_CATEGORY" lazy="true" polymorphism="explicit">
 		<cache usage="read-write" />
 		<id name="id" type="java.lang.Long" column="CATEGORY_PK_ID" unsaved-value="0">
 			<generator class="org.hibernate.id.TableHiLoGenerator">
@@ -19,7 +19,7 @@
 		</set>
 	</class>
 	
-	<class name="DatumName" table="DATUM_NAME" lazy="true" polymorphism="explicit">
+	<class name="DatumName" table="DEF_DATUM_NAME" lazy="true" polymorphism="explicit">
 		<cache usage="read-write" />
 		<id name="id" type="java.lang.Long" column="DATUM_NAME_PK_ID" unsaved-value="0">
 			<generator class="org.hibernate.id.TableHiLoGenerator">
