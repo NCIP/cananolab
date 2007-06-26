@@ -271,7 +271,7 @@ public class SearchNanoparticleService {
 			ida.open();
 			List results = ida
 					.search(" from Characterization chara left join fetch chara.derivedBioAssayDataCollection assayData"
-							+ " left join fetch assayData.datumCollection datum left join fetch datum.conditionCollection"
+							+ " left join fetch assayData.datumCollection datum"
 							+ " where chara.id=" + charId);
 			for (Object obj : results) {
 				aChar = (Characterization) obj;
