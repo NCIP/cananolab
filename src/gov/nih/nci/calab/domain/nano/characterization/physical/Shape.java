@@ -40,4 +40,12 @@ public class Shape extends Characterization {
 	public void setType(String type) {
 		this.type = type;
 	}
+	
+	public String getClassification() {
+		return PHYSICAL_CHARACTERIZATION;
+	}
+
+	public String getName() {
+		return PHYSICAL_SHAPE;
+	}
 }
