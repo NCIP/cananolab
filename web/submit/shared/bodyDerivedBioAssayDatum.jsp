@@ -16,6 +16,9 @@
 					<td>
 						<strong>Value</strong>
 					</td>
+					<td>
+						<strong>Value Type</strong>
+					</td>
 					<td width="10">
 						<strong>Standard Deviation</strong>
 					</td>
@@ -36,7 +39,7 @@
 				<td class="leftLabel">
 					<c:choose>
 						<c:when test="${canUserSubmit eq 'true'}">
-							<html:select
+							<html:select styleId="datumName"
 								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].name"
 								onkeydown="javascript:fnKeyDownHandler(this, event);"
 								onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
@@ -45,16 +48,13 @@
 								<option value="">
 									--?--
 								</option>
-								<option>
-									Average/Mean
-								</option>
-								<option>
-									Z-Average
-								</option>
-								<option>
-									PDI
-								</option>
-								<%--						<html:options name="allTypes" />--%>
+								<c:forEach var="category"
+									items="${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].categories}">
+									<c:forEach var="datumName"
+										items="${derivedDataCategoryMap[category]}">
+										<html:option value="${datumName}">${datumName}</html:option>
+									</c:forEach>
+								</c:forEach>
 							</html:select>&nbsp; 	
 						</c:when>
 						<c:otherwise>
@@ -71,6 +71,23 @@
 						</c:when>
 						<c:otherwise>
 							${ddata.value}&nbsp;
+						</c:otherwise>
+					</c:choose>
+				</td>
+				<td class="label">
+					<c:choose>
+						<c:when test="${canUserSubmit eq 'true'}">
+							<html:select
+								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].valueType">
+								<option value="">
+									--?--
+								</option>
+								<html:options collection="allMeasureTypes" property="name"
+									labelProperty="name" />
+							</html:select>&nbsp; 						
+						</c:when>
+						<c:otherwise>
+							${ddata.valueType}&nbsp;
 						</c:otherwise>
 					</c:choose>
 				</td>
@@ -94,7 +111,8 @@
 								<option value="">
 									--?--
 								</option>
-								<%--						<html:options name="allUnits" />--%>
+								<html:options collection="allMeasureUnits" property="name"
+									labelProperty="name" />
 							</html:select>&nbsp; 						
 						</c:when>
 						<c:otherwise>

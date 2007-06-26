@@ -58,26 +58,19 @@
 			<c:choose>
 				<c:when test="${canUserSubmit eq 'true'}">
 					<td class="rightLabelWithTop" valign="top">
-						<html:select
-							property="achar.derivedBioAssayDataList[${param.fileInd}].category"
+						<html:select styleId="category"
+							property="achar.derivedBioAssayDataList[${param.fileInd}].categories"
 							multiple="yes" size="4"
 							onkeydown="javascript:fnKeyDownHandler(this, event);"
 							onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
 							onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-							onchange="fnChangeHandler_A(this, event);">
+							onchange="fnChangeHandler_A(this, event);
+							multiboxToDropDownWithEditableOption(document.getElementById('category'), document.getElementById('datumName'), categoryDatumNames);">
 							<option value="">
 								--?--
 							</option>
-							<option value="Volume Distribution">
-								Volume Distribution
-							</option>
-							<option value="Number Distribution">
-								Number Distribution
-							</option>
-							<option value="Intensity Distribution">
-								Intensity Distribution
-							</option>
-							<%--<html:options name="allFileCategories" />--%>
+							<html:options collection="derivedDataCategoryMap" property="key"
+								labelProperty="key" />
 						</html:select>
 					</td>
 				</c:when>
@@ -156,3 +149,16 @@
 		value="${fileId}" />
 </logic:present>
 
+<script language="JavaScript">
+<!--//
+  /* populate a hashtable containing derived data category and associated datum names */
+  var categoryDatumNames=new Array();    
+  <c:forEach var="item" items="${derivedDataCategoryMap}">  	 
+    var datumNames=new Array();
+    <c:forEach var="datum" items="${derivedDataCategoryMap[item.key]}" varStatus="count">
+  		datumNames[${count.index}]='${datum}';  	  		  		
+    </c:forEach>
+    categoryDatumNames['${item.key}'] = datumNames;
+  </c:forEach>
+//-->
+</script>
