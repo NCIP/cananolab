@@ -14,7 +14,7 @@
 		<property name="name" type="java.lang.String" column="NAME" />		
 		<set name="datumNameCollection" cascade="all-delete-orphan" lazy="true" inverse="true">
 			<cache usage="read-write" />
-			<key column="DATUM_NAME_PK_ID" />			
+			<key column="CATEGORY_PK_ID" />			
 			<one-to-many class="gov.nih.nci.calab.domain.nano.characterization.DatumName" />
 		</set>
 	</class>
@@ -30,7 +30,7 @@
 		<property name="name" type="java.lang.String" column="NAME" />
 		<property name="datumParsed" type="java.lang.Boolean" column="IS_DATUM_PARSED"/>
 		<many-to-one name="derivedBioAssayDataCategory"
-			class="DerivedBioAssayDataCategory" column="DERIVED_BIOASSAY_DATA_PK_ID"
+			class="DerivedBioAssayDataCategory" column="CATEGORY_PK_ID"
 			not-null="true" lazy="false"/>
 	</class>	
 </hibernate-mapping>
