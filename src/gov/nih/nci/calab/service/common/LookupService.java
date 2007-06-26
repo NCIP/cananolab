@@ -50,7 +50,7 @@ import org.hibernate.collection.PersistentSet;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.112 2007-06-26 15:17:30 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.113 2007-06-26 15:55:50 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -270,7 +270,7 @@ public class LookupService {
 		return containerTypeList;
 	}
 
-	private List<MeasureUnit> getAllMeasureUnits() throws Exception {
+	public List<MeasureUnit> getAllMeasureUnits() throws Exception {
 		List<MeasureUnit> units = new ArrayList<MeasureUnit>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
@@ -743,7 +743,7 @@ public class LookupService {
 		try {
 			hda.open();
 			List<String> chars = null;
-			String query = "select distinct a.category, a.name from characterization_category a "
+			String query = "select distinct a.category, a.name from def_characterization_category a "
 					+ "where a.name not in (select distinct b.category from characterization_category b) "
 					+ "order by a.category, a.name";
 			SQLQuery queryObj = hda.getNativeQuery(query);
@@ -1325,7 +1325,7 @@ public class LookupService {
 		HibernateDataAccess hda = HibernateDataAccess.getInstance();
 		try {
 			hda.open();
-			String query = "select distinct category, has_action, indent_level, category_order from characterization_category order by category_order";
+			String query = "select distinct category, has_action, indent_level, category_order from def_characterization_category order by category_order";
 			SQLQuery queryObj = hda.getNativeQuery(query);
 			queryObj.addScalar("CATEGORY", Hibernate.STRING);
 			queryObj.addScalar("HAS_ACTION", Hibernate.INTEGER);
