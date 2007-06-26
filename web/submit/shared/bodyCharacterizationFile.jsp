@@ -2,6 +2,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <logic:present name="characterizationFile${param.fileInd}">
 	<bean:define id="fileId" name='characterizationFile${param.fileInd}'
@@ -53,28 +54,32 @@
 				</c:otherwise>
 			</c:choose>
 			<td class="labelWithTop" valign="top">
-				<strong>Data Category</strong>
+				<strong>Data Category</strong>				
 			</td>
 			<c:choose>
 				<c:when test="${canUserSubmit eq 'true'}">
 					<td class="rightLabelWithTop" valign="top">
-						<html:select styleId="category"
+						<html:select 
 							property="achar.derivedBioAssayDataList[${param.fileInd}].categories"
 							multiple="yes" size="4"
 							onkeydown="javascript:fnKeyDownHandler(this, event);"
 							onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
 							onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-							onchange="fnChangeHandler_A(this, event);">
+							onchange="fnChangeHandler_A(this, event); filterDatumCategories(${param.fileInd}, ${fn:length(nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].datumList)})">
 							<option value="">
-								--?--
+								--?-- 
 							</option>
-							<html:options name="derivedDataCategories"/>
+							<html:options name="derivedDataCategories" />
 						</html:select>
 					</td>
 				</c:when>
 				<c:otherwise>
 					<td class="rightLabelWithTop">
-						${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].category}&nbsp;
+						<c:forEach var="category"
+							items="${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].categories}">
+							${category}
+						</c:forEach>
+						&nbsp;
 					</td>
 				</c:otherwise>
 			</c:choose>
@@ -117,7 +122,7 @@
 					<tr>
 						<c:choose>
 							<c:when test="${canUserSubmit eq 'true'}">
-								<td valign="bottom">									
+								<td valign="bottom">
 									<a href="#"
 										onclick="javascript:addCharacterizationData(nanoparticleCharacterizationForm, '${param.actionName}', ${param.fileInd})"><span
 										class="addLink">Add Derived Data</span> </a>
@@ -144,17 +149,3 @@
 		property="achar.derivedBioAssayDataList[${param.fileInd}].fileId"
 		value="${fileId}" />
 </logic:present>
-
-<script language="JavaScript">
-<!--//
-  /* populate a hashtable containing derived data category and associated datum names */
-  var categoryDatumNames=new Array();    
-  <c:forEach var="item" items="${derivedDataCategoryMap}">  	 
-    var datumNames=new Array();
-    <c:forEach var="datum" items="${derivedDataCategoryMap[item.key]}" varStatus="count">
-  		datumNames[${count.index}]='${datum}';  	  		  		
-    </c:forEach>
-    categoryDatumNames['${item.key}'] = datumNames;
-  </c:forEach>
-//-->
-</script>
