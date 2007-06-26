@@ -893,7 +893,7 @@ public class InitSessionSetup {
 				if (!instrumentTypes.contains(type)) {
 					instrumentTypes.add(type);
 				}
-			}			
+			}
 			session.setAttribute("allInstruments", instruments);
 			session.setAttribute("allInstrumentTypeToManufacturers",
 					typeToManufacturers);
@@ -939,5 +939,13 @@ public class InitSessionSetup {
 			session.getServletContext().setAttribute("allCharTypeChars",
 					charTypeChars);
 		}
+	}
+
+	public void setDerivedDataCategoryMap(HttpSession session,
+			String characterizationName) throws Exception {
+
+		Map<String, SortedSet<String>> categoryMap = lookupService
+				.getDerivedDataCategoryMap(characterizationName);
+		session.setAttribute("derivedDataCategoryMap", categoryMap);
 	}
 }
