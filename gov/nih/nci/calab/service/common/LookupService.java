@@ -51,7 +51,7 @@ import org.hibernate.collection.PersistentSet;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.115 2007-06-26 18:26:28 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.116 2007-06-26 22:04:14 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -180,9 +180,12 @@ public class LookupService {
 
 		Map<String, List<String>> allUnits = getAllMeasureUnits();
 		List<StorageElement> storageElements = getAllStorageElements();
-		List<String> quantityUnits = allUnits.get("Quantity");
-		List<String> concentrationUnits = allUnits.get("Concentration");
-		List<String> volumeUnits = allUnits.get("Volume");
+		List<String> quantityUnits = (allUnits.get("Quantity") == null) ? new ArrayList<String>()
+				: allUnits.get("Quantity");
+		List<String> concentrationUnits = (allUnits.get("Concentration") == null) ? new ArrayList<String>()
+				: allUnits.get("Concentration");
+		List<String> volumeUnits = (allUnits.get("Volume") == null) ? new ArrayList<String>()
+				: allUnits.get("Volume");
 		List<String> rooms = new ArrayList<String>();
 		List<String> freezers = new ArrayList<String>();
 		List<String> shelves = new ArrayList<String>();
@@ -299,7 +302,7 @@ public class LookupService {
 			String hqlString = "from MeasureType type order by type.name";
 			List results = ida.search(hqlString);
 			for (Object obj : results) {
-				MeasureType type=(MeasureType) obj;
+				MeasureType type = (MeasureType) obj;
 				types.add(type.getName());
 			}
 		} catch (Exception e) {
