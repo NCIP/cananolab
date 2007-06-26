@@ -25,6 +25,7 @@
 			<c:param name="characterizationId" value="${aChar.id}" />
 			<c:param name="submitType" value="${charType.type}" />
 			<c:param name="actionName" value="${aChar.actionName}" />
+			<c:param name="charName" value="${aChar.name}"/>
 		</c:url>
 		<span class="indented${charType.indentLevel+1}"><a href="${url}" title="${aChar.name}"> <font color="${aChar.viewColor}">${aChar.abbr}:${aChar.viewTitle}</font> </a></span>
 		<br>
