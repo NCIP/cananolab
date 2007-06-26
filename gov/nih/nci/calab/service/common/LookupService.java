@@ -50,7 +50,7 @@ import org.hibernate.collection.PersistentSet;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.111 2007-06-19 20:12:53 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.112 2007-06-26 15:17:30 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -1351,5 +1351,41 @@ public class LookupService {
 			hda.close();
 		}
 		return charTypes;
+	}
+
+	public Map<String, SortedSet<String>> getDerivedDataCategoryMap(
+			String characterizationName) throws Exception {
+		Map<String, SortedSet<String>> categoryMap = new HashMap<String, SortedSet<String>>();
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			String hqlString = "select category.name, datumName.name from DerivedBioAssayDataCategory category left join category.datumNameCollection datumName where datumName.datumParsed=false and category.characterizationName='"
+					+ characterizationName + "'";
+			List results = ida.search(hqlString);
+			SortedSet<String> datumNames = null;
+			for (Object obj : results) {
+				String categoryName = ((Object[]) obj)[0].toString();
+				String datumName = ((Object[]) obj)[1].toString();
+				if (categoryMap.get(categoryName) != null) {
+					datumNames = categoryMap.get(categoryName);
+				} else {
+					datumNames = new TreeSet<String>();
+					categoryMap.put(categoryName, datumNames);
+				}
+				datumNames.add(datumName);
+			}
+
+		} catch (Exception e) {
+			logger
+					.error("Problem to retrieve all derived bioassay data categories. "
+							+ e);
+			throw new RuntimeException(
+					"Problem to retrieve all derived bioassay data categories.");
+
+		} finally {
+			ida.close();
+		}
+		return categoryMap;
 	}
 }
