@@ -158,6 +158,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		String particleName = theForm.getString("particleName");
 		String particleType = theForm.getString("particleType");
 		String particleSource = request.getParameter("particleSource");
+		String charName = request.getParameter("charName");
 		InitSessionSetup.getInstance().setApplicationOwner(session);
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
@@ -185,6 +186,9 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		SortedSet<String> allOtherParticleNames = service.getOtherParticles(
 				particleSource, particleName, user);
 		session.setAttribute("allOtherParticleNames", allOtherParticleNames);
+
+		InitSessionSetup.getInstance().setDerivedDataCategoryMap(session,
+				charName);
 	}
 
 	/**
