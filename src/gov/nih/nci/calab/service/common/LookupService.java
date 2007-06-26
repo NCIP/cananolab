@@ -51,7 +51,7 @@ import org.hibernate.collection.PersistentSet;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.114 2007-06-26 16:10:28 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.115 2007-06-26 18:26:28 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -178,25 +178,15 @@ public class LookupService {
 	 */
 	public ContainerInfoBean getSampleContainerInfo() throws Exception {
 
-		List<MeasureUnit> units = getAllMeasureUnits();
+		Map<String, List<String>> allUnits = getAllMeasureUnits();
 		List<StorageElement> storageElements = getAllStorageElements();
-		List<String> quantityUnits = new ArrayList<String>();
-		List<String> concentrationUnits = new ArrayList<String>();
-		List<String> volumeUnits = new ArrayList<String>();
+		List<String> quantityUnits = allUnits.get("Quantity");
+		List<String> concentrationUnits = allUnits.get("Concentration");
+		List<String> volumeUnits = allUnits.get("Volume");
 		List<String> rooms = new ArrayList<String>();
 		List<String> freezers = new ArrayList<String>();
 		List<String> shelves = new ArrayList<String>();
 		List<String> boxes = new ArrayList<String>();
-
-		for (MeasureUnit unit : units) {
-			if (unit.getType().equalsIgnoreCase("Quantity")) {
-				quantityUnits.add(unit.getName());
-			} else if (unit.getType().equalsIgnoreCase("Volume")) {
-				volumeUnits.add(unit.getName());
-			} else if (unit.getType().equalsIgnoreCase("Concentration")) {
-				concentrationUnits.add(unit.getName());
-			}
-		}
 
 		for (StorageElement storageElement : storageElements) {
 			if (storageElement.getType().equalsIgnoreCase("Room")
@@ -271,16 +261,25 @@ public class LookupService {
 		return containerTypeList;
 	}
 
-	public List<MeasureUnit> getAllMeasureUnits() throws Exception {
-		List<MeasureUnit> units = new ArrayList<MeasureUnit>();
+	public Map<String, List<String>> getAllMeasureUnits() throws Exception {
+		Map<String, List<String>> unitMap = new HashMap<String, List<String>>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
 			String hqlString = "from MeasureUnit unit order by unit.name";
 			List results = ida.search(hqlString);
+			List<String> units = null;
 			for (Object obj : results) {
-				units.add((MeasureUnit) obj);
+				MeasureUnit unit = (MeasureUnit) obj;
+				String type = unit.getType();
+				if (unitMap.get(type) != null) {
+					units = unitMap.get(type);
+				} else {
+					units = new ArrayList<String>();
+					unitMap.put(type, units);
+				}
+				units.add(unit.getName());
 			}
 		} catch (Exception e) {
 			logger.error("Error in retrieving all measure units", e);
@@ -288,12 +287,11 @@ public class LookupService {
 		} finally {
 			ida.close();
 		}
-
-		return units;
+		return unitMap;
 	}
 
-	public List<MeasureType> getAllMeasureTypes() throws Exception {
-		List<MeasureType> types = new ArrayList<MeasureType>();
+	public List<String> getAllMeasureTypes() throws Exception {
+		List<String> types = new ArrayList<String>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
@@ -301,7 +299,8 @@ public class LookupService {
 			String hqlString = "from MeasureType type order by type.name";
 			List results = ida.search(hqlString);
 			for (Object obj : results) {
-				types.add((MeasureType) obj);
+				MeasureType type=(MeasureType) obj;
+				types.add(type.getName());
 			}
 		} catch (Exception e) {
 			logger.error("Error in retrieving all measure types", e);
@@ -1409,5 +1408,62 @@ public class LookupService {
 			ida.close();
 		}
 		return categoryMap;
+	}
+
+	public List<String> getDerivedDatumNames(String characterizationName)
+			throws Exception {
+		List<String> datumNames = new ArrayList<String>();
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			String hqlString = "select distinct datumName.name from DerivedBioAssayDataCategory category left join category.datumNameCollection datumName where datumName.datumParsed=false and category.characterizationName='"
+					+ characterizationName + "' order by datumName.name";
+			List results = ida.search(hqlString);
+
+			for (Object obj : results) {
+				String datumName = obj.toString();
+				datumNames.add(datumName);
+			}
+
+		} catch (Exception e) {
+			logger
+					.error("Problem to retrieve all derived bioassay datum names. "
+							+ e);
+			throw new RuntimeException(
+					"Problem to retrieve all derived bioassay datum names.");
+
+		} finally {
+			ida.close();
+		}
+		return datumNames;
+	}
+
+	public List<String> getDerivedDataCategories(String characterizationName)
+			throws Exception {
+		List<String> categories = new ArrayList<String>();
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			String hqlString = "select distinct category.name from DerivedBioAssayDataCategory category left join category.datumNameCollection datumName where datumName.datumParsed=false and category.characterizationName='"
+					+ characterizationName + "' order by category.name";
+			List results = ida.search(hqlString);
+			for (Object obj : results) {
+				String category = obj.toString();
+				categories.add(category);
+			}
+
+		} catch (Exception e) {
+			logger
+					.error("Problem to retrieve all derived bioassay data categories. "
+							+ e);
+			throw new RuntimeException(
+					"Problem to retrieve all derived bioassay data categories.");
+
+		} finally {
+			ida.close();
+		}
+		return categories;
 	}
 }
