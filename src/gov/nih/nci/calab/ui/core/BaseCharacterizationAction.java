@@ -168,7 +168,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		InitSessionSetup.getInstance().setAllShapeTypes(session);
 		InitSessionSetup.getInstance().setAllConcentrationUnits(session);
 		InitSessionSetup.getInstance().setAllCellLines(session);
-		InitSessionSetup.getInstance().setAllMeasureUnitsTypes(session);
+		InitSessionSetup.getInstance().setAllCharacterizationMeasureUnitsTypes(
+				session, charName);
 		// TODO If there are more types of charactizations, add their
 		// corresponding
 		// protocol type here.
@@ -188,8 +189,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 				particleSource, particleName, user);
 		session.setAttribute("allOtherParticleNames", allOtherParticleNames);
 
-		InitSessionSetup.getInstance().setDerivedDataCategoryMap(session,
-				charName);
+		InitSessionSetup.getInstance().setDerivedDataCategoriesDatumNames(
+				session, charName);
 	}
 
 	/**

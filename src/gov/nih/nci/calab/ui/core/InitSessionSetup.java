@@ -1,7 +1,5 @@
 package gov.nih.nci.calab.ui.core;
 
-import gov.nih.nci.calab.domain.MeasureType;
-import gov.nih.nci.calab.domain.MeasureUnit;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.CharacterizationTypeBean;
 import gov.nih.nci.calab.dto.common.InstrumentBean;
@@ -943,22 +941,26 @@ public class InitSessionSetup {
 		}
 	}
 
-	public void setDerivedDataCategoryMap(HttpSession session,
+	public void setDerivedDataCategoriesDatumNames(HttpSession session,
 			String characterizationName) throws Exception {
+		List<String> categories = lookupService
+				.getDerivedDataCategories(characterizationName);
+		session.setAttribute("derivedDataCategories", categories);
 
-		Map<String, SortedSet<String>> categoryMap = lookupService
-				.getDerivedDataCategoryMap(characterizationName);
-		session.setAttribute("derivedDataCategoryMap", categoryMap);
+		List<String> datumNames = lookupService
+				.getDerivedDatumNames(characterizationName);
+		session.setAttribute("datumNames", datumNames);
 	}
 
-	public void setAllMeasureUnitsTypes(HttpSession session) throws Exception {
-		if (session.getAttribute("allMeasureUnits") == null
-				|| session.getAttribute("newCharacterizationCreated") != null) {
-			List<MeasureUnit> units = lookupService.getAllMeasureUnits();
-			List<MeasureType> types=lookupService.getAllMeasureTypes();
- 			session.setAttribute("allMeasureUnits", units);
- 			session.setAttribute("allMeasureTypes", types);
+	public void setAllCharacterizationMeasureUnitsTypes(HttpSession session,
+			String charName) throws Exception {
+		Map<String, List<String>> unitMap = lookupService.getAllMeasureUnits();
+		List<String> charUnits = unitMap.get(charName);
+		if (charUnits == null) {
+			charUnits = new ArrayList<String>();
 		}
-		session.removeAttribute("newCharacterizationCreated");
+		List<String> types = lookupService.getAllMeasureTypes();
+		session.setAttribute("charMeasureUnits", charUnits);
+		session.setAttribute("charMeasureTypes", types);
 	}
 }
