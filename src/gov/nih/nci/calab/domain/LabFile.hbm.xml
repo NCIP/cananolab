@@ -57,7 +57,11 @@
 		<joined-subclass name="gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData"
 			table="DERIVED_BIOASSAY_DATA">
 			<key column="DERIVED_BIOASSAY_DATA_PK_ID" />
-			<property name="category" type="java.lang.String" column="CATEGORY" />
+			<array name="categories" table="BIOASSAY_DATA_DATA_CATEGORY"> 
+				<key column="DERIVED_BIOASSAY_DATA_PK_ID"></key> 
+				<index column="CATEGORY_INDEX"></index> 
+				<element column="CATEGORY_NAME" type="string" /> 
+			</array>  			
 			<list name="datumCollection" cascade="all-delete-orphan" lazy="true">
 			<cache usage="read-write" />
 			<key column="DERIVED_BIOASSAY_DATA_PK_ID" />

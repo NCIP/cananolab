@@ -21,7 +21,7 @@ public class DerivedBioAssayData extends LabFile implements Serializable {
 
 	private Long id;
 
-	private String category;
+	private String[] categories;
 
 	private Collection<Datum> datumCollection = new ArrayList<Datum>();
 
@@ -43,12 +43,12 @@ public class DerivedBioAssayData extends LabFile implements Serializable {
 		this.id = id;
 	}
 
-	public String getCategory() {
-		return category;
+	public String[] getCategories() {
+		return categories;
 	}
 
-	public void setCategory(String type) {
-		this.category = type;
+	public void setCategories(String[] categories) {
+		this.categories=categories;
 	}
 
 	public Collection<Datum> getDatumCollection() {
