@@ -956,6 +956,8 @@ public class InitSessionSetup {
 			String charName) throws Exception {
 		Map<String, List<String>> unitMap = lookupService.getAllMeasureUnits();
 		List<String> charUnits = unitMap.get(charName);
+		//add an empty one to indicate no unit
+		charUnits.add("");
 		if (charUnits == null) {
 			charUnits = new ArrayList<String>();
 		}
