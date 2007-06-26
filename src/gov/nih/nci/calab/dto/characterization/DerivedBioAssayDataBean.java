@@ -26,7 +26,7 @@ public class DerivedBioAssayDataBean extends LabFileBean {
 
 	private String characterizationName;
 
-	private String category;
+	private String[] categories;
 
 	private List<DatumBean> datumList = new ArrayList<DatumBean>();
 
@@ -104,7 +104,7 @@ public class DerivedBioAssayDataBean extends LabFileBean {
 		for (DatumBean datum : datumList) {
 			charFile.getDatumCollection().add(datum.getDomainObj());
 		}
-		charFile.setCategory(category);
+		charFile.setCategories(categories);
 		return charFile;
 	}
 
@@ -136,7 +136,7 @@ public class DerivedBioAssayDataBean extends LabFileBean {
 		DerivedBioAssayDataBean newCharFileBean = new DerivedBioAssayDataBean();
 		// do not copy file id and path
 		newCharFileBean.setKeywords(keywords);
-		newCharFileBean.setCategory(category);
+		newCharFileBean.setCategories(categories);
 		newCharFileBean.setDescription(getDescription());
 		newCharFileBean.setVisibilityGroups(getVisibilityGroups());
 		newCharFileBean.setTitle(getTitle());
@@ -162,12 +162,12 @@ public class DerivedBioAssayDataBean extends LabFileBean {
 		return newCharFileBean;
 	}
 
-	public String getCategory() {
-		return category;
+	public String[] getCategories() {
+		return categories;
 	}
 
-	public void setCategory(String category) {
-		this.category = category;
+	public void setCategories(String[] categories) {
+		this.categories = categories;
 	}
 
 	public List<DatumBean> getDatumList() {
