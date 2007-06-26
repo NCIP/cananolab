@@ -1,5 +1,7 @@
 package gov.nih.nci.calab.ui.core;
 
+import gov.nih.nci.calab.domain.MeasureType;
+import gov.nih.nci.calab.domain.MeasureUnit;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.CharacterizationTypeBean;
 import gov.nih.nci.calab.dto.common.InstrumentBean;
@@ -947,5 +949,16 @@ public class InitSessionSetup {
 		Map<String, SortedSet<String>> categoryMap = lookupService
 				.getDerivedDataCategoryMap(characterizationName);
 		session.setAttribute("derivedDataCategoryMap", categoryMap);
+	}
+
+	public void setAllMeasureUnitsTypes(HttpSession session) throws Exception {
+		if (session.getAttribute("allMeasureUnits") == null
+				|| session.getAttribute("newCharacterizationCreated") != null) {
+			List<MeasureUnit> units = lookupService.getAllMeasureUnits();
+			List<MeasureType> types=lookupService.getAllMeasureTypes();
+ 			session.setAttribute("allMeasureUnits", units);
+ 			session.setAttribute("allMeasureTypes", types);
+		}
+		session.removeAttribute("newCharacterizationCreated");
 	}
 }
