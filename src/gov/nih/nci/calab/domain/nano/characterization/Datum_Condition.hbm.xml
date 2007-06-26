@@ -13,6 +13,7 @@
 		<property name="name" type="java.lang.String" column="NAME" />		
 		<component name="value" class="gov.nih.nci.calab.domain.Measurement">
 			<property name="value" column="VALUE" />
+			<property name="valueType" column="VALUE_TYPE" />
 			<property name="unitOfMeasurement" column="VALUE_UNIT" />
 			<property name="standardDeviation" column="STANDARD_DEVIATION" />
 		</component>
@@ -40,6 +41,7 @@
 		<property name="name" type="java.lang.String" column="NAME" />
 		<component name="value" class="gov.nih.nci.calab.domain.Measurement">
 			<property name="value" column="VALUE" />
+			<property name="valueType" column="VALUE_TYPE" />
 			<property name="unitOfMeasurement" column="VALUE_UNIT" />
 		</component>
 	</class>
