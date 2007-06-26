@@ -5,6 +5,7 @@ import gov.nih.nci.calab.db.HibernateDataAccess;
 import gov.nih.nci.calab.db.IDataAccess;
 import gov.nih.nci.calab.domain.Aliquot;
 import gov.nih.nci.calab.domain.Instrument;
+import gov.nih.nci.calab.domain.MeasureType;
 import gov.nih.nci.calab.domain.MeasureUnit;
 import gov.nih.nci.calab.domain.Protocol;
 import gov.nih.nci.calab.domain.ProtocolFile;
@@ -50,7 +51,7 @@ import org.hibernate.collection.PersistentSet;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.113 2007-06-26 15:55:50 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.114 2007-06-26 16:10:28 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -276,7 +277,7 @@ public class LookupService {
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
-			String hqlString = "from MeasureUnit";
+			String hqlString = "from MeasureUnit unit order by unit.name";
 			List results = ida.search(hqlString);
 			for (Object obj : results) {
 				units.add((MeasureUnit) obj);
@@ -289,6 +290,27 @@ public class LookupService {
 		}
 
 		return units;
+	}
+
+	public List<MeasureType> getAllMeasureTypes() throws Exception {
+		List<MeasureType> types = new ArrayList<MeasureType>();
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			String hqlString = "from MeasureType type order by type.name";
+			List results = ida.search(hqlString);
+			for (Object obj : results) {
+				types.add((MeasureType) obj);
+			}
+		} catch (Exception e) {
+			logger.error("Error in retrieving all measure types", e);
+			throw new RuntimeException("Error in retrieving all measure types.");
+		} finally {
+			ida.close();
+		}
+
+		return types;
 	}
 
 	private List<StorageElement> getAllStorageElements() throws Exception {
@@ -744,7 +766,7 @@ public class LookupService {
 			hda.open();
 			List<String> chars = null;
 			String query = "select distinct a.category, a.name from def_characterization_category a "
-					+ "where a.name not in (select distinct b.category from characterization_category b) "
+					+ "where a.name not in (select distinct b.category from def_characterization_category b) "
 					+ "order by a.category, a.name";
 			SQLQuery queryObj = hda.getNativeQuery(query);
 			queryObj.addScalar("CATEGORY", Hibernate.STRING);
