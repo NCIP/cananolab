@@ -23,15 +23,15 @@ public class DatumBean {
 	private String name;
 
 	private String value;
-	
+
 	private String valueType;
 
 	private String unit;
-	
+
 	private String std;
 
 	private String category;
-	
+
 	private String isAControl = CaNanoLabConstants.BOOLEAN_NO;
 
 	private ControlBean control = new ControlBean();
@@ -39,7 +39,7 @@ public class DatumBean {
 	private List<ConditionBean> conditionList = new ArrayList<ConditionBean>();
 
 	private String numberOfConditions;
-	
+
 	public DatumBean() {
 	}
 
@@ -48,26 +48,29 @@ public class DatumBean {
 		this.name = datum.getName();
 		this.value = (datum.getValue() != null) ? StringUtils
 				.convertToString(datum.getValue().getValue()) : "";
+		this.valueType = (datum.getValue().getValueType() != null) ? StringUtils
+				.convertToString(datum.getValue().getValueType()) : "";
+
 		this.unit = (datum.getValue() != null) ? StringUtils
 				.convertToString(datum.getValue().getUnitOfMeasurement()) : "";
 
-//		Control controlObj = datum.getControl();
-//		if (controlObj != null) {
-//			control = new ControlBean();
-//			control.setName(controlObj.getName());
-//			control.setType(controlObj.getType());
-//			isAControl = CaNanoLabConstants.BOOLEAN_YES;
-//		} else {
-//			isAControl = CaNanoLabConstants.BOOLEAN_NO;
-//		}		
-//		if (datum.getConditionCollection() != null
-//				&& datum.getConditionCollection().size() > 0) {
-//			conditionList = new ArrayList<ConditionBean>();
-//			for (Condition conditionData : datum.getConditionCollection()) {
-//				ConditionBean cBean = new ConditionBean(conditionData);
-//				conditionList.add(cBean);
-//			}
-//		}
+		// Control controlObj = datum.getControl();
+		// if (controlObj != null) {
+		// control = new ControlBean();
+		// control.setName(controlObj.getName());
+		// control.setType(controlObj.getType());
+		// isAControl = CaNanoLabConstants.BOOLEAN_YES;
+		// } else {
+		// isAControl = CaNanoLabConstants.BOOLEAN_NO;
+		// }
+		// if (datum.getConditionCollection() != null
+		// && datum.getConditionCollection().size() > 0) {
+		// conditionList = new ArrayList<ConditionBean>();
+		// for (Condition conditionData : datum.getConditionCollection()) {
+		// ConditionBean cBean = new ConditionBean(conditionData);
+		// conditionList.add(cBean);
+		// }
+		// }
 
 		this.numberOfConditions = conditionList.size() + "";
 	}
