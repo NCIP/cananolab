@@ -24,6 +24,8 @@ public class Datum implements Serializable {
 	// private Boolean control;
 	private Measurement value;
 
+	private String derivedBioAssayDataCategory;
+	
 	private Control control;
 
 	private Collection<Condition> conditionCollection = new ArrayList<Condition>();
@@ -52,12 +54,6 @@ public class Datum implements Serializable {
 		this.name = type;
 	}
 
-	// public Boolean getControl() {
-	// return control;
-	// }
-	// public void setControl(Boolean control) {
-	// this.control = control;
-	// }
 	public Measurement getValue() {
 		return value;
 	}
@@ -80,5 +76,13 @@ public class Datum implements Serializable {
 
 	public void setConditionCollection(Collection<Condition> conditionCollection) {
 		this.conditionCollection = conditionCollection;
+	}
+
+	public String getDerivedBioAssayDataCategory() {
+		return derivedBioAssayDataCategory;
+	}
+
+	public void setDerivedBioAssayDataCategory(String derivedBioAssayDataCategory) {
+		this.derivedBioAssayDataCategory = derivedBioAssayDataCategory;
 	}
 }
