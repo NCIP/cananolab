@@ -14,13 +14,10 @@
 						<strong>Name</strong>
 					</td>
 					<td>
-						<strong>Value</strong>
+						<strong>Statistics Type</strong>
 					</td>
 					<td>
-						<strong>Value Type</strong>
-					</td>
-					<td width="10">
-						<strong>Standard Deviation</strong>
+						<strong>Value</strong>
 					</td>
 					<td>
 						<strong>Unit</strong>
@@ -59,20 +56,8 @@
 				<td class="label">
 					<c:choose>
 						<c:when test="${canUserSubmit eq 'true'}">
-							<html:text
-								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].value"
-								size="5" />&nbsp; 						
-						</c:when>
-						<c:otherwise>
-							${ddata.value}&nbsp;
-						</c:otherwise>
-					</c:choose>
-				</td>
-				<td class="label">
-					<c:choose>
-						<c:when test="${canUserSubmit eq 'true'}">
 							<html:select
-								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].valueType">
+								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].statisticsType">
 								<option value="">
 									--?--
 								</option>
@@ -80,7 +65,7 @@
 							</html:select>&nbsp; 						
 						</c:when>
 						<c:otherwise>
-							${ddata.valueType}&nbsp;
+							${ddata.statisticsType}&nbsp;
 						</c:otherwise>
 					</c:choose>
 				</td>
@@ -88,11 +73,11 @@
 					<c:choose>
 						<c:when test="${canUserSubmit eq 'true'}">
 							<html:text
-								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].std"
+								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].value"
 								size="5" />&nbsp; 						
 						</c:when>
 						<c:otherwise>
-							${ddata.std}&nbsp;
+							${ddata.value}&nbsp;
 						</c:otherwise>
 					</c:choose>
 				</td>
@@ -117,10 +102,11 @@
 						<c:when test="${canUserSubmit eq 'true'}">
 							<html:select
 								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].category">
-								 <option/>
-								<c:forEach var="category" items="${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].categories}">														   
-								    <html:option value="${category}">${category}</html:option>
-								</c:forEach>
+								<option />
+									<c:forEach var="category"
+										items="${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].categories}">
+										<html:option value="${category}">${category}</html:option>
+									</c:forEach>
 							</html:select>&nbsp; 						
 						</c:when>
 						<c:otherwise>
