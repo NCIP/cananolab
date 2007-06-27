@@ -12,18 +12,9 @@ import java.io.Serializable;
 public class Measurement implements Serializable {
 
 	private static final long serialVersionUID = 1234567890L;
-
-	private Float standardDeviation;
-
-	private String valueType;
-
-	public Float getStandardDeviation() {
-		return standardDeviation;
-	}
-
-	public void setStandardDeviation(Float standardDeviation) {
-		this.standardDeviation = standardDeviation;
-	}
+	private java.lang.Long id;
+	private java.lang.Float value;
+	private String statisticsType;
 
 	/**
 	 * 
@@ -38,7 +29,6 @@ public class Measurement implements Serializable {
 		this.setUnitOfMeasurement(unit);
 	}
 
-	private java.lang.Long id;
 
 	public java.lang.Long getId() {
 		return id;
@@ -48,7 +38,6 @@ public class Measurement implements Serializable {
 		this.id = id;
 	}
 
-	private java.lang.Float value;
 
 	public java.lang.Float getValue() {
 		return value;
@@ -68,11 +57,11 @@ public class Measurement implements Serializable {
 		this.unitOfMeasurement = unitOfMeasurement;
 	}
 
-	public String getValueType() {
-		return valueType;
+	public String getStatisticsType() {
+		return statisticsType;
 	}
 
-	public void setValueType(String valueType) {
-		this.valueType = valueType;
+	public void setStatisticsType(String statsType) {
+		this.statisticsType = statsType;
 	}
 }
