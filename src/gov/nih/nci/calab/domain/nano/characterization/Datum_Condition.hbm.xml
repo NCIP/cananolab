@@ -10,12 +10,12 @@
 				<param name="column">next_hi</param>
 			</generator>
 		</id>
-		<property name="name" type="java.lang.String" column="NAME" />		
+		<property name="name" type="java.lang.String" column="NAME" />	
+		<property name="derivedBioAssayDataCategory" type="java.lang.String" column="BIOASSAY_DATA_CATEGORY" />	
 		<component name="value" class="gov.nih.nci.calab.domain.Measurement">
 			<property name="value" column="VALUE" />
-			<property name="valueType" column="VALUE_TYPE" />
+			<property name="statisticsType" column="STATISTICS_TYPE" />
 			<property name="unitOfMeasurement" column="VALUE_UNIT" />
-			<property name="standardDeviation" column="STANDARD_DEVIATION" />
 		</component>
 		<component name="control" class="gov.nih.nci.calab.domain.nano.characterization.Control">
 			<property name="name" column="CONTROL_NAME" />
@@ -41,7 +41,7 @@
 		<property name="name" type="java.lang.String" column="NAME" />
 		<component name="value" class="gov.nih.nci.calab.domain.Measurement">
 			<property name="value" column="VALUE" />
-			<property name="valueType" column="VALUE_TYPE" />
+			<property name="statisticsType" column="STATISTICS_TYPE" />
 			<property name="unitOfMeasurement" column="VALUE_UNIT" />
 		</component>
 	</class>
