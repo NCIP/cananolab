@@ -24,11 +24,9 @@ public class DatumBean {
 
 	private String value;
 
-	private String valueType;
+	private String statisticsType;
 
 	private String unit;
-
-	private String std;
 
 	private String category;
 
@@ -48,8 +46,9 @@ public class DatumBean {
 		this.name = datum.getName();
 		this.value = (datum.getValue() != null) ? StringUtils
 				.convertToString(datum.getValue().getValue()) : "";
-		this.valueType = (datum.getValue().getValueType() != null) ? StringUtils
-				.convertToString(datum.getValue().getValueType()) : "";
+		this.statisticsType = (datum.getValue().getStatisticsType() != null) ? StringUtils
+				.convertToString(datum.getValue().getStatisticsType())
+				: "";
 
 		this.unit = (datum.getValue() != null) ? StringUtils
 				.convertToString(datum.getValue().getUnitOfMeasurement()) : "";
@@ -140,9 +139,11 @@ public class DatumBean {
 		Measurement measurement = new Measurement();
 		if (value.length() > 0)
 			measurement.setValue(new Float(value));
+		if (statisticsType.length()>0)
+			measurement.setStatisticsType(statisticsType);
 		measurement.setUnitOfMeasurement(unit);
 		tableData.setValue(measurement);
-
+		tableData.setDerivedBioAssayDataCategory(category);
 		if (this.getConditionList() != null
 				&& this.getConditionList().size() > 0) {
 			for (ConditionBean condition : this.getConditionList()) {
@@ -173,14 +174,6 @@ public class DatumBean {
 		this.isAControl = isAControl;
 	}
 
-	public String getStd() {
-		return std;
-	}
-
-	public void setStd(String std) {
-		this.std = std;
-	}
-
 	public String getCategory() {
 		return category;
 	}
@@ -189,11 +182,11 @@ public class DatumBean {
 		this.category = category;
 	}
 
-	public String getValueType() {
-		return valueType;
+	public String getStatisticsType() {
+		return statisticsType;
 	}
 
-	public void setValueType(String valueType) {
-		this.valueType = valueType;
+	public void setStatisticsType(String statsType) {
+		this.statisticsType = statsType;
 	}
 }
