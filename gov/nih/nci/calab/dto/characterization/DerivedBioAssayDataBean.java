@@ -151,9 +151,10 @@ public class DerivedBioAssayDataBean extends LabFileBean {
 			for (DatumBean datum : datumList) {
 				DatumBean newDatum = new DatumBean();
 				newDatum.setCategory(datum.getCategory());
-				newDatum.setStd(datum.getStd());
 				newDatum.setName(datum.getName());
 				newDatum.setValue(datum.getValue());
+				newDatum.setStatisticsType(datum.getStatisticsType());
+				newDatum.setCategory(datum.getCategory());
 				newDatum.setUnit(datum.getUnit());
 				newDatumList.add(newDatum);
 			}
