@@ -5,12 +5,12 @@ CREATE TABLE DATUM
   DATUM_PK_ID                  NUMBER           NOT NULL,
   NAME                         VARCHAR2(2000)   NOT NULL,
   VALUE                        NUMBER           NOT NULL,
-  STANDARD_DEVIATION           NUMBER,
   VALUE_UNIT                   VARCHAR2(200),
   DERIVED_BIOASSAY_DATA_PK_ID  NUMBER,
   CONTROL_NAME                 VARCHAR2(200),
   CONTROL_TYPE                 VARCHAR2(100),
-  LIST_INDEX                   NUMBER
+  LIST_INDEX                   NUMBER,
+  STATISTICS_TYPE              VARCHAR2(200)
 )
 LOGGING 
 NOCACHE
