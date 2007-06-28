@@ -1,6 +1,7 @@
 package gov.nih.nci.calab.ui.core;
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
+import gov.nih.nci.calab.dto.common.InstrumentBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.function.FunctionBean;
@@ -31,6 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
+import java.util.TreeMap;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -641,24 +643,54 @@ public class InitSessionSetup {
 		}
 	}
 
-	public void setAllInstrumentTypes(HttpSession session) throws Exception {
-		if (session.getServletContext().getAttribute("allInstrumentTypes") == null) {
-			List<LabelValueBean> instrumentTypes = lookupService
-					.getAllInstrumentTypeAbbrs();
-			session.getServletContext().setAttribute("allInstrumentTypes",
-					instrumentTypes);
-		}
-	}
+//	public void setAllInstrumentTypes(HttpSession session) throws Exception {
+//		if (session.getServletContext().getAttribute("allInstrumentTypes") == null) {
+//			List<LabelValueBean> instrumentTypes = lookupService
+//					.getAllInstrumentTypeAbbrs();
+//			session.getServletContext().setAttribute("allInstrumentTypes",
+//					instrumentTypes);
+//		}
+//	}
+//
+//	public void setAllInstrumentTypeManufacturers(HttpSession session)
+//			throws Exception {
+//		if (session.getServletContext().getAttribute(
+//				"allInstrumentTypeManufacturers") == null) {
+//			Map<String, SortedSet<String>> instrumentManufacturers = lookupService
+//					.getAllInstrumentManufacturers();
+//			session.getServletContext().setAttribute(
+//					"allInstrumentTypeManufacturers", instrumentManufacturers);
+//		}
+//	}
 
-	public void setAllInstrumentTypeManufacturers(HttpSession session)
-			throws Exception {
-		if (session.getServletContext().getAttribute(
-				"allInstrumentTypeManufacturers") == null) {
-			Map<String, SortedSet<String>> instrumentManufacturers = lookupService
-					.getAllInstrumentManufacturers();
-			session.getServletContext().setAttribute(
-					"allInstrumentTypeManufacturers", instrumentManufacturers);
+	
+	public void setAllInstruments(HttpSession session) throws Exception {
+		if (session.getAttribute("allInstruments") == null
+				|| session.getAttribute("newInstrumentCreated") != null) {
+			List<InstrumentBean> instruments = lookupService
+					.getAllInstruments();
+			List<String> manufacturers = new ArrayList<String>();
+			Map<String, List<String>> typeToManufacturers = new TreeMap<String, List<String>>();
+			List<String> instrumentTypes = new ArrayList<String>();
+			for (InstrumentBean instrument : instruments) {
+				String type = instrument.getType();
+				if (typeToManufacturers.get(type) != null) {
+					manufacturers = (List<String>) typeToManufacturers
+							.get(type);
+				} else {
+					manufacturers = new ArrayList<String>();
+					typeToManufacturers.put(type, manufacturers);
+				}
+				manufacturers.add(instrument.getManufacturer());
+				if (!instrumentTypes.contains(type)) {
+					instrumentTypes.add(type);
+				}
+			}
+			session.setAttribute("allInstruments", instruments);
+			session.setAttribute("allInstrumentTypeToManufacturers",
+					typeToManufacturers);
 		}
+		session.removeAttribute("newInstrumentCreated");
 	}
 
 	public void setAllSizeDistributionGraphTypes(HttpSession session)

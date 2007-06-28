@@ -3,7 +3,7 @@
  */
 package gov.nih.nci.calab.domain.nano.characterization;
 
-import gov.nih.nci.calab.domain.Instrument;
+import gov.nih.nci.calab.domain.InstrumentConfiguration;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 
 import java.io.Serializable;
@@ -80,7 +80,7 @@ public class Characterization implements Serializable {
 
 	private Collection<DerivedBioAssayData> derivedBioAssayDataCollection = new ArrayList<DerivedBioAssayData>();
 
-	private Instrument instrument;
+	private InstrumentConfiguration instrumentConfiguration;
 
 	private CharacterizationProtocol characterizationProtocol;
 
@@ -166,12 +166,12 @@ public class Characterization implements Serializable {
 		this.derivedBioAssayDataCollection = derivedBioAssayDataCollection;
 	}
 
-	public Instrument getInstrument() {
-		return instrument;
+	public InstrumentConfiguration getInstrumentConfiguration() {
+		return instrumentConfiguration;
 	}
 
-	public void setInstrument(Instrument instrument) {
-		this.instrument = instrument;
+	public void setInstrumentConfiguration(InstrumentConfiguration instrumentConfiguration) {
+		this.instrumentConfiguration = instrumentConfiguration;
 	}
 
 	public CharacterizationProtocol getCharacterizationProtocol() {

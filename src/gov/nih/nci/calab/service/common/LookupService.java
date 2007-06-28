@@ -3,10 +3,12 @@ package gov.nih.nci.calab.service.common;
 import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
 import gov.nih.nci.calab.domain.Aliquot;
+import gov.nih.nci.calab.domain.Instrument;
 import gov.nih.nci.calab.domain.MeasureUnit;
 import gov.nih.nci.calab.domain.Sample;
 import gov.nih.nci.calab.domain.SampleContainer;
 import gov.nih.nci.calab.domain.StorageElement;
+import gov.nih.nci.calab.dto.common.InstrumentBean;
 import gov.nih.nci.calab.dto.inventory.AliquotBean;
 import gov.nih.nci.calab.dto.inventory.ContainerBean;
 import gov.nih.nci.calab.dto.inventory.ContainerInfoBean;
@@ -36,7 +38,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.93 2007-02-16 22:56:56 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.93.2.1 2007-06-28 17:15:29 zengje Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -882,6 +884,28 @@ public class LookupService {
 		}
 		return instrumentManufacturers;
 	}
+
+	public List<InstrumentBean> getAllInstruments() throws Exception {
+		List<InstrumentBean> instruments = new ArrayList<InstrumentBean>();
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			String hqlString = "from Instrument instrument where instrument.type is not null and instrument.manufacturer is not null order by instrument.type";
+			List results = ida.search(hqlString);
+			for (Object obj : results) {
+				Instrument instrument = (Instrument) obj;
+				instruments.add(new InstrumentBean(instrument));
+			}
+		} catch (Exception e) {
+			logger.error("Problem to retrieve all instruments. " + e);
+			throw new RuntimeException("Problem to retrieve all intruments. ");
+		} finally {
+			ida.close();
+		}
+		return instruments;
+	}
+
 
 	public String[] getSizeDistributionGraphTypes() {
 		// TODO query from database or properties file
