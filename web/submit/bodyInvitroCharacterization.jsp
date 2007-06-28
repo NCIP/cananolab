@@ -87,6 +87,7 @@
 												</td>
 											</tr>											
 											<jsp:include page="bodySharedCharacterizationFile.jsp?chartInd=${chartInd}&formName=${formName}&actionName=${actionName}" />
+											 <!-- 
 											<tr>
 												<td class="leftLabel">
 													<strong>Number of Data Points</strong>
@@ -116,7 +117,8 @@
 														<jsp:param name="chartNum" value="${chartInd}" />
 													</jsp:include>
 												</td>
-											</tr>
+											</tr> 
+											-->
 										</tbody>
 									</table>
 									<br>
