@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleMorphologyAction.java,v 1.12 2007-01-04 23:21:58 pansu Exp $ */
+/* CVS $Id: NanoparticleMorphologyAction.java,v 1.12.2.1 2007-06-28 17:13:58 zengje Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Morphology;
@@ -94,8 +94,11 @@ public class NanoparticleMorphologyAction extends BaseCharacterizationAction {
 				particleName, particleType);
 
 		HttpSession session = request.getSession();
-		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(session);			return forward;
+//		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
+//		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(session);
+		InitSessionSetup.getInstance().setAllInstruments(session);
+
+		return forward;
 	}
 
 	public void clearMap(HttpSession session, DynaValidatorForm theForm,

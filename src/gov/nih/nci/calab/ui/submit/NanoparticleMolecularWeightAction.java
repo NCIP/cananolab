@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleMolecularWeightAction.java,v 1.13 2007-01-04 23:21:58 pansu Exp $ */
+/* CVS $Id: NanoparticleMolecularWeightAction.java,v 1.13.2.1 2007-06-28 17:13:58 zengje Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.MolecularWeight;
@@ -126,10 +126,12 @@ public class NanoparticleMolecularWeightAction extends
 				particleName, particleType);
 
 		HttpSession session = request.getSession();
-		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
+//		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
+//
+//		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(
+//				session);
+		InitSessionSetup.getInstance().setAllInstruments(session);
 
-		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(
-				session);
 		return forward;
 	}
 
