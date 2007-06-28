@@ -126,9 +126,11 @@ public class InvitroCellViabilityAction extends BaseCharacterizationAction {
 				particleName, particleType);
 
 		HttpSession session = request.getSession();
-		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(
-				session);
+//		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
+//		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(
+//				session);
+		InitSessionSetup.getInstance().setAllInstruments(session);
+
 		return forward;
 	}
 
