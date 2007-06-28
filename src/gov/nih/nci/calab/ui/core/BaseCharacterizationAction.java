@@ -38,7 +38,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 
-/* CVS $Id: BaseCharacterizationAction.java,v 1.25 2007-05-10 17:23:32 pansu Exp $ */
+/* CVS $Id: BaseCharacterizationAction.java,v 1.25.2.1 2007-06-28 17:15:29 zengje Exp $ */
 
 public abstract class BaseCharacterizationAction extends AbstractDispatchAction {
 	/**
@@ -71,9 +71,10 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		InitSessionSetup.getInstance().setApplicationOwner(session);
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
-		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(
-				session);
+//		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
+//		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(
+//				session);
+		InitSessionSetup.getInstance().setAllInstruments(session);
 		InitSessionSetup.getInstance().setAllControlTypes(session);
 		InitSessionSetup.getInstance().setAllConditionTypes(session);
 		InitSessionSetup.getInstance().setAllConditionUnits(session);

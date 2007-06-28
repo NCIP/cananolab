@@ -4,6 +4,8 @@ import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
 import gov.nih.nci.calab.domain.AssociatedFile;
 import gov.nih.nci.calab.domain.DerivedDataFile;
+import gov.nih.nci.calab.domain.Instrument;
+import gov.nih.nci.calab.domain.InstrumentConfiguration;
 import gov.nih.nci.calab.domain.InstrumentType;
 import gov.nih.nci.calab.domain.Keyword;
 import gov.nih.nci.calab.domain.LabFile;
@@ -147,57 +149,6 @@ public class SubmitNanoparticleService {
 		try {
 			ida.open();
 
-			/*
-			 * if (achar.getInstrument() != null)
-			 * ida.store(achar.getInstrument());
-			 */
-
-			if (achar.getInstrument() != null) {
-				Manufacturer manuf = achar.getInstrument().getManufacturer();
-				String manufacturerQuery = " from Manufacturer manufacturer where manufacturer.name = '"
-						+ manuf.getName() + "'";
-				List result = ida.search(manufacturerQuery);
-				Manufacturer manufacturer = null;
-				boolean newManufacturer = false;
-				for (Object obj : result) {
-					manufacturer = (Manufacturer) obj;
-				}
-				if (manufacturer == null) {
-					newManufacturer = true;
-					manufacturer = manuf;
-					ida.store(manufacturer);
-				}
-
-				InstrumentType iType = achar.getInstrument()
-						.getInstrumentType();
-				String instrumentTypeQuery = " from InstrumentType instrumentType left join fetch instrumentType.manufacturerCollection where instrumentType.name = '"
-						+ iType.getName() + "'";
-				result = ida.search(instrumentTypeQuery);
-				InstrumentType instrumentType = null;
-				for (Object obj : result) {
-					instrumentType = (InstrumentType) obj;
-				}
-				if (instrumentType == null) {
-					instrumentType = iType;
-
-					ida.createObject(instrumentType);
-
-					HashSet<Manufacturer> manufacturers = new HashSet<Manufacturer>();
-					manufacturers.add(manufacturer);
-					instrumentType.setManufacturerCollection(manufacturers);
-				} else {
-					if (newManufacturer) {
-						instrumentType.getManufacturerCollection().add(
-								manufacturer);
-					}
-				}
-				ida.store(instrumentType);
-
-				achar.getInstrument().setInstrumentType(instrumentType);
-				achar.getInstrument().setManufacturer(manufacturer);
-				ida.store(achar.getInstrument());
-			}
-
 			if (achar.getCharacterizationProtocol() != null) {
 				ida.store(achar.getCharacterizationProtocol());
 			}
@@ -230,6 +181,9 @@ public class SubmitNanoparticleService {
 				existingViewTitleCount = ((Integer) (obj)).intValue();
 			}
 			if (existingViewTitleCount == 0) {
+				if (achar.getInstrumentConfiguration() != null) {
+					addInstrumentConfig(achar.getInstrumentConfiguration(), ida);
+				}
 				// if ID exists, do update
 				if (achar.getId() != null) {
 					ida.store(achar);
@@ -1286,4 +1240,40 @@ public class SubmitNanoparticleService {
 					CaNanoLabConstants.CSM_READ_ROLE);
 		}
 	}
+	
+	private void addInstrumentConfig(InstrumentConfiguration instrumentConfig,
+			IDataAccess ida) throws Exception {
+		Instrument instrument = instrumentConfig.getInstrument();
+
+		// check if instrument is already in database
+		List instrumentResults = ida
+				.search("select instrument from Instrument instrument where instrument.type='"
+						+ instrument.getType()
+						+ "' and instrument.manufacturer='"
+						+ instrument.getManufacturer() + "'");
+
+		Instrument storedInstrument=null;
+		for (Object obj : instrumentResults) {
+			storedInstrument = (Instrument) obj;			
+		}
+		if (storedInstrument != null) {
+			instrument.setId(storedInstrument.getId());
+		}
+		else {
+			ida.createObject(instrument);
+		}
+
+		// if new instrumentConfig, save it
+		if (instrumentConfig.getId() == null) {
+			ida.createObject(instrumentConfig);
+		} else {
+			InstrumentConfiguration storedInstrumentConfig = (InstrumentConfiguration) ida
+					.load(InstrumentConfiguration.class, instrumentConfig
+							.getId());
+			storedInstrumentConfig.setDescription(instrumentConfig
+					.getDescription());
+			storedInstrumentConfig.setInstrument(instrument);
+		}
+	}
+
 }

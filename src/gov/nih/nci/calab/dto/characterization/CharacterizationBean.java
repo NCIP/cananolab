@@ -1,11 +1,13 @@
 package gov.nih.nci.calab.dto.characterization;
 
 import gov.nih.nci.calab.domain.Instrument;
+import gov.nih.nci.calab.domain.InstrumentConfiguration;
 import gov.nih.nci.calab.domain.InstrumentType;
 import gov.nih.nci.calab.domain.Manufacturer;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.CharacterizationProtocol;
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
+import gov.nih.nci.calab.dto.common.InstrumentConfigBean;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 
@@ -36,7 +38,7 @@ public class CharacterizationBean {
 
 	// Abbreviation
 	private String abbr;
-	
+
 	// not set by application
 	private String classification;
 
@@ -44,7 +46,7 @@ public class CharacterizationBean {
 
 	private Date createdDate;
 
-	private InstrumentBean instrument = new InstrumentBean();
+	private InstrumentConfigBean instrumentConfigBean = new InstrumentConfigBean();
 
 	private List<DerivedBioAssayDataBean> derivedBioAssayDataList = new ArrayList<DerivedBioAssayDataBean>();
 
@@ -68,21 +70,15 @@ public class CharacterizationBean {
 		this.setViewTitle(characterization.getIdentificationName());
 		this.setCharacterizationSource(characterization.getSource());
 		this.setCreatedBy(characterization.getCreatedBy());
-		this.setCreatedDate(characterization.getCreatedDate());		
-		this.name=characterization.getName();
+		this.setCreatedDate(characterization.getCreatedDate());
+		this.name = characterization.getName();
 		setAbbr(name);
 
 		this.setDescription(characterization.getDescription());
-		Instrument instrument = characterization.getInstrument();
-		if (instrument != null) {
-			this.getInstrument().setType(
-					(instrument.getInstrumentType() != null) ? instrument
-							.getInstrumentType().getName() : "");
-			this.getInstrument().setDescription(
-					StringUtils.convertToString(instrument.getDescription()));
-			this.getInstrument().setManufacturer(
-					(instrument.getManufacturer() != null) ? instrument
-							.getManufacturer().getName() : "");
+		InstrumentConfiguration instrumentConfigObj = characterization
+				.getInstrumentConfiguration();
+		if (instrumentConfigObj != null) {
+			instrumentConfigBean = new InstrumentConfigBean(instrumentConfigObj);
 		}
 		this.setNumberOfDerivedBioAssayData(Integer.valueOf(
 				characterization.getDerivedBioAssayDataCollection().size())
@@ -114,14 +110,16 @@ public class CharacterizationBean {
 
 	public String getViewTitle() {
 		// get only the first number of characters of the title
-		if (viewTitle!=null &&viewTitle.length() > CaNanoLabConstants.MAX_VIEW_TITLE_LENGTH) {
-			return viewTitle.substring(0, CaNanoLabConstants.MAX_VIEW_TITLE_LENGTH);
+		if (viewTitle != null
+				&& viewTitle.length() > CaNanoLabConstants.MAX_VIEW_TITLE_LENGTH) {
+			return viewTitle.substring(0,
+					CaNanoLabConstants.MAX_VIEW_TITLE_LENGTH);
 		}
 		return viewTitle;
 	}
 
 	public void setViewTitle(String viewTitle) {
-		this.viewTitle = viewTitle;	
+		this.viewTitle = viewTitle;
 	}
 
 	public String getId() {
@@ -151,36 +149,13 @@ public class CharacterizationBean {
 			aChar.getDerivedBioAssayDataCollection().add(table.getDomainObj());
 		}
 
-		Instrument instrument = new Instrument();
-
-		if (getInstrument().getId() != null)
-			instrument.setId(new Long(getInstrument().getId()));
-
-		instrument.setDescription(getInstrument().getDescription());
-
-		String iType = getInstrument().getType();
-		String manuf = getInstrument().getManufacturer();
-
-		if (iType != null && manuf != null) {
-			InstrumentType instrumentType = new InstrumentType();
-			if (iType.equals(CaNanoLabConstants.OTHER))
-				instrumentType
-						.setName(getInstrument().getOtherInstrumentType());
-			else
-				instrumentType.setName(getInstrument().getType());
-
-			Manufacturer manufacturer = new Manufacturer();
-
-			if (manuf.equals(CaNanoLabConstants.OTHER))
-				manufacturer.setName(getInstrument().getOtherManufacturer());
-			else
-				manufacturer.setName(getInstrument().getManufacturer());
-
-			instrument.setInstrumentType(instrumentType);
-			instrument.setManufacturer(manufacturer);
-
-			aChar.setInstrument(instrument);
+		InstrumentConfiguration instrumentConfig = instrumentConfigBean
+				.getDomainObject();
+		// only set instrument config if instrument is selected.
+		if (instrumentConfig.getInstrument().getType().length() > 0) {
+			aChar.setInstrumentConfiguration(instrumentConfig);
 		}
+
 
 		CharacterizationProtocolBean characterizationProtocolBean = getCharacterizationProtocol();
 
@@ -217,65 +192,74 @@ public class CharacterizationBean {
 		return name;
 	}
 
-	private void setAbbr(String name){
+	private void setAbbr(String name) {
 		if (name.equals(CaNanoLabConstants.PHYSICAL_COMPOSITION)) {
-			this.abbr =  CaNanoLabConstants.ABBR_COMPOSITION;
+			this.abbr = CaNanoLabConstants.ABBR_COMPOSITION;
 		} else if (name.equals(CaNanoLabConstants.PHYSICAL_SIZE)) {
-			this.abbr =   CaNanoLabConstants.ABBR_SIZE;
+			this.abbr = CaNanoLabConstants.ABBR_SIZE;
 		} else if (name.equals(CaNanoLabConstants.PHYSICAL_MOLECULAR_WEIGHT)) {
-			this.abbr =   CaNanoLabConstants.ABBR_MOLECULAR_WEIGHT;
+			this.abbr = CaNanoLabConstants.ABBR_MOLECULAR_WEIGHT;
 		} else if (name.equals(CaNanoLabConstants.PHYSICAL_MORPHOLOGY)) {
-			this.abbr =   CaNanoLabConstants.ABBR_MORPHOLOGY;
+			this.abbr = CaNanoLabConstants.ABBR_MORPHOLOGY;
 		} else if (name.equals(CaNanoLabConstants.PHYSICAL_SHAPE)) {
-			this.abbr =   CaNanoLabConstants.ABBR_SHAPE;
+			this.abbr = CaNanoLabConstants.ABBR_SHAPE;
 		} else if (name.equals(CaNanoLabConstants.PHYSICAL_SOLUBILITY)) {
-			this.abbr =   CaNanoLabConstants.ABBR_SOLUBILITY;
+			this.abbr = CaNanoLabConstants.ABBR_SOLUBILITY;
 		} else if (name.equals(CaNanoLabConstants.PHYSICAL_SURFACE)) {
-			this.abbr =   CaNanoLabConstants.ABBR_SURFACE;
+			this.abbr = CaNanoLabConstants.ABBR_SURFACE;
 		} else if (name.equals(CaNanoLabConstants.PHYSICAL_PURITY)) {
-			this.abbr =   CaNanoLabConstants.ABBR_PURITY;
+			this.abbr = CaNanoLabConstants.ABBR_PURITY;
 		} else if (name.equals(CaNanoLabConstants.TOXICITY_OXIDATIVE_STRESS)) {
-			this.abbr =   CaNanoLabConstants.ABBR_OXIDATIVE_STRESS;
+			this.abbr = CaNanoLabConstants.ABBR_OXIDATIVE_STRESS;
 		} else if (name.equals(CaNanoLabConstants.TOXICITY_ENZYME_FUNCTION)) {
-			this.abbr =   CaNanoLabConstants.ABBR_ENZYME_FUNCTION;
+			this.abbr = CaNanoLabConstants.ABBR_ENZYME_FUNCTION;
 		} else if (name.equals(CaNanoLabConstants.CYTOTOXICITY_CELL_VIABILITY)) {
-			this.abbr =   CaNanoLabConstants.ABBR_CELL_VIABILITY;
-		} else if (name.equals(CaNanoLabConstants.CYTOTOXICITY_CASPASE3_ACTIVIATION)) {
-			this.abbr =   CaNanoLabConstants.ABBR_CASPASE3_ACTIVATION;
-		} else if (name.equals(CaNanoLabConstants.BLOODCONTACTTOX_PLATE_AGGREGATION)) {
-			this.abbr =   CaNanoLabConstants.ABBR_PLATELET_AGGREGATION;
+			this.abbr = CaNanoLabConstants.ABBR_CELL_VIABILITY;
+		} else if (name
+				.equals(CaNanoLabConstants.CYTOTOXICITY_CASPASE3_ACTIVIATION)) {
+			this.abbr = CaNanoLabConstants.ABBR_CASPASE3_ACTIVATION;
+		} else if (name
+				.equals(CaNanoLabConstants.BLOODCONTACTTOX_PLATE_AGGREGATION)) {
+			this.abbr = CaNanoLabConstants.ABBR_PLATELET_AGGREGATION;
 		} else if (name.equals(CaNanoLabConstants.BLOODCONTACTTOX_HEMOLYSIS)) {
-			this.abbr =   CaNanoLabConstants.ABBR_HEMOLYSIS;
-		} else if (name.equals(CaNanoLabConstants.BLOODCONTACTTOX_PLASMA_PROTEIN_BINDING)) {
-			this.abbr =   CaNanoLabConstants.ABBR_PLASMA_PROTEIN_BINDING;
+			this.abbr = CaNanoLabConstants.ABBR_HEMOLYSIS;
+		} else if (name
+				.equals(CaNanoLabConstants.BLOODCONTACTTOX_PLASMA_PROTEIN_BINDING)) {
+			this.abbr = CaNanoLabConstants.ABBR_PLASMA_PROTEIN_BINDING;
 		} else if (name.equals(CaNanoLabConstants.BLOODCONTACTTOX_COAGULATION)) {
-			this.abbr =   CaNanoLabConstants.ABBR_COAGULATION;
-		} else if (name.equals(CaNanoLabConstants.IMMUNOCELLFUNCTOX_OXIDATIVE_BURST)) {
-			this.abbr =   CaNanoLabConstants.ABBR_OXIDATIVE_BURST;
+			this.abbr = CaNanoLabConstants.ABBR_COAGULATION;
+		} else if (name
+				.equals(CaNanoLabConstants.IMMUNOCELLFUNCTOX_OXIDATIVE_BURST)) {
+			this.abbr = CaNanoLabConstants.ABBR_OXIDATIVE_BURST;
 		} else if (name.equals(CaNanoLabConstants.IMMUNOCELLFUNCTOX_CHEMOTAXIS)) {
-			this.abbr =   CaNanoLabConstants.ABBR_CHEMOTAXIS;
-		} else if (name.equals(CaNanoLabConstants.IMMUNOCELLFUNCTOX_LEUKOCYTE_PROLIFERATION)) {
-			this.abbr =   CaNanoLabConstants.ABBR_LEUKOCYTE_PROLIFERATION;
-		} else if (name.equals(CaNanoLabConstants.IMMUNOCELLFUNCTOX_PHAGOCYTOSIS)) {
-			this.abbr =   CaNanoLabConstants.ABBR_PHAGOCYTOSIS;
-		} else if (name.equals(CaNanoLabConstants.IMMUNOCELLFUNCTOX_CYTOKINE_INDUCTION)) {
-			this.abbr =   CaNanoLabConstants.ABBR_CYTOKINE_INDUCTION;
+			this.abbr = CaNanoLabConstants.ABBR_CHEMOTAXIS;
+		} else if (name
+				.equals(CaNanoLabConstants.IMMUNOCELLFUNCTOX_LEUKOCYTE_PROLIFERATION)) {
+			this.abbr = CaNanoLabConstants.ABBR_LEUKOCYTE_PROLIFERATION;
+		} else if (name
+				.equals(CaNanoLabConstants.IMMUNOCELLFUNCTOX_PHAGOCYTOSIS)) {
+			this.abbr = CaNanoLabConstants.ABBR_PHAGOCYTOSIS;
+		} else if (name
+				.equals(CaNanoLabConstants.IMMUNOCELLFUNCTOX_CYTOKINE_INDUCTION)) {
+			this.abbr = CaNanoLabConstants.ABBR_CYTOKINE_INDUCTION;
 		} else if (name.equals(CaNanoLabConstants.IMMUNOCELLFUNCTOX_CFU_GM)) {
-			this.abbr =   CaNanoLabConstants.ABBR_CFU_GM;
-		} else if (name.equals(CaNanoLabConstants.IMMUNOCELLFUNCTOX_COMPLEMENT_ACTIVATION)) {
-			this.abbr =   CaNanoLabConstants.ABBR_COMPLEMENT_ACTIVATION;
-		} else if (name.equals(CaNanoLabConstants.IMMUNOCELLFUNCTOX_NKCELL_CYTOTOXIC_ACTIVITY)) {
-			this.abbr =   CaNanoLabConstants.ABBR_NKCELL_CYTOTOXIC_ACTIVITY;
+			this.abbr = CaNanoLabConstants.ABBR_CFU_GM;
+		} else if (name
+				.equals(CaNanoLabConstants.IMMUNOCELLFUNCTOX_COMPLEMENT_ACTIVATION)) {
+			this.abbr = CaNanoLabConstants.ABBR_COMPLEMENT_ACTIVATION;
+		} else if (name
+				.equals(CaNanoLabConstants.IMMUNOCELLFUNCTOX_NKCELL_CYTOTOXIC_ACTIVITY)) {
+			this.abbr = CaNanoLabConstants.ABBR_NKCELL_CYTOTOXIC_ACTIVITY;
 		} else {
 			this.abbr = CaNanoLabConstants.OTHER; // shouldn't happen at all.
 		}
 	}
-	
+
 	public String getAbbr() {
 
 		return abbr;
 	}
-	
+
 	public String getCreatedBy() {
 		return createdBy;
 	}
@@ -305,12 +289,13 @@ public class CharacterizationBean {
 		this.derivedBioAssayDataList = derivedBioAssayData;
 	}
 
-	public InstrumentBean getInstrument() {
-		return instrument;
+	public InstrumentConfigBean getInstrumentConfigBean() {
+		return instrumentConfigBean;
 	}
 
-	public void setInstrument(InstrumentBean instrument) {
-		this.instrument = instrument;
+	public void setInstrumentConfigBean(
+			InstrumentConfigBean instrumentConfigBean) {
+		this.instrumentConfigBean = instrumentConfigBean;
 	}
 
 	public String getNumberOfDerivedBioAssayData() {

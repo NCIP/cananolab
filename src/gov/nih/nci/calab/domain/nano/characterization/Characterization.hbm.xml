@@ -26,7 +26,7 @@
 			<one-to-many class="gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData" />
 		</list>
 		
-		<many-to-one name="instrument"  class="gov.nih.nci.calab.domain.Instrument" column="INSTRUMENT_PK_ID" lazy="false" fetch="join"/> 
+		<many-to-one name="instrumentConfiguration"  class="gov.nih.nci.calab.domain.InstrumentConfiguration" column="INSTRUMENT_CONFIG_PK_ID" lazy="false" fetch="join"/> 
 		
 		<many-to-one name="characterizationProtocol"  class="gov.nih.nci.calab.domain.nano.characterization.CharacterizationProtocol" column="CHAR_PROTOCOL_PK_ID" lazy="false" fetch="join"/> 
 		
