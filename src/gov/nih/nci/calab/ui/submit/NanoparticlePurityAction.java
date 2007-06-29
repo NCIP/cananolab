@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticlePurityAction.java,v 1.10.2.1 2007-06-28 17:13:58 zengje Exp $ */
+/* CVS $Id: NanoparticlePurityAction.java,v 1.10.2.2 2007-06-29 14:56:12 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Purity;
@@ -32,9 +32,9 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
-
 public class NanoparticlePurityAction extends BaseCharacterizationAction {
-	private static Logger logger = Logger.getLogger(NanoparticlePurityAction.class);
+	private static Logger logger = Logger
+			.getLogger(NanoparticlePurityAction.class);
 
 	/**
 	 * Add or update the data to database
@@ -54,32 +54,32 @@ public class NanoparticlePurityAction extends BaseCharacterizationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleType = (String) theForm.get("particleType");
 		String particleName = (String) theForm.get("particleName");
-		PurityBean purityChar=(PurityBean) theForm.get("achar");
+		PurityBean purityChar = (PurityBean) theForm.get("achar");
 
 		if (purityChar.getId() == null || purityChar.getId() == "") {
-			
-			purityChar.setId( (String) theForm.get("characterizationId") );
-			
+
+			purityChar.setId((String) theForm.get("characterizationId"));
+
 		}
-		
+
 		int fileNumber = 0;
-		for (DerivedBioAssayDataBean obj : purityChar.getDerivedBioAssayDataList()) {
-			LabFileBean fileBean = (LabFileBean) request.getSession().getAttribute("characterizationFile" + fileNumber);
-			if (fileBean != null) {		
+		for (DerivedBioAssayDataBean obj : purityChar
+				.getDerivedBioAssayDataList()) {
+			LabFileBean fileBean = (LabFileBean) request.getSession()
+					.getAttribute("characterizationFile" + fileNumber);
+			if (fileBean != null) {
 				logger.info("************set fileBean to " + fileNumber);
 				obj.setFile(fileBean);
 			}
 			fileNumber++;
 		}
 
-		
 		// set createdBy and createdDate for the composition
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		Date date = new Date();
 		purityChar.setCreatedBy(user.getLoginName());
 		purityChar.setCreatedDate(date);
 
-		request.getSession().setAttribute("newCharacterizationCreated", "true");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addParticlePurity(particleType, particleName, purityChar);
 
@@ -88,18 +88,9 @@ public class NanoparticlePurityAction extends BaseCharacterizationAction {
 		msgs.add("message", msg);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
-
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
-
-		HttpSession session = request.getSession();
-//		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-//		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(session);			
-		InitSessionSetup.getInstance().setAllInstruments(session);
-
+		super.postCreate(request, theForm);
 		return forward;
 	}
-
 
 	public void clearMap(HttpSession session, DynaValidatorForm theForm,
 			ActionMapping mapping) throws Exception {
@@ -114,12 +105,13 @@ public class NanoparticlePurityAction extends BaseCharacterizationAction {
 		theForm.set("achar", new PurityBean());
 
 		cleanSessionAttributes(session);
-// for (Enumeration e = session.getAttributeNames(); e.hasMoreElements() ;) {
-// String element = (String) e.nextElement();
-// if (element.startsWith(CaNanoLabConstants.CHARACTERIZATION_FILE)) {
-// session.removeAttribute(element);
-// }
-// }
+		// for (Enumeration e = session.getAttributeNames(); e.hasMoreElements()
+		// ;) {
+		// String element = (String) e.nextElement();
+		// if (element.startsWith(CaNanoLabConstants.CHARACTERIZATION_FILE)) {
+		// session.removeAttribute(element);
+		// }
+		// }
 	}
 
 	public void initSetup(HttpServletRequest request, DynaValidatorForm theForm)
@@ -127,17 +119,19 @@ public class NanoparticlePurityAction extends BaseCharacterizationAction {
 		super.initSetup(request, theForm);
 
 		HttpSession session = request.getSession();
-		InitSessionSetup.getInstance().setAllPurityDistributionGraphTypes(session);
+		InitSessionSetup.getInstance().setAllPurityDistributionGraphTypes(
+				session);
 		InitSessionSetup.getInstance().setAllAreaMeasureUnits(session);
 	}
 
-	protected void setFormCharacterizationBean(DynaValidatorForm theForm, Characterization aChar) throws Exception {
-		PurityBean purity=new PurityBean((Purity)aChar);
-		theForm.set("achar", purity);		
+	protected void setFormCharacterizationBean(DynaValidatorForm theForm,
+			Characterization aChar) throws Exception {
+		PurityBean purity = new PurityBean((Purity) aChar);
+		theForm.set("achar", purity);
 	}
 
 	protected void setLoadFileRequest(HttpServletRequest request) {
 		request.setAttribute("characterization", "purity");
-		request.setAttribute("loadFileForward", "purityInputForm");		
+		request.setAttribute("loadFileForward", "purityInputForm");
 	}
 }

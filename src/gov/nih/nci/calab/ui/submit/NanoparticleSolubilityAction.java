@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSolubilityAction.java,v 1.10.2.1 2007-06-28 17:13:58 zengje Exp $ */
+/* CVS $Id: NanoparticleSolubilityAction.java,v 1.10.2.2 2007-06-29 14:56:12 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Solubility;
@@ -66,9 +66,8 @@ public class NanoparticleSolubilityAction extends BaseCharacterizationAction {
 		int fileNumber = 0;
 		for (DerivedBioAssayDataBean obj : solubilityChar
 				.getDerivedBioAssayDataList()) {
-			LabFileBean fileBean = (LabFileBean) request
-					.getSession().getAttribute(
-							"characterizationFile" + fileNumber);
+			LabFileBean fileBean = (LabFileBean) request.getSession()
+					.getAttribute("characterizationFile" + fileNumber);
 			if (fileBean != null) {
 				logger.info("************set fileBean to " + fileNumber);
 				obj.setFile(fileBean);
@@ -82,7 +81,6 @@ public class NanoparticleSolubilityAction extends BaseCharacterizationAction {
 		solubilityChar.setCreatedBy(user.getLoginName());
 		solubilityChar.setCreatedDate(date);
 
-		request.getSession().setAttribute("newCharacterizationCreated", "true");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addParticleSolubility(particleType, particleName,
 				solubilityChar);
@@ -92,16 +90,7 @@ public class NanoparticleSolubilityAction extends BaseCharacterizationAction {
 		msgs.add("message", msg);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
-
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
-
-		HttpSession session = request.getSession();
-//		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-//		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(
-//				session);
-		InitSessionSetup.getInstance().setAllInstruments(session);
-
+		super.postCreate(request, theForm);
 		return forward;
 	}
 
@@ -135,7 +124,8 @@ public class NanoparticleSolubilityAction extends BaseCharacterizationAction {
 		InitSessionSetup.getInstance().setAllSolubilityDistributionGraphTypes(
 				session);
 		InitSessionSetup.getInstance().setAllConcentrationUnits(session);
-		session.setAttribute("booleanChoices", CaNanoLabConstants.BOOLEAN_CHOICES);
+		session.setAttribute("booleanChoices",
+				CaNanoLabConstants.BOOLEAN_CHOICES);
 	}
 
 	@Override

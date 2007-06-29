@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSizeAction.java,v 1.22.2.1 2007-06-28 17:13:58 zengje Exp $ */
+/* CVS $Id: NanoparticleSizeAction.java,v 1.22.2.2 2007-06-29 14:56:12 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Size;
@@ -84,9 +84,8 @@ public class NanoparticleSizeAction extends BaseCharacterizationAction {
 		int fileNumber = 0;
 		for (DerivedBioAssayDataBean obj : sizeChar
 				.getDerivedBioAssayDataList()) {
-			LabFileBean fileBean = (LabFileBean) request
-					.getSession().getAttribute(
-							"characterizationFile" + fileNumber);
+			LabFileBean fileBean = (LabFileBean) request.getSession()
+					.getAttribute("characterizationFile" + fileNumber);
 			if (fileBean != null) {
 				obj.setFile(fileBean);
 			}
@@ -99,7 +98,6 @@ public class NanoparticleSizeAction extends BaseCharacterizationAction {
 		sizeChar.setCreatedBy(user.getLoginName());
 		sizeChar.setCreatedDate(date);
 
-		request.getSession().setAttribute("newCharacterizationCreated", "true");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addParticleSize(particleType, particleName, sizeChar);
 
@@ -108,17 +106,7 @@ public class NanoparticleSizeAction extends BaseCharacterizationAction {
 		msgs.add("message", msg);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
-
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
-
-		HttpSession session = request.getSession();
-//		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-//		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(
-//				session);
-		InitSessionSetup.getInstance().setAllInstruments(session);
-
-
+		super.postCreate(request, theForm);
 		return forward;
 	}
 
@@ -150,7 +138,7 @@ public class NanoparticleSizeAction extends BaseCharacterizationAction {
 		super.initSetup(request, theForm);
 		HttpSession session = request.getSession();
 		InitSessionSetup.getInstance()
-				.setAllSizeDistributionGraphTypes(session);		
+				.setAllSizeDistributionGraphTypes(session);
 	}
 
 	protected void setLoadFileRequest(HttpServletRequest request) {

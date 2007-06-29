@@ -65,35 +65,38 @@ public class InvitroOxidativeBurstAction extends BaseCharacterizationAction {
 		int fileNumber = 0;
 		for (DerivedBioAssayDataBean obj : oxidativeBurstChar
 				.getDerivedBioAssayDataList()) {
-			
+
 			// Vaidate the the nested data point entries
-			for ( DatumBean dataPoint : obj.getDatumList() ) {
+			for (DatumBean dataPoint : obj.getDatumList()) {
 				try {
-				   Float.parseFloat(dataPoint.getValue());
-				} 
-				catch (NumberFormatException nfe) {
-					Exception dataPointException = new Exception(PropertyReader.getProperty(
-							CaNanoLabConstants.SUBMISSION_PROPERTY, "oxidativeBurstPercentage"));							
-						throw dataPointException;
+					Float.parseFloat(dataPoint.getValue());
+				} catch (NumberFormatException nfe) {
+					Exception dataPointException = new Exception(PropertyReader
+							.getProperty(
+									CaNanoLabConstants.SUBMISSION_PROPERTY,
+									"oxidativeBurstPercentage"));
+					throw dataPointException;
 				}
 
 				try {
-					if ( dataPoint.getIsAControl().equals(CaNanoLabConstants.BOOLEAN_NO) ) {
-						for ( ConditionBean condition : dataPoint.getConditionList() ) {
+					if (dataPoint.getIsAControl().equals(
+							CaNanoLabConstants.BOOLEAN_NO)) {
+						for (ConditionBean condition : dataPoint
+								.getConditionList()) {
 							Float.parseFloat(condition.getValue());
 						}
-					} 
-				} 
-				catch (NumberFormatException nfe) {
-					Exception conditionsException = new Exception(PropertyReader.getProperty(
-							CaNanoLabConstants.SUBMISSION_PROPERTY, "conditionValues"));							
-						throw conditionsException;
+					}
+				} catch (NumberFormatException nfe) {
+					Exception conditionsException = new Exception(
+							PropertyReader.getProperty(
+									CaNanoLabConstants.SUBMISSION_PROPERTY,
+									"conditionValues"));
+					throw conditionsException;
 				}
 			}
-			
-			LabFileBean fileBean = (LabFileBean) request
-					.getSession().getAttribute(
-							"characterizationFile" + fileNumber);
+
+			LabFileBean fileBean = (LabFileBean) request.getSession()
+					.getAttribute("characterizationFile" + fileNumber);
 			if (fileBean != null) {
 				obj.setFile(fileBean);
 			}
@@ -106,7 +109,6 @@ public class InvitroOxidativeBurstAction extends BaseCharacterizationAction {
 		oxidativeBurstChar.setCreatedBy(user.getLoginName());
 		oxidativeBurstChar.setCreatedDate(date);
 
-		request.getSession().setAttribute("newCharacterizationCreated", "true");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addOxidativeBurst(particleType, particleName,
 				oxidativeBurstChar);
@@ -117,16 +119,7 @@ public class InvitroOxidativeBurstAction extends BaseCharacterizationAction {
 		msgs.add("message", msg);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
-
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
-
-		HttpSession session = request.getSession();
-//		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-//		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(
-//				session);
-		InitSessionSetup.getInstance().setAllInstruments(session);
-
+		super.postCreate(request, theForm);
 		return forward;
 	}
 

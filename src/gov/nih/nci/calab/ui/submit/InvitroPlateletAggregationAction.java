@@ -33,7 +33,8 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
-public class InvitroPlateletAggregationAction extends BaseCharacterizationAction {
+public class InvitroPlateletAggregationAction extends
+		BaseCharacterizationAction {
 
 	/**
 	 * Add or update the data to database
@@ -65,35 +66,38 @@ public class InvitroPlateletAggregationAction extends BaseCharacterizationAction
 		int fileNumber = 0;
 		for (DerivedBioAssayDataBean obj : plateletAggregationChar
 				.getDerivedBioAssayDataList()) {
-			
+
 			// Vaidate the the nested data point entries
-			for ( DatumBean dataPoint : obj.getDatumList() ) {
+			for (DatumBean dataPoint : obj.getDatumList()) {
 				try {
-				   Float.parseFloat(dataPoint.getValue());
-				} 
-				catch (NumberFormatException nfe) {
-					Exception dataPointException = new Exception(PropertyReader.getProperty(
-							CaNanoLabConstants.SUBMISSION_PROPERTY, "plateletAggregationPercentage"));							
-						throw dataPointException;
+					Float.parseFloat(dataPoint.getValue());
+				} catch (NumberFormatException nfe) {
+					Exception dataPointException = new Exception(PropertyReader
+							.getProperty(
+									CaNanoLabConstants.SUBMISSION_PROPERTY,
+									"plateletAggregationPercentage"));
+					throw dataPointException;
 				}
 
 				try {
-					if ( dataPoint.getIsAControl().equals(CaNanoLabConstants.BOOLEAN_NO) ) {
-						for ( ConditionBean condition : dataPoint.getConditionList() ) {
+					if (dataPoint.getIsAControl().equals(
+							CaNanoLabConstants.BOOLEAN_NO)) {
+						for (ConditionBean condition : dataPoint
+								.getConditionList()) {
 							Float.parseFloat(condition.getValue());
 						}
-					} 
-				} 
-				catch (NumberFormatException nfe) {
-					Exception conditionsException = new Exception(PropertyReader.getProperty(
-							CaNanoLabConstants.SUBMISSION_PROPERTY, "conditionValues"));							
-						throw conditionsException;
+					}
+				} catch (NumberFormatException nfe) {
+					Exception conditionsException = new Exception(
+							PropertyReader.getProperty(
+									CaNanoLabConstants.SUBMISSION_PROPERTY,
+									"conditionValues"));
+					throw conditionsException;
 				}
 			}
-			
-			LabFileBean fileBean = (LabFileBean) request
-					.getSession().getAttribute(
-							"characterizationFile" + fileNumber);
+
+			LabFileBean fileBean = (LabFileBean) request.getSession()
+					.getAttribute("characterizationFile" + fileNumber);
 			if (fileBean != null) {
 				obj.setFile(fileBean);
 			}
@@ -106,7 +110,6 @@ public class InvitroPlateletAggregationAction extends BaseCharacterizationAction
 		plateletAggregationChar.setCreatedBy(user.getLoginName());
 		plateletAggregationChar.setCreatedDate(date);
 
-		request.getSession().setAttribute("newCharacterizationCreated", "true");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addPlateletAggregation(particleType, particleName,
 				plateletAggregationChar);
@@ -117,16 +120,7 @@ public class InvitroPlateletAggregationAction extends BaseCharacterizationAction
 		msgs.add("message", msg);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
-
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
-
-		HttpSession session = request.getSession();
-//		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-//		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(
-//				session);
-		InitSessionSetup.getInstance().setAllInstruments(session);
-
+		super.postCreate(request, theForm);
 		return forward;
 	}
 
@@ -160,7 +154,8 @@ public class InvitroPlateletAggregationAction extends BaseCharacterizationAction
 	@Override
 	protected void setLoadFileRequest(HttpServletRequest request) {
 		request.setAttribute("characterization", "plateletAggregation");
-		request.setAttribute("loadFileForward", "invitroPlateletAggregationForm");
+		request.setAttribute("loadFileForward",
+				"invitroPlateletAggregationForm");
 
 	}
 }

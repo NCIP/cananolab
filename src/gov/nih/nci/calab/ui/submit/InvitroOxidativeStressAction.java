@@ -105,7 +105,6 @@ public class InvitroOxidativeStressAction extends BaseCharacterizationAction {
 		oxidativeStressChar.setCreatedBy(user.getLoginName());
 		oxidativeStressChar.setCreatedDate(date);
 
-		request.getSession().setAttribute("newCharacterizationCreated", "true");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addOxidativeStress(particleType, particleName,
 				oxidativeStressChar);
@@ -116,16 +115,8 @@ public class InvitroOxidativeStressAction extends BaseCharacterizationAction {
 		msgs.add("message", msg);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
-
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
-
-		HttpSession session = request.getSession();
-//		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-//		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(
-//				session);
-		InitSessionSetup.getInstance().setAllInstruments(session);
-
+		super.postCreate(request, theForm);
+		
 		return forward;
 	}
 

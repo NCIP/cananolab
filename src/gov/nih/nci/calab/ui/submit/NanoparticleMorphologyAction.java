@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleMorphologyAction.java,v 1.12.2.1 2007-06-28 17:13:58 zengje Exp $ */
+/* CVS $Id: NanoparticleMorphologyAction.java,v 1.12.2.2 2007-06-29 14:56:12 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Morphology;
@@ -77,27 +77,17 @@ public class NanoparticleMorphologyAction extends BaseCharacterizationAction {
 		morphologyChar.setCreatedBy(user.getLoginName());
 		morphologyChar.setCreatedDate(date);
 
-		request.getSession().setAttribute("newCharacterizationCreated", "true");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addParticleMorphology(particleType, particleName,
 				morphologyChar);
-		if (morphologyChar.getType().equals(CaNanoLabConstants.OTHER)){
-			InitSessionSetup.getInstance().addSessionAttributeElement(request.getSession(),"allMorphologyTypes", morphologyChar.getOtherType());
-		}
+	
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.addParticleMorphology");
 		msgs.add("message", msg);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
-
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
-
-		HttpSession session = request.getSession();
-//		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-//		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(session);
-		InitSessionSetup.getInstance().setAllInstruments(session);
-
+		super.postCreate(request, theForm);
+		
 		return forward;
 	}
 

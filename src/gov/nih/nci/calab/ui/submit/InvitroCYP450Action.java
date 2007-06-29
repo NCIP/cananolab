@@ -58,9 +58,8 @@ public class InvitroCYP450Action extends BaseCharacterizationAction {
 		int fileNumber = 0;
 		for (DerivedBioAssayDataBean obj : cyp450Char
 				.getDerivedBioAssayDataList()) {
-			LabFileBean fileBean = (LabFileBean) request
-					.getSession().getAttribute(
-							"characterizationFile" + fileNumber);
+			LabFileBean fileBean = (LabFileBean) request.getSession()
+					.getAttribute("characterizationFile" + fileNumber);
 			if (fileBean != null) {
 				obj.setFile(fileBean);
 			}
@@ -73,7 +72,6 @@ public class InvitroCYP450Action extends BaseCharacterizationAction {
 		cyp450Char.setCreatedBy(user.getLoginName());
 		cyp450Char.setCreatedDate(date);
 
-		request.getSession().setAttribute("newCharacterizationCreated", "true");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addCYP450(particleType, particleName, cyp450Char);
 
@@ -83,15 +81,7 @@ public class InvitroCYP450Action extends BaseCharacterizationAction {
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
 
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
-
-		HttpSession session = request.getSession();
-//		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-//		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(
-//				session);
-		InitSessionSetup.getInstance().setAllInstruments(session);
-
+		super.postCreate(request, theForm);
 		return forward;
 	}
 

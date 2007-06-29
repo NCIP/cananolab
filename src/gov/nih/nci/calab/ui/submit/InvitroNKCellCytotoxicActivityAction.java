@@ -65,35 +65,38 @@ public class InvitroNKCellCytotoxicActivityAction extends
 		int fileNumber = 0;
 		for (DerivedBioAssayDataBean obj : nkCellCytotoxicActivityChar
 				.getDerivedBioAssayDataList()) {
-			
+
 			// Vaidate the the nested data point entries
-			for ( DatumBean dataPoint : obj.getDatumList() ) {
+			for (DatumBean dataPoint : obj.getDatumList()) {
 				try {
-				   Float.parseFloat(dataPoint.getValue());
-				} 
-				catch (NumberFormatException nfe) {
-					Exception dataPointException = new Exception(PropertyReader.getProperty(
-							CaNanoLabConstants.SUBMISSION_PROPERTY, "nkCellCytotoxicActivityPercentage"));							
-						throw dataPointException;
+					Float.parseFloat(dataPoint.getValue());
+				} catch (NumberFormatException nfe) {
+					Exception dataPointException = new Exception(PropertyReader
+							.getProperty(
+									CaNanoLabConstants.SUBMISSION_PROPERTY,
+									"nkCellCytotoxicActivityPercentage"));
+					throw dataPointException;
 				}
 
 				try {
-					if ( dataPoint.getIsAControl().equals(CaNanoLabConstants.BOOLEAN_NO) ) {
-						for ( ConditionBean condition : dataPoint.getConditionList() ) {
+					if (dataPoint.getIsAControl().equals(
+							CaNanoLabConstants.BOOLEAN_NO)) {
+						for (ConditionBean condition : dataPoint
+								.getConditionList()) {
 							Float.parseFloat(condition.getValue());
 						}
-					} 
-				} 
-				catch (NumberFormatException nfe) {
-					Exception conditionsException = new Exception(PropertyReader.getProperty(
-							CaNanoLabConstants.SUBMISSION_PROPERTY, "conditionValues"));							
-						throw conditionsException;
+					}
+				} catch (NumberFormatException nfe) {
+					Exception conditionsException = new Exception(
+							PropertyReader.getProperty(
+									CaNanoLabConstants.SUBMISSION_PROPERTY,
+									"conditionValues"));
+					throw conditionsException;
 				}
 			}
-			
-			LabFileBean fileBean = (LabFileBean) request
-					.getSession().getAttribute(
-							"characterizationFile" + fileNumber);
+
+			LabFileBean fileBean = (LabFileBean) request.getSession()
+					.getAttribute("characterizationFile" + fileNumber);
 			if (fileBean != null) {
 				obj.setFile(fileBean);
 			}
@@ -106,7 +109,6 @@ public class InvitroNKCellCytotoxicActivityAction extends
 		nkCellCytotoxicActivityChar.setCreatedBy(user.getLoginName());
 		nkCellCytotoxicActivityChar.setCreatedDate(date);
 
-		request.getSession().setAttribute("newCharacterizationCreated", "true");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addNKCellCytotoxicActivity(particleType, particleName,
 				nkCellCytotoxicActivityChar);
@@ -117,16 +119,7 @@ public class InvitroNKCellCytotoxicActivityAction extends
 		msgs.add("message", msg);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
-
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
-
-		HttpSession session = request.getSession();
-//		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-//		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(
-//				session);
-		InitSessionSetup.getInstance().setAllInstruments(session);
-
+		super.postCreate(request, theForm);
 		return forward;
 	}
 

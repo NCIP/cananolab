@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleStabilityAction.java,v 1.10.2.1 2007-06-28 17:13:58 zengje Exp $ */
+/* CVS $Id: NanoparticleStabilityAction.java,v 1.10.2.2 2007-06-29 14:56:12 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Stability;
@@ -64,9 +64,8 @@ public class NanoparticleStabilityAction extends BaseCharacterizationAction {
 		int fileNumber = 0;
 		for (DerivedBioAssayDataBean obj : stabilityChar
 				.getDerivedBioAssayDataList()) {
-			LabFileBean fileBean = (LabFileBean) request
-					.getSession().getAttribute(
-							"characterizationFile" + fileNumber);
+			LabFileBean fileBean = (LabFileBean) request.getSession()
+					.getAttribute("characterizationFile" + fileNumber);
 			if (fileBean != null) {
 				logger.info("************set fileBean to " + fileNumber);
 				obj.setFile(fileBean);
@@ -80,7 +79,6 @@ public class NanoparticleStabilityAction extends BaseCharacterizationAction {
 		stabilityChar.setCreatedBy(user.getLoginName());
 		stabilityChar.setCreatedDate(date);
 
-		request.getSession().setAttribute("newCharacterizationCreated", "true");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addParticleStability(particleType, particleName, stabilityChar);
 
@@ -89,17 +87,7 @@ public class NanoparticleStabilityAction extends BaseCharacterizationAction {
 		msgs.add("message", msg);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
-
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
-
-		HttpSession session = request.getSession();
-//		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-//
-//		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(
-//				session);
-		InitSessionSetup.getInstance().setAllInstruments(session);
-
+		super.postCreate(request, theForm);
 		return forward;
 	}
 

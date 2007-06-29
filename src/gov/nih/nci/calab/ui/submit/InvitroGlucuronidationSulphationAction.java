@@ -61,9 +61,8 @@ public class InvitroGlucuronidationSulphationAction extends
 		int fileNumber = 0;
 		for (DerivedBioAssayDataBean obj : glucuronidationSulphationChar
 				.getDerivedBioAssayDataList()) {
-			LabFileBean fileBean = (LabFileBean) request
-					.getSession().getAttribute(
-							"characterizationFile" + fileNumber);
+			LabFileBean fileBean = (LabFileBean) request.getSession()
+					.getAttribute("characterizationFile" + fileNumber);
 			if (fileBean != null) {
 				obj.setFile(fileBean);
 			}
@@ -76,7 +75,6 @@ public class InvitroGlucuronidationSulphationAction extends
 		glucuronidationSulphationChar.setCreatedBy(user.getLoginName());
 		glucuronidationSulphationChar.setCreatedDate(date);
 
-		request.getSession().setAttribute("newCharacterizationCreated", "true");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addGlucuronidationSulphation(particleType, particleName,
 				glucuronidationSulphationChar);
@@ -87,15 +85,7 @@ public class InvitroGlucuronidationSulphationAction extends
 		msgs.add("message", msg);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
-
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
-
-		HttpSession session = request.getSession();
-//		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-//		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(session);
-		InitSessionSetup.getInstance().setAllInstruments(session);
-
+		super.postCreate(request, theForm);
 		return forward;
 	}
 
@@ -110,15 +100,17 @@ public class InvitroGlucuronidationSulphationAction extends
 		theForm.set("particleName", particleName);
 		theForm.set("particleType", particleType);
 		theForm.set("achar", new GlucuronidationSulphationBean());
-		
+
 		cleanSessionAttributes(session);
 	}
 
 	@Override
-	protected void setFormCharacterizationBean(DynaValidatorForm theForm, Characterization aChar) throws Exception {
-		GlucuronidationSulphationBean charBean=new GlucuronidationSulphationBean((GlucuronidationSulphation)aChar);
+	protected void setFormCharacterizationBean(DynaValidatorForm theForm,
+			Characterization aChar) throws Exception {
+		GlucuronidationSulphationBean charBean = new GlucuronidationSulphationBean(
+				(GlucuronidationSulphation) aChar);
 		theForm.set("achar", charBean);
-		
+
 	}
 
 	@Override
@@ -126,6 +118,6 @@ public class InvitroGlucuronidationSulphationAction extends
 		request.setAttribute("characterization", "glucuronidationSulphation");
 		request.setAttribute("loadFileForward",
 				"invitroGlucuronidationSulphationForm");
-		
+
 	}
 }

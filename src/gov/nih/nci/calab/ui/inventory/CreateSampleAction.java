@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.inventory;
  * @author pansu
  */
 
-/* CVS $Id: CreateSampleAction.java,v 1.9 2007-01-09 20:16:01 pansu Exp $ */
+/* CVS $Id: CreateSampleAction.java,v 1.9.2.1 2007-06-29 14:56:12 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.inventory.ContainerBean;
 import gov.nih.nci.calab.dto.inventory.SampleBean;
@@ -64,11 +64,9 @@ public class CreateSampleAction extends AbstractDispatchAction {
 			return forward;
 		}
 		String sampleType = (String) theForm.get("sampleType");
-		// String otherSampleType = (String) theForm.get("otherSampleType");
 		String sampleSOP = (String) theForm.get("sampleSOP");
 		String sampleDescription = (String) theForm.get("sampleDescription");
 		String sampleSource = (String) theForm.get("sampleSource");
-		String otherSampleSource = (String) theForm.get("otherSampleSource");
 		String sourceSampleId = (String) theForm.get("sourceSampleId");
 		String dateReceivedStr = (String) theForm.get("dateReceived");
 		Date dateReceived = StringUtils.convertToDate(dateReceivedStr,
@@ -97,18 +95,16 @@ public class CreateSampleAction extends AbstractDispatchAction {
 		Date creationDate = new Date();
 		SampleBean sample = new SampleBean(sampleNamePrefix, sampleName,
 				sampleType, sampleSOP, sampleDescription, sampleSource,
-				otherSampleSource, sourceSampleId, dateReceived, solubility,
-				lotId, lotDescription, numContainers, generalComments,
+				sourceSampleId, dateReceived, solubility, lotId,
+				lotDescription, numContainers, generalComments,
 				sampleSubmitter, creationDate, containers);
 		request.setAttribute("sample", sample);
 		manageSampleService.saveSample(sample, containers);
 
-		// create a new user group if other is specified
-		if (sampleSource.equals(CaNanoLabConstants.OTHER)) {
-			UserService userService = new UserService(
-					CaNanoLabConstants.CSM_APP_NAME);
-			userService.createAGroup(otherSampleSource);
-		}
+		// create a user group for each sample source
+		UserService userService = new UserService(
+				CaNanoLabConstants.CSM_APP_NAME);
+		userService.createAGroup(sampleSource);
 
 		// set a flag to indicate that new sample have been created so session
 		// can be refreshed in initSession.do

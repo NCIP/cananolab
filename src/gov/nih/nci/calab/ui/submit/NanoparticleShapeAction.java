@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleShapeAction.java,v 1.12.2.1 2007-06-28 17:13:58 zengje Exp $ */
+/* CVS $Id: NanoparticleShapeAction.java,v 1.12.2.2 2007-06-29 14:56:12 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Shape;
@@ -15,7 +15,6 @@ import gov.nih.nci.calab.dto.characterization.physical.ShapeBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
-import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.ui.core.BaseCharacterizationAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
@@ -66,9 +65,8 @@ public class NanoparticleShapeAction extends BaseCharacterizationAction {
 		int fileNumber = 0;
 		for (DerivedBioAssayDataBean obj : shapeChar
 				.getDerivedBioAssayDataList()) {
-			LabFileBean fileBean = (LabFileBean) request
-					.getSession().getAttribute(
-							"characterizationFile" + fileNumber);
+			LabFileBean fileBean = (LabFileBean) request.getSession()
+					.getAttribute("characterizationFile" + fileNumber);
 			if (fileBean != null) {
 				logger.info("************set fileBean to " + fileNumber);
 				obj.setFile(fileBean);
@@ -82,31 +80,14 @@ public class NanoparticleShapeAction extends BaseCharacterizationAction {
 		shapeChar.setCreatedBy(user.getLoginName());
 		shapeChar.setCreatedDate(date);
 
-		request.getSession().setAttribute("newCharacterizationCreated", "true");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addParticleShape(particleType, particleName, shapeChar);
-		if (shapeChar.getType().equals(CaNanoLabConstants.OTHER)) {
-			InitSessionSetup.getInstance().addSessionAttributeElement(
-					request.getSession(), "allShapeTypes",
-					shapeChar.getOtherShapeType());
-		}
-
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.addParticleShape");
 		msgs.add("message", msg);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
-
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
-
-		HttpSession session = request.getSession();
-//		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-//
-//		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(
-//				session);
-		InitSessionSetup.getInstance().setAllInstruments(session);
-
+		super.postCreate(request, theForm);
 		return forward;
 	}
 

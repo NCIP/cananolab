@@ -104,14 +104,7 @@ public class InvitroCaspase3ActivationAction extends BaseCharacterizationAction 
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		Date date = new Date();
 		caspase3ActivityChar.setCreatedBy(user.getLoginName());
-		caspase3ActivityChar.setCreatedDate(date);
-		// Update the other cellLine in the session variable
-		if (caspase3ActivityChar.getCellLine().equals(CaNanoLabConstants.OTHER)) {
-			InitSessionSetup.getInstance().addSessionAttributeElement(
-					request.getSession(), "allCellLines",
-					caspase3ActivityChar.getOtherCellLine());
-		}
-		request.getSession().setAttribute("newCharacterizationCreated", "true");
+		caspase3ActivityChar.setCreatedDate(date);		
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addCaspase3Activation(particleType, particleName,
 				caspase3ActivityChar);
@@ -122,16 +115,7 @@ public class InvitroCaspase3ActivationAction extends BaseCharacterizationAction 
 		msgs.add("message", msg);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
-
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
-
-		HttpSession session = request.getSession();
-//		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-//		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(
-//				session);
-		InitSessionSetup.getInstance().setAllInstruments(session);
-
+		super.postCreate(request, theForm);
 		return forward;
 	}
 

@@ -33,7 +33,8 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
-public class InvitroComplementActivationAction extends BaseCharacterizationAction {
+public class InvitroComplementActivationAction extends
+		BaseCharacterizationAction {
 
 	/**
 	 * Add or update the data to database
@@ -53,71 +54,73 @@ public class InvitroComplementActivationAction extends BaseCharacterizationActio
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleType = (String) theForm.get("particleType");
 		String particleName = (String) theForm.get("particleName");
-		ComplementActivationBean complementActivationChar = (ComplementActivationBean) theForm.get("achar");
+		ComplementActivationBean complementActivationChar = (ComplementActivationBean) theForm
+				.get("achar");
 
-		if (complementActivationChar.getId() == null || complementActivationChar.getId() == "") {			
-			complementActivationChar.setId( (String) theForm.get("characterizationId") );			
+		if (complementActivationChar.getId() == null
+				|| complementActivationChar.getId() == "") {
+			complementActivationChar.setId((String) theForm
+					.get("characterizationId"));
 		}
-		
+
 		int fileNumber = 0;
-		for (DerivedBioAssayDataBean obj : complementActivationChar.getDerivedBioAssayDataList()) {
-			
+		for (DerivedBioAssayDataBean obj : complementActivationChar
+				.getDerivedBioAssayDataList()) {
+
 			// Vaidate the the nested data point entries
-			for ( DatumBean dataPoint : obj.getDatumList() ) {
+			for (DatumBean dataPoint : obj.getDatumList()) {
 				try {
-				   Float.parseFloat(dataPoint.getValue());
-				} 
-				catch (NumberFormatException nfe) {
-					Exception dataPointException = new Exception(PropertyReader.getProperty(
-							CaNanoLabConstants.SUBMISSION_PROPERTY, "complementActivationPercentage"));							
-						throw dataPointException;
+					Float.parseFloat(dataPoint.getValue());
+				} catch (NumberFormatException nfe) {
+					Exception dataPointException = new Exception(PropertyReader
+							.getProperty(
+									CaNanoLabConstants.SUBMISSION_PROPERTY,
+									"complementActivationPercentage"));
+					throw dataPointException;
 				}
 
 				try {
-					if ( dataPoint.getIsAControl().equals(CaNanoLabConstants.BOOLEAN_NO) ) {
-						for ( ConditionBean condition : dataPoint.getConditionList() ) {
+					if (dataPoint.getIsAControl().equals(
+							CaNanoLabConstants.BOOLEAN_NO)) {
+						for (ConditionBean condition : dataPoint
+								.getConditionList()) {
 							Float.parseFloat(condition.getValue());
 						}
-					} 
-				} 
-				catch (NumberFormatException nfe) {
-					Exception conditionsException = new Exception(PropertyReader.getProperty(
-							CaNanoLabConstants.SUBMISSION_PROPERTY, "conditionValues"));							
-						throw conditionsException;
+					}
+				} catch (NumberFormatException nfe) {
+					Exception conditionsException = new Exception(
+							PropertyReader.getProperty(
+									CaNanoLabConstants.SUBMISSION_PROPERTY,
+									"conditionValues"));
+					throw conditionsException;
 				}
 			}
-			
-			LabFileBean fileBean = (LabFileBean) request.getSession().getAttribute("characterizationFile" + fileNumber);
-			if (fileBean != null) {		
+
+			LabFileBean fileBean = (LabFileBean) request.getSession()
+					.getAttribute("characterizationFile" + fileNumber);
+			if (fileBean != null) {
 				obj.setFile(fileBean);
 			}
 			fileNumber++;
 		}
-		
+
 		// set createdBy and createdDate for the composition
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		Date date = new Date();
 		complementActivationChar.setCreatedBy(user.getLoginName());
 		complementActivationChar.setCreatedDate(date);
 
-		request.getSession().setAttribute("newCharacterizationCreated", "true");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		service.addComplementActivation(particleType, particleName, complementActivationChar);
+		service.addComplementActivation(particleType, particleName,
+				complementActivationChar);
 
 		ActionMessages msgs = new ActionMessages();
-		ActionMessage msg = new ActionMessage("message.addInvitroComplementActivation");
+		ActionMessage msg = new ActionMessage(
+				"message.addInvitroComplementActivation");
 		msgs.add("message", msg);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
-
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
-				
-		HttpSession session = request.getSession();
-//		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-//		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(session);
-		InitSessionSetup.getInstance().setAllInstruments(session);
-
+		super.postCreate(request, theForm);
 		return forward;
 	}
 
@@ -132,19 +135,22 @@ public class InvitroComplementActivationAction extends BaseCharacterizationActio
 		theForm.set("particleName", particleName);
 		theForm.set("particleType", particleType);
 		theForm.set("achar", new ComplementActivationBean());
-		
+
 		cleanSessionAttributes(session);
 	}
 
 	@Override
-	protected void setFormCharacterizationBean(DynaValidatorForm theForm, Characterization aChar) throws Exception {
-		ComplementActivationBean charBean=new ComplementActivationBean((ComplementActivation)aChar);
+	protected void setFormCharacterizationBean(DynaValidatorForm theForm,
+			Characterization aChar) throws Exception {
+		ComplementActivationBean charBean = new ComplementActivationBean(
+				(ComplementActivation) aChar);
 		theForm.set("achar", charBean);
 	}
 
 	@Override
 	protected void setLoadFileRequest(HttpServletRequest request) {
 		request.setAttribute("characterization", "complementActivation");
-		request.setAttribute("loadFileForward", "invitroComplementActivationForm");
+		request.setAttribute("loadFileForward",
+				"invitroComplementActivationForm");
 	}
 }
