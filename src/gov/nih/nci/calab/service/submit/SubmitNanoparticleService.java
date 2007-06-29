@@ -6,10 +6,8 @@ import gov.nih.nci.calab.domain.AssociatedFile;
 import gov.nih.nci.calab.domain.DerivedDataFile;
 import gov.nih.nci.calab.domain.Instrument;
 import gov.nih.nci.calab.domain.InstrumentConfiguration;
-import gov.nih.nci.calab.domain.InstrumentType;
 import gov.nih.nci.calab.domain.Keyword;
 import gov.nih.nci.calab.domain.LabFile;
-import gov.nih.nci.calab.domain.Manufacturer;
 import gov.nih.nci.calab.domain.OutputFile;
 import gov.nih.nci.calab.domain.Report;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
@@ -60,7 +58,6 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -216,7 +213,7 @@ public class SubmitNanoparticleService {
 			ida.close();
 		}
 		if (existingViewTitleCount > 0) {
-			throw new CalabException(
+			throw new Exception(
 					"The view title is already in use.  Please enter a different one.");
 		}
 	}
@@ -946,7 +943,7 @@ public class SubmitNanoparticleService {
 			ida.close();
 		}
 		if (existingViewTitleCount > 0) {
-			throw new CalabException(
+			throw new Exception(
 					"The view title is already in use.  Please enter a different one.");
 		}
 	}
