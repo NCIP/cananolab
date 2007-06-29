@@ -206,7 +206,7 @@ function clearOtherAgents(agentType, elementPrefix) {
 												<td class="rightLabel" colspan="3">
 													<c:choose>
 														<c:when test="${canUserSubmit eq 'true'}">
-															<html:textarea property="function.linkages[${linkageInd}].description" rows="3" cols="50" />
+															<html:textarea property="function.linkages[${linkageInd}].description" rows="3" cols="80" />
 														</c:when>
 														<c:otherwise>
 															${linkage.description}&nbsp;
