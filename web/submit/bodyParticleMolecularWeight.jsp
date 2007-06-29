@@ -35,13 +35,13 @@
 						<tr class="topBorder">
 							<td class="formTitle" colspan="4">
 								<div align="justify">
-									Molecular Weight Graph
+									Characterization File Information
 								</div>
 							</td>
 						</tr>
 						<tr>
 							<td class="leftLabel">
-								<strong>Number of Graphs</strong>
+								<strong>Number of Files</strong>
 							</td>
 							<td class="label">
 								<c:choose>
@@ -57,7 +57,7 @@
 								&nbsp;
 								<c:choose>
 									<c:when test="${canUserSubmit eq 'true'}">
-										<input type="button" onclick="javascript:updateCharts(this.form, 'nanoparticleMolecularWeight')" value="Update Graphs">
+										<input type="button" onclick="javascript:updateCharts(this.form, 'nanoparticleMolecularWeight')" value="Update Files">
 									</c:when>
 								</c:choose>
 							</td>
@@ -70,13 +70,13 @@
 											<tr class="topBorder">
 												<td class="formSubTitle" colspan="4">
 													<div align="justify">
-														Graph ${chartInd+1}
+														File ${chartInd+1}
 													</div>
 												</td>
 											</tr>
 											<tr>
 												<td class="leftLabel">
-													<strong>Graph Type </strong>
+													<strong>Data Category</strong>
 												</td>
 												<td class="rightLabel" colspan="3">
 													<c:choose>

@@ -114,13 +114,13 @@
 						<tr class="topBorder">
 							<td class="formTitle" colspan="4">
 								<div align="justify">
-									Shape Image
+									Characterization File Information
 								</div>
 							</td>
 						</tr>
 						<tr>
 							<td class="leftLabel">
-								<strong>Number of Images</strong>
+								<strong>Number of Files</strong>
 							</td>
 							<td class="label">
 								<c:choose>
@@ -138,7 +138,7 @@
 									<c:when test="${canUserSubmit eq 'true'}">
 										<input type="button"
 											onclick="javascript:updateCharts(this.form, 'nanoparticleShape')"
-											value="Update Images">
+											value="Update Files">
 									</c:when>
 								</c:choose>
 							</td>
@@ -154,26 +154,8 @@
 											<tr class="topBorder">
 												<td class="formSubTitle" colspan="4">
 													<div align="justify">
-														Graph ${chartInd+1}
+														File ${chartInd+1}
 													</div>
-												</td>
-											</tr>
-											<tr>
-												<td class="leftLabel">
-													<strong>Type </strong>
-												</td>
-												<td class="rightLabel" colspan="3">
-													<c:choose>
-														<c:when test="${canUserSubmit eq 'true'}">
-															<html:select
-																property="achar.derivedBioAssayDataList[${chartInd}].type">
-																<html:options name="allShapeDistributionGraphTypes" />
-															</html:select>
-														</c:when>
-														<c:otherwise>
-						${nanoparticleShapeForm.map.achar.derivedBioAssayDataList[chartInd].type}&nbsp;
-					</c:otherwise>
-													</c:choose>
 												</td>
 											</tr>
 											<jsp:include

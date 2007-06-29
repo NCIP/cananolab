@@ -202,13 +202,13 @@
 						<tr class="topBorder">
 							<td class="formTitle" colspan="4">
 								<div align="justify">
-									Plot Chart
+									Characterization File Information
 								</div>
 							</td>
 						</tr>
 						<tr>
 							<td class="leftLabel">
-								<strong>Number of Plot Chart</strong>
+								<strong>Number of Files</strong>
 							</td>
 							<td class="label">
 								<c:choose>
@@ -224,7 +224,7 @@
 								&nbsp;
 								<c:choose>
 									<c:when test="${canUserSubmit eq 'true'}">
-										<input type="button" onclick="javascript:updateCharts(this.form, 'nanoparticleSurface')" value="Update Plot Charts">
+										<input type="button" onclick="javascript:updateCharts(this.form, 'nanoparticleSurface')" value="Update Files">
 									</c:when>
 								</c:choose>
 							</td>
@@ -237,7 +237,7 @@
 											<tr class="topBorder">
 												<td class="formSubTitle" colspan="4">
 													<div align="justify">
-														Chart ${chartInd+1}
+														File ${chartInd+1}
 													</div>
 												</td>
 											</tr>

@@ -47,13 +47,13 @@
 						<tr class="topBorder">
 							<td class="formTitle" colspan="4">
 								<div align="justify">
-									Histogram/Bar Chart Information
+									Characterization File Information
 								</div>
 							</td>
 						</tr>
 						<tr>
 							<td class="leftLabel">
-								<strong>Number of Histogram/Bar Charts</strong>
+								<strong>Number of Files</strong>
 							</td>
 							<td class="label">
 								<c:choose>
@@ -69,7 +69,7 @@
 								&nbsp;
 								<c:choose>
 									<c:when test="${canUserSubmit eq 'true'}">
-										<input type="button" onclick="javascript:updateCharts(this.form, '${actionName}')" value="Update Charts">
+										<input type="button" onclick="javascript:updateCharts(this.form, '${actionName}')" value="Update Files">
 									</c:when>
 								</c:choose>
 							</td>
@@ -82,7 +82,7 @@
 											<tr class="topBorder">
 												<td class="formSubTitle" colspan="4">
 													<div align="justify">
-														Histogram/Bar Chart ${chartInd+1}
+														File ${chartInd+1}
 													</div>
 												</td>
 											</tr>											
