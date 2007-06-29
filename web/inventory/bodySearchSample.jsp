@@ -14,13 +14,16 @@
 				</h3>
 			</td>
 			<td align="right" width="15%">
-				<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=search_sample')" class="helpText">Help</a>
+				<a
+					href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=search_sample')"
+					class="helpText">Help</a>
 			</td>
 		</tr>
 		<tr>
 			<td colspan="2">
 				<jsp:include page="/bodyMessage.jsp?bundle=inventory" />
-				<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" summary="">
+				<table width="100%" border="0" align="center" cellpadding="3"
+					cellspacing="0" summary="">
 					<TR>
 						<td class="formTitle" width="30%">
 							Search
@@ -45,7 +48,8 @@
 							<strong> <html:select property="sampleType">
 									<option value="" />
 										<html:options name="allSampleTypes" />
-								</html:select></strong>
+								</html:select>
+							</strong>
 						</td>
 					</tr>
 					<tr>
@@ -56,7 +60,8 @@
 							<strong> <html:select property="sampleSource">
 									<option value="" />
 										<html:options name="allSampleSources" />
-								</html:select></strong>
+								</html:select>
+							</strong>
 						</td>
 					</tr>
 					<tr>
@@ -76,11 +81,17 @@
 						</td>
 						<td class="formFieldWhite">
 							<html:text property="dateAccessionedBegin" size="10" />
-							<a href="javascript:cal1.popup();"><img src="images/calendar-icon.gif" width="22" height="18" border="0" alt="Click Here to Pick up the date" align="middle"></a>
+							<a href="javascript:cal1.popup();"><img
+									src="images/calendar-icon.gif" width="22" height="18"
+									border="0" alt="Click Here to Pick up the date" align="middle">
+							</a>
 							<label>
 								&nbsp; to &nbsp;
 								<html:text property="dateAccessionedEnd" size="10" />
-								<a href="javascript:cal2.popup();"><img src="images/calendar-icon.gif" width="22" height="18" border="0" alt="Click Here to Pick up the date" align="middle"></a>
+								<a href="javascript:cal2.popup();"><img
+										src="images/calendar-icon.gif" width="22" height="18"
+										border="0" alt="Click Here to Pick up the date" align="middle">
+								</a>
 							</label>
 						</td>
 					</tr>
@@ -91,26 +102,35 @@
 						<td class="formField">
 							<html:select property="sampleSubmitter">
 								<option value="" />
-									<html:options collection="allUsers" property="loginName" labelProperty="fullName" />
+									<html:options collection="allUsers" property="loginName"
+										labelProperty="fullName" />
 							</html:select>
 						</td>
 					</tr>
 					<tr>
 						<td colspan="2" class="formLabelWhite">
 							<div align="center">
-								<strong>Storage Location<br> <br> Room&nbsp; <html:select property="storageLocation.room">
-										<option value="" />									
-											<html:options name="sampleContainerInfoExcludeOther" property="storageRooms" />
-									</html:select> &nbsp; Freezer&nbsp; <html:select property="storageLocation.freezer">
+								<strong>Storage Location<br> <br> Room&nbsp;
+									<html:select property="storageLocation.room">
 										<option value="" />
-											<html:options name="sampleContainerInfoExcludeOther" property="storageFreezers" />
-									</html:select> &nbsp; &nbsp; Shelf &nbsp; <html:select property="storageLocation.shelf">
+											<html:options name="sampleContainerInfo"
+												property="storageRooms" />
+									</html:select> &nbsp; Freezer&nbsp; <html:select
+										property="storageLocation.freezer">
 										<option value="" />
-											<html:options name="sampleContainerInfoExcludeOther" property="storageShelves" />
+											<html:options name="sampleContainerInfo"
+												property="storageFreezers" />
+									</html:select> &nbsp; &nbsp; Shelf &nbsp; <html:select
+										property="storageLocation.shelf">
+										<option value="" />
+											<html:options name="sampleContainerInfo"
+												property="storageShelves" />
 									</html:select> &nbsp; Box &nbsp; <html:select property="storageLocation.box">
 										<option value="" />
-											<html:options name="sampleContainerInfoExcludeOther" property="storageBoxes" />
-									</html:select></strong>
+											<html:options name="sampleContainerInfo"
+												property="storageBoxes" />
+									</html:select>
+								</strong>
 							</div>
 						</td>
 					</tr>
@@ -121,7 +141,8 @@
 					</tr>
 				</table>
 				<br>
-				<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
+				<table width="100%" border="0" align="center" cellpadding="3"
+					cellspacing="0" class="topBorderOnly" summary="">
 					<tr>
 						<td>
 							<span class="formMessage"> </span>

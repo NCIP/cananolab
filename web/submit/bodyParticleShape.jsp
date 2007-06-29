@@ -3,6 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<script type="text/javascript" src="javascript/editableDropDown.js"></script>
 
 <html:form action="/nanoparticleShape">
 	<table width="100%" align="center">
@@ -14,22 +15,28 @@
 				</h4>
 			</td>
 			<td align="right" width="15%">
-				<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=nano_shape_help')" class="helpText">Help</a>
+				<a
+					href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=nano_shape_help')"
+					class="helpText">Help</a>
 			</td>
 		</tr>
 		<tr>
 			<td colspan="2">
 				<h5 align="center">
-					${nanoparticleShapeForm.map.particleName} (${nanoparticleShapeForm.map.particleType})
+					${nanoparticleShapeForm.map.particleName}
+					(${nanoparticleShapeForm.map.particleType})
 				</h5>
 			</td>
 		</tr>
 		<tr>
 			<td colspan="2">
 				<jsp:include page="/bodyMessage.jsp?bundle=submit" />
-				<jsp:include page="bodySharedCharacterizationSummary.jsp?formName=nanoparticleShapeForm" />
-				<jsp:include page="bodySharedCharacterizationInstrument.jsp?formName=nanoparticleShapeForm" />
-				<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+				<jsp:include
+					page="bodySharedCharacterizationSummary.jsp?formName=nanoparticleShapeForm" />
+				<jsp:include
+					page="bodySharedCharacterizationInstrument.jsp?formName=nanoparticleShapeForm" />
+				<table class="topBorderOnly" cellspacing="0" cellpadding="3"
+					width="100%" align="center" summary="" border="0">
 					<tbody>
 						<tr class="topBorder">
 							<td class="formTitle" colspan="6">
@@ -45,21 +52,16 @@
 							<td class="label">
 								<c:choose>
 									<c:when test="${canUserSubmit eq 'true'}">
-										<html:select property="achar.type" onchange="javascript:updateOtherField(nanoparticleShapeForm, 'achar.type', 'achar.otherShapeType')">
-											<option value=""></option>
+										<html:select property="achar.type"
+											onkeydown="javascript:fnKeyDownHandler(this, event);"
+											onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
+											onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
+											onchange="fnChangeHandler_A(this, event);">
+											<option value="">
+												--?--
+											</option>
 											<html:options name="allShapeTypes" />
 										</html:select>
-										&nbsp;
-										<strong> Other </strong>&nbsp;
-										
-										<c:choose>
-											<c:when test="${nanoparticleShapeForm.map.achar.type eq 'Other'}">
-												<html:text property="achar.otherShapeType" disabled="false" />
-											</c:when>
-											<c:otherwise>
-												<html:text property="achar.otherShapeType" disabled="true" />
-											</c:otherwise>
-										</c:choose>
 									</c:when>
 									<c:otherwise>
 										${nanoparticleShapeForm.map.achar.type}&nbsp;
@@ -86,7 +88,7 @@
 									</c:otherwise>
 								</c:choose>
 							</td>
-							<td class="leftLabel">
+							<td class="label">
 								<strong>Maximum Dimension </strong>
 							</td>
 							<td class="rightLabel">
@@ -106,7 +108,8 @@
 				</table>
 				<br />
 				<%-- size characterization specific --%>
-				<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+				<table class="topBorderOnly" cellspacing="0" cellpadding="3"
+					width="100%" align="center" summary="" border="0">
 					<tbody>
 						<tr class="topBorder">
 							<td class="formTitle" colspan="4">
@@ -133,15 +136,20 @@
 								&nbsp;
 								<c:choose>
 									<c:when test="${canUserSubmit eq 'true'}">
-										<input type="button" onclick="javascript:updateCharts(this.form, 'nanoparticleShape')" value="Update Images">
+										<input type="button"
+											onclick="javascript:updateCharts(this.form, 'nanoparticleShape')"
+											value="Update Images">
 									</c:when>
 								</c:choose>
 							</td>
 						</tr>
 						<tr>
 							<td class="completeLabel" colspan="4">
-								<logic:iterate name="nanoparticleShapeForm" property="achar.derivedBioAssayDataList" id="derivedBioAssayData" indexId="chartInd">
-									<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+								<logic:iterate name="nanoparticleShapeForm"
+									property="achar.derivedBioAssayDataList"
+									id="derivedBioAssayData" indexId="chartInd">
+									<table class="topBorderOnly" cellspacing="0" cellpadding="3"
+										width="100%" align="center" summary="" border="0">
 										<tbody>
 											<tr class="topBorder">
 												<td class="formSubTitle" colspan="4">
@@ -157,7 +165,8 @@
 												<td class="rightLabel" colspan="3">
 													<c:choose>
 														<c:when test="${canUserSubmit eq 'true'}">
-															<html:select property="achar.derivedBioAssayDataList[${chartInd}].type">
+															<html:select
+																property="achar.derivedBioAssayDataList[${chartInd}].type">
 																<html:options name="allShapeDistributionGraphTypes" />
 															</html:select>
 														</c:when>
@@ -167,7 +176,8 @@
 													</c:choose>
 												</td>
 											</tr>
-											<jsp:include page="bodySharedCharacterizationFile.jsp?chartInd=${chartInd}&formName=nanoparticleShapeForm&actionName=nanoparticleShape" />
+											<jsp:include
+												page="bodySharedCharacterizationFile.jsp?chartInd=${chartInd}&formName=nanoparticleShapeForm&actionName=nanoparticleShape" />
 										</tbody>
 									</table>
 									<br>
