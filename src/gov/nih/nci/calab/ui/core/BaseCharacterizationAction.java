@@ -38,7 +38,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 
-/* CVS $Id: BaseCharacterizationAction.java,v 1.25.2.1 2007-06-28 17:15:29 zengje Exp $ */
+/* CVS $Id: BaseCharacterizationAction.java,v 1.25.2.2 2007-06-29 14:56:27 pansu Exp $ */
 
 public abstract class BaseCharacterizationAction extends AbstractDispatchAction {
 	/**
@@ -82,6 +82,17 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		InitSessionSetup.getInstance().setAllTimeUnits(session);
 	}
 
+	protected void postCreate(HttpServletRequest request,
+			DynaValidatorForm theForm) throws Exception {
+		String particleName = theForm.getString("particleName");
+		String particleType = theForm.getString("particleType");
+
+		request.getSession().setAttribute("newCharacterizationCreated", "true");
+		request.getSession().setAttribute("newInstrumentCreated", "true");
+		InitSessionSetup.getInstance().setSideParticleMenu(request,
+				particleName, particleType);
+	}
+	
 	/**
 	 * Set the appropriate type of characterization bean in the form from the
 	 * chararacterization domain obj.
