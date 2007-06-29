@@ -104,7 +104,6 @@ public class InvitroCoagulationAction extends BaseCharacterizationAction {
 		coagulationChar.setCreatedBy(user.getLoginName());
 		coagulationChar.setCreatedDate(date);
 
-		request.getSession().setAttribute("newCharacterizationCreated", "true");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addCoagulation(particleType, particleName, coagulationChar);
 
@@ -114,15 +113,7 @@ public class InvitroCoagulationAction extends BaseCharacterizationAction {
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
 
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
-
-		HttpSession session = request.getSession();
-//		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-//		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(
-//				session);
-		InitSessionSetup.getInstance().setAllInstruments(session);
-
+		super.postCreate(request, theForm);
 		return forward;
 	}
 

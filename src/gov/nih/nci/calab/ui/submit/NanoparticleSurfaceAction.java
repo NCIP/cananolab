@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSurfaceAction.java,v 1.15.2.1 2007-06-28 17:13:58 zengje Exp $ */
+/* CVS $Id: NanoparticleSurfaceAction.java,v 1.15.2.2 2007-06-29 14:56:12 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Surface;
@@ -64,9 +64,8 @@ public class NanoparticleSurfaceAction extends BaseCharacterizationAction {
 		int fileNumber = 0;
 		for (DerivedBioAssayDataBean obj : surfaceChar
 				.getDerivedBioAssayDataList()) {
-			LabFileBean fileBean = (LabFileBean) request
-					.getSession().getAttribute(
-							"characterizationFile" + fileNumber);
+			LabFileBean fileBean = (LabFileBean) request.getSession()
+					.getAttribute("characterizationFile" + fileNumber);
 			if (fileBean != null) {
 				// logger.info("************set fileBean to " + fileNumber);
 				obj.setFile(fileBean);
@@ -80,7 +79,6 @@ public class NanoparticleSurfaceAction extends BaseCharacterizationAction {
 		surfaceChar.setCreatedBy(user.getLoginName());
 		surfaceChar.setCreatedDate(date);
 
-		request.getSession().setAttribute("newCharacterizationCreated", "true");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addParticleSurface(particleType, particleName, surfaceChar);
 
@@ -90,16 +88,7 @@ public class NanoparticleSurfaceAction extends BaseCharacterizationAction {
 		msgs.add("message", msg);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
-
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
-
-		HttpSession session = request.getSession();
-//		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-//		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(
-//				session);
-		InitSessionSetup.getInstance().setAllInstruments(session);
-
+		super.postCreate(request, theForm);
 		return forward;
 	}
 
@@ -155,9 +144,11 @@ public class NanoparticleSurfaceAction extends BaseCharacterizationAction {
 		if (type != null && !type.equals("") && type.equals("charTables")) {
 			updateCharacterizationTables(achar);
 		}
-		if (type != null && !type.equals("") && type.equals("surfaceChemistries")) {
-			updateSurfaceChemistries(achar);;
-		}				
+		if (type != null && !type.equals("")
+				&& type.equals("surfaceChemistries")) {
+			updateSurfaceChemistries(achar);
+			;
+		}
 		theForm.set("achar", achar);
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
@@ -170,7 +161,8 @@ public class NanoparticleSurfaceAction extends BaseCharacterizationAction {
 	 * @param particle
 	 */
 	private void updateSurfaceChemistries(SurfaceBean surface) {
-		int surfaceChemistryNum = Integer.parseInt(surface.getNumberOfSurfaceChemistries());
+		int surfaceChemistryNum = Integer.parseInt(surface
+				.getNumberOfSurfaceChemistries());
 		List<SurfaceChemistryBean> origSurfaceChemistries = surface
 				.getSurfaceChemistries();
 		int origNum = (origSurfaceChemistries == null) ? 0

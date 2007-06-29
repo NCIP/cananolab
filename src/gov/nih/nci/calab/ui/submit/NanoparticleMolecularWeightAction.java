@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleMolecularWeightAction.java,v 1.13.2.1 2007-06-28 17:13:58 zengje Exp $ */
+/* CVS $Id: NanoparticleMolecularWeightAction.java,v 1.13.2.2 2007-06-29 14:56:12 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.MolecularWeight;
@@ -78,7 +78,8 @@ public class NanoparticleMolecularWeightAction extends
 					}
 				} catch (NumberFormatException formatE) {
 					ActionMessages msgs = new ActionMessages();
-					ActionMessage msg = new ActionMessage("errors.float",
+					ActionMessage msg = new ActionMessage(
+							"errors.float",
 							new String[] { CaNanoLabConstants.PHYSICAL_MOLECULAR_WEIGHT });
 					msgs.add("message", msg);
 					saveMessages(request, msgs);
@@ -94,9 +95,8 @@ public class NanoparticleMolecularWeightAction extends
 			logger
 					.info("************************MWAction():char.derivedBioAssayData.type:"
 							+ obj.getType());
-			LabFileBean fileBean = (LabFileBean) request
-					.getSession().getAttribute(
-							"characterizationFile" + fileNumber);
+			LabFileBean fileBean = (LabFileBean) request.getSession()
+					.getAttribute("characterizationFile" + fileNumber);
 			if (fileBean != null) {
 				logger.info("************set fileBean to " + fileNumber);
 				obj.setFile(fileBean);
@@ -110,7 +110,6 @@ public class NanoparticleMolecularWeightAction extends
 		molecularWeightChar.setCreatedBy(user.getLoginName());
 		molecularWeightChar.setCreatedDate(date);
 
-		request.getSession().setAttribute("newCharacterizationCreated", "true");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addParticleMolecularWeight(particleType, particleName,
 				molecularWeightChar);
@@ -121,17 +120,7 @@ public class NanoparticleMolecularWeightAction extends
 		msgs.add("message", msg);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
-
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
-
-		HttpSession session = request.getSession();
-//		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-//
-//		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(
-//				session);
-		InitSessionSetup.getInstance().setAllInstruments(session);
-
+		super.postCreate(request, theForm);
 		return forward;
 	}
 

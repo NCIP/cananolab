@@ -106,7 +106,6 @@ public class InvitroEnzymeInductionAction extends BaseCharacterizationAction {
 		enzymeInductionChar.setCreatedBy(user.getLoginName());
 		enzymeInductionChar.setCreatedDate(date);
 
-		request.getSession().setAttribute("newCharacterizationCreated", "true");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addEnzymeInduction(particleType, particleName,
 				enzymeInductionChar);
@@ -118,15 +117,7 @@ public class InvitroEnzymeInductionAction extends BaseCharacterizationAction {
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
 
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
-
-		HttpSession session = request.getSession();
-//		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-//		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(
-//				session);
-		InitSessionSetup.getInstance().setAllInstruments(session);
-
+		super.postCreate(request, theForm);
 		return forward;
 	}
 
