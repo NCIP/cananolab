@@ -14,22 +14,28 @@
 				</h4>
 			</td>
 			<td align="right" width="15%">
-				<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=nano_solubility_help')" class="helpText">Help</a>
+				<a
+					href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=nano_solubility_help')"
+					class="helpText">Help</a>
 			</td>
 		</tr>
 		<tr>
 			<td colspan="2">
 				<h5 align="center">
-					${nanoparticleSolubilityForm.map.particleName} (${nanoparticleSolubilityForm.map.particleType})
+					${nanoparticleSolubilityForm.map.particleName}
+					(${nanoparticleSolubilityForm.map.particleType})
 				</h5>
 			</td>
 		</tr>
 		<tr>
 			<td colspan="2">
 				<jsp:include page="/bodyMessage.jsp?bundle=submit" />
-				<jsp:include page="bodySharedCharacterizationSummary.jsp?formName=nanoparticleSolubilityForm" />
-				<jsp:include page="bodySharedCharacterizationInstrument.jsp?formName=nanoparticleSolubilityForm" />
-				<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+				<jsp:include
+					page="bodySharedCharacterizationSummary.jsp?formName=nanoparticleSolubilityForm" />
+				<jsp:include
+					page="bodySharedCharacterizationInstrument.jsp?formName=nanoparticleSolubilityForm" />
+				<table class="topBorderOnly" cellspacing="0" cellpadding="3"
+					width="100%" align="center" summary="" border="0">
 					<tbody>
 						<tr class="topBorder">
 							<td class="formTitle" colspan="6">
@@ -95,18 +101,19 @@
 				</table>
 				<br />
 				<%-- size characterization specific --%>
-				<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+				<table class="topBorderOnly" cellspacing="0" cellpadding="3"
+					width="100%" align="center" summary="" border="0">
 					<tbody>
 						<tr class="topBorder">
 							<td class="formTitle" colspan="4">
 								<div align="justify">
-									Solubility Image
+								    Characterization File Information
 								</div>
 							</td>
 						</tr>
 						<tr>
 							<td class="leftLabel">
-								<strong>Number of Images</strong>
+								<strong>Number of Files</strong>
 							</td>
 							<td class="label">
 								<c:choose>
@@ -122,41 +129,30 @@
 								&nbsp;
 								<c:choose>
 									<c:when test="${canUserSubmit eq 'true'}">
-										<input type="button" onclick="javascript:updateCharts(this.form, 'nanoparticleSolubility')" value="Update Images">
+										<input type="button"
+											onclick="javascript:updateCharts(this.form, 'nanoparticleSolubility')"
+											value="Update Files">
 									</c:when>
 								</c:choose>
 							</td>
 						</tr>
 						<tr>
 							<td class="completeLabel" colspan="4">
-								<logic:iterate name="nanoparticleSolubilityForm" property="achar.derivedBioAssayDataList" id="derivedBioAssayData" indexId="chartInd">
-									<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+								<logic:iterate name="nanoparticleSolubilityForm"
+									property="achar.derivedBioAssayDataList"
+									id="derivedBioAssayData" indexId="chartInd">
+									<table class="topBorderOnly" cellspacing="0" cellpadding="3"
+										width="100%" align="center" summary="" border="0">
 										<tbody>
 											<tr class="topBorder">
 												<td class="formSubTitle" colspan="4">
 													<div align="justify">
-														Graph ${chartInd+1}
+														File ${chartInd+1}
 													</div>
 												</td>
 											</tr>
-											<tr>
-												<td class="leftLabel">
-													<strong>Type </strong>
-												</td>
-												<td class="rightLabel" colspan="3">
-													<c:choose>
-														<c:when test="${canUserSubmit eq 'true'}">
-															<html:select property="achar.derivedBioAssayDataList[${chartInd}].type">
-																<html:options name="allSolubilityDistributionGraphTypes" />
-															</html:select>
-														</c:when>
-														<c:otherwise>
-						${nanoparticleSolubilityForm.map.achar.derivedBioAssayDataList[chartInd].type}&nbsp;
-					</c:otherwise>
-													</c:choose>
-												</td>
-											</tr>
-											<jsp:include page="bodySharedCharacterizationFile.jsp?chartInd=${chartInd}&formName=nanoparticleSolubilityForm&actionName=nanoparticleSolubility" />
+											<jsp:include
+												page="bodySharedCharacterizationFile.jsp?chartInd=${chartInd}&formName=nanoparticleSolubilityForm&actionName=nanoparticleSolubility" />
 										</tbody>
 									</table>
 									<br>

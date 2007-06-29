@@ -35,13 +35,13 @@
 						<tr class="topBorder">
 							<td class="formTitle" colspan="4">
 								<div align="justify">
-									Size Distribution
+									Characterization File Information
 								</div>
 							</td>
 						</tr>
 						<tr>
 							<td class="leftLabel">
-								<strong>Number of Distributions</strong>
+								<strong>Number of Files</strong>
 							</td>
 							<td class="label">
 								<c:choose>
@@ -70,13 +70,13 @@
 											<tr class="topBorder">
 												<td class="formSubTitle" colspan="4">
 													<div align="justify">
-														Graph ${chartInd+1}
+														File ${chartInd+1}
 													</div>
 												</td>
 											</tr>
 											<tr>
 												<td class="leftLabel">
-													<strong>Graph Type </strong>
+													<strong>Data Category </strong>
 												</td>
 												<td class="rightLabel" colspan="3">
 													<c:choose>
