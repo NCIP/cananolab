@@ -47,11 +47,14 @@
 			<td class="leftLabel">
 				<strong>Initiator </strong>
 			</td>
-			<td class="label">
+			<td class="rightLabel" colspan="3">
 				<c:choose>
 					<c:when test="${canUserSubmit eq 'true'}">
-						<html:select property="polymer.initiator" onchange="javascript:updateOtherField(nanoparticleCompositionForm, 'polymer.initiator', 'polymer.otherInitiator')">
-							<option />
+						<html:select property="polymer.initiator" onkeydown="javascript:fnKeyDownHandler(this, event);"
+											onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
+											onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
+											onchange="fnChangeHandler_A(this, event);">
+							<option value="">--?--</option>
 								<html:options name="allPolymerInitiators" />
 						</html:select>
 					</c:when>
@@ -60,28 +63,6 @@
 					</c:otherwise>
 				</c:choose>
 			</td>
-			<c:choose>
-				<c:when test="${canUserSubmit eq 'true'}">
-					<td class="label">
-						<strong>Other Initiator </strong>
-					</td>
-					<td class="rightLabel">
-						<c:choose>
-							<c:when test="${nanoparticleCompositionForm.map.polymer.initiator eq 'Other'}">
-								<html:text property="polymer.otherInitiator" disabled="false" />
-							</c:when>
-							<c:otherwise>
-								<html:text property="polymer.otherInitiator" disabled="true" />
-							</c:otherwise>
-						</c:choose>
-					</td>
-				</c:when>
-				<c:otherwise>
-					<td class="rightlabel" colspan="2">
-						&nbsp;
-					</td>
-				</c:otherwise>
-			</c:choose>
 		</tr>
 	</tbody>
 </table>
