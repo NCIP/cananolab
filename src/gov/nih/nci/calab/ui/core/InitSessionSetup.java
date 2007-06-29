@@ -216,28 +216,6 @@ public class InitSessionSetup {
 			ContainerInfoBean containerInfo = lookupService
 					.getSampleContainerInfo();
 			session.setAttribute("sampleContainerInfo", containerInfo);
-
-			// exclude Other in the lists for search samples drop-down
-			List<String> rooms = new ArrayList<String>(containerInfo
-					.getStorageRooms());
-			rooms.remove(CaNanoLabConstants.OTHER);
-			List<String> freezers = new ArrayList<String>(containerInfo
-					.getStorageFreezers());
-			freezers.remove(CaNanoLabConstants.OTHER);
-			List<String> shelves = new ArrayList<String>(containerInfo
-					.getStorageShelves());
-			shelves.remove(CaNanoLabConstants.OTHER);
-			List<String> boxes = new ArrayList<String>(containerInfo
-					.getStorageBoxes());
-			boxes.remove(CaNanoLabConstants.OTHER);
-
-			ContainerInfoBean containerInfoExcludeOther = new ContainerInfoBean(
-					containerInfo.getQuantityUnits(), containerInfo
-							.getConcentrationUnits(), containerInfo
-							.getVolumeUnits(), containerInfo.getStorageLabs(),
-					rooms, freezers, shelves, boxes);
-			session.setAttribute("sampleContainerInfoExcludeOther",
-					containerInfoExcludeOther);
 		}
 		// clear the new sample created flag
 		session.removeAttribute("newSampleCreated");
@@ -278,27 +256,6 @@ public class InitSessionSetup {
 			ContainerInfoBean containerInfo = lookupService
 					.getAliquotContainerInfo();
 			session.setAttribute("aliquotContainerInfo", containerInfo);
-			// exclude Other in the lists for search aliquots drop-down
-			List<String> rooms = new ArrayList<String>(containerInfo
-					.getStorageRooms());
-			rooms.remove(CaNanoLabConstants.OTHER);
-			List<String> freezers = new ArrayList<String>(containerInfo
-					.getStorageFreezers());
-			freezers.remove(CaNanoLabConstants.OTHER);
-			List<String> shelves = new ArrayList<String>(containerInfo
-					.getStorageShelves());
-			shelves.remove(CaNanoLabConstants.OTHER);
-			List<String> boxes = new ArrayList<String>(containerInfo
-					.getStorageBoxes());
-			boxes.remove(CaNanoLabConstants.OTHER);
-
-			ContainerInfoBean containerInfoExcludeOther = new ContainerInfoBean(
-					containerInfo.getQuantityUnits(), containerInfo
-							.getConcentrationUnits(), containerInfo
-							.getVolumeUnits(), containerInfo.getStorageLabs(),
-					rooms, freezers, shelves, boxes);
-			session.setAttribute("aliquotContainerInfoExcludeOther",
-					containerInfoExcludeOther);
 		}
 		session.removeAttribute("newAliquotCreated");
 	}
@@ -439,49 +396,28 @@ public class InitSessionSetup {
 	}
 
 	public void setAllDendrimerBranches(HttpSession session) throws Exception {
-		if (session.getServletContext().getAttribute("allDendrimerBranches") == null
-				|| session.getAttribute("newCharacterizationCreated") != null) {
-			String[] branches = lookupService.getAllDendrimerBranches();
-			session.getServletContext().setAttribute("allDendrimerBranches",
-					branches);
-		}
+		String[] branches = lookupService.getAllDendrimerBranches();
+		session.getServletContext().setAttribute("allDendrimerBranches",
+				branches);
 	}
 
 	public void setAllDendrimerGenerations(HttpSession session)
 			throws Exception {
-		if (session.getServletContext().getAttribute("allDendrimerGenerations") == null
-				|| session.getAttribute("newCharacterizationCreated") != null) {
-			String[] generations = lookupService.getAllDendrimerGenerations();
-			session.getServletContext().setAttribute("allDendrimerGenerations",
-					generations);
-		}
-	}
-
-	public void addSessionAttributeElement(HttpSession session,
-			String attributeName, String newElement) throws Exception {
-		String[] attributeValues = (String[]) session.getServletContext()
-				.getAttribute(attributeName);
-		if (!StringUtils.contains(attributeValues, newElement, true)) {
-			session.getServletContext().setAttribute(attributeName,
-					StringUtils.add(attributeValues, newElement));
-		}
+		String[] generations = lookupService.getAllDendrimerGenerations();
+		session.getServletContext().setAttribute("allDendrimerGenerations",
+				generations);
 	}
 
 	public void setAllMetalCompositions(HttpSession session) throws Exception {
-		if (session.getServletContext().getAttribute("allMetalCompositions") == null) {
-			String[] compositions = lookupService.getAllMetalCompositions();
-			session.getServletContext().setAttribute("allMetalCompositions",
-					compositions);
-		}
+		String[] compositions = lookupService.getAllMetalCompositions();
+		session.getServletContext().setAttribute("allMetalCompositions",
+				compositions);
 	}
 
 	public void setAllPolymerInitiators(HttpSession session) throws Exception {
-		if ((session.getServletContext().getAttribute("allPolymerInitiators") == null)
-				|| (session.getAttribute("newCharacterizationCreated") != null)) {
-			String[] initiators = lookupService.getAllPolymerInitiators();
-			session.getServletContext().setAttribute("allPolymerInitiators",
-					initiators);
-		}
+		String[] initiators = lookupService.getAllPolymerInitiators();
+		session.getServletContext().setAttribute("allPolymerInitiators",
+				initiators);
 	}
 
 	public void setAllParticleFunctionTypes(HttpSession session)
@@ -496,11 +432,8 @@ public class InitSessionSetup {
 	}
 
 	public void setAllParticleSources(HttpSession session) throws Exception {
-		if (session.getServletContext().getAttribute("allParticleSources") == null) {
-			List<String> sources = lookupService.getAllParticleSources();
-			session.getServletContext().setAttribute("allParticleSources",
-					sources);
-		}
+		List<String> sources = lookupService.getAllParticleSources();
+		session.getServletContext().setAttribute("allParticleSources", sources);
 	}
 
 	public void setAllParticleCharacterizationTypes(HttpSession session)
@@ -603,7 +536,7 @@ public class InitSessionSetup {
 					.getRemoteFunctionMap(particleName, gridNode);
 			session.setAttribute("remoteFuncTypeFuncs", funcTypeFuncs);
 		}
-		
+
 		if (session.getAttribute("remoteParticleReports") == null
 				|| session.getAttribute("newReportCreated") != null
 				|| session.getAttribute("newRemoteParticleCreated") != null) {
@@ -618,7 +551,8 @@ public class InitSessionSetup {
 				|| session.getAttribute("newRemoteParticleCreated") != null) {
 			List<LabFileBean> associatedBeans = service
 					.getRemoteAssociatedFiles(particleName, gridNode);
-			session.setAttribute("remoteParticleAssociatedFiles", associatedBeans);
+			session.setAttribute("remoteParticleAssociatedFiles",
+					associatedBeans);
 		}
 		// not part of the side menu, but need to up
 		if (session.getAttribute("newRemoteParticleCreated") != null) {
@@ -643,27 +577,6 @@ public class InitSessionSetup {
 		}
 	}
 
-//	public void setAllInstrumentTypes(HttpSession session) throws Exception {
-//		if (session.getServletContext().getAttribute("allInstrumentTypes") == null) {
-//			List<LabelValueBean> instrumentTypes = lookupService
-//					.getAllInstrumentTypeAbbrs();
-//			session.getServletContext().setAttribute("allInstrumentTypes",
-//					instrumentTypes);
-//		}
-//	}
-//
-//	public void setAllInstrumentTypeManufacturers(HttpSession session)
-//			throws Exception {
-//		if (session.getServletContext().getAttribute(
-//				"allInstrumentTypeManufacturers") == null) {
-//			Map<String, SortedSet<String>> instrumentManufacturers = lookupService
-//					.getAllInstrumentManufacturers();
-//			session.getServletContext().setAttribute(
-//					"allInstrumentTypeManufacturers", instrumentManufacturers);
-//		}
-//	}
-
-	
 	public void setAllInstruments(HttpSession session) throws Exception {
 		if (session.getAttribute("allInstruments") == null
 				|| session.getAttribute("newInstrumentCreated") != null) {
@@ -770,19 +683,14 @@ public class InitSessionSetup {
 	}
 
 	public void setAllMorphologyTypes(HttpSession session) throws Exception {
-		if (session.getServletContext().getAttribute("allMorphologyTypes") == null) {
-			String[] morphologyTypes = lookupService.getAllMorphologyTypes();
-			session.getServletContext().setAttribute("allMorphologyTypes",
-					morphologyTypes);
-		}
+		String[] morphologyTypes = lookupService.getAllMorphologyTypes();
+		session.getServletContext().setAttribute("allMorphologyTypes",
+				morphologyTypes);
 	}
 
 	public void setAllShapeTypes(HttpSession session) throws Exception {
-		if (session.getServletContext().getAttribute("allShapeTypes") == null) {
-			String[] shapeTypes = lookupService.getAllShapeTypes();
-			session.getServletContext().setAttribute("allShapeTypes",
-					shapeTypes);
-		}
+		String[] shapeTypes = lookupService.getAllShapeTypes();
+		session.getServletContext().setAttribute("allShapeTypes", shapeTypes);
 	}
 
 	public void setAllStressorTypes(HttpSession session) throws Exception {
@@ -900,10 +808,8 @@ public class InitSessionSetup {
 	}
 
 	public void setAllCellLines(HttpSession session) throws Exception {
-		if (session.getServletContext().getAttribute("allCellLines") == null) {
-			String[] cellLines = lookupService.getAllCellLines();
-			session.getServletContext().setAttribute("allCellLines", cellLines);
-		}
+		String[] cellLines = lookupService.getAllCellLines();
+		session.getServletContext().setAttribute("allCellLines", cellLines);
 	}
 
 	public void setAllActivationMethods(HttpSession session) throws Exception {
@@ -928,16 +834,6 @@ public class InitSessionSetup {
 					CaNanoLabConstants.APP_OWNER);
 		}
 	}
-
-	// public void addCellLine(HttpSession session, String option) throws
-	// Exception {
-	// String[] cellLines = (String[])
-	// session.getServletContext().getAttribute("allCellLines");
-	// if (!StringHelper.contains(cellLines, option, true)) {
-	// session.getServletContext().setAttribute("allCellLines",
-	// StringHelper.add(cellLines, option));
-	// }
-	// }
 
 	/**
 	 * Create default CSM groups for default visible groups and admin
