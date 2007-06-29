@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-/* CVS $Id: ManageSampleService.java,v 1.9 2007-01-09 20:14:04 pansu Exp $ 
+/* CVS $Id: ManageSampleService.java,v 1.9.2.1 2007-06-29 15:43:48 pansu Exp $ 
  */
 public class ManageSampleService {
 	private static Logger logger = Logger.getLogger(ManageSampleService.class);
@@ -36,7 +36,7 @@ public class ManageSampleService {
 		// if not available, use the default
 		if (sampleNamePrefix == null)
 			sampleNamePrefix = CaNanoLabConstants.DEFAULT_SAMPLE_PREFIX;
-		
+
 		long seqId = 0;
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
@@ -161,13 +161,7 @@ public class ManageSampleService {
 			Nanoparticle doSample = new Nanoparticle();
 
 			// Front end source is a plain text, so just save the source object
-			String sampleSourceName = null;
-			if ((sample.getSampleSource()
-					.equals(CaNanoLabConstants.OTHER))) {
-				sampleSourceName = sample.getOtherSampleSource();
-			} else {
-				sampleSourceName = sample.getSampleSource();
-			}
+			String sampleSourceName = sample.getSampleSource();
 			if ((sampleSourceName != null)
 					&& (sampleSourceName.trim().length() > 0)) {
 				List existedSources = ida
@@ -193,15 +187,9 @@ public class ManageSampleService {
 			doSample.setLotDescription(sample.getLotDescription());
 			doSample.setLotId(sample.getLotId());
 			doSample.setName(sample.getSampleName());
-			// if
-			// (sample.getSampleType().equalsIgnoreCase(CaNanoLabConstants.OTHER)) {
-			// doSample.setType(sample.getOtherSampleType());
-			// if (!existingSampleTypes.contains(sample.getOtherSampleType())) {
-			// createNewSampleType = true;
-			// }
-			// } else {
+
 			doSample.setType(sample.getSampleType());
-			// }
+
 			// TODO: ReceivedBy and Date are not in the wireframe.
 
 			doSample.setReceivedBy("");
@@ -237,14 +225,8 @@ public class ManageSampleService {
 				doSampleContainer.setConcentrationUnit(containers[i]
 						.getConcentrationUnit());
 
-				if ((containers[i].getContainerType()
-						.equals(CaNanoLabConstants.OTHER))) {
-					doSampleContainer.setContainerType((containers[i]
-							.getOtherContainerType()));
-				} else {
-					doSampleContainer.setContainerType((containers[i]
-							.getContainerType()));
-				}
+				doSampleContainer.setContainerType((containers[i]
+						.getContainerType()));
 
 				// Container is created by the same person who creates sample
 				doSampleContainer.setCreatedBy(sample.getSampleSubmitter());
@@ -267,13 +249,8 @@ public class ManageSampleService {
 				// TODO: relationship with storage need to be added too.
 				HashSet<StorageElement> storages = new HashSet<StorageElement>();
 
-				String boxValue = null;
-				if ((containers[i].getStorageLocation().getBox()
-						.equals(CaNanoLabConstants.OTHER))) {
-					boxValue=containers[i].getStorageLocation().getOtherBox();
-				} else {
-					boxValue=containers[i].getStorageLocation().getBox();
-				}
+				String boxValue = containers[i].getStorageLocation().getBox();
+
 				if ((boxValue != null) && (boxValue.trim().length() > 0)) {
 					List existedSE = ida
 							.search("from StorageElement se where se.type = '"
@@ -292,13 +269,8 @@ public class ManageSampleService {
 					storages.add(box);
 				}
 
-				String shelfValue = null;
-				if ((containers[i].getStorageLocation().getShelf()
-						.equals(CaNanoLabConstants.OTHER))) {
-					shelfValue=containers[i].getStorageLocation().getOtherShelf();
-				} else {
-					shelfValue=containers[i].getStorageLocation().getShelf();
-				}
+				String shelfValue = containers[i].getStorageLocation()
+						.getShelf();
 
 				if ((shelfValue != null) && (shelfValue.trim().length() > 0)) {
 					List existedSE = ida
@@ -318,14 +290,9 @@ public class ManageSampleService {
 					// Create releationship between this source and this sample
 					storages.add(shelf);
 				}
-			
-				String freezerValue = null;
-				if ((containers[i].getStorageLocation().getFreezer()
-						.equals(CaNanoLabConstants.OTHER))) {
-					freezerValue=containers[i].getStorageLocation().getOtherFreezer();
-				} else {
-					freezerValue=containers[i].getStorageLocation().getFreezer();
-				}
+
+				String freezerValue = containers[i].getStorageLocation()
+						.getFreezer();
 
 				if ((freezerValue != null) && (freezerValue.length() > 0)) {
 					List existedSE = ida
@@ -345,14 +312,9 @@ public class ManageSampleService {
 					// Create releationship between this source and this sample
 					storages.add(freezer);
 				}
-				 
-				String roomValue = null;
-				if ((containers[i].getStorageLocation().getRoom()
-						.equals(CaNanoLabConstants.OTHER))) {
-					roomValue=containers[i].getStorageLocation().getOtherRoom();
-				} else {
-					roomValue=containers[i].getStorageLocation().getRoom();
-				}
+
+				String roomValue = containers[i].getStorageLocation().getRoom();
+
 				if ((roomValue != null) && (roomValue.length() > 0)) {
 					List existedSE = ida
 							.search("from StorageElement se where se.type = '"
@@ -379,12 +341,6 @@ public class ManageSampleService {
 				doSampleContainer.setStorageElementCollection(storages);
 				ida.store(doSampleContainer);
 			}
-			// save new sample type info if needed
-			// if (createNewSampleType) {
-			// SampleType newSampleType = new SampleType();
-			// newSampleType.setName(sample.getOtherSampleType());
-			// ida.store(newSampleType);
-			// }
 
 		} catch (DuplicateEntriesException ce) {
 			throw ce;
