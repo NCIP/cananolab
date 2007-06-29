@@ -19,7 +19,7 @@ import java.util.Set;
  * 
  */
 
-/* CVS $Id: SampleBean.java,v 1.7 2007-01-09 20:12:36 pansu Exp $ */
+/* CVS $Id: SampleBean.java,v 1.7.2.1 2007-06-29 14:55:33 pansu Exp $ */
 public class SampleBean {
 	private String sampleId = "";
 
@@ -29,15 +29,11 @@ public class SampleBean {
 
 	private String sampleType = "";
 
-	// private String otherSampleType="";
-
 	private String sampleSOP = "";
 
 	private String sampleDescription = "";
 
 	private String sampleSource = "";
-
-	private String otherSampleSource = "";
 
 	private String sourceSampleId = "";
 
@@ -73,19 +69,17 @@ public class SampleBean {
 
 	public SampleBean(String sampleName, String sampleType, String sampleSOP,
 			String sampleDescription, String sampleSource,
-			String otherSampleSource, String sourceSampleId, Date dateReceived,
+			String sourceSampleId, Date dateReceived,
 			String solubility, String lotId, String lotDescription,
 			String numberOfContainers, String generalComments,
 			String sampleSubmitter, Date accessionDate) {
 		super();
 		// TODO Auto-generated constructor stub
 		this.sampleName = sampleName;
-		this.sampleType = sampleType;
-		// this.otherSampleType = otherSampleType;
+		this.sampleType = sampleType;		
 		this.sampleSOP = sampleSOP;
 		this.sampleDescription = sampleDescription;
 		this.sampleSource = sampleSource;
-		this.otherSampleSource = otherSampleSource;
 		this.sourceSampleId = sourceSampleId;
 		this.dateReceived = dateReceived;
 		this.lotId = lotId;
@@ -99,14 +93,14 @@ public class SampleBean {
 
 	public SampleBean(String sampleNamePrefix, String sampleName,
 			String sampleType, String sampleSOP, String sampleDescription,
-			String sampleSource, String otherSampleSource,
+			String sampleSource, 
 			String sourceSampleId, Date dateReceived, String solubility,
 			String lotId, String lotDescription, String numberOfContainers,
 			String generalComments, String sampleSubmitter, Date accessionDate,
 			ContainerBean[] containers) {
 
 		this(sampleName, sampleType, sampleSOP, sampleDescription,
-				sampleSource, otherSampleSource, sourceSampleId, dateReceived,
+				sampleSource, sourceSampleId, dateReceived,
 				solubility, lotId, lotDescription, numberOfContainers,
 				generalComments, sampleSubmitter, accessionDate);
 		this.sampleNamePrefix = sampleNamePrefix;
@@ -233,14 +227,6 @@ public class SampleBean {
 		this.sampleType = sampleType;
 	}
 
-	// public String getOtherSampleType() {
-	// return otherSampleType;
-	// }
-	//
-	// public void setOtherSampleType(String otherSampleType) {
-	// this.otherSampleType = otherSampleType;
-	// }
-
 	public String getSolubility() {
 		return solubility;
 	}
@@ -311,14 +297,6 @@ public class SampleBean {
 					CaNanoLabConstants.DATE_FORMAT);
 		}
 		return dateReceivedStr;
-	}
-
-	public String getOtherSampleSource() {
-		return otherSampleSource;
-	}
-
-	public void setOtherSampleSource(String otherSampleSource) {
-		this.otherSampleSource = otherSampleSource;
 	}
 
 	public SortableName getSortableName() {

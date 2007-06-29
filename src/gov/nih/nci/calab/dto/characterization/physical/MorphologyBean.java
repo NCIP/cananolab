@@ -17,16 +17,6 @@ import java.util.List;
 public class MorphologyBean extends CharacterizationBean {
 	private String type;
 
-	private String otherType;
-
-	public String getOtherType() {
-		return otherType;
-	}
-
-	public void setOtherType(String otherType) {
-		this.otherType = otherType;
-	}
-
 	public MorphologyBean() {
 		super();
 		initSetup();
@@ -73,19 +63,14 @@ public class MorphologyBean extends CharacterizationBean {
 		 */
 	}
 
-public Morphology getDomainObj() {
+	public Morphology getDomainObj() {
 		Morphology morphology = new Morphology();
 		super.updateDomainObj(morphology);
-		
-		if (this.type.equals(CaNanoLabConstants.OTHER) && !this.otherType.equalsIgnoreCase("")){
-			morphology.setType(this.otherType);
-		} else {
-			morphology.setType(this.type);
-		}
-			
-		
+		morphology.setType(this.type);
 		return morphology;
-	}	public String getType() {
+	}
+
+	public String getType() {
 		return type;
 	}
 

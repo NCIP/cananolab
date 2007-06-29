@@ -4,7 +4,6 @@ import gov.nih.nci.calab.domain.Measurement;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Stressor;
 import gov.nih.nci.calab.service.util.StringUtils;
 
-
 /**
  * This class represents the Stressor information
  * 
@@ -13,29 +12,24 @@ import gov.nih.nci.calab.service.util.StringUtils;
  */
 public class StressorBean {
 	private String id;
+
 	private String type;
+
 	private String value;
+
 	private String valueUnit;
+
 	private String description;
-
-	private String otherType;
-	
-	public String getOtherType() {
-		return otherType;
-	}
-
-	public void setOtherType(String otherType) {
-		this.otherType = otherType;
-	}
 
 	public StressorBean() {
 	}
-	
+
 	public StressorBean(Stressor aChar) {
 		this.id = aChar.getId().toString();
 		this.type = aChar.getType();
 		if (aChar.getValue() != null) {
-			this.value = StringUtils.convertToString(aChar.getValue().getValue());
+			this.value = StringUtils.convertToString(aChar.getValue()
+					.getValue());
 			this.valueUnit = aChar.getValue().getUnitOfMeasurement().toString();
 		}
 		this.description = aChar.getDescription();
@@ -80,20 +74,18 @@ public class StressorBean {
 	public void setId(String id) {
 		this.id = id;
 	}
-	
+
 	public Stressor getDomainObj() {
 		Stressor stressor = new Stressor();
-		
-		if (this.id != null && this.id.length() > 0) 
+
+		if (this.id != null && this.id.length() > 0)
 			stressor.setId(new Long(this.id));
-		
-		if (this.type.equalsIgnoreCase("other") && !this.otherType.equalsIgnoreCase(""))
-			stressor.setType(this.otherType);
-		else
-			stressor.setType(this.type);
-		stressor.setValue(new Measurement(new Float(this.value), this.valueUnit));
+
+		stressor.setType(this.type);
+		stressor
+				.setValue(new Measurement(new Float(this.value), this.valueUnit));
 		stressor.setDescription(this.description);
-		
+
 		return stressor;
 	}
 }
