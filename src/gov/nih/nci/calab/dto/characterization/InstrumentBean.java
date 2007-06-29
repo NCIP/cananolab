@@ -11,8 +11,6 @@ public class InstrumentBean {
 	private String description;
 	private String manufacturer;
 	private String abbreviation;
-	private String otherInstrumentType;
-	private String otherManufacturer;
 	
 	public InstrumentBean() {
 		
@@ -60,21 +58,5 @@ public class InstrumentBean {
 
 	public String getId() {
 		return id;
-	}
-
-	public String getOtherInstrumentType() {
-		return otherInstrumentType;
-	}
-
-	public void setOtherInstrumentType(String otherInstrumentType) {
-		this.otherInstrumentType = otherInstrumentType;
-	}
-
-	public String getOtherManufacturer() {
-		return otherManufacturer;
-	}
-
-	public void setOtherManufacturer(String otherManufacturer) {
-		this.otherManufacturer = otherManufacturer;
 	}
 }

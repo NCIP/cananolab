@@ -15,7 +15,7 @@ import java.util.Set;
  * @author pansu
  * 
  */
-/* CVS $Id: ContainerBean.java,v 1.3 2007-01-04 23:20:56 pansu Exp $ */
+/* CVS $Id: ContainerBean.java,v 1.3.2.1 2007-06-29 14:55:33 pansu Exp $ */
 
 public class ContainerBean {
 	private String containerId="";
@@ -23,8 +23,6 @@ public class ContainerBean {
 	private String containerName = "";
 
 	private String containerType = "";
-
-	private String otherContainerType = "";
 
 	private String quantity = "";
 
@@ -65,7 +63,6 @@ public class ContainerBean {
 	public ContainerBean(ContainerBean container) {
 		containerName = container.getContainerName();
 		containerType = container.getContainerType();
-		otherContainerType = container.getOtherContainerType();
 		quantity = container.getQuantity();
 		quantityUnit =container.getQuantityUnit();
 		concentration = container.getConcentration();
@@ -79,7 +76,7 @@ public class ContainerBean {
 		containerComments = container.getContainerComments();
 	}
 
-	public ContainerBean(String containerType, String otherContainerType,
+	public ContainerBean(String containerType, 
 			String quantity, String quantityUnit, String concentration,
 			String concentrationUnit, String volume, String volumeUnit,
 			String solvent, String safetyPrecaution, String storageCondition,
@@ -87,7 +84,6 @@ public class ContainerBean {
 		super();
 		// TODO Auto-generated constructor stub
 		this.containerType = containerType;
-		this.otherContainerType = otherContainerType;
 		this.quantity = quantity;
 		this.quantityUnit = quantityUnit;
 		this.concentration = concentration;
@@ -184,14 +180,6 @@ public class ContainerBean {
 
 	public void setContainerType(String containerType) {
 		this.containerType = containerType;
-	}
-
-	public String getOtherContainerType() {
-		return otherContainerType;
-	}
-
-	public void setOtherContainerType(String otherContainerType) {
-		this.otherContainerType = otherContainerType;
 	}
 
 	public String getQuantity() {

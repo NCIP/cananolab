@@ -10,40 +10,39 @@ import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 import java.util.List;
 
-
 /**
- * This class represents the cellViability characterization information to be shown in
- * the view page.
+ * This class represents the cellViability characterization information to be
+ * shown in the view page.
  * 
  * @author beasleyj
  * 
  */
 public class CellViabilityBean extends CharacterizationBean {
-	
-	private String cellLine;	
-	private String otherCellLine;
-//	private String cellDeathMethod;
+
+	private String cellLine;
+
+	// private String cellDeathMethod;
 
 	public CellViabilityBean() {
 		super();
 	}
-	
+
 	public CellViabilityBean(CellViability aChar) {
 		super(aChar);
 
 		this.cellLine = aChar.getCellLine();
-//		this.cellDeathMethod = aChar.getCellDeathMethod();
+		// this.cellDeathMethod = aChar.getCellDeathMethod();
 	}
 
 	public void setDerivedBioAssayDataList(
 			List<DerivedBioAssayDataBean> derivedBioAssayData) {
 		super.setDerivedBioAssayDataList(derivedBioAssayData);
-		
-		for (DerivedBioAssayDataBean table:getDerivedBioAssayDataList()) {
+
+		for (DerivedBioAssayDataBean table : getDerivedBioAssayDataList()) {
 			for (DatumBean datum : table.getDatumList()) {
 				datum.setType("Percent Cell Viability");
 				datum.setValueUnit("%");
-			}			
+			}
 		}
 	}
 
@@ -54,31 +53,23 @@ public class CellViabilityBean extends CharacterizationBean {
 	public void setCellLine(String cellLine) {
 		this.cellLine = cellLine;
 	}
-	
+
 	public CellViability getDomainObj() {
 		CellViability cellViability = new CellViability();
 		super.updateDomainObj(cellViability);
-		for (DerivedBioAssayData chart: cellViability.getDerivedBioAssayDataCollection()){
-			for (Datum data: chart.getDatumCollection()){
-				data.setType(CaNanoLabConstants.CYTOTOXICITY_CELL_VIABILITY_DATA_TYPE);
+		for (DerivedBioAssayData chart : cellViability
+				.getDerivedBioAssayDataCollection()) {
+			for (Datum data : chart.getDatumCollection()) {
+				data
+						.setType(CaNanoLabConstants.CYTOTOXICITY_CELL_VIABILITY_DATA_TYPE);
 				if (data.getValue() != null) {
-					data.getValue().setUnitOfMeasurement(CaNanoLabConstants.UNIT_PERCENT);
-				}			
+					data.getValue().setUnitOfMeasurement(
+							CaNanoLabConstants.UNIT_PERCENT);
+				}
 			}
 		}
-		if (cellLine.equals(CaNanoLabConstants.OTHER)) {
-			cellViability.setCellLine(this.otherCellLine);
-		} else {
-			cellViability.setCellLine(this.cellLine);
-		}
+		cellViability.setCellLine(this.cellLine);
+
 		return cellViability;
-	}
-
-	public String getOtherCellLine() {
-		return otherCellLine;
-	}
-
-	public void setOtherCellLine(String otherCellLine) {
-		this.otherCellLine = otherCellLine;
 	}
 }
