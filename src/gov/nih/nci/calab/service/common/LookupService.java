@@ -38,7 +38,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.93.2.1 2007-06-28 17:15:29 zengje Exp $ */
+/* CVS $Id: LookupService.java,v 1.93.2.2 2007-06-29 16:27:54 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -139,7 +139,6 @@ public class LookupService {
 		// Detail here
 		// Retrieve data from Sample_Type table
 		List<String> sampleTypes = new ArrayList<String>();
-		// sampleTypes.add(CaNanoLabConstants.OTHER);
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
@@ -201,11 +200,6 @@ public class LookupService {
 				boxes.add((storageElement.getLocation()));
 			}
 		}
-		rooms.add(CaNanoLabConstants.OTHER);
-		freezers.add(CaNanoLabConstants.OTHER);
-		shelves.add(CaNanoLabConstants.OTHER);
-		boxes.add(CaNanoLabConstants.OTHER);
-
 		// set labs and racks to null for now
 		ContainerInfoBean containerInfo = new ContainerInfoBean(quantityUnits,
 				concentrationUnits, volumeUnits, null, rooms, freezers,
@@ -433,7 +427,6 @@ public class LookupService {
 		} finally {
 			ida.close();
 		}
-		sampleSources.add(CaNanoLabConstants.OTHER);
 		return sampleSources;
 	}
 
@@ -653,7 +646,6 @@ public class LookupService {
 		}
 		names.addAll(Arrays
 				.asList(CaNanoLabConstants.DEFAULT_SURFACE_GROUP_NAMES));
-		names.add(CaNanoLabConstants.OTHER);
 
 		return (String[]) names.toArray(new String[0]);
 	}
@@ -678,7 +670,6 @@ public class LookupService {
 		}
 		branches.addAll(Arrays
 				.asList(CaNanoLabConstants.DEFAULT_DENDRIMER_BRANCHES));
-		branches.add(CaNanoLabConstants.OTHER);
 
 		return (String[]) branches.toArray(new String[0]);
 	}
@@ -703,7 +694,6 @@ public class LookupService {
 		}
 		generations.addAll(Arrays
 				.asList(CaNanoLabConstants.DEFAULT_DENDRIMER_GENERATIONS));
-		generations.add(CaNanoLabConstants.OTHER);
 
 		return (String[]) generations.toArray(new String[0]);
 	}
@@ -733,7 +723,6 @@ public class LookupService {
 		}
 		initiators.addAll(Arrays
 				.asList(CaNanoLabConstants.DEFAULT_POLYMER_INITIATORS));
-		initiators.add(CaNanoLabConstants.OTHER);
 
 		return (String[]) initiators.toArray(new String[0]);
 	}
@@ -833,8 +822,6 @@ public class LookupService {
 		} finally {
 			ida.close();
 		}
-		instrumentTypeAbbrs.add(new LabelValueBean(CaNanoLabConstants.OTHER,
-				CaNanoLabConstants.OTHER));
 
 		return instrumentTypeAbbrs;
 	}
@@ -870,8 +857,6 @@ public class LookupService {
 				String name = (String) obj;
 				allManufacturers.add(name);
 			}
-			instrumentManufacturers.put(CaNanoLabConstants.OTHER,
-					allManufacturers);
 
 		} catch (Exception e) {
 			logger
@@ -970,7 +955,6 @@ public class LookupService {
 		}
 		morphologyTypes.addAll(Arrays
 				.asList(CaNanoLabConstants.DEFAULT_MORPHOLOGY_TYPES));
-		morphologyTypes.add(CaNanoLabConstants.OTHER);
 
 		return (String[]) morphologyTypes.toArray(new String[0]);
 	}
@@ -995,7 +979,6 @@ public class LookupService {
 		shapeTypes
 				.addAll(Arrays.asList(CaNanoLabConstants.DEFAULT_SHAPE_TYPES));
 
-		shapeTypes.add(CaNanoLabConstants.OTHER);
 		return (String[]) shapeTypes.toArray(new String[0]);
 	}
 
@@ -1126,7 +1109,6 @@ public class LookupService {
 			ida.close();
 		}
 		cellLines.addAll(Arrays.asList(CaNanoLabConstants.DEFAULT_CELLLINES));
-		cellLines.add(CaNanoLabConstants.OTHER);
 
 		return (String[]) cellLines.toArray(new String[0]);
 
