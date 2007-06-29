@@ -10,7 +10,6 @@
 			<form-property name="sampleSOP" type="java.lang.String" />
 			<form-property name="sampleDescription" type="java.lang.String" />
 			<form-property name="sampleSource" type="java.lang.String" />
-			<form-property name="otherSampleSource" type="java.lang.String" />
 			<form-property name="sourceSampleId" type="java.lang.String" />
 			<form-property name="dateReceived" type="java.lang.String" />
 			<form-property name="lotId" type="java.lang.String" initial="N/A" />
