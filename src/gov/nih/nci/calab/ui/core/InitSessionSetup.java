@@ -784,8 +784,7 @@ public class InitSessionSetup {
 
 	public void setAllAgentTargetTypes(HttpSession session) throws Exception {
 		if (session.getServletContext().getAttribute("allAgentTargetTypes") == null) {
-			Map<String, String[]> agentTargetTypes = lookupService
-					.getAllAgentTargetTypes();
+			String[] agentTargetTypes = lookupService.getAllAgentTargetTypes();
 			session.getServletContext().setAttribute("allAgentTargetTypes",
 					agentTargetTypes);
 		}
