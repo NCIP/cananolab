@@ -26,12 +26,11 @@
 						onkeydown="javascript:fnKeyDownHandler(this, event);"
 						onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
 						onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-						onchange="fnChangeHandler_A(this, event);doubleDropdownForTheEditable(document.getElementById('instrumentType'), document.getElementById('instrumentManufacturer'), instrumentTypeManufacturers); filterAbbreviation();">
+						onchange="fnChangeHandler_A(this, event);filterAbbreviation();">
 						<option value="">
 							--?--
 						</option>						
-						<html:options collection="allInstrumentTypeToManufacturers"
-							property="key" labelProperty="key" />
+						<html:options name="allInstrumentTypes"/>
 					</html:select>
 				</c:when>
 				<c:otherwise>
@@ -62,12 +61,7 @@
 						onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
 						onchange="fnChangeHandler_A(this, event);">
 						<option value="">--?--</option>
-						<c:forEach var="manufacturer"
-							items="${allInstrumentTypeToManufacturers[thisForm.map.achar.instrumentConfigBean.instrumentBean.type]}">
-							<html:option value="${manufacturer}">
-								${manufacturer}
-							</html:option>
-						</c:forEach>
+						<html:options name="allManufacturers"/>				
 					</html:select>
 				</c:when>
 				<c:otherwise>
