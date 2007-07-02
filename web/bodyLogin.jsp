@@ -94,7 +94,7 @@
 								</tr>
 								<tr>
 									<td class="sidebarContent">
-										<strong>caNanoLab 1.0 is now available!</strong>
+										<strong>caNanoLab 1.2 is now available!</strong>
 										<br>
 										caNanoLab 1.0 contains the following features:
 										<br>
