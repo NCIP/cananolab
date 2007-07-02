@@ -43,8 +43,15 @@
 						<td class="label">
 							<c:choose>
 								<c:when test="${canUserSubmit eq 'true'}">
-									<html:select property="characterizationSource">
-										<html:options name="characterizationSources"/>
+									<html:select property="characterizationSource"
+										onkeydown="javascript:fnKeyDownHandler(this, event);"
+										onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
+										onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
+										onchange="fnChangeHandler_A(this, event);">
+										<option value="">
+											--?--
+										</option>
+										<html:options name="characterizationSources" />
 									</html:select>
 								</c:when>
 								<c:otherwise>
