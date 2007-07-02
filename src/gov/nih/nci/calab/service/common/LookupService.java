@@ -38,7 +38,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.93.2.3 2007-07-02 14:42:30 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.93.2.4 2007-07-02 16:53:47 zengje Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -1134,6 +1134,30 @@ public class LookupService {
 		String[] allReportTypes = new String[] { CaNanoLabConstants.REPORT,
 				CaNanoLabConstants.ASSOCIATED_FILE };
 		return allReportTypes;
+	}
+	
+	public String[] getAllCharacterizationSources() throws Exception{
+		SortedSet<String> sources = new TreeSet<String>();
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			String hqlString = "select distinct char.source from Characterization char where char.source is not null";
+			List results = ida.search(hqlString);
+			for (Object obj : results) {
+				sources.add((String) obj);
+			}
+		} catch (Exception e) {
+			logger.error("Problem to retrieve all Characterization Sources.");
+			throw new RuntimeException(
+					"Problem to retrieve all Characterization Sources. ");
+		} finally {
+			ida.close();
+		}
+		sources.addAll(Arrays
+				.asList(CaNanoLabConstants.DEFAULT_CHARACTERIZATION_SOURCES));
+
+		return (String[]) sources.toArray(new String[0]);
 	}
 
 }
