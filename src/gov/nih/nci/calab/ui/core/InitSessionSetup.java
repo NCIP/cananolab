@@ -705,8 +705,6 @@ public class InitSessionSetup {
 		// set static boolean yes or no and characterization source choices
 		session.setAttribute("booleanChoices",
 				CaNanoLabConstants.BOOLEAN_CHOICES);
-		session.setAttribute("characterizationSources",
-				CaNanoLabConstants.CHARACTERIZATION_SOURCES);
 		session.setAttribute("allCarbonNanotubeWallTypes",
 				CaNanoLabConstants.CARBON_NANOTUBE_WALLTYPES);
 		if (session.getAttribute("allReportTypes") == null) {
@@ -831,6 +829,14 @@ public class InitSessionSetup {
 		if (session.getServletContext().getAttribute("applicationOwner") == null) {
 			session.getServletContext().setAttribute("applicationOwner",
 					CaNanoLabConstants.APP_OWNER);
+		}
+	}
+	
+	public void setAllCharacterizationSources(HttpSession session) throws Exception{
+		if (session.getAttribute("characterizationSources") == null || 
+				session.getAttribute("newCharacterizationCreated") != null) {
+			String[] characterizationSources = lookupService.getAllCharacterizationSources();
+			session.setAttribute("characterizationSources", characterizationSources);
 		}
 	}
 
