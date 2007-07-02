@@ -38,7 +38,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.93.2.4 2007-07-02 16:53:47 zengje Exp $ */
+/* CVS $Id: LookupService.java,v 1.93.2.5 2007-07-02 19:30:55 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -876,7 +876,7 @@ public class LookupService {
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
-			String hqlString = "from Instrument instrument where instrument.type is not null and instrument.manufacturer is not null order by instrument.type";
+			String hqlString = "from Instrument instrument where instrument.type is not null order by instrument.type";
 			List results = ida.search(hqlString);
 			for (Object obj : results) {
 				Instrument instrument = (Instrument) obj;
@@ -1159,5 +1159,25 @@ public class LookupService {
 
 		return (String[]) sources.toArray(new String[0]);
 	}
-
+	
+	public SortedSet<String> getAllManufacturers() throws Exception {
+		SortedSet<String> manufacturers = new TreeSet<String>();
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			String hqlString = "select distinct instrument.manufacturer from Instrument instrument";
+			List results = ida.search(hqlString);
+			for (Object obj : results) {
+				String manufacturer = (String) obj;
+				manufacturers.add(manufacturer);
+			}
+		} catch (Exception e) {
+			logger.error("Problem to retrieve all manufacturers. " + e);
+			throw new RuntimeException("Problem to retrieve all manufacturers. ");
+		} finally {
+			ida.close();
+		}
+		return manufacturers;
+	}
 }
