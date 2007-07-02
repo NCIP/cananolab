@@ -206,7 +206,7 @@ function clearOtherAgents(agentType, elementPrefix) {
 												<td class="rightLabel" colspan="3">
 													<c:choose>
 														<c:when test="${canUserSubmit eq 'true'}">
-															<html:textarea property="function.linkages[${linkageInd}].description" rows="3" cols="80" />
+															<html:textarea property="function.linkages[${linkageInd}].description" rows="3" cols="60" />
 														</c:when>
 														<c:otherwise>
 															${linkage.description}&nbsp;
@@ -354,7 +354,7 @@ function clearOtherAgents(agentType, elementPrefix) {
 												<td class="rightLabel" colspan="3">
 													<c:choose>
 														<c:when test="${canUserSubmit eq 'true'}">
-															<html:textarea property="function.linkages[${linkageInd}].agent.description" rows="3" cols="50" />
+															<html:textarea property="function.linkages[${linkageInd}].agent.description" rows="3" cols="60" />
 														</c:when>
 														<c:otherwise>
 															${linkage.agent.description}&nbsp;
@@ -403,9 +403,7 @@ function clearOtherAgents(agentType, elementPrefix) {
 																		<c:choose>
 																			<c:when test="${canUserSubmit eq 'true'}">
 																				<html:select property="function.linkages[${linkageInd}].agent.agentTargets[${tIndex}].type">
-																					<c:forEach var="agentTargetType" items="${allAgentTargetTypes[linkage.agent.type]}">
-																						<html:option value="${agentTargetType}" />
-																					</c:forEach>
+																					<html:options name="allAgentTargetTypes" />																					
 																				</html:select>
 																			</c:when>
 																			<c:otherwise>
@@ -436,7 +434,7 @@ function clearOtherAgents(agentType, elementPrefix) {
 																	<td class="rightLabel" colspan="3">
 																		<c:choose>
 																			<c:when test="${canUserSubmit eq 'true'}">
-																				<html:textarea property="function.linkages[${linkageInd}].agent.agentTargets[${tIndex}].description" rows="3" />
+																				<html:textarea property="function.linkages[${linkageInd}].agent.agentTargets[${tIndex}].description" rows="3" cols="60"/>
 																			</c:when>
 																			<c:otherwise>
 																				${linkage.agent.agentTargets[tIndex].description}&nbsp;

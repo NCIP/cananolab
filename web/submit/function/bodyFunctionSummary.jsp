@@ -54,7 +54,7 @@
 		<td class="rightLabel" colspan="3">
 			<c:choose>
 				<c:when test="${canUserSubmit eq 'true'}">
-					<html:textarea property="function.description" rows="3" cols="80"/>
+					<html:textarea property="function.description" rows="3" cols="60"/>
 				</c:when>
 				<c:otherwise>
 						${nanoparticleFunctionForm.map.function.description}&nbsp;
