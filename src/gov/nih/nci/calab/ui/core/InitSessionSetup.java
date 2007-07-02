@@ -32,7 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
-import java.util.TreeMap;
+import java.util.TreeSet;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -581,30 +581,17 @@ public class InitSessionSetup {
 	}
 
 	public void setAllInstruments(HttpSession session) throws Exception {
-		if (session.getAttribute("allInstruments") == null
+		if (session.getAttribute("allInstrumentTypes") == null
 				|| session.getAttribute("newInstrumentCreated") != null) {
-			List<InstrumentBean> instruments = lookupService
-					.getAllInstruments();
-			List<String> manufacturers = new ArrayList<String>();
-			Map<String, List<String>> typeToManufacturers = new TreeMap<String, List<String>>();
-			List<String> instrumentTypes = new ArrayList<String>();
-			for (InstrumentBean instrument : instruments) {
-				String type = instrument.getType();
-				if (typeToManufacturers.get(type) != null) {
-					manufacturers = (List<String>) typeToManufacturers
-							.get(type);
-				} else {
-					manufacturers = new ArrayList<String>();
-					typeToManufacturers.put(type, manufacturers);
-				}
-				manufacturers.add(instrument.getManufacturer());
-				if (!instrumentTypes.contains(type)) {
-					instrumentTypes.add(type);
-				}
+			List<InstrumentBean>instruments=lookupService.getAllInstruments();
+			SortedSet<String> instrumentTypes=new TreeSet<String>();
+			for (InstrumentBean instrument: instruments) {
+				instrumentTypes.add(instrument.getType());
 			}
+			SortedSet<String> manufacturers=lookupService.getAllManufacturers();			
 			session.setAttribute("allInstruments", instruments);
-			session.setAttribute("allInstrumentTypeToManufacturers",
-					typeToManufacturers);
+			session.setAttribute("allInstrumentTypes", instrumentTypes);
+			session.setAttribute("allManufacturers", manufacturers);			
 		}
 		session.removeAttribute("newInstrumentCreated");
 	}
