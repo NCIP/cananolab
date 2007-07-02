@@ -7,12 +7,13 @@ package gov.nih.nci.calab.ui.inventory;
  * @author pansu
  */
 
-/* CVS $Id: CreateSampleAction.java,v 1.10 2007-05-07 18:55:56 pansu Exp $ */
+/* CVS $Id: CreateSampleAction.java,v 1.11 2007-07-02 21:43:14 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.inventory.ContainerBean;
 import gov.nih.nci.calab.dto.inventory.ContainerInfoBean;
 import gov.nih.nci.calab.dto.inventory.SampleBean;
 import gov.nih.nci.calab.service.inventory.ManageSampleService;
+import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
 import gov.nih.nci.calab.service.util.StringUtils;
@@ -103,9 +104,9 @@ public class CreateSampleAction extends AbstractDispatchAction {
 		manageSampleService.saveSample(sample, containers);
 
 		// create a new user group for the source specified
-		// UserService userService = new UserService(
-		// CaNanoLabConstants.CSM_APP_NAME);
-		// userService.createAGroup(sampleSource);
+		UserService userService = new UserService(
+				CaNanoLabConstants.CSM_APP_NAME);
+		userService.createAGroup(sampleSource);
 
 		// set a flag to indicate that new sample have been created so session
 		// can be refreshed in initSession.do
@@ -200,7 +201,7 @@ public class CreateSampleAction extends AbstractDispatchAction {
 		String newSampleSource = (String) theForm.get("sampleSource");
 		List sampleSources = (List) session.getAttribute("allSampleSources");
 		if (!sampleSources.contains(newSampleSource)
-				&&newSampleSource.length()>0) {
+				&& newSampleSource.length() > 0) {
 			sampleSources.add(newSampleSource);
 		}
 		// update container type drop-down list to include the new entry

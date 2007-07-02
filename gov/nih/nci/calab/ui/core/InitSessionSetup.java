@@ -380,6 +380,7 @@ public class InitSessionSetup {
 			List<String> groupNames = userService.getAllVisibilityGroups();
 			session.setAttribute("allVisibilityGroups", groupNames);
 		}
+		session.removeAttribute("newSampleCreated");		
 	}
 
 	public void setAllDendrimerCores(HttpSession session) throws Exception {
@@ -623,8 +624,6 @@ public class InitSessionSetup {
 		// set static boolean yes or no and characterization source choices
 		session.setAttribute("booleanChoices",
 				CaNanoLabConstants.BOOLEAN_CHOICES);
-		session.setAttribute("characterizationSources",
-				CaNanoLabConstants.CHARACTERIZATION_SOURCES);
 		session.setAttribute("allCarbonNanotubeWallTypes",
 				CaNanoLabConstants.CARBON_NANOTUBE_WALLTYPES);
 		if (session.getAttribute("allReportTypes") == null) {
@@ -798,8 +797,7 @@ public class InitSessionSetup {
 
 	public void setAllAgentTargetTypes(HttpSession session) throws Exception {
 		if (session.getServletContext().getAttribute("allAgentTargetTypes") == null) {
-			Map<String, String[]> agentTargetTypes = lookupService
-					.getAllAgentTargetTypes();
+			String[] agentTargetTypes = lookupService.getAllAgentTargetTypes();
 			session.getServletContext().setAttribute("allAgentTargetTypes",
 					agentTargetTypes);
 		}
@@ -851,6 +849,14 @@ public class InitSessionSetup {
 		}
 	}
 
+	public void setAllCharacterizationSources(HttpSession session) throws Exception{
+		if (session.getAttribute("characterizationSources") == null || 
+				session.getAttribute("newCharacterizationCreated") != null) {
+			String[] characterizationSources = lookupService.getAllCharacterizationSources();
+			session.setAttribute("characterizationSources", characterizationSources);
+		}
+		session.removeAttribute("newCharacterizationCreated");
+	}
 	// public void addCellLine(HttpSession session, String option) throws
 	// Exception {
 	// String[] cellLines = (String[])
@@ -875,30 +881,17 @@ public class InitSessionSetup {
 	public void setAllInstruments(HttpSession session) throws Exception {
 		if (session.getAttribute("allInstruments") == null
 				|| session.getAttribute("newInstrumentCreated") != null) {
-			List<InstrumentBean> instruments = lookupService
-					.getAllInstruments();
-			List<String> manufacturers = new ArrayList<String>();
-			Map<String, List<String>> typeToManufacturers = new TreeMap<String, List<String>>();
-			List<String> instrumentTypes = new ArrayList<String>();
-			for (InstrumentBean instrument : instruments) {
-				String type = instrument.getType();
-				if (typeToManufacturers.get(type) != null) {
-					manufacturers = (List<String>) typeToManufacturers
-							.get(type);
-				} else {
-					manufacturers = new ArrayList<String>();
-					typeToManufacturers.put(type, manufacturers);
-				}
-				manufacturers.add(instrument.getManufacturer());
-				if (!instrumentTypes.contains(type)) {
-					instrumentTypes.add(type);
-				}
+			List<InstrumentBean>instruments=lookupService.getAllInstruments();
+			SortedSet<String> instrumentTypes=new TreeSet<String>();
+			for (InstrumentBean instrument: instruments) {
+				instrumentTypes.add(instrument.getType());
 			}
+			SortedSet<String> manufacturers=lookupService.getAllManufacturers();			
 			session.setAttribute("allInstruments", instruments);
-			session.setAttribute("allInstrumentTypeToManufacturers",
-					typeToManufacturers);
+			session.setAttribute("allInstrumentTypes", instrumentTypes);
+			session.setAttribute("allManufacturers", manufacturers);			
 		}
-		session.removeAttribute("newInstrumentCreated");
+		session.removeAttribute("newInstrumentCreated");		
 	}
 
 	public void setAllDerivedDataFileTypes(HttpSession session)

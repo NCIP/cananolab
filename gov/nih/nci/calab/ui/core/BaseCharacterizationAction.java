@@ -191,6 +191,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 
 		InitSessionSetup.getInstance().setDerivedDataCategoriesDatumNames(
 				session, charName);
+		InitSessionSetup.getInstance().setAllCharacterizationSources(session);
 	}
 
 	/**
