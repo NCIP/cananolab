@@ -581,7 +581,7 @@ public class InitSessionSetup {
 	}
 
 	public void setAllInstruments(HttpSession session) throws Exception {
-		if (session.getAttribute("allInstrumentTypes") == null
+		if (session.getAttribute("allInstruments") == null
 				|| session.getAttribute("newInstrumentCreated") != null) {
 			List<InstrumentBean>instruments=lookupService.getAllInstruments();
 			SortedSet<String> instrumentTypes=new TreeSet<String>();
