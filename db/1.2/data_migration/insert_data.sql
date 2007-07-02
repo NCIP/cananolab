@@ -8,6 +8,22 @@ char_table_pk_id, characterization_pk_id, type, list_index
 from characterization_table;
 
 
+-- map derived_bioassay_data.type to bioassay_data_data_category
+-- update the category name to *** Distribution
+
+update DERIVED_BIOASSAY_DATA  
+set category=category || ' Distribution' 
+where  CATEGORY in 
+(select data.CATEGORY
+from DERIVED_BIOASSAY_DATA data, CHARACTERIZATION chara 
+where data.CHARACTERIZATION_PK_ID = chara.CHARACTERIZATION_PK_ID 
+and data.CATEGORY is not null
+and data.CATEGORY != 'Image'
+and data.CATEGORY != 'Graph'); 
+
+--  insert data into bioassay_data_data_category
+@insert_bioassay_data_data_category.sql;
+
 
 -- migrate data from table_data to Datum
 -- insert_datum_datum_condition.sql
