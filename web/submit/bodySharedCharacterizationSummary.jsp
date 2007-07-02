@@ -28,7 +28,7 @@
 						onchange="fnChangeHandler_A(this, event);">
 						<option value="">
 							--?--
-						</option>
+						</option>						
 						<html:options name="characterizationSources" />
 					</html:select>
 				</c:when>
