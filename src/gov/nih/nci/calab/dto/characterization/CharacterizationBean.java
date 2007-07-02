@@ -1,15 +1,11 @@
 package gov.nih.nci.calab.dto.characterization;
 
-import gov.nih.nci.calab.domain.Instrument;
 import gov.nih.nci.calab.domain.InstrumentConfiguration;
-import gov.nih.nci.calab.domain.InstrumentType;
-import gov.nih.nci.calab.domain.Manufacturer;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.CharacterizationProtocol;
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.dto.common.InstrumentConfigBean;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
-import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -155,7 +151,11 @@ public class CharacterizationBean {
 		if (instrumentConfig.getInstrument().getType().length() > 0) {
 			aChar.setInstrumentConfiguration(instrumentConfig);
 		}
-
+		//temp code to be replaced in release 1.2
+		else if (instrumentConfig.getDescription().length()>0 &&
+				instrumentConfig.getInstrument().getManufacturer().length()>0) {
+			throw new RuntimeException ("Instrument Type is required when manufacturer or descriptions are not empty.");
+		}
 
 		CharacterizationProtocolBean characterizationProtocolBean = getCharacterizationProtocol();
 
