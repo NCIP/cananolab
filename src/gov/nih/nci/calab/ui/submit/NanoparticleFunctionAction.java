@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleFunctionAction.java,v 1.9 2006-12-13 18:04:13 zengje Exp $ */
+/* CVS $Id: NanoparticleFunctionAction.java,v 1.9.2.1 2007-07-02 17:16:59 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.function.Function;
 import gov.nih.nci.calab.dto.function.AgentBean;
@@ -63,7 +63,7 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 		// TODO save in database
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addParticleFunction(particleType, particleName, function);
-		
+
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.addparticle.function");
 		msgs.add("message", msg);
@@ -123,7 +123,7 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 		InitSessionSetup.getInstance().setStaticDropdowns(session);
 		InitSessionSetup.getInstance().setAllSpecies(session);
 	}
-	
+
 	/**
 	 * Set up the form for updating existing characterization
 	 * 
@@ -142,13 +142,12 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 		String functionId = (String) theForm.get("functionId");
 
 		SearchNanoparticleService service = new SearchNanoparticleService();
-		Function aFunc = service
-				.getFunctionBy(functionId);
+		Function aFunc = service.getFunctionBy(functionId);
 
 		HttpSession session = request.getSession();
 		// clear session data from the input forms
-		clearMap(session, theForm, mapping);	
-		FunctionBean function=new FunctionBean(aFunc);
+		clearMap(session, theForm, mapping);
+		FunctionBean function = new FunctionBean(aFunc);
 		theForm.set("function", function);
 		return mapping.getInputForward();
 	}
@@ -206,7 +205,10 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 	 * @param function
 	 */
 	private void updateLinkages(FunctionBean function) {
-		int linkageNum = new Integer(function.getNumberOfLinkages());
+		int linkageNum = 0;
+		if (function.getNumberOfLinkages().length() > 0) {
+			linkageNum = new Integer(function.getNumberOfLinkages());
+		}
 		List<LinkageBean> origLinkages = function.getLinkages();
 		int origNum = (origLinkages == null) ? 0 : origLinkages.size();
 		List<LinkageBean> linkages = new ArrayList<LinkageBean>();
@@ -243,8 +245,11 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 	private void updateAgentTargets(FunctionBean function, String linkageIndex) {
 		int linkageInd = (new Integer(linkageIndex)).intValue();
 		AgentBean agent = function.getLinkages().get(linkageInd).getAgent();
-		int targetNum = (new Integer(agent.getNumberOfAgentTargets()))
-				.intValue();
+		int targetNum = 0;
+		if (agent.getNumberOfAgentTargets().length() > 0) {
+			targetNum = (new Integer(agent.getNumberOfAgentTargets()))
+					.intValue();
+		}
 		List<AgentTargetBean> origTargets = agent.getAgentTargets();
 		int origNum = (origTargets == null) ? 0 : origTargets.size();
 		List<AgentTargetBean> targets = new ArrayList<AgentTargetBean>();

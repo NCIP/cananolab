@@ -365,6 +365,7 @@ public class InitSessionSetup {
 			session.setAttribute("allParticleTypes", particleTypes);
 		}
 		session.removeAttribute("newParticleCreated");
+		session.removeAttribute("newSampleCreated");
 	}
 
 	public void setAllVisibilityGroups(HttpSession session) throws Exception {
@@ -373,6 +374,7 @@ public class InitSessionSetup {
 			List<String> groupNames = userService.getAllVisibilityGroups();
 			session.setAttribute("allVisibilityGroups", groupNames);
 		}
+		session.removeAttribute("newSampleCreated");		
 	}
 
 	public void setAllDendrimerCores(HttpSession session) throws Exception {
@@ -393,6 +395,7 @@ public class InitSessionSetup {
 			session.getServletContext().setAttribute(
 					"allDendrimerSurfaceGroupNames", surfaceGroupNames);
 		}
+		session.removeAttribute("newCharacterizationCreated");
 	}
 
 	public void setAllDendrimerBranches(HttpSession session) throws Exception {
@@ -838,6 +841,7 @@ public class InitSessionSetup {
 			String[] characterizationSources = lookupService.getAllCharacterizationSources();
 			session.setAttribute("characterizationSources", characterizationSources);
 		}
+		session.removeAttribute("newCharacterizationCreated");
 	}
 
 	/**
