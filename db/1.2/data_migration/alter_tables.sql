@@ -7,50 +7,49 @@ ALTER TABLE PROTOCOL_FILE ADD (
 
 -- drop table columns and tables
 
-alter table characterization drop column instrument_pk_id;
+alter table CHARACTERIZATION drop (INSTRUMENT_PK_ID);
 
-drop table instrument_type_manufacturer;
+drop table INSTRUMENT_TYPE_MANUFACTURER;
 
-alter table instrument drop (manufacturer_pk_id, instrument_type_pk_id);
+alter table INSTRUMENT  drop (MANUFACTURER_PK_ID,INSTRUMENT_TYPE_PK_ID);
 
-drop table manufacturer;
+drop table MANUFACTURER;
 
-drop table instrument_type;
+drop table INSTRUMENT_TYPE;
 
-drop table instrument;
+drop table INSTRUMENT;
 
-alter table instrument_tmp rename to instrument;
+alter table INSTRUMENT_TMP rename to INSTRUMENT;
 
-ALTER TABLE CHARACTERIZATION
-	 DROP (CHAR_PROTOCOL_PK_ID);
+alter table CHARACTERIZATION drop (CHAR_PROTOCOL_PK_ID);
 
-ALTER TABLE LAB_FILE
-	 DROP (PROTOCOL_PK_ID);
+alter table LAB_FILE drop (PROTOCOL_PK_ID);
 
-ALTER TABLE PROTOCOL
-	 DROP (DESCRIPTION);
+alter table PROTOCOL drop (DESCRIPTION);
 	 
-RENAME TABLE MEASURE_UNIT TO DEF_MEASURE_UNIT;
-
-RENAME TABLE SAMPE_TYPE TO DEF_SAMPLE_TYPE;
-
-RENAME TABLE STOREAGE_TYPE TO DEF_STORAGE_TYPE;
-
-RENAME TABLE ASSAY_TYPE TO DEF_ASSAY_TYPE
+alter table DERIVED_BIOASSAY_DATA drop (CATEGORY); 
 	 
-drop table table_data_condition;
+rename table MEASURE_UNIT to DEF_MEASURE_UNIT;
 
-drop table table_data;
+rename table SAMPE_TYPE to DEF_SAMPLE_TYPE;
 
-drop table characterization_protocol;
+rename table STOREAGE_TYPE to DEF_STORAGE_TYPE;
 
-drop table characterization_table;
+rename table ASSAY_TYPE to DEF_ASSAY_TYPE
+	 
+drop table TABLE_DATA_CONDITION;
 
-drop table keyword_derived_file;
+drop table TABLE_DATA;
 
-drop table derived_data_file;
+drop table CHARACTERIZATION_PROTOCOL;
 
-drop view view_protocol_file;
+drop table CHARACTERIZATION_TABLE;
+
+drop table KEYWORD_DERIVED_FILE;
+
+drop table DERIVED_DATA_FILE;
+
+drop view VIEW_PROTOCOL_FILE;
 
 
 ALTER TABLE INSTRUMENT_CONFIG ADD (
