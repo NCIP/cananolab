@@ -51,7 +51,7 @@ import org.hibernate.collection.PersistentSet;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.116 2007-06-26 22:04:14 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.117 2007-07-02 21:43:14 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -826,9 +826,6 @@ public class LookupService {
 		} finally {
 			ida.close();
 		}
-		instrumentTypeAbbrs.add(new LabelValueBean(CaNanoLabConstants.OTHER,
-				CaNanoLabConstants.OTHER));
-
 		return instrumentTypeAbbrs;
 	}
 
@@ -863,9 +860,6 @@ public class LookupService {
 				String name = (String) obj;
 				allManufacturers.add(name);
 			}
-			instrumentManufacturers.put(CaNanoLabConstants.OTHER,
-					allManufacturers);
-
 		} catch (Exception e) {
 			logger
 					.error("Problem to retrieve manufacturers for intrument types "
@@ -1124,20 +1118,9 @@ public class LookupService {
 		return agentTypes;
 	}
 
-	public Map<String, String[]> getAllAgentTargetTypes() {
-		Map<String, String[]> agentTargetTypes = new HashMap<String, String[]>();
+	public String[] getAllAgentTargetTypes() {
 		String[] targetTypes = new String[] { "Receptor", "Antigen", "Other" };
-		String[] targetTypes1 = new String[] { "Receptor", "Other" };
-		String[] targetTypes2 = new String[] { "Other" };
-
-		agentTargetTypes.put("Small Molecule", targetTypes2);
-		agentTargetTypes.put("Peptide", targetTypes1);
-		agentTargetTypes.put("Antibody", targetTypes);
-		agentTargetTypes.put("DNA", targetTypes1);
-		agentTargetTypes.put("Probe", targetTypes1);
-		agentTargetTypes.put("Other", targetTypes2);
-		agentTargetTypes.put("Image Contrast Agent", targetTypes2);
-		return agentTargetTypes;
+		return targetTypes;
 	}
 
 	public String[] getAllTimeUnits() {
@@ -1286,7 +1269,7 @@ public class LookupService {
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
-			String hqlString = "from Instrument instrument where instrument.type is not null and instrument.manufacturer is not null order by instrument.type";
+			String hqlString = "from Instrument instrument where instrument.type is not null order by instrument.type";
 			List results = ida.search(hqlString);
 			for (Object obj : results) {
 				Instrument instrument = (Instrument) obj;
@@ -1468,5 +1451,50 @@ public class LookupService {
 			ida.close();
 		}
 		return categories;
+	}
+	
+	public String[] getAllCharacterizationSources() throws Exception{
+		SortedSet<String> sources = new TreeSet<String>();
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			String hqlString = "select distinct char.source from Characterization char where char.source is not null";
+			List results = ida.search(hqlString);
+			for (Object obj : results) {
+				sources.add((String) obj);
+			}
+		} catch (Exception e) {
+			logger.error("Problem to retrieve all Characterization Sources.");
+			throw new RuntimeException(
+					"Problem to retrieve all Characterization Sources. ");
+		} finally {
+			ida.close();
+		}
+		sources.addAll(Arrays
+				.asList(CaNanoLabConstants.DEFAULT_CHARACTERIZATION_SOURCES));
+
+		return (String[]) sources.toArray(new String[0]);
+	}
+	
+	public SortedSet<String> getAllManufacturers() throws Exception {
+		SortedSet<String> manufacturers = new TreeSet<String>();
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			String hqlString = "select distinct instrument.manufacturer from Instrument instrument";
+			List results = ida.search(hqlString);
+			for (Object obj : results) {
+				String manufacturer = (String) obj;
+				manufacturers.add(manufacturer);
+			}
+		} catch (Exception e) {
+			logger.error("Problem to retrieve all manufacturers. " + e);
+			throw new RuntimeException("Problem to retrieve all manufacturers. ");
+		} finally {
+			ida.close();
+		}
+		return manufacturers;
 	}
 }
