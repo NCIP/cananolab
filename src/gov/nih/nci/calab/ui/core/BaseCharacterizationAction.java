@@ -2,6 +2,10 @@ package gov.nih.nci.calab.ui.core;
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
+import gov.nih.nci.calab.domain.nano.characterization.physical.Morphology;
+import gov.nih.nci.calab.domain.nano.characterization.physical.Shape;
+import gov.nih.nci.calab.domain.nano.characterization.physical.Solubility;
+import gov.nih.nci.calab.domain.nano.characterization.physical.Surface;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.DatumBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
@@ -83,6 +87,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		String particleType = theForm.getString("particleType");
 
 		request.getSession().setAttribute("newCharacterizationCreated", "true");
+		request.getSession().setAttribute("newCharacterizationSourceCreated", "true");
 		request.getSession().setAttribute("newInstrumentCreated", "true");
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
@@ -261,7 +266,21 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 					"This characterization no longer exists in the database.  Please log in again to refresh.");
 		}
 		theForm.set("achar", new CharacterizationBean(aChar));
-
+		
+		//set characterizations with additional information
+		if (aChar instanceof Shape) {
+			theForm.set("shape", new ShapeBean((Shape)aChar));
+		}
+		else if (aChar instanceof Morphology) {
+			theForm.set("morphology", new MorphologyBean((Morphology)aChar));
+		}
+		else if (aChar instanceof Solubility) {
+			theForm.set("solubility", new SolubilityBean((Solubility)aChar));
+		}
+		else if (aChar instanceof Surface) {
+			theForm.set("surface", new SurfaceBean((Surface)aChar));
+		}
+		
 		UserService userService = new UserService(
 				CaNanoLabConstants.CSM_APP_NAME);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
