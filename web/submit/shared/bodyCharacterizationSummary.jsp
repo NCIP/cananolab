@@ -2,8 +2,10 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<script type="text/javascript" src="javascript/editableDropDown.js"></script>
 
-<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
+<table width="100%" border="0" align="center" cellpadding="3"
+	cellspacing="0" class="topBorderOnly" summary="">
 	<tr>
 	<tr class="topBorder">
 		<td class="formTitle" colspan="4">
@@ -19,7 +21,14 @@
 		<td class="label">
 			<c:choose>
 				<c:when test="${canUserSubmit eq 'true'}">
-					<html:select property="achar.characterizationSource">
+					<html:select property="achar.characterizationSource"
+						onkeydown="javascript:fnKeyDownHandler(this, event);"
+						onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
+						onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
+						onchange="fnChangeHandler_A(this, event);">
+						<option value="">
+							--?--
+						</option>
 						<html:options name="characterizationSources" />
 					</html:select>
 				</c:when>
@@ -29,13 +38,14 @@
 			</c:choose>
 		</td>
 		<td class="label">
-			<strong>View Title*</strong><br>
+			<strong>View Title*</strong>
+			<br>
 			<em>(text will be truncated after 20 characters)</em>
 		</td>
 		<td class="rightLabel">
 			<c:choose>
 				<c:when test="${canUserSubmit eq 'true'}">
-					<html:text property="achar.viewTitle" size="30"/>
+					<html:text property="achar.viewTitle" size="30" />
 				</c:when>
 				<c:otherwise>
 						${nanoparticleCharacterizationForm.map.achar.viewTitle}&nbsp;
@@ -51,8 +61,9 @@
 			<c:choose>
 				<c:when test="${canUserSubmit eq 'true'}">
 					<html:select property="achar.protocolFileBean.id">
-						<option/>
-						<html:optionsCollection name="protocolNameVersionsByType" label="label" value="value"/>
+						<option />
+							<html:optionsCollection name="protocolNameVersionsByType"
+								label="label" value="value" />
 					</html:select>
 				</c:when>
 				<c:otherwise>
