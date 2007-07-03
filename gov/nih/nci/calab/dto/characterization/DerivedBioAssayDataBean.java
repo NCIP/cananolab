@@ -26,7 +26,7 @@ public class DerivedBioAssayDataBean extends LabFileBean {
 
 	private String characterizationName;
 
-	private String[] categories;
+	private String[] categories=new String[0];
 
 	private List<DatumBean> datumList = new ArrayList<DatumBean>();
 
