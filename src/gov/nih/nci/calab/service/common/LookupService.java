@@ -38,7 +38,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.93.2.5 2007-07-02 19:30:55 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.93.2.6 2007-07-03 19:42:11 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -165,25 +165,18 @@ public class LookupService {
 	 */
 	public ContainerInfoBean getSampleContainerInfo() throws Exception {
 
-		List<MeasureUnit> units = getAllMeasureUnits();
+		Map<String, SortedSet<String>> allUnits = getAllMeasureUnits();
 		List<StorageElement> storageElements = getAllStorageElements();
-		List<String> quantityUnits = new ArrayList<String>();
-		List<String> concentrationUnits = new ArrayList<String>();
-		List<String> volumeUnits = new ArrayList<String>();
-		List<String> rooms = new ArrayList<String>();
-		List<String> freezers = new ArrayList<String>();
-		List<String> shelves = new ArrayList<String>();
-		List<String> boxes = new ArrayList<String>();
-
-		for (MeasureUnit unit : units) {
-			if (unit.getType().equalsIgnoreCase("Quantity")) {
-				quantityUnits.add(unit.getName());
-			} else if (unit.getType().equalsIgnoreCase("Volume")) {
-				volumeUnits.add(unit.getName());
-			} else if (unit.getType().equalsIgnoreCase("Concentration")) {
-				concentrationUnits.add(unit.getName());
-			}
-		}
+		SortedSet<String> quantityUnits = (allUnits.get("Quantity") == null) ? new TreeSet<String>()
+				: allUnits.get("Quantity");
+		SortedSet<String> concentrationUnits = (allUnits.get("Concentration") == null) ? new TreeSet<String>()
+				: allUnits.get("Concentration");
+		SortedSet<String> volumeUnits = (allUnits.get("Volume") == null) ? new TreeSet<String>()
+				: allUnits.get("Volume");
+		SortedSet<String> rooms = new TreeSet<String>();
+		SortedSet<String> freezers = new TreeSet<String>();
+		SortedSet<String> shelves = new TreeSet<String>();
+		SortedSet<String> boxes = new TreeSet<String>();
 
 		for (StorageElement storageElement : storageElements) {
 			if (storageElement.getType().equalsIgnoreCase("Room")
@@ -208,7 +201,7 @@ public class LookupService {
 		return containerInfo;
 	}
 
-	public List<String> getAllSampleContainerTypes() throws Exception {
+	public SortedSet<String> getAllSampleContainerTypes() throws Exception {
 		SortedSet<String> containerTypes = new TreeSet<String>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
@@ -228,12 +221,10 @@ public class LookupService {
 		}
 		containerTypes.addAll(Arrays
 				.asList(CaNanoLabConstants.DEFAULT_CONTAINER_TYPES));
-		List<String> containerTypeList = new ArrayList<String>(containerTypes);
-
-		return containerTypeList;
+		return containerTypes;
 	}
 
-	public List<String> getAllAliquotContainerTypes() throws Exception {
+	public SortedSet<String> getAllAliquotContainerTypes() throws Exception {
 		SortedSet<String> containerTypes = new TreeSet<String>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
@@ -253,20 +244,28 @@ public class LookupService {
 		}
 		containerTypes.addAll(Arrays
 				.asList(CaNanoLabConstants.DEFAULT_CONTAINER_TYPES));
-		List<String> containerTypeList = new ArrayList<String>(containerTypes);
-		return containerTypeList;
+		return containerTypes;
 	}
 
-	private List<MeasureUnit> getAllMeasureUnits() throws Exception {
-		List<MeasureUnit> units = new ArrayList<MeasureUnit>();
+	public Map<String, SortedSet<String>> getAllMeasureUnits() throws Exception {
+		Map<String, SortedSet<String>> unitMap = new HashMap<String, SortedSet<String>>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
-			String hqlString = "from MeasureUnit";
+			String hqlString = "from MeasureUnit unit order by unit.name";
 			List results = ida.search(hqlString);
+			SortedSet<String> units = null;
 			for (Object obj : results) {
-				units.add((MeasureUnit) obj);
+				MeasureUnit unit = (MeasureUnit) obj;
+				String type = unit.getType();
+				if (unitMap.get(type) != null) {
+					units = unitMap.get(type);
+				} else {
+					units = new TreeSet<String>();
+					unitMap.put(type, units);
+				}
+				units.add(unit.getName());
 			}
 		} catch (Exception e) {
 			logger.error("Error in retrieving all measure units", e);
@@ -274,8 +273,7 @@ public class LookupService {
 		} finally {
 			ida.close();
 		}
-
-		return units;
+		return unitMap;
 	}
 
 	private List<StorageElement> getAllStorageElements() throws Exception {
@@ -410,8 +408,8 @@ public class LookupService {
 	 * 
 	 * @return all sample sources
 	 */
-	public List<String> getAllSampleSources() throws Exception {
-		List<String> sampleSources = new ArrayList<String>();
+	public SortedSet<String> getAllSampleSources() throws Exception {
+		SortedSet<String> sampleSources = new TreeSet<String>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
@@ -727,7 +725,7 @@ public class LookupService {
 		return (String[]) initiators.toArray(new String[0]);
 	}
 
-	public List<String> getAllParticleSources() throws Exception {
+	public SortedSet<String> getAllParticleSources() throws Exception {
 		// TODO fill in db code
 		return getAllSampleSources();
 	}
@@ -1073,7 +1071,7 @@ public class LookupService {
 		return conditionTypeUnits;
 	}
 
-	public String[] getAllCellLines() throws Exception {
+	public SortedSet<String> getAllCellLines() throws Exception {
 
 		SortedSet<String> cellLines = new TreeSet<String>();
 		IDataAccess ida = (new DataAccessProxy())
@@ -1098,9 +1096,7 @@ public class LookupService {
 			ida.close();
 		}
 		cellLines.addAll(Arrays.asList(CaNanoLabConstants.DEFAULT_CELLLINES));
-
-		return (String[]) cellLines.toArray(new String[0]);
-
+		return cellLines;
 	}
 
 	public String[] getAllActivationMethods() {
@@ -1136,7 +1132,7 @@ public class LookupService {
 		return allReportTypes;
 	}
 	
-	public String[] getAllCharacterizationSources() throws Exception{
+	public SortedSet<String> getAllCharacterizationSources() throws Exception{
 		SortedSet<String> sources = new TreeSet<String>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
@@ -1157,7 +1153,7 @@ public class LookupService {
 		sources.addAll(Arrays
 				.asList(CaNanoLabConstants.DEFAULT_CHARACTERIZATION_SOURCES));
 
-		return (String[]) sources.toArray(new String[0]);
+		return sources;
 	}
 	
 	public SortedSet<String> getAllManufacturers() throws Exception {

@@ -7,9 +7,10 @@ package gov.nih.nci.calab.ui.inventory;
  * @author pansu
  */
 
-/* CVS $Id: CreateAliquotAction.java,v 1.6 2006-11-15 16:44:58 pansu Exp $ */
+/* CVS $Id: CreateAliquotAction.java,v 1.6.2.1 2007-07-03 19:42:44 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.inventory.AliquotBean;
+import gov.nih.nci.calab.dto.inventory.ContainerInfoBean;
 import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.inventory.ManageAliquotService;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
@@ -108,7 +109,10 @@ public class CreateAliquotAction extends AbstractDispatchAction {
 		List<AliquotBean[]> aliquotMatrix = createAliquotMatrix(colNum, rowNum,
 				numAliquots, aliquotPrefix, firstAliquotNum, template, creator);
 		session.setAttribute("aliquotMatrix", aliquotMatrix);
-		return mapping.getInputForward();
+
+		// update editable drop down list to include new entries
+		updateAllEditables(request.getSession(), theForm);
+		return mapping.findForward("setup");
 
 	}
 
@@ -130,7 +134,15 @@ public class CreateAliquotAction extends AbstractDispatchAction {
 		session.removeAttribute("createAliquotForm");
 		session.removeAttribute("aliquotMatrix");
 
-		return mapping.getInputForward();
+		return mapping.findForward("setup");
+	}
+
+	public ActionForward input(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		updateAllEditables(request.getSession(), theForm);
+		return mapping.findForward("setup");
 	}
 
 	public boolean loginRequired() {
@@ -167,5 +179,23 @@ public class CreateAliquotAction extends AbstractDispatchAction {
 		}
 
 		return aliquotMatrix;
+	}
+
+	private void updateAllEditables(HttpSession session,
+			DynaValidatorForm theForm) throws Exception {
+		AliquotBean template = ((AliquotBean) theForm.get("template"));
+		InitSessionSetup.getInstance().updateEditableDropdown(session,
+				template.getContainer().getContainerType(),
+				"allAliquotContainerTypes");
+		ContainerInfoBean containerInfo = (ContainerInfoBean) session
+				.getAttribute("aliquotContainerInfo");
+		String newRoom = template.getContainer().getStorageLocation().getRoom();
+		String newFreezer = template.getContainer().getStorageLocation().getFreezer();
+		String newShelf = template.getContainer().getStorageLocation().getShelf();
+		String newBox = template.getContainer().getStorageLocation().getBox();
+		containerInfo.getStorageRooms().add(newRoom);
+		containerInfo.getStorageFreezers().add(newFreezer);
+		containerInfo.getStorageShelves().add(newShelf);
+		containerInfo.getStorageBoxes().add(newBox);
 	}
 }

@@ -165,7 +165,7 @@ public class InitSessionSetup {
 
 		if (session.getAttribute("allSampleSources") == null
 				|| session.getAttribute("newSampleCreated") != null) {
-			List sampleSources = lookupService.getAllSampleSources();
+			SortedSet<String> sampleSources = lookupService.getAllSampleSources();
 			session.setAttribute("allSampleSources", sampleSources);
 		}
 		// clear the new sample created flag
@@ -180,7 +180,7 @@ public class InitSessionSetup {
 			throws Exception {
 		if (session.getAttribute("allSampleContainerTypes") == null
 				|| session.getAttribute("newSampleCreated") != null) {
-			List containerTypes = lookupService.getAllSampleContainerTypes();
+			SortedSet<String>  containerTypes = lookupService.getAllSampleContainerTypes();
 			session.setAttribute("allSampleContainerTypes", containerTypes);
 		}
 		// clear the new sample created flag
@@ -239,7 +239,7 @@ public class InitSessionSetup {
 			throws Exception {
 		if (session.getAttribute("allAliquotContainerTypes") == null
 				|| session.getAttribute("newAliquotCreated") != null) {
-			List containerTypes = lookupService.getAllAliquotContainerTypes();
+			SortedSet<String> containerTypes = lookupService.getAllAliquotContainerTypes();
 			session.setAttribute("allAliquotContainerTypes", containerTypes);
 		}
 		session.removeAttribute("newAliquotCreated");
@@ -435,7 +435,7 @@ public class InitSessionSetup {
 	}
 
 	public void setAllParticleSources(HttpSession session) throws Exception {
-		List<String> sources = lookupService.getAllParticleSources();
+		SortedSet<String>  sources = lookupService.getAllParticleSources();
 		session.getServletContext().setAttribute("allParticleSources", sources);
 	}
 
@@ -795,7 +795,7 @@ public class InitSessionSetup {
 	}
 
 	public void setAllCellLines(HttpSession session) throws Exception {
-		String[] cellLines = lookupService.getAllCellLines();
+		SortedSet<String> cellLines = lookupService.getAllCellLines();
 		session.getServletContext().setAttribute("allCellLines", cellLines);
 	}
 
@@ -825,7 +825,7 @@ public class InitSessionSetup {
 	public void setAllCharacterizationSources(HttpSession session) throws Exception{
 		if (session.getAttribute("characterizationSources") == null || 
 				session.getAttribute("newCharacterizationSourceCreated") != null) {
-			String[] characterizationSources = lookupService.getAllCharacterizationSources();
+			SortedSet<String>  characterizationSources = lookupService.getAllCharacterizationSources();
 			session.setAttribute("characterizationSources", characterizationSources);
 		}
 		session.removeAttribute("newCharacterizationSourceCreated");
@@ -840,5 +840,14 @@ public class InitSessionSetup {
 			userService.createAGroup(groupName);
 		}
 		userService.createAGroup(CaNanoLabConstants.CSM_ADMIN);
+	}
+	
+	public void updateEditableDropdown(HttpSession session,
+			String formAttribute, String sessionAttributeName) {
+		SortedSet<String> dropdown = (SortedSet<String>) session
+				.getAttribute(sessionAttributeName);
+		if (dropdown != null && formAttribute != null) {
+			dropdown.add(formAttribute);
+		}
 	}
 }
