@@ -51,7 +51,7 @@ import org.hibernate.collection.PersistentSet;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.118 2007-07-03 17:33:39 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.119 2007-07-03 18:53:54 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -215,7 +215,7 @@ public class LookupService {
 		return containerInfo;
 	}
 
-	public List<String> getAllSampleContainerTypes() throws Exception {
+	public SortedSet<String> getAllSampleContainerTypes() throws Exception {
 		SortedSet<String> containerTypes = new TreeSet<String>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
@@ -235,12 +235,10 @@ public class LookupService {
 		}
 		containerTypes.addAll(Arrays
 				.asList(CaNanoLabConstants.DEFAULT_CONTAINER_TYPES));
-		List<String> containerTypeList = new ArrayList<String>(containerTypes);
-
-		return containerTypeList;
+		return containerTypes;
 	}
 
-	public List<String> getAllAliquotContainerTypes() throws Exception {
+	public SortedSet<String> getAllAliquotContainerTypes() throws Exception {
 		SortedSet<String> containerTypes = new TreeSet<String>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
@@ -260,8 +258,7 @@ public class LookupService {
 		}
 		containerTypes.addAll(Arrays
 				.asList(CaNanoLabConstants.DEFAULT_CONTAINER_TYPES));
-		List<String> containerTypeList = new ArrayList<String>(containerTypes);
-		return containerTypeList;
+		return containerTypes;
 	}
 
 	public Map<String, SortedSet<String>> getAllMeasureUnits() throws Exception {
@@ -447,8 +444,8 @@ public class LookupService {
 	 * 
 	 * @return all sample sources
 	 */
-	public List<String> getAllSampleSources() throws Exception {
-		List<String> sampleSources = new ArrayList<String>();
+	public SortedSet<String> getAllSampleSources() throws Exception {
+		SortedSet<String> sampleSources = new TreeSet<String>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
@@ -744,7 +741,7 @@ public class LookupService {
 		return (String[]) initiators.toArray(new String[0]);
 	}
 
-	public List<String> getAllParticleSources() throws Exception {
+	public SortedSet<String> getAllParticleSources() throws Exception {
 		// TODO fill in db code
 		return getAllSampleSources();
 	}
@@ -1413,8 +1410,8 @@ public class LookupService {
 		return datumNames;
 	}
 
-	public SortedSet<String> getDerivedDataCategories(String characterizationName)
-			throws Exception {
+	public SortedSet<String> getDerivedDataCategories(
+			String characterizationName) throws Exception {
 		SortedSet<String> categories = new TreeSet<String>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
@@ -1440,8 +1437,8 @@ public class LookupService {
 		}
 		return categories;
 	}
-	
-	public SortedSet<String> getAllCharacterizationSources() throws Exception{
+
+	public SortedSet<String> getAllCharacterizationSources() throws Exception {
 		SortedSet<String> sources = new TreeSet<String>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
@@ -1464,7 +1461,7 @@ public class LookupService {
 
 		return sources;
 	}
-	
+
 	public SortedSet<String> getAllManufacturers() throws Exception {
 		SortedSet<String> manufacturers = new TreeSet<String>();
 		IDataAccess ida = (new DataAccessProxy())
@@ -1479,7 +1476,8 @@ public class LookupService {
 			}
 		} catch (Exception e) {
 			logger.error("Problem to retrieve all manufacturers. " + e);
-			throw new RuntimeException("Problem to retrieve all manufacturers. ");
+			throw new RuntimeException(
+					"Problem to retrieve all manufacturers. ");
 		} finally {
 			ida.close();
 		}
