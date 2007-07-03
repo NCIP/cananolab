@@ -1,6 +1,7 @@
 package gov.nih.nci.calab.dto.inventory;
 
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * This class captures the database pre-loaded information about containers and
@@ -9,25 +10,25 @@ import java.util.SortedSet;
  * @author pansu
  * 
  */
-/* CVS $Id: ContainerInfoBean.java,v 1.4 2007-07-03 17:33:32 pansu Exp $ */
+/* CVS $Id: ContainerInfoBean.java,v 1.5 2007-07-03 18:53:26 pansu Exp $ */
 
 public class ContainerInfoBean {
 
-	private SortedSet<String> quantityUnits;
+	private SortedSet<String> quantityUnits=new TreeSet<String>();
 
-	private SortedSet<String> concentrationUnits;
+	private SortedSet<String> concentrationUnits=new TreeSet<String>();
 
-	private SortedSet<String> volumeUnits;
+	private SortedSet<String> volumeUnits=new TreeSet<String>();
 
-	private SortedSet<String> storageLabs;
+	private SortedSet<String> storageLabs=new TreeSet<String>();
 
-	private SortedSet<String> storageRooms;
+	private SortedSet<String> storageRooms=new TreeSet<String>();
 
-	private SortedSet<String> storageFreezers;
+	private SortedSet<String> storageFreezers=new TreeSet<String>();
 
-	private SortedSet<String> storageShelves;
+	private SortedSet<String> storageShelves=new TreeSet<String>();
 
-	private SortedSet<String> storageBoxes;
+	private SortedSet<String> storageBoxes=new TreeSet<String>();
 
 	public SortedSet<String> getStorageBoxes() {
 		return storageBoxes;
