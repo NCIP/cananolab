@@ -51,7 +51,7 @@ import org.hibernate.collection.PersistentSet;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.119 2007-07-03 18:53:54 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.120 2007-07-03 21:09:03 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -635,12 +635,15 @@ public class LookupService {
 		return particleTypeParticles;
 	}
 
-	public String[] getAllDendrimerCores() {
-		String[] cores = new String[] { "Diamine", "Ethyline" };
+	public SortedSet<String> getAllDendrimerCores() {
+		SortedSet<String> cores =new TreeSet<String>();
+		cores.add("Diamine");
+		cores.add("Ethyline");
 		return cores;
 	}
 
-	public String[] getAllDendrimerSurfaceGroupNames() throws Exception {
+	public SortedSet<String> getAllDendrimerSurfaceGroupNames()
+			throws Exception {
 		SortedSet<String> names = new TreeSet<String>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
@@ -661,10 +664,10 @@ public class LookupService {
 		names.addAll(Arrays
 				.asList(CaNanoLabConstants.DEFAULT_SURFACE_GROUP_NAMES));
 
-		return (String[]) names.toArray(new String[0]);
+		return names;
 	}
 
-	public String[] getAllDendrimerBranches() throws Exception {
+	public SortedSet<String> getAllDendrimerBranches() throws Exception {
 		SortedSet<String> branches = new TreeSet<String>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
@@ -685,10 +688,10 @@ public class LookupService {
 		branches.addAll(Arrays
 				.asList(CaNanoLabConstants.DEFAULT_DENDRIMER_BRANCHES));
 
-		return (String[]) branches.toArray(new String[0]);
+		return branches;
 	}
 
-	public String[] getAllDendrimerGenerations() throws Exception {
+	public SortedSet<String> getAllDendrimerGenerations() throws Exception {
 		SortedSet<String> generations = new TreeSet<String>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
@@ -709,7 +712,7 @@ public class LookupService {
 		generations.addAll(Arrays
 				.asList(CaNanoLabConstants.DEFAULT_DENDRIMER_GENERATIONS));
 
-		return (String[]) generations.toArray(new String[0]);
+		return generations;
 	}
 
 	public String[] getAllMetalCompositions() {
@@ -717,7 +720,7 @@ public class LookupService {
 		return compositions;
 	}
 
-	public String[] getAllPolymerInitiators() throws Exception {
+	public SortedSet<String> getAllPolymerInitiators() throws Exception {
 		SortedSet<String> initiators = new TreeSet<String>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
@@ -738,7 +741,7 @@ public class LookupService {
 		initiators.addAll(Arrays
 				.asList(CaNanoLabConstants.DEFAULT_POLYMER_INITIATORS));
 
-		return (String[]) initiators.toArray(new String[0]);
+		return initiators;
 	}
 
 	public SortedSet<String> getAllParticleSources() throws Exception {
@@ -869,7 +872,7 @@ public class LookupService {
 		return instrumentManufacturers;
 	}
 
-	public String[] getAllMorphologyTypes() throws Exception {
+	public SortedSet<String> getAllMorphologyTypes() throws Exception {
 
 		SortedSet<String> morphologyTypes = new TreeSet<String>();
 		IDataAccess ida = (new DataAccessProxy())
@@ -890,10 +893,10 @@ public class LookupService {
 		}
 		morphologyTypes.addAll(Arrays
 				.asList(CaNanoLabConstants.DEFAULT_MORPHOLOGY_TYPES));
-		return (String[]) morphologyTypes.toArray(new String[0]);
+		return morphologyTypes;
 	}
 
-	public String[] getAllShapeTypes() throws Exception {
+	public SortedSet<String> getAllShapeTypes() throws Exception {
 		SortedSet<String> shapeTypes = new TreeSet<String>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
@@ -913,7 +916,7 @@ public class LookupService {
 		shapeTypes
 				.addAll(Arrays.asList(CaNanoLabConstants.DEFAULT_SHAPE_TYPES));
 
-		return (String[]) shapeTypes.toArray(new String[0]);
+		return shapeTypes;
 	}
 
 	public Map<ProtocolBean, List<ProtocolFileBean>> getAllProtocolNameVersionByType(
