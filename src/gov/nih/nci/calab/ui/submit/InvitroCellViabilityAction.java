@@ -48,6 +48,7 @@ public class InvitroCellViabilityAction extends BaseCharacterizationAction {
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addCellViability(particleType, particleName, cytoBean);
 		super.postCreate(request, theForm);
+		request.getSession().setAttribute("newCellLineCreated", "true");
 		
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.addInvitroCellViability");

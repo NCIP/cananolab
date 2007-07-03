@@ -48,6 +48,7 @@ public class InvitroCaspase3ActivationAction extends BaseCharacterizationAction 
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addCaspase3Activation(particleType, particleName, cytoBean);
 		super.postCreate(request, theForm);
+		request.getSession().setAttribute("newCellLineCreated", "true");
 		
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage(
