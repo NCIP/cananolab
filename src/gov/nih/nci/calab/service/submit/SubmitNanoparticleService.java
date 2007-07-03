@@ -238,14 +238,13 @@ public class SubmitNanoparticleService {
 						+ "' and instrument.manufacturer='"
 						+ instrument.getManufacturer() + "'");
 
-		Instrument storedInstrument=null;
+		Instrument storedInstrument = null;
 		for (Object obj : instrumentResults) {
-			storedInstrument = (Instrument) obj;			
+			storedInstrument = (Instrument) obj;
 		}
 		if (storedInstrument != null) {
 			instrument.setId(storedInstrument.getId());
-		}
-		else {
+		} else {
 			ida.createObject(instrument);
 		}
 
@@ -681,9 +680,12 @@ public class SubmitNanoparticleService {
 
 			// add charaterizationName to the path
 			String filePath = File.separator
-					+ CaNanoLabConstants.FOLDER_PARTICLE + File.separator
-					+ fileBean.getParticleName() + File.separator
-					+ fileBean.getCharacterizationName();
+					+ CaNanoLabConstants.FOLDER_PARTICLE
+					+ File.separator
+					+ fileBean.getParticleName()
+					+ File.separator
+					+ StringUtils.getOneWordLowerCaseFirstLetter(fileBean
+							.getCharacterizationName());
 
 			FileService fileService = new FileService();
 			String fileName = fileService.writeUploadedFile(uploadedFile,
