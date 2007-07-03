@@ -824,11 +824,11 @@ public class InitSessionSetup {
 	
 	public void setAllCharacterizationSources(HttpSession session) throws Exception{
 		if (session.getAttribute("characterizationSources") == null || 
-				session.getAttribute("newCharacterizationCreated") != null) {
+				session.getAttribute("newCharacterizationSourceCreated") != null) {
 			String[] characterizationSources = lookupService.getAllCharacterizationSources();
 			session.setAttribute("characterizationSources", characterizationSources);
 		}
-		session.removeAttribute("newCharacterizationCreated");
+		session.removeAttribute("newCharacterizationSourceCreated");
 	}
 
 	/**
