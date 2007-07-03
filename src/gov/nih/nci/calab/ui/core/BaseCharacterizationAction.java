@@ -87,7 +87,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		String particleType = theForm.getString("particleType");
 
 		request.getSession().setAttribute("newCharacterizationCreated", "true");
-		request.getSession().setAttribute("newCharacterizationSourceCreated", "true");
+		request.getSession().setAttribute("newCharacterizationSourceCreated",
+				"true");
 		request.getSession().setAttribute("newInstrumentCreated", "true");
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
@@ -238,7 +239,15 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
-		updateAllEditables(request.getSession(), achar);
+		ShapeBean shape = (ShapeBean) theForm.get("shape");
+		MorphologyBean morphology = (MorphologyBean) theForm.get("morphology");
+		CytotoxicityBean cyto = (CytotoxicityBean) theForm.get("cytotoxicity");
+		HttpSession session = request.getSession();
+		updateAllCharEditables(session, achar);
+		updateShapeEditable(session, shape);
+		updateMorphologyEditable(session, morphology);
+		updateCytotoxicityEditable(session, cyto);
+
 		return mapping.findForward("setup");
 	}
 
@@ -266,21 +275,18 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 					"This characterization no longer exists in the database.  Please log in again to refresh.");
 		}
 		theForm.set("achar", new CharacterizationBean(aChar));
-		
-		//set characterizations with additional information
+
+		// set characterizations with additional information
 		if (aChar instanceof Shape) {
-			theForm.set("shape", new ShapeBean((Shape)aChar));
+			theForm.set("shape", new ShapeBean((Shape) aChar));
+		} else if (aChar instanceof Morphology) {
+			theForm.set("morphology", new MorphologyBean((Morphology) aChar));
+		} else if (aChar instanceof Solubility) {
+			theForm.set("solubility", new SolubilityBean((Solubility) aChar));
+		} else if (aChar instanceof Surface) {
+			theForm.set("surface", new SurfaceBean((Surface) aChar));
 		}
-		else if (aChar instanceof Morphology) {
-			theForm.set("morphology", new MorphologyBean((Morphology)aChar));
-		}
-		else if (aChar instanceof Solubility) {
-			theForm.set("solubility", new SolubilityBean((Solubility)aChar));
-		}
-		else if (aChar instanceof Surface) {
-			theForm.set("surface", new SurfaceBean((Surface)aChar));
-		}
-		
+
 		UserService userService = new UserService(
 				CaNanoLabConstants.CSM_APP_NAME);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
@@ -337,7 +343,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 	public ActionForward loadFile(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		request.setAttribute("characterizationName", request.getParameter("charName"));
+		request.setAttribute("characterizationName", request
+				.getParameter("charName"));
 		request.setAttribute("loadFileForward", "setup");
 		return mapping.findForward("loadFile");
 	}
@@ -402,8 +409,14 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
 
-		updateAllEditables(request.getSession(), achar);
-
+		ShapeBean shape = (ShapeBean) theForm.get("shape");
+		MorphologyBean morphology = (MorphologyBean) theForm.get("morphology");
+		CytotoxicityBean cyto = (CytotoxicityBean) theForm.get("cytotoxicity");
+		HttpSession session = request.getSession();
+		updateAllCharEditables(session, achar);
+		updateShapeEditable(session, shape);
+		updateMorphologyEditable(session, morphology);
+		updateCytotoxicityEditable(session, cyto);
 		return mapping.getInputForward();
 	}
 
@@ -432,7 +445,15 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
 
-		updateAllEditables(request.getSession(), achar);
+		ShapeBean shape = (ShapeBean) theForm.get("shape");
+		MorphologyBean morphology = (MorphologyBean) theForm.get("morphology");
+		CytotoxicityBean cyto = (CytotoxicityBean) theForm.get("cytotoxicity");
+		HttpSession session = request.getSession();
+		updateAllCharEditables(session, achar);
+		updateShapeEditable(session, shape);
+		updateMorphologyEditable(session, morphology);
+		updateCytotoxicityEditable(session, cyto);
+
 		return mapping.getInputForward();
 	}
 
@@ -459,7 +480,15 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		String particleType = theForm.getString("particleType");
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
-		updateAllEditables(request.getSession(), achar);
+		ShapeBean shape = (ShapeBean) theForm.get("shape");
+		MorphologyBean morphology = (MorphologyBean) theForm.get("morphology");
+		CytotoxicityBean cyto = (CytotoxicityBean) theForm.get("cytotoxicity");
+		HttpSession session = request.getSession();
+		updateAllCharEditables(session, achar);
+		updateShapeEditable(session, shape);
+		updateMorphologyEditable(session, morphology);
+		updateCytotoxicityEditable(session, cyto);
+
 		return mapping.getInputForward();
 	}
 
@@ -490,7 +519,15 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
 
-		updateAllEditables(request.getSession(), achar);
+		ShapeBean shape = (ShapeBean) theForm.get("shape");
+		MorphologyBean morphology = (MorphologyBean) theForm.get("morphology");
+		CytotoxicityBean cyto = (CytotoxicityBean) theForm.get("cytotoxicity");
+		HttpSession session = request.getSession();
+		updateAllCharEditables(session, achar);
+		updateShapeEditable(session, shape);
+		updateMorphologyEditable(session, morphology);
+		updateCytotoxicityEditable(session, cyto);
+
 		return mapping.getInputForward();
 	}
 
@@ -528,7 +565,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 	}
 
 	// add edited option to all editable dropdowns
-	private void updateAllEditables(HttpSession session,
+	private void updateAllCharEditables(HttpSession session,
 			CharacterizationBean achar) throws Exception {
 		InitSessionSetup.getInstance().updateEditableDropdown(session,
 				achar.getCharacterizationSource(), "characterizationSources");
@@ -561,6 +598,25 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 				}
 			}
 		}
+	}
+
+	// add edited option to all editable dropdowns
+	private void updateShapeEditable(HttpSession session, ShapeBean shape)
+			throws Exception {
+		InitSessionSetup.getInstance().updateEditableDropdown(session,
+				shape.getType(), "allShapeTypes");
+	}
+
+	private void updateMorphologyEditable(HttpSession session,
+			MorphologyBean morphology) throws Exception {
+		InitSessionSetup.getInstance().updateEditableDropdown(session,
+				morphology.getType(), "allMorphologyTypes");
+	}
+
+	private void updateCytotoxicityEditable(HttpSession session,
+			CytotoxicityBean cyto) throws Exception {
+		InitSessionSetup.getInstance().updateEditableDropdown(session,
+				cyto.getCellLine(), "allCellLines");
 	}
 
 	public boolean loginRequired() {
