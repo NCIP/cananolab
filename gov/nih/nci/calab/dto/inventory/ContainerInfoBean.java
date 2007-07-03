@@ -1,6 +1,6 @@
 package gov.nih.nci.calab.dto.inventory;
 
-import java.util.List;
+import java.util.SortedSet;
 
 /**
  * This class captures the database pre-loaded information about containers and
@@ -9,47 +9,47 @@ import java.util.List;
  * @author pansu
  * 
  */
-/* CVS $Id: ContainerInfoBean.java,v 1.3 2007-01-09 22:53:45 pansu Exp $ */
+/* CVS $Id: ContainerInfoBean.java,v 1.4 2007-07-03 17:33:32 pansu Exp $ */
 
 public class ContainerInfoBean {
 
-	private List<String> quantityUnits;
+	private SortedSet<String> quantityUnits;
 
-	private List<String> concentrationUnits;
+	private SortedSet<String> concentrationUnits;
 
-	private List<String> volumeUnits;
+	private SortedSet<String> volumeUnits;
 
-	private List<String> storageLabs;
+	private SortedSet<String> storageLabs;
 
-	private List<String> storageRooms;
+	private SortedSet<String> storageRooms;
 
-	private List<String> storageFreezers;
+	private SortedSet<String> storageFreezers;
 
-	private List<String> storageShelves;
+	private SortedSet<String> storageShelves;
 
-	private List<String> storageBoxes;
+	private SortedSet<String> storageBoxes;
 
-	public List<String> getStorageBoxes() {
+	public SortedSet<String> getStorageBoxes() {
 		return storageBoxes;
 	}
 
-	public void setStorageBoxes(List<String> storageBoxes) {
+	public void setStorageBoxes(SortedSet<String> storageBoxes) {
 		this.storageBoxes = storageBoxes;
 	}
 
-	public List<String> getStorageShelves() {
+	public SortedSet<String> getStorageShelves() {
 		return storageShelves;
 	}
 
-	public void setStorageShelves(List<String> storageShelves) {
+	public void setStorageShelves(SortedSet<String> storageShelves) {
 		this.storageShelves = storageShelves;
 	}
 
-	public ContainerInfoBean(List<String> quantityUnits,
-			List<String> concentrationUnits, List<String> volumeUnits,
-			List<String> storageLabs, List<String> storeageRooms,
-			List<String> storageFreezers, List<String> storageShelves,
-			List<String> storageBoxes) {
+	public ContainerInfoBean(SortedSet<String> quantityUnits,
+			SortedSet<String> concentrationUnits, SortedSet<String> volumeUnits,
+			SortedSet<String> storageLabs, SortedSet<String> storeageRooms,
+			SortedSet<String> storageFreezers, SortedSet<String> storageShelves,
+			SortedSet<String> storageBoxes) {
 		super();
 		// TODO Auto-generated constructor stub
 		this.quantityUnits = quantityUnits;
@@ -62,59 +62,59 @@ public class ContainerInfoBean {
 		this.storageBoxes = storageBoxes;
 	}
 
-	public List<String> getConcentrationUnits() {
+	public SortedSet<String> getConcentrationUnits() {
 		return concentrationUnits;
 	}
 
-	public void setConcentrationUnits(List<String> concentrationUnits) {
+	public void setConcentrationUnits(SortedSet<String> concentrationUnits) {
 		this.concentrationUnits = concentrationUnits;
 	}
 
-	public List<String> getStorageFreezers() {
+	public SortedSet<String> getStorageFreezers() {
 		return storageFreezers;
 	}
 
-	public void setStorageFreezers(List<String> freezers) {
+	public void setStorageFreezers(SortedSet<String> freezers) {
 		this.storageFreezers = freezers;
 	}
 
-	public List<String> getQuantityUnits() {
+	public SortedSet<String> getQuantityUnits() {
 		return quantityUnits;
 	}
 
-	public void setQuantityUnits(List<String> quantityUnits) {
+	public void setQuantityUnits(SortedSet<String> quantityUnits) {
 		this.quantityUnits = quantityUnits;
 	}
 
-	public List<String> getStorageRooms() {
+	public SortedSet<String> getStorageRooms() {
 		return storageRooms;
 	}
 
-	public void setStorageRooms(List<String> rooms) {
+	public void setStorageRooms(SortedSet<String> rooms) {
 		this.storageRooms = rooms;
 	}
 
-	public List<String> getVolumeUnits() {
+	public SortedSet<String> getVolumeUnits() {
 		return volumeUnits;
 	}
 
-	public void setVolumeUnits(List<String> volumeUnits) {
+	public void setVolumeUnits(SortedSet<String> volumeUnits) {
 		this.volumeUnits = volumeUnits;
 	}
 
-	public List<String> getStorageLabs() {
+	public SortedSet<String> getStorageLabs() {
 		return storageLabs;
 	}
 
-	public void setStorageLabs(List<String> storageLabs) {
+	public void setStorageLabs(SortedSet<String> storageLabs) {
 		this.storageLabs = storageLabs;
 	}
 
-	public List<String> getStoreageRooms() {
+	public SortedSet<String> getStoreageRooms() {
 		return storageRooms;
 	}
 
-	public void setStoreageRooms(List<String> storeageRooms) {
+	public void setStoreageRooms(SortedSet<String> storeageRooms) {
 		this.storageRooms = storeageRooms;
 	}
 }

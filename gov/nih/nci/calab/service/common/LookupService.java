@@ -51,7 +51,7 @@ import org.hibernate.collection.PersistentSet;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.117 2007-07-02 21:43:14 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.118 2007-07-03 17:33:39 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -178,18 +178,18 @@ public class LookupService {
 	 */
 	public ContainerInfoBean getSampleContainerInfo() throws Exception {
 
-		Map<String, List<String>> allUnits = getAllMeasureUnits();
+		Map<String, SortedSet<String>> allUnits = getAllMeasureUnits();
 		List<StorageElement> storageElements = getAllStorageElements();
-		List<String> quantityUnits = (allUnits.get("Quantity") == null) ? new ArrayList<String>()
+		SortedSet<String> quantityUnits = (allUnits.get("Quantity") == null) ? new TreeSet<String>()
 				: allUnits.get("Quantity");
-		List<String> concentrationUnits = (allUnits.get("Concentration") == null) ? new ArrayList<String>()
+		SortedSet<String> concentrationUnits = (allUnits.get("Concentration") == null) ? new TreeSet<String>()
 				: allUnits.get("Concentration");
-		List<String> volumeUnits = (allUnits.get("Volume") == null) ? new ArrayList<String>()
+		SortedSet<String> volumeUnits = (allUnits.get("Volume") == null) ? new TreeSet<String>()
 				: allUnits.get("Volume");
-		List<String> rooms = new ArrayList<String>();
-		List<String> freezers = new ArrayList<String>();
-		List<String> shelves = new ArrayList<String>();
-		List<String> boxes = new ArrayList<String>();
+		SortedSet<String> rooms = new TreeSet<String>();
+		SortedSet<String> freezers = new TreeSet<String>();
+		SortedSet<String> shelves = new TreeSet<String>();
+		SortedSet<String> boxes = new TreeSet<String>();
 
 		for (StorageElement storageElement : storageElements) {
 			if (storageElement.getType().equalsIgnoreCase("Room")
@@ -264,22 +264,22 @@ public class LookupService {
 		return containerTypeList;
 	}
 
-	public Map<String, List<String>> getAllMeasureUnits() throws Exception {
-		Map<String, List<String>> unitMap = new HashMap<String, List<String>>();
+	public Map<String, SortedSet<String>> getAllMeasureUnits() throws Exception {
+		Map<String, SortedSet<String>> unitMap = new HashMap<String, SortedSet<String>>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
 			String hqlString = "from MeasureUnit unit order by unit.name";
 			List results = ida.search(hqlString);
-			List<String> units = null;
+			SortedSet<String> units = null;
 			for (Object obj : results) {
 				MeasureUnit unit = (MeasureUnit) obj;
 				String type = unit.getType();
 				if (unitMap.get(type) != null) {
 					units = unitMap.get(type);
 				} else {
-					units = new ArrayList<String>();
+					units = new TreeSet<String>();
 					unitMap.put(type, units);
 				}
 				units.add(unit.getName());
@@ -293,8 +293,8 @@ public class LookupService {
 		return unitMap;
 	}
 
-	public List<String> getAllMeasureTypes() throws Exception {
-		List<String> types = new ArrayList<String>();
+	public SortedSet<String> getAllMeasureTypes() throws Exception {
+		SortedSet<String> types = new TreeSet<String>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
@@ -1153,7 +1153,7 @@ public class LookupService {
 		return conditionTypeUnits;
 	}
 
-	public String[] getAllCellLines() throws Exception {
+	public SortedSet<String> getAllCellLines() throws Exception {
 
 		SortedSet<String> cellLines = new TreeSet<String>();
 		IDataAccess ida = (new DataAccessProxy())
@@ -1178,7 +1178,7 @@ public class LookupService {
 			ida.close();
 		}
 		cellLines.addAll(Arrays.asList(CaNanoLabConstants.DEFAULT_CELLLINES));
-		return (String[]) cellLines.toArray(new String[0]);
+		return cellLines;
 
 	}
 
@@ -1284,24 +1284,12 @@ public class LookupService {
 		return instruments;
 	}
 
-	public List<String> getAllDerivedDataFileTypes() throws Exception {
-		List<String> fileTypes = new ArrayList<String>();
+	public SortedSet<String> getAllDerivedDataFileTypes() throws Exception {
+		SortedSet<String> fileTypes = new TreeSet<String>();
 		// TODO query from database
 		fileTypes.addAll(Arrays
 				.asList(CaNanoLabConstants.DEFAULT_DERIVED_DATA_FILE_TYPES));
 		return fileTypes;
-	}
-
-	public Map<String, List<String>> getAllDerivedDataCategories()
-			throws Exception {
-		Map<String, List<String>> categoryMap = new HashMap<String, List<String>>();
-		// TODO query from database
-		List<String> categories = new ArrayList<String>();
-		categories.add("Volume Distribution");
-		categories.add("Intensity Distribution");
-		categories.add("Number Distribution");
-		categoryMap.put("Size", categories);
-		return categoryMap;
 	}
 
 	public List<String> getAllFunctionTypes() throws Exception {
@@ -1396,9 +1384,9 @@ public class LookupService {
 		return categoryMap;
 	}
 
-	public List<String> getDerivedDatumNames(String characterizationName)
+	public SortedSet<String> getDerivedDatumNames(String characterizationName)
 			throws Exception {
-		List<String> datumNames = new ArrayList<String>();
+		SortedSet<String> datumNames = new TreeSet<String>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
@@ -1425,9 +1413,9 @@ public class LookupService {
 		return datumNames;
 	}
 
-	public List<String> getDerivedDataCategories(String characterizationName)
+	public SortedSet<String> getDerivedDataCategories(String characterizationName)
 			throws Exception {
-		List<String> categories = new ArrayList<String>();
+		SortedSet<String> categories = new TreeSet<String>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
@@ -1453,7 +1441,7 @@ public class LookupService {
 		return categories;
 	}
 	
-	public String[] getAllCharacterizationSources() throws Exception{
+	public SortedSet<String> getAllCharacterizationSources() throws Exception{
 		SortedSet<String> sources = new TreeSet<String>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
@@ -1474,7 +1462,7 @@ public class LookupService {
 		sources.addAll(Arrays
 				.asList(CaNanoLabConstants.DEFAULT_CHARACTERIZATION_SOURCES));
 
-		return (String[]) sources.toArray(new String[0]);
+		return sources;
 	}
 	
 	public SortedSet<String> getAllManufacturers() throws Exception {
