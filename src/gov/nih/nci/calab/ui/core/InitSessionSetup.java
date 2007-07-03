@@ -38,14 +38,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
-import java.util.TreeMap;
 import java.util.TreeSet;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.struts.action.ActionForm;
 import org.apache.struts.util.LabelValueBean;
+import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * This class sets up session level or servlet context level variables to be
@@ -380,7 +381,7 @@ public class InitSessionSetup {
 			List<String> groupNames = userService.getAllVisibilityGroups();
 			session.setAttribute("allVisibilityGroups", groupNames);
 		}
-		session.removeAttribute("newSampleCreated");		
+		session.removeAttribute("newSampleCreated");
 	}
 
 	public void setAllDendrimerCores(HttpSession session) throws Exception {
@@ -821,7 +822,7 @@ public class InitSessionSetup {
 
 	public void setAllCellLines(HttpSession session) throws Exception {
 		if (session.getServletContext().getAttribute("allCellLines") == null) {
-			String[] cellLines = lookupService.getAllCellLines();
+			SortedSet<String> cellLines = lookupService.getAllCellLines();
 			session.getServletContext().setAttribute("allCellLines", cellLines);
 		}
 	}
@@ -849,14 +850,18 @@ public class InitSessionSetup {
 		}
 	}
 
-	public void setAllCharacterizationSources(HttpSession session) throws Exception{
-		if (session.getAttribute("characterizationSources") == null || 
-				session.getAttribute("newCharacterizationCreated") != null) {
-			String[] characterizationSources = lookupService.getAllCharacterizationSources();
-			session.setAttribute("characterizationSources", characterizationSources);
+	public void setAllCharacterizationSources(HttpSession session)
+			throws Exception {
+		if (session.getAttribute("characterizationSources") == null
+				|| session.getAttribute("newCharacterizationCreated") != null) {
+			SortedSet<String> characterizationSources = lookupService
+					.getAllCharacterizationSources();
+			session.setAttribute("characterizationSources",
+					characterizationSources);
 		}
 		session.removeAttribute("newCharacterizationCreated");
 	}
+
 	// public void addCellLine(HttpSession session, String option) throws
 	// Exception {
 	// String[] cellLines = (String[])
@@ -881,17 +886,19 @@ public class InitSessionSetup {
 	public void setAllInstruments(HttpSession session) throws Exception {
 		if (session.getAttribute("allInstruments") == null
 				|| session.getAttribute("newInstrumentCreated") != null) {
-			List<InstrumentBean>instruments=lookupService.getAllInstruments();
-			SortedSet<String> instrumentTypes=new TreeSet<String>();
-			for (InstrumentBean instrument: instruments) {
+			List<InstrumentBean> instruments = lookupService
+					.getAllInstruments();
+			SortedSet<String> instrumentTypes = new TreeSet<String>();
+			for (InstrumentBean instrument : instruments) {
 				instrumentTypes.add(instrument.getType());
 			}
-			SortedSet<String> manufacturers=lookupService.getAllManufacturers();			
+			SortedSet<String> manufacturers = lookupService
+					.getAllManufacturers();
 			session.setAttribute("allInstruments", instruments);
 			session.setAttribute("allInstrumentTypes", instrumentTypes);
-			session.setAttribute("allManufacturers", manufacturers);			
+			session.setAttribute("allManufacturers", manufacturers);
 		}
-		session.removeAttribute("newInstrumentCreated");		
+		session.removeAttribute("newInstrumentCreated");
 	}
 
 	public void setAllDerivedDataFileTypes(HttpSession session)
@@ -899,7 +906,8 @@ public class InitSessionSetup {
 		if (session.getAttribute("allDerivedDataFileTypes") == null
 				|| session.getAttribute("newCharacterizationCreated") != null) {
 
-			List<String> fileTypes = lookupService.getAllDerivedDataFileTypes();
+			SortedSet<String> fileTypes = lookupService
+					.getAllDerivedDataFileTypes();
 			session.setAttribute("allDerivedDataFileTypes", fileTypes);
 		}
 		session.removeAttribute("newCharacterizationCreated");
@@ -936,26 +944,37 @@ public class InitSessionSetup {
 
 	public void setDerivedDataCategoriesDatumNames(HttpSession session,
 			String characterizationName) throws Exception {
-		List<String> categories = lookupService
+		SortedSet<String> categories = lookupService
 				.getDerivedDataCategories(characterizationName);
 		session.setAttribute("derivedDataCategories", categories);
 
-		List<String> datumNames = lookupService
+		SortedSet<String> datumNames = lookupService
 				.getDerivedDatumNames(characterizationName);
 		session.setAttribute("datumNames", datumNames);
 	}
 
 	public void setAllCharacterizationMeasureUnitsTypes(HttpSession session,
 			String charName) throws Exception {
-		Map<String, List<String>> unitMap = lookupService.getAllMeasureUnits();
-		List<String> charUnits = unitMap.get(charName);
-		//add an empty one to indicate no unit
+		Map<String, SortedSet<String>> unitMap = lookupService
+				.getAllMeasureUnits();
+		SortedSet<String> charUnits = unitMap.get(charName);
+		// add an empty one to indicate no unit
 		charUnits.add("");
 		if (charUnits == null) {
-			charUnits = new ArrayList<String>();
+			charUnits = new TreeSet<String>();
 		}
-		List<String> types = lookupService.getAllMeasureTypes();
+		SortedSet<String> types = lookupService.getAllMeasureTypes();
 		session.setAttribute("charMeasureUnits", charUnits);
 		session.setAttribute("charMeasureTypes", types);
 	}
+
+	public void updateEditableDropdown(HttpSession session,
+			String formAttribute, String sessionAttributeName) {
+		SortedSet<String> dropdown = (SortedSet<String>) session
+				.getAttribute(sessionAttributeName);
+		if (dropdown != null && formAttribute != null) {
+			dropdown.add(formAttribute);
+		}
+	}
+
 }
