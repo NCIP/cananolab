@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSolubilityAction.java,v 1.12 2007-06-19 15:20:04 pansu Exp $ */
+/* CVS $Id: NanoparticleSolubilityAction.java,v 1.13 2007-07-03 17:35:32 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.physical.SolubilityBean;
@@ -56,10 +56,5 @@ public class NanoparticleSolubilityAction extends BaseCharacterizationAction {
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
 		return forward;
-	}
-
-	protected void setLoadFileRequest(HttpServletRequest request) {
-		request.setAttribute("characterization", "solubility");
-		request.setAttribute("loadFileForward", "solubilityInputForm");
 	}
 }

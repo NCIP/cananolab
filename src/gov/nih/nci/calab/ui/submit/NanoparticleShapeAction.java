@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleShapeAction.java,v 1.15 2007-06-19 15:20:04 pansu Exp $ */
+/* CVS $Id: NanoparticleShapeAction.java,v 1.16 2007-07-03 17:35:32 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.physical.ShapeBean;
@@ -57,10 +57,5 @@ public class NanoparticleShapeAction extends BaseCharacterizationAction {
 		forward = mapping.findForward("success");
 
 		return forward;
-	}
-
-	protected void setLoadFileRequest(HttpServletRequest request) {
-		request.setAttribute("characterization", "shape");
-		request.setAttribute("loadFileForward", "shapeInputForm");
 	}
 }

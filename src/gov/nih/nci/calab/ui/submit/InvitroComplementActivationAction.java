@@ -54,10 +54,4 @@ public class InvitroComplementActivationAction extends
 		forward = mapping.findForward("success");
 		return forward;
 	}
-
-	protected void setLoadFileRequest(HttpServletRequest request) {
-		request.setAttribute("characterization", "complementActivation");
-		request.setAttribute("loadFileForward",
-				"invitroComplementActivationForm");
-	}
 }

@@ -53,9 +53,4 @@ public class InvitroCytokineInductionAction extends BaseCharacterizationAction {
 		forward = mapping.findForward("success");
 		return forward;
 	}
-
-	protected void setLoadFileRequest(HttpServletRequest request) {
-		request.setAttribute("characterization", "cytokineInduction");
-		request.setAttribute("loadFileForward", "invitroCytokineInductionForm");
-	}
 }
