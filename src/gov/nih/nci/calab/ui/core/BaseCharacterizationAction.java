@@ -195,20 +195,6 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 	}
 
 	/**
-	 * Set the appropriate type of characterization bean in the form from the
-	 * chararacterization domain obj.
-	 * 
-	 * @param theForm
-	 * @param aChar
-	 * @throws Exception
-	 */
-	protected void setFormCharacterizationBean(DynaValidatorForm theForm,
-			Characterization aChar) throws Exception {
-		CharacterizationBean aCharBean = new CharacterizationBean(aChar);
-		theForm.set("achar", aCharBean);
-	}
-
-	/**
 	 * Clean the session attribture
 	 * 
 	 * @param sessioin
@@ -241,13 +227,15 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		return mapping.getInputForward();
 	}
 
-	/**
-	 * Set request attributes required in load file for different types of
-	 * characterizations
-	 * 
-	 * @param request
-	 */
-	protected abstract void setLoadFileRequest(HttpServletRequest request);
+	public ActionForward input(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		CharacterizationBean achar = (CharacterizationBean) theForm
+				.get("achar");
+		updateAllEditables(request.getSession(), achar);
+		return mapping.findForward("setup");
+	}
 
 	/**
 	 * Set up the form for updating existing characterization
@@ -330,7 +318,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 	public ActionForward loadFile(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		setLoadFileRequest(request);
+		request.setAttribute("characterizationName", request.getParameter("charName"));
+		request.setAttribute("loadFileForward", "setup");
 		return mapping.findForward("loadFile");
 	}
 
@@ -394,6 +383,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
 
+		updateAllEditables(request.getSession(), achar);
+
 		return mapping.getInputForward();
 	}
 
@@ -422,6 +413,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
 
+		updateAllEditables(request.getSession(), achar);
 		return mapping.getInputForward();
 	}
 
@@ -448,7 +440,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		String particleType = theForm.getString("particleType");
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
-
+		updateAllEditables(request.getSession(), achar);
 		return mapping.getInputForward();
 	}
 
@@ -479,6 +471,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
 
+		updateAllEditables(request.getSession(), achar);
 		return mapping.getInputForward();
 	}
 
@@ -513,6 +506,42 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		saveMessages(request, msgs);
 
 		return mapping.findForward("success");
+	}
+
+	// add edited option to all editable dropdowns
+	private void updateAllEditables(HttpSession session,
+			CharacterizationBean achar) throws Exception {
+		InitSessionSetup.getInstance().updateEditableDropdown(session,
+				achar.getCharacterizationSource(), "characterizationSources");
+		InitSessionSetup.getInstance().updateEditableDropdown(session,
+				achar.getInstrumentConfigBean().getInstrumentBean().getType(),
+				"allInstrumentTypes");
+		InitSessionSetup.getInstance().updateEditableDropdown(
+				session,
+				achar.getInstrumentConfigBean().getInstrumentBean()
+						.getManufacturer(), "allManufacturers");
+		for (DerivedBioAssayDataBean derivedBioAssayDataBean : achar
+				.getDerivedBioAssayDataList()) {
+			InitSessionSetup.getInstance().updateEditableDropdown(session,
+					derivedBioAssayDataBean.getType(),
+					"allDerivedDataFileTypes");
+			if (derivedBioAssayDataBean != null) {
+				for (String category : derivedBioAssayDataBean.getCategories()) {
+					InitSessionSetup.getInstance().updateEditableDropdown(
+							session, category, "derivedDataCategories");
+				}
+
+				for (DatumBean datum : derivedBioAssayDataBean.getDatumList()) {
+					InitSessionSetup.getInstance().updateEditableDropdown(
+							session, datum.getName(), "datumNames");
+					InitSessionSetup.getInstance().updateEditableDropdown(
+							session, datum.getStatisticsType(),
+							"charMeasureTypes");
+					InitSessionSetup.getInstance().updateEditableDropdown(
+							session, datum.getUnit(), "charMeasureUnits");
+				}
+			}
+		}
 	}
 
 	public boolean loginRequired() {
