@@ -6,12 +6,13 @@ package gov.nih.nci.calab.ui.inventory;
  * @author pansu
  */
 
-/* CVS $Id: EditAliquotAction.java,v 1.3 2007-05-07 18:55:56 pansu Exp $ */
+/* CVS $Id: EditAliquotAction.java,v 1.4 2007-07-03 18:54:22 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.inventory.AliquotBean;
 import gov.nih.nci.calab.dto.inventory.ContainerInfoBean;
 import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
+import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
 import java.util.Date;
 import java.util.List;
@@ -48,6 +49,14 @@ public class EditAliquotAction extends AbstractDispatchAction {
 		return forward;
 	}
 
+	public ActionForward input(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		updateAllEditables(request.getSession(), theForm);
+		return mapping.findForward("setup");
+	}
+
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -68,7 +77,7 @@ public class EditAliquotAction extends AbstractDispatchAction {
 		}
 
 		// update editable drop-down to include new entry
-		updateEditableDropDownList(request, theForm);
+		updateAllEditables(request.getSession(), theForm);
 		return forward;
 	}
 
@@ -76,42 +85,23 @@ public class EditAliquotAction extends AbstractDispatchAction {
 		return true;
 	}
 
-	private void updateEditableDropDownList(HttpServletRequest request,
-			DynaValidatorForm theForm) {
-		HttpSession session = request.getSession();
-		// update container type drop-down list to include the new entry
-		List allAliquotContainerTypes = (List) session
-				.getAttribute("allAliquotContainerTypes");
+	private void updateAllEditables(HttpSession session,
+			DynaValidatorForm theForm) throws Exception {
 		AliquotBean aliquot = ((AliquotBean) theForm.get("aliquot"));
-		String newContainerType = aliquot.getContainer().getContainerType();
-		if (!allAliquotContainerTypes.contains(newContainerType)
-				&&newContainerType.length()>0) {
-			allAliquotContainerTypes.add(newContainerType);
-		}
-		// update storage location drop-down list to include the new
+		InitSessionSetup.getInstance().updateEditableDropdown(session,
+				aliquot.getContainer().getContainerType(),
+				"allAliquotContainerTypes");
+		ContainerInfoBean containerInfo = (ContainerInfoBean) session
+				.getAttribute("aliquotContainerInfo");
 		String newRoom = aliquot.getContainer().getStorageLocation().getRoom();
 		String newFreezer = aliquot.getContainer().getStorageLocation()
 				.getFreezer();
 		String newShelf = aliquot.getContainer().getStorageLocation()
 				.getShelf();
 		String newBox = aliquot.getContainer().getStorageLocation().getBox();
-		ContainerInfoBean containerInfo = (ContainerInfoBean) session
-				.getAttribute("aliquotContainerInfo");
-		if (!containerInfo.getStorageRooms().contains(newRoom)
-				&& newRoom.length() > 0) {
-			containerInfo.getStorageRooms().add(newRoom);
-		}
-		if (!containerInfo.getStorageFreezers().contains(newFreezer)
-				&& newFreezer.length() > 0) {
-			containerInfo.getStorageFreezers().add(newFreezer);
-		}
-		if (!containerInfo.getStorageShelves().contains(newShelf)
-				&& newShelf.length() > 0) {
-			containerInfo.getStorageShelves().add(newShelf);
-		}
-		if (!containerInfo.getStorageBoxes().contains(newBox)
-				&& newBox.length() > 0) {
-			containerInfo.getStorageBoxes().add(newBox);
-		}
+		containerInfo.getStorageRooms().add(newRoom);
+		containerInfo.getStorageFreezers().add(newFreezer);
+		containerInfo.getStorageShelves().add(newShelf);
+		containerInfo.getStorageBoxes().add(newBox);
 	}
 }
