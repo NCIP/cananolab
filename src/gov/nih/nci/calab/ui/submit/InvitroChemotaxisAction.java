@@ -53,8 +53,4 @@ public class InvitroChemotaxisAction extends BaseCharacterizationAction {
 		return forward;
 	}
 
-	protected void setLoadFileRequest(HttpServletRequest request) {
-		request.setAttribute("characterization", "chemotaxis");
-		request.setAttribute("loadFileForward", "invitroChemotaxisForm");
-	}
 }

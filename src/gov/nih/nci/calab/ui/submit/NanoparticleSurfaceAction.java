@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSurfaceAction.java,v 1.19 2007-06-21 20:41:30 pansu Exp $ */
+/* CVS $Id: NanoparticleSurfaceAction.java,v 1.20 2007-07-03 17:35:32 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.physical.SurfaceBean;
@@ -128,11 +128,5 @@ public class NanoparticleSurfaceAction extends BaseCharacterizationAction {
 			}
 		}
 		surface.setSurfaceChemistries(surfaceChemistries);
-	}
-
-	protected void setLoadFileRequest(HttpServletRequest request) {
-		request.setAttribute("characterization", "surface");
-		request.setAttribute("loadFileForward", "surfaceInputForm");
-
 	}
 }

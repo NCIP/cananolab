@@ -53,11 +53,4 @@ public class InvitroEnzymeInductionAction extends BaseCharacterizationAction {
 		forward = mapping.findForward("success");
 		return forward;
 	}
-
-	protected void setLoadFileRequest(HttpServletRequest request) {
-		request.setAttribute("characterization", "enzymeInduction");
-		request.setAttribute("loadFileForward", "invitroEnzymeInductionForm");
-
-	}
-
 }

@@ -54,11 +54,4 @@ public class InvitroPlateletAggregationAction extends
 		forward = mapping.findForward("success");
 		return forward;
 	}
-
-	protected void setLoadFileRequest(HttpServletRequest request) {
-		request.setAttribute("characterization", "plateletAggregation");
-		request.setAttribute("loadFileForward",
-				"invitroPlateletAggregationForm");
-
-	}
 }

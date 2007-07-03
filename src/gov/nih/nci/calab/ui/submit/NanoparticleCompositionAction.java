@@ -8,7 +8,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleCompositionAction.java,v 1.22 2007-06-19 15:20:04 pansu Exp $ */
+/* CVS $Id: NanoparticleCompositionAction.java,v 1.23 2007-07-03 17:35:32 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.CarbonNanotubeComposition;
@@ -422,16 +422,5 @@ public class NanoparticleCompositionAction extends BaseCharacterizationAction {
 		List<ComposingElementBean> elements = updateElements(origElements,
 				elementNum);
 		composition.setComposingElements(elements);
-	}
-
-	//not needed for composition		
-	protected void setFormCharacterizationBean(DynaValidatorForm theForm,
-			Characterization aChar) throws Exception {
-		// TODO Auto-generated method stub
-	}
-
-	//not needed for composition
-	protected void setLoadFileRequest(HttpServletRequest request) {
-		// TODO Auto-generated method stub
 	}
 }

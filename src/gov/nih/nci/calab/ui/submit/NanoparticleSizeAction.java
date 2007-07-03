@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSizeAction.java,v 1.25 2007-06-19 15:14:29 pansu Exp $ */
+/* CVS $Id: NanoparticleSizeAction.java,v 1.26 2007-07-03 17:35:32 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
@@ -56,17 +56,5 @@ public class NanoparticleSizeAction extends BaseCharacterizationAction {
 		forward = mapping.findForward("success");
 
 		return forward;
-	}
-
-	protected void setLoadFileRequest(HttpServletRequest request) {
-		request.setAttribute("characterization", "size");
-		request.setAttribute("loadFileForward", "sizeInputForm");
-	}
-
-	@Override
-	//TODO delete this
-	protected void setFormCharacterizationBean(DynaValidatorForm theForm, Characterization aChar) throws Exception {
-		// TODO Auto-generated method stub
-		
 	}
 }

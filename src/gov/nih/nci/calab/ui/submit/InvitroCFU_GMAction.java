@@ -53,8 +53,4 @@ public class InvitroCFU_GMAction extends BaseCharacterizationAction {
 		return forward;
 	}
 
-	protected void setLoadFileRequest(HttpServletRequest request) {
-		request.setAttribute("characterization", "cfu_gm");
-		request.setAttribute("loadFileForward", "invitroCFU_GMForm");
-	}
 }
