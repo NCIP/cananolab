@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.inventory;
  * @author pansu
  */
 
-/* CVS $Id: CreateSampleAction.java,v 1.11 2007-07-02 21:43:14 pansu Exp $ */
+/* CVS $Id: CreateSampleAction.java,v 1.12 2007-07-03 18:54:21 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.inventory.ContainerBean;
 import gov.nih.nci.calab.dto.inventory.ContainerInfoBean;
@@ -21,7 +21,6 @@ import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -151,7 +150,7 @@ public class CreateSampleAction extends AbstractDispatchAction {
 		}
 		theForm.set("containers", containers);
 		// update editable drop-down lists to include new entries.
-		updateEditableDropDownList(request, theForm);
+		updateAllEditables(request.getSession(), theForm);
 		return mapping.findForward("setup");
 	}
 
@@ -186,7 +185,7 @@ public class CreateSampleAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		updateEditableDropDownList(request, theForm);
+		updateAllEditables(request.getSession(), theForm);
 		return mapping.findForward("setup");
 	}
 
@@ -194,53 +193,29 @@ public class CreateSampleAction extends AbstractDispatchAction {
 		return true;
 	}
 
-	private void updateEditableDropDownList(HttpServletRequest request,
-			DynaValidatorForm theForm) {
-		HttpSession session = request.getSession();
-		// update sample source drop-down list to include the new entry
-		String newSampleSource = (String) theForm.get("sampleSource");
-		List sampleSources = (List) session.getAttribute("allSampleSources");
-		if (!sampleSources.contains(newSampleSource)
-				&& newSampleSource.length() > 0) {
-			sampleSources.add(newSampleSource);
-		}
-		// update container type drop-down list to include the new entry
-		List sampleContainerTypes = (List) session
-				.getAttribute("allSampleContainerTypes");
+	private void updateAllEditables(HttpSession session,
+			DynaValidatorForm theForm) throws Exception {
+		InitSessionSetup.getInstance().updateEditableDropdown(session,
+				theForm.getString("sampleSource"), "allSampleSources");
 		ContainerBean[] origContainers = (ContainerBean[]) theForm
 				.get("containers");
-		for (int i = 0; i < origContainers.length; i++) {
-			String newContainerType = origContainers[i].getContainerType();
-			if (!sampleContainerTypes.contains(newContainerType)
-					&& newContainerType.length() > 0) {
-				sampleContainerTypes.add(newContainerType);
-			}
-		}
-		// update storage location drop-down list to include the new
 		ContainerInfoBean containerInfo = (ContainerInfoBean) session
 				.getAttribute("sampleContainerInfo");
-		for (int i = 0; i < origContainers.length; i++) {
-			String newRoom = origContainers[i].getStorageLocation().getRoom();
-			String newFreezer = origContainers[i].getStorageLocation()
-					.getFreezer();
-			String newShelf = origContainers[i].getStorageLocation().getShelf();
-			String newBox = origContainers[i].getStorageLocation().getBox();
-			if (!containerInfo.getStorageRooms().contains(newRoom)
-					&& newRoom.length() > 0) {
-				containerInfo.getStorageRooms().add(newRoom);
-			}
-			if (!containerInfo.getStorageFreezers().contains(newFreezer)
-					&& newFreezer.length() > 0) {
-				containerInfo.getStorageFreezers().add(newFreezer);
-			}
-			if (!containerInfo.getStorageShelves().contains(newShelf)
-					&& newShelf.length() > 0) {
-				containerInfo.getStorageShelves().add(newShelf);
-			}
-			if (!containerInfo.getStorageBoxes().contains(newBox)
-					&& newBox.length() > 0) {
-				containerInfo.getStorageBoxes().add(newBox);
-			}
+
+		for (ContainerBean containerBean : origContainers) {
+			InitSessionSetup.getInstance()
+					.updateEditableDropdown(session,
+							containerBean.getContainerType(),
+							"allSampleContainerTypes");
+			String newRoom = containerBean.getStorageLocation().getRoom();
+			String newFreezer = containerBean.getStorageLocation().getFreezer();
+			String newShelf = containerBean.getStorageLocation().getShelf();
+			String newBox = containerBean.getStorageLocation().getBox();
+
+			containerInfo.getStorageRooms().add(newRoom);
+			containerInfo.getStorageFreezers().add(newFreezer);
+			containerInfo.getStorageShelves().add(newShelf);
+			containerInfo.getStorageBoxes().add(newBox);
 		}
 	}
 }
