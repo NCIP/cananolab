@@ -42,7 +42,7 @@
 		</td>
 		<td class="rightLabel">
 			<html:text styleId="instrumentAbbr"
-				property="achar.instrumentConfigBean.instrumentBean.abbreviation" />
+				property="achar.instrumentConfigBean.instrumentBean.abbreviation" readonly="true"/>
 			&nbsp;
 		</td>
 	</tr>
