@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: LoadDerivedBioAssayDataAction.java,v 1.14 2007-06-19 20:15:51 pansu Exp $ */
+/* CVS $Id: LoadDerivedBioAssayDataAction.java,v 1.15 2007-07-03 17:35:55 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
@@ -92,7 +92,7 @@ public class LoadDerivedBioAssayDataAction extends AbstractDispatchAction {
 		theForm.set("forwardPage", (String) request
 				.getAttribute("loadFileForward"));
 		theForm.set("characterizationName", (String) request
-				.getAttribute("characterization"));
+				.getAttribute("characterizationName"));
 		return mapping.getInputForward();
 	}
 
