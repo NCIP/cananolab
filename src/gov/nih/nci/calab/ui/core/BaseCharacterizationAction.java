@@ -38,7 +38,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 
-/* CVS $Id: BaseCharacterizationAction.java,v 1.25.2.3 2007-07-02 16:49:32 zengje Exp $ */
+/* CVS $Id: BaseCharacterizationAction.java,v 1.25.2.4 2007-07-03 18:55:30 zengje Exp $ */
 
 public abstract class BaseCharacterizationAction extends AbstractDispatchAction {
 	/**
@@ -90,6 +90,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 
 		request.getSession().setAttribute("newCharacterizationCreated", "true");
 		request.getSession().setAttribute("newInstrumentCreated", "true");
+		request.getSession().setAttribute("newCharacterizationSourceCreated", "true");
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
 	}
