@@ -171,7 +171,8 @@ public class InitSessionSetup {
 
 		if (session.getAttribute("allSampleSources") == null
 				|| session.getAttribute("newSampleCreated") != null) {
-			SortedSet<String> sampleSources = lookupService.getAllSampleSources();
+			SortedSet<String> sampleSources = lookupService
+					.getAllSampleSources();
 			session.setAttribute("allSampleSources", sampleSources);
 		}
 		// clear the new sample created flag
@@ -186,7 +187,8 @@ public class InitSessionSetup {
 			throws Exception {
 		if (session.getAttribute("allSampleContainerTypes") == null
 				|| session.getAttribute("newSampleCreated") != null) {
-			SortedSet<String> containerTypes = lookupService.getAllSampleContainerTypes();
+			SortedSet<String> containerTypes = lookupService
+					.getAllSampleContainerTypes();
 			session.setAttribute("allSampleContainerTypes", containerTypes);
 		}
 		// clear the new sample created flag
@@ -245,7 +247,8 @@ public class InitSessionSetup {
 			throws Exception {
 		if (session.getAttribute("allAliquotContainerTypes") == null
 				|| session.getAttribute("newAliquotCreated") != null) {
-			SortedSet<String> containerTypes = lookupService.getAllAliquotContainerTypes();
+			SortedSet<String> containerTypes = lookupService
+					.getAllAliquotContainerTypes();
 			session.setAttribute("allAliquotContainerTypes", containerTypes);
 		}
 		session.removeAttribute("newAliquotCreated");
@@ -382,53 +385,34 @@ public class InitSessionSetup {
 		session.removeAttribute("newSampleCreated");
 	}
 
-	public void setAllDendrimerCores(HttpSession session) throws Exception {
-		if (session.getServletContext().getAttribute("allDendrimerCores") == null) {
-			String[] dendrimerCores = lookupService.getAllDendrimerCores();
-			session.getServletContext().setAttribute("allDendrimerCores",
-					dendrimerCores);
+	public void setAllDendrimers(HttpSession session) throws Exception {
+		if ((session.getAttribute("allDendrimerCores") == null)
+				|| session.getAttribute("newDendrimerCreated") != null) {
+			SortedSet<String> dendrimerCores = lookupService
+					.getAllDendrimerCores();
+			session.setAttribute("allDendrimerCores", dendrimerCores);
 		}
-	}
-
-	public void setAllDendrimerSurfaceGroupNames(HttpSession session)
-			throws Exception {
-		if (session.getServletContext().getAttribute(
-				"allDendrimerSurfaceGroupNames") == null
-				|| session.getAttribute("newCharacterizationCreated") != null) {
-			String[] surfaceGroupNames = lookupService
+		if (session.getAttribute("allDendrimerSurfaceGroupNames") == null
+				|| session.getAttribute("newDendrimerCreated") != null) {
+			SortedSet<String> surfaceGroupNames = lookupService
 					.getAllDendrimerSurfaceGroupNames();
-			session.getServletContext().setAttribute(
-					"allDendrimerSurfaceGroupNames", surfaceGroupNames);
+			session.setAttribute("allDendrimerSurfaceGroupNames",
+					surfaceGroupNames);
 		}
-	}
+		if (session.getAttribute("allDendrimerBranches") == null
+				|| session.getAttribute("newDendrimerCreated") != null) {
+			SortedSet<String> branches = lookupService
+					.getAllDendrimerBranches();
+			session.setAttribute("allDendrimerBranches", branches);
+		}
+		if (session.getAttribute("allDendrimerGenerations") == null
+				|| session.getAttribute("newDendrimerCreated") != null) {
+			SortedSet<String> generations = lookupService
+					.getAllDendrimerGenerations();
+			session.setAttribute("allDendrimerGenerations", generations);
+		}
 
-	public void setAllDendrimerBranches(HttpSession session) throws Exception {
-		if (session.getServletContext().getAttribute("allDendrimerBranches") == null
-				|| session.getAttribute("newCharacterizationCreated") != null) {
-			String[] branches = lookupService.getAllDendrimerBranches();
-			session.getServletContext().setAttribute("allDendrimerBranches",
-					branches);
-		}
-	}
-
-	public void setAllDendrimerGenerations(HttpSession session)
-			throws Exception {
-		if (session.getServletContext().getAttribute("allDendrimerGenerations") == null
-				|| session.getAttribute("newCharacterizationCreated") != null) {
-			String[] generations = lookupService.getAllDendrimerGenerations();
-			session.getServletContext().setAttribute("allDendrimerGenerations",
-					generations);
-		}
-	}
-
-	public void addSessionAttributeElement(HttpSession session,
-			String attributeName, String newElement) throws Exception {
-		String[] attributeValues = (String[]) session.getServletContext()
-				.getAttribute(attributeName);
-		if (!StringUtils.contains(attributeValues, newElement, true)) {
-			session.getServletContext().setAttribute(attributeName,
-					StringUtils.add(attributeValues, newElement));
-		}
+		session.removeAttribute("newDendrimerCreated");
 	}
 
 	public void setAllMetalCompositions(HttpSession session) throws Exception {
@@ -440,18 +424,20 @@ public class InitSessionSetup {
 	}
 
 	public void setAllPolymerInitiators(HttpSession session) throws Exception {
-		if ((session.getServletContext().getAttribute("allPolymerInitiators") == null)
-				|| (session.getAttribute("newCharacterizationCreated") != null)) {
-			String[] initiators = lookupService.getAllPolymerInitiators();
-			session.getServletContext().setAttribute("allPolymerInitiators",
-					initiators);
+		if ((session.getAttribute("allPolymerInitiators") == null)
+				|| (session.getAttribute("newPolymerCreated") != null)) {
+			SortedSet<String> initiators = lookupService
+					.getAllPolymerInitiators();
+			session.setAttribute("allPolymerInitiators", initiators);
 		}
+		session.removeAttribute("newPolymerCreated");
 	}
 
 	public void setAllParticleSources(HttpSession session) throws Exception {
 		if (session.getAttribute("allParticleSources") == null
 				|| session.getAttribute("newSampleCreated") != null) {
-			SortedSet<String> particleSources = lookupService.getAllParticleSources();
+			SortedSet<String> particleSources = lookupService
+					.getAllParticleSources();
 			session.setAttribute("allParticleSources", particleSources);
 		}
 		// clear the new sample created flag
@@ -596,27 +582,22 @@ public class InitSessionSetup {
 	}
 
 	public void setAllMorphologyTypes(HttpSession session) throws Exception {
-		if (session.getServletContext().getAttribute("allMorphologyTypes") == null) {
-			String[] morphologyTypes = lookupService.getAllMorphologyTypes();
-			session.getServletContext().setAttribute("allMorphologyTypes",
-					morphologyTypes);
+		if (session.getAttribute("allMorphologyTypes") == null
+				|| session.getAttribute("newMorphologyCreated") != null) {
+			SortedSet<String> morphologyTypes = lookupService
+					.getAllMorphologyTypes();
+			session.setAttribute("allMorphologyTypes", morphologyTypes);
 		}
+		session.removeAttribute("newMorphologyCreated");
 	}
 
 	public void setAllShapeTypes(HttpSession session) throws Exception {
-		if (session.getServletContext().getAttribute("allShapeTypes") == null) {
-			String[] shapeTypes = lookupService.getAllShapeTypes();
-			session.getServletContext().setAttribute("allShapeTypes",
-					shapeTypes);
+		if (session.getAttribute("allShapeTypes") == null
+				|| session.getAttribute("newShapeCreated") != null) {
+			SortedSet<String> shapeTypes = lookupService.getAllShapeTypes();
+			session.setAttribute("allShapeTypes", shapeTypes);
 		}
-	}
-
-	public void setAllStressorTypes(HttpSession session) throws Exception {
-		if (session.getServletContext().getAttribute("allStessorTypes") == null) {
-			String[] stressorTypes = lookupService.getAllStressorTypes();
-			session.getServletContext().setAttribute("allStressorTypes",
-					stressorTypes);
-		}
+		session.removeAttribute("newShapeCreated");
 	}
 
 	public void setStaticDropdowns(HttpSession session) {
@@ -819,10 +800,12 @@ public class InitSessionSetup {
 	}
 
 	public void setAllCellLines(HttpSession session) throws Exception {
-		if (session.getServletContext().getAttribute("allCellLines") == null) {
+		if (session.getAttribute("allCellLines") == null
+				|| session.getAttribute("newCellLineCreated") != null) {
 			SortedSet<String> cellLines = lookupService.getAllCellLines();
-			session.getServletContext().setAttribute("allCellLines", cellLines);
+			session.setAttribute("allCellLines", cellLines);
 		}
+		session.removeAttribute("newCellLineCreated");
 	}
 
 	public void setAllActivationMethods(HttpSession session) throws Exception {
@@ -851,24 +834,14 @@ public class InitSessionSetup {
 	public void setAllCharacterizationSources(HttpSession session)
 			throws Exception {
 		if (session.getAttribute("characterizationSources") == null
-				|| session.getAttribute("newCharacterizationCreated") != null) {
+				|| session.getAttribute("newCharacterizationSourceCreated") != null) {
 			SortedSet<String> characterizationSources = lookupService
 					.getAllCharacterizationSources();
 			session.setAttribute("characterizationSources",
 					characterizationSources);
 		}
-		session.removeAttribute("newCharacterizationCreated");
+		session.removeAttribute("newCharacterizationSourceCreated");
 	}
-
-	// public void addCellLine(HttpSession session, String option) throws
-	// Exception {
-	// String[] cellLines = (String[])
-	// session.getServletContext().getAttribute("allCellLines");
-	// if (!StringHelper.contains(cellLines, option, true)) {
-	// session.getServletContext().setAttribute("allCellLines",
-	// StringHelper.add(cellLines, option));
-	// }
-	// }
 
 	/**
 	 * Create default CSM groups for default visible groups and admin
@@ -955,11 +928,10 @@ public class InitSessionSetup {
 			String charName) throws Exception {
 		Map<String, SortedSet<String>> unitMap = lookupService
 				.getAllMeasureUnits();
-		SortedSet<String> charUnits = unitMap.get(charName);
-		// add an empty one to indicate no unit
-		charUnits.add("");
+		SortedSet<String> charUnits = unitMap.get(charName);	
 		if (charUnits == null) {
 			charUnits = new TreeSet<String>();
+			charUnits.add("");// add an empty one to indicate no unit
 		}
 		SortedSet<String> types = lookupService.getAllMeasureTypes();
 		session.setAttribute("charMeasureUnits", charUnits);

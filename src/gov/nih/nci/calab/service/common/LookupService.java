@@ -51,7 +51,7 @@ import org.hibernate.collection.PersistentSet;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.120 2007-07-03 21:09:03 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.121 2007-07-03 21:14:15 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
