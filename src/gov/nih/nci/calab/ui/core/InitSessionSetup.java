@@ -44,9 +44,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.struts.action.ActionForm;
 import org.apache.struts.util.LabelValueBean;
-import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * This class sets up session level or servlet context level variables to be
@@ -173,7 +171,7 @@ public class InitSessionSetup {
 
 		if (session.getAttribute("allSampleSources") == null
 				|| session.getAttribute("newSampleCreated") != null) {
-			List sampleSources = lookupService.getAllSampleSources();
+			SortedSet<String> sampleSources = lookupService.getAllSampleSources();
 			session.setAttribute("allSampleSources", sampleSources);
 		}
 		// clear the new sample created flag
@@ -188,7 +186,7 @@ public class InitSessionSetup {
 			throws Exception {
 		if (session.getAttribute("allSampleContainerTypes") == null
 				|| session.getAttribute("newSampleCreated") != null) {
-			List containerTypes = lookupService.getAllSampleContainerTypes();
+			SortedSet<String> containerTypes = lookupService.getAllSampleContainerTypes();
 			session.setAttribute("allSampleContainerTypes", containerTypes);
 		}
 		// clear the new sample created flag
@@ -247,7 +245,7 @@ public class InitSessionSetup {
 			throws Exception {
 		if (session.getAttribute("allAliquotContainerTypes") == null
 				|| session.getAttribute("newAliquotCreated") != null) {
-			List containerTypes = lookupService.getAllAliquotContainerTypes();
+			SortedSet<String> containerTypes = lookupService.getAllAliquotContainerTypes();
 			session.setAttribute("allAliquotContainerTypes", containerTypes);
 		}
 		session.removeAttribute("newAliquotCreated");
@@ -453,7 +451,7 @@ public class InitSessionSetup {
 	public void setAllParticleSources(HttpSession session) throws Exception {
 		if (session.getAttribute("allParticleSources") == null
 				|| session.getAttribute("newSampleCreated") != null) {
-			List particleSources = lookupService.getAllParticleSources();
+			SortedSet<String> particleSources = lookupService.getAllParticleSources();
 			session.setAttribute("allParticleSources", particleSources);
 		}
 		// clear the new sample created flag
