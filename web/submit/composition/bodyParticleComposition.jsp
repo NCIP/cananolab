@@ -3,6 +3,8 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page import="gov.nih.nci.calab.service.util.StringUtils"%>
+<script type="text/javascript" src="javascript/editableDropDown.js"></script>
+
 <script type="text/javascript">
 <!--//
 function confirmDeletion()
@@ -60,7 +62,14 @@ function confirmDeletion()
 						<td class="label">
 							<c:choose>
 								<c:when test="${canUserSubmit eq 'true'}">
-									<html:select property="characterizationSource">
+									<html:select property="characterizationSource"
+										onkeydown="javascript:fnKeyDownHandler(this, event);"
+										onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
+										onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
+										onchange="fnChangeHandler_A(this, event);">
+										<option value="">
+											--?--
+										</option>
 										<html:options name="characterizationSources" />
 									</html:select>
 								</c:when>
