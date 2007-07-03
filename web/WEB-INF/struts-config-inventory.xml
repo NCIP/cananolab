@@ -98,7 +98,8 @@
 		<action name="editAliquotForm" parameter="dispatch" path="/editAliquot" scope="request" type="gov.nih.nci.calab.ui.inventory.EditAliquotAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="inventory" key="error.editAliquot.nomatrix" path="inventory.createaliquot" type="gov.nih.nci.calab.exception.CalabException" />
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="inventory" key="error.editAliquot" path="inventory.message" type="java.lang.Exception" />
-			<forward name="input" path="inventory.editaliquot" />
+			<forward name="setup" path="inventory.editaliquot" />
+			<forward name="input" path="/editAliquot.do?dispatch=input&amp;page=0" />
 			<forward name="success" path="inventory.createaliquot" />
 		</action>
 		<action input="input" name="searchSampleForm" parameter="dispatch" path="/searchSample" type="gov.nih.nci.calab.ui.inventory.SearchSampleAction" scope="request">
