@@ -7,9 +7,10 @@ package gov.nih.nci.calab.ui.inventory;
  * @author pansu
  */
 
-/* CVS $Id: CreateSampleAction.java,v 1.9.2.1 2007-06-29 14:56:12 pansu Exp $ */
+/* CVS $Id: CreateSampleAction.java,v 1.9.2.2 2007-07-03 19:42:43 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.inventory.ContainerBean;
+import gov.nih.nci.calab.dto.inventory.ContainerInfoBean;
 import gov.nih.nci.calab.dto.inventory.SampleBean;
 import gov.nih.nci.calab.service.inventory.ManageSampleService;
 import gov.nih.nci.calab.service.security.UserService;
@@ -101,7 +102,7 @@ public class CreateSampleAction extends AbstractDispatchAction {
 		request.setAttribute("sample", sample);
 		manageSampleService.saveSample(sample, containers);
 
-		// create a user group for each sample source
+		// create a new user group for the source specified
 		UserService userService = new UserService(
 				CaNanoLabConstants.CSM_APP_NAME);
 		userService.createAGroup(sampleSource);
@@ -122,7 +123,6 @@ public class CreateSampleAction extends AbstractDispatchAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		int numContainers = Integer.parseInt((String) theForm
 				.get("numberOfContainers"));
-
 		ContainerBean[] origContainers = (ContainerBean[]) theForm
 				.get("containers");
 		ContainerBean[] containers = new ContainerBean[numContainers];
@@ -149,7 +149,9 @@ public class CreateSampleAction extends AbstractDispatchAction {
 			}
 		}
 		theForm.set("containers", containers);
-		return mapping.getInputForward();
+		// update editable drop-down lists to include new entries.
+		updateAllEditables(request.getSession(), theForm);
+		return mapping.findForward("setup");
 	}
 
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
@@ -176,10 +178,44 @@ public class CreateSampleAction extends AbstractDispatchAction {
 				CaNanoLabConstants.CANANOLAB_PROPERTY, "samplePrefix"));
 		ContainerBean[] containers = new ContainerBean[] { new ContainerBean() };
 		theForm.set("containers", containers);
-		return mapping.getInputForward();
+		return mapping.findForward("setup");
+	}
+
+	public ActionForward input(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		updateAllEditables(request.getSession(), theForm);
+		return mapping.findForward("setup");
 	}
 
 	public boolean loginRequired() {
 		return true;
+	}
+
+	private void updateAllEditables(HttpSession session,
+			DynaValidatorForm theForm) throws Exception {
+		InitSessionSetup.getInstance().updateEditableDropdown(session,
+				theForm.getString("sampleSource"), "allSampleSources");
+		ContainerBean[] origContainers = (ContainerBean[]) theForm
+				.get("containers");
+		ContainerInfoBean containerInfo = (ContainerInfoBean) session
+				.getAttribute("sampleContainerInfo");
+
+		for (ContainerBean containerBean : origContainers) {
+			InitSessionSetup.getInstance()
+					.updateEditableDropdown(session,
+							containerBean.getContainerType(),
+							"allSampleContainerTypes");
+			String newRoom = containerBean.getStorageLocation().getRoom();
+			String newFreezer = containerBean.getStorageLocation().getFreezer();
+			String newShelf = containerBean.getStorageLocation().getShelf();
+			String newBox = containerBean.getStorageLocation().getBox();
+
+			containerInfo.getStorageRooms().add(newRoom);
+			containerInfo.getStorageFreezers().add(newFreezer);
+			containerInfo.getStorageShelves().add(newShelf);
+			containerInfo.getStorageBoxes().add(newBox);
+		}
 	}
 }

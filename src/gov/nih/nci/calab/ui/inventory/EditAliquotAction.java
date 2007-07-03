@@ -6,11 +6,13 @@ package gov.nih.nci.calab.ui.inventory;
  * @author pansu
  */
 
-/* CVS $Id: EditAliquotAction.java,v 1.2 2006-08-01 13:25:27 pansu Exp $ */
+/* CVS $Id: EditAliquotAction.java,v 1.2.2.1 2007-07-03 19:42:44 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.inventory.AliquotBean;
+import gov.nih.nci.calab.dto.inventory.ContainerInfoBean;
 import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
+import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
 import java.util.Date;
 import java.util.List;
@@ -42,10 +44,19 @@ public class EditAliquotAction extends AbstractDispatchAction {
 			forward = mapping.findForward("success");
 		} else {
 			throw new CalabException(
-					"Session containing the aliquot matrix either is expired or doesn't exist");			
+					"Session containing the aliquot matrix either is expired or doesn't exist");
 		}
 		return forward;
 	}
+
+	public ActionForward input(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		updateAllEditables(request.getSession(), theForm);
+		return mapping.findForward("setup");
+	}
+
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -64,10 +75,33 @@ public class EditAliquotAction extends AbstractDispatchAction {
 			throw new CalabException(
 					"Session containing the aliquot matrix either is expired or doesn't exist");
 		}
+
+		// update editable drop-down to include new entry
+		updateAllEditables(request.getSession(), theForm);
 		return forward;
 	}
 
 	public boolean loginRequired() {
 		return true;
+	}
+
+	private void updateAllEditables(HttpSession session,
+			DynaValidatorForm theForm) throws Exception {
+		AliquotBean aliquot = ((AliquotBean) theForm.get("aliquot"));
+		InitSessionSetup.getInstance().updateEditableDropdown(session,
+				aliquot.getContainer().getContainerType(),
+				"allAliquotContainerTypes");
+		ContainerInfoBean containerInfo = (ContainerInfoBean) session
+				.getAttribute("aliquotContainerInfo");
+		String newRoom = aliquot.getContainer().getStorageLocation().getRoom();
+		String newFreezer = aliquot.getContainer().getStorageLocation()
+				.getFreezer();
+		String newShelf = aliquot.getContainer().getStorageLocation()
+				.getShelf();
+		String newBox = aliquot.getContainer().getStorageLocation().getBox();
+		containerInfo.getStorageRooms().add(newRoom);
+		containerInfo.getStorageFreezers().add(newFreezer);
+		containerInfo.getStorageShelves().add(newShelf);
+		containerInfo.getStorageBoxes().add(newBox);
 	}
 }
