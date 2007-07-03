@@ -54,10 +54,4 @@ public class InvitroNKCellCytotoxicActivityAction extends
 		forward = mapping.findForward("success");
 		return forward;
 	}
-
-	protected void setLoadFileRequest(HttpServletRequest request) {
-		request.setAttribute("characterization", "nkCellCytotoxicActivity");
-		request.setAttribute("loadFileForward",
-				"invitroNKCellCytotoxicActivityForm");
-	}
 }

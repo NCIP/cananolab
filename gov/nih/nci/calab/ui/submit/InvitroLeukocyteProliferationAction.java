@@ -54,11 +54,4 @@ public class InvitroLeukocyteProliferationAction extends
 		forward = mapping.findForward("success");
 		return forward;
 	}
-
-	protected void setLoadFileRequest(HttpServletRequest request) {
-		request.setAttribute("characterization", "leukocyteProliferation");
-		request.setAttribute("loadFileForward",
-				"invitroLeukocyteProliferationForm");
-	}
-
 }

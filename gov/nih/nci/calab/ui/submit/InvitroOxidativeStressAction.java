@@ -54,10 +54,4 @@ public class InvitroOxidativeStressAction extends BaseCharacterizationAction {
 
 		return forward;
 	}
-
-	protected void setLoadFileRequest(HttpServletRequest request) {
-		request.setAttribute("characterization", "oxidativeStress");
-		request.setAttribute("loadFileForward", "invitroOxidativeStressForm");
-	}
-
 }

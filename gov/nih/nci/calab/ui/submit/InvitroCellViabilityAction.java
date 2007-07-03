@@ -56,10 +56,4 @@ public class InvitroCellViabilityAction extends BaseCharacterizationAction {
 		forward = mapping.findForward("success");
 		return forward;
 	}
-
-	protected void setLoadFileRequest(HttpServletRequest request) {
-		request.setAttribute("characterization", "cellViability");
-		request.setAttribute("loadFileForward", "invitroCellViabilityForm");
-
-	}
 }
