@@ -38,7 +38,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.93.2.7 2007-07-05 15:26:48 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.93.2.8 2007-07-05 16:16:33 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -619,12 +619,14 @@ public class LookupService {
 		return charTypes;
 	}
 
-	public String[] getAllDendrimerCores() {
-		String[] cores = new String[] { "Diamine", "Ethyline" };
+	public SortedSet<String> getAllDendrimerCores() {
+		SortedSet<String> cores =new TreeSet<String>();
+		cores.add("Diamine");
+		cores.add("Ethyline");
 		return cores;
 	}
 
-	public String[] getAllDendrimerSurfaceGroupNames() throws Exception {
+	public SortedSet<String> getAllDendrimerSurfaceGroupNames() throws Exception {
 		SortedSet<String> names = new TreeSet<String>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
@@ -645,10 +647,10 @@ public class LookupService {
 		names.addAll(Arrays
 				.asList(CaNanoLabConstants.DEFAULT_SURFACE_GROUP_NAMES));
 
-		return (String[]) names.toArray(new String[0]);
+		return names;
 	}
 
-	public String[] getAllDendrimerBranches() throws Exception {
+	public SortedSet<String> getAllDendrimerBranches() throws Exception {
 		SortedSet<String> branches = new TreeSet<String>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
@@ -669,10 +671,10 @@ public class LookupService {
 		branches.addAll(Arrays
 				.asList(CaNanoLabConstants.DEFAULT_DENDRIMER_BRANCHES));
 
-		return (String[]) branches.toArray(new String[0]);
+		return branches;
 	}
 
-	public String[] getAllDendrimerGenerations() throws Exception {
+	public SortedSet<String> getAllDendrimerGenerations() throws Exception {
 		SortedSet<String> generations = new TreeSet<String>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
@@ -693,7 +695,7 @@ public class LookupService {
 		generations.addAll(Arrays
 				.asList(CaNanoLabConstants.DEFAULT_DENDRIMER_GENERATIONS));
 
-		return (String[]) generations.toArray(new String[0]);
+		return generations;
 	}
 
 	public String[] getAllMetalCompositions() {
