@@ -8,7 +8,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleCompositionAction.java,v 1.25 2007-07-05 16:46:14 pansu Exp $ */
+/* CVS $Id: NanoparticleCompositionAction.java,v 1.26 2007-07-05 18:58:07 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.CarbonNanotubeComposition;
@@ -391,16 +391,6 @@ public class NanoparticleCompositionAction extends BaseCharacterizationAction {
 		}
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
-		
-		// update editable dropdowns
-		HttpSession session = request.getSession();
-		InitSessionSetup.getInstance().updateEditableDropdown(session,
-				theForm.getString("characterizationSource"),
-				"characterizationSources");
-		PolymerBean polymer = (PolymerBean) theForm.get("polymer");
-		updatePolymerEditable(session, polymer);
-		DendrimerBean dendrimer = (DendrimerBean) theForm.get("dendrimer");
-		updateDendrimerEditable(session, dendrimer);
 
 		return mapping.getInputForward();
 	}
