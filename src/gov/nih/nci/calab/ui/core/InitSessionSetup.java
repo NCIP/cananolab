@@ -165,7 +165,8 @@ public class InitSessionSetup {
 
 		if (session.getAttribute("allSampleSources") == null
 				|| session.getAttribute("newSampleSourceCreated") != null) {
-			SortedSet<String> sampleSources = lookupService.getAllSampleSources();
+			SortedSet<String> sampleSources = lookupService
+					.getAllSampleSources();
 			session.setAttribute("allSampleSources", sampleSources);
 		}
 		// clear the new sample created flag
@@ -180,7 +181,8 @@ public class InitSessionSetup {
 			throws Exception {
 		if (session.getAttribute("allSampleContainerTypes") == null
 				|| session.getAttribute("newSampleCreated") != null) {
-			SortedSet<String>  containerTypes = lookupService.getAllSampleContainerTypes();
+			SortedSet<String> containerTypes = lookupService
+					.getAllSampleContainerTypes();
 			session.setAttribute("allSampleContainerTypes", containerTypes);
 		}
 		// clear the new sample created flag
@@ -239,7 +241,8 @@ public class InitSessionSetup {
 			throws Exception {
 		if (session.getAttribute("allAliquotContainerTypes") == null
 				|| session.getAttribute("newAliquotCreated") != null) {
-			SortedSet<String> containerTypes = lookupService.getAllAliquotContainerTypes();
+			SortedSet<String> containerTypes = lookupService
+					.getAllAliquotContainerTypes();
 			session.setAttribute("allAliquotContainerTypes", containerTypes);
 		}
 		session.removeAttribute("newAliquotCreated");
@@ -374,41 +377,37 @@ public class InitSessionSetup {
 			List<String> groupNames = userService.getAllVisibilityGroups();
 			session.setAttribute("allVisibilityGroups", groupNames);
 		}
-		session.removeAttribute("newSampleCreated");		
+		session.removeAttribute("newSampleCreated");
 	}
 
-	public void setAllDendrimerCores(HttpSession session) throws Exception {
-		if (session.getServletContext().getAttribute("allDendrimerCores") == null) {
-			String[] dendrimerCores = lookupService.getAllDendrimerCores();
-			session.getServletContext().setAttribute("allDendrimerCores",
-					dendrimerCores);
+	public void setAllDendrimers(HttpSession session) throws Exception {
+		if ((session.getAttribute("allDendrimerCores") == null)
+				|| session.getAttribute("newDendrimerCreated") != null) {
+			SortedSet<String> dendrimerCores = lookupService
+					.getAllDendrimerCores();
+			session.setAttribute("allDendrimerCores", dendrimerCores);
 		}
-	}
-
-	public void setAllDendrimerSurfaceGroupNames(HttpSession session)
-			throws Exception {
-		if (session.getServletContext().getAttribute(
-				"allDendrimerSurfaceGroupNames") == null
-				|| session.getAttribute("newCharacterizationCreated") != null) {
-			String[] surfaceGroupNames = lookupService
+		if (session.getAttribute("allDendrimerSurfaceGroupNames") == null
+				|| session.getAttribute("newDendrimerCreated") != null) {
+			SortedSet<String> surfaceGroupNames = lookupService
 					.getAllDendrimerSurfaceGroupNames();
-			session.getServletContext().setAttribute(
-					"allDendrimerSurfaceGroupNames", surfaceGroupNames);
+			session.setAttribute("allDendrimerSurfaceGroupNames",
+					surfaceGroupNames);
 		}
-		session.removeAttribute("newCharacterizationCreated");
-	}
+		if (session.getAttribute("allDendrimerBranches") == null
+				|| session.getAttribute("newDendrimerCreated") != null) {
+			SortedSet<String> branches = lookupService
+					.getAllDendrimerBranches();
+			session.setAttribute("allDendrimerBranches", branches);
+		}
+		if (session.getAttribute("allDendrimerGenerations") == null
+				|| session.getAttribute("newDendrimerCreated") != null) {
+			SortedSet<String> generations = lookupService
+					.getAllDendrimerGenerations();
+			session.setAttribute("allDendrimerGenerations", generations);
+		}
 
-	public void setAllDendrimerBranches(HttpSession session) throws Exception {
-		String[] branches = lookupService.getAllDendrimerBranches();
-		session.getServletContext().setAttribute("allDendrimerBranches",
-				branches);
-	}
-
-	public void setAllDendrimerGenerations(HttpSession session)
-			throws Exception {
-		String[] generations = lookupService.getAllDendrimerGenerations();
-		session.getServletContext().setAttribute("allDendrimerGenerations",
-				generations);
+		session.removeAttribute("newDendrimerCreated");
 	}
 
 	public void setAllMetalCompositions(HttpSession session) throws Exception {
@@ -593,15 +592,17 @@ public class InitSessionSetup {
 	public void setAllInstruments(HttpSession session) throws Exception {
 		if (session.getAttribute("allInstruments") == null
 				|| session.getAttribute("newInstrumentCreated") != null) {
-			List<InstrumentBean>instruments=lookupService.getAllInstruments();
-			SortedSet<String> instrumentTypes=new TreeSet<String>();
-			for (InstrumentBean instrument: instruments) {
+			List<InstrumentBean> instruments = lookupService
+					.getAllInstruments();
+			SortedSet<String> instrumentTypes = new TreeSet<String>();
+			for (InstrumentBean instrument : instruments) {
 				instrumentTypes.add(instrument.getType());
 			}
-			SortedSet<String> manufacturers=lookupService.getAllManufacturers();			
+			SortedSet<String> manufacturers = lookupService
+					.getAllManufacturers();
 			session.setAttribute("allInstruments", instruments);
 			session.setAttribute("allInstrumentTypes", instrumentTypes);
-			session.setAttribute("allManufacturers", manufacturers);			
+			session.setAttribute("allManufacturers", manufacturers);
 		}
 		session.removeAttribute("newInstrumentCreated");
 	}
@@ -835,12 +836,15 @@ public class InitSessionSetup {
 					CaNanoLabConstants.APP_OWNER);
 		}
 	}
-	
-	public void setAllCharacterizationSources(HttpSession session) throws Exception{
-		if (session.getAttribute("characterizationSources") == null || 
-				session.getAttribute("newCharacterizationSourceCreated") != null) {
-			SortedSet<String>  characterizationSources = lookupService.getAllCharacterizationSources();
-			session.setAttribute("characterizationSources", characterizationSources);
+
+	public void setAllCharacterizationSources(HttpSession session)
+			throws Exception {
+		if (session.getAttribute("characterizationSources") == null
+				|| session.getAttribute("newCharacterizationSourceCreated") != null) {
+			SortedSet<String> characterizationSources = lookupService
+					.getAllCharacterizationSources();
+			session.setAttribute("characterizationSources",
+					characterizationSources);
 		}
 		session.removeAttribute("newCharacterizationSourceCreated");
 	}
@@ -855,7 +859,7 @@ public class InitSessionSetup {
 		}
 		userService.createAGroup(CaNanoLabConstants.CSM_ADMIN);
 	}
-	
+
 	public void updateEditableDropdown(HttpSession session,
 			String formAttribute, String sessionAttributeName) {
 		SortedSet<String> dropdown = (SortedSet<String>) session
