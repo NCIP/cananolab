@@ -34,7 +34,7 @@ public class CaNanoLabConstants {
 	public static final String OTHER = "Other";
 
 	public static final String[] DEFAULT_CONTAINER_TYPES = new String[] {
-			"Tube", "Vial", "Other" };
+			"Tube", "Vial" };
 
 	// Sample Container type
 	public static final String ALIQUOT = "Aliquot";
