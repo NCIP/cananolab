@@ -6,6 +6,10 @@ import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.ConditionBean;
 import gov.nih.nci.calab.dto.characterization.DatumBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
+import gov.nih.nci.calab.dto.characterization.invitro.Caspase3ActivationBean;
+import gov.nih.nci.calab.dto.characterization.invitro.CellViabilityBean;
+import gov.nih.nci.calab.dto.characterization.physical.MorphologyBean;
+import gov.nih.nci.calab.dto.characterization.physical.ShapeBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.exception.CalabException;
@@ -38,7 +42,10 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 
-/* CVS $Id: BaseCharacterizationAction.java,v 1.25.2.4 2007-07-03 18:55:30 zengje Exp $ */
+/*
+ * CVS $Id: BaseCharacterizationAction.java,v 1.25.2.3 2007/07/02 16:49:32
+ * zengje Exp $
+ */
 
 public abstract class BaseCharacterizationAction extends AbstractDispatchAction {
 	/**
@@ -71,9 +78,9 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		InitSessionSetup.getInstance().setApplicationOwner(session);
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
-//		InitSessionSetup.getInstance().setAllInstrumentTypes(session);
-//		InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(
-//				session);
+		// InitSessionSetup.getInstance().setAllInstrumentTypes(session);
+		// InitSessionSetup.getInstance().setAllInstrumentTypeManufacturers(
+		// session);
 		InitSessionSetup.getInstance().setAllInstruments(session);
 		InitSessionSetup.getInstance().setAllControlTypes(session);
 		InitSessionSetup.getInstance().setAllConditionTypes(session);
@@ -90,11 +97,12 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 
 		request.getSession().setAttribute("newCharacterizationCreated", "true");
 		request.getSession().setAttribute("newInstrumentCreated", "true");
-		request.getSession().setAttribute("newCharacterizationSourceCreated", "true");
+		request.getSession().setAttribute("newCharacterizationSourceCreated",
+				"true");
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
 	}
-	
+
 	/**
 	 * Set the appropriate type of characterization bean in the form from the
 	 * chararacterization domain obj.
@@ -142,6 +150,30 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		return mapping.getInputForward();
 	}
 
+	public ActionForward input(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		HttpSession session = request.getSession();
+		CharacterizationBean achar = (CharacterizationBean) theForm
+				.get("achar");
+		updateAllCharEditables(session, achar);
+		if (achar instanceof ShapeBean) {
+			updateShapeEditable(session, (ShapeBean) achar);
+		}
+		if (achar instanceof MorphologyBean) {
+			updateMorphologyEditable(session, (MorphologyBean) achar);
+		}
+		if (achar instanceof CellViabilityBean) {
+			updateCytotoxicityEditable(session, (CellViabilityBean) achar);
+		}
+		if (achar instanceof Caspase3ActivationBean) {
+			updateCytotoxicityEditable(session, (Caspase3ActivationBean) achar);
+		}
+
+		return mapping.findForward("setup");
+	}
+
 	/**
 	 * Set request attributes required in load file for different types of
 	 * characterizations
@@ -176,7 +208,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		clearMap(session, theForm, mapping);
 		theForm.set("characterizationId", characterizationId);
 
-		UserService userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
+		UserService userService = new UserService(
+				CaNanoLabConstants.CSM_APP_NAME);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 
 		int fileNumber = 0;
@@ -194,7 +227,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 							.toArray(new String[0]);
 					fileBean.setVisibilityGroups(visibilityGroups);
 					request.getSession().setAttribute(
-							"characterizationFile" + fileNumber, fileBean);				}
+							"characterizationFile" + fileNumber, fileBean);
+				}
 			} else {
 				request.getSession().removeAttribute(
 						"characterizationFile" + fileNumber);
@@ -204,22 +238,6 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		initSetup(request, theForm);
 		setFormCharacterizationBean(theForm, aChar);
 		return mapping.getInputForward();
-	}
-
-	/**
-	 * Prepare the form for viewing existing characterization
-	 * 
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws Exception
-	 */
-	public ActionForward setupView(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		return setupUpdate(mapping, form, request, response);
 	}
 
 	/**
@@ -251,7 +269,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 
 		String fileId = request.getParameter("fileId");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		LabFileBean fileBean = service.getFile(fileId, CaNanoLabConstants.OUTPUT);
+		LabFileBean fileBean = service.getFile(fileId,
+				CaNanoLabConstants.OUTPUT);
 		String fileRoot = PropertyReader.getProperty(
 				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
 		File dFile = new File(fileRoot + File.separator + fileBean.getPath());
@@ -320,6 +339,20 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
+		HttpSession session = request.getSession();
+		updateAllCharEditables(session, achar);
+		if (achar instanceof ShapeBean) {
+			updateShapeEditable(session, (ShapeBean) achar);
+		}
+		if (achar instanceof MorphologyBean) {
+			updateMorphologyEditable(session, (MorphologyBean) achar);
+		}
+		if (achar instanceof CellViabilityBean) {
+			updateCytotoxicityEditable(session, (CellViabilityBean) achar);
+		}
+		if (achar instanceof Caspase3ActivationBean) {
+			updateCytotoxicityEditable(session, (Caspase3ActivationBean) achar);
+		}
 
 		return mapping.getInputForward();
 	}
@@ -452,6 +485,44 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			}
 		}
 		derivedBioAssayDataBean.setDatumList(dataList);
+	}
+
+	private void updateAllCharEditables(HttpSession session,
+			CharacterizationBean achar) throws Exception {
+		InitSessionSetup.getInstance().updateEditableDropdown(session,
+				achar.getCharacterizationSource(), "characterizationSources");
+		InitSessionSetup.getInstance().updateEditableDropdown(session,
+				achar.getInstrumentConfigBean().getInstrumentBean().getType(),
+				"allInstrumentTypes");
+		InitSessionSetup.getInstance().updateEditableDropdown(
+				session,
+				achar.getInstrumentConfigBean().getInstrumentBean()
+						.getManufacturer(), "allManufacturers");
+	}
+
+	// add edited option to all editable dropdowns
+	private void updateShapeEditable(HttpSession session, ShapeBean shape)
+			throws Exception {
+		InitSessionSetup.getInstance().updateEditableDropdown(session,
+				shape.getType(), "allShapeTypes");
+	}
+
+	private void updateMorphologyEditable(HttpSession session,
+			MorphologyBean morphology) throws Exception {
+		InitSessionSetup.getInstance().updateEditableDropdown(session,
+				morphology.getType(), "allMorphologyTypes");
+	}
+
+	private void updateCytotoxicityEditable(HttpSession session,
+			Caspase3ActivationBean cyto) throws Exception {
+		InitSessionSetup.getInstance().updateEditableDropdown(session,
+				cyto.getCellLine(), "allCellLines");
+	}
+
+	private void updateCytotoxicityEditable(HttpSession session,
+			CellViabilityBean cyto) throws Exception {
+		InitSessionSetup.getInstance().updateEditableDropdown(session,
+				cyto.getCellLine(), "allCellLines");
 	}
 
 	public boolean loginRequired() {
