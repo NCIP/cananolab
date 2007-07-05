@@ -510,73 +510,6 @@
 					bundle="submit" />
 			</field>
 		</form>
-		<form
-			name="invitroMetabolicStabilityGlucuronidationSulphationForm">
-			<field property="achar.numberOfDerivedBioAssayData" page="0"
-				depends="integer">
-				<arg position="0" key="numberOfDerivedBioAssayData"
-					bundle="submit" />
-			</field>
-			<field property="achar.characterizationSource" page="1"
-				depends="required">
-				<arg position="0" key="characterizationSource"
-					bundle="submit" />
-			</field>
-			<field property="achar.viewTitle" page="1"
-				depends="required">
-				<arg position="0" key="viewTitle" bundle="submit" />
-			</field>
-			<field property="numberOfDataPoints" page="0"
-				depends="integer"
-				indexedListProperty="achar.derivedBioAssayDataList">
-				<arg position="0" key="numberOfDataPoints"
-					bundle="submit" />
-			</field>
-		</form>
-		<form name="invitroMetabolicStabilityCYP450Form">
-			<field property="achar.numberOfDerivedBioAssayData" page="0"
-				depends="integer">
-				<arg position="0" key="numberOfDerivedBioAssayData"
-					bundle="submit" />
-			</field>
-			<field property="achar.characterizationSource" page="1"
-				depends="required">
-				<arg position="0" key="characterizationSource"
-					bundle="submit" />
-			</field>
-			<field property="achar.viewTitle" page="1"
-				depends="required">
-				<arg position="0" key="viewTitle" bundle="submit" />
-			</field>
-			<field property="numberOfDataPoints" page="0"
-				depends="integer"
-				indexedListProperty="achar.derivedBioAssayDataList">
-				<arg position="0" key="numberOfDataPoints"
-					bundle="submit" />
-			</field>
-		</form>
-		<form name="invitroMetabolicStabilityROSForm">
-			<field property="achar.numberOfDerivedBioAssayData" page="0"
-				depends="integer">
-				<arg position="0" key="numberOfDerivedBioAssayData"
-					bundle="submit" />
-			</field>
-			<field property="achar.characterizationSource" page="1"
-				depends="required">
-				<arg position="0" key="characterizationSource"
-					bundle="submit" />
-			</field>
-			<field property="achar.viewTitle" page="1"
-				depends="required">
-				<arg position="0" key="viewTitle" bundle="submit" />
-			</field>
-			<field property="numberOfDataPoints" page="0"
-				depends="integer"
-				indexedListProperty="achar.derivedBioAssayDataList">
-				<arg position="0" key="numberOfDataPoints"
-					bundle="submit" />
-			</field>
-		</form>
 		<form name="nanoparticleMolecularWeightForm">
 			<field property="achar.characterizationSource" page="1"
 				depends="required">
@@ -599,7 +532,7 @@
 				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
 			<field property="achar.type" page="1" depends="required">
-				<arg position="0" key="nanoparticleMorphologyForm.type"
+				<arg position="0" key="morphology.type"
 					bundle="submit" />
 			</field>
 		</form>
@@ -614,7 +547,7 @@
 				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
 			<field property="achar.type" page="1" depends="required">
-				<arg position="0" key="nanoparticleShapeForm.type"
+				<arg position="0" key="shape.type"
 					bundle="submit" />
 			</field>
 			<field property="achar.maxDimension" page="1"
@@ -687,17 +620,6 @@
 			</field>
 		</form>
 		<form name="nanoparticlePurityForm">
-			<field property="achar.characterizationSource" page="1"
-				depends="required">
-				<arg position="0" key="characterizationSource"
-					bundle="submit" />
-			</field>
-			<field property="achar.viewTitle" page="1"
-				depends="required">
-				<arg position="0" key="viewTitle" bundle="submit" />
-			</field>
-		</form>
-		<form name="nanoparticleStabilityForm">
 			<field property="achar.characterizationSource" page="1"
 				depends="required">
 				<arg position="0" key="characterizationSource"

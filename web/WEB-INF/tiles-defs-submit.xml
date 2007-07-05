@@ -15,8 +15,6 @@
 			<item value="Surface" link="nanoparticleSurface.do?dispatch=setup&amp;page=0" />
 			<item value="Solubility" link="nanoparticleSolubility.do?dispatch=setup&amp;page=0" />
 			<item value="Purity" link="nanoparticlePurity.do?dispatch=setup&amp;page=0" />
-			<!-- 		<item value="Stability" link="nanoparticleStability.do?dispatch=setup&amp;page=0" />   -->
-
 		</putList>
 		<putList name="toxActions">
 			<item value="Oxidative Stress" link="invitroToxicityOxidativeStress.do?dispatch=setup&amp;page=0" />
@@ -41,11 +39,6 @@
 			<item value="CFU_GM" link="invitroImmunotoxicityCFU_GM.do?dispatch=setup&amp;page=0" />
 			<item value="Complement Activation" link="invitroImmunotoxicityComplementActivation.do?dispatch=setup&amp;page=0" />
 			<item value="Cytotoxic Activity of NK Cells" link="invitroImmunotoxicityNKCellCytotoxicActivity.do?dispatch=setup&amp;page=0" />
-		</putList>
-		<putList name="metabolicActions">
-			<item value="CYP450" link="invitroMetabolicStabilityCYP450.do?dispatch=setup&amp;page=0" />
-			<item value="Glucuronidation, Sulphation" link="invitroMetabolicStabilityGlucuronidationSulphation.do?dispatch=setup&amp;page=0" />
-			<item value="ROS" link="invitroMetabolicStabilityROS.do?dispatch=setup&amp;page=0" />
 		</putList>
 	</definition>
 
@@ -180,18 +173,6 @@
 	<definition name="submit.addparticle.shape" extends="calab.home">
 		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
 		<put name="calabContent" value="submit.addparticle.shape.content" />
-		<put name="menu" value="submit" />
-	</definition>
-
-	<!-- definition for the nanoparticle stability page -->
-	<definition name="submit.addparticle.stability.content" extends="submit.content.home">
-		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
-		<put name="submitContent" value="/submit/bodyParticleStability.jsp" />
-	</definition>
-
-	<definition name="submit.addparticle.stability" extends="calab.home">
-		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
-		<put name="calabContent" value="submit.addparticle.stability.content" />
 		<put name="menu" value="submit" />
 	</definition>
 
@@ -519,62 +500,6 @@
 	<definition name="submit.addtoxicity.oxidativestress" extends="calab.home">
 		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
 		<put name="calabContent" value="submit.addtoxicity.oxidativestress.content" />
-		<put name="menu" value="submit" />
-	</definition>
-
-	<!-- definition for the invitro metabolic stability CYP450 page -->
-	<definition name="submit.addmetabolicstability.cyp450.content" extends="submit.content.home">
-		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
-		<put name="submitContent" value="/submit/bodyInvitroCharacterization.jsp" />
-		<put name="pageTitle" value="Invitro Characterization - Metabolic Stability - CYP450" />
-		<put name="actionName" value="invitroMetabolicStabilityCYP450" />
-		<put name="formName" value="invitroMetabolicStabilityCYP450Form" />
-		<put name="formType" value="MetabolicStability" />
-		<put name="dataLabel" value="CYP450 Percentage" />
-		<put name="dataUnit" value="%" />
-
-	</definition>
-
-	<definition name="submit.addmetabolicstability.cyp450" extends="calab.home">
-		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
-		<put name="calabContent" value="submit.addmetabolicstability.cyp450.content" />
-		<put name="menu" value="submit" />
-	</definition>
-
-	<!-- definition for the invitro metabolic stability ROS page -->
-	<definition name="submit.addmetabolicstability.ros.content" extends="submit.content.home">
-		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
-		<put name="submitContent" value="/submit/bodyInvitroCharacterization.jsp" />
-		<put name="pageTitle" value="Invitro Characterization - MetabolicStability - ROS" />
-		<put name="actionName" value="invitroMetabolicStabilityROS" />
-		<put name="formName" value="invitroMetabolicStabilityROSForm" />
-		<put name="formType" value="MetabolicStability" />
-		<put name="dataLabel" value="ROS Percentage" />
-		<put name="dataUnit" value="%" />
-
-	</definition>
-
-	<definition name="submit.addmetabolicstability.ros" extends="calab.home">
-		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
-		<put name="calabContent" value="submit.addmetabolicstability.ros.content" />
-		<put name="menu" value="submit" />
-	</definition>
-
-	<!-- definition for the invitro metabolic stability ROS page -->
-	<definition name="submit.addmetabolicstability.glucuronidationsulphation.content" extends="submit.content.home">
-		<put name="submitActionMenu" value="/submit/submitMenu.jsp" />
-		<put name="submitContent" value="/submit/bodyInvitroCharacterization.jsp" />
-		<put name="pageTitle" value="Invitro Characterization - Metabolic Stability - Glucuronidation Sulphation" />
-		<put name="actionName" value="invitroMetabolicStabilityGlucuronidationSulphation" />
-		<put name="formName" value="invitroMetabolicStabilityGlucuronidationSulphationForm" />
-		<put name="formType" value="MetabolicStability" />
-		<put name="dataLabel" value="Glucuronidation Sulphation Percentage" />
-		<put name="dataUnit" value="%" />
-	</definition>
-
-	<definition name="submit.addmetabolicstability.glucuronidationsulphation" extends="calab.home">
-		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
-		<put name="calabContent" value="submit.addmetabolicstability.glucuronidationsulphation.content" />
 		<put name="menu" value="submit" />
 	</definition>
 
