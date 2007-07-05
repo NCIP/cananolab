@@ -38,7 +38,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.93.2.6 2007-07-03 19:42:11 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.93.2.7 2007-07-05 15:26:48 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -701,7 +701,7 @@ public class LookupService {
 		return compositions;
 	}
 
-	public String[] getAllPolymerInitiators() throws Exception {
+	public SortedSet<String> getAllPolymerInitiators() throws Exception {
 		SortedSet<String> initiators = new TreeSet<String>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
@@ -722,7 +722,7 @@ public class LookupService {
 		initiators.addAll(Arrays
 				.asList(CaNanoLabConstants.DEFAULT_POLYMER_INITIATORS));
 
-		return (String[]) initiators.toArray(new String[0]);
+		return initiators;
 	}
 
 	public SortedSet<String> getAllParticleSources() throws Exception {
@@ -932,7 +932,7 @@ public class LookupService {
 		return graphTypes;
 	}
 
-	public String[] getAllMorphologyTypes() throws Exception {
+	public SortedSet<String> getAllMorphologyTypes() throws Exception {
 
 		SortedSet<String> morphologyTypes = new TreeSet<String>();
 		IDataAccess ida = (new DataAccessProxy())
@@ -953,11 +953,10 @@ public class LookupService {
 		}
 		morphologyTypes.addAll(Arrays
 				.asList(CaNanoLabConstants.DEFAULT_MORPHOLOGY_TYPES));
-
-		return (String[]) morphologyTypes.toArray(new String[0]);
+		return morphologyTypes;
 	}
 
-	public String[] getAllShapeTypes() throws Exception {
+	public SortedSet<String> getAllShapeTypes() throws Exception {
 		SortedSet<String> shapeTypes = new TreeSet<String>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
@@ -977,7 +976,7 @@ public class LookupService {
 		shapeTypes
 				.addAll(Arrays.asList(CaNanoLabConstants.DEFAULT_SHAPE_TYPES));
 
-		return (String[]) shapeTypes.toArray(new String[0]);
+		return shapeTypes;
 	}
 
 	public String[] getAllStressorTypes() {
