@@ -418,9 +418,13 @@ public class InitSessionSetup {
 	}
 
 	public void setAllPolymerInitiators(HttpSession session) throws Exception {
-		String[] initiators = lookupService.getAllPolymerInitiators();
-		session.getServletContext().setAttribute("allPolymerInitiators",
-				initiators);
+		if ((session.getAttribute("allPolymerInitiators") == null)
+				|| (session.getAttribute("newPolymerCreated") != null)) {
+			SortedSet<String> initiators = lookupService
+					.getAllPolymerInitiators();
+			session.setAttribute("allPolymerInitiators", initiators);
+		}
+		session.removeAttribute("newPolymerCreated");
 	}
 
 	public void setAllParticleFunctionTypes(HttpSession session)
@@ -435,8 +439,14 @@ public class InitSessionSetup {
 	}
 
 	public void setAllParticleSources(HttpSession session) throws Exception {
-		SortedSet<String>  sources = lookupService.getAllParticleSources();
-		session.getServletContext().setAttribute("allParticleSources", sources);
+		if (session.getAttribute("allParticleSources") == null
+				|| session.getAttribute("newSampleCreated") != null) {
+			SortedSet<String> particleSources = lookupService
+					.getAllParticleSources();
+			session.setAttribute("allParticleSources", particleSources);
+		}
+		// clear the new sample created flag
+		session.removeAttribute("newSampleCreated");
 	}
 
 	public void setAllParticleCharacterizationTypes(HttpSession session)
@@ -673,22 +683,22 @@ public class InitSessionSetup {
 	}
 
 	public void setAllMorphologyTypes(HttpSession session) throws Exception {
-		String[] morphologyTypes = lookupService.getAllMorphologyTypes();
-		session.getServletContext().setAttribute("allMorphologyTypes",
-				morphologyTypes);
+		if (session.getAttribute("allMorphologyTypes") == null
+				|| session.getAttribute("newMorphologyCreated") != null) {
+			SortedSet<String> morphologyTypes = lookupService
+					.getAllMorphologyTypes();
+			session.setAttribute("allMorphologyTypes", morphologyTypes);
+		}
+		session.removeAttribute("newMorphologyCreated");
 	}
 
 	public void setAllShapeTypes(HttpSession session) throws Exception {
-		String[] shapeTypes = lookupService.getAllShapeTypes();
-		session.getServletContext().setAttribute("allShapeTypes", shapeTypes);
-	}
-
-	public void setAllStressorTypes(HttpSession session) throws Exception {
-		if (session.getServletContext().getAttribute("allStessorTypes") == null) {
-			String[] stressorTypes = lookupService.getAllStressorTypes();
-			session.getServletContext().setAttribute("allStressorTypes",
-					stressorTypes);
+		if (session.getAttribute("allShapeTypes") == null
+				|| session.getAttribute("newShapeCreated") != null) {
+			SortedSet<String> shapeTypes = lookupService.getAllShapeTypes();
+			session.setAttribute("allShapeTypes", shapeTypes);
 		}
+		session.removeAttribute("newShapeCreated");
 	}
 
 	public void setStaticDropdowns(HttpSession session) {
@@ -795,8 +805,12 @@ public class InitSessionSetup {
 	}
 
 	public void setAllCellLines(HttpSession session) throws Exception {
-		SortedSet<String> cellLines = lookupService.getAllCellLines();
-		session.getServletContext().setAttribute("allCellLines", cellLines);
+		if (session.getAttribute("allCellLines") == null
+				|| session.getAttribute("newCellLineCreated") != null) {
+			SortedSet<String> cellLines = lookupService.getAllCellLines();
+			session.setAttribute("allCellLines", cellLines);
+		}
+		session.removeAttribute("newCellLineCreated");
 	}
 
 	public void setAllActivationMethods(HttpSession session) throws Exception {
