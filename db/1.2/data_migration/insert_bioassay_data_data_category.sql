@@ -31,3 +31,6 @@ begin
 end;
 
 
+alter table DERIVED_BIOASSAY_DATA drop (CATEGORY); 
+
+commit;
