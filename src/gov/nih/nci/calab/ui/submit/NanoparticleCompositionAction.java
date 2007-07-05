@@ -8,7 +8,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleCompositionAction.java,v 1.20.2.1 2007-07-02 19:03:33 pansu Exp $ */
+/* CVS $Id: NanoparticleCompositionAction.java,v 1.20.2.2 2007-07-05 16:17:36 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.CarbonNanotubeComposition;
@@ -37,7 +37,7 @@ import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
-import gov.nih.nci.calab.ui.core.BaseCharacterizationAction;
+import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
 import java.util.ArrayList;
@@ -55,7 +55,7 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
-public class NanoparticleCompositionAction extends BaseCharacterizationAction {
+public class NanoparticleCompositionAction extends AbstractDispatchAction {
 
 	/**
 	 * Add or update the data to database
@@ -73,7 +73,7 @@ public class NanoparticleCompositionAction extends BaseCharacterizationAction {
 		ActionForward forward = null;
 
 		HttpSession session = request.getSession();
-		
+
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleType = (String) theForm.get("particleType");
 		String particleName = (String) theForm.get("particleName");
@@ -84,9 +84,11 @@ public class NanoparticleCompositionAction extends BaseCharacterizationAction {
 		CompositionBean composition = null;
 		if (particleType.equalsIgnoreCase(CaNanoLabConstants.DENDRIMER_TYPE)) {
 			composition = (DendrimerBean) theForm.get("dendrimer");
-		} else if (particleType.equalsIgnoreCase(CaNanoLabConstants.POLYMER_TYPE)) {
+		} else if (particleType
+				.equalsIgnoreCase(CaNanoLabConstants.POLYMER_TYPE)) {
 			composition = (PolymerBean) theForm.get("polymer");
-		} else if (particleType.equalsIgnoreCase(CaNanoLabConstants.LIPOSOME_TYPE)) {
+		} else if (particleType
+				.equalsIgnoreCase(CaNanoLabConstants.LIPOSOME_TYPE)) {
 			composition = (LiposomeBean) theForm.get("liposome");
 		} else if (particleType
 				.equalsIgnoreCase(CaNanoLabConstants.CARBON_NANOTUBE_TYPE)) {
@@ -100,7 +102,8 @@ public class NanoparticleCompositionAction extends BaseCharacterizationAction {
 		} else if (particleType
 				.equalsIgnoreCase(CaNanoLabConstants.METAL_PARTICLE_TYPE)) {
 			composition = (MetalParticleBean) theForm.get("metalParticle");
-		} else if (particleType.equalsIgnoreCase(CaNanoLabConstants.EMULSION_TYPE)) {
+		} else if (particleType
+				.equalsIgnoreCase(CaNanoLabConstants.EMULSION_TYPE)) {
 			composition = (EmulsionBean) theForm.get("emulsion");
 		} else if (particleType
 				.equalsIgnoreCase(CaNanoLabConstants.COMPLEX_PARTICLE_TYPE)) {
@@ -114,28 +117,27 @@ public class NanoparticleCompositionAction extends BaseCharacterizationAction {
 		UserBean user = (UserBean) session.getAttribute("user");
 		Date date = new Date();
 		composition.setCreatedBy(user.getLoginName());
-		composition.setCreatedDate(date);
-
-		session.setAttribute("newCharacterizationCreated", "true");
+		composition.setCreatedDate(date);		
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addParticleComposition(particleType, particleName, composition);
 
-		// In case there is other type of branch, generation, etc created during the creationg and update
-		// InitSessionSetup.setSideParticleMenu() clear up the session attribute "newCharcterizationCreated"
-		// So, it is better to refresh the particle type related session variable here.
-		if (particleType.equalsIgnoreCase(CaNanoLabConstants.DENDRIMER_TYPE)) {
-			InitSessionSetup.getInstance().setAllDendrimerCores(session);
-			InitSessionSetup.getInstance().setAllDendrimerSurfaceGroupNames(
+		// In case there is other type of branch, generation, etc created during
+		// the creationg and update
+		// InitSessionSetup.setSideParticleMenu() clear up the session attribute
+		// "newCharcterizationCreated"
+		// So, it is better to refresh the particle type related session
+		// variable here.
+		if (particleType.equalsIgnoreCase(CaNanoLabConstants.DENDRIMER_TYPE)) {			
+			InitSessionSetup.getInstance().setAllDendrimers(
 					session);
-			InitSessionSetup.getInstance().setAllDendrimerBranches(session);
-			InitSessionSetup.getInstance().setAllDendrimerGenerations(session);
-		} else if (particleType.equalsIgnoreCase(CaNanoLabConstants.POLYMER_TYPE)) {
+		} else if (particleType
+				.equalsIgnoreCase(CaNanoLabConstants.POLYMER_TYPE)) {
 			InitSessionSetup.getInstance().setAllPolymerInitiators(session);
 		} else if (particleType
 				.equalsIgnoreCase(CaNanoLabConstants.METAL_PARTICLE_TYPE)) {
 			InitSessionSetup.getInstance().setAllMetalCompositions(session);
 		}
-		
+
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.addParticleComposition");
 		msgs.add("message", msg);
@@ -144,8 +146,67 @@ public class NanoparticleCompositionAction extends BaseCharacterizationAction {
 
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
-
+		session.setAttribute("newCharacterizationCreated", "true");
+		session.setAttribute("newDendrimerCreated", "true");
+		session.setAttribute("newPolymerCreated", "true");
 		return forward;
+	}
+
+	/**
+	 * Set up the input form for adding new characterization
+	 * 
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	public ActionForward setup(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+
+		HttpSession session = request.getSession();
+		clearMap(session, theForm, mapping);
+		initSetup(request, theForm);
+		return mapping.getInputForward();
+	}
+
+	/**
+	 * Prepare the form for viewing existing characterization
+	 * 
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	public ActionForward setupView(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		return setupUpdate(mapping, form, request, response);
+	}
+
+	public ActionForward input(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+
+		// update editable dropdowns
+		HttpSession session = request.getSession();
+		InitSessionSetup.getInstance().updateEditableDropdown(session,
+				theForm.getString("characterizationSource"),
+				"characterizationSources");
+		
+		PolymerBean polymer = (PolymerBean) theForm.get("polymer");
+		updatePolymerEditable(session, polymer);
+
+		DendrimerBean dendrimer = (DendrimerBean) theForm.get("dendrimer");
+		updateDendrimerEditable(session, dendrimer);
+
+		return mapping.findForward("setup");
 	}
 
 	protected void clearMap(HttpSession session, DynaValidatorForm theForm,
@@ -178,13 +239,10 @@ public class NanoparticleCompositionAction extends BaseCharacterizationAction {
 		String particleName = (String) theForm.get("particleName");
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
-		if (particleType.equalsIgnoreCase(CaNanoLabConstants.DENDRIMER_TYPE)) {
-			InitSessionSetup.getInstance().setAllDendrimerCores(session);
-			InitSessionSetup.getInstance().setAllDendrimerSurfaceGroupNames(
-					session);
-			InitSessionSetup.getInstance().setAllDendrimerBranches(session);
-			InitSessionSetup.getInstance().setAllDendrimerGenerations(session);
-		} else if (particleType.equalsIgnoreCase(CaNanoLabConstants.POLYMER_TYPE)) {
+		if (particleType.equalsIgnoreCase(CaNanoLabConstants.DENDRIMER_TYPE)) {			
+			InitSessionSetup.getInstance().setAllDendrimers(session);
+		} else if (particleType
+				.equalsIgnoreCase(CaNanoLabConstants.POLYMER_TYPE)) {
 			InitSessionSetup.getInstance().setAllPolymerInitiators(session);
 		} else if (particleType
 				.equalsIgnoreCase(CaNanoLabConstants.METAL_PARTICLE_TYPE)) {
@@ -221,10 +279,12 @@ public class NanoparticleCompositionAction extends BaseCharacterizationAction {
 			DendrimerBean dendrimer = new DendrimerBean(
 					(DendrimerComposition) aChar);
 			theForm.set("dendrimer", dendrimer);
-		} else if (particleType.equalsIgnoreCase(CaNanoLabConstants.POLYMER_TYPE)) {
+		} else if (particleType
+				.equalsIgnoreCase(CaNanoLabConstants.POLYMER_TYPE)) {
 			PolymerBean polymer = new PolymerBean((PolymerComposition) aChar);
 			theForm.set("polymer", polymer);
-		} else if (particleType.equalsIgnoreCase(CaNanoLabConstants.LIPOSOME_TYPE)) {
+		} else if (particleType
+				.equalsIgnoreCase(CaNanoLabConstants.LIPOSOME_TYPE)) {
 			LiposomeBean liposome = new LiposomeBean(
 					(LiposomeComposition) aChar);
 			theForm.set("liposome", liposome);
@@ -238,7 +298,8 @@ public class NanoparticleCompositionAction extends BaseCharacterizationAction {
 			CarbonNanotubeBean carbonNanotube = new CarbonNanotubeBean(
 					(CarbonNanotubeComposition) aChar);
 			theForm.set("carbonNanotube", carbonNanotube);
-		} else if (particleType.equalsIgnoreCase(CaNanoLabConstants.EMULSION_TYPE)) {
+		} else if (particleType
+				.equalsIgnoreCase(CaNanoLabConstants.EMULSION_TYPE)) {
 			EmulsionBean emulsion = new EmulsionBean(
 					(EmulsionComposition) aChar);
 			theForm.set("emulsion", emulsion);
@@ -291,11 +352,13 @@ public class NanoparticleCompositionAction extends BaseCharacterizationAction {
 			// update surface group info for dendrimers
 			updateSurfaceGroups((DendrimerBean) composition);
 			theForm.set("dendrimer", (DendrimerBean) composition);
-		} else if (particleType.equalsIgnoreCase(CaNanoLabConstants.POLYMER_TYPE)) {
+		} else if (particleType
+				.equalsIgnoreCase(CaNanoLabConstants.POLYMER_TYPE)) {
 			composition = (PolymerBean) theForm.get("polymer");
 			updateComposingElements(composition);
 			theForm.set("polymer", (PolymerBean) composition);
-		} else if (particleType.equalsIgnoreCase(CaNanoLabConstants.LIPOSOME_TYPE)) {
+		} else if (particleType
+				.equalsIgnoreCase(CaNanoLabConstants.LIPOSOME_TYPE)) {
 			composition = (LiposomeBean) theForm.get("liposome");
 			updateComposingElements(composition);
 			theForm.set("liposome", (LiposomeBean) composition);
@@ -309,7 +372,8 @@ public class NanoparticleCompositionAction extends BaseCharacterizationAction {
 			composition = (CarbonNanotubeBean) theForm.get("carbonNanotube");
 			updateComposingElements(composition);
 			theForm.set("carbonNanotube", (CarbonNanotubeBean) composition);
-		} else if (particleType.equalsIgnoreCase(CaNanoLabConstants.EMULSION_TYPE)) {
+		} else if (particleType
+				.equalsIgnoreCase(CaNanoLabConstants.EMULSION_TYPE)) {
 			composition = (EmulsionBean) theForm.get("emulsion");
 		} else if (particleType
 				.equalsIgnoreCase(CaNanoLabConstants.COMPLEX_PARTICLE_TYPE)) {
@@ -329,6 +393,17 @@ public class NanoparticleCompositionAction extends BaseCharacterizationAction {
 		}
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
+
+		// update editable dropdowns
+		HttpSession session = request.getSession();
+		InitSessionSetup.getInstance().updateEditableDropdown(session,
+				theForm.getString("characterizationSource"),
+				"characterizationSources");
+		PolymerBean polymer = (PolymerBean) theForm.get("polymer");
+		updatePolymerEditable(session, polymer);
+		DendrimerBean dendrimer = (DendrimerBean) theForm.get("dendrimer");
+		updateDendrimerEditable(session, dendrimer);
+
 		return mapping.getInputForward();
 	}
 
@@ -434,14 +509,27 @@ public class NanoparticleCompositionAction extends BaseCharacterizationAction {
 		composition.setComposingElements(elements);
 	}
 
-	//not needed for composition		
-	protected void setFormCharacterizationBean(DynaValidatorForm theForm,
-			Characterization aChar) throws Exception {
-		// TODO Auto-generated method stub
+	public boolean loginRequired() {
+		return true;
 	}
 
-	//not needed for composition
-	protected void setLoadFileRequest(HttpServletRequest request) {
-		// TODO Auto-generated method stub
+	
+	private void updateDendrimerEditable(HttpSession session,
+			DendrimerBean dendrimer) throws Exception {
+		InitSessionSetup.getInstance().updateEditableDropdown(session,
+				dendrimer.getGeneration(), "allDendrimerGenerations");
+		InitSessionSetup.getInstance().updateEditableDropdown(session,
+				dendrimer.getBranch(), "allDendrimerBranches");
+		for (SurfaceGroupBean surfaceGroup : dendrimer.getSurfaceGroups()) {
+			InitSessionSetup.getInstance().updateEditableDropdown(session,
+					surfaceGroup.getName(), "allDendrimerSurfaceGroupNames");
+		}
 	}
+
+	private void updatePolymerEditable(HttpSession session, PolymerBean polymer)
+			throws Exception {
+		InitSessionSetup.getInstance().updateEditableDropdown(session,
+				polymer.getInitiator(), "allPolymerInitiators");
+	}
+
 }
