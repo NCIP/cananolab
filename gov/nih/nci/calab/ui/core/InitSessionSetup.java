@@ -942,7 +942,7 @@ public class InitSessionSetup {
 			String formAttribute, String sessionAttributeName) {
 		SortedSet<String> dropdown = (SortedSet<String>) session
 				.getAttribute(sessionAttributeName);
-		if (dropdown != null && formAttribute != null) {
+		if (dropdown != null && formAttribute != null && formAttribute.length()>0) {
 			dropdown.add(formAttribute);
 		}
 	}
