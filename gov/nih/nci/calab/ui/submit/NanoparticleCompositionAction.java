@@ -8,7 +8,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleCompositionAction.java,v 1.24 2007-07-03 21:10:57 pansu Exp $ */
+/* CVS $Id: NanoparticleCompositionAction.java,v 1.25 2007-07-05 16:46:14 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.CarbonNanotubeComposition;
@@ -118,8 +118,6 @@ public class NanoparticleCompositionAction extends BaseCharacterizationAction {
 		Date date = new Date();
 		composition.setCreatedBy(user.getLoginName());
 		composition.setCreatedDate(date);
-
-		session.setAttribute("newCharacterizationCreated", "true");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addParticleComposition(particleType, particleName, composition);
 
@@ -153,9 +151,68 @@ public class NanoparticleCompositionAction extends BaseCharacterizationAction {
 		} else if (particleType
 				.equalsIgnoreCase(CaNanoLabConstants.POLYMER_TYPE)) {
 			request.getSession().setAttribute("newPolymerCreated", "true");
-		}
+		}		
+		session.setAttribute("newCharacterizationCreated", "true");
+		session.setAttribute("newDendrimerCreated", "true");
+		session.setAttribute("newPolymerCreated", "true");
 		
 		return forward;
+	}
+	
+	/**
+	 * Set up the input form for adding new characterization
+	 * 
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	public ActionForward setup(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+
+		HttpSession session = request.getSession();
+		clearMap(session, theForm);
+		initSetup(request, theForm);
+		return mapping.getInputForward();
+	}
+
+	/**
+	 * Prepare the form for viewing existing characterization
+	 * 
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	public ActionForward setupView(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		return setupUpdate(mapping, form, request, response);
+	}
+	public ActionForward input(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+
+		// update editable dropdowns
+		HttpSession session = request.getSession();
+		InitSessionSetup.getInstance().updateEditableDropdown(session,
+				theForm.getString("characterizationSource"),
+				"characterizationSources");
+		
+		PolymerBean polymer = (PolymerBean) theForm.get("polymer");
+		updatePolymerEditable(session, polymer);
+
+		DendrimerBean dendrimer = (DendrimerBean) theForm.get("dendrimer");
+		updateDendrimerEditable(session, dendrimer);
+
+		return mapping.findForward("setup");
 	}
 
 	protected void clearMap(HttpSession session, DynaValidatorForm theForm)
@@ -188,7 +245,8 @@ public class NanoparticleCompositionAction extends BaseCharacterizationAction {
 		} else if (particleType
 				.equalsIgnoreCase(CaNanoLabConstants.METAL_PARTICLE_TYPE)) {
 			InitSessionSetup.getInstance().setAllMetalCompositions(session);
-		}
+		}		
+		InitSessionSetup.getInstance().setAllCharacterizationSources(session);		
 	}
 
 	/**
@@ -333,6 +391,17 @@ public class NanoparticleCompositionAction extends BaseCharacterizationAction {
 		}
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
+		
+		// update editable dropdowns
+		HttpSession session = request.getSession();
+		InitSessionSetup.getInstance().updateEditableDropdown(session,
+				theForm.getString("characterizationSource"),
+				"characterizationSources");
+		PolymerBean polymer = (PolymerBean) theForm.get("polymer");
+		updatePolymerEditable(session, polymer);
+		DendrimerBean dendrimer = (DendrimerBean) theForm.get("dendrimer");
+		updateDendrimerEditable(session, dendrimer);
+
 		return mapping.getInputForward();
 	}
 
@@ -437,4 +506,27 @@ public class NanoparticleCompositionAction extends BaseCharacterizationAction {
 				elementNum);
 		composition.setComposingElements(elements);
 	}
+	public boolean loginRequired() {
+		return true;
+	}
+
+	
+	private void updateDendrimerEditable(HttpSession session,
+			DendrimerBean dendrimer) throws Exception {
+		InitSessionSetup.getInstance().updateEditableDropdown(session,
+				dendrimer.getGeneration(), "allDendrimerGenerations");
+		InitSessionSetup.getInstance().updateEditableDropdown(session,
+				dendrimer.getBranch(), "allDendrimerBranches");
+		for (SurfaceGroupBean surfaceGroup : dendrimer.getSurfaceGroups()) {
+			InitSessionSetup.getInstance().updateEditableDropdown(session,
+					surfaceGroup.getName(), "allDendrimerSurfaceGroupNames");
+		}
+	}
+
+	private void updatePolymerEditable(HttpSession session, PolymerBean polymer)
+			throws Exception {
+		InitSessionSetup.getInstance().updateEditableDropdown(session,
+				polymer.getInitiator(), "allPolymerInitiators");
+	}
+	
 }
