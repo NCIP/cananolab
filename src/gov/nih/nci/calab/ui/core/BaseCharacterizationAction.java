@@ -339,20 +339,6 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
-		HttpSession session = request.getSession();
-		updateAllCharEditables(session, achar);
-		if (achar instanceof ShapeBean) {
-			updateShapeEditable(session, (ShapeBean) achar);
-		}
-		if (achar instanceof MorphologyBean) {
-			updateMorphologyEditable(session, (MorphologyBean) achar);
-		}
-		if (achar instanceof CellViabilityBean) {
-			updateCytotoxicityEditable(session, (CellViabilityBean) achar);
-		}
-		if (achar instanceof Caspase3ActivationBean) {
-			updateCytotoxicityEditable(session, (Caspase3ActivationBean) achar);
-		}
 
 		return mapping.getInputForward();
 	}
