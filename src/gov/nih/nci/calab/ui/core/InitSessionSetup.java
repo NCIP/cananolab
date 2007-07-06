@@ -444,9 +444,8 @@ public class InitSessionSetup {
 		session.removeAttribute("newSampleCreated");
 	}
 
-	public void setSideParticleMenu(HttpServletRequest request,
-			String particleName, String particleType) throws Exception {
-		HttpSession session = request.getSession();
+	public void setAllReports(HttpSession session, String particleName,
+			String particleType) throws Exception {
 		UserBean user = (UserBean) session.getAttribute("user");
 		SearchReportService searchReportService = new SearchReportService();
 		if (session.getAttribute("particleReports") == null
@@ -467,17 +466,24 @@ public class InitSessionSetup {
 							CaNanoLabConstants.ASSOCIATED_FILE, user);
 			session.setAttribute("particleAssociatedFiles", associatedBeans);
 		}
+	}
+
+	public void setSideParticleMenu(HttpServletRequest request,
+			String particleName, String particleType) throws Exception {
+		HttpSession session = request.getSession();
+		setAllReports(session, particleName, particleType);
 		// not part of the side menu, but need to up
-		if (session.getAttribute("newParticleCreated") != null) {
-			setParticleTypeParticles(session);
-		}
-		session.removeAttribute("newParticleCreated");
-		session.removeAttribute("newReportCreated");
-		session.removeAttribute("detailPage");
+		// if (session.getAttribute("newParticleCreated") != null) {
+		// setParticleTypeParticles(session);
+		// }
 		setStaticDropdowns(session);
 		setAllFunctionTypes(session);
 		setFunctionTypeFunctions(session, particleName, particleType);
 		setAllCharacterizations(session, particleName, particleType);
+		session.removeAttribute("newParticleCreated");
+		session.removeAttribute("newReportCreated");
+		session.removeAttribute("newFunctionCreated");
+		session.removeAttribute("detailPage");
 	}
 
 	/**
@@ -515,8 +521,6 @@ public class InitSessionSetup {
 			}
 			session.setAttribute("allCharacterizations", charMap);
 		}
-		session.removeAttribute("newCharacterizationCreated");
-		session.removeAttribute("newParticleCreated");
 	}
 
 	public void setFunctionTypeFunctions(HttpSession session,
@@ -528,7 +532,6 @@ public class InitSessionSetup {
 					.getFunctionInfo(particleName, particleType);
 			session.setAttribute("allFuncTypeFuncs", funcTypeFuncs);
 		}
-		session.removeAttribute("newFunctionCreated");
 	}
 
 	public void setRemoteSideParticleMenu(HttpServletRequest request,
@@ -928,7 +931,7 @@ public class InitSessionSetup {
 			String charName) throws Exception {
 		Map<String, SortedSet<String>> unitMap = lookupService
 				.getAllMeasureUnits();
-		SortedSet<String> charUnits = unitMap.get(charName);	
+		SortedSet<String> charUnits = unitMap.get(charName);
 		if (charUnits == null) {
 			charUnits = new TreeSet<String>();
 			charUnits.add("");// add an empty one to indicate no unit
@@ -942,7 +945,8 @@ public class InitSessionSetup {
 			String formAttribute, String sessionAttributeName) {
 		SortedSet<String> dropdown = (SortedSet<String>) session
 				.getAttribute(sessionAttributeName);
-		if (dropdown != null && formAttribute != null && formAttribute.length()>0) {
+		if (dropdown != null && formAttribute != null
+				&& formAttribute.length() > 0) {
 			dropdown.add(formAttribute);
 		}
 	}
