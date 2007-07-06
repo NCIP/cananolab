@@ -170,13 +170,13 @@ public class InitSessionSetup {
 	public void setAllSampleSources(HttpSession session) throws Exception {
 
 		if (session.getAttribute("allSampleSources") == null
-				|| session.getAttribute("newSampleCreated") != null) {
+				|| session.getAttribute("newSampleSourceCreated") != null) {
 			SortedSet<String> sampleSources = lookupService
 					.getAllSampleSources();
 			session.setAttribute("allSampleSources", sampleSources);
 		}
 		// clear the new sample created flag
-		session.removeAttribute("newSampleCreated");
+		session.removeAttribute("newSampleSourceCreated");
 	}
 
 	public void clearSampleSourcesSession(HttpSession session) {
