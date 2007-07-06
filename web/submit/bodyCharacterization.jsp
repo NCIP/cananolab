@@ -85,8 +85,7 @@
 				</table>
 				<br>
 				<jsp:include page="/submit/shared/bodyCharacterizationCopy.jsp" />
-				<jsp:include page="/submit/shared/bodyCharacterizationSubmit.jsp" />
-				<html:hidden property="particleName" value="${param.particleName}"/>
+				<jsp:include page="/submit/shared/bodyCharacterizationSubmit.jsp" />				
 			</td>
 		</tr>
 	</table>
