@@ -38,7 +38,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.93.2.8 2007-07-05 16:16:33 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.93.2.9 2007-07-06 18:44:02 zengje Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -1019,19 +1019,19 @@ public class LookupService {
 		Map<String, String[]> agentTypes = new HashMap<String, String[]>();
 
 		String[] therapeuticsAgentTypes = new String[] { "Peptide",
-				"Small Molecule", "Antibody", "DNA", "Probe",
+				"Small Molecule", "Antibody", "DNA",
 				"Image Contrast Agent", "Other" };
 		agentTypes.put("Therapeutic", therapeuticsAgentTypes);
 		String[] targetingAgentTypes = new String[] { "Peptide",
-				"Small Molecule", "Antibody", "DNA", "Probe",
+				"Small Molecule", "Antibody", "DNA",
 				"Image Contrast Agent", "Other" };
 		agentTypes.put("Targeting", targetingAgentTypes);
 		String[] imagingAgentTypes = new String[] { "Peptide",
-				"Small Molecule", "Antibody", "DNA", "Probe",
+				"Small Molecule", "Antibody", "DNA",
 				"Image Contrast Agent", "Other" };
 		agentTypes.put("Imaging", imagingAgentTypes);
 		String[] reportingAgentTypes = new String[] { "Peptide",
-				"Small Molecule", "Antibody", "DNA", "Probe",
+				"Small Molecule", "Antibody", "DNA",
 				"Image Contrast Agent", "Other" };
 		agentTypes.put("Reporting", reportingAgentTypes);
 		return agentTypes;
