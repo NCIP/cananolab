@@ -52,7 +52,7 @@ public class DatumBean {
 
 		this.unit = (datum.getValue() != null) ? StringUtils
 				.convertToString(datum.getValue().getUnitOfMeasurement()) : "";
-
+		this.category = datum.getDerivedBioAssayDataCategory();
 		// Control controlObj = datum.getControl();
 		// if (controlObj != null) {
 		// control = new ControlBean();
@@ -139,7 +139,7 @@ public class DatumBean {
 		Measurement measurement = new Measurement();
 		if (value.length() > 0)
 			measurement.setValue(new Float(value));
-		if (statisticsType.length()>0)
+		if (statisticsType.length() > 0)
 			measurement.setStatisticsType(statisticsType);
 		measurement.setUnitOfMeasurement(unit);
 		tableData.setValue(measurement);
