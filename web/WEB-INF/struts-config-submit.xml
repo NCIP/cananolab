@@ -318,12 +318,12 @@
 		<action name="loadDerivedBioAssayDataForm" parameter="dispatch" path="/loadFile" type="gov.nih.nci.calab.ui.submit.LoadDerivedBioAssayDataAction" input="input" scope="request">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.loadDerivedBioAssayData" path="submit.load.characterization.file" type="java.lang.Exception" />
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.download.file" path="home.error" type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="setup" path="submit.load.characterization.file" />
+			<forward name="input" path="submit.load.characterization.file" />
 		</action>
 		<action name="loadDerivedBioAssayDataForm" parameter="dispatch" path="/updateAssayFile" type="gov.nih.nci.calab.ui.submit.LoadDerivedBioAssayDataAction" input="input" scope="request">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.updateDerivedBioAssayData" path="submit.assayresult.file.view" type="java.lang.Exception" />
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.download.file" path="home.error" type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="i" path="submit.assayresult.file.view" />
+			<forward name="input" path="submit.assayresult.file.view" />
 		</action>
 		<action name="nanoparticleFunctionForm" parameter="dispatch" path="/nanoparticleFunction" type="gov.nih.nci.calab.ui.submit.NanoparticleFunctionAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addparticle.function" path="submit.addparticle.function" type="java.lang.Exception" />
