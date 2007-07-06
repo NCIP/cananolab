@@ -251,8 +251,8 @@ function removeCharacterizationData(form, charName, actionName, fileInd, dataInd
 	form.action = actionName + ".do?dispatch=removeData&charName="+charName+"&page=0&fileInd=" + fileInd + "&dataInd=" + dataInd;
 	form.submit();
 }
-function loadFile(form, charName, actionName, particleName, fileNumber) {
-	form.action = actionName + ".do?dispatch=loadFile&page=0&charName="+charName+"&particleName=" + particleName + "&fileNumber=" + fileNumber;
+function loadFile(form, charName, actionName, fileNumber) {
+	form.action = actionName + ".do?dispatch=loadFile&page=0&charName="+charName+"&fileNumber=" + fileNumber;
 	form.submit();
 }
 function updateFunctionLinkages() {
