@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: LoadDerivedBioAssayDataAction.java,v 1.16 2007-07-06 17:46:56 pansu Exp $ */
+/* CVS $Id: LoadDerivedBioAssayDataAction.java,v 1.17 2007-07-06 19:41:41 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
@@ -82,7 +82,7 @@ public class LoadDerivedBioAssayDataAction extends AbstractDispatchAction {
 		InitSessionSetup.getInstance().clearWorkflowSession(session);
 		InitSessionSetup.getInstance().clearSearchSession(session);
 		InitSessionSetup.getInstance().clearInventorySession(session);
-		String particleName = request.getParameter("particleName");
+		String particleName = (String)request.getAttribute("particleName");
 		InitSessionSetup.getInstance().setAllRunFiles(session, particleName);
 		String fileNumber = request.getParameter("fileNumber");
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
