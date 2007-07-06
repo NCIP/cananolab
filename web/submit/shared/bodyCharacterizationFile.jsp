@@ -100,7 +100,7 @@
 					Click on "Load File" button 
 						</logic:notPresent>
 						&nbsp;&nbsp;&nbsp;&nbsp;<input type="button"
-							onclick="javascript:loadFile(this.form, '${param.charName}', '${param.actionName}', '${param.particleName}', ${param.fileInd})"
+							onclick="javascript:loadFile(this.form, '${param.charName}', '${param.actionName}', ${param.fileInd})"
 							value="Load File">
 					</c:when>
 					<c:otherwise>
