@@ -237,6 +237,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		// update editable dropdowns
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
 		ShapeBean shape = (ShapeBean) theForm.get("shape");
@@ -311,7 +312,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			fileNumber++;
 		}
 
-		return mapping.getInputForward();
+		return mapping.findForward("setup");
 	}
 
 	/**
@@ -408,16 +409,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		String particleType = theForm.getString("particleType");
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
-
-		ShapeBean shape = (ShapeBean) theForm.get("shape");
-		MorphologyBean morphology = (MorphologyBean) theForm.get("morphology");
-		CytotoxicityBean cyto = (CytotoxicityBean) theForm.get("cytotoxicity");
-		HttpSession session = request.getSession();
-		updateAllCharEditables(session, achar);
-		updateShapeEditable(session, shape);
-		updateMorphologyEditable(session, morphology);
-		updateCytotoxicityEditable(session, cyto);
-		return mapping.getInputForward();
+		return input(mapping, form, request, response);
 	}
 
 	public ActionForward removeFile(ActionMapping mapping, ActionForm form,
@@ -444,17 +436,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		String particleType = theForm.getString("particleType");
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
-
-		ShapeBean shape = (ShapeBean) theForm.get("shape");
-		MorphologyBean morphology = (MorphologyBean) theForm.get("morphology");
-		CytotoxicityBean cyto = (CytotoxicityBean) theForm.get("cytotoxicity");
-		HttpSession session = request.getSession();
-		updateAllCharEditables(session, achar);
-		updateShapeEditable(session, shape);
-		updateMorphologyEditable(session, morphology);
-		updateCytotoxicityEditable(session, cyto);
-
-		return mapping.getInputForward();
+		return input(mapping, form, request, response);
 	}
 
 	public ActionForward addData(ActionMapping mapping, ActionForm form,
@@ -480,16 +462,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		String particleType = theForm.getString("particleType");
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
-		ShapeBean shape = (ShapeBean) theForm.get("shape");
-		MorphologyBean morphology = (MorphologyBean) theForm.get("morphology");
-		CytotoxicityBean cyto = (CytotoxicityBean) theForm.get("cytotoxicity");
-		HttpSession session = request.getSession();
-		updateAllCharEditables(session, achar);
-		updateShapeEditable(session, shape);
-		updateMorphologyEditable(session, morphology);
-		updateCytotoxicityEditable(session, cyto);
-
-		return mapping.getInputForward();
+		return input(mapping, form, request, response);
 	}
 
 	public ActionForward removeData(ActionMapping mapping, ActionForm form,
@@ -518,17 +491,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		String particleType = theForm.getString("particleType");
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
-
-		ShapeBean shape = (ShapeBean) theForm.get("shape");
-		MorphologyBean morphology = (MorphologyBean) theForm.get("morphology");
-		CytotoxicityBean cyto = (CytotoxicityBean) theForm.get("cytotoxicity");
-		HttpSession session = request.getSession();
-		updateAllCharEditables(session, achar);
-		updateShapeEditable(session, shape);
-		updateMorphologyEditable(session, morphology);
-		updateCytotoxicityEditable(session, cyto);
-
-		return mapping.getInputForward();
+		return input(mapping, form, request, response);
+		//return mapping.getInputForward(); this gives an IndexOutOfBoundException in the jsp page
 	}
 
 	/**
