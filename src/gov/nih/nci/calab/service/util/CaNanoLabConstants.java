@@ -292,7 +292,7 @@ public class CaNanoLabConstants {
 	public static final String ENCAPSULATION = "Encapsulation";
 
 	public static final String[] FUNCTION_AGENT_TYPES = new String[] { DNA,
-			PEPTIDE, SMALL_MOLECULE, PROBE, ANTIBODY, IMAGE_CONTRAST_AGENT };
+			PEPTIDE, SMALL_MOLECULE, ANTIBODY, IMAGE_CONTRAST_AGENT };
 
 	public static final String[] FUNCTION_LINKAGE_TYPES = new String[] {
 			ATTACHMENT, ENCAPSULATION };
