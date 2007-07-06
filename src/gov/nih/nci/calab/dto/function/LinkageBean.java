@@ -37,7 +37,7 @@ public class LinkageBean {
 
 	private SmallMoleculeBean smallMolecule = new SmallMoleculeBean();
 
-	private ProbeBean probe = new ProbeBean();
+//	private ProbeBean probe = new ProbeBean();
 
 	private AntibodyBean antibody = new AntibodyBean();
 
@@ -80,10 +80,12 @@ public class LinkageBean {
 		} else if (theAgent instanceof SmallMolecule) {
 			smallMolecule = new SmallMoleculeBean((SmallMolecule) theAgent);
 			agent.setType(CaNanoLabConstants.SMALL_MOLECULE);
-		} else if (theAgent instanceof Probe) {
-			probe = new ProbeBean((Probe) theAgent);
-			agent.setType(CaNanoLabConstants.PROBE);
-		} else if (theAgent instanceof Antibody) {
+		} 
+//		else if (theAgent instanceof Probe) {
+//			probe = new ProbeBean((Probe) theAgent);
+//			agent.setType(CaNanoLabConstants.PROBE);
+//		} 
+		else if (theAgent instanceof Antibody) {
 			antibody = new AntibodyBean((Antibody) theAgent);
 			agent.setType(CaNanoLabConstants.ANTIBODY);
 		} else if (theAgent instanceof ImageContrastAgent) {
@@ -153,11 +155,13 @@ public class LinkageBean {
 			antibody.setAgentTargets(agent.getAgentTargets());
 			antibody.setNumberOfAgentTargets(agent.getNumberOfAgentTargets());
 			theAgent = antibody.getDomainObj();
-		} else if (agent.getType().equals(CaNanoLabConstants.PROBE)) {
-			probe.setAgentTargets(agent.getAgentTargets());
-			probe.setNumberOfAgentTargets(agent.getNumberOfAgentTargets());
-			theAgent = probe.getDomainObj();
-		} else if (agent.getType().equals(
+		} 
+//		else if (agent.getType().equals(CaNanoLabConstants.PROBE)) {
+//			probe.setAgentTargets(agent.getAgentTargets());
+//			probe.setNumberOfAgentTargets(agent.getNumberOfAgentTargets());
+//			theAgent = probe.getDomainObj();
+//		}
+		else if (agent.getType().equals(
 				CaNanoLabConstants.IMAGE_CONTRAST_AGENT)) {
 			imageContrastAgent.setAgentTargets(agent.getAgentTargets());
 			imageContrastAgent.setNumberOfAgentTargets(agent
@@ -219,9 +223,9 @@ public class LinkageBean {
 		return peptide;
 	}
 
-	public ProbeBean getProbe() {
-		return probe;
-	}
+//	public ProbeBean getProbe() {
+//		return probe;
+//	}
 
 	public SmallMoleculeBean getSmallMolecule() {
 		return smallMolecule;
@@ -243,9 +247,9 @@ public class LinkageBean {
 		this.peptide = peptide;
 	}
 
-	public void setProbe(ProbeBean probe) {
-		this.probe = probe;
-	}
+//	public void setProbe(ProbeBean probe) {
+//		this.probe = probe;
+//	}
 
 	public void setSmallMolecule(SmallMoleculeBean smallMolecule) {
 		this.smallMolecule = smallMolecule;
