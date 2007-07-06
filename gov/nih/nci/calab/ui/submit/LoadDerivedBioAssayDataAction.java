@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: LoadDerivedBioAssayDataAction.java,v 1.15 2007-07-03 17:35:55 pansu Exp $ */
+/* CVS $Id: LoadDerivedBioAssayDataAction.java,v 1.16 2007-07-06 17:46:56 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
@@ -29,8 +29,7 @@ public class LoadDerivedBioAssayDataAction extends AbstractDispatchAction {
 	public ActionForward submit(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		ActionForward forward = null;
-
+		
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleName = (String) theForm.get("particleName");
 		String fileSource = (String) theForm.get("fileSource");
@@ -71,8 +70,8 @@ public class LoadDerivedBioAssayDataAction extends AbstractDispatchAction {
 				savedFileBean);
 
 		String forwardPage = (String) theForm.get("forwardPage");
-		forward = mapping.findForward(forwardPage);
-
+		ActionForward forward = new ActionForward();
+		forward.setPath(forwardPage);
 		return forward;
 	}
 
