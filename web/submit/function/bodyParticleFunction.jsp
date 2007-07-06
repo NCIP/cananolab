@@ -8,8 +8,8 @@
 <!--
 function clearOtherAgents(agentType, elementPrefix) {
 	var sequenceTypes=new Array('peptide', 'dna');
-	var nameTypes=new Array('smallMolecule', 'antibody', 'probe', 'imageContrastAgent');
-	var typeTypes=new Array('probe', 'imageContrastAgent');
+	var nameTypes=new Array('smallMolecule', 'antibody', 'imageContrastAgent');
+	var typeTypes=new Array('imageContrastAgent');
 	
 	for (var i=0; i<sequenceTypes.length; i++) {
 	  disableTextElement(nanoparticleFunctionForm, elementPrefix+'.'+sequenceTypes[i]+'.sequence');	  
@@ -36,10 +36,6 @@ function clearOtherAgents(agentType, elementPrefix) {
 	else if (agentType=='Small Molecule') {
 	  enableTextElement(nanoparticleFunctionForm, elementPrefix+'.smallMolecule.name');
 	  enableTextElement(nanoparticleFunctionForm, elementPrefix+'.smallMolecule.compoundName');
-	}
-	else if (agentType=='Probe') {
-	  enableTextElement(nanoparticleFunctionForm, elementPrefix+'.probe.name');
-	  enableTextElement(nanoparticleFunctionForm, elementPrefix+'.probe.type');
 	}
 	else if (agentType=='Image Contrast Agent') {
 	  enableTextElement(nanoparticleFunctionForm, elementPrefix+'.imageContrastAgent.name');
@@ -264,17 +260,6 @@ function clearOtherAgents(agentType, elementPrefix) {
 																					</html:select>
 																				</td>
 																			</c:when>
-																			<c:when test="${agentType eq 'Probe'}">
-																				<td class="borderlessLabel">
-																					<strong>Name</strong>
-																					<html:text property="function.linkages[${linkageInd}].probe.name" />
-																				</td>
-																				<td class="borderlessLabel">
-																					<strong>Type</strong>
-																					<html:text property="function.linkages[${linkageInd}].probe.type" />
-																					&nbsp;
-																				</td>
-																			</c:when>
 																			<c:when test="${agentType eq 'Image Contrast Agent'}">
 																				<td class="borderlessLabel">
 																					<strong>Name</strong>
@@ -322,14 +307,6 @@ function clearOtherAgents(agentType, elementPrefix) {
 																			</td>
 																			<td class="borderlessLabel">
 																				<strong>Species</strong> ${linkage.antibody.species}&nbsp;
-																			</td>
-																		</c:when>
-																		<c:when test="${linkage.agent.type eq 'Probe'}">
-																			<td class="borderlessLabel">
-																				<strong>Name</strong> ${linkage.probe.name}&nbsp;
-																			</td>
-																			<td class="borderlessLabel">
-																				${linkage.probe.type}&nbsp;
 																			</td>
 																		</c:when>
 																		<c:when test="${linkage.agent.type eq 'Image Contrast Agent'}">
