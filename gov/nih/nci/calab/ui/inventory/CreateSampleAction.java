@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.inventory;
  * @author pansu
  */
 
-/* CVS $Id: CreateSampleAction.java,v 1.12 2007-07-03 18:54:21 pansu Exp $ */
+/* CVS $Id: CreateSampleAction.java,v 1.13 2007-07-06 15:28:49 zengje Exp $ */
 
 import gov.nih.nci.calab.dto.inventory.ContainerBean;
 import gov.nih.nci.calab.dto.inventory.ContainerInfoBean;
@@ -110,6 +110,7 @@ public class CreateSampleAction extends AbstractDispatchAction {
 		// set a flag to indicate that new sample have been created so session
 		// can be refreshed in initSession.do
 		session.setAttribute("newSampleCreated", "yes");
+		session.setAttribute("newSampleSourceCreated", "true");
 
 		forward = mapping.findForward("success");
 
