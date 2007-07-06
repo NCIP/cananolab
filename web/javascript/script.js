@@ -235,24 +235,24 @@ function updateSurfaceChemistries(form, actionName) {
 	form.action = actionName + ".do?dispatch=update&page=0&type=surfaceChemistries";
 	form.submit();
 }
-function addCharacterizationFile(form, actionName) {
-	form.action = actionName + ".do?dispatch=addFile&page=0";
+function addCharacterizationFile(form, charName, actionName) {
+	form.action = actionName + ".do?dispatch=addFile&page=0&charName="+charName;
 	form.submit();
 }
-function removeCharacterizationFile(form, actionName, fileInd) {
-	form.action = actionName + ".do?dispatch=removeFile&page=0&fileInd=" + fileInd;
+function removeCharacterizationFile(form, charName, actionName, fileInd) {
+	form.action = actionName + ".do?dispatch=removeFile&charName="+charName+"&page=0&fileInd=" + fileInd
 	form.submit();
 }
-function addCharacterizationData(form, actionName, fileInd) {
-	form.action = actionName + ".do?dispatch=addData&page=0&fileInd=" + fileInd;
+function addCharacterizationData(form, charName, actionName, fileInd) {
+	form.action = actionName + ".do?dispatch=addData&charName="+charName+"&page=0&fileInd=" + fileInd;
 	form.submit();
 }
-function removeCharacterizationData(form, actionName, fileInd, dataInd) {
-	form.action = actionName + ".do?dispatch=removeData&page=0&fileInd=" + fileInd + "&dataInd=" + dataInd;
+function removeCharacterizationData(form, charName, actionName, fileInd, dataInd) {
+	form.action = actionName + ".do?dispatch=removeData&charName="+charName+"&page=0&fileInd=" + fileInd + "&dataInd=" + dataInd;
 	form.submit();
 }
-function loadFile(form, actionName, particleName, fileNumber) {
-	form.action = actionName + ".do?dispatch=loadFile&page=0&particleName=" + particleName + "&fileNumber=" + fileNumber;
+function loadFile(form, charName, actionName, particleName, fileNumber) {
+	form.action = actionName + ".do?dispatch=loadFile&page=0&charName="+charName+"&particleName=" + particleName + "&fileNumber=" + fileNumber;
 	form.submit();
 }
 function updateFunctionLinkages() {

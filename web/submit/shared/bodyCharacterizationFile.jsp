@@ -17,7 +17,7 @@
 				<c:when test="${canUserSubmit eq 'true'}">
 					<td class="formSubTitle" colspan="4" align="right">
 						<a href="#"
-							onclick="javascript:removeCharacterizationFile(nanoparticleCharacterizationForm, '${param.actionName}', ${param.fileInd})">
+							onclick="javascript:removeCharacterizationFile(nanoparticleCharacterizationForm, '${param.charName}', '${param.actionName}', ${param.fileInd})">
 							<img src="images/delete.gif" border="0" alt="remove this file">
 						</a>
 					</td>
@@ -100,7 +100,7 @@
 					Click on "Load File" button 
 						</logic:notPresent>
 						&nbsp;&nbsp;&nbsp;&nbsp;<input type="button"
-							onclick="javascript:loadFile(this.form, '${param.actionName}', '${param.particleName}', ${param.fileInd})"
+							onclick="javascript:loadFile(this.form, '${param.charName}', '${param.actionName}', '${param.particleName}', ${param.fileInd})"
 							value="Load File">
 					</c:when>
 					<c:otherwise>
@@ -124,7 +124,7 @@
 							<c:when test="${canUserSubmit eq 'true'}">
 								<td valign="bottom">
 									<a href="#"
-										onclick="javascript:addCharacterizationData(nanoparticleCharacterizationForm, '${param.actionName}', ${param.fileInd})"><span
+										onclick="javascript:addCharacterizationData(nanoparticleCharacterizationForm, '${param.charName}', '${param.actionName}', ${param.fileInd})"><span
 										class="addLink">Add Derived Data</span> </a>
 								</td>
 							</c:when>

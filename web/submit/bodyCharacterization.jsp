@@ -61,7 +61,7 @@
 											<c:when test="${canUserSubmit eq 'true'}">
 												<td valign="bottom">													
 													<a href="#"
-														onclick="javascript:addCharacterizationFile(nanoparticleCharacterizationForm, '${actionName}')"><span
+														onclick="javascript:addCharacterizationFile(nanoparticleCharacterizationForm, '${param.charName}', '${actionName}')"><span
 														class="addLink">Add File</span> </a>
 												</td>
 											</c:when>
@@ -86,6 +86,7 @@
 				<br>
 				<jsp:include page="/submit/shared/bodyCharacterizationCopy.jsp" />
 				<jsp:include page="/submit/shared/bodyCharacterizationSubmit.jsp" />
+				<html:hidden property="particleName" value="${param.particleName}"/>
 			</td>
 		</tr>
 	</table>
