@@ -346,7 +346,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			throws Exception {
 		request.setAttribute("characterizationName", request
 				.getParameter("charName"));
-		request.setAttribute("loadFileForward", "setup");
+		request.setAttribute("loadFileForward", mapping.findForward("setup").getPath());		
 		return mapping.findForward("loadFile");
 	}
 
