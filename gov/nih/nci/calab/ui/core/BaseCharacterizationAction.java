@@ -346,7 +346,11 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			throws Exception {
 		request.setAttribute("characterizationName", request
 				.getParameter("charName"));
-		request.setAttribute("loadFileForward", mapping.findForward("setup").getPath());		
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		String particleName = theForm.getString("particleName");
+		request.setAttribute("particleName", particleName);
+		request.setAttribute("loadFileForward", mapping.findForward("setup")
+				.getPath());
 		return mapping.findForward("loadFile");
 	}
 
@@ -492,7 +496,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
 		return input(mapping, form, request, response);
-		//return mapping.getInputForward(); this gives an IndexOutOfBoundException in the jsp page
+		// return mapping.getInputForward(); this gives an
+		// IndexOutOfBoundException in the jsp page
 	}
 
 	/**
