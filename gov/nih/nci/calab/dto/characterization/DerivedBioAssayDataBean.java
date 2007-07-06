@@ -66,6 +66,7 @@ public class DerivedBioAssayDataBean extends LabFileBean {
 			}
 		}
 		numberOfDataPoints = datumList.size() + "";
+		this.categories=charFile.getCategories();
 	}
 
 	public String getNumberOfDataPoints() {
@@ -95,6 +96,8 @@ public class DerivedBioAssayDataBean extends LabFileBean {
 		charFile.setPath(getPath());
 		charFile.setTitle(getTitle());
 		charFile.setVersion(getVersion());
+		charFile.setType(getType());
+		charFile.setCategories(categories);
 
 		for (String keywordValue : keywords) {
 			Keyword keyword = new Keyword();
