@@ -481,6 +481,7 @@ public class InitSessionSetup {
 		setFunctionTypeFunctions(session, particleName, particleType);
 		setAllCharacterizations(session, particleName, particleType);
 		session.removeAttribute("newParticleCreated");
+		session.removeAttribute("newCharacterizationCreated");
 		session.removeAttribute("newReportCreated");
 		session.removeAttribute("newFunctionCreated");
 		session.removeAttribute("detailPage");
