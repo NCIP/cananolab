@@ -15,7 +15,27 @@ public class LabFile implements java.io.Serializable {
 	private java.lang.Long id;
 
 	private String type;
-	
+
+	private String comments;
+
+	private String title;
+
+	private String description;
+
+	private String extension;
+
+	private java.lang.String createdBy;
+
+	private java.util.Date createdDate;
+
+	private java.lang.String version;
+
+	private java.lang.String uri;
+
+	private String filename;
+
+	private gov.nih.nci.calab.domain.DataStatus dataStatus;
+
 	public java.lang.Long getId() {
 		return id;
 	}
@@ -23,8 +43,6 @@ public class LabFile implements java.io.Serializable {
 	public void setId(java.lang.Long id) {
 		this.id = id;
 	}
-
-	private String title;
 
 	public String getTitle() {
 		return title;
@@ -34,8 +52,6 @@ public class LabFile implements java.io.Serializable {
 		this.title = title;
 	}
 
-	private String description;
-
 	public String getDescription() {
 		return description;
 	}
@@ -43,8 +59,6 @@ public class LabFile implements java.io.Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
-	private String comments;
 
 	public String getComments() {
 		return comments;
@@ -54,8 +68,6 @@ public class LabFile implements java.io.Serializable {
 		this.comments = comments;
 	}
 
-	private java.lang.String extension;
-
 	public java.lang.String getExtension() {
 		return extension;
 	}
@@ -63,8 +75,6 @@ public class LabFile implements java.io.Serializable {
 	public void setExtension(java.lang.String extension) {
 		this.extension = extension;
 	}
-
-	private java.lang.String createdBy;
 
 	public java.lang.String getCreatedBy() {
 		return createdBy;
@@ -74,8 +84,6 @@ public class LabFile implements java.io.Serializable {
 		this.createdBy = createdBy;
 	}
 
-	private java.util.Date createdDate;
-
 	public java.util.Date getCreatedDate() {
 		return createdDate;
 	}
@@ -83,8 +91,6 @@ public class LabFile implements java.io.Serializable {
 	public void setCreatedDate(java.util.Date createdDate) {
 		this.createdDate = createdDate;
 	}
-
-	private java.lang.String version;
 
 	public java.lang.String getVersion() {
 		return version;
@@ -94,8 +100,6 @@ public class LabFile implements java.io.Serializable {
 		this.version = version;
 	}
 
-	private java.lang.String uri;
-
 	public java.lang.String getUri() {
 		return uri;
 	}
@@ -104,8 +108,6 @@ public class LabFile implements java.io.Serializable {
 		this.uri = uri;
 	}
 
-	private String filename;
-
 	public String getFilename() {
 		return this.filename;
 	}
@@ -113,8 +115,6 @@ public class LabFile implements java.io.Serializable {
 	public void setFilename(String filename) {
 		this.filename = filename;
 	}
-
-	private gov.nih.nci.calab.domain.DataStatus dataStatus;
 
 	public gov.nih.nci.calab.domain.DataStatus getDataStatus() {
 		return this.dataStatus;
