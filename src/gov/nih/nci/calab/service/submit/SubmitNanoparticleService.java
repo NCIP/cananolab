@@ -155,32 +155,9 @@ public class SubmitNanoparticleService {
 			ida.open();
 			// check if viewTitle is already used the same type of
 			// characterization for the same particle
-			String viewTitleQuery = "";
-			if (achar.getId() == null) {
-				viewTitleQuery = "select count(achar.identificationName) from Nanoparticle particle join particle.characterizationCollection achar where particle.name='"
-						+ particleName
-						+ "' and particle.type='"
-						+ particleType
-						+ "' and achar.identificationName='"
-						+ achar.getIdentificationName()
-						+ "' and achar.name='"
-						+ achar.getName() + "'";
-			} else {
-				viewTitleQuery = "select count(achar.identificationName) from Nanoparticle particle join particle.characterizationCollection achar where particle.name='"
-						+ particleName
-						+ "' and particle.type='"
-						+ particleType
-						+ "' and achar.identificationName='"
-						+ achar.getIdentificationName()
-						+ "' and achar.name='"
-						+ achar.getName() + "' and achar.id!=" + achar.getId();
-			}
-			List viewTitleResult = ida.search(viewTitleQuery);
-
-			for (Object obj : viewTitleResult) {
-				existingViewTitleCount = ((Integer) (obj)).intValue();
-			}
-			if (existingViewTitleCount == 0) {
+			boolean viewTitleUsed = isCharacterizationViewTitleUsed(ida,
+					particleType, particleName, achar);
+			if (!viewTitleUsed) {
 				if (achar.getInstrumentConfiguration() != null) {
 					addInstrumentConfig(achar.getInstrumentConfiguration(), ida);
 				}
@@ -224,7 +201,65 @@ public class SubmitNanoparticleService {
 		} finally {
 			ida.close();
 		}
+	}
 
+	/*
+	 * check if viewTitle is already used the same type of characterization for
+	 * the same particle
+	 */
+	private boolean isCharacterizationViewTitleUsed(IDataAccess ida,
+			String particleType, String particleName, Characterization achar)
+			throws Exception {
+		String viewTitleQuery = "";
+
+		if (achar.getId() == null) {
+			viewTitleQuery = "select count(achar.identificationName) from Nanoparticle particle join particle.characterizationCollection achar where particle.name='"
+					+ particleName
+					+ "' and particle.type='"
+					+ particleType
+					+ "' and achar.identificationName='"
+					+ achar.getIdentificationName()
+					+ "' and achar.name='"
+					+ achar.getName() + "'";
+		} else {
+			viewTitleQuery = "select count(achar.identificationName) from Nanoparticle particle join particle.characterizationCollection achar where particle.name='"
+					+ particleName
+					+ "' and particle.type='"
+					+ particleType
+					+ "' and achar.identificationName='"
+					+ achar.getIdentificationName()
+					+ "' and achar.name='"
+					+ achar.getName() + "' and achar.id!=" + achar.getId();
+		}
+		List viewTitleResult = ida.search(viewTitleQuery);
+
+		int existingViewTitleCount = -1;
+		for (Object obj : viewTitleResult) {
+			existingViewTitleCount = ((Integer) (obj)).intValue();
+		}
+		if (existingViewTitleCount > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Save the file to the file system if newly uploaded
+	 * 
+	 * @param fileBean
+	 */
+	public void saveCharacterizationFile(DerivedBioAssayDataBean fileBean)
+			throws Exception {
+
+		FormFile uploadedFile = fileBean.getUploadedFile();
+		if (uploadedFile != null) {
+			FileService fileService = new FileService();
+			String fileName = fileService.writeUploadedFile(uploadedFile,
+					fileBean.getFullPath(), true);
+		}
+		userService.setVisiblity(fileBean.getId(), fileBean
+				.getVisibilityGroups());
 	}
 
 	private void addInstrumentConfig(InstrumentConfiguration instrumentConfig,
@@ -664,7 +699,7 @@ public class SubmitNanoparticleService {
 	 * @param keywords
 	 * @param visibilities
 	 */
-	public DerivedBioAssayDataBean saveCharacterizationFile(
+	public DerivedBioAssayDataBean saveCharacterizationFile0(
 			DerivedBioAssayDataBean fileBean) throws Exception {
 
 		FormFile uploadedFile = fileBean.getUploadedFile();
@@ -696,7 +731,7 @@ public class SubmitNanoparticleService {
 			dataFile.setFilename(uploadedFile.getFileName());
 			// TODO need to remove the predefine the root path from
 			// outputFilename
-			dataFile.setPath(filePath + File.separator + fileName);
+			dataFile.setUri(filePath + File.separator + fileName);
 		} else {
 			dataFile = fileBean.getDomainObject();
 		}
@@ -774,36 +809,10 @@ public class SubmitNanoparticleService {
 					ida.store(linkage);
 				}
 			}
-			// check if viewTitle is already used the same type of
-			// function for the same particle
-			String viewTitleQuery = "";
-			if (function.getId() == null) {
-				viewTitleQuery = "select count(function.identificationName) from Nanoparticle particle join particle.functionCollection function where particle.name='"
-						+ particleName
-						+ "' and particle.type='"
-						+ particleType
-						+ "' and function.identificationName='"
-						+ doFunction.getIdentificationName()
-						+ "' and function.type='" + doFunction.getType() + "'";
-			} else {
-				viewTitleQuery = "select count(function.identificationName) from Nanoparticle particle join particle.functionCollection function where particle.name='"
-						+ particleName
-						+ "' and particle.type='"
-						+ particleType
-						+ "' and function.identificationName='"
-						+ doFunction.getIdentificationName()
-						+ "' and function.id!="
-						+ function.getId()
-						+ " and function.type='" + doFunction.getType() + "'";
 
-			}
-			List viewTitleResult = ida.search(viewTitleQuery);
-
-			for (Object obj : viewTitleResult) {
-				existingViewTitleCount = ((Integer) (obj)).intValue();
-			}
-			if (existingViewTitleCount == 0) {
-				// if ID exists, do update
+			boolean viewTitleUsed = isFunctionViewTitleUsed(ida, particleType,
+					particleName, doFunction);
+			if (!viewTitleUsed) {
 				if (doFunction.getId() != null) {
 					ida.store(doFunction);
 				} else {// get the existing particle and compositions
@@ -834,6 +843,48 @@ public class SubmitNanoparticleService {
 		if (existingViewTitleCount > 0) {
 			throw new CalabException(
 					"The view title is already in use.  Please enter a different one.");
+		}
+	}
+
+	/*
+	 * check if viewTitle is already used the same type of function for the same
+	 * particle
+	 */
+	private boolean isFunctionViewTitleUsed(IDataAccess ida,
+			String particleType, String particleName, Function function)
+			throws Exception {
+		// check if viewTitle is already used the same type of
+		// function for the same particle
+		String viewTitleQuery = "";
+		if (function.getId() == null) {
+			viewTitleQuery = "select count(function.identificationName) from Nanoparticle particle join particle.functionCollection function where particle.name='"
+					+ particleName
+					+ "' and particle.type='"
+					+ particleType
+					+ "' and function.identificationName='"
+					+ function.getIdentificationName()
+					+ "' and function.type='" + function.getType() + "'";
+		} else {
+			viewTitleQuery = "select count(function.identificationName) from Nanoparticle particle join particle.functionCollection function where particle.name='"
+					+ particleName
+					+ "' and particle.type='"
+					+ particleType
+					+ "' and function.identificationName='"
+					+ function.getIdentificationName()
+					+ "' and function.id!="
+					+ function.getId()
+					+ " and function.type='"
+					+ function.getType() + "'";
+		}
+		List viewTitleResult = ida.search(viewTitleQuery);
+		int existingViewTitleCount = -1;
+		for (Object obj : viewTitleResult) {
+			existingViewTitleCount = ((Integer) (obj)).intValue();
+		}
+		if (existingViewTitleCount > 0) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 
@@ -935,7 +986,7 @@ public class SubmitNanoparticleService {
 					LabFileBean fileBean = new LabFileBean();
 					fileBean.setId(file.getId().toString());
 					fileBean.setName(file.getFilename());
-					fileBean.setPath(file.getPath());
+					fileBean.setUri(file.getUri());
 					runFiles.add(fileBean);
 				}
 			}
