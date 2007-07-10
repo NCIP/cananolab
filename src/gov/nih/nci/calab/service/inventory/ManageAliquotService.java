@@ -24,7 +24,7 @@ import org.apache.log4j.Logger;
  */
 
 /*
- * CVS $Id: ManageAliquotService.java,v 1.7 2007-05-07 18:53:45 pansu Exp $
+ * CVS $Id: ManageAliquotService.java,v 1.8 2007-07-10 16:09:15 pansu Exp $
  */
 
 public class ManageAliquotService {
@@ -327,7 +327,7 @@ public class ManageAliquotService {
 
 	private String getCreatedMethod(IDataAccess ida, String sopURI)
 			throws Exception {
-		String hqlString = "select sop.name from SampleSOP sop join sop.sampleSOPFileCollection sopFile where sopFile.path='"
+		String hqlString = "select sop.name from SampleSOP sop join sop.sampleSOPFileCollection sopFile where sopFile.uri='"
 				+ sopURI + "'";
 		List results = ida.search(hqlString);
 		for (Object obj : results) {

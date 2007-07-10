@@ -13,59 +13,6 @@ package gov.nih.nci.calab.domain;
 public class SampleSOPFile extends LabFile implements java.io.Serializable {
 	private static final long serialVersionUID = 1234567890L;
 
-	// private java.lang.Long id;
-	// public java.lang.Long getId(){
-	// return id;
-	// }
-	// public void setId( java.lang.Long id){
-	// this.id = id;
-	// }
-	//	
-	//	   
-	// private java.lang.String path;
-	// public java.lang.String getPath(){
-	// return path;
-	// }
-	// public void setPath( java.lang.String path){
-	// this.path = path;
-	// }
-	//	
-	//	   
-	// private java.lang.String extension;
-	// public java.lang.String getExtension(){
-	// return extension;
-	// }
-	// public void setExtension( java.lang.String extension){
-	// this.extension = extension;
-	// }
-	//	
-	//	   
-	// private java.lang.String createdBy;
-	// public java.lang.String getCreatedBy(){
-	// return createdBy;
-	// }
-	// public void setCreatedBy( java.lang.String createdBy){
-	// this.createdBy = createdBy;
-	// }
-	//	
-	//	   
-	// private java.util.Date createdDate;
-	// public java.util.Date getCreatedDate(){
-	// return createdDate;
-	// }
-	// public void setCreatedDate( java.util.Date createdDate){
-	// this.createdDate = createdDate;
-	// }
-	//	
-	//	   
-	// private java.lang.String version;
-	// public java.lang.String getVersion(){
-	// return version;
-	// }
-	// public void setVersion( java.lang.String version){
-	// this.version = version;
-	// }
-
 	private gov.nih.nci.calab.domain.SampleSOP sampleSOP;
 
 	public gov.nih.nci.calab.domain.SampleSOP getSampleSOP() {

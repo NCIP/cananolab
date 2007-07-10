@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchProtocolAction.java,v 1.6 2007-06-19 20:15:22 pansu Exp $ */
+/* CVS $Id: SearchProtocolAction.java,v 1.7 2007-07-10 16:10:31 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
@@ -97,7 +97,7 @@ public class SearchProtocolAction extends AbstractDispatchAction {
 		LabFileBean fileBean = service.getFile(fileId);
 		String fileRoot = PropertyReader.getProperty(
 				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
-		File dFile = new File(fileRoot + File.separator + fileBean.getPath());
+		File dFile = new File(fileRoot + File.separator + fileBean.getUri());
 		if (dFile.exists()) {
 			response.setContentType("application/octet-stream");
 			response.setHeader("Content-disposition", "attachment;filename="

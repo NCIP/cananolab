@@ -18,7 +18,7 @@ public class FileBean {
 
 	private String id = "";
 
-	private String path = "";
+	private String uri = "";
 
 	private String filename = "";
 
@@ -43,26 +43,26 @@ public class FileBean {
 	}
 
 	// used in WorkflowResultBean
-	public FileBean(String id, String path, String shortFileName,
+	public FileBean(String id, String uri, String shortFileName,
 			Date fileSubmissionDate, String fileSubmitter,
 			String fileMaskStatus, String inoutType) {
 		this.id = id;
-		this.path = path;
+		this.uri = uri;
 		this.createdDate = fileSubmissionDate;
 		this.fileSubmitter = fileSubmitter;
-		this.filename = getFileName(path);
+		this.filename = getFileName(uri);
 		this.shortFilename = shortFileName;
 		this.fileMaskStatus = (fileMaskStatus.length() == 0 && filename
 				.length() > 0) ? CaNanoLabConstants.ACTIVE_STATUS : fileMaskStatus;
 		this.inoutType = inoutType;
 	}
 
-	public FileBean(String id, String path) {
+	public FileBean(String id, String uri) {
 		super();
 		// TODO Auto-generated constructor stub
 		this.id = id;
-		this.path = path;
-		this.filename = getFileName(path);
+		this.uri = uri;
+		this.filename = getFileName(uri);
 	}
 
 	public String getTimePrefix() {
@@ -75,9 +75,9 @@ public class FileBean {
 
 	public FileBean(InputFile infile) {
 		this.id = StringUtils.convertToString(infile.getId());
-		this.path = infile.getPath();
+		this.uri = infile.getUri();
 		this.fileSubmitter = infile.getCreatedBy();
-		this.filename = getFileName(path);
+		this.filename = getFileName(uri);
 		this.shortFilename = infile.getFilename();
 		this.fileMaskStatus = (fileMaskStatus.length() == 0 && filename
 				.length() > 0) ? CaNanoLabConstants.ACTIVE_STATUS : fileMaskStatus;
@@ -87,11 +87,11 @@ public class FileBean {
 
 	public FileBean(OutputFile outfile) {
 		this.id = StringUtils.convertToString(outfile.getId());
-		this.path = outfile.getPath();
+		this.uri = outfile.getUri();
 		this.fileSubmitter = outfile.getCreatedBy();
 		this.fileMaskStatus = (fileMaskStatus.length() == 0 && filename
 				.length() > 0) ? CaNanoLabConstants.ACTIVE_STATUS : fileMaskStatus;
-		this.filename = getFileName(path);
+		this.filename = getFileName(uri);
 		this.shortFilename = outfile.getFilename();
 		this.inoutType = CaNanoLabConstants.OUTPUT;
 		this.createdDate=outfile.getCreatedDate();
@@ -105,13 +105,13 @@ public class FileBean {
 		this.id = id;
 	}
 
-	public String getPath() {
-		return path;
+	public String getUri() {
+		return uri;
 	}
 
-	public void setPath(String path) {
-		this.path = path;
-		this.filename = getFileName(path);
+	public void setUri(String uri) {
+		this.uri = uri;
+		this.filename = getFileName(uri);
 	}
 
 	public String getFilename() {
@@ -123,8 +123,8 @@ public class FileBean {
 	// }
 	//	
 
-	private String getFileName(String path) {
-		String[] tokens = path.split("/");
+	private String getFileName(String uri) {
+		String[] tokens = uri.split("/");
 		return tokens[tokens.length - 1];
 	}
 

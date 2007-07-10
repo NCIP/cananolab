@@ -20,7 +20,7 @@
 			column="CREATED_DATE" />
 		<property name="version" type="java.lang.String"
 			column="VERSION" />
-		<property name="path" type="java.lang.String" column="FILE_URI" />
+		<property name="uri" type="java.lang.String" column="FILE_URI" />
 		<property name="filename" type="java.lang.String"
 			column="FILE_NAME" />
 		<property name="title" type="java.lang.String" column="TITLE" />

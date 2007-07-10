@@ -44,7 +44,7 @@ public class FileService {
 							"fileRepositoryDir");
 
 			File fileObj = new File(fileRoot + File.separator
-					+ labFile.getPath());
+					+ labFile.getUri());
 			InputStream in = new FileInputStream(fileObj);
 			byte[] bytes = new byte[32768];
 			int numRead = 0;
@@ -81,7 +81,7 @@ public class FileService {
 							"fileRepositoryDir");
 
 			File fileObj = new File(fileRoot + File.separator
-					+ labFile.getPath());
+					+ labFile.getUri());
 			long fileLength = fileObj.length();
 
 			// You cannot create an array using a long type.

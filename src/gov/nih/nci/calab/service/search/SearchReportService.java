@@ -44,7 +44,7 @@ public class SearchReportService {
 
 			ida.open();
 			List results = ida
-					.search("select report.id, report.filename, report.path from Nanoparticle particle join particle.reportCollection "
+					.search("select report.id, report.filename, report.uri from Nanoparticle particle join particle.reportCollection "
 							+ " report where particle.name='"
 							+ particleName
 							+ "' and particle.type='" + particleType + "'");
@@ -52,15 +52,15 @@ public class SearchReportService {
 			for (Object obj : results) {
 				String reportId = ((Object[]) obj)[0].toString();
 				String fileName = (String) (((Object[]) obj)[1]);
-				String path = (String) (((Object[]) obj)[2]);
+				String uri = (String) (((Object[]) obj)[2]);
 				String toolTip = "";
-				int idx = path.lastIndexOf(File.separator);
+				int idx = uri.lastIndexOf(File.separator);
 				if (idx > 0)
-					toolTip = path.substring(idx + 1);
+					toolTip = uri.substring(idx + 1);
 
 				LabFileBean fileBean = new LabFileBean();
 				fileBean.setId(reportId);
-				fileBean.setPath(path);
+				fileBean.setUri(uri);
 				fileBean.setName(fileName);
 				fileBean.setType(CaNanoLabConstants.REPORT);
 				fileBeans.add(fileBean);

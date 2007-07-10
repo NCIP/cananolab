@@ -23,7 +23,7 @@ import org.apache.log4j.Logger;
  * 
  */
 
-/* CVS $Id: SearchWorkflowService.java,v 1.1 2007-02-28 21:53:01 pansu Exp $ */
+/* CVS $Id: SearchWorkflowService.java,v 1.2 2007-07-10 16:09:53 pansu Exp $ */
 
 public class SearchWorkflowService {
 	private static Logger logger = Logger
@@ -43,7 +43,7 @@ public class SearchWorkflowService {
 				fileSubmissionDateBegin, fileSubmissionDateEnd, fileSubmitter,
 				criteriaJoin);
 
-		String hqlString = "select distinct file.path, assay.assayType, assay.name, run.id, run.name, run.createdDate, aliquot.name, aliquotStatus.status, file.createdDate, file.createdBy, fileStatus.status, file.id, file.filename ";
+		String hqlString = "select distinct file.uri, assay.assayType, assay.name, run.id, run.name, run.createdDate, aliquot.name, aliquotStatus.status, file.createdDate, file.createdBy, fileStatus.status, file.id, file.filename ";
 
 		// get inputFile workflows first
 		SortedSet<WorkflowResultBean> workflowSet = new TreeSet<WorkflowResultBean>(
@@ -134,9 +134,9 @@ public class SearchWorkflowService {
 		if (fileName.length() > 0) {
 			if (fileName.indexOf("*") != -1) {
 				fileName = fileName.replace('*', '%');
-				whereList.add("file.path like ?");
+				whereList.add("file.uri like ?");
 			} else {
-				whereList.add("file.path=?");
+				whereList.add("file.uri=?");
 			}
 			paramList.add(fileName);
 			where = "where ";
