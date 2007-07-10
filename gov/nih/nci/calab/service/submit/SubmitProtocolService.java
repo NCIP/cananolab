@@ -25,7 +25,7 @@ import org.apache.struts.upload.FormFile;
  */
 
 /*
- * CVS $Id: SubmitProtocolService.java,v 1.9 2007-06-08 22:15:48 pansu Exp $
+ * CVS $Id: SubmitProtocolService.java,v 1.10 2007-07-10 16:09:31 pansu Exp $
  */
 
 public class SubmitProtocolService {
@@ -74,7 +74,7 @@ public class SubmitProtocolService {
 		dataFile.setDescription(fileBean.getDescription());
 		if (uploadedFile != null) {
 			dataFile.setFilename(uploadedFile.getFileName());
-			dataFile.setPath(CaNanoLabConstants.FOLDER_PROTOCOL
+			dataFile.setUri(CaNanoLabConstants.FOLDER_PROTOCOL
 					+ File.separator + fileName);
 		}
 		dataFile.setTitle(fileBean.getTitle().toUpperCase()); // convert to
@@ -148,8 +148,8 @@ public class SubmitProtocolService {
 						file.setVersion(dataFile.getVersion());
 					if (dataFile.getFilename() != null && dataFile.getFilename().length() > 0)
 						file.setFilename(dataFile.getFilename());
-					if (dataFile.getPath() != null && dataFile.getPath().length() > 0)
-						file.setPath(dataFile.getPath());
+					if (dataFile.getUri() != null && dataFile.getUri().length() > 0)
+						file.setUri(dataFile.getUri());
 				}
 			}
 			else {
@@ -204,7 +204,7 @@ public class SubmitProtocolService {
 			file.setDescription(fileBean.getDescription());
 			if (fileName != null && fileName.length() > 0) {
 				file.setFilename(fileName);
-				file.setPath(CaNanoLabConstants.FOLDER_PROTOCOL
+				file.setUri(CaNanoLabConstants.FOLDER_PROTOCOL
 						+ File.separator + fileName);
 			}
 		} catch (Exception e) {

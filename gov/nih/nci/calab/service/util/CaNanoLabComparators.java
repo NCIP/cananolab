@@ -17,7 +17,7 @@ import java.util.Comparator;
  * 
  */
 
-/* CVS $Id: CaNanoLabComparators.java,v 1.2 2007-02-28 21:52:12 pansu Exp $ */
+/* CVS $Id: CaNanoLabComparators.java,v 1.3 2007-07-10 16:09:44 pansu Exp $ */
 
 public class CaNanoLabComparators {
 
@@ -145,9 +145,9 @@ public class CaNanoLabComparators {
 
 	public static class FileBeanComparator implements Comparator<FileBean> {
 		public int compare(FileBean file1, FileBean file2) {
-			// compare short file name then path
+			// compare short file name then uri
 			if (file1.getShortFilename().compareTo(file2.getShortFilename()) == 0) {
-				return file1.getPath().compareTo(file2.getPath());
+				return file1.getUri().compareTo(file2.getUri());
 			} else {
 				return file1.getShortFilename().compareTo(
 						file2.getShortFilename());

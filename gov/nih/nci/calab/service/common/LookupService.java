@@ -51,7 +51,7 @@ import org.hibernate.collection.PersistentSet;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.121 2007-07-03 21:14:15 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.122 2007-07-10 16:08:57 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -540,7 +540,7 @@ public class LookupService {
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
-			String hqlString = "select sop.name, file.path from SampleSOP sop join sop.sampleSOPFileCollection file where sop.description='aliquot creation'";
+			String hqlString = "select sop.name, file.uri from SampleSOP sop join sop.sampleSOPFileCollection file where sop.description='aliquot creation'";
 			List results = ida.search(hqlString);
 			for (Object obj : results) {
 				String sopName = (String) ((Object[]) obj)[0];

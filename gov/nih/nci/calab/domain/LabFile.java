@@ -94,14 +94,14 @@ public class LabFile implements java.io.Serializable {
 		this.version = version;
 	}
 
-	private java.lang.String path;
+	private java.lang.String uri;
 
-	public java.lang.String getPath() {
-		return path;
+	public java.lang.String getUri() {
+		return uri;
 	}
 
-	public void setPath(java.lang.String path) {
-		this.path = path;
+	public void setUri(java.lang.String uri) {
+		this.uri = uri;
 	}
 
 	private String filename;
