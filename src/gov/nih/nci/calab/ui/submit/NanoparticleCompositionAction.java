@@ -8,7 +8,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleCompositionAction.java,v 1.26 2007-07-05 18:58:07 pansu Exp $ */
+/* CVS $Id: NanoparticleCompositionAction.java,v 1.27 2007-07-10 16:06:04 zengje Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.CarbonNanotubeComposition;
@@ -270,9 +270,8 @@ public class NanoparticleCompositionAction extends BaseCharacterizationAction {
 		SearchNanoparticleService service = new SearchNanoparticleService();
 		Characterization aChar = service.getCharacterizationBy(compositionId);
 
-		HttpSession session = request.getSession();
-		// clear session data from the input forms
-		clearMap(session, theForm);
+//		HttpSession session = request.getSession();
+		initSetup(request, theForm);
 		if (particleType.equalsIgnoreCase(CaNanoLabConstants.DENDRIMER_TYPE)) {
 			DendrimerBean dendrimer = new DendrimerBean(
 					(DendrimerComposition) aChar);
@@ -321,7 +320,7 @@ public class NanoparticleCompositionAction extends BaseCharacterizationAction {
 		theForm.set("characterizationSource", aChar.getSource());
 		theForm.set("viewTitle", aChar.getIdentificationName());
 		theForm.set("description", aChar.getDescription());
-		initSetup(request, theForm);
+
 
 		return mapping.getInputForward();
 	}
