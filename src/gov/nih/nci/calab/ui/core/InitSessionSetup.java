@@ -882,7 +882,7 @@ public class InitSessionSetup {
 				|| session.getAttribute("newCharacterizationCreated") != null) {
 
 			SortedSet<String> fileTypes = lookupService
-					.getAllDerivedDataFileTypes();
+					.getAllCharacterizationFileTypes();
 			session.setAttribute("allDerivedDataFileTypes", fileTypes);
 		}
 		session.removeAttribute("newCharacterizationCreated");
