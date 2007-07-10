@@ -143,7 +143,8 @@ public class SubmitNanoparticleService {
 	 * @throws Exception
 	 */
 	private void addParticleCharacterization(String particleType,
-			String particleName, Characterization achar) throws Exception {
+			String particleName, Characterization achar,
+			CharacterizationBean charBean) throws Exception {
 
 		// if ID is not set save to the database otherwise update
 		IDataAccess ida = (new DataAccessProxy())
@@ -200,6 +201,16 @@ public class SubmitNanoparticleService {
 			throw e;
 		} finally {
 			ida.close();
+		}
+		
+		// save file to the file system
+		// if this block of code is inside the db try catch block, hibernate doesn't 
+		// persist derivedBioAssayData
+		if (!charBean.getDerivedBioAssayDataList().isEmpty()) {
+			for (DerivedBioAssayDataBean derivedBioAssayDataBean : charBean
+					.getDerivedBioAssayDataList()) {
+				saveCharacterizationFile(derivedBioAssayDataBean);
+			}
 		}
 	}
 
@@ -307,7 +318,8 @@ public class SubmitNanoparticleService {
 	public void addParticleComposition(String particleType,
 			String particleName, CompositionBean composition) throws Exception {
 		ParticleComposition doComp = composition.getDomainObj();
-		addParticleCharacterization(particleType, particleName, doComp);
+		addParticleCharacterization(particleType, particleName, doComp,
+				composition);
 	}
 
 	/**
@@ -323,7 +335,7 @@ public class SubmitNanoparticleService {
 
 		Size doSize = new Size();
 		size.updateDomainObj(doSize);
-		addParticleCharacterization(particleType, particleName, doSize);
+		addParticleCharacterization(particleType, particleName, doSize, size);
 	}
 
 	/**
@@ -340,7 +352,8 @@ public class SubmitNanoparticleService {
 		Surface doSurface = new Surface();
 		surface.updateDomainObj(doSurface);
 
-		addParticleCharacterization(particleType, particleName, doSurface);
+		addParticleCharacterization(particleType, particleName, doSurface,
+				surface);
 	}
 
 	/**
@@ -357,7 +370,7 @@ public class SubmitNanoparticleService {
 		MolecularWeight doMolecularWeight = new MolecularWeight();
 		molecularWeight.updateDomainObj(doMolecularWeight);
 		addParticleCharacterization(particleType, particleName,
-				doMolecularWeight);
+				doMolecularWeight, molecularWeight);
 	}
 
 	/**
@@ -372,7 +385,8 @@ public class SubmitNanoparticleService {
 			MorphologyBean morphology) throws Exception {
 		Morphology doMorphology = new Morphology();
 		morphology.updateDomainObj(doMorphology);
-		addParticleCharacterization(particleType, particleName, doMorphology);
+		addParticleCharacterization(particleType, particleName, doMorphology,
+				morphology);
 	}
 
 	/**
@@ -387,7 +401,7 @@ public class SubmitNanoparticleService {
 			ShapeBean shape) throws Exception {
 		Shape doShape = new Shape();
 		shape.updateDomainObj(doShape);
-		addParticleCharacterization(particleType, particleName, doShape);
+		addParticleCharacterization(particleType, particleName, doShape, shape);
 	}
 
 	/**
@@ -403,7 +417,8 @@ public class SubmitNanoparticleService {
 		Purity doPurity = new Purity();
 		purity.updateDomainObj(doPurity);
 		// TODO think about how to deal with characterization file.
-		addParticleCharacterization(particleType, particleName, doPurity);
+		addParticleCharacterization(particleType, particleName, doPurity,
+				purity);
 	}
 
 	/**
@@ -419,7 +434,8 @@ public class SubmitNanoparticleService {
 		Solubility doSolubility = new Solubility();
 		solubility.updateDomainObj(doSolubility);
 		// TODO think about how to deal with characterization file.
-		addParticleCharacterization(particleType, particleName, doSolubility);
+		addParticleCharacterization(particleType, particleName, doSolubility,
+				solubility);
 	}
 
 	/**
@@ -435,7 +451,8 @@ public class SubmitNanoparticleService {
 		Hemolysis doHemolysis = new Hemolysis();
 		hemolysis.updateDomainObj(doHemolysis);
 		// TODO think about how to deal with characterization file.
-		addParticleCharacterization(particleType, particleName, doHemolysis);
+		addParticleCharacterization(particleType, particleName, doHemolysis,
+				hemolysis);
 	}
 
 	/**
@@ -450,7 +467,8 @@ public class SubmitNanoparticleService {
 			CharacterizationBean coagulation) throws Exception {
 		Coagulation doCoagulation = new Coagulation();
 		coagulation.updateDomainObj(doCoagulation);
-		addParticleCharacterization(particleType, particleName, doCoagulation);
+		addParticleCharacterization(particleType, particleName, doCoagulation,
+				coagulation);
 	}
 
 	/**
@@ -467,7 +485,7 @@ public class SubmitNanoparticleService {
 		PlateletAggregation doPlateletAggregation = new PlateletAggregation();
 		plateletAggregation.updateDomainObj(doPlateletAggregation);
 		addParticleCharacterization(particleType, particleName,
-				doPlateletAggregation);
+				doPlateletAggregation, plateletAggregation);
 	}
 
 	/**
@@ -484,7 +502,7 @@ public class SubmitNanoparticleService {
 		ComplementActivation doComplementActivation = new ComplementActivation();
 		complementActivation.updateDomainObj(doComplementActivation);
 		addParticleCharacterization(particleType, particleName,
-				doComplementActivation);
+				doComplementActivation, complementActivation);
 	}
 
 	/**
@@ -500,7 +518,8 @@ public class SubmitNanoparticleService {
 
 		Chemotaxis doChemotaxis = new Chemotaxis();
 		chemotaxis.updateDomainObj(doChemotaxis);
-		addParticleCharacterization(particleType, particleName, doChemotaxis);
+		addParticleCharacterization(particleType, particleName, doChemotaxis,
+				chemotaxis);
 	}
 
 	/**
@@ -519,7 +538,7 @@ public class SubmitNanoparticleService {
 		NKCellCytotoxicActivity doNKCellCytotoxicActivity = new NKCellCytotoxicActivity();
 		nkCellCytotoxicActivity.updateDomainObj(doNKCellCytotoxicActivity);
 		addParticleCharacterization(particleType, particleName,
-				doNKCellCytotoxicActivity);
+				doNKCellCytotoxicActivity, nkCellCytotoxicActivity);
 	}
 
 	/**
@@ -536,7 +555,7 @@ public class SubmitNanoparticleService {
 		LeukocyteProliferation doLeukocyteProliferation = new LeukocyteProliferation();
 		leukocyteProliferation.updateDomainObj(doLeukocyteProliferation);
 		addParticleCharacterization(particleType, particleName,
-				doLeukocyteProliferation);
+				doLeukocyteProliferation, leukocyteProliferation);
 	}
 
 	/**
@@ -551,7 +570,8 @@ public class SubmitNanoparticleService {
 			CharacterizationBean cfu_gm) throws Exception {
 		CFU_GM doCFU_GM = new CFU_GM();
 		cfu_gm.updateDomainObj(doCFU_GM);
-		addParticleCharacterization(particleType, particleName, doCFU_GM);
+		addParticleCharacterization(particleType, particleName, doCFU_GM,
+				cfu_gm);
 	}
 
 	/**
@@ -567,7 +587,7 @@ public class SubmitNanoparticleService {
 		OxidativeBurst doOxidativeBurst = new OxidativeBurst();
 		oxidativeBurst.updateDomainObj(doOxidativeBurst);
 		addParticleCharacterization(particleType, particleName,
-				doOxidativeBurst);
+				doOxidativeBurst, oxidativeBurst);
 	}
 
 	/**
@@ -582,7 +602,8 @@ public class SubmitNanoparticleService {
 			CharacterizationBean phagocytosis) throws Exception {
 		Phagocytosis doPhagocytosis = new Phagocytosis();
 		phagocytosis.updateDomainObj(doPhagocytosis);
-		addParticleCharacterization(particleType, particleName, doPhagocytosis);
+		addParticleCharacterization(particleType, particleName, doPhagocytosis,
+				phagocytosis);
 	}
 
 	/**
@@ -599,7 +620,7 @@ public class SubmitNanoparticleService {
 		cytokineInduction.updateDomainObj(doCytokineInduction);
 
 		addParticleCharacterization(particleType, particleName,
-				doCytokineInduction);
+				doCytokineInduction, cytokineInduction);
 	}
 
 	/**
@@ -615,7 +636,7 @@ public class SubmitNanoparticleService {
 		PlasmaProteinBinding doProteinBinding = new PlasmaProteinBinding();
 		plasmaProteinBinding.updateDomainObj(doProteinBinding);
 		addParticleCharacterization(particleType, particleName,
-				doProteinBinding);
+				doProteinBinding, plasmaProteinBinding);
 	}
 
 	/**
@@ -630,7 +651,8 @@ public class SubmitNanoparticleService {
 			CytotoxicityBean cellViability) throws Exception {
 		CellViability doCellViability = new CellViability();
 		cellViability.updateDomainObj(doCellViability);
-		addParticleCharacterization(particleType, particleName, doCellViability);
+		addParticleCharacterization(particleType, particleName,
+				doCellViability, cellViability);
 	}
 
 	/**
@@ -647,7 +669,7 @@ public class SubmitNanoparticleService {
 		EnzymeInduction doEnzymeInduction = new EnzymeInduction();
 		enzymeInduction.updateDomainObj(doEnzymeInduction);
 		addParticleCharacterization(particleType, particleName,
-				doEnzymeInduction);
+				doEnzymeInduction, enzymeInduction);
 	}
 
 	/**
@@ -663,7 +685,7 @@ public class SubmitNanoparticleService {
 		OxidativeStress doOxidativeStress = new OxidativeStress();
 		oxidativeStress.updateDomainObj(doOxidativeStress);
 		addParticleCharacterization(particleType, particleName,
-				doOxidativeStress);
+				doOxidativeStress, oxidativeStress);
 	}
 
 	/**
@@ -679,81 +701,12 @@ public class SubmitNanoparticleService {
 		Caspase3Activation doCaspase3Activation = new Caspase3Activation();
 		caspase3Activation.updateDomainObj(doCaspase3Activation);
 		addParticleCharacterization(particleType, particleName,
-				doCaspase3Activation);
+				doCaspase3Activation, caspase3Activation);
 	}
 
 	public void setCharacterizationFile(String particleName,
 			String characterizationName, LabFileBean fileBean) {
 
-	}
-
-	/**
-	 * Save the characterization file into the database, and save to the file
-	 * system if newly uploaded
-	 * 
-	 * @param particleName
-	 * @param uploadedFile
-	 * @param title
-	 * @param description
-	 * @param comments
-	 * @param keywords
-	 * @param visibilities
-	 */
-	public DerivedBioAssayDataBean saveCharacterizationFile0(
-			DerivedBioAssayDataBean fileBean) throws Exception {
-
-		FormFile uploadedFile = fileBean.getUploadedFile();
-		DerivedBioAssayData dataFile = null;
-		if (uploadedFile != null) {
-			// write file to the file system
-			String rootPath = PropertyReader
-					.getProperty(CaNanoLabConstants.FILEUPLOAD_PROPERTY,
-							"fileRepositoryDir");
-			// get rid of trailing file separator
-			if (rootPath.charAt(rootPath.length() - 1) == File.separatorChar)
-				rootPath = rootPath.substring(0, rootPath.length() - 1);
-
-			// add charaterizationName to the path
-			String filePath = File.separator
-					+ CaNanoLabConstants.FOLDER_PARTICLE
-					+ File.separator
-					+ fileBean.getParticleName()
-					+ File.separator
-					+ StringUtils.getOneWordLowerCaseFirstLetter(fileBean
-							.getCharacterizationName());
-
-			FileService fileService = new FileService();
-			String fileName = fileService.writeUploadedFile(uploadedFile,
-					rootPath + filePath, true);
-
-			dataFile = fileBean.getDomainObject();
-			// set file name, path and keywords for DerivedDataFile specific
-			dataFile.setFilename(uploadedFile.getFileName());
-			// TODO need to remove the predefine the root path from
-			// outputFilename
-			dataFile.setUri(filePath + File.separator + fileName);
-		} else {
-			dataFile = fileBean.getDomainObject();
-		}
-		// save file to the database
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
-		try {
-			ida.open();
-			ida.store(dataFile);
-		} catch (Exception e) {
-			e.printStackTrace();
-			ida.rollback();
-			logger.error("Problem saving characterization File: ");
-			throw e;
-		} finally {
-			ida.close();
-		}
-		DerivedBioAssayDataBean savedFileBean = new DerivedBioAssayDataBean(
-				dataFile);
-		userService.setVisiblity(savedFileBean.getId(), savedFileBean
-				.getVisibilityGroups());
-		return savedFileBean;
 	}
 
 	/**
