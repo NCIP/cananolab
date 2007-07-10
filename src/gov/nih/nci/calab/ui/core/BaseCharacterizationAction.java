@@ -68,16 +68,6 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		charBean.setCreatedBy(user.getLoginName());
 		charBean.setCreatedDate(date);
 
-		// set characterization files
-		int fileNumber = 0;
-		for (DerivedBioAssayDataBean obj : charBean
-				.getDerivedBioAssayDataList()) {
-			DerivedBioAssayDataBean fileBean = (DerivedBioAssayDataBean) request
-					.getSession().getAttribute(
-							"characterizationFile" + fileNumber);
-			obj = fileBean;
-			fileNumber++;
-		}
 		return charBean;
 	}
 
@@ -351,6 +341,12 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		request.setAttribute("particleName", particleName);
 		request.setAttribute("loadFileForward", mapping.findForward("setup")
 				.getPath());
+		CharacterizationBean achar = (CharacterizationBean) theForm
+				.get("achar");
+		int fileNum = Integer.parseInt(request.getParameter("fileNumber"));
+		DerivedBioAssayDataBean derivedBioAssayDataBean = achar
+				.getDerivedBioAssayDataList().get(fileNum);
+		request.setAttribute("file", derivedBioAssayDataBean);
 		return mapping.findForward("loadFile");
 	}
 
@@ -369,7 +365,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		LabFileBean fileBean = service.getFile(fileId);
 		String fileRoot = PropertyReader.getProperty(
 				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
-		File dFile = new File(fileRoot + File.separator + fileBean.getPath());
+		File dFile = new File(fileRoot + File.separator + fileBean.getUri());
 		if (dFile.exists()) {
 			response.setContentType("application/octet-stream");
 			response.setHeader("Content-disposition", "attachment;filename="
