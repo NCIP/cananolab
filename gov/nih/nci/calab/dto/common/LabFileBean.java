@@ -175,6 +175,7 @@ public class LabFileBean {
 		labfile.setUri(uri);		
 		labfile.setTitle(title);
 		labfile.setVersion(version);
+		labfile.setType(type);
 		return labfile;
 	}
 
