@@ -56,7 +56,7 @@ public class SubmitReportService {
 		dataFile.setDescription(fileBean.getDescription());
 		dataFile.setFilename(uploadedFile.getFileName());
 
-		dataFile.setPath(File.separator + CaNanoLabConstants.FOLDER_REPORT
+		dataFile.setUri(File.separator + CaNanoLabConstants.FOLDER_REPORT
 				+ File.separator + fileName);
 		dataFile.setTitle(fileBean.getTitle().toUpperCase()); // convert to
 		// upper case
@@ -64,7 +64,7 @@ public class SubmitReportService {
 		dataFile.setCreatedDate(date);
 		dataFile.setComments(fileBean.getComments());
 
-		// TODO daves reportFile path to the database
+		// TODO daves reportFile uri to the database
 		// look up the samples for each particleNames
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);

@@ -425,7 +425,7 @@ public class ExecuteWorkflowService {
 					FileNameConvertor fconvertor = new FileNameConvertor();
 					String filename = fconvertor.getConvertedFileName(fileData
 							.getFileName());
-					doInputFile.setPath(filepath + CaNanoLabConstants.URI_SEPERATOR
+					doInputFile.setUri(filepath + CaNanoLabConstants.URI_SEPERATOR
 							+ filename);
 					doInputFile.setFilename(getShortFilename(filename));
 
@@ -443,7 +443,7 @@ public class ExecuteWorkflowService {
 					FileNameConvertor fconvertor = new FileNameConvertor();
 					String filename = fconvertor.getConvertedFileName(fileData
 							.getFileName());
-					doOutputFile.setPath(filepath
+					doOutputFile.setUri(filepath
 							+ CaNanoLabConstants.URI_SEPERATOR
 							+ fconvertor.getConvertedFileName(fileData
 									.getFileName()));

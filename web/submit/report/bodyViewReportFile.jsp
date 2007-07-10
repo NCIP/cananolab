@@ -58,7 +58,7 @@
 										<html:text property="file.title" size="80" />
 										<html:hidden property="file.id" />
 										<html:hidden property="file.type" />
-										<html:hidden property="file.path" />
+										<html:hidden property="file.uri" />
 									</td>
 								</tr>
 								<tr>

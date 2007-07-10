@@ -27,9 +27,7 @@ public class LabFileBean {
 	private String createdBy;
 
 	private String id;
-
-	private String path;
-
+	
 	private String name;
 
 	private String type;
@@ -40,9 +38,13 @@ public class LabFileBean {
 
 	private String version;
 
-	private String fileSystemRoot;
+	private String uri; //value saved in the db
 
+	private String fullPath; //including root up to file name
+	
 	private FormFile uploadedFile;
+	
+	
 
 	/*
 	 * name to be displayed as a part of the drop-down list
@@ -66,7 +68,7 @@ public class LabFileBean {
 	public LabFileBean(LabFile charFile) {
 		this.id = charFile.getId().toString();
 		this.name = charFile.getFilename();
-		this.path = charFile.getPath();
+		this.uri = charFile.getUri();
 		this.title = charFile.getTitle();
 		this.description = charFile.getDescription();
 		this.createdBy = charFile.getCreatedBy();
@@ -128,12 +130,12 @@ public class LabFileBean {
 		this.name = name;
 	}
 
-	public String getPath() {
-		return path;
+	public String getUri() {
+		return uri;
 	}
 
-	public void setPath(String path) {
-		this.path = path;
+	public void setUri(String uri) {
+		this.uri = uri;
 	}
 
 	public String getTitle() {
@@ -170,15 +172,15 @@ public class LabFileBean {
 		labfile.setDescription(description);
 		labfile.setComments(comments);
 		labfile.setFilename(name);
-		labfile.setPath(path);
+		labfile.setUri(uri);		
 		labfile.setTitle(title);
 		labfile.setVersion(version);
 		return labfile;
 	}
 
 	public String getDisplayName() {
-		if (path != null) {
-			displayName = path.replaceAll("/decompressedFiles", "");
+		if (uri != null) {
+			displayName = uri.replaceAll("/decompressedFiles", "");
 		} else {
 			displayName = "";
 		}
@@ -206,12 +208,12 @@ public class LabFileBean {
 		this.gridNode = gridNode;
 	}
 
-	public String getFileSystemRoot() {
-		return fileSystemRoot;
+	public String getFullPath() {
+		return fullPath;
 	}
 
-	public void setFileSystemRoot(String pathRoot) {
-		this.fileSystemRoot = pathRoot;
+	public void setFullPath(String fullPath) {
+		this.fullPath = fullPath;
 	}
 
 	public FormFile getUploadedFile() {

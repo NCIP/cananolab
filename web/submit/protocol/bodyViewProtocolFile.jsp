@@ -82,15 +82,14 @@
 									<td class="rightLabel"">
 										<html:text property="file.title" size="80" />
 										<html:hidden property="file.id" />
-										<html:hidden property="file.path" />
+										<html:hidden property="file.uri" />
 									</td>
 								</tr>
 								<tr>
 									<td class="leftLabel">
 										<strong>File Description</strong>
 									</td>
-									<td class="rightLabel"">
-										<html:textarea property="file.description" rows="3" cols="80" />
+									<td class="rightLabel"">u<html:textarea property="file.description" rows="3" cols="80" />
 									</td>
 								</tr>
 								<tr>
