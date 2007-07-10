@@ -93,7 +93,7 @@ public class DerivedBioAssayDataBean extends LabFileBean {
 		charFile.setDescription(getDescription());
 		charFile.setComments(getComments());
 		charFile.setFilename(getName());
-		charFile.setPath(getPath());
+		charFile.setUri(getUri());
 		charFile.setTitle(getTitle());
 		charFile.setVersion(getVersion());
 		charFile.setType(getType());

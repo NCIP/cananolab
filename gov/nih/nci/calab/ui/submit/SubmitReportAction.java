@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: SubmitReportAction.java,v 1.12 2007-06-19 20:15:51 pansu Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.13 2007-07-10 17:56:10 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
@@ -114,7 +114,7 @@ public class SubmitReportAction extends AbstractDispatchAction {
 
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.updateReport", fileBean
-				.getPath());
+				.getUri());
 
 		msgs.add("message", msg);
 		saveMessages(request, msgs);
