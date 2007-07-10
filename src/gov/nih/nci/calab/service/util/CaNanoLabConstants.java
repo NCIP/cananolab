@@ -82,9 +82,10 @@ public class CaNanoLabConstants {
 	public static final String[] BOOLEAN_CHOICES = new String[] { BOOLEAN_YES,
 			BOOLEAN_NO };
 
-	public static final String[] PROTOCOL_TYPES = new String[] { "Physical assay", "Synthesis",
-		"In vitro assay", "In vivo assay", "Sample preparation", "Safety", "Radiolabeling" };
-	
+	public static final String[] PROTOCOL_TYPES = new String[] {
+			"Physical assay", "Synthesis", "In vitro assay", "In vivo assay",
+			"Sample preparation", "Safety", "Radiolabeling" };
+
 	public static final String DEFAULT_SAMPLE_PREFIX = "NANO-";
 
 	public static final String DEFAULT_APP_OWNER = "NCICB";
@@ -255,8 +256,7 @@ public class CaNanoLabConstants {
 
 	public static final String COATING = "coating";
 
-    public static final String[] DEFAULT_CHARACTERIZATION_SOURCES = new String[] {
-		APP_OWNER};
+	public static final String[] DEFAULT_CHARACTERIZATION_SOURCES = new String[] { APP_OWNER };
 
 	public static final String[] CARBON_NANOTUBE_WALLTYPES = new String[] {
 			"Single (SWNT)", "Double (DWMT)", "Multiple (MWNT)" };
@@ -438,16 +438,8 @@ public class CaNanoLabConstants {
 	public static final String[] VISIBLE_GROUPS = new String[] { CSM_PI,
 			CSM_RESEARCHER };
 
-	public static final String AUTO_COPY_CHARACTERIZATION_VIEW_TITLE_SUFFIX="auto_init_copy"+StringUtils.getDateAsString();
-	public static final String AUTO_COPY_CHARACTERIZATION_VIEW_COLOR="red";
-	
+	public static final String AUTO_COPY_CHARACTERIZATION_VIEW_TITLE_SUFFIX = "auto_init_copy"
+			+ StringUtils.getDateAsString();
 
-	public static final String IMAGE_TYPE = "Image";
-
-	public static final String GRAPH_TYPE = "Graph";
-
-	public static final String SPREADSHEET_TYPE = "Spreadsheet";
-
-	public static final String[] DEFAULT_DERIVED_DATA_FILE_TYPES = new String[] {
-		IMAGE_TYPE, GRAPH_TYPE, SPREADSHEET_TYPE };
+	public static final String AUTO_COPY_CHARACTERIZATION_VIEW_COLOR = "red";
 }
