@@ -88,31 +88,26 @@
 			<td class="completeLabel" valign="top" colspan="4">
 				<strong>File Name</strong> &nbsp;&nbsp;&nbsp;
 				<c:choose>
-					<c:when test="${canUserSubmit eq 'true'}">
-						<logic:present name="characterizationFile${param.fileInd}">
-							<html:link
-								page="/updateAssayFile.do?page=0&dispatch=setupUpdate&fileId=${fileId}&actionName=${param.actionName}">
-								<bean:write name="characterizationFile${param.fileInd}"
-									property="displayName" />
+					<c:when
+						test="${!empty nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].uri}">
+						<html:link
+							page="/updateAssayFile.do?page=0&dispatch=setupUpdate&fileId=${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].id}&actionName=${param.actionName}">
+								${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].displayName}
 							</html:link>
-						</logic:present>
-						<logic:notPresent name="characterizationFile${param.fileInd}">
-					Click on "Load File" button 
-						</logic:notPresent>
+					</c:when>
+				</c:choose>
+				<c:choose>
+					<c:when test="${canUserSubmit eq 'true'}">
+						<c:choose>
+							<c:when
+								test="${empty nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].uri}">	
+								Click on "Load File" button 	
+							</c:when>
+						</c:choose>
 						&nbsp;&nbsp;&nbsp;&nbsp;<input type="button"
 							onclick="javascript:loadFile(this.form, '${param.charName}', '${param.actionName}', ${param.fileInd})"
 							value="Load File">
 					</c:when>
-					<c:otherwise>
-						<logic:present name="characterizationFile${param.fileInd}">
-							<html:link
-								page="/updateAssayFile.do?page=0&dispatch=setupView&fileId=${fileId}&actionName=${param.actionName}">
-								<bean:write name="characterizationFile${param.fileInd}"
-									property="displayName" />
-							</html:link>
-						</logic:present>
-					&nbsp;				
-			</c:otherwise>
 				</c:choose>
 			</td>
 		</tr>
