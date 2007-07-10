@@ -89,7 +89,7 @@
 									<td class="leftLabel">
 										<strong>File Description</strong>
 									</td>
-									<td class="rightLabel"">u<html:textarea property="file.description" rows="3" cols="80" />
+									<td class="rightLabel"><html:textarea property="file.description" rows="3" cols="80" />
 									</td>
 								</tr>
 								<tr>
