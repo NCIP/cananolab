@@ -9,6 +9,7 @@ import gov.nih.nci.calab.domain.Keyword;
 import gov.nih.nci.calab.domain.LabFile;
 import gov.nih.nci.calab.domain.OutputFile;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
+import gov.nih.nci.calab.domain.nano.characterization.CharacterizationFileType;
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.domain.nano.characterization.invitro.CFU_GM;
 import gov.nih.nci.calab.domain.nano.characterization.invitro.Caspase3Activation;
@@ -53,10 +54,8 @@ import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.common.FileService;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
-import gov.nih.nci.calab.service.util.PropertyReader;
 import gov.nih.nci.calab.service.util.StringUtils;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -194,6 +193,17 @@ public class SubmitNanoparticleService {
 				throw new Exception(
 						"The view title is already in use.  Please enter a different one.");
 			}
+
+			// add new characterization file type if necessary
+			if (!charBean.getDerivedBioAssayDataList().isEmpty()) {
+				for (DerivedBioAssayDataBean derivedBioAssayDataBean : charBean
+						.getDerivedBioAssayDataList()) {
+					if (derivedBioAssayDataBean.getType().length() > 0)
+						addCharacterizationFileType(ida,
+								derivedBioAssayDataBean.getType());
+				}
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			ida.rollback();
@@ -202,15 +212,32 @@ public class SubmitNanoparticleService {
 		} finally {
 			ida.close();
 		}
-		
+
 		// save file to the file system
-		// if this block of code is inside the db try catch block, hibernate doesn't 
+		// if this block of code is inside the db try catch block, hibernate
+		// doesn't
 		// persist derivedBioAssayData
 		if (!charBean.getDerivedBioAssayDataList().isEmpty()) {
 			for (DerivedBioAssayDataBean derivedBioAssayDataBean : charBean
 					.getDerivedBioAssayDataList()) {
 				saveCharacterizationFile(derivedBioAssayDataBean);
 			}
+		}
+	}
+
+	private void addCharacterizationFileType(IDataAccess ida, String type)
+			throws Exception {
+		List results = ida
+				.search("select count(distinct fileType.name) from CharacterizationFileType fileType where fileType.name='"
+						+ type + "'");
+		CharacterizationFileType fileType = new CharacterizationFileType();
+		fileType.setName(type);
+		int count = -1;
+		for (Object obj : results) {
+			count = ((Integer) (obj)).intValue();
+		}
+		if (count == 0) {
+			ida.createObject(fileType);
 		}
 	}
 
