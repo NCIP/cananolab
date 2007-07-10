@@ -51,7 +51,7 @@ import org.hibernate.collection.PersistentSet;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.122 2007-07-10 16:08:57 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.123 2007-07-10 21:52:53 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -1284,11 +1284,25 @@ public class LookupService {
 		return instruments;
 	}
 
-	public SortedSet<String> getAllDerivedDataFileTypes() throws Exception {
-		SortedSet<String> fileTypes = new TreeSet<String>();
-		// TODO query from database
-		fileTypes.addAll(Arrays
-				.asList(CaNanoLabConstants.DEFAULT_DERIVED_DATA_FILE_TYPES));
+	public SortedSet<String> getAllCharacterizationFileTypes() throws Exception {
+		SortedSet<String> fileTypes = new TreeSet<String>();		
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			String hqlString = "select distinct fileType.name from CharacterizationFileType fileType order by fileType.name";
+			List results = ida.search(hqlString);
+			for (Object obj : results) {
+				String type = (String) obj;
+				fileTypes.add(type);
+			}
+		} catch (Exception e) {
+			logger.error("Problem to retrieve all characterization file types. " + e);
+			throw new RuntimeException(
+					"Problem to retrieve all characterization file types. ");
+		} finally {
+			ida.close();
+		}				
 		return fileTypes;
 	}
 
