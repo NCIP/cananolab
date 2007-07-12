@@ -57,7 +57,7 @@
 								&nbsp;
 								<c:choose>
 									<c:when test="${canUserSubmit eq 'true'}">
-										<input type="button" onclick="javascript:updateCharts(this.form, 'nanoparticleSize')" value="Update Distributions">
+										<input type="button" onclick="javascript:updateCharts(this.form, 'nanoparticleSize')" value="Update Files">
 									</c:when>
 								</c:choose>
 							</td>
