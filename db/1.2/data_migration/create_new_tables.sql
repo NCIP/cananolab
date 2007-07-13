@@ -62,7 +62,8 @@ CREATE TABLE DATUM_CONDITION
   VALUE                  NUMBER                 NOT NULL,
   VALUE_UNIT             VARCHAR2(200)          NOT NULL,
   DATUM_PK_ID            NUMBER                 NOT NULL,
-  LIST_INDEX             NUMBER
+  LIST_INDEX             NUMBER,
+  STATISTICS_TYPE        VARCHAR2(200)
 )
 LOGGING 
 NOCACHE
