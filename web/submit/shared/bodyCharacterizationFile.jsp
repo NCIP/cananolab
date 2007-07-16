@@ -28,7 +28,7 @@
 			</c:choose>
 		</tr>
 		<tr>
-			<td class="leftLabelWithTop" valign="top" width="10%">
+			<td class="leftLabelWithTop" valign="top" width="15%">
 				<strong>File Type</strong>
 			</td>
 			<c:choose>
@@ -54,12 +54,12 @@
 				</c:otherwise>
 			</c:choose>
 			<td class="labelWithTop" valign="top">
-				<strong>Data Category</strong>				
+				<strong>Data Category</strong>
 			</td>
 			<c:choose>
 				<c:when test="${canUserSubmit eq 'true'}">
 					<td class="rightLabelWithTop" valign="top">
-						<html:select 
+						<html:select
 							property="achar.derivedBioAssayDataList[${param.fileInd}].categories"
 							multiple="yes" size="4"
 							onkeydown="javascript:fnKeyDownHandler(this, event);"
@@ -67,7 +67,7 @@
 							onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
 							onchange="fnChangeHandler_A(this, event); filterDatumCategories(${param.fileInd}, ${fn:length(nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].datumList)})">
 							<option value="">
-								--?-- 
+								--?--
 							</option>
 							<html:options name="derivedDataCategories" />
 						</html:select>
@@ -109,6 +109,14 @@
 							value="Load File">
 					</c:when>
 				</c:choose>
+			</td>
+		</tr>
+		<tr>
+			<td class="leftLabel" valign="top" colspan="1">
+				<strong>File/Derived Data Description</strong>
+			</td>
+			<td class="rightLabel" colspan="3">
+				<html:textarea property="achar.derivedBioAssayDataList[${param.fileInd}].description" rows="3" cols="70" />
 			</td>
 		</tr>
 		<tr>
