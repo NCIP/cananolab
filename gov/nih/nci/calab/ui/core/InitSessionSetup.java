@@ -879,13 +879,13 @@ public class InitSessionSetup {
 	public void setAllDerivedDataFileTypes(HttpSession session)
 			throws Exception {
 		if (session.getAttribute("allDerivedDataFileTypes") == null
-				|| session.getAttribute("newCharacterizationCreated") != null) {
+				|| session.getAttribute("newCharacterizationFileTypeCreated") != null) {
 
 			SortedSet<String> fileTypes = lookupService
 					.getAllCharacterizationFileTypes();
 			session.setAttribute("allDerivedDataFileTypes", fileTypes);
 		}
-		session.removeAttribute("newCharacterizationCreated");
+		session.removeAttribute("newCharacterizationFileTypeCreated");
 	}
 
 	public void setAllFunctionTypes(HttpSession session) throws Exception {
