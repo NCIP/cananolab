@@ -22,6 +22,7 @@
 			<c:param name="dispatch" value="${dispatchValue}" />
 			<c:param name="particleName" value="${particleName}" />
 			<c:param name="particleType" value="${particleType}" />
+			<c:param name="particleSource" value="${particleSource}" />
 			<c:param name="characterizationId" value="${aChar.id}" />
 			<c:param name="submitType" value="${charType.type}" />
 			<c:param name="actionName" value="${aChar.actionName}" />

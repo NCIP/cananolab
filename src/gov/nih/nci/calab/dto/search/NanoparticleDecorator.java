@@ -19,8 +19,9 @@ public class NanoparticleDecorator extends TableDecorator {
 		// replace space with special char
 		String particleType = particle.getSampleType().replace(" ", "%20");
 		String particleName = particle.getSampleName();
+		String particleSource=particle.getSampleSource();
 		String editParticleURL = "nanoparticleGeneralInfo.do?dispatch=setupUpdate&particleType="
-				+ particleType + "&particleName=" + particleName;
+				+ particleType + "&particleName=" + particleName+"&particleSource="+particleSource;
 		String link = "<a href=" + editParticleURL + ">"
 				+ particle.getSampleName() + "</a>";
 		SortableName sortableLink = new SortableName(particle.getSampleName(),
@@ -33,8 +34,9 @@ public class NanoparticleDecorator extends TableDecorator {
 		// replace space with special char
 		String particleType = particle.getSampleType().replace(" ", "%20");
 		String particleName = particle.getSampleName();
+		String particleSource=particle.getSampleSource();
 		String viewParticleURL = "nanoparticleGeneralInfo.do?dispatch=setupView&particleType="
-				+ particleType + "&particleName=" + particleName;
+				+ particleType + "&particleName=" + particleName+"&particleSource="+particleSource;;
 		String link = "<a href=" + viewParticleURL + ">"
 				+ particle.getSampleName() + "</a>";
 		SortableName sortableLink = new SortableName(particle.getSampleName(),
