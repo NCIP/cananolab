@@ -16,7 +16,7 @@
 				</tr>
 				<tr>
 					<td class="leftLabel" valign="top" width="30%">
-						<strong>Copy to Other DNT ${param.particleSource}
+						<strong>Copy to Other ${param.particleSource}
 							Particles</strong>
 					</td>
 					<td class="label">

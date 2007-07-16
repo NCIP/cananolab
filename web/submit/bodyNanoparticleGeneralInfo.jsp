@@ -44,6 +44,14 @@
 						</td>
 					</tr>
 					<tr>
+						<td class="leftLabel">
+							<strong>Particle Source</strong>
+						</td>
+						<td class="rightLabel">
+							${particle.sampleSource}
+						</td>
+					</tr>
+					<tr>
 						<td class="leftLabel" valign="top">
 							<strong>Keywords <em>(one per line)</em></strong>
 						</td>

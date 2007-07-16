@@ -7,6 +7,7 @@
 			<form-property name="page" type="java.lang.Integer" initial="0" />
 			<form-property name="particleType" type="java.lang.String" />
 			<form-property name="particleName" type="java.lang.String" />
+			<form-property name="particleSource" type="java.lang.String" />
 			<form-property name="keywords" type="java.lang.String" />
 			<form-property name="visibilities" type="java.lang.String[]" />
 		</form-bean>
@@ -62,6 +63,7 @@
 			<form-property name="page" type="java.lang.Integer" initial="0" />
 			<form-property name="particleName" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="particleSource" type="java.lang.String" />
 			<form-property name="otherParticles" type="java.lang.String[]" />
 			<form-property name="copyData" type="java.lang.Boolean" initial="false" />
 			<form-property name="characterizationId" type="java.lang.String" />

@@ -17,11 +17,17 @@
 	</c:when>
 </c:choose>
 <c:choose>
+	<c:when test="${!empty param.particleSource}">
+		<c:set var="particleSource" value="${param.particleSource}"
+			scope="session" />
+	</c:when>
+</c:choose>
+<c:choose>
 	<c:when test="${canUserSubmit eq 'true'}">
-		<c:set var="dispatchValue" value="setupUpdate" scope="session"/>
+		<c:set var="dispatchValue" value="setupUpdate" scope="session" />
 	</c:when>
 	<c:otherwise>
-		<c:set var="dispatchValue" value="setupView" scope="session"/>
+		<c:set var="dispatchValue" value="setupView" scope="session" />
 	</c:otherwise>
 </c:choose>
 <table summary="" cellpadding="0" cellspacing="0" border="0"
@@ -45,20 +51,24 @@
 								<span class="indented"> <c:choose>
 										<c:when test="${canUserSubmit eq 'true'}">
 											<a
-												href="nanoparticleGeneralInfo.do?dispatch=setupUpdate&particleType=${particleType}&particleName=${particleName}"">${particleName}
+												href="nanoparticleGeneralInfo.do?dispatch=setupUpdate&particleType=${particleType}&particleName=${particleName}&particleSource=${particleSource}">${particleName}
 												(${particleType})</a>
 										</c:when>
 										<c:otherwise>
 											<a
-												href="nanoparticleGeneralInfo.do?dispatch=setupView&particleType=${particleType}&particleName=${particleName}"">${particleName}
+												href="nanoparticleGeneralInfo.do?dispatch=setupView&particleType=${particleType}&particleName=${particleName}&particleSource=${particleSource}">${particleName}
 												(${particleType})</a>
 										</c:otherwise>
 									</c:choose> </span>
 								<br>
 								<br>
 							</li>
-							<li><jsp:include page="sideParticleFunctionMenu.jsp"/></li>
-							<li><jsp:include page="sideParticleCharacterizationMenu.jsp"/></li>
+							<li>
+								<jsp:include page="sideParticleFunctionMenu.jsp" />
+							</li>
+							<li>
+								<jsp:include page="sideParticleCharacterizationMenu.jsp" />
+							</li>
 							<li>
 								<span class="largerText">Other Associated Files
 									&nbsp;&nbsp;</span>

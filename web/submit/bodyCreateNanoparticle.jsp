@@ -33,7 +33,7 @@
 						</tr>
 						<tr>
 							<td class="leftLabel">
-								<strong>Particle Type*</strong>
+								<strong>Particle Type *</strong>
 							</td>
 							<td class="rightLabel">
 								<c:choose>
@@ -53,7 +53,7 @@
 						</tr>
 						<tr>
 							<td class="leftLabel">
-								<strong>Particle ID*</strong>
+								<strong>Particle ID *</strong>
 							</td>
 							<td class="rightLabel">
 								<c:choose>
@@ -73,10 +73,22 @@
 								</c:choose>
 							</td>
 						</tr>
+						<c:choose>
+							<c:when test="${param.dispatch eq 'setupUpdate'}">
+								<tr>
+									<td class="leftLabel">
+										<strong>Particle Source</strong>
+									</td>
+									<td class="rightLabel">
+										${nanoparticleGeneralInfoForm.map.particleSource}
+										<html:hidden property="particleSource" />
+									</td>
+								</tr>
+							</c:when>
+						</c:choose>
 						<tr>
 							<td class="leftLabel" valign="top">
-								<strong>Keywords <em>(one per line)</em>
-								</strong>
+								<strong>Keywords <em>(one per line)</em> </strong>
 							</td>
 							<td class="rightLabel">
 								<html:textarea property="keywords" rows="4" />
