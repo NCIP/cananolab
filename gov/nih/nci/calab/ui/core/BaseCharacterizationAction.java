@@ -154,7 +154,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		String submitType = (String) request.getParameter("submitType");
 		String particleName = theForm.getString("particleName");
 		String particleType = theForm.getString("particleType");
-		String particleSource = request.getParameter("particleSource");
+		String particleSource = theForm.getString("particleSource");		
 		String charName = request.getParameter("charName");
 		InitSessionSetup.getInstance().setApplicationOwner(session);
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
@@ -180,8 +180,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		// set up other particle names from the same source
 		LookupService service = new LookupService();
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-
-		particleSource = "DNT";
+		
 		SortedSet<String> allOtherParticleNames = service.getOtherParticles(
 				particleSource, particleName, user);
 		session.setAttribute("allOtherParticleNames", allOtherParticleNames);
