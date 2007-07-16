@@ -49,7 +49,7 @@
 						<tr class="topBorder">
 							<td class="formTitle" colspan="4">
 								<div align="justify">
-									Characterization File Information
+									Characterization File/Derived Data Information
 								</div>
 							</td>
 						</tr>
@@ -62,7 +62,7 @@
 												<td valign="bottom">													
 													<a href="#"
 														onclick="javascript:addCharacterizationFile(nanoparticleCharacterizationForm, '${param.charName}', '${actionName}')"><span
-														class="addLink">Add File</span> </a>
+														class="addLink">Add File/Derived Data</span> </a>
 												</td>
 											</c:when>
 											<c:otherwise>
