@@ -59,14 +59,6 @@
 						</tr>
 						<tr>
 							<td class="leftLabel" valign="top">
-								<strong>File Description</strong>
-							</td>
-							<td class="rightLabel">
-								<html:textarea property="file.description" rows="3" cols="50" />
-							</td>
-						</tr>
-						<tr>
-							<td class="leftLabel" valign="top">
 								<strong>Keywords <em>(one per line)</em> </strong>
 							</td>
 							<td class="rightLabel">

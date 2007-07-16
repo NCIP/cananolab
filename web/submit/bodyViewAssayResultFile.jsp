@@ -51,14 +51,6 @@
 								</tr>
 								<tr>
 									<td class="leftLabel">
-										<strong>Assay Result File Description</strong>
-									</td>
-									<td class="rightLabel" colspan="3">
-										<html:textarea property="file.description" rows="3" cols="80" />
-									</td>
-								</tr>
-								<tr>
-									<td class="leftLabel">
 										<strong>Keywords <em>(one per line)</em></strong>
 									</td>
 									<td class="rightLabel" colspan="3">
