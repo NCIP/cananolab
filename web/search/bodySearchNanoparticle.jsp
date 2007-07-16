@@ -97,6 +97,20 @@
 					</tr>
 					<tr>
 						<td class="leftLabel" valign="top">
+							<strong> Summary/Description <em>(one per line)</em> </strong>
+						</td>
+						<td class="label">
+							<html:textarea property="summaries" rows="4" />
+						</td>
+						<td class="rightLabel" colspan="2">
+							<strong>for<br> <html:radio property="summaryType"
+									value="characterization">Characterization</html:radio> <br> <html:radio
+									property="summaryType" value="assayResult">Assay Result</html:radio>
+							</strong>
+						</td>
+					</tr>
+					<tr>
+						<td class="leftLabel" valign="top">
 							<strong> Keywords <em>(one per line)</em> </strong>
 						</td>
 						<td class="label">
