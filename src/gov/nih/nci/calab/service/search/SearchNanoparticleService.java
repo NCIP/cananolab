@@ -53,7 +53,7 @@ public class SearchNanoparticleService {
 	public List<ParticleBean> basicSearch(String particleSource,
 			String particleType, String[] functionTypes,
 			String[] characterizations, String[] keywords, String keywordType,
-			UserBean user) throws Exception {
+			String[] summaries, String summaryType, UserBean user) throws Exception {
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		List<ParticleBean> particles = new ArrayList<ParticleBean>();
@@ -66,6 +66,7 @@ public class SearchNanoparticleService {
 			String keywordFrom = "";
 			String functionFrom = "";
 			String characterizationFrom = "";
+			String summaryForm = "";
 
 			if (particleSource != null && particleSource.length() > 0) {
 				where = "where ";
@@ -103,13 +104,34 @@ public class SearchNanoparticleService {
 				} else {
 					keywordFrom = "join particle.characterizationCollection characterization "
 							+ "join characterization.derivedBioAssayDataCollection  dataCollection "
-							+ "join dataCollection.file.keywordCollection keyword ";
+							+ "join dataCollection.keywordCollection keyword ";
 				}
 
 				whereList.add("keyword.name in ("
 						+ StringUtils.join(inList, ", ") + ") ");
 			}
 
+			if (summaries != null && summaries.length > 0) {
+				List<String> summaryList = new ArrayList<String>();
+				where = "where ";
+				for (String summary : summaries) {
+					paramList.add("%"+summary+"%");
+					summaryList.add("?");
+				}
+
+				if (summaryType.equals("characterization")) {
+					summaryForm = "join particle.characterizationCollection data ";				
+				} else {
+					summaryForm = "join particle.characterizationCollection characterization "
+							+ "join characterization.derivedBioAssayDataCollection  data ";
+				}	
+				List<String> summaryWhere = new ArrayList<String>();
+				for (String summary: summaryList) {
+					summaryWhere.add("data.description like "+ summary);
+				}
+				whereList.add(StringUtils.join(summaryWhere, " or "));
+			}
+			
 			if (characterizations != null && characterizations.length > 0) {
 				List<String> inList = new ArrayList<String>();
 				where = "where ";
@@ -129,7 +151,7 @@ public class SearchNanoparticleService {
 			}
 			String whereStr = StringUtils.join(whereList, " and ");
 			String hqlString = "select particle from Nanoparticle particle "
-					+ functionFrom + keywordFrom + characterizationFrom + where
+					+ functionFrom + keywordFrom + summaryForm + characterizationFrom + where
 					+ whereStr;
 
 			ida.open();
@@ -367,7 +389,7 @@ public class SearchNanoparticleService {
 		try {
 			// query by particle type and function types first
 			particleList = this.basicSearch(null, particleType, functionTypes,
-					null, null, null, user);
+					null, null, null, null, null,user);
 			// return if no particles found or no other search criteria entered
 			if (searchCriteria.isEmpty() || particleList.isEmpty()) {
 				return particleList;

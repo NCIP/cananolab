@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: SearchNanoparticleAction.java,v 1.16 2007-07-03 17:35:07 pansu Exp $ */
+/* CVS $Id: SearchNanoparticleAction.java,v 1.17 2007-07-16 18:08:47 zengje Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
@@ -44,13 +44,18 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 				.get("characterizations");
 		String keywordType = (String) theForm.get("keywordType");
 		String keywords = (String) theForm.get("keywords");
+		
+		String summaryType = theForm.getString("summaryType");
+		String summaries = theForm.getString("summaries");
 		String[] keywordList = (keywords.length() == 0) ? null : keywords
+				.split("\r\n");
+		String[] summaryList = (summaries.length() == 0) ? null : summaries
 				.split("\r\n");
 
 		SearchNanoparticleService searchParticleService = new SearchNanoparticleService();
 		List<ParticleBean> particles = searchParticleService.basicSearch(
 				particleSource, particleType, functionTypes, characterizations,
-				keywordList, keywordType, user);
+				keywordList, keywordType, summaryList, summaryType, user);
 
 		if (particles != null && !particles.isEmpty()) {
 			request.setAttribute("particles", particles);

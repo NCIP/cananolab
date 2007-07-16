@@ -10,6 +10,8 @@
 			<form-property name="characterizations" type="java.lang.String[]" />
 			<form-property name="keywords" type="java.lang.String" />
 			<form-property name="keywordType" type="java.lang.String" initial="nanoparticle" />
+			<form-property name="summaries" type="java.lang.String" />
+			<form-property name="summaryType" type="java.lang.String" initial="characterization" />
 		</form-bean>
 		<form-bean name="searchReportForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="particleType" type="java.lang.String" />
