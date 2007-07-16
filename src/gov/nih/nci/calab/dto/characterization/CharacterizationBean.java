@@ -175,9 +175,10 @@ public class CharacterizationBean {
 		InstrumentConfiguration instrumentConfig = instrumentConfigBean
 				.getDomainObject();
 		//only set instrument config if instrument is selected.
-		if (instrumentConfig.getInstrument().getType().length() > 0) {
-			aChar.setInstrumentConfiguration(instrumentConfig);
-		}
+        if ((instrumentConfig.getInstrument() != null)&& (instrumentConfig.getInstrument().getType() != null))
+			if (instrumentConfig.getInstrument().getType().length() > 0) {
+				aChar.setInstrumentConfiguration(instrumentConfig);
+			}			
 
 		if (protocolFileBean.getId() != null
 				&& protocolFileBean.getId().length() > 0) {
