@@ -116,7 +116,7 @@
 				<strong>File/Derived Data Description</strong>
 			</td>
 			<td class="rightLabel" colspan="3">
-				<html:textarea property="achar.derivedBioAssayDataList[${param.fileInd}].description" rows="3" cols="70" />
+				<html:textarea property="achar.derivedBioAssayDataList[${param.fileInd}].description" rows="3" cols="65" />
 			</td>
 		</tr>
 		<tr>
