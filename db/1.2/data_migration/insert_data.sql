@@ -50,7 +50,29 @@ where value_unit is not null;
 -- update_lab_file_insert_keyword_bioassay_data.sql
 
 
-@update_lab_file_insert_keyword_bioassay_data.sql
+-- @update_lab_file_insert_keyword_bioassay_data.sql
+
+declare
+  cursor c_table_ids is
+select a.CHAR_TABLE_PK_ID table_id, b.FILE_PK_ID file_id
+from characterization_table a, lab_file b
+where a.LABFILE_PK_ID=b.file_pk_id;
+
+begin
+	 for i in c_table_ids loop
+	    update lab_file
+		set file_pk_id=i.table_id
+		where file_pk_id=i.file_id;
+		
+		insert into keyword_bioassay_data
+		select keyword_pk_id, i.table_id
+		from keyword_derived_file
+		where derived_file_pk_id=i.file_id;
+		
+	 end loop;
+end;
+/
+
 
 -- insert the derived bioassay data that doesn't not have file uploaded
 -- insert_lab_file_no_file.sql
@@ -64,7 +86,25 @@ where labfile_pk_id is null;
 -- update the CSM 
 -- update_csm_pe_pg.sql
 
-@update_csm_pg_pe.sql
+-- @update_csm_pg_pe.sql
+
+declare
+  cursor c_file_ids is
+select to_char(a.CHAR_TABLE_PK_ID) new_file_id, b.PROTECTION_ELEMENT_NAME
+from characterization_table a, csm_protection_element b
+where to_char(a.LABFILE_PK_ID)=b.PROTECTION_ELEMENT_NAME
+and a.labfile_pk_id is not null;
+
+begin
+	 for i in c_file_ids loop
+    	 update csm_protection_element pe
+         set protection_element_name=i.new_file_id,
+		     object_id=i.new_file_id
+	     where protection_element_name=i.protection_element_name;  
+	 end loop;
+end;
+/
+
 
 -- insert "characterization" as PE, PG, and assign 
 insert into csm_protection_element 
@@ -82,7 +122,48 @@ where pg.PROTECTION_GROUP_NAME=pe.PROTECTION_ELEMENT_NAME
 and pe.OBJECT_ID='characterization';
 
 
-@remove_redundant_char_protocol.sql
+-- @remove_redundant_char_protocol.sql
+--delete redundant rows in characterization_protocol and update characterization 
+declare
+  cursor c_redundants is
+select count(distinct a.CHAR_PROTOCOL_PK_ID), a.name, a.version
+from characterization_protocol a, characterization_protocol b
+where a.CHAR_PROTOCOL_PK_ID!=b.CHAR_PROTOCOL_PK_ID
+and a.name=b.name
+and a.version=b.version
+group by (a.name, a.version);
+
+  v_char_protocol_pk_id number;
+  
+begin
+  for i in c_redundants loop
+    --select the first one in the redudnant list
+    select char_protocol_pk_id
+	into v_char_protocol_pk_id
+	from characterization_protocol
+	where name=i.name
+	and version=i.version
+	and rownum=1;
+	
+	--update characterization
+	update characterization chara
+	set char_protocol_pk_id=v_char_protocol_pk_id
+	where exists
+	(select char_protocol_pk_id
+	from characterization_protocol p
+	where p.name=i.name
+	and p.version=i.version
+	and chara.char_protocol_pk_id=p.char_protocol_pk_id);
+	
+	--delete other redundant ones
+	delete from characterization_protocol
+	where char_protocol_pk_id!=v_char_protocol_pk_id
+	and name=i.name
+	and version=i.version;
+  end loop;
+end; 
+/
+
 
 -- insert data into protocol from characterization_protocol
 -- insert_protocol.sql
@@ -178,7 +259,49 @@ and a.instrument_type_pk_id=b.instrument_type_pk_id);
 delete from instrument_type
 where name is null;
 
-@remove_redundant_instrument.sql
+-- @remove_redundant_instrument.sql
+--delete redundant rows in instrument and update characterization instrument
+declare
+  cursor c_redundants is
+select count(distinct a.instrument_pk_id), a.instrument_type_pk_id, a.manufacturer_pk_id
+from instrument a, instrument b
+where a.instrument_type_pk_id=b.instrument_type_pk_id
+and a.manufacturer_pk_id=b.manufacturer_pk_id
+and a.instrument_pk_id!=b.instrument_pk_id
+group by (a.instrument_type_pk_id, a.manufacturer_pk_id);
+
+  v_instrument_pk_id number;
+  
+begin
+  for i in c_redundants loop
+    --select the first one in the redudnant list
+    select instrument_pk_id
+	into v_instrument_pk_id
+	from instrument
+	where instrument_type_pk_id=i.instrument_type_pk_id
+	and manufacturer_pk_id=i.manufacturer_pk_id
+	and rownum=1;
+	
+	--update to use the first one
+	update characterization chara
+	set instrument_pk_id=v_instrument_pk_id
+	where exists
+	(select instrument_pk_id
+	from instrument instr
+	where chara.instrument_pk_id=instr.instrument_pk_id
+	and instr.instrument_type_pk_id=i.instrument_type_pk_id
+	and instr.manufacturer_pk_id=i.manufacturer_pk_id);
+	
+	--delete the other redundnant ones
+	delete from instrument
+	where instrument_pk_id!=v_instrument_pk_id
+	and instrument_type_pk_id=i.instrument_type_pk_id
+	and manufacturer_pk_id=i.manufacturer_pk_id;
+	
+  end loop;
+end;
+/
+
 
 --insert into instrument_tmp
 insert into instrument_tmp
@@ -386,7 +509,55 @@ and b.PROTECTION_ELEMENT_NAME=d.PROTECTION_GROUP_NAME;
 select csm_pg_pe_pg_pe_id_seq.currval from dual;
 
 -- update csm_user_group_role_pg for protocle file and new protected group "characterization"
-@update_csm_user_group_role_pg
+-- @update_csm_user_group_role_pg
+declare
+
+ v_pi_group number;
+ v_admin_group number;
+ v_researcher_group number;
+ v_read_role number;
+ v_delete_role number;
+ 
+begin
+  select group_id into v_pi_group 
+from CSM_GROUP 
+where group_name='&appowner'||'_PI';
+    
+   select group_id into v_admin_group 
+from CSM_GROUP 
+where group_name='&appowner'||'_Administrator';
+
+   select group_id into v_researcher_group 
+from CSM_GROUP 
+where group_name='&appowner'||'_Researcher';
+
+  select role_id into v_read_role
+from CSM_ROLE 
+where role_name='R';
+
+    select role_id into v_delete_role
+from CSM_ROLE 
+where role_name='D';
+ 
+    insert into csm_user_group_role_pg
+select csm_user_grou_user_group_r_seq.nextval, null, v_pi_group, v_read_role, PROTECTION_GROUP_ID, sysdate
+from lab_file a, csm_protection_group b
+where a.created_by='data_migration'
+and to_char(a.FILE_PK_ID)=b.PROTECTION_GROUP_NAME;
+
+    insert into csm_user_group_role_pg
+select csm_user_grou_user_group_r_seq.nextval, null, v_researcher_group, v_read_role, PROTECTION_GROUP_ID, sysdate
+from lab_file a, csm_protection_group b
+where a.created_by='data_migration'
+and to_char(a.FILE_PK_ID)=b.PROTECTION_GROUP_NAME;
+
+    insert into csm_user_group_role_pg
+select csm_user_grou_user_group_r_seq.nextval, null, v_admin_group, v_delete_role, PROTECTION_GROUP_ID, sysdate
+from csm_protection_group b
+where b.PROTECTION_GROUP_NAME='characterization';
+
+end; 
+/
 
 
 
