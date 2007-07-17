@@ -8,7 +8,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleCompositionAction.java,v 1.27 2007-07-10 16:06:04 zengje Exp $ */
+/* CVS $Id: NanoparticleCompositionAction.java,v 1.28 2007-07-17 18:22:41 zengje Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.CarbonNanotubeComposition;
@@ -37,7 +37,7 @@ import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
-import gov.nih.nci.calab.ui.core.BaseCharacterizationAction;
+import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
 import java.util.ArrayList;
@@ -55,7 +55,7 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
-public class NanoparticleCompositionAction extends BaseCharacterizationAction {
+public class NanoparticleCompositionAction extends AbstractDispatchAction {
 
 	/**
 	 * Add or update the data to database
@@ -143,18 +143,18 @@ public class NanoparticleCompositionAction extends BaseCharacterizationAction {
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
 		
+		request.getSession().setAttribute("newCharacterizationCreated", "true");
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
-		request.getSession().setAttribute("newCharacterizationCreated", "true");
 		if (particleType.equalsIgnoreCase(CaNanoLabConstants.DENDRIMER_TYPE)) {
 			request.getSession().setAttribute("newDendrimerCreated", "true");
 		} else if (particleType
 				.equalsIgnoreCase(CaNanoLabConstants.POLYMER_TYPE)) {
 			request.getSession().setAttribute("newPolymerCreated", "true");
 		}		
-		session.setAttribute("newCharacterizationCreated", "true");
-		session.setAttribute("newDendrimerCreated", "true");
-		session.setAttribute("newPolymerCreated", "true");
+//		session.setAttribute("newCharacterizationCreated", "true");
+//		session.setAttribute("newDendrimerCreated", "true");
+//		session.setAttribute("newPolymerCreated", "true");
 		
 		return forward;
 	}
@@ -227,6 +227,9 @@ public class NanoparticleCompositionAction extends BaseCharacterizationAction {
 		theForm.set("liposome", new LiposomeBean());
 		theForm.set("quantumDot", new QuantumDotBean());
 		theForm.set("metalParticle", new MetalParticleBean());
+		theForm.set("viewTitle", "");
+		theForm.set("characterizationSource", "");
+		theForm.set("description", "");
 	}
 
 	protected void initSetup(HttpServletRequest request,
@@ -518,4 +521,29 @@ public class NanoparticleCompositionAction extends BaseCharacterizationAction {
 				polymer.getInitiator(), "allPolymerInitiators");
 	}
 	
+	public ActionForward deleteConfirmed(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		String particleName = theForm.getString("particleName");
+		String particleType = theForm.getString("particleType");
+		String strCharId = theForm.getString("characterizationId");
+
+		SubmitNanoparticleService service = new SubmitNanoparticleService();
+		service.deleteCharacterizations(particleName, particleType,
+				new String[] { strCharId });
+
+		// signal the session that characterization has been changed
+		request.getSession().setAttribute("newCharacterizationCreated", "true");
+
+		InitSessionSetup.getInstance().setSideParticleMenu(request,
+				particleName, particleType);
+		ActionMessages msgs = new ActionMessages();
+		ActionMessage msg = new ActionMessage("message.delete.characterization");
+		msgs.add("message", msg);
+		saveMessages(request, msgs);
+
+		return mapping.findForward("success");
+	}
+
 }
