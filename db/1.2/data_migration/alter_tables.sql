@@ -29,13 +29,13 @@ alter table PROTOCOL drop (DESCRIPTION);
 	 
 alter table DERIVED_BIOASSAY_DATA drop (CATEGORY); 
 	 
-rename table MEASURE_UNIT to DEF_MEASURE_UNIT;
+alter table MEASURE_UNIT rename to DEF_MEASURE_UNIT;
 
-rename table SAMPE_TYPE to DEF_SAMPLE_TYPE;
+alter table SAMPLE_TYPE rename to DEF_SAMPLE_TYPE;
 
-rename table STOREAGE_TYPE to DEF_STORAGE_TYPE;
+alter table STORAGE_TYPE rename to DEF_STORAGE_TYPE;
 
-rename table ASSAY_TYPE to DEF_ASSAY_TYPE
+alter table ASSAY_TYPE rename to DEF_ASSAY_TYPE;
 	 
 drop table TABLE_DATA_CONDITION;
 
