@@ -44,6 +44,10 @@ public class InvitroNKCellCytotoxicActivityAction extends
 		CharacterizationBean charBean = super.prepareCreate(request, theForm);
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addNKCellCytotoxicActivity(particleType, particleName, charBean);
+		CharacterizationBean[] otherChars=super.prepareCopy(request, theForm, service);
+		for (CharacterizationBean acharBean: otherChars) {
+			service.addNKCellCytotoxicActivity(particleType, acharBean.getParticleName(), acharBean);
+		}
 		super.postCreate(request, theForm);
 
 		ActionMessages msgs = new ActionMessages();
