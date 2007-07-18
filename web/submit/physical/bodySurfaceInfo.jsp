@@ -24,10 +24,10 @@
 			<td class="label">
 				<c:choose>
 					<c:when test="${canUserSubmit eq 'true'}">
-						<html:text property="surface.surfaceArea" />&nbsp;sq nm
-										<!-- <html:select property="surface.surfaceAreaUnit">
-											<html:options name="allAreaMeasureUnits" />
-										</html:select> -->
+						<html:text property="surface.surfaceArea" />&nbsp;
+						<html:select property="surface.surfaceAreaUnit">
+							<html:options name="allAreaMeasureUnits" />
+						</html:select>
 					</c:when>
 					<c:otherwise>
 										${nanoparticleCharacterizationForm.map.surface.surfaceArea}&nbsp;
