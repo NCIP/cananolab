@@ -1,82 +1,119 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
-<hibernate-mapping package="gov.nih.nci.calab.domain.nano.characterization.physical">
-	<subclass name="Size" extends="gov.nih.nci.calab.domain.nano.characterization.Characterization" discriminator-value="Size" />
-	<subclass name="MolecularWeight" extends="gov.nih.nci.calab.domain.nano.characterization.Characterization" discriminator-value="MolecularWeight" />
-	<subclass name="Morphology" extends="gov.nih.nci.calab.domain.nano.characterization.Characterization" discriminator-value="Morphology">
+<hibernate-mapping
+	package="gov.nih.nci.calab.domain.nano.characterization.physical">
+	<subclass name="Size"
+		extends="gov.nih.nci.calab.domain.nano.characterization.Characterization"
+		discriminator-value="Size" />
+	<subclass name="MolecularWeight"
+		extends="gov.nih.nci.calab.domain.nano.characterization.Characterization"
+		discriminator-value="MolecularWeight" />
+	<subclass name="Morphology"
+		extends="gov.nih.nci.calab.domain.nano.characterization.Characterization"
+		discriminator-value="Morphology">
 		<join table="MORPHOLOGY">
 			<key column="MORPHOLOGY_PK_ID" />
 			<property name="type" type="java.lang.String" column="TYPE" />
 		</join>
 	</subclass>
-	<subclass name="Shape" extends="gov.nih.nci.calab.domain.nano.characterization.Characterization" discriminator-value="Shape">
+	<subclass name="Shape"
+		extends="gov.nih.nci.calab.domain.nano.characterization.Characterization"
+		discriminator-value="Shape">
 		<join table="SHAPE">
 			<key column="SHAPE_PK_ID" />
 			<property name="type" type="java.lang.String" column="TYPE" />
-			<property name="maxDimension" type="java.lang.Float" column="MAX_DIMENSION" />
-			<property name="minDimension" type="java.lang.Float" column="MIN_DIMENSION" />
+			<property name="maxDimension" type="java.lang.Float"
+				column="MAX_DIMENSION" />
+			<property name="minDimension" type="java.lang.Float"
+				column="MIN_DIMENSION" />
 		</join>
 	</subclass>
-	<subclass name="Solubility" extends="gov.nih.nci.calab.domain.nano.characterization.Characterization" discriminator-value="Solubility">
+	<subclass name="Solubility"
+		extends="gov.nih.nci.calab.domain.nano.characterization.Characterization"
+		discriminator-value="Solubility">
 		<join table="SOLUBILITY">
 			<key column="SOLUBILITY_PK_ID" />
-			<property name="solvent" type="java.lang.String" column="SOLVENT" />
-			<property name="isSoluble" type="java.lang.Boolean" column="IS_SOLUBLE" />
-			<component name="criticalConcentration" class="gov.nih.nci.calab.domain.Measurement">
+			<property name="solvent" type="java.lang.String"
+				column="SOLVENT" />
+			<property name="isSoluble" type="java.lang.Boolean"
+				column="IS_SOLUBLE" />
+			<component name="criticalConcentration"
+				class="gov.nih.nci.calab.domain.Measurement">
 				<property name="value" column="CRITICAL_CONCENTRATION" />
-				<property name="unitOfMeasurement" column="CONCENTRATION_UNIT" />
+				<property name="unitOfMeasurement"
+					column="CONCENTRATION_UNIT" />
 			</component>
 		</join>
 	</subclass>
-	<subclass name="Surface" extends="gov.nih.nci.calab.domain.nano.characterization.Characterization" discriminator-value="Surface">
-		<list name="surfaceChemistryCollection" cascade="all-delete-orphan" lazy="false">
-				<cache usage="read-write" />
-				<key column="SURFACE_PK_ID" />
-				<list-index column="LIST_INDEX" /> 
-				<one-to-many class="gov.nih.nci.calab.domain.nano.characterization.physical.SurfaceChemistry" />
-			</list>
+	<subclass name="Surface"
+		extends="gov.nih.nci.calab.domain.nano.characterization.Characterization"
+		discriminator-value="Surface">
+		<list name="surfaceChemistryCollection"
+			cascade="all-delete-orphan" lazy="false">
+			<cache usage="read-write" />
+			<key column="SURFACE_PK_ID" />
+			<list-index column="LIST_INDEX" />
+			<one-to-many
+				class="gov.nih.nci.calab.domain.nano.characterization.physical.SurfaceChemistry" />
+		</list>
 		<join table="SURFACE">
 			<key column="SURFACE_PK_ID" />
-			<component name="surfaceArea" class="gov.nih.nci.calab.domain.Measurement">
+			<component name="surfaceArea"
+				class="gov.nih.nci.calab.domain.Measurement">
 				<property name="value" column="SURFACE_AREA" />
-				<property name="unitOfMeasurement" column="SURFACE_AREA_UNIT" />
+				<property name="unitOfMeasurement"
+					column="SURFACE_AREA_UNIT" />
 			</component>
-			<component name="charge" class="gov.nih.nci.calab.domain.Measurement">
+			<component name="charge"
+				class="gov.nih.nci.calab.domain.Measurement">
 				<property name="value" column="CHARGE" />
 				<property name="unitOfMeasurement" column="CHARGE_UNIT" />
 			</component>
-			<property name="isHydrophobic" type="java.lang.Boolean" column="IS_HYDROPHOBIC" />
-			<property name="zetaPotential" type="java.lang.Float" column="ZETA_POTENTIAL" />
+			<property name="isHydrophobic" type="java.lang.Boolean"
+				column="IS_HYDROPHOBIC" />
+			<property name="zetaPotential" type="java.lang.Float"
+				column="ZETA_POTENTIAL" />
 		</join>
 	</subclass>
-	<subclass name="Purity" extends="gov.nih.nci.calab.domain.nano.characterization.Characterization" discriminator-value="Purity" />
-</hibernate-mapping>
+	<subclass name="Purity"
+		extends="gov.nih.nci.calab.domain.nano.characterization.Characterization"
+		discriminator-value="Purity" />
 
-<!--  	
-    <subclass name="Functional" extends="gov.nih.nci.calab.domain.nano.characterization.Characterization" discriminator-value="Functional" />  
-	<subclass name="Stability" extends="gov.nih.nci.calab.domain.nano.characterization.Characterization" discriminator-value="Stability">
-		<join table="STABILITY">
-			<key column="STABILITY_PK_ID" />
-			<property name="stressResult" type="java.lang.String" column="STRESS_RESULT" />
-			<property name="releaseKineticsDescription" type="java.lang.String" column="RELEASE_KINETICS_DESCRIPTION" />
-			<property name="measurementType" type="java.lang.String" column="MEASUREMENT_TYPE" />
-			<component name="longTermStorage" class="gov.nih.nci.calab.domain.Measurement">
-				<property name="value" column="LONG_TERM_STORAGE" />
-				<property name="unitOfMeasurement" column="LONG_TERM_STORAGE_UNIT" />
-			</component>
-			<component name="shortTermStorage" class="gov.nih.nci.calab.domain.Measurement">
-				<property name="value" column="SHORT_TERM_STORAGE" />
-				<property name="unitOfMeasurement" column="SHORT_TERM_STORAGE_UNIT" />
-			</component>
-			<component name="stressor" class="gov.nih.nci.calab.domain.nano.characterization.physical.Stressor">
-				<property name="type" column="STRESSOR_TYPE" />
-				<property name="description" column="STRESSOR_DESC" />
-				<component name="value" class="gov.nih.nci.calab.domain.Measurement">
-					<property name="value" column="STRESSOR_VALUE" />
-					<property name="unitOfMeasurement" column="STRESSOR_VALUE_UNIT" />
-				</component>
-			</component>
-		</join>
-	</subclass>
--->
+	<class name="ShapeType" table="DEF_Shape_Type" lazy="true"
+		polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="java.lang.Long" column="SHAPE_TYPE_PK_ID"
+			unsaved-value="0">
+			<generator class="org.hibernate.id.TableHiLoGenerator">
+				<param name="table">hibernate_unique_key</param>
+				<param name="column">next_hi</param>
+			</generator>
+		</id>
+		<property name="name" type="java.lang.String" column="NAME" />
+	</class>
+	<class name="MorphologyType" table="DEF_Morphology_Type" lazy="true"
+		polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="java.lang.Long"
+			column="MORPHOLOGY_TYPE_PK_ID" unsaved-value="0">
+			<generator class="org.hibernate.id.TableHiLoGenerator">
+				<param name="table">hibernate_unique_key</param>
+				<param name="column">next_hi</param>
+			</generator>
+		</id>
+		<property name="name" type="java.lang.String" column="NAME" />
+	</class>
+	<class name="SolventType" table="DEF_Solvent_Type" lazy="true"
+		polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="java.lang.Long"
+			column="SOLVENT_TYPE_PK_ID" unsaved-value="0">
+			<generator class="org.hibernate.id.TableHiLoGenerator">
+				<param name="table">hibernate_unique_key</param>
+				<param name="column">next_hi</param>
+			</generator>
+		</id>
+		<property name="name" type="java.lang.String" column="NAME" />
+	</class>
+</hibernate-mapping>
