@@ -52,7 +52,7 @@ public class InvitroCellViabilityAction extends BaseCharacterizationAction {
 			service.addCellViability(particleType, particleName, acharBean);
 		}
 		super.postCreate(request, theForm);
-		request.getSession().setAttribute("newCellLineCreated", "true");
+		request.getSession().setAttribute("newCytoCreated", "true");
 		
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.addInvitroCellViability");

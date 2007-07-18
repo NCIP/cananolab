@@ -54,7 +54,7 @@ public class InvitroCaspase3ActivationAction extends BaseCharacterizationAction 
 					.getParticleName(), acharBean);
 		}
 		super.postCreate(request, theForm);
-		request.getSession().setAttribute("newCellLineCreated", "true");
+		request.getSession().setAttribute("newCytoCreated", "true");
 
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage(
