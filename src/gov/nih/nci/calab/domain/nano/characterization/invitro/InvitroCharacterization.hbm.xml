@@ -7,7 +7,6 @@
 	<subclass name="Hemolysis" extends="gov.nih.nci.calab.domain.nano.characterization.toxicity.ImmunoToxicity" discriminator-value="Hemolysis" />
 	<subclass name="Coagulation" extends="gov.nih.nci.calab.domain.nano.characterization.toxicity.ImmunoToxicity" discriminator-value="Coagulation" />
 	<subclass name="PlasmaProteinBinding" extends="gov.nih.nci.calab.domain.nano.characterization.toxicity.ImmunoToxicity" discriminator-value="PlasmaProteinBinding" />
-
 	<subclass name="ComplementActivation" extends="gov.nih.nci.calab.domain.nano.characterization.toxicity.ImmunoToxicity" discriminator-value="ComplementActivation" />
 	<subclass name="CytokineInduction" extends="gov.nih.nci.calab.domain.nano.characterization.toxicity.ImmunoToxicity" discriminator-value="CytokineInduction" />
 	<subclass name="Chemotaxis" extends="gov.nih.nci.calab.domain.nano.characterization.toxicity.ImmunoToxicity" discriminator-value="Chemotaxis" />
@@ -16,7 +15,6 @@
 	<subclass name="OxidativeBurst" extends="gov.nih.nci.calab.domain.nano.characterization.toxicity.ImmunoToxicity" discriminator-value="OxidativeBurst" />
 	<subclass name="CFU_GM" extends="gov.nih.nci.calab.domain.nano.characterization.toxicity.ImmunoToxicity" discriminator-value="CFU_GM" />
 	<subclass name="Phagocytosis" extends="gov.nih.nci.calab.domain.nano.characterization.toxicity.ImmunoToxicity" discriminator-value="Phagocytosis" />
-
 	<subclass name="Caspase3Activation" extends="gov.nih.nci.calab.domain.nano.characterization.toxicity.Cytotoxicity" discriminator-value="Caspase3Activation">
 		<join table="CYTOTOXICITY">
 			<key column="CYTOTOXICITY_PK_ID" />
@@ -33,11 +31,16 @@
 	</subclass>
 	<subclass name="EnzymeInduction" extends="gov.nih.nci.calab.domain.nano.characterization.toxicity.Toxicity" discriminator-value="EnzymeInduction" />
 	<subclass name="OxidativeStress" extends="gov.nih.nci.calab.domain.nano.characterization.toxicity.Toxicity" discriminator-value="OxidativeStress" />
-
-	<!-- 
-		<subclass name="CPY450" extends="gov.nih.nci.calab.domain.nano.characterization.invitro.MetabolicStability" discriminator-value="CYP450" />
-		<subclass name="ROS" extends="gov.nih.nci.calab.domain.nano.characterization.invitro.MetabolicStability" discriminator-value="ROS" />
-		<subclass name="GlucuronidationSulphation" extends="gov.nih.nci.calab.domain.nano.characterization.invitro.MetabolicStability" discriminator-value="GlucuronidationSulphation" />
-	-->
-
+	<class name="CellLineType" table="DEF_CellLine_Type" lazy="true"
+		polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="java.lang.Long" column="CELLLINE_TYPE_PK_ID"
+			unsaved-value="0">
+			<generator class="org.hibernate.id.TableHiLoGenerator">
+				<param name="table">hibernate_unique_key</param>
+				<param name="column">next_hi</param>
+			</generator>
+		</id>
+		<property name="name" type="java.lang.String" column="NAME" />
+	</class>
 </hibernate-mapping>
