@@ -57,6 +57,8 @@ public class CharacterizationBean {
 
 	private String actionName;
 
+	private String particleName;
+		
 	public String getActionName() {
 		actionName = StringUtils.getOneWordLowerCaseFirstLetter(name);
 		return actionName;
@@ -324,12 +326,20 @@ public class CharacterizationBean {
 	}
 
 	public String getViewColor() {
+		if (viewTitle.matches("^copy_\\d{15}?")) {
+			viewColor=CaNanoLabConstants.AUTO_COPY_CHARACTERIZATION_VIEW_COLOR;
+		}
 		return viewColor;
 	}
 
-	public void setViewColor(String viewColor) {
-		this.viewColor = viewColor;
+	public String getParticleName() {
+		return particleName;
 	}
+
+	public void setParticleName(String particleName) {
+		this.particleName = particleName;
+	}
+
 
 	/**
 	 * Create a new instance of CharacterizationBean with the same metadata
@@ -339,6 +349,8 @@ public class CharacterizationBean {
 	 */
 	public CharacterizationBean copy(boolean copyData) {
 		CharacterizationBean newCharBean = new CharacterizationBean(this);
+		//unset id
+		newCharBean.setId(null);
 		// set InstrumentConfig, DerivedBioAssayDataList
 		InstrumentConfigBean newInstrumentConfigBean = instrumentConfigBean
 				.copy();
