@@ -10,6 +10,6 @@
 				<param name="column">next_hi</param>
 	   </generator>
     </id>
-    <property name="name" type="java.lang.String" column="SAMPLE_TYPE_NAME" />
+    <property name="name" type="java.lang.String" column="NAME" />
   </class>
 </hibernate-mapping>
