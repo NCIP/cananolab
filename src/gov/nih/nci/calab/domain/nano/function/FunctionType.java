@@ -1,27 +1,7 @@
 package gov.nih.nci.calab.domain.nano.function;
 
-import java.io.Serializable;
+import gov.nih.nci.calab.domain.LookupType;
 
-public class FunctionType implements Serializable {
+public class FunctionType extends LookupType {
 	private static final long serialVersionUID = 1234567890L;
-
-	private Long id;
-
-	private String name;
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 }
