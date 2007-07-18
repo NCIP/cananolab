@@ -19,28 +19,61 @@ from DERIVED_BIOASSAY_DATA data, CHARACTERIZATION chara
 where data.CHARACTERIZATION_PK_ID = chara.CHARACTERIZATION_PK_ID 
 and data.CATEGORY is not null
 and data.CATEGORY != 'Image'
-and data.CATEGORY != 'Graph'); 
+and data.CATEGORY != 'Graph'
+and data.CATEGORY not like '% Distribution'); 
 
 --  insert data into bioassay_data_data_category
-@insert_bioassay_data_data_category.sql;
+-- @insert_bioassay_data_data_category.sql;
+declare
+  cursor c_bioassay_data_category is
+select chara.NAME name, data.DERIVED_BIOASSAY_DATA_PK_ID id, data.CATEGORY category
+from DERIVED_BIOASSAY_DATA data, CHARACTERIZATION chara 
+where data.CHARACTERIZATION_PK_ID = chara.CHARACTERIZATION_PK_ID 
+and data.CATEGORY is not null
+and data.CATEGORY != 'Image'
+and data.CATEGORY != 'Graph'
+group by (data.DERIVED_BIOASSAY_DATA_PK_ID, data.CATEGORY, chara.NAME);
 
+ v_data_pk_id number;
+ v_category_index number;
+ 
+begin
+	 v_category_index := 0;
+	 v_data_pk_id := 0;
+	 for i in c_bioassay_data_category loop
+	    if i.id != v_data_pk_id then
+     	    v_data_pk_id := i.id;
+			v_category_index := 0;
+		end if;
+		
+	    insert into bioassay_data_data_category 
+		(derived_bioassay_data_pk_id, category_index, category_name)
+		values (v_data_pk_id, v_category_index, i.category);
+		
+		v_category_index := v_category_index + 1;
+		
+	 end loop;
+end;
+/
 
 -- migrate data from table_data to Datum
--- insert_datum_datum_condition.sql
+-- ? statistics_type, bioassay_data_category
 
 insert into datum
-(datum_pk_id, name, value, standard_deviation, value_unit, derived_bioassay_data_pk_id, control_name, control_type, list_index)
+(datum_pk_id, name, value, value_unit, derived_bioassay_data_pk_id, control_name, control_type, list_index)
 select 
-table_data_pk_id, type, value, null, value_unit, char_table_pk_id, control_name, control_type, list_index
+table_data_pk_id, type, value, value_unit, char_table_pk_id, control_name, control_type, list_index
 from table_data
 where value is not null and type is not null;
 
 
 -- migrate data from table_data_condition to datum_condition
--- insert_datum_datum_condition.sql
 
 insert into datum_condition
-select * from table_data_condition
+(datum_condition_pk_id, name, value, value_unit, datum_pk_id, list_index)
+select 
+ table_data_cond_pk_id, type, value, value_unit, table_data_pk_id, list_index
+ from table_data_condition
 where value_unit is not null;
 
 
