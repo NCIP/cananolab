@@ -6,6 +6,7 @@ import gov.nih.nci.calab.domain.nano.characterization.physical.Morphology;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Shape;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Solubility;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Surface;
+import gov.nih.nci.calab.domain.nano.characterization.toxicity.Cytotoxicity;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.DatumBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
@@ -294,6 +295,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			theForm.set("solubility", new SolubilityBean((Solubility) aChar));
 		} else if (aChar instanceof Surface) {
 			theForm.set("surface", new SurfaceBean((Surface) aChar));
+		} else if (aChar instanceof Cytotoxicity) {
+			theForm.set("cytotoxicity", new CytotoxicityBean((Cytotoxicity) aChar));
 		}
 
 		UserService userService = new UserService(
