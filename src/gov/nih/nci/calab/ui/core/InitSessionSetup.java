@@ -385,7 +385,27 @@ public class InitSessionSetup {
 		session.removeAttribute("newSampleCreated");
 	}
 
-	public void setAllDendrimers(HttpSession session) throws Exception {
+	public void setAllCompositionDropdowns(HttpSession session)
+			throws Exception {
+		setAllDendrimers(session);
+
+		if ((session.getAttribute("allPolymerInitiators") == null)
+				|| (session.getAttribute("newPolymerCreated") != null)) {
+			SortedSet<String> initiators = lookupService
+					.getAllPolymerInitiators();
+			session.setAttribute("allPolymerInitiators", initiators);
+		}
+		session.removeAttribute("newPolymerCreated");
+
+		if (session.getServletContext().getAttribute("allActivationMethods") == null) {
+			String[] activationMethods = lookupService
+					.getAllActivationMethods();
+			session.getServletContext().setAttribute("allActivationMethods",
+					activationMethods);
+		}
+	}
+
+	private void setAllDendrimers(HttpSession session) throws Exception {
 		if ((session.getAttribute("allDendrimerCores") == null)
 				|| session.getAttribute("newDendrimerCreated") != null) {
 			SortedSet<String> dendrimerCores = lookupService
@@ -423,16 +443,6 @@ public class InitSessionSetup {
 		}
 	}
 
-	public void setAllPolymerInitiators(HttpSession session) throws Exception {
-		if ((session.getAttribute("allPolymerInitiators") == null)
-				|| (session.getAttribute("newPolymerCreated") != null)) {
-			SortedSet<String> initiators = lookupService
-					.getAllPolymerInitiators();
-			session.setAttribute("allPolymerInitiators", initiators);
-		}
-		session.removeAttribute("newPolymerCreated");
-	}
-
 	public void setAllParticleSources(HttpSession session) throws Exception {
 		if (session.getAttribute("allParticleSources") == null
 				|| session.getAttribute("newSampleCreated") != null) {
@@ -444,7 +454,7 @@ public class InitSessionSetup {
 		session.removeAttribute("newSampleCreated");
 	}
 
-	public void setAllReports(HttpSession session, String particleName,
+	private void setAllReports(HttpSession session, String particleName,
 			String particleType) throws Exception {
 		UserBean user = (UserBean) session.getAttribute("user");
 		SearchReportService searchReportService = new SearchReportService();
@@ -495,7 +505,7 @@ public class InitSessionSetup {
 	 * @param particleType
 	 * @throws Exception
 	 */
-	public void setAllCharacterizations(HttpSession session,
+	private void setAllCharacterizations(HttpSession session,
 			String particleName, String particleType) throws Exception {
 		setAllCharacterizationTypes(session);
 		Map<String, List<String>> charTypeChars = (Map<String, List<String>>) session
@@ -585,7 +595,30 @@ public class InitSessionSetup {
 		setStaticDropdowns(session);
 	}
 
-	public void setAllMorphologyTypes(HttpSession session) throws Exception {
+	public void setAllPhysicalDropdowns(HttpSession session) throws Exception {
+		// solubility
+		if (session.getAttribute("allSolventTypes") == null
+				|| session.getAttribute("newSolubilityCreated") != null) {
+			SortedSet<String> solventTypes = lookupService.getAllSolventTypes();
+			session.setAttribute("allSolventTypes", solventTypes);
+		}
+		if (session.getAttribute("allConcentrationUnits") == null
+				|| session.getAttribute("newSolubilityCreated") != null) {
+			SortedSet<String> concentrationUnits = lookupService
+					.getAllMeasureUnits().get("Concentration");
+			session.setAttribute("allConcentrationUnits", concentrationUnits);
+		}
+		session.removeAttribute("newSolubilityCreated");
+
+		// shape
+		if (session.getAttribute("allShapeTypes") == null
+				|| session.getAttribute("newShapeCreated") != null) {
+			SortedSet<String> shapeTypes = lookupService.getAllShapeTypes();
+			session.setAttribute("allShapeTypes", shapeTypes);
+		}
+		session.removeAttribute("newShapeCreated");
+
+		// morphology
 		if (session.getAttribute("allMorphologyTypes") == null
 				|| session.getAttribute("newMorphologyCreated") != null) {
 			SortedSet<String> morphologyTypes = lookupService
@@ -593,15 +626,21 @@ public class InitSessionSetup {
 			session.setAttribute("allMorphologyTypes", morphologyTypes);
 		}
 		session.removeAttribute("newMorphologyCreated");
-	}
 
-	public void setAllShapeTypes(HttpSession session) throws Exception {
-		if (session.getAttribute("allShapeTypes") == null
-				|| session.getAttribute("newShapeCreated") != null) {
-			SortedSet<String> shapeTypes = lookupService.getAllShapeTypes();
-			session.setAttribute("allShapeTypes", shapeTypes);
+		// surface
+		if (session.getAttribute("allChargeMeasureUnits") == null
+				|| session.getAttribute("newSurfaceCreated") != null) {
+			SortedSet<String> chargeUnits = lookupService.getAllMeasureUnits()
+					.get("Charge");
+			session.setAttribute("allChargeMeasureUnits", chargeUnits);
 		}
-		session.removeAttribute("newShapeCreated");
+		if (session.getAttribute("allAreaMeasureUnits") == null
+				|| session.getAttribute("newSurfaceCreated") != null) {
+			SortedSet<String> chargeUnits = lookupService.getAllMeasureUnits()
+					.get("Area");
+			session.setAttribute("allAreaMeasureUnits", chargeUnits);
+		}		
+		session.removeAttribute("newSurfaceCreated");
 	}
 
 	public void setStaticDropdowns(HttpSession session) {
@@ -739,62 +778,31 @@ public class InitSessionSetup {
 		}
 	}
 
-	public void setAllChargeMeasureUnits(HttpSession session) throws Exception {
-		if (session.getServletContext().getAttribute("allChargeMeasureUnits") == null) {
-			SortedSet<String> chargeUnits = lookupService.getAllMeasureUnits()
-					.get("Charge");
-			session.getServletContext().setAttribute("allChargeMeasureUnits",
-					chargeUnits);
+	public void setAllInvitroDropdowns(HttpSession session) throws Exception {
+		if (session.getAttribute("allCellLines") == null
+				|| session.getAttribute("newCytoCreated") != null) {
+			SortedSet<String> cellLines = lookupService.getAllCellLines();
+			session.setAttribute("allCellLines", cellLines);
 		}
+		session.removeAttribute("newCytoCreated");
 	}
 
-	public void setAllAgentTypes(HttpSession session) throws Exception {
-		if (session.getServletContext().getAttribute("allAgentTypes") == null) {
-			Map<String, String[]> agentTypes = lookupService.getAllAgentTypes();
-			session.getServletContext().setAttribute("allAgentTypes",
-					agentTypes);
+	public void setAllFunctionDropdowns(HttpSession session) throws Exception {
+		if (session.getServletContext().getAttribute("allSpecies") == null) {
+			List<LabelValueBean> species = lookupService.getAllSpecies();
+			session.getServletContext().setAttribute("allSpecies", species);
 		}
-	}
 
-	public void setAllAgentTargetTypes(HttpSession session) throws Exception {
 		if (session.getServletContext().getAttribute("allAgentTargetTypes") == null) {
 			String[] agentTargetTypes = lookupService.getAllAgentTargetTypes();
 			session.getServletContext().setAttribute("allAgentTargetTypes",
 					agentTargetTypes);
 		}
-	}
 
-	public void setAllConcentrationUnits(HttpSession session) throws Exception {
-		if (session.getServletContext().getAttribute("allConcentrationUnits") == null) {
-			SortedSet<String> concentrationUnits = lookupService
-					.getAllMeasureUnits().get("Concentration");
-			session.getServletContext().setAttribute("allConcentrationUnits",
-					concentrationUnits);
-		}
-	}
-
-	public void setAllCellLines(HttpSession session) throws Exception {
-		if (session.getAttribute("allCellLines") == null
-				|| session.getAttribute("newCellLineCreated") != null) {
-			SortedSet<String> cellLines = lookupService.getAllCellLines();
-			session.setAttribute("allCellLines", cellLines);
-		}
-		session.removeAttribute("newCellLineCreated");
-	}
-
-	public void setAllActivationMethods(HttpSession session) throws Exception {
-		if (session.getServletContext().getAttribute("allActivationMethods") == null) {
-			String[] activationMethods = lookupService
-					.getAllActivationMethods();
-			session.getServletContext().setAttribute("allActivationMethods",
-					activationMethods);
-		}
-	}
-
-	public void setAllSpecies(HttpSession session) throws Exception {
-		if (session.getServletContext().getAttribute("allSpecies") == null) {
-			List<LabelValueBean> species = lookupService.getAllSpecies();
-			session.getServletContext().setAttribute("allSpecies", species);
+		if (session.getServletContext().getAttribute("allAgentTypes") == null) {
+			Map<String, String[]> agentTypes = lookupService.getAllAgentTypes();
+			session.getServletContext().setAttribute("allAgentTypes",
+					agentTypes);
 		}
 	}
 
@@ -805,7 +813,7 @@ public class InitSessionSetup {
 		}
 	}
 
-	public void setAllCharacterizationSources(HttpSession session)
+	public void setAllCharacterizationDropdowns(HttpSession session)
 			throws Exception {
 		if (session.getAttribute("characterizationSources") == null
 				|| session.getAttribute("newCharacterizationSourceCreated") != null) {
@@ -921,5 +929,4 @@ public class InitSessionSetup {
 			dropdown.add(formAttribute);
 		}
 	}
-
 }
