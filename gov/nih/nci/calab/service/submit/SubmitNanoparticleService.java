@@ -54,13 +54,14 @@ import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.common.FileService;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
+import gov.nih.nci.calab.service.util.PropertyReader;
 import gov.nih.nci.calab.service.util.StringUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.apache.struts.upload.FormFile;
 
 /**
  * This class includes service calls involved in creating nanoparticle general
@@ -215,8 +216,7 @@ public class SubmitNanoparticleService {
 
 		// save file to the file system
 		// if this block of code is inside the db try catch block, hibernate
-		// doesn't
-		// persist derivedBioAssayData
+		// doesn't persist derivedBioAssayData
 		if (!charBean.getDerivedBioAssayDataList().isEmpty()) {
 			for (DerivedBioAssayDataBean derivedBioAssayDataBean : charBean
 					.getDerivedBioAssayDataList()) {
@@ -283,18 +283,20 @@ public class SubmitNanoparticleService {
 	}
 
 	/**
-	 * Save the file to the file system if newly uploaded
+	 * Save the file to the file system
 	 * 
 	 * @param fileBean
 	 */
 	public void saveCharacterizationFile(DerivedBioAssayDataBean fileBean)
 			throws Exception {
 
-		FormFile uploadedFile = fileBean.getUploadedFile();
-		if (uploadedFile != null) {
+		byte[] fileContent = fileBean.getFileContent();
+		String rootPath = PropertyReader.getProperty(
+				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
+		if (fileContent != null) {
 			FileService fileService = new FileService();
-			String fileName = fileService.writeUploadedFile(uploadedFile,
-					fileBean.getFullPath(), true);
+			fileService.writeFile(fileContent, rootPath + File.separator
+					+ fileBean.getUri());
 		}
 		userService.setVisiblity(fileBean.getId(), fileBean
 				.getVisibilityGroups());
