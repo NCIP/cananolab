@@ -44,10 +44,6 @@ import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.dto.characterization.composition.CompositionBean;
 import gov.nih.nci.calab.dto.characterization.invitro.CytotoxicityBean;
-import gov.nih.nci.calab.dto.characterization.physical.MorphologyBean;
-import gov.nih.nci.calab.dto.characterization.physical.ShapeBean;
-import gov.nih.nci.calab.dto.characterization.physical.SolubilityBean;
-import gov.nih.nci.calab.dto.characterization.physical.SurfaceBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.function.FunctionBean;
 import gov.nih.nci.calab.exception.CalabException;
@@ -376,7 +372,7 @@ public class SubmitNanoparticleService {
 	 * @throws Exception
 	 */
 	public void addParticleSurface(String particleType, String particleName,
-			SurfaceBean surface) throws Exception {
+			CharacterizationBean surface) throws Exception {
 
 		Surface doSurface = new Surface();
 		surface.updateDomainObj(doSurface);
@@ -411,7 +407,7 @@ public class SubmitNanoparticleService {
 	 * @throws Exception
 	 */
 	public void addParticleMorphology(String particleType, String particleName,
-			MorphologyBean morphology) throws Exception {
+			CharacterizationBean morphology) throws Exception {
 		Morphology doMorphology = new Morphology();
 		morphology.updateDomainObj(doMorphology);
 		addParticleCharacterization(particleType, particleName, doMorphology,
@@ -427,7 +423,7 @@ public class SubmitNanoparticleService {
 	 * @throws Exception
 	 */
 	public void addParticleShape(String particleType, String particleName,
-			ShapeBean shape) throws Exception {
+			CharacterizationBean shape) throws Exception {
 		Shape doShape = new Shape();
 		shape.updateDomainObj(doShape);
 		addParticleCharacterization(particleType, particleName, doShape, shape);
@@ -459,7 +455,7 @@ public class SubmitNanoparticleService {
 	 * @throws Exception
 	 */
 	public void addParticleSolubility(String particleType, String particleName,
-			SolubilityBean solubility) throws Exception {
+			CharacterizationBean solubility) throws Exception {
 		Solubility doSolubility = new Solubility();
 		solubility.updateDomainObj(doSolubility);
 		// TODO think about how to deal with characterization file.
@@ -677,7 +673,7 @@ public class SubmitNanoparticleService {
 	 * @throws Exception
 	 */
 	public void addCellViability(String particleType, String particleName,
-			CytotoxicityBean cellViability) throws Exception {
+			CharacterizationBean cellViability) throws Exception {
 		CellViability doCellViability = new CellViability();
 		cellViability.updateDomainObj(doCellViability);
 		addParticleCharacterization(particleType, particleName,
@@ -726,7 +722,7 @@ public class SubmitNanoparticleService {
 	 * @throws Exception
 	 */
 	public void addCaspase3Activation(String particleType, String particleName,
-			CytotoxicityBean caspase3Activation) throws Exception {
+			CharacterizationBean caspase3Activation) throws Exception {
 		Caspase3Activation doCaspase3Activation = new Caspase3Activation();
 		caspase3Activation.updateDomainObj(doCaspase3Activation);
 		addParticleCharacterization(particleType, particleName,
