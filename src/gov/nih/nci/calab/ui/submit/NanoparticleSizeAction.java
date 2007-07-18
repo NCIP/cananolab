@@ -6,9 +6,8 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSizeAction.java,v 1.26 2007-07-03 17:35:32 pansu Exp $ */
+/* CVS $Id: NanoparticleSizeAction.java,v 1.27 2007-07-18 18:09:54 pansu Exp $ */
 
-import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.ui.core.BaseCharacterizationAction;
@@ -47,6 +46,10 @@ public class NanoparticleSizeAction extends BaseCharacterizationAction {
 		CharacterizationBean charBean = super.prepareCreate(request, theForm);
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addParticleSize(particleType, particleName, charBean);
+		CharacterizationBean[] otherChars=super.prepareCopy(request, theForm, service);
+		for (CharacterizationBean acharBean: otherChars) {
+			service.addParticleSize(particleType, acharBean.getParticleName(), acharBean);
+		}
 		super.postCreate(request, theForm);
 		
 		ActionMessages msgs = new ActionMessages();
