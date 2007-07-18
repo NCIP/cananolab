@@ -51,7 +51,7 @@ import org.hibernate.collection.PersistentSet;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.123 2007-07-10 21:52:53 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.124 2007-07-18 20:57:53 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -636,7 +636,7 @@ public class LookupService {
 	}
 
 	public SortedSet<String> getAllDendrimerCores() {
-		SortedSet<String> cores =new TreeSet<String>();
+		SortedSet<String> cores = new TreeSet<String>();
 		cores.add("Diamine");
 		cores.add("Ethyline");
 		return cores;
@@ -649,7 +649,7 @@ public class LookupService {
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
-			String hqlString = "select distinct surfaceGroup.name from SurfaceGroup surfaceGroup where surfaceGroup.name is not null";
+			String hqlString = "select distinct name from SurfaceGroupType";
 			List results = ida.search(hqlString);
 			for (Object obj : results) {
 				names.add((String) obj);
@@ -661,9 +661,6 @@ public class LookupService {
 		} finally {
 			ida.close();
 		}
-		names.addAll(Arrays
-				.asList(CaNanoLabConstants.DEFAULT_SURFACE_GROUP_NAMES));
-
 		return names;
 	}
 
@@ -879,7 +876,7 @@ public class LookupService {
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
-			String hqlString = "select distinct morphology.type from Morphology morphology";
+			String hqlString = "select distinct name from MorphologyType";
 			List results = ida.search(hqlString);
 			for (Object obj : results) {
 				morphologyTypes.add((String) obj);
@@ -890,9 +887,7 @@ public class LookupService {
 					"Problem to retrieve all morphology types.");
 		} finally {
 			ida.close();
-		}
-		morphologyTypes.addAll(Arrays
-				.asList(CaNanoLabConstants.DEFAULT_MORPHOLOGY_TYPES));
+		}		
 		return morphologyTypes;
 	}
 
@@ -902,7 +897,7 @@ public class LookupService {
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
-			String hqlString = "select distinct shape.type from Shape shape where shape.type is not null";
+			String hqlString = "select distinct name from ShapeType";
 			List results = ida.search(hqlString);
 			for (Object obj : results) {
 				shapeTypes.add((String) obj);
@@ -913,10 +908,27 @@ public class LookupService {
 		} finally {
 			ida.close();
 		}
-		shapeTypes
-				.addAll(Arrays.asList(CaNanoLabConstants.DEFAULT_SHAPE_TYPES));
-
 		return shapeTypes;
+	}
+
+	public SortedSet<String> getAllSolventTypes() throws Exception {
+		SortedSet<String> solventTypes = new TreeSet<String>();
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			String hqlString = "select distinct name from SolventType";
+			List results = ida.search(hqlString);
+			for (Object obj : results) {
+				solventTypes.add((String) obj);
+			}
+		} catch (Exception e) {
+			logger.error("Problem to retrieve all solvent types.");
+			throw new RuntimeException("Problem to retrieve all solvent types.");
+		} finally {
+			ida.close();
+		}
+		return solventTypes;
 	}
 
 	public Map<ProtocolBean, List<ProtocolFileBean>> getAllProtocolNameVersionByType(
@@ -1062,40 +1074,6 @@ public class LookupService {
 		return protocolFiles;
 	}
 
-	public String[] getAllStressorTypes() {
-		String[] stressorTypes = new String[] { "Thermal", "PH", "Freeze thaw",
-				"Photo", "Centrifugation", "Lyophilization", "Chemical",
-				"Other" };
-		return stressorTypes;
-	}
-
-	public String[] getAllAreaMeasureUnits() {
-		String[] areaUnit = new String[] { "sq nm" };
-		return areaUnit;
-	}
-
-	public String[] getAllChargeMeasureUnits() {
-		String[] chargeUnit = new String[] { "a.u", "aC", "Ah", "C", "esu",
-				"Fr", "statC" };
-		return chargeUnit;
-	}
-
-	public String[] getAllDensityMeasureUnits() {
-		String[] densityUnits = new String[] { "kg/L" };
-		return densityUnits;
-	}
-
-	public String[] getAllControlTypes() {
-		String[] controlTypes = new String[] { " ", "Positive", "Negative" };
-		return controlTypes;
-	}
-
-	public String[] getAllConditionTypes() {
-		String[] conditionTypes = new String[] { "Particle Concentration",
-				"Temperature", "Time" };
-		return conditionTypes;
-	}
-
 	public Map<String, String[]> getAllAgentTypes() {
 		Map<String, String[]> agentTypes = new HashMap<String, String[]>();
 
@@ -1123,36 +1101,6 @@ public class LookupService {
 		return targetTypes;
 	}
 
-	public String[] getAllTimeUnits() {
-		String[] timeUnits = new String[] { "hours", "days", "months" };
-		return timeUnits;
-	}
-
-	public String[] getAllTemperatureUnits() {
-		String[] temperatureUnits = new String[] { "degrees celsius",
-				"degrees fahrenhiet" };
-		return temperatureUnits;
-	}
-
-	public String[] getAllConcentrationUnits() {
-		String[] concentrationUnits = new String[] { "g/ml", "mg/ml", "pg/ml",
-				"ug/ml", "ug/ul" };
-		return concentrationUnits;
-	}
-
-	public Map<String, String[]> getAllConditionUnits() {
-		Map<String, String[]> conditionTypeUnits = new HashMap<String, String[]>();
-		String[] concentrationUnits = new String[] { "g/ml", "mg/ml", "pg/ml",
-				"ug/ml", "ug/ul", };
-		String[] temperatureUnits = new String[] { "degrees celsius",
-				"degrees fahrenhiet" };
-		String[] timeUnits = new String[] { "hours", "days", "months" };
-		conditionTypeUnits.put("Particle Concentration", concentrationUnits);
-		conditionTypeUnits.put("Time", timeUnits);
-		conditionTypeUnits.put("Temperature", temperatureUnits);
-		return conditionTypeUnits;
-	}
-
 	public SortedSet<String> getAllCellLines() throws Exception {
 
 		SortedSet<String> cellLines = new TreeSet<String>();
@@ -1160,16 +1108,10 @@ public class LookupService {
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
-			String hqlString = "select distinct cellViability.cellLine, caspase.cellLine from CellViability cellViability, Caspase3Activation caspase";
+			String hqlString = "select distinct name from CellLineType";
 			List results = ida.search(hqlString);
 			for (Object obj : results) {
-				// cellLines.add((String) obj);
-				Object[] objects = (Object[]) obj;
-				for (Object object : objects) {
-					if (object != null) {
-						cellLines.add((String) object);
-					}
-				}
+				cellLines.add((String) obj);
 			}
 		} catch (Exception e) {
 			logger.error("Problem to retrieve all Cell lines.");
@@ -1177,7 +1119,6 @@ public class LookupService {
 		} finally {
 			ida.close();
 		}
-		cellLines.addAll(Arrays.asList(CaNanoLabConstants.DEFAULT_CELLLINES));
 		return cellLines;
 
 	}
@@ -1285,7 +1226,7 @@ public class LookupService {
 	}
 
 	public SortedSet<String> getAllCharacterizationFileTypes() throws Exception {
-		SortedSet<String> fileTypes = new TreeSet<String>();		
+		SortedSet<String> fileTypes = new TreeSet<String>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
@@ -1297,12 +1238,14 @@ public class LookupService {
 				fileTypes.add(type);
 			}
 		} catch (Exception e) {
-			logger.error("Problem to retrieve all characterization file types. " + e);
+			logger
+					.error("Problem to retrieve all characterization file types. "
+							+ e);
 			throw new RuntimeException(
 					"Problem to retrieve all characterization file types. ");
 		} finally {
 			ida.close();
-		}				
+		}
 		return fileTypes;
 	}
 
