@@ -40,11 +40,7 @@ public class LabFileBean {
 
 	private String uri; //value saved in the db
 
-	private String fullPath; //including root up to file name
-	
-	private FormFile uploadedFile;
-	
-	
+	private byte[] fileContent;
 
 	/*
 	 * name to be displayed as a part of the drop-down list
@@ -54,6 +50,8 @@ public class LabFileBean {
 	private String instanceType; // type of instance, protocol, output,
 									// report, associatedFile, etc
 
+	private String timeStampedName;
+	
 	public String getInstanceType() {
 		return instanceType;
 	}
@@ -209,22 +207,6 @@ public class LabFileBean {
 		this.gridNode = gridNode;
 	}
 
-	public String getFullPath() {
-		return fullPath;
-	}
-
-	public void setFullPath(String fullPath) {
-		this.fullPath = fullPath;
-	}
-
-	public FormFile getUploadedFile() {
-		return uploadedFile;
-	}
-
-	public void setUploadedFile(FormFile uploadedFile) {
-		this.uploadedFile = uploadedFile;
-	}
-
 	public void setDisplayName(String displayName) {
 		this.displayName = displayName;
 	}
@@ -233,4 +215,19 @@ public class LabFileBean {
 		this.visibilityStr = visibilityStr;
 	}
 
+	public byte[] getFileContent() {
+		return fileContent;
+	}
+
+	public void setFileContent(byte[] fileContent) {
+		this.fileContent = fileContent;
+	}
+
+	public String getTimeStampedName() {
+		return timeStampedName;
+	}
+
+	public void setTimeStampedName(String timeStampedName) {
+		this.timeStampedName = timeStampedName;
+	}
 }
