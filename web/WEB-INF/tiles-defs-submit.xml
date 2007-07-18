@@ -122,6 +122,7 @@
 		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
 		<put name="calabContent" value="submit.addparticle.surface.content" />
 		<put name="menu" value="submit" />
+		<put name="detailPage" value="/submit/physical/bodySurfaceInfo.jsp" />
 	</definition>
 
 	<!-- definition for the nanoparticle molecular weight page -->
