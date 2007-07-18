@@ -63,6 +63,16 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		HttpSession session = request.getSession();
 		CharacterizationBean charBean = (CharacterizationBean) theForm
 				.get("achar");
+		// retrieve file content
+		FileService fileService = new FileService();
+		for (DerivedBioAssayDataBean derivedDataFileBean : charBean
+				.getDerivedBioAssayDataList()) {
+			byte[] content = fileService.getFileContent(new Long(
+					derivedDataFileBean.getId()));
+			if (content != null) {
+				derivedDataFileBean.setFileContent(content);
+			}
+		}
 
 		// set createdBy and createdDate for the characterization
 		UserBean user = (UserBean) session.getAttribute("user");
@@ -117,8 +127,9 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			// replace particleName in path and uri with new particleName
 			for (DerivedBioAssayDataBean derivedBioAssayData : dataList) {
 				String origUri = derivedBioAssayData.getUri();
-				derivedBioAssayData.setUri(origUri.replace(origParticleName,
-						particleName));
+				if (origUri != null)
+					derivedBioAssayData.setUri(origUri.replace(
+							origParticleName, particleName));
 			}
 			charBeans[i] = newCharBean;
 			i++;
@@ -169,10 +180,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 				particleName, particleType);
 		InitSessionSetup.getInstance().setAllInstruments(session);
 		InitSessionSetup.getInstance().setAllDerivedDataFileTypes(session);
-		InitSessionSetup.getInstance().setAllMorphologyTypes(session);
-		InitSessionSetup.getInstance().setAllShapeTypes(session);
-		InitSessionSetup.getInstance().setAllConcentrationUnits(session);
-		InitSessionSetup.getInstance().setAllCellLines(session);
+		InitSessionSetup.getInstance().setAllPhysicalDropdowns(session);		
+		InitSessionSetup.getInstance().setAllInvitroDropdowns(session);		
 		InitSessionSetup.getInstance().setAllCharacterizationMeasureUnitsTypes(
 				session, charName);
 		// TODO If there are more types of charactizations, add their
@@ -195,7 +204,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 
 		InitSessionSetup.getInstance().setDerivedDataCategoriesDatumNames(
 				session, charName);
-		InitSessionSetup.getInstance().setAllCharacterizationSources(session);
+		InitSessionSetup.getInstance().setAllCharacterizationDropdowns(session);
 	}
 
 	/**
@@ -274,18 +283,6 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 					"This characterization no longer exists in the database.  Please log in again to refresh.");
 		}
 		CharacterizationBean charBean = new CharacterizationBean(aChar);
-
-		// retrieve file content
-		FileService fileService = new FileService();
-		for (DerivedBioAssayDataBean derivedDataFileBean : charBean
-				.getDerivedBioAssayDataList()) {
-			byte[] content = fileService.getFileContent(new Long(
-					derivedDataFileBean.getId()));
-			if (content != null) {
-				derivedDataFileBean.setFileContent(content);
-			}
-		}
-
 		theForm.set("achar", charBean);
 
 		// set characterizations with additional information
