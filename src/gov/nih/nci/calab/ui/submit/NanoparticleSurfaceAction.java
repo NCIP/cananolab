@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSurfaceAction.java,v 1.20 2007-07-03 17:35:32 pansu Exp $ */
+/* CVS $Id: NanoparticleSurfaceAction.java,v 1.21 2007-07-18 19:23:00 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.physical.SurfaceBean;
@@ -51,8 +51,13 @@ public class NanoparticleSurfaceAction extends BaseCharacterizationAction {
 		SurfaceBean propBean = (SurfaceBean) theForm.get("surface");
 		SurfaceBean surfaceBean = new SurfaceBean(propBean, charBean);
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		service.addParticleSurface(particleType, particleName,
-				surfaceBean);
+		service.addParticleSurface(particleType, particleName, surfaceBean);
+		CharacterizationBean[] otherChars = super.prepareCopy(request, theForm,
+				service);
+		for (CharacterizationBean acharBean : otherChars) {
+			service.addParticleSurface(particleType, acharBean
+					.getParticleName(), acharBean);
+		}
 		super.postCreate(request, theForm);
 
 		ActionMessages msgs = new ActionMessages();
@@ -81,9 +86,11 @@ public class NanoparticleSurfaceAction extends BaseCharacterizationAction {
 		String particleName = (String) theForm.get("particleName");
 		SurfaceBean achar = (SurfaceBean) theForm.get("achar");
 		String type = (String) request.getParameter("type");
-		if (type != null && !type.equals("") && type.equals("surfaceChemistries")) {
-			updateSurfaceChemistries(achar);;
-		}				
+		if (type != null && !type.equals("")
+				&& type.equals("surfaceChemistries")) {
+			updateSurfaceChemistries(achar);
+			;
+		}
 		theForm.set("achar", achar);
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
@@ -96,7 +103,8 @@ public class NanoparticleSurfaceAction extends BaseCharacterizationAction {
 	 * @param particle
 	 */
 	private void updateSurfaceChemistries(SurfaceBean surface) {
-		int surfaceChemistryNum = Integer.parseInt(surface.getNumberOfSurfaceChemistries());
+		int surfaceChemistryNum = Integer.parseInt(surface
+				.getNumberOfSurfaceChemistries());
 		List<SurfaceChemistryBean> origSurfaceChemistries = surface
 				.getSurfaceChemistries();
 		int origNum = (origSurfaceChemistries == null) ? 0

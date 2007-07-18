@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleMorphologyAction.java,v 1.17 2007-07-03 21:10:57 pansu Exp $ */
+/* CVS $Id: NanoparticleMorphologyAction.java,v 1.18 2007-07-18 19:23:01 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.physical.MorphologyBean;
@@ -49,6 +49,10 @@ public class NanoparticleMorphologyAction extends BaseCharacterizationAction {
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addParticleMorphology(particleType, particleName,
 				morphologyBean);
+		CharacterizationBean[] otherChars=super.prepareCopy(request, theForm, service);
+		for (CharacterizationBean acharBean: otherChars) {
+			service.addParticleMorphology(particleType, acharBean.getParticleName(), acharBean);
+		}
 		super.postCreate(request, theForm);
 		request.getSession().setAttribute("newMorphologyCreated", "true");
 		ActionMessages msgs = new ActionMessages();
