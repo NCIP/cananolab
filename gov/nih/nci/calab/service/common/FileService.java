@@ -17,6 +17,7 @@ import java.util.Date;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.upload.FormFile;
+import org.hibernate.ObjectNotFoundException;
 
 /**
  * Utility service for file retrieving and writing.
@@ -80,7 +81,9 @@ public class FileService {
 			String fileRoot = PropertyReader
 					.getProperty(CaNanoLabConstants.FILEUPLOAD_PROPERTY,
 							"fileRepositoryDir");
-
+			if (labFile==null || labFile.getUri()==null) {
+				return null;
+			}
 			File fileObj = new File(fileRoot + File.separator
 					+ labFile.getUri());
 			long fileLength = fileObj.length();
@@ -123,7 +126,8 @@ public class FileService {
 			throw new Exception(
 					"error getting file content from the file system and writing to the output stream:"
 							+ e);
-		} finally {
+		}
+		finally {
 			hda.close();
 		}
 	}
