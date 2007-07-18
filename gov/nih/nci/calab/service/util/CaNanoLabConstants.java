@@ -316,21 +316,6 @@ public class CaNanoLabConstants {
 
 	public static final int MAX_VIEW_TITLE_LENGTH = 23;
 
-	public static final String[] DEFAULT_CELLLINES = new String[] { "LLC-PK1",
-			"Hep-G2" };
-
-	public static final String[] DEFAULT_SHAPE_TYPES = new String[] { "Cubic",
-			"Hexagonal", "Irregular", "Needle", "Oblate", "Rod", "Spherical",
-			"Tetrahedron", "Tetrapod", "Triangle", "Eliptical", "Composite",
-			"Cylindrical", "Vesicular", "Elliposid" };
-
-	public static final String[] DEFAULT_MORPHOLOGY_TYPES = new String[] {
-			"Powder", "Liquid", "Solid", "Crystalline", "Copolymer", "Fibril",
-			"Colloid", "Oil" };
-
-	public static final String[] DEFAULT_SURFACE_GROUP_NAMES = new String[] {
-			"Amine", "Carboxyl", "Hydroxyl" };
-
 	public static final String ABBR_COMPOSITION = "CP";
 
 	public static final String ABBR_SIZE = "SZ";
