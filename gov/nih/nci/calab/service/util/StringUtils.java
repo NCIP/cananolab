@@ -2,7 +2,6 @@ package gov.nih.nci.calab.service.util;
 
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -15,7 +14,7 @@ import org.apache.log4j.Logger;
  * @author pansu
  * 
  */
-/* CVS $Id: StringUtils.java,v 1.16 2007-06-18 19:19:12 pansu Exp $ */
+/* CVS $Id: StringUtils.java,v 1.17 2007-07-18 18:05:02 pansu Exp $ */
 
 public class StringUtils {
 	private static Logger logger = Logger.getLogger(StringUtils.class);
@@ -219,51 +218,13 @@ public class StringUtils {
 		return result;
 	}
 
-	public static String getTimeAsString() {
-		String time = null;
-		Calendar calendar = Calendar.getInstance();
-		time = "" + calendar.get(Calendar.YEAR);
-		time = time
-				+ (calendar.get(Calendar.MONTH) < 9 ? "0"
-						+ (calendar.get(Calendar.MONTH) + 1) : ""
-						+ (calendar.get(Calendar.MONTH) + 1));
-
-		time = time
-				+ (calendar.get(Calendar.DAY_OF_MONTH) < 10 ? "0"
-						+ calendar.get(Calendar.DAY_OF_MONTH) : ""
-						+ calendar.get(Calendar.DAY_OF_MONTH)) + "_";
-		time = time + calendar.get(Calendar.HOUR_OF_DAY) + "-";
-		time = time
-				+ (calendar.get(Calendar.MINUTE) < 10 ? "0"
-						+ calendar.get(Calendar.MINUTE) : ""
-						+ calendar.get(Calendar.MINUTE)) + "-";
-		time = time
-				+ (calendar.get(Calendar.SECOND) < 10 ? "0"
-						+ calendar.get(Calendar.SECOND) : ""
-						+ calendar.get(Calendar.SECOND)) + "-";
-		time = time + calendar.get(Calendar.MILLISECOND);
-		return time;
-	}
-	
-	public static String getDateAsString() {
-		
-		Calendar calendar = Calendar.getInstance();
-		String month=calendar.get(Calendar.MONTH) < 9 ? "0"
-				+ (calendar.get(Calendar.MONTH) + 1) : ""
-					+ (calendar.get(Calendar.MONTH) + 1);
-		String day=calendar.get(Calendar.DAY_OF_MONTH) < 10 ? "0"
-				+ calendar.get(Calendar.DAY_OF_MONTH) : ""
-					+ calendar.get(Calendar.DAY_OF_MONTH);
-		String year=calendar.get(Calendar.YEAR)+"";
-		return month+day+year;		
-	}
-	
-    /**
-     * Convert a string with multiple words separated by space to
-     * one word, with first letter as lower case.
-     * @param words
-     * @return
-     */
+	/**
+	 * Convert a string with multiple words separated by space to one word, with
+	 * first letter as lower case.
+	 * 
+	 * @param words
+	 * @return
+	 */
 	public static String getOneWordLowerCaseFirstLetter(String words) {
 		// remove space in words and make the first letter lower case.
 		String firstLetter = words.substring(0, 1);
@@ -271,13 +232,14 @@ public class StringUtils {
 				firstLetter.toLowerCase()).replace(" ", "");
 		return oneWord;
 	}
-	
-	   /**
-     * Convert a string with multiple words separated by space to
-     * one word, with first letter as lower case.
-     * @param words
-     * @return
-     */
+
+	/**
+	 * Convert a string with multiple words separated by space to one word, with
+	 * first letter as lower case.
+	 * 
+	 * @param words
+	 * @return
+	 */
 	public static String getOneWordUpperCaseFirstLetter(String words) {
 		// remove space in words and make the first letter lower case.
 		String firstLetter = words.substring(0, 1);
@@ -285,9 +247,13 @@ public class StringUtils {
 				firstLetter.toUpperCase()).replace(" ", "");
 		return oneWord;
 	}
-	
+
 	public static void main(String[] args) {
-		String dateString=StringUtils.getDateAsString();
-		System.out.println(dateString);
+		try {
+			String dateString = StringUtils.convertDateToString(new Date(), "yyyyMMdd_HH-mm-ss-SSS");			
+			System.out.println(dateString);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
