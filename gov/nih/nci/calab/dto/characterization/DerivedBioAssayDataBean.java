@@ -137,7 +137,7 @@ public class DerivedBioAssayDataBean extends LabFileBean {
 	 */
 	public DerivedBioAssayDataBean copy(boolean copyData) {
 		DerivedBioAssayDataBean newCharFileBean = new DerivedBioAssayDataBean();
-		// do not copy file id and path
+		// do not copy file id
 		newCharFileBean.setKeywords(keywords);
 		newCharFileBean.setCategories(categories);
 		newCharFileBean.setDescription(getDescription());
@@ -147,8 +147,11 @@ public class DerivedBioAssayDataBean extends LabFileBean {
 		newCharFileBean.setName(getName());
 		newCharFileBean.setCreatedBy(getCreatedBy());
 		newCharFileBean.setCreatedDate(getCreatedDate());
-		newCharFileBean.setUploadedFile(getUploadedFile());
+		newCharFileBean.setFileContent(getFileContent());
+		//copy uri but will be modified		
+		newCharFileBean.setUri(getUri());
 		newCharFileBean.setCharacterizationName(characterizationName);
+		newCharFileBean.setType(getType());
 		if (copyData) {
 			List<DatumBean> newDatumList = new ArrayList<DatumBean>();
 			for (DatumBean datum : datumList) {
