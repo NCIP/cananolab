@@ -7,12 +7,14 @@ import gov.nih.nci.calab.domain.Instrument;
 import gov.nih.nci.calab.domain.InstrumentConfiguration;
 import gov.nih.nci.calab.domain.Keyword;
 import gov.nih.nci.calab.domain.LabFile;
+import gov.nih.nci.calab.domain.LookupType;
 import gov.nih.nci.calab.domain.OutputFile;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.CharacterizationFileType;
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.domain.nano.characterization.invitro.CFU_GM;
 import gov.nih.nci.calab.domain.nano.characterization.invitro.Caspase3Activation;
+import gov.nih.nci.calab.domain.nano.characterization.invitro.CellLineType;
 import gov.nih.nci.calab.domain.nano.characterization.invitro.CellViability;
 import gov.nih.nci.calab.domain.nano.characterization.invitro.Chemotaxis;
 import gov.nih.nci.calab.domain.nano.characterization.invitro.Coagulation;
@@ -29,10 +31,13 @@ import gov.nih.nci.calab.domain.nano.characterization.invitro.PlasmaProteinBindi
 import gov.nih.nci.calab.domain.nano.characterization.invitro.PlateletAggregation;
 import gov.nih.nci.calab.domain.nano.characterization.physical.MolecularWeight;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Morphology;
+import gov.nih.nci.calab.domain.nano.characterization.physical.MorphologyType;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Purity;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Shape;
+import gov.nih.nci.calab.domain.nano.characterization.physical.ShapeType;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Size;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Solubility;
+import gov.nih.nci.calab.domain.nano.characterization.physical.SolventType;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Surface;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.ParticleComposition;
 import gov.nih.nci.calab.domain.nano.function.Agent;
@@ -44,6 +49,10 @@ import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.dto.characterization.composition.CompositionBean;
 import gov.nih.nci.calab.dto.characterization.invitro.CytotoxicityBean;
+import gov.nih.nci.calab.dto.characterization.physical.MorphologyBean;
+import gov.nih.nci.calab.dto.characterization.physical.ShapeBean;
+import gov.nih.nci.calab.dto.characterization.physical.SolubilityBean;
+import gov.nih.nci.calab.dto.characterization.physical.SurfaceBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.function.FunctionBean;
 import gov.nih.nci.calab.exception.CalabException;
@@ -375,10 +384,37 @@ public class SubmitNanoparticleService {
 			CharacterizationBean surface) throws Exception {
 
 		Surface doSurface = new Surface();
-		surface.updateDomainObj(doSurface);
-
+		((SurfaceBean)surface).updateDomainObj(doSurface);
 		addParticleCharacterization(particleType, particleName, doSurface,
 				surface);
+	}
+
+	private void addLookupType(LookupType lookupType, String lookupTypeType,
+			String type) throws Exception {
+		// if ID is not set save to the database otherwise update
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			List results = ida.search("select count(distinct name) from "
+					+ lookupTypeType + " type where name='" + type
+					+ "'");
+			lookupType.setName(type);
+			int count = -1;
+			for (Object obj : results) {
+				count = ((Integer) (obj)).intValue();
+			}
+			if (count == 0) {
+				ida.createObject(lookupType);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			ida.rollback();
+			logger.error("Problem saving look up type: " + type);
+			throw e;
+		} finally {
+			ida.close();
+		}
 	}
 
 	/**
@@ -409,9 +445,11 @@ public class SubmitNanoparticleService {
 	public void addParticleMorphology(String particleType, String particleName,
 			CharacterizationBean morphology) throws Exception {
 		Morphology doMorphology = new Morphology();
-		morphology.updateDomainObj(doMorphology);
+		((MorphologyBean)morphology).updateDomainObj(doMorphology);
 		addParticleCharacterization(particleType, particleName, doMorphology,
 				morphology);
+		MorphologyType morphologyType = new MorphologyType();
+		addLookupType(morphologyType, "MorphologyType", doMorphology.getType());
 	}
 
 	/**
@@ -425,8 +463,10 @@ public class SubmitNanoparticleService {
 	public void addParticleShape(String particleType, String particleName,
 			CharacterizationBean shape) throws Exception {
 		Shape doShape = new Shape();
-		shape.updateDomainObj(doShape);
+		((ShapeBean)shape).updateDomainObj(doShape);
 		addParticleCharacterization(particleType, particleName, doShape, shape);
+		ShapeType shapeType = new ShapeType();
+		addLookupType(shapeType, "ShapeType", doShape.getType());
 	}
 
 	/**
@@ -457,10 +497,13 @@ public class SubmitNanoparticleService {
 	public void addParticleSolubility(String particleType, String particleName,
 			CharacterizationBean solubility) throws Exception {
 		Solubility doSolubility = new Solubility();
-		solubility.updateDomainObj(doSolubility);
+		((SolubilityBean)solubility).updateDomainObj(doSolubility);
 		// TODO think about how to deal with characterization file.
 		addParticleCharacterization(particleType, particleName, doSolubility,
 				solubility);
+		SolventType solventType = new SolventType();
+		addLookupType(solventType, "SolventType", doSolubility.getSolvent());
+
 	}
 
 	/**
@@ -665,7 +708,7 @@ public class SubmitNanoparticleService {
 	}
 
 	/**
-	 * Saves the invitro CellViability binding characterization to the database
+	 * Saves the invitro  binding characterization to the database
 	 * 
 	 * @param particleType
 	 * @param particleName
@@ -675,9 +718,12 @@ public class SubmitNanoparticleService {
 	public void addCellViability(String particleType, String particleName,
 			CharacterizationBean cellViability) throws Exception {
 		CellViability doCellViability = new CellViability();
-		cellViability.updateDomainObj(doCellViability);
+		((CytotoxicityBean)cellViability).updateDomainObj(doCellViability);
 		addParticleCharacterization(particleType, particleName,
 				doCellViability, cellViability);
+		CellLineType cellLineType = new CellLineType();
+		addLookupType(cellLineType, "CellLineType", doCellViability
+				.getCellLine());
 	}
 
 	/**
@@ -727,6 +773,9 @@ public class SubmitNanoparticleService {
 		caspase3Activation.updateDomainObj(doCaspase3Activation);
 		addParticleCharacterization(particleType, particleName,
 				doCaspase3Activation, caspase3Activation);
+		CellLineType cellLineType = new CellLineType();
+		addLookupType(cellLineType, "CellLineType", doCaspase3Activation
+				.getCellLine());
 	}
 
 	public void setCharacterizationFile(String particleName,
