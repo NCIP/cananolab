@@ -732,7 +732,8 @@ public class InitSessionSetup {
 
 	public void setAllAreaMeasureUnits(HttpSession session) throws Exception {
 		if (session.getServletContext().getAttribute("allAreaMeasureUnits") == null) {
-			String[] areaUnits = lookupService.getAllAreaMeasureUnits();
+			SortedSet<String> areaUnits = lookupService.getAllMeasureUnits()
+					.get("Area");
 			session.getServletContext().setAttribute("allAreaMeasureUnits",
 					areaUnits);
 		}
@@ -740,34 +741,10 @@ public class InitSessionSetup {
 
 	public void setAllChargeMeasureUnits(HttpSession session) throws Exception {
 		if (session.getServletContext().getAttribute("allChargeMeasureUnits") == null) {
-			String[] chargeUnits = lookupService.getAllChargeMeasureUnits();
+			SortedSet<String> chargeUnits = lookupService.getAllMeasureUnits()
+					.get("Charge");
 			session.getServletContext().setAttribute("allChargeMeasureUnits",
 					chargeUnits);
-		}
-	}
-
-	public void setAllControlTypes(HttpSession session) throws Exception {
-		if (session.getServletContext().getAttribute("allControlTypes") == null) {
-			String[] controlTypes = lookupService.getAllControlTypes();
-			session.getServletContext().setAttribute("allControlTypes",
-					controlTypes);
-		}
-	}
-
-	public void setAllConditionTypes(HttpSession session) throws Exception {
-		if (session.getServletContext().getAttribute("allConditionTypes") == null) {
-			String[] conditionTypes = lookupService.getAllConditionTypes();
-			session.getServletContext().setAttribute("allConditionTypes",
-					conditionTypes);
-		}
-	}
-
-	public void setAllConditionUnits(HttpSession session) throws Exception {
-		if (session.getServletContext().getAttribute("allConditionTypeUnits") == null) {
-			Map<String, String[]> conditionTypeUnits = lookupService
-					.getAllConditionUnits();
-			session.getServletContext().setAttribute("allConditionTypeUnits",
-					conditionTypeUnits);
 		}
 	}
 
@@ -787,17 +764,10 @@ public class InitSessionSetup {
 		}
 	}
 
-	public void setAllTimeUnits(HttpSession session) throws Exception {
-		if (session.getServletContext().getAttribute("allTimeUnits") == null) {
-			String[] timeUnits = lookupService.getAllTimeUnits();
-			session.getServletContext().setAttribute("allTimeUnits", timeUnits);
-		}
-	}
-
 	public void setAllConcentrationUnits(HttpSession session) throws Exception {
 		if (session.getServletContext().getAttribute("allConcentrationUnits") == null) {
-			String[] concentrationUnits = lookupService
-					.getAllConcentrationUnits();
+			SortedSet<String> concentrationUnits = lookupService
+					.getAllMeasureUnits().get("Concentration");
 			session.getServletContext().setAttribute("allConcentrationUnits",
 					concentrationUnits);
 		}
