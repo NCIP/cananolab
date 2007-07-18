@@ -6,16 +6,20 @@ import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.function.Function;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
+import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.dto.common.SearchableBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.function.FunctionBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.exception.CalabException;
+import gov.nih.nci.calab.service.common.FileService;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CaNanoLabComparators;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
+import gov.nih.nci.calab.service.util.PropertyReader;
 import gov.nih.nci.calab.service.util.StringUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -33,7 +37,7 @@ import org.apache.log4j.Logger;
  */
 public class SearchNanoparticleService {
 	private static Logger logger = Logger
-			.getLogger(SearchNanoparticleService.class);	
+			.getLogger(SearchNanoparticleService.class);
 
 	/**
 	 * Search for nanoparticles based on particle source, type, function types,
@@ -53,7 +57,8 @@ public class SearchNanoparticleService {
 	public List<ParticleBean> basicSearch(String particleSource,
 			String particleType, String[] functionTypes,
 			String[] characterizations, String[] keywords, String keywordType,
-			String[] summaries, String summaryType, UserBean user) throws Exception {
+			String[] summaries, String summaryType, UserBean user)
+			throws Exception {
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		List<ParticleBean> particles = new ArrayList<ParticleBean>();
@@ -115,23 +120,23 @@ public class SearchNanoparticleService {
 				List<String> summaryList = new ArrayList<String>();
 				where = "where ";
 				for (String summary : summaries) {
-					paramList.add("%"+summary+"%");
+					paramList.add("%" + summary + "%");
 					summaryList.add("?");
 				}
 
 				if (summaryType.equals("characterization")) {
-					summaryForm = "join particle.characterizationCollection data ";				
+					summaryForm = "join particle.characterizationCollection data ";
 				} else {
 					summaryForm = "join particle.characterizationCollection characterization "
 							+ "join characterization.derivedBioAssayDataCollection  data ";
-				}	
+				}
 				List<String> summaryWhere = new ArrayList<String>();
-				for (String summary: summaryList) {
-					summaryWhere.add("data.description like "+ summary);
+				for (String summary : summaryList) {
+					summaryWhere.add("data.description like " + summary);
 				}
 				whereList.add(StringUtils.join(summaryWhere, " or "));
 			}
-			
+
 			if (characterizations != null && characterizations.length > 0) {
 				List<String> inList = new ArrayList<String>();
 				where = "where ";
@@ -151,8 +156,8 @@ public class SearchNanoparticleService {
 			}
 			String whereStr = StringUtils.join(whereList, " and ");
 			String hqlString = "select particle from Nanoparticle particle "
-					+ functionFrom + keywordFrom + summaryForm + characterizationFrom + where
-					+ whereStr;
+					+ functionFrom + keywordFrom + summaryForm
+					+ characterizationFrom + where + whereStr;
 
 			ida.open();
 
@@ -171,7 +176,8 @@ public class SearchNanoparticleService {
 			ida.close();
 		}
 
-		UserService userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
+		UserService userService = new UserService(
+				CaNanoLabConstants.CSM_APP_NAME);
 
 		List<ParticleBean> filteredParticles = userService
 				.getFilteredParticles(user, particles);
@@ -220,7 +226,8 @@ public class SearchNanoparticleService {
 		}
 
 		ParticleBean particleBean = new ParticleBean(particle);
-		UserService userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
+		UserService userService = new UserService(
+				CaNanoLabConstants.CSM_APP_NAME);
 		List<String> accessibleGroups = userService.getAccessibleGroups(
 				particleName, CaNanoLabConstants.CSM_READ_ROLE);
 		String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
@@ -241,7 +248,8 @@ public class SearchNanoparticleService {
 					.search("select chara.id, chara.name, chara.identificationName from Nanoparticle particle join particle.characterizationCollection chara where particle.name='"
 							+ particleName
 							+ "' and particle.type='"
-							+ particleType + "' order by chara.name, chara.identificationName");
+							+ particleType
+							+ "' order by chara.name, chara.identificationName");
 			for (Object obj : results) {
 				String charId = ((Object[]) obj)[0].toString();
 				String charName = (String) (((Object[]) obj)[1]);
@@ -283,7 +291,7 @@ public class SearchNanoparticleService {
 		return aChar;
 	}
 
-	public Characterization getCharacterizationAndTableBy(String charId)
+	public Characterization getCharacterizationAndDerivedDataBy(String charId)
 			throws Exception {
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
@@ -304,7 +312,6 @@ public class SearchNanoparticleService {
 		} finally {
 			ida.close();
 		}
-		
 		return aChar;
 	}
 
@@ -389,7 +396,7 @@ public class SearchNanoparticleService {
 		try {
 			// query by particle type and function types first
 			particleList = this.basicSearch(null, particleType, functionTypes,
-					null, null, null, null, null,user);
+					null, null, null, null, null, user);
 			// return if no particles found or no other search criteria entered
 			if (searchCriteria.isEmpty() || particleList.isEmpty()) {
 				return particleList;
