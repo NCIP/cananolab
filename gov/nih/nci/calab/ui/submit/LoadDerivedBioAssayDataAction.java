@@ -6,9 +6,10 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: LoadDerivedBioAssayDataAction.java,v 1.18 2007-07-10 17:55:51 pansu Exp $ */
+/* CVS $Id: LoadDerivedBioAssayDataAction.java,v 1.19 2007-07-18 18:09:50 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
+import gov.nih.nci.calab.service.common.FileService;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
@@ -41,41 +42,37 @@ public class LoadDerivedBioAssayDataAction extends AbstractDispatchAction {
 		DerivedBioAssayDataBean fileBean = (DerivedBioAssayDataBean) theForm
 				.get("file");
 		String characterizationName = (String) theForm
-				.get("characterizationName");		
+				.get("characterizationName");
 		fileBean.setCharacterizationName(characterizationName);
 		fileBean.setParticleName(particleName);
 		if (fileSource.equals("new")) {
 			FormFile uploadedFile = (FormFile) theForm.get("uploadedFile");
-			fileBean.setUploadedFile(uploadedFile);
-			String rootPath = PropertyReader
-					.getProperty(CaNanoLabConstants.FILEUPLOAD_PROPERTY,
-							"fileRepositoryDir");
-			// get rid of trailing file separator
-			if (rootPath.charAt(rootPath.length() - 1) == File.separatorChar)
-				rootPath = rootPath.substring(0, rootPath.length() - 1);
-
-			// add charaterizationName to the path
+			fileBean.setFileContent(uploadedFile.getFileData());
+			fileBean.setName(uploadedFile.getFileName());
+			fileBean.setTimeStampedName(FileService
+					.prefixFileNameWithTimeStamp(uploadedFile.getFileName()));
+						// add charaterizationName to the path
 			String filePath = File.separator
 					+ CaNanoLabConstants.FOLDER_PARTICLE
 					+ File.separator
 					+ fileBean.getParticleName()
 					+ File.separator
 					+ StringUtils.getOneWordLowerCaseFirstLetter(fileBean
-							.getCharacterizationName()); 
-			fileBean.setFullPath(rootPath + filePath);
-			fileBean.setUri(filePath+File.separator+uploadedFile.getFileName());
-			fileBean.setName(uploadedFile.getFileName());
+							.getCharacterizationName());
+			
+			fileBean.setUri(filePath + File.separator
+					+ fileBean.getTimeStampedName());
 		} else {
 			if (fileBean.getId() != null) {
 				SubmitNanoparticleService service = new SubmitNanoparticleService();
 				DerivedBioAssayDataBean existingFileBean = (DerivedBioAssayDataBean) service
 						.getFile(fileBean.getId());
-				fileBean.setParticleName(existingFileBean.getUri());				
+				fileBean.setParticleName(existingFileBean.getUri());
 			}
 		}
 		String forwardPage = (String) theForm.get("forwardPage");
 		ActionForward forward = new ActionForward();
-		forward.setPath(forwardPage);		
+		forward.setPath(forwardPage);
 		return forward;
 	}
 
@@ -96,7 +93,7 @@ public class LoadDerivedBioAssayDataAction extends AbstractDispatchAction {
 		theForm.set("forwardPage", (String) request
 				.getAttribute("loadFileForward"));
 		theForm.set("characterizationName", (String) request
-				.getAttribute("characterizationName"));		
+				.getAttribute("characterizationName"));
 		return mapping.getInputForward();
 	}
 
