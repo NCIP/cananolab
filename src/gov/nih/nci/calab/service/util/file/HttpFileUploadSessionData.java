@@ -55,6 +55,7 @@ import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -151,7 +152,7 @@ public class HttpFileUploadSessionData implements Serializable
         
         if(timeStamp == null)
         {
-            timeStamp = StringUtils.getTimeAsString();
+            timeStamp = StringUtils.convertDateToString(new Date(), "yyyyMMdd_HH-mm-ss-SSS");
         }
         
         return timeStamp;

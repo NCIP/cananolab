@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.SQLException;
+import java.util.Date;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.upload.FormFile;
@@ -143,6 +144,17 @@ public class FileService {
 		return fileName;
 	}
 
+	public void writeFile(byte[] fileContent, String fullFileName)
+			throws IOException {
+		String path = fullFileName.substring(0, fullFileName
+				.lastIndexOf(File.separator));
+		File pathDir = new File(path);
+		if (!pathDir.exists())
+			pathDir.mkdirs();
+		FileOutputStream oStream = new FileOutputStream(new File(fullFileName));
+		oStream.write(fileContent);
+	}
+
 	public void writeFile(InputStream is, FileOutputStream os)
 			throws IOException {
 		byte[] bytes = new byte[32768];
@@ -154,8 +166,9 @@ public class FileService {
 		os.close();
 	}
 
-	public String prefixFileNameWithTimeStamp(String fileName) {
-		String newFileName = StringUtils.getTimeAsString() + "_" + fileName;
+	public static String prefixFileNameWithTimeStamp(String fileName) {
+		String newFileName = StringUtils.convertDateToString(new Date(), "yyyyMMdd_HH-mm-ss-SSS")
+				+ "_" + fileName;
 		return newFileName;
 	}
 
