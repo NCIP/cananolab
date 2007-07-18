@@ -17,12 +17,14 @@ import gov.nih.nci.calab.dto.characterization.physical.SurfaceBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.exception.CalabException;
+import gov.nih.nci.calab.service.common.FileService;
 import gov.nih.nci.calab.service.common.LookupService;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
+import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -73,6 +75,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 
 	protected void postCreate(HttpServletRequest request,
 			DynaValidatorForm theForm) throws Exception {
+
 		String particleName = theForm.getString("particleName");
 		String particleType = theForm.getString("particleType");
 
@@ -80,7 +83,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		request.getSession().setAttribute("newCharacterizationSourceCreated",
 				"true");
 		request.getSession().setAttribute("newInstrumentCreated", "true");
-		request.getSession().setAttribute("newCharacterizationFileTypeCreated", "true");
+		request.getSession().setAttribute("newCharacterizationFileTypeCreated",
+				"true");
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
 	}
@@ -90,28 +94,31 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			throws Exception {
 		CharacterizationBean charBean = (CharacterizationBean) theForm
 				.get("achar");
+		String origParticleName = theForm.getString("particleName");
+		charBean.setParticleName(origParticleName);
 		String[] otherParticles = (String[]) theForm.get("otherParticles");
 		Boolean copyData = (Boolean) theForm.get("copyData");
-
 		CharacterizationBean[] charBeans = new CharacterizationBean[otherParticles.length];
 		int i = 0;
 		for (String particleName : otherParticles) {
 			CharacterizationBean newCharBean = charBean.copy(copyData
 					.booleanValue());
+			newCharBean.setParticleName(particleName);
 			// reset view title
-			String autoTitle = particleName
-					+ "_"
-					+ CaNanoLabConstants.AUTO_COPY_CHARACTERIZATION_VIEW_TITLE_SUFFIX;
-			String autoColor = CaNanoLabConstants.AUTO_COPY_CHARACTERIZATION_VIEW_COLOR;
+
+			String timeStamp = StringUtils.convertDateToString(new Date(),
+					"MMddyyHHmmssSSS");
+			String autoTitle = CaNanoLabConstants.AUTO_COPY_CHARACTERIZATION_VIEW_TITLE_PREFIX
+					+ timeStamp;
+
 			newCharBean.setViewTitle(autoTitle);
-			newCharBean.setViewColor(autoColor);
-			// save the files to the database and file system
-			if (!copyData) {
-				List<DerivedBioAssayDataBean> dataList = newCharBean
-						.getDerivedBioAssayDataList();
-				for (DerivedBioAssayDataBean derivedBioAssayData : dataList) {
-					service.saveCharacterizationFile(derivedBioAssayData);
-				}
+			List<DerivedBioAssayDataBean> dataList = newCharBean
+					.getDerivedBioAssayDataList();
+			// replace particleName in path and uri with new particleName
+			for (DerivedBioAssayDataBean derivedBioAssayData : dataList) {
+				String origUri = derivedBioAssayData.getUri();
+				derivedBioAssayData.setUri(origUri.replace(origParticleName,
+						particleName));
 			}
 			charBeans[i] = newCharBean;
 			i++;
@@ -131,6 +138,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			throws Exception {
 		// reset achar and otherParticles
 		theForm.set("otherParticles", new String[0]);
+		theForm.set("copyData", false);
 		theForm.set("achar", new CharacterizationBean());
 		theForm.set("morphology", new MorphologyBean());
 		theForm.set("shape", new ShapeBean());
@@ -154,7 +162,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		String submitType = (String) request.getParameter("submitType");
 		String particleName = theForm.getString("particleName");
 		String particleType = theForm.getString("particleType");
-		String particleSource = theForm.getString("particleSource");		
+		String particleSource = theForm.getString("particleSource");
 		String charName = request.getParameter("charName");
 		InitSessionSetup.getInstance().setApplicationOwner(session);
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
@@ -180,7 +188,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		// set up other particle names from the same source
 		LookupService service = new LookupService();
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		
+
 		SortedSet<String> allOtherParticleNames = service.getOtherParticles(
 				particleSource, particleName, user);
 		session.setAttribute("allOtherParticleNames", allOtherParticleNames);
@@ -260,12 +268,25 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		String characterizationId = request.getParameter("characterizationId");
 		SearchNanoparticleService service = new SearchNanoparticleService();
 		Characterization aChar = service
-				.getCharacterizationAndTableBy(characterizationId);
+				.getCharacterizationAndDerivedDataBy(characterizationId);
 		if (aChar == null) {
 			throw new Exception(
 					"This characterization no longer exists in the database.  Please log in again to refresh.");
 		}
-		theForm.set("achar", new CharacterizationBean(aChar));
+		CharacterizationBean charBean = new CharacterizationBean(aChar);
+
+		// retrieve file content
+		FileService fileService = new FileService();
+		for (DerivedBioAssayDataBean derivedDataFileBean : charBean
+				.getDerivedBioAssayDataList()) {
+			byte[] content = fileService.getFileContent(new Long(
+					derivedDataFileBean.getId()));
+			if (content != null) {
+				derivedDataFileBean.setFileContent(content);
+			}
+		}
+
+		theForm.set("achar", charBean);
 
 		// set characterizations with additional information
 		if (aChar instanceof Shape) {
