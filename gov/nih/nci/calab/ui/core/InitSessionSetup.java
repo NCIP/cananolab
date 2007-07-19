@@ -913,7 +913,7 @@ public class InitSessionSetup {
 		}
 	}
 
-	public void setDerivedDataCategoriesDatumNames(HttpSession session,
+	public void setDerivedDatumNames(HttpSession session,
 			String characterizationName) throws Exception {
 		SortedSet<String> categories = lookupService
 				.getDerivedDataCategories(characterizationName);

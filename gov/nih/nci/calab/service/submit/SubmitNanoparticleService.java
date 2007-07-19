@@ -8,11 +8,14 @@ import gov.nih.nci.calab.domain.InstrumentConfiguration;
 import gov.nih.nci.calab.domain.Keyword;
 import gov.nih.nci.calab.domain.LabFile;
 import gov.nih.nci.calab.domain.LookupType;
+import gov.nih.nci.calab.domain.MeasureType;
 import gov.nih.nci.calab.domain.MeasureUnit;
 import gov.nih.nci.calab.domain.OutputFile;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.CharacterizationFileType;
+import gov.nih.nci.calab.domain.nano.characterization.DatumName;
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
+import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayDataCategory;
 import gov.nih.nci.calab.domain.nano.characterization.invitro.CFU_GM;
 import gov.nih.nci.calab.domain.nano.characterization.invitro.Caspase3Activation;
 import gov.nih.nci.calab.domain.nano.characterization.invitro.CellLineType;
@@ -47,6 +50,7 @@ import gov.nih.nci.calab.domain.nano.function.Function;
 import gov.nih.nci.calab.domain.nano.function.Linkage;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
+import gov.nih.nci.calab.dto.characterization.DatumBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.dto.characterization.composition.CompositionBean;
 import gov.nih.nci.calab.dto.characterization.invitro.CytotoxicityBean;
@@ -200,23 +204,10 @@ public class SubmitNanoparticleService {
 				throw new Exception(
 						"The view title is already in use.  Please enter a different one.");
 			}
-
-			// add new characterization file type if necessary
-			if (!charBean.getDerivedBioAssayDataList().isEmpty()) {
-				for (DerivedBioAssayDataBean derivedBioAssayDataBean : charBean
-						.getDerivedBioAssayDataList()) {
-					if (derivedBioAssayDataBean.getType().length() > 0) {
-						CharacterizationFileType fileType = new CharacterizationFileType();
-						addLookupType(ida, fileType, derivedBioAssayDataBean
-								.getType());
-					}
-				}
-			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			ida.rollback();
-			logger.error("Problem saving characterization: ");
+			logger.error("Problem saving characterization. ");
 			throw e;
 		} finally {
 			ida.close();
@@ -230,6 +221,49 @@ public class SubmitNanoparticleService {
 					.getDerivedBioAssayDataList()) {
 				saveCharacterizationFile(derivedBioAssayDataBean);
 			}
+		}
+	}
+
+	public void addNewCharacterizationDataDropdowns(
+			CharacterizationBean charBean, String charaterizationName)
+			throws Exception {
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		try {
+			ida.open();
+			if (!charBean.getDerivedBioAssayDataList().isEmpty()) {
+				for (DerivedBioAssayDataBean derivedBioAssayDataBean : charBean
+						.getDerivedBioAssayDataList()) {
+					// add new characterization file type if necessary
+					if (derivedBioAssayDataBean.getType().length() > 0) {
+						CharacterizationFileType fileType = new CharacterizationFileType();
+						addLookupType(ida, fileType, derivedBioAssayDataBean
+								.getType());
+					}
+					// add new derived data cateory
+					for (String category : derivedBioAssayDataBean
+							.getCategories()) {
+						addDerivedDataCategory(ida, category,
+								charaterizationName);
+					}
+					// add new datum name, measure type, and unit
+					for (DatumBean datumBean : derivedBioAssayDataBean
+							.getDatumList()) {
+						addDatumName(ida, datumBean.getName(),
+								charaterizationName);
+						MeasureType measureType = new MeasureType();
+						addLookupType(ida, measureType, datumBean
+								.getStatisticsType());
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			ida.rollback();
+			logger.error("Problem saving characterization data drop downs. ");
+			throw e;
+		} finally {
+			ida.close();
 		}
 	}
 
@@ -395,6 +429,49 @@ public class SubmitNanoparticleService {
 		if (count == 0) {
 			ida.createObject(lookupType);
 		}
+	}
+
+	private void addDatumName(IDataAccess ida, String name,
+			String characterizationName) throws Exception {
+
+		List results = ida.search("select count(distinct name) from DatumName"
+				+ " where characterizationName='" + characterizationName + "'"
+				+ " and name='" + name + "'");
+		DatumName datumName = new DatumName();
+		datumName.setName(name);
+		datumName.setCharacterizationName(characterizationName);
+		datumName.setDatumParsed(false);
+		int count = -1;
+		for (Object obj : results) {
+			count = ((Integer) (obj)).intValue();
+		}
+		if (count == 0) {
+			ida.createObject(datumName);
+		}
+	}
+
+	private void addDerivedDataCategory(IDataAccess ida, String name,
+			String characterizationName) throws Exception {
+
+		List results = ida
+				.search("select count(distinct name) from DerivedBioAssayDataCategory"
+						+ " where characterizationName='"
+						+ characterizationName
+						+ "'"
+						+ " and name='"
+						+ name
+						+ "'");
+		DerivedBioAssayDataCategory category = new DerivedBioAssayDataCategory();
+		category.setName(name);
+		category.setCharacterizationName(characterizationName);
+		int count = -1;
+		for (Object obj : results) {
+			count = ((Integer) (obj)).intValue();
+		}
+		if (count == 0) {
+			ida.createObject(category);
+		}
+
 	}
 
 	private void addLookupType(LookupType lookupType, String type)
