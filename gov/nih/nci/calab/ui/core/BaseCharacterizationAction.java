@@ -181,8 +181,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 				particleName, particleType);
 		InitSessionSetup.getInstance().setAllInstruments(session);
 		InitSessionSetup.getInstance().setAllDerivedDataFileTypes(session);
-		InitSessionSetup.getInstance().setAllPhysicalDropdowns(session);		
-		InitSessionSetup.getInstance().setAllInvitroDropdowns(session);		
+		InitSessionSetup.getInstance().setAllPhysicalDropdowns(session);
+		InitSessionSetup.getInstance().setAllInvitroDropdowns(session);
 		InitSessionSetup.getInstance().setAllCharacterizationMeasureUnitsTypes(
 				session, charName);
 		// TODO If there are more types of charactizations, add their
@@ -295,8 +295,11 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			theForm.set("solubility", new SolubilityBean((Solubility) aChar));
 		} else if (aChar instanceof Surface) {
 			theForm.set("surface", new SurfaceBean((Surface) aChar));
+		} else if (aChar instanceof Solubility) {
+			theForm.set("solubility", new SolubilityBean((Solubility) aChar));
 		} else if (aChar instanceof Cytotoxicity) {
-			theForm.set("cytotoxicity", new CytotoxicityBean((Cytotoxicity) aChar));
+			theForm.set("cytotoxicity", new CytotoxicityBean(
+					(Cytotoxicity) aChar));
 		}
 
 		UserService userService = new UserService(
