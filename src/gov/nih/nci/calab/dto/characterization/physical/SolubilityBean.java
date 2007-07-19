@@ -36,10 +36,12 @@ public class SolubilityBean extends CharacterizationBean {
 	public SolubilityBean(SolubilityBean solubilityPropBean,
 			CharacterizationBean charBean) {
 		super(charBean);
-		this.solvent=solubilityPropBean.getSolvent();
-		this.criticalConcentration=solubilityPropBean.getCriticalConcentration();
-		this.criticalConcentrationUnit=solubilityPropBean.getCriticalConcentrationUnit();
-		this.isSoluble=solubilityPropBean.getIsSoluble();		
+		this.solvent = solubilityPropBean.getSolvent();
+		this.criticalConcentration = solubilityPropBean
+				.getCriticalConcentration();
+		this.criticalConcentrationUnit = solubilityPropBean
+				.getCriticalConcentrationUnit();
+		this.isSoluble = solubilityPropBean.getIsSoluble();
 	}
 
 	public SolubilityBean(Solubility aChar) {
@@ -59,8 +61,11 @@ public class SolubilityBean extends CharacterizationBean {
 		super.updateDomainObj(solubility);
 
 		solubility.setSolvent(this.solvent);
-		solubility.setCriticalConcentration(new Measurement(new Float(
-				this.criticalConcentration), this.criticalConcentrationUnit));
+		if (criticalConcentration.length() > 0)
+			solubility
+					.setCriticalConcentration(new Measurement(new Float(
+							this.criticalConcentration),
+							this.criticalConcentrationUnit));
 		solubility.setIsSoluble((this.isSoluble
 				.equalsIgnoreCase(CaNanoLabConstants.BOOLEAN_YES)) ? true
 				: false);
