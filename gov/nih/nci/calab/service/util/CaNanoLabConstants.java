@@ -426,4 +426,21 @@ public class CaNanoLabConstants {
 	public static final String AUTO_COPY_CHARACTERIZATION_VIEW_TITLE_PREFIX = "copy_";
 
 	public static final String AUTO_COPY_CHARACTERIZATION_VIEW_COLOR = "red";
+	
+	public static final String UNIT_TYPE_CONCENTRATION = "Concentration";
+	
+	public static final String UNIT_TYPE_CHARGE	= "Charge";
+	
+	public static final String UNIT_TYPE_QUANTITY = "Quantity";
+	
+	public static final String UNIT_TYPE_AREA = "Area";
+	
+	public static final String UNIT_TYPE_SIZE = "Size";
+	
+	public static final String UNIT_TYPE_VOLUME = "Volume";
+	
+	public static final String UNIT_TYPE_MOLECULAR_WEIGHT = "Molecular Weight";
+	
+	public static final String UNIT_TYPE_ZETA_POTENTIAL = "Zeta Potential";
+	
 }
