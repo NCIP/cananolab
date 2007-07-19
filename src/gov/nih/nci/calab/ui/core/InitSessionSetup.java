@@ -650,6 +650,12 @@ public class InitSessionSetup {
 					.getAllLookupTypes("MolecularFormulaType");
 			session.setAttribute("allMolecularFormulaTypes", chargeUnits);
 		}
+		if (session.getAttribute("allZetaPotentialUnits") == null
+				|| session.getAttribute("newSurfaceCreated") != null) {
+			SortedSet<String> chargeUnits = lookupService.getAllMeasureUnits()
+					.get("Zeta Potential");
+			session.setAttribute("allZetaPotentialUnits", chargeUnits);
+		}	
 		session.removeAttribute("newSurfaceCreated");
 	}
 
