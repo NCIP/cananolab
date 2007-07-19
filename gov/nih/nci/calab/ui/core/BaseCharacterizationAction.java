@@ -252,12 +252,14 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		MorphologyBean morphology = (MorphologyBean) theForm.get("morphology");
 		CytotoxicityBean cyto = (CytotoxicityBean) theForm.get("cytotoxicity");
 		SolubilityBean solubility = (SolubilityBean) theForm.get("solubility");
+		SurfaceBean surface = (SurfaceBean) theForm.get("surface");
 		HttpSession session = request.getSession();
 		updateAllCharEditables(session, achar);
 		updateShapeEditable(session, shape);
 		updateMorphologyEditable(session, morphology);
 		updateCytotoxicityEditable(session, cyto);
 		updateSolubilityEditable(session, solubility);
+		updateSurfaceEditable(session, surface);
 		return mapping.findForward("setup");
 	}
 
@@ -613,6 +615,18 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			SolubilityBean solubility) throws Exception {
 		InitSessionSetup.getInstance().updateEditableDropdown(session,
 				solubility.getSolvent(), "allSolventTypes");
+		InitSessionSetup.getInstance().updateEditableDropdown(session,
+				solubility.getCriticalConcentrationUnit(), "allConcentrationUnits");
+	}
+
+	private void updateSurfaceEditable(HttpSession session,
+			SurfaceBean surface) throws Exception {
+		InitSessionSetup.getInstance().updateEditableDropdown(session,
+				surface.getChargeUnit(), "allChargeMeasureUnits");
+		InitSessionSetup.getInstance().updateEditableDropdown(session,
+				surface.getSurfaceAreaUnit(), "allAreaMeasureUnits");
+		InitSessionSetup.getInstance().updateEditableDropdown(session,
+				surface.getZetaPotentialUnit(), "allZetaPotentialUnits");
 	}
 
 	public boolean loginRequired() {
