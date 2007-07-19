@@ -53,6 +53,7 @@ public class SurfaceBean extends CharacterizationBean {
 		this.surfaceAreaUnit = propBean.getSurfaceAreaUnit();
 		this.surfaceChemistries = propBean.getSurfaceChemistries();
 		this.zetaPotential = propBean.getZetaPotential();
+		this.zetaPotentialUnit = propBean.getZetaPotentialUnit();
 	}
 
 	public SurfaceBean(Surface aChar) {
@@ -71,7 +72,9 @@ public class SurfaceBean extends CharacterizationBean {
 		// this.zetaPotential = (aChar.getZetaPotential() !=
 		// null)?aChar.getZetaPotential().getValue():"";
 		this.zetaPotential = (aChar.getZetaPotential() != null) ? aChar
-				.getZetaPotential().toString() : "";
+				.getZetaPotential().getValue().toString() : "";
+		this.zetaPotentialUnit = (aChar.getZetaPotential() != null) ? aChar
+				.getZetaPotential().getUnitOfMeasurement() : "";
 
 		for (SurfaceChemistry surfaceChemistry : aChar
 				.getSurfaceChemistryCollection()) {
