@@ -12,10 +12,7 @@ public class Surface extends Characterization {
 
 	private Measurement surfaceArea;
 
-//	private Measurement surfaceCharge;
-
-	 private Measurement zetaPotential;
-//	private Float zetaPotential;
+	private Measurement zetaPotential;
 
 	private Measurement charge;
 
