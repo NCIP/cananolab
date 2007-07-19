@@ -64,6 +64,7 @@
 			<form-property name="particleName" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />
 			<form-property name="particleSource" type="java.lang.String" />
+			<form-property name="charName" type="java.lang.String"/>
 			<form-property name="otherParticles" type="java.lang.String[]" />
 			<form-property name="copyData" type="java.lang.Boolean" initial="false" />
 			<form-property name="characterizationId" type="java.lang.String" />
