@@ -17,7 +17,7 @@
 				<c:when test="${canUserSubmit eq 'true'}">
 					<td class="formSubTitle" colspan="4" align="right">
 						<a href="#"
-							onclick="javascript:removeCharacterizationFile(nanoparticleCharacterizationForm, '${param.charName}', '${param.actionName}', ${param.fileInd})">
+							onclick="javascript:removeCharacterizationFile(nanoparticleCharacterizationForm, '${charName}', '${actionName}', ${param.fileInd})">
 							<img src="images/delete.gif" border="0" alt="remove this file">
 						</a>
 					</td>
@@ -91,7 +91,7 @@
 					<c:when
 						test="${!empty nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].uri}">
 						<html:link
-							page="/updateAssayFile.do?page=0&dispatch=setupUpdate&fileId=${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].id}&actionName=${param.actionName}">
+							page="/updateAssayFile.do?page=0&dispatch=setupUpdate&fileId=${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].id}&actionName=${actionName}">
 								${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].displayName}
 							</html:link>
 					</c:when>
@@ -105,7 +105,7 @@
 							</c:when>
 						</c:choose>
 						&nbsp;&nbsp;&nbsp;&nbsp;<input type="button"
-							onclick="javascript:loadFile(this.form, '${param.charName}', '${param.actionName}', ${param.fileInd})"
+							onclick="javascript:loadFile(this.form, '${charName}', '${actionName}', ${param.fileInd})"
 							value="Load File">
 					</c:when>
 				</c:choose>
@@ -127,7 +127,7 @@
 							<c:when test="${canUserSubmit eq 'true'}">
 								<td valign="bottom">
 									<a href="#"
-										onclick="javascript:addCharacterizationData(nanoparticleCharacterizationForm, '${param.charName}', '${param.actionName}', ${param.fileInd})"><span
+										onclick="javascript:addCharacterizationData(nanoparticleCharacterizationForm, '${charName}', '${actionName}', ${param.fileInd})"><span
 										class="addLink">Add Derived Data</span> </a>
 								</td>
 							</c:when>
