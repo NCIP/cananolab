@@ -21,7 +21,16 @@
 			<td class="label">
 				<c:choose>
 					<c:when test="${canUserSubmit eq 'true'}">
-						<html:text property="solubility.solvent" />
+						<html:select property="solubility.solvent"
+							onkeydown="javascript:fnKeyDownHandler(this, event);"
+							onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
+							onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
+							onchange="fnChangeHandler_A(this, event);">
+							<option value="">
+								--?--
+							</option>
+							<html:options name="allSolventTypes" />
+						</html:select>
 					</c:when>
 					<c:otherwise>
 										${nanoparticleCharacterizationForm.map.solubility.solvent}&nbsp;
