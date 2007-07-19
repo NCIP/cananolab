@@ -7,6 +7,11 @@
 		<c:set var="actionName" value="${param.actionName}" scope="session" />
 	</c:when>
 </c:choose>
+<c:choose>
+	<c:when test="${!empty param.charName}">
+		<c:set var="charName" value="${param.charName}" scope="session" />
+	</c:when>
+</c:choose>
 <html:form action="/${actionName}">
 	<table width="100%" align="center">
 		<tr>
@@ -59,9 +64,9 @@
 									<tr>
 										<c:choose>
 											<c:when test="${canUserSubmit eq 'true'}">
-												<td valign="bottom">													
+												<td valign="bottom">
 													<a href="#"
-														onclick="javascript:addCharacterizationFile(nanoparticleCharacterizationForm, '${param.charName}', '${actionName}')"><span
+														onclick="javascript:addCharacterizationFile(nanoparticleCharacterizationForm, '${charName}', '${actionName}')"><span
 														class="addLink">Add File/Derived Data</span> </a>
 												</td>
 											</c:when>
@@ -85,7 +90,7 @@
 				</table>
 				<br>
 				<jsp:include page="/submit/shared/bodyCharacterizationCopy.jsp" />
-				<jsp:include page="/submit/shared/bodyCharacterizationSubmit.jsp" />				
+				<jsp:include page="/submit/shared/bodyCharacterizationSubmit.jsp" />
 			</td>
 		</tr>
 	</table>
