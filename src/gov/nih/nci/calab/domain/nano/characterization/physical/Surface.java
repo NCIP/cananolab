@@ -12,10 +12,10 @@ public class Surface extends Characterization {
 
 	private Measurement surfaceArea;
 
-	private Measurement surfaceCharge;
+//	private Measurement surfaceCharge;
 
-	// private Measurement zetaPotential;
-	private Float zetaPotential;
+	 private Measurement zetaPotential;
+//	private Float zetaPotential;
 
 	private Measurement charge;
 
@@ -61,13 +61,13 @@ public class Surface extends Characterization {
 		this.surfaceArea = surfaceArrea;
 	}
 
-	public Measurement getSurfaceCharge() {
-		return surfaceCharge;
-	}
-
-	public void setSurfaceCharge(Measurement surfaceCharge) {
-		this.surfaceCharge = surfaceCharge;
-	}
+//	public Measurement getSurfaceCharge() {
+//		return surfaceCharge;
+//	}
+//
+//	public void setSurfaceCharge(Measurement surfaceCharge) {
+//		this.surfaceCharge = surfaceCharge;
+//	}
 
 	/*
 	 * public Measurement getZetaPotential() { return zetaPotential; }
@@ -84,11 +84,11 @@ public class Surface extends Characterization {
 		this.surfaceChemistryCollection = surfaceChemistryCollection;
 	}
 
-	public Float getZetaPotential() {
+	public Measurement getZetaPotential() {
 		return zetaPotential;
 	}
 
-	public void setZetaPotential(Float zetaPotential) {
+	public void setZetaPotential(Measurement zetaPotential) {
 		this.zetaPotential = zetaPotential;
 	}
 }
