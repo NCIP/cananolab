@@ -16,47 +16,47 @@ function confirmDeletion()
 }
 //-->
 </script>
-		<br>
-		<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
-			<tr>
-				<td width="30%">
-					<span class="formMessage"> </span>
-					<br>
-					<c:choose>
-						<c:when test="${param.dispatch ne 'setup' && canUserDeleteChars eq 'true'}">
-							<table height="32" border="0" align="left" cellpadding="4" cellspacing="0">
-								<tr>
-									<td height="32">
-										<div align="left">
-											<input type="button" value="Delete" onclick="confirmDeletion();">
-										</div>
-									</td>
-								</tr>
-							</table>
-						</c:when>
-					</c:choose>
-					<c:choose>
-						<c:when test="${canUserSubmit eq 'true'}">
-							<table height="32" border="0" align="right" cellpadding="4" cellspacing="0">
-								<tr>
-									<td width="490" height="32">
-										<div align="right">
-											<input type="reset" value="Reset" onclick="">
-											<input type="hidden" name="dispatch" value="create">
-											<input type="hidden" name="page" value="2">
-											<c:choose>
-												<c:when test="${canUserSubmit eq 'true'}">
-													<html:hidden property="particleType" />
-												</c:when>
-											</c:choose>
-											<html:submit />
-										</div>
-									</td>
-								</tr>
-							</table>
-						</c:when>
-					</c:choose>
-					<div align="right"></div>
-				</td>
-			</tr>
-		</table>
+<br>
+<table width="100%" border="0" align="center" cellpadding="3"
+	cellspacing="0" class="topBorderOnly" summary="">
+	<tr>
+		<td width="30%">
+			<span class="formMessage"> </span>
+			<br>
+			<c:choose>
+				<c:when
+					test="${param.dispatch ne 'setup' && canUserDeleteChars eq 'true'}">
+					<table height="32" border="0" align="left" cellpadding="4"
+						cellspacing="0">
+						<tr>
+							<td height="32">
+								<div align="left">
+									<input type="button" value="Delete"
+										onclick="confirmDeletion();">
+								</div>
+							</td>
+						</tr>
+					</table>
+				</c:when>
+			</c:choose>
+			<c:choose>
+				<c:when test="${canUserSubmit eq 'true'}">
+					<table height="32" border="0" align="right" cellpadding="4"
+						cellspacing="0">
+						<tr>
+							<td width="490" height="32">
+								<div align="right">
+									<input type="reset" value="Reset" onclick="">
+									<input type="hidden" name="dispatch" value="create">
+									<input type="hidden" name="page" value="2">
+									<html:submit />
+								</div>
+							</td>
+						</tr>
+					</table>
+				</c:when>
+			</c:choose>
+			<div align="right"></div>
+		</td>
+	</tr>
+</table>
