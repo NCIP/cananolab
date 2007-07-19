@@ -440,8 +440,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 	public ActionForward removeFile(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		String findIndexStr = (String) request.getParameter("fileInd");
-		int fileInd = Integer.parseInt(findIndexStr);
+		String fileIndexStr = (String) request.getParameter("fileInd");
+		int fileInd = Integer.parseInt(fileIndexStr);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
@@ -452,7 +452,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		for (int i = 0; i < origNum; i++) {
 			tables.add((DerivedBioAssayDataBean) origTables.get(i));
 		}
-		// remove the one at findInd
+		// remove the one at the index
 		if (origNum > 0) {
 			tables.remove(fileInd);
 		}
@@ -608,7 +608,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		InitSessionSetup.getInstance().updateEditableDropdown(session,
 				cyto.getCellLine(), "allCellLines");
 	}
-	
+
 	private void updateSolubilityEditable(HttpSession session,
 			SolubilityBean solubility) throws Exception {
 		InitSessionSetup.getInstance().updateEditableDropdown(session,
