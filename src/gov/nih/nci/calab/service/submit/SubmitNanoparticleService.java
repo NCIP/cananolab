@@ -204,9 +204,11 @@ public class SubmitNanoparticleService {
 			if (!charBean.getDerivedBioAssayDataList().isEmpty()) {
 				for (DerivedBioAssayDataBean derivedBioAssayDataBean : charBean
 						.getDerivedBioAssayDataList()) {
-					if (derivedBioAssayDataBean.getType().length() > 0)
-						addCharacterizationFileType(ida,
-								derivedBioAssayDataBean.getType());
+					if (derivedBioAssayDataBean.getType().length() > 0) {
+						CharacterizationFileType fileType = new CharacterizationFileType();
+						addLookupType(ida, fileType, derivedBioAssayDataBean
+								.getType());
+					}
 				}
 			}
 
@@ -227,22 +229,6 @@ public class SubmitNanoparticleService {
 					.getDerivedBioAssayDataList()) {
 				saveCharacterizationFile(derivedBioAssayDataBean);
 			}
-		}
-	}
-
-	private void addCharacterizationFileType(IDataAccess ida, String type)
-			throws Exception {
-		List results = ida
-				.search("select count(distinct fileType.name) from CharacterizationFileType fileType where fileType.name='"
-						+ type + "'");
-		CharacterizationFileType fileType = new CharacterizationFileType();
-		fileType.setName(type);
-		int count = -1;
-		for (Object obj : results) {
-			count = ((Integer) (obj)).intValue();
-		}
-		if (count == 0) {
-			ida.createObject(fileType);
 		}
 	}
 
@@ -387,6 +373,22 @@ public class SubmitNanoparticleService {
 		((SurfaceBean) surface).updateDomainObj(doSurface);
 		addParticleCharacterization(particleType, particleName, doSurface,
 				surface);
+	}
+
+	private void addLookupType(IDataAccess ida, LookupType lookupType,
+			String type) throws Exception {
+		String className = lookupType.getClass().getSimpleName();
+
+		List results = ida.search("select count(distinct name) from "
+				+ className + " type where name='" + type + "'");
+		lookupType.setName(type);
+		int count = -1;
+		for (Object obj : results) {
+			count = ((Integer) (obj)).intValue();
+		}
+		if (count == 0) {
+			ida.createObject(lookupType);
+		}
 	}
 
 	private void addLookupType(LookupType lookupType, String type)
