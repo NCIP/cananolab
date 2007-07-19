@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-/* CVS $Id: ManageSampleService.java,v 1.10 2007-05-07 18:53:45 pansu Exp $ 
+/* CVS $Id: ManageSampleService.java,v 1.11 2007-07-19 14:52:38 pansu Exp $ 
  */
 public class ManageSampleService {
 	private static Logger logger = Logger.getLogger(ManageSampleService.class);
@@ -123,11 +123,8 @@ public class ManageSampleService {
 	public void saveSample(SampleBean sample, ContainerBean[] containers)
 			throws Exception {
 
-		boolean createNewSampleType = false;
-
-		// Get existing sampleType to compare
-		LookupService lookupService = new LookupService();
-		List<String> existingSampleTypes = lookupService.getAllSampleTypes();
+				// Get existing sampleType to compare
+		LookupService lookupService = new LookupService();		
 
 		// check if the smaple is exist
 		// For NCL, sampleId + lotId is unique -- in SampleBean, sampleId
