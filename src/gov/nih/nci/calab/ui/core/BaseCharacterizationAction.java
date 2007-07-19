@@ -68,10 +68,12 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		FileService fileService = new FileService();
 		for (DerivedBioAssayDataBean derivedDataFileBean : charBean
 				.getDerivedBioAssayDataList()) {
-			byte[] content = fileService.getFileContent(new Long(
-					derivedDataFileBean.getId()));
-			if (content != null) {
-				derivedDataFileBean.setFileContent(content);
+			if (derivedDataFileBean.getId() != null) {
+				byte[] content = fileService.getFileContent(new Long(
+						derivedDataFileBean.getId()));
+				if (content != null) {
+					derivedDataFileBean.setFileContent(content);
+				}
 			}
 		}
 
@@ -89,6 +91,12 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 
 		String particleName = theForm.getString("particleName");
 		String particleType = theForm.getString("particleType");
+		CharacterizationBean charBean = (CharacterizationBean) theForm
+				.get("achar");
+		String charName = theForm.getString("charName");
+		// save new lookup up types in the database definition tables.
+		SubmitNanoparticleService service = new SubmitNanoparticleService();
+		service.addNewCharacterizationDataDropdowns(charBean, charName);
 
 		request.getSession().setAttribute("newCharacterizationCreated", "true");
 		request.getSession().setAttribute("newCharacterizationSourceCreated",
@@ -175,7 +183,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		String particleName = theForm.getString("particleName");
 		String particleType = theForm.getString("particleType");
 		String particleSource = theForm.getString("particleSource");
-		String charName = request.getParameter("charName");
+		String charName = theForm.getString("charName");
 		InitSessionSetup.getInstance().setApplicationOwner(session);
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
@@ -203,8 +211,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 				particleSource, particleName, user);
 		session.setAttribute("allOtherParticleNames", allOtherParticleNames);
 
-		InitSessionSetup.getInstance().setDerivedDataCategoriesDatumNames(
-				session, charName);
+		InitSessionSetup.getInstance().setDerivedDatumNames(session, charName);
 		InitSessionSetup.getInstance().setAllCharacterizationDropdowns(session);
 	}
 
@@ -361,11 +368,12 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 	public ActionForward loadFile(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		request.setAttribute("characterizationName", request
-				.getParameter("charName"));
+
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleName = theForm.getString("particleName");
 		request.setAttribute("particleName", particleName);
+		request.setAttribute("characterizationName", theForm
+				.getString("charName"));
 		request.setAttribute("loadFileForward", mapping.findForward("setup")
 				.getPath());
 		CharacterizationBean achar = (CharacterizationBean) theForm
