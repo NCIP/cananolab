@@ -6,6 +6,8 @@ public class SurfaceChemistry implements java.io.Serializable {
 
 	private Long id;
 
+	private String molecularFormulaType;
+	
 	private String moleculeName;
 
 	private Integer numberOfMolecule;
@@ -37,5 +39,13 @@ public class SurfaceChemistry implements java.io.Serializable {
 
 	public void setNumberOfMolecule(Integer numberOfMolecule) {
 		this.numberOfMolecule = numberOfMolecule;
+	}
+
+	public String getMolecularFormulaType() {
+		return molecularFormulaType;
+	}
+
+	public void setMolecularFormulaType(String molecularFormulaType) {
+		this.molecularFormulaType = molecularFormulaType;
 	}
 }

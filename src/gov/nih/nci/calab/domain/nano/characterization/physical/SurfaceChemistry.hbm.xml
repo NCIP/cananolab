@@ -10,6 +10,7 @@
 				<param name="column">next_hi</param>
 	   </generator>
     </id>
+    <property name="molecularFormulaType" type="java.lang.String" column="MOLECULAR_FORMULA_TYPE" />
     <property name="moleculeName" type="java.lang.String" column="MOLECULE_NAME" />
     <property name="numberOfMolecule" type="java.lang.Integer" column="NUMBER_MOLECULE" />
   </class>

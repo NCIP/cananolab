@@ -13,6 +13,7 @@ public class SurfaceChemistryBean {
 	private String id;
 	private String moleculeName;
 	private String numberOfMolecules;
+	private String molecularFormulaType;
 
 	/**
 	 * 
@@ -58,6 +59,14 @@ public class SurfaceChemistryBean {
 
 	public void setNumberOfMolecules(String numberOfMolecule) {
 		this.numberOfMolecules = numberOfMolecule;
+	}
+
+	public String getMolecularFormulaType() {
+		return molecularFormulaType;
+	}
+
+	public void setMolecularFormulaType(String molecularFormulaType) {
+		this.molecularFormulaType = molecularFormulaType;
 	}
 
 }
