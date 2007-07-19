@@ -72,8 +72,12 @@
 			</component>
 			<property name="isHydrophobic" type="java.lang.Boolean"
 				column="IS_HYDROPHOBIC" />
-			<property name="zetaPotential" type="java.lang.Float"
-				column="ZETA_POTENTIAL" />
+			<component name="zetaPotential"
+				class="gov.nih.nci.calab.domain.Measurement">
+				<property name="value" column="ZETA_POTENTIAL" />
+				<property name="unitOfMeasurement"
+					column="ZETA_POTENTIAL_UNIT" />
+			</component>
 		</join>
 	</subclass>
 	<subclass name="Purity"
