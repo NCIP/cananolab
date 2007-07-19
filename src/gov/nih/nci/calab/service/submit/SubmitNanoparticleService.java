@@ -8,6 +8,7 @@ import gov.nih.nci.calab.domain.InstrumentConfiguration;
 import gov.nih.nci.calab.domain.Keyword;
 import gov.nih.nci.calab.domain.LabFile;
 import gov.nih.nci.calab.domain.LookupType;
+import gov.nih.nci.calab.domain.MeasureUnit;
 import gov.nih.nci.calab.domain.OutputFile;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.CharacterizationFileType;
@@ -373,6 +374,11 @@ public class SubmitNanoparticleService {
 		((SurfaceBean) surface).updateDomainObj(doSurface);
 		addParticleCharacterization(particleType, particleName, doSurface,
 				surface);
+		MeasureUnit measureUnit = new MeasureUnit();
+		addMeasureUnit(measureUnit, doSurface.getCharge().getUnitOfMeasurement(), CaNanoLabConstants.UNIT_TYPE_CHARGE);
+		addMeasureUnit(measureUnit, doSurface.getSurfaceArea().getUnitOfMeasurement(), CaNanoLabConstants.UNIT_TYPE_CHARGE);
+		addMeasureUnit(measureUnit, doSurface.getZetaPotential().getUnitOfMeasurement(), CaNanoLabConstants.UNIT_TYPE_ZETA_POTENTIAL);
+
 	}
 
 	private void addLookupType(IDataAccess ida, LookupType lookupType,
@@ -408,6 +414,35 @@ public class SubmitNanoparticleService {
 			}
 			if (count == 0) {
 				ida.createObject(lookupType);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			ida.rollback();
+			logger.error("Problem saving look up type: " + type);
+			throw e;
+		} finally {
+			ida.close();
+		}
+	}
+
+	private void addMeasureUnit(MeasureUnit unitType, String unit, String type)
+			throws Exception {
+		// if ID is not set save to the database otherwise update
+		IDataAccess ida = (new DataAccessProxy())
+				.getInstance(IDataAccess.HIBERNATE);
+		String className = unitType.getClass().getSimpleName();
+		try {
+			ida.open();
+			List results = ida.search("select count(distinct measureUnit.name) from "
+					+ className + " measureUnit where measureUnit.name='" + unit + "' and measureUnit.type='" + type + "'");
+			int count = -1;
+			for (Object obj : results) {
+				count = ((Integer) (obj)).intValue();
+			}
+			if (count == 0) {
+				unitType.setName(unit);
+				unitType.setType(type);
+				ida.createObject(unitType);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -505,6 +540,8 @@ public class SubmitNanoparticleService {
 				solubility);
 		SolventType solventType = new SolventType();
 		addLookupType(solventType, doSolubility.getSolvent());
+		MeasureUnit measureUnit = new MeasureUnit();
+		addMeasureUnit(measureUnit, doSolubility.getCriticalConcentration().getUnitOfMeasurement(), CaNanoLabConstants.UNIT_TYPE_CONCENTRATION);
 	}
 
 	/**
