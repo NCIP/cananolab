@@ -9,16 +9,7 @@ public class DatumName {
 
 	private String name;
 
-	private DerivedBioAssayDataCategory derivedBioAssayDataCategory;
-
-	public DerivedBioAssayDataCategory getDerivedBioAssayDataCategory() {
-		return derivedBioAssayDataCategory;
-	}
-
-	public void setDerivedBioAssayDataCategory(
-			DerivedBioAssayDataCategory derivedBioAssayDataCategory) {
-		this.derivedBioAssayDataCategory = derivedBioAssayDataCategory;
-	}
+	private String characterizationName;
 
 	public Boolean getDatumParsed() {
 		return datumParsed;
@@ -42,6 +33,14 @@ public class DatumName {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getCharacterizationName() {
+		return characterizationName;
+	}
+
+	public void setCharacterizationName(String characterizationName) {
+		this.characterizationName = characterizationName;
 	}
 
 }

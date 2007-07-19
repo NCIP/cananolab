@@ -12,11 +12,6 @@
 		</id>
 		<property name="characterizationName" type="java.lang.String" column="CHARACTERIZATION_NAME" />	
 		<property name="name" type="java.lang.String" column="NAME" />		
-		<set name="datumNameCollection" cascade="all-delete-orphan" lazy="true" inverse="true">
-			<cache usage="read-write" />
-			<key column="CATEGORY_PK_ID" />			
-			<one-to-many class="gov.nih.nci.calab.domain.nano.characterization.DatumName" />
-		</set>
 	</class>
 	
 	<class name="DatumName" table="DEF_DATUM_NAME" lazy="true" polymorphism="explicit">
@@ -29,8 +24,6 @@
 		</id>
 		<property name="name" type="java.lang.String" column="NAME" />
 		<property name="datumParsed" type="java.lang.Boolean" column="IS_DATUM_PARSED"/>
-		<many-to-one name="derivedBioAssayDataCategory"
-			class="DerivedBioAssayDataCategory" column="CATEGORY_PK_ID"
-			not-null="true" lazy="false"/>
+		<property name="characterizationName" type="java.lang.String" column="CHARACTERIZATION_NAME"/>
 	</class>	
 </hibernate-mapping>
