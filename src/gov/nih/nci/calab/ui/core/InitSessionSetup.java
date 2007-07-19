@@ -201,8 +201,9 @@ public class InitSessionSetup {
 
 	public void setAllSampleTypes(ServletContext appContext) throws Exception {
 		if (appContext.getAttribute("allSampleTypes") == null) {
-			List sampleTypes = lookupService.getAllSampleTypes();
-			appContext.setAttribute("allSampleTypes", sampleTypes);
+			SortedSet<String> types = lookupService
+					.getAllLookupTypes("SampleType");
+			appContext.setAttribute("allSampleTypes", types);
 		}
 	}
 
@@ -599,7 +600,8 @@ public class InitSessionSetup {
 		// solubility
 		if (session.getAttribute("allSolventTypes") == null
 				|| session.getAttribute("newSolubilityCreated") != null) {
-			SortedSet<String> solventTypes = lookupService.getAllSolventTypes();
+			SortedSet<String> solventTypes = lookupService
+					.getAllLookupTypes("SolventType");
 			session.setAttribute("allSolventTypes", solventTypes);
 		}
 		if (session.getAttribute("allConcentrationUnits") == null
@@ -613,7 +615,8 @@ public class InitSessionSetup {
 		// shape
 		if (session.getAttribute("allShapeTypes") == null
 				|| session.getAttribute("newShapeCreated") != null) {
-			SortedSet<String> shapeTypes = lookupService.getAllShapeTypes();
+			SortedSet<String> shapeTypes = lookupService
+					.getAllLookupTypes("ShapeType");
 			session.setAttribute("allShapeTypes", shapeTypes);
 		}
 		session.removeAttribute("newShapeCreated");
@@ -622,7 +625,8 @@ public class InitSessionSetup {
 		if (session.getAttribute("allMorphologyTypes") == null
 				|| session.getAttribute("newMorphologyCreated") != null) {
 			SortedSet<String> morphologyTypes = lookupService
-					.getAllMorphologyTypes();
+					.getAllLookupTypes("MorphologyType");
+			;
 			session.setAttribute("allMorphologyTypes", morphologyTypes);
 		}
 		session.removeAttribute("newMorphologyCreated");
@@ -639,7 +643,13 @@ public class InitSessionSetup {
 			SortedSet<String> chargeUnits = lookupService.getAllMeasureUnits()
 					.get("Area");
 			session.setAttribute("allAreaMeasureUnits", chargeUnits);
-		}		
+		}
+		if (session.getAttribute("allMolecularFormulaTypes") == null
+				|| session.getAttribute("newSurfaceCreated") != null) {
+			SortedSet<String> chargeUnits = lookupService
+					.getAllLookupTypes("MolecularFormulaType");
+			session.setAttribute("allMolecularFormulaTypes", chargeUnits);
+		}
 		session.removeAttribute("newSurfaceCreated");
 	}
 
@@ -781,7 +791,8 @@ public class InitSessionSetup {
 	public void setAllInvitroDropdowns(HttpSession session) throws Exception {
 		if (session.getAttribute("allCellLines") == null
 				|| session.getAttribute("newCytoCreated") != null) {
-			SortedSet<String> cellLines = lookupService.getAllCellLines();
+			SortedSet<String> cellLines = lookupService
+					.getAllLookupTypes("CellLineType");
 			session.setAttribute("allCellLines", cellLines);
 		}
 		session.removeAttribute("newCytoCreated");
@@ -869,7 +880,8 @@ public class InitSessionSetup {
 	public void setAllFunctionTypes(HttpSession session) throws Exception {
 		// set in application context
 		if (session.getServletContext().getAttribute("allFunctionTypes") == null) {
-			List<String> types = lookupService.getAllFunctionTypes();
+			SortedSet<String> types = lookupService
+					.getAllLookupTypes("FunctionType");
 			session.getServletContext().setAttribute("allFunctionTypes", types);
 		}
 	}
@@ -915,7 +927,8 @@ public class InitSessionSetup {
 			charUnits = new TreeSet<String>();
 			charUnits.add("");// add an empty one to indicate no unit
 		}
-		SortedSet<String> types = lookupService.getAllMeasureTypes();
+		SortedSet<String> types = lookupService
+				.getAllLookupTypes("MeasureType");
 		session.setAttribute("charMeasureUnits", charUnits);
 		session.setAttribute("charMeasureTypes", types);
 	}
