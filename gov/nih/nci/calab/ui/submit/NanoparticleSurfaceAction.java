@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSurfaceAction.java,v 1.22 2007-07-18 21:45:48 pansu Exp $ */
+/* CVS $Id: NanoparticleSurfaceAction.java,v 1.23 2007-07-19 14:53:23 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.physical.SurfaceBean;
@@ -68,73 +68,53 @@ public class NanoparticleSurfaceAction extends BaseCharacterizationAction {
 		return forward;
 	}
 
-	/**
-	 * Update multiple children on the same form
-	 * 
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws Exception
-	 */
-	public ActionForward update(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
+	public ActionForward addSurfaceChemistry(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
-		SurfaceBean achar = (SurfaceBean) theForm.get("achar");
-		String type = (String) request.getParameter("type");
-		if (type != null && !type.equals("")
-				&& type.equals("surfaceChemistries")) {
-			updateSurfaceChemistries(achar);
-			;
+		SurfaceBean surface = (SurfaceBean) theForm.get("surface");
+		List<SurfaceChemistryBean> origChemistries = surface
+				.getSurfaceChemistries();
+
+		int origNum = (origChemistries == null) ? 0 : origChemistries.size();
+		List<SurfaceChemistryBean> chems = new ArrayList<SurfaceChemistryBean>();
+		for (int i = 0; i < origNum; i++) {
+			chems.add((SurfaceChemistryBean) origChemistries.get(i));
 		}
-		theForm.set("achar", achar);
+		// add a new one
+		chems.add(new SurfaceChemistryBean());
+		surface.setSurfaceChemistries(chems);
+		String particleName = theForm.getString("particleName");
+		String particleType = theForm.getString("particleType");
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
-		return mapping.getInputForward();
+		return input(mapping, form, request, response);
 	}
-
-	/**
-	 * Update surface chemistry for Surface
-	 * 
-	 * @param particle
-	 */
-	private void updateSurfaceChemistries(SurfaceBean surface) {
-		int surfaceChemistryNum = Integer.parseInt(surface
-				.getNumberOfSurfaceChemistries());
-		List<SurfaceChemistryBean> origSurfaceChemistries = surface
+	
+	public ActionForward removeSurfaceChemistry(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		String indexStr = (String) request.getParameter("chemInd");
+		int chemInd = Integer.parseInt(indexStr);
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		SurfaceBean surface = (SurfaceBean) theForm.get("surface");
+		List<SurfaceChemistryBean> origChemistries = surface
 				.getSurfaceChemistries();
-		int origNum = (origSurfaceChemistries == null) ? 0
-				: origSurfaceChemistries.size();
-		List<SurfaceChemistryBean> surfaceChemistries = new ArrayList<SurfaceChemistryBean>();
-		// create new ones
-		if (origNum == 0) {
 
-			for (int i = 0; i < surfaceChemistryNum; i++) {
-				SurfaceChemistryBean surfaceChemistry = new SurfaceChemistryBean();
-				surfaceChemistries.add(surfaceChemistry);
-			}
+		int origNum = (origChemistries == null) ? 0 : origChemistries.size();
+		List<SurfaceChemistryBean> chems = new ArrayList<SurfaceChemistryBean>();
+		for (int i = 0; i < origNum; i++) {
+			chems.add((SurfaceChemistryBean) origChemistries.get(i));
 		}
-		// use keep original surface group info
-		else if (surfaceChemistryNum <= origNum) {
-			for (int i = 0; i < surfaceChemistryNum; i++) {
-				surfaceChemistries
-						.add((SurfaceChemistryBean) origSurfaceChemistries
-								.get(i));
-			}
-		} else {
-			for (int i = 0; i < origNum; i++) {
-				surfaceChemistries
-						.add((SurfaceChemistryBean) origSurfaceChemistries
-								.get(i));
-			}
-			for (int i = origNum; i < surfaceChemistryNum; i++) {
-				surfaceChemistries.add(new SurfaceChemistryBean());
-			}
+		// remove the one at the index
+		if (origNum > 0) {
+			chems.remove(chemInd);
 		}
-		surface.setSurfaceChemistries(surfaceChemistries);
+		surface.setSurfaceChemistries(chems);
+		String particleName = theForm.getString("particleName");
+		String particleType = theForm.getString("particleType");
+		InitSessionSetup.getInstance().setSideParticleMenu(request,
+				particleName, particleType);
+		return input(mapping, form, request, response);
 	}
 }
