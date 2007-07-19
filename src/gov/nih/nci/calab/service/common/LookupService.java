@@ -51,7 +51,7 @@ import org.hibernate.collection.PersistentSet;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.125 2007-07-19 14:52:19 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.126 2007-07-19 21:19:57 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -819,26 +819,28 @@ public class LookupService {
 		return instrumentManufacturers;
 	}
 
-	public SortedSet<String> getAllLookupTypes(String lookupType) throws Exception {
+	public SortedSet<String> getAllLookupTypes(String lookupType)
+			throws Exception {
 		SortedSet<String> types = new TreeSet<String>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
-			String hqlString = "select distinct name from "+lookupType;
+			String hqlString = "select distinct name from " + lookupType;
 			List results = ida.search(hqlString);
 			for (Object obj : results) {
 				types.add((String) obj);
 			}
 		} catch (Exception e) {
-			logger.error("Problem to retrieve all "+lookupType+" types.");
-			throw new RuntimeException("Problem to retrieve all "+lookupType+" types.");
+			logger.error("Problem to retrieve all " + lookupType + " types.");
+			throw new RuntimeException("Problem to retrieve all " + lookupType
+					+ " types.");
 		} finally {
 			ida.close();
 		}
 		return types;
 	}
-	
+
 	public Map<ProtocolBean, List<ProtocolFileBean>> getAllProtocolNameVersionByType(
 			String type) throws Exception {
 		Map<ProtocolBean, List<ProtocolFileBean>> nameVersions = new HashMap<ProtocolBean, List<ProtocolFileBean>>();
@@ -1212,8 +1214,8 @@ public class LookupService {
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
-			String hqlString = "select distinct datumName.name from DerivedBioAssayDataCategory category left join category.datumNameCollection datumName where datumName.datumParsed=false and category.characterizationName='"
-					+ characterizationName + "' order by datumName.name";
+			String hqlString = "select distinct name from DatumName where datumParsed=false and characterizationName='"
+					+ characterizationName + "'";
 			List results = ida.search(hqlString);
 
 			for (Object obj : results) {
@@ -1241,8 +1243,8 @@ public class LookupService {
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
-			String hqlString = "select distinct category.name from DerivedBioAssayDataCategory category left join category.datumNameCollection datumName where datumName.datumParsed=false and category.characterizationName='"
-					+ characterizationName + "' order by category.name";
+			String hqlString = "select distinct name from DerivedBioAssayDataCategory where characterizationName='"
+					+ characterizationName + "'";
 			List results = ida.search(hqlString);
 			for (Object obj : results) {
 				String category = obj.toString();
@@ -1250,6 +1252,7 @@ public class LookupService {
 			}
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger
 					.error("Problem to retrieve all derived bioassay data categories. "
 							+ e);
