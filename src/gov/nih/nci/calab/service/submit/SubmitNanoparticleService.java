@@ -384,21 +384,21 @@ public class SubmitNanoparticleService {
 			CharacterizationBean surface) throws Exception {
 
 		Surface doSurface = new Surface();
-		((SurfaceBean)surface).updateDomainObj(doSurface);
+		((SurfaceBean) surface).updateDomainObj(doSurface);
 		addParticleCharacterization(particleType, particleName, doSurface,
 				surface);
 	}
 
-	private void addLookupType(LookupType lookupType, String lookupTypeType,
-			String type) throws Exception {
+	private void addLookupType(LookupType lookupType, String type)
+			throws Exception {
 		// if ID is not set save to the database otherwise update
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
+		String className = lookupType.getClass().getSimpleName();
 		try {
 			ida.open();
 			List results = ida.search("select count(distinct name) from "
-					+ lookupTypeType + " type where name='" + type
-					+ "'");
+					+ className + " type where name='" + type + "'");
 			lookupType.setName(type);
 			int count = -1;
 			for (Object obj : results) {
@@ -445,11 +445,11 @@ public class SubmitNanoparticleService {
 	public void addParticleMorphology(String particleType, String particleName,
 			CharacterizationBean morphology) throws Exception {
 		Morphology doMorphology = new Morphology();
-		((MorphologyBean)morphology).updateDomainObj(doMorphology);
+		((MorphologyBean) morphology).updateDomainObj(doMorphology);
 		addParticleCharacterization(particleType, particleName, doMorphology,
 				morphology);
 		MorphologyType morphologyType = new MorphologyType();
-		addLookupType(morphologyType, "MorphologyType", doMorphology.getType());
+		addLookupType(morphologyType, doMorphology.getType());
 	}
 
 	/**
@@ -463,10 +463,10 @@ public class SubmitNanoparticleService {
 	public void addParticleShape(String particleType, String particleName,
 			CharacterizationBean shape) throws Exception {
 		Shape doShape = new Shape();
-		((ShapeBean)shape).updateDomainObj(doShape);
+		((ShapeBean) shape).updateDomainObj(doShape);
 		addParticleCharacterization(particleType, particleName, doShape, shape);
 		ShapeType shapeType = new ShapeType();
-		addLookupType(shapeType, "ShapeType", doShape.getType());
+		addLookupType(shapeType, doShape.getType());
 	}
 
 	/**
@@ -497,13 +497,12 @@ public class SubmitNanoparticleService {
 	public void addParticleSolubility(String particleType, String particleName,
 			CharacterizationBean solubility) throws Exception {
 		Solubility doSolubility = new Solubility();
-		((SolubilityBean)solubility).updateDomainObj(doSolubility);
+		((SolubilityBean) solubility).updateDomainObj(doSolubility);
 		// TODO think about how to deal with characterization file.
 		addParticleCharacterization(particleType, particleName, doSolubility,
 				solubility);
 		SolventType solventType = new SolventType();
-		addLookupType(solventType, "SolventType", doSolubility.getSolvent());
-
+		addLookupType(solventType, doSolubility.getSolvent());
 	}
 
 	/**
@@ -708,7 +707,7 @@ public class SubmitNanoparticleService {
 	}
 
 	/**
-	 * Saves the invitro  binding characterization to the database
+	 * Saves the invitro binding characterization to the database
 	 * 
 	 * @param particleType
 	 * @param particleName
@@ -718,12 +717,11 @@ public class SubmitNanoparticleService {
 	public void addCellViability(String particleType, String particleName,
 			CharacterizationBean cellViability) throws Exception {
 		CellViability doCellViability = new CellViability();
-		((CytotoxicityBean)cellViability).updateDomainObj(doCellViability);
+		((CytotoxicityBean) cellViability).updateDomainObj(doCellViability);
 		addParticleCharacterization(particleType, particleName,
 				doCellViability, cellViability);
 		CellLineType cellLineType = new CellLineType();
-		addLookupType(cellLineType, "CellLineType", doCellViability
-				.getCellLine());
+		addLookupType(cellLineType, doCellViability.getCellLine());
 	}
 
 	/**
@@ -774,8 +772,7 @@ public class SubmitNanoparticleService {
 		addParticleCharacterization(particleType, particleName,
 				doCaspase3Activation, caspase3Activation);
 		CellLineType cellLineType = new CellLineType();
-		addLookupType(cellLineType, "CellLineType", doCaspase3Activation
-				.getCellLine());
+		addLookupType(cellLineType, doCaspase3Activation.getCellLine());
 	}
 
 	public void setCharacterizationFile(String particleName,
