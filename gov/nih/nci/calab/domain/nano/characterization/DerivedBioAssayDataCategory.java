@@ -13,8 +13,6 @@ public class DerivedBioAssayDataCategory implements Serializable {
 	
 	private String name;
 	
-	private Set<DatumName> datumNameCollection=new HashSet<DatumName>();
-	
 	public String getCharacterizationName() {
 		return characterizationName;
 	}
@@ -38,14 +36,4 @@ public class DerivedBioAssayDataCategory implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public Set<DatumName> getDatumNameCollection() {
-		return datumNameCollection;
-	}
-
-	public void setDatumNameCollection(Set<DatumName> datumNameCollection) {
-		this.datumNameCollection = datumNameCollection;
-	}
-	
-
 }
