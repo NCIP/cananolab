@@ -251,12 +251,13 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		ShapeBean shape = (ShapeBean) theForm.get("shape");
 		MorphologyBean morphology = (MorphologyBean) theForm.get("morphology");
 		CytotoxicityBean cyto = (CytotoxicityBean) theForm.get("cytotoxicity");
+		SolubilityBean solubility = (SolubilityBean) theForm.get("solubility");
 		HttpSession session = request.getSession();
 		updateAllCharEditables(session, achar);
 		updateShapeEditable(session, shape);
 		updateMorphologyEditable(session, morphology);
 		updateCytotoxicityEditable(session, cyto);
-
+		updateSolubilityEditable(session, solubility);
 		return mapping.findForward("setup");
 	}
 
@@ -606,6 +607,12 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			CytotoxicityBean cyto) throws Exception {
 		InitSessionSetup.getInstance().updateEditableDropdown(session,
 				cyto.getCellLine(), "allCellLines");
+	}
+	
+	private void updateSolubilityEditable(HttpSession session,
+			SolubilityBean solubility) throws Exception {
+		InitSessionSetup.getInstance().updateEditableDropdown(session,
+				solubility.getSolvent(), "allSolventTypes");
 	}
 
 	public boolean loginRequired() {
