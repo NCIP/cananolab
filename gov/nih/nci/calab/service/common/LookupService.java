@@ -51,7 +51,7 @@ import org.hibernate.collection.PersistentSet;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.124 2007-07-18 20:57:53 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.125 2007-07-19 14:52:19 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -141,34 +141,6 @@ public class LookupService {
 			ida.close();
 		}
 		return sampleContainers;
-	}
-
-	/**
-	 * Retrieving all sample types.
-	 * 
-	 * @return a list of all sample types
-	 */
-	public List<String> getAllSampleTypes() throws Exception {
-		// Detail here
-		// Retrieve data from Sample_Type table
-		List<String> sampleTypes = new ArrayList<String>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
-		try {
-			ida.open();
-			String hqlString = "select sampleType.name from SampleType sampleType order by sampleType.name";
-			List results = ida.search(hqlString);
-			for (Object obj : results) {
-				sampleTypes.add((String) obj);
-			}
-		} catch (Exception e) {
-			logger.error("Error in retrieving all sample types", e);
-			throw new RuntimeException("Error in retrieving all sample types");
-		} finally {
-			ida.close();
-		}
-
-		return sampleTypes;
 	}
 
 	/**
@@ -288,28 +260,6 @@ public class LookupService {
 			ida.close();
 		}
 		return unitMap;
-	}
-
-	public SortedSet<String> getAllMeasureTypes() throws Exception {
-		SortedSet<String> types = new TreeSet<String>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
-		try {
-			ida.open();
-			String hqlString = "from MeasureType type order by type.name";
-			List results = ida.search(hqlString);
-			for (Object obj : results) {
-				MeasureType type = (MeasureType) obj;
-				types.add(type.getName());
-			}
-		} catch (Exception e) {
-			logger.error("Error in retrieving all measure types", e);
-			throw new RuntimeException("Error in retrieving all measure types.");
-		} finally {
-			ida.close();
-		}
-
-		return types;
 	}
 
 	private List<StorageElement> getAllStorageElements() throws Exception {
@@ -869,68 +819,26 @@ public class LookupService {
 		return instrumentManufacturers;
 	}
 
-	public SortedSet<String> getAllMorphologyTypes() throws Exception {
-
-		SortedSet<String> morphologyTypes = new TreeSet<String>();
+	public SortedSet<String> getAllLookupTypes(String lookupType) throws Exception {
+		SortedSet<String> types = new TreeSet<String>();
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			ida.open();
-			String hqlString = "select distinct name from MorphologyType";
+			String hqlString = "select distinct name from "+lookupType;
 			List results = ida.search(hqlString);
 			for (Object obj : results) {
-				morphologyTypes.add((String) obj);
+				types.add((String) obj);
 			}
 		} catch (Exception e) {
-			logger.error("Problem to retrieve all morphology types.");
-			throw new RuntimeException(
-					"Problem to retrieve all morphology types.");
-		} finally {
-			ida.close();
-		}		
-		return morphologyTypes;
-	}
-
-	public SortedSet<String> getAllShapeTypes() throws Exception {
-		SortedSet<String> shapeTypes = new TreeSet<String>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
-		try {
-			ida.open();
-			String hqlString = "select distinct name from ShapeType";
-			List results = ida.search(hqlString);
-			for (Object obj : results) {
-				shapeTypes.add((String) obj);
-			}
-		} catch (Exception e) {
-			logger.error("Problem to retrieve all shape types.");
-			throw new RuntimeException("Problem to retrieve all shape types.");
+			logger.error("Problem to retrieve all "+lookupType+" types.");
+			throw new RuntimeException("Problem to retrieve all "+lookupType+" types.");
 		} finally {
 			ida.close();
 		}
-		return shapeTypes;
+		return types;
 	}
-
-	public SortedSet<String> getAllSolventTypes() throws Exception {
-		SortedSet<String> solventTypes = new TreeSet<String>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
-		try {
-			ida.open();
-			String hqlString = "select distinct name from SolventType";
-			List results = ida.search(hqlString);
-			for (Object obj : results) {
-				solventTypes.add((String) obj);
-			}
-		} catch (Exception e) {
-			logger.error("Problem to retrieve all solvent types.");
-			throw new RuntimeException("Problem to retrieve all solvent types.");
-		} finally {
-			ida.close();
-		}
-		return solventTypes;
-	}
-
+	
 	public Map<ProtocolBean, List<ProtocolFileBean>> getAllProtocolNameVersionByType(
 			String type) throws Exception {
 		Map<ProtocolBean, List<ProtocolFileBean>> nameVersions = new HashMap<ProtocolBean, List<ProtocolFileBean>>();
@@ -1101,28 +1009,6 @@ public class LookupService {
 		return targetTypes;
 	}
 
-	public SortedSet<String> getAllCellLines() throws Exception {
-
-		SortedSet<String> cellLines = new TreeSet<String>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
-		try {
-			ida.open();
-			String hqlString = "select distinct name from CellLineType";
-			List results = ida.search(hqlString);
-			for (Object obj : results) {
-				cellLines.add((String) obj);
-			}
-		} catch (Exception e) {
-			logger.error("Problem to retrieve all Cell lines.");
-			throw new RuntimeException("Problem to retrieve all Cell lines.");
-		} finally {
-			ida.close();
-		}
-		return cellLines;
-
-	}
-
 	public String[] getAllActivationMethods() {
 		String[] activationMethods = new String[] { "NMR", "MRI", "Radiation",
 				"Ultrasound", "Ultraviolet Light" };
@@ -1247,28 +1133,6 @@ public class LookupService {
 			ida.close();
 		}
 		return fileTypes;
-	}
-
-	public List<String> getAllFunctionTypes() throws Exception {
-		List<String> types = new ArrayList<String>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
-		try {
-			ida.open();
-			String hqlString = "select funcType.name from FunctionType funcType order by funcType.name";
-			List results = ida.search(hqlString);
-			for (Object obj : results) {
-				String type = (String) obj;
-				types.add(type);
-			}
-		} catch (Exception e) {
-			logger.error("Problem to retrieve all function types. " + e);
-			throw new RuntimeException(
-					"Problem to retrieve all function types. ");
-		} finally {
-			ida.close();
-		}
-		return types;
 	}
 
 	public List<CharacterizationTypeBean> getAllCharacterizationTypes()
