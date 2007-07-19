@@ -231,8 +231,12 @@ function updateComposition() {
 	document.nanoparticleCompositionForm.action = "composition.do?dispatch=update&page=0";
 	document.nanoparticleCompositionForm.submit();
 }
-function updateSurfaceChemistries(form, actionName) {
-	form.action = actionName + ".do?dispatch=update&page=0&type=surfaceChemistries";
+function addSurfaceChemistry(form, actionName) {
+	form.action = actionName + ".do?dispatch=addSurfaceChemistry&page=0";
+	form.submit();
+}
+function removeSurfaceChemistry(form, actionName, chemInd) {
+	form.action = actionName + ".do?dispatch=removeSurfaceChemistry&page=0&chemInd="+chemInd;
 	form.submit();
 }
 function addCharacterizationFile(form, charName, actionName) {
