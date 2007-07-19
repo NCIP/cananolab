@@ -376,7 +376,7 @@ public class SubmitNanoparticleService {
 				surface);
 		MeasureUnit measureUnit = new MeasureUnit();
 		addMeasureUnit(measureUnit, doSurface.getCharge().getUnitOfMeasurement(), CaNanoLabConstants.UNIT_TYPE_CHARGE);
-		addMeasureUnit(measureUnit, doSurface.getSurfaceArea().getUnitOfMeasurement(), CaNanoLabConstants.UNIT_TYPE_CHARGE);
+		addMeasureUnit(measureUnit, doSurface.getSurfaceArea().getUnitOfMeasurement(), CaNanoLabConstants.UNIT_TYPE_AREA);
 		addMeasureUnit(measureUnit, doSurface.getZetaPotential().getUnitOfMeasurement(), CaNanoLabConstants.UNIT_TYPE_ZETA_POTENTIAL);
 
 	}
