@@ -57,7 +57,11 @@
 					<c:choose>
 						<c:when test="${canUserSubmit eq 'true'}">
 							<html:select
-								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].statisticsType">
+								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].statisticsType"
+								onkeydown="javascript:fnKeyDownHandler(this, event);"
+								onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
+								onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
+								onchange="fnChangeHandler_A(this, event);">
 								<option value="">
 									--?--
 								</option>
@@ -85,7 +89,11 @@
 					<c:choose>
 						<c:when test="${canUserSubmit eq 'true'}">
 							<html:select
-								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].unit">
+								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].unit"
+								onkeydown="javascript:fnKeyDownHandler(this, event);"
+								onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
+								onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
+								onchange="fnChangeHandler_A(this, event);">
 								<option value="">
 									--?--
 								</option>
