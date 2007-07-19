@@ -99,83 +99,98 @@
 		<tr class="topBorder">
 			<td class="formTitle" colspan="4">
 				<div align="justify">
-					Surface Chemistry
+					Surface Chemistry Information
 				</div>
 			</td>
 		</tr>
 		<tr>
-			<td class="leftLabel">
-				<strong>Number of Surface Chemistry</strong>
-			</td>
-			<td class="label">
-				<c:choose>
-					<c:when test="${canUserSubmit eq 'true'}">
-						<html:text property="surface.numberOfSurfaceChemistries" />
-					</c:when>
-					<c:otherwise>
-						${nanoparticleCharacterizationForm.map.surface.numberOfSurfaceChemistries}&nbsp;
-									</c:otherwise>
-				</c:choose>
-			</td>
-			<td class="rightLabel" colspan="2">
-				&nbsp;
-				<c:choose>
-					<c:when test="${canUserSubmit eq 'true'}">
-						<input type="button"
-							onclick="javascript:updateSurfaceChemistries(this.form, 'nanoparticleSurface')"
-							value="Update Surface Chemistries">
-					</c:when>
-				</c:choose>
-			</td>
-		</tr>
-		<tr>
 			<td class="completeLabel" colspan="4">
-				<c:forEach var="achar.surfaceChemistries"
-					items="${nanoparticleCharacterizationForm.map.surface.surfaceChemistries}"
-					varStatus="status">
-					<table class="topBorderOnly" cellspacing="0" cellpadding="3"
-						width="100%" align="center" summary="" border="0">
-						<tbody>
-							<tr class="topBorder">
-								<td class="formSubTitle" colspan="4">
-									<div align="justify">
-										Surface Chemistry ${status.index+1}
-									</div>
+				<table border="0" width="100%">
+					<tr>
+						<c:choose>
+							<c:when test="${canUserSubmit eq 'true'}">
+								<td valign="bottom">
+									<a href="#"
+										onclick="javascript:addSurfaceChemistry(nanoparticleCharacterizationForm,'${actionName}')"><span
+										class="addLink">Add Surface Chemistry</span> </a>
 								</td>
-							</tr>
-							<tr>
-								<td class="leftLabel">
-									<strong>Molecule</strong>
-								</td>
-								<td class="label">
-									<c:choose>
-										<c:when test="${canUserSubmit eq 'true'}">
-											<html:text name="achar.surfaceChemistries" indexed="true"
-												property="moleculeName" />
-										</c:when>
-										<c:otherwise>
+							</c:when>
+							<c:otherwise>
+								<td></td>
+							</c:otherwise>
+						</c:choose>
+						<td>
+							<c:forEach var="surface.surfaceChemistries"
+								items="${nanoparticleCharacterizationForm.map.surface.surfaceChemistries}"
+								varStatus="status">
+								<table class="topBorderOnly" cellspacing="0" cellpadding="3"
+									width="100%" align="center" summary="" border="0">
+									<tbody>
+										<tr>
+											<c:choose>
+												<c:when test="${canUserSubmit eq 'true'}">
+													<td class="formSubTitle" colspan="4" align="right">
+														<a href="#"
+															onclick="javascript:removeSurfaceChemistry(nanoparticleCharacterizationForm, '${actionName}', ${status.index})">
+															<img src="images/delete.gif" border="0"
+																alt="remove this file"> </a>
+													</td>
+												</c:when>
+												<c:otherwise>
+													<td></td>
+												</c:otherwise>
+											</c:choose>
+										</tr>
+										<tr>
+											<td class="leftLabel">
+												<strong>Molecular Formula Type</strong>
+											</td>
+											<td class="label">
+												<html:select name="surface.surfaceChemistries"
+													indexed="true" property="molecularFormulaType">
+													<option/>
+													<html:options name="allMolecularFormulaTypes" />
+												</html:select>
+											</td>
+											<td class="label">
+												<strong>Molecular Formula</strong>
+											</td>
+											<td class="rightLabel">
+												<c:choose>
+													<c:when test="${canUserSubmit eq 'true'}">
+														<html:text name="surface.surfaceChemistries"
+															indexed="true" property="moleculeName" size="30"/>
+													</c:when>
+													<c:otherwise>
 						${nanoparticleCharacterizationForm.map.surface.surfaceChemistries[status.index].moleculeName}&nbsp;
 														</c:otherwise>
-									</c:choose>
-								</td>
-								<td class="label">
-									<strong>Number of Molecule </strong>
-								</td>
-								<td class="rightLabel">
-									<c:choose>
-										<c:when test="${canUserSubmit eq 'true'}">
-											<html:text name="surface.surfaceChemistries" indexed="true"
-												property="numberOfMolecules" /> &nbsp;															
+												</c:choose>
+											</td>
+										</tr>
+										<tr>
+											<td class="leftLabel">
+												<strong>Number of Molecule </strong>
+											</td>
+											<td class="rightLabel" colspan="3">
+												&nbsp;
+												<c:choose>
+													<c:when test="${canUserSubmit eq 'true'}">
+														<html:text name="surface.surfaceChemistries"
+															indexed="true" property="numberOfMolecules" /> &nbsp;															
 														</c:when>
-										<c:otherwise>
+													<c:otherwise>
 															${nanoparticleCharacterizationForm.map.surface.surfaceChemistries[status.index].numberOfMolecules}&nbsp;
 														</c:otherwise>
-									</c:choose>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</c:forEach>
+												</c:choose>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								<br>
+							</c:forEach>
+						</td>
+					</tr>
+				</table>
 			</td>
 		</tr>
 </table>
