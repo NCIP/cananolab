@@ -1,5 +1,6 @@
 package gov.nih.nci.calab.dto.characterization.physical;
 
+import gov.nih.nci.calab.domain.Measurement;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Shape;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 
@@ -17,9 +18,9 @@ public class ShapeBean extends CharacterizationBean {
 
 	private String minDimension;
 
-	private String minDimensionUnit = "nm";
+	private String minDimensionUnit="nm";
 
-	private String maxDimensionUnit = "nm";
+	private String maxDimensionUnit="nm";
 
 	//this is used for validation only
 	private String validateValue;
@@ -50,9 +51,9 @@ public class ShapeBean extends CharacterizationBean {
 
 		this.type = aChar.getType();
 		this.minDimension = (aChar.getMinDimension() != null) ? aChar
-				.getMinDimension().toString() : "";
+				.getMinDimension().getValue().toString() : "";
 		this.maxDimension = (aChar.getMaxDimension() != null) ? aChar
-				.getMaxDimension().toString() : "";
+				.getMaxDimension().getValue().toString() : "";
 		this.minDimensionUnit = "nm";
 		this.maxDimensionUnit = "nm";
 	}
@@ -61,10 +62,8 @@ public class ShapeBean extends CharacterizationBean {
 		super.updateDomainObj(shape);
 
 		shape.setType(this.type);
-		shape.setMinDimension((this.minDimension.length() == 0) ? null : Float
-				.valueOf(this.minDimension));
-		shape.setMaxDimension((this.maxDimension.length() == 0) ? null : Float
-				.valueOf(this.maxDimension));
+		shape.setMinDimension(new Measurement(new Float(this.minDimension), this.minDimensionUnit));
+		shape.setMaxDimension(new Measurement(new Float(this.maxDimension), this.maxDimensionUnit));
 	}
 
 	public String getType() {

@@ -1,5 +1,6 @@
 package gov.nih.nci.calab.domain.nano.characterization.physical;
 
+import gov.nih.nci.calab.domain.Measurement;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 
 public class Shape extends Characterization {
@@ -8,28 +9,28 @@ public class Shape extends Characterization {
 	
 	private String type;
 
-	private Float maxDimension;
+	private Measurement maxDimension;
 
-	private Float minDimension;
+	private Measurement minDimension;
 
 	public Shape() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Float getMaxDimension() {
+	public Measurement getMaxDimension() {
 		return maxDimension;
 	}
 
-	public void setMaxDimension(Float maxDimension) {
+	public void setMaxDimension(Measurement maxDimension) {
 		this.maxDimension = maxDimension;
 	}
 
-	public Float getMinDimension() {
+	public Measurement getMinDimension() {
 		return minDimension;
 	}
 
-	public void setMinDimension(Float minDimension) {
+	public void setMinDimension(Measurement minDimension) {
 		this.minDimension = minDimension;
 	}
 
