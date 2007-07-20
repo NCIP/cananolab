@@ -21,11 +21,11 @@ public class SurfaceBean extends CharacterizationBean {
 
 	private String surfaceArea;
 
-	private String surfaceAreaUnit;
+	private String surfaceAreaUnit="nm^2";
 
 	private String zetaPotential;
 
-	private String zetaPotentialUnit;
+	private String zetaPotentialUnit="mV";
 
 	private String charge;
 
