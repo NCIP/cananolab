@@ -51,7 +51,7 @@ import org.hibernate.collection.PersistentSet;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.126 2007-07-19 21:19:57 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.127 2007-07-20 19:01:14 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -254,6 +254,7 @@ public class LookupService {
 				units.add(unit.getName());
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("Error in retrieving all measure units", e);
 			throw new RuntimeException("Error in retrieving all measure units.");
 		} finally {
