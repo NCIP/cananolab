@@ -44,6 +44,7 @@
 				<c:choose>
 					<c:when test="${canUserSubmit eq 'true'}">
 						<html:select property="solubility.isSoluble">
+							<option value=""></option>
 							<html:options name="booleanChoices" />
 						</html:select>
 					</c:when>
@@ -61,14 +62,8 @@
 				<c:choose>
 					<c:when test="${canUserSubmit eq 'true'}">
 						<html:text property="solubility.criticalConcentration" />
-						<html:select property="solubility.criticalConcentrationUnit"
-							onkeydown="javascript:fnKeyDownHandler(this, event);"
-							onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-							onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-							onchange="fnChangeHandler_A(this, event);">
-							<option value="">
-								--?--
-							</option>
+						<html:select property="solubility.criticalConcentrationUnit">							
+							<option value=""></option>
 							<html:options name="allConcentrationUnits" />
 						</html:select>
 					</c:when>
