@@ -54,7 +54,8 @@ public class SolubilityBean extends CharacterizationBean {
 			this.criticalConcentrationUnit = aChar.getCriticalConcentration()
 					.getUnitOfMeasurement();
 		}
-		this.isSoluble = aChar.getIsSoluble() ? "true" : "false";
+		this.isSoluble = aChar.getIsSoluble() ? CaNanoLabConstants.BOOLEAN_YES
+				: CaNanoLabConstants.BOOLEAN_NO;
 	}
 
 	public void updateDomainObj(Solubility solubility) {
