@@ -23,10 +23,18 @@
 		<join table="SHAPE">
 			<key column="SHAPE_PK_ID" />
 			<property name="type" type="java.lang.String" column="TYPE" />
-			<property name="maxDimension" type="java.lang.Float"
-				column="MAX_DIMENSION" />
-			<property name="minDimension" type="java.lang.Float"
-				column="MIN_DIMENSION" />
+			<component name="maxDimension"
+				class="gov.nih.nci.calab.domain.Measurement">
+				<property name="value" column="MAX_DIMENSION" />
+				<property name="unitOfMeasurement"
+					column="MAX_DIMENSION_UNIT" />
+			</component>	
+			<component name="minDimension"
+				class="gov.nih.nci.calab.domain.Measurement">
+				<property name="value" column="MIN_DIMENSION" />
+				<property name="unitOfMeasurement"
+					column="MIN_DIMENSION_UNIT" />
+			</component>
 		</join>
 	</subclass>
 	<subclass name="Solubility"
