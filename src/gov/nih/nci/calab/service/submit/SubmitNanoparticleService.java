@@ -504,6 +504,9 @@ public class SubmitNanoparticleService {
 
 	private void addMeasureUnit(MeasureUnit unitType, String unit, String type)
 			throws Exception {
+		if (unit==null || unit.length()==0) {
+			return;
+		}
 		// if ID is not set save to the database otherwise update
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
