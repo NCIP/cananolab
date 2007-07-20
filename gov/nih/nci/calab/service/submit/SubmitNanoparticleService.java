@@ -225,7 +225,7 @@ public class SubmitNanoparticleService {
 	}
 
 	public void addNewCharacterizationDataDropdowns(
-			CharacterizationBean charBean, String charaterizationName)
+			CharacterizationBean charBean, String characterizationName)
 			throws Exception {
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
@@ -244,16 +244,18 @@ public class SubmitNanoparticleService {
 					for (String category : derivedBioAssayDataBean
 							.getCategories()) {
 						addDerivedDataCategory(ida, category,
-								charaterizationName);
+								characterizationName);
 					}
 					// add new datum name, measure type, and unit
 					for (DatumBean datumBean : derivedBioAssayDataBean
 							.getDatumList()) {
 						addDatumName(ida, datumBean.getName(),
-								charaterizationName);
+								characterizationName);
 						MeasureType measureType = new MeasureType();
 						addLookupType(ida, measureType, datumBean
 								.getStatisticsType());
+						addMeasureUnit(ida, datumBean.getUnit(),
+								characterizationName);
 					}
 				}
 			}
@@ -408,10 +410,12 @@ public class SubmitNanoparticleService {
 		((SurfaceBean) surface).updateDomainObj(doSurface);
 		addParticleCharacterization(particleType, particleName, doSurface,
 				surface);
-		MeasureUnit measureUnit = new MeasureUnit();
-		addMeasureUnit(measureUnit, doSurface.getCharge().getUnitOfMeasurement(), CaNanoLabConstants.UNIT_TYPE_CHARGE);
-		addMeasureUnit(measureUnit, doSurface.getSurfaceArea().getUnitOfMeasurement(), CaNanoLabConstants.UNIT_TYPE_AREA);
-		addMeasureUnit(measureUnit, doSurface.getZetaPotential().getUnitOfMeasurement(), CaNanoLabConstants.UNIT_TYPE_ZETA_POTENTIAL);
+		addMeasureUnit(doSurface.getCharge().getUnitOfMeasurement(),
+				CaNanoLabConstants.UNIT_TYPE_CHARGE);
+		addMeasureUnit(doSurface.getSurfaceArea().getUnitOfMeasurement(),
+				CaNanoLabConstants.UNIT_TYPE_AREA);
+		addMeasureUnit(doSurface.getZetaPotential().getUnitOfMeasurement(),
+				CaNanoLabConstants.UNIT_TYPE_ZETA_POTENTIAL);
 
 	}
 
@@ -502,27 +506,28 @@ public class SubmitNanoparticleService {
 		}
 	}
 
-	private void addMeasureUnit(MeasureUnit unitType, String unit, String type)
-			throws Exception {
-		if (unit==null || unit.length()==0) {
+	private void addMeasureUnit(String unit, String type) throws Exception {
+		if (unit == null || unit.length() == 0) {
 			return;
 		}
 		// if ID is not set save to the database otherwise update
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
-		String className = unitType.getClass().getSimpleName();
+		MeasureUnit measureUnit = new MeasureUnit();
 		try {
 			ida.open();
-			List results = ida.search("select count(distinct measureUnit.name) from "
-					+ className + " measureUnit where measureUnit.name='" + unit + "' and measureUnit.type='" + type + "'");
+			List results = ida
+					.search("select count(distinct measureUnit.name) from "
+							+ "MeasureUnit measureUnit where measureUnit.name='"
+							+ unit + "' and measureUnit.type='" + type + "'");
 			int count = -1;
 			for (Object obj : results) {
 				count = ((Integer) (obj)).intValue();
 			}
 			if (count == 0) {
-				unitType.setName(unit);
-				unitType.setType(type);
-				ida.createObject(unitType);
+				measureUnit.setName(unit);
+				measureUnit.setType(type);
+				ida.createObject(measureUnit);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -531,6 +536,26 @@ public class SubmitNanoparticleService {
 			throw e;
 		} finally {
 			ida.close();
+		}
+	}
+
+	private void addMeasureUnit(IDataAccess ida, String unit, String type)
+			throws Exception {
+		if (unit == null || unit.length() == 0) {
+			return;
+		}
+		List results = ida.search("select count(distinct name) from "
+				+ " MeasureUnit where name='" + unit + "' and type='" + type
+				+ "'");
+		int count = -1;
+		for (Object obj : results) {
+			count = ((Integer) (obj)).intValue();
+		}
+		MeasureUnit measureUnit = new MeasureUnit();
+		if (count == 0) {
+			measureUnit.setName(unit);
+			measureUnit.setType(type);
+			ida.createObject(measureUnit);
 		}
 	}
 
@@ -620,8 +645,9 @@ public class SubmitNanoparticleService {
 				solubility);
 		SolventType solventType = new SolventType();
 		addLookupType(solventType, doSolubility.getSolvent());
-		MeasureUnit measureUnit = new MeasureUnit();
-		addMeasureUnit(measureUnit, doSolubility.getCriticalConcentration().getUnitOfMeasurement(), CaNanoLabConstants.UNIT_TYPE_CONCENTRATION);
+		addMeasureUnit(doSolubility.getCriticalConcentration()
+				.getUnitOfMeasurement(),
+				CaNanoLabConstants.UNIT_TYPE_CONCENTRATION);
 	}
 
 	/**
