@@ -24,17 +24,8 @@
 			<td class="label">
 				<c:choose>
 					<c:when test="${canUserSubmit eq 'true'}">
-						<html:text property="surface.surfaceArea" />&nbsp;&nbsp;
-						<html:select property="surface.surfaceAreaUnit"
-							onkeydown="javascript:fnKeyDownHandler(this, event);"
-							onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-							onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-							onchange="fnChangeHandler_A(this, event);">
-							<option value="">
-								--?--
-							</option>
-							<html:options name="allAreaMeasureUnits" />
-						</html:select>
+						<html:text property="surface.surfaceArea" />&nbsp;
+						${nanoparticleCharacterizationForm.map.surface.surfaceAreaUnit}&nbsp;
 					</c:when>
 					<c:otherwise>
 										${nanoparticleCharacterizationForm.map.surface.surfaceArea}&nbsp;
@@ -71,14 +62,8 @@
 				<c:choose>
 					<c:when test="${canUserSubmit eq 'true'}">
 						<html:text property="surface.charge" />&nbsp;
-						<html:select property="surface.chargeUnit"
-							onkeydown="javascript:fnKeyDownHandler(this, event);"
-							onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-							onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-							onchange="fnChangeHandler_A(this, event);">
-							<option value="">
-								--?--
-							</option>
+						<html:select property="surface.chargeUnit">
+							<option value="" />
 							<html:options name="allChargeMeasureUnits" />
 						</html:select>
 					</c:when>
@@ -97,19 +82,11 @@
 				<c:choose>
 					<c:when test="${canUserSubmit eq 'true'}">
 						<html:text property="surface.zetaPotential" />&nbsp;
-						<html:select property="surface.zetaPotentialUnit"
-							onkeydown="javascript:fnKeyDownHandler(this, event);"
-							onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-							onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-							onchange="fnChangeHandler_A(this, event);">
-							<option value="">
-								--?--
-							</option>
-							<html:options name="allZetaPotentialUnits" />
-						</html:select>
+						${nanoparticleCharacterizationForm.map.surface.zetaPotentialUnit}&nbsp;
 									</c:when>
 					<c:otherwise>
 										${nanoparticleCharacterizationForm.map.surface.zetaPotential}&nbsp;
+										${nanoparticleCharacterizationForm.map.surface.zetaPotentialUnit}&nbsp;
 									</c:otherwise>
 				</c:choose>
 			</td>
