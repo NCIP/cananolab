@@ -24,7 +24,7 @@ public class SurfaceBean extends CharacterizationBean {
 	private String surfaceAreaUnit;
 
 	private String zetaPotential;
-	
+
 	private String zetaPotentialUnit;
 
 	private String charge;
@@ -32,8 +32,6 @@ public class SurfaceBean extends CharacterizationBean {
 	private String chargeUnit;
 
 	private String isHydrophobic;
-
-	private String numberOfSurfaceChemistries;
 
 	private List<SurfaceChemistryBean> surfaceChemistries = new ArrayList<SurfaceChemistryBean>();
 
@@ -47,8 +45,6 @@ public class SurfaceBean extends CharacterizationBean {
 		this.charge = propBean.getCharge();
 		this.chargeUnit = propBean.getChargeUnit();
 		this.isHydrophobic = propBean.getIsHydrophobic();
-		this.numberOfSurfaceChemistries = propBean
-				.getNumberOfSurfaceChemistries();
 		this.surfaceArea = propBean.getSurfaceArea();
 		this.surfaceAreaUnit = propBean.getSurfaceAreaUnit();
 		this.surfaceChemistries = propBean.getSurfaceChemistries();
@@ -63,8 +59,8 @@ public class SurfaceBean extends CharacterizationBean {
 				.convertToString(aChar.getCharge().getValue()) : "";
 		this.chargeUnit = (aChar.getCharge() != null) ? aChar.getCharge()
 				.getUnitOfMeasurement() : "";
-		this.isHydrophobic = (aChar.getIsHydrophobic() != null) ? aChar
-				.getIsHydrophobic().toString() : "";
+		this.isHydrophobic = aChar.getIsHydrophobic() ? CaNanoLabConstants.BOOLEAN_YES
+				: CaNanoLabConstants.BOOLEAN_NO;
 		this.surfaceArea = (aChar.getSurfaceArea() != null) ? aChar
 				.getSurfaceArea().getValue().toString() : "";
 		this.surfaceAreaUnit = (aChar.getSurfaceArea() != null) ? aChar
@@ -82,8 +78,6 @@ public class SurfaceBean extends CharacterizationBean {
 					surfaceChemistry);
 			surfaceChemistries.add(surfaceChemistryBean);
 		}
-		this.numberOfSurfaceChemistries = surfaceChemistries.size() + "";
-
 	}
 
 	public String getCharge() {
@@ -151,7 +145,8 @@ public class SurfaceBean extends CharacterizationBean {
 		surface.setIsHydrophobic(hycrophobicStatus);
 		surface.setCharge(new Measurement(new Float(charge), chargeUnit));
 		// surface.setZetaPotential(new Measurement(zetaPotential, "mV"));
-		surface.setZetaPotential(new Measurement(new Float(zetaPotential), zetaPotentialUnit));
+		surface.setZetaPotential(new Measurement(new Float(zetaPotential),
+				zetaPotentialUnit));
 
 		surface.setSurfaceArea(new Measurement(new Float(surfaceArea),
 				surfaceAreaUnit));
@@ -160,14 +155,6 @@ public class SurfaceBean extends CharacterizationBean {
 			surface.getSurfaceChemistryCollection().add(
 					surfaceChemistry.getDomainObj());
 		}
-	}
-
-	public String getNumberOfSurfaceChemistries() {
-		return numberOfSurfaceChemistries;
-	}
-
-	public void setNumberOfSurfaceChemistries(String numberOfSurfaceChemistry) {
-		this.numberOfSurfaceChemistries = numberOfSurfaceChemistry;
 	}
 
 	public String getZetaPotentialUnit() {
