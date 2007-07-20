@@ -51,6 +51,7 @@
 				<c:choose>
 					<c:when test="${canUserSubmit eq 'true'}">
 						<html:select property="surface.isHydrophobic">
+						    <option value=""></option>
 							<html:options name="booleanChoices" />
 						</html:select>
 					</c:when>
