@@ -21,7 +21,6 @@
 				</field>
 			-->
 		</form>
-
 		<form name="publishReportForm">
 			<field property="particleNames" page="2"
 				depends="required">
@@ -181,7 +180,7 @@
 						((achar.instrumentConfigBean.description==null)
 						or (*this*!=null))
 					</var-value>
-				</var>				
+				</var>
 			</field>
 			<field
 				property="achar.instrumentConfigBean.instrumentBean.manufacturer"
@@ -240,12 +239,19 @@
 				<arg position="0" key="surface.chargeValue"
 					bundle="submit" />
 			</field>
-			<field property="surface.numberOfSurfaceChemistries"
-				page="1" depends="integer">
+			<field property="surface.chargeUnit"
+				page="2" depends="validwhen">
 				<arg position="0"
-					key="surface.numberOfSurfaceChemistries" bundle="submit" />
+					key="surface.chargeUnit" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						((surface.charge==null) or
+						(*this*!=null))
+					</var-value>
+				</var>
 			</field>
-			<field property="numberOfMolecules" page="1"
+			<field property="numberOfMolecules" page="2"
 				depends="integer"
 				indexedListProperty="surface.surfaceChemistries">
 				<arg position="0" key="surface.numberOfMolecules"
@@ -255,6 +261,18 @@
 				depends="float">
 				<arg position="0"
 					key="solubility.criticalConcentrationValue" bundle="submit" />
+			</field>
+			<field property="solubility.criticalConcentrationUnit"
+				page="2" depends="validwhen">
+				<arg position="0"
+					key="solubility.criticalConcentrationUnit" bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						((solubility.criticalConcentration==null) or
+						(*this*!=null))
+					</var-value>
+				</var>
 			</field>
 		</form>
 	</formset>
