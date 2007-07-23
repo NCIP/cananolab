@@ -32,7 +32,9 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
@@ -54,8 +56,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  */
 
 /*
- * CVS $Id: BaseCharacterizationAction.java,v 1.27 2007/05/15 13:33:05 chenhang
- * Exp $
+ * CVS $Id: BaseCharacterizationAction.java,v 1.66 2007-07-23 21:15:52 pansu Exp $
  */
 
 public abstract class BaseCharacterizationAction extends AbstractDispatchAction {
@@ -73,6 +74,28 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 						derivedDataFileBean.getId()));
 				if (content != null) {
 					derivedDataFileBean.setFileContent(content);
+				}
+			}
+
+			Map<String, Integer> uniqueDatumMap = new HashMap<String, Integer>();
+			for (DatumBean datumBean : derivedDataFileBean.getDatumList()) {
+				// validate that neither name nor value can be empty
+				if (datumBean.getName().length() == 0
+						|| datumBean.getValue().length() == 0) {
+					throw new RuntimeException(
+							"Derived data name and value can't be empty.");
+				}
+
+				// validate derived data has unique name, statistics type and
+				// category
+				String uniqueStr = datumBean.getName() + ":"
+						+ datumBean.getStatisticsType() + ":"
+						+ datumBean.getCategory();
+				if (uniqueDatumMap.get(uniqueStr) != null) {
+					throw new RuntimeException(
+							"no two derived data can have the same name, statistics type and category.");
+				} else {
+					uniqueDatumMap.put(uniqueStr, 1);
 				}
 			}
 		}
@@ -266,7 +289,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		updateMorphologyEditable(session, morphology);
 		updateCytotoxicityEditable(session, cyto);
 		updateSolubilityEditable(session, solubility);
-//		updateSurfaceEditable(session, surface);
+		// updateSurfaceEditable(session, surface);
 		return mapping.findForward("setup");
 	}
 
@@ -625,9 +648,9 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 				solubility.getSolvent(), "allSolventTypes");
 	}
 
-//	private void updateSurfaceEditable(HttpSession session,
-//			SurfaceBean surface) throws Exception {
-//	}
+	// private void updateSurfaceEditable(HttpSession session,
+	// SurfaceBean surface) throws Exception {
+	// }
 
 	public boolean loginRequired() {
 		return true;
