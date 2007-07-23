@@ -11,13 +11,13 @@
 				test="${!empty nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].datumList}">
 				<tr class="formSubTitle">
 					<td>
-						<strong>Name</strong>
+						<strong>Name*</strong>
 					</td>
 					<td>
 						<strong>Statistics Type</strong>
 					</td>
 					<td>
-						<strong>Value</strong>
+						<strong>Value*</strong>
 					</td>
 					<td>
 						<strong>Unit</strong>
