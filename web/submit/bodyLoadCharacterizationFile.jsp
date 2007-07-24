@@ -43,7 +43,7 @@
 								<html:radio property="fileSource" value="chooseExisting">
 									<strong> Choose File from the caNanoLab workflow</strong>
 								</html:radio>&nbsp;&nbsp;
-								<html:select property="file.id">
+								<html:select property="runFileId">
 									<html:options collection="allRunFiles" property="id"
 										labelProperty="displayName" />
 								</html:select>	
@@ -100,9 +100,8 @@
 												<input type="reset" value="Reset">
 												<input type="hidden" name="dispatch" value="submit">
 												<input type="hidden" name="page" value="2">
-												<html:hidden property="forwardPage" />												
-												<html:hidden property="particleName" />
-												<html:hidden property="characterizationName" />
+												<html:hidden property="forwardPage" />			
+												<html:hidden property="fileNumber"/>
 												<html:submit />
 											</div>
 										</div>

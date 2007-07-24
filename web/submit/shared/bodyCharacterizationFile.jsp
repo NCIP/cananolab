@@ -87,24 +87,26 @@
 		<tr>
 			<td class="completeLabel" valign="top" colspan="4">
 				<strong>File Name</strong> &nbsp;&nbsp;&nbsp;
-				<logic:present
-					name="characterizationFile${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].id}">
-					<html:link
-						page="/updateAssayFile.do?page=0&dispatch=${dispatchValue}&fileId=${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].id}&actionName=${actionName}">
+				<c:choose>
+					<c:when
+						test="${!empty nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].uri}">
+						<html:link
+							page="/updateAssayFile.do?page=0&dispatch=setupUpdate&fileId=${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].id}&actionName=${actionName}">
 								${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].displayName}
-						</html:link>
-				</logic:present>
+							</html:link>
+					</c:when>
+				</c:choose>
 				<c:choose>
 					<c:when test="${canUserSubmit eq 'true'}">
 						<c:choose>
 							<c:when
 								test="${empty nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].uri}">	
 								Click on "Load File" button 	
+									&nbsp;&nbsp;&nbsp;&nbsp;<input type="button"
+									onclick="javascript:loadFile(this.form, '${charName}', '${actionName}', ${param.fileInd})"
+									value="Load File">
 							</c:when>
-						</c:choose>
-						&nbsp;&nbsp;&nbsp;&nbsp;<input type="button"
-							onclick="javascript:loadFile(this.form, '${charName}', '${actionName}', ${param.fileInd})"
-							value="Load File">
+						</c:choose>						
 					</c:when>
 				</c:choose>
 			</td>
