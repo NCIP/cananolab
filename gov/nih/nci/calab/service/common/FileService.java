@@ -155,6 +155,10 @@ public class FileService {
 		File pathDir = new File(path);
 		if (!pathDir.exists())
 			pathDir.mkdirs();
+		File file=new File(fullFileName);
+		if (file.exists()) {
+			return; //don't save again
+		}
 		FileOutputStream oStream = new FileOutputStream(new File(fullFileName));
 		oStream.write(fileContent);
 	}
