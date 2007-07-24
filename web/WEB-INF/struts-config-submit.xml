@@ -25,11 +25,6 @@
 			<form-property name="protocolType" type="java.lang.String" />
 			<form-property name="uploadedFile" type="org.apache.struts.upload.FormFile" />
 			<form-property name="file" type="gov.nih.nci.calab.dto.common.ProtocolFileBean" />
-
-			<!--	<form-property name="fileTitle" type="java.lang.String" />	-->
-			<!--	<form-property name="description" type="java.lang.String" />   -->
-			<!--	<form-property name="visibility" type="java.lang.String" /> -->
-			<!--	<form-property name="protocolVersion" type="java.lang.String" /> -->
 		</form-bean>
 		<form-bean name="updateProtocolForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="dispatch" type="java.lang.String" />
@@ -79,11 +74,11 @@
 			<form-property name="dispatch" type="java.lang.String" />
 			<form-property name="page" type="java.lang.Integer" initial="0" />
 			<form-property name="fileSource" type="java.lang.String" initial="new" />
+			<form-property name="runFileId" type="java.lang.String"/>
+			<form-property name="fileNumber" type="java.lang.Integer"/>
 			<form-property name="uploadedFile" type="org.apache.struts.upload.FormFile" />
 			<form-property name="file" type="gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean" />
 			<form-property name="forwardPage" type="java.lang.String" />
-			<form-property name="particleName" type="java.lang.String" />
-			<form-property name="characterizationName" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="nanoparticleFunctionForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="dispatch" type="java.lang.String" />
@@ -316,12 +311,12 @@
 			<forward name="input" path="/oxidativeStress.do?dispatch=input&amp;page=0" />
 			<forward name="setup" path="submit.addtoxicity.oxidativestress" />
 		</action>
-		<action name="loadDerivedBioAssayDataForm" parameter="dispatch" path="/loadFile" type="gov.nih.nci.calab.ui.submit.LoadDerivedBioAssayDataAction" input="input">
+		<action name="loadDerivedBioAssayDataForm" parameter="dispatch" path="/loadFile" type="gov.nih.nci.calab.ui.submit.LoadDerivedBioAssayDataAction" input="input" scope="request">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.loadDerivedBioAssayData" path="submit.load.characterization.file" type="java.lang.Exception" />
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.download.file" path="home.error" type="gov.nih.nci.calab.exception.CalabException" />
 			<forward name="input" path="submit.load.characterization.file" />
 		</action>
-		<action name="loadDerivedBioAssayDataForm" parameter="dispatch" path="/updateAssayFile" type="gov.nih.nci.calab.ui.submit.LoadDerivedBioAssayDataAction" input="input">
+		<action name="loadDerivedBioAssayDataForm" parameter="dispatch" path="/updateAssayFile" type="gov.nih.nci.calab.ui.submit.LoadDerivedBioAssayDataAction" input="input" scope="request">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.updateDerivedBioAssayData" path="submit.assayresult.file.view" type="java.lang.Exception" />
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.download.file" path="home.error" type="gov.nih.nci.calab.exception.CalabException" />
 			<forward name="input" path="submit.assayresult.file.view" />
