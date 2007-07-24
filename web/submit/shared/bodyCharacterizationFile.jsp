@@ -87,15 +87,13 @@
 		<tr>
 			<td class="completeLabel" valign="top" colspan="4">
 				<strong>File Name</strong> &nbsp;&nbsp;&nbsp;
-				<c:choose>
-					<c:when
-						test="${!empty nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].uri}">
-						<html:link
-							page="/updateAssayFile.do?page=0&dispatch=setupUpdate&fileId=${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].id}&actionName=${actionName}">
+				<logic:present
+					name="characterizationFile${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].id}">
+					<html:link
+						page="/updateAssayFile.do?page=0&dispatch=${dispatchValue}&fileId=${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].id}&actionName=${actionName}">
 								${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].displayName}
-							</html:link>
-					</c:when>
-				</c:choose>
+						</html:link>
+				</logic:present>
 				<c:choose>
 					<c:when test="${canUserSubmit eq 'true'}">
 						<c:choose>
@@ -116,7 +114,9 @@
 				<strong>File/Derived Data Description</strong>
 			</td>
 			<td class="rightLabel" colspan="3">
-				<html:textarea property="achar.derivedBioAssayDataList[${param.fileInd}].description" rows="3" cols="65" />
+				<html:textarea
+					property="achar.derivedBioAssayDataList[${param.fileInd}].description"
+					rows="3" cols="65" />
 			</td>
 		</tr>
 		<tr>
