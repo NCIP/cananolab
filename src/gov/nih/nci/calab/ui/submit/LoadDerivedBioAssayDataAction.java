@@ -6,11 +6,11 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: LoadDerivedBioAssayDataAction.java,v 1.21 2007-07-24 15:59:25 pansu Exp $ */
+/* CVS $Id: LoadDerivedBioAssayDataAction.java,v 1.22 2007-07-24 21:38:29 pansu Exp $ */
 
+import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
-import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.common.FileService;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
@@ -38,14 +38,9 @@ public class LoadDerivedBioAssayDataAction extends AbstractDispatchAction {
 			throws Exception {
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleName = (String) theForm.get("particleName");
 		String fileSource = (String) theForm.get("fileSource");
 		DerivedBioAssayDataBean fileBean = (DerivedBioAssayDataBean) theForm
 				.get("file");
-		String characterizationName = (String) theForm
-				.get("characterizationName");
-		fileBean.setCharacterizationName(characterizationName);
-		fileBean.setParticleName(particleName);
 		if (fileSource.equals("new")) {
 			FormFile uploadedFile = (FormFile) theForm.get("uploadedFile");
 			fileBean.setFileContent(uploadedFile.getFileData());
@@ -64,10 +59,11 @@ public class LoadDerivedBioAssayDataAction extends AbstractDispatchAction {
 			fileBean.setUri(filePath + File.separator
 					+ fileBean.getTimeStampedName());
 		} else {
-			if (fileBean.getId() != null) {
+			String runFileId = theForm.getString("runFileId");
+			if (runFileId != null) {
 				SubmitNanoparticleService service = new SubmitNanoparticleService();
 				LabFileBean existingFileBean = (LabFileBean) service
-						.getFile(fileBean.getId());
+						.getFile(runFileId);
 				fileBean.setName(existingFileBean.getName());
 				fileBean.setCreatedBy(existingFileBean.getCreatedBy());
 				fileBean.setCreatedDate(existingFileBean.getCreatedDate());
@@ -75,10 +71,21 @@ public class LoadDerivedBioAssayDataAction extends AbstractDispatchAction {
 			}
 		}
 		String forwardPage = (String) theForm.get("forwardPage");
+		DynaValidatorForm charForm = (DynaValidatorForm) request.getSession()
+				.getAttribute("nanoparticleCharacterizationForm");
+		CharacterizationBean achar = (CharacterizationBean) charForm
+				.get("achar");
+		int fileNum = (Integer)theForm.get("fileNumber");
+		DerivedBioAssayDataBean derivedBioAssayDataBean = achar
+				.getDerivedBioAssayDataList().get(fileNum);
+		derivedBioAssayDataBean.setName(fileBean.getName());
+		derivedBioAssayDataBean.setFileContent(fileBean.getFileContent());
+		derivedBioAssayDataBean.setUri(fileBean.getUri());
+		derivedBioAssayDataBean.setVisibilityGroups(fileBean
+				.getVisibilityGroups());
+		derivedBioAssayDataBean.setKeywordsStr(fileBean.getKeywordsStr());
 		ActionForward forward = new ActionForward();
 		forward.setPath(forwardPage);
-		request.getSession().setAttribute(
-				"characterizationFile" + fileBean.getId(), fileBean);
 		return forward;
 	}
 
@@ -88,19 +95,15 @@ public class LoadDerivedBioAssayDataAction extends AbstractDispatchAction {
 		HttpSession session = request.getSession();
 		InitSessionSetup.getInstance().clearWorkflowSession(session);
 		InitSessionSetup.getInstance().clearSearchSession(session);
-		InitSessionSetup.getInstance().clearInventorySession(session);
-		String particleName = (String) request.getAttribute("particleName");
-		InitSessionSetup.getInstance().setAllRunFiles(session, particleName);
+		InitSessionSetup.getInstance().clearInventorySession(session);		
+		
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		DerivedBioAssayDataBean file = (DerivedBioAssayDataBean) request
 				.getAttribute("file");
-		theForm.set("fileSource", "new");
+		InitSessionSetup.getInstance().setAllRunFiles(session, file.getParticleName());
 		theForm.set("file", file);
-		theForm.set("particleName", particleName);
 		theForm.set("forwardPage", (String) request
 				.getAttribute("loadFileForward"));
-		theForm.set("characterizationName", (String) request
-				.getAttribute("characterizationName"));
 		return mapping.getInputForward();
 	}
 
@@ -111,19 +114,12 @@ public class LoadDerivedBioAssayDataAction extends AbstractDispatchAction {
 		InitSessionSetup.getInstance().clearWorkflowSession(session);
 		InitSessionSetup.getInstance().clearSearchSession(session);
 		InitSessionSetup.getInstance().clearInventorySession(session);
-
 		String fileId = request.getParameter("fileId");
-		DerivedBioAssayDataBean fileBean = (DerivedBioAssayDataBean) session
-				.getAttribute("characterizationFile" + fileId);
-		if (fileBean == null) {
-			throw new CalabException("Session expired for loaded files");
-		}
-		// SubmitNanoparticleService service = new SubmitNanoparticleService();
-		// DerivedBioAssayDataBean fileBean = service
-		// .getDerivedBioAssayData(fileId);
+		SubmitNanoparticleService service = new SubmitNanoparticleService();
+		DerivedBioAssayDataBean fileBean = service
+				.getDerivedBioAssayData(fileId);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		theForm.set("file", fileBean);
-
 		String actionName = request.getParameter("actionName");
 		String formName = request.getParameter("formName");
 		request.setAttribute("actionName", actionName);
