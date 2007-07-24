@@ -774,14 +774,14 @@ public class InitSessionSetup {
 	public void setAllRunFiles(HttpSession session, String particleName)
 			throws Exception {
 		if (session.getAttribute("allRunFiles") == null
-				|| session.getAttribute("newParticleCreated") != null
+				|| session.getAttribute("newRunFileCreated") != null
 				|| session.getAttribute("newFileLoaded") != null) {
 			SubmitNanoparticleService service = new SubmitNanoparticleService();
 			List<LabFileBean> runFileBeans = service
 					.getAllRunFiles(particleName);
 			session.setAttribute("allRunFiles", runFileBeans);
 		}
-		session.removeAttribute("newParticleCreated");
+		session.removeAttribute("newRunFileCreated");
 		session.removeAttribute("newFileLoaded");
 	}
 
