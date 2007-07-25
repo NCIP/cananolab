@@ -9,7 +9,7 @@
 			<td>
 				<h3>
 					<br>
-					Load Charaterization File
+					Load Characterization File
 				</h3>
 			</td>
 			<td align="right" width="15%">
