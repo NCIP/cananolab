@@ -89,7 +89,7 @@
 				<strong>File Name</strong> &nbsp;&nbsp;&nbsp;
 				<c:choose>
 					<c:when
-						test="${!empty nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].uri}">
+						test="${!empty nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].uri && nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].hidden==false}">
 						<html:link
 							page="/updateAssayFile.do?page=0&dispatch=setupUpdate&fileId=${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].id}&actionName=${actionName}">
 								${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].displayName}
