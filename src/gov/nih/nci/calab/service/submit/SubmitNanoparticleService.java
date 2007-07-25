@@ -216,9 +216,11 @@ public class SubmitNanoparticleService {
 		// save file to the file system
 		// if this block of code is inside the db try catch block, hibernate
 		// doesn't persist derivedBioAssayData
-		if (!charBean.getDerivedBioAssayDataList().isEmpty()) {
-			for (DerivedBioAssayDataBean derivedBioAssayDataBean : charBean
-					.getDerivedBioAssayDataList()) {
+		if (!achar.getDerivedBioAssayDataCollection().isEmpty()) {
+			for (DerivedBioAssayData derivedBioAssayData : achar
+					.getDerivedBioAssayDataCollection()) {
+				DerivedBioAssayDataBean derivedBioAssayDataBean = new DerivedBioAssayDataBean(
+						derivedBioAssayData);
 				saveCharacterizationFile(derivedBioAssayDataBean);
 			}
 		}
@@ -410,12 +412,12 @@ public class SubmitNanoparticleService {
 		((SurfaceBean) surface).updateDomainObj(doSurface);
 		addParticleCharacterization(particleType, particleName, doSurface,
 				surface);
-//		addMeasureUnit(doSurface.getCharge().getUnitOfMeasurement(),
-//				CaNanoLabConstants.UNIT_TYPE_CHARGE);
-//		addMeasureUnit(doSurface.getSurfaceArea().getUnitOfMeasurement(),
-//				CaNanoLabConstants.UNIT_TYPE_AREA);
-//		addMeasureUnit(doSurface.getZetaPotential().getUnitOfMeasurement(),
-//				CaNanoLabConstants.UNIT_TYPE_ZETA_POTENTIAL);
+		// addMeasureUnit(doSurface.getCharge().getUnitOfMeasurement(),
+		// CaNanoLabConstants.UNIT_TYPE_CHARGE);
+		// addMeasureUnit(doSurface.getSurfaceArea().getUnitOfMeasurement(),
+		// CaNanoLabConstants.UNIT_TYPE_AREA);
+		// addMeasureUnit(doSurface.getZetaPotential().getUnitOfMeasurement(),
+		// CaNanoLabConstants.UNIT_TYPE_ZETA_POTENTIAL);
 
 	}
 
@@ -506,38 +508,38 @@ public class SubmitNanoparticleService {
 		}
 	}
 
-//	private void addMeasureUnit(String unit, String type) throws Exception {
-//		if (unit == null || unit.length() == 0) {
-//			return;
-//		}
-//		// if ID is not set save to the database otherwise update
-//		IDataAccess ida = (new DataAccessProxy())
-//				.getInstance(IDataAccess.HIBERNATE);
-//		MeasureUnit measureUnit = new MeasureUnit();
-//		try {
-//			ida.open();
-//			List results = ida
-//					.search("select count(distinct measureUnit.name) from "
-//							+ "MeasureUnit measureUnit where measureUnit.name='"
-//							+ unit + "' and measureUnit.type='" + type + "'");
-//			int count = -1;
-//			for (Object obj : results) {
-//				count = ((Integer) (obj)).intValue();
-//			}
-//			if (count == 0) {
-//				measureUnit.setName(unit);
-//				measureUnit.setType(type);
-//				ida.createObject(measureUnit);
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			ida.rollback();
-//			logger.error("Problem saving look up type: " + type);
-//			throw e;
-//		} finally {
-//			ida.close();
-//		}
-//	}
+	// private void addMeasureUnit(String unit, String type) throws Exception {
+	// if (unit == null || unit.length() == 0) {
+	// return;
+	// }
+	// // if ID is not set save to the database otherwise update
+	// IDataAccess ida = (new DataAccessProxy())
+	// .getInstance(IDataAccess.HIBERNATE);
+	// MeasureUnit measureUnit = new MeasureUnit();
+	// try {
+	// ida.open();
+	// List results = ida
+	// .search("select count(distinct measureUnit.name) from "
+	// + "MeasureUnit measureUnit where measureUnit.name='"
+	// + unit + "' and measureUnit.type='" + type + "'");
+	// int count = -1;
+	// for (Object obj : results) {
+	// count = ((Integer) (obj)).intValue();
+	// }
+	// if (count == 0) {
+	// measureUnit.setName(unit);
+	// measureUnit.setType(type);
+	// ida.createObject(measureUnit);
+	// }
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// ida.rollback();
+	// logger.error("Problem saving look up type: " + type);
+	// throw e;
+	// } finally {
+	// ida.close();
+	// }
+	// }
 
 	private void addMeasureUnit(IDataAccess ida, String unit, String type)
 			throws Exception {
@@ -645,9 +647,9 @@ public class SubmitNanoparticleService {
 				solubility);
 		SolventType solventType = new SolventType();
 		addLookupType(solventType, doSolubility.getSolvent());
-//		addMeasureUnit(doSolubility.getCriticalConcentration()
-//				.getUnitOfMeasurement(),
-//				CaNanoLabConstants.UNIT_TYPE_CONCENTRATION);
+		// addMeasureUnit(doSolubility.getCriticalConcentration()
+		// .getUnitOfMeasurement(),
+		// CaNanoLabConstants.UNIT_TYPE_CONCENTRATION);
 	}
 
 	/**
