@@ -89,11 +89,19 @@
 				<strong>File Name</strong> &nbsp;&nbsp;&nbsp;
 				<c:choose>
 					<c:when
-						test="${!empty nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].uri && nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].hidden==false}">
-						<html:link
-							page="/updateAssayFile.do?page=0&dispatch=setupUpdate&fileId=${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].id}&actionName=${actionName}">
+						test="${!empty nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].uri}">
+						<c:choose>
+							<c:when
+								test="${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].hidden==false}">
+								<html:link
+									page="/updateAssayFile.do?page=0&dispatch=setupUpdate&fileId=${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].id}&actionName=${actionName}">
 								${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].displayName}
 							</html:link>
+							</c:when>
+							<c:otherwise>
+								The file is private.
+							</c:otherwise>
+						</c:choose>
 					</c:when>
 				</c:choose>
 				<c:choose>
@@ -106,7 +114,7 @@
 									onclick="javascript:loadFile(this.form, '${charName}', '${actionName}', ${param.fileInd})"
 									value="Load File">
 							</c:when>
-						</c:choose>						
+						</c:choose>
 					</c:when>
 				</c:choose>
 			</td>
