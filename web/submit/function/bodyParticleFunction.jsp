@@ -59,13 +59,16 @@ function clearOtherAgents(agentType, elementPrefix) {
 				</h4>
 			</td>
 			<td align="right" width="15%">
-				<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=particle_function_help')" class="helpText">Help</a>
+				<a
+					href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=particle_function_help')"
+					class="helpText">Help</a>
 			</td>
 		</tr>
 		<tr>
 			<td colspan="2">
 				<h5 align="center">
-					${nanoparticleFunctionForm.map.particleName} (${nanoparticleFunctionForm.map.particleType})
+					${nanoparticleFunctionForm.map.particleName}
+					(${nanoparticleFunctionForm.map.particleType})
 				</h5>
 			</td>
 		</tr>
@@ -76,7 +79,8 @@ function clearOtherAgents(agentType, elementPrefix) {
 
 				<%-- Function Linkage Agent --%>
 
-				<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+				<table class="topBorderOnly" cellspacing="0" cellpadding="3"
+					width="100%" align="center" summary="" border="0">
 					<tbody>
 						<tr class="topBorder">
 							<td class="formTitle" colspan="4">
@@ -103,15 +107,19 @@ function clearOtherAgents(agentType, elementPrefix) {
 								&nbsp;
 								<c:choose>
 									<c:when test="${canUserSubmit eq 'true'}">
-										<input type="button" onclick="javascript:updateFunctionLinkages()" value="Update Linkages">
+										<input type="button"
+											onclick="javascript:updateFunctionLinkages()"
+											value="Update Linkages">
 									</c:when>
 								</c:choose>
 							</td>
 						</tr>
 						<tr>
 							<td class="completeLabel" colspan="4">
-								<logic:iterate id="linkage" name="nanoparticleFunctionForm" property="function.linkages" indexId="linkageInd">
-									<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+								<logic:iterate id="linkage" name="nanoparticleFunctionForm"
+									property="function.linkages" indexId="linkageInd">
+									<table class="topBorderOnly" cellspacing="0" cellpadding="3"
+										width="100%" align="center" summary="" border="0">
 										<tbody>
 											<tr class="topBorder">
 												<td class="formSubTitle" colspan="4">
@@ -125,36 +133,45 @@ function clearOtherAgents(agentType, elementPrefix) {
 													<strong>Linkage Type </strong>
 												</td>
 												<td class="rightlabel" colspan="3">
-													<table cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+													<table cellspacing="0" cellpadding="3" width="100%"
+														align="center" summary="" border="0">
 														<c:choose>
 															<c:when test="${canUserSubmit eq 'true'}">
 																<tr>
 																	<td class="borderlessLabel">
-																		<html:radio property="function.linkages[${linkageInd}].type" value="Attachment"
+																		<html:radio
+																			property="function.linkages[${linkageInd}].type"
+																			value="Attachment"
 																			onclick="javascript:disableTextElement(this.form, 'function.linkages[${linkageInd}].localization');enableTextElement(this.form, 'function.linkages[${linkageInd}].bondType');" />
 																		Attachment
 																	</td>
 																	<td class="borderlessLabel">
 																		<strong>Bond Type</strong>
-																		<html:text property="function.linkages[${linkageInd}].bondType" />
+																		<html:text
+																			property="function.linkages[${linkageInd}].bondType" />
 																		&nbsp;
 																	</td>
 																</tr>
 																<tr>
 																	<td class="borderlessLabel">
-																		<html:radio property="function.linkages[${linkageInd}].type" value="Encapsulation"
+																		<html:radio
+																			property="function.linkages[${linkageInd}].type"
+																			value="Encapsulation"
 																			onclick="javascript:disableTextElement(this.form, 'function.linkages[${linkageInd}].bondType');enableTextElement(this.form, 'function.linkages[${linkageInd}].localization');" />
 																		Encapsulation
 																	</td>
 																	<td class="borderlessLabel">
 																		<strong>Localization</strong>
-																		<html:text property="function.linkages[${linkageInd}].localization" />
+																		<html:text
+																			property="function.linkages[${linkageInd}].localization" />
 																		&nbsp;
 																	</td>
 																</tr>
 																<tr>
 																	<td class="borderlessLabel">
-																		<html:radio property="function.linkages[${linkageInd}].type" value="Other"
+																		<html:radio
+																			property="function.linkages[${linkageInd}].type"
+																			value="Other"
 																			onclick="javascript:disableTextElement(this.form, 'function.linkages[${linkageInd}].localization');disableTextElement(this.form, 'function.linkages[${linkageInd}].bondType');" />
 																		Other
 																	</td>
@@ -206,7 +223,9 @@ function clearOtherAgents(agentType, elementPrefix) {
 												<td class="rightLabel" colspan="3">
 													<c:choose>
 														<c:when test="${canUserSubmit eq 'true'}">
-															<html:textarea property="function.linkages[${linkageInd}].description" rows="3" cols="60" />
+															<html:textarea
+																property="function.linkages[${linkageInd}].description"
+																rows="3" cols="60" />
 														</c:when>
 														<c:otherwise>
 															${linkage.description}&nbsp;
@@ -219,70 +238,88 @@ function clearOtherAgents(agentType, elementPrefix) {
 													<strong>Agent Type</strong>
 												</td>
 												<td class="rightLabel" colspan="3">
-													<table cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+													<table cellspacing="0" cellpadding="3" width="100%"
+														align="center" summary="" border="0">
 														<c:choose>
 															<%-- read and write view --%>
 															<c:when test="${canUserSubmit eq 'true'}">
-																<c:forEach var="agentType" items="${allAgentTypes[submitType]}" varStatus="status">
+																<c:forEach var="agentType"
+																	items="${allAgentTypes[submitType]}" varStatus="status">
 																	<tr>
 																		<td class="borderlessLabel">
-																			<html:radio property="function.linkages[${linkageInd}].agent.type" value="${agentType}" onclick="javascript:clearOtherAgents('${agentType}', 'function.linkages[${linkageInd}]')" />
+																			<html:radio
+																				property="function.linkages[${linkageInd}].agent.type"
+																				value="${agentType}"
+																				onclick="javascript:clearOtherAgents('${agentType}', 'function.linkages[${linkageInd}]')" />
 																			${agentType}
 																		</td>
 																		<c:choose>
 																			<c:when test="${agentType eq 'Peptide'}">
 																				<td class="borderlessLabel" colspan="2">
 																					<strong>Sequence</strong>
-																					<html:text property="function.linkages[${linkageInd}].peptide.sequence" size="50" />
+																					<html:text
+																						property="function.linkages[${linkageInd}].peptide.sequence"
+																						size="50" />
 																				</td>
 																			</c:when>
 																			<c:when test="${agentType eq 'DNA'}">
 																				<td class="borderlessLabel" colspan="2">
 																					<strong>Sequence</strong>
-																					<html:text property="function.linkages[${linkageInd}].dna.sequence" size="50" />
+																					<html:text
+																						property="function.linkages[${linkageInd}].dna.sequence"
+																						size="50" />
 																				</td>
 																			</c:when>
 																			<c:when test="${agentType eq 'Small Molecule'}">
 																				<td class="borderlessLabel">
 																					<strong>Name</strong>
-																					<html:text property="function.linkages[${linkageInd}].smallMolecule.name" />
+																					<html:text
+																						property="function.linkages[${linkageInd}].smallMolecule.name" />
 																				</td>
 																				<td class="borderlessLabel">
 																					<strong>Compound Name</strong>
-																					<html:text property="function.linkages[${linkageInd}].smallMolecule.compoundName" />
+																					<html:text
+																						property="function.linkages[${linkageInd}].smallMolecule.compoundName" />
 																				</td>
 																			</c:when>
 																			<c:when test="${agentType eq 'Antibody'}">
 																				<td class="borderlessLabel">
 																					<strong>Name</strong>
-																					<html:text property="function.linkages[${linkageInd}].antibody.name" />
+																					<html:text
+																						property="function.linkages[${linkageInd}].antibody.name" />
 																				</td>
 																				<td class="borderlessLabel">
 																					<strong>Species</strong>
-																					<html:select property="function.linkages[${linkageInd}].antibody.species">
-																						<html:options collection="allSpecies" property="value" labelProperty="label" />
+																					<html:select
+																						property="function.linkages[${linkageInd}].antibody.species">
+																						<html:options collection="allSpecies"
+																							property="value" labelProperty="label" />
 																					</html:select>
 																				</td>
 																			</c:when>
 																			<c:when test="${agentType eq 'Probe'}">
 																				<td class="borderlessLabel">
 																					<strong>Name</strong>
-																					<html:text property="function.linkages[${linkageInd}].probe.name" />
+																					<html:text
+																						property="function.linkages[${linkageInd}].probe.name" />
 																				</td>
 																				<td class="borderlessLabel">
 																					<strong>Type</strong>
-																					<html:text property="function.linkages[${linkageInd}].probe.type" />
+																					<html:text
+																						property="function.linkages[${linkageInd}].probe.type" />
 																					&nbsp;
 																				</td>
 																			</c:when>
 																			<c:when test="${agentType eq 'Image Contrast Agent'}">
 																				<td class="borderlessLabel">
 																					<strong>Name</strong>
-																					<html:text property="function.linkages[${linkageInd}].imageContrastAgent.name" />
+																					<html:text
+																						property="function.linkages[${linkageInd}].imageContrastAgent.name" />
 																				</td>
 																				<td class="borderlessLabel">
 																					<strong>Type</strong>
-																					<html:text property="function.linkages[${linkageInd}].imageContrastAgent.type" />
+																					<html:text
+																						property="function.linkages[${linkageInd}].imageContrastAgent.type" />
 																					&nbsp;
 																				</td>
 																			</c:when>
@@ -300,17 +337,21 @@ function clearOtherAgents(agentType, elementPrefix) {
 																	<c:choose>
 																		<c:when test="${linkage.agent.type eq 'Peptide'}">
 																			<td class="borderlessLabel" colspan="2">
-																				<strong>Sequence</strong> ${linkage.peptide.sequence}&nbsp;
+																				<strong>Sequence</strong>
+																				${linkage.peptide.sequence}&nbsp;
 																			</td>
 																		</c:when>
 																		<c:when test="${linkage.agent.type eq 'DNA'}">
 																			<td class="borderlessLabel" colspan="2">
-																				<strong>Sequence</strong> ${linkage.dna.sequence}&nbsp;
+																				<strong>Sequence</strong>
+																				${linkage.dna.sequence}&nbsp;
 																			</td>
 																		</c:when>
-																		<c:when test="${linkage.agent.type eq 'Small Molecule'}">
+																		<c:when
+																			test="${linkage.agent.type eq 'Small Molecule'}">
 																			<td class="borderlessLabel">
-																				<strong>Name</strong> ${linkage.smallMolecule.name}&nbsp;
+																				<strong>Name</strong>
+																				${linkage.smallMolecule.name}&nbsp;
 																			</td>
 																			<td class="borderlessLabel">
 																				<strong>Compound Name</strong>${linkage.smallMolecule.compoundName}&nbsp;
@@ -321,7 +362,8 @@ function clearOtherAgents(agentType, elementPrefix) {
 																				<strong>Name</strong>${linkage.antibody.name}&nbsp;
 																			</td>
 																			<td class="borderlessLabel">
-																				<strong>Species</strong> ${linkage.antibody.species}&nbsp;
+																				<strong>Species</strong>
+																				${linkage.antibody.species}&nbsp;
 																			</td>
 																		</c:when>
 																		<c:when test="${linkage.agent.type eq 'Probe'}">
@@ -332,12 +374,15 @@ function clearOtherAgents(agentType, elementPrefix) {
 																				${linkage.probe.type}&nbsp;
 																			</td>
 																		</c:when>
-																		<c:when test="${linkage.agent.type eq 'Image Contrast Agent'}">
+																		<c:when
+																			test="${linkage.agent.type eq 'Image Contrast Agent'}">
 																			<td class="borderlessLabel">
-																				<strong>Name</strong> ${linkage.imageContrastAgent.name}&nbsp;
+																				<strong>Name</strong>
+																				${linkage.imageContrastAgent.name}&nbsp;
 																			</td>
 																			<td class="borderlessLabel">
-																				<strong>Contrast Agent Type</strong> ${linkage.imageContrastAgent.type}&nbsp;
+																				<strong>Contrast Agent Type</strong>
+																				${linkage.imageContrastAgent.type}&nbsp;
 																			</td>
 																		</c:when>
 																	</c:choose>
@@ -354,7 +399,9 @@ function clearOtherAgents(agentType, elementPrefix) {
 												<td class="rightLabel" colspan="3">
 													<c:choose>
 														<c:when test="${canUserSubmit eq 'true'}">
-															<html:textarea property="function.linkages[${linkageInd}].agent.description" rows="3" cols="60" />
+															<html:textarea
+																property="function.linkages[${linkageInd}].agent.description"
+																rows="3" cols="60" />
 														</c:when>
 														<c:otherwise>
 															${linkage.agent.description}&nbsp;
@@ -369,24 +416,32 @@ function clearOtherAgents(agentType, elementPrefix) {
 															<strong>Number of Agent Targets </strong>
 														</td>
 														<td class="label">
-															<html:text property="function.linkages[${linkageInd}].agent.numberOfAgentTargets" />
+															<html:text
+																property="function.linkages[${linkageInd}].agent.numberOfAgentTargets" />
 														</td>
 														<td class="rightLabel" colspan="2">
 															&nbsp;
-															<input type="button" onclick="javascript:updateAgentTargets('${linkageInd}')" value="Update Agent Targets">
+															<input type="button"
+																onclick="javascript:updateAgentTargets('${linkageInd}')"
+																value="Update Agent Targets">
 														</td>
 													</c:when>
 													<c:otherwise>
 														<td class="leftLabel" colspan="4">
-															<strong>Number of Agent Targets </strong> &nbsp;&nbsp;&nbsp;${linkage.agent.numberOfAgentTargets}&nbsp;
+															<strong>Number of Agent Targets </strong>
+															&nbsp;&nbsp;&nbsp;${linkage.agent.numberOfAgentTargets}&nbsp;
 														</td>
 													</c:otherwise>
 												</c:choose>
 											</tr>
 											<tr>
 												<td class="completeLabel" colspan="4">
-													<logic:iterate id="target" name="nanoparticleFunctionForm" property="function.linkages[${linkageInd}].agent.agentTargets" indexId="tIndex">
-														<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+													<logic:iterate id="target" name="nanoparticleFunctionForm"
+														property="function.linkages[${linkageInd}].agent.agentTargets"
+														indexId="tIndex">
+														<table class="topBorderOnly" cellspacing="0"
+															cellpadding="3" width="100%" align="center" summary=""
+															border="0">
 															<tbody>
 																<tr class="topBorder">
 																	<td class="formSubTitle" colspan="4">
@@ -402,8 +457,9 @@ function clearOtherAgents(agentType, elementPrefix) {
 																	<td class="label">
 																		<c:choose>
 																			<c:when test="${canUserSubmit eq 'true'}">
-																				<html:select property="function.linkages[${linkageInd}].agent.agentTargets[${tIndex}].type">
-																					<html:options name="allAgentTargetTypes" />																					
+																				<html:select
+																					property="function.linkages[${linkageInd}].agent.agentTargets[${tIndex}].type">
+																					<html:options name="allAgentTargetTypes" />
 																				</html:select>
 																			</c:when>
 																			<c:otherwise>
@@ -418,7 +474,8 @@ function clearOtherAgents(agentType, elementPrefix) {
 																	<td class="rightLabel">
 																		<c:choose>
 																			<c:when test="${canUserSubmit eq 'true'}">
-																				<html:text property="function.linkages[${linkageInd}].agent.agentTargets[${tIndex}].name" />
+																				<html:text
+																					property="function.linkages[${linkageInd}].agent.agentTargets[${tIndex}].name" />
 																			</c:when>
 																			<c:otherwise>
 																				${linkage.agent.agentTargets[tIndex].name}&nbsp;
@@ -434,7 +491,9 @@ function clearOtherAgents(agentType, elementPrefix) {
 																	<td class="rightLabel" colspan="3">
 																		<c:choose>
 																			<c:when test="${canUserSubmit eq 'true'}">
-																				<html:textarea property="function.linkages[${linkageInd}].agent.agentTargets[${tIndex}].description" rows="3" cols="60"/>
+																				<html:textarea
+																					property="function.linkages[${linkageInd}].agent.agentTargets[${tIndex}].description"
+																					rows="3" cols="60" />
 																			</c:when>
 																			<c:otherwise>
 																				${linkage.agent.agentTargets[tIndex].description}&nbsp;
@@ -455,7 +514,34 @@ function clearOtherAgents(agentType, elementPrefix) {
 						</tr>
 				</table>
 				<%-- end of Function Linkage Agent  --%>
-				<jsp:include page="/submit/bodySharedCharacterizationSubmit.jsp" />
+				<br>
+				<table width="100%" border="0" align="center" cellpadding="3"
+					cellspacing="0" class="topBorderOnly" summary="">
+					<tr>
+						<td width="30%">
+							<span class="formMessage"> </span>
+							<br>
+							<c:choose>
+								<c:when test="${canUserSubmit eq 'true'}">
+									<table height="32" border="0" align="right" cellpadding="4"
+										cellspacing="0">
+										<tr>
+											<td width="490" height="32">
+												<div align="right">
+													<input type="reset" value="Reset" onclick="">
+													<input type="hidden" name="dispatch" value="create">
+													<input type="hidden" name="page" value="2">
+													<html:submit />
+												</div>
+											</td>
+										</tr>
+									</table>
+								</c:when>
+							</c:choose>
+							<div align="right"></div>
+						</td>
+					</tr>
+				</table>
 			</td>
 		</tr>
 	</table>
