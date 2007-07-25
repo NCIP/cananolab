@@ -56,7 +56,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  */
 
 /*
- * CVS $Id: BaseCharacterizationAction.java,v 1.68 2007-07-24 21:38:23 pansu Exp $
+ * CVS $Id: BaseCharacterizationAction.java,v 1.69 2007-07-25 18:44:35 pansu Exp $
  */
 
 public abstract class BaseCharacterizationAction extends AbstractDispatchAction {
@@ -339,10 +339,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 				CaNanoLabConstants.CSM_APP_NAME);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 
-		// set up charaterization files in the session
-		int fileNum = 0;
-		for (DerivedBioAssayData obj : aChar.getDerivedBioAssayDataCollection()) {
-			DerivedBioAssayDataBean fileBean = new DerivedBioAssayDataBean(obj);
+		// set up charaterization files visibility
+		for (DerivedBioAssayDataBean fileBean: charBean.getDerivedBioAssayDataList()) {			
 			boolean status = userService.checkReadPermission(user, fileBean
 					.getId());
 			if (status) {
@@ -352,10 +350,11 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 				String[] visibilityGroups = accessibleGroups
 						.toArray(new String[0]);
 				fileBean.setVisibilityGroups(visibilityGroups);
-				request.getSession().setAttribute(
-						"characterizationFile" + fileNum, fileBean);
+				fileBean.setHidden(false);
 			}
-			fileNum++;
+			else {
+				fileBean.setHidden(true);
+			}
 		}
 		return mapping.findForward("setup");
 	}
@@ -391,7 +390,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			throws Exception {
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleName = theForm.getString("particleName");		
+		String particleName = theForm.getString("particleName");
 		request.setAttribute("loadFileForward", mapping.findForward("setup")
 				.getPath());
 		CharacterizationBean achar = (CharacterizationBean) theForm
@@ -400,7 +399,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		DerivedBioAssayDataBean derivedBioAssayDataBean = achar
 				.getDerivedBioAssayDataList().get(fileNum);
 		derivedBioAssayDataBean.setParticleName(particleName);
-		derivedBioAssayDataBean.setCharacterizationName( theForm
+		derivedBioAssayDataBean.setCharacterizationName(theForm
 				.getString("charName"));
 		request.setAttribute("file", derivedBioAssayDataBean);
 		return mapping.findForward("loadFile");
