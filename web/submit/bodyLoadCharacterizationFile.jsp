@@ -102,6 +102,8 @@
 												<input type="hidden" name="page" value="2">
 												<html:hidden property="forwardPage" />			
 												<html:hidden property="fileNumber"/>
+												<html:hidden property="file.particleName"/>
+												<html:hidden property="file.characterizationName"/>
 												<html:submit />
 											</div>
 										</div>
