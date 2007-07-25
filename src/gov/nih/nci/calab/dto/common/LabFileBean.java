@@ -52,6 +52,8 @@ public class LabFileBean {
 
 	private String timeStampedName;
 	
+	private boolean hidden;
+	
 	public String getInstanceType() {
 		return instanceType;
 	}
@@ -229,5 +231,13 @@ public class LabFileBean {
 
 	public void setTimeStampedName(String timeStampedName) {
 		this.timeStampedName = timeStampedName;
+	}
+
+	public boolean isHidden() {
+		return hidden;
+	}
+
+	public void setHidden(boolean hidden) {
+		this.hidden = hidden;
 	}
 }
