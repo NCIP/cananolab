@@ -98,7 +98,7 @@ public class DerivedBioAssayDataBean extends LabFileBean {
 		charFile.setVersion(getVersion());
 		charFile.setType(getType());
 		charFile.setCategories(categories);
-
+		charFile.setContent(getFileContent());
 		for (String keywordValue : keywords) {
 			Keyword keyword = new Keyword();
 			keyword.setName(keywordValue);
