@@ -35,6 +35,8 @@ public class LabFile implements java.io.Serializable {
 	private String filename;
 
 	private gov.nih.nci.calab.domain.DataStatus dataStatus;
+	
+	private byte[] content;
 
 	public java.lang.Long getId() {
 		return id;
@@ -130,6 +132,14 @@ public class LabFile implements java.io.Serializable {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public byte[] getContent() {
+		return content;
+	}
+
+	public void setContent(byte[] content) {
+		this.content = content;
 	}
 
 	public boolean equals(Object obj) {
