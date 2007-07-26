@@ -16,16 +16,15 @@
 					</tr>
 					<tr>
 						<td class="welcomeContent" valign="top">
-							Welcome to the cancer Nanotechnology Laboratory Analysis Bench
-							(caNanoLab)! caNanoLab is a Laboratory Information Management
-							System (LIMS) designed to facilitate data sharing in laboratories
-							performing nanoparticle assays. caNanoLab provides support for
-							the accessioning of samples (nanoparticles), execution of
-							nanoparticle assays, and recording of assay results.
-							Additionally, caNanoLab allows for the annotation of
-							nanoparticles with characterizations resulting from physical and
-							in vitro nanoparticle assays and the sharing of these
-							characterizations in a secure fashion.
+							Welcome to the
+							<strong>cancer Nanotechnology Laboratory (caNanoLab)</strong>
+							portal. caNanoLab is a data sharing portal designed for
+							laboratories performing nanoparticle assays. caNanoLab provides
+							support for the annotation of nanoparticles with
+							characterizations resulting from physical and in vitro
+							nanoparticle assays and the sharing of these characterizations in
+							a secure fashion. The diagram below describes the caNanoLab
+							functionality and workflow:
 						</td>
 					</tr>
 				</table>
@@ -136,7 +135,7 @@
 											</li>
 											<li>
 												Remote Grid Search for Reports and Physical Composition
-												Data.
+												Data
 											</li>
 											<li>
 												Role-based Security
