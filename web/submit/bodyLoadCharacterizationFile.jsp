@@ -9,7 +9,7 @@
 			<td>
 				<h3>
 					<br>
-					Load Characterization File
+					Load/Update Characterization File
 				</h3>
 			</td>
 			<td align="right" width="15%">
@@ -34,19 +34,37 @@
 						</tr>
 						<tr>
 							<td class="completeLabel" colspan="2">
+								<c:choose>
+									<c:when test="${!empty file.uri && empty file.id}">
+										<strong>Loaded Assay Result File Name</strong>&nbsp;
+									    	${file.displayName}
+								    </c:when>
+								</c:choose>
+								<c:choose>
+									<c:when test="${!empty file.id}">
+										<strong>Loaded Assay Result File Name</strong>&nbsp;
+										<a
+											href="${actionName}.do?dispatch=download&amp;fileId=${file.id}">${file.displayName}</a>
+									</c:when>
+								</c:choose>
+								<br>
+								<br>
 								<html:radio property="fileSource" value="new">
 									<strong> Upload New File</strong>
 								</html:radio>
 								&nbsp; &nbsp;
 								<html:file size="60" property="uploadedFile" />
 								<br>
+								<br>
 								<html:radio property="fileSource" value="chooseExisting">
 									<strong> Choose File from the caNanoLab workflow</strong>
-								</html:radio>&nbsp;&nbsp;
-								<html:select property="runFileId">
-									<html:options collection="allRunFiles" property="id"
-										labelProperty="displayName" />
-								</html:select>	
+								</html:radio>
+								<blockquote>
+									<html:select property="runFileId">
+										<html:options collection="allRunFiles" property="id"
+											labelProperty="displayName" />
+									</html:select>
+								</blockquote>
 							</td>
 						</tr>
 						<tr>
@@ -79,7 +97,7 @@
 									${applicationOwner}_PI are defaults if none of above is
 									selected.)</i>
 							</td>
-						</tr>										
+						</tr>
 					</tbody>
 				</table>
 				<br>
@@ -100,10 +118,10 @@
 												<input type="reset" value="Reset">
 												<input type="hidden" name="dispatch" value="submit">
 												<input type="hidden" name="page" value="2">
-												<html:hidden property="forwardPage" />			
-												<html:hidden property="fileNumber"/>
-												<html:hidden property="file.particleName"/>
-												<html:hidden property="file.characterizationName"/>
+												<html:hidden property="forwardPage" />
+												<html:hidden property="fileNumber" />
+												<html:hidden property="file.particleName" />
+												<html:hidden property="file.characterizationName" />
 												<html:submit />
 											</div>
 										</div>
