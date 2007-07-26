@@ -94,7 +94,7 @@
 							<c:when
 								test="${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].hidden==false}">
 								<html:link
-									page="/updateAssayFile.do?page=0&dispatch=setupUpdate&fileId=${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].id}&actionName=${actionName}">
+									page="/${actionName}.do?page=0&dispatch=loadFile&charName=${charName}&fileNumber=${param.fileInd}">
 								${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].displayName}
 							</html:link>
 							</c:when>
