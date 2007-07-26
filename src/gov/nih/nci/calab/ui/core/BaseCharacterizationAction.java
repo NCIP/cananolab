@@ -56,7 +56,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  */
 
 /*
- * CVS $Id: BaseCharacterizationAction.java,v 1.69 2007-07-25 18:44:35 pansu Exp $
+ * CVS $Id: BaseCharacterizationAction.java,v 1.70 2007-07-26 16:36:11 pansu Exp $
  */
 
 public abstract class BaseCharacterizationAction extends AbstractDispatchAction {
@@ -340,7 +340,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 
 		// set up charaterization files visibility
-		for (DerivedBioAssayDataBean fileBean: charBean.getDerivedBioAssayDataList()) {			
+		for (DerivedBioAssayDataBean fileBean : charBean
+				.getDerivedBioAssayDataList()) {
 			boolean status = userService.checkReadPermission(user, fileBean
 					.getId());
 			if (status) {
@@ -351,8 +352,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 						.toArray(new String[0]);
 				fileBean.setVisibilityGroups(visibilityGroups);
 				fileBean.setHidden(false);
-			}
-			else {
+			} else {
 				fileBean.setHidden(true);
 			}
 		}
