@@ -75,6 +75,7 @@ public class LabFileBean {
 		this.version = charFile.getVersion();
 		this.createdDate = charFile.getCreatedDate();
 		this.type = charFile.getType();
+		this.fileContent=charFile.getContent();
 	}
 
 	public LabFileBean(LabFile charFile, String gridNodeHost) {
@@ -176,6 +177,7 @@ public class LabFileBean {
 		labfile.setTitle(title);
 		labfile.setVersion(version);
 		labfile.setType(type);
+		labfile.setContent(fileContent);
 		return labfile;
 	}
 
