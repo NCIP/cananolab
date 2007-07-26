@@ -121,47 +121,38 @@
 										<ul>
 											<li>
 												Sample and Aliquot Management
+											</li>
 											<li>
 												Assay Run Creation
+											</li>
 											<li>
 												Assay Result Management
+											</li>
 											<li>
-												Nanoparticle Annotation Creation and Deletion
+												Nanoparticle Annotation Creation, Deletion and Search
+											</li>
+											<li>
+												Report and Protocol Management
+											</li>
+											<li>
+												Remote Grid Search for Reports and Physical Composition
+												Data.
+											</li>
 											<li>
 												Role-based Security
-											<li>
-												Protocol Management
-											<li>
-												Remote Searches for Reports and Compositions on the Grid
+											</li>
 										</ul>
+										<br>
 									</td>
 								</tr>
 							</table>
 						</td>
 					</tr>
-					<!-- what's new ends -->
-
-					<!-- did you know? begins -->
-					<!-- did you know? ends -->
-
-					<!-- spacer cell begins (keep for dynamic expanding) -->
 					<tr height="100%">
-						<td valign="top" height="100%">
-							<table summary="" cellpadding="0" cellspacing="0" border="0"
-								width="100%" height="100%" class="noTopBottomSidebarSection">
-								<tr>
-									<td class="sidebarContent" valign="top">
-										&nbsp;
-									</td>
-								</tr>
-							</table>
-						</td>
+						<td valign="top" height="100%"></td>
 					</tr>
-					<!-- spacer cell ends -->
-
 				</table>
 			</td>
 		</tr>
-		<!-- sidebar ends -->
 	</table>
 </html:form>
