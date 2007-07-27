@@ -103,7 +103,7 @@
 	</form-beans>
 	<global-forwards>
 		<forward name="function" path="nanoparticleFunction.do?page=0" />
-		<forward name="loadFile" path="/loadFile.do?dispatch=setup&amp;page=0" />
+		<forward name="loadFile" path="/loadFile.do?dispatch=setupView&amp;page=0" />
 		<forward name="deleteConfirmed" path="submit.message" />
 	</global-forwards>
 	<action-mappings>
