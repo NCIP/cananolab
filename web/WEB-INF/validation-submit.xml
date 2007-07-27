@@ -150,7 +150,7 @@
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((fileSource!="new") or (*this*!=null))
+						(((fileSource!="new") or (file.id!=null)) or (*this*!=null))
 					</var-value>
 				</var>
 			</field>
