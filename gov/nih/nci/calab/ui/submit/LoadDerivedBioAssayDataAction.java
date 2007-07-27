@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: LoadDerivedBioAssayDataAction.java,v 1.24 2007-07-27 19:22:30 pansu Exp $ */
+/* CVS $Id: LoadDerivedBioAssayDataAction.java,v 1.25 2007-07-27 19:57:35 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
@@ -97,7 +97,7 @@ public class LoadDerivedBioAssayDataAction extends AbstractDispatchAction {
 		return forward;
 	}
 
-	public ActionForward setup(ActionMapping mapping, ActionForm form,
+	public ActionForward setupView(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		HttpSession session = request.getSession();
