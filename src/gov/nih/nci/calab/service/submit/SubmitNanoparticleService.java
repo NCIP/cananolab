@@ -131,7 +131,6 @@ public class SubmitNanoparticleService {
 					particle.getKeywordCollection().add(keywordObj);
 				}
 			}
-
 		} catch (Exception e) {
 			ida.rollback();
 			logger
@@ -217,11 +216,16 @@ public class SubmitNanoparticleService {
 		// if this block of code is inside the db try catch block, hibernate
 		// doesn't persist derivedBioAssayData
 		if (!achar.getDerivedBioAssayDataCollection().isEmpty()) {
+			int count=0;
 			for (DerivedBioAssayData derivedBioAssayData : achar
 					.getDerivedBioAssayDataCollection()) {
 				DerivedBioAssayDataBean derivedBioAssayDataBean = new DerivedBioAssayDataBean(
 						derivedBioAssayData);
+				//assign visibility
+				DerivedBioAssayDataBean unsaved=charBean.getDerivedBioAssayDataList().get(count);
+				derivedBioAssayDataBean.setVisibilityGroups(unsaved.getVisibilityGroups());
 				saveCharacterizationFile(derivedBioAssayDataBean);
+				count++;
 			}
 		}
 	}
