@@ -28,13 +28,14 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 				String dispatch = request.getParameter("dispatch");
 				// check whether user have access to the class
 				boolean accessStatus = canUserExecute(request.getSession());
-				//if have access or if have no access but dispatch is either setupView or download
-				//do forward
+				// if have access or if have no access but dispatch is either
+				// setupView or download or loadfile
+				// do forward
 				if (accessStatus
 						|| !accessStatus
 						&& dispatch != null
-						&& (dispatch.equals("setupView") || dispatch
-								.equals("download"))) {
+						&& (dispatch.equals("setupView")
+								|| dispatch.equals("download")||dispatch.equals("loadFile"))) {
 					forward = super.execute(mapping, form, request, response);
 				} else {
 					request.getSession().removeAttribute("user");
