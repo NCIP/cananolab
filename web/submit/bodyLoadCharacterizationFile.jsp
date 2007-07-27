@@ -115,7 +115,7 @@
 										<c:choose>
 											<c:when
 												test="${!empty file.id && loadDerivedBioAssayDataForm.map.fileSource=='new'}">
-												<a
+												<strong>File Name  </strong> <a
 													href="${actionName}.do?dispatch=download&amp;fileId=${file.id}">${file.displayName}</a>
 												<html:hidden property="file.id" />
 												<html:hidden property="file.name" />
