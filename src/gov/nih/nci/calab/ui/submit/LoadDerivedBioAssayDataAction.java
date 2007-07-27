@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: LoadDerivedBioAssayDataAction.java,v 1.23 2007-07-26 16:36:25 pansu Exp $ */
+/* CVS $Id: LoadDerivedBioAssayDataAction.java,v 1.24 2007-07-27 19:22:30 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
@@ -27,8 +27,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
 import org.apache.struts.upload.FormFile;
 import org.apache.struts.validator.DynaValidatorForm;
 
@@ -43,24 +41,28 @@ public class LoadDerivedBioAssayDataAction extends AbstractDispatchAction {
 				.get("file");
 		if (fileSource.equals("new")) {
 			FormFile uploadedFile = (FormFile) theForm.get("uploadedFile");
-			fileBean.setFileContent(uploadedFile.getFileData());
-			fileBean.setName(uploadedFile.getFileName());
-			fileBean.setTimeStampedName(FileService
-					.prefixFileNameWithTimeStamp(uploadedFile.getFileName()));
-			// add charaterizationName to the path
-			String filePath = File.separator
-					+ CaNanoLabConstants.FOLDER_PARTICLE
-					+ File.separator
-					+ fileBean.getParticleName()
-					+ File.separator
-					+ StringUtils.getOneWordLowerCaseFirstLetter(fileBean
-							.getCharacterizationName());
+			if (uploadedFile.getFileName().length() > 0) {
+				fileBean.setFileContent(uploadedFile.getFileData());
+				fileBean.setName(uploadedFile.getFileName());
+				fileBean
+						.setTimeStampedName(FileService
+								.prefixFileNameWithTimeStamp(uploadedFile
+										.getFileName()));
+				// add charaterizationName to the path
+				String filePath = File.separator
+						+ CaNanoLabConstants.FOLDER_PARTICLE
+						+ File.separator
+						+ fileBean.getParticleName()
+						+ File.separator
+						+ StringUtils.getOneWordLowerCaseFirstLetter(fileBean
+								.getCharacterizationName());
 
-			fileBean.setUri(filePath + File.separator
-					+ fileBean.getTimeStampedName());
-		} else {
+				fileBean.setUri(filePath + File.separator
+						+ fileBean.getTimeStampedName());
+			}
+		} else if (fileSource.equals("chooseExisting")) {
 			String runFileId = theForm.getString("runFileId");
-			if (runFileId != null) {
+			if (runFileId != null && runFileId.length() > 0) {
 				SubmitNanoparticleService service = new SubmitNanoparticleService();
 				LabFileBean existingFileBean = (LabFileBean) service
 						.getFile(runFileId);
@@ -106,62 +108,18 @@ public class LoadDerivedBioAssayDataAction extends AbstractDispatchAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		DerivedBioAssayDataBean file = (DerivedBioAssayDataBean) request
 				.getAttribute("file");
+		// set fileSource radio button
+		if (file.getUri() != null
+				&& file.getUri().length() > 0
+				&& file.getUri().contains(
+						CaNanoLabConstants.FOLDER_WORKFLOW_DATA)) {
+			theForm.set("fileSource", "chooseExisting");
+		}
 		InitSessionSetup.getInstance().setAllRunFiles(session,
 				file.getParticleName());
 		theForm.set("file", file);
 		theForm.set("forwardPage", (String) request
 				.getAttribute("loadFileForward"));
-		return mapping.getInputForward();
-	}
-
-	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		HttpSession session = request.getSession();
-		InitSessionSetup.getInstance().clearWorkflowSession(session);
-		InitSessionSetup.getInstance().clearSearchSession(session);
-		InitSessionSetup.getInstance().clearInventorySession(session);
-		String fileId = request.getParameter("fileId");
-		if (fileId.length() > 0) {
-			SubmitNanoparticleService service = new SubmitNanoparticleService();
-			DerivedBioAssayDataBean fileBean = service
-					.getDerivedBioAssayData(fileId);
-			DynaValidatorForm theForm = (DynaValidatorForm) form;
-			theForm.set("file", fileBean);
-			InitSessionSetup.getInstance().setAllRunFiles(session,
-					fileBean.getParticleName());
-		} else {
-
-		}
-		String actionName = request.getParameter("actionName");
-		String formName = request.getParameter("formName");
-		request.setAttribute("actionName", actionName);
-		request.setAttribute("formName", formName);
-		return mapping.getInputForward();
-	}
-
-	public ActionForward setupView(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		return setupUpdate(mapping, form, request, response);
-	}
-
-	public ActionForward update(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		DerivedBioAssayDataBean fileBean = (DerivedBioAssayDataBean) theForm
-				.get("file");
-		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		service.updateDerivedBioAssayDataMetaData(fileBean);
-
-		ActionMessages msgs = new ActionMessages();
-		ActionMessage msg = new ActionMessage(
-				"message.updateDerivedBioAssayData", fileBean.getUri());
-
-		msgs.add("message", msg);
-		saveMessages(request, msgs);
 		return mapping.getInputForward();
 	}
 
