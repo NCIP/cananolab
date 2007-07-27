@@ -94,7 +94,7 @@
 													&nbsp;
 												</td>
 												<td class="borderlessLabel">
-													<html:select property="file.runFileId">
+													<html:select property="runFileId">
 														<option value=""></option>
 														<html:options collection="allRunFiles" property="id"
 															labelProperty="displayName" />
