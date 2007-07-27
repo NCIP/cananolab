@@ -1,7 +1,6 @@
 package gov.nih.nci.calab.ui.core;
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
-import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Morphology;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Shape;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Solubility;
@@ -56,7 +55,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  */
 
 /*
- * CVS $Id: BaseCharacterizationAction.java,v 1.70 2007-07-26 16:36:11 pansu Exp $
+ * CVS $Id: BaseCharacterizationAction.java,v 1.71 2007-07-27 19:56:55 pansu Exp $
  */
 
 public abstract class BaseCharacterizationAction extends AbstractDispatchAction {
