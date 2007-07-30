@@ -2,6 +2,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <c:choose>
 	<c:when test="${!empty param.actionName}">
 		<c:set var="actionName" value="${param.actionName}" scope="session" />
@@ -12,6 +13,32 @@
 		<c:set var="charName" value="${param.charName}" scope="session" />
 	</c:when>
 </c:choose>
+<c:choose>
+	<c:when test="${submitType eq 'Physical'}">
+		<c:set var="helpName" value="nano_${actionName}_help" />
+	</c:when>
+</c:choose>
+<c:choose>
+	<c:when test="${submitType eq 'Blood Contact'}">
+		<c:set var="helpName" value="immunotoxicity_help" />
+	</c:when>
+</c:choose>
+<c:choose>	
+	<c:when test="${submitType eq 'Immune Cell Function' }">
+		<c:set var="helpName" value="immunotoxicity_help" />
+	</c:when>
+</c:choose>
+<c:choose>
+	<c:when test="${submitType eq 'Cytotoxicity' }">
+		<c:set var="helpName" value="cytotoxicity_help" />
+	</c:when>
+</c:choose>
+<c:choose>
+	<c:when test="${submitType eq 'Toxicity' }">
+		<c:set var="helpName" value="toxicity_help" />
+	</c:when>
+</c:choose>
+
 <html:form action="/${actionName}">
 	<table width="100%" align="center">
 		<tr>
@@ -23,7 +50,7 @@
 			</td>
 			<td align="right" width="15%">
 				<a
-					href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=${submitType}_help')"
+					href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=${helpName}')"
 					class="helpText">Help</a>
 			</td>
 		</tr>
