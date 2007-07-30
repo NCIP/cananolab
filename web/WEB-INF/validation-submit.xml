@@ -195,26 +195,6 @@
 					</var-value>
 				</var>
 			</field>
-			<field property="shape.type" page="2" depends="validwhen">
-				<arg position="0" key="shape.type" bundle="submit" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>
-						((shape.validateValue==null) or (*this*!=null))
-					</var-value>
-				</var>
-			</field>
-			<field property="morphology.type" page="2"
-				depends="validwhen">
-				<arg position="0" key="morphology.type" bundle="submit" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>
-						((morphology.validateValue==null) or
-						(*this*!=null))
-					</var-value>
-				</var>
-			</field>
 			<field property="shape.maxDimension" page="2"
 				depends="float">
 				<arg position="0" key="shape.maxDimension"
