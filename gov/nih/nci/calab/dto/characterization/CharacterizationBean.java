@@ -67,6 +67,12 @@ public class CharacterizationBean {
 	public CharacterizationBean() {
 
 	}
+	
+	/** Used in the side menu tree */
+	public CharacterizationBean(String name, String abbr) {
+		this.name=name;
+		this.abbr=abbr;
+	}
 
 	/**
 	 * Copy constructor
@@ -206,71 +212,11 @@ public class CharacterizationBean {
 		return name;
 	}
 
-	private void setAbbr(String name) {
-		if (name.equals(CaNanoLabConstants.PHYSICAL_COMPOSITION)) {
-			this.abbr = CaNanoLabConstants.ABBR_COMPOSITION;
-		} else if (name.equals(CaNanoLabConstants.PHYSICAL_SIZE)) {
-			this.abbr = CaNanoLabConstants.ABBR_SIZE;
-		} else if (name.equals(CaNanoLabConstants.PHYSICAL_MOLECULAR_WEIGHT)) {
-			this.abbr = CaNanoLabConstants.ABBR_MOLECULAR_WEIGHT;
-		} else if (name.equals(CaNanoLabConstants.PHYSICAL_MORPHOLOGY)) {
-			this.abbr = CaNanoLabConstants.ABBR_MORPHOLOGY;
-		} else if (name.equals(CaNanoLabConstants.PHYSICAL_SHAPE)) {
-			this.abbr = CaNanoLabConstants.ABBR_SHAPE;
-		} else if (name.equals(CaNanoLabConstants.PHYSICAL_SOLUBILITY)) {
-			this.abbr = CaNanoLabConstants.ABBR_SOLUBILITY;
-		} else if (name.equals(CaNanoLabConstants.PHYSICAL_SURFACE)) {
-			this.abbr = CaNanoLabConstants.ABBR_SURFACE;
-		} else if (name.equals(CaNanoLabConstants.PHYSICAL_PURITY)) {
-			this.abbr = CaNanoLabConstants.ABBR_PURITY;
-		} else if (name.equals(CaNanoLabConstants.TOXICITY_OXIDATIVE_STRESS)) {
-			this.abbr = CaNanoLabConstants.ABBR_OXIDATIVE_STRESS;
-		} else if (name.equals(CaNanoLabConstants.TOXICITY_ENZYME_FUNCTION)) {
-			this.abbr = CaNanoLabConstants.ABBR_ENZYME_FUNCTION;
-		} else if (name.equals(CaNanoLabConstants.CYTOTOXICITY_CELL_VIABILITY)) {
-			this.abbr = CaNanoLabConstants.ABBR_CELL_VIABILITY;
-		} else if (name
-				.equals(CaNanoLabConstants.CYTOTOXICITY_CASPASE3_ACTIVIATION)) {
-			this.abbr = CaNanoLabConstants.ABBR_CASPASE3_ACTIVATION;
-		} else if (name
-				.equals(CaNanoLabConstants.BLOODCONTACTTOX_PLATE_AGGREGATION)) {
-			this.abbr = CaNanoLabConstants.ABBR_PLATELET_AGGREGATION;
-		} else if (name.equals(CaNanoLabConstants.BLOODCONTACTTOX_HEMOLYSIS)) {
-			this.abbr = CaNanoLabConstants.ABBR_HEMOLYSIS;
-		} else if (name
-				.equals(CaNanoLabConstants.BLOODCONTACTTOX_PLASMA_PROTEIN_BINDING)) {
-			this.abbr = CaNanoLabConstants.ABBR_PLASMA_PROTEIN_BINDING;
-		} else if (name.equals(CaNanoLabConstants.BLOODCONTACTTOX_COAGULATION)) {
-			this.abbr = CaNanoLabConstants.ABBR_COAGULATION;
-		} else if (name
-				.equals(CaNanoLabConstants.IMMUNOCELLFUNCTOX_OXIDATIVE_BURST)) {
-			this.abbr = CaNanoLabConstants.ABBR_OXIDATIVE_BURST;
-		} else if (name.equals(CaNanoLabConstants.IMMUNOCELLFUNCTOX_CHEMOTAXIS)) {
-			this.abbr = CaNanoLabConstants.ABBR_CHEMOTAXIS;
-		} else if (name
-				.equals(CaNanoLabConstants.IMMUNOCELLFUNCTOX_LEUKOCYTE_PROLIFERATION)) {
-			this.abbr = CaNanoLabConstants.ABBR_LEUKOCYTE_PROLIFERATION;
-		} else if (name
-				.equals(CaNanoLabConstants.IMMUNOCELLFUNCTOX_PHAGOCYTOSIS)) {
-			this.abbr = CaNanoLabConstants.ABBR_PHAGOCYTOSIS;
-		} else if (name
-				.equals(CaNanoLabConstants.IMMUNOCELLFUNCTOX_CYTOKINE_INDUCTION)) {
-			this.abbr = CaNanoLabConstants.ABBR_CYTOKINE_INDUCTION;
-		} else if (name.equals(CaNanoLabConstants.IMMUNOCELLFUNCTOX_CFU_GM)) {
-			this.abbr = CaNanoLabConstants.ABBR_CFU_GM;
-		} else if (name
-				.equals(CaNanoLabConstants.IMMUNOCELLFUNCTOX_COMPLEMENT_ACTIVATION)) {
-			this.abbr = CaNanoLabConstants.ABBR_COMPLEMENT_ACTIVATION;
-		} else if (name
-				.equals(CaNanoLabConstants.IMMUNOCELLFUNCTOX_NKCELL_CYTOTOXIC_ACTIVITY)) {
-			this.abbr = CaNanoLabConstants.ABBR_NKCELL_CYTOTOXIC_ACTIVITY;
-		} else {
-			this.abbr = CaNanoLabConstants.OTHER; // shouldn't happen at all.
-		}
+	public void setAbbr(String abbr) {
+		this.abbr=abbr;
 	}
 
 	public String getAbbr() {
-
 		return abbr;
 	}
 
