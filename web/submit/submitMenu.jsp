@@ -28,10 +28,10 @@
 	<c:when test="${canUserSubmit eq 'true'}">
 		<table border="0" cellspacing="0" cellpadding="0">
 			<tr>
-				<c:forEach var="charName" items="${allCharTypeChars[submitType]}">
-				    <jsp:useBean id="charName" type="java.lang.String" />
+				<c:forEach var="achar" items="${allCharTypeChars[submitType]}">
+				    <jsp:useBean id="achar" type="gov.nih.nci.calab.dto.characterization.CharacterizationBean" />
 				    <%
-				       String actionName=StringUtils.getOneWordLowerCaseFirstLetter(charName);
+				       String actionName=StringUtils.getOneWordLowerCaseFirstLetter(achar.getName());
 				       pageContext.setAttribute("actionName", actionName);
 				     %>
 					<td class="secondMenuItem" height="20">
@@ -55,5 +55,3 @@
 		</table>
 	</c:when>
 </c:choose>
-
-
