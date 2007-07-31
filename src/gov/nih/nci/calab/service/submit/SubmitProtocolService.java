@@ -3,8 +3,10 @@ package gov.nih.nci.calab.service.submit;
 import gov.nih.nci.calab.db.DataAccessProxy;
 import gov.nih.nci.calab.db.IDataAccess;
 import gov.nih.nci.calab.domain.LabFile;
+import gov.nih.nci.calab.domain.LookupType;
 import gov.nih.nci.calab.domain.Protocol;
 import gov.nih.nci.calab.domain.ProtocolFile;
+import gov.nih.nci.calab.domain.ProtocolType;
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
 import gov.nih.nci.calab.service.common.FileService;
 import gov.nih.nci.calab.service.security.UserService;
@@ -25,7 +27,7 @@ import org.apache.struts.upload.FormFile;
  */
 
 /*
- * CVS $Id: SubmitProtocolService.java,v 1.10 2007-07-10 16:09:31 pansu Exp $
+ * CVS $Id: SubmitProtocolService.java,v 1.11 2007-07-31 19:12:40 pansu Exp $
  */
 
 public class SubmitProtocolService {
@@ -156,6 +158,10 @@ public class SubmitProtocolService {
 				dataFile.setProtocol(protocol);
 				ida.store(dataFile);
 			}
+			
+			//add protocol type to database
+			ProtocolType protocolType=new ProtocolType();
+			addLookupType(ida, protocolType, protocol.getType());
 		} catch (Exception e) {
 			e.printStackTrace();
 			ida.rollback();
@@ -169,6 +175,23 @@ public class SubmitProtocolService {
 				.getVisibilityGroups());
 
 	}
+	
+	private void addLookupType(IDataAccess ida, LookupType lookupType,
+			String type) throws Exception {
+		String className = lookupType.getClass().getSimpleName();
+
+		List results = ida.search("select count(distinct name) from "
+				+ className + " type where name='" + type + "'");
+		lookupType.setName(type);
+		int count = -1;
+		for (Object obj : results) {
+			count = ((Integer) (obj)).intValue();
+		}
+		if (count == 0) {
+			ida.createObject(lookupType);
+		}
+	}
+	
 	public void updateProtocol(ProtocolFileBean fileBean,
 			FormFile uploadedFile) throws Exception {
 
