@@ -84,7 +84,7 @@
     // if option the Editable field
     {
       getdropdown.options[getdropdown.options.selectedIndex].text = '';
-      //getdropdown.options[getdropdown.options.selectedIndex].value = ''; //Use this line only if want to change the internal value too; else this line is not required.
+      getdropdown.options[getdropdown.options.selectedIndex].value = '';
     }
     }
   }
@@ -149,8 +149,6 @@
     return false;
     }
   }
-
-//Dropdown specific functions, which manipulate dropdown specific global variables
 
   /*----------------------------------------------
   Dropdown specific global variables are:
@@ -261,7 +259,7 @@
     // (you need to know the keycode/ASCII value of the  character to be allowed/disallowed.
     // - Subrata Chakrabarty
 
-//added - and . by Sue Pan
+//added  - 45 and . 46 by Sue Pan
     if ((keycode>47 && keycode<59)||(keycode>62 && keycode<127) ||(keycode==32) || (keycode==45) || (keycode==46))
     {
       var vAllowableCharacter = "yes";
@@ -279,7 +277,7 @@
       // if selected option the Editable option of the dropdown
       {
 
-        var vEditString = getdropdown[vEditableOptionIndex_A].text;
+        var vEditString = getdropdown[vEditableOptionIndex_A].value;
 
         // make Editable option Null if it is being edited for the first time
         if((vAllowableCharacter == "yes")||(keychar=="backspace"))
@@ -348,7 +346,7 @@
             {
               if(i!=vEditableOptionIndex_A)
               {
-                var vReadOnlyString = getdropdown[i].text;
+                var vReadOnlyString = getdropdown[i].value;
                 var vFirstChar = vReadOnlyString.substring(0,1);
                 if((vFirstChar == vUpperCaseEnteredChar)||(vFirstChar == vLowerCaseEnteredChar))
                 {
@@ -370,7 +368,8 @@
 
         // Set the new edited string into the Editable option
         getdropdown.options[vEditableOptionIndex_A].text = vEditString;
-        getdropdown.options[vEditableOptionIndex_A].value = vEditString; //Use this line only if want to change the internal value too; else this line is not required.
+        getdropdown.options[vEditableOptionIndex_A].value = vEditString;
+
         return false;
       }
     return true;
@@ -398,3 +397,4 @@
       }
     }
   }
+  
