@@ -51,7 +51,7 @@ import org.hibernate.collection.PersistentSet;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.128 2007-07-31 20:37:59 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.129 2007-07-31 21:25:27 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -1004,44 +1004,17 @@ public class LookupService {
 		String[] imagingAgentTypes = new String[] { "Peptide",
 				"Small Molecule", "Antibody", "DNA", "Probe",
 				"Image Contrast Agent", "Other" };
-		agentTypes.put("Imaging", imagingAgentTypes);
+		agentTypes.put("Diagnostic Imaging", imagingAgentTypes);
 		String[] reportingAgentTypes = new String[] { "Peptide",
 				"Small Molecule", "Antibody", "DNA", "Probe",
 				"Image Contrast Agent", "Other" };
-		agentTypes.put("Reporting", reportingAgentTypes);
+		agentTypes.put("Diagnostic Reporting", reportingAgentTypes);
 		return agentTypes;
 	}
 
 	public String[] getAllAgentTargetTypes() {
 		String[] targetTypes = new String[] { "Receptor", "Antigen", "Other" };
 		return targetTypes;
-	}
-
-	public String[] getAllActivationMethods() {
-		String[] activationMethods = new String[] { "NMR", "MRI", "Radiation",
-				"Ultrasound", "Ultraviolet Light" };
-		return activationMethods;
-	}
-
-	public List<LabelValueBean> getAllSpecies() throws Exception {
-		List<LabelValueBean> species = new ArrayList<LabelValueBean>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
-		species.add(new LabelValueBean("", ""));
-		try {
-			for (int i = 0; i < CaNanoLabConstants.SPECIES_COMMON.length; i++) {
-				String specie = CaNanoLabConstants.SPECIES_COMMON[i];
-				species.add(new LabelValueBean(specie, specie));
-			}
-		} catch (Exception e) {
-			logger.error("Problem to retrieve all species. " + e);
-			throw new RuntimeException(
-					"Problem to retrieve all intrument types. ");
-		} finally {
-			ida.close();
-		}
-
-		return species;
 	}
 
 	public String[] getAllReportTypes() {
