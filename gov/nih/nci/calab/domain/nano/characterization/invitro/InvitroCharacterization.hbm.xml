@@ -30,17 +30,5 @@
 		</join>
 	</subclass>
 	<subclass name="EnzymeInduction" extends="gov.nih.nci.calab.domain.nano.characterization.toxicity.Toxicity" discriminator-value="EnzymeInduction" />
-	<subclass name="OxidativeStress" extends="gov.nih.nci.calab.domain.nano.characterization.toxicity.Toxicity" discriminator-value="OxidativeStress" />
-	<class name="CellLineType" table="DEF_CellLine_Type" lazy="true"
-		polymorphism="explicit">
-		<cache usage="read-write" />
-		<id name="id" type="java.lang.Long" column="CELLLINE_TYPE_PK_ID"
-			unsaved-value="0">
-			<generator class="org.hibernate.id.TableHiLoGenerator">
-				<param name="table">hibernate_unique_key</param>
-				<param name="column">next_hi</param>
-			</generator>
-		</id>
-		<property name="name" type="java.lang.String" column="NAME" />
-	</class>
+	<subclass name="OxidativeStress" extends="gov.nih.nci.calab.domain.nano.characterization.toxicity.Toxicity" discriminator-value="OxidativeStress" />	
 </hibernate-mapping>
