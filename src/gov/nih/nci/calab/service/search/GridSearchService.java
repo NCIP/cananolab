@@ -61,8 +61,8 @@ public class GridSearchService {
 					particleType, functionTypes);
 			if (gridReports != null) {
 				for (Report report : gridReports) {
-					LabFileBean fileBean=new LabFileBean(report,
-							gridNode.getHostName());
+					LabFileBean fileBean = new LabFileBean(report, gridNode
+							.getHostName());
 					fileBean.setInstanceType(CaNanoLabConstants.REPORT);
 					reports.add(fileBean);
 				}
@@ -73,9 +73,10 @@ public class GridSearchService {
 							functionTypes);
 			if (gridAssociatedFiles != null) {
 				for (AssociatedFile report : gridAssociatedFiles) {
-					LabFileBean fileBean=new LabFileBean(report,
-							gridNode.getHostName());
-					fileBean.setInstanceType(CaNanoLabConstants.ASSOCIATED_FILE);
+					LabFileBean fileBean = new LabFileBean(report, gridNode
+							.getHostName());
+					fileBean
+							.setInstanceType(CaNanoLabConstants.ASSOCIATED_FILE);
 					reports.add(fileBean);
 				}
 			}
@@ -84,8 +85,8 @@ public class GridSearchService {
 					particleType, functionTypes);
 			if (gridReports != null) {
 				for (Report report : gridReports) {
-					LabFileBean fileBean=new LabFileBean(report,
-							gridNode.getHostName());
+					LabFileBean fileBean = new LabFileBean(report, gridNode
+							.getHostName());
 					fileBean.setInstanceType(CaNanoLabConstants.REPORT);
 					reports.add(fileBean);
 				}
@@ -95,9 +96,10 @@ public class GridSearchService {
 							functionTypes);
 			if (gridAssociatedFiles != null) {
 				for (AssociatedFile report : gridAssociatedFiles) {
-					LabFileBean fileBean=new LabFileBean(report,
-							gridNode.getHostName());
-					fileBean.setInstanceType(CaNanoLabConstants.ASSOCIATED_FILE);
+					LabFileBean fileBean = new LabFileBean(report, gridNode
+							.getHostName());
+					fileBean
+							.setInstanceType(CaNanoLabConstants.ASSOCIATED_FILE);
 					reports.add(fileBean);
 				}
 			}
@@ -186,9 +188,10 @@ public class GridSearchService {
 			String particleName, GridNodeBean gridNode) throws Exception {
 		CaNanoLabSvcClient gridClient = new CaNanoLabSvcClient(gridNode
 				.getAddress());
+		// get saved characterizations saved in a remote node
 		Characterization[] gridCharacterizations = gridClient
 				.getCharacterizationsByParticleName(particleName);
-
+		// get all characterization type characterizations
 		Map<String, List<CharacterizationBean>> charTypeChars = new HashMap<String, List<CharacterizationBean>>();
 
 		// set up lookup table, key characterization type, value
@@ -196,15 +199,21 @@ public class GridSearchService {
 		// characterizations types in order as in lookupService.
 		if (gridCharacterizations != null) {
 			LookupService lookupService = new LookupService();
-			Map<String, List<String>> orderedCharTypeCharStrings = lookupService
+			Map<String, List<CharacterizationBean>> orderedCharTypeChars = lookupService
 					.getCharacterizationTypeCharacterizations();
-
-			for (String charType : orderedCharTypeCharStrings.keySet()) {
+			// set abbreviation for each saved characterization
+			for (String charType : orderedCharTypeChars.keySet()) {
 				List<CharacterizationBean> newCharBeans = new ArrayList<CharacterizationBean>();
-				List<String> charStringList = orderedCharTypeCharStrings.get(charType);
+				List<CharacterizationBean> orderedCharList = orderedCharTypeChars
+						.get(charType);
 				for (Characterization chara : gridCharacterizations) {
-					if (charStringList.contains(chara.getName())) {
-						newCharBeans.add(new CharacterizationBean(chara));
+					for (CharacterizationBean displayBean : orderedCharList) {
+						if (displayBean.getName().equals(chara.getName())) {
+							CharacterizationBean charBean = new CharacterizationBean(
+									chara);
+							charBean.setAbbr(displayBean.getAbbr());
+							newCharBeans.add(charBean);
+						}
 					}
 				}
 				if (!newCharBeans.isEmpty()) {
@@ -249,8 +258,8 @@ public class GridSearchService {
 				.getReportsByParticleName(particleName);
 		if (gridReports != null) {
 			for (Report report : gridReports) {
-				LabFileBean fileBean=new LabFileBean(report,
-						gridNode.getHostName());
+				LabFileBean fileBean = new LabFileBean(report, gridNode
+						.getHostName());
 				fileBean.setInstanceType(CaNanoLabConstants.REPORT);
 				reports.add(fileBean);
 			}
@@ -268,8 +277,8 @@ public class GridSearchService {
 				.getOtherAssociatedFilesByParticleName(particleName);
 		if (gridFiles != null) {
 			for (AssociatedFile file : gridFiles) {
-				LabFileBean fileBean=new LabFileBean(file,
-						gridNode.getHostName());
+				LabFileBean fileBean = new LabFileBean(file, gridNode
+						.getHostName());
 				fileBean.setInstanceType(CaNanoLabConstants.ASSOCIATED_FILE);
 				files.add(fileBean);
 			}
