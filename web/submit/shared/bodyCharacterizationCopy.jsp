@@ -14,29 +14,31 @@
 						</div>
 					</td>
 				</tr>
-				<logic:present name="allOtherParticles">
-					<tr>
-						<td class="leftLabel" valign="top" width="30%">
-							<strong>Copy to Other ${param.particleSource} Particles</strong>
-						</td>
-						<td class="label">
-							<html:select property="otherParticles" size="6" multiple="true">
-								<html:options name="allOtherParticleNames" />
-							</html:select>
-						</td>
-						<td class="rightLabel" valign="top">
-							<html:checkbox property="copyData" />
-							<strong>Also copy derived data?</strong>
-						</td>
-					</tr>
-				</logic:present>
-				<logic:notPresent name="allOtherParticles">
-					<tr>
-						<td class="completeLabel" colspan="3">
-							There are no other particles from source ${particleSource} to
-							copy characterization to.
-						</td>
-				</logic:notPresent>
+				<c:choose>
+					<c:when test="${!empty allOtherParticleNames}">
+						<tr>
+							<td class="leftLabel" valign="top" width="30%">
+								<strong>Copy to Other ${param.particleSource} Particles</strong>
+							</td>
+							<td class="label">
+								<html:select property="otherParticles" size="6" multiple="true">
+									<html:options name="allOtherParticleNames" />
+								</html:select>
+							</td>
+							<td class="rightLabel" valign="top">
+								<html:checkbox property="copyData" />
+								<strong>Also copy derived data?</strong>
+							</td>
+						</tr>
+					</c:when>
+					<c:otherwise>
+						<tr>
+							<td class="completeLabel" colspan="3">
+								There are no other particles from source ${particleSource} to
+								copy characterization to.
+							</td>
+					</c:otherwise>
+				</c:choose>
 			</tbody>
 		</table>
 	</c:when>
