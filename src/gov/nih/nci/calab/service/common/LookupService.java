@@ -5,13 +5,13 @@ import gov.nih.nci.calab.db.HibernateDataAccess;
 import gov.nih.nci.calab.db.IDataAccess;
 import gov.nih.nci.calab.domain.Aliquot;
 import gov.nih.nci.calab.domain.Instrument;
-import gov.nih.nci.calab.domain.MeasureType;
 import gov.nih.nci.calab.domain.MeasureUnit;
 import gov.nih.nci.calab.domain.Protocol;
 import gov.nih.nci.calab.domain.ProtocolFile;
 import gov.nih.nci.calab.domain.Sample;
 import gov.nih.nci.calab.domain.SampleContainer;
 import gov.nih.nci.calab.domain.StorageElement;
+import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.CharacterizationTypeBean;
 import gov.nih.nci.calab.dto.common.InstrumentBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
@@ -51,7 +51,7 @@ import org.hibernate.collection.PersistentSet;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.127 2007-07-20 19:01:14 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.128 2007-07-31 20:37:59 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -708,31 +708,36 @@ public class LookupService {
 	 * @return a map between a characterization type and its child
 	 *         characterizations.
 	 */
-	public Map<String, List<String>> getCharacterizationTypeCharacterizations()
+	public Map<String, List<CharacterizationBean>> getCharacterizationTypeCharacterizations()
 			throws Exception {
-		Map<String, List<String>> charTypeChars = new HashMap<String, List<String>>();
+		Map<String, List<CharacterizationBean>> charTypeChars = new HashMap<String, List<CharacterizationBean>>();
 		HibernateDataAccess hda = HibernateDataAccess.getInstance();
 		try {
 			hda.open();
-			List<String> chars = null;
-			String query = "select distinct a.category, a.name from def_characterization_category a "
+			List<CharacterizationBean> chars = null;
+			String query = "select distinct a.category, a.name, a.name_abbreviation from def_characterization_category a "
 					+ "where a.name not in (select distinct b.category from def_characterization_category b) "
-					+ "order by a.category, a.name";
+					+ "order by a.category, a.name, a.name_abbreviation";
 			SQLQuery queryObj = hda.getNativeQuery(query);
 			queryObj.addScalar("CATEGORY", Hibernate.STRING);
 			queryObj.addScalar("NAME", Hibernate.STRING);
+			queryObj.addScalar("NAME_ABBREVIATION", Hibernate.STRING);
 			List results = queryObj.list();
 			for (Object obj : results) {
 				Object[] objarr = (Object[]) obj;
 				String type = objarr[0].toString();
 				String name = objarr[1].toString();
+				String abbr = objarr[2].toString();
 				if (charTypeChars.get(type) != null) {
-					chars = (List<String>) charTypeChars.get(type);
+					chars = (List<CharacterizationBean>) charTypeChars
+							.get(type);
 				} else {
-					chars = new ArrayList<String>();
+					chars = new ArrayList<CharacterizationBean>();
 					charTypeChars.put(type, chars);
 				}
-				chars.add(name);
+				CharacterizationBean charBean = new CharacterizationBean(name,
+						abbr);
+				chars.add(charBean);
 			}
 		} catch (Exception e) {
 			logger
