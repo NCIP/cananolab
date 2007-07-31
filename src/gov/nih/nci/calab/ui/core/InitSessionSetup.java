@@ -509,22 +509,29 @@ public class InitSessionSetup {
 	private void setAllCharacterizations(HttpSession session,
 			String particleName, String particleType) throws Exception {
 		setAllCharacterizationTypes(session);
-		Map<String, List<String>> charTypeChars = (Map<String, List<String>>) session
+		Map<String, List<CharacterizationBean>> charTypeChars = (Map<String, List<CharacterizationBean>>) session
 				.getServletContext().getAttribute("allCharTypeChars");
 		if (session.getAttribute("allCharacterizations") == null
 				|| session.getAttribute("newCharacterizationCreated") != null
 				|| session.getAttribute("newParticleCreated") != null) {
+			//get saved characterizations based on the particle type and name
 			SearchNanoparticleService service = new SearchNanoparticleService();
 			List<CharacterizationBean> charBeans = service
 					.getCharacterizationInfo(particleName, particleType);
 			Map<String, List<CharacterizationBean>> charMap = new HashMap<String, List<CharacterizationBean>>();
 			for (String charType : charTypeChars.keySet()) {
 				List<CharacterizationBean> newCharBeans = new ArrayList<CharacterizationBean>();
-				List<String> charList = (List<String>) charTypeChars
+				//get all characterizations for the characterization type
+				List<CharacterizationBean> charList = (List<CharacterizationBean>) charTypeChars
 						.get(charType);
+				//set abbreviation for each saved characterization
 				for (CharacterizationBean charBean : charBeans) {
-					if (charList.contains(charBean.getName())) {
-						newCharBeans.add(charBean);
+					for (CharacterizationBean displayBean : charList) {
+						if (displayBean.getName().equals(charBean.getName())) {
+							charBean.setAbbr(displayBean.getAbbr());
+							newCharBeans.add(charBean);
+							break;
+						}
 					}
 				}
 				if (!newCharBeans.isEmpty()) {
@@ -655,7 +662,7 @@ public class InitSessionSetup {
 			SortedSet<String> chargeUnits = lookupService.getAllMeasureUnits()
 					.get("Zeta Potential");
 			session.setAttribute("allZetaPotentialUnits", chargeUnits);
-		}	
+		}
 		session.removeAttribute("newSurfaceCreated");
 	}
 
@@ -675,9 +682,14 @@ public class InitSessionSetup {
 				CaNanoLabConstants.FUNCTION_AGENT_TYPES);
 	}
 
-	public void setProtocolType(HttpSession session) throws Exception {	
-		SortedSet<String> protocolTypes = lookupService.getAllLookupTypes("ProtocolType");		
-		session.setAttribute("protocolTypes", protocolTypes);
+	public void setProtocolType(HttpSession session) throws Exception {
+		if (session.getAttribute("protocolTypes") == null
+				|| session.getAttribute("newProtocolCreated") != null) {
+			SortedSet<String> protocolTypes = lookupService
+					.getAllLookupTypes("ProtocolType");
+			session.setAttribute("protocolTypes", protocolTypes);
+		}
+		session.removeAttribute("newProtocolCreated");
 	}
 
 	public void setProtocolSubmitPage(HttpSession session, UserBean user)
@@ -899,9 +911,9 @@ public class InitSessionSetup {
 		}
 
 		// set in application context mapping between characterization type and
-		// child characterization names
+		// child characterization name and abbrs
 		if (session.getServletContext().getAttribute("allCharTypeChars") == null) {
-			Map<String, List<String>> charTypeChars = lookupService
+			Map<String, List<CharacterizationBean>> charTypeChars = lookupService
 					.getCharacterizationTypeCharacterizations();
 			session.getServletContext().setAttribute("allCharTypeChars",
 					charTypeChars);
