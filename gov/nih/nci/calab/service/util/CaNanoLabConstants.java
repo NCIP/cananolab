@@ -82,10 +82,6 @@ public class CaNanoLabConstants {
 	public static final String[] BOOLEAN_CHOICES = new String[] { BOOLEAN_YES,
 			BOOLEAN_NO };
 
-	public static final String[] PROTOCOL_TYPES = new String[] {
-			"Physical assay", "Synthesis", "In vitro assay", "In vivo assay",
-			"Sample preparation", "Safety", "Radiolabeling" };
-
 	public static final String DEFAULT_SAMPLE_PREFIX = "NANO-";
 
 	public static final String DEFAULT_APP_OWNER = "NCICB";
@@ -119,119 +115,6 @@ public class CaNanoLabConstants {
 	 * The following Strings are nano specific
 	 * 
 	 */
-
-	public static final String PHYSICAL_CHARACTERIZATION = "Physical";
-
-	public static final String COMPOSITION_CHARACTERIZATION = "Composition";
-
-	public static final String INVITRO_CHARACTERIZATION = "In Vitro";
-
-	public static final String INVIVO_CHARACTERIZATION = "In Vivo";
-
-	public static final String TOXICITY_CHARACTERIZATION = "Toxicity";
-
-	public static final String CYTOXICITY_CHARACTERIZATION = "Cytoxicity";
-
-	public static final String APOPTOSIS_CELL_DEATH_METHOD_CYTOXICITY_CHARACTERIZATION = "apoptosis";
-
-	public static final String NECROSIS_CELL_DEATH_METHOD_CYTOXICITY_CHARACTERIZATION = "necrosis";
-
-	public static final String BLOOD_CONTACT_IMMUNOTOXICITY_CHARACTERIZATION = "Blood Contact";
-
-	public static final String IMMUNE_CELL_FUNCTION_IMMUNOTOXICITY_CHARACTERIZATION = "Immune Cell Function";
-
-	public static final String METABOLIC_STABILITY_TOXICITY_CHARACTERIZATION = "Metabolic Stability";
-
-	public static final String PHYSICAL_SIZE = "Size";
-
-	public static final String PHYSICAL_SHAPE = "Shape";
-
-	public static final String PHYSICAL_MOLECULAR_WEIGHT = "Molecular Weight";
-
-	public static final String PHYSICAL_SOLUBILITY = "Solubility";
-
-	public static final String PHYSICAL_SURFACE = "Surface";
-
-	public static final String PHYSICAL_STABILITY = "Stability";
-
-	public static final String PHYSICAL_PURITY = "Purity";
-
-	public static final String PHYSICAL_FUNCTIONAL = "Functional";
-
-	public static final String PHYSICAL_MORPHOLOGY = "Morphology";
-
-	public static final String PHYSICAL_COMPOSITION = "Composition";
-
-	public static final String TOXICITY_OXIDATIVE_STRESS = "Oxidative Stress";
-
-	public static final String TOXICITY_OXIDATIVE_STRESS_DATA_TYPE = "Percent Oxidative Stress";
-
-	public static final String TOXICITY_ENZYME_FUNCTION = "Enzyme Function";
-
-	public static final String TOXICITY_ENZYME_FUNCTION_DATA_TYPE = "Percent Enzyme Induction";
-
-	public static final String CYTOTOXICITY_CELL_VIABILITY = "Cell Viability";
-
-	public static final String CYTOTOXICITY_CELL_VIABILITY_DATA_TYPE = "Percent Cell Viability";
-
-	public static final String CYTOTOXICITY_CASPASE3_ACTIVIATION = "Caspase 3 Activation";
-
-	public static final String CYTOTOXICITY_CASPASE3_ACTIVIATION_DATA_TYPE = "Percent Caspase 3 Activation";
-
-	public static final String BLOODCONTACTTOX_PLATE_AGGREGATION = "Platelet Aggregation";
-
-	public static final String BLOODCONTACTTOX_PLATELET_AGGREGATION_DATA_TYPE = "Percent Platelet Aggregation";
-
-	public static final String BLOODCONTACTTOX_HEMOLYSIS = "Hemolysis";
-
-	public static final String BLOODCONTACTTOX_HEMOLYSIS_DATA_TYPE = "Percent Hemolysis";
-
-	public static final String BLOODCONTACTTOX_COAGULATION = "Coagulation";
-
-	public static final String BLOODCONTACTTOX_COAGULATION_DATA_TYPE = "Coagulation Time";
-
-	public static final String BLOODCONTACTTOX_PLASMA_PROTEIN_BINDING = "Plasma Protein Binding";
-
-	public static final String BLOODCONTACTTOX_PLASMA_PROTEIN_BINDING_DATA_TYPE = "Percent Plasma Protein Binding";
-
-	public static final String IMMUNOCELLFUNCTOX_PHAGOCYTOSIS = "Phagocytosis";
-
-	public static final String IMMUNOCELLFUNCTOX_PHAGOCYTOSIS_DATA_TYPE = "Fold Induction";
-
-	public static final String IMMUNOCELLFUNCTOX_OXIDATIVE_BURST = "Oxidative Burst";
-
-	public static final String IMMUNOCELLFUNCTOX_OXIDATIVE_BURST_DATA_TYPE = "Percent Oxidative Burst";
-
-	public static final String IMMUNOCELLFUNCTOX_CHEMOTAXIS = "Chemotaxis";
-
-	public static final String IMMUNOCELLFUNCTOX_CHEMOTAXIS_DATA_TYPE = "Relative Fluorescent Values";
-
-	public static final String IMMUNOCELLFUNCTOX_CYTOKINE_INDUCTION = "Cytokine Induction";
-
-	public static final String IMMUNOCELLFUNCTOX_CYTOKINE_INDUCTION_DATA_TYPE = "Cytokine Concentration";
-
-	public static final String IMMUNOCELLFUNCTOX_COMPLEMENT_ACTIVATION = "Complement Activation";
-
-	public static final String IMMUNOCELLFUNCTOX_COMPLEMENT_ACTIVATION_DATA_TYPE = "Percent Complement Activation";
-
-	public static final String IMMUNOCELLFUNCTOX_LEUKOCYTE_PROLIFERATION = "Leukocyte Proliferation";
-
-	public static final String IMMUNOCELLFUNCTOX_LEUKOCYTE_PROLIFERATION_DATA_TYPE = "Percent Leukocyte Proliferation";
-
-	public static final String IMMUNOCELLFUNCTOX_NKCELL_CYTOTOXIC_ACTIVITY = "Cytotoxic Activity of NK Cells";
-
-	public static final String IMMUNOCELLFUNCTOX_NKCELL_CYTOTOXIC_ACTIVITY_DATA_TYPE = "Percent Cytotoxic Activity";
-
-	public static final String METABOLIC_STABILITY_CYP450 = "CYP450";
-
-	public static final String METABOLIC_STABILITY_ROS = "ROS";
-
-	public static final String METABOLIC_STABILITY_GLUCURONIDATION_SULPHATION = "Glucuronidation Sulphation";
-
-	public static final String IMMUNOCELLFUNCTOX_CFU_GM = "CFU_GM";
-
-	public static final String IMMUNOCELLFUNCTOX_CFU_GM_DATA_TYPE = "CFU_GM";
-
 	public static final String DENDRIMER_TYPE = "Dendrimer";
 
 	public static final String POLYMER_TYPE = "Polymer";
@@ -316,54 +199,6 @@ public class CaNanoLabConstants {
 
 	public static final int MAX_VIEW_TITLE_LENGTH = 23;
 
-	public static final String ABBR_COMPOSITION = "CP";
-
-	public static final String ABBR_SIZE = "SZ";
-
-	public static final String ABBR_MOLECULAR_WEIGHT = "MW";
-
-	public static final String ABBR_MORPHOLOGY = "MP";
-
-	public static final String ABBR_SHAPE = "SH";
-
-	public static final String ABBR_SURFACE = "SF";
-
-	public static final String ABBR_SOLUBILITY = "SL";
-
-	public static final String ABBR_PURITY = "PT";
-
-	public static final String ABBR_OXIDATIVE_STRESS = "OS";
-
-	public static final String ABBR_ENZYME_FUNCTION = "EF";
-
-	public static final String ABBR_CELL_VIABILITY = "CV";
-
-	public static final String ABBR_CASPASE3_ACTIVATION = "C3";
-
-	public static final String ABBR_PLATELET_AGGREGATION = "PA";
-
-	public static final String ABBR_HEMOLYSIS = "HM";
-
-	public static final String ABBR_PLASMA_PROTEIN_BINDING = "PB";
-
-	public static final String ABBR_COAGULATION = "CG";
-
-	public static final String ABBR_OXIDATIVE_BURST = "OB";
-
-	public static final String ABBR_CHEMOTAXIS = "CT";
-
-	public static final String ABBR_LEUKOCYTE_PROLIFERATION = "LP";
-
-	public static final String ABBR_PHAGOCYTOSIS = "PC";
-
-	public static final String ABBR_CYTOKINE_INDUCTION = "CI";
-
-	public static final String ABBR_CFU_GM = "CU";
-
-	public static final String ABBR_COMPLEMENT_ACTIVATION = "CA";
-
-	public static final String ABBR_NKCELL_CYTOTOXIC_ACTIVITY = "NK";
-
 	public static final String[] SPECIES_SCIENTIFIC = { "Mus musculus",
 			"Homo sapiens", "Rattus rattus", "Sus scrofa",
 			"Meriones unguiculatus", "Mesocricetus auratus", "Cavia porcellus",
@@ -412,6 +247,7 @@ public class CaNanoLabConstants {
 		PARTICLE_CLASSIFICATION_MAP.put(COMPLEX_PARTICLE_TYPE, COMPLEX);
 	}
 
+	
 	public static final String CSM_PI = APP_OWNER + "_PI";
 
 	public static final String CSM_RESEARCHER = APP_OWNER + "_Researcher";
