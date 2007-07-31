@@ -397,13 +397,6 @@ public class InitSessionSetup {
 			session.setAttribute("allPolymerInitiators", initiators);
 		}
 		session.removeAttribute("newPolymerCreated");
-
-		if (session.getServletContext().getAttribute("allActivationMethods") == null) {
-			String[] activationMethods = lookupService
-					.getAllActivationMethods();
-			session.getServletContext().setAttribute("allActivationMethods",
-					activationMethods);
-		}
 	}
 
 	private void setAllDendrimers(HttpSession session) throws Exception {
@@ -514,17 +507,17 @@ public class InitSessionSetup {
 		if (session.getAttribute("allCharacterizations") == null
 				|| session.getAttribute("newCharacterizationCreated") != null
 				|| session.getAttribute("newParticleCreated") != null) {
-			//get saved characterizations based on the particle type and name
+			// get saved characterizations based on the particle type and name
 			SearchNanoparticleService service = new SearchNanoparticleService();
 			List<CharacterizationBean> charBeans = service
 					.getCharacterizationInfo(particleName, particleType);
 			Map<String, List<CharacterizationBean>> charMap = new HashMap<String, List<CharacterizationBean>>();
 			for (String charType : charTypeChars.keySet()) {
 				List<CharacterizationBean> newCharBeans = new ArrayList<CharacterizationBean>();
-				//get all characterizations for the characterization type
+				// get all characterizations for the characterization type
 				List<CharacterizationBean> charList = (List<CharacterizationBean>) charTypeChars
 						.get(charType);
-				//set abbreviation for each saved characterization
+				// set abbreviation for each saved characterization
 				for (CharacterizationBean charBean : charBeans) {
 					for (CharacterizationBean displayBean : charList) {
 						if (displayBean.getName().equals(charBean.getName())) {
@@ -813,8 +806,29 @@ public class InitSessionSetup {
 
 	public void setAllFunctionDropdowns(HttpSession session) throws Exception {
 		if (session.getServletContext().getAttribute("allSpecies") == null) {
-			List<LabelValueBean> species = lookupService.getAllSpecies();
-			session.getServletContext().setAttribute("allSpecies", species);
+			SortedSet<String> names = lookupService
+					.getAllLookupTypes("SpeciesName");
+			session.getServletContext().setAttribute("allSpecies", names);
+		}
+
+		if (session.getServletContext().getAttribute("allImageContrastAgentTypes") == null) {
+			SortedSet<String> agentTypes = lookupService
+					.getAllLookupTypes("ImageContrastAgentType");
+			session.getServletContext().setAttribute("allImageContrastAgentTypes",
+					agentTypes);
+		}
+
+		if (session.getServletContext().getAttribute("allActivationMethods") == null) {
+			SortedSet<String> methods = lookupService
+					.getAllLookupTypes("ActivationMethod");
+			session.getServletContext().setAttribute("allActivationMethods",
+					methods);
+		}
+
+		if (session.getServletContext().getAttribute("allBondTypes") == null) {
+			SortedSet<String> methods = lookupService
+					.getAllLookupTypes("BondType");
+			session.getServletContext().setAttribute("allBondTypes", methods);
 		}
 
 		if (session.getServletContext().getAttribute("allAgentTargetTypes") == null) {
