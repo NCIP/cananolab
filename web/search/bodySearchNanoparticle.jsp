@@ -104,7 +104,7 @@
 						</td>
 						<td class="rightLabel" colspan="2">
 							<strong>for<br> <html:radio property="summaryType"
-									value="characterization">Characterization</html:radio> <br> <html:radio
+									value="characterization">Nanoparticle</html:radio> <br> <html:radio
 									property="summaryType" value="assayResult">Assay Result</html:radio>
 							</strong>
 						</td>
