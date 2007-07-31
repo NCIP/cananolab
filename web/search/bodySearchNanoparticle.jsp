@@ -105,7 +105,7 @@
 						<td class="rightLabel" colspan="2">
 							<strong>for<br> <html:radio property="summaryType"
 									value="characterization">Nanoparticle</html:radio> <br> <html:radio
-									property="summaryType" value="assayResult">Assay Result</html:radio>
+									property="summaryType" value="assayResult">Characterization File</html:radio>
 							</strong>
 						</td>
 					</tr>
@@ -119,7 +119,7 @@
 						<td class="rightLabel" colspan="2">
 							<strong>for<br> <html:radio property="keywordType"
 									value="nanoparticle">Nanoparticle</html:radio> <br> <html:radio
-									property="keywordType" value="assayResult">Assay Result</html:radio>
+									property="keywordType" value="assayResult">Characterization File</html:radio>
 							</strong>
 						</td>
 					</tr>
