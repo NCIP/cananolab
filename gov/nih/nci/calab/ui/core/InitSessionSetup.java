@@ -675,13 +675,8 @@ public class InitSessionSetup {
 				CaNanoLabConstants.FUNCTION_AGENT_TYPES);
 	}
 
-	public void setProtocolType(HttpSession session) throws Exception {
-		// set protocol types, and protocol names for all these types
-		SortedSet<String> protocolTypes = lookupService.getAllProtocolTypes();
-		for (int i = 0; i < CaNanoLabConstants.PROTOCOL_TYPES.length; i++) {
-			if (!protocolTypes.contains(CaNanoLabConstants.PROTOCOL_TYPES[i]))
-				protocolTypes.add(CaNanoLabConstants.PROTOCOL_TYPES[i]);
-		}
+	public void setProtocolType(HttpSession session) throws Exception {	
+		SortedSet<String> protocolTypes = lookupService.getAllLookupTypes("ProtocolType");		
 		session.setAttribute("protocolTypes", protocolTypes);
 	}
 
