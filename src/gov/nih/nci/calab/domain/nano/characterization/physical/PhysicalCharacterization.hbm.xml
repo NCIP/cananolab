@@ -91,41 +91,4 @@
 	<subclass name="Purity"
 		extends="gov.nih.nci.calab.domain.nano.characterization.Characterization"
 		discriminator-value="Purity" />
-
-	<class name="ShapeType" table="DEF_Shape_Type" lazy="true"
-		polymorphism="explicit">
-		<cache usage="read-write" />
-		<id name="id" type="java.lang.Long" column="SHAPE_TYPE_PK_ID"
-			unsaved-value="0">
-			<generator class="org.hibernate.id.TableHiLoGenerator">
-				<param name="table">hibernate_unique_key</param>
-				<param name="column">next_hi</param>
-			</generator>
-		</id>
-		<property name="name" type="java.lang.String" column="NAME" />
-	</class>
-	<class name="MorphologyType" table="DEF_Morphology_Type" lazy="true"
-		polymorphism="explicit">
-		<cache usage="read-write" />
-		<id name="id" type="java.lang.Long"
-			column="MORPHOLOGY_TYPE_PK_ID" unsaved-value="0">
-			<generator class="org.hibernate.id.TableHiLoGenerator">
-				<param name="table">hibernate_unique_key</param>
-				<param name="column">next_hi</param>
-			</generator>
-		</id>
-		<property name="name" type="java.lang.String" column="NAME" />
-	</class>
-	<class name="SolventType" table="DEF_Solvent_Type" lazy="true"
-		polymorphism="explicit">
-		<cache usage="read-write" />
-		<id name="id" type="java.lang.Long"
-			column="SOLVENT_TYPE_PK_ID" unsaved-value="0">
-			<generator class="org.hibernate.id.TableHiLoGenerator">
-				<param name="table">hibernate_unique_key</param>
-				<param name="column">next_hi</param>
-			</generator>
-		</id>
-		<property name="name" type="java.lang.String" column="NAME" />
-	</class>
 </hibernate-mapping>
