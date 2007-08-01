@@ -216,14 +216,16 @@ public class SubmitNanoparticleService {
 		// if this block of code is inside the db try catch block, hibernate
 		// doesn't persist derivedBioAssayData
 		if (!achar.getDerivedBioAssayDataCollection().isEmpty()) {
-			int count=0;
+			int count = 0;
 			for (DerivedBioAssayData derivedBioAssayData : achar
 					.getDerivedBioAssayDataCollection()) {
 				DerivedBioAssayDataBean derivedBioAssayDataBean = new DerivedBioAssayDataBean(
 						derivedBioAssayData);
-				//assign visibility
-				DerivedBioAssayDataBean unsaved=charBean.getDerivedBioAssayDataList().get(count);
-				derivedBioAssayDataBean.setVisibilityGroups(unsaved.getVisibilityGroups());
+				// assign visibility
+				DerivedBioAssayDataBean unsaved = charBean
+						.getDerivedBioAssayDataList().get(count);
+				derivedBioAssayDataBean.setVisibilityGroups(unsaved
+						.getVisibilityGroups());
 				saveCharacterizationFile(derivedBioAssayDataBean);
 				count++;
 			}
@@ -428,16 +430,17 @@ public class SubmitNanoparticleService {
 	private void addLookupType(IDataAccess ida, LookupType lookupType,
 			String type) throws Exception {
 		String className = lookupType.getClass().getSimpleName();
-
-		List results = ida.search("select count(distinct name) from "
-				+ className + " type where name='" + type + "'");
-		lookupType.setName(type);
-		int count = -1;
-		for (Object obj : results) {
-			count = ((Integer) (obj)).intValue();
-		}
-		if (count == 0) {
-			ida.createObject(lookupType);
+		if (type != null && type.length() > 0) {
+			List results = ida.search("select count(distinct name) from "
+					+ className + " type where name='" + type + "'");
+			lookupType.setName(type);
+			int count = -1;
+			for (Object obj : results) {
+				count = ((Integer) (obj)).intValue();
+			}
+			if (count == 0) {
+				ida.createObject(lookupType);
+			}
 		}
 	}
 
@@ -486,29 +489,31 @@ public class SubmitNanoparticleService {
 
 	private void addLookupType(LookupType lookupType, String type)
 			throws Exception {
-		// if ID is not set save to the database otherwise update
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
-		String className = lookupType.getClass().getSimpleName();
-		try {
-			ida.open();
-			List results = ida.search("select count(distinct name) from "
-					+ className + " type where name='" + type + "'");
-			lookupType.setName(type);
-			int count = -1;
-			for (Object obj : results) {
-				count = ((Integer) (obj)).intValue();
+		if (type != null && type.length() > 0) {
+			// if ID is not set save to the database otherwise update
+			IDataAccess ida = (new DataAccessProxy())
+					.getInstance(IDataAccess.HIBERNATE);
+			String className = lookupType.getClass().getSimpleName();
+			try {
+				ida.open();
+				List results = ida.search("select count(distinct name) from "
+						+ className + " type where name='" + type + "'");
+				lookupType.setName(type);
+				int count = -1;
+				for (Object obj : results) {
+					count = ((Integer) (obj)).intValue();
+				}
+				if (count == 0) {
+					ida.createObject(lookupType);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				ida.rollback();
+				logger.error("Problem saving look up type: " + type);
+				throw e;
+			} finally {
+				ida.close();
 			}
-			if (count == 0) {
-				ida.createObject(lookupType);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			ida.rollback();
-			logger.error("Problem saving look up type: " + type);
-			throw e;
-		} finally {
-			ida.close();
 		}
 	}
 
