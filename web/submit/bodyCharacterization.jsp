@@ -23,7 +23,7 @@
 		<c:set var="helpName" value="immunotoxicity_help" />
 	</c:when>
 </c:choose>
-<c:choose>	
+<c:choose>
 	<c:when test="${submitType eq 'Immune Cell Function' }">
 		<c:set var="helpName" value="immunotoxicity_help" />
 	</c:when>
@@ -106,7 +106,10 @@
 												property="achar.derivedBioAssayDataList"
 												id="derivedBioAssayData" indexId="fileInd">
 												<jsp:include
-													page="/submit/shared/bodyCharacterizationFile.jsp?actionName=${actionName}&fileInd=${fileInd}" />
+													page="/submit/shared/bodyCharacterizationFile.jsp">
+													<jsp:param name="actionName" value="${actionName}"/>
+													<jsp:param name="fileInd" value="${fileInd}"/>
+												</jsp:include>
 												<br>
 											</logic:iterate>
 										</td>
