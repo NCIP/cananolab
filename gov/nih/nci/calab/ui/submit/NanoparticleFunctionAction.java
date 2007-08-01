@@ -6,9 +6,11 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleFunctionAction.java,v 1.10 2007-07-18 20:59:44 pansu Exp $ */
+/* CVS $Id: NanoparticleFunctionAction.java,v 1.11 2007-08-01 18:25:18 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.function.Function;
+import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
+import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.dto.function.AgentBean;
 import gov.nih.nci.calab.dto.function.AgentTargetBean;
 import gov.nih.nci.calab.dto.function.FunctionBean;
@@ -63,7 +65,7 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 		// TODO save in database
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addParticleFunction(particleType, particleName, function);
-		
+
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.addparticle.function");
 		msgs.add("message", msg);
@@ -120,7 +122,7 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 		InitSessionSetup.getInstance().setStaticDropdowns(session);
 		InitSessionSetup.getInstance().setAllFunctionDropdowns(session);
 	}
-	
+
 	/**
 	 * Set up the form for updating existing characterization
 	 * 
@@ -139,13 +141,12 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 		String functionId = (String) theForm.get("functionId");
 
 		SearchNanoparticleService service = new SearchNanoparticleService();
-		Function aFunc = service
-				.getFunctionBy(functionId);
+		Function aFunc = service.getFunctionBy(functionId);
 
 		HttpSession session = request.getSession();
 		// clear session data from the input forms
-		clearMap(session, theForm, mapping);	
-		FunctionBean function=new FunctionBean(aFunc);
+		clearMap(session, theForm, mapping);
+		FunctionBean function = new FunctionBean(aFunc);
 		theForm.set("function", function);
 		return mapping.getInputForward();
 	}
@@ -166,107 +167,106 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 		return setupUpdate(mapping, form, request, response);
 	}
 
-	/**
-	 * Update multiple children on the same form
-	 * 
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws Exception
-	 */
-	public ActionForward update(ActionMapping mapping, ActionForm form,
+	public ActionForward addLinkage(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
-		String type = (String) request.getParameter("type");
-		String linkageIndex = (String) request.getParameter("linkageIndex");
 		FunctionBean function = (FunctionBean) theForm.get("function");
+		List<LinkageBean> origLinkages = function.getLinkages();
+		int origNum = (origLinkages == null) ? 0 : origLinkages.size();
 
-		if (type != null && !type.equals("") && type.equals("linkages")) {
-			updateLinkages(function);
+		List<LinkageBean> linkages = new ArrayList<LinkageBean>();
+		for (int i = 0; i < origNum; i++) {
+			linkages.add((LinkageBean) origLinkages.get(i));
 		}
-		if (type != null && !type.equals("") && type.equals("agentTargets")) {
-			updateAgentTargets(function, linkageIndex);
-		}
+		// add a new one
+		linkages.add(new LinkageBean());
+		function.setLinkages(linkages);
+		String particleName = theForm.getString("particleName");
+		String particleType = theForm.getString("particleType");
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
 		return mapping.getInputForward();
 	}
 
-	/**
-	 * Update linkages
-	 * 
-	 * @param function
-	 */
-	private void updateLinkages(FunctionBean function) {
-		int linkageNum = new Integer(function.getNumberOfLinkages());
+	public ActionForward removeLinkage(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		String linkageIndex = (String) request.getParameter("linkageInd");
+		int ind = Integer.parseInt(linkageIndex);
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		FunctionBean function = (FunctionBean) theForm.get("function");
 		List<LinkageBean> origLinkages = function.getLinkages();
 		int origNum = (origLinkages == null) ? 0 : origLinkages.size();
 		List<LinkageBean> linkages = new ArrayList<LinkageBean>();
-		// create new ones
-		if (origNum == 0) {
-
-			for (int i = 0; i < linkageNum; i++) {
-				LinkageBean linkage = new LinkageBean();
-				linkages.add(linkage);
-			}
+		for (int i = 0; i < origNum; i++) {
+			linkages.add(origLinkages.get(i));
 		}
-		// use keep original linkage info
-		else if (linkageNum <= origNum) {
-			for (int i = 0; i < linkageNum; i++) {
-				linkages.add((LinkageBean) origLinkages.get(i));
-			}
-		} else {
-			for (int i = 0; i < origNum; i++) {
-				linkages.add((LinkageBean) origLinkages.get(i));
-			}
-			for (int i = origNum; i < linkageNum; i++) {
-				linkages.add(new LinkageBean());
-			}
+		// remove the one at the index
+		if (origNum > 0) {
+			linkages.remove(ind);
 		}
 		function.setLinkages(linkages);
+		String particleName = theForm.getString("particleName");
+		String particleType = theForm.getString("particleType");
+		InitSessionSetup.getInstance().setSideParticleMenu(request,
+				particleName, particleType);
+		return mapping.getInputForward();
 	}
 
-	/**
-	 * Update agent targets for a given agent of a linkage
-	 * 
-	 * @param function
-	 * @param linkageIndex
-	 */
-	private void updateAgentTargets(FunctionBean function, String linkageIndex) {
-		int linkageInd = (new Integer(linkageIndex)).intValue();
-		AgentBean agent = function.getLinkages().get(linkageInd).getAgent();
-		int targetNum = (new Integer(agent.getNumberOfAgentTargets()))
-				.intValue();
+	public ActionForward addTarget(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		String linkageIndex = (String) request.getParameter("linkageInd");
+		int ind = Integer.parseInt(linkageIndex);
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		FunctionBean function = (FunctionBean) theForm.get("function");
+		AgentBean agent = function.getLinkages().get(ind).getAgent();
 		List<AgentTargetBean> origTargets = agent.getAgentTargets();
 		int origNum = (origTargets == null) ? 0 : origTargets.size();
 		List<AgentTargetBean> targets = new ArrayList<AgentTargetBean>();
-		// create new ones
-		if (origNum == 0) {
-
-			for (int i = 0; i < targetNum; i++) {
-				AgentTargetBean target = new AgentTargetBean();
-				targets.add(target);
-			}
+		for (int i = 0; i < origNum; i++) {
+			targets.add(origTargets.get(i));
 		}
-		// use keep original agent target info
-		else if (targetNum <= origNum) {
-			for (int i = 0; i < targetNum; i++) {
-				targets.add((AgentTargetBean) origTargets.get(i));
-			}
-		} else {
-			for (int i = 0; i < origNum; i++) {
-				targets.add((AgentTargetBean) origTargets.get(i));
-			}
-			for (int i = origNum; i < targetNum; i++) {
-				targets.add(new AgentTargetBean());
-			}
+		// add a new one
+		targets.add(new AgentTargetBean());
+		agent.setAgentTargets(targets);
+		String particleName = theForm.getString("particleName");
+		String particleType = theForm.getString("particleType");
+		InitSessionSetup.getInstance().setSideParticleMenu(request,
+				particleName, particleType);
+		return mapping.getInputForward();
+	}
+
+	public ActionForward removeTarget(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+
+		String linkageIndex = (String) request.getParameter("linkageInd");
+		int ind = Integer.parseInt(linkageIndex);
+		String targetIndex = (String) request.getParameter("targetInd");
+		int tInd = Integer.parseInt(targetIndex);
+
+		FunctionBean function = (FunctionBean) theForm.get("function");
+		AgentBean agent = function.getLinkages().get(ind).getAgent();
+		List<AgentTargetBean> origTargets = agent.getAgentTargets();
+		int origNum = (origTargets == null) ? 0 : origTargets.size();
+
+		List<AgentTargetBean> targets = new ArrayList<AgentTargetBean>();
+		for (int i = 0; i < origNum; i++) {
+			targets.add(origTargets.get(i));
+		}
+		// remove the one at the index
+		if (origNum > 0) {
+			targets.remove(tInd);
 		}
 		agent.setAgentTargets(targets);
+		String particleName = theForm.getString("particleName");
+		String particleType = theForm.getString("particleType");
+		InitSessionSetup.getInstance().setSideParticleMenu(request,
+				particleName, particleType);
+		return mapping.getInputForward();
 	}
 
 	public boolean loginRequired() {
