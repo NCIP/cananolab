@@ -468,8 +468,7 @@ function clearOtherAgents(agentType, elementPrefix) {
 															<br>
 														</td>
 														<td class="label">
-															<br>
-															&lt;/
+															<br>															
 															<html:text
 																property="function.linkages[${linkageInd}].agent.numberOfAgentTargets" />
 															<br>
