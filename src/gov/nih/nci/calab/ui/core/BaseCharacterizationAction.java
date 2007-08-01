@@ -55,7 +55,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  */
 
 /*
- * CVS $Id: BaseCharacterizationAction.java,v 1.71 2007-07-27 19:56:55 pansu Exp $
+ * CVS $Id: BaseCharacterizationAction.java,v 1.72 2007-08-01 18:24:44 pansu Exp $
  */
 
 public abstract class BaseCharacterizationAction extends AbstractDispatchAction {
@@ -454,7 +454,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		int origNum = (origTables == null) ? 0 : origTables.size();
 		List<DerivedBioAssayDataBean> tables = new ArrayList<DerivedBioAssayDataBean>();
 		for (int i = 0; i < origNum; i++) {
-			tables.add((DerivedBioAssayDataBean) origTables.get(i));
+			tables.add(origTables.get(i));
 		}
 		// add a new one
 		tables.add(new DerivedBioAssayDataBean());
@@ -479,7 +479,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		int origNum = (origTables == null) ? 0 : origTables.size();
 		List<DerivedBioAssayDataBean> tables = new ArrayList<DerivedBioAssayDataBean>();
 		for (int i = 0; i < origNum; i++) {
-			tables.add((DerivedBioAssayDataBean) origTables.get(i));
+			tables.add(origTables.get(i));
 		}
 		// remove the one at the index
 		if (origNum > 0) {
