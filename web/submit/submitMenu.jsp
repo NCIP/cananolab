@@ -42,9 +42,9 @@
 						   <c:param name="particleName" value="${particleName}"/>
 						   <c:param name="particleType" value="${particleType}"/>
 						   <c:param name="actionName" value="${actionName}"/>
-						   <c:param name="charName" value="${charName}"/>
+						   <c:param name="charName" value="${achar.name}"/>
 						</c:url>
-						<a href="${link}" class="secondMenuLink">${charName}</a>
+						<a href="${link}" class="secondMenuLink">${achar.name}</a>
 					</td>
 					<td>
 						<img height="16" alt="" src="images/mainMenuSeparator.gif"
