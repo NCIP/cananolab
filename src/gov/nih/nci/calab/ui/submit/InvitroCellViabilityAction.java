@@ -49,7 +49,8 @@ public class InvitroCellViabilityAction extends BaseCharacterizationAction {
 		service.addCellViability(particleType, particleName, cytoBean);
 		CharacterizationBean[] otherChars=super.prepareCopy(request, theForm, service);
 		for (CharacterizationBean acharBean: otherChars) {
-			service.addCellViability(particleType, particleName, acharBean);
+			CytotoxicityBean aCytoBean = new CytotoxicityBean(propBean, acharBean);
+			service.addCellViability(particleType, acharBean.getParticleName(), aCytoBean);
 		}
 		super.postCreate(request, theForm);
 		request.getSession().setAttribute("newCytoCreated", "true");
