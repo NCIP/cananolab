@@ -192,7 +192,6 @@ function doubleMultibox(selection1, selection2, value1ToValue2) {
 		selection2.options[i] = new Option(value2Arr[i], value2Arr[i]);
 	}
 }
-
 /* filter second drop-down by first multi-box selections */
 function multiboxToDropDownWithEditableOption(selection1, selection2, value1ToValue2) {
 	selection2.options.length = 0;
@@ -212,9 +211,8 @@ function multiboxToDropDownWithEditableOption(selection1, selection2, value1ToVa
 			}
 		}
 	}
-	
 	for (var i = 0; i < value2Arr.length; i++) {
-		selection2.options[i+1] = new Option(value2Arr[i], value2Arr[i]);
+		selection2.options[i + 1] = new Option(value2Arr[i], value2Arr[i]);
 	}
 }
 function clearMultibox(selection) {
@@ -236,37 +234,46 @@ function addSurfaceChemistry(form, actionName) {
 	form.submit();
 }
 function removeSurfaceChemistry(form, actionName, chemInd) {
-	form.action = actionName + ".do?dispatch=removeSurfaceChemistry&page=0&chemInd="+chemInd;
+	form.action = actionName + ".do?dispatch=removeSurfaceChemistry&page=0&chemInd=" + chemInd;
 	form.submit();
 }
 function addCharacterizationFile(form, charName, actionName) {
-	form.action = actionName + ".do?dispatch=addFile&page=0&charName="+charName;
+	form.action = actionName + ".do?dispatch=addFile&page=0&charName=" + charName;
 	form.submit();
 }
 function removeCharacterizationFile(form, charName, actionName, fileInd) {
-	form.action = actionName + ".do?dispatch=removeFile&charName="+charName+"&page=0&fileInd=" + fileInd
+	form.action = actionName + ".do?dispatch=removeFile&charName=" + charName + "&page=0&fileInd=" + fileInd;
 	form.submit();
 }
 function addCharacterizationData(form, charName, actionName, fileInd) {
-	form.action = actionName + ".do?dispatch=addData&charName="+charName+"&page=0&fileInd=" + fileInd;
+	form.action = actionName + ".do?dispatch=addData&charName=" + charName + "&page=0&fileInd=" + fileInd;
 	form.submit();
 }
 function removeCharacterizationData(form, charName, actionName, fileInd, dataInd) {
-	form.action = actionName + ".do?dispatch=removeData&charName="+charName+"&page=0&fileInd=" + fileInd + "&dataInd=" + dataInd;
+	form.action = actionName + ".do?dispatch=removeData&charName=" + charName + "&page=0&fileInd=" + fileInd + "&dataInd=" + dataInd;
 	form.submit();
 }
 function loadFile(form, charName, actionName, fileNumber) {
-	form.action = actionName + ".do?dispatch=loadFile&page=0&charName="+charName+"&fileNumber=" + fileNumber;
+	form.action = actionName + ".do?dispatch=loadFile&page=0&charName=" + charName + "&fileNumber=" + fileNumber;
 	form.submit();
 }
-function updateFunctionLinkages() {
-	document.nanoparticleFunctionForm.action = "nanoparticleFunction.do?dispatch=update&page=0&type=linkages";
-	document.nanoparticleFunctionForm.submit();
+function addLinkage(form) {
+	form.action = "nanoparticleFunction.do?dispatch=addLinkage&page=0";
+	form.submit();
 }
-function updateAgentTargets(linkageIndex) {
-	document.nanoparticleFunctionForm.action = "nanoparticleFunction.do?dispatch=update&page=0&type=agentTargets&linkageIndex=" + linkageIndex;
-	document.nanoparticleFunctionForm.submit();
+function removeLinkage(form, linkageInd) {
+	form.action = "nanoparticleFunction.do?dispatch=removeLinkage&page=0&linkageInd=" + linkageInd;
+	form.submit();
 }
+function addTarget(form, linkageInd) {
+	form.action = "nanoparticleFunction.do?dispatch=addTarget&page=0&linkageInd=" + linkageInd;
+	form.submit();
+}
+function removeTarget(form, linkageInd, targetInd) {
+	form.action = "nanoparticleFunction.do?dispatch=removeTarget&page=0&linkageInd=" + linkageInd + "&targetInd=" + targetInd;
+	form.submit();
+}
+
 function refreshManufacturers(form, action) {
 	form.dispatch.value = action;
 	form.submit();
