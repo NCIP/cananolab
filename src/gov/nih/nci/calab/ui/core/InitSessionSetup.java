@@ -811,12 +811,13 @@ public class InitSessionSetup {
 			session.getServletContext().setAttribute("allSpecies", names);
 		}
 
-		if (session.getServletContext().getAttribute("allImageContrastAgentTypes") == null) {
+		if (session.getAttribute("allImageContrastAgentTypes") == null
+				|| session.getAttribute("newContrastAgentTypeCreated") != null) {
 			SortedSet<String> agentTypes = lookupService
 					.getAllLookupTypes("ImageContrastAgentType");
-			session.getServletContext().setAttribute("allImageContrastAgentTypes",
-					agentTypes);
+			session.setAttribute("allImageContrastAgentTypes", agentTypes);
 		}
+		session.removeAttribute("newContrastAgentTypeCreated");
 
 		if (session.getServletContext().getAttribute("allActivationMethods") == null) {
 			SortedSet<String> methods = lookupService
@@ -825,22 +826,40 @@ public class InitSessionSetup {
 					methods);
 		}
 
-		if (session.getServletContext().getAttribute("allBondTypes") == null) {
-			SortedSet<String> methods = lookupService
+		if (session.getAttribute("allBondTypes") == null
+				|| session.getAttribute("newBondTypeCreated") != null) {
+			SortedSet<String> bondTypes = lookupService
 					.getAllLookupTypes("BondType");
-			session.getServletContext().setAttribute("allBondTypes", methods);
+			session.setAttribute("allBondTypes", bondTypes);
+		}
+		session.removeAttribute("newBondTypeCreated");
+
+		if (session.getServletContext().getAttribute("allLinkageTypes") == null) {
+			SortedSet<String> linkageTypes = lookupService
+					.getAllLookupTypes("FunctionLinkageType");
+			List<String> linkageTypeList = new ArrayList<String>(linkageTypes);
+			linkageTypeList.add(CaNanoLabConstants.OTHER);
+			session.getServletContext().setAttribute("allLinkageTypes",
+					linkageTypeList);
 		}
 
 		if (session.getServletContext().getAttribute("allAgentTargetTypes") == null) {
-			String[] agentTargetTypes = lookupService.getAllAgentTargetTypes();
-			session.getServletContext().setAttribute("allAgentTargetTypes",
+			SortedSet<String> agentTargetTypes = lookupService
+					.getAllLookupTypes("FunctionAgentTargetType");
+			List<String> agentTargetTypeList = new ArrayList<String>(
 					agentTargetTypes);
+			agentTargetTypeList.add(CaNanoLabConstants.OTHER);
+			session.getServletContext().setAttribute("allAgentTargetTypes",
+					agentTargetTypeList);
 		}
 
 		if (session.getServletContext().getAttribute("allAgentTypes") == null) {
-			Map<String, String[]> agentTypes = lookupService.getAllAgentTypes();
+			SortedSet<String> agentTypes = lookupService
+					.getAllLookupTypes("FunctionAgentType");
+			List<String> agentTypeList = new ArrayList<String>(agentTypes);
+			agentTypeList.add(CaNanoLabConstants.OTHER);
 			session.getServletContext().setAttribute("allAgentTypes",
-					agentTypes);
+					agentTypeList);
 		}
 	}
 
