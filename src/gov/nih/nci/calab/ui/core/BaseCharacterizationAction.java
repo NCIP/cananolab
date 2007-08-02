@@ -55,7 +55,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  */
 
 /*
- * CVS $Id: BaseCharacterizationAction.java,v 1.72 2007-08-01 18:24:44 pansu Exp $
+ * CVS $Id: BaseCharacterizationAction.java,v 1.73 2007-08-02 21:41:47 zengje Exp $
  */
 
 public abstract class BaseCharacterizationAction extends AbstractDispatchAction {
@@ -83,6 +83,15 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 						|| datumBean.getValue().length() == 0) {
 					throw new RuntimeException(
 							"Derived data name and value can't be empty.");
+				}
+				
+				if (datumBean.getStatisticsType().equalsIgnoreCase("boolean")) {
+					if (!datumBean.getValue().equalsIgnoreCase("true") &&
+							!datumBean.getValue().equalsIgnoreCase("false") &&
+							!datumBean.getValue().equalsIgnoreCase("yes") &&
+							!datumBean.getValue().equalsIgnoreCase("no")) {
+						throw new RuntimeException("The datum value for boolean type should be 'True'/'False' or 'Yes'/'No'.");
+					}
 				}
 
 				// validate derived data has unique name, statistics type and
