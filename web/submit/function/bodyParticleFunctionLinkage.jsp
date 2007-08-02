@@ -7,45 +7,31 @@
 
 <script language="JavaScript">
 <!--
-function clearOtherAgents(agentType, elementPrefix) {
-	var sequenceTypes=new Array('peptide', 'dna');
-	var nameTypes=new Array('smallMolecule', 'antibody', 'probe', 'imageContrastAgent');
-	var typeTypes=new Array('probe', 'imageContrastAgent');
-	
-	for (var i=0; i<sequenceTypes.length; i++) {
-	  disableTextElement(nanoparticleFunctionForm, elementPrefix+'.'+sequenceTypes[i]+'.sequence');	  
-	}	
-	for (var i=0; i<nameTypes.length; i++) {
-	  disableTextElement(nanoparticleFunctionForm, elementPrefix+'.'+nameTypes[i]+'.name');
+function updateDetail(elementId, ind) {
+	var sel=document.getElementById(elementId);
+	for (var i=0; i<sel.options.length; i++) {
+	  var type=sel.options[i].value;	  	  
+	  if (i!=sel.selectedIndex) {
+	     hideDetail(type+" Detail"+ind);
+	  }
+	  else {
+	     showDetail(type+" Detail"+ind);
+	  } 
 	}
-	for (var i=0; i<typeTypes.length; i++) {
-	  disableTextElement(nanoparticleFunctionForm, elementPrefix+'.'+typeTypes[i]+'.type');
-	}	
-	disableTextElement(nanoparticleFunctionForm, elementPrefix+'.antibody.species');
-	disableTextElement(nanoparticleFunctionForm, elementPrefix+'.smallMolecule.compoundName');
-	
-	if (agentType =='Peptide') {
-	  enableTextElement(nanoparticleFunctionForm, elementPrefix+'.peptide.sequence');
+}
+
+function showDetail(elementId) {
+	var element=document.getElementById(elementId);
+	if (element!=null) {
+	  element.style.visibility="visible";
 	}
-	else if (agentType=='DNA') {
-	  enableTextElement(nanoparticleFunctionForm, elementPrefix+'.dna.sequence');
-	}
-	else if (agentType=='Antibody') {
-	  enableTextElement(nanoparticleFunctionForm, elementPrefix+'.antibody.name');
-	  enableTextElement(nanoparticleFunctionForm, elementPrefix+'.antibody.species');
-	}
-	else if (agentType=='Small Molecule') {
-	  enableTextElement(nanoparticleFunctionForm, elementPrefix+'.smallMolecule.name');
-	  enableTextElement(nanoparticleFunctionForm, elementPrefix+'.smallMolecule.compoundName');
-	}
-	else if (agentType=='Probe') {
-	  enableTextElement(nanoparticleFunctionForm, elementPrefix+'.probe.name');
-	  enableTextElement(nanoparticleFunctionForm, elementPrefix+'.probe.type');
-	}
-	else if (agentType=='Image Contrast Agent') {
-	  enableTextElement(nanoparticleFunctionForm, elementPrefix+'.imageContrastAgent.name');
-	  enableTextElement(nanoparticleFunctionForm, elementPrefix+'.imageContrastAgent.type');
-	}
+}
+
+function hideDetail(elementId) {
+	var element=document.getElementById(elementId);
+	if (element!=null) {
+	  element.style.visibility="hidden";
+    }
 }
 //-->
 </script>
@@ -56,7 +42,7 @@ function clearOtherAgents(agentType, elementPrefix) {
 		<tr>
 			<c:choose>
 				<c:when test="${canUserSubmit eq 'true'}">
-					<td class="formSubTitle" colspan="4" align="right">
+					<td class="formSubTitle" colspan="3" align="right">
 						<a href="#"
 							onclick="javascript:removeLinkage(nanoparticleFunctionForm, ${param.linkageInd})">
 							<img src="images/delete.gif" border="0" alt="remove this linkage">
@@ -69,116 +55,51 @@ function clearOtherAgents(agentType, elementPrefix) {
 			</c:choose>
 		</tr>
 		<tr>
-			<td class="leftLabel">
-				<strong>Linkage Type </strong>
+			<td class="leftLabel" valign="top" width="15%">
+				<strong>Linkage Type*</strong>
 				<br>
 			</td>
-			<td class="rightlabel" colspan="3">
-				<table cellspacing="0" cellpadding="3" width="100%" align="center"
-					summary="" border="0">
-					<c:choose>
-						<c:when test="${canUserSubmit eq 'true'}">
-							<tr>
-								<td class="borderlessLabel">
-									<html:radio
-										property="function.linkages[${param.linkageInd}].type"
-										value="Attachment"
-										onclick="javascript:disableTextElement(this.form, 'function.linkages[${param.linkageInd}].localization');enableTextElement(this.form, 'function.linkages[${param.linkageInd}].bondType');" />
-									Attachment
-									<br>
-								</td>
-								<td class="borderlessLabel">
-									<strong>Bond Type</strong>
-									<html:select
-										property="function.linkages[${param.linkageInd}].bondType"
-										onkeydown="javascript:fnKeyDownHandler(this, event);"
-										onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-										onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-										onchange="fnChangeHandler_A(this, event);">
-										<option value="">
-											--?--
-										</option>
-										<html:options name="allBondTypes" />
-									</html:select>
-									&nbsp;
-									<br>
-								</td>
-							</tr>
-							<tr>
-								<td class="borderlessLabel">
-									<html:radio
-										property="function.linkages[${param.linkageInd}].type"
-										value="Encapsulation"
-										onclick="javascript:disableTextElement(this.form, 'function.linkages[${param.linkageInd}].bondType');enableTextElement(this.form, 'function.linkages[${param.linkageInd}].localization');" />
-									Encapsulation
-									<br>
-								</td>
-								<td class="borderlessLabel">
-									<strong>Localization</strong>
-									<html:text
-										property="function.linkages[${param.linkageInd}].localization" />
-									&nbsp;
-									<br>
-								</td>
-							</tr>
-							<tr>
-								<td class="borderlessLabel">
-									<html:radio
-										property="function.linkages[${param.linkageInd}].type"
-										value="Other"
-										onclick="javascript:disableTextElement(this.form, 'function.linkages[${param.linkageInd}].localization');disableTextElement(this.form, 'function.linkages[${param.linkageInd}].bondType');" />
-									Other
-									<br>
-								</td>
-								<td>
-									<br>
-								</td>
-							</tr>
-						</c:when>
-						<%--  read only view --%>
-						<c:otherwise>
-							<tr>
-								<td class="borderlessLabel">
-									${linkage.type}&nbsp;
-									<br>
-								</td>
-								<c:choose>
-									<c:when test="${linkage.type eq 'Attachment'}">
-										<td class="borderlessLabel">
-											<strong>Bond Type</strong>&nbsp;
-											<br>
-										</td>
-										<td class="borderlessLabel">
-											${linkage.bondType}&nbsp;
-											<br>
-										</td>
-									</c:when>
-									<c:when test="${linkage.type eq 'Encapsulation'}">
-										<td class="borderlessLabel">
-											<strong>Localization</strong>&nbsp;
-											<br>
-										</td>
-										<td class="rightLabel">
-											${linkage.localization}&nbsp;
-											<br>
-										</td>
-									</c:when>
-									<c:when test="${agentType eq 'Other'}">
-										<td class="borderlessLabel">
-											<strong>Other</strong>&nbsp;
-											<br>
-										</td>
-										<td class="borderlessLabel">
-											&nbsp;
-											<br>
-										</td>
-									</c:when>
-								</c:choose>
-							</tr>
-						</c:otherwise>
-					</c:choose>
-				</table>
-				<br>
+			<td class="label" width="25%">
+				<html:select styleId="linkageType${param.linkageInd}"
+					property="function.linkages[${param.linkageInd}].type"
+					onchange="javascript:updateDetail('linkageType${param.linkageInd}', ${param.linkageInd})">
+					<option value=""></option>
+					<html:options name="allLinkageTypes" />
+				</html:select>
+			</td>
+			<c:set var="attachmentVis" value="hidden" />
+			<c:set var="encapsulationVis" value="hidden" />
+			<c:set var="linkageType"
+				value="${nanoparticleFunctionForm.map.function.linkages[param.linkageInd].type}" />
+			<c:choose>
+				<c:when test="${linkageType eq 'Attachment'}">
+					<c:set var="attachmentVis" value="show" />
+				</c:when>
+			</c:choose>
+			<c:choose>
+				<c:when test="${linkageType eq 'Encapsulation'}">
+					<c:set var="encapsulationVis" value="show" />
+				</c:when>
+			</c:choose>
+			<td class="rightLabel">
+				<span id="Attachment Detail${param.linkageInd}"
+					style="visibility:${attachmentVis};position:absolute;"> <strong>Bond
+						Type</strong> <html:select
+						property="function.linkages[${param.linkageInd}].bondType"
+						onkeydown="javascript:fnKeyDownHandler(this, event);"
+						onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
+						onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
+						onchange="fnChangeHandler_A(this, event);">
+						<option value="">
+							--?--
+						</option>
+						<html:options name="allBondTypes" />
+					</html:select> </span>
+				<span id="Encapsulation Detail${param.linkageInd}"
+					style="visibility:${encapsulationVis};"> <strong>Localization</strong>
+					<html:text
+						property="function.linkages[${param.linkageInd}].localization" />
+					&nbsp; </span>
 			</td>
 		</tr>
 		<tr>
@@ -186,7 +107,7 @@ function clearOtherAgents(agentType, elementPrefix) {
 				<Strong>Linkage Description</Strong>
 				<br>
 			</td>
-			<td class="rightLabel" colspan="3">
+			<td class="rightLabel" colspan="2">
 				<c:choose>
 					<c:when test="${canUserSubmit eq 'true'}">
 						<html:textarea
@@ -200,189 +121,159 @@ function clearOtherAgents(agentType, elementPrefix) {
 				<br>
 			</td>
 		</tr>
-		<tr>
-			<td class="leftLabel" width="15%">
-				<strong>Agent Type</strong>
-				<br>
-			</td>
-			<td class="rightLabel" colspan="3">
-				<table cellspacing="0" cellpadding="3" width="100%" align="center"
-					summary="" border="0">
-					<c:choose>
-						<%-- read and write view --%>
-						<c:when test="${canUserSubmit eq 'true'}">
-							<c:forEach var="agentType" items="${allAgentTypes[submitType]}"
-								varStatus="status">
-								<tr>
-									<td class="borderlessLabel">
-										<html:radio
-											property="function.linkages[${param.linkageInd}].agent.type"
-											value="${agentType}"
-											onclick="javascript:clearOtherAgents('${agentType}', 'function.linkages[${param.linkageInd}]')" />
-										${agentType}
-										<br>
-									</td>
-									<c:choose>
-										<c:when test="${agentType eq 'Peptide'}">
-											<td class="borderlessLabel" colspan="2">
-												<strong>Sequence</strong>
-												<html:text
-													property="function.linkages[${param.linkageInd}].peptide.sequence"
-													size="50" />
-												<br>
-											</td>
-										</c:when>
-										<c:when test="${agentType eq 'DNA'}">
-											<td class="borderlessLabel" colspan="2">
-												<strong>Sequence</strong>
-												<html:text
-													property="function.linkages[${param.linkageInd}].dna.sequence"
-													size="50" />
-												<br>
-											</td>
-										</c:when>
-										<c:when test="${agentType eq 'Small Molecule'}">
-											<td class="borderlessLabel">
-												<strong>Name</strong>
-												<html:text
-													property="function.linkages[${param.linkageInd}].smallMolecule.name" />
-												<br>
-											</td>
-											<td class="borderlessLabel">
-												<strong>Compound Name</strong>
-												<html:text
-													property="function.linkages[${param.linkageInd}].smallMolecule.compoundName" />
-												<br>
-											</td>
-										</c:when>
-										<c:when test="${agentType eq 'Antibody'}">
-											<td class="borderlessLabel">
-												<strong>Name</strong>
-												<html:text
-													property="function.linkages[${param.linkageInd}].antibody.name" />
-												<br>
-											</td>
-											<td class="borderlessLabel">
-												<strong>Species</strong>
-												<html:select
-													property="function.linkages[${param.linkageInd}].antibody.species">
-													<option value=""></option>
-													<html:options name="allSpecies" />
-												</html:select>
-												<br>
-											</td>
-										</c:when>
-										<c:when test="${agentType eq 'Probe'}">
-											<td class="borderlessLabel">
-												<strong>Name</strong>
-												<html:text
-													property="function.linkages[${param.linkageInd}].probe.name" />
-												<br>
-											</td>
-											<td class="borderlessLabel">
-												<strong>Type</strong>
-												<html:text
-													property="function.linkages[${param.linkageInd}].probe.type" />
-												&nbsp;
-												<br>
-											</td>
-										</c:when>
-										<c:when test="${agentType eq 'Image Contrast Agent'}">
-											<td class="borderlessLabel">
-												<strong>Name</strong>
-												<html:text
-													property="function.linkages[${param.linkageInd}].imageContrastAgent.name" />
-												<br>
-											</td>
-											<td class="borderlessLabel">
-												<strong>Type</strong>
-												<html:select
-													property="function.linkages[${param.linkageInd}].imageContrastAgent.type"
-													onkeydown="javascript:fnKeyDownHandler(this, event);"
-													onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-													onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-													onchange="fnChangeHandler_A(this, event);">
-													<option value="">
-														--?--
-													</option>
-													<html:options name="allImageContrastAgentTypes" />
-												</html:select>
-												<br>
-											</td>
-										</c:when>
-									</c:choose>
-								</tr>
-							</c:forEach>
-						</c:when>
 
-						<%--  read only view --%>
-						<c:otherwise>
-							<tr>
-								<td class="borderlessLabel">
-									${linkage.agent.type}&nbsp;
-									<br>
-								</td>
-								<c:choose>
-									<c:when test="${linkage.agent.type eq 'Peptide'}">
-										<td class="borderlessLabel" colspan="2">
-											<strong>Sequence</strong> ${linkage.peptide.sequence}&nbsp;
-											<br>
-										</td>
-									</c:when>
-									<c:when test="${linkage.agent.type eq 'DNA'}">
-										<td class="borderlessLabel" colspan="2">
-											<strong>Sequence</strong> ${linkage.dna.sequence}&nbsp;
-											<br>
-										</td>
-									</c:when>
-									<c:when test="${linkage.agent.type eq 'Small Molecule'}">
-										<td class="borderlessLabel">
-											<strong>Name</strong> ${linkage.smallMolecule.name}&nbsp;
-											<br>
-										</td>
-										<td class="borderlessLabel">
-											<strong>Compound Name</strong>${linkage.smallMolecule.compoundName}&nbsp;
-											<br>
-										</td>
-									</c:when>
-									<c:when test="${linkage.agent.type eq 'Antibody'}">
-										<td class="borderlessLabel">
-											<strong>Name</strong>${linkage.antibody.name}&nbsp;
-											<br>
-										</td>
-										<td class="borderlessLabel">
-											<strong>Species</strong> ${linkage.antibody.species}&nbsp;
-											<br>
-										</td>
-									</c:when>
-									<c:when test="${linkage.agent.type eq 'Probe'}">
-										<td class="borderlessLabel">
-											<strong>Name</strong> ${linkage.probe.name}&nbsp;
-											<br>
-										</td>
-										<td class="borderlessLabel">
-											${linkage.probe.type}&nbsp;
-											<br>
-										</td>
-									</c:when>
-									<c:when test="${linkage.agent.type eq 'Image Contrast Agent'}">
-										<td class="borderlessLabel">
-											<strong>Name</strong>
-											${linkage.imageContrastAgent.name}&nbsp;
-											<br>
-										</td>
-										<td class="borderlessLabel">
-											<strong>Contrast Agent Type</strong>
-											${linkage.imageContrastAgent.type}&nbsp;
-											<br>
-										</td>
-									</c:when>
-								</c:choose>
-							</tr>
-						</c:otherwise>
-					</c:choose>
-				</table>
-				<br>
+		<tr>
+			<td class="leftLabel" valign="top">
+				<strong>Agent Type*</strong>
+			</td>
+			<td class="label" valign="top">
+				<html:select styleId="agentType${param.linkageInd}"
+					property="function.linkages[${param.linkageInd}].agent.type"
+					onchange="javascript:updateDetail('agentType${param.linkageInd}', ${param.linkageInd})">
+					<option value=""></option>
+					<html:options name="allAgentTypes" />
+				</html:select>
+			</td>
+			<c:set var="antibodyVis" value="hidden" />
+			<c:set var="dnaVis" value="hidden" />
+			<c:set var="contrastAgentVis" value="hidden" />
+			<c:set var="peptideVis" value="hidden" />
+			<c:set var="smallMolVis" value="hidden" />
+			<c:set var="agentType"
+				value="${nanoparticleFunctionForm.map.function.linkages[param.linkageInd].agent.type}" />
+			<c:choose>
+				<c:when test="${agentType eq 'Antibody'}">
+					<c:set var="antibodyVis" value="show" />
+				</c:when>
+			</c:choose>
+			<c:choose>
+				<c:when test="${agentType eq 'DNA'}">
+					<c:set var="dnaVis" value="show" />
+				</c:when>
+			</c:choose>
+			<c:choose>
+				<c:when test="${agentType eq 'Image Contrast Agent'}">
+					<c:set var="contrastAgentVis" value="show" />
+				</c:when>
+			</c:choose>
+			<c:choose>
+				<c:when test="${agentType eq 'Peptide'}">
+					<c:set var="peptideVis" value="show" />
+				</c:when>
+			</c:choose>
+			<c:choose>
+				<c:when test="${agentType eq 'Small Molecule'}">
+					<c:set var="smallMolVis" value="show" />
+				</c:when>
+			</c:choose>
+			<td class="rightLabel" valign="top" height="60">
+				<span id="Antibody Detail${param.linkageInd}"
+					style="visibility:${antibodyVis};position:absolute;">
+					<table>
+						<tr>
+							<td class="borderLessLabel">
+								<strong>Name</strong>
+							</td>
+							<td>
+								<html:text
+									property="function.linkages[${param.linkageInd}].antibody.name"
+									size="30" />
+							</td>
+						</tr>
+						<tr>
+							<td class="borderLessLabel">
+								<strong>Species</strong>
+							</td>
+							<td>
+								<html:select
+									property="function.linkages[${param.linkageInd}].antibody.species">
+									<option value=""></option>
+									<html:options name="allSpecies" />
+								</html:select>
+							</td>
+						</tr>
+					</table> </span>
+				<span id="DNA Detail${param.linkageInd}"
+					style="visibility:${dnaVis};position:absolute;"><table>
+						<tr>
+							<td class="borderLessLabel">
+								<strong>Sequence</strong>
+							</td>
+							<td>
+								<html:text
+									property="function.linkages[${param.linkageInd}].dna.sequence"
+									size="30" />
+							</td>
+						</tr>
+					</table> </span>
+				<span id="Image Contrast Agent Detail${param.linkageInd}"
+					style="visibility:${contrastAgentVis};position:absolute;">
+					<table>
+						<tr>
+							<td class="borderLessLabel">
+								<strong>Name</strong>
+							</td>
+							<td>
+								<html:text
+									property="function.linkages[${param.linkageInd}].imageContrastAgent.name"
+									size="30" />
+							</td>
+						</tr>
+						<tr>
+							<td class="borderLessLabel">
+								<strong>Type</strong>
+							</td>
+							<td>
+								<html:select
+									property="function.linkages[${param.linkageInd}].imageContrastAgent.type"
+									onkeydown="javascript:fnKeyDownHandler(this, event);"
+									onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
+									onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
+									onchange="fnChangeHandler_A(this, event);">
+									<option value="">
+										--?--
+									</option>
+									<html:options name="allImageContrastAgentTypes" />
+								</html:select>
+							</td>
+						</tr>
+					</table> </span>
+				<span id="Peptide Detail${param.linkageInd}"
+					style="visibility:${peptideVis};position:absolute;"><table>
+						<tr>
+							<td class="borderLessLabel">
+								<strong>Sequence</strong>
+							</td>
+							<td>
+								<html:text
+									property="function.linkages[${param.linkageInd}].peptide.sequence"
+									size="30" />
+							</td>
+						</tr>
+					</table> </span>
+				<span id="Small Molecule Detail${param.linkageInd}"
+					style="visibility:${smallMolVis};position:absolute;"><table>
+						<tr>
+							<td class="borderLessLabel">
+								<strong>Name</strong>
+							</td>
+							<td>
+								<html:text
+									property="function.linkages[${param.linkageInd}].smallMolecule.name"
+									size="30" />
+							</td>
+						</tr>
+						<tr>
+							<td class="borderLessLabel">
+								<strong>Compound Name</strong>
+							</td>
+							<td>
+								<html:text
+									property="function.linkages[${param.linkageInd}].smallMolecule.compoundName"
+									size="30" />
+							</td>
+						</tr>
+					</table> </span>&nbsp;
 			</td>
 		</tr>
 		<tr>
@@ -398,8 +289,8 @@ function clearOtherAgents(agentType, elementPrefix) {
 							rows="3" cols="60" />
 					</c:when>
 					<c:otherwise>
-															${linkage.agent.description}&nbsp;
-														</c:otherwise>
+						${linkage.agent.description}&nbsp;
+					</c:otherwise>
 				</c:choose>
 				<br>
 			</td>
