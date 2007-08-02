@@ -39,6 +39,9 @@ public class AgentTargetBean {
 			this.type = CaNanoLabConstants.RECEPTOR;
 			this.name = ((Receptor) agentTarget).getName();
 		}
+		else if (agentTarget instanceof UnclassifiedAgentTarget) {
+			this.type=CaNanoLabConstants.OTHER;			
+		}
 	}
 
 	public String getDescription() {
@@ -98,6 +101,5 @@ public class AgentTargetBean {
 			doAntigen.setDescription(description);			
 			return doAntigen;
 		}
-
 	}
 }

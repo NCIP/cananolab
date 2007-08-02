@@ -36,8 +36,6 @@ public class DatumBean {
 
 	private List<ConditionBean> conditionList = new ArrayList<ConditionBean>();
 
-	private String numberOfConditions;
-
 	public DatumBean() {
 	}
 
@@ -70,8 +68,6 @@ public class DatumBean {
 		// conditionList.add(cBean);
 		// }
 		// }
-
-		this.numberOfConditions = conditionList.size() + "";
 	}
 
 	public String getId() {
@@ -120,14 +116,6 @@ public class DatumBean {
 
 	public void setConditionList(List<ConditionBean> conditionList) {
 		this.conditionList = conditionList;
-	}
-
-	public String getNumberOfConditions() {
-		return numberOfConditions;
-	}
-
-	public void setNumberOfConditions(String numberOfConditions) {
-		this.numberOfConditions = numberOfConditions;
 	}
 
 	public Datum getDomainObj() {
