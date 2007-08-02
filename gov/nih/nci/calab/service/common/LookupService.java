@@ -51,7 +51,7 @@ import org.hibernate.collection.PersistentSet;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.129 2007-07-31 21:25:27 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.130 2007-08-02 20:31:06 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -988,33 +988,6 @@ public class LookupService {
 			protocolFiles.add((ProtocolFileBean) lfb);
 		}
 		return protocolFiles;
-	}
-
-	public Map<String, String[]> getAllAgentTypes() {
-		Map<String, String[]> agentTypes = new HashMap<String, String[]>();
-
-		String[] therapeuticsAgentTypes = new String[] { "Peptide",
-				"Small Molecule", "Antibody", "DNA", "Probe",
-				"Image Contrast Agent", "Other" };
-		agentTypes.put("Therapeutic", therapeuticsAgentTypes);
-		String[] targetingAgentTypes = new String[] { "Peptide",
-				"Small Molecule", "Antibody", "DNA", "Probe",
-				"Image Contrast Agent", "Other" };
-		agentTypes.put("Targeting", targetingAgentTypes);
-		String[] imagingAgentTypes = new String[] { "Peptide",
-				"Small Molecule", "Antibody", "DNA", "Probe",
-				"Image Contrast Agent", "Other" };
-		agentTypes.put("Diagnostic Imaging", imagingAgentTypes);
-		String[] reportingAgentTypes = new String[] { "Peptide",
-				"Small Molecule", "Antibody", "DNA", "Probe",
-				"Image Contrast Agent", "Other" };
-		agentTypes.put("Diagnostic Reporting", reportingAgentTypes);
-		return agentTypes;
-	}
-
-	public String[] getAllAgentTargetTypes() {
-		String[] targetTypes = new String[] { "Receptor", "Antigen", "Other" };
-		return targetTypes;
 	}
 
 	public String[] getAllReportTypes() {
