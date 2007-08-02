@@ -42,11 +42,23 @@ public class DatumBean {
 	public DatumBean(Datum datum) {
 		this.id = datum.getId().toString();
 		this.name = datum.getName();
-		this.value = (datum.getValue() != null) ? StringUtils
-				.convertToString(datum.getValue().getValue()) : "";
+		
 		this.statisticsType = (datum.getValue().getStatisticsType() != null) ? StringUtils
 				.convertToString(datum.getValue().getStatisticsType())
 				: "";
+		if (this.statisticsType.equals("boolean")) {
+			if(datum.getValue() != null){
+				if (datum.getValue().getValue() == 1.0) {
+					this.value = CaNanoLabConstants.BOOLEAN_YES;
+				}
+				else if (datum.getValue().getValue() == 0.0){
+					this.value = CaNanoLabConstants.BOOLEAN_NO;
+				}
+			}		
+		} else {
+			this.value = (datum.getValue() != null) ? StringUtils
+					.convertToString(datum.getValue().getValue()) : "";
+		}
 
 		this.unit = (datum.getValue() != null) ? StringUtils
 				.convertToString(datum.getValue().getUnitOfMeasurement()) : "";
@@ -125,10 +137,25 @@ public class DatumBean {
 		}
 		tableData.setName(name);
 		Measurement measurement = new Measurement();
-		if (value.length() > 0)
-			measurement.setValue(new Float(value));
-		if (statisticsType.length() > 0)
+		
+		if (statisticsType.length() > 0) {
 			measurement.setStatisticsType(statisticsType);
+			if (statisticsType.equals("boolean")){
+				if (value.equalsIgnoreCase("false") || (value.equalsIgnoreCase("no"))){
+					measurement.setValue(new Float(0));
+				} else {
+					measurement.setValue(new Float(1));
+				}				
+			} else {
+				if (value.length() > 0)
+					measurement.setValue(new Float(value));
+			}
+		} else {
+			if (value.length() > 0)
+				measurement.setValue(new Float(value));
+		}
+			
+			
 		measurement.setUnitOfMeasurement(unit);
 		tableData.setValue(measurement);
 		tableData.setDerivedBioAssayDataCategory(category);
