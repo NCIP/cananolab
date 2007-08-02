@@ -6,17 +6,17 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleFunctionAction.java,v 1.11 2007-08-01 18:25:18 pansu Exp $ */
+/* CVS $Id: NanoparticleFunctionAction.java,v 1.12 2007-08-02 20:31:41 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.function.Function;
-import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
-import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.dto.function.AgentBean;
 import gov.nih.nci.calab.dto.function.AgentTargetBean;
 import gov.nih.nci.calab.dto.function.FunctionBean;
+import gov.nih.nci.calab.dto.function.ImageContrastAgentBean;
 import gov.nih.nci.calab.dto.function.LinkageBean;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
@@ -56,12 +56,23 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 		FunctionBean function = (FunctionBean) theForm.get("function");
 
 		if (function.getId() == null || function.getId() == "") {
-
 			function.setId((String) theForm.get("functionId"));
-
 		}
 
+		// validate agent target
+		for (LinkageBean linkageBean : function.getLinkages()) {
+			for (AgentTargetBean agentTargetBean : linkageBean.getAgent()
+					.getAgentTargets()) {
+				if (agentTargetBean.getName().length() == 0
+						&& agentTargetBean.getDescription().length() == 0
+						&& agentTargetBean.getType().length() == 0) {
+					throw new RuntimeException("Agent target type can not be empty.");
+				}
+			}
+		}
 		request.getSession().setAttribute("newFunctionCreated", "true");
+		request.getSession().setAttribute("newBondTypeCreated", "true");
+		request.getSession().setAttribute("newContrastAgentTypeCreated", "true");
 		// TODO save in database
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addParticleFunction(particleType, particleName, function);
@@ -148,7 +159,7 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 		clearMap(session, theForm, mapping);
 		FunctionBean function = new FunctionBean(aFunc);
 		theForm.set("function", function);
-		return mapping.getInputForward();
+		return mapping.findForward("setup");
 	}
 
 	/**
@@ -186,7 +197,7 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 		String particleType = theForm.getString("particleType");
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
-		return mapping.getInputForward();
+		return input(mapping, form, request, response);
 	}
 
 	public ActionForward removeLinkage(ActionMapping mapping, ActionForm form,
@@ -211,7 +222,7 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 		String particleType = theForm.getString("particleType");
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
-		return mapping.getInputForward();
+		return input(mapping, form, request, response);
 	}
 
 	public ActionForward addTarget(ActionMapping mapping, ActionForm form,
@@ -235,7 +246,7 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 		String particleType = theForm.getString("particleType");
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
-		return mapping.getInputForward();
+		return input(mapping, form, request, response);
 	}
 
 	public ActionForward removeTarget(ActionMapping mapping, ActionForm form,
@@ -266,7 +277,38 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 		String particleType = theForm.getString("particleType");
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
-		return mapping.getInputForward();
+		return input(mapping, form, request, response);
+	}
+
+	public ActionForward input(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		// update editable dropdowns
+		FunctionBean function = (FunctionBean) theForm.get("function");
+		HttpSession session = request.getSession();
+		updateEditables(session, function);
+		return mapping.findForward("setup");
+	}
+
+	private void updateEditables(HttpSession session, FunctionBean function)
+			throws Exception {
+		// update bondType editable dropdowns
+		for (LinkageBean linkage : function.getLinkages()) {
+			if (linkage.getType() != null
+					&& linkage.getType().equals(CaNanoLabConstants.ATTACHMENT)) {
+				InitSessionSetup.getInstance().updateEditableDropdown(session,
+						linkage.getBondType(), "allBondTypes");
+			}
+			if (linkage.getAgent() != null
+					&& linkage.getAgent().getType() != null
+					&& linkage.getAgent().getType().equals(
+							CaNanoLabConstants.IMAGE_CONTRAST_AGENT)) {
+				InitSessionSetup.getInstance().updateEditableDropdown(session,
+						linkage.getImageContrastAgent().getType(),
+						"allImageContrastAgentTypes");
+			}
+		}
 	}
 
 	public boolean loginRequired() {
