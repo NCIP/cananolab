@@ -2,7 +2,6 @@ package gov.nih.nci.calab.dto.function;
 
 import gov.nih.nci.calab.domain.nano.function.Agent;
 import gov.nih.nci.calab.domain.nano.function.AgentTarget;
-import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,15 +18,13 @@ public class AgentBean {
 
 	private String id;
 
-	private String type = CaNanoLabConstants.PEPTIDE;
+	private String type;
 
 	private String description;
 
 	// otherValue can be "compoundName" for SamllMolecule; "type" for Probe and
 	// ImageContrastAgent;
 	// "speicies" for Antibody; or "sequence" for DNA and Peptide
-
-	private String numberOfAgentTargets;
 
 	private List<AgentTargetBean> agentTargets = new ArrayList<AgentTargetBean>();
 
@@ -45,7 +42,6 @@ public class AgentBean {
 		for (AgentTarget agentTarget : agent.getAgentTargetCollection()) {
 			agentTargets.add(new AgentTargetBean(agentTarget));
 		}
-		this.numberOfAgentTargets = agentTargets.size() + "";
 	}
 
 	public String getDescription() {
@@ -70,14 +66,6 @@ public class AgentBean {
 
 	public void setId(String id) {
 		this.id = id;
-	}
-
-	public String getNumberOfAgentTargets() {
-		return numberOfAgentTargets;
-	}
-
-	public void setNumberOfAgentTargets(String numberOfAgentTargets) {
-		this.numberOfAgentTargets = numberOfAgentTargets;
 	}
 
 	public List<AgentTargetBean> getAgentTargets() {

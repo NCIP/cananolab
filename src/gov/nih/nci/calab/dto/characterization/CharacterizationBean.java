@@ -51,14 +51,12 @@ public class CharacterizationBean {
 
 	private List<DerivedBioAssayDataBean> derivedBioAssayDataList = new ArrayList<DerivedBioAssayDataBean>();
 
-	private String numberOfDerivedBioAssayData;
-
 	private ProtocolFileBean protocolFileBean = new ProtocolFileBean();
 
 	private String actionName;
 
 	private String particleName;
-		
+
 	public String getActionName() {
 		actionName = StringUtils.getOneWordLowerCaseFirstLetter(name);
 		return actionName;
@@ -67,11 +65,11 @@ public class CharacterizationBean {
 	public CharacterizationBean() {
 
 	}
-	
+
 	/** Used in the side menu tree */
 	public CharacterizationBean(String name, String abbr) {
-		this.name=name;
-		this.abbr=abbr;
+		this.name = name;
+		this.abbr = abbr;
 	}
 
 	/**
@@ -115,9 +113,6 @@ public class CharacterizationBean {
 		if (instrumentConfigObj != null) {
 			instrumentConfigBean = new InstrumentConfigBean(instrumentConfigObj);
 		}
-		this.setNumberOfDerivedBioAssayData(Integer.valueOf(
-				characterization.getDerivedBioAssayDataCollection().size())
-				.toString());
 		for (DerivedBioAssayData table : characterization
 				.getDerivedBioAssayDataCollection()) {
 			DerivedBioAssayDataBean ctBean = new DerivedBioAssayDataBean(table);
@@ -127,7 +122,6 @@ public class CharacterizationBean {
 		if (protocolFile != null) {
 			protocolFileBean = new ProtocolFileBean(protocolFile);
 		}
-		this.numberOfDerivedBioAssayData = derivedBioAssayDataList.size() + "";
 	}
 
 	public String getCharacterizationSource() {
@@ -182,11 +176,12 @@ public class CharacterizationBean {
 
 		InstrumentConfiguration instrumentConfig = instrumentConfigBean
 				.getDomainObject();
-		//only set instrument config if instrument is selected.
-        if ((instrumentConfig.getInstrument() != null)&& (instrumentConfig.getInstrument().getType() != null))
+		// only set instrument config if instrument is selected.
+		if ((instrumentConfig.getInstrument() != null)
+				&& (instrumentConfig.getInstrument().getType() != null))
 			if (instrumentConfig.getInstrument().getType().length() > 0) {
 				aChar.setInstrumentConfiguration(instrumentConfig);
-			}			
+			}
 
 		if (protocolFileBean.getId() != null
 				&& protocolFileBean.getId().length() > 0) {
@@ -213,7 +208,7 @@ public class CharacterizationBean {
 	}
 
 	public void setAbbr(String abbr) {
-		this.abbr=abbr;
+		this.abbr = abbr;
 	}
 
 	public String getAbbr() {
@@ -254,15 +249,6 @@ public class CharacterizationBean {
 		this.instrumentConfigBean = instrumentConfigBean;
 	}
 
-	public String getNumberOfDerivedBioAssayData() {
-		return numberOfDerivedBioAssayData;
-	}
-
-	public void setNumberOfDerivedBioAssayData(
-			String numberOfDerivedBioAssayData) {
-		this.numberOfDerivedBioAssayData = numberOfDerivedBioAssayData;
-	}
-
 	public ProtocolFileBean getProtocolFileBean() {
 		return protocolFileBean;
 	}
@@ -273,7 +259,7 @@ public class CharacterizationBean {
 
 	public String getViewColor() {
 		if (viewTitle.matches("^copy_\\d{15}?")) {
-			viewColor=CaNanoLabConstants.AUTO_COPY_CHARACTERIZATION_VIEW_COLOR;
+			viewColor = CaNanoLabConstants.AUTO_COPY_CHARACTERIZATION_VIEW_COLOR;
 		}
 		return viewColor;
 	}
@@ -286,7 +272,6 @@ public class CharacterizationBean {
 		this.particleName = particleName;
 	}
 
-
 	/**
 	 * Create a new instance of CharacterizationBean with the same metadata
 	 * except DerivedBioAssayDataList and InstrumentConfig.
@@ -295,7 +280,7 @@ public class CharacterizationBean {
 	 */
 	public CharacterizationBean copy(boolean copyData) {
 		CharacterizationBean newCharBean = new CharacterizationBean(this);
-		//unset id
+		// unset id
 		newCharBean.setId(null);
 		// set InstrumentConfig, DerivedBioAssayDataList
 		InstrumentConfigBean newInstrumentConfigBean = instrumentConfigBean
