@@ -125,21 +125,33 @@
 				</var>
 			</field>
 		</form>
-
 		<form name="nanoparticleFunctionForm">
 			<field property="function.viewTitle" page="2"
 				depends="required">
 				<arg position="0" key="viewTitle" bundle="submit" />
 			</field>
-			<field property="function.numberOfLinkages" page="1"
-				depends="integer">
-				<arg position="0" key="function.numberOfLinkages"
+			<field property="type" page="2" depends="validwhen"
+				indexedListProperty="function.linkages">
+				<arg position="0" key="function.linkageType"
 					bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>((function.numberOfLinkages==0) or
+						(*this*!=null))
+					</var-value>
+				</var>
 			</field>
-			<field property="agent.numberOfAgentTargets" page="1"
-				depends="integer" indexedListProperty="function.linkages">
-				<arg position="0" key="function.numberOfAgentTargets"
+			<field property="agent.type" page="2" depends="validwhen"
+				indexedListProperty="function.linkages">
+				<arg position="0" key="function.linkage.agentType"
 					bundle="submit" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						((function.numberOfLinkages==0) or
+						(*this*!=null))
+					</var-value>
+				</var>
 			</field>
 		</form>
 		<form name="loadDerivedBioAssayDataForm">
@@ -150,7 +162,8 @@
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						(((fileSource!="new") or (file.id!=null)) or (*this*!=null))
+						(((fileSource!="new") or (file.id!=null)) or
+						(*this*!=null))
 					</var-value>
 				</var>
 			</field>
@@ -219,15 +232,14 @@
 				<arg position="0" key="surface.chargeValue"
 					bundle="submit" />
 			</field>
-			<field property="surface.chargeUnit"
-				page="2" depends="validwhen">
-				<arg position="0"
-					key="surface.chargeUnit" bundle="submit" />
+			<field property="surface.chargeUnit" page="2"
+				depends="validwhen">
+				<arg position="0" key="surface.chargeUnit"
+					bundle="submit" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((surface.charge==null) or
-						(*this*!=null))
+						((surface.charge==null) or (*this*!=null))
 					</var-value>
 				</var>
 			</field>
