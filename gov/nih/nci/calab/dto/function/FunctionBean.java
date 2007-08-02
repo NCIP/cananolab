@@ -23,7 +23,7 @@ public class FunctionBean {
 	private String viewTitle;
 	
 	private List<LinkageBean> linkages = new ArrayList<LinkageBean>();;
-	private String numberOfLinkages;
+	private int numberOfLinkages;
 	
 	/**
 	 * 
@@ -48,7 +48,7 @@ public class FunctionBean {
 		for(Linkage linkage: function.getLinkageCollection()) {
 			linkages.add(new LinkageBean(linkage));
 		}
-		this.numberOfLinkages=linkages.size()+"";
+		this.numberOfLinkages=linkages.size();
 	}
 	
 	public String getActivationMethod() {
@@ -83,12 +83,8 @@ public class FunctionBean {
 		this.linkages = linkages;
 	}
 
-	public String getNumberOfLinkages() {
-		return numberOfLinkages;
-	}
-
-	public void setNumberOfLinkages(String numberOfLinkages) {
-		this.numberOfLinkages = numberOfLinkages;
+	public int getNumberOfLinkages() {
+		return linkages.size();
 	}
 
 	public String getViewTitle() {

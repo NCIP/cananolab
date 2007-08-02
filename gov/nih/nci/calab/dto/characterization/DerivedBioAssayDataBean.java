@@ -30,8 +30,6 @@ public class DerivedBioAssayDataBean extends LabFileBean {
 
 	private List<DatumBean> datumList = new ArrayList<DatumBean>();
 
-	private String numberOfDataPoints;
-
 	public String getCharacterizationName() {
 		return characterizationName;
 	}
@@ -65,16 +63,7 @@ public class DerivedBioAssayDataBean extends LabFileBean {
 				datumList.add(ctDataBean);
 			}
 		}
-		numberOfDataPoints = datumList.size() + "";
 		this.categories=charFile.getCategories();
-	}
-
-	public String getNumberOfDataPoints() {
-		return numberOfDataPoints;
-	}
-
-	public void setNumberOfDataPoints(String numberOfDataPoints) {
-		this.numberOfDataPoints = numberOfDataPoints;
 	}
 
 	public DerivedBioAssayDataBean(DerivedBioAssayData charFile,
