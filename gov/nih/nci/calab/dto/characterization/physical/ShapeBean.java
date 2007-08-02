@@ -62,8 +62,17 @@ public class ShapeBean extends CharacterizationBean {
 		super.updateDomainObj(shape);
 
 		shape.setType(this.type);
-		shape.setMinDimension(new Measurement(new Float(this.minDimension), this.minDimensionUnit));
-		shape.setMaxDimension(new Measurement(new Float(this.maxDimension), this.maxDimensionUnit));
+		if ((this.minDimension == null) || (this.minDimension.length() == 0)){
+			shape.setMinDimension(null);
+		} else {
+			shape.setMinDimension(new Measurement(new Float(this.minDimension), this.minDimensionUnit));
+		}
+		
+		if ((this.maxDimension == null) || (this.maxDimension.length() == 0)) {
+			shape.setMaxDimension(null);
+		} else {
+			shape.setMaxDimension(new Measurement(new Float(this.maxDimension), this.maxDimensionUnit));
+		}
 	}
 
 	public String getType() {

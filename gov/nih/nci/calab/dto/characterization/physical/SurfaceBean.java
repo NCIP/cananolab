@@ -143,14 +143,26 @@ public class SurfaceBean extends CharacterizationBean {
 				.equalsIgnoreCase(CaNanoLabConstants.BOOLEAN_YES)) ? true
 				: false;
 		surface.setIsHydrophobic(hycrophobicStatus);
-		surface.setCharge(new Measurement(new Float(charge), chargeUnit));
+		if ((charge == null) || (charge.length() == 0)){
+			surface.setCharge(null);
+		} else {
+			surface.setCharge(new Measurement(new Float(charge), chargeUnit));
+		}
 		// surface.setZetaPotential(new Measurement(zetaPotential, "mV"));
-		surface.setZetaPotential(new Measurement(new Float(zetaPotential),
-				zetaPotentialUnit));
+		if ((zetaPotential == null) || (zetaPotential.length() == 0)) {
+			surface.setZetaPotential(null);
+		} else {
+			surface.setZetaPotential(new Measurement(new Float(zetaPotential),
+					zetaPotentialUnit));
+		}
 
-		surface.setSurfaceArea(new Measurement(new Float(surfaceArea),
-				surfaceAreaUnit));
-
+		if ((surfaceArea == null) || (surfaceArea.length() == 0)) {
+			surface.setSurfaceArea(null);
+		} else {
+			surface.setSurfaceArea(new Measurement(new Float(surfaceArea),
+					surfaceAreaUnit));
+		}
+		
 		for (SurfaceChemistryBean surfaceChemistry : surfaceChemistries) {
 			surface.getSurfaceChemistryCollection().add(
 					surfaceChemistry.getDomainObj());
