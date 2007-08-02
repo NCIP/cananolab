@@ -31,6 +31,7 @@
 					<c:when test="${canUserSubmit eq 'true'}">
 						<html:select
 							property="function.linkages[${param.linkageInd}].agent.agentTargets[${param.targetInd}].type">
+							<option value=""></option>
 							<html:options name="allAgentTargetTypes" />
 						</html:select>
 					</c:when>
