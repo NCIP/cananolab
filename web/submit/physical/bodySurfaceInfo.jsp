@@ -28,9 +28,9 @@
 						${nanoparticleCharacterizationForm.map.surface.surfaceAreaUnit}&nbsp;
 					</c:when>
 					<c:otherwise>
-										${nanoparticleCharacterizationForm.map.surface.surfaceArea}&nbsp;
-										${nanoparticleCharacterizationForm.map.surface.surfaceAreaUnit}&nbsp;
-									</c:otherwise>
+						${nanoparticleCharacterizationForm.map.surface.surfaceArea}&nbsp;
+						${nanoparticleCharacterizationForm.map.surface.surfaceAreaUnit}&nbsp;
+					</c:otherwise>
 				</c:choose>
 			</td>
 			<td class="label">
@@ -47,8 +47,8 @@
 						</html:select>
 					</c:when>
 					<c:otherwise>
-										${nanoparticleCharacterizationForm.map.surface.isHydrophobic}&nbsp;
-									</c:otherwise>
+						${nanoparticleCharacterizationForm.map.surface.isHydrophobic}&nbsp;
+					</c:otherwise>
 				</c:choose>
 			</td>
 		</tr>
@@ -68,9 +68,9 @@
 						</html:select>
 					</c:when>
 					<c:otherwise>
-										${nanoparticleCharacterizationForm.map.surface.charge}&nbsp;
-										${nanoparticleCharacterizationForm.map.surface.chargeUnit}&nbsp;
-									</c:otherwise>
+						${nanoparticleCharacterizationForm.map.surface.charge}&nbsp;
+						${nanoparticleCharacterizationForm.map.surface.chargeUnit}&nbsp;
+					</c:otherwise>
 				</c:choose>
 			</td>
 			<td class="label">
@@ -83,11 +83,11 @@
 					<c:when test="${canUserSubmit eq 'true'}">
 						<html:text property="surface.zetaPotential" />&nbsp;
 						${nanoparticleCharacterizationForm.map.surface.zetaPotentialUnit}&nbsp;
-									</c:when>
+					</c:when>
 					<c:otherwise>
-										${nanoparticleCharacterizationForm.map.surface.zetaPotential}&nbsp;
-										${nanoparticleCharacterizationForm.map.surface.zetaPotentialUnit}&nbsp;
-									</c:otherwise>
+						${nanoparticleCharacterizationForm.map.surface.zetaPotential}&nbsp;
+						${nanoparticleCharacterizationForm.map.surface.zetaPotentialUnit}&nbsp;
+					</c:otherwise>
 				</c:choose>
 			</td>
 		</tr>
