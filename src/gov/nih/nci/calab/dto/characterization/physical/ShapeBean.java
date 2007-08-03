@@ -54,8 +54,6 @@ public class ShapeBean extends CharacterizationBean {
 				.getMinDimension().getValue().toString() : "";
 		this.maxDimension = (aChar.getMaxDimension() != null) ? aChar
 				.getMaxDimension().getValue().toString() : "";
-		this.minDimensionUnit = "nm";
-		this.maxDimensionUnit = "nm";
 	}
 
 	public void updateDomainObj(Shape shape) {
