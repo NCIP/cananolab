@@ -63,8 +63,14 @@ public class SurfaceBean extends CharacterizationBean {
 				: CaNanoLabConstants.BOOLEAN_NO;
 		this.surfaceArea = (aChar.getSurfaceArea() != null) ? aChar
 				.getSurfaceArea().getValue().toString() : "";
+		this.surfaceAreaUnit = (aChar.getSurfaceArea() != null) ? aChar
+				.getSurfaceArea().getUnitOfMeasurement() : "";
+		// this.zetaPotential = (aChar.getZetaPotential() !=
+		// null)?aChar.getZetaPotential().getValue():"";
 		this.zetaPotential = (aChar.getZetaPotential() != null) ? aChar
 				.getZetaPotential().getValue().toString() : "";
+		this.zetaPotentialUnit = (aChar.getZetaPotential() != null) ? aChar
+				.getZetaPotential().getUnitOfMeasurement() : "";
 
 		for (SurfaceChemistry surfaceChemistry : aChar
 				.getSurfaceChemistryCollection()) {
