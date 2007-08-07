@@ -104,7 +104,7 @@
 						</td>
 						<td class="rightLabel" colspan="2">
 							<strong>for<br> <html:radio property="summaryType"
-									value="characterization">Nanoparticle</html:radio> <br> <html:radio
+									value="characterization">Characterization</html:radio> <br> <html:radio
 									property="summaryType" value="assayResult">Characterization File/Derived Data</html:radio>
 							</strong>
 						</td>
@@ -160,7 +160,7 @@
   <c:forEach var="item" items="${allCharTypeChars}">  
     var chars=new Array();    
    <c:forEach var="char" items="${allCharTypeChars[item.key]}" varStatus="count">
-  		chars[${count.index}]='${char}'; 
+  		chars[${count.index}]='${char.name}'; 
     </c:forEach>
     charTypeChars['${item.key}']=chars;
   </c:forEach>
