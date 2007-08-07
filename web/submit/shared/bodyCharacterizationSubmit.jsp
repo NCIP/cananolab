@@ -25,7 +25,7 @@ function confirmDeletion()
 			<br>
 			<c:choose>
 				<c:when
-					test="${param.dispatch ne 'setup' && canUserDeleteChars eq 'true'}">
+					test="${param.dispatch eq 'setupUpdate'&& canUserDeleteChars eq 'true'}">
 					<table height="32" border="0" align="left" cellpadding="4"
 						cellspacing="0">
 						<tr>
