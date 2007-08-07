@@ -31,26 +31,26 @@ public class ProtocolFileBean extends LabFileBean {
 	public void setProtocolBean(ProtocolBean protocolBean) {
 		this.protocolBean = protocolBean;
 	}
-	public int compareTo(Object obj) {
-		int comparison = 0;
-		if (obj instanceof ProtocolFileBean) {
-			ProtocolFileBean inPb = (ProtocolFileBean) obj;
-			
-			if (this.getName() != null){
-				comparison = this.getName().compareTo(inPb.getName());
-				if (comparison == 0){
-					if (this.getVersion() != null)
-						comparison = this.getVersion().compareTo(inPb.getVersion());
-				}
-			}
-			else {
-				if (this.getVersion() != null){
-					comparison = this.getVersion().compareTo(inPb.getVersion());
-				}
-			}
-		}
-		return comparison;
-	}
+//	public int compareTo(Object obj) {
+//		int comparison = 0;
+//		if (obj instanceof ProtocolFileBean) {
+//			ProtocolFileBean inPb = (ProtocolFileBean) obj;
+//			
+//			if (this.getName() != null){
+//				comparison = this.getName().compareTo(inPb.getName());
+//				if (comparison == 0){
+//					if (this.getVersion() != null)
+//						comparison = this.getVersion().compareTo(inPb.getVersion());
+//				}
+//			}
+//			else {
+//				if (this.getVersion() != null){
+//					comparison = this.getVersion().compareTo(inPb.getVersion());
+//				}
+//			}
+//		}
+//		return comparison;
+//	}
 
 	public boolean equals(Object obj) {
 		boolean eq = false;
