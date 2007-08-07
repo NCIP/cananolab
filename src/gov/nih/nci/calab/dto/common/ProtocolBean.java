@@ -71,22 +71,30 @@ public class ProtocolBean implements Comparable {
 		if (obj instanceof ProtocolBean) {
 			ProtocolBean inPb = (ProtocolBean) obj;
 			int comparison = this.getName().compareTo(inPb.getName());
+			if (comparison == 0) {
+				comparison = this.getId().compareTo(inPb.getId());
+			}
 			return comparison;
 		}
 		return -1;
 	}
 
 	public boolean equals(Object obj) {
-		boolean eq = false;
-		if (obj instanceof ProtocolBean) {
-			ProtocolBean c = (ProtocolBean) obj;
-			String thisId = this.getId();
-			// String name = this.getName();
-			if (thisId != null && thisId.equals(c.getId())) { // &&
-				// name != null && name.equals(c.getName())) {
-				eq = true;
-			}
+//		boolean eq = false;
+//		if (obj instanceof ProtocolBean) {
+//			ProtocolBean c = (ProtocolBean) obj;
+//			String thisId = this.getId();
+//			// String name = this.getName();
+//			if (thisId != null && thisId.equals(c.getId())) { // &&
+//				// name != null && name.equals(c.getName())) {
+//				eq = true;
+//			}
+//		}
+//		return eq;
+		if (this.compareTo(obj)== 0){
+			return true;
+		} else {
+			return false;
 		}
-		return eq;
 	}
 }
