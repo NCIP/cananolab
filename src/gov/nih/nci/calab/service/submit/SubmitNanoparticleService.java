@@ -1253,33 +1253,6 @@ public class SubmitNanoparticleService {
 	}
 
 	/**
-	 * Delete the characterization
-	 */
-	public void deleteCharacterization(String strCharId) throws Exception {
-		// if ID is not set save to the database otherwise update
-		HibernateDataAccess ida = (HibernateDataAccess) (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
-		try {
-			ida.open();
-
-			// Get ID
-			Long charId = Long.parseLong(strCharId);
-
-			Object charObj = ida.load(Characterization.class, charId);
-
-			ida.delete(charObj);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			ida.rollback();
-			logger.error("Problem saving characterization: ");
-			throw e;
-		} finally {
-			ida.close();
-		}
-	}
-
-	/**
 	 * Delete the characterizations
 	 */
 	public void deleteCharacterizations(String particleName,
