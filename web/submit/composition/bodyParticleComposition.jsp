@@ -130,7 +130,7 @@ function confirmDeletion()
 									<span class="formMessage"> </span>
 									<br>
 									<c:choose>
-										<c:when test="${param.dispatch ne 'setup'}">
+										<c:when test="${param.dispatch eq 'setupUpdate'}">
 											<table height="32" border="0" align="left" cellpadding="4"
 												cellspacing="0">
 												<tr>
