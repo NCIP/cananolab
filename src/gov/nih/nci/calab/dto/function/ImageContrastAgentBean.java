@@ -9,14 +9,12 @@ import gov.nih.nci.calab.domain.nano.function.ImageContrastAgent;
  * @author pansu
  * 
  */
-public class ImageContrastAgentBean extends AgentBean {
+public class ImageContrastAgentBean extends BaseAgentBean {
 	private String name;
 
 	private String type;
 
-	public ImageContrastAgentBean() {
-		super();
-		// TODO Auto-generated constructor stub
+	public ImageContrastAgentBean() {		
 	}
 
 	public ImageContrastAgentBean(ImageContrastAgent imageContrastAgent) {
@@ -41,11 +39,9 @@ public class ImageContrastAgentBean extends AgentBean {
 		this.type = type;
 	}
 
-	public ImageContrastAgent getDomainObj() {
-		ImageContrastAgent imageContrastAgent = new ImageContrastAgent();
+	public void updateDomainObj(ImageContrastAgent imageContrastAgent) {		
 		super.updateDomainObj(imageContrastAgent);
 		imageContrastAgent.setName(name);
-		imageContrastAgent.setType(type);
-		return imageContrastAgent;
+		imageContrastAgent.setType(type);		
 	}
 }

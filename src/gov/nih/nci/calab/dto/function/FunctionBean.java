@@ -12,19 +12,22 @@ import java.util.List;
 
 /**
  * @author zengje
- *
+ * 
  */
 public class FunctionBean {
 
 	private String id;
+
 	private String type;
+
 	private String activationMethod;
+
 	private String description;
+
 	private String viewTitle;
-	
-	private List<LinkageBean> linkages = new ArrayList<LinkageBean>();;
-	private int numberOfLinkages;
-	
+
+	private List<LinkageBean> linkages = new ArrayList<LinkageBean>();
+
 	/**
 	 * 
 	 */
@@ -34,23 +37,22 @@ public class FunctionBean {
 	}
 
 	public FunctionBean(String id, String type, String viewTitle) {
-		this.id=id;		
-		this.type=type;
-		this.viewTitle=viewTitle;
+		this.id = id;
+		this.type = type;
+		this.viewTitle = viewTitle;
 	}
-	
+
 	public FunctionBean(Function function) {
-		this.id=function.getId().toString();
-		this.type=function.getType();
-		this.activationMethod=function.getActivationMethod();
-		this.description=function.getDescription();
-		this.viewTitle=function.getIdentificationName();
-		for(Linkage linkage: function.getLinkageCollection()) {
+		this.id = function.getId().toString();
+		this.type = function.getType();
+		this.activationMethod = function.getActivationMethod();
+		this.description = function.getDescription();
+		this.viewTitle = function.getIdentificationName();
+		for (Linkage linkage : function.getLinkageCollection()) {
 			linkages.add(new LinkageBean(linkage));
 		}
-		this.numberOfLinkages=linkages.size();
 	}
-	
+
 	public String getActivationMethod() {
 		return activationMethod;
 	}
@@ -88,9 +90,11 @@ public class FunctionBean {
 	}
 
 	public String getViewTitle() {
-			// get only the first number of characters of the title
-		if (viewTitle!=null &&viewTitle.length() > CaNanoLabConstants.MAX_VIEW_TITLE_LENGTH) {
-			return viewTitle.substring(0, CaNanoLabConstants.MAX_VIEW_TITLE_LENGTH);
+		// get only the first number of characters of the title
+		if (viewTitle != null
+				&& viewTitle.length() > CaNanoLabConstants.MAX_VIEW_TITLE_LENGTH) {
+			return viewTitle.substring(0,
+					CaNanoLabConstants.MAX_VIEW_TITLE_LENGTH);
 		}
 		return viewTitle;
 	}
@@ -107,18 +111,46 @@ public class FunctionBean {
 		this.type = type;
 	}
 
-	public Function getDomainObj(){
-		Function doFunction = new Function();
-		if (getId() != null && getId().length() > 0) {
-			doFunction.setId(new Long(getId()));
-		}
+	public void updateDomainObj(Function doFunction) {
 		doFunction.setActivationMethod(activationMethod);
 		doFunction.setDescription(description);
 		doFunction.setIdentificationName(viewTitle);
 		doFunction.setType(type);
-		for (LinkageBean linkage: getLinkages()) {
-			doFunction.getLinkageCollection().add(linkage.getDomainObj());
+		updateLinkages(doFunction);
+	}
+
+	private void updateLinkages(Function doFunction) {
+		int persistNum = doFunction.getLinkageCollection().size();
+		int beanNum = getLinkages().size();
+		int linkageNum = (beanNum < persistNum) ? beanNum : persistNum;
+		for (int i = 0; i < linkageNum; i++) {
+			LinkageBean linkageBean = getLinkages().get(i);
+			Linkage doLinkage = (Linkage) ((List) doFunction
+					.getLinkageCollection()).get(i);
+
+			if (linkageBean.getType().equals(
+					doLinkage.getClass().getSimpleName())) {
+				linkageBean.updateDomainObj(doLinkage);
+			}
+			// if the linkage type is updated create new instance of new linkage			
+			else {
+				Linkage newDoLinkage = linkageBean.getDomainObj();
+				doFunction.getLinkageCollection().remove(doLinkage);
+				doFunction.getLinkageCollection().add(newDoLinkage);
+			}
 		}
-		return doFunction;
+		if (beanNum > persistNum) {
+			for (int i = persistNum; i < beanNum; i++) {
+				LinkageBean linkageBean = getLinkages().get(i);
+				Linkage doLinkage = linkageBean.getDomainObj();
+				doFunction.getLinkageCollection().add(doLinkage);
+			}
+		} else {
+			for (int i = beanNum; i < persistNum; i++) {
+				Linkage doLinkage = (Linkage) ((List) doFunction
+						.getLinkageCollection()).get(i);
+				doFunction.getLinkageCollection().remove(doLinkage);
+			}
+		}
 	}
 }
