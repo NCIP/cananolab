@@ -8,11 +8,10 @@ import gov.nih.nci.calab.domain.nano.function.DNA;
  * @author pansu
  * 
  */
-public class DNABean extends AgentBean {
+public class DNABean extends BaseAgentBean {
 	private String sequence;
 
-	public DNABean() {
-		super();
+	public DNABean() {		
 	}
 
 	public DNABean(DNA dna) {
@@ -28,10 +27,8 @@ public class DNABean extends AgentBean {
 		this.sequence = sequence;
 	}
 	
-	public DNA getDomainObj() {
-		DNA dna = new DNA();
+	public void updateDomainObj(DNA dna) {		
 		super.updateDomainObj(dna);
-		dna.setSequence(sequence);
-		return dna;
+		dna.setSequence(sequence);		
 	}
 }

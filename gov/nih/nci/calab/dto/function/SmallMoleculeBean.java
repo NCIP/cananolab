@@ -7,13 +7,11 @@ import gov.nih.nci.calab.domain.nano.function.SmallMolecule;
  * @author pansu
  * 
  */
-public class SmallMoleculeBean extends AgentBean{
+public class SmallMoleculeBean extends BaseAgentBean{
 	private String name;
 	private String compoundName;
 	
 	public SmallMoleculeBean() {
-		super();
-		// TODO Auto-generated constructor stub
 	}
 	public SmallMoleculeBean(SmallMolecule smallMolecule) {
 		super(smallMolecule);
@@ -33,11 +31,9 @@ public class SmallMoleculeBean extends AgentBean{
 		this.name = name;
 	}
 	
-	public SmallMolecule getDomainObj() {
-		SmallMolecule smallMolecule = new SmallMolecule();
+	public void updateDomainObj(SmallMolecule smallMolecule) {		
 		super.updateDomainObj(smallMolecule);
 		smallMolecule.setName(name);
-		smallMolecule.setCompoundName(compoundName);
-		return smallMolecule;
+		smallMolecule.setCompoundName(compoundName);		
 	}
 }
