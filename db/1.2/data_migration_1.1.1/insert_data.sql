@@ -251,6 +251,9 @@ where type='Reporting';
 -- Update shape table to set min/max_dimension_unit  to mv
 update shape set min_dimension_unit='nm', max_dimension_unit='nm';
  
+ -- update Linkage_pk_id to agent_pk_id
+update Linkage set linkage_pk_id = agent_pk_id where agent_pk_id is not null;
+ 
 -- insert function_type data
 
 INSERT INTO DEF_FUNCTION_TYPE ( FUNCTION_TYPE_PK_ID, NAME ) VALUES ( 

@@ -27,6 +27,8 @@ alter table LAB_FILE drop (PROTOCOL_PK_ID);
 
 alter table PROTOCOL drop (DESCRIPTION);
 	 
+alter table LINKAGE drop (AGENT_PK_ID);
+	 
 alter table DERIVED_BIOASSAY_DATA drop (CATEGORY); 
 	 
 drop table TABLE_DATA_CONDITION;

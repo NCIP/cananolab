@@ -373,6 +373,8 @@ where exists
 from instrument_config config
 where chara.instrument_pk_id = config.instrument_config_pk_id);
 
+-- update Linkage_pk_id to agent_pk_id
+update Linkage set linkage_pk_id = agent_pk_id where agent_pk_id is not null;
 
 -- insert function_type data
 
