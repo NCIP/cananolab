@@ -75,7 +75,11 @@ public class ToolkitAPIDataAccess implements IDataAccess {
 		appService.removeObject(obj);
 	}
 	
-
+	public Object get(Class klass, Serializable id) throws Exception
+	{
+		throw new Exception( "Not supported yet");
+	}
+	
 	public Object load(Class klass, Serializable id) throws Exception
 	{
 		throw new Exception( "Not supported yet");

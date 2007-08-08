@@ -146,7 +146,7 @@ public class HibernateDataAccess implements IDataAccess {
 		session.update(o);
 	}
 
-	public Object load(Class klass, long id) {
+	public Object get(Class klass, Serializable id) {
 		return session.get(klass, id);
 	}
 
