@@ -169,7 +169,7 @@ public class SubmitNanoparticleService {
 			// characterization for the same particle
 			boolean viewTitleUsed = isCharacterizationViewTitleUsed(ida,
 					particleType, particleName, achar);
-			if (!viewTitleUsed) {
+			if (viewTitleUsed) {
 				throw new RuntimeException(
 						"The view title is already in use.  Please enter a different one.");
 			} else {
