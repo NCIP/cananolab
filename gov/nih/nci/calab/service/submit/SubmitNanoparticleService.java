@@ -46,6 +46,7 @@ import gov.nih.nci.calab.domain.nano.characterization.physical.Surface;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.ParticleComposition;
 import gov.nih.nci.calab.domain.nano.function.Agent;
 import gov.nih.nci.calab.domain.nano.function.AgentTarget;
+import gov.nih.nci.calab.domain.nano.function.Encapsulation;
 import gov.nih.nci.calab.domain.nano.function.Function;
 import gov.nih.nci.calab.domain.nano.function.Linkage;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
@@ -59,7 +60,9 @@ import gov.nih.nci.calab.dto.characterization.physical.ShapeBean;
 import gov.nih.nci.calab.dto.characterization.physical.SolubilityBean;
 import gov.nih.nci.calab.dto.characterization.physical.SurfaceBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
+import gov.nih.nci.calab.dto.function.AgentBean;
 import gov.nih.nci.calab.dto.function.FunctionBean;
+import gov.nih.nci.calab.dto.function.LinkageBean;
 import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.common.FileService;
 import gov.nih.nci.calab.service.security.UserService;
@@ -160,7 +163,6 @@ public class SubmitNanoparticleService {
 				.getInstance(IDataAccess.HIBERNATE);
 
 		Nanoparticle particle = null;
-		int existingViewTitleCount = -1;
 		try {
 			ida.open();
 			// check if viewTitle is already used the same type of
@@ -168,6 +170,9 @@ public class SubmitNanoparticleService {
 			boolean viewTitleUsed = isCharacterizationViewTitleUsed(ida,
 					particleType, particleName, achar);
 			if (!viewTitleUsed) {
+				throw new RuntimeException(
+						"The view title is already in use.  Please enter a different one.");
+			} else {
 				if (achar.getInstrumentConfiguration() != null) {
 					addInstrumentConfig(achar.getInstrumentConfiguration(), ida);
 				}
@@ -198,10 +203,6 @@ public class SubmitNanoparticleService {
 						particle.getCharacterizationCollection().add(achar);
 					}
 				}
-			}
-			if (existingViewTitleCount > 0) {
-				throw new Exception(
-						"The view title is already in use.  Please enter a different one.");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -935,97 +936,57 @@ public class SubmitNanoparticleService {
 			String characterizationName, LabFileBean fileBean) {
 
 	}
-
+	
 	/**
 	 * 
 	 */
 	public void addParticleFunction(String particleType, String particleName,
 			FunctionBean function) throws Exception {
-		Function doFunction = function.getDomainObj();
 
 		// if ID is not set save to the database otherwise update
 		IDataAccess ida = (new DataAccessProxy())
 				.getInstance(IDataAccess.HIBERNATE);
 
 		Nanoparticle particle = null;
-		int existingViewTitleCount = -1;
+		Function doFunction = new Function();
 		try {
-			// Have to seperate this section out in a different hibernate
-			// session.
-			// check linkage id object type
 			ida.open();
-			if (doFunction.getId() != null
-					&& doFunction.getLinkageCollection() != null) {
-				for (Linkage linkage : doFunction.getLinkageCollection()) {
-					// check linkage id object type
-					if (linkage.getId() != null) {
-						List result = ida
-								.search("from Linkage linkage where linkage.id = "
-										+ linkage.getId());
-						if (result != null && result.size() > 0) {
-							Linkage existingObj = (Linkage) result.get(0);
-							// the the type is different,
-							if (existingObj.getClass() != linkage.getClass()) {
-								linkage.setId(null);
-								ida.removeObject(existingObj);
-							}
-						}
-					}
-				}
-			}
-			ida.close();
-
-			ida.open();
-			if (doFunction.getLinkageCollection() != null) {
-				for (Linkage linkage : doFunction.getLinkageCollection()) {
-					Agent agent = linkage.getAgent();
-					if (agent != null) {
-						for (AgentTarget agentTarget : agent
-								.getAgentTargetCollection()) {
-							ida.store(agentTarget);
-						}
-						ida.store(agent);
-					}
-					ida.store(linkage);
-				}
-			}
-
 			boolean viewTitleUsed = isFunctionViewTitleUsed(ida, particleType,
 					particleName, doFunction);
-			if (!viewTitleUsed) {
-				if (doFunction.getId() != null) {
-					ida.store(doFunction);
-				} else {// get the existing particle and compositions
-					// from database created during sample creation
-					List results = ida
-							.search("select particle from Nanoparticle particle left join fetch particle.functionCollection where particle.name='"
-									+ particleName
-									+ "' and particle.type='"
-									+ particleType + "'");
 
-					for (Object obj : results) {
-						particle = (Nanoparticle) obj;
-					}
-
-					if (particle != null) {
-						particle.getFunctionCollection().add(doFunction);
-					}
+			if (viewTitleUsed) {
+				throw new RuntimeException(
+						"The view title is already in use.  Please enter a different one.");
+			} else {
+				// if function already exists in the database
+				if (function.getId() != null) {
+					doFunction = (Function) ida.get(Function.class, new Long(
+							function.getId()));
+					function.updateDomainObj(doFunction);
+				} else {
+					function.updateDomainObj(doFunction);
+				}				
+				List results = ida
+						.search("select particle from Nanoparticle particle left join fetch particle.functionCollection where particle.name='"
+								+ particleName
+								+ "' and particle.type='"
+								+ particleType + "'");
+				for (Object obj : results) {
+					particle = (Nanoparticle) obj;
+				}
+				if (particle != null) {
+					particle.getFunctionCollection().add(doFunction);
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			ida.rollback();
-			logger.error("Problem saving characterization: ");
+			logger.error("Problem saving function: ");
 			throw e;
 		} finally {
 			ida.close();
 		}
-		if (existingViewTitleCount > 0) {
-			throw new CalabException(
-					"The view title is already in use.  Please enter a different one.");
-		}
 	}
-
 	/*
 	 * check if viewTitle is already used the same type of function for the same
 	 * particle
