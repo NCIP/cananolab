@@ -45,9 +45,11 @@ import gov.nih.nci.calab.domain.nano.characterization.physical.SolventType;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Surface;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.ParticleComposition;
 import gov.nih.nci.calab.domain.nano.function.Agent;
-import gov.nih.nci.calab.domain.nano.function.AgentTarget;
-import gov.nih.nci.calab.domain.nano.function.Encapsulation;
+import gov.nih.nci.calab.domain.nano.function.Attachment;
+import gov.nih.nci.calab.domain.nano.function.BondType;
 import gov.nih.nci.calab.domain.nano.function.Function;
+import gov.nih.nci.calab.domain.nano.function.ImageContrastAgent;
+import gov.nih.nci.calab.domain.nano.function.ImageContrastAgentType;
 import gov.nih.nci.calab.domain.nano.function.Linkage;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
@@ -60,9 +62,7 @@ import gov.nih.nci.calab.dto.characterization.physical.ShapeBean;
 import gov.nih.nci.calab.dto.characterization.physical.SolubilityBean;
 import gov.nih.nci.calab.dto.characterization.physical.SurfaceBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
-import gov.nih.nci.calab.dto.function.AgentBean;
 import gov.nih.nci.calab.dto.function.FunctionBean;
-import gov.nih.nci.calab.dto.function.LinkageBean;
 import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.common.FileService;
 import gov.nih.nci.calab.service.security.UserService;
@@ -976,6 +976,21 @@ public class SubmitNanoparticleService {
 				}
 				if (particle != null) {
 					particle.getFunctionCollection().add(doFunction);
+				}
+			}
+			
+			//persist bondType and image contrast agent type drop-down
+			for (Linkage linkage: doFunction.getLinkageCollection()) {
+				if (linkage instanceof Attachment) {
+					String bondType=((Attachment)linkage).getBondType();
+					BondType lookup=new BondType();
+					addLookupType(ida, lookup, bondType);					
+				}
+				Agent agent=linkage.getAgent();
+				if (agent instanceof ImageContrastAgent) {
+					String agentType=((ImageContrastAgent)agent).getType();
+					ImageContrastAgentType lookup=new ImageContrastAgentType();
+					addLookupType(ida, lookup, agentType);
 				}
 			}
 		} catch (Exception e) {
