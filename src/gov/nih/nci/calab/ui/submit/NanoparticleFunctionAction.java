@@ -6,13 +6,12 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleFunctionAction.java,v 1.12 2007-08-02 20:31:41 pansu Exp $ */
+/* CVS $Id: NanoparticleFunctionAction.java,v 1.13 2007-08-08 18:56:01 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.function.Function;
 import gov.nih.nci.calab.dto.function.AgentBean;
 import gov.nih.nci.calab.dto.function.AgentTargetBean;
 import gov.nih.nci.calab.dto.function.FunctionBean;
-import gov.nih.nci.calab.dto.function.ImageContrastAgentBean;
 import gov.nih.nci.calab.dto.function.LinkageBean;
 import gov.nih.nci.calab.service.search.SearchNanoparticleService;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
@@ -305,7 +304,7 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 					&& linkage.getAgent().getType().equals(
 							CaNanoLabConstants.IMAGE_CONTRAST_AGENT)) {
 				InitSessionSetup.getInstance().updateEditableDropdown(session,
-						linkage.getImageContrastAgent().getType(),
+						linkage.getAgent().getImageContrastAgent().getType(),
 						"allImageContrastAgentTypes");
 			}
 		}
