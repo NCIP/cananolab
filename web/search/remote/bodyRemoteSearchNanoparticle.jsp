@@ -83,7 +83,7 @@
 									multiple="true" size="4">
 									<c:forEach var="char"
 										items="${allCharTypeChars[remoteSearchNanoparticleForm.map.characterizationType]}">
-										<html:option value="${char}">${char}</html:option>
+										<html:option value="${char.name}">${char.name}</html:option>
 									</c:forEach>
 								</html:select>
 							</strong>
@@ -140,7 +140,7 @@
   <c:forEach var="item" items="${allCharTypeChars}">  
     var chars=new Array();    
    <c:forEach var="char" items="${allCharTypeChars[item.key]}" varStatus="count">
-  		chars[${count.index}]='${char}'; 
+  		chars[${count.index}]='${char.name}'; 
     </c:forEach>
     charTypeChars['${item.key}']=chars;
   </c:forEach>

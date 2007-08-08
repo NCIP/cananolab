@@ -90,7 +90,7 @@
 									multiple="true" size="4">
 									<c:forEach var="char"
 										items="${allCharTypeChars[searchNanoparticleForm.map.characterizationType]}">
-										<html:option value="${char}">${char}</html:option>
+										<html:option value="${char.name}">${char.name}</html:option>
 									</c:forEach>
 								</html:select> </strong>
 						</td>
