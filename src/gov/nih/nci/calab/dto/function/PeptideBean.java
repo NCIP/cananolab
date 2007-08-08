@@ -8,12 +8,11 @@ import gov.nih.nci.calab.domain.nano.function.Peptide;
  * @author pansu
  * 
  */
-public class PeptideBean extends AgentBean{
+public class PeptideBean extends BaseAgentBean{
 	
 	private String sequence;
 
-	public PeptideBean() {
-		super();
+	public PeptideBean() {	
 	}
 	public PeptideBean(Peptide peptide) {
 		super(peptide);
@@ -27,10 +26,8 @@ public class PeptideBean extends AgentBean{
 		this.sequence = sequence;
 	}
 	
-	public Peptide getDomainObj() {
-		Peptide peptide = new Peptide();
+	public void updateDomainObj(Peptide peptide) {		
 		super.updateDomainObj(peptide);
-		peptide.setSequence(sequence);
-		return peptide;
+		peptide.setSequence(sequence);		
 	}
 }
