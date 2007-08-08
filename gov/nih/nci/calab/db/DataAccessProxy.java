@@ -105,6 +105,11 @@ public class DataAccessProxy implements IDataAccess {
 		return access.load(klass, id);
 	}
 	
+	public Object get(Class klass, Serializable id) throws Exception
+	{
+		return access.get(klass, id);
+	}
+
 	public IDataAccess getInstance(int type) throws Exception {
 		switch (type) {
 		case IDataAccess.HIBERNATE:
