@@ -176,7 +176,7 @@ function hideDetail(elementId) {
 							</td>
 							<td>
 								<html:text
-									property="function.linkages[${param.linkageInd}].antibody.name"
+									property="function.linkages[${param.linkageInd}].agent.antibody.name"
 									size="30" />
 							</td>
 						</tr>
@@ -186,7 +186,7 @@ function hideDetail(elementId) {
 							</td>
 							<td>
 								<html:select
-									property="function.linkages[${param.linkageInd}].antibody.species">
+									property="function.linkages[${param.linkageInd}].agent.antibody.species">
 									<option value=""></option>
 									<html:options name="allSpecies" />
 								</html:select>
@@ -201,7 +201,7 @@ function hideDetail(elementId) {
 							</td>
 							<td>
 								<html:text
-									property="function.linkages[${param.linkageInd}].dna.sequence"
+									property="function.linkages[${param.linkageInd}].agent.dna.sequence"
 									size="30" />
 							</td>
 						</tr>
@@ -215,7 +215,7 @@ function hideDetail(elementId) {
 							</td>
 							<td>
 								<html:text
-									property="function.linkages[${param.linkageInd}].imageContrastAgent.name"
+									property="function.linkages[${param.linkageInd}].agent.imageContrastAgent.name"
 									size="30" />
 							</td>
 						</tr>
@@ -225,7 +225,7 @@ function hideDetail(elementId) {
 							</td>
 							<td>
 								<html:select
-									property="function.linkages[${param.linkageInd}].imageContrastAgent.type"
+									property="function.linkages[${param.linkageInd}].agent.imageContrastAgent.type"
 									onkeydown="javascript:fnKeyDownHandler(this, event);"
 									onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
 									onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
@@ -246,7 +246,7 @@ function hideDetail(elementId) {
 							</td>
 							<td>
 								<html:text
-									property="function.linkages[${param.linkageInd}].peptide.sequence"
+									property="function.linkages[${param.linkageInd}].agent.peptide.sequence"
 									size="30" />
 							</td>
 						</tr>
@@ -259,7 +259,7 @@ function hideDetail(elementId) {
 							</td>
 							<td>
 								<html:text
-									property="function.linkages[${param.linkageInd}].smallMolecule.name"
+									property="function.linkages[${param.linkageInd}].agent.smallMolecule.name"
 									size="30" />
 							</td>
 						</tr>
@@ -269,7 +269,7 @@ function hideDetail(elementId) {
 							</td>
 							<td>
 								<html:text
-									property="function.linkages[${param.linkageInd}].smallMolecule.compoundName"
+									property="function.linkages[${param.linkageInd}].agent.smallMolecule.compoundName"
 									size="30" />
 							</td>
 						</tr>
