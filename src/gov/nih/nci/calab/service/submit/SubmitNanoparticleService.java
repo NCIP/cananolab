@@ -936,7 +936,7 @@ public class SubmitNanoparticleService {
 			String characterizationName, LabFileBean fileBean) {
 
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -965,31 +965,32 @@ public class SubmitNanoparticleService {
 					function.updateDomainObj(doFunction);
 				} else {
 					function.updateDomainObj(doFunction);
-				}				
-				List results = ida
-						.search("select particle from Nanoparticle particle left join fetch particle.functionCollection where particle.name='"
-								+ particleName
-								+ "' and particle.type='"
-								+ particleType + "'");
-				for (Object obj : results) {
-					particle = (Nanoparticle) obj;
-				}
-				if (particle != null) {
-					particle.getFunctionCollection().add(doFunction);
+
+					List results = ida
+							.search("select particle from Nanoparticle particle left join fetch particle.functionCollection where particle.name='"
+									+ particleName
+									+ "' and particle.type='"
+									+ particleType + "'");
+					for (Object obj : results) {
+						particle = (Nanoparticle) obj;
+					}
+					if (particle != null) {
+						particle.getFunctionCollection().add(doFunction);
+					}
 				}
 			}
-			
-			//persist bondType and image contrast agent type drop-down
-			for (Linkage linkage: doFunction.getLinkageCollection()) {
+
+			// persist bondType and image contrast agent type drop-down
+			for (Linkage linkage : doFunction.getLinkageCollection()) {
 				if (linkage instanceof Attachment) {
-					String bondType=((Attachment)linkage).getBondType();
-					BondType lookup=new BondType();
-					addLookupType(ida, lookup, bondType);					
+					String bondType = ((Attachment) linkage).getBondType();
+					BondType lookup = new BondType();
+					addLookupType(ida, lookup, bondType);
 				}
-				Agent agent=linkage.getAgent();
+				Agent agent = linkage.getAgent();
 				if (agent instanceof ImageContrastAgent) {
-					String agentType=((ImageContrastAgent)agent).getType();
-					ImageContrastAgentType lookup=new ImageContrastAgentType();
+					String agentType = ((ImageContrastAgent) agent).getType();
+					ImageContrastAgentType lookup = new ImageContrastAgentType();
 					addLookupType(ida, lookup, agentType);
 				}
 			}
@@ -1002,6 +1003,7 @@ public class SubmitNanoparticleService {
 			ida.close();
 		}
 	}
+
 	/*
 	 * check if viewTitle is already used the same type of function for the same
 	 * particle
