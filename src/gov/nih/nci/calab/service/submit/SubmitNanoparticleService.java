@@ -11,6 +11,7 @@ import gov.nih.nci.calab.domain.LookupType;
 import gov.nih.nci.calab.domain.MeasureType;
 import gov.nih.nci.calab.domain.MeasureUnit;
 import gov.nih.nci.calab.domain.OutputFile;
+import gov.nih.nci.calab.domain.ProtocolFile;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.CharacterizationFileType;
 import gov.nih.nci.calab.domain.nano.characterization.DatumName;
@@ -44,6 +45,7 @@ import gov.nih.nci.calab.domain.nano.characterization.physical.Solubility;
 import gov.nih.nci.calab.domain.nano.characterization.physical.SolventType;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Surface;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.ParticleComposition;
+import gov.nih.nci.calab.domain.nano.characterization.toxicity.Cytotoxicity;
 import gov.nih.nci.calab.domain.nano.function.Agent;
 import gov.nih.nci.calab.domain.nano.function.Attachment;
 import gov.nih.nci.calab.domain.nano.function.BondType;
@@ -61,7 +63,10 @@ import gov.nih.nci.calab.dto.characterization.physical.MorphologyBean;
 import gov.nih.nci.calab.dto.characterization.physical.ShapeBean;
 import gov.nih.nci.calab.dto.characterization.physical.SolubilityBean;
 import gov.nih.nci.calab.dto.characterization.physical.SurfaceBean;
+import gov.nih.nci.calab.dto.common.InstrumentBean;
+import gov.nih.nci.calab.dto.common.InstrumentConfigBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
+import gov.nih.nci.calab.dto.common.ProtocolFileBean;
 import gov.nih.nci.calab.dto.function.FunctionBean;
 import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.common.FileService;
@@ -173,22 +178,35 @@ public class SubmitNanoparticleService {
 				throw new RuntimeException(
 						"The view title is already in use.  Please enter a different one.");
 			} else {
-				if (achar.getInstrumentConfiguration() != null) {
-					addInstrumentConfig(achar.getInstrumentConfiguration(), ida);
-				}
-				// if ID exists, do update
-				if (achar.getId() != null) {
+				// if ID exists, load from database
+				if (charBean.getId() != null) {
 					// check if ID is still valid
-					try {
-						Characterization storedChara = (Characterization) ida
-								.load(Characterization.class, achar.getId());
-					} catch (Exception e) {
+					achar = (Characterization) ida.get(Characterization.class,
+							new Long(charBean.getId()));
+					if (achar == null)
 						throw new Exception(
 								"This characterization is no longer in the database.  Please log in again to refresh.");
-					}
-					ida.store(achar);
-				} else {// get the existing particle and characterizations
-					// from database created during sample creation
+				}
+				// updated domain object
+				if (achar instanceof Shape) {
+					((ShapeBean) charBean).updateDomainObj(achar);
+				} else if (achar instanceof Morphology) {
+					((MorphologyBean) charBean).updateDomainObj(achar);
+				} else if (achar instanceof Solubility) {
+					((SolubilityBean) charBean).updateDomainObj(achar);
+				} else if (achar instanceof Surface) {
+					((SurfaceBean) charBean).updateDomainObj(achar);
+				} else if (achar instanceof Cytotoxicity) {
+					((CytotoxicityBean) charBean).updateDomainObj(achar);
+				} else
+					charBean.updateDomainObj(achar);
+
+				addProtocolFile(charBean.getProtocolFileBean(), achar, ida);
+				// store instrumentConfig and instrument
+				addInstrumentConfig(charBean.getInstrumentConfigBean(), achar,
+						ida);
+
+				if (charBean.getId() == null) {
 					List results = ida
 							.search("select particle from Nanoparticle particle left join fetch particle.characterizationCollection where particle.name='"
 									+ particleName
@@ -339,37 +357,56 @@ public class SubmitNanoparticleService {
 				.getVisibilityGroups());
 	}
 
-	private void addInstrumentConfig(InstrumentConfiguration instrumentConfig,
-			IDataAccess ida) throws Exception {
-		Instrument instrument = instrumentConfig.getInstrument();
+	private void addInstrumentConfig(InstrumentConfigBean instrumentConfigBean,
+			Characterization doChar, IDataAccess ida) throws Exception {
+		InstrumentBean instrumentBean = instrumentConfigBean
+				.getInstrumentBean();
+		if (instrumentBean.getType().length() == 0
+				&& instrumentBean.getManufacturer().length() == 0) {
+			doChar.setInstrumentConfiguration(null);
+			return;
+		}
 
-		// check if instrument is already in database
+		// check if instrument is already in database based on type and
+		// manufacturer
+		Instrument instrument = null;
 		List instrumentResults = ida
 				.search("select instrument from Instrument instrument where instrument.type='"
-						+ instrument.getType()
+						+ instrumentBean.getType()
 						+ "' and instrument.manufacturer='"
-						+ instrument.getManufacturer() + "'");
+						+ instrumentBean.getManufacturer() + "'");
 
-		Instrument storedInstrument = null;
 		for (Object obj : instrumentResults) {
-			storedInstrument = (Instrument) obj;
+			instrument = (Instrument) obj;
 		}
-		if (storedInstrument != null) {
-			instrument.setId(storedInstrument.getId());
-		} else {
-			ida.createObject(instrument);
+		// if not in the database, create one
+		if (instrument == null) {
+			instrument = new Instrument();
+			instrument.setType(instrumentBean.getType());
+			instrument.setManufacturer(instrumentBean.getManufacturer());
+			ida.store(instrument);
 		}
 
-		// if new instrumentConfig, save it
-		if (instrumentConfig.getId() == null) {
-			ida.createObject(instrumentConfig);
+		InstrumentConfiguration instrumentConfig = null;
+		// new instrumentConfig
+		if (instrumentConfigBean.getId() == null) {
+			instrumentConfig = new InstrumentConfiguration();
+			doChar.setInstrumentConfiguration(instrumentConfig);
+
 		} else {
-			InstrumentConfiguration storedInstrumentConfig = (InstrumentConfiguration) ida
-					.load(InstrumentConfiguration.class, instrumentConfig
-							.getId());
-			storedInstrumentConfig.setDescription(instrumentConfig
-					.getDescription());
-			storedInstrumentConfig.setInstrument(instrument);
+			instrumentConfig = doChar.getInstrumentConfiguration();
+		}
+		instrumentConfig.setDescription(instrumentConfigBean.getDescription());
+		instrumentConfig.setInstrument(instrument);
+		ida.store(instrumentConfig);
+	}
+
+	private void addProtocolFile(ProtocolFileBean protocolFileBean,
+			Characterization doChar, IDataAccess ida) throws Exception {
+		if (protocolFileBean.getId().length()>0) {
+			ProtocolFile protocolFile = (ProtocolFile) ida.get(
+					ProtocolFile.class, new Long(protocolFileBean.getId()));
+			doChar.setProtocolFile(protocolFile);
 		}
 	}
 
@@ -398,9 +435,7 @@ public class SubmitNanoparticleService {
 	 */
 	public void addParticleSize(String particleType, String particleName,
 			CharacterizationBean size) throws Exception {
-
 		Size doSize = new Size();
-		size.updateDomainObj(doSize);
 		addParticleCharacterization(particleType, particleName, doSize, size);
 	}
 
@@ -414,9 +449,7 @@ public class SubmitNanoparticleService {
 	 */
 	public void addParticleSurface(String particleType, String particleName,
 			CharacterizationBean surface) throws Exception {
-
 		Surface doSurface = new Surface();
-		((SurfaceBean) surface).updateDomainObj(doSurface);
 		addParticleCharacterization(particleType, particleName, doSurface,
 				surface);
 		// addMeasureUnit(doSurface.getCharge().getUnitOfMeasurement(),
@@ -583,7 +616,6 @@ public class SubmitNanoparticleService {
 			String particleName, CharacterizationBean molecularWeight)
 			throws Exception {
 		MolecularWeight doMolecularWeight = new MolecularWeight();
-		molecularWeight.updateDomainObj(doMolecularWeight);
 		addParticleCharacterization(particleType, particleName,
 				doMolecularWeight, molecularWeight);
 	}
@@ -597,13 +629,12 @@ public class SubmitNanoparticleService {
 	 * @throws Exception
 	 */
 	public void addParticleMorphology(String particleType, String particleName,
-			CharacterizationBean morphology) throws Exception {
+			MorphologyBean morphology) throws Exception {
 		Morphology doMorphology = new Morphology();
-		((MorphologyBean) morphology).updateDomainObj(doMorphology);
 		addParticleCharacterization(particleType, particleName, doMorphology,
 				morphology);
 		MorphologyType morphologyType = new MorphologyType();
-		addLookupType(morphologyType, doMorphology.getType());
+		addLookupType(morphologyType, morphology.getType());
 	}
 
 	/**
@@ -615,12 +646,11 @@ public class SubmitNanoparticleService {
 	 * @throws Exception
 	 */
 	public void addParticleShape(String particleType, String particleName,
-			CharacterizationBean shape) throws Exception {
+			ShapeBean shape) throws Exception {
 		Shape doShape = new Shape();
-		((ShapeBean) shape).updateDomainObj(doShape);
 		addParticleCharacterization(particleType, particleName, doShape, shape);
 		ShapeType shapeType = new ShapeType();
-		addLookupType(shapeType, doShape.getType());
+		addLookupType(shapeType, shape.getType());
 	}
 
 	/**
@@ -634,8 +664,6 @@ public class SubmitNanoparticleService {
 	public void addParticlePurity(String particleType, String particleName,
 			CharacterizationBean purity) throws Exception {
 		Purity doPurity = new Purity();
-		purity.updateDomainObj(doPurity);
-		// TODO think about how to deal with characterization file.
 		addParticleCharacterization(particleType, particleName, doPurity,
 				purity);
 	}
@@ -649,15 +677,13 @@ public class SubmitNanoparticleService {
 	 * @throws Exception
 	 */
 	public void addParticleSolubility(String particleType, String particleName,
-			CharacterizationBean solubility) throws Exception {
+			SolubilityBean solubility) throws Exception {
 		Solubility doSolubility = new Solubility();
-		((SolubilityBean) solubility).updateDomainObj(doSolubility);
-		// TODO think about how to deal with characterization file.
 		addParticleCharacterization(particleType, particleName, doSolubility,
 				solubility);
 		SolventType solventType = new SolventType();
-		addLookupType(solventType, doSolubility.getSolvent());
-		// addMeasureUnit(doSolubility.getCriticalConcentration()
+		addLookupType(solventType, solubility.getSolvent());
+		// addMeasureUnit(solubility.getCriticalConcentration()
 		// .getUnitOfMeasurement(),
 		// CaNanoLabConstants.UNIT_TYPE_CONCENTRATION);
 	}
@@ -673,8 +699,6 @@ public class SubmitNanoparticleService {
 	public void addHemolysis(String particleType, String particleName,
 			CharacterizationBean hemolysis) throws Exception {
 		Hemolysis doHemolysis = new Hemolysis();
-		hemolysis.updateDomainObj(doHemolysis);
-		// TODO think about how to deal with characterization file.
 		addParticleCharacterization(particleType, particleName, doHemolysis,
 				hemolysis);
 	}
@@ -690,7 +714,6 @@ public class SubmitNanoparticleService {
 	public void addCoagulation(String particleType, String particleName,
 			CharacterizationBean coagulation) throws Exception {
 		Coagulation doCoagulation = new Coagulation();
-		coagulation.updateDomainObj(doCoagulation);
 		addParticleCharacterization(particleType, particleName, doCoagulation,
 				coagulation);
 	}
@@ -707,26 +730,8 @@ public class SubmitNanoparticleService {
 			String particleName, CharacterizationBean plateletAggregation)
 			throws Exception {
 		PlateletAggregation doPlateletAggregation = new PlateletAggregation();
-		plateletAggregation.updateDomainObj(doPlateletAggregation);
 		addParticleCharacterization(particleType, particleName,
 				doPlateletAggregation, plateletAggregation);
-	}
-
-	/**
-	 * Saves the invitro Complement Activation characterization to the database
-	 * 
-	 * @param particleType
-	 * @param particleName
-	 * @param complementActivation
-	 * @throws Exception
-	 */
-	public void addComplementActivation(String particleType,
-			String particleName, CharacterizationBean complementActivation)
-			throws Exception {
-		ComplementActivation doComplementActivation = new ComplementActivation();
-		complementActivation.updateDomainObj(doComplementActivation);
-		addParticleCharacterization(particleType, particleName,
-				doComplementActivation, complementActivation);
 	}
 
 	/**
@@ -739,9 +744,7 @@ public class SubmitNanoparticleService {
 	 */
 	public void addChemotaxis(String particleType, String particleName,
 			CharacterizationBean chemotaxis) throws Exception {
-
 		Chemotaxis doChemotaxis = new Chemotaxis();
-		chemotaxis.updateDomainObj(doChemotaxis);
 		addParticleCharacterization(particleType, particleName, doChemotaxis,
 				chemotaxis);
 	}
@@ -758,9 +761,7 @@ public class SubmitNanoparticleService {
 	public void addNKCellCytotoxicActivity(String particleType,
 			String particleName, CharacterizationBean nkCellCytotoxicActivity)
 			throws Exception {
-
 		NKCellCytotoxicActivity doNKCellCytotoxicActivity = new NKCellCytotoxicActivity();
-		nkCellCytotoxicActivity.updateDomainObj(doNKCellCytotoxicActivity);
 		addParticleCharacterization(particleType, particleName,
 				doNKCellCytotoxicActivity, nkCellCytotoxicActivity);
 	}
@@ -777,7 +778,6 @@ public class SubmitNanoparticleService {
 			String particleName, CharacterizationBean leukocyteProliferation)
 			throws Exception {
 		LeukocyteProliferation doLeukocyteProliferation = new LeukocyteProliferation();
-		leukocyteProliferation.updateDomainObj(doLeukocyteProliferation);
 		addParticleCharacterization(particleType, particleName,
 				doLeukocyteProliferation, leukocyteProliferation);
 	}
@@ -793,9 +793,24 @@ public class SubmitNanoparticleService {
 	public void addCFU_GM(String particleType, String particleName,
 			CharacterizationBean cfu_gm) throws Exception {
 		CFU_GM doCFU_GM = new CFU_GM();
-		cfu_gm.updateDomainObj(doCFU_GM);
 		addParticleCharacterization(particleType, particleName, doCFU_GM,
 				cfu_gm);
+	}
+
+	/**
+	 * Saves the invitro Complement Activation characterization to the database
+	 * 
+	 * @param particleType
+	 * @param particleName
+	 * @param complementActivation
+	 * @throws Exception
+	 */
+	public void addComplementActivation(String particleType,
+			String particleName, CharacterizationBean complementActivation)
+			throws Exception {
+		ComplementActivation doComplementActivation = new ComplementActivation();
+		addParticleCharacterization(particleType, particleName,
+				doComplementActivation, complementActivation);
 	}
 
 	/**
@@ -809,7 +824,6 @@ public class SubmitNanoparticleService {
 	public void addOxidativeBurst(String particleType, String particleName,
 			CharacterizationBean oxidativeBurst) throws Exception {
 		OxidativeBurst doOxidativeBurst = new OxidativeBurst();
-		oxidativeBurst.updateDomainObj(doOxidativeBurst);
 		addParticleCharacterization(particleType, particleName,
 				doOxidativeBurst, oxidativeBurst);
 	}
@@ -825,7 +839,6 @@ public class SubmitNanoparticleService {
 	public void addPhagocytosis(String particleType, String particleName,
 			CharacterizationBean phagocytosis) throws Exception {
 		Phagocytosis doPhagocytosis = new Phagocytosis();
-		phagocytosis.updateDomainObj(doPhagocytosis);
 		addParticleCharacterization(particleType, particleName, doPhagocytosis,
 				phagocytosis);
 	}
@@ -841,8 +854,6 @@ public class SubmitNanoparticleService {
 	public void addCytokineInduction(String particleType, String particleName,
 			CharacterizationBean cytokineInduction) throws Exception {
 		CytokineInduction doCytokineInduction = new CytokineInduction();
-		cytokineInduction.updateDomainObj(doCytokineInduction);
-
 		addParticleCharacterization(particleType, particleName,
 				doCytokineInduction, cytokineInduction);
 	}
@@ -858,7 +869,6 @@ public class SubmitNanoparticleService {
 	public void addProteinBinding(String particleType, String particleName,
 			CharacterizationBean plasmaProteinBinding) throws Exception {
 		PlasmaProteinBinding doProteinBinding = new PlasmaProteinBinding();
-		plasmaProteinBinding.updateDomainObj(doProteinBinding);
 		addParticleCharacterization(particleType, particleName,
 				doProteinBinding, plasmaProteinBinding);
 	}
@@ -872,13 +882,12 @@ public class SubmitNanoparticleService {
 	 * @throws Exception
 	 */
 	public void addCellViability(String particleType, String particleName,
-			CharacterizationBean cellViability) throws Exception {
+			CytotoxicityBean cellViability) throws Exception {
 		CellViability doCellViability = new CellViability();
-		((CytotoxicityBean) cellViability).updateDomainObj(doCellViability);
 		addParticleCharacterization(particleType, particleName,
 				doCellViability, cellViability);
 		CellLineType cellLineType = new CellLineType();
-		addLookupType(cellLineType, doCellViability.getCellLine());
+		addLookupType(cellLineType, cellViability.getCellLine());
 	}
 
 	/**
@@ -893,7 +902,6 @@ public class SubmitNanoparticleService {
 	public void addEnzymeInduction(String particleType, String particleName,
 			CharacterizationBean enzymeInduction) throws Exception {
 		EnzymeInduction doEnzymeInduction = new EnzymeInduction();
-		enzymeInduction.updateDomainObj(doEnzymeInduction);
 		addParticleCharacterization(particleType, particleName,
 				doEnzymeInduction, enzymeInduction);
 	}
@@ -909,7 +917,6 @@ public class SubmitNanoparticleService {
 	public void addOxidativeStress(String particleType, String particleName,
 			CharacterizationBean oxidativeStress) throws Exception {
 		OxidativeStress doOxidativeStress = new OxidativeStress();
-		oxidativeStress.updateDomainObj(doOxidativeStress);
 		addParticleCharacterization(particleType, particleName,
 				doOxidativeStress, oxidativeStress);
 	}
@@ -923,18 +930,12 @@ public class SubmitNanoparticleService {
 	 * @throws Exception
 	 */
 	public void addCaspase3Activation(String particleType, String particleName,
-			CharacterizationBean caspase3Activation) throws Exception {
+			CytotoxicityBean caspase3Activation) throws Exception {
 		Caspase3Activation doCaspase3Activation = new Caspase3Activation();
-		caspase3Activation.updateDomainObj(doCaspase3Activation);
 		addParticleCharacterization(particleType, particleName,
 				doCaspase3Activation, caspase3Activation);
 		CellLineType cellLineType = new CellLineType();
-		addLookupType(cellLineType, doCaspase3Activation.getCellLine());
-	}
-
-	public void setCharacterizationFile(String particleName,
-			String characterizationName, LabFileBean fileBean) {
-
+		addLookupType(cellLineType, caspase3Activation.getCellLine());
 	}
 
 	/**
@@ -958,14 +959,13 @@ public class SubmitNanoparticleService {
 				throw new RuntimeException(
 						"The view title is already in use.  Please enter a different one.");
 			} else {
-				// if function already exists in the database
+				// if function already exists in the database, load it first
 				if (function.getId() != null) {
 					doFunction = (Function) ida.get(Function.class, new Long(
 							function.getId()));
 					function.updateDomainObj(doFunction);
 				} else {
 					function.updateDomainObj(doFunction);
-
 					List results = ida
 							.search("select particle from Nanoparticle particle left join fetch particle.functionCollection where particle.name='"
 									+ particleName
@@ -1187,45 +1187,6 @@ public class SubmitNanoparticleService {
 			ida.close();
 		}
 
-		userService.setVisiblity(fileBean.getId(), fileBean
-				.getVisibilityGroups());
-	}
-
-	/**
-	 * Update the meta data associated with a file stored in the database
-	 * 
-	 * @param fileBean
-	 * @throws Exception
-	 */
-	public void updateDerivedBioAssayDataMetaData(
-			DerivedBioAssayDataBean fileBean) throws Exception {
-
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
-		try {
-			ida.open();
-			DerivedBioAssayData file = (DerivedBioAssayData) ida.load(
-					DerivedBioAssayData.class, StringUtils
-							.convertToLong(fileBean.getId()));
-
-			file.setTitle(fileBean.getTitle().toUpperCase());
-			file.setDescription(fileBean.getDescription());
-			file.getKeywordCollection().clear();
-			if (fileBean.getKeywords() != null) {
-				for (String keyword : fileBean.getKeywords()) {
-					Keyword keywordObj = new Keyword();
-					keywordObj.setName(keyword);
-					file.getKeywordCollection().add(keywordObj);
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			ida.rollback();
-			logger.error("Problem updating derived data file meta data: ");
-			throw e;
-		} finally {
-			ida.close();
-		}
 		userService.setVisiblity(fileBean.getId(), fileBean
 				.getVisibilityGroups());
 	}
