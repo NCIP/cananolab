@@ -181,6 +181,50 @@ public class DatumBean {
 		return tableData;
 	}
 
+	public void updateDomainObj(Datum doDatum) {			
+		doDatum.setName(name);
+		Measurement measurement = new Measurement();
+		
+		if (statisticsType.length() > 0) {
+			measurement.setStatisticsType(statisticsType);
+			if (statisticsType.equals("boolean")){
+				if (value.equalsIgnoreCase("false") || (value.equalsIgnoreCase("no"))){
+					measurement.setValue(new Float(0));
+				} else {
+					measurement.setValue(new Float(1));
+				}				
+			} else {
+				if (value.length() > 0)
+					measurement.setValue(new Float(value));
+			}
+		} else {
+			if (value.length() > 0)
+				measurement.setValue(new Float(value));
+		}		
+			
+		measurement.setUnitOfMeasurement(unit);
+		doDatum.setValue(measurement);
+		doDatum.setDerivedBioAssayDataCategory(category);
+		if (this.getConditionList() != null
+				&& this.getConditionList().size() > 0) {
+			for (ConditionBean condition : this.getConditionList()) {
+				doDatum.getConditionCollection()
+						.add(condition.getDomainObj());
+			}
+		}
+
+		if (isAControl.equals(CaNanoLabConstants.BOOLEAN_YES)) {
+			Control control = new Control();
+			if (getControl() != null) {
+				if (getControl().getId() != null)
+					control.setId(new Long(getControl().getId()));
+				control.setName(getControl().getName());
+				control.setType(getControl().getType());
+				doDatum.setControl(control);
+			}
+		}
+	}
+
 	public String getIsAControl() {
 		return isAControl;
 	}
