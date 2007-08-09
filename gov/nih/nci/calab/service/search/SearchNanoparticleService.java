@@ -359,7 +359,7 @@ public class SearchNanoparticleService {
 
 			ida.open();
 			List results = ida
-					.search(" from Function func left join fetch func.linkageCollection link left join fetch link.agent.agentTargetCollection where func.id="
+					.search(" from Function func left join fetch func.linkageCollection link left join fetch link.agent agent left join fetch agent.agentTargetCollection where func.id="
 							+ funcId);
 			for (Object obj : results) {
 				func = (Function) obj;
