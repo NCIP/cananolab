@@ -11,6 +11,6 @@ import gov.nih.nci.calab.domain.nano.function.UnclassifiedAgent;
  */
 public class UnclassifiedAgentBean extends BaseAgentBean {
 	public void updateDomainObj(UnclassifiedAgent agent) {
-		super.updateDomainObj(agent);
+//		super.updateDomainObj(agent);
 	}
 }

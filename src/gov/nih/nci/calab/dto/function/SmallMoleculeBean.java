@@ -31,8 +31,9 @@ public class SmallMoleculeBean extends BaseAgentBean{
 		this.name = name;
 	}
 	
-	public void updateDomainObj(SmallMolecule smallMolecule) {		
-		super.updateDomainObj(smallMolecule);
+	public void updateDomainObj(SmallMolecule smallMolecule) {
+		// super has been called in AgentBean level, so no need to call again here.
+//		super.updateDomainObj(smallMolecule);
 		smallMolecule.setName(name);
 		smallMolecule.setCompoundName(compoundName);		
 	}

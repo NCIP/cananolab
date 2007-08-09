@@ -40,7 +40,8 @@ public class ImageContrastAgentBean extends BaseAgentBean {
 	}
 
 	public void updateDomainObj(ImageContrastAgent imageContrastAgent) {		
-		super.updateDomainObj(imageContrastAgent);
+		// super has been called in AgentBean level, so no need to call again here.
+//		super.updateDomainObj(imageContrastAgent);
 		imageContrastAgent.setName(name);
 		imageContrastAgent.setType(type);		
 	}

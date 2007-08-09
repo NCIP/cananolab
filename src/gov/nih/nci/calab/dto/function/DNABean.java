@@ -28,7 +28,8 @@ public class DNABean extends BaseAgentBean {
 	}
 	
 	public void updateDomainObj(DNA dna) {		
-		super.updateDomainObj(dna);
+		// super has been called in AgentBean level, so no need to call again here.
+		//		super.updateDomainObj(dna);
 		dna.setSequence(sequence);		
 	}
 }

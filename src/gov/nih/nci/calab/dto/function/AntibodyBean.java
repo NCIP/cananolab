@@ -32,9 +32,11 @@ public class AntibodyBean extends BaseAgentBean {
 		this.species = species;
 	}
 
-	public void getDomainObj(Antibody antibody) {
-		super.updateDomainObj(antibody);
+	public void updateDomainObj(Antibody antibody) {
+		// super has been called in AgentBean level, so no need to call again here.
+//		super.updateDomainObj(antibody);
 		antibody.setName(name);
 		antibody.setSpecies(species);
 	}
+	
 }
