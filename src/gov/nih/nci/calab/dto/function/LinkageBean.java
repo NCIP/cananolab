@@ -90,7 +90,7 @@ public class LinkageBean {
 		} else if (type.equals(CaNanoLabConstants.ENCAPSULATION)) {
 			((Encapsulation) doLinkage).setLocalization(localization);
 		}
-		//updateAgent(doLinkage);
+		updateAgent(doLinkage);
 	}
 
 	public Linkage getDomainObj() {
@@ -110,7 +110,7 @@ public class LinkageBean {
 		} else if (type.equals(CaNanoLabConstants.ENCAPSULATION)) {
 			((Encapsulation) doLinkage).setLocalization(localization);
 		}
-		//updateAgent(doLinkage);
+		updateAgent(doLinkage);
 		return doLinkage;
 	}
 
