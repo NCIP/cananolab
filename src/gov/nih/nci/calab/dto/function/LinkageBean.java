@@ -90,7 +90,7 @@ public class LinkageBean {
 		} else if (type.equals(CaNanoLabConstants.ENCAPSULATION)) {
 			((Encapsulation) doLinkage).setLocalization(localization);
 		}
-		updateAgent(doLinkage);
+		//updateAgent(doLinkage);
 	}
 
 	public Linkage getDomainObj() {
@@ -110,13 +110,14 @@ public class LinkageBean {
 		} else if (type.equals(CaNanoLabConstants.ENCAPSULATION)) {
 			((Encapsulation) doLinkage).setLocalization(localization);
 		}
-		updateAgent(doLinkage);
+		//updateAgent(doLinkage);
 		return doLinkage;
 	}
 
 	private void updateAgent(Linkage doLinkage) {
+		Agent doAgent=null;
 		if (agent.getId() != null) {
-			Agent doAgent = doLinkage.getAgent();
+			doAgent = doLinkage.getAgent();
 			if (doAgent != null
 					&& agent.getType().equals(
 							doAgent.getClass().getSimpleName())) {
@@ -125,11 +126,11 @@ public class LinkageBean {
 			// if the agent type is updated create new instance of new agent
 			// type
 			else {
-				Agent newDoAgent = agent.getDomainObj();
-				doLinkage.setAgent(newDoAgent);
+				doAgent = agent.getDomainObj();				
+				doLinkage.setAgent(doAgent);
 			}
 		} else {
-			Agent doAgent = agent.getDomainObj();
+			doAgent = agent.getDomainObj();
 			doLinkage.setAgent(doAgent);
 		}
 	}

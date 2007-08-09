@@ -5,12 +5,12 @@ import gov.nih.nci.calab.domain.nano.function.AgentTarget;
 import gov.nih.nci.calab.domain.nano.function.Antibody;
 import gov.nih.nci.calab.domain.nano.function.DNA;
 import gov.nih.nci.calab.domain.nano.function.ImageContrastAgent;
-import gov.nih.nci.calab.domain.nano.function.Linkage;
 import gov.nih.nci.calab.domain.nano.function.Peptide;
 import gov.nih.nci.calab.domain.nano.function.SmallMolecule;
 import gov.nih.nci.calab.domain.nano.function.UnclassifiedAgent;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -70,7 +70,7 @@ public class AgentBean extends BaseAgentBean {
 	}
 
 	// update existing domain object
-	public void updateDomainObj(Agent doAgent) {		
+	public void updateDomainObj(Agent doAgent) {
 		super.updateDomainObj(doAgent);
 		if (getType().equals(CaNanoLabConstants.DNA)) {
 			dna.updateDomainObj((DNA) doAgent);
@@ -89,7 +89,7 @@ public class AgentBean extends BaseAgentBean {
 	}
 
 	// create new domain object
-	public Agent getDomainObj() {	
+	public Agent getDomainObj() {
 		Agent doAgent = null;
 		if (getType().equals(CaNanoLabConstants.DNA)) {
 			doAgent = new DNA();
@@ -123,38 +123,39 @@ public class AgentBean extends BaseAgentBean {
 	}
 
 	private void updateAgentTargets(Agent doAgent) {
-		int persistNum = doAgent.getAgentTargetCollection().size();
-		int beanNum = getAgentTargets().size();
-		int targetNum = (beanNum < persistNum) ? beanNum : persistNum;
-		for (int i = 0; i < targetNum; i++) {
-			AgentTargetBean agentTargetBean = getAgentTargets().get(i);
-			AgentTarget doAgentTarget = (AgentTarget) ((List) doAgent
-					.getAgentTargetCollection()).get(i);
-
-			if (agentTargetBean.getType().equals(
-					doAgentTarget.getClass().getSimpleName())) {
-				agentTargetBean.updateDomainObj(doAgentTarget);
+		// copy collection
+		List<AgentTarget> doAgentTargets = new ArrayList<AgentTarget>(doAgent
+				.getAgentTargetCollection());
+		// clear the existing collection
+		doAgent.getAgentTargetCollection().clear();
+		for (AgentTargetBean agentTargetBean : getAgentTargets()) {
+			AgentTarget doAgentTarget = null;
+			// if no id, add new domain object
+			if (agentTargetBean.getId() == null) {
+				doAgentTarget = agentTargetBean.getDomainObj();
+			} else {
+				// find domain object with the same ID and add the updated
+				// domain object
+				if (doAgentTargets.size() > 0) {
+					for (AgentTarget aDoAgentTarget : doAgentTargets) {
+						if (aDoAgentTarget.getId().equals(
+								new Long(agentTargetBean.getId()))) {
+							if (aDoAgentTarget.getClass().getSimpleName()
+									.equals(agentTargetBean.getType())) {
+								doAgentTarget = aDoAgentTarget;
+								agentTargetBean.updateDomainObj(doAgentTarget);
+							} else {
+								doAgentTarget = agentTargetBean.getDomainObj();
+							}
+							break;
+						}
+					}
+				}
+				else {
+					doAgentTarget = agentTargetBean.getDomainObj();
+				}
 			}
-			// if the agent target type is updated create new instance of new
-			// agent target
-			else {
-				AgentTarget newDoAgentTarget = agentTargetBean.getDomainObj();
-				doAgent.getAgentTargetCollection().remove(doAgentTarget);
-				doAgent.getAgentTargetCollection().add(newDoAgentTarget);
-			}
-		}
-		if (beanNum > persistNum) {
-			for (int i = persistNum; i < beanNum; i++) {
-				AgentTargetBean agentTargetBean = getAgentTargets().get(i);
-				AgentTarget doAgentTarget = agentTargetBean.getDomainObj();
-				doAgent.getAgentTargetCollection().add(doAgentTarget);
-			}
-		} else {
-			for (int i = beanNum; i < persistNum; i++) {
-				AgentTarget doAgentTarget = (AgentTarget) ((List) doAgent
-						.getAgentTargetCollection()).get(i);
-				doAgent.getAgentTargetCollection().remove(doAgentTarget);
-			}
+			doAgent.getAgentTargetCollection().add(doAgentTarget);
 		}
 	}
 
