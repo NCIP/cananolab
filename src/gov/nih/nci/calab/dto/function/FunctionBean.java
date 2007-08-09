@@ -137,17 +137,24 @@ public class FunctionBean {
 				// domain object
 				if (doLinkages.size() > 0) {
 					for (Linkage aDoLinkage : doLinkages) {
-						if (aDoLinkage.getId().equals(
-								new Long(linkageBean.getId()))) {
-							// if type is not changed, update the domainObj
-							if (aDoLinkage.getClass().getSimpleName().equals(
-									linkageBean.getType())) {
-								doLinkage = aDoLinkage;
-								linkageBean.updateDomainObj(doLinkage);
-							} else {
-								doLinkage = linkageBean.getDomainObj();
+						//if agent type is changed, have to create new linkage domain obj
+						if (aDoLinkage.getAgent().getClass().getSimpleName()
+								.equals(linkageBean.getAgent().getType())) {
+							if (aDoLinkage.getId().equals(
+									new Long(linkageBean.getId()))) {
+								// if type is not changed, update the domainObj
+								if (aDoLinkage.getClass().getSimpleName()
+										.equals(linkageBean.getType())) {
+									doLinkage = aDoLinkage;
+									linkageBean.updateDomainObj(doLinkage);
+								} else {
+									doLinkage = linkageBean.getDomainObj();
+								}
+								break;
 							}
-							break;
+						}
+						else {
+							doLinkage = linkageBean.getDomainObj();
 						}
 					}
 				} else {
