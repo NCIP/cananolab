@@ -26,8 +26,9 @@ public class PeptideBean extends BaseAgentBean{
 		this.sequence = sequence;
 	}
 	
-	public void updateDomainObj(Peptide peptide) {		
-		super.updateDomainObj(peptide);
+	public void updateDomainObj(Peptide peptide) {
+		// super has been called in AgentBean level, so no need to call again here.
+//		super.updateDomainObj(peptide);
 		peptide.setSequence(sequence);		
 	}
 }
