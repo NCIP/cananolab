@@ -58,15 +58,4 @@ public class InstrumentConfigBean {
 		newInstrumentConfigBean.setInstrumentBean(instrumentBean);
 		return newInstrumentConfigBean;
 	}
-	
-	public InstrumentConfiguration getDomainObject() {
-		InstrumentConfiguration instrumentConfig = new InstrumentConfiguration();
-		if (id != null && id.length() > 0) {
-			instrumentConfig.setId(new Long(id));
-		}
-		Instrument instrument=instrumentBean.getDomainObject();
-		instrumentConfig.setDescription(description);
-		instrumentConfig.setInstrument(instrument);
-		return instrumentConfig;
-	}
 }
