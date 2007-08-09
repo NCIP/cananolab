@@ -3,8 +3,10 @@
  */
 package gov.nih.nci.calab.dto.function;
 
+import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.domain.nano.function.Function;
 import gov.nih.nci.calab.domain.nano.function.Linkage;
+import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 import java.util.ArrayList;
@@ -120,37 +122,39 @@ public class FunctionBean {
 	}
 
 	private void updateLinkages(Function doFunction) {
-		int persistNum = doFunction.getLinkageCollection().size();
-		int beanNum = getLinkages().size();
-		int linkageNum = (beanNum < persistNum) ? beanNum : persistNum;
-		for (int i = 0; i < linkageNum; i++) {
-			LinkageBean linkageBean = getLinkages().get(i);
-			Linkage doLinkage = (Linkage) ((List) doFunction
-					.getLinkageCollection()).get(i);
-
-			if (linkageBean.getType().equals(
-					doLinkage.getClass().getSimpleName())) {
-				linkageBean.updateDomainObj(doLinkage);
+		// copy collection
+		List<Linkage> doLinkages = new ArrayList<Linkage>(doFunction
+				.getLinkageCollection());
+		// clear the existing collection
+		doFunction.getLinkageCollection().clear();
+		for (LinkageBean linkageBean : getLinkages()) {
+			Linkage doLinkage = null;
+			// if no id, add new domain object
+			if (linkageBean.getId() == null) {
+				doLinkage = linkageBean.getDomainObj();
+			} else {
+				// find domain object with the same ID and add the updated
+				// domain object
+				if (doLinkages.size() > 0) {
+					for (Linkage aDoLinkage : doLinkages) {
+						if (aDoLinkage.getId().equals(
+								new Long(linkageBean.getId()))) {
+							// if type is not changed, update the domainObj
+							if (aDoLinkage.getClass().getSimpleName().equals(
+									linkageBean.getType())) {
+								doLinkage = aDoLinkage;
+								linkageBean.updateDomainObj(doLinkage);
+							} else {
+								doLinkage = linkageBean.getDomainObj();
+							}
+							break;
+						}
+					}
+				} else {
+					doLinkage = linkageBean.getDomainObj();
+				}
 			}
-			// if the linkage type is updated create new instance of new linkage			
-			else {
-				Linkage newDoLinkage = linkageBean.getDomainObj();
-				doFunction.getLinkageCollection().remove(doLinkage);
-				doFunction.getLinkageCollection().add(newDoLinkage);
-			}
-		}
-		if (beanNum > persistNum) {
-			for (int i = persistNum; i < beanNum; i++) {
-				LinkageBean linkageBean = getLinkages().get(i);
-				Linkage doLinkage = linkageBean.getDomainObj();
-				doFunction.getLinkageCollection().add(doLinkage);
-			}
-		} else {
-			for (int i = beanNum; i < persistNum; i++) {
-				Linkage doLinkage = (Linkage) ((List) doFunction
-						.getLinkageCollection()).get(i);
-				doFunction.getLinkageCollection().remove(doLinkage);
-			}
+			doFunction.getLinkageCollection().add(doLinkage);
 		}
 	}
 }

@@ -26,7 +26,7 @@ public class DerivedBioAssayDataBean extends LabFileBean {
 
 	private String characterizationName;
 
-	private String[] categories=new String[0];
+	private String[] categories = new String[0];
 
 	private List<DatumBean> datumList = new ArrayList<DatumBean>();
 
@@ -63,7 +63,7 @@ public class DerivedBioAssayDataBean extends LabFileBean {
 				datumList.add(ctDataBean);
 			}
 		}
-		this.categories=charFile.getCategories();
+		this.categories = charFile.getCategories();
 	}
 
 	public DerivedBioAssayDataBean(DerivedBioAssayData charFile,
@@ -72,32 +72,52 @@ public class DerivedBioAssayDataBean extends LabFileBean {
 		setGridNode(gridNodeHost);
 	}
 
-	public DerivedBioAssayData getDomainObject() {
-		DerivedBioAssayData charFile = new DerivedBioAssayData();
-		if (getId() != null && getId().length() > 0) {
-			charFile.setId(new Long(getId()));
-		}
-		charFile.setCreatedBy(getCreatedBy());
-		charFile.setCreatedDate(getCreatedDate());
-		charFile.setDescription(getDescription());
-		charFile.setComments(getComments());
-		charFile.setFilename(getName());
-		charFile.setUri(getUri());
-		charFile.setTitle(getTitle());
-		charFile.setVersion(getVersion());
-		charFile.setType(getType());
-		charFile.setCategories(categories);
-		charFile.setContent(getFileContent());
+	public void updateDomainObj(DerivedBioAssayData doDerivedBioAssayData) {
+		doDerivedBioAssayData.setCreatedBy(getCreatedBy());
+		doDerivedBioAssayData.setCreatedDate(getCreatedDate());
+		doDerivedBioAssayData.setDescription(getDescription());
+		doDerivedBioAssayData.setComments(getComments());
+		doDerivedBioAssayData.setFilename(getName());
+		doDerivedBioAssayData.setUri(getUri());
+		doDerivedBioAssayData.setTitle(getTitle());
+		doDerivedBioAssayData.setVersion(getVersion());
+		doDerivedBioAssayData.setType(getType());
+		doDerivedBioAssayData.setCategories(categories);
+		doDerivedBioAssayData.setContent(getFileContent());
+		doDerivedBioAssayData.setCategories(categories);
 		for (String keywordValue : keywords) {
 			Keyword keyword = new Keyword();
 			keyword.setName(keywordValue);
-			charFile.getKeywordCollection().add(keyword);
+			doDerivedBioAssayData.getKeywordCollection().add(keyword);
 		}
-		for (DatumBean datum : datumList) {
-			charFile.getDatumCollection().add(datum.getDomainObj());
+		updateDatumList(doDerivedBioAssayData);
+	}
+
+	private void updateDatumList(DerivedBioAssayData doDerivedBioAssayData) {
+		// copy collection
+		List<Datum> doDatumList = new ArrayList<Datum>(doDerivedBioAssayData
+				.getDatumCollection());
+		// clear the existing collection
+		doDerivedBioAssayData.getDatumCollection().clear();
+		for (DatumBean datumBean : getDatumList()) {
+			Datum doDatum = null;
+			// if no id, add new domain object
+			if (datumBean.getId() == null) {
+				doDatum = new Datum();
+			} else {
+				// find domain object with the same ID and add the updated
+				// domain object
+				for (Datum aDoDatum : doDatumList) {
+					if (aDoDatum.getId().equals(
+							new Long(datumBean.getId()))) {
+						doDatum = aDoDatum;
+						break;
+					}
+				}
+			}
+			datumBean.updateDomainObj(doDatum);
+			doDerivedBioAssayData.getDatumCollection().add(doDatum);
 		}
-		charFile.setCategories(categories);
-		return charFile;
 	}
 
 	public String getKeywordsStr() {
@@ -137,7 +157,7 @@ public class DerivedBioAssayDataBean extends LabFileBean {
 		newCharFileBean.setCreatedBy(getCreatedBy());
 		newCharFileBean.setCreatedDate(getCreatedDate());
 		newCharFileBean.setFileContent(getFileContent());
-		//copy uri but will be modified		
+		// copy uri but will be modified
 		newCharFileBean.setUri(getUri());
 		newCharFileBean.setCharacterizationName(characterizationName);
 		newCharFileBean.setType(getType());

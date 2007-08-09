@@ -159,35 +159,41 @@ public class CharacterizationBean {
 	 * 
 	 * @return
 	 */
-	public void updateDomainObj(Characterization aChar) {
-		if (getId() != null && getId().length() > 0) {
-			aChar.setId(new Long(getId()));
-		}
-		aChar.setSource(getCharacterizationSource());
-		aChar.setIdentificationName(getViewTitle());
-		aChar.setDescription(getDescription());
-		aChar.setCreatedBy(getCreatedBy());
-		aChar.setCreatedDate(getCreatedDate());
+	public void updateDomainObj(Characterization doChar) {
+		doChar.setSource(getCharacterizationSource());
+		doChar.setIdentificationName(getViewTitle());
+		doChar.setDescription(getDescription());
+		doChar.setCreatedBy(getCreatedBy());
+		doChar.setCreatedDate(getCreatedDate());
+		updateDerivedBioAssayData(doChar);				
+	}	
 
-		for (DerivedBioAssayDataBean table : getDerivedBioAssayDataList()) {
-			aChar.getDerivedBioAssayDataCollection().add(
-					table.getDomainObject());
-		}
-
-		InstrumentConfiguration instrumentConfig = instrumentConfigBean
-				.getDomainObject();
-		// only set instrument config if instrument is selected.
-		if ((instrumentConfig.getInstrument() != null)
-				&& (instrumentConfig.getInstrument().getType() != null))
-			if (instrumentConfig.getInstrument().getType().length() > 0) {
-				aChar.setInstrumentConfiguration(instrumentConfig);
+	// update domain object's derivedBioAssayData collection
+	private void updateDerivedBioAssayData(Characterization doChar) {
+		// copy collection
+		List<DerivedBioAssayData> doDerivedDataList = new ArrayList<DerivedBioAssayData>(
+				doChar.getDerivedBioAssayDataCollection());
+		// clear the existing collection
+		doChar.getDerivedBioAssayDataCollection().clear();
+		for (DerivedBioAssayDataBean derivedBioAssayDataBean : getDerivedBioAssayDataList()) {
+			DerivedBioAssayData doDerivedBioAssayData = null;
+			// if no id, add new domain object
+			if (derivedBioAssayDataBean.getId() == null) {
+				doDerivedBioAssayData = new DerivedBioAssayData();
+			} else {
+				// find domain object with the same ID and add the updated
+				// domain object
+				for (DerivedBioAssayData doData : doDerivedDataList) {
+					if (doData.getId().equals(
+							new Long(derivedBioAssayDataBean.getId()))) {
+						doDerivedBioAssayData = doData;
+						break;
+					}
+				}
 			}
-
-		if (protocolFileBean.getId() != null
-				&& protocolFileBean.getId().length() > 0) {
-			ProtocolFile protocolFile = new ProtocolFile();
-			protocolFile.setId(new Long(protocolFileBean.getId()));
-			aChar.setProtocolFile(protocolFile);
+			derivedBioAssayDataBean.updateDomainObj(doDerivedBioAssayData);
+			doChar.getDerivedBioAssayDataCollection()
+					.add(doDerivedBioAssayData);
 		}
 	}
 
