@@ -376,8 +376,27 @@ where chara.instrument_pk_id = config.instrument_config_pk_id);
 -- update Linkage_pk_id to agent_pk_id
 update Linkage set linkage_pk_id = agent_pk_id where agent_pk_id is not null;
 
--- insert function_type data
+-- remove orphaned agents
+delete from agent where agent_pk_id not in (select linkage_pk_id from linkage);
 
+-- clean up keywords
+select a.KEYWORD_PK_ID from keyword a, keyword_nanoparticle b
+where a.KEYWORD_PK_ID=b.KEYWORD_PK_ID
+and a.NAME is null;
+
+delete from keyword_bioassay_data
+where keyword_pk_id in
+( select a.KEYWORD_PK_ID
+  from keyword a, keyword_bioassay_data b
+  where a.KEYWORD_PK_ID=b.KEYWORD_PK_ID
+  and a.NAME is null);
+
+delete from keyword
+where name is null;
+
+
+
+-- insert function_type data
 INSERT INTO DEF_FUNCTION_TYPE ( FUNCTION_TYPE_PK_ID, NAME ) VALUES ( 
 1, 'Therapeutic'); 
 INSERT INTO DEF_FUNCTION_TYPE ( FUNCTION_TYPE_PK_ID, NAME ) VALUES ( 
