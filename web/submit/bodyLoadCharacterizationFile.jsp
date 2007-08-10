@@ -8,7 +8,11 @@
 			<td>
 				<h3>
 					<br>
-					Load/Update Characterization File
+					<c:choose>
+						<c:when test="${canUserSubmit eq 'true'}">Load/Update</c:when>
+						<c:otherwise>View</c:otherwise>
+					</c:choose>
+					Characterization File
 				</h3>
 			</td>
 			<td align="right" width="15%">
@@ -104,24 +108,11 @@
 										</table>
 									</c:when>
 									<c:otherwise>
-										<c:choose>
-											<c:when
-												test="${!empty file.uri && empty file.id && loadDerivedBioAssayDataForm.map.fileSource=='new'}">
-									    	${file.displayName}
-									    	<html:hidden property="file.name" />
-												<html:hidden property="file.uri" />
-											</c:when>
-										</c:choose>
-										<c:choose>
-											<c:when
-												test="${!empty file.id && loadDerivedBioAssayDataForm.map.fileSource=='new'}">
-												<strong>File Name  </strong> <a
-													href="${actionName}.do?dispatch=download&amp;fileId=${file.id}">${file.displayName}</a>
-												<html:hidden property="file.id" />
-												<html:hidden property="file.name" />
-												<html:hidden property="file.uri" />
-											</c:when>
-										</c:choose>
+										<strong> Uploaded New File</strong>&nbsp;
+											<a href="${actionName}.do?dispatch=download&amp;fileId=${file.id}">${file.displayName}</a>
+										<html:hidden property="file.id" />
+										<html:hidden property="file.name" />
+										<html:hidden property="file.uri" />										
 									</c:otherwise>
 								</c:choose>
 							</td>
