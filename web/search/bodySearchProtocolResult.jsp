@@ -13,7 +13,7 @@
 			</h3>
 		</td>
 		<td align="right" width="15%">
-			<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=protocols_search_results_help')" class="helpText">Help</a>&nbsp;&nbsp; <a href="searchProtocol.do?dispatch=setup" class="helpText">back</a>
+			<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=protocol_search_results_help')" class="helpText">Help</a>&nbsp;&nbsp; <a href="searchProtocol.do?dispatch=setup" class="helpText">back</a>
 		</td>
 	</tr>
 	<tr>
