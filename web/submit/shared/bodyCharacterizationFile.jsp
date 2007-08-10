@@ -123,11 +123,20 @@
 			<td class="leftLabel" valign="top" colspan="1">
 				<strong>File/Derived Data Description</strong>
 			</td>
-			<td class="rightLabel" colspan="3">
-				<html:textarea
-					property="achar.derivedBioAssayDataList[${param.fileInd}].description"
-					rows="3" cols="65" />
-			</td>
+			<c:choose>
+				<c:when test="${canUserSubmit eq 'true'}">
+					<td class="rightLabel" colspan="3">
+						<html:textarea
+							property="achar.derivedBioAssayDataList[${param.fileInd}].description"
+							rows="3" cols="65" />
+					</td>
+				</c:when>
+				<c:otherwise>
+					<td class="rightLabel" colspan="3">
+						${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].description}&nbsp;
+					</td>
+				</c:otherwise>
+			</c:choose>
 		</tr>
 		<tr>
 			<td class="completeLabel" colspan="4">
