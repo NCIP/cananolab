@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: LoadDerivedBioAssayDataAction.java,v 1.25 2007-07-27 19:57:35 pansu Exp $ */
+/* CVS $Id: LoadDerivedBioAssayDataAction.java,v 1.26 2007-08-10 15:05:06 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
@@ -69,7 +69,7 @@ public class LoadDerivedBioAssayDataAction extends AbstractDispatchAction {
 				fileBean.setName(existingFileBean.getName());
 				fileBean.setCreatedBy(existingFileBean.getCreatedBy());
 				fileBean.setCreatedDate(existingFileBean.getCreatedDate());
-				fileBean.setUri(existingFileBean.getUri());
+				fileBean.setUri(existingFileBean.getUri());			
 				FileService fileService = new FileService();
 				byte[] content = fileService
 						.getFileContent(new Long(runFileId));
@@ -91,7 +91,7 @@ public class LoadDerivedBioAssayDataAction extends AbstractDispatchAction {
 		derivedBioAssayDataBean.setUri(fileBean.getUri());
 		derivedBioAssayDataBean.setVisibilityGroups(fileBean
 				.getVisibilityGroups());
-		derivedBioAssayDataBean.setKeywordsStr(fileBean.getKeywordsStr());
+		derivedBioAssayDataBean.setKeywords(fileBean.getKeywords());
 		ActionForward forward = new ActionForward();
 		forward.setPath(forwardPage);
 		return forward;
