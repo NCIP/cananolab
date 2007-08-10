@@ -135,8 +135,10 @@ public class SubmitNanoparticleService {
 			if (keywords != null) {
 				for (String keyword : keywords) {
 					Keyword keywordObj = new Keyword();
-					keywordObj.setName(keyword);
-					particle.getKeywordCollection().add(keywordObj);
+					if (keyword.length() > 0) {
+						keywordObj.setName(keyword);
+						particle.getKeywordCollection().add(keywordObj);
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -403,7 +405,7 @@ public class SubmitNanoparticleService {
 
 	private void addProtocolFile(ProtocolFileBean protocolFileBean,
 			Characterization doChar, IDataAccess ida) throws Exception {
-		if (protocolFileBean.getId().length()>0) {
+		if (protocolFileBean.getId().length() > 0) {
 			ProtocolFile protocolFile = (ProtocolFile) ida.get(
 					ProtocolFile.class, new Long(protocolFileBean.getId()));
 			doChar.setProtocolFile(protocolFile);
