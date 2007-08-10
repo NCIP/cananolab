@@ -1,12 +1,13 @@
 function FileData_Pairs(x)
 {
 x.t("available","https://gforge.nci.nih.gov/docman/view.php/69/4728/calab_upt_user_guide.pdf");
-x.t("administered","administrator.");
+x.t("administered","administrator");
 x.t("(upt)","administered");
 x.t("user","getting");
 x.t("user","new");
 x.t("user","registering");
 x.t("user","provisioning");
+x.t("administrator","information");
 x.t("new","user");
 x.t("new","users");
 x.t("getting","started");
@@ -14,16 +15,15 @@ x.t("upt","user\u2019s");
 x.t("guide","available");
 x.t("registering","new");
 x.t("cananolab","registering");
-x.t("cananolab","1.1");
+x.t("cananolab","1.2");
 x.t("started","cananolab");
 x.t("registered","using");
-x.t("1.1","cananolab");
-x.t("1.1","registered");
+x.t("1.2","cananolab");
+x.t("1.2","registered");
 x.t("tool","(upt)");
 x.t("information","upt");
 x.t("provisioning","tool");
 x.t("users","cananolab");
 x.t("using","user");
-x.t("administrator.","information");
 x.t("user\u2019s","guide");
 }

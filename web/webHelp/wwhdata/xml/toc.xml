@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WebWorksHelpTOC version="5.0" xmlns="urn:WebWorks-Help-TOC-Schema">
-  <i t="Welcome to caNanoLab 1.1" l="0" />
-  <i t="Getting Started with caNanoLab 1.1" l="1">
+  <i t="Welcome to caNanoLab 1.2" l="0" />
+  <i t="Getting Started with caNanoLab 1.2" l="1">
     <i t="About caNanoLab" l="2">
       <i t="Introduction to caNanoLab" l="2#1085961" />
       <i t="caNanoLab Welcome Login Page" l="3" />
@@ -51,71 +51,82 @@
         <i t="Particle Tree" l="38" />
       </i>
     </i>
-    <i t="Nanoparticle Function" l="39">
-      <i t="Nanoparticle Function Page" l="40" />
+    <i t="Managing Protocols" l="39">
+      <i t="Submitting a Protocol" l="40" />
     </i>
-    <i t="Nanoparticle Characterization" l="41">
-      <i t="Physical Characterization" l="42">
-        <i t="Composition" l="43">
-          <i t="Carbon Nanotube" l="44" />
-          <i t="Complex Particle" l="45" />
-          <i t="Dendrimer" l="46" />
-          <i t="Emulsion" l="47" />
-          <i t="Fullerene" l="48" />
-          <i t="Liposome" l="49" />
-          <i t="Metal Particle" l="50" />
-          <i t="Polymer" l="51" />
-          <i t="Quantum Dot" l="52" />
+    <i t="Nanoparticle Function" l="41">
+      <i t="Nanoparticle Function Page" l="42" />
+    </i>
+    <i t="Nanoparticle Characterization" l="43">
+      <i t="Physical Characterization" l="44">
+        <i t="Composition" l="45">
+          <i t="Carbon Nanotube" l="46" />
+          <i t="Complex Particle" l="47" />
+          <i t="Dendrimer" l="48" />
+          <i t="Emulsion" l="49" />
+          <i t="Fullerene" l="50" />
+          <i t="Liposome" l="51" />
+          <i t="Metal Particle" l="52" />
+          <i t="Polymer" l="53" />
+          <i t="Quantum Dot" l="54" />
         </i>
-        <i t="Loading Characterization Files" l="53" />
-        <i t="Size" l="54" />
-        <i t="Molecular Weight" l="55" />
-        <i t="Morphology" l="56" />
-        <i t="Shape" l="57" />
-        <i t="Surface" l="58" />
-        <i t="Solubility" l="59" />
-        <i t="Purity" l="60" />
+        <i t="Loading Characterization Files" l="55" />
+        <i t="Molecular Weight" l="56" />
+        <i t="Morphology" l="57" />
+        <i t="Purity" l="58" />
+        <i t="Shape" l="59" />
+        <i t="Size" l="60" />
+        <i t="Solubility" l="61" />
+        <i t="Surface" l="62" />
       </i>
-      <i t="In Vitro Characterization" l="61">
-        <i t="In Vitro Characterization Forms" l="62" />
-        <i t="Toxicity" l="63">
-          <i t="Cytotoxicity" l="64" />
-          <i t="Immunotoxicity" l="65" />
+      <i t="In Vitro Characterization" l="63">
+        <i t="In Vitro Characterization Forms" l="64" />
+        <i t="Toxicity" l="65">
+          <i t="Cytotoxicity" l="66" />
+          <i t="Immunotoxicity" l="67" />
         </i>
       </i>
     </i>
-    <i t="Publishing a Nanoparticle Report" l="66" />
+    <i t="Managing Characterizations" l="68">
+      <i t="Copying Characterizations" l="68#1130595" />
+      <i t="Deleting a Characterization" l="69" />
+    </i>
+    <i t="Publishing a Nanoparticle Report" l="70" />
   </i>
-  <i t="Searching the caNanoLab Data­base" l="67">
-    <i t="Launching a caNanoLab Search" l="68">
-      <i t="Searching a Workflow" l="69">
-        <i t="Workflow Search Results" l="70" />
+  <i t="Searching the caNanoLab Data­base" l="71">
+    <i t="Launching a caNanoLab Search" l="72">
+      <i t="Searching a Workflow" l="73">
+        <i t="Workflow Search Results" l="74" />
       </i>
-      <i t="Searching Samples" l="71">
-        <i t="Sample Search Results" l="72" />
-        <i t="Sample Details Page" l="73" />
+      <i t="Searching Samples" l="75">
+        <i t="Sample Search Results" l="76" />
+        <i t="Sample Details Page" l="77" />
       </i>
-      <i t="Searching Aliquots" l="74">
-        <i t="Aliquot Search Results" l="75" />
-        <i t="Aliquot Details Page" l="76" />
+      <i t="Searching Aliquots" l="78">
+        <i t="Aliquot Search Results" l="79" />
+        <i t="Aliquot Details Page" l="80" />
       </i>
-      <i t="Searching Nanoparticles" l="77">
-        <i t="Nanoparticle Search Results" l="78" />
-        <i t="Nanoparticle Details" l="79" />
+      <i t="Searching Nanoparticles" l="81">
+        <i t="Nanoparticle Search Results" l="82" />
+        <i t="Nanoparticle Details" l="83" />
       </i>
-      <i t="Searching Nanoparticle Reports" l="80">
-        <i t="Nanoparticle Reports Search Results" l="81" />
-        <i t="Nanoparticle Report Details Page" l="82" />
+      <i t="Searching Nanoparticle Reports" l="84">
+        <i t="Nanoparticle Reports Search Results" l="85" />
+        <i t="Nanoparticle Report Details Page" l="86" />
       </i>
     </i>
-    <i t="Remote Searches" l="83">
-      <i t="Remote Nanoparticle Search" l="84">
-        <i t="Remote Nanoparticle Search Results" l="85" />
+    <i t="Searching Protocols" l="87">
+      <i t="Protocol Search Results" l="88" />
+      <i t="Protocol File Page" l="89" />
+    </i>
+    <i t="Remote Searches" l="90">
+      <i t="Remote Nanoparticle Search" l="91">
+        <i t="Remote Nanoparticle Search Results" l="92" />
       </i>
-      <i t="Remote Reports Search" l="86">
-        <i t="Remote Report Search Results" l="87" />
+      <i t="Remote Reports Search" l="93">
+        <i t="Remote Report Search Results" l="94" />
       </i>
     </i>
   </i>
-  <i t="Application Support" l="88" />
+  <i t="Application Support" l="95" />
 </WebWorksHelpTOC>

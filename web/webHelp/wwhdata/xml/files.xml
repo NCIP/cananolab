@@ -38,8 +38,8 @@
     <h7 weight="2" />
   </ScoringPrefs>
   <DocumentInfo>
-    <Document title="Welcome to caNanoLab 1.1" href="Welcome%20to%20caLAB.1.1.html" />
-    <Document title="Getting Started with caNanoLab 1.1" href="About%20caLAB.2.1.html" />
+    <Document title="Welcome to caNanoLab 1.2" href="Welcome%20to%20caLAB.1.1.html" />
+    <Document title="Getting Started with caNanoLab 1.2" href="About%20caLAB.2.1.html" />
     <Document title="About caNanoLab" href="About%20caLAB.2.2.html" />
     <Document title="caNanoLab Welcome Login Page" href="About%20caLAB.2.3.html" />
     <Document title="Registering a New User" href="About%20caLAB.2.4.html" />
@@ -77,34 +77,38 @@
     <Document title="Annotating a Nanoparticle" href="Submit%20to%20caLAB.3.3.html" />
     <Document title="Nanoparticle General Information" href="Submit%20to%20caLAB.3.4.html" />
     <Document title="Particle Tree" href="Submit%20to%20caLAB.3.5.html" />
-    <Document title="Nanoparticle Function" href="Submit%20to%20caLAB.3.6.html" />
-    <Document title="Nanoparticle Function Page" href="Submit%20to%20caLAB.3.7.html" />
-    <Document title="Nanoparticle Characterization" href="Submit%20to%20caLAB.3.8.html" />
-    <Document title="Physical Characterization" href="Submit%20to%20caLAB.3.9.html" />
-    <Document title="Composition" href="Submit%20to%20caLAB.3.10.html" />
-    <Document title="Carbon Nanotube" href="Submit%20to%20caLAB.3.11.html" />
-    <Document title="Complex Particle" href="Submit%20to%20caLAB.3.12.html" />
-    <Document title="Dendrimer" href="Submit%20to%20caLAB.3.13.html" />
-    <Document title="Emulsion" href="Submit%20to%20caLAB.3.14.html" />
-    <Document title="Fullerene" href="Submit%20to%20caLAB.3.15.html" />
-    <Document title="Liposome" href="Submit%20to%20caLAB.3.16.html" />
-    <Document title="Metal Particle" href="Submit%20to%20caLAB.3.17.html" />
-    <Document title="Polymer" href="Submit%20to%20caLAB.3.18.html" />
-    <Document title="Quantum Dot" href="Submit%20to%20caLAB.3.19.html" />
-    <Document title="Loading Characterization Files" href="Submit%20to%20caLAB.3.20.html" />
-    <Document title="Size" href="Submit%20to%20caLAB.3.21.html" />
-    <Document title="Molecular Weight" href="Submit%20to%20caLAB.3.22.html" />
-    <Document title="Morphology" href="Submit%20to%20caLAB.3.23.html" />
-    <Document title="Shape" href="Submit%20to%20caLAB.3.24.html" />
-    <Document title="Surface" href="Submit%20to%20caLAB.3.25.html" />
-    <Document title="Solubility" href="Submit%20to%20caLAB.3.26.html" />
-    <Document title="Purity" href="Submit%20to%20caLAB.3.27.html" />
-    <Document title="In Vitro Characterization" href="Submit%20to%20caLAB.3.28.html" />
-    <Document title="In Vitro Characterization Forms" href="Submit%20to%20caLAB.3.29.html" />
-    <Document title="Toxicity" href="Submit%20to%20caLAB.3.30.html" />
-    <Document title="Cytotoxicity" href="Submit%20to%20caLAB.3.31.html" />
-    <Document title="Immunotoxicity" href="Submit%20to%20caLAB.3.32.html" />
-    <Document title="Publishing a Nanoparticle Report" href="Submit%20to%20caLAB.3.33.html" />
+    <Document title="Managing Protocols" href="Submit%20to%20caLAB.3.6.html" />
+    <Document title="Submitting a Protocol" href="Submit%20to%20caLAB.3.7.html" />
+    <Document title="Nanoparticle Function" href="Submit%20to%20caLAB.3.8.html" />
+    <Document title="Nanoparticle Function Page" href="Submit%20to%20caLAB.3.9.html" />
+    <Document title="Nanoparticle Characterization" href="Submit%20to%20caLAB.3.10.html" />
+    <Document title="Physical Characterization" href="Submit%20to%20caLAB.3.11.html" />
+    <Document title="Composition" href="Submit%20to%20caLAB.3.12.html" />
+    <Document title="Carbon Nanotube" href="Submit%20to%20caLAB.3.13.html" />
+    <Document title="Complex Particle" href="Submit%20to%20caLAB.3.14.html" />
+    <Document title="Dendrimer" href="Submit%20to%20caLAB.3.15.html" />
+    <Document title="Emulsion" href="Submit%20to%20caLAB.3.16.html" />
+    <Document title="Fullerene" href="Submit%20to%20caLAB.3.17.html" />
+    <Document title="Liposome" href="Submit%20to%20caLAB.3.18.html" />
+    <Document title="Metal Particle" href="Submit%20to%20caLAB.3.19.html" />
+    <Document title="Polymer" href="Submit%20to%20caLAB.3.20.html" />
+    <Document title="Quantum Dot" href="Submit%20to%20caLAB.3.21.html" />
+    <Document title="Loading Characterization Files" href="Submit%20to%20caLAB.3.22.html" />
+    <Document title="Molecular Weight" href="Submit%20to%20caLAB.3.23.html" />
+    <Document title="Morphology" href="Submit%20to%20caLAB.3.24.html" />
+    <Document title="Purity" href="Submit%20to%20caLAB.3.25.html" />
+    <Document title="Shape" href="Submit%20to%20caLAB.3.26.html" />
+    <Document title="Size" href="Submit%20to%20caLAB.3.27.html" />
+    <Document title="Solubility" href="Submit%20to%20caLAB.3.28.html" />
+    <Document title="Surface" href="Submit%20to%20caLAB.3.29.html" />
+    <Document title="In Vitro Characterization" href="Submit%20to%20caLAB.3.30.html" />
+    <Document title="In Vitro Characterization Forms" href="Submit%20to%20caLAB.3.31.html" />
+    <Document title="Toxicity" href="Submit%20to%20caLAB.3.32.html" />
+    <Document title="Cytotoxicity" href="Submit%20to%20caLAB.3.33.html" />
+    <Document title="Immunotoxicity" href="Submit%20to%20caLAB.3.34.html" />
+    <Document title="Managing Characterizations" href="Submit%20to%20caLAB.3.35.html" />
+    <Document title="Deleting a Characterization" href="Submit%20to%20caLAB.3.36.html" />
+    <Document title="Publishing a Nanoparticle Report" href="Submit%20to%20caLAB.3.37.html" />
     <Document title="Searching the caNanoLab Data­base" href="Searching%20caLAB.4.1.html" />
     <Document title="Launching a caNanoLab Search" href="Searching%20caLAB.4.2.html" />
     <Document title="Searching a Workflow" href="Searching%20caLAB.4.3.html" />
@@ -121,11 +125,14 @@
     <Document title="Searching Nanoparticle Reports" href="Searching%20caLAB.4.14.html" />
     <Document title="Nanoparticle Reports Search Results" href="Searching%20caLAB.4.15.html" />
     <Document title="Nanoparticle Report Details Page" href="Searching%20caLAB.4.16.html" />
-    <Document title="Remote Searches" href="Searching%20caLAB.4.17.html" />
-    <Document title="Remote Nanoparticle Search" href="Searching%20caLAB.4.18.html" />
-    <Document title="Remote Nanoparticle Search Results" href="Searching%20caLAB.4.19.html" />
-    <Document title="Remote Reports Search" href="Searching%20caLAB.4.20.html" />
-    <Document title="Remote Report Search Results" href="Searching%20caLAB.4.21.html" />
+    <Document title="Searching Protocols" href="Searching%20caLAB.4.17.html" />
+    <Document title="Protocol Search Results" href="Searching%20caLAB.4.18.html" />
+    <Document title="Protocol File Page" href="Searching%20caLAB.4.19.html" />
+    <Document title="Remote Searches" href="Searching%20caLAB.4.20.html" />
+    <Document title="Remote Nanoparticle Search" href="Searching%20caLAB.4.21.html" />
+    <Document title="Remote Nanoparticle Search Results" href="Searching%20caLAB.4.22.html" />
+    <Document title="Remote Reports Search" href="Searching%20caLAB.4.23.html" />
+    <Document title="Remote Report Search Results" href="Searching%20caLAB.4.24.html" />
     <Document title="Application Support" href="Application%20Support.5.1.html" />
   </DocumentInfo>
   <TopicMap>
@@ -152,21 +159,21 @@
     <Topic name="annotate_nano_help" href="Submit%20to%20caLAB.3.3.html#1126285" />
     <Topic name="nano_general_info_help" href="Submit%20to%20caLAB.3.4.html#1116422" />
     <Topic name="particle_tree_help" href="Submit%20to%20caLAB.3.5.html#1105095" />
-    <Topic name="particle_function_help" href="Submit%20to%20caLAB.3.7.html#1118502" />
-    <Topic name="composition_help" href="Submit%20to%20caLAB.3.10.html#1103655" />
-    <Topic name="load_characterization_file_help" href="Submit%20to%20caLAB.3.20.html#1103003" />
-    <Topic name="nano_size_help" href="Submit%20to%20caLAB.3.21.html#1114794" />
-    <Topic name="nano_MW_help" href="Submit%20to%20caLAB.3.22.html#1107103" />
-    <Topic name="nano_morphology_help" href="Submit%20to%20caLAB.3.23.html#1107104" />
-    <Topic name="nano_shape_help" href="Submit%20to%20caLAB.3.24.html#1107101" />
-    <Topic name="nano_surface_help" href="Submit%20to%20caLAB.3.25.html#1104870" />
-    <Topic name="nano_solubility_help" href="Submit%20to%20caLAB.3.26.html#1104929" />
-    <Topic name="nano_purity_help" href="Submit%20to%20caLAB.3.27.html#1104930" />
-    <Topic name="toxicity_help" href="Submit%20to%20caLAB.3.30.html#1117165" />
-    <Topic name="cytotoxicity_help" href="Submit%20to%20caLAB.3.31.html#1110125" />
-    <Topic name="cytoxicity_help" href="Submit%20to%20caLAB.3.31.html#1110125" />
-    <Topic name="immunotoxicity_help" href="Submit%20to%20caLAB.3.32.html#1110131" />
-    <Topic name="nano_report_help" href="Submit%20to%20caLAB.3.33.html#1103094" />
+    <Topic name="particle_function_help" href="Submit%20to%20caLAB.3.9.html#1118502" />
+    <Topic name="composition_help" href="Submit%20to%20caLAB.3.12.html#1103655" />
+    <Topic name="load_characterization_file_help" href="Submit%20to%20caLAB.3.22.html#1103003" />
+    <Topic name="nano_molecularWeight_help" href="Submit%20to%20caLAB.3.23.html#1132021" />
+    <Topic name="nano_morphology_help" href="Submit%20to%20caLAB.3.24.html#1107104" />
+    <Topic name="nano_purity_help" href="Submit%20to%20caLAB.3.25.html#1129355" />
+    <Topic name="nano_shape_help" href="Submit%20to%20caLAB.3.26.html#1107101" />
+    <Topic name="nano_size_help" href="Submit%20to%20caLAB.3.27.html#1128888" />
+    <Topic name="nano_solubility_help" href="Submit%20to%20caLAB.3.28.html#1104929" />
+    <Topic name="nano_surface_help" href="Submit%20to%20caLAB.3.29.html#1129116" />
+    <Topic name="toxicity_help" href="Submit%20to%20caLAB.3.32.html#1117165" />
+    <Topic name="cytotoxicity_help" href="Submit%20to%20caLAB.3.33.html#1110125" />
+    <Topic name="cytoxicity_help" href="Submit%20to%20caLAB.3.33.html#1110125" />
+    <Topic name="immunotoxicity_help" href="Submit%20to%20caLAB.3.34.html#1110131" />
+    <Topic name="nano_report_help" href="Submit%20to%20caLAB.3.37.html#1130917" />
     <Topic name="search_workflow" href="Searching%20caLAB.4.3.html#1073772" />
     <Topic name="workflow_search_results" href="Searching%20caLAB.4.4.html#1073690" />
     <Topic name="search_sample" href="Searching%20caLAB.4.5.html#1069067" />
@@ -179,9 +186,9 @@
     <Topic name="nano_search_results_help" href="Searching%20caLAB.4.12.html#1102726" />
     <Topic name="search_reports_help" href="Searching%20caLAB.4.14.html#1111098" />
     <Topic name="search_reports_results_help" href="Searching%20caLAB.4.15.html#1104802" />
-    <Topic name="remote_nanoparticle_search_help" href="Searching%20caLAB.4.18.html#1114175" />
-    <Topic name="remote_nanoparticle_search_results_help" href="Searching%20caLAB.4.19.html#1114478" />
-    <Topic name="remote_reports_search_help" href="Searching%20caLAB.4.20.html#1114922" />
-    <Topic name="remote_reports_search_results_help" href="Searching%20caLAB.4.21.html#1115292" />
+    <Topic name="remote_nanoparticle_search_help" href="Searching%20caLAB.4.21.html#1114175" />
+    <Topic name="remote_nanoparticle_search_results_help" href="Searching%20caLAB.4.22.html#1114478" />
+    <Topic name="remote_reports_search_help" href="Searching%20caLAB.4.23.html#1114922" />
+    <Topic name="remote_reports_search_results_help" href="Searching%20caLAB.4.24.html#1115292" />
   </TopicMap>
 </WebWorksHelpBook>
