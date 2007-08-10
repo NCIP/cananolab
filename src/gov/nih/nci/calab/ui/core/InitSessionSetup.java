@@ -538,6 +538,7 @@ public class InitSessionSetup {
 	public void setFunctionTypeFunctions(HttpSession session,
 			String particleName, String particleType) throws Exception {
 		if (session.getAttribute("allFuncTypeFuncs") == null
+				|| session.getAttribute("newParticleCreated") != null
 				|| session.getAttribute("newFunctionCreated") != null) {
 			SearchNanoparticleService service = new SearchNanoparticleService();
 			Map<String, List<FunctionBean>> funcTypeFuncs = service
