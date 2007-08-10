@@ -8,6 +8,8 @@ import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * This class represents attributes of a characerization file to be viewed in a
@@ -51,7 +53,7 @@ public class DerivedBioAssayDataBean extends LabFileBean {
 
 	public DerivedBioAssayDataBean(DerivedBioAssayData charFile) {
 		super(charFile);
-		List<String> allkeywords = new ArrayList<String>();
+		SortedSet<String> allkeywords = new TreeSet<String>();
 		for (Keyword keyword : ((DerivedBioAssayData) charFile)
 				.getKeywordCollection()) {
 			allkeywords.add(keyword.getName());
@@ -85,10 +87,14 @@ public class DerivedBioAssayDataBean extends LabFileBean {
 		doDerivedBioAssayData.setCategories(categories);
 		doDerivedBioAssayData.setContent(getFileContent());
 		doDerivedBioAssayData.setCategories(categories);
+		//replace existing keywords
+		doDerivedBioAssayData.getKeywordCollection().clear();
 		for (String keywordValue : keywords) {
 			Keyword keyword = new Keyword();
-			keyword.setName(keywordValue);
-			doDerivedBioAssayData.getKeywordCollection().add(keyword);
+			if (keywordValue.length() > 0) {
+				keyword.setName(keywordValue);
+				doDerivedBioAssayData.getKeywordCollection().add(keyword);
+			}
 		}
 		updateDatumList(doDerivedBioAssayData);
 	}
@@ -108,8 +114,7 @@ public class DerivedBioAssayDataBean extends LabFileBean {
 				// find domain object with the same ID and add the updated
 				// domain object
 				for (Datum aDoDatum : doDatumList) {
-					if (aDoDatum.getId().equals(
-							new Long(datumBean.getId()))) {
+					if (aDoDatum.getId().equals(new Long(datumBean.getId()))) {
 						doDatum = aDoDatum;
 						break;
 					}
