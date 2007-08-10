@@ -28,8 +28,8 @@
 						onchange="fnChangeHandler_A(this, event);filterAbbreviation();">
 						<option value="">
 							--?--
-						</option>						
-						<html:options name="allInstrumentTypes"/>
+						</option>
+						<html:options name="allInstrumentTypes" />
 					</html:select>
 				</c:when>
 				<c:otherwise>
@@ -40,11 +40,22 @@
 		<td class="label">
 			<strong>Instrument Type Abbreviation </strong>
 		</td>
-		<td class="rightLabel">
-			<html:text styleId="instrumentAbbr"
-				property="achar.instrumentConfigBean.instrumentBean.abbreviation" readonly="true"/>
-			&nbsp;
-		</td>
+		<c:choose>
+			<c:when test="${canUserSubmit eq 'true'}">
+				<td class="rightLabel">
+					<html:text styleId="instrumentAbbr"
+						property="achar.instrumentConfigBean.instrumentBean.abbreviation"
+						readonly="true" />
+					&nbsp;
+				</td>
+			</c:when>
+			<c:otherwise>
+				<td class="rightLabel">
+					${nanoparticleCharacterizationForm.map.achar.instrumentConfigBean.instrumentBean.abbreviation}
+					&nbsp;
+				</td>
+			</c:otherwise>
+		</c:choose>
 	</tr>
 	<tr>
 		<td class="leftLabel">
@@ -59,8 +70,10 @@
 						onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
 						onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
 						onchange="fnChangeHandler_A(this, event);">
-						<option value="">--?--</option>
-						<html:options name="allManufacturers"/>
+						<option value="">
+							--?--
+						</option>
+						<html:options name="allManufacturers" />
 					</html:select>
 				</c:when>
 				<c:otherwise>
