@@ -144,7 +144,7 @@ div.Blockquote
   margin-left: 36pt;
   margin-right: 0pt;
   margin-top: 0.0pt;
-  text-align: LeftRight;
+  text-align: justify;
   text-indent: -18pt;
   text-transform: none;
   vertical-align: baseline;
@@ -165,7 +165,7 @@ div.Blockquote
   font-style: italic;
   font-variant: normal;
   font-weight: normal;
-  text-align: LeftRight;
+  text-align: justify;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -236,7 +236,7 @@ div.Body_Text_Indent
   margin-left: 18pt;
   margin-right: 0pt;
   margin-top: 3.0pt;
-  text-align: LeftRight;
+  text-align: justify;
   text-indent: 0pt;
   text-transform: none;
   vertical-align: baseline;
@@ -257,7 +257,7 @@ div.Body_Text_Indent
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  text-align: LeftRight;
+  text-align: justify;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -282,7 +282,7 @@ div.Body_Text_Indent_2
   margin-left: 36pt;
   margin-right: 0pt;
   margin-top: 3.0pt;
-  text-align: LeftRight;
+  text-align: justify;
   text-indent: 0pt;
   text-transform: none;
   vertical-align: baseline;
@@ -303,7 +303,7 @@ div.Body_Text_Indent_2
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  text-align: LeftRight;
+  text-align: justify;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -328,7 +328,7 @@ div.Body_Text_Indent_3
   margin-left: 54pt;
   margin-right: 0pt;
   margin-top: 3.0pt;
-  text-align: LeftRight;
+  text-align: justify;
   text-indent: 0pt;
   text-transform: none;
   vertical-align: baseline;
@@ -349,7 +349,7 @@ div.Body_Text_Indent_3
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  text-align: LeftRight;
+  text-align: justify;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -374,7 +374,7 @@ div.Body_Text_Indent_4
   margin-left: 72pt;
   margin-right: 0pt;
   margin-top: 3.0pt;
-  text-align: LeftRight;
+  text-align: justify;
   text-indent: 0pt;
   text-transform: none;
   vertical-align: baseline;
@@ -395,7 +395,7 @@ div.Body_Text_Indent_4
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  text-align: LeftRight;
+  text-align: justify;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -420,7 +420,7 @@ div.Body_Text_Indent_No_Space
   margin-left: 18pt;
   margin-right: 0pt;
   margin-top: 0.0pt;
-  text-align: LeftRight;
+  text-align: justify;
   text-indent: 0pt;
   text-transform: none;
   vertical-align: baseline;
@@ -441,7 +441,7 @@ div.Body_Text_Indent_No_Space
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  text-align: LeftRight;
+  text-align: justify;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -466,7 +466,7 @@ div.Body_Text_No_Space
   margin-left: 0pt;
   margin-right: 0pt;
   margin-top: 0.0pt;
-  text-align: LeftRight;
+  text-align: justify;
   text-indent: 0pt;
   text-transform: none;
   vertical-align: baseline;
@@ -487,7 +487,7 @@ div.Body_Text_No_Space
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  text-align: LeftRight;
+  text-align: justify;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -512,7 +512,7 @@ div.Bullet
   margin-left: 36pt;
   margin-right: 0pt;
   margin-top: 4.0pt;
-  text-align: LeftRight;
+  text-align: justify;
   text-indent: -18pt;
   text-transform: none;
   vertical-align: baseline;
@@ -533,7 +533,7 @@ div.Bullet
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  text-align: LeftRight;
+  text-align: justify;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -558,7 +558,7 @@ div.Bullet_Indent
   margin-left: 54pt;
   margin-right: 0pt;
   margin-top: 4.0pt;
-  text-align: LeftRight;
+  text-align: justify;
   text-indent: -18pt;
   text-transform: none;
   vertical-align: baseline;
@@ -579,7 +579,7 @@ div.Bullet_Indent
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  text-align: LeftRight;
+  text-align: justify;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -604,7 +604,7 @@ div.Callout
   margin-left: 0pt;
   margin-right: 0pt;
   margin-top: 0.0pt;
-  text-align: LeftRight;
+  text-align: justify;
   text-indent: 0pt;
   text-transform: none;
   vertical-align: baseline;
@@ -625,7 +625,7 @@ div.Callout
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  text-align: LeftRight;
+  text-align: justify;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -1252,7 +1252,7 @@ div.Lettered_List
   margin-left: 72pt;
   margin-right: 0pt;
   margin-top: 5.0pt;
-  text-align: LeftRight;
+  text-align: justify;
   text-indent: -18pt;
   text-transform: none;
   vertical-align: baseline;
@@ -1273,7 +1273,7 @@ div.Lettered_List
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  text-align: LeftRight;
+  text-align: justify;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -1298,7 +1298,7 @@ div.Lettered_List_1
   margin-left: 72pt;
   margin-right: 0pt;
   margin-top: 5.0pt;
-  text-align: LeftRight;
+  text-align: justify;
   text-indent: -18pt;
   text-transform: none;
   vertical-align: baseline;
@@ -1319,7 +1319,7 @@ div.Lettered_List_1
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  text-align: LeftRight;
+  text-align: justify;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -1435,20 +1435,20 @@ div.Note
   margin-bottom: 2.0pt;
   margin-left: 68.4pt;
   margin-right: 0pt;
-  margin-top: -18px;
-  padding-bottom: 13px;
-  text-align: LeftRight;
+  margin-top: -5px;
+  padding-bottom: 18px;
+  text-align: justify;
   text-indent: -25px;
   text-transform: none;
-  vertical-align: top;
+  vertical-align: baseline;
 }
 
 .Note_outer
 {
   margin-bottom: 2.0pt;
   margin-right: 0pt;
-  margin-top: -18px;
-  padding-bottom: 13px;
+  margin-top: -5px;
+  padding-bottom: 18px;
 }
 
 .Note_inner
@@ -1459,9 +1459,9 @@ div.Note
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  text-align: LeftRight;
+  text-align: justify;
   text-transform: none;
-  vertical-align: top;
+  vertical-align: baseline;
   margin-left: 0pt;
   margin-right: 0pt;
   margin-top: 0pt;
@@ -1484,7 +1484,7 @@ div.Numbered_List
   margin-left: 36pt;
   margin-right: 0pt;
   margin-top: 5.0pt;
-  text-align: LeftRight;
+  text-align: justify;
   text-indent: -18pt;
   text-transform: none;
   vertical-align: baseline;
@@ -1505,7 +1505,7 @@ div.Numbered_List
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  text-align: LeftRight;
+  text-align: justify;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -1530,7 +1530,7 @@ div.Numbered_List_1
   margin-left: 36pt;
   margin-right: 0pt;
   margin-top: 5.0pt;
-  text-align: LeftRight;
+  text-align: justify;
   text-indent: -18pt;
   text-transform: none;
   vertical-align: baseline;
@@ -1551,7 +1551,7 @@ div.Numbered_List_1
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  text-align: LeftRight;
+  text-align: justify;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -1576,7 +1576,7 @@ div.Numbered_List_1_Indent
   margin-left: 54pt;
   margin-right: 0pt;
   margin-top: 5.0pt;
-  text-align: LeftRight;
+  text-align: justify;
   text-indent: -18pt;
   text-transform: none;
   vertical-align: baseline;
@@ -1597,7 +1597,7 @@ div.Numbered_List_1_Indent
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  text-align: LeftRight;
+  text-align: justify;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -1622,7 +1622,7 @@ div.Numbered_List_Indent
   margin-left: 54pt;
   margin-right: 0pt;
   margin-top: 5.0pt;
-  text-align: LeftRight;
+  text-align: justify;
   text-indent: -18pt;
   text-transform: none;
   vertical-align: baseline;
@@ -1643,7 +1643,7 @@ div.Numbered_List_Indent
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  text-align: LeftRight;
+  text-align: justify;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -1759,7 +1759,7 @@ div.Subhead
   margin-left: 0pt;
   margin-right: 0pt;
   margin-top: 14.0pt;
-  text-align: LeftRight;
+  text-align: justify;
   text-indent: 0pt;
   text-transform: none;
   vertical-align: baseline;
@@ -1779,7 +1779,7 @@ div.Subhead
   font-size: 12.0pt;
   font-style: normal;
   font-weight: normal;
-  text-align: LeftRight;
+  text-align: justify;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -1850,7 +1850,7 @@ div.Table_Header
   margin-left: 3px;
   margin-right: 3px;
   margin-top: 3px;
-  text-align: Center;
+  text-align: left;
   text-indent: 0pt;
   text-transform: none;
   vertical-align: baseline;
@@ -1871,7 +1871,7 @@ div.Table_Header
   font-style: italic;
   font-variant: normal;
   font-weight: bold;
-  text-align: Center;
+  text-align: left;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;

@@ -2,8 +2,54 @@
 /*                         */
 a:link:active  { color: #0000CC}
 a:link:hover   { color: #CC0033}
-a:link         { color: #3366CC}
-a:visited      { color: #9999CC}
+a:link         {
+	color: #3366CC;
+	text-decoration : none;
+}
+a:visited      {
+	color: #9999CC;
+	text-decoration : none;
+}
+
+/*Style for popups*/
+.Popup {
+	text-decoration : none;
+}
+.Popup a:link {
+	color: #660000;
+	text-decoration : none;
+}
+.Popup a:visited {
+	color: #660000;
+	text-decoration : none;
+}
+.Popup a:hover {
+	color: #660000;
+	text-decoration : none;
+}
+.Popup a:active {
+	color: #660000;
+	text-decoration : none;
+}
+PopupTable {
+	text-decoration : none;
+}
+.PopupTable a:link {
+	color: #660000;
+	text-decoration : none;
+}
+.PopupTable a:visited {
+	color: #660000;
+	text-decoration : none;
+}
+.PopupTable a:hover {
+	color: #660000;
+	text-decoration : none;
+}
+.PopupTable a:active {
+	color: #660000;
+	text-decoration : none;
+}
 
 /* Use this style to control spacing for inline related topics tags */
 /*                                                                  */
