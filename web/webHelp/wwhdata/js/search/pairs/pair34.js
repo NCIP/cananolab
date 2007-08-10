@@ -1,23 +1,23 @@
 function FileData_Pairs(x)
 {
-x.t("cananolab.","topics");
 x.t("publishing","nanoparticle");
 x.t("discussed","section");
 x.t("publish","reports");
 x.t("characterization","publishing");
-x.t("include:","submitting");
 x.t("annotating","nanoparticles");
 x.t("annotating","nanoparticle");
 x.t("cananolab","allows");
+x.t("cananolab","topics");
 x.t("allows","submit");
 x.t("nanoparticles","publish");
 x.t("nanoparticles","annotating");
 x.t("nanoparticles","submit");
 x.t("feature","cananolab");
 x.t("annotations","nanoparticles");
-x.t("section","include:");
+x.t("section","include");
 x.t("submitting","annotations");
-x.t("reports","cananolab.");
+x.t("reports","cananolab");
+x.t("include","submitting");
 x.t("submit","feature");
 x.t("submit","annotations");
 x.t("topics","discussed");
