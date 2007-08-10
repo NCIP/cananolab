@@ -9,6 +9,8 @@ import gov.nih.nci.calab.dto.inventory.SampleBean;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * This class represents shared properties of nanoparticles to be shown in the
@@ -64,7 +66,7 @@ public class ParticleBean extends SampleBean {
 		try {
 			Collection<Keyword> keywordCol = particle.getKeywordCollection();
 			// get a unique set of keywords
-			Set<String> keywordSet = new HashSet<String>();
+			SortedSet<String> keywordSet = new TreeSet<String>();
 			for (Keyword keywordObj : keywordCol) {
 				keywordSet.add(keywordObj.getName());
 			}
