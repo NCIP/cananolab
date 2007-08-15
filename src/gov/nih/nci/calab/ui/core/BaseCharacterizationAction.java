@@ -107,7 +107,13 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 						throw new RuntimeException(
 								"The datum value for boolean type should be 'True'/'False' or 'Yes'/'No'.");
 					}
+				} else {
+					if (!StringUtils.isDouble(datumBean.getValue()) && !StringUtils.isInteger(datumBean.getValue())) {
+						throw new RuntimeException("The datum value should be a number.");
+					}
 				}
+				
+				
 
 				// validate derived data has unique name, statistics type and
 				// category
