@@ -119,7 +119,6 @@ function confirmDeletion()
 					pageContext.setAttribute("includePage", includePage);
 				%>
 				<jsp:include page="/submit/composition/body${includePage}Info.jsp" />
-
 				<c:choose>
 					<c:when test="${canUserSubmit eq 'true'}">
 						<br>
@@ -130,7 +129,8 @@ function confirmDeletion()
 									<span class="formMessage"> </span>
 									<br>
 									<c:choose>
-										<c:when test="${param.dispatch eq 'setupUpdate'}">
+										<c:when
+											test="${param.dispatch eq 'setupUpdate' && canUserDeleteChars eq 'true'}">
 											<table height="32" border="0" align="left" cellpadding="4"
 												cellspacing="0">
 												<tr>
