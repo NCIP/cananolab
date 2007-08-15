@@ -202,11 +202,14 @@ public class SubmitNanoparticleService {
 					((CytotoxicityBean) charBean).updateDomainObj(achar);
 				} else
 					charBean.updateDomainObj(achar);
-
-				addProtocolFile(charBean.getProtocolFileBean(), achar, ida);
-				// store instrumentConfig and instrument
-				addInstrumentConfig(charBean.getInstrumentConfigBean(), achar,
-						ida);
+				
+				if (!(achar instanceof ParticleComposition)){
+					addProtocolFile(charBean.getProtocolFileBean(), achar, ida);
+					// store instrumentConfig and instrument
+					addInstrumentConfig(charBean.getInstrumentConfigBean(), achar,
+							ida);	
+				}
+				
 
 				if (charBean.getId() == null) {
 					List results = ida
@@ -363,7 +366,7 @@ public class SubmitNanoparticleService {
 			Characterization doChar, IDataAccess ida) throws Exception {
 		InstrumentBean instrumentBean = instrumentConfigBean
 				.getInstrumentBean();
-		if (instrumentBean.getType().length() == 0
+		if (instrumentBean.getType() != null && instrumentBean.getType().length() == 0
 				&& instrumentBean.getManufacturer().length() == 0) {
 			doChar.setInstrumentConfiguration(null);
 			return;
@@ -405,7 +408,7 @@ public class SubmitNanoparticleService {
 
 	private void addProtocolFile(ProtocolFileBean protocolFileBean,
 			Characterization doChar, IDataAccess ida) throws Exception {
-		if (protocolFileBean.getId().length() > 0) {
+		if (protocolFileBean.getId() != null && protocolFileBean.getId().length() > 0) {
 			ProtocolFile protocolFile = (ProtocolFile) ida.get(
 					ProtocolFile.class, new Long(protocolFileBean.getId()));
 			doChar.setProtocolFile(protocolFile);
