@@ -51,7 +51,7 @@ import org.hibernate.collection.PersistentSet;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.130 2007-08-02 20:31:06 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.131 2007-08-16 18:23:10 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -1251,7 +1251,8 @@ public class LookupService {
 			List results = ida.search(hqlString);
 			for (Object obj : results) {
 				String manufacturer = (String) obj;
-				manufacturers.add(manufacturer);
+				if (manufacturer != null)
+					manufacturers.add(manufacturer);
 			}
 		} catch (Exception e) {
 			logger.error("Problem to retrieve all manufacturers. " + e);
