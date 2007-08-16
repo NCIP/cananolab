@@ -175,7 +175,7 @@ public class SubmitNanoparticleService {
 			// check if viewTitle is already used the same type of
 			// characterization for the same particle
 			boolean viewTitleUsed = isCharacterizationViewTitleUsed(ida,
-					particleType, particleName, achar);
+					particleType, particleName, charBean);
 			if (viewTitleUsed) {
 				throw new RuntimeException(
 						"The view title is already in use.  Please enter a different one.");
@@ -202,14 +202,11 @@ public class SubmitNanoparticleService {
 					((CytotoxicityBean) charBean).updateDomainObj(achar);
 				} else
 					charBean.updateDomainObj(achar);
-				
-				if (!(achar instanceof ParticleComposition)){
-					addProtocolFile(charBean.getProtocolFileBean(), achar, ida);
-					// store instrumentConfig and instrument
-					addInstrumentConfig(charBean.getInstrumentConfigBean(), achar,
-							ida);	
-				}
-				
+
+				addProtocolFile(charBean.getProtocolFileBean(), achar, ida);
+				// store instrumentConfig and instrument
+				addInstrumentConfig(charBean.getInstrumentConfigBean(), achar,
+						ida);
 
 				if (charBean.getId() == null) {
 					List results = ida
@@ -306,28 +303,30 @@ public class SubmitNanoparticleService {
 	 * the same particle
 	 */
 	private boolean isCharacterizationViewTitleUsed(IDataAccess ida,
-			String particleType, String particleName, Characterization achar)
-			throws Exception {
+			String particleType, String particleName,
+			CharacterizationBean charBean) throws Exception {
 		String viewTitleQuery = "";
 
-		if (achar.getId() == null) {
+		if (charBean.getId() == null) {
 			viewTitleQuery = "select count(achar.identificationName) from Nanoparticle particle join particle.characterizationCollection achar where particle.name='"
 					+ particleName
 					+ "' and particle.type='"
 					+ particleType
 					+ "' and achar.identificationName='"
-					+ achar.getIdentificationName()
+					+ charBean.getViewTitle()
 					+ "' and achar.name='"
-					+ achar.getName() + "'";
+					+ charBean.getName() + "'";
 		} else {
 			viewTitleQuery = "select count(achar.identificationName) from Nanoparticle particle join particle.characterizationCollection achar where particle.name='"
 					+ particleName
 					+ "' and particle.type='"
 					+ particleType
 					+ "' and achar.identificationName='"
-					+ achar.getIdentificationName()
+					+ charBean.getViewTitle()
 					+ "' and achar.name='"
-					+ achar.getName() + "' and achar.id!=" + achar.getId();
+					+ charBean.getName()
+					+ "' and achar.id!="
+					+ charBean.getId();
 		}
 		List viewTitleResult = ida.search(viewTitleQuery);
 
@@ -366,7 +365,14 @@ public class SubmitNanoparticleService {
 			Characterization doChar, IDataAccess ida) throws Exception {
 		InstrumentBean instrumentBean = instrumentConfigBean
 				.getInstrumentBean();
-		if (instrumentBean.getType() != null && instrumentBean.getType().length() == 0
+
+		if (instrumentBean.getType() == null
+				&& instrumentBean.getManufacturer() == null
+				&& instrumentConfigBean.getDescription() == null) {
+			return;
+		}
+		if (instrumentBean.getType() != null
+				&& instrumentBean.getType().length() == 0
 				&& instrumentBean.getManufacturer().length() == 0) {
 			doChar.setInstrumentConfiguration(null);
 			return;
@@ -408,7 +414,8 @@ public class SubmitNanoparticleService {
 
 	private void addProtocolFile(ProtocolFileBean protocolFileBean,
 			Characterization doChar, IDataAccess ida) throws Exception {
-		if (protocolFileBean.getId() != null && protocolFileBean.getId().length() > 0) {
+		if (protocolFileBean.getId() != null
+				&& protocolFileBean.getId().length() > 0) {
 			ProtocolFile protocolFile = (ProtocolFile) ida.get(
 					ProtocolFile.class, new Long(protocolFileBean.getId()));
 			doChar.setProtocolFile(protocolFile);
