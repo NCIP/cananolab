@@ -64,6 +64,7 @@
 				<c:choose>
 					<c:when test="${canUserSubmit eq 'true'}">
 						<html:select property="carbonNanotube.wallType">
+							<option value=""></option>
 							<html:options name="allCarbonNanotubeWallTypes"/>
 						</html:select>
 					</c:when>
