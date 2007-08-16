@@ -175,7 +175,7 @@ public class SubmitNanoparticleService {
 			// check if viewTitle is already used the same type of
 			// characterization for the same particle
 			boolean viewTitleUsed = isCharacterizationViewTitleUsed(ida,
-					particleType, particleName, charBean);
+					particleType, particleName, achar, charBean);
 			if (viewTitleUsed) {
 				throw new RuntimeException(
 						"The view title is already in use.  Please enter a different one.");
@@ -303,7 +303,7 @@ public class SubmitNanoparticleService {
 	 * the same particle
 	 */
 	private boolean isCharacterizationViewTitleUsed(IDataAccess ida,
-			String particleType, String particleName,
+			String particleType, String particleName, Characterization achar,
 			CharacterizationBean charBean) throws Exception {
 		String viewTitleQuery = "";
 
@@ -315,7 +315,7 @@ public class SubmitNanoparticleService {
 					+ "' and achar.identificationName='"
 					+ charBean.getViewTitle()
 					+ "' and achar.name='"
-					+ charBean.getName() + "'";
+					+ achar.getName() + "'";
 		} else {
 			viewTitleQuery = "select count(achar.identificationName) from Nanoparticle particle join particle.characterizationCollection achar where particle.name='"
 					+ particleName
@@ -324,9 +324,7 @@ public class SubmitNanoparticleService {
 					+ "' and achar.identificationName='"
 					+ charBean.getViewTitle()
 					+ "' and achar.name='"
-					+ charBean.getName()
-					+ "' and achar.id!="
-					+ charBean.getId();
+					+ achar.getName() + "' and achar.id!=" + charBean.getId();
 		}
 		List viewTitleResult = ida.search(viewTitleQuery);
 
