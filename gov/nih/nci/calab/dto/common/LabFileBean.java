@@ -5,8 +5,6 @@ import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.Date;
 
-import org.apache.struts.upload.FormFile;
-
 /**
  * This class represents attributes of a lab file to be viewed in a view page.
  * 
