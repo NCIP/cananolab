@@ -1,6 +1,5 @@
 package gov.nih.nci.calab.dto.common;
 
-import gov.nih.nci.calab.domain.Instrument;
 import gov.nih.nci.calab.domain.InstrumentConfiguration;
 import gov.nih.nci.calab.service.util.StringUtils;
 
