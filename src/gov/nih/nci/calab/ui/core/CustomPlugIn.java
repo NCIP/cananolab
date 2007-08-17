@@ -1,10 +1,8 @@
 package gov.nih.nci.calab.ui.core;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import javax.servlet.ServletException;
 
+import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionServlet;
 import org.apache.struts.action.PlugIn;
 import org.apache.struts.config.ModuleConfig;
@@ -17,7 +15,7 @@ import org.apache.struts.config.ModuleConfig;
  * 
  */
 public class CustomPlugIn implements PlugIn {
-	Logger logger=Logger.getLogger(CustomPlugIn.class.getName());
+	Logger logger=Logger.getLogger(CustomPlugIn.class);
 	// This method will be called at application startup time
 	public void init(ActionServlet actionServlet, ModuleConfig config)
 			throws ServletException {
@@ -28,7 +26,7 @@ public class CustomPlugIn implements PlugIn {
 					actionServlet.getServletContext());
 			InitSessionSetup.getInstance().createDefaultCSMGroups();
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, "Servlet initialization error", e);
+			logger.error("Servlet initialization error", e);
 		}
 		System.out.println("Exiting CustomPlugIn.init()");
 	}
