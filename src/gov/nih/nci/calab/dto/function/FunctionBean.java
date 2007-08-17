@@ -3,10 +3,8 @@
  */
 package gov.nih.nci.calab.dto.function;
 
-import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.domain.nano.function.Function;
 import gov.nih.nci.calab.domain.nano.function.Linkage;
-import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 import java.util.ArrayList;
