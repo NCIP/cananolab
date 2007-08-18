@@ -1,8 +1,6 @@
 package gov.nih.nci.calab.service.common;
 
-import gov.nih.nci.calab.db.DataAccessProxy;
-import gov.nih.nci.calab.db.HibernateDataAccess;
-import gov.nih.nci.calab.db.IDataAccess;
+import gov.nih.nci.calab.db.HibernateUtil;
 import gov.nih.nci.calab.domain.Aliquot;
 import gov.nih.nci.calab.domain.Instrument;
 import gov.nih.nci.calab.domain.MeasureUnit;
@@ -42,6 +40,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts.util.LabelValueBean;
 import org.hibernate.Hibernate;
 import org.hibernate.SQLQuery;
+import org.hibernate.Session;
 import org.hibernate.collection.PersistentSet;
 
 /**
@@ -51,7 +50,7 @@ import org.hibernate.collection.PersistentSet;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.131 2007-08-16 18:23:10 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.132 2007-08-18 02:05:10 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -67,13 +66,13 @@ public class LookupService {
 	public Map<String, SortedSet<AliquotBean>> getUnmaskedSampleAliquots()
 			throws Exception {
 		SortedSet<AliquotBean> aliquots = null;
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
 		Map<String, SortedSet<AliquotBean>> sampleAliquots = new HashMap<String, SortedSet<AliquotBean>>();
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			String hqlString = "select aliquot.id, aliquot.name, aliquot.sample.name from Aliquot aliquot where aliquot.dataStatus is null order by aliquot.name";
-			List results = ida.search(hqlString);
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
 			for (Object obj : results) {
 				Object[] info = (Object[]) obj;
 				AliquotBean aliquot = new AliquotBean(StringUtils
@@ -96,7 +95,7 @@ public class LookupService {
 			throw new RuntimeException(
 					"Error in retrieving all aliquot Ids and names");
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		return sampleAliquots;
 	}
@@ -109,13 +108,13 @@ public class LookupService {
 	public Map<String, SortedSet<ContainerBean>> getAllSampleContainers()
 			throws Exception {
 		SortedSet<ContainerBean> containers = null;
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
 		Map<String, SortedSet<ContainerBean>> sampleContainers = new HashMap<String, SortedSet<ContainerBean>>();
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			String hqlString = "select container, container.sample.name from SampleContainer container";
-			List results = ida.search(hqlString);
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
 			for (Object obj : results) {
 				Object[] info = (Object[]) obj;
 				if (!(info[0] instanceof Aliquot)) {
@@ -134,11 +133,12 @@ public class LookupService {
 					containers.add(container);
 				}
 			}
+
 		} catch (Exception e) {
 			logger.error("Error in retrieving all containers", e);
 			throw new RuntimeException("Error in retrieving all containers");
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		return sampleContainers;
 	}
@@ -189,21 +189,22 @@ public class LookupService {
 
 	public SortedSet<String> getAllSampleContainerTypes() throws Exception {
 		SortedSet<String> containerTypes = new TreeSet<String>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			String hqlString = "select distinct container.containerType from SampleContainer container order by container.containerType";
-			List results = ida.search(hqlString);
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
 			for (Object obj : results) {
 				containerTypes.add((String) obj);
 			}
+
 		} catch (Exception e) {
 			logger.error("Error in retrieving all sample container types", e);
 			throw new RuntimeException(
 					"Error in retrieving all sample container types.");
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		containerTypes.addAll(Arrays
 				.asList(CaNanoLabConstants.DEFAULT_CONTAINER_TYPES));
@@ -212,21 +213,23 @@ public class LookupService {
 
 	public SortedSet<String> getAllAliquotContainerTypes() throws Exception {
 		SortedSet<String> containerTypes = new TreeSet<String>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
+
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			String hqlString = "select distinct aliquot.containerType from Aliquot aliquot order by aliquot.containerType";
-			List results = ida.search(hqlString);
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
 			for (Object obj : results) {
 				containerTypes.add((String) obj);
 			}
+
 		} catch (Exception e) {
 			logger.error("Error in retrieving all aliquot container types", e);
 			throw new RuntimeException(
 					"Error in retrieving all aliquot container types.");
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		containerTypes.addAll(Arrays
 				.asList(CaNanoLabConstants.DEFAULT_CONTAINER_TYPES));
@@ -235,12 +238,13 @@ public class LookupService {
 
 	public Map<String, SortedSet<String>> getAllMeasureUnits() throws Exception {
 		Map<String, SortedSet<String>> unitMap = new HashMap<String, SortedSet<String>>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
+
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			String hqlString = "from MeasureUnit unit order by unit.name";
-			List results = ida.search(hqlString);
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
 			SortedSet<String> units = null;
 			for (Object obj : results) {
 				MeasureUnit unit = (MeasureUnit) obj;
@@ -253,33 +257,35 @@ public class LookupService {
 				}
 				units.add(unit.getName());
 			}
+
 		} catch (Exception e) {
-			e.printStackTrace();
 			logger.error("Error in retrieving all measure units", e);
 			throw new RuntimeException("Error in retrieving all measure units.");
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		return unitMap;
 	}
 
 	private List<StorageElement> getAllStorageElements() throws Exception {
 		List<StorageElement> storageElements = new ArrayList<StorageElement>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
+
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			String hqlString = "from StorageElement where type in ('Room', 'Freezer', 'Shelf', 'Box') and location!='Other'";
-			List results = ida.search(hqlString);
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
 			for (Object obj : results) {
 				storageElements.add((StorageElement) obj);
 			}
+
 		} catch (Exception e) {
 			logger.error("Error in retrieving all rooms and freezers", e);
 			throw new RuntimeException(
 					"Error in retrieving all rooms and freezers.");
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		return storageElements;
 	}
@@ -300,25 +306,26 @@ public class LookupService {
 	 */
 	public List<SampleBean> getAllSamples() throws Exception {
 		List<SampleBean> samples = new ArrayList<SampleBean>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
 
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			String hqlString = "select sample.id, sample.name from Sample sample";
-			List results = ida.search(hqlString);
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
 			for (Object obj : results) {
 				Object[] sampleInfo = (Object[]) obj;
 				samples.add(new SampleBean(StringUtils
 						.convertToString(sampleInfo[0]), StringUtils
 						.convertToString(sampleInfo[1])));
 			}
+
 		} catch (Exception e) {
 			logger.error("Error in retrieving all sample IDs and names", e);
 			throw new RuntimeException(
 					"Error in retrieving all sample IDs and names");
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		Collections.sort(samples,
 				new CaNanoLabComparators.SampleBeanComparator());
@@ -332,20 +339,20 @@ public class LookupService {
 	 */
 	public List getAllAssayTypes() throws Exception {
 		List<String> assayTypes = new ArrayList<String>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			String hqlString = "select assayType.name from AssayType assayType order by assayType.executeOrder";
-			List results = ida.search(hqlString);
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
 			for (Object obj : results) {
 				assayTypes.add((String) obj);
-			}
+			}			
 		} catch (Exception e) {
 			logger.error("Error in retrieving all assay types", e);
 			throw new RuntimeException("Error in retrieving all assay types");
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		return assayTypes;
 	}
@@ -358,12 +365,13 @@ public class LookupService {
 	public Map<String, SortedSet<AssayBean>> getAllAssayTypeAssays()
 			throws Exception {
 		Map<String, SortedSet<AssayBean>> assayTypeAssays = new HashMap<String, SortedSet<AssayBean>>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
+
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			String hqlString = "select assay.id, assay.name, assay.assayType from Assay assay";
-			List results = ida.search(hqlString);
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
 			SortedSet<AssayBean> assays = null;
 			for (Object obj : results) {
 				Object[] objArray = (Object[]) obj;
@@ -380,13 +388,12 @@ public class LookupService {
 				}
 				assays.add(assay);
 			}
+			
 		} catch (Exception e) {
-			// TODO: temp for debuging use. remove later
-			e.printStackTrace();
 			logger.error("Error in retrieving all assay beans. ", e);
 			throw new RuntimeException("Error in retrieving all assays beans. ");
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		return assayTypeAssays;
 	}
@@ -397,20 +404,22 @@ public class LookupService {
 	 */
 	public SortedSet<String> getAllSampleSources() throws Exception {
 		SortedSet<String> sampleSources = new TreeSet<String>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
+
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			String hqlString = "select source.organizationName from Source source order by source.organizationName";
-			List results = ida.search(hqlString);
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
 			for (Object obj : results) {
 				sampleSources.add((String) obj);
 			}
+			
 		} catch (Exception e) {
 			logger.error("Error in retrieving all sample sources", e);
 			throw new RuntimeException("Error in retrieving all sample sources");
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 
 		return sampleSources;
@@ -424,12 +433,13 @@ public class LookupService {
 	public Map<String, SortedSet<SampleBean>> getSampleSourceSamplesWithUnmaskedAliquots()
 			throws Exception {
 		Map<String, SortedSet<SampleBean>> sampleSourceSamples = new HashMap<String, SortedSet<SampleBean>>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
+
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			String hqlString = "select distinct aliquot.sample from Aliquot aliquot where aliquot.dataStatus is null";
-			List results = ida.search(hqlString);
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
 			SortedSet<SampleBean> samples = null;
 			for (Object obj : results) {
 				SampleBean sample = new SampleBean((Sample) obj);
@@ -449,6 +459,7 @@ public class LookupService {
 				}
 				samples.add(sample);
 			}
+			
 		} catch (Exception e) {
 			logger.error(
 					"Error in retrieving sample beans with unmasked aliquots ",
@@ -456,27 +467,29 @@ public class LookupService {
 			throw new RuntimeException(
 					"Error in retrieving all sample beans with unmasked aliquots. ");
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		return sampleSourceSamples;
 	}
 
 	public List<String> getAllSampleSOPs() throws Exception {
 		List<String> sampleSOPs = new ArrayList<String>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
+
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			String hqlString = "select sampleSOP.name from SampleSOP sampleSOP where sampleSOP.description='sample creation'";
-			List results = ida.search(hqlString);
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
 			for (Object obj : results) {
 				sampleSOPs.add((String) obj);
 			}
+			
 		} catch (Exception e) {
-			logger.error("Problem to retrieve all Sample SOPs.");
+			logger.error("Problem to retrieve all Sample SOPs.", e);
 			throw new RuntimeException("Problem to retrieve all Sample SOPs. ");
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		return sampleSOPs;
 	}
@@ -487,23 +500,25 @@ public class LookupService {
 	 */
 	public List<LabelValueBean> getAliquotCreateMethods() throws Exception {
 		List<LabelValueBean> createMethods = new ArrayList<LabelValueBean>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
+
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			String hqlString = "select sop.name, file.uri from SampleSOP sop join sop.sampleSOPFileCollection file where sop.description='aliquot creation'";
-			List results = ida.search(hqlString);
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
 			for (Object obj : results) {
 				String sopName = (String) ((Object[]) obj)[0];
 				String sopURI = (String) ((Object[]) obj)[1];
 				String sopURL = (sopURI == null) ? "" : sopURI;
 				createMethods.add(new LabelValueBean(sopName, sopURL));
 			}
+			
 		} catch (Exception e) {
 			logger.error("Error in retrieving all sample sources", e);
 			throw new RuntimeException("Error in retrieving all sample sources");
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		return createMethods;
 	}
@@ -514,21 +529,23 @@ public class LookupService {
 	 */
 	public List<String> getAllSourceSampleIds() throws Exception {
 		List<String> sourceSampleIds = new ArrayList<String>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
+
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			String hqlString = "select distinct sample.sourceSampleId from Sample sample order by sample.sourceSampleId";
-			List results = ida.search(hqlString);
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
 			for (Object obj : results) {
 				sourceSampleIds.add((String) obj);
 			}
+			
 		} catch (Exception e) {
 			logger.error("Error in retrieving all source sample IDs", e);
 			throw new RuntimeException(
 					"Error in retrieving all source sample IDs");
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 
 		return sourceSampleIds;
@@ -536,19 +553,17 @@ public class LookupService {
 
 	public Map<String, SortedSet<String>> getAllParticleTypeParticles()
 			throws Exception {
-		// TODO fill in actual database query.
 		Map<String, SortedSet<String>> particleTypeParticles = new HashMap<String, SortedSet<String>>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
 		UserService userService = new UserService(
 				CaNanoLabConstants.CSM_APP_NAME);
-
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			// String hqlString = "select particle.type, particle.name from
 			// Nanoparticle particle";
 			String hqlString = "select particle.type, particle.name from Nanoparticle particle where size(particle.characterizationCollection) = 0";
-			List results = ida.search(hqlString);
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
 			SortedSet<String> particleNames = null;
 			for (Object obj : results) {
 				Object[] objArray = (Object[]) obj;
@@ -556,32 +571,43 @@ public class LookupService {
 				String particleName = (String) objArray[1];
 
 				if (particleType != null) {
-					// check if the particle already has visibility group
-					// assigned, if yes, do NOT add to the list
-					List<String> groups = userService.getAccessibleGroups(
-							particleName, CaNanoLabConstants.CSM_READ_ROLE);
-					if (groups.size() == 0) {
-						if (particleTypeParticles.get(particleType) != null) {
-							particleNames = (SortedSet<String>) particleTypeParticles
-									.get(particleType);
-						} else {
-							particleNames = new TreeSet<String>(
-									new CaNanoLabComparators.SortableNameComparator());
-							particleTypeParticles.put(particleType,
-									particleNames);
-						}
-						particleNames.add(particleName);
+					if (particleTypeParticles.get(particleType) != null) {
+						particleNames = (SortedSet<String>) particleTypeParticles
+								.get(particleType);
+					} else {
+						particleNames = new TreeSet<String>(
+								new CaNanoLabComparators.SortableNameComparator());
+						particleTypeParticles.put(particleType, particleNames);
 					}
+					particleNames.add(particleName);
 				}
 			}
+			
 		} catch (Exception e) {
-			logger
-					.error("Error in retrieving all particle type particles. ",
-							e);
-			throw new RuntimeException(
-					"Error in retrieving all particle type particles. ");
+			logger.error("Error retrieving particle type particles", e);
+			throw e;
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
+		}
+
+		// check if the particle already has visibility group
+		// assigned, if yes, do NOT add to the list
+		Map<String, SortedSet<String>> fixedParticleTypeParticles = new HashMap<String, SortedSet<String>>(
+				particleTypeParticles);
+		for (String particleType : fixedParticleTypeParticles.keySet()) {
+			SortedSet<String> particleNames = particleTypeParticles
+					.get(particleType);
+			SortedSet<String> fixedParticleNames = new TreeSet<String>(
+					particleNames);
+			for (String particleName : fixedParticleNames) {
+				List<String> groups = userService.getAccessibleGroups(
+						particleName, CaNanoLabConstants.CSM_READ_ROLE);
+				if (groups.size() > 0)
+					particleNames.remove(particleName);
+			}
+			if (particleNames.size() == 0) {
+				particleTypeParticles.remove(particleType);
+			}
 		}
 		return particleTypeParticles;
 	}
@@ -596,42 +622,46 @@ public class LookupService {
 	public SortedSet<String> getAllDendrimerSurfaceGroupNames()
 			throws Exception {
 		SortedSet<String> names = new TreeSet<String>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
+
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			String hqlString = "select distinct name from SurfaceGroupType";
-			List results = ida.search(hqlString);
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
 			for (Object obj : results) {
 				names.add((String) obj);
 			}
+			
 		} catch (Exception e) {
-			logger.error("Problem to retrieve all Surface Group name.");
+			logger.error("Problem to retrieve all Surface Group name.", e);
 			throw new RuntimeException(
 					"Problem to retrieve all Surface Group name. ");
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		return names;
 	}
 
 	public SortedSet<String> getAllDendrimerBranches() throws Exception {
 		SortedSet<String> branches = new TreeSet<String>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
+
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			String hqlString = "select distinct dendrimer.branch from DendrimerComposition dendrimer where dendrimer.branch is not null";
-			List results = ida.search(hqlString);
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
 			for (Object obj : results) {
 				branches.add((String) obj);
 			}
+			
 		} catch (Exception e) {
-			logger.error("Problem to retrieve all Dendrimer Branches.");
+			logger.error("Problem to retrieve all Dendrimer Branches.", e);
 			throw new RuntimeException(
 					"Problem to retrieve all Dendrimer Branches. ");
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		branches.addAll(Arrays
 				.asList(CaNanoLabConstants.DEFAULT_DENDRIMER_BRANCHES));
@@ -641,21 +671,23 @@ public class LookupService {
 
 	public SortedSet<String> getAllDendrimerGenerations() throws Exception {
 		SortedSet<String> generations = new TreeSet<String>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
+
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			String hqlString = "select distinct dendrimer.generation from DendrimerComposition dendrimer where dendrimer.generation is not null ";
-			List results = ida.search(hqlString);
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
 			for (Object obj : results) {
 				generations.add(obj.toString());
 			}
+			
 		} catch (Exception e) {
-			logger.error("Problem to retrieve all Dendrimer Generations.");
+			logger.error("Problem to retrieve all Dendrimer Generations.", e);
 			throw new RuntimeException(
 					"Problem to retrieve all Dendrimer Generations. ");
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		generations.addAll(Arrays
 				.asList(CaNanoLabConstants.DEFAULT_DENDRIMER_GENERATIONS));
@@ -670,21 +702,23 @@ public class LookupService {
 
 	public SortedSet<String> getAllPolymerInitiators() throws Exception {
 		SortedSet<String> initiators = new TreeSet<String>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
+
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			String hqlString = "select distinct polymer.initiator from PolymerComposition polymer where polymer.initiator is not null ";
-			List results = ida.search(hqlString);
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
 			for (Object obj : results) {
 				initiators.add((String) obj);
 			}
+			
 		} catch (Exception e) {
-			logger.error("Problem to retrieve all Polymer Initiator.");
+			logger.error("Problem to retrieve all Polymer Initiator.", e);
 			throw new RuntimeException(
 					"Problem to retrieve all Polymer Initiator. ");
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		initiators.addAll(Arrays
 				.asList(CaNanoLabConstants.DEFAULT_POLYMER_INITIATORS));
@@ -711,18 +745,20 @@ public class LookupService {
 	public Map<String, List<CharacterizationBean>> getCharacterizationTypeCharacterizations()
 			throws Exception {
 		Map<String, List<CharacterizationBean>> charTypeChars = new HashMap<String, List<CharacterizationBean>>();
-		HibernateDataAccess hda = HibernateDataAccess.getInstance();
+
 		try {
-			hda.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			List<CharacterizationBean> chars = null;
 			String query = "select distinct a.category, a.name, a.name_abbreviation from def_characterization_category a "
 					+ "where a.name not in (select distinct b.category from def_characterization_category b) "
 					+ "order by a.category, a.name, a.name_abbreviation";
-			SQLQuery queryObj = hda.getNativeQuery(query);
+			SQLQuery queryObj = session.createSQLQuery(query);
 			queryObj.addScalar("CATEGORY", Hibernate.STRING);
 			queryObj.addScalar("NAME", Hibernate.STRING);
 			queryObj.addScalar("NAME_ABBREVIATION", Hibernate.STRING);
 			List results = queryObj.list();
+			HibernateUtil.commitTransaction();
 			for (Object obj : results) {
 				Object[] objarr = (Object[]) obj;
 				String type = objarr[0].toString();
@@ -739,26 +775,29 @@ public class LookupService {
 						abbr);
 				chars.add(charBean);
 			}
+			
 		} catch (Exception e) {
 			logger
-					.error("Problem to retrieve all characterization type characterizations. "
-							+ e);
+					.error(
+							"Problem to retrieve all characterization type characterizations. ",
+							e);
 			throw new RuntimeException(
 					"Problem to retrieve all characteriztaion type characterizations. ");
 		} finally {
-			hda.close();
+			HibernateUtil.closeSession();
 		}
 		return charTypeChars;
 	}
 
 	public List<LabelValueBean> getAllInstrumentTypeAbbrs() throws Exception {
 		List<LabelValueBean> instrumentTypeAbbrs = new ArrayList<LabelValueBean>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
+
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			String hqlString = "select distinct instrumentType.name, instrumentType.abbreviation from InstrumentType instrumentType where instrumentType.name is not null";
-			List results = ida.search(hqlString);
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
 			for (Object obj : results) {
 				if (obj != null) {
 					Object[] objs = (Object[]) obj;
@@ -772,12 +811,13 @@ public class LookupService {
 							(String) objs[0]));
 				}
 			}
+			
 		} catch (Exception e) {
-			logger.error("Problem to retrieve all instrumentTypes. " + e);
+			logger.error("Problem to retrieve all instrumentTypes. ", e);
 			throw new RuntimeException(
 					"Problem to retrieve all intrument types. ");
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		return instrumentTypeAbbrs;
 	}
@@ -785,13 +825,13 @@ public class LookupService {
 	public Map<String, SortedSet<String>> getAllInstrumentManufacturers()
 			throws Exception {
 		Map<String, SortedSet<String>> instrumentManufacturers = new HashMap<String, SortedSet<String>>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
+
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 
 			String hqlString = "select distinct instrumentType.name, manufacturer.name from InstrumentType instrumentType join instrumentType.manufacturerCollection manufacturer ";
-			List results = ida.search(hqlString);
+			List results = session.createQuery(hqlString).list();
 			SortedSet<String> manufacturers = null;
 			for (Object obj : results) {
 				String instrumentType = ((Object[]) obj)[0].toString();
@@ -805,22 +845,27 @@ public class LookupService {
 				}
 				manufacturers.add(manufacturer);
 			}
-			List allResult = ida
-					.search("select manufacturer.name from Manufacturer manufacturer where manufacturer.name is not null");
+			List allResult = session
+					.createQuery(
+							"select manufacturer.name from Manufacturer manufacturer where manufacturer.name is not null")
+					.list();
+			HibernateUtil.commitTransaction();
 			SortedSet<String> allManufacturers = null;
 			allManufacturers = new TreeSet<String>();
 			for (Object obj : allResult) {
 				String name = (String) obj;
 				allManufacturers.add(name);
 			}
+			
 		} catch (Exception e) {
 			logger
-					.error("Problem to retrieve manufacturers for intrument types "
-							+ e);
+					.error(
+							"Problem to retrieve manufacturers for intrument types ",
+							e);
 			throw new RuntimeException(
 					"Problem to retrieve manufacturers for intrument types.");
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		return instrumentManufacturers;
 	}
@@ -828,21 +873,25 @@ public class LookupService {
 	public SortedSet<String> getAllLookupTypes(String lookupType)
 			throws Exception {
 		SortedSet<String> types = new TreeSet<String>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
+
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			String hqlString = "select distinct name from " + lookupType;
-			List results = ida.search(hqlString);
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
 			for (Object obj : results) {
 				types.add((String) obj);
 			}
+			
 		} catch (Exception e) {
-			logger.error("Problem to retrieve all " + lookupType + " types.");
+			logger
+					.error("Problem to retrieve all " + lookupType + " types.",
+							e);
 			throw new RuntimeException("Problem to retrieve all " + lookupType
 					+ " types.");
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		return types;
 	}
@@ -851,13 +900,14 @@ public class LookupService {
 			String type) throws Exception {
 		Map<ProtocolBean, List<ProtocolFileBean>> nameVersions = new HashMap<ProtocolBean, List<ProtocolFileBean>>();
 		Map<Protocol, ProtocolBean> keyMap = new HashMap<Protocol, ProtocolBean>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
+
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			String hqlString = "select protocolFile, protocolFile.protocol from ProtocolFile protocolFile"
 					+ " where protocolFile.protocol.type = '" + type + "'";
-			List results = ida.search(hqlString);
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
 			for (Object obj : results) {
 				Object[] array = (Object[]) obj;
 				Object key = null;
@@ -892,36 +942,39 @@ public class LookupService {
 					keyMap.put((Protocol) key, protocolBean);
 				}
 			}
+			
 		} catch (Exception e) {
-			logger
-					.error("Problem to retrieve all protocol names and their versions by type "
-							+ type);
+			logger.error(
+					"Problem to retrieve all protocol names and their versions by type "
+							+ type, e);
 			throw new RuntimeException(
 					"Problem to retrieve all protocol names and their versions by type "
 							+ type);
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		return nameVersions;
 	}
 
 	public SortedSet<String> getAllProtocolTypes() throws Exception {
 		SortedSet<String> protocolTypes = new TreeSet<String>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
+
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();			
 			String hqlString = "select distinct protocol.type from Protocol protocol where protocol.type is not null";
-			List results = ida.search(hqlString);
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
 			for (Object obj : results) {
 				protocolTypes.add((String) obj);
 			}
+			
 		} catch (Exception e) {
-			logger.error("Problem to retrieve all protocol types.");
+			logger.error("Problem to retrieve all protocol types.", e);
 			throw new RuntimeException(
 					"Problem to retrieve all protocol types.");
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		return protocolTypes;
 	}
@@ -929,13 +982,14 @@ public class LookupService {
 	public SortedSet<ProtocolBean> getAllProtocols(UserBean user)
 			throws Exception {
 		SortedSet<ProtocolBean> protocolBeans = new TreeSet<ProtocolBean>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
+
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			String hqlString = "from Protocol as protocol left join fetch protocol.protocolFileCollection";
 
-			List results = ida.search(hqlString);
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
 			for (Object obj : results) {
 				Protocol p = (Protocol) obj;
 				ProtocolBean pb = new ProtocolBean();
@@ -959,12 +1013,15 @@ public class LookupService {
 				if (!pb.getFileBeanList().isEmpty())
 					protocolBeans.add(pb);
 			}
+			
 		} catch (Exception e) {
-			logger.error("Problem to retrieve all protocol names and types.");
+			logger
+					.error("Problem to retrieve all protocol names and types.",
+							e);
 			throw new RuntimeException(
 					"Problem to retrieve all protocol names and types.");
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		return protocolBeans;
 	}
@@ -1008,21 +1065,20 @@ public class LookupService {
 	public SortedSet<String> getOtherParticles(String particleSource,
 			String particleName, UserBean user) throws Exception {
 
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
 		UserService userService = new UserService(
 				CaNanoLabConstants.CSM_APP_NAME);
 		SortedSet<String> otherParticleNames = new TreeSet<String>();
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			String hqlString = "select particle.name from Nanoparticle particle where particle.source.organizationName='"
 					+ particleSource
 					+ "' and particle.name !='"
 					+ particleName
 					+ "'";
 
-			List results = ida.search(hqlString);
-
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
 			for (Object obj : results) {
 				String otherParticleName = (String) obj;
 				// check if user can see the particle
@@ -1032,6 +1088,7 @@ public class LookupService {
 					otherParticleNames.add(otherParticleName);
 				}
 			}
+			
 		} catch (Exception e) {
 			logger
 					.error("Error in retrieving all particle type particles. ",
@@ -1039,52 +1096,54 @@ public class LookupService {
 			throw new RuntimeException(
 					"Error in retrieving all particle type particles. ");
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		return otherParticleNames;
 	}
 
 	public List<InstrumentBean> getAllInstruments() throws Exception {
 		List<InstrumentBean> instruments = new ArrayList<InstrumentBean>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
+
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			String hqlString = "from Instrument instrument where instrument.type is not null order by instrument.type";
-			List results = ida.search(hqlString);
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
 			for (Object obj : results) {
 				Instrument instrument = (Instrument) obj;
 				instruments.add(new InstrumentBean(instrument));
 			}
+			
 		} catch (Exception e) {
-			logger.error("Problem to retrieve all instruments. " + e);
+			logger.error("Problem to retrieve all instruments. ", e);
 			throw new RuntimeException("Problem to retrieve all intruments. ");
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		return instruments;
 	}
 
 	public SortedSet<String> getAllCharacterizationFileTypes() throws Exception {
 		SortedSet<String> fileTypes = new TreeSet<String>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			String hqlString = "select distinct fileType.name from CharacterizationFileType fileType order by fileType.name";
-			List results = ida.search(hqlString);
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
 			for (Object obj : results) {
 				String type = (String) obj;
 				fileTypes.add(type);
 			}
+			
 		} catch (Exception e) {
-			logger
-					.error("Problem to retrieve all characterization file types. "
-							+ e);
+			logger.error(
+					"Problem to retrieve all characterization file types. ", e);
 			throw new RuntimeException(
-					"Problem to retrieve all characterization file types. ");
+					"Problem to retrieve all characterization file types. ", e);
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		return fileTypes;
 	}
@@ -1092,16 +1151,18 @@ public class LookupService {
 	public List<CharacterizationTypeBean> getAllCharacterizationTypes()
 			throws Exception {
 		List<CharacterizationTypeBean> charTypes = new ArrayList<CharacterizationTypeBean>();
-		HibernateDataAccess hda = HibernateDataAccess.getInstance();
+
 		try {
-			hda.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			String query = "select distinct category, has_action, indent_level, category_order from def_characterization_category order by category_order";
-			SQLQuery queryObj = hda.getNativeQuery(query);
+			SQLQuery queryObj = session.createSQLQuery(query);
 			queryObj.addScalar("CATEGORY", Hibernate.STRING);
 			queryObj.addScalar("HAS_ACTION", Hibernate.INTEGER);
 			queryObj.addScalar("INDENT_LEVEL", Hibernate.INTEGER);
 			queryObj.addScalar("CATEGORY_ORDER", Hibernate.INTEGER);
 			List results = queryObj.list();
+			HibernateUtil.commitTransaction();
 			for (Object obj : results) {
 				Object[] objarr = (Object[]) obj;
 				String type = objarr[0].toString();
@@ -1111,14 +1172,13 @@ public class LookupService {
 						type, indentLevel, hasAction);
 				charTypes.add(charType);
 			}
+			
 		} catch (Exception e) {
-			logger
-					.error("Problem to retrieve all characterization types. "
-							+ e);
+			logger.error("Problem to retrieve all characterization types. ", e);
 			throw new RuntimeException(
-					"Problem to retrieve all characteriztaion types. ");
+					"Problem to retrieve all characteriztaion types. ", e);
 		} finally {
-			hda.close();
+			HibernateUtil.closeSession();
 		}
 		return charTypes;
 	}
@@ -1126,13 +1186,14 @@ public class LookupService {
 	public Map<String, SortedSet<String>> getDerivedDataCategoryMap(
 			String characterizationName) throws Exception {
 		Map<String, SortedSet<String>> categoryMap = new HashMap<String, SortedSet<String>>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
+
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			String hqlString = "select category.name, datumName.name from DerivedBioAssayDataCategory category left join category.datumNameCollection datumName where datumName.datumParsed=false and category.characterizationName='"
 					+ characterizationName + "'";
-			List results = ida.search(hqlString);
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
 			SortedSet<String> datumNames = null;
 			for (Object obj : results) {
 				String categoryName = ((Object[]) obj)[0].toString();
@@ -1145,16 +1206,18 @@ public class LookupService {
 				}
 				datumNames.add(datumName);
 			}
-
+			
 		} catch (Exception e) {
 			logger
-					.error("Problem to retrieve all derived bioassay data categories. "
-							+ e);
+					.error(
+							"Problem to retrieve all derived bioassay data categories. ",
+							e);
 			throw new RuntimeException(
-					"Problem to retrieve all derived bioassay data categories.");
+					"Problem to retrieve all derived bioassay data categories.",
+					e);
 
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		return categoryMap;
 	}
@@ -1162,28 +1225,28 @@ public class LookupService {
 	public SortedSet<String> getDerivedDatumNames(String characterizationName)
 			throws Exception {
 		SortedSet<String> datumNames = new TreeSet<String>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			String hqlString = "select distinct name from DatumName where datumParsed=false and characterizationName='"
 					+ characterizationName + "'";
-			List results = ida.search(hqlString);
-
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
 			for (Object obj : results) {
 				String datumName = obj.toString();
 				datumNames.add(datumName);
 			}
-
+			
 		} catch (Exception e) {
 			logger
-					.error("Problem to retrieve all derived bioassay datum names. "
-							+ e);
+					.error(
+							"Problem to retrieve all derived bioassay datum names. ",
+							e);
 			throw new RuntimeException(
-					"Problem to retrieve all derived bioassay datum names.");
+					"Problem to retrieve all derived bioassay datum names.", e);
 
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		return datumNames;
 	}
@@ -1191,49 +1254,55 @@ public class LookupService {
 	public SortedSet<String> getDerivedDataCategories(
 			String characterizationName) throws Exception {
 		SortedSet<String> categories = new TreeSet<String>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
+
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			String hqlString = "select distinct name from DerivedBioAssayDataCategory where characterizationName='"
 					+ characterizationName + "'";
-			List results = ida.search(hqlString);
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
 			for (Object obj : results) {
 				String category = obj.toString();
 				categories.add(category);
 			}
-
+			
 		} catch (Exception e) {
-			e.printStackTrace();
 			logger
-					.error("Problem to retrieve all derived bioassay data categories. "
-							+ e);
+					.error(
+							"Problem to retrieve all derived bioassay data categories.",
+							e);
 			throw new RuntimeException(
-					"Problem to retrieve all derived bioassay data categories.");
+					"Problem to retrieve all derived bioassay data categories.",
+					e);
 
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		return categories;
 	}
 
 	public SortedSet<String> getAllCharacterizationSources() throws Exception {
 		SortedSet<String> sources = new TreeSet<String>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
+
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			String hqlString = "select distinct char.source from Characterization char where char.source is not null";
-			List results = ida.search(hqlString);
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
 			for (Object obj : results) {
 				sources.add((String) obj);
 			}
+			
 		} catch (Exception e) {
-			logger.error("Problem to retrieve all Characterization Sources.");
+			logger
+					.error("Problem to retrieve all Characterization Sources.",
+							e);
 			throw new RuntimeException(
 					"Problem to retrieve all Characterization Sources. ");
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		sources.addAll(Arrays
 				.asList(CaNanoLabConstants.DEFAULT_CHARACTERIZATION_SOURCES));
@@ -1243,23 +1312,23 @@ public class LookupService {
 
 	public SortedSet<String> getAllManufacturers() throws Exception {
 		SortedSet<String> manufacturers = new TreeSet<String>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			String hqlString = "select distinct instrument.manufacturer from Instrument instrument";
-			List results = ida.search(hqlString);
+			List results = session.createQuery(hqlString).list();
 			for (Object obj : results) {
 				String manufacturer = (String) obj;
 				if (manufacturer != null)
 					manufacturers.add(manufacturer);
 			}
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
-			logger.error("Problem to retrieve all manufacturers. " + e);
+			logger.error("Problem to retrieve all manufacturers. ", e);
 			throw new RuntimeException(
-					"Problem to retrieve all manufacturers. ");
+					"Problem to retrieve all manufacturers. ", e);
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		return manufacturers;
 	}

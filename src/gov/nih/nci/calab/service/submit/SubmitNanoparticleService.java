@@ -1,8 +1,6 @@
 package gov.nih.nci.calab.service.submit;
 
-import gov.nih.nci.calab.db.DataAccessProxy;
-import gov.nih.nci.calab.db.HibernateDataAccess;
-import gov.nih.nci.calab.db.IDataAccess;
+import gov.nih.nci.calab.db.HibernateUtil;
 import gov.nih.nci.calab.domain.Instrument;
 import gov.nih.nci.calab.domain.InstrumentConfiguration;
 import gov.nih.nci.calab.domain.Keyword;
@@ -80,6 +78,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
 
 /**
  * This class includes service calls involved in creating nanoparticle general
@@ -115,14 +114,14 @@ public class SubmitNanoparticleService {
 			throws Exception {
 
 		// save nanoparticle to the database
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			// get the existing particle from database created during sample
 			// creation
-			List results = ida.search("from Nanoparticle where name='"
-					+ particleName + "' and type='" + particleType + "'");
+			List results = session.createQuery(
+					"from Nanoparticle where name='" + particleName
+							+ "' and type='" + particleType + "'").list();
 			Nanoparticle particle = null;
 			for (Object obj : results) {
 				particle = (Nanoparticle) obj;
@@ -141,14 +140,13 @@ public class SubmitNanoparticleService {
 					}
 				}
 			}
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
-			ida.rollback();
-			logger
-					.error("Problem updating particle with name: "
-							+ particleName);
+			HibernateUtil.rollbackTransaction();
+			logger.error("Problem saving particle general information. ", e);
 			throw e;
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		userService.setVisiblity(particleName, visibilities);
 	}
@@ -166,15 +164,14 @@ public class SubmitNanoparticleService {
 			CharacterizationBean charBean) throws Exception {
 
 		// if ID is not set save to the database otherwise update
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
-
 		Nanoparticle particle = null;
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+
 			// check if viewTitle is already used the same type of
 			// characterization for the same particle
-			boolean viewTitleUsed = isCharacterizationViewTitleUsed(ida,
+			boolean viewTitleUsed = isCharacterizationViewTitleUsed(session,
 					particleType, particleName, achar, charBean);
 			if (viewTitleUsed) {
 				throw new RuntimeException(
@@ -183,8 +180,8 @@ public class SubmitNanoparticleService {
 				// if ID exists, load from database
 				if (charBean.getId() != null) {
 					// check if ID is still valid
-					achar = (Characterization) ida.get(Characterization.class,
-							new Long(charBean.getId()));
+					achar = (Characterization) session.get(
+							Characterization.class, new Long(charBean.getId()));
 					if (achar == null)
 						throw new Exception(
 								"This characterization is no longer in the database.  Please log in again to refresh.");
@@ -203,17 +200,18 @@ public class SubmitNanoparticleService {
 				} else
 					charBean.updateDomainObj(achar);
 
-				addProtocolFile(charBean.getProtocolFileBean(), achar, ida);
+				addProtocolFile(charBean.getProtocolFileBean(), achar, session);
 				// store instrumentConfig and instrument
 				addInstrumentConfig(charBean.getInstrumentConfigBean(), achar,
-						ida);
+						session);
 
 				if (charBean.getId() == null) {
-					List results = ida
-							.search("select particle from Nanoparticle particle left join fetch particle.characterizationCollection where particle.name='"
-									+ particleName
-									+ "' and particle.type='"
-									+ particleType + "'");
+					List results = session
+							.createQuery(
+									"select particle from Nanoparticle particle left join fetch particle.characterizationCollection where particle.name='"
+											+ particleName
+											+ "' and particle.type='"
+											+ particleType + "'").list();
 
 					for (Object obj : results) {
 						particle = (Nanoparticle) obj;
@@ -224,31 +222,39 @@ public class SubmitNanoparticleService {
 					}
 				}
 			}
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
-			e.printStackTrace();
-			ida.rollback();
-			logger.error("Problem saving characterization. ");
+			logger.error("Problem saving characterization. ", e);
+			HibernateUtil.rollbackTransaction();
 			throw e;
 		} finally {
-			ida.close();
-		}
-
-		// save file to the file system
-		// if this block of code is inside the db try catch block, hibernate
-		// doesn't persist derivedBioAssayData
-		if (!achar.getDerivedBioAssayDataCollection().isEmpty()) {
-			int count = 0;
-			for (DerivedBioAssayData derivedBioAssayData : achar
-					.getDerivedBioAssayDataCollection()) {
-				DerivedBioAssayDataBean derivedBioAssayDataBean = new DerivedBioAssayDataBean(
-						derivedBioAssayData);
-				// assign visibility
-				DerivedBioAssayDataBean unsaved = charBean
-						.getDerivedBioAssayDataList().get(count);
-				derivedBioAssayDataBean.setVisibilityGroups(unsaved
-						.getVisibilityGroups());
-				saveCharacterizationFile(derivedBioAssayDataBean);
-				count++;
+			HibernateUtil.closeSession();
+			// skip if there is database error above and achar has not
+			// been persisted
+			if (achar.getId() != null) {
+				// save file to the file system
+				// if this block of code is inside the db try block,
+				// hibernate
+				// doesn't persist derivedBioAssayData
+				if (!achar.getDerivedBioAssayDataCollection().isEmpty()) {
+					int count = 0;
+					for (DerivedBioAssayData derivedBioAssayData : achar
+							.getDerivedBioAssayDataCollection()) {
+						// skip if there is database error above and
+						// derivedBioAssayData has not been persisted
+						if (derivedBioAssayData.getId() != null) {
+							DerivedBioAssayDataBean derivedBioAssayDataBean = new DerivedBioAssayDataBean(
+									derivedBioAssayData);
+							// assign visibility
+							DerivedBioAssayDataBean unsaved = charBean
+									.getDerivedBioAssayDataList().get(count);
+							derivedBioAssayDataBean.setVisibilityGroups(unsaved
+									.getVisibilityGroups());
+							saveCharacterizationFile(derivedBioAssayDataBean);
+							count++;
+						}
+					}
+				}
 			}
 		}
 	}
@@ -256,45 +262,47 @@ public class SubmitNanoparticleService {
 	public void addNewCharacterizationDataDropdowns(
 			CharacterizationBean charBean, String characterizationName)
 			throws Exception {
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();			
+			HibernateUtil.beginTransaction();
+
 			if (!charBean.getDerivedBioAssayDataList().isEmpty()) {
 				for (DerivedBioAssayDataBean derivedBioAssayDataBean : charBean
 						.getDerivedBioAssayDataList()) {
 					// add new characterization file type if necessary
 					if (derivedBioAssayDataBean.getType().length() > 0) {
 						CharacterizationFileType fileType = new CharacterizationFileType();
-						addLookupType(ida, fileType, derivedBioAssayDataBean
-								.getType());
+						addLookupType(session, fileType,
+								derivedBioAssayDataBean.getType());
 					}
 					// add new derived data cateory
 					for (String category : derivedBioAssayDataBean
 							.getCategories()) {
-						addDerivedDataCategory(ida, category,
+						addDerivedDataCategory(session, category,
 								characterizationName);
 					}
 					// add new datum name, measure type, and unit
 					for (DatumBean datumBean : derivedBioAssayDataBean
 							.getDatumList()) {
-						addDatumName(ida, datumBean.getName(),
+						addDatumName(session, datumBean.getName(),
 								characterizationName);
 						MeasureType measureType = new MeasureType();
-						addLookupType(ida, measureType, datumBean
+						addLookupType(session, measureType, datumBean
 								.getStatisticsType());
-						addMeasureUnit(ida, datumBean.getUnit(),
+						addMeasureUnit(session, datumBean.getUnit(),
 								characterizationName);
 					}
 				}
 			}
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
-			e.printStackTrace();
-			ida.rollback();
-			logger.error("Problem saving characterization data drop downs. ");
+			HibernateUtil.rollbackTransaction();
+			logger
+					.error("Problem saving characterization data drop downs. ",
+							e);
 			throw e;
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 	}
 
@@ -302,11 +310,10 @@ public class SubmitNanoparticleService {
 	 * check if viewTitle is already used the same type of characterization for
 	 * the same particle
 	 */
-	private boolean isCharacterizationViewTitleUsed(IDataAccess ida,
+	private boolean isCharacterizationViewTitleUsed(Session session,
 			String particleType, String particleName, Characterization achar,
 			CharacterizationBean charBean) throws Exception {
 		String viewTitleQuery = "";
-
 		if (charBean.getId() == null) {
 			viewTitleQuery = "select count(achar.identificationName) from Nanoparticle particle join particle.characterizationCollection achar where particle.name='"
 					+ particleName
@@ -326,7 +333,7 @@ public class SubmitNanoparticleService {
 					+ "' and achar.name='"
 					+ achar.getName() + "' and achar.id!=" + charBean.getId();
 		}
-		List viewTitleResult = ida.search(viewTitleQuery);
+		List viewTitleResult = session.createQuery(viewTitleQuery).list();
 
 		int existingViewTitleCount = -1;
 		for (Object obj : viewTitleResult) {
@@ -360,7 +367,7 @@ public class SubmitNanoparticleService {
 	}
 
 	private void addInstrumentConfig(InstrumentConfigBean instrumentConfigBean,
-			Characterization doChar, IDataAccess ida) throws Exception {
+			Characterization doChar, Session session) throws Exception {
 		InstrumentBean instrumentBean = instrumentConfigBean
 				.getInstrumentBean();
 
@@ -379,11 +386,11 @@ public class SubmitNanoparticleService {
 		// check if instrument is already in database based on type and
 		// manufacturer
 		Instrument instrument = null;
-		List instrumentResults = ida
-				.search("select instrument from Instrument instrument where instrument.type='"
+		List instrumentResults = session.createQuery(
+				"select instrument from Instrument instrument where instrument.type='"
 						+ instrumentBean.getType()
 						+ "' and instrument.manufacturer='"
-						+ instrumentBean.getManufacturer() + "'");
+						+ instrumentBean.getManufacturer() + "'").list();
 
 		for (Object obj : instrumentResults) {
 			instrument = (Instrument) obj;
@@ -393,7 +400,7 @@ public class SubmitNanoparticleService {
 			instrument = new Instrument();
 			instrument.setType(instrumentBean.getType());
 			instrument.setManufacturer(instrumentBean.getManufacturer());
-			ida.store(instrument);
+			session.saveOrUpdate(instrument);
 		}
 
 		InstrumentConfiguration instrumentConfig = null;
@@ -407,14 +414,14 @@ public class SubmitNanoparticleService {
 		}
 		instrumentConfig.setDescription(instrumentConfigBean.getDescription());
 		instrumentConfig.setInstrument(instrument);
-		ida.store(instrumentConfig);
+		session.saveOrUpdate(instrumentConfig);
 	}
 
 	private void addProtocolFile(ProtocolFileBean protocolFileBean,
-			Characterization doChar, IDataAccess ida) throws Exception {
+			Characterization doChar, Session session) throws Exception {
 		if (protocolFileBean.getId() != null
 				&& protocolFileBean.getId().length() > 0) {
-			ProtocolFile protocolFile = (ProtocolFile) ida.get(
+			ProtocolFile protocolFile = (ProtocolFile) session.get(
 					ProtocolFile.class, new Long(protocolFileBean.getId()));
 			doChar.setProtocolFile(protocolFile);
 		}
@@ -471,29 +478,32 @@ public class SubmitNanoparticleService {
 
 	}
 
-	private void addLookupType(IDataAccess ida, LookupType lookupType,
+	private void addLookupType(Session session, LookupType lookupType,
 			String type) throws Exception {
 		String className = lookupType.getClass().getSimpleName();
 		if (type != null && type.length() > 0) {
-			List results = ida.search("select count(distinct name) from "
-					+ className + " type where name='" + type + "'");
+			List results = session.createQuery(
+					"select count(distinct name) from " + className
+							+ " type where name='" + type + "'").list();
 			lookupType.setName(type);
 			int count = -1;
 			for (Object obj : results) {
 				count = ((Integer) (obj)).intValue();
 			}
 			if (count == 0) {
-				ida.createObject(lookupType);
+				session.save(lookupType);
 			}
 		}
 	}
 
-	private void addDatumName(IDataAccess ida, String name,
+	private void addDatumName(Session session, String name,
 			String characterizationName) throws Exception {
 
-		List results = ida.search("select count(distinct name) from DatumName"
-				+ " where characterizationName='" + characterizationName + "'"
-				+ " and name='" + name + "'");
+		List results = session.createQuery(
+				"select count(distinct name) from DatumName"
+						+ " where characterizationName='"
+						+ characterizationName + "'" + " and name='" + name
+						+ "'").list();
 		DatumName datumName = new DatumName();
 		datumName.setName(name);
 		datumName.setCharacterizationName(characterizationName);
@@ -503,21 +513,18 @@ public class SubmitNanoparticleService {
 			count = ((Integer) (obj)).intValue();
 		}
 		if (count == 0) {
-			ida.createObject(datumName);
+			session.save(datumName);
 		}
 	}
 
-	private void addDerivedDataCategory(IDataAccess ida, String name,
+	private void addDerivedDataCategory(Session session, String name,
 			String characterizationName) throws Exception {
 
-		List results = ida
-				.search("select count(distinct name) from DerivedBioAssayDataCategory"
+		List results = session.createQuery(
+				"select count(distinct name) from DerivedBioAssayDataCategory"
 						+ " where characterizationName='"
-						+ characterizationName
-						+ "'"
-						+ " and name='"
-						+ name
-						+ "'");
+						+ characterizationName + "'" + " and name='" + name
+						+ "'").list();
 		DerivedBioAssayDataCategory category = new DerivedBioAssayDataCategory();
 		category.setName(name);
 		category.setCharacterizationName(characterizationName);
@@ -526,7 +533,7 @@ public class SubmitNanoparticleService {
 			count = ((Integer) (obj)).intValue();
 		}
 		if (count == 0) {
-			ida.createObject(category);
+			session.save(category);
 		}
 
 	}
@@ -535,73 +542,41 @@ public class SubmitNanoparticleService {
 			throws Exception {
 		if (type != null && type.length() > 0) {
 			// if ID is not set save to the database otherwise update
-			IDataAccess ida = (new DataAccessProxy())
-					.getInstance(IDataAccess.HIBERNATE);
 			String className = lookupType.getClass().getSimpleName();
 			try {
-				ida.open();
-				List results = ida.search("select count(distinct name) from "
-						+ className + " type where name='" + type + "'");
+				Session session = HibernateUtil.currentSession();
+				HibernateUtil.beginTransaction();
+				List results = session.createQuery(
+						"select count(distinct name) from " + className
+								+ " type where name='" + type + "'").list();
 				lookupType.setName(type);
 				int count = -1;
 				for (Object obj : results) {
 					count = ((Integer) (obj)).intValue();
 				}
 				if (count == 0) {
-					ida.createObject(lookupType);
+					session.save(lookupType);
 				}
+				HibernateUtil.commitTransaction();
 			} catch (Exception e) {
-				e.printStackTrace();
-				ida.rollback();
-				logger.error("Problem saving look up type: " + type);
+				HibernateUtil.rollbackTransaction();
+				logger.error("Problem saving look up type: " + type, e);
 				throw e;
 			} finally {
-				ida.close();
+				HibernateUtil.closeSession();
 			}
 		}
 	}
 
-	// private void addMeasureUnit(String unit, String type) throws Exception {
-	// if (unit == null || unit.length() == 0) {
-	// return;
-	// }
-	// // if ID is not set save to the database otherwise update
-	// IDataAccess ida = (new DataAccessProxy())
-	// .getInstance(IDataAccess.HIBERNATE);
-	// MeasureUnit measureUnit = new MeasureUnit();
-	// try {
-	// ida.open();
-	// List results = ida
-	// .search("select count(distinct measureUnit.name) from "
-	// + "MeasureUnit measureUnit where measureUnit.name='"
-	// + unit + "' and measureUnit.type='" + type + "'");
-	// int count = -1;
-	// for (Object obj : results) {
-	// count = ((Integer) (obj)).intValue();
-	// }
-	// if (count == 0) {
-	// measureUnit.setName(unit);
-	// measureUnit.setType(type);
-	// ida.createObject(measureUnit);
-	// }
-	// } catch (Exception e) {
-	// e.printStackTrace();
-	// ida.rollback();
-	// logger.error("Problem saving look up type: " + type);
-	// throw e;
-	// } finally {
-	// ida.close();
-	// }
-	// }
-
-	private void addMeasureUnit(IDataAccess ida, String unit, String type)
+	private void addMeasureUnit(Session session, String unit, String type)
 			throws Exception {
 		if (unit == null || unit.length() == 0) {
 			return;
 		}
-		List results = ida.search("select count(distinct name) from "
-				+ " MeasureUnit where name='" + unit + "' and type='" + type
-				+ "'");
+		List results = session.createQuery(
+				"select count(distinct name) from "
+						+ " MeasureUnit where name='" + unit + "' and type='"
+						+ type + "'").list();
 		int count = -1;
 		for (Object obj : results) {
 			count = ((Integer) (obj)).intValue();
@@ -610,7 +585,7 @@ public class SubmitNanoparticleService {
 		if (count == 0) {
 			measureUnit.setName(unit);
 			measureUnit.setType(type);
-			ida.createObject(measureUnit);
+			session.save(measureUnit);
 		}
 	}
 
@@ -955,15 +930,14 @@ public class SubmitNanoparticleService {
 			FunctionBean function) throws Exception {
 
 		// if ID is not set save to the database otherwise update
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
-
 		Nanoparticle particle = null;
 		Function doFunction = new Function();
 		try {
-			ida.open();
-			boolean viewTitleUsed = isFunctionViewTitleUsed(ida, particleType,
-					particleName, doFunction);
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+
+			boolean viewTitleUsed = isFunctionViewTitleUsed(session,
+					particleType, particleName, doFunction);
 
 			if (viewTitleUsed) {
 				throw new RuntimeException(
@@ -971,16 +945,17 @@ public class SubmitNanoparticleService {
 			} else {
 				// if function already exists in the database, load it first
 				if (function.getId() != null) {
-					doFunction = (Function) ida.get(Function.class, new Long(
-							function.getId()));
+					doFunction = (Function) session.get(Function.class,
+							new Long(function.getId()));
 					function.updateDomainObj(doFunction);
 				} else {
 					function.updateDomainObj(doFunction);
-					List results = ida
-							.search("select particle from Nanoparticle particle left join fetch particle.functionCollection where particle.name='"
-									+ particleName
-									+ "' and particle.type='"
-									+ particleType + "'");
+					List results = session
+							.createQuery(
+									"select particle from Nanoparticle particle left join fetch particle.functionCollection where particle.name='"
+											+ particleName
+											+ "' and particle.type='"
+											+ particleType + "'").list();
 					for (Object obj : results) {
 						particle = (Nanoparticle) obj;
 					}
@@ -995,22 +970,22 @@ public class SubmitNanoparticleService {
 				if (linkage instanceof Attachment) {
 					String bondType = ((Attachment) linkage).getBondType();
 					BondType lookup = new BondType();
-					addLookupType(ida, lookup, bondType);
+					addLookupType(session, lookup, bondType);
 				}
 				Agent agent = linkage.getAgent();
 				if (agent instanceof ImageContrastAgent) {
 					String agentType = ((ImageContrastAgent) agent).getType();
 					ImageContrastAgentType lookup = new ImageContrastAgentType();
-					addLookupType(ida, lookup, agentType);
+					addLookupType(session, lookup, agentType);
 				}
 			}
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
-			e.printStackTrace();
-			ida.rollback();
-			logger.error("Problem saving function: ");
+			HibernateUtil.rollbackTransaction();
+			logger.error("Problem saving function: ", e);
 			throw e;
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 	}
 
@@ -1018,7 +993,7 @@ public class SubmitNanoparticleService {
 	 * check if viewTitle is already used the same type of function for the same
 	 * particle
 	 */
-	private boolean isFunctionViewTitleUsed(IDataAccess ida,
+	private boolean isFunctionViewTitleUsed(Session session,
 			String particleType, String particleName, Function function)
 			throws Exception {
 		// check if viewTitle is already used the same type of
@@ -1044,7 +1019,7 @@ public class SubmitNanoparticleService {
 					+ " and function.type='"
 					+ function.getType() + "'";
 		}
-		List viewTitleResult = ida.search(viewTitleQuery);
+		List viewTitleResult = session.createQuery(viewTitleQuery).list();
 		int existingViewTitleCount = -1;
 		for (Object obj : viewTitleResult) {
 			existingViewTitleCount = ((Integer) (obj)).intValue();
@@ -1063,22 +1038,19 @@ public class SubmitNanoparticleService {
 	 * @return
 	 */
 	public LabFileBean getFile(String fileId) throws Exception {
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
 		LabFileBean fileBean = null;
 		try {
-			ida.open();
-
-			LabFile file = (LabFile) ida.load(LabFile.class, StringUtils
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			LabFile file = (LabFile) session.load(LabFile.class, StringUtils
 					.convertToLong(fileId));
 			fileBean = new LabFileBean(file);
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
-			e.printStackTrace();
-			ida.rollback();
-			logger.error("Problem getting file with file ID: " + fileId);
+			logger.error("Problem getting file with file ID: " + fileId, e);
 			throw e;
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		// get visibilities
 		UserService userService = new UserService(
@@ -1098,26 +1070,24 @@ public class SubmitNanoparticleService {
 	 */
 	public DerivedBioAssayDataBean getDerivedBioAssayData(String fileId)
 			throws Exception {
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
+
 		DerivedBioAssayDataBean fileBean = null;
 		try {
-			ida.open();
-
-			DerivedBioAssayData file = (DerivedBioAssayData) ida.load(
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			DerivedBioAssayData file = (DerivedBioAssayData) session.load(
 					DerivedBioAssayData.class, StringUtils
 							.convertToLong(fileId));
 			// load keywords
 			file.getKeywordCollection();
 			fileBean = new DerivedBioAssayDataBean(file,
 					CaNanoLabConstants.OUTPUT);
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
-			e.printStackTrace();
-			ida.rollback();
-			logger.error("Problem getting file with file ID: " + fileId);
+			logger.error("Problem getting file with file ID: " + fileId, e);
 			throw e;
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		// get visibilities
 		UserService userService = new UserService(
@@ -1139,13 +1109,12 @@ public class SubmitNanoparticleService {
 	public List<LabFileBean> getAllRunFiles(String particleName)
 			throws Exception {
 		List<LabFileBean> runFiles = new ArrayList<LabFileBean>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			String query = "select distinct outFile from Run run join run.outputFileCollection outFile join run.runSampleContainerCollection runContainer where runContainer.sampleContainer.sample.name='"
 					+ particleName + "'";
-			List results = ida.search(query);
+			List results = session.createQuery(query).list();
 
 			for (Object obj : results) {
 				OutputFile file = (OutputFile) obj;
@@ -1158,14 +1127,13 @@ public class SubmitNanoparticleService {
 					runFiles.add(fileBean);
 				}
 			}
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
-			e.printStackTrace();
-			ida.rollback();
 			logger.error("Problem getting run files for particle: "
-					+ particleName);
+					+ particleName, e);
 			throw e;
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		return runFiles;
 	}
@@ -1177,24 +1145,22 @@ public class SubmitNanoparticleService {
 	 * @throws Exception
 	 */
 	public void updateFileMetaData(LabFileBean fileBean) throws Exception {
-
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
 		try {
-			ida.open();
-			LabFile file = (LabFile) ida.load(LabFile.class, StringUtils
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			LabFile file = (LabFile) session.load(LabFile.class, StringUtils
 					.convertToLong(fileBean.getId()));
 
 			file.setTitle(fileBean.getTitle().toUpperCase());
 			file.setDescription(fileBean.getDescription());
 			file.setComments(fileBean.getComments());
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
-			e.printStackTrace();
-			ida.rollback();
-			logger.error("Problem updating file meta data: ");
+			HibernateUtil.rollbackTransaction();
+			logger.error("Problem updating file meta data: ", e);
 			throw e;
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 
 		userService.setVisiblity(fileBean.getId(), fileBean
@@ -1207,36 +1173,34 @@ public class SubmitNanoparticleService {
 	public void deleteCharacterizations(String particleName,
 			String particleType, String[] charIds) throws Exception {
 		// if ID is not set save to the database otherwise update
-		HibernateDataAccess ida = (HibernateDataAccess) (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+
 			// Get ID
 			for (String strCharId : charIds) {
 
 				Long charId = Long.parseLong(strCharId);
-
-				Object charObj = ida.load(Characterization.class, charId);
+				Object charObj = session.load(Characterization.class, charId);
 				// deassociate first
 				String hqlString = "from Nanoparticle particle where particle.characterizationCollection.id = '"
 						+ strCharId + "'";
-				List results = ida.search(hqlString);
+				List results = session.createQuery(hqlString).list();
 				for (Object obj : results) {
 					Nanoparticle particle = (Nanoparticle) obj;
 					particle.getCharacterizationCollection().remove(charObj);
 				}
 				// then delete
-				ida.delete(charObj);
-
+				// session.delete(charObj);
 			}
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
-			e.printStackTrace();
-			ida.rollback();
-			logger.error("Problem deleting characterization: ");
+			HibernateUtil.rollbackTransaction();
+			logger.error("Problem deleting characterization: ", e);
 			throw new Exception(
 					"The characterization is no longer exist in the database, please login again to refresh the view.");
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 	}
 }

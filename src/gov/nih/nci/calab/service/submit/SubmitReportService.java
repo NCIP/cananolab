@@ -1,7 +1,6 @@
 package gov.nih.nci.calab.service.submit;
 
-import gov.nih.nci.calab.db.DataAccessProxy;
-import gov.nih.nci.calab.db.IDataAccess;
+import gov.nih.nci.calab.db.HibernateUtil;
 import gov.nih.nci.calab.domain.AssociatedFile;
 import gov.nih.nci.calab.domain.LabFile;
 import gov.nih.nci.calab.domain.Report;
@@ -18,6 +17,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.upload.FormFile;
+import org.hibernate.Session;
 
 /**
  * This class includes service calls involved in creating reports.
@@ -66,30 +66,30 @@ public class SubmitReportService {
 
 		// TODO daves reportFile uri to the database
 		// look up the samples for each particleNames
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
-
 		try {
-			ida.open();
-			ida.store(dataFile);
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			session.saveOrUpdate(dataFile);
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
-			e.printStackTrace();
-			ida.rollback();
-			logger.error("Problem saving report File: ");
+			HibernateUtil.rollbackTransaction();
+			logger.error("Problem saving report File: ", e);
 			throw e;
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 
 		Nanoparticle particle = null;
 
 		for (String particleName : particleNames) {
 			try {
-				ida.open();
+				Session session = HibernateUtil.currentSession();
+				HibernateUtil.beginTransaction();
 
-				List results = ida
-						.search("select particle from Nanoparticle particle left join fetch particle.reportCollection where particle.name='"
-								+ particleName + "'");
+				List results = session
+						.createQuery(
+								"select particle from Nanoparticle particle left join fetch particle.reportCollection where particle.name='"
+										+ particleName + "'").list();
 
 				for (Object obj : results) {
 					particle = (Nanoparticle) obj;
@@ -103,14 +103,13 @@ public class SubmitReportService {
 						particle.getAssociatedFileCollection().add(
 								(AssociatedFile) dataFile);
 				}
-
+				HibernateUtil.commitTransaction();
 			} catch (Exception e) {
-				e.printStackTrace();
-				ida.rollback();
-				logger.error("Problem saving report File: ");
+				HibernateUtil.rollbackTransaction();
+				logger.error("Problem saving report File: ", e);
 				throw e;
 			} finally {
-				ida.close();
+				HibernateUtil.closeSession();
 			}
 		}
 		userService.setVisiblity(dataFile.getId().toString(), fileBean

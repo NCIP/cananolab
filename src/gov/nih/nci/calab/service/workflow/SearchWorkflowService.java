@@ -1,7 +1,6 @@
 package gov.nih.nci.calab.service.workflow;
 
-import gov.nih.nci.calab.db.DataAccessProxy;
-import gov.nih.nci.calab.db.IDataAccess;
+import gov.nih.nci.calab.db.HibernateUtil;
 import gov.nih.nci.calab.dto.workflow.WorkflowResultBean;
 import gov.nih.nci.calab.service.util.CaNanoLabComparators;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
@@ -23,7 +22,7 @@ import org.apache.log4j.Logger;
  * 
  */
 
-/* CVS $Id: SearchWorkflowService.java,v 1.2 2007-07-10 16:09:53 pansu Exp $ */
+/* CVS $Id: SearchWorkflowService.java,v 1.3 2007-08-18 02:05:09 pansu Exp $ */
 
 public class SearchWorkflowService {
 	private static Logger logger = Logger
@@ -70,7 +69,8 @@ public class SearchWorkflowService {
 		workflows = filterWorkflows(new ArrayList<WorkflowResultBean>(
 				workflowSet), isFileIn, isFileOut, excludeMaskedAliquots,
 				excludeMaskedFiles);
-		Collections.sort(workflows, new CaNanoLabComparators.WorkflowResultBeanComparator());
+		Collections.sort(workflows,
+				new CaNanoLabComparators.WorkflowResultBeanComparator());
 		return workflows;
 	}
 
@@ -173,29 +173,26 @@ public class SearchWorkflowService {
 	private List<WorkflowResultBean> getWorkflows(String hqlString,
 			List paramList) throws Exception {
 		List<WorkflowResultBean> workflows = new ArrayList<WorkflowResultBean>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
-
 		try {
-			ida.open();
-
-			List results = ida.searchByParam(hqlString, paramList);
+			
+			HibernateUtil.beginTransaction();
+			List results = HibernateUtil.createQueryByParam(hqlString, paramList).list();
 
 			for (Object obj : results) {
 				Object[] items = (Object[]) obj;
 				String theFilePath = StringUtils.convertToString(items[0]);
 				String theAssayType = StringUtils.convertToString(items[1]);
 				String theAssayName = StringUtils.convertToString(items[2]);
-				String theAssayRunId=StringUtils.convertToString(items[3]);
-				String theAssayRunName = StringUtils.convertToString(items[4]);				
-				Date theAssayRunDate =(Date) items[5];
+				String theAssayRunId = StringUtils.convertToString(items[3]);
+				String theAssayRunName = StringUtils.convertToString(items[4]);
+				Date theAssayRunDate = (Date) items[5];
 				String theAliquotName = StringUtils.convertToString(items[6]);
 				String theAliquotStatus = StringUtils.convertToString(items[7]);
 				Date theFileSubmissionDate = (Date) items[8];
 				String theFileSubmitter = StringUtils.convertToString(items[9]);
 				String theFileStatus = StringUtils.convertToString(items[10]);
-				String fileId=StringUtils.convertToString(items[11]);
-				String filename=StringUtils.convertToString(items[12]);
+				String fileId = StringUtils.convertToString(items[11]);
+				String filename = StringUtils.convertToString(items[12]);
 				// set inout type to empty string when file path is emtpy
 				String theFileInoutType = StringUtils
 						.convertToString(items[13]);
@@ -205,20 +202,22 @@ public class SearchWorkflowService {
 					// set inout type=in to empty when no filePath
 					theFileInoutType = (theFilePath.length() == 0) ? ""
 							: theFileInoutType;
-					workflows.add(new WorkflowResultBean(fileId, theFilePath, filename, 
-							theAssayType, theAssayName, theAssayRunId, theAssayRunName,
-							theAssayRunDate, theAliquotName, theAliquotStatus,
+					workflows.add(new WorkflowResultBean(fileId, theFilePath,
+							filename, theAssayType, theAssayName,
+							theAssayRunId, theAssayRunName, theAssayRunDate,
+							theAliquotName, theAliquotStatus,
 							theFileSubmissionDate, theFileSubmitter,
 							theFileStatus, theFileInoutType));
 				}
 			}
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			logger.error("Error in searching aliquots by the given parameters",
 					e);
 			throw new RuntimeException(
 					"Error in searching aliquots by the given parameters");
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		return workflows;
 	}
@@ -268,7 +267,7 @@ public class SearchWorkflowService {
 				workflows.add(workflow);
 			}
 		}
-		
+
 		return workflows;
 
 	}

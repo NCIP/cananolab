@@ -1,7 +1,6 @@
 package gov.nih.nci.calab.service.inventory;
 
-import gov.nih.nci.calab.db.DataAccessProxy;
-import gov.nih.nci.calab.db.IDataAccess;
+import gov.nih.nci.calab.db.HibernateUtil;
 import gov.nih.nci.calab.domain.Aliquot;
 import gov.nih.nci.calab.dto.inventory.AliquotBean;
 import gov.nih.nci.calab.dto.inventory.StorageLocation;
@@ -15,13 +14,14 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
 
 /**
  * 
  * @author pansu
  * 
  */
-/* CVS $Id: SearchAliquotService.java,v 1.1 2007-02-28 21:50:43 pansu Exp $ */
+/* CVS $Id: SearchAliquotService.java,v 1.2 2007-08-18 02:05:10 pansu Exp $ */
 
 public class SearchAliquotService {
 	private static Logger logger = Logger.getLogger(SearchAliquotService.class);
@@ -44,8 +44,6 @@ public class SearchAliquotService {
 			String sampleSubmitter, StorageLocation storageLocation)
 			throws Exception {
 		List<AliquotBean> aliquots = new ArrayList<AliquotBean>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
 		try {
 			List<Object> paramList = new ArrayList<Object>();
 			List<String> whereList = new ArrayList<String>();
@@ -127,56 +125,55 @@ public class SearchAliquotService {
 
 			String whereStr = StringUtils.join(whereList, " and ");
 			String hqlString = "select aliquot from Aliquot aliquot "
-					+ storageFrom + where + whereStr;
+					+ storageFrom + where + whereStr;		
+			HibernateUtil.beginTransaction();
 
-			ida.open();
-
-			List<? extends Object> results = (List<? extends Object>) ida
-					.searchByParam(hqlString, paramList);
+			List<? extends Object> results = (List<? extends Object>) (HibernateUtil
+					.createQueryByParam(hqlString, paramList).list());
 			for (Object obj : new HashSet<Object>(results)) {
 				Aliquot aliquot = (Aliquot) obj;
 				aliquots.add(new AliquotBean(aliquot));
 			}
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			logger.error("Error in searching aliquots by the given parameters",
 					e);
 			throw new RuntimeException(
 					"Error in searching aliquots by the given parameters");
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 
-		Collections
-				.sort(aliquots, new CaNanoLabComparators.AliquotBeanComparator());
+		Collections.sort(aliquots,
+				new CaNanoLabComparators.AliquotBeanComparator());
 		return aliquots;
 	}
 
 	public List<AliquotBean> searchAliquotsByContainer(String containerId)
 			throws Exception {
 		List<AliquotBean> aliquots = new ArrayList<AliquotBean>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			String hqlString = "select aliquot from Aliquot aliquot join aliquot.parentSampleContainerCollection container where container.id="
 					+ containerId;
-			List results = ida.search(hqlString);
+			List results = session.createQuery(hqlString).list();
 			for (Object obj : results) {
 				Aliquot aliquot = (Aliquot) obj;
 				aliquots.add(new AliquotBean(aliquot));
 			}
-			// TODO fill in the detail of getting aliquots from container
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			logger.error(
 					"Error in searching aliquots by the given container ID", e);
 			throw new RuntimeException(
 					"Error in searching aliquots by the given container ID");
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 
-		Collections
-				.sort(aliquots, new CaNanoLabComparators.AliquotBeanComparator());
+		Collections.sort(aliquots,
+				new CaNanoLabComparators.AliquotBeanComparator());
 		return aliquots;
 	}
 }
