@@ -27,7 +27,7 @@ import org.hibernate.Session;
  */
 
 /*
- * CVS $Id: SubmitProtocolService.java,v 1.12 2007-08-18 02:05:09 pansu Exp $
+ * CVS $Id: SubmitProtocolService.java,v 1.13 2007-08-18 02:16:55 pansu Exp $
  */
 
 public class SubmitProtocolService {
@@ -127,7 +127,7 @@ public class SubmitProtocolService {
 					session.saveOrUpdate(protocol);
 				}
 			} else {
-				session.saveOrUpdate(protocol);
+				session.save(protocol);
 			}
 			// Check datafile
 			if (dataFile.getId() != null) {
@@ -162,7 +162,7 @@ public class SubmitProtocolService {
 				}
 			} else {
 				dataFile.setProtocol(protocol);
-				session.saveOrUpdate(dataFile);
+				session.save(dataFile);
 			}
 
 			// add protocol type to database

@@ -321,7 +321,7 @@ public class ExecuteWorkflowService {
 							+ CaNanoLabConstants.URI_SEPERATOR + filename);
 					doInputFile.setFilename(getShortFilename(filename));
 
-					session.saveOrUpdate(doInputFile);
+					session.save(doInputFile);
 					// logger.info("Object object retruned from inputfile = " +
 					// object);
 				} else if (inout.equalsIgnoreCase(CaNanoLabConstants.OUTPUT)) {
