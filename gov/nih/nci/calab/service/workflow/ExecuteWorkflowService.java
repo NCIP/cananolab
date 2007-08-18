@@ -1,7 +1,6 @@
 package gov.nih.nci.calab.service.workflow;
 
-import gov.nih.nci.calab.db.DataAccessProxy;
-import gov.nih.nci.calab.db.IDataAccess;
+import gov.nih.nci.calab.db.HibernateUtil;
 import gov.nih.nci.calab.domain.Aliquot;
 import gov.nih.nci.calab.domain.Assay;
 import gov.nih.nci.calab.domain.InputFile;
@@ -33,6 +32,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
 
 public class ExecuteWorkflowService {
 	private static Logger logger = Logger
@@ -49,14 +49,14 @@ public class ExecuteWorkflowService {
 			String comments, String creator, String creationDate)
 			throws Exception {
 
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+
 			// load run object
 			logger.debug("ExecuteWorkflowService.saveRunAliquots(): run id = "
 					+ runId);
-			Run doRun = (Run) ida.load(Run.class, StringUtils
+			Run doRun = (Run) session.load(Run.class, StringUtils
 					.convertToLong(runId));
 
 			// Create RunSampleContainer collection
@@ -67,7 +67,7 @@ public class ExecuteWorkflowService {
 						+ runId
 						+ "' and runcontainer.sampleContainer.name='"
 						+ aliquotNames[i] + "'";
-				List results = ida.search(hqlString);
+				List results = session.createQuery(hqlString).list();
 				if (((Integer) results.get(0)).intValue() > 0) {
 					logger
 							.debug("The aliquot name "
@@ -82,9 +82,9 @@ public class ExecuteWorkflowService {
 						.debug("ExecuteWorkflowService.saveRunAliquots(): aliquot name = "
 								+ aliquotNames[i]);
 
-				List aliquotResults = ida
-						.search("from Aliquot aliquot where aliquot.name='"
-								+ aliquotNames[i] + "'");
+				List aliquotResults = session.createQuery(
+						"from Aliquot aliquot where aliquot.name='"
+								+ aliquotNames[i] + "'").list();
 				Aliquot doAliquot = null;
 				for (Object obj : aliquotResults) {
 					doAliquot = (Aliquot) obj;
@@ -96,27 +96,27 @@ public class ExecuteWorkflowService {
 				doRunSC.setCreatedBy(creator);
 				doRunSC.setCreatedDate(StringUtils.convertToDate(creationDate,
 						CaNanoLabConstants.DATE_FORMAT));
-				ida.createObject(doRunSC);
+				session.save(doRunSC);
 			}
-			ida.close();
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
-			ida.rollback();
+			HibernateUtil.rollbackTransaction();
 			logger.error("Error in saving Run Aliquot ", e);
 			throw new RuntimeException("Error in saving Run Aliquot ");
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 	}
 
 	public AliquotBean getAliquot(String aliquotId) throws Exception {
 		AliquotBean aliquotBean = new AliquotBean();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
+
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			String hqlString = "from Aliquot aliquot where aliquot.id ='"
 					+ aliquotId + "'";
-			List results = ida.search(hqlString);
+			List results = session.createQuery(hqlString).list();
 			for (Object obj : results) {
 				Aliquot doAliquot = (Aliquot) obj;
 				aliquotBean.setAliquotId(aliquotId); // name
@@ -160,7 +160,8 @@ public class ExecuteWorkflowService {
 						.getStorageElementCollection();
 				for (Object storageObj : storageElements) {
 					StorageElement element = (StorageElement) storageObj;
-					if (element.getType().equals(CaNanoLabConstants.STORAGE_ROOM)) {
+					if (element.getType().equals(
+							CaNanoLabConstants.STORAGE_ROOM)) {
 						location.setRoom(element.getLocation());
 					} else if (element.getType().equals(
 							CaNanoLabConstants.STORAGE_FREEZER)) {
@@ -180,8 +181,8 @@ public class ExecuteWorkflowService {
 					}
 				}
 				containerBean.setStorageLocation(location);
-
 				aliquotBean.setContainer(containerBean);
+				HibernateUtil.commitTransaction();
 			}
 		} catch (Exception e) {
 			logger.error("Error in retrieving aliquot information with id -- "
@@ -190,7 +191,7 @@ public class ExecuteWorkflowService {
 					"Error in retrieving aliquot information with name -- "
 							+ aliquotId);
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		if (aliquotBean.getAliquotId().length() == 0) {
 			return null;
@@ -214,19 +215,19 @@ public class ExecuteWorkflowService {
 		// Details of Saving to RUN Table
 
 		Long runId; // Run Id is the primary key of the saved Run
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
+
 		RunBean runBean = null;
 		logger.debug("ExecuteWorkflowService.saveRun(): assayName = "
 				+ assayName);
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 
 			Run doRun = new Run();
 
 			// Retrieve the max sequence number for assay run
 			String runName = CaNanoLabConstants.RUN
-					+ (getLastAssayRunNum(ida, assayName) + 1);
+					+ (getLastAssayRunNum(session, assayName) + 1);
 			logger.debug("ExecuteWorkflowService.saveRun(): new run name = "
 					+ runName);
 			doRun.setName(runName);
@@ -237,34 +238,34 @@ public class ExecuteWorkflowService {
 			doRun.setRunDate(runDate);
 
 			Assay assay = null;
-			List assayResults = ida
-					.search("from Assay assay where assay.name='" + assayName
-							+ "'");
+			List assayResults = session.createQuery(
+					"from Assay assay where assay.name='" + assayName + "'")
+					.list();
 			for (Object obj : assayResults) {
 				assay = (Assay) obj;
 			}
 			doRun.setAssay(assay);
 
-			runId = (Long) ida.createObject(doRun);
+			runId = (Long) session.save(doRun);
 			doRun.setId(runId);
 			runBean = new RunBean(doRun);
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
-			e.printStackTrace();
-			ida.rollback();
+			HibernateUtil.rollbackTransaction();
 			logger.error("Error in creating Run for assay. ", e);
 			throw new RuntimeException("Error in creating Run for assay. ");
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		return runBean;
 	}
 
-	private int getLastAssayRunNum(IDataAccess ida, String assayName) {
+	private int getLastAssayRunNum(Session session, String assayName) {
 		int runNum = 0;
 		try {
 			String hqlString = "select run.name from Run run join run.assay  assay where assay.name='"
 					+ assayName + "'";
-			List results = ida.search(hqlString);
+			List results = session.createQuery(hqlString).list();
 			for (Object obj : results) {
 				String runName = (String) obj;
 				int runSeqNum = Integer.parseInt(runName.substring(
@@ -284,114 +285,6 @@ public class ExecuteWorkflowService {
 		return runNum;
 	}
 
-	/*
-	 * public ExecuteWorkflowBean getExecuteWorkflowBean() throws Exception { //
-	 * long start = System.currentTimeMillis();
-	 * 
-	 * IDataAccess ida = (new DataAccessProxy())
-	 * .getInstance(IDataAccess.HIBERNATE);
-	 * 
-	 * ExecuteWorkflowBean workflowBean = new ExecuteWorkflowBean();
-	 * 
-	 * Map<String, SortedSet<AssayBean>> assayTypeAssayMap = new HashMap<String,
-	 * SortedSet<AssayBean>>(); Map<String, SortedSet<RunBean>> assayRunMap =
-	 * new HashMap<String, SortedSet<RunBean>>(); Map<String, SortedSet<AliquotBean>>
-	 * runAliquotMap = new HashMap<String, SortedSet<AliquotBean>>(); Map<String,
-	 * SortedSet<FileBean>> runInFileMap = new HashMap<String, SortedSet<FileBean>>();
-	 * Map<String, SortedSet<FileBean>> runOutFileMap = new HashMap<String,
-	 * SortedSet<FileBean>>();
-	 * 
-	 * SortedSet<AssayBean> assays; SortedSet<RunBean> runs; SortedSet<AliquotBean>
-	 * aliquots; SortedSet<FileBean> inFiles; SortedSet<FileBean> outFiles;
-	 * 
-	 * int assayCount = 0; int runCount = 0; int aliquotCount = 0; int
-	 * inFileCount = 0;
-	 * 
-	 * try { ida.open(); // Get all assay for AssayType String hqlStringAliquot =
-	 * "select assay, run, aliquot, aliquotStatus" + " from Assay assay left
-	 * join assay.runCollection run left join run.runSampleContainerCollection
-	 * runSampleContainer left join runSampleContainer.sampleContainer aliquot
-	 * left join aliquot.dataStatus aliquotStatus"; List results =
-	 * ida.search(hqlStringAliquot);
-	 * 
-	 * String hqlStringIn = "select assay, run, file, fileStatus" + " from Assay
-	 * assay left join assay.runCollection run left join run.inputFileCollection
-	 * file left join file.dataStatus fileStatus"; List resultsIn =
-	 * ida.search(hqlStringIn); String hqlStringOut = "select assay, run, file,
-	 * fileStatus" + " from Assay assay left join assay.runCollection run left
-	 * join run.outputFileCollection file left join file.dataStatus fileStatus";
-	 * 
-	 * List resultsOut = ida.search(hqlStringOut); results.addAll(resultsIn);
-	 * results.addAll(resultsOut);
-	 * 
-	 * for (Object obj : results) { Object[] items = (Object[]) obj; AssayBean
-	 * assayBean = new AssayBean((Assay) items[0]); RunBean runBean = null; if
-	 * (items[1] != null) { runBean = new RunBean((Run) items[1]); } AliquotBean
-	 * aliquotBean = null; FileBean inFileBean = null; FileBean outFileBean =
-	 * null; String statusStr = (items[3] == null) ?
-	 * CaNanoLabConstants.ACTIVE_STATUS : CaNanoLabConstants.MASK_STATUS; if (items[2]
-	 * instanceof Aliquot) { aliquotBean = new AliquotBean((Aliquot) items[2]);
-	 * aliquotBean.setMaskStatus(statusStr); } else if (items[2] instanceof
-	 * InputFile) { inFileBean = new FileBean((InputFile) items[2]);
-	 * inFileBean.setFileMaskStatus(statusStr); } else if (items[2] instanceof
-	 * OutputFile) { outFileBean = new FileBean((OutputFile) items[2]);
-	 * outFileBean.setFileMaskStatus(statusStr); }
-	 * 
-	 * if (assayTypeAssayMap.get(assayBean.getAssayType()) == null) { assays =
-	 * new TreeSet<AssayBean>( new CaNanoLabComparators.AssayBeanComparator());
-	 * assayTypeAssayMap.put(assayBean.getAssayType(), assays); } else { assays =
-	 * assayTypeAssayMap.get(assayBean.getAssayType()); } assays.add(assayBean);
-	 * 
-	 * if (runBean != null) { if (assayRunMap.get(assayBean.getAssayId()) ==
-	 * null) { runs = new TreeSet<RunBean>( new
-	 * CaNanoLabComparators.RunBeanComparator());
-	 * assayRunMap.put(assayBean.getAssayId(), runs); } else { runs =
-	 * assayRunMap.get(assayBean.getAssayId()); } runs.add(runBean); }
-	 * 
-	 * if (aliquotBean != null) { if (runAliquotMap.get(runBean.getId()) ==
-	 * null) { aliquots = new TreeSet<AliquotBean>( new
-	 * CaNanoLabComparators.AliquotBeanComparator());
-	 * runAliquotMap.put(runBean.getId(), aliquots); } else { aliquots =
-	 * runAliquotMap.get(runBean.getId()); } aliquots.add(aliquotBean); }
-	 * 
-	 * if (inFileBean != null) { if (runInFileMap.get(runBean.getId()) == null) {
-	 * inFiles = new TreeSet<FileBean>( new
-	 * CaNanoLabComparators.FileBeanComparator()); runInFileMap.put(runBean.getId(),
-	 * inFiles); } else { inFiles = runInFileMap.get(runBean.getId()); }
-	 * inFiles.add(inFileBean); }
-	 * 
-	 * if (outFileBean != null) { if (runOutFileMap.get(runBean.getId()) ==
-	 * null) { outFiles = new TreeSet<FileBean>( new
-	 * CaNanoLabComparators.FileBeanComparator());
-	 * runOutFileMap.put(runBean.getId(), outFiles); } else { outFiles =
-	 * runOutFileMap.get(runBean.getId()); } outFiles.add(outFileBean); } } //
-	 * Get all counts and parent child associations
-	 * workflowBean.setAssayTypeCount(assayTypeAssayMap.keySet().size()); for
-	 * (String assayType : assayTypeAssayMap.keySet()) { SortedSet<AssayBean>
-	 * typeAssays = assayTypeAssayMap .get(assayType); assayCount +=
-	 * typeAssays.size(); for (AssayBean assay : typeAssays) { SortedSet<RunBean>
-	 * assayRuns = assayRunMap.get(assay .getAssayId()); if (assayRuns != null) {
-	 * runCount += assayRuns.size(); assay.setRunBeans(new ArrayList<RunBean>(assayRuns));
-	 * for (RunBean run : assayRuns) { SortedSet<AliquotBean> runAliquots =
-	 * runAliquotMap .get(run.getId()); if (runAliquots != null) { aliquotCount +=
-	 * runAliquots.size(); run.setAliquotBeans(new ArrayList<AliquotBean>(
-	 * runAliquots)); } SortedSet<FileBean> runInFiles = runInFileMap
-	 * .get(run.getId()); if (runInFiles != null) { inFileCount +=
-	 * runInFiles.size(); run.setInputFileBeans(new ArrayList<FileBean>(
-	 * runInFiles)); } SortedSet<FileBean> runOutFiles = runOutFileMap
-	 * .get(run.getId()); if (runOutFiles != null) { run.setOutputFileBeans(new
-	 * ArrayList<FileBean>( runOutFiles)); } } } } }
-	 * workflowBean.setAssayCount(assayCount);
-	 * workflowBean.setRunCount(runCount);
-	 * workflowBean.setAliquotCount(aliquotCount);
-	 * workflowBean.setInputFileCount(inFileCount);
-	 * workflowBean.setAssayBeanMap(assayTypeAssayMap); } catch (Exception e) {
-	 * logger.error("Error in retriving execute workflow objects", e); throw new
-	 * RuntimeException( "Error in retriving execute workflow objects "); }
-	 * finally { ida.close(); } // System.out.println(System.currentTimeMillis() -
-	 * start); return workflowBean; }
-	 */
-
 	/**
 	 * Save the aliquot IDs to be associated with the given run ID.
 	 * 
@@ -405,12 +298,11 @@ public class ExecuteWorkflowService {
 		// fileList is a list of HttpUploadedFileData
 		Date date = Calendar.getInstance().getTime();
 
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			// TODO: only one run should be returned
-			Run doRun = (Run) ida.load(Run.class, StringUtils
+			Run doRun = (Run) session.load(Run.class, StringUtils
 					.convertToLong(runId));
 			// String assayName = doRun.getAssay().getName();
 			// String assayType = doRun.getAssay().getAssayType();
@@ -425,11 +317,11 @@ public class ExecuteWorkflowService {
 					FileNameConvertor fconvertor = new FileNameConvertor();
 					String filename = fconvertor.getConvertedFileName(fileData
 							.getFileName());
-					doInputFile.setUri(filepath + CaNanoLabConstants.URI_SEPERATOR
-							+ filename);
+					doInputFile.setUri(filepath
+							+ CaNanoLabConstants.URI_SEPERATOR + filename);
 					doInputFile.setFilename(getShortFilename(filename));
 
-					ida.store(doInputFile);
+					session.saveOrUpdate(doInputFile);
 					// logger.info("Object object retruned from inputfile = " +
 					// object);
 				} else if (inout.equalsIgnoreCase(CaNanoLabConstants.OUTPUT)) {
@@ -449,28 +341,29 @@ public class ExecuteWorkflowService {
 									.getFileName()));
 					doOutputFile.setFilename(getShortFilename(filename));
 
-					ida.store(doOutputFile);
+					session.save(doOutputFile);
 				}
 			}
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
-			ida.rollback();
-			e.printStackTrace();
+			HibernateUtil.rollbackTransaction();
+			logger.error("Error in persist File information for  run -> "
+					+ runId + " |  " + inout, e);
 			throw new RuntimeException(
 					"Error in persist File information for  run -> " + runId
 							+ " |  " + inout);
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 	}
 
 	public List<FileBean> getLastestFileListByRun(String runId, String type)
 			throws Exception {
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
 		List<FileBean> fileBeans = new ArrayList<FileBean>();
 		try {
-			ida.open();
-			Run doRun = (Run) ida.load(Run.class, StringUtils
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			Run doRun = (Run) session.load(Run.class, StringUtils
 					.convertToLong(runId));
 			if (type.equalsIgnoreCase("input")) {
 				Set inputFiles = (Set) doRun.getInputFileCollection();
@@ -478,15 +371,15 @@ public class ExecuteWorkflowService {
 				for (Object infile : inputFiles) {
 					InputFile doInputFile = (InputFile) infile;
 					/*
-					FileBean infileBean = new FileBean();					
-					infileBean.setId(doInputFile.getId().toString());
-					infileBean.setPath(doInputFile.getPath());
-					infileBean.setCreatedDate(doInputFile.getCreatedDate());
-					String status = (doInputFile.getDataStatus() == null) ? ""
-							: doInputFile.getDataStatus().getStatus();
-					infileBean.setFileMaskStatus(status);
-					*/
-					FileBean infileBean=new FileBean(doInputFile);
+					 * FileBean infileBean = new FileBean();
+					 * infileBean.setId(doInputFile.getId().toString());
+					 * infileBean.setPath(doInputFile.getPath());
+					 * infileBean.setCreatedDate(doInputFile.getCreatedDate());
+					 * String status = (doInputFile.getDataStatus() == null) ? "" :
+					 * doInputFile.getDataStatus().getStatus();
+					 * infileBean.setFileMaskStatus(status);
+					 */
+					FileBean infileBean = new FileBean(doInputFile);
 					fileBeans.add(infileBean);
 				}
 			} else if (type.equalsIgnoreCase("output")) {
@@ -494,26 +387,26 @@ public class ExecuteWorkflowService {
 				for (Object outfile : outputFiles) {
 					OutputFile doOutputFile = (OutputFile) outfile;
 					/*
-					FileBean outfileBean = new FileBean();
-					outfileBean.setId(doOutputFile.getId().toString());
-					outfileBean.setPath(doOutputFile.getPath());
-					outfileBean.setCreatedDate(doOutputFile.getCreatedDate());
-					String status = (doOutputFile.getDataStatus() == null) ? ""
-							: doOutputFile.getDataStatus().getStatus();
-					outfileBean.setFileMaskStatus(status);
-					*/
-					FileBean outfileBean=new FileBean(doOutputFile);
+					 * FileBean outfileBean = new FileBean();
+					 * outfileBean.setId(doOutputFile.getId().toString());
+					 * outfileBean.setPath(doOutputFile.getPath());
+					 * outfileBean.setCreatedDate(doOutputFile.getCreatedDate());
+					 * String status = (doOutputFile.getDataStatus() == null) ? "" :
+					 * doOutputFile.getDataStatus().getStatus();
+					 * outfileBean.setFileMaskStatus(status);
+					 */
+					FileBean outfileBean = new FileBean(doOutputFile);
 					fileBeans.add(outfileBean);
 				}
 			}
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
-			e.printStackTrace();
-			ida.rollback();
+			HibernateUtil.rollbackTransaction();
 			logger.error("Error in retrieving updated file list. ", e);
 			throw new RuntimeException(
 					"Error in retrieving updated file list. ");
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 
 		return fileBeans;
@@ -529,14 +422,14 @@ public class ExecuteWorkflowService {
 	}
 
 	public RunBean getRunBeanById(String runId) throws Exception {
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
+
 		RunBean runBean = new RunBean();
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			String hqlString = "select run.name, assay.name, assay.assayType from Run run join run.assay assay where run.id='"
 					+ runId + "'";
-			List results = ida.search(hqlString);
+			List results = session.createQuery(hqlString).list();
 			for (Object obj : results) {
 				Object[] values = (Object[]) obj;
 				runBean.setName(StringUtils.convertToString(values[0]));
@@ -546,11 +439,12 @@ public class ExecuteWorkflowService {
 				runBean.setAssayBean(assayBean);
 				break;
 			}
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Error in getting run by ID", e);
 			throw e;
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		return runBean;
 	}
@@ -558,8 +452,6 @@ public class ExecuteWorkflowService {
 	public RunBean getCurrentRun(String runId) throws Exception {
 		// long start = System.currentTimeMillis();
 
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
 		SortedSet<AliquotBean> aliquots = new TreeSet<AliquotBean>(
 				new CaNanoLabComparators.AliquotBeanComparator());
 
@@ -570,22 +462,23 @@ public class ExecuteWorkflowService {
 				new CaNanoLabComparators.FileBeanComparator());
 		RunBean runBean = null;
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			// Get all assay for AssayType
 			String hqlStringAliquot = "select run, aliquot, aliquotStatus"
 					+ " from Run run left join run.runSampleContainerCollection runSampleContainer left join runSampleContainer.sampleContainer aliquot left join aliquot.dataStatus aliquotStatus"
 					+ " where run.id='" + runId + "'";
-			List results = ida.search(hqlStringAliquot);
+			List results = session.createQuery(hqlStringAliquot).list();
 
 			String hqlStringIn = "select run, file, fileStatus"
 					+ " from Run run left join run.inputFileCollection file left join file.dataStatus fileStatus"
 					+ " where run.id='" + runId + "'";
-			List resultsIn = ida.search(hqlStringIn);
+			List resultsIn = session.createQuery(hqlStringIn).list();
 			String hqlStringOut = "select run, file, fileStatus"
 					+ " from Run run left join run.outputFileCollection file left join file.dataStatus fileStatus"
 					+ " where run.id='" + runId + "'";
 
-			List resultsOut = ida.search(hqlStringOut);
+			List resultsOut = session.createQuery(hqlStringOut).list();
 			results.addAll(resultsIn);
 			results.addAll(resultsOut);
 
@@ -620,13 +513,13 @@ public class ExecuteWorkflowService {
 					outFiles.add(outFileBean);
 				}
 			}
-
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			logger.error("Error in retrieving the specified run object", e);
 			throw new RuntimeException(
 					"Error in retrieving the specified run object");
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		if (runBean != null) {
 			runBean.setAliquotBeans(new ArrayList<AliquotBean>(aliquots));
@@ -664,16 +557,15 @@ public class ExecuteWorkflowService {
 		if (whereList.size() > 0) {
 			query = select + where;
 		}
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
 
 		Map<String, RunBean> runMap = new HashMap<String, RunBean>();
 		Map<String, SortedSet<AliquotBean>> runAliquotMap = new HashMap<String, SortedSet<AliquotBean>>();
 		SortedSet<AliquotBean> aliquots = null;
 		List<RunBean> runs = new ArrayList<RunBean>();
 		try {
-			ida.open();
-			List resultsOut = ida.searchByParam(query, paramList);
+			HibernateUtil.beginTransaction();
+			List resultsOut = HibernateUtil
+					.createQueryByParam(query, paramList).list();
 			for (Object obj : resultsOut) {
 				Object[] items = (Object[]) obj;
 				RunBean run = new RunBean((Run) items[0]);
@@ -717,11 +609,12 @@ public class ExecuteWorkflowService {
 					runs.add(run);
 				}
 			}
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			logger.error("Error in searching runs", e);
 			throw new RuntimeException("Error in searching runs");
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 
 		Collections.sort(runs, new CaNanoLabComparators.RunBeanComparator());

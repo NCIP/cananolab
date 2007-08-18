@@ -1,6 +1,6 @@
 package gov.nih.nci.calab.service.security;
 
-import gov.nih.nci.calab.db.HibernateDataAccess;
+import gov.nih.nci.calab.db.HibernateUtil;
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
@@ -35,9 +35,11 @@ import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.struts.tiles.beans.MenuItem;
 import org.hibernate.Hibernate;
 import org.hibernate.SQLQuery;
+import org.hibernate.Session;
 
 /**
  * This class takes care of authentication and authorization of a user and group
@@ -46,6 +48,8 @@ import org.hibernate.SQLQuery;
  * 
  */
 public class UserService {
+	private Logger logger = Logger.getLogger(UserService.class);
+
 	private AuthenticationManager authenticationManager = null;
 
 	private AuthorizationManager authorizationManager = null;
@@ -166,6 +170,7 @@ public class UserService {
 		return checkPermission(user, protectionElementObjectId,
 				CaNanoLabConstants.CSM_DELETE_PRIVILEGE);
 	}
+
 	/**
 	 * Check whether user can execute the menuItems in session, each defined as
 	 * a protection element using UPT tool. The excluded menuItems are not
@@ -438,25 +443,28 @@ public class UserService {
 	public List<String> getExistingRoleIds(ProtectionGroup pg, Group group)
 			throws Exception {
 		List<String> roleIds = new ArrayList<String>();
-		HibernateDataAccess hda = HibernateDataAccess.getInstance();
+
 		String query = "select distinct role_id from csm_user_group_role_pg "
 				+ "where protection_group_id=" + pg.getProtectionGroupId()
 				+ " and group_id=" + group.getGroupId();
 		try {
-			hda.open();
-			SQLQuery queryObj = hda.getNativeQuery(query);
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			SQLQuery queryObj = session.createSQLQuery(query);
 			queryObj.addScalar("ROLE_ID", Hibernate.STRING);
 			List results = queryObj.list();
 			for (Object obj : results) {
 				String roleId = (String) obj;
 				roleIds.add(roleId);
 			}
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
+			logger.error("error getting existing roles from CSM database", e);
 			throw new Exception(
-					"error getting existing roles from CSM database:" + e);
+					"error getting existing roles from CSM database:" , e);
 
 		} finally {
-			hda.close();
+			HibernateUtil.closeSession();
 		}
 
 		return roleIds;
@@ -626,27 +634,29 @@ public class UserService {
 	public List<String> getAccessibleGroups(String objectName, String roleName)
 			throws Exception {
 		List<String> groups = new ArrayList<String>();
-		HibernateDataAccess hda = HibernateDataAccess.getInstance();
+
 		String query = "select d.GROUP_NAME GROUP_NAME from csm_protection_group a, csm_role b, csm_user_group_role_pg c, csm_group d	"
 				+ "where a.PROTECTION_GROUP_ID=c.PROTECTION_GROUP_ID and b.ROLE_ID=c.ROLE_ID and c.GROUP_ID=d.GROUP_ID and "
 				+ "a.PROTECTION_GROUP_NAME='"
 				+ objectName
 				+ "' and b.ROLE_NAME='" + roleName + "'";
 		try {
-			hda.open();
-			SQLQuery queryObj = hda.getNativeQuery(query);
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			SQLQuery queryObj = session.createSQLQuery(query);
 			queryObj.addScalar("GROUP_NAME", Hibernate.STRING);
 			List results = queryObj.list();
 			for (Object obj : results) {
 				String group = (String) obj;
 				groups.add(group);
 			}
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			throw new Exception(
-					"error getting accessible groups from CSM database:" + e);
+					"error getting accessible groups from CSM database:" , e);
 
 		} finally {
-			hda.close();
+			HibernateUtil.closeSession();
 		}
 		return groups;
 	}
@@ -718,21 +728,24 @@ public class UserService {
 		Role role = this.getRole(roleName);
 		Group group = this.getGroup(groupName);
 
-		HibernateDataAccess hda = HibernateDataAccess.getInstance();
 		String query = "delete from csm_user_group_role_pg "
 				+ "where PROTECTION_GROUP_ID=" + pg.getProtectionGroupId()
 				+ "and ROLE_ID=" + role.getId() + " and GROUP_ID="
 				+ group.getGroupId();
 		try {
-			hda.open();
-			Connection connection = hda.getConnection();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			Connection connection = session.connection();
 			Statement stmt = connection.createStatement();
 			stmt.execute(query);
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
+			HibernateUtil.rollbackTransaction();
+			logger.error("Error getting accessible groups from CSM database", e);
 			throw new Exception(
-					"error getting accessible groups from CSM database:" + e);
+					"error getting accessible groups from CSM database:" , e);
 		} finally {
-			hda.close();
+			HibernateUtil.closeSession();
 		}
 	}
 
@@ -756,7 +769,6 @@ public class UserService {
 			}
 		}
 
-		HibernateDataAccess hda = HibernateDataAccess.getInstance();
 		String query = "delete from csm_user_group_role_pg "
 				+ "where PROTECTION_GROUP_ID=" + pg.getProtectionGroupId()
 				+ "and ROLE_ID=" + role.getId();
@@ -765,15 +777,19 @@ public class UserService {
 					+ StringUtils.join(exceptionGroupIds, ",") + ")";
 		}
 		try {
-			hda.open();
-			Connection connection = hda.getConnection();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			Connection connection = session.connection();
 			Statement stmt = connection.createStatement();
 			stmt.execute(query);
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
+			HibernateUtil.rollbackTransaction();
+			logger.error("Error getting accessible groups from CSM database", e);
 			throw new Exception(
-					"error getting accessible groups from CSM database:" + e);
+					"error getting accessible groups from CSM database:", e);
 		} finally {
-			hda.close();
+			HibernateUtil.closeSession();
 		}
 	}
 

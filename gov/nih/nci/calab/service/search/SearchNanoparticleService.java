@@ -1,7 +1,6 @@
 package gov.nih.nci.calab.service.search;
 
-import gov.nih.nci.calab.db.DataAccessProxy;
-import gov.nih.nci.calab.db.IDataAccess;
+import gov.nih.nci.calab.db.HibernateUtil;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.function.Function;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
@@ -24,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
 
 /**
  * This class includes methods invovled in searching nanoparticles.
@@ -55,8 +55,6 @@ public class SearchNanoparticleService {
 			String[] characterizations, String[] keywords, String keywordType,
 			String[] summaries, String summaryType, UserBean user)
 			throws Exception {
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
 		List<ParticleBean> particles = new ArrayList<ParticleBean>();
 
 		try {
@@ -154,22 +152,22 @@ public class SearchNanoparticleService {
 			String hqlString = "select particle from Nanoparticle particle "
 					+ functionFrom + keywordFrom + summaryForm
 					+ characterizationFrom + where + whereStr;
+			HibernateUtil.beginTransaction();
 
-			ida.open();
-
-			List<? extends Object> results = (List<? extends Object>) ida
-					.searchByParam(hqlString, paramList);
+			List<? extends Object> results = (List<? extends Object>) (HibernateUtil
+					.createQueryByParam(hqlString, paramList)).list();
 			for (Object obj : new HashSet<Object>(results)) {
 				Nanoparticle particle = (Nanoparticle) obj;
 				ParticleBean particleBean = new ParticleBean(particle);
 				particles.add(particleBean);
 			}
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			logger
 					.error("Problem finding particles with thet given search parameters ");
 			throw e;
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 
 		UserService userService = new UserService(
@@ -197,28 +195,30 @@ public class SearchNanoparticleService {
 			throws Exception {
 
 		Nanoparticle particle = null;
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			// get the existing particle from database created during sample
 			// creation
-			List results = ida
-					.search("from Nanoparticle as particle left join fetch particle.keywordCollection where particle.name='"
-							+ particleName
-							+ "' and particle.type='"
-							+ particleType + "'");
+			List results = session
+					.createQuery(
+							"from Nanoparticle as particle left join fetch particle.keywordCollection where particle.name='"
+									+ particleName
+									+ "' and particle.type='"
+									+ particleType + "'").list();
 			for (Object obj : results) {
 				particle = (Nanoparticle) obj;
 			}
+			HibernateUtil.commitTransaction();
 			if (particle == null) {
 				throw new CalabException("No such particle in the database");
 			}
 		} catch (Exception e) {
-			logger.error("Problem finding particle with name: " + particleName);
+			logger.error("Problem finding particle with name: " + particleName,
+					e);
 			throw e;
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 
 		ParticleBean particleBean = new ParticleBean(particle);
@@ -235,17 +235,19 @@ public class SearchNanoparticleService {
 	public List<CharacterizationBean> getCharacterizationInfo(
 			String particleName, String particleType) throws Exception {
 		List<CharacterizationBean> charBeans = new ArrayList<CharacterizationBean>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
+
 		try {
 
-			ida.open();
-			List results = ida
-					.search("select chara.id, chara.name, chara.identificationName from Nanoparticle particle join particle.characterizationCollection chara where particle.name='"
-							+ particleName
-							+ "' and particle.type='"
-							+ particleType
-							+ "' order by chara.name, chara.identificationName");
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			List results = session
+					.createQuery(
+							"select chara.id, chara.name, chara.identificationName from Nanoparticle particle join particle.characterizationCollection chara where particle.name='"
+									+ particleName
+									+ "' and particle.type='"
+									+ particleType
+									+ "' order by chara.name, chara.identificationName")
+					.list();
 			for (Object obj : results) {
 				String charId = ((Object[]) obj)[0].toString();
 				String charName = (String) (((Object[]) obj)[1]);
@@ -254,59 +256,64 @@ public class SearchNanoparticleService {
 						charId, charName, viewTitle);
 				charBeans.add(charBean);
 			}
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			logger.error("Problem finding characterization info for particle: "
-					+ particleName);
+					+ particleName, e);
 			throw e;
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		return charBeans;
 	}
 
 	public Characterization getCharacterizationBy(String charId)
 			throws Exception {
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
+
 		Characterization aChar = null;
 		try {
 
-			ida.open();
-			List results = ida
-					.search(" from Characterization chara left join fetch chara.composingElementCollection left join fetch chara.derivedBioAssayDataCollection where chara.id="
-							+ charId);
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			List results = session
+					.createQuery(
+							" from Characterization chara left join fetch chara.composingElementCollection left join fetch chara.derivedBioAssayDataCollection where chara.id="
+									+ charId).list();
 			for (Object obj : results) {
 				aChar = (Characterization) obj;
 			}
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
-			logger.error("Problem finding characterization");
+			logger.error("Problem finding characterization", e);
 			throw e;
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		return aChar;
 	}
 
 	public Characterization getCharacterizationAndDerivedDataBy(String charId)
 			throws Exception {
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
+
 		Characterization aChar = null;
 		try {
 
-			ida.open();
-			List results = ida
-					.search(" from Characterization chara left join fetch chara.derivedBioAssayDataCollection assayData"
-							+ " left join fetch assayData.datumCollection datum"
-							+ " where chara.id=" + charId);
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			List results = session
+					.createQuery(
+							" from Characterization chara left join fetch chara.derivedBioAssayDataCollection assayData"
+									+ " left join fetch assayData.datumCollection datum"
+									+ " where chara.id=" + charId).list();
 			for (Object obj : results) {
 				aChar = (Characterization) obj;
 			}
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
-			logger.error("Problem finding characterization");
+			logger.error("Problem finding characterization", e);
 			throw e;
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		return aChar;
 	}
@@ -315,16 +322,16 @@ public class SearchNanoparticleService {
 			String particleType) throws Exception {
 		Map<String, List<FunctionBean>> funcTypeFuncs = new HashMap<String, List<FunctionBean>>();
 
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
 		try {
 
-			ida.open();
-			List results = ida
-					.search("select func.id, func.type, func.identificationName from Nanoparticle particle join particle.functionCollection func where particle.name='"
-							+ particleName
-							+ "' and particle.type='"
-							+ particleType + "'");
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			List results = session
+					.createQuery(
+							"select func.id, func.type, func.identificationName from Nanoparticle particle join particle.functionCollection func where particle.name='"
+									+ particleName
+									+ "' and particle.type='"
+									+ particleType + "'").list();
 			List<FunctionBean> funcs = new ArrayList<FunctionBean>();
 			for (Object obj : results) {
 				String funcId = ((Object[]) obj)[0].toString();
@@ -341,34 +348,37 @@ public class SearchNanoparticleService {
 				funcs.add(funcBean);
 
 			}
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			logger.error("Problem finding characterization info for particle: "
-					+ particleName);
+					+ particleName, e);
 			throw e;
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		return funcTypeFuncs;
 	}
 
 	public Function getFunctionBy(String funcId) throws Exception {
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
+
 		Function func = null;
 		try {
 
-			ida.open();
-			List results = ida
-					.search(" from Function func left join fetch func.linkageCollection link left join fetch link.agent agent left join fetch agent.agentTargetCollection where func.id="
-							+ funcId);
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			List results = session
+					.createQuery(
+							" from Function func left join fetch func.linkageCollection link left join fetch link.agent agent left join fetch agent.agentTargetCollection where func.id="
+									+ funcId).list();
 			for (Object obj : results) {
 				func = (Function) obj;
 			}
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
-			logger.error("Problem finding functions");
+			logger.error("Problem finding functions", e);
 			throw e;
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		return func;
 	}
@@ -384,9 +394,6 @@ public class SearchNanoparticleService {
 	public List<ParticleBean> advancedSearch(String particleType,
 			String[] functionTypes, List<SearchableBean> searchCriteria,
 			UserBean user) throws Exception {
-
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
 		List<ParticleBean> particleList = null;
 
 		try {
@@ -397,18 +404,19 @@ public class SearchNanoparticleService {
 			if (searchCriteria.isEmpty() || particleList.isEmpty()) {
 				return particleList;
 			}
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			for (SearchableBean searchBean : searchCriteria) {
-				List<ParticleBean> theParticles = searchParticlesBy(ida,
+				List<ParticleBean> theParticles = searchParticlesBy(session,
 						searchBean);
 				particleList.retainAll(theParticles);
 			}
-
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
-			logger.error("Problem finding particles.");
+			logger.error("Problem finding particles.", e);
 			throw e;
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		return particleList;
 	}
@@ -422,7 +430,7 @@ public class SearchNanoparticleService {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<ParticleBean> searchParticlesBy(IDataAccess ida,
+	public List<ParticleBean> searchParticlesBy(Session session,
 			SearchableBean charInfo) throws Exception {
 		List<ParticleBean> particles = new ArrayList<ParticleBean>();
 		// if no value range, don't query
@@ -448,14 +456,20 @@ public class SearchNanoparticleService {
 		}
 
 		String hqlString = hqlSelect + hqlWhere;
-
-		List results = ida.searchByParam(hqlString, paramList);
-		for (Object obj : results) {
-			Nanoparticle particle = (Nanoparticle) obj;
-			ParticleBean particleBean = new ParticleBean(particle);
-			particles.add(particleBean);
+		try {			
+			List results = HibernateUtil.createQueryByParam(hqlString,
+					paramList).list();
+			for (Object obj : results) {
+				Nanoparticle particle = (Nanoparticle) obj;
+				ParticleBean particleBean = new ParticleBean(particle);
+				particles.add(particleBean);
+			}			
 		}
+		catch (Exception e) {
 
+		} finally {
+			HibernateUtil.closeSession();
+		}
 		return particles;
 	}
 }

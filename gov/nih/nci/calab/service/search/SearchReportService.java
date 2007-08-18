@@ -1,7 +1,6 @@
 package gov.nih.nci.calab.service.search;
 
-import gov.nih.nci.calab.db.DataAccessProxy;
-import gov.nih.nci.calab.db.IDataAccess;
+import gov.nih.nci.calab.db.HibernateUtil;
 import gov.nih.nci.calab.domain.AssociatedFile;
 import gov.nih.nci.calab.domain.LabFile;
 import gov.nih.nci.calab.domain.Report;
@@ -16,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
 
 /**
  * This class includes methods invovled in searching reports.
@@ -24,30 +24,30 @@ import org.apache.log4j.Logger;
  * 
  */
 public class SearchReportService {
-	private static Logger logger = Logger
-	.getLogger(SearchReportService.class);	
+	private static Logger logger = Logger.getLogger(SearchReportService.class);
 
 	private UserService userService;
-	
-	public SearchReportService() throws Exception{
-		userService = new UserService(
-				CaNanoLabConstants.CSM_APP_NAME);
+
+	public SearchReportService() throws Exception {
+		userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
 
 	}
+
 	public List<LabFileBean> getReportByParticle(String particleName,
 			String particleType, UserBean user) throws Exception {
 		List<LabFileBean> fileBeans = new ArrayList<LabFileBean>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
 
 		try {
 
-			ida.open();
-			List results = ida
-					.search("select report.id, report.filename, report.uri from Nanoparticle particle join particle.reportCollection "
-							+ " report where particle.name='"
-							+ particleName
-							+ "' and particle.type='" + particleType + "'");
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			List results = session
+					.createQuery(
+							"select report.id, report.filename, report.uri from Nanoparticle particle join particle.reportCollection "
+									+ " report where particle.name='"
+									+ particleName
+									+ "' and particle.type='"
+									+ particleType + "'").list();
 
 			for (Object obj : results) {
 				String reportId = ((Object[]) obj)[0].toString();
@@ -65,14 +65,14 @@ public class SearchReportService {
 				fileBean.setType(CaNanoLabConstants.REPORT);
 				fileBeans.add(fileBean);
 			}
-
 			fileBeans = userService.getFilteredFiles(user, fileBeans);
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			logger.error("Problem finding report info for particle: "
-					+ particleName);
+					+ particleName, e);
 			throw e;
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		return fileBeans;
 	}
@@ -81,11 +81,8 @@ public class SearchReportService {
 			String reportType, String particleType, String[] functionTypes,
 			UserBean user) throws Exception {
 		List<LabFileBean> reports = new ArrayList<LabFileBean>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
 		try {
-
-			ida.open();
+			HibernateUtil.beginTransaction();
 			List<Object> paramList = new ArrayList<Object>();
 			List<String> whereList = new ArrayList<String>();
 			String where = "";
@@ -125,49 +122,54 @@ public class SearchReportService {
 				String hqlString1 = hqlString
 						+ "join particle.reportCollection report "
 						+ functionTypeFrom + where + whereStr;
-				results = ida.searchByParam(hqlString1, paramList);
+				results = HibernateUtil.createQueryByParam(hqlString1,
+						paramList).list();
 				String hqlString2 = hqlString
 						+ "join particle.associatedFileCollection report "
 						+ functionTypeFrom + where + whereStr;
-				List results2 = ida.searchByParam(hqlString2, paramList);
+				List results2 = HibernateUtil.createQueryByParam(hqlString2,
+						paramList).list();
 				if (results2 != null) {
 					results.addAll(results2);
 				}
 			} else {
 				if (reportType.equals(CaNanoLabConstants.REPORT)) {
 					hqlString += "join particle.reportCollection report ";
-				} else if (reportType.equals(CaNanoLabConstants.ASSOCIATED_FILE)) {
+				} else if (reportType
+						.equals(CaNanoLabConstants.ASSOCIATED_FILE)) {
 					hqlString += "join particle.associatedFileCollection report ";
 				}
 				hqlString += functionTypeFrom + where + whereStr;
-				results = ida.searchByParam(hqlString, paramList);
+				results = HibernateUtil
+						.createQueryByParam(hqlString, paramList).list();
 			}
 
 			for (Object obj : results) {
-				LabFileBean fileBean =null;
+				LabFileBean fileBean = null;
 				if (obj instanceof Report) {
-					fileBean=new LabFileBean((Report)obj);
+					fileBean = new LabFileBean((Report) obj);
 					fileBean.setInstanceType(CaNanoLabConstants.REPORT);
-				}
-				else {
-					fileBean=new LabFileBean((AssociatedFile)obj);
-					fileBean.setInstanceType(CaNanoLabConstants.ASSOCIATED_FILE);
+				} else {
+					fileBean = new LabFileBean((AssociatedFile) obj);
+					fileBean
+							.setInstanceType(CaNanoLabConstants.ASSOCIATED_FILE);
 				}
 				reports.add(fileBean);
 			}
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
-			logger.error("Problem finding report info.");
+			logger.error("Problem finding report info.", e);
 			throw e;
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 
-		List<LabFileBean> filteredReports = userService.getFilteredFiles(
-				user, reports);
+		List<LabFileBean> filteredReports = userService.getFilteredFiles(user,
+				reports);
 
 		return filteredReports;
 	}
-	
+
 	/**
 	 * retrieve sample report information including reportCollection and
 	 * associatedFileCollection
@@ -181,8 +183,7 @@ public class SearchReportService {
 			String particleType, String reportType, UserBean user)
 			throws Exception {
 		List<LabFileBean> fileBeans = new ArrayList<LabFileBean>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
+
 		String reportJoin = "reportCollection";
 		String associatedFileJoin = "associatedFileCollection";
 
@@ -191,36 +192,42 @@ public class SearchReportService {
 				+ particleName
 				+ "' and particle.type='" + particleType + "'";
 		if (reportType.equals(CaNanoLabConstants.REPORT)) {
-			hql=hql.replaceAll("reportType", reportJoin);
+			hql = hql.replaceAll("reportType", reportJoin);
 		} else if (reportType.equals(CaNanoLabConstants.ASSOCIATED_FILE)) {
-			hql=hql.replaceAll("reportType", associatedFileJoin);
+			hql = hql.replaceAll("reportType", associatedFileJoin);
 		}
 		try {
-			ida.open();
-			List results = ida.search(hql);
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			List results = session.createQuery(hql).list();
 			for (Object obj : results) {
 				LabFileBean fileBean = new LabFileBean((LabFile) obj);
 				fileBean.setInstanceType(reportType);
-				UserService userService = new UserService(
-						CaNanoLabConstants.CSM_APP_NAME);
-				List<String> accessibleGroups = userService
-						.getAccessibleGroups(fileBean.getId(),
-								CaNanoLabConstants.CSM_READ_ROLE);
-				String[] visibilityGroups = accessibleGroups
-						.toArray(new String[0]);
-				fileBean.setVisibilityGroups(visibilityGroups);
 				fileBeans.add(fileBean);
 			}
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			logger.error("Problem finding report info for particle: "
-					+ particleName);
+					+ particleName, e);
 			throw e;
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 
-		List<LabFileBean> filteredReports = userService.getFilteredFiles(
-				user, fileBeans);
+		List<LabFileBean> filteredReports = userService.getFilteredFiles(user,
+				fileBeans);
+		
+		// retrieve visible groups
+		UserService userService = new UserService(
+				CaNanoLabConstants.CSM_APP_NAME);
+
+		for (LabFileBean fileBean: filteredReports) {
+			List<String> accessibleGroups=userService.getAccessibleGroups(fileBean.getId(),
+							CaNanoLabConstants.CSM_READ_ROLE);
+			String[] visibilityGroups = accessibleGroups
+					.toArray(new String[0]);
+			fileBean.setVisibilityGroups(visibilityGroups);
+		}
 		return filteredReports;
 	}
 }

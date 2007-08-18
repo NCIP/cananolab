@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.search;
  * @author pansu
  */
 
-/* CVS $Id: RemoteSearchReportAction.java,v 1.12 2007-06-19 20:14:29 pansu Exp $ */
+/* CVS $Id: RemoteSearchReportAction.java,v 1.13 2007-08-18 02:05:08 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.remote.GridNodeBean;
@@ -206,7 +206,7 @@ public class RemoteSearchReportAction extends AbstractDispatchAction {
 						"File to download doesn't exist on the server");
 			}
 		} catch (Exception e) {
-			throw new CalabException("Error retrieving remote file:" + e);
+			throw new CalabException("Error retrieving remote file:" , e);
 		}
 		return null;
 	}

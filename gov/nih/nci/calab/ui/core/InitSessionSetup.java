@@ -585,10 +585,6 @@ public class InitSessionSetup {
 			session.setAttribute("remoteParticleAssociatedFiles",
 					associatedBeans);
 		}
-		// not part of the side menu, but need to up
-		if (session.getAttribute("newRemoteParticleCreated") != null) {
-			setParticleTypeParticles(session);
-		}
 		session.removeAttribute("newCharacterizationCreated");
 		session.removeAttribute("newFunctionCreated");
 		session.removeAttribute("newRemoteParticleCreated");

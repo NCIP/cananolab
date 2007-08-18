@@ -1,7 +1,6 @@
 package gov.nih.nci.calab.service.inventory;
 
-import gov.nih.nci.calab.db.DataAccessProxy;
-import gov.nih.nci.calab.db.IDataAccess;
+import gov.nih.nci.calab.db.HibernateUtil;
 import gov.nih.nci.calab.domain.LabFile;
 import gov.nih.nci.calab.domain.Sample;
 import gov.nih.nci.calab.dto.inventory.SampleBean;
@@ -16,13 +15,14 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
 
 /**
  * 
  * @author pansu
  * 
  */
-/* CVS $Id: SearchSampleService.java,v 1.1 2007-02-28 21:50:43 pansu Exp $ */
+/* CVS $Id: SearchSampleService.java,v 1.2 2007-08-18 02:05:10 pansu Exp $ */
 
 public class SearchSampleService {
 	private static Logger logger = Logger.getLogger(SearchSampleService.class);
@@ -46,8 +46,6 @@ public class SearchSampleService {
 			String sampleSubmitter, StorageLocation storageLocation)
 			throws Exception {
 		List<SampleBean> samples = new ArrayList<SampleBean>();
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
 
 		try {
 			List<Object> paramList = new ArrayList<Object>();
@@ -137,14 +135,15 @@ public class SearchSampleService {
 			String hqlString = "select sample from Sample sample "
 					+ storageFrom + where + whereStr;
 
-			ida.open();
+			HibernateUtil.beginTransaction();
 
-			List<? extends Object> results = (List<? extends Object>) ida
-					.searchByParam(hqlString, paramList);
+			List<? extends Object> results = (List<? extends Object>) (HibernateUtil
+					.createQueryByParam(hqlString, paramList).list());
 			for (Object obj : new HashSet<Object>(results)) {
 				Sample sample = (Sample) obj;
 				samples.add(new SampleBean(sample));
 			}
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			logger
 					.error("Error in searching sample by the given parameters",
@@ -152,10 +151,11 @@ public class SearchSampleService {
 			throw new RuntimeException(
 					"Error in searching sample by the given parameters");
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 
-		Collections.sort(samples, new CaNanoLabComparators.SampleBeanComparator());
+		Collections.sort(samples,
+				new CaNanoLabComparators.SampleBeanComparator());
 		return samples;
 	}
 
@@ -182,64 +182,61 @@ public class SearchSampleService {
 				sourceSampleId, dateAccessionedBegin, dateAccessionedEnd,
 				sampleSubmitter, storageLocation);
 	}
-	
+
 	public Sample searchSampleBy(String charId) throws Exception {
 		Sample sample = null;
-		IDataAccess ida = (new DataAccessProxy()).getInstance(IDataAccess.HIBERNATE);
-
 		try {
 
-			ida.open();
-			List results = ida
-					.search(" from Nanoparticle nano left join fetch nano.characterizationCollection chara" +
-					" where chara.id="
-					+ charId);
-			for(Object obj: results) {
-				sample=(Sample)obj;
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			List results = session.createQuery(
+					" from Nanoparticle nano left join fetch nano.characterizationCollection chara"
+							+ " where chara.id=" + charId).list();
+			for (Object obj : results) {
+				sample = (Sample) obj;
 			}
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			logger.error("Problem finding characterization");
 			throw e;
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
-		
+
 		return sample;
 	}
-	
+
 	public List<LabFile> searchLabFilesBy(String charId) throws Exception {
 		Sample sample = this.searchSampleBy(charId);
 
 		List<LabFile> labFiles = new ArrayList<LabFile>();
-		
+
 		if (sample != null) {
-		
-			IDataAccess ida = (new DataAccessProxy())
-					.getInstance(IDataAccess.HIBERNATE);
-			
 			LabFile labFile;
 			try {
-	
-				ida.open();
-				List results = ida
-						.search(" from Sample sample left join fetch sample.sampleContainerCollection" +
-								" left join fetch sample.sampleContainerCollection.runSampleContainerCollection" +
-								" left join fetch sample.sampleContainerCollection.runSampleContainerCollection.run" +
-								" left join fetch sample.sampleContainerCollection.runSampleContainerCollection.run.outputFileCollection" +
-								" where sample.id="
-								+ sample.getId());
-				for(Object obj: results) {
-					labFile=(LabFile)obj;
+
+				Session session = HibernateUtil.currentSession();
+				HibernateUtil.beginTransaction();
+				List results = session
+						.createQuery(
+								" from Sample sample left join fetch sample.sampleContainerCollection"
+										+ " left join fetch sample.sampleContainerCollection.runSampleContainerCollection"
+										+ " left join fetch sample.sampleContainerCollection.runSampleContainerCollection.run"
+										+ " left join fetch sample.sampleContainerCollection.runSampleContainerCollection.run.outputFileCollection"
+										+ " where sample.id=" + sample.getId())
+						.list();
+				for (Object obj : results) {
+					labFile = (LabFile) obj;
 					labFiles.add(labFile);
 				}
+				HibernateUtil.commitTransaction();
 			} catch (Exception e) {
-				logger.error("Problem finding characterization");
+				logger.error("Problem finding characterization", e);
 				throw e;
 			} finally {
-				ida.close();
+				HibernateUtil.closeSession();
 			}
 		}
 		return labFiles;
 	}
-
 }
