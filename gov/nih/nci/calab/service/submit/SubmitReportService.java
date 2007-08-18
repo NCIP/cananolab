@@ -69,7 +69,7 @@ public class SubmitReportService {
 		try {
 			Session session = HibernateUtil.currentSession();
 			HibernateUtil.beginTransaction();
-			session.saveOrUpdate(dataFile);
+			session.save(dataFile);
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			HibernateUtil.rollbackTransaction();

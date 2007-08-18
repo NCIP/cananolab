@@ -24,7 +24,7 @@ import org.hibernate.Session;
  */
 
 /*
- * CVS $Id: ManageAliquotService.java,v 1.9 2007-08-18 02:05:10 pansu Exp $
+ * CVS $Id: ManageAliquotService.java,v 1.10 2007-08-18 02:16:55 pansu Exp $
  */
 
 public class ManageAliquotService {
@@ -222,7 +222,7 @@ public class ManageAliquotService {
 								container);
 					}
 
-					session.saveOrUpdate(doAliquot);
+					session.save(doAliquot);
 
 					// 3. StorageElement
 					HashSet<StorageElement> storages = new HashSet<StorageElement>();
@@ -242,7 +242,7 @@ public class ManageAliquotService {
 							box = new StorageElement();
 							box.setLocation(boxValue);
 							box.setType(CaNanoLabConstants.STORAGE_BOX);
-							session.saveOrUpdate(box);
+							session.save(box);
 						}
 						storages.add(box);
 					}
@@ -263,7 +263,7 @@ public class ManageAliquotService {
 							shelf = new StorageElement();
 							shelf.setLocation(shelfValue);
 							shelf.setType(CaNanoLabConstants.STORAGE_SHELF);
-							session.saveOrUpdate(shelf);
+							session.save(shelf);
 						}
 						storages.add(shelf);
 					}
@@ -284,7 +284,7 @@ public class ManageAliquotService {
 							freezer = new StorageElement();
 							freezer.setLocation(freezerValue);
 							freezer.setType(CaNanoLabConstants.STORAGE_FREEZER);
-							session.saveOrUpdate(freezer);
+							session.save(freezer);
 						}
 						storages.add(freezer);
 					}
@@ -305,7 +305,7 @@ public class ManageAliquotService {
 							room = new StorageElement();
 							room.setLocation(roomValue);
 							room.setType(CaNanoLabConstants.STORAGE_ROOM);
-							session.saveOrUpdate(room);
+							session.save(room);
 						}
 						storages.add(room);
 					}

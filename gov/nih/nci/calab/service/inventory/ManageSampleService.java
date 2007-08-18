@@ -20,7 +20,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
-/* CVS $Id: ManageSampleService.java,v 1.12 2007-08-18 02:05:10 pansu Exp $ 
+/* CVS $Id: ManageSampleService.java,v 1.13 2007-08-18 02:16:55 pansu Exp $ 
  */
 public class ManageSampleService {
 	private static Logger logger = Logger.getLogger(ManageSampleService.class);
@@ -172,7 +172,7 @@ public class ManageSampleService {
 				} else {
 					source = new Source();
 					source.setOrganizationName(sampleSourceName);
-					session.saveOrUpdate(source);
+					session.save(source);
 				}
 				// Create releationship between this source and this sample
 				doSample.setSource(source);
@@ -263,7 +263,7 @@ public class ManageSampleService {
 						box = new StorageElement();
 						box.setLocation(boxValue);
 						box.setType(CaNanoLabConstants.STORAGE_BOX);
-						session.saveOrUpdate(box);
+						session.save(box);
 					}
 					// Create releationship between this source and this sample
 					storages.add(box);
@@ -285,7 +285,7 @@ public class ManageSampleService {
 						shelf = new StorageElement();
 						shelf.setLocation(shelfValue);
 						shelf.setType(CaNanoLabConstants.STORAGE_SHELF);
-						session.saveOrUpdate(shelf);
+						session.save(shelf);
 					}
 					// Create releationship between this source and this sample
 					storages.add(shelf);
@@ -307,7 +307,7 @@ public class ManageSampleService {
 						freezer = new StorageElement();
 						freezer.setLocation(freezerValue);
 						freezer.setType(CaNanoLabConstants.STORAGE_FREEZER);
-						session.saveOrUpdate(freezer);
+						session.save(freezer);
 					}
 					// Create releationship between this source and this sample
 					storages.add(freezer);
@@ -329,7 +329,7 @@ public class ManageSampleService {
 						room = new StorageElement();
 						room.setLocation(roomValue);
 						room.setType(CaNanoLabConstants.STORAGE_ROOM);
-						session.saveOrUpdate(room);
+						session.save(room);
 					}
 					// Create releationship between this source and this sample
 					storages.add(room);

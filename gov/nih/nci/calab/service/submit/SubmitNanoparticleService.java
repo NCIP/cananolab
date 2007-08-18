@@ -400,7 +400,7 @@ public class SubmitNanoparticleService {
 			instrument = new Instrument();
 			instrument.setType(instrumentBean.getType());
 			instrument.setManufacturer(instrumentBean.getManufacturer());
-			session.saveOrUpdate(instrument);
+			session.save(instrument);
 		}
 
 		InstrumentConfiguration instrumentConfig = null;
