@@ -94,7 +94,7 @@
 	<!-- definition for the particle general info update page -->
 	<definition name="submit.generalinfo.update" extends="calab.home">
 		<put name="calabSidemenu" value="/submit/sideParticleMenu.jsp" />
-		<put name="calabContent" value="/submit/bodyCreateNanoparticle.jsp" />
+		<put name="calabContent" value="/submit/bodyNanoparticleGeneralInfo.jsp" />
 		<put name="menu" value="submit" />
 	</definition>
 
