@@ -1,7 +1,6 @@
 package gov.nih.nci.calab.service.submit;
 
-import gov.nih.nci.calab.db.DataAccessProxy;
-import gov.nih.nci.calab.db.IDataAccess;
+import gov.nih.nci.calab.db.HibernateUtil;
 import gov.nih.nci.calab.domain.LabFile;
 import gov.nih.nci.calab.domain.LookupType;
 import gov.nih.nci.calab.domain.Protocol;
@@ -19,22 +18,24 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.upload.FormFile;
+import org.hibernate.Session;
 
 /**
  * 
- * @author chenhang 
+ * @author chenhang
  * 
  */
 
 /*
- * CVS $Id: SubmitProtocolService.java,v 1.11 2007-07-31 19:12:40 pansu Exp $
+ * CVS $Id: SubmitProtocolService.java,v 1.12 2007-08-18 02:05:09 pansu Exp $
  */
 
 public class SubmitProtocolService {
 	private static Logger logger = Logger
 			.getLogger(SubmitProtocolService.class);
+
 	private UserService userService;
-	
+
 	public SubmitProtocolService() throws Exception {
 		userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
 	}
@@ -48,13 +49,14 @@ public class SubmitProtocolService {
 	 *            the FormFile
 	 * @throws Exception
 	 */
-	public void createProtocol(ProtocolFileBean fileBean,
-			FormFile uploadedFile) throws Exception {
+	public void createProtocol(ProtocolFileBean fileBean, FormFile uploadedFile)
+			throws Exception {
 
 		// TODO saves protocol file to the file system
 		String fileName = null;
-		if (uploadedFile != null && (uploadedFile.getFileName() == null 
-				|| uploadedFile.getFileName().length() == 0)){
+		if (uploadedFile != null
+				&& (uploadedFile.getFileName() == null || uploadedFile
+						.getFileName().length() == 0)) {
 			uploadedFile = null;
 		}
 		if (uploadedFile != null) {
@@ -76,129 +78,135 @@ public class SubmitProtocolService {
 		dataFile.setDescription(fileBean.getDescription());
 		if (uploadedFile != null) {
 			dataFile.setFilename(uploadedFile.getFileName());
-			dataFile.setUri(CaNanoLabConstants.FOLDER_PROTOCOL
-					+ File.separator + fileName);
+			dataFile.setUri(CaNanoLabConstants.FOLDER_PROTOCOL + File.separator
+					+ fileName);
 		}
 		dataFile.setTitle(fileBean.getTitle().toUpperCase()); // convert to
 		// upper case
 		Date date = new Date();
 		dataFile.setCreatedDate(date);
-		//If the id is 
+		// If the id is
 		Long fileId = null;
 		Long protocolId = null;
-		//It might be new or old
-		if (isLong(fileBean.getId())){
+		// It might be new or old
+		if (isLong(fileBean.getId())) {
 			fileId = new Long(fileBean.getId());
 			dataFile.setId(fileId);
 		}
-		//It's a new version
+		// It's a new version
 		else {
 			dataFile.setVersion(fileBean.getId());
 		}
 		Protocol protocol = new Protocol();
-		//It can be a new name (numeric name) or an old id.
-		if (isLong(fileBean.getProtocolBean().getId())){
+		// It can be a new name (numeric name) or an old id.
+		if (isLong(fileBean.getProtocolBean().getId())) {
 			protocolId = new Long(fileBean.getProtocolBean().getId());
 			protocol.setId(protocolId);
 		}
-		//It's a new name
+		// It's a new name
 		else {
 			protocol.setName(fileBean.getProtocolBean().getId());
 		}
-		//protocol.setName(fileBean.getProtocolBean().getName());
+		// protocol.setName(fileBean.getProtocolBean().getName());
 		protocol.setType(fileBean.getProtocolBean().getType());
 
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
-
 		try {
-			ida.open();
-			if (protocol.getId() != null){
-				List results = ida.search("from Protocol where id='" + protocol.getId() + "'");
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			if (protocol.getId() != null) {
+				List results = session.createQuery(
+						"from Protocol where id='" + protocol.getId() + "'")
+						.list();
 				Protocol pl = null;
 				for (Object obj : results) {
 					pl = (Protocol) obj;
 				}
-				if (pl == null){
+				if (pl == null) {
 					protocol.setName(protocol.getId().toString());
 					protocol.setId(null);
-					ida.store(protocol);
+					session.saveOrUpdate(protocol);
 				}
+			} else {
+				session.saveOrUpdate(protocol);
 			}
-			else {
-				ida.store(protocol);
-			}
-			//Check datafile
-			if (dataFile.getId() != null){
-				List results = ida.search("from ProtocolFile where id='" + dataFile.getId() + "'");
+			// Check datafile
+			if (dataFile.getId() != null) {
+				List results = session
+						.createQuery(
+								"from ProtocolFile where id='"
+										+ dataFile.getId() + "'").list();
 				ProtocolFile pf = null;
 				for (Object obj : results) {
 					pf = (ProtocolFile) obj;
 				}
-				if (pf == null){
+				if (pf == null) {
 					dataFile.setVersion(dataFile.getId().toString());
 					dataFile.setId(null);
 					dataFile.setProtocol(protocol);
-					ida.store(dataFile);
-				}
-				else {
-					LabFile file = (LabFile) ida.load(LabFile.class, dataFile.getId());
+					session.saveOrUpdate(dataFile);
+				} else {
+					LabFile file = (LabFile) session.load(LabFile.class,
+							dataFile.getId());
 
 					file.setTitle(dataFile.getTitle().toUpperCase());
 					file.setDescription(dataFile.getDescription());
-					if (dataFile.getVersion() != null && dataFile.getVersion().length() > 0)
+					if (dataFile.getVersion() != null
+							&& dataFile.getVersion().length() > 0)
 						file.setVersion(dataFile.getVersion());
-					if (dataFile.getFilename() != null && dataFile.getFilename().length() > 0)
+					if (dataFile.getFilename() != null
+							&& dataFile.getFilename().length() > 0)
 						file.setFilename(dataFile.getFilename());
-					if (dataFile.getUri() != null && dataFile.getUri().length() > 0)
+					if (dataFile.getUri() != null
+							&& dataFile.getUri().length() > 0)
 						file.setUri(dataFile.getUri());
 				}
-			}
-			else {
+			} else {
 				dataFile.setProtocol(protocol);
-				ida.store(dataFile);
+				session.saveOrUpdate(dataFile);
 			}
-			
-			//add protocol type to database
-			ProtocolType protocolType=new ProtocolType();
-			addLookupType(ida, protocolType, protocol.getType());
+
+			// add protocol type to database
+			ProtocolType protocolType = new ProtocolType();
+			addLookupType(session, protocolType, protocol.getType());
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
-			e.printStackTrace();
-			ida.rollback();
-			logger.error("Problem saving protocol data: ");
+			HibernateUtil.rollbackTransaction();
+			logger.error("Problem saving protocol data: ", e);
 			throw e;
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 
 		userService.setVisiblity(dataFile.getId().toString(), fileBean
 				.getVisibilityGroups());
 
 	}
-	
-	private void addLookupType(IDataAccess ida, LookupType lookupType,
+
+	private void addLookupType(Session session, LookupType lookupType,
 			String type) throws Exception {
 		String className = lookupType.getClass().getSimpleName();
 
-		List results = ida.search("select count(distinct name) from "
-				+ className + " type where name='" + type + "'");
+		List results = session.createQuery(
+				"select count(distinct name) from " + className
+						+ " type where name='" + type + "'").list();
 		lookupType.setName(type);
 		int count = -1;
 		for (Object obj : results) {
 			count = ((Integer) (obj)).intValue();
 		}
 		if (count == 0) {
-			ida.createObject(lookupType);
+			session.save(lookupType);
 		}
 	}
-	
-	public void updateProtocol(ProtocolFileBean fileBean,
-			FormFile uploadedFile) throws Exception {
+
+	public void updateProtocol(ProtocolFileBean fileBean, FormFile uploadedFile)
+			throws Exception {
 
 		// TODO saves protocol file to the file system
 		String fileName = null;
-		if (uploadedFile != null && (uploadedFile.getFileName() == null 
-				|| uploadedFile.getFileName().length() == 0)){
+		if (uploadedFile != null
+				&& (uploadedFile.getFileName() == null || uploadedFile
+						.getFileName().length() == 0)) {
 			uploadedFile = null;
 		}
 		if (uploadedFile != null) {
@@ -216,38 +224,38 @@ public class SubmitProtocolService {
 							+ CaNanoLabConstants.FOLDER_PROTOCOL, true);
 		}
 
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
-
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 
-			LabFile file = (LabFile) ida.load(LabFile.class, Long.parseLong(fileBean.getId()));
+			LabFile file = (LabFile) session.load(LabFile.class, Long
+					.parseLong(fileBean.getId()));
 			file.setTitle(fileBean.getTitle().toUpperCase());
 			file.setDescription(fileBean.getDescription());
 			if (fileName != null && fileName.length() > 0) {
 				file.setFilename(fileName);
-				file.setUri(CaNanoLabConstants.FOLDER_PROTOCOL
-						+ File.separator + fileName);
+				file.setUri(CaNanoLabConstants.FOLDER_PROTOCOL + File.separator
+						+ fileName);
 			}
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
-			e.printStackTrace();
-			ida.rollback();
-			logger.error("Problem saving protocol data: ");
+			HibernateUtil.rollbackTransaction();
+			logger.error("Problem saving protocol data: ", e);
 			throw e;
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 
 		userService.setVisiblity(fileBean.getId().toString(), fileBean
 				.getVisibilityGroups());
 
 	}
-	private boolean isLong(String value){
+
+	private boolean isLong(String value) {
 		boolean isLong = true;
 		try {
 			double d = Long.parseLong(value);
-		}catch (NumberFormatException nfe){
+		} catch (NumberFormatException nfe) {
 			isLong = false;
 		}
 		return isLong;

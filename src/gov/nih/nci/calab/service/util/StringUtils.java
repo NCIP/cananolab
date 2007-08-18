@@ -14,7 +14,7 @@ import org.apache.log4j.Logger;
  * @author pansu
  * 
  */
-/* CVS $Id: StringUtils.java,v 1.17 2007-07-18 18:05:02 pansu Exp $ */
+/* CVS $Id: StringUtils.java,v 1.18 2007-08-18 02:05:08 pansu Exp $ */
 
 public class StringUtils {
 	private static Logger logger = Logger.getLogger(StringUtils.class);
@@ -253,7 +253,7 @@ public class StringUtils {
 			String dateString = StringUtils.convertDateToString(new Date(), "yyyyMMdd_HH-mm-ss-SSS");			
 			System.out.println(dateString);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 	}
 }

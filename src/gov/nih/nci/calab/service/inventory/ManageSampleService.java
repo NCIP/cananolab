@@ -1,7 +1,6 @@
 package gov.nih.nci.calab.service.inventory;
 
-import gov.nih.nci.calab.db.DataAccessProxy;
-import gov.nih.nci.calab.db.IDataAccess;
+import gov.nih.nci.calab.db.HibernateUtil;
 import gov.nih.nci.calab.domain.SampleContainer;
 import gov.nih.nci.calab.domain.SampleSOP;
 import gov.nih.nci.calab.domain.Source;
@@ -19,8 +18,9 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
 
-/* CVS $Id: ManageSampleService.java,v 1.11 2007-07-19 14:52:38 pansu Exp $ 
+/* CVS $Id: ManageSampleService.java,v 1.12 2007-08-18 02:05:10 pansu Exp $ 
  */
 public class ManageSampleService {
 	private static Logger logger = Logger.getLogger(ManageSampleService.class);
@@ -38,12 +38,12 @@ public class ManageSampleService {
 			sampleNamePrefix = CaNanoLabConstants.DEFAULT_SAMPLE_PREFIX;
 
 		long seqId = 0;
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
+
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			String hqlString = "select max(sample.sampleSequenceId) from Sample sample";
-			List results = ida.search(hqlString);
+			List results = session.createQuery(hqlString).list();
 			logger
 					.debug("ManageSampleService.getSampleSequenceId(): results.size = "
 							+ results.size());
@@ -59,12 +59,13 @@ public class ManageSampleService {
 			logger
 					.debug("ManageSampleService.getSampleSequenceId(): current seq id = "
 							+ seqId);
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
-			logger.error("Problem in retrieving default sample ID prefix.");
+			logger.error("Problem in retrieving default sample ID prefix.", e);
 			throw new RuntimeException(
 					"Problem in retrieving default sample ID prefix.");
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 
 		return sampleNamePrefix + (seqId + 1);
@@ -123,19 +124,19 @@ public class ManageSampleService {
 	public void saveSample(SampleBean sample, ContainerBean[] containers)
 			throws Exception {
 
-				// Get existing sampleType to compare
-		LookupService lookupService = new LookupService();		
+		// Get existing sampleType to compare
+		LookupService lookupService = new LookupService();
 
 		// check if the smaple is exist
 		// For NCL, sampleId + lotId is unique -- in SampleBean, sampleId
 		// issampleName
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
+
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			String hqlString = "select count(*) from Sample sample where sample.name = '"
 					+ sample.getSampleName() + "'";
-			List results = ida.search(hqlString);
+			List results = session.createQuery(hqlString).list();
 			if (results.iterator().hasNext()) {
 				Object obj = results.iterator().next();
 				logger
@@ -161,9 +162,9 @@ public class ManageSampleService {
 			String sampleSourceName = sample.getSampleSource();
 			if ((sampleSourceName != null)
 					&& (sampleSourceName.trim().length() > 0)) {
-				List existedSources = ida
-						.search("from Source source where source.organizationName = '"
-								+ sampleSourceName + "'");
+				List existedSources = session.createQuery(
+						"from Source source where source.organizationName = '"
+								+ sampleSourceName + "'").list();
 
 				Source source = null;
 				if (existedSources.size() > 0) {
@@ -171,7 +172,7 @@ public class ManageSampleService {
 				} else {
 					source = new Source();
 					source.setOrganizationName(sampleSourceName);
-					ida.store(source);
+					session.saveOrUpdate(source);
 				}
 				// Create releationship between this source and this sample
 				doSample.setSource(source);
@@ -199,9 +200,10 @@ public class ManageSampleService {
 			// primary key......
 			String sopName = sample.getSampleSOP();
 			if ((sopName != null) && (sopName.length() > 0)) {
-				List existedSOP = ida
-						.search("from SampleSOP sop where sop.name = '"
-								+ sopName + "'");
+				List existedSOP = session
+						.createQuery(
+								"from SampleSOP sop where sop.name = '"
+										+ sopName + "'").list();
 				SampleSOP sop = (SampleSOP) existedSOP.get(0);
 				doSample.setSampleSOP(sop);
 			}
@@ -209,7 +211,7 @@ public class ManageSampleService {
 			String classification = lookupService
 					.getParticleClassification(sample.getSampleType());
 			doSample.setClassification(classification);
-			ida.createObject(doSample);
+			session.save(doSample);
 
 			// Container list
 			for (int i = 0; i < containers.length; i++) {
@@ -249,10 +251,11 @@ public class ManageSampleService {
 				String boxValue = containers[i].getStorageLocation().getBox();
 
 				if ((boxValue != null) && (boxValue.trim().length() > 0)) {
-					List existedSE = ida
-							.search("from StorageElement se where se.type = '"
+					List existedSE = session.createQuery(
+							"from StorageElement se where se.type = '"
 									+ CaNanoLabConstants.STORAGE_BOX
-									+ "' and se.location = '" + boxValue + "'");
+									+ "' and se.location = '" + boxValue + "'")
+							.list();
 					StorageElement box = null;
 					if (existedSE.size() > 0) {
 						box = (StorageElement) existedSE.get(0);
@@ -260,7 +263,7 @@ public class ManageSampleService {
 						box = new StorageElement();
 						box.setLocation(boxValue);
 						box.setType(CaNanoLabConstants.STORAGE_BOX);
-						ida.store(box);
+						session.saveOrUpdate(box);
 					}
 					// Create releationship between this source and this sample
 					storages.add(box);
@@ -270,11 +273,11 @@ public class ManageSampleService {
 						.getShelf();
 
 				if ((shelfValue != null) && (shelfValue.trim().length() > 0)) {
-					List existedSE = ida
-							.search("from StorageElement se where se.type = '"
+					List existedSE = session.createQuery(
+							"from StorageElement se where se.type = '"
 									+ CaNanoLabConstants.STORAGE_SHELF
 									+ "' and se.location = '" + shelfValue
-									+ "'");
+									+ "'").list();
 					StorageElement shelf = null;
 					if (existedSE.size() > 0) {
 						shelf = (StorageElement) existedSE.get(0);
@@ -282,7 +285,7 @@ public class ManageSampleService {
 						shelf = new StorageElement();
 						shelf.setLocation(shelfValue);
 						shelf.setType(CaNanoLabConstants.STORAGE_SHELF);
-						ida.store(shelf);
+						session.saveOrUpdate(shelf);
 					}
 					// Create releationship between this source and this sample
 					storages.add(shelf);
@@ -292,11 +295,11 @@ public class ManageSampleService {
 						.getFreezer();
 
 				if ((freezerValue != null) && (freezerValue.length() > 0)) {
-					List existedSE = ida
-							.search("from StorageElement se where se.type = '"
+					List existedSE = session.createQuery(
+							"from StorageElement se where se.type = '"
 									+ CaNanoLabConstants.STORAGE_FREEZER
 									+ "' and se.location = '" + freezerValue
-									+ "'");
+									+ "'").list();
 					StorageElement freezer = null;
 					if (existedSE.size() > 0) {
 						freezer = (StorageElement) existedSE.get(0);
@@ -304,7 +307,7 @@ public class ManageSampleService {
 						freezer = new StorageElement();
 						freezer.setLocation(freezerValue);
 						freezer.setType(CaNanoLabConstants.STORAGE_FREEZER);
-						ida.store(freezer);
+						session.saveOrUpdate(freezer);
 					}
 					// Create releationship between this source and this sample
 					storages.add(freezer);
@@ -313,10 +316,12 @@ public class ManageSampleService {
 				String roomValue = containers[i].getStorageLocation().getRoom();
 
 				if ((roomValue != null) && (roomValue.length() > 0)) {
-					List existedSE = ida
-							.search("from StorageElement se where se.type = '"
-									+ CaNanoLabConstants.STORAGE_ROOM
-									+ "' and se.location = '" + roomValue + "'");
+					List existedSE = session
+							.createQuery(
+									"from StorageElement se where se.type = '"
+											+ CaNanoLabConstants.STORAGE_ROOM
+											+ "' and se.location = '"
+											+ roomValue + "'").list();
 					StorageElement room = null;
 					if (existedSE.size() > 0) {
 						room = (StorageElement) existedSE.get(0);
@@ -324,30 +329,29 @@ public class ManageSampleService {
 						room = new StorageElement();
 						room.setLocation(roomValue);
 						room.setType(CaNanoLabConstants.STORAGE_ROOM);
-						ida.store(room);
+						session.saveOrUpdate(room);
 					}
 					// Create releationship between this source and this sample
 					storages.add(room);
 				}
 
 				doSampleContainer.setSample(doSample);
-				ida.store(doSampleContainer);
+				session.saveOrUpdate(doSampleContainer);
 
 				logger
 						.debug("ManageSampleService.saveSample(): same again with storage info");
 				doSampleContainer.setStorageElementCollection(storages);
-				ida.store(doSampleContainer);
+				session.saveOrUpdate(doSampleContainer);
 			}
-
+			HibernateUtil.commitTransaction();
 		} catch (DuplicateEntriesException ce) {
 			throw ce;
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger.error("Problem saving the sample.");
-			ida.rollback();
+			logger.error("Problem saving the sample.", e);
+			HibernateUtil.rollbackTransaction();
 			throw e;
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 	}
 }

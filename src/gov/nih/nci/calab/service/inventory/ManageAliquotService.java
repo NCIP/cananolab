@@ -1,7 +1,6 @@
 package gov.nih.nci.calab.service.inventory;
 
-import gov.nih.nci.calab.db.DataAccessProxy;
-import gov.nih.nci.calab.db.IDataAccess;
+import gov.nih.nci.calab.db.HibernateUtil;
 import gov.nih.nci.calab.domain.Aliquot;
 import gov.nih.nci.calab.domain.Sample;
 import gov.nih.nci.calab.domain.SampleContainer;
@@ -16,6 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
 
 /**
  * 
@@ -24,7 +24,7 @@ import org.apache.log4j.Logger;
  */
 
 /*
- * CVS $Id: ManageAliquotService.java,v 1.8 2007-07-10 16:09:15 pansu Exp $
+ * CVS $Id: ManageAliquotService.java,v 1.9 2007-08-18 02:05:10 pansu Exp $
  */
 
 public class ManageAliquotService {
@@ -63,13 +63,12 @@ public class ManageAliquotService {
 	private int getLastSampleContainerAliquotNum(String containerName)
 			throws Exception {
 		int aliquotNum = 0;
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			String hqlString = "select child from Aliquot child join child.parentSampleContainerCollection parent where parent.name='"
 					+ containerName + "'";
-			List results = ida.search(hqlString);
+			List results = session.createQuery(hqlString).list();
 			for (Object obj : results) {
 				SampleContainer container = (SampleContainer) obj;
 				if (container instanceof Aliquot) {
@@ -82,6 +81,7 @@ public class ManageAliquotService {
 					}
 				}
 			}
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			logger
 					.error(
@@ -90,7 +90,7 @@ public class ManageAliquotService {
 			throw new RuntimeException(
 					"Error in retrieving the last sample container aliquot number");
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		return aliquotNum;
 	}
@@ -98,13 +98,12 @@ public class ManageAliquotService {
 	private int getLastAliquotChildAliquotNum(String parentAliquotName)
 			throws Exception {
 		int aliquotNum = 0;
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 			String hqlString = "select child from Aliquot parent join parent.childSampleContainerCollection child where parent.name='"
 					+ parentAliquotName + "'";
-			List results = ida.search(hqlString);
+			List results = session.createQuery(hqlString).list();
 			for (Object obj : results) {
 				SampleContainer container = (SampleContainer) obj;
 				if (container instanceof Aliquot) {
@@ -117,6 +116,7 @@ public class ManageAliquotService {
 					}
 				}
 			}
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			logger
 					.error(
@@ -125,7 +125,7 @@ public class ManageAliquotService {
 			throw new RuntimeException(
 					"Error in retrieving the last aliquot child aliquot number");
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 		return aliquotNum;
 	}
@@ -142,25 +142,25 @@ public class ManageAliquotService {
 	public void saveAliquots(boolean fromAliquot, String parentName,
 			List<AliquotBean[]> aliquotMatrix) throws Exception {
 		// Check to if the aliquot is from Sample or Aliqot
-		IDataAccess ida = (new DataAccessProxy())
-				.getInstance(IDataAccess.HIBERNATE);
 		try {
-			ida.open();
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 
 			Aliquot parentAliquot = null;
 			SampleContainer container = null;
 			Sample sample = null;
 			if (fromAliquot) {
 				// Get aliqot ID and load the object
-				List results = ida
-						.search("select aliquot, aliquot.sample from Aliquot aliquot where aliquot.name='"
-								+ parentName + "'");
+				List results = session.createQuery(
+						"select aliquot, aliquot.sample from Aliquot aliquot where aliquot.name='"
+								+ parentName + "'").list();
 				parentAliquot = (Aliquot) ((Object[]) results.get(0))[0];
 				sample = (Sample) ((Object[]) results.get(0))[1];
 			} else {
-				List results = ida
-						.search("select container, container.sample from SampleContainer container where container.name='"
-								+ parentName + "'");
+				List results = session
+						.createQuery(
+								"select container, container.sample from SampleContainer container where container.name='"
+										+ parentName + "'").list();
 				container = (SampleContainer) ((Object[]) results.get(0))[0];
 				sample = (Sample) ((Object[]) results.get(0))[1];
 			}
@@ -171,10 +171,10 @@ public class ManageAliquotService {
 				for (int i = 0; i < aliquotBeans.length
 						&& aliquotBeans[i] != null; i++) {
 					// check if the same aliquot name exists in the system
-					int total = ida.search(
+					int total = session.createQuery(
 							"from Aliquot aliquot where aliquot.name='"
 									+ aliquotBeans[i].getAliquotName() + "'")
-							.size();
+							.list().size();
 					if (total > 0) {
 						throw new DuplicateEntriesException(
 								"The aliquot(s) already exists in the system.  Please use the Create Aliquot page to create new aliquots. ");
@@ -206,7 +206,7 @@ public class ManageAliquotService {
 					doAliquot.setVolume(StringUtils
 							.convertToFloat(containerBean.getVolume()));
 					doAliquot.setVolumeUnit(containerBean.getVolumeUnit());
-					doAliquot.setCreatedMethod(getCreatedMethod(ida,
+					doAliquot.setCreatedMethod(getCreatedMethod(session,
 							aliquotBean.getHowCreated()));
 					doAliquot.setCreatedBy(aliquotBean.getCreator());
 					doAliquot.setCreatedDate(aliquotBean.getCreationDate());
@@ -222,19 +222,19 @@ public class ManageAliquotService {
 								container);
 					}
 
-					ida.createObject(doAliquot);
+					session.saveOrUpdate(doAliquot);
 
 					// 3. StorageElement
 					HashSet<StorageElement> storages = new HashSet<StorageElement>();
 
-					String boxValue =  containerBean.getStorageLocation().getBox();
+					String boxValue = containerBean.getStorageLocation()
+							.getBox();
 					if ((boxValue != null) && (boxValue.length() > 0)) {
-						List existedSE = ida
-								.search("from StorageElement se where se.type = '"
+						List existedSE = session.createQuery(
+								"from StorageElement se where se.type = '"
 										+ CaNanoLabConstants.STORAGE_BOX
-										+ "' and se.location = '"
-										+ boxValue
-										+ "'");
+										+ "' and se.location = '" + boxValue
+										+ "'").list();
 						StorageElement box = null;
 						if (existedSE.size() > 0) {
 							box = (StorageElement) existedSE.get(0);
@@ -242,20 +242,20 @@ public class ManageAliquotService {
 							box = new StorageElement();
 							box.setLocation(boxValue);
 							box.setType(CaNanoLabConstants.STORAGE_BOX);
-							ida.store(box);
+							session.saveOrUpdate(box);
 						}
 						storages.add(box);
 					}
 
-					String shelfValue = containerBean.getStorageLocation().getShelf();
+					String shelfValue = containerBean.getStorageLocation()
+							.getShelf();
 
 					if ((shelfValue != null) && (shelfValue.length() > 0)) {
-						List existedSE = ida
-								.search("from StorageElement se where se.type = '"
+						List existedSE = session.createQuery(
+								"from StorageElement se where se.type = '"
 										+ CaNanoLabConstants.STORAGE_SHELF
-										+ "' and se.location = '"
-										+ shelfValue
-										+ "'");
+										+ "' and se.location = '" + shelfValue
+										+ "'").list();
 						StorageElement shelf = null;
 						if (existedSE.size() > 0) {
 							shelf = (StorageElement) existedSE.get(0);
@@ -263,7 +263,7 @@ public class ManageAliquotService {
 							shelf = new StorageElement();
 							shelf.setLocation(shelfValue);
 							shelf.setType(CaNanoLabConstants.STORAGE_SHELF);
-							ida.store(shelf);
+							session.saveOrUpdate(shelf);
 						}
 						storages.add(shelf);
 					}
@@ -272,11 +272,11 @@ public class ManageAliquotService {
 							.getFreezer();
 
 					if ((freezerValue != null) && (freezerValue.length() > 0)) {
-						List existedSE = ida
-								.search("from StorageElement se where se.type = '"
+						List existedSE = session.createQuery(
+								"from StorageElement se where se.type = '"
 										+ CaNanoLabConstants.STORAGE_FREEZER
 										+ "' and se.location = '"
-										+ freezerValue + "'");
+										+ freezerValue + "'").list();
 						StorageElement freezer = null;
 						if (existedSE.size() > 0) {
 							freezer = (StorageElement) existedSE.get(0);
@@ -284,7 +284,7 @@ public class ManageAliquotService {
 							freezer = new StorageElement();
 							freezer.setLocation(freezerValue);
 							freezer.setType(CaNanoLabConstants.STORAGE_FREEZER);
-							ida.store(freezer);
+							session.saveOrUpdate(freezer);
 						}
 						storages.add(freezer);
 					}
@@ -293,12 +293,11 @@ public class ManageAliquotService {
 							.getRoom();
 
 					if ((roomValue != null) && (roomValue.length() > 0)) {
-						List existedSE = ida
-								.search("from StorageElement se where se.type = '"
+						List existedSE = session.createQuery(
+								"from StorageElement se where se.type = '"
 										+ CaNanoLabConstants.STORAGE_ROOM
-										+ "' and se.location = '"
-										+ roomValue
-										+ "'");
+										+ "' and se.location = '" + roomValue
+										+ "'").list();
 						StorageElement room = null;
 						if (existedSE.size() > 0) {
 							room = (StorageElement) existedSE.get(0);
@@ -306,30 +305,32 @@ public class ManageAliquotService {
 							room = new StorageElement();
 							room.setLocation(roomValue);
 							room.setType(CaNanoLabConstants.STORAGE_ROOM);
-							ida.store(room);
+							session.saveOrUpdate(room);
 						}
 						storages.add(room);
 					}
 					doAliquot.setStorageElementCollection(storages);
-					ida.store(doAliquot);
+					session.saveOrUpdate(doAliquot);
 				}
 			}
+			HibernateUtil.commitTransaction();
 		} catch (DuplicateEntriesException ce) {
+			HibernateUtil.rollbackTransaction();
 			throw ce;
 		} catch (Exception e) {
-			e.printStackTrace();
-			ida.rollback();
+			logger.error("Error in saving aliquots", e);
+			HibernateUtil.rollbackTransaction();
 			throw e;
 		} finally {
-			ida.close();
+			HibernateUtil.closeSession();
 		}
 	}
 
-	private String getCreatedMethod(IDataAccess ida, String sopURI)
+	private String getCreatedMethod(Session session, String sopURI)
 			throws Exception {
 		String hqlString = "select sop.name from SampleSOP sop join sop.sampleSOPFileCollection sopFile where sopFile.uri='"
 				+ sopURI + "'";
-		List results = ida.search(hqlString);
+		List results = session.createQuery(hqlString).list();
 		for (Object obj : results) {
 			return (String) obj;
 		}

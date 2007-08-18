@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.23 2007-07-24 15:59:06 pansu Exp $ */
+/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.24 2007-08-18 02:05:10 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
@@ -98,8 +98,6 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 		InitSessionSetup.getInstance().clearWorkflowSession(session);
 		InitSessionSetup.getInstance().clearSearchSession(session);
 		InitSessionSetup.getInstance().clearInventorySession(session);
-
-		InitSessionSetup.getInstance().setParticleTypeParticles(session);
 		InitSessionSetup.getInstance().setAllVisibilityGroups(session);
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;

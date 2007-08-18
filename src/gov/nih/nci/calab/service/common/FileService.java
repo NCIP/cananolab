@@ -1,6 +1,6 @@
 package gov.nih.nci.calab.service.common;
 
-import gov.nih.nci.calab.db.HibernateDataAccess;
+import gov.nih.nci.calab.db.HibernateUtil;
 import gov.nih.nci.calab.domain.LabFile;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
@@ -17,6 +17,8 @@ import java.util.Date;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.upload.FormFile;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
 
 /**
  * Utility service for file retrieving and writing.
@@ -36,10 +38,12 @@ public class FileService {
 	 */
 	public void writeFileContent(Long fileId, OutputStream out)
 			throws Exception {
-		HibernateDataAccess hda = HibernateDataAccess.getInstance();
+
 		try {
-			hda.open();
-			LabFile labFile = (LabFile) hda.load(LabFile.class, fileId);
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			LabFile labFile = (LabFile) session.load(LabFile.class, fileId);
+			HibernateUtil.commitTransaction();
 			String fileRoot = PropertyReader
 					.getProperty(CaNanoLabConstants.FILEUPLOAD_PROPERTY,
 							"fileRepositoryDir");
@@ -52,16 +56,21 @@ public class FileService {
 			while ((numRead = in.read(bytes)) > 0) {
 				out.write(bytes, 0, numRead);
 			}
-			out.close();
-		} catch (SQLException e) {
+			out.close();			
+		} catch (HibernateException e) {
+			logger.error("error getting file meta data from the database.", e);
 			throw new Exception(
-					"error getting file meta data from the database:" + e);
+					"error getting file meta data from the database:" , e);
 		} catch (IOException e) {
+			logger
+					.error(
+							"Error getting file content from the file system and writing to the output stream",
+							e);
 			throw new Exception(
 					"error getting file content from the file system and writing to the output stream:"
-							+ e);
+							, e);
 		} finally {
-			hda.close();
+			HibernateUtil.closeSession();
 		}
 	}
 
@@ -73,14 +82,16 @@ public class FileService {
 	 * @throws Exception
 	 */
 	public byte[] getFileContent(Long fileId) throws Exception {
-		HibernateDataAccess hda = HibernateDataAccess.getInstance();
+
 		try {
-			hda.open();
-			LabFile labFile = (LabFile) hda.load(LabFile.class, fileId);
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			LabFile labFile = (LabFile) session.load(LabFile.class, fileId);
+			HibernateUtil.commitTransaction();
 			String fileRoot = PropertyReader
 					.getProperty(CaNanoLabConstants.FILEUPLOAD_PROPERTY,
 							"fileRepositoryDir");
-			if (labFile==null || labFile.getUri()==null) {
+			if (labFile == null || labFile.getUri() == null) {
 				return null;
 			}
 			File fileObj = new File(fileRoot + File.separator
@@ -117,17 +128,22 @@ public class FileService {
 
 			// Close the input stream and return bytes
 			is.close();
+			
 			return fileData;
 		} catch (SQLException e) {
+			logger.error("Error getting file meta data from the database", e);
 			throw new Exception(
-					"error getting file meta data from the database:" + e);
+					"error getting file meta data from the database:" , e);
 		} catch (IOException e) {
+			logger
+					.error(
+							"Error getting file content from the file system and writing to the output stream",
+							e);
 			throw new Exception(
 					"error getting file content from the file system and writing to the output stream:"
-							+ e);
-		}
-		finally {
-			hda.close();
+							, e);
+		} finally {
+			HibernateUtil.closeSession();
 		}
 	}
 
@@ -154,9 +170,9 @@ public class FileService {
 		File pathDir = new File(path);
 		if (!pathDir.exists())
 			pathDir.mkdirs();
-		File file=new File(fullFileName);
+		File file = new File(fullFileName);
 		if (file.exists()) {
-			return; //don't save again
+			return; // don't save again
 		}
 		FileOutputStream oStream = new FileOutputStream(new File(fullFileName));
 		oStream.write(fileContent);
@@ -174,7 +190,8 @@ public class FileService {
 	}
 
 	public static String prefixFileNameWithTimeStamp(String fileName) {
-		String newFileName = StringUtils.convertDateToString(new Date(), "yyyyMMdd_HH-mm-ss-SSS")
+		String newFileName = StringUtils.convertDateToString(new Date(),
+				"yyyyMMdd_HH-mm-ss-SSS")
 				+ "_" + fileName;
 		return newFileName;
 	}
