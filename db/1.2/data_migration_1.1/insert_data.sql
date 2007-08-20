@@ -203,7 +203,7 @@ end;
 
 insert into protocol
 (protocol_pk_id, protocol_name, protocol_type)
-select char_protocol_pk_id, name, 'In vitro assay'
+select char_protocol_pk_id, name, 'In Vitro assay'
 from characterization_protocol
 order by name;
 
@@ -813,15 +813,15 @@ UNIT_TYPE ) VALUES (
 INSERT INTO DEF_PROTOCOL_TYPE ( PROTOCOL_TYPE_PK_ID, NAME ) VALUES ( 
 1, 'Physical assay'); 
 INSERT INTO DEF_PROTOCOL_TYPE ( PROTOCOL_TYPE_PK_ID, NAME ) VALUES ( 
-2, 'In vivo assay'); 
+2, 'In Vivo assay'); 
 INSERT INTO DEF_PROTOCOL_TYPE ( PROTOCOL_TYPE_PK_ID, NAME ) VALUES ( 
 3, 'In Vitro assay'); 
 INSERT INTO DEF_PROTOCOL_TYPE ( PROTOCOL_TYPE_PK_ID, NAME ) VALUES ( 
-4, 'Radio labeling'); 
+4, 'Radio Labeling'); 
 INSERT INTO DEF_PROTOCOL_TYPE ( PROTOCOL_TYPE_PK_ID, NAME ) VALUES ( 
 5, 'Synthesis'); 
 INSERT INTO DEF_PROTOCOL_TYPE ( PROTOCOL_TYPE_PK_ID, NAME ) VALUES ( 
-6, 'Sample preparation'); 
+6, 'Sample Preparation'); 
 INSERT INTO DEF_PROTOCOL_TYPE ( PROTOCOL_TYPE_PK_ID, NAME ) VALUES ( 
 7, 'Safety'); 
 
@@ -939,6 +939,9 @@ select csm_user_grou_user_group_r_seq.nextval, null, v_admin_group, v_delete_rol
 from csm_protection_group b
 where b.PROTECTION_GROUP_NAME='characterization';
 
+exception
+    when no_data_found then
+	return;
 end; 
 /
 
