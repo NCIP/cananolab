@@ -203,7 +203,7 @@ end;
 
 insert into protocol
 (protocol_pk_id, protocol_name, protocol_type)
-select char_protocol_pk_id, name, 'In vitro assay'
+select char_protocol_pk_id, name, 'In Vitro assay'
 from characterization_protocol
 order by name;
 
@@ -558,11 +558,11 @@ where group_name='&appowner'||'_PI';
     
    select group_id into v_admin_group 
 from CSM_GROUP 
-where group_name='&appowner'||'_Administrator';
+where group_name='&&appowner'||'_Administrator';
 
    select group_id into v_researcher_group 
 from CSM_GROUP 
-where group_name='&appowner'||'_Researcher';
+where group_name='&&appowner'||'_Researcher';
 
   select role_id into v_read_role
 from CSM_ROLE 
@@ -589,6 +589,9 @@ select csm_user_grou_user_group_r_seq.nextval, null, v_admin_group, v_delete_rol
 from csm_protection_group b
 where b.PROTECTION_GROUP_NAME='characterization';
 
+exception
+    when no_data_found then
+	return;
 end; 
 /
 
