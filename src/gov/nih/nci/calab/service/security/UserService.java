@@ -29,6 +29,7 @@ import gov.nih.nci.security.exceptions.CSException;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -271,8 +272,11 @@ public class UserService {
 		List<String> groups = getAllGroups();
 		// filter out the ones starting with APP_OWNER
 		List<String> filteredGroups = new ArrayList<String>();
+		List<String> notShownGroups = Arrays
+				.asList(CaNanoLabConstants.VISIBLE_GROUPS);
 		for (String groupName : groups) {
-			if (!groupName.startsWith(CaNanoLabConstants.APP_OWNER)) {
+			if (!notShownGroups.contains(groupName)
+					&& !groupName.equals(CaNanoLabConstants.CSM_ADMIN)) {
 				filteredGroups.add(groupName);
 			}
 		}
@@ -461,7 +465,7 @@ public class UserService {
 		} catch (Exception e) {
 			logger.error("error getting existing roles from CSM database", e);
 			throw new Exception(
-					"error getting existing roles from CSM database:" , e);
+					"error getting existing roles from CSM database:", e);
 
 		} finally {
 			HibernateUtil.closeSession();
@@ -653,7 +657,7 @@ public class UserService {
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			throw new Exception(
-					"error getting accessible groups from CSM database:" , e);
+					"error getting accessible groups from CSM database:", e);
 
 		} finally {
 			HibernateUtil.closeSession();
@@ -741,9 +745,11 @@ public class UserService {
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			HibernateUtil.rollbackTransaction();
-			logger.error("Error getting accessible groups from CSM database", e);
+			logger
+					.error("Error getting accessible groups from CSM database",
+							e);
 			throw new Exception(
-					"error getting accessible groups from CSM database:" , e);
+					"error getting accessible groups from CSM database:", e);
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -785,7 +791,9 @@ public class UserService {
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			HibernateUtil.rollbackTransaction();
-			logger.error("Error getting accessible groups from CSM database", e);
+			logger
+					.error("Error getting accessible groups from CSM database",
+							e);
 			throw new Exception(
 					"error getting accessible groups from CSM database:", e);
 		} finally {
