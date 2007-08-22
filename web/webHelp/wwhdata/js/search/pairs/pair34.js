@@ -1,6 +1,8 @@
 function FileData_Pairs(x)
 {
+x.t("protocols","nanoparticle");
 x.t("publishing","nanoparticle");
+x.t("managing","protocols");
 x.t("discussed","section");
 x.t("publish","reports");
 x.t("characterization","publishing");
@@ -9,11 +11,13 @@ x.t("annotating","nanoparticle");
 x.t("cananolab","allows");
 x.t("cananolab","topics");
 x.t("allows","submit");
+x.t("nanoparticles","managing");
 x.t("nanoparticles","publish");
 x.t("nanoparticles","annotating");
 x.t("nanoparticles","submit");
 x.t("feature","cananolab");
 x.t("annotations","nanoparticles");
+x.t("function","annotating");
 x.t("section","include");
 x.t("submitting","annotations");
 x.t("reports","cananolab");
@@ -22,6 +26,7 @@ x.t("submit","feature");
 x.t("submit","annotations");
 x.t("topics","discussed");
 x.t("nanoparticle","characterization");
+x.t("nanoparticle","function");
 x.t("nanoparticle","report");
 x.t("nanoparticle","nanoparticle");
 }
