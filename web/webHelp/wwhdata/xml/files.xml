@@ -159,6 +159,7 @@
     <Topic name="annotate_nano_help" href="Submit%20to%20caLAB.3.3.html#1126285" />
     <Topic name="nano_general_info_help" href="Submit%20to%20caLAB.3.4.html#1116422" />
     <Topic name="particle_tree_help" href="Submit%20to%20caLAB.3.5.html#1105095" />
+    <Topic name="submit_protocol_help" href="Submit%20to%20caLAB.3.7.html#1128669" />
     <Topic name="particle_function_help" href="Submit%20to%20caLAB.3.9.html#1118502" />
     <Topic name="composition_help" href="Submit%20to%20caLAB.3.12.html#1103655" />
     <Topic name="load_characterization_file_help" href="Submit%20to%20caLAB.3.22.html#1103003" />
@@ -186,6 +187,9 @@
     <Topic name="nano_search_results_help" href="Searching%20caLAB.4.12.html#1102726" />
     <Topic name="search_reports_help" href="Searching%20caLAB.4.14.html#1111098" />
     <Topic name="search_reports_results_help" href="Searching%20caLAB.4.15.html#1104802" />
+    <Topic name="search_protocol_help" href="Searching%20caLAB.4.17.html#1115894" />
+    <Topic name="protocol_search_results_help" href="Searching%20caLAB.4.18.html#1115920" />
+    <Topic name="protocol_file_help" href="Searching%20caLAB.4.19.html#1115928" />
     <Topic name="remote_nanoparticle_search_help" href="Searching%20caLAB.4.21.html#1114175" />
     <Topic name="remote_nanoparticle_search_results_help" href="Searching%20caLAB.4.22.html#1114478" />
     <Topic name="remote_reports_search_help" href="Searching%20caLAB.4.23.html#1114922" />
