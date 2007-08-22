@@ -65,7 +65,7 @@
 		<put name="nciHeader" value="/html/nciHeader.html" />
 		<put name="calabHeader" value="/html/calabHeader.html" />
 		<put name="calabContent" value="/bodyDisclaimer.jsp" />
-		<put name="calabFooter" value="/html/calabFooter.html" />
+		<put name="calabFooter" value="/bodyMessage.jsp" />
 		<put name="nciFooter" value="/html/nciFooter.html" />
 	</definition>
 </tiles-definitions>
