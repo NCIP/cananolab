@@ -1,11 +1,13 @@
 function FileData_Pairs(x)
 {
+x.t("searching","protocols");
 x.t("searching","aliquots");
 x.t("searching","cananolab");
 x.t("searching","nanoparticles");
 x.t("searching","workflow");
 x.t("searching","samples");
 x.t("searching","runs");
+x.t("protocols","remote");
 x.t("rather","rest");
 x.t("describes","cananolab");
 x.t("launching","cananolab");
@@ -30,7 +32,7 @@ x.t("search","option");
 x.t("search","topics");
 x.t("rest","search");
 x.t("started","cananolab");
-x.t("nanoparticles","remote");
+x.t("nanoparticles","searching");
 x.t("executing","workflow");
 x.t("workflow","searching");
 x.t("workflow","topic");
