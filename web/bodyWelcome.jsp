@@ -16,8 +16,8 @@
 			caNanoLab provides support for the annotation of nanoparticles with characterizations resulting 
 			from physical and in vitro nanoparticle assays and the sharing of these characterizations in a 
 			secure fashion. The diagram below describes the caNanoLab functionality and workflow: 			
-			
-			<img align="middle" src="images/calabworkflow.gif" alt="caNanoLab Workflow" width="720" height="540">
+			<br><br>
+			<img align="middle" src="images/functions_flowchart.gif" alt="caNanoLab flowchart">
 		<br>
 		<br>
 	</td>
