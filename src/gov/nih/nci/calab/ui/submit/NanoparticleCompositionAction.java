@@ -8,7 +8,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleCompositionAction.java,v 1.29 2007-07-18 20:59:35 pansu Exp $ */
+/* CVS $Id: NanoparticleCompositionAction.java,v 1.30 2007-08-24 17:59:04 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.CarbonNanotubeComposition;
@@ -309,7 +309,7 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		theForm.set("viewTitle", aChar.getIdentificationName());
 		theForm.set("description", aChar.getDescription());
 
-		return mapping.getInputForward();
+		return mapping.findForward("setup");
 	}
 
 	/**
