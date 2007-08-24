@@ -253,7 +253,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 					session, "Physical assay");
 		else
 			InitSessionSetup.getInstance().setAllProtocolNameVersionsByType(
-					session, "In vitro assay");
+					session, "In Vitro assay");
 
 		// set up other particle names from the same source
 		LookupService service = new LookupService();
