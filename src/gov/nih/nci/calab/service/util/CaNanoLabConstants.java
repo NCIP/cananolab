@@ -65,6 +65,10 @@ public class CaNanoLabConstants {
 	public static final String CANANOLAB_PROPERTY = "caNanoLab.properties";
 
 	public static final String CSM_READ_ROLE = "R";
+	
+	public static final String CSM_DELETE_ROLE = "D";
+	
+	public static final String CSM_EXECUTE_ROLE = "E";
 
 	public static final String CSM_READ_PRIVILEGE = "READ";
 
@@ -247,7 +251,6 @@ public class CaNanoLabConstants {
 		PARTICLE_CLASSIFICATION_MAP.put(COMPLEX_PARTICLE_TYPE, COMPLEX);
 	}
 
-	
 	public static final String CSM_PI = APP_OWNER + "_PI";
 
 	public static final String CSM_RESEARCHER = APP_OWNER + "_Researcher";
@@ -262,21 +265,34 @@ public class CaNanoLabConstants {
 	public static final String AUTO_COPY_CHARACTERIZATION_VIEW_TITLE_PREFIX = "copy_";
 
 	public static final String AUTO_COPY_CHARACTERIZATION_VIEW_COLOR = "red";
-	
+
 	public static final String UNIT_TYPE_CONCENTRATION = "Concentration";
-	
-	public static final String UNIT_TYPE_CHARGE	= "Charge";
-	
+
+	public static final String UNIT_TYPE_CHARGE = "Charge";
+
 	public static final String UNIT_TYPE_QUANTITY = "Quantity";
-	
+
 	public static final String UNIT_TYPE_AREA = "Area";
-	
+
 	public static final String UNIT_TYPE_SIZE = "Size";
-	
+
 	public static final String UNIT_TYPE_VOLUME = "Volume";
-	
+
 	public static final String UNIT_TYPE_MOLECULAR_WEIGHT = "Molecular Weight";
-	
+
 	public static final String UNIT_TYPE_ZETA_POTENTIAL = "Zeta Potential";
-	
+
+	public static final String CSM_PG_CHARACTERIZATION = "characterization";
+
+	public static final String CSM_PG_SUBMIT = "submit";
+
+	public static final String CSM_PG_INVENTORY = "inventory";
+
+	public static final String CSM_PG_WORKFLOW = "workflow";
+
+	public static final String CSM_PG_SEARCH = "search";
+
+	public static final String CSM_PG_REMOTE_SEARCH = "remote search";
+
+	public static final String CSM_PG_ADMIN = "administration";
 }
