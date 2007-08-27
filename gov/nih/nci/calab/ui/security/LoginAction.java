@@ -68,19 +68,22 @@ public class LoginAction extends AbstractBaseAction {
 
 	private void setUserSessionInfo(HttpSession session, String loginName)
 			throws Exception {
-		UserService userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
+		UserService userService = new UserService(
+				CaNanoLabConstants.CSM_APP_NAME);
 		UserBean user = userService.getUserBean(loginName);
 		session.setAttribute("user", user);
 		session.setAttribute("userService", userService);
-		
-		boolean canSubmit = userService.checkExecutePermission(user, "submit");
+
+		boolean canSubmit = userService.checkExecutePermission(user,
+				CaNanoLabConstants.CSM_PG_SUBMIT);
 		if (canSubmit) {
 			session.setAttribute("canUserSubmit", "true");
 		} else {
 			session.setAttribute("canUserSubmit", "false");
 		}
-		
-		boolean canDelete = userService.checkDeletePermission(user, "characterization");
+
+		boolean canDelete = userService.checkDeletePermission(user,
+				CaNanoLabConstants.CSM_PG_CHARACTERIZATION);
 		if (canDelete) {
 			session.setAttribute("canUserDeleteChars", "true");
 		} else {
