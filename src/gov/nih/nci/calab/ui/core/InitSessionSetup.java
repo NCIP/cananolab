@@ -881,13 +881,50 @@ public class InitSessionSetup {
 
 	/**
 	 * Create default CSM groups for default visible groups and admin
-	 * 
+	 * , and assign them with default protection groups and roles
 	 */
 	public void createDefaultCSMGroups() throws Exception {
 		for (String groupName : CaNanoLabConstants.VISIBLE_GROUPS) {
 			userService.createAGroup(groupName);
 		}
 		userService.createAGroup(CaNanoLabConstants.CSM_ADMIN);
+		//assign admin to role D on characterization
+		userService.assignGroupToProtectionGroupWithRole(
+				CaNanoLabConstants.CSM_ADMIN,
+				CaNanoLabConstants.CSM_PG_CHARACTERIZATION,
+				CaNanoLabConstants.CSM_DELETE_ROLE);
+		//assign admin to role E on administration
+		userService.assignGroupToProtectionGroupWithRole(
+				CaNanoLabConstants.CSM_ADMIN,
+				CaNanoLabConstants.CSM_PG_ADMIN,
+				CaNanoLabConstants.CSM_EXECUTE_ROLE);
+		
+		//assign pi to role E on submit, workflow, inventory
+		userService.assignGroupToProtectionGroupWithRole(
+				CaNanoLabConstants.CSM_PI,
+				CaNanoLabConstants.CSM_PG_SUBMIT,
+				CaNanoLabConstants.CSM_EXECUTE_ROLE);
+		
+		userService.assignGroupToProtectionGroupWithRole(
+				CaNanoLabConstants.CSM_PI,
+				CaNanoLabConstants.CSM_PG_INVENTORY,
+				CaNanoLabConstants.CSM_EXECUTE_ROLE);
+		
+		userService.assignGroupToProtectionGroupWithRole(
+				CaNanoLabConstants.CSM_PI,
+				CaNanoLabConstants.CSM_PG_WORKFLOW,
+				CaNanoLabConstants.CSM_EXECUTE_ROLE);
+		
+		//assign researcher to role E on workflow, inventory		
+		userService.assignGroupToProtectionGroupWithRole(
+				CaNanoLabConstants.CSM_RESEARCHER,
+				CaNanoLabConstants.CSM_PG_INVENTORY,
+				CaNanoLabConstants.CSM_EXECUTE_ROLE);
+		
+		userService.assignGroupToProtectionGroupWithRole(
+				CaNanoLabConstants.CSM_RESEARCHER,
+				CaNanoLabConstants.CSM_PG_WORKFLOW,
+				CaNanoLabConstants.CSM_EXECUTE_ROLE);
 	}
 
 	public void setAllInstruments(HttpSession session) throws Exception {
