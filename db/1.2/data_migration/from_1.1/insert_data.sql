@@ -116,6 +116,44 @@ select char_table_pk_id
 from characterization_table
 where labfile_pk_id is null;
 
+-- insert "D" as new role
+-- insert csm_role_privilege
+
+declare
+  v_application_id number;
+  v_delete_privilege_id number;
+  v_delete_role_cnt integer;
+begin
+   select application_id into v_application_id
+   from csm_application
+   where application_name='caNanoLab';
+
+   select privilege_id into v_delete_privilege_id
+   from csm_privilege
+   where privilege_name='DELETE';
+  
+   select count(*) into v_delete_role_cnt
+   from csm_role
+   where role_name='D';
+ 
+   if v_delete_role_cnt=0 then	
+   insert into csm_role
+   (role_id, role_name, role_description, application_id, active_flag, update_date)
+   values
+   (csm_role_role_id_seq.nextval, 'D', 'delete only', v_application_id, 1, sysdate);
+   
+   insert into csm_role_privilege
+   (role_privilege_id, role_id, privilege_id, update_date)
+   values
+   (csm_role_priv_role_privile_seq.nextval, csm_role_role_id_seq.currval, v_delete_privilege_id, sysdate);
+   end if;
+   
+exception
+   when no_data_found then
+      return;	
+end;
+/
+
 -- update the CSM 
 -- update_csm_pe_pg.sql
 
@@ -932,17 +970,8 @@ from lab_file a, csm_protection_group b
 where a.created_by='data_migration'
 and to_char(a.FILE_PK_ID)=b.PROTECTION_GROUP_NAME;
 
-    insert into csm_user_group_role_pg
-select csm_user_grou_user_group_r_seq.nextval, null, v_admin_group, v_delete_role, PROTECTION_GROUP_ID, sysdate
-from csm_protection_group b
-where b.PROTECTION_GROUP_NAME='characterization';
-
 exception
     when no_data_found then
 	return;
 end; 
 /
-
-
-
-
