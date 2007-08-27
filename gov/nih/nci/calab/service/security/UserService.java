@@ -818,4 +818,14 @@ public class UserService {
 					CaNanoLabConstants.CSM_READ_ROLE);
 		}
 	}
+
+	public void assignGroupToProtectionGroupWithRole(String groupName,
+			String protectionGroupName, String roleName) throws Exception {
+		Role deleteRole = getRole(roleName);
+		ProtectionGroup pg = getProtectionGroup(protectionGroupName);
+		Group group = getGroup(groupName);
+		userManager.assignGroupRoleToProtectionGroup(pg.getProtectionGroupId()
+				.toString(), group.getGroupId().toString(),
+				new String[] { deleteRole.getId().toString() });
+	}
 }
