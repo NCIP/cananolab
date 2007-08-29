@@ -134,7 +134,7 @@
 						</tr>
 						<tr>
 							<td class="leftLabel" valign="top">
-								<strong>Keywords <em>(one per line)</em> </strong>
+								<strong>Keywords <em>(one word per line)</em> </strong>
 							</td>
 							<td class="rightLabel">
 								<c:choose>
