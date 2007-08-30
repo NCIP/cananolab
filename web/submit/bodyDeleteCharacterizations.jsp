@@ -29,7 +29,7 @@ function confirmDeletion()
 						</h3>
 					</td>
 					<td align="right" width="15%">
-						<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=nano_general_info_help')" class="helpText">Help</a>
+						<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=delete_characterization_help')" class="helpText">Help</a>
 					</td>
 				</tr>
 
@@ -86,9 +86,9 @@ function confirmDeletion()
 			</table>
 		</c:when>
 		<c:otherwise>
-			<h4>
+			<font color="blue" size="-1"><b>MESSAGE: </b>
 				No Characterization exists under this category.
-			</h4>
+			</font>
 		</c:otherwise>
 	</c:choose>
 </html:form>
