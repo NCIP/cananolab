@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <meta http-equiv="Content-Style-Type" content="text/css" />
     <!-- MOTW-DISABLED saved from url=(0014)about:internet -->
-    <title>Masking a File</title>
+    <title>caNanoLab File Naming Conventions</title>
     <link rel="StyleSheet" href="css/About%20caLAB.css" type="text/css" media="all" />
     <link rel="StyleSheet" href="css/webworks.css" type="text/css" media="all" />
     <script type="text/javascript" language="JavaScript1.2" src="wwhdata/common/context.js"></script>
@@ -28,50 +28,14 @@
   <body style="" onLoad="WWHUpdate();" onUnload="WWHUnload();" onKeyDown="WWHHandleKeyDown((document.all||document.getElementById||document.layers)?event:null);" onKeyPress="WWHHandleKeyPress((document.all||document.getElementById||document.layers)?event:null);" onKeyUp="WWHHandleKeyUp((document.all||document.getElementById||document.layers)?event:null);">
     <br />
     <div class="WebWorks_Breadcrumbs" style="text-align: left;">
-      <a class="WebWorks_Breadcrumb_Link" href="About%20caLAB.2.1.html#1078900">Getting Started with caNanoLab  1.2</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="About%20caLAB.2.29.html#1078900">Working with Files</a> &gt; Masking a File</div>
+      <a class="WebWorks_Breadcrumb_Link" href="About%20caLAB.2.1.html#1085950">Getting Started with caNanoLab  1.2</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="About%20caLAB.2.30.html#1085950">Working with Files</a> &gt; caNanoLab File Naming Conventions</div>
     <hr align="left" />
     <blockquote>
-      <div class="Heading2"><a name="1078900">Masking a File</a></div>
-      <div class="Body_Text"><a name="1083578">Once you have uploaded a file, it is listed in the </a><span style="font-weight: bold;">In</span> folder of a run, along with other input files you may have uploaded. In caNanoLab 1.2, you cannot delete uploaded files from the system, but you can mask them. As an example for doing so, perhaps you accidentally uploaded the wrong file for an assay, and you do not want it to be recognized as an active file in the assay.</div>
-      <div class="Body_Text"><a name="1083507">To mask a file, follow these steps:</a></div>
-      <div class="Numbered_List_1_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1083508">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Numbered_List_1_inner" style="width: 18pt; white-space: nowrap;">1.	</div>
-            </td>
-            <td width="100%">
-              <div class="Numbered_List_1_inner"><a name="1083508">Click on the (+) symbol to open the </a><span style="font-weight: bold;">In</span> folder. Each item listed in the folder has been assigned to the open Run. Each is a hyperlink that can open its corresponding details.</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Numbered_List_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1083509">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">2.	</div>
-            </td>
-            <td width="100%">
-              <div class="Numbered_List_inner"><a name="1083509">Click the right-most link in the right pane of the </a>caNanoLab browser, <span style="font-weight: bold;">Mask </span><span style="font-weight: bold;">Files.</span></div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Body_Text_Indent_2"><a name="1083788">The browser displays in table format general information for the workflow, as </a>well as it lists the uploaded files.</div>
-      <div class="Numbered_List_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1083710">
-          <tr style="vertical-align: baseline;">
-            <td>
-              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">3.	</div>
-            </td>
-            <td width="100%">
-              <div class="Numbered_List_inner"><a name="1083710">In the Uploaded Input Files table, </a><span style="font-weight: bold;">Mask Action</span> column, click the <span style="font-weight: bold;">Mask</span> hyper­text link corresponding to the file to be masked. </div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="Body_Text"><a name="1084726">Upon masking the file, it is still visible in the </a>Run Tree, but its name has been changed to itacilized font, indicating its masked status. You can still view the file details by clicking its name. The operating system loads the appropriate application for viewing the file.</div>
+      <div class="Heading2"><a name="1085950">caNanoLab F</a>ile Naming Conventions</div>
+      <div class="Body_Text"><a name="1083672">In the </a>caNanoLab Run Tree, an uploaded file is identified by its original file name. When you upload a file into caNanoLab, it is also assigned a caNanoLab-generated name, using this convention: </div>
+      <div class="Body_Text_Indent"><span class="Code"><a name="1115032">y</a></span><span class="Code">earmonthday_hour_min_second_{original file name}</span>. </div>
+      <div class="Body_Text"><a name="1115036">T</a>his name does not display in the Run Tree, but if you mouse over the file name, the full name displays as popup text. The full name also displays on the list of files that open when you click the <span style="font-weight: bold;">Mask Files</span> hypertext link when a Run is selected.  </div>
+      <div class="Body_Text"><a name="1083673">The time stamp, accurate to a millisecond, is added to a file name during the upload </a>procedure. You can upload duplicate files (as in a case where a file is modified), and the timestamp would differentiate between the two. The caNanoLab system can identify the person who uploaded a specific file.</div>
       <script type="text/javascript" language="JavaScript1.2">
         <!--
           // Clear related topics
@@ -80,9 +44,8 @@
 
           // Add related topics
           //
-          WWHAddRelatedTopic("Uploading Input/Output Files", "caNanoLab", "About%20caLAB.2.30.html#1086942");
-          WWHAddRelatedTopic("caNanoLab File Naming Conventions", "caNanoLab", "About%20caLAB.2.31.html#1085950");
-          WWHAddRelatedTopic("Downloading Files", "caNanoLab", "About%20caLAB.2.33.html#1085617");
+          WWHAddRelatedTopic("Uploading Input/Output Files", "caNanoLab", "About%20caLAB.2.31.html#1086942");
+          WWHAddRelatedTopic("Masking a File", "caNanoLab", "About%20caLAB.2.33.html#1078900");
 
           document.writeln(WWHRelatedTopicsInlineHTML());
         // -->

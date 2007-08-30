@@ -1,3 +1,49 @@
+div.Anchor_Para
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 6.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 0.0pt;
+  margin-left: 18pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+  text-align: Left;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Anchor_Para_outer
+{
+  margin-bottom: 0.0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+}
+
+.Anchor_Para_inner
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 6.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
 div.Appendix
 {
   color: #000000;
@@ -140,20 +186,20 @@ div.Blockquote
   font-style: italic;
   font-variant: normal;
   font-weight: normal;
-  margin-bottom: 0.0pt;
+  margin-bottom: 8.0pt;
   margin-left: 36pt;
-  margin-right: 0pt;
+  margin-right: 36pt;
   margin-top: 0.0pt;
-  text-align: justify;
-  text-indent: -18pt;
+  text-align: Left;
+  text-indent: 0pt;
   text-transform: none;
   vertical-align: baseline;
 }
 
 .Blockquote_outer
 {
-  margin-bottom: 0.0pt;
-  margin-right: 0pt;
+  margin-bottom: 8.0pt;
+  margin-right: 36pt;
   margin-top: 0.0pt;
 }
 
@@ -165,7 +211,7 @@ div.Blockquote
   font-style: italic;
   font-variant: normal;
   font-weight: normal;
-  text-align: justify;
+  text-align: Left;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -186,10 +232,10 @@ div.Body_Text
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  margin-bottom: 6.0pt;
+  margin-bottom: 8.0pt;
   margin-left: 0pt;
   margin-right: 0pt;
-  margin-top: 2.0pt;
+  margin-top: 0.0pt;
   text-align: Left;
   text-indent: 0pt;
   text-transform: none;
@@ -198,9 +244,9 @@ div.Body_Text
 
 .Body_Text_outer
 {
-  margin-bottom: 6.0pt;
+  margin-bottom: 8.0pt;
   margin-right: 0pt;
-  margin-top: 2.0pt;
+  margin-top: 0.0pt;
 }
 
 .Body_Text_inner
@@ -270,6 +316,52 @@ div.Body_Text_Before6
   padding-bottom: 0pt;
 }
 
+div.Body_Text_Drop_Down
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: bold;
+  margin-bottom: 8.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+  text-align: Left;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Body_Text_Drop_Down_outer
+{
+  margin-bottom: 8.0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+}
+
+.Body_Text_Drop_Down_inner
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: bold;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
 div.Body_Text_Indent
 {
   color: #000000;
@@ -278,11 +370,11 @@ div.Body_Text_Indent
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  margin-bottom: 6.0pt;
-  margin-left: 18pt;
+  margin-bottom: 8.0pt;
+  margin-left: 36pt;
   margin-right: 0pt;
-  margin-top: 3.0pt;
-  text-align: justify;
+  margin-top: 0.0pt;
+  text-align: Left;
   text-indent: 0pt;
   text-transform: none;
   vertical-align: baseline;
@@ -290,9 +382,9 @@ div.Body_Text_Indent
 
 .Body_Text_Indent_outer
 {
-  margin-bottom: 6.0pt;
+  margin-bottom: 8.0pt;
   margin-right: 0pt;
-  margin-top: 3.0pt;
+  margin-top: 0.0pt;
 }
 
 .Body_Text_Indent_inner
@@ -303,7 +395,7 @@ div.Body_Text_Indent
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  text-align: justify;
+  text-align: Left;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -324,11 +416,11 @@ div.Body_Text_Indent_2
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  margin-bottom: 6.0pt;
+  margin-bottom: 8.0pt;
   margin-left: 36pt;
   margin-right: 0pt;
-  margin-top: 3.0pt;
-  text-align: justify;
+  margin-top: 0.0pt;
+  text-align: Left;
   text-indent: 0pt;
   text-transform: none;
   vertical-align: baseline;
@@ -336,9 +428,9 @@ div.Body_Text_Indent_2
 
 .Body_Text_Indent_2_outer
 {
-  margin-bottom: 6.0pt;
+  margin-bottom: 8.0pt;
   margin-right: 0pt;
-  margin-top: 3.0pt;
+  margin-top: 0.0pt;
 }
 
 .Body_Text_Indent_2_inner
@@ -349,7 +441,7 @@ div.Body_Text_Indent_2
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  text-align: justify;
+  text-align: Left;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -370,11 +462,11 @@ div.Body_Text_Indent_3
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  margin-bottom: 6.0pt;
+  margin-bottom: 8.0pt;
   margin-left: 54pt;
   margin-right: 0pt;
-  margin-top: 3.0pt;
-  text-align: justify;
+  margin-top: 0.0pt;
+  text-align: Left;
   text-indent: 0pt;
   text-transform: none;
   vertical-align: baseline;
@@ -382,9 +474,9 @@ div.Body_Text_Indent_3
 
 .Body_Text_Indent_3_outer
 {
-  margin-bottom: 6.0pt;
+  margin-bottom: 8.0pt;
   margin-right: 0pt;
-  margin-top: 3.0pt;
+  margin-top: 0.0pt;
 }
 
 .Body_Text_Indent_3_inner
@@ -395,7 +487,7 @@ div.Body_Text_Indent_3
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  text-align: justify;
+  text-align: Left;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -509,10 +601,10 @@ div.Body_Text_Indent_No_Space
   font-variant: normal;
   font-weight: normal;
   margin-bottom: 0.0pt;
-  margin-left: 18pt;
+  margin-left: 36pt;
   margin-right: 0pt;
   margin-top: 0.0pt;
-  text-align: justify;
+  text-align: Left;
   text-indent: 0pt;
   text-transform: none;
   vertical-align: baseline;
@@ -533,7 +625,53 @@ div.Body_Text_Indent_No_Space
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  text-align: justify;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.Body_Text_Newpage
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 8.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+  text-align: Left;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Body_Text_Newpage_outer
+{
+  margin-bottom: 8.0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+}
+
+.Body_Text_Newpage_inner
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: Left;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -558,7 +696,7 @@ div.Body_Text_No_Space
   margin-left: 0pt;
   margin-right: 0pt;
   margin-top: 0.0pt;
-  text-align: justify;
+  text-align: Left;
   text-indent: 0pt;
   text-transform: none;
   vertical-align: baseline;
@@ -579,7 +717,7 @@ div.Body_Text_No_Space
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  text-align: justify;
+  text-align: Left;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -646,11 +784,11 @@ div.Bullet
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  margin-bottom: 0.0pt;
+  margin-bottom: 6.0pt;
   margin-left: 36pt;
   margin-right: 0pt;
-  margin-top: 4.0pt;
-  text-align: justify;
+  margin-top: 0.0pt;
+  text-align: Left;
   text-indent: -18pt;
   text-transform: none;
   vertical-align: baseline;
@@ -658,9 +796,9 @@ div.Bullet
 
 .Bullet_outer
 {
-  margin-bottom: 0.0pt;
+  margin-bottom: 6.0pt;
   margin-right: 0pt;
-  margin-top: 4.0pt;
+  margin-top: 0.0pt;
 }
 
 .Bullet_inner
@@ -671,7 +809,7 @@ div.Bullet
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  text-align: justify;
+  text-align: Left;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -692,11 +830,11 @@ div.Bullet_Indent
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  margin-bottom: 0.0pt;
+  margin-bottom: 6.0pt;
   margin-left: 54pt;
   margin-right: 0pt;
-  margin-top: 4.0pt;
-  text-align: justify;
+  margin-top: 0.0pt;
+  text-align: Left;
   text-indent: -18pt;
   text-transform: none;
   vertical-align: baseline;
@@ -704,9 +842,9 @@ div.Bullet_Indent
 
 .Bullet_Indent_outer
 {
-  margin-bottom: 0.0pt;
+  margin-bottom: 6.0pt;
   margin-right: 0pt;
-  margin-top: 4.0pt;
+  margin-top: 0.0pt;
 }
 
 .Bullet_Indent_inner
@@ -717,7 +855,53 @@ div.Bullet_Indent
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  text-align: justify;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.Bullet_Indent_2
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 6.0pt;
+  margin-left: 72pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+  text-align: Left;
+  text-indent: -18pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Bullet_Indent_2_outer
+{
+  margin-bottom: 6.0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+}
+
+.Bullet_Indent_2_inner
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: Left;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -834,7 +1018,7 @@ div.Callout
   margin-left: 0pt;
   margin-right: 0pt;
   margin-top: 0.0pt;
-  text-align: justify;
+  text-align: Left;
   text-indent: 0pt;
   text-transform: none;
   vertical-align: baseline;
@@ -855,7 +1039,53 @@ div.Callout
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  text-align: justify;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.Callout_Large
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: bold;
+  margin-bottom: 0.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+  text-align: Left;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Callout_Large_outer
+{
+  margin-bottom: 0.0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+}
+
+.Callout_Large_inner
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: bold;
+  text-align: Left;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -945,6 +1175,98 @@ div.Caption_Indent
   font-family: "Palatino Linotype";
   font-size: 11.0pt;
   font-style: italic;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.Caution_Indent
+{
+  color: #000000;
+  font-family: "Palatino Linotype";
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 6.0pt;
+  margin-left: 86.4pt;
+  margin-right: 0pt;
+  margin-top: 3.0pt;
+  text-align: Left;
+  text-indent: -50.400000000000006pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Caution_Indent_outer
+{
+  margin-bottom: 6.0pt;
+  margin-right: 0pt;
+  margin-top: 3.0pt;
+}
+
+.Caution_Indent_inner
+{
+  color: #000000;
+  font-family: "Palatino Linotype";
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.Caution_Main_Body
+{
+  color: #000000;
+  font-family: "Palatino Linotype";
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 10.0pt;
+  margin-left: 64.8pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+  text-align: Left;
+  text-indent: -51.839999999999996pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Caution_Main_Body_outer
+{
+  margin-bottom: 10.0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+}
+
+.Caution_Main_Body_inner
+{
+  color: #000000;
+  font-family: "Palatino Linotype";
+  font-size: 11.0pt;
+  font-style: normal;
   font-variant: normal;
   font-weight: normal;
   text-align: Left;
@@ -1102,7 +1424,7 @@ div.Code
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  margin-bottom: 0.0pt;
+  margin-bottom: 0.3pt;
   margin-left: 18pt;
   margin-right: 0pt;
   margin-top: 0.0pt;
@@ -1114,7 +1436,7 @@ div.Code
 
 .Code_outer
 {
-  margin-bottom: 0.0pt;
+  margin-bottom: 0.3pt;
   margin-right: 0pt;
   margin-top: 0.0pt;
 }
@@ -1148,7 +1470,7 @@ div.Code_Indent
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  margin-bottom: 0.0pt;
+  margin-bottom: 0.3pt;
   margin-left: 36pt;
   margin-right: 0pt;
   margin-top: 0.0pt;
@@ -1160,7 +1482,7 @@ div.Code_Indent
 
 .Code_Indent_outer
 {
-  margin-bottom: 0.0pt;
+  margin-bottom: 0.3pt;
   margin-right: 0pt;
   margin-top: 0.0pt;
 }
@@ -1186,14 +1508,244 @@ div.Code_Indent
   padding-bottom: 0pt;
 }
 
+div.Code_Indent_2
+{
+  color: #000000;
+  font-family: "Courier New";
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 0.3pt;
+  margin-left: 54pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+  text-align: Left;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Code_Indent_2_outer
+{
+  margin-bottom: 0.3pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+}
+
+.Code_Indent_2_inner
+{
+  color: #000000;
+  font-family: "Courier New";
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.Code_Indent_3
+{
+  color: #000000;
+  font-family: "Courier New";
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 0.3pt;
+  margin-left: 72pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+  text-align: Left;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Code_Indent_3_outer
+{
+  margin-bottom: 0.3pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+}
+
+.Code_Indent_3_inner
+{
+  color: #000000;
+  font-family: "Courier New";
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.Example
+{
+  color: #000000;
+  font-family: "Palatino Linotype";
+  font-size: 11.0pt;
+  font-style: italic;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 13.0pt;
+  margin-left: 18pt;
+  margin-right: 0pt;
+  margin-top: 3.0pt;
+  text-align: Left;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Example_outer
+{
+  margin-bottom: 13.0pt;
+  margin-right: 0pt;
+  margin-top: 3.0pt;
+}
+
+.Example_inner
+{
+  color: #000000;
+  font-family: "Palatino Linotype";
+  font-size: 11.0pt;
+  font-style: italic;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.Exercise_Heading
+{
+  color: #000000;
+  font-family: "Palatino Linotype";
+  font-size: 14.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 0.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 12.0pt;
+  text-align: Left;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Exercise_Heading_outer
+{
+  margin-bottom: 0.0pt;
+  margin-right: 0pt;
+  margin-top: 12.0pt;
+}
+
+.Exercise_Heading_inner
+{
+  color: #000000;
+  font-family: "Palatino Linotype";
+  font-size: 14.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.Exercise_HeadingTOC
+{
+  color: #000000;
+  font-family: "Palatino Linotype";
+  font-size: 12.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 0.0pt;
+  margin-left: 36pt;
+  margin-right: 0pt;
+  margin-top: 3.0pt;
+  text-align: Left;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Exercise_HeadingTOC_outer
+{
+  margin-bottom: 0.0pt;
+  margin-right: 0pt;
+  margin-top: 3.0pt;
+}
+
+.Exercise_HeadingTOC_inner
+{
+  color: #000000;
+  font-family: "Palatino Linotype";
+  font-size: 12.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
 div.Footer
 {
   color: #000000;
   font-family: Arial;
   font-size: 9.0pt;
-  font-style: italic;
+  font-style: normal;
   font-variant: normal;
-  font-weight: bold;
+  font-weight: normal;
   margin-bottom: 0.0pt;
   margin-left: 0pt;
   margin-right: 0pt;
@@ -1216,9 +1768,9 @@ div.Footer
   color: #000000;
   font-family: Arial;
   font-size: 9.0pt;
-  font-style: italic;
+  font-style: normal;
   font-variant: normal;
-  font-weight: bold;
+  font-weight: normal;
   text-align: Left;
   text-transform: none;
   vertical-align: baseline;
@@ -1241,11 +1793,11 @@ div.Footnote
   font-variant: normal;
   font-weight: normal;
   margin-bottom: 0.0pt;
-  margin-left: 30.00024pt;
+  margin-left: 36pt;
   margin-right: 18pt;
   margin-top: 0.0pt;
   text-align: Left;
-  text-indent: -12.000240000000001pt;
+  text-indent: -18pt;
   text-transform: none;
   vertical-align: baseline;
 }
@@ -1332,10 +1884,10 @@ div.Heading1
   font-style: normal;
   font-variant: normal;
   font-weight: bold;
-  margin-bottom: 12.0pt;
+  margin-bottom: 0.0pt;
   margin-left: 0pt;
   margin-right: 0pt;
-  margin-top: 9.0pt;
+  margin-top: 15.0pt;
   padding-bottom: 10px;
   text-align: Left;
   text-indent: 0pt;
@@ -1345,13 +1897,59 @@ div.Heading1
 
 .Heading1_outer
 {
-  margin-bottom: 12.0pt;
+  margin-bottom: 0.0pt;
   margin-right: 0pt;
-  margin-top: 9.0pt;
+  margin-top: 15.0pt;
   padding-bottom: 10px;
 }
 
 .Heading1_inner
+{
+  color: #515186;
+  font-family: "Palatino Linotype";
+  font-size: 16.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: bold;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.Heading1NOTOC
+{
+  color: #515186;
+  font-family: "Palatino Linotype";
+  font-size: 16.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: bold;
+  margin-bottom: 0.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 15.0pt;
+  text-align: Left;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Heading1NOTOC_outer
+{
+  margin-bottom: 0.0pt;
+  margin-right: 0pt;
+  margin-top: 15.0pt;
+}
+
+.Heading1NOTOC_inner
 {
   color: #515186;
   font-family: "Palatino Linotype";
@@ -1426,10 +2024,10 @@ div.Heading2
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  margin-bottom: 8.0pt;
+  margin-bottom: 0.0pt;
   margin-left: 0pt;
   margin-right: 0pt;
-  margin-top: 8.0pt;
+  margin-top: 12.0pt;
   padding-bottom: 10px;
   text-align: Left;
   text-indent: 0pt;
@@ -1439,9 +2037,9 @@ div.Heading2
 
 .Heading2_outer
 {
-  margin-bottom: 8.0pt;
+  margin-bottom: 0.0pt;
   margin-right: 0pt;
-  margin-top: 8.0pt;
+  margin-top: 12.0pt;
   padding-bottom: 10px;
 }
 
@@ -1523,7 +2121,7 @@ div.Heading3
   margin-bottom: 0.0pt;
   margin-left: 0pt;
   margin-right: 0pt;
-  margin-top: 14.0pt;
+  margin-top: 12.0pt;
   padding-bottom: 10px;
   text-align: Left;
   text-indent: 0pt;
@@ -1535,7 +2133,7 @@ div.Heading3
 {
   margin-bottom: 0.0pt;
   margin-right: 0pt;
-  margin-top: 14.0pt;
+  margin-top: 12.0pt;
   padding-bottom: 10px;
 }
 
@@ -1617,7 +2215,7 @@ div.Heading4
   margin-bottom: 0px;
   margin-left: 0pt;
   margin-right: 0pt;
-  margin-top: 14.0pt;
+  margin-top: 12.0pt;
   padding-bottom: 10px;
   text-align: Left;
   text-indent: 0pt;
@@ -1629,7 +2227,7 @@ div.Heading4
 {
   margin-bottom: 0px;
   margin-right: 0pt;
-  margin-top: 14.0pt;
+  margin-top: 12.0pt;
   padding-bottom: 10px;
 }
 
@@ -1663,10 +2261,10 @@ div.Lettered_List
   font-variant: normal;
   font-weight: normal;
   margin-bottom: 3px;
-  margin-left: 72pt;
+  margin-left: 54pt;
   margin-right: 0pt;
-  margin-top: 5.0pt;
-  text-align: justify;
+  margin-top: 0.0pt;
+  text-align: Left;
   text-indent: -18pt;
   text-transform: none;
   vertical-align: baseline;
@@ -1676,7 +2274,7 @@ div.Lettered_List
 {
   margin-bottom: 3px;
   margin-right: 0pt;
-  margin-top: 5.0pt;
+  margin-top: 0.0pt;
 }
 
 .Lettered_List_inner
@@ -1687,7 +2285,7 @@ div.Lettered_List
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  text-align: justify;
+  text-align: Left;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -1709,10 +2307,10 @@ div.Lettered_List_1
   font-variant: normal;
   font-weight: normal;
   margin-bottom: 3px;
-  margin-left: 72pt;
+  margin-left: 54pt;
   margin-right: 0pt;
-  margin-top: 5.0pt;
-  text-align: justify;
+  margin-top: 0.0pt;
+  text-align: Left;
   text-indent: -18pt;
   text-transform: none;
   vertical-align: baseline;
@@ -1722,7 +2320,7 @@ div.Lettered_List_1
 {
   margin-bottom: 3px;
   margin-right: 0pt;
-  margin-top: 5.0pt;
+  margin-top: 0.0pt;
 }
 
 .Lettered_List_1_inner
@@ -1733,7 +2331,7 @@ div.Lettered_List_1
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  text-align: justify;
+  text-align: Left;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -1846,23 +2444,21 @@ div.Note
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  margin-bottom: 2.0pt;
+  margin-bottom: 6.0pt;
   margin-left: 68.4pt;
   margin-right: 0pt;
-  margin-top: -5px;
-  padding-bottom: 18px;
-  text-align: justify;
-  text-indent: -25px;
+  margin-top: 3.0pt;
+  text-align: Left;
+  text-indent: -32.400000000000006pt;
   text-transform: none;
   vertical-align: baseline;
 }
 
 .Note_outer
 {
-  margin-bottom: 2.0pt;
+  margin-bottom: 6.0pt;
   margin-right: 0pt;
-  margin-top: -5px;
-  padding-bottom: 18px;
+  margin-top: 3.0pt;
 }
 
 .Note_inner
@@ -1873,7 +2469,149 @@ div.Note
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  text-align: justify;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.Note_Drop_Down
+{
+  color: #000000;
+  font-family: "Palatino Linotype";
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 6.0pt;
+  margin-left: 68.4pt;
+  margin-right: 0pt;
+  margin-top: 3.0pt;
+  text-align: Left;
+  text-indent: -32.400000000000006pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Note_Drop_Down_outer
+{
+  margin-bottom: 6.0pt;
+  margin-right: 0pt;
+  margin-top: 3.0pt;
+}
+
+.Note_Drop_Down_inner
+{
+  color: #000000;
+  font-family: "Palatino Linotype";
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.Note_Indent
+{
+  color: #000000;
+  font-family: "Palatino Linotype";
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 6.0pt;
+  margin-left: 68.4pt;
+  margin-right: 0pt;
+  margin-top: -5px;
+  padding-bottom: 18px;
+  text-align: Left;
+  text-indent: -25px;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Note_Indent_outer
+{
+  margin-bottom: 6.0pt;
+  margin-right: 0pt;
+  margin-top: -5px;
+  padding-bottom: 18px;
+}
+
+.Note_Indent_inner
+{
+  color: #000000;
+  font-family: "Palatino Linotype";
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.Note_Main_Body
+{
+  color: #000000;
+  font-family: "Palatino Linotype";
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 10.0pt;
+  margin-left: 64.8pt;
+  margin-right: 0pt;
+  margin-top: -5px;
+  padding-bottom: 18px;
+  text-align: Left;
+  text-indent: -15px;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Note_Main_Body_outer
+{
+  margin-bottom: 10.0pt;
+  margin-right: 0pt;
+  margin-top: -5px;
+  padding-bottom: 18px;
+}
+
+.Note_Main_Body_inner
+{
+  color: #000000;
+  font-family: "Palatino Linotype";
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: Left;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -1940,11 +2678,11 @@ div.Numbered_List
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  margin-bottom: 0.0pt;
+  margin-bottom: 6.0pt;
   margin-left: 36pt;
   margin-right: 0pt;
-  margin-top: 5.0pt;
-  text-align: justify;
+  margin-top: 0.0pt;
+  text-align: Left;
   text-indent: -18pt;
   text-transform: none;
   vertical-align: baseline;
@@ -1952,9 +2690,9 @@ div.Numbered_List
 
 .Numbered_List_outer
 {
-  margin-bottom: 0.0pt;
+  margin-bottom: 6.0pt;
   margin-right: 0pt;
-  margin-top: 5.0pt;
+  margin-top: 0.0pt;
 }
 
 .Numbered_List_inner
@@ -1965,7 +2703,7 @@ div.Numbered_List
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  text-align: justify;
+  text-align: Left;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -1986,11 +2724,11 @@ div.Numbered_List_1
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  margin-bottom: 0.0pt;
+  margin-bottom: 6.0pt;
   margin-left: 36pt;
   margin-right: 0pt;
-  margin-top: 5.0pt;
-  text-align: justify;
+  margin-top: 0.0pt;
+  text-align: Left;
   text-indent: -18pt;
   text-transform: none;
   vertical-align: baseline;
@@ -1998,9 +2736,9 @@ div.Numbered_List_1
 
 .Numbered_List_1_outer
 {
-  margin-bottom: 0.0pt;
+  margin-bottom: 6.0pt;
   margin-right: 0pt;
-  margin-top: 5.0pt;
+  margin-top: 0.0pt;
 }
 
 .Numbered_List_1_inner
@@ -2011,7 +2749,7 @@ div.Numbered_List_1
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  text-align: justify;
+  text-align: Left;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -2032,11 +2770,11 @@ div.Numbered_List_1_Indent
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  margin-bottom: 0.0pt;
+  margin-bottom: 6.0pt;
   margin-left: 54pt;
   margin-right: 0pt;
-  margin-top: 5.0pt;
-  text-align: justify;
+  margin-top: 0.0pt;
+  text-align: Left;
   text-indent: -18pt;
   text-transform: none;
   vertical-align: baseline;
@@ -2044,9 +2782,9 @@ div.Numbered_List_1_Indent
 
 .Numbered_List_1_Indent_outer
 {
-  margin-bottom: 0.0pt;
+  margin-bottom: 6.0pt;
   margin-right: 0pt;
-  margin-top: 5.0pt;
+  margin-top: 0.0pt;
 }
 
 .Numbered_List_1_Indent_inner
@@ -2057,7 +2795,7 @@ div.Numbered_List_1_Indent
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  text-align: justify;
+  text-align: Left;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -2078,11 +2816,11 @@ div.Numbered_List_Indent
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  margin-bottom: 0.0pt;
+  margin-bottom: 6.0pt;
   margin-left: 54pt;
   margin-right: 0pt;
-  margin-top: 5.0pt;
-  text-align: justify;
+  margin-top: 0.0pt;
+  text-align: Left;
   text-indent: -18pt;
   text-transform: none;
   vertical-align: baseline;
@@ -2090,9 +2828,9 @@ div.Numbered_List_Indent
 
 .Numbered_List_Indent_outer
 {
-  margin-bottom: 0.0pt;
+  margin-bottom: 6.0pt;
   margin-right: 0pt;
-  margin-top: 5.0pt;
+  margin-top: 0.0pt;
 }
 
 .Numbered_List_Indent_inner
@@ -2103,7 +2841,7 @@ div.Numbered_List_Indent
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  text-align: justify;
+  text-align: Left;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -2150,6 +2888,98 @@ div.Picture
   font-variant: normal;
   font-weight: normal;
   text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.Popup_Next
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 10.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 0.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+  text-align: Left;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Popup_Next_outer
+{
+  margin-bottom: 0.0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+}
+
+.Popup_Next_inner
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 10.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.Popup_Text
+{
+  color: #000000;
+  font-family: Sans-Serif;
+  font-size: 9pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 0.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+  text-align: left;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Popup_Text_outer
+{
+  margin-bottom: 0.0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+}
+
+.Popup_Text_inner
+{
+  color: #000000;
+  font-family: Sans-Serif;
+  font-size: 9pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: left;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -2287,6 +3117,52 @@ div.Related_topics
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.Roadmap
+{
+  color: #000000;
+  font-family: "Palatino Linotype";
+  font-size: 14.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: bold;
+  margin-bottom: 3.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+  text-align: Left;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Roadmap_outer
+{
+  margin-bottom: 3.0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+}
+
+.Roadmap_inner
+{
+  color: #000000;
+  font-family: "Palatino Linotype";
+  font-size: 14.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: bold;
   text-align: Left;
   text-transform: none;
   vertical-align: baseline;
@@ -2449,7 +3325,7 @@ div.Subhead
   margin-left: 0pt;
   margin-right: 0pt;
   margin-top: 14.0pt;
-  text-align: justify;
+  text-align: Left;
   text-indent: 0pt;
   text-transform: none;
   vertical-align: baseline;
@@ -2469,7 +3345,53 @@ div.Subhead
   font-size: 12.0pt;
   font-style: normal;
   font-weight: normal;
-  text-align: justify;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.Subprocedure
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: bold;
+  margin-bottom: 3.0pt;
+  margin-left: 36pt;
+  margin-right: 0pt;
+  margin-top: 8.0pt;
+  text-align: Left;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Subprocedure_outer
+{
+  margin-bottom: 3.0pt;
+  margin-right: 0pt;
+  margin-top: 8.0pt;
+}
+
+.Subprocedure_inner
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: bold;
+  text-align: Left;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -2490,11 +3412,11 @@ div.Table_Bullet
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  margin-bottom: 0.0pt;
+  margin-bottom: 3.0pt;
   margin-left: 18pt;
   margin-right: 0pt;
-  margin-top: 0.0pt;
-  text-align: justify;
+  margin-top: 3.0pt;
+  text-align: Left;
   text-indent: -18pt;
   text-transform: none;
   vertical-align: baseline;
@@ -2502,9 +3424,9 @@ div.Table_Bullet
 
 .Table_Bullet_outer
 {
-  margin-bottom: 0.0pt;
+  margin-bottom: 3.0pt;
   margin-right: 0pt;
-  margin-top: 0.0pt;
+  margin-top: 3.0pt;
 }
 
 .Table_Bullet_inner
@@ -2515,7 +3437,99 @@ div.Table_Bullet
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  text-align: justify;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.Table_Caption_Drop_Down
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 8.0pt;
+  margin-left: 36pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+  text-align: Left;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Table_Caption_Drop_Down_outer
+{
+  margin-bottom: 8.0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+}
+
+.Table_Caption_Drop_Down_inner
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.Table_Caption_Indent_Drop_Down
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 6.0pt;
+  margin-left: 36pt;
+  margin-right: 0pt;
+  margin-top: 3.0pt;
+  text-align: Left;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Table_Caption_Indent_Drop_Down_outer
+{
+  margin-bottom: 6.0pt;
+  margin-right: 0pt;
+  margin-top: 3.0pt;
+}
+
+.Table_Caption_Indent_Drop_Down_inner
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: Left;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -2586,7 +3600,7 @@ div.Table_Header
   margin-left: 3px;
   margin-right: 3px;
   margin-top: 3px;
-  text-align: left;
+  text-align: Left;
   text-indent: 0pt;
   text-transform: none;
   vertical-align: baseline;
@@ -2607,7 +3621,7 @@ div.Table_Header
   font-style: italic;
   font-variant: normal;
   font-weight: bold;
-  text-align: left;
+  text-align: Left;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -2675,7 +3689,7 @@ div.Table_Listnumber_2
   font-variant: normal;
   font-weight: normal;
   margin-bottom: 0.0pt;
-  margin-left: 36pt;
+  margin-left: 18pt;
   margin-right: 0pt;
   margin-top: 6.0pt;
   text-align: Left;
@@ -2712,6 +3726,60 @@ div.Table_Listnumber_2
   padding-bottom: 0pt;
 }
 
+div.Table_Row_Heading
+{
+  border-bottom-style: none;
+  border-left-style: none;
+  border-right-style: none;
+  border-top-style: none;
+  color: #000000;
+  font-family: Arial;
+  font-size: 10.0pt;
+  font-style: italic;
+  font-variant: normal;
+  font-weight: bold;
+  margin-bottom: 3.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 3.0pt;
+  text-align: Left;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Table_Row_Heading_outer
+{
+  border-bottom-style: none;
+  border-left-style: none;
+  border-right-style: none;
+  border-top-style: none;
+  margin-bottom: 3.0pt;
+  margin-right: 0pt;
+  margin-top: 3.0pt;
+}
+
+.Table_Row_Heading_inner
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 10.0pt;
+  font-style: italic;
+  font-variant: normal;
+  font-weight: bold;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
 div.Table_Text
 {
   color: #000000;
@@ -2720,10 +3788,10 @@ div.Table_Text
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  margin-bottom: 0.0pt;
+  margin-bottom: 3.0pt;
   margin-left: 0pt;
   margin-right: 0pt;
-  margin-top: 0.0pt;
+  margin-top: 3.0pt;
   text-align: Left;
   text-indent: 0pt;
   text-transform: none;
@@ -2732,12 +3800,58 @@ div.Table_Text
 
 .Table_Text_outer
 {
-  margin-bottom: 0.0pt;
+  margin-bottom: 3.0pt;
   margin-right: 0pt;
-  margin-top: 0.0pt;
+  margin-top: 3.0pt;
 }
 
 .Table_Text_inner
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 10.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.Table_Text_Indent
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 10.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 3.0pt;
+  margin-left: 18pt;
+  margin-right: 0pt;
+  margin-top: 3.0pt;
+  text-align: Left;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Table_Text_Indent_outer
+{
+  margin-bottom: 3.0pt;
+  margin-right: 0pt;
+  margin-top: 3.0pt;
+}
+
+.Table_Text_Indent_inner
 {
   color: #000000;
   font-family: Arial;
@@ -2896,6 +4010,144 @@ div.TableTitle
   padding-bottom: 0pt;
 }
 
+div.TableTitle_Indent
+{
+  color: #000000;
+  font-family: "Palatino Linotype";
+  font-size: 11.0pt;
+  font-style: italic;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 13.0pt;
+  margin-left: 36pt;
+  margin-right: 0pt;
+  margin-top: 3.0pt;
+  text-align: Left;
+  text-indent: 0pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.TableTitle_Indent_outer
+{
+  margin-bottom: 13.0pt;
+  margin-right: 0pt;
+  margin-top: 3.0pt;
+}
+
+.TableTitle_Indent_inner
+{
+  color: #000000;
+  font-family: "Palatino Linotype";
+  font-size: 11.0pt;
+  font-style: italic;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.Tip_Indent
+{
+  color: #000000;
+  font-family: "Palatino Linotype";
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 6.0pt;
+  margin-left: 68.4pt;
+  margin-right: 0pt;
+  margin-top: 3.0pt;
+  text-align: Left;
+  text-indent: -32.400000000000006pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Tip_Indent_outer
+{
+  margin-bottom: 6.0pt;
+  margin-right: 0pt;
+  margin-top: 3.0pt;
+}
+
+.Tip_Indent_inner
+{
+  color: #000000;
+  font-family: "Palatino Linotype";
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+div.Tip_Main_Body
+{
+  color: #000000;
+  font-family: "Palatino Linotype";
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 10.0pt;
+  margin-left: 64.8pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+  text-align: Left;
+  text-indent: -36pt;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.Tip_Main_Body_outer
+{
+  margin-bottom: 10.0pt;
+  margin-right: 0pt;
+  margin-top: 0.0pt;
+}
+
+.Tip_Main_Body_inner
+{
+  color: #000000;
+  font-family: "Palatino Linotype";
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-align: Left;
+  text-transform: none;
+  vertical-align: baseline;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
 div.Title
 {
   color: #515186;
@@ -2947,14 +4199,7 @@ span.Blue
 
 span.Bold
 {
-  color: #000000;
-  font-family: Arial;
-  font-size: 11.0pt;
-  font-style: normal;
-  font-variant: normal;
   font-weight: bold;
-  text-transform: none;
-  vertical-align: baseline;
 }
 
 span.Code
@@ -2970,19 +4215,12 @@ span.Emphasis
 span.Grape
 {
   color: #515186;
-  font-variant: normal;
-  text-transform: none;
-  vertical-align: baseline;
 }
 
 span.HTTP
 {
-  color: #515186;
-  font-family: Arial;
-  font-size: 10.0pt;
-  font-style: normal;
+  color: #0000ff;
   font-variant: normal;
-  font-weight: normal;
   text-decoration: underline;
   text-transform: none;
   vertical-align: baseline;
@@ -2991,8 +4229,22 @@ span.HTTP
 span.Keypress
 {
   color: #000000;
+  font-family: Arial;
+  font-size: 11.0pt;
   font-style: normal;
   font-weight: normal;
+  vertical-align: baseline;
+}
+
+span.Lettered_List_Char
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-transform: none;
   vertical-align: baseline;
 }
 
@@ -3008,13 +4260,35 @@ span.Note
   vertical-align: baseline;
 }
 
+span.Popup
+{
+  border-bottom-color: Maroon;
+  border-bottom-style: dotted;
+  color: Maroon;
+  font-family: Arial;
+  font-size: 11.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+span.PopupTable
+{
+  color: #000000;
+  font-family: Arial;
+  font-size: 10.0pt;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
 span.Red
 {
   color: #ff0000;
-  font-family: Arial;
-  font-variant: normal;
-  text-transform: none;
-  vertical-align: baseline;
 }
 
 span.small_bullet
@@ -3045,10 +4319,70 @@ span.URL
 {
   color: #0000ff;
   font-family: Arial;
+  font-size: 11.0pt;
+  font-style: normal;
   font-variant: normal;
+  font-weight: normal;
   text-decoration: underline;
   text-transform: none;
   vertical-align: baseline;
+}
+
+table.Table_-_Feature_Description
+{
+  margin-bottom: 12.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 3.0pt;
+  padding-bottom: 4pt;
+  padding-left: 6pt;
+  padding-right: 4pt;
+  padding-top: 4pt;
+  text-align: right;
+}
+
+table.UnstructMasterPageMaps
+{
+  margin-bottom: 6.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 6.0pt;
+  padding-bottom: 3pt;
+  padding-left: 3pt;
+  padding-right: 3pt;
+  padding-top: 3pt;
+  text-align: left;
+}
+
+table.Table_-_Single_Cell
+{
+  margin-bottom: 12.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 3.0pt;
+  padding-bottom: 4pt;
+  padding-left: 6pt;
+  padding-right: 4pt;
+  padding-top: 4pt;
+  text-align: left;
+}
+
+table.Table_-_List
+{
+  border-bottom-style: none;
+  border-left-style: none;
+  border-right-style: none;
+  border-top-style: none;
+  margin-bottom: 0px;
+  margin-left: 40px;
+  margin-right: 0px;
+  margin-top: 0px;
+  padding-bottom: 4pt;
+  padding-left: 6pt;
+  padding-right: 4pt;
+  padding-top: 4pt;
+  text-align: right;
+  width: 90%;
 }
 
 table.Table_-_Column_Header
@@ -3065,7 +4399,7 @@ table.Table_-_Column_Header
   margin-bottom: 12.0pt;
   margin-left: 0pt;
   margin-right: 0pt;
-  margin-top: 12.0pt;
+  margin-top: 3.0pt;
   padding-bottom: 4pt;
   padding-left: 6pt;
   padding-right: 4pt;
@@ -3074,18 +4408,17 @@ table.Table_-_Column_Header
   width: 90%;
 }
 
-table.Mapping_Table
+table.Figure_Indent
 {
-  margin-bottom: 6.0pt;
-  margin-left: 0pt;
+  margin-bottom: 12.0pt;
+  margin-left: 36pt;
   margin-right: 0pt;
-  margin-top: 6.0pt;
-  padding-bottom: 2pt;
-  padding-left: 2pt;
-  padding-right: 2pt;
-  padding-top: 2pt;
+  margin-top: 3.0pt;
+  padding-bottom: 4pt;
+  padding-left: 0pt;
+  padding-right: 4pt;
+  padding-top: 0pt;
   text-align: left;
-  width: 90%;
 }
 
 table.Table_-_No_Border
@@ -3101,11 +4434,52 @@ table.Table_-_No_Border
   margin-bottom: 12.0pt;
   margin-left: 0pt;
   margin-right: 0pt;
-  margin-top: 12.0pt;
+  margin-top: 3.0pt;
   padding-bottom: 4pt;
   padding-left: 6pt;
   padding-right: 4pt;
   padding-top: 4pt;
+  text-align: left;
+  width: 90%;
+}
+
+table.Figure
+{
+  margin-bottom: 12.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 3.0pt;
+  padding-bottom: 4pt;
+  padding-left: 6pt;
+  padding-right: 4pt;
+  padding-top: 4pt;
+  text-align: left;
+}
+
+table.Table_-_No_Header
+{
+  margin-bottom: 12.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 3.0pt;
+  padding-bottom: 4pt;
+  padding-left: 6pt;
+  padding-right: 4pt;
+  padding-top: 4pt;
+  text-align: left;
+  width: 90%;
+}
+
+table.Mapping_Table
+{
+  margin-bottom: 6.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 3.0pt;
+  padding-bottom: 2pt;
+  padding-left: 2pt;
+  padding-right: 2pt;
+  padding-top: 2pt;
   text-align: left;
   width: 90%;
 }
@@ -3115,52 +4489,36 @@ table.Table_-_Header
   margin-bottom: 12.0pt;
   margin-left: 0pt;
   margin-right: 0pt;
-  margin-top: 12.0pt;
+  margin-top: 3.0pt;
+  padding-bottom: 4pt;
+  padding-left: 6pt;
+  padding-right: 4pt;
+  padding-top: 4pt;
+  text-align: right;
+  width: 90%;
+}
+
+table.Table_-_Row_Headings
+{
+  background-color: White;
+  border-bottom-color: White;
+  border-bottom-style: none;
+  border-bottom-width: thin;
+  border-left-color: White;
+  border-left-style: none;
+  border-right-color: White;
+  border-right-style: none;
+  border-top-color: White;
+  border-top-style: none;
+  margin-bottom: 12.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 3.0pt;
   padding-bottom: 4pt;
   padding-left: 6pt;
   padding-right: 4pt;
   padding-top: 4pt;
   text-align: left;
   width: 90%;
-}
-
-table.Table_-_No_Header
-{
-  margin-bottom: 12.0pt;
-  margin-left: 0pt;
-  margin-right: 0pt;
-  margin-top: 12.0pt;
-  padding-bottom: 4pt;
-  padding-left: 6pt;
-  padding-right: 4pt;
-  padding-top: 4pt;
-  text-align: left;
-  width: 90%;
-}
-
-table.Figure_Indent
-{
-  margin-bottom: 12.0pt;
-  margin-left: 36pt;
-  margin-right: 0pt;
-  margin-top: 12.0pt;
-  padding-bottom: 4pt;
-  padding-left: 0pt;
-  padding-right: 4pt;
-  padding-top: 0pt;
-  text-align: left;
-}
-
-table.Figure
-{
-  margin-bottom: 12.0pt;
-  margin-left: 0pt;
-  margin-right: 0pt;
-  margin-top: 12.0pt;
-  padding-bottom: 4pt;
-  padding-left: 6pt;
-  padding-right: 4pt;
-  padding-top: 4pt;
-  text-align: left;
 }
 

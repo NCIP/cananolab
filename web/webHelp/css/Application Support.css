@@ -1711,10 +1711,9 @@ div.Note
   margin-bottom: 2.0pt;
   margin-left: 68.4pt;
   margin-right: 0pt;
-  margin-top: -5px;
-  padding-bottom: 18px;
+  margin-top: 7.0pt;
   text-align: Left;
-  text-indent: -25px;
+  text-indent: -32.400000000000006pt;
   text-transform: none;
   vertical-align: baseline;
 }
@@ -1723,8 +1722,7 @@ div.Note
 {
   margin-bottom: 2.0pt;
   margin-right: 0pt;
-  margin-top: -5px;
-  padding-bottom: 18px;
+  margin-top: 7.0pt;
 }
 
 .Note_inner
@@ -2264,7 +2262,7 @@ div.Table_Header
   margin-left: 3px;
   margin-right: 3px;
   margin-top: 3px;
-  text-align: left;
+  text-align: Center;
   text-indent: 0pt;
   text-transform: none;
   vertical-align: baseline;
@@ -2285,7 +2283,7 @@ div.Table_Header
   font-style: italic;
   font-variant: normal;
   font-weight: bold;
-  text-align: left;
+  text-align: Center;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
