@@ -41,47 +41,48 @@
     <Document title="Welcome to caNanoLab 1.2" href="Welcome%20to%20caLAB.1.1.html" />
     <Document title="Getting Started with caNanoLab 1.2" href="About%20caLAB.2.1.html" />
     <Document title="About caNanoLab" href="About%20caLAB.2.2.html" />
-    <Document title="caNanoLab Welcome Login Page" href="About%20caLAB.2.3.html" />
-    <Document title="Registering a New User" href="About%20caLAB.2.4.html" />
-    <Document title="Logging into caNanoLab/Updating Password" href="About%20caLAB.2.5.html" />
-    <Document title="caNanoLab Welcome Main Page" href="About%20caLAB.2.6.html" />
-    <Document title="Using caNanoLab Online Help" href="About%20caLAB.2.7.html" />
-    <Document title="Navigation in caNanoLab" href="About%20caLAB.2.8.html" />
-    <Document title="caNanoLab Functionality Overview" href="About%20caLAB.2.9.html" />
-    <Document title="Managing caNanoLab Inventory" href="About%20caLAB.2.10.html" />
-    <Document title="Managing Samples" href="About%20caLAB.2.11.html" />
-    <Document title="caNanoLab Sample Overview" href="About%20caLAB.2.12.html" />
-    <Document title="Creating a New Sample" href="About%20caLAB.2.13.html" />
-    <Document title="Manage Aliquots" href="About%20caLAB.2.14.html" />
-    <Document title="Creating A New Aliquot" href="About%20caLAB.2.15.html" />
-    <Document title="Editing an Aliquot" href="About%20caLAB.2.16.html" />
-    <Document title="Aliquot Naming Conventions" href="About%20caLAB.2.17.html" />
-    <Document title="Viewing an Aliquot" href="About%20caLAB.2.18.html" />
-    <Document title="Using an Aliquot" href="About%20caLAB.2.19.html" />
-    <Document title="Masking an Aliquot" href="About%20caLAB.2.20.html" />
-    <Document title="Working With a caNanoLab Workflow" href="About%20caLAB.2.21.html" />
-    <Document title="Workflow Overview" href="About%20caLAB.2.22.html" />
-    <Document title="Executing a caNanoLab Workflow" href="About%20caLAB.2.23.html" />
-    <Document title="Creating an Assay Run" href="About%20caLAB.2.24.html" />
-    <Document title="Searching Runs" href="About%20caLAB.2.25.html" />
-    <Document title="Search Run Results" href="About%20caLAB.2.26.html" />
-    <Document title="Run Details - Workflow General Information" href="About%20caLAB.2.27.html" />
-    <Document title="Assay Run In and Out Folders" href="About%20caLAB.2.28.html" />
-    <Document title="Working with Files" href="About%20caLAB.2.29.html" />
-    <Document title="Uploading Input/Output Files" href="About%20caLAB.2.30.html" />
-    <Document title="caNanoLab File Naming Conventions" href="About%20caLAB.2.31.html" />
-    <Document title="Masking a File" href="About%20caLAB.2.32.html" />
-    <Document title="Downloading Files" href="About%20caLAB.2.33.html" />
+    <Document title="Permissions and Visibility" href="About%20caLAB.2.3.html" />
+    <Document title="caNanoLab Welcome Login Page" href="About%20caLAB.2.4.html" />
+    <Document title="Registering a New User" href="About%20caLAB.2.5.html" />
+    <Document title="Logging into caNanoLab/Updating Password" href="About%20caLAB.2.6.html" />
+    <Document title="caNanoLab Welcome Main Page" href="About%20caLAB.2.7.html" />
+    <Document title="Using caNanoLab Online Help" href="About%20caLAB.2.8.html" />
+    <Document title="Navigation in caNanoLab" href="About%20caLAB.2.9.html" />
+    <Document title="caNanoLab Functionality Overview" href="About%20caLAB.2.10.html" />
+    <Document title="Managing caNanoLab Inventory" href="About%20caLAB.2.11.html" />
+    <Document title="Managing Samples" href="About%20caLAB.2.12.html" />
+    <Document title="caNanoLab Sample Overview" href="About%20caLAB.2.13.html" />
+    <Document title="Creating a New Sample" href="About%20caLAB.2.14.html" />
+    <Document title="Manage Aliquots" href="About%20caLAB.2.15.html" />
+    <Document title="Creating A New Aliquot" href="About%20caLAB.2.16.html" />
+    <Document title="Editing an Aliquot" href="About%20caLAB.2.17.html" />
+    <Document title="Aliquot Naming Conventions" href="About%20caLAB.2.18.html" />
+    <Document title="Viewing an Aliquot" href="About%20caLAB.2.19.html" />
+    <Document title="Using an Aliquot" href="About%20caLAB.2.20.html" />
+    <Document title="Masking an Aliquot" href="About%20caLAB.2.21.html" />
+    <Document title="Working With a caNanoLab Workflow" href="About%20caLAB.2.22.html" />
+    <Document title="Workflow Overview" href="About%20caLAB.2.23.html" />
+    <Document title="Executing a caNanoLab Workflow" href="About%20caLAB.2.24.html" />
+    <Document title="Creating an Assay Run" href="About%20caLAB.2.25.html" />
+    <Document title="Searching Runs" href="About%20caLAB.2.26.html" />
+    <Document title="Search Run Results" href="About%20caLAB.2.27.html" />
+    <Document title="Run Details - Workflow General Information" href="About%20caLAB.2.28.html" />
+    <Document title="Assay Run In and Out Folders" href="About%20caLAB.2.29.html" />
+    <Document title="Working with Files" href="About%20caLAB.2.30.html" />
+    <Document title="Uploading Input/Output Files" href="About%20caLAB.2.31.html" />
+    <Document title="caNanoLab File Naming Conventions" href="About%20caLAB.2.32.html" />
+    <Document title="Masking a File" href="About%20caLAB.2.33.html" />
+    <Document title="Downloading Files" href="About%20caLAB.2.34.html" />
     <Document title="Annotating Nanoparticles" href="Submit%20to%20caLAB.3.1.html" />
-    <Document title="Submitting Annotations for Nanoparticles" href="Submit%20to%20caLAB.3.2.html" />
-    <Document title="Annotating a Nanoparticle" href="Submit%20to%20caLAB.3.3.html" />
+    <Document title="Sample and Nanoparticle Definitions" href="Submit%20to%20caLAB.3.2.html" />
+    <Document title="Submitting a Nanoparticle Annotation" href="Submit%20to%20caLAB.3.3.html" />
     <Document title="Nanoparticle General Information" href="Submit%20to%20caLAB.3.4.html" />
     <Document title="Particle Tree" href="Submit%20to%20caLAB.3.5.html" />
     <Document title="Managing Protocols" href="Submit%20to%20caLAB.3.6.html" />
     <Document title="Submitting a Protocol" href="Submit%20to%20caLAB.3.7.html" />
-    <Document title="Nanoparticle Function" href="Submit%20to%20caLAB.3.8.html" />
-    <Document title="Nanoparticle Function Page" href="Submit%20to%20caLAB.3.9.html" />
-    <Document title="Nanoparticle Characterization" href="Submit%20to%20caLAB.3.10.html" />
+    <Document title="Nanoparticle Functions" href="Submit%20to%20caLAB.3.8.html" />
+    <Document title="Adding a Nanoparticle Function" href="Submit%20to%20caLAB.3.9.html" />
+    <Document title="Nanoparticle Characterizations" href="Submit%20to%20caLAB.3.10.html" />
     <Document title="Physical Characterization" href="Submit%20to%20caLAB.3.11.html" />
     <Document title="Composition" href="Submit%20to%20caLAB.3.12.html" />
     <Document title="Carbon Nanotube" href="Submit%20to%20caLAB.3.13.html" />
@@ -108,8 +109,8 @@
     <Document title="Immunotoxicity" href="Submit%20to%20caLAB.3.34.html" />
     <Document title="Managing Characterizations" href="Submit%20to%20caLAB.3.35.html" />
     <Document title="Deleting a Characterization" href="Submit%20to%20caLAB.3.36.html" />
-    <Document title="Publishing a Nanoparticle Report" href="Submit%20to%20caLAB.3.37.html" />
-    <Document title="Searching the caNanoLab Data­base" href="Searching%20caLAB.4.1.html" />
+    <Document title="Submitting a Nanoparticle Report" href="Submit%20to%20caLAB.3.37.html" />
+    <Document title="Searching the caNanoLab Database" href="Searching%20caLAB.4.1.html" />
     <Document title="Launching a caNanoLab Search" href="Searching%20caLAB.4.2.html" />
     <Document title="Searching a Workflow" href="Searching%20caLAB.4.3.html" />
     <Document title="Workflow Search Results" href="Searching%20caLAB.4.4.html" />
@@ -136,26 +137,26 @@
     <Document title="Application Support" href="Application%20Support.5.1.html" />
   </DocumentInfo>
   <TopicMap>
-    <Topic name="welcome_login" href="About%20caLAB.2.3.html#1112801" />
-    <Topic name="register_user" href="About%20caLAB.2.4.html#1112431" />
-    <Topic name="update_password_help" href="About%20caLAB.2.5.html#1091033" />
-    <Topic name="welcome_workflow" href="About%20caLAB.2.6.html#1092139" />
-    <Topic name="create_sample" href="About%20caLAB.2.13.html#1108744" />
-    <Topic name="create_aliquot" href="About%20caLAB.2.15.html#1108888" />
-    <Topic name="edit_aliquot" href="About%20caLAB.2.16.html#1108983" />
-    <Topic name="view_aliquot" href="About%20caLAB.2.18.html#1109027" />
-    <Topic name="use_aliquot_help" href="About%20caLAB.2.19.html#1109062" />
-    <Topic name="mask_aliquot" href="About%20caLAB.2.20.html#1109071" />
-    <Topic name="create_assay_run" href="About%20caLAB.2.24.html#1097500" />
-    <Topic name="search_runs_help" href="About%20caLAB.2.25.html#1104001" />
-    <Topic name="search_run_results_help" href="About%20caLAB.2.26.html#1104577" />
-    <Topic name="run_details_help" href="About%20caLAB.2.27.html#1104905" />
-    <Topic name="out_folder" href="About%20caLAB.2.28.html#1097561" />
-    <Topic name="in_folder" href="About%20caLAB.2.28.html#1097561" />
-    <Topic name="upload_files" href="About%20caLAB.2.30.html#1086942" />
-    <Topic name="file_upload" href="About%20caLAB.2.30.html#1086942" />
-    <Topic name="mask_files" href="About%20caLAB.2.32.html#1078900" />
-    <Topic name="download_files" href="About%20caLAB.2.33.html#1085617" />
+    <Topic name="welcome_login" href="About%20caLAB.2.4.html#1112801" />
+    <Topic name="register_user" href="About%20caLAB.2.5.html#1112431" />
+    <Topic name="update_password_help" href="About%20caLAB.2.6.html#1091033" />
+    <Topic name="welcome_workflow" href="About%20caLAB.2.7.html#1092139" />
+    <Topic name="create_sample" href="About%20caLAB.2.14.html#1108744" />
+    <Topic name="create_aliquot" href="About%20caLAB.2.16.html#1108888" />
+    <Topic name="edit_aliquot" href="About%20caLAB.2.17.html#1121726" />
+    <Topic name="view_aliquot" href="About%20caLAB.2.19.html#1109027" />
+    <Topic name="use_aliquot_help" href="About%20caLAB.2.20.html#1109062" />
+    <Topic name="mask_aliquot" href="About%20caLAB.2.21.html#1109071" />
+    <Topic name="create_assay_run" href="About%20caLAB.2.25.html#1097500" />
+    <Topic name="search_runs_help" href="About%20caLAB.2.26.html#1104001" />
+    <Topic name="search_run_results_help" href="About%20caLAB.2.27.html#1104577" />
+    <Topic name="run_details_help" href="About%20caLAB.2.28.html#1104905" />
+    <Topic name="out_folder" href="About%20caLAB.2.29.html#1097561" />
+    <Topic name="in_folder" href="About%20caLAB.2.29.html#1097561" />
+    <Topic name="upload_files" href="About%20caLAB.2.31.html#1086942" />
+    <Topic name="file_upload" href="About%20caLAB.2.31.html#1086942" />
+    <Topic name="mask_files" href="About%20caLAB.2.33.html#1078900" />
+    <Topic name="download_files" href="About%20caLAB.2.34.html#1085617" />
     <Topic name="annotate_nano_help" href="Submit%20to%20caLAB.3.3.html#1126285" />
     <Topic name="nano_general_info_help" href="Submit%20to%20caLAB.3.4.html#1116422" />
     <Topic name="particle_tree_help" href="Submit%20to%20caLAB.3.5.html#1105095" />
@@ -174,6 +175,7 @@
     <Topic name="cytotoxicity_help" href="Submit%20to%20caLAB.3.33.html#1110125" />
     <Topic name="cytoxicity_help" href="Submit%20to%20caLAB.3.33.html#1110125" />
     <Topic name="immunotoxicity_help" href="Submit%20to%20caLAB.3.34.html#1110131" />
+    <Topic name="delete_characterization_help" href="Submit%20to%20caLAB.3.36.html#1130598" />
     <Topic name="nano_report_help" href="Submit%20to%20caLAB.3.37.html#1130917" />
     <Topic name="search_workflow" href="Searching%20caLAB.4.3.html#1073772" />
     <Topic name="workflow_search_results" href="Searching%20caLAB.4.4.html#1073690" />

@@ -28,7 +28,7 @@
   <body style="" onLoad="WWHUpdate();" onUnload="WWHUnload();" onKeyDown="WWHHandleKeyDown((document.all||document.getElementById||document.layers)?event:null);" onKeyPress="WWHHandleKeyPress((document.all||document.getElementById||document.layers)?event:null);" onKeyUp="WWHHandleKeyUp((document.all||document.getElementById||document.layers)?event:null);">
     <br />
     <div class="WebWorks_Breadcrumbs" style="text-align: left;">
-      <a class="WebWorks_Breadcrumb_Link" href="Searching%20caLAB.4.1.html#1115928">Searching the caNanoLab  Data­base</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="Searching%20caLAB.4.17.html#1115928">Searching Protocols</a> &gt; Protocol File Page</div>
+      <a class="WebWorks_Breadcrumb_Link" href="Searching%20caLAB.4.1.html#1115928">Searching the caNanoLab  Database</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="Searching%20caLAB.4.17.html#1115928">Searching Protocols</a> &gt; Protocol File Page</div>
     <hr align="left" />
     <blockquote>
       <div class="Heading2"><a name="1115928">Protocol File Page</a></div>
@@ -39,6 +39,11 @@
           // Clear related topics
           //
           WWHClearRelatedTopics();
+
+          // Add related topics
+          //
+          WWHAddRelatedTopic("Searching Protocols", "caNanoLab", "Searching%20caLAB.4.17.html#1115894");
+          WWHAddRelatedTopic("Protocol Search Results", "caNanoLab", "Searching%20caLAB.4.18.html#1115920");
 
           document.writeln(WWHRelatedTopicsInlineHTML());
         // -->

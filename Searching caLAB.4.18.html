@@ -28,24 +28,24 @@
   <body style="" onLoad="WWHUpdate();" onUnload="WWHUnload();" onKeyDown="WWHHandleKeyDown((document.all||document.getElementById||document.layers)?event:null);" onKeyPress="WWHHandleKeyPress((document.all||document.getElementById||document.layers)?event:null);" onKeyUp="WWHHandleKeyUp((document.all||document.getElementById||document.layers)?event:null);">
     <br />
     <div class="WebWorks_Breadcrumbs" style="text-align: left;">
-      <a class="WebWorks_Breadcrumb_Link" href="Searching%20caLAB.4.1.html#1115920">Searching the caNanoLab  Data­base</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="Searching%20caLAB.4.17.html#1115920">Searching Protocols</a> &gt; Protocol Search Results</div>
+      <a class="WebWorks_Breadcrumb_Link" href="Searching%20caLAB.4.1.html#1115920">Searching the caNanoLab  Database</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="Searching%20caLAB.4.17.html#1115920">Searching Protocols</a> &gt; Protocol Search Results</div>
     <hr align="left" />
     <blockquote>
       <div class="Heading2"><a name="1115920">Protocol Search Results</a></div>
       <div class="Body_Text"><span style="font-weight: bold;"><a name="1115921">Note:</a></span> If you click the <span style="font-weight: bold;">Search</span> button having defined no parameters, all of the protocols located in the search display in the search results.</div>
       <div class="Body_Text"><a name="1115925">Once you have submitted a search for a protocol (</a><span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caNanoLab', 'Searching%20caLAB.4.17.html#1115894', '');">Searching Protocols</a></span>), search results display in the caNanoLab screen. Results show pertinent protocol information and a URI to each report. Click the <span style="font-weight: bold;">Protocol Name</span> URI to locate and open a protocol file. </div>
-      <div class="Note_outer" style="margin-left: 50.25pt;">
+      <div class="Note_Main_Body_outer" style="margin-left: 54pt;">
         <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1115927">
           <tr style="vertical-align: baseline;">
             <td>
-              <div class="Note_inner" style="width: 25px; white-space: nowrap;">
+              <div class="Note_Main_Body_inner" style="width: 15px; white-space: nowrap;">
                 <span style="left: -20px; position: relative; top: 12px;">
                   <img src="Lightbulb.gif" alt="*" id="bullet1115927" border="0" width="30" height="30" />
                 </span>
               </div>
             </td>
             <td width="100%">
-              <div class="Note_inner"><a name="1115927">The table columns are sortable. Click the column title to sort it.</a></div>
+              <div class="Note_Main_Body_inner"><a name="1115927">The table columns are sortable; click a column title to sort it.</a></div>
             </td>
           </tr>
         </table>
@@ -55,6 +55,11 @@
           // Clear related topics
           //
           WWHClearRelatedTopics();
+
+          // Add related topics
+          //
+          WWHAddRelatedTopic("Searching Protocols", "caNanoLab", "Searching%20caLAB.4.17.html#1115894");
+          WWHAddRelatedTopic("Protocol File Page", "caNanoLab", "Searching%20caLAB.4.19.html#1115928");
 
           document.writeln(WWHRelatedTopicsInlineHTML());
         // -->
