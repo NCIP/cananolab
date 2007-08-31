@@ -498,22 +498,23 @@ public class SubmitNanoparticleService {
 
 	private void addDatumName(Session session, String name,
 			String characterizationName) throws Exception {
-
-		List results = session.createQuery(
-				"select count(distinct name) from DatumName"
-						+ " where characterizationName='"
-						+ characterizationName + "'" + " and name='" + name
-						+ "'").list();
-		DatumName datumName = new DatumName();
-		datumName.setName(name);
-		datumName.setCharacterizationName(characterizationName);
-		datumName.setDatumParsed(false);
-		int count = -1;
-		for (Object obj : results) {
-			count = ((Integer) (obj)).intValue();
-		}
-		if (count == 0) {
-			session.save(datumName);
+		if (name != null && name.length() > 0) {
+			List results = session.createQuery(
+					"select count(distinct name) from DatumName"
+							+ " where characterizationName='"
+							+ characterizationName + "'" + " and name='" + name
+							+ "'").list();
+			DatumName datumName = new DatumName();
+			datumName.setName(name);
+			datumName.setCharacterizationName(characterizationName);
+			datumName.setDatumParsed(false);
+			int count = -1;
+			for (Object obj : results) {
+				count = ((Integer) (obj)).intValue();
+			}
+			if (count == 0) {
+				session.save(datumName);
+			}
 		}
 	}
 
