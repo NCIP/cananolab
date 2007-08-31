@@ -1,5 +1,7 @@
 package gov.nih.nci.calab.dto.search;
 
+import java.net.URLEncoder;
+
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.SortableName;
 
@@ -13,10 +15,10 @@ import org.displaytag.decorator.TableDecorator;
  * 
  */
 public class ReportDecorator extends TableDecorator {
-	public SortableName getEditReportURL() {
+	public SortableName getEditReportURL() throws Exception {
 		LabFileBean file = (LabFileBean) getCurrentRowObject();
 		// replace space with special char
-		String fileInstanceType = file.getInstanceType().replace(" ", "%20");
+		String fileInstanceType = URLEncoder.encode(file.getInstanceType(), "UTF-8");
 		String fileId = file.getId();
 		String editReportURL = "updateReport.do?submitType=none&page=0&dispatch=setupUpdate&fileType="
 				+ fileInstanceType + "&fileId=" + fileId;
@@ -26,10 +28,10 @@ public class ReportDecorator extends TableDecorator {
 		return sortableLink;
 	}
 
-	public SortableName getViewReportURL() {
+	public SortableName getViewReportURL() throws Exception {
 		LabFileBean file = (LabFileBean) getCurrentRowObject();
 		// replace space with special char
-		String fileInstanceType = file.getInstanceType().replace(" ", "%20");
+		String fileInstanceType = URLEncoder.encode(file.getInstanceType(), "UTF-8");
 		String fileId = file.getId();
 		String editReportURL = "updateReport.do?submitType=none&page=0&dispatch=setupView&fileType="
 				+ fileInstanceType + "&fileId=" + fileId;
@@ -39,11 +41,12 @@ public class ReportDecorator extends TableDecorator {
 		return sortableLink;
 	}
 
-public SortableName getRemoteDownloadURL() {
+public SortableName getRemoteDownloadURL() throws Exception{
 		LabFileBean file = (LabFileBean) getCurrentRowObject();
-		// TODO add URL
-		String downloadURL = "remoteSearchReport.do?dispatch=download&gridNodeHost="+file.getGridNode()+"&fileId="
-				+ file.getId() + "&fileName=" + file.getName();
+		String gridNode=URLEncoder.encode(file.getGridNode(), "UTF-8");
+		String fileName=URLEncoder.encode(file.getName(), "UTF-8");
+		String downloadURL = "remoteSearchReport.do?dispatch=download&gridNodeHost="+gridNode+"&fileId="
+				+ file.getId() + "&fileName=" + fileName;
 		String link = "<a href=" + downloadURL + ">" + file.getTitle() + "</a>";
 		SortableName sortableLink = new SortableName(file.getTitle(), link);
 		return sortableLink;
