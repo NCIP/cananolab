@@ -263,7 +263,7 @@ public class SubmitNanoparticleService {
 			CharacterizationBean charBean, String characterizationName)
 			throws Exception {
 		try {
-			Session session = HibernateUtil.currentSession();			
+			Session session = HibernateUtil.currentSession();
 			HibernateUtil.beginTransaction();
 
 			if (!charBean.getDerivedBioAssayDataList().isEmpty()) {
@@ -519,23 +519,23 @@ public class SubmitNanoparticleService {
 
 	private void addDerivedDataCategory(Session session, String name,
 			String characterizationName) throws Exception {
-
-		List results = session.createQuery(
-				"select count(distinct name) from DerivedBioAssayDataCategory"
-						+ " where characterizationName='"
-						+ characterizationName + "'" + " and name='" + name
-						+ "'").list();
-		DerivedBioAssayDataCategory category = new DerivedBioAssayDataCategory();
-		category.setName(name);
-		category.setCharacterizationName(characterizationName);
-		int count = -1;
-		for (Object obj : results) {
-			count = ((Integer) (obj)).intValue();
+		if (name != null && name.length() > 0) {
+			List results = session.createQuery(
+					"select count(distinct name) from DerivedBioAssayDataCategory"
+							+ " where characterizationName='"
+							+ characterizationName + "'" + " and name='" + name
+							+ "'").list();
+			DerivedBioAssayDataCategory category = new DerivedBioAssayDataCategory();
+			category.setName(name);
+			category.setCharacterizationName(characterizationName);
+			int count = -1;
+			for (Object obj : results) {
+				count = ((Integer) (obj)).intValue();
+			}
+			if (count == 0) {
+				session.save(category);
+			}
 		}
-		if (count == 0) {
-			session.save(category);
-		}
-
 	}
 
 	private void addLookupType(LookupType lookupType, String type)
