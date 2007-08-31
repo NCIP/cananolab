@@ -1,5 +1,7 @@
 package gov.nih.nci.calab.dto.search;
 
+import java.net.URLEncoder;
+
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
 import gov.nih.nci.calab.dto.common.SortableName;
@@ -37,11 +39,12 @@ public class ProtocolDecorator extends TableDecorator {
 		return sortableLink;
 	}
 
-public SortableName getRemoteDownloadURL() {
+public SortableName getRemoteDownloadURL() throws Exception{
 		LabFileBean file = (LabFileBean) getCurrentRowObject();
-		// TODO add URL
-		String downloadURL = "remoteSearchReport.do?dispatch=download&gridNodeHost="+file.getGridNode()+"&fileId="
-				+ file.getId() + "&fileName=" + file.getName();
+		String fileName=URLEncoder.encode(file.getName(), "UTF-8");
+		String gridNode=URLEncoder.encode(file.getGridNode(), "UTF-8");
+		String downloadURL = "remoteSearchReport.do?dispatch=download&gridNodeHost="+gridNode+"&fileId="
+				+ file.getId() + "&fileName=" + fileName;
 		String link = "<a href=" + downloadURL + ">" + file.getTitle() + "</a>";
 		SortableName sortableLink = new SortableName(file.getTitle(), link);
 		return sortableLink;
