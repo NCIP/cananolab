@@ -42,19 +42,18 @@ public class DatumBean {
 	public DatumBean(Datum datum) {
 		this.id = datum.getId().toString();
 		this.name = datum.getName();
-		
+
 		this.statisticsType = (datum.getValue().getStatisticsType() != null) ? StringUtils
 				.convertToString(datum.getValue().getStatisticsType())
 				: "";
 		if (this.statisticsType.equals("boolean")) {
-			if(datum.getValue() != null){
+			if (datum.getValue() != null) {
 				if (datum.getValue().getValue() == 1.0) {
 					this.value = CaNanoLabConstants.BOOLEAN_YES;
-				}
-				else if (datum.getValue().getValue() == 0.0){
+				} else if (datum.getValue().getValue() == 0.0) {
 					this.value = CaNanoLabConstants.BOOLEAN_NO;
 				}
-			}		
+			}
 		} else {
 			this.value = (datum.getValue() != null) ? StringUtils
 					.convertToString(datum.getValue().getValue()) : "";
@@ -62,7 +61,9 @@ public class DatumBean {
 
 		this.unit = (datum.getValue() != null) ? StringUtils
 				.convertToString(datum.getValue().getUnitOfMeasurement()) : "";
-		this.category = datum.getDerivedBioAssayDataCategory();
+		this.category = (datum.getDerivedBioAssayDataCategory() != null) ? datum
+				.getDerivedBioAssayDataCategory()
+				: "";
 		// Control controlObj = datum.getControl();
 		// if (controlObj != null) {
 		// control = new ControlBean();
@@ -130,69 +131,19 @@ public class DatumBean {
 		this.conditionList = conditionList;
 	}
 
-	public Datum getDomainObj() {
-		Datum tableData = new Datum();
-		if (getId() != null && getId().length() > 0) {
-			tableData.setId(new Long(getId()));
-		}
-		tableData.setName(name);
-		Measurement measurement = new Measurement();
-		
-		if (statisticsType.length() > 0) {
-			measurement.setStatisticsType(statisticsType);
-			if (statisticsType.equals("boolean")){
-				if (value.equalsIgnoreCase("false") || (value.equalsIgnoreCase("no"))){
-					measurement.setValue(new Float(0));
-				} else {
-					measurement.setValue(new Float(1));
-				}				
-			} else {
-				if (value.length() > 0)
-					measurement.setValue(new Float(value));
-			}
-		} else {
-			if (value.length() > 0)
-				measurement.setValue(new Float(value));
-		}
-			
-			
-		measurement.setUnitOfMeasurement(unit);
-		tableData.setValue(measurement);
-		tableData.setDerivedBioAssayDataCategory(category);
-		if (this.getConditionList() != null
-				&& this.getConditionList().size() > 0) {
-			for (ConditionBean condition : this.getConditionList()) {
-				tableData.getConditionCollection()
-						.add(condition.getDomainObj());
-			}
-		}
-
-		if (isAControl.equals(CaNanoLabConstants.BOOLEAN_YES)) {
-			Control control = new Control();
-			if (getControl() != null) {
-				if (getControl().getId() != null)
-					control.setId(new Long(getControl().getId()));
-				control.setName(getControl().getName());
-				control.setType(getControl().getType());
-				tableData.setControl(control);
-			}
-		}
-
-		return tableData;
-	}
-
-	public void updateDomainObj(Datum doDatum) {			
+	public void updateDomainObj(Datum doDatum) {
 		doDatum.setName(name);
 		Measurement measurement = new Measurement();
-		
+
 		if (statisticsType.length() > 0) {
 			measurement.setStatisticsType(statisticsType);
-			if (statisticsType.equals("boolean")){
-				if (value.equalsIgnoreCase("false") || (value.equalsIgnoreCase("no"))){
+			if (statisticsType.equals("boolean")) {
+				if (value.equalsIgnoreCase("false")
+						|| (value.equalsIgnoreCase("no"))) {
 					measurement.setValue(new Float(0));
 				} else {
 					measurement.setValue(new Float(1));
-				}				
+				}
 			} else {
 				if (value.length() > 0)
 					measurement.setValue(new Float(value));
@@ -200,16 +151,16 @@ public class DatumBean {
 		} else {
 			if (value.length() > 0)
 				measurement.setValue(new Float(value));
-		}		
-			
+		}
+
 		measurement.setUnitOfMeasurement(unit);
 		doDatum.setValue(measurement);
-		doDatum.setDerivedBioAssayDataCategory(category);
+		if (category.length() > 0)
+			doDatum.setDerivedBioAssayDataCategory(category);
 		if (this.getConditionList() != null
 				&& this.getConditionList().size() > 0) {
 			for (ConditionBean condition : this.getConditionList()) {
-				doDatum.getConditionCollection()
-						.add(condition.getDomainObj());
+				doDatum.getConditionCollection().add(condition.getDomainObj());
 			}
 		}
 
