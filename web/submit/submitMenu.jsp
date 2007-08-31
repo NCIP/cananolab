@@ -25,6 +25,12 @@
 	</c:when>
 </c:choose>
 <c:choose>
+	<c:when test="${!empty param.particleSource}">
+		<c:set var="particleSource" value="${param.particleSource}"
+			scope="session" />
+	</c:when>
+</c:choose>
+<c:choose>
 	<c:when test="${canUserSubmit eq 'true'}">
 		<table border="0" cellspacing="0" cellpadding="0">
 			<tr>
@@ -41,6 +47,7 @@
 						   <c:param name="page" value="0"/>
 						   <c:param name="particleName" value="${particleName}"/>
 						   <c:param name="particleType" value="${particleType}"/>
+						   <c:param name="particleSource" value="${particleSource}"/>
 						   <c:param name="actionName" value="${actionName}"/>
 						   <c:param name="charName" value="${achar.name}"/>
 						</c:url>
