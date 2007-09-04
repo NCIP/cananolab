@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleMolecularWeightAction.java,v 1.17 2007-07-18 19:23:00 pansu Exp $ */
+/* CVS $Id: NanoparticleMolecularWeightAction.java,v 1.18 2007-09-04 20:06:47 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
@@ -41,16 +41,13 @@ public class NanoparticleMolecularWeightAction extends
 		ActionForward forward = null;
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
 		CharacterizationBean charBean = super.prepareCreate(request, theForm);
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		service
-				.addParticleMolecularWeight(particleType, particleName,
-						charBean);
-		CharacterizationBean[] otherChars=super.prepareCopy(request, theForm, service);
-		for (CharacterizationBean acharBean: otherChars) {
-			service.addParticleMolecularWeight(particleType, acharBean.getParticleName(), acharBean);
+		service.addParticleMolecularWeight(charBean);
+		CharacterizationBean[] otherChars = super.prepareCopy(request, theForm,
+				service);
+		for (CharacterizationBean acharBean : otherChars) {
+			service.addParticleMolecularWeight(acharBean);
 		}
 		super.postCreate(request, theForm);
 

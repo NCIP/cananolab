@@ -39,14 +39,12 @@ public class InvitroLeukocyteProliferationAction extends
 		ActionForward forward = null;
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
 		CharacterizationBean charBean = super.prepareCreate(request, theForm);
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		service.addLeukocyteProliferation(particleType, particleName, charBean);
+		service.addLeukocyteProliferation(charBean);
 		CharacterizationBean[] otherChars=super.prepareCopy(request, theForm, service);
 		for (CharacterizationBean acharBean: otherChars) {
-			service.addLeukocyteProliferation(particleType, acharBean.getParticleName(), acharBean);
+			service.addLeukocyteProliferation(acharBean);
 		}
 		super.postCreate(request, theForm);
 

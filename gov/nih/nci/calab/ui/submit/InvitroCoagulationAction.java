@@ -38,14 +38,12 @@ public class InvitroCoagulationAction extends BaseCharacterizationAction {
 		ActionForward forward = null;
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
 		CharacterizationBean charBean = super.prepareCreate(request, theForm);
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		service.addCoagulation(particleType, particleName, charBean);
+		service.addCoagulation(charBean);
 		CharacterizationBean[] otherChars=super.prepareCopy(request, theForm, service);
 		for (CharacterizationBean acharBean: otherChars) {
-			service.addCoagulation(particleType, acharBean.getParticleName(), acharBean);
+			service.addCoagulation(acharBean);
 		}
 		super.postCreate(request, theForm);
 
