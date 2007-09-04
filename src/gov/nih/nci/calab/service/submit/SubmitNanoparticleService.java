@@ -159,8 +159,7 @@ public class SubmitNanoparticleService {
 	 * @param achar
 	 * @throws Exception
 	 */
-	private void addParticleCharacterization(String particleType,
-			String particleName, Characterization achar,
+	private void addParticleCharacterization(Characterization achar,
 			CharacterizationBean charBean) throws Exception {
 
 		// if ID is not set save to the database otherwise update
@@ -172,7 +171,7 @@ public class SubmitNanoparticleService {
 			// check if viewTitle is already used the same type of
 			// characterization for the same particle
 			boolean viewTitleUsed = isCharacterizationViewTitleUsed(session,
-					particleType, particleName, achar, charBean);
+					achar, charBean);
 			if (viewTitleUsed) {
 				throw new RuntimeException(
 						"The view title is already in use.  Please enter a different one.");
@@ -188,15 +187,18 @@ public class SubmitNanoparticleService {
 				}
 				// updated domain object
 				if (achar instanceof Shape) {
-					((ShapeBean) charBean).updateDomainObj((Shape)achar);
+					((ShapeBean) charBean).updateDomainObj((Shape) achar);
 				} else if (achar instanceof Morphology) {
-					((MorphologyBean) charBean).updateDomainObj((Morphology)achar);
+					((MorphologyBean) charBean)
+							.updateDomainObj((Morphology) achar);
 				} else if (achar instanceof Solubility) {
-					((SolubilityBean) charBean).updateDomainObj((Solubility)achar);
+					((SolubilityBean) charBean)
+							.updateDomainObj((Solubility) achar);
 				} else if (achar instanceof Surface) {
-					((SurfaceBean) charBean).updateDomainObj((Surface)achar);
+					((SurfaceBean) charBean).updateDomainObj((Surface) achar);
 				} else if (achar instanceof Cytotoxicity) {
-					((CytotoxicityBean) charBean).updateDomainObj((Cytotoxicity)achar);
+					((CytotoxicityBean) charBean)
+							.updateDomainObj((Cytotoxicity) achar);
 				} else
 					charBean.updateDomainObj(achar);
 
@@ -208,10 +210,11 @@ public class SubmitNanoparticleService {
 				if (charBean.getId() == null) {
 					List results = session
 							.createQuery(
-									"select particle from Nanoparticle particle left join fetch particle.characterizationCollection where particle.name='"
-											+ particleName
+									"from Nanoparticle particle left join fetch particle.characterizationCollection where particle.name='"
+											+ charBean.getParticleName()
 											+ "' and particle.type='"
-											+ particleType + "'").list();
+											+ charBean.getParticleType() + "'")
+							.list();
 
 					for (Object obj : results) {
 						particle = (Nanoparticle) obj;
@@ -311,23 +314,23 @@ public class SubmitNanoparticleService {
 	 * the same particle
 	 */
 	private boolean isCharacterizationViewTitleUsed(Session session,
-			String particleType, String particleName, Characterization achar,
-			CharacterizationBean charBean) throws Exception {
+			Characterization achar, CharacterizationBean charBean)
+			throws Exception {
 		String viewTitleQuery = "";
 		if (charBean.getId() == null) {
 			viewTitleQuery = "select count(achar.identificationName) from Nanoparticle particle join particle.characterizationCollection achar where particle.name='"
-					+ particleName
+					+ charBean.getParticleName()
 					+ "' and particle.type='"
-					+ particleType
+					+ charBean.getParticleType()
 					+ "' and achar.identificationName='"
 					+ charBean.getViewTitle()
 					+ "' and achar.name='"
 					+ achar.getName() + "'";
 		} else {
 			viewTitleQuery = "select count(achar.identificationName) from Nanoparticle particle join particle.characterizationCollection achar where particle.name='"
-					+ particleName
+					+ charBean.getParticleName()
 					+ "' and particle.type='"
-					+ particleType
+					+ charBean.getParticleType()
 					+ "' and achar.identificationName='"
 					+ charBean.getViewTitle()
 					+ "' and achar.name='"
@@ -430,30 +433,24 @@ public class SubmitNanoparticleService {
 	/**
 	 * Saves the particle composition to the database
 	 * 
-	 * @param particleType
-	 * @param particleName
 	 * @param composition
 	 * @throws Exception
 	 */
-	public void addParticleComposition(String particleType,
-			String particleName, CompositionBean composition) throws Exception {
+	public void addParticleComposition(CompositionBean composition)
+			throws Exception {
 		ParticleComposition doComp = composition.getDomainObj();
-		addParticleCharacterization(particleType, particleName, doComp,
-				composition);
+		addParticleCharacterization(doComp, composition);
 	}
 
 	/**
-	 * O Saves the size characterization to the database
+	 * Saves the size characterization to the database
 	 * 
-	 * @param particleType
-	 * @param particleName
 	 * @param size
 	 * @throws Exception
 	 */
-	public void addParticleSize(String particleType, String particleName,
-			CharacterizationBean size) throws Exception {
+	public void addParticleSize(CharacterizationBean size) throws Exception {
 		Size doSize = new Size();
-		addParticleCharacterization(particleType, particleName, doSize, size);
+		addParticleCharacterization(doSize, size);
 	}
 
 	/**
@@ -464,11 +461,10 @@ public class SubmitNanoparticleService {
 	 * @param surface
 	 * @throws Exception
 	 */
-	public void addParticleSurface(String particleType, String particleName,
-			CharacterizationBean surface) throws Exception {
+	public void addParticleSurface(CharacterizationBean surface)
+			throws Exception {
 		Surface doSurface = new Surface();
-		addParticleCharacterization(particleType, particleName, doSurface,
-				surface);
+		addParticleCharacterization(doSurface, surface);
 		// addMeasureUnit(doSurface.getCharge().getUnitOfMeasurement(),
 		// CaNanoLabConstants.UNIT_TYPE_CHARGE);
 		// addMeasureUnit(doSurface.getSurfaceArea().getUnitOfMeasurement(),
@@ -593,32 +589,25 @@ public class SubmitNanoparticleService {
 	/**
 	 * Saves the molecular weight characterization to the database
 	 * 
-	 * @param particleType
-	 * @param particleName
 	 * @param molecularWeight
 	 * @throws Exception
 	 */
-	public void addParticleMolecularWeight(String particleType,
-			String particleName, CharacterizationBean molecularWeight)
+	public void addParticleMolecularWeight(CharacterizationBean molecularWeight)
 			throws Exception {
 		MolecularWeight doMolecularWeight = new MolecularWeight();
-		addParticleCharacterization(particleType, particleName,
-				doMolecularWeight, molecularWeight);
+		addParticleCharacterization(doMolecularWeight, molecularWeight);
 	}
 
 	/**
 	 * Saves the morphology characterization to the database
 	 * 
-	 * @param particleType
-	 * @param particleName
 	 * @param morphology
 	 * @throws Exception
 	 */
-	public void addParticleMorphology(String particleType, String particleName,
-			MorphologyBean morphology) throws Exception {
+	public void addParticleMorphology(MorphologyBean morphology)
+			throws Exception {
 		Morphology doMorphology = new Morphology();
-		addParticleCharacterization(particleType, particleName, doMorphology,
-				morphology);
+		addParticleCharacterization(doMorphology, morphology);
 		MorphologyType morphologyType = new MorphologyType();
 		addLookupType(morphologyType, morphology.getType());
 	}
@@ -626,15 +615,12 @@ public class SubmitNanoparticleService {
 	/**
 	 * Saves the shape characterization to the database
 	 * 
-	 * @param particleType
-	 * @param particleName
 	 * @param shape
 	 * @throws Exception
 	 */
-	public void addParticleShape(String particleType, String particleName,
-			ShapeBean shape) throws Exception {
+	public void addParticleShape(ShapeBean shape) throws Exception {
 		Shape doShape = new Shape();
-		addParticleCharacterization(particleType, particleName, doShape, shape);
+		addParticleCharacterization(doShape, shape);
 		ShapeType shapeType = new ShapeType();
 		addLookupType(shapeType, shape.getType());
 	}
@@ -642,31 +628,24 @@ public class SubmitNanoparticleService {
 	/**
 	 * Saves the purity characterization to the database
 	 * 
-	 * @param particleType
-	 * @param particleName
 	 * @param purity
 	 * @throws Exception
 	 */
-	public void addParticlePurity(String particleType, String particleName,
-			CharacterizationBean purity) throws Exception {
+	public void addParticlePurity(CharacterizationBean purity) throws Exception {
 		Purity doPurity = new Purity();
-		addParticleCharacterization(particleType, particleName, doPurity,
-				purity);
+		addParticleCharacterization(doPurity, purity);
 	}
 
 	/**
 	 * Saves the solubility characterization to the database
 	 * 
-	 * @param particleType
-	 * @param particleName
 	 * @param solubility
 	 * @throws Exception
 	 */
-	public void addParticleSolubility(String particleType, String particleName,
-			SolubilityBean solubility) throws Exception {
+	public void addParticleSolubility(SolubilityBean solubility)
+			throws Exception {
 		Solubility doSolubility = new Solubility();
-		addParticleCharacterization(particleType, particleName, doSolubility,
-				solubility);
+		addParticleCharacterization(doSolubility, solubility);
 		SolventType solventType = new SolventType();
 		addLookupType(solventType, solubility.getSolvent());
 		// addMeasureUnit(solubility.getCriticalConcentration()
@@ -677,201 +656,158 @@ public class SubmitNanoparticleService {
 	/**
 	 * Saves the invitro hemolysis characterization to the database
 	 * 
-	 * @param particleType
-	 * @param particleName
 	 * @param hemolysis
 	 * @throws Exception
 	 */
-	public void addHemolysis(String particleType, String particleName,
-			CharacterizationBean hemolysis) throws Exception {
+	public void addHemolysis(CharacterizationBean hemolysis) throws Exception {
 		Hemolysis doHemolysis = new Hemolysis();
-		addParticleCharacterization(particleType, particleName, doHemolysis,
-				hemolysis);
+		addParticleCharacterization(doHemolysis, hemolysis);
 	}
 
 	/**
 	 * Saves the invitro coagulation characterization to the database
 	 * 
-	 * @param particleType
-	 * @param particleName
 	 * @param coagulation
 	 * @throws Exception
 	 */
-	public void addCoagulation(String particleType, String particleName,
-			CharacterizationBean coagulation) throws Exception {
+	public void addCoagulation(CharacterizationBean coagulation)
+			throws Exception {
 		Coagulation doCoagulation = new Coagulation();
-		addParticleCharacterization(particleType, particleName, doCoagulation,
-				coagulation);
+		addParticleCharacterization(doCoagulation, coagulation);
 	}
 
 	/**
 	 * Saves the invitro plate aggregation characterization to the database
 	 * 
-	 * @param particleType
-	 * @param particleName
 	 * @param plateletAggregation
 	 * @throws Exception
 	 */
-	public void addPlateletAggregation(String particleType,
-			String particleName, CharacterizationBean plateletAggregation)
+	public void addPlateletAggregation(CharacterizationBean plateletAggregation)
 			throws Exception {
 		PlateletAggregation doPlateletAggregation = new PlateletAggregation();
-		addParticleCharacterization(particleType, particleName,
-				doPlateletAggregation, plateletAggregation);
+		addParticleCharacterization(doPlateletAggregation, plateletAggregation);
 	}
 
 	/**
 	 * Saves the invitro chemotaxis characterization to the database
 	 * 
-	 * @param particleType
-	 * @param particleName
 	 * @param chemotaxis
 	 * @throws Exception
 	 */
-	public void addChemotaxis(String particleType, String particleName,
-			CharacterizationBean chemotaxis) throws Exception {
+	public void addChemotaxis(CharacterizationBean chemotaxis) throws Exception {
 		Chemotaxis doChemotaxis = new Chemotaxis();
-		addParticleCharacterization(particleType, particleName, doChemotaxis,
-				chemotaxis);
+		addParticleCharacterization(doChemotaxis, chemotaxis);
 	}
 
 	/**
 	 * Saves the invitro NKCellCytotoxicActivity characterization to the
 	 * database
 	 * 
-	 * @param particleType
-	 * @param particleName
 	 * @param nkCellCytotoxicActivity
 	 * @throws Exception
 	 */
-	public void addNKCellCytotoxicActivity(String particleType,
-			String particleName, CharacterizationBean nkCellCytotoxicActivity)
-			throws Exception {
+	public void addNKCellCytotoxicActivity(
+			CharacterizationBean nkCellCytotoxicActivity) throws Exception {
 		NKCellCytotoxicActivity doNKCellCytotoxicActivity = new NKCellCytotoxicActivity();
-		addParticleCharacterization(particleType, particleName,
-				doNKCellCytotoxicActivity, nkCellCytotoxicActivity);
+		addParticleCharacterization(doNKCellCytotoxicActivity,
+				nkCellCytotoxicActivity);
 	}
 
 	/**
 	 * Saves the invitro LeukocyteProliferation characterization to the database
 	 * 
-	 * @param particleType
-	 * @param particleName
 	 * @param leukocyteProliferation
 	 * @throws Exception
 	 */
-	public void addLeukocyteProliferation(String particleType,
-			String particleName, CharacterizationBean leukocyteProliferation)
-			throws Exception {
+	public void addLeukocyteProliferation(
+			CharacterizationBean leukocyteProliferation) throws Exception {
 		LeukocyteProliferation doLeukocyteProliferation = new LeukocyteProliferation();
-		addParticleCharacterization(particleType, particleName,
-				doLeukocyteProliferation, leukocyteProliferation);
+		addParticleCharacterization(doLeukocyteProliferation,
+				leukocyteProliferation);
 	}
 
 	/**
 	 * Saves the invitro CFU_GM characterization to the database
 	 * 
-	 * @param particleType
-	 * @param particleName
 	 * @param cfu_gm
 	 * @throws Exception
 	 */
-	public void addCFU_GM(String particleType, String particleName,
-			CharacterizationBean cfu_gm) throws Exception {
+	public void addCFU_GM(CharacterizationBean cfu_gm) throws Exception {
 		CFU_GM doCFU_GM = new CFU_GM();
-		addParticleCharacterization(particleType, particleName, doCFU_GM,
-				cfu_gm);
+		addParticleCharacterization(doCFU_GM, cfu_gm);
 	}
 
 	/**
 	 * Saves the invitro Complement Activation characterization to the database
 	 * 
-	 * @param particleType
-	 * @param particleName
 	 * @param complementActivation
 	 * @throws Exception
 	 */
-	public void addComplementActivation(String particleType,
-			String particleName, CharacterizationBean complementActivation)
-			throws Exception {
+	public void addComplementActivation(
+			CharacterizationBean complementActivation) throws Exception {
 		ComplementActivation doComplementActivation = new ComplementActivation();
-		addParticleCharacterization(particleType, particleName,
-				doComplementActivation, complementActivation);
+		addParticleCharacterization(doComplementActivation,
+				complementActivation);
 	}
 
 	/**
 	 * Saves the invitro OxidativeBurst characterization to the database
 	 * 
-	 * @param particleType
-	 * @param particleName
 	 * @param oxidativeBurst
 	 * @throws Exception
 	 */
-	public void addOxidativeBurst(String particleType, String particleName,
-			CharacterizationBean oxidativeBurst) throws Exception {
+	public void addOxidativeBurst(CharacterizationBean oxidativeBurst)
+			throws Exception {
 		OxidativeBurst doOxidativeBurst = new OxidativeBurst();
-		addParticleCharacterization(particleType, particleName,
-				doOxidativeBurst, oxidativeBurst);
+		addParticleCharacterization(doOxidativeBurst, oxidativeBurst);
 	}
 
 	/**
 	 * Saves the invitro Phagocytosis characterization to the database
 	 * 
-	 * @param particleType
-	 * @param particleName
 	 * @param phagocytosis
 	 * @throws Exception
 	 */
-	public void addPhagocytosis(String particleType, String particleName,
-			CharacterizationBean phagocytosis) throws Exception {
+	public void addPhagocytosis(CharacterizationBean phagocytosis)
+			throws Exception {
 		Phagocytosis doPhagocytosis = new Phagocytosis();
-		addParticleCharacterization(particleType, particleName, doPhagocytosis,
-				phagocytosis);
+		addParticleCharacterization(doPhagocytosis, phagocytosis);
 	}
 
 	/**
 	 * Saves the invitro CytokineInduction characterization to the database
 	 * 
-	 * @param particleType
-	 * @param particleName
 	 * @param cytokineInduction
 	 * @throws Exception
 	 */
-	public void addCytokineInduction(String particleType, String particleName,
-			CharacterizationBean cytokineInduction) throws Exception {
+	public void addCytokineInduction(CharacterizationBean cytokineInduction)
+			throws Exception {
 		CytokineInduction doCytokineInduction = new CytokineInduction();
-		addParticleCharacterization(particleType, particleName,
-				doCytokineInduction, cytokineInduction);
+		addParticleCharacterization(doCytokineInduction, cytokineInduction);
 	}
 
 	/**
 	 * Saves the invitro plasma protein binding characterization to the database
 	 * 
-	 * @param particleType
-	 * @param particleName
 	 * @param plasmaProteinBinding
 	 * @throws Exception
 	 */
-	public void addProteinBinding(String particleType, String particleName,
-			CharacterizationBean plasmaProteinBinding) throws Exception {
+	public void addProteinBinding(CharacterizationBean plasmaProteinBinding)
+			throws Exception {
 		PlasmaProteinBinding doProteinBinding = new PlasmaProteinBinding();
-		addParticleCharacterization(particleType, particleName,
-				doProteinBinding, plasmaProteinBinding);
+		addParticleCharacterization(doProteinBinding, plasmaProteinBinding);
 	}
 
 	/**
 	 * Saves the invitro binding characterization to the database
 	 * 
-	 * @param particleType
-	 * @param particleName
 	 * @param cellViability
 	 * @throws Exception
 	 */
-	public void addCellViability(String particleType, String particleName,
-			CytotoxicityBean cellViability) throws Exception {
+	public void addCellViability(CytotoxicityBean cellViability)
+			throws Exception {
 		CellViability doCellViability = new CellViability();
-		addParticleCharacterization(particleType, particleName,
-				doCellViability, cellViability);
+		addParticleCharacterization(doCellViability, cellViability);
 		CellLineType cellLineType = new CellLineType();
 		addLookupType(cellLineType, cellViability.getCellLine());
 	}
@@ -880,46 +816,37 @@ public class SubmitNanoparticleService {
 	 * Saves the invitro EnzymeInduction binding characterization to the
 	 * database
 	 * 
-	 * @param particleType
-	 * @param particleName
 	 * @param enzymeInduction
 	 * @throws Exception
 	 */
-	public void addEnzymeInduction(String particleType, String particleName,
-			CharacterizationBean enzymeInduction) throws Exception {
+	public void addEnzymeInduction(CharacterizationBean enzymeInduction)
+			throws Exception {
 		EnzymeInduction doEnzymeInduction = new EnzymeInduction();
-		addParticleCharacterization(particleType, particleName,
-				doEnzymeInduction, enzymeInduction);
+		addParticleCharacterization(doEnzymeInduction, enzymeInduction);
 	}
 
 	/**
 	 * Saves the invitro OxidativeStress characterization to the database
 	 * 
-	 * @param particleType
-	 * @param particleName
 	 * @param oxidativeStress
 	 * @throws Exception
 	 */
-	public void addOxidativeStress(String particleType, String particleName,
-			CharacterizationBean oxidativeStress) throws Exception {
+	public void addOxidativeStress(CharacterizationBean oxidativeStress)
+			throws Exception {
 		OxidativeStress doOxidativeStress = new OxidativeStress();
-		addParticleCharacterization(particleType, particleName,
-				doOxidativeStress, oxidativeStress);
+		addParticleCharacterization(doOxidativeStress, oxidativeStress);
 	}
 
 	/**
 	 * Saves the invitro Caspase3Activation characterization to the database
 	 * 
-	 * @param particleType
-	 * @param particleName
 	 * @param caspase3Activation
 	 * @throws Exception
 	 */
-	public void addCaspase3Activation(String particleType, String particleName,
-			CytotoxicityBean caspase3Activation) throws Exception {
+	public void addCaspase3Activation(CytotoxicityBean caspase3Activation)
+			throws Exception {
 		Caspase3Activation doCaspase3Activation = new Caspase3Activation();
-		addParticleCharacterization(particleType, particleName,
-				doCaspase3Activation, caspase3Activation);
+		addParticleCharacterization(doCaspase3Activation, caspase3Activation);
 		CellLineType cellLineType = new CellLineType();
 		addLookupType(cellLineType, caspase3Activation.getCellLine());
 	}
