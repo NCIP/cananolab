@@ -15,11 +15,21 @@
 			<td align="right" width="15%">
 				<a
 					href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=nano_general_info_help')"
-					class="helpText">Help</a>
+					class="helpText">Help</a> 
 			</td>
 		</tr>
 		<c:choose>
-			<c:when test="${!empty allParticleTypes}">
+			<c:when test="${empty allParticleTypes && param.dispatch eq 'setup'}">
+				<tr>
+					<td colspan="2">
+						<font color="blue" size="-1"><b>MESSAGE: </b>There are no
+							un-annotated nanoparticles in the database. Please make sure to
+							either create a new sample or go to Search Nanoparticle to update
+							an existing annotated nanoparticle. </font>
+					</td>
+				</tr>
+			</c:when>
+			<c:otherwise>
 				<tr>
 					<td colspan="2">
 						<jsp:include page="/bodyMessage.jsp?bundle=submit" />
@@ -138,16 +148,6 @@
 								</td>
 							</tr>
 						</table>
-					</td>
-				</tr>
-			</c:when>
-			<c:otherwise>
-				<tr>
-					<td colspan="2">						
-						<font color="blue" size="-1"><b>MESSAGE: </b>There are no un-annotated
-							nanoparticles in the database. Please make sure to either create a
-							new sample or go to Search Nanoparticle to update an existing
-							annotated nanoparticle. </font>
 					</td>
 				</tr>
 			</c:otherwise>
