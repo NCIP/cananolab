@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSurfaceAction.java,v 1.24 2007-08-01 20:49:36 pansu Exp $ */
+/* CVS $Id: NanoparticleSurfaceAction.java,v 1.25 2007-09-04 20:06:47 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.physical.SurfaceBean;
@@ -45,19 +45,16 @@ public class NanoparticleSurfaceAction extends BaseCharacterizationAction {
 		ActionForward forward = null;
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
 		CharacterizationBean charBean = super.prepareCreate(request, theForm);
 		SurfaceBean propBean = (SurfaceBean) theForm.get("surface");
 		SurfaceBean surfaceBean = new SurfaceBean(propBean, charBean);
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		service.addParticleSurface(particleType, particleName, surfaceBean);
+		service.addParticleSurface(surfaceBean);
 		CharacterizationBean[] otherChars = super.prepareCopy(request, theForm,
 				service);
 		for (CharacterizationBean acharBean : otherChars) {
 			SurfaceBean aSurfaceBean = new SurfaceBean(propBean, acharBean);
-			service.addParticleSurface(particleType, acharBean
-					.getParticleName(), aSurfaceBean);
+			service.addParticleSurface(aSurfaceBean);
 		}
 		super.postCreate(request, theForm);
 		request.getSession().setAttribute("newSurfaceCreated", "true");

@@ -38,14 +38,12 @@ public class InvitroOxidativeStressAction extends BaseCharacterizationAction {
 		ActionForward forward = null;
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
 		CharacterizationBean charBean = super.prepareCreate(request, theForm);
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		service.addOxidativeStress(particleType, particleName, charBean);
+		service.addOxidativeStress(charBean);
 		CharacterizationBean[] otherChars=super.prepareCopy(request, theForm, service);
 		for (CharacterizationBean acharBean: otherChars) {
-			service.addOxidativeStress(particleType, acharBean.getParticleName(), acharBean);
+			service.addOxidativeStress(acharBean);
 		}
 		super.postCreate(request, theForm);
 

@@ -39,14 +39,12 @@ public class InvitroNKCellCytotoxicActivityAction extends
 		ActionForward forward = null;
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
 		CharacterizationBean charBean = super.prepareCreate(request, theForm);
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		service.addNKCellCytotoxicActivity(particleType, particleName, charBean);
+		service.addNKCellCytotoxicActivity(charBean);
 		CharacterizationBean[] otherChars=super.prepareCopy(request, theForm, service);
 		for (CharacterizationBean acharBean: otherChars) {
-			service.addNKCellCytotoxicActivity(particleType, acharBean.getParticleName(), acharBean);
+			service.addNKCellCytotoxicActivity(acharBean);
 		}
 		super.postCreate(request, theForm);
 

@@ -38,14 +38,12 @@ public class InvitroPhagocytosisAction extends BaseCharacterizationAction {
 		ActionForward forward = null;
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
 		CharacterizationBean charBean = super.prepareCreate(request, theForm);
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		service.addPhagocytosis(particleType, particleName, charBean);
+		service.addPhagocytosis(charBean);
 		CharacterizationBean[] otherChars=super.prepareCopy(request, theForm, service);
 		for (CharacterizationBean acharBean: otherChars) {
-			service.addPhagocytosis(particleType, acharBean.getParticleName(), acharBean);
+			service.addPhagocytosis(acharBean);
 		}
 		super.postCreate(request, theForm);
 

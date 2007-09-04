@@ -38,14 +38,12 @@ public class InvitroCFU_GMAction extends BaseCharacterizationAction {
 		ActionForward forward = null;
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
 		CharacterizationBean charBean = super.prepareCreate(request, theForm);
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		service.addCFU_GM(particleType, particleName, charBean);
+		service.addCFU_GM(charBean);
 		CharacterizationBean[] otherChars=super.prepareCopy(request, theForm, service);
 		for (CharacterizationBean acharBean: otherChars) {
-			service.addCFU_GM(particleType, acharBean.getParticleName(), acharBean);
+			service.addCFU_GM(acharBean);
 		}
 		super.postCreate(request, theForm);
 		

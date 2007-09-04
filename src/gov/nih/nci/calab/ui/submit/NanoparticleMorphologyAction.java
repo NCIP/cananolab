@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleMorphologyAction.java,v 1.19 2007-08-01 20:49:36 pansu Exp $ */
+/* CVS $Id: NanoparticleMorphologyAction.java,v 1.20 2007-09-04 20:06:47 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.physical.MorphologyBean;
@@ -41,21 +41,18 @@ public class NanoparticleMorphologyAction extends BaseCharacterizationAction {
 		ActionForward forward = null;
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
 		CharacterizationBean charBean = super.prepareCreate(request, theForm);
 		MorphologyBean propBean = (MorphologyBean) theForm.get("morphology");
 		MorphologyBean morphologyBean = new MorphologyBean(propBean, charBean);
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		service.addParticleMorphology(particleType, particleName,
+		service.addParticleMorphology(
 				morphologyBean);
 		CharacterizationBean[] otherChars = super.prepareCopy(request, theForm,
 				service);
 		for (CharacterizationBean acharBean : otherChars) {
 			MorphologyBean aMorphologyBean = new MorphologyBean(propBean,
 					acharBean);
-			service.addParticleMorphology(particleType, acharBean
-					.getParticleName(), aMorphologyBean);
+			service.addParticleMorphology(aMorphologyBean);
 		}
 		super.postCreate(request, theForm);
 		request.getSession().setAttribute("newMorphologyCreated", "true");

@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSolubilityAction.java,v 1.16 2007-08-01 20:49:36 pansu Exp $ */
+/* CVS $Id: NanoparticleSolubilityAction.java,v 1.17 2007-09-04 20:06:47 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.physical.SolubilityBean;
@@ -40,18 +40,16 @@ public class NanoparticleSolubilityAction extends BaseCharacterizationAction {
 		ActionForward forward = null;
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
 		CharacterizationBean charBean = super.prepareCreate(request, theForm);
 		SolubilityBean propBean = (SolubilityBean) theForm.get("solubility");
 		SolubilityBean solubilityBean = new SolubilityBean(propBean, charBean);
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		service.addParticleSolubility(particleType, particleName,
+		service.addParticleSolubility(
 				solubilityBean);
 		CharacterizationBean[] otherChars=super.prepareCopy(request, theForm, service);
 		for (CharacterizationBean acharBean: otherChars) {
 			SolubilityBean aSolubilityBean = new SolubilityBean(propBean, acharBean);
-			service.addParticleSolubility(particleType, acharBean.getParticleName(), aSolubilityBean);
+			service.addParticleSolubility(aSolubilityBean);
 		}
 		super.postCreate(request, theForm);
 		request.getSession().setAttribute("newSolubilityCreated", "true");
