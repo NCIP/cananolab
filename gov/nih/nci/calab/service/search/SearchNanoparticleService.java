@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.exolab.castor.xml.schema.Particle;
 import org.hibernate.Session;
 
 /**
@@ -456,20 +457,40 @@ public class SearchNanoparticleService {
 		}
 
 		String hqlString = hqlSelect + hqlWhere;
-		try {			
+		try {
 			List results = HibernateUtil.createQueryByParam(hqlString,
 					paramList).list();
 			for (Object obj : results) {
 				Nanoparticle particle = (Nanoparticle) obj;
 				ParticleBean particleBean = new ParticleBean(particle);
 				particles.add(particleBean);
-			}			
-		}
-		catch (Exception e) {
+			}
+		} catch (Exception e) {
 
 		} finally {
 			HibernateUtil.closeSession();
 		}
 		return particles;
+	}
+
+	public Nanoparticle getParticleBy(String particleName) throws Exception {
+		Nanoparticle particle = null;
+		try {
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			List results = session.createQuery(
+					" from Nanoparticle particle where particle.name='"
+							+ particleName + "'").list();
+			for (Object obj : results) {
+				particle = (Nanoparticle) obj;
+			}
+			HibernateUtil.commitTransaction();
+		} catch (Exception e) {
+			logger.error("Problem finding functions", e);
+			throw e;
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		return particle;
 	}
 }
