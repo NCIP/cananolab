@@ -18,7 +18,7 @@ import org.displaytag.decorator.TableDecorator;
 public class NanoparticleDecorator extends TableDecorator {
 	public SortableName getEditParticleURL() throws Exception{
 		ParticleBean particle = (ParticleBean) getCurrentRowObject();		
-		String particleType = URLEncoder.encode(particle.getSampleType().replace(" ", "%20"), "UTF-8");
+		String particleType = URLEncoder.encode(particle.getSampleType(), "UTF-8");
 		String particleName = URLEncoder.encode(particle.getSampleName(), "UTF-8");
 		String particleSource=URLEncoder.encode(particle.getSampleSource(), "UTF-8");
 		String editParticleURL = "nanoparticleGeneralInfo.do?dispatch=setupUpdate&particleType="
@@ -33,7 +33,7 @@ public class NanoparticleDecorator extends TableDecorator {
 
 	public SortableName getViewParticleURL() throws Exception {
 		ParticleBean particle = (ParticleBean) getCurrentRowObject();		
-		String particleType = URLEncoder.encode(particle.getSampleType().replace(" ", "%20"), "UTF-8");
+		String particleType = URLEncoder.encode(particle.getSampleType(), "UTF-8");
 		String particleName = URLEncoder.encode(particle.getSampleName(), "UTF-8");
 		String particleSource=URLEncoder.encode(particle.getSampleSource(), "UTF-8");
 		String viewParticleURL = "nanoparticleGeneralInfo.do?dispatch=setupView&particleType="
@@ -47,7 +47,7 @@ public class NanoparticleDecorator extends TableDecorator {
 
 	public SortableName getRemoteViewURL() throws Exception {
 		ParticleBean particle = (ParticleBean) getCurrentRowObject();		
-		String particleType = URLEncoder.encode(particle.getSampleType().replace(" ", "%20"), "UTF-8");
+		String particleType = URLEncoder.encode(particle.getSampleType(), "UTF-8");
 		String particleName = URLEncoder.encode(particle.getSampleName(), "UTF-8");
 		String remoteViewURL = "remoteNanoparticleGeneralInfo.do?dispatch=view&particleType="
 				+ particleType + "&particleName=" + particleName+"&gridNodeHost="+particle.getGridNode();
