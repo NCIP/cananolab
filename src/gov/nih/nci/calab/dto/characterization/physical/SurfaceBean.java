@@ -21,11 +21,11 @@ public class SurfaceBean extends CharacterizationBean {
 
 	private String surfaceArea;
 
-	private String surfaceAreaUnit="nm^2";
+	private String surfaceAreaUnit = "nm^2";
 
 	private String zetaPotential;
 
-	private String zetaPotentialUnit="mV";
+	private String zetaPotentialUnit = "mV";
 
 	private String charge;
 
@@ -59,8 +59,12 @@ public class SurfaceBean extends CharacterizationBean {
 				.convertToString(aChar.getCharge().getValue()) : "";
 		this.chargeUnit = (aChar.getCharge() != null) ? aChar.getCharge()
 				.getUnitOfMeasurement() : "";
-		this.isHydrophobic = aChar.getIsHydrophobic() ? CaNanoLabConstants.BOOLEAN_YES
-				: CaNanoLabConstants.BOOLEAN_NO;
+		if (aChar.getIsHydrophobic() == null) {
+			this.isHydrophobic = "";
+		} else {
+			this.isHydrophobic = (aChar.getIsHydrophobic()) ? CaNanoLabConstants.BOOLEAN_YES
+					: CaNanoLabConstants.BOOLEAN_NO;
+		}
 		this.surfaceArea = (aChar.getSurfaceArea() != null) ? aChar
 				.getSurfaceArea().getValue().toString() : "";
 		this.zetaPotential = (aChar.getZetaPotential() != null) ? aChar
@@ -132,12 +136,15 @@ public class SurfaceBean extends CharacterizationBean {
 
 	public void updateDomainObj(Surface surface) {
 		super.updateDomainObj(surface);
-
-		boolean hycrophobicStatus = (isHydrophobic
-				.equalsIgnoreCase(CaNanoLabConstants.BOOLEAN_YES)) ? true
-				: false;
-		surface.setIsHydrophobic(hycrophobicStatus);
-		if ((charge == null) || (charge.length() == 0)){
+		if (isHydrophobic==null || isHydrophobic.length() == 0) {
+			surface.setIsHydrophobic(null);
+		} else {
+			boolean hycrophobicStatus = (isHydrophobic
+					.equalsIgnoreCase(CaNanoLabConstants.BOOLEAN_YES)) ? true
+					: false;
+			surface.setIsHydrophobic(hycrophobicStatus);
+		}
+		if ((charge == null) || (charge.length() == 0)) {
 			surface.setCharge(null);
 		} else {
 			surface.setCharge(new Measurement(new Float(charge), chargeUnit));
@@ -156,7 +163,7 @@ public class SurfaceBean extends CharacterizationBean {
 			surface.setSurfaceArea(new Measurement(new Float(surfaceArea),
 					surfaceAreaUnit));
 		}
-		
+
 		for (SurfaceChemistryBean surfaceChemistry : surfaceChemistries) {
 			surface.getSurfaceChemistryCollection().add(
 					surfaceChemistry.getDomainObj());
