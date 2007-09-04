@@ -39,20 +39,17 @@ public class InvitroCaspase3ActivationAction extends BaseCharacterizationAction 
 		ActionForward forward = null;
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
 		CharacterizationBean charBean = super.prepareCreate(request, theForm);
 		CytotoxicityBean propBean = (CytotoxicityBean) theForm
 				.get("cytotoxicity");
 		CytotoxicityBean cytoBean = new CytotoxicityBean(propBean, charBean);
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		service.addCaspase3Activation(particleType, particleName, cytoBean);
+		service.addCaspase3Activation(cytoBean);
 		CharacterizationBean[] otherChars = super.prepareCopy(request, theForm,
 				service);
 		for (CharacterizationBean acharBean : otherChars) {
-			CytotoxicityBean aCytoBean = new CytotoxicityBean(propBean, charBean);
-			service.addCaspase3Activation(particleType, acharBean
-					.getParticleName(), aCytoBean);
+			CytotoxicityBean aCytoBean = new CytotoxicityBean(propBean, acharBean);
+			service.addCaspase3Activation(aCytoBean);
 		}
 		super.postCreate(request, theForm);
 		request.getSession().setAttribute("newCytoCreated", "true");

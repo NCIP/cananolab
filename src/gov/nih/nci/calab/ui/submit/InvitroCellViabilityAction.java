@@ -39,18 +39,16 @@ public class InvitroCellViabilityAction extends BaseCharacterizationAction {
 		ActionForward forward = null;
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
 		CharacterizationBean charBean = super.prepareCreate(request, theForm);
 		CytotoxicityBean propBean = (CytotoxicityBean) theForm
 				.get("cytotoxicity");
 		CytotoxicityBean cytoBean = new CytotoxicityBean(propBean, charBean);
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		service.addCellViability(particleType, particleName, cytoBean);
+		service.addCellViability(cytoBean);
 		CharacterizationBean[] otherChars=super.prepareCopy(request, theForm, service);
 		for (CharacterizationBean acharBean: otherChars) {
 			CytotoxicityBean aCytoBean = new CytotoxicityBean(propBean, acharBean);
-			service.addCellViability(particleType, acharBean.getParticleName(), aCytoBean);
+			service.addCellViability(aCytoBean);
 		}
 		super.postCreate(request, theForm);
 		request.getSession().setAttribute("newCytoCreated", "true");

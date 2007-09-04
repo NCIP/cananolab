@@ -38,14 +38,12 @@ public class InvitroCytokineInductionAction extends BaseCharacterizationAction {
 		ActionForward forward = null;
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
 		CharacterizationBean charBean = super.prepareCreate(request, theForm);
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		service.addCytokineInduction(particleType, particleName, charBean);
+		service.addCytokineInduction(charBean);
 		CharacterizationBean[] otherChars=super.prepareCopy(request, theForm, service);
 		for (CharacterizationBean acharBean: otherChars) {
-			service.addCytokineInduction(particleType, acharBean.getParticleName(), acharBean);
+			service.addCytokineInduction(acharBean);
 		}
 		super.postCreate(request, theForm);
 

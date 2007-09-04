@@ -38,14 +38,12 @@ public class InvitroChemotaxisAction extends BaseCharacterizationAction {
 		ActionForward forward = null;
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
 		CharacterizationBean charBean = super.prepareCreate(request, theForm);
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		service.addChemotaxis(particleType, particleName, charBean);
+		service.addChemotaxis(charBean);
 		CharacterizationBean[] otherChars=super.prepareCopy(request, theForm, service);
 		for (CharacterizationBean acharBean: otherChars) {
-			service.addChemotaxis(particleType, acharBean.getParticleName(), acharBean);
+			service.addChemotaxis(acharBean);
 		}
 		super.postCreate(request, theForm);
 

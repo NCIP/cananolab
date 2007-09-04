@@ -38,14 +38,12 @@ public class InvitroHemolysisAction extends BaseCharacterizationAction {
 		ActionForward forward = null;
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
 		CharacterizationBean charBean = super.prepareCreate(request, theForm);
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		service.addHemolysis(particleType, particleName, charBean);
+		service.addHemolysis(charBean);
 		CharacterizationBean[] otherChars=super.prepareCopy(request, theForm, service);
 		for (CharacterizationBean acharBean: otherChars) {
-			service.addHemolysis(particleType, acharBean.getParticleName(), acharBean);
+			service.addHemolysis(acharBean);
 		}
 		super.postCreate(request, theForm);
 

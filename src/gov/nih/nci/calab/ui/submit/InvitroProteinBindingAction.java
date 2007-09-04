@@ -38,14 +38,12 @@ public class InvitroProteinBindingAction extends BaseCharacterizationAction {
 		ActionForward forward = null;
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
 		CharacterizationBean charBean = super.prepareCreate(request, theForm);
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		service.addProteinBinding(particleType, particleName, charBean);
+		service.addProteinBinding(charBean);
 		CharacterizationBean[] otherChars=super.prepareCopy(request, theForm, service);
 		for (CharacterizationBean acharBean: otherChars) {
-			service.addProteinBinding(particleType, acharBean.getParticleName(), acharBean);
+			service.addProteinBinding(acharBean);
 		}
 		super.postCreate(request, theForm);
 

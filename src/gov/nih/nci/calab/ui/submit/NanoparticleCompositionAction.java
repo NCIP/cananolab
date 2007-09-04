@@ -8,7 +8,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleCompositionAction.java,v 1.30 2007-08-24 17:59:04 pansu Exp $ */
+/* CVS $Id: NanoparticleCompositionAction.java,v 1.31 2007-09-04 20:06:47 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.CarbonNanotubeComposition;
@@ -112,14 +112,16 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		composition.setViewTitle(viewTitle);
 		composition.setDescription(description);
 		composition.setCharacterizationSource(characterizationSource);
-
+		composition.setParticleName(particleName);
+		composition.setParticleType(particleType);
+		
 		// set createdBy and createdDate for the composition
 		UserBean user = (UserBean) session.getAttribute("user");
 		Date date = new Date();
 		composition.setCreatedBy(user.getLoginName());
 		composition.setCreatedDate(date);
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		service.addParticleComposition(particleType, particleName, composition);
+		service.addParticleComposition(composition);
 
 		// In case there is other type of branch, generation, etc created during
 		// the creationg and update

@@ -39,14 +39,12 @@ public class InvitroComplementActivationAction extends
 		ActionForward forward = null;
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
 		CharacterizationBean charBean = super.prepareCreate(request, theForm);
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		service.addComplementActivation(particleType, particleName, charBean);
+		service.addComplementActivation(charBean);
 		CharacterizationBean[] otherChars=super.prepareCopy(request, theForm, service);
 		for (CharacterizationBean acharBean: otherChars) {
-			service.addComplementActivation(particleType, acharBean.getParticleName(), acharBean);
+			service.addComplementActivation(acharBean);
 		}
 		super.postCreate(request, theForm);
 

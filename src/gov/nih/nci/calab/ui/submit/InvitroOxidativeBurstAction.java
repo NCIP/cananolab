@@ -38,14 +38,12 @@ public class InvitroOxidativeBurstAction extends BaseCharacterizationAction {
 		ActionForward forward = null;
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
 		CharacterizationBean charBean = super.prepareCreate(request, theForm);
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		service.addOxidativeBurst(particleType, particleName, charBean);
+		service.addOxidativeBurst(charBean);
 		CharacterizationBean[] otherChars=super.prepareCopy(request, theForm, service);
 		for (CharacterizationBean acharBean: otherChars) {
-			service.addOxidativeBurst(particleType, acharBean.getParticleName(), acharBean);
+			service.addOxidativeBurst(acharBean);
 		}
 		super.postCreate(request, theForm);
 
