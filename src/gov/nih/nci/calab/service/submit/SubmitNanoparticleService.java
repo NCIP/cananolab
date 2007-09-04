@@ -188,15 +188,15 @@ public class SubmitNanoparticleService {
 				}
 				// updated domain object
 				if (achar instanceof Shape) {
-					((ShapeBean) charBean).updateDomainObj(achar);
+					((ShapeBean) charBean).updateDomainObj((Shape)achar);
 				} else if (achar instanceof Morphology) {
-					((MorphologyBean) charBean).updateDomainObj(achar);
+					((MorphologyBean) charBean).updateDomainObj((Morphology)achar);
 				} else if (achar instanceof Solubility) {
-					((SolubilityBean) charBean).updateDomainObj(achar);
+					((SolubilityBean) charBean).updateDomainObj((Solubility)achar);
 				} else if (achar instanceof Surface) {
-					((SurfaceBean) charBean).updateDomainObj(achar);
+					((SurfaceBean) charBean).updateDomainObj((Surface)achar);
 				} else if (achar instanceof Cytotoxicity) {
-					((CytotoxicityBean) charBean).updateDomainObj(achar);
+					((CytotoxicityBean) charBean).updateDomainObj((Cytotoxicity)achar);
 				} else
 					charBean.updateDomainObj(achar);
 
