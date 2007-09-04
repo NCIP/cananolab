@@ -13,7 +13,7 @@ import org.hibernate.cfg.Configuration;
 
 /**
  * 
- * @author pansu
+ * @author pansu (modified based on an internet version)
  * 
  */
 public class HibernateUtil {
@@ -21,9 +21,9 @@ public class HibernateUtil {
 
 	private static final SessionFactory sessionFactory;
 
-	public static final ThreadLocal<Session> threadSession = new ThreadLocal<Session>();
+	private static final ThreadLocal<Session> threadSession = new ThreadLocal<Session>();
 
-	public static final ThreadLocal<Transaction> threadTransaction = new ThreadLocal<Transaction>();
+	private static final ThreadLocal<Transaction> threadTransaction = new ThreadLocal<Transaction>();
 
 	private static String CONFIG_FILE_LOCATION = "/orm1.cfg.xml";
 
