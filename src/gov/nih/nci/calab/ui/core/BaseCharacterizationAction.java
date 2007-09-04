@@ -6,6 +6,7 @@ import gov.nih.nci.calab.domain.nano.characterization.physical.Shape;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Solubility;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Surface;
 import gov.nih.nci.calab.domain.nano.characterization.toxicity.Cytotoxicity;
+import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.DatumBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
@@ -134,7 +135,10 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		Date date = new Date();
 		charBean.setCreatedBy(user.getLoginName());
 		charBean.setCreatedDate(date);
-
+		String particleType = (String) theForm.get("particleType");
+		String particleName = (String) theForm.get("particleName");
+		charBean.setParticleName(particleName);
+		charBean.setParticleType(particleType);
 		return charBean;
 	}
 
@@ -170,13 +174,15 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		String[] otherParticles = (String[]) theForm.get("otherParticles");
 		Boolean copyData = (Boolean) theForm.get("copyData");
 		CharacterizationBean[] charBeans = new CharacterizationBean[otherParticles.length];
+		SearchNanoparticleService searchService=new SearchNanoparticleService();
 		int i = 0;
 		for (String particleName : otherParticles) {
 			CharacterizationBean newCharBean = charBean.copy(copyData
 					.booleanValue());
 			newCharBean.setParticleName(particleName);
+			Nanoparticle otherParticle=searchService.getParticleBy(particleName);
+			newCharBean.setParticleType(otherParticle.getType());
 			// reset view title
-
 			String timeStamp = StringUtils.convertDateToString(new Date(),
 					"MMddyyHHmmssSSS");
 			String autoTitle = CaNanoLabConstants.AUTO_COPY_CHARACTERIZATION_VIEW_TITLE_PREFIX
