@@ -56,6 +56,8 @@ public class CharacterizationBean {
 	private String actionName;
 
 	private String particleName;
+	
+	private String particleType;
 
 	public String getActionName() {
 		actionName = StringUtils.getOneWordLowerCaseFirstLetter(name);
@@ -89,6 +91,8 @@ public class CharacterizationBean {
 		this.description = charBean.getDescription();
 		this.instrumentConfigBean = charBean.getInstrumentConfigBean();
 		this.protocolFileBean = charBean.getProtocolFileBean();
+		this.particleType=charBean.getParticleType();
+		this.particleName=charBean.getParticleName();
 	}
 
 	public CharacterizationBean(String id, String name, String viewTitle) {
@@ -276,6 +280,14 @@ public class CharacterizationBean {
 
 	public void setParticleName(String particleName) {
 		this.particleName = particleName;
+	}
+
+	public String getParticleType() {
+		return particleType;
+	}
+
+	public void setParticleType(String particleType) {
+		this.particleType = particleType;
 	}
 
 	/**
