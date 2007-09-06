@@ -208,7 +208,7 @@ group by (a.name, a.version);
   
 begin
   for i in c_redundants loop
-    --select the first one in the redudnant list
+    --select the first one in the redundant list
     select char_protocol_pk_id
 	into v_char_protocol_pk_id
 	from characterization_protocol
@@ -940,15 +940,15 @@ declare
 begin
   select group_id into v_pi_group 
 from CSM_GROUP 
-where group_name='&appowner'||'_PI';
+where group_name='&&appowner'||'_PI';
     
    select group_id into v_admin_group 
 from CSM_GROUP 
-where group_name='&&appowner'||'_Administrator';
+where group_name='&appowner'||'_Administrator';
 
    select group_id into v_researcher_group 
 from CSM_GROUP 
-where group_name='&&appowner'||'_Researcher';
+where group_name='&appowner'||'_Researcher';
 
   select role_id into v_read_role
 from CSM_ROLE 
