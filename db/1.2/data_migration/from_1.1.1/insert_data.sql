@@ -813,15 +813,15 @@ declare
 begin
   select group_id into v_pi_group 
 from CSM_GROUP 
-where group_name='&appowner'||'_PI';
+where group_name='&&appowner'||'_PI';
     
    select group_id into v_admin_group 
 from CSM_GROUP 
-where group_name='&&appowner'||'_Administrator';
+where group_name='&appowner'||'_Administrator';
 
    select group_id into v_researcher_group 
 from CSM_GROUP 
-where group_name='&&appowner'||'_Researcher';
+where group_name='&appowner'||'_Researcher';
 
   select role_id into v_read_role
 from CSM_ROLE 
