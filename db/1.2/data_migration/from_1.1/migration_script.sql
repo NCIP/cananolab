@@ -7,3 +7,4 @@
 @archive_tables_triggers.sql
 
 commit;
+exit;
