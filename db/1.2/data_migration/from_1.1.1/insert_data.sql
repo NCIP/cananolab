@@ -798,6 +798,107 @@ and c.created_by='data_migration'
 and to_char(c.FILE_PK_ID)=d.PROTECTION_GROUP_NAME
 and b.PROTECTION_ELEMENT_NAME=d.PROTECTION_GROUP_NAME;
 
+-- merge PI, Researcher and Administrator groups in CSM_GROUP
+-- update NCICB prefix
+declare
+ v_pi_group number;
+ v_admin_group number;
+ v_researcher_group number;
+
+ cursor c_pis is
+ select group_id from csm_group where group_name like '%PI'	 order by group_id;
+
+ cursor c_researchers is
+ select group_id from csm_group where group_name like '%Researcher'	order by group_id;
+
+ cursor c_admins is
+ select group_id from csm_group where group_name like '%Administrator'	order by group_id;
+	 
+begin
+	 select group_id into v_pi_group
+	 from 
+	 (select group_id from csm_group
+	 where group_name like '%PI'
+	 order by group_id)
+	 where rownum=1;
+	 
+ 	 select group_id into v_researcher_group
+	 from 
+	 (select group_id from csm_group
+	 where group_name like '%Researcher'
+	 order by group_id)
+	 where rownum=1;
+
+ 	 select group_id into v_admin_group
+	 from 
+	 (select group_id from csm_group
+	 where group_name like '%Administrator'
+	 order by group_id)
+	 where rownum=1;
+	 
+
+	 for i in c_pis loop	 
+	    if i.group_id!=v_pi_group then		
+		    update csm_user_group
+			set group_id=v_pi_group
+			where group_id=i.group_id;
+			
+			update csm_user_group_role_pg
+			set group_id=v_pi_group
+			where group_id=i.group_id;
+			
+			delete from csm_group
+			where group_id=i.group_id;
+		end if;
+	 end loop;
+	 
+	 for i in c_researchers loop
+	    if i.group_id!=v_researcher_group then
+		    update csm_user_group
+			set group_id=v_researcher_group
+			where group_id=i.group_id;
+			
+			update csm_user_group_role_pg
+			set group_id=v_researcher_group
+			where group_id=i.group_id;
+			
+			delete from csm_group
+			where group_id=i.group_id;
+		end if;
+	 end loop;
+	 
+	 for i in c_admins loop	 
+	    if i.group_id!=v_admin_group then
+		    update csm_user_group
+			set group_id=v_admin_group
+			where group_id=i.group_id;
+			
+			update csm_user_group_role_pg
+			set group_id=v_admin_group
+			where group_id=i.group_id;
+			
+			delete from csm_group
+			where group_id=i.group_id;
+		end if;
+	 end loop; 
+	 
+ 	 update csm_group
+ 	 set group_name='&&appowner'||'_PI'
+ 	 where group_id=v_pi_group;
+ 
+	 update csm_group
+	 set group_name='&appowner'||'_Researcher'
+	 where group_id=v_researcher_group;
+	 
+	 update csm_group
+	 set group_name='&appowner'||'_Administrator'
+ 	 where group_id=v_admin_group;
+ exception
+    when no_data_found then
+ return; 	
+end; 
+/
+
 select csm_pg_pe_pg_pe_id_seq.currval from dual;
 
 -- update csm_user_group_role_pg for protocle file and new protected group "characterization"
@@ -813,7 +914,7 @@ declare
 begin
   select group_id into v_pi_group 
 from CSM_GROUP 
-where group_name='&&appowner'||'_PI';
+where group_name='&appowner'||'_PI';
     
    select group_id into v_admin_group 
 from CSM_GROUP 
