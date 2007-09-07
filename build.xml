@@ -43,7 +43,7 @@
 	</target>
 
 
-	<target name="build-application" depends="compile">
+	<target name="build-application" depends="clean, compile">
 		<!--  copy web files and lib files for the war file -->
 		<copy todir="${build.webroot.dir}">
 			<fileset dir="${src.webroot.dir}">
