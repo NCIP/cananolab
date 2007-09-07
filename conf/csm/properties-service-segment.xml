@@ -1,0 +1,3 @@
+<attribute name="Properties">
+	gov.nih.nci.security.configFile=@JBOSS_HOME@/server/default/conf/ApplicationSecurityConfig.xml
+</attribute>
