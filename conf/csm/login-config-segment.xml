@@ -1,0 +1,40 @@
+<application-policy name="caNanoLab">
+	<authentication>
+		<login-module
+			code="gov.nih.nci.security.authentication.loginmodules.EncryptedRDBMSLoginModule"
+			flag="required">
+			<module-option name="driver">
+				oracle.jdbc.driver.OracleDriver
+			</module-option>
+			<module-option name="url">
+				jdbc:oracle:thin:@@DBSERVER@:1521:@DBNAME@
+			</module-option>
+			<module-option name="user">@DBUSER@</module-option>
+			<module-option name="passwd">@DBPASSWORD@</module-option>
+			<module-option name="query">
+				SELECT * FROM CSM_USER WHERE LOGIN_NAME=? and PASSWORD=?
+			</module-option>
+			<module-option name="hashAlgorithm">SHA</module-option>
+		</login-module>
+	</authentication>
+</application-policy>
+<application-policy name="caNanoLab-upt">
+	<authentication>
+		<login-module
+			code="gov.nih.nci.security.authentication.loginmodules.EncryptedRDBMSLoginModule"
+			flag="required">
+			<module-option name="driver">
+				oracle.jdbc.driver.OracleDriver
+			</module-option>
+			<module-option name="url">
+				jdbc:oracle:thin:@@DBSERVER@:1521:@DBNAME@
+			</module-option>
+			<module-option name="user">@DBUSER@</module-option>
+			<module-option name="passwd">@DBPASSWORD@</module-option>
+			<module-option name="query">
+				SELECT * FROM CSM_USER WHERE LOGIN_NAME=? and PASSWORD=?
+			</module-option>
+			<module-option name="hashAlgorithm">SHA</module-option>
+		</login-module>
+	</authentication>
+</application-policy>

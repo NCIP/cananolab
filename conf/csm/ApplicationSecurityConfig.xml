@@ -13,7 +13,7 @@
 				<authorization-provider-class>
 					<!-- Fully qualified class name-->
 				</authorization-provider-class>
-				<hibernate-config-file>@ABSOLUTE_PATH/caNanoLab.csm.hibernate.cfg.xml</hibernate-config-file>
+				<hibernate-config-file>@ABSOLUTE_PATH@/caNanoLab.csm.hibernate.cfg.xml</hibernate-config-file>
 			</authorization>
 		</application>
 		<application>
@@ -27,7 +27,7 @@
 				<authorization-provider-class>
 					<!-- Fully qualified class name-->
 				</authorization-provider-class>
-				<hibernate-config-file>@ABSOLUTE_PATH/caNanoLab.csm.hibernate.cfg.xml</hibernate-config-file>
+				<hibernate-config-file>@ABSOLUTE_PATH@/caNanoLab.csm.hibernate.cfg.xml</hibernate-config-file>
 			</authorization>
 		</application>
 	</application-list>
