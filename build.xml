@@ -84,15 +84,10 @@
 		<war destfile="${build.webroot.dir}/war/caNanoLab.war" webxml="${build.webinf.dir}/web.xml" basedir="${build.webroot.dir}" compress="true" />
 		<copy todir="${build.webroot.dir}/war">
 			<fileset dir="conf/csm/">
-				<include name="*.*" />
+				<include name="*.war" />
 			</fileset>
 			<fileset dir="conf/sdk/">
-				<include name="*.*" />
-			</fileset>
-		</copy>
-		<copy todir="${build.webroot.dir}/war">
-			<fileset dir="conf/">
-		 		<include name="oracle-ds.xml" />
+				<include name="*.war" />
 			</fileset>
 		</copy>
 	</target>
