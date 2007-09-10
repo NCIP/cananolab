@@ -1,4 +1,0 @@
-samplePrefix=@SAMPLE_PREFIX@-
-applicationOwner=@APP_OWNER@
-gridIndexServiceURL=http://@GRID_INDEX_SERVER@/wsrf/services/DefaultIndexService
-
