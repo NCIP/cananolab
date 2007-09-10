@@ -374,7 +374,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 				CaNanoLabConstants.CSM_APP_NAME);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 
-		// set up charaterization files visibility
+		// set up characterization files visibility
 		for (DerivedBioAssayDataBean fileBean : charBean
 				.getDerivedBioAssayDataList()) {
 			boolean status = userService.checkReadPermission(user, fileBean
