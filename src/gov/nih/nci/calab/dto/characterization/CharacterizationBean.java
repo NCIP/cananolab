@@ -268,7 +268,7 @@ public class CharacterizationBean {
 	}
 
 	public String getViewColor() {
-		if (viewTitle.matches("^copy_\\d{15}?")) {
+		if (viewTitle!=null && viewTitle.matches("^copy_\\d{15}?")) {
 			viewColor = CaNanoLabConstants.AUTO_COPY_CHARACTERIZATION_VIEW_COLOR;
 		}
 		return viewColor;
