@@ -66,3 +66,8 @@ ALTER TABLE INSTRUMENT_CONFIG ADD (
     REFERENCES INSTRUMENT (INSTRUMENT_PK_ID));
     
 alter view view_sample_sop_file compile;
+
+--used for backward compatibility with caGrid
+alter table characterization 
+  add  (instrument_pk_id number,
+	char_protocol_pk_id number);
