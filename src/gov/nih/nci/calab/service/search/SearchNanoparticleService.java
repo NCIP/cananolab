@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.exolab.castor.xml.schema.Particle;
 import org.hibernate.Session;
 
 /**
@@ -196,6 +195,7 @@ public class SearchNanoparticleService {
 			throws Exception {
 
 		Nanoparticle particle = null;
+		ParticleBean particleBean =null;
 		try {
 			Session session = HibernateUtil.currentSession();
 			HibernateUtil.beginTransaction();
@@ -209,11 +209,12 @@ public class SearchNanoparticleService {
 									+ particleType + "'").list();
 			for (Object obj : results) {
 				particle = (Nanoparticle) obj;
-			}
-			HibernateUtil.commitTransaction();
+			}			
 			if (particle == null) {
 				throw new CalabException("No such particle in the database");
 			}
+			particleBean = new ParticleBean(particle);
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			logger.error("Problem finding particle with name: " + particleName,
 					e);
@@ -221,8 +222,7 @@ public class SearchNanoparticleService {
 		} finally {
 			HibernateUtil.closeSession();
 		}
-
-		ParticleBean particleBean = new ParticleBean(particle);
+		
 		UserService userService = new UserService(
 				CaNanoLabConstants.CSM_APP_NAME);
 		List<String> accessibleGroups = userService.getAccessibleGroups(
