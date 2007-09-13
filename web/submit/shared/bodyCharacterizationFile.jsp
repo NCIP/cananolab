@@ -23,7 +23,7 @@
 					</td>
 				</c:when>
 				<c:otherwise>
-					<td></td>
+					<td class="formSubTitle" colspan="4">&nbsp;</td>
 				</c:otherwise>
 			</c:choose>
 		</tr>
