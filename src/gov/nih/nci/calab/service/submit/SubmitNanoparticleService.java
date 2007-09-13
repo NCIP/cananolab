@@ -66,6 +66,7 @@ import gov.nih.nci.calab.dto.common.InstrumentConfigBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
 import gov.nih.nci.calab.dto.function.FunctionBean;
+import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.common.FileService;
 import gov.nih.nci.calab.service.security.UserService;
@@ -109,10 +110,11 @@ public class SubmitNanoparticleService {
 	 * @param visibilities
 	 * @throws Exception
 	 */
-	public void addParticleGeneralInfo(String particleType,
+	public ParticleBean addParticleGeneralInfo(String particleType,
 			String particleName, String[] keywords, String[] visibilities)
 			throws Exception {
-
+		Nanoparticle particle = null;
+		ParticleBean particleBean=null;
 		// save nanoparticle to the database
 		try {
 			Session session = HibernateUtil.currentSession();
@@ -121,8 +123,7 @@ public class SubmitNanoparticleService {
 			// creation
 			List results = session.createQuery(
 					"from Nanoparticle where name='" + particleName
-							+ "' and type='" + particleType + "'").list();
-			Nanoparticle particle = null;
+							+ "' and type='" + particleType + "'").list();			
 			for (Object obj : results) {
 				particle = (Nanoparticle) obj;
 			}
@@ -140,7 +141,11 @@ public class SubmitNanoparticleService {
 					}
 				}
 			}
-			HibernateUtil.commitTransaction();
+			if (particle!=null) {
+				particleBean=new ParticleBean(particle);
+			}
+
+			HibernateUtil.commitTransaction();			
 		} catch (Exception e) {
 			HibernateUtil.rollbackTransaction();
 			logger.error("Problem saving particle general information. ", e);
@@ -148,7 +153,9 @@ public class SubmitNanoparticleService {
 		} finally {
 			HibernateUtil.closeSession();
 		}
+		
 		userService.setVisiblity(particleName, visibilities);
+		return particleBean;
 	}
 
 	/**
