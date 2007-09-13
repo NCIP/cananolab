@@ -21,7 +21,16 @@
 		<c:set var="particleSource" value="${param.particleSource}"
 			scope="session" />
 	</c:when>
+	<c:otherwise>
+		<c:choose>
+			<c:when test="${!empty requestScope.particleSource}">
+				<c:set var="particleSource" value="${requestScope.particleSource}"
+					scope="session" />
+			</c:when>
+		</c:choose>
+	</c:otherwise>
 </c:choose>
+
 <c:choose>
 	<c:when test="${canUserSubmit eq 'true'}">
 		<c:set var="dispatchValue" value="setupUpdate" scope="session" />
