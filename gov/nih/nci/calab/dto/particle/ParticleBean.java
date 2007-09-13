@@ -56,42 +56,38 @@ public class ParticleBean extends SampleBean {
 	public ParticleBean(Nanoparticle particle) {
 		this(particle.getId().toString(), particle.getName());
 		this.setSampleType(particle.getType());
+		this.setSampleSource(particle.getSource().getOrganizationName());
 		if (particle.getSource() != null) {
 			this.setSampleSource(particle.getSource().getOrganizationName());
-		}
-		else {
+		} else {
 			this.setSampleSource("");
 		}
 		this.particleClassification = particle.getClassification();
-		try {
-			Collection<Keyword> keywordCol = particle.getKeywordCollection();
-			// get a unique set of keywords
-			SortedSet<String> keywordSet = new TreeSet<String>();
-			for (Keyword keywordObj : keywordCol) {
-				keywordSet.add(keywordObj.getName());
-			}
-			keywords = keywordSet.toArray(new String[0]);
-
-			Collection<Characterization> characterizationCol = particle
-					.getCharacterizationCollection();
-			// get a unique list of characterization
-			Set<String> charcterizationSet = new HashSet<String>();
-			for (Characterization charObj : characterizationCol) {
-				charcterizationSet.add(charObj.getClassification() + ":"
-						+ charObj.getName());
-			}
-			characterizations = charcterizationSet.toArray(new String[0]);
-
-			Collection<Function> functionCol = particle.getFunctionCollection();
-			// get a unique list of function
-			Set<String> functionTypeSet = new HashSet<String>();
-			for (Function funcObj : functionCol) {
-				functionTypeSet.add(funcObj.getType());
-			}
-			functionTypes = functionTypeSet.toArray(new String[0]);
-		} catch (org.hibernate.LazyInitializationException e) {
-			// ignore this exception
+		Collection<Keyword> keywordCol = particle.getKeywordCollection();
+		// get a unique set of keywords
+		SortedSet<String> keywordSet = new TreeSet<String>();
+		for (Keyword keywordObj : keywordCol) {
+			keywordSet.add(keywordObj.getName());
 		}
+		keywords = keywordSet.toArray(new String[0]);
+
+		Collection<Characterization> characterizationCol = particle
+				.getCharacterizationCollection();
+		// get a unique list of characterization
+		Set<String> charcterizationSet = new HashSet<String>();
+		for (Characterization charObj : characterizationCol) {
+			charcterizationSet.add(charObj.getClassification() + ":"
+					+ charObj.getName());
+		}
+		characterizations = charcterizationSet.toArray(new String[0]);
+
+		Collection<Function> functionCol = particle.getFunctionCollection();
+		// get a unique list of function
+		Set<String> functionTypeSet = new HashSet<String>();
+		for (Function funcObj : functionCol) {
+			functionTypeSet.add(funcObj.getType());
+		}
+		functionTypes = functionTypeSet.toArray(new String[0]);
 	}
 
 	public ParticleBean(Nanoparticle particle, String gridNode) {
