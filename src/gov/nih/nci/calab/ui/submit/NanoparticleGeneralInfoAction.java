@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.24 2007-08-18 02:05:10 pansu Exp $ */
+/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.25 2007-09-13 22:12:57 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
@@ -52,10 +52,9 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 		String[] keywordList = (keywords.length() == 0) ? null : keywords
 				.split("\r\n");
 		SubmitNanoparticleService submitNanoparticleService = new SubmitNanoparticleService();
-		submitNanoparticleService.addParticleGeneralInfo(particleType,
+		ParticleBean particleBean=submitNanoparticleService.addParticleGeneralInfo(particleType,
 				particleName, keywordList, visibilities);
-		HttpSession session = request.getSession();
-		
+		HttpSession session = request.getSession();		
 		//display default visible groups
 		List<String > visList = new ArrayList<String>();
 		visList.addAll(Arrays.asList(CaNanoLabConstants.VISIBLE_GROUPS));
@@ -71,6 +70,7 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
 		request.getSession().setAttribute("newRunFileCreated", "true");
+		request.setAttribute("particleSource", particleBean.getSampleSource());
 		return forward;
 	}
 
@@ -110,6 +110,7 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 				particleName, particleType);
 		theForm.set("particleName", particle.getSampleName());
 		theForm.set("particleType", particle.getSampleType());
+		theForm.set("particleSource", particle.getSampleSource());
 		theForm.set("keywords", StringUtils
 				.join(particle.getKeywords(), "\r\n"));
 		theForm.set("visibilities", particle.getVisibilityGroups());
