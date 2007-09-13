@@ -88,17 +88,12 @@
 			<form-property name="function" type="gov.nih.nci.calab.dto.function.FunctionBean" />
 			<form-property name="functionId" type="java.lang.String" />
 		</form-bean>
-		<form-bean name="multipCharacterizationDeleteSetupForm" type="org.apache.struts.validator.DynaValidatorForm">
-			<form-property name="dispatch" type="java.lang.String" />
-			<form-property name="particleName" type="java.lang.String" />
-			<form-property name="particleType" type="java.lang.String" />
-			<form-property name="charBeans" type="gov.nih.nci.calab.dto.characterization.CharacterizationBean[]" />
-		</form-bean>
 		<form-bean name="characterizationMultiDeletionForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="dispatch" type="java.lang.String" />
 			<form-property name="particleName" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />
-			<form-property name="charIds" type="java.lang.String[]" />
+			<form-property name="charIds" type="java.lang.String[]" />			
+			<form-property name="page" type="java.lang.Integer" initial="0" />			
 		</form-bean>
 	</form-beans>
 	<global-forwards>
@@ -324,11 +319,9 @@
 			<forward name="setup" path="submit.addparticle.function" />
 		</action>
 		<action path="/submitAction" type="gov.nih.nci.calab.ui.core.BaseForwardAction" parameter="submit.action.message" scope="request" />
-		<action name="multipCharacterizationDeleteSetupForm" path="/deleteSetupAction" type="gov.nih.nci.calab.ui.submit.DeleteMultiCharacterizationAction" parameter="dispatch" scope="request">
-			<forward name="success" path="submit.delete.characterization" />
-		</action>
-		<action name="characterizationMultiDeletionForm" path="/deleteAction" type="gov.nih.nci.calab.ui.submit.DeleteMultiCharacterizationAction" parameter="dispatch" scope="request">
-			<forward name="success" path="submit.message" />
+		<action name="characterizationMultiDeletionForm" path="/deleteAction" type="gov.nih.nci.calab.ui.submit.DeleteMultiCharacterizationAction" parameter="dispatch" input="input" scope="request">
+			<forward name="message" path="submit.message" />
+			<forward name="input" path="submit.delete.characterization" />
 		</action>
 	</action-mappings>
 </struts-config>
