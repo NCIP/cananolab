@@ -55,21 +55,32 @@
 														onclick="javascript:addLinkage(nanoparticleFunctionForm)"><span
 														class="addLink">Add Linkage</span> </a>
 												</td>
+												<td>
+													<logic:iterate id="linkage" name="nanoparticleFunctionForm"
+														property="function.linkages" indexId="linkageInd">
+														<jsp:include
+															page="/submit/function/bodyParticleFunctionLinkage.jsp">
+															<jsp:param name="linkageInd" value="${linkageInd}" />
+														</jsp:include>
+														<br>
+													</logic:iterate>
+												</td>
 											</c:when>
 											<c:otherwise>
 												<td></td>
+												<td>
+													<logic:iterate id="linkage" name="nanoparticleFunctionForm"
+														property="function.linkages" indexId="linkageInd">
+														<jsp:include
+															page="/submit/function/bodyParticleFunctionLinkageReadOnly.jsp">
+															<jsp:param name="linkageInd" value="${linkageInd}" />
+														</jsp:include>
+														<br>
+													</logic:iterate>
+												</td>
 											</c:otherwise>
 										</c:choose>
-										<td>
-											<logic:iterate id="linkage" name="nanoparticleFunctionForm"
-												property="function.linkages" indexId="linkageInd">
-												<jsp:include
-													page="/submit/function/bodyParticleFunctionLinkage.jsp">
-													<jsp:param name="linkageInd" value="${linkageInd}" />
-												</jsp:include>
-												<br>
-											</logic:iterate>
-										</td>
+
 									</tr>
 								</table>
 							</td>
