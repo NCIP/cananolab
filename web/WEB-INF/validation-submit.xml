@@ -136,7 +136,8 @@
 					bundle="submit" />
 				<var>
 					<var-name>test</var-name>
-					<var-value>((function.numberOfLinkages==0) or
+					<var-value>
+						((function.numberOfLinkages==0) or
 						(*this*!=null))
 					</var-value>
 				</var>
@@ -265,6 +266,11 @@
 						(*this*!=null))
 					</var-value>
 				</var>
+			</field>
+		</form>
+		<form name="characterizationMultiDeletionForm">
+			<field property="charIds" depends="required" page="2">
+				<arg position="0" key="delete.charIds" bundle="submit" />
 			</field>
 		</form>
 	</formset>
