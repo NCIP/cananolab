@@ -30,8 +30,6 @@ public class DeleteMultiCharacterizationAction extends AbstractDispatchAction {
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		ActionForward forward = null;
-
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 
 		// setCharacterizationTypeCharacterizations
@@ -40,16 +38,19 @@ public class DeleteMultiCharacterizationAction extends AbstractDispatchAction {
 				.getSession().getAttribute("allCharacterizations"));
 		List<CharacterizationBean> charBeans = charsMap.get(deleteType);
 
-		// convert charBeans to array due to the struts-config
 		if (charBeans != null) {
-			theForm.set("charBeans", charBeans
-					.toArray(new CharacterizationBean[charBeans.size()]));
-			request.setAttribute("charBeansValue", "true");
+			request.getSession().setAttribute("charBeans", charBeans);
+			return mapping.getInputForward();
+
+		} else {
+			ActionMessages msgs = new ActionMessages();
+			ActionMessage msg = new ActionMessage(
+					"message.delete.no.characterizations");
+			msgs.add("message", msg);
+			saveMessages(request, msgs);
+			return mapping.findForward("message");
 		}
-
-		forward = mapping.findForward("success");
-
-		return forward;
+		
 	}
 
 	public ActionForward deleteConfirmed(ActionMapping mapping,
@@ -71,13 +72,12 @@ public class DeleteMultiCharacterizationAction extends AbstractDispatchAction {
 
 		InitSessionSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
-
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.delete.characterization");
 		msgs.add("message", msg);
 		saveMessages(request, msgs);
 
-		forward = mapping.findForward("success");
+		forward = mapping.findForward("message");
 
 		return forward;
 	}
