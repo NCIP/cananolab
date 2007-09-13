@@ -8,53 +8,30 @@
 	width="100%" align="center" summary="" border="0">
 	<tbody>
 		<tr>
-			<c:choose>
-				<c:when test="${canUserSubmit eq 'true'}">
-					<td class="formSubTitle" colspan="4" align="right">
-						<a href="#"
-							onclick="javascript:removeTarget(nanoparticleFunctionForm, ${param.linkageInd}, ${param.targetInd})">
-							<img src="images/delete.gif" border="0"
-								alt="remove this agent target"> </a>
-					</td>
-				</c:when>
-				<c:otherwise>
-					<td></td>
-				</c:otherwise>
-			</c:choose>
+			<td class="formSubTitle" colspan="4" align="right">
+				<a href="#"
+					onclick="javascript:removeTarget(nanoparticleFunctionForm, ${param.linkageInd}, ${param.targetInd})">
+					<img src="images/delete.gif" border="0"
+						alt="remove this agent target"> </a>
+			</td>
 		</tr>
 		<tr>
-			<td class="leftLabel">
+			<td class="leftLabelWithTop">
 				<strong>Target Type*</strong>
 			</td>
-			<td class="label">
-				<c:choose>
-					<c:when test="${canUserSubmit eq 'true'}">
-						<html:select
-							property="function.linkages[${param.linkageInd}].agent.agentTargets[${param.targetInd}].type">
-							<option value=""></option>
-							<html:options name="allAgentTargetTypes" />
-						</html:select>
-					</c:when>
-					<c:otherwise>
-					   ${linkage.agent.agentTargets[param.targetInd].type}&nbsp;
-					</c:otherwise>
-				</c:choose>
-
+			<td class="labelWithTop">
+				<html:select
+					property="function.linkages[${param.linkageInd}].agent.agentTargets[${param.targetInd}].type">
+					<option value=""></option>
+					<html:options name="allAgentTargetTypes" />
+				</html:select>
 			</td>
-			<td class="label">
+			<td class="labelWithTop">
 				<strong>Target Name</strong>
 			</td>
-			<td class="rightLabel">
-				<c:choose>
-					<c:when test="${canUserSubmit eq 'true'}">
-						<html:text
-							property="function.linkages[${param.linkageInd}].agent.agentTargets[${param.targetInd}].name" />
-					</c:when>
-					<c:otherwise>
-						${linkage.agent.agentTargets[param.targetInd].name}&nbsp;
-					</c:otherwise>
-				</c:choose>
-
+			<td class="rightLabelWithTop">
+				<html:text
+					property="function.linkages[${param.linkageInd}].agent.agentTargets[${param.targetInd}].name" />
 			</td>
 		</tr>
 		<tr>
@@ -62,16 +39,9 @@
 				<strong>Target Description</strong>
 			</td>
 			<td class="rightLabel" colspan="3">
-				<c:choose>
-					<c:when test="${canUserSubmit eq 'true'}">
-						<html:textarea
-							property="function.linkages[${param.linkageInd}].agent.agentTargets[${param.targetInd}].description"
-							rows="3" cols="60" />
-					</c:when>
-					<c:otherwise>
-					   ${linkage.agent.agentTargets[param.targetInd].description}&nbsp;
-					</c:otherwise>
-				</c:choose>
+				<html:textarea
+					property="function.linkages[${param.linkageInd}].agent.agentTargets[${param.targetInd}].description"
+					rows="3" cols="60" />
 			</td>
 		</tr>
 </table>
