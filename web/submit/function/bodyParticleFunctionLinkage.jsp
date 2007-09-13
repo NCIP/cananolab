@@ -40,19 +40,12 @@ function hideDetail(elementId) {
 	width="100%" align="center" summary="" border="0">
 	<tbody>
 		<tr>
-			<c:choose>
-				<c:when test="${canUserSubmit eq 'true'}">
-					<td class="formSubTitle" colspan="3" align="right">
-						<a href="#"
-							onclick="javascript:removeLinkage(nanoparticleFunctionForm, ${param.linkageInd})">
-							<img src="images/delete.gif" border="0" alt="remove this linkage">
-						</a>
-					</td>
-				</c:when>
-				<c:otherwise>
-					<td></td>
-				</c:otherwise>
-			</c:choose>
+			<td class="formSubTitle" colspan="3" align="right">
+				<a href="#"
+					onclick="javascript:removeLinkage(nanoparticleFunctionForm, ${param.linkageInd})">
+					<img src="images/delete.gif" border="0" alt="remove this linkage">
+				</a>
+			</td>
 		</tr>
 		<tr>
 			<td class="leftLabel" valign="top" width="15%">
@@ -108,20 +101,12 @@ function hideDetail(elementId) {
 				<br>
 			</td>
 			<td class="rightLabel" colspan="2">
-				<c:choose>
-					<c:when test="${canUserSubmit eq 'true'}">
-						<html:textarea
-							property="function.linkages[${param.linkageInd}].description"
-							rows="3" cols="60" />
-					</c:when>
-					<c:otherwise>
-															${linkage.description}&nbsp;
-														</c:otherwise>
-				</c:choose>
+				<html:textarea
+					property="function.linkages[${param.linkageInd}].description"
+					rows="3" cols="60" />
 				<br>
 			</td>
 		</tr>
-
 		<tr>
 			<td class="leftLabel" valign="top">
 				<strong>Agent Type*</strong>
@@ -171,7 +156,7 @@ function hideDetail(elementId) {
 					style="visibility:${antibodyVis};position:absolute;">
 					<table>
 						<tr>
-							<td class="borderLessLabel">
+							<td class="borderlessLabel">
 								<strong>Name</strong>
 							</td>
 							<td>
@@ -181,10 +166,10 @@ function hideDetail(elementId) {
 							</td>
 						</tr>
 						<tr>
-							<td class="borderLessLabel">
+							<td class="borderlessLabel">
 								<strong>Species</strong>
 							</td>
-							<td>
+							<td class="borderlessLabel">
 								<html:select
 									property="function.linkages[${param.linkageInd}].agent.antibody.species">
 									<option value=""></option>
@@ -196,10 +181,10 @@ function hideDetail(elementId) {
 				<span id="DNA Detail${param.linkageInd}"
 					style="visibility:${dnaVis};position:absolute;"><table>
 						<tr>
-							<td class="borderLessLabel">
+							<td class="borderlessLabel">
 								<strong>Sequence</strong>
 							</td>
-							<td>
+							<td class="borderlessLabel">
 								<html:text
 									property="function.linkages[${param.linkageInd}].agent.dna.sequence"
 									size="30" />
@@ -210,20 +195,20 @@ function hideDetail(elementId) {
 					style="visibility:${contrastAgentVis};position:absolute;">
 					<table>
 						<tr>
-							<td class="borderLessLabel">
+							<td class="borderlessLabel">
 								<strong>Name</strong>
 							</td>
-							<td>
+							<td class="borderlessLabel">
 								<html:text
 									property="function.linkages[${param.linkageInd}].agent.imageContrastAgent.name"
 									size="30" />
 							</td>
 						</tr>
 						<tr>
-							<td class="borderLessLabel">
+							<td class="borderlessLabel">
 								<strong>Type</strong>
 							</td>
-							<td>
+							<td class="borderlessLabel">
 								<html:select
 									property="function.linkages[${param.linkageInd}].agent.imageContrastAgent.type"
 									onkeydown="javascript:fnKeyDownHandler(this, event);"
@@ -241,10 +226,10 @@ function hideDetail(elementId) {
 				<span id="Peptide Detail${param.linkageInd}"
 					style="visibility:${peptideVis};position:absolute;"><table>
 						<tr>
-							<td class="borderLessLabel">
+							<td class="borderlessLabel">
 								<strong>Sequence</strong>
 							</td>
-							<td>
+							<td class="borderlessLabel">
 								<html:text
 									property="function.linkages[${param.linkageInd}].agent.peptide.sequence"
 									size="30" />
@@ -254,20 +239,20 @@ function hideDetail(elementId) {
 				<span id="Small Molecule Detail${param.linkageInd}"
 					style="visibility:${smallMolVis};position:absolute;"><table>
 						<tr>
-							<td class="borderLessLabel">
+							<td class="borderlessLabel">
 								<strong>Name</strong>
 							</td>
-							<td>
+							<td class="borderlessLabel">
 								<html:text
 									property="function.linkages[${param.linkageInd}].agent.smallMolecule.name"
 									size="30" />
 							</td>
 						</tr>
 						<tr>
-							<td class="borderLessLabel">
+							<td class="borderlessLabel">
 								<strong>Compound Name</strong>
 							</td>
-							<td>
+							<td class="borderlessLabel">
 								<html:text
 									property="function.linkages[${param.linkageInd}].agent.smallMolecule.compoundName"
 									size="30" />
@@ -282,16 +267,9 @@ function hideDetail(elementId) {
 				<br>
 			</td>
 			<td class="rightLabel" colspan="3">
-				<c:choose>
-					<c:when test="${canUserSubmit eq 'true'}">
-						<html:textarea
-							property="function.linkages[${param.linkageInd}].agent.description"
-							rows="3" cols="60" />
-					</c:when>
-					<c:otherwise>
-						${linkage.agent.description}&nbsp;
-					</c:otherwise>
-				</c:choose>
+				<html:textarea
+					property="function.linkages[${param.linkageInd}].agent.description"
+					rows="3" cols="60" />
 				<br>
 			</td>
 		</tr>
@@ -299,18 +277,11 @@ function hideDetail(elementId) {
 			<td class="completeLabel" colspan="4">
 				<table border="0" width="100%">
 					<tr>
-						<c:choose>
-							<c:when test="${canUserSubmit eq 'true'}">
-								<td valign="bottom">
-									<a href="#"
-										onclick="javascript:addTarget(nanoparticleFunctionForm, ${param.linkageInd})"><span
-										class="addLink">Add Agent Target</span> </a>
-								</td>
-							</c:when>
-							<c:otherwise>
-								<td></td>
-							</c:otherwise>
-						</c:choose>
+						<td valign="bottom">
+							<a href="#"
+								onclick="javascript:addTarget(nanoparticleFunctionForm, ${param.linkageInd})"><span
+								class="addLink">Add Agent Target</span> </a>
+						</td>
 						<td>
 							<logic:iterate id="target" name="nanoparticleFunctionForm"
 								property="function.linkages[${param.linkageInd}].agent.agentTargets"
