@@ -36,7 +36,7 @@
 								<strong>Particle Type</strong>
 							</td>
 							<td class="rightLabel">
-								${param.particleType}
+								${nanoparticleGeneralInfoForm.map.particleType}
 							</td>
 						</tr>
 						<tr>
@@ -44,7 +44,7 @@
 								<strong>Particle ID</strong>
 							</td>
 							<td class="rightLabel">
-								${param.particleName}
+								${nanoparticleGeneralInfoForm.map.particleName}
 							</td>
 						</tr>
 						<tr>
@@ -52,7 +52,7 @@
 								<strong>Particle Source</strong>
 							</td>
 							<td class="rightLabel">
-								${param.particleSource}
+								${nanoparticleGeneralInfoForm.map.particleSource}
 							</td>
 						</tr>
 						<tr>
@@ -123,7 +123,9 @@
 													<div align="right">
 														<input type="reset" value="Reset" onclick="">
 														<input type="hidden" name="dispatch" value="create">
-														<input type="hidden" name="page" value="1">
+														<html:hidden property="particleName"/>
+														<html:hidden property="particleType"/>
+														<input type="hidden" name="page" value="0">
 														<html:submit />
 													</div>
 												</div>
