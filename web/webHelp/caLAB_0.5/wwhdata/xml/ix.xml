@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WebWorksHelpIX version="5.0" xmlns="urn:WebWorks-Help-Index-Schema">
+  <g t="A" o="002">
+    <i t="Aliquot">
+      <i t="creating">
+        <j l="10" />
+      </i>
+      <i t="editing">
+        <j l="11" />
+      </i>
+      <i t="masking">
+        <j l="15" />
+      </i>
+      <i t="naming conventions">
+        <j l="12#1089195" />
+      </i>
+      <i t="relationship to sample">
+        <j l="10#1071350" />
+      </i>
+      <i t="search">
+        <j l="27#1073883" />
+      </i>
+      <i t="using an">
+        <j l="14" />
+      </i>
+      <i t="viewing">
+        <j l="13#1087036" />
+      </i>
+    </i>
+    <i t="Application support">
+      <j l="29#1085816" />
+    </i>
+    <i t="Assay Run">
+      <i t="creating">
+        <j l="16" />
+      </i>
+      <i t="In and Out folders">
+        <j l="18#1087434" />
+      </i>
+      <i t="in workflow">
+        <j l="16" />
+      </i>
+    </i>
+    <i t="Assays">
+      <i t="in caLAB">
+        <j l="6#1080116" />
+      </i>
+      <i t="workflow template">
+        <j l="7#1089040" />
+      </i>
+    </i>
+  </g>
+  <g t="C" o="002">
+    <i t="caLAB">
+      <i t="application support">
+        <j l="29#1085816" />
+      </i>
+      <i t="assays in">
+        <j l="6#1080116" />
+      </i>
+      <i t="introduction to">
+        <j l="1#1064739" />
+      </i>
+      <i t="launching search">
+        <j l="24" />
+      </i>
+      <i t="login">
+        <j l="2#1068949" />
+      </i>
+      <i t="online help">
+        <j l="2#1069421" />
+      </i>
+      <i t="Quick Links">
+        <j l="2#1071849" />
+      </i>
+      <i t="user account">
+        <j l="2#1069299" />
+      </i>
+      <i t="viewer description">
+        <j l="4#1079784" />
+      </i>
+      <i t="workflow overview">
+        <j l="7#1088883" />
+      </i>
+    </i>
+    <i t="Creating">
+      <i t="Aliquot">
+        <j l="10" />
+      </i>
+      <i t="Assay Run">
+        <j l="16" />
+      </i>
+      <i t="Run">
+        <j l="16" />
+      </i>
+      <i t="Sample">
+        <j l="9" />
+      </i>
+    </i>
+  </g>
+  <g t="D" o="002">
+    <i t="Downloading files">
+      <j l="23#1085688" />
+    </i>
+  </g>
+  <g t="E" o="002">
+    <i t="Editing an aliquot">
+      <j l="11" />
+    </i>
+  </g>
+  <g t="F" o="002">
+    <i t="Files">
+      <i t="downloading">
+        <j l="23#1085688" />
+      </i>
+      <i t="masking">
+        <j l="22#1083578" />
+      </i>
+      <i t="uploading">
+        <j l="20#1078684" />
+      </i>
+      <i t="working with">
+        <j l="19#1086982" />
+      </i>
+    </i>
+  </g>
+  <g t="L" o="002">
+    <i t="LIMS">
+      <j l="1#1064739" />
+    </i>
+  </g>
+  <g t="M" o="002">
+    <i t="Masking">
+      <i t="aliquot">
+        <j l="15" />
+      </i>
+      <i t="file">
+        <j l="22#1083578" />
+      </i>
+    </i>
+  </g>
+  <g t="N" o="002">
+    <i t="NCICB, application support">
+      <j l="29#1085816" />
+    </i>
+  </g>
+  <g t="O" o="002">
+    <i t="Online help">
+      <i t="description">
+        <j l="5#1088660" />
+      </i>
+      <i t="opening">
+        <j l="2#1069421" />
+      </i>
+    </i>
+  </g>
+  <g t="P" o="002">
+    <i t="Protocol">
+      <i t="in caLAB">
+        <j l="9#1081090" />
+      </i>
+      <i t="submission">
+        <j l="9#1081090" />
+      </i>
+    </i>
+  </g>
+  <g t="R" o="002">
+    <i t="Registering new user">
+      <j l="3#1091052" />
+    </i>
+    <i t="Run">
+      <i t="creating">
+        <j l="16" />
+      </i>
+      <i t="see also Assay Run">
+        <j l="16" />
+      </i>
+    </i>
+  </g>
+  <g t="S" o="002">
+    <i t="Sample">
+      <i t="container, search results">
+        <j l="28#1079481" />
+      </i>
+      <i t="containers, search">
+        <j l="27#1073883" />
+      </i>
+      <i t="creating">
+        <j l="9" />
+      </i>
+    </i>
+    <i t="Search results">
+      <i t="sample container">
+        <j l="28#1079481" />
+      </i>
+      <i t="workflow">
+        <j l="26#1073669" />
+      </i>
+    </i>
+    <i t="Search, launching">
+      <j l="24" />
+    </i>
+    <i t="Searching">
+      <i t="sample containers">
+        <j l="27#1073883" />
+      </i>
+      <i t="workflow">
+        <j l="25#1072427" />
+      </i>
+    </i>
+  </g>
+  <g t="U" o="002">
+    <i t="Uploading input/output files">
+      <j l="20#1078684" />
+    </i>
+    <i t="User">
+      <i t="registering">
+        <j l="3#1091052" />
+      </i>
+    </i>
+    <i t="User account">
+      <j l="2#1069299" />
+    </i>
+  </g>
+  <g t="W" o="002">
+    <i t="Workflow">
+      <i t="executing">
+        <j l="8#1077088" />
+      </i>
+      <i t="overview">
+        <j l="7#1088883" />
+      </i>
+      <i t="search results">
+        <j l="26#1073669" />
+      </i>
+      <i t="searching">
+        <j l="25#1072427" />
+      </i>
+      <i t="tasks in">
+        <j l="7#1080499" />
+      </i>
+      <i t="template">
+        <j l="7#1089100" />
+      </i>
+      <i t="template assays">
+        <j l="7#1089040" />
+      </i>
+    </i>
+  </g>
+</WebWorksHelpIX>
