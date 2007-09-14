@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.inventory;
  * @author pansu
  */
 
-/* CVS $Id: ViewSampleDetailAction.java,v 1.1 2007-02-28 21:54:09 pansu Exp $ */
+/* CVS $Id: ViewSampleDetailAction.java,v 1.2 2007-09-14 16:55:18 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.inventory.ContainerBean;
 import gov.nih.nci.calab.dto.inventory.SampleBean;
@@ -67,6 +67,6 @@ public class ViewSampleDetailAction extends AbstractBaseAction {
 	}
 
 	public boolean loginRequired() {
-		return false;
+		return true;
 	}
 }
