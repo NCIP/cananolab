@@ -111,6 +111,7 @@
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="inventory" key="error.searchAliquot" path="inventory.searchaliquot" type="java.lang.Exception" />
 			<forward name="input" path="inventory.searchaliquot" />
 			<forward name="success" path="inventory.searchaliquotresult" />
+			<forward name="sampleResult" path="inventory.searchsampleresult" />
 		</action>
 		<action path="/sampleResultForward" type="gov.nih.nci.calab.ui.core.BaseForwardAction" parameter="inventory.searchsampleresult" scope="request" />
 		<action input="input" name="viewSampleDetailForm" path="/viewSampleDetail" scope="request" type="gov.nih.nci.calab.ui.inventory.ViewSampleDetailAction">
