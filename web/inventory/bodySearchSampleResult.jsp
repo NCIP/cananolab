@@ -22,6 +22,11 @@
 		</tr>
 		<tr>
 			<td colspan="2">
+				<c:choose>
+					<c:when test="${!empty requestScope.containerId}">
+						<c:set var="containerId" value="${requestScope.containerId}" scope="page" />
+					</c:when>
+				</c:choose>
 				<jsp:include page="/bodyMessage.jsp?bundle=inventory" />
 				<display:table name="sessionScope.sampleContainers" id="container"
 					requestURI="searchSample.do" pagesize="25" class="displaytable"
