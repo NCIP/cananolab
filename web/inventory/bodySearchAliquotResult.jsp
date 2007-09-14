@@ -22,7 +22,7 @@
 						<a href="searchAliquot.do?dispatch=setup&page=0" class="helpText">back</a>
 					</c:when>
 					<c:otherwise>
-						<a href="sampleResultForward.do" class="helpText">back</a>
+						<a href="javascript:history.go(-1)" class="helpText">back</a>
 					</c:otherwise>
 				</c:choose>
 			</td>
