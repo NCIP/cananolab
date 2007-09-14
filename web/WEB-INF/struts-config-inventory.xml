@@ -118,7 +118,7 @@
 		<action input="input" name="searchAliquotForm" parameter="dispatch" path="/showAliquot" type="gov.nih.nci.calab.ui.inventory.SearchAliquotAction" scope="request">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="inventory" key="error.showAliquot" path="inventory.showaliquot" type="java.lang.Exception" />
 			<forward name="input" path="inventory.searchsampleresult" />
-			<forward name="success" path="inventory.searchwaliquotresult" />			
+			<forward name="success" path="inventory.searchaliquotresult" />			
 		</action>		
 		<action input="input" name="viewSampleDetailForm" path="/viewSampleDetail" scope="request" type="gov.nih.nci.calab.ui.inventory.ViewSampleDetailAction">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="inventory" key="error.viewSampleDetails.noSamples" path="inventory.searchsampleresult" type="java.lang.Exception" />
