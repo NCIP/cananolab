@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.inventory;
  * @author pansu
  */
 
-/* CVS $Id: SearchAliquotAction.java,v 1.2 2007-09-14 16:06:08 pansu Exp $ */
+/* CVS $Id: SearchAliquotAction.java,v 1.3 2007-09-14 16:55:03 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.inventory.AliquotBean;
 import gov.nih.nci.calab.dto.inventory.StorageLocation;
@@ -90,6 +90,7 @@ public class SearchAliquotAction extends AbstractDispatchAction {
 			String fromSampleResult=request.getParameter("fromSampleResult");
 			if (fromSampleResult!=null && fromSampleResult.equals("true")) {
 				forward=mapping.findForward("sampleResult");
+				request.setAttribute("containerId", containerId);
 			}
 			else {
 				forward=mapping.getInputForward();
