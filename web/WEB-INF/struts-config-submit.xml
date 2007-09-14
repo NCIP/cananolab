@@ -138,6 +138,7 @@
 		<action name="publishReportForm" parameter="dispatch" path="/updateReport" type="gov.nih.nci.calab.ui.submit.SubmitReportAction" input="input" scope="request">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.updateReport" path="submit.report.view" type="java.lang.Exception" />
 			<forward name="input" path="submit.report.view" />
+			<forward name="success" path="submit.report.message" />
 		</action>
 		<action name="nanoparticleCompositionForm" parameter="dispatch" path="/composition" type="gov.nih.nci.calab.ui.submit.NanoparticleCompositionAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="submit" key="error.addParticleComposition" path="submit.addparticle.composition" type="java.lang.Exception" />
