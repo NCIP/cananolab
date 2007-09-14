@@ -34,7 +34,7 @@
 				<display:table name="sessionScope.aliquots" id="aliquot"
 					class="displaytable" pagesize="25" requestURI="searchAliquot.do"
 					decorator="gov.nih.nci.calab.dto.inventory.AliquotDecorator">
-					<display:column title="Select" property="aliquotId"/>
+					<display:column title="Select" property="aliquotId" />
 					<display:column title="Sample<br>ID" property="sample.sortableName"
 						sortable="true" />
 					<display:column title="Sample<br>Accession<br>Date"
@@ -63,6 +63,7 @@
 					<div align="right">
 						<input type="button" value="View Details"
 							onclick="javascript:submitAction(document.resultForm, 'viewAliquotDetail.do')">
+						<input type="hidden" name="page" value="1">
 					</div>
 				</logic:present>
 			</td>
