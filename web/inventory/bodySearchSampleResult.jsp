@@ -68,7 +68,7 @@
 					<input type="hidden" name="page" value="1">
 					<input type="hidden" name="fromSampleResult" value="true">
 					<input type="button" value="Show Aliquots"
-						onclick="javascript:submitAction(document.resultForm, 'searchAliquot.do')">
+						onclick="javascript:submitAction(document.resultForm, 'showAliquot.do')">
 				</div>
 			</td>
 		</tr>
