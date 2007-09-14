@@ -32,11 +32,9 @@
 				<jsp:include page="/bodyMessage.jsp?bundle=inventory" />
 
 				<display:table name="sessionScope.aliquots" id="aliquot"
-					class="displaytable" pagesize="25" requestURI="searchAliquot.do">
-					<display:column title="Select">
-						<input type="radio" name="aliquotId" value="${aliquot.aliquotId}"
-							checked>
-					</display:column>
+					class="displaytable" pagesize="25" requestURI="searchAliquot.do"
+					decorator="gov.nih.nci.calab.dto.inventory.AliquotDecorator">
+					<display:column title="Select" property="aliquotId"/>
 					<display:column title="Sample<br>ID" property="sample.sortableName"
 						sortable="true" />
 					<display:column title="Sample<br>Accession<br>Date"
