@@ -51,7 +51,7 @@
 			<form-property name="sampleSubmitter" type="java.lang.String" />
 			<form-property name="storageLocation" type="gov.nih.nci.calab.dto.inventory.StorageLocation" />
 		</form-bean>
-		<form-bean name="searchAliquotForm" type="org.apache.struts.validator.DynaValidatorForm">
+		<form-bean name="searchAliquotForm" type="org.apache.struts.validator.DynaValidatorActionForm">
 			<form-property name="dispatch" type="java.lang.String" />
 			<form-property name="page" type="java.lang.Integer" initial="0" />
 			<form-property name="aliquotName" type="java.lang.String" />
@@ -64,13 +64,15 @@
 			<form-property name="sampleSubmitter" type="java.lang.String" />
 			<form-property name="storageLocation" type="gov.nih.nci.calab.dto.inventory.StorageLocation" />
 		</form-bean>
-		<form-bean name="viewSampleDetailForm" type="org.apache.struts.action.DynaActionForm">
+		<form-bean name="viewSampleDetailForm" type="org.apache.struts.validator.DynaValidatorActionForm">
 			<form-property name="sampleId" type="java.lang.String" />
 			<form-property name="containerId" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer" initial="0" />
 		</form-bean>
-		<form-bean name="viewAliquotDetailForm" type="org.apache.struts.action.DynaActionForm">
+		<form-bean name="viewAliquotDetailForm" type="org.apache.struts.validator.DynaValidatorActionForm">
 			<form-property name="sampleId" type="java.lang.String" />
 			<form-property name="aliquotId" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer" initial="0" />
 		</form-bean>
 	</form-beans>
 
@@ -112,8 +114,12 @@
 			<forward name="input" path="inventory.searchaliquot" />
 			<forward name="success" path="inventory.searchaliquotresult" />
 			<forward name="sampleResult" path="inventory.searchsampleresult" />
-		</action>
-		<action path="/sampleResultForward" type="gov.nih.nci.calab.ui.core.BaseForwardAction" parameter="inventory.searchsampleresult" scope="request" />
+		</action>	
+		<action input="input" name="searchAliquotForm" parameter="dispatch" path="/showAliquot" type="gov.nih.nci.calab.ui.inventory.SearchAliquotAction" scope="request">
+			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="inventory" key="error.showAliquot" path="inventory.showaliquot" type="java.lang.Exception" />
+			<forward name="input" path="inventory.searchsampleresult" />
+			<forward name="success" path="inventory.searchwaliquotresult" />			
+		</action>		
 		<action input="input" name="viewSampleDetailForm" path="/viewSampleDetail" scope="request" type="gov.nih.nci.calab.ui.inventory.ViewSampleDetailAction">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="inventory" key="error.viewSampleDetails.noSamples" path="inventory.searchsampleresult" type="java.lang.Exception" />
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" bundle="inventory" key="error.viewSampleDetails" path="inventory.searchsampleresult" type="java.lang.Exception" />
