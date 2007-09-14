@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WebWorksHelpSettings version="5.0" xmlns="urn:WebWorks-Help-Settings-Schema">
+  <Common>
+    <Cookies daystoexpire="30" enable="true" id="3296ED86E334B7E6">
+    </Cookies>
+    <Accessible value="false">
+    </Accessible>
+    <SeeAlso showbook="false">
+      <Size width="250">
+      </Size>
+      <Indent value="17">
+      </Indent>
+      <Title>
+        <Font style="font-family: Verdana, Arial, Helvetica, sans-serif ; font-size: 10pt">
+        </Font>
+        <Colors foreground="#FFFFFF" background="#999999">
+        </Colors>
+      </Title>
+      <Font style="font-family: Verdana, Arial, Helvetica, sans-serif ; font-size: 8pt">
+      </Font>
+      <Colors foreground="#003399" background="#FFFFFF" border="#666666">
+      </Colors>
+    </SeeAlso>
+    <NavigationBar>
+      <SyncContents enable="true">
+      </SyncContents>
+      <Previous enable="true">
+      </Previous>
+      <Next enable="true">
+      </Next>
+      <RelatedTopics enableicon="true" enableinline="true">
+        <Title>
+          <Font style="font-family: Verdana, Arial, Helvetica, sans-serif ; font-size: 10pt">
+          </Font>
+          <Colors foreground="#FFFFFF" background="#999999">
+          </Colors>
+        </Title>
+        <Inline>
+          <Font style="font-family: Verdana, Arial, Helvetica, sans-serif ; font-size: 10pt">
+          </Font>
+          <Colors foreground="#003366">
+          </Colors>
+        </Inline>
+        <Font style="font-family: Verdana, Arial, Helvetica, sans-serif ; font-size: 8pt">
+        </Font>
+        <Colors foreground="#003399" background="#FFFFFF" border="#666666">
+        </Colors>
+        <Size width="250">
+        </Size>
+      </RelatedTopics>
+      <Email enable="false" address="">
+      </Email>
+      <Print enable="true">
+      </Print>
+      <Bookmark enable="false">
+      </Bookmark>
+      <PDF enable="false">
+      </PDF>
+    </NavigationBar>
+    <Tabs>
+      <DefaultColors foreground="#666666">
+      </DefaultColors>
+      <SelectedColors foreground="#FFFFFF">
+      </SelectedColors>
+    </Tabs>
+    <Panels>
+      <HoverText enable="true">
+        <Font style="font-family: Verdana, Arial, Helvetica, sans-serif ; font-size: 8pt">
+        </Font>
+        <Colors foreground="#000000" background="#FFFFCC" border="#999999">
+        </Colors>
+        <Size width="150">
+        </Size>
+      </HoverText>
+      <Contents enable="true">
+      </Contents>
+      <Index enable="true">
+      </Index>
+      <Search enable="true">
+        <Results showrank="true">
+        </Results>
+        <Highlighting enable="true">
+          <Colors foreground="#FFFFFF" background="#333399">
+          </Colors>
+        </Highlighting>
+      </Search>
+      <Favorites enable="true">
+      </Favorites>
+    </Panels>
+    <Popups>
+      <Colors foreground="#000000" background="#FFFFCC" border="#999999">
+      </Colors>
+      <Size width="200">
+      </Size>
+    </Popups>
+  </Common>
+  <Implementations>
+    <JavaScript>
+      <Font style="font-family: Verdana, Arial, Helvetica, sans-serif ; font-size: 8pt">
+      </Font>
+      <Indent value="17">
+      </Indent>
+      <AnchorColors highlight="#CCCCCC" enabled="#315585" disabled="black">
+      </AnchorColors>
+      <Tabs>
+        <Font style="font-family: Verdana, Arial, Helvetica, sans-serif ; font-size: 9pt ; font-weight: normal">
+        </Font>
+      </Tabs>
+      <Panels>
+        <Contents>
+        </Contents>
+        <Index>
+          <SectionNavigation threshold="500" separator=" - ">
+            <Font style="font-family: Verdana, Arial, Helvetica, sans-serif ; font-size: 7pt ; font-weight: bold">
+            </Font>
+            <CurrentColor value="black">
+            </CurrentColor>
+            <AnchorColors highlight="#CCCCCC" enabled="#315585" disabled="#999999">
+            </AnchorColors>
+          </SectionNavigation>
+        </Index>
+        <Search resultsbybook="true">
+        </Search>
+        <Favorites>
+        </Favorites>
+      </Panels>
+    </JavaScript>
+  </Implementations>
+</WebWorksHelpSettings>
