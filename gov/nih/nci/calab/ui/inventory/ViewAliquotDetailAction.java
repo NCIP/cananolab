@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.inventory;
  * @author pansu
  */
 
-/* CVS $Id: ViewAliquotDetailAction.java,v 1.1 2007-02-28 21:54:10 pansu Exp $ */
+/* CVS $Id: ViewAliquotDetailAction.java,v 1.2 2007-09-14 16:55:18 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.inventory.AliquotBean;
 import gov.nih.nci.calab.exception.CalabException;
@@ -65,6 +65,6 @@ public class ViewAliquotDetailAction extends AbstractBaseAction {
 	}
 
 	public boolean loginRequired() {
-		return false;
+		return true;
 	}
 }
