@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.inventory;
  * @author pansu
  */
 
-/* CVS $Id: SearchAliquotAction.java,v 1.3 2007-09-14 16:55:03 pansu Exp $ */
+/* CVS $Id: SearchAliquotAction.java,v 1.4 2007-09-14 20:56:08 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.inventory.AliquotBean;
 import gov.nih.nci.calab.dto.inventory.StorageLocation;
@@ -85,21 +85,13 @@ public class SearchAliquotAction extends AbstractDispatchAction {
 			ActionMessage msg = new ActionMessage(
 					"message.searchSample.noResult");
 			msgs.add("message", msg);
-			saveMessages(request, msgs);	
+			saveMessages(request, msgs);
 			session.removeAttribute("aliquots");
-			String fromSampleResult=request.getParameter("fromSampleResult");
-			if (fromSampleResult!=null && fromSampleResult.equals("true")) {
-				forward=mapping.findForward("sampleResult");
-				request.setAttribute("containerId", containerId);
-			}
-			else {
-				forward=mapping.getInputForward();
-			}
+			forward = mapping.getInputForward();
 		} else {
-			session.setAttribute("aliquots", aliquots);		
+			session.setAttribute("aliquots", aliquots);
 			forward = mapping.findForward("success");
 		}
-			
 		return forward;
 	}
 
