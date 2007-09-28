@@ -75,6 +75,7 @@
 				<filter token="SAMPLE_PREFIX" value="${sample.prefix}" />
 				<filter token="APP_OWNER" value="${application.owner}" />	
 				<filter token="GRID_INDEX_SERVER" value="${grid.indexserver}" />
+				<filter token="DATABASE" value="${database}" />
 			</filterset>
 		</copy>
 		<move file="${build.classes.dir}/fileupload.properties.template" tofile="${build.classes.dir}/fileupload.properties" />
