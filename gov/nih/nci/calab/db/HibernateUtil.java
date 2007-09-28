@@ -1,5 +1,8 @@
 package gov.nih.nci.calab.db;
 
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
+import gov.nih.nci.calab.service.util.PropertyReader;
+
 import java.sql.Date;
 import java.util.List;
 
@@ -25,7 +28,11 @@ public class HibernateUtil {
 
 	private static final ThreadLocal<Transaction> threadTransaction = new ThreadLocal<Transaction>();
 
-	private static String CONFIG_FILE_LOCATION = "/orm1.cfg.xml";
+	private static String DATABASE = PropertyReader.getProperty(
+			CaNanoLabConstants.CANANOLAB_PROPERTY, "database").toLowerCase();
+
+	private static String CONFIG_FILE_LOCATION = "/orm1_" + DATABASE
+			+ ".cfg.xml";
 
 	static {
 		try {
@@ -52,7 +59,7 @@ public class HibernateUtil {
 	public static void closeSession() throws HibernateException {
 		commitTransaction();
 		Session s = threadSession.get();
-		threadSession.set(null);		
+		threadSession.set(null);
 		if (s != null)
 			s.close();
 	}
