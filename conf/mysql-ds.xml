@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ===================================================================== -->
+<!--                                                                       -->
+<!--  JBoss Server Configuration                                           -->
+<!--                                                                       -->
+<!-- ===================================================================== -->
+
+<!-- $Id: mysql-ds.xml,v 1.1 2007-09-28 15:43:55 pansu Exp $ -->
+<!-- ==================================================================== -->
+<!--  Datasource config for MySQL using 2.0.11 driver                     -->
+<!-- ==================================================================== -->
+
+
+<datasources>
+  <local-tx-datasource>
+    <jndi-name>caNanoLab</jndi-name>
+    <connection-url>jdbc:mysql://@@DBSERVER@:@PORT@/@DBNAME@</connection-url>
+    <user-name>@DBUSER@</user-name>
+    <password>@DBPASSWORD@</password>
+    <driver-class>com.mysql.jdbc.Driver</driver-class>
+  </local-tx-datasource>
+</datasources>
