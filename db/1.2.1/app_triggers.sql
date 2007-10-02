@@ -1,4 +1,5 @@
 -- Create triggers
+USE cananolab;
 
 delimiter $
 CREATE TRIGGER SET_HISTORY_NANOPARTICLE_CHAR

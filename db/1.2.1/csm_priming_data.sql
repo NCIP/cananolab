@@ -1,3 +1,4 @@
+USE cananolab;
 # 
 # The following entries creates a super admin application incase you decide 
 # to use this database to run UPT also. In that case you need to provide
