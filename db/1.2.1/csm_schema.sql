@@ -1,8 +1,4 @@
-# Replace the <<database_name>> with proper database name that is to be created.
-
-#CREATE DATABASE <<database_name>>;
-
-USE cananolab121;
+USE cananolab;
 
 DROP TABLE IF EXISTS CSM_APPLICATION
 ;
