@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <project name="caNanoLab" default="build-application" basedir=".">
-	<property file="build.properties" />
+	<property file="build.properties" />	
 	<property name="src.java.dir" value="src" />
 	<property name="src.webroot.dir" value="web" />
 	<property name="src.lib.dir" value="web/WEB-INF/lib" />
@@ -9,7 +9,8 @@
 	<property name="build.webinf.dir" value="output/WEB-INF" />
 	<property name="build.classes.dir" value="output/WEB-INF/classes" />
 	<property name="build.war.dir" value="output/war" />
-
+	<property name="database" value="mysql"/>
+	
 	<target name="clean">
 		<delete dir="output" quiet="true" />
 	</target>
@@ -87,10 +88,11 @@
 			<fileset dir="conf/csm/">
 				<include name="*.war" />
 			</fileset>
-			<fileset dir="conf/sdk/">
+			<fileset dir="conf/sdk/${database}">
 				<include name="*.war" />
 			</fileset>
 		</copy>
+		<echo message="Hello, world ${database}"/>
 	</target>
 	
 </project>
