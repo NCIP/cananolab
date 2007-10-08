@@ -77,7 +77,7 @@
 								</tr>
 								<tr>
 									<td class="leftLabel">
-										<strong>File Title*</strong>
+										<strong>File Title</strong>
 									</td>
 									<td class="rightLabel"">
 										<html:text property="file.title" size="80" />
