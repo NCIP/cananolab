@@ -777,7 +777,7 @@ public class UserService {
 
 		String query = "delete from csm_user_group_role_pg "
 				+ "where PROTECTION_GROUP_ID=" + pg.getProtectionGroupId()
-				+ "and ROLE_ID=" + role.getId();
+				+ " and ROLE_ID=" + role.getId();
 		if (!exceptionGroupIds.isEmpty()) {
 			query += " and GROUP_ID not in ("
 					+ StringUtils.join(exceptionGroupIds, ",") + ")";
