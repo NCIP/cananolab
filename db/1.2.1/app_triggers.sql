@@ -1,5 +1,3 @@
---Create triggers
-
 use cananolab;
 
 drop trigger SET_HISTORY_NANOPARTICLE_CHAR;
