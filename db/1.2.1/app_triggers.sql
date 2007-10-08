@@ -1,5 +1,24 @@
--- Create triggers
+﻿-- Create triggers
 USE cananolab;
+
+drop trigger SET_HISTORY_NANOPARTICLE_CHAR;
+drop trigger SET_HISTORY_DERIVED_BIODATA;
+drop trigger SET_HISTORY_DATUM;
+drop trigger SET_HISTORY_CHARACTERIZATION;
+drop trigger SET_HISTORY_LAB_FILE;
+drop trigger SET_HIST_COMPOSING_ELEMENT;
+drop trigger SET_HISTORY_SURFACE;
+drop trigger SET_HISTORY_SURFACE_CHEMISTRY;
+drop trigger SET_HISTORY_SURFACE_GROUP;
+drop trigger SET_HISTORY_SOLUBILITY;
+drop trigger SET_HISTORY_SHAPE;
+drop trigger SET_HISTORY_MORPHOLOGY;
+drop trigger SET_HISTORY_NANOTUBE;
+drop trigger SET_HISTORY_POLYMER;
+drop trigger SET_HISTORY_FULLERENE;
+drop trigger SET_HISTORY_EMULSION;
+drop trigger SET_HISTORY_DENDRIMER;
+drop trigger SET_HISTORY_CYTOTOXICITY;
 
 delimiter $
 CREATE TRIGGER SET_HISTORY_NANOPARTICLE_CHAR
@@ -11,11 +30,11 @@ BEGIN
     INSERT INTO HISTORY_NANOPARTICLE_CHAR
      ( CHARACTERIZATION_PK_ID, NANOPARTICLE_PK_ID, DELETED_DATE )
     VALUES
-     ( old.CHARACTERIZATION_PK_ID, old.NANOPARTICLE_PK_ID, sysdate);
+     ( old.CHARACTERIZATION_PK_ID, old.NANOPARTICLE_PK_ID, sysdate());
 
 END$
 
-CREATE TRIGGER SET_history_Derived_Biodata
+CREATE TRIGGER SET_HISTORY_DERIVED_BIODATA
 BEFORE update
     ON derived_bioassay_data
     FOR EACH ROW
@@ -30,14 +49,14 @@ BEGIN
         (old.derived_bioassay_data_pk_id, 
          old.characterization_pk_id, 
          old.list_index,
-         sysdate);
+         sysdate());
    ELSE 
        delete from history_derived_bioassay_data where DERIVED_BIOASSAY_DATA_PK_ID=old.DERIVED_BIOASSAY_DATA_PK_ID;
    END IF;
 END$
 
 
-CREATE TRIGGER SET_HISTORY_datum
+CREATE TRIGGER SET_HISTORY_DATUM
 BEFORE update
     ON datum
     FOR EACH ROW
@@ -66,7 +85,7 @@ BEGIN
          old.list_index, 
          old.statistics_type, 
          old.bioassay_data_category, 
-         sysdate );
+         sysdate() );
    ELSE 
        delete from history_datum where datum_pk_id=old.datum_pk_id;
    END IF;
@@ -103,7 +122,7 @@ BEGIN
        old.CREATED_BY, 
        old.PROTOCOL_FILE_PK_ID, 
        old.INSTRUMENT_CONFIG_PK_ID, 
-       sysdate,
+       sysdate(),
        'CHARACTERIZATION');
 
 END$
@@ -129,7 +148,7 @@ BEGIN
          old.description, 
          old.characterization_pk_id, 
          old.list_index, 
-         sysdate );
+         sysdate() );
    ELSE 
       delete from history_composing_element where composing_element_pk_id=old.composing_element_pk_id;
    END IF;
@@ -156,7 +175,7 @@ BEGIN
          old.number_molecule, 
          old.list_index, 
 		 old.molecular_formula_type,
-         sysdate );
+         sysdate() );
    ELSE
       delete from history_surface_chemistry where surface_chemistry_pk_id=old.surface_chemistry_pk_id;
    END IF;      
@@ -181,7 +200,7 @@ BEGIN
          old.modifier, 
          old.d_composition_pk_id, 
          old.list_index, 
-         sysdate );
+         sysdate() );
    ELSE 
       delete from history_surface_group where surface_group_pk_id=old.surface_group_pk_id;
    END IF;
@@ -230,7 +249,7 @@ BEGIN
        old.DESCRIPTION,
        old.COMMENTS,
        old.TYPE,
-       sysdate);
+       sysdate());
 END$
 
 CREATE TRIGGER SET_HISTORY_NANOTUBE
@@ -252,7 +271,7 @@ begin
        old.growth_diameter, 
        old.average_length, 
        old.wall_type, 
-       sysdate, 
+       sysdate(), 
        'CARBON_NANOTUBE_COMPOSITION');
       
 end$
@@ -276,7 +295,7 @@ begin
        old.molecular_formula,
        old.repeat_unit,
        old.branch,
-       sysdate,
+       sysdate(),
        'DENDRIMER_COMPOSITION');
 end$
 
@@ -299,7 +318,7 @@ begin
        old.molecular_formula,
        old.polymer_name,
        old.is_polymerized,
-       sysdate,
+       sysdate(),
        'EMULSION_COMPOSITION');
 end$
 
@@ -318,7 +337,7 @@ begin
      ( old.cytotoxicity_pk_id,
        old.cell_line,
        old.cell_death_method,
-       sysdate,
+       sysdate(),
        'CYTOTOXICITY');
 end$
 
@@ -335,7 +354,7 @@ begin
     VALUES
      ( old.f_composition_pk_id,
        old.number_of_carbon,
-       sysdate,
+       sysdate(),
        'FULLERENE_COMPOSITION');
 end$
 
@@ -352,7 +371,7 @@ begin
     VALUES
      ( old.morphology_pk_id,
        old.type,
-       sysdate,
+       sysdate(),
        'MORPHOLOGY');
 end$
 
@@ -373,7 +392,7 @@ begin
        old.is_cross_link,
        old.cross_link_degree,
        old.initiator,
-       sysdate,
+       sysdate(),
        'POLYMER_COMPOSITION');
 end$
 
@@ -398,7 +417,7 @@ begin
        old.max_dimension_unit,
        old.min_dimension_unit,
        old.type,
-       sysdate,
+       sysdate(),
        'SHAPE');
 end$
 
@@ -421,7 +440,7 @@ begin
        old.critical_concentration,
        old.concentration_unit,
        old.is_soluble,
-       sysdate,
+       sysdate(),
        'SOLUBILITY');
 end$
 
@@ -450,7 +469,7 @@ begin
        old.charge,
        old.charge_unit,
        old.is_hydrophobic,
-       sysdate,
+       sysdate(),
        'SURFACE');
 end$
 
