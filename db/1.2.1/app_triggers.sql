@@ -1,5 +1,6 @@
-﻿-- Create triggers
-USE cananolab;
+--Create triggers
+
+use cananolab;
 
 drop trigger SET_HISTORY_NANOPARTICLE_CHAR;
 drop trigger SET_HISTORY_DERIVED_BIODATA;
