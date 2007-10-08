@@ -69,6 +69,7 @@ public class LabFileBean {
 		this.uri = charFile.getUri();
 		this.title = charFile.getTitle();
 		this.description = charFile.getDescription();
+		this.comments=charFile.getComments();
 		this.createdBy = charFile.getCreatedBy();
 		this.version = charFile.getVersion();
 		this.createdDate = charFile.getCreatedDate();
