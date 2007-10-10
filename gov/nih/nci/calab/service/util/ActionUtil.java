@@ -3,12 +3,34 @@ package gov.nih.nci.calab.service.util;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Enumeration;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.ServletException;
 
 public class ActionUtil
 {
+	public static String getHostUriString (HttpServletRequest request) 
+			throws ServletException, IOException
+	{
+		String scheme = request.getScheme();
+		String host = request.getServerName();
+		int port = request.getServerPort();
+
+		String url = "";
+		if(host.equals("localhost"))
+			url = scheme + "://" + host + ":" + port;
+		
+		else
+			url = scheme + "://" + host;
+		
+		return url;
+		
+	}
+	
     public void writeBinaryStream(File file, HttpServletResponse response) throws Exception
     {
         if (file == null || response == null)
