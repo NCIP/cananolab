@@ -12,6 +12,7 @@ import gov.nih.nci.calab.service.util.file.HttpUploadedFileData;
 import gov.nih.nci.calab.service.workflow.ExecuteWorkflowService;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
+import gov.nih.nci.calab.service.util.ActionUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -74,13 +75,24 @@ public class FileUploadAction extends AbstractDispatchAction {
 
 		DynaActionForm fileForm = (DynaActionForm) form;
 		
-		fileForm.set("archiveValue", PropertyReader.getProperty(
+		/* get host uri 
+		 * since some hosts are from https
+		 * and some from http
+		 */
+		
+		String hostUriString = ActionUtil.getHostUriString(request);
+		
+		String archValue = hostUriString + PropertyReader.getProperty(
+				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "archiveValue");
+				System.out.println("archValue:" + archValue);
+				
+		fileForm.set("archiveValue", hostUriString + PropertyReader.getProperty(
 				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "archiveValue"));
-		fileForm.set("servletURL", PropertyReader.getProperty(
+		fileForm.set("servletURL", hostUriString + PropertyReader.getProperty(
 				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "servletURL"));
-		fileForm.set("notifyURL", PropertyReader.getProperty(
+		fileForm.set("notifyURL", hostUriString + PropertyReader.getProperty(
 				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "notifyURL"));
-		fileForm.set("defaultURL", PropertyReader.getProperty(
+		fileForm.set("defaultURL", hostUriString + PropertyReader.getProperty(
 				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "defaultURL"));
 		fileForm.set("sid", session.getId());
 		fileForm.set("module", "calab");
