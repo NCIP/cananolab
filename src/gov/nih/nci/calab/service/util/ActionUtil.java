@@ -21,14 +21,12 @@ public class ActionUtil
 		int port = request.getServerPort();
 
 		String url = "";
-		if(host.equals("localhost"))
+		if(port != -1)
 			url = scheme + "://" + host + ":" + port;
-		
 		else
 			url = scheme + "://" + host;
 		
-		return url;
-		
+		return url;	
 	}
 	
     public void writeBinaryStream(File file, HttpServletResponse response) throws Exception
