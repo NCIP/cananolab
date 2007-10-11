@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.submit;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleFunctionAction.java,v 1.13 2007-08-08 18:56:01 pansu Exp $ */
+/* CVS $Id: NanoparticleFunctionAction.java,v 1.14 2007-10-11 20:35:58 cais Exp $ */
 
 import gov.nih.nci.calab.domain.nano.function.Function;
 import gov.nih.nci.calab.dto.function.AgentBean;
@@ -62,9 +62,8 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 		for (LinkageBean linkageBean : function.getLinkages()) {
 			for (AgentTargetBean agentTargetBean : linkageBean.getAgent()
 					.getAgentTargets()) {
-				if (agentTargetBean.getName().length() == 0
-						&& agentTargetBean.getDescription().length() == 0
-						&& agentTargetBean.getType().length() == 0) {
+				
+				if(agentTargetBean.getType().length() == 0) {
 					throw new RuntimeException("Agent target type can not be empty.");
 				}
 			}
