@@ -75,16 +75,10 @@ public class FileUploadAction extends AbstractDispatchAction {
 
 		DynaActionForm fileForm = (DynaActionForm) form;
 		
-		/* get host uri 
-		 * since some hosts are from https
+		/* get host url, since some hosts are from https
 		 * and some from http
-		 */
-		
+		 ************************************************/
 		String hostUriString = ActionUtil.getHostUriString(request);
-		
-		String archValue = hostUriString + PropertyReader.getProperty(
-				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "archiveValue");
-				System.out.println("archValue:" + archValue);
 				
 		fileForm.set("archiveValue", hostUriString + PropertyReader.getProperty(
 				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "archiveValue"));
@@ -129,10 +123,14 @@ public class FileUploadAction extends AbstractDispatchAction {
 				+ mySessionData.getRun() + File.separator
 				+ mySessionData.getInout();
 		String fullPathName = path + relativePathName;
+		
+System.out.println("fullPathName:" + fullPathName);
 
 		String mode = (String) request.getParameter("mode");
 		HttpSession session = request.getSession();
-
+		
+System.out.println("mode:" + mode);
+		
 		if ("stop".equals(mode)) {
 			if (mySessionData != null) {
 				mySessionData.setIsStopped(true);
@@ -186,6 +184,7 @@ public class FileUploadAction extends AbstractDispatchAction {
 			String inout = mySessionData.getInout();
 			String runId = mySessionData.getRunId();
 
+System.out.println("upload data to database");
 			logger_.info("Persist file upload data to database ");
 			// use CaNanoLabConstants.URI_SEPERATOR to save in the database, which
 			// might be different from physical file structure/seperator
@@ -193,9 +192,12 @@ public class FileUploadAction extends AbstractDispatchAction {
 					+ CaNanoLabConstants.URI_SEPERATOR + mySessionData.getAssay()
 					+ CaNanoLabConstants.URI_SEPERATOR + mySessionData.getRun()
 					+ CaNanoLabConstants.URI_SEPERATOR + mySessionData.getInout();
+System.out.println("uriPathName:" + uriPathName);
+			
 			String unzipFilePath = CaNanoLabConstants.URI_SEPERATOR + uriPathName
 					+ CaNanoLabConstants.URI_SEPERATOR
 					+ CaNanoLabConstants.UNCOMPRESSED_FILE_DIRECTORY;
+
 			ExecuteWorkflowService workflowService = new ExecuteWorkflowService();
 			workflowService.saveFile(fileList, unzipFilePath, runId, inout,
 					(String) session.getAttribute("creator"));
