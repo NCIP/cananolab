@@ -113,11 +113,13 @@
 								</tr>
 								<tr>
 									<td class="sidebarContent">
-										<strong>caNanoLab 1.2 is now available!</strong>
+										<strong>caNanoLab 1.2.1 is now available!</strong>
 										<br>
-										caNanoLab 1.2 contains the following features:
+										caNanoLab 1.2.1 contains the following features:
 										<br>
 										<ul>
+											<li>MySQL 5.0.x Database
+											</li>
 											<li>
 												Sample and Aliquot Management
 											</li>
@@ -134,8 +136,7 @@
 												Report and Protocol Management
 											</li>
 											<li>
-												Remote Grid Search for Reports and Physical Composition
-												Data
+												Remote Grid Search for Reports and Physical Composition Data
 											</li>
 											<li>
 												Role-based Security
