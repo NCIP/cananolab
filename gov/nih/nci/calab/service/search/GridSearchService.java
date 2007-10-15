@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -37,6 +38,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * 
  */
 public class GridSearchService {
+	private static Logger logger = Logger.getLogger(GridSearchService.class);
 
 	/**
 	 * Retrieve remote reports files from the given grid node.
@@ -54,55 +56,60 @@ public class GridSearchService {
 			GridNodeBean gridNode) throws Exception {
 		List<LabFileBean> reports = new ArrayList<LabFileBean>();
 
-		CaNanoLabSvcClient gridClient = new CaNanoLabSvcClient(gridNode
-				.getAddress());
-		if (reportType.equals(CaNanoLabConstants.REPORT)) {
-			Report[] gridReports = gridClient.getReports(reportTitle,
-					particleType, functionTypes);
-			if (gridReports != null) {
-				for (Report report : gridReports) {
-					LabFileBean fileBean = new LabFileBean(report, gridNode
-							.getHostName());
-					fileBean.setInstanceType(CaNanoLabConstants.REPORT);
-					reports.add(fileBean);
+		try {
+			CaNanoLabSvcClient gridClient = new CaNanoLabSvcClient(gridNode
+					.getAddress());
+			if (reportType.equals(CaNanoLabConstants.REPORT)) {
+				Report[] gridReports = gridClient.getReports(reportTitle,
+						particleType, functionTypes);
+				if (gridReports != null) {
+					for (Report report : gridReports) {
+						LabFileBean fileBean = new LabFileBean(report, gridNode
+								.getHostName());
+						fileBean.setInstanceType(CaNanoLabConstants.REPORT);
+						reports.add(fileBean);
+					}
+				}
+			} else if (reportType.equals(CaNanoLabConstants.ASSOCIATED_FILE)) {
+				AssociatedFile[] gridAssociatedFiles = gridClient
+						.getOtherAssociatedFiles(reportTitle, particleType,
+								functionTypes);
+				if (gridAssociatedFiles != null) {
+					for (AssociatedFile report : gridAssociatedFiles) {
+						LabFileBean fileBean = new LabFileBean(report, gridNode
+								.getHostName());
+						fileBean
+								.setInstanceType(CaNanoLabConstants.ASSOCIATED_FILE);
+						reports.add(fileBean);
+					}
+				}
+			} else {
+				Report[] gridReports = gridClient.getReports(reportTitle,
+						particleType, functionTypes);
+				if (gridReports != null) {
+					for (Report report : gridReports) {
+						LabFileBean fileBean = new LabFileBean(report, gridNode
+								.getHostName());
+						fileBean.setInstanceType(CaNanoLabConstants.REPORT);
+						reports.add(fileBean);
+					}
+				}
+				AssociatedFile[] gridAssociatedFiles = gridClient
+						.getOtherAssociatedFiles(reportTitle, particleType,
+								functionTypes);
+				if (gridAssociatedFiles != null) {
+					for (AssociatedFile report : gridAssociatedFiles) {
+						LabFileBean fileBean = new LabFileBean(report, gridNode
+								.getHostName());
+						fileBean
+								.setInstanceType(CaNanoLabConstants.ASSOCIATED_FILE);
+						reports.add(fileBean);
+					}
 				}
 			}
-		} else if (reportType.equals(CaNanoLabConstants.ASSOCIATED_FILE)) {
-			AssociatedFile[] gridAssociatedFiles = gridClient
-					.getOtherAssociatedFiles(reportTitle, particleType,
-							functionTypes);
-			if (gridAssociatedFiles != null) {
-				for (AssociatedFile report : gridAssociatedFiles) {
-					LabFileBean fileBean = new LabFileBean(report, gridNode
-							.getHostName());
-					fileBean
-							.setInstanceType(CaNanoLabConstants.ASSOCIATED_FILE);
-					reports.add(fileBean);
-				}
-			}
-		} else {
-			Report[] gridReports = gridClient.getReports(reportTitle,
-					particleType, functionTypes);
-			if (gridReports != null) {
-				for (Report report : gridReports) {
-					LabFileBean fileBean = new LabFileBean(report, gridNode
-							.getHostName());
-					fileBean.setInstanceType(CaNanoLabConstants.REPORT);
-					reports.add(fileBean);
-				}
-			}
-			AssociatedFile[] gridAssociatedFiles = gridClient
-					.getOtherAssociatedFiles(reportTitle, particleType,
-							functionTypes);
-			if (gridAssociatedFiles != null) {
-				for (AssociatedFile report : gridAssociatedFiles) {
-					LabFileBean fileBean = new LabFileBean(report, gridNode
-							.getHostName());
-					fileBean
-							.setInstanceType(CaNanoLabConstants.ASSOCIATED_FILE);
-					reports.add(fileBean);
-				}
-			}
+		} catch (Exception e) {
+			logger.error("Error in searching remote reports: " + e);
+			throw e;
 		}
 		return reports;
 	}
@@ -121,57 +128,67 @@ public class GridSearchService {
 			String[] functionTypes, String[] characterizationTypes,
 			GridNodeBean gridNode) throws Exception {
 		List<ParticleBean> particles = new ArrayList<ParticleBean>();
-
-		CaNanoLabSvcClient gridClient = new CaNanoLabSvcClient(gridNode
-				.getAddress());
-		Nanoparticle[] gridParticles = gridClient.getNanoparticles(
-				particleType, characterizationTypes, functionTypes);
-		if (gridParticles != null) {
-			for (Nanoparticle particle : gridParticles) {
-				Characterization[] gridCharacterizations = gridClient
-						.getCharacterizationsByParticleName(particle.getName());
-				if (gridCharacterizations != null) {
-					particle.setCharacterizationCollection(Arrays
-							.asList(gridCharacterizations));
+		try {
+			CaNanoLabSvcClient gridClient = new CaNanoLabSvcClient(gridNode
+					.getAddress());
+			Nanoparticle[] gridParticles = gridClient.getNanoparticles(
+					particleType, characterizationTypes, functionTypes);
+			if (gridParticles != null) {
+				for (Nanoparticle particle : gridParticles) {
+					Characterization[] gridCharacterizations = gridClient
+							.getCharacterizationsByParticleName(particle
+									.getName());
+					if (gridCharacterizations != null) {
+						particle.setCharacterizationCollection(Arrays
+								.asList(gridCharacterizations));
+					}
+					Function[] gridFunctions = gridClient
+							.getFunctionsByParticleName(particle.getName());
+					if (gridFunctions != null) {
+						particle.setFunctionCollection(Arrays
+								.asList(gridFunctions));
+					}
+					Source gridSource = gridClient
+							.getSourceByParticleName(particle.getName());
+					if (gridSource != null)
+						particle.setSource(gridSource);
+					particles.add(new ParticleBean(particle, gridNode
+							.getHostName()));
 				}
-				Function[] gridFunctions = gridClient
-						.getFunctionsByParticleName(particle.getName());
-				if (gridFunctions != null) {
-					particle
-							.setFunctionCollection(Arrays.asList(gridFunctions));
-				}
-				Source gridSource = gridClient.getSourceByParticleName(particle
-						.getName());
-				if (gridSource != null)
-					particle.setSource(gridSource);
-				particles
-						.add(new ParticleBean(particle, gridNode.getHostName()));
 			}
+		} catch (Exception e) {
+			logger.error("Error in searching remote particles: " + e);
+			throw e;
 		}
 		return particles;
 	}
 
 	public Nanoparticle getRemoteNanoparticle(String particleName,
 			GridNodeBean gridNode) throws Exception {
-		CaNanoLabSvcClient gridClient = new CaNanoLabSvcClient(gridNode
-				.getAddress());
-		Nanoparticle particle = gridClient.getNanoparticle(particleName);
-		Characterization[] gridCharacterizations = gridClient
-				.getCharacterizationsByParticleName(particle.getName());
-		if (gridCharacterizations != null) {
-			particle.setCharacterizationCollection(Arrays
-					.asList(gridCharacterizations));
+		Nanoparticle particle = null;
+		try {
+			CaNanoLabSvcClient gridClient = new CaNanoLabSvcClient(gridNode
+					.getAddress());
+			particle = gridClient.getNanoparticle(particleName);
+			Characterization[] gridCharacterizations = gridClient
+					.getCharacterizationsByParticleName(particle.getName());
+			if (gridCharacterizations != null) {
+				particle.setCharacterizationCollection(Arrays
+						.asList(gridCharacterizations));
+			}
+			Function[] gridFunctions = gridClient
+					.getFunctionsByParticleName(particle.getName());
+			if (gridFunctions != null) {
+				particle.setFunctionCollection(Arrays.asList(gridFunctions));
+			}
+			Source gridSource = gridClient.getSourceByParticleName(particle
+					.getName());
+			if (gridSource != null)
+				particle.setSource(gridSource);
+		} catch (Exception e) {
+			logger.error("Error in getting remote particle: " + e);
+			throw e;
 		}
-		Function[] gridFunctions = gridClient
-				.getFunctionsByParticleName(particle.getName());
-		if (gridFunctions != null) {
-			particle.setFunctionCollection(Arrays.asList(gridFunctions));
-		}
-		Source gridSource = gridClient.getSourceByParticleName(particle
-				.getName());
-		if (gridSource != null)
-			particle.setSource(gridSource);
-
 		return particle;
 	}
 
@@ -186,127 +203,159 @@ public class GridSearchService {
 	 */
 	public Map<String, List<CharacterizationBean>> getRemoteCharacterizationMap(
 			String particleName, GridNodeBean gridNode) throws Exception {
-		CaNanoLabSvcClient gridClient = new CaNanoLabSvcClient(gridNode
-				.getAddress());
-		// get saved characterizations saved in a remote node
-		Characterization[] gridCharacterizations = gridClient
-				.getCharacterizationsByParticleName(particleName);
-		// get all characterization type characterizations
-		Map<String, List<CharacterizationBean>> charTypeChars = new HashMap<String, List<CharacterizationBean>>();
+		Map<String, List<CharacterizationBean>> charTypeChars = null;
 
-		// set up lookup table, key characterization type, value
-		// characterizationBeans for the side menu. Keep the
-		// characterizations types in order as in lookupService.
-		if (gridCharacterizations != null) {
-			LookupService lookupService = new LookupService();
-			Map<String, List<CharacterizationBean>> orderedCharTypeChars = lookupService
-					.getCharacterizationTypeCharacterizations();
-			// set abbreviation for each saved characterization
-			for (String charType : orderedCharTypeChars.keySet()) {
-				List<CharacterizationBean> newCharBeans = new ArrayList<CharacterizationBean>();
-				List<CharacterizationBean> orderedCharList = orderedCharTypeChars
-						.get(charType);
-				for (Characterization chara : gridCharacterizations) {
-					for (CharacterizationBean displayBean : orderedCharList) {
-						if (displayBean.getName().equals(chara.getName())) {
-							CharacterizationBean charBean = new CharacterizationBean(
-									chara);
-							charBean.setAbbr(displayBean.getAbbr());
-							newCharBeans.add(charBean);
+		try {
+			CaNanoLabSvcClient gridClient = new CaNanoLabSvcClient(gridNode
+					.getAddress());
+			// get saved characterizations saved in a remote node
+			Characterization[] gridCharacterizations = gridClient
+					.getCharacterizationsByParticleName(particleName);
+			// get all characterization type characterizations
+			charTypeChars = new HashMap<String, List<CharacterizationBean>>();
+
+			// set up lookup table, key characterization type, value
+			// characterizationBeans for the side menu. Keep the
+			// characterizations types in order as in lookupService.
+			if (gridCharacterizations != null) {
+				LookupService lookupService = new LookupService();
+				Map<String, List<CharacterizationBean>> orderedCharTypeChars = lookupService
+						.getCharacterizationTypeCharacterizations();
+				// set abbreviation for each saved characterization
+				for (String charType : orderedCharTypeChars.keySet()) {
+					List<CharacterizationBean> newCharBeans = new ArrayList<CharacterizationBean>();
+					List<CharacterizationBean> orderedCharList = orderedCharTypeChars
+							.get(charType);
+					for (Characterization chara : gridCharacterizations) {
+						for (CharacterizationBean displayBean : orderedCharList) {
+							if (displayBean.getName().equals(chara.getName())) {
+								CharacterizationBean charBean = new CharacterizationBean(
+										chara);
+								charBean.setAbbr(displayBean.getAbbr());
+								newCharBeans.add(charBean);
+							}
 						}
 					}
-				}
-				if (!newCharBeans.isEmpty()) {
-					charTypeChars.put(charType, newCharBeans);
+					if (!newCharBeans.isEmpty()) {
+						charTypeChars.put(charType, newCharBeans);
+					}
 				}
 			}
+		} catch (Exception e) {
+			logger.error("Error in getting remote characterization map: " + e);
+			throw e;
 		}
 		return charTypeChars;
 	}
 
 	public Map<String, List<FunctionBean>> getRemoteFunctionMap(
 			String particleName, GridNodeBean gridNode) throws Exception {
-		CaNanoLabSvcClient gridClient = new CaNanoLabSvcClient(gridNode
-				.getAddress());
-		Function[] gridFunctions = gridClient
-				.getFunctionsByParticleName(particleName);
+		Map<String, List<FunctionBean>> funcTypeFuncs = null;
+		try {
+			CaNanoLabSvcClient gridClient = new CaNanoLabSvcClient(gridNode
+					.getAddress());
+			Function[] gridFunctions = gridClient
+					.getFunctionsByParticleName(particleName);
 
-		Map<String, List<FunctionBean>> funcTypeFuncs = new HashMap<String, List<FunctionBean>>();
-		List<FunctionBean> funcs = new ArrayList<FunctionBean>();
-		if (gridFunctions != null) {
-			for (Function func : gridFunctions) {
-				if (funcTypeFuncs.get(func.getType()) != null) {
-					funcs = (List<FunctionBean>) (funcTypeFuncs.get(func
-							.getType()));
-				} else {
-					funcs = new ArrayList<FunctionBean>();
-					funcTypeFuncs.put(func.getType(), funcs);
+			funcTypeFuncs = new HashMap<String, List<FunctionBean>>();
+			List<FunctionBean> funcs = new ArrayList<FunctionBean>();
+			if (gridFunctions != null) {
+				for (Function func : gridFunctions) {
+					if (funcTypeFuncs.get(func.getType()) != null) {
+						funcs = (List<FunctionBean>) (funcTypeFuncs.get(func
+								.getType()));
+					} else {
+						funcs = new ArrayList<FunctionBean>();
+						funcTypeFuncs.put(func.getType(), funcs);
+					}
+					funcs.add(new FunctionBean(func));
 				}
-				funcs.add(new FunctionBean(func));
 			}
+		} catch (Exception e) {
+			logger.error("Error in getting remote function map: " + e);
+			throw e;
 		}
 		return funcTypeFuncs;
 	}
 
 	public List<LabFileBean> getRemoteReports(String particleName,
 			GridNodeBean gridNode) throws Exception {
-		CaNanoLabSvcClient gridClient = new CaNanoLabSvcClient(gridNode
-				.getAddress());
+		List<LabFileBean> reports = null;
+		try {
+			CaNanoLabSvcClient gridClient = new CaNanoLabSvcClient(gridNode
+					.getAddress());
 
-		List<LabFileBean> reports = new ArrayList<LabFileBean>();
-		Report[] gridReports = gridClient
-				.getReportsByParticleName(particleName);
-		if (gridReports != null) {
-			for (Report report : gridReports) {
-				LabFileBean fileBean = new LabFileBean(report, gridNode
-						.getHostName());
-				fileBean.setInstanceType(CaNanoLabConstants.REPORT);
-				reports.add(fileBean);
+			reports = new ArrayList<LabFileBean>();
+			Report[] gridReports = gridClient
+					.getReportsByParticleName(particleName);
+			if (gridReports != null) {
+				for (Report report : gridReports) {
+					LabFileBean fileBean = new LabFileBean(report, gridNode
+							.getHostName());
+					fileBean.setInstanceType(CaNanoLabConstants.REPORT);
+					reports.add(fileBean);
+				}
 			}
+		} catch (Exception e) {
+			logger.error("Error in getting remote reports: " + e);
+			throw e;
 		}
 		return reports;
 	}
 
 	public List<LabFileBean> getRemoteAssociatedFiles(String particleName,
 			GridNodeBean gridNode) throws Exception {
-		CaNanoLabSvcClient gridClient = new CaNanoLabSvcClient(gridNode
-				.getAddress());
+		List<LabFileBean> files = null;
+		try {
+			CaNanoLabSvcClient gridClient = new CaNanoLabSvcClient(gridNode
+					.getAddress());
 
-		List<LabFileBean> files = new ArrayList<LabFileBean>();
-		AssociatedFile[] gridFiles = gridClient
-				.getOtherAssociatedFilesByParticleName(particleName);
-		if (gridFiles != null) {
-			for (AssociatedFile file : gridFiles) {
-				LabFileBean fileBean = new LabFileBean(file, gridNode
-						.getHostName());
-				fileBean.setInstanceType(CaNanoLabConstants.ASSOCIATED_FILE);
-				files.add(fileBean);
+			files = new ArrayList<LabFileBean>();
+			AssociatedFile[] gridFiles = gridClient
+					.getOtherAssociatedFilesByParticleName(particleName);
+			if (gridFiles != null) {
+				for (AssociatedFile file : gridFiles) {
+					LabFileBean fileBean = new LabFileBean(file, gridNode
+							.getHostName());
+					fileBean
+							.setInstanceType(CaNanoLabConstants.ASSOCIATED_FILE);
+					files.add(fileBean);
+				}
 			}
+		} catch (Exception e) {
+			logger.error("Error in getting remote files: " + e);
+			throw e;
 		}
 		return files;
 	}
 
 	public ParticleComposition getRemoteComposition(String compositionId,
 			String particleName, GridNodeBean gridNode) throws Exception {
-		CaNanoLabSvcClient gridClient = new CaNanoLabSvcClient(gridNode
-				.getAddress());
-		ParticleComposition comp = (ParticleComposition) gridClient
-				.getCharacterization(Long.parseLong(compositionId),
-						particleName);
-		ComposingElement[] composingElements = gridClient.getComposingElements(
-				Long.parseLong(compositionId), particleName);
-		if (comp != null && composingElements != null) {
-			comp
-					.setComposingElementCollection(Arrays
-							.asList(composingElements));
-		}
-		if (comp instanceof DendrimerComposition) {
-			SurfaceGroup[] surfaceGroups = gridClient.getSurfaceGroups(Long
+		ParticleComposition comp = null;
+		try {
+			CaNanoLabSvcClient gridClient = new CaNanoLabSvcClient(gridNode
+					.getAddress());
+			comp = (ParticleComposition) gridClient.getCharacterization(Long
 					.parseLong(compositionId), particleName);
-			if (comp != null && surfaceGroups != null) {
-				((DendrimerComposition) comp).setSurfaceGroupCollection(Arrays
-						.asList(surfaceGroups));
+			ComposingElement[] composingElements = gridClient
+					.getComposingElements(Long.parseLong(compositionId),
+							particleName);
+			if (comp != null && composingElements != null) {
+				comp.setComposingElementCollection(Arrays
+						.asList(composingElements));
 			}
+			if (comp instanceof DendrimerComposition) {
+				SurfaceGroup[] surfaceGroups = gridClient.getSurfaceGroups(Long
+						.parseLong(compositionId), particleName);
+				if (comp != null && surfaceGroups != null) {
+					((DendrimerComposition) comp)
+							.setSurfaceGroupCollection(Arrays
+									.asList(surfaceGroups));
+				}
+			}
+		} catch (Exception e) {
+			logger.error("Error in getting remote composition: " + e);
+			throw e;
 		}
 		return comp;
 	}
@@ -322,18 +371,24 @@ public class GridSearchService {
 	 */
 	public byte[] getRemoteFileContent(String fileId, GridNodeBean gridNode)
 			throws Exception {
-		String remoteCodeBase = RemoteQuerySystemPropertyConfigurer
-				.getRemoteServiceUrlCodebase(gridNode.getAppServiceURL());
-		// dynamically set system property to contain the remote caNanoLab
-		// hostname
-		System.getProperties().put("remote.codebase", remoteCodeBase);
+		byte[] fileContent = null;
+		try {
+			String remoteCodeBase = RemoteQuerySystemPropertyConfigurer
+					.getRemoteServiceUrlCodebase(gridNode.getAppServiceURL());
+			// dynamically set system property to contain the remote caNanoLab
+			// hostname
+			System.getProperties().put("remote.codebase", remoteCodeBase);
 
-		ApplicationContext ctx = new ClassPathXmlApplicationContext(
-				"caNanoLabClientContext.xml");
-		RemoteQueryFacade remoteQueryFacade = (RemoteQueryFacade) ctx
-				.getBean("remoteQueryProxy");
-		byte[] fileContent = remoteQueryFacade.retrievePublicFileContent(Long
-				.parseLong(fileId));
+			ApplicationContext ctx = new ClassPathXmlApplicationContext(
+					"caNanoLabClientContext.xml");
+			RemoteQueryFacade remoteQueryFacade = (RemoteQueryFacade) ctx
+					.getBean("remoteQueryProxy");
+			fileContent = remoteQueryFacade.retrievePublicFileContent(Long
+					.parseLong(fileId));
+		} catch (Exception e) {
+			logger.error("Error in getting remote file content: " + e);
+			throw e;
+		}
 		return fileContent;
 	}
 }
