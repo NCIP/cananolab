@@ -136,7 +136,7 @@ public class SurfaceBean extends CharacterizationBean {
 
 	public void updateDomainObj(Surface surface) {
 		super.updateDomainObj(surface);
-		if (isHydrophobic==null || isHydrophobic.length() == 0) {
+		if (isHydrophobic == null || isHydrophobic.length() == 0) {
 			surface.setIsHydrophobic(null);
 		} else {
 			boolean hycrophobicStatus = (isHydrophobic
@@ -164,9 +164,28 @@ public class SurfaceBean extends CharacterizationBean {
 					surfaceAreaUnit));
 		}
 
+		// copy collection
+		List<SurfaceChemistry> doChemList = new ArrayList<SurfaceChemistry>(
+				surface.getSurfaceChemistryCollection());
+		// clear collection
+		surface.getSurfaceChemistryCollection().clear();
 		for (SurfaceChemistryBean surfaceChemistry : surfaceChemistries) {
-			surface.getSurfaceChemistryCollection().add(
-					surfaceChemistry.getDomainObj());
+			SurfaceChemistry doSurfaceChemistry = null;
+			if (surfaceChemistry.getId() == null) {
+				doSurfaceChemistry = new SurfaceChemistry();
+			} else {
+				// find domain object with the same ID and add the updated
+				// domain object
+				for (SurfaceChemistry doChem : doChemList) {
+					if (doChem.getId().equals(
+							new Long(surfaceChemistry.getId()))) {
+						doSurfaceChemistry = doChem;
+						break;
+					}
+				}
+			}
+			surfaceChemistry.updateDomainObj(doSurfaceChemistry);
+			surface.getSurfaceChemistryCollection().add(doSurfaceChemistry);
 		}
 	}
 
