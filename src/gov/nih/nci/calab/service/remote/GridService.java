@@ -30,32 +30,6 @@ public class GridService {
 	private static Logger logger = Logger.getLogger(GridService.class);
 
 	/**
-	 * Temp code to be replaced
-	 * 
-	 * @param indexServiceURL
-	 * @param domainModelName
-	 * @return
-	 * @throws Exception
-	 */
-	public static Map<String, GridNodeBean> discoverServicesTmp(
-			String indexServiceURL, String domainModelName) throws Exception {
-
-		Map<String, GridNodeBean> gridNodeMap = new TreeMap<String, GridNodeBean>();
-		GridNodeBean qaNode = new GridNodeBean(
-				"caNanoLab-QA",
-				"http://cananolab-qa.nci.nih.gov:8080/wsrf/services/cagrid/CaNanoLabSvc",
-				"http://cananolab-qa.nci.nih.gov/caNanoLabSDK/http/remoteService");
-		GridNodeBean devNode = new GridNodeBean(
-				"caNanoLab-DEV",
-				"http://cananolab-dev.nci.nih.gov:8080/wsrf/services/cagrid/CaNanoLabSvc",
-				"http://cananolab-dev.nci.nih.gov/caNanoLabSDK/http/remoteService");
-
-		gridNodeMap.put("caNanoLab-QA", qaNode);
-		gridNodeMap.put("caNanoLab-DEV", devNode);
-		return gridNodeMap;
-	}
-
-	/**
 	 * Query the grid index service by domain model name and return a map of
 	 * GridNodeBeans with keys being the hostnames.
 	 * 
@@ -68,9 +42,18 @@ public class GridService {
 			String indexServiceURL, String domainModelName) throws Exception {
 
 		Map<String, GridNodeBean> gridNodeMap = new TreeMap<String, GridNodeBean>();
-		DiscoveryClient discoveryClient = new DiscoveryClient(indexServiceURL);
-		EndpointReferenceType[] services = discoveryClient
-				.discoverDataServicesByDomainModel(domainModelName);
+		EndpointReferenceType[] services = null;
+		try {
+			DiscoveryClient discoveryClient = new DiscoveryClient(
+					indexServiceURL);
+			services = discoveryClient
+					.discoverDataServicesByDomainModel(domainModelName);
+		} catch (Exception e) {
+			logger
+					.error("Error in discovering caNanoLab nodes from the index server:"
+							+ e);
+			throw e;
+		}
 		if (services != null) {
 			for (EndpointReferenceType service : services) {
 				String address = service.getAddress().toString();
