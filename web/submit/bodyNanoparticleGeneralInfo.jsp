@@ -175,7 +175,7 @@
 									The Final Characterization Report(s) for this particle is
 									<c:choose>
 										<c:when test="${empty particleReports}">																		
-								currently not availabe.
+								currently not available.
 					</c:when>
 										<c:otherwise>
 											<c:forEach var="aReport" items="${particleReports}">
