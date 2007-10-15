@@ -18,7 +18,7 @@
 					<c:when test="${!empty allOtherParticleNames}">
 						<tr>
 							<td class="leftLabel" valign="top" width="30%">
-								<strong>Copy to Other ${param.particleSource} Particles</strong>
+								<strong>Copy to Other ${particleSource} Particles</strong>
 							</td>
 							<td class="label">
 								<html:select property="otherParticles" size="6" multiple="true">
