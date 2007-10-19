@@ -40,6 +40,13 @@ the sharing of these characterizations in a secure fashion.
 ================================================================
                            2.0 Features
 ================================================================
+	======================
+    1.2.1 Functionalities:
+    ======================
+	* No new functionalities.  Provided support for working against
+	  a MySQL 5.0.x database and support for migrating from release 1.2
+	  in Oracle.
+	  
     =====================
     1.2 Functionalities:
     =====================
