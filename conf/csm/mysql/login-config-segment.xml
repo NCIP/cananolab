@@ -7,7 +7,7 @@
                              com.mysql.jdbc.Driver
 			</module-option>
 			<module-option name="url">
-                             jdbc:mysql://@@DBSERVER@:@PORT@/@DBNAME@
+                             jdbc:mysql://@DBSERVER@:@PORT@/@DBNAME@
 			</module-option>
 			<module-option name="user">@DBUSER@</module-option>
 			<module-option name="passwd">@DBPASSWORD@</module-option>
@@ -27,7 +27,7 @@
                              com.mysql.jdbc.Driver
 			</module-option>
 			<module-option name="url">
-                             jdbc:mysql://@@DBSERVER@:@PORT@/@DBNAME@
+                             jdbc:mysql://@DBSERVER@:@PORT@/@DBNAME@
 			</module-option>
 			<module-option name="user">@DBUSER@</module-option>
 			<module-option name="passwd">@DBPASSWORD@</module-option>
