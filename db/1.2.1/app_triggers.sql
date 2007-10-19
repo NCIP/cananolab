@@ -1,23 +1,24 @@
 use cananolab;
 
-drop trigger SET_HISTORY_NANOPARTICLE_CHAR;
-drop trigger SET_HISTORY_DERIVED_BIODATA;
-drop trigger SET_HISTORY_DATUM;
-drop trigger SET_HISTORY_CHARACTERIZATION;
-drop trigger SET_HISTORY_LAB_FILE;
-drop trigger SET_HIST_COMPOSING_ELEMENT;
-drop trigger SET_HISTORY_SURFACE;
-drop trigger SET_HISTORY_SURFACE_CHEMISTRY;
-drop trigger SET_HISTORY_SURFACE_GROUP;
-drop trigger SET_HISTORY_SOLUBILITY;
-drop trigger SET_HISTORY_SHAPE;
-drop trigger SET_HISTORY_MORPHOLOGY;
-drop trigger SET_HISTORY_NANOTUBE;
-drop trigger SET_HISTORY_POLYMER;
-drop trigger SET_HISTORY_FULLERENE;
-drop trigger SET_HISTORY_EMULSION;
-drop trigger SET_HISTORY_DENDRIMER;
-drop trigger SET_HISTORY_CYTOTOXICITY;
+--only available after 5.0.32
+--drop trigger if exists SET_HISTORY_NANOPARTICLE_CHAR;
+--drop trigger if exists SET_HISTORY_DERIVED_BIODATA;
+--drop trigger if exists SET_HISTORY_DATUM;
+--drop trigger if exists SET_HISTORY_CHARACTERIZATION;
+--drop trigger if exists SET_HISTORY_LAB_FILE;
+--drop trigger if exists SET_HIST_COMPOSING_ELEMENT;
+--drop trigger if exists SET_HISTORY_SURFACE;
+--drop trigger if exists SET_HISTORY_SURFACE_CHEMISTRY;
+--drop trigger if exists SET_HISTORY_SURFACE_GROUP;
+--drop trigger if exists SET_HISTORY_SOLUBILITY;
+--drop trigger if exists SET_HISTORY_SHAPE;
+--drop trigger if exists SET_HISTORY_MORPHOLOGY;
+--drop trigger if exists SET_HISTORY_NANOTUBE;
+--drop trigger if exists SET_HISTORY_POLYMER;
+--drop trigger if exists SET_HISTORY_FULLERENE;
+--drop trigger if exists SET_HISTORY_EMULSION;
+--drop trigger if exists SET_HISTORY_DENDRIMER;
+--drop trigger if exists SET_HISTORY_CYTOTOXICITY;
 
 delimiter $
 CREATE TRIGGER SET_HISTORY_NANOPARTICLE_CHAR
