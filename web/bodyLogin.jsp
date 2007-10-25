@@ -1,7 +1,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
-<html:form action="/login" focus="loginID">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 	<table summary="" cellpadding="0" cellspacing="0" border="0"
 		height="100%">
 		<tr>
@@ -17,13 +17,38 @@
 					<tr>
 						<td class="welcomeContent" valign="top">
 							Welcome to the
-							<strong>cancer Nanotechnology Laboratory (caNanoLab)</strong> 
-							portal. caNanoLab is a data sharing portal designed for 
-							laboratories performing nanoparticle assays. caNanoLab provides 
-							support for the annotation of nanoparticles with 
-							characterizations resulting from physical and in vitro 
-							nanoparticle assays and the sharing of these characterizations in 
-							a secure fashion.&nbsp; 
+							<strong>cancer Nanotechnology Laboratory (caNanoLab)</strong>
+							portal. caNanoLab is a data sharing portal designed for
+							laboratories performing nanoparticle assays. caNanoLab provides
+							support for the annotation of nanoparticles with
+							characterizations resulting from physical and in vitro
+							nanoparticle assays and the sharing of these characterizations in
+							a secure fashion.
+							<br><br>
+					<div id="publicLinks">
+						<ul>
+							<li>
+							<c:url var="protocolURL" value="searchProtocol.do">
+								<c:param name="dispatch">setup</c:param>
+							</c:url>
+							<h4><a href="${protocolURL}">Protocols</a></h4>
+							<h5>Browse public protocols</h5>
+							</li>
+							<li>
+							<c:url var="charURL" value="searchNanoparticle.do">
+								<c:param name="dispatch">setup</c:param>
+							</c:url>
+							<h4><a href="${charURL}">Nanoparticles</a></h4>
+							<h5>Browse public nanoparticles</h5>
+							</li>
+							<li>
+							<c:url var="reportURL" value="searchReport.do">
+								<c:param name="dispatch">setup</c:param>
+							</c:url>
+							<h4><a href="${reportURL}">Reports</a></h4>
+							<h5>Browse public reports</h5><br>
+							</li>
+						</ul></div>
 						</td>
 					</tr>
 				</table>
@@ -35,6 +60,7 @@
 			<td valign="top">
 
 				<!-- sidebar begins -->
+				<html:form action="/login" focus="loginID">
 				<table summary="" cellpadding="0" cellspacing="0" border="0"
 					height="100%">
 
@@ -72,8 +98,7 @@
 														PASSWORD
 													</label>
 												</td>
-												<td class="formFieldLogin">
-													<html:password property="password" size="14" />
+												<td class="formFieldLogin"><html:password property="password" size="14" />
 												</td>
 											</tr>
 											<tr>
@@ -148,10 +173,11 @@
 						</td>
 					</tr>
 					<tr height="100%">
-						<td valign="top" height="100%"></td>
+						<td valign="top" height="100%"><br></td>
 					</tr>
 				</table>
+				</html:form>
 			</td>
 		</tr>
 	</table>
-</html:form>
+
