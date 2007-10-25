@@ -25,6 +25,7 @@ import gov.nih.nci.security.dao.RoleSearchCriteria;
 import gov.nih.nci.security.dao.SearchCriteria;
 import gov.nih.nci.security.dao.UserSearchCriteria;
 import gov.nih.nci.security.exceptions.CSException;
+import gov.nih.nci.calab.service.remote.*;
 
 import java.sql.Connection;
 import java.sql.Statement;
@@ -153,8 +154,24 @@ public class UserService {
 	 */
 	public boolean checkReadPermission(UserBean user,
 			String protectionElementObjectId) throws CSException {
-		return checkPermission(user, protectionElementObjectId,
+		
+		if(user == null) {
+			RemoteQueryFacade rqf = new RemoteQueryFacadeImpl();
+			try {
+				if(rqf.isPublicId(protectionElementObjectId))
+					return true;
+				else
+					return false;
+					
+			} catch (Exception e) {
+					logger.error("error testing isPublicId for a nanoparticle: " + e);
+					throw new CSException("error in checkReadPermission:", e);
+			}
+			
+		} else {		
+			return checkPermission(user, protectionElementObjectId,
 				CaNanoLabConstants.CSM_READ_PRIVILEGE);
+		}
 	}
 
 	/**
@@ -557,12 +574,12 @@ public class UserService {
 	 */
 	public List<ParticleBean> getFilteredParticles(UserBean user,
 			List<ParticleBean> particles) throws Exception {
+		
 		List<ParticleBean> filteredParticles = new ArrayList<ParticleBean>();
 		for (ParticleBean particle : particles) {
 			boolean status = checkReadPermission(user, particle.getSampleName());
-			if (status) {
+			if (status)
 				filteredParticles.add(particle);
-			}
 		}
 		return filteredParticles;
 	}
@@ -577,12 +594,12 @@ public class UserService {
 	 */
 	public List<LabFileBean> getFilteredFiles(UserBean user,
 			List<LabFileBean> files) throws Exception {
+		
 		List<LabFileBean> filteredReports = new ArrayList<LabFileBean>();
 		for (LabFileBean file : files) {
 			boolean status = checkReadPermission(user, file.getId());
-			if (status) {
-				filteredReports.add(file);
-			}
+			if (status)
+					filteredReports.add(file);
 		}
 		return filteredReports;
 	}
