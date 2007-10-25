@@ -649,6 +649,25 @@ p,.p { /* for paragraphs */
 	line-height: 1.5em;
 }
 
+#publicLinks, ul { /* for the public links below the welcome content of the home page */
+	font-family: arial, helvetica, verdana, sans-serif;
+	font-size: 0.8em;
+	font-weight: bold;
+	padding-left: 0;
+	margin-left: 0.5em;
+	list-style: none;
+}
+
+#publicLinks h5 {
+	margin-top: 0.6em;
+	font-weight: normal;
+}
+
+#publicLinks h4 {
+	margin-bottom: 0;
+	padding-bottom: 0;
+}
+
 img.img { /* for images that need a border */
 	border: 1px solid #5c5c5c; /* constant: dark gray */
 }
