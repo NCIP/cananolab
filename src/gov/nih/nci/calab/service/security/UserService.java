@@ -59,6 +59,8 @@ public class UserService {
 	private UserProvisioningManager userManager = null;
 
 	private String applicationName = null;
+	
+	private RemoteQueryFacade remoteQueryFacade = null;
 
 	public UserService(String applicationName) throws CSException {
 		this.applicationName = applicationName;
@@ -70,6 +72,12 @@ public class UserService {
 				.getUserProvisioningManager(applicationName);
 	}
 
+	private RemoteQueryFacade getRemoteQueryFacade() {
+		if(this.remoteQueryFacade == null)
+			this.remoteQueryFacade = new RemoteQueryFacadeImpl();
+		return this.remoteQueryFacade;
+	}
+	
 	public UserBean getUserBean(String userLogin) {
 		User user = authorizationManager.getUser(userLogin);
 		return new UserBean(user); // or
@@ -156,7 +164,7 @@ public class UserService {
 			String protectionElementObjectId) throws CSException {
 		
 		if(user == null) {
-			RemoteQueryFacade rqf = new RemoteQueryFacadeImpl();
+			RemoteQueryFacade rqf = getRemoteQueryFacade();
 			try {
 				if(rqf.isPublicId(protectionElementObjectId))
 					return true;
