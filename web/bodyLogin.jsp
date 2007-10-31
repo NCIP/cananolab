@@ -32,21 +32,23 @@
 								<c:param name="dispatch">setup</c:param>
 							</c:url>
 							<h4><a href="${protocolURL}">Protocols</a></h4>
-							<h5>Browse public protocols</h5>
+							<h5>Provides access to publicly available nanotechnology protocols. Includes protocols for nanoparticle characterizations (physical, in vitro, in vivo), sample preparation, radio labeling, and safety.
+</h5>
 							</li>
 							<li>
 							<c:url var="charURL" value="searchNanoparticle.do">
 								<c:param name="dispatch">setup</c:param>
 							</c:url>
 							<h4><a href="${charURL}">Nanoparticles</a></h4>
-							<h5>Browse public nanoparticles</h5>
+							<h5>Provides access to publicly available nanoparticle characterization data.  Includes information on particle composition, function, and physical and in vitro characterizations.</h5>
 							</li>
 							<li>
 							<c:url var="reportURL" value="searchReport.do">
 								<c:param name="dispatch">setup</c:param>
 							</c:url>
 							<h4><a href="${reportURL}">Reports</a></h4>
-							<h5>Browse public reports</h5><br>
+							<h5>Provides access to publicly available reports detailing the results of nanoparticle characterization experiments.
+</h5>
 							</li>
 						</ul></div>
 						</td>
@@ -141,7 +143,7 @@
 										<br>
 										caNanoLab 1.2.1 contains the following features:
 										<br>
-										<ul>
+										<ul class="sidebarContentList">
 											<li>MySQL 5.0.x Database
 											</li>
 											<li>
@@ -169,11 +171,14 @@
 										<br>
 									</td>
 								</tr>
+								<tr height="100%">
+									<td>&nbsp;</td>
+								</tr>
 							</table>
 						</td>
 					</tr>
 					<tr height="100%">
-						<td valign="top" height="100%"><br></td>
+						<td style="background-color: #f4f4f5; border-left: 1px solid #cccccc;" >&nbsp;</td>
 					</tr>
 				</table>
 				</html:form>
