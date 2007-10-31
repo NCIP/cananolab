@@ -380,6 +380,8 @@ SIDEBAR BEGINS
 	border-right: 1px solid #cccccc; /* constant: medium gray */
 }
 
+
+
 .noTopBottomSidebarSection { /* for the individual sidebar sections */
 	background-color: #f4f4f5; /* constant: light gray */
 	font-family: verdana, arial, helvetica, sans-serif;
@@ -399,6 +401,16 @@ SIDEBAR BEGINS
 .sidebarContent { /* for the areas under the sidebar titles and requires text */
 	font-size: 1em;
 	padding: 0.8em;
+}
+
+.sidebarContentList {  /* for the list inside "WHAT'S NEW" on the Welcome Content */
+	list-style-type: disc;
+	font-weight: normal;
+	padding-left: 1em;
+}
+
+.sidebarContentList li {
+	padding-bottom: 0.5em;
 }
 
 .sidebarLogin { /* for the sidebar login cells */
@@ -647,6 +659,7 @@ p,.p { /* for paragraphs */
 	font-family: arial, helvetica, verdana, sans-serif;
 	font-size: 0.8em;
 	line-height: 1.5em;
+	padding-left: 0.2em;
 }
 
 #publicLinks, ul { /* for the public links below the welcome content of the home page */
