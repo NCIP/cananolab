@@ -143,7 +143,7 @@
 										<br>
 										caNanoLab 1.2.1 contains the following features:
 										<br>
-										<ul class="sidebarContentList">
+										<ul>
 											<li>MySQL 5.0.x Database
 											</li>
 											<li>
@@ -178,7 +178,7 @@
 						</td>
 					</tr>
 					<tr height="100%">
-						<td style="background-color: #f4f4f5; border-left: 1px solid #cccccc;" >&nbsp;</td>
+						<td class="loginMenuFill">&nbsp;</td>
 					</tr>
 				</table>
 				</html:form>
