@@ -167,6 +167,12 @@ td.subMenuFill { /* for the empty cell below the sub-menu items */
 	border-right: 1px solid #cccccc; /* constant: medium gray */
 }
 
+td.loginMenuFill {
+	background-color: #f4f4f5;
+	border-left: 1px solid #cccccc;
+	border-right: 1px solid #cccccc;
+}
+
 td.subMenuFooter { /* for the last row in the submenu left of the footer menu */
 	font-size: 0.6em;
 	font-weight: bold;
@@ -403,13 +409,14 @@ SIDEBAR BEGINS
 	padding: 0.8em;
 }
 
-.sidebarContentList {  /* for the list inside "WHAT'S NEW" on the Welcome Content */
+/* for the list inside "WHAT'S NEW" on the Welcome Content */
+.sidebarContent ul {
 	list-style-type: disc;
 	font-weight: normal;
 	padding-left: 1em;
 }
 
-.sidebarContentList li {
+.sidebarContent li {
 	padding-bottom: 0.5em;
 }
 
