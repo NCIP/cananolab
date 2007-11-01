@@ -29,8 +29,8 @@ public class Function implements java.io.Serializable {
 	 * 
 	 */
 	public Function() {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 
 	public String getActivationMethod() {

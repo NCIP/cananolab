@@ -15,8 +15,8 @@ public class Condition implements Serializable {
 	private Measurement value;
 
 	public Condition() {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 
 	public Long getId() {

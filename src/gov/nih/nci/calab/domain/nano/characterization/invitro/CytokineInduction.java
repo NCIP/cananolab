@@ -15,8 +15,8 @@ public class CytokineInduction extends ImmunoToxicity {
 	 * 
 	 */
 	public CytokineInduction() {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 	public String getImmunotoxiticyType() {
 		return IMMUNE_CELL_FUNCTION_IMMUNOTOXICITY_CHARACTERIZATION;

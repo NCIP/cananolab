@@ -14,8 +14,6 @@ public class Agent implements java.io.Serializable {
 	private Collection<AgentTarget> agentTargetCollection = new ArrayList<AgentTarget>();
 
 	public Agent() {
-		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public String getDescription() {

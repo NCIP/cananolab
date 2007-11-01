@@ -5,8 +5,6 @@ public class ComplexComposition extends ParticleComposition {
 
 	private static final long serialVersionUID = 1234567890L;
 	public ComplexComposition() {
-		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public String getName() {

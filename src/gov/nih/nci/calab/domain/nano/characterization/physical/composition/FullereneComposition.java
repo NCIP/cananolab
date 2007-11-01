@@ -9,8 +9,8 @@ public class FullereneComposition extends ParticleComposition {
 	private Integer numberOfCarbon;
 
 	public FullereneComposition() {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 
 	public Integer getNumberOfCarbon() {

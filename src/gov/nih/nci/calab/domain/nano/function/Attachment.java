@@ -12,8 +12,6 @@ public class Attachment extends Linkage {
 //	private Agent agent;
 
 	public Attachment() {
-		super();
-		// TODO Auto-generated constructor stub
 	}
 
 //	public Long getId() {

@@ -14,8 +14,8 @@ public class Solubility extends Characterization {
 	private Boolean isSoluble;
 
 	public Solubility() {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 
 	public String getName() {

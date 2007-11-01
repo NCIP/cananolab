@@ -21,8 +21,8 @@ public class Keyword implements Serializable{
 	 * 
 	 */
 	public Keyword() {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 
 	public Long getId() {

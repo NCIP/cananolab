@@ -8,8 +8,8 @@ public class UnclassifiedAgentTarget extends AgentTarget {
 	private String description;
 
 	public UnclassifiedAgentTarget() {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 
 	public String getDescription() {

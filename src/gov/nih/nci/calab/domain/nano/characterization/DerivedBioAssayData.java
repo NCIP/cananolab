@@ -31,8 +31,8 @@ public class DerivedBioAssayData extends LabFile implements Serializable {
 	 * 
 	 */
 	public DerivedBioAssayData() {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 
 	public Long getId() {

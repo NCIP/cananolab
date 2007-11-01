@@ -16,8 +16,6 @@ public class ComplementActivation extends ImmunoToxicity {
 	 * 
 	 */
 	public ComplementActivation() {
-		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public String getImmunotoxiticyType() {

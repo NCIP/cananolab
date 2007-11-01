@@ -6,8 +6,6 @@ public class CFU_GM extends ImmunoToxicity {
 	private static final long serialVersionUID = 1234567890L;
 
 	public CFU_GM() {
-		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public String getImmunotoxiticyType() {

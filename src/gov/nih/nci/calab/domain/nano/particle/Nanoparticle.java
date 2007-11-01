@@ -27,8 +27,8 @@ public class Nanoparticle extends Sample {
 	private Collection<AssociatedFile> associatedFileCollection = new HashSet<AssociatedFile>();
 	
 	public Nanoparticle() {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 
 	public String getClassification() {

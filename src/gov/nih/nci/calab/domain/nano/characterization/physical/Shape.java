@@ -14,8 +14,8 @@ public class Shape extends Characterization {
 	private Measurement minDimension;
 
 	public Shape() {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 
 	public Measurement getMaxDimension() {

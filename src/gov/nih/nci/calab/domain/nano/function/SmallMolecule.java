@@ -9,8 +9,8 @@ public class SmallMolecule extends Agent {
 	private String compoundName;
 
 	public SmallMolecule() {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 
 	public String getName() {

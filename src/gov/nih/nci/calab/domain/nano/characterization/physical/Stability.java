@@ -30,8 +30,8 @@ public class Stability extends Characterization {
 	 * 
 	 */
 	public Stability() {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 
 	public Measurement getLongTermStorage() {

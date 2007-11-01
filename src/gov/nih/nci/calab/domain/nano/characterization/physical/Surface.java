@@ -21,8 +21,8 @@ public class Surface extends Characterization {
 	private Collection<SurfaceChemistry> surfaceChemistryCollection = new ArrayList<SurfaceChemistry>();
 
 	public Surface() {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 
 	public String getClassification() {
