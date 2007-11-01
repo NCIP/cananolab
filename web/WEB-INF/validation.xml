@@ -23,15 +23,55 @@
 				<arg position="0" key="updatePasswordForm.newPassword" />
 				<var>
 					<var-name>test</var-name>
-					<var-value>((*this* != null) and (newPassword != password))</var-value>
+					<var-value>
+						((*this* != null) and (newPassword != password))
+					</var-value>
 				</var>
 			</field>
 			<field property="newPassword2" depends="validwhenmatch">
 				<arg position="0" key="updatePasswordForm.newPassword2" />
 				<var>
 					<var-name>test</var-name>
-					<var-value>((*this* != null) and (newPassword == newPassword2))</var-value>
+					<var-value>
+						((*this* != null) and (newPassword ==
+						newPassword2))
+					</var-value>
 				</var>
+			</field>
+		</form>
+		<form name="submitReportForm">
+			<field property="particleNames" page="2"
+				depends="required">
+				<arg position="0" key="submitReportForm.particleID"
+					bundle="report" />
+			</field>
+			<field property="file.type" page="2" depends="required">
+				<arg position="0" key="submitReportForm.reportType"
+					bundle="report" />
+			</field>
+			<field property="uploadedFile" page="2"
+				depends="required">
+				<arg position="0" key="submitReportForm.reportFile"
+					bundle="report" />
+			</field>
+			<field property="file.title" page="1" depends="required">
+				<arg position="0" key="submitReportForm.title"
+					bundle="report" />
+			</field>
+		</form>
+		<form name="submitProtocolForm">
+			<field property="protocolId" page="1" depends="required">
+				<arg position="0" key="submitProtocolForm.protocolName"
+					bundle="protocol" />
+			</field>
+			<field property="protocolType" page="1"
+				depends="required">
+				<arg position="0" key="submitProtocolForm.protocolType"
+					bundle="protocol" />
+			</field>
+			<field property="file.id" page="1" depends="required">
+				<arg position="0"
+					key="submitProtocolForm.protocolVersion" bundle="protocol" />
 			</field>
 		</form>
 	</formset>

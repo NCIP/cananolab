@@ -20,12 +20,15 @@ import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.common.FileService;
 import gov.nih.nci.calab.service.common.LookupService;
-import gov.nih.nci.calab.service.search.SearchNanoparticleService;
+import gov.nih.nci.calab.service.particle.SearchNanoparticleService;
+import gov.nih.nci.calab.service.particle.SubmitNanoparticleService;
 import gov.nih.nci.calab.service.security.UserService;
-import gov.nih.nci.calab.service.submit.SubmitNanoparticleService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
 import gov.nih.nci.calab.service.util.StringUtils;
+import gov.nih.nci.calab.ui.particle.InitParticleSetup;
+import gov.nih.nci.calab.ui.protocol.InitProtocolSetup;
+import gov.nih.nci.calab.ui.security.InitSecuritySetup;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -109,12 +112,12 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 								"The datum value for boolean type should be 'True'/'False' or 'Yes'/'No'.");
 					}
 				} else {
-					if (!StringUtils.isDouble(datumBean.getValue()) && !StringUtils.isInteger(datumBean.getValue())) {
-						throw new RuntimeException("The datum value should be a number.");
+					if (!StringUtils.isDouble(datumBean.getValue())
+							&& !StringUtils.isInteger(datumBean.getValue())) {
+						throw new RuntimeException(
+								"The datum value should be a number.");
 					}
 				}
-				
-				
 
 				// validate derived data has unique name, statistics type and
 				// category
@@ -160,7 +163,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		request.getSession().setAttribute("newInstrumentCreated", "true");
 		request.getSession().setAttribute("newCharacterizationFileTypeCreated",
 				"true");
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
+		InitParticleSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
 	}
 
@@ -174,13 +177,14 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		String[] otherParticles = (String[]) theForm.get("otherParticles");
 		Boolean copyData = (Boolean) theForm.get("copyData");
 		CharacterizationBean[] charBeans = new CharacterizationBean[otherParticles.length];
-		SearchNanoparticleService searchService=new SearchNanoparticleService();
+		SearchNanoparticleService searchService = new SearchNanoparticleService();
 		int i = 0;
 		for (String particleName : otherParticles) {
 			CharacterizationBean newCharBean = charBean.copy(copyData
 					.booleanValue());
 			newCharBean.setParticleName(particleName);
-			Nanoparticle otherParticle=searchService.getParticleBy(particleName);
+			Nanoparticle otherParticle = searchService
+					.getParticleBy(particleName);
 			newCharBean.setParticleType(otherParticle.getType());
 			// reset view title
 			String timeStamp = StringUtils.convertDateToString(new Date(),
@@ -243,22 +247,22 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		String particleSource = theForm.getString("particleSource");
 		String charName = theForm.getString("charName");
 		InitSessionSetup.getInstance().setApplicationOwner(session);
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
+		InitParticleSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
-		InitSessionSetup.getInstance().setAllInstruments(session);
-		InitSessionSetup.getInstance().setAllDerivedDataFileTypes(session);
-		InitSessionSetup.getInstance().setAllPhysicalDropdowns(session);
-		InitSessionSetup.getInstance().setAllInvitroDropdowns(session);
-		InitSessionSetup.getInstance().setAllCharacterizationMeasureUnitsTypes(
+		InitParticleSetup.getInstance().setAllInstruments(session);
+		InitParticleSetup.getInstance().setAllDerivedDataFileTypes(session);
+		InitParticleSetup.getInstance().setAllPhysicalDropdowns(session);
+		InitParticleSetup.getInstance().setAllInvitroDropdowns(session);
+		InitParticleSetup.getInstance().setAllCharacterizationMeasureUnitsTypes(
 				session, charName);
 		// TODO If there are more types of charactizations, add their
 		// corresponding
 		// protocol type here.
 		if (submitType.equalsIgnoreCase("physical"))
-			InitSessionSetup.getInstance().setAllProtocolNameVersionsByType(
+			InitProtocolSetup.getInstance().setAllProtocolNameVersionsByType(
 					session, "Physical assay");
 		else
-			InitSessionSetup.getInstance().setAllProtocolNameVersionsByType(
+			InitProtocolSetup.getInstance().setAllProtocolNameVersionsByType(
 					session, "In Vitro assay");
 
 		// set up other particle names from the same source
@@ -269,8 +273,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 				particleSource, particleName, user);
 		session.setAttribute("allOtherParticleNames", allOtherParticleNames);
 
-		InitSessionSetup.getInstance().setDerivedDatumNames(session, charName);
-		InitSessionSetup.getInstance().setAllCharacterizationDropdowns(session);
+		InitParticleSetup.getInstance().setDerivedDatumNames(session, charName);
+		InitParticleSetup.getInstance().setAllCharacterizationDropdowns(session);
 	}
 
 	/**
@@ -497,7 +501,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		achar.setDerivedBioAssayDataList(tables);
 		String particleName = theForm.getString("particleName");
 		String particleType = theForm.getString("particleType");
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
+		InitParticleSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
 		return input(mapping, form, request, response);
 	}
@@ -524,7 +528,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		achar.setDerivedBioAssayDataList(tables);
 		String particleName = theForm.getString("particleName");
 		String particleType = theForm.getString("particleType");
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
+		InitParticleSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
 		return input(mapping, form, request, response);
 	}
@@ -550,7 +554,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		derivedBioAssayDataBean.setDatumList(dataList);
 		String particleName = theForm.getString("particleName");
 		String particleType = theForm.getString("particleType");
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
+		InitParticleSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
 		return input(mapping, form, request, response);
 	}
@@ -579,7 +583,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		derivedBioAssayDataBean.setDatumList(dataList);
 		String particleName = theForm.getString("particleName");
 		String particleType = theForm.getString("particleType");
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
+		InitParticleSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
 		return input(mapping, form, request, response);
 		// return mapping.getInputForward(); this gives an
@@ -609,7 +613,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		// signal the session that characterization has been changed
 		request.getSession().setAttribute("newCharacterizationCreated", "true");
 
-		InitSessionSetup.getInstance().setSideParticleMenu(request,
+		InitParticleSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.delete.characterization");
@@ -686,5 +690,10 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 
 	public boolean loginRequired() {
 		return true;
+	}
+
+	public boolean canUserExecute(UserBean user) throws Exception {
+		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
+				CaNanoLabConstants.CSM_PG_PARTICLE);
 	}
 }

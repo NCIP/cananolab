@@ -25,17 +25,17 @@
 		<action name="loginForm" path="/login" scope="request" type="gov.nih.nci.calab.ui.security.LoginAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.login" path="/index.jsp" type="java.lang.Exception" />
 			<forward name="success" path="calab.welcome" />
-			<forward name="input" path="calab.index" />
+			<forward name="input" path="calab.login" />
 			<forward name="changePassword" path="calab.password" />
 		</action>
 		<action name="updatePasswordForm" path="/updatePassword" scope="request" type="gov.nih.nci.calab.ui.security.UpdatePasswordAction" input="input">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.password" path="calab.password" type="java.lang.Exception" />
-			<forward name="success" path="calab.index" />
+			<forward name="success" path="calab.login" />
 			<forward name="input" path="calab.password" />
 		</action>
 		<action path="/logout" scope="request" type="gov.nih.nci.calab.ui.security.LogoutAction">
 			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.logout" path="home.error" type="java.lang.Exception" />
-			<forward name="success" path="calab.index" />
+			<forward name="success" path="calab.login" />
 		</action>
 	</action-mappings>
 
@@ -44,18 +44,18 @@
 		<set-property property="processorClass" value="gov.nih.nci.calab.ui.core.CustomRequestProcessor" />
 	</controller>
 	<message-resources parameter="gov.nih.nci.calab.resources.application" null="false" />
-	<message-resources key="workflow" parameter="gov.nih.nci.calab.resources.workflow" null="false" />
-	<message-resources key="inventory" parameter="gov.nih.nci.calab.resources.inventory" null="false" />
-	<message-resources key="search" parameter="gov.nih.nci.calab.resources.search" null="false" />
-	<message-resources key="submit" parameter="gov.nih.nci.calab.resources.submit" null="false" />
+	<message-resources key="sample" parameter="gov.nih.nci.calab.resources.sample" null="false" />
+	<message-resources key="protocol" parameter="gov.nih.nci.calab.resources.protocol" null="false" />
+	<message-resources key="particle" parameter="gov.nih.nci.calab.resources.particle" null="false" />
+	<message-resources key="report" parameter="gov.nih.nci.calab.resources.report" null="false" />
 
 	<plug-in className="org.apache.struts.tiles.TilesPlugin">
 		<set-property property="definitions-config"
 			value="/WEB-INF/tiles-defs.xml,       												   
-			       /WEB-INF/tiles-defs-workflow.xml,
-                   /WEB-INF/tiles-defs-inventory.xml,
-                   /WEB-INF/tiles-defs-search.xml,
-                   /WEB-INF/tiles-defs-submit.xml" />
+                   /WEB-INF/tiles-defs-sample.xml,
+                   /WEB-INF/tiles-defs-protocol.xml,
+                   /WEB-INF/tiles-defs-particle.xml,
+                   /WEB-INF/tiles-defs-report.xml" />
 		<set-property property="definitions-debug" value="2" />
 		<set-property property="definitions-parser-details" value="2" />
 		<set-property property="definitions-parser-validate" value="true" />
@@ -64,10 +64,9 @@
 		<set-property property="stopOnFirstError" value="false" />
 		<set-property property="pathnames"
 			value="/WEB-INF/validation.xml,
-			      /WEB-INF/validation-workflow.xml , 
-			      /WEB-INF/validation-inventory.xml ,             
-                  /WEB-INF/validator-rules.xml,
-                  /WEB-INF/validation-submit.xml" />
+			      /WEB-INF/validation-sample.xml, 
+			      /WEB-INF/validation-particle.xml,             
+                  /WEB-INF/validator-rules.xml" />
 	</plug-in>
 	<plug-in className="gov.nih.nci.calab.ui.core.CustomPlugIn"/>	
 </struts-config>

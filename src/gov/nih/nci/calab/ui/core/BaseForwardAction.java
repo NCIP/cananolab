@@ -10,13 +10,17 @@
 package gov.nih.nci.calab.ui.core;
 
 /**
- * This class calls the Struts ForwardAction to forward to a page, aslo 
- * extends AbstractBaseAction to inherit the user authentication features.
- *  
+ * This class calls the Struts ForwardAction to forward to a page, aslo extends
+ * AbstractBaseAction to inherit the user authentication features.
+ * 
  * @author pansu
  */
 
-/* CVS $Id: BaseForwardAction.java,v 1.4 2007-10-25 20:56:51 cais Exp $ */
+/* CVS $Id: BaseForwardAction.java,v 1.5 2007-11-01 17:46:14 pansu Exp $ */
+
+import gov.nih.nci.calab.dto.common.UserBean;
+import gov.nih.nci.calab.service.security.UserService;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,15 +35,32 @@ public class BaseForwardAction extends AbstractBaseAction {
 	public ActionForward executeTask(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		HttpSession session = request.getSession();
 		ForwardAction forwardAction = new ForwardAction();
+		UserService userService = new UserService(
+				CaNanoLabConstants.CSM_APP_NAME);
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+
+		boolean createProtocol = userService.checkCreatePermission(user,
+				CaNanoLabConstants.CSM_PG_PROTOCOL);
+		session.setAttribute("canCreateProtocol", createProtocol);
+		boolean createReport = userService.checkCreatePermission(user,
+				CaNanoLabConstants.CSM_PG_REPORT);
+		session.setAttribute("canCreateReport", createReport);
+		boolean createParticle = userService.checkCreatePermission(user,
+				CaNanoLabConstants.CSM_PG_PARTICLE);
+		session.setAttribute("canCreateNanoparticle", createParticle);
+		boolean createSample = userService.checkCreatePermission(user,
+				CaNanoLabConstants.CSM_PG_SAMPLE);
+		session.setAttribute("canCreateSample", createSample);
+
 		return forwardAction.execute(mapping, form, request, response);
 	}
 
 	public boolean loginRequired() {
-		//return true;
 		return false;
 	}
-	
+
 	public boolean canUserExecute(HttpSession session) {
 		return true;
 	}

@@ -4,6 +4,6 @@
 	<tiles:insert definition="calab.welcome" />
 </logic:present>
 <logic:notPresent name="user">
-	<tiles:insert definition="calab.index" />
+	<tiles:insert definition="calab.login" />
 </logic:notPresent>
 
