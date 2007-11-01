@@ -1,5 +1,8 @@
 package gov.nih.nci.calab.ui.core;
 
+import gov.nih.nci.calab.ui.sample.InitSampleSetup;
+import gov.nih.nci.calab.ui.security.InitSecuritySetup;
+
 import javax.servlet.ServletException;
 
 import org.apache.log4j.Logger;
@@ -22,9 +25,9 @@ public class CustomPlugIn implements PlugIn {
 		System.out.println("Entering CustomPlugIn.init()");
 		// set all sample types and create default visible groups in CSM
 		try {
-			InitSessionSetup.getInstance().setAllSampleTypes(
+			InitSampleSetup.getInstance().setAllSampleTypes(
 					actionServlet.getServletContext());
-			InitSessionSetup.getInstance().createDefaultCSMGroups();
+			InitSecuritySetup.getInstance().createDefaultCSMGroups();
 		} catch (Exception e) {
 			logger.error("Servlet initialization error", e);
 		}

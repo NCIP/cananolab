@@ -1,0 +1,740 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+<struts-config>
+	<form-beans>
+		<form-bean name="nanoparticleGeneralInfoForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
+			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="particleName" type="java.lang.String" />
+			<form-property name="particleSource"
+				type="java.lang.String" />
+			<form-property name="keywords" type="java.lang.String" />
+			<form-property name="visibilities"
+				type="java.lang.String[]" />
+		</form-bean>
+		<form-bean name="nanoparticleCompositionForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
+			<form-property name="particleName" type="java.lang.String" />
+			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="dendrimer"
+				type="gov.nih.nci.calab.dto.characterization.composition.DendrimerBean" />
+			<form-property name="liposome"
+				type="gov.nih.nci.calab.dto.characterization.composition.LiposomeBean" />
+			<form-property name="carbonNanotube"
+				type="gov.nih.nci.calab.dto.characterization.composition.CarbonNanotubeBean" />
+			<form-property name="fullerene"
+				type="gov.nih.nci.calab.dto.characterization.composition.FullereneBean" />
+			<form-property name="polymer"
+				type="gov.nih.nci.calab.dto.characterization.composition.PolymerBean" />
+			<form-property name="quantumDot"
+				type="gov.nih.nci.calab.dto.characterization.composition.QuantumDotBean" />
+			<form-property name="emulsion"
+				type="gov.nih.nci.calab.dto.characterization.composition.EmulsionBean" />
+			<form-property name="metalParticle"
+				type="gov.nih.nci.calab.dto.characterization.composition.MetalParticleBean" />
+			<form-property name="complexParticle"
+				type="gov.nih.nci.calab.dto.characterization.composition.ComplexParticleBean" />
+			<form-property name="viewTitle" type="java.lang.String" />
+			<form-property name="description" type="java.lang.String" />
+			<form-property name="characterizationSource"
+				type="java.lang.String" />
+			<form-property name="characterizationId"
+				type="java.lang.String" />
+		</form-bean>
+		<form-bean name="nanoparticleCharacterizationForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
+			<form-property name="particleName" type="java.lang.String" />
+			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="particleSource"
+				type="java.lang.String" />
+			<form-property name="charName" type="java.lang.String" />
+			<form-property name="otherParticles"
+				type="java.lang.String[]" />
+			<form-property name="copyData" type="java.lang.Boolean"
+				initial="false" />
+			<form-property name="characterizationId"
+				type="java.lang.String" />
+			<form-property name="achar"
+				type="gov.nih.nci.calab.dto.characterization.CharacterizationBean" />
+			<form-property name="surface"
+				type="gov.nih.nci.calab.dto.characterization.physical.SurfaceBean" />
+			<form-property name="morphology"
+				type="gov.nih.nci.calab.dto.characterization.physical.MorphologyBean" />
+			<form-property name="shape"
+				type="gov.nih.nci.calab.dto.characterization.physical.ShapeBean" />
+			<form-property name="solubility"
+				type="gov.nih.nci.calab.dto.characterization.physical.SolubilityBean" />
+			<form-property name="cytotoxicity"
+				type="gov.nih.nci.calab.dto.characterization.invitro.CytotoxicityBean" />
+		</form-bean>
+		<form-bean name="loadDerivedBioAssayDataForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
+			<form-property name="fileNumber" type="java.lang.Integer" />
+			<form-property name="uploadedFile"
+				type="org.apache.struts.upload.FormFile" />
+			<form-property name="file"
+				type="gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean" />
+			<form-property name="forwardPage" type="java.lang.String" />
+		</form-bean>
+		<form-bean name="nanoparticleFunctionForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
+			<form-property name="particleName" type="java.lang.String" />
+			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="function"
+				type="gov.nih.nci.calab.dto.function.FunctionBean" />
+			<form-property name="functionId" type="java.lang.String" />
+		</form-bean>
+		<form-bean name="characterizationMultiDeletionForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="particleName" type="java.lang.String" />
+			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="charIds" type="java.lang.String[]" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
+		</form-bean>
+		<form-bean name="searchNanoparticleForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="particleSource"
+				type="java.lang.String" />
+			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="functionTypes"
+				type="java.lang.String[]" />
+			<form-property name="characterizationType"
+				type="java.lang.String" />
+			<form-property name="characterizations"
+				type="java.lang.String[]" />
+			<form-property name="keywords" type="java.lang.String" />
+			<form-property name="keywordType" type="java.lang.String"
+				initial="nanoparticle" />
+			<form-property name="summaries" type="java.lang.String" />
+			<form-property name="summaryType" type="java.lang.String"
+				initial="characterization" />
+		</form-bean>
+		<form-bean name="searchNanoparticleAdvancedForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="functionTypes"
+				type="java.lang.String[]" />
+			<form-property name="size1"
+				type="gov.nih.nci.calab.dto.common.SearchableBean" />
+			<form-property name="size2"
+				type="gov.nih.nci.calab.dto.common.SearchableBean" />
+			<form-property name="molecularWeight"
+				type="gov.nih.nci.calab.dto.common.SearchableBean" />
+			<form-property name="cellViability"
+				type="gov.nih.nci.calab.dto.common.SearchableBean" />
+		</form-bean>
+		<form-bean name="remoteSearchNanoparticleForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="functionTypes"
+				type="java.lang.String[]" />
+			<form-property name="characterizationType"
+				type="java.lang.String" />
+			<form-property name="characterizations"
+				type="java.lang.String[]" />
+			<form-property name="gridNodes" type="java.lang.String[]" />
+		</form-bean>
+		<form-bean name="remoteNanoparticleGeneralInfoForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
+			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="particleName" type="java.lang.String" />
+		</form-bean>
+	</form-beans>
+	<global-forwards>
+		<forward name="remoteComposition"
+			path="remoteNanoparticleComposition.do" />
+		<forward name="remoteSearchMessage"
+			path="particle.remote.message" />
+		<forward name="function" path="nanoparticleFunction.do?page=0" />
+		<forward name="loadFile"
+			path="/loadFile.do?dispatch=setupView&amp;page=0" />
+		<forward name="deleteConfirmed" path="particle.message" />
+	</global-forwards>
+	<action-mappings>
+		<action path="/manageParticle"
+			type="gov.nih.nci.calab.ui.core.BaseForwardAction"
+			parameter="particle.managenanoparticle" scope="request" />
+		<action name="nanoparticleGeneralInfoForm" parameter="dispatch"
+			path="/nanoparticleGeneralInfo"
+			type="gov.nih.nci.calab.ui.particle.NanoparticleGeneralInfoAction"
+			input="input" scope="request">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="submit" key="error.nanoparticle.generalInfo"
+				path="particle.createnanoparticle" type="java.lang.Exception" />
+			<forward name="success" path="particle.message" />
+			<forward name="view" path="particle.generalinfo.view" />
+			<forward name="viewDisclaimer"
+				path="particle.viewParticleDisclaimer" />
+			<forward name="update" path="particle.generalinfo.update" />
+			<forward name="input" path="particle.createnanoparticle" />
+		</action>
+		<action name="nanoparticleCompositionForm" parameter="dispatch"
+			path="/composition"
+			type="gov.nih.nci.calab.ui.particle.NanoparticleCompositionAction"
+			input="input">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="submit" key="error.addParticleComposition"
+				path="particle.addparticle.composition" type="java.lang.Exception" />
+			<forward name="success" path="particle.action.message" />
+			<forward name="input"
+				path="/composition.do?dispatch=input&amp;page=0" />
+			<forward name="setup" path="particle.addparticle.composition" />
+		</action>
+		<action name="nanoparticleCharacterizationForm"
+			parameter="dispatch" path="/size"
+			type="gov.nih.nci.calab.ui.particle.NanoparticleSizeAction"
+			input="input">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="submit" key="error.addParticleSize"
+				path="particle.addparticle.size" type="java.lang.Exception" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				key="error.download.file" path="home.error"
+				type="gov.nih.nci.calab.exception.CalabException" />
+			<forward name="success" path="particle.action.message" />
+			<forward name="input"
+				path="/size.do?dispatch=input&amp;page=0" />
+			<forward name="setup" path="particle.addparticle.size" />
+		</action>
+		<action name="nanoparticleCharacterizationForm"
+			parameter="dispatch" path="/surface"
+			type="gov.nih.nci.calab.ui.particle.NanoparticleSurfaceAction"
+			input="input">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="submit" key="error.addParticleSurface"
+				path="particle.addparticle.surface" type="java.lang.Exception" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				key="error.download.file" path="home.error"
+				type="gov.nih.nci.calab.exception.CalabException" />
+			<forward name="success" path="particle.action.message" />
+			<forward name="input"
+				path="/surface.do?dispatch=input&amp;page=0" />
+			<forward name="setup" path="particle.addparticle.surface" />
+		</action>
+		<action name="nanoparticleCharacterizationForm"
+			parameter="dispatch" path="/molecularWeight"
+			type="gov.nih.nci.calab.ui.particle.NanoparticleMolecularWeightAction"
+			input="input">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="submit" key="error.addParticleMolecularWeight"
+				path="particle.addparticle.molecularweight"
+				type="java.lang.Exception" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				key="error.download.file" path="home.error"
+				type="gov.nih.nci.calab.exception.CalabException" />
+			<forward name="success" path="particle.action.message" />
+			<forward name="input"
+				path="/molecularWeight.do?dispatch=input&amp;page=0" />
+			<forward name="setup"
+				path="particle.addparticle.molecularweight" />
+		</action>
+		<action name="nanoparticleCharacterizationForm"
+			parameter="dispatch" path="/morphology"
+			type="gov.nih.nci.calab.ui.particle.NanoparticleMorphologyAction"
+			input="input">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="submit" key="error.addParticleMorphology"
+				path="particle.addparticle.morphology" type="java.lang.Exception" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				key="error.download.file" path="home.error"
+				type="gov.nih.nci.calab.exception.CalabException" />
+			<forward name="success" path="particle.action.message" />
+			<forward name="input"
+				path="/morphology.do?dispatch=input&amp;page=0" />
+			<forward name="setup" path="particle.addparticle.morphology" />
+		</action>
+		<action name="nanoparticleCharacterizationForm"
+			parameter="dispatch" path="/shape"
+			type="gov.nih.nci.calab.ui.particle.NanoparticleShapeAction"
+			input="input">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="submit" key="error.addParticleShape"
+				path="particle.addparticle.shape" type="java.lang.Exception" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				key="error.download.file" path="home.error"
+				type="gov.nih.nci.calab.exception.CalabException" />
+			<forward name="success" path="particle.action.message" />
+			<forward name="input"
+				path="/shape.do?dispatch=input&amp;page=0" />
+			<forward name="setup" path="particle.addparticle.shape" />
+		</action>
+		<action name="nanoparticleCharacterizationForm"
+			parameter="dispatch" path="/purity"
+			type="gov.nih.nci.calab.ui.particle.NanoparticlePurityAction"
+			input="input">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="submit" key="error.addParticlePurity"
+				path="particle.addparticle.purity" type="java.lang.Exception" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				key="error.download.file" path="home.error"
+				type="gov.nih.nci.calab.exception.CalabException" />
+			<forward name="success" path="particle.action.message" />
+			<forward name="input"
+				path="/purity.do?dispatch=input&amp;page=0" />
+			<forward name="setup" path="particle.addparticle.purity" />
+		</action>
+		<action name="nanoparticleCharacterizationForm"
+			parameter="dispatch" path="/solubility"
+			type="gov.nih.nci.calab.ui.particle.NanoparticleSolubilityAction"
+			input="input">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="submit" key="error.addParticleSolubility"
+				path="particle.addparticle.solubility" type="java.lang.Exception" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				key="error.download.file" path="home.error"
+				type="gov.nih.nci.calab.exception.CalabException" />
+			<forward name="success" path="particle.action.message" />
+			<forward name="input"
+				path="/solubility.do?dispatch=input&amp;page=0" />
+			<forward name="setup" path="particle.addparticle.solubility" />
+		</action>
+		<action name="nanoparticleCharacterizationForm"
+			parameter="dispatch" path="/hemolysis"
+			type="gov.nih.nci.calab.ui.particle.InvitroHemolysisAction"
+			input="input">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="submit" key="error.addInvitroHemolysis"
+				path="particle.addimmunotoxicity.hemolysis"
+				type="java.lang.Exception" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				key="error.download.file" path="home.error"
+				type="gov.nih.nci.calab.exception.CalabException" />
+			<forward name="success" path="particle.action.message" />
+			<forward name="input"
+				path="/hemolysis.do?dispatch=input&amp;page=0" />
+			<forward name="setup"
+				path="particle.addimmunotoxicity.hemolysis" />
+		</action>
+		<action name="nanoparticleCharacterizationForm"
+			parameter="dispatch" path="/plateletAggregation"
+			type="gov.nih.nci.calab.ui.particle.InvitroPlateletAggregationAction"
+			input="input">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="submit" key="error.addInvitroPlateletAggregation"
+				path="particle.addimmunotoxicity.plateletaggregation"
+				type="java.lang.Exception" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				key="error.download.file" path="home.error"
+				type="gov.nih.nci.calab.exception.CalabException" />
+			<forward name="success" path="particle.action.message" />
+			<forward name="input"
+				path="/plateletAggregation.do?dispatch=input&amp;page=0" />
+			<forward name="setup"
+				path="particle.addimmunotoxicity.plateletaggregation" />
+		</action>
+		<action name="nanoparticleCharacterizationForm"
+			parameter="dispatch" path="/coagulation"
+			type="gov.nih.nci.calab.ui.particle.InvitroCoagulationAction"
+			input="input">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="submit" key="error.addInvitroCoagulation"
+				path="particle.addimmunotoxicity.coagulation"
+				type="java.lang.Exception" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				key="error.download.file" path="home.error"
+				type="gov.nih.nci.calab.exception.CalabException" />
+			<forward name="success" path="particle.action.message" />
+			<forward name="input"
+				path="/coagulation.do?dispatch=input&amp;page=0" />
+			<forward name="setup"
+				path="particle.addimmunotoxicity.coagulation" />
+		</action>
+		<action name="nanoparticleCharacterizationForm"
+			parameter="dispatch" path="/plasmaProteinBinding"
+			type="gov.nih.nci.calab.ui.particle.InvitroProteinBindingAction"
+			input="input">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="submit" key="error.addInvitroProteinBinding"
+				path="particle.addimmunotoxicity.plasmaproteinbinding"
+				type="java.lang.Exception" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				key="error.download.file" path="home.error"
+				type="gov.nih.nci.calab.exception.CalabException" />
+			<forward name="success" path="particle.action.message" />
+			<forward name="input"
+				path="/plasmaProteinBinding.do?dispatch=input&amp;page=0" />
+			<forward name="setup"
+				path="particle.addimmunotoxicity.plasmaproteinbinding" />
+		</action>
+		<action name="nanoparticleCharacterizationForm"
+			parameter="dispatch" path="/complementActivation"
+			type="gov.nih.nci.calab.ui.particle.InvitroComplementActivationAction"
+			input="input">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="submit" key="error.addInvitroComplementActivation"
+				path="particle.addimmunotoxicity.complementactivation"
+				type="java.lang.Exception" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				key="error.download.file" path="home.error"
+				type="gov.nih.nci.calab.exception.CalabException" />
+			<forward name="success" path="particle.action.message" />
+			<forward name="input"
+				path="/complementActivation.do?dispatch=input&amp;page=0" />
+			<forward name="setup"
+				path="particle.addimmunotoxicity.complementactivation" />
+		</action>
+		<action name="nanoparticleCharacterizationForm"
+			parameter="dispatch" path="/cytokineInduction"
+			type="gov.nih.nci.calab.ui.particle.InvitroCytokineInductionAction"
+			input="input">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="submit" key="error.addInvitroCytokineInduction"
+				path="particle.addimmunotoxicity.cytokineinduction"
+				type="java.lang.Exception" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				key="error.download.file" path="home.error"
+				type="gov.nih.nci.calab.exception.CalabException" />
+			<forward name="success" path="particle.action.message" />
+			<forward name="input"
+				path="/cytokinInduction.do?dispatch=input&amp;page=0" />
+			<forward name="setup"
+				path="particle.addimmunotoxicity.cytokineinduction" />
+		</action>
+		<action name="nanoparticleCharacterizationForm"
+			parameter="dispatch" path="/chemotaxis"
+			type="gov.nih.nci.calab.ui.particle.InvitroChemotaxisAction"
+			input="input">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="submit" key="error.addInvitroChemotaxis"
+				path="particle.addimmunotoxicity.chemotaxis"
+				type="java.lang.Exception" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				key="error.download.file" path="home.error"
+				type="gov.nih.nci.calab.exception.CalabException" />
+			<forward name="success" path="particle.action.message" />
+			<forward name="input"
+				path="/chemotaxis.do?dispatch=input&amp;page=0" />
+			<forward name="setup"
+				path="particle.addimmunotoxicity.chemotaxis" />
+		</action>
+		<action name="nanoparticleCharacterizationForm"
+			parameter="dispatch" path="/nKCellCytotoxicActivity"
+			type="gov.nih.nci.calab.ui.particle.InvitroNKCellCytotoxicActivityAction"
+			input="input">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="submit" key="error.addInvitroNKCellCytotoxicActivity"
+				path="particle.addimmunotoxicity.nkcellcytotoxicactivity"
+				type="java.lang.Exception" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				key="error.download.file" path="home.error"
+				type="gov.nih.nci.calab.exception.CalabException" />
+			<forward name="success" path="particle.action.message" />
+			<forward name="input"
+				path="/nKCellCytotoxicActivity.do?dispatch=input&amp;page=0" />
+			<forward name="setup"
+				path="particle.addimmunotoxicity.nkcellcytotoxicactivity" />
+		</action>
+		<action name="nanoparticleCharacterizationForm"
+			parameter="dispatch" path="/leukocyteProliferation"
+			type="gov.nih.nci.calab.ui.particle.InvitroLeukocyteProliferationAction"
+			input="input">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="submit" key="error.addInvitroLeukocyteProliferation"
+				path="particle.addimmunotoxicity.leukocyteproliferation"
+				type="java.lang.Exception" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				key="error.download.file" path="home.error"
+				type="gov.nih.nci.calab.exception.CalabException" />
+			<forward name="success" path="particle.action.message" />
+			<forward name="input"
+				path="/leukocyteProliferation.do?dispatch=input&amp;page=0" />
+			<forward name="setup"
+				path="particle.addimmunotoxicity.leukocyteproliferation" />
+		</action>
+		<action name="nanoparticleCharacterizationForm"
+			parameter="dispatch" path="/cFU_GM"
+			type="gov.nih.nci.calab.ui.particle.InvitroCFU_GMAction"
+			input="input">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="submit" key="error.addInvitroCFU_GM"
+				path="particle.addimmunotoxicity.cfu_gm" type="java.lang.Exception" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				key="error.download.file" path="home.error"
+				type="gov.nih.nci.calab.exception.CalabException" />
+			<forward name="success" path="particle.action.message" />
+			<forward name="input"
+				path="/cFU_GM.do?dispatch=input&amp;page=0" />
+			<forward name="setup"
+				path="particle.addimmunotoxicity.cfu_gm" />
+		</action>
+		<action name="nanoparticleCharacterizationForm"
+			parameter="dispatch" path="/oxidativeBurst"
+			type="gov.nih.nci.calab.ui.particle.InvitroOxidativeBurstAction"
+			input="input">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="submit" key="error.addInvitroOxidativeBurst"
+				path="particle.addimmunotoxicity.oxidativeburst"
+				type="java.lang.Exception" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				key="error.download.file" path="home.error"
+				type="gov.nih.nci.calab.exception.CalabException" />
+			<forward name="success" path="particle.action.message" />
+			<forward name="input"
+				path="/oxidativeBurst.do?dispatch=input&amp;page=0" />
+			<forward name="setup"
+				path="particle.addimmunotoxicity.oxidativeburst" />
+		</action>
+		<action name="nanoparticleCharacterizationForm"
+			parameter="dispatch" path="/phagocytosis"
+			type="gov.nih.nci.calab.ui.particle.InvitroPhagocytosisAction"
+			input="input">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="submit" key="error.addInvitroPhagocytosis"
+				path="particle.addimmunotoxicity.phagocytosis"
+				type="java.lang.Exception" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				key="error.download.file" path="home.error"
+				type="gov.nih.nci.calab.exception.CalabException" />
+			<forward name="success" path="particle.action.message" />
+			<forward name="input"
+				path="/phagocytosis.do?dispatch=input&amp;page=0" />
+			<forward name="setup"
+				path="particle.addimmunotoxicity.phagocytosis" />
+		</action>
+		<action name="nanoparticleCharacterizationForm"
+			parameter="dispatch" path="/cellViability"
+			type="gov.nih.nci.calab.ui.particle.InvitroCellViabilityAction"
+			input="input">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="submit" key="error.addInvitroCellViability"
+				path="particle.addcytotoxicity.cellviability"
+				type="java.lang.Exception" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				key="error.download.file" path="home.error"
+				type="gov.nih.nci.calab.exception.CalabException" />
+			<forward name="success" path="particle.action.message" />
+			<forward name="input"
+				path="/cellViability.do?dispatch=input&amp;page=0" />
+			<forward name="setup"
+				path="particle.addcytotoxicity.cellviability" />
+		</action>
+		<action name="nanoparticleCharacterizationForm"
+			parameter="dispatch" path="/caspase3Activation"
+			type="gov.nih.nci.calab.ui.particle.InvitroCaspase3ActivationAction"
+			input="input">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="submit" key="error.addInvitroCaspase3Activation"
+				path="particle.addcytotoxicity.caspase3activation"
+				type="java.lang.Exception" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				key="error.download.file" path="home.error"
+				type="gov.nih.nci.calab.exception.CalabException" />
+			<forward name="success" path="particle.action.message" />
+			<forward name="input"
+				path="/caspase3Activation.do?dispatch=input&amp;page=0" />
+			<forward name="setup"
+				path="particle.addcytotoxicity.caspase3activation" />
+		</action>
+		<action name="nanoparticleCharacterizationForm"
+			parameter="dispatch" path="/enzymeInduction"
+			type="gov.nih.nci.calab.ui.particle.InvitroEnzymeInductionAction"
+			input="input">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="submit" key="error.addInvitroEnzymeInduction"
+				path="particle.addtoxicity.enzymeinduction"
+				type="java.lang.Exception" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				key="error.download.file" path="home.error"
+				type="gov.nih.nci.calab.exception.CalabException" />
+			<forward name="success" path="particle.action.message" />
+			<forward name="input"
+				path="/enzymeInduction.do?dispatch=input&amp;page=0" />
+			<forward name="setup"
+				path="particle.addtoxicity.enzymeinduction" />
+		</action>
+		<action name="nanoparticleCharacterizationForm"
+			parameter="dispatch" path="/oxidativeStress"
+			type="gov.nih.nci.calab.ui.particle.InvitroOxidativeStressAction"
+			input="input">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="submit" key="error.addInvitroOxidativeStress"
+				path="particle.addtoxicity.oxidativestress"
+				type="java.lang.Exception" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				key="error.download.file" path="home.error"
+				type="gov.nih.nci.calab.exception.CalabException" />
+			<forward name="success" path="particle.action.message" />
+			<forward name="input"
+				path="/oxidativeStress.do?dispatch=input&amp;page=0" />
+			<forward name="setup"
+				path="particle.addtoxicity.oxidativestress" />
+		</action>
+		<action name="loadDerivedBioAssayDataForm" parameter="dispatch"
+			path="/loadFile"
+			type="gov.nih.nci.calab.ui.particle.LoadDerivedBioAssayDataAction"
+			input="input" scope="request">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="submit" key="error.loadDerivedBioAssayData"
+				path="particle.load.characterization.file" type="java.lang.Exception" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				key="error.download.file" path="home.error"
+				type="gov.nih.nci.calab.exception.CalabException" />
+			<forward name="input"
+				path="particle.load.characterization.file" />
+		</action>
+		<action name="nanoparticleFunctionForm" parameter="dispatch"
+			path="/nanoparticleFunction"
+			type="gov.nih.nci.calab.ui.particle.NanoparticleFunctionAction"
+			input="input">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="submit" key="error.addparticle.function"
+				path="particle.addparticle.function" type="java.lang.Exception" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				key="error.download.file" path="home.error"
+				type="gov.nih.nci.calab.exception.CalabException" />
+			<forward name="success" path="particle.message" />
+			<forward name="input"
+				path="/nanoparticleFunction.do?dispatch=input&amp;page=0" />
+			<forward name="setup" path="particle.addparticle.function" />
+		</action>
+		<action path="/submitAction"
+			type="gov.nih.nci.calab.ui.core.BaseForwardAction"
+			parameter="particle.action.message" scope="request" />
+		<action name="characterizationMultiDeletionForm"
+			path="/deleteAction"
+			type="gov.nih.nci.calab.ui.particle.DeleteMultiCharacterizationAction"
+			parameter="dispatch" input="input" scope="request">
+			<forward name="message" path="particle.message" />
+			<forward name="input" path="particle.delete.characterization" />
+		</action>
+		<action input="input" name="searchNanoparticleForm"
+			parameter="dispatch" path="/searchNanoparticle"
+			type="gov.nih.nci.calab.ui.particle.SearchNanoparticleAction"
+			scope="request">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="search" key="error.searchNanoparticle"
+				path="particle.searchnanoparticle" type="java.lang.Exception" />
+			<forward name="input" path="particle.searchnanoparticle" />
+			<forward name="success"
+				path="particle.searchnanoparticle.result" />
+		</action>
+		<action input="input" name="searchNanoparticleAdvancedForm"
+			parameter="dispatch" path="/searchNanoparticleAdvanced"
+			type="gov.nih.nci.calab.ui.particle.SearchNanoparticleAdvancedAction"
+			scope="request">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="search" key="error.searchNanoparticleAdvanced"
+				path="particle.searchnanoparticle.advanced"
+				type="java.lang.Exception" />
+			<forward name="input"
+				path="particle.searchnanoparticle.advanced" />
+			<forward name="success"
+				path="particle.searchnanoparticle.advanced.result" />
+		</action>
+		<action path="/underConstruction"
+			type="gov.nih.nci.calab.ui.core.BaseForwardAction"
+			parameter="particle.remote.under.construction" scope="request" />
+		<action input="input" name="remoteSearchNanoparticleForm"
+			parameter="dispatch" path="/remoteSearchNanoparticle"
+			type="gov.nih.nci.calab.ui.particle.RemoteSearchNanoparticleAction"
+			scope="request">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="search" key="error.searchNanoparticle"
+				path="particle.remote.searchnanoparticle" type="java.lang.Exception" />
+			<forward name="input"
+				path="particle.remote.searchnanoparticle" />
+			<forward name="success"
+				path="particle.remote.searchnanoparticle.result" />
+		</action>
+		<action name="remoteNanoparticleGeneralInfoForm"
+			parameter="dispatch" path="/remoteNanoparticleGeneralInfo"
+			type="gov.nih.nci.calab.ui.particle.RemoteNanoparticleGeneralInfoAction"
+			input="success" scope="request">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="search" key="error.nanoparticle.generalInfo"
+				path="particle.remote.nanoparticle.generalinfo"
+				type="java.lang.Exception" />
+			<forward name="success"
+				path="particle.remote.nanoparticle.generalinfo" />
+			<forward name="viewDisclaimer"
+				path="particle.viewParticleDisclaimer" />
+		</action>
+		<action name="nanoparticleCompositionForm" parameter="dispatch"
+			path="/remoteNanoparticleComposition"
+			type="gov.nih.nci.calab.ui.particle.RemoteNanoparticleCompositionAction"
+			input="success">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="search" key="error.particle.composition.view"
+				path="particle.remote.particle.composition"
+				type="java.lang.Exception" />
+			<forward name="success"
+				path="particle.remote.particle.composition" />
+		</action>
+	</action-mappings>
+</struts-config>

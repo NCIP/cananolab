@@ -74,17 +74,15 @@ public class LoginAction extends AbstractBaseAction {
 		session.setAttribute("user", user);
 		session.setAttribute("userService", userService);
 
-		boolean canSubmit = userService.checkExecutePermission(user,
-				CaNanoLabConstants.CSM_PG_SUBMIT);
-		if (canSubmit) {
-			session.setAttribute("canUserSubmit", "true");
-		} else {
-			session.setAttribute("canUserSubmit", "false");
-		}
-
+		boolean createSample = userService.checkCreatePermission(user,
+				CaNanoLabConstants.CSM_PG_SAMPLE);
+		session.setAttribute("canCreateSample", createSample);
+		boolean isAdmin=userService.isAdmin(user.getLoginName());
+		session.setAttribute("isAdmin", isAdmin);
+		
 		boolean canDelete = userService.checkDeletePermission(user,
-				CaNanoLabConstants.CSM_PG_CHARACTERIZATION);
-		if (canDelete) {
+				CaNanoLabConstants.CSM_PG_PARTICLE);
+		if (canDelete&&isAdmin) {
 			session.setAttribute("canUserDeleteChars", "true");
 		} else {
 			session.setAttribute("canUserDeleteChars", "false");

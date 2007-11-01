@@ -1,12 +1,8 @@
 package gov.nih.nci.calab.service.util;
 
-import gov.nih.nci.calab.dto.inventory.AliquotBean;
-import gov.nih.nci.calab.dto.inventory.ContainerBean;
-import gov.nih.nci.calab.dto.inventory.SampleBean;
-import gov.nih.nci.calab.dto.workflow.AssayBean;
-import gov.nih.nci.calab.dto.workflow.FileBean;
-import gov.nih.nci.calab.dto.workflow.RunBean;
-import gov.nih.nci.calab.dto.workflow.WorkflowResultBean;
+import gov.nih.nci.calab.dto.sample.AliquotBean;
+import gov.nih.nci.calab.dto.sample.ContainerBean;
+import gov.nih.nci.calab.dto.sample.SampleBean;
 
 import java.util.Comparator;
 
@@ -17,22 +13,9 @@ import java.util.Comparator;
  * 
  */
 
-/* CVS $Id: CaNanoLabComparators.java,v 1.3 2007-07-10 16:09:44 pansu Exp $ */
+/* CVS $Id: CaNanoLabComparators.java,v 1.4 2007-11-01 17:35:00 pansu Exp $ */
 
 public class CaNanoLabComparators {
-
-	public static class RunBeanComparator implements Comparator<RunBean> {
-		public int compare(RunBean run1, RunBean run2) {
-			// compare assay first
-			AssayBeanComparator assayComp = new AssayBeanComparator();
-			if (assayComp.compare(run1.getAssayBean(), run2.getAssayBean()) == 0) {
-				// compare runName
-				return new SortableNameComparator().compare(run1.getName(),
-						run2.getName());
-			}
-			return assayComp.compare(run1.getAssayBean(), run2.getAssayBean());
-		}
-	}
 
 	public static class AliquotBeanComparator implements
 			Comparator<AliquotBean> {
@@ -103,31 +86,6 @@ public class CaNanoLabComparators {
 		}
 	}
 
-	public static class AssayBeanComparator implements Comparator<AssayBean> {
-		public int compare(AssayBean assay1, AssayBean assay2) {
-
-			// compare assayType first then if assayNumber is valid, compare
-			// prefix then number, else
-			// compare name
-			if (assay1.getAssayType().compareTo(assay2.getAssayType()) == 0) {
-				if (assay1.getAssayNumber() == -1
-						|| assay2.getAssayNumber() == -1) {
-					return assay1.getAssayName().compareTo(
-							assay2.getAssayName());
-				} else if (assay1.getAssayPrefix().compareTo(
-						assay2.getAssayPrefix()) == 0) {
-					return assay1.getAssayNumber().compareTo(
-							assay2.getAssayNumber());
-				} else {
-					return assay1.getAssayPrefix().compareTo(
-							assay2.getAssayPrefix());
-				}
-			} else {
-				return assay1.getAssayType().compareTo(assay2.getAssayType());
-			}
-		}
-	}
-
 	public static class SampleBeanComparator implements Comparator<SampleBean> {
 		public int compare(SampleBean sample1, SampleBean sample2) {
 			return new SortableNameComparator().compare(
@@ -140,51 +98,6 @@ public class CaNanoLabComparators {
 		public int compare(ContainerBean container1, ContainerBean container2) {
 			return new SortableNameComparator().compare(container1
 					.getContainerName(), container2.getContainerName());
-		}
-	}
-
-	public static class FileBeanComparator implements Comparator<FileBean> {
-		public int compare(FileBean file1, FileBean file2) {
-			// compare short file name then uri
-			if (file1.getShortFilename().compareTo(file2.getShortFilename()) == 0) {
-				return file1.getUri().compareTo(file2.getUri());
-			} else {
-				return file1.getShortFilename().compareTo(
-						file2.getShortFilename());
-			}
-		}
-	}
-
-	public static class WorkflowResultBeanComparator implements
-			Comparator<WorkflowResultBean> {
-		public int compare(WorkflowResultBean workflow1,
-				WorkflowResultBean workflow2) {
-			int assayDiff = (new AssayBeanComparator()).compare(workflow1
-					.getAssay(), workflow2.getAssay());
-			int runDiff = (new RunBeanComparator()).compare(workflow1.getRun(),
-					workflow2.getRun());
-			int fileDiff = (new FileBeanComparator()).compare(workflow1
-					.getFile(), workflow2.getFile());
-			int aliquotDiff = (new AliquotBeanComparator()).compare(workflow1
-					.getAliquot(), workflow2.getAliquot());
-
-			// compare assay first
-			if (assayDiff == 0) {
-				// compare run
-				if (runDiff == 0) {
-					// compare file
-					if (fileDiff == 0) {
-						// compare aliquot
-						return aliquotDiff;
-					} else {
-						return fileDiff;
-					}
-				} else {
-					return runDiff;
-				}
-			} else {
-				return assayDiff;
-			}
 		}
 	}
 }

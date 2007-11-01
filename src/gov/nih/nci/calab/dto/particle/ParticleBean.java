@@ -4,7 +4,7 @@ import gov.nih.nci.calab.domain.Keyword;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.function.Function;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
-import gov.nih.nci.calab.dto.inventory.SampleBean;
+import gov.nih.nci.calab.dto.sample.SampleBean;
 
 import java.util.Collection;
 import java.util.HashSet;

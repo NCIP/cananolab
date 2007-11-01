@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+<struts-config>
+	<form-beans>
+		<form-bean name="createSampleForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
+			<form-property name="sampleName"
+				type="java.lang.String" />
+			<form-property name="sampleType" type="java.lang.String" />
+			<form-property name="sampleSOP" type="java.lang.String" />
+			<form-property name="sampleDescription"
+				type="java.lang.String" />
+			<form-property name="sampleSource" type="java.lang.String" />
+			<form-property name="sourceSampleId"
+				type="java.lang.String" />
+			<form-property name="dateReceived" type="java.lang.String" />
+			<form-property name="lotId" type="java.lang.String" />
+			<form-property name="lotDescription"
+				type="java.lang.String" />
+			<form-property name="solubility" type="java.lang.String" />
+			<form-property name="numberOfContainers"
+				type="java.lang.String" initial="1" />
+			<form-property name="generalComments"
+				type="java.lang.String" />
+			<form-property name="containers"
+				type="gov.nih.nci.calab.dto.sample.ContainerBean[]" />
+			<form-property name="configuredSampleNamePrefix"
+				type="java.lang.String" />
+		</form-bean>
+		<form-bean name="createAliquotForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
+			<form-property name="fromAliquot" type="java.lang.String"
+				initial="false" />
+			<form-property name="sampleName" type="java.lang.String" />
+			<form-property name="containerName" type="java.lang.String" />
+			<form-property name="aliquotSampleName"
+				type="java.lang.String" />
+			<form-property name="parentAliquotName"
+				type="java.lang.String" />
+			<form-property name="numberOfAliquots"
+				type="java.lang.String" initial="0" />
+			<form-property name="template"
+				type="gov.nih.nci.calab.dto.sample.AliquotBean" />
+			<form-property name="generalComments"
+				type="java.lang.String" />
+		</form-bean>
+		<form-bean name="editAliquotForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
+			<form-property name="rowNum" type="java.lang.String" />
+			<form-property name="colNum" type="java.lang.String" />
+			<form-property name="aliquot"
+				type="gov.nih.nci.calab.dto.sample.AliquotBean" />
+		</form-bean>
+		<form-bean name="searchSampleForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
+			<form-property name="sampleName" type="java.lang.String" />
+			<form-property name="sourceSampleId"
+				type="java.lang.String" />
+			<form-property name="sampleSource" type="java.lang.String" />
+			<form-property name="dateAccessionedBegin"
+				type="java.lang.String" />
+			<form-property name="sampleType" type="java.lang.String" />
+			<form-property name="dateAccessionedEnd"
+				type="java.lang.String" />
+			<form-property name="sampleSubmitter"
+				type="java.lang.String" />
+			<form-property name="storageLocation"
+				type="gov.nih.nci.calab.dto.sample.StorageLocation" />
+		</form-bean>
+		<form-bean name="searchAliquotForm"
+			type="org.apache.struts.validator.DynaValidatorActionForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
+			<form-property name="aliquotName" type="java.lang.String" />
+			<form-property name="containerId" type="java.lang.String" />
+			<form-property name="sourceSampleId"
+				type="java.lang.String" />
+			<form-property name="sampleSource" type="java.lang.String" />
+			<form-property name="dateAccessionedBegin"
+				type="java.lang.String" />
+			<form-property name="sampleType" type="java.lang.String" />
+			<form-property name="dateAccessionedEnd"
+				type="java.lang.String" />
+			<form-property name="sampleSubmitter"
+				type="java.lang.String" />
+			<form-property name="storageLocation"
+				type="gov.nih.nci.calab.dto.sample.StorageLocation" />
+		</form-bean>
+		<form-bean name="viewSampleDetailForm"
+			type="org.apache.struts.validator.DynaValidatorActionForm">
+			<form-property name="sampleId" type="java.lang.String" />
+			<form-property name="containerId" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
+		</form-bean>
+		<form-bean name="viewAliquotDetailForm"
+			type="org.apache.struts.validator.DynaValidatorActionForm">
+			<form-property name="sampleId" type="java.lang.String" />
+			<form-property name="aliquotId" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
+		</form-bean>
+	</form-beans>
+	<action-mappings>
+		<action path="/manageSample"
+			type="gov.nih.nci.calab.ui.core.BaseForwardAction"
+			parameter="sample.managesample" scope="request" />
+		<action name="createSampleForm" parameter="dispatch"
+			path="/createSample"
+			type="gov.nih.nci.calab.ui.sample.CreateSampleAction"
+			input="input">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="sample" key="error.createSample" path="sample.message"
+				type="java.lang.Exception" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="sample" key="error.createSample.duplicate"
+				path="sample.createsample"
+				type="gov.nih.nci.calab.exception.DuplicateEntriesException" />
+			<forward name="success" path="sample.sampledetails" />
+			<forward name="input"
+				path="/createSample.do?dispatch=input&amp;page=0" />
+			<forward name="setup" path="sample.createsample" />
+		</action>
+		<action name="createAliquotForm" parameter="dispatch"
+			path="/createAliquot"
+			type="gov.nih.nci.calab.ui.sample.CreateAliquotAction"
+			input="input">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="sample" key="error.createAliquot.nomatrix"
+				path="sample.createaliquot"
+				type="gov.nih.nci.calab.exception.CalabException" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="sample" key="error.createAliquot.duplicate"
+				path="sample.createaliquot"
+				type="gov.nih.nci.calab.exception.DuplicateEntriesException" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="sample" key="error.createAliquot" path="sample.message"
+				type="java.lang.Exception" />
+			<forward name="setup" path="sample.createaliquot" />
+			<forward name="input"
+				path="/createAliquot.do?dispatch=input&amp;page=0" />
+			<forward name="success" path="sample.createaliquotresult" />
+		</action>
+		<action name="editAliquotForm" parameter="dispatch"
+			path="/editAliquot" scope="request"
+			type="gov.nih.nci.calab.ui.sample.EditAliquotAction" input="input">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="sample" key="error.editAliquot.nomatrix"
+				path="sample.createaliquot"
+				type="gov.nih.nci.calab.exception.CalabException" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="sample" key="error.editAliquot" path="sample.message"
+				type="java.lang.Exception" />
+			<forward name="setup" path="sample.editaliquot" />
+			<forward name="input"
+				path="/editAliquot.do?dispatch=input&amp;page=0" />
+			<forward name="success" path="sample.createaliquot" />
+		</action>
+		<action input="input" name="searchSampleForm"
+			parameter="dispatch" path="/searchSample"
+			type="gov.nih.nci.calab.ui.sample.SearchSampleAction"
+			scope="request">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="sample" key="error.searchSample" path="sample.searchsample"
+				type="java.lang.Exception" />
+			<forward name="input" path="sample.searchsample" />
+			<forward name="success" path="sample.searchsampleresult" />
+		</action>
+		<action input="input" name="searchAliquotForm"
+			parameter="dispatch" path="/searchAliquot"
+			type="gov.nih.nci.calab.ui.sample.SearchAliquotAction"
+			scope="request">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="sample" key="error.searchAliquot"
+				path="sample.searchaliquot" type="java.lang.Exception" />
+			<forward name="input" path="sample.searchaliquot" />
+			<forward name="success" path="sample.searchaliquotresult" />
+			<forward name="sampleResult"
+				path="sample.searchsampleresult" />
+		</action>
+		<action input="input" name="searchAliquotForm"
+			parameter="dispatch" path="/showAliquot"
+			type="gov.nih.nci.calab.ui.sample.SearchAliquotAction"
+			scope="request">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="sample" key="error.showAliquot" path="sample.showaliquot"
+				type="java.lang.Exception" />
+			<forward name="input" path="sample.searchsampleresult" />
+			<forward name="success" path="sample.searchaliquotresult" />
+		</action>
+		<action input="input" name="viewSampleDetailForm"
+			path="/viewSampleDetail" scope="request"
+			type="gov.nih.nci.calab.ui.sample.ViewSampleDetailAction">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="sample" key="error.viewSampleDetails.noSamples"
+				path="sample.searchsampleresult" type="java.lang.Exception" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="sample" key="error.viewSampleDetails"
+				path="sample.searchsampleresult" type="java.lang.Exception" />
+			<forward name="input" path="sample.searchsampleresult" />
+			<forward name="success" path="sample.viewsampledetails" />
+		</action>
+		<action input="input" name="viewAliquotDetailForm"
+			path="/viewAliquotDetail" scope="request"
+			type="gov.nih.nci.calab.ui.sample.ViewAliquotDetailAction">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="sample" key="error.viewSampleDetails.noSamples"
+				path="sample.searchsampleresult" type="java.lang.Exception" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="sample" key="error.viewSampleDetails"
+				path="sample.searchsampleresult" type="java.lang.Exception" />
+			<forward name="input" path="sample.searchaliquotresult" />
+			<forward name="success" path="sample.viewaliquotdetails" />
+		</action>
+	</action-mappings>
+</struts-config>

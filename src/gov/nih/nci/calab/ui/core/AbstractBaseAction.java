@@ -17,10 +17,12 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: AbstractBaseAction.java,v 1.11 2006-08-02 16:38:10 pansu Exp $ */
+/* CVS $Id: AbstractBaseAction.java,v 1.12 2007-11-01 17:37:04 pansu Exp $ */
 
+import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.exception.InvalidSessionException;
 import gov.nih.nci.calab.exception.NoAccessException;
+import gov.nih.nci.calab.ui.security.InitSecuritySetup;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,36 +38,26 @@ public abstract class AbstractBaseAction extends Action {
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		HttpSession session=request.getSession();
+		ActionForward forward = executeTask(mapping, form, request, response);
+		UserBean user = (UserBean) session.getAttribute("user");
 
-		ActionForward forward = null;
-		if (!loginRequired() || loginRequired() && isUserLoggedIn(request)) {
-			if (loginRequired()) {
-				boolean accessStatus = canUserExecute(request.getSession());
-				if (!accessStatus) {
-					throw new NoAccessException(
-							"You don't have access to class: "
-									+ this.getClass().getName());
-				}
+		if (!loginRequired()) {
+			return forward;
+
+		}
+		
+		if (user != null) {
+			boolean accessStatus = canUserExecute(request.getSession());
+			if (!accessStatus) {
+				throw new NoAccessException("You don't have access to class: "
+						+ this.getClass().getName());
 			}
-			forward = executeTask(mapping, form, request, response);
 		} else {
 			throw new InvalidSessionException();
 		}
 
 		return forward;
-	}
-
-	/**
-	 * 
-	 * @param request
-	 * @return whether the user is successfully logged in.
-	 */
-	private boolean isUserLoggedIn(HttpServletRequest request) {
-		boolean isLoggedIn = false;
-		if (request.getSession().getAttribute("user") != null) {
-			isLoggedIn = true;
-		}
-		return isLoggedIn;
 	}
 
 	/**
@@ -88,7 +80,7 @@ public abstract class AbstractBaseAction extends Action {
 	 * @throws Exception
 	 */
 	public boolean canUserExecute(HttpSession session) throws Exception {
-		return InitSessionSetup.getInstance().canUserExecuteClass(session,
+		return InitSecuritySetup.getInstance().canUserExecuteClass(session,
 				this.getClass());
 	}
 }

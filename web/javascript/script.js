@@ -2,12 +2,7 @@
 function changeMenuStyle(obj, new_style) {
 	obj.className = new_style;
 }
-function showCursor() {
-	document.body.style.cursor = "hand";
-}
-function hideCursor() {
-	document.body.style.cursor = "default";
-}
+
 function confirmDelete() {
 	if (confirm("Are you sure you want to delete?")) {
 		return true;
@@ -287,10 +282,11 @@ function doubleDropdownWithNestedProperties(form, elementName1, elementName2, va
 }
 function getElement(form, elementName) {
 	var element;
-	for (var i = 0; i < form.elements.length; i++) {
+	for (var i = 0; i < form.elements.length;) {
 		if (form.elements[i].name.indexOf(elementName) != -1) {
 			element = form.elements[i];
 		}
+		i=i+1;
 	}
 	return element;
 }

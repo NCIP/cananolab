@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+<struts-config>
+	<form-beans>
+		<form-bean name="submitReportForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
+			<form-property name="particleNames"
+				type="java.lang.String[]" />
+			<form-property name="uploadedFile"
+				type="org.apache.struts.upload.FormFile" />
+			<form-property name="file"
+				type="gov.nih.nci.calab.dto.common.LabFileBean" />
+		</form-bean>
+		<form-bean name="searchReportForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="functionTypes"
+				type="java.lang.String[]" />
+			<form-property name="reportTitle" type="java.lang.String" />
+			<form-property name="reportType" type="java.lang.String" />
+		</form-bean>
+		<form-bean name="remoteSearchReportForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="functionTypes"
+				type="java.lang.String[]" />
+			<form-property name="reportTitle" type="java.lang.String" />
+			<form-property name="reportType" type="java.lang.String" />
+			<form-property name="gridNodes" type="java.lang.String[]" />
+		</form-bean>
+	</form-beans>
+	<action-mappings>
+		<action path="/manageReport"
+			type="gov.nih.nci.calab.ui.core.BaseForwardAction"
+			parameter="report.managereport" scope="request" />
+		<action name="submitReportForm" parameter="dispatch"
+			path="/submitReport"
+			type="gov.nih.nci.calab.ui.report.SubmitReportAction" input="input"
+			scope="request">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="submit" key="error.submitReport" path="report.submitreport"
+				type="java.lang.Exception" />
+			<forward name="success" path="report.message" />
+			<forward name="input" path="report.submitreport" />
+		</action>
+		<action name="submitReportForm" parameter="dispatch"
+			path="/updateReportForParticle"
+			type="gov.nih.nci.calab.ui.report.SubmitReportAction" input="input"
+			scope="request">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="submit" key="error.updateReport"
+				path="report.report.particle.view" type="java.lang.Exception" />
+			<forward name="input" path="report.report.particle.view" />
+			<forward name="success" path="report.report.particle.view" />
+		</action>
+		<action name="submitReportForm" parameter="dispatch"
+			path="/updateReport"
+			type="gov.nih.nci.calab.ui.report.SubmitReportAction" input="input"
+			scope="request">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="submit" key="error.updateReport" path="report.report.view"
+				type="java.lang.Exception" />
+			<forward name="input" path="report.report.view" />
+			<forward name="success" path="report.message" />
+		</action>
+		<action path="/reportResults"
+			type="gov.nih.nci.calab.ui.core.BaseForwardAction"
+			parameter="report.searchreport.result" scope="request" />
+		<action input="input" name="searchReportForm"
+			parameter="dispatch" path="/searchReport"
+			type="gov.nih.nci.calab.ui.report.SearchReportAction"
+			scope="request">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				key="error.download.file" path="home.error"
+				type="gov.nih.nci.calab.exception.CalabException" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="search" key="error.searchReport" path="report.searchreport"
+				type="java.lang.Exception" />
+			<forward name="input" path="report.searchreport" />
+			<forward name="success" path="report.searchreport.result" />
+		</action>
+		<action input="input" name="remoteSearchReportForm"
+			parameter="dispatch" path="/remoteSearchReport"
+			type="gov.nih.nci.calab.ui.report.RemoteSearchReportAction"
+			scope="request">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				key="error.download.file" path="home.error"
+				type="gov.nih.nci.calab.exception.CalabException" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="search" key="error.searchReport"
+				path="report.remote.searchreport" type="java.lang.Exception" />
+			<forward name="input" path="report.remote.searchreport" />
+			<forward name="success"
+				path="report.remote.searchreport.result" />
+		</action>
+	</action-mappings>
+</struts-config>

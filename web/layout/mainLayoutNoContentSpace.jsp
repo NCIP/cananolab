@@ -2,29 +2,18 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <html>
 	<head>
-		<title><tiles:getAsString name="title" ignore="true" /></title>
-		<link rel="stylesheet" type="text/css" href="css/caLab.css" />
-		<link rel="stylesheet" type="text/css" href="css/menu.css" />
+		<title><tiles:getAsString name="title" ignore="true" />
+		</title>
+		<link rel="stylesheet" type="text/css" href="css/caLab.css">
+		<link rel="stylesheet" type="text/css" href="css/menu.css">
 		<link rel="StyleSheet" type="text/css" href="css/dtree.css">
 		<script type="text/javascript" src="javascript/script.js"></script>
 		<script type="text/javascript" src="javascript/dtree.js"></script>
-		<script type="text/javascript" language="JavaScript">
-<!--
-	function s_show(){return false}
-	function s_hide(){return false}
-	if(window.event+''=='undefined')event=0
-//-->
-</script>
-		<script type="text/javascript" src="javascript/s_loader.js"></script>
-		<script type="text/javascript" src="javascript/s_arrays.js"></script>
-		<script type="text/javascript" src="javascript/s_script_dom.js"></script>
-		<script type="text/javascript" src="javascript/s_script_ns4.js"></script>
-		<script type="text/javascript" src="javascript/s_script_old.js"></script>
-		
 	</head>
 	<tiles:importAttribute scope="session" />
 	<body>
-		<table height="100%" cellspacing="0" cellpadding="0" width="100%" summary="" border="0" align="center">
+		<table height="100%" cellspacing="0" cellpadding="0" width="100%"
+			summary="" border="0" align="center">
 			<!-- nci hdr begins -->
 			<tbody>
 				<tr>
@@ -35,7 +24,8 @@
 				</tr>
 				<tr>
 					<td valign="top" height="100%">
-						<table height="100%" cellspacing="0" cellpadding="0" summary="" border="0">
+						<table height="100%" cellspacing="0" cellpadding="0" summary=""
+							border="0">
 							<tbody>
 								<tr>
 									<td colspan="2" height="50">
@@ -50,7 +40,8 @@
 									</td>
 
 									<td valign="top" width="100%">
-										<table height="100%" cellspacing="0" cellpadding="0" width="100%" summary="" border="0">
+										<table height="100%" cellspacing="0" cellpadding="0"
+											width="100%" summary="" border="0">
 											<tbody>
 												<tr>
 													<td class="mainMenu" width="100%" height="20">
@@ -88,3 +79,4 @@
 			</tbody>
 		</table>
 	</body>
+</html>
