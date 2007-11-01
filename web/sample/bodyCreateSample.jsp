@@ -48,8 +48,7 @@ function refreshContainers() {
 								<div align="justify">
 									<strong> Sample ID * </strong> (
 									<bean:write name="createSampleForm"
-										property="configuredSampleNamePrefix" />
-									X)
+										property="configuredSampleNamePrefix" />X)
 									<span class="formField"><span class="formFieldWhite"><html:text
 												property="sampleName" size="15" /> </span> &nbsp; &nbsp; <strong>Sample
 											Type* </strong><span class="formFieldWhite"><html:select
