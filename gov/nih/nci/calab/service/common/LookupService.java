@@ -16,11 +16,10 @@ import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.ProtocolBean;
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
-import gov.nih.nci.calab.dto.inventory.AliquotBean;
-import gov.nih.nci.calab.dto.inventory.ContainerBean;
-import gov.nih.nci.calab.dto.inventory.ContainerInfoBean;
-import gov.nih.nci.calab.dto.inventory.SampleBean;
-import gov.nih.nci.calab.dto.workflow.AssayBean;
+import gov.nih.nci.calab.dto.sample.AliquotBean;
+import gov.nih.nci.calab.dto.sample.ContainerBean;
+import gov.nih.nci.calab.dto.sample.ContainerInfoBean;
+import gov.nih.nci.calab.dto.sample.SampleBean;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CaNanoLabComparators;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
@@ -50,7 +49,7 @@ import org.hibernate.collection.PersistentSet;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.132 2007-08-18 02:05:10 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.133 2007-11-01 17:34:00 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -359,47 +358,6 @@ public class LookupService {
 
 	/**
 	 * 
-	 * @return a map between assay type and its assays
-	 * @throws Exception
-	 */
-	public Map<String, SortedSet<AssayBean>> getAllAssayTypeAssays()
-			throws Exception {
-		Map<String, SortedSet<AssayBean>> assayTypeAssays = new HashMap<String, SortedSet<AssayBean>>();
-
-		try {
-			Session session = HibernateUtil.currentSession();
-			HibernateUtil.beginTransaction();
-			String hqlString = "select assay.id, assay.name, assay.assayType from Assay assay";
-			List results = session.createQuery(hqlString).list();
-			HibernateUtil.commitTransaction();
-			SortedSet<AssayBean> assays = null;
-			for (Object obj : results) {
-				Object[] objArray = (Object[]) obj;
-				AssayBean assay = new AssayBean(
-						((Long) objArray[0]).toString(), (String) objArray[1],
-						(String) objArray[2]);
-				if (assayTypeAssays.get(assay.getAssayType()) != null) {
-					assays = (SortedSet<AssayBean>) assayTypeAssays.get(assay
-							.getAssayType());
-				} else {
-					assays = new TreeSet<AssayBean>(
-							new CaNanoLabComparators.AssayBeanComparator());
-					assayTypeAssays.put(assay.getAssayType(), assays);
-				}
-				assays.add(assay);
-			}
-			
-		} catch (Exception e) {
-			logger.error("Error in retrieving all assay beans. ", e);
-			throw new RuntimeException("Error in retrieving all assays beans. ");
-		} finally {
-			HibernateUtil.closeSession();
-		}
-		return assayTypeAssays;
-	}
-
-	/**
-	 * 
 	 * @return all sample sources
 	 */
 	public SortedSet<String> getAllSampleSources() throws Exception {
@@ -444,7 +402,6 @@ public class LookupService {
 			for (Object obj : results) {
 				SampleBean sample = new SampleBean((Sample) obj);
 				if (sampleSourceSamples.get(sample.getSampleSource()) != null) {
-					// TODO need to make sample source a required field
 					if (sample.getSampleSource().length() > 0) {
 						samples = (SortedSet<SampleBean>) sampleSourceSamples
 								.get(sample.getSampleSource());
@@ -727,7 +684,6 @@ public class LookupService {
 	}
 
 	public SortedSet<String> getAllParticleSources() throws Exception {
-		// TODO fill in db code
 		return getAllSampleSources();
 	}
 

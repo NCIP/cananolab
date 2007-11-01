@@ -5,6 +5,8 @@ import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.exception.CalabException;
+import gov.nih.nci.calab.service.remote.RemoteQueryFacade;
+import gov.nih.nci.calab.service.remote.RemoteQueryFacadeImpl;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.security.AuthenticationManager;
@@ -25,7 +27,6 @@ import gov.nih.nci.security.dao.RoleSearchCriteria;
 import gov.nih.nci.security.dao.SearchCriteria;
 import gov.nih.nci.security.dao.UserSearchCriteria;
 import gov.nih.nci.security.exceptions.CSException;
-import gov.nih.nci.calab.service.remote.*;
 
 import java.sql.Connection;
 import java.sql.Statement;
@@ -59,7 +60,7 @@ public class UserService {
 	private UserProvisioningManager userManager = null;
 
 	private String applicationName = null;
-	
+
 	private RemoteQueryFacade remoteQueryFacade = null;
 
 	public UserService(String applicationName) throws CSException {
@@ -73,11 +74,11 @@ public class UserService {
 	}
 
 	private RemoteQueryFacade getRemoteQueryFacade() {
-		if(this.remoteQueryFacade == null)
+		if (this.remoteQueryFacade == null)
 			this.remoteQueryFacade = new RemoteQueryFacadeImpl();
 		return this.remoteQueryFacade;
 	}
-	
+
 	public UserBean getUserBean(String userLogin) {
 		User user = authorizationManager.getUser(userLogin);
 		return new UserBean(user); // or
@@ -131,9 +132,19 @@ public class UserService {
 			String protectionElementObjectId, String privilege)
 			throws CSException {
 		boolean status = false;
+		if (user==null) {
+			return status;
+		}
 		status = authorizationManager.checkPermission(user.getLoginName(),
 				protectionElementObjectId, privilege);
 		return status;
+	}
+
+	public boolean checkCreatePermission(UserBean user,
+			String protectionElementObjectId)
+			throws CSException {		
+		return checkPermission(user, protectionElementObjectId,
+				CaNanoLabConstants.CSM_CREATE_PRIVILEGE);		
 	}
 
 	/**
@@ -162,23 +173,24 @@ public class UserService {
 	 */
 	public boolean checkReadPermission(UserBean user,
 			String protectionElementObjectId) throws CSException {
-		
-		if(user == null) {
+
+		if (user == null) {
 			RemoteQueryFacade rqf = getRemoteQueryFacade();
 			try {
-				if(rqf.isPublicId(protectionElementObjectId))
+				if (rqf.isPublicId(protectionElementObjectId))
 					return true;
 				else
 					return false;
-					
+
 			} catch (Exception e) {
-					logger.error("error testing isPublicId for a nanoparticle: " + e);
-					throw new CSException("error in checkReadPermission:", e);
+				logger.error("error testing isPublicId for a nanoparticle: "
+						+ e);
+				throw new CSException("error in checkReadPermission:", e);
 			}
-			
-		} else {		
+
+		} else {
 			return checkPermission(user, protectionElementObjectId,
-				CaNanoLabConstants.CSM_READ_PRIVILEGE);
+					CaNanoLabConstants.CSM_READ_PRIVILEGE);
 		}
 	}
 
@@ -582,7 +594,7 @@ public class UserService {
 	 */
 	public List<ParticleBean> getFilteredParticles(UserBean user,
 			List<ParticleBean> particles) throws Exception {
-		
+
 		List<ParticleBean> filteredParticles = new ArrayList<ParticleBean>();
 		for (ParticleBean particle : particles) {
 			boolean status = checkReadPermission(user, particle.getSampleName());
@@ -602,12 +614,12 @@ public class UserService {
 	 */
 	public List<LabFileBean> getFilteredFiles(UserBean user,
 			List<LabFileBean> files) throws Exception {
-		
+
 		List<LabFileBean> filteredReports = new ArrayList<LabFileBean>();
 		for (LabFileBean file : files) {
 			boolean status = checkReadPermission(user, file.getId());
 			if (status)
-					filteredReports.add(file);
+				filteredReports.add(file);
 		}
 		return filteredReports;
 	}
@@ -846,11 +858,11 @@ public class UserService {
 
 	public void assignGroupToProtectionGroupWithRole(String groupName,
 			String protectionGroupName, String roleName) throws Exception {
-		Role deleteRole = getRole(roleName);
+		Role role = getRole(roleName);
 		ProtectionGroup pg = getProtectionGroup(protectionGroupName);
 		Group group = getGroup(groupName);
 		userManager.assignGroupRoleToProtectionGroup(pg.getProtectionGroupId()
 				.toString(), group.getGroupId().toString(),
-				new String[] { deleteRole.getId().toString() });
+				new String[] { role.getId().toString() });
 	}
 }
