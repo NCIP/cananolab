@@ -18,7 +18,7 @@
 		</form-bean>
 	</form-beans>
 	<global-exceptions>
-		<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.login.required" path="/index.jsp" type="gov.nih.nci.calab.exception.InvalidSessionException" />
+		<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.session.expired" path="/index.jsp" type="gov.nih.nci.calab.exception.InvalidSessionException" />
 		<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.noaccess" path="/index.jsp" type="gov.nih.nci.calab.exception.NoAccessException" />
 	</global-exceptions>
 	<action-mappings>
