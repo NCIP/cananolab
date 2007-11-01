@@ -1,3 +1,0 @@
-<attribute name="Properties">
-	gov.nih.nci.security.configFile=@ABSOLUTE_PATH@/ApplicationSecurityConfig.xml
-</attribute>
