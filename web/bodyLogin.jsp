@@ -40,15 +40,14 @@
 								<c:param name="dispatch">setup</c:param>
 							</c:url>
 							<h4><a href="${charURL}">Nanoparticles</a></h4>
-							<h5>Provides access to publicly available nanoparticle characterization data.  Includes information on particle composition, function, and physical and in vitro characterizations.</h5>
+							<h5>Provides access to publicly available nanoparticle characterization data.  Includes information on particle composition, function, and physical and in vitro characterizations (in vivo coming soon).</h5>
 							</li>
 							<li>
 							<c:url var="reportURL" value="searchReport.do">
 								<c:param name="dispatch">setup</c:param>
 							</c:url>
 							<h4><a href="${reportURL}">Reports</a></h4>
-							<h5>Provides access to publicly available reports detailing the results of nanoparticle characterization experiments.
-</h5>
+							<h5>Provides access to publicly available reports detailing the results of nanoparticle characterization projects.</h5>
 							</li>
 						</ul></div>
 						</td>
