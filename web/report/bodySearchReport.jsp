@@ -12,7 +12,7 @@
 				</h3>
 			</td>
 			<td align="right" width="25%">
-				<a href="remoteSearchReport.do?dispatch=setup" class="helpText">Remote Search</a>&nbsp;
+				<a href="remoteSearchReport.do?dispatch=setup" class="helpText">Grid Search</a>&nbsp;
 				<%--<a href="advancedNanoparticleSearch.do" class="helpText">Advanced Search</a> &nbsp; &nbsp; --%>
 				<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=search_reports_help')" class="helpText">Help</a>
 			</td>

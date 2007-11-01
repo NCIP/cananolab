@@ -12,7 +12,7 @@
 				</h3>
 			</td>
 			<td align="right" width="25%">
-				<a href="remoteSearchNanoparticle.do?dispatch=setup" class="helpText">Remote
+				<a href="remoteSearchNanoparticle.do?dispatch=setup" class="helpText">Grid
 					Search</a>&nbsp;
 				<%--<a href="advancedNanoparticleSearch.do" class="helpText">Advanced Search</a> &nbsp; &nbsp; --%>
 				<a
