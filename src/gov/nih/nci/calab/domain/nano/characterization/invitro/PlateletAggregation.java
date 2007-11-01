@@ -16,8 +16,8 @@ public class PlateletAggregation extends ImmunoToxicity {
 	 * 
 	 */
 	public PlateletAggregation() {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 
 	public String getImmunotoxiticyType() {

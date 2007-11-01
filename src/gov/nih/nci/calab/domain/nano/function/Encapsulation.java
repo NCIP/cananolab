@@ -12,8 +12,8 @@ public class Encapsulation extends Linkage {
 //	private Agent agent;
 
 	public Encapsulation() {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 
 //	public Long getId() {

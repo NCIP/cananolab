@@ -6,8 +6,8 @@ public class QuantumDotComposition extends ParticleComposition {
 	private static final long serialVersionUID = 1234567890L;
 
 	public QuantumDotComposition() {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 
 	public String getClassification() {

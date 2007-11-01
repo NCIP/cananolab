@@ -20,8 +20,8 @@ public class Measurement implements Serializable {
 	 * 
 	 */
 	public Measurement() {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 
 	public Measurement(Float value, String unit) {

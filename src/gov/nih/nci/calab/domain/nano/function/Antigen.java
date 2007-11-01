@@ -11,8 +11,6 @@ public class Antigen extends AgentTarget {
 	private String name;
 
 	public Antigen() {
-		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public String getName() {

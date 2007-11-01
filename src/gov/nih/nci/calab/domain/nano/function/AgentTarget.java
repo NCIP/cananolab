@@ -9,8 +9,6 @@ public class AgentTarget implements java.io.Serializable {
 	private String description;
 
 	public AgentTarget() {
-		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public String getDescription() {

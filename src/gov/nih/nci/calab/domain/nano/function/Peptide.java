@@ -7,8 +7,8 @@ public class Peptide extends Agent {
 	private String sequence;
 
 	public Peptide() {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 
 	public String getSequence() {

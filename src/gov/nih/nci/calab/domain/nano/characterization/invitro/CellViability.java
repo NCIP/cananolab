@@ -6,8 +6,7 @@ public class CellViability extends Cytotoxicity {
 	private static final long serialVersionUID = 1234567890L;
 
 	public CellViability() {
-		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 	public String getClassification() {
 		return INVITRO_CHARACTERIZATION;

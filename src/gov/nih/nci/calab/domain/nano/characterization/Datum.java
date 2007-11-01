@@ -34,8 +34,8 @@ public class Datum implements Serializable {
 	 * 
 	 */
 	public Datum() {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 
 	public Long getId() {

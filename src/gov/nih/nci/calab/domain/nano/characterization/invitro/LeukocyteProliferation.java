@@ -6,8 +6,8 @@ public class LeukocyteProliferation extends ImmunoToxicity {
 	private static final long serialVersionUID = 1234567890L;
 
 	public LeukocyteProliferation() {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 
 	public String getImmunotoxiticyType() {

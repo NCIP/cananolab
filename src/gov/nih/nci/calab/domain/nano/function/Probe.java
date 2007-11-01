@@ -9,8 +9,8 @@ public class Probe extends Agent {
 	private String type;
 
 	public Probe() {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 
 	public String getName() {
