@@ -14,8 +14,8 @@ public class GridNodeBean {
 	private String appServiceURL;
 
 	public GridNodeBean(String hostName, String address) {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 		this.hostName = hostName;
 		this.address = address;
 	}

@@ -32,8 +32,8 @@ public class FunctionBean {
 	 * 
 	 */
 	public FunctionBean() {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 
 	public FunctionBean(String id, String type, String viewTitle) {

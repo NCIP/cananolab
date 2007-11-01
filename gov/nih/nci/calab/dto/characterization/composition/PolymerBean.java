@@ -18,7 +18,7 @@ public class PolymerBean extends CompositionBean {
 	private String initiator;
 	
 	public PolymerBean() {
-		super();
+		
 	}
 
 	public PolymerBean(PolymerComposition polymer) {

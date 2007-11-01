@@ -11,7 +11,7 @@ public class CharacterizationTypeBean {
 
 	public CharacterizationTypeBean(String type, int indentLevel,
 			boolean hasAction) {
-		super();
+		
 		this.type = type;
 		this.indentLevel = indentLevel;
 		this.hasAction = hasAction;

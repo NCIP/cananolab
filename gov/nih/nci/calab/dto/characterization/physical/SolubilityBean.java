@@ -23,7 +23,7 @@ public class SolubilityBean extends CharacterizationBean {
 	private String isSoluble;
 
 	public SolubilityBean() {
-		super();
+		
 	}
 
 	/**

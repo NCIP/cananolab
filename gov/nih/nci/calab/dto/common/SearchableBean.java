@@ -22,8 +22,8 @@ public class SearchableBean {
 	}
 	public SearchableBean(String classification, String type, String lowValue,
 			String highValue) {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 		this.classification = classification;
 		this.type = type;
 		this.lowValue = lowValue;

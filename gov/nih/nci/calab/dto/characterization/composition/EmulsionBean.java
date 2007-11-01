@@ -20,7 +20,7 @@ public class EmulsionBean extends CompositionBean {
 	private String polymerName;
 
 	public EmulsionBean() {
-		super();
+		
 	}
 
 	public EmulsionBean(EmulsionComposition emulsion) {

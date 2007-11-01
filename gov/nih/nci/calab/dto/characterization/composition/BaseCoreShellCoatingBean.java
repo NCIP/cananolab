@@ -25,7 +25,7 @@ public class BaseCoreShellCoatingBean extends CompositionBean {
 	private String numberOfCoatings;
 
 	public BaseCoreShellCoatingBean() {
-		super();
+		
 		core.setElementType(CaNanoLabConstants.CORE);
 		getComposingElements().add(core);
 	}

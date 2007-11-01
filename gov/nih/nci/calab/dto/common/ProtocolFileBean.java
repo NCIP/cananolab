@@ -16,7 +16,7 @@ public class ProtocolFileBean extends LabFileBean {
 	 * 
 	 */
 	public ProtocolFileBean() {
-		super();
+		
 	}
 
 	public ProtocolFileBean(ProtocolFile protocolFile) {

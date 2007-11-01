@@ -32,8 +32,8 @@ public class LinkageBean {
 	 * 
 	 */
 	public LinkageBean() {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 
 	public LinkageBean(Linkage linkage) {

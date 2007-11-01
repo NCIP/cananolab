@@ -17,7 +17,7 @@ public class CytotoxicityBean extends CharacterizationBean {
 	// private String cellDeathMethod;
 
 	public CytotoxicityBean() {
-		super();
+		
 	}
 
 	public CytotoxicityBean(CytotoxicityBean propBean,

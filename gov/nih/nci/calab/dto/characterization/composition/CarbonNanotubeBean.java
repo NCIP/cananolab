@@ -22,7 +22,7 @@ public class CarbonNanotubeBean extends CompositionBean {
 	private String wallType;
 
 	public CarbonNanotubeBean() {
-		super();
+		
 	}
 
 	public CarbonNanotubeBean(CarbonNanotubeComposition carbonNanotube) {
