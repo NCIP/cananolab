@@ -13,8 +13,8 @@ public class SurfaceChemistry implements java.io.Serializable {
 	private Integer numberOfMolecule;
 
 	public SurfaceChemistry() {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 
 	public Long getId() {

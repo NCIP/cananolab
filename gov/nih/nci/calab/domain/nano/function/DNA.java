@@ -7,8 +7,8 @@ public class DNA extends Agent {
 	private String sequence;
 
 	public DNA() {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 
 	public String getSequence() {

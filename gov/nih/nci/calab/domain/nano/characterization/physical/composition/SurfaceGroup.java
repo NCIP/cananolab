@@ -21,8 +21,8 @@ public class SurfaceGroup implements java.io.Serializable {
 	 *
 	 */
 	public SurfaceGroup() {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 
 	public Long getId() {

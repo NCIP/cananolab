@@ -7,8 +7,8 @@ public class Size extends Characterization {
 	private static final long serialVersionUID = 1234567890L;
 
 	public Size() {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 	
 	public String getClassification() {

@@ -11,7 +11,7 @@ public class ImmunoToxicity extends Toxicity {
 	}
 
 	public void setImmunotoxiticyType(String type) {
-		// TODO Auto-generated method stub
+
 		this.immunotoxicityType = type;
 	}
 

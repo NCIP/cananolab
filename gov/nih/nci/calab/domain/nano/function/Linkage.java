@@ -11,8 +11,8 @@ public class Linkage implements java.io.Serializable {
 	private Agent agent;
 
 	public Linkage() {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 
 	public Long getId() {

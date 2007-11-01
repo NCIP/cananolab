@@ -6,8 +6,6 @@ public class Caspase3Activation extends Cytotoxicity {
 	private static final long serialVersionUID = 1234567890L;
 
 	public Caspase3Activation() {
-		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public String getClassification() {

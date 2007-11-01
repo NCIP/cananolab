@@ -13,8 +13,8 @@ public class Control implements Serializable {
 	private String type;
 
 	public Control() {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 
 	public Long getId() {

@@ -18,8 +18,8 @@ public class UnclassifiedLinkage extends Linkage {
 //	}
 //
 	public UnclassifiedLinkage() {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 //
 //	public String getDescription() {

@@ -17,8 +17,8 @@ public class DendrimerComposition extends ParticleComposition {
 	private Collection<SurfaceGroup> surfaceGroupCollection = new ArrayList<SurfaceGroup>();
 
 	public DendrimerComposition() {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 
 	public String getBranch() {

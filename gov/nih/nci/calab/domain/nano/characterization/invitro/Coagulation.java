@@ -15,8 +15,6 @@ public class Coagulation extends ImmunoToxicity {
 	 * 
 	 */
 	public Coagulation() {
-		super();
-		// TODO Auto-generated constructor stub
 	}
 	
 	public String getImmunotoxiticyType() {

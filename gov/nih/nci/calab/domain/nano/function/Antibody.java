@@ -9,8 +9,6 @@ public class Antibody extends Agent {
 	private String species;
 
 	public Antibody() {
-		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public String getName() {

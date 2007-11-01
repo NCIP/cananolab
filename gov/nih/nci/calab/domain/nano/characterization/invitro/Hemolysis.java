@@ -16,8 +16,8 @@ public class Hemolysis extends ImmunoToxicity {
 	 * 
 	 */
 	public Hemolysis() {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 
 	public String getImmunotoxiticyType() {

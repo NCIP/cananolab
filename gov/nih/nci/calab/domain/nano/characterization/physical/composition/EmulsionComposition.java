@@ -14,8 +14,8 @@ public class EmulsionComposition extends ParticleComposition {
 	private String polymerName;
 
 	public EmulsionComposition() {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 
 	public String getType() {

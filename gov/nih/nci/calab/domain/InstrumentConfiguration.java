@@ -22,8 +22,8 @@ public class InstrumentConfiguration implements Serializable {
 	 * 
 	 */
 	public InstrumentConfiguration() {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 
 	public String getDescription() {

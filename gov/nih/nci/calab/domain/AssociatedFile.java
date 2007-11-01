@@ -19,8 +19,6 @@ public class AssociatedFile extends LabFile {
 	 * 
 	 */
 	public AssociatedFile() {
-		super();
-		// TODO Auto-generated constructor stub
 	}
 
 

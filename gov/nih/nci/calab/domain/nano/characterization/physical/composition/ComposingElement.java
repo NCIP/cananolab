@@ -24,8 +24,8 @@ public class ComposingElement implements java.io.Serializable {
 	 * 
 	 */
 	public ComposingElement() {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 
 	public Long getId() {

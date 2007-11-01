@@ -11,8 +11,8 @@ public class LiposomeComposition extends ParticleComposition {
 	private String polymerName;
 
 	public LiposomeComposition() {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 
 	public Boolean getPolymerized() {

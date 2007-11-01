@@ -14,8 +14,6 @@ public class CarbonNanotubeComposition extends ParticleComposition {
 	private String wallType;
 
 	public CarbonNanotubeComposition() {
-		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public String getClassification() {

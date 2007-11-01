@@ -5,8 +5,8 @@ import gov.nih.nci.calab.domain.nano.characterization.toxicity.ImmunoToxicity;
 public class NKCellCytotoxicActivity extends ImmunoToxicity {
 
 	public NKCellCytotoxicActivity() {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 	private static final long serialVersionUID = 1234567890L;
 	public String getImmunotoxiticyType() {

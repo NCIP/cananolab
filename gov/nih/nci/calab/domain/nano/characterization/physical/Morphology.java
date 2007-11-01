@@ -9,8 +9,8 @@ public class Morphology extends Characterization {
 	private String type;
 
 	public Morphology() {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 
 	public String getClassification() {

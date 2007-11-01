@@ -11,8 +11,8 @@ public class PolymerComposition extends ParticleComposition {
 	private String initiator;
 
 	public PolymerComposition() {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 
 	public Float getCrossLinkDegree() {

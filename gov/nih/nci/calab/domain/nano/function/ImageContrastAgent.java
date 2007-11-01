@@ -9,8 +9,8 @@ public class ImageContrastAgent extends Agent {
 	private String type;
 
 	public ImageContrastAgent() {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 
 	public String getName() {
