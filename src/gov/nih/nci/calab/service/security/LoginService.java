@@ -30,7 +30,6 @@ public class LoginService
 	{
 		this.applicationName = strname;
 		am = SecurityServiceProvider.getAuthenticationManager(this.applicationName);
-        //TODO Add Role implementation
 	 }
 	
 	/**

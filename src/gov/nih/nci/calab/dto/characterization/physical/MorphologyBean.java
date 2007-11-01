@@ -24,7 +24,7 @@ public class MorphologyBean extends CharacterizationBean {
 	}
 
 	public MorphologyBean() {
-		super();
+		
 	}
 
 	public MorphologyBean(MorphologyBean propBean, CharacterizationBean charBean) {

@@ -36,7 +36,7 @@ public class SurfaceBean extends CharacterizationBean {
 	private List<SurfaceChemistryBean> surfaceChemistries = new ArrayList<SurfaceChemistryBean>();
 
 	public SurfaceBean() {
-		super();
+		
 		surfaceChemistries = new ArrayList<SurfaceChemistryBean>();
 	}
 

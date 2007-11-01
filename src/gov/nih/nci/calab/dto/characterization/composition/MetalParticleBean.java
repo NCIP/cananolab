@@ -14,7 +14,7 @@ import gov.nih.nci.calab.domain.nano.characterization.physical.composition.Metal
 public class MetalParticleBean extends BaseCoreShellCoatingBean {
 
 	public MetalParticleBean() {
-		super();
+		
 	}
 
 	public MetalParticleBean(MetalParticleComposition doComp) {

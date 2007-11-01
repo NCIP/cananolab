@@ -24,8 +24,6 @@ public class AgentTargetBean {
 	private String type;
 
 	public AgentTargetBean() {
-		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public AgentTargetBean(AgentTarget agentTarget) {
