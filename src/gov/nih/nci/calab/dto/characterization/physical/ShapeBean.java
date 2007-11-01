@@ -34,7 +34,7 @@ public class ShapeBean extends CharacterizationBean {
 	}
 
 	public ShapeBean() {
-		super();
+		
 	}
 
 	public ShapeBean(ShapeBean propBean, CharacterizationBean charBean) {

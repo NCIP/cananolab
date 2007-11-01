@@ -162,7 +162,6 @@ public class ProcessFileUpload extends HttpServlet {
 
 				String fullPathName = null;
 
-				// TODO: set path here
 				String path = PropertyReader.getProperty(
 						CaNanoLabConstants.FILEUPLOAD_PROPERTY,
 						"fileRepositoryDir");

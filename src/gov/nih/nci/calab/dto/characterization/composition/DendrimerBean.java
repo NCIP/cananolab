@@ -31,7 +31,7 @@ public class DendrimerBean extends CompositionBean {
 	private ComposingElementBean core = new ComposingElementBean();
 
 	public DendrimerBean() {
-		super();
+		
 		surfaceGroups = new ArrayList<SurfaceGroupBean>();
 		core.setElementType(CaNanoLabConstants.CORE);
 		getComposingElements().add(core);

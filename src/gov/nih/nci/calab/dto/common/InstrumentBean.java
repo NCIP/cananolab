@@ -24,7 +24,7 @@ public class InstrumentBean {
 
 	public InstrumentBean(String type, String description, String manufacturer,
 			String abbreviation) {
-		super();
+		
 		this.type = type;
 		this.manufacturer = manufacturer;
 		this.abbreviation = abbreviation;

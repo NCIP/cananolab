@@ -31,8 +31,8 @@ public class ProtocolBean implements Comparable {
 	 * 
 	 */
 	public ProtocolBean() {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 
 	public String getId() {

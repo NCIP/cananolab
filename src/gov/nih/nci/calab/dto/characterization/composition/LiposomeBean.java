@@ -16,7 +16,7 @@ public class LiposomeBean extends CompositionBean {
 	private String polymerName;
 
 	public LiposomeBean() {
-		super();
+		
 	}
 
 	public LiposomeBean(LiposomeComposition liposome) {

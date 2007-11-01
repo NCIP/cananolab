@@ -13,7 +13,7 @@ public class FullereneBean extends CompositionBean {
 	private String numberOfCarbons;
 
 	public FullereneBean() {
-		super();
+		
 	}
 
 	public FullereneBean(FullereneComposition fullerene) {
