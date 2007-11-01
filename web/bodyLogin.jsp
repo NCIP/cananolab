@@ -61,7 +61,7 @@
 			<td valign="top">
 
 				<!-- sidebar begins -->
-				<html:form action="/login" focus="loginID">
+				<html:form action="/login">
 				<table summary="" cellpadding="0" cellspacing="0" border="0"
 					height="100%">
 
