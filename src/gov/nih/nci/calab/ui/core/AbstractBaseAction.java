@@ -17,7 +17,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: AbstractBaseAction.java,v 1.12 2007-11-01 17:37:04 pansu Exp $ */
+/* CVS $Id: AbstractBaseAction.java,v 1.13 2007-11-02 16:16:06 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.exception.InvalidSessionException;
@@ -39,11 +39,10 @@ public abstract class AbstractBaseAction extends Action {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		HttpSession session=request.getSession();
-		ActionForward forward = executeTask(mapping, form, request, response);
 		UserBean user = (UserBean) session.getAttribute("user");
 
 		if (!loginRequired()) {
-			return forward;
+			return executeTask(mapping, form, request, response);
 
 		}
 		
@@ -57,7 +56,7 @@ public abstract class AbstractBaseAction extends Action {
 			throw new InvalidSessionException();
 		}
 
-		return forward;
+		return executeTask(mapping, form, request, response);
 	}
 
 	/**

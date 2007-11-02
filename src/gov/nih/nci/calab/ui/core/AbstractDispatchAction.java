@@ -18,18 +18,18 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		HttpSession session = request.getSession();
-		ActionForward forward = super.execute(mapping, form, request, response);
+		
 		UserBean user = (UserBean) session.getAttribute("user");
 
 		// response.setHeader("Cache-Control", "no-cache");
 
 		if (!loginRequired()) {
-			return forward;
+			return super.execute(mapping, form, request, response);
 		}
 		String dispatch = request.getParameter("dispatch");
 		if (dispatch.equals("setupView") || dispatch.equals("download")
 				|| dispatch.equals("loadFile")) {
-			return forward;
+			return super.execute(mapping, form, request, response);
 		}
 		if (user != null) {
 			// check whether user have access to the class
@@ -38,7 +38,7 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 			// setupView or download or loadfile
 			// do forward
 			if (accessStatus) {
-				return forward;
+				return super.execute(mapping, form, request, response);
 			} else {
 				request.getSession().removeAttribute("user");
 				throw new NoAccessException("You don't have access to class: "
