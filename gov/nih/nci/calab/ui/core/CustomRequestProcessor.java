@@ -20,12 +20,8 @@ public class CustomRequestProcessor extends TilesRequestProcessor {
 			javax.servlet.http.HttpServletRequest request,
 			javax.servlet.http.HttpServletResponse response,
 			ActionMapping mapping) {
-		HttpSession session = request.getSession(false);
-		if (session == null
-				|| session != null
-				&& session.getAttribute("user") == null
-				&& !(request.getServletPath().equals("/login.do") || request
-						.getServletPath().equals("/updatePassword.do"))) {
+		HttpSession session = request.getSession();
+		if (session.isNew() && (request.getServletPath().startsWith("/create"))) {
 			return null;
 		} else {
 			return super.processActionForm(request, response, mapping);
