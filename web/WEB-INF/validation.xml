@@ -60,7 +60,7 @@
 			</field>
 		</form>
 		<form name="submitProtocolForm">
-			<field property="protocolId" page="1" depends="required">
+			<field property="protocolName" page="1" depends="required">
 				<arg position="0" key="submitProtocolForm.protocolName"
 					bundle="protocol" />
 			</field>

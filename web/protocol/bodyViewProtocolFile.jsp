@@ -13,7 +13,9 @@
 				</h3>
 			</td>
 			<td align="right" width="15%">
-				<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=nano_protocol_help')" class="helpText">Help</a>
+				<a
+					href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=nano_protocol_help')"
+					class="helpText">Help</a>
 				<logic:equal name="protocolActionName" value="updateProtocol">
 				&nbsp;&nbsp;<a href="protocolResults.do" class="helpText">Back</a>
 				</logic:equal>
@@ -22,7 +24,8 @@
 		<tr>
 			<td colspan="2">
 				<jsp:include page="/bodyMessage.jsp?bundle=protocol" />
-				<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+				<table class="topBorderOnly" cellspacing="0" cellpadding="3"
+					width="100%" align="center" summary="" border="0">
 					<tbody>
 						<tr class="topBorder">
 							<td class="formTitle" colspan="4">
@@ -60,15 +63,16 @@
 						</tr>
 						<c:choose>
 							<c:when test="${canCreateProtocol eq 'true'}">
-							<tr>
+								<tr>
 									<td class="leftLabel">
 										<strong>Protocol File</strong>
 									</td>
 									<td class="rightLabel">
 										<c:choose>
-											<c:when test="${not empty filename}">
-												<!-- <strong>Uploaded File:&nbsp; &nbsp; </strong> c:out value="${filename}"/> &nbsp; &nbsp; -->
-												<a href="searchProtocol.do?dispatch=download&amp;fileId=<bean:write name="updateProtocolForm" property="file.id" />"> /protocol/<bean:write name="updateProtocolForm" property="file.name" /></a>&nbsp; &nbsp;
+											<c:when test="${not empty updateProtocolForm.map.file.uri}">
+												<a
+													href="searchProtocol.do?dispatch=download&amp;fileId=<bean:write name="updateProtocolForm" property="file.id" />">${updateProtocolForm.map.file.uri}
+												</a>
 											</c:when>
 											<c:otherwise>No file uploaded.</c:otherwise>
 										</c:choose>
@@ -89,7 +93,8 @@
 									<td class="leftLabel">
 										<strong>File Description</strong>
 									</td>
-									<td class="rightLabel"><html:textarea property="file.description" rows="3" cols="80" />
+									<td class="rightLabel">
+										<html:textarea property="file.description" rows="3" cols="80" />
 									</td>
 								</tr>
 								<tr>
@@ -97,27 +102,33 @@
 										<strong>Visibility</strong>
 									</td>
 									<td class="rightLabel">
-										<html:select property="file.visibilityGroups" multiple="true" size="6">
+										<html:select property="file.visibilityGroups" multiple="true"
+											size="6">
 											<html:options name="allVisibilityGroups" />
 										</html:select>
 										<br>
-										<i>(${applicationOwner}_Researcher and ${applicationOwner}_PI are defaults if none of above is selected.)</i>
+										<i>(${applicationOwner}_Researcher and
+											${applicationOwner}_PI are defaults if none of above is
+											selected.)</i>
 									</td>
 								</tr>
 							</c:when>
 							<c:otherwise>
-							<tr>
+								<tr>
 									<td class="leftLabel">
 										<strong>Protocol File</strong>
 									</td>
 									<td class="rightLabel">
 										<c:choose>
-											<c:when test="${not empty filename}">
-												<!-- <strong>Uploaded File:&nbsp; &nbsp; </strong> c:out value="${filename}"/> &nbsp; &nbsp; -->
-												<a href="searchProtocol.do?dispatch=download&amp;fileId=<bean:write name="updateProtocolForm" property="file.id" />"> /protocol/<bean:write name="updateProtocolForm" property="file.name" /></a>&nbsp; &nbsp;
+											<c:when test="${not empty updateProtocolForm.map.file.uri}">
+												<a
+													href="searchProtocol.do?dispatch=download&amp;fileId=<bean:write name="updateProtocolForm" property="file.id" />">${updateProtocolForm.map.file.uri}
+												</a>
 											</c:when>
 											<c:otherwise>No file uploaded.</c:otherwise>
 										</c:choose>
+										<%-- <html:file property="uploadedFile" /> &nbsp; &nbsp; --%>
+									</td>
 									</td>
 								</tr>
 								<tr>
@@ -134,7 +145,8 @@
 										<strong>Description</strong>
 									</td>
 									<td class="rightLabel" colspan="3">
-										<bean:write name="updateProtocolForm" property="file.description" />
+										<bean:write name="updateProtocolForm"
+											property="file.description" />
 										&nbsp;
 									</td>
 								</tr>
@@ -143,7 +155,8 @@
 										<strong>Visibility</strong>
 									</td>
 									<td class="rightLabel" colspan="3">
-										<bean:write name="updateProtocolForm" property="file.visibilityStr" filter="false" />
+										<bean:write name="updateProtocolForm"
+											property="file.visibilityStr" filter="false" />
 										&nbsp;
 									</td>
 								</tr>
@@ -158,12 +171,14 @@
 	<c:choose>
 		<c:when test="${canCreateProtocol eq 'true'}">
 			<br>
-			<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
+			<table width="100%" border="0" align="center" cellpadding="3"
+				cellspacing="0" class="topBorderOnly" summary="">
 				<tr>
 					<td width="30%">
 						<span class="formMessage"> </span>
 						<br>
-						<table width="498" height="32" border="0" align="right" cellpadding="4" cellspacing="0">
+						<table width="498" height="32" border="0" align="right"
+							cellpadding="4" cellspacing="0">
 							<tr>
 								<td width="490" height="32">
 									<div align="right">

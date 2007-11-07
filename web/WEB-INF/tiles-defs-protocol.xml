@@ -21,6 +21,7 @@
 		<put name="calabContent"
 			value="/protocol/bodySubmitProtocol.jsp" />
 		<put name="menu" value="protocols" />
+		<put name="onloadJavascript" value="retrieveProtocols();retrieveProtocolFileVersions();"/>
 	</definition>
 
 	<definition name="protocol.message" extends="calab.home">

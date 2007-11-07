@@ -3,6 +3,9 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <script type="text/javascript" src="javascript/editableDropDown.js"></script>
+<script type='text/javascript' src='javascript/ProtocolManager.js'></script>
+<script type='text/javascript' src='dwr/interface/ProtocolManager.js'></script>
+<script type='text/javascript' src='dwr/engine.js'></script>
 
 <table width="100%" border="0" align="center" cellpadding="3"
 	cellspacing="0" class="topBorderOnly" summary="">
@@ -60,14 +63,19 @@
 		<td class="label" colspan="3">
 			<c:choose>
 				<c:when test="${canCreateNanoparticle eq 'true'}">
-					<html:select property="achar.protocolFileBean.id">
+					<html:select styleId="protocolId"
+						property="achar.protocolFileBean.id"
+						onchange="retrieveProtocolFile()">
 						<option />
-							<html:optionsCollection name="protocolNameVersionsByType"
-								label="label" value="value" />
-					</html:select>
+							<html:options collection="submitTypeProtocolFiles" property="id" labelProperty="displayName"/>
+					</html:select> &nbsp;<span id="protocolLink"><a
+						href="searchProtocol.do?dispatch=download&amp;fileId=${nanoparticleCharacterizationForm.map.achar.protocolFileBean.id}">${nanoparticleCharacterizationForm.map.achar.protocolFileBean.uri}</a>
+					</span>
 				</c:when>
 				<c:otherwise>
 						${nanoparticleCharacterizationForm.map.achar.protocolFileBean.protocolBean.name}&nbsp;
+						<a
+						href="searchProtocol.do?dispatch=download&amp;fileId=${nanoparticleCharacterizationForm.map.achar.protocolFileBean.id}">${nanoparticleCharacterizationForm.map.achar.protocolFileBean.uri}</a>
 				</c:otherwise>
 			</c:choose>
 		</td>

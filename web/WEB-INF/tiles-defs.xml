@@ -31,6 +31,7 @@
 		<put name="calabFooter" value="/html/calabFooter.html" />
 		<put name="nciFooter" value="/html/nciFooter.html" />
 		<put name="menu" value="home" />
+		<put name="onloadJavascript" value=""/>
 		<putList name="items">
 			<item value="SAMPLES" link="gotoPage('manageSample.do')" />
 			<item value="PROTOCOLS"
