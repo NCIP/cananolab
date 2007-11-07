@@ -688,6 +688,12 @@ p,.p { /* for paragraphs */
 	padding-bottom: 0;
 }
 
+#publicLinks img {
+	float: left;
+	margin: 0;
+	padding: 0;
+}
+
 img.img { /* for images that need a border */
 	border: 1px solid #5c5c5c; /* constant: dark gray */
 }
