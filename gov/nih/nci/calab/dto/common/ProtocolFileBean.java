@@ -16,12 +16,12 @@ public class ProtocolFileBean extends LabFileBean {
 	 * 
 	 */
 	public ProtocolFileBean() {
-		
+
 	}
 
 	public ProtocolFileBean(ProtocolFile protocolFile) {
 		super(protocolFile);
-		protocolBean=new ProtocolBean(protocolFile.getProtocol());
+		protocolBean = new ProtocolBean(protocolFile.getProtocol());
 	}
 
 	public ProtocolBean getProtocolBean() {
@@ -31,26 +31,31 @@ public class ProtocolFileBean extends LabFileBean {
 	public void setProtocolBean(ProtocolBean protocolBean) {
 		this.protocolBean = protocolBean;
 	}
-//	public int compareTo(Object obj) {
-//		int comparison = 0;
-//		if (obj instanceof ProtocolFileBean) {
-//			ProtocolFileBean inPb = (ProtocolFileBean) obj;
-//			
-//			if (this.getName() != null){
-//				comparison = this.getName().compareTo(inPb.getName());
-//				if (comparison == 0){
-//					if (this.getVersion() != null)
-//						comparison = this.getVersion().compareTo(inPb.getVersion());
-//				}
-//			}
-//			else {
-//				if (this.getVersion() != null){
-//					comparison = this.getVersion().compareTo(inPb.getVersion());
-//				}
-//			}
-//		}
-//		return comparison;
-//	}
+
+	public String getDisplayName() {
+		return getProtocolBean().getName() + "-" + getVersion();
+	}
+
+	// public int compareTo(Object obj) {
+	// int comparison = 0;
+	// if (obj instanceof ProtocolFileBean) {
+	// ProtocolFileBean inPb = (ProtocolFileBean) obj;
+	//			
+	// if (this.getName() != null){
+	// comparison = this.getName().compareTo(inPb.getName());
+	// if (comparison == 0){
+	// if (this.getVersion() != null)
+	// comparison = this.getVersion().compareTo(inPb.getVersion());
+	// }
+	// }
+	// else {
+	// if (this.getVersion() != null){
+	// comparison = this.getVersion().compareTo(inPb.getVersion());
+	// }
+	// }
+	// }
+	// return comparison;
+	// }
 
 	public boolean equals(Object obj) {
 		boolean eq = false;
