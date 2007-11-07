@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dwr PUBLIC "-//GetAhead Limited//DTD Direct Web Remoting 2.0//EN" "http://getahead.org/dwr/dwr20.dtd">
+<dwr>
+	<allow>
+		<create creator="new" javascript="ProtocolManager">
+			<param name="class"
+				value="gov.nih.nci.calab.service.protocol.SearchProtocolService" />
+			<include method="getProtocolFileBean" />
+			<include method="getProtocolFileBeans" />
+			<include method="getProtocolBeans" />
+		</create>
+		<convert converter="bean"
+			match="gov.nih.nci.calab.dto.common.ProtocolFileBean">
+			<param name="include" value="id, name, title, uri, version" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.calab.dto.common.ProtocolBean">
+			<param name="include" value="id, name, type" />
+		</convert>
+	</allow>
+</dwr>
