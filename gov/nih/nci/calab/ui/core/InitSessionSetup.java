@@ -4,6 +4,7 @@ import gov.nih.nci.calab.service.common.LookupService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.servlet.http.HttpSession;
 
@@ -48,12 +49,15 @@ public class InitSessionSetup {
 	}
 
 	public void updateEditableDropdown(HttpSession session,
-			String formAttribute, String sessionAttributeName) {
+			String formAttributeValue, String sessionAttributeName) {
 		SortedSet<String> dropdown = (SortedSet<String>) session
 				.getAttribute(sessionAttributeName);
-		if (dropdown != null && formAttribute != null
-				&& formAttribute.length() > 0) {
-			dropdown.add(formAttribute);
+		if (dropdown == null) {
+			dropdown = new TreeSet<String>();			
 		}
+		if (formAttributeValue != null && formAttributeValue.length() > 0) {
+			dropdown.add(formAttributeValue);
+		}
+		session.setAttribute(sessionAttributeName, dropdown);
 	}
 }
