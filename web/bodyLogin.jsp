@@ -27,6 +27,7 @@
 							<br><br>
 					<div id="publicLinks">
 						<ul>
+							<img src="images/icon_protocol_48x.jpg" />
 							<li>
 							<c:url var="protocolURL" value="searchProtocol.do">
 								<c:param name="dispatch">setup</c:param>
@@ -35,6 +36,7 @@
 							<h5>Provides access to publicly available nanotechnology protocols. Includes protocols for nanoparticle characterizations (physical, in vitro, in vivo), sample preparation, radio labeling, and safety.
 </h5>
 							</li>
+							<img src="images/icon_nanoparticle_48x.jpg" />
 							<li>
 							<c:url var="charURL" value="searchNanoparticle.do">
 								<c:param name="dispatch">setup</c:param>
@@ -42,6 +44,8 @@
 							<h4><a href="${charURL}">Nanoparticles</a></h4>
 							<h5>Provides access to publicly available nanoparticle characterization data.  Includes information on particle composition, function, and physical and in vitro characterizations (in vivo coming soon).</h5>
 							</li>
+							
+							<img src="images/icon_report_48x.gif" />
 							<li>
 							<c:url var="reportURL" value="searchReport.do">
 								<c:param name="dispatch">setup</c:param>
