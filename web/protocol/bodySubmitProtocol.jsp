@@ -4,6 +4,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <script type="text/javascript" src="javascript/editableDropDown.js"></script>
+<script type='text/javascript' src='javascript/ProtocolManager.js'></script>
+<script type='text/javascript' src='dwr/interface/ProtocolManager.js'></script>
+<script type='text/javascript' src='dwr/engine.js'></script>
+<script type='text/javascript' src='dwr/util.js'></script>
 
 <html:form action="/submitProtocol" enctype="multipart/form-data">
 	<table width="100%" align="center">
@@ -15,13 +19,16 @@
 				</h3>
 			</td>
 			<td align="right" width="15%">
-				<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=submit_protocol_help')" class="helpText">Help</a>
+				<a
+					href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=submit_protocol_help')"
+					class="helpText">Help</a>
 			</td>
 		</tr>
 		<tr>
 			<td colspan="2">
 				<jsp:include page="/bodyMessage.jsp?bundle=protocol" />
-				<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+				<table class="topBorderOnly" cellspacing="0" cellpadding="3"
+					width="100%" align="center" summary="" border="0">
 					<tbody>
 						<tr class="topBorder">
 							<td class="formTitle" colspan="2">
@@ -35,54 +42,47 @@
 								<strong>Protocol Type*</strong>
 							</td>
 							<td class="rightLabel">
-								<html:select property="protocolType" 
+								<html:select styleId="protocolType" property="protocolType"
 									onkeydown="javascript:fnKeyDownHandler(this, event);"
 									onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
 									onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-									onchange="fnChangeHandler_A(this, event); filterProtocolNames();">
-									<option value="">--?--</option>
+									onchange="fnChangeHandler_A(this, event); resetProtocols(); retrieveProtocols();">
+									<html:option value="">--?--</html:option>
 									<html:options name="protocolTypes" />
 								</html:select>
 							</td>
 						</tr>
 						<tr>
-							<td class="leftLabel" >
+							<td class="leftLabel">
 								<strong>Protocol Name* </strong>
 							</td>
 							<td class="rightLabel">
-								<html:select styleId="pName" property="protocolId" 
+								<html:select styleId="protocolName" property="protocolName"
 									onkeydown="javascript:fnKeyDownHandler(this, event);"
 									onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
 									onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-									onchange="fnChangeHandler_A(this, event); javascript:filterProtocolVersions();">
-									<option value="">--?--</option>
-									<html:optionsCollection name="protocolNames" label="name" value="id"/>
-								</html:select> &nbsp; &nbsp; <strong>Protocol Version* </strong>&nbsp; 
-								<html:select styleId="protocolVersion" property="file.id" 
+									onchange="fnChangeHandler_A(this, event); resetProtocolFiles(); retrieveProtocolFileVersions();">
+									<html:option value="">--?--</html:option>
+									<html:option value="${submitProtocolForm.map.protocolName}">${submitProtocolForm.map.protocolName}</html:option>
+								</html:select>
+								&nbsp; &nbsp;
+								<strong>Protocol Version* </strong>&nbsp;
+								<html:select styleId="protocolId" property="file.id"
 									onkeydown="javascript:fnKeyDownHandler(this, event);"
 									onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
 									onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-									onchange="fnChangeHandler_A(this, event); javascript:getProtocolFileData();">
-									<option value="">--?--</option>
-									<html:optionsCollection name="protocolVersions" label="label" value="value"/>
-								</html:select> &nbsp; &nbsp;  
-									<!-- html:text property="file.version" size="10"/ -->
+									onchange="fnChangeHandler_A(this, event); retrieveProtocolFile(); ">
+									<html:option value="">--?--</html:option>
+								</html:select>
+								&nbsp; &nbsp;
 							</td>
 						</tr>
 						<tr>
 							<td class="leftLabel">
 								<strong>Protocol File</strong>
 							</td>
-							<!-- td class="rightLabel" nowrap-->
 							<td class="rightLabel">
-								<span id="filenameDiv">
-									<c:choose>
-										<c:when test="${not empty filename}">
-											<!-- strong>Uploaded File:&nbsp; &nbsp; </strong><c:out value="${filename}"/> &nbsp; &nbsp; -->
-											<a href="searchProtocol.do?dispatch=download&amp;fileId=<bean:write name="submitProtocolForm" property="file.id" />"> /protocol/<bean:write name="submitProtocolForm" property="file.name" /></a>&nbsp; &nbsp;
-										</c:when>
-									</c:choose>
-								</span>
+								<span id="protocolLink"> </span>&nbsp;
 								<html:file property="uploadedFile" />
 							</td>
 						</tr>
@@ -91,7 +91,7 @@
 								<strong>File Title</strong>
 							</td>
 							<td class="rightLabel">
-								<html:text styleId="fileTitle" property="file.title" size="80"/>
+								<html:text styleId="fileTitle" property="file.title" size="80" />
 							</td>
 						</tr>
 						<tr>
@@ -99,7 +99,8 @@
 								<strong>Description</strong>
 							</td>
 							<td class="rightLabel">
-								<html:textarea styleId="fileDescription" property="file.description" rows="3" cols="80" />
+								<br>
+
 							</td>
 						</tr>
 						<tr>
@@ -107,27 +108,33 @@
 								<strong>Visibility</strong>
 							</td>
 							<td class="rightLabel">
-								<html:select property="file.visibilityGroups" multiple="true" size="6">
+								<html:select property="file.visibilityGroups" multiple="true"
+									size="6">
 									<html:options name="allVisibilityGroups" />
 								</html:select>
 								<br>
-								<i>(${applicationOwner}_Researcher and ${applicationOwner}_PI are defaults if none of above is selected.)</i>						
+								<i>(${applicationOwner}_Researcher and
+									${applicationOwner}_PI are defaults if none of above is
+									selected.)</i>
 							</td>
 						</tr>
 					</tbody>
 				</table>
 				<br>
-				<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
+				<table width="100%" border="0" align="center" cellpadding="3"
+					cellspacing="0" class="topBorderOnly" summary="">
 					<tr>
 						<td width="30%">
 							<span class="formMessage"> </span>
 							<br>
-							<table width="498" height="15" border="0" align="right" cellpadding="4" cellspacing="0">
+							<table width="498" height="15" border="0" align="right"
+								cellpadding="4" cellspacing="0">
 								<tr>
 									<td width="490" height="15">
 										<div align="right">
 											<div align="right">
-												<input type="reset" value="Reset" onclick="javascript:location.href='submitProtocol.do?dispatch=setup&page=0'">
+												<input type="reset" value="Reset"
+													onclick="javascript:location.href='submitProtocol.do?dispatch=setup&page=0'">
 												<input type="hidden" name="dispatch" value="submit">
 												<input type="hidden" name="page" value="2">
 												<html:submit />
@@ -144,101 +151,3 @@
 		</tr>
 	</table>
 </html:form>
-
-<script language="JavaScript">
-<!--//
-  /* populate a hashtable containing sampleName aliquots */
-  var typeNames=new Array();    
-  <c:forEach var="item" items="${AllProtocolTypeNames}">
-    var names=new Array();
-    <c:forEach var="name" items="${AllProtocolTypeNames[item.key]}" varStatus="count">
-  	    names[${count.index}]='${name}';  	
-    </c:forEach>
-    typeNames['${item.key}']=names;
-  </c:forEach>  
-
-  var typeIds=new Array();    
-  <c:forEach var="item" items="${AllProtocolTypeIds}">
-    var ids=new Array();
-    <c:forEach var="id" items="${AllProtocolTypeIds[item.key]}" varStatus="count">
-  	    ids[${count.index}]='${id}';  	
-    </c:forEach>
-    typeIds['${item.key}']=ids;
-  </c:forEach> 
-  
-  function filterProtocolNames() {
-  	if (!document.submitProtocolForm.protocolType[1].checked) {
-		doubleDropdownForNameValuePairs(document.submitProtocolForm.protocolType, document.submitProtocolForm.protocolId, typeNames, typeIds);	
-  		var theVersion = document.getElementById("protocolVersion");
-  		var theName = document.getElementById("pName");
-		var fileTitle = document.getElementById("fileTitle");
-		var fileDescription = document.getElementById("fileDescription");
-		fileTitle.value = "";
-		fileDescription.value = "";
-		document.getElementById('filenameDiv').innerHTML = '';
-  		doubleDropdownForNameValuePairs(theName, theVersion, null, null);
-	}
-  }
-  
-  var nameVersions=new Array();    
-  <c:forEach var="item" items="${AllProtocolNameVersions}">
-    var versions=new Array();
-    <c:forEach var="version" items="${AllProtocolNameVersions[item.key]}" varStatus="count">
-  	    versions[${count.index}]='${version}';  	
-    </c:forEach>
-    nameVersions['${item.key}']=versions;
-  </c:forEach>  
-
-  var nameIds=new Array();    
-  <c:forEach var="item" items="${AllProtocolNameFileIds}">
-    var fileIds=new Array();
-    <c:forEach var="fileId" items="${AllProtocolNameFileIds[item.key]}" varStatus="count">
-  	    fileIds[${count.index}]='${fileId}';  	
-    </c:forEach>
-    nameIds['${item.key}']=fileIds;
-  </c:forEach> 
-  
-  function filterProtocolVersions() {
-  	var theVersion = document.getElementById("protocolVersion");
-  	var theName = document.getElementById("pName");
-   	var fileTitle = document.getElementById("fileTitle");
-  	var fileDescription = document.getElementById("fileDescription");
-  	fileTitle.value = "";
-  	fileDescription.value = "";
-  	document.getElementById('filenameDiv').innerHTML = '';
-  	if (!theName[1].checked) {
-  	   doubleDropdownForNameValuePairs(theName, theVersion, nameVersions, nameIds);	
-  	}
-  }
-  function getProtocolFileData(){
-  	var version = document.getElementById("protocolVersion");
-    var i;
-  	for (i = version.length - 1; i>=0; i--) {
-    	if (version.options[i].selected){
-    		if (version.options[i].value == ""){
-  				var fileTitle = document.getElementById("fileTitle");
-  				var fileDescription = document.getElementById("fileDescription");
-  				//alert("fileTitle = " + fileTitle.value);
-  				//alert("fileDescription = " + fileDescription.value);
-  				fileTitle.value = "";
-  				fileDescription.value = "";
-  				document.getElementById('filenameDiv').innerHTML = '';
-  			}
-  			else{
-  				document.submitProtocolForm.dispatch.value = "getFileData";
-  				document.submitProtocolForm.submit();
-  			}
-  		}
-  	}
-  }
-  function resetRest(){
-  alert(" resetRest called");
-  	var fileTitle = document.getElementById("fileTitle");
-  	var fileDescription = document.getElementById("fileDescription");
-  	alert("fileTitle = " + fileTitle.value);
-  	alert("fileDescription = " + fileDescription.value);
-  	fileTitle.text.value = "";
-  	fileDescription.text.value = "";
-  }
-//-->
-</script>
