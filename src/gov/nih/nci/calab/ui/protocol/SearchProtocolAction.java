@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.protocol;
  * @author pansu
  */
 
-/* CVS $Id: SearchProtocolAction.java,v 1.1 2007-11-01 17:30:21 pansu Exp $ */
+/* CVS $Id: SearchProtocolAction.java,v 1.2 2007-11-07 21:22:20 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
@@ -73,7 +73,7 @@ public class SearchProtocolAction extends AbstractDispatchAction {
 			throws Exception {
 		HttpSession session = request.getSession();
 		InitSessionSetup.getInstance().setApplicationOwner(session);
-		InitProtocolSetup.getInstance().setProtocolType(session);
+		InitProtocolSetup.getInstance().setAllProtocolTypes(session);
 
 		return mapping.getInputForward();
 	}

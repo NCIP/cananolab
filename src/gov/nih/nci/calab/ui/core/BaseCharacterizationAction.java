@@ -255,16 +255,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		InitParticleSetup.getInstance().setAllInvitroDropdowns(session);
 		InitParticleSetup.getInstance().setAllCharacterizationMeasureUnitsTypes(
 				session, charName);
-		// TODO If there are more types of charactizations, add their
-		// corresponding
-		// protocol type here.
-		if (submitType.equalsIgnoreCase("physical"))
-			InitProtocolSetup.getInstance().setAllProtocolNameVersionsByType(
-					session, "Physical assay");
-		else
-			InitProtocolSetup.getInstance().setAllProtocolNameVersionsByType(
-					session, "In Vitro assay");
-
+		InitProtocolSetup.getInstance().setProtocolFilesBySubmitType(session, submitType);
+		
 		// set up other particle names from the same source
 		LookupService service = new LookupService();
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
