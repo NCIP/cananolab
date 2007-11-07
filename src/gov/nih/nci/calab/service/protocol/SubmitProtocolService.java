@@ -27,7 +27,7 @@ import org.hibernate.Session;
  */
 
 /*
- * CVS $Id: SubmitProtocolService.java,v 1.1 2007-11-01 17:31:14 pansu Exp $
+ * CVS $Id: SubmitProtocolService.java,v 1.2 2007-11-07 21:22:20 pansu Exp $
  */
 
 public class SubmitProtocolService {
@@ -77,8 +77,8 @@ public class SubmitProtocolService {
 		dataFile.setDescription(fileBean.getDescription());
 		if (uploadedFile != null) {
 			dataFile.setFilename(uploadedFile.getFileName());
-			dataFile.setUri(CaNanoLabConstants.FOLDER_PROTOCOL + File.separator
-					+ fileName);
+			dataFile.setUri(File.separator + CaNanoLabConstants.FOLDER_PROTOCOL
+					+ File.separator + fileName);
 		}
 		dataFile.setTitle(fileBean.getTitle().toUpperCase()); // convert to
 		// upper case
@@ -232,8 +232,8 @@ public class SubmitProtocolService {
 			file.setDescription(fileBean.getDescription());
 			if (fileName != null && fileName.length() > 0) {
 				file.setFilename(fileName);
-				file.setUri(CaNanoLabConstants.FOLDER_PROTOCOL + File.separator
-						+ fileName);
+				file.setUri(File.separator + CaNanoLabConstants.FOLDER_PROTOCOL
+						+ File.separator + fileName);
 			}
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {

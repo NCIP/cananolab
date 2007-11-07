@@ -14,12 +14,15 @@ import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 /**
- * This class includes methods invovled in searching reports.
+ * This class includes methods invovled in setting up protocol related forms and
+ * searching protocols.
  * 
  * @author pansu
  * 
@@ -31,58 +34,9 @@ public class SearchProtocolService {
 
 	public SearchProtocolService() throws Exception {
 		userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
-
 	}
 
-	public ProtocolFileBean getProtocolFileBean(String fileBeanId)
-			throws Exception {
-		ProtocolFileBean fileBean = null;
-		try {
-
-			Session session = HibernateUtil.currentSession();
-			HibernateUtil.beginTransaction();
-			List results = session
-					.createQuery(
-							"select protocolFile.title, protocolFile.description, protocolFile.filename, "
-									+ "protocolFile.version from ProtocolFile protocolFile "
-									+ "where protocolFile.id='" + fileBeanId
-									+ "'").list();
-
-			for (Object obj : results) {
-				String title = (String) (((Object[]) obj)[0]);
-				String description = (String) (((Object[]) obj)[1]);
-				String fileName = (String) (((Object[]) obj)[2]);
-				String version = (String) (((Object[]) obj)[3]);
-
-				fileBean = new ProtocolFileBean();
-				fileBean.setId(fileBeanId);
-				fileBean.setDescription(description);
-				fileBean.setTitle(title);
-				fileBean.setName(fileName);
-				fileBean.setVersion(version);
-			}
-			HibernateUtil.commitTransaction();
-		} catch (Exception e) {
-			logger.error(
-					"Problem finding protocol file info for protocol file Id: "
-							+ fileBeanId, e);
-			throw e;
-		} finally {
-			HibernateUtil.closeSession();
-		}
-		// get visibilities
-		UserService userService = new UserService(
-				CaNanoLabConstants.CSM_APP_NAME);
-		List<String> accessibleGroups = userService.getAccessibleGroups(
-				fileBean.getId(), CaNanoLabConstants.CSM_READ_ROLE);
-		String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
-		fileBean.setVisibilityGroups(visibilityGroups);
-		return fileBean;
-	}
-
-	public ProtocolFileBean getWholeProtocolFileBean(String fileId)
-			throws Exception {
-
+	public ProtocolFileBean getProtocolFileBean(String fileId) throws Exception {
 		ProtocolFileBean pfb = new ProtocolFileBean();
 		try {
 			Session session = HibernateUtil.currentSession();
@@ -97,18 +51,7 @@ public class SearchProtocolService {
 
 			for (Object obj : results) {
 				ProtocolFile pf = (ProtocolFile) obj;
-				pfb.setId(pf.getId().toString());
-				pfb.setVersion(pf.getVersion());
-				pfb.setTitle(pf.getTitle());
-				pfb.setName(pf.getFilename());
-				pfb.setDescription(pf.getDescription());
-
-				ProtocolBean pb = new ProtocolBean();
-				Protocol p = pf.getProtocol();
-				pb.setId(p.getId().toString());
-				pb.setName(p.getName());
-				pb.setType(p.getType());
-				pfb.setProtocolBean(pb);
+				pfb = new ProtocolFileBean(pf);
 			}
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
@@ -126,13 +69,117 @@ public class SearchProtocolService {
 		return pfb;
 	}
 
+	//used for Ajax
+	public List<ProtocolFileBean> getProtocolFileBeans(String protocolName,
+			String protocolType) throws Exception {
+		if (protocolName == null || protocolName.length() == 0
+				|| protocolType == null || protocolType.length() == 0) {
+			return null;
+		}
+		List<ProtocolFileBean> files = new ArrayList<ProtocolFileBean>();
+		try {
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+
+			String hqlString = "select protocolFile from ProtocolFile protocolFile join "
+					+ "protocolFile.protocol protocol ";
+			String where = "";
+			if (protocolType != null && protocolType.length() > 0) {
+				where += "where protocol.name='" + protocolName
+						+ "' and protocol.type='" + protocolType + "'";
+			} else if (protocolName != null && protocolName.length() > 0) {
+				where += "where protocol.name='" + protocolName + "'";
+			} else if (protocolType != null && protocolType.length() > 0) {
+				where += "where protocol.type='" + protocolType + "'";
+			}
+
+			List results = session.createQuery(hqlString + where).list();
+
+			for (Object obj : results) {
+				ProtocolFile pf = (ProtocolFile) obj;
+				files.add(new ProtocolFileBean(pf));
+			}
+			HibernateUtil.commitTransaction();
+		} catch (Exception e) {
+			logger
+					.error(
+							"Problem finding protocol files base on protocol name and type.",
+							e);
+			throw e;
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		return files;
+	}
+
+	//used for Ajax
+	public List<ProtocolBean> getProtocolBeans(String protocolType)
+			throws Exception {
+		if (protocolType == null || protocolType.length() == 0) {
+			return null;
+		}
+		List<ProtocolBean> protocols = new ArrayList<ProtocolBean>();
+		try {
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+
+			String hqlString = "from Protocol where type='" + protocolType
+					+ "'";
+			List results = session.createQuery(hqlString).list();
+
+			for (Object obj : results) {
+				Protocol protocol = (Protocol) obj;
+				protocols.add(new ProtocolBean(protocol));
+			}
+			HibernateUtil.commitTransaction();
+		} catch (Exception e) {
+			logger
+					.error(
+							"Problem finding protocols base on protocol type.",
+							e);
+			throw e;
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		return protocols;
+	}
+
+	public List<ProtocolFileBean> getProtocolFileBeans(String protocolType)
+			throws Exception {
+
+		List<ProtocolFileBean> files = new ArrayList<ProtocolFileBean>();
+		try {
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+
+			String hqlString = "select protocolFile from ProtocolFile protocolFile join "
+					+ "protocolFile.protocol protocol where protocol.type='"
+					+ protocolType + "'";
+
+			List results = session.createQuery(hqlString).list();
+
+			for (Object obj : results) {
+				ProtocolFile pf = (ProtocolFile) obj;
+				files.add(new ProtocolFileBean(pf));
+			}
+			HibernateUtil.commitTransaction();
+		} catch (Exception e) {
+			logger.error(
+					"Problem finding protocol files base on protocol type.", e);
+			throw e;
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		return files;
+	}
+
 	public List<ProtocolFileBean> searchProtocols(String fileTitle,
 			String protocolType, String protocolName, UserBean user)
 			throws Exception {
 		List<ProtocolFileBean> protocols = new ArrayList<ProtocolFileBean>();
 		List<LabFileBean> protocolFiles = new ArrayList<LabFileBean>();
 
-		try {			
+		try {
 			HibernateUtil.beginTransaction();
 			List<Object> paramList = new ArrayList<Object>();
 			List<String> whereList = new ArrayList<String>();
@@ -177,18 +224,7 @@ public class SearchProtocolService {
 
 			for (Object obj : results) {
 				ProtocolFile pf = (ProtocolFile) obj;
-				LabFileBean pfb = new ProtocolFileBean();
-				pfb.setId(pf.getId().toString());
-				pfb.setVersion(pf.getVersion());
-				pfb.setTitle(pf.getTitle());
-				pfb.setDescription(pf.getDescription());
-
-				ProtocolBean pb = new ProtocolBean();
-				Protocol p = pf.getProtocol();
-				pb.setId(p.getId().toString());
-				pb.setName(p.getName());
-				pb.setType(p.getType());
-				((ProtocolFileBean) pfb).setProtocolBean(pb);
+				LabFileBean pfb = new ProtocolFileBean(pf);
 				protocolFiles.add(pfb);
 			}
 			HibernateUtil.commitTransaction();
@@ -210,5 +246,28 @@ public class SearchProtocolService {
 		}
 		// return returnProtocols;
 		return protocols;
+	}
+
+	public SortedSet<String> getAllProtocolTypes() throws Exception {
+		SortedSet<String> protocolTypes = new TreeSet<String>();
+
+		try {
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			String hqlString = "select distinct protocol.type from Protocol protocol where protocol.type is not null";
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
+			for (Object obj : results) {
+				protocolTypes.add((String) obj);
+			}
+
+		} catch (Exception e) {
+			logger.error("Problem to retrieve all protocol types.", e);
+			throw new RuntimeException(
+					"Problem to retrieve all protocol types.");
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		return protocolTypes;
 	}
 }
