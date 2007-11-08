@@ -9,14 +9,12 @@
 			<span class="welcomeContent">
 				<h4>
 					Manage Sample/Aliquot Home
-				</h4> This is the manage sample/aliquot section. A sample is the
-				nanoparticle recieved by the laboratory that undergoes further
-				characterization.&nbsp; An aliquot is a portion of the total sample
-				(nanoparticle) used during the execution of laboratory assays. In
-				this section, you may create a new sample (or aliquot) or select an
-				existing sample (or aliquot). Please begin by selecting either
-				Create a New Sample (or Aliquot) or Select an Existing Sample (or
-				Aliquot).<br> <br> </span>
+				</h4> This is the manage sample/aliquot section. A sample is the 
+				nanoparticle received by the laboratory that undergoes further 
+				characterization.&nbsp; An aliquot is a portion of the total sample 
+				(nanoparticle) used during the execution of laboratory assays. In 
+				this section, you may either create a new sample, create a new aliquot, or select an 
+				existing samples and select existing aliquots. <br> <br> </span>
 		</td>
 	</tr>
 	<tr>
