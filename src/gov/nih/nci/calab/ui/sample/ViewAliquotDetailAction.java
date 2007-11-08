@@ -6,11 +6,14 @@ package gov.nih.nci.calab.ui.sample;
  * @author pansu
  */
 
-/* CVS $Id: ViewAliquotDetailAction.java,v 1.1 2007-11-01 17:30:21 pansu Exp $ */
+/* CVS $Id: ViewAliquotDetailAction.java,v 1.2 2007-11-08 20:41:11 pansu Exp $ */
 
+import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.sample.AliquotBean;
 import gov.nih.nci.calab.exception.CalabException;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
+import gov.nih.nci.calab.ui.security.InitSecuritySetup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +41,7 @@ public class ViewAliquotDetailAction extends AbstractBaseAction {
 		HttpSession session = request.getSession();
 		DynaActionForm theForm = (DynaActionForm) form;
 		String aliquotId = (String) theForm.get("aliquotId");
-		
+
 		ActionMessages messages = new ActionMessages();
 		if (session.getAttribute("aliquots") != null) {
 			List<AliquotBean> aliquots = new ArrayList<AliquotBean>(
@@ -66,5 +69,10 @@ public class ViewAliquotDetailAction extends AbstractBaseAction {
 
 	public boolean loginRequired() {
 		return true;
+	}
+
+	public boolean canUserExecute(UserBean user) throws Exception {
+		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
+				CaNanoLabConstants.CSM_PG_SAMPLE);
 	}
 }

@@ -6,11 +6,14 @@ package gov.nih.nci.calab.ui.sample;
  * @author pansu
  */
 
-/* CVS $Id: ViewSampleDetailAction.java,v 1.1 2007-11-01 17:30:21 pansu Exp $ */
+/* CVS $Id: ViewSampleDetailAction.java,v 1.2 2007-11-08 20:41:11 pansu Exp $ */
 
+import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.sample.ContainerBean;
 import gov.nih.nci.calab.dto.sample.SampleBean;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
+import gov.nih.nci.calab.ui.security.InitSecuritySetup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +52,7 @@ public class ViewSampleDetailAction extends AbstractBaseAction {
 			for (ContainerBean container : sampleContainers) {
 				if (container.getContainerId().equals(containerId)) {
 					sample = container.getSample();
-					request.setAttribute("sample", sample);					
+					request.setAttribute("sample", sample);
 					break;
 				}
 			}
@@ -68,5 +71,10 @@ public class ViewSampleDetailAction extends AbstractBaseAction {
 
 	public boolean loginRequired() {
 		return true;
+	}
+
+	public boolean canUserExecute(UserBean user) throws Exception {
+		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
+				CaNanoLabConstants.CSM_PG_SAMPLE);
 	}
 }
