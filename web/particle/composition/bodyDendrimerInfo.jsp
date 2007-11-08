@@ -24,7 +24,7 @@
 			</td>
 			<td class="label">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
 						<html:select property="dendrimer.branch" onkeydown="javascript:fnKeyDownHandler(this, event);"
 											onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
 											onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
@@ -43,7 +43,7 @@
 			</td>
 			<td class="rightLabel">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
 						<html:text property="dendrimer.repeatUnit" />
 					</c:when>
 					<c:otherwise>
@@ -58,7 +58,7 @@
 			</td>
 			<td class="label">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
 						<html:select property="dendrimer.generation" onkeydown="javascript:fnKeyDownHandler(this, event);"
 											onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
 											onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
@@ -77,7 +77,7 @@
 			</td>
 			<td class="rightLabel">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
 						<html:text property="dendrimer.molecularFormula" />
 					</c:when>
 					<c:otherwise>
@@ -104,7 +104,7 @@
 			</td>
 			<td class="rightLabel" colspan="3">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
 						<html:text property="dendrimer.core.chemicalName" />
 					</c:when>
 					<c:otherwise>
@@ -119,7 +119,7 @@
 			</td>
 			<td class="rightLabel" colspan="3">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
 						<html:textarea property="dendrimer.core.description" rows="3" cols="80" />
 					</c:when>
 					<c:otherwise>
@@ -146,7 +146,7 @@
 			</td>
 			<td class="label">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
 						<html:text property="dendrimer.numberOfSurfaceGroups" />
 					</c:when>
 					<c:otherwise>
@@ -158,7 +158,7 @@
 			<td class="rightLabel" colspan="2">
 				&nbsp;
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
 						<input type="button" onclick="javascript:updateComposition()" value="Update Surface Groups">
 					</c:when>
 				</c:choose>
@@ -182,7 +182,7 @@
 								</td>
 								<td class="label">
 									<c:choose>
-										<c:when test="${canCreateNanoparticle eq 'true'}">
+										<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
 											<html:select name="dendrimer.surfaceGroups" indexed="true" property="name" onkeydown="javascript:fnKeyDownHandler(this, event);"
 											onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
 											onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
@@ -201,7 +201,7 @@
 								</td>
 								<td class="rightLabel">
 									<c:choose>
-										<c:when test="${canCreateNanoparticle eq 'true'}">
+										<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
 											<html:text name="dendrimer.surfaceGroups" indexed="true" property="modifier" />
 										</c:when>
 										<c:otherwise>

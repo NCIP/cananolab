@@ -18,7 +18,7 @@
 			</td>
 			<td class="label">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true'  && isRemote eq 'false'}">
 						<html:text property="carbonNanotube.growthDiameter" />
 					</c:when>
 					<c:otherwise>
@@ -32,7 +32,7 @@
 			</td>
 			<td class="rightLabel">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
 						<html:text property="carbonNanotube.chirality" />
 					</c:when>
 					<c:otherwise>
@@ -48,7 +48,7 @@
 			</td>
 			<td class="label" align="left">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
 						<html:text property="carbonNanotube.averageLength" />
 					</c:when>
 					<c:otherwise>
@@ -62,7 +62,7 @@
 			</td>
 			<td class="rightLabel">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
 						<html:select property="carbonNanotube.wallType">
 							<option value=""></option>
 							<html:options name="allCarbonNanotubeWallTypes"/>
@@ -92,7 +92,7 @@
 			</td>
 			<td class="label">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
 						<html:text property="carbonNanotube.numberOfElements" />
 					</c:when>
 					<c:otherwise>
@@ -103,7 +103,7 @@
 			<td class="rightLabel" colspan="2">
 				&nbsp;
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
 						<input type="button" onclick="javascript:updateComposition()" value="Update Modifications">
 					</c:when>
 				</c:choose>
@@ -127,7 +127,7 @@
 								</td>
 								<td class="label">
 									<c:choose>
-										<c:when test="${canCreateNanoparticle eq 'true'}">
+										<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
 											<html:text name="carbonNanotube.composingElements" indexed="true" property="elementType" />
 										</c:when>
 										<c:otherwise>
@@ -141,7 +141,7 @@
 								</td>
 								<td class="rightLabel">
 									<c:choose>
-										<c:when test="${canCreateNanoparticle eq 'true'}">
+										<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
 											<html:text name="carbonNanotube.composingElements" indexed="true" property="chemicalName" />
 										</c:when>
 										<c:otherwise>
@@ -156,7 +156,7 @@
 								</td>
 								<td class="rightLabel" colspan="3">
 									<c:choose>
-										<c:when test="${canCreateNanoparticle eq 'true'}">
+										<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
 											<html:textarea name="carbonNanotube.composingElements" indexed="true" property="description" rows="3" cols="80"/>
 										</c:when>
 										<c:otherwise>
