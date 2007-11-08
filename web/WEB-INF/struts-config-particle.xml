@@ -183,8 +183,7 @@
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="submit" key="error.nanoparticle.generalInfo"
 				path="particle.createNanoparticle" type="java.lang.Exception" />
-			<forward name="success"
-				path="particle.annotationMessage" />
+			<forward name="success" path="particle.annotationMessage" />
 			<forward name="view" path="particle.generalInfo" />
 			<forward name="viewDisclaimer" path="particle.disclaimer" />
 			<forward name="update" path="particle.generalInfo" />
@@ -662,21 +661,19 @@
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success"
-				path="particle.annotationMessage" />
+			<forward name="success" path="particle.annotationMessage" />
 			<forward name="input"
 				path="/nanoparticleFunction.do?dispatch=input&amp;page=0" />
 			<forward name="setup" path="particle.function" />
 		</action>
 		<action path="/submitAction"
 			type="gov.nih.nci.calab.ui.core.BaseForwardAction"
-			parameter="particle.characterizationMessage" scope="request" />
+			parameter="particle.cMessage" scope="request" />
 		<action name="characterizationMultiDeletionForm"
 			path="/deleteAction"
 			type="gov.nih.nci.calab.ui.particle.DeleteMultiCharacterizationAction"
 			parameter="dispatch" input="input" scope="request">
-			<forward name="message"
-				path="particle.annotationMessage" />
+			<forward name="message" path="particle.annotationMessage" />
 			<forward name="input"
 				path="particle.deleteCharacterization" />
 		</action>
@@ -725,22 +722,25 @@
 		<action name="remoteNanoparticleGeneralInfoForm"
 			parameter="dispatch" path="/remoteNanoparticleGeneralInfo"
 			type="gov.nih.nci.calab.ui.particle.RemoteNanoparticleGeneralInfoAction"
-			input="success" scope="request">
+			input="input" scope="request">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="search" key="error.nanoparticle.generalInfo"
+				bundle="search" key="error.particle.remoteGeneralInfo"
 				path="particle.remoteGeneralInfo" type="java.lang.Exception" />
 			<forward name="success" path="particle.remoteGeneralInfo" />
+			<forward name="input" path="particle.annotationMessage" />
 			<forward name="viewDisclaimer" path="particle.disclaimer" />
 		</action>
 		<action name="nanoparticleCompositionForm" parameter="dispatch"
 			path="/remoteNanoparticleComposition"
 			type="gov.nih.nci.calab.ui.particle.RemoteNanoparticleCompositionAction"
-			input="success">
+			input="input">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="search" key="error.particle.composition.view"
+				bundle="search" key="error.particle.remoteComposition"
 				path="particle.remoteComposition" type="java.lang.Exception" />
+			<forward name="input"
+				path="particle.characterizationMessage" />
 			<forward name="success" path="particle.remoteComposition" />
 		</action>
 		<action name="submitReportForm" parameter="dispatch"
@@ -749,8 +749,8 @@
 			scope="request">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="submit" key="error.updateReport"
-				path="particle.viewReport" type="java.lang.Exception" />
+				bundle="submit" key="error.updateReport" path="particle.viewReport"
+				type="java.lang.Exception" />
 			<forward name="input" path="particle.viewReport" />
 			<forward name="success" path="particle.annotationMessage" />
 		</action>
