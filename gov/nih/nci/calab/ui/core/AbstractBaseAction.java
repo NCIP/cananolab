@@ -17,12 +17,11 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: AbstractBaseAction.java,v 1.13 2007-11-02 16:16:06 pansu Exp $ */
+/* CVS $Id: AbstractBaseAction.java,v 1.14 2007-11-08 20:40:52 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.exception.InvalidSessionException;
 import gov.nih.nci.calab.exception.NoAccessException;
-import gov.nih.nci.calab.ui.security.InitSecuritySetup;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,16 +37,15 @@ public abstract class AbstractBaseAction extends Action {
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		HttpSession session=request.getSession();
+		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
 
 		if (!loginRequired()) {
 			return executeTask(mapping, form, request, response);
-
 		}
-		
+
 		if (user != null) {
-			boolean accessStatus = canUserExecute(request.getSession());
+			boolean accessStatus = canUserExecute(user);
 			if (!accessStatus) {
 				throw new NoAccessException("You don't have access to class: "
 						+ this.getClass().getName());
@@ -78,8 +76,5 @@ public abstract class AbstractBaseAction extends Action {
 	 * @return
 	 * @throws Exception
 	 */
-	public boolean canUserExecute(HttpSession session) throws Exception {
-		return InitSecuritySetup.getInstance().canUserExecuteClass(session,
-				this.getClass());
-	}
+	public abstract boolean canUserExecute(UserBean user) throws Exception;
 }
