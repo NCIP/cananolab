@@ -18,7 +18,7 @@
 			</td>
 			<td class="label">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
 						<html:select property="polymer.crosslinked">
 							<html:options name="booleanChoices" />
 						</html:select>
@@ -33,7 +33,7 @@
 			</td>
 			<td class="rightLabel">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
 						<html:text property="polymer.crosslinkDegree" size="3" />
 					</c:when>
 					<c:otherwise>
@@ -49,7 +49,7 @@
 			</td>
 			<td class="label">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
 						<html:select property="polymer.initiator" onkeydown="javascript:fnKeyDownHandler(this, event);"
 											onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
 											onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
@@ -82,7 +82,7 @@
 			</td>
 			<td class="label">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
 						<html:text property="polymer.numberOfElements" />
 					</c:when>
 					<c:otherwise>
@@ -93,7 +93,7 @@
 			<td class="rightLabel" colspan="2">
 				&nbsp;
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
 						<input type="button" onclick="javascript:updateComposition()" value="Update Monomers">
 					</c:when>
 				</c:choose>
@@ -117,7 +117,7 @@
 								</td>
 								<td class="rightLabel" colspan="3">
 									<c:choose>
-										<c:when test="${canCreateNanoparticle eq 'true'}">
+										<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
 											<html:text name="polymer.composingElements" indexed="true" property="chemicalName" />
 										</c:when>
 										<c:otherwise>
@@ -132,7 +132,7 @@
 								</td>
 								<td class="rightLabel" colspan="3">
 									<c:choose>
-										<c:when test="${canCreateNanoparticle eq 'true'}">
+										<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
 											<html:textarea name="polymer.composingElements" indexed="true" property="description" rows="3" cols="80" />
 										</c:when>
 										<c:otherwise>
@@ -145,7 +145,7 @@
 					</table>
 					<br>
 					<c:choose>
-						<c:when test="${canCreateNanoparticle eq 'true'}">
+						<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
 							<html:hidden name="polymer.composingElements" indexed="true" property="elementType" value="monomer" />
 						</c:when>
 					</c:choose>

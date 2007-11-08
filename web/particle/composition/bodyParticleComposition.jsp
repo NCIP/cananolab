@@ -20,6 +20,15 @@ function confirmDeletion()
 //-->
 </script>
 <jsp:include page="/particle/submitMenu.jsp" />
+<%-- turn off update when doing remote searches --%>
+<c:choose>
+<c:when test="${!empty param.gridNodeHost}">
+   <c:set var="isRemote" value="true" scope="session"/>
+</c:when>
+<c:otherwise>
+  <c:set var="isRemote" value="false" scope="session"/>
+</c:otherwise>
+</c:choose>
 <html:form action="/composition">
 	<table width="100%" align="center">
 		<tr>
@@ -60,9 +69,9 @@ function confirmDeletion()
 						<td class="leftLabel">
 							<strong>Characterization Source* </strong>
 						</td>
-						<td class="label">
+						<td class="label">${canCreatenanoParticle}
 							<c:choose>
-								<c:when test="${canCreateNanoparticle eq 'true'}">
+								<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
 									<html:select property="characterizationSource"
 										onkeydown="javascript:fnKeyDownHandler(this, event);"
 										onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
@@ -86,7 +95,7 @@ function confirmDeletion()
 						</td>
 						<td class="rightLabel">
 							<c:choose>
-								<c:when test="${canCreateNanoparticle eq 'true'}">
+								<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
 									<html:text property="viewTitle" />
 								</c:when>
 								<c:otherwise>
@@ -101,7 +110,7 @@ function confirmDeletion()
 						</td>
 						<td class="rightLabel" colspan="3">
 							<c:choose>
-								<c:when test="${canCreateNanoparticle eq 'true'}">
+								<c:when test="${canCreateNanoparticle eq 'true'  && isRemote eq 'false'}">
 									<html:textarea property="description" rows="3" cols="80" />
 								</c:when>
 								<c:otherwise>
@@ -121,7 +130,7 @@ function confirmDeletion()
 				%>
 				<jsp:include page="/particle/composition/body${includePage}Info.jsp" />
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
 						<br>
 						<table width="100%" border="0" align="center" cellpadding="3"
 							cellspacing="0" class="topBorderOnly" summary="">
@@ -155,7 +164,7 @@ function confirmDeletion()
 														<input type="hidden" name="dispatch" value="create">
 														<input type="hidden" name="page" value="2">
 														<c:choose>
-															<c:when test="${canCreateNanoparticle eq 'true'}">
+															<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
 																<html:hidden property="particleType" />
 															</c:when>
 														</c:choose>
