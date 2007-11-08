@@ -1,6 +1,5 @@
 package gov.nih.nci.calab.domain;
 
-
 /**
  * <!-- LICENSE_TEXT_START -->
  * <!-- LICENSE_TEXT_END -->
@@ -18,7 +17,7 @@ public class SampleContainer implements java.io.Serializable {
 	private java.lang.Long id;
 
 	public java.lang.Long getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(java.lang.Long id) {
@@ -28,7 +27,7 @@ public class SampleContainer implements java.io.Serializable {
 	private java.lang.Float quantity;
 
 	public java.lang.Float getQuantity() {
-		return quantity;
+		return this.quantity;
 	}
 
 	public void setQuantity(java.lang.Float quantity) {
@@ -38,7 +37,7 @@ public class SampleContainer implements java.io.Serializable {
 	private java.lang.Float concentration;
 
 	public java.lang.Float getConcentration() {
-		return concentration;
+		return this.concentration;
 	}
 
 	public void setConcentration(java.lang.Float concentration) {
@@ -48,7 +47,7 @@ public class SampleContainer implements java.io.Serializable {
 	private java.lang.Float volume;
 
 	public java.lang.Float getVolume() {
-		return volume;
+		return this.volume;
 	}
 
 	public void setVolume(java.lang.Float volume) {
@@ -58,7 +57,7 @@ public class SampleContainer implements java.io.Serializable {
 	private java.lang.String diluentsSolvent;
 
 	public java.lang.String getDiluentsSolvent() {
-		return diluentsSolvent;
+		return this.diluentsSolvent;
 	}
 
 	public void setDiluentsSolvent(java.lang.String diluentsSolvent) {
@@ -68,7 +67,7 @@ public class SampleContainer implements java.io.Serializable {
 	private java.lang.String safetyPrecaution;
 
 	public java.lang.String getSafetyPrecaution() {
-		return safetyPrecaution;
+		return this.safetyPrecaution;
 	}
 
 	public void setSafetyPrecaution(java.lang.String safetyPrecaution) {
@@ -78,7 +77,7 @@ public class SampleContainer implements java.io.Serializable {
 	private java.lang.String storageCondition;
 
 	public java.lang.String getStorageCondition() {
-		return storageCondition;
+		return this.storageCondition;
 	}
 
 	public void setStorageCondition(java.lang.String storageCondition) {
@@ -88,7 +87,7 @@ public class SampleContainer implements java.io.Serializable {
 	private java.lang.String comments;
 
 	public java.lang.String getComments() {
-		return comments;
+		return this.comments;
 	}
 
 	public void setComments(java.lang.String comments) {
@@ -98,7 +97,7 @@ public class SampleContainer implements java.io.Serializable {
 	private java.lang.String quantityUnit;
 
 	public java.lang.String getQuantityUnit() {
-		return quantityUnit;
+		return this.quantityUnit;
 	}
 
 	public void setQuantityUnit(java.lang.String quantityUnit) {
@@ -108,7 +107,7 @@ public class SampleContainer implements java.io.Serializable {
 	private java.lang.String concentrationUnit;
 
 	public java.lang.String getConcentrationUnit() {
-		return concentrationUnit;
+		return this.concentrationUnit;
 	}
 
 	public void setConcentrationUnit(java.lang.String concentrationUnit) {
@@ -118,7 +117,7 @@ public class SampleContainer implements java.io.Serializable {
 	private java.lang.String volumeUnit;
 
 	public java.lang.String getVolumeUnit() {
-		return volumeUnit;
+		return this.volumeUnit;
 	}
 
 	public void setVolumeUnit(java.lang.String volumeUnit) {
@@ -128,7 +127,7 @@ public class SampleContainer implements java.io.Serializable {
 	private java.lang.String createdBy;
 
 	public java.lang.String getCreatedBy() {
-		return createdBy;
+		return this.createdBy;
 	}
 
 	public void setCreatedBy(java.lang.String createdBy) {
@@ -138,7 +137,7 @@ public class SampleContainer implements java.io.Serializable {
 	private java.util.Date createdDate;
 
 	public java.util.Date getCreatedDate() {
-		return createdDate;
+		return this.createdDate;
 	}
 
 	public void setCreatedDate(java.util.Date createdDate) {
@@ -148,7 +147,7 @@ public class SampleContainer implements java.io.Serializable {
 	private java.lang.String barcode;
 
 	public java.lang.String getBarcode() {
-		return barcode;
+		return this.barcode;
 	}
 
 	public void setBarcode(java.lang.String barcode) {
@@ -158,7 +157,7 @@ public class SampleContainer implements java.io.Serializable {
 	private java.lang.String containerType;
 
 	public java.lang.String getContainerType() {
-		return containerType;
+		return this.containerType;
 	}
 
 	public void setContainerType(java.lang.String containerType) {
@@ -168,17 +167,17 @@ public class SampleContainer implements java.io.Serializable {
 	private java.lang.String createdMethod;
 
 	public java.lang.String getCreatedMethod() {
-		return createdMethod;
+		return this.createdMethod;
 	}
 
 	public void setCreatedMethod(java.lang.String createdMethod) {
 		this.createdMethod = createdMethod;
 	}
-	
+
 	private java.lang.String name;
-	
+
 	public java.lang.String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(java.lang.String name) {
@@ -211,7 +210,7 @@ public class SampleContainer implements java.io.Serializable {
 		// ex.printStackTrace();
 		// }
 		// }
-		return storageElementCollection;
+		return this.storageElementCollection;
 
 	}
 
@@ -249,7 +248,7 @@ public class SampleContainer implements java.io.Serializable {
 		// ex.printStackTrace();
 		// }
 		// }
-		return parentSampleContainerCollection;
+		return this.parentSampleContainerCollection;
 	}
 
 	public void setParentSampleContainerCollection(
@@ -286,7 +285,7 @@ public class SampleContainer implements java.io.Serializable {
 		// ex.printStackTrace();
 		// }
 		// }
-		return childSampleContainerCollection;
+		return this.childSampleContainerCollection;
 	}
 
 	public void setChildSampleContainerCollection(
@@ -323,7 +322,7 @@ public class SampleContainer implements java.io.Serializable {
 		// ex.printStackTrace();
 		// }
 		// }
-		return runSampleContainerCollection;
+		return this.runSampleContainerCollection;
 	}
 
 	public void setRunSampleContainerCollection(
@@ -355,7 +354,7 @@ public class SampleContainer implements java.io.Serializable {
 		// ...");
 		// ex.printStackTrace();
 		// }
-		return sample;
+		return this.sample;
 	}
 
 	public void setSample(gov.nih.nci.calab.domain.Sample sample) {

@@ -1,6 +1,5 @@
 package gov.nih.nci.calab.domain;
 
-
 /**
  * <!-- LICENSE_TEXT_START -->
  * <!-- LICENSE_TEXT_END -->
@@ -17,25 +16,26 @@ public class SampleSOPFile extends LabFile implements java.io.Serializable {
 
 	public gov.nih.nci.calab.domain.SampleSOP getSampleSOP() {
 
-//		ApplicationService applicationService = ApplicationServiceProvider
-//				.getApplicationService();
-//		gov.nih.nci.calab.domain.SampleSOPFile thisIdSet = new gov.nih.nci.calab.domain.SampleSOPFile();
-//		thisIdSet.setId(this.getId());
-//
-//		try {
-//			java.util.List resultList = applicationService.search(
-//					"gov.nih.nci.calab.domain.SampleSOP", thisIdSet);
-//			if (resultList != null && resultList.size() > 0) {
-//				sampleSOP = (gov.nih.nci.calab.domain.SampleSOP) resultList
-//						.get(0);
-//			}
-//
-//		} catch (Exception ex) {
-//			System.out
-//					.println("SampleSOPFile:getSampleSOP throws exception ... ...");
-//			ex.printStackTrace();
-//		}
-		return sampleSOP;
+		// ApplicationService applicationService = ApplicationServiceProvider
+		// .getApplicationService();
+		// gov.nih.nci.calab.domain.SampleSOPFile thisIdSet = new
+		// gov.nih.nci.calab.domain.SampleSOPFile();
+		// thisIdSet.setId(this.getId());
+		//
+		// try {
+		// java.util.List resultList = applicationService.search(
+		// "gov.nih.nci.calab.domain.SampleSOP", thisIdSet);
+		// if (resultList != null && resultList.size() > 0) {
+		// sampleSOP = (gov.nih.nci.calab.domain.SampleSOP) resultList
+		// .get(0);
+		// }
+		//
+		// } catch (Exception ex) {
+		// System.out
+		// .println("SampleSOPFile:getSampleSOP throws exception ... ...");
+		// ex.printStackTrace();
+		// }
+		return this.sampleSOP;
 
 	}
 

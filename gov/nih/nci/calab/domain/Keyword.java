@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @author zengje
  * 
  */
-public class Keyword implements Serializable{
+public class Keyword implements Serializable {
 
 	private static final long serialVersionUID = 1234567890L;
 
@@ -21,12 +21,11 @@ public class Keyword implements Serializable{
 	 * 
 	 */
 	public Keyword() {
-		
-		
+
 	}
 
 	public Long getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(Long id) {
@@ -34,7 +33,7 @@ public class Keyword implements Serializable{
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
