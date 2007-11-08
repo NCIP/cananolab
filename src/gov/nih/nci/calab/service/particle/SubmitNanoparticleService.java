@@ -872,7 +872,7 @@ public class SubmitNanoparticleService {
 			HibernateUtil.beginTransaction();
 
 			boolean viewTitleUsed = isFunctionViewTitleUsed(session,
-					particleType, particleName, doFunction);
+					particleType, particleName, function);
 
 			if (viewTitleUsed) {
 				throw new RuntimeException(
@@ -929,7 +929,7 @@ public class SubmitNanoparticleService {
 	 * particle
 	 */
 	private boolean isFunctionViewTitleUsed(Session session,
-			String particleType, String particleName, Function function)
+			String particleType, String particleName, FunctionBean function)
 			throws Exception {
 		// check if viewTitle is already used the same type of
 		// function for the same particle
@@ -940,7 +940,7 @@ public class SubmitNanoparticleService {
 					+ "' and particle.type='"
 					+ particleType
 					+ "' and function.identificationName='"
-					+ function.getIdentificationName()
+					+ function.getViewTitle()
 					+ "' and function.type='" + function.getType() + "'";
 		} else {
 			viewTitleQuery = "select count(function.identificationName) from Nanoparticle particle join particle.functionCollection function where particle.name='"
@@ -948,7 +948,7 @@ public class SubmitNanoparticleService {
 					+ "' and particle.type='"
 					+ particleType
 					+ "' and function.identificationName='"
-					+ function.getIdentificationName()
+					+ function.getViewTitle()
 					+ "' and function.id!="
 					+ function.getId()
 					+ " and function.type='"
