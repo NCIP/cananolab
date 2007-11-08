@@ -10,28 +10,28 @@ import java.util.TreeSet;
  * @author pansu
  * 
  */
-/* CVS $Id: ContainerInfoBean.java,v 1.1 2007-11-01 17:31:14 pansu Exp $ */
+/* CVS $Id: ContainerInfoBean.java,v 1.2 2007-11-08 20:41:35 pansu Exp $ */
 
 public class ContainerInfoBean {
 
-	private SortedSet<String> quantityUnits=new TreeSet<String>();
+	private SortedSet<String> quantityUnits = new TreeSet<String>();
 
-	private SortedSet<String> concentrationUnits=new TreeSet<String>();
+	private SortedSet<String> concentrationUnits = new TreeSet<String>();
 
-	private SortedSet<String> volumeUnits=new TreeSet<String>();
+	private SortedSet<String> volumeUnits = new TreeSet<String>();
 
-	private SortedSet<String> storageLabs=new TreeSet<String>();
+	private SortedSet<String> storageLabs = new TreeSet<String>();
 
-	private SortedSet<String> storageRooms=new TreeSet<String>();
+	private SortedSet<String> storageRooms = new TreeSet<String>();
 
-	private SortedSet<String> storageFreezers=new TreeSet<String>();
+	private SortedSet<String> storageFreezers = new TreeSet<String>();
 
-	private SortedSet<String> storageShelves=new TreeSet<String>();
+	private SortedSet<String> storageShelves = new TreeSet<String>();
 
-	private SortedSet<String> storageBoxes=new TreeSet<String>();
+	private SortedSet<String> storageBoxes = new TreeSet<String>();
 
 	public SortedSet<String> getStorageBoxes() {
-		return storageBoxes;
+		return this.storageBoxes;
 	}
 
 	public void setStorageBoxes(SortedSet<String> storageBoxes) {
@@ -39,7 +39,7 @@ public class ContainerInfoBean {
 	}
 
 	public SortedSet<String> getStorageShelves() {
-		return storageShelves;
+		return this.storageShelves;
 	}
 
 	public void setStorageShelves(SortedSet<String> storageShelves) {
@@ -47,12 +47,11 @@ public class ContainerInfoBean {
 	}
 
 	public ContainerInfoBean(SortedSet<String> quantityUnits,
-			SortedSet<String> concentrationUnits, SortedSet<String> volumeUnits,
-			SortedSet<String> storageLabs, SortedSet<String> storeageRooms,
-			SortedSet<String> storageFreezers, SortedSet<String> storageShelves,
-			SortedSet<String> storageBoxes) {
-		
-		
+			SortedSet<String> concentrationUnits,
+			SortedSet<String> volumeUnits, SortedSet<String> storageLabs,
+			SortedSet<String> storeageRooms, SortedSet<String> storageFreezers,
+			SortedSet<String> storageShelves, SortedSet<String> storageBoxes) {
+
 		this.quantityUnits = quantityUnits;
 		this.concentrationUnits = concentrationUnits;
 		this.volumeUnits = volumeUnits;
@@ -64,7 +63,7 @@ public class ContainerInfoBean {
 	}
 
 	public SortedSet<String> getConcentrationUnits() {
-		return concentrationUnits;
+		return this.concentrationUnits;
 	}
 
 	public void setConcentrationUnits(SortedSet<String> concentrationUnits) {
@@ -72,7 +71,7 @@ public class ContainerInfoBean {
 	}
 
 	public SortedSet<String> getStorageFreezers() {
-		return storageFreezers;
+		return this.storageFreezers;
 	}
 
 	public void setStorageFreezers(SortedSet<String> freezers) {
@@ -80,7 +79,7 @@ public class ContainerInfoBean {
 	}
 
 	public SortedSet<String> getQuantityUnits() {
-		return quantityUnits;
+		return this.quantityUnits;
 	}
 
 	public void setQuantityUnits(SortedSet<String> quantityUnits) {
@@ -88,7 +87,7 @@ public class ContainerInfoBean {
 	}
 
 	public SortedSet<String> getStorageRooms() {
-		return storageRooms;
+		return this.storageRooms;
 	}
 
 	public void setStorageRooms(SortedSet<String> rooms) {
@@ -96,7 +95,7 @@ public class ContainerInfoBean {
 	}
 
 	public SortedSet<String> getVolumeUnits() {
-		return volumeUnits;
+		return this.volumeUnits;
 	}
 
 	public void setVolumeUnits(SortedSet<String> volumeUnits) {
@@ -104,7 +103,7 @@ public class ContainerInfoBean {
 	}
 
 	public SortedSet<String> getStorageLabs() {
-		return storageLabs;
+		return this.storageLabs;
 	}
 
 	public void setStorageLabs(SortedSet<String> storageLabs) {
@@ -112,7 +111,7 @@ public class ContainerInfoBean {
 	}
 
 	public SortedSet<String> getStoreageRooms() {
-		return storageRooms;
+		return this.storageRooms;
 	}
 
 	public void setStoreageRooms(SortedSet<String> storeageRooms) {

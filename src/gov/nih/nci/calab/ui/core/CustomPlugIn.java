@@ -18,7 +18,8 @@ import org.apache.struts.config.ModuleConfig;
  * 
  */
 public class CustomPlugIn implements PlugIn {
-	Logger logger=Logger.getLogger(CustomPlugIn.class);
+	Logger logger = Logger.getLogger(CustomPlugIn.class);
+
 	// This method will be called at application startup time
 	public void init(ActionServlet actionServlet, ModuleConfig config)
 			throws ServletException {
@@ -29,7 +30,7 @@ public class CustomPlugIn implements PlugIn {
 					actionServlet.getServletContext());
 			InitSecuritySetup.getInstance().createDefaultCSMGroups();
 		} catch (Exception e) {
-			logger.error("Servlet initialization error", e);
+			this.logger.error("Servlet initialization error", e);
 		}
 		System.out.println("Exiting CustomPlugIn.init()");
 	}

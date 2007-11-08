@@ -18,15 +18,15 @@ public class ShapeBean extends CharacterizationBean {
 
 	private String minDimension;
 
-	private String minDimensionUnit="nm";
+	private String minDimensionUnit = "nm";
 
-	private String maxDimensionUnit="nm";
+	private String maxDimensionUnit = "nm";
 
-	//this is used for validation only
+	// this is used for validation only
 	private String validateValue;
-	
+
 	public String getValidateValue() {
-		return validateValue;
+		return this.validateValue;
 	}
 
 	public void setValidateValue(String validateValue) {
@@ -34,7 +34,7 @@ public class ShapeBean extends CharacterizationBean {
 	}
 
 	public ShapeBean() {
-		
+
 	}
 
 	public ShapeBean(ShapeBean propBean, CharacterizationBean charBean) {
@@ -60,21 +60,23 @@ public class ShapeBean extends CharacterizationBean {
 		super.updateDomainObj(shape);
 
 		shape.setType(this.type);
-		if ((this.minDimension == null) || (this.minDimension.length() == 0)){
+		if ((this.minDimension == null) || (this.minDimension.length() == 0)) {
 			shape.setMinDimension(null);
 		} else {
-			shape.setMinDimension(new Measurement(new Float(this.minDimension), this.minDimensionUnit));
+			shape.setMinDimension(new Measurement(new Float(this.minDimension),
+					this.minDimensionUnit));
 		}
-		
+
 		if ((this.maxDimension == null) || (this.maxDimension.length() == 0)) {
 			shape.setMaxDimension(null);
 		} else {
-			shape.setMaxDimension(new Measurement(new Float(this.maxDimension), this.maxDimensionUnit));
+			shape.setMaxDimension(new Measurement(new Float(this.maxDimension),
+					this.maxDimensionUnit));
 		}
 	}
 
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
 	public void setType(String type) {
@@ -82,7 +84,7 @@ public class ShapeBean extends CharacterizationBean {
 	}
 
 	public String getMaxDimension() {
-		return maxDimension;
+		return this.maxDimension;
 	}
 
 	public void setMaxDimension(String maxDimension) {
@@ -90,7 +92,7 @@ public class ShapeBean extends CharacterizationBean {
 	}
 
 	public String getMinDimension() {
-		return minDimension;
+		return this.minDimension;
 	}
 
 	public void setMinDimension(String minDimension) {
@@ -98,7 +100,7 @@ public class ShapeBean extends CharacterizationBean {
 	}
 
 	public String getMaxDimensionUnit() {
-		return maxDimensionUnit;
+		return this.maxDimensionUnit;
 	}
 
 	public void setMaxDimensionUnit(String maxDimensionUnit) {
@@ -106,7 +108,7 @@ public class ShapeBean extends CharacterizationBean {
 	}
 
 	public String getMinDimensionUnit() {
-		return minDimensionUnit;
+		return this.minDimensionUnit;
 	}
 
 	public void setMinDimensionUnit(String minDimensionUnit) {

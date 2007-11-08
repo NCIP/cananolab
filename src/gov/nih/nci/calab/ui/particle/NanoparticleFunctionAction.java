@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleFunctionAction.java,v 1.1 2007-11-01 17:30:21 pansu Exp $ */
+/* CVS $Id: NanoparticleFunctionAction.java,v 1.2 2007-11-08 20:41:34 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.function.Function;
 import gov.nih.nci.calab.dto.common.UserBean;
@@ -189,7 +189,7 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 
 		List<LinkageBean> linkages = new ArrayList<LinkageBean>();
 		for (int i = 0; i < origNum; i++) {
-			linkages.add((LinkageBean) origLinkages.get(i));
+			linkages.add(origLinkages.get(i));
 		}
 		// add a new one
 		linkages.add(new LinkageBean());
@@ -204,7 +204,7 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 	public ActionForward removeLinkage(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		String linkageIndex = (String) request.getParameter("linkageInd");
+		String linkageIndex = request.getParameter("linkageInd");
 		int ind = Integer.parseInt(linkageIndex);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		FunctionBean function = (FunctionBean) theForm.get("function");
@@ -229,7 +229,7 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 	public ActionForward addTarget(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		String linkageIndex = (String) request.getParameter("linkageInd");
+		String linkageIndex = request.getParameter("linkageInd");
 		int ind = Integer.parseInt(linkageIndex);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		FunctionBean function = (FunctionBean) theForm.get("function");
@@ -255,9 +255,9 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 
-		String linkageIndex = (String) request.getParameter("linkageInd");
+		String linkageIndex = request.getParameter("linkageInd");
 		int ind = Integer.parseInt(linkageIndex);
-		String targetIndex = (String) request.getParameter("targetInd");
+		String targetIndex = request.getParameter("targetInd");
 		int tInd = Integer.parseInt(targetIndex);
 
 		FunctionBean function = (FunctionBean) theForm.get("function");

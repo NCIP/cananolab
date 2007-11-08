@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleMorphologyAction.java,v 1.1 2007-11-01 17:30:21 pansu Exp $ */
+/* CVS $Id: NanoparticleMorphologyAction.java,v 1.2 2007-11-08 20:41:34 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.physical.MorphologyBean;
@@ -45,8 +45,7 @@ public class NanoparticleMorphologyAction extends BaseCharacterizationAction {
 		MorphologyBean propBean = (MorphologyBean) theForm.get("morphology");
 		MorphologyBean morphologyBean = new MorphologyBean(propBean, charBean);
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		service.addParticleMorphology(
-				morphologyBean);
+		service.addParticleMorphology(morphologyBean);
 		CharacterizationBean[] otherChars = super.prepareCopy(request, theForm,
 				service);
 		for (CharacterizationBean acharBean : otherChars) {

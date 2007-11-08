@@ -1,5 +1,6 @@
 package gov.nih.nci.calab.ui.security;
 
+import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.security.LoginService;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
@@ -38,9 +39,9 @@ public class UpdatePasswordAction extends AbstractBaseAction {
 		if (isAuthenticated) {
 			UserService userService = new UserService(
 					CaNanoLabConstants.CSM_APP_NAME);
-			userService.updatePassword(loginId, newPassword);	
-			ActionMessages messages=new ActionMessages();
-			ActionMessage message=new ActionMessage("message.password");
+			userService.updatePassword(loginId, newPassword);
+			ActionMessages messages = new ActionMessages();
+			ActionMessage message = new ActionMessage("message.password");
 			messages.add("message", message);
 			saveMessages(request, messages);
 		}
@@ -51,8 +52,7 @@ public class UpdatePasswordAction extends AbstractBaseAction {
 		return false;
 	}
 
-	/* overwrite parent */
-	public boolean canUserExecute() {
+	public boolean canUserExecute(UserBean user) {
 		return true;
 	}
 }

@@ -31,20 +31,20 @@ public class SortableName implements Comparable {
 		if (obj instanceof SortableName) {
 			SortableName sortableName2 = (SortableName) obj;
 			return (new CaNanoLabComparators.SortableNameComparator()).compare(
-					name, sortableName2.getName());
+					this.name, sortableName2.getName());
 		}
 		return 0;
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public String toString() {
-		if (url == null) {
-			return name;
+		if (this.url == null) {
+			return this.name;
 		} else {
-			return url;
+			return this.url;
 		}
 	}
 }

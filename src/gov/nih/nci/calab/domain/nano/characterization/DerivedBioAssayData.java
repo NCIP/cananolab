@@ -31,12 +31,11 @@ public class DerivedBioAssayData extends LabFile implements Serializable {
 	 * 
 	 */
 	public DerivedBioAssayData() {
-		
-		
+
 	}
 
 	public Long getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(Long id) {
@@ -44,15 +43,15 @@ public class DerivedBioAssayData extends LabFile implements Serializable {
 	}
 
 	public String[] getCategories() {
-		return categories;
+		return this.categories;
 	}
 
 	public void setCategories(String[] categories) {
-		this.categories=categories;
+		this.categories = categories;
 	}
 
 	public Collection<Datum> getDatumCollection() {
-		return datumCollection;
+		return this.datumCollection;
 	}
 
 	public void setDatumCollection(Collection<Datum> datumCollection) {
@@ -60,7 +59,7 @@ public class DerivedBioAssayData extends LabFile implements Serializable {
 	}
 
 	public Collection<Keyword> getKeywordCollection() {
-		return keywordCollection;
+		return this.keywordCollection;
 	}
 
 	public void setKeywordCollection(Collection<Keyword> keywordCollection) {

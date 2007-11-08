@@ -6,7 +6,7 @@ import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 public class Shape extends Characterization {
 
 	private static final long serialVersionUID = 1234567890L;
-	
+
 	private String type;
 
 	private Measurement maxDimension;
@@ -14,12 +14,11 @@ public class Shape extends Characterization {
 	private Measurement minDimension;
 
 	public Shape() {
-		
-		
+
 	}
 
 	public Measurement getMaxDimension() {
-		return maxDimension;
+		return this.maxDimension;
 	}
 
 	public void setMaxDimension(Measurement maxDimension) {
@@ -27,7 +26,7 @@ public class Shape extends Characterization {
 	}
 
 	public Measurement getMinDimension() {
-		return minDimension;
+		return this.minDimension;
 	}
 
 	public void setMinDimension(Measurement minDimension) {
@@ -35,13 +34,13 @@ public class Shape extends Characterization {
 	}
 
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
 	public void setType(String type) {
 		this.type = type;
 	}
-	
+
 	public String getClassification() {
 		return PHYSICAL_CHARACTERIZATION;
 	}

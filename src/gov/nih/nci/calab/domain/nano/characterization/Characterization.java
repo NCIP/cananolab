@@ -61,11 +61,11 @@ public class Characterization implements Serializable {
 	}
 
 	public String getClassification() {
-		return classification;
+		return this.classification;
 	}
 
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
 	public void setDescription(String description) {
@@ -73,7 +73,7 @@ public class Characterization implements Serializable {
 	}
 
 	public String getIdentificationName() {
-		return identificationName;
+		return this.identificationName;
 	}
 
 	public void setIdentificationName(String identificationName) {
@@ -81,7 +81,7 @@ public class Characterization implements Serializable {
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setNanoparticleCollection(Collection<Nanoparticle> particles) {
@@ -89,11 +89,11 @@ public class Characterization implements Serializable {
 	}
 
 	public Collection<Nanoparticle> getNanoparticleCollection() {
-		return nanoparticleCollection;
+		return this.nanoparticleCollection;
 	}
 
 	public String getCreatedBy() {
-		return createdBy;
+		return this.createdBy;
 	}
 
 	public void setCreatedBy(String createdBy) {
@@ -101,7 +101,7 @@ public class Characterization implements Serializable {
 	}
 
 	public Date getCreatedDate() {
-		return createdDate;
+		return this.createdDate;
 	}
 
 	public void setCreatedDate(Date createdDate) {
@@ -109,7 +109,7 @@ public class Characterization implements Serializable {
 	}
 
 	public Collection<DerivedBioAssayData> getDerivedBioAssayDataCollection() {
-		return derivedBioAssayDataCollection;
+		return this.derivedBioAssayDataCollection;
 	}
 
 	public void setDerivedBioAssayDataCollection(
@@ -118,10 +118,11 @@ public class Characterization implements Serializable {
 	}
 
 	public InstrumentConfiguration getInstrumentConfiguration() {
-		return instrumentConfiguration;
+		return this.instrumentConfiguration;
 	}
 
-	public void setInstrumentConfiguration(InstrumentConfiguration instrumentConfiguration) {
+	public void setInstrumentConfiguration(
+			InstrumentConfiguration instrumentConfiguration) {
 		this.instrumentConfiguration = instrumentConfiguration;
 	}
 
@@ -276,7 +277,7 @@ public class Characterization implements Serializable {
 	}
 
 	public ProtocolFile getProtocolFile() {
-		return protocolFile;
+		return this.protocolFile;
 	}
 
 	public void setProtocolFile(ProtocolFile protocolFile) {

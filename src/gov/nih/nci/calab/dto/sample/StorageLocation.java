@@ -8,7 +8,7 @@ import gov.nih.nci.calab.service.util.StringUtils;
  * @author pansu
  * 
  */
-/* CVS $Id: StorageLocation.java,v 1.1 2007-11-01 17:31:14 pansu Exp $ */
+/* CVS $Id: StorageLocation.java,v 1.2 2007-11-08 20:41:35 pansu Exp $ */
 
 public class StorageLocation {
 	private String lab = "";
@@ -27,18 +27,17 @@ public class StorageLocation {
 	}
 
 	public StorageLocation(StorageLocation loc) {
-		lab = loc.getLab();
-		room = loc.getRoom();
-		freezer = loc.getFreezer();
-		shelf = loc.getShelf();
-		rack = loc.getRack();
-		box = loc.getBox();
+		this.lab = loc.getLab();
+		this.room = loc.getRoom();
+		this.freezer = loc.getFreezer();
+		this.shelf = loc.getShelf();
+		this.rack = loc.getRack();
+		this.box = loc.getBox();
 	}
 
 	public StorageLocation(String lab, String room, String freezer,
 			String shelf, String rack, String box) {
-		
-		
+
 		this.lab = lab;
 		this.room = room;
 		this.freezer = freezer;
@@ -47,11 +46,8 @@ public class StorageLocation {
 		this.box = box;
 	}
 
-	public StorageLocation(String room, String freezer,
-			String shelf, String box
-			) {
-		
-		
+	public StorageLocation(String room, String freezer, String shelf, String box) {
+
 		this.room = room;
 		this.freezer = freezer;
 		this.shelf = shelf;
@@ -59,7 +55,7 @@ public class StorageLocation {
 	}
 
 	public String getBox() {
-		return box;
+		return this.box;
 	}
 
 	public void setBox(String box) {
@@ -67,7 +63,7 @@ public class StorageLocation {
 	}
 
 	public String getFreezer() {
-		return freezer;
+		return this.freezer;
 	}
 
 	public void setFreezer(String freezer) {
@@ -75,7 +71,7 @@ public class StorageLocation {
 	}
 
 	public String getLab() {
-		return lab;
+		return this.lab;
 	}
 
 	public void setLab(String lab) {
@@ -83,7 +79,7 @@ public class StorageLocation {
 	}
 
 	public String getRack() {
-		return rack;
+		return this.rack;
 	}
 
 	public void setRack(String rack) {
@@ -91,7 +87,7 @@ public class StorageLocation {
 	}
 
 	public String getRoom() {
-		return room;
+		return this.room;
 	}
 
 	public void setRoom(String room) {
@@ -99,7 +95,7 @@ public class StorageLocation {
 	}
 
 	public String getShelf() {
-		return shelf;
+		return this.shelf;
 	}
 
 	public void setShelf(String shelf) {

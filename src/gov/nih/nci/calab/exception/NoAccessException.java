@@ -1,8 +1,8 @@
 package gov.nih.nci.calab.exception;
 
 /**
- * This class represents the exception to be thrown when the user access a function
- * that he/she doesn't have access to.
+ * This class represents the exception to be thrown when the user access a
+ * function that he/she doesn't have access to.
  * 
  * @author pansu
  * 
@@ -20,10 +20,10 @@ public class NoAccessException extends CalabException {
 	}
 
 	public NoAccessException(String message, Throwable cause) {
-		super(message, cause);	
+		super(message, cause);
 	}
-	
+
 	public NoAccessException(Throwable cause) {
-		super(cause);	
+		super(cause);
 	}
 }

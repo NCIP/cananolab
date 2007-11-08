@@ -15,7 +15,7 @@ import java.util.Date;
  * 
  */
 
-/* CVS $Id: AliquotBean.java,v 1.1 2007-11-01 17:31:14 pansu Exp $ */
+/* CVS $Id: AliquotBean.java,v 1.2 2007-11-08 20:41:35 pansu Exp $ */
 
 public class AliquotBean {
 	private String aliquotId = "";
@@ -37,8 +37,8 @@ public class AliquotBean {
 	private String maskStatus = "";
 
 	public AliquotBean() {
-		container = new ContainerBean();
-		sample = new SampleBean();
+		this.container = new ContainerBean();
+		this.sample = new SampleBean();
 	}
 
 	// used in WorkflowResultBean
@@ -94,7 +94,7 @@ public class AliquotBean {
 	}
 
 	public ContainerBean getContainer() {
-		return container;
+		return this.container;
 	}
 
 	public void setContainer(ContainerBean container) {
@@ -102,7 +102,7 @@ public class AliquotBean {
 	}
 
 	public String getHowCreated() {
-		return howCreated;
+		return this.howCreated;
 	}
 
 	public void setHowCreated(String howCreated) {
@@ -110,7 +110,7 @@ public class AliquotBean {
 	}
 
 	public Date getCreationDate() {
-		return creationDate;
+		return this.creationDate;
 	}
 
 	public void setCreationDate(Date creationDate) {
@@ -118,7 +118,7 @@ public class AliquotBean {
 	}
 
 	public String getCreator() {
-		return creator;
+		return this.creator;
 	}
 
 	public void setCreator(String creator) {
@@ -126,7 +126,7 @@ public class AliquotBean {
 	}
 
 	public SampleBean getSample() {
-		return sample;
+		return this.sample;
 	}
 
 	public void setSample(SampleBean sample) {
@@ -134,7 +134,7 @@ public class AliquotBean {
 	}
 
 	public String getAliquotId() {
-		return aliquotId;
+		return this.aliquotId;
 	}
 
 	public void setAliquotId(String aliquotId) {
@@ -142,7 +142,7 @@ public class AliquotBean {
 	}
 
 	public String getAliquotName() {
-		return aliquotName;
+		return this.aliquotName;
 	}
 
 	public void setAliquotName(String aliquotName) {
@@ -150,7 +150,7 @@ public class AliquotBean {
 	}
 
 	public String getMaskStatus() {
-		return maskStatus;
+		return this.maskStatus;
 	}
 
 	public void setMaskStatus(String maskStatus) {
@@ -159,15 +159,15 @@ public class AliquotBean {
 	}
 
 	public String getCreationDateStr() {
-		if (creationDate != null) {
-			creationDateStr = StringUtils.convertDateToString(creationDate,
+		if (this.creationDate != null) {
+			this.creationDateStr = StringUtils.convertDateToString(this.creationDate,
 					CaNanoLabConstants.DATE_FORMAT);
 		}
-		return creationDateStr;
+		return this.creationDateStr;
 	}
 
 	// used for display tag
 	public SortableName getSortableName() {
-		return new SortableName(aliquotName);
+		return new SortableName(this.aliquotName);
 	}
 }

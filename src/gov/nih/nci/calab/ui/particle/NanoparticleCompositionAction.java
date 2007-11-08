@@ -8,7 +8,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleCompositionAction.java,v 1.1 2007-11-01 17:30:21 pansu Exp $ */
+/* CVS $Id: NanoparticleCompositionAction.java,v 1.2 2007-11-08 20:41:34 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.CarbonNanotubeComposition;
@@ -115,7 +115,7 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		composition.setCharacterizationSource(characterizationSource);
 		composition.setParticleName(particleName);
 		composition.setParticleType(particleType);
-		
+
 		// set createdBy and createdDate for the composition
 		UserBean user = (UserBean) session.getAttribute("user");
 		Date date = new Date();
@@ -237,7 +237,8 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		InitParticleSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
 		InitParticleSetup.getInstance().setAllCompositionDropdowns(session);
-		InitParticleSetup.getInstance().setAllCharacterizationDropdowns(session);
+		InitParticleSetup.getInstance()
+				.setAllCharacterizationDropdowns(session);
 	}
 
 	/**
@@ -338,27 +339,27 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 			composition = (DendrimerBean) theForm.get("dendrimer");
 			// update surface group info for dendrimers
 			updateSurfaceGroups((DendrimerBean) composition);
-			theForm.set("dendrimer", (DendrimerBean) composition);
+			theForm.set("dendrimer", composition);
 		} else if (particleType
 				.equalsIgnoreCase(CaNanoLabConstants.POLYMER_TYPE)) {
 			composition = (PolymerBean) theForm.get("polymer");
 			updateComposingElements(composition);
-			theForm.set("polymer", (PolymerBean) composition);
+			theForm.set("polymer", composition);
 		} else if (particleType
 				.equalsIgnoreCase(CaNanoLabConstants.LIPOSOME_TYPE)) {
 			composition = (LiposomeBean) theForm.get("liposome");
 			updateComposingElements(composition);
-			theForm.set("liposome", (LiposomeBean) composition);
+			theForm.set("liposome", composition);
 		} else if (particleType
 				.equalsIgnoreCase(CaNanoLabConstants.FULLERENE_TYPE)) {
 			composition = (FullereneBean) theForm.get("fullerene");
 			updateComposingElements(composition);
-			theForm.set("fullerene", (FullereneBean) composition);
+			theForm.set("fullerene", composition);
 		} else if (particleType
 				.equalsIgnoreCase(CaNanoLabConstants.CARBON_NANOTUBE_TYPE)) {
 			composition = (CarbonNanotubeBean) theForm.get("carbonNanotube");
 			updateComposingElements(composition);
-			theForm.set("carbonNanotube", (CarbonNanotubeBean) composition);
+			theForm.set("carbonNanotube", composition);
 		} else if (particleType
 				.equalsIgnoreCase(CaNanoLabConstants.EMULSION_TYPE)) {
 			composition = (EmulsionBean) theForm.get("emulsion");
@@ -366,17 +367,17 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 				.equalsIgnoreCase(CaNanoLabConstants.COMPLEX_PARTICLE_TYPE)) {
 			composition = (ComplexParticleBean) theForm.get("complexParticle");
 			updateComposingElements(composition);
-			theForm.set("complexParticle", (ComplexParticleBean) composition);
+			theForm.set("complexParticle", composition);
 		} else if (particleType
 				.equalsIgnoreCase(CaNanoLabConstants.QUANTUM_DOT_TYPE)) {
 			composition = (QuantumDotBean) theForm.get("quantumDot");
 			updateCoreShellsCoatings((QuantumDotBean) composition);
-			theForm.set("quantumDot", (QuantumDotBean) composition);
+			theForm.set("quantumDot", composition);
 		} else if (particleType
 				.equalsIgnoreCase(CaNanoLabConstants.METAL_PARTICLE_TYPE)) {
 			composition = (MetalParticleBean) theForm.get("metalParticle");
 			updateCoreShellsCoatings((MetalParticleBean) composition);
-			theForm.set("metalParticle", (MetalParticleBean) composition);
+			theForm.set("metalParticle", composition);
 		}
 		InitParticleSetup.getInstance().setSideParticleMenu(request,
 				particleName, particleType);
@@ -407,11 +408,11 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		// use keep original surface group info
 		else if (surfaceGroupNum <= origNum) {
 			for (int i = 0; i < surfaceGroupNum; i++) {
-				surfaceGroups.add((SurfaceGroupBean) origSurfaceGroups.get(i));
+				surfaceGroups.add(origSurfaceGroups.get(i));
 			}
 		} else {
 			for (int i = 0; i < origNum; i++) {
-				surfaceGroups.add((SurfaceGroupBean) origSurfaceGroups.get(i));
+				surfaceGroups.add(origSurfaceGroups.get(i));
 			}
 			for (int i = origNum; i < surfaceGroupNum; i++) {
 				surfaceGroups.add(new SurfaceGroupBean());
@@ -463,11 +464,11 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		// use keep original element info
 		else if (elementNum <= origNum) {
 			for (int i = 0; i < elementNum; i++) {
-				elements.add((ComposingElementBean) origElements.get(i));
+				elements.add(origElements.get(i));
 			}
 		} else {
 			for (int i = 0; i < origNum; i++) {
-				elements.add((ComposingElementBean) origElements.get(i));
+				elements.add(origElements.get(i));
 			}
 			for (int i = origNum; i < elementNum; i++) {
 				elements.add(new ComposingElementBean());
@@ -532,6 +533,7 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 
 		return mapping.findForward("success");
 	}
+
 	public boolean canUserExecute(UserBean user) throws Exception {
 		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
 				CaNanoLabConstants.CSM_PG_PARTICLE);

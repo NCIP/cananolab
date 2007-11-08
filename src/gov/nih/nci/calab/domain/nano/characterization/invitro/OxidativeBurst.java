@@ -5,9 +5,9 @@ import gov.nih.nci.calab.domain.nano.characterization.toxicity.ImmunoToxicity;
 public class OxidativeBurst extends ImmunoToxicity {
 
 	public OxidativeBurst() {
-		
-		
+
 	}
+
 	private static final long serialVersionUID = 1234567890L;
 
 	public String getImmunotoxiticyType() {
@@ -17,6 +17,7 @@ public class OxidativeBurst extends ImmunoToxicity {
 	public String getClassification() {
 		return INVITRO_CHARACTERIZATION;
 	}
+
 	public String getName() {
 		return IMMUNOCELLFUNCTOX_OXIDATIVE_BURST;
 	}

@@ -17,7 +17,7 @@ public class Agent implements java.io.Serializable {
 	}
 
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
 	public void setDescription(String description) {
@@ -25,7 +25,7 @@ public class Agent implements java.io.Serializable {
 	}
 
 	public Long getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(Long id) {
@@ -33,7 +33,7 @@ public class Agent implements java.io.Serializable {
 	}
 
 	public Collection<AgentTarget> getAgentTargetCollection() {
-		return agentTargetCollection;
+		return this.agentTargetCollection;
 	}
 
 	public void setAgentTargetCollection(

@@ -7,8 +7,7 @@ public class Purity extends Characterization {
 	private static final long serialVersionUID = 1234567890L;
 
 	public Purity() {
-		
-		
+
 	}
 
 	public String getClassification() {

@@ -27,7 +27,7 @@ public class InstrumentConfigBean {
 	}
 
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
 	public void setDescription(String description) {
@@ -35,7 +35,7 @@ public class InstrumentConfigBean {
 	}
 
 	public String getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(String id) {
@@ -43,7 +43,7 @@ public class InstrumentConfigBean {
 	}
 
 	public InstrumentBean getInstrumentBean() {
-		return instrumentBean;
+		return this.instrumentBean;
 	}
 
 	public void setInstrumentBean(InstrumentBean instrumentBean) {
@@ -52,9 +52,9 @@ public class InstrumentConfigBean {
 
 	public InstrumentConfigBean copy() {
 		InstrumentConfigBean newInstrumentConfigBean = new InstrumentConfigBean();
-		//do not copy id
-		newInstrumentConfigBean.setDescription(description);
-		newInstrumentConfigBean.setInstrumentBean(instrumentBean);
+		// do not copy id
+		newInstrumentConfigBean.setDescription(this.description);
+		newInstrumentConfigBean.setInstrumentBean(this.instrumentBean);
 		return newInstrumentConfigBean;
 	}
 }

@@ -31,10 +31,10 @@ public class DendrimerBean extends CompositionBean {
 	private ComposingElementBean core = new ComposingElementBean();
 
 	public DendrimerBean() {
-		
-		surfaceGroups = new ArrayList<SurfaceGroupBean>();
-		core.setElementType(CaNanoLabConstants.CORE);
-		getComposingElements().add(core);
+
+		this.surfaceGroups = new ArrayList<SurfaceGroupBean>();
+		this.core.setElementType(CaNanoLabConstants.CORE);
+		getComposingElements().add(this.core);
 	}
 
 	public DendrimerBean(DendrimerComposition dendrimer) {
@@ -46,33 +46,33 @@ public class DendrimerBean extends CompositionBean {
 		this.repeatUnit = dendrimer.getRepeatUnit();
 
 		for (ComposingElementBean element : getComposingElements()) {
-			core = element;
+			this.core = element;
 		}
 		for (SurfaceGroup surface : dendrimer.getSurfaceGroupCollection()) {
 			SurfaceGroupBean surfaceBean = new SurfaceGroupBean(surface);
-			surfaceGroups.add(surfaceBean);
+			this.surfaceGroups.add(surfaceBean);
 		}
-		this.numberOfSurfaceGroups = surfaceGroups.size() + "";
+		this.numberOfSurfaceGroups = this.surfaceGroups.size() + "";
 	}
 
 	public String getBranch() {
-		return branch;
+		return this.branch;
 	}
 
 	public String getGeneration() {
-		return generation;
+		return this.generation;
 	}
 
 	public String getRepeatUnit() {
-		return repeatUnit;
+		return this.repeatUnit;
 	}
 
 	public String getNumberOfSurfaceGroups() {
-		return numberOfSurfaceGroups;
+		return this.numberOfSurfaceGroups;
 	}
 
 	public String getMolecularFormula() {
-		return molecularFormula;
+		return this.molecularFormula;
 	}
 
 	public void setBranch(String branch) {
@@ -96,7 +96,7 @@ public class DendrimerBean extends CompositionBean {
 	}
 
 	public List<SurfaceGroupBean> getSurfaceGroups() {
-		return surfaceGroups;
+		return this.surfaceGroups;
 	}
 
 	public void setSurfaceGroups(List<SurfaceGroupBean> surfaceGroups) {
@@ -104,7 +104,7 @@ public class DendrimerBean extends CompositionBean {
 	}
 
 	public ComposingElementBean getCore() {
-		return core;
+		return this.core;
 	}
 
 	public void setCore(ComposingElementBean core) {
@@ -115,13 +115,13 @@ public class DendrimerBean extends CompositionBean {
 		DendrimerComposition doComp = new DendrimerComposition();
 		super.updateDomainObj(doComp);
 
-		if (generation.length() > 0) {
-			doComp.setGeneration(new Float(generation));
+		if (this.generation.length() > 0) {
+			doComp.setGeneration(new Float(this.generation));
 		}
-		doComp.setBranch(branch);
-		doComp.setRepeatUnit(repeatUnit);
-		doComp.setMolecularFormula(molecularFormula);
-		for (SurfaceGroupBean surfaceGroup : surfaceGroups) {
+		doComp.setBranch(this.branch);
+		doComp.setRepeatUnit(this.repeatUnit);
+		doComp.setMolecularFormula(this.molecularFormula);
+		for (SurfaceGroupBean surfaceGroup : this.surfaceGroups) {
 			doComp.getSurfaceGroupCollection().add(surfaceGroup.getDomainObj());
 		}
 		return doComp;

@@ -1,18 +1,16 @@
 package gov.nih.nci.calab.domain.nano.function;
 
-
 public class DNA extends Agent {
 	private static final long serialVersionUID = 1234567890L;
 
 	private String sequence;
 
 	public DNA() {
-		
-		
+
 	}
 
 	public String getSequence() {
-		return sequence;
+		return this.sequence;
 	}
 
 	public void setSequence(String sequence) {

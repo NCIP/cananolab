@@ -20,7 +20,7 @@ public class EmulsionBean extends CompositionBean {
 	private String polymerName;
 
 	public EmulsionBean() {
-		
+
 	}
 
 	public EmulsionBean(EmulsionComposition emulsion) {
@@ -33,7 +33,7 @@ public class EmulsionBean extends CompositionBean {
 	}
 
 	public String getEmulsionType() {
-		return emulsionType;
+		return this.emulsionType;
 	}
 
 	public void setEmulsionType(String emulsionType) {
@@ -41,7 +41,7 @@ public class EmulsionBean extends CompositionBean {
 	}
 
 	public String getMolecularFormula() {
-		return molecularFormula;
+		return this.molecularFormula;
 	}
 
 	public void setMolecularFormula(String molecularFormula) {
@@ -49,7 +49,7 @@ public class EmulsionBean extends CompositionBean {
 	}
 
 	public String getPolymerized() {
-		return polymerized;
+		return this.polymerized;
 	}
 
 	public void setPolymerized(String polymerized) {
@@ -57,7 +57,7 @@ public class EmulsionBean extends CompositionBean {
 	}
 
 	public String getPolymerName() {
-		return polymerName;
+		return this.polymerName;
 	}
 
 	public void setPolymerName(String polymerName) {
@@ -67,12 +67,13 @@ public class EmulsionBean extends CompositionBean {
 	public EmulsionComposition getDomainObj() {
 		EmulsionComposition doComp = new EmulsionComposition();
 		super.updateDomainObj(doComp);
-		doComp.setType(emulsionType);
-		doComp.setMolecularFormula(molecularFormula);
-		boolean polymerizedStatus = (polymerized.equalsIgnoreCase(CaNanoLabConstants.BOOLEAN_YES)) ? true
+		doComp.setType(this.emulsionType);
+		doComp.setMolecularFormula(this.molecularFormula);
+		boolean polymerizedStatus = (this.polymerized
+				.equalsIgnoreCase(CaNanoLabConstants.BOOLEAN_YES)) ? true
 				: false;
 		doComp.setPolymerized(polymerizedStatus);
-		doComp.setPolymerName(polymerName);
+		doComp.setPolymerName(this.polymerName);
 		return doComp;
 	}
 }

@@ -12,11 +12,12 @@ import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
  */
 public class MorphologyBean extends CharacterizationBean {
 	private String type;
-	//this is used for validation only
+
+	// this is used for validation only
 	private String validateValue;
 
 	public String getValidateValue() {
-		return validateValue;
+		return this.validateValue;
 	}
 
 	public void setValidateValue(String validateValue) {
@@ -24,7 +25,7 @@ public class MorphologyBean extends CharacterizationBean {
 	}
 
 	public MorphologyBean() {
-		
+
 	}
 
 	public MorphologyBean(MorphologyBean propBean, CharacterizationBean charBean) {
@@ -43,7 +44,7 @@ public class MorphologyBean extends CharacterizationBean {
 	}
 
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
 	public void setType(String type) {

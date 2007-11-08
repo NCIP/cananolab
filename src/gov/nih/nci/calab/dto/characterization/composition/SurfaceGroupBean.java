@@ -27,7 +27,7 @@ public class SurfaceGroupBean {
 	}
 
 	public String getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(String id) {
@@ -35,7 +35,7 @@ public class SurfaceGroupBean {
 	}
 
 	public String getModifier() {
-		return modifier;
+		return this.modifier;
 	}
 
 	public void setModifier(String modifier) {
@@ -43,7 +43,7 @@ public class SurfaceGroupBean {
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -53,9 +53,9 @@ public class SurfaceGroupBean {
 	public SurfaceGroup getDomainObj() {
 		SurfaceGroup surfaceGroup = new SurfaceGroup();
 
-		surfaceGroup.setName(name);
+		surfaceGroup.setName(this.name);
 
-		surfaceGroup.setModifier(modifier);
+		surfaceGroup.setModifier(this.modifier);
 		if (getId() != null && getId().length() > 0) {
 			surfaceGroup.setId(new Long(getId()));
 		}

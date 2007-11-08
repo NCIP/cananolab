@@ -6,14 +6,12 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: LoadDerivedBioAssayDataAction.java,v 1.1 2007-11-01 17:30:21 pansu Exp $ */
+/* CVS $Id: LoadDerivedBioAssayDataAction.java,v 1.2 2007-11-08 20:41:34 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
-import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.common.FileService;
-import gov.nih.nci.calab.service.particle.SubmitNanoparticleService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
@@ -84,7 +82,7 @@ public class LoadDerivedBioAssayDataAction extends AbstractDispatchAction {
 		DerivedBioAssayDataBean file = (DerivedBioAssayDataBean) request
 				.getAttribute("file");
 		theForm.set("file", file);
-		theForm.set("forwardPage", (String) request
+		theForm.set("forwardPage", request
 				.getAttribute("loadFileForward"));
 		return mapping.getInputForward();
 	}

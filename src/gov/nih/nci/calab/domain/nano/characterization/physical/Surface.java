@@ -21,21 +21,19 @@ public class Surface extends Characterization {
 	private Collection<SurfaceChemistry> surfaceChemistryCollection = new ArrayList<SurfaceChemistry>();
 
 	public Surface() {
-		
-		
+
 	}
 
 	public String getClassification() {
 		return PHYSICAL_CHARACTERIZATION;
 	}
 
-
 	public String getName() {
 		return PHYSICAL_SURFACE;
 	}
 
 	public Measurement getCharge() {
-		return charge;
+		return this.charge;
 	}
 
 	public void setCharge(Measurement charge) {
@@ -43,7 +41,7 @@ public class Surface extends Characterization {
 	}
 
 	public Boolean getIsHydrophobic() {
-		return isHydrophobic;
+		return this.isHydrophobic;
 	}
 
 	public void setIsHydrophobic(Boolean isHydrophobic) {
@@ -51,20 +49,20 @@ public class Surface extends Characterization {
 	}
 
 	public Measurement getSurfaceArea() {
-		return surfaceArea;
+		return this.surfaceArea;
 	}
 
 	public void setSurfaceArea(Measurement surfaceArrea) {
 		this.surfaceArea = surfaceArrea;
 	}
 
-//	public Measurement getSurfaceCharge() {
-//		return surfaceCharge;
-//	}
-//
-//	public void setSurfaceCharge(Measurement surfaceCharge) {
-//		this.surfaceCharge = surfaceCharge;
-//	}
+	// public Measurement getSurfaceCharge() {
+	// return surfaceCharge;
+	// }
+	//
+	// public void setSurfaceCharge(Measurement surfaceCharge) {
+	// this.surfaceCharge = surfaceCharge;
+	// }
 
 	/*
 	 * public Measurement getZetaPotential() { return zetaPotential; }
@@ -73,7 +71,7 @@ public class Surface extends Characterization {
 	 * this.zetaPotential = zetaPotential; }
 	 */
 	public Collection<SurfaceChemistry> getSurfaceChemistryCollection() {
-		return surfaceChemistryCollection;
+		return this.surfaceChemistryCollection;
 	}
 
 	public void setSurfaceChemistryCollection(
@@ -82,7 +80,7 @@ public class Surface extends Characterization {
 	}
 
 	public Measurement getZetaPotential() {
-		return zetaPotential;
+		return this.zetaPotential;
 	}
 
 	public void setZetaPotential(Measurement zetaPotential) {

@@ -154,7 +154,7 @@ public class SearchNanoparticleService {
 					+ characterizationFrom + where + whereStr;
 			HibernateUtil.beginTransaction();
 
-			List<? extends Object> results = (List<? extends Object>) (HibernateUtil
+			List<? extends Object> results = (HibernateUtil
 					.createQueryByParam(hqlString, paramList)).list();
 			for (Object obj : new HashSet<Object>(results)) {
 				Nanoparticle particle = (Nanoparticle) obj;
@@ -195,7 +195,7 @@ public class SearchNanoparticleService {
 			throws Exception {
 
 		Nanoparticle particle = null;
-		ParticleBean particleBean =null;
+		ParticleBean particleBean = null;
 		try {
 			Session session = HibernateUtil.currentSession();
 			HibernateUtil.beginTransaction();
@@ -209,7 +209,7 @@ public class SearchNanoparticleService {
 									+ particleType + "'").list();
 			for (Object obj : results) {
 				particle = (Nanoparticle) obj;
-			}			
+			}
 			if (particle == null) {
 				throw new CalabException("No such particle in the database");
 			}
@@ -222,7 +222,7 @@ public class SearchNanoparticleService {
 		} finally {
 			HibernateUtil.closeSession();
 		}
-		
+
 		UserService userService = new UserService(
 				CaNanoLabConstants.CSM_APP_NAME);
 		List<String> accessibleGroups = userService.getAccessibleGroups(
@@ -341,7 +341,7 @@ public class SearchNanoparticleService {
 				FunctionBean funcBean = new FunctionBean(funcId, funcType,
 						viewTitle);
 				if (funcTypeFuncs.get(funcType) != null) {
-					funcs = (List<FunctionBean>) (funcTypeFuncs.get(funcType));
+					funcs = (funcTypeFuncs.get(funcType));
 				} else {
 					funcs = new ArrayList<FunctionBean>();
 					funcTypeFuncs.put(funcType, funcs);

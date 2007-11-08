@@ -17,7 +17,7 @@ public class CytotoxicityBean extends CharacterizationBean {
 	// private String cellDeathMethod;
 
 	public CytotoxicityBean() {
-		
+
 	}
 
 	public CytotoxicityBean(CytotoxicityBean propBean,
@@ -34,7 +34,7 @@ public class CytotoxicityBean extends CharacterizationBean {
 	}
 
 	public String getCellLine() {
-		return cellLine;
+		return this.cellLine;
 	}
 
 	public void setCellLine(String cellLine) {

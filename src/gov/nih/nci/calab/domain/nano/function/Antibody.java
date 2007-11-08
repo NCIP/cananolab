@@ -1,6 +1,5 @@
 package gov.nih.nci.calab.domain.nano.function;
 
-
 public class Antibody extends Agent {
 	private static final long serialVersionUID = 1234567890L;
 
@@ -12,7 +11,7 @@ public class Antibody extends Agent {
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -20,7 +19,7 @@ public class Antibody extends Agent {
 	}
 
 	public String getSpecies() {
-		return species;
+		return this.species;
 	}
 
 	public void setSpecies(String species) {

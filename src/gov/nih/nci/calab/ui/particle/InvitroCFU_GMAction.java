@@ -41,12 +41,13 @@ public class InvitroCFU_GMAction extends BaseCharacterizationAction {
 		CharacterizationBean charBean = super.prepareCreate(request, theForm);
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addCFU_GM(charBean);
-		CharacterizationBean[] otherChars=super.prepareCopy(request, theForm, service);
-		for (CharacterizationBean acharBean: otherChars) {
+		CharacterizationBean[] otherChars = super.prepareCopy(request, theForm,
+				service);
+		for (CharacterizationBean acharBean : otherChars) {
 			service.addCFU_GM(acharBean);
 		}
 		super.postCreate(request, theForm);
-		
+
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.addInvitroCFU_GM");
 		msgs.add("message", msg);

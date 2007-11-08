@@ -97,7 +97,7 @@ public class SubmitNanoparticleService {
 	private UserService userService;
 
 	public SubmitNanoparticleService() throws Exception {
-		userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
+		this.userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
 	}
 
 	/**
@@ -114,7 +114,7 @@ public class SubmitNanoparticleService {
 			String particleName, String[] keywords, String[] visibilities)
 			throws Exception {
 		Nanoparticle particle = null;
-		ParticleBean particleBean=null;
+		ParticleBean particleBean = null;
 		// save nanoparticle to the database
 		try {
 			Session session = HibernateUtil.currentSession();
@@ -123,7 +123,7 @@ public class SubmitNanoparticleService {
 			// creation
 			List results = session.createQuery(
 					"from Nanoparticle where name='" + particleName
-							+ "' and type='" + particleType + "'").list();			
+							+ "' and type='" + particleType + "'").list();
 			for (Object obj : results) {
 				particle = (Nanoparticle) obj;
 			}
@@ -141,11 +141,11 @@ public class SubmitNanoparticleService {
 					}
 				}
 			}
-			if (particle!=null) {
-				particleBean=new ParticleBean(particle);
+			if (particle != null) {
+				particleBean = new ParticleBean(particle);
 			}
 
-			HibernateUtil.commitTransaction();			
+			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			HibernateUtil.rollbackTransaction();
 			logger.error("Problem saving particle general information. ", e);
@@ -153,8 +153,8 @@ public class SubmitNanoparticleService {
 		} finally {
 			HibernateUtil.closeSession();
 		}
-		
-		userService.setVisiblity(particleName, visibilities);
+
+		this.userService.setVisiblity(particleName, visibilities);
 		return particleBean;
 	}
 
@@ -372,7 +372,7 @@ public class SubmitNanoparticleService {
 			fileService.writeFile(fileContent, rootPath + File.separator
 					+ fileBean.getUri());
 		}
-		userService.setVisiblity(fileBean.getId(), fileBean
+		this.userService.setVisiblity(fileBean.getId(), fileBean
 				.getVisibilityGroups());
 	}
 
@@ -941,7 +941,8 @@ public class SubmitNanoparticleService {
 					+ particleType
 					+ "' and function.identificationName='"
 					+ function.getViewTitle()
-					+ "' and function.type='" + function.getType() + "'";
+					+ "' and function.type='"
+					+ function.getType() + "'";
 		} else {
 			viewTitleQuery = "select count(function.identificationName) from Nanoparticle particle join particle.functionCollection function where particle.name='"
 					+ particleName
@@ -1098,7 +1099,7 @@ public class SubmitNanoparticleService {
 			HibernateUtil.closeSession();
 		}
 
-		userService.setVisiblity(fileBean.getId(), fileBean
+		this.userService.setVisiblity(fileBean.getId(), fileBean
 				.getVisibilityGroups());
 	}
 

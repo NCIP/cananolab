@@ -1,9 +1,7 @@
 package gov.nih.nci.calab.domain.nano.characterization.physical.composition;
 
-
 public class EmulsionComposition extends ParticleComposition {
 	private static final long serialVersionUID = 1234567890L;
-
 
 	private String type;
 
@@ -14,12 +12,11 @@ public class EmulsionComposition extends ParticleComposition {
 	private String polymerName;
 
 	public EmulsionComposition() {
-		
-		
+
 	}
 
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
 	public void setType(String type) {
@@ -27,7 +24,7 @@ public class EmulsionComposition extends ParticleComposition {
 	}
 
 	public String getMolecularFormula() {
-		return molecularFormula;
+		return this.molecularFormula;
 	}
 
 	public void setMolecularFormula(String molecularFormula) {
@@ -35,7 +32,7 @@ public class EmulsionComposition extends ParticleComposition {
 	}
 
 	public String getPolymerName() {
-		return polymerName;
+		return this.polymerName;
 	}
 
 	public void setPolymerName(String polymerName) {
@@ -51,7 +48,7 @@ public class EmulsionComposition extends ParticleComposition {
 	}
 
 	public Boolean getPolymerized() {
-		return polymerized;
+		return this.polymerized;
 	}
 
 	public void setPolymerized(Boolean polymerized) {

@@ -14,8 +14,7 @@ public class GridNodeBean {
 	private String appServiceURL;
 
 	public GridNodeBean(String hostName, String address) {
-		
-		
+
 		this.hostName = hostName;
 		this.address = address;
 	}
@@ -26,7 +25,7 @@ public class GridNodeBean {
 	}
 
 	public String getAddress() {
-		return address;
+		return this.address;
 	}
 
 	public void setAddress(String address) {
@@ -34,7 +33,7 @@ public class GridNodeBean {
 	}
 
 	public String getHostName() {
-		return hostName;
+		return this.hostName;
 	}
 
 	public void setHostName(String hostName) {
@@ -42,7 +41,7 @@ public class GridNodeBean {
 	}
 
 	public String getAppServiceURL() {
-		return appServiceURL;
+		return this.appServiceURL;
 	}
 
 	public void setAppServiceURL(String appServiceURL) {

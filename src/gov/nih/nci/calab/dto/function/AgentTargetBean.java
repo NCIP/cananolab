@@ -42,7 +42,7 @@ public class AgentTargetBean {
 	}
 
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
 	public void setDescription(String description) {
@@ -50,7 +50,7 @@ public class AgentTargetBean {
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -58,7 +58,7 @@ public class AgentTargetBean {
 	}
 
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
 	public void setType(String type) {
@@ -66,7 +66,7 @@ public class AgentTargetBean {
 	}
 
 	public String getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(String id) {
@@ -74,27 +74,27 @@ public class AgentTargetBean {
 	}
 
 	public void updateDomainObj(AgentTarget agentTarget) {
-		agentTarget.setDescription(description);
-		if (type.equals(CaNanoLabConstants.RECEPTOR)) {
-			((Receptor) agentTarget).setName(name);
+		agentTarget.setDescription(this.description);
+		if (this.type.equals(CaNanoLabConstants.RECEPTOR)) {
+			((Receptor) agentTarget).setName(this.name);
 
-		} else if (type.equals(CaNanoLabConstants.ANTIGEN)) {
-			((Antigen) agentTarget).setName(name);
+		} else if (this.type.equals(CaNanoLabConstants.ANTIGEN)) {
+			((Antigen) agentTarget).setName(this.name);
 		}
 	}
 
 	public AgentTarget getDomainObj() {
 		AgentTarget agentTarget = null;
-		if (type.equals(CaNanoLabConstants.RECEPTOR)) {
+		if (this.type.equals(CaNanoLabConstants.RECEPTOR)) {
 			agentTarget = new Receptor();
-			((Receptor) agentTarget).setName(name);
-		} else if (type.equals(CaNanoLabConstants.ANTIGEN)) {
+			((Receptor) agentTarget).setName(this.name);
+		} else if (this.type.equals(CaNanoLabConstants.ANTIGEN)) {
 			agentTarget = new Antigen();
-			((Antigen) agentTarget).setName(name);
+			((Antigen) agentTarget).setName(this.name);
 		} else {
 			agentTarget = new UnclassifiedAgentTarget();
 		}
-		agentTarget.setDescription(description);
+		agentTarget.setDescription(this.description);
 		return agentTarget;
 	}
 }

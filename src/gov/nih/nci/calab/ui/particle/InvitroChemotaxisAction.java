@@ -41,8 +41,9 @@ public class InvitroChemotaxisAction extends BaseCharacterizationAction {
 		CharacterizationBean charBean = super.prepareCreate(request, theForm);
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addChemotaxis(charBean);
-		CharacterizationBean[] otherChars=super.prepareCopy(request, theForm, service);
-		for (CharacterizationBean acharBean: otherChars) {
+		CharacterizationBean[] otherChars = super.prepareCopy(request, theForm,
+				service);
+		for (CharacterizationBean acharBean : otherChars) {
 			service.addChemotaxis(acharBean);
 		}
 		super.postCreate(request, theForm);

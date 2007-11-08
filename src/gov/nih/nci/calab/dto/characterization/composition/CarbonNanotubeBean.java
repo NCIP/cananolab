@@ -22,7 +22,7 @@ public class CarbonNanotubeBean extends CompositionBean {
 	private String wallType;
 
 	public CarbonNanotubeBean() {
-		
+
 	}
 
 	public CarbonNanotubeBean(CarbonNanotubeComposition carbonNanotube) {
@@ -38,7 +38,7 @@ public class CarbonNanotubeBean extends CompositionBean {
 	}
 
 	public String getAverageLength() {
-		return averageLength;
+		return this.averageLength;
 	}
 
 	public void setAverageLength(String averageLength) {
@@ -46,7 +46,7 @@ public class CarbonNanotubeBean extends CompositionBean {
 	}
 
 	public String getGrowthDiameter() {
-		return growthDiameter;
+		return this.growthDiameter;
 	}
 
 	public void setGrowthDiameter(String growthDiameter) {
@@ -54,7 +54,7 @@ public class CarbonNanotubeBean extends CompositionBean {
 	}
 
 	public String getChirality() {
-		return chirality;
+		return this.chirality;
 	}
 
 	public void setChirality(String chirality) {
@@ -62,7 +62,7 @@ public class CarbonNanotubeBean extends CompositionBean {
 	}
 
 	public String getWallType() {
-		return wallType;
+		return this.wallType;
 	}
 
 	public void setWallType(String wallType) {
@@ -73,15 +73,15 @@ public class CarbonNanotubeBean extends CompositionBean {
 		CarbonNanotubeComposition doComp = new CarbonNanotubeComposition();
 		super.updateDomainObj(doComp);
 
-		if (averageLength.length() > 0) {
-			doComp.setAverageLength(new Float(averageLength));
+		if (this.averageLength.length() > 0) {
+			doComp.setAverageLength(new Float(this.averageLength));
 		}
-		doComp.setChirality(chirality);
+		doComp.setChirality(this.chirality);
 
-		if (growthDiameter.length() > 0) {
-			doComp.setGrowthDiameter(new Float(growthDiameter));
+		if (this.growthDiameter.length() > 0) {
+			doComp.setGrowthDiameter(new Float(this.growthDiameter));
 		}
-		doComp.setWallType(wallType);
+		doComp.setWallType(this.wallType);
 
 		return doComp;
 	}

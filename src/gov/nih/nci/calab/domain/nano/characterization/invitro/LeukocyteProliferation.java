@@ -6,8 +6,7 @@ public class LeukocyteProliferation extends ImmunoToxicity {
 	private static final long serialVersionUID = 1234567890L;
 
 	public LeukocyteProliferation() {
-		
-		
+
 	}
 
 	public String getImmunotoxiticyType() {
@@ -17,7 +16,7 @@ public class LeukocyteProliferation extends ImmunoToxicity {
 	public String getClassification() {
 		return INVITRO_CHARACTERIZATION;
 	}
-	
+
 	public String getName() {
 		return IMMUNOCELLFUNCTOX_LEUKOCYTE_PROLIFERATION;
 	}

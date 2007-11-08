@@ -49,19 +49,19 @@ public class AgentBean extends BaseAgentBean {
 		super(agent);
 
 		if (agent instanceof DNA) {
-			dna = new DNABean((DNA) agent);
+			this.dna = new DNABean((DNA) agent);
 			setType(CaNanoLabConstants.DNA);
 		} else if (agent instanceof Peptide) {
-			peptide = new PeptideBean((Peptide) agent);
+			this.peptide = new PeptideBean((Peptide) agent);
 			setType(CaNanoLabConstants.PEPTIDE);
 		} else if (agent instanceof SmallMolecule) {
-			smallMolecule = new SmallMoleculeBean((SmallMolecule) agent);
+			this.smallMolecule = new SmallMoleculeBean((SmallMolecule) agent);
 			setType(CaNanoLabConstants.SMALL_MOLECULE);
 		} else if (agent instanceof Antibody) {
-			antibody = new AntibodyBean((Antibody) agent);
+			this.antibody = new AntibodyBean((Antibody) agent);
 			setType(CaNanoLabConstants.ANTIBODY);
 		} else if (agent instanceof ImageContrastAgent) {
-			imageContrastAgent = new ImageContrastAgentBean(
+			this.imageContrastAgent = new ImageContrastAgentBean(
 					(ImageContrastAgent) agent);
 			setType(CaNanoLabConstants.IMAGE_CONTRAST_AGENT);
 		} else if (agent instanceof UnclassifiedAgent) {
@@ -73,17 +73,17 @@ public class AgentBean extends BaseAgentBean {
 	public void updateDomainObj(Agent doAgent) {
 		super.updateDomainObj(doAgent);
 		if (getType().equals(CaNanoLabConstants.DNA)) {
-			dna.updateDomainObj((DNA) doAgent);
+			this.dna.updateDomainObj((DNA) doAgent);
 		} else if (getType().equals(CaNanoLabConstants.PEPTIDE)) {
-			peptide.updateDomainObj((Peptide) doAgent);
+			this.peptide.updateDomainObj((Peptide) doAgent);
 		} else if (getType().equals(CaNanoLabConstants.ANTIBODY)) {
-			antibody.updateDomainObj((Antibody) doAgent);
+			this.antibody.updateDomainObj((Antibody) doAgent);
 		} else if (getType().equals(CaNanoLabConstants.IMAGE_CONTRAST_AGENT)) {
-			imageContrastAgent.updateDomainObj((ImageContrastAgent) doAgent);
+			this.imageContrastAgent.updateDomainObj((ImageContrastAgent) doAgent);
 		} else if (getType().equals(CaNanoLabConstants.SMALL_MOLECULE)) {
-			smallMolecule.updateDomainObj((SmallMolecule) doAgent);
+			this.smallMolecule.updateDomainObj((SmallMolecule) doAgent);
 		} else if (getType().equals(CaNanoLabConstants.OTHER)) {
-			other.updateDomainObj((UnclassifiedAgent) doAgent);
+			this.other.updateDomainObj((UnclassifiedAgent) doAgent);
 		}
 		updateAgentTargets(doAgent);
 	}
@@ -106,17 +106,17 @@ public class AgentBean extends BaseAgentBean {
 		}
 		super.updateDomainObj(doAgent);
 		if (getType().equals(CaNanoLabConstants.DNA)) {
-			dna.updateDomainObj((DNA) doAgent);
+			this.dna.updateDomainObj((DNA) doAgent);
 		} else if (getType().equals(CaNanoLabConstants.PEPTIDE)) {
-			peptide.updateDomainObj((Peptide) doAgent);
+			this.peptide.updateDomainObj((Peptide) doAgent);
 		} else if (getType().equals(CaNanoLabConstants.ANTIBODY)) {
-			antibody.updateDomainObj((Antibody) doAgent);
+			this.antibody.updateDomainObj((Antibody) doAgent);
 		} else if (getType().equals(CaNanoLabConstants.IMAGE_CONTRAST_AGENT)) {
-			imageContrastAgent.updateDomainObj((ImageContrastAgent) doAgent);
+			this.imageContrastAgent.updateDomainObj((ImageContrastAgent) doAgent);
 		} else if (getType().equals(CaNanoLabConstants.SMALL_MOLECULE)) {
-			smallMolecule.updateDomainObj((SmallMolecule) doAgent);
+			this.smallMolecule.updateDomainObj((SmallMolecule) doAgent);
 		} else if (getType().equals(CaNanoLabConstants.OTHER)) {
-			other.updateDomainObj((UnclassifiedAgent) doAgent);
+			this.other.updateDomainObj((UnclassifiedAgent) doAgent);
 		}
 		updateAgentTargets(doAgent);
 		return doAgent;
@@ -150,8 +150,7 @@ public class AgentBean extends BaseAgentBean {
 							break;
 						}
 					}
-				}
-				else {
+				} else {
 					doAgentTarget = agentTargetBean.getDomainObj();
 				}
 			}
@@ -160,23 +159,23 @@ public class AgentBean extends BaseAgentBean {
 	}
 
 	public AntibodyBean getAntibody() {
-		return antibody;
+		return this.antibody;
 	}
 
 	public DNABean getDna() {
-		return dna;
+		return this.dna;
 	}
 
 	public ImageContrastAgentBean getImageContrastAgent() {
-		return imageContrastAgent;
+		return this.imageContrastAgent;
 	}
 
 	public PeptideBean getPeptide() {
-		return peptide;
+		return this.peptide;
 	}
 
 	public SmallMoleculeBean getSmallMolecule() {
-		return smallMolecule;
+		return this.smallMolecule;
 	}
 
 	public void setAntibody(AntibodyBean antibody) {

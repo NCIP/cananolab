@@ -22,7 +22,7 @@ import org.hibernate.Session;
  * @author pansu
  * 
  */
-/* CVS $Id: SearchSampleService.java,v 1.1 2007-11-01 17:31:14 pansu Exp $ */
+/* CVS $Id: SearchSampleService.java,v 1.2 2007-11-08 20:41:35 pansu Exp $ */
 
 public class SearchSampleService {
 	private static Logger logger = Logger.getLogger(SearchSampleService.class);
@@ -137,7 +137,7 @@ public class SearchSampleService {
 
 			HibernateUtil.beginTransaction();
 
-			List<? extends Object> results = (List<? extends Object>) (HibernateUtil
+			List<? extends Object> results = (HibernateUtil
 					.createQueryByParam(hqlString, paramList).list());
 			for (Object obj : new HashSet<Object>(results)) {
 				Sample sample = (Sample) obj;

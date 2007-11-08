@@ -56,12 +56,12 @@ public class CharacterizationBean {
 	private String actionName;
 
 	private String particleName;
-	
+
 	private String particleType;
 
 	public String getActionName() {
-		actionName = StringUtils.getOneWordLowerCaseFirstLetter(name);
-		return actionName;
+		this.actionName = StringUtils.getOneWordLowerCaseFirstLetter(this.name);
+		return this.actionName;
 	}
 
 	public CharacterizationBean() {
@@ -91,8 +91,8 @@ public class CharacterizationBean {
 		this.description = charBean.getDescription();
 		this.instrumentConfigBean = charBean.getInstrumentConfigBean();
 		this.protocolFileBean = charBean.getProtocolFileBean();
-		this.particleType=charBean.getParticleType();
-		this.particleName=charBean.getParticleName();
+		this.particleType = charBean.getParticleType();
+		this.particleName = charBean.getParticleName();
 	}
 
 	public CharacterizationBean(String id, String name, String viewTitle) {
@@ -109,13 +109,13 @@ public class CharacterizationBean {
 		this.setCreatedBy(characterization.getCreatedBy());
 		this.setCreatedDate(characterization.getCreatedDate());
 		this.name = characterization.getName();
-		setAbbr(name);
+		setAbbr(this.name);
 
 		this.setDescription(characterization.getDescription());
 		InstrumentConfiguration instrumentConfigObj = characterization
 				.getInstrumentConfiguration();
 		if (instrumentConfigObj != null) {
-			instrumentConfigBean = new InstrumentConfigBean(instrumentConfigObj);
+			this.instrumentConfigBean = new InstrumentConfigBean(instrumentConfigObj);
 		}
 		for (DerivedBioAssayData table : characterization
 				.getDerivedBioAssayDataCollection()) {
@@ -124,12 +124,12 @@ public class CharacterizationBean {
 		}
 		ProtocolFile protocolFile = characterization.getProtocolFile();
 		if (protocolFile != null) {
-			protocolFileBean = new ProtocolFileBean(protocolFile);
+			this.protocolFileBean = new ProtocolFileBean(protocolFile);
 		}
 	}
 
 	public String getCharacterizationSource() {
-		return characterizationSource;
+		return this.characterizationSource;
 	}
 
 	public void setCharacterizationSource(String characterizationSource) {
@@ -138,12 +138,12 @@ public class CharacterizationBean {
 
 	public String getViewTitle() {
 		// get only the first number of characters of the title
-		if (viewTitle != null
-				&& viewTitle.length() > CaNanoLabConstants.MAX_VIEW_TITLE_LENGTH) {
-			return viewTitle.substring(0,
+		if (this.viewTitle != null
+				&& this.viewTitle.length() > CaNanoLabConstants.MAX_VIEW_TITLE_LENGTH) {
+			return this.viewTitle.substring(0,
 					CaNanoLabConstants.MAX_VIEW_TITLE_LENGTH);
 		}
-		return viewTitle;
+		return this.viewTitle;
 	}
 
 	public void setViewTitle(String viewTitle) {
@@ -151,7 +151,7 @@ public class CharacterizationBean {
 	}
 
 	public String getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(String id) {
@@ -169,8 +169,8 @@ public class CharacterizationBean {
 		doChar.setDescription(getDescription());
 		doChar.setCreatedBy(getCreatedBy());
 		doChar.setCreatedDate(getCreatedDate());
-		updateDerivedBioAssayData(doChar);				
-	}	
+		updateDerivedBioAssayData(doChar);
+	}
 
 	// update domain object's derivedBioAssayData collection
 	private void updateDerivedBioAssayData(Characterization doChar) {
@@ -202,7 +202,7 @@ public class CharacterizationBean {
 	}
 
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
 	public void setDescription(String description) {
@@ -210,11 +210,11 @@ public class CharacterizationBean {
 	}
 
 	public String getClassification() {
-		return classification;
+		return this.classification;
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setAbbr(String abbr) {
@@ -222,11 +222,11 @@ public class CharacterizationBean {
 	}
 
 	public String getAbbr() {
-		return abbr;
+		return this.abbr;
 	}
 
 	public String getCreatedBy() {
-		return createdBy;
+		return this.createdBy;
 	}
 
 	public void setCreatedBy(String createdBy) {
@@ -234,7 +234,7 @@ public class CharacterizationBean {
 	}
 
 	public Date getCreatedDate() {
-		return createdDate;
+		return this.createdDate;
 	}
 
 	public void setCreatedDate(Date createdDate) {
@@ -242,7 +242,7 @@ public class CharacterizationBean {
 	}
 
 	public List<DerivedBioAssayDataBean> getDerivedBioAssayDataList() {
-		return derivedBioAssayDataList;
+		return this.derivedBioAssayDataList;
 	}
 
 	public void setDerivedBioAssayDataList(
@@ -251,7 +251,7 @@ public class CharacterizationBean {
 	}
 
 	public InstrumentConfigBean getInstrumentConfigBean() {
-		return instrumentConfigBean;
+		return this.instrumentConfigBean;
 	}
 
 	public void setInstrumentConfigBean(
@@ -260,7 +260,7 @@ public class CharacterizationBean {
 	}
 
 	public ProtocolFileBean getProtocolFileBean() {
-		return protocolFileBean;
+		return this.protocolFileBean;
 	}
 
 	public void setProtocolFileBean(ProtocolFileBean protocolFileBean) {
@@ -268,14 +268,14 @@ public class CharacterizationBean {
 	}
 
 	public String getViewColor() {
-		if (viewTitle!=null && viewTitle.matches("^copy_\\d{15}?")) {
-			viewColor = CaNanoLabConstants.AUTO_COPY_CHARACTERIZATION_VIEW_COLOR;
+		if (this.viewTitle != null && this.viewTitle.matches("^copy_\\d{15}?")) {
+			this.viewColor = CaNanoLabConstants.AUTO_COPY_CHARACTERIZATION_VIEW_COLOR;
 		}
-		return viewColor;
+		return this.viewColor;
 	}
 
 	public String getParticleName() {
-		return particleName;
+		return this.particleName;
 	}
 
 	public void setParticleName(String particleName) {
@@ -283,7 +283,7 @@ public class CharacterizationBean {
 	}
 
 	public String getParticleType() {
-		return particleType;
+		return this.particleType;
 	}
 
 	public void setParticleType(String particleType) {
@@ -301,12 +301,12 @@ public class CharacterizationBean {
 		// unset id
 		newCharBean.setId(null);
 		// set InstrumentConfig, DerivedBioAssayDataList
-		InstrumentConfigBean newInstrumentConfigBean = instrumentConfigBean
+		InstrumentConfigBean newInstrumentConfigBean = this.instrumentConfigBean
 				.copy();
 		newCharBean.setInstrumentConfigBean(newInstrumentConfigBean);
 
 		List<DerivedBioAssayDataBean> newDerivedBioAssayDataList = new ArrayList<DerivedBioAssayDataBean>();
-		for (DerivedBioAssayDataBean derivedBioAssayDataBean : derivedBioAssayDataList) {
+		for (DerivedBioAssayDataBean derivedBioAssayDataBean : this.derivedBioAssayDataList) {
 			DerivedBioAssayDataBean newDerivedBioAssayDataBean = derivedBioAssayDataBean
 					.copy(copyData);
 			newDerivedBioAssayDataList.add(newDerivedBioAssayDataBean);

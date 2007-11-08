@@ -1,6 +1,5 @@
 package gov.nih.nci.calab.domain.nano.function;
 
-
 public class ImageContrastAgent extends Agent {
 	private static final long serialVersionUID = 1234567890L;
 
@@ -9,12 +8,11 @@ public class ImageContrastAgent extends Agent {
 	private String type;
 
 	public ImageContrastAgent() {
-		
-		
+
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -22,7 +20,7 @@ public class ImageContrastAgent extends Agent {
 	}
 
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
 	public void setType(String type) {

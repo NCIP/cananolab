@@ -7,18 +7,17 @@ public class SurfaceChemistry implements java.io.Serializable {
 	private Long id;
 
 	private String molecularFormulaType;
-	
+
 	private String moleculeName;
 
 	private Integer numberOfMolecule;
 
 	public SurfaceChemistry() {
-		
-		
+
 	}
 
 	public Long getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(Long id) {
@@ -26,7 +25,7 @@ public class SurfaceChemistry implements java.io.Serializable {
 	}
 
 	public String getMoleculeName() {
-		return moleculeName;
+		return this.moleculeName;
 	}
 
 	public void setMoleculeName(String molecule) {
@@ -34,7 +33,7 @@ public class SurfaceChemistry implements java.io.Serializable {
 	}
 
 	public Integer getNumberOfMolecule() {
-		return numberOfMolecule;
+		return this.numberOfMolecule;
 	}
 
 	public void setNumberOfMolecule(Integer numberOfMolecule) {
@@ -42,7 +41,7 @@ public class SurfaceChemistry implements java.io.Serializable {
 	}
 
 	public String getMolecularFormulaType() {
-		return molecularFormulaType;
+		return this.molecularFormulaType;
 	}
 
 	public void setMolecularFormulaType(String molecularFormulaType) {

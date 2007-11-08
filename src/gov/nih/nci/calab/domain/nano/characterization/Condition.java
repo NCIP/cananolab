@@ -15,12 +15,11 @@ public class Condition implements Serializable {
 	private Measurement value;
 
 	public Condition() {
-		
-		
+
 	}
 
 	public Long getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(Long id) {
@@ -28,7 +27,7 @@ public class Condition implements Serializable {
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String type) {
@@ -36,7 +35,7 @@ public class Condition implements Serializable {
 	}
 
 	public Measurement getValue() {
-		return value;
+		return this.value;
 	}
 
 	public void setValue(Measurement value) {

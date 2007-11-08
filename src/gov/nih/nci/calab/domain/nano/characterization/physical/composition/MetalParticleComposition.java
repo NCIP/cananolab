@@ -1,13 +1,11 @@
 package gov.nih.nci.calab.domain.nano.characterization.physical.composition;
 
-
 public class MetalParticleComposition extends ParticleComposition {
 
 	private static final long serialVersionUID = 1234567890L;
 
 	public MetalParticleComposition() {
-		
-		
+
 	}
 
 	public String getClassification() {

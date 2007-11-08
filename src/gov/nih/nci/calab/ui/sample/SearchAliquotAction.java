@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.sample;
  * @author pansu
  */
 
-/* CVS $Id: SearchAliquotAction.java,v 1.1 2007-11-01 17:30:21 pansu Exp $ */
+/* CVS $Id: SearchAliquotAction.java,v 1.2 2007-11-08 20:41:34 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.sample.AliquotBean;
@@ -111,7 +111,7 @@ public class SearchAliquotAction extends AbstractDispatchAction {
 	public boolean loginRequired() {
 		return true;
 	}
-	
+
 	public boolean canUserExecute(UserBean user) throws Exception {
 		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
 				CaNanoLabConstants.CSM_PG_SAMPLE);

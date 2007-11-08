@@ -16,8 +16,7 @@ public class PlasmaProteinBinding extends ImmunoToxicity {
 	 * 
 	 */
 	public PlasmaProteinBinding() {
-		
-		
+
 	}
 
 	public String getImmunotoxiticyType() {

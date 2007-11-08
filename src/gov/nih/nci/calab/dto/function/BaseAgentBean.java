@@ -16,8 +16,9 @@ public class BaseAgentBean {
 	private List<AgentTargetBean> agentTargets = new ArrayList<AgentTargetBean>();
 
 	public BaseAgentBean() {
-		
+
 	}
+
 	public BaseAgentBean(Agent agent) {
 		this.id = agent.getId().toString();
 		this.description = agent.getDescription();
@@ -27,7 +28,7 @@ public class BaseAgentBean {
 	}
 
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
 	public void setDescription(String description) {
@@ -35,7 +36,7 @@ public class BaseAgentBean {
 	}
 
 	public String getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(String id) {
@@ -43,7 +44,7 @@ public class BaseAgentBean {
 	}
 
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
 	public void setType(String type) {
@@ -51,7 +52,7 @@ public class BaseAgentBean {
 	}
 
 	public List<AgentTargetBean> getAgentTargets() {
-		return agentTargets;
+		return this.agentTargets;
 	}
 
 	public void setAgentTargets(List<AgentTargetBean> agentTargets) {
@@ -59,6 +60,6 @@ public class BaseAgentBean {
 	}
 
 	public void updateDomainObj(Agent doAgent) {
-		doAgent.setDescription(description);
+		doAgent.setDescription(this.description);
 	}
 }

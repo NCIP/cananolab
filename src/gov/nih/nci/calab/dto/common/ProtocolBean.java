@@ -20,9 +20,9 @@ public class ProtocolBean implements Comparable {
 	private String type;
 
 	public ProtocolBean(Protocol protocol) {
-		id = protocol.getId().toString();
-		name = protocol.getName();
-		type = protocol.getType();
+		this.id = protocol.getId().toString();
+		this.name = protocol.getName();
+		this.type = protocol.getType();
 	}
 
 	private List<ProtocolFileBean> fileBeanList = new ArrayList<ProtocolFileBean>();
@@ -35,7 +35,7 @@ public class ProtocolBean implements Comparable {
 	}
 
 	public String getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(String id) {
@@ -43,7 +43,7 @@ public class ProtocolBean implements Comparable {
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -51,7 +51,7 @@ public class ProtocolBean implements Comparable {
 	}
 
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
 	public void setType(String type) {
@@ -59,7 +59,7 @@ public class ProtocolBean implements Comparable {
 	}
 
 	public List<ProtocolFileBean> getFileBeanList() {
-		return fileBeanList;
+		return this.fileBeanList;
 	}
 
 	public void setFileBeanList(List<ProtocolFileBean> fileBeanList) {

@@ -27,13 +27,13 @@ public class CompositionBean extends CharacterizationBean {
 		for (ComposingElement element : composition
 				.getComposingElementCollection()) {
 			ComposingElementBean elementBean = new ComposingElementBean(element);
-			composingElements.add(elementBean);
+			this.composingElements.add(elementBean);
 		}
-		this.setNumberOfElements(composingElements.size() + "");
+		this.setNumberOfElements(this.composingElements.size() + "");
 	}
 
 	public List<ComposingElementBean> getComposingElements() {
-		return composingElements;
+		return this.composingElements;
 	}
 
 	public void setComposingElements(
@@ -42,17 +42,17 @@ public class CompositionBean extends CharacterizationBean {
 	}
 
 	public String getNumberOfElements() {
-		return numberOfElements;
+		return this.numberOfElements;
 	}
 
 	public void setNumberOfElements(String numberOfElements) {
 		this.numberOfElements = numberOfElements;
 	}
 
-    public ParticleComposition getDomainObj() {
-    	return new ParticleComposition();
-    }
-    
+	public ParticleComposition getDomainObj() {
+		return new ParticleComposition();
+	}
+
 	public void updateDomainObj(ParticleComposition doComp) {
 		super.updateDomainObj(doComp);
 		for (ComposingElementBean element : getComposingElements()) {

@@ -6,14 +6,13 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SearchNanoparticleAdvancedAction.java,v 1.1 2007-11-01 17:30:21 pansu Exp $ */
+/* CVS $Id: SearchNanoparticleAdvancedAction.java,v 1.2 2007-11-08 20:41:34 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.SearchableBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.service.particle.SearchNanoparticleService;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
-import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
 import java.util.ArrayList;
 import java.util.List;

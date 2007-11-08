@@ -25,12 +25,11 @@ public class Stressor {
 	 * 
 	 */
 	public Stressor() {
-		
-		
+
 	}
 
 	public Long getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(Long id) {
@@ -38,7 +37,7 @@ public class Stressor {
 	}
 
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
 	public void setType(String type) {
@@ -46,7 +45,7 @@ public class Stressor {
 	}
 
 	public Measurement getValue() {
-		return value;
+		return this.value;
 	}
 
 	public void setValue(Measurement value) {
@@ -54,7 +53,7 @@ public class Stressor {
 	}
 
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
 	public void setDescription(String description) {

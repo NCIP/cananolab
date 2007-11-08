@@ -13,12 +13,11 @@ public class Control implements Serializable {
 	private String type;
 
 	public Control() {
-		
-		
+
 	}
 
 	public Long getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(Long id) {
@@ -26,7 +25,7 @@ public class Control implements Serializable {
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -34,7 +33,7 @@ public class Control implements Serializable {
 	}
 
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
 	public void setType(String type) {

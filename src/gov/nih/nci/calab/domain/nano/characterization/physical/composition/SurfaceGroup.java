@@ -5,7 +5,7 @@ package gov.nih.nci.calab.domain.nano.characterization.physical.composition;
 
 /**
  * @author Zeng
- *
+ * 
  */
 public class SurfaceGroup implements java.io.Serializable {
 
@@ -18,15 +18,14 @@ public class SurfaceGroup implements java.io.Serializable {
 	private String modifier;
 
 	/**
-	 *
+	 * 
 	 */
 	public SurfaceGroup() {
-		
-		
+
 	}
 
 	public Long getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(Long id) {
@@ -34,7 +33,7 @@ public class SurfaceGroup implements java.io.Serializable {
 	}
 
 	public String getModifier() {
-		return modifier;
+		return this.modifier;
 	}
 
 	public void setModifier(String modifier) {
@@ -42,7 +41,7 @@ public class SurfaceGroup implements java.io.Serializable {
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {

@@ -1,6 +1,5 @@
 package gov.nih.nci.calab.domain.nano.function;
 
-
 public class SmallMolecule extends Agent {
 	private static final long serialVersionUID = 1234567890L;
 
@@ -9,12 +8,11 @@ public class SmallMolecule extends Agent {
 	private String compoundName;
 
 	public SmallMolecule() {
-		
-		
+
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -22,7 +20,7 @@ public class SmallMolecule extends Agent {
 	}
 
 	public String getCompoundName() {
-		return compoundName;
+		return this.compoundName;
 	}
 
 	public void setCompoundName(String compoundName) {

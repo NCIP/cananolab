@@ -17,21 +17,21 @@ public class InstrumentBean {
 	private String manufacturer;
 
 	private String abbreviation;
-	
+
 	public InstrumentBean() {
-		
+
 	}
 
 	public InstrumentBean(String type, String description, String manufacturer,
 			String abbreviation) {
-		
+
 		this.type = type;
 		this.manufacturer = manufacturer;
 		this.abbreviation = abbreviation;
 	}
 
 	public InstrumentBean(Instrument instrument) {
-		this.id=StringUtils.convertToString(instrument.getId());
+		this.id = StringUtils.convertToString(instrument.getId());
 		this.type = StringUtils.convertToString(instrument.getType());
 		this.manufacturer = StringUtils.convertToString(instrument
 				.getManufacturer());
@@ -40,7 +40,7 @@ public class InstrumentBean {
 	}
 
 	public String getAbbreviation() {
-		return abbreviation;
+		return this.abbreviation;
 	}
 
 	public void setAbbreviation(String abbreviation) {
@@ -48,7 +48,7 @@ public class InstrumentBean {
 	}
 
 	public String getManufacturer() {
-		return manufacturer;
+		return this.manufacturer;
 	}
 
 	public void setManufacturer(String manufacturer) {
@@ -56,7 +56,7 @@ public class InstrumentBean {
 	}
 
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
 	public void setType(String type) {
@@ -64,21 +64,21 @@ public class InstrumentBean {
 	}
 
 	public String getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(String id) {
 		this.id = id;
 	}
-	
+
 	public Instrument getDomainObject() {
 		Instrument instrument = new Instrument();
-		if (id != null && id.length() > 0) {
-			instrument.setId(new Long(id));
+		if (this.id != null && this.id.length() > 0) {
+			instrument.setId(new Long(this.id));
 		}
-		instrument.setType(type);
-		instrument.setManufacturer(manufacturer);
-		instrument.setAbbreviation(abbreviation);
+		instrument.setType(this.type);
+		instrument.setManufacturer(this.manufacturer);
+		instrument.setAbbreviation(this.abbreviation);
 		return instrument;
 	}
 }
