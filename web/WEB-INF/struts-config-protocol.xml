@@ -36,7 +36,7 @@
 	<action-mappings>
 		<action path="/manageProtocol"
 			type="gov.nih.nci.calab.ui.core.BaseForwardAction"
-			parameter="protocol.manageprotocol" scope="request" />
+			parameter="protocol.manageProtocol" scope="request" />
 		<action name="submitProtocolForm" parameter="dispatch"
 			path="/submitProtocol"
 			type="gov.nih.nci.calab.ui.protocol.SubmitProtocolAction"
@@ -44,13 +44,13 @@
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="protocol" key="error.submitProtocol"
-				path="protocol.submitprotocol" type="java.lang.Exception" />
+				path="protocol.submitProtocol" type="java.lang.Exception" />
 			<forward name="success" path="protocol.message" />
 			<forward name="input"
 				path="/submitProtocol.do?dispatch=reSetup&amp;page=0" />
-			<forward name="setup" path="protocol.submitprotocol" />
+			<forward name="setup" path="protocol.submitProtocol" />
 			<forward name="resetProtocolPage"
-				path="protocol.submitprotocol" />
+				path="protocol.submitProtocol" />
 		</action>
 		<action name="updateProtocolForm" parameter="dispatch"
 			path="/updateProtocol"
@@ -59,13 +59,13 @@
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="protocol" key="error.updateProtocol"
-				path="protocol.updateprotocol" type="java.lang.Exception" />
+				path="protocol.updateProtocol" type="java.lang.Exception" />
 			<forward name="success" path="protocol.message" />
 			<forward name="input"
 				path="/updateProtocol.do?dispatch=setupUpdate&amp;page=0" />
 			<forward name="failure"
 				path="/updateProtocol.do?dispatch=setupUpdate" />
-			<forward name="setup" path="protocol.updateprotocol" />
+			<forward name="setup" path="protocol.updateProtocol" />
 		</action>
 		<action input="input" name="searchProtocolForm"
 			parameter="dispatch" path="/searchProtocol"
@@ -78,13 +78,13 @@
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="protocol" key="error.searchProtocol"
-				path="protocol.searchprotocol" type="java.lang.Exception" />
-			<forward name="input" path="protocol.searchprotocol" />
+				path="protocol.searchProtocol" type="java.lang.Exception" />
+			<forward name="input" path="protocol.searchProtocol" />
 			<forward name="success"
-				path="protocol.searchprotocol.result" />
+				path="protocol.searchProtocolResult" />
 		</action>
 		<action path="/protocolResults"
 			type="gov.nih.nci.calab.ui.core.BaseForwardAction"
-			parameter="protocol.searchprotocol.result" scope="request" />
+			parameter="protocol.searchProtocolResult" scope="request" />
 	</action-mappings>
 </struts-config>

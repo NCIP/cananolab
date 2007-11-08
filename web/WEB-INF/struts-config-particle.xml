@@ -168,12 +168,13 @@
 		<forward name="function" path="nanoparticleFunction.do?page=0" />
 		<forward name="loadFile"
 			path="/loadFile.do?dispatch=setupView&amp;page=0" />
-		<forward name="deleteConfirmed" path="particle.message" />
+		<forward name="deleteConfirmed"
+			path="particle.annotationMessage" />
 	</global-forwards>
 	<action-mappings>
 		<action path="/manageParticle"
 			type="gov.nih.nci.calab.ui.core.BaseForwardAction"
-			parameter="particle.managenanoparticle" scope="request" />
+			parameter="particle.manageNanoparticle" scope="request" />
 		<action name="nanoparticleGeneralInfoForm" parameter="dispatch"
 			path="/nanoparticleGeneralInfo"
 			type="gov.nih.nci.calab.ui.particle.NanoparticleGeneralInfoAction"
@@ -181,13 +182,13 @@
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="submit" key="error.nanoparticle.generalInfo"
-				path="particle.createnanoparticle" type="java.lang.Exception" />
-			<forward name="success" path="particle.message" />
-			<forward name="view" path="particle.generalinfo.view" />
-			<forward name="viewDisclaimer"
-				path="particle.viewParticleDisclaimer" />
-			<forward name="update" path="particle.generalinfo.update" />
-			<forward name="input" path="particle.createnanoparticle" />
+				path="particle.createNanoparticle" type="java.lang.Exception" />
+			<forward name="success"
+				path="particle.annotationMessage" />
+			<forward name="view" path="particle.generalInfo" />
+			<forward name="viewDisclaimer" path="particle.disclaimer" />
+			<forward name="update" path="particle.generalInfo" />
+			<forward name="input" path="particle.createNanoparticle" />
 		</action>
 		<action name="nanoparticleCompositionForm" parameter="dispatch"
 			path="/composition"
@@ -196,11 +197,12 @@
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="submit" key="error.addParticleComposition"
-				path="particle.addparticle.composition" type="java.lang.Exception" />
-			<forward name="success" path="particle.action.message" />
+				path="particle.composition" type="java.lang.Exception" />
+			<forward name="success"
+				path="particle.characterizationMessage" />
 			<forward name="input"
 				path="/composition.do?dispatch=input&amp;page=0" />
-			<forward name="setup" path="particle.addparticle.composition" />
+			<forward name="setup" path="particle.composition" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/size"
@@ -209,15 +211,17 @@
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="submit" key="error.addParticleSize"
-				path="particle.addparticle.size" type="java.lang.Exception" />
+				path="particle.physicalCharacterization" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.action.message" />
+			<forward name="success"
+				path="particle.characterizationMessage" />
 			<forward name="input"
 				path="/size.do?dispatch=input&amp;page=0" />
-			<forward name="setup" path="particle.addparticle.size" />
+			<forward name="setup"
+				path="particle.physicalCharacterization" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/surface"
@@ -226,15 +230,16 @@
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="submit" key="error.addParticleSurface"
-				path="particle.addparticle.surface" type="java.lang.Exception" />
+				path="particle.surface" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.action.message" />
+			<forward name="success"
+				path="particle.characterizationMessage" />
 			<forward name="input"
 				path="/surface.do?dispatch=input&amp;page=0" />
-			<forward name="setup" path="particle.addparticle.surface" />
+			<forward name="setup" path="particle.surface" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/molecularWeight"
@@ -243,17 +248,17 @@
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="submit" key="error.addParticleMolecularWeight"
-				path="particle.addparticle.molecularweight"
-				type="java.lang.Exception" />
+				path="particle.physicalCharacterization" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.action.message" />
+			<forward name="success"
+				path="particle.characterizationMessage" />
 			<forward name="input"
 				path="/molecularWeight.do?dispatch=input&amp;page=0" />
 			<forward name="setup"
-				path="particle.addparticle.molecularweight" />
+				path="particle.physicalCharacterization" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/morphology"
@@ -262,15 +267,16 @@
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="submit" key="error.addParticleMorphology"
-				path="particle.addparticle.morphology" type="java.lang.Exception" />
+				path="particle.morphology" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.action.message" />
+			<forward name="success"
+				path="particle.characterizationMessage" />
 			<forward name="input"
 				path="/morphology.do?dispatch=input&amp;page=0" />
-			<forward name="setup" path="particle.addparticle.morphology" />
+			<forward name="setup" path="particle.morphology" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/shape"
@@ -278,16 +284,17 @@
 			input="input">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="submit" key="error.addParticleShape"
-				path="particle.addparticle.shape" type="java.lang.Exception" />
+				bundle="submit" key="error.addParticleShape" path="particle.shape"
+				type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.action.message" />
+			<forward name="success"
+				path="particle.characterizationMessage" />
 			<forward name="input"
 				path="/shape.do?dispatch=input&amp;page=0" />
-			<forward name="setup" path="particle.addparticle.shape" />
+			<forward name="setup" path="particle.shape" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/purity"
@@ -296,15 +303,17 @@
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="submit" key="error.addParticlePurity"
-				path="particle.addparticle.purity" type="java.lang.Exception" />
+				path="particle.physicalCharacterization" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.action.message" />
+			<forward name="success"
+				path="particle.characterizationMessage" />
 			<forward name="input"
 				path="/purity.do?dispatch=input&amp;page=0" />
-			<forward name="setup" path="particle.addparticle.purity" />
+			<forward name="setup"
+				path="particle.physicalCharacterization" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/solubility"
@@ -313,15 +322,16 @@
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="submit" key="error.addParticleSolubility"
-				path="particle.addparticle.solubility" type="java.lang.Exception" />
+				path="particle.solubility" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.action.message" />
+			<forward name="success"
+				path="particle.characterizationMessage" />
 			<forward name="input"
 				path="/solubility.do?dispatch=input&amp;page=0" />
-			<forward name="setup" path="particle.addparticle.solubility" />
+			<forward name="setup" path="particle.solubility" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/hemolysis"
@@ -330,17 +340,17 @@
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="submit" key="error.addInvitroHemolysis"
-				path="particle.addimmunotoxicity.hemolysis"
-				type="java.lang.Exception" />
+				path="particle.inVitroCharacterization" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.action.message" />
+			<forward name="success"
+				path="particle.characterizationMessage" />
 			<forward name="input"
 				path="/hemolysis.do?dispatch=input&amp;page=0" />
 			<forward name="setup"
-				path="particle.addimmunotoxicity.hemolysis" />
+				path="particle.inVitroCharacterization" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/plateletAggregation"
@@ -349,17 +359,17 @@
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="submit" key="error.addInvitroPlateletAggregation"
-				path="particle.addimmunotoxicity.plateletaggregation"
-				type="java.lang.Exception" />
+				path="particle.inVitroCharacterization" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.action.message" />
+			<forward name="success"
+				path="particle.characterizationMessage" />
 			<forward name="input"
 				path="/plateletAggregation.do?dispatch=input&amp;page=0" />
 			<forward name="setup"
-				path="particle.addimmunotoxicity.plateletaggregation" />
+				path="particle.inVitroCharacterization" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/coagulation"
@@ -368,17 +378,17 @@
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="submit" key="error.addInvitroCoagulation"
-				path="particle.addimmunotoxicity.coagulation"
-				type="java.lang.Exception" />
+				path="particle.inVitroCharacterization" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.action.message" />
+			<forward name="success"
+				path="particle.characterizationMessage" />
 			<forward name="input"
 				path="/coagulation.do?dispatch=input&amp;page=0" />
 			<forward name="setup"
-				path="particle.addimmunotoxicity.coagulation" />
+				path="particle.inVitroCharacterization" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/plasmaProteinBinding"
@@ -387,17 +397,17 @@
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="submit" key="error.addInvitroProteinBinding"
-				path="particle.addimmunotoxicity.plasmaproteinbinding"
-				type="java.lang.Exception" />
+				path="particle.inVitroCharacterization" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.action.message" />
+			<forward name="success"
+				path="particle.characterizationMessage" />
 			<forward name="input"
 				path="/plasmaProteinBinding.do?dispatch=input&amp;page=0" />
 			<forward name="setup"
-				path="particle.addimmunotoxicity.plasmaproteinbinding" />
+				path="particle.inVitroCharacterization" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/complementActivation"
@@ -406,17 +416,17 @@
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="submit" key="error.addInvitroComplementActivation"
-				path="particle.addimmunotoxicity.complementactivation"
-				type="java.lang.Exception" />
+				path="particle.inVitroCharacterization" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.action.message" />
+			<forward name="success"
+				path="particle.characterizationMessage" />
 			<forward name="input"
 				path="/complementActivation.do?dispatch=input&amp;page=0" />
 			<forward name="setup"
-				path="particle.addimmunotoxicity.complementactivation" />
+				path="particle.inVitroCharacterization" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/cytokineInduction"
@@ -425,17 +435,17 @@
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="submit" key="error.addInvitroCytokineInduction"
-				path="particle.addimmunotoxicity.cytokineinduction"
-				type="java.lang.Exception" />
+				path="particle.inVitroCharacterization" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.action.message" />
+			<forward name="success"
+				path="particle.characterizationMessage" />
 			<forward name="input"
 				path="/cytokinInduction.do?dispatch=input&amp;page=0" />
 			<forward name="setup"
-				path="particle.addimmunotoxicity.cytokineinduction" />
+				path="particle.inVitroCharacterization" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/chemotaxis"
@@ -444,17 +454,17 @@
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="submit" key="error.addInvitroChemotaxis"
-				path="particle.addimmunotoxicity.chemotaxis"
-				type="java.lang.Exception" />
+				path="particle.inVitroCharacterization" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.action.message" />
+			<forward name="success"
+				path="particle.characterizationMessage" />
 			<forward name="input"
 				path="/chemotaxis.do?dispatch=input&amp;page=0" />
 			<forward name="setup"
-				path="particle.addimmunotoxicity.chemotaxis" />
+				path="particle.inVitroCharacterization" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/nKCellCytotoxicActivity"
@@ -463,17 +473,17 @@
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="submit" key="error.addInvitroNKCellCytotoxicActivity"
-				path="particle.addimmunotoxicity.nkcellcytotoxicactivity"
-				type="java.lang.Exception" />
+				path="particle.inVitroCharacterization" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.action.message" />
+			<forward name="success"
+				path="particle.characterizationMessage" />
 			<forward name="input"
 				path="/nKCellCytotoxicActivity.do?dispatch=input&amp;page=0" />
 			<forward name="setup"
-				path="particle.addimmunotoxicity.nkcellcytotoxicactivity" />
+				path="particle.inVitroCharacterization" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/leukocyteProliferation"
@@ -482,17 +492,17 @@
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="submit" key="error.addInvitroLeukocyteProliferation"
-				path="particle.addimmunotoxicity.leukocyteproliferation"
-				type="java.lang.Exception" />
+				path="particle.inVitroCharacterization" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.action.message" />
+			<forward name="success"
+				path="particle.characterizationMessage" />
 			<forward name="input"
 				path="/leukocyteProliferation.do?dispatch=input&amp;page=0" />
 			<forward name="setup"
-				path="particle.addimmunotoxicity.leukocyteproliferation" />
+				path="particle.inVitroCharacterization" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/cFU_GM"
@@ -501,16 +511,17 @@
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="submit" key="error.addInvitroCFU_GM"
-				path="particle.addimmunotoxicity.cfu_gm" type="java.lang.Exception" />
+				path="particle.inVitroCharacterization" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.action.message" />
+			<forward name="success"
+				path="particle.characterizationMessage" />
 			<forward name="input"
 				path="/cFU_GM.do?dispatch=input&amp;page=0" />
 			<forward name="setup"
-				path="particle.addimmunotoxicity.cfu_gm" />
+				path="particle.inVitroCharacterization" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/oxidativeBurst"
@@ -519,17 +530,17 @@
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="submit" key="error.addInvitroOxidativeBurst"
-				path="particle.addimmunotoxicity.oxidativeburst"
-				type="java.lang.Exception" />
+				path="particle.inVitroCharacterization" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.action.message" />
+			<forward name="success"
+				path="particle.characterizationMessage" />
 			<forward name="input"
 				path="/oxidativeBurst.do?dispatch=input&amp;page=0" />
 			<forward name="setup"
-				path="particle.addimmunotoxicity.oxidativeburst" />
+				path="particle.inVitroCharacterization" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/phagocytosis"
@@ -538,17 +549,17 @@
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="submit" key="error.addInvitroPhagocytosis"
-				path="particle.addimmunotoxicity.phagocytosis"
-				type="java.lang.Exception" />
+				path="particle.inVitroCharacterization" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.action.message" />
+			<forward name="success"
+				path="particle.characterizationMessage" />
 			<forward name="input"
 				path="/phagocytosis.do?dispatch=input&amp;page=0" />
 			<forward name="setup"
-				path="particle.addimmunotoxicity.phagocytosis" />
+				path="particle.inVitroCharacterization" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/cellViability"
@@ -557,17 +568,16 @@
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="submit" key="error.addInvitroCellViability"
-				path="particle.addcytotoxicity.cellviability"
-				type="java.lang.Exception" />
+				path="particle.cytotoxicity" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.action.message" />
+			<forward name="success"
+				path="particle.characterizationMessage" />
 			<forward name="input"
 				path="/cellViability.do?dispatch=input&amp;page=0" />
-			<forward name="setup"
-				path="particle.addcytotoxicity.cellviability" />
+			<forward name="setup" path="particle.cytotoxicity" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/caspase3Activation"
@@ -576,17 +586,16 @@
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="submit" key="error.addInvitroCaspase3Activation"
-				path="particle.addcytotoxicity.caspase3activation"
-				type="java.lang.Exception" />
+				path="particle.cytotoxicity" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.action.message" />
+			<forward name="success"
+				path="particle.characterizationMessage" />
 			<forward name="input"
 				path="/caspase3Activation.do?dispatch=input&amp;page=0" />
-			<forward name="setup"
-				path="particle.addcytotoxicity.caspase3activation" />
+			<forward name="setup" path="particle.cytotoxicity" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/enzymeInduction"
@@ -595,17 +604,17 @@
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="submit" key="error.addInvitroEnzymeInduction"
-				path="particle.addtoxicity.enzymeinduction"
-				type="java.lang.Exception" />
+				path="particle.inVitroCharacterization" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.action.message" />
+			<forward name="success"
+				path="particle.characterizationMessage" />
 			<forward name="input"
 				path="/enzymeInduction.do?dispatch=input&amp;page=0" />
 			<forward name="setup"
-				path="particle.addtoxicity.enzymeinduction" />
+				path="particle.inVitroCharacterization" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/oxidativeStress"
@@ -614,17 +623,17 @@
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="submit" key="error.addInvitroOxidativeStress"
-				path="particle.addtoxicity.oxidativestress"
-				type="java.lang.Exception" />
+				path="particle.inVitroCharacterization" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.action.message" />
+			<forward name="success"
+				path="particle.characterizationMessage" />
 			<forward name="input"
 				path="/oxidativeStress.do?dispatch=input&amp;page=0" />
 			<forward name="setup"
-				path="particle.addtoxicity.oxidativestress" />
+				path="particle.inVitroCharacterization" />
 		</action>
 		<action name="loadDerivedBioAssayDataForm" parameter="dispatch"
 			path="/loadFile"
@@ -633,13 +642,13 @@
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="submit" key="error.loadDerivedBioAssayData"
-				path="particle.load.characterization.file" type="java.lang.Exception" />
+				path="particle.loadCharacterizationFile" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
 			<forward name="input"
-				path="particle.load.characterization.file" />
+				path="particle.loadCharacterizationFile" />
 		</action>
 		<action name="nanoparticleFunctionForm" parameter="dispatch"
 			path="/nanoparticleFunction"
@@ -648,25 +657,28 @@
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="submit" key="error.addparticle.function"
-				path="particle.addparticle.function" type="java.lang.Exception" />
+				path="particle.function" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.message" />
+			<forward name="success"
+				path="particle.annotationMessage" />
 			<forward name="input"
 				path="/nanoparticleFunction.do?dispatch=input&amp;page=0" />
-			<forward name="setup" path="particle.addparticle.function" />
+			<forward name="setup" path="particle.function" />
 		</action>
 		<action path="/submitAction"
 			type="gov.nih.nci.calab.ui.core.BaseForwardAction"
-			parameter="particle.action.message" scope="request" />
+			parameter="particle.characterizationMessage" scope="request" />
 		<action name="characterizationMultiDeletionForm"
 			path="/deleteAction"
 			type="gov.nih.nci.calab.ui.particle.DeleteMultiCharacterizationAction"
 			parameter="dispatch" input="input" scope="request">
-			<forward name="message" path="particle.message" />
-			<forward name="input" path="particle.delete.characterization" />
+			<forward name="message"
+				path="particle.annotationMessage" />
+			<forward name="input"
+				path="particle.deleteCharacterization" />
 		</action>
 		<action input="input" name="searchNanoparticleForm"
 			parameter="dispatch" path="/searchNanoparticle"
@@ -675,10 +687,10 @@
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="search" key="error.searchNanoparticle"
-				path="particle.searchnanoparticle" type="java.lang.Exception" />
-			<forward name="input" path="particle.searchnanoparticle" />
+				path="particle.searchNanoparticle" type="java.lang.Exception" />
+			<forward name="input" path="particle.searchNanoparticle" />
 			<forward name="success"
-				path="particle.searchnanoparticle.result" />
+				path="particle.searchNanoparticleResult" />
 		</action>
 		<action input="input" name="searchNanoparticleAdvancedForm"
 			parameter="dispatch" path="/searchNanoparticleAdvanced"
@@ -687,16 +699,16 @@
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="search" key="error.searchNanoparticleAdvanced"
-				path="particle.searchnanoparticle.advanced"
+				path="particle.advancedSearchNanoparticle"
 				type="java.lang.Exception" />
 			<forward name="input"
-				path="particle.searchnanoparticle.advanced" />
+				path="particle.advancedSearchNanoparticle" />
 			<forward name="success"
-				path="particle.searchnanoparticle.advanced.result" />
+				path="particle.advancedSearchNanoparticleResult" />
 		</action>
 		<action path="/underConstruction"
 			type="gov.nih.nci.calab.ui.core.BaseForwardAction"
-			parameter="particle.remote.under.construction" scope="request" />
+			parameter="particle.remoteUnderConstruction" scope="request" />
 		<action input="input" name="remoteSearchNanoparticleForm"
 			parameter="dispatch" path="/remoteSearchNanoparticle"
 			type="gov.nih.nci.calab.ui.particle.RemoteSearchNanoparticleAction"
@@ -704,11 +716,11 @@
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="search" key="error.searchNanoparticle"
-				path="particle.remote.searchnanoparticle" type="java.lang.Exception" />
+				path="particle.remoteSearchNanoparticle" type="java.lang.Exception" />
 			<forward name="input"
-				path="particle.remote.searchnanoparticle" />
+				path="particle.remoteSearchNanoparticle" />
 			<forward name="success"
-				path="particle.remote.searchnanoparticle.result" />
+				path="particle.remoteSearchNanoparticleResult" />
 		</action>
 		<action name="remoteNanoparticleGeneralInfoForm"
 			parameter="dispatch" path="/remoteNanoparticleGeneralInfo"
@@ -717,12 +729,9 @@
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="search" key="error.nanoparticle.generalInfo"
-				path="particle.remote.nanoparticle.generalinfo"
-				type="java.lang.Exception" />
-			<forward name="success"
-				path="particle.remote.nanoparticle.generalinfo" />
-			<forward name="viewDisclaimer"
-				path="particle.viewParticleDisclaimer" />
+				path="particle.remoteGeneralInfo" type="java.lang.Exception" />
+			<forward name="success" path="particle.remoteGeneralInfo" />
+			<forward name="viewDisclaimer" path="particle.disclaimer" />
 		</action>
 		<action name="nanoparticleCompositionForm" parameter="dispatch"
 			path="/remoteNanoparticleComposition"
@@ -731,10 +740,19 @@
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="search" key="error.particle.composition.view"
-				path="particle.remote.particle.composition"
-				type="java.lang.Exception" />
-			<forward name="success"
-				path="particle.remote.particle.composition" />
+				path="particle.remoteComposition" type="java.lang.Exception" />
+			<forward name="success" path="particle.remoteComposition" />
+		</action>
+		<action name="submitReportForm" parameter="dispatch"
+			path="/updateReportForParticle"
+			type="gov.nih.nci.calab.ui.report.SubmitReportAction" input="input"
+			scope="request">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="submit" key="error.updateReport"
+				path="particle.viewReport" type="java.lang.Exception" />
+			<forward name="input" path="particle.viewReport" />
+			<forward name="success" path="particle.annotationMessage" />
 		</action>
 	</action-mappings>
 </struts-config>

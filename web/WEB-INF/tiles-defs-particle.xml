@@ -2,20 +2,16 @@
 <!DOCTYPE tiles-definitions PUBLIC
        "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN"
        "http://struts.apache.org/dtds/tiles-config_1_1.dtd">
-
 <tiles-definitions>
 	<definition name="particle.message" extends="calab.home">
 		<put name="calabContent"
 			value="/bodyMessage.jsp?bundle=particle" />
-		<put name="menu" value="search" />
-	</definition>
-
-	<definition name="particle.content.home" path="/layout/submitLayout.jsp">
-		<put name="submitActionMenu" value="/particle/submitMenu.jsp" />
+		<put name="menu" value="nanoparticles" />
 	</definition>
 
 	<!-- definition for the manage nanoparticle page -->
-	<definition name="particle.managenanoparticle" extends="calab.home">
+	<definition name="particle.manageNanoparticle"
+		extends="calab.home">
 		<put name="calabContent" value="/bodyManageItem.jsp" />
 		<put name="menu" value="nanoparticles" />
 		<put name="item" value="Nanoparticle" />
@@ -27,580 +23,136 @@
 			value="searchNanoparticle.do?dispatch=setup" />
 	</definition>
 
-	<!-- definition for the create nanoparticle page -->
-	<definition name="particle.createnanoparticle" extends="calab.home">
+	<!-- definition for the annotate nanoparticle page -->
+	<definition name="particle.createNanoparticle"
+		extends="calab.home">
 		<put name="calabContent"
 			value="/particle/bodyCreateNanoparticle.jsp" />
 		<put name="menu" value="nanoparticles" />
 	</definition>
 
-	<definition name="particle.message" extends="calab.home">
-		<put name="calabSidemenu" value="/particle/sideParticleMenu.jsp" />
-		<put name="calabContent" value="/bodyMessage.jsp?bundle=particle" />
+	<definition name="particle.annotationHome"
+		extends="calab.home">
+		<put name="calabSidemenu"
+			value="/particle/sideParticleMenu.jsp" />		
 		<put name="menu" value="nanoparticles" />
 	</definition>
 
-	<definition name="particle.action.message.content"
-		extends="particle.content.home">
-		<put name="submitActionMenu" value="/particle/submitMenu.jsp" />
-		<put name="submitContent"
+	<definition name="particle.characterization"
+		extends="particle.annotationHome">
+		<put name="calabContent"
+			value="/particle/bodyCharacterization.jsp" />
+		<put name="detailPage" value="" />
+	</definition>
+	
+	<definition name="particle.annotationMessage"
+		extends="particle.characterization">
+		<put name="calabContent"
 			value="/bodyMessage.jsp?bundle=particle" />
 	</definition>
-	<definition name="particle.action.message" extends="calab.home">
-		<put name="calabContent" value="particle.action.message.content" />
-		<put name="calabSidemenu" value="/particle/sideParticleMenu.jsp" />
-		<put name="menu" value="nanoparticles" />
-	</definition>
 
+	<definition name="particle.characterizationMessage"
+		extends="particle.characterization">
+		<put name="calabContent"
+			value="/particle/bodyCharacterizationMessage.jsp?bundle=particle" />
+	</definition>
+	
 	<!-- definition for the nanoparticle composition page -->
-	<definition name="particle.addparticle.composition.content"
-		extends="particle.content.home">
-		<put name="submitActionMenu" value="/particle/submitMenu.jsp" />
-		<put name="submitContent"
+	<definition name="particle.composition"
+		extends="particle.physicalCharacterization">
+		<put name="calabContent"
 			value="/particle/composition/bodyParticleComposition.jsp" />
 	</definition>
 
-	<definition name="particle.addparticle.composition"
-		extends="calab.home">
-		<put name="calabSidemenu" value="/particle/sideParticleMenu.jsp" />
-		<put name="calabContent"
-			value="particle.addparticle.composition.content" />
-		<put name="menu" value="nanoparticles" />
-	</definition>
 	<!-- definition for the particle general info view page -->
-	<definition name="particle.generalinfo.view" extends="calab.home">
-		<put name="calabSidemenu" value="/particle/sideParticleMenu.jsp" />
+	<definition name="particle.generalInfo"
+		extends="particle.annotationHome">
 		<put name="calabContent"
 			value="/particle/bodyNanoparticleGeneralInfo.jsp" />
 		<put name="menu" value="nanoparticles" />
 	</definition>
 
-	<definition name="particle.viewParticleDisclaimer"
-		extends="calab.home">
-		<put name="calabSidemenu" value="/particle/sideParticleMenu.jsp" />
+	<definition name="particle.disclaimer"
+		extends="particle.annotationHome">
 		<put name="calabContent"
 			value="/particle/bodyNanoparticleDisclaimer.jsp" />
 		<put name="menu" value="nanoparticles" />
 	</definition>
-	<!-- definition for the particle general info update page -->
-	<definition name="particle.generalinfo.update" extends="calab.home">
-		<put name="calabSidemenu" value="/particle/sideParticleMenu.jsp" />
-		<put name="calabContent"
-			value="/particle/bodyNanoparticleGeneralInfo.jsp" />
-		<put name="menu" value="nanoparticles" />
+
+	<definition name="particle.physicalCharacterization"
+		extends="particle.characterization">
+		<put name="pageTitle" value="Physical Characterization - " />
 	</definition>
 
-	<!-- definition for the nanoparticle size page -->
-	<definition name="particle.addparticle.size.content"
-		extends="particle.content.home">
-		<put name="submitActionMenu" value="/particle/submitMenu.jsp" />
-		<put name="submitContent"
-			value="/particle/bodyCharacterization.jsp" />
-		<put name="pageTitle" value="Physical Characterization - Size" />
-	</definition>
-
-	<definition name="particle.addparticle.size" extends="calab.home">
-		<put name="calabSidemenu" value="/particle/sideParticleMenu.jsp" />
-		<put name="calabContent"
-			value="particle.addparticle.size.content" />
-		<put name="menu" value="nanoparticles" />
+	<definition name="particle.inVitroCharacterization"
+		extends="particle.characterization">
+		<put name="pageTitle" value="In Vitro Characterization - " />
 	</definition>
 
 	<!-- definition for the nanoparticle surface page -->
-	<definition name="particle.addparticle.surface.content"
-		extends="particle.content.home">
-		<put name="submitActionMenu" value="/particle/submitMenu.jsp" />
-		<put name="submitContent"
-			value="/particle/bodyCharacterization.jsp" />
-		<put name="pageTitle"
-			value="Physical Characterization - Surface" />
-	</definition>
-
-	<definition name="particle.addparticle.surface"
-		extends="calab.home">
-		<put name="calabSidemenu" value="/particle/sideParticleMenu.jsp" />
-		<put name="calabContent"
-			value="particle.addparticle.surface.content" />
-		<put name="menu" value="nanoparticles" />
+	<definition name="particle.surface"
+		extends="particle.physicalCharacterization">
 		<put name="detailPage"
 			value="/particle/physical/bodySurfaceInfo.jsp" />
 	</definition>
 
-	<!-- definition for the nanoparticle molecular weight page -->
-	<definition name="particle.addparticle.molecularweight.content"
-		extends="particle.content.home">
-		<put name="submitActionMenu" value="/particle/submitMenu.jsp" />
-		<put name="submitContent"
-			value="/particle/bodyCharacterization.jsp" />
-		<put name="pageTitle"
-			value="Physical Characterization - Molecular Weight" />
-	</definition>
-
-	<definition name="particle.addparticle.molecularweight"
-		extends="calab.home">
-		<put name="calabSidemenu" value="/particle/sideParticleMenu.jsp" />
-		<put name="calabContent"
-			value="particle.addparticle.molecularweight.content" />
-		<put name="menu" value="nanoparticles" />
-	</definition>
-
 	<!-- definition for the nanoparticle morphology page -->
-	<definition name="particle.addparticle.morphology.content"
-		extends="particle.content.home">
-		<put name="submitActionMenu" value="/particle/submitMenu.jsp" />
-		<put name="submitContent"
-			value="/particle/bodyCharacterization.jsp" />
-		<put name="pageTitle"
-			value="Physical Characterization - Morphology" />
-	</definition>
-
-	<definition name="particle.addparticle.morphology"
-		extends="calab.home">
-		<put name="calabSidemenu" value="/particle/sideParticleMenu.jsp" />
-		<put name="calabContent"
-			value="particle.addparticle.morphology.content" />
-		<put name="menu" value="nanoparticles" />
+	<definition name="particle.morphology"
+		extends="particle.physicalCharacterization">
 		<put name="detailPage"
 			value="/particle/physical/bodyMorphologyInfo.jsp" />
 	</definition>
 
 	<!-- definition for the nanoparticle shape page -->
-	<definition name="particle.addparticle.shape.content"
-		extends="particle.content.home">
-		<put name="submitActionMenu" value="/particle/submitMenu.jsp" />
-		<put name="submitContent"
-			value="/particle/bodyCharacterization.jsp" />
-		<put name="pageTitle" value="Physical Characterization - Shape" />
-	</definition>
-
-	<definition name="particle.addparticle.shape" extends="calab.home">
-		<put name="calabSidemenu" value="/particle/sideParticleMenu.jsp" />
-		<put name="calabContent"
-			value="particle.addparticle.shape.content" />
-		<put name="menu" value="nanoparticles" />
+	<definition name="particle.shape"
+		extends="particle.physicalCharacterization">
 		<put name="detailPage"
 			value="/particle/physical/bodyShapeInfo.jsp" />
 	</definition>
 
-	<!-- definition for the nanoparticle purity page -->
-	<definition name="particle.addparticle.purity.content"
-		extends="particle.content.home">
-		<put name="submitActionMenu" value="/particle/submitMenu.jsp" />
-		<put name="submitContent"
-			value="/particle/bodyCharacterization.jsp" />
-		<put name="pageTitle"
-			value="Physical Characterization - Purity" />
-	</definition>
-
-	<definition name="particle.addparticle.purity" extends="calab.home">
-		<put name="calabSidemenu" value="/particle/sideParticleMenu.jsp" />
-		<put name="calabContent"
-			value="particle.addparticle.purity.content" />
-		<put name="menu" value="nanoparticles" />
-	</definition>
-
 	<!-- definition for the nanoparticle solubility page -->
-	<definition name="particle.addparticle.solubility.content"
-		extends="particle.content.home">
-		<put name="submitActionMenu" value="/particle/submitMenu.jsp" />
-		<put name="submitContent"
-			value="/particle/bodyCharacterization.jsp" />
-		<put name="pageTitle"
-			value="Physical Characterization - Solubility" />
-	</definition>
-
-	<definition name="particle.addparticle.solubility"
-		extends="calab.home">
-		<put name="calabSidemenu" value="/particle/sideParticleMenu.jsp" />
-		<put name="calabContent"
-			value="particle.addparticle.solubility.content" />
-		<put name="menu" value="nanoparticles" />
+	<definition name="particle.solubility"
+		extends="particle.physicalCharacterization">
 		<put name="detailPage"
 			value="/particle/physical/bodySolubilityInfo.jsp" />
 	</definition>
 
-	<!-- definition for the invitro immunotoxicity hemology page -->
-	<definition name="particle.addimmunotoxicity.hemolysis.content"
-		extends="particle.content.home">
-		<put name="submitActionMenu" value="/particle/submitMenu.jsp" />
-		<put name="submitContent"
-			value="/particle/bodyCharacterization.jsp" />
-		<put name="pageTitle"
-			value="Invitro Characterization - Immunotoxicity - Hemolysis" />
-	</definition>
-
-	<definition name="particle.addimmunotoxicity.hemolysis"
-		extends="calab.home">
-		<put name="calabSidemenu" value="/particle/sideParticleMenu.jsp" />
-		<put name="calabContent"
-			value="particle.addimmunotoxicity.hemolysis.content" />
-		<put name="menu" value="nanoparticles" />
-	</definition>
-
-	<!-- definition for the invitro immunotoxicity coagulation page -->
-	<definition name="particle.addimmunotoxicity.coagulation.content"
-		extends="particle.content.home">
-		<put name="submitActionMenu" value="/particle/submitMenu.jsp" />
-		<put name="submitContent"
-			value="/particle/bodyCharacterization.jsp" />
-		<put name="pageTitle"
-			value="Invitro Characterization - Immunotoxicity - Coagulation" />
-	</definition>
-
-	<definition name="particle.addimmunotoxicity.coagulation"
-		extends="calab.home">
-		<put name="calabSidemenu" value="/particle/sideParticleMenu.jsp" />
-		<put name="calabContent"
-			value="particle.addimmunotoxicity.coagulation.content" />
-		<put name="menu" value="nanoparticles" />
-	</definition>
-
-	<!-- definition for the invitro immunotoxicity plate aggregation page -->
-	<definition
-		name="particle.addimmunotoxicity.plateletaggregation.content"
-		extends="particle.content.home">
-		<put name="submitActionMenu" value="/particle/submitMenu.jsp" />
-		<put name="submitContent"
-			value="/particle/bodyCharacterization.jsp" />
-		<put name="pageTitle"
-			value="Invitro Characterization - Immunotoxicity - Platelet Aggregation" />
-	</definition>
-
-	<definition name="particle.addimmunotoxicity.plateletaggregation"
-		extends="calab.home">
-		<put name="calabSidemenu" value="/particle/sideParticleMenu.jsp" />
-		<put name="calabContent"
-			value="particle.addimmunotoxicity.plateletaggregation.content" />
-		<put name="menu" value="nanoparticles" />
-	</definition>
-
-	<!-- definition for the invitro immunotoxicity plasma protein binding page -->
-	<definition
-		name="particle.addimmunotoxicity.plasmaproteinbinding.content"
-		extends="particle.content.home">
-		<put name="submitActionMenu" value="/particle/submitMenu.jsp" />
-		<put name="submitContent"
-			value="/particle/bodyCharacterization.jsp" />
-		<put name="pageTitle"
-			value="Invitro Characterization - Immunotoxicity - Protein Binding" />
-	</definition>
-
-	<definition name="particle.addimmunotoxicity.plasmaproteinbinding"
-		extends="calab.home">
-		<put name="calabSidemenu" value="/particle/sideParticleMenu.jsp" />
-		<put name="calabContent"
-			value="particle.addimmunotoxicity.plasmaproteinbinding.content" />
-		<put name="menu" value="nanoparticles" />
-	</definition>
-
-	<!-- definition for the invitro immunotoxicity complement activation page -->
-	<definition
-		name="particle.addimmunotoxicity.complementactivation.content"
-		extends="particle.content.home">
-		<put name="submitActionMenu" value="/particle/submitMenu.jsp" />
-		<put name="submitContent"
-			value="/particle/bodyCharacterization.jsp" />
-		<put name="pageTitle"
-			value="Invitro Characterization - Immunotoxicity - Complement Activation" />
-	</definition>
-
-	<definition name="particle.addimmunotoxicity.complementactivation"
-		extends="calab.home">
-		<put name="calabSidemenu" value="/particle/sideParticleMenu.jsp" />
-		<put name="calabContent"
-			value="particle.addimmunotoxicity.complementactivation.content" />
-		<put name="menu" value="nanoparticles" />
-	</definition>
-
-	<!-- definition for the invitro immunotoxicity CytokineInduction page -->
-	<definition
-		name="particle.addimmunotoxicity.cytokineinduction.content"
-		extends="particle.content.home">
-		<put name="submitActionMenu" value="/particle/submitMenu.jsp" />
-		<put name="submitContent"
-			value="/particle/bodyCharacterization.jsp" />
-		<put name="pageTitle"
-			value="Invitro Characterization - Immunotoxicity - Cytokine Induction" />
-	</definition>
-
-	<definition name="particle.addimmunotoxicity.cytokineinduction"
-		extends="calab.home">
-		<put name="calabSidemenu" value="/particle/sideParticleMenu.jsp" />
-		<put name="calabContent"
-			value="particle.addimmunotoxicity.cytokineinduction.content" />
-		<put name="menu" value="nanoparticles" />
-	</definition>
-
-	<!-- definition for the invitro immunotoxicity chemotaxis page -->
-	<definition name="particle.addimmunotoxicity.chemotaxis.content"
-		extends="particle.content.home">
-		<put name="submitActionMenu" value="/particle/submitMenu.jsp" />
-		<put name="submitContent"
-			value="/particle/bodyCharacterization.jsp" />
-		<put name="pageTitle"
-			value="Invitro Characterization - Immunotoxicity - Chemotaxis" />
-	</definition>
-
-	<definition name="particle.addimmunotoxicity.chemotaxis"
-		extends="calab.home">
-		<put name="calabSidemenu" value="/particle/sideParticleMenu.jsp" />
-		<put name="calabContent"
-			value="particle.addimmunotoxicity.chemotaxis.content" />
-		<put name="menu" value="nanoparticles" />
-	</definition>
-
-	<!-- definition for the invitro immunotoxicity nkcellcytotoxicactivity page -->
-	<definition
-		name="particle.addimmunotoxicity.nkcellcytotoxicactivity.content"
-		extends="particle.content.home">
-		<put name="submitActionMenu" value="/particle/submitMenu.jsp" />
-		<put name="submitContent"
-			value="/particle/bodyCharacterization.jsp" />
-		<put name="pageTitle"
-			value="Invitro Characterization - Immunotoxicity - NK Cell Cytotoxic Activity" />
-	</definition>
-
-	<definition name="particle.addimmunotoxicity.nkcellcytotoxicactivity"
-		extends="calab.home">
-		<put name="calabSidemenu" value="/particle/sideParticleMenu.jsp" />
-		<put name="calabContent"
-			value="particle.addimmunotoxicity.nkcellcytotoxicactivity.content" />
-		<put name="menu" value="nanoparticles" />
-	</definition>
-
-	<!-- definition for the invitro immunotoxicity leukocyteproliferation page -->
-	<definition
-		name="particle.addimmunotoxicity.leukocyteproliferation.content"
-		extends="particle.content.home">
-		<put name="submitActionMenu" value="/particle/submitMenu.jsp" />
-		<put name="submitContent"
-			value="/particle/bodyCharacterization.jsp" />
-		<put name="pageTitle"
-			value="Invitro Characterization - Immunotoxicity - Leukocyte Proliferation" />
-	</definition>
-
-	<definition name="particle.addimmunotoxicity.leukocyteproliferation"
-		extends="calab.home">
-		<put name="calabSidemenu" value="/particle/sideParticleMenu.jsp" />
-		<put name="calabContent"
-			value="particle.addimmunotoxicity.leukocyteproliferation.content" />
-		<put name="menu" value="nanoparticles" />
-	</definition>
-
-	<!-- definition for the invitro immunotoxicity cfu_gm page -->
-	<definition name="particle.addimmunotoxicity.cfu_gm.content"
-		extends="particle.content.home">
-		<put name="submitActionMenu" value="/particle/submitMenu.jsp" />
-		<put name="submitContent"
-			value="/particle/bodyCharacterization.jsp" />
-		<put name="pageTitle"
-			value="Invitro Characterization - Immunotoxicity - CFU-GM" />
-	</definition>
-
-	<definition name="particle.addimmunotoxicity.cfu_gm"
-		extends="calab.home">
-		<put name="calabSidemenu" value="/particle/sideParticleMenu.jsp" />
-		<put name="calabContent"
-			value="particle.addimmunotoxicity.cfu_gm.content" />
-		<put name="menu" value="nanoparticles" />
-	</definition>
-
-	<!-- definition for the invitro immunotoxicity oxidativeburst page -->
-	<definition name="particle.addimmunotoxicity.oxidativeburst.content"
-		extends="particle.content.home">
-		<put name="submitActionMenu" value="/particle/submitMenu.jsp" />
-		<put name="submitContent"
-			value="/particle/bodyCharacterization.jsp" />
-		<put name="pageTitle"
-			value="Invitro Characterization - Immunotoxicity - Oxidative Burst" />
-	</definition>
-
-	<definition name="particle.addimmunotoxicity.oxidativeburst"
-		extends="calab.home">
-		<put name="calabSidemenu" value="/particle/sideParticleMenu.jsp" />
-		<put name="calabContent"
-			value="particle.addimmunotoxicity.oxidativeburst.content" />
-		<put name="menu" value="nanoparticles" />
-	</definition>
-
-	<!-- definition for the invitro immunotoxicity phagocytosis page -->
-	<definition name="particle.addimmunotoxicity.phagocytosis.content"
-		extends="particle.content.home">
-		<put name="submitActionMenu" value="/particle/submitMenu.jsp" />
-		<put name="submitContent"
-			value="/particle/bodyCharacterization.jsp" />
-		<put name="pageTitle"
-			value="Invitro Characterization - Immunotoxicity - Phagocytosis" />
-	</definition>
-
-	<definition name="particle.addimmunotoxicity.phagocytosis"
-		extends="calab.home">
-		<put name="calabSidemenu" value="/particle/sideParticleMenu.jsp" />
-		<put name="calabContent"
-			value="particle.addimmunotoxicity.phagocytosis.content" />
-		<put name="menu" value="nanoparticles" />
-	</definition>
-
 	<!-- definition for the invitro cytotoxicity cellviability page -->
-	<definition name="particle.addcytotoxicity.cellviability.content"
-		extends="particle.content.home">
-		<put name="submitActionMenu" value="/particle/submitMenu.jsp" />
-		<put name="submitContent"
-			value="/particle/bodyCharacterization.jsp" />
-		<put name="pageTitle"
-			value="Invitro Characterization - Cytotoxicity - Cell Viability" />
+	<definition name="particle.cytotoxicity"
+		extends="particle.inVitroCharacterization">
 		<put name="detailPage"
 			value="/particle/invitro/bodyCytotoxicityInfo.jsp" />
-	</definition>
-
-	<definition name="particle.addcytotoxicity.cellviability"
-		extends="calab.home">
-		<put name="calabSidemenu" value="/particle/sideParticleMenu.jsp" />
-		<put name="calabContent"
-			value="particle.addcytotoxicity.cellviability.content" />
-		<put name="menu" value="nanoparticles" />
-	</definition>
-
-	<!-- definition for the invitro cytotoxicity caspase3activation page -->
-	<definition name="particle.addcytotoxicity.caspase3activation.content"
-		extends="particle.content.home">
-		<put name="submitActionMenu" value="/particle/submitMenu.jsp" />
-		<put name="submitContent"
-			value="/particle/bodyCharacterization.jsp" />
-		<put name="pageTitle"
-			value="Invitro Characterization - Cytotoxicity - Caspase 3 Activation" />
-		<put name="detailPage"
-			value="/particle/invitro/bodyCytotoxicityInfo.jsp" />
-	</definition>
-
-	<definition name="particle.addcytotoxicity.caspase3activation"
-		extends="calab.home">
-		<put name="calabSidemenu" value="/particle/sideParticleMenu.jsp" />
-		<put name="calabContent"
-			value="particle.addcytotoxicity.caspase3activation.content" />
-		<put name="menu" value="nanoparticles" />
-	</definition>
-
-	<!-- definition for the invitro toxicity enzymeinduction page -->
-	<definition name="particle.addtoxicity.enzymeinduction.content"
-		extends="particle.content.home">
-		<put name="submitActionMenu" value="/particle/submitMenu.jsp" />
-		<put name="submitContent"
-			value="/particle/bodyCharacterization.jsp" />
-		<put name="pageTitle"
-			value="Invitro Characterization - Toxicity - Enzyme Induction" />
-	</definition>
-
-	<definition name="particle.addtoxicity.enzymeinduction"
-		extends="calab.home">
-		<put name="calabSidemenu" value="/particle/sideParticleMenu.jsp" />
-		<put name="calabContent"
-			value="particle.addtoxicity.enzymeinduction.content" />
-		<put name="menu" value="nanoparticles" />
-	</definition>
-
-	<!-- definition for the invitro toxicity oxidativestress page -->
-	<definition name="particle.addtoxicity.oxidativestress.content"
-		extends="particle.content.home">
-		<put name="submitActionMenu" value="/particle/submitMenu.jsp" />
-		<put name="submitContent"
-			value="/particle/bodyCharacterization.jsp" />
-		<put name="pageTitle"
-			value="Invitro Characterization - Toxicity - Oxidative Stress" />
-	</definition>
-
-	<definition name="particle.addtoxicity.oxidativestress"
-		extends="calab.home">
-		<put name="calabSidemenu" value="/particle/sideParticleMenu.jsp" />
-		<put name="calabContent"
-			value="particle.addtoxicity.oxidativestress.content" />
-		<put name="menu" value="nanoparticles" />
 	</definition>
 
 	<!-- definition for the load characterization file page -->
-	<definition name="particle.load.characterization.file.content"
-		extends="particle.content.home">
-		<put name="submitActionMenu" value="/particle/submitMenu.jsp" />
-		<put name="submitContent"
+	<definition name="particle.loadCharacterizationFile"
+		extends="particle.annotationHome">
+		<put name="calabContent"
 			value="/particle/bodyLoadCharacterizationFile.jsp" />
 	</definition>
 
-	<definition name="particle.load.characterization.file"
-		extends="calab.home">
-		<put name="calabSidemenu" value="/particle/sideParticleMenu.jsp" />
+	<!-- definition for the nanoparticle function page -->
+	<definition name="particle.function" extends="particle.annotationHome">
 		<put name="calabContent"
-			value="particle.load.characterization.file.content" />
-		<put name="menu" value="nanoparticles" />
-	</definition>
-
-	<!-- definition for the view characterization file page -->
-	<definition name="particle.assayresult.file.view.content"
-		extends="particle.content.home">
-		<put name="submitActionMenu" value="/particle/submitMenu.jsp" />
-		<put name="submitContent"
-			value="/particle/bodyViewAssayResultFile.jsp" />
-	</definition>
-
-	<definition name="particle.assayresult.file.view"
-		extends="calab.home">
-		<put name="calabSidemenu" value="/particle/sideParticleMenu.jsp" />
-		<put name="calabContent"
-			value="particle.assayresult.file.view.content" />
-		<put name="menu" value="nanoparticles" />
-	</definition>
-
-	<!-- definition for the nanoparticle surface page -->
-	<definition name="particle.addparticle.function.content"
-		extends="particle.content.home">
-		<put name="submitActionMenu" value="/particle/submitMenu.jsp" />
-		<put name="submitContent"
 			value="/particle/function/bodyParticleFunction.jsp" />
 	</definition>
 
-	<definition name="particle.addparticle.function"
-		extends="calab.home">
-		<put name="calabSidemenu" value="/particle/sideParticleMenu.jsp" />
-		<put name="calabContent"
-			value="particle.addparticle.function.content" />
-		<put name="menu" value="nanoparticles" />
-		<put name="detailPage"
-			value="/particle/physical/bodySurfaceInfo.jsp" />
-	</definition>
-
 	<!-- definition for the view report/associated file page -->
-	<definition name="particle.report.view.content"
-		extends="particle.content.home">
-		<put name="submitActionMenu" value="/particle/submitMenu.jsp" />
-		<put name="submitContent"
-			value="/particle/report/bodyViewReportFile.jsp" />
-	</definition>
-
-	<definition name="particle.report.view" extends="calab.home">
-		<put name="calabContent" value="particle.report.view.content" />
-		<put name="menu" value="nanoparticles" />
-		<put name="reportActionName" value="updateReport" />
-	</definition>
-
-	<!-- definition for the view report/associated file for particle page -->
-	<definition name="particle.report.particle.view"
-		extends="calab.home">
-		<put name="calabSidemenu" value="/particle/sideParticleMenu.jsp" />
-		<put name="calabContent" value="particle.report.view.content" />
-		<put name="menu" value="nanoparticles" />
+	<definition name="particle.viewReport"
+		extends="particle.annotationHome">
+		<put name="calabContent" value="/report/bodyViewReportFile.jsp" />
 		<put name="reportActionName" value="updateReportForParticle" />
 	</definition>
 
 	<!-- definition for the multiple characterization deletion page -->
-	<definition name="particle.delete.characterization"
-		extends="calab.home">
-		<put name="calabSidemenu" value="/particle/sideParticleMenu.jsp" />
+	<definition name="particle.deleteCharacterization"
+		extends="particle.annotationHome">
 		<put name="calabContent"
 			value="/particle/bodyDeleteCharacterizations.jsp" />
-		<put name="menu" value="nanoparticles" />
 	</definition>
 
 	<!-- definition for the search nanoparticle page -->
-	<definition name="particle.searchnanoparticle"
+	<definition name="particle.searchNanoparticle"
 		extends="calab.home">
 		<put name="calabContent"
 			value="/particle/bodySearchNanoparticle.jsp" />
@@ -608,7 +160,7 @@
 	</definition>
 
 	<!-- definition for the search nanoparticle result page -->
-	<definition name="particle.searchnanoparticle.result"
+	<definition name="particle.searchNanoparticleResult"
 		extends="calab.home">
 		<put name="calabContent"
 			value="/particle/bodySearchNanoparticleResult.jsp" />
@@ -616,7 +168,7 @@
 	</definition>
 
 	<!-- definition for the advanced search nanoparticle page -->
-	<definition name="particle.searchnanoparticle.advanced"
+	<definition name="particle.advancedSearchNanoparticle"
 		extends="calab.home">
 		<put name="calabContent"
 			value="/particle/bodySearchNanoparticleAdvanced.jsp" />
@@ -624,7 +176,7 @@
 	</definition>
 
 	<!-- definition for the advanced search nanoparticle result page -->
-	<definition name="particle.searchnanoparticle.advanced.result"
+	<definition name="particle.advancedSearchNanoparticleResult"
 		extends="calab.home">
 		<put name="calabContent"
 			value="/particle/bodySearchNanoparticleAdvancedResult.jsp" />
@@ -632,7 +184,7 @@
 	</definition>
 
 	<!-- definition for the remote search nanoparticle page -->
-	<definition name="particle.remote.searchnanoparticle"
+	<definition name="particle.remoteSearchNanoparticle"
 		extends="calab.home">
 		<put name="calabContent"
 			value="/particle/remote/bodyRemoteSearchNanoparticle.jsp" />
@@ -640,48 +192,43 @@
 	</definition>
 
 	<!-- definition for the remote search nanoparticle result page -->
-	<definition name="particle.remote.searchnanoparticle.result"
+	<definition name="particle.remoteSearchNanoparticleResult"
 		extends="calab.home">
 		<put name="calabContent"
 			value="/particle/remote/bodyRemoteSearchNanoparticleResult.jsp" />
 		<put name="menu" value="nanoparticles" />
 	</definition>
 
-	<!-- definition for remote nanoparticle detail page -->
-	<definition name="particle.remote.nanoparticle.generalinfo"
-		extends="calab.home">
+	<definition name="particle.remoteHome" extends="calab.home">
 		<put name="calabSidemenu"
 			value="/particle/remote/remoteSideParticleMenu.jsp" />
-		<put name="calabContent"
-			value="/particle/remote/bodyRemoteNanoparticleGeneralInfo.jsp" />
 		<put name="menu" value="nanoparticles" />
 	</definition>
 
-	<definition name="particle.remote.viewParticleDisclaimer"
-		extends="calab.home">
-		<put name="calabSidemenu"
-			value="/particle/remote/remoteSideParticleMenu.jsp" />
+	<!-- definition for remote nanoparticle detail page -->
+	<definition name="particle.remoteGeneralInfo"
+		extends="particle.remoteHome">
 		<put name="calabContent"
-			value="/particle/remote/bodyRemoteNanoparticleDisclaimer.jsp" />
-		<put name="menu" value="nanoparticles" />
+			value="/particle/remote/bodyRemoteNanoparticleGeneralInfo.jsp" />
+	</definition>
+
+	<definition name="particle.remoteParticleDisclaimer"
+		extends="particle.remoteHome">
+		<put name="calabContent"
+			value="/particle/bodyNanoparticleDisclaimer.jsp" />
 	</definition>
 
 	<!-- definition for the remote nanoparticle composition page -->
-	<definition name="particle.remote.particle.composition"
-		extends="calab.home">
-		<put name="calabSidemenu"
-			value="/particle/remote/remoteSideParticleMenu.jsp" />
+	<definition name="particle.remoteComposition"
+		extends="particle.remoteHome">
 		<put name="calabContent"
 			value="/particle/composition/bodyParticleComposition.jsp" />
-		<put name="menu" value="nanoparticles" />
 	</definition>
 
-	<definition name="particle.remote.under.construction"
-		extends="calab.home">
-		<put name="calabSidemenu"
-			value="/particle/remote/remoteSideParticleMenu.jsp" />
+	<definition name="particle.remoteUnderConstruction"
+		extends="particle.remoteHome">
 		<put name="calabContent"
 			value="/particle/remote/bodyRemoteUnderConstruction.jsp" />
-		<put name="menu" value="nanoparticles" />
 	</definition>
+
 </tiles-definitions>
