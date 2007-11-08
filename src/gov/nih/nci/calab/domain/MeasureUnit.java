@@ -15,7 +15,7 @@ public class MeasureUnit implements java.io.Serializable {
 	private java.lang.Long id;
 
 	public java.lang.Long getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(java.lang.Long id) {
@@ -25,7 +25,7 @@ public class MeasureUnit implements java.io.Serializable {
 	private java.lang.String name;
 
 	public java.lang.String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(java.lang.String name) {
@@ -35,7 +35,7 @@ public class MeasureUnit implements java.io.Serializable {
 	private java.lang.String description;
 
 	public java.lang.String getDescription() {
-		return description;
+		return this.description;
 	}
 
 	public void setDescription(java.lang.String description) {
@@ -45,7 +45,7 @@ public class MeasureUnit implements java.io.Serializable {
 	private java.lang.String type;
 
 	public java.lang.String getType() {
-		return type;
+		return this.type;
 	}
 
 	public void setType(java.lang.String type) {

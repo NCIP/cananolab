@@ -29,30 +29,12 @@
 		<property name="comments" type="java.lang.String"
 			column="COMMENTS" />
 		<property name="type" type="java.lang.String" column="TYPE" />
-		<joined-subclass name="gov.nih.nci.calab.domain.OutputFile"
-			table="RUN_OUTPUT_FILE">
-			<key column="OUTPUT_FILE_PK_ID" />
-			<many-to-one name="run" class="gov.nih.nci.calab.domain.Run"
-				column="RUN_PK_ID" />
-			<many-to-one name="dataStatus"
-				class="gov.nih.nci.calab.domain.DataStatus"
-				column="DATA_STATUS_PK_ID" />
-		</joined-subclass>
 		<joined-subclass name="gov.nih.nci.calab.domain.SampleSOPFile"
 			table="VIEW_SAMPLE_SOP_FILE">
 			<key column="SOP_FILE_PK_ID" />
 			<many-to-one name="sampleSOP"
 				class="gov.nih.nci.calab.domain.SampleSOP"
 				column="SAMPLE_SOP_PK_ID" />
-		</joined-subclass>
-		<joined-subclass name="gov.nih.nci.calab.domain.InputFile"
-			table="RUN_INPUT_FILE">
-			<key column="INPUT_FILE_PK_ID" />
-			<many-to-one name="run" class="gov.nih.nci.calab.domain.Run"
-				column="RUN_PK_ID" />
-			<many-to-one name="dataStatus"
-				class="gov.nih.nci.calab.domain.DataStatus"
-				column="DATA_STATUS_PK_ID" />
 		</joined-subclass>
 		<joined-subclass name="gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData"
 			table="DERIVED_BIOASSAY_DATA">

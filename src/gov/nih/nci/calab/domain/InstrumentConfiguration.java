@@ -22,12 +22,11 @@ public class InstrumentConfiguration implements Serializable {
 	 * 
 	 */
 	public InstrumentConfiguration() {
-		
-		
+
 	}
 
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
 	public void setDescription(String description) {
@@ -35,7 +34,7 @@ public class InstrumentConfiguration implements Serializable {
 	}
 
 	public Long getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(Long id) {
@@ -43,7 +42,7 @@ public class InstrumentConfiguration implements Serializable {
 	}
 
 	public Instrument getInstrument() {
-		return instrument;
+		return this.instrument;
 	}
 
 	public void setInstrument(Instrument instrument) {
