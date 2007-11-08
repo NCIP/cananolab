@@ -46,12 +46,12 @@ where protection_group_name in ('administration', 'search', 'remote search', 'su
 delete from csm_pg_pe
 where protection_group_id not in
 (select protection_group_id
-from csm_protection_group)
+from csm_protection_group);
 
 delete from csm_pg_pe
 where protection_element_id not in
 (select protection_element_id
-from csm_protection_element)
+from csm_protection_element);
 
 commit;
 
