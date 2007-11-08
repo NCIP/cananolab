@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.sample;
  * @author pansu
  */
 
-/* CVS $Id: CreateAliquotAction.java,v 1.1 2007-11-01 17:30:21 pansu Exp $ */
+/* CVS $Id: CreateAliquotAction.java,v 1.2 2007-11-08 20:41:34 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.sample.AliquotBean;
@@ -188,15 +188,17 @@ public class CreateAliquotAction extends AbstractDispatchAction {
 		ContainerInfoBean containerInfo = (ContainerInfoBean) session
 				.getAttribute("aliquotContainerInfo");
 		String newRoom = template.getContainer().getStorageLocation().getRoom();
-		String newFreezer = template.getContainer().getStorageLocation().getFreezer();
-		String newShelf = template.getContainer().getStorageLocation().getShelf();
+		String newFreezer = template.getContainer().getStorageLocation()
+				.getFreezer();
+		String newShelf = template.getContainer().getStorageLocation()
+				.getShelf();
 		String newBox = template.getContainer().getStorageLocation().getBox();
 		containerInfo.getStorageRooms().add(newRoom);
 		containerInfo.getStorageFreezers().add(newFreezer);
 		containerInfo.getStorageShelves().add(newShelf);
 		containerInfo.getStorageBoxes().add(newBox);
 	}
-	
+
 	public boolean canUserExecute(UserBean user) throws Exception {
 		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
 				CaNanoLabConstants.CSM_PG_SAMPLE);

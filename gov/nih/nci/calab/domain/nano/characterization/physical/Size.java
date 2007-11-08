@@ -7,10 +7,9 @@ public class Size extends Characterization {
 	private static final long serialVersionUID = 1234567890L;
 
 	public Size() {
-		
-		
+
 	}
-	
+
 	public String getClassification() {
 		return PHYSICAL_CHARACTERIZATION;
 	}

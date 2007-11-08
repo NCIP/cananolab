@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.report;
  * @author pansu
  */
 
-/* CVS $Id: RemoteSearchReportAction.java,v 1.1 2007-11-01 17:30:21 pansu Exp $ */
+/* CVS $Id: RemoteSearchReportAction.java,v 1.2 2007-11-08 20:41:34 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
@@ -155,7 +155,7 @@ public class RemoteSearchReportAction extends AbstractDispatchAction {
 			if (fileData != null) {
 				response.setContentType("application/octet-stream");
 				response.setHeader("Content-disposition",
-						"attachment;filename=" + fileName);		
+						"attachment;filename=" + fileName);
 				response.setHeader("cache-control", "Private");
 
 				java.io.OutputStream out = response.getOutputStream();
@@ -206,11 +206,11 @@ public class RemoteSearchReportAction extends AbstractDispatchAction {
 						"File to download doesn't exist on the server");
 			}
 		} catch (Exception e) {
-			throw new CalabException("Error retrieving remote file:" , e);
+			throw new CalabException("Error retrieving remote file:", e);
 		}
 		return null;
 	}
-	
+
 	public boolean canUserExecute(UserBean user) throws Exception {
 		return true;
 	}

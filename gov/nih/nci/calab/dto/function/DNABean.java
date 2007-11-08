@@ -11,7 +11,7 @@ import gov.nih.nci.calab.domain.nano.function.DNA;
 public class DNABean extends BaseAgentBean {
 	private String sequence;
 
-	public DNABean() {		
+	public DNABean() {
 	}
 
 	public DNABean(DNA dna) {
@@ -20,16 +20,17 @@ public class DNABean extends BaseAgentBean {
 	}
 
 	public String getSequence() {
-		return sequence;
+		return this.sequence;
 	}
 
 	public void setSequence(String sequence) {
 		this.sequence = sequence;
 	}
-	
-	public void updateDomainObj(DNA dna) {		
-		// super has been called in AgentBean level, so no need to call again here.
-		//		super.updateDomainObj(dna);
-		dna.setSequence(sequence);		
+
+	public void updateDomainObj(DNA dna) {
+		// super has been called in AgentBean level, so no need to call again
+		// here.
+		// super.updateDomainObj(dna);
+		dna.setSequence(this.sequence);
 	}
 }

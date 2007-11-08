@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.sample;
  * @author pansu
  */
 
-/* CVS $Id: SearchSampleAction.java,v 1.1 2007-11-01 17:30:21 pansu Exp $ */
+/* CVS $Id: SearchSampleAction.java,v 1.2 2007-11-08 20:41:34 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.sample.ContainerBean;
@@ -102,19 +102,19 @@ public class SearchSampleAction extends AbstractDispatchAction {
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		HttpSession session=request.getSession();
+		HttpSession session = request.getSession();
 		InitSecuritySetup.getInstance().setAllUsers(session);
 		InitSampleSetup.getInstance().setAllSampleContainerInfo(session);
 		InitSampleSetup.getInstance().setAllSampleSources(session);
 		InitSampleSetup.getInstance().setAllSourceSampleIds(session);
-		
+
 		return mapping.getInputForward();
 	}
 
 	public boolean loginRequired() {
 		return true;
 	}
-	
+
 	public boolean canUserExecute(UserBean user) throws Exception {
 		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
 				CaNanoLabConstants.CSM_PG_SAMPLE);

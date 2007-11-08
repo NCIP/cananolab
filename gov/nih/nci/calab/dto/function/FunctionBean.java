@@ -32,8 +32,7 @@ public class FunctionBean {
 	 * 
 	 */
 	public FunctionBean() {
-		
-		
+
 	}
 
 	public FunctionBean(String id, String type, String viewTitle) {
@@ -49,12 +48,12 @@ public class FunctionBean {
 		this.description = function.getDescription();
 		this.viewTitle = function.getIdentificationName();
 		for (Linkage linkage : function.getLinkageCollection()) {
-			linkages.add(new LinkageBean(linkage));
+			this.linkages.add(new LinkageBean(linkage));
 		}
 	}
 
 	public String getActivationMethod() {
-		return activationMethod;
+		return this.activationMethod;
 	}
 
 	public void setActivationMethod(String activationMethod) {
@@ -62,7 +61,7 @@ public class FunctionBean {
 	}
 
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
 	public void setDescription(String description) {
@@ -70,7 +69,7 @@ public class FunctionBean {
 	}
 
 	public String getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(String id) {
@@ -78,7 +77,7 @@ public class FunctionBean {
 	}
 
 	public List<LinkageBean> getLinkages() {
-		return linkages;
+		return this.linkages;
 	}
 
 	public void setLinkages(List<LinkageBean> linkages) {
@@ -86,17 +85,17 @@ public class FunctionBean {
 	}
 
 	public int getNumberOfLinkages() {
-		return linkages.size();
+		return this.linkages.size();
 	}
 
 	public String getViewTitle() {
 		// get only the first number of characters of the title
-		if (viewTitle != null
-				&& viewTitle.length() > CaNanoLabConstants.MAX_VIEW_TITLE_LENGTH) {
-			return viewTitle.substring(0,
+		if (this.viewTitle != null
+				&& this.viewTitle.length() > CaNanoLabConstants.MAX_VIEW_TITLE_LENGTH) {
+			return this.viewTitle.substring(0,
 					CaNanoLabConstants.MAX_VIEW_TITLE_LENGTH);
 		}
-		return viewTitle;
+		return this.viewTitle;
 	}
 
 	public void setViewTitle(String viewTitle) {
@@ -104,7 +103,7 @@ public class FunctionBean {
 	}
 
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
 	public void setType(String type) {
@@ -112,10 +111,10 @@ public class FunctionBean {
 	}
 
 	public void updateDomainObj(Function doFunction) {
-		doFunction.setActivationMethod(activationMethod);
-		doFunction.setDescription(description);
-		doFunction.setIdentificationName(viewTitle);
-		doFunction.setType(type);
+		doFunction.setActivationMethod(this.activationMethod);
+		doFunction.setDescription(this.description);
+		doFunction.setIdentificationName(this.viewTitle);
+		doFunction.setType(this.type);
 		updateLinkages(doFunction);
 	}
 
@@ -135,7 +134,8 @@ public class FunctionBean {
 				// domain object
 				if (doLinkages.size() > 0) {
 					for (Linkage aDoLinkage : doLinkages) {
-						//if agent type is changed, have to create new linkage domain obj
+						// if agent type is changed, have to create new linkage
+						// domain obj
 						if (aDoLinkage.getAgent().getClass().getSimpleName()
 								.equals(linkageBean.getAgent().getType())) {
 							if (aDoLinkage.getId().equals(
@@ -150,8 +150,7 @@ public class FunctionBean {
 								}
 								break;
 							}
-						}
-						else {
+						} else {
 							doLinkage = linkageBean.getDomainObj();
 						}
 					}

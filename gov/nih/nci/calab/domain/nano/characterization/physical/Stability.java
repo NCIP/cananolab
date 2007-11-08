@@ -30,12 +30,11 @@ public class Stability extends Characterization {
 	 * 
 	 */
 	public Stability() {
-		
-		
+
 	}
 
 	public Measurement getLongTermStorage() {
-		return longTermStorage;
+		return this.longTermStorage;
 	}
 
 	public void setLongTermStorage(Measurement longTermStorage) {
@@ -43,7 +42,7 @@ public class Stability extends Characterization {
 	}
 
 	public String getMeasurementType() {
-		return measurementType;
+		return this.measurementType;
 	}
 
 	public void setMeasurementType(String measurementType) {
@@ -51,7 +50,7 @@ public class Stability extends Characterization {
 	}
 
 	public String getReleaseKineticsDescription() {
-		return releaseKineticsDescription;
+		return this.releaseKineticsDescription;
 	}
 
 	public void setReleaseKineticsDescription(String releaseKineticsDescription) {
@@ -59,7 +58,7 @@ public class Stability extends Characterization {
 	}
 
 	public Measurement getShortTermStorage() {
-		return shortTermStorage;
+		return this.shortTermStorage;
 	}
 
 	public void setShortTermStorage(Measurement shortTermStorage) {
@@ -67,7 +66,7 @@ public class Stability extends Characterization {
 	}
 
 	public Stressor getStressor() {
-		return stressor;
+		return this.stressor;
 	}
 
 	public void setStressor(Stressor stressor) {
@@ -75,7 +74,7 @@ public class Stability extends Characterization {
 	}
 
 	public String getStressResult() {
-		return stressResult;
+		return this.stressResult;
 	}
 
 	public void setStressResult(String stressResult) {

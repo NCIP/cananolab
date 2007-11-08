@@ -25,29 +25,31 @@ public class BaseCoreShellCoatingBean extends CompositionBean {
 	private String numberOfCoatings;
 
 	public BaseCoreShellCoatingBean() {
-		
-		core.setElementType(CaNanoLabConstants.CORE);
-		getComposingElements().add(core);
+
+		this.core.setElementType(CaNanoLabConstants.CORE);
+		getComposingElements().add(this.core);
 	}
 
 	public BaseCoreShellCoatingBean(ParticleComposition doComp) {
 		super(doComp);
-		core = new ComposingElementBean();
+		this.core = new ComposingElementBean();
 		for (ComposingElementBean element : getComposingElements()) {
 			if (element.getElementType().equals(CaNanoLabConstants.CORE)) {
-				core = element;
-			} else if (element.getElementType().equals(CaNanoLabConstants.COATING)) {
-				coatings.add(element);
-			} else if (element.getElementType().equals(CaNanoLabConstants.SHELL)) {
-				shells.add(element);
+				this.core = element;
+			} else if (element.getElementType().equals(
+					CaNanoLabConstants.COATING)) {
+				this.coatings.add(element);
+			} else if (element.getElementType()
+					.equals(CaNanoLabConstants.SHELL)) {
+				this.shells.add(element);
 			}
 		}
-		this.setNumberOfShells(shells.size() + "");
-		this.setNumberOfCoatings(coatings.size() + "");
+		this.setNumberOfShells(this.shells.size() + "");
+		this.setNumberOfCoatings(this.coatings.size() + "");
 	}
 
 	public List<ComposingElementBean> getCoatings() {
-		return coatings;
+		return this.coatings;
 	}
 
 	public void setCoatings(List<ComposingElementBean> coatings) {
@@ -55,7 +57,7 @@ public class BaseCoreShellCoatingBean extends CompositionBean {
 	}
 
 	public ComposingElementBean getCore() {
-		return core;
+		return this.core;
 	}
 
 	public void setCore(ComposingElementBean core) {
@@ -63,7 +65,7 @@ public class BaseCoreShellCoatingBean extends CompositionBean {
 	}
 
 	public List<ComposingElementBean> getShells() {
-		return shells;
+		return this.shells;
 	}
 
 	public void setShells(List<ComposingElementBean> shells) {
@@ -71,7 +73,7 @@ public class BaseCoreShellCoatingBean extends CompositionBean {
 	}
 
 	public String getNumberOfCoatings() {
-		return numberOfCoatings;
+		return this.numberOfCoatings;
 	}
 
 	public void setNumberOfCoatings(String numberOfCoatings) {
@@ -79,7 +81,7 @@ public class BaseCoreShellCoatingBean extends CompositionBean {
 	}
 
 	public String getNumberOfShells() {
-		return numberOfShells;
+		return this.numberOfShells;
 	}
 
 	public void setNumberOfShells(String numberOfShells) {

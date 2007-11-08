@@ -16,9 +16,9 @@ public class PolymerBean extends CompositionBean {
 	private String crosslinkDegree;
 
 	private String initiator;
-	
+
 	public PolymerBean() {
-		
+
 	}
 
 	public PolymerBean(PolymerComposition polymer) {
@@ -27,19 +27,19 @@ public class PolymerBean extends CompositionBean {
 				: CaNanoLabConstants.BOOLEAN_NO;
 		this.crosslinkDegree = (polymer.getCrossLinkDegree() == null) ? ""
 				: polymer.getCrossLinkDegree().toString();
-		this.initiator = polymer.getInitiator();		
+		this.initiator = polymer.getInitiator();
 	}
 
 	public String getCrosslinkDegree() {
-		return crosslinkDegree;
+		return this.crosslinkDegree;
 	}
 
 	public String getCrosslinked() {
-		return crosslinked;
+		return this.crosslinked;
 	}
 
 	public String getInitiator() {
-		return initiator;
+		return this.initiator;
 	}
 
 	public void setCrosslinkDegree(String crosslinkDegree) {
@@ -53,18 +53,19 @@ public class PolymerBean extends CompositionBean {
 	public void setInitiator(String initiator) {
 		this.initiator = initiator;
 	}
-	
+
 	public PolymerComposition getDomainObj() {
 		PolymerComposition doComp = new PolymerComposition();
 		super.updateDomainObj(doComp);
-		boolean crosslinkedStatus = (crosslinked.equalsIgnoreCase(CaNanoLabConstants.BOOLEAN_YES)) ? true
+		boolean crosslinkedStatus = (this.crosslinked
+				.equalsIgnoreCase(CaNanoLabConstants.BOOLEAN_YES)) ? true
 				: false;
 		doComp.setCrossLinked(crosslinkedStatus);
-		if (crosslinkDegree.length() > 0) {
-			doComp.setCrossLinkDegree(new Float(crosslinkDegree));
+		if (this.crosslinkDegree.length() > 0) {
+			doComp.setCrossLinkDegree(new Float(this.crosslinkDegree));
 		}
-		if (initiator.length() > 0) {			
-			doComp.setInitiator(initiator);
+		if (this.initiator.length() > 0) {
+			doComp.setInitiator(this.initiator);
 		}
 		return doComp;
 	}

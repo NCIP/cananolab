@@ -13,7 +13,7 @@ public class FullereneBean extends CompositionBean {
 	private String numberOfCarbons;
 
 	public FullereneBean() {
-		
+
 	}
 
 	public FullereneBean(FullereneComposition fullerene) {
@@ -23,7 +23,7 @@ public class FullereneBean extends CompositionBean {
 	}
 
 	public String getNumberOfCarbons() {
-		return numberOfCarbons;
+		return this.numberOfCarbons;
 	}
 
 	public void setNumberOfCarbons(String numberOfCarbons) {
@@ -33,7 +33,7 @@ public class FullereneBean extends CompositionBean {
 	public FullereneComposition getDomainObj() {
 		FullereneComposition doComp = new FullereneComposition();
 		super.updateDomainObj(doComp);
-		doComp.setNumberOfCarbon(new Integer(numberOfCarbons));
+		doComp.setNumberOfCarbon(new Integer(this.numberOfCarbons));
 		return doComp;
 	}
 }

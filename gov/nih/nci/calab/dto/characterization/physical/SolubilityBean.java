@@ -23,7 +23,7 @@ public class SolubilityBean extends CharacterizationBean {
 	private String isSoluble;
 
 	public SolubilityBean() {
-		
+
 	}
 
 	/**
@@ -62,7 +62,7 @@ public class SolubilityBean extends CharacterizationBean {
 		super.updateDomainObj(solubility);
 
 		solubility.setSolvent(this.solvent);
-		if (criticalConcentration.length() > 0)
+		if (this.criticalConcentration.length() > 0)
 			solubility
 					.setCriticalConcentration(new Measurement(new Float(
 							this.criticalConcentration),
@@ -73,7 +73,7 @@ public class SolubilityBean extends CharacterizationBean {
 	}
 
 	public String getCriticalConcentration() {
-		return criticalConcentration;
+		return this.criticalConcentration;
 	}
 
 	public void setCriticalConcentration(String criticalConcentration) {
@@ -81,7 +81,7 @@ public class SolubilityBean extends CharacterizationBean {
 	}
 
 	public String getIsSoluble() {
-		return isSoluble;
+		return this.isSoluble;
 	}
 
 	public void setIsSoluble(String isSoluble) {
@@ -89,7 +89,7 @@ public class SolubilityBean extends CharacterizationBean {
 	}
 
 	public String getSolvent() {
-		return solvent;
+		return this.solvent;
 	}
 
 	public void setSolvent(String solvent) {
@@ -97,7 +97,7 @@ public class SolubilityBean extends CharacterizationBean {
 	}
 
 	public String getCriticalConcentrationUnit() {
-		return criticalConcentrationUnit;
+		return this.criticalConcentrationUnit;
 	}
 
 	public void setCriticalConcentrationUnit(String criticalConcentrationUnit) {

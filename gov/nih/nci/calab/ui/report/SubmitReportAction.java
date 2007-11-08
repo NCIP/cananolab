@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.report;
  * @author pansu
  */
 
-/* CVS $Id: SubmitReportAction.java,v 1.1 2007-11-01 17:30:21 pansu Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.2 2007-11-08 20:41:34 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
@@ -48,8 +48,7 @@ public class SubmitReportAction extends AbstractDispatchAction {
 
 		// display default visible groups
 		if (fileBean.getVisibilityGroups().length == 0) {
-			fileBean
-					.setVisibilityGroups(CaNanoLabConstants.VISIBLE_GROUPS);
+			fileBean.setVisibilityGroups(CaNanoLabConstants.VISIBLE_GROUPS);
 		}
 
 		ActionMessages msgs = new ActionMessages();
@@ -90,7 +89,7 @@ public class SubmitReportAction extends AbstractDispatchAction {
 		String fileId = request.getParameter("fileId");
 		String fileType = request.getParameter("fileType");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		LabFileBean fileBean=service.getFile(fileId);
+		LabFileBean fileBean = service.getFile(fileId);
 		fileBean.setInstanceType(fileType);
 		theForm.set("file", fileBean);
 		return mapping.getInputForward();
@@ -126,7 +125,7 @@ public class SubmitReportAction extends AbstractDispatchAction {
 	public boolean loginRequired() {
 		return true;
 	}
-	
+
 	public boolean canUserExecute(UserBean user) throws Exception {
 		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
 				CaNanoLabConstants.CSM_PG_REPORT);

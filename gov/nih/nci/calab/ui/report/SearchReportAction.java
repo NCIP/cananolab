@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.report;
  * @author pansu
  */
 
-/* CVS $Id: SearchReportAction.java,v 1.1 2007-11-01 17:30:21 pansu Exp $ */
+/* CVS $Id: SearchReportAction.java,v 1.2 2007-11-08 20:41:34 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
@@ -73,10 +73,10 @@ public class SearchReportAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		HttpSession session = request.getSession();
-//		InitSessionSetup.getInstance().setAllParticleTypeParticles(session);
+		// InitSessionSetup.getInstance().setAllParticleTypeParticles(session);
 		InitParticleSetup.getInstance().setAllFunctionTypes(session);
 		InitSessionSetup.getInstance().setApplicationOwner(session);
-		InitSessionSetup.getInstance().setStaticDropdowns(session);		
+		InitSessionSetup.getInstance().setStaticDropdowns(session);
 
 		return mapping.getInputForward();
 	}
@@ -104,7 +104,7 @@ public class SearchReportAction extends AbstractDispatchAction {
 		if (dFile.exists()) {
 			response.setContentType("application/octet-stream");
 			response.setHeader("Content-disposition", "attachment;filename="
-					+ fileBean.getName());			
+					+ fileBean.getName());
 			response.setHeader("cache-control", "Private");
 
 			java.io.InputStream in = new FileInputStream(dFile);
@@ -123,7 +123,7 @@ public class SearchReportAction extends AbstractDispatchAction {
 		}
 		return null;
 	}
-	
+
 	public boolean canUserExecute(UserBean user) throws Exception {
 		return true;
 	}

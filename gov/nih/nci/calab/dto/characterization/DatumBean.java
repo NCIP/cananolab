@@ -84,7 +84,7 @@ public class DatumBean {
 	}
 
 	public String getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(String id) {
@@ -92,7 +92,7 @@ public class DatumBean {
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String type) {
@@ -100,7 +100,7 @@ public class DatumBean {
 	}
 
 	public String getValue() {
-		return value;
+		return this.value;
 	}
 
 	public void setValue(String value) {
@@ -108,7 +108,7 @@ public class DatumBean {
 	}
 
 	public String getUnit() {
-		return unit;
+		return this.unit;
 	}
 
 	public void setUnit(String unit) {
@@ -116,7 +116,7 @@ public class DatumBean {
 	}
 
 	public ControlBean getControl() {
-		return control;
+		return this.control;
 	}
 
 	public void setControl(ControlBean control) {
@@ -124,7 +124,7 @@ public class DatumBean {
 	}
 
 	public List<ConditionBean> getConditionList() {
-		return conditionList;
+		return this.conditionList;
 	}
 
 	public void setConditionList(List<ConditionBean> conditionList) {
@@ -132,31 +132,31 @@ public class DatumBean {
 	}
 
 	public void updateDomainObj(Datum doDatum) {
-		doDatum.setName(name);
+		doDatum.setName(this.name);
 		Measurement measurement = new Measurement();
 
-		if (statisticsType.length() > 0) {
-			measurement.setStatisticsType(statisticsType);
-			if (statisticsType.equals("boolean")) {
-				if (value.equalsIgnoreCase("false")
-						|| (value.equalsIgnoreCase("no"))) {
+		if (this.statisticsType.length() > 0) {
+			measurement.setStatisticsType(this.statisticsType);
+			if (this.statisticsType.equals("boolean")) {
+				if (this.value.equalsIgnoreCase("false")
+						|| (this.value.equalsIgnoreCase("no"))) {
 					measurement.setValue(new Float(0));
 				} else {
 					measurement.setValue(new Float(1));
 				}
 			} else {
-				if (value.length() > 0)
-					measurement.setValue(new Float(value));
+				if (this.value.length() > 0)
+					measurement.setValue(new Float(this.value));
 			}
 		} else {
-			if (value.length() > 0)
-				measurement.setValue(new Float(value));
+			if (this.value.length() > 0)
+				measurement.setValue(new Float(this.value));
 		}
 
-		measurement.setUnitOfMeasurement(unit);
+		measurement.setUnitOfMeasurement(this.unit);
 		doDatum.setValue(measurement);
-		if (category.length() > 0)
-			doDatum.setDerivedBioAssayDataCategory(category);
+		if (this.category.length() > 0)
+			doDatum.setDerivedBioAssayDataCategory(this.category);
 		if (this.getConditionList() != null
 				&& this.getConditionList().size() > 0) {
 			for (ConditionBean condition : this.getConditionList()) {
@@ -164,7 +164,7 @@ public class DatumBean {
 			}
 		}
 
-		if (isAControl.equals(CaNanoLabConstants.BOOLEAN_YES)) {
+		if (this.isAControl.equals(CaNanoLabConstants.BOOLEAN_YES)) {
 			Control control = new Control();
 			if (getControl() != null) {
 				if (getControl().getId() != null)
@@ -177,7 +177,7 @@ public class DatumBean {
 	}
 
 	public String getIsAControl() {
-		return isAControl;
+		return this.isAControl;
 	}
 
 	public void setIsAControl(String isAControl) {
@@ -185,7 +185,7 @@ public class DatumBean {
 	}
 
 	public String getCategory() {
-		return category;
+		return this.category;
 	}
 
 	public void setCategory(String category) {
@@ -193,7 +193,7 @@ public class DatumBean {
 	}
 
 	public String getStatisticsType() {
-		return statisticsType;
+		return this.statisticsType;
 	}
 
 	public void setStatisticsType(String statsType) {

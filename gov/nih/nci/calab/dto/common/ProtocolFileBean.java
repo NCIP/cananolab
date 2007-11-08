@@ -21,11 +21,11 @@ public class ProtocolFileBean extends LabFileBean {
 
 	public ProtocolFileBean(ProtocolFile protocolFile) {
 		super(protocolFile);
-		protocolBean = new ProtocolBean(protocolFile.getProtocol());
+		this.protocolBean = new ProtocolBean(protocolFile.getProtocol());
 	}
 
 	public ProtocolBean getProtocolBean() {
-		return protocolBean;
+		return this.protocolBean;
 	}
 
 	public void setProtocolBean(ProtocolBean protocolBean) {

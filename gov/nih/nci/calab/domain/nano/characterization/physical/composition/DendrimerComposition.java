@@ -17,12 +17,11 @@ public class DendrimerComposition extends ParticleComposition {
 	private Collection<SurfaceGroup> surfaceGroupCollection = new ArrayList<SurfaceGroup>();
 
 	public DendrimerComposition() {
-		
-		
+
 	}
 
 	public String getBranch() {
-		return branch;
+		return this.branch;
 	}
 
 	public void setBranch(String branch) {
@@ -30,7 +29,7 @@ public class DendrimerComposition extends ParticleComposition {
 	}
 
 	public Float getGeneration() {
-		return generation;
+		return this.generation;
 	}
 
 	public void setGeneration(Float generation) {
@@ -38,7 +37,7 @@ public class DendrimerComposition extends ParticleComposition {
 	}
 
 	public String getMolecularFormula() {
-		return molecularFormula;
+		return this.molecularFormula;
 	}
 
 	public void setMolecularFormula(String molecularFormula) {
@@ -46,7 +45,7 @@ public class DendrimerComposition extends ParticleComposition {
 	}
 
 	public String getRepeatUnit() {
-		return repeatUnit;
+		return this.repeatUnit;
 	}
 
 	public void setRepeatUnit(String repeatUnit) {
@@ -54,7 +53,7 @@ public class DendrimerComposition extends ParticleComposition {
 	}
 
 	public Collection<SurfaceGroup> getSurfaceGroupCollection() {
-		return surfaceGroupCollection;
+		return this.surfaceGroupCollection;
 	}
 
 	public void setSurfaceGroupCollection(

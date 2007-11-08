@@ -1,6 +1,5 @@
 package gov.nih.nci.calab.domain.nano.characterization.physical.composition;
 
-
 public class CarbonNanotubeComposition extends ParticleComposition {
 
 	private static final long serialVersionUID = 1234567890L;
@@ -25,7 +24,7 @@ public class CarbonNanotubeComposition extends ParticleComposition {
 	}
 
 	public Float getAverageLength() {
-		return averageLength;
+		return this.averageLength;
 	}
 
 	public void setAverageLength(Float averageLength) {
@@ -33,7 +32,7 @@ public class CarbonNanotubeComposition extends ParticleComposition {
 	}
 
 	public String getChirality() {
-		return chirality;
+		return this.chirality;
 	}
 
 	public void setChirality(String chirality) {
@@ -41,11 +40,11 @@ public class CarbonNanotubeComposition extends ParticleComposition {
 	}
 
 	public Float getGrowthDiameter() {
-		return growthDiameter;
+		return this.growthDiameter;
 	}
 
 	public String getWallType() {
-		return wallType;
+		return this.wallType;
 	}
 
 	public void setWallType(String wallType) {

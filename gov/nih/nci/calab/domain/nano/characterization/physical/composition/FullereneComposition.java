@@ -1,20 +1,17 @@
 package gov.nih.nci.calab.domain.nano.characterization.physical.composition;
 
-
 public class FullereneComposition extends ParticleComposition {
 
 	private static final long serialVersionUID = 1234567890L;
 
-
 	private Integer numberOfCarbon;
 
 	public FullereneComposition() {
-		
-		
+
 	}
 
 	public Integer getNumberOfCarbon() {
-		return numberOfCarbon;
+		return this.numberOfCarbon;
 	}
 
 	public void setNumberOfCarbon(Integer numberOfCarbon) {

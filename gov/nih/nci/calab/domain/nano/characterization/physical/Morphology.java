@@ -9,8 +9,7 @@ public class Morphology extends Characterization {
 	private String type;
 
 	public Morphology() {
-		
-		
+
 	}
 
 	public String getClassification() {
@@ -22,7 +21,7 @@ public class Morphology extends Characterization {
 	}
 
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
 	public void setType(String type) {

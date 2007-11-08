@@ -271,29 +271,29 @@ public class CaNanoLabConstants {
 	public static final String UNIT_TYPE_ZETA_POTENTIAL = "Zeta Potential";
 
 	public static final String CSM_READ_ROLE = "R";
-	
+
 	public static final String CSM_DELETE_ROLE = "D";
-	
+
 	public static final String CSM_EXECUTE_ROLE = "E";
 
-	public static final String CSM_CURD_ROLE="CURD";
-	
-	public static final String CSM_CUR_ROLE="CUR";
-	
+	public static final String CSM_CURD_ROLE = "CURD";
+
+	public static final String CSM_CUR_ROLE = "CUR";
+
 	public static final String CSM_READ_PRIVILEGE = "READ";
 
 	public static final String CSM_EXECUTE_PRIVILEGE = "EXECUTE";
 
 	public static final String CSM_DELETE_PRIVILEGE = "DELETE";
-	
+
 	public static final String CSM_CREATE_PRIVILEGE = "CREATE";
-	
+
 	public static final String CSM_PG_SAMPLE = "sample";
 
 	public static final String CSM_PG_PROTOCOL = "protocol";
-	
+
 	public static final String CSM_PG_PARTICLE = "nanoparticle";
-	
+
 	public static final String CSM_PG_REPORT = "report";
 
 }

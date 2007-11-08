@@ -2,14 +2,14 @@ package gov.nih.nci.calab.exception;
 
 /**
  * @author zengje
- *
+ * 
  */
 public class DuplicateEntriesException extends CalabException {
 
 	private static final long serialVersionUID = 1234567890L;
-	
+
 	private String message;
-	
+
 	public DuplicateEntriesException() {
 		super();
 		this.message = "Duplicate entries are found.";
@@ -29,8 +29,8 @@ public class DuplicateEntriesException extends CalabException {
 		super(cause);
 		this.message = "Duplicate entries are found.";
 	}
-	
+
 	public String getMessage() {
-		return message;
+		return this.message;
 	}
 }

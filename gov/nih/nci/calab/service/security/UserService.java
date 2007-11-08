@@ -80,7 +80,7 @@ public class UserService {
 	}
 
 	public UserBean getUserBean(String userLogin) {
-		User user = authorizationManager.getUser(userLogin);
+		User user = this.authorizationManager.getUser(userLogin);
 		return new UserBean(user); // or
 		// userManger.getUser(userLoginId);
 	}
@@ -92,8 +92,8 @@ public class UserService {
 	 * @return
 	 */
 	public boolean isAdmin(String user) {
-		boolean adminStatus = authorizationManager.checkOwnership(user,
-				applicationName);
+		boolean adminStatus = this.authorizationManager.checkOwnership(user,
+				this.applicationName);
 		return adminStatus;
 	}
 
@@ -107,7 +107,7 @@ public class UserService {
 	 */
 	public boolean isUserInGroup(UserBean user, String groupName)
 			throws Exception {
-		Set groups = userManager.getGroups(user.getUserId());
+		Set groups = this.userManager.getGroups(user.getUserId());
 		for (Object obj : groups) {
 			Group group = (Group) obj;
 			if (group.getGroupName().equalsIgnoreCase(groupName)
@@ -132,19 +132,18 @@ public class UserService {
 			String protectionElementObjectId, String privilege)
 			throws CSException {
 		boolean status = false;
-		if (user==null) {
+		if (user == null) {
 			return status;
 		}
-		status = authorizationManager.checkPermission(user.getLoginName(),
+		status = this.authorizationManager.checkPermission(user.getLoginName(),
 				protectionElementObjectId, privilege);
 		return status;
 	}
 
 	public boolean checkCreatePermission(UserBean user,
-			String protectionElementObjectId)
-			throws CSException {		
+			String protectionElementObjectId) throws CSException {
 		return checkPermission(user, protectionElementObjectId,
-				CaNanoLabConstants.CSM_CREATE_PRIVILEGE);		
+				CaNanoLabConstants.CSM_CREATE_PRIVILEGE);
 	}
 
 	/**
@@ -183,7 +182,7 @@ public class UserService {
 					return false;
 
 			} catch (Exception e) {
-				logger.error("error testing isPublicId for a nanoparticle: "
+				this.logger.error("error testing isPublicId for a nanoparticle: "
 						+ e);
 				throw new CSException("error in checkReadPermission:", e);
 			}
@@ -251,13 +250,13 @@ public class UserService {
 	 */
 	public void updatePassword(String loginName, String newPassword)
 			throws Exception {
-		User user = authorizationManager.getUser(loginName);
+		User user = this.authorizationManager.getUser(loginName);
 		java.util.Map options = SecurityServiceProvider
 				.getLoginModuleOptions(CaNanoLabConstants.CSM_APP_NAME);
 		String encryptedPassword = EncryptedRDBMSHelper.encrypt(newPassword,
 				(String) options.get("hashAlgorithm"));
 		user.setPassword(encryptedPassword);
-		userManager.modifyUser(user);
+		this.userManager.modifyUser(user);
 	}
 
 	/**
@@ -271,7 +270,7 @@ public class UserService {
 		User dummy = new User();
 		dummy.setLoginName("*");
 		SearchCriteria sc = new UserSearchCriteria(dummy);
-		List results = userManager.getObjects(sc);
+		List results = this.userManager.getObjects(sc);
 		for (Object obj : results) {
 			User doUser = (User) obj;
 			users.add(new UserBean(doUser));
@@ -290,7 +289,7 @@ public class UserService {
 		Group dummy = new Group();
 		dummy.setGroupName("*");
 		SearchCriteria sc = new GroupSearchCriteria(dummy);
-		List results = userManager.getObjects(sc);
+		List results = this.userManager.getObjects(sc);
 		for (Object obj : results) {
 			Group doGroup = (Group) obj;
 			groups.add(doGroup.getGroupName());
@@ -321,19 +320,19 @@ public class UserService {
 	}
 
 	public String getApplicationName() {
-		return applicationName;
+		return this.applicationName;
 	}
 
 	public AuthenticationManager getAuthenticationManager() {
-		return authenticationManager;
+		return this.authenticationManager;
 	}
 
 	public AuthorizationManager getAuthorizationManager() {
-		return authorizationManager;
+		return this.authorizationManager;
 	}
 
 	public UserProvisioningManager getUserManager() {
-		return userManager;
+		return this.userManager;
 	}
 
 	/**
@@ -347,7 +346,7 @@ public class UserService {
 		Group group = new Group();
 		group.setGroupName(groupName);
 		SearchCriteria sc = new GroupSearchCriteria(group);
-		List results = userManager.getObjects(sc);
+		List results = this.userManager.getObjects(sc);
 		Group doGroup = null;
 		for (Object obj : results) {
 			doGroup = (Group) obj;
@@ -367,7 +366,7 @@ public class UserService {
 		if (doGroup == null) {
 			doGroup = new Group();
 			doGroup.setGroupName(groupName);
-			userManager.createGroup(doGroup);
+			this.userManager.createGroup(doGroup);
 		}
 	}
 
@@ -382,7 +381,7 @@ public class UserService {
 		Role role = new Role();
 		role.setName(roleName);
 		SearchCriteria sc = new RoleSearchCriteria(role);
-		List results = userManager.getObjects(sc);
+		List results = this.userManager.getObjects(sc);
 		Role doRole = null;
 		for (Object obj : results) {
 			doRole = (Role) obj;
@@ -404,14 +403,14 @@ public class UserService {
 		pe.setObjectId(objectId);
 		pe.setProtectionElementName(objectId);
 		SearchCriteria sc = new ProtectionElementSearchCriteria(pe);
-		List results = userManager.getObjects(sc);
+		List results = this.userManager.getObjects(sc);
 		ProtectionElement doPE = null;
 		for (Object obj : results) {
 			doPE = (ProtectionElement) obj;
 			break;
 		}
 		if (doPE == null) {
-			authorizationManager.createProtectionElement(pe);
+			this.authorizationManager.createProtectionElement(pe);
 			return pe;
 		}
 		return doPE;
@@ -429,14 +428,14 @@ public class UserService {
 		ProtectionGroup pg = new ProtectionGroup();
 		pg.setProtectionGroupName(protectionGroupName);
 		SearchCriteria sc = new ProtectionGroupSearchCriteria(pg);
-		List results = userManager.getObjects(sc);
+		List results = this.userManager.getObjects(sc);
 		ProtectionGroup doPG = null;
 		for (Object obj : results) {
 			doPG = (ProtectionGroup) obj;
 			break;
 		}
 		if (doPG == null) {
-			userManager.createProtectionGroup(pg);
+			this.userManager.createProtectionGroup(pg);
 			return pg;
 		}
 		return doPG;
@@ -452,7 +451,7 @@ public class UserService {
 	public void assignProtectionElementToProtectionGroup(ProtectionElement pe,
 			ProtectionGroup pg) throws Exception {
 		Set<ProtectionGroup> assignedPGs = new HashSet<ProtectionGroup>(
-				(Set<? extends ProtectionGroup>) authorizationManager
+				this.authorizationManager
 						.getProtectionGroups(pe.getProtectionElementId()
 								.toString()));
 		// check to see if the assignment is already made to ignore CSM
@@ -468,7 +467,7 @@ public class UserService {
 				return;
 			}
 		}
-		authorizationManager.assignProtectionElement(pg
+		this.authorizationManager.assignProtectionElement(pg
 				.getProtectionGroupName(), pe.getObjectId());
 	}
 
@@ -500,7 +499,7 @@ public class UserService {
 			}
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
-			logger.error("error getting existing roles from CSM database", e);
+			this.logger.error("error getting existing roles from CSM database", e);
 			throw new Exception(
 					"error getting existing roles from CSM database:", e);
 
@@ -523,7 +522,7 @@ public class UserService {
 			throws Exception {
 		List<String> roleIds = new ArrayList<String>();
 		Set existingRoles = null;
-		Set contexts = userManager.getProtectionGroupRoleContextForGroup(group
+		Set contexts = this.userManager.getProtectionGroupRoleContextForGroup(group
 				.getGroupId().toString());
 		for (Object obj : contexts) {
 			ProtectionGroupRoleContext context = (ProtectionGroupRoleContext) obj;
@@ -578,7 +577,7 @@ public class UserService {
 		if (!existingRoleIds.contains(role.getId().toString())) {
 			allRoleIds.add(role.getId().toString());
 		}
-		userManager.assignGroupRoleToProtectionGroup(pg.getProtectionGroupId()
+		this.userManager.assignGroupRoleToProtectionGroup(pg.getProtectionGroupId()
 				.toString(), group.getGroupId().toString(), allRoleIds
 				.toArray(new String[0]));
 
@@ -639,14 +638,14 @@ public class UserService {
 		Role role = getRole(roleName);
 		for (String groupName : allGroups) {
 			Group group = getGroup(groupName);
-			Set contexts = userManager
+			Set contexts = this.userManager
 					.getProtectionGroupRoleContextForGroup(group.getGroupId()
 							.toString());
 			for (Object obj : contexts) {
 				ProtectionGroupRoleContext context = (ProtectionGroupRoleContext) obj;
 				ProtectionGroup pg = context.getProtectionGroup();
 				Set<Role> roles = new HashSet<Role>(
-						(Set<? extends Role>) context.getRoles());
+						context.getRoles());
 				// contains doesn't work because CSM didn't implement hashCode
 				// in Role.
 				// if (pg.getProtectionGroupName().equals(objectName)
@@ -722,13 +721,13 @@ public class UserService {
 		// .toString(), new String[] { role.getId().toString() });
 
 		// get existing roles.
-		Set contexts = userManager.getProtectionGroupRoleContextForGroup(group
+		Set contexts = this.userManager.getProtectionGroupRoleContextForGroup(group
 				.getGroupId().toString());
 		Set<Role> existingRoles = null;
 		for (Object obj : contexts) {
 			ProtectionGroupRoleContext context = (ProtectionGroupRoleContext) obj;
 			if (context.getProtectionGroup().equals(pg)) {
-				existingRoles = new HashSet<Role>((Set<? extends Role>) context
+				existingRoles = new HashSet<Role>(context
 						.getRoles());
 				break;
 			}
@@ -751,7 +750,7 @@ public class UserService {
 			roleIds[i] = aRole.getId().toString();
 			i++;
 		}
-		userManager.assignGroupRoleToProtectionGroup(pg.getProtectionGroupId()
+		this.userManager.assignGroupRoleToProtectionGroup(pg.getProtectionGroupId()
 				.toString(), group.getGroupId().toString(), roleIds);
 	}
 
@@ -782,7 +781,7 @@ public class UserService {
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			HibernateUtil.rollbackTransaction();
-			logger
+			this.logger
 					.error("Error getting accessible groups from CSM database",
 							e);
 			throw new Exception(
@@ -828,7 +827,7 @@ public class UserService {
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			HibernateUtil.rollbackTransaction();
-			logger
+			this.logger
 					.error("Error getting accessible groups from CSM database",
 							e);
 			throw new Exception(
@@ -861,8 +860,8 @@ public class UserService {
 		Role role = getRole(roleName);
 		ProtectionGroup pg = getProtectionGroup(protectionGroupName);
 		Group group = getGroup(groupName);
-		userManager.assignGroupRoleToProtectionGroup(pg.getProtectionGroupId()
-				.toString(), group.getGroupId().toString(),
-				new String[] { role.getId().toString() });
+		this.userManager.assignGroupRoleToProtectionGroup(pg.getProtectionGroupId()
+				.toString(), group.getGroupId().toString(), new String[] { role
+				.getId().toString() });
 	}
 }

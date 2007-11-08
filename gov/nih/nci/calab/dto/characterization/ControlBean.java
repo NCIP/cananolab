@@ -11,12 +11,14 @@ import gov.nih.nci.calab.domain.nano.characterization.Control;
  */
 public class ControlBean {
 	private String id;
+
 	private String type;
+
 	private String name;
 
 	public ControlBean() {
 	}
-	
+
 	public ControlBean(Control control) {
 		this.id = control.getId().toString();
 		this.type = control.getType();
@@ -24,7 +26,7 @@ public class ControlBean {
 	}
 
 	public String getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(String id) {
@@ -32,7 +34,7 @@ public class ControlBean {
 	}
 
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
 	public void setType(String type) {
@@ -40,7 +42,7 @@ public class ControlBean {
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -52,8 +54,8 @@ public class ControlBean {
 		if (getId() != null && getId().length() > 0) {
 			tableData.setId(new Long(getId()));
 		}
-		tableData.setType(type);
-		tableData.setName(name);
+		tableData.setType(this.type);
+		tableData.setName(this.name);
 		return tableData;
 	}
 }

@@ -21,7 +21,7 @@ import org.hibernate.Session;
  * @author pansu
  * 
  */
-/* CVS $Id: SearchAliquotService.java,v 1.1 2007-11-01 17:31:14 pansu Exp $ */
+/* CVS $Id: SearchAliquotService.java,v 1.2 2007-11-08 20:41:35 pansu Exp $ */
 
 public class SearchAliquotService {
 	private static Logger logger = Logger.getLogger(SearchAliquotService.class);
@@ -125,10 +125,10 @@ public class SearchAliquotService {
 
 			String whereStr = StringUtils.join(whereList, " and ");
 			String hqlString = "select aliquot from Aliquot aliquot "
-					+ storageFrom + where + whereStr;		
+					+ storageFrom + where + whereStr;
 			HibernateUtil.beginTransaction();
 
-			List<? extends Object> results = (List<? extends Object>) (HibernateUtil
+			List<? extends Object> results = (HibernateUtil
 					.createQueryByParam(hqlString, paramList).list());
 			for (Object obj : new HashSet<Object>(results)) {
 				Aliquot aliquot = (Aliquot) obj;

@@ -53,7 +53,7 @@ public class InitSessionSetup {
 		SortedSet<String> dropdown = (SortedSet<String>) session
 				.getAttribute(sessionAttributeName);
 		if (dropdown == null) {
-			dropdown = new TreeSet<String>();			
+			dropdown = new TreeSet<String>();
 		}
 		if (formAttributeValue != null && formAttributeValue.length() > 0) {
 			dropdown.add(formAttributeValue);

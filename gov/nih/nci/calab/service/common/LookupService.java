@@ -4,17 +4,12 @@ import gov.nih.nci.calab.db.HibernateUtil;
 import gov.nih.nci.calab.domain.Aliquot;
 import gov.nih.nci.calab.domain.Instrument;
 import gov.nih.nci.calab.domain.MeasureUnit;
-import gov.nih.nci.calab.domain.Protocol;
-import gov.nih.nci.calab.domain.ProtocolFile;
 import gov.nih.nci.calab.domain.Sample;
 import gov.nih.nci.calab.domain.SampleContainer;
 import gov.nih.nci.calab.domain.StorageElement;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.CharacterizationTypeBean;
 import gov.nih.nci.calab.dto.common.InstrumentBean;
-import gov.nih.nci.calab.dto.common.LabFileBean;
-import gov.nih.nci.calab.dto.common.ProtocolBean;
-import gov.nih.nci.calab.dto.common.ProtocolFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.sample.AliquotBean;
 import gov.nih.nci.calab.dto.sample.ContainerBean;
@@ -29,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
@@ -40,7 +34,6 @@ import org.apache.struts.util.LabelValueBean;
 import org.hibernate.Hibernate;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
-import org.hibernate.collection.PersistentSet;
 
 /**
  * The service to return prepopulated data that are shared across different
@@ -49,7 +42,7 @@ import org.hibernate.collection.PersistentSet;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.134 2007-11-07 21:08:08 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.135 2007-11-08 20:41:35 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -346,7 +339,7 @@ public class LookupService {
 			HibernateUtil.commitTransaction();
 			for (Object obj : results) {
 				assayTypes.add((String) obj);
-			}			
+			}
 		} catch (Exception e) {
 			logger.error("Error in retrieving all assay types", e);
 			throw new RuntimeException("Error in retrieving all assay types");
@@ -372,7 +365,7 @@ public class LookupService {
 			for (Object obj : results) {
 				sampleSources.add((String) obj);
 			}
-			
+
 		} catch (Exception e) {
 			logger.error("Error in retrieving all sample sources", e);
 			throw new RuntimeException("Error in retrieving all sample sources");
@@ -416,7 +409,7 @@ public class LookupService {
 				}
 				samples.add(sample);
 			}
-			
+
 		} catch (Exception e) {
 			logger.error(
 					"Error in retrieving sample beans with unmasked aliquots ",
@@ -441,7 +434,7 @@ public class LookupService {
 			for (Object obj : results) {
 				sampleSOPs.add((String) obj);
 			}
-			
+
 		} catch (Exception e) {
 			logger.error("Problem to retrieve all Sample SOPs.", e);
 			throw new RuntimeException("Problem to retrieve all Sample SOPs. ");
@@ -470,7 +463,7 @@ public class LookupService {
 				String sopURL = (sopURI == null) ? "" : sopURI;
 				createMethods.add(new LabelValueBean(sopName, sopURL));
 			}
-			
+
 		} catch (Exception e) {
 			logger.error("Error in retrieving all sample sources", e);
 			throw new RuntimeException("Error in retrieving all sample sources");
@@ -496,7 +489,7 @@ public class LookupService {
 			for (Object obj : results) {
 				sourceSampleIds.add((String) obj);
 			}
-			
+
 		} catch (Exception e) {
 			logger.error("Error in retrieving all source sample IDs", e);
 			throw new RuntimeException(
@@ -539,7 +532,7 @@ public class LookupService {
 					particleNames.add(particleName);
 				}
 			}
-			
+
 		} catch (Exception e) {
 			logger.error("Error retrieving particle type particles", e);
 			throw e;
@@ -589,7 +582,7 @@ public class LookupService {
 			for (Object obj : results) {
 				names.add((String) obj);
 			}
-			
+
 		} catch (Exception e) {
 			logger.error("Problem to retrieve all Surface Group name.", e);
 			throw new RuntimeException(
@@ -612,7 +605,7 @@ public class LookupService {
 			for (Object obj : results) {
 				branches.add((String) obj);
 			}
-			
+
 		} catch (Exception e) {
 			logger.error("Problem to retrieve all Dendrimer Branches.", e);
 			throw new RuntimeException(
@@ -638,7 +631,7 @@ public class LookupService {
 			for (Object obj : results) {
 				generations.add(obj.toString());
 			}
-			
+
 		} catch (Exception e) {
 			logger.error("Problem to retrieve all Dendrimer Generations.", e);
 			throw new RuntimeException(
@@ -669,7 +662,7 @@ public class LookupService {
 			for (Object obj : results) {
 				initiators.add((String) obj);
 			}
-			
+
 		} catch (Exception e) {
 			logger.error("Problem to retrieve all Polymer Initiator.", e);
 			throw new RuntimeException(
@@ -731,7 +724,7 @@ public class LookupService {
 						abbr);
 				chars.add(charBean);
 			}
-			
+
 		} catch (Exception e) {
 			logger
 					.error(
@@ -767,7 +760,7 @@ public class LookupService {
 							(String) objs[0]));
 				}
 			}
-			
+
 		} catch (Exception e) {
 			logger.error("Problem to retrieve all instrumentTypes. ", e);
 			throw new RuntimeException(
@@ -812,7 +805,7 @@ public class LookupService {
 				String name = (String) obj;
 				allManufacturers.add(name);
 			}
-			
+
 		} catch (Exception e) {
 			logger
 					.error(
@@ -839,7 +832,7 @@ public class LookupService {
 			for (Object obj : results) {
 				types.add((String) obj);
 			}
-			
+
 		} catch (Exception e) {
 			logger
 					.error("Problem to retrieve all " + lookupType + " types.",
@@ -851,7 +844,6 @@ public class LookupService {
 		}
 		return types;
 	}
-
 
 	public String[] getAllReportTypes() {
 		String[] allReportTypes = new String[] { CaNanoLabConstants.REPORT,
@@ -894,7 +886,7 @@ public class LookupService {
 					otherParticleNames.add(otherParticleName);
 				}
 			}
-			
+
 		} catch (Exception e) {
 			logger
 					.error("Error in retrieving all particle type particles. ",
@@ -920,7 +912,7 @@ public class LookupService {
 				Instrument instrument = (Instrument) obj;
 				instruments.add(new InstrumentBean(instrument));
 			}
-			
+
 		} catch (Exception e) {
 			logger.error("Problem to retrieve all instruments. ", e);
 			throw new RuntimeException("Problem to retrieve all intruments. ");
@@ -942,7 +934,7 @@ public class LookupService {
 				String type = (String) obj;
 				fileTypes.add(type);
 			}
-			
+
 		} catch (Exception e) {
 			logger.error(
 					"Problem to retrieve all characterization file types. ", e);
@@ -978,7 +970,7 @@ public class LookupService {
 						type, indentLevel, hasAction);
 				charTypes.add(charType);
 			}
-			
+
 		} catch (Exception e) {
 			logger.error("Problem to retrieve all characterization types. ", e);
 			throw new RuntimeException(
@@ -1012,7 +1004,7 @@ public class LookupService {
 				}
 				datumNames.add(datumName);
 			}
-			
+
 		} catch (Exception e) {
 			logger
 					.error(
@@ -1042,7 +1034,7 @@ public class LookupService {
 				String datumName = obj.toString();
 				datumNames.add(datumName);
 			}
-			
+
 		} catch (Exception e) {
 			logger
 					.error(
@@ -1072,7 +1064,7 @@ public class LookupService {
 				String category = obj.toString();
 				categories.add(category);
 			}
-			
+
 		} catch (Exception e) {
 			logger
 					.error(
@@ -1100,7 +1092,7 @@ public class LookupService {
 			for (Object obj : results) {
 				sources.add((String) obj);
 			}
-			
+
 		} catch (Exception e) {
 			logger
 					.error("Problem to retrieve all Characterization Sources.",

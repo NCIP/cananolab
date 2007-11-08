@@ -7,14 +7,13 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: RemoteNanoparticleGeneralInfoAction.java,v 1.1 2007-11-01 17:30:21 pansu Exp $ */
+/* CVS $Id: RemoteNanoparticleGeneralInfoAction.java,v 1.2 2007-11-08 20:41:34 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.remote.GridNodeBean;
 import gov.nih.nci.calab.service.report.SearchReportService;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
-import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -40,12 +39,12 @@ public class RemoteNanoparticleGeneralInfoAction extends AbstractDispatchAction 
 		String particleName = theForm.getString("particleName");
 		String gridNodeHost = request.getParameter("gridNodeHost");
 		GridNodeBean gridNode = gridNodeMap.get(gridNodeHost);
-		
+
 		InitParticleSetup.getInstance().setRemoteSideParticleMenu(request,
 				particleName, gridNode);
 
 		ActionForward forward = mapping.findForward("success");
-		//force data refresh on the side menu
+		// force data refresh on the side menu
 		request.getSession().setAttribute("newRemoteParticleCreated", "true");
 		return forward;
 	}
@@ -72,7 +71,7 @@ public class RemoteNanoparticleGeneralInfoAction extends AbstractDispatchAction 
 	public boolean loginRequired() {
 		return false;
 	}
-	
+
 	public boolean canUserExecute(UserBean user) throws Exception {
 		return true;
 	}

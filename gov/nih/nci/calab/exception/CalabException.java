@@ -2,13 +2,13 @@ package gov.nih.nci.calab.exception;
 
 /**
  * @author zengje
- *
+ * 
  */
 
 public class CalabException extends Exception {
 
 	private static final long serialVersionUID = 1234567890L;
- 
+
 	/**
 	 * 
 	 */

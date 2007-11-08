@@ -10,7 +10,7 @@ public class Chemotaxis extends ImmunoToxicity {
 
 	public String getImmunotoxiticyType() {
 		return IMMUNE_CELL_FUNCTION_IMMUNOTOXICITY_CHARACTERIZATION;
-		
+
 	}
 
 	public String getClassification() {

@@ -11,12 +11,11 @@ public class Linkage implements java.io.Serializable {
 	private Agent agent;
 
 	public Linkage() {
-		
-		
+
 	}
 
 	public Long getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(Long id) {
@@ -24,7 +23,7 @@ public class Linkage implements java.io.Serializable {
 	}
 
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
 	public void setDescription(String description) {
@@ -32,7 +31,7 @@ public class Linkage implements java.io.Serializable {
 	}
 
 	public Agent getAgent() {
-		return agent;
+		return this.agent;
 	}
 
 	public void setAgent(Agent agent) {

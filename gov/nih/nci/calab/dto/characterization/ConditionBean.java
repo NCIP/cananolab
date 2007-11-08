@@ -23,16 +23,18 @@ public class ConditionBean {
 	public ConditionBean() {
 
 	}
-	
+
 	public ConditionBean(Condition condition) {
 		this.id = condition.getId().toString();
 		this.type = condition.getName();
-		this.value = (condition.getValue()!= null)?StringUtils.convertToString(condition.getValue().getValue()):"";
-		this.unit = (condition.getValue()!= null)?condition.getValue().getUnitOfMeasurement():"";
+		this.value = (condition.getValue() != null) ? StringUtils
+				.convertToString(condition.getValue().getValue()) : "";
+		this.unit = (condition.getValue() != null) ? condition.getValue()
+				.getUnitOfMeasurement() : "";
 	}
 
 	public String getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(String id) {
@@ -40,7 +42,7 @@ public class ConditionBean {
 	}
 
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
 	public void setType(String type) {
@@ -48,7 +50,7 @@ public class ConditionBean {
 	}
 
 	public String getValue() {
-		return value;
+		return this.value;
 	}
 
 	public void setValue(String value) {
@@ -56,7 +58,7 @@ public class ConditionBean {
 	}
 
 	public String getUnit() {
-		return unit;
+		return this.unit;
 	}
 
 	public void setUnit(String unit) {
@@ -68,10 +70,10 @@ public class ConditionBean {
 		if (getId() != null && getId().length() > 0) {
 			tableData.setId(new Long(getId()));
 		}
-		tableData.setName(type);
-		Measurement measurement=new Measurement();
-		measurement.setValue(new Float(value));
-		measurement.setUnitOfMeasurement(unit);
+		tableData.setName(this.type);
+		Measurement measurement = new Measurement();
+		measurement.setValue(new Float(this.value));
+		measurement.setUnitOfMeasurement(this.unit);
 		tableData.setValue(measurement);
 		return tableData;
 	}

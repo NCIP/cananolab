@@ -9,21 +9,21 @@ package gov.nih.nci.calab.dto.common;
  * 
  */
 public class SearchableBean {
-	private String classification="";
+	private String classification = "";
 
-	private String type="";
+	private String type = "";
 
-	private String lowValue="";
+	private String lowValue = "";
 
-	private String highValue="";
+	private String highValue = "";
 
 	public SearchableBean() {
-		
+
 	}
+
 	public SearchableBean(String classification, String type, String lowValue,
 			String highValue) {
-		
-		
+
 		this.classification = classification;
 		this.type = type;
 		this.lowValue = lowValue;
@@ -31,7 +31,7 @@ public class SearchableBean {
 	}
 
 	public String getHighValue() {
-		return highValue;
+		return this.highValue;
 	}
 
 	public void setHighValue(String highValue) {
@@ -39,7 +39,7 @@ public class SearchableBean {
 	}
 
 	public String getLowValue() {
-		return lowValue;
+		return this.lowValue;
 	}
 
 	public void setLowValue(String lowValue) {
@@ -47,7 +47,7 @@ public class SearchableBean {
 	}
 
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
 	public void setType(String type) {
@@ -55,7 +55,7 @@ public class SearchableBean {
 	}
 
 	public String getClassification() {
-		return classification;
+		return this.classification;
 	}
 
 	public void setClassification(String classification) {

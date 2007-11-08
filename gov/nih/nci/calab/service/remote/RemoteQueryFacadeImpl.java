@@ -60,8 +60,8 @@ public class RemoteQueryFacadeImpl implements RemoteQueryFacade {
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			logger.error("error getting public data from CSM database:", e);
-			throw new Exception("error getting public data from CSM database:"
-					, e);
+			throw new Exception("error getting public data from CSM database:",
+					e);
 		} finally {
 			HibernateUtil.closeSession();
 		}

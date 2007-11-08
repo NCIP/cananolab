@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: RemoteSearchNanoparticleAction.java,v 1.1 2007-11-01 17:30:21 pansu Exp $ */
+/* CVS $Id: RemoteSearchNanoparticleAction.java,v 1.2 2007-11-08 20:41:34 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
@@ -15,7 +15,6 @@ import gov.nih.nci.calab.service.remote.GridSearchService;
 import gov.nih.nci.calab.service.remote.GridService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
-import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
 import java.net.MalformedURLException;
 import java.rmi.RemoteException;

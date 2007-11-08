@@ -14,17 +14,15 @@ public class Solubility extends Characterization {
 	private Boolean isSoluble;
 
 	public Solubility() {
-		
-		
+
 	}
 
 	public String getName() {
 		return PHYSICAL_SOLUBILITY;
 	}
 
-
 	public Measurement getCriticalConcentration() {
-		return criticalConcentration;
+		return this.criticalConcentration;
 	}
 
 	public void setCriticalConcentration(Measurement criticalConcentration) {
@@ -32,7 +30,7 @@ public class Solubility extends Characterization {
 	}
 
 	public Boolean getIsSoluble() {
-		return isSoluble;
+		return this.isSoluble;
 	}
 
 	public void setIsSoluble(Boolean isSoluble) {
@@ -40,7 +38,7 @@ public class Solubility extends Characterization {
 	}
 
 	public String getSolvent() {
-		return solvent;
+		return this.solvent;
 	}
 
 	public void setSolvent(String solvent) {

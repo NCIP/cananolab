@@ -28,8 +28,8 @@ public class LoginAction extends AbstractBaseAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 
-		ActionForward forward = null;		
-		//logout first
+		ActionForward forward = null;
+		// logout first
 		HttpSession session = request.getSession();
 		if (!session.isNew()) {
 			// invalidate the old one
@@ -59,8 +59,8 @@ public class LoginAction extends AbstractBaseAction {
 				msgs.add("message", msg);
 				saveMessages(request, msgs);
 				return mapping.findForward("changePassword");
-			}			
-			session = request.getSession();			
+			}
+			session = request.getSession();
 			setUserSessionInfo(session, strLoginId);
 
 			forward = mapping.findForward("success");
@@ -79,12 +79,12 @@ public class LoginAction extends AbstractBaseAction {
 		boolean createSample = userService.checkCreatePermission(user,
 				CaNanoLabConstants.CSM_PG_SAMPLE);
 		session.setAttribute("canCreateSample", createSample);
-		boolean isAdmin=userService.isAdmin(user.getLoginName());
+		boolean isAdmin = userService.isAdmin(user.getLoginName());
 		session.setAttribute("isAdmin", isAdmin);
-		
+
 		boolean canDelete = userService.checkDeletePermission(user,
 				CaNanoLabConstants.CSM_PG_PARTICLE);
-		if (canDelete&&isAdmin) {
+		if (canDelete && isAdmin) {
 			session.setAttribute("canUserDeleteChars", "true");
 		} else {
 			session.setAttribute("canUserDeleteChars", "false");
@@ -95,8 +95,7 @@ public class LoginAction extends AbstractBaseAction {
 		return false;
 	}
 
-	/* overwrite parent */
-	public boolean canUserExecute() {
+	public boolean canUserExecute(UserBean user) {
 		return true;
 	}
 

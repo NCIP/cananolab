@@ -27,7 +27,7 @@ import org.hibernate.Session;
  */
 
 /*
- * CVS $Id: SubmitProtocolService.java,v 1.2 2007-11-07 21:22:20 pansu Exp $
+ * CVS $Id: SubmitProtocolService.java,v 1.3 2007-11-08 20:41:35 pansu Exp $
  */
 
 public class SubmitProtocolService {
@@ -37,7 +37,7 @@ public class SubmitProtocolService {
 	private UserService userService;
 
 	public SubmitProtocolService() throws Exception {
-		userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
+		this.userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
 	}
 
 	/**
@@ -176,7 +176,7 @@ public class SubmitProtocolService {
 			HibernateUtil.closeSession();
 		}
 
-		userService.setVisiblity(dataFile.getId().toString(), fileBean
+		this.userService.setVisiblity(dataFile.getId().toString(), fileBean
 				.getVisibilityGroups());
 
 	}
@@ -244,7 +244,7 @@ public class SubmitProtocolService {
 			HibernateUtil.closeSession();
 		}
 
-		userService.setVisiblity(fileBean.getId().toString(), fileBean
+		this.userService.setVisiblity(fileBean.getId().toString(), fileBean
 				.getVisibilityGroups());
 
 	}

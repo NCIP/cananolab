@@ -15,7 +15,8 @@ public class ReportDecorator extends TableDecorator {
 	public SortableName getEditReportURL() throws Exception {
 		LabFileBean file = (LabFileBean) getCurrentRowObject();
 		// replace space with special char
-		String fileInstanceType = URLEncoder.encode(file.getInstanceType(), "UTF-8");
+		String fileInstanceType = URLEncoder.encode(file.getInstanceType(),
+				"UTF-8");
 		String fileId = file.getId();
 		String editReportURL = "updateReport.do?submitType=none&page=0&dispatch=setupUpdate&fileType="
 				+ fileInstanceType + "&fileId=" + fileId;
@@ -28,7 +29,8 @@ public class ReportDecorator extends TableDecorator {
 	public SortableName getViewReportURL() throws Exception {
 		LabFileBean file = (LabFileBean) getCurrentRowObject();
 		// replace space with special char
-		String fileInstanceType = URLEncoder.encode(file.getInstanceType(), "UTF-8");
+		String fileInstanceType = URLEncoder.encode(file.getInstanceType(),
+				"UTF-8");
 		String fileId = file.getId();
 		String editReportURL = "updateReport.do?submitType=none&page=0&dispatch=setupView&fileType="
 				+ fileInstanceType + "&fileId=" + fileId;
@@ -38,13 +40,18 @@ public class ReportDecorator extends TableDecorator {
 		return sortableLink;
 	}
 
-public SortableName getRemoteDownloadURL() throws Exception{
+	public SortableName getRemoteDownloadURL() throws Exception {
 		LabFileBean file = (LabFileBean) getCurrentRowObject();
-		String gridNode=URLEncoder.encode(file.getGridNode(), "UTF-8");
-		String fileName=URLEncoder.encode(file.getName(), "UTF-8");
-		String downloadURL = "remoteSearchReport.do?dispatch=download&gridNodeHost="+gridNode+"&fileId="
-				+ file.getId() + "&fileName=" + fileName;
+		String gridNode = URLEncoder.encode(file.getGridNode(), "UTF-8");
+		String fileName = URLEncoder.encode(file.getName(), "UTF-8");
+		String downloadURL = "remoteSearchReport.do?dispatch=download&gridNodeHost="
+				+ gridNode
+				+ "&fileId="
+				+ file.getId()
+				+ "&fileName="
+				+ fileName;
 		String link = "<a href=" + downloadURL + ">" + file.getTitle() + "</a>";
 		SortableName sortableLink = new SortableName(file.getTitle(), link);
 		return sortableLink;
-	}}
+	}
+}
