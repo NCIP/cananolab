@@ -16,6 +16,7 @@ import gov.nih.nci.calab.dto.characterization.physical.ShapeBean;
 import gov.nih.nci.calab.dto.characterization.physical.SolubilityBean;
 import gov.nih.nci.calab.dto.characterization.physical.SurfaceBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
+import gov.nih.nci.calab.dto.common.ProtocolFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.common.FileService;
@@ -253,10 +254,11 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		InitParticleSetup.getInstance().setAllDerivedDataFileTypes(session);
 		InitParticleSetup.getInstance().setAllPhysicalDropdowns(session);
 		InitParticleSetup.getInstance().setAllInvitroDropdowns(session);
-		InitParticleSetup.getInstance().setAllCharacterizationMeasureUnitsTypes(
-				session, charName);
-		InitProtocolSetup.getInstance().setProtocolFilesBySubmitType(session, submitType);
-		
+		InitParticleSetup.getInstance()
+				.setAllCharacterizationMeasureUnitsTypes(session, charName);
+		InitProtocolSetup.getInstance().setProtocolFilesBySubmitType(session,
+				submitType);
+
 		// set up other particle names from the same source
 		LookupService service = new LookupService();
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
@@ -266,7 +268,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		session.setAttribute("allOtherParticleNames", allOtherParticleNames);
 
 		InitParticleSetup.getInstance().setDerivedDatumNames(session, charName);
-		InitParticleSetup.getInstance().setAllCharacterizationDropdowns(session);
+		InitParticleSetup.getInstance()
+				.setAllCharacterizationDropdowns(session);
 	}
 
 	/**
@@ -387,6 +390,22 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 				fileBean.setHidden(true);
 			}
 		}
+
+		// set up protocol file visibility
+		ProtocolFileBean protocolFileBean = charBean.getProtocolFileBean();
+		if (protocolFileBean != null) {
+			boolean status = false;
+			if (protocolFileBean.getId() != null) {
+				status = userService.checkReadPermission(user, protocolFileBean
+						.getId());
+			}
+			if (status) {
+				protocolFileBean.setHidden(false);
+			} else {
+				protocolFileBean.setHidden(true);
+			}
+		}
+
 		return mapping.findForward("setup");
 	}
 
