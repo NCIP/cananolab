@@ -4,19 +4,18 @@
        "http://struts.apache.org/dtds/tiles-config_1_1.dtd">
 <tiles-definitions>
 	<definition name="sample.message" extends="calab.home">
-		<put name="calabContent"
-			value="/bodyMessage.jsp?bundle=sample" />
+		<put name="calabContent" value="/bodyMessage.jsp?bundle=sample" />
 		<put name="menu" value="samples" />
 	</definition>
 
 	<!-- definition for the manage sample page -->
-	<definition name="sample.managesample" extends="calab.home">
+	<definition name="sample.manageSample" extends="calab.home">
 		<put name="calabContent" value="/sample/bodyManageSample.jsp" />
 		<put name="menu" value="samples" />
 	</definition>
 
 	<!-- definition for the manage aliquot page -->
-	<definition name="sample.managealiquot" extends="calab.home">
+	<definition name="sample.manageAliquot" extends="calab.home">
 		<put name="calabContent" value="/bodyManageItem.jsp" />
 		<put name="menu" value="samples" />
 		<put name="item" value="Aliquot" />
@@ -26,21 +25,19 @@
 	</definition>
 
 	<!-- definition for the create sample page -->
-	<definition name="sample.createsample" extends="calab.home">
+	<definition name="sample.createSample" extends="calab.home">
 		<put name="calabContent" value="/sample/bodyCreateSample.jsp" />
 		<put name="menu" value="samples" />
 	</definition>
-	<definition name="sample.sampledetails" extends="calab.home">
+
+	<!-- definition for the view sample details page -->
+	<definition name="sample.viewSampleDetails" extends="calab.home">
 		<put name="calabContent" value="/sample/bodySampleDetails.jsp" />
-		<put name="menu" value="samples" />
-	</definition>
-	<definition name="sample.message" extends="calab.home">
-		<put name="calabContent" value="/bodyMessage.jsp?bundle=sample" />
 		<put name="menu" value="samples" />
 	</definition>
 
 	<!-- definition for the create aliquot page -->
-	<definition name="sample.createaliquot" extends="calab.home">
+	<definition name="sample.createAliquot" extends="calab.home">
 		<put name="calabContent" value="/sample/bodyCreateAliquot.jsp" />
 		<put name="menu" value="samples" />
 	</definition>
@@ -48,54 +45,43 @@
 		<put name="calabContent" value="/sample/bodyAliquotDetails.jsp" />
 		<put name="menu" value="samples" />
 	</definition>
-	<definition name="sample.createaliquotresult" extends="calab.home">
+	<definition name="sample.createAliquotresult" extends="calab.home">
 		<put name="calabContent" value="/sample/bodyCreateAliquotResult.jsp" />
 		<put name="menu" value="samples" />
 	</definition>
 
 	<!-- definition for the edit aliquot page -->
-	<definition name="sample.editaliquot" extends="calab.home">
+	<definition name="sample.editAliquot" extends="calab.home">
 		<put name="calabContent" value="/sample/bodyEditAliquot.jsp" />
 		<put name="menu" value="samples" />
 	</definition>
-	<definition name="sample.createassay" extends="calab.home">
-		<put name="calabContent" value="/sample/bodyCreateAssay.jsp" />
-		<put name="menu" value="samples" />
-	</definition>
-
 
 	<!-- definition for the search sample page -->
-	<definition name="sample.searchsample" extends="calab.home">
+	<definition name="sample.searchSample" extends="calab.home">
 		<put name="calabContent" value="/sample/bodySearchSample.jsp" />
 		<put name="menu" value="samples" />
 	</definition>
 
 	<!-- definition for the search aliquot page -->
-	<definition name="sample.searchaliquot" extends="calab.home">
+	<definition name="sample.searchAliquot" extends="calab.home">
 		<put name="calabContent" value="/sample/bodySearchAliquot.jsp" />
 		<put name="menu" value="samples" />
 	</definition>
 
 	<!-- definition for the search sample result page -->
-	<definition name="sample.searchsampleresult" extends="calab.home">
+	<definition name="sample.searchSampleResult" extends="calab.home">
 		<put name="calabContent" value="/sample/bodySearchSampleResult.jsp" />
 		<put name="menu" value="samples" />
 	</definition>
 
 	<!-- definition for the search aliquot result page -->
-	<definition name="sample.searchaliquotresult" extends="calab.home">
+	<definition name="sample.searchAliquotResult" extends="calab.home">
 		<put name="calabContent" value="/sample/bodySearchAliquotResult.jsp" />
 		<put name="menu" value="samples" />
 	</definition>
 
 	<!-- definition for the view sample details page -->
-	<definition name="sample.viewsampledetails" extends="calab.home">
-		<put name="calabContent" value="/sample/bodySampleDetails.jsp" />
-		<put name="menu" value="samples" />
-	</definition>
-
-	<!-- definition for the view sample details page -->
-	<definition name="sample.viewaliquotdetails" extends="calab.home">
+	<definition name="sample.viewAliquotDetails" extends="calab.home">
 		<put name="calabContent" value="/sample/bodyAliquotDetails.jsp" />
 		<put name="menu" value="samples" />
 	</definition>

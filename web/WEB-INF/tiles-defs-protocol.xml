@@ -4,7 +4,7 @@
        "http://struts.apache.org/dtds/tiles-config_1_1.dtd">
 <tiles-definitions>
 	<!-- definition for the manage protocol page -->
-	<definition name="protocol.manageprotocol" extends="calab.home">
+	<definition name="protocol.manageProtocol" extends="calab.home">
 		<put name="calabContent" value="/bodyManageItem.jsp" />
 		<put name="menu" value="protocols" />
 		<put name="item" value="Protocol" />
@@ -17,7 +17,7 @@
 	</definition>
 
 	<!-- definition for the submit protocol page -->
-	<definition name="protocol.submitprotocol" extends="calab.home">
+	<definition name="protocol.submitProtocol" extends="calab.home">
 		<put name="calabContent"
 			value="/protocol/bodySubmitProtocol.jsp" />
 		<put name="menu" value="protocols" />
@@ -30,7 +30,7 @@
 	</definition>
 
 	<!-- definition for the submit protocol page -->
-	<definition name="protocol.updateprotocol" extends="calab.home">
+	<definition name="protocol.updateProtocol" extends="calab.home">
 		<put name="calabContent"
 			value="/protocol/bodyViewProtocolFile.jsp" />
 		<put name="menu" value="protocols" />
@@ -38,13 +38,13 @@
 	</definition>
 
 	<!-- definition for the search protocol page -->
-	<definition name="protocol.searchprotocol" extends="calab.home">
+	<definition name="protocol.searchProtocol" extends="calab.home">
 		<put name="calabContent" value="/protocol/bodySearchProtocol.jsp" />
 		<put name="menu" value="protocols" />
 	</definition>
 
 	<!-- definition for the search protocol result page -->
-	<definition name="protocol.searchprotocol.result"
+	<definition name="protocol.searchProtocolResult"
 		extends="calab.home">
 		<put name="calabContent"
 			value="/protocol/bodySearchProtocolResult.jsp" />

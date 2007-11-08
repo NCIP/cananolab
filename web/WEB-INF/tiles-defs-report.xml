@@ -3,14 +3,8 @@
        "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN"
        "http://struts.apache.org/dtds/tiles-config_1_1.dtd">
 <tiles-definitions>
-	<!-- main layout definition for the submit content page inside caNanoLab -->
-	<definition name="report.content.home"
-		path="/layout/submitLayout.jsp">
-		<put name="submitActionMenu" value="/report/submitMenu.jsp" />
-	</definition>
-
 	<!-- definition for the manage nanoparticle page -->
-	<definition name="report.managereport" extends="calab.home">
+	<definition name="report.manageReport" extends="calab.home">
 		<put name="calabContent" value="/bodyManageItem.jsp" />
 		<put name="menu" value="reports" />
 		<put name="item" value="Report" />
@@ -26,68 +20,31 @@
 		<put name="menu" value="reports" />
 	</definition>
 
-	<definition name="report.submitreport" extends="calab.home">
+	<definition name="report.submitReport" extends="calab.home">
 		<put name="calabContent" value="/report/bodySubmitReport.jsp" />
 		<put name="menu" value="reports" />
 	</definition>
-	<definition name="report.action.message.content"
-		extends="report.content.home">
-		<put name="submitActionMenu" value="/report/submitMenu.jsp" />
-		<put name="submitContent"
-			value="/bodyMessage.jsp?bundle=report" />
-	</definition>
-	<definition name="report.action.message" extends="calab.home">
-		<put name="calabContent" value="report.action.message.content" />
-		<put name="calabSidemenu" value="/report/sideParticleMenu.jsp" />
-		<put name="menu" value="reports" />
-	</definition>
 	<!-- definition for the search report page -->
-	<definition name="report.searchreport" extends="calab.home">
+	<definition name="report.searchReport" extends="calab.home">
 		<put name="calabContent" value="/report/bodySearchReport.jsp" />
 		<put name="menu" value="reports" />
 	</definition>
 
+	<definition name="report.viewReport" extends="calab.home">
+		<put name="calabContent" value="/report/bodyViewReportFile.jsp" />
+		<put name="menu" value="reports" />
+		<put name="reportActionName" value="updateReport" />
+	</definition>
+	
 	<!-- definition for the search report result page -->
-	<definition name="report.searchreport.result"
+	<definition name="report.searchReportResult"
 		extends="calab.home">
 		<put name="calabContent"
 			value="/report/bodySearchReportResult.jsp" />
 		<put name="menu" value="reports" />
 	</definition>
 
-	<!-- definition for the view report/associated file page -->
-	<definition name="report.report.view.content"
-		extends="report.content.home">
-		<put name="submitActionMenu" value="/report/submitMenu.jsp" />
-		<put name="submitContent"
-			value="/report/bodyViewReportFile.jsp" />
-	</definition>
-
-	<definition name="report.report.view" extends="calab.home">
-		<put name="calabContent" value="report.report.view.content" />
-		<put name="menu" value="reports" />
-		<put name="reportActionName" value="updateReport" />
-	</definition>
-
-	<!-- definition for the view report/associated file for particle page -->
-	<definition name="report.report.particle.view"
-		extends="calab.home">
-		<put name="calabSidemenu" value="/report/sideParticleMenu.jsp" />
-		<put name="calabContent" value="report.report.view.content" />
-		<put name="menu" value="reports" />
-		<put name="reportActionName" value="updateReportForParticle" />
-	</definition>
-
-	<!-- definition for the multiple characterization deletion page -->
-	<definition name="report.delete.characterization"
-		extends="calab.home">
-		<put name="calabSidemenu" value="/report/sideParticleMenu.jsp" />
-		<put name="calabContent"
-			value="/report/bodyDeleteCharacterizations.jsp" />
-		<put name="menu" value="reports" />
-	</definition>
-
-	<definition name="report.remote.searchreport"
+	<definition name="report.remoteSearchReport"
 		extends="calab.home">
 		<put name="calabContent"
 			value="/report/bodyRemoteSearchReport.jsp" />
@@ -95,7 +52,7 @@
 	</definition>
 
 	<!-- definition for the remote search report result page -->
-	<definition name="report.remote.searchreport.result"
+	<definition name="report.remoteSearchReportResult"
 		extends="calab.home">
 		<put name="calabContent"
 			value="/report/bodyRemoteSearchReportResult.jsp" />
