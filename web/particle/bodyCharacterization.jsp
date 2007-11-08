@@ -39,13 +39,15 @@
 	</c:when>
 </c:choose>
 
+<jsp:include page="submitMenu.jsp" />
+
 <html:form action="/${actionName}">
 	<table width="100%" align="center">
 		<tr>
 			<td>
 				<h4>
 					<br>
-					${pageTitle}
+					${pageTitle} ${charName}
 				</h4>
 			</td>
 			<td align="right" width="15%">
@@ -70,11 +72,12 @@
 
 				<jsp:include
 					page="/particle/shared/bodyCharacterizationInstrument.jsp" />
+				<c:choose>
+					<c:when test="${!empty detailPage}">
 
-				<logic:present name="detailPage">
-					<jsp:include page="${detailPage}" />
-				</logic:present>
-
+						<jsp:include page="${detailPage}" />
+					</c:when>
+				</c:choose>
 				<table class="topBorderOnly" cellspacing="0" cellpadding="3"
 					width="100%" align="center" summary="" border="0">
 					<tbody>
@@ -107,8 +110,8 @@
 												id="derivedBioAssayData" indexId="fileInd">
 												<jsp:include
 													page="/particle/shared/bodyCharacterizationFile.jsp">
-													<jsp:param name="actionName" value="${actionName}"/>
-													<jsp:param name="fileInd" value="${fileInd}"/>
+													<jsp:param name="actionName" value="${actionName}" />
+													<jsp:param name="fileInd" value="${fileInd}" />
 												</jsp:include>
 												<br>
 											</logic:iterate>

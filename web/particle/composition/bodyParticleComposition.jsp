@@ -19,6 +19,7 @@ function confirmDeletion()
 }
 //-->
 </script>
+<jsp:include page="/particle/submitMenu.jsp" />
 <html:form action="/composition">
 	<table width="100%" align="center">
 		<tr>
