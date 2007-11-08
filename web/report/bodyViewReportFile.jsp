@@ -36,7 +36,7 @@
 								<strong>Report File Type</strong>
 							</td>
 							<td class="rightLabel" colspan="3">
-								<bean:write name="submitReportForm" property="file.type" />
+								<bean:write name="submitReportForm" property="file.instanceType" />
 								&nbsp;
 							</td>
 						</tr>
