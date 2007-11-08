@@ -60,25 +60,51 @@
 		<td class="leftLabel">
 			<strong>Protocol Name - Version</strong>
 		</td>
-		<td class="label" colspan="3">
-			<c:choose>
-				<c:when test="${canCreateNanoparticle eq 'true'}">
-					<html:select styleId="protocolId"
-						property="achar.protocolFileBean.id"
-						onchange="retrieveProtocolFile()">
-						<option />
-							<html:options collection="submitTypeProtocolFiles" property="id" labelProperty="displayName"/>
-					</html:select> &nbsp;<span id="protocolLink"><a
-						href="searchProtocol.do?dispatch=download&amp;fileId=${nanoparticleCharacterizationForm.map.achar.protocolFileBean.id}">${nanoparticleCharacterizationForm.map.achar.protocolFileBean.uri}</a>
-					</span>
-				</c:when>
-				<c:otherwise>
-						${nanoparticleCharacterizationForm.map.achar.protocolFileBean.protocolBean.name}&nbsp;
+		<c:choose>
+			<c:when test="${canCreateNanoparticle eq 'true'}">
+				<td class="label" colspan="3">
+					<c:choose>
+						<c:when test="${!empty submitTypeProtocolFiles}">
+							<html:select styleId="protocolId"
+								property="achar.protocolFileBean.id"
+								onchange="retrieveProtocolFile()">
+								<option />
+									<html:options collection="submitTypeProtocolFiles"
+										property="id" labelProperty="displayName" />
+							</html:select> &nbsp;<span id="protocolLink"><a
+								href="searchProtocol.do?dispatch=download&amp;fileId=${nanoparticleCharacterizationForm.map.achar.protocolFileBean.id}">${nanoparticleCharacterizationForm.map.achar.protocolFileBean.uri}</a>
+							</span>
+						</c:when>
+						<c:otherwise>
+						    No protocols available.
+						</c:otherwise>
+					</c:choose>
+				</td>
+			</c:when>
+			<c:otherwise>
+				<td class="label" colspan="3">
+					<c:choose>
+						<c:when
+							test="${empty nanoparticleCharacterizationForm.map.achar.protocolFileBean.id}">
+									No protocol loaded
+						</c:when>
+						<c:otherwise>
+							<c:choose>
+								<c:when
+									test="${nanoparticleCharacterizationForm.map.achar.protocolFileBean.hidden eq 'false'}">
+						${nanoparticleCharacterizationForm.map.achar.protocolFileBean.displayName}&nbsp;
 						<a
-						href="searchProtocol.do?dispatch=download&amp;fileId=${nanoparticleCharacterizationForm.map.achar.protocolFileBean.id}">${nanoparticleCharacterizationForm.map.achar.protocolFileBean.uri}</a>
-				</c:otherwise>
-			</c:choose>
-		</td>
+										href="searchProtocol.do?dispatch=download&amp;fileId=${nanoparticleCharacterizationForm.map.achar.protocolFileBean.id}">${nanoparticleCharacterizationForm.map.achar.protocolFileBean.uri}</a>
+								</c:when>
+								<c:otherwise>
+									The protocol file is private
+								</c:otherwise>
+							</c:choose>
+						</c:otherwise>
+					</c:choose>
+				</td>
+			</c:otherwise>
+		</c:choose>
 	</tr>
 	<tr>
 		<td class="leftLabel" valign="top">

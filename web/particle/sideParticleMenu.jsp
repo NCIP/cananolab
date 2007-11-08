@@ -95,7 +95,7 @@
 								<br>
 								<c:forEach var="aReport" items="${particleReports}">
 									<span class="indented"> <a
-										href="updateReportForParticle.do?page=0&dispatch=${dispatchValue}&submitType=none&fileId=${aReport.id}&fileType=${aReport.type}"
+										href="updateReportForParticle.do?page=0&dispatch=${dispatchValue}&submitType=none&fileId=${aReport.id}&fileType=${aReport.instanceType}"
 										title="${aReport.displayName}">${aReport.name}</a> </span>
 									<br>
 								</c:forEach>
