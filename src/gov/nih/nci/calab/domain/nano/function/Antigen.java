@@ -1,7 +1,7 @@
 package gov.nih.nci.calab.domain.nano.function;
 
 public class Antigen extends AgentTarget {
-	
+
 	private static final long serialVersionUID = 1234567890L;
 
 	private Long id;
@@ -14,7 +14,7 @@ public class Antigen extends AgentTarget {
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -22,7 +22,7 @@ public class Antigen extends AgentTarget {
 	}
 
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
 	public void setDescription(String description) {
@@ -30,7 +30,7 @@ public class Antigen extends AgentTarget {
 	}
 
 	public Long getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(Long id) {

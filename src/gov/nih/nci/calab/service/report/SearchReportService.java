@@ -29,7 +29,7 @@ public class SearchReportService {
 	private UserService userService;
 
 	public SearchReportService() throws Exception {
-		userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
+		this.userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
 
 	}
 
@@ -65,7 +65,7 @@ public class SearchReportService {
 				fileBean.setType(CaNanoLabConstants.REPORT);
 				fileBeans.add(fileBean);
 			}
-			fileBeans = userService.getFilteredFiles(user, fileBeans);
+			fileBeans = this.userService.getFilteredFiles(user, fileBeans);
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			logger.error("Problem finding report info for particle: "
@@ -164,7 +164,7 @@ public class SearchReportService {
 			HibernateUtil.closeSession();
 		}
 
-		List<LabFileBean> filteredReports = userService.getFilteredFiles(user,
+		List<LabFileBean> filteredReports = this.userService.getFilteredFiles(user,
 				reports);
 
 		return filteredReports;
@@ -214,18 +214,17 @@ public class SearchReportService {
 			HibernateUtil.closeSession();
 		}
 
-		List<LabFileBean> filteredReports = userService.getFilteredFiles(user,
+		List<LabFileBean> filteredReports = this.userService.getFilteredFiles(user,
 				fileBeans);
-		
+
 		// retrieve visible groups
 		UserService userService = new UserService(
 				CaNanoLabConstants.CSM_APP_NAME);
 
-		for (LabFileBean fileBean: filteredReports) {
-			List<String> accessibleGroups=userService.getAccessibleGroups(fileBean.getId(),
-							CaNanoLabConstants.CSM_READ_ROLE);
-			String[] visibilityGroups = accessibleGroups
-					.toArray(new String[0]);
+		for (LabFileBean fileBean : filteredReports) {
+			List<String> accessibleGroups = userService.getAccessibleGroups(
+					fileBean.getId(), CaNanoLabConstants.CSM_READ_ROLE);
+			String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
 			fileBean.setVisibilityGroups(visibilityGroups);
 		}
 		return filteredReports;

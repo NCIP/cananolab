@@ -48,7 +48,8 @@ public class InvitroCaspase3ActivationAction extends BaseCharacterizationAction 
 		CharacterizationBean[] otherChars = super.prepareCopy(request, theForm,
 				service);
 		for (CharacterizationBean acharBean : otherChars) {
-			CytotoxicityBean aCytoBean = new CytotoxicityBean(propBean, acharBean);
+			CytotoxicityBean aCytoBean = new CytotoxicityBean(propBean,
+					acharBean);
 			service.addCaspase3Activation(aCytoBean);
 		}
 		super.postCreate(request, theForm);

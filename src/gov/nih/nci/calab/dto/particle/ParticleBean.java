@@ -69,7 +69,7 @@ public class ParticleBean extends SampleBean {
 		for (Keyword keywordObj : keywordCol) {
 			keywordSet.add(keywordObj.getName());
 		}
-		keywords = keywordSet.toArray(new String[0]);
+		this.keywords = keywordSet.toArray(new String[0]);
 
 		Collection<Characterization> characterizationCol = particle
 				.getCharacterizationCollection();
@@ -79,7 +79,7 @@ public class ParticleBean extends SampleBean {
 			charcterizationSet.add(charObj.getClassification() + ":"
 					+ charObj.getName());
 		}
-		characterizations = charcterizationSet.toArray(new String[0]);
+		this.characterizations = charcterizationSet.toArray(new String[0]);
 
 		Collection<Function> functionCol = particle.getFunctionCollection();
 		// get a unique list of function
@@ -87,7 +87,7 @@ public class ParticleBean extends SampleBean {
 		for (Function funcObj : functionCol) {
 			functionTypeSet.add(funcObj.getType());
 		}
-		functionTypes = functionTypeSet.toArray(new String[0]);
+		this.functionTypes = functionTypeSet.toArray(new String[0]);
 	}
 
 	public ParticleBean(Nanoparticle particle, String gridNode) {
@@ -96,7 +96,7 @@ public class ParticleBean extends SampleBean {
 	}
 
 	public String[] getCharacterizations() {
-		return characterizations;
+		return this.characterizations;
 	}
 
 	public void setCharacterizations(String[] characterizations) {
@@ -104,7 +104,7 @@ public class ParticleBean extends SampleBean {
 	}
 
 	public String[] getFunctionTypes() {
-		return functionTypes;
+		return this.functionTypes;
 	}
 
 	public void setFunctionTypes(String[] functionTypes) {
@@ -112,7 +112,7 @@ public class ParticleBean extends SampleBean {
 	}
 
 	public String[] getKeywords() {
-		return keywords;
+		return this.keywords;
 	}
 
 	public void setKeywords(String[] keywords) {
@@ -120,7 +120,7 @@ public class ParticleBean extends SampleBean {
 	}
 
 	public String getParticleClassification() {
-		return particleClassification;
+		return this.particleClassification;
 	}
 
 	public void setParticleClassification(String particleClassification) {
@@ -128,7 +128,7 @@ public class ParticleBean extends SampleBean {
 	}
 
 	public String[] getVisibilityGroups() {
-		return visibilityGroups;
+		return this.visibilityGroups;
 	}
 
 	public void setVisibilityGroups(String[] visibilityGroups) {
@@ -136,7 +136,7 @@ public class ParticleBean extends SampleBean {
 	}
 
 	public String getGridNode() {
-		return gridNode;
+		return this.gridNode;
 	}
 
 	public void setGridNode(String gridNode) {

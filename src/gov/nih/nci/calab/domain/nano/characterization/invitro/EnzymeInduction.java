@@ -7,7 +7,7 @@ public class EnzymeInduction extends Toxicity {
 	private static final long serialVersionUID = 1234567890L;
 
 	public EnzymeInduction() {
-		
+
 	}
 
 	public String getName() {

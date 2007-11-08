@@ -15,11 +15,11 @@ import java.util.Set;
  * @author pansu
  * 
  */
-/* CVS $Id: ContainerBean.java,v 1.1 2007-11-01 17:31:14 pansu Exp $ */
+/* CVS $Id: ContainerBean.java,v 1.2 2007-11-08 20:41:35 pansu Exp $ */
 
 public class ContainerBean {
-	private String containerId="";
-	
+	private String containerId = "";
+
 	private String containerName = "";
 
 	private String containerType = "";
@@ -43,13 +43,13 @@ public class ContainerBean {
 	private String storageCondition = "";
 
 	private StorageLocation storageLocation;
-	
+
 	private String containerComments = "";
 
-	private SampleBean sample;	
+	private SampleBean sample;
 
 	public SampleBean getSample() {
-		return sample;
+		return this.sample;
 	}
 
 	public void setSample(SampleBean sample) {
@@ -57,32 +57,31 @@ public class ContainerBean {
 	}
 
 	public ContainerBean() {
-		storageLocation = new StorageLocation();
+		this.storageLocation = new StorageLocation();
 	}
 
 	public ContainerBean(ContainerBean container) {
-		containerName = container.getContainerName();
-		containerType = container.getContainerType();
-		quantity = container.getQuantity();
-		quantityUnit =container.getQuantityUnit();
-		concentration = container.getConcentration();
-		concentrationUnit =container.getConcentrationUnit();
-		volume = container.getVolume();
-		volumeUnit = container.getVolumeUnit();
-		solvent = container.getSolvent();
-		safetyPrecaution = container.getSafetyPrecaution();
-		storageCondition = container.getStorageCondition();
-		storageLocation=new StorageLocation(container.getStorageLocation());
-		containerComments = container.getContainerComments();
+		this.containerName = container.getContainerName();
+		this.containerType = container.getContainerType();
+		this.quantity = container.getQuantity();
+		this.quantityUnit = container.getQuantityUnit();
+		this.concentration = container.getConcentration();
+		this.concentrationUnit = container.getConcentrationUnit();
+		this.volume = container.getVolume();
+		this.volumeUnit = container.getVolumeUnit();
+		this.solvent = container.getSolvent();
+		this.safetyPrecaution = container.getSafetyPrecaution();
+		this.storageCondition = container.getStorageCondition();
+		this.storageLocation = new StorageLocation(container.getStorageLocation());
+		this.containerComments = container.getContainerComments();
 	}
 
-	public ContainerBean(String containerType, 
-			String quantity, String quantityUnit, String concentration,
+	public ContainerBean(String containerType, String quantity,
+			String quantityUnit, String concentration,
 			String concentrationUnit, String volume, String volumeUnit,
 			String solvent, String safetyPrecaution, String storageCondition,
 			StorageLocation storageLocation, String containerComments) {
-		
-		
+
 		this.containerType = containerType;
 		this.quantity = quantity;
 		this.quantityUnit = quantityUnit;
@@ -98,7 +97,7 @@ public class ContainerBean {
 	}
 
 	public ContainerBean(SampleContainer container) {
-		this.containerId=StringUtils.convertToString(container.getId());
+		this.containerId = StringUtils.convertToString(container.getId());
 		this.containerName = StringUtils.convertToString(container.getName());
 		this.containerType = StringUtils.convertToString(container
 				.getContainerType());
@@ -129,8 +128,8 @@ public class ContainerBean {
 				String location = element.getLocation();
 				if (element.getType().equals(CaNanoLabConstants.STORAGE_LAB)) {
 					lab = location;
-				} else if (element.getType()
-						.equals(CaNanoLabConstants.STORAGE_ROOM)) {
+				} else if (element.getType().equals(
+						CaNanoLabConstants.STORAGE_ROOM)) {
 					room = location;
 				} else if (element.getType().equals(
 						CaNanoLabConstants.STORAGE_FREEZER)) {
@@ -138,10 +137,11 @@ public class ContainerBean {
 				} else if (element.getType().equals(
 						CaNanoLabConstants.STORAGE_SHELF)) {
 					shelf = location;
-				} else if (element.getType()
-						.equals(CaNanoLabConstants.STORAGE_RACK)) {
+				} else if (element.getType().equals(
+						CaNanoLabConstants.STORAGE_RACK)) {
 					rack = location;
-				} else if (element.getType().equals(CaNanoLabConstants.STORAGE_BOX)) {
+				} else if (element.getType().equals(
+						CaNanoLabConstants.STORAGE_BOX)) {
 					box = location;
 				}
 			}
@@ -151,7 +151,7 @@ public class ContainerBean {
 	}
 
 	public String getConcentration() {
-		return concentration;
+		return this.concentration;
 	}
 
 	public void setConcentration(String concentration) {
@@ -159,7 +159,7 @@ public class ContainerBean {
 	}
 
 	public String getConcentrationUnit() {
-		return concentrationUnit;
+		return this.concentrationUnit;
 	}
 
 	public void setConcentrationUnit(String concentrationUnit) {
@@ -167,7 +167,7 @@ public class ContainerBean {
 	}
 
 	public String getContainerComments() {
-		return containerComments;
+		return this.containerComments;
 	}
 
 	public void setContainerComments(String containerComments) {
@@ -175,7 +175,7 @@ public class ContainerBean {
 	}
 
 	public String getContainerType() {
-		return containerType;
+		return this.containerType;
 	}
 
 	public void setContainerType(String containerType) {
@@ -183,7 +183,7 @@ public class ContainerBean {
 	}
 
 	public String getQuantity() {
-		return quantity;
+		return this.quantity;
 	}
 
 	public void setQuantity(String quantity) {
@@ -191,7 +191,7 @@ public class ContainerBean {
 	}
 
 	public String getQuantityUnit() {
-		return quantityUnit;
+		return this.quantityUnit;
 	}
 
 	public void setQuantityUnit(String quantityUnit) {
@@ -199,7 +199,7 @@ public class ContainerBean {
 	}
 
 	public String getSafetyPrecaution() {
-		return safetyPrecaution;
+		return this.safetyPrecaution;
 	}
 
 	public void setSafetyPrecaution(String safetyPrecaution) {
@@ -207,7 +207,7 @@ public class ContainerBean {
 	}
 
 	public String getSolvent() {
-		return solvent;
+		return this.solvent;
 	}
 
 	public void setSolvent(String solvent) {
@@ -215,7 +215,7 @@ public class ContainerBean {
 	}
 
 	public String getStorageCondition() {
-		return storageCondition;
+		return this.storageCondition;
 	}
 
 	public void setStorageCondition(String storageCondition) {
@@ -223,7 +223,7 @@ public class ContainerBean {
 	}
 
 	public String getVolume() {
-		return volume;
+		return this.volume;
 	}
 
 	public void setVolume(String volume) {
@@ -231,7 +231,7 @@ public class ContainerBean {
 	}
 
 	public String getVolumeUnit() {
-		return volumeUnit;
+		return this.volumeUnit;
 	}
 
 	public void setVolumeUnit(String volumeUnit) {
@@ -239,7 +239,7 @@ public class ContainerBean {
 	}
 
 	public StorageLocation getStorageLocation() {
-		return storageLocation;
+		return this.storageLocation;
 	}
 
 	public void setStorageLocation(StorageLocation storageLocation) {
@@ -247,19 +247,19 @@ public class ContainerBean {
 	}
 
 	public String getContainerName() {
-		return containerName;
+		return this.containerName;
 	}
 
 	public void setContainerName(String containerName) {
 		this.containerName = containerName;
 	}
-	
-	//used for display tag
+
+	// used for display tag
 	public SortableName getSortableName() {
-		return new SortableName(containerName);
+		return new SortableName(this.containerName);
 	}
 
 	public String getContainerId() {
-		return containerId;
+		return this.containerId;
 	}
 }

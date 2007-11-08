@@ -6,14 +6,13 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSurfaceAction.java,v 1.1 2007-11-01 17:30:21 pansu Exp $ */
+/* CVS $Id: NanoparticleSurfaceAction.java,v 1.2 2007-11-08 20:41:34 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.physical.SurfaceBean;
 import gov.nih.nci.calab.dto.characterization.physical.SurfaceChemistryBean;
 import gov.nih.nci.calab.service.particle.SubmitNanoparticleService;
 import gov.nih.nci.calab.ui.core.BaseCharacterizationAction;
-import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +76,7 @@ public class NanoparticleSurfaceAction extends BaseCharacterizationAction {
 		int origNum = (origChemistries == null) ? 0 : origChemistries.size();
 		List<SurfaceChemistryBean> chems = new ArrayList<SurfaceChemistryBean>();
 		for (int i = 0; i < origNum; i++) {
-			chems.add((SurfaceChemistryBean) origChemistries.get(i));
+			chems.add(origChemistries.get(i));
 		}
 		// add a new one
 		chems.add(new SurfaceChemistryBean());
@@ -88,11 +87,11 @@ public class NanoparticleSurfaceAction extends BaseCharacterizationAction {
 				particleName, particleType);
 		return input(mapping, form, request, response);
 	}
-	
-	public ActionForward removeSurfaceChemistry(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		String indexStr = (String) request.getParameter("chemInd");
+
+	public ActionForward removeSurfaceChemistry(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String indexStr = request.getParameter("chemInd");
 		int chemInd = Integer.parseInt(indexStr);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		SurfaceBean surface = (SurfaceBean) theForm.get("surface");
@@ -102,7 +101,7 @@ public class NanoparticleSurfaceAction extends BaseCharacterizationAction {
 		int origNum = (origChemistries == null) ? 0 : origChemistries.size();
 		List<SurfaceChemistryBean> chems = new ArrayList<SurfaceChemistryBean>();
 		for (int i = 0; i < origNum; i++) {
-			chems.add((SurfaceChemistryBean) origChemistries.get(i));
+			chems.add(origChemistries.get(i));
 		}
 		// remove the one at the index
 		if (origNum > 0) {

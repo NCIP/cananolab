@@ -42,8 +42,9 @@ public class InvitroComplementActivationAction extends
 		CharacterizationBean charBean = super.prepareCreate(request, theForm);
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addComplementActivation(charBean);
-		CharacterizationBean[] otherChars=super.prepareCopy(request, theForm, service);
-		for (CharacterizationBean acharBean: otherChars) {
+		CharacterizationBean[] otherChars = super.prepareCopy(request, theForm,
+				service);
+		for (CharacterizationBean acharBean : otherChars) {
 			service.addComplementActivation(acharBean);
 		}
 		super.postCreate(request, theForm);

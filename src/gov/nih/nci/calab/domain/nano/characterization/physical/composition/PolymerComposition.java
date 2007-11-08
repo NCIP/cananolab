@@ -11,12 +11,11 @@ public class PolymerComposition extends ParticleComposition {
 	private String initiator;
 
 	public PolymerComposition() {
-		
-		
+
 	}
 
 	public Float getCrossLinkDegree() {
-		return crossLinkDegree;
+		return this.crossLinkDegree;
 	}
 
 	public void setCrossLinkDegree(Float crossLinkDegree) {
@@ -24,7 +23,7 @@ public class PolymerComposition extends ParticleComposition {
 	}
 
 	public String getInitiator() {
-		return initiator;
+		return this.initiator;
 	}
 
 	public void setInitiator(String initiator) {
@@ -40,7 +39,7 @@ public class PolymerComposition extends ParticleComposition {
 	}
 
 	public Boolean getCrossLinked() {
-		return crossLinked;
+		return this.crossLinked;
 	}
 
 	public void setCrossLinked(Boolean crossLinked) {

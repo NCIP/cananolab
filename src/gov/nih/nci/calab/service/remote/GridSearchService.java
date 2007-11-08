@@ -260,7 +260,7 @@ public class GridSearchService {
 			if (gridFunctions != null) {
 				for (Function func : gridFunctions) {
 					if (funcTypeFuncs.get(func.getType()) != null) {
-						funcs = (List<FunctionBean>) (funcTypeFuncs.get(func
+						funcs = (funcTypeFuncs.get(func
 								.getType()));
 					} else {
 						funcs = new ArrayList<FunctionBean>();

@@ -14,7 +14,7 @@ import org.apache.log4j.Logger;
  * @author pansu
  * 
  */
-/* CVS $Id: StringUtils.java,v 1.18 2007-08-18 02:05:08 pansu Exp $ */
+/* CVS $Id: StringUtils.java,v 1.19 2007-11-08 20:41:35 pansu Exp $ */
 
 public class StringUtils {
 	private static Logger logger = Logger.getLogger(StringUtils.class);
@@ -250,7 +250,8 @@ public class StringUtils {
 
 	public static void main(String[] args) {
 		try {
-			String dateString = StringUtils.convertDateToString(new Date(), "yyyyMMdd_HH-mm-ss-SSS");			
+			String dateString = StringUtils.convertDateToString(new Date(),
+					"yyyyMMdd_HH-mm-ss-SSS");
 			System.out.println(dateString);
 		} catch (Exception e) {
 			logger.error(e);

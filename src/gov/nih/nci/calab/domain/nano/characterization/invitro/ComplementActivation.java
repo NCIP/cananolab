@@ -7,7 +7,7 @@ import gov.nih.nci.calab.domain.nano.characterization.toxicity.ImmunoToxicity;
 
 /**
  * @author zengje
- *
+ * 
  */
 public class ComplementActivation extends ImmunoToxicity {
 	private static final long serialVersionUID = 1234567890L;

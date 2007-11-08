@@ -11,13 +11,13 @@ import gov.nih.nci.calab.domain.nano.characterization.physical.composition.Quant
  */
 public class QuantumDotBean extends BaseCoreShellCoatingBean {
 	public QuantumDotBean() {
-		
+
 	}
 
 	public QuantumDotBean(QuantumDotComposition doComp) {
 		super(doComp);
 	}
-	
+
 	public QuantumDotComposition getDomainObj() {
 		QuantumDotComposition doComp = new QuantumDotComposition();
 		super.updateDomainObj(doComp);

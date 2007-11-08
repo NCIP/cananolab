@@ -8,12 +8,11 @@ public class UnclassifiedAgentTarget extends AgentTarget {
 	private String description;
 
 	public UnclassifiedAgentTarget() {
-		
-		
+
 	}
 
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
 	public void setDescription(String description) {
@@ -21,7 +20,7 @@ public class UnclassifiedAgentTarget extends AgentTarget {
 	}
 
 	public Long getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(Long id) {

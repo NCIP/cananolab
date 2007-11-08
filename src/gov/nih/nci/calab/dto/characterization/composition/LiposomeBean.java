@@ -16,18 +16,18 @@ public class LiposomeBean extends CompositionBean {
 	private String polymerName;
 
 	public LiposomeBean() {
-		
+
 	}
 
 	public LiposomeBean(LiposomeComposition liposome) {
 		super(liposome);
 		this.polymerized = (liposome.getPolymerized()) ? CaNanoLabConstants.BOOLEAN_YES
 				: CaNanoLabConstants.BOOLEAN_NO;
-		this.polymerName = liposome.getPolymerName();		
+		this.polymerName = liposome.getPolymerName();
 	}
 
 	public String getPolymerized() {
-		return polymerized;
+		return this.polymerized;
 	}
 
 	public void setPolymerized(String polymerized) {
@@ -35,16 +35,17 @@ public class LiposomeBean extends CompositionBean {
 	}
 
 	public String getPolymerName() {
-		return polymerName;
+		return this.polymerName;
 	}
 
 	public LiposomeComposition getDomainObj() {
 		LiposomeComposition doComp = new LiposomeComposition();
 		super.updateDomainObj(doComp);
-		boolean polymerizedStatus = (polymerized.equalsIgnoreCase(CaNanoLabConstants.BOOLEAN_YES)) ? true
+		boolean polymerizedStatus = (this.polymerized
+				.equalsIgnoreCase(CaNanoLabConstants.BOOLEAN_YES)) ? true
 				: false;
 		doComp.setPolymerized(polymerizedStatus);
-		doComp.setPolymerName(polymerName);
+		doComp.setPolymerName(this.polymerName);
 		return doComp;
 	}
 

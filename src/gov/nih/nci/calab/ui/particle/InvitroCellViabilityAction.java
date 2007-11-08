@@ -45,14 +45,16 @@ public class InvitroCellViabilityAction extends BaseCharacterizationAction {
 		CytotoxicityBean cytoBean = new CytotoxicityBean(propBean, charBean);
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.addCellViability(cytoBean);
-		CharacterizationBean[] otherChars=super.prepareCopy(request, theForm, service);
-		for (CharacterizationBean acharBean: otherChars) {
-			CytotoxicityBean aCytoBean = new CytotoxicityBean(propBean, acharBean);
+		CharacterizationBean[] otherChars = super.prepareCopy(request, theForm,
+				service);
+		for (CharacterizationBean acharBean : otherChars) {
+			CytotoxicityBean aCytoBean = new CytotoxicityBean(propBean,
+					acharBean);
 			service.addCellViability(aCytoBean);
 		}
 		super.postCreate(request, theForm);
 		request.getSession().setAttribute("newCytoCreated", "true");
-		
+
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.addInvitroCellViability");
 		msgs.add("message", msg);

@@ -11,14 +11,14 @@ public class CharacterizationTypeBean {
 
 	public CharacterizationTypeBean(String type, int indentLevel,
 			boolean hasAction) {
-		
+
 		this.type = type;
 		this.indentLevel = indentLevel;
 		this.hasAction = hasAction;
 	}
 
 	public boolean isHasCharNode() {
-		return hasAction;
+		return this.hasAction;
 	}
 
 	public void setHasCharNode(boolean hasAction) {
@@ -26,7 +26,7 @@ public class CharacterizationTypeBean {
 	}
 
 	public int getIndentLevel() {
-		return indentLevel;
+		return this.indentLevel;
 	}
 
 	public void setIndentLevel(int indentLevel) {
@@ -34,7 +34,7 @@ public class CharacterizationTypeBean {
 	}
 
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
 	public void setType(String type) {
@@ -42,7 +42,7 @@ public class CharacterizationTypeBean {
 	}
 
 	public boolean isHasAction() {
-		return hasAction;
+		return this.hasAction;
 	}
 
 	public void setHasAction(boolean hasAction) {

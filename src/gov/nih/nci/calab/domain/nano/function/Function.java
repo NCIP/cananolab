@@ -29,12 +29,11 @@ public class Function implements java.io.Serializable {
 	 * 
 	 */
 	public Function() {
-		
-		
+
 	}
 
 	public String getActivationMethod() {
-		return activationMethod;
+		return this.activationMethod;
 	}
 
 	public void setActivationMethod(String activationMethod) {
@@ -42,7 +41,7 @@ public class Function implements java.io.Serializable {
 	}
 
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
 	public void setType(String type) {
@@ -50,7 +49,7 @@ public class Function implements java.io.Serializable {
 	}
 
 	public Long getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(Long id) {
@@ -58,7 +57,7 @@ public class Function implements java.io.Serializable {
 	}
 
 	public Collection<Linkage> getLinkageCollection() {
-		return linkageCollection;
+		return this.linkageCollection;
 	}
 
 	public void setLinkageCollection(Collection<Linkage> linkageCollection) {
@@ -66,7 +65,7 @@ public class Function implements java.io.Serializable {
 	}
 
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
 	public void setDescription(String description) {
@@ -74,13 +73,13 @@ public class Function implements java.io.Serializable {
 	}
 
 	public String getIdentificationName() {
-		return identificationName;
+		return this.identificationName;
 	}
 
 	public void setIdentificationName(String identificationName) {
 		this.identificationName = identificationName;
 	}
-	
+
 	public boolean equals(Object obj) {
 		boolean eq = false;
 		if (obj instanceof Function) {

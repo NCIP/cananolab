@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.protocol;
  * @author pansu
  */
 
-/* CVS $Id: SearchProtocolAction.java,v 1.2 2007-11-07 21:22:20 pansu Exp $ */
+/* CVS $Id: SearchProtocolAction.java,v 1.3 2007-11-08 20:41:35 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
@@ -49,8 +49,8 @@ public class SearchProtocolAction extends AbstractDispatchAction {
 		String protocolName = (String) theForm.get("protocolName");
 
 		SearchProtocolService searchProtocolService = new SearchProtocolService();
-		List<ProtocolFileBean> protocols = searchProtocolService.searchProtocols(
-				fileTitle, protocolType, protocolName, user);
+		List<ProtocolFileBean> protocols = searchProtocolService
+				.searchProtocols(fileTitle, protocolType, protocolName, user);
 
 		if (protocols != null && !protocols.isEmpty()) {
 			request.getSession().setAttribute("protocols", protocols);
@@ -120,7 +120,7 @@ public class SearchProtocolAction extends AbstractDispatchAction {
 		}
 		return null;
 	}
-	
+
 	public boolean canUserExecute(UserBean user) throws Exception {
 		return true;
 	}

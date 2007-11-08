@@ -14,7 +14,7 @@ public class ImageContrastAgentBean extends BaseAgentBean {
 
 	private String type;
 
-	public ImageContrastAgentBean() {		
+	public ImageContrastAgentBean() {
 	}
 
 	public ImageContrastAgentBean(ImageContrastAgent imageContrastAgent) {
@@ -24,7 +24,7 @@ public class ImageContrastAgentBean extends BaseAgentBean {
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -32,17 +32,18 @@ public class ImageContrastAgentBean extends BaseAgentBean {
 	}
 
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
 	public void setType(String type) {
 		this.type = type;
 	}
 
-	public void updateDomainObj(ImageContrastAgent imageContrastAgent) {		
-		// super has been called in AgentBean level, so no need to call again here.
-//		super.updateDomainObj(imageContrastAgent);
-		imageContrastAgent.setName(name);
-		imageContrastAgent.setType(type);		
+	public void updateDomainObj(ImageContrastAgent imageContrastAgent) {
+		// super has been called in AgentBean level, so no need to call again
+		// here.
+		// super.updateDomainObj(imageContrastAgent);
+		imageContrastAgent.setName(this.name);
+		imageContrastAgent.setType(this.type);
 	}
 }

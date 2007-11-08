@@ -20,10 +20,10 @@ public class InvalidSessionException extends CalabException {
 	}
 
 	public InvalidSessionException(String message, Throwable cause) {
-		super(message, cause);	
+		super(message, cause);
 	}
-	
+
 	public InvalidSessionException(Throwable cause) {
-		super(cause);	
+		super(cause);
 	}
 }

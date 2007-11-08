@@ -13,26 +13,25 @@ import java.util.HashSet;
 public class Nanoparticle extends Sample {
 
 	private static final long serialVersionUID = 1234567890L;
-	
-	private String classification; 
-	
+
+	private String classification;
+
 	private Collection<Keyword> keywordCollection = new HashSet<Keyword>();
-	
+
 	private Collection<Function> functionCollection = new HashSet<Function>();
-	
+
 	private Collection<Characterization> characterizationCollection = new HashSet<Characterization>();
-	
+
 	private Collection<Report> reportCollection = new HashSet<Report>();
-	
+
 	private Collection<AssociatedFile> associatedFileCollection = new HashSet<AssociatedFile>();
-	
+
 	public Nanoparticle() {
-		
-		
+
 	}
 
 	public String getClassification() {
-		return classification;
+		return this.classification;
 	}
 
 	public void setClassification(String classification) {
@@ -40,7 +39,7 @@ public class Nanoparticle extends Sample {
 	}
 
 	public Collection<Function> getFunctionCollection() {
-		return functionCollection;
+		return this.functionCollection;
 	}
 
 	public void setFunctionCollection(Collection<Function> functionCollection) {
@@ -48,7 +47,7 @@ public class Nanoparticle extends Sample {
 	}
 
 	public Collection<Keyword> getKeywordCollection() {
-		return keywordCollection;
+		return this.keywordCollection;
 	}
 
 	public void setKeywordCollection(Collection<Keyword> keywordCollection) {
@@ -56,7 +55,7 @@ public class Nanoparticle extends Sample {
 	}
 
 	public Collection<Characterization> getCharacterizationCollection() {
-		return characterizationCollection;
+		return this.characterizationCollection;
 	}
 
 	public void setCharacterizationCollection(
@@ -65,7 +64,7 @@ public class Nanoparticle extends Sample {
 	}
 
 	public Collection<AssociatedFile> getAssociatedFileCollection() {
-		return associatedFileCollection;
+		return this.associatedFileCollection;
 	}
 
 	public void setAssociatedFileCollection(
@@ -74,12 +73,11 @@ public class Nanoparticle extends Sample {
 	}
 
 	public Collection<Report> getReportCollection() {
-		return reportCollection;
+		return this.reportCollection;
 	}
 
 	public void setReportCollection(Collection<Report> reportCollection) {
 		this.reportCollection = reportCollection;
 	}
-	
-	
+
 }

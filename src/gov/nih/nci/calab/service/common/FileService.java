@@ -56,19 +56,19 @@ public class FileService {
 			while ((numRead = in.read(bytes)) > 0) {
 				out.write(bytes, 0, numRead);
 			}
-			out.close();			
+			out.close();
 		} catch (HibernateException e) {
-			logger.error("error getting file meta data from the database.", e);
+			this.logger.error("error getting file meta data from the database.", e);
 			throw new Exception(
-					"error getting file meta data from the database:" , e);
+					"error getting file meta data from the database:", e);
 		} catch (IOException e) {
-			logger
+			this.logger
 					.error(
 							"Error getting file content from the file system and writing to the output stream",
 							e);
 			throw new Exception(
-					"error getting file content from the file system and writing to the output stream:"
-							, e);
+					"error getting file content from the file system and writing to the output stream:",
+					e);
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -128,20 +128,20 @@ public class FileService {
 
 			// Close the input stream and return bytes
 			is.close();
-			
+
 			return fileData;
 		} catch (SQLException e) {
-			logger.error("Error getting file meta data from the database", e);
+			this.logger.error("Error getting file meta data from the database", e);
 			throw new Exception(
-					"error getting file meta data from the database:" , e);
+					"error getting file meta data from the database:", e);
 		} catch (IOException e) {
-			logger
+			this.logger
 					.error(
 							"Error getting file content from the file system and writing to the output stream",
 							e);
 			throw new Exception(
-					"error getting file content from the file system and writing to the output stream:"
-							, e);
+					"error getting file content from the file system and writing to the output stream:",
+					e);
 		} finally {
 			HibernateUtil.closeSession();
 		}

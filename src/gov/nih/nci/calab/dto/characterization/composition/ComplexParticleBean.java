@@ -12,13 +12,13 @@ import gov.nih.nci.calab.domain.nano.characterization.physical.composition.Compl
 public class ComplexParticleBean extends CompositionBean {
 
 	public ComplexParticleBean() {
-		
+
 	}
 
 	public ComplexParticleBean(ComplexComposition complex) {
 		super(complex);
 	}
-	
+
 	public ComplexComposition getDomainObj() {
 		ComplexComposition doComp = new ComplexComposition();
 		super.updateDomainObj(doComp);

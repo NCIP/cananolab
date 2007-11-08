@@ -16,16 +16,16 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: BaseExceptionHandler.java,v 1.2 2007-08-17 19:08:07 pansu Exp $ */
+/* CVS $Id: BaseExceptionHandler.java,v 1.3 2007-11-08 20:41:35 pansu Exp $ */
 
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ExceptionHandler;
 
 public class BaseExceptionHandler extends ExceptionHandler {
 	private static Logger logger = Logger.getLogger(BaseExceptionHandler.class);
-	
-	//overwrite the default logException method to log exception as errors
+
+	// overwrite the default logException method to log exception as errors
 	protected void logException(Exception ex) {
-        logger.error(ex.getMessage(), ex);
-    }
+		logger.error(ex.getMessage(), ex);
+	}
 }

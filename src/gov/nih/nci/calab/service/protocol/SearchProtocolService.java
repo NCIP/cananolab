@@ -33,7 +33,7 @@ public class SearchProtocolService {
 	private UserService userService;
 
 	public SearchProtocolService() throws Exception {
-		userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
+		this.userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
 	}
 
 	public ProtocolFileBean getProtocolFileBean(String fileId) throws Exception {
@@ -69,7 +69,7 @@ public class SearchProtocolService {
 		return pfb;
 	}
 
-	//used for Ajax
+	// used for Ajax
 	public List<ProtocolFileBean> getProtocolFileBeans(String protocolName,
 			String protocolType) throws Exception {
 		if (protocolName == null || protocolName.length() == 0
@@ -112,7 +112,7 @@ public class SearchProtocolService {
 		return files;
 	}
 
-	//used for Ajax
+	// used for Ajax
 	public List<ProtocolBean> getProtocolBeans(String protocolType)
 			throws Exception {
 		if (protocolType == null || protocolType.length() == 0) {
@@ -133,10 +133,7 @@ public class SearchProtocolService {
 			}
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
-			logger
-					.error(
-							"Problem finding protocols base on protocol type.",
-							e);
+			logger.error("Problem finding protocols base on protocol type.", e);
 			throw e;
 		} finally {
 			HibernateUtil.closeSession();
@@ -237,7 +234,7 @@ public class SearchProtocolService {
 		if (protocolFiles.isEmpty())
 			return protocols;
 
-		List<LabFileBean> filteredProtocols = userService.getFilteredFiles(
+		List<LabFileBean> filteredProtocols = this.userService.getFilteredFiles(
 				user, protocolFiles);
 		if (!filteredProtocols.isEmpty()) {
 			for (LabFileBean fb : filteredProtocols) {

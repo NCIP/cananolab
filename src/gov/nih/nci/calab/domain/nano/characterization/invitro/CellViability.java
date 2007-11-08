@@ -6,8 +6,9 @@ public class CellViability extends Cytotoxicity {
 	private static final long serialVersionUID = 1234567890L;
 
 	public CellViability() {
-		
+
 	}
+
 	public String getClassification() {
 		return INVITRO_CHARACTERIZATION;
 	}
@@ -17,6 +18,6 @@ public class CellViability extends Cytotoxicity {
 	}
 
 	public String getCellDeathMethod() {
-		return APOPTOSIS_CELL_DEATH_METHOD_CYTOXICITY_CHARACTERIZATION;		
+		return APOPTOSIS_CELL_DEATH_METHOD_CYTOXICITY_CHARACTERIZATION;
 	}
 }

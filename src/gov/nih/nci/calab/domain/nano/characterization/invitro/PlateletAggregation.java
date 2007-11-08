@@ -16,8 +16,7 @@ public class PlateletAggregation extends ImmunoToxicity {
 	 * 
 	 */
 	public PlateletAggregation() {
-		
-		
+
 	}
 
 	public String getImmunotoxiticyType() {

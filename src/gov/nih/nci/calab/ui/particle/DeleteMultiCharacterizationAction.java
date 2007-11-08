@@ -32,8 +32,6 @@ public class DeleteMultiCharacterizationAction extends AbstractDispatchAction {
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-
 		// setCharacterizationTypeCharacterizations
 		String deleteType = request.getParameter("charCategory");
 		Map<String, List<CharacterizationBean>> charsMap = (Map<String, List<CharacterizationBean>>) (request
@@ -52,7 +50,7 @@ public class DeleteMultiCharacterizationAction extends AbstractDispatchAction {
 			saveMessages(request, msgs);
 			return mapping.findForward("message");
 		}
-		
+
 	}
 
 	public ActionForward deleteConfirmed(ActionMapping mapping,
@@ -83,11 +81,11 @@ public class DeleteMultiCharacterizationAction extends AbstractDispatchAction {
 
 		return forward;
 	}
-	
+
 	public boolean loginRequired() {
 		return true;
 	}
-	
+
 	public boolean canUserExecute(UserBean user) throws Exception {
 		return InitSecuritySetup.getInstance().userHasDeletePrivilege(user,
 				CaNanoLabConstants.CSM_PG_PARTICLE);

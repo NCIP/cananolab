@@ -6,13 +6,13 @@ public class DerivedBioAssayDataCategory implements Serializable {
 	private static final long serialVersionUID = 1234567890L;
 
 	private Long id;
-	
+
 	private String characterizationName;
-	
+
 	private String name;
-	
+
 	public String getCharacterizationName() {
-		return characterizationName;
+		return this.characterizationName;
 	}
 
 	public void setCharacterizationName(String characterizationName) {
@@ -20,7 +20,7 @@ public class DerivedBioAssayDataCategory implements Serializable {
 	}
 
 	public Long getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(Long id) {
@@ -28,7 +28,7 @@ public class DerivedBioAssayDataCategory implements Serializable {
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {

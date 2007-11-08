@@ -32,18 +32,17 @@ public class LinkageBean {
 	 * 
 	 */
 	public LinkageBean() {
-		
-		
+
 	}
 
 	public LinkageBean(Linkage linkage) {
 		this.description = linkage.getDescription();
 		this.id = linkage.getId().toString();
 		if (linkage instanceof Attachment) {
-			bondType = ((Attachment) linkage).getBondType();
+			this.bondType = ((Attachment) linkage).getBondType();
 			this.type = CaNanoLabConstants.ATTACHMENT;
 		} else if (linkage instanceof Encapsulation) {
-			localization = ((Encapsulation) linkage).getLocalization();
+			this.localization = ((Encapsulation) linkage).getLocalization();
 			this.type = CaNanoLabConstants.ENCAPSULATION;
 		} else if (linkage instanceof UnclassifiedLinkage) {
 			this.type = CaNanoLabConstants.OTHER;
@@ -52,7 +51,7 @@ public class LinkageBean {
 	}
 
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
 	public void setDescription(String description) {
@@ -60,7 +59,7 @@ public class LinkageBean {
 	}
 
 	public String getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(String id) {
@@ -68,7 +67,7 @@ public class LinkageBean {
 	}
 
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
 	public void setType(String type) {
@@ -76,7 +75,7 @@ public class LinkageBean {
 	}
 
 	public AgentBean getAgent() {
-		return agent;
+		return this.agent;
 	}
 
 	public void setAgent(AgentBean agent) {
@@ -84,11 +83,11 @@ public class LinkageBean {
 	}
 
 	public void updateDomainObj(Linkage doLinkage) {
-		doLinkage.setDescription(description);
-		if (type.equals(CaNanoLabConstants.ATTACHMENT)) {
-			((Attachment) doLinkage).setBondType(bondType);
-		} else if (type.equals(CaNanoLabConstants.ENCAPSULATION)) {
-			((Encapsulation) doLinkage).setLocalization(localization);
+		doLinkage.setDescription(this.description);
+		if (this.type.equals(CaNanoLabConstants.ATTACHMENT)) {
+			((Attachment) doLinkage).setBondType(this.bondType);
+		} else if (this.type.equals(CaNanoLabConstants.ENCAPSULATION)) {
+			((Encapsulation) doLinkage).setLocalization(this.localization);
 		}
 		updateAgent(doLinkage);
 	}
@@ -96,47 +95,47 @@ public class LinkageBean {
 	public Linkage getDomainObj() {
 		Linkage doLinkage = null;
 		// create new instances of different types if not persisted already
-		if (type.equals(CaNanoLabConstants.ATTACHMENT)) {
+		if (this.type.equals(CaNanoLabConstants.ATTACHMENT)) {
 			doLinkage = new Attachment();
-		} else if (type.equals(CaNanoLabConstants.ENCAPSULATION)) {
+		} else if (this.type.equals(CaNanoLabConstants.ENCAPSULATION)) {
 			doLinkage = new Encapsulation();
 		} else {
 			doLinkage = new UnclassifiedLinkage();
 		}
 
-		doLinkage.setDescription(description);
-		if (type.equals(CaNanoLabConstants.ATTACHMENT)) {
-			((Attachment) doLinkage).setBondType(bondType);
-		} else if (type.equals(CaNanoLabConstants.ENCAPSULATION)) {
-			((Encapsulation) doLinkage).setLocalization(localization);
+		doLinkage.setDescription(this.description);
+		if (this.type.equals(CaNanoLabConstants.ATTACHMENT)) {
+			((Attachment) doLinkage).setBondType(this.bondType);
+		} else if (this.type.equals(CaNanoLabConstants.ENCAPSULATION)) {
+			((Encapsulation) doLinkage).setLocalization(this.localization);
 		}
 		updateAgent(doLinkage);
 		return doLinkage;
 	}
 
 	private void updateAgent(Linkage doLinkage) {
-		Agent doAgent=null;
-		if (agent.getId() != null) {
+		Agent doAgent = null;
+		if (this.agent.getId() != null) {
 			doAgent = doLinkage.getAgent();
 			if (doAgent != null
-					&& agent.getType().equals(
+					&& this.agent.getType().equals(
 							doAgent.getClass().getSimpleName())) {
-				agent.updateDomainObj(doAgent);
+				this.agent.updateDomainObj(doAgent);
 			}
 			// if the agent type is updated create new instance of new agent
 			// type
 			else {
-				doAgent = agent.getDomainObj();				
+				doAgent = this.agent.getDomainObj();
 				doLinkage.setAgent(doAgent);
 			}
 		} else {
-			doAgent = agent.getDomainObj();
+			doAgent = this.agent.getDomainObj();
 			doLinkage.setAgent(doAgent);
 		}
 	}
 
 	public String getBondType() {
-		return bondType;
+		return this.bondType;
 	}
 
 	public void setBondType(String bondType) {
@@ -144,7 +143,7 @@ public class LinkageBean {
 	}
 
 	public String getLocalization() {
-		return localization;
+		return this.localization;
 	}
 
 	public void setLocalization(String localization) {

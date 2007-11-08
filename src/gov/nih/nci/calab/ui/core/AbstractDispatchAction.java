@@ -18,7 +18,7 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		HttpSession session = request.getSession();
-		
+
 		UserBean user = (UserBean) session.getAttribute("user");
 
 		// response.setHeader("Cache-Control", "no-cache");

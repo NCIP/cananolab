@@ -31,7 +31,7 @@ public class SubmitReportService {
 	private UserService userService;
 
 	public SubmitReportService() throws Exception {
-		userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
+		this.userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
 	}
 
 	public void createReport(String[] particleNames, FormFile uploadedFile,
@@ -110,7 +110,7 @@ public class SubmitReportService {
 				HibernateUtil.closeSession();
 			}
 		}
-		userService.setVisiblity(dataFile.getId().toString(), fileBean
+		this.userService.setVisiblity(dataFile.getId().toString(), fileBean
 				.getVisibilityGroups());
 	}
 }

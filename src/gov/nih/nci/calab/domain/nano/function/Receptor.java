@@ -10,12 +10,11 @@ public class Receptor extends AgentTarget {
 	private String name;
 
 	public Receptor() {
-		
-		
+
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -23,7 +22,7 @@ public class Receptor extends AgentTarget {
 	}
 
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
 	public void setDescription(String description) {
@@ -31,7 +30,7 @@ public class Receptor extends AgentTarget {
 	}
 
 	public Long getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(Long id) {

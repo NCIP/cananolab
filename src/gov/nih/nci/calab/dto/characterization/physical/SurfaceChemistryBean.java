@@ -32,7 +32,7 @@ public class SurfaceChemistryBean {
 	}
 
 	public String getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(String id) {
@@ -40,7 +40,7 @@ public class SurfaceChemistryBean {
 	}
 
 	public String getMoleculeName() {
-		return moleculeName;
+		return this.moleculeName;
 	}
 
 	public void setMoleculeName(String molecule) {
@@ -59,7 +59,7 @@ public class SurfaceChemistryBean {
 	}
 
 	public String getNumberOfMolecules() {
-		return numberOfMolecules;
+		return this.numberOfMolecules;
 	}
 
 	public void setNumberOfMolecules(String numberOfMolecule) {
@@ -67,7 +67,7 @@ public class SurfaceChemistryBean {
 	}
 
 	public String getMolecularFormulaType() {
-		return molecularFormulaType;
+		return this.molecularFormulaType;
 	}
 
 	public void setMolecularFormulaType(String molecularFormulaType) {

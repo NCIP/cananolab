@@ -12,7 +12,7 @@ public class DatumName {
 	private String characterizationName;
 
 	public Boolean getDatumParsed() {
-		return datumParsed;
+		return this.datumParsed;
 	}
 
 	public void setDatumParsed(Boolean datumParsed) {
@@ -20,7 +20,7 @@ public class DatumName {
 	}
 
 	public Long getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(Long id) {
@@ -28,7 +28,7 @@ public class DatumName {
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -36,7 +36,7 @@ public class DatumName {
 	}
 
 	public String getCharacterizationName() {
-		return characterizationName;
+		return this.characterizationName;
 	}
 
 	public void setCharacterizationName(String characterizationName) {

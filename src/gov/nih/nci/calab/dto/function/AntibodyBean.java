@@ -17,7 +17,7 @@ public class AntibodyBean extends BaseAgentBean {
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -25,7 +25,7 @@ public class AntibodyBean extends BaseAgentBean {
 	}
 
 	public String getSpecies() {
-		return species;
+		return this.species;
 	}
 
 	public void setSpecies(String species) {
@@ -33,10 +33,11 @@ public class AntibodyBean extends BaseAgentBean {
 	}
 
 	public void updateDomainObj(Antibody antibody) {
-		// super has been called in AgentBean level, so no need to call again here.
-//		super.updateDomainObj(antibody);
-		antibody.setName(name);
-		antibody.setSpecies(species);
+		// super has been called in AgentBean level, so no need to call again
+		// here.
+		// super.updateDomainObj(antibody);
+		antibody.setName(this.name);
+		antibody.setSpecies(this.species);
 	}
-	
+
 }

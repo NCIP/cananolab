@@ -1,6 +1,5 @@
 package gov.nih.nci.calab.domain.nano.function;
 
-
 public class Probe extends Agent {
 	private static final long serialVersionUID = 1234567890L;
 
@@ -9,12 +8,11 @@ public class Probe extends Agent {
 	private String type;
 
 	public Probe() {
-		
-		
+
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -22,7 +20,7 @@ public class Probe extends Agent {
 	}
 
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
 	public void setType(String type) {

@@ -20,7 +20,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
-/* CVS $Id: ManageSampleService.java,v 1.1 2007-11-01 17:31:14 pansu Exp $ 
+/* CVS $Id: ManageSampleService.java,v 1.2 2007-11-08 20:41:35 pansu Exp $ 
  */
 public class ManageSampleService {
 	private static Logger logger = Logger.getLogger(ManageSampleService.class);
@@ -86,7 +86,7 @@ public class ManageSampleService {
 	 * @return full sample name from sampleName and lotId
 	 */
 	public String getSampleName(String sampleName, String lotId) {
-		if (lotId.trim().length()==0) {
+		if (lotId.trim().length() == 0) {
 			return sampleName;
 		}
 		return sampleName + "-" + lotId;
@@ -100,10 +100,10 @@ public class ManageSampleService {
 	 * @return
 	 */
 	public String getContainerPrefix(String sampleName, String lotId) {
-		if (lotId.trim().length()==0) {
+		if (lotId.trim().length() == 0) {
 			return sampleName + "-0";
 		}
-		return sampleName+"-"+lotId;
+		return sampleName + "-" + lotId;
 	}
 
 	/**

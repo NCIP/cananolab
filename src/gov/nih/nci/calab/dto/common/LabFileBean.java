@@ -25,7 +25,7 @@ public class LabFileBean {
 	private String createdBy;
 
 	private String id;
-	
+
 	private String name;
 
 	private String type;
@@ -36,7 +36,7 @@ public class LabFileBean {
 
 	private String version;
 
-	private String uri; //value saved in the db
+	private String uri; // value saved in the db
 
 	private byte[] fileContent;
 
@@ -46,14 +46,15 @@ public class LabFileBean {
 	private String displayName;
 
 	private String instanceType; // type of instance, protocol, output,
-									// report, associatedFile, etc
+
+	// report, associatedFile, etc
 
 	private String timeStampedName;
-	
+
 	private boolean hidden;
-	
+
 	public String getInstanceType() {
-		return instanceType;
+		return this.instanceType;
 	}
 
 	public void setInstanceType(String instanceType) {
@@ -69,12 +70,12 @@ public class LabFileBean {
 		this.uri = charFile.getUri();
 		this.title = charFile.getTitle();
 		this.description = charFile.getDescription();
-		this.comments=charFile.getComments();
+		this.comments = charFile.getComments();
 		this.createdBy = charFile.getCreatedBy();
 		this.version = charFile.getVersion();
 		this.createdDate = charFile.getCreatedDate();
 		this.type = charFile.getType();
-		this.fileContent=charFile.getContent();
+		this.fileContent = charFile.getContent();
 	}
 
 	public LabFileBean(LabFile charFile, String gridNodeHost) {
@@ -83,7 +84,7 @@ public class LabFileBean {
 	}
 
 	public String getComments() {
-		return comments;
+		return this.comments;
 	}
 
 	public void setComments(String comments) {
@@ -91,7 +92,7 @@ public class LabFileBean {
 	}
 
 	public String getCreatedBy() {
-		return createdBy;
+		return this.createdBy;
 	}
 
 	public void setCreatedBy(String createdBy) {
@@ -99,7 +100,7 @@ public class LabFileBean {
 	}
 
 	public Date getCreatedDate() {
-		return createdDate;
+		return this.createdDate;
 	}
 
 	public void setCreatedDate(Date createdDate) {
@@ -107,7 +108,7 @@ public class LabFileBean {
 	}
 
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
 	public void setDescription(String description) {
@@ -115,7 +116,7 @@ public class LabFileBean {
 	}
 
 	public String getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(String id) {
@@ -123,7 +124,7 @@ public class LabFileBean {
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -131,7 +132,7 @@ public class LabFileBean {
 	}
 
 	public String getUri() {
-		return uri;
+		return this.uri;
 	}
 
 	public void setUri(String uri) {
@@ -139,7 +140,7 @@ public class LabFileBean {
 	}
 
 	public String getTitle() {
-		return title;
+		return this.title;
 	}
 
 	public void setTitle(String title) {
@@ -147,7 +148,7 @@ public class LabFileBean {
 	}
 
 	public String[] getVisibilityGroups() {
-		return visibilityGroups;
+		return this.visibilityGroups;
 	}
 
 	public void setVisibilityGroups(String[] visibilityGroups) {
@@ -155,7 +156,7 @@ public class LabFileBean {
 	}
 
 	public String getVersion() {
-		return version;
+		return this.version;
 	}
 
 	public void setVersion(String version) {
@@ -164,33 +165,33 @@ public class LabFileBean {
 
 	public LabFile getDomainObject() {
 		LabFile labfile = new LabFile();
-		if (id != null && id.length() > 0) {
-			labfile.setId(new Long(id));
+		if (this.id != null && this.id.length() > 0) {
+			labfile.setId(new Long(this.id));
 		}
-		labfile.setCreatedBy(createdBy);
-		labfile.setCreatedDate(createdDate);
-		labfile.setDescription(description);
-		labfile.setComments(comments);
-		labfile.setFilename(name);
-		labfile.setUri(uri);		
-		labfile.setTitle(title);
-		labfile.setVersion(version);
-		labfile.setType(type);
-		labfile.setContent(fileContent);
+		labfile.setCreatedBy(this.createdBy);
+		labfile.setCreatedDate(this.createdDate);
+		labfile.setDescription(this.description);
+		labfile.setComments(this.comments);
+		labfile.setFilename(this.name);
+		labfile.setUri(this.uri);
+		labfile.setTitle(this.title);
+		labfile.setVersion(this.version);
+		labfile.setType(this.type);
+		labfile.setContent(this.fileContent);
 		return labfile;
 	}
 
 	public String getDisplayName() {
-		if (uri != null) {
-			displayName = uri.replaceAll("/decompressedFiles", "");
+		if (this.uri != null) {
+			this.displayName = this.uri.replaceAll("/decompressedFiles", "");
 		} else {
-			displayName = "";
+			this.displayName = "";
 		}
-		return displayName;
+		return this.displayName;
 	}
 
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
 	public void setType(String type) {
@@ -198,12 +199,12 @@ public class LabFileBean {
 	}
 
 	public String getVisibilityStr() {
-		visibilityStr = StringUtils.join(visibilityGroups, "<br>");
-		return visibilityStr;
+		this.visibilityStr = StringUtils.join(this.visibilityGroups, "<br>");
+		return this.visibilityStr;
 	}
 
 	public String getGridNode() {
-		return gridNode;
+		return this.gridNode;
 	}
 
 	public void setGridNode(String gridNode) {
@@ -219,7 +220,7 @@ public class LabFileBean {
 	}
 
 	public byte[] getFileContent() {
-		return fileContent;
+		return this.fileContent;
 	}
 
 	public void setFileContent(byte[] fileContent) {
@@ -227,7 +228,7 @@ public class LabFileBean {
 	}
 
 	public String getTimeStampedName() {
-		return timeStampedName;
+		return this.timeStampedName;
 	}
 
 	public void setTimeStampedName(String timeStampedName) {
@@ -235,7 +236,7 @@ public class LabFileBean {
 	}
 
 	public boolean isHidden() {
-		return hidden;
+		return this.hidden;
 	}
 
 	public void setHidden(boolean hidden) {

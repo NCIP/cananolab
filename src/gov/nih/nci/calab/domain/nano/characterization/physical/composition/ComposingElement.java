@@ -24,12 +24,11 @@ public class ComposingElement implements java.io.Serializable {
 	 * 
 	 */
 	public ComposingElement() {
-		
-		
+
 	}
 
 	public Long getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(Long id) {
@@ -37,7 +36,7 @@ public class ComposingElement implements java.io.Serializable {
 	}
 
 	public String getChemicalName() {
-		return chemicalName;
+		return this.chemicalName;
 	}
 
 	public void setChemicalName(String chemicalName) {
@@ -45,7 +44,7 @@ public class ComposingElement implements java.io.Serializable {
 	}
 
 	public String getElementType() {
-		return elementType;
+		return this.elementType;
 	}
 
 	public void setElementType(String elementType) {
@@ -53,7 +52,7 @@ public class ComposingElement implements java.io.Serializable {
 	}
 
 	public ParticleComposition getParticleComposition() {
-		return particleComposition;
+		return this.particleComposition;
 	}
 
 	public void setParticleComposition(ParticleComposition composition) {
@@ -61,7 +60,7 @@ public class ComposingElement implements java.io.Serializable {
 	}
 
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
 	public void setDescription(String description) {

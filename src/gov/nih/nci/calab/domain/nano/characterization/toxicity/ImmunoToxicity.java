@@ -16,7 +16,7 @@ public class ImmunoToxicity extends Toxicity {
 	}
 
 	public String getImmunotoxicityType() {
-		return immunotoxicityType;
+		return this.immunotoxicityType;
 	}
 
 	public void setImmunotoxicityType(String immunotoxicityType) {
