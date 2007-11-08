@@ -15,7 +15,7 @@ public class LookupType implements java.io.Serializable {
 	private java.lang.Long id;
 
 	public java.lang.Long getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(java.lang.Long id) {
@@ -25,7 +25,7 @@ public class LookupType implements java.io.Serializable {
 	private java.lang.String name;
 
 	public java.lang.String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(java.lang.String name) {

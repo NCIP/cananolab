@@ -13,16 +13,15 @@ import java.util.HashSet;
 
 public class Sample implements java.io.Serializable {
 	private static final long serialVersionUID = 1234567890L;
-	
+
 	private static final String ALIQUOT = "Aliquot";
 
 	private static final String SAMPLE_CONTAINER = "Sample_container";
 
-
 	private java.lang.Long id;
 
 	public java.lang.Long getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(java.lang.Long id) {
@@ -32,7 +31,7 @@ public class Sample implements java.io.Serializable {
 	private java.lang.Long sampleSequenceId;
 
 	public java.lang.Long getSampleSequenceId() {
-		return sampleSequenceId;
+		return this.sampleSequenceId;
 	}
 
 	public void setSampleSequenceId(java.lang.Long sampleSequenceId) {
@@ -42,7 +41,7 @@ public class Sample implements java.io.Serializable {
 	private java.lang.String name;
 
 	public java.lang.String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(java.lang.String name) {
@@ -52,7 +51,7 @@ public class Sample implements java.io.Serializable {
 	private java.lang.String type;
 
 	public java.lang.String getType() {
-		return type;
+		return this.type;
 	}
 
 	public void setType(java.lang.String type) {
@@ -62,7 +61,7 @@ public class Sample implements java.io.Serializable {
 	private java.lang.String description;
 
 	public java.lang.String getDescription() {
-		return description;
+		return this.description;
 	}
 
 	public void setDescription(java.lang.String description) {
@@ -72,7 +71,7 @@ public class Sample implements java.io.Serializable {
 	private java.lang.String sourceSampleId;
 
 	public java.lang.String getSourceSampleId() {
-		return sourceSampleId;
+		return this.sourceSampleId;
 	}
 
 	public void setSourceSampleId(java.lang.String sourceSampleId) {
@@ -82,7 +81,7 @@ public class Sample implements java.io.Serializable {
 	private java.lang.String solubility;
 
 	public java.lang.String getSolubility() {
-		return solubility;
+		return this.solubility;
 	}
 
 	public void setSolubility(java.lang.String solubility) {
@@ -92,7 +91,7 @@ public class Sample implements java.io.Serializable {
 	private java.lang.String lotId;
 
 	public java.lang.String getLotId() {
-		return lotId;
+		return this.lotId;
 	}
 
 	public void setLotId(java.lang.String lotId) {
@@ -102,7 +101,7 @@ public class Sample implements java.io.Serializable {
 	private java.lang.String lotDescription;
 
 	public java.lang.String getLotDescription() {
-		return lotDescription;
+		return this.lotDescription;
 	}
 
 	public void setLotDescription(java.lang.String lotDescription) {
@@ -112,7 +111,7 @@ public class Sample implements java.io.Serializable {
 	private java.lang.String comments;
 
 	public java.lang.String getComments() {
-		return comments;
+		return this.comments;
 	}
 
 	public void setComments(java.lang.String comments) {
@@ -122,7 +121,7 @@ public class Sample implements java.io.Serializable {
 	private java.lang.String createdBy;
 
 	public java.lang.String getCreatedBy() {
-		return createdBy;
+		return this.createdBy;
 	}
 
 	public void setCreatedBy(java.lang.String createdBy) {
@@ -132,7 +131,7 @@ public class Sample implements java.io.Serializable {
 	private java.util.Date createdDate;
 
 	public java.util.Date getCreatedDate() {
-		return createdDate;
+		return this.createdDate;
 	}
 
 	public void setCreatedDate(java.util.Date createdDate) {
@@ -142,7 +141,7 @@ public class Sample implements java.io.Serializable {
 	private java.lang.String receivedBy;
 
 	public java.lang.String getReceivedBy() {
-		return receivedBy;
+		return this.receivedBy;
 	}
 
 	public void setReceivedBy(java.lang.String receivedBy) {
@@ -152,7 +151,7 @@ public class Sample implements java.io.Serializable {
 	private java.util.Date receivedDate;
 
 	public java.util.Date getReceivedDate() {
-		return receivedDate;
+		return this.receivedDate;
 	}
 
 	public void setReceivedDate(java.util.Date receivedDate) {
@@ -163,23 +162,24 @@ public class Sample implements java.io.Serializable {
 
 	public gov.nih.nci.calab.domain.Source getSource() {
 
-//		ApplicationService applicationService = ApplicationServiceProvider
-//				.getApplicationService();
-//		gov.nih.nci.calab.domain.Sample thisIdSet = new gov.nih.nci.calab.domain.Sample();
-//		thisIdSet.setId(this.getId());
-//
-//		try {
-//			java.util.List resultList = applicationService.search(
-//					"gov.nih.nci.calab.domain.Source", thisIdSet);
-//			if (resultList != null && resultList.size() > 0) {
-//				source = (gov.nih.nci.calab.domain.Source) resultList.get(0);
-//			}
-//
-//		} catch (Exception ex) {
-//			System.out.println("Sample:getSource throws exception ... ...");
-//			ex.printStackTrace();
-//		}
-		return source;
+		// ApplicationService applicationService = ApplicationServiceProvider
+		// .getApplicationService();
+		// gov.nih.nci.calab.domain.Sample thisIdSet = new
+		// gov.nih.nci.calab.domain.Sample();
+		// thisIdSet.setId(this.getId());
+		//
+		// try {
+		// java.util.List resultList = applicationService.search(
+		// "gov.nih.nci.calab.domain.Source", thisIdSet);
+		// if (resultList != null && resultList.size() > 0) {
+		// source = (gov.nih.nci.calab.domain.Source) resultList.get(0);
+		// }
+		//
+		// } catch (Exception ex) {
+		// System.out.println("Sample:getSource throws exception ... ...");
+		// ex.printStackTrace();
+		// }
+		return this.source;
 
 	}
 
@@ -191,23 +191,24 @@ public class Sample implements java.io.Serializable {
 
 	public gov.nih.nci.calab.domain.SampleSOP getSampleSOP() {
 
-//		ApplicationService applicationService = ApplicationServiceProvider
-//				.getApplicationService();
-//		gov.nih.nci.calab.domain.Sample thisIdSet = new gov.nih.nci.calab.domain.Sample();
-//		thisIdSet.setId(this.getId());
-//		try {
-//			java.util.List resultList = applicationService.search(
-//					"gov.nih.nci.calab.domain.SampleSOP", thisIdSet);
-//
-//			if (resultList != null && resultList.size() > 0) {
-//				sampleSOP = (gov.nih.nci.calab.domain.SampleSOP) resultList
-//						.get(0);
-//			}
-//		} catch (Exception ex) {
-//			System.out.println("Sample:getSampleSOP throws exception ... ...");
-//			ex.printStackTrace();
-//		}
-		return sampleSOP;
+		// ApplicationService applicationService = ApplicationServiceProvider
+		// .getApplicationService();
+		// gov.nih.nci.calab.domain.Sample thisIdSet = new
+		// gov.nih.nci.calab.domain.Sample();
+		// thisIdSet.setId(this.getId());
+		// try {
+		// java.util.List resultList = applicationService.search(
+		// "gov.nih.nci.calab.domain.SampleSOP", thisIdSet);
+		//
+		// if (resultList != null && resultList.size() > 0) {
+		// sampleSOP = (gov.nih.nci.calab.domain.SampleSOP) resultList
+		// .get(0);
+		// }
+		// } catch (Exception ex) {
+		// System.out.println("Sample:getSampleSOP throws exception ... ...");
+		// ex.printStackTrace();
+		// }
+		return this.sampleSOP;
 
 	}
 
@@ -244,13 +245,13 @@ public class Sample implements java.io.Serializable {
 		// ex.printStackTrace();
 		// }
 		// }
-		return sampleContainerCollection;
+		return this.sampleContainerCollection;
 	}
 
 	public java.util.Collection getSampleContainerCollection(String type) {
 
 		HashSet typedContainer = new HashSet();
-		for (Object obj : sampleContainerCollection) {
+		for (Object obj : this.sampleContainerCollection) {
 			SampleContainer container = (SampleContainer) obj;
 			if ((type.equals(ALIQUOT) && (container instanceof Aliquot))) {
 				typedContainer.add(container);
@@ -266,56 +267,29 @@ public class Sample implements java.io.Serializable {
 		this.sampleContainerCollection = sampleContainerCollection;
 	}
 
-	private java.util.Collection projectCollection = new java.util.HashSet();
-
-	public java.util.Collection getProjectCollection() {
-//		try {
-//			if (projectCollection.size() == 0) {
-//			}
-//		} catch (Exception e) {
-//			ApplicationService applicationService = ApplicationServiceProvider
-//					.getApplicationService();
-//			try {
-//
-//				gov.nih.nci.calab.domain.Sample thisIdSet = new gov.nih.nci.calab.domain.Sample();
-//				thisIdSet.setId(this.getId());
-//				java.util.Collection resultList = applicationService.search(
-//						"gov.nih.nci.calab.domain.Project", thisIdSet);
-//				projectCollection = resultList;
-//				return resultList;
-//
-//			} catch (Exception ex) {
-//				System.out
-//						.println("Sample:getProjectCollection throws exception ... ...");
-//				ex.printStackTrace();
-//			}
-//		}
-		return projectCollection;
-	}
-
-	public void setProjectCollection(java.util.Collection projectCollection) {
-		this.projectCollection = projectCollection;
-	}
-
-//	private java.util.Collection<Report> reportCollection = new java.util.HashSet<Report>();
-//
-//	public java.util.Collection<Report> getReportCollection() {
-//		return reportCollection;
-//	}
-//
-//	public void setReportCollection(java.util.Collection<Report> reportCollection) {
-//		this.reportCollection = reportCollection;
-//	}
-//	
-//	public Collection<AssociatedFile> associatedFileCollection = new HashSet<AssociatedFile>();
-//		
-//	public Collection<AssociatedFile> getAssociatedFileCollection() {
-//		return associatedFileCollection;
-//	}
-//
-//	public void setAssociatedFileCollection(Collection<AssociatedFile> associatedFileCollection) {
-//		this.associatedFileCollection = associatedFileCollection;
-//	}
+	// private java.util.Collection<Report> reportCollection = new
+	// java.util.HashSet<Report>();
+	//
+	// public java.util.Collection<Report> getReportCollection() {
+	// return reportCollection;
+	// }
+	//
+	// public void setReportCollection(java.util.Collection<Report>
+	// reportCollection) {
+	// this.reportCollection = reportCollection;
+	// }
+	//	
+	// public Collection<AssociatedFile> associatedFileCollection = new
+	// HashSet<AssociatedFile>();
+	//		
+	// public Collection<AssociatedFile> getAssociatedFileCollection() {
+	// return associatedFileCollection;
+	// }
+	//
+	// public void setAssociatedFileCollection(Collection<AssociatedFile>
+	// associatedFileCollection) {
+	// this.associatedFileCollection = associatedFileCollection;
+	// }
 
 	public boolean equals(Object obj) {
 		boolean eq = false;

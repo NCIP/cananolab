@@ -35,11 +35,11 @@ public class LabFile implements java.io.Serializable {
 	private String filename;
 
 	private gov.nih.nci.calab.domain.DataStatus dataStatus;
-	
+
 	private byte[] content;
 
 	public java.lang.Long getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(java.lang.Long id) {
@@ -47,7 +47,7 @@ public class LabFile implements java.io.Serializable {
 	}
 
 	public String getTitle() {
-		return title;
+		return this.title;
 	}
 
 	public void setTitle(String title) {
@@ -55,7 +55,7 @@ public class LabFile implements java.io.Serializable {
 	}
 
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
 	public void setDescription(String description) {
@@ -63,7 +63,7 @@ public class LabFile implements java.io.Serializable {
 	}
 
 	public String getComments() {
-		return comments;
+		return this.comments;
 	}
 
 	public void setComments(String comments) {
@@ -71,7 +71,7 @@ public class LabFile implements java.io.Serializable {
 	}
 
 	public java.lang.String getExtension() {
-		return extension;
+		return this.extension;
 	}
 
 	public void setExtension(java.lang.String extension) {
@@ -79,7 +79,7 @@ public class LabFile implements java.io.Serializable {
 	}
 
 	public java.lang.String getCreatedBy() {
-		return createdBy;
+		return this.createdBy;
 	}
 
 	public void setCreatedBy(java.lang.String createdBy) {
@@ -87,7 +87,7 @@ public class LabFile implements java.io.Serializable {
 	}
 
 	public java.util.Date getCreatedDate() {
-		return createdDate;
+		return this.createdDate;
 	}
 
 	public void setCreatedDate(java.util.Date createdDate) {
@@ -95,7 +95,7 @@ public class LabFile implements java.io.Serializable {
 	}
 
 	public java.lang.String getVersion() {
-		return version;
+		return this.version;
 	}
 
 	public void setVersion(java.lang.String version) {
@@ -103,7 +103,7 @@ public class LabFile implements java.io.Serializable {
 	}
 
 	public java.lang.String getUri() {
-		return uri;
+		return this.uri;
 	}
 
 	public void setUri(java.lang.String uri) {
@@ -127,7 +127,7 @@ public class LabFile implements java.io.Serializable {
 	}
 
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
 	public void setType(String type) {
@@ -135,7 +135,7 @@ public class LabFile implements java.io.Serializable {
 	}
 
 	public byte[] getContent() {
-		return content;
+		return this.content;
 	}
 
 	public void setContent(byte[] content) {

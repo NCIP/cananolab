@@ -14,21 +14,22 @@ import java.util.HashSet;
  */
 public class Report extends LabFile {
 	private static final long serialVersionUID = 1234567890L;
+
 	private Collection<Nanoparticle> particleCollection = new HashSet<Nanoparticle>();
 
 	/**
 	 * 
 	 */
 	public Report() {
-		
-		
+
 	}
 
 	public Collection<Nanoparticle> getParticleCollection() {
-		return particleCollection;
+		return this.particleCollection;
 	}
 
-	public void setParticleCollection(Collection<Nanoparticle> particleCollection) {
+	public void setParticleCollection(
+			Collection<Nanoparticle> particleCollection) {
 		this.particleCollection = particleCollection;
 	}
 

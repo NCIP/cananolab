@@ -9,11 +9,10 @@ import java.util.Collection;
 import java.util.HashSet;
 
 public class AssociatedFile extends LabFile {
-    
+
 	private static final long serialVersionUID = 1234567890L;
-	
+
 	private Collection<Nanoparticle> particleCollection = new HashSet<Nanoparticle>();
-	
 
 	/**
 	 * 
@@ -21,13 +20,12 @@ public class AssociatedFile extends LabFile {
 	public AssociatedFile() {
 	}
 
-
 	public Collection<Nanoparticle> getParticleCollection() {
-		return particleCollection;
+		return this.particleCollection;
 	}
 
-
-	public void setParticleCollection(Collection<Nanoparticle> particleCollection) {
+	public void setParticleCollection(
+			Collection<Nanoparticle> particleCollection) {
 		this.particleCollection = particleCollection;
 	}
 

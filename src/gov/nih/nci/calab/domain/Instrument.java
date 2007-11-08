@@ -24,12 +24,11 @@ public class Instrument implements Serializable {
 	 * 
 	 */
 	public Instrument() {
-		
-		
+
 	}
 
 	public Long getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(Long id) {
@@ -37,7 +36,7 @@ public class Instrument implements Serializable {
 	}
 
 	public String getAbbreviation() {
-		return abbreviation;
+		return this.abbreviation;
 	}
 
 	public void setAbbreviation(String abbreviation) {
@@ -45,7 +44,7 @@ public class Instrument implements Serializable {
 	}
 
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
 	public void setType(String type) {
@@ -53,7 +52,7 @@ public class Instrument implements Serializable {
 	}
 
 	public String getManufacturer() {
-		return manufacturer;
+		return this.manufacturer;
 	}
 
 	public void setManufacturer(String manufacturer) {

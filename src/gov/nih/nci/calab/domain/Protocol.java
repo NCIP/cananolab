@@ -1,6 +1,5 @@
 package gov.nih.nci.calab.domain;
 
-
 /**
  * <!-- LICENSE_TEXT_START -->
  * <!-- LICENSE_TEXT_END -->
@@ -16,9 +15,9 @@ public class Protocol implements java.io.Serializable {
 	private java.lang.Long id;
 
 	private String type;
-	
+
 	public java.lang.Long getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(java.lang.Long id) {
@@ -28,7 +27,7 @@ public class Protocol implements java.io.Serializable {
 	private java.lang.String name;
 
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
 	public void setType(String type) {
@@ -36,7 +35,7 @@ public class Protocol implements java.io.Serializable {
 	}
 
 	public java.lang.String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(java.lang.String name) {
@@ -46,28 +45,30 @@ public class Protocol implements java.io.Serializable {
 	private java.util.Collection protocolFileCollection = new java.util.HashSet();
 
 	public java.util.Collection getProtocolFileCollection() {
-//		try {
-//			if (protocolFileCollection.size() == 0) {
-//			}
-//		} catch (Exception e) {
-//			ApplicationService applicationService = ApplicationServiceProvider
-//					.getApplicationService();
-//			try {
-//
-//				gov.nih.nci.calab.domain.Protocol thisIdSet = new gov.nih.nci.calab.domain.Protocol();
-//				thisIdSet.setId(this.getId());
-//				java.util.Collection resultList = applicationService.search(
-//						"gov.nih.nci.calab.domain.ProtocolFile", thisIdSet);
-//				protocolFileCollection = resultList;
-//				return resultList;
-//
-//			} catch (Exception ex) {
-//				System.out
-//						.println("Protocol:getProtocolFileCollection throws exception ... ...");
-//				ex.printStackTrace();
-//			}
-//		}
-		return protocolFileCollection;
+		// try {
+		// if (protocolFileCollection.size() == 0) {
+		// }
+		// } catch (Exception e) {
+		// ApplicationService applicationService = ApplicationServiceProvider
+		// .getApplicationService();
+		// try {
+		//
+		// gov.nih.nci.calab.domain.Protocol thisIdSet = new
+		// gov.nih.nci.calab.domain.Protocol();
+		// thisIdSet.setId(this.getId());
+		// java.util.Collection resultList = applicationService.search(
+		// "gov.nih.nci.calab.domain.ProtocolFile", thisIdSet);
+		// protocolFileCollection = resultList;
+		// return resultList;
+		//
+		// } catch (Exception ex) {
+		// System.out
+		// .println("Protocol:getProtocolFileCollection throws exception ...
+		// ...");
+		// ex.printStackTrace();
+		// }
+		// }
+		return this.protocolFileCollection;
 	}
 
 	public void setProtocolFileCollection(
@@ -78,28 +79,29 @@ public class Protocol implements java.io.Serializable {
 	private java.util.Collection assayCollection = new java.util.HashSet();
 
 	public java.util.Collection getAssayCollection() {
-//		try {
-//			if (assayCollection.size() == 0) {
-//			}
-//		} catch (Exception e) {
-//			ApplicationService applicationService = ApplicationServiceProvider
-//					.getApplicationService();
-//			try {
-//
-//				gov.nih.nci.calab.domain.Protocol thisIdSet = new gov.nih.nci.calab.domain.Protocol();
-//				thisIdSet.setId(this.getId());
-//				java.util.Collection resultList = applicationService.search(
-//						"gov.nih.nci.calab.domain.Assay", thisIdSet);
-//				assayCollection = resultList;
-//				return resultList;
-//
-//			} catch (Exception ex) {
-//				System.out
-//						.println("Protocol:getAssayCollection throws exception ... ...");
-//				ex.printStackTrace();
-//			}
-//		}
-		return assayCollection;
+		// try {
+		// if (assayCollection.size() == 0) {
+		// }
+		// } catch (Exception e) {
+		// ApplicationService applicationService = ApplicationServiceProvider
+		// .getApplicationService();
+		// try {
+		//
+		// gov.nih.nci.calab.domain.Protocol thisIdSet = new
+		// gov.nih.nci.calab.domain.Protocol();
+		// thisIdSet.setId(this.getId());
+		// java.util.Collection resultList = applicationService.search(
+		// "gov.nih.nci.calab.domain.Assay", thisIdSet);
+		// assayCollection = resultList;
+		// return resultList;
+		//
+		// } catch (Exception ex) {
+		// System.out
+		// .println("Protocol:getAssayCollection throws exception ... ...");
+		// ex.printStackTrace();
+		// }
+		// }
+		return this.assayCollection;
 	}
 
 	public void setAssayCollection(java.util.Collection assayCollection) {

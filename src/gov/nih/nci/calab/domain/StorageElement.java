@@ -15,7 +15,7 @@ public class StorageElement implements java.io.Serializable {
 	private java.lang.Long id;
 
 	public java.lang.Long getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(java.lang.Long id) {
@@ -25,7 +25,7 @@ public class StorageElement implements java.io.Serializable {
 	private java.lang.String location;
 
 	public java.lang.String getLocation() {
-		return location;
+		return this.location;
 	}
 
 	public void setLocation(java.lang.String location) {
@@ -35,7 +35,7 @@ public class StorageElement implements java.io.Serializable {
 	private java.lang.String type;
 
 	public java.lang.String getType() {
-		return type;
+		return this.type;
 	}
 
 	public void setType(java.lang.String type) {

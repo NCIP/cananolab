@@ -1,6 +1,5 @@
 package gov.nih.nci.calab.domain;
 
-
 /**
  * <!-- LICENSE_TEXT_START -->
  * <!-- LICENSE_TEXT_END -->
@@ -16,7 +15,7 @@ public class Source implements java.io.Serializable {
 	private java.lang.Long id;
 
 	public java.lang.Long getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(java.lang.Long id) {
@@ -26,7 +25,7 @@ public class Source implements java.io.Serializable {
 	private java.lang.String organizationName;
 
 	public java.lang.String getOrganizationName() {
-		return organizationName;
+		return this.organizationName;
 	}
 
 	public void setOrganizationName(java.lang.String organizationName) {
@@ -36,7 +35,7 @@ public class Source implements java.io.Serializable {
 	private java.lang.String address;
 
 	public java.lang.String getAddress() {
-		return address;
+		return this.address;
 	}
 
 	public void setAddress(java.lang.String address) {
@@ -46,7 +45,7 @@ public class Source implements java.io.Serializable {
 	private java.lang.String city;
 
 	public java.lang.String getCity() {
-		return city;
+		return this.city;
 	}
 
 	public void setCity(java.lang.String city) {
@@ -56,7 +55,7 @@ public class Source implements java.io.Serializable {
 	private java.lang.String state;
 
 	public java.lang.String getState() {
-		return state;
+		return this.state;
 	}
 
 	public void setState(java.lang.String state) {
@@ -66,7 +65,7 @@ public class Source implements java.io.Serializable {
 	private java.lang.String country;
 
 	public java.lang.String getCountry() {
-		return country;
+		return this.country;
 	}
 
 	public void setCountry(java.lang.String country) {
@@ -76,28 +75,29 @@ public class Source implements java.io.Serializable {
 	private java.util.Collection contactCollection = new java.util.HashSet();
 
 	public java.util.Collection getContactCollection() {
-//		try {
-//			if (contactCollection.size() == 0) {
-//			}
-//		} catch (Exception e) {
-//			ApplicationService applicationService = ApplicationServiceProvider
-//					.getApplicationService();
-//			try {
-//
-//				gov.nih.nci.calab.domain.Source thisIdSet = new gov.nih.nci.calab.domain.Source();
-//				thisIdSet.setId(this.getId());
-//				java.util.Collection resultList = applicationService.search(
-//						"gov.nih.nci.calab.domain.Contact", thisIdSet);
-//				contactCollection = resultList;
-//				return resultList;
-//
-//			} catch (Exception ex) {
-//				System.out
-//						.println("Source:getContactCollection throws exception ... ...");
-//				ex.printStackTrace();
-//			}
-//		}
-		return contactCollection;
+		// try {
+		// if (contactCollection.size() == 0) {
+		// }
+		// } catch (Exception e) {
+		// ApplicationService applicationService = ApplicationServiceProvider
+		// .getApplicationService();
+		// try {
+		//
+		// gov.nih.nci.calab.domain.Source thisIdSet = new
+		// gov.nih.nci.calab.domain.Source();
+		// thisIdSet.setId(this.getId());
+		// java.util.Collection resultList = applicationService.search(
+		// "gov.nih.nci.calab.domain.Contact", thisIdSet);
+		// contactCollection = resultList;
+		// return resultList;
+		//
+		// } catch (Exception ex) {
+		// System.out
+		// .println("Source:getContactCollection throws exception ... ...");
+		// ex.printStackTrace();
+		// }
+		// }
+		return this.contactCollection;
 	}
 
 	public void setContactCollection(java.util.Collection contactCollection) {
@@ -107,28 +107,29 @@ public class Source implements java.io.Serializable {
 	private java.util.Collection sampleCollection = new java.util.HashSet();
 
 	public java.util.Collection getSampleCollection() {
-//		try {
-//			if (sampleCollection.size() == 0) {
-//			}
-//		} catch (Exception e) {
-//			ApplicationService applicationService = ApplicationServiceProvider
-//					.getApplicationService();
-//			try {
-//
-//				gov.nih.nci.calab.domain.Source thisIdSet = new gov.nih.nci.calab.domain.Source();
-//				thisIdSet.setId(this.getId());
-//				java.util.Collection resultList = applicationService.search(
-//						"gov.nih.nci.calab.domain.Sample", thisIdSet);
-//				sampleCollection = resultList;
-//				return resultList;
-//
-//			} catch (Exception ex) {
-//				System.out
-//						.println("Source:getSampleCollection throws exception ... ...");
-//				ex.printStackTrace();
-//			}
-//		}
-		return sampleCollection;
+		// try {
+		// if (sampleCollection.size() == 0) {
+		// }
+		// } catch (Exception e) {
+		// ApplicationService applicationService = ApplicationServiceProvider
+		// .getApplicationService();
+		// try {
+		//
+		// gov.nih.nci.calab.domain.Source thisIdSet = new
+		// gov.nih.nci.calab.domain.Source();
+		// thisIdSet.setId(this.getId());
+		// java.util.Collection resultList = applicationService.search(
+		// "gov.nih.nci.calab.domain.Sample", thisIdSet);
+		// sampleCollection = resultList;
+		// return resultList;
+		//
+		// } catch (Exception ex) {
+		// System.out
+		// .println("Source:getSampleCollection throws exception ... ...");
+		// ex.printStackTrace();
+		// }
+		// }
+		return this.sampleCollection;
 	}
 
 	public void setSampleCollection(java.util.Collection sampleCollection) {

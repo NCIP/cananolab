@@ -12,16 +12,18 @@ import java.io.Serializable;
 public class Measurement implements Serializable {
 
 	private static final long serialVersionUID = 1234567890L;
+
 	private java.lang.Long id;
+
 	private java.lang.Float value;
+
 	private String statisticsType;
 
 	/**
 	 * 
 	 */
 	public Measurement() {
-		
-		
+
 	}
 
 	public Measurement(Float value, String unit) {
@@ -29,18 +31,16 @@ public class Measurement implements Serializable {
 		this.setUnitOfMeasurement(unit);
 	}
 
-
 	public java.lang.Long getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(java.lang.Long id) {
 		this.id = id;
 	}
 
-
 	public java.lang.Float getValue() {
-		return value;
+		return this.value;
 	}
 
 	public void setValue(java.lang.Float value) {
@@ -50,7 +50,7 @@ public class Measurement implements Serializable {
 	private java.lang.String unitOfMeasurement;
 
 	public java.lang.String getUnitOfMeasurement() {
-		return unitOfMeasurement;
+		return this.unitOfMeasurement;
 	}
 
 	public void setUnitOfMeasurement(java.lang.String unitOfMeasurement) {
@@ -58,7 +58,7 @@ public class Measurement implements Serializable {
 	}
 
 	public String getStatisticsType() {
-		return statisticsType;
+		return this.statisticsType;
 	}
 
 	public void setStatisticsType(String statsType) {

@@ -15,7 +15,7 @@ public class DataStatus implements java.io.Serializable {
 	private java.lang.Long id;
 
 	public java.lang.Long getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(java.lang.Long id) {
@@ -25,7 +25,7 @@ public class DataStatus implements java.io.Serializable {
 	private java.lang.String status;
 
 	public java.lang.String getStatus() {
-		return status;
+		return this.status;
 	}
 
 	public void setStatus(java.lang.String status) {
@@ -35,7 +35,7 @@ public class DataStatus implements java.io.Serializable {
 	private java.lang.String reason;
 
 	public java.lang.String getReason() {
-		return reason;
+		return this.reason;
 	}
 
 	public void setReason(java.lang.String reason) {
