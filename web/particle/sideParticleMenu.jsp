@@ -3,6 +3,11 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+
+<link rel="StyleSheet" type="text/css" href="css/sidemenu.css">
+
+<script type="text/javascript" src="javascript/sidemenu.js"></script>
+
 <!-- submenu begins -->
 <c:choose>
 	<c:when test="${!empty param.particleName}">
@@ -32,83 +37,106 @@
 </c:choose>
 
 <c:choose>
-	<c:when test="${canCreateNanoparticle eq 'true'}">
+	<c:when test="${canUserSubmit eq 'true'}">
 		<c:set var="dispatchValue" value="setupUpdate" scope="session" />
 	</c:when>
 	<c:otherwise>
 		<c:set var="dispatchValue" value="setupView" scope="session" />
 	</c:otherwise>
 </c:choose>
+
 <table summary="" cellpadding="0" cellspacing="0" border="0"
 	height="100%" width="250">
 	<tr>
 		<td class="subMenuPrimaryTitle" height="21">
-			PARTICLE TREE
+			NAVIGATION TREE
+		</td>
+	</tr>
+	<tr><td>
+
+	<ul class="slidingmenu" id="menuroot">
+	  <li id="view_particle">VIEWING PARTICLE: <c:out value="${particleName}" />
+      </li>
+      <li class="toplist">
+			<c:url var="url" value="nanoparticleGeneralInfo.do">
+				<c:param name="dispatch" value="${dispatchValue}" />
+				<c:param name="particleName" value="${particleName}" />
+				<c:param name="particleType" value="${particleType}" />
+				<c:param name="particleSource" value="${particleSource}" />
+			</c:url>
+			<a class="topa" href="${url}">GENERAL INFORMATION</a>
+      </li>
+      <jsp:include page="sideParticleFunctionMenu.jsp"></jsp:include>
+      <jsp:include page="sideParticleCharacterizationMenu.jsp"></jsp:include>
+      
+	<li class="toplist">
+		<a href="#">ASSOCIATE FILES</a>
+		<c:if test="${!empty particleAssociatedFiles}" >
+			<ul class="sublist_1">
+				<c:forEach var="aReport" items="${particleAssociatedFiles}">
+					<c:url var="url" value="updateReportForParticle.do">
+						<c:param name="page" value="0" />
+						<c:param name="dispatch" value="${dispatchValue}" />
+						<c:param name="submitType" value="none" />
+						<c:param name="fileId" value="${aReport.id}" />
+						<c:param name="fileType" value="${aReport.type}"/>
+					</c:url>
+					<li><a	href="${url}" title="${aReport.displayName}">${aReport.name}</a></li>
+				</c:forEach>
+			</ul>
+		</c:if>						
+	</li>
+	<li class="toplist">
+		<a href="#">REPORTS</a>
+		<ul class="sublist_1">
+			<c:forEach var="aReport" items="${particleReports}">
+				<c:url var="url" value="updateReportForParticle.do">
+					<c:param name="page" value="0" />
+					<c:param name="dispatch" value="${dispatchValue}" />
+					<c:param name="submitType" value="none" />
+					<c:param name="fileId" value="${aReport.id}" />
+					<c:param name="fileType" value="${aReport.type}"/>
+				</c:url>
+				<li><a	href="${url}" title="${aReport.displayName}">${aReport.name}</a></li>
+			</c:forEach>
+		</ul>
+	</li>
+
+      <li class="toplist">
+        <a href="#">IN VIVO CHARACTERIZATIONS</a>
+      </li>
+    </ul>
+    
+	</td></tr>
+	<tr><td class="subMenuFill">
+		&nbsp;
+	</td></tr>
+	<tr>
+		<td class="subMenuPrimaryTitle" id="quick_link" height="27">
+				QUICK LINKS
+				<!-- anchor to skip sub menu -->
+				<a href="#content"><img height="1" alt="Skip Menu" src="images/shim.gif" width="1" border="0"></a>
 		</td>
 	</tr>
 	<tr>
-		<td class="formMessage" height="100%">
-			<table width="100%" height="95%" border="0" cellpadding="2"
-				cellspacing="0">
-				<tr>
-					<td align="left" valign="top" class="formMessage">
-						<ul>
-							<li>
-								<span class="largerText">General Information</span>
-								<br>
-								<br>
-								<span class="indented"> <c:choose>
-										<c:when test="${canCreateNanoparticle eq 'true'}">
-											<a
-												href="nanoparticleGeneralInfo.do?dispatch=setupUpdate&particleType=${particleType}&particleName=${particleName}&particleSource=${particleSource}">${particleName}
-												(${particleType})</a>
-										</c:when>
-										<c:otherwise>
-											<a
-												href="nanoparticleGeneralInfo.do?dispatch=setupView&particleType=${particleType}&particleName=${particleName}&particleSource=${particleSource}">${particleName}
-												(${particleType})</a>
-										</c:otherwise>
-									</c:choose> </span>
-								<br>
-								<br>
-							</li>
-							<li>
-								<jsp:include page="sideParticleFunctionMenu.jsp" />
-							</li>
-							<li>
-								<jsp:include page="sideParticleCharacterizationMenu.jsp" />
-							</li>
-							<li>
-								<span class="largerText">Other Associated Files
-									&nbsp;&nbsp;</span>
-								<c:forEach var="aReport" items="${particleAssociatedFiles}">
-									<span class="indented"> <a
-										href="updateReportForParticle.do?page=0&dispatch=${dispatchValue}&submitType=none&fileId=${aReport.id}&fileType=${aReport.type}"
-										title="${aReport.displayName}">${aReport.name}</a> </span>
-									<br>
-								</c:forEach>
-								<br>
-								<br>
-							</li>
-							<li>
-								<span class="largerText">Reports</span>
-								<br>
-								<c:forEach var="aReport" items="${particleReports}">
-									<span class="indented"> <a
-										href="updateReportForParticle.do?page=0&dispatch=${dispatchValue}&submitType=none&fileId=${aReport.id}&fileType=${aReport.instanceType}"
-										title="${aReport.displayName}">${aReport.name}</a> </span>
-									<br>
-								</c:forEach>
-							</li>
-						</ul>
-						<p>
-							&nbsp;
-						</p>
-					</td>
-				</tr>
-			</table>
+		<td class="subMenuSecondaryTitle" onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()" onclick="openWindow('http://www.cancer.gov')" onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()" height="20">
+				<a class="subMenuSecondary">NCI HOME</a>
 		</td>
 	</tr>
+	<tr>
+		<td class="subMenuSecondaryTitle" onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver')" onclick="openWindow('http://ncicb.nci.nih.gov/')" onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle')" height="20">
+			<a class="subMenuSecondary">NCICB HOME</a>
+		</td>
+	</tr>
+	<tr>
+		<td class="subMenuSecondaryTitle" onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver')" onclick="openWindow('http://ncl.cancer.gov/')" onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle')" height="20">
+			<a class="subMenuSecondary">NCL HOME</a>
+		</td>
+	</tr>
+	<tr><td class="subMenuFill" height="100%">
+		&nbsp;
+	</td></tr>
+
 	<tr>
 		<td class="subMenuFooter" height="22">
 			&nbsp;
