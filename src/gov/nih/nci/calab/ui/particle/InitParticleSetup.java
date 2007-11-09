@@ -17,10 +17,8 @@ import gov.nih.nci.calab.ui.core.InitSessionSetup;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -191,15 +189,8 @@ public class InitParticleSetup {
 			List<CharacterizationBean> charBeans = service
 					.getCharacterizationInfo(particleName, particleType);
 			Map<String, List<CharacterizationBean>> charMap = new HashMap<String, List<CharacterizationBean>>();
-			
-			Map<String, String> ascendTypeTreeMap = getAscendTypeTreeMap(charTypeChars);
-			
-			Map<String, Set<String>> typeTreeMap = new HashMap<String, Set<String>>();
-			
-			/* charType: category column of table def_characterization_category */
 			for (String charType : charTypeChars.keySet()) {
 				List<CharacterizationBean> newCharBeans = new ArrayList<CharacterizationBean>();
-				
 				// get all characterizations for the characterization type
 				List<CharacterizationBean> charList = (List<CharacterizationBean>) charTypeChars
 						.get(charType);
@@ -209,22 +200,6 @@ public class InitParticleSetup {
 						if (displayBean.getName().equals(charBean.getName())) {
 							charBean.setAbbr(displayBean.getAbbr());
 							newCharBeans.add(charBean);
-							
-							String childType = displayBean.getName();
-
-							while(childType != null && !childType.equalsIgnoreCase("Physical") &&
-									!childType.equalsIgnoreCase("in vitro")) {
-								String parentType = ascendTypeTreeMap.get(childType);
-
-								if(typeTreeMap.containsKey(parentType)) {
-									typeTreeMap.get(parentType).add(childType);
-								} else {
-									Set<String> typeSet = new TreeSet<String>();
-									typeSet.add(childType);
-									typeTreeMap.put(parentType, typeSet);
-								}
-								childType = parentType;
-							}
 							break;
 						}
 					}
@@ -233,53 +208,10 @@ public class InitParticleSetup {
 					charMap.put(charType, newCharBeans);
 				}
 			}
-			session.setAttribute("allCharacterizations", typeTreeMap );
-			
-			/*
-			 * nameCharMap
-			 * key: the 'name' column of table def_characterization_category
-			 * These names do not exist in the 'category' column, i.e. they are
-			 * the lowest level in the category tree.
-			 * value: list of CharacterizationBean
-			 */
-			Map<String, List<CharacterizationBean>> nameCharMap = 
-				new HashMap<String, List<CharacterizationBean>>();
-			
-			for (String charCategory : charMap.keySet()) {
-				List<CharacterizationBean> charList = (List<CharacterizationBean>)
-						charMap.get(charCategory);
-				for (CharacterizationBean cbean : charList) {
-					
-					String pname = cbean.getName();
-					if(!charMap.containsKey(pname)) {
-						if(nameCharMap.containsKey(pname)) {
-							List<CharacterizationBean> clist = (List<CharacterizationBean>) nameCharMap.get(pname);
-							clist.add(cbean);
-						} else {
-							List<CharacterizationBean> charBeanList = 
-								new ArrayList<CharacterizationBean>();
-							charBeanList.add(cbean);
-							nameCharMap.put(pname, charBeanList);
-						}
-					}
-				}
-			}		
-			session.setAttribute("nameToCharacterizations", nameCharMap);
+			session.setAttribute("allCharacterizations", charMap);
 		}
 	}
 
-	public Map<String, String> getAscendTypeTreeMap(Map<String, List<CharacterizationBean>> charTypeMap) {
-		Map<String, String> selectedCharTreeMap = new HashMap<String, String>();
-		for (String ctype : charTypeMap.keySet()) {
-			List<CharacterizationBean> cbeanList = (List<CharacterizationBean>) charTypeMap.get(ctype);
-			for(CharacterizationBean cbean : cbeanList) {
-				String cname = cbean.getName();
-				selectedCharTreeMap.put(cname, ctype);
-			}
-		}
-		return selectedCharTreeMap;
-	}
-	
 	public void setFunctionTypeFunctions(HttpSession session,
 			String particleName, String particleType) throws Exception {
 		if (session.getAttribute("allFuncTypeFuncs") == null
@@ -533,9 +465,6 @@ public class InitParticleSetup {
 	public void setAllCharacterizationTypes(HttpSession session)
 			throws Exception {
 		// set in application context
-		/*
-		 * do not use anymore
-		 * *******************
 		if (session.getServletContext()
 				.getAttribute("allCharacterizationTypes") == null) {
 			List<CharacterizationTypeBean> types = lookupService
@@ -543,8 +472,7 @@ public class InitParticleSetup {
 			session.getServletContext().setAttribute(
 					"allCharacterizationTypes", types);
 		}
-		*/
-		
+
 		// set in application context mapping between characterization type and
 		// child characterization name and abbrs
 		if (session.getServletContext().getAttribute("allCharTypeChars") == null) {
