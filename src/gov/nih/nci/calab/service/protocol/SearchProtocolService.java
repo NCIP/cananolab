@@ -68,7 +68,7 @@ public class SearchProtocolService {
 	}
 
 	// used for Ajax
-	public List<ProtocolFileBean> getProtocolFileBeans(String protocolName,
+	public List<ProtocolFileBean> getProtocolFiles(String protocolName,
 			String protocolType) throws Exception {
 		if (protocolName == null || protocolName.length() == 0
 				|| protocolType == null || protocolType.length() == 0) {
