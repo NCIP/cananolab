@@ -2,7 +2,7 @@
 var editOption = [{label:"--?--", value:""}];
 function retrieveProtocols() {
 	var protocolType = document.getElementById("protocolType").value;
-	ProtocolManager.getProtocolBeans(protocolType, populateProtocols);
+	ProtocolManager.getProtocolNames(protocolType, populateProtocolNames);
 }
 function resetProtocols() {
 	dwr.util.removeAllOptions("protocolName");
@@ -11,19 +11,19 @@ function resetProtocols() {
 	dwr.util.addOptions("protocolId", editOption, "value", "label");
 	writeLink(null);
 }
-function populateProtocols(protocols) {
+function populateProtocolNames(protocolNames) {
     //get previous selection
 	var selectedProtocolName = dwr.util.getValue("protocolName");
 	//remove option that's the same as previous selection
-	var updatedProtocols = new Array();
-	if (protocols != null) {
-		for (i = 0; i < protocols.length; i++) {
-			if (protocols[i].name != selectedProtocolName) {
-				updatedProtocols.push(protocols[i]);
+	var updatedProtocolNames = new Array();
+	if (protocolNames != null) {
+		for (i = 0; i < protocolNames.length; i++) {
+			if (protocolNames[i]!= selectedProtocolName) {
+				updatedProtocolNames.push(protocolNames[i]);
 			}
 		}
 	}
-	dwr.util.addOptions("protocolName", updatedProtocols, "name");
+	dwr.util.addOptions("protocolName", updatedProtocolNames);
 }
 function retrieveProtocolFileVersions() {
 	var protocolName = document.getElementById("protocolName").value;

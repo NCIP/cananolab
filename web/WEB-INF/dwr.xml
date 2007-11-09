@@ -7,15 +7,11 @@
 				value="gov.nih.nci.calab.service.protocol.SearchProtocolService" />
 			<include method="getProtocolFileBean" />
 			<include method="getProtocolFileBeans" />
-			<include method="getProtocolBeans" />
+			<include method="getProtocolNames" />
 		</create>
 		<convert converter="bean"
 			match="gov.nih.nci.calab.dto.common.ProtocolFileBean">
 			<param name="include" value="id, name, title, uri, version" />
-		</convert>
-		<convert converter="bean"
-			match="gov.nih.nci.calab.dto.common.ProtocolBean">
-			<param name="include" value="id, name, type" />
 		</convert>
 	</allow>
 </dwr>
