@@ -1,54 +1,23 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-<li class="toplist"><a href="#">FUNCTION</a>
-	<ul class="sublist_4">
-	<c:forEach var="funcType" items="${allFunctionTypes}">
-	   <c:choose>
-		<c:when test="${!empty allFuncTypeFuncs[funcType]}" >
-			<li><a href="#">${funcType}</a>
-        		<ul class="sublist_5">
-				<c:forEach var="aFunc" items="${allFuncTypeFuncs[funcType]}">
-						<c:url var="url" value="nanoparticleFunction.do">
-							<c:param name="page" value="0" />
-							<c:param name="dispatch" value="${dispatchValue}" />
-							<c:param name="particleName" value="${particleName}" />
-							<c:param name="particleType" value="${particleType}" />
-							<c:param name="functionId" value="${aFunc.id}" />
-							<c:param name="submitType" value="${funcType}" />
-						</c:url>
-						<li><a href=${url}>${aFunc.viewTitle}</a></li>
-				</c:forEach>
-				<c:if test="${canCreateNanoparticle eq 'true'}">
-					<c:url var="addUrl" value="nanoparticleFunction.do">
-							<c:param name="page" value="0" />
-							<c:param name="dispatch" value="setup" />
-							<c:param name="particleName" value="${particleName}" />
-							<c:param name="particleType" value="${particleType}" />
-							<c:param name="submitType" value="${funcType}" />
-					</c:url>
-					<li><a href="${addUrl}">Enter ${funcType}</a></li>
-				</c:if>
-        		</ul>
-        	</li>
-       </c:when>
-       <c:otherwise>
-			<c:if test="${canCreateNanoparticle eq 'true'}">
-       			<li><a href="#">${funcType}</a>
-       				<ul class="sublist_5">
-       					<c:url var="addUrl" value="nanoparticleFunction.do">
-							<c:param name="page" value="0" />
-							<c:param name="dispatch" value="setup" />
-							<c:param name="particleName" value="${particleName}" />
-							<c:param name="particleType" value="${particleType}" />
-							<c:param name="submitType" value="${funcType}" />
-						</c:url>
-						<li><a href="${addUrl}">Enter ${funcType}</a></li>
-					</ul>
-				</li>
-			</c:if>
-       </c:otherwise>
-      </c:choose>
+<span class="largerText">Function</span>
+<br>
+<br>
+<c:forEach var="funcType" items="${allFunctionTypes}">
+	<span class="indented0"><strong>-${funcType}</strong></span>
+	<c:choose>
+		<c:when test="${canCreateNanoparticle eq 'true'}">&nbsp;&nbsp;<a
+				href="nanoparticleFunction.do?dispatch=setup&page=0&particleType=${particleType}&particleName=${particleName}&submitType=${funcType}"><em>add</em></a>
+		</c:when>
+	</c:choose>
+	<br>
+	<c:forEach var="aFunc" items="${allFuncTypeFuncs[funcType]}">
+		<span class="indented1"><a
+			href="nanoparticleFunction.do?dispatch=${dispatchValue}&page=0&particleType=${particleType}&particleName=${particleName}&functionId=${aFunc.id}&submitType=${funcType}">${aFunc.viewTitle}</a>
+		</span>
+		<br>
 	</c:forEach>
-	</ul>
-</li>
+	<br>
+</c:forEach>
+<br>
