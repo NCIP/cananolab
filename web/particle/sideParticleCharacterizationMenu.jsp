@@ -19,7 +19,7 @@
 <c:set var="physicalType" value="Physical" />
 <li class="toplist">
 	<a href="#" >COMPOSITION</a>
-	<ul class="sublist_1">
+	<ul class="sublist_5">
 	<c:forEach var="subCharType" items="${allCharacterizations[physicalType]}">
 	  <c:if test="${subCharType == 'Composition'}" >
         	<c:forEach var="leafCharBean" items="${nameToCharacterizations[subCharType]}">
@@ -51,11 +51,11 @@
 </li>
 
 <li class="toplist"><a href="#">PHYSICAL CHARACTERIZATIONS</a>
-	<ul class="sublist_1" style=${physicalDisplay}>
+	<ul class="sublist_4" style=${physicalDisplay}>
 	<c:forEach var="subCharType" items="${allCharacterizations[physicalType]}">
 	  <c:if test="${subCharType != 'Composition'}" >
 		<li><a href="#">${subCharType}</a>
-        	<ul class="sublist_2" style=${physicalDisplay}>
+        	<ul class="sublist_5" style=${physicalDisplay}>
         	<c:forEach var="leafCharBean" items="${nameToCharacterizations[subCharType]}">
 				<c:url var="url" value="${leafCharBean.actionName}.do">
 					<c:param name="page" value="0" />
