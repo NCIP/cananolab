@@ -1,10 +1,8 @@
 package gov.nih.nci.calab.service.protocol;
 
 import gov.nih.nci.calab.db.HibernateUtil;
-import gov.nih.nci.calab.domain.Protocol;
 import gov.nih.nci.calab.domain.ProtocolFile;
 import gov.nih.nci.calab.dto.common.LabFileBean;
-import gov.nih.nci.calab.dto.common.ProtocolBean;
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.report.SearchReportService;
@@ -113,23 +111,23 @@ public class SearchProtocolService {
 	}
 
 	// used for Ajax
-	public List<ProtocolBean> getProtocolBeans(String protocolType)
+	public SortedSet<String> getProtocolNames(String protocolType)
 			throws Exception {
 		if (protocolType == null || protocolType.length() == 0) {
 			return null;
 		}
-		List<ProtocolBean> protocols = new ArrayList<ProtocolBean>();
+		SortedSet<String> protocolNames = new TreeSet<String>();
 		try {
 			Session session = HibernateUtil.currentSession();
 			HibernateUtil.beginTransaction();
 
-			String hqlString = "from Protocol where type='" + protocolType
+			String hqlString = "select name from Protocol where type='" + protocolType
 					+ "'";
 			List results = session.createQuery(hqlString).list();
 
 			for (Object obj : results) {
-				Protocol protocol = (Protocol) obj;
-				protocols.add(new ProtocolBean(protocol));
+				String protocolName = (String) obj;
+				protocolNames.add(protocolName);
 			}
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
@@ -138,7 +136,7 @@ public class SearchProtocolService {
 		} finally {
 			HibernateUtil.closeSession();
 		}
-		return protocols;
+		return protocolNames;
 	}
 
 	public List<ProtocolFileBean> getProtocolFileBeans(String protocolType)
