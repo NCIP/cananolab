@@ -11,9 +11,10 @@
 					Search Nanoparticles
 				</h3>
 			</td>
-			<td align="right" width="25%">
-				<a href="remoteSearchNanoparticle.do?dispatch=setup" class="helpText">Grid
-					Search</a>&nbsp;
+			<td align="right" width="30%">
+				<img src="images/icon_gridSearch_48x.gif" alt="caBIG grid search"
+					align="center"><a href="remoteSearchNanoparticle.do?dispatch=setup"
+					class="helpText">Grid Search</a>&nbsp;&nbsp;
 				<%--<a href="advancedNanoparticleSearch.do" class="helpText">Advanced Search</a> &nbsp; &nbsp; --%>
 				<a
 					href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=search_nano_help')"
@@ -74,8 +75,7 @@
 										<span class="indented${charType.indentLevel}"><a
 											href="#"
 											onclick="javascript:dynamicDropdown('${charType.type}', document.searchNanoparticleForm.characterizations, charTypeChars); setHiddenCharType('${charType.type}')">${charType.type}
-										</a>
-										</span>
+										</a> </span>
 									</c:when>
 									<c:otherwise>
 										<span class="indented${charType.indentLevel}">${charType.type}</span>
