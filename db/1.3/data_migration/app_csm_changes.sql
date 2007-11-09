@@ -5,6 +5,8 @@
 -- Disable foreign key checks
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 
+use cananolab;
+
 INSERT INTO csm_protection_element(protection_element_name, protection_element_description, object_id, attribute, protection_element_type_id, application_id, update_date)
 VALUES ('sample', '', 'sample', '', NULL, 2, sysdate()),
   ('protocol', '', 'protocol', '', NULL, 2, sysdate()),
