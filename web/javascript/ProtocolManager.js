@@ -28,7 +28,7 @@ function populateProtocolNames(protocolNames) {
 function retrieveProtocolFileVersions() {
 	var protocolName = document.getElementById("protocolName").value;
 	var protocolType = document.getElementById("protocolType").value;
-	ProtocolManager.getProtocolFileBeans(protocolName, protocolType, populateProtocolFileVersions);
+	ProtocolManager.getProtocolFiles(protocolName, protocolType, populateProtocolFileVersions);
 }
 function resetProtocolFiles() {
 	dwr.util.removeAllOptions("protocolId");

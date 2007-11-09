@@ -6,7 +6,7 @@
 			<param name="class"
 				value="gov.nih.nci.calab.service.protocol.SearchProtocolService" />
 			<include method="getProtocolFileBean" />
-			<include method="getProtocolFileBeans" />
+			<include method="getProtocolFiles" />
 			<include method="getProtocolNames" />
 		</create>
 		<convert converter="bean"
