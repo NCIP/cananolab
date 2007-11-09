@@ -2,12 +2,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <li class="toplist"><a href="#">FUNCTION</a>
-	<ul class="sublist_1">
+	<ul class="sublist_4">
 	<c:forEach var="funcType" items="${allFunctionTypes}">
 	   <c:choose>
 		<c:when test="${!empty allFuncTypeFuncs[funcType]}" >
 			<li><a href="#">${funcType}</a>
-        		<ul class="sublist_2">
+        		<ul class="sublist_5">
 				<c:forEach var="aFunc" items="${allFuncTypeFuncs[funcType]}">
 						<c:url var="url" value="nanoparticleFunction.do">
 							<c:param name="page" value="0" />
@@ -35,7 +35,7 @@
        <c:otherwise>
 			<c:if test="${canCreateNanoparticle eq 'true'}">
        			<li><a href="#">${funcType}</a>
-       				<ul class="sublist_2">
+       				<ul class="sublist_5">
        					<c:url var="addUrl" value="nanoparticleFunction.do">
 							<c:param name="page" value="0" />
 							<c:param name="dispatch" value="setup" />
