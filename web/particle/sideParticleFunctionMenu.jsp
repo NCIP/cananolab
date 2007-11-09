@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-<li><a class="topa" href="#">FUNCTION</a>
+<li class="toplist"><a href="#">FUNCTION</a>
 	<ul class="sublist_1">
 	<c:forEach var="funcType" items="${allFunctionTypes}">
 	   <c:choose>
