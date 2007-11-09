@@ -45,12 +45,17 @@ where protection_element_name in ('administration', 'search', 'remote search', '
 DELETE from csm_protection_group
 where protection_group_name in ('administration', 'search', 'remote search', 'submit', 'workflow', 'inventory', 'characterization');
 
-delete from csm_pg_pe
+DELETE from csm_user_group_role_pg 
 where protection_group_id not in
 (select protection_group_id
 from csm_protection_group);
 
-delete from csm_pg_pe
+DELETE from csm_pg_pe
+where protection_group_id not in
+(select protection_group_id
+from csm_protection_group);
+
+DELETE from csm_pg_pe
 where protection_element_id not in
 (select protection_element_id
 from csm_protection_element);
