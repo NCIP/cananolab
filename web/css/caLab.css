@@ -188,8 +188,8 @@ td.subMenuFooter { /* for the last row in the submenu left of the footer menu */
 LINKS BEGIN 
 ###############*/
 a:link,a:visited,a:active { /* default links */
-	/* color: #333333; */ /* constant: dark gray */
-	/* text-decoration: underline; */
+	color: #333333; /* constant: dark gray */
+	text-decoration: underline;
 	white-space: nowrap;
 }
 
