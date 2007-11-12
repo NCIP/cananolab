@@ -11,45 +11,25 @@ function addEvent(elm, evType, fn, useCapture) {
 }
 
 function init() {
-
   var rootul = document.getElementById('menuroot');
   var lis = rootul.getElementsByTagName('li');
     for (var i = 0; i < lis.length; i++) {
       var node = lis[i];
 
-      if (node.className == 'toplist' &&
-      		node.nodeName.toLowerCase() == 'li' &&
-         	node.getElementsByTagName('ul').length > 0) {
-         	var cname = node.className;
-        addEvent(node, 'click', getClickFor(node), false);
-        node.getElementsByTagName('a')[0].className += ' subheader';
+      if(node.nodeName.toLowerCase() == 'li' &&
+         node.getElementsByTagName('ul').length > 0) {
+         	
+         	if(node.className == 'toplist') {
+        		addEvent(node, 'click', getClickFor(node), false);
+        		node.getElementsByTagName('a')[0].className += ' subheader';
+        	} else {
+        		addEvent(node, 'click', cancelBubling, false);
+        	}
       }
-    }
-
+   }
 }
-
-/*
-function init() {
-  var uls = document.getElementsByTagName('ul');
-  for (var u = 0; u < uls.length; u++) {
-    if (uls[u].className.search(/\bslidingmenu\b/) == -1) continue;
-    var lis = uls[u].getElementsByTagName('li');
-    for (var i = 0; i < lis.length; i++) {
-      var node = lis[i];
-      if (node.nodeName.toLowerCase() == 'li' &&
-          node.getElementsByTagName('ul').length > 0) {
-        addEvent(node, 'click', getClickFor(node), false);
-        node.getElementsByTagName('a')[0].className += ' subheader';
-      }
-    }
-  }
-}
-*/
-
-
 
 addEvent(window, 'load', init, false);
-
 
 function getClickFor(node) {
   return function(e) { mclick(e, node); };
@@ -98,4 +78,13 @@ function closeAllSideMenu ()
 	for(var k=0; k<menuuls.length; k++) {
 		menuuls[k].style.display = 'none';
 	}
+}
+
+function cancelBubling(e) {
+	if (window.event) {
+      window.event.cancelBubble = true;
+    }
+    if (e && e.stopPropagation && e.preventDefault) {
+      e.stopPropagation();
+    }
 }
