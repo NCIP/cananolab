@@ -1,25 +1,47 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-<!-- 
-	<span class="indented${charType.indentLevel}"><strong>-${charType.type}</strong> </span>
-	<c:choose>
-		<c:when test="${canCreateNanoparticle eq 'true' && charType.hasAction}">
-			&nbsp;&nbsp;<a href="submitAction.do?submitType=${charType.type}&particleType=${particleType}&particleName=${particleName}&particleSource=${particleSource}"><em>add</em></a>
-			<c:choose>
-				<c:when test="${canUserDeleteChars eq 'true'}">
-					&nbsp;<a href="deleteAction.do?page=0&charCategory=${charType.type}&dispatch=setup&particleType=${particleType}&particleName=${particleName}"><em>delete</em></a>
-				</c:when>
-			</c:choose>
-		</c:when>
-	</c:choose>
--->
+<c:choose>
+	<c:when test="${displaytype == 'Molecular Weight' ||
+			  displaytype == 'Morphology' ||
+			  displaytype == 'Purity' ||
+			  displaytype == 'Size' ||
+			  displaytype == 'Surface' ||
+			  displaytype == 'Solubility' ||
+			  displaytype == 'Shape'}">
+		<c:set var="phyDisplay" value="display: block;" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="phyDisplay" value="display: none;" />
+	</c:otherwise>
+</c:choose>
 
-				
+<c:choose>
+	<c:when test="${displaytype == 'Toxicity' ||
+				displaytype == 'Cytotoxicity' ||
+				displaytype == 'Immunotoxicity' ||
+				displaytype == 'Oxidative Stress' ||
+				displaytype == 'Enzyme Induction'}">
+		<c:set var="invitroDisplay" value="display: block;" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="invitroDisplay" value="display: none;" />
+	</c:otherwise>
+</c:choose>
+
+<c:choose>
+	<c:when test="${displaytype == 'Composition'}">
+		<c:set var="compDisplay" value="display: block;" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="compDisplay" value="display: none;" />
+	</c:otherwise>
+</c:choose>
+
 <c:set var="physicalType" value="Physical" />
 <li class="toplist">
 	<a href="#" >COMPOSITION</a>
-	<ul class="sublist_5">
+	<ul class="sublist_5" style="${compDisplay}">
 	<c:forEach var="subCharType" items="${allCharacterizations[physicalType]}">
 	  <c:if test="${subCharType == 'Composition'}" >
         	<c:forEach var="leafCharBean" items="${nameToCharacterizations[subCharType]}">
@@ -51,11 +73,11 @@
 </li>
 
 <li class="toplist"><a href="#">PHYSICAL CHARACTERIZATIONS</a>
-	<ul class="sublist_4" style=${physicalDisplay}>
+	<ul class="sublist_4" style="${phyDisplay}" >
 	<c:forEach var="subCharType" items="${allCharacterizations[physicalType]}">
 	  <c:if test="${subCharType != 'Composition'}" >
 		<li><a href="#">${subCharType}</a>
-        	<ul class="sublist_5" style=${physicalDisplay}>
+        	<ul class="sublist_5" style="${phyDisplay}">
         	<c:forEach var="leafCharBean" items="${nameToCharacterizations[subCharType]}">
 				<c:url var="url" value="${leafCharBean.actionName}.do">
 					<c:param name="page" value="0" />
@@ -90,19 +112,19 @@
 
 		<c:set var="inVitroType" value="In Vitro" />
 		<li class="toplist" ><a href="#">IN VITRO CHARACTERIZATIONS</a>
-        <ul class="sublist_1" style=${invitroDisplay}>
+        <ul class="sublist_1" style="${invitroDisplay}">
         <c:forEach var="secondLevelChar" items="${allCharacterizations[inVitroType]}">
         	<li><a href="#">${secondLevelChar}</a>
-        	<ul class="sublist_2" style=${invitroDisplay}>
+        	<ul class="sublist_2" style="${invitroDisplay}">
         	<c:forEach var="thirdLevelChar" items="${allCharacterizations[secondLevelChar]}">
         		<li><a href="#">${thirdLevelChar}</a>
-        		<ul class="sublist_3" style=${invitroDisplay}>
+        		<ul class="sublist_3" style="${invitroDisplay}">
         		<c:forEach var="fourthLevelChar" items="${allCharacterizations[thirdLevelChar]}">
         			<li><a href="#">${fourthLevelChar}</a>
-        			<ul class="sublist_4" style=${invitroDisplay}>
+        			<ul class="sublist_4" style="${invitroDisplay}">
         			<c:forEach var="fifthLevelChar" items="${allCharacterizations[fourthLevelChar]}">
         				<li><a href="#">${fifthLevelChar}</a>
-        				<ul class="sublist_5" style=${invitroDisplay}>
+        				<ul class="sublist_5" style="${invitroDisplay}">
         				<c:forEach var="leafCharBean" items="${nameToCharacterizations[fifthLevelChar]}">
 							<c:url var="url" value="${leafCharBean.actionName}.do">
 								<c:param name="page" value="0" />
