@@ -13,7 +13,7 @@
 	</c:otherwise>
 </c:choose>
 
-<li class="toplist"><a href="#">FUNCTION</a>
+<li class="toplist"><a href="#" class="subMenuSecondary" >FUNCTION</a>
 	<ul class="sublist_4" style="${funcDisplay}">
 	<c:forEach var="funcType" items="${allFunctionTypes}">
 	   <c:choose>
@@ -29,7 +29,7 @@
 							<c:param name="functionId" value="${aFunc.id}" />
 							<c:param name="submitType" value="${funcType}" />
 						</c:url>
-						<li><a href=${url}>${aFunc.viewTitle}</a></li>
+						<li><a href=${url}><span class="data_anchar">></span>${aFunc.viewTitle}</a></li>
 				</c:forEach>
 				<c:if test="${canCreateNanoparticle eq 'true'}">
 					<c:url var="addUrl" value="nanoparticleFunction.do">
