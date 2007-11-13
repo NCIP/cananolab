@@ -40,7 +40,7 @@
 
 <c:set var="physicalType" value="Physical" />
 <li class="toplist">
-	<a href="#" >COMPOSITION</a>
+	<a href="#" class="subMenuSecondary">COMPOSITION</a>
 	<ul class="sublist_5" style="${compDisplay}">
 	<c:forEach var="subCharType" items="${allCharacterizations[physicalType]}">
 	  <c:if test="${subCharType == 'Composition'}" >
@@ -56,7 +56,7 @@
 					<c:param name="actionName" value="${leafCharBean.actionName}" />
 					<c:param name="charName" value="${leafCharBean.name}"/>
 				</c:url>
-				<li><a href=${url}>${leafCharBean.viewTitle}</a></li>
+				<li><a href=${url}><span class="data_anchar">></span>${leafCharBean.viewTitle}</a></li>
 			</c:forEach>
 			<c:if test="${canCreateNanoparticle eq 'true'}">
 				<c:url var="submitUrl" value="submitAction.do">
@@ -72,7 +72,7 @@
 	</ul>
 </li>
 
-<li class="toplist"><a href="#">PHYSICAL CHARACTERIZATIONS</a>
+<li class="toplist"><a href="#" class="subMenuSecondary">PHYSICAL CHARACTERIZATIONS</a>
 	<ul class="sublist_4" style="${phyDisplay}" >
 	<c:forEach var="subCharType" items="${allCharacterizations[physicalType]}">
 	  <c:if test="${subCharType != 'Composition'}" >
@@ -92,7 +92,7 @@
 					<c:param name="physicalDisplay" value="display: block;"/>
 					<c:param name="invitroDisplay" value="display: none;"/>
 				</c:url>
-				<li><a href=${url}>${leafCharBean.viewTitle}</a></li>
+				<li><a href=${url}><span class="data_anchar">></span>${leafCharBean.viewTitle}</a></li>
 			</c:forEach>
 			<c:if test="${canCreateNanoparticle eq 'true'}">
 				<c:url var="submitUrl" value="submitAction.do">
@@ -111,10 +111,10 @@
 </li>
 
 		<c:set var="inVitroType" value="In Vitro" />
-		<li class="toplist" ><a href="#">IN VITRO CHARACTERIZATIONS</a>
+		<li class="toplist" ><a href="#" class="subMenuSecondary" >IN VITRO CHARACTERIZATIONS</a>
         <ul class="sublist_1" style="${invitroDisplay}">
         <c:forEach var="secondLevelChar" items="${allCharacterizations[inVitroType]}">
-        	<li><a href="#">${secondLevelChar}</a>
+        	<li><a href="#" class="sublist_1">${secondLevelChar}</a>
         	<ul class="sublist_2" style="${invitroDisplay}">
         	<c:forEach var="thirdLevelChar" items="${allCharacterizations[secondLevelChar]}">
         		<li><a href="#">${thirdLevelChar}</a>
@@ -139,7 +139,7 @@
 								<c:param name="physicalDisplay" value="display: none;"/>
 								<c:param name="invitroDisplay" value="display: block;"/>
 							</c:url>
-							<li><a href=${url}>${leafCharBean.viewTitle}</a></li>
+							<li><a href=${url} class="sublist_5"><span class="data_anchar">></span>${leafCharBean.viewTitle}</a></li>
 						</c:forEach>
 						<c:if test="${canCreateNanoparticle eq 'true'}">
 							<c:url var="submitUrl" value="submitAction.do">
@@ -148,7 +148,7 @@
 								<c:param name="particleSource" value="${particleSource}" />
 								<c:param name="submitType" value="${fifthLevelChar}" />
 							</c:url>
-							<li><a href="${submitUrl}">Enter ${fifthLevelChar}</a></li>
+							<li><a href="${submitUrl}"><span class="data_anchar">*</span>Enter ${fifthLevelChar}</a></li>
 						</c:if>
 						</ul></li>
 					</c:forEach>
