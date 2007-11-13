@@ -73,9 +73,7 @@
 <table summary="" cellpadding="0" cellspacing="0" border="0"
 	height="100%" width="250">
 	<tr>
-		<td class="subMenuPrimaryTitle" height="21">
-			NAVIGATION TREE
-		</td>
+		<td class="subMenuPrimaryTitle" height="21">NAVIGATION TREE</td>
 	</tr>
 	<tr><td>
 

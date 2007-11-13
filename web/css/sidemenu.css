@@ -78,8 +78,7 @@ ul.sublist_1 a {
 	
 }
 
-
-ul.sublist_2 a:link, a:visited, a:active {
+ul.sublist_2 a:link.sublist_4, a:visited.sublist_4, a:active.sublist_4 {
 	color: #400080;
 }
 
@@ -87,13 +86,12 @@ ul.sublist_1 a:link.sublist_1, a:visited.sublist_1, a:active.sublist_1 {
 	color: #FFFFFF;
 }
 
-/*
-ul.sublist_5 a:link, a:visited, a:active {
+ul.sublist_5 a:link.sublist_5, a:visited.sublist_5, a:active.sublist_5 {
 	color: black;
 }
-*/
+
 ul.sublist_2 a {
-	background-color: #D4D4FF;
+	background-color: #D3DDE7; /* #D4D4FF; */
 	color: #400080; /*#475B82;  dark blue */
 	
 	font-size: 0.8em;
@@ -106,6 +104,7 @@ ul.sublist_2 a {
 ul.sublist_2 li {
 	/* border-bottom-color: #475B82; */
 	/* background-color: #D4D4FF; */
+	background-color: #D3DDE7;
 }
 
 ul.sublist_3 a {
@@ -121,12 +120,12 @@ ul.sublist_3 a {
 }
 
 ul.sublist_3 li {
-	background-color: #AAD4FF; /* #AAAAFF; */
+	background-color: #D3DDE7 /* #AAD4FF;  #AAAAFF; */
 	border-bottom: 1px solid #cccccc;
 }
 
 ul.sublist_4 a {
-	background-color: #D4D4FF;
+	background-color: #D3DDE7;
 	color: #400080;
 	font-size: 0.8em;
 	font-weight: bold;
@@ -137,7 +136,7 @@ ul.sublist_4 a {
 }
 
 ul.sublist_4 li {
-	background-color: #D4D4FF;
+	background-color: #D3DDE7;
 	border-right: 1px solid #cccccc;
 }
 
@@ -196,6 +195,5 @@ ul.slidingmenu ul {
 .data_anchar {
 	font-size: 0.7em;
 	font-weight: bold;
-	/* padding-right: 0.2em; */
 	vertical-align: middle;
 }
