@@ -21,7 +21,7 @@ function init() {
          	
          	if(node.className == 'toplist') {
         		addEvent(node, 'click', getClickFor(node), false);
-        		node.getElementsByTagName('a')[0].className += ' subheader';
+        		// node.getElementsByTagName('a')[0].className += ' subheader';
         	} else {
         		addEvent(node, 'click', cancelBubling, false);
         	}
