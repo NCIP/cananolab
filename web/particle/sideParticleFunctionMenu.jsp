@@ -29,7 +29,7 @@
 							<c:param name="functionId" value="${aFunc.id}" />
 							<c:param name="submitType" value="${funcType}" />
 						</c:url>
-						<li><a href=${url}><span class="data_anchar">></span>${aFunc.viewTitle}</a></li>
+						<li><a href=${url}><span class="data_anchar">>&nbsp;</span>${aFunc.viewTitle}</a></li>
 				</c:forEach>
 				<c:if test="${canCreateNanoparticle eq 'true'}">
 					<c:url var="addUrl" value="nanoparticleFunction.do">
