@@ -533,9 +533,6 @@ public class InitParticleSetup {
 	public void setAllCharacterizationTypes(HttpSession session)
 			throws Exception {
 		// set in application context
-		/*
-		 * do not use anymore
-		 * *******************
 		if (session.getServletContext()
 				.getAttribute("allCharacterizationTypes") == null) {
 			List<CharacterizationTypeBean> types = lookupService
@@ -543,7 +540,7 @@ public class InitParticleSetup {
 			session.getServletContext().setAttribute(
 					"allCharacterizationTypes", types);
 		}
-		*/
+		
 		
 		// set in application context mapping between characterization type and
 		// child characterization name and abbrs
