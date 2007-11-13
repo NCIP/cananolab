@@ -8,7 +8,6 @@
 <script type="text/javascript" src="javascript/sidemenu.js"></script>
 
 <!-- submenu begins -->
-
 <c:choose>
 	<c:when test="${!empty param.submitType && param.submitType != 'none'}">
 		<c:set var="displaytype" value="${param.submitType}" scope="request" />
@@ -81,8 +80,8 @@
 	<tr><td>
 
 	<ul class="slidingmenu" id="menuroot">
-	  <li id="view_particle">VIEWING PARTICLE: <c:out value="${particleName}" />
-      </li>
+	 
+	  <li id="view_particle" >VIEWING PARTICLE: <c:out value="${particleName}" /></li>
       <li class="toplist">
 			<c:url var="url" value="nanoparticleGeneralInfo.do">
 				<c:param name="dispatch" value="${dispatchValue}" />
@@ -90,15 +89,15 @@
 				<c:param name="particleType" value="${particleType}" />
 				<c:param name="particleSource" value="${particleSource}" />
 			</c:url>
-			<a class="topa" href="${url}">GENERAL INFORMATION</a>
+			<a href="${url}" class="subMenuSecondary" >GENERAL INFORMATION</a>
       </li>
       <jsp:include page="sideParticleFunctionMenu.jsp"></jsp:include>
       <jsp:include page="sideParticleCharacterizationMenu.jsp"></jsp:include>
       
 	<li class="toplist">
-		<a href="#">ASSOCIATE FILES</a>
+		<a href="#" class="subMenuSecondary">ASSOCIATE FILES</a>
 		<c:if test="${!empty particleAssociatedFiles}" >
-			<ul class="sublist_1" style="${fileDisplay}">
+			<ul class="sublist_5" style="${fileDisplay}">
 				<c:forEach var="aReport" items="${particleAssociatedFiles}">
 					<c:url var="url" value="updateReportForParticle.do">
 						<c:param name="page" value="0" />
@@ -108,13 +107,13 @@
 						<c:param name="fileType" value="${aReport.type}"/>
 						<c:param name="displayType" value="associateFile"/>
 					</c:url>
-					<li><a	href="${url}" title="${aReport.displayName}">${aReport.name}</a></li>
+					<li><a	href="${url}" title="${aReport.displayName}"><span class="data_anchar">>&nbsp;</span>${aReport.name}</a></li>
 				</c:forEach>
 			</ul>
 		</c:if>						
 	</li>
 	<li class="toplist">
-		<a href="#">REPORTS</a>
+		<a href="#" class="subMenuSecondary">REPORTS</a>
 		<ul class="sublist_5" style="${reportDisplay}">
 			<c:forEach var="aReport" items="${particleReports}">
 				<c:url var="url" value="updateReportForParticle.do">
@@ -125,13 +124,13 @@
 					<c:param name="fileId" value="${aReport.id}" />
 					<c:param name="fileType" value="${aReport.type}"/>
 				</c:url>
-				<li><a	href="${url}" title="${aReport.displayName}">${aReport.name}</a></li>
+				<li><a	href="${url}" title="${aReport.displayName}"><span class="data_anchar">>&nbsp;</span>${aReport.name}</a></li>
 			</c:forEach>
 		</ul>
 	</li>
 
-      <li class="toplist">
-        <a href="#">IN VIVO CHARACTERIZATIONS</a>
+      <li class="toplist" id="invivolist" >
+        IN VIVO CHARACTERIZATIONS
       </li>
     </ul>
     
@@ -140,11 +139,7 @@
 		&nbsp;
 	</td></tr>
 	<tr>
-		<td class="subMenuPrimaryTitle" id="quick_link" height="27">
-				QUICK LINKS
-				<!-- anchor to skip sub menu -->
-				<a href="#content"><img height="1" alt="Skip Menu" src="images/shim.gif" width="1" border="0"></a>
-		</td>
+		<td class="subMenuPrimaryTitle" height="27">QUICK LINKS</td>
 	</tr>
 	<tr>
 		<td class="subMenuSecondaryTitle" onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()" onclick="openWindow('http://www.cancer.gov')" onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()" height="20">
