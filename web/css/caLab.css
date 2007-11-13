@@ -188,8 +188,8 @@ td.subMenuFooter { /* for the last row in the submenu left of the footer menu */
 LINKS BEGIN 
 ###############*/
 a:link,a:visited,a:active { /* default links */
-	/* color: #333333; */ /* constant: dark gray */
-	/* text-decoration: underline; */
+	color: #333333; /* constant: dark gray */
+	text-decoration: underline;
 	white-space: nowrap;
 }
 
@@ -248,7 +248,6 @@ a:link.footerMenuLink,a:visited.footerMenuLink,a:active.footerMenuLink { /* for 
 a:hover.footerMenuLink {
 	color: #ffffff; /* constant: white */
 }
-
 
 a:link.dataPagingLink,a:visited.dataPagingLink,a:active.dataPagingLink { /* for the previous and next links for the paging areas */
 	color: #5c5c5c; /* constant: dark gray */
