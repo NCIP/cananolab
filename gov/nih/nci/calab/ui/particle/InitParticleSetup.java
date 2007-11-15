@@ -194,7 +194,11 @@ public class InitParticleSetup {
 			
 			Map<String, String> ascendTypeTreeMap = getAscendTypeTreeMap(charTypeChars);
 			
+			// all characterization types
 			Map<String, Set<String>> typeTreeMap = new HashMap<String, Set<String>>();
+			
+			// only characterization types that searched with viewTitles
+			Map<String, Set<String>> typeTreeSelectedMap = new HashMap<String, Set<String>>();
 			
 			/* charType: category column of table def_characterization_category */
 			for (String charType : charTypeChars.keySet()) {
@@ -204,29 +208,41 @@ public class InitParticleSetup {
 				List<CharacterizationBean> charList = (List<CharacterizationBean>) charTypeChars
 						.get(charType);
 				// set abbreviation for each saved characterization
-				for (CharacterizationBean charBean : charBeans) {
-					for (CharacterizationBean displayBean : charList) {
+				for (CharacterizationBean displayBean : charList) {
+					for (CharacterizationBean charBean : charBeans) {
 						if (displayBean.getName().equals(charBean.getName())) {
 							charBean.setAbbr(displayBean.getAbbr());
 							newCharBeans.add(charBean);
-							
+											
 							String childType = displayBean.getName();
-
 							while(childType != null && !childType.equalsIgnoreCase("Physical") &&
 									!childType.equalsIgnoreCase("in vitro")) {
 								String parentType = ascendTypeTreeMap.get(childType);
 
-								if(typeTreeMap.containsKey(parentType)) {
-									typeTreeMap.get(parentType).add(childType);
+								if(typeTreeSelectedMap.containsKey(parentType)) {
+									typeTreeSelectedMap.get(parentType).add(childType);
 								} else {
 									Set<String> typeSet = new TreeSet<String>();
 									typeSet.add(childType);
-									typeTreeMap.put(parentType, typeSet);
+									typeTreeSelectedMap.put(parentType, typeSet);
 								}
 								childType = parentType;
 							}
-							break;
 						}
+					}
+					String childType = displayBean.getName();
+					while(childType != null && !childType.equalsIgnoreCase("Physical") &&
+							!childType.equalsIgnoreCase("in vitro")) {
+						String parentType = ascendTypeTreeMap.get(childType);
+
+						if(typeTreeMap.containsKey(parentType)) {
+							typeTreeMap.get(parentType).add(childType);
+						} else {
+							Set<String> typeSet = new TreeSet<String>();
+							typeSet.add(childType);
+							typeTreeMap.put(parentType, typeSet);
+						}
+						childType = parentType;
 					}
 				}
 				if (!newCharBeans.isEmpty()) {
@@ -234,6 +250,7 @@ public class InitParticleSetup {
 				}
 			}
 			session.setAttribute("allCharacterizations", typeTreeMap );
+			session.setAttribute("selectedCharacterizations", typeTreeSelectedMap );
 			
 			/*
 			 * nameCharMap
