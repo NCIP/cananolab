@@ -49,14 +49,35 @@ public class CompositionBean extends CharacterizationBean {
 		this.numberOfElements = numberOfElements;
 	}
 
-	public ParticleComposition getDomainObj() {
-		return new ParticleComposition();
-	}
-
 	public void updateDomainObj(ParticleComposition doComp) {
 		super.updateDomainObj(doComp);
-		for (ComposingElementBean element : getComposingElements()) {
-			doComp.getComposingElementCollection().add(element.getDomainObj());
+		updateComposingElements(doComp);
+	}
+
+	// update domain object's composing element collection
+	private void updateComposingElements(ParticleComposition doComp) {
+		// copy collection
+		List<ComposingElement> doComposingElementList = new ArrayList<ComposingElement>(
+				doComp.getComposingElementCollection());
+		// clear the existing collection
+		doComp.getComposingElementCollection().clear();
+		for (ComposingElementBean elementBean : getComposingElements()) {
+			ComposingElement doElement = null;
+			// if no id, add new domain object
+			if (elementBean.getId() == null) {
+				doElement = new ComposingElement();
+			} else {
+				// find domain object with the same ID and add the updated
+				// domain object
+				for (ComposingElement element : doComposingElementList) {
+					if (element.getId().equals(new Long(elementBean.getId()))) {
+						doElement = element;
+						break;
+					}
+				}
+			}
+			elementBean.updateDomainObj(doElement);
+			doComp.getComposingElementCollection().add(doElement);
 		}
 	}
 }
