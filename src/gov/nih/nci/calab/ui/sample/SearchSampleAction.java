@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.sample;
  * @author pansu
  */
 
-/* CVS $Id: SearchSampleAction.java,v 1.2 2007-11-08 20:41:34 pansu Exp $ */
+/* CVS $Id: SearchSampleAction.java,v 1.3 2007-11-15 15:17:49 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.sample.ContainerBean;
@@ -19,7 +19,6 @@ import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.security.InitSecuritySetup;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -90,7 +89,7 @@ public class SearchSampleAction extends AbstractDispatchAction {
 			// create a list of ContainerBeans for use in display tag
 			List<ContainerBean> containers = new ArrayList<ContainerBean>();
 			for (SampleBean sample : samples) {
-				containers.addAll(Arrays.asList(sample.getContainers()));
+				containers.addAll(sample.getContainers());
 			}
 			session.setAttribute("sampleContainers", containers);
 			forward = mapping.findForward("success");
