@@ -9,7 +9,8 @@
 //-->
 </script>
 
-<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+<table class="topBorderOnly" cellspacing="0" cellpadding="3"
+	width="100%" align="center" summary="" border="0">
 	<tbody>
 		<tr class="topBorder">
 			<td class="formTitle" colspan="4">
@@ -24,12 +25,16 @@
 			</td>
 			<td class="label">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
-						<html:select property="dendrimer.branch" onkeydown="javascript:fnKeyDownHandler(this, event);"
-											onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-											onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-											onchange="fnChangeHandler_A(this, event);">
-							<option value="">--?--</option>
+					<c:when
+						test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
+						<html:select property="dendrimer.branch"
+							onkeydown="javascript:fnKeyDownHandler(this, event);"
+							onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
+							onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
+							onchange="fnChangeHandler_A(this, event);">
+							<option value="">
+								--?--
+							</option>
 							<html:options name="allDendrimerBranches" />
 						</html:select>
 					</c:when>
@@ -43,7 +48,8 @@
 			</td>
 			<td class="rightLabel">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
+					<c:when
+						test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
 						<html:text property="dendrimer.repeatUnit" />
 					</c:when>
 					<c:otherwise>
@@ -58,12 +64,16 @@
 			</td>
 			<td class="label">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
-						<html:select property="dendrimer.generation" onkeydown="javascript:fnKeyDownHandler(this, event);"
-											onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-											onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-											onchange="fnChangeHandler_A(this, event);">
-							<option value="">--?--</option>
+					<c:when
+						test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
+						<html:select property="dendrimer.generation"
+							onkeydown="javascript:fnKeyDownHandler(this, event);"
+							onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
+							onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
+							onchange="fnChangeHandler_A(this, event);">
+							<option value="">
+								--?--
+							</option>
 							<html:options name="allDendrimerGenerations" />
 						</html:select>
 					</c:when>
@@ -77,7 +87,8 @@
 			</td>
 			<td class="rightLabel">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
+					<c:when
+						test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
 						<html:text property="dendrimer.molecularFormula" />
 					</c:when>
 					<c:otherwise>
@@ -89,49 +100,8 @@
 	</tbody>
 </table>
 <br>
-<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
-	<tbody>
-		<tr class="topBorder">
-			<td class="formTitle" colspan="4">
-				<div align="justify">
-					Core Information
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td class="leftLabel">
-				<strong>Chemical Name</strong>
-			</td>
-			<td class="rightLabel" colspan="3">
-				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
-						<html:text property="dendrimer.core.chemicalName" />
-					</c:when>
-					<c:otherwise>
-						${nanoparticleCompositionForm.map.dendrimer.core.chemicalName}&nbsp;
-					</c:otherwise>
-				</c:choose>
-			</td>
-		</tr>
-		<tr>
-			<td class="leftLabel">
-				<strong>Description</strong>
-			</td>
-			<td class="rightLabel" colspan="3">
-				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
-						<html:textarea property="dendrimer.core.description" rows="3" cols="80" />
-					</c:when>
-					<c:otherwise>
-						${nanoparticleCompositionForm.map.dendrimer.core.description}&nbsp;
-					</c:otherwise>
-				</c:choose>
-			</td>
-		</tr>
-</table>
-
-<br>
-<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+<table class="topBorderOnly" cellspacing="0" cellpadding="3"
+	width="100%" align="center" summary="" border="0">
 	<tbody>
 		<tr class="topBorder">
 			<td class="formTitle" colspan="4">
@@ -141,79 +111,99 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="leftLabel">
-				<strong>Number of Surface Groups</strong>
-			</td>
-			<td class="label">
-				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
-						<html:text property="dendrimer.numberOfSurfaceGroups" />
-					</c:when>
-					<c:otherwise>
-						${nanoparticleCompositionForm.map.dendrimer.numberOfSurfaceGroups}&nbsp;
-					</c:otherwise>
-				</c:choose>
-
-			</td>
-			<td class="rightLabel" colspan="2">
-				&nbsp;
-				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
-						<input type="button" onclick="javascript:updateComposition()" value="Update Surface Groups">
-					</c:when>
-				</c:choose>
-			</td>
-		</tr>
-		<tr>
 			<td class="completeLabel" colspan="4">
-				<c:forEach var="dendrimer.surfaceGroups" items="${nanoparticleCompositionForm.map.dendrimer.surfaceGroups}" varStatus="status">
-					<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
-						<tbody>
-							<tr class="topBorder">
-								<td class="formSubTitle" colspan="4">
-									<div align="justify">
-										Surface Group ${status.index+1}
-									</div>
+				<table border="0" width="100%">
+					<tr>
+						<c:choose>
+							<c:when
+								test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
+								<td valign="bottom" width="120">
+									<a href="#"
+										onclick="javascript:addSurfaceGroup(nanoparticleCompositionForm, 'composition')"><span
+										class="addLink">Add Surface Group</span></a>
 								</td>
-							</tr>
-							<tr>
-								<td class="leftLabel">
-									<strong>Name </strong>
-								</td>
-								<td class="label">
-									<c:choose>
-										<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
-											<html:select name="dendrimer.surfaceGroups" indexed="true" property="name" onkeydown="javascript:fnKeyDownHandler(this, event);"
-											onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-											onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-											onchange="fnChangeHandler_A(this, event);">
-												<option value="">--?--</option>
-													<html:options name="allDendrimerSurfaceGroupNames" />
-											</html:select>
-										</c:when>
-										<c:otherwise>
-						${nanoparticleCompositionForm.map.dendrimer.surfaceGroups[status.index].name}&nbsp;
+							</c:when>
+							<c:otherwise>
+								<td></td>
+							</c:otherwise>
+						</c:choose>
+						<td>
+							<logic:iterate name="nanoparticleCompositionForm"
+								property="dendrimer.surfaceGroups" id="surfaceGroup"
+								indexId="ind">
+								<table class="topBorderOnly" cellspacing="0" cellpadding="3"
+									width="100%" align="center" summary="" border="0">
+									<tbody>
+										<tr>
+											<c:choose>
+												<c:when test="${canCreateNanoparticle eq 'true'}">
+													<td class="formSubTitleNoRight" colspan="3">
+														<div align="justify">
+															Surface Group ${ind+1}
+														</div>
+													</td>
+													<td class="formSubTitleNoLeft" align="right">
+														<a href="#"
+															onclick="javascript:removeSurfaceGroup(nanoparticleCompositionForm, 'composition', ${ind})">
+															<img src="images/delete.gif" border="0"
+																alt="remove this surface group"> </a>
+													</td>
+												</c:when>
+												<c:otherwise>
+													<td class="formSubTitle" colspan="4">
+														&nbsp;
+													</td>
+												</c:otherwise>
+											</c:choose>
+										</tr>
+										<tr>
+											<td class="leftLabel">
+												<strong>Name </strong>
+											</td>
+											<td class="label">
+												<c:choose>
+													<c:when
+														test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
+														<html:select 
+															property="dendrimer.surfaceGroups[${ind}].name"
+															onkeydown="javascript:fnKeyDownHandler(this, event);"
+															onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
+															onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
+															onchange="fnChangeHandler_A(this, event);">
+															<option value="">
+																--?--
+															</option>
+															<html:options name="allDendrimerSurfaceGroupNames" />
+														</html:select>
+													</c:when>
+													<c:otherwise>
+						${nanoparticleCompositionForm.map.dendrimer.surfaceGroups[ind].name}&nbsp;
 					</c:otherwise>
-									</c:choose>
-								</td>
-								<td class="label">
-									<strong>Modifier</strong>
-								</td>
-								<td class="rightLabel">
-									<c:choose>
-										<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
-											<html:text name="dendrimer.surfaceGroups" indexed="true" property="modifier" />
-										</c:when>
-										<c:otherwise>
-						${nanoparticleCompositionForm.map.dendrimer.surfaceGroups[status.index].modifier}&nbsp;
+												</c:choose>
+											</td>
+											<td class="label">
+												<strong>Modifier</strong>
+											</td>
+											<td class="rightLabel">
+												<c:choose>
+													<c:when
+														test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
+														<html:text 
+															property="dendrimer.surfaceGroups[${ind}].modifier" />
+													</c:when>
+													<c:otherwise>
+						${nanoparticleCompositionForm.map.dendrimer.surfaceGroups[ind].modifier}&nbsp;
 					</c:otherwise>
-									</c:choose>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-					<br>
-				</c:forEach>
+												</c:choose>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								<br>
+							</logic:iterate>
+						</td>
+					</tr>
+				</table>
 			</td>
 		</tr>
 </table>
