@@ -41,7 +41,6 @@
 		<c:set var="compDisplay" value="display: none;" />
 	</c:otherwise>
 </c:choose>
-
 <c:choose>
 	<c:when test="${canCreateNanoparticle eq 'true'}">
 		<c:set var="physicalType" value="Physical" />
@@ -63,6 +62,7 @@
 								<c:param name="submitType" value="${subCharType}" />
 								<c:param name="actionName" value="${leafCharBean.actionName}" />
 								<c:param name="charName" value="${leafCharBean.name}" />
+								<c:param name="displayType" value="${leafCharBean.name}"/>
 							</c:url>
 							<li>
 								<a href=${url } class="sublist_5"><span class="data_anchar">>&nbsp;</span>${leafCharBean.viewTitle}</a>
@@ -75,8 +75,9 @@
 							<c:param name="submitType" value="${physicalType}" />
 							<c:param name="page" value="0" />
 							<c:param name="dispatch" value="setup" />
-							<c:param name="actionName" value="${leafCharBean.actionName}" />
-							<c:param name="charName" value="${leafCharBean.name}" />
+							<c:param name="actionName" value="${charaLeafActionName[subCharType]}" />
+							<c:param name="charName" value="${subCharType}" />
+							<c:param name="displayType" value="${subCharType}"/>
 						</c:url>
 						<li>
 							<a href="${submitUrl}">Enter ${subCharType}</a>

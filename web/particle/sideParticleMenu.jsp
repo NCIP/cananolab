@@ -9,14 +9,14 @@
 
 <!-- submenu begins -->
 <c:choose>
-	<c:when test="${!empty param.submitType && param.submitType != 'none'}">
+	<c:when test="${!empty param.submitType && param.submitType != 'none' &&
+					param.displayType != 'Composition' }">
 		<c:set var="displaytype" value="${param.submitType}" scope="request" />
 	</c:when>
 	<c:otherwise>
-		<c:set var="displaytype" value="${param.displayType}" />
+		<c:set var="displaytype" value="${param.displayType}" scope="request" />
 	</c:otherwise>
 </c:choose>
-
 <c:choose>
 	<c:when test="${!empty param.particleName}">
 		<c:set var="particleName" value="${param.particleName}"
