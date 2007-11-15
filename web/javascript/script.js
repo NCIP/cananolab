@@ -50,6 +50,7 @@ function openWindow(pageURL, name, width, height) {
 function openHelpWindow(pageURL) {
 	window.open(pageURL, "Help", "alwaysRaised,dependent,status,scrollbars,resizable,width=800,height=500");
 }
+
 /**
 moveItems is a function used in moving items in one multiple select to the other.
 */
@@ -225,9 +226,29 @@ function submitAction(form, actionName) {
 	form.action = actionName;
 	form.submit();
 }
-function updateComposition() {
-	document.nanoparticleCompositionForm.action = "composition.do?dispatch=update&page=0";
-	document.nanoparticleCompositionForm.submit();
+function addContainer(form, actionName) {
+	form.action = actionName + ".do?dispatch=addContainer&page=1";
+	form.submit();
+}
+function removeContainer(form, actionName, containerInd) {
+	form.action = actionName + ".do?dispatch=removeContainer&page=1&containerInd=" + containerInd;
+	form.submit();	
+}
+function addSurfaceGroup(form, actionName) {
+	form.action = actionName+".do?dispatch=addSurfaceGroup&page=1";
+	form.submit();
+}
+function removeSurfaceGroup(form, actionName, groupInd) {
+	form.action = actionName + ".do?dispatch=removeSurfaceGroup&page=1&groupInd=" + groupInd;
+	form.submit();	
+}
+function addComposingElement(form, actionName) {
+	form.action = actionName+".do?dispatch=addComposingElement&page=1";
+	form.submit();
+}
+function removeComposingElement(form, actionName, elementInd) {
+	form.action = actionName + ".do?dispatch=removeComposingElement&page=1&elementInd=" + elementInd;
+	form.submit();	
 }
 function addSurfaceChemistry(form, actionName) {
 	form.action = actionName + ".do?dispatch=addSurfaceChemistry&page=0";
@@ -311,3 +332,4 @@ function updateOtherField(form, elementName, otherElementName) {
 		disableTextElement(form, otherElementName);
 	}
 }
+
