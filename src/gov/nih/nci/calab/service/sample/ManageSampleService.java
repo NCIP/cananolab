@@ -20,7 +20,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
-/* CVS $Id: ManageSampleService.java,v 1.2 2007-11-08 20:41:35 pansu Exp $ 
+/* CVS $Id: ManageSampleService.java,v 1.3 2007-11-15 15:06:02 pansu Exp $ 
  */
 public class ManageSampleService {
 	private static Logger logger = Logger.getLogger(ManageSampleService.class);
@@ -111,7 +111,7 @@ public class ManageSampleService {
 	 * 
 	 * @throws Exception
 	 */
-	public void saveSample(SampleBean sample, ContainerBean[] containers)
+	public void saveSample(SampleBean sample)
 			throws Exception {
 
 		// Get existing sampleType to compare
@@ -200,40 +200,40 @@ public class ManageSampleService {
 			session.save(doSample);
 
 			// Container list
-			for (int i = 0; i < containers.length; i++) {
+			for (ContainerBean containerBean: sample.getContainers()) {
 				SampleContainer doSampleContainer = new SampleContainer();
 				// use Hibernate Hilo algorithm to generate the id
-				doSampleContainer.setComments(containers[i]
+				doSampleContainer.setComments(containerBean
 						.getContainerComments());
 				doSampleContainer.setConcentration(StringUtils
-						.convertToFloat(containers[i].getConcentration()));
-				doSampleContainer.setConcentrationUnit(containers[i]
+						.convertToFloat(containerBean.getConcentration()));
+				doSampleContainer.setConcentrationUnit(containerBean
 						.getConcentrationUnit());
 
-				doSampleContainer.setContainerType((containers[i]
+				doSampleContainer.setContainerType((containerBean
 						.getContainerType()));
 
 				// Container is created by the same person who creates sample
 				doSampleContainer.setCreatedBy(sample.getSampleSubmitter());
 				doSampleContainer.setCreatedDate(sample.getAccessionDate());
 				doSampleContainer
-						.setDiluentsSolvent(containers[i].getSolvent());
+						.setDiluentsSolvent(containerBean.getSolvent());
 				doSampleContainer.setQuantity(StringUtils
-						.convertToFloat(containers[i].getQuantity()));
-				doSampleContainer.setQuantityUnit(containers[i]
+						.convertToFloat(containerBean.getQuantity()));
+				doSampleContainer.setQuantityUnit(containerBean
 						.getQuantityUnit());
-				doSampleContainer.setSafetyPrecaution(containers[i]
+				doSampleContainer.setSafetyPrecaution(containerBean
 						.getSafetyPrecaution());
-				doSampleContainer.setStorageCondition(containers[i]
+				doSampleContainer.setStorageCondition(containerBean
 						.getStorageCondition());
 				doSampleContainer.setVolume(StringUtils
-						.convertToFloat(containers[i].getVolume()));
-				doSampleContainer.setVolumeUnit(containers[i].getVolumeUnit());
-				doSampleContainer.setName(containers[i].getContainerName());
+						.convertToFloat(containerBean.getVolume()));
+				doSampleContainer.setVolumeUnit(containerBean.getVolumeUnit());
+				doSampleContainer.setName(containerBean.getContainerName());
 
 				HashSet<StorageElement> storages = new HashSet<StorageElement>();
 
-				String boxValue = containers[i].getStorageLocation().getBox();
+				String boxValue = containerBean.getStorageLocation().getBox();
 
 				if ((boxValue != null) && (boxValue.trim().length() > 0)) {
 					List existedSE = session.createQuery(
@@ -254,7 +254,7 @@ public class ManageSampleService {
 					storages.add(box);
 				}
 
-				String shelfValue = containers[i].getStorageLocation()
+				String shelfValue = containerBean.getStorageLocation()
 						.getShelf();
 
 				if ((shelfValue != null) && (shelfValue.trim().length() > 0)) {
@@ -276,7 +276,7 @@ public class ManageSampleService {
 					storages.add(shelf);
 				}
 
-				String freezerValue = containers[i].getStorageLocation()
+				String freezerValue = containerBean.getStorageLocation()
 						.getFreezer();
 
 				if ((freezerValue != null) && (freezerValue.length() > 0)) {
@@ -298,7 +298,7 @@ public class ManageSampleService {
 					storages.add(freezer);
 				}
 
-				String roomValue = containers[i].getStorageLocation().getRoom();
+				String roomValue = containerBean.getStorageLocation().getRoom();
 
 				if ((roomValue != null) && (roomValue.length() > 0)) {
 					List existedSE = session

@@ -216,7 +216,7 @@ public class Sample implements java.io.Serializable {
 		this.sampleSOP = sampleSOP;
 	}
 
-	private java.util.Collection sampleContainerCollection = new java.util.HashSet();
+	private java.util.Collection<SampleContainer> sampleContainerCollection = new java.util.HashSet<SampleContainer>();
 
 	public java.util.Collection getSampleContainerCollection() {
 		// try{
@@ -248,9 +248,9 @@ public class Sample implements java.io.Serializable {
 		return this.sampleContainerCollection;
 	}
 
-	public java.util.Collection getSampleContainerCollection(String type) {
+	public java.util.Collection<SampleContainer> getSampleContainerCollection(String type) {
 
-		HashSet typedContainer = new HashSet();
+		HashSet<SampleContainer> typedContainer = new HashSet<SampleContainer>();
 		for (Object obj : this.sampleContainerCollection) {
 			SampleContainer container = (SampleContainer) obj;
 			if ((type.equals(ALIQUOT) && (container instanceof Aliquot))) {
@@ -263,7 +263,7 @@ public class Sample implements java.io.Serializable {
 	}
 
 	public void setSampleContainerCollection(
-			java.util.Collection sampleContainerCollection) {
+			java.util.Collection<SampleContainer> sampleContainerCollection) {
 		this.sampleContainerCollection = sampleContainerCollection;
 	}
 
