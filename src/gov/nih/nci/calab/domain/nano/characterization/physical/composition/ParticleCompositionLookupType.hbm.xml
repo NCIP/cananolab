@@ -3,6 +3,19 @@
 
 <hibernate-mapping
 	package="gov.nih.nci.calab.domain.nano.characterization.physical.composition">
+	<class name="ComposingElementType"
+		table="DEF_composing_element_Type" lazy="true"
+		polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="java.lang.Long"
+			column="composing_element_TYPE_PK_ID" unsaved-value="0">
+			<generator class="org.hibernate.id.TableHiLoGenerator">
+				<param name="table">hibernate_unique_key</param>
+				<param name="column">next_hi</param>
+			</generator>
+		</id>
+		<property name="name" type="java.lang.String" column="NAME" />
+	</class>
 	<class name="MolecularFormulaType"
 		table="DEF_Molecular_Formula_Type" lazy="true"
 		polymorphism="explicit">
