@@ -12,17 +12,14 @@ ul.slidingmenu a {
 
 ul.slidingmenu {
 	/* border-right: 1px solid #cccccc; */ /* constant: medium gray */
-	/*
-	list-style-type: square;
-	list-style-position: inside;
-	*/
+	border-right: 1px solid #cccccc;
+	/* border-left: 1px solid #cccccc; */
 }
 
 ul.slidingmenu a:link, a:visited, a:active { 
 	text-decoration: none;
 	width: 100%;
 	font-weight: bold;
-
 }
 
 ul.slidingmenu a:hover {
@@ -53,15 +50,7 @@ ul.slidingmenu li {
 	background-color: #98B7B7; /* constant: dark gray */
 }
 
-
-
 ul.sublist_1 li {
-	/*
-	background-color: #6a8989;
-	color: white;
-	
-	border-bottom: 1px solid #cccccc;
-	*/
 	background-color: #C3C3C3;
 	color: #FFFFFF;
 }
@@ -86,46 +75,46 @@ ul.sublist_1 a:link.sublist_1, a:visited.sublist_1, a:active.sublist_1 {
 	color: #FFFFFF;
 }
 
+ul.sublist_2 a:link.sublist_2, a:visited.sublist_2, a:active.sublist_2 {
+	color: #FFFFFF;
+}
+
 ul.sublist_5 a:link.sublist_5, a:visited.sublist_5, a:active.sublist_5 {
 	color: black;
 }
 
 ul.sublist_2 a {
-	background-color: #D3DDE7; /* #D4D4FF; */
-	color: #400080; /*#475B82;  dark blue */
-	
+	background-color: #C3C3C3; /* #D3DDE7; */
+	color: #FFFFFF; /* #400080; */
 	font-size: 0.8em;
 	font-weight: bold;
 	text-indent: 2em;
-	padding-top: 0.2em;
+	padding-top: 0.1em;
 	padding-bottom: 0.1em;
+	vertical-align: middle;
 }
 
 ul.sublist_2 li {
-	/* border-bottom-color: #475B82; */
-	/* background-color: #D4D4FF; */
-	background-color: #D3DDE7;
+	background-color: #C3C3C3; /* #D3DDE7; */
 }
 
 ul.sublist_3 a {
-	/* background-color: #AAD4FF; *//* #AAAAFF; */
+	background-color: #D3DDE7;
 	color: #400080;
 	font-size: 0.8em;
 	font-weight: bold;
 	font-variant: normal;
-	/* font-family: Arial, Helvetica, sans-serif; */
 	text-indent: 3em;
 	padding-top: 0.2em;
 	padding-bottom: 0.1em;
 }
 
 ul.sublist_3 li {
-	background-color: #D3DDE7 /* #AAD4FF;  #AAAAFF; */
 	border-bottom: 1px solid #cccccc;
+	background-color: #D3DDE7;
 }
 
 ul.sublist_4 a {
-	background-color: #D3DDE7;
 	color: #400080;
 	font-size: 0.8em;
 	font-weight: bold;
@@ -137,7 +126,6 @@ ul.sublist_4 a {
 
 ul.sublist_4 li {
 	background-color: #D3DDE7;
-	border-right: 1px solid #cccccc;
 }
 
 ul.sublist_5 a {
@@ -152,9 +140,7 @@ ul.sublist_5 a {
 }
 
 ul.sublist_5 li {
-	/* background-color: #ECE9D8; */
 	background-color: #FFFFFF /* #F4F4F5 */;
-
 }
 
 ul.slidingmenu ul { 
