@@ -42,7 +42,13 @@ import gov.nih.nci.calab.domain.nano.characterization.physical.Size;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Solubility;
 import gov.nih.nci.calab.domain.nano.characterization.physical.SolventType;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Surface;
+import gov.nih.nci.calab.domain.nano.characterization.physical.composition.CarbonNanotubeComposition;
+import gov.nih.nci.calab.domain.nano.characterization.physical.composition.DendrimerComposition;
+import gov.nih.nci.calab.domain.nano.characterization.physical.composition.EmulsionComposition;
+import gov.nih.nci.calab.domain.nano.characterization.physical.composition.FullereneComposition;
+import gov.nih.nci.calab.domain.nano.characterization.physical.composition.LiposomeComposition;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.ParticleComposition;
+import gov.nih.nci.calab.domain.nano.characterization.physical.composition.PolymerComposition;
 import gov.nih.nci.calab.domain.nano.characterization.toxicity.Cytotoxicity;
 import gov.nih.nci.calab.domain.nano.function.Agent;
 import gov.nih.nci.calab.domain.nano.function.Attachment;
@@ -55,7 +61,13 @@ import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.DatumBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
+import gov.nih.nci.calab.dto.characterization.composition.CarbonNanotubeBean;
 import gov.nih.nci.calab.dto.characterization.composition.CompositionBean;
+import gov.nih.nci.calab.dto.characterization.composition.DendrimerBean;
+import gov.nih.nci.calab.dto.characterization.composition.EmulsionBean;
+import gov.nih.nci.calab.dto.characterization.composition.FullereneBean;
+import gov.nih.nci.calab.dto.characterization.composition.LiposomeBean;
+import gov.nih.nci.calab.dto.characterization.composition.PolymerBean;
 import gov.nih.nci.calab.dto.characterization.invitro.CytotoxicityBean;
 import gov.nih.nci.calab.dto.characterization.physical.MorphologyBean;
 import gov.nih.nci.calab.dto.characterization.physical.ShapeBean;
@@ -192,7 +204,7 @@ public class SubmitNanoparticleService {
 						throw new Exception(
 								"This characterization is no longer in the database.  Please log in again to refresh.");
 				}
-				// updated domain object
+				// update domain object
 				if (achar instanceof Shape) {
 					((ShapeBean) charBean).updateDomainObj((Shape) achar);
 				} else if (achar instanceof Morphology) {
@@ -445,8 +457,82 @@ public class SubmitNanoparticleService {
 	 */
 	public void addParticleComposition(CompositionBean composition)
 			throws Exception {
-		ParticleComposition doComp = composition.getDomainObj();
-		addParticleCharacterization(doComp, composition);
+
+		ParticleComposition doComp = new ParticleComposition();
+
+		// if ID is not set save to the database otherwise update
+		Nanoparticle particle = null;
+		try {
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+
+			// check if viewTitle is already used the same type of
+			// characterization for the same particle
+			boolean viewTitleUsed = isCharacterizationViewTitleUsed(session,
+					doComp, composition);
+			if (viewTitleUsed) {
+				throw new RuntimeException(
+						"The view title is already in use.  Please enter a different one.");
+			} else {
+				// if ID exists, load from database
+				if (composition.getId() != null) {
+					// check if ID is still valid
+					doComp = (ParticleComposition) session.get(
+							ParticleComposition.class, new Long(composition
+									.getId()));
+					if (doComp == null)
+						throw new Exception(
+								"This composition is no longer in the database.  Please log in again to refresh.");
+				}
+				// update domain object
+				if (doComp instanceof DendrimerComposition) {
+					((DendrimerBean) composition)
+							.updateDomainObj((DendrimerComposition) doComp);
+				} else if (doComp instanceof CarbonNanotubeComposition) {
+					((CarbonNanotubeBean) composition)
+							.updateDomainObj((CarbonNanotubeComposition) doComp);
+				} else if (doComp instanceof EmulsionComposition) {
+					((EmulsionBean) composition)
+							.updateDomainObj((EmulsionComposition) doComp);
+				} else if (doComp instanceof FullereneComposition) {
+					((FullereneBean) composition)
+							.updateDomainObj((FullereneComposition) doComp);
+				} else if (doComp instanceof LiposomeComposition) {
+					((LiposomeBean) composition)
+							.updateDomainObj((LiposomeComposition) doComp);
+				} else if (doComp instanceof PolymerComposition) {
+					((PolymerBean) composition)
+							.updateDomainObj((PolymerComposition) doComp);
+				} else {
+					composition.updateDomainObj(doComp);
+				}
+
+				if (composition.getId() == null) {
+					List results = session
+							.createQuery(
+									"from Nanoparticle particle left join fetch particle.characterizationCollection where particle.name='"
+											+ composition.getParticleName()
+											+ "' and particle.type='"
+											+ composition.getParticleType() + "'")
+							.list();
+
+					for (Object obj : results) {
+						particle = (Nanoparticle) obj;
+					}
+
+					if (particle != null) {
+						particle.getCharacterizationCollection().add(doComp);
+					}
+				}
+			}
+			HibernateUtil.commitTransaction();
+		} catch (Exception e) {
+			logger.error("Problem saving characterization. ", e);
+			HibernateUtil.rollbackTransaction();
+			throw e;
+		} finally {
+			HibernateUtil.closeSession();
+		}
 	}
 
 	/**
