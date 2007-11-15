@@ -30,10 +30,8 @@ public class FullereneBean extends CompositionBean {
 		this.numberOfCarbons = numberOfCarbons;
 	}
 
-	public FullereneComposition getDomainObj() {
-		FullereneComposition doComp = new FullereneComposition();
+	public void updateDomainObj(FullereneComposition doComp) {		
 		super.updateDomainObj(doComp);
-		doComp.setNumberOfCarbon(new Integer(this.numberOfCarbons));
-		return doComp;
+		doComp.setNumberOfCarbon(new Integer(this.numberOfCarbons));		
 	}
 }

@@ -20,10 +20,4 @@ public class MetalParticleBean extends BaseCoreShellCoatingBean {
 	public MetalParticleBean(MetalParticleComposition doComp) {
 		super(doComp);
 	}
-
-	public MetalParticleComposition getDomainObj() {
-		MetalParticleComposition doComp = new MetalParticleComposition();
-		super.updateDomainObj(doComp);
-		return doComp;
-	}
 }
