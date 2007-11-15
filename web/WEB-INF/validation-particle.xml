@@ -22,12 +22,12 @@
 			-->
     	</form>
 		<form name="nanoparticleCompositionForm">
-			<field property="characterizationSource" page="2"
+			<field property="composition.characterizationSource" page="2"
 				depends="required">
 				<arg position="0" key="characterizationSource"
 					bundle="particle" />
 			</field>
-			<field property="viewTitle" page="2" depends="required">
+			<field property="composition.viewTitle" page="2" depends="required">
 				<arg position="0" key="viewTitle" bundle="particle" />
 			</field>
 			<field property="carbonNanotube.growthDiameter" page="2"
