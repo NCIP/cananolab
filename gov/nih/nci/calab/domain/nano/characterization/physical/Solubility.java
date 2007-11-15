@@ -21,6 +21,10 @@ public class Solubility extends Characterization {
 		return PHYSICAL_SOLUBILITY;
 	}
 
+	public String getClassification() {
+		return PHYSICAL_CHARACTERIZATION;
+	}
+	
 	public Measurement getCriticalConcentration() {
 		return this.criticalConcentration;
 	}
