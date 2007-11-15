@@ -7,26 +7,8 @@
 			<form-property name="dispatch" type="java.lang.String" />
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
-			<form-property name="sampleName"
-				type="java.lang.String" />
-			<form-property name="sampleType" type="java.lang.String" />
-			<form-property name="sampleSOP" type="java.lang.String" />
-			<form-property name="sampleDescription"
-				type="java.lang.String" />
-			<form-property name="sampleSource" type="java.lang.String" />
-			<form-property name="sourceSampleId"
-				type="java.lang.String" />
-			<form-property name="dateReceived" type="java.lang.String" />
-			<form-property name="lotId" type="java.lang.String" />
-			<form-property name="lotDescription"
-				type="java.lang.String" />
-			<form-property name="solubility" type="java.lang.String" />
-			<form-property name="numberOfContainers"
-				type="java.lang.String" initial="1" />
-			<form-property name="generalComments"
-				type="java.lang.String" />
-			<form-property name="containers"
-				type="gov.nih.nci.calab.dto.sample.ContainerBean[]" />
+			<form-property name="sample"
+				type="gov.nih.nci.calab.dto.sample.SampleBean" />	
 			<form-property name="configuredSampleNamePrefix"
 				type="java.lang.String" />
 		</form-bean>
