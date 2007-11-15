@@ -67,6 +67,10 @@ public class InitParticleSetup {
 
 	public void setAllCompositionDropdowns(HttpSession session)
 			throws Exception {
+		SortedSet<String> composingElementTypes = lookupService
+				.getAllLookupTypes("ComposingElementType");
+		session.setAttribute("allComposingElementTypes", composingElementTypes);
+
 		setAllDendrimers(session);
 
 		if ((session.getAttribute("allPolymerInitiators") == null)
@@ -191,23 +195,23 @@ public class InitParticleSetup {
 			List<CharacterizationBean> charBeans = service
 					.getCharacterizationInfo(particleName, particleType);
 			Map<String, List<CharacterizationBean>> charMap = new HashMap<String, List<CharacterizationBean>>();
-			
+
 			Map<String, String> ascendTypeTreeMap = getAscendTypeTreeMap(charTypeChars);
-			
-			//get all characterization types that do not have children
-			//key: characterization name, value: action name
+
+			// get all characterization types that do not have children
+			// key: characterization name, value: action name
 			Map<String, String> charLeafActionNameMap = getCharTypeLeafMap(charTypeChars);
-			
+
 			// all characterization types
 			Map<String, Set<String>> typeTreeMap = new HashMap<String, Set<String>>();
-			
+
 			// only characterization types that searched with viewTitles
 			Map<String, Set<String>> typeTreeSelectedMap = new HashMap<String, Set<String>>();
-			
+
 			/* charType: category column of table def_characterization_category */
 			for (String charType : charTypeChars.keySet()) {
 				List<CharacterizationBean> newCharBeans = new ArrayList<CharacterizationBean>();
-				
+
 				// get all characterizations for the characterization type
 				List<CharacterizationBean> charList = (List<CharacterizationBean>) charTypeChars
 						.get(charType);
@@ -217,31 +221,36 @@ public class InitParticleSetup {
 						if (displayBean.getName().equals(charBean.getName())) {
 							charBean.setAbbr(displayBean.getAbbr());
 							newCharBeans.add(charBean);
-											
-							String childType = displayBean.getName();
-							while(childType != null && !childType.equalsIgnoreCase("Physical") &&
-									!childType.equalsIgnoreCase("in vitro")) {
-								String parentType = ascendTypeTreeMap.get(childType);
 
-								if(typeTreeSelectedMap.containsKey(parentType)) {
-									typeTreeSelectedMap.get(parentType).add(childType);
+							String childType = displayBean.getName();
+							while (childType != null
+									&& !childType.equalsIgnoreCase("Physical")
+									&& !childType.equalsIgnoreCase("in vitro")) {
+								String parentType = ascendTypeTreeMap
+										.get(childType);
+
+								if (typeTreeSelectedMap.containsKey(parentType)) {
+									typeTreeSelectedMap.get(parentType).add(
+											childType);
 								} else {
 									Set<String> typeSet = new TreeSet<String>();
 									typeSet.add(childType);
-									typeTreeSelectedMap.put(parentType, typeSet);
+									typeTreeSelectedMap
+											.put(parentType, typeSet);
 								}
 								childType = parentType;
 							}
-							
+
 							// break;
 						}
 					}
 					String childType = displayBean.getName();
-					while(childType != null && !childType.equalsIgnoreCase("Physical") &&
-							!childType.equalsIgnoreCase("in vitro")) {
+					while (childType != null
+							&& !childType.equalsIgnoreCase("Physical")
+							&& !childType.equalsIgnoreCase("in vitro")) {
 						String parentType = ascendTypeTreeMap.get(childType);
 
-						if(typeTreeMap.containsKey(parentType)) {
+						if (typeTreeMap.containsKey(parentType)) {
 							typeTreeMap.get(parentType).add(childType);
 						} else {
 							Set<String> typeSet = new TreeSet<String>();
@@ -255,71 +264,74 @@ public class InitParticleSetup {
 					charMap.put(charType, newCharBeans);
 				}
 			}
-			session.setAttribute("allCharacterizations", typeTreeMap );
-			session.setAttribute("selectedCharacterizations", typeTreeSelectedMap );
+			session.setAttribute("allCharacterizations", typeTreeMap);
+			session.setAttribute("selectedCharacterizations",
+					typeTreeSelectedMap);
 			session.setAttribute("charaLeafActionName", charLeafActionNameMap);
-			
+
 			/*
-			 * nameCharMap
-			 * key: the 'name' column of table def_characterization_category
-			 * These names do not exist in the 'category' column, i.e. they are
-			 * the lowest level in the category tree.
-			 * value: list of CharacterizationBean
+			 * nameCharMap key: the 'name' column of table
+			 * def_characterization_category These names do not exist in the
+			 * 'category' column, i.e. they are the lowest level in the category
+			 * tree. value: list of CharacterizationBean
 			 */
-			Map<String, List<CharacterizationBean>> nameCharMap = 
-				new HashMap<String, List<CharacterizationBean>>();
-			
+			Map<String, List<CharacterizationBean>> nameCharMap = new HashMap<String, List<CharacterizationBean>>();
+
 			for (String charCategory : charMap.keySet()) {
-				List<CharacterizationBean> charList = (List<CharacterizationBean>)
-						charMap.get(charCategory);
+				List<CharacterizationBean> charList = (List<CharacterizationBean>) charMap
+						.get(charCategory);
 				for (CharacterizationBean cbean : charList) {
-					
+
 					String pname = cbean.getName();
-					if(!charMap.containsKey(pname)) {
-						if(nameCharMap.containsKey(pname)) {
-							List<CharacterizationBean> clist = (List<CharacterizationBean>) nameCharMap.get(pname);
+					if (!charMap.containsKey(pname)) {
+						if (nameCharMap.containsKey(pname)) {
+							List<CharacterizationBean> clist = (List<CharacterizationBean>) nameCharMap
+									.get(pname);
 							clist.add(cbean);
 						} else {
-							List<CharacterizationBean> charBeanList = 
-								new ArrayList<CharacterizationBean>();
+							List<CharacterizationBean> charBeanList = new ArrayList<CharacterizationBean>();
 							charBeanList.add(cbean);
 							nameCharMap.put(pname, charBeanList);
 						}
 					}
 				}
-			}		
+			}
 			session.setAttribute("nameToCharacterizations", nameCharMap);
 		}
 	}
 
-	public Map<String, String> getAscendTypeTreeMap(Map<String, List<CharacterizationBean>> charTypeMap) {
+	public Map<String, String> getAscendTypeTreeMap(
+			Map<String, List<CharacterizationBean>> charTypeMap) {
 		Map<String, String> selectedCharTreeMap = new HashMap<String, String>();
 		for (String ctype : charTypeMap.keySet()) {
-			List<CharacterizationBean> cbeanList = (List<CharacterizationBean>) charTypeMap.get(ctype);
-			for(CharacterizationBean cbean : cbeanList) {
+			List<CharacterizationBean> cbeanList = (List<CharacterizationBean>) charTypeMap
+					.get(ctype);
+			for (CharacterizationBean cbean : cbeanList) {
 				String cname = cbean.getName();
 				selectedCharTreeMap.put(cname, ctype);
 			}
 		}
 		return selectedCharTreeMap;
 	}
-	
-	public Map<String, String> getCharTypeLeafMap(Map<String, List<CharacterizationBean>> charTypeMap) {
+
+	public Map<String, String> getCharTypeLeafMap(
+			Map<String, List<CharacterizationBean>> charTypeMap) {
 		Map<String, String> leafMap = new HashMap<String, String>();
 		for (String ctype : charTypeMap.keySet()) {
-			List<CharacterizationBean> cbeanList = (List<CharacterizationBean>) charTypeMap.get(ctype);
-			for(CharacterizationBean cbean : cbeanList) {
+			List<CharacterizationBean> cbeanList = (List<CharacterizationBean>) charTypeMap
+					.get(ctype);
+			for (CharacterizationBean cbean : cbeanList) {
 				String cname = cbean.getName();
-				if(!charTypeMap.containsKey(cname)) {
-						leafMap.put(cname, cbean.getActionName());
-						System.out.println("leaf: " + cname + ", actionName: " + cbean.getActionName());
+				if (!charTypeMap.containsKey(cname)) {
+					leafMap.put(cname, cbean.getActionName());
+					System.out.println("leaf: " + cname + ", actionName: "
+							+ cbean.getActionName());
 				}
 			}
 		}
 		return leafMap;
 	}
 
-	
 	public void setFunctionTypeFunctions(HttpSession session,
 			String particleName, String particleType) throws Exception {
 		if (session.getAttribute("allFuncTypeFuncs") == null
@@ -580,8 +592,7 @@ public class InitParticleSetup {
 			session.getServletContext().setAttribute(
 					"allCharacterizationTypes", types);
 		}
-		
-		
+
 		// set in application context mapping between characterization type and
 		// child characterization name and abbrs
 		if (session.getServletContext().getAttribute("allCharTypeChars") == null) {
