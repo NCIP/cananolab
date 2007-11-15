@@ -64,8 +64,7 @@ public class EmulsionBean extends CompositionBean {
 		this.polymerName = polymerName;
 	}
 
-	public EmulsionComposition getDomainObj() {
-		EmulsionComposition doComp = new EmulsionComposition();
+	public void updateDomainObj(EmulsionComposition doComp) {		
 		super.updateDomainObj(doComp);
 		doComp.setType(this.emulsionType);
 		doComp.setMolecularFormula(this.molecularFormula);
@@ -73,7 +72,6 @@ public class EmulsionBean extends CompositionBean {
 				.equalsIgnoreCase(CaNanoLabConstants.BOOLEAN_YES)) ? true
 				: false;
 		doComp.setPolymerized(polymerizedStatus);
-		doComp.setPolymerName(this.polymerName);
-		return doComp;
+		doComp.setPolymerName(this.polymerName);		
 	}
 }

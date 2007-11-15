@@ -18,9 +18,4 @@ public class QuantumDotBean extends BaseCoreShellCoatingBean {
 		super(doComp);
 	}
 
-	public QuantumDotComposition getDomainObj() {
-		QuantumDotComposition doComp = new QuantumDotComposition();
-		super.updateDomainObj(doComp);
-		return doComp;
-	}
 }
