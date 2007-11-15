@@ -152,19 +152,6 @@
 						&nbsp;
 					</td>
 				</tr>
-
-				<tr>
-					<td class="formLabelWhite">
-						<div align="left">
-							<strong>Number of Containers </strong>
-						</div>
-					</td>
-
-					<td class="formFieldWhite">
-						<bean:write name="sample" property="numberOfContainers" />
-						&nbsp;
-					</td>
-				</tr>
 				<tr>
 					<td class="formLabel">
 						<div align="left">
