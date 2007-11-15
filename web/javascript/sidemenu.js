@@ -15,16 +15,13 @@ function init() {
   var lis = rootul.getElementsByTagName('li');
     for (var i = 0; i < lis.length; i++) {
       var node = lis[i];
-
-      if(node.nodeName.toLowerCase() == 'li' &&
-         node.getElementsByTagName('ul').length > 0) {
-         	
+      if(node.nodeName.toLowerCase() == 'li') {	
          	if(node.className == 'toplist') {
         		addEvent(node, 'click', getClickFor(node), false);
         		// node.getElementsByTagName('a')[0].className += ' subheader';
         	} else {
         		addEvent(node, 'click', cancelBubling, false);
-        	}
+        	}	
       }
    }
 }
