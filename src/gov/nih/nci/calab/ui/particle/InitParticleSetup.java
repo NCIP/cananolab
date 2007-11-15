@@ -194,6 +194,10 @@ public class InitParticleSetup {
 			
 			Map<String, String> ascendTypeTreeMap = getAscendTypeTreeMap(charTypeChars);
 			
+			//get all characterization types that do not have children
+			//key: characterization name, value: action name
+			Map<String, String> charLeafActionNameMap = getCharTypeLeafMap(charTypeChars);
+			
 			// all characterization types
 			Map<String, Set<String>> typeTreeMap = new HashMap<String, Set<String>>();
 			
@@ -228,6 +232,8 @@ public class InitParticleSetup {
 								}
 								childType = parentType;
 							}
+							
+							// break;
 						}
 					}
 					String childType = displayBean.getName();
@@ -251,6 +257,7 @@ public class InitParticleSetup {
 			}
 			session.setAttribute("allCharacterizations", typeTreeMap );
 			session.setAttribute("selectedCharacterizations", typeTreeSelectedMap );
+			session.setAttribute("charaLeafActionName", charLeafActionNameMap);
 			
 			/*
 			 * nameCharMap
@@ -296,6 +303,22 @@ public class InitParticleSetup {
 		}
 		return selectedCharTreeMap;
 	}
+	
+	public Map<String, String> getCharTypeLeafMap(Map<String, List<CharacterizationBean>> charTypeMap) {
+		Map<String, String> leafMap = new HashMap<String, String>();
+		for (String ctype : charTypeMap.keySet()) {
+			List<CharacterizationBean> cbeanList = (List<CharacterizationBean>) charTypeMap.get(ctype);
+			for(CharacterizationBean cbean : cbeanList) {
+				String cname = cbean.getName();
+				if(!charTypeMap.containsKey(cname)) {
+						leafMap.put(cname, cbean.getActionName());
+						System.out.println("leaf: " + cname + ", actionName: " + cbean.getActionName());
+				}
+			}
+		}
+		return leafMap;
+	}
+
 	
 	public void setFunctionTypeFunctions(HttpSession session,
 			String particleName, String particleType) throws Exception {
