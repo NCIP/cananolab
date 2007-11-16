@@ -8,7 +8,7 @@
 
 //-->
 </script>
-
+<br>
 <table class="topBorderOnly" cellspacing="0" cellpadding="3"
 	width="100%" align="center" summary="" border="0">
 	<tbody>
@@ -158,7 +158,7 @@
 										</tr>
 										<tr>
 											<td class="leftLabel">
-												<strong>Name </strong>
+												<strong>Name* </strong>
 											</td>
 											<td class="label">
 												<c:choose>
