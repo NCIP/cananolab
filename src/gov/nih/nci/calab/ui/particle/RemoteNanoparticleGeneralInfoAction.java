@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: RemoteNanoparticleGeneralInfoAction.java,v 1.2 2007-11-08 20:41:34 pansu Exp $ */
+/* CVS $Id: RemoteNanoparticleGeneralInfoAction.java,v 1.2.2.1 2007-11-16 20:38:19 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
@@ -39,13 +39,13 @@ public class RemoteNanoparticleGeneralInfoAction extends AbstractDispatchAction 
 		String particleName = theForm.getString("particleName");
 		String gridNodeHost = request.getParameter("gridNodeHost");
 		GridNodeBean gridNode = gridNodeMap.get(gridNodeHost);
+		// force data refresh on the side menu
+		request.getSession().setAttribute("newRemoteParticleCreated", "true");
 
 		InitParticleSetup.getInstance().setRemoteSideParticleMenu(request,
 				particleName, gridNode);
 
 		ActionForward forward = mapping.findForward("success");
-		// force data refresh on the side menu
-		request.getSession().setAttribute("newRemoteParticleCreated", "true");
 		return forward;
 	}
 
