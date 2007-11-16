@@ -67,10 +67,9 @@ function confirmDeletion()
 					</tr>
 					<tr>
 						<td class="leftLabel">
-							<strong>Characterization Source* </strong>
+							<strong>Characterization Source*</strong>
 						</td>
-						<td class="label">
-							${canCreatenanoParticle}
+						<td class="label">							
 							<c:choose>
 								<c:when
 									test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
@@ -86,7 +85,7 @@ function confirmDeletion()
 									</html:select>
 								</c:when>
 								<c:otherwise>
-						${nanoparticleCompositionForm.map.characterizationSource}&nbsp;
+						${nanoparticleCompositionForm.map.composition.characterizationSource}&nbsp;
 					</c:otherwise>
 							</c:choose>
 						</td>
@@ -119,13 +118,12 @@ function confirmDeletion()
 										cols="80" />
 								</c:when>
 								<c:otherwise>
-						${nanoparticleCompositionForm.map.description}&nbsp;
+						${nanoparticleCompositionForm.map.composition.description}&nbsp;
 					</c:otherwise>
 							</c:choose>
 						</td>
 					</tr>
-				</table>
-				<br>
+				</table>				
 				<c:set var="particleType" value="${param.particleType}" scope="page" />
 				<jsp:useBean id="particleType" type="java.lang.String" />
 				<%
@@ -151,7 +149,7 @@ function confirmDeletion()
 								<table border="0" width="100%">
 									<tr>
 										<c:choose>
-											<c:when test="${canCreateNanoparticle eq 'true'}">
+											<c:when test="${canCreateNanoparticle eq 'true'&& isRemote eq 'false'}">
 												<td valign="bottom">
 													<a href="#"
 														onclick="javascript:addComposingElement(nanoparticleCompositionForm, 'composition')"><span
@@ -172,7 +170,7 @@ function confirmDeletion()
 													<tbody>
 														<tr>
 															<c:choose>
-																<c:when test="${canCreateNanoparticle eq 'true'}">
+																<c:when test="${canCreateNanoparticle eq 'true'&& isRemote eq 'false'}">
 																	<td class="formSubTitle" colspan="4" align="right">
 																		<a href="#"
 																			onclick="javascript:removeComposingElement(nanoparticleCompositionForm, 'composition', ${ind})">
@@ -188,11 +186,11 @@ function confirmDeletion()
 															</c:choose>
 														</tr>
 														<tr>
-															<td class="leftLabelWithTop" valign="top" width="15%">
-																<strong>Composing Element Type</strong>
+															<td class="leftLabelWithTop" valign="top">
+																<strong>Composing Element Type*</strong>
 															</td>
 															<c:choose>
-																<c:when test="${canCreateNanoparticle eq 'true'}">
+																<c:when test="${canCreateNanoparticle eq 'true'&& isRemote eq 'false'}">
 																	<td class="labelWithTop" valign="top">
 																		<html:select
 																			property="composition.composingElements[${ind}].elementType"
@@ -204,6 +202,10 @@ function confirmDeletion()
 																				--?--
 																			</option>
 																			<html:options name="allComposingElementTypes" />
+																			<c:if
+																				test="${param.particleType eq 'Complex Particle'}">
+																			<html:options name="allParticleElementTypes"/>
+																			</c:if>
 																		</html:select>
 																	</td>
 																</c:when>
@@ -217,7 +219,7 @@ function confirmDeletion()
 																<strong>Chemical Name</strong>
 															</td>
 															<c:choose>
-																<c:when test="${canCreateNanoparticle eq 'true'}">
+																<c:when test="${canCreateNanoparticle eq 'true'&& isRemote eq 'false'}">
 																	<td class="rightLabelWithTop" valign="top">
 																		<html:text
 																			property="composition.composingElements[${ind}].chemicalName" size="30"/>
@@ -236,7 +238,7 @@ function confirmDeletion()
 																<strong>Description</strong>
 															</td>
 															<c:choose>
-																<c:when test="${canCreateNanoparticle eq 'true'}">
+																<c:when test="${canCreateNanoparticle eq 'true'&& isRemote eq 'false'}">
 																	<td class="rightLabel" colspan="3">
 																		<html:textarea
 																			property="composition.composingElements[${ind}].description"
