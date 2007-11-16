@@ -40,23 +40,6 @@ CREATE TABLE agent_target (
 )
 ENGINE = INNODB;
 
-DROP TABLE IF EXISTS assay;
-CREATE TABLE assay (
-  assay_pk_id DECIMAL(22, 0) NOT NULL,
-  assay_name VARCHAR(200) BINARY NULL,
-  description VARCHAR(4000) BINARY NULL,
-  assay_type VARCHAR(200) BINARY NULL,
-  created_date DATETIME NULL,
-  created_by VARCHAR(200) BINARY NULL,
-  protocol_pk_id DECIMAL(22, 0) NULL,
-  PRIMARY KEY (assay_pk_id),
-  CONSTRAINT sys_c00246772 FOREIGN KEY sys_c00246772 (protocol_pk_id)
-    REFERENCES protocol (protocol_pk_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
-)
-ENGINE = INNODB;
-
 DROP TABLE IF EXISTS associated_file;
 CREATE TABLE associated_file (
   associated_file_pk_id DECIMAL(22, 0) NOT NULL,
@@ -242,15 +225,13 @@ CREATE TABLE def_activation_method (
 )
 ENGINE = INNODB;
 
-DROP TABLE IF EXISTS def_assay_type;
-CREATE TABLE def_assay_type (
-  assay_type_pk_id DECIMAL(22, 0) NOT NULL,
-  name VARCHAR(200) BINARY NOT NULL,
-  description VARCHAR(4000) BINARY NULL,
-  execute_order VARCHAR(10) BINARY NULL,
-  PRIMARY KEY (assay_type_pk_id)
+DROP TABLE IF EXISTS def_composing_element_type;
+CREATE TABLE def_composing_element_type (
+   composing_element_type_pk_id decimal (20, 0) NOT NULL,
+   name varchar (200) NOT NULL
+   PRIMARY KEY (composing_element_type_pk_id)
 )
-ENGINE = INNODB;
+ENGINE=INNODB;
 
 DROP TABLE IF EXISTS def_bioassay_data_category;
 CREATE TABLE def_bioassay_data_category (
@@ -862,31 +843,6 @@ CREATE TABLE polymer_composition (
 )
 ENGINE = INNODB;
 
-DROP TABLE IF EXISTS project;
-CREATE TABLE project (
-  project_pk_id DECIMAL(22, 0) NOT NULL,
-  project_name VARCHAR(200) BINARY NULL,
-  description VARCHAR(4000) BINARY NULL,
-  PRIMARY KEY (project_pk_id)
-)
-ENGINE = INNODB;
-
-DROP TABLE IF EXISTS project_sample;
-CREATE TABLE project_sample (
-  sample_pk_id DECIMAL(22, 0) NOT NULL,
-  project_pk_id DECIMAL(22, 0) NOT NULL,
-  PRIMARY KEY (sample_pk_id, project_pk_id),
-  CONSTRAINT sys_c00246780 FOREIGN KEY sys_c00246780 (project_pk_id)
-    REFERENCES project (project_pk_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT sys_c00246781 FOREIGN KEY sys_c00246781 (sample_pk_id)
-    REFERENCES sample (sample_pk_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
-)
-ENGINE = INNODB;
-
 DROP TABLE IF EXISTS protocol;
 CREATE TABLE protocol (
   protocol_pk_id DECIMAL(22, 0) NOT NULL,
@@ -918,67 +874,6 @@ CREATE TABLE report (
   PRIMARY KEY (report_pk_id),
   CONSTRAINT sys_c00246814 FOREIGN KEY sys_c00246814 (report_pk_id)
     REFERENCES lab_file (file_pk_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
-)
-ENGINE = INNODB;
-
-DROP TABLE IF EXISTS run;
-CREATE TABLE run (
-  run_pk_id DECIMAL(22, 0) NOT NULL,
-  run_name VARCHAR(500) BINARY NULL,
-  description VARCHAR(4000) BINARY NULL,
-  created_by VARCHAR(200) BINARY NULL,
-  created_date DATETIME NULL,
-  assay_pk_id DECIMAL(22, 0) NULL,
-  run_by VARCHAR(200) BINARY NULL,
-  run_date DATETIME NULL,
-  PRIMARY KEY (run_pk_id),
-  CONSTRAINT sys_c00246782 FOREIGN KEY sys_c00246782 (assay_pk_id)
-    REFERENCES assay (assay_pk_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
-)
-ENGINE = INNODB;
-
-DROP TABLE IF EXISTS run_input_file;
-CREATE TABLE run_input_file (
-  input_file_pk_id DECIMAL(22, 0) NULL,
-  run_pk_id DECIMAL(22, 0) NULL,
-  data_status_pk_id DECIMAL(22, 0) NULL
-)
-ENGINE = INNODB;
-
-DROP TABLE IF EXISTS run_output_file;
-CREATE TABLE run_output_file (
-  output_file_pk_id DECIMAL(22, 0) NULL,
-  run_pk_id DECIMAL(22, 0) NULL,
-  data_status_pk_id DECIMAL(22, 0) NULL
-)
-ENGINE = INNODB;
-
-DROP TABLE IF EXISTS run_sample_container;
-CREATE TABLE run_sample_container (
-  comments VARCHAR(4000) BINARY NULL,
-  run_sample_container_pk_id DECIMAL(22, 0) NOT NULL,
-  created_by VARCHAR(200) BINARY NULL,
-  created_date DATETIME NULL,
-  run_pk_id DECIMAL(22, 0) NULL,
-  sample_container_pk_id DECIMAL(22, 0) NULL,
-  status VARCHAR(20) BINARY NULL,
-  reason VARCHAR(2000) BINARY NULL,
-  data_status_pk_id DECIMAL(22, 0) NULL,
-  PRIMARY KEY (run_sample_container_pk_id),
-  CONSTRAINT sys_c00246783 FOREIGN KEY sys_c00246783 (sample_container_pk_id)
-    REFERENCES sample_container (sample_container_pk_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT sys_c00246784 FOREIGN KEY sys_c00246784 (run_pk_id)
-    REFERENCES run (run_pk_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT sys_c00246785 FOREIGN KEY sys_c00246785 (data_status_pk_id)
-    REFERENCES data_status (data_status_pk_id)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
 )
