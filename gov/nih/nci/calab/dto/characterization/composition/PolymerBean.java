@@ -54,7 +54,7 @@ public class PolymerBean extends CompositionBean {
 		this.initiator = initiator;
 	}
 
-	public void updateDomainObj(PolymerComposition doComp) {		
+	public void updateDomainObj(PolymerComposition doComp) {
 		super.updateDomainObj(doComp);
 		boolean crosslinkedStatus = (this.crosslinked
 				.equalsIgnoreCase(CaNanoLabConstants.BOOLEAN_YES)) ? true

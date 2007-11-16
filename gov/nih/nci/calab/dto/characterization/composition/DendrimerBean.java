@@ -92,7 +92,7 @@ public class DendrimerBean extends CompositionBean {
 		this.surfaceGroups = surfaceGroups;
 	}
 
-	public void updateDomainObj(DendrimerComposition doComp) {
+	public void updateDomainObj(DendrimerComposition doComp) {		
 		super.updateDomainObj(doComp);
 		if (this.generation.length() > 0) {
 			doComp.setGeneration(new Float(this.generation));
