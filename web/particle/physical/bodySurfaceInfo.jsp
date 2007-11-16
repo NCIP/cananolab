@@ -42,7 +42,7 @@
 				<c:choose>
 					<c:when test="${canCreateNanoparticle eq 'true'}">
 						<html:select property="surface.isHydrophobic">
-						    <option value=""></option>
+							<option value=""></option>
 							<html:options name="booleanChoices" />
 						</html:select>
 					</c:when>
@@ -64,7 +64,7 @@
 						<html:text property="surface.charge" />&nbsp;
 						<html:select property="surface.chargeUnit">
 							<option value="" />
-							<html:options name="allChargeMeasureUnits" />
+								<html:options name="allChargeMeasureUnits" />
 						</html:select>
 					</c:when>
 					<c:otherwise>
@@ -145,13 +145,45 @@
 										</tr>
 										<tr>
 											<td class="leftLabel">
+												<strong>Number of Molecule* </strong>
+											</td>
+											<td class="label">
+												&nbsp;
+												<c:choose>
+													<c:when test="${canCreateNanoparticle eq 'true'}">
+														<html:text name="surface.surfaceChemistries"
+															indexed="true" property="numberOfMolecules" /> &nbsp;															
+														</c:when>
+													<c:otherwise>
+															${nanoparticleCharacterizationForm.map.surface.surfaceChemistries[status.index].numberOfMolecules}&nbsp;
+														</c:otherwise>
+												</c:choose>
+											</td>
+											<td class="label">
+												<strong>Molecule Name </strong>
+											</td>
+											<td class="rightLabel">
+												&nbsp;
+												<c:choose>
+													<c:when test="${canCreateNanoparticle eq 'true'}">
+														<html:text name="surface.surfaceChemistries"
+															indexed="true" property="moleculeName" /> &nbsp;															
+														</c:when>
+													<c:otherwise>
+															${nanoparticleCharacterizationForm.map.surface.surfaceChemistries[status.index].moleculeName}&nbsp;
+														</c:otherwise>
+												</c:choose>
+											</td>
+										</tr>
+										<tr>
+											<td class="leftLabel">
 												<strong>Molecular Formula Type</strong>
 											</td>
 											<td class="label">
 												<html:select name="surface.surfaceChemistries"
 													indexed="true" property="molecularFormulaType">
-													<option/>
-													<html:options name="allMolecularFormulaTypes" />
+													<option />
+														<html:options name="allMolecularFormulaTypes" />
 												</html:select>
 											</td>
 											<td class="label">
@@ -161,27 +193,10 @@
 												<c:choose>
 													<c:when test="${canCreateNanoparticle eq 'true'}">
 														<html:text name="surface.surfaceChemistries"
-															indexed="true" property="moleculeName" size="30"/>
+															indexed="true" property="moleculeName" size="30" />
 													</c:when>
 													<c:otherwise>
 						${nanoparticleCharacterizationForm.map.surface.surfaceChemistries[status.index].moleculeName}&nbsp;
-														</c:otherwise>
-												</c:choose>
-											</td>
-										</tr>
-										<tr>
-											<td class="leftLabel">
-												<strong>Number of Molecule </strong>
-											</td>
-											<td class="rightLabel" colspan="3">
-												&nbsp;
-												<c:choose>
-													<c:when test="${canCreateNanoparticle eq 'true'}">
-														<html:text name="surface.surfaceChemistries"
-															indexed="true" property="numberOfMolecules" /> &nbsp;															
-														</c:when>
-													<c:otherwise>
-															${nanoparticleCharacterizationForm.map.surface.surfaceChemistries[status.index].numberOfMolecules}&nbsp;
 														</c:otherwise>
 												</c:choose>
 											</td>
