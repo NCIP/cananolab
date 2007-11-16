@@ -52,15 +52,13 @@ public class ComposingElementBean {
 		this.elementType = elementType;
 	}
 
-	public ComposingElement getDomainObj() {
-		ComposingElement element = new ComposingElement();
+	public void updateDomainObj(ComposingElement element) {		
 		if (getId() != null && getId().length() > 0) {
 			element.setId(new Long(getId()));
 		}
 		element.setChemicalName(this.chemicalName);
 		element.setDescription(this.description);
-		element.setElementType(this.elementType);
-		return element;
+		element.setElementType(this.elementType);		
 	}
 
 	public String getId() {

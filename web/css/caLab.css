@@ -147,7 +147,7 @@ td.subMenuSecondaryTitle { /* for the off state of the cell for the elements (us
 	font-size: 0.6em;
 	font-weight: bold;
 	padding-left: 0.8em;
-	background-color: #98b7b7; /* lighter */
+	background-color: #6A8989; /* darker */
 	color: #ffffff; /* constant: white */
 	border-bottom: 1px solid #cccccc; /* constant: medium gray */
 	border-right: 1px solid #cccccc; /* constant: medium gray */
@@ -157,7 +157,7 @@ td.subMenuSecondaryTitleOver { /* for the over state of the cell for the element
 	font-size: 0.6em;
 	font-weight: bold;
 	padding-left: 0.8em;
-	background-color: #6a8989; /* darker */
+	background-color: #98B7B7; /* lighter */
 	color: #ffffff; /* constant: white */
 	border-bottom: 1px solid #cccccc; /* constant: medium gray */
 	border-right: 1px solid #cccccc; /* constant: medium gray */
@@ -165,6 +165,7 @@ td.subMenuSecondaryTitleOver { /* for the over state of the cell for the element
 
 td.subMenuFill { /* for the empty cell below the sub-menu items */
 	border-right: 1px solid #cccccc; /* constant: medium gray */
+	background-color: #6A8989;
 }
 
 td.loginMenuFill {
@@ -202,6 +203,10 @@ a:link.helpText,a:visited.helpText,a:active.helpText { /* for help link text not
 }
 
 a:hover {
+	color: #a90101; /* constant: red */
+}
+
+a:hover.helpText {
 	color: #a90101; /* constant: red */
 }
 
@@ -635,7 +640,7 @@ h4,.h4 { /* for title of page */
 }
 
 p,.p { /* for paragraphs */
-	padding-left: 1em;
+	/* padding-left: 1em; */
 }
 
 .standardText { /* for stand-alone text not affected by any cascading text styles */
@@ -681,11 +686,20 @@ p,.p { /* for paragraphs */
 #publicLinks h5 {
 	margin-top: 0.6em;
 	font-weight: normal;
+	font-size: 1em;
+	line-height: 1.3em;
 }
 
 #publicLinks h4 {
 	margin-bottom: 0;
 	padding-bottom: 0;
+}
+
+#publicLinks p {
+	margin: 0.6em, 0, 1em, 0;
+	text-align: left;
+	font-weight: normal;
+	line-height: 1.3em;
 }
 
 #publicLinks img {
@@ -874,7 +888,7 @@ td.secondMenuItemOver { /* for the over state of the main menu (top) cells */
 .addLink {
 	color: #a90101; /* constant: red */
 	font-weight: bold;
-	font-size: 0.7em;
+	font-size: 0.7em;	
 }
 
 .removeLink {
@@ -893,3 +907,59 @@ td.secondMenuItemOver { /* for the over state of the main menu (top) cells */
 	border-left: 1px solid #5c5c5c; /* constant: dark gray */
 	border-right: 1px solid #5c5c5c; /* constant: dark gray */
 }
+
+.formSubTitleNoRight { /* for header cells (top) of forms */
+	font-family: arial, helvetica, verdana, sans-serif;
+	font-size: 0.7em;
+	font-weight: bold;
+	padding-left: 0.8em;
+	background-color: #AAAAAB; /* constant: lighter gray */
+	color: #000000; /* constant: black */
+	border-top: 1px solid #5c5c5c; /* constant: dark gray */
+	border-left: 1px solid #5c5c5c; /* constant: dark gray */
+}
+
+.formSubTitleNoLeft { /* for header cells (top) of forms */
+	font-family: arial, helvetica, verdana, sans-serif;
+	font-size: 0.7em;
+	font-weight: bold;
+	padding-left: 0.8em;
+	background-color: #AAAAAB; /* constant: lighter gray */
+	color: #000000; /* constant: black */
+	border-top: 1px solid #5c5c5c; /* constant: dark gray */
+	border-right: 1px solid #5c5c5c; /* constant: dark gray */
+}
+
+.thumbnail{
+position: relative;
+z-index: 0;
+}
+
+.thumbnail:hover{
+background-color: transparent;
+z-index: 50;
+}
+
+.thumbnail span{ /*CSS for enlarged image*/
+position: absolute;
+background-color: lightyellow;
+padding: 5px;
+left: -1000px;
+border: 1px dashed gray;
+visibility: hidden;
+color: black;
+text-decoration: none;
+}
+
+.thumbnail span img{ /*CSS for enlarged image*/
+border-width: 0;
+padding: 2px;
+}
+
+.thumbnail:hover span{ /*CSS for enlarged image on hover*/
+visibility: visible;
+top: 0;
+left: 60px; /*position where enlarged image should offset horizontally */
+
+}
+

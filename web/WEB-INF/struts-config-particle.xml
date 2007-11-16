@@ -22,6 +22,8 @@
 				initial="0" />
 			<form-property name="particleName" type="java.lang.String" />
 			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="composition"
+				type="gov.nih.nci.calab.dto.characterization.composition.CompositionBean" />
 			<form-property name="dendrimer"
 				type="gov.nih.nci.calab.dto.characterization.composition.DendrimerBean" />
 			<form-property name="liposome"
@@ -32,18 +34,8 @@
 				type="gov.nih.nci.calab.dto.characterization.composition.FullereneBean" />
 			<form-property name="polymer"
 				type="gov.nih.nci.calab.dto.characterization.composition.PolymerBean" />
-			<form-property name="quantumDot"
-				type="gov.nih.nci.calab.dto.characterization.composition.QuantumDotBean" />
 			<form-property name="emulsion"
 				type="gov.nih.nci.calab.dto.characterization.composition.EmulsionBean" />
-			<form-property name="metalParticle"
-				type="gov.nih.nci.calab.dto.characterization.composition.MetalParticleBean" />
-			<form-property name="complexParticle"
-				type="gov.nih.nci.calab.dto.characterization.composition.ComplexParticleBean" />
-			<form-property name="viewTitle" type="java.lang.String" />
-			<form-property name="description" type="java.lang.String" />
-			<form-property name="characterizationSource"
-				type="java.lang.String" />
 			<form-property name="characterizationId"
 				type="java.lang.String" />
 		</form-bean>
@@ -221,6 +213,8 @@
 				path="/size.do?dispatch=input&amp;page=0" />
 			<forward name="setup"
 				path="particle.physicalCharacterization" />
+			<forward name="summaryView"
+				path="particle.physicalSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/surface"
@@ -239,6 +233,8 @@
 			<forward name="input"
 				path="/surface.do?dispatch=input&amp;page=0" />
 			<forward name="setup" path="particle.surface" />
+			<forward name="summaryView"
+				path="particle.physicalSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/molecularWeight"
@@ -258,6 +254,8 @@
 				path="/molecularWeight.do?dispatch=input&amp;page=0" />
 			<forward name="setup"
 				path="particle.physicalCharacterization" />
+			<forward name="summaryView"
+				path="particle.physicalSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/morphology"
@@ -276,6 +274,8 @@
 			<forward name="input"
 				path="/morphology.do?dispatch=input&amp;page=0" />
 			<forward name="setup" path="particle.morphology" />
+			<forward name="summaryView"
+				path="particle.physicalSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/shape"
@@ -442,7 +442,7 @@
 			<forward name="success"
 				path="particle.characterizationMessage" />
 			<forward name="input"
-				path="/cytokinInduction.do?dispatch=input&amp;page=0" />
+				path="/cytokinInductione.do?dispatch=input&amp;page=0" />
 			<forward name="setup"
 				path="particle.inVitroCharacterization" />
 		</action>

@@ -8,27 +8,22 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: RemoteNanoparticleCompositionAction.java,v 1.2 2007-11-08 20:41:34 pansu Exp $ */
+/* CVS $Id: RemoteNanoparticleCompositionAction.java,v 1.2.2.1 2007-11-16 19:45:50 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.CarbonNanotubeComposition;
-import gov.nih.nci.calab.domain.nano.characterization.physical.composition.ComplexComposition;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.DendrimerComposition;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.EmulsionComposition;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.FullereneComposition;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.LiposomeComposition;
-import gov.nih.nci.calab.domain.nano.characterization.physical.composition.MetalParticleComposition;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.ParticleComposition;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.PolymerComposition;
-import gov.nih.nci.calab.domain.nano.characterization.physical.composition.QuantumDotComposition;
 import gov.nih.nci.calab.dto.characterization.composition.CarbonNanotubeBean;
-import gov.nih.nci.calab.dto.characterization.composition.ComplexParticleBean;
+import gov.nih.nci.calab.dto.characterization.composition.CompositionBean;
 import gov.nih.nci.calab.dto.characterization.composition.DendrimerBean;
 import gov.nih.nci.calab.dto.characterization.composition.EmulsionBean;
 import gov.nih.nci.calab.dto.characterization.composition.FullereneBean;
 import gov.nih.nci.calab.dto.characterization.composition.LiposomeBean;
-import gov.nih.nci.calab.dto.characterization.composition.MetalParticleBean;
 import gov.nih.nci.calab.dto.characterization.composition.PolymerBean;
-import gov.nih.nci.calab.dto.characterization.composition.QuantumDotBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.remote.GridNodeBean;
 import gov.nih.nci.calab.service.remote.GridSearchService;
@@ -56,15 +51,13 @@ public class RemoteNanoparticleCompositionAction extends AbstractDispatchAction 
 
 		// clear session data from the input forms
 		theForm.getMap().clear();
+		theForm.set("composition", new CompositionBean());
 		theForm.set("dendrimer", new DendrimerBean());
 		theForm.set("polymer", new PolymerBean());
 		theForm.set("fullerene", new FullereneBean());
 		theForm.set("carbonNanotube", new CarbonNanotubeBean());
 		theForm.set("emulsion", new EmulsionBean());
-		theForm.set("complexParticle", new ComplexParticleBean());
 		theForm.set("liposome", new LiposomeBean());
-		theForm.set("quantumDot", new QuantumDotBean());
-		theForm.set("metalParticle", new MetalParticleBean());
 		theForm.set("particleName", particleName);
 		theForm.set("particleType", particleType);
 	}
@@ -89,54 +82,38 @@ public class RemoteNanoparticleCompositionAction extends AbstractDispatchAction 
 		GridSearchService service = new GridSearchService();
 		ParticleComposition comp = service.getRemoteComposition(compositionId,
 				particleName, gridNode);
-
+		CompositionBean compositionBean=new CompositionBean(comp);		
 		// clear session data from the input forms
 		clearMap(session, theForm);
-		if (particleType.equalsIgnoreCase(CaNanoLabConstants.DENDRIMER_TYPE)) {
+		if (particleType
+				.equalsIgnoreCase(CaNanoLabConstants.COMPOSITION_DENDRIMER_TYPE)) {
 			DendrimerBean dendrimer = new DendrimerBean(
 					(DendrimerComposition) comp);
 			theForm.set("dendrimer", dendrimer);
 		} else if (particleType
-				.equalsIgnoreCase(CaNanoLabConstants.POLYMER_TYPE)) {
+				.equalsIgnoreCase(CaNanoLabConstants.COMPOSITION_POLYMER_TYPE)) {
 			PolymerBean polymer = new PolymerBean((PolymerComposition) comp);
 			theForm.set("polymer", polymer);
 		} else if (particleType
-				.equalsIgnoreCase(CaNanoLabConstants.LIPOSOME_TYPE)) {
+				.equalsIgnoreCase(CaNanoLabConstants.COMPOSITION_LIPOSOME_TYPE)) {
 			LiposomeBean liposome = new LiposomeBean((LiposomeComposition) comp);
 			theForm.set("liposome", liposome);
 		} else if (particleType
-				.equalsIgnoreCase(CaNanoLabConstants.FULLERENE_TYPE)) {
+				.equalsIgnoreCase(CaNanoLabConstants.COMPOSITION_FULLERENE_TYPE)) {
 			FullereneBean fullerene = new FullereneBean(
 					(FullereneComposition) comp);
 			theForm.set("fullerene", fullerene);
 		} else if (particleType
-				.equalsIgnoreCase(CaNanoLabConstants.CARBON_NANOTUBE_TYPE)) {
+				.equalsIgnoreCase(CaNanoLabConstants.COMPOSITION_CARBON_NANOTUBE_TYPE)) {
 			CarbonNanotubeBean carbonNanotube = new CarbonNanotubeBean(
 					(CarbonNanotubeComposition) comp);
 			theForm.set("carbonNanotube", carbonNanotube);
 		} else if (particleType
-				.equalsIgnoreCase(CaNanoLabConstants.EMULSION_TYPE)) {
+				.equalsIgnoreCase(CaNanoLabConstants.COMPOSITION_EMULSION_TYPE)) {
 			EmulsionBean emulsion = new EmulsionBean((EmulsionComposition) comp);
 			theForm.set("emulsion", emulsion);
-		} else if (particleType
-				.equalsIgnoreCase(CaNanoLabConstants.COMPLEX_PARTICLE_TYPE)) {
-			ComplexParticleBean complexParticle = new ComplexParticleBean(
-					(ComplexComposition) comp);
-			theForm.set("complexParticle", complexParticle);
-		} else if (particleType
-				.equalsIgnoreCase(CaNanoLabConstants.QUANTUM_DOT_TYPE)) {
-			QuantumDotBean quantumDot = new QuantumDotBean(
-					(QuantumDotComposition) comp);
-			theForm.set("quantumDot", quantumDot);
-		} else if (particleType
-				.equalsIgnoreCase(CaNanoLabConstants.METAL_PARTICLE_TYPE)) {
-			MetalParticleBean metalParticle = new MetalParticleBean(
-					(MetalParticleComposition) comp);
-			theForm.set("metalParticle", metalParticle);
 		}
-		theForm.set("characterizationSource", comp.getSource());
-		theForm.set("viewTitle", comp.getIdentificationName());
-		theForm.set("description", comp.getDescription());
+		theForm.set("composition", compositionBean );
 		ActionForward forward = mapping.findForward("success");
 		return forward;
 	}

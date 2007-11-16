@@ -5,25 +5,25 @@
 <form-validation>
 	<formset>
 		<form name="createSampleForm">
-			<field property="sampleName" page="1"
+			<field property="sample.sampleNamePrefix" page="2"
 				depends="required">
 				<arg position="0"
-					key="createSampleForm.sampleName" bundle="sample" />
+					key="createSampleForm.sampleNamePrefix" bundle="sample" />
 			</field>
-			<field property="sampleType" page="1" depends="required">
+			<field property="sample.sampleType" page="2" depends="required">
 				<arg position="0" key="createSampleForm.sampleType"
 					bundle="sample" />
 			</field>
-			<field property="sampleSource" page="1"
+			<field property="sample.sampleSource" page="2"
 				depends="required">
 				<arg position="0" key="createSampleForm.sampleSource"
 					bundle="sample" />
 			</field>
-			<field property="lotId" page="1" depends="integer">
+			<field property="sample.lotId" page="2" depends="integer">
 				<arg position="0" key="createSampleForm.lotId"
 					bundle="sample" />
 			</field>
-			<field property="dateReceived" page="1" depends="date">
+			<field property="sample.dateReceivedStr" page="2" depends="date">
 				<arg position="0" key="createSampleForm.dateReceived"
 					bundle="sample" />
 				<var>
@@ -31,98 +31,81 @@
 					<var-value>MM/dd/yy</var-value>
 				</var>
 			</field>
-			<field property="numberOfContainers" page="0"
-				depends="integer,intRange">
-				<arg position="0"
-					key="createSampleForm.numberOfContainers" bundle="sample" />
-				<arg position="1" name="intRange" key="${var:min}"
-					resource="false" bundle="sample" />
-				<arg position="2" name="intRange" key="${var:max}"
-					resource="false" bundle="sample" />
-				<var>
-					<var-name>min</var-name>
-					<var-value>1</var-value>
-				</var>
-				<var>
-					<var-name>max</var-name>
-					<var-value>100</var-value>
-				</var>
-			</field>
-			<field property="containerType" page="1" depends="required"
-				indexedListProperty="containers">
+			<field property="containerType" page="2" depends="required"
+				indexedListProperty="sample.containers">
 				<arg position="0" key="createSampleForm.containerType"
 					bundle="sample" />
 			</field>
-			<field property="solvent" page="0" depends="validwhen"
-				indexedListProperty="containers">
+			<field property="solvent" page="1" depends="validwhen"
+				indexedListProperty="sample.containers">
 				<arg position="0"
 					key="createSampleForm.concentrationSolvent" bundle="sample" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((containers[].concentration==null) or
+						((sample.containers[].concentration==null) or
 						(*this*!=null))
 					</var-value>
 				</var>
 			</field>
-			<field property="concentration" page="0" depends="validwhen"
-				indexedListProperty="containers">
+			<field property="concentration" page="1" depends="validwhen"
+				indexedListProperty="sample.containers">
 				<arg position="0"
 					key="createSampleForm.solventConcentration" bundle="sample" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((containers[].solvent==null) or (*this*!=null))
+						((sample.containers[].solvent==null) or (*this*!=null))
 					</var-value>
 				</var>
 			</field>
-			<field property="quantity" page="0" depends="float"
-				indexedListProperty="containers">
+			<field property="quantity" page="1" depends="float"
+				indexedListProperty="sample.containers">
 				<arg position="0" key="createSampleForm.quantity"
 					bundle="sample" />
 			</field>
-			<field property="concentration" page="0" depends="float"
-				indexedListProperty="containers">
+			<field property="concentration" page="1" depends="float"
+				indexedListProperty="sample.containers">
 				<arg position="0" key="createSampleForm.concentration"
 					bundle="sample" />
 			</field>
-			<field property="volume" page="0" depends="float"
-				indexedListProperty="containers">
+			<field property="volume" page="1" depends="float"
+				indexedListProperty="sample.containers">
 				<arg position="0" key="createSampleForm.volume"
 					bundle="sample" />
 			</field>
-			<field property="quantityUnit" page="0" depends="validwhen"
-				indexedListProperty="containers">
+			<field property="quantityUnit" page="1" depends="validwhen"
+				indexedListProperty="sample.containers">
 				<arg position="0" key="createSampleForm.quantityUnit"
 					bundle="sample" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((containers[].quantity==null) or
+						((sample.containers[].quantity==null) or
 						(*this*!=null))
 					</var-value>
 				</var>
 			</field>
-			<field property="concentrationUnit" page="0"
-				depends="validwhen" indexedListProperty="containers">
+			<field property="concentrationUnit" page="1"
+				depends="validwhen" indexedListProperty="sample.containers">
 				<arg position="0"
 					key="createSampleForm.concentrationUnit" bundle="sample" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((containers[].concentration==null) or
+						((sample.containers[].concentration==null) or
 						(*this*!=null))
 					</var-value>
 				</var>
 			</field>
-			<field property="volumeUnit" page="0" depends="validwhen"
-				indexedListProperty="containers">
+			<field property="volumeUnit" page="1" depends="validwhen"
+				indexedListProperty="sample.containers">
 				<arg position="0" key="createSampleForm.volumeUnit"
 					bundle="sample" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((containers[].volume==null) or (*this*!=null))
+						((sample.containers[].volume==null) or (*this*!=null))
 					</var-value>
 				</var>
 			</field>

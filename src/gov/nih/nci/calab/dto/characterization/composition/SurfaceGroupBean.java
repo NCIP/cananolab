@@ -50,15 +50,12 @@ public class SurfaceGroupBean {
 		this.name = name;
 	}
 
-	public SurfaceGroup getDomainObj() {
-		SurfaceGroup surfaceGroup = new SurfaceGroup();
-
+	public void updateDomainObj(SurfaceGroup surfaceGroup) {
 		surfaceGroup.setName(this.name);
 
 		surfaceGroup.setModifier(this.modifier);
 		if (getId() != null && getId().length() > 0) {
 			surfaceGroup.setId(new Long(getId()));
 		}
-		return surfaceGroup;
 	}
 }
