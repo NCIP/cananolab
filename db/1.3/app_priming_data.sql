@@ -6,30 +6,6 @@ USE cananolab;
 -- Disable foreign key checks
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 
-INSERT INTO assay(assay_pk_id, assay_name, description, assay_type, created_date, created_by, protocol_pk_id)
-VALUES (1, 'STE-1', NULL, 'Pre-screening', '2006-04-06 11:12:02', ' ', NULL),
-  (2, 'STE-2', NULL, 'Pre-screening', '2006-04-06 11:12:02', ' ', NULL),
-  (3, 'STE-3', NULL, 'Pre-screening', '2006-04-06 11:12:02', ' ', NULL),
-  (4, 'PCC-1', NULL, 'Pre-screening', '2006-04-06 11:12:02', ' ', NULL),
-  (5, 'ITA-1', NULL, 'In Vitro', '2006-04-06 11:12:02', ' ', NULL),
-  (6, 'ITA-2', NULL, 'In Vitro', '2006-04-06 11:12:02', ' ', NULL),
-  (7, 'ITA-3', NULL, 'In Vitro', '2006-04-06 11:12:02', ' ', NULL),
-  (8, 'ITA-4', NULL, 'In Vitro', '2006-04-06 11:12:02', ' ', NULL),
-  (9, 'ITA-5', NULL, 'In Vitro', '2006-04-06 11:12:02', ' ', NULL),
-  (10, 'ITA-6', NULL, 'In Vitro', '2006-04-06 11:12:02', ' ', NULL),
-  (11, 'ITA-7', NULL, 'In Vitro', '2006-04-06 11:12:02', ' ', NULL),
-  (12, 'ITA-8', NULL, 'In Vitro', '2006-04-06 11:12:02', ' ', NULL),
-  (13, 'ITA-9', NULL, 'In Vitro', '2006-04-06 11:12:02', ' ', NULL),
-  (14, 'ITA-10', NULL, 'In Vitro', '2006-04-06 11:12:02', ' ', NULL),
-  (15, 'ITA-11', NULL, 'In Vitro', '2006-04-06 11:12:02', ' ', NULL),
-  (16, 'ITA-12', NULL, 'In Vitro', '2006-04-06 11:12:02', ' ', NULL),
-  (17, 'GTA-1', NULL, 'In Vitro', '2006-04-06 11:12:02', ' ', NULL),
-  (18, 'GTA-2', NULL, 'In Vitro', '2006-04-06 11:12:02', ' ', NULL),
-  (19, 'GTA-3', NULL, 'In Vitro', '2006-04-06 11:12:02', ' ', NULL),
-  (20, 'GTA-4', NULL, 'In Vitro', '2006-04-06 11:12:02', ' ', NULL),
-  (21, 'GTA-5', NULL, 'In Vitro', '2006-04-06 11:12:02', ' ', NULL),
-  (22, 'GTA-6', NULL, 'In Vitro', '2006-04-06 11:12:02', ' ', NULL);
-
 INSERT INTO def_activation_method(activation_method_pk_id, name)
 VALUES (1, 'MRI'),
   (2, 'NMR'),
@@ -37,11 +13,17 @@ VALUES (1, 'MRI'),
   (4, 'Ultrasound'),
   (5, 'Ultraviolet');
 
-INSERT INTO def_assay_type(assay_type_pk_id, name, description, execute_order)
-VALUES (1, 'Pre-screening', NULL, '1'),
-  (2, 'In Vitro', NULL, '2'),
-  (3, 'In Vivo', NULL, '3'),
-  (4, 'PCC', NULL, '4');
+INSERT INTO def_composing_element_type(composing_element_type_pk_id, name)
+VALUES (1, 'core'),
+  (2, 'shell'),
+  (3, 'coating'),
+  (4, 'monomer'),
+  (5, 'lipid'),
+  (6, 'modification'),
+  (7, 'oil'),
+  (8, 'PFC'),
+  (9, 'drug'),
+  (10, 'image contrast agent');
 
 INSERT INTO def_bioassay_data_category(category_pk_id, name, characterization_name)
 VALUES (1, 'Volume Distribution', 'Size'),

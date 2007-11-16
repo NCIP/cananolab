@@ -20,18 +20,17 @@ CREATE TABLE def_composing_element_type (
 )
 ENGINE=INNODB;
 
-
 INSERT INTO def_composing_element_type(composing_element_type_pk_id, name)
-VALUES (1, 'Core'),
-  (2, 'Shell'),
-  (3, 'Coating'),
-  (4, 'Monomer'),
-  (5, 'Lipid'),
-  (6, 'Modification'),
-  (7, 'Oil'),
+VALUES (1, 'core'),
+  (2, 'shell'),
+  (3, 'coating'),
+  (4, 'monomer'),
+  (5, 'lipid'),
+  (6, 'modification'),
+  (7, 'oil'),
   (8, 'PFC'),
-  (9, 'Drug'),
-  (10, 'Image Contrast Agent');
+  (9, 'drug'),
+  (10, 'image contrast agent');
 
 commit;
 
