@@ -4,10 +4,8 @@ import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.common.LookupService;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
-import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.security.exceptions.CSException;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -39,20 +37,6 @@ public class InitSecuritySetup {
 			session.getServletContext().setAttribute("allUsers", allUsers);
 		}
 		session.removeAttribute("newUserCreated");
-	}
-
-	public void setCurrentUser(HttpSession session) throws Exception {
-
-		// get user and date information
-		String creator = "";
-		if (session.getAttribute("user") != null) {
-			UserBean user = (UserBean) session.getAttribute("user");
-			creator = user.getLoginName();
-		}
-		String creationDate = StringUtils.convertDateToString(new Date(),
-				CaNanoLabConstants.DATE_FORMAT);
-		session.setAttribute("creator", creator);
-		session.setAttribute("creationDate", creationDate);
 	}
 
 	public static LookupService getLookupService() {
