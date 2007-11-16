@@ -162,8 +162,7 @@
 																<c:when test="${ind==0}">
 																	<td class="formSubTitle" width="100%" colspan="2">
 																		<div align="justify">
-																			Container
-																			<c:out value="${ind+1}" />
+																			Container ${ind+1}
 																			<html:hidden
 																				property="sample.containers[${ind}].containerName"
 																				value="${ind+1}" />
@@ -172,8 +171,7 @@
 																<c:otherwise>
 																	<td class="formSubTitleNoRight" width="100%">
 																		<div align="justify">
-																			Container
-																			<c:out value="${ind+1}" />
+																			Container ${ind+1}
 																			<html:hidden
 																				property="sample.containers[${ind}].containerName"
 																				value="${ind+1}" />

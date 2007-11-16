@@ -120,7 +120,8 @@
 								<td valign="bottom" width="120">
 									<a href="#"
 										onclick="javascript:addSurfaceGroup(nanoparticleCompositionForm, 'composition')"><span
-										class="addLink">Add Surface Group</span></a>
+										class="addLink">Add Surface Group</span>
+									</a>
 								</td>
 							</c:when>
 							<c:otherwise>
@@ -138,9 +139,7 @@
 											<c:choose>
 												<c:when test="${canCreateNanoparticle eq 'true'}">
 													<td class="formSubTitleNoRight" colspan="3">
-														<div align="justify">
-															Surface Group ${ind+1}
-														</div>
+														Surface Group #${ind+1}
 													</td>
 													<td class="formSubTitleNoLeft" align="right">
 														<a href="#"
@@ -151,7 +150,7 @@
 												</c:when>
 												<c:otherwise>
 													<td class="formSubTitle" colspan="4">
-														&nbsp;
+														Surface Group ${ind+1}
 													</td>
 												</c:otherwise>
 											</c:choose>
@@ -164,7 +163,7 @@
 												<c:choose>
 													<c:when
 														test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
-														<html:select 
+														<html:select
 															property="dendrimer.surfaceGroups[${ind}].name"
 															onkeydown="javascript:fnKeyDownHandler(this, event);"
 															onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
@@ -188,7 +187,7 @@
 												<c:choose>
 													<c:when
 														test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
-														<html:text 
+														<html:text
 															property="dendrimer.surfaceGroups[${ind}].modifier" />
 													</c:when>
 													<c:otherwise>
