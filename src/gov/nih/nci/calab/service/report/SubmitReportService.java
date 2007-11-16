@@ -58,9 +58,8 @@ public class SubmitReportService {
 		dataFile.setUri(File.separator + CaNanoLabConstants.FOLDER_REPORT
 				+ File.separator + fileName);
 		dataFile.setTitle(fileBean.getTitle().toUpperCase()); // convert to
-		// upper case
-		Date date = new Date();
-		dataFile.setCreatedDate(date);
+		dataFile.setCreatedDate(fileBean.getCreatedDate());
+		dataFile.setCreatedBy(fileBean.getCreatedBy());
 		dataFile.setComments(fileBean.getComments());
 
 		// look up the samples for each particleNames

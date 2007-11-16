@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.sample;
  * @author pansu
  */
 
-/* CVS $Id: CreateAliquotAction.java,v 1.2 2007-11-08 20:41:34 pansu Exp $ */
+/* CVS $Id: CreateAliquotAction.java,v 1.2.2.1 2007-11-16 22:23:18 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.sample.AliquotBean;
@@ -105,11 +105,10 @@ public class CreateAliquotAction extends AbstractDispatchAction {
 				.getAliquotPrefix(parentName);
 
 		// get user and date from session
-		String creator = (String) session.getAttribute("creator");
-
+		UserBean creator = (UserBean) session.getAttribute("user");
 		// create a 2-D matrix for aliquot
 		List<AliquotBean[]> aliquotMatrix = createAliquotMatrix(colNum, rowNum,
-				numAliquots, aliquotPrefix, firstAliquotNum, template, creator);
+				numAliquots, aliquotPrefix, firstAliquotNum, template, creator.getLoginName());
 		session.setAttribute("aliquotMatrix", aliquotMatrix);
 
 		// update editable drop down list to include new entries
@@ -127,7 +126,6 @@ public class CreateAliquotAction extends AbstractDispatchAction {
 		InitSampleSetup.getInstance().setAllAliquotContainerTypes(session);
 		InitSampleSetup.getInstance().setAllAliquotContainerInfo(session);
 		InitSampleSetup.getInstance().setAllAliquotCreateMethods(session);
-		InitSecuritySetup.getInstance().setCurrentUser(session);
 
 		session.removeAttribute("createAliquotForm");
 		session.removeAttribute("aliquotMatrix");

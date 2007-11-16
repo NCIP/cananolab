@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.report;
  * @author pansu
  */
 
-/* CVS $Id: SubmitReportAction.java,v 1.2 2007-11-08 20:41:34 pansu Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.2.2.1 2007-11-16 22:23:18 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
@@ -18,6 +18,8 @@ import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 import gov.nih.nci.calab.ui.sample.InitSampleSetup;
 import gov.nih.nci.calab.ui.security.InitSecuritySetup;
+
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,6 +43,10 @@ public class SubmitReportAction extends AbstractDispatchAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String[] particleNames = (String[]) theForm.get("particleNames");
 		LabFileBean fileBean = (LabFileBean) theForm.get("file");
+		String user=(String)request.getSession().getAttribute("user");
+		fileBean.setCreatedBy(user);
+		fileBean.setCreatedDate(new Date());
+		
 		FormFile uploadedFile = (FormFile) theForm.get("uploadedFile");
 		SubmitReportService service = new SubmitReportService();
 

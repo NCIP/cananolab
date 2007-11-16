@@ -21,7 +21,7 @@ import java.util.List;
  * 
  */
 
-/* CVS $Id: SampleBean.java,v 1.2.2.1 2007-11-16 19:45:50 pansu Exp $ */
+/* CVS $Id: SampleBean.java,v 1.2.2.2 2007-11-16 22:22:42 pansu Exp $ */
 public class SampleBean {
 	private String sampleId = "";
 
@@ -41,7 +41,7 @@ public class SampleBean {
 
 	private Date dateReceived;
 
-	private String dateReceivedStr="";
+	private String dateReceivedStr = "";
 
 	private String lotId = "";
 
@@ -60,7 +60,7 @@ public class SampleBean {
 	private List<ContainerBean> containers = new ArrayList<ContainerBean>();
 
 	public SampleBean() {
-		//initialize to have one container
+		// initialize to have one container
 		containers.add(new ContainerBean());
 	}
 
@@ -77,6 +77,9 @@ public class SampleBean {
 		this.sourceSampleId = StringUtils.convertToString(sample
 				.getSourceSampleId());
 		this.dateReceived = sample.getReceivedDate();
+		if (this.dateReceived != null)
+			this.dateReceivedStr = StringUtils.convertDateToString(
+					dateReceived, CaNanoLabConstants.DATE_FORMAT);
 		this.solubility = StringUtils.convertToString(sample.getSolubility());
 		this.lotId = StringUtils.convertToString(sample.getLotId());
 		this.lotDescription = StringUtils.convertToString(sample
@@ -89,6 +92,10 @@ public class SampleBean {
 		this.sampleSubmitter = StringUtils.convertToString(sample
 				.getCreatedBy());
 		this.accessionDate = sample.getCreatedDate();
+		if (this.accessionDate != null) {
+			this.accessionDateStr = StringUtils.convertDateToString(
+					accessionDate, CaNanoLabConstants.DATE_FORMAT);
+		}
 		for (SampleContainer container : sampleContainers) {
 			ContainerBean containerBean = new ContainerBean(container);
 			containerBean.setSample(this);
@@ -102,8 +109,12 @@ public class SampleBean {
 		this.sampleId = sampleId;
 		this.sampleName = sampleName;
 	}
-	
+
 	public Date getDateReceived() {
+		if (dateReceivedStr.length() > 0) {
+			this.dateReceived = StringUtils.convertToDate(dateReceivedStr,
+					CaNanoLabConstants.DATE_FORMAT);
+		}
 		return this.dateReceived;
 	}
 
@@ -115,7 +126,7 @@ public class SampleBean {
 		this.accessionDate = accessionDate;
 	}
 
-	public void setDateReceived(Date dateReceived) {
+	public void setDateReceived(Date dateReceived) {		
 		this.dateReceived = dateReceived;
 	}
 
@@ -142,6 +153,7 @@ public class SampleBean {
 	public void setLotId(String lotId) {
 		this.lotId = lotId;
 	}
+
 	public String getSampleDescription() {
 		return this.sampleDescription;
 	}

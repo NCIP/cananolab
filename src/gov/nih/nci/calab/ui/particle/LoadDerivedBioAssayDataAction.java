@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: LoadDerivedBioAssayDataAction.java,v 1.2 2007-11-08 20:41:34 pansu Exp $ */
+/* CVS $Id: LoadDerivedBioAssayDataAction.java,v 1.2.2.1 2007-11-16 22:23:02 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
@@ -18,6 +18,7 @@ import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.security.InitSecuritySetup;
 
 import java.io.File;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -69,6 +70,9 @@ public class LoadDerivedBioAssayDataAction extends AbstractDispatchAction {
 		derivedBioAssayDataBean.setVisibilityGroups(fileBean
 				.getVisibilityGroups());
 		derivedBioAssayDataBean.setKeywords(fileBean.getKeywords());
+		derivedBioAssayDataBean.setCreatedDate(new Date());
+		String user = (String) request.getSession().getAttribute("user");
+		derivedBioAssayDataBean.setCreatedBy(user);
 		ActionForward forward = new ActionForward();
 		forward.setPath(forwardPage);
 		return forward;
@@ -82,8 +86,7 @@ public class LoadDerivedBioAssayDataAction extends AbstractDispatchAction {
 		DerivedBioAssayDataBean file = (DerivedBioAssayDataBean) request
 				.getAttribute("file");
 		theForm.set("file", file);
-		theForm.set("forwardPage", request
-				.getAttribute("loadFileForward"));
+		theForm.set("forwardPage", request.getAttribute("loadFileForward"));
 		return mapping.getInputForward();
 	}
 

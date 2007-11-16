@@ -35,9 +35,7 @@
 				<display:column title="Version" property="version" sortable="false" />
 				<display:column title="File Title" property="title" sortable="true" />
 				<display:column title="Description" property="description" sortable="false" />
-				<%--
-				<display:column title="Protocol Description" property="description" sortable="true" />
-				--%>
+				<display:column title="Protocol Submit Date" property="createdDate" sortable="true" format="{0,date,MM-dd-yyyy}" />
 			</display:table>
 		</td>
 	</tr>

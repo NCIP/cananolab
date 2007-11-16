@@ -27,7 +27,7 @@ import org.hibernate.Session;
  */
 
 /*
- * CVS $Id: SubmitProtocolService.java,v 1.3 2007-11-08 20:41:35 pansu Exp $
+ * CVS $Id: SubmitProtocolService.java,v 1.3.2.1 2007-11-16 22:22:42 pansu Exp $
  */
 
 public class SubmitProtocolService {
@@ -81,9 +81,9 @@ public class SubmitProtocolService {
 					+ File.separator + fileName);
 		}
 		dataFile.setTitle(fileBean.getTitle().toUpperCase()); // convert to
-		// upper case
-		Date date = new Date();
-		dataFile.setCreatedDate(date);
+		dataFile.setCreatedDate(fileBean.getCreatedDate());
+		dataFile.setCreatedBy(fileBean.getCreatedBy());
+
 		// If the id is
 		Long fileId = null;
 		Long protocolId = null;
