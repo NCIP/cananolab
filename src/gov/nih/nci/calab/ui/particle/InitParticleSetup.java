@@ -17,7 +17,6 @@ import gov.nih.nci.calab.ui.core.InitSessionSetup;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -71,6 +70,13 @@ public class InitParticleSetup {
 				.getAllLookupTypes("ComposingElementType");
 		session.setAttribute("allComposingElementTypes", composingElementTypes);
 
+		session.setAttribute("allComposingElementTypes", composingElementTypes);
+		SortedSet<String> particleTypes = lookupService
+				.getAllLookupTypes("SampleType");
+		//remove complex particle as a type of composing element type.
+		particleTypes.remove("Complex Particle");
+		session.setAttribute("allParticleElementTypes", particleTypes);
+		
 		setAllDendrimers(session);
 
 		if ((session.getAttribute("allPolymerInitiators") == null)
