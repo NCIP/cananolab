@@ -43,12 +43,15 @@ import gov.nih.nci.calab.domain.nano.characterization.physical.Solubility;
 import gov.nih.nci.calab.domain.nano.characterization.physical.SolventType;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Surface;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.CarbonNanotubeComposition;
+import gov.nih.nci.calab.domain.nano.characterization.physical.composition.ComplexComposition;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.DendrimerComposition;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.EmulsionComposition;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.FullereneComposition;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.LiposomeComposition;
+import gov.nih.nci.calab.domain.nano.characterization.physical.composition.MetalParticleComposition;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.ParticleComposition;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.PolymerComposition;
+import gov.nih.nci.calab.domain.nano.characterization.physical.composition.QuantumDotComposition;
 import gov.nih.nci.calab.domain.nano.characterization.toxicity.Cytotoxicity;
 import gov.nih.nci.calab.domain.nano.function.Agent;
 import gov.nih.nci.calab.domain.nano.function.Attachment;
@@ -453,13 +456,40 @@ public class SubmitNanoparticleService {
 	 * Saves the particle composition to the database
 	 * 
 	 * @param composition
+	 * @param compositionType
 	 * @throws Exception
 	 */
-	public void addParticleComposition(CompositionBean composition)
-			throws Exception {
-
-		ParticleComposition doComp = new ParticleComposition();
-
+	public void addParticleComposition(CompositionBean composition,
+			String compositionType) throws Exception {
+		ParticleComposition doComp = new ParticleComposition();		
+		if (compositionType
+				.equals(CaNanoLabConstants.COMPOSITION_COMPLEX_PARTICLE_TYPE)) {
+			doComp = new ComplexComposition();
+		} else if (compositionType
+				.equals(CaNanoLabConstants.COMPOSITION_METAL_PARTICLE_TYPE)) {
+			doComp = new MetalParticleComposition();
+		} else if (compositionType
+				.equals(CaNanoLabConstants.COMPOSITION_QUANTUM_DOT_TYPE)) {
+			doComp = new QuantumDotComposition();
+		} else if (compositionType
+				.equals(CaNanoLabConstants.COMPOSITION_CARBON_NANOTUBE_TYPE)) {
+			doComp=new CarbonNanotubeComposition();
+		} else if (compositionType
+				.equals(CaNanoLabConstants.COMPOSITION_DENDRIMER_TYPE)) {
+			doComp=new DendrimerComposition();
+		} else if (compositionType
+				.equals(CaNanoLabConstants.COMPOSITION_EMULSION_TYPE)) {
+			doComp=new EmulsionComposition();
+		} else if (compositionType
+				.equals(CaNanoLabConstants.COMPOSITION_FULLERENE_TYPE)) {
+			doComp=new FullereneComposition();
+		} else if (compositionType
+				.equals(CaNanoLabConstants.COMPOSITION_LIPOSOME_TYPE)) {
+			doComp=new LiposomeComposition();
+		} else if (compositionType
+				.equals(CaNanoLabConstants.COMPOSITION_POLYMER_TYPE)) {
+			doComp=new PolymerComposition();
+		}
 		// if ID is not set save to the database otherwise update
 		Nanoparticle particle = null;
 		try {
@@ -485,10 +515,10 @@ public class SubmitNanoparticleService {
 								"This composition is no longer in the database.  Please log in again to refresh.");
 				}
 				// update domain object
-				if (doComp instanceof DendrimerComposition) {
+				if (doComp instanceof DendrimerComposition) {					
 					((DendrimerBean) composition)
 							.updateDomainObj((DendrimerComposition) doComp);
-				} else if (doComp instanceof CarbonNanotubeComposition) {
+				} else if (doComp instanceof CarbonNanotubeComposition) {					
 					((CarbonNanotubeBean) composition)
 							.updateDomainObj((CarbonNanotubeComposition) doComp);
 				} else if (doComp instanceof EmulsionComposition) {
@@ -513,8 +543,8 @@ public class SubmitNanoparticleService {
 									"from Nanoparticle particle left join fetch particle.characterizationCollection where particle.name='"
 											+ composition.getParticleName()
 											+ "' and particle.type='"
-											+ composition.getParticleType() + "'")
-							.list();
+											+ composition.getParticleType()
+											+ "'").list();
 
 					for (Object obj : results) {
 						particle = (Nanoparticle) obj;
