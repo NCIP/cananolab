@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.sample;
  * @author pansu
  */
 
-/* CVS $Id: CreateSampleAction.java,v 1.1.2.1 2007-11-16 19:45:50 pansu Exp $ */
+/* CVS $Id: CreateSampleAction.java,v 1.1.2.2 2007-11-16 22:23:18 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.sample.ContainerBean;
@@ -71,9 +71,9 @@ public class CreateSampleAction extends AbstractDispatchAction {
 				.getSampleNamePrefix(), sample.getLotId());
 		sample.setSampleName(fullSampleName);
 		// get user information from session
-		String sampleSubmitter = (String) session.getAttribute("creator");
+		UserBean sampleSubmitter = (UserBean) session.getAttribute("user");
 		sample.setAccessionDate(new Date());
-		sample.setSampleSubmitter(sampleSubmitter);
+		sample.setSampleSubmitter(sampleSubmitter.getLoginName());
 		
 		List<ContainerBean> containers = sample.getContainers();
 		// update container name to be full container name
@@ -149,7 +149,6 @@ public class CreateSampleAction extends AbstractDispatchAction {
 		InitSampleSetup.getInstance().setAllSampleSOPs(session);
 		InitSampleSetup.getInstance().setAllSampleContainerTypes(session);
 		InitSampleSetup.getInstance().setAllSampleContainerInfo(session);
-		InitSecuritySetup.getInstance().setCurrentUser(session);
 
 		ManageSampleService mangeSampleService = new ManageSampleService();
 		DynaValidatorForm theForm = (DynaValidatorForm) form;

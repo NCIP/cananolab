@@ -348,9 +348,6 @@ function openLink() {
 					cellspacing="0" class="topBorderOnly" summary="">
 					<tr>
 						<td width="30%">
-							<span class="formMessage"> Aliquoted by: <bean:write
-									name="creator" /> <br> Aliquoted Date: <bean:write
-									name="creationDate" /> </span>
 							<table border="0" align="right" cellpadding="4" cellspacing="0">
 								<tr>
 									<td height="32">

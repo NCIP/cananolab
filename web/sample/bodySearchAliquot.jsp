@@ -83,15 +83,13 @@
 							<html:text property="dateAccessionedBegin" size="10" />
 							<a href="javascript:cal1.popup();"><img
 									src="images/calendar-icon.gif" width="22" height="18"
-									border="0" alt="Click Here to Pick up the date" align="middle">
-							</a>
+									border="0" alt="Click Here to Pick up the date" align="middle"></a>
 							<label>
 								&nbsp; to &nbsp;
 								<html:text property="dateAccessionedEnd" size="10" />
 								<a href="javascript:cal2.popup();"><img
 										src="images/calendar-icon.gif" width="22" height="18"
-										border="0" alt="Click Here to Pick up the date" align="middle">
-								</a>
+										border="0" alt="Click Here to Pick up the date" align="middle"></a>
 							</label>
 						</td>
 					</tr>
