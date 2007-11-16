@@ -38,7 +38,7 @@ public class LiposomeBean extends CompositionBean {
 		return this.polymerName;
 	}
 
-	public void updateDomainObj(LiposomeComposition doComp) {		
+	public void updateDomainObj(LiposomeComposition doComp) {	
 		super.updateDomainObj(doComp);
 		boolean polymerizedStatus = (this.polymerized
 				.equalsIgnoreCase(CaNanoLabConstants.BOOLEAN_YES)) ? true
