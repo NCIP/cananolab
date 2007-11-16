@@ -442,7 +442,7 @@
 			<forward name="success"
 				path="particle.characterizationMessage" />
 			<forward name="input"
-				path="/cytokinInductione.do?dispatch=input&amp;page=0" />
+				path="/cytokineInductione.do?dispatch=input&amp;page=0" />
 			<forward name="setup"
 				path="particle.inVitroCharacterization" />
 		</action>
