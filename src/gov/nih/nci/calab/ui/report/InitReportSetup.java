@@ -1,14 +1,6 @@
 package gov.nih.nci.calab.ui.report;
 
-import gov.nih.nci.calab.dto.common.LabFileBean;
-import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.common.LookupService;
-import gov.nih.nci.calab.service.report.SearchReportService;
-import gov.nih.nci.calab.service.util.CaNanoLabConstants;
-
-import java.util.List;
-
-import javax.servlet.http.HttpSession;
 
 /**
  * This class sets up information required for report forms.
