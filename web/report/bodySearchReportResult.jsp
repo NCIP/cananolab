@@ -31,6 +31,7 @@
 				<display:column title="Report Title" property="${link}" sortable="true" />
 				<display:column title="Report Type" property="instanceType" sortable="true" />
 				<display:column title="Report Description" property="description" sortable="true" />
+				<display:column title="Report Submit Date" property="createdDate" sortable="true" format="{0,date,MM-dd-yyyy}" />
 			</display:table>
 		</td>
 	</tr>

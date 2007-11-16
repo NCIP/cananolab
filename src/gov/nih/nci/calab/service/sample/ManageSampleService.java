@@ -20,7 +20,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
-/* CVS $Id: ManageSampleService.java,v 1.3 2007-11-15 15:06:02 pansu Exp $ 
+/* CVS $Id: ManageSampleService.java,v 1.4 2007-11-16 22:29:53 pansu Exp $ 
  */
 public class ManageSampleService {
 	private static Logger logger = Logger.getLogger(ManageSampleService.class);

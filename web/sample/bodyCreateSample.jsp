@@ -370,13 +370,6 @@
 					summary="" border="0">
 					<tbody>
 						<tr>
-							<td width="30%" class="formMessage" valign="top">
-								Accessioned by:
-								<bean:write name="creator" />
-								<br>
-								Accession Date:
-								<bean:write name="creationDate" />
-							</td>
 							<td align="right">
 								<table height="32" cellspacing="0" cellpadding="4" align="right"
 									order="0">
