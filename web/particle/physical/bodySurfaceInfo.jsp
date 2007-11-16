@@ -131,7 +131,10 @@
 										<tr>
 											<c:choose>
 												<c:when test="${canCreateNanoparticle eq 'true'}">
-													<td class="formSubTitle" colspan="4" align="right">
+													<td class="formSubTitleNoRight" colspan="3">
+														Surface Chemistry #${status.index+1}
+													</td>
+													<td class="formSubTitleNoLeft" align="right">
 														<a href="#"
 															onclick="javascript:removeSurfaceChemistry(nanoparticleCharacterizationForm, '${actionName}', ${status.index})">
 															<img src="images/delete.gif" border="0"
@@ -139,7 +142,9 @@
 													</td>
 												</c:when>
 												<c:otherwise>
-													<td></td>
+													<td class="formSubTitle" colspan="4">
+														Surface Chemistry #${status.index+1}
+													</td>
 												</c:otherwise>
 											</c:choose>
 										</tr>
