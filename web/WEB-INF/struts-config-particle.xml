@@ -34,14 +34,8 @@
 				type="gov.nih.nci.calab.dto.characterization.composition.FullereneBean" />
 			<form-property name="polymer"
 				type="gov.nih.nci.calab.dto.characterization.composition.PolymerBean" />
-			<form-property name="quantumDot"
-				type="gov.nih.nci.calab.dto.characterization.composition.QuantumDotBean" />
 			<form-property name="emulsion"
 				type="gov.nih.nci.calab.dto.characterization.composition.EmulsionBean" />
-			<form-property name="metalParticle"
-				type="gov.nih.nci.calab.dto.characterization.composition.MetalParticleBean" />
-			<form-property name="complexParticle"
-				type="gov.nih.nci.calab.dto.characterization.composition.ComplexParticleBean" />
 			<form-property name="characterizationId"
 				type="java.lang.String" />
 		</form-bean>
