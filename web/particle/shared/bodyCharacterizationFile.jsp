@@ -15,7 +15,10 @@
 		<tr>
 			<c:choose>
 				<c:when test="${canCreateNanoparticle eq 'true'}">
-					<td class="formSubTitle" colspan="4" align="right">
+					<td class="formSubTitleNoRight" colspan="3">
+						Characterization File #${param.fileInd+1}
+					</td>
+					<td class="formSubTitleNoLeft" align="right">
 						<a href="#"
 							onclick="javascript:removeCharacterizationFile(nanoparticleCharacterizationForm, '${charName}', '${actionName}', ${param.fileInd})">
 							<img src="images/delete.gif" border="0" alt="remove this file">
@@ -23,7 +26,9 @@
 					</td>
 				</c:when>
 				<c:otherwise>
-					<td class="formSubTitle" colspan="4">&nbsp;</td>
+					<td class="formSubTitle" colspan="4">
+						Characterization File #${param.fileInd+1}
+					</td>
 				</c:otherwise>
 			</c:choose>
 		</tr>
