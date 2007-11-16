@@ -47,7 +47,7 @@ public class InitProtocolSetup {
 			protocolFiles = searchProtocolService
 					.getProtocolFileBeans("Physical assay");
 		}
-		if (submitType.equalsIgnoreCase("in vitro")) {
+		else {
 			protocolFiles = searchProtocolService
 					.getProtocolFileBeans("In Vitro assay");
 		}
