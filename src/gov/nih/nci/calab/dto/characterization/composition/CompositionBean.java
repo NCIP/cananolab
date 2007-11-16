@@ -15,13 +15,11 @@ import java.util.List;
  * 
  */
 public class CompositionBean extends CharacterizationBean {
-	private String numberOfElements;
-
 	private List<ComposingElementBean> composingElements = new ArrayList<ComposingElementBean>();
 
 	public CompositionBean() {
 	}
-
+	
 	public CompositionBean(ParticleComposition composition) {
 		super(composition);
 		for (ComposingElement element : composition
@@ -29,7 +27,6 @@ public class CompositionBean extends CharacterizationBean {
 			ComposingElementBean elementBean = new ComposingElementBean(element);
 			this.composingElements.add(elementBean);
 		}
-		this.setNumberOfElements(this.composingElements.size() + "");
 	}
 
 	public List<ComposingElementBean> getComposingElements() {
@@ -39,14 +36,6 @@ public class CompositionBean extends CharacterizationBean {
 	public void setComposingElements(
 			List<ComposingElementBean> composingElements) {
 		this.composingElements = composingElements;
-	}
-
-	public String getNumberOfElements() {
-		return this.numberOfElements;
-	}
-
-	public void setNumberOfElements(String numberOfElements) {
-		this.numberOfElements = numberOfElements;
 	}
 
 	public void updateDomainObj(ParticleComposition doComp) {
