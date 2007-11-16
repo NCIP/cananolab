@@ -228,7 +228,7 @@ ENGINE = INNODB;
 DROP TABLE IF EXISTS def_composing_element_type;
 CREATE TABLE def_composing_element_type (
    composing_element_type_pk_id decimal (20, 0) NOT NULL,
-   name varchar (200) NOT NULL
+   name varchar (200) NOT NULL,
    PRIMARY KEY (composing_element_type_pk_id)
 )
 ENGINE=INNODB;
