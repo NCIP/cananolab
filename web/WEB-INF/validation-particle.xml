@@ -20,14 +20,15 @@
 				<arg position="0" key="nanoparticleGeneralInfoForm.visibilities" bundle="particle" />
 				</field>
 			-->
-    	</form>
+		</form>
 		<form name="nanoparticleCompositionForm">
-			<field property="characterizationSource" page="2"
-				depends="required">
+			<field property="composition.characterizationSource"
+				page="2" depends="required">
 				<arg position="0" key="characterizationSource"
 					bundle="particle" />
 			</field>
-			<field property="viewTitle" page="2" depends="required">
+			<field property="composition.viewTitle" page="2"
+				depends="required">
 				<arg position="0" key="viewTitle" bundle="particle" />
 			</field>
 			<field property="carbonNanotube.growthDiameter" page="2"
@@ -84,6 +85,26 @@
 					</var-value>
 				</var>
 			</field>
+			<field property="elementType" page="2" depends="validwhen"
+				indexedListProperty="composition.composingElements">
+				<arg position="0"
+					key="nanoparticleComposition.composition.elementType"
+					bundle="particle" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>(*this*!=null)</var-value>
+				</var>
+			</field>
+			<field property="name" page="2" depends="validwhen"
+				indexedListProperty="dendrimer.surfaceGroups">
+				<arg position="0"
+					key="nanoparticleComposition.dendrimer.surfaceGroup"
+					bundle="particle" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>(*this*!=null)</var-value>
+				</var>
+			</field>
 		</form>
 		<form name="nanoparticleFunctionForm">
 			<field property="function.viewTitle" page="2"
@@ -123,7 +144,7 @@
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((file.id!=null) or	(*this*!=null))
+						((file.id!=null) or (*this*!=null))
 					</var-value>
 				</var>
 			</field>
@@ -204,11 +225,19 @@
 				</var>
 			</field>
 			<field property="numberOfMolecules" page="2"
-				depends="integer"
+				depends="integer, validwhen"
 				indexedListProperty="surface.surfaceChemistries">
 				<arg position="0" key="surface.numberOfMolecules"
 					bundle="particle" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						(*this*!=null)
+					</var-value>
+				</var>
+
 			</field>
+
 			<field property="solubility.criticalConcentration" page="2"
 				depends="float">
 				<arg position="0"
@@ -229,7 +258,8 @@
 		</form>
 		<form name="characterizationMultiDeletionForm">
 			<field property="charIds" depends="required" page="2">
-				<arg position="0" key="delete.charIds" bundle="particle" />
+				<arg position="0" key="delete.charIds"
+					bundle="particle" />
 			</field>
 		</form>
 	</formset>

@@ -2,7 +2,6 @@ package gov.nih.nci.calab.dto.characterization.composition;
 
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.DendrimerComposition;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.SurfaceGroup;
-import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,13 +27,7 @@ public class DendrimerBean extends CompositionBean {
 
 	private List<SurfaceGroupBean> surfaceGroups = new ArrayList<SurfaceGroupBean>();;
 
-	private ComposingElementBean core = new ComposingElementBean();
-
 	public DendrimerBean() {
-
-		this.surfaceGroups = new ArrayList<SurfaceGroupBean>();
-		this.core.setElementType(CaNanoLabConstants.CORE);
-		getComposingElements().add(this.core);
 	}
 
 	public DendrimerBean(DendrimerComposition dendrimer) {
@@ -44,10 +37,6 @@ public class DendrimerBean extends CompositionBean {
 				.getGeneration().toString();
 		this.molecularFormula = dendrimer.getMolecularFormula();
 		this.repeatUnit = dendrimer.getRepeatUnit();
-
-		for (ComposingElementBean element : getComposingElements()) {
-			this.core = element;
-		}
 		for (SurfaceGroup surface : dendrimer.getSurfaceGroupCollection()) {
 			SurfaceGroupBean surfaceBean = new SurfaceGroupBean(surface);
 			this.surfaceGroups.add(surfaceBean);
@@ -103,28 +92,42 @@ public class DendrimerBean extends CompositionBean {
 		this.surfaceGroups = surfaceGroups;
 	}
 
-	public ComposingElementBean getCore() {
-		return this.core;
-	}
-
-	public void setCore(ComposingElementBean core) {
-		this.core = core;
-	}
-
-	public DendrimerComposition getDomainObj() {
-		DendrimerComposition doComp = new DendrimerComposition();
+	public void updateDomainObj(DendrimerComposition doComp) {		
 		super.updateDomainObj(doComp);
-
 		if (this.generation.length() > 0) {
 			doComp.setGeneration(new Float(this.generation));
 		}
 		doComp.setBranch(this.branch);
 		doComp.setRepeatUnit(this.repeatUnit);
 		doComp.setMolecularFormula(this.molecularFormula);
-		for (SurfaceGroupBean surfaceGroup : this.surfaceGroups) {
-			doComp.getSurfaceGroupCollection().add(surfaceGroup.getDomainObj());
-		}
-		return doComp;
+		updateSurfaceGroups(doComp);
 	}
 
+	// update domain object's surface group collection
+	private void updateSurfaceGroups(DendrimerComposition doComp) {
+		// copy collection
+		List<SurfaceGroup> doSurfaceGroupList = new ArrayList<SurfaceGroup>(
+				doComp.getSurfaceGroupCollection());
+		// clear the existing collection
+		doComp.getSurfaceGroupCollection().clear();
+		for (SurfaceGroupBean surfaceGroupBean : getSurfaceGroups()) {
+			SurfaceGroup doSurfaceGroup = null;
+			// if no id, add new domain object
+			if (surfaceGroupBean.getId() == null) {
+				doSurfaceGroup = new SurfaceGroup();
+			} else {
+				// find domain object with the same ID and add the updated
+				// domain object
+				for (SurfaceGroup surfaceGroup : doSurfaceGroupList) {
+					if (surfaceGroup.getId().equals(
+							new Long(surfaceGroupBean.getId()))) {
+						doSurfaceGroup = surfaceGroup;
+						break;
+					}
+				}
+			}
+			surfaceGroupBean.updateDomainObj(doSurfaceGroup);
+			doComp.getSurfaceGroupCollection().add(doSurfaceGroup);
+		}
+	}
 }

@@ -7,9 +7,11 @@ import gov.nih.nci.calab.service.util.CaNanoLabComparators;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 /**
  * This class represents all properties of a sample that need to be viewed and
@@ -19,7 +21,7 @@ import java.util.Set;
  * 
  */
 
-/* CVS $Id: SampleBean.java,v 1.2 2007-11-08 20:41:35 pansu Exp $ */
+/* CVS $Id: SampleBean.java,v 1.2.2.1 2007-11-16 19:45:50 pansu Exp $ */
 public class SampleBean {
 	private String sampleId = "";
 
@@ -39,15 +41,13 @@ public class SampleBean {
 
 	private Date dateReceived;
 
-	private String dateReceivedStr;
+	private String dateReceivedStr="";
 
 	private String lotId = "";
 
 	private String lotDescription = "";
 
 	private String solubility = "";
-
-	private String numberOfContainers = "";
 
 	private String generalComments = "";
 
@@ -57,53 +57,11 @@ public class SampleBean {
 
 	private String accessionDateStr;
 
-	private ContainerBean[] containers;
+	private List<ContainerBean> containers = new ArrayList<ContainerBean>();
 
 	public SampleBean() {
-	}
-
-	public SampleBean(String sampleId, String sampleName) {
-		this.sampleId = sampleId;
-		this.sampleName = sampleName;
-	}
-
-	public SampleBean(String sampleName, String sampleType, String sampleSOP,
-			String sampleDescription, String sampleSource,
-			String sourceSampleId, Date dateReceived, String solubility,
-			String lotId, String lotDescription, String numberOfContainers,
-			String generalComments, String sampleSubmitter, Date accessionDate) {
-
-		this.sampleName = sampleName;
-		this.sampleType = sampleType;
-		this.sampleSOP = sampleSOP;
-		this.sampleDescription = sampleDescription;
-		this.sampleSource = sampleSource;
-		this.sourceSampleId = sourceSampleId;
-		this.dateReceived = dateReceived;
-		this.lotId = lotId;
-		this.lotDescription = lotDescription;
-		this.solubility = solubility;
-		this.numberOfContainers = numberOfContainers;
-		this.generalComments = generalComments;
-		this.sampleSubmitter = sampleSubmitter;
-		this.accessionDate = accessionDate;
-	}
-
-	public SampleBean(String sampleNamePrefix, String sampleName,
-			String sampleType, String sampleSOP, String sampleDescription,
-			String sampleSource, String sourceSampleId, Date dateReceived,
-			String solubility, String lotId, String lotDescription,
-			String numberOfContainers, String generalComments,
-			String sampleSubmitter, Date accessionDate,
-			ContainerBean[] containers) {
-
-		this(sampleName, sampleType, sampleSOP, sampleDescription,
-				sampleSource, sourceSampleId, dateReceived, solubility, lotId,
-				lotDescription, numberOfContainers, generalComments,
-				sampleSubmitter, accessionDate);
-		// sampleNamePrefix is the same as sampleName is lot ID is empty
-		this.sampleNamePrefix = sampleNamePrefix;
-		this.containers = containers;
+		//initialize to have one container
+		containers.add(new ContainerBean());
 	}
 
 	public SampleBean(Sample sample) {
@@ -124,28 +82,27 @@ public class SampleBean {
 		this.lotDescription = StringUtils.convertToString(sample
 				.getLotDescription());
 		// exclude aliquots
-		Set sampleContainers = (Set) sample
+		Collection<SampleContainer> sampleContainers = sample
 				.getSampleContainerCollection(CaNanoLabConstants.SAMPLE_CONTAINER);
-		this.numberOfContainers = StringUtils.convertToString(sampleContainers
-				.size());
 		this.generalComments = StringUtils
 				.convertToString(sample.getComments());
 		this.sampleSubmitter = StringUtils.convertToString(sample
 				.getCreatedBy());
 		this.accessionDate = sample.getCreatedDate();
-		this.containers = new ContainerBean[sampleContainers.size()];
-
-		int i = 0;
-		for (Object obj : sampleContainers) {
-			SampleContainer sampleContainer = (SampleContainer) obj;
-			this.containers[i] = new ContainerBean(sampleContainer);
-			this.containers[i].setSample(this);
-			i++;
+		for (SampleContainer container : sampleContainers) {
+			ContainerBean containerBean = new ContainerBean(container);
+			containerBean.setSample(this);
+			containers.add(containerBean);
 		}
-		Arrays.sort(this.containers,
+		Collections.sort(this.containers,
 				new CaNanoLabComparators.ContainerBeanComparator());
 	}
 
+	public SampleBean(String sampleId, String sampleName) {
+		this.sampleId = sampleId;
+		this.sampleName = sampleName;
+	}
+	
 	public Date getDateReceived() {
 		return this.dateReceived;
 	}
@@ -185,15 +142,6 @@ public class SampleBean {
 	public void setLotId(String lotId) {
 		this.lotId = lotId;
 	}
-
-	public String getNumberOfContainers() {
-		return this.numberOfContainers;
-	}
-
-	public void setNumberOfContainers(String numberOfContainers) {
-		this.numberOfContainers = numberOfContainers;
-	}
-
 	public String getSampleDescription() {
 		return this.sampleDescription;
 	}
@@ -258,11 +206,11 @@ public class SampleBean {
 		this.sampleSubmitter = sampleSubmitter;
 	}
 
-	public ContainerBean[] getContainers() {
+	public List<ContainerBean> getContainers() {
 		return this.containers;
 	}
 
-	public void setContainers(ContainerBean[] containers) {
+	public void setContainers(List<ContainerBean> containers) {
 		this.containers = containers;
 	}
 
@@ -284,16 +232,16 @@ public class SampleBean {
 
 	public String getAccessionDateStr() {
 		if (this.accessionDate != null) {
-			this.accessionDateStr = StringUtils.convertDateToString(this.accessionDate,
-					CaNanoLabConstants.DATE_FORMAT);
+			this.accessionDateStr = StringUtils.convertDateToString(
+					this.accessionDate, CaNanoLabConstants.DATE_FORMAT);
 		}
 		return this.accessionDateStr;
 	}
 
 	public String getDateReceivedStr() {
 		if (this.dateReceived != null) {
-			this.dateReceivedStr = StringUtils.convertDateToString(this.dateReceived,
-					CaNanoLabConstants.DATE_FORMAT);
+			this.dateReceivedStr = StringUtils.convertDateToString(
+					this.dateReceived, CaNanoLabConstants.DATE_FORMAT);
 		}
 		return this.dateReceivedStr;
 	}
@@ -322,6 +270,10 @@ public class SampleBean {
 			h += getSampleId().hashCode();
 		}
 		return h;
+	}
+
+	public void setDateReceivedStr(String dateReceivedStr) {
+		this.dateReceivedStr = dateReceivedStr;
 	}
 
 }

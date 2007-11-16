@@ -107,29 +107,23 @@ public class CaNanoLabConstants {
 	 * The following Strings are nano specific
 	 * 
 	 */
-	public static final String DENDRIMER_TYPE = "Dendrimer";
+	public static final String COMPOSITION_DENDRIMER_TYPE = "Dendrimer";
 
-	public static final String POLYMER_TYPE = "Polymer";
+	public static final String COMPOSITION_POLYMER_TYPE = "Polymer";
 
-	public static final String LIPOSOME_TYPE = "Liposome";
+	public static final String COMPOSITION_LIPOSOME_TYPE = "Liposome";
 
-	public static final String CARBON_NANOTUBE_TYPE = "Carbon Nanotube";
+	public static final String COMPOSITION_CARBON_NANOTUBE_TYPE = "Carbon Nanotube";
 
-	public static final String FULLERENE_TYPE = "Fullerene";
+	public static final String COMPOSITION_FULLERENE_TYPE = "Fullerene";
 
-	public static final String QUANTUM_DOT_TYPE = "Quantum Dot";
+	public static final String COMPOSITION_QUANTUM_DOT_TYPE = "Quantum Dot";
 
-	public static final String METAL_PARTICLE_TYPE = "Metal Particle";
+	public static final String COMPOSITION_METAL_PARTICLE_TYPE = "Metal Particle";
 
-	public static final String EMULSION_TYPE = "Emulsion";
+	public static final String COMPOSITION_EMULSION_TYPE = "Emulsion";
 
-	public static final String COMPLEX_PARTICLE_TYPE = "Complex Particle";
-
-	public static final String CORE = "core";
-
-	public static final String SHELL = "shell";
-
-	public static final String COATING = "coating";
+	public static final String COMPOSITION_COMPLEX_PARTICLE_TYPE = "Complex Particle";
 
 	public static final String[] DEFAULT_CHARACTERIZATION_SOURCES = new String[] { APP_OWNER };
 
@@ -228,15 +222,15 @@ public class CaNanoLabConstants {
 
 	static {
 		PARTICLE_CLASSIFICATION_MAP = new HashMap<String, String>();
-		PARTICLE_CLASSIFICATION_MAP.put(DENDRIMER_TYPE, ORGANIC_HYDROCARBON);
-		PARTICLE_CLASSIFICATION_MAP.put(POLYMER_TYPE, ORGANIC_HYDROCARBON);
-		PARTICLE_CLASSIFICATION_MAP.put(FULLERENE_TYPE, ORGANIC_CARBON);
-		PARTICLE_CLASSIFICATION_MAP.put(CARBON_NANOTUBE_TYPE, ORGANIC_CARBON);
-		PARTICLE_CLASSIFICATION_MAP.put(LIPOSOME_TYPE, ORGANIC);
-		PARTICLE_CLASSIFICATION_MAP.put(EMULSION_TYPE, ORGANIC);
-		PARTICLE_CLASSIFICATION_MAP.put(METAL_PARTICLE_TYPE, INORGANIC);
-		PARTICLE_CLASSIFICATION_MAP.put(QUANTUM_DOT_TYPE, INORGANIC);
-		PARTICLE_CLASSIFICATION_MAP.put(COMPLEX_PARTICLE_TYPE, COMPLEX);
+		PARTICLE_CLASSIFICATION_MAP.put(COMPOSITION_DENDRIMER_TYPE, ORGANIC_HYDROCARBON);
+		PARTICLE_CLASSIFICATION_MAP.put(COMPOSITION_POLYMER_TYPE, ORGANIC_HYDROCARBON);
+		PARTICLE_CLASSIFICATION_MAP.put(COMPOSITION_FULLERENE_TYPE, ORGANIC_CARBON);
+		PARTICLE_CLASSIFICATION_MAP.put(COMPOSITION_CARBON_NANOTUBE_TYPE, ORGANIC_CARBON);
+		PARTICLE_CLASSIFICATION_MAP.put(COMPOSITION_LIPOSOME_TYPE, ORGANIC);
+		PARTICLE_CLASSIFICATION_MAP.put(COMPOSITION_EMULSION_TYPE, ORGANIC);
+		PARTICLE_CLASSIFICATION_MAP.put(COMPOSITION_METAL_PARTICLE_TYPE, INORGANIC);
+		PARTICLE_CLASSIFICATION_MAP.put(COMPOSITION_QUANTUM_DOT_TYPE, INORGANIC);
+		PARTICLE_CLASSIFICATION_MAP.put(COMPOSITION_COMPLEX_PARTICLE_TYPE, COMPLEX);
 	}
 
 	public static final String CSM_PI = APP_OWNER + "_PI";

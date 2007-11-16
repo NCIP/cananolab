@@ -33,7 +33,7 @@
 										<c:param name="dispatch">setup</c:param>
 									</c:url>
 									<h4>
-										<a href="${protocolURL}">Protocols</a>
+										<a href="${protocolURL}" >Protocols</a>
 									</h4>
 									<h5>
 										Provides access to publicly available nanotechnology
@@ -48,7 +48,7 @@
 										<c:param name="dispatch">setup</c:param>
 									</c:url>
 									<h4>
-										<a href="${charURL}">Nanoparticles</a>
+										<a href="${charURL}" >Nanoparticles</a>
 									</h4>
 									<h5>
 										Provides access to publicly available nanoparticle
@@ -64,7 +64,7 @@
 										<c:param name="dispatch">setup</c:param>
 									</c:url>
 									<h4>
-										<a href="${reportURL}">Reports</a>
+										<a href="${reportURL}" >Reports</a>
 									</h4>
 									<h5>
 										Provides access to publicly available reports detailing the

@@ -12,6 +12,14 @@ drop table run_input_file;
 drop table run_output_file;
 drop table run_sample_container;
 
+DROP TABLE IF EXISTS def_composing_element_type;
+CREATE TABLE def_composing_element_type (
+   composing_element_type_pk_id decimal (20, 0) NOT NULL,
+   name varchar (200) NOT NULL
+   PRIMARY KEY (composing_element_type_pk_id)
+)
+ENGINE=INNODB;
+
 -- Re-enable foreign key checks
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 

@@ -2,7 +2,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
+<br>
 <table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
 	<tbody>
 		<tr class="topBorder">
@@ -65,91 +65,4 @@
 			</td>
 		</tr>
 	</tbody>
-</table>
-<br>
-<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
-	<tbody>
-		<tr class="topBorder">
-			<td class="formTitle" colspan="4">
-				<div align="justify">
-					Monomer Information
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td class="leftLabel">
-				<strong>Number of Monomers</strong>
-			</td>
-			<td class="label">
-				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
-						<html:text property="polymer.numberOfElements" />
-					</c:when>
-					<c:otherwise>
-						${nanoparticleCompositionForm.map.polymer.numberOfElements}&nbsp;
-					</c:otherwise>
-				</c:choose>
-			</td>
-			<td class="rightLabel" colspan="2">
-				&nbsp;
-				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
-						<input type="button" onclick="javascript:updateComposition()" value="Update Monomers">
-					</c:when>
-				</c:choose>
-			</td>
-		</tr>
-		<tr>
-			<td class="completeLabel" colspan="4">
-				<c:forEach var="polymer.composingElements" items="${nanoparticleCompositionForm.map.polymer.composingElements}" varStatus="status">
-					<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
-						<tbody>
-							<tr class="topBorder">
-								<td class="formSubTitle" colspan="4">
-									<div align="justify">
-										Monomer ${status.index+1}
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td class="leftLabel">
-									<strong>Chemical Name</strong>
-								</td>
-								<td class="rightLabel" colspan="3">
-									<c:choose>
-										<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
-											<html:text name="polymer.composingElements" indexed="true" property="chemicalName" />
-										</c:when>
-										<c:otherwise>
-						${nanoparticleCompositionForm.map.polymer.composingElements[status.index].chemicalName}&nbsp;
-					</c:otherwise>
-									</c:choose>
-								</td>
-							</tr>
-							<tr>
-								<td class="leftLabel">
-									<strong>Description</strong>
-								</td>
-								<td class="rightLabel" colspan="3">
-									<c:choose>
-										<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
-											<html:textarea name="polymer.composingElements" indexed="true" property="description" rows="3" cols="80" />
-										</c:when>
-										<c:otherwise>
-						${nanoparticleCompositionForm.map.polymer.composingElements[status.index].description}&nbsp;
-					</c:otherwise>
-									</c:choose>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-					<br>
-					<c:choose>
-						<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
-							<html:hidden name="polymer.composingElements" indexed="true" property="elementType" value="monomer" />
-						</c:when>
-					</c:choose>
-				</c:forEach>
-			</td>
-		</tr>
 </table>

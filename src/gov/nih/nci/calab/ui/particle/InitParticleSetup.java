@@ -65,6 +65,16 @@ public class InitParticleSetup {
 
 	public void setAllCompositionDropdowns(HttpSession session)
 			throws Exception {
+		SortedSet<String> composingElementTypes = lookupService
+				.getAllLookupTypes("ComposingElementType");
+		session.setAttribute("allComposingElementTypes", composingElementTypes);
+
+		session.setAttribute("allComposingElementTypes", composingElementTypes);
+		SortedSet<String> particleTypes = lookupService
+				.getAllLookupTypes("SampleType");
+		// remove complex particle as a type of composing element type.
+		particleTypes.remove("Complex Particle");
+		session.setAttribute("allParticleElementTypes", particleTypes);
 		setAllDendrimers(session);
 
 		if ((session.getAttribute("allPolymerInitiators") == null)
