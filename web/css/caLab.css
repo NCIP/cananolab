@@ -147,7 +147,7 @@ td.subMenuSecondaryTitle { /* for the off state of the cell for the elements (us
 	font-size: 0.6em;
 	font-weight: bold;
 	padding-left: 0.8em;
-	background-color: #98b7b7; /* lighter */
+	background-color: #6A8989; /* darker */
 	color: #ffffff; /* constant: white */
 	border-bottom: 1px solid #cccccc; /* constant: medium gray */
 	border-right: 1px solid #cccccc; /* constant: medium gray */
@@ -157,7 +157,7 @@ td.subMenuSecondaryTitleOver { /* for the over state of the cell for the element
 	font-size: 0.6em;
 	font-weight: bold;
 	padding-left: 0.8em;
-	background-color: #6a8989; /* darker */
+	background-color: #98B7B7; /* lighter */
 	color: #ffffff; /* constant: white */
 	border-bottom: 1px solid #cccccc; /* constant: medium gray */
 	border-right: 1px solid #cccccc; /* constant: medium gray */
@@ -165,6 +165,7 @@ td.subMenuSecondaryTitleOver { /* for the over state of the cell for the element
 
 td.subMenuFill { /* for the empty cell below the sub-menu items */
 	border-right: 1px solid #cccccc; /* constant: medium gray */
+	background-color: #6A8989;
 }
 
 td.loginMenuFill {
