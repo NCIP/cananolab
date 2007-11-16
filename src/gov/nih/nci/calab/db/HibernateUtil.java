@@ -3,7 +3,7 @@ package gov.nih.nci.calab.db;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
