@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.sample;
  * @author pansu
  */
 
-/* CVS $Id: SearchSampleAction.java,v 1.3 2007-11-15 15:17:49 pansu Exp $ */
+/* CVS $Id: SearchSampleAction.java,v 1.4 2007-11-16 22:30:15 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.sample.ContainerBean;

@@ -28,7 +28,7 @@
 					bundle="sample" />
 				<var>
 					<var-name>datePattern</var-name>
-					<var-value>MM/dd/yy</var-value>
+					<var-value>MM/dd/yyyy</var-value>
 				</var>
 			</field>
 			<field property="containerType" page="2" depends="required"
@@ -318,40 +318,40 @@
 		<form name="searchSampleForm">
 			<field property="dateAccessionedBegin" page="1"
 				depends="date">
-				<arg key="searchSampleForm.dateAccessionedBegin"
+				<arg key="dateAccessioned"
 					bundle="sample" position="0" />
 				<var>
 					<var-name>datePattern</var-name>
-					<var-value>MM/dd/yy</var-value>
+					<var-value>MM/dd/yyyy</var-value>
 				</var>
 			</field>
 			<field property="dateAccessionedEnd" page="1"
 				depends="date">
-				<arg key="searchSampleForm.dateAccessionedEnd"
+				<arg key="dateAccessioned"
 					bundle="sample" position="0" />
 				<var>
 					<var-name>datePattern</var-name>
-					<var-value>MM/dd/yy</var-value>
+					<var-value>MM/dd/yyyy</var-value>
 				</var>
 			</field>
 		</form>
 		<form name="/searchAliquot">
 			<field property="dateAccessionedBegin" page="1"
 				depends="date">
-				<arg key="dateAccessionedBegin" bundle="sample"
+				<arg key="dateAccessioned" bundle="sample"
 					position="0" />
 				<var>
 					<var-name>datePattern</var-name>
-					<var-value>MM/dd/yy</var-value>
+					<var-value>MM/dd/yyyy</var-value>
 				</var>
 			</field>
 			<field property="dateAccessionedEnd" page="1"
 				depends="date">
-				<arg key="dateAccessionedEnd" bundle="sample"
+				<arg key="dateAccessioned" bundle="sample"
 					position="0" />
 				<var>
 					<var-name>datePattern</var-name>
-					<var-value>MM/dd/yy</var-value>
+					<var-value>MM/dd/yyyy</var-value>
 				</var>
 			</field>
 		</form>
