@@ -62,7 +62,7 @@
 		</td>
 		<c:choose>
 			<c:when test="${canCreateNanoparticle eq 'true'}">
-				<td class="label" colspan="3">
+				<td class="rightLabel" colspan="3">
 					<c:choose>
 						<c:when test="${!empty submitTypeProtocolFiles}">
 							<html:select styleId="protocolId"
@@ -82,7 +82,7 @@
 				</td>
 			</c:when>
 			<c:otherwise>
-				<td class="label" colspan="3">
+				<td class="rightLabel" colspan="3">
 					<c:choose>
 						<c:when
 							test="${empty nanoparticleCharacterizationForm.map.achar.protocolFileBean.id}">
