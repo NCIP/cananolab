@@ -8,7 +8,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleCompositionAction.java,v 1.2.2.1 2007-11-16 19:45:50 pansu Exp $ */
+/* CVS $Id: NanoparticleCompositionAction.java,v 1.2.2.2 2007-11-19 22:23:24 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.CarbonNanotubeComposition;
@@ -249,6 +249,10 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 
 		SearchNanoparticleService service = new SearchNanoparticleService();
 		Characterization aChar = service.getCharacterizationBy(compositionId);
+		if (aChar == null) {
+			throw new Exception(
+					"This characterization no longer exists in the database.  Please log in again to refresh.");
+		}
 
 		// HttpSession session = request.getSession();
 		initSetup(request, theForm);
