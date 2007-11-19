@@ -114,7 +114,7 @@ public class DerivedBioAssayDataBean extends LabFileBean {
 				// find domain object with the same ID and add the updated
 				// domain object
 				for (Datum aDoDatum : doDatumList) {
-					if (aDoDatum.getId().equals(new Long(datumBean.getId()))) {
+					if (aDoDatum!=null && aDoDatum.getId().equals(new Long(datumBean.getId()))) {
 						doDatum = aDoDatum;
 						break;
 					}
