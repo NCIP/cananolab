@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: LoadDerivedBioAssayDataAction.java,v 1.2.2.1 2007-11-16 22:23:02 pansu Exp $ */
+/* CVS $Id: LoadDerivedBioAssayDataAction.java,v 1.2.2.2 2007-11-19 21:20:42 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
@@ -71,8 +71,8 @@ public class LoadDerivedBioAssayDataAction extends AbstractDispatchAction {
 				.getVisibilityGroups());
 		derivedBioAssayDataBean.setKeywords(fileBean.getKeywords());
 		derivedBioAssayDataBean.setCreatedDate(new Date());
-		String user = (String) request.getSession().getAttribute("user");
-		derivedBioAssayDataBean.setCreatedBy(user);
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		derivedBioAssayDataBean.setCreatedBy(user.getLoginName());
 		ActionForward forward = new ActionForward();
 		forward.setPath(forwardPage);
 		return forward;
