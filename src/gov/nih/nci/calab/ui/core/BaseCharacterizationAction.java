@@ -409,6 +409,25 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		return mapping.findForward("setup");
 	}
 
+	public ActionForward summaryView(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		initSetup(request, theForm);
+		String characterizationId = request.getParameter("characterizationId");		
+		SearchNanoparticleService service = new SearchNanoparticleService();
+		Characterization aChar = service
+				.getCharacterizationAndDerivedDataBy(characterizationId);
+		if (aChar == null) {
+			throw new Exception(
+					"This characterization no longer exists in the database.  Please log in again to refresh.");
+		}
+		CharacterizationBean charBean = new CharacterizationBean(aChar);
+		
+		theForm.set("achar", charBean);
+
+		return mapping.findForward("summaryView");
+	}
+	
 	/**
 	 * Prepare the form for viewing existing characterization
 	 * 
