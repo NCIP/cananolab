@@ -5,8 +5,7 @@ package gov.nih.nci.calab.ui.protocol;
  *  
  * @author chenhang
  */
-
-/* CVS $Id: SubmitProtocolAction.java,v 1.4 2007-11-16 22:30:15 pansu Exp $ */
+/* CVS $Id: SubmitProtocolAction.java,v 1.5 2007-11-19 21:43:13 pansu Exp $ */
 
 import java.util.Date;
 
@@ -44,10 +43,9 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		String protocolName = (String) theForm.get("protocolName");
 		String protocolType = (String) theForm.get("protocolType");
 		ProtocolFileBean fileBean = (ProtocolFileBean) theForm.get("file");
-		String user=(String)request.getSession().getAttribute("user");
-		fileBean.setCreatedBy(user);
+		UserBean user=(UserBean)request.getSession().getAttribute("user");
+		fileBean.setCreatedBy(user.getLoginName());
 		fileBean.setCreatedDate(new Date());
-
 		// String version = fileBean.getId();
 
 		ProtocolBean pBean = new ProtocolBean();
