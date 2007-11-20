@@ -72,12 +72,11 @@ VALUES (1, 'Toxicity', 'Oxidative Stress', 1, 2, 1, 'OS'),
   (22, 'Physical', 'Molecular Weight', 1, 0, 0, 'MW'),
   (23, 'Physical', 'Shape', 1, 0, 0, 'SH'),
   (24, 'Physical', 'Morphology', 1, 0, 0, 'MP'),
-  (25, 'Physical', 'Composition', 1, 0, 0, 'CP'),
-  (26, 'In Vitro', 'Toxicity', 0, 1, 0, NULL),
-  (27, 'Toxicity', 'Cytotoxicity', 1, 2, 1, NULL),
-  (28, 'Toxicity', 'Immunotoxicity', 1, 2, 1, NULL),
-  (29, 'Immunotoxicity', 'Blood Contact', 0, 4, 2, NULL),
-  (30, 'Immunotoxicity', 'Immune Cell Function', 0, 4, 2, NULL);
+  (25, 'In Vitro', 'Toxicity', 0, 1, 0, NULL),
+  (26, 'Toxicity', 'Cytotoxicity', 1, 2, 1, NULL),
+  (27, 'Toxicity', 'Immunotoxicity', 1, 2, 1, NULL),
+  (28, 'Immunotoxicity', 'Blood Contact', 0, 4, 2, NULL),
+  (29, 'Immunotoxicity', 'Immune Cell Function', 0, 4, 2, NULL);
 
 INSERT INTO def_characterization_file_type(file_type_pk_id, name)
 VALUES (1, 'Image'),

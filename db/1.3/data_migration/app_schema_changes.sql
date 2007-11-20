@@ -34,6 +34,10 @@ VALUES (1, 'core'),
 
 commit;
 
+delete from def_characterization_category
+where category='Physical'
+and name='Composition';
+
 -- Re-enable foreign key checks
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 
