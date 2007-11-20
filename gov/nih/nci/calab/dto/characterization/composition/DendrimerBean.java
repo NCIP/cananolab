@@ -21,8 +21,6 @@ public class DendrimerBean extends CompositionBean {
 
 	private String generation;
 
-	private String numberOfSurfaceGroups;
-
 	private String molecularFormula;
 
 	private List<SurfaceGroupBean> surfaceGroups = new ArrayList<SurfaceGroupBean>();;
@@ -41,7 +39,6 @@ public class DendrimerBean extends CompositionBean {
 			SurfaceGroupBean surfaceBean = new SurfaceGroupBean(surface);
 			this.surfaceGroups.add(surfaceBean);
 		}
-		this.numberOfSurfaceGroups = this.surfaceGroups.size() + "";
 	}
 
 	public String getBranch() {
@@ -54,10 +51,6 @@ public class DendrimerBean extends CompositionBean {
 
 	public String getRepeatUnit() {
 		return this.repeatUnit;
-	}
-
-	public String getNumberOfSurfaceGroups() {
-		return this.numberOfSurfaceGroups;
 	}
 
 	public String getMolecularFormula() {
@@ -74,10 +67,6 @@ public class DendrimerBean extends CompositionBean {
 
 	public void setMolecularFormula(String molecularFormula) {
 		this.molecularFormula = molecularFormula;
-	}
-
-	public void setNumberOfSurfaceGroups(String numberOfSurfaceGroups) {
-		this.numberOfSurfaceGroups = numberOfSurfaceGroups;
 	}
 
 	public void setRepeatUnit(String repeatUnit) {
