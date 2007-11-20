@@ -34,10 +34,12 @@ public class DeleteMultiCharacterizationAction extends AbstractDispatchAction {
 			throws Exception {
 		// setCharacterizationTypeCharacterizations
 		String deleteType = request.getParameter("charCategory");
+		
+		
 		Map<String, List<CharacterizationBean>> charsMap = (Map<String, List<CharacterizationBean>>) (request
-				.getSession().getAttribute("allCharacterizations"));
+				.getSession().getAttribute("charaLeafToCharacterizations"));
 		List<CharacterizationBean> charBeans = charsMap.get(deleteType);
-
+		
 		if (charBeans != null) {
 			request.getSession().setAttribute("charBeans", charBeans);
 			return mapping.getInputForward();
