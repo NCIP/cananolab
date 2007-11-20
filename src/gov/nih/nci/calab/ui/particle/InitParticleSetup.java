@@ -302,7 +302,7 @@ public class InitParticleSetup {
 					}
 				}
 			}
-			session.setAttribute("nameToCharacterizations", nameCharMap);
+			session.setAttribute("charaLeafToCharacterizations", nameCharMap);
 		}
 	}
 
@@ -330,8 +330,6 @@ public class InitParticleSetup {
 				String cname = cbean.getName();
 				if (!charTypeMap.containsKey(cname)) {
 					leafMap.put(cname, cbean.getActionName());
-					System.out.println("leaf: " + cname + ", actionName: "
-							+ cbean.getActionName());
 				}
 			}
 		}
