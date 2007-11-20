@@ -10,13 +10,13 @@ import gov.nih.nci.calab.domain.nano.characterization.physical.SurfaceChemistry;
  * 
  */
 public class SurfaceChemistryBean {
-	private String id;
+	private String id="";
 
-	private String moleculeName;
+	private String moleculeName="";
 
-	private String numberOfMolecules;
+	private String numberOfMolecules="";
 
-	private String molecularFormulaType;
+	private String molecularFormulaType="";
 
 	/**
 	 * 
@@ -40,6 +40,10 @@ public class SurfaceChemistryBean {
 	}
 
 	public String getMoleculeName() {
+		//set to 0
+		if (moleculeName.length()==0) {
+			this.moleculeName="0";
+		}
 		return this.moleculeName;
 	}
 
