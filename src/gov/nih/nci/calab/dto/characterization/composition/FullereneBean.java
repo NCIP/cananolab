@@ -10,7 +10,7 @@ import gov.nih.nci.calab.domain.nano.characterization.physical.composition.Fulle
  * 
  */
 public class FullereneBean extends CompositionBean {
-	private String numberOfCarbons;
+	private String numberOfCarbons="";
 
 	public FullereneBean() {
 
@@ -23,6 +23,9 @@ public class FullereneBean extends CompositionBean {
 	}
 
 	public String getNumberOfCarbons() {
+		if (this.numberOfCarbons.length()==0) {
+			this.numberOfCarbons="0";
+		}
 		return this.numberOfCarbons;
 	}
 
