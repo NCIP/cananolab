@@ -3,8 +3,6 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-
-<jsp:include page="/particle/submitMenu.jsp" />
 <html:form action="/nanoparticleFunction">
 	<table width="100%" align="center">
 		<tr>
@@ -24,8 +22,8 @@
 		<tr>
 			<td colspan="2">
 				<h5 align="center">
-					${nanoparticleFunctionForm.map.particleName}
-					(${nanoparticleFunctionForm.map.particleType})
+					${nanoparticleFunctionForm.map.particle.sampleName}
+					(${nanoparticleFunctionForm.map.particle.sampleType})
 				</h5>
 			</td>
 		</tr>
@@ -108,6 +106,10 @@
 										<input type="reset" value="Reset" onclick="">
 										<input type="hidden" name="dispatch" value="create">
 										<input type="hidden" name="page" value="2">
+										<html:hidden property="particle.sampleId" />
+										<html:hidden property="particle.sampleName" />
+										<html:hidden property="particle.sampleSource" />
+										<html:hidden property="particle.sampleType" />
 										<html:submit />
 									</div>
 								</td>

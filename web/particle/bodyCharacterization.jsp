@@ -2,52 +2,13 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
-<c:choose>
-	<c:when test="${!empty param.actionName}">
-		<c:set var="actionName" value="${param.actionName}" scope="session" />
-	</c:when>
-</c:choose>
-<c:choose>
-	<c:when test="${!empty param.charName}">
-		<c:set var="charName" value="${param.charName}" scope="session" />
-	</c:when>
-</c:choose>
-<c:choose>
-	<c:when test="${submitType eq 'Physical'}">
-		<c:set var="helpName" value="nano_${actionName}_help" />
-	</c:when>
-</c:choose>
-<c:choose>
-	<c:when test="${submitType eq 'Blood Contact'}">
-		<c:set var="helpName" value="immunotoxicity_help" />
-	</c:when>
-</c:choose>
-<c:choose>
-	<c:when test="${submitType eq 'Immune Cell Function' }">
-		<c:set var="helpName" value="immunotoxicity_help" />
-	</c:when>
-</c:choose>
-<c:choose>
-	<c:when test="${submitType eq 'Cytotoxicity' }">
-		<c:set var="helpName" value="cytotoxicity_help" />
-	</c:when>
-</c:choose>
-<c:choose>
-	<c:when test="${submitType eq 'Toxicity' }">
-		<c:set var="helpName" value="toxicity_help" />
-	</c:when>
-</c:choose>
-
-<jsp:include page="submitMenu.jsp" />
-
-<html:form action="/${actionName}">
+<html:form action="/${nanoparticleCharacterizationForm.map.charName}">
 	<table width="100%" align="center">
 		<tr>
 			<td>
 				<h4>
 					<br>
-					${pageTitle} ${charName}
+					${pageTitle} ${nanoparticleCharacterizationForm.map.charName}
 				</h4>
 			</td>
 			<td align="right" width="15%">
@@ -59,7 +20,8 @@
 		<tr>
 			<td colspan="2">
 				<h5 align="center">
-					${param.particleName} ${param.particleType}
+					${nanoparticleCharacterizationForm.map.particle.sampleName}
+					${nanoparticleCharacterizationForm.map.particle.sampleType}
 				</h5>
 			</td>
 		</tr>
@@ -67,14 +29,11 @@
 		<tr>
 			<td colspan="2">
 				<jsp:include page="/bodyMessage.jsp?bundle=particle" />
-
 				<jsp:include page="/particle/shared/bodyCharacterizationSummary.jsp" />
-
 				<jsp:include
 					page="/particle/shared/bodyCharacterizationInstrument.jsp" />
 				<c:choose>
 					<c:when test="${!empty detailPage}">
-
 						<jsp:include page="${detailPage}" />
 					</c:when>
 				</c:choose>
@@ -96,7 +55,7 @@
 											<c:when test="${canCreateNanoparticle eq 'true'}">
 												<td valign="bottom">
 													<a href="#"
-														onclick="javascript:addCharacterizationFile(nanoparticleCharacterizationForm, '${charName}', '${actionName}')"><span
+														onclick="javascript:addCharacterizationFile(nanoparticleCharacterizationForm, '${nanoparticleCharacterizationForm.map.charName}', '${nanoparticleCharacterizationForm.map.charName}')"><span
 														class="addLink">Add File/Derived Data</span> </a>
 												</td>
 											</c:when>
@@ -109,8 +68,7 @@
 												property="achar.derivedBioAssayDataList"
 												id="derivedBioAssayData" indexId="fileInd">
 												<jsp:include
-													page="/particle/shared/bodyCharacterizationFile.jsp">
-													<jsp:param name="actionName" value="${actionName}" />
+													page="/particle/shared/bodyCharacterizationFile.jsp">													
 													<jsp:param name="fileInd" value="${fileInd}" />
 												</jsp:include>
 												<br>

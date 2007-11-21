@@ -5,21 +5,16 @@
 <form-validation>
 	<formset>
 		<form name="nanoparticleGeneralInfoForm">
-			<field property="particleType" page="1"
+			<field property="particle.sampleType" page="1"
 				depends="required">
 				<arg position="0"
 					key="nanoparticleGeneralInfoForm.particleType" bundle="particle" />
 			</field>
-			<field property="particleName" page="1"
+			<field property="particle.sampleName" page="1"
 				depends="required">
 				<arg position="0"
 					key="nanoparticleGeneralInfoForm.particleID" bundle="particle" />
 			</field>
-			<!--
-				<field property="visibilities" page="1" depends="required">
-				<arg position="0" key="nanoparticleGeneralInfoForm.visibilities" bundle="particle" />
-				</field>
-			-->
 		</form>
 		<form name="nanoparticleCompositionForm">
 			<field property="composition.characterizationSource"

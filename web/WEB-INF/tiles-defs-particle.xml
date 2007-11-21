@@ -31,10 +31,9 @@
 		<put name="menu" value="nanoparticles" />
 	</definition>
 
-	<definition name="particle.annotationHome"
-		extends="calab.home">
+	<definition name="particle.annotationHome" extends="calab.home">
 		<put name="calabSidemenu"
-			value="/particle/sideParticleMenu.jsp" />		
+			value="/particle/sideParticleMenu.jsp" />
 		<put name="menu" value="nanoparticles" />
 	</definition>
 
@@ -44,7 +43,7 @@
 			value="/particle/bodyCharacterization.jsp" />
 		<put name="detailPage" value="" />
 	</definition>
-	
+
 	<definition name="particle.annotationMessage"
 		extends="particle.characterization">
 		<put name="calabContent"
@@ -56,7 +55,7 @@
 		<put name="calabContent"
 			value="/particle/bodyCharacterizationMessage.jsp?bundle=particle" />
 	</definition>
-	
+
 	<!-- definition for the nanoparticle composition page -->
 	<definition name="particle.composition"
 		extends="particle.physicalCharacterization">
@@ -72,13 +71,6 @@
 		<put name="menu" value="nanoparticles" />
 	</definition>
 
-	<definition name="particle.disclaimer"
-		extends="particle.annotationHome">
-		<put name="calabContent"
-			value="/particle/bodyNanoparticleDisclaimer.jsp" />
-		<put name="menu" value="nanoparticles" />
-	</definition>
-
 	<definition name="particle.physicalCharacterization"
 		extends="particle.characterization">
 		<put name="pageTitle" value="Physical Characterization - " />
@@ -89,6 +81,16 @@
 		<put name="pageTitle" value="In Vitro Characterization - " />
 	</definition>
 
+	<definition name="particle.physicalSummaryView"
+		extends="particle.physicalCharacterization">
+     	<put name="calabContent" value="/particle/bodyCharacterizationSummaryView.jsp" />
+	</definition>
+
+	<definition name="particle.inVitroSummaryView"
+		extends="particle.inVitroCharacterization">
+     	<put name="calabContent" value="/particle/bodyCharacterizationSummaryView.jsp" />
+	</definition>
+	
 	<!-- definition for the nanoparticle surface page -->
 	<definition name="particle.surface"
 		extends="particle.physicalCharacterization">
@@ -132,7 +134,8 @@
 	</definition>
 
 	<!-- definition for the nanoparticle function page -->
-	<definition name="particle.function" extends="particle.annotationHome">
+	<definition name="particle.function"
+		extends="particle.annotationHome">
 		<put name="calabContent"
 			value="/particle/function/bodyParticleFunction.jsp" />
 	</definition>

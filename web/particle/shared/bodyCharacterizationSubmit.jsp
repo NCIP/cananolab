@@ -49,6 +49,10 @@ function confirmDeletion()
 									<input type="reset" value="Reset" onclick="">
 									<input type="hidden" name="dispatch" value="create">
 									<input type="hidden" name="page" value="2">
+									<html:hidden property="particle.sampleId" />
+									<html:hidden property="particle.sampleName" />
+									<html:hidden property="particle.sampleSource" />
+									<html:hidden property="particle.sampleType" />
 									<html:submit />
 								</div>
 							</td>

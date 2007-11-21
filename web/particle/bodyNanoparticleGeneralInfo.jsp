@@ -2,14 +2,13 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
 <html:form action="/nanoparticleGeneralInfo">
 	<table width="100%" align="center">
 		<tr>
 			<td>
-				<h3>
-					<br>
-					${nanoparticleGeneralInfoForm.map.particleName} General Information
+				<h3>					
+					${nanoparticleGeneralInfoForm.map.particle.sampleName} General
+					Information
 				</h3>
 			</td>
 			<td align="right" width="15%">
@@ -36,7 +35,7 @@
 								<strong>Particle Type</strong>
 							</td>
 							<td class="rightLabel">
-								${nanoparticleGeneralInfoForm.map.particleType}
+								${nanoparticleGeneralInfoForm.map.particle.sampleType}
 							</td>
 						</tr>
 						<tr>
@@ -44,7 +43,7 @@
 								<strong>Particle ID</strong>
 							</td>
 							<td class="rightLabel">
-								${nanoparticleGeneralInfoForm.map.particleName}
+								${nanoparticleGeneralInfoForm.map.particle.sampleId}
 							</td>
 						</tr>
 						<tr>
@@ -52,7 +51,7 @@
 								<strong>Particle Source</strong>
 							</td>
 							<td class="rightLabel">
-								${nanoparticleGeneralInfoForm.map.particleSource}
+								${nanoparticleGeneralInfoForm.map.particle.sampleSource}
 							</td>
 						</tr>
 						<tr>
@@ -62,7 +61,7 @@
 							<c:choose>
 								<c:when test="${canCreateNanoparticle eq 'true'}">
 									<td class="rightLabel">
-										<html:textarea property="keywords" rows="4" />
+										<html:textarea property="particle.keywordsStr" rows="4" />
 									</td>
 								</c:when>
 								<c:otherwise>
@@ -83,7 +82,8 @@
 							<c:choose>
 								<c:when test="${canCreateNanoparticle eq 'true'}">
 									<td class="rightLabel">
-										<html:select property="visibilities" multiple="true" size="6">
+										<html:select property="particle.visibilityGroups"
+											multiple="true" size="6">
 											<html:options name="allVisibilityGroups" />
 										</html:select>
 										<br>
@@ -123,9 +123,11 @@
 													<div align="right">
 														<input type="reset" value="Reset" onclick="">
 														<input type="hidden" name="dispatch" value="create">
-														<html:hidden property="particleName"/>
-														<html:hidden property="particleType"/>
 														<input type="hidden" name="page" value="0">
+														<html:hidden property="particle.sampleId" />
+														<html:hidden property="particle.sampleName"/>
+														<html:hidden property="particle.sampleSource"/>
+														<html:hidden property="particle.sampleType"/>
 														<html:submit />
 													</div>
 												</div>

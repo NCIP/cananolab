@@ -9,44 +9,12 @@
 
 <!-- submenu begins -->
 <c:choose>
-	<c:when
-		test="${!empty param.submitType && param.submitType != 'none' &&
-					param.displayType != 'Composition' }">
-		<c:set var="displaytype" value="${param.submitType}" scope="request" />
-	</c:when>
-	<c:otherwise>
-		<c:set var="displaytype" value="${param.displayType}" scope="request" />
-	</c:otherwise>
-</c:choose>
-<c:choose>
-	<c:when test="${!empty param.particleName}">
-		<c:set var="particleName" value="${param.particleName}"
-			scope="session" />
+	<c:when test="${!empty param.submitType}">
+		<c:set var="submitType" value="${param.submitType}" scope="session" />
 	</c:when>
 </c:choose>
 <c:choose>
-	<c:when test="${!empty param.particleType}">
-		<c:set var="particleType" value="${param.particleType}"
-			scope="session" />
-	</c:when>
-</c:choose>
-<c:choose>
-	<c:when test="${!empty param.particleSource}">
-		<c:set var="particleSource" value="${param.particleSource}"
-			scope="session" />
-	</c:when>
-	<c:otherwise>
-		<c:choose>
-			<c:when test="${!empty requestScope.particleSource}">
-				<c:set var="particleSource" value="${requestScope.particleSource}"
-					scope="session" />
-			</c:when>
-		</c:choose>
-	</c:otherwise>
-</c:choose>
-
-<c:choose>
-	<c:when test="${canUserSubmit eq 'true'}">
+	<c:when test="${canCreateNanoparticle eq 'true'}">
 		<c:set var="dispatchValue" value="setupUpdate" scope="session" />
 	</c:when>
 	<c:otherwise>
@@ -54,23 +22,45 @@
 	</c:otherwise>
 </c:choose>
 <c:choose>
-	<c:when test="${displaytype == 'report'}">
+	<c:when test="${!empty theParticle}">
+		<c:set var="particleName" value="${theParticle.sampleName}"
+			scope="session" />
+	</c:when>
+</c:choose>
+<c:choose>
+	<c:when test="${!empty theParticle}">
+		<c:set var="particleType" value="${theParticle.sampleType}"
+			scope="session" />
+	</c:when>
+</c:choose>
+<c:choose>
+	<c:when test="${!empty theParticle}">
+		<c:set var="particleSource" value="${theParticle.sampleSource}"
+			scope="session" />
+	</c:when>
+</c:choose>
+<c:choose>
+	<c:when test="${!empty theParticle}">
+		<c:set var="particleId" value="${theParticle.sampleId}"
+			scope="session" />
+	</c:when>
+</c:choose>
+<c:choose>
+	<c:when test="${submitType == 'report'}">
 		<c:set var="reportDisplay" value="display: block;" />
 	</c:when>
 	<c:otherwise>
 		<c:set var="reportDisplay" value="display: none;" />
 	</c:otherwise>
 </c:choose>
-
 <c:choose>
-	<c:when test="${displaytype == 'associateFile'}">
+	<c:when test="${submitType == 'associateFile'}">
 		<c:set var="fileDisplay" value="display: block;" />
 	</c:when>
 	<c:otherwise>
 		<c:set var="fileDisplay" value="display: none;" />
 	</c:otherwise>
 </c:choose>
-
 <table summary="" cellpadding="0" cellspacing="0" border="0"
 	height="100%" width="250">
 	<tr>
@@ -90,15 +80,13 @@
 				<li class="toplist">
 					<c:url var="url" value="nanoparticleGeneralInfo.do">
 						<c:param name="dispatch" value="${dispatchValue}" />
-						<c:param name="particleName" value="${particleName}" />
-						<c:param name="particleType" value="${particleType}" />
-						<c:param name="particleSource" value="${particleSource}" />
+						<c:param name="particleId" value="${particleId}" />
 					</c:url>
 					<a href="${url}" class="subMenuSecondary">GENERAL INFORMATION</a>
 				</li>
 				<jsp:include page="sideParticleFunctionMenu.jsp"></jsp:include>
+				<jsp:include page="sideParticleCompositionMenu.jsp"></jsp:include>
 				<jsp:include page="sideParticleCharacterizationMenu.jsp"></jsp:include>
-
 
 				<c:choose>
 					<c:when test="${!empty particleAssociatedFiles}">
@@ -112,7 +100,7 @@
 										<c:param name="submitType" value="none" />
 										<c:param name="fileId" value="${aReport.id}" />
 										<c:param name="fileType" value="${aReport.type}" />
-										<c:param name="displayType" value="associateFile" />
+										<c:param name="submitType" value="associateFile" />
 									</c:url>
 									<li>
 										<a href="${url}" title="${aReport.displayName}"><span
@@ -136,7 +124,7 @@
 							<ul class="sublist_5" style="${reportDisplay}">
 								<c:forEach var="aReport" items="${particleReports}">
 									<c:url var="url" value="updateReportForParticle.do">
-										<c:param name="displayType" value="report" />
+										<c:param name="submitType" value="report" />
 										<c:param name="page" value="0" />
 										<c:param name="dispatch" value="${dispatchValue}" />
 										<c:param name="submitType" value="none" />
