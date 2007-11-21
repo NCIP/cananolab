@@ -5,9 +5,7 @@ package gov.nih.nci.calab.ui.protocol;
  *  
  * @author chenhang
  */
-/* CVS $Id: SubmitProtocolAction.java,v 1.5 2007-11-19 21:43:13 pansu Exp $ */
-
-import java.util.Date;
+/* CVS $Id: SubmitProtocolAction.java,v 1.6 2007-11-21 23:21:49 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.ProtocolBean;
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
@@ -19,6 +17,8 @@ import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 import gov.nih.nci.calab.ui.security.InitSecuritySetup;
+
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

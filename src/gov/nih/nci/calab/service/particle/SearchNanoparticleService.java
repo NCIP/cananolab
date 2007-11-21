@@ -2,9 +2,33 @@ package gov.nih.nci.calab.service.particle;
 
 import gov.nih.nci.calab.db.HibernateUtil;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
+import gov.nih.nci.calab.domain.nano.characterization.physical.Morphology;
+import gov.nih.nci.calab.domain.nano.characterization.physical.Shape;
+import gov.nih.nci.calab.domain.nano.characterization.physical.Solubility;
+import gov.nih.nci.calab.domain.nano.characterization.physical.Surface;
+import gov.nih.nci.calab.domain.nano.characterization.physical.composition.CarbonNanotubeComposition;
+import gov.nih.nci.calab.domain.nano.characterization.physical.composition.DendrimerComposition;
+import gov.nih.nci.calab.domain.nano.characterization.physical.composition.EmulsionComposition;
+import gov.nih.nci.calab.domain.nano.characterization.physical.composition.FullereneComposition;
+import gov.nih.nci.calab.domain.nano.characterization.physical.composition.LiposomeComposition;
+import gov.nih.nci.calab.domain.nano.characterization.physical.composition.ParticleComposition;
+import gov.nih.nci.calab.domain.nano.characterization.physical.composition.PolymerComposition;
+import gov.nih.nci.calab.domain.nano.characterization.toxicity.Cytotoxicity;
 import gov.nih.nci.calab.domain.nano.function.Function;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
+import gov.nih.nci.calab.dto.characterization.composition.CarbonNanotubeBean;
+import gov.nih.nci.calab.dto.characterization.composition.CompositionBean;
+import gov.nih.nci.calab.dto.characterization.composition.DendrimerBean;
+import gov.nih.nci.calab.dto.characterization.composition.EmulsionBean;
+import gov.nih.nci.calab.dto.characterization.composition.FullereneBean;
+import gov.nih.nci.calab.dto.characterization.composition.LiposomeBean;
+import gov.nih.nci.calab.dto.characterization.composition.PolymerBean;
+import gov.nih.nci.calab.dto.characterization.invitro.CytotoxicityBean;
+import gov.nih.nci.calab.dto.characterization.physical.MorphologyBean;
+import gov.nih.nci.calab.dto.characterization.physical.ShapeBean;
+import gov.nih.nci.calab.dto.characterization.physical.SolubilityBean;
+import gov.nih.nci.calab.dto.characterization.physical.SurfaceBean;
 import gov.nih.nci.calab.dto.common.SearchableBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.function.FunctionBean;
@@ -16,11 +40,13 @@ import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
@@ -154,8 +180,8 @@ public class SearchNanoparticleService {
 					+ characterizationFrom + where + whereStr;
 			HibernateUtil.beginTransaction();
 
-			List<? extends Object> results = (HibernateUtil
-					.createQueryByParam(hqlString, paramList)).list();
+			List<? extends Object> results = (HibernateUtil.createQueryByParam(
+					hqlString, paramList)).list();
 			for (Object obj : new HashSet<Object>(results)) {
 				Nanoparticle particle = (Nanoparticle) obj;
 				ParticleBean particleBean = new ParticleBean(particle);
@@ -186,38 +212,26 @@ public class SearchNanoparticleService {
 	 * Query nanoparticle general information such as name, type, keywords and
 	 * visibilities.
 	 * 
-	 * @param particleName
-	 * @param particleType
+	 * @param particleId
 	 * @return
 	 * @throws Exception
 	 */
-	public ParticleBean getGeneralInfo(String particleName, String particleType)
-			throws Exception {
+	public ParticleBean getGeneralInfo(String particleId) throws Exception {
 
 		Nanoparticle particle = null;
 		ParticleBean particleBean = null;
 		try {
 			Session session = HibernateUtil.currentSession();
 			HibernateUtil.beginTransaction();
-			// get the existing particle from database created during sample
-			// creation
-			List results = session
-					.createQuery(
-							"from Nanoparticle as particle left join fetch particle.keywordCollection where particle.name='"
-									+ particleName
-									+ "' and particle.type='"
-									+ particleType + "'").list();
-			for (Object obj : results) {
-				particle = (Nanoparticle) obj;
-			}
+			particle = (Nanoparticle) session.load(Nanoparticle.class,
+					new Long(particleId));
 			if (particle == null) {
 				throw new CalabException("No such particle in the database");
 			}
 			particleBean = new ParticleBean(particle);
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
-			logger.error("Problem finding particle with name: " + particleName,
-					e);
+			logger.error("Problem finding particle with ID: " + particleId, e);
 			throw e;
 		} finally {
 			HibernateUtil.closeSession();
@@ -226,15 +240,34 @@ public class SearchNanoparticleService {
 		UserService userService = new UserService(
 				CaNanoLabConstants.CSM_APP_NAME);
 		List<String> accessibleGroups = userService.getAccessibleGroups(
-				particleName, CaNanoLabConstants.CSM_READ_ROLE);
+				particleBean.getSampleName(), CaNanoLabConstants.CSM_READ_ROLE);
 		String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
 		particleBean.setVisibilityGroups(visibilityGroups);
 
 		return particleBean;
 	}
 
-	public List<CharacterizationBean> getCharacterizationInfo(
-			String particleName, String particleType) throws Exception {
+	public ParticleBean getParticleInfo(String particleId) throws Exception {
+		ParticleBean particleBean = null;
+		try {
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			Nanoparticle particle = (Nanoparticle) session.load(
+					Nanoparticle.class, new Long(particleId));
+			if (particle != null)
+				particleBean = new ParticleBean(particle);
+			HibernateUtil.commitTransaction();
+		} catch (Exception e) {
+			logger.error("Problem finding particle with ID: " + particleId, e);
+			throw e;
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		return particleBean;
+	}
+
+	public List<CharacterizationBean> getCharacterizationInfo(String particleId)
+			throws Exception {
 		List<CharacterizationBean> charBeans = new ArrayList<CharacterizationBean>();
 
 		try {
@@ -243,11 +276,9 @@ public class SearchNanoparticleService {
 			HibernateUtil.beginTransaction();
 			List results = session
 					.createQuery(
-							"select chara.id, chara.name, chara.identificationName from Nanoparticle particle join particle.characterizationCollection chara where particle.name='"
-									+ particleName
-									+ "' and particle.type='"
-									+ particleType
-									+ "' order by chara.name, chara.identificationName")
+							"select chara.id, chara.name, chara.identificationName from Nanoparticle particle join particle.characterizationCollection chara where particle.id="
+									+ particleId
+									+ " order by chara.name, chara.identificationName")
 					.list();
 			for (Object obj : results) {
 				String charId = ((Object[]) obj)[0].toString();
@@ -260,7 +291,7 @@ public class SearchNanoparticleService {
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			logger.error("Problem finding characterization info for particle: "
-					+ particleName, e);
+					+ particleId, e);
 			throw e;
 		} finally {
 			HibernateUtil.closeSession();
@@ -268,71 +299,51 @@ public class SearchNanoparticleService {
 		return charBeans;
 	}
 
-	public Characterization getCharacterizationBy(String charId)
+	// this would be replaced when composition model is separated from
+	// characterization model
+	public List<CompositionBean> getCompositionInfo(String particleId)
 			throws Exception {
-
-		Characterization aChar = null;
+		List<CompositionBean> compBeans = new ArrayList<CompositionBean>();
 		try {
-
 			Session session = HibernateUtil.currentSession();
 			HibernateUtil.beginTransaction();
 			List results = session
 					.createQuery(
-							" from Characterization chara left join fetch chara.composingElementCollection left join fetch chara.derivedBioAssayDataCollection where chara.id="
-									+ charId).list();
+							"select chara.id, chara.name, chara.identificationName from Nanoparticle particle join particle.characterizationCollection chara where particle.id="
+									+ particleId
+									+ " and chara.name='Composition' "
+									+ " order by chara.identificationName")
+					.list();
 			for (Object obj : results) {
-				aChar = (Characterization) obj;
+				String charId = ((Object[]) obj)[0].toString();
+				String charName = (String) (((Object[]) obj)[1]);
+				String viewTitle = (String) (((Object[]) obj)[2]);
+				CompositionBean compBean = new CompositionBean(charId,
+						charName, viewTitle);
+				compBeans.add(compBean);
 			}
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
-			logger.error("Problem finding characterization", e);
+			logger.error("Problem finding characterization info for particle: "
+					+ particleId, e);
 			throw e;
 		} finally {
 			HibernateUtil.closeSession();
 		}
-		return aChar;
+		return compBeans;
 	}
 
-	public Characterization getCharacterizationAndDerivedDataBy(String charId)
+	public Map<String, List<FunctionBean>> getFunctionInfo(String particleId)
 			throws Exception {
-
-		Characterization aChar = null;
-		try {
-
-			Session session = HibernateUtil.currentSession();
-			HibernateUtil.beginTransaction();
-			List results = session
-					.createQuery(
-							" from Characterization chara left join fetch chara.derivedBioAssayDataCollection assayData"
-									+ " left join fetch assayData.datumCollection datum"
-									+ " where chara.id=" + charId).list();
-			for (Object obj : results) {
-				aChar = (Characterization) obj;
-			}
-			HibernateUtil.commitTransaction();
-		} catch (Exception e) {
-			logger.error("Problem finding characterization", e);
-			throw e;
-		} finally {
-			HibernateUtil.closeSession();
-		}
-		return aChar;
-	}
-
-	public Map<String, List<FunctionBean>> getFunctionInfo(String particleName,
-			String particleType) throws Exception {
 		Map<String, List<FunctionBean>> funcTypeFuncs = new HashMap<String, List<FunctionBean>>();
 
 		try {
-
 			Session session = HibernateUtil.currentSession();
 			HibernateUtil.beginTransaction();
 			List results = session
 					.createQuery(
-							"select func.id, func.type, func.identificationName from Nanoparticle particle join particle.functionCollection func where particle.name='"
-									+ particleName
-									+ "' and particle.type='"
-									+ particleType + "'").list();
+							"select func.id, func.type, func.identificationName from Nanoparticle particle join particle.functionCollection func where particle.id="
+									+ particleId).list();
 			List<FunctionBean> funcs = new ArrayList<FunctionBean>();
 			for (Object obj : results) {
 				String funcId = ((Object[]) obj)[0].toString();
@@ -347,12 +358,11 @@ public class SearchNanoparticleService {
 					funcTypeFuncs.put(funcType, funcs);
 				}
 				funcs.add(funcBean);
-
 			}
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			logger.error("Problem finding characterization info for particle: "
-					+ particleName, e);
+					+ particleId, e);
 			throw e;
 		} finally {
 			HibernateUtil.closeSession();
@@ -360,20 +370,102 @@ public class SearchNanoparticleService {
 		return funcTypeFuncs;
 	}
 
-	public Function getFunctionBy(String funcId) throws Exception {
+	public CompositionBean getCompositionBy(String compositionId)
+			throws Exception {
 
-		Function func = null;
+		CompositionBean comp = null;
+		try {
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			// ParticleComposition doComp = (ParticleComposition) session.load(
+			// ParticleComposition.class, new Long(compositionId));
+			List results = session.createQuery(
+					"from ParticleComposition where id=" + compositionId)
+					.list();
+			ParticleComposition doComp = null;
+			for (Object obj : results) {
+				doComp = (ParticleComposition) obj;
+			}
+			if (doComp == null) {
+				return null;
+			}
+			if (doComp instanceof DendrimerComposition) {
+				comp = new DendrimerBean((DendrimerComposition) doComp);
+			} else if (doComp instanceof PolymerComposition) {
+				comp = new PolymerBean((PolymerComposition) doComp);
+			} else if (doComp instanceof LiposomeComposition) {
+				comp = new LiposomeBean((LiposomeComposition) doComp);
+			} else if (doComp instanceof FullereneComposition) {
+				comp = new FullereneBean((FullereneComposition) doComp);
+			} else if (doComp instanceof CarbonNanotubeComposition) {
+				comp = new CarbonNanotubeBean(
+						(CarbonNanotubeComposition) doComp);
+			} else if (doComp instanceof EmulsionComposition) {
+				comp = new EmulsionBean((EmulsionComposition) doComp);
+			} else {
+				comp = new CompositionBean(doComp);
+			}
+			HibernateUtil.commitTransaction();
+		} catch (Exception e) {
+			logger.error("Problem finding composition by ID " + compositionId,
+					e);
+			throw e;
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		return comp;
+	}
+
+	public CharacterizationBean getCharacterizationBy(String charId)
+			throws Exception {
+		CharacterizationBean charBean = null;
+		try {
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			// Characterization aChar = (Characterization) session.load(
+			// Characterization.class, new Long(charId));
+			List results = session.createQuery(
+					"from Characterization where id=" + charId).list();
+			Characterization aChar = null;
+			for (Object obj : results) {
+				aChar = (Characterization) obj;
+			}
+			if (aChar == null) {
+				return null;
+			}
+			if (aChar instanceof Shape) {
+				charBean = new ShapeBean((Shape) aChar);
+			} else if (aChar instanceof Morphology) {
+				charBean = new MorphologyBean((Morphology) aChar);
+			} else if (aChar instanceof Solubility) {
+				charBean = new SolubilityBean((Solubility) aChar);
+			} else if (aChar instanceof Surface) {
+				charBean = new SurfaceBean((Surface) aChar);
+			} else if (aChar instanceof Cytotoxicity) {
+				charBean = new CytotoxicityBean((Cytotoxicity) aChar);
+			} else {
+				charBean = new CharacterizationBean(aChar);
+			}
+			HibernateUtil.commitTransaction();
+		} catch (Exception e) {
+			logger.error("Problem finding characterization of ID " + charId, e);
+			throw e;
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		return charBean;
+	}
+
+	public FunctionBean getFunctionBy(String funcId) throws Exception {
+		FunctionBean functionBean = null;
 		try {
 
 			Session session = HibernateUtil.currentSession();
 			HibernateUtil.beginTransaction();
-			List results = session
-					.createQuery(
-							" from Function func left join fetch func.linkageCollection link left join fetch link.agent agent left join fetch agent.agentTargetCollection where func.id="
-									+ funcId).list();
-			for (Object obj : results) {
-				func = (Function) obj;
-			}
+			Function func = (Function) session.load(Function.class, new Long(
+					funcId));
+			if (func != null)
+				functionBean = new FunctionBean(func);
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			logger.error("Problem finding functions", e);
@@ -381,7 +473,7 @@ public class SearchNanoparticleService {
 		} finally {
 			HibernateUtil.closeSession();
 		}
-		return func;
+		return functionBean;
 	}
 
 	/**
@@ -463,6 +555,28 @@ public class SearchNanoparticleService {
 			for (Object obj : results) {
 				Nanoparticle particle = (Nanoparticle) obj;
 				ParticleBean particleBean = new ParticleBean(particle);
+				// get a unique list of characterization
+				Collection<Characterization> characterizationCol = particle
+						.getCharacterizationCollection();
+
+				Set<String> charcterizationSet = new HashSet<String>();
+				for (Characterization charObj : characterizationCol) {
+					charcterizationSet.add(charObj.getClassification() + ":"
+							+ charObj.getName());
+				}
+				particleBean.setCharacterizations(charcterizationSet
+						.toArray(new String[0]));
+
+				// get a unique list of function
+				Collection<Function> functionCol = particle
+						.getFunctionCollection();
+
+				Set<String> functionTypeSet = new HashSet<String>();
+				for (Function funcObj : functionCol) {
+					functionTypeSet.add(funcObj.getType());
+				}
+				particleBean.setFunctionTypes(functionTypeSet
+						.toArray(new String[0]));
 				particles.add(particleBean);
 			}
 		} catch (Exception e) {
@@ -473,24 +587,30 @@ public class SearchNanoparticleService {
 		return particles;
 	}
 
-	public Nanoparticle getParticleBy(String particleName) throws Exception {
-		Nanoparticle particle = null;
+	public ParticleBean getParticleBy(String particleName) throws Exception {
+		ParticleBean particleBean = null;
 		try {
 			Session session = HibernateUtil.currentSession();
 			HibernateUtil.beginTransaction();
 			List results = session.createQuery(
 					" from Nanoparticle particle where particle.name='"
 							+ particleName + "'").list();
+			Nanoparticle particle = null;
 			for (Object obj : results) {
 				particle = (Nanoparticle) obj;
 			}
+			if (particle != null) {
+				particleBean = new ParticleBean(particle);
+			}
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
-			logger.error("Problem finding functions", e);
+			logger
+					.error("Problem finding particles by name:" + particleName,
+							e);
 			throw e;
 		} finally {
 			HibernateUtil.closeSession();
 		}
-		return particle;
+		return particleBean;
 	}
 }

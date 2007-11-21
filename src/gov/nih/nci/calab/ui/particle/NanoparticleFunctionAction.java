@@ -6,14 +6,14 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleFunctionAction.java,v 1.2 2007-11-08 20:41:34 pansu Exp $ */
+/* CVS $Id: NanoparticleFunctionAction.java,v 1.3 2007-11-21 23:21:50 pansu Exp $ */
 
-import gov.nih.nci.calab.domain.nano.function.Function;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.function.AgentBean;
 import gov.nih.nci.calab.dto.function.AgentTargetBean;
 import gov.nih.nci.calab.dto.function.FunctionBean;
 import gov.nih.nci.calab.dto.function.LinkageBean;
+import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.service.particle.SearchNanoparticleService;
 import gov.nih.nci.calab.service.particle.SubmitNanoparticleService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
@@ -52,8 +52,7 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 		ActionForward forward = null;
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
+		ParticleBean particle = (ParticleBean) theForm.get("particle");
 		FunctionBean function = (FunctionBean) theForm.get("function");
 
 		if (function.getId() == null || function.getId() == "") {
@@ -76,7 +75,7 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 		request.getSession()
 				.setAttribute("newContrastAgentTypeCreated", "true");
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		service.addParticleFunction(particleType, particleName, function);
+		service.addParticleFunction(particle.getSampleId(), function);
 
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.addparticle.function");
@@ -85,8 +84,8 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 		forward = mapping.findForward("success");
 
 		InitParticleSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
-
+				particle.getSampleId());
+		request.setAttribute("theParticle", particle);
 		return forward;
 	}
 
@@ -114,23 +113,21 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 
 	private void clearMap(HttpSession session, DynaValidatorForm theForm,
 			ActionMapping mapping) throws Exception {
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
-
 		// clear session data from the input forms
-		theForm.getMap().clear();
-		theForm.set("particleName", particleName);
-		theForm.set("particleType", particleType);
+		theForm.set("particle", new ParticleBean());
 		theForm.set("function", new FunctionBean());
 	}
 
 	private void initSetup(HttpServletRequest request, DynaValidatorForm theForm)
 			throws Exception {
 		HttpSession session = request.getSession();
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
+		String particleId = (String) request.getParameter("particleId");
+		SearchNanoparticleService searchtNanoparticleService = new SearchNanoparticleService();
+		ParticleBean particle = searchtNanoparticleService
+				.getParticleInfo(particleId);
+		theForm.set("particle", particle);
 		InitParticleSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
+				particle.getSampleId());
 		InitSessionSetup.getInstance().setStaticDropdowns(session);
 		InitParticleSetup.getInstance().setAllFunctionDropdowns(session);
 	}
@@ -151,15 +148,9 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		initSetup(request, theForm);
 		String functionId = (String) theForm.get("functionId");
-
 		SearchNanoparticleService service = new SearchNanoparticleService();
-		Function aFunc = service.getFunctionBy(functionId);
-
-		HttpSession session = request.getSession();
-		// clear session data from the input forms
-		clearMap(session, theForm, mapping);
-		FunctionBean function = new FunctionBean(aFunc);
-		theForm.set("function", function);
+		FunctionBean functionBean = service.getFunctionBy(functionId);		
+		theForm.set("function", functionBean);
 		return mapping.findForward("setup");
 	}
 
@@ -194,10 +185,9 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 		// add a new one
 		linkages.add(new LinkageBean());
 		function.setLinkages(linkages);
-		String particleName = theForm.getString("particleName");
-		String particleType = theForm.getString("particleType");
+		ParticleBean particle = (ParticleBean) theForm.get("particle");
 		InitParticleSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
+				particle.getSampleId());
 		return input(mapping, form, request, response);
 	}
 
@@ -219,10 +209,9 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 			linkages.remove(ind);
 		}
 		function.setLinkages(linkages);
-		String particleName = theForm.getString("particleName");
-		String particleType = theForm.getString("particleType");
+		ParticleBean particle = (ParticleBean) theForm.get("particle");
 		InitParticleSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
+				particle.getSampleId());
 		return input(mapping, form, request, response);
 	}
 
@@ -243,10 +232,9 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 		// add a new one
 		targets.add(new AgentTargetBean());
 		agent.setAgentTargets(targets);
-		String particleName = theForm.getString("particleName");
-		String particleType = theForm.getString("particleType");
+		ParticleBean particle = (ParticleBean) theForm.get("particle");
 		InitParticleSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
+				particle.getSampleId());
 		return input(mapping, form, request, response);
 	}
 
@@ -274,10 +262,9 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 			targets.remove(tInd);
 		}
 		agent.setAgentTargets(targets);
-		String particleName = theForm.getString("particleName");
-		String particleType = theForm.getString("particleType");
+		ParticleBean particle = (ParticleBean) theForm.get("particle");
 		InitParticleSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
+				particle.getSampleId());
 		return input(mapping, form, request, response);
 	}
 

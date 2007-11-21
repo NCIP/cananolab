@@ -5,6 +5,7 @@ package gov.nih.nci.calab.ui.particle;
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.common.UserBean;
+import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.service.particle.SubmitNanoparticleService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
@@ -34,12 +35,11 @@ public class DeleteMultiCharacterizationAction extends AbstractDispatchAction {
 			throws Exception {
 		// setCharacterizationTypeCharacterizations
 		String deleteType = request.getParameter("charCategory");
-		
-		
+
 		Map<String, List<CharacterizationBean>> charsMap = (Map<String, List<CharacterizationBean>>) (request
 				.getSession().getAttribute("charaLeafToCharacterizations"));
 		List<CharacterizationBean> charBeans = charsMap.get(deleteType);
-		
+
 		if (charBeans != null) {
 			request.getSession().setAttribute("charBeans", charBeans);
 			return mapping.getInputForward();
@@ -62,18 +62,17 @@ public class DeleteMultiCharacterizationAction extends AbstractDispatchAction {
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String[] charIds = (String[]) theForm.get("charIds");
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
+		ParticleBean particle = (ParticleBean) theForm.get("particle");
 
 		// setCharacterizationTypeCharacterizations
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		service.deleteCharacterizations(particleName, particleType, charIds);
+		service.deleteCharacterizations(charIds);
 
 		// signal the session that characterization has been changed
 		request.getSession().setAttribute("newCharacterizationCreated", "true");
 
 		InitParticleSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
+				particle.getSampleId());
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.delete.characterization");
 		msgs.add("message", msg);

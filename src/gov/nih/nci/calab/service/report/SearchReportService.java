@@ -33,8 +33,8 @@ public class SearchReportService {
 
 	}
 
-	public List<LabFileBean> getReportByParticle(String particleName,
-			String particleType, UserBean user) throws Exception {
+	public List<LabFileBean> getReportByParticle(String particleId,
+			UserBean user) throws Exception {
 		List<LabFileBean> fileBeans = new ArrayList<LabFileBean>();
 
 		try {
@@ -44,10 +44,8 @@ public class SearchReportService {
 			List results = session
 					.createQuery(
 							"select report.id, report.filename, report.uri from Nanoparticle particle join particle.reportCollection "
-									+ " report where particle.name='"
-									+ particleName
-									+ "' and particle.type='"
-									+ particleType + "'").list();
+									+ " report where particle.id=" + particleId)
+					.list();
 
 			for (Object obj : results) {
 				String reportId = ((Object[]) obj)[0].toString();
@@ -69,7 +67,7 @@ public class SearchReportService {
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			logger.error("Problem finding report info for particle: "
-					+ particleName, e);
+					+ particleId, e);
 			throw e;
 		} finally {
 			HibernateUtil.closeSession();
@@ -164,8 +162,8 @@ public class SearchReportService {
 			HibernateUtil.closeSession();
 		}
 
-		List<LabFileBean> filteredReports = this.userService.getFilteredFiles(user,
-				reports);
+		List<LabFileBean> filteredReports = this.userService.getFilteredFiles(
+				user, reports);
 
 		return filteredReports;
 	}
@@ -179,18 +177,15 @@ public class SearchReportService {
 	 * @return List of LabFileBean
 	 * @throws Exception
 	 */
-	public List<LabFileBean> getReportInfo(String particleName,
-			String particleType, String reportType, UserBean user)
-			throws Exception {
+	public List<LabFileBean> getReportInfo(String particleId,
+			String reportType, UserBean user) throws Exception {
 		List<LabFileBean> fileBeans = new ArrayList<LabFileBean>();
 
 		String reportJoin = "reportCollection";
 		String associatedFileJoin = "associatedFileCollection";
 
 		String hql = "select report from Nanoparticle particle join particle.reportType"
-				+ " report where particle.name='"
-				+ particleName
-				+ "' and particle.type='" + particleType + "'";
+				+ " report where particle.id=" + particleId;
 		if (reportType.equals(CaNanoLabConstants.REPORT)) {
 			hql = hql.replaceAll("reportType", reportJoin);
 		} else if (reportType.equals(CaNanoLabConstants.ASSOCIATED_FILE)) {
@@ -208,14 +203,14 @@ public class SearchReportService {
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			logger.error("Problem finding report info for particle: "
-					+ particleName, e);
+					+ particleId, e);
 			throw e;
 		} finally {
 			HibernateUtil.closeSession();
 		}
 
-		List<LabFileBean> filteredReports = this.userService.getFilteredFiles(user,
-				fileBeans);
+		List<LabFileBean> filteredReports = this.userService.getFilteredFiles(
+				user, fileBeans);
 
 		// retrieve visible groups
 		UserService userService = new UserService(
