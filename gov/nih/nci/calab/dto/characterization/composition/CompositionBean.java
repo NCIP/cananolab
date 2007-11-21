@@ -19,7 +19,11 @@ public class CompositionBean extends CharacterizationBean {
 
 	public CompositionBean() {
 	}
-	
+
+	public CompositionBean(String id, String name, String viewTitle) {
+		super(id, name, viewTitle);
+	}
+
 	public CompositionBean(ParticleComposition composition) {
 		super(composition);
 		for (ComposingElement element : composition
