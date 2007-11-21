@@ -1,16 +1,17 @@
 package gov.nih.nci.calab.dto.particle;
 
-import gov.nih.nci.calab.domain.Keyword;
-import gov.nih.nci.calab.domain.nano.characterization.Characterization;
-import gov.nih.nci.calab.domain.nano.function.Function;
-import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
-import gov.nih.nci.calab.dto.sample.SampleBean;
-
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
+import gov.nih.nci.calab.domain.Keyword;
+import gov.nih.nci.calab.domain.nano.characterization.Characterization;
+import gov.nih.nci.calab.domain.nano.function.Function;
+import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
+import gov.nih.nci.calab.dto.sample.SampleBean;
+import gov.nih.nci.calab.service.util.StringUtils;
 
 /**
  * This class represents shared properties of nanoparticles to be shown in the
@@ -27,9 +28,11 @@ public class ParticleBean extends SampleBean {
 
 	private String[] characterizations;
 
-	private String[] keywords;
+	private String keywordsStr;
 
-	private String[] visibilityGroups;
+	private String[] keywords = new String[0];
+
+	private String[] visibilityGroups = new String[0];
 
 	private String gridNode;
 
@@ -38,19 +41,6 @@ public class ParticleBean extends SampleBean {
 	}
 
 	public ParticleBean() {
-	}
-
-	public ParticleBean(String id, String name, String particleSource,
-			String particleType, String particleClassification,
-			String[] functionTypes, String[] characterizations,
-			String[] keywords) {
-		this(id, name);
-		setSampleType(particleType);
-		setSampleSource(particleSource);
-		this.particleClassification = particleClassification;
-		this.functionTypes = functionTypes;
-		this.characterizations = characterizations;
-		this.keywords = keywords;
 	}
 
 	public ParticleBean(Nanoparticle particle) {
@@ -63,31 +53,44 @@ public class ParticleBean extends SampleBean {
 			this.setSampleSource("");
 		}
 		this.particleClassification = particle.getClassification();
-		Collection<Keyword> keywordCol = particle.getKeywordCollection();
-		// get a unique set of keywords
-		SortedSet<String> keywordSet = new TreeSet<String>();
-		for (Keyword keywordObj : keywordCol) {
-			keywordSet.add(keywordObj.getName());
-		}
-		this.keywords = keywordSet.toArray(new String[0]);
+		setParticleFunctions(particle);
+		setParticleCharacterizations(particle);
+		setParticleKeywords(particle);
 
+	}
+
+	private void setParticleFunctions(Nanoparticle particle) {
+		// get a unique list of function
+		Collection<Function> functionCol = particle.getFunctionCollection();
+
+		Set<String> functionTypeSet = new HashSet<String>();
+		for (Function funcObj : functionCol) {
+			functionTypeSet.add(funcObj.getType());
+		}
+		this.setFunctionTypes(functionTypeSet.toArray(new String[0]));
+	}
+
+	private void setParticleCharacterizations(Nanoparticle particle) {
+		// get a unique list of characterization
 		Collection<Characterization> characterizationCol = particle
 				.getCharacterizationCollection();
-		// get a unique list of characterization
+
 		Set<String> charcterizationSet = new HashSet<String>();
 		for (Characterization charObj : characterizationCol) {
 			charcterizationSet.add(charObj.getClassification() + ":"
 					+ charObj.getName());
 		}
-		this.characterizations = charcterizationSet.toArray(new String[0]);
+		this.setCharacterizations(charcterizationSet.toArray(new String[0]));
+	}
 
-		Collection<Function> functionCol = particle.getFunctionCollection();
-		// get a unique list of function
-		Set<String> functionTypeSet = new HashSet<String>();
-		for (Function funcObj : functionCol) {
-			functionTypeSet.add(funcObj.getType());
+	private void setParticleKeywords(Nanoparticle particle) {
+		// get a unique set of keywords
+		Collection<Keyword> keywordCol = particle.getKeywordCollection();
+		SortedSet<String> keywordSet = new TreeSet<String>();
+		for (Keyword keywordObj : keywordCol) {
+			keywordSet.add(keywordObj.getName());
 		}
-		this.functionTypes = functionTypeSet.toArray(new String[0]);
+		this.setKeywords(keywordSet.toArray(new String[0]));
 	}
 
 	public ParticleBean(Nanoparticle particle, String gridNode) {
@@ -143,4 +146,14 @@ public class ParticleBean extends SampleBean {
 		this.gridNode = gridNode;
 	}
 
+	public String getKeywordsStr() {
+		this.keywordsStr = StringUtils.join(this.keywords, "\r\n");
+		return this.keywordsStr;
+	}
+
+	public void setKeywordsStr(String keywordsStr) {
+		this.keywordsStr = keywordsStr;
+		if (keywordsStr.length() > 0)
+			this.keywords = this.keywordsStr.split("\r\n");
+	}
 }
