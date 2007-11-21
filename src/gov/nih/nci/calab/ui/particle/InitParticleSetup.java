@@ -211,9 +211,6 @@ public class InitParticleSetup {
 			// all characterization types
 			Map<String, Set<String>> typeTreeMap = new HashMap<String, Set<String>>();
 
-			// only characterization types that searched with viewTitles
-			Map<String, Set<String>> typeTreeSelectedMap = new HashMap<String, Set<String>>();
-
 			/* charType: category column of table def_characterization_category */
 			for (String charType : charTypeChars.keySet()) {
 				List<CharacterizationBean> newCharBeans = new ArrayList<CharacterizationBean>();
@@ -227,27 +224,6 @@ public class InitParticleSetup {
 						if (displayBean.getName().equals(charBean.getName())) {
 							charBean.setAbbr(displayBean.getAbbr());
 							newCharBeans.add(charBean);
-
-							String childType = displayBean.getName();
-							while (childType != null
-									&& !childType.equalsIgnoreCase("Physical")
-									&& !childType.equalsIgnoreCase("in vitro")) {
-								String parentType = ascendTypeTreeMap
-										.get(childType);
-
-								if (typeTreeSelectedMap.containsKey(parentType)) {
-									typeTreeSelectedMap.get(parentType).add(
-											childType);
-								} else {
-									Set<String> typeSet = new TreeSet<String>();
-									typeSet.add(childType);
-									typeTreeSelectedMap
-											.put(parentType, typeSet);
-								}
-								childType = parentType;
-							}
-
-							// break;
 						}
 					}
 					String childType = displayBean.getName();
@@ -271,39 +247,80 @@ public class InitParticleSetup {
 				}
 			}
 			session.setAttribute("allCharacterizations", typeTreeMap);
-			session.setAttribute("selectedCharacterizations",
-					typeTreeSelectedMap);
+			
+			// only characterization types that searched with viewTitles
+			Map<String, Set<String>> typeTreeSelectedMap = createCharaTypeTree(charMap, ascendTypeTreeMap);
+			session.setAttribute("selectedCharacterizations", typeTreeSelectedMap);
+			
 			session.setAttribute("charaLeafActionName", charLeafActionNameMap);
+			
+			Map<String, List<CharacterizationBean>> nameCharMap = getLeafCharaMap(charMap);
+			session.setAttribute("charaLeafToCharacterizations", nameCharMap);
+		}
+	}
+	
+	public Map<String, Set<String>> createCharaTypeTree(
+			Map<String, List<CharacterizationBean>> charMap, Map<String, String> ascendTypeTreeMap)
+	{
+		
+		//key: parent type; value: set of child types;
+		Map<String, Set<String>> typeTreeMap = new HashMap<String, Set<String>>();
+		
+		for (String charType : charMap.keySet()) {
+			List<CharacterizationBean> charBeans = 
+				(List<CharacterizationBean>) charMap.get(charType);
+		
+			for(CharacterizationBean charBean : charBeans) {
+		
+				String childType = charBean.getName();
+				while (childType != null
+						&& !childType.equalsIgnoreCase("Physical")
+						&& !childType.equalsIgnoreCase("in vitro")) {
+					String parentType = ascendTypeTreeMap.get(childType);
 
-			/*
-			 * nameCharMap key: the 'name' column of table
-			 * def_characterization_category These names do not exist in the
-			 * 'category' column, i.e. they are the lowest level in the category
-			 * tree. value: list of CharacterizationBean
-			 */
-			Map<String, List<CharacterizationBean>> nameCharMap = new HashMap<String, List<CharacterizationBean>>();
+					if (typeTreeMap.containsKey(parentType)) {
+						typeTreeMap.get(parentType).add(childType);
+					} else {
+						Set<String> typeSet = new TreeSet<String>();
+						typeSet.add(childType);
+						typeTreeMap.put(parentType, typeSet);
+					}
+					childType = parentType;
+				}
+			}
+		}
+		return typeTreeMap;
+	}
+	
+	public Map<String, List<CharacterizationBean>> getLeafCharaMap(Map<String, List<CharacterizationBean>> charMap)
+	{
+		/*
+		 * nameCharMap key: the 'name' column of table
+		 * def_characterization_category These names do not exist in the
+		 * 'category' column, i.e. they are the lowest level in the category
+		 * tree. value: list of CharacterizationBean
+		 */
+		Map<String, List<CharacterizationBean>> nameCharMap = new HashMap<String, List<CharacterizationBean>>();
 
-			for (String charCategory : charMap.keySet()) {
-				List<CharacterizationBean> charList = (List<CharacterizationBean>) charMap
-						.get(charCategory);
-				for (CharacterizationBean cbean : charList) {
-
-					String pname = cbean.getName();
-					if (!charMap.containsKey(pname)) {
-						if (nameCharMap.containsKey(pname)) {
-							List<CharacterizationBean> clist = (List<CharacterizationBean>) nameCharMap
-									.get(pname);
-							clist.add(cbean);
-						} else {
-							List<CharacterizationBean> charBeanList = new ArrayList<CharacterizationBean>();
-							charBeanList.add(cbean);
-							nameCharMap.put(pname, charBeanList);
-						}
+		for (String charCategory : charMap.keySet()) {
+			List<CharacterizationBean> charList = (List<CharacterizationBean>) charMap
+				.get(charCategory);
+			for (CharacterizationBean cbean : charList) {
+				String pname = cbean.getName();
+				if (!charMap.containsKey(pname)) {
+					if (nameCharMap.containsKey(pname)) {
+						List<CharacterizationBean> clist = (List<CharacterizationBean>) nameCharMap
+							.get(pname);
+						clist.add(cbean);
+					} else {
+						List<CharacterizationBean> charBeanList = new ArrayList<CharacterizationBean>();
+						charBeanList.add(cbean);
+						nameCharMap.put(pname, charBeanList);
 					}
 				}
 			}
-			session.setAttribute("charaLeafToCharacterizations", nameCharMap);
 		}
+		return nameCharMap;
 	}
 
 	public Map<String, String> getAscendTypeTreeMap(
@@ -358,7 +375,20 @@ public class InitParticleSetup {
 
 			Map<String, List<CharacterizationBean>> charTypeChars = service
 					.getRemoteCharacterizationMap(particleName, gridNode);
-			session.setAttribute("remoteCharTypeChars", charTypeChars);
+			
+			Map<String, List<CharacterizationBean>> nameCharMap = 
+									getLeafCharaMap(charTypeChars);
+			session.setAttribute("remoteCharaLeafToCharacterizations", nameCharMap);
+			
+			LookupService lookupService = new LookupService();
+			Map<String, List<CharacterizationBean>> orderedCharTypeChars = lookupService
+					.getCharacterizationTypeCharacterizations();
+			Map<String, String> ascendTypeTreeMap = getAscendTypeTreeMap(orderedCharTypeChars);
+			Map<String, Set<String>> typeTreeSelectedMap = 
+				createCharaTypeTree(charTypeChars, ascendTypeTreeMap);
+			session.setAttribute("remoteSelectedCharacterizations", typeTreeSelectedMap);
+			
+			//session.setAttribute("remoteCharTypeChars", charTypeChars);
 		}
 
 		if (session.getAttribute("remoteFuncTypeFuncs") == null
