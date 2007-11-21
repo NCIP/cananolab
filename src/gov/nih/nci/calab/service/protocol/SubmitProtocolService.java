@@ -13,7 +13,6 @@ import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
 
 import java.io.File;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -27,7 +26,7 @@ import org.hibernate.Session;
  */
 
 /*
- * CVS $Id: SubmitProtocolService.java,v 1.4 2007-11-16 22:29:53 pansu Exp $
+ * CVS $Id: SubmitProtocolService.java,v 1.5 2007-11-21 23:21:18 pansu Exp $
  */
 
 public class SubmitProtocolService {
