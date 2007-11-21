@@ -627,13 +627,15 @@ td.leftBorderedFormFieldWhite {
 }
 
 h3,.h3 { /* for title of page */
+	font-family: arial, helvetica, verdana, sans-serif;
 	font-size: 1.3em;
 	font-weight: bold;
 	color: #5c5c5c; /* constant: dark gray */
-	text-align: center;
+	text-align: left;
 }
 
 h4,.h4 { /* for title of page */
+	font-family: arial, helvetica, verdana, sans-serif;
 	font-size: 1.1em;
 	font-weight: bold;
 	color: #5c5c5c; /* constant: dark gray */
@@ -731,6 +733,14 @@ img.img { /* for images that need a border */
 	font-family: arial, helvetica, verdana, sans-serif;
 	font-size: 0.7em;
 	background-color: #f4f4f5;
+	color: #000000;
+	text-align: left;
+}
+
+.whiteBorderlessLabel {
+	font-family: arial, helvetica, verdana, sans-serif;
+	font-size: 0.7em;
+	background-color: #ffffff;
 	color: #000000;
 	text-align: left;
 }
@@ -923,11 +933,19 @@ td.secondMenuItemOver { /* for the over state of the main menu (top) cells */
 	font-family: arial, helvetica, verdana, sans-serif;
 	font-size: 0.7em;
 	font-weight: bold;
-	padding-left: 0.8em;
+	padding-right: 0.8em;
 	background-color: #AAAAAB; /* constant: lighter gray */
 	color: #000000; /* constant: black */
 	border-top: 1px solid #5c5c5c; /* constant: dark gray */
 	border-right: 1px solid #5c5c5c; /* constant: dark gray */
+}
+
+.formSubTitleNoBorder { /* for header cells (top) of forms */
+	font-family: arial, helvetica, verdana, sans-serif;
+	font-size: 0.7em;
+	font-weight: bold;
+	background-color: #AAAAAB; /* constant: lighter gray */
+	color: #000000; /* constant: black */
 }
 
 .thumbnail{
