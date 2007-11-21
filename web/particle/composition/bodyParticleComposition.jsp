@@ -47,8 +47,8 @@ function confirmDeletion()
 		<tr>
 			<td colspan="2">
 				<h5 align="center">
-					${nanoparticleCompositionForm.map.particleName}
-					(${nanoparticleCompositionForm.map.particleType})
+					${nanoparticleCompositionForm.map.particle.sampleName}
+					(${nanoparticleCompositionForm.map.particle.sampleType})
 				</h5>
 			</td>
 		</tr>
@@ -124,7 +124,9 @@ function confirmDeletion()
 						</td>
 					</tr>
 				</table>
-				<c:set var="particleType" value="${param.particleType}" scope="page" />
+				<c:set var="particleType"
+					value="${nanoparticleCompositionForm.map.particle.sampleType}"
+					scope="page" />
 				<jsp:useBean id="particleType" type="java.lang.String" />
 				<%
 							String includePage = StringUtils
@@ -209,7 +211,7 @@ function confirmDeletion()
 																			</option>
 																			<html:options name="allComposingElementTypes" />
 																			<c:if
-																				test="${param.particleType eq 'Complex Particle'}">
+																				test="${nanoparticleCompositionForm.map.particle.sampleType eq 'Complex Particle'}">
 																				<html:options name="allParticleElementTypes" />
 																			</c:if>
 																		</html:select>
@@ -307,12 +309,10 @@ function confirmDeletion()
 														<input type="reset" value="Reset" onclick="">
 														<input type="hidden" name="dispatch" value="create">
 														<input type="hidden" name="page" value="2">
-														<c:choose>
-															<c:when
-																test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
-																<html:hidden property="particleType" />
-															</c:when>
-														</c:choose>
+														<html:hidden property="particle.sampleId" />
+														<html:hidden property="particle.sampleName" />
+														<html:hidden property="particle.sampleSource" />
+														<html:hidden property="particle.sampleType" />
 														<html:submit />
 													</div>
 												</div>

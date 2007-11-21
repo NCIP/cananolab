@@ -8,14 +8,13 @@
 		<tr>
 			<td>
 				<h3>
-					<br>
 					Submit Nanoparticle - General Information
 				</h3>
 			</td>
 			<td align="right" width="15%">
 				<a
 					href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=nano_general_info_help')"
-					class="helpText">Help</a> 
+					class="helpText">Help</a>
 			</td>
 		</tr>
 		<c:choose>
@@ -50,12 +49,12 @@
 									<td class="rightLabel">
 										<c:choose>
 											<c:when test="${param.dispatch eq 'setupUpdate'}">
-										${nanoparticleGeneralInfoForm.map.particleType}
-										<html:hidden property="particleType" />
+										${nanoparticleGeneralInfoForm.map.particle.sampleType}										
 											</c:when>
 											<c:otherwise>
-												<html:select property="particleType"
-													onchange="javascript:doubleDropdown(document.nanoparticleGeneralInfoForm.particleType, document.nanoparticleGeneralInfoForm.particleName, particleTypeParticles)">
+												<html:select styleId="particleType"
+													property="particle.sampleType"
+													onchange="javascript:doubleDropdown(document.getElementById('particleType'), document.getElementById('particleName'), particleTypeParticles)">
 													<option value=""></option>
 													<html:options name="allParticleTypes" />
 												</html:select>
@@ -70,14 +69,14 @@
 									<td class="rightLabel">
 										<c:choose>
 											<c:when test="${param.dispatch eq 'setupUpdate'}">
-              							${nanoparticleGeneralInfoForm.map.particleName}
-              							<html:hidden property="particleName" />
+              							${nanoparticleGeneralInfoForm.map.particle.sampleName}
 											</c:when>
 											<c:otherwise>
-												<html:select property="particleName">
+												<html:select styleId="particleName"
+													property="particle.sampleName">
 													<option value=""></option>
 													<c:forEach var="name"
-														items="${allParticleTypeParticles[nanoparticleGeneralInfoForm.map.particleType]}">
+														items="${allParticleTypeParticles[nanoparticleGeneralInfoForm.map.particle.sampleType]}">
 														<html:option value="${name}">${name}</html:option>
 													</c:forEach>
 												</html:select>
@@ -92,8 +91,7 @@
 												<strong>Particle Source</strong>
 											</td>
 											<td class="rightLabel">
-												${nanoparticleGeneralInfoForm.map.particleSource}
-												<html:hidden property="particleSource" />
+												${nanoparticleGeneralInfoForm.map.particle.sampleSource}
 											</td>
 										</tr>
 									</c:when>
@@ -103,7 +101,7 @@
 										<strong>Keywords <em>(one word per line)</em> </strong>
 									</td>
 									<td class="rightLabel">
-										<html:textarea property="keywords" rows="4" />
+										<html:textarea property="particle.keywordsStr" rows="4" />
 									</td>
 								</tr>
 								<tr>
@@ -111,7 +109,8 @@
 										<strong>Visibility</strong>
 									</td>
 									<td class="rightLabel">
-										<html:select property="visibilities" multiple="true" size="6">
+										<html:select property="particle.visibilityGroups"
+											multiple="true" size="6">
 											<html:options name="allVisibilityGroups" />
 										</html:select>
 										<br>

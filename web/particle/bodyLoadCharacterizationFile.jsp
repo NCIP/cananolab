@@ -2,6 +2,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <html:form action="/loadFile" enctype="multipart/form-data">
 	<table width="100%" align="center">
 		<tr>
@@ -59,7 +60,7 @@
 										<c:choose>
 											<c:when test="${!empty file.id}">
 												<a
-													href="${actionName}.do?dispatch=download&amp;fileId=${file.id}">${file.displayName}</a>
+													href="${nanoparticleCharacterizationForm.map.charName}.do?dispatch=download&amp;fileId=${file.id}">${file.displayName}</a>																						
 												<html:hidden property="file.id" />
 												<html:hidden property="file.name" />
 												<html:hidden property="file.uri" /><br>
@@ -69,7 +70,7 @@
 									</c:when>
 									<c:otherwise>
 										<a
-											href="${actionName}.do?dispatch=download&amp;fileId=${file.id}">${file.displayName}</a>
+											href="${nanoparticleCharacterizationForm.map.charName}.do?dispatch=download&amp;fileId=${file.id}">${file.displayName}</a>
 										<html:hidden property="file.id" />
 										<html:hidden property="file.name" />
 										<html:hidden property="file.uri" />

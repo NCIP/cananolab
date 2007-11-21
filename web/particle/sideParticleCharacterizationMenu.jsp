@@ -32,169 +32,73 @@
 		<c:set var="invitroDisplay" value="display: none;" />
 	</c:otherwise>
 </c:choose>
-
-<c:choose>
-	<c:when test="${displaytype == 'Composition'}">
-		<c:set var="compDisplay" value="display: block;" />
-	</c:when>
-	<c:otherwise>
-		<c:set var="compDisplay" value="display: none;" />
-	</c:otherwise>
-</c:choose>
 <c:choose>
 	<c:when test="${canCreateNanoparticle eq 'true'}">
 		<c:set var="physicalType" value="Physical" />
-		<li class="toplist">
-			<a href="#" class="subMenuSecondary">COMPOSITION</a>
-			<ul class="sublist_4" id="compul" style="${compDisplay}">
-				<c:forEach var="subCharType"
-					items="${allCharacterizations[physicalType]}">
-					<c:if test="${subCharType == 'Composition'}">
-						<c:url var="submitUrl" value="composition.do">
-							<c:param name="particleName" value="${particleName}" />
-							<c:param name="particleType" value="${particleType}" />
-							<c:param name="particleSource" value="${particleSource}" />
-							<c:param name="submitType" value="${physicalType}" />
-							<c:param name="page" value="0" />
-							<c:param name="dispatch" value="setup" />
-							<c:param name="actionName"
-								value="${charaLeafActionName[subCharType]}" />
-							<c:param name="charName" value="${subCharType}" />
-							<c:param name="displayType" value="${subCharType}" />
-						</c:url>
-						<li><table class="charTitle">
-								<tr class="titleRow">
-									<td class="titleCell_2">
-										<a href="#" class="sublist_4">${subCharType}</a>
-									</td>
-									<td>
-										&nbsp;
-									</td>
-									<td class="addCell">
-										<a href="${submitUrl}" class="addlink">add</a>
-									</td>
-									<c:if test="${canUserDeleteChars eq 'true' &&
-												!empty charaLeafToCharacterizations[subCharType]}">
-										<td>
-											&nbsp;
-										</td>
-										<td class="addCell">
-											<c:url var="deleteUrl" value="deleteAction.do">
-												<c:param name="particleName" value="${particleName}" />
-												<c:param name="particleType" value="${particleType}" />
-												<c:param name="charCategory" value="${subCharType}" />
-												<c:param name="submitType" value="${physicalType}" />
-												<c:param name="page" value="0" />
-												<c:param name="dispatch" value="setup" />
-											</c:url>
-											<a href="${deleteUrl}" class="addlink">delete</a>
-										</td>
-									</c:if>
-								</tr>
-						</table></li>
-						<c:forEach var="leafCharBean"
-							items="${charaLeafToCharacterizations[subCharType]}">
-							<c:url var="url" value="${leafCharBean.actionName}.do">
-								<c:param name="page" value="0" />
-								<c:param name="dispatch" value="${dispatchValue}" />
-								<c:param name="particleName" value="${particleName}" />
-								<c:param name="particleType" value="${particleType}" />
-								<c:param name="particleSource" value="${particleSource}" />
-								<c:param name="characterizationId" value="${leafCharBean.id}" />
-								<c:param name="submitType" value="${subCharType}" />
-								<c:param name="actionName" value="${leafCharBean.actionName}" />
-								<c:param name="charName" value="${leafCharBean.name}" />
-								<c:param name="displayType" value="${leafCharBean.name}" />
-							</c:url>
-							<li id="complist">
-								<a href=${url} id="complink" class="sublist_5"><span class="data_anchar">>&nbsp;</span>${leafCharBean.viewTitle}</a>
-							</li>
-						</c:forEach>
-						
-					</c:if>
-				</c:forEach>
-			</ul>
-		</li>
-
 		<li class="toplist">
 			<a href="#" class="subMenuSecondary">PHYSICAL CHARACTERIZATIONS</a>
 			<ul class="sublist_4" style="${phyDisplay}">
 				<c:forEach var="subCharType"
 					items="${allCharacterizations[physicalType]}">
-					<c:if test="${subCharType != 'Composition'}">
-						<li>
-							<c:url var="submitUrl"
-								value="${charaLeafActionName[subCharType]}.do">
-								<c:param name="particleName" value="${particleName}" />
-								<c:param name="particleType" value="${particleType}" />
-								<c:param name="particleSource" value="${particleSource}" />
-								<c:param name="submitType" value="${physicalType}" />
-								<c:param name="page" value="0" />
-								<c:param name="dispatch" value="setup" />
-								<c:param name="actionName"
-									value="${charaLeafActionName[subCharType]}" />
-								<c:param name="charName" value="${subCharType}" />
-							</c:url>
-							<table class="charTitle">
-								<tr class="titleRow">
-									<td class="titleCell_2">
-										<a href="#" class="sublist_4">${subCharType}</a>
-									</td>
+					<li>
+						<c:url var="submitUrl"
+							value="${charaLeafActionName[subCharType]}.do">
+							<c:param name="particleId" value="${particleId}" />
+							<c:param name="submitType" value="${physicalType}" />
+							<c:param name="page" value="0" />
+							<c:param name="dispatch" value="setup" />
+						</c:url>
+						<table class="charTitle">
+							<tr class="titleRow">
+								<td class="titleCell_2">
+									<a href="#" class="sublist_4">${subCharType}</a>
+								</td>
+								<td>
+									&nbsp;
+								</td>
+								<td class="addCell">
+									<a href="${submitUrl}" class="addlink">add</a>
+								</td>
+								<c:if
+									test="${canUserDeleteChars eq 'true' &&
+												!empty charaLeafToCharacterizations[subCharType]}">
 									<td>
 										&nbsp;
 									</td>
 									<td class="addCell">
-										<a href="${submitUrl}" class="addlink">add</a>
-									</td>
-									<c:if test="${canUserDeleteChars eq 'true' &&
-												!empty charaLeafToCharacterizations[subCharType]}">
-										<td>
-											&nbsp;
-										</td>
-										<td class="addCell">
 										<c:url var="deleteUrl" value="deleteAction.do">
-											<c:param name="particleName" value="${particleName}" />
-											<c:param name="particleType" value="${particleType}" />
-											<c:param name="charCategory" value="${subCharType}" />
+											<c:param name="particleId" value="${particleId}" />
 											<c:param name="submitType" value="${physicalType}" />
 											<c:param name="page" value="0" />
 											<c:param name="dispatch" value="setup" />
 										</c:url>
-											<a href="${deleteUrl}" class="addlink">delete</a>
-										</td>
-									</c:if>
-								</tr>
-							</table>
-							<c:if test="${!empty charaLeafToCharacterizations[subCharType]}">
-								<ul class="sublist_5" style="${phyDisplay}">
-									<c:forEach var="leafCharBean"
-										items="${charaLeafToCharacterizations[subCharType]}">
-										<c:url var="url" value="${leafCharBean.actionName}.do">
-											<c:param name="page" value="0" />
-											<c:param name="dispatch" value="${dispatchValue}" />
-											<c:param name="particleName" value="${particleName}" />
-											<c:param name="particleType" value="${particleType}" />
-											<c:param name="particleSource" value="${particleSource}" />
-											<c:param name="characterizationId" value="${leafCharBean.id}" />
-											<c:param name="submitType" value="${subCharType}" />
-											<c:param name="actionName" value="${leafCharBean.actionName}" />
-											<c:param name="charName" value="${leafCharBean.name}" />
-										</c:url>
-										<li>
-											<a href=${url } class="sublist_5"><span
-												class="data_anchar">>&nbsp;</span>${leafCharBean.viewTitle}</a>
-										</li>
-										<c:set var="actionname" value="${leafCharBean.actionName}" />
-										<c:set var="charname" value="${leafCharBean.name}" />
-									</c:forEach>
-								</ul>
-							</c:if>
-						</li>
-					</c:if>
+										<a href="${deleteUrl}" class="addlink">delete</a>
+									</td>
+								</c:if>
+							</tr>
+						</table>
+						<c:if test="${!empty charaLeafToCharacterizations[subCharType]}">
+							<ul class="sublist_5" style="${phyDisplay}">
+								<c:forEach var="leafCharBean"
+									items="${charaLeafToCharacterizations[subCharType]}">
+									<c:url var="url" value="${leafCharBean.actionName}.do">
+										<c:param name="page" value="0" />
+										<c:param name="dispatch" value="summaryView" />
+										<c:param name="particleId" value="${particleId}" />
+										<c:param name="characterizationId" value="${leafCharBean.id}" />
+										<c:param name="submitType" value="${leafCharBean.name}" />
+									</c:url>
+									<li>
+										<a href=${url } class="sublist_5"><span
+											class="data_anchar">>&nbsp;</span>${leafCharBean.viewTitle}</a>
+									</li>
+								</c:forEach>
+							</ul>
+						</c:if>
+					</li>
 				</c:forEach>
 			</ul>
 		</li>
-
 		<c:set var="inVitroType" value="In Vitro" />
 		<li class="toplist">
 			<a href="#" class="subMenuSecondary">IN VITRO CHARACTERIZATIONS</a>
@@ -220,15 +124,10 @@
 										<c:otherwise>
 											<c:url var="submitUrl"
 												value="${charaLeafActionName[thirdLevelChar]}.do">
-												<c:param name="particleName" value="${particleName}" />
-												<c:param name="particleType" value="${particleType}" />
-												<c:param name="particleSource" value="${particleSource}" />
+												<c:param name="particleId" value="${particleId}" />
 												<c:param name="submitType" value="${secondLevelChar}" />
 												<c:param name="page" value="0" />
 												<c:param name="dispatch" value="setup" />
-												<c:param name="actionName"
-													value="${charaLeafActionName[thirdLevelChar]}" />
-												<c:param name="charName" value="${thirdLevelChar}" />
 											</c:url>
 											<table class="charTitle">
 												<tr class="titleRow">
@@ -241,16 +140,15 @@
 													<td class="addCell">
 														<a href="${submitUrl}" class="addlink">add</a>
 													</td>
-													<c:if test="${canUserDeleteChars eq 'true' &&
+													<c:if
+														test="${canUserDeleteChars eq 'true' &&
 																!empty charaLeafToCharacterizations[fourthLevelChar]}">
 														<td>
 															&nbsp;
 														</td>
 														<td class="addCell">
 															<c:url var="deleteUrl" value="deleteAction.do">
-																<c:param name="particleName" value="${particleName}" />
-																<c:param name="particleType" value="${particleType}" />
-																<c:param name="charCategory" value="${thirdLevelChar}" />
+																<c:param name="particleId" value="${particleId}" />
 																<c:param name="submitType" value="${secondLevelChar}" />
 																<c:param name="page" value="0" />
 																<c:param name="dispatch" value="setup" />
@@ -270,16 +168,11 @@
 													items="${charaLeafToCharacterizations[thirdLevelChar]}">
 													<c:url var="url3" value="${leafCharBean.actionName}.do">
 														<c:param name="page" value="0" />
-														<c:param name="dispatch" value="${dispatchValue}" />
-														<c:param name="particleName" value="${particleName}" />
-														<c:param name="particleType" value="${particleType}" />
-														<c:param name="particleSource" value="${particleSource}" />
+														<c:param name="dispatch" value="summaryView" />
+														<c:param name="particleId" value="${particleId}" />
 														<c:param name="characterizationId"
 															value="${leafCharBean.id}" />
-														<c:param name="submitType" value="${thirdLevelChar}" />
-														<c:param name="actionName"
-															value="${leafCharBean.actionName}" />
-														<c:param name="charName" value="${leafCharBean.name}" />
+														<c:param name="submitType" value="${leafCharBean.name}" />
 													</c:url>
 													<li>
 														<a href="${url3}" class="sublist_5"><span
@@ -308,16 +201,10 @@
 																<c:otherwise>
 																	<c:url var="submitUrl"
 																		value="${charaLeafActionName[fourthLevelChar]}.do">
-																		<c:param name="particleName" value="${particleName}" />
-																		<c:param name="particleType" value="${particleType}" />
-																		<c:param name="particleSource"
-																			value="${particleSource}" />
+																		<c:param name="particleId" value="${particleId}" />
 																		<c:param name="submitType" value="${secondLevelChar}" />
 																		<c:param name="page" value="0" />
 																		<c:param name="dispatch" value="setup" />
-																		<c:param name="actionName"
-																			value="${charaLeafActionName[fourthLevelChar]}" />
-																		<c:param name="charName" value="${fourthLevelChar}" />
 																	</c:url>
 																	<table class="charTitle">
 																		<tr class="titleRow">
@@ -330,17 +217,17 @@
 																			<td class="addCell">
 																				<a href="${submitUrl}" class="addlink">add</a>
 																			</td>
-																			<c:if test="${canUserDeleteChars eq 'true' &&
+																			<c:if
+																				test="${canUserDeleteChars eq 'true' &&
 																				!empty charaLeafToCharacterizations[fourthLevelChar]}">
 																				<td>
 																					&nbsp;
 																				</td>
 																				<td class="addCell">
 																					<c:url var="deleteUrl" value="deleteAction.do">
-																						<c:param name="particleName" value="${particleName}" />
-																						<c:param name="particleType" value="${particleType}" />
-																						<c:param name="charCategory" value="${fourthLevelChar}" />
-																						<c:param name="submitType" value="${secondLevelChar}" />
+																						<c:param name="particleId" value="${particleId}" />
+																						<c:param name="submitType"
+																							value="${secondLevelChar}" />
 																						<c:param name="page" value="0" />
 																						<c:param name="dispatch" value="setup" />
 																					</c:url>
@@ -360,17 +247,11 @@
 																			<c:url var="url4"
 																				value="${leafCharBean.actionName}.do">
 																				<c:param name="page" value="0" />
-																				<c:param name="dispatch" value="${dispatchValue}" />
-																				<c:param name="particleName" value="${particleName}" />
-																				<c:param name="particleType" value="${particleType}" />
-																				<c:param name="particleSource"
-																					value="${particleSource}" />
+																				<c:param name="dispatch" value="summaryView" />
+																				<c:param name="particleId" value="${particleId}" />
 																				<c:param name="characterizationId"
 																					value="${leafCharBean.id}" />
-																				<c:param name="submitType" value="${secondLevelChar}" />
-																				<c:param name="actionName"
-																					value="${leafCharBean.actionName}" />
-																				<c:param name="charName"
+																				<c:param name="submitType"
 																					value="${leafCharBean.name}" />
 																			</c:url>
 																			<li>
@@ -390,19 +271,11 @@
 
 																					<c:url var="submitUrl"
 																						value="${charaLeafActionName[fifthLevelChar]}.do">
-																						<c:param name="particleName"
-																							value="${particleName}" />
-																						<c:param name="particleType"
-																							value="${particleType}" />
-																						<c:param name="particleSource"
-																							value="${particleSource}" />
+																						<c:param name="particleId" value="${particleId}" />
 																						<c:param name="submitType"
 																							value="${secondLevelChar}" />
 																						<c:param name="page" value="0" />
 																						<c:param name="dispatch" value="setup" />
-																						<c:param name="actionName"
-																							value="${charaLeafActionName[fifthLevelChar]}" />
-																						<c:param name="charName" value="${fifthLevelChar}" />
 																					</c:url>
 																					<table class="charTitle">
 																						<tr class="titleRow">
@@ -415,17 +288,18 @@
 																							<td class="addCell">
 																								<a href="${submitUrl}" class="addlink">add</a>
 																							</td>
-																							<c:if test="${canUserDeleteChars eq 'true' &&
+																							<c:if
+																								test="${canUserDeleteChars eq 'true' &&
 																							!empty charaLeafToCharacterizations[fifthLevelChar]}">
 																								<td>
 																									&nbsp;
 																								</td>
 																								<td class="addCell">
 																									<c:url var="deleteUrl" value="deleteAction.do">
-																										<c:param name="particleName" value="${particleName}" />
-																										<c:param name="particleType" value="${particleType}" />
-																										<c:param name="charCategory" value="${fifthLevelChar}" />
-																										<c:param name="submitType" value="${secondLevelChar}" />
+																										<c:param name="particleId"
+																											value="${particleId}" />
+																										<c:param name="submitType"
+																											value="${secondLevelChar}" />
 																										<c:param name="page" value="0" />
 																										<c:param name="dispatch" value="setup" />
 																									</c:url>
@@ -443,20 +317,12 @@
 																									value="${leafCharBean.actionName}.do">
 																									<c:param name="page" value="0" />
 																									<c:param name="dispatch"
-																										value="${dispatchValue}" />
-																									<c:param name="particleName"
-																										value="${particleName}" />
-																									<c:param name="particleType"
-																										value="${particleType}" />
-																									<c:param name="particleSource"
-																										value="${particleSource}" />
+																										value="summaryView" />
+																									<c:param name="particleId"
+																										value="${particleId}" />
 																									<c:param name="characterizationId"
 																										value="${leafCharBean.id}" />
 																									<c:param name="submitType"
-																										value="${thirdLevelChar}" />
-																									<c:param name="actionName"
-																										value="${leafCharBean.actionName}" />
-																									<c:param name="charName"
 																										value="${leafCharBean.name}" />
 																								</c:url>
 																								<li>
@@ -485,38 +351,9 @@
 				</c:forEach>
 			</ul>
 		</li>
-
 	</c:when>
 	<c:otherwise>
 		<c:set var="physicalType" value="Physical" />
-		<li class="toplist">
-			<a href="#" class="subMenuSecondary">COMPOSITION</a>
-			<ul class="sublist_5" style="${compDisplay}">
-				<c:forEach var="subCharType"
-					items="${selectedCharacterizations[physicalType]}">
-					<c:if test="${subCharType == 'Composition'}">
-						<c:forEach var="leafCharBean"
-							items="${charaLeafToCharacterizations[subCharType]}">
-							<c:url var="url" value="${leafCharBean.actionName}.do">
-								<c:param name="page" value="0" />
-								<c:param name="dispatch" value="${dispatchValue}" />
-								<c:param name="particleName" value="${particleName}" />
-								<c:param name="particleType" value="${particleType}" />
-								<c:param name="particleSource" value="${particleSource}" />
-								<c:param name="characterizationId" value="${leafCharBean.id}" />
-								<c:param name="submitType" value="${subCharType}" />
-								<c:param name="actionName" value="${leafCharBean.actionName}" />
-								<c:param name="charName" value="${leafCharBean.name}" />
-							</c:url>
-							<li>
-								<a href=${url } class="sublist_5"><span class="data_anchar">>&nbsp;</span>${leafCharBean.viewTitle}</a>
-							</li>
-						</c:forEach>
-					</c:if>
-				</c:forEach>
-			</ul>
-		</li>
-
 		<li class="toplist">
 			<a href="#" class="subMenuSecondary">PHYSICAL CHARACTERIZATIONS</a>
 			<ul class="sublist_4" style="${phyDisplay}">
@@ -530,14 +367,10 @@
 									items="${charaLeafToCharacterizations[subCharType]}">
 									<c:url var="url" value="${leafCharBean.actionName}.do">
 										<c:param name="page" value="0" />
-										<c:param name="dispatch" value="${dispatchValue}" />
-										<c:param name="particleName" value="${particleName}" />
-										<c:param name="particleType" value="${particleType}" />
-										<c:param name="particleSource" value="${particleSource}" />
+										<c:param name="dispatch" value="summaryView" />
+										<c:param name="particleId" value="${particleId}" />
 										<c:param name="characterizationId" value="${leafCharBean.id}" />
-										<c:param name="submitType" value="${subCharType}" />
-										<c:param name="actionName" value="${leafCharBean.actionName}" />
-										<c:param name="charName" value="${leafCharBean.name}" />
+										<c:param name="submitType" value="${leafCharBean.name}" />
 									</c:url>
 									<li>
 										<a href=${url } class="sublist_5"><span
@@ -572,16 +405,11 @@
 													items="${charaLeafToCharacterizations[thirdLevelChar]}">
 													<c:url var="url3" value="${leafCharBean.actionName}.do">
 														<c:param name="page" value="0" />
-														<c:param name="dispatch" value="${dispatchValue}" />
-														<c:param name="particleName" value="${particleName}" />
-														<c:param name="particleType" value="${particleType}" />
-														<c:param name="particleSource" value="${particleSource}" />
+														<c:param name="dispatch" value="summaryView" />
+														<c:param name="particleId" value="${particleId}" />
 														<c:param name="characterizationId"
 															value="${leafCharBean.id}" />
-														<c:param name="submitType" value="${thirdLevelChar}" />
-														<c:param name="actionName"
-															value="${leafCharBean.actionName}" />
-														<c:param name="charName" value="${leafCharBean.name}" />
+														<c:param name="submitType" value="${leafCharBean.name}" />
 													</c:url>
 													<li>
 														<a href="${url3}" class="sublist_5"><span
@@ -605,17 +433,11 @@
 																		<c:url var="url4"
 																			value="${leafCharBean.actionName}.do">
 																			<c:param name="page" value="0" />
-																			<c:param name="dispatch" value="${dispatchValue}" />
-																			<c:param name="particleName" value="${particleName}" />
-																			<c:param name="particleType" value="${particleType}" />
-																			<c:param name="particleSource"
-																				value="${particleSource}" />
+																			<c:param name="dispatch" value="summaryView" />
+																			<c:param name="particleId" value="${particleId}" />
 																			<c:param name="characterizationId"
 																				value="${leafCharBean.id}" />
-																			<c:param name="submitType" value="${thirdLevelChar}" />
-																			<c:param name="actionName"
-																				value="${leafCharBean.actionName}" />
-																			<c:param name="charName" value="${leafCharBean.name}" />
+																			<c:param name="submitType" value="${leafCharBean.name}" />
 																		</c:url>
 																		<li>
 																			<a href="${url4}" class="sublist_5"><span
@@ -636,20 +458,11 @@
 																					<c:url var="url5"
 																						value="${leafCharBean.actionName}.do">
 																						<c:param name="page" value="0" />
-																						<c:param name="dispatch" value="${dispatchValue}" />
-																						<c:param name="particleName"
-																							value="${particleName}" />
-																						<c:param name="particleType"
-																							value="${particleType}" />
-																						<c:param name="particleSource"
-																							value="${particleSource}" />
+																						<c:param name="dispatch" value="summaryView" />
+																						<c:param name="particleId" value="${particleId}" />
 																						<c:param name="characterizationId"
 																							value="${leafCharBean.id}" />
 																						<c:param name="submitType"
-																							value="${thirdLevelChar}" />
-																						<c:param name="actionName"
-																							value="${leafCharBean.actionName}" />
-																						<c:param name="charName"
 																							value="${leafCharBean.name}" />
 																					</c:url>
 																					<li>
@@ -676,7 +489,6 @@
 				</c:forEach>
 			</ul>
 		</li>
-
 	</c:otherwise>
 </c:choose>
 

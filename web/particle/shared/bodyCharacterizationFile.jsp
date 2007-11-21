@@ -20,7 +20,7 @@
 					</td>
 					<td class="formSubTitleNoLeft" align="right">
 						<a href="#"
-							onclick="javascript:removeCharacterizationFile(nanoparticleCharacterizationForm, '${charName}', '${actionName}', ${param.fileInd})">
+							onclick="javascript:removeCharacterizationFile(nanoparticleCharacterizationForm, '${nanoparticleCharacterizationForm.map.charName}', '${nanoparticleCharacterizationForm.map.charName}', ${param.fileInd})">
 							<img src="images/delete.gif" border="0" alt="remove this file">
 						</a>
 					</td>
@@ -99,7 +99,7 @@
 							<c:when
 								test="${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].hidden==false}">
 								<html:link
-									page="/${actionName}.do?page=0&dispatch=loadFile&charName=${charName}&fileNumber=${param.fileInd}">
+									page="/${nanoparticleCharacterizationForm.map.charName}.do?page=0&dispatch=loadFile&charName=${nanoparticleCharacterizationForm.map.charName}&fileNumber=${param.fileInd}">
 								${nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].displayName}
 							</html:link>
 							</c:when>
@@ -116,7 +116,7 @@
 								test="${empty nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].uri}">	
 								Click on "Load File" button 	
 									&nbsp;&nbsp;&nbsp;&nbsp;<input type="button"
-									onclick="javascript:loadFile(this.form, '${charName}', '${actionName}', ${param.fileInd})"
+									onclick="javascript:loadFile(this.form, '${nanoparticleCharacterizationForm.map.charName}', '${nanoparticleCharacterizationForm.map.charName}', ${param.fileInd})"
 									value="Load File">
 							</c:when>
 						</c:choose>
@@ -151,7 +151,7 @@
 							<c:when test="${canCreateNanoparticle eq 'true'}">
 								<td valign="bottom">
 									<a href="#"
-										onclick="javascript:addCharacterizationData(nanoparticleCharacterizationForm, '${charName}', '${actionName}', ${param.fileInd})"><span
+										onclick="javascript:addCharacterizationData(nanoparticleCharacterizationForm, '${nanoparticleCharacterizationForm.map.charName}', '${nanoparticleCharacterizationForm.map.charName}', ${param.fileInd})"><span
 										class="addLink">Add Derived Data</span> </a>
 								</td>
 							</c:when>

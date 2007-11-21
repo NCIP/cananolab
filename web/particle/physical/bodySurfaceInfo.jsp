@@ -113,7 +113,7 @@
 							<c:when test="${canCreateNanoparticle eq 'true'}">
 								<td valign="bottom">
 									<a href="#"
-										onclick="javascript:addSurfaceChemistry(nanoparticleCharacterizationForm,'${actionName}')"><span
+										onclick="javascript:addSurfaceChemistry(nanoparticleCharacterizationForm,'${nanoparticleCharacterizationForm.map.charName}')"><span
 										class="addLink">Add Surface Chemistry</span> </a>
 								</td>
 							</c:when>
@@ -136,7 +136,7 @@
 													</td>
 													<td class="formSubTitleNoLeft" align="right">
 														<a href="#"
-															onclick="javascript:removeSurfaceChemistry(nanoparticleCharacterizationForm, '${actionName}', ${status.index})">
+															onclick="javascript:removeSurfaceChemistry(nanoparticleCharacterizationForm, '${nanoparticleCharacterizationForm.map.charName}', ${status.index})">
 															<img src="images/delete.gif" border="0"
 																alt="remove this file"> </a>
 													</td>
