@@ -6,11 +6,12 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSurfaceAction.java,v 1.2 2007-11-08 20:41:34 pansu Exp $ */
+/* CVS $Id: NanoparticleSurfaceAction.java,v 1.3 2007-11-21 23:21:49 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.physical.SurfaceBean;
 import gov.nih.nci.calab.dto.characterization.physical.SurfaceChemistryBean;
+import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.service.particle.SubmitNanoparticleService;
 import gov.nih.nci.calab.ui.core.BaseCharacterizationAction;
 
@@ -81,10 +82,9 @@ public class NanoparticleSurfaceAction extends BaseCharacterizationAction {
 		// add a new one
 		chems.add(new SurfaceChemistryBean());
 		surface.setSurfaceChemistries(chems);
-		String particleName = theForm.getString("particleName");
-		String particleType = theForm.getString("particleType");
+		ParticleBean particle = (ParticleBean) theForm.get("particle");
 		InitParticleSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
+				particle.getSampleId());
 		return input(mapping, form, request, response);
 	}
 
@@ -108,10 +108,9 @@ public class NanoparticleSurfaceAction extends BaseCharacterizationAction {
 			chems.remove(chemInd);
 		}
 		surface.setSurfaceChemistries(chems);
-		String particleName = theForm.getString("particleName");
-		String particleType = theForm.getString("particleType");
+		ParticleBean particle = (ParticleBean) theForm.get("particle");
 		InitParticleSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
+				particle.getSampleId());
 		return input(mapping, form, request, response);
 	}
 }

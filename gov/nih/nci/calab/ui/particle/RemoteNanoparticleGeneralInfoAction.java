@@ -7,15 +7,12 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: RemoteNanoparticleGeneralInfoAction.java,v 1.3 2007-11-16 20:41:19 pansu Exp $ */
+/* CVS $Id: RemoteNanoparticleGeneralInfoAction.java,v 1.4 2007-11-21 23:21:49 pansu Exp $ */
 
-import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.remote.GridNodeBean;
-import gov.nih.nci.calab.service.report.SearchReportService;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,26 +45,7 @@ public class RemoteNanoparticleGeneralInfoAction extends AbstractDispatchAction 
 		ActionForward forward = mapping.findForward("success");
 		return forward;
 	}
-
-	public ActionForward viewDisclaimer(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-
-		ActionForward forward = null;
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleName = (String) theForm.get("particleName");
-		String particleType = (String) theForm.get("particleType");
-		InitParticleSetup.getInstance().setSideParticleMenu(request,
-				particleName, particleType);
-		SearchReportService searchReportService = new SearchReportService();
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		Collection<LabFileBean> reports = searchReportService
-				.getReportByParticle(particleName, particleType, user);
-		request.setAttribute("particleReports", reports);
-		forward = mapping.findForward("viewDisclaimer");
-		return forward;
-	}
-
+	
 	public boolean loginRequired() {
 		return false;
 	}

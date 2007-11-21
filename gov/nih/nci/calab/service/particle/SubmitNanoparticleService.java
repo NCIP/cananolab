@@ -116,50 +116,48 @@ public class SubmitNanoparticleService {
 	}
 
 	/**
-	 * Update keywords and visibilities for the particle with the given name and
-	 * type
+	 * Update keywords and visibilities for the particle with the given id
 	 * 
-	 * @param particleType
-	 * @param particleName
-	 * @param keywords
-	 * @param visibilities
+	 * @param particle
 	 * @throws Exception
 	 */
-	public ParticleBean addParticleGeneralInfo(String particleType,
-			String particleName, String[] keywords, String[] visibilities)
-			throws Exception {
-		Nanoparticle particle = null;
-		ParticleBean particleBean = null;
+	public void addParticleGeneralInfo(ParticleBean particle) throws Exception {
+		Nanoparticle doParticle = null;
 		// save nanoparticle to the database
 		try {
 			Session session = HibernateUtil.currentSession();
 			HibernateUtil.beginTransaction();
 			// get the existing particle from database created during sample
 			// creation
-			List results = session.createQuery(
-					"from Nanoparticle where name='" + particleName
-							+ "' and type='" + particleType + "'").list();
-			for (Object obj : results) {
-				particle = (Nanoparticle) obj;
+			List results = null;
+			if (particle.getSampleId() == null
+					|| particle.getSampleId().length() == 0) {
+				results = session.createQuery(
+						"from Nanoparticle where type='"
+								+ particle.getSampleType() + "' and name='"
+								+ particle.getSampleName() + "'").list();
+			} else {
+				results = session.createQuery(
+						"from Nanoparticle where id=" + particle.getSampleId())
+						.list();
 			}
-			if (particle == null) {
+			for (Object obj : results) {
+				doParticle = (Nanoparticle) obj;
+			}
+			if (doParticle == null) {
 				throw new CalabException("No such particle in the database");
 			}
 
-			particle.getKeywordCollection().clear();
-			if (keywords != null) {
-				for (String keyword : keywords) {
+			doParticle.getKeywordCollection().clear();
+			if (particle.getKeywords() != null) {
+				for (String keyword : particle.getKeywords()) {
 					Keyword keywordObj = new Keyword();
 					if (keyword.length() > 0) {
 						keywordObj.setName(keyword);
-						particle.getKeywordCollection().add(keywordObj);
+						doParticle.getKeywordCollection().add(keywordObj);
 					}
 				}
 			}
-			if (particle != null) {
-				particleBean = new ParticleBean(particle);
-			}
-
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			HibernateUtil.rollbackTransaction();
@@ -168,9 +166,11 @@ public class SubmitNanoparticleService {
 		} finally {
 			HibernateUtil.closeSession();
 		}
+		particle.setSampleId(doParticle.getId() + "");
+		particle.setSampleSource(doParticle.getSource().getOrganizationName());
 
-		this.userService.setVisiblity(particleName, visibilities);
-		return particleBean;
+		this.userService.setVisiblity(particle.getSampleName(), particle
+				.getVisibilityGroups());
 	}
 
 	/**
@@ -461,7 +461,7 @@ public class SubmitNanoparticleService {
 	 */
 	public void addParticleComposition(CompositionBean composition,
 			String compositionType) throws Exception {
-		ParticleComposition doComp = new ParticleComposition();		
+		ParticleComposition doComp = new ParticleComposition();
 		if (compositionType
 				.equals(CaNanoLabConstants.COMPOSITION_COMPLEX_PARTICLE_TYPE)) {
 			doComp = new ComplexComposition();
@@ -473,22 +473,22 @@ public class SubmitNanoparticleService {
 			doComp = new QuantumDotComposition();
 		} else if (compositionType
 				.equals(CaNanoLabConstants.COMPOSITION_CARBON_NANOTUBE_TYPE)) {
-			doComp=new CarbonNanotubeComposition();
+			doComp = new CarbonNanotubeComposition();
 		} else if (compositionType
 				.equals(CaNanoLabConstants.COMPOSITION_DENDRIMER_TYPE)) {
-			doComp=new DendrimerComposition();
+			doComp = new DendrimerComposition();
 		} else if (compositionType
 				.equals(CaNanoLabConstants.COMPOSITION_EMULSION_TYPE)) {
-			doComp=new EmulsionComposition();
+			doComp = new EmulsionComposition();
 		} else if (compositionType
 				.equals(CaNanoLabConstants.COMPOSITION_FULLERENE_TYPE)) {
-			doComp=new FullereneComposition();
+			doComp = new FullereneComposition();
 		} else if (compositionType
 				.equals(CaNanoLabConstants.COMPOSITION_LIPOSOME_TYPE)) {
-			doComp=new LiposomeComposition();
+			doComp = new LiposomeComposition();
 		} else if (compositionType
 				.equals(CaNanoLabConstants.COMPOSITION_POLYMER_TYPE)) {
-			doComp=new PolymerComposition();
+			doComp = new PolymerComposition();
 		}
 		// if ID is not set save to the database otherwise update
 		Nanoparticle particle = null;
@@ -515,10 +515,10 @@ public class SubmitNanoparticleService {
 								"This composition is no longer in the database.  Please log in again to refresh.");
 				}
 				// update domain object
-				if (doComp instanceof DendrimerComposition) {					
+				if (doComp instanceof DendrimerComposition) {
 					((DendrimerBean) composition)
 							.updateDomainObj((DendrimerComposition) doComp);
-				} else if (doComp instanceof CarbonNanotubeComposition) {					
+				} else if (doComp instanceof CarbonNanotubeComposition) {
 					((CarbonNanotubeBean) composition)
 							.updateDomainObj((CarbonNanotubeComposition) doComp);
 				} else if (doComp instanceof EmulsionComposition) {
@@ -977,18 +977,17 @@ public class SubmitNanoparticleService {
 	/**
 	 * 
 	 */
-	public void addParticleFunction(String particleType, String particleName,
-			FunctionBean function) throws Exception {
+	public void addParticleFunction(String particleId, FunctionBean function)
+			throws Exception {
 
 		// if ID is not set save to the database otherwise update
-		Nanoparticle particle = null;
 		Function doFunction = new Function();
 		try {
 			Session session = HibernateUtil.currentSession();
 			HibernateUtil.beginTransaction();
 
 			boolean viewTitleUsed = isFunctionViewTitleUsed(session,
-					particleType, particleName, function);
+					particleId, function);
 
 			if (viewTitleUsed) {
 				throw new RuntimeException(
@@ -1001,15 +1000,8 @@ public class SubmitNanoparticleService {
 					function.updateDomainObj(doFunction);
 				} else {
 					function.updateDomainObj(doFunction);
-					List results = session
-							.createQuery(
-									"select particle from Nanoparticle particle left join fetch particle.functionCollection where particle.name='"
-											+ particleName
-											+ "' and particle.type='"
-											+ particleType + "'").list();
-					for (Object obj : results) {
-						particle = (Nanoparticle) obj;
-					}
+					Nanoparticle particle = (Nanoparticle) session.load(
+							Nanoparticle.class, new Long(particleId));
 					if (particle != null) {
 						particle.getFunctionCollection().add(doFunction);
 					}
@@ -1044,27 +1036,22 @@ public class SubmitNanoparticleService {
 	 * check if viewTitle is already used the same type of function for the same
 	 * particle
 	 */
-	private boolean isFunctionViewTitleUsed(Session session,
-			String particleType, String particleName, FunctionBean function)
-			throws Exception {
+	private boolean isFunctionViewTitleUsed(Session session, String particleId,
+			FunctionBean function) throws Exception {
 		// check if viewTitle is already used the same type of
 		// function for the same particle
 		String viewTitleQuery = "";
 		if (function.getId() == null) {
-			viewTitleQuery = "select count(function.identificationName) from Nanoparticle particle join particle.functionCollection function where particle.name='"
-					+ particleName
-					+ "' and particle.type='"
-					+ particleType
-					+ "' and function.identificationName='"
+			viewTitleQuery = "select count(function.identificationName) from Nanoparticle particle join particle.functionCollection function where particle.id="
+					+ particleId
+					+ " and function.identificationName='"
 					+ function.getViewTitle()
 					+ "' and function.type='"
 					+ function.getType() + "'";
 		} else {
-			viewTitleQuery = "select count(function.identificationName) from Nanoparticle particle join particle.functionCollection function where particle.name='"
-					+ particleName
-					+ "' and particle.type='"
-					+ particleType
-					+ "' and function.identificationName='"
+			viewTitleQuery = "select count(function.identificationName) from Nanoparticle particle join particle.functionCollection function where particle.id="
+					+ particleId
+					+ " and function.identificationName='"
 					+ function.getViewTitle()
 					+ "' and function.id!="
 					+ function.getId()
@@ -1222,8 +1209,7 @@ public class SubmitNanoparticleService {
 	/**
 	 * Delete the characterizations
 	 */
-	public void deleteCharacterizations(String particleName,
-			String particleType, String[] charIds) throws Exception {
+	public void deleteCharacterizations(String[] charIds) throws Exception {
 		// if ID is not set save to the database otherwise update
 		try {
 			Session session = HibernateUtil.currentSession();
