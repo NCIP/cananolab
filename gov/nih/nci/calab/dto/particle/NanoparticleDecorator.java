@@ -3,8 +3,6 @@ package gov.nih.nci.calab.dto.particle;
 import gov.nih.nci.calab.dto.common.SortableName;
 import gov.nih.nci.calab.service.util.StringUtils;
 
-import java.net.URLEncoder;
-
 import org.displaytag.decorator.TableDecorator;
 
 /**
@@ -17,17 +15,9 @@ import org.displaytag.decorator.TableDecorator;
 public class NanoparticleDecorator extends TableDecorator {
 	public SortableName getEditParticleURL() throws Exception {
 		ParticleBean particle = (ParticleBean) getCurrentRowObject();
-		String particleType = URLEncoder.encode(particle.getSampleType(),
-				"UTF-8");
-		String particleName = URLEncoder.encode(particle.getSampleName(),
-				"UTF-8");
-		String particleSource = URLEncoder.encode(particle.getSampleSource(),
-				"UTF-8");
-		String editParticleURL = "nanoparticleGeneralInfo.do?dispatch=setupUpdate&particleType="
-				+ particleType
-				+ "&particleName="
-				+ particleName
-				+ "&particleSource=" + particleSource;
+		String particleId = particle.getSampleId();
+		String editParticleURL = "nanoparticleGeneralInfo.do?dispatch=setupUpdate&particleId="
+				+ particleId;
 		String link = "<a href=" + editParticleURL + ">"
 				+ particle.getSampleName() + "</a>";
 
@@ -38,17 +28,9 @@ public class NanoparticleDecorator extends TableDecorator {
 
 	public SortableName getViewParticleURL() throws Exception {
 		ParticleBean particle = (ParticleBean) getCurrentRowObject();
-		String particleType = URLEncoder.encode(particle.getSampleType(),
-				"UTF-8");
-		String particleName = URLEncoder.encode(particle.getSampleName(),
-				"UTF-8");
-		String particleSource = URLEncoder.encode(particle.getSampleSource(),
-				"UTF-8");
-		String viewParticleURL = "nanoparticleGeneralInfo.do?dispatch=setupView&particleType="
-				+ particleType
-				+ "&particleName="
-				+ particleName
-				+ "&particleSource=" + particleSource;
+		String particleId = particle.getSampleId();
+		String viewParticleURL = "nanoparticleGeneralInfo.do?dispatch=setupView&particleId="
+				+ particleId;
 		;
 		String link = "<a href=" + viewParticleURL + ">"
 				+ particle.getSampleName() + "</a>";
@@ -59,15 +41,9 @@ public class NanoparticleDecorator extends TableDecorator {
 
 	public SortableName getRemoteViewURL() throws Exception {
 		ParticleBean particle = (ParticleBean) getCurrentRowObject();
-		String particleType = URLEncoder.encode(particle.getSampleType(),
-				"UTF-8");
-		String particleName = URLEncoder.encode(particle.getSampleName(),
-				"UTF-8");
-		String remoteViewURL = "remoteNanoparticleGeneralInfo.do?dispatch=view&particleType="
-				+ particleType
-				+ "&particleName="
-				+ particleName
-				+ "&gridNodeHost=" + particle.getGridNode();
+		String particleId = particle.getSampleId();
+		String remoteViewURL = "remoteNanoparticleGeneralInfo.do?dispatch=view&particleId="
+				+ particleId + "&gridNodeHost=" + particle.getGridNode();
 		String link = "<a href=" + remoteViewURL + ">"
 				+ particle.getSampleName() + "</a>";
 		SortableName sortableLink = new SortableName(particle.getSampleName(),
