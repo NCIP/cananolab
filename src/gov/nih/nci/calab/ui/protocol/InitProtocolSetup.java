@@ -43,6 +43,7 @@ public class InitProtocolSetup {
 	public void setProtocolFilesBySubmitType(HttpSession session,
 			String submitType) throws Exception {
 		List<ProtocolFileBean> protocolFiles = null;
+		/*
 		if (submitType.equalsIgnoreCase("physical")) {
 			protocolFiles = searchProtocolService
 					.getProtocolFileBeans("Physical assay");
@@ -52,5 +53,6 @@ public class InitProtocolSetup {
 					.getProtocolFileBeans("In Vitro assay");
 		}
 		session.setAttribute("submitTypeProtocolFiles", protocolFiles);
+		*/
 	}
 }

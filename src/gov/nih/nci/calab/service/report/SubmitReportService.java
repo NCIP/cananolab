@@ -12,7 +12,6 @@ import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
 
 import java.io.File;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
