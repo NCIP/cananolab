@@ -107,6 +107,17 @@ ul.sublist_3 a {
 	padding-bottom: 0.1em;
 }
 
+ul.sublist_3_control a {
+	background-color: #FFFFFF;
+	color: #400080;
+	font-size: 0.8em;
+	font-weight: bold;
+	font-variant: normal;
+	text-indent: 3em;
+	padding-top: 0.2em;
+	padding-bottom: 0.1em;
+}
+
 ul.sublist_3 li {
 	/* border-bottom: 1px solid #cccccc; */
 	background-color: #FFFFFF;
@@ -138,6 +149,17 @@ ul.sublist_4 li {
 
 
 ul.sublist_5 a {
+	background-color: #FFFFFF; /* #F4F4F5; */
+	color: black;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 0.8em;
+	font-weight: normal;
+	text-indent: 4em;
+	padding-top: 0.1em;
+	padding-bottom: 0.1em;
+}
+
+ul.sublist_5_control a {
 	background-color: #FFFFFF; /* #F4F4F5; */
 	color: black;
 	font-family: Arial, Helvetica, sans-serif;
