@@ -2,7 +2,6 @@ package gov.nih.nci.calab.ui.particle;
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.CharacterizationTypeBean;
-import gov.nih.nci.calab.dto.characterization.composition.CompositionBean;
 import gov.nih.nci.calab.dto.common.InstrumentBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
@@ -74,10 +73,10 @@ public class InitParticleSetup {
 		session.setAttribute("allComposingElementTypes", composingElementTypes);
 		SortedSet<String> particleTypes = lookupService
 				.getAllLookupTypes("SampleType");
-		// remove complex particle as a type of composing element type.
+		//remove complex particle as a type of composing element type.
 		particleTypes.remove("Complex Particle");
 		session.setAttribute("allParticleElementTypes", particleTypes);
-
+		
 		setAllDendrimers(session);
 
 		if ((session.getAttribute("allPolymerInitiators") == null)
@@ -139,18 +138,17 @@ public class InitParticleSetup {
 	}
 
 	public void setSideParticleMenu(HttpServletRequest request,
-			String particleId) throws Exception {
+			String particleName, String particleType) throws Exception {
 		HttpSession session = request.getSession();
-		setAllReports(session, particleId);
+		setAllReports(session, particleName, particleType);
 		// not part of the side menu, but need to up
 		// if (session.getAttribute("newParticleCreated") != null) {
 		// setParticleTypeParticles(session);
 		// }
 		InitSessionSetup.getInstance().setStaticDropdowns(session);
 		setAllFunctionTypes(session);
-		setFunctionTypeFunctions(session, particleId);
-		setAllCompositions(session, particleId);
-		setAllCharacterizations(session, particleId);
+		setFunctionTypeFunctions(session, particleName, particleType);
+		setAllCharacterizations(session, particleName, particleType);
 		session.removeAttribute("newParticleCreated");
 		session.removeAttribute("newCharacterizationCreated");
 		session.removeAttribute("newReportCreated");
@@ -158,16 +156,17 @@ public class InitParticleSetup {
 		session.removeAttribute("detailPage");
 	}
 
-	private void setAllReports(HttpSession session, String particleId)
-			throws Exception {
+	private void setAllReports(HttpSession session, String particleName,
+			String particleType) throws Exception {
 		UserBean user = (UserBean) session.getAttribute("user");
 		SearchReportService searchReportService = new SearchReportService();
 		if (session.getAttribute("particleReports") == null
 				|| session.getAttribute("newReportCreated") != null
 				|| session.getAttribute("newParticleCreated") != null) {
 
-			List<LabFileBean> reportBeans = searchReportService.getReportInfo(
-					particleId, CaNanoLabConstants.REPORT, user);
+			List<LabFileBean> reportBeans = searchReportService
+					.getReportInfo(particleName, particleType,
+							CaNanoLabConstants.REPORT, user);
 			session.setAttribute("particleReports", reportBeans);
 		}
 
@@ -175,24 +174,12 @@ public class InitParticleSetup {
 				|| session.getAttribute("newReportCreated") != null
 				|| session.getAttribute("newParticleCreated") != null) {
 			List<LabFileBean> associatedBeans = searchReportService
-					.getReportInfo(particleId,
+					.getReportInfo(particleName, particleType,
 							CaNanoLabConstants.ASSOCIATED_FILE, user);
 			session.setAttribute("particleAssociatedFiles", associatedBeans);
 		}
 	}
 
-	private void setAllCompositions(HttpSession session,
-			String particleId) throws Exception {
-		if (session.getAttribute("allCharacterizations") == null
-				|| session.getAttribute("newCharacterizationCreated") != null
-				|| session.getAttribute("newParticleCreated") != null) {
-			// get saved characterizations based on the particle type and name
-			SearchNanoparticleService service = new SearchNanoparticleService();
-			List<CompositionBean> compBeans = service			
-					.getCompositionInfo(particleId);			
-			session.setAttribute("allCompositions", compBeans);
-		}
-	}
 	/**
 	 * Set characterizations stored in the database
 	 * 
@@ -202,17 +189,17 @@ public class InitParticleSetup {
 	 * @throws Exception
 	 */
 	private void setAllCharacterizations(HttpSession session,
-			String particleId) throws Exception {
+			String particleName, String particleType) throws Exception {
 		setAllCharacterizationTypes(session);
 		Map<String, List<CharacterizationBean>> charTypeChars = (Map<String, List<CharacterizationBean>>) session
 				.getServletContext().getAttribute("allCharTypeChars");
 		if (session.getAttribute("allCharacterizations") == null
 				|| session.getAttribute("newCharacterizationCreated") != null
 				|| session.getAttribute("newParticleCreated") != null) {
-			// get saved characterizations based on the particle ID
+			// get saved characterizations based on the particle type and name
 			SearchNanoparticleService service = new SearchNanoparticleService();
 			List<CharacterizationBean> charBeans = service
-					.getCharacterizationInfo(particleId);
+					.getCharacterizationInfo(particleName, particleType);
 			Map<String, List<CharacterizationBean>> charMap = new HashMap<String, List<CharacterizationBean>>();
 
 			Map<String, String> ascendTypeTreeMap = getAscendTypeTreeMap(charTypeChars);
@@ -358,22 +345,20 @@ public class InitParticleSetup {
 					.get(ctype);
 			for (CharacterizationBean cbean : cbeanList) {
 				String cname = cbean.getName();
-				if (!charTypeMap.containsKey(cname)) {
-					leafMap.put(cname, cbean.getActionName());
-				}
+				leafMap.put(cname, cbean.getActionName());
 			}
 		}
 		return leafMap;
 	}
 
 	public void setFunctionTypeFunctions(HttpSession session,
-			String particleId) throws Exception {
+			String particleName, String particleType) throws Exception {
 		if (session.getAttribute("allFuncTypeFuncs") == null
 				|| session.getAttribute("newParticleCreated") != null
 				|| session.getAttribute("newFunctionCreated") != null) {
 			SearchNanoparticleService service = new SearchNanoparticleService();
 			Map<String, List<FunctionBean>> funcTypeFuncs = service
-					.getFunctionInfo(particleId);
+					.getFunctionInfo(particleName, particleType);
 			session.setAttribute("allFuncTypeFuncs", funcTypeFuncs);
 		}
 	}
@@ -400,8 +385,6 @@ public class InitParticleSetup {
 			Map<String, Set<String>> typeTreeSelectedMap = 
 				createCharaTypeTree(charTypeChars, ascendTypeTreeMap);
 			session.setAttribute("remoteSelectedCharacterizations", typeTreeSelectedMap);
-			
-			//session.setAttribute("remoteCharTypeChars", charTypeChars);
 		}
 
 		if (session.getAttribute("remoteFuncTypeFuncs") == null
