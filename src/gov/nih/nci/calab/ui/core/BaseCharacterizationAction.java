@@ -1,6 +1,7 @@
 package gov.nih.nci.calab.ui.core;
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
+import gov.nih.nci.calab.dto.characterization.CharacterizationSummaryBean;
 import gov.nih.nci.calab.dto.characterization.DatumBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.dto.characterization.invitro.CytotoxicityBean;
@@ -31,9 +32,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -424,6 +427,31 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		return mapping.findForward("summaryView");
 	}
 
+	public ActionForward nameSummaryView(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		initSetup(request, theForm);
+		String charName = request.getParameter("submitType");
+		theForm.set("charName", charName);
+		SearchNanoparticleService service = new SearchNanoparticleService();
+		List<CharacterizationSummaryBean> charSummaryBeans = service
+				.getCharacterizationSummaryByName(charName);
+		if (charSummaryBeans == null) {
+			throw new Exception(
+					"There are no such characterizations in the database.");
+		}
+		SortedSet<String> datumLabels = new TreeSet<String>();
+		for (CharacterizationSummaryBean summaryBean : charSummaryBeans) {
+			Map<String, String> datumMap = summaryBean.getDatumMap();
+			datumLabels.addAll(datumMap.keySet());
+		}
+		request.setAttribute("nameCharacterizationSummary", charSummaryBeans);
+		request.setAttribute("datumLabels", datumLabels);
+
+		return mapping.findForward("nameSummaryView");
+	}
+
 	/**
 	 * Prepare the form for viewing existing characterization
 	 * 
@@ -455,7 +483,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			throws Exception {
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		ParticleBean particle =(ParticleBean) theForm.get("particle");
+		ParticleBean particle = (ParticleBean) theForm.get("particle");
 		request.setAttribute("loadFileForward", mapping.findForward("setup")
 				.getPath());
 		CharacterizationBean achar = (CharacterizationBean) theForm

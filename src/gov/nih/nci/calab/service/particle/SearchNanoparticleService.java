@@ -17,6 +17,9 @@ import gov.nih.nci.calab.domain.nano.characterization.toxicity.Cytotoxicity;
 import gov.nih.nci.calab.domain.nano.function.Function;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
+import gov.nih.nci.calab.dto.characterization.CharacterizationSummaryBean;
+import gov.nih.nci.calab.dto.characterization.DatumBean;
+import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.calab.dto.characterization.composition.CarbonNanotubeBean;
 import gov.nih.nci.calab.dto.characterization.composition.CompositionBean;
 import gov.nih.nci.calab.dto.characterization.composition.DendrimerBean;
@@ -454,6 +457,79 @@ public class SearchNanoparticleService {
 			HibernateUtil.closeSession();
 		}
 		return charBean;
+	}
+
+	public List<CharacterizationSummaryBean> getCharacterizationSummaryByName(
+			String charName) throws Exception {
+		List<CharacterizationSummaryBean> charSummaryBeans = new ArrayList<CharacterizationSummaryBean>();
+		List<CharacterizationBean> charBeans = getCharacterizationsByName(charName);
+		if (charBeans.isEmpty()) {
+			return null;
+		}
+		for (CharacterizationBean charBean : charBeans) {
+			CharacterizationSummaryBean charSummaryBean = new CharacterizationSummaryBean();
+			charSummaryBean.setCharBean(charBean);
+			if (charBean.getDerivedBioAssayDataList() != null
+					&& !charBean.getDerivedBioAssayDataList().isEmpty()) {
+				for (DerivedBioAssayDataBean charFile : charBean
+						.getDerivedBioAssayDataList()) {
+					Map<String, String> datumMap = new HashMap<String, String>();
+					for (DatumBean data : charFile.getDatumList()) {
+						String datumLabel = data.getName();
+						if (data.getUnit() != null
+								&& data.getUnit().length() > 0) {
+							datumLabel = "(" + data.getUnit() + ")";
+						}
+						datumMap.put(datumLabel, data.getValue());
+					}
+					charSummaryBean.setDatumMap(datumMap);
+					charSummaryBean.setCharFile(charFile);
+				}
+			}
+		}
+		return charSummaryBeans;
+	}
+
+	public List<CharacterizationBean> getCharacterizationsByName(String charName)
+			throws Exception {
+		List<CharacterizationBean> charBeans = new ArrayList<CharacterizationBean>();
+		try {
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			// Characterization aChar = (Characterization) session.load(
+			// Characterization.class, new Long(charId));
+			List results = session.createQuery(
+					"from Characterization where name=" + charName).list();
+			Characterization aChar = null;
+			for (Object obj : results) {
+				aChar = (Characterization) obj;
+				CharacterizationBean charBean = null;
+				if (aChar instanceof Shape) {
+					charBean = new ShapeBean((Shape) aChar);
+				} else if (aChar instanceof Morphology) {
+					charBean = new MorphologyBean((Morphology) aChar);
+				} else if (aChar instanceof Solubility) {
+					charBean = new SolubilityBean((Solubility) aChar);
+				} else if (aChar instanceof Surface) {
+					charBean = new SurfaceBean((Surface) aChar);
+				} else if (aChar instanceof Cytotoxicity) {
+					charBean = new CytotoxicityBean((Cytotoxicity) aChar);
+				} else {
+					charBean = new CharacterizationBean(aChar);
+				}
+				if (charBean != null) {
+					charBeans.add(charBean);
+				}
+			}
+			HibernateUtil.commitTransaction();
+		} catch (Exception e) {
+			logger.error("Problem finding characterizations with name "
+					+ charName, e);
+			throw e;
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		return charBeans;
 	}
 
 	public FunctionBean getFunctionBy(String funcId) throws Exception {
