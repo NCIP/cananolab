@@ -401,7 +401,8 @@ public class InitParticleSetup {
 				createCharaTypeTree(charTypeChars, ascendTypeTreeMap);
 			session.setAttribute("remoteSelectedCharacterizations", typeTreeSelectedMap);
 			
-			//session.setAttribute("remoteCharTypeChars", charTypeChars);
+			Map<String, String> charActionNameMap = getCharTypeLeafMap(orderedCharTypeChars);
+			session.setAttribute("remoteCharaActionName", charActionNameMap);
 		}
 
 		if (session.getAttribute("remoteFuncTypeFuncs") == null
