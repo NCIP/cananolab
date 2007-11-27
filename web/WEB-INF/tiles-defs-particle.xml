@@ -83,14 +83,28 @@
 
 	<definition name="particle.physicalSummaryView"
 		extends="particle.physicalCharacterization">
-     	<put name="calabContent" value="/particle/bodyCharacterizationSummaryView.jsp" />
+		<put name="calabContent"
+			value="/particle/bodyCharacterizationSummaryView.jsp" />
 	</definition>
 
 	<definition name="particle.inVitroSummaryView"
 		extends="particle.inVitroCharacterization">
-     	<put name="calabContent" value="/particle/bodyCharacterizationSummaryView.jsp" />
+		<put name="calabContent"
+			value="/particle/bodyCharacterizationSummaryView.jsp" />
 	</definition>
-	
+
+	<definition name="particle.physicalNameSummaryView"
+		extends="particle.physicalCharacterization">
+		<put name="calabContent"
+			value="/particle/bodyCharacterizationNameSummaryView.jsp" />
+	</definition>
+
+	<definition name="particle.inVitroNameSummaryView"
+		extends="particle.inVitroCharacterization">
+		<put name="calabContent"
+			value="/particle/bodyCharacterizationNameSummaryView.jsp" />
+	</definition>
+
 	<!-- definition for the nanoparticle surface page -->
 	<definition name="particle.surface"
 		extends="particle.physicalCharacterization">

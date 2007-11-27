@@ -206,6 +206,8 @@
 				path="particle.physicalCharacterization" />
 			<forward name="summaryView"
 				path="particle.physicalSummaryView" />
+			<forward name="nameSummaryView"
+				path="particle.physicalNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/surface"
@@ -225,6 +227,8 @@
 			<forward name="setup" path="particle.surface" />
 			<forward name="summaryView"
 				path="particle.physicalSummaryView" />
+			<forward name="nameSummaryView"
+				path="particle.physicalNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/molecularWeight"
@@ -245,6 +249,8 @@
 				path="particle.physicalCharacterization" />
 			<forward name="summaryView"
 				path="particle.physicalSummaryView" />
+			<forward name="nameSummaryView"
+				path="particle.physicalNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/morphology"
@@ -264,6 +270,8 @@
 			<forward name="setup" path="particle.morphology" />
 			<forward name="summaryView"
 				path="particle.physicalSummaryView" />
+			<forward name="nameSummaryView"
+				path="particle.physicalNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/shape"
@@ -283,6 +291,8 @@
 			<forward name="setup" path="particle.shape" />
 			<forward name="summaryView"
 				path="particle.physicalSummaryView" />
+			<forward name="nameSummaryView"
+				path="particle.physicalNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/purity"
@@ -303,6 +313,8 @@
 				path="particle.physicalCharacterization" />
 			<forward name="summaryView"
 				path="particle.physicalSummaryView" />
+			<forward name="nameSummaryView"
+				path="particle.physicalNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/solubility"
@@ -322,6 +334,8 @@
 			<forward name="setup" path="particle.solubility" />
 			<forward name="summaryView"
 				path="particle.physicalSummaryView" />
+			<forward name="nameSummaryView"
+				path="particle.physicalNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/hemolysis"
@@ -342,6 +356,8 @@
 				path="particle.inVitroCharacterization" />
 			<forward name="summaryView"
 				path="particle.inVitroSummaryView" />
+			<forward name="nameSummaryView"
+				path="particle.inVitroNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/plateletAggregation"
@@ -362,6 +378,8 @@
 				path="particle.inVitroCharacterization" />
 			<forward name="summaryView"
 				path="particle.inVitroSummaryView" />
+			<forward name="nameSummaryView"
+				path="particle.inVitroNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/coagulation"
@@ -382,6 +400,8 @@
 				path="particle.inVitroCharacterization" />
 			<forward name="summaryView"
 				path="particle.inVitroSummaryView" />
+			<forward name="nameSummaryView"
+				path="particle.inVitroNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/plasmaProteinBinding"
@@ -402,6 +422,8 @@
 				path="particle.inVitroCharacterization" />
 			<forward name="summaryView"
 				path="particle.inVitroSummaryView" />
+			<forward name="nameSummaryView"
+				path="particle.inVitroNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/complementActivation"
@@ -422,6 +444,8 @@
 				path="particle.inVitroCharacterization" />
 			<forward name="summaryView"
 				path="particle.inVitroSummaryView" />
+			<forward name="nameSummaryView"
+				path="particle.inVitroNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/cytokineInduction"
@@ -442,6 +466,8 @@
 				path="particle.inVitroCharacterization" />
 			<forward name="summaryView"
 				path="particle.inVitroSummaryView" />
+			<forward name="nameSummaryView"
+				path="particle.inVitroNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/chemotaxis"
@@ -462,6 +488,8 @@
 				path="particle.inVitroCharacterization" />
 			<forward name="summaryView"
 				path="particle.inVitroSummaryView" />
+			<forward name="nameSummaryView"
+				path="particle.inVitroNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/nKCellCytotoxicActivity"
@@ -482,6 +510,8 @@
 				path="particle.inVitroCharacterization" />
 			<forward name="summaryView"
 				path="particle.inVitroSummaryView" />
+			<forward name="nameSummaryView"
+				path="particle.inVitroNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/leukocyteProliferation"
@@ -502,6 +532,8 @@
 				path="particle.inVitroCharacterization" />
 			<forward name="summaryView"
 				path="particle.inVitroSummaryView" />
+			<forward name="nameSummaryView"
+				path="particle.inVitroNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/cFU_GM"
@@ -522,6 +554,8 @@
 				path="particle.inVitroCharacterization" />
 			<forward name="summaryView"
 				path="particle.inVitroSummaryView" />
+			<forward name="nameSummaryView"
+				path="particle.inVitroNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/oxidativeBurst"
@@ -542,6 +576,8 @@
 				path="particle.inVitroCharacterization" />
 			<forward name="summaryView"
 				path="particle.inVitroSummaryView" />
+			<forward name="nameSummaryView"
+				path="particle.inVitroNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/phagocytosis"
@@ -562,6 +598,8 @@
 				path="particle.inVitroCharacterization" />
 			<forward name="summaryView"
 				path="particle.inVitroSummaryView" />
+			<forward name="nameSummaryView"
+				path="particle.inVitroNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/cellViability"
@@ -581,6 +619,8 @@
 			<forward name="setup" path="particle.cytotoxicity" />
 			<forward name="summaryView"
 				path="particle.inVitroSummaryView" />
+			<forward name="nameSummaryView"
+				path="particle.inVitroNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/caspase3Activation"
@@ -600,6 +640,8 @@
 			<forward name="setup" path="particle.cytotoxicity" />
 			<forward name="summaryView"
 				path="particle.inVitroSummaryView" />
+			<forward name="nameSummaryView"
+				path="particle.inVitroNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/enzymeInduction"
@@ -620,6 +662,8 @@
 				path="particle.inVitroCharacterization" />
 			<forward name="summaryView"
 				path="particle.inVitroSummaryView" />
+			<forward name="nameSummaryView"
+				path="particle.inVitroNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/oxidativeStress"
@@ -640,6 +684,8 @@
 				path="particle.inVitroCharacterization" />
 			<forward name="summaryView"
 				path="particle.inVitroSummaryView" />
+			<forward name="nameSummaryView"
+				path="particle.inVitroNameSummaryView" />
 		</action>
 		<action name="loadDerivedBioAssayDataForm" parameter="dispatch"
 			path="/loadFile"
