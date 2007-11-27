@@ -19,17 +19,108 @@
 </c:choose>
 
 <c:choose>
-	<c:when
-		test="${displaytype == 'In Vitro' ||
-			    displaytype == 'Toxicity' ||
-				displaytype == 'Cytotoxicity' ||
-				displaytype == 'Immunotoxicity' ||
-				displaytype == 'Oxidative Stress' ||
-				displaytype == 'Enzyme Induction'}">
+	<c:when test="${displaytype == 'In Vitro' ||
+			    displaytype == 'Toxicity'}">
 		<c:set var="invitroDisplay" value="display: block;" />
 	</c:when>
 	<c:otherwise>
 		<c:set var="invitroDisplay" value="display: none;" />
+	</c:otherwise>
+</c:choose>
+
+<c:choose>
+	<c:when test="${displaytype == 'Coagulation' ||
+				displaytype == 'Hemolysis' ||
+				displaytype == 'Plasma Protein Binding' ||
+				displaytype == 'CFU_GM' ||
+				displaytype == 'Chemotaxis' ||
+				displaytype == 'Complement Activation' ||
+				displaytype == 'Cytokine Induction' ||
+				displaytype == 'Leukocyte Proliferation' ||
+				displaytype == 'NK Cell Cytotoxic Activity' ||
+				displaytype == 'Oxidative Burst' ||
+				displaytype == 'Phagocytosis' ||
+				displaytype == 'Platelet Aggregation'}">
+		<c:set var="invitroDisplay" value="display: block;" />
+		<style type="text/css">
+			#immunotoxicity {
+				display: block;
+			}
+			#immunotoxicity ul {
+				display: block;
+			}
+		</style>
+	</c:when>
+	<c:otherwise>
+		<style type="text/css">
+			#immunotoxicity {
+				display: none;
+			}
+		</style>
+	</c:otherwise>
+</c:choose>
+
+<c:choose>
+	<c:when test="${displaytype == 'Caspase 3 Activation' ||
+				displaytype == 'Cell Viability'}">
+		<c:set var="invitroDisplay" value="display: block;" />
+		<style type="text/css">
+			#cytotoxicity {
+				display: block;
+			}
+			#cytotoxicity ul {
+				display: block;
+			}
+		</style>
+	</c:when>
+	<c:otherwise>
+		<style type="text/css">
+			#cytotoxicity {
+				display: none;
+			}
+		</style>
+	</c:otherwise>
+</c:choose>
+
+<c:choose>
+	<c:when test="${displaytype == 'Oxidative Stress'}">
+		<c:set var="invitroDisplay" value="display: block;" />
+		<style type="text/css" >
+			#oxidativeStress {
+				display: block;
+			}
+			#oxidativeStress ul {
+				display: block;
+			}
+		</style>
+	</c:when>
+	<c:otherwise>
+		<style type="text/css" >
+			#oxidativeStress {
+				display: none;
+			}
+		</style>
+	</c:otherwise>
+</c:choose>
+
+<c:choose>
+	<c:when test="${displaytype == 'Enzyme Induction'}">
+		<c:set var="invitroDisplay" value="display: block;" />
+		<style type="text/css" >
+			#enzymeInduction {
+				display: block;
+			}
+			#enzymeInduction ul {
+				display: block;
+			}
+		</style>
+	</c:when>
+	<c:otherwise>
+		<style type="text/css" >
+			#enzymeInduction {
+				display: none;
+			}
+		</style>
 	</c:otherwise>
 </c:choose>
 
@@ -43,7 +134,7 @@
 </c:choose>
 
 <c:set var="physicalType" value="Physical" />
-		<li class="toplist">
+		<li class="controlList">
 			<a href="#" class="subMenuSecondary">COMPOSITION</a>
 			<ul class="sublist_5" style="${compDisplay}">
 				<c:forEach var="subCharType"
@@ -73,7 +164,7 @@
 <c:url var="url" value="underConstruction.do">
 	<c:param name="submitType" value="Physical" />
 </c:url>
-		<li class="toplist">
+		<li class="controlList">
 			<a href="#" class="subMenuSecondary">PHYSICAL CHARACTERIZATIONS</a>
 			<ul class="sublist_4" style="${phyDisplay}">
 				<c:forEach var="subCharType"
@@ -97,11 +188,9 @@
 			</ul>
 		</li>
 
-<c:url var="url" value="underConstruction.do">
-	<c:param name="submitType" value="In Vitro" />
-</c:url>
+
 		<c:set var="inVitroType" value="In Vitro" />
-		<li class="toplist">
+		<li class="controlList">
 			<a href="#" class="subMenuSecondary">IN VITRO CHARACTERIZATIONS</a>
 			<ul class="sublist_1" style="${invitroDisplay}">
 				<c:forEach var="secondLevelChar"
@@ -111,15 +200,18 @@
 						<ul class="sublist_2" style="${invitroDisplay}">
 							<c:forEach var="thirdLevelChar"
 								items="${remoteSelectedCharacterizations[secondLevelChar]}">
-								<li>
+								<li class="controlList2">
 									<a href="#" class="sublist_1">${thirdLevelChar}</a>
 									<c:choose>
 										<c:when
 											test="${!empty remoteCharaLeafToCharacterizations[thirdLevelChar]}">
-											<ul class="sublist_5" style="${invitroDisplay}">
+											<ul class="sublist_5_control" id="${remoteCharaActionName[thirdLevelChar]}">
 												<c:forEach var="leafCharBean"
 													items="${remoteCharaLeafToCharacterizations[thirdLevelChar]}">
 													<li>
+														<c:url var="url" value="underConstruction.do">
+															<c:param name="submitType" value="${thirdLevelChar}" />
+														</c:url>
 														<a href="${url}" class="sublist_5"><span
 															class="data_anchar">>&nbsp;</span>${leafCharBean.viewTitle}</a>
 													</li>
@@ -127,7 +219,7 @@
 											</ul>
 										</c:when>
 										<c:otherwise>
-											<ul class="sublist_3" style="${invitroDisplay}">
+											<ul class="sublist_3_control" id="${remoteCharaActionName[thirdLevelChar]}">
 												<c:forEach var="fourthLevelChar"
 													items="${remoteSelectedCharacterizations[thirdLevelChar]}">
 													<li>
@@ -135,11 +227,14 @@
 														<c:choose>
 															<c:when
 																test="${!empty remoteCharaLeafToCharacterizations[fourthLevelChar]}">
-																<ul class="sublist_5" style="${invitroDisplay}">
+																<ul class="sublist_5">
 																	<c:forEach var="leafCharBean"
 																		items="${remoteCharaLeafToCharacterizations[fourthLevelChar]}">
 																		
 																		<li>
+																			<c:url var="url" value="underConstruction.do">
+																				<c:param name="submitType" value="${fourthLevelChar}" />
+																			</c:url>
 																			<a href="${url}" class="sublist_5"><span
 																				class="data_anchar">>&nbsp;</span>${leafCharBean.viewTitle}</a>
 																		</li>
@@ -156,6 +251,9 @@
 																				<c:forEach var="leafCharBean"
 																					items="${remoteCharaLeafToCharacterizations[fifthLevelChar]}">
 																					<li>
+																						<c:url var="url" value="underConstruction.do">
+																							<c:param name="submitType" value="${fifthLevelChar}" />
+																						</c:url>
 																						<a href="${url}" class="sublist_5"><span
 																							class="data_anchar">>&nbsp;</span>${leafCharBean.viewTitle}</a>
 																					</li>

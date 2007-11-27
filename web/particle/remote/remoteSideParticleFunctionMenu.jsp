@@ -13,7 +13,7 @@
 		<c:set var="funcDisplay" value="display: none;" />
 	</c:otherwise>
 </c:choose>
-<li class="toplist">
+<li class="controlList">
 	<a href="#" class="subMenuSecondary">FUNCTION</a>
 	<ul class="sublist_4" style="${funcDisplay}">
 		<c:forEach var="funcType" items="${allFunctionTypes}">
