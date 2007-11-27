@@ -32,7 +32,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
@@ -444,7 +443,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		SortedSet<String> datumLabels = new TreeSet<String>();
 		for (CharacterizationSummaryBean summaryBean : charSummaryBeans) {
 			Map<String, String> datumMap = summaryBean.getDatumMap();
-			datumLabels.addAll(datumMap.keySet());
+			if (datumMap != null && !datumMap.isEmpty())
+				datumLabels.addAll(datumMap.keySet());
 		}
 		request.setAttribute("nameCharacterizationSummary", charSummaryBeans);
 		request.setAttribute("datumLabels", datumLabels);

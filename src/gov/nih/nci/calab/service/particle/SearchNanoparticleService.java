@@ -486,6 +486,7 @@ public class SearchNanoparticleService {
 					charSummaryBean.setCharFile(charFile);
 				}
 			}
+			charSummaryBeans.add(charSummaryBean);
 		}
 		return charSummaryBeans;
 	}

@@ -51,7 +51,14 @@
 						<table class="charTitle">
 							<tr class="titleRow">
 								<td class="titleCell_2">
-									<a href="#" class="sublist_4">${subCharType}</a>
+									<c:url var="url"
+										value="${charaLeafActionName[subCharType]}.do">
+										<c:param name="particleId" value="${particleId}" />
+										<c:param name="submitType" value="${subCharType}" />
+										<c:param name="page" value="0" />
+										<c:param name="dispatch" value="nameSummaryView" />
+									</c:url>
+									<a href="${url}" class="sublist_4">${subCharType}</a>
 								</td>
 								<td>
 									&nbsp;
@@ -316,8 +323,7 @@
 																								<c:url var="url5"
 																									value="${leafCharBean.actionName}.do">
 																									<c:param name="page" value="0" />
-																									<c:param name="dispatch"
-																										value="summaryView" />
+																									<c:param name="dispatch" value="summaryView" />
 																									<c:param name="particleId"
 																										value="${particleId}" />
 																									<c:param name="characterizationId"
@@ -437,7 +443,8 @@
 																			<c:param name="particleId" value="${particleId}" />
 																			<c:param name="characterizationId"
 																				value="${leafCharBean.id}" />
-																			<c:param name="submitType" value="${leafCharBean.name}" />
+																			<c:param name="submitType"
+																				value="${leafCharBean.name}" />
 																		</c:url>
 																		<li>
 																			<a href="${url4}" class="sublist_5"><span
