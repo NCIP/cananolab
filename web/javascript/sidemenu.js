@@ -76,7 +76,7 @@ function mclick(e, targetElement) {
 
     	   } else if(parentUl.nodeName.toLowerCase() == 'ul' 
     		/* && parentUl.className == 'slidingmenu' */ ) {
-    		
+    		cancelBubling(e);
     		cnode.style.display = 'none';
     		var uls = cnode.getElementsByTagName('ul');
      		for (var j = 0; j < uls.length; j++) {
@@ -85,12 +85,7 @@ function mclick(e, targetElement) {
      	   }
     	}
     }
-    if (window.event) {
-      window.event.cancelBubble = true;
-    }
-    if (e && e.stopPropagation && e.preventDefault) {
-      e.stopPropagation();
-    }
+    cancelBubling();
   }
 }
 
