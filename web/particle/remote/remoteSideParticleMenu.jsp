@@ -51,7 +51,7 @@
 					VIEWING PARTICLE:
 					<c:out value="${particleName}" />
 				</li>
-				<li class="toplist">
+				<li class="controlList">
 					<c:url var="url" value="remoteNanoparticleGeneralInfo.do">
 						<c:param name="dispatch" value="view" />
 						<c:param name="particleName" value="${particleName}" />
