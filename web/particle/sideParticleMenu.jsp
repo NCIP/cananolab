@@ -119,7 +119,7 @@
 
 				<c:choose>
 					<c:when test="${!empty particleReports}">
-						<li class="toplist">
+						<li class="controlList">
 							<a href="#" class="subMenuSecondary">REPORTS</a>
 							<ul class="sublist_5" style="${reportDisplay}">
 								<c:forEach var="aReport" items="${particleReports}">
