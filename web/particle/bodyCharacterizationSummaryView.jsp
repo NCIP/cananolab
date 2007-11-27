@@ -35,17 +35,17 @@
 								</c:url>
 								<c:if test="${canCreateNanoparticle eq 'true'}">
 									<td>
-										<a href="${url}"><img src="images/icon_edit.gif"
-												alt="edit characterization"> </a>
+										<a href="${url}"><img src="images/icon_edit_23x.gif"
+												alt="edit characterization" border="0"></a>
 									</td>
 								</c:if>
 								<td>
-									<img src="images/icon_print.gif"
-										alt="print characterization summary">
+									<a href="#"><img src="images/icon_print_23x.gif"
+										alt="print characterization summary"  border="0"></a>
 								</td>
 								<td>
-									<img src="images/icon_export.gif"
-										alt="export characterization summary">
+									<a href="#"><img src="images/icon_excel_23x.gif"
+										alt="export characterization summary" border="0"></a>
 								</td>
 							</tr>
 						</table>
@@ -148,11 +148,11 @@
 											indexId="datumInd">
 											<td class="whiteBorderLessLabel">
 												${datum.value}
-											</th>
+											</td>
 										</logic:iterate>
 									</tr>
 								</table>
-							</td>
+							</th>
 						</tr>
 					</c:if>
 				</logic:iterate>
