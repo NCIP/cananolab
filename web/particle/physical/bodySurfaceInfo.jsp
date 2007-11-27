@@ -184,26 +184,12 @@
 											<td class="leftLabel">
 												<strong>Molecular Formula Type</strong>
 											</td>
-											<td class="label">
+											<td class="rightLabel" colspan="3">
 												<html:select name="surface.surfaceChemistries"
 													indexed="true" property="molecularFormulaType">
 													<option />
 														<html:options name="allMolecularFormulaTypes" />
 												</html:select>
-											</td>
-											<td class="label">
-												<strong>Molecular Formula</strong>
-											</td>
-											<td class="rightLabel">
-												<c:choose>
-													<c:when test="${canCreateNanoparticle eq 'true'}">
-														<html:text name="surface.surfaceChemistries"
-															indexed="true" property="moleculeName" size="30" />
-													</c:when>
-													<c:otherwise>
-						${nanoparticleCharacterizationForm.map.surface.surfaceChemistries[status.index].moleculeName}&nbsp;
-														</c:otherwise>
-												</c:choose>
 											</td>
 										</tr>
 									</tbody>
