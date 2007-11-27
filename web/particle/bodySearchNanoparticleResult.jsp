@@ -7,8 +7,7 @@
 <table width="100%" align="center">
 	<tr>
 		<td>
-			<h3>
-				<br>
+			<h3>			
 				Nanoparticle Search Results
 			</h3>
 		</td>
