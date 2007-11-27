@@ -19,23 +19,115 @@
 </c:choose>
 
 <c:choose>
-	<c:when
-		test="${displaytype == 'In Vitro' ||
-			    displaytype == 'Toxicity' ||
-				displaytype == 'Cytotoxicity' ||
-				displaytype == 'Immunotoxicity' ||
-				displaytype == 'Oxidative Stress' ||
-				displaytype == 'Enzyme Induction'}">
+	<c:when test="${displaytype == 'In Vitro' ||
+			    displaytype == 'Toxicity'}">
 		<c:set var="invitroDisplay" value="display: block;" />
 	</c:when>
 	<c:otherwise>
 		<c:set var="invitroDisplay" value="display: none;" />
 	</c:otherwise>
 </c:choose>
+
+<c:choose>
+	<c:when test="${displaytype == 'Coagulation' ||
+				displaytype == 'Hemolysis' ||
+				displaytype == 'Plasma Protein Binding' ||
+				displaytype == 'CFU_GM' ||
+				displaytype == 'Chemotaxis' ||
+				displaytype == 'Complement Activation' ||
+				displaytype == 'Cytokine Induction' ||
+				displaytype == 'Leukocyte Proliferation' ||
+				displaytype == 'NK Cell Cytotoxic Activity' ||
+				displaytype == 'Oxidative Burst' ||
+				displaytype == 'Phagocytosis' ||
+				displaytype == 'Platelet Aggregation'}">
+		<c:set var="invitroDisplay" value="display: block;" />
+		<style type="text/css">
+			#immunotoxicity {
+				display: block;
+			}
+			#immunotoxicity ul {
+				display: block;
+			}
+		</style>
+	</c:when>
+	<c:otherwise>
+		<style type="text/css">
+			#immunotoxicity {
+				display: none;
+			}
+		</style>
+	</c:otherwise>
+</c:choose>
+
+<c:choose>
+	<c:when test="${displaytype == 'Caspase 3 Activation' ||
+				displaytype == 'Cell Viability'}">
+		<c:set var="invitroDisplay" value="display: block;" />
+		<style type="text/css">
+			#cytotoxicity {
+				display: block;
+			}
+			#cytotoxicity ul {
+				display: block;
+			}
+		</style>
+	</c:when>
+	<c:otherwise>
+		<style type="text/css">
+			#cytotoxicity {
+				display: none;
+			}
+		</style>
+	</c:otherwise>
+</c:choose>
+
+<c:choose>
+	<c:when test="${displaytype == 'Oxidative Stress'}">
+		<c:set var="invitroDisplay" value="display: block;" />
+		<style type="text/css" >
+			#oxidativeStress {
+				display: block;
+			}
+			#oxidativeStress ul {
+				display: block;
+			}
+		</style>
+	</c:when>
+	<c:otherwise>
+		<style type="text/css" >
+			#oxidativeStress {
+				display: none;
+			}
+		</style>
+	</c:otherwise>
+</c:choose>
+
+<c:choose>
+	<c:when test="${displaytype == 'Enzyme Induction'}">
+		<c:set var="invitroDisplay" value="display: block;" />
+		<style type="text/css" >
+			#enzymeInduction {
+				display: block;
+			}
+			#enzymeInduction ul {
+				display: block;
+			}
+		</style>
+	</c:when>
+	<c:otherwise>
+		<style type="text/css" >
+			#enzymeInduction {
+				display: none;
+			}
+		</style>
+	</c:otherwise>
+</c:choose>
+
 <c:choose>
 	<c:when test="${canCreateNanoparticle eq 'true'}">
 		<c:set var="physicalType" value="Physical" />
-		<li class="toplist">
+		<li class="controlList">
 			<a href="#" class="subMenuSecondary">PHYSICAL CHARACTERIZATIONS</a>
 			<ul class="sublist_4" style="${phyDisplay}">
 				<c:forEach var="subCharType"
@@ -107,7 +199,7 @@
 			</ul>
 		</li>
 		<c:set var="inVitroType" value="In Vitro" />
-		<li class="toplist">
+		<li class="controlList">
 			<a href="#" class="subMenuSecondary">IN VITRO CHARACTERIZATIONS</a>
 			<ul class="sublist_1" style="${invitroDisplay}">
 				<c:forEach var="secondLevelChar"
@@ -117,12 +209,12 @@
 						<ul class="sublist_2" style="${invitroDisplay}">
 							<c:forEach var="thirdLevelChar"
 								items="${allCharacterizations[secondLevelChar]}">
-								<li>
+								<li class="controlList2">
 									<c:choose>
 										<c:when test="${!empty allCharacterizations[thirdLevelChar]}">
-											<table class="charTitle">
-												<tr class="titleRow">
-													<td class="titleCell_2">
+											<table class="subTitleTable" bgcolor="#F4F4F5" >
+												<tr class="titleRowVitro">
+													<td class="titleCell_2_vitro">
 														<a href="#" class="sublist_2">${thirdLevelChar}</a>
 													</td>
 												</tr>
@@ -136,24 +228,24 @@
 												<c:param name="page" value="0" />
 												<c:param name="dispatch" value="setup" />
 											</c:url>
-											<table class="charTitle">
+											<table class="subTitleTable" bgcolor="#F4F4F5" >
 												<tr class="titleRow">
-													<td class="titleCell_2">
+													<td class="titleCell_2_vitro" width="50">
 														<a href="#" class="sublist_2">${thirdLevelChar}</a>
 													</td>
-													<td>
+													<td width="20">
 														&nbsp;
 													</td>
-													<td class="addCell">
+													<td class="addCellVitro" width="40">
 														<a href="${submitUrl}" class="addlink">add</a>
 													</td>
-													<c:if
-														test="${canUserDeleteChars eq 'true' &&
-																!empty charaLeafToCharacterizations[fourthLevelChar]}">
+													<c:choose>
+													<c:when test="${canUserDeleteChars eq 'true' &&
+																!empty charaLeafToCharacterizations[thirdLevelChar]}">
 														<td>
 															&nbsp;
 														</td>
-														<td class="addCell">
+														<td class="addCellVitro">
 															<c:url var="deleteUrl" value="deleteAction.do">
 																<c:param name="particleId" value="${particleId}" />
 																<c:param name="submitType" value="${secondLevelChar}" />
@@ -162,7 +254,11 @@
 															</c:url>
 															<a href="${deleteUrl}" class="addlink">delete</a>
 														</td>
-													</c:if>
+														</c:when>
+														<c:otherwise>
+														<td>&nbsp;</td><td>&nbsp;</td>
+														</c:otherwise>
+													</c:choose>
 												</tr>
 											</table>
 										</c:otherwise>
@@ -170,7 +266,7 @@
 									<c:choose>
 										<c:when
 											test="${!empty charaLeafToCharacterizations[thirdLevelChar]}">
-											<ul class="sublist_5" style="${invitroDisplay}">
+											<ul class="sublist_5_control" id="${charaLeafActionName[thirdLevelChar]}">
 												<c:forEach var="leafCharBean"
 													items="${charaLeafToCharacterizations[thirdLevelChar]}">
 													<c:url var="url3" value="${leafCharBean.actionName}.do">
@@ -190,7 +286,7 @@
 										</c:when>
 										<c:otherwise>
 											<c:if test="${!empty allCharacterizations[thirdLevelChar]}">
-												<ul class="sublist_3" style="${invitroDisplay}">
+												<ul class="sublist_3_control" id="${charaLeafActionName[thirdLevelChar]}">
 													<c:forEach var="fourthLevelChar"
 														items="${allCharacterizations[thirdLevelChar]}">
 														<li>
@@ -248,7 +344,7 @@
 															<c:choose>
 																<c:when
 																	test="${!empty charaLeafToCharacterizations[fourthLevelChar]}">
-																	<ul class="sublist_5" style="${invitroDisplay}">
+																	<ul class="sublist_5" >
 																		<c:forEach var="leafCharBean"
 																			items="${charaLeafToCharacterizations[fourthLevelChar]}">
 																			<c:url var="url4"
@@ -360,7 +456,7 @@
 	</c:when>
 	<c:otherwise>
 		<c:set var="physicalType" value="Physical" />
-		<li class="toplist">
+		<li class="controlList">
 			<a href="#" class="subMenuSecondary">PHYSICAL CHARACTERIZATIONS</a>
 			<ul class="sublist_4" style="${phyDisplay}">
 				<c:forEach var="subCharType"
@@ -391,7 +487,7 @@
 		</li>
 
 		<c:set var="inVitroType" value="In Vitro" />
-		<li class="toplist">
+		<li class="controlList">
 			<a href="#" class="subMenuSecondary">IN VITRO CHARACTERIZATIONS</a>
 			<ul class="sublist_1" style="${invitroDisplay}">
 				<c:forEach var="secondLevelChar"
@@ -401,12 +497,12 @@
 						<ul class="sublist_2" style="${invitroDisplay}">
 							<c:forEach var="thirdLevelChar"
 								items="${selectedCharacterizations[secondLevelChar]}">
-								<li>
+								<li class="controlList2">
 									<a href="#" class="sublist_1">${thirdLevelChar}</a>
 									<c:choose>
 										<c:when
 											test="${!empty charaLeafToCharacterizations[thirdLevelChar]}">
-											<ul class="sublist_5" style="${invitroDisplay}">
+											<ul class="sublist_5_control" id="${charaLeafActionName[thirdLevelChar]}">
 												<c:forEach var="leafCharBean"
 													items="${charaLeafToCharacterizations[thirdLevelChar]}">
 													<c:url var="url3" value="${leafCharBean.actionName}.do">
@@ -425,7 +521,7 @@
 											</ul>
 										</c:when>
 										<c:otherwise>
-											<ul class="sublist_3" style="${invitroDisplay}">
+											<ul class="sublist_3_control" id="${charaLeafActionName[thirdLevelChar]}">
 												<c:forEach var="fourthLevelChar"
 													items="${selectedCharacterizations[thirdLevelChar]}">
 													<li>
@@ -454,7 +550,7 @@
 																</ul>
 															</c:when>
 															<c:otherwise>
-																<ul class="sublist_4" style="${invitroDisplay}">
+																<ul class="sublist_4" >
 																	<c:forEach var="fifthLevelChar"
 																		items="${selectedCharacterizations[fourthLevelChar]}">
 																		<li>
