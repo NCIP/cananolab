@@ -14,7 +14,7 @@
 	</c:otherwise>
 </c:choose>
 
-<li class="toplist">
+<li class="controlList">
 	<a href="#" class="subMenuSecondary">FUNCTION</a>
 	<ul class="sublist_4" style="${funcDisplay}">
 		<c:forEach var="funcType" items="${allFunctionTypes}">
@@ -26,6 +26,7 @@
 						<c:param name="particleId" value="${particleId}" />
 						<c:param name="submitType" value="${funcType}" />
 					</c:url>
+					<li>
 					<table class="charTitle">
 						<tr class="titleRow">
 							<td class="titleCell_2">
@@ -39,16 +40,11 @@
 							</td>
 						</tr>
 					</table>
+					</li>
 				</c:when>
 				<c:otherwise>
 					<c:if test="${!empty allFuncTypeFuncs[funcType]}">
-						<table class="charTitle">
-							<tr class="titleRow">
-								<td class="titleCell_2">
-									<a href="#" class="sublist_4">${funcType}</a>
-								</td>
-							</tr>
-						</table>
+						<a href="#" class="sublist_4">${funcType}</a>
 					</c:if>
 				</c:otherwise>
 			</c:choose>
