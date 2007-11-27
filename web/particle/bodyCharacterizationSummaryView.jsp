@@ -19,39 +19,39 @@
 	<tr>
 		<td colspan="2">
 			<jsp:include page="/bodyMessage.jsp?bundle=particle" />
+			<table align="right">
+				<tr>
+					<c:url var="url"
+						value="${nanoparticleCharacterizationForm.map.charName}.do">
+						<c:param name="page" value="0" />
+						<c:param name="dispatch" value="setupUpdate" />
+						<c:param name="particleId" value="${particleId}" />
+						<c:param name="characterizationId"
+							value="${nanoparticleCharacterizationForm.map.achar.id}" />
+					</c:url>
+					<c:if test="${canCreateNanoparticle eq 'true'}">
+						<td>
+							<a href="${url}"><img src="images/icon_edit_23x.gif"
+									alt="edit characterization" border="0"> </a>
+						</td>
+					</c:if>
+					<td>
+						<a href="#"><img src="images/icon_print_23x.gif"
+								alt="print characterization summary" border="0"> </a>
+					</td>
+					<td>
+						<a href="#"><img src="images/icon_excel_23x.gif"
+								alt="export characterization summary" border="0"> </a>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
 			<table width="100%" border="0" align="center" cellpadding="3"
 				cellspacing="0" class="topBorderOnly" summary="">
 				<tr>
-					<td colspan="2" align="right">
-						<table>
-							<tr>
-								<c:url var="url"
-									value="${nanoparticleCharacterizationForm.map.charName}.do">
-									<c:param name="page" value="0" />
-									<c:param name="dispatch" value="setupUpdate" />
-									<c:param name="particleId" value="${particleId}" />
-									<c:param name="characterizationId"
-										value="${nanoparticleCharacterizationForm.map.achar.id}" />
-								</c:url>
-								<c:if test="${canCreateNanoparticle eq 'true'}">
-									<td>
-										<a href="${url}"><img src="images/icon_edit_23x.gif"
-												alt="edit characterization" border="0"></a>
-									</td>
-								</c:if>
-								<td>
-									<a href="#"><img src="images/icon_print_23x.gif"
-										alt="print characterization summary"  border="0"></a>
-								</td>
-								<td>
-									<a href="#"><img src="images/icon_excel_23x.gif"
-										alt="export characterization summary" border="0"></a>
-								</td>
-							</tr>
-						</table>
-					</td>
-				</tr>
-				<tr class="topBorder">
 					<td class="formTitle" colspan="2">
 						<div align="justify">
 							${nanoparticleCharacterizationForm.map.particle.sampleName}
@@ -108,20 +108,23 @@
 							</td>
 						</tr>
 					</c:if>
-					<tr>
-						<th class="leftLabel" valign="top">
-							Characterization File # ${fileInd+1}
-						</th>
-						<td class="rightLabel">
-							${derivedBioAssayData.type}
-							<br>
-							<a class="thumbnail" href="#thumb"><img
-									src="${nanoparticleCharacterizationForm.map.charName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.id}"
-									border="0" width="150"> <span><img
-										src="${nanoparticleCharacterizationForm.map.charName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.id}">
-									<br /> </span> </a>
-						</td>
-					</tr>
+					<c:if
+						test="${!empty derivedBioAssayData && !empty derivedBioAssayData.uri}">
+						<tr>
+							<th class="leftLabel" valign="top">
+								Characterization File # ${fileInd+1}
+							</th>
+							<td class="rightLabel">
+								${derivedBioAssayData.type}
+								<br>
+								<a class="thumbnail" href="#thumb"><img
+										src="${nanoparticleCharacterizationForm.map.charName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.id}"
+										border="0" width="150"> <span><img
+											src="${nanoparticleCharacterizationForm.map.charName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.id}">
+										<br /> </span> </a>
+							</td>
+						</tr>
+					</c:if>
 					<c:if test="${!empty derivedBioAssayData.datumList}">
 						<tr>
 							<th class="completeLabel" align="left" colspan="2">
