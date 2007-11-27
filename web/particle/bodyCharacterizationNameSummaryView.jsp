@@ -8,7 +8,7 @@
 		<td>
 			<h4>
 				<br>
-				${pageTitle} ${nanoparticleCharacterizationForm.map.charName}
+				${pageTitle} ${submitType}
 			</h4>
 		</td>
 		<td align="right" width="15%">
@@ -92,17 +92,18 @@
 									<br>
 							${summaryBean.charBean.instrumentConfigBean.description}
 							</c:if>
-							</c:if>
+							</c:if>&nbsp;
 						</td>
 						<c:forEach var="label" items="${datumLabels}">
 							<td class="label" valign="top">
-								${summaryBean.datumMap[label]}
+								${summaryBean.datumMap[label]}&nbsp;
 							</td>
 						</c:forEach>
 						<td class="rightLabel">
-							${summaryBean.charFile.type} ${summaryBean.charFile.id}
+							${summaryBean.charFile.type}
 							<br>
-							<c:if test="${!empty summaryBean.charFile}">
+							<c:if
+								test="${!empty summaryBean.charFile && !empty summaryBean.charFile.uri}">
 								<a class="thumbnail" href="#thumb"><img
 										src="${nanoparticleCharacterizationForm.map.charName}.do?dispatch=download&amp;fileId=${summaryBean.charFile.id}"
 										border="0" width="150"> <span><img
