@@ -12,11 +12,11 @@ import gov.nih.nci.calab.domain.nano.characterization.physical.SurfaceChemistry;
 public class SurfaceChemistryBean {
 	private String id;
 
-	private String moleculeName;
+	private String moleculeName="";
 
-	private String numberOfMolecules;
+	private String numberOfMolecules="";
 
-	private String molecularFormulaType;
+	private String molecularFormulaType="";
 
 	/**
 	 * 
@@ -27,6 +27,7 @@ public class SurfaceChemistryBean {
 	public SurfaceChemistryBean(SurfaceChemistry surfaceChemistry) {
 		this.id = surfaceChemistry.getId().toString();
 		this.moleculeName = surfaceChemistry.getMoleculeName();
+		this.molecularFormulaType=surfaceChemistry.getMolecularFormulaType();
 		this.numberOfMolecules = (surfaceChemistry.getNumberOfMolecule() == null) ? "0"
 				: surfaceChemistry.getNumberOfMolecule().toString();
 	}
@@ -39,7 +40,7 @@ public class SurfaceChemistryBean {
 		this.id = id;
 	}
 
-	public String getMoleculeName() {
+	public String getMoleculeName() {		
 		return this.moleculeName;
 	}
 
@@ -59,6 +60,10 @@ public class SurfaceChemistryBean {
 	}
 
 	public String getNumberOfMolecules() {
+		//set to 0
+		if (this.numberOfMolecules.length()==0) {
+			this.numberOfMolecules="0";
+		}
 		return this.numberOfMolecules;
 	}
 
