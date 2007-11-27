@@ -54,6 +54,7 @@ public class SurfaceChemistryBean {
 						.parseInt(getNumberOfMolecules())
 						: null);
 		surfaceChemistry.setMoleculeName(getMoleculeName());
+		surfaceChemistry.setMolecularFormulaType(getMolecularFormulaType());
 		if (getId() != null && getId().length() > 0) {
 			surfaceChemistry.setId(new Long(getId()));
 		}
