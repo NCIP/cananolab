@@ -27,6 +27,7 @@ public class SurfaceChemistryBean {
 	public SurfaceChemistryBean(SurfaceChemistry surfaceChemistry) {
 		this.id = surfaceChemistry.getId().toString();
 		this.moleculeName = surfaceChemistry.getMoleculeName();
+		this.molecularFormulaType=surfaceChemistry.getMolecularFormulaType();
 		this.numberOfMolecules = (surfaceChemistry.getNumberOfMolecule() == null) ? "0"
 				: surfaceChemistry.getNumberOfMolecule().toString();
 	}
