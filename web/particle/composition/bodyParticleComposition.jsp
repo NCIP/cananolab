@@ -33,8 +33,7 @@ function confirmDeletion()
 	<table width="100%" align="center">
 		<tr>
 			<td>
-				<h4>
-					<br>
+				<h4>					
 					Physical Characterization - Composition
 				</h4>
 			</td>

@@ -6,8 +6,7 @@
 	<table width="100%" align="center">
 		<tr>
 			<td>
-				<h4>
-					<br>
+				<h4>					
 					${pageTitle} ${nanoparticleCharacterizationForm.map.charName}
 				</h4>
 			</td>
