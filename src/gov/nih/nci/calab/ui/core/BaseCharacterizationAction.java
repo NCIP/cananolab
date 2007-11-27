@@ -431,11 +431,12 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			HttpServletResponse response) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		initSetup(request, theForm);
-		String charName = request.getParameter("submitType");
-		theForm.set("charName", charName);
+		String submitType = request.getParameter("submitType");
+		ParticleBean particle = (ParticleBean) theForm.get("particle");
 		SearchNanoparticleService service = new SearchNanoparticleService();
 		List<CharacterizationSummaryBean> charSummaryBeans = service
-				.getCharacterizationSummaryByName(charName);
+				.getParticleCharacterizationSummaryByName(submitType, particle
+						.getSampleId());
 		if (charSummaryBeans == null) {
 			throw new Exception(
 					"There are no such characterizations in the database.");
