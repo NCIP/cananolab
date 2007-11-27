@@ -22,7 +22,7 @@ ul.slidingmenu a:link, a:visited, a:active {
 }
 
 ul.slidingmenu a:hover {
-	background-color: #98B7B7; /* #6A8989; */ /* constant: darker gray */
+	background-color: #98B7B7; /* constant: light gray */
 	color: white;
 }
 
@@ -30,7 +30,7 @@ ul.slidingmenu a:link.subMenuSecondary,
 	a:visited.subMenuSecondary, a:active.subMenuSecondary {
 	color: #ffffff; /* constant: white */
 	white-space: nowrap;
-	background-color: #6A8989; /* #98b7b7; */ /* constant: light gray */
+	background-color: #6A8989;  /* constant: dark gray */
 	padding-top: 0.4em;
 	padding-bottom: 0.3em;
 	text-indent: 0.6em;
@@ -50,8 +50,15 @@ ul.slidingmenu li {
 }
 
 ul.sublist_1 li {
-	background-color: #FFFFFF; /* #F4F4F5; */
-	color: #FFFFFF;
+	background-color: #F4F4F5;
+}
+
+li.controlList {
+	background-color: #F4F4F5;
+}
+
+li.controlList a {
+	background-color: #F4F4F5;
 }
 
 ul.sublist_1 a {
@@ -81,7 +88,7 @@ ul.sublist_5 a:link.sublist_5, a:visited.sublist_5, a:active.sublist_5 {
 }
 
 ul.sublist_2 a {
-	background-color: #FFFFFF;  /* #F4F4F5; *//* light gray */
+	background-color: #F4F4F5; /* light gray */
 	color: #FFFFFF; /* #400080; */
 	font-size: 0.8em;
 	font-weight: bold;
@@ -283,6 +290,34 @@ td.titleCell_2 a {
 	font-family: Verdana, Helvetica, Arial, sans-serif;
 	text-indent: 1.4em;
 }
+/*
+.controlList2 {
+	background-color: #F4F4F5;
+}
+
+
+tr.titleRowVitro td {
+	background-color: #F4F4F5;
+}
+
+*/
+
+table.subTitleTable {
+	background-color: #F4F4F5;
+	width: 100%;
+	border-collapse: collapse;
+}
+
+
+td.titleCell_2_vitro a {
+	color: #400080;
+	background-color: #F4F4F5;
+	font-size: 0.6em;
+	font-weight: bold;
+	font-family: Verdana, Helvetica, Arial, sans-serif;
+	text-indent: 1.4em;
+}
+
 
 td.titleCell_3 a {
 	color: #400080;
@@ -325,5 +360,18 @@ td.arror img {
 }
 
 td.addCell a:link.addlink, a:visited.addlink, a:active.addlink {
+	text-decoration: underline;
+}
+
+td.addCellVitro a {
+	background-color: #F4F4F5;
+	color: #400080;
+	font-size: 0.6em;
+	font-weight: bold;
+	font-family: Verdana, Helvetica, Arial, sans-serif;
+	text-indent: 0;
+}
+
+td.addCellVitro a:link.addlink, a:visited.addlink, a:active.addlink {
 	text-decoration: underline;
 }
