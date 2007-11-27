@@ -459,16 +459,15 @@ public class SearchNanoparticleService {
 		return charBean;
 	}
 
-	public List<CharacterizationSummaryBean> getCharacterizationSummaryByName(
-			String charName) throws Exception {
+	public List<CharacterizationSummaryBean> getParticleCharacterizationSummaryByName(
+			String charName, String particleId) throws Exception {
 		List<CharacterizationSummaryBean> charSummaryBeans = new ArrayList<CharacterizationSummaryBean>();
-		List<CharacterizationBean> charBeans = getCharacterizationsByName(charName);
+		List<CharacterizationBean> charBeans = getParticleCharacterizationsByName(
+				charName, particleId);
 		if (charBeans.isEmpty()) {
 			return null;
 		}
 		for (CharacterizationBean charBean : charBeans) {
-			CharacterizationSummaryBean charSummaryBean = new CharacterizationSummaryBean();
-			charSummaryBean.setCharBean(charBean);
 			if (charBean.getDerivedBioAssayDataList() != null
 					&& !charBean.getDerivedBioAssayDataList().isEmpty()) {
 				for (DerivedBioAssayDataBean charFile : charBean
@@ -482,25 +481,38 @@ public class SearchNanoparticleService {
 						}
 						datumMap.put(datumLabel, data.getValue());
 					}
+					CharacterizationSummaryBean charSummaryBean = new CharacterizationSummaryBean();
+					charSummaryBean.setCharBean(charBean);
 					charSummaryBean.setDatumMap(datumMap);
 					charSummaryBean.setCharFile(charFile);
+					charSummaryBeans.add(charSummaryBean);
 				}
+			} else {
+				CharacterizationSummaryBean charSummaryBean = new CharacterizationSummaryBean();
+				charSummaryBean.setCharBean(charBean);
+				charSummaryBeans.add(charSummaryBean);
 			}
-			charSummaryBeans.add(charSummaryBean);
 		}
 		return charSummaryBeans;
 	}
 
-	public List<CharacterizationBean> getCharacterizationsByName(String charName)
-			throws Exception {
+	public List<CharacterizationBean> getParticleCharacterizationsByName(
+			String charName, String particleId) throws Exception {
 		List<CharacterizationBean> charBeans = new ArrayList<CharacterizationBean>();
 		try {
 			Session session = HibernateUtil.currentSession();
 			HibernateUtil.beginTransaction();
 			// Characterization aChar = (Characterization) session.load(
 			// Characterization.class, new Long(charId));
-			List results = session.createQuery(
-					"from Characterization where name=" + charName).list();
+			List results = session
+					.createQuery(
+							"select chara from Nanoparticle particle join particle.characterizationCollection chara where particle.id="
+									+ particleId
+									+ " and chara.name='"
+									+ charName
+									+ "'"
+									+ " order by chara.identificationName").list();
+
 			Characterization aChar = null;
 			for (Object obj : results) {
 				aChar = (Characterization) obj;
