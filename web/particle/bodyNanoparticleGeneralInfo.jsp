@@ -6,7 +6,7 @@
 	<table width="100%" align="center">
 		<tr>
 			<td>
-				<h3>					
+				<h3>
 					${nanoparticleGeneralInfoForm.map.particle.sampleName} General
 					Information
 				</h3>
@@ -66,7 +66,8 @@
 								</c:when>
 								<c:otherwise>
 									<td class="rightLabel">
-										<c:forEach var="keyword" items="${particle.keywords}">
+										<c:forEach var="keyword"
+											items="${nanoparticleGeneralInfoForm.map.particle.keywords}">
 											<c:out value="${keyword}" />
 											<br>
 										</c:forEach>
@@ -95,7 +96,7 @@
 								<c:otherwise>
 									<td class="rightLabel">
 										<c:forEach var="visibility"
-											items="${particle.visibilityGroups}">
+											items="${nanoparticleGeneralInfoForm.map.particle.visibilityGroups}">
 											<c:out value="${visibility}" />&nbsp;
 								<br>
 										</c:forEach>
@@ -125,9 +126,9 @@
 														<input type="hidden" name="dispatch" value="create">
 														<input type="hidden" name="page" value="0">
 														<html:hidden property="particle.sampleId" />
-														<html:hidden property="particle.sampleName"/>
-														<html:hidden property="particle.sampleSource"/>
-														<html:hidden property="particle.sampleType"/>
+														<html:hidden property="particle.sampleName" />
+														<html:hidden property="particle.sampleSource" />
+														<html:hidden property="particle.sampleType" />
 														<html:submit />
 													</div>
 												</div>
