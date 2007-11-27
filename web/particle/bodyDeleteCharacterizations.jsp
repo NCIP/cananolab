@@ -71,12 +71,16 @@ function confirmDeletion()
 									<td width="490" height="32">
 										<div align="right">
 											<div align="right">
-												<input type="reset" value="Reset" onclick="">
-												<input type="hidden" name="dispatch" value="delete">
+												<input type="reset" value="Reset" onclick=""/>
+												<input type="hidden" name="dispatch" value="delete"/>
 												<input type="hidden" name="particleType"
-													value="${param.particleType}">
+													value="${param.particleType}"/>
 												<input type="hidden" name="particleName"
-													value="${param.particleName}">
+													value="${param.particleName}"/>
+												<input type="hidden" name="submitType"
+													value="${param.submitType}"/>
+												<input type="hidden" name="diaplayType"
+														value="${param.displayType}" />
 												<input type="button" value="Delete"
 													onclick="confirmDeletion();" />
 												<input type="hidden" name="page" value="2">
