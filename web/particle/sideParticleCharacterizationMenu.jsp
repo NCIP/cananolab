@@ -155,7 +155,7 @@
 									&nbsp;
 								</td>
 								<td class="addCell">
-									<a href="${submitUrl}" class="addlink">add</a>
+									<a href="${submitUrl}" class="addlink"><img src="images/btn_add.gif" border="0"/></a>
 								</td>
 								<c:if
 									test="${canUserDeleteChars eq 'true' &&
@@ -170,7 +170,7 @@
 											<c:param name="page" value="0" />
 											<c:param name="dispatch" value="setup" />
 										</c:url>
-										<a href="${deleteUrl}" class="addlink">delete</a>
+										<a href="${deleteUrl}" class="addlink"><img src="images/btn_delete.gif" border="0"/></a>
 									</td>
 								</c:if>
 							</tr>
@@ -236,7 +236,7 @@
 														&nbsp;
 													</td>
 													<td class="addCellVitro" width="40">
-														<a href="${submitUrl}" class="addlink">add</a>
+														<a href="${submitUrl}" class="addlink"><img src="images/btn_add.gif" border="0"/></a>
 													</td>
 													<c:choose>
 													<c:when test="${canUserDeleteChars eq 'true' &&
@@ -251,7 +251,7 @@
 																<c:param name="page" value="0" />
 																<c:param name="dispatch" value="setup" />
 															</c:url>
-															<a href="${deleteUrl}" class="addlink">delete</a>
+															<a href="${deleteUrl}" class="addlink"><img src="images/btn_delete.gif" border="0"/></a>
 														</td>
 														</c:when>
 														<c:otherwise>
@@ -317,7 +317,7 @@
 																				&nbsp;
 																			</td>
 																			<td class="addCell">
-																				<a href="${submitUrl}" class="addlink">add</a>
+																				<a href="${submitUrl}" class="addlink"><img src="images/btn_add.gif" border="0"/></a>
 																			</td>
 																			<c:if
 																				test="${canUserDeleteChars eq 'true' &&
@@ -333,7 +333,7 @@
 																						<c:param name="page" value="0" />
 																						<c:param name="dispatch" value="setup" />
 																					</c:url>
-																					<a href="${deleteUrl}" class="addlink">delete</a>
+																					<a href="${deleteUrl}" class="addlink"><img src="images/btn_delete.gif" border="0"/></a>
 																				</td>
 																			</c:if>
 																		</tr>
@@ -388,7 +388,7 @@
 																								&nbsp;
 																							</td>
 																							<td class="addCell">
-																								<a href="${submitUrl}" class="addlink">add</a>
+																								<a href="${submitUrl}" class="addlink"><img src="images/btn_add.gif" border="0"/></a>
 																							</td>
 																							<c:if
 																								test="${canUserDeleteChars eq 'true' &&
@@ -405,7 +405,7 @@
 																										<c:param name="page" value="0" />
 																										<c:param name="dispatch" value="setup" />
 																									</c:url>
-																									<a href="${deleteUrl}" class="addlink">delete</a>
+																									<a href="${deleteUrl}" class="addlink"><img src="images/btn_delete.gif" border="0"/></a>
 																								</td>
 																							</c:if>
 																						</tr>
