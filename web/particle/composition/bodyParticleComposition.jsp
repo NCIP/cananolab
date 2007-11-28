@@ -308,6 +308,8 @@ function confirmDeletion()
 														<input type="reset" value="Reset" onclick="">
 														<input type="hidden" name="dispatch" value="create">
 														<input type="hidden" name="page" value="2">
+														<input type="hidden" name="submitType"
+																value="${param.submitType}"/>
 														<html:hidden property="particle.sampleId" />
 														<html:hidden property="particle.sampleName" />
 														<html:hidden property="particle.sampleSource" />
