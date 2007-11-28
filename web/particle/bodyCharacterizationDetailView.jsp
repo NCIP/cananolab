@@ -19,33 +19,6 @@
 	<tr>
 		<td colspan="2">
 			<jsp:include page="/bodyMessage.jsp?bundle=particle" />
-			<table align="right">
-				<tr>
-					<c:url var="url"
-						value="${nanoparticleCharacterizationForm.map.achar.actionName}.do">
-						<c:param name="page" value="0" />
-						<c:param name="dispatch" value="setupUpdate" />
-						<c:param name="particleId" value="${particleId}" />
-						<c:param name="characterizationId"
-							value="${nanoparticleCharacterizationForm.map.achar.id}" />
-						<c:param name="submitType" value="${submitType}"/>
-					</c:url>
-					<c:if test="${canCreateNanoparticle eq 'true'}">
-						<td>
-							<a href="${url}"><img src="images/icon_edit_23x.gif"
-									alt="edit characterization" border="0"> </a>
-						</td>
-					</c:if>
-					<td>
-						<a href="#"><img src="images/icon_print_23x.gif"
-								alt="print characterization summary" border="0"> </a>
-					</td>
-					<td>
-						<a href="#"><img src="images/icon_excel_23x.gif"
-								alt="export characterization summary" border="0"> </a>
-					</td>
-				</tr>
-			</table>
 		</td>
 	</tr>
 	<tr>
@@ -54,12 +27,40 @@
 				cellspacing="0" class="topBorderOnly" summary="">
 				<tr>
 					<td class="formTitle" colspan="2">
-						<div align="justify">
-							${nanoparticleCharacterizationForm.map.particle.sampleName}
-							${nanoparticleCharacterizationForm.map.particle.sampleType} - ${
-							nanoparticleCharacterizationForm.map.achar.viewTitle} - ${
-							nanoparticleCharacterizationForm.map.achar.characterizationSource}
-						</div>
+						<table width="100%">
+							<tr>
+								<td class="formTitle" width="100%">
+									${nanoparticleCharacterizationForm.map.particle.sampleName}
+									${nanoparticleCharacterizationForm.map.particle.sampleType} -
+									${ nanoparticleCharacterizationForm.map.achar.viewTitle} - ${
+									nanoparticleCharacterizationForm.map.achar.characterizationSource}
+								</td>
+								<td align="right" class="formTitle">
+									<c:url var="url"
+										value="${nanoparticleCharacterizationForm.map.achar.actionName}.do">
+										<c:param name="page" value="0" />
+										<c:param name="dispatch" value="setupUpdate" />
+										<c:param name="particleId" value="${particleId}" />
+										<c:param name="characterizationId"
+											value="${nanoparticleCharacterizationForm.map.achar.id}" />
+										<c:param name="submitType" value="${submitType}" />
+									</c:url>
+									<c:if test="${canCreateNanoparticle eq 'true'}">
+										<td>
+											<a href="${url}"><img src="images/icon_edit_23x.gif"
+													alt="edit characterization" border="0"> </a>
+										</td>
+									</c:if>
+								<td>
+									<a href="#"><img src="images/icon_print_23x.gif"
+											alt="print characterization summary" border="0"> </a>
+								</td>
+								<td>
+									<a href="#"><img src="images/icon_excel_23x.gif"
+											alt="export characterization summary" border="0"> </a>
+								</td>
+							</tr>
+						</table>
 					</td>
 				</tr>
 				<c:if
@@ -70,6 +71,19 @@
 						</th>
 						<td class="rightLabel">
 							${nanoparticleCharacterizationForm.map.achar.description}
+						</td>
+					</tr>
+				</c:if>
+				<c:if
+					test="${nanoparticleCharacterizationForm.map.achar.protocolFileBean.hidden eq 'false'}">
+					<tr>
+						<th class="leftLabel" valign="top">
+							Protocol
+						</th>
+						<td class="rightLabel">
+							${nanoparticleCharacterizationForm.map.achar.protocolFileBean.displayName}&nbsp;
+							<a
+								href="searchProtocol.do?dispatch=download&amp;fileId=${nanoparticleCharacterizationForm.map.achar.protocolFileBean.id}">${nanoparticleCharacterizationForm.map.achar.protocolFileBean.uri}</a>
 						</td>
 					</tr>
 				</c:if>
