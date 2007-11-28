@@ -15,7 +15,7 @@ ul.slidingmenu {
 	border-right: 1px solid #cccccc;
 }
 
-ul.slidingmenu a:link, a:visited, a:active { 
+ul.slidingmenu a:link, ul.slidingmenu a:visited, ul.slidingmenu a:active { 
 	text-decoration: none;
 	width: 100%;
 	font-weight: bold;
@@ -205,9 +205,7 @@ ul.slidingmenu ul {
 }
 
 #view_particle {
-	/* background-color: #a90101; */ /* constant: red */
 	background-color: #5C5C5C;
-	
 	color: #FFFFFF;
 	font-size: 0.9em;
 	font-weight: normal;
@@ -290,17 +288,6 @@ td.titleCell_2 a {
 	font-family: Verdana, Helvetica, Arial, sans-serif;
 	text-indent: 1.4em;
 }
-/*
-.controlList2 {
-	background-color: #F4F4F5;
-}
-
-
-tr.titleRowVitro td {
-	background-color: #F4F4F5;
-}
-
-*/
 
 table.subTitleTable {
 	background-color: #F4F4F5;
@@ -359,7 +346,9 @@ td.arror img {
 	margin-bottom: 0;
 }
 
-td.addCell a:link.addlink, a:visited.addlink, a:active.addlink {
+td.addCell a:link.addlink, 
+td.addCell a:visited.addlink, 
+td.addCell a:active.addlink {
 	text-decoration: underline;
 }
 
@@ -372,6 +361,8 @@ td.addCellVitro a {
 	text-indent: 0;
 }
 
-td.addCellVitro a:link.addlink, a:visited.addlink, a:active.addlink {
+td.addCellVitro a:link.addlink, 
+td.addCellVitro a:visited.addlink, 
+td.addCellVitro a:active.addlink {
 	text-decoration: underline;
 }
