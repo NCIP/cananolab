@@ -82,7 +82,7 @@
 		<form-bean name="characterizationMultiDeletionForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="dispatch" type="java.lang.String" />
-			<form-property name="particleId" type="String" />
+			<form-property name="particleId" type="java.lang.String" />
 			<form-property name="charIds" type="java.lang.String[]" />
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />

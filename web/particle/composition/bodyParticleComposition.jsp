@@ -154,7 +154,7 @@ function confirmDeletion()
 												test="${canCreateNanoparticle eq 'true'&& isRemote eq 'false'}">
 												<td valign="bottom">
 													<a href="#"
-														onclick="javascript:addComponentt(nanoparticleCompositionForm, 'composition', 'addComposingElement')"><span
+														onclick="javascript:addComponent(nanoparticleCompositionForm, 'composition', 'addComposingElement')"><span
 														class="addLink">Add Composing Element</span> </a>
 												</td>
 											</c:when>
