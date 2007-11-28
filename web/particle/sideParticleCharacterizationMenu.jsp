@@ -85,7 +85,7 @@
 <c:choose>
 	<c:when test="${displaytype == 'Oxidative Stress'}">
 		<c:set var="invitroDisplay" value="display: block;" />
-		<style type="text/css" >
+		<style type="text/css">
 			#oxidativeStress {
 				display: block;
 			}
@@ -123,7 +123,6 @@
 		</style>
 	</c:otherwise>
 </c:choose>
-
 <c:choose>
 	<c:when test="${canCreateNanoparticle eq 'true'}">
 		<c:set var="physicalType" value="Physical" />
@@ -136,7 +135,7 @@
 						<c:url var="submitUrl"
 							value="${charaLeafActionName[subCharType]}.do">
 							<c:param name="particleId" value="${particleId}" />
-							<c:param name="submitType" value="${physicalType}" />
+							<c:param name="submitType" value="${subCharType}" />
 							<c:param name="page" value="0" />
 							<c:param name="dispatch" value="setup" />
 						</c:url>
@@ -167,7 +166,7 @@
 									<td class="addCell">
 										<c:url var="deleteUrl" value="deleteAction.do">
 											<c:param name="particleId" value="${particleId}" />
-											<c:param name="submitType" value="${physicalType}" />
+											<c:param name="submitType" value="${subCharType}" />
 											<c:param name="page" value="0" />
 											<c:param name="dispatch" value="setup" />
 										</c:url>
@@ -224,7 +223,7 @@
 											<c:url var="submitUrl"
 												value="${charaLeafActionName[thirdLevelChar]}.do">
 												<c:param name="particleId" value="${particleId}" />
-												<c:param name="submitType" value="${secondLevelChar}" />
+												<c:param name="submitType" value="${thirdLevelChar}" />
 												<c:param name="page" value="0" />
 												<c:param name="dispatch" value="setup" />
 											</c:url>
@@ -248,7 +247,7 @@
 														<td class="addCellVitro">
 															<c:url var="deleteUrl" value="deleteAction.do">
 																<c:param name="particleId" value="${particleId}" />
-																<c:param name="submitType" value="${secondLevelChar}" />
+																<c:param name="submitType" value="${thirdLevelChar}" />
 																<c:param name="page" value="0" />
 																<c:param name="dispatch" value="setup" />
 															</c:url>
@@ -305,7 +304,7 @@
 																	<c:url var="submitUrl"
 																		value="${charaLeafActionName[fourthLevelChar]}.do">
 																		<c:param name="particleId" value="${particleId}" />
-																		<c:param name="submitType" value="${secondLevelChar}" />
+																		<c:param name="submitType" value="${fourthLevelChar}" />
 																		<c:param name="page" value="0" />
 																		<c:param name="dispatch" value="setup" />
 																	</c:url>
@@ -330,7 +329,7 @@
 																					<c:url var="deleteUrl" value="deleteAction.do">
 																						<c:param name="particleId" value="${particleId}" />
 																						<c:param name="submitType"
-																							value="${secondLevelChar}" />
+																							value="${fourthLevelChar}" />
 																						<c:param name="page" value="0" />
 																						<c:param name="dispatch" value="setup" />
 																					</c:url>
@@ -376,7 +375,7 @@
 																						value="${charaLeafActionName[fifthLevelChar]}.do">
 																						<c:param name="particleId" value="${particleId}" />
 																						<c:param name="submitType"
-																							value="${secondLevelChar}" />
+																							value="${fifthLevelChar}" />
 																						<c:param name="page" value="0" />
 																						<c:param name="dispatch" value="setup" />
 																					</c:url>
@@ -402,7 +401,7 @@
 																										<c:param name="particleId"
 																											value="${particleId}" />
 																										<c:param name="submitType"
-																											value="${secondLevelChar}" />
+																											value="${fifthLevelChar}" />
 																										<c:param name="page" value="0" />
 																										<c:param name="dispatch" value="setup" />
 																									</c:url>
