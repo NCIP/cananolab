@@ -58,7 +58,7 @@
 						<c:param name="dispatch" value="${dispatchValue}" />
 						<c:param name="particleId" value="${particleId}" />
 						<c:param name="characterizationId" value="${leafCharBean.id}" />
-						<c:param name="submitType" value="${compBean.name}" />
+						<c:param name="submitType" value="${leafCharBean.name}" />
 					</c:url>
 					<li id="complist">
 						<a href=${url } id="complink" class="sublist_5"><span
