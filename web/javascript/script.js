@@ -50,7 +50,6 @@ function openWindow(pageURL, name, width, height) {
 function openHelpWindow(pageURL) {
 	window.open(pageURL, "Help", "alwaysRaised,dependent,status,scrollbars,resizable,width=800,height=500");
 }
-
 /**
 moveItems is a function used in moving items in one multiple select to the other.
 */
@@ -226,72 +225,24 @@ function submitAction(form, actionName) {
 	form.action = actionName;
 	form.submit();
 }
-function addContainer(form, actionName) {
-	form.action = actionName + ".do?dispatch=addContainer&page=1";
+function addComponent(form, actionName, dispatchName) {
+	form.action = actionName + ".do?dispatch=" + dispatchName + "&page=1";
 	form.submit();
 }
-function removeContainer(form, actionName, containerInd) {
-	form.action = actionName + ".do?dispatch=removeContainer&page=1&containerInd=" + containerInd;
-	form.submit();	
-}
-function addSurfaceGroup(form, actionName) {
-	form.action = actionName+".do?dispatch=addSurfaceGroup&page=1";
+function removeComponent(form, actionName, compInd, dispatchName) {
+	form.action = actionName + ".do?dispatch=" + dispatchName + "&page=1&compInd=" + compInd;
 	form.submit();
 }
-function removeSurfaceGroup(form, actionName, groupInd) {
-	form.action = actionName + ".do?dispatch=removeSurfaceGroup&page=1&groupInd=" + groupInd;
-	form.submit();	
-}
-function addComposingElement(form, actionName) {
-	form.action = actionName+".do?dispatch=addComposingElement&page=1";
+function addChildComponent(form, actionName, compInd, dispatchName) {
+	form.action = actionName + ".do?dispatch=" + dispatchName + "&page=1&compInd=" + compInd;
 	form.submit();
 }
-function removeComposingElement(form, actionName, elementInd) {
-	form.action = actionName + ".do?dispatch=removeComposingElement&page=1&elementInd=" + elementInd;
-	form.submit();	
-}
-function addSurfaceChemistry(form, actionName) {
-	form.action = actionName + ".do?dispatch=addSurfaceChemistry&page=0";
+function removeChildComponent(form, actionName, compInd, childCompInd, dispatchName) {
+	form.action = actionName + ".do?dispatch=" + dispatchName + "&page=1&compInd=" + compInd + "&childCompInd=" + childCompInd;
 	form.submit();
 }
-function removeSurfaceChemistry(form, actionName, chemInd) {
-	form.action = actionName + ".do?dispatch=removeSurfaceChemistry&page=0&chemInd=" + chemInd;
-	form.submit();
-}
-function addCharacterizationFile(form, charName, actionName) {
-	form.action = actionName + ".do?dispatch=addFile&page=0&charName=" + charName;
-	form.submit();
-}
-function removeCharacterizationFile(form, charName, actionName, fileInd) {
-	form.action = actionName + ".do?dispatch=removeFile&charName=" + charName + "&page=0&fileInd=" + fileInd;
-	form.submit();
-}
-function addCharacterizationData(form, charName, actionName, fileInd) {
-	form.action = actionName + ".do?dispatch=addData&charName=" + charName + "&page=0&fileInd=" + fileInd;
-	form.submit();
-}
-function removeCharacterizationData(form, charName, actionName, fileInd, dataInd) {
-	form.action = actionName + ".do?dispatch=removeData&charName=" + charName + "&page=0&fileInd=" + fileInd + "&dataInd=" + dataInd;
-	form.submit();
-}
-function loadFile(form, charName, actionName, fileNumber) {
-	form.action = actionName + ".do?dispatch=loadFile&page=0&charName=" + charName + "&fileNumber=" + fileNumber;
-	form.submit();
-}
-function addLinkage(form) {
-	form.action = "nanoparticleFunction.do?dispatch=addLinkage&page=0";
-	form.submit();
-}
-function removeLinkage(form, linkageInd) {
-	form.action = "nanoparticleFunction.do?dispatch=removeLinkage&page=0&linkageInd=" + linkageInd;
-	form.submit();
-}
-function addTarget(form, linkageInd) {
-	form.action = "nanoparticleFunction.do?dispatch=addTarget&page=0&linkageInd=" + linkageInd;
-	form.submit();
-}
-function removeTarget(form, linkageInd, targetInd) {
-	form.action = "nanoparticleFunction.do?dispatch=removeTarget&page=0&linkageInd=" + linkageInd + "&targetInd=" + targetInd;
+function loadFile(form, actionName, fileNumber) {
+	form.action = actionName + ".do?dispatch=loadFile&page=0&fileNumber=" + fileNumber;
 	form.submit();
 }
 function refreshManufacturers(form, action) {
