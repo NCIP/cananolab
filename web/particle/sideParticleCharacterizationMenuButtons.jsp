@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <table class="charTitle">
 	<tr class="titleRow">
-		<td class="titleCell_2">
+		<td class="${param.charTypeLabelStyle}">
 		    <c:set var="url" value="#"/>
 			<c:if test="${!empty charaLeafToCharacterizations[param.charType]}">
 				<c:url var="url" value="${charaLeafActionName[param.charType]}.do">
@@ -12,7 +12,7 @@
 					<c:param name="dispatch" value="summaryView" />
 				</c:url>
 			</c:if>
-			<a href="${url}" class="sublist_4">${param.charType}</a>
+			<a href="${url}" class="${param.charTypeStyle}">${param.charType}</a>
 		</td>
 		<td>
 			&nbsp;
