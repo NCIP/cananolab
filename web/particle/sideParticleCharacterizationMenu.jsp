@@ -136,6 +136,8 @@
 			<li>
 				<jsp:include page="sideParticleCharacterizationMenuButtons.jsp">
 					<jsp:param name="charType" value="${subCharType}" />
+					<jsp:param name="charTypeStyle" value="sublist_4" />
+					<jsp:param name="charTypeLabelStyle" value="titleCell_2" />
 				</jsp:include>
 				<c:if test="${!empty charaLeafToCharacterizations[subCharType]}">
 					<ul class="sublist_5" style="${phyDisplay}">
@@ -183,6 +185,8 @@
 								<c:otherwise>
 									<jsp:include page="sideParticleCharacterizationMenuButtons.jsp">
 										<jsp:param name="charType" value="${thirdLevelChar}" />
+										<jsp:param name="charTypeStyle" value="sublist_2" />
+										<jsp:param name="charTypeLabelStyle" value="titleCell_2_vitro" />
 									</jsp:include>
 								</c:otherwise>
 							</c:choose>
@@ -230,6 +234,8 @@
 															<jsp:include
 																page="sideParticleCharacterizationMenuButtons.jsp">
 																<jsp:param name="charType" value="${fourthLevelChar}" />
+																<jsp:param name="charTypeStyle" value="sublist_4" />
+																<jsp:param name="charTypeLabelStyle" value="titleCell_3" />
 															</jsp:include>
 														</c:otherwise>
 													</c:choose>
@@ -272,6 +278,9 @@
 																			<jsp:include
 																				page="sideParticleCharacterizationMenuButtons.jsp">
 																				<jsp:param name="charType" value="${fifthLevelChar}" />
+																				<jsp:param name="charTypeStyle" value="sublist_4" />
+																				<jsp:param name="charTypeLabelStyle"
+																					value="titleCell_4" />
 																			</jsp:include>
 																			<c:if
 																				test="${!empty charaLeafToCharacterizations[fifthLevelChar]}">
