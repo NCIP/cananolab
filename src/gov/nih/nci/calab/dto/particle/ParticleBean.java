@@ -36,27 +36,32 @@ public class ParticleBean extends SampleBean {
 
 	private String gridNode;
 
-	public ParticleBean(String id, String name) {
+	public ParticleBean(String id, String name, String type) {
 		super(id, name);
+		this.setSampleType(type);
+	}
+
+	public ParticleBean(String id, String name, String type, String source) {
+		super(id, name);
+		this.setSampleType(type);
+		this.setSampleSource(source);
 	}
 
 	public ParticleBean() {
+		super();
 	}
-
+	
 	public ParticleBean(Nanoparticle particle) {
-		this(particle.getId().toString(), particle.getName());
-		this.setSampleType(particle.getType());
-		this.setSampleSource(particle.getSource().getOrganizationName());
-		if (particle.getSource() != null) {
-			this.setSampleSource(particle.getSource().getOrganizationName());
-		} else {
-			this.setSampleSource("");
-		}
+		this(particle.getId().toString(), particle.getName(), particle
+				.getType());
+		String source = (particle.getSource() == null) ? "" : particle
+				.getSource().getOrganizationName();
+		this.setSampleSource(source);
+
 		this.particleClassification = particle.getClassification();
 		setParticleFunctions(particle);
 		setParticleCharacterizations(particle);
 		setParticleKeywords(particle);
-
 	}
 
 	private void setParticleFunctions(Nanoparticle particle) {

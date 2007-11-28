@@ -148,7 +148,7 @@
 									<tr>
 										<td valign="bottom">
 											<a href="#"
-												onclick="javascript:addContainer(createSampleForm, 'createSample')"><span
+												onclick="javascript:addComponent(createSampleForm, 'createSample', 'addContainer')"><span
 												class="addLink">Add Container</span> </a>
 										</td>
 										<td>
@@ -177,7 +177,7 @@
 																				value="${ind+1}" />
 																	<td class="formSubTitleNoLeft" align="right">
 																		<a href="#"
-																			onclick="javascript:removeContainer(createSampleForm, 'createSample', ${ind})">
+																			onclick="javascript:removeComponent(createSampleForm, 'createSample', ${ind}, 'removeContainer')">
 																			<img src="images/delete.gif" border="0"
 																				alt="remove this container"> </a>
 																	</td>

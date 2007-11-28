@@ -10,7 +10,7 @@
 		<tr>
 			<td class="formSubTitle" colspan="4" align="right">
 				<a href="#"
-					onclick="javascript:removeTarget(nanoparticleFunctionForm, ${param.linkageInd}, ${param.targetInd})">
+					onclick="javascript:removeChildComponent(nanoparticleFunctionForm, 'nanoparticleFunction', ${param.linkageInd}, ${param.targetInd}, 'removeTarget')">
 					<img src="images/delete.gif" border="0"
 						alt="remove this agent target"> </a>
 			</td>

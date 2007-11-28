@@ -119,7 +119,7 @@
 								test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
 								<td valign="bottom" width="120">
 									<a href="#"
-										onclick="javascript:addSurfaceGroup(nanoparticleCompositionForm, 'composition')"><span
+										onclick="javascript:addComponent(nanoparticleCompositionForm, 'composition', 'addSurfaceGroup')"><span
 										class="addLink">Add Surface Group</span>
 									</a>
 								</td>
@@ -143,7 +143,7 @@
 													</td>
 													<td class="formSubTitleNoLeft" align="right">
 														<a href="#"
-															onclick="javascript:removeSurfaceGroup(nanoparticleCompositionForm, 'composition', ${ind})">
+															onclick="javascript:removeComponent(nanoparticleCompositionForm, 'composition', ${ind}, 'removeSurfaceGroup')">
 															<img src="images/delete.gif" border="0"
 																alt="remove this surface group"> </a>
 													</td>

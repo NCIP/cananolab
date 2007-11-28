@@ -154,7 +154,7 @@ function confirmDeletion()
 												test="${canCreateNanoparticle eq 'true'&& isRemote eq 'false'}">
 												<td valign="bottom">
 													<a href="#"
-														onclick="javascript:addComposingElement(nanoparticleCompositionForm, 'composition')"><span
+														onclick="javascript:addComponentt(nanoparticleCompositionForm, 'composition', 'addComposingElement')"><span
 														class="addLink">Add Composing Element</span> </a>
 												</td>
 											</c:when>
@@ -179,7 +179,7 @@ function confirmDeletion()
 																	</td>
 																	<td class="formSubTitleNoLeft" align="right">
 																		<a href="#"
-																			onclick="javascript:removeComposingElement(nanoparticleCompositionForm, 'composition', ${ind})">
+																			onclick="javascript:removeComponent(nanoparticleCompositionForm, 'composition', ${ind}, 'removeComposingElement')">
 																			<img src="images/delete.gif" border="0"
 																				alt="remove this composing element"> </a>
 																	</td>

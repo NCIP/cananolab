@@ -49,7 +49,7 @@ import org.hibernate.collection.PersistentSet;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.136 2007-11-09 18:48:32 cais Exp $ */
+/* CVS $Id: LookupService.java,v 1.137 2007-11-28 20:30:26 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -1064,53 +1064,6 @@ public class LookupService {
 		return allReportTypes;
 	}
 
-	/**
-	 * Get other particles from the given particle source
-	 * 
-	 * @param particleSource
-	 * @param particleName
-	 * @param user
-	 * @return
-	 * @throws Exception
-	 */
-	public SortedSet<String> getOtherParticles(String particleSource,
-			String particleName, UserBean user) throws Exception {
-
-		UserService userService = new UserService(
-				CaNanoLabConstants.CSM_APP_NAME);
-		SortedSet<String> otherParticleNames = new TreeSet<String>();
-		try {
-			Session session = HibernateUtil.currentSession();
-			HibernateUtil.beginTransaction();
-			String hqlString = "select particle.name from Nanoparticle particle where particle.source.organizationName='"
-					+ particleSource
-					+ "' and particle.name !='"
-					+ particleName
-					+ "'";
-
-			List results = session.createQuery(hqlString).list();
-			HibernateUtil.commitTransaction();
-			for (Object obj : results) {
-				String otherParticleName = (String) obj;
-				// check if user can see the particle
-				boolean status = userService.checkReadPermission(user,
-						otherParticleName);
-				if (status) {
-					otherParticleNames.add(otherParticleName);
-				}
-			}
-			
-		} catch (Exception e) {
-			logger
-					.error("Error in retrieving all particle type particles. ",
-							e);
-			throw new RuntimeException(
-					"Error in retrieving all particle type particles. ");
-		} finally {
-			HibernateUtil.closeSession();
-		}
-		return otherParticleNames;
-	}
 
 	public List<InstrumentBean> getAllInstruments() throws Exception {
 		List<InstrumentBean> instruments = new ArrayList<InstrumentBean>();

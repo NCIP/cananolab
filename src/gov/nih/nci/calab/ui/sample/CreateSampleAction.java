@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.sample;
  * @author pansu
  */
 
-/* CVS $Id: CreateSampleAction.java,v 1.3 2007-11-16 22:30:15 pansu Exp $ */
+/* CVS $Id: CreateSampleAction.java,v 1.4 2007-11-28 20:30:26 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.sample.ContainerBean;
@@ -122,7 +122,7 @@ public class CreateSampleAction extends AbstractDispatchAction {
 	public ActionForward removeContainer(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		String indexStr = (String) request.getParameter("containerInd");
+		String indexStr = (String) request.getParameter("compInd");
 		int ind = Integer.parseInt(indexStr);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		SampleBean sample = (SampleBean) theForm

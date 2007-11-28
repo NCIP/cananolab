@@ -31,8 +31,6 @@
 				type="gov.nih.nci.calab.dto.characterization.composition.PolymerBean" />
 			<form-property name="emulsion"
 				type="gov.nih.nci.calab.dto.characterization.composition.EmulsionBean" />
-			<form-property name="characterizationId"
-				type="java.lang.String" />
 		</form-bean>
 		<form-bean name="nanoparticleCharacterizationForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
@@ -41,13 +39,10 @@
 				initial="0" />
 			<form-property name="particle"
 				type="gov.nih.nci.calab.dto.particle.ParticleBean" />
-			<form-property name="charName" type="java.lang.String" />
 			<form-property name="otherParticles"
 				type="java.lang.String[]" />
 			<form-property name="copyData" type="java.lang.Boolean"
 				initial="false" />
-			<form-property name="characterizationId"
-				type="java.lang.String" />
 			<form-property name="achar"
 				type="gov.nih.nci.calab.dto.characterization.CharacterizationBean" />
 			<form-property name="surface"
@@ -87,8 +82,7 @@
 		<form-bean name="characterizationMultiDeletionForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="dispatch" type="java.lang.String" />
-			<form-property name="particle"
-				type="gov.nih.nci.calab.dto.particle.ParticleBean" />
+			<form-property name="particleId" type="String" />
 			<form-property name="charIds" type="java.lang.String[]" />
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
@@ -199,15 +193,15 @@
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.physicalSummaryView" />
+			<forward name="success" path="particle.physicalDetailView" />
 			<forward name="input"
 				path="/size.do?dispatch=input&amp;page=0" />
 			<forward name="setup"
 				path="particle.physicalCharacterization" />
+			<forward name="detailView"
+				path="particle.physicalDetailView" />
 			<forward name="summaryView"
 				path="particle.physicalSummaryView" />
-			<forward name="nameSummaryView"
-				path="particle.physicalNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/surface"
@@ -221,14 +215,14 @@
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.physicalSummaryView" />
+			<forward name="success" path="particle.physicalDetailView" />
 			<forward name="input"
 				path="/surface.do?dispatch=input&amp;page=0" />
 			<forward name="setup" path="particle.surface" />
+			<forward name="detailView"
+				path="particle.physicalDetailView" />
 			<forward name="summaryView"
 				path="particle.physicalSummaryView" />
-			<forward name="nameSummaryView"
-				path="particle.physicalNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/molecularWeight"
@@ -242,15 +236,15 @@
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.physicalSummaryView" />
+			<forward name="success" path="particle.physicalDetailView" />
 			<forward name="input"
 				path="/molecularWeight.do?dispatch=input&amp;page=0" />
 			<forward name="setup"
 				path="particle.physicalCharacterization" />
+			<forward name="detailView"
+				path="particle.physicalDetailView" />
 			<forward name="summaryView"
 				path="particle.physicalSummaryView" />
-			<forward name="nameSummaryView"
-				path="particle.physicalNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/morphology"
@@ -264,14 +258,14 @@
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.physicalSummaryView" />
+			<forward name="success" path="particle.physicalDetailView" />
 			<forward name="input"
 				path="/morphology.do?dispatch=input&amp;page=0" />
 			<forward name="setup" path="particle.morphology" />
+			<forward name="detailView"
+				path="particle.physicalDetailView" />
 			<forward name="summaryView"
 				path="particle.physicalSummaryView" />
-			<forward name="nameSummaryView"
-				path="particle.physicalNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/shape"
@@ -285,14 +279,14 @@
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.physicalSummaryView" />
+			<forward name="success" path="particle.physicalDetailView" />
 			<forward name="input"
 				path="/shape.do?dispatch=input&amp;page=0" />
 			<forward name="setup" path="particle.shape" />
+			<forward name="detailView"
+				path="particle.physicalDetailView" />
 			<forward name="summaryView"
 				path="particle.physicalSummaryView" />
-			<forward name="nameSummaryView"
-				path="particle.physicalNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/purity"
@@ -306,15 +300,15 @@
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.physicalSummaryView" />
+			<forward name="success" path="particle.physicalDetailView" />
 			<forward name="input"
 				path="/purity.do?dispatch=input&amp;page=0" />
 			<forward name="setup"
 				path="particle.physicalCharacterization" />
+			<forward name="detailView"
+				path="particle.physicalDetailView" />
 			<forward name="summaryView"
 				path="particle.physicalSummaryView" />
-			<forward name="nameSummaryView"
-				path="particle.physicalNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/solubility"
@@ -328,14 +322,14 @@
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.physicalSummaryView" />
+			<forward name="success" path="particle.physicalDetailView" />
 			<forward name="input"
 				path="/solubility.do?dispatch=input&amp;page=0" />
 			<forward name="setup" path="particle.solubility" />
+			<forward name="detailView"
+				path="particle.physicalDetailView" />
 			<forward name="summaryView"
 				path="particle.physicalSummaryView" />
-			<forward name="nameSummaryView"
-				path="particle.physicalNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/hemolysis"
@@ -349,15 +343,15 @@
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.inVitroSummaryView" />
+			<forward name="success" path="particle.inVitroDetailView" />
 			<forward name="input"
 				path="/hemolysis.do?dispatch=input&amp;page=0" />
 			<forward name="setup"
 				path="particle.inVitroCharacterization" />
+			<forward name="detailView"
+				path="particle.inVitroDetailView" />
 			<forward name="summaryView"
 				path="particle.inVitroSummaryView" />
-			<forward name="nameSummaryView"
-				path="particle.inVitroNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/plateletAggregation"
@@ -371,15 +365,15 @@
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.inVitroSummaryView" />
+			<forward name="success" path="particle.inVitroDetailView" />
 			<forward name="input"
 				path="/plateletAggregation.do?dispatch=input&amp;page=0" />
 			<forward name="setup"
 				path="particle.inVitroCharacterization" />
+			<forward name="detailView"
+				path="particle.inVitroDetailView" />
 			<forward name="summaryView"
 				path="particle.inVitroSummaryView" />
-			<forward name="nameSummaryView"
-				path="particle.inVitroNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/coagulation"
@@ -393,15 +387,15 @@
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.inVitroSummaryView" />
+			<forward name="success" path="particle.inVitroDetailView" />
 			<forward name="input"
 				path="/coagulation.do?dispatch=input&amp;page=0" />
 			<forward name="setup"
 				path="particle.inVitroCharacterization" />
+			<forward name="detailView"
+				path="particle.inVitroDetailView" />
 			<forward name="summaryView"
 				path="particle.inVitroSummaryView" />
-			<forward name="nameSummaryView"
-				path="particle.inVitroNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/plasmaProteinBinding"
@@ -415,15 +409,15 @@
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.inVitroSummaryView" />
+			<forward name="success" path="particle.inVitroDetailView" />
 			<forward name="input"
 				path="/plasmaProteinBinding.do?dispatch=input&amp;page=0" />
 			<forward name="setup"
 				path="particle.inVitroCharacterization" />
+			<forward name="detailView"
+				path="particle.inVitroDetailView" />
 			<forward name="summaryView"
 				path="particle.inVitroSummaryView" />
-			<forward name="nameSummaryView"
-				path="particle.inVitroNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/complementActivation"
@@ -437,15 +431,15 @@
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.inVitroSummaryView" />
+			<forward name="success" path="particle.inVitroDetailView" />
 			<forward name="input"
 				path="/complementActivation.do?dispatch=input&amp;page=0" />
 			<forward name="setup"
 				path="particle.inVitroCharacterization" />
+			<forward name="detailView"
+				path="particle.inVitroDetailView" />
 			<forward name="summaryView"
 				path="particle.inVitroSummaryView" />
-			<forward name="nameSummaryView"
-				path="particle.inVitroNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/cytokineInduction"
@@ -459,15 +453,15 @@
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.inVitroSummaryView" />
+			<forward name="success" path="particle.inVitroDetailView" />
 			<forward name="input"
 				path="/cytokineInductione.do?dispatch=input&amp;page=0" />
 			<forward name="setup"
 				path="particle.inVitroCharacterization" />
+			<forward name="detailView"
+				path="particle.inVitroDetailView" />
 			<forward name="summaryView"
 				path="particle.inVitroSummaryView" />
-			<forward name="nameSummaryView"
-				path="particle.inVitroNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/chemotaxis"
@@ -481,15 +475,15 @@
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.inVitroSummaryView" />
+			<forward name="success" path="particle.inVitroDetailView" />
 			<forward name="input"
 				path="/chemotaxis.do?dispatch=input&amp;page=0" />
 			<forward name="setup"
 				path="particle.inVitroCharacterization" />
+			<forward name="detailView"
+				path="particle.inVitroDetailView" />
 			<forward name="summaryView"
 				path="particle.inVitroSummaryView" />
-			<forward name="nameSummaryView"
-				path="particle.inVitroNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/nKCellCytotoxicActivity"
@@ -503,15 +497,15 @@
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.inVitroSummaryView" />
+			<forward name="success" path="particle.inVitroDetailView" />
 			<forward name="input"
 				path="/nKCellCytotoxicActivity.do?dispatch=input&amp;page=0" />
 			<forward name="setup"
 				path="particle.inVitroCharacterization" />
+			<forward name="detailView"
+				path="particle.inVitroDetailView" />
 			<forward name="summaryView"
 				path="particle.inVitroSummaryView" />
-			<forward name="nameSummaryView"
-				path="particle.inVitroNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/leukocyteProliferation"
@@ -525,15 +519,15 @@
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.inVitroSummaryView" />
+			<forward name="success" path="particle.inVitroDetailView" />
 			<forward name="input"
 				path="/leukocyteProliferation.do?dispatch=input&amp;page=0" />
 			<forward name="setup"
 				path="particle.inVitroCharacterization" />
+			<forward name="detailView"
+				path="particle.inVitroDetailView" />
 			<forward name="summaryView"
 				path="particle.inVitroSummaryView" />
-			<forward name="nameSummaryView"
-				path="particle.inVitroNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/cFU_GM"
@@ -547,15 +541,15 @@
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.inVitroSummaryView" />
+			<forward name="success" path="particle.inVitroDetailView" />
 			<forward name="input"
 				path="/cFU_GM.do?dispatch=input&amp;page=0" />
 			<forward name="setup"
 				path="particle.inVitroCharacterization" />
+			<forward name="detailView"
+				path="particle.inVitroDetailView" />
 			<forward name="summaryView"
 				path="particle.inVitroSummaryView" />
-			<forward name="nameSummaryView"
-				path="particle.inVitroNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/oxidativeBurst"
@@ -569,15 +563,15 @@
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.inVitroSummaryView" />
+			<forward name="success" path="particle.inVitroDetailView" />
 			<forward name="input"
 				path="/oxidativeBurst.do?dispatch=input&amp;page=0" />
 			<forward name="setup"
 				path="particle.inVitroCharacterization" />
+			<forward name="detailView"
+				path="particle.inVitroDetailView" />
 			<forward name="summaryView"
 				path="particle.inVitroSummaryView" />
-			<forward name="nameSummaryView"
-				path="particle.inVitroNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/phagocytosis"
@@ -591,15 +585,15 @@
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.inVitroSummaryView" />
+			<forward name="success" path="particle.inVitroDetailView" />
 			<forward name="input"
 				path="/phagocytosis.do?dispatch=input&amp;page=0" />
 			<forward name="setup"
 				path="particle.inVitroCharacterization" />
+			<forward name="detailView"
+				path="particle.inVitroDetailView" />
 			<forward name="summaryView"
 				path="particle.inVitroSummaryView" />
-			<forward name="nameSummaryView"
-				path="particle.inVitroNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/cellViability"
@@ -613,14 +607,14 @@
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.inVitroSummaryView" />
+			<forward name="success" path="particle.inVitroDetailView" />
 			<forward name="input"
 				path="/cellViability.do?dispatch=input&amp;page=0" />
 			<forward name="setup" path="particle.cytotoxicity" />
+			<forward name="detailView"
+				path="particle.inVitroDetailView" />
 			<forward name="summaryView"
 				path="particle.inVitroSummaryView" />
-			<forward name="nameSummaryView"
-				path="particle.inVitroNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/caspase3Activation"
@@ -634,14 +628,14 @@
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.inVitroSummaryView" />
+			<forward name="success" path="particle.inVitroDetailView" />
 			<forward name="input"
 				path="/caspase3Activation.do?dispatch=input&amp;page=0" />
 			<forward name="setup" path="particle.cytotoxicity" />
+			<forward name="detailView"
+				path="particle.inVitroDetailView" />
 			<forward name="summaryView"
 				path="particle.inVitroSummaryView" />
-			<forward name="nameSummaryView"
-				path="particle.inVitroNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/enzymeInduction"
@@ -655,15 +649,15 @@
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.inVitroSummaryView" />
+			<forward name="success" path="particle.inVitroDetailView" />
 			<forward name="input"
 				path="/enzymeInduction.do?dispatch=input&amp;page=0" />
 			<forward name="setup"
 				path="particle.inVitroCharacterization" />
+			<forward name="detailView"
+				path="particle.inVitroDetailView" />
 			<forward name="summaryView"
 				path="particle.inVitroSummaryView" />
-			<forward name="nameSummaryView"
-				path="particle.inVitroNameSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
 			parameter="dispatch" path="/oxidativeStress"
@@ -677,15 +671,15 @@
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.download.file" path="home.error"
 				type="gov.nih.nci.calab.exception.CalabException" />
-			<forward name="success" path="particle.inVitroSummaryView" />
+			<forward name="success" path="particle.inVitroDetailView" />
 			<forward name="input"
 				path="/oxidativeStress.do?dispatch=input&amp;page=0" />
 			<forward name="setup"
 				path="particle.inVitroCharacterization" />
+			<forward name="detailView"
+				path="particle.inVitroDetailView" />
 			<forward name="summaryView"
 				path="particle.inVitroSummaryView" />
-			<forward name="nameSummaryView"
-				path="particle.inVitroNameSummaryView" />
 		</action>
 		<action name="loadDerivedBioAssayDataForm" parameter="dispatch"
 			path="/loadFile"

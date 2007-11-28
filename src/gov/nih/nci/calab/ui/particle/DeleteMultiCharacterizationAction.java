@@ -6,13 +6,13 @@ package gov.nih.nci.calab.ui.particle;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
+import gov.nih.nci.calab.service.particle.SearchNanoparticleService;
 import gov.nih.nci.calab.service.particle.SubmitNanoparticleService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.security.InitSecuritySetup;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,12 +33,13 @@ public class DeleteMultiCharacterizationAction extends AbstractDispatchAction {
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		// setCharacterizationTypeCharacterizations
-		String deleteType = request.getParameter("charCategory");
-
-		Map<String, List<CharacterizationBean>> charsMap = (Map<String, List<CharacterizationBean>>) (request
-				.getSession().getAttribute("charaLeafToCharacterizations"));
-		List<CharacterizationBean> charBeans = charsMap.get(deleteType);
+		String submitType = request.getParameter("submitType");
+		String particleId = request.getParameter("particleId");
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		theForm.set(particleId, particleId);
+		SearchNanoparticleService service = new SearchNanoparticleService();
+		List<CharacterizationBean> charBeans = service
+				.getParticleCharacterizationsByName(submitType, particleId);
 
 		if (charBeans != null) {
 			request.getSession().setAttribute("charBeans", charBeans);
@@ -52,17 +53,15 @@ public class DeleteMultiCharacterizationAction extends AbstractDispatchAction {
 			saveMessages(request, msgs);
 			return mapping.findForward("message");
 		}
-
 	}
 
 	public ActionForward deleteConfirmed(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		ActionForward forward = null;
-
+		
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String[] charIds = (String[]) theForm.get("charIds");
-		ParticleBean particle = (ParticleBean) theForm.get("particle");
+		String particleId = theForm.getString("particleId");
 
 		// setCharacterizationTypeCharacterizations
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
@@ -71,16 +70,13 @@ public class DeleteMultiCharacterizationAction extends AbstractDispatchAction {
 		// signal the session that characterization has been changed
 		request.getSession().setAttribute("newCharacterizationCreated", "true");
 
-		InitParticleSetup.getInstance().setSideParticleMenu(request,
-				particle.getSampleId());
+		InitParticleSetup.getInstance()
+				.setSideParticleMenu(request, particleId);
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.delete.characterization");
 		msgs.add("message", msg);
 		saveMessages(request, msgs);
-
-		forward = mapping.findForward("message");
-
-		return forward;
+		return mapping.getInputForward();
 	}
 
 	public boolean loginRequired() {

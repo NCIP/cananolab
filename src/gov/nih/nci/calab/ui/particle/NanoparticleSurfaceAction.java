@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSurfaceAction.java,v 1.3 2007-11-21 23:21:49 pansu Exp $ */
+/* CVS $Id: NanoparticleSurfaceAction.java,v 1.4 2007-11-28 20:30:25 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.physical.SurfaceBean;
@@ -91,8 +91,8 @@ public class NanoparticleSurfaceAction extends BaseCharacterizationAction {
 	public ActionForward removeSurfaceChemistry(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		String indexStr = request.getParameter("chemInd");
-		int chemInd = Integer.parseInt(indexStr);
+		String indexStr = request.getParameter("compInd");
+		int compInd = Integer.parseInt(indexStr);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		SurfaceBean surface = (SurfaceBean) theForm.get("surface");
 		List<SurfaceChemistryBean> origChemistries = surface
@@ -105,7 +105,7 @@ public class NanoparticleSurfaceAction extends BaseCharacterizationAction {
 		}
 		// remove the one at the index
 		if (origNum > 0) {
-			chems.remove(chemInd);
+			chems.remove(compInd);
 		}
 		surface.setSurfaceChemistries(chems);
 		ParticleBean particle = (ParticleBean) theForm.get("particle");

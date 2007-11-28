@@ -233,9 +233,9 @@ public class SubmitNanoparticleService {
 					List results = session
 							.createQuery(
 									"from Nanoparticle particle left join fetch particle.characterizationCollection where particle.name='"
-											+ charBean.getParticleName()
+											+ charBean.getParticle().getSampleName()
 											+ "' and particle.type='"
-											+ charBean.getParticleType() + "'")
+											+ charBean.getParticle().getSampleType() + "'")
 							.list();
 
 					for (Object obj : results) {
@@ -341,18 +341,18 @@ public class SubmitNanoparticleService {
 		String viewTitleQuery = "";
 		if (charBean.getId() == null) {
 			viewTitleQuery = "select count(achar.identificationName) from Nanoparticle particle join particle.characterizationCollection achar where particle.name='"
-					+ charBean.getParticleName()
+					+ charBean.getParticle().getSampleName()
 					+ "' and particle.type='"
-					+ charBean.getParticleType()
+					+ charBean.getParticle().getSampleType()
 					+ "' and achar.identificationName='"
 					+ charBean.getViewTitle()
 					+ "' and achar.name='"
 					+ achar.getName() + "'";
 		} else {
 			viewTitleQuery = "select count(achar.identificationName) from Nanoparticle particle join particle.characterizationCollection achar where particle.name='"
-					+ charBean.getParticleName()
+					+ charBean.getParticle().getSampleName()
 					+ "' and particle.type='"
-					+ charBean.getParticleType()
+					+ charBean.getParticle().getSampleType()
 					+ "' and achar.identificationName='"
 					+ charBean.getViewTitle()
 					+ "' and achar.name='"
@@ -541,9 +541,9 @@ public class SubmitNanoparticleService {
 					List results = session
 							.createQuery(
 									"from Nanoparticle particle left join fetch particle.characterizationCollection where particle.name='"
-											+ composition.getParticleName()
+											+ composition.getParticle().getSampleName()
 											+ "' and particle.type='"
-											+ composition.getParticleType()
+											+ composition.getParticle().getSampleType()
 											+ "'").list();
 
 					for (Object obj : results) {

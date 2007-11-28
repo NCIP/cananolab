@@ -50,6 +50,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
@@ -477,7 +479,7 @@ public class SearchNanoparticleService {
 						String datumLabel = data.getName();
 						if (data.getUnit() != null
 								&& data.getUnit().length() > 0) {
-							datumLabel = "(" + data.getUnit() + ")";
+							datumLabel += "(" + data.getUnit() + ")";
 						}
 						datumMap.put(datumLabel, data.getValue());
 					}
@@ -511,7 +513,8 @@ public class SearchNanoparticleService {
 									+ " and chara.name='"
 									+ charName
 									+ "'"
-									+ " order by chara.identificationName").list();
+									+ " order by chara.identificationName")
+					.list();
 
 			Characterization aChar = null;
 			for (Object obj : results) {
@@ -701,5 +704,53 @@ public class SearchNanoparticleService {
 			HibernateUtil.closeSession();
 		}
 		return particleBean;
+	}
+
+	/**
+	 * Get other particles from the given particle source
+	 * 
+	 * @param particleSource
+	 * @param particleName
+	 * @param user
+	 * @return
+	 * @throws Exception
+	 */
+	public SortedSet<String> getOtherParticles(String particleSource,
+			String particleName, UserBean user) throws Exception {
+
+		UserService userService = new UserService(
+				CaNanoLabConstants.CSM_APP_NAME);
+		SortedSet<String> otherParticleNames = new TreeSet<String>();
+		try {
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			String hqlString = "select particle.name from Nanoparticle particle where particle.source.organizationName='"
+					+ particleSource
+					+ "' and particle.name !='"
+					+ particleName
+					+ "'";
+
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
+			for (Object obj : results) {
+				String otherParticleName = (String) obj;
+				// check if user can see the particle
+				boolean status = userService.checkReadPermission(user,
+						otherParticleName);
+				if (status) {
+					otherParticleNames.add(otherParticleName);
+				}
+			}
+
+		} catch (Exception e) {
+			logger
+					.error("Error in retrieving all particle type particles. ",
+							e);
+			throw new RuntimeException(
+					"Error in retrieving all particle type particles. ");
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		return otherParticleNames;
 	}
 }

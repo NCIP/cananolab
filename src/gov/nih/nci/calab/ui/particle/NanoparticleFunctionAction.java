@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleFunctionAction.java,v 1.3 2007-11-21 23:21:50 pansu Exp $ */
+/* CVS $Id: NanoparticleFunctionAction.java,v 1.4 2007-11-28 20:30:25 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.function.AgentBean;
@@ -194,7 +194,7 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 	public ActionForward removeLinkage(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		String linkageIndex = request.getParameter("linkageInd");
+		String linkageIndex = request.getParameter("compInd");
 		int ind = Integer.parseInt(linkageIndex);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		FunctionBean function = (FunctionBean) theForm.get("function");
@@ -218,7 +218,7 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 	public ActionForward addTarget(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		String linkageIndex = request.getParameter("linkageInd");
+		String linkageIndex = request.getParameter("compInd");
 		int ind = Integer.parseInt(linkageIndex);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		FunctionBean function = (FunctionBean) theForm.get("function");
@@ -243,9 +243,9 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 
-		String linkageIndex = request.getParameter("linkageInd");
+		String linkageIndex = request.getParameter("compInd");
 		int ind = Integer.parseInt(linkageIndex);
-		String targetIndex = request.getParameter("targetInd");
+		String targetIndex = request.getParameter("childCompInd");
 		int tInd = Integer.parseInt(targetIndex);
 
 		FunctionBean function = (FunctionBean) theForm.get("function");

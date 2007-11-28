@@ -42,7 +42,7 @@ function hideDetail(elementId) {
 		<tr>
 			<td class="formSubTitle" colspan="3" align="right">
 				<a href="#"
-					onclick="javascript:removeLinkage(nanoparticleFunctionForm, ${param.linkageInd})">
+					onclick="javascript:removeComponent(nanoparticleFunctionForm, 'nanoparticleFunction', ${param.linkageInd}, 'removeLinkage')">
 					<img src="images/delete.gif" border="0" alt="remove this linkage">
 				</a>
 			</td>
@@ -279,7 +279,7 @@ function hideDetail(elementId) {
 					<tr>
 						<td valign="bottom">
 							<a href="#"
-								onclick="javascript:addTarget(nanoparticleFunctionForm, ${param.linkageInd})"><span
+								onclick="javascript:addChildComponent(nanoparticleFunctionForm, 'nanoparticleFunction', ${param.linkageInd}, 'addTarget')"><span
 								class="addLink">Add Agent Target</span> </a>
 						</td>
 						<td>
