@@ -477,8 +477,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		DerivedBioAssayDataBean derivedBioAssayDataBean = achar
 				.getDerivedBioAssayDataList().get(fileNum);
 		derivedBioAssayDataBean.setParticleName(particle.getSampleName());
-		derivedBioAssayDataBean.setCharacterizationName(theForm
-				.getString("charName"));
+		derivedBioAssayDataBean.setCharacterizationName(achar.getName());
 		request.setAttribute("file", derivedBioAssayDataBean);
 		return mapping.findForward("loadFile");
 	}
