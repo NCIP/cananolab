@@ -28,6 +28,7 @@
 						<c:param name="particleId" value="${particleId}" />
 						<c:param name="characterizationId"
 							value="${nanoparticleCharacterizationForm.map.achar.id}" />
+						<c:param name="submitType" value="${submitType}"/>
 					</c:url>
 					<c:if test="${canCreateNanoparticle eq 'true'}">
 						<td>
