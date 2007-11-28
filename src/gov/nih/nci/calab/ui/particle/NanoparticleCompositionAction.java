@@ -8,7 +8,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleCompositionAction.java,v 1.6 2007-11-21 23:21:49 pansu Exp $ */
+/* CVS $Id: NanoparticleCompositionAction.java,v 1.7 2007-11-28 20:30:25 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.composition.CarbonNanotubeBean;
 import gov.nih.nci.calab.dto.characterization.composition.ComposingElementBean;
@@ -88,8 +88,7 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		} else {
 			composition = new CompositionBean();
 		}
-		composition.setParticleName(particle.getSampleName());
-		composition.setParticleType(particle.getSampleType());
+		composition.setParticle(particle);
 		composition.setCreatedBy(baseComposition.getCreatedBy());
 		composition.setCreatedDate(baseComposition.getCreatedDate());
 		composition.setCharacterizationSource(baseComposition
@@ -294,7 +293,7 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String indexStr = (String) request.getParameter("groupInd");
+		String indexStr = (String) request.getParameter("compInd");
 		int ind = Integer.parseInt(indexStr);
 		DendrimerBean dendrimer = (DendrimerBean) theForm.get("dendrimer");
 		List<SurfaceGroupBean> origSurfaceGroups = dendrimer.getSurfaceGroups();
@@ -338,7 +337,7 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 	public ActionForward removeComposingElement(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		String indexStr = (String) request.getParameter("elementInd");
+		String indexStr = (String) request.getParameter("compInd");
 		int ind = Integer.parseInt(indexStr);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CompositionBean comp = (CompositionBean) theForm.get("composition");

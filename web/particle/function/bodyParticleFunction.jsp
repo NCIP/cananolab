@@ -52,7 +52,7 @@
 											<c:when test="${canCreateNanoparticle eq 'true'}">
 												<td valign="bottom">
 													<a href="#"
-														onclick="javascript:addLinkage(nanoparticleFunctionForm)"><span
+														onclick="javascript:addComponent(nanoparticleFunctionForm, 'nanoparticleFunction', 'addLinkage')"><span
 														class="addLink">Add Linkage</span> </a>
 												</td>
 												<td>

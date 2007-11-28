@@ -2,12 +2,12 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<html:form action="/${nanoparticleCharacterizationForm.map.charName}">
+<html:form action="/${nanoparticleCharacterizationForm.map.achar.actionName}">
 	<table width="100%" align="center">
 		<tr>
 			<td>
-				<h4>					
-					${pageTitle} ${nanoparticleCharacterizationForm.map.charName}
+				<h4>
+					${pageTitle} ${submitType}
 				</h4>
 			</td>
 			<td align="right" width="15%">
@@ -54,7 +54,7 @@
 											<c:when test="${canCreateNanoparticle eq 'true'}">
 												<td valign="bottom">
 													<a href="#"
-														onclick="javascript:addCharacterizationFile(nanoparticleCharacterizationForm, '${nanoparticleCharacterizationForm.map.charName}', '${nanoparticleCharacterizationForm.map.charName}')"><span
+														onclick="javascript:addComponent(nanoparticleCharacterizationForm, '${nanoparticleCharacterizationForm.map.achar.actionName}', 'addFile')"><span
 														class="addLink">Add File/Derived Data</span> </a>
 												</td>
 											</c:when>
@@ -67,7 +67,7 @@
 												property="achar.derivedBioAssayDataList"
 												id="derivedBioAssayData" indexId="fileInd">
 												<jsp:include
-													page="/particle/shared/bodyCharacterizationFile.jsp">													
+													page="/particle/shared/bodyCharacterizationFile.jsp">
 													<jsp:param name="fileInd" value="${fileInd}" />
 												</jsp:include>
 												<br>

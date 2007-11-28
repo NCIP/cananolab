@@ -127,7 +127,7 @@
 
 						<td class="rightLabel">
 							<a href="#" class="removeLink"
-								onclick="javascript:removeCharacterizationData(nanoparticleCharacterizationForm, '${nanoparticleCharacterizationForm.map.charName}','${nanoparticleCharacterizationForm.map.charName}', ${param.fileInd}, ${dInd})">remove</a>
+								onclick="javascript:removeChildComponent(nanoparticleCharacterizationForm, '${nanoparticleCharacterizationForm.map.achar.actionName}', ${param.fileInd}, ${dInd}, 'removeData')">remove</a>
 						</td>
 					</c:when>
 					<c:otherwise>

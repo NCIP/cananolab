@@ -15,7 +15,6 @@ import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.common.FileService;
-import gov.nih.nci.calab.service.common.LookupService;
 import gov.nih.nci.calab.service.particle.SearchNanoparticleService;
 import gov.nih.nci.calab.service.particle.SubmitNanoparticleService;
 import gov.nih.nci.calab.service.security.UserService;
@@ -135,8 +134,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		charBean.setCreatedBy(user.getLoginName());
 		charBean.setCreatedDate(date);
 		ParticleBean particle = (ParticleBean) theForm.get("particle");
-		charBean.setParticleName(particle.getSampleName());
-		charBean.setParticleType(particle.getSampleType());
+		charBean.setParticle(particle);
 		return charBean;
 	}
 
@@ -146,10 +144,10 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		ParticleBean particle = (ParticleBean) theForm.get("particle");
 		CharacterizationBean charBean = (CharacterizationBean) theForm
 				.get("achar");
-		String charName = theForm.getString("charName");
 		// save new lookup up types in the database definition tables.
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		service.addNewCharacterizationDataDropdowns(charBean, charName);
+		service.addNewCharacterizationDataDropdowns(charBean, charBean
+				.getName());
 
 		request.getSession().setAttribute("newCharacterizationCreated", "true");
 		request.getSession().setAttribute("newCharacterizationSourceCreated",
@@ -168,7 +166,6 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		CharacterizationBean charBean = (CharacterizationBean) theForm
 				.get("achar");
 		ParticleBean particle = (ParticleBean) theForm.get("particle");
-		charBean.setParticleName(particle.getSampleName());
 		String[] otherParticles = (String[]) theForm.get("otherParticles");
 		Boolean copyData = (Boolean) theForm.get("copyData");
 		CharacterizationBean[] charBeans = new CharacterizationBean[otherParticles.length];
@@ -177,10 +174,12 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		for (String particleName : otherParticles) {
 			CharacterizationBean newCharBean = charBean.copy(copyData
 					.booleanValue());
-			newCharBean.setParticleName(particleName);
+			// overwrite particle and particle type;
+			newCharBean.getParticle().setSampleName(particleName);
 			ParticleBean otherParticle = searchService
 					.getParticleBy(particleName);
-			newCharBean.setParticleType(otherParticle.getSampleType());
+			newCharBean.getParticle().setSampleType(
+					otherParticle.getSampleType());
 			// reset view title
 			String timeStamp = StringUtils.convertDateToString(new Date(),
 					"MMddyyHHmmssSSS");
@@ -236,42 +235,62 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			DynaValidatorForm theForm) throws Exception {
 		HttpSession session = request.getSession();
 		clearMap(session, theForm);
-		String submitType = (String) request.getParameter("submitType");
-		if (submitType != null) {
-			String charName = StringUtils
-					.getOneWordLowerCaseFirstLetter(submitType);
-			theForm.set("charName", charName);
-			InitParticleSetup.getInstance()
-					.setAllCharacterizationMeasureUnitsTypes(session, charName);
-			InitParticleSetup.getInstance().setDerivedDatumNames(session,
-					charName);
-		}
-		String particleId = request.getParameter("particleId");
-		SearchNanoparticleService searchtNanoparticleService = new SearchNanoparticleService();
-		ParticleBean particle = searchtNanoparticleService
-				.getGeneralInfo(particleId);
-		theForm.set("particle", particle);
-
-		InitSessionSetup.getInstance().setApplicationOwner(session);
+		SearchNanoparticleService service = new SearchNanoparticleService();
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		InitParticleSetup.getInstance()
-				.setSideParticleMenu(request, particleId);
+				.setAllCharacterizationDropdowns(session);
+
+		// set up particle
+		String particleId = request.getParameter("particleId");
+		if (particleId != null) {
+			SearchNanoparticleService searchtNanoparticleService = new SearchNanoparticleService();
+			ParticleBean particle = searchtNanoparticleService
+					.getGeneralInfo(particleId);
+			theForm.set("particle", particle);
+
+			// set up other particles from the same source
+			SortedSet<String> allOtherParticleNames = service
+					.getOtherParticles(particle.getSampleSource(), particle
+							.getSampleName(), user);
+			session
+					.setAttribute("allOtherParticleNames",
+							allOtherParticleNames);
+
+			InitParticleSetup.getInstance().setSideParticleMenu(request,
+					particleId);
+		} else {
+			throw new RuntimeException("Particle ID is required.");
+		}
+		InitSessionSetup.getInstance().setApplicationOwner(session);
 		InitParticleSetup.getInstance().setAllInstruments(session);
 		InitParticleSetup.getInstance().setAllDerivedDataFileTypes(session);
 		InitParticleSetup.getInstance().setAllPhysicalDropdowns(session);
 		InitParticleSetup.getInstance().setAllInvitroDropdowns(session);
-		InitProtocolSetup.getInstance().setProtocolFilesBySubmitType(session,
-				submitType);
 
-		// set up other particle names from the same source
-		LookupService service = new LookupService();
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-
-		SortedSet<String> allOtherParticleNames = service.getOtherParticles(
-				particle.getSampleSource(), particle.getSampleName(), user);
-		session.setAttribute("allOtherParticleNames", allOtherParticleNames);
-
-		InitParticleSetup.getInstance()
-				.setAllCharacterizationDropdowns(session);
+		// set characterization
+		String submitType = (String) request.getParameter("submitType");
+		String characterizationId = request.getParameter("characterizationId");
+		if (characterizationId != null) {
+			CharacterizationBean charBean = service
+					.getCharacterizationBy(characterizationId);
+			if (charBean == null) {
+				throw new RuntimeException(
+						"This characterization no longer exists in the database.  Please log in again to refresh.");
+			}
+			theForm.set("achar", charBean);
+		}
+		CharacterizationBean achar = (CharacterizationBean) theForm
+				.get("achar");
+		if (achar != null && submitType != null) {
+			achar.setName(submitType);
+			InitParticleSetup.getInstance()
+					.setAllCharacterizationMeasureUnitsTypes(session,
+							submitType);
+			InitParticleSetup.getInstance().setDerivedDatumNames(session,
+					achar.getName());
+			InitProtocolSetup.getInstance().setProtocolFilesBySubmitType(
+					session, achar.getName());
+		}
 	}
 
 	/**
@@ -317,8 +336,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		ShapeBean shape = (ShapeBean) theForm.get("shape");
 		MorphologyBean morphology = (MorphologyBean) theForm.get("morphology");
 		CytotoxicityBean cyto = (CytotoxicityBean) theForm.get("cytotoxicity");
-		SolubilityBean solubility = (SolubilityBean) theForm.get("solubility");
-		SurfaceBean surface = (SurfaceBean) theForm.get("surface");
+		SolubilityBean solubility = (SolubilityBean) theForm.get("solubility");		
 		HttpSession session = request.getSession();
 		updateAllCharEditables(session, achar);
 		updateShapeEditable(session, shape);
@@ -344,15 +362,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		initSetup(request, theForm);
-		String characterizationId = request.getParameter("characterizationId");
-		SearchNanoparticleService service = new SearchNanoparticleService();
-		CharacterizationBean charBean = service
-				.getCharacterizationBy(characterizationId);
-		if (charBean == null) {
-			throw new Exception(
-					"This characterization no longer exists in the database.  Please log in again to refresh.");
-		}
-		theForm.set("achar", charBean);
+		CharacterizationBean charBean = (CharacterizationBean) theForm
+				.get("achar");
 		// set characterizations with additional information
 		if (charBean instanceof ShapeBean) {
 			theForm.set("shape", charBean);
@@ -404,31 +415,20 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 				protocolFileBean.setHidden(true);
 			}
 		}
-
 		return mapping.findForward("setup");
+	}
+
+	public ActionForward detailView(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		initSetup(request, theForm);
+		return mapping.findForward("detailView");
 	}
 
 	public ActionForward summaryView(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		initSetup(request, theForm);
-		String characterizationId = request.getParameter("characterizationId");
-		SearchNanoparticleService service = new SearchNanoparticleService();
-		CharacterizationBean charBean = service
-				.getCharacterizationBy(characterizationId);
-		if (charBean == null) {
-			throw new Exception(
-					"This characterization no longer exists in the database.  Please log in again to refresh.");
-		}
-		theForm.set("achar", charBean);
-
-		return mapping.findForward("summaryView");
-	}
-
-	public ActionForward nameSummaryView(ActionMapping mapping,
-			ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		initSetup(request, theForm);
 		String submitType = request.getParameter("submitType");
@@ -450,23 +450,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		request.setAttribute("nameCharacterizationSummary", charSummaryBeans);
 		request.setAttribute("datumLabels", datumLabels);
 
-		return mapping.findForward("nameSummaryView");
-	}
-
-	/**
-	 * Prepare the form for viewing existing characterization
-	 * 
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws Exception
-	 */
-	public ActionForward setupView(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		return setupUpdate(mapping, form, request, response);
+		return mapping.findForward("summaryView");
 	}
 
 	/**
@@ -563,7 +547,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 	public ActionForward removeFile(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		String fileIndexStr = (String) request.getParameter("fileInd");
+		String fileIndexStr = (String) request.getParameter("compInd");
 		int fileInd = Integer.parseInt(fileIndexStr);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CharacterizationBean achar = (CharacterizationBean) theForm
@@ -592,7 +576,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
-		String fileIndexStr = (String) request.getParameter("fileInd");
+		String fileIndexStr = (String) request.getParameter("compInd");
 		int fileInd = Integer.parseInt(fileIndexStr);
 		DerivedBioAssayDataBean derivedBioAssayDataBean = (DerivedBioAssayDataBean) achar
 				.getDerivedBioAssayDataList().get(fileInd);
@@ -617,9 +601,9 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
-		String fileIndexStr = (String) request.getParameter("fileInd");
+		String fileIndexStr = (String) request.getParameter("compInd");
 		int fileInd = Integer.parseInt(fileIndexStr);
-		String dataIndexStr = (String) request.getParameter("dataInd");
+		String dataIndexStr = (String) request.getParameter("childCompInd");
 		int dataInd = Integer.parseInt(dataIndexStr);
 		DerivedBioAssayDataBean derivedBioAssayDataBean = (DerivedBioAssayDataBean) achar
 				.getDerivedBioAssayDataList().get(fileInd);
@@ -653,11 +637,12 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		initSetup(request, theForm);
 		ParticleBean particle = (ParticleBean) theForm.get("particle");
-		String strCharId = theForm.getString("characterizationId");
+		String charId = request.getParameter("characterizationId");
 
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
-		service.deleteCharacterizations(new String[] { strCharId });
+		service.deleteCharacterizations(new String[] { charId });
 
 		// signal the session that characterization has been changed
 		request.getSession().setAttribute("newCharacterizationCreated", "true");
