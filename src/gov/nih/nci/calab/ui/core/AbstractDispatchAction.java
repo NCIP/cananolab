@@ -28,7 +28,8 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 		}
 		String dispatch = request.getParameter("dispatch");
 		if (dispatch.equals("setupView") || dispatch.equals("summaryView")
-				|| dispatch.equals("download") || dispatch.equals("loadFile")) {
+				|| dispatch.equals("detailView") || dispatch.equals("download")
+				|| dispatch.equals("loadFile")) {
 			return super.execute(mapping, form, request, response);
 		}
 		if (user != null) {
