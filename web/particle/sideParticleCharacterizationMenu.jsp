@@ -131,6 +131,7 @@
 			<ul class="sublist_4" style="${phyDisplay}">
 				<c:forEach var="subCharType"
 					items="${allCharacterizations[physicalType]}">
+					<c:if test="${subCharType != 'Composition'}">
 					<li>
 						<c:url var="submitUrl"
 							value="${charaLeafActionName[subCharType]}.do">
@@ -194,6 +195,7 @@
 							</ul>
 						</c:if>
 					</li>
+					</c:if>
 				</c:forEach>
 			</ul>
 		</li>
