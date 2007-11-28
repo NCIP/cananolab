@@ -36,7 +36,7 @@
 								&nbsp;
 							</td>
 							<td class="addCell">
-								<a href="${addUrl}" class="addlink">add</a>
+								<a href="${addUrl}" class="addlink"><img src="images/btn_add.gif" border="0"/></a>
 							</td>
 						</tr>
 					</table>
