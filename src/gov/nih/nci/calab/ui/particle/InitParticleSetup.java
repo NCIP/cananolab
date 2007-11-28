@@ -358,9 +358,7 @@ public class InitParticleSetup {
 					.get(ctype);
 			for (CharacterizationBean cbean : cbeanList) {
 				String cname = cbean.getName();
-				if (!charTypeMap.containsKey(cname)) {
-					leafMap.put(cname, cbean.getActionName());
-				}
+				leafMap.put(cname, cbean.getActionName());
 			}
 		}
 		return leafMap;
