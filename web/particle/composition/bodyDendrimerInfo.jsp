@@ -3,11 +3,6 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<script language="JavaScript">
-<!--
-
-//-->
-</script>
 <br>
 <table class="topBorderOnly" cellspacing="0" cellpadding="3"
 	width="100%" align="center" summary="" border="0">

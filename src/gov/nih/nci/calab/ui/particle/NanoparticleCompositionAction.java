@@ -8,7 +8,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleCompositionAction.java,v 1.7 2007-11-28 20:30:25 pansu Exp $ */
+/* CVS $Id: NanoparticleCompositionAction.java,v 1.8 2007-11-28 21:00:13 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.composition.CarbonNanotubeBean;
 import gov.nih.nci.calab.dto.characterization.composition.ComposingElementBean;
@@ -241,7 +241,7 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 				.getParticleInfo(particleId);
 		theForm.set("particle", particle);
 
-		String compositionId = (String) theForm.get("characterizationId");
+		String compositionId = request.getParameter("characterizationId");
 		SearchNanoparticleService service = new SearchNanoparticleService();
 		CompositionBean composition = service.getCompositionBy(compositionId);
 		if (composition == null) {
@@ -264,7 +264,6 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		} else if (composition instanceof EmulsionBean) {
 			theForm.set("emulsion", composition);
 		}
-		theForm.set("characterizationId", compositionId);
 		return mapping.findForward("setup");
 	}
 
@@ -386,7 +385,7 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 			HttpServletResponse response) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ParticleBean particle = (ParticleBean) theForm.get("particle");
-		String strCharId = theForm.getString("characterizationId");
+		String strCharId = request.getParameter("characterizationId");
 
 		SubmitNanoparticleService service = new SubmitNanoparticleService();
 		service.deleteCharacterizations(new String[] { strCharId });

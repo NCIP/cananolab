@@ -36,7 +36,7 @@ public class DeleteMultiCharacterizationAction extends AbstractDispatchAction {
 		String submitType = request.getParameter("submitType");
 		String particleId = request.getParameter("particleId");
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		theForm.set(particleId, particleId);
+		theForm.set("particleId", particleId);
 		SearchNanoparticleService service = new SearchNanoparticleService();
 		List<CharacterizationBean> charBeans = service
 				.getParticleCharacterizationsByName(submitType, particleId);
@@ -76,7 +76,7 @@ public class DeleteMultiCharacterizationAction extends AbstractDispatchAction {
 		ActionMessage msg = new ActionMessage("message.delete.characterization");
 		msgs.add("message", msg);
 		saveMessages(request, msgs);
-		return mapping.getInputForward();
+		return mapping.findForward("message");
 	}
 
 	public boolean loginRequired() {
