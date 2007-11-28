@@ -6,6 +6,7 @@ import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.dto.common.InstrumentConfigBean;
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
+import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 
@@ -34,13 +35,12 @@ public class CharacterizationBean {
 
 	private String description;
 
-	// not set by application
 	private String name;
 
 	// Abbreviation
 	private String abbr;
 
-	// not set by application
+	//not set by application
 	private String classification;
 
 	private String createdBy;
@@ -55,9 +55,7 @@ public class CharacterizationBean {
 
 	private String actionName;
 
-	private String particleName;
-
-	private String particleType;
+	private ParticleBean particle=new ParticleBean();
 
 	public String getActionName() {
 		this.actionName = StringUtils.getOneWordLowerCaseFirstLetter(this.name);
@@ -91,8 +89,7 @@ public class CharacterizationBean {
 		this.description = charBean.getDescription();
 		this.instrumentConfigBean = charBean.getInstrumentConfigBean();
 		this.protocolFileBean = charBean.getProtocolFileBean();
-		this.particleType = charBean.getParticleType();
-		this.particleName = charBean.getParticleName();
+		this.particle = charBean.getParticle();
 	}
 
 	public CharacterizationBean(String id, String name, String viewTitle) {
@@ -274,20 +271,13 @@ public class CharacterizationBean {
 		return this.viewColor;
 	}
 
-	public String getParticleName() {
-		return this.particleName;
+
+	public ParticleBean getParticle() {
+		return particle;
 	}
 
-	public void setParticleName(String particleName) {
-		this.particleName = particleName;
-	}
-
-	public String getParticleType() {
-		return this.particleType;
-	}
-
-	public void setParticleType(String particleType) {
-		this.particleType = particleType;
+	public void setParticle(ParticleBean particle) {
+		this.particle = particle;
 	}
 
 	/**
@@ -313,5 +303,13 @@ public class CharacterizationBean {
 		}
 		newCharBean.setDerivedBioAssayDataList(newDerivedBioAssayDataList);
 		return newCharBean;
+	}
+
+	public void setActionName(String actionName) {
+		this.actionName = actionName;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }
