@@ -105,11 +105,11 @@
 							<br>
 							<c:if
 								test="${!empty summaryBean.charFile && !empty summaryBean.charFile.uri}">
-								<a class="thumbnail" href="#thumb"><img
+								<a href="#"
+									onclick="popImage('${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${summaryBean.charFile.id}', ${summaryBean.charFile.id}, 100, 100)"><img
 										src="${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${summaryBean.charFile.id}"
-										border="0" width="150"> <span><img
-											src="${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${summaryBean.charFile.id}">
-										<br /> </span> </a>
+										border="0" width="150">
+								</a>
 							</c:if>
 						</td>
 					</tr>
@@ -118,3 +118,5 @@
 		</td>
 	</tr>
 </table>
+
+
