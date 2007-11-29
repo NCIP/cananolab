@@ -127,12 +127,24 @@
 	</c:otherwise>
 </c:choose>
 
+<style type="text/css">
+	#${characterizationId} {
+		background-color: #98B7B7;
+		color: white;
+	}
+	#${characterizationId} a {
+		background-color: #98B7B7;
+		color: white;
+	}
+</style>
+
 <c:set var="physicalType" value="Physical" />
 <li class="controlList">
 	<a href="#" class="subMenuSecondary">PHYSICAL CHARACTERIZATIONS</a>
 	<ul class="sublist_4" style="${phyDisplay}">
 		<c:forEach var="subCharType"
 			items="${allCharacterizations[physicalType]}">
+			<c:if test="${subCharType != 'Composition'}">
 			<li>
 				<jsp:include page="sideParticleCharacterizationMenuButtons.jsp">
 					<jsp:param name="charType" value="${subCharType}" />
@@ -152,13 +164,14 @@
 								<c:param name="characterizationId" value="${leafCharBean.id}" />
 								<c:param name="submitType" value="${leafCharBean.name}" />
 							</c:url>
-							<li>
+							<li id="${leafCharBean.id}">
 								<a href=${url } class="sublist_5"><span class="data_anchar">>&nbsp;</span>${leafCharBean.viewTitle}</a>
 							</li>
 						</c:forEach>
 					</ul>
 				</c:if>
 			</li>
+			</c:if>
 		</c:forEach>
 	</ul>
 </li>
@@ -176,7 +189,7 @@
 						<li class="controlList2">
 							<c:choose>
 								<c:when test="${!empty allCharacterizations[thirdLevelChar]}">
-									<table class="subTitleTable" bgcolor="#F4F4F5">
+									<table class="subTitleTable" >
 										<tr class="titleRowVitro">
 											<td class="titleCell_2_vitro">
 												<a href="#" class="sublist_2">${thirdLevelChar}</a>
@@ -240,8 +253,8 @@
 																<jsp:param name="charType" value="${fourthLevelChar}" />
 																<jsp:param name="charTypeStyle" value="sublist_4" />
 																<jsp:param name="charTypeLabelStyle" value="titleCell_3" />
-																<jsp:param name="tableStyle" value="subTitleTable" />
-																<jsp:param name="addLinkStyle" value="addCellVitro"/>
+																<jsp:param name="tableStyle" value="charTitle" />
+																<jsp:param name="addLinkStyle" value="addCell"/>
 															</jsp:include>
 														</c:otherwise>
 													</c:choose>
