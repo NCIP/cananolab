@@ -264,20 +264,25 @@ public class InitParticleSetup {
 			// viewTitles
 			Map<String, Set<String>> typeTreeSelectedMap = createCharaTypeTree(
 					charMap, ascendTypeTreeMap);
+			// set allCharacterizations based on user privilege
 			UserService userService = new UserService(
 					CaNanoLabConstants.CSM_APP_NAME);
 			UserBean user = (UserBean) session.getAttribute("user");
-
-			boolean createParticle = userService.checkCreatePermission(user,
-					CaNanoLabConstants.CSM_PG_PARTICLE);
-			if (createParticle) {
+			if (session.getAttribute("canCreateNanoparticle") == null) {
+				Boolean createParticle = userService.checkCreatePermission(
+						user, CaNanoLabConstants.CSM_PG_PARTICLE);
+				session.setAttribute("canCreateNanoparticle", createParticle);
+			}
+			Boolean canCreateNanoparticle = (Boolean) session
+					.getAttribute("canCreateNanoparticle");
+			if (canCreateNanoparticle) {
 				session.setAttribute("allCharacterizations", typeTreeMap);
 			} else {
 				session.setAttribute("allCharacterizations",
 						typeTreeSelectedMap);
 			}
+			
 			session.setAttribute("charaLeafActionName", charLeafActionNameMap);
-
 			Map<String, List<CharacterizationBean>> nameCharMap = getLeafCharaMap(charMap);
 			session.setAttribute("charaLeafToCharacterizations", nameCharMap);
 		}
