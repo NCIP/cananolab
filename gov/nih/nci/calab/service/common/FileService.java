@@ -2,6 +2,8 @@ package gov.nih.nci.calab.service.common;
 
 import gov.nih.nci.calab.db.HibernateUtil;
 import gov.nih.nci.calab.domain.LabFile;
+import gov.nih.nci.calab.dto.common.LabFileBean;
+import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
 import gov.nih.nci.calab.service.util.StringUtils;
@@ -14,6 +16,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.upload.FormFile;
@@ -28,6 +31,44 @@ import org.hibernate.Session;
  */
 public class FileService {
 	Logger logger = Logger.getLogger(FileService.class);
+
+	// remove existing visibilities for the data
+	private UserService userService;
+
+	public FileService() throws Exception {
+		this.userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
+	}
+
+	/**
+	 * Load the file for the given fileId from the database
+	 * 
+	 * @param fileId
+	 * @return
+	 */
+	public LabFileBean getFile(String fileId) throws Exception {
+		LabFileBean fileBean = null;
+		try {
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			LabFile file = (LabFile) session.load(LabFile.class, StringUtils
+					.convertToLong(fileId));
+			fileBean = new LabFileBean(file);
+			HibernateUtil.commitTransaction();
+		} catch (Exception e) {
+			logger.error("Problem getting file with file ID: " + fileId, e);
+			throw e;
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		// get visibilities
+		UserService userService = new UserService(
+				CaNanoLabConstants.CSM_APP_NAME);
+		List<String> accessibleGroups = userService.getAccessibleGroups(
+				fileBean.getId(), CaNanoLabConstants.CSM_READ_ROLE);
+		String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
+		fileBean.setVisibilityGroups(visibilityGroups);
+		return fileBean;
+	}
 
 	/**
 	 * Write content of the file to the given output stream
@@ -58,7 +99,8 @@ public class FileService {
 			}
 			out.close();
 		} catch (HibernateException e) {
-			this.logger.error("error getting file meta data from the database.", e);
+			this.logger.error(
+					"error getting file meta data from the database.", e);
 			throw new Exception(
 					"error getting file meta data from the database:", e);
 		} catch (IOException e) {
@@ -131,7 +173,8 @@ public class FileService {
 
 			return fileData;
 		} catch (SQLException e) {
-			this.logger.error("Error getting file meta data from the database", e);
+			this.logger.error("Error getting file meta data from the database",
+					e);
 			throw new Exception(
 					"error getting file meta data from the database:", e);
 		} catch (IOException e) {
@@ -194,6 +237,35 @@ public class FileService {
 				"yyyyMMdd_HH-mm-ss-SSS")
 				+ "_" + fileName;
 		return newFileName;
+	}
+
+	/**
+	 * Update the meta data associated with a file stored in the database
+	 * 
+	 * @param fileBean
+	 * @throws Exception
+	 */
+	public void updateFileMetaData(LabFileBean fileBean) throws Exception {
+		try {
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			LabFile file = (LabFile) session.load(LabFile.class, StringUtils
+					.convertToLong(fileBean.getId()));
+
+			file.setTitle(fileBean.getTitle().toUpperCase());
+			file.setDescription(fileBean.getDescription());
+			file.setComments(fileBean.getComments());
+			HibernateUtil.commitTransaction();
+		} catch (Exception e) {
+			HibernateUtil.rollbackTransaction();
+			logger.error("Problem updating file meta data: ", e);
+			throw e;
+		} finally {
+			HibernateUtil.closeSession();
+		}
+
+		userService.setVisiblity(fileBean.getId(), fileBean
+				.getVisibilityGroups());
 	}
 
 }

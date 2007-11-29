@@ -3,12 +3,10 @@ package gov.nih.nci.calab.service.particle;
 import gov.nih.nci.calab.db.HibernateUtil;
 import gov.nih.nci.calab.domain.Instrument;
 import gov.nih.nci.calab.domain.InstrumentConfiguration;
-import gov.nih.nci.calab.domain.Keyword;
 import gov.nih.nci.calab.domain.LabFile;
 import gov.nih.nci.calab.domain.LookupType;
 import gov.nih.nci.calab.domain.MeasureType;
 import gov.nih.nci.calab.domain.MeasureUnit;
-import gov.nih.nci.calab.domain.OutputFile;
 import gov.nih.nci.calab.domain.ProtocolFile;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.CharacterizationFileType;
@@ -42,35 +40,13 @@ import gov.nih.nci.calab.domain.nano.characterization.physical.Size;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Solubility;
 import gov.nih.nci.calab.domain.nano.characterization.physical.SolventType;
 import gov.nih.nci.calab.domain.nano.characterization.physical.Surface;
-import gov.nih.nci.calab.domain.nano.characterization.physical.composition.CarbonNanotubeComposition;
-import gov.nih.nci.calab.domain.nano.characterization.physical.composition.ComplexComposition;
-import gov.nih.nci.calab.domain.nano.characterization.physical.composition.DendrimerComposition;
-import gov.nih.nci.calab.domain.nano.characterization.physical.composition.EmulsionComposition;
-import gov.nih.nci.calab.domain.nano.characterization.physical.composition.FullereneComposition;
-import gov.nih.nci.calab.domain.nano.characterization.physical.composition.LiposomeComposition;
-import gov.nih.nci.calab.domain.nano.characterization.physical.composition.MetalParticleComposition;
-import gov.nih.nci.calab.domain.nano.characterization.physical.composition.ParticleComposition;
-import gov.nih.nci.calab.domain.nano.characterization.physical.composition.PolymerComposition;
-import gov.nih.nci.calab.domain.nano.characterization.physical.composition.QuantumDotComposition;
 import gov.nih.nci.calab.domain.nano.characterization.toxicity.Cytotoxicity;
-import gov.nih.nci.calab.domain.nano.function.Agent;
-import gov.nih.nci.calab.domain.nano.function.Attachment;
-import gov.nih.nci.calab.domain.nano.function.BondType;
-import gov.nih.nci.calab.domain.nano.function.Function;
-import gov.nih.nci.calab.domain.nano.function.ImageContrastAgent;
-import gov.nih.nci.calab.domain.nano.function.ImageContrastAgentType;
-import gov.nih.nci.calab.domain.nano.function.Linkage;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
+import gov.nih.nci.calab.dto.characterization.CharacterizationSummaryBean;
+import gov.nih.nci.calab.dto.characterization.CharacterizationTypeBean;
 import gov.nih.nci.calab.dto.characterization.DatumBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
-import gov.nih.nci.calab.dto.characterization.composition.CarbonNanotubeBean;
-import gov.nih.nci.calab.dto.characterization.composition.CompositionBean;
-import gov.nih.nci.calab.dto.characterization.composition.DendrimerBean;
-import gov.nih.nci.calab.dto.characterization.composition.EmulsionBean;
-import gov.nih.nci.calab.dto.characterization.composition.FullereneBean;
-import gov.nih.nci.calab.dto.characterization.composition.LiposomeBean;
-import gov.nih.nci.calab.dto.characterization.composition.PolymerBean;
 import gov.nih.nci.calab.dto.characterization.invitro.CytotoxicityBean;
 import gov.nih.nci.calab.dto.characterization.physical.MorphologyBean;
 import gov.nih.nci.calab.dto.characterization.physical.ShapeBean;
@@ -80,9 +56,6 @@ import gov.nih.nci.calab.dto.common.InstrumentBean;
 import gov.nih.nci.calab.dto.common.InstrumentConfigBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
-import gov.nih.nci.calab.dto.function.FunctionBean;
-import gov.nih.nci.calab.dto.particle.ParticleBean;
-import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.common.FileService;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
@@ -91,9 +64,16 @@ import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Hibernate;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
 /**
@@ -104,73 +84,175 @@ import org.hibernate.Session;
  * @author pansu
  * 
  */
-public class SubmitNanoparticleService {
+public class NanoparticleCharacterizationService {
 	private static Logger logger = Logger
-			.getLogger(SubmitNanoparticleService.class);
+			.getLogger(NanoparticleCharacterizationService.class);
 
 	// remove existing visibilities for the data
 	private UserService userService;
 
-	public SubmitNanoparticleService() throws Exception {
+	public NanoparticleCharacterizationService() throws Exception {
 		this.userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
 	}
 
-	/**
-	 * Update keywords and visibilities for the particle with the given id
-	 * 
-	 * @param particle
-	 * @throws Exception
-	 */
-	public void addParticleGeneralInfo(ParticleBean particle) throws Exception {
-		Nanoparticle doParticle = null;
-		// save nanoparticle to the database
+	public CharacterizationBean getCharacterizationBy(String charId)
+			throws Exception {
+		CharacterizationBean charBean = null;
 		try {
 			Session session = HibernateUtil.currentSession();
 			HibernateUtil.beginTransaction();
-			// get the existing particle from database created during sample
-			// creation
-			List results = null;
-			if (particle.getSampleId() == null
-					|| particle.getSampleId().length() == 0) {
-				results = session.createQuery(
-						"from Nanoparticle where type='"
-								+ particle.getSampleType() + "' and name='"
-								+ particle.getSampleName() + "'").list();
-			} else {
-				results = session.createQuery(
-						"from Nanoparticle where id=" + particle.getSampleId())
-						.list();
-			}
+			// Characterization aChar = (Characterization) session.load(
+			// Characterization.class, new Long(charId));
+			List results = session.createQuery(
+					"from Characterization where id=" + charId).list();
+			Characterization aChar = null;
 			for (Object obj : results) {
-				doParticle = (Nanoparticle) obj;
+				aChar = (Characterization) obj;
 			}
-			if (doParticle == null) {
-				throw new CalabException("No such particle in the database");
+			if (aChar == null) {
+				return null;
 			}
-
-			doParticle.getKeywordCollection().clear();
-			if (particle.getKeywords() != null) {
-				for (String keyword : particle.getKeywords()) {
-					Keyword keywordObj = new Keyword();
-					if (keyword.length() > 0) {
-						keywordObj.setName(keyword);
-						doParticle.getKeywordCollection().add(keywordObj);
-					}
-				}
+			if (aChar instanceof Shape) {
+				charBean = new ShapeBean((Shape) aChar);
+			} else if (aChar instanceof Morphology) {
+				charBean = new MorphologyBean((Morphology) aChar);
+			} else if (aChar instanceof Solubility) {
+				charBean = new SolubilityBean((Solubility) aChar);
+			} else if (aChar instanceof Surface) {
+				charBean = new SurfaceBean((Surface) aChar);
+			} else if (aChar instanceof Cytotoxicity) {
+				charBean = new CytotoxicityBean((Cytotoxicity) aChar);
+			} else {
+				charBean = new CharacterizationBean(aChar);
 			}
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
-			HibernateUtil.rollbackTransaction();
-			logger.error("Problem saving particle general information. ", e);
+			logger.error("Problem finding characterization of ID " + charId, e);
 			throw e;
 		} finally {
 			HibernateUtil.closeSession();
 		}
-		particle.setSampleId(doParticle.getId() + "");
-		particle.setSampleSource(doParticle.getSource().getOrganizationName());
+		return charBean;
+	}
 
-		this.userService.setVisiblity(particle.getSampleName(), particle
-				.getVisibilityGroups());
+	public List<CharacterizationBean> getCharacterizationInfo(String particleId)
+			throws Exception {
+		List<CharacterizationBean> charBeans = new ArrayList<CharacterizationBean>();
+
+		try {
+
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			List results = session
+					.createQuery(
+							"select chara.id, chara.name, chara.identificationName from Nanoparticle particle join particle.characterizationCollection chara where particle.id="
+									+ particleId
+									+ " order by chara.name, chara.identificationName")
+					.list();
+			for (Object obj : results) {
+				String charId = ((Object[]) obj)[0].toString();
+				String charName = (String) (((Object[]) obj)[1]);
+				String viewTitle = (String) (((Object[]) obj)[2]);
+				CharacterizationBean charBean = new CharacterizationBean(
+						charId, charName, viewTitle);
+				charBeans.add(charBean);
+			}
+			HibernateUtil.commitTransaction();
+		} catch (Exception e) {
+			logger.error("Problem finding characterization info for particle: "
+					+ particleId, e);
+			throw e;
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		return charBeans;
+	}
+
+	public List<CharacterizationSummaryBean> getParticleCharacterizationSummaryByName(
+			String charName, String particleId) throws Exception {
+		List<CharacterizationSummaryBean> charSummaryBeans = new ArrayList<CharacterizationSummaryBean>();
+		List<CharacterizationBean> charBeans = getParticleCharacterizationsByName(
+				charName, particleId);
+		if (charBeans.isEmpty()) {
+			return null;
+		}
+		for (CharacterizationBean charBean : charBeans) {
+			if (charBean.getDerivedBioAssayDataList() != null
+					&& !charBean.getDerivedBioAssayDataList().isEmpty()) {
+				for (DerivedBioAssayDataBean charFile : charBean
+						.getDerivedBioAssayDataList()) {
+					Map<String, String> datumMap = new HashMap<String, String>();
+					for (DatumBean data : charFile.getDatumList()) {
+						String datumLabel = data.getName();
+						if (data.getUnit() != null
+								&& data.getUnit().length() > 0) {
+							datumLabel += "(" + data.getUnit() + ")";
+						}
+						datumMap.put(datumLabel, data.getValue());
+					}
+					CharacterizationSummaryBean charSummaryBean = new CharacterizationSummaryBean();
+					charSummaryBean.setCharBean(charBean);
+					charSummaryBean.setDatumMap(datumMap);
+					charSummaryBean.setCharFile(charFile);
+					charSummaryBeans.add(charSummaryBean);
+				}
+			} else {
+				CharacterizationSummaryBean charSummaryBean = new CharacterizationSummaryBean();
+				charSummaryBean.setCharBean(charBean);
+				charSummaryBeans.add(charSummaryBean);
+			}
+		}
+		return charSummaryBeans;
+	}
+
+	public List<CharacterizationBean> getParticleCharacterizationsByName(
+			String charName, String particleId) throws Exception {
+		List<CharacterizationBean> charBeans = new ArrayList<CharacterizationBean>();
+		try {
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			// Characterization aChar = (Characterization) session.load(
+			// Characterization.class, new Long(charId));
+			List results = session
+					.createQuery(
+							"select chara from Nanoparticle particle join particle.characterizationCollection chara where particle.id="
+									+ particleId
+									+ " and chara.name='"
+									+ charName
+									+ "'"
+									+ " order by chara.identificationName")
+					.list();
+
+			Characterization aChar = null;
+			for (Object obj : results) {
+				aChar = (Characterization) obj;
+				CharacterizationBean charBean = null;
+				if (aChar instanceof Shape) {
+					charBean = new ShapeBean((Shape) aChar);
+				} else if (aChar instanceof Morphology) {
+					charBean = new MorphologyBean((Morphology) aChar);
+				} else if (aChar instanceof Solubility) {
+					charBean = new SolubilityBean((Solubility) aChar);
+				} else if (aChar instanceof Surface) {
+					charBean = new SurfaceBean((Surface) aChar);
+				} else if (aChar instanceof Cytotoxicity) {
+					charBean = new CytotoxicityBean((Cytotoxicity) aChar);
+				} else {
+					charBean = new CharacterizationBean(aChar);
+				}
+				if (charBean != null) {
+					charBeans.add(charBean);
+				}
+			}
+			HibernateUtil.commitTransaction();
+		} catch (Exception e) {
+			logger.error("Problem finding characterizations with name "
+					+ charName, e);
+			throw e;
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		return charBeans;
 	}
 
 	/**
@@ -233,9 +315,11 @@ public class SubmitNanoparticleService {
 					List results = session
 							.createQuery(
 									"from Nanoparticle particle left join fetch particle.characterizationCollection where particle.name='"
-											+ charBean.getParticle().getSampleName()
+											+ charBean.getParticle()
+													.getSampleName()
 											+ "' and particle.type='"
-											+ charBean.getParticle().getSampleType() + "'")
+											+ charBean.getParticle()
+													.getSampleType() + "'")
 							.list();
 
 					for (Object obj : results) {
@@ -297,7 +381,7 @@ public class SubmitNanoparticleService {
 					// add new characterization file type if necessary
 					if (derivedBioAssayDataBean.getType().length() > 0) {
 						CharacterizationFileType fileType = new CharacterizationFileType();
-						addLookupType(session, fileType,
+						NanoparticleService.addLookupType(session, fileType,
 								derivedBioAssayDataBean.getType());
 					}
 					// add new derived data cateory
@@ -312,8 +396,8 @@ public class SubmitNanoparticleService {
 						addDatumName(session, datumBean.getName(),
 								characterizationName);
 						MeasureType measureType = new MeasureType();
-						addLookupType(session, measureType, datumBean
-								.getStatisticsType());
+						NanoparticleService.addLookupType(session, measureType,
+								datumBean.getStatisticsType());
 						addMeasureUnit(session, datumBean.getUnit(),
 								characterizationName);
 					}
@@ -453,119 +537,6 @@ public class SubmitNanoparticleService {
 	}
 
 	/**
-	 * Saves the particle composition to the database
-	 * 
-	 * @param composition
-	 * @param compositionType
-	 * @throws Exception
-	 */
-	public void addParticleComposition(CompositionBean composition,
-			String compositionType) throws Exception {
-		ParticleComposition doComp = new ParticleComposition();
-		if (compositionType
-				.equals(CaNanoLabConstants.COMPOSITION_COMPLEX_PARTICLE_TYPE)) {
-			doComp = new ComplexComposition();
-		} else if (compositionType
-				.equals(CaNanoLabConstants.COMPOSITION_METAL_PARTICLE_TYPE)) {
-			doComp = new MetalParticleComposition();
-		} else if (compositionType
-				.equals(CaNanoLabConstants.COMPOSITION_QUANTUM_DOT_TYPE)) {
-			doComp = new QuantumDotComposition();
-		} else if (compositionType
-				.equals(CaNanoLabConstants.COMPOSITION_CARBON_NANOTUBE_TYPE)) {
-			doComp = new CarbonNanotubeComposition();
-		} else if (compositionType
-				.equals(CaNanoLabConstants.COMPOSITION_DENDRIMER_TYPE)) {
-			doComp = new DendrimerComposition();
-		} else if (compositionType
-				.equals(CaNanoLabConstants.COMPOSITION_EMULSION_TYPE)) {
-			doComp = new EmulsionComposition();
-		} else if (compositionType
-				.equals(CaNanoLabConstants.COMPOSITION_FULLERENE_TYPE)) {
-			doComp = new FullereneComposition();
-		} else if (compositionType
-				.equals(CaNanoLabConstants.COMPOSITION_LIPOSOME_TYPE)) {
-			doComp = new LiposomeComposition();
-		} else if (compositionType
-				.equals(CaNanoLabConstants.COMPOSITION_POLYMER_TYPE)) {
-			doComp = new PolymerComposition();
-		}
-		// if ID is not set save to the database otherwise update
-		Nanoparticle particle = null;
-		try {
-			Session session = HibernateUtil.currentSession();
-			HibernateUtil.beginTransaction();
-
-			// check if viewTitle is already used the same type of
-			// characterization for the same particle
-			boolean viewTitleUsed = isCharacterizationViewTitleUsed(session,
-					doComp, composition);
-			if (viewTitleUsed) {
-				throw new RuntimeException(
-						"The view title is already in use.  Please enter a different one.");
-			} else {
-				// if ID exists, load from database
-				if (composition.getId() != null) {
-					// check if ID is still valid
-					doComp = (ParticleComposition) session.get(
-							ParticleComposition.class, new Long(composition
-									.getId()));
-					if (doComp == null)
-						throw new Exception(
-								"This composition is no longer in the database.  Please log in again to refresh.");
-				}
-				// update domain object
-				if (doComp instanceof DendrimerComposition) {
-					((DendrimerBean) composition)
-							.updateDomainObj((DendrimerComposition) doComp);
-				} else if (doComp instanceof CarbonNanotubeComposition) {
-					((CarbonNanotubeBean) composition)
-							.updateDomainObj((CarbonNanotubeComposition) doComp);
-				} else if (doComp instanceof EmulsionComposition) {
-					((EmulsionBean) composition)
-							.updateDomainObj((EmulsionComposition) doComp);
-				} else if (doComp instanceof FullereneComposition) {
-					((FullereneBean) composition)
-							.updateDomainObj((FullereneComposition) doComp);
-				} else if (doComp instanceof LiposomeComposition) {
-					((LiposomeBean) composition)
-							.updateDomainObj((LiposomeComposition) doComp);
-				} else if (doComp instanceof PolymerComposition) {
-					((PolymerBean) composition)
-							.updateDomainObj((PolymerComposition) doComp);
-				} else {
-					composition.updateDomainObj(doComp);
-				}
-
-				if (composition.getId() == null) {
-					List results = session
-							.createQuery(
-									"from Nanoparticle particle left join fetch particle.characterizationCollection where particle.name='"
-											+ composition.getParticle().getSampleName()
-											+ "' and particle.type='"
-											+ composition.getParticle().getSampleType()
-											+ "'").list();
-
-					for (Object obj : results) {
-						particle = (Nanoparticle) obj;
-					}
-
-					if (particle != null) {
-						particle.getCharacterizationCollection().add(doComp);
-					}
-				}
-			}
-			HibernateUtil.commitTransaction();
-		} catch (Exception e) {
-			logger.error("Problem saving characterization. ", e);
-			HibernateUtil.rollbackTransaction();
-			throw e;
-		} finally {
-			HibernateUtil.closeSession();
-		}
-	}
-
-	/**
 	 * Saves the size characterization to the database
 	 * 
 	 * @param size
@@ -595,24 +566,6 @@ public class SubmitNanoparticleService {
 		// addMeasureUnit(doSurface.getZetaPotential().getUnitOfMeasurement(),
 		// CaNanoLabConstants.UNIT_TYPE_ZETA_POTENTIAL);
 
-	}
-
-	private void addLookupType(Session session, LookupType lookupType,
-			String type) throws Exception {
-		String className = lookupType.getClass().getSimpleName();
-		if (type != null && type.length() > 0) {
-			List results = session.createQuery(
-					"select count(distinct name) from " + className
-							+ " type where name='" + type + "'").list();
-			lookupType.setName(type);
-			int count = -1;
-			for (Object obj : results) {
-				count = ((Integer) (obj)).intValue();
-			}
-			if (count == 0) {
-				session.save(lookupType);
-			}
-		}
 	}
 
 	private void addDatumName(Session session, String name,
@@ -658,6 +611,27 @@ public class SubmitNanoparticleService {
 		}
 	}
 
+	private void addMeasureUnit(Session session, String unit, String type)
+			throws Exception {
+		if (unit == null || unit.length() == 0) {
+			return;
+		}
+		List results = session.createQuery(
+				"select count(distinct name) from "
+						+ " MeasureUnit where name='" + unit + "' and type='"
+						+ type + "'").list();
+		int count = -1;
+		for (Object obj : results) {
+			count = ((Integer) (obj)).intValue();
+		}
+		MeasureUnit measureUnit = new MeasureUnit();
+		if (count == 0) {
+			measureUnit.setName(unit);
+			measureUnit.setType(type);
+			session.save(measureUnit);
+		}
+	}
+
 	private void addLookupType(LookupType lookupType, String type)
 			throws Exception {
 		if (type != null && type.length() > 0) {
@@ -685,27 +659,6 @@ public class SubmitNanoparticleService {
 			} finally {
 				HibernateUtil.closeSession();
 			}
-		}
-	}
-
-	private void addMeasureUnit(Session session, String unit, String type)
-			throws Exception {
-		if (unit == null || unit.length() == 0) {
-			return;
-		}
-		List results = session.createQuery(
-				"select count(distinct name) from "
-						+ " MeasureUnit where name='" + unit + "' and type='"
-						+ type + "'").list();
-		int count = -1;
-		for (Object obj : results) {
-			count = ((Integer) (obj)).intValue();
-		}
-		MeasureUnit measureUnit = new MeasureUnit();
-		if (count == 0) {
-			measureUnit.setName(unit);
-			measureUnit.setType(type);
-			session.save(measureUnit);
 		}
 	}
 
@@ -975,133 +928,6 @@ public class SubmitNanoparticleService {
 	}
 
 	/**
-	 * 
-	 */
-	public void addParticleFunction(String particleId, FunctionBean function)
-			throws Exception {
-
-		// if ID is not set save to the database otherwise update
-		Function doFunction = new Function();
-		try {
-			Session session = HibernateUtil.currentSession();
-			HibernateUtil.beginTransaction();
-
-			boolean viewTitleUsed = isFunctionViewTitleUsed(session,
-					particleId, function);
-
-			if (viewTitleUsed) {
-				throw new RuntimeException(
-						"The view title is already in use.  Please enter a different one.");
-			} else {
-				// if function already exists in the database, load it first
-				if (function.getId() != null) {
-					doFunction = (Function) session.get(Function.class,
-							new Long(function.getId()));
-					function.updateDomainObj(doFunction);
-				} else {
-					function.updateDomainObj(doFunction);
-					Nanoparticle particle = (Nanoparticle) session.load(
-							Nanoparticle.class, new Long(particleId));
-					if (particle != null) {
-						particle.getFunctionCollection().add(doFunction);
-					}
-				}
-			}
-
-			// persist bondType and image contrast agent type drop-down
-			for (Linkage linkage : doFunction.getLinkageCollection()) {
-				if (linkage instanceof Attachment) {
-					String bondType = ((Attachment) linkage).getBondType();
-					BondType lookup = new BondType();
-					addLookupType(session, lookup, bondType);
-				}
-				Agent agent = linkage.getAgent();
-				if (agent instanceof ImageContrastAgent) {
-					String agentType = ((ImageContrastAgent) agent).getType();
-					ImageContrastAgentType lookup = new ImageContrastAgentType();
-					addLookupType(session, lookup, agentType);
-				}
-			}
-			HibernateUtil.commitTransaction();
-		} catch (Exception e) {
-			HibernateUtil.rollbackTransaction();
-			logger.error("Problem saving function: ", e);
-			throw e;
-		} finally {
-			HibernateUtil.closeSession();
-		}
-	}
-
-	/*
-	 * check if viewTitle is already used the same type of function for the same
-	 * particle
-	 */
-	private boolean isFunctionViewTitleUsed(Session session, String particleId,
-			FunctionBean function) throws Exception {
-		// check if viewTitle is already used the same type of
-		// function for the same particle
-		String viewTitleQuery = "";
-		if (function.getId() == null) {
-			viewTitleQuery = "select count(function.identificationName) from Nanoparticle particle join particle.functionCollection function where particle.id="
-					+ particleId
-					+ " and function.identificationName='"
-					+ function.getViewTitle()
-					+ "' and function.type='"
-					+ function.getType() + "'";
-		} else {
-			viewTitleQuery = "select count(function.identificationName) from Nanoparticle particle join particle.functionCollection function where particle.id="
-					+ particleId
-					+ " and function.identificationName='"
-					+ function.getViewTitle()
-					+ "' and function.id!="
-					+ function.getId()
-					+ " and function.type='"
-					+ function.getType() + "'";
-		}
-		List viewTitleResult = session.createQuery(viewTitleQuery).list();
-		int existingViewTitleCount = -1;
-		for (Object obj : viewTitleResult) {
-			existingViewTitleCount = ((Integer) (obj)).intValue();
-		}
-		if (existingViewTitleCount > 0) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	/**
-	 * Load the file for the given fileId from the database
-	 * 
-	 * @param fileId
-	 * @return
-	 */
-	public LabFileBean getFile(String fileId) throws Exception {
-		LabFileBean fileBean = null;
-		try {
-			Session session = HibernateUtil.currentSession();
-			HibernateUtil.beginTransaction();
-			LabFile file = (LabFile) session.load(LabFile.class, StringUtils
-					.convertToLong(fileId));
-			fileBean = new LabFileBean(file);
-			HibernateUtil.commitTransaction();
-		} catch (Exception e) {
-			logger.error("Problem getting file with file ID: " + fileId, e);
-			throw e;
-		} finally {
-			HibernateUtil.closeSession();
-		}
-		// get visibilities
-		UserService userService = new UserService(
-				CaNanoLabConstants.CSM_APP_NAME);
-		List<String> accessibleGroups = userService.getAccessibleGroups(
-				fileBean.getId(), CaNanoLabConstants.CSM_READ_ROLE);
-		String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
-		fileBean.setVisibilityGroups(visibilityGroups);
-		return fileBean;
-	}
-
-	/**
 	 * Load the derived data file for the given fileId from the database
 	 * 
 	 * @param fileId
@@ -1139,74 +965,6 @@ public class SubmitNanoparticleService {
 	}
 
 	/**
-	 * Get the list of all run output files associated with a particle
-	 * 
-	 * @param particleName
-	 * @return
-	 * @throws Exception
-	 */
-	public List<LabFileBean> getAllRunFiles(String particleName)
-			throws Exception {
-		List<LabFileBean> runFiles = new ArrayList<LabFileBean>();
-		try {
-			Session session = HibernateUtil.currentSession();
-			HibernateUtil.beginTransaction();
-			String query = "select distinct outFile from Run run join run.outputFileCollection outFile join run.runSampleContainerCollection runContainer where runContainer.sampleContainer.sample.name='"
-					+ particleName + "'";
-			List results = session.createQuery(query).list();
-
-			for (Object obj : results) {
-				OutputFile file = (OutputFile) obj;
-				// active status only
-				if (file.getDataStatus() == null) {
-					LabFileBean fileBean = new LabFileBean();
-					fileBean.setId(file.getId().toString());
-					fileBean.setName(file.getFilename());
-					fileBean.setUri(file.getUri());
-					runFiles.add(fileBean);
-				}
-			}
-			HibernateUtil.commitTransaction();
-		} catch (Exception e) {
-			logger.error("Problem getting run files for particle: "
-					+ particleName, e);
-			throw e;
-		} finally {
-			HibernateUtil.closeSession();
-		}
-		return runFiles;
-	}
-
-	/**
-	 * Update the meta data associated with a file stored in the database
-	 * 
-	 * @param fileBean
-	 * @throws Exception
-	 */
-	public void updateFileMetaData(LabFileBean fileBean) throws Exception {
-		try {
-			Session session = HibernateUtil.currentSession();
-			HibernateUtil.beginTransaction();
-			LabFile file = (LabFile) session.load(LabFile.class, StringUtils
-					.convertToLong(fileBean.getId()));
-
-			file.setTitle(fileBean.getTitle().toUpperCase());
-			file.setDescription(fileBean.getDescription());
-			file.setComments(fileBean.getComments());
-			HibernateUtil.commitTransaction();
-		} catch (Exception e) {
-			HibernateUtil.rollbackTransaction();
-			logger.error("Problem updating file meta data: ", e);
-			throw e;
-		} finally {
-			HibernateUtil.closeSession();
-		}
-
-		this.userService.setVisiblity(fileBean.getId(), fileBean
-				.getVisibilityGroups());
-	}
-
-	/**
 	 * Delete the characterizations
 	 */
 	public void deleteCharacterizations(String[] charIds) throws Exception {
@@ -1240,5 +998,398 @@ public class SubmitNanoparticleService {
 		} finally {
 			HibernateUtil.closeSession();
 		}
+	}
+
+	public SortedSet<String> getAllCharacterizationFileTypes() throws Exception {
+		SortedSet<String> fileTypes = new TreeSet<String>();
+		try {
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			String hqlString = "select distinct fileType.name from CharacterizationFileType fileType order by fileType.name";
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
+			for (Object obj : results) {
+				String type = (String) obj;
+				fileTypes.add(type);
+			}
+
+		} catch (Exception e) {
+			logger.error(
+					"Problem to retrieve all characterization file types. ", e);
+			throw new RuntimeException(
+					"Problem to retrieve all characterization file types. ", e);
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		return fileTypes;
+	}
+
+	public List<CharacterizationTypeBean> getAllCharacterizationTypes()
+			throws Exception {
+		List<CharacterizationTypeBean> charTypes = new ArrayList<CharacterizationTypeBean>();
+
+		try {
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			String query = "select distinct category, has_action, indent_level, category_order from def_characterization_category order by category_order";
+			SQLQuery queryObj = session.createSQLQuery(query);
+			queryObj.addScalar("CATEGORY", Hibernate.STRING);
+			queryObj.addScalar("HAS_ACTION", Hibernate.INTEGER);
+			queryObj.addScalar("INDENT_LEVEL", Hibernate.INTEGER);
+			queryObj.addScalar("CATEGORY_ORDER", Hibernate.INTEGER);
+			List results = queryObj.list();
+			HibernateUtil.commitTransaction();
+			for (Object obj : results) {
+				Object[] objarr = (Object[]) obj;
+				String type = objarr[0].toString();
+				boolean hasAction = ((Integer) objarr[1] == 0) ? false : true;
+				int indentLevel = (Integer) objarr[2];
+				CharacterizationTypeBean charType = new CharacterizationTypeBean(
+						type, indentLevel, hasAction);
+				charTypes.add(charType);
+			}
+
+		} catch (Exception e) {
+			logger.error("Problem to retrieve all characterization types. ", e);
+			throw new RuntimeException(
+					"Problem to retrieve all characteriztaion types. ", e);
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		return charTypes;
+	}
+
+	public Map<String, SortedSet<String>> getDerivedDataCategoryMap(
+			String characterizationName) throws Exception {
+		Map<String, SortedSet<String>> categoryMap = new HashMap<String, SortedSet<String>>();
+
+		try {
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			String hqlString = "select category.name, datumName.name from DerivedBioAssayDataCategory category left join category.datumNameCollection datumName where datumName.datumParsed=false and category.characterizationName='"
+					+ characterizationName + "'";
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
+			SortedSet<String> datumNames = null;
+			for (Object obj : results) {
+				String categoryName = ((Object[]) obj)[0].toString();
+				String datumName = ((Object[]) obj)[1].toString();
+				if (categoryMap.get(categoryName) != null) {
+					datumNames = categoryMap.get(categoryName);
+				} else {
+					datumNames = new TreeSet<String>();
+					categoryMap.put(categoryName, datumNames);
+				}
+				datumNames.add(datumName);
+			}
+
+		} catch (Exception e) {
+			logger
+					.error(
+							"Problem to retrieve all derived bioassay data categories. ",
+							e);
+			throw new RuntimeException(
+					"Problem to retrieve all derived bioassay data categories.",
+					e);
+
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		return categoryMap;
+	}
+
+	public SortedSet<String> getDerivedDatumNames(String characterizationName)
+			throws Exception {
+		SortedSet<String> datumNames = new TreeSet<String>();
+		try {
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			String hqlString = "select distinct name from DatumName where datumParsed=false and characterizationName='"
+					+ characterizationName + "'";
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
+			for (Object obj : results) {
+				String datumName = obj.toString();
+				datumNames.add(datumName);
+			}
+
+		} catch (Exception e) {
+			logger
+					.error(
+							"Problem to retrieve all derived bioassay datum names. ",
+							e);
+			throw new RuntimeException(
+					"Problem to retrieve all derived bioassay datum names.", e);
+
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		return datumNames;
+	}
+
+	public SortedSet<String> getDerivedDataCategories(
+			String characterizationName) throws Exception {
+		SortedSet<String> categories = new TreeSet<String>();
+
+		try {
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			String hqlString = "select distinct name from DerivedBioAssayDataCategory where characterizationName='"
+					+ characterizationName + "'";
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
+			for (Object obj : results) {
+				String category = obj.toString();
+				categories.add(category);
+			}
+
+		} catch (Exception e) {
+			logger
+					.error(
+							"Problem to retrieve all derived bioassay data categories.",
+							e);
+			throw new RuntimeException(
+					"Problem to retrieve all derived bioassay data categories.",
+					e);
+
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		return categories;
+	}
+
+	public SortedSet<String> getAllCharacterizationSources() throws Exception {
+		SortedSet<String> sources = new TreeSet<String>();
+
+		try {
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			String hqlString = "select distinct char.source from Characterization char where char.source is not null";
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
+			for (Object obj : results) {
+				sources.add((String) obj);
+			}
+
+		} catch (Exception e) {
+			logger
+					.error("Problem to retrieve all Characterization Sources.",
+							e);
+			throw new RuntimeException(
+					"Problem to retrieve all Characterization Sources. ");
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		sources.addAll(Arrays
+				.asList(CaNanoLabConstants.DEFAULT_CHARACTERIZATION_SOURCES));
+
+		return sources;
+	}
+
+	public SortedSet<String> getAllManufacturers() throws Exception {
+		SortedSet<String> manufacturers = new TreeSet<String>();
+		try {
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			String hqlString = "select distinct instrument.manufacturer from Instrument instrument";
+			List results = session.createQuery(hqlString).list();
+			for (Object obj : results) {
+				String manufacturer = (String) obj;
+				if (manufacturer != null)
+					manufacturers.add(manufacturer);
+			}
+			HibernateUtil.commitTransaction();
+		} catch (Exception e) {
+			logger.error("Problem to retrieve all manufacturers. ", e);
+			throw new RuntimeException(
+					"Problem to retrieve all manufacturers. ", e);
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		return manufacturers;
+	}
+
+	public Map<String, SortedSet<String>> getAllInstrumentManufacturers()
+			throws Exception {
+		Map<String, SortedSet<String>> instrumentManufacturers = new HashMap<String, SortedSet<String>>();
+
+		try {
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+
+			String hqlString = "select distinct instrumentType.name, manufacturer.name from InstrumentType instrumentType join instrumentType.manufacturerCollection manufacturer ";
+			List results = session.createQuery(hqlString).list();
+			SortedSet<String> manufacturers = null;
+			for (Object obj : results) {
+				String instrumentType = ((Object[]) obj)[0].toString();
+				String manufacturer = ((Object[]) obj)[1].toString();
+				if (instrumentManufacturers.get(instrumentType) != null) {
+					manufacturers = (SortedSet<String>) instrumentManufacturers
+							.get(instrumentType);
+				} else {
+					manufacturers = new TreeSet<String>();
+					instrumentManufacturers.put(instrumentType, manufacturers);
+				}
+				manufacturers.add(manufacturer);
+			}
+			List allResult = session
+					.createQuery(
+							"select manufacturer.name from Manufacturer manufacturer where manufacturer.name is not null")
+					.list();
+			HibernateUtil.commitTransaction();
+			SortedSet<String> allManufacturers = null;
+			allManufacturers = new TreeSet<String>();
+			for (Object obj : allResult) {
+				String name = (String) obj;
+				allManufacturers.add(name);
+			}
+
+		} catch (Exception e) {
+			logger
+					.error(
+							"Problem to retrieve manufacturers for intrument types ",
+							e);
+			throw new RuntimeException(
+					"Problem to retrieve manufacturers for intrument types.");
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		return instrumentManufacturers;
+	}
+
+	public List<InstrumentBean> getAllInstruments() throws Exception {
+		List<InstrumentBean> instruments = new ArrayList<InstrumentBean>();
+
+		try {
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			String hqlString = "from Instrument instrument where instrument.type is not null order by instrument.type";
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
+			for (Object obj : results) {
+				Instrument instrument = (Instrument) obj;
+				instruments.add(new InstrumentBean(instrument));
+			}
+
+		} catch (Exception e) {
+			logger.error("Problem to retrieve all instruments. ", e);
+			throw new RuntimeException("Problem to retrieve all intruments. ");
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		return instruments;
+	}
+
+
+	/**
+	 * 
+	 * @return a map between a characterization type and its child
+	 *         characterizations.
+	 */
+	public Map<String, List<CharacterizationBean>> getCharacterizationTypeCharacterizations()
+			throws Exception {
+		Map<String, List<CharacterizationBean>> charTypeChars = new HashMap<String, List<CharacterizationBean>>();
+
+		try {
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			List<CharacterizationBean> chars = null;
+			String query = "select distinct a.category, a.name, a.name_abbreviation from def_characterization_category a "
+					// + "where a.name not in (select distinct b.category from
+					// def_characterization_category b) "
+					+ "order by a.category, a.name, a.name_abbreviation";
+			SQLQuery queryObj = session.createSQLQuery(query);
+			queryObj.addScalar("CATEGORY", Hibernate.STRING);
+			queryObj.addScalar("NAME", Hibernate.STRING);
+			queryObj.addScalar("NAME_ABBREVIATION", Hibernate.STRING);
+			List results = queryObj.list();
+			HibernateUtil.commitTransaction();
+			for (Object obj : results) {
+				Object[] objarr = (Object[]) obj;
+				String type = objarr[0].toString();
+				String name = objarr[1].toString();
+				String abbr;
+				if (objarr[2] == null) {
+					abbr = "";
+				} else {
+					abbr = objarr[2].toString();
+				}
+				if (charTypeChars.get(type) != null) {
+					chars = (List<CharacterizationBean>) charTypeChars
+							.get(type);
+				} else {
+					chars = new ArrayList<CharacterizationBean>();
+					charTypeChars.put(type, chars);
+				}
+				CharacterizationBean charBean = new CharacterizationBean(name,
+						abbr);
+				chars.add(charBean);
+			}
+
+		} catch (Exception e) {
+			logger
+					.error(
+							"Problem to retrieve all characterization type characterizations. ",
+							e);
+			throw new RuntimeException(
+					"Problem to retrieve all characteriztaion type characterizations. ");
+		} finally {
+			HibernateUtil.closeSession();
+		}
+
+		return charTypeChars;
+
+	}
+
+	/**
+	 * 
+	 * @return a map between a characterization type and its child
+	 *         characterizations.
+	 */
+	public Map<String, Map<String, List<CharacterizationBean>>> getCharacterizationTypeTree()
+			throws Exception {
+		Map charTypeChars = new HashMap<String, Map>();
+
+		try {
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			List<CharacterizationBean> chars = null;
+			String query = "select distinct a.category, a.name, a.name_abbreviation from def_characterization_category a "
+					+ "where a.name not in (select distinct b.category from def_characterization_category b) "
+					+ "order by a.category, a.name, a.name_abbreviation";
+			SQLQuery queryObj = session.createSQLQuery(query);
+			queryObj.addScalar("CATEGORY", Hibernate.STRING);
+			queryObj.addScalar("NAME", Hibernate.STRING);
+			queryObj.addScalar("NAME_ABBREVIATION", Hibernate.STRING);
+			List results = queryObj.list();
+			HibernateUtil.commitTransaction();
+			for (Object obj : results) {
+				Object[] objarr = (Object[]) obj;
+				String type = objarr[0].toString();
+				String name = objarr[1].toString();
+				String abbr = objarr[2].toString();
+				if (charTypeChars.get(type) != null) {
+					chars = (List<CharacterizationBean>) charTypeChars
+							.get(type);
+				} else {
+					chars = new ArrayList<CharacterizationBean>();
+					charTypeChars.put(type, chars);
+				}
+				CharacterizationBean charBean = new CharacterizationBean(name,
+						abbr);
+				chars.add(charBean);
+			}
+
+		} catch (Exception e) {
+			logger
+					.error(
+							"Problem to retrieve all characterization type characterizations. ",
+							e);
+			throw new RuntimeException(
+					"Problem to retrieve all characteriztaion type characterizations. ");
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		return charTypeChars;
 	}
 }
