@@ -284,3 +284,24 @@ function updateOtherField(form, elementName, otherElementName) {
 	}
 }
 
+function resizeImage(imgId) {
+   var width=document.getElementId("'"+imgId+"'").width();
+   alert(width);
+}
+
+function popImage(imgSrc, imgId, left, top) {	
+    var popImg=new Image();
+    popImg.src=imgSrc;
+    width=popImg.width+20;
+    height=popImg.height+20;
+	var imgWindow = window.open("", "charImgwindow", "title=no,toolbar=no,width="+width+",height="+height+",left="+left+",top="+top);	
+	imgWindow.document.write("<html><head><title>Characterization File</title></head>\n");  
+	imgWindow.document.write("<body bgcolor=\"#FFFFFF\">");
+	imgWindow.document.write("<img styleId='"+imgId+"' src='" + imgSrc + "'/>");	
+	imgWindow.document.write("</body></html>");
+    imgWindow.focus();    
+}
+
+function closePopUpImage() {
+    imgWindow.close();
+}
