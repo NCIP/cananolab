@@ -138,6 +138,8 @@
 					<jsp:param name="charType" value="${subCharType}" />
 					<jsp:param name="charTypeStyle" value="sublist_4" />
 					<jsp:param name="charTypeLabelStyle" value="titleCell_2" />
+					<jsp:param name="tableStyle" value="charTitle" />
+					<jsp:param name="addLinkStyle" value="addCell"/>
 				</jsp:include>
 				<c:if test="${!empty charaLeafToCharacterizations[subCharType]}">
 					<ul class="sublist_5" style="${phyDisplay}">
@@ -187,6 +189,8 @@
 										<jsp:param name="charType" value="${thirdLevelChar}" />
 										<jsp:param name="charTypeStyle" value="sublist_2" />
 										<jsp:param name="charTypeLabelStyle" value="titleCell_2_vitro" />
+										<jsp:param name="tableStyle" value="subTitleTable" />
+										<jsp:param name="addLinkStyle" value="addCellVitro"/>
 									</jsp:include>
 								</c:otherwise>
 							</c:choose>
@@ -236,6 +240,8 @@
 																<jsp:param name="charType" value="${fourthLevelChar}" />
 																<jsp:param name="charTypeStyle" value="sublist_4" />
 																<jsp:param name="charTypeLabelStyle" value="titleCell_3" />
+																<jsp:param name="tableStyle" value="subTitleTable" />
+																<jsp:param name="addLinkStyle" value="addCellVitro"/>
 															</jsp:include>
 														</c:otherwise>
 													</c:choose>
@@ -281,6 +287,8 @@
 																				<jsp:param name="charTypeStyle" value="sublist_4" />
 																				<jsp:param name="charTypeLabelStyle"
 																					value="titleCell_4" />
+																				<jsp:param name="tableStyle" value="charTitle" />
+																				<jsp:param name="addLinkStyle" value="addCellVitro"/>
 																			</jsp:include>
 																			<c:if
 																				test="${!empty charaLeafToCharacterizations[fifthLevelChar]}">
