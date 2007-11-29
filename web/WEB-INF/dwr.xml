@@ -9,6 +9,11 @@
 			<include method="getProtocolFiles" />
 			<include method="getProtocolNames" />
 		</create>
+		<create creator="new" javascript="ParticleManager">
+			<param name="class"
+				value="gov.nih.nci.calab.service.particle.NanoparticleService" />
+			<include method="getNewParticleNamesByType" />
+		</create>
 		<convert converter="bean"
 			match="gov.nih.nci.calab.dto.common.ProtocolFileBean">
 			<param name="include" value="id, name, title, uri, version" />
