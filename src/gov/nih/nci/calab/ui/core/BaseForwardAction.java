@@ -16,7 +16,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: BaseForwardAction.java,v 1.7 2007-11-08 20:41:35 pansu Exp $ */
+/* CVS $Id: BaseForwardAction.java,v 1.8 2007-11-29 19:20:59 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.exception.InvalidSessionException;
@@ -46,16 +46,16 @@ public class BaseForwardAction extends AbstractBaseAction {
 				CaNanoLabConstants.CSM_APP_NAME);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 
-		boolean createProtocol = userService.checkCreatePermission(user,
+		Boolean createProtocol = userService.checkCreatePermission(user,
 				CaNanoLabConstants.CSM_PG_PROTOCOL);
 		session.setAttribute("canCreateProtocol", createProtocol);
-		boolean createReport = userService.checkCreatePermission(user,
+		Boolean createReport = userService.checkCreatePermission(user,
 				CaNanoLabConstants.CSM_PG_REPORT);
 		session.setAttribute("canCreateReport", createReport);
-		boolean createParticle = userService.checkCreatePermission(user,
+		Boolean createParticle = userService.checkCreatePermission(user,
 				CaNanoLabConstants.CSM_PG_PARTICLE);
 		session.setAttribute("canCreateNanoparticle", createParticle);
-		boolean createSample = userService.checkCreatePermission(user,
+		Boolean createSample = userService.checkCreatePermission(user,
 				CaNanoLabConstants.CSM_PG_SAMPLE);
 		session.setAttribute("canCreateSample", createSample);
 

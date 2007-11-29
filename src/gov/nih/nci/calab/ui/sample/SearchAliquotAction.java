@@ -6,12 +6,12 @@ package gov.nih.nci.calab.ui.sample;
  * @author pansu
  */
 
-/* CVS $Id: SearchAliquotAction.java,v 1.2 2007-11-08 20:41:34 pansu Exp $ */
+/* CVS $Id: SearchAliquotAction.java,v 1.3 2007-11-29 19:20:50 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.sample.AliquotBean;
 import gov.nih.nci.calab.dto.sample.StorageLocation;
-import gov.nih.nci.calab.service.sample.SearchAliquotService;
+import gov.nih.nci.calab.service.sample.AliquotService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
@@ -61,7 +61,7 @@ public class SearchAliquotAction extends AbstractDispatchAction {
 				.get("storageLocation");
 
 		// pass the parameters to the searchAliquotService
-		SearchAliquotService searchAliquotService = new SearchAliquotService();
+		AliquotService searchAliquotService = new AliquotService();
 
 		List<AliquotBean> aliquots = null;
 

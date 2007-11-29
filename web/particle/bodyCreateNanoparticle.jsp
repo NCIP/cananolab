@@ -2,6 +2,10 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<script type='text/javascript' src='javascript/ParticleManager.js'></script>
+<script type='text/javascript' src='dwr/interface/ParticleManager.js'></script>
+<script type='text/javascript' src='dwr/engine.js'></script>
+<script type='text/javascript' src='dwr/util.js'></script>
 
 <html:form action="/nanoparticleGeneralInfo">
 	<table width="100%" align="center">
@@ -18,7 +22,8 @@
 			</td>
 		</tr>
 		<c:choose>
-			<c:when test="${empty allParticleTypes && param.dispatch eq 'setup'}">
+			<c:when
+				test="${empty allNewParticleTypes && param.dispatch eq 'setup'}">
 				<tr>
 					<td colspan="2">
 						<font color="blue" size="-1"><b>MESSAGE: </b>There are no
@@ -54,9 +59,9 @@
 											<c:otherwise>
 												<html:select styleId="particleType"
 													property="particle.sampleType"
-													onchange="javascript:doubleDropdown(document.getElementById('particleType'), document.getElementById('particleName'), particleTypeParticles)">
+													onchange="resetParticleNames(); retrieveParticleNames()">
 													<option value=""></option>
-													<html:options name="allParticleTypes" />
+													<html:options name="allNewParticleTypes" />
 												</html:select>
 											</c:otherwise>
 										</c:choose>
@@ -74,11 +79,8 @@
 											<c:otherwise>
 												<html:select styleId="particleName"
 													property="particle.sampleName">
-													<option value=""></option>
-													<c:forEach var="name"
-														items="${allParticleTypeParticles[nanoparticleGeneralInfoForm.map.particle.sampleType]}">
-														<html:option value="${name}">${name}</html:option>
-													</c:forEach>
+													<html:option
+														value="${nanoparticleGeneralInfoForm.map.particle.sampleName}">${nanoparticleGeneralInfoForm.map.particle.sampleName}</html:option>
 												</html:select>
 											</c:otherwise>
 										</c:choose>
@@ -153,17 +155,4 @@
 		</c:choose>
 	</table>
 </html:form>
-<script language="JavaScript">
-<!--//
 
-  /* populate a hashtable containing particle type particles */
-  var particleTypeParticles=new Array();    
-  <c:forEach var="item" items="${allParticleTypeParticles}">
-    var particleNames=new Array();
-    <c:forEach var="particleName" items="${allParticleTypeParticles[item.key]}" varStatus="count">
-  		particleNames[${count.index}]='${particleName}';  	
-    </c:forEach>
-    particleTypeParticles['${item.key}']=particleNames;
-  </c:forEach> 
-//-->
-</script>

@@ -1,8 +1,10 @@
 package gov.nih.nci.calab.service.protocol;
 
 import gov.nih.nci.calab.db.HibernateUtil;
+import gov.nih.nci.calab.domain.Protocol;
 import gov.nih.nci.calab.domain.ProtocolFile;
 import gov.nih.nci.calab.dto.common.LabFileBean;
+import gov.nih.nci.calab.dto.common.ProtocolBean;
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.service.report.SearchReportService;
@@ -11,12 +13,16 @@ import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
+import org.hibernate.collection.PersistentSet;
 
 /**
  * This class includes methods invovled in setting up protocol related forms and
@@ -121,8 +127,8 @@ public class SearchProtocolService {
 			Session session = HibernateUtil.currentSession();
 			HibernateUtil.beginTransaction();
 
-			String hqlString = "select name from Protocol where type='" + protocolType
-					+ "'";
+			String hqlString = "select name from Protocol where type='"
+					+ protocolType + "'";
 			List results = session.createQuery(hqlString).list();
 
 			for (Object obj : results) {
@@ -232,8 +238,8 @@ public class SearchProtocolService {
 		if (protocolFiles.isEmpty())
 			return protocols;
 
-		List<LabFileBean> filteredProtocols = this.userService.getFilteredFiles(
-				user, protocolFiles);
+		List<LabFileBean> filteredProtocols = this.userService
+				.getFilteredFiles(user, protocolFiles);
 		if (!filteredProtocols.isEmpty()) {
 			for (LabFileBean fb : filteredProtocols) {
 				protocols.add((ProtocolFileBean) fb);
@@ -264,5 +270,133 @@ public class SearchProtocolService {
 			HibernateUtil.closeSession();
 		}
 		return protocolTypes;
+	}
+
+	public Map<ProtocolBean, List<ProtocolFileBean>> getAllProtocolNameVersionByType(
+			String type) throws Exception {
+		Map<ProtocolBean, List<ProtocolFileBean>> nameVersions = new HashMap<ProtocolBean, List<ProtocolFileBean>>();
+		Map<Protocol, ProtocolBean> keyMap = new HashMap<Protocol, ProtocolBean>();
+
+		try {
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			String hqlString = "select protocolFile, protocolFile.protocol from ProtocolFile protocolFile"
+					+ " where protocolFile.protocol.type = '" + type + "'";
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
+			for (Object obj : results) {
+				Object[] array = (Object[]) obj;
+				Object key = null;
+				Object value = null;
+				for (int i = 0; i < array.length; i++) {
+					if (array[i] instanceof Protocol) {
+						key = array[i];
+					} else if (array[i] instanceof ProtocolFile) {
+						value = array[i];
+					}
+				}
+
+				if (keyMap.containsKey(key)) {
+					ProtocolBean pb = keyMap.get(key);
+					List<ProtocolFileBean> localList = nameVersions.get(pb);
+					ProtocolFileBean fb = new ProtocolFileBean();
+					fb.setVersion(((ProtocolFile) value).getVersion());
+					fb.setId(((ProtocolFile) value).getId().toString());
+					localList.add(fb);
+				} else {
+					List<ProtocolFileBean> localList = new ArrayList<ProtocolFileBean>();
+					ProtocolFileBean fb = new ProtocolFileBean();
+					fb.setVersion(((ProtocolFile) value).getVersion());
+					fb.setId(((ProtocolFile) value).getId().toString());
+					localList.add(fb);
+					ProtocolBean protocolBean = new ProtocolBean();
+					Protocol protocol = (Protocol) key;
+					protocolBean.setId(protocol.getId().toString());
+					protocolBean.setName(protocol.getName());
+					protocolBean.setType(protocol.getType());
+					nameVersions.put(protocolBean, localList);
+					keyMap.put((Protocol) key, protocolBean);
+				}
+			}
+
+		} catch (Exception e) {
+			logger.error(
+					"Problem to retrieve all protocol names and their versions by type "
+							+ type, e);
+			throw new RuntimeException(
+					"Problem to retrieve all protocol names and their versions by type "
+							+ type);
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		return nameVersions;
+	}
+
+	public SortedSet<ProtocolBean> getAllProtocols(UserBean user)
+			throws Exception {
+		SortedSet<ProtocolBean> protocolBeans = new TreeSet<ProtocolBean>();
+
+		try {
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			String hqlString = "from Protocol as protocol left join fetch protocol.protocolFileCollection";
+
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
+			for (Object obj : results) {
+				Protocol p = (Protocol) obj;
+				ProtocolBean pb = new ProtocolBean();
+				pb.setId(p.getId().toString());
+				pb.setName(p.getName());
+				pb.setType(p.getType());
+				PersistentSet set = (PersistentSet) p
+						.getProtocolFileCollection();
+				// HashSet hashSet = set.
+				if (!set.isEmpty()) {
+					List<ProtocolFileBean> list = new ArrayList<ProtocolFileBean>();
+					for (Iterator it = set.iterator(); it.hasNext();) {
+						ProtocolFile pf = (ProtocolFile) it.next();
+						ProtocolFileBean pfb = new ProtocolFileBean();
+						pfb.setId(pf.getId().toString());
+						pfb.setVersion(pf.getVersion());
+						list.add(pfb);
+					}
+					pb.setFileBeanList(filterProtocols(list, user));
+				}
+				if (!pb.getFileBeanList().isEmpty())
+					protocolBeans.add(pb);
+			}
+
+		} catch (Exception e) {
+			logger
+					.error("Problem to retrieve all protocol names and types.",
+							e);
+			throw new RuntimeException(
+					"Problem to retrieve all protocol names and types.");
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		return protocolBeans;
+	}
+
+	private List<ProtocolFileBean> filterProtocols(
+			List<ProtocolFileBean> protocolFiles, UserBean user)
+			throws Exception {
+		UserService userService = new UserService(
+				CaNanoLabConstants.CSM_APP_NAME);
+		List<LabFileBean> tempList = new ArrayList<LabFileBean>();
+		for (ProtocolFileBean pfb : protocolFiles) {
+			tempList.add(pfb);
+		}
+		List<LabFileBean> filteredProtocols = userService.getFilteredFiles(
+				user, tempList);
+		protocolFiles.clear();
+
+		if (filteredProtocols == null || filteredProtocols.isEmpty())
+			return protocolFiles;
+		for (LabFileBean lfb : filteredProtocols) {
+			protocolFiles.add((ProtocolFileBean) lfb);
+		}
+		return protocolFiles;
 	}
 }

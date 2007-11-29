@@ -16,7 +16,7 @@ import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.function.FunctionBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.dto.remote.GridNodeBean;
-import gov.nih.nci.calab.service.common.LookupService;
+import gov.nih.nci.calab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 import java.util.ArrayList;
@@ -216,8 +216,8 @@ public class GridSearchService {
 			// characterizationBeans for the side menu. Keep the
 			// characterizations types in order as in lookupService.
 			if (gridCharacterizations != null) {
-				LookupService lookupService = new LookupService();
-				Map<String, List<CharacterizationBean>> orderedCharTypeChars = lookupService
+				NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
+				Map<String, List<CharacterizationBean>> orderedCharTypeChars = service
 						.getCharacterizationTypeCharacterizations();
 				// set abbreviation for each saved characterization
 				for (String charType : orderedCharTypeChars.keySet()) {
@@ -260,8 +260,7 @@ public class GridSearchService {
 			if (gridFunctions != null) {
 				for (Function func : gridFunctions) {
 					if (funcTypeFuncs.get(func.getType()) != null) {
-						funcs = (funcTypeFuncs.get(func
-								.getType()));
+						funcs = (funcTypeFuncs.get(func.getType()));
 					} else {
 						funcs = new ArrayList<FunctionBean>();
 						funcTypeFuncs.put(func.getType(), funcs);

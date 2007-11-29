@@ -6,10 +6,10 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticlePurityAction.java,v 1.2 2007-11-08 20:41:34 pansu Exp $ */
+/* CVS $Id: NanoparticlePurityAction.java,v 1.3 2007-11-29 19:20:06 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
-import gov.nih.nci.calab.service.particle.SubmitNanoparticleService;
+import gov.nih.nci.calab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.calab.ui.core.BaseCharacterizationAction;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,10 +41,9 @@ public class NanoparticlePurityAction extends BaseCharacterizationAction {
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CharacterizationBean charBean = super.prepareCreate(request, theForm);
-		SubmitNanoparticleService service = new SubmitNanoparticleService();
+		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		service.addParticlePurity(charBean);
-		CharacterizationBean[] otherChars = super.prepareCopy(request, theForm,
-				service);
+		CharacterizationBean[] otherChars = super.prepareCopy(request, theForm);
 		for (CharacterizationBean acharBean : otherChars) {
 			service.addParticlePurity(acharBean);
 		}

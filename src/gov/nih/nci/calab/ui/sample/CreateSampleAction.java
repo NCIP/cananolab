@@ -7,13 +7,13 @@ package gov.nih.nci.calab.ui.sample;
  * @author pansu
  */
 
-/* CVS $Id: CreateSampleAction.java,v 1.4 2007-11-28 20:30:26 pansu Exp $ */
+/* CVS $Id: CreateSampleAction.java,v 1.5 2007-11-29 19:20:50 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.sample.ContainerBean;
 import gov.nih.nci.calab.dto.sample.ContainerInfoBean;
 import gov.nih.nci.calab.dto.sample.SampleBean;
-import gov.nih.nci.calab.service.sample.ManageSampleService;
+import gov.nih.nci.calab.service.sample.SampleService;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
@@ -66,7 +66,7 @@ public class CreateSampleAction extends AbstractDispatchAction {
 
 			return forward;
 		}
-		ManageSampleService manageSampleService = new ManageSampleService();
+		SampleService manageSampleService = new SampleService();
 		String fullSampleName = manageSampleService.getSampleName(sample
 				.getSampleNamePrefix(), sample.getLotId());
 		sample.setSampleName(fullSampleName);
@@ -74,7 +74,7 @@ public class CreateSampleAction extends AbstractDispatchAction {
 		UserBean sampleSubmitter = (UserBean) session.getAttribute("user");
 		sample.setAccessionDate(new Date());
 		sample.setSampleSubmitter(sampleSubmitter.getLoginName());
-		
+
 		List<ContainerBean> containers = sample.getContainers();
 		// update container name to be full container name
 		String containerPrefix = manageSampleService.getContainerPrefix(sample
@@ -82,7 +82,7 @@ public class CreateSampleAction extends AbstractDispatchAction {
 		for (ContainerBean container : containers) {
 			container.setContainerName(containerPrefix + "-"
 					+ container.getContainerName());
-		}		
+		}
 		manageSampleService.saveSample(sample);
 		request.setAttribute("sample", sample);
 
@@ -105,11 +105,10 @@ public class CreateSampleAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		SampleBean sample=(SampleBean)theForm.get("sample");	
-		List<ContainerBean> origContainers = sample
-				.getContainers();
+		SampleBean sample = (SampleBean) theForm.get("sample");
+		List<ContainerBean> origContainers = sample.getContainers();
 		int origNum = (origContainers == null) ? 0 : origContainers.size();
-		List<ContainerBean> containers  = new ArrayList<ContainerBean>();
+		List<ContainerBean> containers = new ArrayList<ContainerBean>();
 		for (int i = 0; i < origNum; i++) {
 			containers.add(origContainers.get(i));
 		}
@@ -119,14 +118,13 @@ public class CreateSampleAction extends AbstractDispatchAction {
 		return input(mapping, form, request, response);
 	}
 
-	public ActionForward removeContainer(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		String indexStr = (String) request.getParameter("compInd");
+	public ActionForward removeContainer(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String indexStr = request.getParameter("compInd");
 		int ind = Integer.parseInt(indexStr);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		SampleBean sample = (SampleBean) theForm
-				.get("sample");
+		SampleBean sample = (SampleBean) theForm.get("sample");
 		List<ContainerBean> origContainers = sample.getContainers();
 		int origNum = (origContainers == null) ? 0 : origContainers.size();
 		List<ContainerBean> containers = new ArrayList<ContainerBean>();
@@ -150,9 +148,9 @@ public class CreateSampleAction extends AbstractDispatchAction {
 		InitSampleSetup.getInstance().setAllSampleContainerTypes(session);
 		InitSampleSetup.getInstance().setAllSampleContainerInfo(session);
 
-		ManageSampleService mangeSampleService = new ManageSampleService();
+		SampleService mangeSampleService = new SampleService();
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		SampleBean sample =new SampleBean();
+		SampleBean sample = new SampleBean();
 		sample.setSampleNamePrefix(mangeSampleService.getDefaultSampleName());
 		String configuredSampleNamePrefix = PropertyReader.getProperty(
 				CaNanoLabConstants.CANANOLAB_PROPERTY, "samplePrefix");
@@ -178,7 +176,7 @@ public class CreateSampleAction extends AbstractDispatchAction {
 
 	private void updateAllEditables(HttpSession session,
 			DynaValidatorForm theForm) throws Exception {
-		SampleBean sample=(SampleBean)theForm.get("sample");
+		SampleBean sample = (SampleBean) theForm.get("sample");
 		InitSessionSetup.getInstance().updateEditableDropdown(session,
 				sample.getSampleSource(), "allSampleSources");
 		ContainerInfoBean containerInfo = (ContainerInfoBean) session

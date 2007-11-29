@@ -116,7 +116,7 @@
 					<c:if test="${!empty derivedBioAssayData.description}">
 						<tr>
 							<th class="leftLabel" valign="top">
-								Characterization File # ${fileInd+1} Description
+								Characterization File #${fileInd+1} Description
 							</th>
 							<td class="rightLabel">
 								${derivedBioAssayData.description}&nbsp;
@@ -127,7 +127,7 @@
 						test="${!empty derivedBioAssayData && !empty derivedBioAssayData.uri}">
 						<tr>
 							<th class="leftLabel" valign="top">
-								Characterization File # ${fileInd+1}
+								Characterization File #${fileInd+1}
 							</th>
 							<td class="rightLabel">
 								${derivedBioAssayData.type}

@@ -6,13 +6,13 @@ package gov.nih.nci.calab.ui.protocol;
  * @author pansu
  */
 
-/* CVS $Id: SearchProtocolAction.java,v 1.3 2007-11-08 20:41:35 pansu Exp $ */
+/* CVS $Id: SearchProtocolAction.java,v 1.4 2007-11-29 19:20:15 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.exception.CalabException;
-import gov.nih.nci.calab.service.particle.SubmitNanoparticleService;
+import gov.nih.nci.calab.service.common.FileService;
 import gov.nih.nci.calab.service.protocol.SearchProtocolService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
@@ -93,7 +93,7 @@ public class SearchProtocolAction extends AbstractDispatchAction {
 			throws Exception {
 
 		String fileId = request.getParameter("fileId");
-		SubmitNanoparticleService service = new SubmitNanoparticleService();
+		FileService service = new FileService();
 		LabFileBean fileBean = service.getFile(fileId);
 		String fileRoot = PropertyReader.getProperty(
 				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
