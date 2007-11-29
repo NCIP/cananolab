@@ -7,14 +7,26 @@ import gov.nih.nci.calab.domain.SampleContainer;
 import gov.nih.nci.calab.domain.StorageElement;
 import gov.nih.nci.calab.dto.sample.AliquotBean;
 import gov.nih.nci.calab.dto.sample.ContainerBean;
+import gov.nih.nci.calab.dto.sample.ContainerInfoBean;
+import gov.nih.nci.calab.dto.sample.StorageLocation;
 import gov.nih.nci.calab.exception.DuplicateEntriesException;
+import gov.nih.nci.calab.service.util.CaNanoLabComparators;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
+import org.apache.struts.util.LabelValueBean;
 import org.hibernate.Session;
 
 /**
@@ -22,13 +34,241 @@ import org.hibernate.Session;
  * @author pansu
  * 
  */
+/* CVS $Id: AliquotService.java,v 1.1 2007-11-29 19:18:11 pansu Exp $ */
 
-/*
- * CVS $Id: ManageAliquotService.java,v 1.1 2007-11-01 17:31:14 pansu Exp $
- */
+public class AliquotService {
+	private static Logger logger = Logger.getLogger(AliquotService.class);
 
-public class ManageAliquotService {
-	private static Logger logger = Logger.getLogger(ManageAliquotService.class);
+	/**
+	 * 
+	 * @param aliquotName
+	 * @param sampleType
+	 * @param sampleSource
+	 * @param sourceSampleId
+	 * @param dateAccessionedBegin
+	 * @param dateAccessionedEnd
+	 * @param sampleSubmitter
+	 * @param storageLocation
+	 * @return
+	 */
+	public List<AliquotBean> searchAliquotsByAliquotName(String aliquotName,
+			String sampleType, String sampleSource, String sourceSampleId,
+			Date dateAccessionedBegin, Date dateAccessionedEnd,
+			String sampleSubmitter, StorageLocation storageLocation)
+			throws Exception {
+		List<AliquotBean> aliquots = new ArrayList<AliquotBean>();
+		try {
+			List<Object> paramList = new ArrayList<Object>();
+			List<String> whereList = new ArrayList<String>();
+
+			String where = "";
+			String storageFrom = "";
+			if (aliquotName.length() > 0) {
+				where = "where ";
+				if (aliquotName.indexOf("*") != -1) {
+					aliquotName = aliquotName.replace('*', '%');
+					whereList.add("aliquot.name like ?");
+				} else {
+					whereList.add("aliquot.name=?");
+				}
+				paramList.add(aliquotName);
+			}
+			if (sampleType.length() > 0) {
+				paramList.add(sampleType);
+				where = "where ";
+				whereList.add("aliquot.sample.type=?");
+			}
+
+			if (sampleSource.length() > 0) {
+				paramList.add(sampleSource);
+				where = "where ";
+				whereList.add("aliquot.sample.source.organizationName=?");
+			}
+
+			if (sourceSampleId.length() > 0) {
+				paramList.add(sourceSampleId);
+				where = "where ";
+				whereList.add("aliquot.sample.sourceSampleId=?");
+			}
+
+			if (dateAccessionedBegin != null) {
+				paramList.add(dateAccessionedBegin);
+				where = "where ";
+				whereList.add("aliquot.createdDate>=?");
+			}
+
+			if (dateAccessionedEnd != null) {
+				paramList.add(dateAccessionedEnd);
+				where = "where ";
+				whereList.add("aliquot.createdDate<=?");
+			}
+			if (sampleSubmitter.length() > 0) {
+				paramList.add(sampleSubmitter);
+				where = "where ";
+				whereList.add("aliquot.createdBy=?");
+			}
+
+			if (storageLocation.getRoom().length() > 0) {
+				paramList.add(storageLocation.getRoom());
+				where = "where ";
+				storageFrom = "join aliquot.storageElementCollection storage ";
+				whereList.add("storage.type='Room' and storage.location=?");
+			}
+
+			if (storageLocation.getFreezer().length() > 0) {
+				paramList.add(storageLocation.getFreezer());
+				where = "where ";
+				storageFrom = "join aliquot.storageElementCollection storage ";
+				whereList.add("storage.type='Freezer' and storage.location=?");
+			}
+
+			if (storageLocation.getFreezer().length() > 0) {
+				paramList.add(storageLocation.getFreezer());
+				where = "where ";
+				storageFrom = "join aliquot.storageElementCollection storage ";
+				whereList.add(" storage.type='Shelf' and storage.location=?");
+			}
+
+			if (storageLocation.getBox().length() > 0) {
+				paramList.add(storageLocation.getBox());
+				where = "where ";
+				storageFrom = "join aliquot.storageElementCollection storage ";
+				whereList.add("storage.type='Box' and storage.location=?");
+			}
+
+			String whereStr = StringUtils.join(whereList, " and ");
+			String hqlString = "select aliquot from Aliquot aliquot "
+					+ storageFrom + where + whereStr;
+			HibernateUtil.beginTransaction();
+
+			List<? extends Object> results = (HibernateUtil.createQueryByParam(
+					hqlString, paramList).list());
+			for (Object obj : new HashSet<Object>(results)) {
+				Aliquot aliquot = (Aliquot) obj;
+				aliquots.add(new AliquotBean(aliquot));
+			}
+			HibernateUtil.commitTransaction();
+		} catch (Exception e) {
+			logger.error("Error in searching aliquots by the given parameters",
+					e);
+			throw new RuntimeException(
+					"Error in searching aliquots by the given parameters");
+		} finally {
+			HibernateUtil.closeSession();
+		}
+
+		Collections.sort(aliquots,
+				new CaNanoLabComparators.AliquotBeanComparator());
+		return aliquots;
+	}
+
+	public List<AliquotBean> searchAliquotsByContainer(String containerId)
+			throws Exception {
+		List<AliquotBean> aliquots = new ArrayList<AliquotBean>();
+		try {
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			String hqlString = "select aliquot from Aliquot aliquot join aliquot.parentSampleContainerCollection container where container.id="
+					+ containerId;
+			List results = session.createQuery(hqlString).list();
+			for (Object obj : results) {
+				Aliquot aliquot = (Aliquot) obj;
+				aliquots.add(new AliquotBean(aliquot));
+			}
+			HibernateUtil.commitTransaction();
+		} catch (Exception e) {
+			logger.error(
+					"Error in searching aliquots by the given container ID", e);
+			throw new RuntimeException(
+					"Error in searching aliquots by the given container ID");
+		} finally {
+			HibernateUtil.closeSession();
+		}
+
+		Collections.sort(aliquots,
+				new CaNanoLabComparators.AliquotBeanComparator());
+		return aliquots;
+	}
+
+	/**
+	 * Retrieving all unmasked aliquots for use in views create run, use aliquot
+	 * and create aliquot.
+	 * 
+	 * @return a Map between sample name and its associated unmasked aliquots
+	 * @throws Exception
+	 */
+
+	public Map<String, SortedSet<AliquotBean>> getUnmaskedSampleAliquots()
+			throws Exception {
+		SortedSet<AliquotBean> aliquots = null;
+		Map<String, SortedSet<AliquotBean>> sampleAliquots = new HashMap<String, SortedSet<AliquotBean>>();
+		try {
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			String hqlString = "select aliquot.id, aliquot.name, aliquot.sample.name from Aliquot aliquot where aliquot.dataStatus is null order by aliquot.name";
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
+			for (Object obj : results) {
+				Object[] info = (Object[]) obj;
+				AliquotBean aliquot = new AliquotBean(StringUtils
+						.convertToString(info[0]), StringUtils
+						.convertToString(info[1]),
+						CaNanoLabConstants.ACTIVE_STATUS);
+				String sampleName = (String) info[2];
+				if (sampleAliquots.get(sampleName) != null) {
+					aliquots = sampleAliquots
+							.get(sampleName);
+				} else {
+					aliquots = new TreeSet<AliquotBean>(
+							new CaNanoLabComparators.AliquotBeanComparator());
+					sampleAliquots.put(sampleName, aliquots);
+				}
+				aliquots.add(aliquot);
+			}
+		} catch (Exception e) {
+			logger.error("Error in retrieving all aliquot Ids and names", e);
+			throw new RuntimeException(
+					"Error in retrieving all aliquot Ids and names");
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		return sampleAliquots;
+	}
+
+	public SortedSet<String> getAllAliquotContainerTypes() throws Exception {
+		SortedSet<String> containerTypes = new TreeSet<String>();
+
+		try {
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			String hqlString = "select distinct aliquot.containerType from Aliquot aliquot order by aliquot.containerType";
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
+			for (Object obj : results) {
+				containerTypes.add((String) obj);
+			}
+
+		} catch (Exception e) {
+			logger.error("Error in retrieving all aliquot container types", e);
+			throw new RuntimeException(
+					"Error in retrieving all aliquot container types.");
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		containerTypes.addAll(Arrays
+				.asList(CaNanoLabConstants.DEFAULT_CONTAINER_TYPES));
+		return containerTypes;
+	}
+
+	/**
+	 * 
+	 * @return the default sample container information in a form of
+	 *         ContainerInfoBean
+	 */
+	public ContainerInfoBean getAliquotContainerInfo() throws Exception {
+		SampleService sampleService = new SampleService();
+		return sampleService.getSampleContainerInfo();
+	}
 
 	public int getDefaultAliquotMatrixColumnNumber() {
 		return 10;
@@ -334,5 +574,34 @@ public class ManageAliquotService {
 			return (String) obj;
 		}
 		return "";
+	}
+
+	/**
+	 * 
+	 * @return all methods for creating aliquots
+	 */
+	public List<LabelValueBean> getAliquotCreateMethods() throws Exception {
+		List<LabelValueBean> createMethods = new ArrayList<LabelValueBean>();
+
+		try {
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			String hqlString = "select sop.name, file.uri from SampleSOP sop join sop.sampleSOPFileCollection file where sop.description='aliquot creation'";
+			List results = session.createQuery(hqlString).list();
+			HibernateUtil.commitTransaction();
+			for (Object obj : results) {
+				String sopName = (String) ((Object[]) obj)[0];
+				String sopURI = (String) ((Object[]) obj)[1];
+				String sopURL = (sopURI == null) ? "" : sopURI;
+				createMethods.add(new LabelValueBean(sopName, sopURL));
+			}
+
+		} catch (Exception e) {
+			logger.error("Error in retrieving all sample sources", e);
+			throw new RuntimeException("Error in retrieving all sample sources");
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		return createMethods;
 	}
 }
