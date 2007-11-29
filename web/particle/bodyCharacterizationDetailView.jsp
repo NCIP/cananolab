@@ -132,11 +132,12 @@
 							<td class="rightLabel">
 								${derivedBioAssayData.type}
 								<br>
-								<a class="thumbnail" href="#thumb"><img
+								<%--<a class="thumbnail" href="#thumb">--%>
+								<a href="#"
+									onclick="popImage('${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.id}', ${derivedBioAssayData.id}, 100, 100)"><img
+										styleId="thumb${derivedBioAssayData.id}"
 										src="${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.id}"
-										border="0" width="150"> <span><img
-											src="${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.id}">
-										<br /> </span> </a>
+										border="0" width="150"> </a>
 							</td>
 						</tr>
 					</c:if>
