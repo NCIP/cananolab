@@ -5,9 +5,7 @@ package gov.nih.nci.calab.ui.particle;
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.common.UserBean;
-import gov.nih.nci.calab.dto.particle.ParticleBean;
-import gov.nih.nci.calab.service.particle.SearchNanoparticleService;
-import gov.nih.nci.calab.service.particle.SubmitNanoparticleService;
+import gov.nih.nci.calab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.security.InitSecuritySetup;
@@ -37,7 +35,7 @@ public class DeleteMultiCharacterizationAction extends AbstractDispatchAction {
 		String particleId = request.getParameter("particleId");
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		theForm.set("particleId", particleId);
-		SearchNanoparticleService service = new SearchNanoparticleService();
+		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		List<CharacterizationBean> charBeans = service
 				.getParticleCharacterizationsByName(submitType, particleId);
 
@@ -58,13 +56,13 @@ public class DeleteMultiCharacterizationAction extends AbstractDispatchAction {
 	public ActionForward deleteConfirmed(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		
+
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String[] charIds = (String[]) theForm.get("charIds");
 		String particleId = theForm.getString("particleId");
 
 		// setCharacterizationTypeCharacterizations
-		SubmitNanoparticleService service = new SubmitNanoparticleService();
+		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		service.deleteCharacterizations(charIds);
 
 		// signal the session that characterization has been changed

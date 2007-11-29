@@ -8,7 +8,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleCompositionAction.java,v 1.8 2007-11-28 21:00:13 pansu Exp $ */
+/* CVS $Id: NanoparticleCompositionAction.java,v 1.9 2007-11-29 19:20:06 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.composition.CarbonNanotubeBean;
 import gov.nih.nci.calab.dto.characterization.composition.ComposingElementBean;
@@ -21,8 +21,9 @@ import gov.nih.nci.calab.dto.characterization.composition.PolymerBean;
 import gov.nih.nci.calab.dto.characterization.composition.SurfaceGroupBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
-import gov.nih.nci.calab.service.particle.SearchNanoparticleService;
-import gov.nih.nci.calab.service.particle.SubmitNanoparticleService;
+import gov.nih.nci.calab.service.particle.NanoparticleCharacterizationService;
+import gov.nih.nci.calab.service.particle.NanoparticleCompositionService;
+import gov.nih.nci.calab.service.particle.NanoparticleService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
@@ -104,7 +105,7 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		Date date = new Date();
 		composition.setCreatedBy(user.getLoginName());
 		composition.setCreatedDate(date);
-		SubmitNanoparticleService service = new SubmitNanoparticleService();
+		NanoparticleCompositionService service = new NanoparticleCompositionService();
 		service.addParticleComposition(composition, particle.getSampleType());
 
 		// In case there is other type of branch, generation, etc created during
@@ -208,8 +209,8 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 	protected void initSetup(HttpServletRequest request,
 			DynaValidatorForm theForm) throws Exception {
 		HttpSession session = request.getSession();
-		String particleId = (String) request.getParameter("particleId");
-		SearchNanoparticleService searchtNanoparticleService = new SearchNanoparticleService();
+		String particleId = request.getParameter("particleId");
+		NanoparticleService searchtNanoparticleService = new NanoparticleService();
 		ParticleBean particle = searchtNanoparticleService
 				.getParticleInfo(particleId);
 		theForm.set("particle", particle);
@@ -235,14 +236,14 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 			throws Exception {
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleId = (String) request.getParameter("particleId");
-		SearchNanoparticleService searchtNanoparticleService = new SearchNanoparticleService();
+		String particleId = request.getParameter("particleId");
+		NanoparticleService searchtNanoparticleService = new NanoparticleService();
 		ParticleBean particle = searchtNanoparticleService
 				.getParticleInfo(particleId);
 		theForm.set("particle", particle);
 
 		String compositionId = request.getParameter("characterizationId");
-		SearchNanoparticleService service = new SearchNanoparticleService();
+		NanoparticleCompositionService service = new NanoparticleCompositionService();
 		CompositionBean composition = service.getCompositionBy(compositionId);
 		if (composition == null) {
 			throw new Exception(
@@ -292,7 +293,7 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String indexStr = (String) request.getParameter("compInd");
+		String indexStr = request.getParameter("compInd");
 		int ind = Integer.parseInt(indexStr);
 		DendrimerBean dendrimer = (DendrimerBean) theForm.get("dendrimer");
 		List<SurfaceGroupBean> origSurfaceGroups = dendrimer.getSurfaceGroups();
@@ -336,7 +337,7 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 	public ActionForward removeComposingElement(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		String indexStr = (String) request.getParameter("compInd");
+		String indexStr = request.getParameter("compInd");
 		int ind = Integer.parseInt(indexStr);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CompositionBean comp = (CompositionBean) theForm.get("composition");
@@ -387,7 +388,7 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		ParticleBean particle = (ParticleBean) theForm.get("particle");
 		String strCharId = request.getParameter("characterizationId");
 
-		SubmitNanoparticleService service = new SubmitNanoparticleService();
+		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		service.deleteCharacterizations(new String[] { strCharId });
 
 		// signal the session that characterization has been changed

@@ -8,7 +8,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: RemoteNanoparticleCompositionAction.java,v 1.3 2007-11-16 19:16:24 pansu Exp $ */
+/* CVS $Id: RemoteNanoparticleCompositionAction.java,v 1.4 2007-11-29 19:20:06 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.CarbonNanotubeComposition;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.DendrimerComposition;
@@ -82,7 +82,7 @@ public class RemoteNanoparticleCompositionAction extends AbstractDispatchAction 
 		GridSearchService service = new GridSearchService();
 		ParticleComposition comp = service.getRemoteComposition(compositionId,
 				particleName, gridNode);
-		CompositionBean compositionBean=new CompositionBean(comp);		
+		CompositionBean compositionBean = new CompositionBean(comp);
 		// clear session data from the input forms
 		clearMap(session, theForm);
 		if (particleType
@@ -113,7 +113,7 @@ public class RemoteNanoparticleCompositionAction extends AbstractDispatchAction 
 			EmulsionBean emulsion = new EmulsionBean((EmulsionComposition) comp);
 			theForm.set("emulsion", emulsion);
 		}
-		theForm.set("composition", compositionBean );
+		theForm.set("composition", compositionBean);
 		ActionForward forward = mapping.findForward("success");
 		return forward;
 	}

@@ -15,8 +15,8 @@ import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.exception.CalabException;
 import gov.nih.nci.calab.service.common.FileService;
-import gov.nih.nci.calab.service.particle.SearchNanoparticleService;
-import gov.nih.nci.calab.service.particle.SubmitNanoparticleService;
+import gov.nih.nci.calab.service.particle.NanoparticleCharacterizationService;
+import gov.nih.nci.calab.service.particle.NanoparticleService;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
@@ -145,7 +145,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		CharacterizationBean charBean = (CharacterizationBean) theForm
 				.get("achar");
 		// save new lookup up types in the database definition tables.
-		SubmitNanoparticleService service = new SubmitNanoparticleService();
+		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		service.addNewCharacterizationDataDropdowns(charBean, charBean
 				.getName());
 
@@ -161,23 +161,21 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 	}
 
 	protected CharacterizationBean[] prepareCopy(HttpServletRequest request,
-			DynaValidatorForm theForm, SubmitNanoparticleService service)
-			throws Exception {
+			DynaValidatorForm theForm) throws Exception {
 		CharacterizationBean charBean = (CharacterizationBean) theForm
 				.get("achar");
 		ParticleBean particle = (ParticleBean) theForm.get("particle");
 		String[] otherParticles = (String[]) theForm.get("otherParticles");
 		Boolean copyData = (Boolean) theForm.get("copyData");
 		CharacterizationBean[] charBeans = new CharacterizationBean[otherParticles.length];
-		SearchNanoparticleService searchService = new SearchNanoparticleService();
+		NanoparticleService service = new NanoparticleService();
 		int i = 0;
 		for (String particleName : otherParticles) {
 			CharacterizationBean newCharBean = charBean.copy(copyData
 					.booleanValue());
 			// overwrite particle and particle type;
 			newCharBean.getParticle().setSampleName(particleName);
-			ParticleBean otherParticle = searchService
-					.getParticleBy(particleName);
+			ParticleBean otherParticle = service.getParticleBy(particleName);
 			newCharBean.getParticle().setSampleType(
 					otherParticle.getSampleType());
 			// reset view title
@@ -235,7 +233,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			DynaValidatorForm theForm) throws Exception {
 		HttpSession session = request.getSession();
 		clearMap(session, theForm);
-		SearchNanoparticleService service = new SearchNanoparticleService();
+
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		InitParticleSetup.getInstance()
 				.setAllCharacterizationDropdowns(session);
@@ -243,13 +241,12 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		// set up particle
 		String particleId = request.getParameter("particleId");
 		if (particleId != null) {
-			SearchNanoparticleService searchtNanoparticleService = new SearchNanoparticleService();
-			ParticleBean particle = searchtNanoparticleService
-					.getGeneralInfo(particleId);
+			NanoparticleService particleService = new NanoparticleService();
+			ParticleBean particle = particleService.getGeneralInfo(particleId);
 			theForm.set("particle", particle);
 
 			// set up other particles from the same source
-			SortedSet<String> allOtherParticleNames = service
+			SortedSet<String> allOtherParticleNames = particleService
 					.getOtherParticles(particle.getSampleSource(), particle
 							.getSampleName(), user);
 			session
@@ -271,7 +268,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		String submitType = (String) request.getParameter("submitType");
 		String characterizationId = request.getParameter("characterizationId");
 		if (characterizationId != null) {
-			CharacterizationBean charBean = service
+			NanoparticleCharacterizationService charService = new NanoparticleCharacterizationService();
+			CharacterizationBean charBean = charService
 					.getCharacterizationBy(characterizationId);
 			if (charBean == null) {
 				throw new RuntimeException(
@@ -336,7 +334,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		ShapeBean shape = (ShapeBean) theForm.get("shape");
 		MorphologyBean morphology = (MorphologyBean) theForm.get("morphology");
 		CytotoxicityBean cyto = (CytotoxicityBean) theForm.get("cytotoxicity");
-		SolubilityBean solubility = (SolubilityBean) theForm.get("solubility");		
+		SolubilityBean solubility = (SolubilityBean) theForm.get("solubility");
 		HttpSession session = request.getSession();
 		updateAllCharEditables(session, achar);
 		updateShapeEditable(session, shape);
@@ -433,7 +431,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		initSetup(request, theForm);
 		String submitType = request.getParameter("submitType");
 		ParticleBean particle = (ParticleBean) theForm.get("particle");
-		SearchNanoparticleService service = new SearchNanoparticleService();
+		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		List<CharacterizationSummaryBean> charSummaryBeans = service
 				.getParticleCharacterizationSummaryByName(submitType, particle
 						.getSampleId());
@@ -493,7 +491,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			throws Exception {
 
 		String fileId = request.getParameter("fileId");
-		SubmitNanoparticleService service = new SubmitNanoparticleService();
+		FileService service = new FileService();
 		LabFileBean fileBean = service.getFile(fileId);
 		String fileRoot = PropertyReader.getProperty(
 				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
@@ -640,7 +638,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		ParticleBean particle = (ParticleBean) theForm.get("particle");
 		String charId = request.getParameter("characterizationId");
 
-		SubmitNanoparticleService service = new SubmitNanoparticleService();
+		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		service.deleteCharacterizations(new String[] { charId });
 
 		// signal the session that characterization has been changed

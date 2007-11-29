@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.particle;
  */
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
-import gov.nih.nci.calab.service.particle.SubmitNanoparticleService;
+import gov.nih.nci.calab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.calab.ui.core.BaseCharacterizationAction;
 
 import javax.servlet.http.HttpServletRequest;
@@ -40,10 +40,9 @@ public class InvitroNKCellCytotoxicActivityAction extends
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CharacterizationBean charBean = super.prepareCreate(request, theForm);
-		SubmitNanoparticleService service = new SubmitNanoparticleService();
+		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		service.addNKCellCytotoxicActivity(charBean);
-		CharacterizationBean[] otherChars = super.prepareCopy(request, theForm,
-				service);
+		CharacterizationBean[] otherChars = super.prepareCopy(request, theForm);
 		for (CharacterizationBean acharBean : otherChars) {
 			service.addNKCellCytotoxicActivity(acharBean);
 		}

@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.report;
  * @author pansu
  */
 
-/* CVS $Id: RemoteSearchReportAction.java,v 1.2 2007-11-08 20:41:34 pansu Exp $ */
+/* CVS $Id: RemoteSearchReportAction.java,v 1.3 2007-11-29 19:20:24 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
@@ -98,8 +98,8 @@ public class RemoteSearchReportAction extends AbstractDispatchAction {
 			throws Exception {
 		HttpSession session = request.getSession();
 		InitParticleSetup.getInstance().setAllFunctionTypes(session);
+		InitReportSetup.getInstance().setAllReportTypes(session);
 		InitSessionSetup.getInstance().setApplicationOwner(session);
-		InitSessionSetup.getInstance().setStaticDropdowns(session);
 
 		ActionMessages msgs = new ActionMessages();
 		try {

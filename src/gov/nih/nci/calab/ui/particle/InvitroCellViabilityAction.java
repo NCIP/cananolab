@@ -8,7 +8,7 @@ package gov.nih.nci.calab.ui.particle;
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.invitro.CytotoxicityBean;
-import gov.nih.nci.calab.service.particle.SubmitNanoparticleService;
+import gov.nih.nci.calab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.calab.ui.core.BaseCharacterizationAction;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,10 +43,9 @@ public class InvitroCellViabilityAction extends BaseCharacterizationAction {
 		CytotoxicityBean propBean = (CytotoxicityBean) theForm
 				.get("cytotoxicity");
 		CytotoxicityBean cytoBean = new CytotoxicityBean(propBean, charBean);
-		SubmitNanoparticleService service = new SubmitNanoparticleService();
+		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		service.addCellViability(cytoBean);
-		CharacterizationBean[] otherChars = super.prepareCopy(request, theForm,
-				service);
+		CharacterizationBean[] otherChars = super.prepareCopy(request, theForm);
 		for (CharacterizationBean acharBean : otherChars) {
 			CytotoxicityBean aCytoBean = new CytotoxicityBean(propBean,
 					acharBean);

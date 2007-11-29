@@ -5,11 +5,11 @@ package gov.nih.nci.calab.ui.report;
  *  
  * @author pansu
  */
-/* CVS $Id: SubmitReportAction.java,v 1.4 2007-11-19 21:44:13 pansu Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.5 2007-11-29 19:20:24 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
-import gov.nih.nci.calab.service.particle.SubmitNanoparticleService;
+import gov.nih.nci.calab.service.common.FileService;
 import gov.nih.nci.calab.service.report.SubmitReportService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
@@ -42,7 +42,7 @@ public class SubmitReportAction extends AbstractDispatchAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String[] particleNames = (String[]) theForm.get("particleNames");
 		LabFileBean fileBean = (LabFileBean) theForm.get("file");
-		UserBean user=(UserBean)request.getSession().getAttribute("user");
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		fileBean.setCreatedBy(user.getLoginName());
 		fileBean.setCreatedDate(new Date());
 		FormFile uploadedFile = (FormFile) theForm.get("uploadedFile");
@@ -76,7 +76,7 @@ public class SubmitReportAction extends AbstractDispatchAction {
 		HttpSession session = request.getSession();
 		InitSessionSetup.getInstance().setApplicationOwner(session);
 		InitSampleSetup.getInstance().setAllSampleContainers(session);
-		InitSessionSetup.getInstance().setStaticDropdowns(session);
+		InitReportSetup.getInstance().setAllReportTypes(session);
 		InitSecuritySetup.getInstance().setAllVisibilityGroups(session);
 		return mapping.getInputForward();
 	}
@@ -92,7 +92,7 @@ public class SubmitReportAction extends AbstractDispatchAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String fileId = request.getParameter("fileId");
 		String fileType = request.getParameter("fileType");
-		SubmitNanoparticleService service = new SubmitNanoparticleService();
+		FileService service = new FileService();
 		LabFileBean fileBean = service.getFile(fileId);
 		fileBean.setInstanceType(fileType);
 		theForm.set("file", fileBean);
@@ -111,7 +111,7 @@ public class SubmitReportAction extends AbstractDispatchAction {
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		LabFileBean fileBean = (LabFileBean) theForm.get("file");
-		SubmitNanoparticleService service = new SubmitNanoparticleService();
+		FileService service = new FileService();
 		service.updateFileMetaData(fileBean);
 
 		ActionMessages msgs = new ActionMessages();

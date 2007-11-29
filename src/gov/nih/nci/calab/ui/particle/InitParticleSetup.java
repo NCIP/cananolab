@@ -9,15 +9,17 @@ import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.function.FunctionBean;
 import gov.nih.nci.calab.dto.remote.GridNodeBean;
 import gov.nih.nci.calab.service.common.LookupService;
-import gov.nih.nci.calab.service.particle.SearchNanoparticleService;
+import gov.nih.nci.calab.service.particle.NanoparticleCharacterizationService;
+import gov.nih.nci.calab.service.particle.NanoparticleCompositionService;
+import gov.nih.nci.calab.service.particle.NanoparticleFunctionService;
+import gov.nih.nci.calab.service.particle.NanoparticleService;
 import gov.nih.nci.calab.service.remote.GridSearchService;
-import gov.nih.nci.calab.service.report.SearchReportService;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
+import gov.nih.nci.calab.ui.report.InitReportSetup;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +39,16 @@ import javax.servlet.http.HttpSession;
 public class InitParticleSetup {
 	private static LookupService lookupService;
 
+	private static NanoparticleService particleService;
+
+	private static NanoparticleCharacterizationService charService;
+
+	private static NanoparticleCompositionService compService;
+
 	private InitParticleSetup() throws Exception {
+		particleService = new NanoparticleService();
+		charService = new NanoparticleCharacterizationService();
+		compService = new NanoparticleCompositionService();
 		lookupService = new LookupService();
 	}
 
@@ -45,23 +56,13 @@ public class InitParticleSetup {
 		return new InitParticleSetup();
 	}
 
-	public static LookupService getLookupService() {
-		return lookupService;
-	}
-
-	public void setParticleTypeParticles(HttpSession session) throws Exception {
-		if (session.getAttribute("particleTypeParticles") == null
+	public void setNewParticleTypes(HttpSession session) throws Exception {
+		if (session.getAttribute("allNewParticleTypes") == null
 				|| session.getAttribute("newSampleCreated") != null
 				|| session.getAttribute("newParticleCreated") != null) {
-			Map<String, SortedSet<String>> particleTypeParticles = lookupService
-					.getAllParticleTypeParticles();
-			List<String> particleTypes = new ArrayList<String>(
-					particleTypeParticles.keySet());
-			Collections.sort(particleTypes);
-
-			session.setAttribute("allParticleTypeParticles",
-					particleTypeParticles);
-			session.setAttribute("allParticleTypes", particleTypes);
+			SortedSet<String> particleTypes = particleService
+					.getUnannotatedParticleTypes();
+			session.setAttribute("allNewParticleTypes", particleTypes);
 		}
 		session.removeAttribute("newParticleCreated");
 	}
@@ -83,7 +84,7 @@ public class InitParticleSetup {
 
 		if ((session.getAttribute("allPolymerInitiators") == null)
 				|| (session.getAttribute("newPolymerCreated") != null)) {
-			SortedSet<String> initiators = lookupService
+			SortedSet<String> initiators = compService
 					.getAllPolymerInitiators();
 			session.setAttribute("allPolymerInitiators", initiators);
 		}
@@ -93,26 +94,25 @@ public class InitParticleSetup {
 	private void setAllDendrimers(HttpSession session) throws Exception {
 		if ((session.getAttribute("allDendrimerCores") == null)
 				|| session.getAttribute("newDendrimerCreated") != null) {
-			SortedSet<String> dendrimerCores = lookupService
+			SortedSet<String> dendrimerCores = compService
 					.getAllDendrimerCores();
 			session.setAttribute("allDendrimerCores", dendrimerCores);
 		}
 		if (session.getAttribute("allDendrimerSurfaceGroupNames") == null
 				|| session.getAttribute("newDendrimerCreated") != null) {
-			SortedSet<String> surfaceGroupNames = lookupService
+			SortedSet<String> surfaceGroupNames = compService
 					.getAllDendrimerSurfaceGroupNames();
 			session.setAttribute("allDendrimerSurfaceGroupNames",
 					surfaceGroupNames);
 		}
 		if (session.getAttribute("allDendrimerBranches") == null
 				|| session.getAttribute("newDendrimerCreated") != null) {
-			SortedSet<String> branches = lookupService
-					.getAllDendrimerBranches();
+			SortedSet<String> branches = compService.getAllDendrimerBranches();
 			session.setAttribute("allDendrimerBranches", branches);
 		}
 		if (session.getAttribute("allDendrimerGenerations") == null
 				|| session.getAttribute("newDendrimerCreated") != null) {
-			SortedSet<String> generations = lookupService
+			SortedSet<String> generations = compService
 					.getAllDendrimerGenerations();
 			session.setAttribute("allDendrimerGenerations", generations);
 		}
@@ -122,7 +122,7 @@ public class InitParticleSetup {
 
 	public void setAllMetalCompositions(HttpSession session) throws Exception {
 		if (session.getServletContext().getAttribute("allMetalCompositions") == null) {
-			String[] compositions = lookupService.getAllMetalCompositions();
+			String[] compositions = compService.getAllMetalCompositions();
 			session.getServletContext().setAttribute("allMetalCompositions",
 					compositions);
 		}
@@ -131,7 +131,7 @@ public class InitParticleSetup {
 	public void setAllParticleSources(HttpSession session) throws Exception {
 		if (session.getAttribute("allParticleSources") == null
 				|| session.getAttribute("newSampleCreated") != null) {
-			SortedSet<String> particleSources = lookupService
+			SortedSet<String> particleSources = particleService
 					.getAllParticleSources();
 			session.setAttribute("allParticleSources", particleSources);
 		}
@@ -142,7 +142,7 @@ public class InitParticleSetup {
 	public void setSideParticleMenu(HttpServletRequest request,
 			String particleId) throws Exception {
 		HttpSession session = request.getSession();
-		setAllReports(session, particleId);
+		InitReportSetup.getInstance().setAllReports(session, particleId);
 		// not part of the side menu, but need to up
 		// if (session.getAttribute("newParticleCreated") != null) {
 		// setParticleTypeParticles(session);
@@ -159,36 +159,13 @@ public class InitParticleSetup {
 		session.removeAttribute("detailPage");
 	}
 
-	private void setAllReports(HttpSession session, String particleId)
-			throws Exception {
-		UserBean user = (UserBean) session.getAttribute("user");
-		SearchReportService searchReportService = new SearchReportService();
-		if (session.getAttribute("particleReports") == null
-				|| session.getAttribute("newReportCreated") != null
-				|| session.getAttribute("newParticleCreated") != null) {
-
-			List<LabFileBean> reportBeans = searchReportService.getReportInfo(
-					particleId, CaNanoLabConstants.REPORT, user);
-			session.setAttribute("particleReports", reportBeans);
-		}
-
-		if (session.getAttribute("particleAssociatedFiles") == null
-				|| session.getAttribute("newReportCreated") != null
-				|| session.getAttribute("newParticleCreated") != null) {
-			List<LabFileBean> associatedBeans = searchReportService
-					.getReportInfo(particleId,
-							CaNanoLabConstants.ASSOCIATED_FILE, user);
-			session.setAttribute("particleAssociatedFiles", associatedBeans);
-		}
-	}
-
 	private void setAllCompositions(HttpSession session, String particleId)
 			throws Exception {
 		if (session.getAttribute("allCharacterizations") == null
 				|| session.getAttribute("newCharacterizationCreated") != null
 				|| session.getAttribute("newParticleCreated") != null) {
 			// get saved characterizations based on the particle type and name
-			SearchNanoparticleService service = new SearchNanoparticleService();
+			NanoparticleCompositionService service = new NanoparticleCompositionService();
 			List<CompositionBean> compBeans = service
 					.getCompositionInfo(particleId);
 			session.setAttribute("allCompositions", compBeans);
@@ -212,7 +189,7 @@ public class InitParticleSetup {
 				|| session.getAttribute("newCharacterizationCreated") != null
 				|| session.getAttribute("newParticleCreated") != null) {
 			// get saved characterizations based on the particle ID
-			SearchNanoparticleService service = new SearchNanoparticleService();
+			NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 			List<CharacterizationBean> charBeans = service
 					.getCharacterizationInfo(particleId);
 			Map<String, List<CharacterizationBean>> charMap = new HashMap<String, List<CharacterizationBean>>();
@@ -281,7 +258,7 @@ public class InitParticleSetup {
 				session.setAttribute("allCharacterizations",
 						typeTreeSelectedMap);
 			}
-			
+
 			session.setAttribute("charaLeafActionName", charLeafActionNameMap);
 			Map<String, List<CharacterizationBean>> nameCharMap = getLeafCharaMap(charMap);
 			session.setAttribute("charaLeafToCharacterizations", nameCharMap);
@@ -385,7 +362,7 @@ public class InitParticleSetup {
 		if (session.getAttribute("allFuncTypeFuncs") == null
 				|| session.getAttribute("newParticleCreated") != null
 				|| session.getAttribute("newFunctionCreated") != null) {
-			SearchNanoparticleService service = new SearchNanoparticleService();
+			NanoparticleFunctionService service = new NanoparticleFunctionService();
 			Map<String, List<FunctionBean>> funcTypeFuncs = service
 					.getFunctionInfo(particleId);
 			session.setAttribute("allFuncTypeFuncs", funcTypeFuncs);
@@ -407,8 +384,7 @@ public class InitParticleSetup {
 			session.setAttribute("remoteCharaLeafToCharacterizations",
 					nameCharMap);
 
-			LookupService lookupService = new LookupService();
-			Map<String, List<CharacterizationBean>> orderedCharTypeChars = lookupService
+			Map<String, List<CharacterizationBean>> orderedCharTypeChars = charService
 					.getCharacterizationTypeCharacterizations();
 			Map<String, String> ascendTypeTreeMap = getAscendTypeTreeMap(orderedCharTypeChars);
 			Map<String, Set<String>> typeTreeSelectedMap = createCharaTypeTree(
@@ -598,7 +574,7 @@ public class InitParticleSetup {
 			throws Exception {
 		if (session.getAttribute("characterizationSources") == null
 				|| session.getAttribute("newCharacterizationSourceCreated") != null) {
-			SortedSet<String> characterizationSources = lookupService
+			SortedSet<String> characterizationSources = charService
 					.getAllCharacterizationSources();
 			session.setAttribute("characterizationSources",
 					characterizationSources);
@@ -609,14 +585,12 @@ public class InitParticleSetup {
 	public void setAllInstruments(HttpSession session) throws Exception {
 		if (session.getAttribute("allInstruments") == null
 				|| session.getAttribute("newInstrumentCreated") != null) {
-			List<InstrumentBean> instruments = lookupService
-					.getAllInstruments();
+			List<InstrumentBean> instruments = charService.getAllInstruments();
 			SortedSet<String> instrumentTypes = new TreeSet<String>();
 			for (InstrumentBean instrument : instruments) {
 				instrumentTypes.add(instrument.getType());
 			}
-			SortedSet<String> manufacturers = lookupService
-					.getAllManufacturers();
+			SortedSet<String> manufacturers = charService.getAllManufacturers();
 			session.setAttribute("allInstruments", instruments);
 			session.setAttribute("allInstrumentTypes", instrumentTypes);
 			session.setAttribute("allManufacturers", manufacturers);
@@ -629,7 +603,7 @@ public class InitParticleSetup {
 		if (session.getAttribute("allDerivedDataFileTypes") == null
 				|| session.getAttribute("newCharacterizationFileTypeCreated") != null) {
 
-			SortedSet<String> fileTypes = lookupService
+			SortedSet<String> fileTypes = charService
 					.getAllCharacterizationFileTypes();
 			session.setAttribute("allDerivedDataFileTypes", fileTypes);
 		}
@@ -650,7 +624,7 @@ public class InitParticleSetup {
 		// set in application context
 		if (session.getServletContext()
 				.getAttribute("allCharacterizationTypes") == null) {
-			List<CharacterizationTypeBean> types = lookupService
+			List<CharacterizationTypeBean> types = charService
 					.getAllCharacterizationTypes();
 			session.getServletContext().setAttribute(
 					"allCharacterizationTypes", types);
@@ -659,7 +633,7 @@ public class InitParticleSetup {
 		// set in application context mapping between characterization type and
 		// child characterization name and abbrs
 		if (session.getServletContext().getAttribute("allCharTypeChars") == null) {
-			Map<String, List<CharacterizationBean>> charTypeChars = lookupService
+			Map<String, List<CharacterizationBean>> charTypeChars = charService
 					.getCharacterizationTypeCharacterizations();
 			session.getServletContext().setAttribute("allCharTypeChars",
 					charTypeChars);
@@ -668,11 +642,11 @@ public class InitParticleSetup {
 
 	public void setDerivedDatumNames(HttpSession session,
 			String characterizationName) throws Exception {
-		SortedSet<String> categories = lookupService
+		SortedSet<String> categories = charService
 				.getDerivedDataCategories(characterizationName);
 		session.setAttribute("derivedDataCategories", categories);
 
-		SortedSet<String> datumNames = lookupService
+		SortedSet<String> datumNames = charService
 				.getDerivedDatumNames(characterizationName);
 		session.setAttribute("datumNames", datumNames);
 	}

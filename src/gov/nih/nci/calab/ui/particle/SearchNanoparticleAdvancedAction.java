@@ -6,12 +6,12 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SearchNanoparticleAdvancedAction.java,v 1.2 2007-11-08 20:41:34 pansu Exp $ */
+/* CVS $Id: SearchNanoparticleAdvancedAction.java,v 1.3 2007-11-29 19:20:06 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.SearchableBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
-import gov.nih.nci.calab.service.particle.SearchNanoparticleService;
+import gov.nih.nci.calab.service.particle.NanoparticleService;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ public class SearchNanoparticleAdvancedAction extends AbstractDispatchAction {
 		SearchableBean cellViability = (SearchableBean) theForm
 				.get("cellViability");
 
-		SearchNanoparticleService searchParticleService = new SearchNanoparticleService();
+		NanoparticleService searchParticleService = new NanoparticleService();
 		List<SearchableBean> searchCriteria = new ArrayList<SearchableBean>();
 		// don't search if value range is empty
 		if (size1.getLowValue().length() > 0

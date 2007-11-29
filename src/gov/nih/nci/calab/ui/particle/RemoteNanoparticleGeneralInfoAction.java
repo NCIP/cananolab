@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: RemoteNanoparticleGeneralInfoAction.java,v 1.4 2007-11-21 23:21:49 pansu Exp $ */
+/* CVS $Id: RemoteNanoparticleGeneralInfoAction.java,v 1.5 2007-11-29 19:20:06 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.remote.GridNodeBean;
@@ -45,7 +45,7 @@ public class RemoteNanoparticleGeneralInfoAction extends AbstractDispatchAction 
 		ActionForward forward = mapping.findForward("success");
 		return forward;
 	}
-	
+
 	public boolean loginRequired() {
 		return false;
 	}
