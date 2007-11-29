@@ -6,12 +6,12 @@ package gov.nih.nci.calab.ui.report;
  * @author pansu
  */
 
-/* CVS $Id: SearchReportAction.java,v 1.2 2007-11-08 20:41:34 pansu Exp $ */
+/* CVS $Id: SearchReportAction.java,v 1.3 2007-11-29 19:20:24 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.exception.CalabException;
-import gov.nih.nci.calab.service.particle.SubmitNanoparticleService;
+import gov.nih.nci.calab.service.common.FileService;
 import gov.nih.nci.calab.service.report.SearchReportService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
@@ -74,10 +74,9 @@ public class SearchReportAction extends AbstractDispatchAction {
 			throws Exception {
 		HttpSession session = request.getSession();
 		// InitSessionSetup.getInstance().setAllParticleTypeParticles(session);
+		InitReportSetup.getInstance().setAllReportTypes(session);
 		InitParticleSetup.getInstance().setAllFunctionTypes(session);
 		InitSessionSetup.getInstance().setApplicationOwner(session);
-		InitSessionSetup.getInstance().setStaticDropdowns(session);
-
 		return mapping.getInputForward();
 	}
 
@@ -96,7 +95,7 @@ public class SearchReportAction extends AbstractDispatchAction {
 			throws Exception {
 
 		String fileId = request.getParameter("fileId");
-		SubmitNanoparticleService service = new SubmitNanoparticleService();
+		FileService service = new FileService();
 		LabFileBean fileBean = service.getFile(fileId);
 		String fileRoot = PropertyReader.getProperty(
 				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");

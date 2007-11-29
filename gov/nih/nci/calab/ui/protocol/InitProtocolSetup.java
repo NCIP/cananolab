@@ -33,7 +33,7 @@ public class InitProtocolSetup {
 	public void setAllProtocolTypes(HttpSession session) throws Exception {
 		if (session.getAttribute("protocolTypes") == null
 				|| session.getAttribute("newProtocolCreated") != null) {
-			SortedSet<String> protocolTypes = lookupService
+			SortedSet<String> protocolTypes = LookupService
 					.getAllLookupTypes("ProtocolType");
 			session.setAttribute("protocolTypes", protocolTypes);
 		}
@@ -43,16 +43,13 @@ public class InitProtocolSetup {
 	public void setProtocolFilesBySubmitType(HttpSession session,
 			String submitType) throws Exception {
 		List<ProtocolFileBean> protocolFiles = null;
-		/*
-		if (submitType.equalsIgnoreCase("physical")) {
+		if (submitType.equalsIgnoreCase("size")) {
 			protocolFiles = searchProtocolService
 					.getProtocolFileBeans("Physical assay");
-		}
-		else {
+		} else {
 			protocolFiles = searchProtocolService
 					.getProtocolFileBeans("In Vitro assay");
 		}
 		session.setAttribute("submitTypeProtocolFiles", protocolFiles);
-		*/
 	}
 }

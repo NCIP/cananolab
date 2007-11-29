@@ -6,13 +6,13 @@ package gov.nih.nci.calab.ui.sample;
  * @author pansu
  */
 
-/* CVS $Id: SearchSampleAction.java,v 1.4 2007-11-16 22:30:15 pansu Exp $ */
+/* CVS $Id: SearchSampleAction.java,v 1.5 2007-11-29 19:20:50 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.sample.ContainerBean;
 import gov.nih.nci.calab.dto.sample.SampleBean;
 import gov.nih.nci.calab.dto.sample.StorageLocation;
-import gov.nih.nci.calab.service.sample.SearchSampleService;
+import gov.nih.nci.calab.service.sample.SampleService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
@@ -63,7 +63,7 @@ public class SearchSampleAction extends AbstractDispatchAction {
 				.get("storageLocation");
 
 		// pass the parameters to the searchSampleService
-		SearchSampleService searchSampleService = new SearchSampleService();
+		SampleService searchSampleService = new SampleService();
 
 		List<SampleBean> samples = null;
 		if (sampleName.length() >= 0) {

@@ -38,10 +38,7 @@ public class InitSessionSetup {
 				CaNanoLabConstants.BOOLEAN_CHOICES);
 		session.setAttribute("allCarbonNanotubeWallTypes",
 				CaNanoLabConstants.CARBON_NANOTUBE_WALLTYPES);
-		if (session.getAttribute("allReportTypes") == null) {
-			String[] allReportTypes = lookupService.getAllReportTypes();
-			session.setAttribute("allReportTypes", allReportTypes);
-		}
+
 		session.setAttribute("allFunctionLinkageTypes",
 				CaNanoLabConstants.FUNCTION_LINKAGE_TYPES);
 		session.setAttribute("allFunctionAgentTypes",

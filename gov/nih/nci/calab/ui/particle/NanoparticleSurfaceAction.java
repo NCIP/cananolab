@@ -6,13 +6,13 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSurfaceAction.java,v 1.4 2007-11-28 20:30:25 pansu Exp $ */
+/* CVS $Id: NanoparticleSurfaceAction.java,v 1.5 2007-11-29 19:20:06 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.physical.SurfaceBean;
 import gov.nih.nci.calab.dto.characterization.physical.SurfaceChemistryBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
-import gov.nih.nci.calab.service.particle.SubmitNanoparticleService;
+import gov.nih.nci.calab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.calab.ui.core.BaseCharacterizationAction;
 
 import java.util.ArrayList;
@@ -48,10 +48,9 @@ public class NanoparticleSurfaceAction extends BaseCharacterizationAction {
 		CharacterizationBean charBean = super.prepareCreate(request, theForm);
 		SurfaceBean propBean = (SurfaceBean) theForm.get("surface");
 		SurfaceBean surfaceBean = new SurfaceBean(propBean, charBean);
-		SubmitNanoparticleService service = new SubmitNanoparticleService();
+		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		service.addParticleSurface(surfaceBean);
-		CharacterizationBean[] otherChars = super.prepareCopy(request, theForm,
-				service);
+		CharacterizationBean[] otherChars = super.prepareCopy(request, theForm);
 		for (CharacterizationBean acharBean : otherChars) {
 			SurfaceBean aSurfaceBean = new SurfaceBean(propBean, acharBean);
 			service.addParticleSurface(aSurfaceBean);

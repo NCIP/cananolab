@@ -7,12 +7,11 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.3 2007-11-21 23:21:50 pansu Exp $ */
+/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.4 2007-11-29 19:20:06 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
-import gov.nih.nci.calab.service.particle.SearchNanoparticleService;
-import gov.nih.nci.calab.service.particle.SubmitNanoparticleService;
+import gov.nih.nci.calab.service.particle.NanoparticleService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
@@ -42,7 +41,7 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 		ActionForward forward = null;
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ParticleBean particle = (ParticleBean) theForm.get("particle");
-		SubmitNanoparticleService submitNanoparticleService = new SubmitNanoparticleService();
+		NanoparticleService submitNanoparticleService = new NanoparticleService();
 		submitNanoparticleService.addParticleGeneralInfo(particle);
 		HttpSession session = request.getSession();
 		// display default visible groups
@@ -68,9 +67,9 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 			throws Exception {
 		HttpSession session = request.getSession();
 
-		InitParticleSetup.getInstance().setParticleTypeParticles(session);
+		InitParticleSetup.getInstance().setNewParticleTypes(session);
 		InitSecuritySetup.getInstance().setAllVisibilityGroups(session);
-		InitSessionSetup.getInstance().setApplicationOwner(session);		
+		InitSessionSetup.getInstance().setApplicationOwner(session);
 		return mapping.getInputForward();
 	}
 
@@ -80,8 +79,8 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 		HttpSession session = request.getSession();
 		InitSecuritySetup.getInstance().setAllVisibilityGroups(session);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleId = (String) request.getParameter("particleId");
-		SearchNanoparticleService searchtNanoparticleService = new SearchNanoparticleService();
+		String particleId = request.getParameter("particleId");
+		NanoparticleService searchtNanoparticleService = new NanoparticleService();
 		ParticleBean particle = searchtNanoparticleService
 				.getGeneralInfo(particleId);
 		theForm.set("particle", particle);
@@ -97,8 +96,8 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 			throws Exception {
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleId = (String) request.getParameter("particleId");
-		SearchNanoparticleService searchtNanoparticleService = new SearchNanoparticleService();
+		String particleId = request.getParameter("particleId");
+		NanoparticleService searchtNanoparticleService = new NanoparticleService();
 		ParticleBean particle = searchtNanoparticleService
 				.getGeneralInfo(particleId);
 		theForm.set("particle", particle);

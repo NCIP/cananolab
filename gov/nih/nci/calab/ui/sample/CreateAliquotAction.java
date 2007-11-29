@@ -7,13 +7,13 @@ package gov.nih.nci.calab.ui.sample;
  * @author pansu
  */
 
-/* CVS $Id: CreateAliquotAction.java,v 1.3 2007-11-16 22:30:15 pansu Exp $ */
+/* CVS $Id: CreateAliquotAction.java,v 1.4 2007-11-29 19:20:50 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.sample.AliquotBean;
 import gov.nih.nci.calab.dto.sample.ContainerInfoBean;
 import gov.nih.nci.calab.exception.CalabException;
-import gov.nih.nci.calab.service.sample.ManageAliquotService;
+import gov.nih.nci.calab.service.sample.AliquotService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
@@ -55,7 +55,7 @@ public class CreateAliquotAction extends AbstractDispatchAction {
 			List<AliquotBean[]> aliquotMatrix = new ArrayList<AliquotBean[]>(
 					(List<? extends AliquotBean[]>) session
 							.getAttribute("aliquotMatrix"));
-			ManageAliquotService manageAliquotService = new ManageAliquotService();
+			AliquotService manageAliquotService = new AliquotService();
 			manageAliquotService.saveAliquots(fromAliquot, parentName,
 					aliquotMatrix);
 			ActionMessages msgs = new ActionMessages();
@@ -94,7 +94,7 @@ public class CreateAliquotAction extends AbstractDispatchAction {
 
 		AliquotBean template = (AliquotBean) theForm.get("template");
 
-		ManageAliquotService manageAliquotService = new ManageAliquotService();
+		AliquotService manageAliquotService = new AliquotService();
 		int colNum = manageAliquotService.getDefaultAliquotMatrixColumnNumber();
 		int rowNum = (int) Math.ceil((float) numAliquots / colNum);
 
@@ -108,7 +108,8 @@ public class CreateAliquotAction extends AbstractDispatchAction {
 		UserBean creator = (UserBean) session.getAttribute("user");
 		// create a 2-D matrix for aliquot
 		List<AliquotBean[]> aliquotMatrix = createAliquotMatrix(colNum, rowNum,
-				numAliquots, aliquotPrefix, firstAliquotNum, template, creator.getLoginName());
+				numAliquots, aliquotPrefix, firstAliquotNum, template, creator
+						.getLoginName());
 		session.setAttribute("aliquotMatrix", aliquotMatrix);
 
 		// update editable drop down list to include new entries

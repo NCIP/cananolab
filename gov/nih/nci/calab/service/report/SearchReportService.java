@@ -224,4 +224,11 @@ public class SearchReportService {
 		}
 		return filteredReports;
 	}
+
+	public String[] getAllReportTypes() {
+		String[] allReportTypes = new String[] { CaNanoLabConstants.REPORT,
+				CaNanoLabConstants.ASSOCIATED_FILE };
+		return allReportTypes;
+	}
+
 }

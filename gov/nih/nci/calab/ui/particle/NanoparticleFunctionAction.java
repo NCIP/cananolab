@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleFunctionAction.java,v 1.4 2007-11-28 20:30:25 pansu Exp $ */
+/* CVS $Id: NanoparticleFunctionAction.java,v 1.5 2007-11-29 19:20:06 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.function.AgentBean;
@@ -14,8 +14,8 @@ import gov.nih.nci.calab.dto.function.AgentTargetBean;
 import gov.nih.nci.calab.dto.function.FunctionBean;
 import gov.nih.nci.calab.dto.function.LinkageBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
-import gov.nih.nci.calab.service.particle.SearchNanoparticleService;
-import gov.nih.nci.calab.service.particle.SubmitNanoparticleService;
+import gov.nih.nci.calab.service.particle.NanoparticleFunctionService;
+import gov.nih.nci.calab.service.particle.NanoparticleService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
@@ -74,7 +74,7 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 		request.getSession().setAttribute("newBondTypeCreated", "true");
 		request.getSession()
 				.setAttribute("newContrastAgentTypeCreated", "true");
-		SubmitNanoparticleService service = new SubmitNanoparticleService();
+		NanoparticleFunctionService service = new NanoparticleFunctionService();
 		service.addParticleFunction(particle.getSampleId(), function);
 
 		ActionMessages msgs = new ActionMessages();
@@ -121,8 +121,8 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 	private void initSetup(HttpServletRequest request, DynaValidatorForm theForm)
 			throws Exception {
 		HttpSession session = request.getSession();
-		String particleId = (String) request.getParameter("particleId");
-		SearchNanoparticleService searchtNanoparticleService = new SearchNanoparticleService();
+		String particleId = request.getParameter("particleId");
+		NanoparticleService searchtNanoparticleService = new NanoparticleService();
 		ParticleBean particle = searchtNanoparticleService
 				.getParticleInfo(particleId);
 		theForm.set("particle", particle);
@@ -148,8 +148,8 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		initSetup(request, theForm);
 		String functionId = (String) theForm.get("functionId");
-		SearchNanoparticleService service = new SearchNanoparticleService();
-		FunctionBean functionBean = service.getFunctionBy(functionId);		
+		NanoparticleFunctionService service = new NanoparticleFunctionService();
+		FunctionBean functionBean = service.getFunctionBy(functionId);
 		theForm.set("function", functionBean);
 		return mapping.findForward("setup");
 	}
