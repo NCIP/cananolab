@@ -75,7 +75,7 @@ div.exportlinks {
 
 span.export {
 	padding: 0 4px 1px 20px;
-	display: inline-block;
+	/* display: inline-block;  */ /* value error, commented out */
 	cursor: pointer;
 	font-family: arial, helvetica, verdana, sans-serif;
 	font-size: 0.8em;
