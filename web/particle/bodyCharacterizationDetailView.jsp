@@ -134,8 +134,7 @@
 								<br>
 								<%--<a class="thumbnail" href="#thumb">--%>
 								<a href="#"
-									onclick="popImage('${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.id}', ${derivedBioAssayData.id}, 100, 100)"><img
-										styleId="thumb${derivedBioAssayData.id}"
+									onclick="popImage(event, '${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.id}', ${derivedBioAssayData.id}, 100, 100)"><img
 										src="${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.id}"
 										border="0" width="150"> </a>
 							</td>

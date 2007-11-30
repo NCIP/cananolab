@@ -69,10 +69,11 @@
 							<c:url var="url"
 								value="${nanoparticleCharacterizationForm.map.achar.actionName}.do">
 								<c:param name="page" value="0" />
-								<c:param name="dispatch" value="setupUpdate" />
+								<c:param name="dispatch" value="detailView" />
 								<c:param name="particleId" value="${particleId}" />
 								<c:param name="characterizationId"
 									value="${summaryBean.charBean.id}" />
+								<c:param name="submitType" value="${submitType}" />
 							</c:url>
 							<a href="${url}">${summaryBean.charBean.viewTitle}</a>
 						</td>
@@ -106,10 +107,9 @@
 							<c:if
 								test="${!empty summaryBean.charFile && !empty summaryBean.charFile.uri}">
 								<a href="#"
-									onclick="popImage('${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${summaryBean.charFile.id}', ${summaryBean.charFile.id}, 100, 100)"><img
+									onclick="popImage(event,'${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${summaryBean.charFile.id}', ${summaryBean.charFile.id})"><img
 										src="${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${summaryBean.charFile.id}"
-										border="0" width="150">
-								</a>
+										border="0" width="150"> </a>
 							</c:if>
 						</td>
 					</tr>

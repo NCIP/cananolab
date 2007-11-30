@@ -284,24 +284,26 @@ function updateOtherField(form, elementName, otherElementName) {
 	}
 }
 
-function resizeImage(imgId) {
-   var width=document.getElementId("'"+imgId+"'").width();
-   alert(width);
-}
-
-function popImage(imgSrc, imgId, left, top) {	
-    var popImg=new Image();
-    popImg.src=imgSrc;
-    width=popImg.width+20;
-    height=popImg.height+20;
-	var imgWindow = window.open("", "charImgwindow", "title=no,toolbar=no,width="+width+",height="+height+",left="+left+",top="+top);	
-	imgWindow.document.write("<html><head><title>Characterization File</title></head>\n");  
-	imgWindow.document.write("<body bgcolor=\"#FFFFFF\">");
-	imgWindow.document.write("<img styleId='"+imgId+"' src='" + imgSrc + "'/>");	
+var imgWindow=null;
+function popImage(event, imgSrc, imgId) {
+	var popImg = new Image();
+	popImg.src = imgSrc;
+	width = popImg.width + 20;
+	height = popImg.height + 20;
+//    leftPos=event.clientX-width-200;
+//    topPos=event.clientY-200;
+	leftPos = 50;
+	topPos = 50;
+	if (imgWindow && imgWindow.open) {
+		imgWindow.location.reload(true);
+		imgWindow.focus();
+	}
+	imgWindow = window.open("", "charFileWindow", "title=no,toolbar=no,width=" + width + ",height=" + height + ",left=" + leftPos + ",top=" + topPos);
+	imgWindow.document.write("<html><head><title>Characterization File</title></head>\n");
+	imgWindow.document.write("<body onload='self.focus();' bgcolor=\"#FFFFFF\">\n");
+	imgWindow.document.write("<img styleId='" + imgId + "' src='" + imgSrc + "'/>\n");
 	imgWindow.document.write("</body></html>");
-    imgWindow.focus();    
+	
+	var t = setTimeout("imgWindow.close()", 15000);
 }
 
-function closePopUpImage() {
-    imgWindow.close();
-}
