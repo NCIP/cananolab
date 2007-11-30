@@ -278,6 +278,42 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 					achar.getName());
 			InitProtocolSetup.getInstance().setProtocolFilesBySubmitType(
 					session, achar.getName());
+
+			UserService userService = new UserService(
+					CaNanoLabConstants.CSM_APP_NAME);
+
+			// set up characterization files visibility
+			for (DerivedBioAssayDataBean fileBean : achar
+					.getDerivedBioAssayDataList()) {
+				boolean status = userService.checkReadPermission(user, fileBean
+						.getId());
+				if (status) {
+					List<String> accessibleGroups = userService
+							.getAccessibleGroups(fileBean.getId(),
+									CaNanoLabConstants.CSM_READ_ROLE);
+					String[] visibilityGroups = accessibleGroups
+							.toArray(new String[0]);
+					fileBean.setVisibilityGroups(visibilityGroups);
+					fileBean.setHidden(false);
+				} else {
+					fileBean.setHidden(true);
+				}
+			}
+
+			// set up protocol file visibility
+			ProtocolFileBean protocolFileBean = achar.getProtocolFileBean();
+			if (protocolFileBean != null) {
+				boolean status = false;
+				if (protocolFileBean.getId() != null) {
+					status = userService.checkReadPermission(user,
+							protocolFileBean.getId());
+				}
+				if (status) {
+					protocolFileBean.setHidden(false);
+				} else {
+					protocolFileBean.setHidden(true);
+				}
+			}
 		}
 	}
 
@@ -367,42 +403,6 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			theForm.set("cytotoxicity", charBean);
 		}
 
-		UserService userService = new UserService(
-				CaNanoLabConstants.CSM_APP_NAME);
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-
-		// set up characterization files visibility
-		for (DerivedBioAssayDataBean fileBean : charBean
-				.getDerivedBioAssayDataList()) {
-			boolean status = userService.checkReadPermission(user, fileBean
-					.getId());
-			if (status) {
-				List<String> accessibleGroups = userService
-						.getAccessibleGroups(fileBean.getId(),
-								CaNanoLabConstants.CSM_READ_ROLE);
-				String[] visibilityGroups = accessibleGroups
-						.toArray(new String[0]);
-				fileBean.setVisibilityGroups(visibilityGroups);
-				fileBean.setHidden(false);
-			} else {
-				fileBean.setHidden(true);
-			}
-		}
-
-		// set up protocol file visibility
-		ProtocolFileBean protocolFileBean = charBean.getProtocolFileBean();
-		if (protocolFileBean != null) {
-			boolean status = false;
-			if (protocolFileBean.getId() != null) {
-				status = userService.checkReadPermission(user, protocolFileBean
-						.getId());
-			}
-			if (status) {
-				protocolFileBean.setHidden(false);
-			} else {
-				protocolFileBean.setHidden(true);
-			}
-		}
 		return mapping.findForward("setup");
 	}
 
