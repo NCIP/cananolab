@@ -75,15 +75,23 @@
 					</tr>
 				</c:if>
 				<c:if
-					test="${nanoparticleCharacterizationForm.map.achar.protocolFileBean.hidden eq 'false'}">
+					test="${!empty nanoparticleCharacterizationForm.map.achar.protocolFileBean.id}">
 					<tr>
 						<th class="leftLabel" valign="top">
 							Protocol
 						</th>
-						<td class="rightLabel">
+						<td class="rightLabel" valign="top">
+							<c:choose>
+								<c:when
+									test="${nanoparticleCharacterizationForm.map.achar.protocolFileBean.hidden eq 'true'}">
+									Private protocol
+								</c:when>
+								<c:otherwise>
 							${nanoparticleCharacterizationForm.map.achar.protocolFileBean.displayName}&nbsp;
 							<a
-								href="searchProtocol.do?dispatch=download&amp;fileId=${nanoparticleCharacterizationForm.map.achar.protocolFileBean.id}">${nanoparticleCharacterizationForm.map.achar.protocolFileBean.uri}</a>
+										href="searchProtocol.do?dispatch=download&amp;fileId=${nanoparticleCharacterizationForm.map.achar.protocolFileBean.id}">${nanoparticleCharacterizationForm.map.achar.protocolFileBean.uri}</a>
+								</c:otherwise>
+							</c:choose>
 						</td>
 					</tr>
 				</c:if>
@@ -93,7 +101,7 @@
 						<th class="leftLabel" valign="top">
 							Instrument
 						</th>
-						<td class="rightLabel">
+						<td class="rightLabel" valign="top">
 							${nanoparticleCharacterizationForm.map.achar.instrumentConfigBean.instrumentBean.type}-
 							${nanoparticleCharacterizationForm.map.achar.instrumentConfigBean.instrumentBean.manufacturer}
 							&nbsp;
@@ -118,7 +126,7 @@
 							<th class="leftLabel" valign="top">
 								Characterization File #${fileInd+1} Description
 							</th>
-							<td class="rightLabel">
+							<td class="rightLabel" valign="top">
 								${derivedBioAssayData.description}&nbsp;
 							</td>
 						</tr>
@@ -129,14 +137,20 @@
 							<th class="leftLabel" valign="top">
 								Characterization File #${fileInd+1}
 							</th>
-							<td class="rightLabel">
+							<td class="rightLabel" valign="top">
 								${derivedBioAssayData.type}
 								<br>
-								<%--<a class="thumbnail" href="#thumb">--%>
-								<a href="#"
-									onclick="popImage(event, '${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.id}', ${derivedBioAssayData.id}, 100, 100)"><img
-										src="${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.id}"
-										border="0" width="150"> </a>
+								<c:choose>
+									<c:when test="${derivedBioAssayData.hidden eq 'true'}">
+									Private file
+								</c:when>
+									<c:otherwise>
+										<a href="#"
+											onclick="popImage(event, '${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.id}', ${derivedBioAssayData.id}, 100, 100)"><img
+												src="${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.id}"
+												border="0" width="150"> </a>
+									</c:otherwise>
+								</c:choose>
 							</td>
 						</tr>
 					</c:if>
