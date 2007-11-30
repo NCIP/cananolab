@@ -153,7 +153,21 @@ ul.sublist_4 li {
 	border-bottom: 0;
 }
 
+ul.sublist_5_clicked a {
+	background-color: #98B7B7; /* #F4F4F5; */
+	color: #FFFFFF;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 0.8em;
+	font-weight: normal;
+	text-indent: 4em;
+	padding-top: 0.1em;
+	padding-bottom: 0.1em;
+}
 
+li.clickedLi {
+	background-color: #98B7B7; /* #F4F4F5; */
+	color: #FFFFFF;
+}
 
 ul.sublist_5 a {
 	background-color: #FFFFFF; /* #F4F4F5; */
@@ -234,8 +248,8 @@ ul.slidingmenu 	li.nodatali {
 
 
 table.charTitle {
-	cellpadding: 0;
-	cellspacing: 0;
+	padding: 0;
+	border-spacing: 0;
 	border-collapse: collapse;
 	background-color: #FFFFFF;
 	height: 5px;
