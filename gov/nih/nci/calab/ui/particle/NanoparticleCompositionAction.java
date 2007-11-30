@@ -8,7 +8,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleCompositionAction.java,v 1.9 2007-11-29 19:20:06 pansu Exp $ */
+/* CVS $Id: NanoparticleCompositionAction.java,v 1.10 2007-11-30 22:58:30 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.composition.CarbonNanotubeBean;
 import gov.nih.nci.calab.dto.characterization.composition.ComposingElementBean;
@@ -204,6 +204,7 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		theForm.set("emulsion", new EmulsionBean());
 		theForm.set("liposome", new LiposomeBean());
 		theForm.set("composition", new CompositionBean());
+		theForm.set("particle",new ParticleBean());
 	}
 
 	protected void initSetup(HttpServletRequest request,
