@@ -7,18 +7,6 @@
 <link rel="StyleSheet" type="text/css" href="css/sidemenu.css">
 <script type="text/javascript" src="javascript/sidemenu.js"></script>
 
-<!-- submenu begins -->
-<c:choose>
-	<c:when
-		test="${!empty param.submitType && param.submitType != 'none' &&
-					param.displayType != 'Composition' }">
-		<c:set var="displaytype" value="${param.submitType}" scope="request" />
-	</c:when>
-	<c:otherwise>
-		<c:set var="displaytype" value="${param.displayType}" scope="request" />
-	</c:otherwise>
-</c:choose>
-
 <c:choose>
 	<c:when test="${!empty param.particleName}">
 		<c:set var="particleName" value="${param.particleName}"
@@ -31,6 +19,40 @@
 			scope="session" />
 	</c:when>
 </c:choose>
+
+<c:choose>
+	<c:when test="${!empty param.submitType}">
+		<c:set var="submitType" value="${param.submitType}" scope="session" />
+	</c:when>
+</c:choose>
+
+<c:set var="dispatchValue" value="view" scope="session" />
+
+<c:choose>
+	<c:when test="${!empty theParticle}">
+		<c:set var="particleName" value="${theParticle.sampleName}"
+			scope="session" />
+	</c:when>
+</c:choose>
+<c:choose>
+	<c:when test="${!empty theParticle}">
+		<c:set var="particleType" value="${theParticle.sampleType}"
+			scope="session" />
+	</c:when>
+</c:choose>
+<c:choose>
+	<c:when test="${!empty theParticle}">
+		<c:set var="particleSource" value="${theParticle.sampleSource}"
+			scope="session" />
+	</c:when>
+</c:choose>
+<c:choose>
+	<c:when test="${!empty theParticle}">
+		<c:set var="particleId" value="${theParticle.sampleId}"
+			scope="session" />
+	</c:when>
+</c:choose>
+
 <c:choose>
 	<c:when test="${!empty param.gridNodeHost}">
 		<c:set var="gridNodeHost" value="${param.gridNodeHost}"
@@ -65,7 +87,7 @@
 
 				<c:choose>
 					<c:when test="${!empty particleAssociatedFiles}">
-						<li class="toplist">
+						<li class="controlList">
 							<a href="#" class="subMenuSecondary">ASSOCIATE FILES</a>
 							<ul class="sublist_5" style="${fileDisplay}">
 								<c:forEach var="aFile" items="${remoteParticleAssociatedFiles}">
@@ -92,13 +114,12 @@
 				</c:choose>
 				<c:choose>
 					<c:when test="${!empty remoteParticleReports}">
-						<li class="toplist">
+						<li class="controlList">
 							<a href="#" class="subMenuSecondary">REPORTS</a>
 							<ul class="sublist_5" style="${reportDisplay}">
 								<c:forEach var="aReport" items="${remoteParticleReports}">
 									<c:url var="url" value="remoteSearchReport.do">
 										<c:param name="displayType" value="report" />
-
 										<c:param name="dispatch" value="download" />
 										<c:param name="gridNodeHost" value="${gridNodeHost}" />
 										<c:param name="fileId" value="${aReport.id}" />
