@@ -78,18 +78,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			}
 		}
 
-		// retrieve file content
-		FileService fileService = new FileService();
 		for (DerivedBioAssayDataBean derivedDataFileBean : charBean
 				.getDerivedBioAssayDataList()) {
-			if (derivedDataFileBean.getId() != null) {
-				byte[] content = fileService.getFileContent(new Long(
-						derivedDataFileBean.getId()));
-				if (content != null) {
-					derivedDataFileBean.setFileContent(content);
-				}
-			}
-
 			Map<String, Integer> uniqueDatumMap = new HashMap<String, Integer>();
 			for (DatumBean datumBean : derivedDataFileBean.getDatumList()) {
 				// validate that neither name nor value can be empty
