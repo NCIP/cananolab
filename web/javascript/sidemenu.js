@@ -28,7 +28,6 @@ function init() {
 }
 
 addEvent(window, 'load', init, false);
-addEvent(window, 'load', changeBGColor, false);
 
 function getClickFor(node) {
   return function(e) { mclick(e, node); };
