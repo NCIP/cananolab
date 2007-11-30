@@ -116,7 +116,7 @@
 								test="${empty nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].uri}">	
 								Click on "Load File" button 	
 									&nbsp;&nbsp;&nbsp;&nbsp;<input type="button"
-									onclick="javascript:loadFile(this.form, '${nanoparticleCharacterizationForm.map.achar.actionName}', ', ${param.fileInd})"
+									onclick="javascript:loadFile(this.form, '${nanoparticleCharacterizationForm.map.achar.actionName}', ${param.fileInd})"
 									value="Load File">
 							</c:when>
 						</c:choose>

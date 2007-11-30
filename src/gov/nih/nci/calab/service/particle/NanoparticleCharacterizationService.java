@@ -3,7 +3,6 @@ package gov.nih.nci.calab.service.particle;
 import gov.nih.nci.calab.db.HibernateUtil;
 import gov.nih.nci.calab.domain.Instrument;
 import gov.nih.nci.calab.domain.InstrumentConfiguration;
-import gov.nih.nci.calab.domain.LabFile;
 import gov.nih.nci.calab.domain.LookupType;
 import gov.nih.nci.calab.domain.MeasureType;
 import gov.nih.nci.calab.domain.MeasureUnit;
@@ -54,7 +53,6 @@ import gov.nih.nci.calab.dto.characterization.physical.SolubilityBean;
 import gov.nih.nci.calab.dto.characterization.physical.SurfaceBean;
 import gov.nih.nci.calab.dto.common.InstrumentBean;
 import gov.nih.nci.calab.dto.common.InstrumentConfigBean;
-import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
 import gov.nih.nci.calab.service.common.FileService;
 import gov.nih.nci.calab.service.security.UserService;
@@ -352,13 +350,10 @@ public class NanoparticleCharacterizationService {
 						// skip if there is database error above and
 						// derivedBioAssayData has not been persisted
 						if (derivedBioAssayData.getId() != null) {
-							DerivedBioAssayDataBean derivedBioAssayDataBean = new DerivedBioAssayDataBean(
-									derivedBioAssayData);
-							// assign visibility
-							DerivedBioAssayDataBean unsaved = charBean
+							DerivedBioAssayDataBean derivedBioAssayDataBean = charBean
 									.getDerivedBioAssayDataList().get(count);
-							derivedBioAssayDataBean.setVisibilityGroups(unsaved
-									.getVisibilityGroups());
+							derivedBioAssayDataBean.setId(derivedBioAssayData
+									.getId().toString());
 							saveCharacterizationFile(derivedBioAssayDataBean);
 							count++;
 						}
@@ -462,7 +457,6 @@ public class NanoparticleCharacterizationService {
 	 */
 	public void saveCharacterizationFile(DerivedBioAssayDataBean fileBean)
 			throws Exception {
-
 		byte[] fileContent = fileBean.getFileContent();
 		String rootPath = PropertyReader.getProperty(
 				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
@@ -1279,7 +1273,6 @@ public class NanoparticleCharacterizationService {
 		}
 		return instruments;
 	}
-
 
 	/**
 	 * 
