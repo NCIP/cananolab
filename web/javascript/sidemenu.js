@@ -28,6 +28,7 @@ function init() {
 }
 
 addEvent(window, 'load', init, false);
+addEvent(window, 'load', changeBGColor, false);
 
 function getClickFor(node) {
   return function(e) { mclick(e, node); };
@@ -52,6 +53,9 @@ function mclick(e, targetElement) {
   				   uls[u].className != 'sublist_3_control') {
   				
      				uls[u].style.display = 'block';
+     				var immuUl = document.getElementById('immunotoxicity');
+     				if(immuUl.style.display == 'none')
+     					immuUl.style.display = 'block';
      			}
      		}
 
