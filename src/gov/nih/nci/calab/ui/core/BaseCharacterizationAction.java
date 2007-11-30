@@ -429,11 +429,33 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			throw new Exception(
 					"There are no such characterizations in the database.");
 		}
+		
+		//set data labels and file visibility
+		UserService userService = new UserService(
+				CaNanoLabConstants.CSM_APP_NAME);
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+
 		SortedSet<String> datumLabels = new TreeSet<String>();
+
 		for (CharacterizationSummaryBean summaryBean : charSummaryBeans) {
 			Map<String, String> datumMap = summaryBean.getDatumMap();
-			if (datumMap != null && !datumMap.isEmpty())
+			if (datumMap != null && !datumMap.isEmpty()) {
 				datumLabels.addAll(datumMap.keySet());
+			}
+			DerivedBioAssayDataBean fileBean = summaryBean.getCharFile();
+			boolean status = userService.checkReadPermission(user, fileBean
+					.getId());
+			if (status) {
+				List<String> accessibleGroups = userService
+						.getAccessibleGroups(fileBean.getId(),
+								CaNanoLabConstants.CSM_READ_ROLE);
+				String[] visibilityGroups = accessibleGroups
+						.toArray(new String[0]);
+				fileBean.setVisibilityGroups(visibilityGroups);
+				fileBean.setHidden(false);
+			} else {
+				fileBean.setHidden(true);
+			}
 		}
 		request.setAttribute("nameCharacterizationSummary", charSummaryBeans);
 		request.setAttribute("datumLabels", datumLabels);
