@@ -209,6 +209,7 @@ public class GridSearchService {
 			// get saved characterizations saved in a remote node
 			Characterization[] gridCharacterizations = gridClient
 					.getCharacterizationsByParticleName(particleName);
+			
 			// get all characterization type characterizations
 			charTypeChars = new HashMap<String, List<CharacterizationBean>>();
 
@@ -239,6 +240,15 @@ public class GridSearchService {
 					}
 				}
 			}
+			
+//			 put compositions in the map separately
+			List<CharacterizationBean> compositions = new ArrayList<CharacterizationBean>();
+			for (Characterization achar : gridCharacterizations) {
+				if (achar instanceof ParticleComposition) {
+					compositions.add(new CharacterizationBean(achar));
+				}
+			}
+			charTypeChars.put("Composition", compositions);
 		} catch (Exception e) {
 			logger.error("Error in getting remote characterization map: " + e);
 			throw e;
