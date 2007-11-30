@@ -10,7 +10,7 @@
 	</c:otherwise>
 </c:choose>
 <c:choose>
-	<c:when test="${!empty allCompositions}">
+	<c:when test="${!empty allCompositions || canCreateNanoparticle eq 'true'}">
 		<li class="controlList">
 			<a href="#" class="subMenuSecondary">COMPOSITION</a>
 			<ul class="sublist_4" id="compul" style="${compDisplay}">
@@ -24,7 +24,7 @@
 					<table class="charTitle">
 						<tr class="titleRow">
 							<td class="titleCell_2">
-								<a href="#" class="sublist_4">Base Composition</a>
+								<a href="#" class="sublist_4">Composition Properties</a>
 							</td>
 							<td>
 								&nbsp;
