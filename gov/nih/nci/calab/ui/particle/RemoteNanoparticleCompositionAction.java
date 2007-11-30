@@ -8,7 +8,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: RemoteNanoparticleCompositionAction.java,v 1.4 2007-11-29 19:20:06 pansu Exp $ */
+/* CVS $Id: RemoteNanoparticleCompositionAction.java,v 1.5 2007-11-30 22:58:46 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.CarbonNanotubeComposition;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.DendrimerComposition;
@@ -17,6 +17,7 @@ import gov.nih.nci.calab.domain.nano.characterization.physical.composition.Fulle
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.LiposomeComposition;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.ParticleComposition;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.PolymerComposition;
+import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.dto.characterization.composition.CarbonNanotubeBean;
 import gov.nih.nci.calab.dto.characterization.composition.CompositionBean;
 import gov.nih.nci.calab.dto.characterization.composition.DendrimerBean;
@@ -25,6 +26,7 @@ import gov.nih.nci.calab.dto.characterization.composition.FullereneBean;
 import gov.nih.nci.calab.dto.characterization.composition.LiposomeBean;
 import gov.nih.nci.calab.dto.characterization.composition.PolymerBean;
 import gov.nih.nci.calab.dto.common.UserBean;
+import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.dto.remote.GridNodeBean;
 import gov.nih.nci.calab.service.remote.GridSearchService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
@@ -46,45 +48,45 @@ public class RemoteNanoparticleCompositionAction extends AbstractDispatchAction 
 
 	private void clearMap(HttpSession session, DynaValidatorForm theForm)
 			throws Exception {
-		String particleType = (String) theForm.get("particleType");
-		String particleName = (String) theForm.get("particleName");
-
 		// clear session data from the input forms
-		theForm.getMap().clear();
-		theForm.set("composition", new CompositionBean());
 		theForm.set("dendrimer", new DendrimerBean());
 		theForm.set("polymer", new PolymerBean());
 		theForm.set("fullerene", new FullereneBean());
 		theForm.set("carbonNanotube", new CarbonNanotubeBean());
 		theForm.set("emulsion", new EmulsionBean());
 		theForm.set("liposome", new LiposomeBean());
-		theForm.set("particleName", particleName);
-		theForm.set("particleType", particleType);
+		theForm.set("composition", new CompositionBean());
+		theForm.set("particle", new ParticleBean());
 	}
 
 	public ActionForward view(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		// clear session data from the input forms
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		HttpSession session = request.getSession();
+		clearMap(session, theForm);
 		Map<String, GridNodeBean> gridNodeMap = new HashMap<String, GridNodeBean>(
 				(Map<? extends String, ? extends GridNodeBean>) request
 						.getSession().getAttribute("allGridNodes"));
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String compositionId = theForm.getString("characterizationId");
-		String particleName = theForm.getString("particleName");
-		String particleType = theForm.getString("particleType");
+
+		String compositionId = request.getParameter("characterizationId");
+		String particleName = request.getParameter("particleName");
+		String particleType = request.getParameter("particleType");
 		String gridNodeHost = request.getParameter("gridNodeHost");
 		GridNodeBean gridNode = gridNodeMap.get(gridNodeHost);
 
-		HttpSession session = request.getSession();
 		InitParticleSetup.getInstance().setRemoteSideParticleMenu(request,
 				particleName, gridNode);
 
 		GridSearchService service = new GridSearchService();
+		Nanoparticle particle = service.getRemoteNanoparticle(particleName,
+				gridNode);
+		theForm.set("particle", new ParticleBean(particle));
+
 		ParticleComposition comp = service.getRemoteComposition(compositionId,
 				particleName, gridNode);
 		CompositionBean compositionBean = new CompositionBean(comp);
-		// clear session data from the input forms
-		clearMap(session, theForm);
 		if (particleType
 				.equalsIgnoreCase(CaNanoLabConstants.COMPOSITION_DENDRIMER_TYPE)) {
 			DendrimerBean dendrimer = new DendrimerBean(
