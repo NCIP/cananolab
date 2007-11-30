@@ -101,15 +101,22 @@
 								${summaryBean.datumMap[label]}&nbsp;
 							</td>
 						</c:forEach>
-						<td class="rightLabel">
+						<td class="rightLabel" valign="top">
 							${summaryBean.charFile.type}
 							<br>
 							<c:if
 								test="${!empty summaryBean.charFile && !empty summaryBean.charFile.uri}">
-								<a href="#"
-									onclick="popImage(event,'${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${summaryBean.charFile.id}', ${summaryBean.charFile.id})"><img
-										src="${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${summaryBean.charFile.id}"
-										border="0" width="150"> </a>
+								<c:choose>
+									<c:when test="${summaryBean.charFile.hidden eq 'true' }">
+										Private file
+									</c:when>
+									<c:otherwise>
+										<a href="#"
+											onclick="popImage(event,'${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${summaryBean.charFile.id}', ${summaryBean.charFile.id})"><img
+												src="${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${summaryBean.charFile.id}"
+												border="0" width="150"></a>
+									</c:otherwise>
+								</c:choose>
 							</c:if>
 						</td>
 					</tr>
