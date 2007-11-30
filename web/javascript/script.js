@@ -283,8 +283,8 @@ function updateOtherField(form, elementName, otherElementName) {
 		disableTextElement(form, otherElementName);
 	}
 }
-
-var imgWindow=null;
+var imgWindow = null;
+var t=null;
 function popImage(event, imgSrc, imgId) {
 	var popImg = new Image();
 	popImg.src = imgSrc;
@@ -295,15 +295,17 @@ function popImage(event, imgSrc, imgId) {
 	leftPos = 50;
 	topPos = 50;
 	if (imgWindow && imgWindow.open) {
-		imgWindow.location.reload(true);
-		imgWindow.focus();
+		imgWindow.close();
+		t=null;
 	}
-	imgWindow = window.open("", "charFileWindow", "title=no,toolbar=no,width=" + width + ",height=" + height + ",left=" + leftPos + ",top=" + topPos);
-	imgWindow.document.write("<html><head><title>Characterization File</title></head>\n");
-	imgWindow.document.write("<body onload='self.focus();' bgcolor=\"#FFFFFF\">\n");
+	//myScript = "<html><head>\n" + "<script>\n" + "var t=null;\n" + "function closeMe() {\n" + "t=setTimeout(\"window.close();\", 5000);\n" + "}\n" + "</script>\n" + "<title>Characterization File</title></head>\n";
+    myScript = "<html><head><title>Characterization File</title></head>\n";
+	imgWindow = window.open("", "charFileWindow", "width=" + width + ",height=" + height + ",left=" + leftPos + ",top=" + topPos);
+	imgWindow.document.write(myScript);
+	//imgWindow.document.write("<body onLoad=\"closeMe();self.focus();\" bgcolor=\"#FFFFFF\">\n");
+	imgWindow.document.write("<body onLoad=\"self.focus();\" bgcolor=\"#FFFFFF\">\n");
 	imgWindow.document.write("<img styleId='" + imgId + "' src='" + imgSrc + "'/>\n");
 	imgWindow.document.write("</body></html>");
-	
-	var t = setTimeout("imgWindow.close()", 15000);
+	t=setTimeout("imgWindow.close();", 15000);
 }
 
