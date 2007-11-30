@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSizeAction.java,v 1.3 2007-11-29 19:20:06 pansu Exp $ */
+/* CVS $Id: NanoparticleSizeAction.java,v 1.4 2007-11-30 06:44:02 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.service.particle.NanoparticleCharacterizationService;
@@ -43,6 +43,7 @@ public class NanoparticleSizeAction extends BaseCharacterizationAction {
 		CharacterizationBean charBean = super.prepareCreate(request, theForm);
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		service.addParticleSize(charBean);
+		theForm.set("achar", charBean);
 		CharacterizationBean[] otherChars = super.prepareCopy(request, theForm);
 		for (CharacterizationBean acharBean : otherChars) {
 			service.addParticleSize(acharBean);
