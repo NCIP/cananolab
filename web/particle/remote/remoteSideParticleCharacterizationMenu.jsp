@@ -19,7 +19,8 @@
 </c:choose>
 
 <c:choose>
-	<c:when test="${displaytype == 'In Vitro' ||
+	<c:when
+		test="${displaytype == 'In Vitro' ||
 			    displaytype == 'Toxicity'}">
 		<c:set var="invitroDisplay" value="display: block;" />
 	</c:when>
@@ -29,7 +30,8 @@
 </c:choose>
 
 <c:choose>
-	<c:when test="${displaytype == 'Coagulation' ||
+	<c:when
+		test="${displaytype == 'Coagulation' ||
 				displaytype == 'Hemolysis' ||
 				displaytype == 'Plasma Protein Binding' ||
 				displaytype == 'CFU_GM' ||
@@ -61,7 +63,8 @@
 </c:choose>
 
 <c:choose>
-	<c:when test="${displaytype == 'Caspase 3 Activation' ||
+	<c:when
+		test="${displaytype == 'Caspase 3 Activation' ||
 				displaytype == 'Cell Viability'}">
 		<c:set var="invitroDisplay" value="display: block;" />
 		<style type="text/css">
@@ -85,7 +88,7 @@
 <c:choose>
 	<c:when test="${displaytype == 'Oxidative Stress'}">
 		<c:set var="invitroDisplay" value="display: block;" />
-		<style type="text/css" >
+		<style type="text/css">
 			#oxidativeStress {
 				display: block;
 			}
@@ -95,7 +98,7 @@
 		</style>
 	</c:when>
 	<c:otherwise>
-		<style type="text/css" >
+		<style type="text/css">
 			#oxidativeStress {
 				display: none;
 			}
@@ -106,7 +109,7 @@
 <c:choose>
 	<c:when test="${displaytype == 'Enzyme Induction'}">
 		<c:set var="invitroDisplay" value="display: block;" />
-		<style type="text/css" >
+		<style type="text/css">
 			#enzymeInduction {
 				display: block;
 			}
@@ -116,7 +119,7 @@
 		</style>
 	</c:when>
 	<c:otherwise>
-		<style type="text/css" >
+		<style type="text/css">
 			#enzymeInduction {
 				display: none;
 			}
@@ -135,30 +138,24 @@
 
 <c:set var="physicalType" value="Physical" />
 <c:choose>
-	<c:when test="${!empty remoteSelectedCharacterizations['Composition']}">
+	<c:when test="${!empty remoteCompositions}">
 		<li class="controlList">
 			<a href="#" class="subMenuSecondary">COMPOSITION</a>
 			<ul class="sublist_5" style="${compDisplay}">
-				<c:forEach var="subCharType"
-					items="${remoteSelectedCharacterizations[physicalType]}">
-					<c:if test="${subCharType == 'Composition'}">
-						<c:forEach var="leafCharBean"
-							items="${remoteCharaLeafToCharacterizations[subCharType]}">
-							<c:url var="url" value="remoteNanoparticleComposition.do">
-								<c:param name="page" value="0" />
-								<c:param name="dispatch" value="view" />
-								<c:param name="particleName" value="${particleName}" />
-								<c:param name="particleType" value="${particleType}" />
-								<c:param name="characterizationId" value="${leafCharBean.id}" />
-								<c:param name="submitType" value="${subCharType}" />
-								<c:param name="actionName" value="${leafCharBean.actionName}" />
-								<c:param name="gridNodeHost" value="${gridNodeHost}" />
-							</c:url>
-							<li>
-								<a href=${url } class="sublist_5"><span class="data_anchar">>&nbsp;</span>${leafCharBean.viewTitle}</a>
-							</li>
-						</c:forEach>
-					</c:if>
+				<c:forEach var="leafCharBean" items="${remoteCompositions}">
+					<c:url var="url" value="remoteNanoparticleComposition.do">
+						<c:param name="page" value="0" />
+						<c:param name="dispatch" value="view" />
+						<c:param name="particleName" value="${particleName}" />
+						<c:param name="particleType" value="${particleType}" />
+						<c:param name="characterizationId" value="${leafCharBean.id}" />
+						<c:param name="submitType" value="${subCharType}" />
+						<c:param name="actionName" value="${leafCharBean.actionName}" />
+						<c:param name="gridNodeHost" value="${gridNodeHost}" />
+					</c:url>
+					<li>
+						<a href=${url } class="sublist_5"><span class="data_anchar">>&nbsp;</span>${leafCharBean.viewTitle}</a>
+					</li>
 				</c:forEach>
 			</ul>
 		</li>
@@ -169,121 +166,121 @@
 		</li>
 	</c:otherwise>
 </c:choose>
-		
+
 <c:url var="url" value="underConstruction.do">
 	<c:param name="submitType" value="Physical" />
 </c:url>
-		<li class="controlList">
-			<a href="#" class="subMenuSecondary">PHYSICAL CHARACTERIZATIONS</a>
-			<ul class="sublist_4" style="${phyDisplay}">
-				<c:forEach var="subCharType"
-					items="${remoteSelectedCharacterizations[physicalType]}">
-					<c:if test="${subCharType != 'Composition'}">
+<li class="controlList">
+	<a href="#" class="subMenuSecondary">PHYSICAL CHARACTERIZATIONS</a>
+	<ul class="sublist_4" style="${phyDisplay}">
+		<c:forEach var="subCharType"
+			items="${remoteSelectedCharacterizations[physicalType]}">
+			<li>
+				<a href="#" class="sublist_4">${subCharType}</a>
+				<ul class="sublist_5" style="${phyDisplay}">
+					<c:forEach var="leafCharBean"
+						items="${remoteCharaLeafToCharacterizations[subCharType]}">
+
 						<li>
-							<a href="#" class="sublist_4">${subCharType}</a>
-							<ul class="sublist_5" style="${phyDisplay}">
-								<c:forEach var="leafCharBean"
-									items="${remoteCharaLeafToCharacterizations[subCharType]}">
-									
-									<li>
-										<a href=${url } class="sublist_5"><span
-											class="data_anchar">>&nbsp;</span>${leafCharBean.viewTitle}</a>
-									</li>
-								</c:forEach>
-							</ul>
+							<a href=${url } class="sublist_5"><span class="data_anchar">>&nbsp;</span>${leafCharBean.viewTitle}</a>
 						</li>
-					</c:if>
-				</c:forEach>
-			</ul>
-		</li>
+					</c:forEach>
+				</ul>
+			</li>
+		</c:forEach>
+	</ul>
+</li>
 
 
-		<c:set var="inVitroType" value="In Vitro" />
-		<li class="controlList">
-			<a href="#" class="subMenuSecondary">IN VITRO CHARACTERIZATIONS</a>
-			<ul class="sublist_1" style="${invitroDisplay}">
-				<c:forEach var="secondLevelChar"
-					items="${remoteSelectedCharacterizations[inVitroType]}">
-					<li>
-						<a href="#" class="sublist_2">${secondLevelChar}</a>
-						<ul class="sublist_2" style="${invitroDisplay}">
-							<c:forEach var="thirdLevelChar"
-								items="${remoteSelectedCharacterizations[secondLevelChar]}">
-								<li class="controlList2">
-									<a href="#" class="sublist_1">${thirdLevelChar}</a>
-									<c:choose>
-										<c:when
-											test="${!empty remoteCharaLeafToCharacterizations[thirdLevelChar]}">
-											<ul class="sublist_5_control" id="${remoteCharaActionName[thirdLevelChar]}">
-												<c:forEach var="leafCharBean"
-													items="${remoteCharaLeafToCharacterizations[thirdLevelChar]}">
-													<li>
-														<c:url var="url" value="underConstruction.do">
-															<c:param name="submitType" value="${thirdLevelChar}" />
-														</c:url>
-														<a href="${url}" class="sublist_5"><span
-															class="data_anchar">>&nbsp;</span>${leafCharBean.viewTitle}</a>
-													</li>
-												</c:forEach>
-											</ul>
-										</c:when>
-										<c:otherwise>
-											<ul class="sublist_3_control" id="${remoteCharaActionName[thirdLevelChar]}">
-												<c:forEach var="fourthLevelChar"
-													items="${remoteSelectedCharacterizations[thirdLevelChar]}">
-													<li>
-														<a href="#" class="sublist_4">${fourthLevelChar}</a>
-														<c:choose>
-															<c:when
-																test="${!empty remoteCharaLeafToCharacterizations[fourthLevelChar]}">
-																<ul class="sublist_5">
-																	<c:forEach var="leafCharBean"
-																		items="${remoteCharaLeafToCharacterizations[fourthLevelChar]}">
-																		
-																		<li>
-																			<c:url var="url" value="underConstruction.do">
-																				<c:param name="submitType" value="${fourthLevelChar}" />
-																			</c:url>
-																			<a href="${url}" class="sublist_5"><span
-																				class="data_anchar">>&nbsp;</span>${leafCharBean.viewTitle}</a>
-																		</li>
-																	</c:forEach>
-																</ul>
-															</c:when>
-															<c:otherwise>
-																<ul class="sublist_4" style="${invitroDisplay}">
-																	<c:forEach var="fifthLevelChar"
-																		items="${remoteSelectedCharacterizations[fourthLevelChar]}">
-																		<li>
-																			<a href="#" class="sublist_4">${fifthLevelChar}</a>
-																			<ul class="sublist_5" style="${invitroDisplay}">
-																				<c:forEach var="leafCharBean"
-																					items="${remoteCharaLeafToCharacterizations[fifthLevelChar]}">
-																					<li>
-																						<c:url var="url" value="underConstruction.do">
-																							<c:param name="submitType" value="${fifthLevelChar}" />
-																						</c:url>
-																						<a href="${url}" class="sublist_5"><span
-																							class="data_anchar">>&nbsp;</span>${leafCharBean.viewTitle}</a>
-																					</li>
-																				</c:forEach>
+<c:set var="inVitroType" value="In Vitro" />
+<li class="controlList">
+	<a href="#" class="subMenuSecondary">IN VITRO CHARACTERIZATIONS</a>
+	<ul class="sublist_1" style="${invitroDisplay}">
+		<c:forEach var="secondLevelChar"
+			items="${remoteSelectedCharacterizations[inVitroType]}">
+			<li>
+				<a href="#" class="sublist_2">${secondLevelChar}</a>
+				<ul class="sublist_2" style="${invitroDisplay}">
+					<c:forEach var="thirdLevelChar"
+						items="${remoteSelectedCharacterizations[secondLevelChar]}">
+						<li class="controlList2">
+							<a href="#" class="sublist_1">${thirdLevelChar}</a>
+							<c:choose>
+								<c:when
+									test="${!empty remoteCharaLeafToCharacterizations[thirdLevelChar]}">
+									<ul class="sublist_5_control"
+										id="${remoteCharaActionName[thirdLevelChar]}">
+										<c:forEach var="leafCharBean"
+											items="${remoteCharaLeafToCharacterizations[thirdLevelChar]}">
+											<li>
+												<c:url var="url" value="underConstruction.do">
+													<c:param name="submitType" value="${thirdLevelChar}" />
+												</c:url>
+												<a href="${url}" class="sublist_5"><span
+													class="data_anchar">>&nbsp;</span>${leafCharBean.viewTitle}</a>
+											</li>
+										</c:forEach>
+									</ul>
+								</c:when>
+								<c:otherwise>
+									<ul class="sublist_3_control"
+										id="${remoteCharaActionName[thirdLevelChar]}">
+										<c:forEach var="fourthLevelChar"
+											items="${remoteSelectedCharacterizations[thirdLevelChar]}">
+											<li>
+												<a href="#" class="sublist_4">${fourthLevelChar}</a>
+												<c:choose>
+													<c:when
+														test="${!empty remoteCharaLeafToCharacterizations[fourthLevelChar]}">
+														<ul class="sublist_5">
+															<c:forEach var="leafCharBean"
+																items="${remoteCharaLeafToCharacterizations[fourthLevelChar]}">
 
-																			</ul>
-																		</li>
-																	</c:forEach>
-																</ul>
-															</c:otherwise>
-														</c:choose>
-													</li>
-												</c:forEach>
-											</ul>
-										</c:otherwise>
-									</c:choose>
-								</li>
-							</c:forEach>
-						</ul>
-					</li>
-				</c:forEach>
-			</ul>
-		</li>
-		
+																<li>
+																	<c:url var="url" value="underConstruction.do">
+																		<c:param name="submitType" value="${fourthLevelChar}" />
+																	</c:url>
+																	<a href="${url}" class="sublist_5"><span
+																		class="data_anchar">>&nbsp;</span>${leafCharBean.viewTitle}</a>
+																</li>
+															</c:forEach>
+														</ul>
+													</c:when>
+													<c:otherwise>
+														<ul class="sublist_4" style="${invitroDisplay}">
+															<c:forEach var="fifthLevelChar"
+																items="${remoteSelectedCharacterizations[fourthLevelChar]}">
+																<li>
+																	<a href="#" class="sublist_4">${fifthLevelChar}</a>
+																	<ul class="sublist_5" style="${invitroDisplay}">
+																		<c:forEach var="leafCharBean"
+																			items="${remoteCharaLeafToCharacterizations[fifthLevelChar]}">
+																			<li>
+																				<c:url var="url" value="underConstruction.do">
+																					<c:param name="submitType"
+																						value="${fifthLevelChar}" />
+																				</c:url>
+																				<a href="${url}" class="sublist_5"><span
+																					class="data_anchar">>&nbsp;</span>${leafCharBean.viewTitle}</a>
+																			</li>
+																		</c:forEach>
+
+																	</ul>
+																</li>
+															</c:forEach>
+														</ul>
+													</c:otherwise>
+												</c:choose>
+											</li>
+										</c:forEach>
+									</ul>
+								</c:otherwise>
+							</c:choose>
+						</li>
+					</c:forEach>
+				</ul>
+			</li>
+		</c:forEach>
+	</ul>
+</li>
+
