@@ -134,6 +134,8 @@
 </c:choose>
 
 <c:set var="physicalType" value="Physical" />
+<c:choose>
+	<c:when test="${!empty remoteSelectedCharacterizations['Composition']}">
 		<li class="controlList">
 			<a href="#" class="subMenuSecondary">COMPOSITION</a>
 			<ul class="sublist_5" style="${compDisplay}">
@@ -160,6 +162,13 @@
 				</c:forEach>
 			</ul>
 		</li>
+	</c:when>
+	<c:otherwise>
+		<li class="nodatali">
+			COMPOSITION
+		</li>
+	</c:otherwise>
+</c:choose>
 		
 <c:url var="url" value="underConstruction.do">
 	<c:param name="submitType" value="Physical" />
