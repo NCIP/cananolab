@@ -379,7 +379,9 @@ public class InitParticleSetup {
 
 			Map<String, List<CharacterizationBean>> charTypeChars = service
 					.getRemoteCharacterizationMap(particleName, gridNode);
-
+			List<CharacterizationBean> remoteComps = charTypeChars
+					.get("Composition");
+			session.setAttribute("remoteCompositions", remoteComps);
 			Map<String, List<CharacterizationBean>> nameCharMap = getLeafCharaMap(charTypeChars);
 			session.setAttribute("remoteCharaLeafToCharacterizations",
 					nameCharMap);
