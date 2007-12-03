@@ -2,9 +2,13 @@ package gov.nih.nci.calab.ui.protocol;
 
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
 import gov.nih.nci.calab.service.common.LookupService;
+import gov.nih.nci.calab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.calab.service.protocol.SearchProtocolService;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.SortedSet;
 
 import javax.servlet.http.HttpSession;
@@ -40,16 +44,45 @@ public class InitProtocolSetup {
 		session.removeAttribute("newProtocolCreated");
 	}
 
-	public void setProtocolFilesBySubmitType(HttpSession session,
-			String submitType) throws Exception {
-		List<ProtocolFileBean> protocolFiles = null;
-		if (submitType.equalsIgnoreCase("size")) {
-			protocolFiles = searchProtocolService
-					.getProtocolFileBeans("Physical assay");
+	public void setProtocolFilesByCharName(HttpSession session, String charName)
+			throws Exception {
+		Map<String, String> charNameToCharCategory = null;
+		// retrieve from application context if there
+		if (session.getServletContext().getAttribute(
+				"characterizationCategoryMap") == null) {
+			NanoparticleCharacterizationService charService = new NanoparticleCharacterizationService();
+			charNameToCharCategory = charService
+					.getCharacterizationCategoryMap();
+			session.getServletContext().setAttribute(
+					"characterizationCategoryMap", charNameToCharCategory);
 		} else {
-			protocolFiles = searchProtocolService
-					.getProtocolFileBeans("In Vitro assay");
+			charNameToCharCategory = new HashMap<String, String>(
+					(Map<? extends String, String>) session.getServletContext()
+							.getAttribute("characterizationCategoryMap"));
 		}
+		String protocolType = null;
+		String category = charNameToCharCategory.get(charName);
+		if (category != null
+				&& category
+						.equals(CaNanoLabConstants.PHYSICAL_CHARACTERIZATION_CATEGORY)) {
+			protocolType = CaNanoLabConstants.PHYSICAL_ASSAY_PROTOCOL;
+		} else {
+			// get the top level category
+			String nextCategory = null;
+			while (category != null) {
+				nextCategory = category;
+				category = charNameToCharCategory.get(nextCategory);
+			}
+			if (nextCategory
+					.equals(CaNanoLabConstants.IN_VITRO_CHARACTERIZATION_CATEGORY)) {
+				protocolType = CaNanoLabConstants.INVITRO_ASSAY_PROTOCOL;
+			} else {
+				protocolType = null; //update if in vivo is implemented
+			}
+		}
+		List<ProtocolFileBean> protocolFiles = null;
+		protocolFiles = searchProtocolService
+				.getProtocolFileBeans(protocolType);
 		session.setAttribute("submitTypeProtocolFiles", protocolFiles);
 	}
 }
