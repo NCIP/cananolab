@@ -234,7 +234,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			NanoparticleService particleService = new NanoparticleService();
 			ParticleBean particle = particleService.getGeneralInfo(particleId);
 			theForm.set("particle", particle);
-
+			request.setAttribute("theParticle", particle);
 			// set up other particles from the same source
 			SortedSet<String> allOtherParticleNames = particleService
 					.getOtherParticles(particle.getSampleSource(), particle
@@ -300,7 +300,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 					fileBean.setHidden(true);
 				}
 				boolean imageStatus = false;
-				if (fileBean.getType() != null
+				if (fileBean.getType().length() > 0
 						&& fileBean.getType().equalsIgnoreCase("Graph")
 						|| fileBean.getType().equalsIgnoreCase("Image")) {
 					imageStatus = true;
@@ -467,12 +467,11 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 				fileBean.setHidden(true);
 			}
 			boolean imageStatus = false;
-			if (fileBean.getType() != null
+			if (fileBean.getType().length() > 0
 					&& fileBean.getType().equalsIgnoreCase("Graph")
 					|| fileBean.getType().equalsIgnoreCase("Image")) {
-				imageStatus=true;
-			}
-			else if (fileBean.getName() != null) {
+				imageStatus = true;
+			} else if (fileBean.getName() != null) {
 				imageStatus = StringUtils.isImgFileExt(fileBean.getName());
 			}
 			fileBean.setImage(imageStatus);
