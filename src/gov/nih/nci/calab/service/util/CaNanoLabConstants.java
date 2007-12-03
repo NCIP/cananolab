@@ -304,9 +304,13 @@ public class CaNanoLabConstants {
 	public static final String PHYSICAL_CHARACTERIZATION_CATEGORY = "Physical";
 
 	public static final String IN_VITRO_CHARACTERIZATION_CATEGORY = "In Vitro";
-	
-	/* image file name extension */
-	public static final String[] IMAGE_FILE_EXTENSIONS = {"jpg", "gif", "tif", "png"};
-	
 
+	/* image file name extension */
+	public static final String[] IMAGE_FILE_EXTENSIONS = { "AVS", "BMP", "CIN",
+			"DCX", "DIB", "DPX", "FITS", "GIF", "ICO", "JFIF", "JIF", "JPE",
+			"JPEG", "JPG", "MIFF", "OTB", "P7", "PALM", "PAM", "PBM", "PCD",
+			"PCDS", "PCL", "PCX", "PGM", "PICT", "PNG", "PNM", "PPM", "PSD",
+			"RAS", "SGI", "SUN", "TGA", "TIF", "TIFF", "WMF", "XBM", "XPM",
+			"YUV", "CGM", "DXF", "EMF", "EPS", "MET", "MVG", "ODG", "OTG",
+			"STD", "SVG", "SXD", "WMF" };
 }
