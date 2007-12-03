@@ -149,7 +149,7 @@
 						<c:param name="particleName" value="${particleName}" />
 						<c:param name="particleType" value="${particleType}" />
 						<c:param name="characterizationId" value="${leafCharBean.id}" />
-						<c:param name="submitType" value="${subCharType}" />
+						<c:param name="submitType" value="${leafCharBean.name}" />
 						<c:param name="actionName" value="${leafCharBean.actionName}" />
 						<c:param name="gridNodeHost" value="${gridNodeHost}" />
 					</c:url>
@@ -175,6 +175,7 @@
 	<ul class="sublist_4" style="${phyDisplay}">
 		<c:forEach var="subCharType"
 			items="${remoteSelectedCharacterizations[physicalType]}">
+			<c:if test="${subCharType != 'Composition'}">
 			<li>
 				<a href="#" class="sublist_4">${subCharType}</a>
 				<ul class="sublist_5" style="${phyDisplay}">
@@ -187,6 +188,7 @@
 					</c:forEach>
 				</ul>
 			</li>
+			</c:if>
 		</c:forEach>
 	</ul>
 </li>
