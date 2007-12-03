@@ -8,7 +8,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleCompositionAction.java,v 1.10 2007-11-30 22:58:30 pansu Exp $ */
+/* CVS $Id: NanoparticleCompositionAction.java,v 1.11 2007-12-03 22:03:10 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.composition.CarbonNanotubeBean;
 import gov.nih.nci.calab.dto.characterization.composition.ComposingElementBean;
@@ -220,6 +220,7 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		InitParticleSetup.getInstance().setAllCompositionDropdowns(session);
 		InitParticleSetup.getInstance()
 				.setAllCharacterizationDropdowns(session);
+		request.setAttribute("theParticle", particle);
 	}
 
 	/**
