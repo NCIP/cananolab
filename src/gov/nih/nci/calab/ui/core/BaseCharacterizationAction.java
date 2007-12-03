@@ -276,13 +276,14 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 							submitType);
 			InitParticleSetup.getInstance().setDerivedDatumNames(session,
 					achar.getName());
-			InitProtocolSetup.getInstance().setProtocolFilesByCharName(
-					session, achar.getName());
+			InitProtocolSetup.getInstance().setProtocolFilesByCharName(session,
+					achar.getName());
 
 			UserService userService = new UserService(
 					CaNanoLabConstants.CSM_APP_NAME);
 
-			// set up characterization files visibility
+			// set up characterization files visibility, and whether file is an
+			// image
 			for (DerivedBioAssayDataBean fileBean : achar
 					.getDerivedBioAssayDataList()) {
 				boolean status = userService.checkReadPermission(user, fileBean
@@ -298,6 +299,11 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 				} else {
 					fileBean.setHidden(true);
 				}
+				boolean imageStatus=false;
+				if (fileBean.getName() != null) {
+					imageStatus = StringUtils.isImgFileExt(fileBean.getName());
+				}
+				fileBean.setImage(imageStatus);
 			}
 
 			// set up protocol file visibility
@@ -429,8 +435,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			throw new Exception(
 					"There are no such characterizations in the database.");
 		}
-		
-		//set data labels and file visibility
+
+		// set data labels and file visibility, and whether file is an image
 		UserService userService = new UserService(
 				CaNanoLabConstants.CSM_APP_NAME);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
@@ -456,6 +462,11 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			} else {
 				fileBean.setHidden(true);
 			}
+			boolean imageStatus = false;
+			if (fileBean.getName() != null) {
+				imageStatus = StringUtils.isImgFileExt(fileBean.getName());
+			}
+			fileBean.setImage(imageStatus);
 		}
 		request.setAttribute("nameCharacterizationSummary", charSummaryBeans);
 		request.setAttribute("datumLabels", datumLabels);
