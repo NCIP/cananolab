@@ -113,10 +113,18 @@
 										Private file
 									</c:when>
 									<c:otherwise>
-										<a href="#"
-											onclick="popImage(event,'${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${summaryBean.charFile.id}', ${summaryBean.charFile.id})"><img
-												src="${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${summaryBean.charFile.id}"
-												border="0" width="150"> </a>
+										<c:choose>
+											<c:when test="${summaryBean.charFile.image eq 'true'}">
+												<a href="#"
+													onclick="popImage(event,'${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${summaryBean.charFile.id}', ${summaryBean.charFile.id})"><img
+														src="${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${summaryBean.charFile.id}"
+														border="0" width="150"> </a>
+											</c:when>
+											<c:otherwise>
+												<a
+													href="${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${summaryBean.charFile.id}">${summaryBean.charFile.uri}</a>
+											</c:otherwise>
+										</c:choose>
 									</c:otherwise>
 								</c:choose>
 							</c:if>

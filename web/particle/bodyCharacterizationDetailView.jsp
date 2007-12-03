@@ -147,10 +147,18 @@
 									Private file
 								</c:when>
 									<c:otherwise>
-										<a href="#"
-											onclick="popImage(event, '${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.id}', ${derivedBioAssayData.id}, 100, 100)"><img
-												src="${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.id}"
-												border="0" width="150"> </a>
+										<c:choose>
+											<c:when test="${derivedBioAssayData.image eq 'true'}">
+												<a href="#"
+													onclick="popImage(event, '${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.id}', ${derivedBioAssayData.id}, 100, 100)"><img
+														src="${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.id}"
+														border="0" width="150"> </a>
+											</c:when>
+											<c:otherwise>
+												<a
+													href="${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.id}">${derivedBioAssayData.uri}</a>
+											</c:otherwise>
+										</c:choose>
 									</c:otherwise>
 								</c:choose>
 							</td>
