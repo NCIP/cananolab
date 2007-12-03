@@ -14,25 +14,24 @@ import org.apache.log4j.Logger;
  * @author pansu
  * 
  */
-/* CVS $Id: StringUtils.java,v 1.22 2007-12-03 19:47:35 pansu Exp $ */
+/* CVS $Id: StringUtils.java,v 1.23 2007-12-03 20:25:14 pansu Exp $ */
 
 public class StringUtils {
 	private static Logger logger = Logger.getLogger(StringUtils.class);
 
-	public static boolean isImgFileExt(String fileName)
-	{
+	public static boolean isImgFileExt(String fileName) {
 		boolean isImgFileExt = false;
-		String lowerCase = fileName.toLowerCase();
-		for(int i=0; i<CaNanoLabConstants.IMAGE_FILE_EXTENSIONS.length; i++) {
-			if(lowerCase.endsWith("." + CaNanoLabConstants.IMAGE_FILE_EXTENSIONS[i]) ) {
+		for (int i = 0; i < CaNanoLabConstants.IMAGE_FILE_EXTENSIONS.length; i++) {
+			if (fileName.toUpperCase().endsWith(
+					"." + CaNanoLabConstants.IMAGE_FILE_EXTENSIONS[i])) {
 				isImgFileExt = true;
 				break;
 			}
 		}
-		
+
 		return isImgFileExt;
 	}
-	
+
 	public static Date convertToDate(String dateString, String dateFormat) {
 		if (dateString == null || dateString == "") {
 			return null;
