@@ -6,7 +6,15 @@
 
 <link rel="StyleSheet" type="text/css" href="css/sidemenu.css">
 <script type="text/javascript" src="javascript/sidemenu.js"></script>
-
+<c:choose>
+	<c:when
+		test="${!empty param.submitType && param.submitType != 'none'}">
+		<c:set var="displaytype" value="${param.submitType}" scope="request" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="displaytype" value="${param.displayType}" scope="request" />
+	</c:otherwise>
+</c:choose>
 <c:choose>
 	<c:when test="${!empty param.particleName}">
 		<c:set var="particleName" value="${param.particleName}"
