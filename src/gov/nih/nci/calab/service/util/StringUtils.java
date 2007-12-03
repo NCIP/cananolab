@@ -14,7 +14,7 @@ import org.apache.log4j.Logger;
  * @author pansu
  * 
  */
-/* CVS $Id: StringUtils.java,v 1.21 2007-12-03 17:41:12 cais Exp $ */
+/* CVS $Id: StringUtils.java,v 1.22 2007-12-03 19:47:35 pansu Exp $ */
 
 public class StringUtils {
 	private static Logger logger = Logger.getLogger(StringUtils.class);
@@ -23,8 +23,8 @@ public class StringUtils {
 	{
 		boolean isImgFileExt = false;
 		String lowerCase = fileName.toLowerCase();
-		for(int i=0; i<CaNanoLabConstants.imgFileExts.length; i++) {
-			if(lowerCase.endsWith("." + CaNanoLabConstants.imgFileExts[i]) ) {
+		for(int i=0; i<CaNanoLabConstants.IMAGE_FILE_EXTENSIONS.length; i++) {
+			if(lowerCase.endsWith("." + CaNanoLabConstants.IMAGE_FILE_EXTENSIONS[i]) ) {
 				isImgFileExt = true;
 				break;
 			}
