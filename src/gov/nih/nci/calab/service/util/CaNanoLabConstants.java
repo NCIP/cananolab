@@ -306,7 +306,7 @@ public class CaNanoLabConstants {
 	public static final String IN_VITRO_CHARACTERIZATION_CATEGORY = "In Vitro";
 	
 	/* image file name extension */
-	public static final String[] imgFileExts = {"jpg", "gif", "tif", "png"};
+	public static final String[] IMAGE_FILE_EXTENSIONS = {"jpg", "gif", "tif", "png"};
 	
 
 }
