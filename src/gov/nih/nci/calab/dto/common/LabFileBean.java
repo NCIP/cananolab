@@ -53,6 +53,8 @@ public class LabFileBean {
 
 	private boolean hidden;
 
+	private boolean image;
+
 	public String getInstanceType() {
 		return this.instanceType;
 	}
@@ -241,5 +243,13 @@ public class LabFileBean {
 
 	public void setHidden(boolean hidden) {
 		this.hidden = hidden;
+	}
+
+	public boolean isImage() {
+		return image;
+	}
+
+	public void setImage(boolean image) {
+		this.image = image;
 	}
 }
