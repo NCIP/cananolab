@@ -138,8 +138,10 @@
 								Characterization File #${fileInd+1}
 							</th>
 							<td class="rightLabel" valign="top">
+								<c:if test="${!empty derivedBioAssayData.type}">
 								${derivedBioAssayData.type}
 								<br>
+								</c:if>
 								<c:choose>
 									<c:when test="${derivedBioAssayData.hidden eq 'true'}">
 									Private file

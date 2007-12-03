@@ -102,8 +102,10 @@
 							</td>
 						</c:forEach>
 						<td class="rightLabel" valign="top">
+							<c:if test="${! empty summaryBean.charFile.type}">
 							${summaryBean.charFile.type}
 							<br>
+							</c:if>
 							<c:if
 								test="${!empty summaryBean.charFile && !empty summaryBean.charFile.uri}">
 								<c:choose>
@@ -114,7 +116,7 @@
 										<a href="#"
 											onclick="popImage(event,'${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${summaryBean.charFile.id}', ${summaryBean.charFile.id})"><img
 												src="${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${summaryBean.charFile.id}"
-												border="0" width="150"></a>
+												border="0" width="150"> </a>
 									</c:otherwise>
 								</c:choose>
 							</c:if>
