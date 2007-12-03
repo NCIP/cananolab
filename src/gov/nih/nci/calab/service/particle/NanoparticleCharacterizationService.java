@@ -527,6 +527,14 @@ public class NanoparticleCharacterizationService {
 			ProtocolFile protocolFile = (ProtocolFile) session.get(
 					ProtocolFile.class, new Long(protocolFileBean.getId()));
 			doChar.setProtocolFile(protocolFile);
+			//updated protocolFileBean in charBean
+			protocolFileBean.setName(protocolFile.getFilename());
+			protocolFileBean.setUri(protocolFile.getUri());
+			protocolFileBean.setTitle(protocolFile.getTitle());
+			protocolFileBean.setDescription(protocolFile.getDescription());
+			protocolFileBean.setCreatedBy(protocolFile.getCreatedBy());
+			protocolFileBean.setCreatedDate(protocolFile.getCreatedDate());
+			protocolFileBean.setVersion(protocolFile.getVersion());			
 		}
 	}
 
@@ -1332,6 +1340,33 @@ public class NanoparticleCharacterizationService {
 
 		return charTypeChars;
 
+	}
+
+	public Map<String, String> getCharacterizationCategoryMap()
+			throws Exception {
+		Map<String, String> charNameToCharCategory = new HashMap<String, String>();
+		try {
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			String query = "select distinct a.category, a.name from def_characterization_category a ";
+			SQLQuery queryObj = session.createSQLQuery(query);
+			queryObj.addScalar("CATEGORY", Hibernate.STRING);
+			queryObj.addScalar("NAME", Hibernate.STRING);
+			List results = queryObj.list();
+			HibernateUtil.commitTransaction();
+			for (Object obj : results) {
+				Object[] objarr = (Object[]) obj;
+				String category = objarr[0].toString();
+				String name = objarr[1].toString();
+				charNameToCharCategory.put(name, category);
+			}
+		} catch (Exception e) {
+			logger.error("Error retrieving characterization catgories", e);
+			throw e;
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		return charNameToCharCategory;
 	}
 
 	/**
