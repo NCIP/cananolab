@@ -35,32 +35,6 @@
 </c:choose>
 
 <c:set var="dispatchValue" value="view" scope="session" />
-
-<c:choose>
-	<c:when test="${!empty theParticle}">
-		<c:set var="particleName" value="${theParticle.sampleName}"
-			scope="session" />
-	</c:when>
-</c:choose>
-<c:choose>
-	<c:when test="${!empty theParticle}">
-		<c:set var="particleType" value="${theParticle.sampleType}"
-			scope="session" />
-	</c:when>
-</c:choose>
-<c:choose>
-	<c:when test="${!empty theParticle}">
-		<c:set var="particleSource" value="${theParticle.sampleSource}"
-			scope="session" />
-	</c:when>
-</c:choose>
-<c:choose>
-	<c:when test="${!empty theParticle}">
-		<c:set var="particleId" value="${theParticle.sampleId}"
-			scope="session" />
-	</c:when>
-</c:choose>
-
 <c:choose>
 	<c:when test="${!empty param.gridNodeHost}">
 		<c:set var="gridNodeHost" value="${param.gridNodeHost}"
