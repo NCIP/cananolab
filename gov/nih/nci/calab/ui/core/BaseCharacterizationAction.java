@@ -276,7 +276,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 							submitType);
 			InitParticleSetup.getInstance().setDerivedDatumNames(session,
 					achar.getName());
-			InitProtocolSetup.getInstance().setProtocolFilesBySubmitType(
+			InitProtocolSetup.getInstance().setProtocolFilesByCharName(
 					session, achar.getName());
 
 			UserService userService = new UserService(
