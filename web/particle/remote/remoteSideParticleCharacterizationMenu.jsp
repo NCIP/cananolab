@@ -150,7 +150,6 @@
 						<c:param name="particleType" value="${particleType}" />
 						<c:param name="characterizationId" value="${leafCharBean.id}" />
 						<c:param name="submitType" value="${leafCharBean.name}" />
-						<c:param name="actionName" value="${leafCharBean.actionName}" />
 						<c:param name="gridNodeHost" value="${gridNodeHost}" />
 					</c:url>
 					<li>
