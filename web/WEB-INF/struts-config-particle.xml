@@ -160,7 +160,7 @@
 			input="input" scope="request">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="submit" key="error.nanoparticle.generalInfo"
+				bundle="particle" key="error.nanoparticle.generalInfo"
 				path="particle.createNanoparticle" type="java.lang.Exception" />
 			<forward name="success" path="particle.generalInfo" />
 			<forward name="view" path="particle.generalInfo" />
@@ -173,7 +173,7 @@
 			input="input">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="submit" key="error.addParticleComposition"
+				bundle="particle" key="error.addParticleComposition"
 				path="particle.composition" type="java.lang.Exception" />
 			<forward name="success"
 				path="particle.characterizationMessage" />
@@ -187,7 +187,7 @@
 			input="input">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="submit" key="error.addParticleSize"
+				bundle="particle" key="error.addParticleSize"
 				path="particle.physicalCharacterization" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
@@ -209,7 +209,7 @@
 			input="input">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="submit" key="error.addParticleSurface"
+				bundle="particle" key="error.addParticleSurface"
 				path="particle.surface" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
@@ -230,7 +230,7 @@
 			input="input">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="submit" key="error.addParticleMolecularWeight"
+				bundle="particle" key="error.addParticleMolecularWeight"
 				path="particle.physicalCharacterization" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
@@ -252,7 +252,7 @@
 			input="input">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="submit" key="error.addParticleMorphology"
+				bundle="particle" key="error.addParticleMorphology"
 				path="particle.morphology" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
@@ -273,7 +273,7 @@
 			input="input">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="submit" key="error.addParticleShape" path="particle.shape"
+				bundle="particle" key="error.addParticleShape" path="particle.shape"
 				type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
@@ -294,7 +294,7 @@
 			input="input">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="submit" key="error.addParticlePurity"
+				bundle="particle" key="error.addParticlePurity"
 				path="particle.physicalCharacterization" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
@@ -316,7 +316,7 @@
 			input="input">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="submit" key="error.addParticleSolubility"
+				bundle="particle" key="error.addParticleSolubility"
 				path="particle.solubility" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
@@ -337,7 +337,7 @@
 			input="input">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="submit" key="error.addInvitroHemolysis"
+				bundle="particle" key="error.addInvitroHemolysis"
 				path="particle.inVitroCharacterization" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
@@ -359,7 +359,7 @@
 			input="input">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="submit" key="error.addInvitroPlateletAggregation"
+				bundle="particle" key="error.addInvitroPlateletAggregation"
 				path="particle.inVitroCharacterization" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
@@ -381,7 +381,7 @@
 			input="input">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="submit" key="error.addInvitroCoagulation"
+				bundle="particle" key="error.addInvitroCoagulation"
 				path="particle.inVitroCharacterization" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
@@ -403,7 +403,7 @@
 			input="input">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="submit" key="error.addInvitroProteinBinding"
+				bundle="particle" key="error.addInvitroProteinBinding"
 				path="particle.inVitroCharacterization" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
@@ -425,7 +425,7 @@
 			input="input">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="submit" key="error.addInvitroComplementActivation"
+				bundle="particle" key="error.addInvitroComplementActivation"
 				path="particle.inVitroCharacterization" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
@@ -447,7 +447,7 @@
 			input="input">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="submit" key="error.addInvitroCytokineInduction"
+				bundle="particle" key="error.addInvitroCytokineInduction"
 				path="particle.inVitroCharacterization" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
@@ -469,7 +469,7 @@
 			input="input">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="submit" key="error.addInvitroChemotaxis"
+				bundle="particle" key="error.addInvitroChemotaxis"
 				path="particle.inVitroCharacterization" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
@@ -491,7 +491,7 @@
 			input="input">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="submit" key="error.addInvitroNKCellCytotoxicActivity"
+				bundle="particle" key="error.addInvitroNKCellCytotoxicActivity"
 				path="particle.inVitroCharacterization" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
@@ -513,7 +513,7 @@
 			input="input">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="submit" key="error.addInvitroLeukocyteProliferation"
+				bundle="particle" key="error.addInvitroLeukocyteProliferation"
 				path="particle.inVitroCharacterization" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
@@ -535,7 +535,7 @@
 			input="input">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="submit" key="error.addInvitroCFU_GM"
+				bundle="particle" key="error.addInvitroCFU_GM"
 				path="particle.inVitroCharacterization" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
@@ -557,7 +557,7 @@
 			input="input">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="submit" key="error.addInvitroOxidativeBurst"
+				bundle="particle" key="error.addInvitroOxidativeBurst"
 				path="particle.inVitroCharacterization" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
@@ -579,7 +579,7 @@
 			input="input">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="submit" key="error.addInvitroPhagocytosis"
+				bundle="particle" key="error.addInvitroPhagocytosis"
 				path="particle.inVitroCharacterization" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
@@ -601,7 +601,7 @@
 			input="input">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="submit" key="error.addInvitroCellViability"
+				bundle="particle" key="error.addInvitroCellViability"
 				path="particle.cytotoxicity" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
@@ -622,7 +622,7 @@
 			input="input">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="submit" key="error.addInvitroCaspase3Activation"
+				bundle="particle" key="error.addInvitroCaspase3Activation"
 				path="particle.cytotoxicity" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
@@ -643,7 +643,7 @@
 			input="input">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="submit" key="error.addInvitroEnzymeInduction"
+				bundle="particle" key="error.addInvitroEnzymeInduction"
 				path="particle.inVitroCharacterization" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
@@ -665,7 +665,7 @@
 			input="input">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="submit" key="error.addInvitroOxidativeStress"
+				bundle="particle" key="error.addInvitroOxidativeStress"
 				path="particle.inVitroCharacterization" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
@@ -687,7 +687,7 @@
 			input="input" scope="request">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="submit" key="error.loadDerivedBioAssayData"
+				bundle="particle" key="error.loadDerivedBioAssayData"
 				path="particle.loadCharacterizationFile" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
@@ -702,7 +702,7 @@
 			input="input">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="submit" key="error.addparticle.function"
+				bundle="particle" key="error.addparticle.function"
 				path="particle.function" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
@@ -730,7 +730,7 @@
 			scope="request">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="search" key="error.searchNanoparticle"
+				bundle="particle" key="error.searchNanoparticle"
 				path="particle.searchNanoparticle" type="java.lang.Exception" />
 			<forward name="input" path="particle.searchNanoparticle" />
 			<forward name="success"
@@ -742,7 +742,7 @@
 			scope="request">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="search" key="error.searchNanoparticleAdvanced"
+				bundle="particle" key="error.searchNanoparticleAdvanced"
 				path="particle.advancedSearchNanoparticle"
 				type="java.lang.Exception" />
 			<forward name="input"
@@ -759,7 +759,7 @@
 			scope="request">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="search" key="error.searchNanoparticle"
+				bundle="particle" key="error.searchNanoparticle"
 				path="particle.remoteSearchNanoparticle" type="java.lang.Exception" />
 			<forward name="input"
 				path="particle.remoteSearchNanoparticle" />
@@ -772,7 +772,7 @@
 			input="input" scope="request">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="search" key="error.particle.remoteGeneralInfo"
+				bundle="particle" key="error.particle.remoteGeneralInfo"
 				path="particle.remoteGeneralInfo" type="java.lang.Exception" />
 			<forward name="success" path="particle.remoteGeneralInfo" />
 			<forward name="input" path="particle.annotationMessage" />
@@ -783,7 +783,7 @@
 			input="input">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="search" key="error.particle.remoteComposition"
+				bundle="particle" key="error.particle.remoteComposition"
 				path="particle.remoteComposition" type="java.lang.Exception" />
 			<forward name="input"
 				path="particle.characterizationMessage" />
@@ -795,7 +795,7 @@
 			scope="request">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="submit" key="error.updateReport" path="particle.viewReport"
+				bundle="particle" key="error.updateReport" path="particle.viewReport"
 				type="java.lang.Exception" />
 			<forward name="input" path="particle.viewReport" />
 			<forward name="success" path="particle.annotationMessage" />

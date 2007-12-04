@@ -42,7 +42,7 @@
 			scope="request">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="submit" key="error.submitReport" path="report.submitReport"
+				bundle="report" key="error.submitReport" path="report.submitReport"
 				type="java.lang.Exception" />
 			<forward name="success" path="report.message" />
 			<forward name="input" path="report.submitReport" />
@@ -53,7 +53,7 @@
 			scope="request">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="submit" key="error.updateReport" path="report.viewReport"
+				bundle="report" key="error.updateReport" path="report.viewReport"
 				type="java.lang.Exception" />
 			<forward name="input" path="report.viewReport" />
 			<forward name="success" path="report.message" />
@@ -71,7 +71,7 @@
 				type="gov.nih.nci.calab.exception.CalabException" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="search" key="error.searchReport" path="report.searchReport"
+				bundle="report" key="error.searchReport" path="report.searchReport"
 				type="java.lang.Exception" />
 			<forward name="input" path="report.searchReport" />
 			<forward name="success" path="report.searchReportResult" />
@@ -86,7 +86,7 @@
 				type="gov.nih.nci.calab.exception.CalabException" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="search" key="error.searchReport"
+				bundle="report" key="error.searchReport"
 				path="report.remoteSearchReport" type="java.lang.Exception" />
 			<forward name="input" path="report.remoteSearchReport" />
 			<forward name="success"
