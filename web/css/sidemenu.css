@@ -151,6 +151,18 @@ ul.sublist_4 a {
 ul.sublist_4 li {
 	background-color: #FFFFFF; /* #D3DDE7; */
 	border-bottom: 0;
+	color: #400080;
+}
+	
+li.sublist_4_func {
+	background-color: #FFFFFF; /* #D3DDE7; */
+	border-bottom: 0;
+	color: #400080;
+	font-size: 0.9em;
+	font-weight: bold;
+	text-indent: 3.5em;
+	padding-top: 0.1em;
+	padding-bottom: 0.1em;
 }
 
 ul.sublist_5_clicked a {
@@ -295,13 +307,31 @@ td.titleCell a {
 	font-family: Verdana, Helvetica, Arial, sans-serif;
 }
 
-td.titleCell_2 a {
+td.titleCell2 a {
 	color: #400080;
 	background-color: #FFFFFF;
 	font-size: 0.6em;
 	font-weight: bold;
 	font-family: Verdana, Helvetica, Arial, sans-serif;
 	text-indent: 1.4em;
+}
+
+td.titleCell2NoData {
+	color: #400080;
+	background-color: #FFFFFF;
+	font-size: 0.6em;
+	font-weight: bold;
+	font-family: Verdana, Helvetica, Arial, sans-serif;
+	text-indent: 1.4em;
+}
+
+td.titleCell2NoData li {
+	font-size: 0.9em;
+	color: #400080;
+	background-color: #FFFFFF;
+	font-weight: bold;
+	font-family: Verdana, Helvetica, Arial, sans-serif;
+	text-indent: 0.2em;
 }
 
 table.subTitleTable {
@@ -310,8 +340,16 @@ table.subTitleTable {
 	border-collapse: collapse;
 }
 
+td.titleCell2Vitro a {
+	color: #400080;
+	background-color: #F4F4F5;
+	font-size: 0.6em;
+	font-weight: bold;
+	font-family: Verdana, Helvetica, Arial, sans-serif;
+	text-indent: 1.4em;
+}
 
-td.titleCell_2_vitro a {
+td.titleCell2VitroNoData {
 	color: #400080;
 	background-color: #F4F4F5;
 	font-size: 0.6em;
@@ -321,7 +359,7 @@ td.titleCell_2_vitro a {
 }
 
 
-td.titleCell_3 a {
+td.titleCell3 a {
 	color: #400080;
 	background-color: #FFFFFF;
 	font-size: 0.6em;
@@ -330,7 +368,25 @@ td.titleCell_3 a {
 	text-indent: 2em;
 }
 
-td.titleCell_4 a {
+td.titleCell3NoData {
+	color: #400080;
+	background-color: #FFFFFF;
+	font-size: 0.6em;
+	font-weight: bold;
+	font-family: Verdana, Helvetica, Arial, sans-serif;
+	text-indent: 2em;
+}
+
+td.titleCell4 a {
+	color: #400080;
+	background-color: #FFFFFF;
+	font-size: 0.6em;
+	font-weight: bold;
+	font-family: Verdana, Helvetica, Arial, sans-serif;
+	text-indent: 2.6em;
+}
+
+td.titleCell4NoData {
 	color: #400080;
 	background-color: #FFFFFF;
 	font-size: 0.6em;
