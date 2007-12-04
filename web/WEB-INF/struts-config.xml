@@ -3,14 +3,17 @@
 <struts-config>
 	<display-name>caNanoLab</display-name>
 	<form-beans>
-		<form-bean name="initSessionForm" type="org.apache.struts.action.DynaActionForm">
+		<form-bean name="initSessionForm"
+			type="org.apache.struts.action.DynaActionForm">
 			<form-property name="forwardPage" type="java.lang.String" />
 		</form-bean>
-		<form-bean name="loginForm" type="org.apache.struts.validator.DynaValidatorForm">
+		<form-bean name="loginForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="loginId" type="java.lang.String" />
 			<form-property name="password" type="java.lang.String" />
 		</form-bean>
-		<form-bean name="updatePasswordForm" type="org.apache.struts.validator.DynaValidatorForm">
+		<form-bean name="updatePasswordForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="loginId" type="java.lang.String" />
 			<form-property name="password" type="java.lang.String" />
 			<form-property name="newPassword" type="java.lang.String" />
@@ -18,36 +21,62 @@
 		</form-bean>
 	</form-beans>
 	<global-exceptions>
-		<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.session.expired" path="/index.jsp" type="gov.nih.nci.calab.exception.InvalidSessionException" />
-		<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.noaccess" path="/index.jsp" type="gov.nih.nci.calab.exception.NoAccessException" />
+		<exception
+			handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+			key="error.session.expired" path="/index.jsp"
+			type="gov.nih.nci.calab.exception.InvalidSessionException" />
+		<exception
+			handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+			key="error.noaccess" path="/index.jsp"
+			type="gov.nih.nci.calab.exception.NoAccessException" />
+		<exception key="error.nullpointer" type="java.lang.NullPointerException"
+			path="/index.jsp" />
 	</global-exceptions>
 	<action-mappings>
-		<action name="loginForm" path="/login" scope="request" type="gov.nih.nci.calab.ui.security.LoginAction" input="input">
-			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.login" path="/index.jsp" type="java.lang.Exception" />
+		<action name="loginForm" path="/login" scope="request"
+			type="gov.nih.nci.calab.ui.security.LoginAction" input="input">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				key="error.login" path="/index.jsp" type="java.lang.Exception" />
 			<forward name="success" path="calab.welcome" />
 			<forward name="input" path="calab.login" />
 			<forward name="changePassword" path="calab.password" />
 		</action>
-		<action name="updatePasswordForm" path="/updatePassword" scope="request" type="gov.nih.nci.calab.ui.security.UpdatePasswordAction" input="input">
-			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.password" path="calab.password" type="java.lang.Exception" />
+		<action name="updatePasswordForm" path="/updatePassword"
+			scope="request"
+			type="gov.nih.nci.calab.ui.security.UpdatePasswordAction"
+			input="input">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				key="error.password" path="calab.password"
+				type="java.lang.Exception" />
 			<forward name="success" path="calab.login" />
 			<forward name="input" path="calab.password" />
 		</action>
-		<action path="/logout" scope="request" type="gov.nih.nci.calab.ui.security.LogoutAction">
-			<exception handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler" key="error.logout" path="home.error" type="java.lang.Exception" />
+		<action path="/logout" scope="request"
+			type="gov.nih.nci.calab.ui.security.LogoutAction">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				key="error.logout" path="home.error" type="java.lang.Exception" />
 			<forward name="success" path="calab.login" />
 		</action>
 	</action-mappings>
 
 	<controller>
 		<set-property value="true" property="inputForward" />
-		<set-property property="processorClass" value="gov.nih.nci.calab.ui.core.CustomRequestProcessor" />
+		<set-property property="processorClass"
+			value="gov.nih.nci.calab.ui.core.CustomRequestProcessor" />
 	</controller>
-	<message-resources parameter="gov.nih.nci.calab.resources.application" null="false" />
-	<message-resources key="sample" parameter="gov.nih.nci.calab.resources.sample" null="false" />
-	<message-resources key="protocol" parameter="gov.nih.nci.calab.resources.protocol" null="false" />
-	<message-resources key="particle" parameter="gov.nih.nci.calab.resources.particle" null="false" />
-	<message-resources key="report" parameter="gov.nih.nci.calab.resources.report" null="false" />
+	<message-resources
+		parameter="gov.nih.nci.calab.resources.application" null="false" />
+	<message-resources key="sample"
+		parameter="gov.nih.nci.calab.resources.sample" null="false" />
+	<message-resources key="protocol"
+		parameter="gov.nih.nci.calab.resources.protocol" null="false" />
+	<message-resources key="particle"
+		parameter="gov.nih.nci.calab.resources.particle" null="false" />
+	<message-resources key="report"
+		parameter="gov.nih.nci.calab.resources.report" null="false" />
 
 	<plug-in className="org.apache.struts.tiles.TilesPlugin">
 		<set-property property="definitions-config"
@@ -58,7 +87,8 @@
                    /WEB-INF/tiles-defs-report.xml" />
 		<set-property property="definitions-debug" value="2" />
 		<set-property property="definitions-parser-details" value="2" />
-		<set-property property="definitions-parser-validate" value="true" />
+		<set-property property="definitions-parser-validate"
+			value="true" />
 	</plug-in>
 	<plug-in className="org.apache.struts.validator.ValidatorPlugIn">
 		<set-property property="stopOnFirstError" value="false" />
@@ -68,5 +98,5 @@
 			      /WEB-INF/validation-particle.xml,             
                   /WEB-INF/validator-rules.xml" />
 	</plug-in>
-	<plug-in className="gov.nih.nci.calab.ui.core.CustomPlugIn"/>	
+	<plug-in className="gov.nih.nci.calab.ui.core.CustomPlugIn" />
 </struts-config>
