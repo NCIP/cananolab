@@ -455,29 +455,33 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 				datumLabels.addAll(datumMap.keySet());
 			}
 			DerivedBioAssayDataBean fileBean = summaryBean.getCharFile();
-			boolean status = userService.checkReadPermission(user, fileBean
-					.getId());
-			if (status) {
-				List<String> accessibleGroups = userService
-						.getAccessibleGroups(fileBean.getId(),
-								CaNanoLabConstants.CSM_READ_ROLE);
-				String[] visibilityGroups = accessibleGroups
-						.toArray(new String[0]);
-				fileBean.setVisibilityGroups(visibilityGroups);
-				fileBean.setHidden(false);
-			} else {
-				fileBean.setHidden(true);
-			}
-			boolean imageStatus = false;
-			if (fileBean.getType() != null && fileBean.getType().length() > 0) {
-				if (fileBean.getType().equalsIgnoreCase("Graph")
-						|| fileBean.getType().equalsIgnoreCase("Image")) {
-					imageStatus = true;
-				} else if (fileBean.getName() != null) {
-					imageStatus = StringUtils.isImgFileExt(fileBean.getName());
+			if (fileBean != null) {
+				boolean status = userService.checkReadPermission(user, fileBean
+						.getId());
+				if (status) {
+					List<String> accessibleGroups = userService
+							.getAccessibleGroups(fileBean.getId(),
+									CaNanoLabConstants.CSM_READ_ROLE);
+					String[] visibilityGroups = accessibleGroups
+							.toArray(new String[0]);
+					fileBean.setVisibilityGroups(visibilityGroups);
+					fileBean.setHidden(false);
+				} else {
+					fileBean.setHidden(true);
 				}
+				boolean imageStatus = false;
+				if (fileBean.getType() != null
+						&& fileBean.getType().length() > 0) {
+					if (fileBean.getType().equalsIgnoreCase("Graph")
+							|| fileBean.getType().equalsIgnoreCase("Image")) {
+						imageStatus = true;
+					} else if (fileBean.getName() != null) {
+						imageStatus = StringUtils.isImgFileExt(fileBean
+								.getName());
+					}
+				}
+				fileBean.setImage(imageStatus);
 			}
-			fileBean.setImage(imageStatus);
 		}
 		request.setAttribute("nameCharacterizationSummary", charSummaryBeans);
 		request.setAttribute("datumLabels", datumLabels);
