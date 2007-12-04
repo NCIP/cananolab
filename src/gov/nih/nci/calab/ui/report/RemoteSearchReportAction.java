@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.report;
  * @author pansu
  */
 
-/* CVS $Id: RemoteSearchReportAction.java,v 1.3 2007-11-29 19:20:24 pansu Exp $ */
+/* CVS $Id: RemoteSearchReportAction.java,v 1.4 2007-12-04 15:32:21 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
@@ -51,14 +51,41 @@ public class RemoteSearchReportAction extends AbstractDispatchAction {
 		String[] functionTypes = (String[]) theForm.get("functionTypes");
 
 		String[] gridNodeHosts = (String[]) theForm.get("gridNodes");
-		Map<String, GridNodeBean> gridNodeMap = new HashMap<String, GridNodeBean>(
-				(Map<? extends String, ? extends GridNodeBean>) request
-						.getSession().getAttribute("allGridNodes"));
+		ActionMessages msgs = new ActionMessages();
+		HttpSession session=request.getSession();
+		Map<String, GridNodeBean> gridNodeMap = null;
+		if (session.getAttribute("allGridNodes") == null) {
+			try {
+				gridNodeMap = GridService.discoverServices(
+						CaNanoLabConstants.GRID_INDEX_SERVICE_URL,
+						CaNanoLabConstants.DOMAIN_MODEL_NAME);
+				if (gridNodeMap == null) {
+					ActionMessage msg = new ActionMessage(
+							"message.grid.discovery.none",
+							CaNanoLabConstants.DOMAIN_MODEL_NAME);
+					msgs.add("message", msg);
+					saveMessages(request, msgs);
+					return mapping.findForward("remoteSearchMessage");
+				} else {
+					request.getSession()
+							.setAttribute("allGridNodes", gridNodeMap);
+				}
+			} catch (Exception e) {
+				ActionMessage msg = new ActionMessage("message.grid.discovery",
+						CaNanoLabConstants.DOMAIN_MODEL_NAME, e);
+				msgs.add("message", msg);
+				saveMessages(request, msgs);
+				return mapping.findForward("remoteSearchMessage");
+			}
+		} else {
+			gridNodeMap = new HashMap<String, GridNodeBean>(
+					(Map<? extends String, ? extends GridNodeBean>) request
+							.getSession().getAttribute("allGridNodes"));
+		}
 		GridNodeBean[] gridNodes = GridService.getGridNodesFromHostNames(
 				gridNodeMap, gridNodeHosts);
 		GridSearchService searchService = new GridSearchService();
-		List<LabFileBean> reports = new ArrayList<LabFileBean>();
-		ActionMessages msgs = new ActionMessages();
+		List<LabFileBean> reports = new ArrayList<LabFileBean>();		
 		for (GridNodeBean gridNode : gridNodes) {
 			try {
 				List<LabFileBean> gridReports = searchService.getRemoteReports(
