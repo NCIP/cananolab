@@ -300,7 +300,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 					fileBean.setHidden(true);
 				}
 				boolean imageStatus = false;
-				if (fileBean.getType().length() > 0
+				if (fileBean.getType()!=null&& fileBean.getType().length() > 0
 						&& fileBean.getType().equalsIgnoreCase("Graph")
 						|| fileBean.getType().equalsIgnoreCase("Image")) {
 					imageStatus = true;
@@ -412,7 +412,6 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		} else if (charBean instanceof CytotoxicityBean) {
 			theForm.set("cytotoxicity", charBean);
 		}
-
 		return mapping.findForward("setup");
 	}
 
