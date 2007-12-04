@@ -29,8 +29,8 @@
 					<li>
 					<table class="charTitle">
 						<tr class="titleRow">
-							<td class="titleCell_2">
-								<a href="#" class="sublist_4">${funcType}</a>
+							<td class="titleCell2NoData">
+								<c:out value="${funcType}" />
 							</td>
 							<td>
 								&nbsp;
@@ -44,7 +44,7 @@
 				</c:when>
 				<c:otherwise>
 					<c:if test="${!empty allFuncTypeFuncs[funcType]}">
-						<a href="#" class="sublist_4">${funcType}</a>
+						<li class="sublist_4_func">${funcType}</li>
 					</c:if>
 				</c:otherwise>
 			</c:choose>
