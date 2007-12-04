@@ -8,7 +8,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: RemoteNanoparticleCompositionAction.java,v 1.5 2007-11-30 22:58:46 pansu Exp $ */
+/* CVS $Id: RemoteNanoparticleCompositionAction.java,v 1.6 2007-12-04 15:32:21 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.CarbonNanotubeComposition;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.DendrimerComposition;
@@ -29,6 +29,7 @@ import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.dto.remote.GridNodeBean;
 import gov.nih.nci.calab.service.remote.GridSearchService;
+import gov.nih.nci.calab.service.remote.GridService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 
@@ -42,6 +43,8 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
 public class RemoteNanoparticleCompositionAction extends AbstractDispatchAction {
@@ -66,15 +69,42 @@ public class RemoteNanoparticleCompositionAction extends AbstractDispatchAction 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		HttpSession session = request.getSession();
 		clearMap(session, theForm);
-		Map<String, GridNodeBean> gridNodeMap = new HashMap<String, GridNodeBean>(
-				(Map<? extends String, ? extends GridNodeBean>) request
-						.getSession().getAttribute("allGridNodes"));
+		ActionMessages msgs = new ActionMessages();
 
+		Map<String, GridNodeBean> gridNodes = null;
+		if (session.getAttribute("allGridNodes") == null) {
+			try {
+				gridNodes = GridService.discoverServices(
+						CaNanoLabConstants.GRID_INDEX_SERVICE_URL,
+						CaNanoLabConstants.DOMAIN_MODEL_NAME);
+				if (gridNodes == null) {
+					ActionMessage msg = new ActionMessage(
+							"message.grid.discovery.none",
+							CaNanoLabConstants.DOMAIN_MODEL_NAME);
+					msgs.add("message", msg);
+					saveMessages(request, msgs);
+					return mapping.findForward("remoteSearchMessage");
+				} else {
+					request.getSession()
+							.setAttribute("allGridNodes", gridNodes);
+				}
+			} catch (Exception e) {
+				ActionMessage msg = new ActionMessage("message.grid.discovery",
+						CaNanoLabConstants.DOMAIN_MODEL_NAME, e);
+				msgs.add("message", msg);
+				saveMessages(request, msgs);
+				return mapping.findForward("remoteSearchMessage");
+			}
+		} else {
+			gridNodes = new HashMap<String, GridNodeBean>(
+					(Map<? extends String, ? extends GridNodeBean>) request
+							.getSession().getAttribute("allGridNodes"));
+		}
 		String compositionId = request.getParameter("characterizationId");
 		String particleName = request.getParameter("particleName");
 		String particleType = request.getParameter("particleType");
 		String gridNodeHost = request.getParameter("gridNodeHost");
-		GridNodeBean gridNode = gridNodeMap.get(gridNodeHost);
+		GridNodeBean gridNode = gridNodes.get(gridNodeHost);
 
 		InitParticleSetup.getInstance().setRemoteSideParticleMenu(request,
 				particleName, gridNode);
