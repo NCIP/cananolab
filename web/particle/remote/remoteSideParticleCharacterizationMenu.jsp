@@ -175,7 +175,6 @@
 	<ul class="sublist_4" style="${phyDisplay}">
 		<c:forEach var="subCharType"
 			items="${remoteSelectedCharacterizations[physicalType]}">
-			<c:if test="${subCharType != 'Composition'}">
 			<li>
 				<a href="#" class="sublist_4">${subCharType}</a>
 				<ul class="sublist_5" style="${phyDisplay}">
@@ -188,7 +187,6 @@
 					</c:forEach>
 				</ul>
 			</li>
-			</c:if>
 		</c:forEach>
 	</ul>
 </li>
