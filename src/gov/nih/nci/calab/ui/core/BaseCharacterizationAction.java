@@ -300,12 +300,15 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 					fileBean.setHidden(true);
 				}
 				boolean imageStatus = false;
-				if (fileBean.getType()!=null&& fileBean.getType().length() > 0
-						&& fileBean.getType().equalsIgnoreCase("Graph")
-						|| fileBean.getType().equalsIgnoreCase("Image")) {
-					imageStatus = true;
-				} else if (fileBean.getName() != null) {
-					imageStatus = StringUtils.isImgFileExt(fileBean.getName());
+				if (fileBean.getType() != null
+						&& fileBean.getType().length() > 0) {
+					if (fileBean.getType().equalsIgnoreCase("Graph")
+							|| fileBean.getType().equalsIgnoreCase("Image")) {
+						imageStatus = true;
+					} else if (fileBean.getName() != null) {
+						imageStatus = StringUtils.isImgFileExt(fileBean
+								.getName());
+					}
 				}
 				fileBean.setImage(imageStatus);
 			}
@@ -466,12 +469,13 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 				fileBean.setHidden(true);
 			}
 			boolean imageStatus = false;
-			if (fileBean.getType()!=null &&fileBean.getType().length() > 0
-					&& fileBean.getType().equalsIgnoreCase("Graph")
-					|| fileBean.getType().equalsIgnoreCase("Image")) {
-				imageStatus = true;
-			} else if (fileBean.getName() != null) {
-				imageStatus = StringUtils.isImgFileExt(fileBean.getName());
+			if (fileBean.getType() != null && fileBean.getType().length() > 0) {
+				if (fileBean.getType().equalsIgnoreCase("Graph")
+						|| fileBean.getType().equalsIgnoreCase("Image")) {
+					imageStatus = true;
+				} else if (fileBean.getName() != null) {
+					imageStatus = StringUtils.isImgFileExt(fileBean.getName());
+				}
 			}
 			fileBean.setImage(imageStatus);
 		}
