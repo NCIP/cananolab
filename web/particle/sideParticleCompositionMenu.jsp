@@ -23,8 +23,8 @@
 				<li>
 					<table class="charTitle">
 						<tr class="titleRow">
-							<td class="titleCell_2">
-								<a href="#" class="sublist_4">Composition Properties</a>
+							<td class="titleCell2NoData">
+								<li>Composition Properties</li>
 							</td>
 							<td>
 								&nbsp;

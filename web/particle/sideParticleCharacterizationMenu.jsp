@@ -149,7 +149,8 @@
 				<jsp:include page="sideParticleCharacterizationMenuButtons.jsp">
 					<jsp:param name="charType" value="${subCharType}" />
 					<jsp:param name="charTypeStyle" value="sublist_4" />
-					<jsp:param name="charTypeLabelStyle" value="titleCell_2" />
+					<jsp:param name="charTypeLabelStyle" value="titleCell2" />
+					<jsp:param name="noDataLabelStyle" value="titleCell2NoData" />
 					<jsp:param name="tableStyle" value="charTitle" />
 					<jsp:param name="addLinkStyle" value="addCell"/>
 				</jsp:include>
@@ -191,7 +192,7 @@
 								<c:when test="${!empty allCharacterizations[thirdLevelChar]}">
 									<table class="subTitleTable" >
 										<tr class="titleRowVitro">
-											<td class="titleCell_2_vitro">
+											<td class="titleCell2Vitro">
 												<a href="#" class="sublist_2">${thirdLevelChar}</a>
 											</td>
 										</tr>
@@ -201,7 +202,8 @@
 									<jsp:include page="sideParticleCharacterizationMenuButtons.jsp">
 										<jsp:param name="charType" value="${thirdLevelChar}" />
 										<jsp:param name="charTypeStyle" value="sublist_2" />
-										<jsp:param name="charTypeLabelStyle" value="titleCell_2_vitro" />
+										<jsp:param name="charTypeLabelStyle" value="titleCell2Vitro" />
+										<jsp:param name="noDataLabelStyle" value="titleCell2VitroNoData" />
 										<jsp:param name="tableStyle" value="subTitleTable" />
 										<jsp:param name="addLinkStyle" value="addCellVitro"/>
 									</jsp:include>
@@ -241,7 +243,7 @@
 															test="${!empty allCharacterizations[fourthLevelChar]}">
 															<table class="charTitle">
 																<tr class="titleRow">
-																	<td class="titleCell_3">
+																	<td class="titleCell3">
 																		<a href="#" class="sublist_4">${fourthLevelChar}</a>
 																	</td>
 																</tr>
@@ -252,7 +254,8 @@
 																page="sideParticleCharacterizationMenuButtons.jsp">
 																<jsp:param name="charType" value="${fourthLevelChar}" />
 																<jsp:param name="charTypeStyle" value="sublist_4" />
-																<jsp:param name="charTypeLabelStyle" value="titleCell_3" />
+																<jsp:param name="charTypeLabelStyle" value="titleCell3" />
+																<jsp:param name="noDataLabelStyle" value="titleCell3NoData" />
 																<jsp:param name="tableStyle" value="charTitle" />
 																<jsp:param name="addLinkStyle" value="addCell"/>
 															</jsp:include>
@@ -299,7 +302,8 @@
 																				<jsp:param name="charType" value="${fifthLevelChar}" />
 																				<jsp:param name="charTypeStyle" value="sublist_4" />
 																				<jsp:param name="charTypeLabelStyle"
-																					value="titleCell_4" />
+																					value="titleCell4" />
+																				<jsp:param name="noDataLabelStyle" value="titleCell4NoData" />
 																				<jsp:param name="tableStyle" value="charTitle" />
 																				<jsp:param name="addLinkStyle" value="addCellVitro"/>
 																			</jsp:include>

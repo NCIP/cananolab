@@ -2,18 +2,26 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <table class="${param.tableStyle}">
 	<tr class="titleRow">
-		<td class="${param.charTypeLabelStyle}">
-			<c:set var="url" value="#" />
-			<c:if test="${!empty charaLeafToCharacterizations[param.charType]}">
+		
+			<c:choose>
+			<c:when test="${!empty charaLeafToCharacterizations[param.charType]}">
+				<td class="${param.charTypeLabelStyle}">
 				<c:url var="url" value="${charaLeafActionName[param.charType]}.do">
 					<c:param name="particleId" value="${particleId}" />
 					<c:param name="submitType" value="${param.charType}" />
 					<c:param name="page" value="0" />
 					<c:param name="dispatch" value="summaryView" />
 				</c:url>
-			</c:if>
-			<a href="${url}" class="${param.charTypeStyle}">${param.charType}</a>
-		</td>
+				<a href="${url}" class="${param.charTypeStyle}">${param.charType}</a>
+				</td>
+			</c:when>
+			<c:otherwise>
+				<td class="${param.noDataLabelStyle}">
+				<c:out value="${param.charType}"/>
+				</td>
+			</c:otherwise>
+			</c:choose>
+
 		<td>
 			&nbsp;&nbsp;
 		</td>
