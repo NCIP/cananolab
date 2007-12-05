@@ -17,8 +17,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
 public class InvitroCellViabilityAction extends BaseCharacterizationAction {
@@ -36,29 +34,20 @@ public class InvitroCellViabilityAction extends BaseCharacterizationAction {
 	public ActionForward create(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		ActionForward forward = null;
-
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CharacterizationBean charBean = super.prepareCreate(request, theForm);
+		CharacterizationBean charBean = prepareCreate(request, theForm);
 		CytotoxicityBean propBean = (CytotoxicityBean) theForm
 				.get("cytotoxicity");
 		CytotoxicityBean cytoBean = new CytotoxicityBean(propBean, charBean);
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		service.addCellViability(cytoBean);
-		CharacterizationBean[] otherChars = super.prepareCopy(request, theForm);
+		CharacterizationBean[] otherChars = prepareCopy(request, theForm);
 		for (CharacterizationBean acharBean : otherChars) {
 			CytotoxicityBean aCytoBean = new CytotoxicityBean(propBean,
 					acharBean);
 			service.addCellViability(aCytoBean);
 		}
-		super.postCreate(request, theForm);
 		request.getSession().setAttribute("newCytoCreated", "true");
-
-		ActionMessages msgs = new ActionMessages();
-		ActionMessage msg = new ActionMessage("message.addInvitroCellViability");
-		msgs.add("message", msg);
-		saveMessages(request, msgs);
-		forward = mapping.findForward("success");
-		return forward;
+		return postCreate(request, theForm, mapping);
 	}
 }

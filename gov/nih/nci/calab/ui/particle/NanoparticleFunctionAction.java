@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleFunctionAction.java,v 1.5 2007-11-29 19:20:06 pansu Exp $ */
+/* CVS $Id: NanoparticleFunctionAction.java,v 1.6 2007-12-05 20:01:09 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.function.AgentBean;
@@ -14,6 +14,7 @@ import gov.nih.nci.calab.dto.function.AgentTargetBean;
 import gov.nih.nci.calab.dto.function.FunctionBean;
 import gov.nih.nci.calab.dto.function.LinkageBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
+import gov.nih.nci.calab.exception.CaNanoLabException;
 import gov.nih.nci.calab.service.particle.NanoparticleFunctionService;
 import gov.nih.nci.calab.service.particle.NanoparticleService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
@@ -65,7 +66,7 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 					.getAgentTargets()) {
 
 				if (agentTargetBean.getType().length() == 0) {
-					throw new RuntimeException(
+					throw new CaNanoLabException(
 							"Agent target type can not be empty.");
 				}
 			}

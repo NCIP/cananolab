@@ -6,12 +6,12 @@ package gov.nih.nci.calab.ui.protocol;
  * @author pansu
  */
 
-/* CVS $Id: SearchProtocolAction.java,v 1.4 2007-11-29 19:20:15 pansu Exp $ */
+/* CVS $Id: SearchProtocolAction.java,v 1.5 2007-12-05 20:01:09 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
-import gov.nih.nci.calab.exception.CalabException;
+import gov.nih.nci.calab.exception.FileNotFoundException;
 import gov.nih.nci.calab.service.common.FileService;
 import gov.nih.nci.calab.service.protocol.SearchProtocolService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
@@ -115,8 +115,8 @@ public class SearchProtocolAction extends AbstractDispatchAction {
 			}
 			out.close();
 		} else {
-			throw new CalabException(
-					"File to download doesn't exist on the server");
+			throw new FileNotFoundException(
+					"File to download doesn't exist on the server when searching protocols");
 		}
 		return null;
 	}

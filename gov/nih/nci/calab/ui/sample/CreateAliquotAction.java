@@ -7,12 +7,12 @@ package gov.nih.nci.calab.ui.sample;
  * @author pansu
  */
 
-/* CVS $Id: CreateAliquotAction.java,v 1.4 2007-11-29 19:20:50 pansu Exp $ */
+/* CVS $Id: CreateAliquotAction.java,v 1.5 2007-12-05 20:01:09 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.sample.AliquotBean;
 import gov.nih.nci.calab.dto.sample.ContainerInfoBean;
-import gov.nih.nci.calab.exception.CalabException;
+import gov.nih.nci.calab.exception.CaNanoLabException;
 import gov.nih.nci.calab.service.sample.AliquotService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
@@ -70,8 +70,8 @@ public class CreateAliquotAction extends AbstractDispatchAction {
 
 			forward = mapping.findForward("success");
 		} else {
-			throw new CalabException(
-					"Can't find the aliquot matrix to save.  Please click on 'Update Aliquots' button before submitting");
+			throw new CaNanoLabException(
+					"Can't find the aliquot matrix to save when creating aliquots.  Please click on 'Update Aliquots' button before submitting");
 		}
 		return forward;
 	}

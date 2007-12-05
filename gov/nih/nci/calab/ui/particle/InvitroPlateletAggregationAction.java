@@ -16,8 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
 public class InvitroPlateletAggregationAction extends
@@ -36,24 +34,14 @@ public class InvitroPlateletAggregationAction extends
 	public ActionForward create(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		ActionForward forward = null;
-
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CharacterizationBean charBean = super.prepareCreate(request, theForm);
+		CharacterizationBean charBean = prepareCreate(request, theForm);
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		service.addPlateletAggregation(charBean);
-		CharacterizationBean[] otherChars = super.prepareCopy(request, theForm);
+		CharacterizationBean[] otherChars = prepareCopy(request, theForm);
 		for (CharacterizationBean acharBean : otherChars) {
 			service.addPlateletAggregation(acharBean);
 		}
-		super.postCreate(request, theForm);
-
-		ActionMessages msgs = new ActionMessages();
-		ActionMessage msg = new ActionMessage(
-				"message.addInvitroPlateletAggregation");
-		msgs.add("message", msg);
-		saveMessages(request, msgs);
-		forward = mapping.findForward("success");
-		return forward;
+		return postCreate(request, theForm, mapping);
 	}
 }
