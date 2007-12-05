@@ -19,7 +19,7 @@
 	<tr>
 		<td colspan="2">
 			<jsp:include page="/bodyMessage.jsp?bundle=report" />
-			<display:table name="remoteReports" id="report" requestURI="remoteSearchReport.do" pagesize="25" class="displaytable" decorator="gov.nih.nci.calab.dto.common.ReportDecorator">
+			<display:table name="sessionScope.remoteReports" id="report" requestURI="remoteSearchReport.do" pagesize="25" class="displaytable" decorator="gov.nih.nci.calab.dto.common.ReportDecorator">
 				<display:column title="Report Title" property="remoteDownloadURL" sortable="true" />
 				<display:column title="Report Type" property="instanceType" sortable="true" />
 				<display:column title="Report Description" property="description" sortable="true" />

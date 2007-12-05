@@ -21,115 +21,117 @@
 		<tr>
 			<td colspan="2">
 				<jsp:include page="/bodyMessage.jsp?bundle=particle" />
-				<table width="100%" border="0" align="center" cellpadding="3"
-					cellspacing="0" summary="">
-					<tr class="topBorder">
-						<td class="formTitle" colspan="4">
-							<div align="justify">
-								Search Criteria
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td class="leftLabel">
-							<strong> Particle Type </strong>
-						</td>
-						<td class="rightLabel" colspan="3">
-							<strong> <html:select property="particleType">
-									<option value="" />
-										<html:options name="allSampleTypes" />
-								</html:select>
-							</strong>
-						</td>
-					</tr>
-					<tr>
-						<td class="leftLabel" valign="top">
-							<strong> Function Type </strong>
-						</td>
-						<td class="rightLabel" colspan="3">
-							<strong> <html:select property="functionTypes"
-									multiple="true" size="4">
-									<html:options name="allFunctionTypes" />
-								</html:select>
-							</strong>
-						</td>
-					</tr>
-					<tr>
-						<td class="leftLabel" valign="top">
-							<strong> Characterization Type </strong>
-						</td>
-						<td class="label">
-							<c:forEach var="charType" items="${allCharacterizationTypes}">
-								<c:choose>
-									<c:when test="${charType.hasAction}">
-										<span class="indented${charType.indentLevel}"><a
-											href="#"
-											onclick="javascript:dynamicDropdown('${charType.type}', document.remoteSearchNanoparticleForm.characterizations, charTypeChars);setHiddenCharType('${charType.type}')">${charType.type}
-										</a>
-										</span>
-									</c:when>
-									<c:otherwise>
-										<span class="indented${charType.indentLevel}">${charType.type}</span>
-									</c:otherwise>
-								</c:choose>
-								<br>
-							</c:forEach>
-						</td>
-						<td class="label" valign="top">
-							<strong> Characterization </strong>
-						</td>
-						<td class="rightLabel" valign="top">
-							<strong> <html:select property="characterizations"
-									multiple="true" size="4">
-									<c:forEach var="char"
-										items="${allCharTypeChars[remoteSearchNanoparticleForm.map.characterizationType]}">
-										<html:option value="${char.name}">${char.name}</html:option>
-									</c:forEach>
-								</html:select>
-							</strong>
-							<html:hidden styleId="characterizationType" property="characterizationType"/>
-						</td>
-					</tr>
-					<tr>
-						<td class="leftLabel" valign="top">
-							<strong> Grid Node Host </strong>
-						</td>
-						<td class="rightLabel" colspan="3">
-							<strong><html:select property="gridNodes"
-									multiple="true" size="3">
-									<html:options collection="allGridNodes" property="key"
-										labelProperty="key" />
-								</html:select>
-							</strong>
-						</td>
-					</tr>
-				</table>
-				<br>
-				<table width="100%" border="0" align="center" cellpadding="3"
-					cellspacing="0" class="topBorderOnly" summary="">
-					<tr>
-						<td>
-							<span class="formMessage"> </span>
-							<br>
-							<table border="0" align="right" cellpadding="4" cellspacing="0">
-								<tr>
-									<td>
-										<div align="right">
-											<input type="button" value="Reset"
-												onClick="javascript:location.href='remoteSearchNanoparticle.do?dispatch=setup&page=0'">
-											<input type="hidden" name="dispatch" value="search">
-											<input type="hidden" name="page" value="1">
-											<html:submit value="Search" />
-										</div>
-									</td>
-								</tr>
-							</table>
-							<div align="right"></div>
-						</td>
-					</tr>
-				</table>
 			</td>
 		</tr>
+		<c:if test="${! empty allGridNodes}">
+			<tr>
+				<td colspan="2">
+					<table width="100%" border="0" align="center" cellpadding="3"
+						cellspacing="0" summary="">
+						<tr class="topBorder">
+							<td class="formTitle" colspan="4">
+								<div align="justify">
+									Search Criteria
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="leftLabel">
+								<strong> Particle Type </strong>
+							</td>
+							<td class="rightLabel" colspan="3">
+								<strong> <html:select property="particleType">
+										<option value="" />
+											<html:options name="allSampleTypes" />
+									</html:select> </strong>
+							</td>
+						</tr>
+						<tr>
+							<td class="leftLabel" valign="top">
+								<strong> Function Type </strong>
+							</td>
+							<td class="rightLabel" colspan="3">
+								<strong> <html:select property="functionTypes"
+										multiple="true" size="4">
+										<html:options name="allFunctionTypes" />
+									</html:select> </strong>
+							</td>
+						</tr>
+						<tr>
+							<td class="leftLabel" valign="top">
+								<strong> Characterization Type </strong>
+							</td>
+							<td class="label">
+								<c:forEach var="charType" items="${allCharacterizationTypes}">
+									<c:choose>
+										<c:when test="${charType.hasAction}">
+											<span class="indented${charType.indentLevel}"><a
+												href="#"
+												onclick="javascript:dynamicDropdown('${charType.type}', document.remoteSearchNanoparticleForm.characterizations, charTypeChars);setHiddenCharType('${charType.type}')">${charType.type}
+											</a> </span>
+										</c:when>
+										<c:otherwise>
+											<span class="indented${charType.indentLevel}">${charType.type}</span>
+										</c:otherwise>
+									</c:choose>
+									<br>
+								</c:forEach>
+							</td>
+							<td class="label" valign="top">
+								<strong> Characterization </strong>
+							</td>
+							<td class="rightLabel" valign="top">
+								<strong> <html:select property="characterizations"
+										multiple="true" size="4">
+										<c:forEach var="char"
+											items="${allCharTypeChars[remoteSearchNanoparticleForm.map.characterizationType]}">
+											<html:option value="${char.name}">${char.name}</html:option>
+										</c:forEach>
+									</html:select> </strong>
+								<html:hidden styleId="characterizationType"
+									property="characterizationType" />
+							</td>
+						</tr>
+						<tr>
+							<td class="leftLabel" valign="top">
+								<strong> Grid Node Host </strong>
+							</td>
+							<td class="rightLabel" colspan="3">
+								<strong><html:select property="gridNodes"
+										multiple="true" size="3">
+										<html:options collection="allGridNodes" property="key"
+											labelProperty="key" />
+									</html:select> </strong>
+							</td>
+						</tr>
+					</table>
+					<br>
+					<table width="100%" border="0" align="center" cellpadding="3"
+						cellspacing="0" class="topBorderOnly" summary="">
+						<tr>
+							<td>
+								<span class="formMessage"> </span>
+								<br>
+								<table border="0" align="right" cellpadding="4" cellspacing="0">
+									<tr>
+										<td>
+											<div align="right">
+												<input type="button" value="Reset"
+													onClick="javascript:location.href='remoteSearchNanoparticle.do?dispatch=setup&page=0'">
+												<input type="hidden" name="dispatch" value="search">
+												<input type="hidden" name="page" value="1">
+												<html:submit value="Search" />
+											</div>
+										</td>
+									</tr>
+								</table>
+								<div align="right"></div>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</c:if>
 	</table>
 </html:form>
 <script language="JavaScript">

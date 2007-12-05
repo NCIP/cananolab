@@ -19,7 +19,7 @@
 	<tr>
 		<td colspan="2">
 			<jsp:include page="/bodyMessage.jsp?bundle=particle" />
-			<display:table name="remoteParticles" id="particle" requestURI="remoteSearchNanoparticle.do" pagesize="25" class="displaytable" decorator="gov.nih.nci.calab.dto.particle.NanoparticleDecorator">
+			<display:table name="sessionScope.remoteParticles" id="particle" requestURI="remoteSearchNanoparticle.do" pagesize="25" class="displaytable" decorator="gov.nih.nci.calab.dto.particle.NanoparticleDecorator">
 				<display:column title="Particle ID" property="remoteViewURL" sortable="true" />
 				<display:column title="Particle Source" property="sampleSource" sortable="true" />
 				<display:column title="Particle Classification" property="particleClassification" sortable="true" />
