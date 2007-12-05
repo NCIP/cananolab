@@ -42,8 +42,8 @@
 			scope="request">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="report" key="error.submitReport" path="report.submitReport"
-				type="java.lang.Exception" />
+				bundle="report" key="error.generalException"
+				path="report.submitReport" type="java.lang.Exception" />
 			<forward name="success" path="report.message" />
 			<forward name="input" path="report.submitReport" />
 		</action>
@@ -53,8 +53,8 @@
 			scope="request">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="report" key="error.updateReport" path="report.viewReport"
-				type="java.lang.Exception" />
+				bundle="report" key="error.generalException"
+				path="report.viewReport" type="java.lang.Exception" />
 			<forward name="input" path="report.viewReport" />
 			<forward name="success" path="report.message" />
 		</action>
@@ -67,12 +67,8 @@
 			scope="request">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				key="error.download.file" path="home.error"
-				type="gov.nih.nci.calab.exception.CalabException" />
-			<exception
-				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="report" key="error.searchReport" path="report.searchReport"
-				type="java.lang.Exception" />
+				bundle="report" key="error.generalException"
+				path="report.searchReport" type="java.lang.Exception" />
 			<forward name="input" path="report.searchReport" />
 			<forward name="success" path="report.searchReportResult" />
 		</action>
@@ -82,12 +78,14 @@
 			scope="request">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				key="error.download.file" path="home.error"
-				type="gov.nih.nci.calab.exception.CalabException" />
+				bundle="report" key="error.grid.discovery"
+				path="report.remoteSearchReport"
+				type="gov.nih.nci.calab.exception.GridAutoDiscoveryException" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="report" key="error.searchReport"
-				path="report.remoteSearchReport" type="java.lang.Exception" />
+				bundle="report" key="error.grid.notAvailable"
+				path="report.remoteSearchReportResult"
+				type="gov.nih.nci.calab.exception.GridQueryException" />
 			<forward name="input" path="report.remoteSearchReport" />
 			<forward name="success"
 				path="report.remoteSearchReportResult" />

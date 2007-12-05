@@ -43,7 +43,7 @@
 			input="input" scope="request">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="protocol" key="error.submitProtocol"
+				bundle="protocol" key="error.generalException"
 				path="protocol.submitProtocol" type="java.lang.Exception" />
 			<forward name="success" path="protocol.message" />
 			<forward name="input"
@@ -58,7 +58,7 @@
 			input="input" scope="request">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="protocol" key="error.updateProtocol"
+				bundle="protocol" key="error.generalException"
 				path="protocol.updateProtocol" type="java.lang.Exception" />
 			<forward name="success" path="protocol.message" />
 			<forward name="input"
@@ -73,11 +73,7 @@
 			scope="request">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				key="error.download.file" path="home.error"
-				type="gov.nih.nci.calab.exception.CalabException" />
-			<exception
-				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="protocol" key="error.searchProtocol"
+				bundle="protocol" key="error.generalException"
 				path="protocol.searchProtocol" type="java.lang.Exception" />
 			<forward name="input" path="protocol.searchProtocol" />
 			<forward name="success"

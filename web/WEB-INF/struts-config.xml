@@ -29,15 +29,22 @@
 			handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 			key="error.noaccess" path="/index.jsp"
 			type="gov.nih.nci.calab.exception.NoAccessException" />
-		<exception key="error.nullpointer" type="java.lang.NullPointerException"
-			path="/index.jsp" />
+		<exception
+			handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+			key="error.download.file" path="home.error"
+			type="gov.nih.nci.calab.exception.FileNotFoundException" />
+		<exception key="error.nullpointer"
+			type="java.lang.NullPointerException" path="/index.jsp" />
+		<exception key="error.generalException"
+			type="java.lang.Exception" path="/index.jsp" />
 	</global-exceptions>
 	<action-mappings>
 		<action name="loginForm" path="/login" scope="request"
 			type="gov.nih.nci.calab.ui.security.LoginAction" input="input">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				key="error.login" path="/index.jsp" type="java.lang.Exception" />
+				key="error.login" path="/index.jsp"
+				type="gov.nih.nci.security.exceptions.CSException" />
 			<forward name="success" path="calab.welcome" />
 			<forward name="input" path="calab.login" />
 			<forward name="changePassword" path="calab.password" />
@@ -49,15 +56,12 @@
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.password" path="calab.password"
-				type="java.lang.Exception" />
+				type="gov.nih.nci.security.exceptions.CSException" />
 			<forward name="success" path="calab.login" />
 			<forward name="input" path="calab.password" />
 		</action>
 		<action path="/logout" scope="request"
 			type="gov.nih.nci.calab.ui.security.LogoutAction">
-			<exception
-				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				key="error.logout" path="home.error" type="java.lang.Exception" />
 			<forward name="success" path="calab.login" />
 		</action>
 	</action-mappings>

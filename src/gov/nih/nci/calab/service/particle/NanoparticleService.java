@@ -9,7 +9,7 @@ import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.dto.common.SearchableBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
-import gov.nih.nci.calab.exception.CalabException;
+import gov.nih.nci.calab.exception.CaNanoLabException;
 import gov.nih.nci.calab.service.sample.SampleService;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CaNanoLabComparators;
@@ -211,7 +211,7 @@ public class NanoparticleService {
 			particle = (Nanoparticle) session.load(Nanoparticle.class,
 					new Long(particleId));
 			if (particle == null) {
-				throw new CalabException("No such particle in the database");
+				throw new CaNanoLabException("No such particle in the database");
 			}
 			particleBean = new ParticleBean(particle);
 			HibernateUtil.commitTransaction();
@@ -466,7 +466,7 @@ public class NanoparticleService {
 				doParticle = (Nanoparticle) obj;
 			}
 			if (doParticle == null) {
-				throw new CalabException("No such particle in the database");
+				throw new CaNanoLabException("No such particle in the database");
 			}
 			doParticle.setClassification(getParticleClassification(particle
 					.getSampleType()));

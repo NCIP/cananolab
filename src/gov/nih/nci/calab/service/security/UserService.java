@@ -4,7 +4,7 @@ import gov.nih.nci.calab.db.HibernateUtil;
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
-import gov.nih.nci.calab.exception.CalabException;
+import gov.nih.nci.calab.exception.CaNanoLabException;
 import gov.nih.nci.calab.service.remote.RemoteQueryFacade;
 import gov.nih.nci.calab.service.remote.RemoteQueryFacadeImpl;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
@@ -565,11 +565,11 @@ public class UserService {
 		Role role = getRole(roleName);
 
 		if (group == null) {
-			throw new CalabException("No such group defined in CSM: "
+			throw new CaNanoLabException("No such group defined in CSM: "
 					+ groupName);
 		}
 		if (role == null) {
-			throw new CalabException("No such role defined in CSM: " + roleName);
+			throw new CaNanoLabException("No such role defined in CSM: " + roleName);
 		}
 
 		List<String> existingRoleIds = getExistingRoleIds(pg, group);
