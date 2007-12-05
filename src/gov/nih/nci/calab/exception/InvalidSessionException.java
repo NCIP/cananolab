@@ -7,7 +7,7 @@ package gov.nih.nci.calab.exception;
  * @author pansu
  * 
  */
-public class InvalidSessionException extends CalabException {
+public class InvalidSessionException extends CaNanoLabException {
 
 	private static final long serialVersionUID = 1234567890L;
 
