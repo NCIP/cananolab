@@ -5,28 +5,28 @@ package gov.nih.nci.calab.exception;
  * 
  */
 
-public class CalabException extends Exception {
+public class CaNanoLabException extends Exception {
 
 	private static final long serialVersionUID = 1234567890L;
 
 	/**
 	 * 
 	 */
-	public CalabException() {
+	public CaNanoLabException() {
 		super("An exception ocurred in caLAB");
 	}
 
-	public CalabException(String message) {
+	public CaNanoLabException(String message) {
 		super(message);
 
 	}
 
-	public CalabException(String message, Throwable cause) {
+	public CaNanoLabException(String message, Throwable cause) {
 		super(message, cause);
 
 	}
 
-	public CalabException(Throwable cause) {
+	public CaNanoLabException(Throwable cause) {
 		super(cause);
 
 	}
