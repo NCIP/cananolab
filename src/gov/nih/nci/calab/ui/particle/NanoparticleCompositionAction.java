@@ -8,7 +8,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleCompositionAction.java,v 1.11 2007-12-03 22:03:10 pansu Exp $ */
+/* CVS $Id: NanoparticleCompositionAction.java,v 1.12 2007-12-05 20:01:09 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.composition.CarbonNanotubeBean;
 import gov.nih.nci.calab.dto.characterization.composition.ComposingElementBean;
@@ -21,6 +21,7 @@ import gov.nih.nci.calab.dto.characterization.composition.PolymerBean;
 import gov.nih.nci.calab.dto.characterization.composition.SurfaceGroupBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
+import gov.nih.nci.calab.exception.CaNanoLabException;
 import gov.nih.nci.calab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.calab.service.particle.NanoparticleCompositionService;
 import gov.nih.nci.calab.service.particle.NanoparticleService;
@@ -248,7 +249,7 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		NanoparticleCompositionService service = new NanoparticleCompositionService();
 		CompositionBean composition = service.getCompositionBy(compositionId);
 		if (composition == null) {
-			throw new Exception(
+			throw new CaNanoLabException(
 					"This characterization no longer exists in the database.  Please log in again to refresh.");
 		}
 

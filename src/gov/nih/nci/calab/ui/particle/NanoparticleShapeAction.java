@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleShapeAction.java,v 1.3 2007-11-29 19:20:06 pansu Exp $ */
+/* CVS $Id: NanoparticleShapeAction.java,v 1.4 2007-12-05 20:01:09 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.physical.ShapeBean;
@@ -19,8 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
 public class NanoparticleShapeAction extends BaseCharacterizationAction {
@@ -37,27 +35,17 @@ public class NanoparticleShapeAction extends BaseCharacterizationAction {
 	public ActionForward create(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		ActionForward forward = null;
-
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CharacterizationBean charBean = super.prepareCreate(request, theForm);
+		CharacterizationBean charBean = prepareCreate(request, theForm);
 		ShapeBean propBean = (ShapeBean) theForm.get("shape");
 		ShapeBean shapeBean = new ShapeBean(propBean, charBean);
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		service.addParticleShape(shapeBean);
-		CharacterizationBean[] otherChars = super.prepareCopy(request, theForm);
+		CharacterizationBean[] otherChars = prepareCopy(request, theForm);
 		for (CharacterizationBean acharBean : otherChars) {
 			ShapeBean aShapeBean = new ShapeBean(propBean, acharBean);
 			service.addParticleShape(aShapeBean);
 		}
-		super.postCreate(request, theForm);
 		request.getSession().setAttribute("newShapeCreated", "true");
-		ActionMessages msgs = new ActionMessages();
-		ActionMessage msg = new ActionMessage("message.addParticleShape");
-		msgs.add("message", msg);
-		saveMessages(request, msgs);
-		forward = mapping.findForward("success");
-
-		return forward;
-	}
+		return postCreate(request, theForm, mapping);	}
 }

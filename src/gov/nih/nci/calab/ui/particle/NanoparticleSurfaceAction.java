@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSurfaceAction.java,v 1.5 2007-11-29 19:20:06 pansu Exp $ */
+/* CVS $Id: NanoparticleSurfaceAction.java,v 1.6 2007-12-05 20:01:09 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.physical.SurfaceBean;
@@ -24,8 +24,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
 public class NanoparticleSurfaceAction extends BaseCharacterizationAction {
@@ -42,27 +40,19 @@ public class NanoparticleSurfaceAction extends BaseCharacterizationAction {
 	public ActionForward create(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		ActionForward forward = null;
-
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CharacterizationBean charBean = super.prepareCreate(request, theForm);
+		CharacterizationBean charBean = prepareCreate(request, theForm);
 		SurfaceBean propBean = (SurfaceBean) theForm.get("surface");
 		SurfaceBean surfaceBean = new SurfaceBean(propBean, charBean);
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		service.addParticleSurface(surfaceBean);
-		CharacterizationBean[] otherChars = super.prepareCopy(request, theForm);
+		CharacterizationBean[] otherChars = prepareCopy(request, theForm);
 		for (CharacterizationBean acharBean : otherChars) {
 			SurfaceBean aSurfaceBean = new SurfaceBean(propBean, acharBean);
 			service.addParticleSurface(aSurfaceBean);
 		}
-		super.postCreate(request, theForm);
 		request.getSession().setAttribute("newSurfaceCreated", "true");
-		ActionMessages msgs = new ActionMessages();
-		ActionMessage msg = new ActionMessage("message.addParticleSurface");
-		msgs.add("message", msg);
-		saveMessages(request, msgs);
-		forward = mapping.findForward("success");
-		return forward;
+		return postCreate(request, theForm, mapping);
 	}
 
 	public ActionForward addSurfaceChemistry(ActionMapping mapping,

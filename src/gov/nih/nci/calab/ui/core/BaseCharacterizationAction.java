@@ -13,7 +13,7 @@ import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
-import gov.nih.nci.calab.exception.CalabException;
+import gov.nih.nci.calab.exception.CaNanoLabException;
 import gov.nih.nci.calab.service.common.FileService;
 import gov.nih.nci.calab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.calab.service.particle.NanoparticleService;
@@ -73,7 +73,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 					&& derivedDataFileBean.getCategories().length == 0
 					&& derivedDataFileBean.getDisplayName().length() == 0
 					&& derivedDataFileBean.getDatumList().size() == 0) {
-				throw new RuntimeException(
+				throw new CaNanoLabException(
 						"has an empty section for characterization file/derived data. Please remove it prior to saving.");
 			}
 		}
@@ -85,7 +85,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 				// validate that neither name nor value can be empty
 				if (datumBean.getName().length() == 0
 						|| datumBean.getValue().length() == 0) {
-					throw new RuntimeException(
+					throw new CaNanoLabException(
 							"Derived data name and value can't be empty.");
 				}
 
@@ -94,13 +94,13 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 							&& !datumBean.getValue().equalsIgnoreCase("false")
 							&& !datumBean.getValue().equalsIgnoreCase("yes")
 							&& !datumBean.getValue().equalsIgnoreCase("no")) {
-						throw new RuntimeException(
+						throw new CaNanoLabException(
 								"The datum value for boolean type should be 'True'/'False' or 'Yes'/'No'.");
 					}
 				} else {
 					if (!StringUtils.isDouble(datumBean.getValue())
 							&& !StringUtils.isInteger(datumBean.getValue())) {
-						throw new RuntimeException(
+						throw new CaNanoLabException(
 								"The datum value should be a number.");
 					}
 				}
@@ -111,7 +111,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 						+ datumBean.getStatisticsType() + ":"
 						+ datumBean.getCategory();
 				if (uniqueDatumMap.get(uniqueStr) != null) {
-					throw new RuntimeException(
+					throw new CaNanoLabException(
 							"no two derived data can have the same name, statistics type and category.");
 				} else {
 					uniqueDatumMap.put(uniqueStr, 1);
@@ -128,8 +128,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		return charBean;
 	}
 
-	protected void postCreate(HttpServletRequest request,
-			DynaValidatorForm theForm) throws Exception {
+	protected ActionForward postCreate(HttpServletRequest request,
+			DynaValidatorForm theForm, ActionMapping mapping) throws Exception {
 
 		ParticleBean particle = (ParticleBean) theForm.get("particle");
 		CharacterizationBean charBean = (CharacterizationBean) theForm
@@ -148,6 +148,13 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		InitParticleSetup.getInstance().setSideParticleMenu(request,
 				particle.getSampleId());
 		request.setAttribute("theParticle", particle);
+
+		ActionMessages msgs = new ActionMessages();
+		ActionMessage msg = new ActionMessage("message.addCharacterization",
+				charBean.getName());
+		msgs.add("message", msg);
+		saveMessages(request, msgs);
+		return mapping.findForward("success");
 	}
 
 	protected CharacterizationBean[] prepareCopy(HttpServletRequest request,
@@ -246,7 +253,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			InitParticleSetup.getInstance().setSideParticleMenu(request,
 					particleId);
 		} else {
-			throw new RuntimeException("Particle ID is required.");
+			throw new CaNanoLabException("Particle ID is required.");
 		}
 		InitSessionSetup.getInstance().setApplicationOwner(session);
 		InitParticleSetup.getInstance().setAllInstruments(session);
@@ -262,7 +269,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			CharacterizationBean charBean = charService
 					.getCharacterizationBy(characterizationId);
 			if (charBean == null) {
-				throw new RuntimeException(
+				throw new CaNanoLabException(
 						"This characterization no longer exists in the database.  Please log in again to refresh.");
 			}
 			theForm.set("achar", charBean);
@@ -286,9 +293,9 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			// image
 			for (DerivedBioAssayDataBean fileBean : achar
 					.getDerivedBioAssayDataList()) {
-				boolean status = userService.checkReadPermission(user, fileBean
-						.getId());
-				if (status) {
+				boolean accessStatus = userService.checkReadPermission(user,
+						fileBean.getId());
+				if (accessStatus) {
 					List<String> accessibleGroups = userService
 							.getAccessibleGroups(fileBean.getId(),
 									CaNanoLabConstants.CSM_READ_ROLE);
@@ -300,19 +307,11 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 					fileBean.setHidden(true);
 				}
 				boolean imageStatus = false;
-				if (fileBean.getType() != null
-						&& fileBean.getType().length() > 0) {
-					if (fileBean.getType().equalsIgnoreCase("Graph")
-							|| fileBean.getType().equalsIgnoreCase("Image")) {
-						imageStatus = true;
-					} else if (fileBean.getName() != null) {
-						imageStatus = StringUtils.isImgFileExt(fileBean
-								.getName());
-					}
+				if (fileBean.getName() != null) {
+					imageStatus = StringUtils.isImgFileExt(fileBean.getName());
+					fileBean.setImage(imageStatus);
 				}
-				fileBean.setImage(imageStatus);
 			}
-
 			// set up protocol file visibility
 			ProtocolFileBean protocolFileBean = achar.getProtocolFileBean();
 			if (protocolFileBean != null) {
@@ -456,9 +455,9 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			}
 			DerivedBioAssayDataBean fileBean = summaryBean.getCharFile();
 			if (fileBean != null) {
-				boolean status = userService.checkReadPermission(user, fileBean
-						.getId());
-				if (status) {
+				boolean accessStatus = userService.checkReadPermission(user,
+						fileBean.getId());
+				if (accessStatus) {
 					List<String> accessibleGroups = userService
 							.getAccessibleGroups(fileBean.getId(),
 									CaNanoLabConstants.CSM_READ_ROLE);
@@ -470,15 +469,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 					fileBean.setHidden(true);
 				}
 				boolean imageStatus = false;
-				if (fileBean.getType() != null
-						&& fileBean.getType().length() > 0) {
-					if (fileBean.getType().equalsIgnoreCase("Graph")
-							|| fileBean.getType().equalsIgnoreCase("Image")) {
-						imageStatus = true;
-					} else if (fileBean.getName() != null) {
-						imageStatus = StringUtils.isImgFileExt(fileBean
-								.getName());
-					}
+				if (fileBean.getName() != null) {
+					imageStatus = StringUtils.isImgFileExt(fileBean.getName());
 				}
 				fileBean.setImage(imageStatus);
 			}
@@ -551,7 +543,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			}
 			out.close();
 		} else {
-			throw new CalabException(
+			throw new CaNanoLabException(
 					"File to download doesn't exist on the server");
 		}
 		return null;

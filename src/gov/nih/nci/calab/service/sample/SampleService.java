@@ -39,7 +39,7 @@ import org.hibernate.Session;
  * @author pansu
  * 
  */
-/* CVS $Id: SampleService.java,v 1.1 2007-11-29 19:18:11 pansu Exp $ */
+/* CVS $Id: SampleService.java,v 1.2 2007-12-05 20:01:09 pansu Exp $ */
 
 public class SampleService {
 	private static Logger logger = Logger.getLogger(SampleService.class);
@@ -654,8 +654,7 @@ public class SampleService {
 								+ " | object value = " + obj);
 				// Yes, throws exception
 				if (((Integer) obj).intValue() > 0) {
-					throw new DuplicateEntriesException(
-							"The same sample already exists in the system.");
+					throw new DuplicateEntriesException();
 				}
 			}
 			// No, save it

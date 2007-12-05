@@ -106,7 +106,7 @@
 			input="input">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="sample" key="error.createSample" path="sample.message"
+				bundle="sample" key="error.generalException" path="sample.message"
 				type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
@@ -126,15 +126,15 @@
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="sample" key="error.createAliquot.nomatrix"
 				path="sample.createAliquot"
-				type="gov.nih.nci.calab.exception.CalabException" />
+				type="gov.nih.nci.calab.exception.CaNanoLabException" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="sample" key="error.createAliquot.duplicate"
-				path="sample.createAliquot"
+				path="sample.createAliquot.duplicate"
 				type="gov.nih.nci.calab.exception.DuplicateEntriesException" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="sample" key="error.createAliquot" path="sample.message"
+				bundle="sample" key="error.generalException" path="sample.message"
 				type="java.lang.Exception" />
 			<forward name="setup" path="sample.createAliquot" />
 			<forward name="input"
@@ -148,10 +148,10 @@
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="sample" key="error.editAliquot.nomatrix"
 				path="sample.createAliquot"
-				type="gov.nih.nci.calab.exception.CalabException" />
+				type="gov.nih.nci.calab.exception.CaNanoLabException" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="sample" key="error.editAliquot" path="sample.message"
+				bundle="sample" key="error.generalException" path="sample.message"
 				type="java.lang.Exception" />
 			<forward name="setup" path="sample.editAliquot" />
 			<forward name="input"
@@ -164,7 +164,7 @@
 			scope="request">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="sample" key="error.searchSample" path="sample.searchSample"
+				bundle="sample" key="error.generalException" path="sample.searchSample"
 				type="java.lang.Exception" />
 			<forward name="input" path="sample.searchSample" />
 			<forward name="success" path="sample.searchSampleResult" />
@@ -175,7 +175,7 @@
 			scope="request">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="sample" key="error.searchAliquot"
+				bundle="sample" key="error.generalException"
 				path="sample.searchAliquot" type="java.lang.Exception" />
 			<forward name="input" path="sample.searchAliquot" />
 			<forward name="success" path="sample.searchAliquotResult" />
@@ -188,7 +188,7 @@
 			scope="request">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="sample" key="error.showAliquot" path="sample.showaliquot"
+				bundle="sample" key="error.generalException" path="sample.showaliquot"
 				type="java.lang.Exception" />
 			<forward name="input" path="sample.searchSampleResult" />
 			<forward name="success" path="sample.searchAliquotResult" />
@@ -199,10 +199,10 @@
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="sample" key="error.viewSampleDetails.noSamples"
-				path="sample.searchSampleResult" type="java.lang.Exception" />
+				path="sample.searchSampleResult" type="java.lang.CaNanoLabException" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="sample" key="error.viewSampleDetails"
+				bundle="sample" key="error.generalException"
 				path="sample.searchSampleResult" type="java.lang.Exception" />
 			<forward name="input" path="sample.searchSampleResult" />
 			<forward name="success" path="sample.viewSampleDetails" />
@@ -213,10 +213,10 @@
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="sample" key="error.viewSampleDetails.noSamples"
-				path="sample.searchSampleResult" type="java.lang.Exception" />
+				path="sample.searchSampleResult" type="java.lang.CaNanoLabException" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="sample" key="error.viewSampleDetails"
+				bundle="sample" key="error.generalException"
 				path="sample.searchSampleResult" type="java.lang.Exception" />
 			<forward name="input" path="sample.searchAliquotResult" />
 			<forward name="success" path="sample.viewAliquotDetails" />

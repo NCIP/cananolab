@@ -32,8 +32,8 @@ public class LogoutAction extends Action {
 			session.invalidate();
 		}
 		ActionMessages msgs = new ActionMessages();
-		ActionMessage error = new ActionMessage("msg.logout");
-		msgs.add("msg", error);
+		ActionMessage message = new ActionMessage("msg.logout");
+		msgs.add("message", message);
 		saveMessages(request, msgs);
 
 		forward = mapping.findForward("success");
