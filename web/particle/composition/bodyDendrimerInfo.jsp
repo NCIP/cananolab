@@ -132,7 +132,7 @@
 									<tbody>
 										<tr>
 											<c:choose>
-												<c:when test="${canCreateNanoparticle eq 'true'}">
+												<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
 													<td class="formSubTitleNoRight" colspan="3">
 														Surface Group #${ind+1}
 													</td>
