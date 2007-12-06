@@ -33,6 +33,12 @@
 			<form-property name="protocolName" type="java.lang.String" />
 		</form-bean>
 	</form-beans>
+	<global-exceptions>
+		<exception
+			handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+			key="error.protocolException" path="home.error"
+			type="gov.nih.nci.calab.exception.ProtocolException" />
+	</global-exceptions>
 	<action-mappings>
 		<action path="/manageProtocol"
 			type="gov.nih.nci.calab.ui.core.BaseForwardAction"
@@ -41,6 +47,11 @@
 			path="/submitProtocol"
 			type="gov.nih.nci.calab.ui.protocol.SubmitProtocolAction"
 			input="input" scope="request">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="protocol" key="error.securityException"
+				path="protocol.submitProtocol"
+				type="gov.nih.nci.calab.exception.CaNanoLabSecurityException" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="protocol" key="error.generalException"
@@ -56,6 +67,11 @@
 			path="/updateProtocol"
 			type="gov.nih.nci.calab.ui.protocol.SubmitProtocolAction"
 			input="input" scope="request">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="protocol" key="error.securityException"
+				path="protocol.updateProtocol"
+				type="gov.nih.nci.calab.exception.CaNanoLabSecurityException" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="protocol" key="error.generalException"
