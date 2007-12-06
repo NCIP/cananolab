@@ -10,6 +10,7 @@ import gov.nih.nci.calab.dto.sample.ContainerBean;
 import gov.nih.nci.calab.dto.sample.ContainerInfoBean;
 import gov.nih.nci.calab.dto.sample.StorageLocation;
 import gov.nih.nci.calab.exception.DuplicateEntriesException;
+import gov.nih.nci.calab.exception.SampleException;
 import gov.nih.nci.calab.service.util.CaNanoLabComparators;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
@@ -34,7 +35,7 @@ import org.hibernate.Session;
  * @author pansu
  * 
  */
-/* CVS $Id: AliquotService.java,v 1.1 2007-11-29 19:18:11 pansu Exp $ */
+/* CVS $Id: AliquotService.java,v 1.2 2007-12-06 09:01:44 pansu Exp $ */
 
 public class AliquotService {
 	private static Logger logger = Logger.getLogger(AliquotService.class);
@@ -55,7 +56,7 @@ public class AliquotService {
 			String sampleType, String sampleSource, String sourceSampleId,
 			Date dateAccessionedBegin, Date dateAccessionedEnd,
 			String sampleSubmitter, StorageLocation storageLocation)
-			throws Exception {
+			throws SampleException {
 		List<AliquotBean> aliquots = new ArrayList<AliquotBean>();
 		try {
 			List<Object> paramList = new ArrayList<Object>();
@@ -151,8 +152,7 @@ public class AliquotService {
 		} catch (Exception e) {
 			logger.error("Error in searching aliquots by the given parameters",
 					e);
-			throw new RuntimeException(
-					"Error in searching aliquots by the given parameters");
+			throw new SampleException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -163,7 +163,7 @@ public class AliquotService {
 	}
 
 	public List<AliquotBean> searchAliquotsByContainer(String containerId)
-			throws Exception {
+			throws SampleException {
 		List<AliquotBean> aliquots = new ArrayList<AliquotBean>();
 		try {
 			Session session = HibernateUtil.currentSession();
@@ -179,8 +179,7 @@ public class AliquotService {
 		} catch (Exception e) {
 			logger.error(
 					"Error in searching aliquots by the given container ID", e);
-			throw new RuntimeException(
-					"Error in searching aliquots by the given container ID");
+			throw new SampleException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -195,11 +194,11 @@ public class AliquotService {
 	 * and create aliquot.
 	 * 
 	 * @return a Map between sample name and its associated unmasked aliquots
-	 * @throws Exception
+	 * @throws SampleException
 	 */
 
 	public Map<String, SortedSet<AliquotBean>> getUnmaskedSampleAliquots()
-			throws Exception {
+			throws SampleException {
 		SortedSet<AliquotBean> aliquots = null;
 		Map<String, SortedSet<AliquotBean>> sampleAliquots = new HashMap<String, SortedSet<AliquotBean>>();
 		try {
@@ -216,8 +215,7 @@ public class AliquotService {
 						CaNanoLabConstants.ACTIVE_STATUS);
 				String sampleName = (String) info[2];
 				if (sampleAliquots.get(sampleName) != null) {
-					aliquots = sampleAliquots
-							.get(sampleName);
+					aliquots = sampleAliquots.get(sampleName);
 				} else {
 					aliquots = new TreeSet<AliquotBean>(
 							new CaNanoLabComparators.AliquotBeanComparator());
@@ -227,15 +225,15 @@ public class AliquotService {
 			}
 		} catch (Exception e) {
 			logger.error("Error in retrieving all aliquot Ids and names", e);
-			throw new RuntimeException(
-					"Error in retrieving all aliquot Ids and names");
+			throw new SampleException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
 		return sampleAliquots;
 	}
 
-	public SortedSet<String> getAllAliquotContainerTypes() throws Exception {
+	public SortedSet<String> getAllAliquotContainerTypes()
+			throws SampleException {
 		SortedSet<String> containerTypes = new TreeSet<String>();
 
 		try {
@@ -250,8 +248,7 @@ public class AliquotService {
 
 		} catch (Exception e) {
 			logger.error("Error in retrieving all aliquot container types", e);
-			throw new RuntimeException(
-					"Error in retrieving all aliquot container types.");
+			throw new SampleException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -265,7 +262,7 @@ public class AliquotService {
 	 * @return the default sample container information in a form of
 	 *         ContainerInfoBean
 	 */
-	public ContainerInfoBean getAliquotContainerInfo() throws Exception {
+	public ContainerInfoBean getAliquotContainerInfo() throws SampleException {
 		SampleService sampleService = new SampleService();
 		return sampleService.getSampleContainerInfo();
 	}
@@ -290,7 +287,7 @@ public class AliquotService {
 	 * @return the first number for assigning a new aliquot IDs.
 	 */
 	public int getFirstAliquotNum(boolean fromAliquot, String parentName)
-			throws Exception {
+			throws SampleException {
 		int aliquotNum = 0;
 		if (!fromAliquot) {
 			aliquotNum = getLastSampleContainerAliquotNum(parentName) + 1;
@@ -301,7 +298,7 @@ public class AliquotService {
 	}
 
 	private int getLastSampleContainerAliquotNum(String containerName)
-			throws Exception {
+			throws SecurityException {
 		int aliquotNum = 0;
 		try {
 			Session session = HibernateUtil.currentSession();
@@ -327,8 +324,7 @@ public class AliquotService {
 					.error(
 							"Error in retrieving the last sample container aliquot number",
 							e);
-			throw new RuntimeException(
-					"Error in retrieving the last sample container aliquot number");
+			throw new SecurityException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -336,7 +332,7 @@ public class AliquotService {
 	}
 
 	private int getLastAliquotChildAliquotNum(String parentAliquotName)
-			throws Exception {
+			throws SecurityException {
 		int aliquotNum = 0;
 		try {
 			Session session = HibernateUtil.currentSession();
@@ -362,8 +358,7 @@ public class AliquotService {
 					.error(
 							"Error in retrieving the last aliquot child aliquot number",
 							e);
-			throw new RuntimeException(
-					"Error in retrieving the last aliquot child aliquot number");
+			throw new SecurityException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -376,11 +371,11 @@ public class AliquotService {
 	 * @param fromAliquot
 	 * @param parentName
 	 * @param aliquotMatrix
-	 * @throws Exception
+	 * @throws SampleException
 	 */
 
 	public void saveAliquots(boolean fromAliquot, String parentName,
-			List<AliquotBean[]> aliquotMatrix) throws Exception {
+			List<AliquotBean[]> aliquotMatrix) throws SampleException {
 		// Check to if the aliquot is from Sample or Aliqot
 		try {
 			Session session = HibernateUtil.currentSession();
@@ -553,20 +548,17 @@ public class AliquotService {
 				}
 			}
 			HibernateUtil.commitTransaction();
-		} catch (DuplicateEntriesException ce) {
-			HibernateUtil.rollbackTransaction();
-			throw ce;
 		} catch (Exception e) {
-			logger.error("Error in saving aliquots", e);
 			HibernateUtil.rollbackTransaction();
-			throw e;
+			logger.error("Error in saving aliquots", e);
+			throw new SampleException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
 	}
 
 	private String getCreatedMethod(Session session, String sopURI)
-			throws Exception {
+			throws SampleException {
 		String hqlString = "select sop.name from SampleSOP sop join sop.sampleSOPFileCollection sopFile where sopFile.uri='"
 				+ sopURI + "'";
 		List results = session.createQuery(hqlString).list();
@@ -580,7 +572,8 @@ public class AliquotService {
 	 * 
 	 * @return all methods for creating aliquots
 	 */
-	public List<LabelValueBean> getAliquotCreateMethods() throws Exception {
+	public List<LabelValueBean> getAliquotCreateMethods()
+			throws SampleException {
 		List<LabelValueBean> createMethods = new ArrayList<LabelValueBean>();
 
 		try {
@@ -598,7 +591,7 @@ public class AliquotService {
 
 		} catch (Exception e) {
 			logger.error("Error in retrieving all sample sources", e);
-			throw new RuntimeException("Error in retrieving all sample sources");
+			throw new SampleException();
 		} finally {
 			HibernateUtil.closeSession();
 		}

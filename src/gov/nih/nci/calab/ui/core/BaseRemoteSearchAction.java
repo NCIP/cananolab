@@ -6,11 +6,11 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: BaseRemoteSearchAction.java,v 1.1 2007-12-05 20:01:08 pansu Exp $ */
+/* CVS $Id: BaseRemoteSearchAction.java,v 1.2 2007-12-06 09:01:44 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.remote.GridNodeBean;
-import gov.nih.nci.calab.exception.GridAutoDiscoveryException;
+import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.calab.service.remote.GridService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
@@ -32,14 +32,12 @@ public abstract class BaseRemoteSearchAction extends AbstractDispatchAction {
 			throws Exception {
 		Map<String, GridNodeBean> gridNodes = null;
 		// set grid nodes map in the session
-		try {
-			gridNodes = GridService.discoverServices(
-					CaNanoLabConstants.GRID_INDEX_SERVICE_URL,
-					CaNanoLabConstants.DOMAIN_MODEL_NAME);			
-			request.getSession().setAttribute("allGridNodes", gridNodes);
-		} catch (Exception e) {
-			throw new GridAutoDiscoveryException("Error in grid node auto-discovery.");
-		}
+
+		gridNodes = GridService.discoverServices(
+				CaNanoLabConstants.GRID_INDEX_SERVICE_URL,
+				CaNanoLabConstants.DOMAIN_MODEL_NAME);
+		request.getSession().setAttribute("allGridNodes", gridNodes);
+
 		return gridNodes;
 	}
 
@@ -77,7 +75,8 @@ public abstract class BaseRemoteSearchAction extends AbstractDispatchAction {
 		return false;
 	}
 
-	public boolean canUserExecute(UserBean user) throws Exception {
+	public boolean canUserExecute(UserBean user)
+			throws CaNanoLabSecurityException {
 		return true;
 	}
 }

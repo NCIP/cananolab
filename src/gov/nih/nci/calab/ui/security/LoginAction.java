@@ -1,6 +1,7 @@
 package gov.nih.nci.calab.ui.security;
 
 import gov.nih.nci.calab.dto.common.UserBean;
+import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.calab.service.security.LoginService;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
@@ -64,6 +65,8 @@ public class LoginAction extends AbstractBaseAction {
 			setUserSessionInfo(session, strLoginId);
 
 			forward = mapping.findForward("success");
+		} else {
+			throw new CaNanoLabSecurityException("Invalid Credentials.");
 		}
 		return forward;
 	}

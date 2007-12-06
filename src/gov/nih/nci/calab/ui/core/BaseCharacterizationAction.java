@@ -14,6 +14,9 @@ import gov.nih.nci.calab.dto.common.ProtocolFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.exception.CaNanoLabException;
+import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
+import gov.nih.nci.calab.exception.FileException;
+import gov.nih.nci.calab.exception.ParticleCharacterizationException;
 import gov.nih.nci.calab.service.common.FileService;
 import gov.nih.nci.calab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.calab.service.particle.NanoparticleService;
@@ -65,7 +68,6 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		HttpSession session = request.getSession();
 		CharacterizationBean charBean = (CharacterizationBean) theForm
 				.get("achar");
-
 		// validate that characterization file/derived data can't be empty
 		for (DerivedBioAssayDataBean derivedDataFileBean : charBean
 				.getDerivedBioAssayDataList()) {
@@ -73,7 +75,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 					&& derivedDataFileBean.getCategories().length == 0
 					&& derivedDataFileBean.getDisplayName().length() == 0
 					&& derivedDataFileBean.getDatumList().size() == 0) {
-				throw new CaNanoLabException(
+				throw new ParticleCharacterizationException(
 						"has an empty section for characterization file/derived data. Please remove it prior to saving.");
 			}
 		}
@@ -85,7 +87,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 				// validate that neither name nor value can be empty
 				if (datumBean.getName().length() == 0
 						|| datumBean.getValue().length() == 0) {
-					throw new CaNanoLabException(
+					throw new ParticleCharacterizationException(
 							"Derived data name and value can't be empty.");
 				}
 
@@ -94,13 +96,13 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 							&& !datumBean.getValue().equalsIgnoreCase("false")
 							&& !datumBean.getValue().equalsIgnoreCase("yes")
 							&& !datumBean.getValue().equalsIgnoreCase("no")) {
-						throw new CaNanoLabException(
+						throw new ParticleCharacterizationException(
 								"The datum value for boolean type should be 'True'/'False' or 'Yes'/'No'.");
 					}
 				} else {
 					if (!StringUtils.isDouble(datumBean.getValue())
 							&& !StringUtils.isInteger(datumBean.getValue())) {
-						throw new CaNanoLabException(
+						throw new ParticleCharacterizationException(
 								"The datum value should be a number.");
 					}
 				}
@@ -111,7 +113,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 						+ datumBean.getStatisticsType() + ":"
 						+ datumBean.getCategory();
 				if (uniqueDatumMap.get(uniqueStr) != null) {
-					throw new CaNanoLabException(
+					throw new ParticleCharacterizationException(
 							"no two derived data can have the same name, statistics type and category.");
 				} else {
 					uniqueDatumMap.put(uniqueStr, 1);
@@ -253,7 +255,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			InitParticleSetup.getInstance().setSideParticleMenu(request,
 					particleId);
 		} else {
-			throw new CaNanoLabException("Particle ID is required.");
+			throw new ParticleCharacterizationException("Particle ID is required.");
 		}
 		InitSessionSetup.getInstance().setApplicationOwner(session);
 		InitParticleSetup.getInstance().setAllInstruments(session);
@@ -269,7 +271,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			CharacterizationBean charBean = charService
 					.getCharacterizationBy(characterizationId);
 			if (charBean == null) {
-				throw new CaNanoLabException(
+				throw new ParticleCharacterizationException(
 						"This characterization no longer exists in the database.  Please log in again to refresh.");
 			}
 			theForm.set("achar", charBean);
@@ -447,7 +449,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 
 		SortedSet<String> datumLabels = new TreeSet<String>();
-
+		charSummaryBeans = null;
 		for (CharacterizationSummaryBean summaryBean : charSummaryBeans) {
 			Map<String, String> datumMap = summaryBean.getDatumMap();
 			if (datumMap != null && !datumMap.isEmpty()) {
@@ -543,7 +545,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			}
 			out.close();
 		} else {
-			throw new CaNanoLabException(
+			throw new FileException(
 					"File to download doesn't exist on the server");
 		}
 		return null;
@@ -753,7 +755,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		return true;
 	}
 
-	public boolean canUserExecute(UserBean user) throws Exception {
+	public boolean canUserExecute(UserBean user)
+			throws CaNanoLabSecurityException {
 		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
 				CaNanoLabConstants.CSM_PG_PARTICLE);
 	}

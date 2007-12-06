@@ -6,12 +6,13 @@ package gov.nih.nci.calab.ui.sample;
  * @author pansu
  */
 
-/* CVS $Id: ViewSampleDetailAction.java,v 1.3 2007-12-05 20:01:09 pansu Exp $ */
+/* CVS $Id: ViewSampleDetailAction.java,v 1.4 2007-12-06 09:01:44 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.sample.ContainerBean;
 import gov.nih.nci.calab.dto.sample.SampleBean;
-import gov.nih.nci.calab.exception.CaNanoLabException;
+import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
+import gov.nih.nci.calab.exception.SampleException;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
 import gov.nih.nci.calab.ui.security.InitSecuritySetup;
@@ -52,7 +53,7 @@ public class ViewSampleDetailAction extends AbstractBaseAction {
 			}
 			forward = mapping.findForward("success");
 		} else {
-			throw new CaNanoLabException(
+			throw new SampleException(
 					"Session containing the searched sample results either is expired or doesn't exist when viewing sample details");
 		}
 		return forward;
@@ -62,7 +63,8 @@ public class ViewSampleDetailAction extends AbstractBaseAction {
 		return true;
 	}
 
-	public boolean canUserExecute(UserBean user) throws Exception {
+	public boolean canUserExecute(UserBean user)
+			throws CaNanoLabSecurityException {
 		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
 				CaNanoLabConstants.CSM_PG_SAMPLE);
 	}

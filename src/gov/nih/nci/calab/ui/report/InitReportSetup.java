@@ -2,6 +2,8 @@ package gov.nih.nci.calab.ui.report;
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
+import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
+import gov.nih.nci.calab.exception.ReportException;
 import gov.nih.nci.calab.service.report.SearchReportService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
@@ -18,16 +20,17 @@ import javax.servlet.http.HttpSession;
 public class InitReportSetup {
 	private static SearchReportService reportService;
 
-	private InitReportSetup() throws Exception {
+	private InitReportSetup() throws CaNanoLabSecurityException {
 		reportService = new SearchReportService();
 	}
 
-	public static InitReportSetup getInstance() throws Exception {
+	public static InitReportSetup getInstance()
+			throws CaNanoLabSecurityException {
 		return new InitReportSetup();
 	}
 
 	public void setAllReports(HttpSession session, String particleId)
-			throws Exception {
+			throws ReportException, CaNanoLabSecurityException {
 		UserBean user = (UserBean) session.getAttribute("user");
 		if (session.getAttribute("particleReports") == null
 				|| session.getAttribute("newReportCreated") != null

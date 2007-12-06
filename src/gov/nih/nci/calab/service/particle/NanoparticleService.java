@@ -2,7 +2,6 @@ package gov.nih.nci.calab.service.particle;
 
 import gov.nih.nci.calab.db.HibernateUtil;
 import gov.nih.nci.calab.domain.Keyword;
-import gov.nih.nci.calab.domain.LookupType;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.function.Function;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
@@ -10,6 +9,8 @@ import gov.nih.nci.calab.dto.common.SearchableBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.exception.CaNanoLabException;
+import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
+import gov.nih.nci.calab.exception.ParticleException;
 import gov.nih.nci.calab.service.sample.SampleService;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CaNanoLabComparators;
@@ -42,7 +43,7 @@ public class NanoparticleService {
 	// remove existing visibilities for the data
 	private UserService userService;
 
-	public NanoparticleService() throws Exception {
+	public NanoparticleService() throws CaNanoLabSecurityException {
 		this.userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
 	}
 
@@ -59,13 +60,14 @@ public class NanoparticleService {
 	 * @param keywords
 	 * @param user
 	 * @return
-	 * @throws Exception
+	 * @throws ParticleException
+	 * @throws CaNanoLabSecurityException
 	 */
 	public List<ParticleBean> basicSearch(String particleSource,
 			String particleType, String[] functionTypes,
 			String[] characterizations, String[] keywords, String keywordType,
 			String[] summaries, String summaryType, UserBean user)
-			throws Exception {
+			throws ParticleException, CaNanoLabSecurityException {
 		List<ParticleBean> particles = new ArrayList<ParticleBean>();
 
 		try {
@@ -175,15 +177,14 @@ public class NanoparticleService {
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			logger
-					.error("Problem finding particles with thet given search parameters ");
-			throw e;
+					.error("Problem finding particles with the given search parameters ", e);
+			throw new ParticleException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
 
 		UserService userService = new UserService(
 				CaNanoLabConstants.CSM_APP_NAME);
-
 		List<ParticleBean> filteredParticles = userService
 				.getFilteredParticles(user, particles);
 
@@ -199,9 +200,11 @@ public class NanoparticleService {
 	 * 
 	 * @param particleId
 	 * @return
-	 * @throws Exception
+	 * @throws ParticleException
+	 * @throws CaNanoLabSecurityException
 	 */
-	public ParticleBean getGeneralInfo(String particleId) throws Exception {
+	public ParticleBean getGeneralInfo(String particleId)
+			throws ParticleException, CaNanoLabSecurityException {
 
 		Nanoparticle particle = null;
 		ParticleBean particleBean = null;
@@ -211,13 +214,13 @@ public class NanoparticleService {
 			particle = (Nanoparticle) session.load(Nanoparticle.class,
 					new Long(particleId));
 			if (particle == null) {
-				throw new CaNanoLabException("No such particle in the database");
+				throw new ParticleException("No such particle in the database");
 			}
 			particleBean = new ParticleBean(particle);
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			logger.error("Problem finding particle with ID: " + particleId, e);
-			throw e;
+			throw new ParticleException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -232,7 +235,8 @@ public class NanoparticleService {
 		return particleBean;
 	}
 
-	public ParticleBean getParticleInfo(String particleId) throws Exception {
+	public ParticleBean getParticleInfo(String particleId)
+			throws ParticleException {
 		ParticleBean particleBean = null;
 		try {
 			Session session = HibernateUtil.currentSession();
@@ -244,7 +248,7 @@ public class NanoparticleService {
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			logger.error("Problem finding particle with ID: " + particleId, e);
-			throw e;
+			throw new ParticleException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -261,7 +265,7 @@ public class NanoparticleService {
 	 */
 	public List<ParticleBean> advancedSearch(String particleType,
 			String[] functionTypes, List<SearchableBean> searchCriteria,
-			UserBean user) throws Exception {
+			UserBean user) throws ParticleException {
 		List<ParticleBean> particleList = null;
 
 		try {
@@ -282,7 +286,7 @@ public class NanoparticleService {
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			logger.error("Problem finding particles.", e);
-			throw e;
+			throw new ParticleException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -296,10 +300,10 @@ public class NanoparticleService {
 	 * @param ida
 	 * @param charInfo
 	 * @return
-	 * @throws Exception
+	 * @throws ParticleException
 	 */
 	public List<ParticleBean> searchParticlesBy(Session session,
-			SearchableBean charInfo) throws Exception {
+			SearchableBean charInfo) throws ParticleException {
 		List<ParticleBean> particles = new ArrayList<ParticleBean>();
 		// if no value range, don't query
 		if (charInfo.getLowValue().length() == 0
@@ -355,14 +359,16 @@ public class NanoparticleService {
 				particles.add(particleBean);
 			}
 		} catch (Exception e) {
-
+			logger.error(e);
+			throw new ParticleException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
 		return particles;
 	}
 
-	public ParticleBean getParticleBy(String particleName) throws Exception {
+	public ParticleBean getParticleBy(String particleName)
+			throws ParticleException {
 		ParticleBean particleBean = null;
 		try {
 			Session session = HibernateUtil.currentSession();
@@ -382,7 +388,7 @@ public class NanoparticleService {
 			logger
 					.error("Problem finding particles by name:" + particleName,
 							e);
-			throw e;
+			throw new ParticleException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -396,10 +402,12 @@ public class NanoparticleService {
 	 * @param particleName
 	 * @param user
 	 * @return
-	 * @throws Exception
+	 * @throws ParticleException
+	 * @throws CaNanoLabSecurityException
 	 */
 	public SortedSet<String> getOtherParticles(String particleSource,
-			String particleName, UserBean user) throws Exception {
+			String particleName, UserBean user) throws ParticleException,
+			CaNanoLabSecurityException {
 
 		UserService userService = new UserService(
 				CaNanoLabConstants.CSM_APP_NAME);
@@ -429,7 +437,7 @@ public class NanoparticleService {
 			logger
 					.error("Error in retrieving all particle type particles. ",
 							e);
-			throw new RuntimeException(
+			throw new ParticleException(
 					"Error in retrieving all particle type particles. ");
 		} finally {
 			HibernateUtil.closeSession();
@@ -441,9 +449,11 @@ public class NanoparticleService {
 	 * Update keywords and visibilities for the particle with the given id
 	 * 
 	 * @param particle
-	 * @throws Exception
+	 * @throws ParticleException
+	 * @throws CaNanoLabSecurityException
 	 */
-	public void addParticleGeneralInfo(ParticleBean particle) throws Exception {
+	public void addParticleGeneralInfo(ParticleBean particle)
+			throws ParticleException, CaNanoLabSecurityException {
 		Nanoparticle doParticle = null;
 		// save nanoparticle to the database
 		try {
@@ -466,7 +476,7 @@ public class NanoparticleService {
 				doParticle = (Nanoparticle) obj;
 			}
 			if (doParticle == null) {
-				throw new CaNanoLabException("No such particle in the database");
+				throw new ParticleException("No such particle in the database");
 			}
 			doParticle.setClassification(getParticleClassification(particle
 					.getSampleType()));
@@ -484,7 +494,7 @@ public class NanoparticleService {
 		} catch (Exception e) {
 			HibernateUtil.rollbackTransaction();
 			logger.error("Problem saving particle general information. ", e);
-			throw e;
+			throw new ParticleException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -495,36 +505,24 @@ public class NanoparticleService {
 				.getVisibilityGroups());
 	}
 
-	public static void addLookupType(Session session, LookupType lookupType,
-			String type) throws Exception {
-		String className = lookupType.getClass().getSimpleName();
-		if (type != null && type.length() > 0) {
-			List results = session.createQuery(
-					"select count(distinct name) from " + className
-							+ " type where name='" + type + "'").list();
-			lookupType.setName(type);
-			int count = -1;
-			for (Object obj : results) {
-				count = ((Integer) (obj)).intValue();
-			}
-			if (count == 0) {
-				session.save(lookupType);
-			}
-		}
-	}
-
 	public String getParticleClassification(String particleType) {
 		String classification = CaNanoLabConstants.PARTICLE_CLASSIFICATION_MAP
 				.get(particleType);
 		return classification;
 	}
 
-	public SortedSet<String> getAllParticleSources() throws Exception {
-		SampleService service = new SampleService();
-		return service.getAllSampleSources();
+	public SortedSet<String> getAllParticleSources() throws ParticleException {
+		try {
+			SampleService service = new SampleService();
+			return service.getAllSampleSources();
+		} catch (Exception e) {
+			logger.error("Eror getting particle sources.", e);
+			throw new ParticleException();
+		}
 	}
 
-	public SortedSet<String> getUnannotatedParticleTypes() throws Exception {
+	public SortedSet<String> getUnannotatedParticleTypes()
+			throws ParticleException {
 		SortedSet<String> particleTypes = new TreeSet<String>();
 		try {
 			Session session = HibernateUtil.currentSession();
@@ -545,7 +543,7 @@ public class NanoparticleService {
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			logger.error("Error retrieving unannotated particle types", e);
-			throw e;
+			throw new ParticleException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -553,7 +551,7 @@ public class NanoparticleService {
 	}
 
 	public SortedSet<String> getNewParticleNamesByType(String particleType)
-			throws Exception {
+			throws ParticleException {
 		SortedSet<String> particleNames = new TreeSet<String>(
 				new CaNanoLabComparators.SortableNameComparator());
 		try {
@@ -576,7 +574,7 @@ public class NanoparticleService {
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			logger.error("Error retrieving unannotated particles", e);
-			throw e;
+			throw new ParticleException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -584,7 +582,7 @@ public class NanoparticleService {
 	}
 
 	public Map<String, SortedSet<String>> getAllParticleTypeParticles()
-			throws Exception {
+			throws ParticleException, CaNanoLabSecurityException {
 		Map<String, SortedSet<String>> particleTypeParticles = new HashMap<String, SortedSet<String>>();
 		UserService userService = new UserService(
 				CaNanoLabConstants.CSM_APP_NAME);
@@ -604,8 +602,7 @@ public class NanoparticleService {
 
 				if (particleType != null) {
 					if (particleTypeParticles.get(particleType) != null) {
-						particleNames = particleTypeParticles
-								.get(particleType);
+						particleNames = particleTypeParticles.get(particleType);
 					} else {
 						particleNames = new TreeSet<String>(
 								new CaNanoLabComparators.SortableNameComparator());
@@ -617,7 +614,7 @@ public class NanoparticleService {
 
 		} catch (Exception e) {
 			logger.error("Error retrieving particle type particles", e);
-			throw e;
+			throw new ParticleException();
 		} finally {
 			HibernateUtil.closeSession();
 		}

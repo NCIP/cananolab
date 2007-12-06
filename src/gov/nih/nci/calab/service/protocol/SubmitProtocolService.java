@@ -2,12 +2,14 @@ package gov.nih.nci.calab.service.protocol;
 
 import gov.nih.nci.calab.db.HibernateUtil;
 import gov.nih.nci.calab.domain.LabFile;
-import gov.nih.nci.calab.domain.LookupType;
 import gov.nih.nci.calab.domain.Protocol;
 import gov.nih.nci.calab.domain.ProtocolFile;
 import gov.nih.nci.calab.domain.ProtocolType;
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
+import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
+import gov.nih.nci.calab.exception.ProtocolException;
 import gov.nih.nci.calab.service.common.FileService;
+import gov.nih.nci.calab.service.common.LookupService;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
@@ -26,7 +28,7 @@ import org.hibernate.Session;
  */
 
 /*
- * CVS $Id: SubmitProtocolService.java,v 1.5 2007-11-21 23:21:18 pansu Exp $
+ * CVS $Id: SubmitProtocolService.java,v 1.6 2007-12-06 09:01:44 pansu Exp $
  */
 
 public class SubmitProtocolService {
@@ -35,21 +37,21 @@ public class SubmitProtocolService {
 
 	private UserService userService;
 
-	public SubmitProtocolService() throws Exception {
+	public SubmitProtocolService() throws ProtocolException,
+			CaNanoLabSecurityException {
 		this.userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
 	}
-
+	
 	/**
 	 * Create a brand new protocol based on user input
 	 * 
-	 * @param fileBean,
-	 *            the ProtocolFileBean
-	 * @param uploadedFile,
-	 *            the FormFile
-	 * @throws Exception
+	 * @param fileBean
+	 * @param uploadedFile
+	 * @throws ProtocolException
+	 * @throws CaNanoLabSecurityException
 	 */
 	public void createProtocol(ProtocolFileBean fileBean, FormFile uploadedFile)
-			throws Exception {
+			throws ProtocolException, CaNanoLabSecurityException {
 
 		String fileName = null;
 		if (uploadedFile != null
@@ -58,18 +60,23 @@ public class SubmitProtocolService {
 			uploadedFile = null;
 		}
 		if (uploadedFile != null) {
+			try {
+				FileService fileService = new FileService();
 
-			FileService fileService = new FileService();
+				String rootPath = PropertyReader.getProperty(
+						CaNanoLabConstants.FILEUPLOAD_PROPERTY,
+						"fileRepositoryDir");
+				if (rootPath.charAt(rootPath.length() - 1) == File.separatorChar)
+					rootPath = rootPath.substring(0, rootPath.length() - 1);
 
-			String rootPath = PropertyReader
-					.getProperty(CaNanoLabConstants.FILEUPLOAD_PROPERTY,
-							"fileRepositoryDir");
-			if (rootPath.charAt(rootPath.length() - 1) == File.separatorChar)
-				rootPath = rootPath.substring(0, rootPath.length() - 1);
-
-			fileName = fileService
-					.writeUploadedFile(uploadedFile, rootPath + File.separator
-							+ CaNanoLabConstants.FOLDER_PROTOCOL, true);
+				fileName = fileService.writeUploadedFile(uploadedFile, rootPath
+						+ File.separator + CaNanoLabConstants.FOLDER_PROTOCOL,
+						true);
+			} catch (Exception e) {
+				logger.error("Error writing uploaded file to the file system.",
+						e);
+				throw new ProtocolException();
+			}
 		}
 		ProtocolFile dataFile = new ProtocolFile();
 
@@ -165,12 +172,13 @@ public class SubmitProtocolService {
 
 			// add protocol type to database
 			ProtocolType protocolType = new ProtocolType();
-			addLookupType(session, protocolType, protocol.getType());
+			LookupService.addLookupType(session, protocolType, protocol
+					.getType());
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			HibernateUtil.rollbackTransaction();
 			logger.error("Problem saving protocol data: ", e);
-			throw e;
+			throw new ProtocolException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -180,25 +188,8 @@ public class SubmitProtocolService {
 
 	}
 
-	private void addLookupType(Session session, LookupType lookupType,
-			String type) throws Exception {
-		String className = lookupType.getClass().getSimpleName();
-
-		List results = session.createQuery(
-				"select count(distinct name) from " + className
-						+ " type where name='" + type + "'").list();
-		lookupType.setName(type);
-		int count = -1;
-		for (Object obj : results) {
-			count = ((Integer) (obj)).intValue();
-		}
-		if (count == 0) {
-			session.save(lookupType);
-		}
-	}
-
 	public void updateProtocol(ProtocolFileBean fileBean, FormFile uploadedFile)
-			throws Exception {
+			throws ProtocolException, CaNanoLabSecurityException {
 
 		String fileName = null;
 		if (uploadedFile != null
@@ -207,18 +198,22 @@ public class SubmitProtocolService {
 			uploadedFile = null;
 		}
 		if (uploadedFile != null) {
+			try {
+				FileService fileService = new FileService();
 
-			FileService fileService = new FileService();
+				String rootPath = PropertyReader.getProperty(
+						CaNanoLabConstants.FILEUPLOAD_PROPERTY,
+						"fileRepositoryDir");
+				if (rootPath.charAt(rootPath.length() - 1) == File.separatorChar)
+					rootPath = rootPath.substring(0, rootPath.length() - 1);
 
-			String rootPath = PropertyReader
-					.getProperty(CaNanoLabConstants.FILEUPLOAD_PROPERTY,
-							"fileRepositoryDir");
-			if (rootPath.charAt(rootPath.length() - 1) == File.separatorChar)
-				rootPath = rootPath.substring(0, rootPath.length() - 1);
-
-			fileName = fileService
-					.writeUploadedFile(uploadedFile, rootPath + File.separator
-							+ CaNanoLabConstants.FOLDER_PROTOCOL, true);
+				fileName = fileService.writeUploadedFile(uploadedFile, rootPath
+						+ File.separator + CaNanoLabConstants.FOLDER_PROTOCOL,
+						true);
+			} catch (Exception e) {
+				logger.error("Error saving uploaded file the file system.", e);
+				throw new ProtocolException();
+			}
 		}
 
 		try {
@@ -238,7 +233,7 @@ public class SubmitProtocolService {
 		} catch (Exception e) {
 			HibernateUtil.rollbackTransaction();
 			logger.error("Problem saving protocol data: ", e);
-			throw e;
+			throw new ProtocolException();
 		} finally {
 			HibernateUtil.closeSession();
 		}

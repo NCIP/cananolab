@@ -16,6 +16,7 @@ import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.function.FunctionBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.dto.remote.GridNodeBean;
+import gov.nih.nci.calab.exception.GridQueryException;
 import gov.nih.nci.calab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
@@ -47,11 +48,11 @@ public class GridSearchService {
 	 * @param functionTypes
 	 * @param gridNode
 	 * @return
-	 * @throws Exception
+	 * @throws GridQueryException
 	 */
 	public List<LabFileBean> getRemoteReports(String reportTitle,
 			String reportType, String particleType, String[] functionTypes,
-			GridNodeBean gridNode) throws Exception {
+			GridNodeBean gridNode) throws GridQueryException {
 		List<LabFileBean> reports = new ArrayList<LabFileBean>();
 
 		try {
@@ -107,7 +108,7 @@ public class GridSearchService {
 			}
 		} catch (Exception e) {
 			logger.error("Error in searching remote reports: " + e);
-			throw e;
+			throw new GridQueryException();
 		}
 		return reports;
 	}
@@ -120,11 +121,11 @@ public class GridSearchService {
 	 * @param characterizationTypes
 	 * @param gridNode
 	 * @return
-	 * @throws Exception
+	 * @throws GridQueryException
 	 */
 	public List<ParticleBean> getRemoteNanoparticles(String particleType,
 			String[] functionTypes, String[] characterizationTypes,
-			GridNodeBean gridNode) throws Exception {
+			GridNodeBean gridNode) throws GridQueryException {
 		List<ParticleBean> particles = new ArrayList<ParticleBean>();
 		try {
 			CaNanoLabSvcClient gridClient = new CaNanoLabSvcClient(gridNode
@@ -156,13 +157,13 @@ public class GridSearchService {
 			}
 		} catch (Exception e) {
 			logger.error("Error in searching remote particles: " + e);
-			throw e;
+			throw new GridQueryException();
 		}
 		return particles;
 	}
 
 	public Nanoparticle getRemoteNanoparticle(String particleName,
-			GridNodeBean gridNode) throws Exception {
+			GridNodeBean gridNode) throws GridQueryException {
 		Nanoparticle particle = null;
 		try {
 			CaNanoLabSvcClient gridClient = new CaNanoLabSvcClient(gridNode
@@ -185,7 +186,7 @@ public class GridSearchService {
 				particle.setSource(gridSource);
 		} catch (Exception e) {
 			logger.error("Error in getting remote particle: " + e);
-			throw e;
+			throw new GridQueryException();
 		}
 		return particle;
 	}
@@ -197,10 +198,10 @@ public class GridSearchService {
 	 * @param particleName
 	 * @param gridNode
 	 * @return
-	 * @throws Exception
+	 * @throws GridQueryException
 	 */
 	public Map<String, List<CharacterizationBean>> getRemoteCharacterizationMap(
-			String particleName, GridNodeBean gridNode) throws Exception {
+			String particleName, GridNodeBean gridNode) throws GridQueryException {
 		Map<String, List<CharacterizationBean>> charTypeChars = null;
 
 		try {
@@ -251,13 +252,13 @@ public class GridSearchService {
 			charTypeChars.put("Composition", compositions);
 		} catch (Exception e) {
 			logger.error("Error in getting remote characterization map: " + e);
-			throw e;
+			throw new GridQueryException();
 		}
 		return charTypeChars;
 	}
 
 	public Map<String, List<FunctionBean>> getRemoteFunctionMap(
-			String particleName, GridNodeBean gridNode) throws Exception {
+			String particleName, GridNodeBean gridNode) throws GridQueryException {
 		Map<String, List<FunctionBean>> funcTypeFuncs = null;
 		try {
 			CaNanoLabSvcClient gridClient = new CaNanoLabSvcClient(gridNode
@@ -280,13 +281,13 @@ public class GridSearchService {
 			}
 		} catch (Exception e) {
 			logger.error("Error in getting remote function map: " + e);
-			throw e;
+			throw new GridQueryException();
 		}
 		return funcTypeFuncs;
 	}
 
 	public List<LabFileBean> getRemoteReports(String particleName,
-			GridNodeBean gridNode) throws Exception {
+			GridNodeBean gridNode) throws GridQueryException {
 		List<LabFileBean> reports = null;
 		try {
 			CaNanoLabSvcClient gridClient = new CaNanoLabSvcClient(gridNode
@@ -305,13 +306,13 @@ public class GridSearchService {
 			}
 		} catch (Exception e) {
 			logger.error("Error in getting remote reports: " + e);
-			throw e;
+			throw new GridQueryException();
 		}
 		return reports;
 	}
 
 	public List<LabFileBean> getRemoteAssociatedFiles(String particleName,
-			GridNodeBean gridNode) throws Exception {
+			GridNodeBean gridNode) throws GridQueryException {
 		List<LabFileBean> files = null;
 		try {
 			CaNanoLabSvcClient gridClient = new CaNanoLabSvcClient(gridNode
@@ -331,13 +332,13 @@ public class GridSearchService {
 			}
 		} catch (Exception e) {
 			logger.error("Error in getting remote files: " + e);
-			throw e;
+			throw new GridQueryException();
 		}
 		return files;
 	}
 
 	public ParticleComposition getRemoteComposition(String compositionId,
-			String particleName, GridNodeBean gridNode) throws Exception {
+			String particleName, GridNodeBean gridNode) throws GridQueryException {
 		ParticleComposition comp = null;
 		try {
 			CaNanoLabSvcClient gridClient = new CaNanoLabSvcClient(gridNode
@@ -362,7 +363,7 @@ public class GridSearchService {
 			}
 		} catch (Exception e) {
 			logger.error("Error in getting remote composition: " + e);
-			throw e;
+			throw new GridQueryException();
 		}
 		return comp;
 	}
@@ -374,10 +375,10 @@ public class GridSearchService {
 	 * @param fileId
 	 * @param gridNode
 	 * @return
-	 * @throws Exception
+	 * @throws GridQueryException
 	 */
 	public byte[] getRemoteFileContent(String fileId, GridNodeBean gridNode)
-			throws Exception {
+			throws GridQueryException {
 		byte[] fileContent = null;
 		try {
 			String remoteCodeBase = RemoteQuerySystemPropertyConfigurer
@@ -394,7 +395,7 @@ public class GridSearchService {
 					.parseLong(fileId));
 		} catch (Exception e) {
 			logger.error("Error in getting remote file content: " + e);
-			throw e;
+			throw new GridQueryException();
 		}
 		return fileContent;
 	}

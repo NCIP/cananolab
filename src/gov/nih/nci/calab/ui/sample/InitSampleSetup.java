@@ -4,6 +4,8 @@ import gov.nih.nci.calab.dto.sample.AliquotBean;
 import gov.nih.nci.calab.dto.sample.ContainerBean;
 import gov.nih.nci.calab.dto.sample.ContainerInfoBean;
 import gov.nih.nci.calab.dto.sample.SampleBean;
+import gov.nih.nci.calab.exception.CaNanoLabException;
+import gov.nih.nci.calab.exception.SampleException;
 import gov.nih.nci.calab.service.common.LookupService;
 import gov.nih.nci.calab.service.sample.AliquotService;
 import gov.nih.nci.calab.service.sample.SampleService;
@@ -31,18 +33,18 @@ public class InitSampleSetup {
 
 	private static LookupService lookupService;
 
-	private InitSampleSetup() throws Exception {
+	private InitSampleSetup() {
 		sampleService = new SampleService();
 		aliquotService = new AliquotService();
 		lookupService = new LookupService();
 	}
 
-	public static InitSampleSetup getInstance() throws Exception {
+	public static InitSampleSetup getInstance() {
 		return new InitSampleSetup();
 	}
 
 	public void setSampleSourceUnmaskedAliquots(HttpSession session)
-			throws Exception {
+			throws SampleException {
 		// set map between sample source and samples that have unmasked aliquots
 		if (session.getAttribute("sampleSourceSamplesWithUnmaskedAliquots") == null
 				|| session.getAttribute("allSampleSourcesWithUnmaskedAliquots") == null
@@ -66,7 +68,7 @@ public class InitSampleSetup {
 	}
 
 	public void setAllSampleUnmaskedAliquots(HttpSession session)
-			throws Exception {
+			throws SampleException {
 		// set map between samples and unmasked aliquots
 		if (session.getAttribute("allUnmaskedSampleAliquots") == null
 				|| session.getAttribute("newAliquotCreated") != null) {
@@ -87,7 +89,7 @@ public class InitSampleSetup {
 		session.removeAttribute("allSampleNamesWithAliquots");
 	}
 
-	public void setAllSampleSources(HttpSession session) throws Exception {
+	public void setAllSampleSources(HttpSession session) throws SampleException {
 
 		if (session.getAttribute("allSampleSources") == null
 				|| session.getAttribute("newSampleSourceCreated") != null) {
@@ -104,7 +106,7 @@ public class InitSampleSetup {
 	}
 
 	public void setAllSampleContainerTypes(HttpSession session)
-			throws Exception {
+			throws SampleException {
 		if (session.getAttribute("allSampleContainerTypes") == null
 				|| session.getAttribute("newSampleCreated") != null) {
 			SortedSet<String> containerTypes = sampleService
@@ -119,7 +121,8 @@ public class InitSampleSetup {
 		session.removeAttribute("allSampleContainerTypes");
 	}
 
-	public void setAllSampleTypes(ServletContext appContext) throws Exception {
+	public void setAllSampleTypes(ServletContext appContext)
+			throws CaNanoLabException {
 		if (appContext.getAttribute("allSampleTypes") == null) {
 			SortedSet<String> types = LookupService
 					.getAllLookupTypes("SampleType");
@@ -131,7 +134,7 @@ public class InitSampleSetup {
 		// session.removeAttribute("allSampleTypes");
 	}
 
-	public void setAllSampleSOPs(HttpSession session) throws Exception {
+	public void setAllSampleSOPs(HttpSession session) throws SampleException {
 		if (session.getServletContext().getAttribute("allSampleSOPs") == null) {
 			List sampleSOPs = sampleService.getAllSampleSOPs();
 			session.getServletContext().setAttribute("allSampleSOPs",
@@ -139,7 +142,8 @@ public class InitSampleSetup {
 		}
 	}
 
-	public void setAllSampleContainerInfo(HttpSession session) throws Exception {
+	public void setAllSampleContainerInfo(HttpSession session)
+			throws SampleException {
 		if (session.getAttribute("sampleContainerInfo") == null
 				|| session.getAttribute("newSampleCreated") != null) {
 			ContainerInfoBean containerInfo = sampleService
@@ -151,7 +155,7 @@ public class InitSampleSetup {
 	}
 
 	public void setAllAliquotContainerTypes(HttpSession session)
-			throws Exception {
+			throws SampleException {
 		if (session.getAttribute("allAliquotContainerTypes") == null
 				|| session.getAttribute("newAliquotCreated") != null) {
 			SortedSet<String> containerTypes = aliquotService
@@ -166,7 +170,7 @@ public class InitSampleSetup {
 	}
 
 	public void setAllAliquotContainerInfo(HttpSession session)
-			throws Exception {
+			throws SampleException {
 		if (session.getAttribute("aliquotContainerInfo") == null
 				|| session.getAttribute("newAliquotCreated") != null) {
 			ContainerInfoBean containerInfo = aliquotService
@@ -177,7 +181,7 @@ public class InitSampleSetup {
 	}
 
 	public void setAllAliquotCreateMethods(HttpSession session)
-			throws Exception {
+			throws SampleException {
 		if (session.getServletContext().getAttribute("aliquotCreateMethods") == null) {
 			List methods = aliquotService.getAliquotCreateMethods();
 			session.getServletContext().setAttribute("aliquotCreateMethods",
@@ -185,7 +189,8 @@ public class InitSampleSetup {
 		}
 	}
 
-	public void setAllSampleContainers(HttpSession session) throws Exception {
+	public void setAllSampleContainers(HttpSession session)
+			throws SampleException {
 		if (session.getAttribute("allSampleContainers") == null
 				|| session.getAttribute("newSampleCreated") != null) {
 			Map<String, SortedSet<ContainerBean>> sampleContainers = sampleService
@@ -206,7 +211,8 @@ public class InitSampleSetup {
 		session.removeAttribute("allSampleNames");
 	}
 
-	public void setAllSourceSampleIds(HttpSession session) throws Exception {
+	public void setAllSourceSampleIds(HttpSession session)
+			throws SampleException {
 		if (session.getAttribute("allSourceSampleIds") == null
 				|| session.getAttribute("newSampleCreated") != null) {
 			List sourceSampleIds = sampleService.getAllSourceSampleIds();

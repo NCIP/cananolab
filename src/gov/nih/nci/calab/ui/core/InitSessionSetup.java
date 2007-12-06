@@ -1,6 +1,5 @@
 package gov.nih.nci.calab.ui.core;
 
-import gov.nih.nci.calab.service.common.LookupService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 import java.util.SortedSet;
@@ -15,13 +14,10 @@ import javax.servlet.http.HttpSession;
  * 
  */
 public class InitSessionSetup {
-	private static LookupService lookupService;
-
-	private InitSessionSetup() throws Exception {
-		lookupService = new LookupService();
+	private InitSessionSetup() {
 	}
 
-	public static InitSessionSetup getInstance() throws Exception {
+	public static InitSessionSetup getInstance() {
 		return new InitSessionSetup();
 	}
 

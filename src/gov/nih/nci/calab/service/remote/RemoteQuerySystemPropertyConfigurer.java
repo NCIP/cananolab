@@ -21,7 +21,7 @@ public class RemoteQuerySystemPropertyConfigurer extends
 	}
 
 	public static String getRemoteServiceUrlCodebase(String appServiceURL)
-			throws Exception {
+			throws IOException {
 		URL url = new URL(appServiceURL);
 		String codeBase = url.getProtocol() + "://" + url.getHost() + ":"
 				+ url.getPort();

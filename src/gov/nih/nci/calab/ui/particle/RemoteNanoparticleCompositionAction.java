@@ -8,7 +8,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: RemoteNanoparticleCompositionAction.java,v 1.7 2007-12-05 20:01:09 pansu Exp $ */
+/* CVS $Id: RemoteNanoparticleCompositionAction.java,v 1.8 2007-12-06 09:01:43 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.CarbonNanotubeComposition;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.DendrimerComposition;
@@ -27,7 +27,6 @@ import gov.nih.nci.calab.dto.characterization.composition.LiposomeBean;
 import gov.nih.nci.calab.dto.characterization.composition.PolymerBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.dto.remote.GridNodeBean;
-import gov.nih.nci.calab.exception.GridQueryException;
 import gov.nih.nci.calab.service.remote.GridSearchService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.ui.core.BaseRemoteSearchAction;
@@ -77,48 +76,42 @@ public class RemoteNanoparticleCompositionAction extends BaseRemoteSearchAction 
 				particleName, gridNode);
 
 		GridSearchService service = new GridSearchService();
-		try {
-			Nanoparticle particle = service.getRemoteNanoparticle(particleName,
-					gridNode);
-			theForm.set("particle", new ParticleBean(particle));
-			ParticleComposition comp = service.getRemoteComposition(
-					compositionId, particleName, gridNode);	
-			
-			CompositionBean compositionBean = new CompositionBean(comp);
-			if (particleType
-					.equalsIgnoreCase(CaNanoLabConstants.COMPOSITION_DENDRIMER_TYPE)) {
-				DendrimerBean dendrimer = new DendrimerBean(
-						(DendrimerComposition) comp);
-				theForm.set("dendrimer", dendrimer);
-			} else if (particleType
-					.equalsIgnoreCase(CaNanoLabConstants.COMPOSITION_POLYMER_TYPE)) {
-				PolymerBean polymer = new PolymerBean((PolymerComposition) comp);
-				theForm.set("polymer", polymer);
-			} else if (particleType
-					.equalsIgnoreCase(CaNanoLabConstants.COMPOSITION_LIPOSOME_TYPE)) {
-				LiposomeBean liposome = new LiposomeBean(
-						(LiposomeComposition) comp);
-				theForm.set("liposome", liposome);
-			} else if (particleType
-					.equalsIgnoreCase(CaNanoLabConstants.COMPOSITION_FULLERENE_TYPE)) {
-				FullereneBean fullerene = new FullereneBean(
-						(FullereneComposition) comp);
-				theForm.set("fullerene", fullerene);
-			} else if (particleType
-					.equalsIgnoreCase(CaNanoLabConstants.COMPOSITION_CARBON_NANOTUBE_TYPE)) {
-				CarbonNanotubeBean carbonNanotube = new CarbonNanotubeBean(
-						(CarbonNanotubeComposition) comp);
-				theForm.set("carbonNanotube", carbonNanotube);
-			} else if (particleType
-					.equalsIgnoreCase(CaNanoLabConstants.COMPOSITION_EMULSION_TYPE)) {
-				EmulsionBean emulsion = new EmulsionBean(
-						(EmulsionComposition) comp);
-				theForm.set("emulsion", emulsion);
-			}
-			theForm.set("composition", compositionBean);
-		} catch (Exception e) {
-			throw new GridQueryException(gridNodeHost);
+		Nanoparticle particle = service.getRemoteNanoparticle(particleName,
+				gridNode);
+		theForm.set("particle", new ParticleBean(particle));
+		ParticleComposition comp = service.getRemoteComposition(compositionId,
+				particleName, gridNode);
+
+		CompositionBean compositionBean = new CompositionBean(comp);
+		if (particleType
+				.equalsIgnoreCase(CaNanoLabConstants.COMPOSITION_DENDRIMER_TYPE)) {
+			DendrimerBean dendrimer = new DendrimerBean(
+					(DendrimerComposition) comp);
+			theForm.set("dendrimer", dendrimer);
+		} else if (particleType
+				.equalsIgnoreCase(CaNanoLabConstants.COMPOSITION_POLYMER_TYPE)) {
+			PolymerBean polymer = new PolymerBean((PolymerComposition) comp);
+			theForm.set("polymer", polymer);
+		} else if (particleType
+				.equalsIgnoreCase(CaNanoLabConstants.COMPOSITION_LIPOSOME_TYPE)) {
+			LiposomeBean liposome = new LiposomeBean((LiposomeComposition) comp);
+			theForm.set("liposome", liposome);
+		} else if (particleType
+				.equalsIgnoreCase(CaNanoLabConstants.COMPOSITION_FULLERENE_TYPE)) {
+			FullereneBean fullerene = new FullereneBean(
+					(FullereneComposition) comp);
+			theForm.set("fullerene", fullerene);
+		} else if (particleType
+				.equalsIgnoreCase(CaNanoLabConstants.COMPOSITION_CARBON_NANOTUBE_TYPE)) {
+			CarbonNanotubeBean carbonNanotube = new CarbonNanotubeBean(
+					(CarbonNanotubeComposition) comp);
+			theForm.set("carbonNanotube", carbonNanotube);
+		} else if (particleType
+				.equalsIgnoreCase(CaNanoLabConstants.COMPOSITION_EMULSION_TYPE)) {
+			EmulsionBean emulsion = new EmulsionBean((EmulsionComposition) comp);
+			theForm.set("emulsion", emulsion);
 		}
+		theForm.set("composition", compositionBean);
 
 		ActionForward forward = mapping.findForward("success");
 		return forward;

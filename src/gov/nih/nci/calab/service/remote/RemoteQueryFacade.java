@@ -1,5 +1,7 @@
 package gov.nih.nci.calab.service.remote;
 
+import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
+
 import java.util.List;
 
 /**
@@ -10,9 +12,11 @@ import java.util.List;
  */
 public interface RemoteQueryFacade {
 
-	public boolean isPublicId(String dataId) throws Exception;
+	public boolean isPublicId(String dataId) throws CaNanoLabSecurityException;
 
-	public List<String> getPublicDataIds(String[] dataIds) throws Exception;
+	public List<String> getPublicDataIds(String[] dataIds)
+			throws CaNanoLabSecurityException;
 
-	public byte[] retrievePublicFileContent(Long fileId) throws Exception;
+	public byte[] retrievePublicFileContent(Long fileId)
+			throws CaNanoLabSecurityException;
 }

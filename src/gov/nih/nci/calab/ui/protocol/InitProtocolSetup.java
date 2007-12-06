@@ -1,6 +1,10 @@
 package gov.nih.nci.calab.ui.protocol;
 
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
+import gov.nih.nci.calab.exception.CaNanoLabException;
+import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
+import gov.nih.nci.calab.exception.ParticleCharacterizationException;
+import gov.nih.nci.calab.exception.ProtocolException;
 import gov.nih.nci.calab.service.common.LookupService;
 import gov.nih.nci.calab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.calab.service.protocol.SearchProtocolService;
@@ -23,18 +27,17 @@ import javax.servlet.http.HttpSession;
 public class InitProtocolSetup {
 	private static SearchProtocolService searchProtocolService;
 
-	private static LookupService lookupService;
-
-	private InitProtocolSetup() throws Exception {
+	private InitProtocolSetup() throws CaNanoLabSecurityException {
 		searchProtocolService = new SearchProtocolService();
-		lookupService = new LookupService();
 	}
 
-	public static InitProtocolSetup getInstance() throws Exception {
+	public static InitProtocolSetup getInstance()
+			throws CaNanoLabSecurityException {
 		return new InitProtocolSetup();
 	}
 
-	public void setAllProtocolTypes(HttpSession session) throws Exception {
+	public void setAllProtocolTypes(HttpSession session)
+			throws CaNanoLabException {
 		if (session.getAttribute("protocolTypes") == null
 				|| session.getAttribute("newProtocolCreated") != null) {
 			SortedSet<String> protocolTypes = LookupService
@@ -45,7 +48,8 @@ public class InitProtocolSetup {
 	}
 
 	public void setProtocolFilesByCharName(HttpSession session, String charName)
-			throws Exception {
+			throws ParticleCharacterizationException,
+			CaNanoLabSecurityException, ProtocolException {
 		Map<String, String> charNameToCharCategory = null;
 		// retrieve from application context if there
 		if (session.getServletContext().getAttribute(
@@ -77,7 +81,7 @@ public class InitProtocolSetup {
 					.equals(CaNanoLabConstants.IN_VITRO_CHARACTERIZATION_CATEGORY)) {
 				protocolType = CaNanoLabConstants.INVITRO_ASSAY_PROTOCOL;
 			} else {
-				protocolType = null; //update if in vivo is implemented
+				protocolType = null; // update if in vivo is implemented
 			}
 		}
 		List<ProtocolFileBean> protocolFiles = null;

@@ -10,7 +10,7 @@ import org.displaytag.decorator.TableDecorator;
  * 
  */
 public class AliquotDecorator extends TableDecorator {
-	public String getAliquotId() throws Exception {
+	public String getAliquotId() {
 		AliquotBean aliquot = (AliquotBean) getCurrentRowObject();
 		String checked = "";
 		if (getListIndex() == 0) {
