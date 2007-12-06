@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.5 2007-12-06 09:01:43 pansu Exp $ */
+/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.6 2007-12-06 14:18:30 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
@@ -98,8 +98,8 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleId = request.getParameter("particleId");
-		NanoparticleService searchtNanoparticleService = new NanoparticleService();
-		ParticleBean particle = searchtNanoparticleService
+		NanoparticleService searchNanoparticleService = new NanoparticleService();
+		ParticleBean particle = searchNanoparticleService
 				.getGeneralInfo(particleId);
 		theForm.set("particle", particle);
 		request.getSession().setAttribute("newParticleCreated", "true");
