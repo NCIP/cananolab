@@ -201,7 +201,8 @@ public class GridSearchService {
 	 * @throws GridQueryException
 	 */
 	public Map<String, List<CharacterizationBean>> getRemoteCharacterizationMap(
-			String particleName, GridNodeBean gridNode) throws GridQueryException {
+			String particleName, GridNodeBean gridNode)
+			throws GridQueryException {
 		Map<String, List<CharacterizationBean>> charTypeChars = null;
 
 		try {
@@ -210,7 +211,7 @@ public class GridSearchService {
 			// get saved characterizations saved in a remote node
 			Characterization[] gridCharacterizations = gridClient
 					.getCharacterizationsByParticleName(particleName);
-			
+
 			// get all characterization type characterizations
 			charTypeChars = new HashMap<String, List<CharacterizationBean>>();
 
@@ -240,16 +241,16 @@ public class GridSearchService {
 						charTypeChars.put(charType, newCharBeans);
 					}
 				}
-			}
-			
-//			 put compositions in the map separately
-			List<CharacterizationBean> compositions = new ArrayList<CharacterizationBean>();
-			for (Characterization achar : gridCharacterizations) {
-				if (achar instanceof ParticleComposition) {
-					compositions.add(new CharacterizationBean(achar));
+
+				// put compositions in the map separately
+				List<CharacterizationBean> compositions = new ArrayList<CharacterizationBean>();
+				for (Characterization achar : gridCharacterizations) {
+					if (achar instanceof ParticleComposition) {
+						compositions.add(new CharacterizationBean(achar));
+					}
 				}
+				charTypeChars.put("Composition", compositions);
 			}
-			charTypeChars.put("Composition", compositions);
 		} catch (Exception e) {
 			logger.error("Error in getting remote characterization map: " + e);
 			throw new GridQueryException();
@@ -258,7 +259,8 @@ public class GridSearchService {
 	}
 
 	public Map<String, List<FunctionBean>> getRemoteFunctionMap(
-			String particleName, GridNodeBean gridNode) throws GridQueryException {
+			String particleName, GridNodeBean gridNode)
+			throws GridQueryException {
 		Map<String, List<FunctionBean>> funcTypeFuncs = null;
 		try {
 			CaNanoLabSvcClient gridClient = new CaNanoLabSvcClient(gridNode
@@ -338,7 +340,8 @@ public class GridSearchService {
 	}
 
 	public ParticleComposition getRemoteComposition(String compositionId,
-			String particleName, GridNodeBean gridNode) throws GridQueryException {
+			String particleName, GridNodeBean gridNode)
+			throws GridQueryException {
 		ParticleComposition comp = null;
 		try {
 			CaNanoLabSvcClient gridClient = new CaNanoLabSvcClient(gridNode
