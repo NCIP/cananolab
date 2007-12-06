@@ -50,12 +50,6 @@
 			value="/bodyMessage.jsp?bundle=particle" />
 	</definition>
 
-	<definition name="particle.characterizationMessage"
-		extends="particle.characterization">
-		<put name="calabContent"
-			value="/particle/bodyCharacterizationMessage.jsp?bundle=particle" />
-	</definition>
-
 	<!-- definition for the nanoparticle composition page -->
 	<definition name="particle.composition"
 		extends="particle.physicalCharacterization">
