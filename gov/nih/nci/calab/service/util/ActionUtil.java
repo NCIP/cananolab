@@ -1,5 +1,7 @@
 package gov.nih.nci.calab.service.util;
 
+import gov.nih.nci.calab.exception.CaNanoLabException;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -27,10 +29,11 @@ public class ActionUtil {
 	}
 
 	public void writeBinaryStream(File file, HttpServletResponse response)
-			throws Exception {
+			throws CaNanoLabException {
 		if (file == null || response == null) {
-			throw new Exception("Unable to write file to HttpServletResponse: "
-					+ "Either pathName or response is null.");
+			throw new CaNanoLabException(
+					"Unable to write file to HttpServletResponse: "
+							+ "Either pathName or response is null.");
 		}
 		try {
 			// set a non-standard content type to force brower to open Save As
@@ -50,9 +53,9 @@ public class ActionUtil {
 			// ServletOutputStream
 			bis.close();
 		} catch (Exception e) {
-			throw new Exception("Unable to write file to client, exception is "
-					+ e.toString());
+			throw new CaNanoLabException(
+					"Unable to write file to client, exception is "
+							+ e.toString());
 		}
-
 	}
 }

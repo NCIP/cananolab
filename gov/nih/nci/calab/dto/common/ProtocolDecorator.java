@@ -1,5 +1,6 @@
 package gov.nih.nci.calab.dto.common;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 import org.displaytag.decorator.TableDecorator;
@@ -40,7 +41,7 @@ public class ProtocolDecorator extends TableDecorator {
 		return sortableLink;
 	}
 
-	public SortableName getRemoteDownloadURL() throws Exception {
+	public SortableName getRemoteDownloadURL() throws UnsupportedEncodingException {
 		LabFileBean file = (LabFileBean) getCurrentRowObject();
 		String fileName = URLEncoder.encode(file.getName(), "UTF-8");
 		String gridNode = URLEncoder.encode(file.getGridNode(), "UTF-8");

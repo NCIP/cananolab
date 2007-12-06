@@ -54,7 +54,10 @@ import gov.nih.nci.calab.dto.characterization.physical.SurfaceBean;
 import gov.nih.nci.calab.dto.common.InstrumentBean;
 import gov.nih.nci.calab.dto.common.InstrumentConfigBean;
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
+import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
+import gov.nih.nci.calab.exception.ParticleCharacterizationException;
 import gov.nih.nci.calab.service.common.FileService;
+import gov.nih.nci.calab.service.common.LookupService;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
@@ -89,12 +92,13 @@ public class NanoparticleCharacterizationService {
 	// remove existing visibilities for the data
 	private UserService userService;
 
-	public NanoparticleCharacterizationService() throws Exception {
+	public NanoparticleCharacterizationService()
+			throws CaNanoLabSecurityException {
 		this.userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
 	}
 
 	public CharacterizationBean getCharacterizationBy(String charId)
-			throws Exception {
+			throws ParticleCharacterizationException {
 		CharacterizationBean charBean = null;
 		try {
 			Session session = HibernateUtil.currentSession();
@@ -126,7 +130,7 @@ public class NanoparticleCharacterizationService {
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			logger.error("Problem finding characterization of ID " + charId, e);
-			throw e;
+			throw new ParticleCharacterizationException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -134,11 +138,10 @@ public class NanoparticleCharacterizationService {
 	}
 
 	public List<CharacterizationBean> getCharacterizationInfo(String particleId)
-			throws Exception {
+			throws ParticleCharacterizationException {
 		List<CharacterizationBean> charBeans = new ArrayList<CharacterizationBean>();
 
 		try {
-
 			Session session = HibernateUtil.currentSession();
 			HibernateUtil.beginTransaction();
 			List results = session
@@ -159,7 +162,7 @@ public class NanoparticleCharacterizationService {
 		} catch (Exception e) {
 			logger.error("Problem finding characterization info for particle: "
 					+ particleId, e);
-			throw e;
+			throw new ParticleCharacterizationException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -167,7 +170,8 @@ public class NanoparticleCharacterizationService {
 	}
 
 	public List<CharacterizationSummaryBean> getParticleCharacterizationSummaryByName(
-			String charName, String particleId) throws Exception {
+			String charName, String particleId)
+			throws ParticleCharacterizationException {
 		List<CharacterizationSummaryBean> charSummaryBeans = new ArrayList<CharacterizationSummaryBean>();
 		List<CharacterizationBean> charBeans = getParticleCharacterizationsByName(
 				charName, particleId);
@@ -204,7 +208,8 @@ public class NanoparticleCharacterizationService {
 	}
 
 	public List<CharacterizationBean> getParticleCharacterizationsByName(
-			String charName, String particleId) throws Exception {
+			String charName, String particleId)
+			throws ParticleCharacterizationException {
 		List<CharacterizationBean> charBeans = new ArrayList<CharacterizationBean>();
 		try {
 			Session session = HibernateUtil.currentSession();
@@ -246,7 +251,7 @@ public class NanoparticleCharacterizationService {
 		} catch (Exception e) {
 			logger.error("Problem finding characterizations with name "
 					+ charName, e);
-			throw e;
+			throw new ParticleCharacterizationException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -259,10 +264,11 @@ public class NanoparticleCharacterizationService {
 	 * @param particleType
 	 * @param particleName
 	 * @param achar
-	 * @throws Exception
+	 * @throws ParticleCharacterizationException
 	 */
 	private void addParticleCharacterization(Characterization achar,
-			CharacterizationBean charBean) throws Exception {
+			CharacterizationBean charBean)
+			throws ParticleCharacterizationException {
 
 		// if ID is not set save to the database otherwise update
 		Nanoparticle particle = null;
@@ -333,7 +339,7 @@ public class NanoparticleCharacterizationService {
 		} catch (Exception e) {
 			logger.error("Problem saving characterization. ", e);
 			HibernateUtil.rollbackTransaction();
-			throw e;
+			throw new ParticleCharacterizationException();
 		} finally {
 			HibernateUtil.closeSession();
 			// skip if there is database error above and achar has not
@@ -365,7 +371,7 @@ public class NanoparticleCharacterizationService {
 
 	public void addNewCharacterizationDataDropdowns(
 			CharacterizationBean charBean, String characterizationName)
-			throws Exception {
+			throws ParticleCharacterizationException {
 		try {
 			Session session = HibernateUtil.currentSession();
 			HibernateUtil.beginTransaction();
@@ -376,7 +382,7 @@ public class NanoparticleCharacterizationService {
 					// add new characterization file type if necessary
 					if (derivedBioAssayDataBean.getType().length() > 0) {
 						CharacterizationFileType fileType = new CharacterizationFileType();
-						NanoparticleService.addLookupType(session, fileType,
+						LookupService.addLookupType(session, fileType,
 								derivedBioAssayDataBean.getType());
 					}
 					// add new derived data cateory
@@ -391,7 +397,7 @@ public class NanoparticleCharacterizationService {
 						addDatumName(session, datumBean.getName(),
 								characterizationName);
 						MeasureType measureType = new MeasureType();
-						NanoparticleService.addLookupType(session, measureType,
+						LookupService.addLookupType(session, measureType,
 								datumBean.getStatisticsType());
 						addMeasureUnit(session, datumBean.getUnit(),
 								characterizationName);
@@ -404,7 +410,7 @@ public class NanoparticleCharacterizationService {
 			logger
 					.error("Problem saving characterization data drop downs. ",
 							e);
-			throw e;
+			throw new ParticleCharacterizationException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -415,8 +421,7 @@ public class NanoparticleCharacterizationService {
 	 * the same particle
 	 */
 	private boolean isCharacterizationViewTitleUsed(Session session,
-			Characterization achar, CharacterizationBean charBean)
-			throws Exception {
+			Characterization achar, CharacterizationBean charBean) {
 		String viewTitleQuery = "";
 		if (charBean.getId() == null) {
 			viewTitleQuery = "select count(achar.identificationName) from Nanoparticle particle join particle.characterizationCollection achar where particle.name='"
@@ -456,21 +461,26 @@ public class NanoparticleCharacterizationService {
 	 * @param fileBean
 	 */
 	public void saveCharacterizationFile(DerivedBioAssayDataBean fileBean)
-			throws Exception {
+			throws ParticleCharacterizationException {
 		byte[] fileContent = fileBean.getFileContent();
 		String rootPath = PropertyReader.getProperty(
 				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
-		if (fileContent != null) {
-			FileService fileService = new FileService();
-			fileService.writeFile(fileContent, rootPath + File.separator
-					+ fileBean.getUri());
+		try {
+			if (fileContent != null) {
+				FileService fileService = new FileService();
+				fileService.writeFile(fileContent, rootPath + File.separator
+						+ fileBean.getUri());
+			}
+			this.userService.setVisiblity(fileBean.getId(), fileBean
+					.getVisibilityGroups());
+		} catch (Exception e) {
+			logger.error("Error saving characterization file", e);
+			throw new ParticleCharacterizationException();
 		}
-		this.userService.setVisiblity(fileBean.getId(), fileBean
-				.getVisibilityGroups());
 	}
 
 	private void addInstrumentConfig(InstrumentConfigBean instrumentConfigBean,
-			Characterization doChar, Session session) throws Exception {
+			Characterization doChar, Session session) {
 		InstrumentBean instrumentBean = instrumentConfigBean
 				.getInstrumentBean();
 
@@ -521,20 +531,20 @@ public class NanoparticleCharacterizationService {
 	}
 
 	private void addProtocolFile(ProtocolFileBean protocolFileBean,
-			Characterization doChar, Session session) throws Exception {
+			Characterization doChar, Session session) {
 		if (protocolFileBean.getId() != null
 				&& protocolFileBean.getId().length() > 0) {
 			ProtocolFile protocolFile = (ProtocolFile) session.get(
 					ProtocolFile.class, new Long(protocolFileBean.getId()));
 			doChar.setProtocolFile(protocolFile);
-			//updated protocolFileBean in charBean
+			// updated protocolFileBean in charBean
 			protocolFileBean.setName(protocolFile.getFilename());
 			protocolFileBean.setUri(protocolFile.getUri());
 			protocolFileBean.setTitle(protocolFile.getTitle());
 			protocolFileBean.setDescription(protocolFile.getDescription());
 			protocolFileBean.setCreatedBy(protocolFile.getCreatedBy());
 			protocolFileBean.setCreatedDate(protocolFile.getCreatedDate());
-			protocolFileBean.setVersion(protocolFile.getVersion());			
+			protocolFileBean.setVersion(protocolFile.getVersion());
 		}
 	}
 
@@ -542,9 +552,10 @@ public class NanoparticleCharacterizationService {
 	 * Saves the size characterization to the database
 	 * 
 	 * @param size
-	 * @throws Exception
+	 * @throws ParticleCharacterizationException
 	 */
-	public void addParticleSize(CharacterizationBean size) throws Exception {
+	public void addParticleSize(CharacterizationBean size)
+			throws ParticleCharacterizationException {
 		Size doSize = new Size();
 		addParticleCharacterization(doSize, size);
 	}
@@ -555,10 +566,10 @@ public class NanoparticleCharacterizationService {
 	 * @param particleType
 	 * @param particleName
 	 * @param surface
-	 * @throws Exception
+	 * @throws ParticleCharacterizationException
 	 */
 	public void addParticleSurface(CharacterizationBean surface)
-			throws Exception {
+			throws ParticleCharacterizationException {
 		Surface doSurface = new Surface();
 		addParticleCharacterization(doSurface, surface);
 		// addMeasureUnit(doSurface.getCharge().getUnitOfMeasurement(),
@@ -571,7 +582,8 @@ public class NanoparticleCharacterizationService {
 	}
 
 	private void addDatumName(Session session, String name,
-			String characterizationName) throws Exception {
+			String characterizationName)
+			throws ParticleCharacterizationException {
 		if (name != null && name.length() > 0) {
 			List results = session.createQuery(
 					"select count(distinct name) from DatumName"
@@ -593,7 +605,7 @@ public class NanoparticleCharacterizationService {
 	}
 
 	private void addDerivedDataCategory(Session session, String name,
-			String characterizationName) throws Exception {
+			String characterizationName) {
 		if (name != null && name.length() > 0) {
 			List results = session.createQuery(
 					"select count(distinct name) from DerivedBioAssayDataCategory"
@@ -613,8 +625,7 @@ public class NanoparticleCharacterizationService {
 		}
 	}
 
-	private void addMeasureUnit(Session session, String unit, String type)
-			throws Exception {
+	private void addMeasureUnit(Session session, String unit, String type) {
 		if (unit == null || unit.length() == 0) {
 			return;
 		}
@@ -635,7 +646,7 @@ public class NanoparticleCharacterizationService {
 	}
 
 	private void addLookupType(LookupType lookupType, String type)
-			throws Exception {
+			throws ParticleCharacterizationException {
 		if (type != null && type.length() > 0) {
 			// if ID is not set save to the database otherwise update
 			String className = lookupType.getClass().getSimpleName();
@@ -657,7 +668,7 @@ public class NanoparticleCharacterizationService {
 			} catch (Exception e) {
 				HibernateUtil.rollbackTransaction();
 				logger.error("Problem saving look up type: " + type, e);
-				throw e;
+				throw new ParticleCharacterizationException();
 			} finally {
 				HibernateUtil.closeSession();
 			}
@@ -668,10 +679,10 @@ public class NanoparticleCharacterizationService {
 	 * Saves the molecular weight characterization to the database
 	 * 
 	 * @param molecularWeight
-	 * @throws Exception
+	 * @throws ParticleCharacterizationException
 	 */
 	public void addParticleMolecularWeight(CharacterizationBean molecularWeight)
-			throws Exception {
+			throws ParticleCharacterizationException {
 		MolecularWeight doMolecularWeight = new MolecularWeight();
 		addParticleCharacterization(doMolecularWeight, molecularWeight);
 	}
@@ -680,10 +691,10 @@ public class NanoparticleCharacterizationService {
 	 * Saves the morphology characterization to the database
 	 * 
 	 * @param morphology
-	 * @throws Exception
+	 * @throws ParticleCharacterizationException
 	 */
 	public void addParticleMorphology(MorphologyBean morphology)
-			throws Exception {
+			throws ParticleCharacterizationException {
 		Morphology doMorphology = new Morphology();
 		addParticleCharacterization(doMorphology, morphology);
 		MorphologyType morphologyType = new MorphologyType();
@@ -694,9 +705,10 @@ public class NanoparticleCharacterizationService {
 	 * Saves the shape characterization to the database
 	 * 
 	 * @param shape
-	 * @throws Exception
+	 * @throws ParticleCharacterizationException
 	 */
-	public void addParticleShape(ShapeBean shape) throws Exception {
+	public void addParticleShape(ShapeBean shape)
+			throws ParticleCharacterizationException {
 		Shape doShape = new Shape();
 		addParticleCharacterization(doShape, shape);
 		ShapeType shapeType = new ShapeType();
@@ -707,9 +719,10 @@ public class NanoparticleCharacterizationService {
 	 * Saves the purity characterization to the database
 	 * 
 	 * @param purity
-	 * @throws Exception
+	 * @throws ParticleCharacterizationException
 	 */
-	public void addParticlePurity(CharacterizationBean purity) throws Exception {
+	public void addParticlePurity(CharacterizationBean purity)
+			throws ParticleCharacterizationException {
 		Purity doPurity = new Purity();
 		addParticleCharacterization(doPurity, purity);
 	}
@@ -718,10 +731,10 @@ public class NanoparticleCharacterizationService {
 	 * Saves the solubility characterization to the database
 	 * 
 	 * @param solubility
-	 * @throws Exception
+	 * @throws ParticleCharacterizationException
 	 */
 	public void addParticleSolubility(SolubilityBean solubility)
-			throws Exception {
+			throws ParticleCharacterizationException {
 		Solubility doSolubility = new Solubility();
 		addParticleCharacterization(doSolubility, solubility);
 		SolventType solventType = new SolventType();
@@ -735,9 +748,10 @@ public class NanoparticleCharacterizationService {
 	 * Saves the invitro hemolysis characterization to the database
 	 * 
 	 * @param hemolysis
-	 * @throws Exception
+	 * @throws ParticleCharacterizationException
 	 */
-	public void addHemolysis(CharacterizationBean hemolysis) throws Exception {
+	public void addHemolysis(CharacterizationBean hemolysis)
+			throws ParticleCharacterizationException {
 		Hemolysis doHemolysis = new Hemolysis();
 		addParticleCharacterization(doHemolysis, hemolysis);
 	}
@@ -746,10 +760,10 @@ public class NanoparticleCharacterizationService {
 	 * Saves the invitro coagulation characterization to the database
 	 * 
 	 * @param coagulation
-	 * @throws Exception
+	 * @throws ParticleCharacterizationException
 	 */
 	public void addCoagulation(CharacterizationBean coagulation)
-			throws Exception {
+			throws ParticleCharacterizationException {
 		Coagulation doCoagulation = new Coagulation();
 		addParticleCharacterization(doCoagulation, coagulation);
 	}
@@ -758,10 +772,10 @@ public class NanoparticleCharacterizationService {
 	 * Saves the invitro plate aggregation characterization to the database
 	 * 
 	 * @param plateletAggregation
-	 * @throws Exception
+	 * @throws ParticleCharacterizationException
 	 */
 	public void addPlateletAggregation(CharacterizationBean plateletAggregation)
-			throws Exception {
+			throws ParticleCharacterizationException {
 		PlateletAggregation doPlateletAggregation = new PlateletAggregation();
 		addParticleCharacterization(doPlateletAggregation, plateletAggregation);
 	}
@@ -770,9 +784,10 @@ public class NanoparticleCharacterizationService {
 	 * Saves the invitro chemotaxis characterization to the database
 	 * 
 	 * @param chemotaxis
-	 * @throws Exception
+	 * @throws ParticleCharacterizationException
 	 */
-	public void addChemotaxis(CharacterizationBean chemotaxis) throws Exception {
+	public void addChemotaxis(CharacterizationBean chemotaxis)
+			throws ParticleCharacterizationException {
 		Chemotaxis doChemotaxis = new Chemotaxis();
 		addParticleCharacterization(doChemotaxis, chemotaxis);
 	}
@@ -782,10 +797,11 @@ public class NanoparticleCharacterizationService {
 	 * database
 	 * 
 	 * @param nkCellCytotoxicActivity
-	 * @throws Exception
+	 * @throws ParticleCharacterizationException
 	 */
 	public void addNKCellCytotoxicActivity(
-			CharacterizationBean nkCellCytotoxicActivity) throws Exception {
+			CharacterizationBean nkCellCytotoxicActivity)
+			throws ParticleCharacterizationException {
 		NKCellCytotoxicActivity doNKCellCytotoxicActivity = new NKCellCytotoxicActivity();
 		addParticleCharacterization(doNKCellCytotoxicActivity,
 				nkCellCytotoxicActivity);
@@ -795,10 +811,11 @@ public class NanoparticleCharacterizationService {
 	 * Saves the invitro LeukocyteProliferation characterization to the database
 	 * 
 	 * @param leukocyteProliferation
-	 * @throws Exception
+	 * @throws ParticleCharacterizationException
 	 */
 	public void addLeukocyteProliferation(
-			CharacterizationBean leukocyteProliferation) throws Exception {
+			CharacterizationBean leukocyteProliferation)
+			throws ParticleCharacterizationException {
 		LeukocyteProliferation doLeukocyteProliferation = new LeukocyteProliferation();
 		addParticleCharacterization(doLeukocyteProliferation,
 				leukocyteProliferation);
@@ -808,9 +825,10 @@ public class NanoparticleCharacterizationService {
 	 * Saves the invitro CFU_GM characterization to the database
 	 * 
 	 * @param cfu_gm
-	 * @throws Exception
+	 * @throws ParticleCharacterizationException
 	 */
-	public void addCFU_GM(CharacterizationBean cfu_gm) throws Exception {
+	public void addCFU_GM(CharacterizationBean cfu_gm)
+			throws ParticleCharacterizationException {
 		CFU_GM doCFU_GM = new CFU_GM();
 		addParticleCharacterization(doCFU_GM, cfu_gm);
 	}
@@ -819,10 +837,11 @@ public class NanoparticleCharacterizationService {
 	 * Saves the invitro Complement Activation characterization to the database
 	 * 
 	 * @param complementActivation
-	 * @throws Exception
+	 * @throws ParticleCharacterizationException
 	 */
 	public void addComplementActivation(
-			CharacterizationBean complementActivation) throws Exception {
+			CharacterizationBean complementActivation)
+			throws ParticleCharacterizationException {
 		ComplementActivation doComplementActivation = new ComplementActivation();
 		addParticleCharacterization(doComplementActivation,
 				complementActivation);
@@ -832,10 +851,10 @@ public class NanoparticleCharacterizationService {
 	 * Saves the invitro OxidativeBurst characterization to the database
 	 * 
 	 * @param oxidativeBurst
-	 * @throws Exception
+	 * @throws ParticleCharacterizationException
 	 */
 	public void addOxidativeBurst(CharacterizationBean oxidativeBurst)
-			throws Exception {
+			throws ParticleCharacterizationException {
 		OxidativeBurst doOxidativeBurst = new OxidativeBurst();
 		addParticleCharacterization(doOxidativeBurst, oxidativeBurst);
 	}
@@ -844,10 +863,10 @@ public class NanoparticleCharacterizationService {
 	 * Saves the invitro Phagocytosis characterization to the database
 	 * 
 	 * @param phagocytosis
-	 * @throws Exception
+	 * @throws ParticleCharacterizationException
 	 */
 	public void addPhagocytosis(CharacterizationBean phagocytosis)
-			throws Exception {
+			throws ParticleCharacterizationException {
 		Phagocytosis doPhagocytosis = new Phagocytosis();
 		addParticleCharacterization(doPhagocytosis, phagocytosis);
 	}
@@ -856,10 +875,10 @@ public class NanoparticleCharacterizationService {
 	 * Saves the invitro CytokineInduction characterization to the database
 	 * 
 	 * @param cytokineInduction
-	 * @throws Exception
+	 * @throws ParticleCharacterizationException
 	 */
 	public void addCytokineInduction(CharacterizationBean cytokineInduction)
-			throws Exception {
+			throws ParticleCharacterizationException {
 		CytokineInduction doCytokineInduction = new CytokineInduction();
 		addParticleCharacterization(doCytokineInduction, cytokineInduction);
 	}
@@ -868,10 +887,10 @@ public class NanoparticleCharacterizationService {
 	 * Saves the invitro plasma protein binding characterization to the database
 	 * 
 	 * @param plasmaProteinBinding
-	 * @throws Exception
+	 * @throws ParticleCharacterizationException
 	 */
 	public void addProteinBinding(CharacterizationBean plasmaProteinBinding)
-			throws Exception {
+			throws ParticleCharacterizationException {
 		PlasmaProteinBinding doProteinBinding = new PlasmaProteinBinding();
 		addParticleCharacterization(doProteinBinding, plasmaProteinBinding);
 	}
@@ -880,10 +899,10 @@ public class NanoparticleCharacterizationService {
 	 * Saves the invitro binding characterization to the database
 	 * 
 	 * @param cellViability
-	 * @throws Exception
+	 * @throws ParticleCharacterizationException
 	 */
 	public void addCellViability(CytotoxicityBean cellViability)
-			throws Exception {
+			throws ParticleCharacterizationException {
 		CellViability doCellViability = new CellViability();
 		addParticleCharacterization(doCellViability, cellViability);
 		CellLineType cellLineType = new CellLineType();
@@ -895,10 +914,10 @@ public class NanoparticleCharacterizationService {
 	 * database
 	 * 
 	 * @param enzymeInduction
-	 * @throws Exception
+	 * @throws ParticleCharacterizationException
 	 */
 	public void addEnzymeInduction(CharacterizationBean enzymeInduction)
-			throws Exception {
+			throws ParticleCharacterizationException {
 		EnzymeInduction doEnzymeInduction = new EnzymeInduction();
 		addParticleCharacterization(doEnzymeInduction, enzymeInduction);
 	}
@@ -907,10 +926,10 @@ public class NanoparticleCharacterizationService {
 	 * Saves the invitro OxidativeStress characterization to the database
 	 * 
 	 * @param oxidativeStress
-	 * @throws Exception
+	 * @throws ParticleCharacterizationException
 	 */
 	public void addOxidativeStress(CharacterizationBean oxidativeStress)
-			throws Exception {
+			throws ParticleCharacterizationException {
 		OxidativeStress doOxidativeStress = new OxidativeStress();
 		addParticleCharacterization(doOxidativeStress, oxidativeStress);
 	}
@@ -919,10 +938,10 @@ public class NanoparticleCharacterizationService {
 	 * Saves the invitro Caspase3Activation characterization to the database
 	 * 
 	 * @param caspase3Activation
-	 * @throws Exception
+	 * @throws ParticleCharacterizationException
 	 */
 	public void addCaspase3Activation(CytotoxicityBean caspase3Activation)
-			throws Exception {
+			throws ParticleCharacterizationException {
 		Caspase3Activation doCaspase3Activation = new Caspase3Activation();
 		addParticleCharacterization(doCaspase3Activation, caspase3Activation);
 		CellLineType cellLineType = new CellLineType();
@@ -936,7 +955,8 @@ public class NanoparticleCharacterizationService {
 	 * @return
 	 */
 	public DerivedBioAssayDataBean getDerivedBioAssayData(String fileId)
-			throws Exception {
+			throws ParticleCharacterizationException,
+			CaNanoLabSecurityException {
 
 		DerivedBioAssayDataBean fileBean = null;
 		try {
@@ -952,7 +972,7 @@ public class NanoparticleCharacterizationService {
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			logger.error("Problem getting file with file ID: " + fileId, e);
-			throw e;
+			throw new ParticleCharacterizationException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -969,7 +989,8 @@ public class NanoparticleCharacterizationService {
 	/**
 	 * Delete the characterizations
 	 */
-	public void deleteCharacterizations(String[] charIds) throws Exception {
+	public void deleteCharacterizations(String[] charIds)
+			throws ParticleCharacterizationException {
 		// if ID is not set save to the database otherwise update
 		try {
 			Session session = HibernateUtil.currentSession();
@@ -995,14 +1016,15 @@ public class NanoparticleCharacterizationService {
 		} catch (Exception e) {
 			HibernateUtil.rollbackTransaction();
 			logger.error("Problem deleting characterization: ", e);
-			throw new Exception(
+			throw new ParticleCharacterizationException(
 					"The characterization is no longer exist in the database, please login again to refresh the view.");
 		} finally {
 			HibernateUtil.closeSession();
 		}
 	}
 
-	public SortedSet<String> getAllCharacterizationFileTypes() throws Exception {
+	public SortedSet<String> getAllCharacterizationFileTypes()
+			throws ParticleCharacterizationException {
 		SortedSet<String> fileTypes = new TreeSet<String>();
 		try {
 			Session session = HibernateUtil.currentSession();
@@ -1027,7 +1049,7 @@ public class NanoparticleCharacterizationService {
 	}
 
 	public List<CharacterizationTypeBean> getAllCharacterizationTypes()
-			throws Exception {
+			throws ParticleCharacterizationException {
 		List<CharacterizationTypeBean> charTypes = new ArrayList<CharacterizationTypeBean>();
 
 		try {
@@ -1062,7 +1084,8 @@ public class NanoparticleCharacterizationService {
 	}
 
 	public Map<String, SortedSet<String>> getDerivedDataCategoryMap(
-			String characterizationName) throws Exception {
+			String characterizationName)
+			throws ParticleCharacterizationException {
 		Map<String, SortedSet<String>> categoryMap = new HashMap<String, SortedSet<String>>();
 
 		try {
@@ -1101,7 +1124,7 @@ public class NanoparticleCharacterizationService {
 	}
 
 	public SortedSet<String> getDerivedDatumNames(String characterizationName)
-			throws Exception {
+			throws ParticleCharacterizationException {
 		SortedSet<String> datumNames = new TreeSet<String>();
 		try {
 			Session session = HibernateUtil.currentSession();
@@ -1130,7 +1153,8 @@ public class NanoparticleCharacterizationService {
 	}
 
 	public SortedSet<String> getDerivedDataCategories(
-			String characterizationName) throws Exception {
+			String characterizationName)
+			throws ParticleCharacterizationException {
 		SortedSet<String> categories = new TreeSet<String>();
 
 		try {
@@ -1150,9 +1174,8 @@ public class NanoparticleCharacterizationService {
 					.error(
 							"Problem to retrieve all derived bioassay data categories.",
 							e);
-			throw new RuntimeException(
-					"Problem to retrieve all derived bioassay data categories.",
-					e);
+			throw new ParticleCharacterizationException(
+					"Problem to retrieve all derived bioassay data categories.");
 
 		} finally {
 			HibernateUtil.closeSession();
@@ -1160,7 +1183,8 @@ public class NanoparticleCharacterizationService {
 		return categories;
 	}
 
-	public SortedSet<String> getAllCharacterizationSources() throws Exception {
+	public SortedSet<String> getAllCharacterizationSources()
+			throws ParticleCharacterizationException {
 		SortedSet<String> sources = new TreeSet<String>();
 
 		try {
@@ -1177,7 +1201,7 @@ public class NanoparticleCharacterizationService {
 			logger
 					.error("Problem to retrieve all Characterization Sources.",
 							e);
-			throw new RuntimeException(
+			throw new ParticleCharacterizationException(
 					"Problem to retrieve all Characterization Sources. ");
 		} finally {
 			HibernateUtil.closeSession();
@@ -1188,7 +1212,8 @@ public class NanoparticleCharacterizationService {
 		return sources;
 	}
 
-	public SortedSet<String> getAllManufacturers() throws Exception {
+	public SortedSet<String> getAllManufacturers()
+			throws ParticleCharacterizationException {
 		SortedSet<String> manufacturers = new TreeSet<String>();
 		try {
 			Session session = HibernateUtil.currentSession();
@@ -1203,8 +1228,8 @@ public class NanoparticleCharacterizationService {
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			logger.error("Problem to retrieve all manufacturers. ", e);
-			throw new RuntimeException(
-					"Problem to retrieve all manufacturers. ", e);
+			throw new ParticleCharacterizationException(
+					"Problem to retrieve all manufacturers.");
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -1212,7 +1237,7 @@ public class NanoparticleCharacterizationService {
 	}
 
 	public Map<String, SortedSet<String>> getAllInstrumentManufacturers()
-			throws Exception {
+			throws ParticleCharacterizationException {
 		Map<String, SortedSet<String>> instrumentManufacturers = new HashMap<String, SortedSet<String>>();
 
 		try {
@@ -1251,7 +1276,7 @@ public class NanoparticleCharacterizationService {
 					.error(
 							"Problem to retrieve manufacturers for intrument types ",
 							e);
-			throw new RuntimeException(
+			throw new ParticleCharacterizationException(
 					"Problem to retrieve manufacturers for intrument types.");
 		} finally {
 			HibernateUtil.closeSession();
@@ -1259,7 +1284,8 @@ public class NanoparticleCharacterizationService {
 		return instrumentManufacturers;
 	}
 
-	public List<InstrumentBean> getAllInstruments() throws Exception {
+	public List<InstrumentBean> getAllInstruments()
+			throws ParticleCharacterizationException {
 		List<InstrumentBean> instruments = new ArrayList<InstrumentBean>();
 
 		try {
@@ -1275,7 +1301,8 @@ public class NanoparticleCharacterizationService {
 
 		} catch (Exception e) {
 			logger.error("Problem to retrieve all instruments. ", e);
-			throw new RuntimeException("Problem to retrieve all intruments. ");
+			throw new ParticleCharacterizationException(
+					"Problem to retrieve all intruments. ");
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -1288,7 +1315,7 @@ public class NanoparticleCharacterizationService {
 	 *         characterizations.
 	 */
 	public Map<String, List<CharacterizationBean>> getCharacterizationTypeCharacterizations()
-			throws Exception {
+			throws ParticleCharacterizationException {
 		Map<String, List<CharacterizationBean>> charTypeChars = new HashMap<String, List<CharacterizationBean>>();
 
 		try {
@@ -1332,7 +1359,7 @@ public class NanoparticleCharacterizationService {
 					.error(
 							"Problem to retrieve all characterization type characterizations. ",
 							e);
-			throw new RuntimeException(
+			throw new ParticleCharacterizationException(
 					"Problem to retrieve all characteriztaion type characterizations. ");
 		} finally {
 			HibernateUtil.closeSession();
@@ -1343,7 +1370,7 @@ public class NanoparticleCharacterizationService {
 	}
 
 	public Map<String, String> getCharacterizationCategoryMap()
-			throws Exception {
+			throws ParticleCharacterizationException {
 		Map<String, String> charNameToCharCategory = new HashMap<String, String>();
 		try {
 			Session session = HibernateUtil.currentSession();
@@ -1362,7 +1389,7 @@ public class NanoparticleCharacterizationService {
 			}
 		} catch (Exception e) {
 			logger.error("Error retrieving characterization catgories", e);
-			throw e;
+			throw new ParticleCharacterizationException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -1375,7 +1402,7 @@ public class NanoparticleCharacterizationService {
 	 *         characterizations.
 	 */
 	public Map<String, Map<String, List<CharacterizationBean>>> getCharacterizationTypeTree()
-			throws Exception {
+			throws ParticleCharacterizationException {
 		Map charTypeChars = new HashMap<String, Map>();
 
 		try {
@@ -1413,7 +1440,7 @@ public class NanoparticleCharacterizationService {
 					.error(
 							"Problem to retrieve all characterization type characterizations. ",
 							e);
-			throw new RuntimeException(
+			throw new ParticleCharacterizationException(
 					"Problem to retrieve all characteriztaion type characterizations. ");
 		} finally {
 			HibernateUtil.closeSession();

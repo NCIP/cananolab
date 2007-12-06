@@ -7,10 +7,11 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.4 2007-11-29 19:20:06 pansu Exp $ */
+/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.5 2007-12-06 09:01:43 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
+import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.calab.service.particle.NanoparticleService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
@@ -112,7 +113,7 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 		return true;
 	}
 
-	public boolean canUserExecute(UserBean user) throws Exception {
+	public boolean canUserExecute(UserBean user) throws CaNanoLabSecurityException {
 		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
 				CaNanoLabConstants.CSM_PG_PARTICLE);
 	}

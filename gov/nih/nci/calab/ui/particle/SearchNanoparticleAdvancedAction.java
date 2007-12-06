@@ -6,11 +6,12 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SearchNanoparticleAdvancedAction.java,v 1.3 2007-11-29 19:20:06 pansu Exp $ */
+/* CVS $Id: SearchNanoparticleAdvancedAction.java,v 1.4 2007-12-06 09:01:43 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.SearchableBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
+import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.calab.service.particle.NanoparticleService;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 
@@ -105,7 +106,8 @@ public class SearchNanoparticleAdvancedAction extends AbstractDispatchAction {
 		return false;
 	}
 
-	public boolean canUserExecute(UserBean user) throws Exception {
+	public boolean canUserExecute(UserBean user)
+			throws CaNanoLabSecurityException {
 		return true;
 	}
 }

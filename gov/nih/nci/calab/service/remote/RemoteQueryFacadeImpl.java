@@ -1,6 +1,7 @@
 package gov.nih.nci.calab.service.remote;
 
 import gov.nih.nci.calab.db.HibernateUtil;
+import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.calab.service.common.FileService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
@@ -27,7 +28,7 @@ public class RemoteQueryFacadeImpl implements RemoteQueryFacade {
 	public RemoteQueryFacadeImpl() {
 	}
 
-	public boolean isPublicId(String dataId) throws Exception {
+	public boolean isPublicId(String dataId) throws CaNanoLabSecurityException {
 		Collection<String> publicDataCollection = getPublicProtectionGroupCollection();
 		if (publicDataCollection.contains(dataId)) {
 			return true;
@@ -37,7 +38,7 @@ public class RemoteQueryFacadeImpl implements RemoteQueryFacade {
 	}
 
 	private Collection<String> getPublicProtectionGroupCollection()
-			throws Exception {
+			throws CaNanoLabSecurityException {
 		Collection<String> publicDataCollection = new ArrayList<String>();
 
 		String query = "select distinct a.PROTECTION_GROUP_NAME from csm_protection_group a, csm_role b, csm_user_group_role_pg c, csm_group d	"
@@ -60,8 +61,7 @@ public class RemoteQueryFacadeImpl implements RemoteQueryFacade {
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			logger.error("error getting public data from CSM database:", e);
-			throw new Exception("error getting public data from CSM database:",
-					e);
+			throw new CaNanoLabSecurityException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -76,7 +76,8 @@ public class RemoteQueryFacadeImpl implements RemoteQueryFacade {
 	 * AssociatedFile or OutputFile.
 	 * 
 	 */
-	public List<String> getPublicDataIds(String[] dataIds) throws Exception {
+	public List<String> getPublicDataIds(String[] dataIds)
+			throws CaNanoLabSecurityException {
 		List<String> publicIds = new ArrayList<String>();
 		Collection<String> publicDataCollection = getPublicProtectionGroupCollection();
 		for (String id : dataIds) {
@@ -87,12 +88,18 @@ public class RemoteQueryFacadeImpl implements RemoteQueryFacade {
 		return publicIds;
 	}
 
-	public byte[] retrievePublicFileContent(Long fileId) throws Exception {
+	public byte[] retrievePublicFileContent(Long fileId)
+			throws CaNanoLabSecurityException {
 		byte[] fileData = null;
 		Collection<String> publicDataCollection = getPublicProtectionGroupCollection();
 		if (publicDataCollection.contains(fileId.toString())) {
-			FileService fileService = new FileService();
-			fileData = fileService.getFileContent(fileId);
+			try {
+				FileService fileService = new FileService();
+				fileData = fileService.getFileContent(fileId);
+			} catch (Exception e) {
+				logger.error("Error getting file content.", e);
+				throw new CaNanoLabSecurityException();
+			}
 		}
 		return fileData;
 	}

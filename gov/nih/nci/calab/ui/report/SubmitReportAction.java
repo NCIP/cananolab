@@ -5,10 +5,11 @@ package gov.nih.nci.calab.ui.report;
  *  
  * @author pansu
  */
-/* CVS $Id: SubmitReportAction.java,v 1.5 2007-11-29 19:20:24 pansu Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.6 2007-12-06 09:01:44 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
+import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.calab.service.common.FileService;
 import gov.nih.nci.calab.service.report.SubmitReportService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
@@ -130,7 +131,7 @@ public class SubmitReportAction extends AbstractDispatchAction {
 		return true;
 	}
 
-	public boolean canUserExecute(UserBean user) throws Exception {
+	public boolean canUserExecute(UserBean user) throws CaNanoLabSecurityException {
 		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
 				CaNanoLabConstants.CSM_PG_REPORT);
 	}

@@ -6,8 +6,8 @@ import gov.nih.nci.cagrid.discovery.client.DiscoveryClient;
 import gov.nih.nci.cagrid.metadata.MetadataUtils;
 import gov.nih.nci.cagrid.metadata.ResourcePropertyHelper;
 import gov.nih.nci.cagrid.metadata.ServiceMetadata;
-import gov.nih.nci.cagrid.metadata.exceptions.RemoteResourcePropertyRetrievalException;
 import gov.nih.nci.calab.dto.remote.GridNodeBean;
+import gov.nih.nci.calab.exception.GridAutoDiscoveryException;
 
 import java.io.Reader;
 import java.io.StringReader;
@@ -36,10 +36,11 @@ public class GridService {
 	 * @param indexServiceURL
 	 * @param domainModelName
 	 * @return
-	 * @throws Exception
+	 * @throws GridAutoDiscoveryException
 	 */
 	public static Map<String, GridNodeBean> discoverServices(
-			String indexServiceURL, String domainModelName) throws Exception {
+			String indexServiceURL, String domainModelName)
+			throws GridAutoDiscoveryException {
 
 		Map<String, GridNodeBean> gridNodeMap = new TreeMap<String, GridNodeBean>();
 		EndpointReferenceType[] services = null;
@@ -52,7 +53,7 @@ public class GridService {
 			logger
 					.error("Error in discovering caNanoLab nodes from the index server:"
 							+ e);
-			throw e;
+			throw new GridAutoDiscoveryException();
 		}
 		if (services != null) {
 			for (EndpointReferenceType service : services) {
@@ -88,10 +89,11 @@ public class GridService {
 					GridNodeBean gridNode = new GridNodeBean(hostName, address,
 							appServiceURL);
 					gridNodeMap.put(hostName, gridNode);
-				} catch (RemoteResourcePropertyRetrievalException e) {
-					logger
-							.error("Can't successfully obtain grid service metadata: "
-									+ address);
+				} catch (Exception e) {
+					logger.error(
+							"Can't successfully obtain grid service metadata: "
+									+ address, e);
+					throw new GridAutoDiscoveryException();
 				}
 			}
 			return gridNodeMap;

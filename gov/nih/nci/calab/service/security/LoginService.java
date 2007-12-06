@@ -1,8 +1,10 @@
 package gov.nih.nci.calab.service.security;
 
+import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.security.AuthenticationManager;
 import gov.nih.nci.security.SecurityServiceProvider;
-import gov.nih.nci.security.exceptions.CSException;
+
+import org.apache.log4j.Logger;
 
 /**
  * The LoginService authenticates users into the calab system.
@@ -15,6 +17,7 @@ import gov.nih.nci.security.exceptions.CSException;
  */
 
 public class LoginService {
+	private Logger logger = Logger.getLogger(LoginService.class);
 
 	String applicationName = null;
 
@@ -29,10 +32,17 @@ public class LoginService {
 	 *            name of the application
 	 */
 
-	public LoginService(String strname) throws Exception {
+	public LoginService(String strname) throws SecurityException {
 		this.applicationName = strname;
-		this.am = SecurityServiceProvider
-				.getAuthenticationManager(this.applicationName);
+		try {
+			this.am = SecurityServiceProvider
+					.getAuthenticationManager(this.applicationName);
+
+		} catch (Exception e) {
+			logger.error(e);
+			throw new SecurityException();
+		}
+
 	}
 
 	/**
@@ -46,7 +56,12 @@ public class LoginService {
 	 * @return boolean identicating whether the user successfully authenticated
 	 */
 	public boolean login(String strUsername, String strPassword)
-			throws CSException {
-		return this.am.login(strUsername, strPassword);
+			throws CaNanoLabSecurityException {
+		try {
+			return this.am.login(strUsername, strPassword);
+		} catch (Exception e) {
+			logger.error(e);
+			throw new CaNanoLabSecurityException("Invalid Credentials.");
+		}
 	}
 }

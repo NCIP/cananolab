@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleFunctionAction.java,v 1.6 2007-12-05 20:01:09 pansu Exp $ */
+/* CVS $Id: NanoparticleFunctionAction.java,v 1.7 2007-12-06 09:01:43 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.function.AgentBean;
@@ -14,7 +14,8 @@ import gov.nih.nci.calab.dto.function.AgentTargetBean;
 import gov.nih.nci.calab.dto.function.FunctionBean;
 import gov.nih.nci.calab.dto.function.LinkageBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
-import gov.nih.nci.calab.exception.CaNanoLabException;
+import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
+import gov.nih.nci.calab.exception.ParticleFunctionException;
 import gov.nih.nci.calab.service.particle.NanoparticleFunctionService;
 import gov.nih.nci.calab.service.particle.NanoparticleService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
@@ -66,7 +67,7 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 					.getAgentTargets()) {
 
 				if (agentTargetBean.getType().length() == 0) {
-					throw new CaNanoLabException(
+					throw new ParticleFunctionException(
 							"Agent target type can not be empty.");
 				}
 			}
@@ -304,7 +305,7 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 		return true;
 	}
 
-	public boolean canUserExecute(UserBean user) throws Exception {
+	public boolean canUserExecute(UserBean user) throws CaNanoLabSecurityException {
 		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
 				CaNanoLabConstants.CSM_PG_PARTICLE);
 	}

@@ -7,6 +7,8 @@ import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.ProtocolBean;
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
+import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
+import gov.nih.nci.calab.exception.ProtocolException;
 import gov.nih.nci.calab.service.report.SearchReportService;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
@@ -36,11 +38,12 @@ public class SearchProtocolService {
 
 	private UserService userService;
 
-	public SearchProtocolService() throws Exception {
+	public SearchProtocolService() throws CaNanoLabSecurityException {
 		this.userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
 	}
 
-	public ProtocolFileBean getProtocolFileBean(String fileId) throws Exception {
+	public ProtocolFileBean getProtocolFileBean(String fileId)
+			throws ProtocolException, CaNanoLabSecurityException {
 		ProtocolFileBean pfb = new ProtocolFileBean();
 		try {
 			Session session = HibernateUtil.currentSession();
@@ -60,7 +63,7 @@ public class SearchProtocolService {
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			logger.error("Problem finding protocol info.", e);
-			throw e;
+			throw new ProtocolException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -75,7 +78,8 @@ public class SearchProtocolService {
 
 	// used for Ajax
 	public List<ProtocolFileBean> getProtocolFiles(String protocolName,
-			String protocolType) throws Exception {
+			String protocolType) throws ProtocolException,
+			CaNanoLabSecurityException {
 		if (protocolName == null || protocolName.length() == 0
 				|| protocolType == null || protocolType.length() == 0) {
 			return null;
@@ -109,7 +113,7 @@ public class SearchProtocolService {
 					.error(
 							"Problem finding protocol files base on protocol name and type.",
 							e);
-			throw e;
+			throw new ProtocolException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -118,7 +122,7 @@ public class SearchProtocolService {
 
 	// used for Ajax
 	public SortedSet<String> getProtocolNames(String protocolType)
-			throws Exception {
+			throws ProtocolException {
 		if (protocolType == null || protocolType.length() == 0) {
 			return null;
 		}
@@ -138,7 +142,7 @@ public class SearchProtocolService {
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			logger.error("Problem finding protocols base on protocol type.", e);
-			throw e;
+			throw new ProtocolException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -146,7 +150,7 @@ public class SearchProtocolService {
 	}
 
 	public List<ProtocolFileBean> getProtocolFileBeans(String protocolType)
-			throws Exception {
+			throws ProtocolException {
 
 		List<ProtocolFileBean> files = new ArrayList<ProtocolFileBean>();
 		try {
@@ -167,7 +171,7 @@ public class SearchProtocolService {
 		} catch (Exception e) {
 			logger.error(
 					"Problem finding protocol files base on protocol type.", e);
-			throw e;
+			throw new ProtocolException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -176,7 +180,7 @@ public class SearchProtocolService {
 
 	public List<ProtocolFileBean> searchProtocols(String fileTitle,
 			String protocolType, String protocolName, UserBean user)
-			throws Exception {
+			throws ProtocolException, CaNanoLabSecurityException {
 		List<ProtocolFileBean> protocols = new ArrayList<ProtocolFileBean>();
 		List<LabFileBean> protocolFiles = new ArrayList<LabFileBean>();
 
@@ -231,7 +235,7 @@ public class SearchProtocolService {
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			logger.error("Problem finding protocol info.", e);
-			throw e;
+			throw new ProtocolException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -249,7 +253,7 @@ public class SearchProtocolService {
 		return protocols;
 	}
 
-	public SortedSet<String> getAllProtocolTypes() throws Exception {
+	public SortedSet<String> getAllProtocolTypes() throws ProtocolException {
 		SortedSet<String> protocolTypes = new TreeSet<String>();
 
 		try {
@@ -273,7 +277,7 @@ public class SearchProtocolService {
 	}
 
 	public Map<ProtocolBean, List<ProtocolFileBean>> getAllProtocolNameVersionByType(
-			String type) throws Exception {
+			String type) throws ProtocolException {
 		Map<ProtocolBean, List<ProtocolFileBean>> nameVersions = new HashMap<ProtocolBean, List<ProtocolFileBean>>();
 		Map<Protocol, ProtocolBean> keyMap = new HashMap<Protocol, ProtocolBean>();
 
@@ -323,7 +327,7 @@ public class SearchProtocolService {
 			logger.error(
 					"Problem to retrieve all protocol names and their versions by type "
 							+ type, e);
-			throw new RuntimeException(
+			throw new ProtocolException(
 					"Problem to retrieve all protocol names and their versions by type "
 							+ type);
 		} finally {
@@ -333,7 +337,7 @@ public class SearchProtocolService {
 	}
 
 	public SortedSet<ProtocolBean> getAllProtocols(UserBean user)
-			throws Exception {
+			throws ProtocolException {
 		SortedSet<ProtocolBean> protocolBeans = new TreeSet<ProtocolBean>();
 
 		try {
@@ -371,7 +375,7 @@ public class SearchProtocolService {
 			logger
 					.error("Problem to retrieve all protocol names and types.",
 							e);
-			throw new RuntimeException(
+			throw new ProtocolException(
 					"Problem to retrieve all protocol names and types.");
 		} finally {
 			HibernateUtil.closeSession();
@@ -381,7 +385,7 @@ public class SearchProtocolService {
 
 	private List<ProtocolFileBean> filterProtocols(
 			List<ProtocolFileBean> protocolFiles, UserBean user)
-			throws Exception {
+			throws CaNanoLabSecurityException {
 		UserService userService = new UserService(
 				CaNanoLabConstants.CSM_APP_NAME);
 		List<LabFileBean> tempList = new ArrayList<LabFileBean>();

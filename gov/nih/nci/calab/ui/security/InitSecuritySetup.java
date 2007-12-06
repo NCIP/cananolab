@@ -1,10 +1,10 @@
 package gov.nih.nci.calab.ui.security;
 
 import gov.nih.nci.calab.dto.common.UserBean;
+import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.calab.service.common.LookupService;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
-import gov.nih.nci.security.exceptions.CSException;
 
 import java.util.List;
 
@@ -21,16 +21,17 @@ public class InitSecuritySetup {
 
 	private static UserService userService;
 
-	private InitSecuritySetup() throws Exception {
+	private InitSecuritySetup() throws CaNanoLabSecurityException {
 		lookupService = new LookupService();
 		userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
 	}
 
-	public static InitSecuritySetup getInstance() throws Exception {
+	public static InitSecuritySetup getInstance()
+			throws CaNanoLabSecurityException {
 		return new InitSecuritySetup();
 	}
 
-	public void setAllUsers(HttpSession session) throws Exception {
+	public void setAllUsers(HttpSession session) throws CaNanoLabSecurityException {
 		if ((session.getAttribute("newUserCreated") != null)
 				|| (session.getServletContext().getAttribute("allUsers") == null)) {
 			List allUsers = userService.getAllUsers();
@@ -48,7 +49,7 @@ public class InitSecuritySetup {
 	}
 
 	public boolean canUserExecuteClass(HttpSession session, Class classObj)
-			throws CSException {
+			throws CaNanoLabSecurityException {
 		UserBean user = (UserBean) session.getAttribute("user");
 		// assume the part of the package name containing the function domain
 		// is the same as the protection element defined in CSM
@@ -58,7 +59,7 @@ public class InitSecuritySetup {
 	}
 
 	public boolean userHasCreatePrivilege(UserBean user,
-			String protectionElementObjectId) throws CSException {
+			String protectionElementObjectId) throws CaNanoLabSecurityException {
 		boolean status = false;
 		status = userService.checkCreatePermission(user,
 				protectionElementObjectId);
@@ -66,14 +67,15 @@ public class InitSecuritySetup {
 	}
 
 	public boolean userHasDeletePrivilege(UserBean user,
-			String protectionElementObjectId) throws CSException {
+			String protectionElementObjectId) throws CaNanoLabSecurityException {
 		boolean status = false;
 		status = userService.checkDeletePermission(user,
 				protectionElementObjectId);
 		return status;
 	}
 
-	public void setAllVisibilityGroups(HttpSession session) throws Exception {
+	public void setAllVisibilityGroups(HttpSession session)
+			throws CaNanoLabSecurityException {
 		if (session.getAttribute("allVisibilityGroups") == null
 				|| session.getAttribute("newSampleCreated") != null) {
 			List<String> groupNames = userService.getAllVisibilityGroups();
@@ -93,7 +95,7 @@ public class InitSecuritySetup {
 	 * Create default CSM groups for default visible groups and admin , and
 	 * assign them with default protection groups and roles
 	 */
-	public void createDefaultCSMGroups() throws Exception {
+	public void createDefaultCSMGroups() throws CaNanoLabSecurityException {
 		for (String groupName : CaNanoLabConstants.VISIBLE_GROUPS) {
 			userService.createAGroup(groupName);
 		}

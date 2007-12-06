@@ -10,8 +10,8 @@ import gov.nih.nci.calab.domain.nano.function.ImageContrastAgentType;
 import gov.nih.nci.calab.domain.nano.function.Linkage;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.dto.function.FunctionBean;
-import gov.nih.nci.calab.service.security.UserService;
-import gov.nih.nci.calab.service.util.CaNanoLabConstants;
+import gov.nih.nci.calab.exception.ParticleFunctionException;
+import gov.nih.nci.calab.service.common.LookupService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,14 +32,11 @@ public class NanoparticleFunctionService {
 	private static Logger logger = Logger
 			.getLogger(NanoparticleFunctionService.class);
 
-	// remove existing visibilities for the data
-	private UserService userService;
-
-	public NanoparticleFunctionService() throws Exception {
-		this.userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
+	public NanoparticleFunctionService() {
 	}
 
-	public FunctionBean getFunctionBy(String funcId) throws Exception {
+	public FunctionBean getFunctionBy(String funcId)
+			throws ParticleFunctionException {
 		FunctionBean functionBean = null;
 		try {
 
@@ -52,7 +49,7 @@ public class NanoparticleFunctionService {
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			logger.error("Problem finding functions", e);
-			throw e;
+			throw new ParticleFunctionException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -60,7 +57,7 @@ public class NanoparticleFunctionService {
 	}
 
 	public Map<String, List<FunctionBean>> getFunctionInfo(String particleId)
-			throws Exception {
+			throws ParticleFunctionException {
 		Map<String, List<FunctionBean>> funcTypeFuncs = new HashMap<String, List<FunctionBean>>();
 
 		try {
@@ -89,7 +86,7 @@ public class NanoparticleFunctionService {
 		} catch (Exception e) {
 			logger.error("Problem finding characterization info for particle: "
 					+ particleId, e);
-			throw e;
+			throw new ParticleFunctionException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -100,7 +97,7 @@ public class NanoparticleFunctionService {
 	 * 
 	 */
 	public void addParticleFunction(String particleId, FunctionBean function)
-			throws Exception {
+			throws ParticleFunctionException {
 
 		// if ID is not set save to the database otherwise update
 		Function doFunction = new Function();
@@ -135,22 +132,20 @@ public class NanoparticleFunctionService {
 				if (linkage instanceof Attachment) {
 					String bondType = ((Attachment) linkage).getBondType();
 					BondType lookup = new BondType();
-					NanoparticleService
-							.addLookupType(session, lookup, bondType);
+					LookupService.addLookupType(session, lookup, bondType);
 				}
 				Agent agent = linkage.getAgent();
 				if (agent instanceof ImageContrastAgent) {
 					String agentType = ((ImageContrastAgent) agent).getType();
 					ImageContrastAgentType lookup = new ImageContrastAgentType();
-					NanoparticleService.addLookupType(session, lookup,
-							agentType);
+					LookupService.addLookupType(session, lookup, agentType);
 				}
 			}
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			HibernateUtil.rollbackTransaction();
 			logger.error("Problem saving function: ", e);
-			throw e;
+			throw new ParticleFunctionException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -161,7 +156,7 @@ public class NanoparticleFunctionService {
 	 * particle
 	 */
 	private boolean isFunctionViewTitleUsed(Session session, String particleId,
-			FunctionBean function) throws Exception {
+			FunctionBean function) {
 		// check if viewTitle is already used the same type of
 		// function for the same particle
 		String viewTitleQuery = "";

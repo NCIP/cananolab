@@ -1,5 +1,6 @@
 package gov.nih.nci.calab.dto.common;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 import org.displaytag.decorator.TableDecorator;
@@ -12,7 +13,7 @@ import org.displaytag.decorator.TableDecorator;
  * 
  */
 public class ReportDecorator extends TableDecorator {
-	public SortableName getEditReportURL() throws Exception {
+	public SortableName getEditReportURL() throws UnsupportedEncodingException {
 		LabFileBean file = (LabFileBean) getCurrentRowObject();
 		// replace space with special char
 		String fileInstanceType = URLEncoder.encode(file.getInstanceType(),
@@ -26,7 +27,7 @@ public class ReportDecorator extends TableDecorator {
 		return sortableLink;
 	}
 
-	public SortableName getViewReportURL() throws Exception {
+	public SortableName getViewReportURL() throws UnsupportedEncodingException {
 		LabFileBean file = (LabFileBean) getCurrentRowObject();
 		// replace space with special char
 		String fileInstanceType = URLEncoder.encode(file.getInstanceType(),
@@ -40,7 +41,7 @@ public class ReportDecorator extends TableDecorator {
 		return sortableLink;
 	}
 
-	public SortableName getRemoteDownloadURL() throws Exception {
+	public SortableName getRemoteDownloadURL() throws UnsupportedEncodingException {
 		LabFileBean file = (LabFileBean) getCurrentRowObject();
 		String gridNode = URLEncoder.encode(file.getGridNode(), "UTF-8");
 		String fileName = URLEncoder.encode(file.getName(), "UTF-8");

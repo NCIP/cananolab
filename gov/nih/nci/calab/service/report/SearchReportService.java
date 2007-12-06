@@ -6,6 +6,8 @@ import gov.nih.nci.calab.domain.LabFile;
 import gov.nih.nci.calab.domain.Report;
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
+import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
+import gov.nih.nci.calab.exception.ReportException;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
@@ -28,13 +30,12 @@ public class SearchReportService {
 
 	private UserService userService;
 
-	public SearchReportService() throws Exception {
+	public SearchReportService() throws CaNanoLabSecurityException {
 		this.userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
-
 	}
 
 	public List<LabFileBean> getReportByParticle(String particleId,
-			UserBean user) throws Exception {
+			UserBean user) throws ReportException {
 		List<LabFileBean> fileBeans = new ArrayList<LabFileBean>();
 
 		try {
@@ -68,7 +69,7 @@ public class SearchReportService {
 		} catch (Exception e) {
 			logger.error("Problem finding report info for particle: "
 					+ particleId, e);
-			throw e;
+			throw new ReportException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -77,7 +78,7 @@ public class SearchReportService {
 
 	public List<LabFileBean> searchReports(String reportTitle,
 			String reportType, String particleType, String[] functionTypes,
-			UserBean user) throws Exception {
+			UserBean user) throws ReportException, CaNanoLabSecurityException {
 		List<LabFileBean> reports = new ArrayList<LabFileBean>();
 		try {
 			HibernateUtil.beginTransaction();
@@ -157,7 +158,7 @@ public class SearchReportService {
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			logger.error("Problem finding report info.", e);
-			throw e;
+			throw new ReportException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -175,10 +176,12 @@ public class SearchReportService {
 	 * @param particleName
 	 * @param particleType
 	 * @return List of LabFileBean
-	 * @throws Exception
+	 * @throws ReportException
+	 * @throws CaNanoLabSecurityException
 	 */
 	public List<LabFileBean> getReportInfo(String particleId,
-			String reportType, UserBean user) throws Exception {
+			String reportType, UserBean user) throws ReportException,
+			CaNanoLabSecurityException {
 		List<LabFileBean> fileBeans = new ArrayList<LabFileBean>();
 
 		String reportJoin = "reportCollection";
@@ -204,7 +207,7 @@ public class SearchReportService {
 		} catch (Exception e) {
 			logger.error("Problem finding report info for particle: "
 					+ particleId, e);
-			throw e;
+			throw new ReportException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
