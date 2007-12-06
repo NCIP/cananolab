@@ -7,6 +7,7 @@ import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.dto.common.InstrumentConfigBean;
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
+import gov.nih.nci.calab.dto.sample.SampleBean;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 
@@ -40,7 +41,7 @@ public class CharacterizationBean {
 	// Abbreviation
 	private String abbr;
 
-	//not set by application
+	// not set by application
 	private String classification;
 
 	private String createdBy;
@@ -55,7 +56,7 @@ public class CharacterizationBean {
 
 	private String actionName;
 
-	private ParticleBean particle=new ParticleBean();
+	private ParticleBean particle = new ParticleBean();
 
 	public String getActionName() {
 		this.actionName = StringUtils.getOneWordLowerCaseFirstLetter(this.name);
@@ -112,7 +113,8 @@ public class CharacterizationBean {
 		InstrumentConfiguration instrumentConfigObj = characterization
 				.getInstrumentConfiguration();
 		if (instrumentConfigObj != null) {
-			this.instrumentConfigBean = new InstrumentConfigBean(instrumentConfigObj);
+			this.instrumentConfigBean = new InstrumentConfigBean(
+					instrumentConfigObj);
 		}
 		for (DerivedBioAssayData table : characterization
 				.getDerivedBioAssayDataCollection()) {
@@ -271,7 +273,6 @@ public class CharacterizationBean {
 		return this.viewColor;
 	}
 
-
 	public ParticleBean getParticle() {
 		return particle;
 	}
@@ -311,5 +312,26 @@ public class CharacterizationBean {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public boolean equals(Object obj) {
+		boolean eq = false;
+		if (obj instanceof CharacterizationBean) {
+			CharacterizationBean c = (CharacterizationBean) obj;
+			String thisId = getId();
+
+			if (thisId != null && thisId.equals(c.getId())) {
+				eq = true;
+			}
+		}
+		return eq;
+	}
+
+	public int hashCode() {
+		int h = 0;
+		if (getId() != null) {
+			h += getId().hashCode();
+		}
+		return h;
 	}
 }
