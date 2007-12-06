@@ -10,7 +10,7 @@ import org.displaytag.decorator.TableDecorator;
  * 
  */
 public class ContainerDecorator extends TableDecorator {
-	public String getContainerId() throws Exception {
+	public String getContainerId() {
 		ContainerBean container = (ContainerBean) getCurrentRowObject();
 		String checked = "";
 		if (getPageContext().getAttribute("containerId") != null

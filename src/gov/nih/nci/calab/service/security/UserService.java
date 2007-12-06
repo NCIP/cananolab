@@ -4,7 +4,7 @@ import gov.nih.nci.calab.db.HibernateUtil;
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
-import gov.nih.nci.calab.exception.CaNanoLabException;
+import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.calab.service.remote.RemoteQueryFacade;
 import gov.nih.nci.calab.service.remote.RemoteQueryFacadeImpl;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
@@ -26,7 +26,6 @@ import gov.nih.nci.security.dao.ProtectionGroupSearchCriteria;
 import gov.nih.nci.security.dao.RoleSearchCriteria;
 import gov.nih.nci.security.dao.SearchCriteria;
 import gov.nih.nci.security.dao.UserSearchCriteria;
-import gov.nih.nci.security.exceptions.CSException;
 
 import java.sql.Connection;
 import java.sql.Statement;
@@ -36,10 +35,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.servlet.http.HttpSession;
-
 import org.apache.log4j.Logger;
-import org.apache.struts.tiles.beans.MenuItem;
 import org.hibernate.Hibernate;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
@@ -63,14 +59,20 @@ public class UserService {
 
 	private RemoteQueryFacade remoteQueryFacade = null;
 
-	public UserService(String applicationName) throws CSException {
-		this.applicationName = applicationName;
-		this.authenticationManager = SecurityServiceProvider
-				.getAuthenticationManager(applicationName);
-		this.authorizationManager = SecurityServiceProvider
-				.getAuthorizationManager(applicationName);
-		this.userManager = SecurityServiceProvider
-				.getUserProvisioningManager(applicationName);
+	public UserService(String applicationName)
+			throws CaNanoLabSecurityException {
+		try {
+			this.applicationName = applicationName;
+			this.authenticationManager = SecurityServiceProvider
+					.getAuthenticationManager(applicationName);
+			this.authorizationManager = SecurityServiceProvider
+					.getAuthorizationManager(applicationName);
+			this.userManager = SecurityServiceProvider
+					.getUserProvisioningManager(applicationName);
+		} catch (Exception e) {
+			logger.error(e);
+			throw new CaNanoLabSecurityException();
+		}
 	}
 
 	private RemoteQueryFacade getRemoteQueryFacade() {
@@ -103,19 +105,24 @@ public class UserService {
 	 * @param user
 	 * @param groupName
 	 * @return
-	 * @throws Exception
+	 * @throws CaNanoLabSecurityException
 	 */
 	public boolean isUserInGroup(UserBean user, String groupName)
-			throws Exception {
-		Set groups = this.userManager.getGroups(user.getUserId());
-		for (Object obj : groups) {
-			Group group = (Group) obj;
-			if (group.getGroupName().equalsIgnoreCase(groupName)
-					|| group.getGroupName().startsWith(groupName)) {
-				return true;
+			throws CaNanoLabSecurityException {
+		try {
+			Set groups = this.userManager.getGroups(user.getUserId());
+			for (Object obj : groups) {
+				Group group = (Group) obj;
+				if (group.getGroupName().equalsIgnoreCase(groupName)
+						|| group.getGroupName().startsWith(groupName)) {
+					return true;
+				}
 			}
+			return false;
+		} catch (Exception e) {
+			logger.error("Error in checking if user is in the group.", e);
+			throw new CaNanoLabSecurityException();
 		}
-		return false;
 	}
 
 	/**
@@ -126,22 +133,27 @@ public class UserService {
 	 * @param protectionElementObjectId
 	 * @param privilege
 	 * @return
-	 * @throws CSException
+	 * @throws CaNanoLabSecurityException
 	 */
 	public boolean checkPermission(UserBean user,
 			String protectionElementObjectId, String privilege)
-			throws CSException {
-		boolean status = false;
-		if (user == null) {
+			throws CaNanoLabSecurityException {
+		try {
+			boolean status = false;
+			if (user == null) {
+				return status;
+			}
+			status = this.authorizationManager.checkPermission(user
+					.getLoginName(), protectionElementObjectId, privilege);
 			return status;
+		} catch (Exception e) {
+			logger.error("Error in checking user permission.", e);
+			throw new CaNanoLabSecurityException();
 		}
-		status = this.authorizationManager.checkPermission(user.getLoginName(),
-				protectionElementObjectId, privilege);
-		return status;
 	}
 
 	public boolean checkCreatePermission(UserBean user,
-			String protectionElementObjectId) throws CSException {
+			String protectionElementObjectId) throws CaNanoLabSecurityException {
 		return checkPermission(user, protectionElementObjectId,
 				CaNanoLabConstants.CSM_CREATE_PRIVILEGE);
 	}
@@ -153,10 +165,10 @@ public class UserService {
 	 * @param user
 	 * @param protectionElementObjectId
 	 * @return
-	 * @throws CSException
+	 * @throws CaNanoLabSecurityException
 	 */
 	public boolean checkExecutePermission(UserBean user,
-			String protectionElementObjectId) throws CSException {
+			String protectionElementObjectId) throws CaNanoLabSecurityException {
 		return checkPermission(user, protectionElementObjectId,
 				CaNanoLabConstants.CSM_EXECUTE_PRIVILEGE);
 	}
@@ -168,10 +180,10 @@ public class UserService {
 	 * @param user
 	 * @param protectionElementObjectId
 	 * @return
-	 * @throws CSException
+	 * @throws CaNanoLabSecurityException
 	 */
 	public boolean checkReadPermission(UserBean user,
-			String protectionElementObjectId) throws CSException {
+			String protectionElementObjectId) throws CaNanoLabSecurityException {
 
 		if (user == null) {
 			RemoteQueryFacade rqf = getRemoteQueryFacade();
@@ -180,13 +192,11 @@ public class UserService {
 					return true;
 				else
 					return false;
-
 			} catch (Exception e) {
-				this.logger.error("error testing isPublicId for a nanoparticle: "
-						+ e);
-				throw new CSException("error in checkReadPermission:", e);
+				this.logger.error(
+						"Error in testing isPublicId for a nanoparticle.", e);
+				throw new CaNanoLabSecurityException();
 			}
-
 		} else {
 			return checkPermission(user, protectionElementObjectId,
 					CaNanoLabConstants.CSM_READ_PRIVILEGE);
@@ -200,45 +210,12 @@ public class UserService {
 	 * @param user
 	 * @param protectionElementObjectId
 	 * @return
-	 * @throws CSException
+	 * @throws CaNanoLabSecurityException
 	 */
 	public boolean checkDeletePermission(UserBean user,
-			String protectionElementObjectId) throws CSException {
+			String protectionElementObjectId) throws CaNanoLabSecurityException {
 		return checkPermission(user, protectionElementObjectId,
 				CaNanoLabConstants.CSM_DELETE_PRIVILEGE);
-	}
-
-	/**
-	 * Check whether user can execute the menuItems in session, each defined as
-	 * a protection element using UPT tool. The excluded menuItems are not
-	 * checked.
-	 * 
-	 * @param session
-	 * @throws CSException
-	 */
-	public void setFilteredMenuItem(HttpSession session) throws CSException {
-		if (session.getAttribute("filteredItems") != null) {
-			return;
-		}
-
-		List<MenuItem> filteredItems = new ArrayList<MenuItem>();
-		List<MenuItem> items = new ArrayList<MenuItem>(
-				(List<? extends MenuItem>) session.getAttribute("items"));
-		UserBean user = (UserBean) session.getAttribute("user");
-		if (user != null) {
-			for (MenuItem item : items) {
-				// make sure change menu item values to lower case since
-				// pre-defined
-				// pes and pgs in the UPT tool are entered as lower case and
-				// CSM API is case sensitive
-				boolean executeStatus = checkExecutePermission(user, item
-						.getValue().toLowerCase());
-				if (executeStatus) {
-					filteredItems.add(item);
-				}
-			}
-			session.setAttribute("filteredItems", filteredItems);
-		}
 	}
 
 	/**
@@ -246,55 +223,70 @@ public class UserService {
 	 * 
 	 * @param loginName
 	 * @param newPassword
-	 * @throws Exception
+	 * @throws CaNanoLabSecurityException
 	 */
 	public void updatePassword(String loginName, String newPassword)
-			throws Exception {
-		User user = this.authorizationManager.getUser(loginName);
-		java.util.Map options = SecurityServiceProvider
-				.getLoginModuleOptions(CaNanoLabConstants.CSM_APP_NAME);
-		String encryptedPassword = EncryptedRDBMSHelper.encrypt(newPassword,
-				(String) options.get("hashAlgorithm"));
-		user.setPassword(encryptedPassword);
-		this.userManager.modifyUser(user);
+			throws CaNanoLabSecurityException {
+		try {
+			User user = this.authorizationManager.getUser(loginName);
+			java.util.Map options = SecurityServiceProvider
+					.getLoginModuleOptions(CaNanoLabConstants.CSM_APP_NAME);
+			String encryptedPassword = EncryptedRDBMSHelper.encrypt(
+					newPassword, (String) options.get("hashAlgorithm"));
+			user.setPassword(encryptedPassword);
+			this.userManager.modifyUser(user);
+		} catch (Exception e) {
+			logger.error("Error in updating password.", e);
+			throw new CaNanoLabSecurityException();
+		}
 	}
 
 	/**
 	 * Get all users in the application
 	 * 
 	 * @return
-	 * @throws Exception
+	 * @throws CaNanoLabSecurityException
 	 */
-	public List<UserBean> getAllUsers() throws Exception {
-		List<UserBean> users = new ArrayList<UserBean>();
-		User dummy = new User();
-		dummy.setLoginName("*");
-		SearchCriteria sc = new UserSearchCriteria(dummy);
-		List results = this.userManager.getObjects(sc);
-		for (Object obj : results) {
-			User doUser = (User) obj;
-			users.add(new UserBean(doUser));
+	public List<UserBean> getAllUsers() throws CaNanoLabSecurityException {
+		try {
+			List<UserBean> users = new ArrayList<UserBean>();
+			User dummy = new User();
+			dummy.setLoginName("*");
+			SearchCriteria sc = new UserSearchCriteria(dummy);
+			List results = this.userManager.getObjects(sc);
+			for (Object obj : results) {
+				User doUser = (User) obj;
+				users.add(new UserBean(doUser));
+			}
+			return users;
+		} catch (Exception e) {
+			logger.error("Error in getting all users.", e);
+			throw new CaNanoLabSecurityException();
 		}
-		return users;
 	}
 
 	/**
 	 * Get all user groups in the application
 	 * 
 	 * @return
-	 * @throws Exception
+	 * @throws CaNanoLabSecurityException
 	 */
-	public List<String> getAllGroups() throws Exception {
-		List<String> groups = new ArrayList<String>();
-		Group dummy = new Group();
-		dummy.setGroupName("*");
-		SearchCriteria sc = new GroupSearchCriteria(dummy);
-		List results = this.userManager.getObjects(sc);
-		for (Object obj : results) {
-			Group doGroup = (Group) obj;
-			groups.add(doGroup.getGroupName());
+	public List<String> getAllGroups() throws CaNanoLabSecurityException {
+		try {
+			List<String> groups = new ArrayList<String>();
+			Group dummy = new Group();
+			dummy.setGroupName("*");
+			SearchCriteria sc = new GroupSearchCriteria(dummy);
+			List results = this.userManager.getObjects(sc);
+			for (Object obj : results) {
+				Group doGroup = (Group) obj;
+				groups.add(doGroup.getGroupName());
+			}
+			return groups;
+		} catch (Exception e) {
+			logger.error("Error in getting all groups.", e);
+			throw new CaNanoLabSecurityException();
 		}
-		return groups;
 	}
 
 	/**
@@ -302,9 +294,10 @@ public class UserService {
 	 * groups starting with APP_OWNER).
 	 * 
 	 * @return
-	 * @throws Exception
+	 * @throws CaNanoLabSecurityException
 	 */
-	public List<String> getAllVisibilityGroups() throws Exception {
+	public List<String> getAllVisibilityGroups()
+			throws CaNanoLabSecurityException {
 		List<String> groups = getAllGroups();
 		// filter out the ones starting with APP_OWNER
 		List<String> filteredGroups = new ArrayList<String>();
@@ -340,9 +333,8 @@ public class UserService {
 	 * 
 	 * @param groupName
 	 * @return
-	 * @throws Exception
 	 */
-	public Group getGroup(String groupName) throws Exception {
+	public Group getGroup(String groupName) {
 		Group group = new Group();
 		group.setGroupName(groupName);
 		SearchCriteria sc = new GroupSearchCriteria(group);
@@ -359,14 +351,20 @@ public class UserService {
 	 * Create a user group in the CSM database if it's not already created
 	 * 
 	 * @param groupName
-	 * @throws Exception
+	 * @throws CaNanoLabSecurityException
 	 */
-	public void createAGroup(String groupName) throws Exception {
-		Group doGroup = getGroup(groupName);
-		if (doGroup == null) {
-			doGroup = new Group();
-			doGroup.setGroupName(groupName);
-			this.userManager.createGroup(doGroup);
+	public void createAGroup(String groupName)
+			throws CaNanoLabSecurityException {
+		try {
+			Group doGroup = getGroup(groupName);
+			if (doGroup == null) {
+				doGroup = new Group();
+				doGroup.setGroupName(groupName);
+				this.userManager.createGroup(doGroup);
+			}
+		} catch (Exception e) {
+			logger.error("Error in creating a group.", e);
+			throw new CaNanoLabSecurityException();
 		}
 	}
 
@@ -375,9 +373,8 @@ public class UserService {
 	 * 
 	 * @param roleName
 	 * @return
-	 * @throws Exception
 	 */
-	public Role getRole(String roleName) throws Exception {
+	public Role getRole(String roleName) {
 		Role role = new Role();
 		role.setName(roleName);
 		SearchCriteria sc = new RoleSearchCriteria(role);
@@ -395,25 +392,31 @@ public class UserService {
 	 * 
 	 * @param objectId
 	 * @return
-	 * @throws Exception
+	 * @throws CaNanoLabSecurityException
 	 */
 	public ProtectionElement getProtectionElement(String objectId)
-			throws Exception {
-		ProtectionElement pe = new ProtectionElement();
-		pe.setObjectId(objectId);
-		pe.setProtectionElementName(objectId);
-		SearchCriteria sc = new ProtectionElementSearchCriteria(pe);
-		List results = this.userManager.getObjects(sc);
-		ProtectionElement doPE = null;
-		for (Object obj : results) {
-			doPE = (ProtectionElement) obj;
-			break;
+			throws CaNanoLabSecurityException {
+		try {
+			ProtectionElement pe = new ProtectionElement();
+			pe.setObjectId(objectId);
+			pe.setProtectionElementName(objectId);
+			SearchCriteria sc = new ProtectionElementSearchCriteria(pe);
+			List results = this.userManager.getObjects(sc);
+			ProtectionElement doPE = null;
+			for (Object obj : results) {
+				doPE = (ProtectionElement) obj;
+				break;
+			}
+			if (doPE == null) {
+				this.authorizationManager.createProtectionElement(pe);
+				return pe;
+			}
+			return doPE;
+		} catch (Exception e) {
+			logger.error("Error in creating protection element", e);
+			throw new CaNanoLabSecurityException();
 		}
-		if (doPE == null) {
-			this.authorizationManager.createProtectionElement(pe);
-			return pe;
-		}
-		return doPE;
+
 	}
 
 	/**
@@ -421,24 +424,30 @@ public class UserService {
 	 * 
 	 * @param protectionGroupName
 	 * @return
-	 * @throws Exception
+	 * @throws CaNanoLabSecurityException
 	 */
 	public ProtectionGroup getProtectionGroup(String protectionGroupName)
-			throws Exception {
+			throws CaNanoLabSecurityException {
+
 		ProtectionGroup pg = new ProtectionGroup();
 		pg.setProtectionGroupName(protectionGroupName);
-		SearchCriteria sc = new ProtectionGroupSearchCriteria(pg);
-		List results = this.userManager.getObjects(sc);
-		ProtectionGroup doPG = null;
-		for (Object obj : results) {
-			doPG = (ProtectionGroup) obj;
-			break;
+		try {
+			SearchCriteria sc = new ProtectionGroupSearchCriteria(pg);
+			List results = this.userManager.getObjects(sc);
+			ProtectionGroup doPG = null;
+			for (Object obj : results) {
+				doPG = (ProtectionGroup) obj;
+				break;
+			}
+			if (doPG == null) {
+				this.userManager.createProtectionGroup(pg);
+				return pg;
+			}
+			return doPG;
+		} catch (Exception e) {
+			logger.error("Error in getting protection group.", e);
+			throw new CaNanoLabSecurityException();
 		}
-		if (doPG == null) {
-			this.userManager.createProtectionGroup(pg);
-			return pg;
-		}
-		return doPG;
 	}
 
 	/**
@@ -446,29 +455,36 @@ public class UserService {
 	 * 
 	 * @param pe
 	 * @param pg
-	 * @throws Exception
+	 * @throws CaNanoLabSecurityException
 	 */
 	public void assignProtectionElementToProtectionGroup(ProtectionElement pe,
-			ProtectionGroup pg) throws Exception {
-		Set<ProtectionGroup> assignedPGs = new HashSet<ProtectionGroup>(
-				this.authorizationManager
-						.getProtectionGroups(pe.getProtectionElementId()
-								.toString()));
-		// check to see if the assignment is already made to ignore CSM
-		// exception.
+			ProtectionGroup pg) throws CaNanoLabSecurityException {
+		try {
+			Set<ProtectionGroup> assignedPGs = new HashSet<ProtectionGroup>(
+					this.authorizationManager.getProtectionGroups(pe
+							.getProtectionElementId().toString()));
+			// check to see if the assignment is already made to ignore CSM
+			// exception.
 
-		// contains doesn't work because CSM didn't implement hashCode in
-		// ProtectionGroup.
-		// if (assignedPGs.contains(pg)) {
-		// return;
-		// }
-		for (ProtectionGroup aPg : assignedPGs) {
-			if (aPg.equals(pg)) {
-				return;
+			// contains doesn't work because CSM didn't implement hashCode in
+			// ProtectionGroup.
+			// if (assignedPGs.contains(pg)) {
+			// return;
+			// }
+			for (ProtectionGroup aPg : assignedPGs) {
+				if (aPg.equals(pg)) {
+					return;
+				}
 			}
+			this.authorizationManager.assignProtectionElement(pg
+					.getProtectionGroupName(), pe.getObjectId());
+		} catch (Exception e) {
+			logger
+					.error(
+							"Error in assigning protection element to protection group",
+							e);
+			throw new CaNanoLabSecurityException();
 		}
-		this.authorizationManager.assignProtectionElement(pg
-				.getProtectionGroupName(), pe.getObjectId());
 	}
 
 	/**
@@ -478,10 +494,10 @@ public class UserService {
 	 * @param objectName
 	 * @param groupName
 	 * @return
-	 * @throws Exception
+	 * @throws CaNanoLabSecurityException
 	 */
 	public List<String> getExistingRoleIds(ProtectionGroup pg, Group group)
-			throws Exception {
+			throws CaNanoLabSecurityException {
 		List<String> roleIds = new ArrayList<String>();
 
 		String query = "select distinct role_id from csm_user_group_role_pg "
@@ -499,10 +515,10 @@ public class UserService {
 			}
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
-			this.logger.error("error getting existing roles from CSM database", e);
-			throw new Exception(
-					"error getting existing roles from CSM database:", e);
-
+			logger
+					.error("Error in getting existing roles from CSM database",
+							e);
+			throw new CaNanoLabSecurityException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -516,28 +532,34 @@ public class UserService {
 	 * @param objectName
 	 * @param groupName
 	 * @return
-	 * @throws Exception
+	 * @throws CaNanoLabSecurityException
 	 */
 	public List<String> getExistingRoleIdsSlow(ProtectionGroup pg, Group group)
-			throws Exception {
+			throws CaNanoLabSecurityException {
 		List<String> roleIds = new ArrayList<String>();
 		Set existingRoles = null;
-		Set contexts = this.userManager.getProtectionGroupRoleContextForGroup(group
-				.getGroupId().toString());
-		for (Object obj : contexts) {
-			ProtectionGroupRoleContext context = (ProtectionGroupRoleContext) obj;
-			if (context.getProtectionGroup().equals(pg)) {
-				existingRoles = context.getRoles();
-				break;
+		try {
+			Set contexts = this.userManager
+					.getProtectionGroupRoleContextForGroup(group.getGroupId()
+							.toString());
+			for (Object obj : contexts) {
+				ProtectionGroupRoleContext context = (ProtectionGroupRoleContext) obj;
+				if (context.getProtectionGroup().equals(pg)) {
+					existingRoles = context.getRoles();
+					break;
+				}
 			}
-		}
-		if (existingRoles != null) {
-			for (Object obj : existingRoles) {
-				Role aRole = (Role) obj;
-				roleIds.add(aRole.getId().toString());
+			if (existingRoles != null) {
+				for (Object obj : existingRoles) {
+					Role aRole = (Role) obj;
+					roleIds.add(aRole.getId().toString());
+				}
 			}
+			return roleIds;
+		} catch (Exception e) {
+			logger.error("Error in getting role IDs", e);
+			throw new CaNanoLabSecurityException();
 		}
-		return roleIds;
 	}
 
 	/**
@@ -547,17 +569,19 @@ public class UserService {
 	 * @param objectName
 	 * @param groupName
 	 * @param roleName
-	 * @throws Exception
+	 * @throws CaNanoLabSecurityException
 	 */
 	public void secureObject(String objectName, String groupName,
-			String roleName) throws Exception {
+			String roleName) throws CaNanoLabSecurityException {
+
 		// create protection element
 		ProtectionElement pe = getProtectionElement(objectName);
 
 		// create protection group
 		ProtectionGroup pg = getProtectionGroup(objectName);
 
-		// assign protection element to protection group if not already exists
+		// assign protection element to protection group if not already
+		// exists
 		assignProtectionElementToProtectionGroup(pe, pg);
 
 		// get group and role
@@ -565,11 +589,12 @@ public class UserService {
 		Role role = getRole(roleName);
 
 		if (group == null) {
-			throw new CaNanoLabException("No such group defined in CSM: "
-					+ groupName);
+			throw new CaNanoLabSecurityException(
+					"No such group defined in CSM: " + groupName);
 		}
 		if (role == null) {
-			throw new CaNanoLabException("No such role defined in CSM: " + roleName);
+			throw new CaNanoLabSecurityException(
+					"No such role defined in CSM: " + roleName);
 		}
 
 		List<String> existingRoleIds = getExistingRoleIds(pg, group);
@@ -577,10 +602,14 @@ public class UserService {
 		if (!existingRoleIds.contains(role.getId().toString())) {
 			allRoleIds.add(role.getId().toString());
 		}
-		this.userManager.assignGroupRoleToProtectionGroup(pg.getProtectionGroupId()
-				.toString(), group.getGroupId().toString(), allRoleIds
-				.toArray(new String[0]));
-
+		try {
+			this.userManager.assignGroupRoleToProtectionGroup(pg
+					.getProtectionGroupId().toString(), group.getGroupId()
+					.toString(), allRoleIds.toArray(new String[0]));
+		} catch (Exception e) {
+			logger.error("Error in securing objects", e);
+			throw new CaNanoLabSecurityException();
+		}
 	}
 
 	/**
@@ -589,12 +618,13 @@ public class UserService {
 	 * @param user
 	 * @param particles
 	 * @return
-	 * @throws Exception
+	 * @throws CaNanoLabSecurityException
 	 */
 	public List<ParticleBean> getFilteredParticles(UserBean user,
-			List<ParticleBean> particles) throws Exception {
+			List<ParticleBean> particles) throws CaNanoLabSecurityException {
 
 		List<ParticleBean> filteredParticles = new ArrayList<ParticleBean>();
+
 		for (ParticleBean particle : particles) {
 			boolean status = checkReadPermission(user, particle.getSampleName());
 			if (status)
@@ -609,10 +639,10 @@ public class UserService {
 	 * @param user
 	 * @param particles
 	 * @return
-	 * @throws Exception
+	 * @throws CaNanoLabSecurityException
 	 */
 	public List<LabFileBean> getFilteredFiles(UserBean user,
-			List<LabFileBean> files) throws Exception {
+			List<LabFileBean> files) throws CaNanoLabSecurityException {
 
 		List<LabFileBean> filteredReports = new ArrayList<LabFileBean>();
 		for (LabFileBean file : files) {
@@ -629,39 +659,46 @@ public class UserService {
 	 * @param objectName
 	 * @param roleName
 	 * @return
-	 * @throws Exception
+	 * @throws CaNanoLabSecurityException
 	 */
 	public List<String> getAccessibleGroupsSlow(String objectName,
-			String roleName) throws Exception {
+			String roleName) throws CaNanoLabSecurityException {
 		List<String> groups = new ArrayList<String>();
+
 		List<String> allGroups = getAllGroups();
 		Role role = getRole(roleName);
-		for (String groupName : allGroups) {
-			Group group = getGroup(groupName);
-			Set contexts = this.userManager
-					.getProtectionGroupRoleContextForGroup(group.getGroupId()
-							.toString());
-			for (Object obj : contexts) {
-				ProtectionGroupRoleContext context = (ProtectionGroupRoleContext) obj;
-				ProtectionGroup pg = context.getProtectionGroup();
-				Set<Role> roles = new HashSet<Role>(
-						context.getRoles());
-				// contains doesn't work because CSM didn't implement hashCode
-				// in Role.
-				// if (pg.getProtectionGroupName().equals(objectName)
-				// && roles.contains(role)) {
-				// groups.add(groupName);
-				// }
-				if (pg.getProtectionGroupName().equals(objectName)) {
-					for (Role aRole : roles) {
-						if (aRole.equals(role)) {
-							groups.add(groupName);
+		try {
+			for (String groupName : allGroups) {
+				Group group = getGroup(groupName);
+				Set contexts = this.userManager
+						.getProtectionGroupRoleContextForGroup(group
+								.getGroupId().toString());
+				for (Object obj : contexts) {
+					ProtectionGroupRoleContext context = (ProtectionGroupRoleContext) obj;
+					ProtectionGroup pg = context.getProtectionGroup();
+					Set<Role> roles = new HashSet<Role>(context.getRoles());
+					// contains doesn't work because CSM didn't implement
+					// hashCode
+					// in Role.
+					// if (pg.getProtectionGroupName().equals(objectName)
+					// && roles.contains(role)) {
+					// groups.add(groupName);
+					// }
+					if (pg.getProtectionGroupName().equals(objectName)) {
+						for (Role aRole : roles) {
+							if (aRole.equals(role)) {
+								groups.add(groupName);
+							}
 						}
 					}
 				}
 			}
+			return groups;
+		} catch (Exception e) {
+			logger.error("Error in getting accessible groups", e);
+			throw new CaNanoLabSecurityException();
 		}
-		return groups;
+
 	}
 
 	/**
@@ -672,7 +709,7 @@ public class UserService {
 	 * @return
 	 */
 	public List<String> getAccessibleGroups(String objectName, String roleName)
-			throws Exception {
+			throws CaNanoLabSecurityException {
 		List<String> groups = new ArrayList<String>();
 
 		String query = "select d.GROUP_NAME GROUP_NAME from csm_protection_group a, csm_role b, csm_user_group_role_pg c, csm_group d	"
@@ -692,9 +729,8 @@ public class UserService {
 			}
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
-			throw new Exception(
-					"error getting accessible groups from CSM database:", e);
-
+			logger.error("Error in getting accessible groups", e);
+			throw new CaNanoLabSecurityException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -707,10 +743,11 @@ public class UserService {
 	 * @param objectName
 	 * @param groupName
 	 * @param roleName
-	 * @throws Exception
+	 * @throws CaNanoLabSecurityException
 	 */
 	public void removeAccessibleGroupSlow(String objectName, String groupName,
-			String roleName) throws Exception {
+			String roleName) throws CaNanoLabSecurityException {
+
 		Group group = getGroup(groupName);
 		Role role = getRole(roleName);
 		ProtectionGroup pg = getProtectionGroup(objectName);
@@ -721,37 +758,45 @@ public class UserService {
 		// .toString(), new String[] { role.getId().toString() });
 
 		// get existing roles.
-		Set contexts = this.userManager.getProtectionGroupRoleContextForGroup(group
-				.getGroupId().toString());
-		Set<Role> existingRoles = null;
-		for (Object obj : contexts) {
-			ProtectionGroupRoleContext context = (ProtectionGroupRoleContext) obj;
-			if (context.getProtectionGroup().equals(pg)) {
-				existingRoles = new HashSet<Role>(context
-						.getRoles());
-				break;
+		try {
+			Set contexts = this.userManager
+					.getProtectionGroupRoleContextForGroup(group.getGroupId()
+							.toString());
+			Set<Role> existingRoles = null;
+			for (Object obj : contexts) {
+				ProtectionGroupRoleContext context = (ProtectionGroupRoleContext) obj;
+				if (context.getProtectionGroup().equals(pg)) {
+					existingRoles = new HashSet<Role>(context.getRoles());
+					break;
+				}
 			}
-		}
-		// remove role from existing roles
-		// remove doesn't work because CSM didn't implement hashCode for Role
-		// existingRoles.remove(role);
+			// remove role from existing roles
+			// remove doesn't work because CSM didn't implement hashCode for
+			// Role
+			// existingRoles.remove(role);
 
-		Set<Role> updatedRoles = new HashSet<Role>();
-		for (Role aRole : existingRoles) {
-			if (!aRole.equals(role)) {
-				updatedRoles.add(aRole);
+			Set<Role> updatedRoles = new HashSet<Role>();
+			for (Role aRole : existingRoles) {
+				if (!aRole.equals(role)) {
+					updatedRoles.add(aRole);
+				}
 			}
+			// reassign the roles.
+			String[] roleIds = new String[updatedRoles.size()];
+			int i = 0;
+			for (Object obj : updatedRoles) {
+				Role aRole = (Role) obj;
+				roleIds[i] = aRole.getId().toString();
+				i++;
+			}
+			this.userManager.assignGroupRoleToProtectionGroup(pg
+					.getProtectionGroupId().toString(), group.getGroupId()
+					.toString(), roleIds);
+		} catch (Exception e) {
+			logger.error("Error in remove accessible groups", e);
+			throw new CaNanoLabSecurityException();
 		}
-		// reassign the roles.
-		String[] roleIds = new String[updatedRoles.size()];
-		int i = 0;
-		for (Object obj : updatedRoles) {
-			Role aRole = (Role) obj;
-			roleIds[i] = aRole.getId().toString();
-			i++;
-		}
-		this.userManager.assignGroupRoleToProtectionGroup(pg.getProtectionGroupId()
-				.toString(), group.getGroupId().toString(), roleIds);
+
 	}
 
 	/**
@@ -760,19 +805,20 @@ public class UserService {
 	 * @param objectName
 	 * @param groupName
 	 * @param roleName
-	 * @throws Exception
+	 * @throws CaNanoLabSecurityException
 	 */
 	public void removeAccessibleGroup(String objectName, String groupName,
-			String roleName) throws Exception {
-		ProtectionGroup pg = this.getProtectionGroup(objectName);
-		Role role = this.getRole(roleName);
-		Group group = this.getGroup(groupName);
-
-		String query = "delete from csm_user_group_role_pg "
-				+ "where PROTECTION_GROUP_ID=" + pg.getProtectionGroupId()
-				+ "and ROLE_ID=" + role.getId() + " and GROUP_ID="
-				+ group.getGroupId();
+			String roleName) throws CaNanoLabSecurityException {
 		try {
+			ProtectionGroup pg = this.getProtectionGroup(objectName);
+			Role role = this.getRole(roleName);
+			Group group = this.getGroup(groupName);
+
+			String query = "delete from csm_user_group_role_pg "
+					+ "where PROTECTION_GROUP_ID=" + pg.getProtectionGroupId()
+					+ "and ROLE_ID=" + role.getId() + " and GROUP_ID="
+					+ group.getGroupId();
+
 			Session session = HibernateUtil.currentSession();
 			HibernateUtil.beginTransaction();
 			Connection connection = session.connection();
@@ -781,11 +827,10 @@ public class UserService {
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			HibernateUtil.rollbackTransaction();
-			this.logger
+			logger
 					.error("Error getting accessible groups from CSM database",
 							e);
-			throw new Exception(
-					"error getting accessible groups from CSM database:", e);
+			throw new CaNanoLabSecurityException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -797,28 +842,29 @@ public class UserService {
 	 * @param objectName
 	 * @param groupName
 	 * @param roleName
-	 * @throws Exception
+	 * @throws CaNanoLabSecurityException
 	 */
 	public void removeAllAccessibleGroups(String objectName, String roleName,
-			String[] exceptionGroupNames) throws Exception {
-		ProtectionGroup pg = this.getProtectionGroup(objectName);
-		Role role = this.getRole(roleName);
-		List<String> exceptionGroupIds = new ArrayList<String>();
-		if (exceptionGroupNames != null) {
-			for (String groupName : exceptionGroupNames) {
-				Group group = getGroup(groupName);
-				exceptionGroupIds.add(group.getGroupId().toString());
-			}
-		}
-
-		String query = "delete from csm_user_group_role_pg "
-				+ "where PROTECTION_GROUP_ID=" + pg.getProtectionGroupId()
-				+ " and ROLE_ID=" + role.getId();
-		if (!exceptionGroupIds.isEmpty()) {
-			query += " and GROUP_ID not in ("
-					+ StringUtils.join(exceptionGroupIds, ",") + ")";
-		}
+			String[] exceptionGroupNames) throws CaNanoLabSecurityException {
 		try {
+
+			ProtectionGroup pg = this.getProtectionGroup(objectName);
+			Role role = this.getRole(roleName);
+			List<String> exceptionGroupIds = new ArrayList<String>();
+			if (exceptionGroupNames != null) {
+				for (String groupName : exceptionGroupNames) {
+					Group group = getGroup(groupName);
+					exceptionGroupIds.add(group.getGroupId().toString());
+				}
+			}
+
+			String query = "delete from csm_user_group_role_pg "
+					+ "where PROTECTION_GROUP_ID=" + pg.getProtectionGroupId()
+					+ " and ROLE_ID=" + role.getId();
+			if (!exceptionGroupIds.isEmpty()) {
+				query += " and GROUP_ID not in ("
+						+ StringUtils.join(exceptionGroupIds, ",") + ")";
+			}
 			Session session = HibernateUtil.currentSession();
 			HibernateUtil.beginTransaction();
 			Connection connection = session.connection();
@@ -827,41 +873,54 @@ public class UserService {
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			HibernateUtil.rollbackTransaction();
-			this.logger
-					.error("Error getting accessible groups from CSM database",
-							e);
-			throw new Exception(
-					"error getting accessible groups from CSM database:", e);
+			logger.error("Error removing accessible groups from CSM database",
+					e);
+			throw new CaNanoLabSecurityException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
 	}
 
 	public void setVisiblity(String dataToProtect, String[] visibilities)
-			throws Exception {
-		removeAllAccessibleGroups(dataToProtect,
-				CaNanoLabConstants.CSM_READ_ROLE, null);
+			throws CaNanoLabSecurityException {
+		try {
 
-		// set new visibilities
-		for (String visibility : visibilities) {
-			secureObject(dataToProtect, visibility,
-					CaNanoLabConstants.CSM_READ_ROLE);
-		}
+			removeAllAccessibleGroups(dataToProtect,
+					CaNanoLabConstants.CSM_READ_ROLE, null);
 
-		// set default visibilities
-		for (String visibility : CaNanoLabConstants.VISIBLE_GROUPS) {
-			secureObject(dataToProtect, visibility,
-					CaNanoLabConstants.CSM_READ_ROLE);
+			// set new visibilities
+			for (String visibility : visibilities) {
+				secureObject(dataToProtect, visibility,
+						CaNanoLabConstants.CSM_READ_ROLE);
+			}
+
+			// set default visibilities
+			for (String visibility : CaNanoLabConstants.VISIBLE_GROUPS) {
+				secureObject(dataToProtect, visibility,
+						CaNanoLabConstants.CSM_READ_ROLE);
+			}
+		} catch (Exception e) {
+			logger.error("Error in setting visibility", e);
+			throw new CaNanoLabSecurityException();
 		}
 	}
 
 	public void assignGroupToProtectionGroupWithRole(String groupName,
-			String protectionGroupName, String roleName) throws Exception {
-		Role role = getRole(roleName);
-		ProtectionGroup pg = getProtectionGroup(protectionGroupName);
-		Group group = getGroup(groupName);
-		this.userManager.assignGroupRoleToProtectionGroup(pg.getProtectionGroupId()
-				.toString(), group.getGroupId().toString(), new String[] { role
-				.getId().toString() });
+			String protectionGroupName, String roleName)
+			throws CaNanoLabSecurityException {
+		try {
+			Role role = getRole(roleName);
+			ProtectionGroup pg = getProtectionGroup(protectionGroupName);
+			Group group = getGroup(groupName);
+			this.userManager.assignGroupRoleToProtectionGroup(pg
+					.getProtectionGroupId().toString(), group.getGroupId()
+					.toString(), new String[] { role.getId().toString() });
+		} catch (Exception e) {
+			logger
+					.error(
+							"Error in assigning group to protection group with role",
+							e);
+			throw new CaNanoLabSecurityException();
+		}
 	}
 }

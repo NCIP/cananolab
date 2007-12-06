@@ -6,6 +6,8 @@ import gov.nih.nci.calab.domain.LabFile;
 import gov.nih.nci.calab.domain.Report;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.dto.common.LabFileBean;
+import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
+import gov.nih.nci.calab.exception.ReportException;
 import gov.nih.nci.calab.service.common.FileService;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
@@ -29,52 +31,54 @@ public class SubmitReportService {
 
 	private UserService userService;
 
-	public SubmitReportService() throws Exception {
+	public SubmitReportService() throws CaNanoLabSecurityException {
 		this.userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
 	}
 
 	public void createReport(String[] particleNames, FormFile uploadedFile,
-			LabFileBean fileBean) throws Exception {
+			LabFileBean fileBean) throws ReportException,
+			CaNanoLabSecurityException {
 
 		String rootPath = PropertyReader.getProperty(
 				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
 		if (rootPath.charAt(rootPath.length() - 1) == File.separatorChar)
 			rootPath = rootPath.substring(0, rootPath.length() - 1);
-
-		FileService fileService = new FileService();
-		String fileName = fileService.writeUploadedFile(uploadedFile, rootPath
-				+ File.separator + CaNanoLabConstants.FOLDER_REPORT, true);
-
 		LabFile dataFile = null;
-		if (fileBean.getType().equalsIgnoreCase(CaNanoLabConstants.REPORT))
-			dataFile = new Report();
-		else
-			dataFile = new AssociatedFile();
-
-		dataFile.setDescription(fileBean.getDescription());
-		dataFile.setFilename(uploadedFile.getFileName());
-
-		dataFile.setUri(File.separator + CaNanoLabConstants.FOLDER_REPORT
-				+ File.separator + fileName);
-		dataFile.setTitle(fileBean.getTitle().toUpperCase()); // convert to
-		dataFile.setCreatedDate(fileBean.getCreatedDate());
-		dataFile.setCreatedBy(fileBean.getCreatedBy());
-		dataFile.setComments(fileBean.getComments());
-
-		// look up the samples for each particleNames
 		try {
-			Session session = HibernateUtil.currentSession();
-			HibernateUtil.beginTransaction();
-			session.save(dataFile);
-			HibernateUtil.commitTransaction();
-		} catch (Exception e) {
-			HibernateUtil.rollbackTransaction();
-			logger.error("Problem saving report File: ", e);
-			throw e;
-		} finally {
-			HibernateUtil.closeSession();
-		}
+			FileService fileService = new FileService();
+			String fileName = fileService.writeUploadedFile(uploadedFile,
+					rootPath + File.separator
+							+ CaNanoLabConstants.FOLDER_REPORT, true);
 
+			if (fileBean.getType().equalsIgnoreCase(CaNanoLabConstants.REPORT))
+				dataFile = new Report();
+			else
+				dataFile = new AssociatedFile();
+
+			dataFile.setDescription(fileBean.getDescription());
+			dataFile.setFilename(uploadedFile.getFileName());
+
+			dataFile.setUri(File.separator + CaNanoLabConstants.FOLDER_REPORT
+					+ File.separator + fileName);
+			dataFile.setTitle(fileBean.getTitle().toUpperCase()); // convert
+			// to
+			dataFile.setCreatedDate(fileBean.getCreatedDate());
+			dataFile.setCreatedBy(fileBean.getCreatedBy());
+			dataFile.setComments(fileBean.getComments());
+		} catch (Exception e) {
+			logger.error(
+					"Error in writing the uploaded file to the file system. ",
+					e);
+			throw new ReportException();
+		}
+		/*
+		 * try { Session session = HibernateUtil.currentSession();
+		 * HibernateUtil.beginTransaction(); session.save(dataFile);
+		 * HibernateUtil.commitTransaction(); } catch (Exception e) {
+		 * HibernateUtil.rollbackTransaction(); logger.error("Problem saving
+		 * report File: ", e); throw new ReportException(); } finally {
+		 * HibernateUtil.closeSession(); }
+		 */
 		Nanoparticle particle = null;
 
 		for (String particleName : particleNames) {
@@ -103,7 +107,7 @@ public class SubmitReportService {
 			} catch (Exception e) {
 				HibernateUtil.rollbackTransaction();
 				logger.error("Problem saving report File: ", e);
-				throw e;
+				throw new ReportException();
 			} finally {
 				HibernateUtil.closeSession();
 			}

@@ -8,6 +8,13 @@ import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.function.FunctionBean;
 import gov.nih.nci.calab.dto.remote.GridNodeBean;
+import gov.nih.nci.calab.exception.CaNanoLabException;
+import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
+import gov.nih.nci.calab.exception.ParticleCharacterizationException;
+import gov.nih.nci.calab.exception.ParticleCompositionException;
+import gov.nih.nci.calab.exception.ParticleException;
+import gov.nih.nci.calab.exception.ParticleFunctionException;
+import gov.nih.nci.calab.exception.ReportException;
 import gov.nih.nci.calab.service.common.LookupService;
 import gov.nih.nci.calab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.calab.service.particle.NanoparticleCompositionService;
@@ -45,18 +52,20 @@ public class InitParticleSetup {
 
 	private static NanoparticleCompositionService compService;
 
-	private InitParticleSetup() throws Exception {
+	private InitParticleSetup() throws CaNanoLabSecurityException {
 		particleService = new NanoparticleService();
 		charService = new NanoparticleCharacterizationService();
 		compService = new NanoparticleCompositionService();
 		lookupService = new LookupService();
 	}
 
-	public static InitParticleSetup getInstance() throws Exception {
+	public static InitParticleSetup getInstance()
+			throws CaNanoLabSecurityException {
 		return new InitParticleSetup();
 	}
 
-	public void setNewParticleTypes(HttpSession session) throws Exception {
+	public void setNewParticleTypes(HttpSession session)
+			throws ParticleException {
 		if (session.getAttribute("allNewParticleTypes") == null
 				|| session.getAttribute("newSampleCreated") != null
 				|| session.getAttribute("newParticleCreated") != null) {
@@ -68,7 +77,7 @@ public class InitParticleSetup {
 	}
 
 	public void setAllCompositionDropdowns(HttpSession session)
-			throws Exception {
+			throws CaNanoLabException {
 		SortedSet<String> composingElementTypes = lookupService
 				.getAllLookupTypes("ComposingElementType");
 		session.setAttribute("allComposingElementTypes", composingElementTypes);
@@ -91,7 +100,8 @@ public class InitParticleSetup {
 		session.removeAttribute("newPolymerCreated");
 	}
 
-	private void setAllDendrimers(HttpSession session) throws Exception {
+	private void setAllDendrimers(HttpSession session)
+			throws ParticleCompositionException {
 		if ((session.getAttribute("allDendrimerCores") == null)
 				|| session.getAttribute("newDendrimerCreated") != null) {
 			SortedSet<String> dendrimerCores = compService
@@ -120,7 +130,8 @@ public class InitParticleSetup {
 		session.removeAttribute("newDendrimerCreated");
 	}
 
-	public void setAllMetalCompositions(HttpSession session) throws Exception {
+	public void setAllMetalCompositions(HttpSession session)
+			throws ParticleCompositionException {
 		if (session.getServletContext().getAttribute("allMetalCompositions") == null) {
 			String[] compositions = compService.getAllMetalCompositions();
 			session.getServletContext().setAttribute("allMetalCompositions",
@@ -128,7 +139,8 @@ public class InitParticleSetup {
 		}
 	}
 
-	public void setAllParticleSources(HttpSession session) throws Exception {
+	public void setAllParticleSources(HttpSession session)
+			throws ParticleException {
 		if (session.getAttribute("allParticleSources") == null
 				|| session.getAttribute("newSampleCreated") != null) {
 			SortedSet<String> particleSources = particleService
@@ -140,7 +152,7 @@ public class InitParticleSetup {
 	}
 
 	public void setSideParticleMenu(HttpServletRequest request,
-			String particleId) throws Exception {
+			String particleId) throws CaNanoLabException {
 		HttpSession session = request.getSession();
 		InitReportSetup.getInstance().setAllReports(session, particleId);
 		// not part of the side menu, but need to up
@@ -160,7 +172,7 @@ public class InitParticleSetup {
 	}
 
 	private void setAllCompositions(HttpSession session, String particleId)
-			throws Exception {
+			throws ParticleCompositionException {
 		if (session.getAttribute("allCharacterizations") == null
 				|| session.getAttribute("newCharacterizationCreated") != null
 				|| session.getAttribute("newParticleCreated") != null) {
@@ -178,10 +190,12 @@ public class InitParticleSetup {
 	 * @param session
 	 * @param particleName
 	 * @param particleType
-	 * @throws Exception
+	 * @throws ParticleCharacterizationException
+	 * @throws CaNanoLabSecurityException
 	 */
 	private void setAllCharacterizations(HttpSession session, String particleId)
-			throws Exception {
+			throws ParticleCharacterizationException,
+			CaNanoLabSecurityException {
 		setAllCharacterizationTypes(session);
 		Map<String, List<CharacterizationBean>> charTypeChars = (Map<String, List<CharacterizationBean>>) session
 				.getServletContext().getAttribute("allCharTypeChars");
@@ -358,7 +372,7 @@ public class InitParticleSetup {
 	}
 
 	public void setFunctionTypeFunctions(HttpSession session, String particleId)
-			throws Exception {
+			throws ParticleFunctionException {
 		if (session.getAttribute("allFuncTypeFuncs") == null
 				|| session.getAttribute("newParticleCreated") != null
 				|| session.getAttribute("newFunctionCreated") != null) {
@@ -370,7 +384,8 @@ public class InitParticleSetup {
 	}
 
 	public void setRemoteSideParticleMenu(HttpServletRequest request,
-			String particleName, GridNodeBean gridNode) throws Exception {
+			String particleName, GridNodeBean gridNode)
+			throws CaNanoLabException {
 		HttpSession session = request.getSession();
 		GridSearchService service = new GridSearchService();
 		if (session.getAttribute("remoteCharTypeChars") == null
@@ -431,7 +446,8 @@ public class InitParticleSetup {
 		InitSessionSetup.getInstance().setStaticDropdowns(session);
 	}
 
-	public void setAllPhysicalDropdowns(HttpSession session) throws Exception {
+	public void setAllPhysicalDropdowns(HttpSession session)
+			throws CaNanoLabException {
 		// solubility
 		if (session.getAttribute("allSolventTypes") == null
 				|| session.getAttribute("newSolubilityCreated") != null) {
@@ -494,7 +510,8 @@ public class InitParticleSetup {
 		session.removeAttribute("newSurfaceCreated");
 	}
 
-	public void setAllAreaMeasureUnits(HttpSession session) throws Exception {
+	public void setAllAreaMeasureUnits(HttpSession session)
+			throws CaNanoLabException {
 		if (session.getServletContext().getAttribute("allAreaMeasureUnits") == null) {
 			SortedSet<String> areaUnits = lookupService.getAllMeasureUnits()
 					.get("Area");
@@ -503,7 +520,8 @@ public class InitParticleSetup {
 		}
 	}
 
-	public void setAllInvitroDropdowns(HttpSession session) throws Exception {
+	public void setAllInvitroDropdowns(HttpSession session)
+			throws CaNanoLabException {
 		if (session.getAttribute("allCellLines") == null
 				|| session.getAttribute("newCytoCreated") != null) {
 			SortedSet<String> cellLines = lookupService
@@ -513,7 +531,8 @@ public class InitParticleSetup {
 		session.removeAttribute("newCytoCreated");
 	}
 
-	public void setAllFunctionDropdowns(HttpSession session) throws Exception {
+	public void setAllFunctionDropdowns(HttpSession session)
+			throws CaNanoLabException {
 		if (session.getServletContext().getAttribute("allSpecies") == null) {
 			SortedSet<String> names = lookupService
 					.getAllLookupTypes("SpeciesName");
@@ -573,7 +592,7 @@ public class InitParticleSetup {
 	}
 
 	public void setAllCharacterizationDropdowns(HttpSession session)
-			throws Exception {
+			throws ParticleCharacterizationException {
 		if (session.getAttribute("characterizationSources") == null
 				|| session.getAttribute("newCharacterizationSourceCreated") != null) {
 			SortedSet<String> characterizationSources = charService
@@ -584,7 +603,8 @@ public class InitParticleSetup {
 		session.removeAttribute("newCharacterizationSourceCreated");
 	}
 
-	public void setAllInstruments(HttpSession session) throws Exception {
+	public void setAllInstruments(HttpSession session)
+			throws ParticleCharacterizationException {
 		if (session.getAttribute("allInstruments") == null
 				|| session.getAttribute("newInstrumentCreated") != null) {
 			List<InstrumentBean> instruments = charService.getAllInstruments();
@@ -601,7 +621,7 @@ public class InitParticleSetup {
 	}
 
 	public void setAllDerivedDataFileTypes(HttpSession session)
-			throws Exception {
+			throws ParticleCharacterizationException {
 		if (session.getAttribute("allDerivedDataFileTypes") == null
 				|| session.getAttribute("newCharacterizationFileTypeCreated") != null) {
 
@@ -612,7 +632,8 @@ public class InitParticleSetup {
 		session.removeAttribute("newCharacterizationFileTypeCreated");
 	}
 
-	public void setAllFunctionTypes(HttpSession session) throws Exception {
+	public void setAllFunctionTypes(HttpSession session)
+			throws CaNanoLabException {
 		// set in application context
 		if (session.getServletContext().getAttribute("allFunctionTypes") == null) {
 			SortedSet<String> types = lookupService
@@ -622,7 +643,7 @@ public class InitParticleSetup {
 	}
 
 	public void setAllCharacterizationTypes(HttpSession session)
-			throws Exception {
+			throws ParticleCharacterizationException {
 		// set in application context
 		if (session.getServletContext()
 				.getAttribute("allCharacterizationTypes") == null) {
@@ -643,7 +664,8 @@ public class InitParticleSetup {
 	}
 
 	public void setDerivedDatumNames(HttpSession session,
-			String characterizationName) throws Exception {
+			String characterizationName)
+			throws ParticleCharacterizationException {
 		SortedSet<String> categories = charService
 				.getDerivedDataCategories(characterizationName);
 		session.setAttribute("derivedDataCategories", categories);
@@ -654,7 +676,7 @@ public class InitParticleSetup {
 	}
 
 	public void setAllCharacterizationMeasureUnitsTypes(HttpSession session,
-			String charName) throws Exception {
+			String charName) throws CaNanoLabException {
 		Map<String, SortedSet<String>> unitMap = lookupService
 				.getAllMeasureUnits();
 		SortedSet<String> charUnits = unitMap.get(charName);

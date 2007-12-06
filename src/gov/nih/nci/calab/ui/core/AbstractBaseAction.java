@@ -17,9 +17,10 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: AbstractBaseAction.java,v 1.15 2007-12-05 20:01:08 pansu Exp $ */
+/* CVS $Id: AbstractBaseAction.java,v 1.16 2007-12-06 09:01:44 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
+import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.calab.exception.InvalidSessionException;
 import gov.nih.nci.calab.exception.NoAccessException;
 
@@ -33,7 +34,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 public abstract class AbstractBaseAction extends Action {
-	
+
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -43,17 +44,14 @@ public abstract class AbstractBaseAction extends Action {
 		if (!loginRequired()) {
 			return executeTask(mapping, form, request, response);
 		}
-
 		if (user != null) {
 			boolean accessStatus = canUserExecute(user);
 			if (!accessStatus) {
-				throw new NoAccessException("You don't have access to class: "
-						+ this.getClass().getName());
+				throw new NoAccessException();
 			}
 		} else {
 			throw new InvalidSessionException();
 		}
-
 		return executeTask(mapping, form, request, response);
 	}
 
@@ -74,7 +72,8 @@ public abstract class AbstractBaseAction extends Action {
 	 * 
 	 * @param session
 	 * @return
-	 * @throws Exception
+	 * @throws CaNanoLabSecurityException
 	 */
-	public abstract boolean canUserExecute(UserBean user) throws Exception;
+	public abstract boolean canUserExecute(UserBean user)
+			throws CaNanoLabSecurityException;
 }

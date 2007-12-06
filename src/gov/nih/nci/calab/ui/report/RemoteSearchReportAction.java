@@ -6,12 +6,11 @@ package gov.nih.nci.calab.ui.report;
  * @author pansu
  */
 
-/* CVS $Id: RemoteSearchReportAction.java,v 1.5 2007-12-05 20:01:08 pansu Exp $ */
+/* CVS $Id: RemoteSearchReportAction.java,v 1.6 2007-12-06 09:01:44 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.remote.GridNodeBean;
-import gov.nih.nci.calab.exception.FileNotFoundException;
-import gov.nih.nci.calab.exception.GridQueryException;
+import gov.nih.nci.calab.exception.FileException;
 import gov.nih.nci.calab.service.remote.GridSearchService;
 import gov.nih.nci.calab.service.remote.GridService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
@@ -51,7 +50,7 @@ public class RemoteSearchReportAction extends BaseRemoteSearchAction {
 		Map<String, GridNodeBean> gridNodeMap = prepareSearch(request);
 		GridNodeBean[] gridNodes = GridService.getGridNodesFromHostNames(
 				gridNodeMap, gridNodeHosts);
-		ActionMessages msgs = new ActionMessages();		
+		ActionMessages msgs = new ActionMessages();
 		if (gridNodes == null) {
 			ActionMessage msg = new ActionMessage(
 					"message.grid.discovery.none",
@@ -66,16 +65,16 @@ public class RemoteSearchReportAction extends BaseRemoteSearchAction {
 			try {
 				List<LabFileBean> gridReports = searchService.getRemoteReports(
 						reportTitle, reportType, particleType, functionTypes,
-						gridNode);		
+						gridNode);
 				if (gridReports.size() == 0) {
 					ActionMessage message = new ActionMessage(
-							"message.remoteSearchReport.noresult",
-							gridNode.getHostName());
+							"message.remoteSearchReport.noresult", gridNode
+									.getHostName());
 					msgs.add("message", message);
 					saveMessages(request, msgs);
 				}
 				reports.addAll(gridReports);
-			} catch (Exception e) {				
+			} catch (Exception e) {
 				ActionMessage message = new ActionMessage(
 						"error.grid.notAvailable", gridNode.getHostName());
 				msgs.add("message", message);
@@ -86,7 +85,7 @@ public class RemoteSearchReportAction extends BaseRemoteSearchAction {
 		if (!reports.isEmpty()) {
 			request.getSession().setAttribute("remoteReports", reports);
 			forward = mapping.findForward("success");
-		} else {			
+		} else {
 			ActionMessage msg = new ActionMessage(
 					"message.searchReport.noresult");
 			msgs.add("message", msg);
@@ -119,7 +118,7 @@ public class RemoteSearchReportAction extends BaseRemoteSearchAction {
 		String fileId = request.getParameter("fileId");
 		String fileName = request.getParameter("fileName");
 		String gridNodeHost = request.getParameter("gridNodeHost");
-		Map<String, GridNodeBean> gridNodes = initSetup(request);		
+		Map<String, GridNodeBean> gridNodes = initSetup(request);
 		ActionMessages msgs = new ActionMessages();
 		if (gridNodes == null) {
 			ActionMessage msg = new ActionMessage(
@@ -131,23 +130,19 @@ public class RemoteSearchReportAction extends BaseRemoteSearchAction {
 		}
 		GridNodeBean gridNode = gridNodes.get(gridNodeHost);
 		GridSearchService searchService = new GridSearchService();
-		try {
-			byte[] fileData = searchService.getRemoteFileContent(fileId,
-					gridNode);			
-			if (fileData != null) {
-				response.setContentType("application/octet-stream");
-				response.setHeader("Content-disposition",
-						"attachment;filename=" + fileName);
-				response.setHeader("cache-control", "Private");
-				java.io.OutputStream out = response.getOutputStream();
-				out.write(fileData);
-				out.close();
-			} else {
-				throw new FileNotFoundException(
-						"File to download doesn't exist on the server");
-			}
-		} catch (Exception e) {
-			throw new GridQueryException("Error retrieving remote file", e);
+
+		byte[] fileData = searchService.getRemoteFileContent(fileId, gridNode);
+		if (fileData != null) {
+			response.setContentType("application/octet-stream");
+			response.setHeader("Content-disposition", "attachment;filename="
+					+ fileName);
+			response.setHeader("cache-control", "Private");
+			java.io.OutputStream out = response.getOutputStream();
+			out.write(fileData);
+			out.close();
+		} else {
+			throw new FileException(
+					"File to download doesn't exist on the server");
 		}
 		return null;
 	}

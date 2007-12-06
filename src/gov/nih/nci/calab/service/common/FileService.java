@@ -3,6 +3,8 @@ package gov.nih.nci.calab.service.common;
 import gov.nih.nci.calab.db.HibernateUtil;
 import gov.nih.nci.calab.domain.LabFile;
 import gov.nih.nci.calab.dto.common.LabFileBean;
+import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
+import gov.nih.nci.calab.exception.FileException;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
@@ -14,7 +16,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class FileService {
 	// remove existing visibilities for the data
 	private UserService userService;
 
-	public FileService() throws Exception {
+	public FileService() throws CaNanoLabSecurityException {
 		this.userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
 	}
 
@@ -45,7 +46,8 @@ public class FileService {
 	 * @param fileId
 	 * @return
 	 */
-	public LabFileBean getFile(String fileId) throws Exception {
+	public LabFileBean getFile(String fileId) throws FileException,
+			CaNanoLabSecurityException {
 		LabFileBean fileBean = null;
 		try {
 			Session session = HibernateUtil.currentSession();
@@ -56,7 +58,7 @@ public class FileService {
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			logger.error("Problem getting file with file ID: " + fileId, e);
-			throw e;
+			throw new FileException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -75,10 +77,10 @@ public class FileService {
 	 * 
 	 * @param fileId
 	 * @param out
-	 * @throws Exception
+	 * @throws FileException
 	 */
 	public void writeFileContent(Long fileId, OutputStream out)
-			throws Exception {
+			throws FileException {
 
 		try {
 			Session session = HibernateUtil.currentSession();
@@ -100,17 +102,16 @@ public class FileService {
 			out.close();
 		} catch (HibernateException e) {
 			this.logger.error(
-					"error getting file meta data from the database.", e);
-			throw new Exception(
-					"error getting file meta data from the database:", e);
+					"Error getting file meta data from the database.", e);
+			throw new FileException(
+					"error getting file meta data from the database");
 		} catch (IOException e) {
 			this.logger
 					.error(
 							"Error getting file content from the file system and writing to the output stream",
 							e);
-			throw new Exception(
-					"error getting file content from the file system and writing to the output stream:",
-					e);
+			throw new FileException(
+					"Error getting file content from the file system and writing to the output stream");
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -121,9 +122,9 @@ public class FileService {
 	 * 
 	 * @param fileId
 	 * @return
-	 * @throws Exception
+	 * @throws FileException
 	 */
-	public byte[] getFileContent(Long fileId) throws Exception {
+	public byte[] getFileContent(Long fileId) throws FileException {
 
 		try {
 			Session session = HibernateUtil.currentSession();
@@ -145,7 +146,9 @@ public class FileService {
 			// Before converting to an int type, check
 			// to ensure that file is not larger than Integer.MAX_VALUE.
 			if (fileLength > Integer.MAX_VALUE) {
-				throw new Exception(
+				logger
+						.error("The file is too big. Byte array can't be longer than Java Integer MAX_VALUE");
+				throw new FileException(
 						"The file is too big. Byte array can't be longer than Java Integer MAX_VALUE");
 			}
 
@@ -172,19 +175,13 @@ public class FileService {
 			is.close();
 
 			return fileData;
-		} catch (SQLException e) {
-			this.logger.error("Error getting file meta data from the database",
-					e);
-			throw new Exception(
-					"error getting file meta data from the database:", e);
 		} catch (IOException e) {
 			this.logger
 					.error(
 							"Error getting file content from the file system and writing to the output stream",
 							e);
-			throw new Exception(
-					"error getting file content from the file system and writing to the output stream:",
-					e);
+			throw new FileException(
+					"Error getting file content from the file system and writing to the output stream.");
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -221,7 +218,7 @@ public class FileService {
 		oStream.write(fileContent);
 	}
 
-	public void writeFile(InputStream is, FileOutputStream os)
+	private void writeFile(InputStream is, FileOutputStream os)
 			throws IOException {
 		byte[] bytes = new byte[32768];
 
@@ -243,9 +240,11 @@ public class FileService {
 	 * Update the meta data associated with a file stored in the database
 	 * 
 	 * @param fileBean
-	 * @throws Exception
+	 * @throws FileException
+	 * @throws CaNanoLabSecurityException
 	 */
-	public void updateFileMetaData(LabFileBean fileBean) throws Exception {
+	public void updateFileMetaData(LabFileBean fileBean) throws FileException,
+			CaNanoLabSecurityException {
 		try {
 			Session session = HibernateUtil.currentSession();
 			HibernateUtil.beginTransaction();
@@ -259,7 +258,7 @@ public class FileService {
 		} catch (Exception e) {
 			HibernateUtil.rollbackTransaction();
 			logger.error("Problem updating file meta data: ", e);
-			throw e;
+			throw new FileException();
 		} finally {
 			HibernateUtil.closeSession();
 		}

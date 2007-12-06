@@ -2,7 +2,6 @@ package gov.nih.nci.calab.service.sample;
 
 import gov.nih.nci.calab.db.HibernateUtil;
 import gov.nih.nci.calab.domain.Aliquot;
-import gov.nih.nci.calab.domain.LabFile;
 import gov.nih.nci.calab.domain.Sample;
 import gov.nih.nci.calab.domain.SampleContainer;
 import gov.nih.nci.calab.domain.SampleSOP;
@@ -14,6 +13,7 @@ import gov.nih.nci.calab.dto.sample.ContainerInfoBean;
 import gov.nih.nci.calab.dto.sample.SampleBean;
 import gov.nih.nci.calab.dto.sample.StorageLocation;
 import gov.nih.nci.calab.exception.DuplicateEntriesException;
+import gov.nih.nci.calab.exception.SampleException;
 import gov.nih.nci.calab.service.common.LookupService;
 import gov.nih.nci.calab.service.util.CaNanoLabComparators;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
@@ -39,7 +39,7 @@ import org.hibernate.Session;
  * @author pansu
  * 
  */
-/* CVS $Id: SampleService.java,v 1.2 2007-12-05 20:01:09 pansu Exp $ */
+/* CVS $Id: SampleService.java,v 1.3 2007-12-06 09:01:44 pansu Exp $ */
 
 public class SampleService {
 	private static Logger logger = Logger.getLogger(SampleService.class);
@@ -61,7 +61,7 @@ public class SampleService {
 			String sampleType, String sampleSource, String sourceSampleId,
 			Date dateAccessionedBegin, Date dateAccessionedEnd,
 			String sampleSubmitter, StorageLocation storageLocation)
-			throws Exception {
+			throws SampleException {
 		List<SampleBean> samples = new ArrayList<SampleBean>();
 
 		try {
@@ -165,8 +165,7 @@ public class SampleService {
 			logger
 					.error("Error in searching sample by the given parameters",
 							e);
-			throw new RuntimeException(
-					"Error in searching sample by the given parameters");
+			throw new SampleException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -193,77 +192,20 @@ public class SampleService {
 			String sampleSource, String sourceSampleId,
 			Date dateAccessionedBegin, Date dateAccessionedEnd,
 			String sampleSubmitter, StorageLocation storageLocation)
-			throws Exception {
+			throws SampleException {
 
 		return searchSamplesBySampleName("", sampleType, sampleSource,
 				sourceSampleId, dateAccessionedBegin, dateAccessionedEnd,
 				sampleSubmitter, storageLocation);
 	}
 
-	public Sample searchSampleBy(String charId) throws Exception {
-		Sample sample = null;
-		try {
-
-			Session session = HibernateUtil.currentSession();
-			HibernateUtil.beginTransaction();
-			List results = session.createQuery(
-					" from Nanoparticle nano left join fetch nano.characterizationCollection chara"
-							+ " where chara.id=" + charId).list();
-			for (Object obj : results) {
-				sample = (Sample) obj;
-			}
-			HibernateUtil.commitTransaction();
-		} catch (Exception e) {
-			logger.error("Problem finding characterization");
-			throw e;
-		} finally {
-			HibernateUtil.closeSession();
-		}
-
-		return sample;
-	}
-
-	public List<LabFile> searchLabFilesBy(String charId) throws Exception {
-		Sample sample = this.searchSampleBy(charId);
-
-		List<LabFile> labFiles = new ArrayList<LabFile>();
-
-		if (sample != null) {
-			LabFile labFile;
-			try {
-
-				Session session = HibernateUtil.currentSession();
-				HibernateUtil.beginTransaction();
-				List results = session
-						.createQuery(
-								" from Sample sample left join fetch sample.sampleContainerCollection"
-										+ " left join fetch sample.sampleContainerCollection.runSampleContainerCollection"
-										+ " left join fetch sample.sampleContainerCollection.runSampleContainerCollection.run"
-										+ " left join fetch sample.sampleContainerCollection.runSampleContainerCollection.run.outputFileCollection"
-										+ " where sample.id=" + sample.getId())
-						.list();
-				for (Object obj : results) {
-					labFile = (LabFile) obj;
-					labFiles.add(labFile);
-				}
-				HibernateUtil.commitTransaction();
-			} catch (Exception e) {
-				logger.error("Problem finding characterization", e);
-				throw e;
-			} finally {
-				HibernateUtil.closeSession();
-			}
-		}
-		return labFiles;
-	}
-
 	/**
 	 * 
 	 * @return a map between sample name and its sample containers
-	 * @throws Exception
+	 * @throws SampleException
 	 */
 	public Map<String, SortedSet<ContainerBean>> getAllSampleContainers()
-			throws Exception {
+			throws SampleException {
 		SortedSet<ContainerBean> containers = null;
 		Map<String, SortedSet<ContainerBean>> sampleContainers = new HashMap<String, SortedSet<ContainerBean>>();
 		try {
@@ -293,14 +235,15 @@ public class SampleService {
 
 		} catch (Exception e) {
 			logger.error("Error in retrieving all containers", e);
-			throw new RuntimeException("Error in retrieving all containers");
+			throw new SampleException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
 		return sampleContainers;
 	}
 
-	public SortedSet<String> getAllSampleContainerTypes() throws Exception {
+	public SortedSet<String> getAllSampleContainerTypes()
+			throws SampleException {
 		SortedSet<String> containerTypes = new TreeSet<String>();
 		try {
 			Session session = HibernateUtil.currentSession();
@@ -314,8 +257,7 @@ public class SampleService {
 
 		} catch (Exception e) {
 			logger.error("Error in retrieving all sample container types", e);
-			throw new RuntimeException(
-					"Error in retrieving all sample container types.");
+			throw new SampleException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -329,7 +271,7 @@ public class SampleService {
 	 * 
 	 * @return a list of SampleBean containing sample Ids and names DELETE
 	 */
-	public List<SampleBean> getAllSamples() throws Exception {
+	public List<SampleBean> getAllSamples() throws SampleException {
 		List<SampleBean> samples = new ArrayList<SampleBean>();
 
 		try {
@@ -347,8 +289,7 @@ public class SampleService {
 
 		} catch (Exception e) {
 			logger.error("Error in retrieving all sample IDs and names", e);
-			throw new RuntimeException(
-					"Error in retrieving all sample IDs and names");
+			throw new SampleException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -357,7 +298,7 @@ public class SampleService {
 		return samples;
 	}
 
-	public List<String> getAllSampleSOPs() throws Exception {
+	public List<String> getAllSampleSOPs() throws SampleException {
 		List<String> sampleSOPs = new ArrayList<String>();
 
 		try {
@@ -372,7 +313,7 @@ public class SampleService {
 
 		} catch (Exception e) {
 			logger.error("Problem to retrieve all Sample SOPs.", e);
-			throw new RuntimeException("Problem to retrieve all Sample SOPs. ");
+			throw new SampleException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -384,51 +325,56 @@ public class SampleService {
 	 * @return the default sample container information in a form of
 	 *         ContainerInfoBean
 	 */
-	public ContainerInfoBean getSampleContainerInfo() throws Exception {
+	public ContainerInfoBean getSampleContainerInfo() throws SampleException {
+		try {
+			Map<String, SortedSet<String>> allUnits = LookupService
+					.getAllMeasureUnits();
+			List<StorageElement> storageElements = getAllStorageElements();
+			SortedSet<String> quantityUnits = (allUnits.get("Quantity") == null) ? new TreeSet<String>()
+					: allUnits.get("Quantity");
+			SortedSet<String> concentrationUnits = (allUnits
+					.get("Concentration") == null) ? new TreeSet<String>()
+					: allUnits.get("Concentration");
+			SortedSet<String> volumeUnits = (allUnits.get("Volume") == null) ? new TreeSet<String>()
+					: allUnits.get("Volume");
+			SortedSet<String> rooms = new TreeSet<String>();
+			SortedSet<String> freezers = new TreeSet<String>();
+			SortedSet<String> shelves = new TreeSet<String>();
+			SortedSet<String> boxes = new TreeSet<String>();
 
-		Map<String, SortedSet<String>> allUnits = LookupService
-				.getAllMeasureUnits();
-		List<StorageElement> storageElements = getAllStorageElements();
-		SortedSet<String> quantityUnits = (allUnits.get("Quantity") == null) ? new TreeSet<String>()
-				: allUnits.get("Quantity");
-		SortedSet<String> concentrationUnits = (allUnits.get("Concentration") == null) ? new TreeSet<String>()
-				: allUnits.get("Concentration");
-		SortedSet<String> volumeUnits = (allUnits.get("Volume") == null) ? new TreeSet<String>()
-				: allUnits.get("Volume");
-		SortedSet<String> rooms = new TreeSet<String>();
-		SortedSet<String> freezers = new TreeSet<String>();
-		SortedSet<String> shelves = new TreeSet<String>();
-		SortedSet<String> boxes = new TreeSet<String>();
-
-		for (StorageElement storageElement : storageElements) {
-			if (storageElement.getType().equalsIgnoreCase("Room")
-					&& !rooms.contains(storageElement.getLocation())) {
-				rooms.add((storageElement.getLocation()));
-			} else if (storageElement.getType().equalsIgnoreCase("Freezer")
-					&& !freezers.contains(storageElement.getLocation())) {
-				freezers.add((storageElement.getLocation()));
-			} else if (storageElement.getType().equalsIgnoreCase("Shelf")
-					&& !shelves.contains(storageElement.getLocation())) {
-				shelves.add((storageElement.getLocation()));
-			} else if (storageElement.getType().equalsIgnoreCase("Box")
-					&& !boxes.contains(storageElement.getLocation())) {
-				boxes.add((storageElement.getLocation()));
+			for (StorageElement storageElement : storageElements) {
+				if (storageElement.getType().equalsIgnoreCase("Room")
+						&& !rooms.contains(storageElement.getLocation())) {
+					rooms.add((storageElement.getLocation()));
+				} else if (storageElement.getType().equalsIgnoreCase("Freezer")
+						&& !freezers.contains(storageElement.getLocation())) {
+					freezers.add((storageElement.getLocation()));
+				} else if (storageElement.getType().equalsIgnoreCase("Shelf")
+						&& !shelves.contains(storageElement.getLocation())) {
+					shelves.add((storageElement.getLocation()));
+				} else if (storageElement.getType().equalsIgnoreCase("Box")
+						&& !boxes.contains(storageElement.getLocation())) {
+					boxes.add((storageElement.getLocation()));
+				}
 			}
+
+			// set labs and racks to null for now
+			ContainerInfoBean containerInfo = new ContainerInfoBean(
+					quantityUnits, concentrationUnits, volumeUnits, null,
+					rooms, freezers, shelves, boxes);
+
+			return containerInfo;
+		} catch (Exception e) {
+			logger.error("Error in getting sample container info", e);
+			throw new SampleException();
 		}
-
-		// set labs and racks to null for now
-		ContainerInfoBean containerInfo = new ContainerInfoBean(quantityUnits,
-				concentrationUnits, volumeUnits, null, rooms, freezers,
-				shelves, boxes);
-
-		return containerInfo;
 	}
 
 	/**
 	 * 
 	 * @return all source sample IDs
 	 */
-	public List<String> getAllSourceSampleIds() throws Exception {
+	public List<String> getAllSourceSampleIds() throws SampleException {
 		List<String> sourceSampleIds = new ArrayList<String>();
 
 		try {
@@ -443,8 +389,7 @@ public class SampleService {
 
 		} catch (Exception e) {
 			logger.error("Error in retrieving all source sample IDs", e);
-			throw new RuntimeException(
-					"Error in retrieving all source sample IDs");
+			throw new SampleException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -456,7 +401,7 @@ public class SampleService {
 	 * 
 	 * @return all sample sources
 	 */
-	public SortedSet<String> getAllSampleSources() throws Exception {
+	public SortedSet<String> getAllSampleSources() throws SampleException {
 		SortedSet<String> sampleSources = new TreeSet<String>();
 
 		try {
@@ -471,7 +416,7 @@ public class SampleService {
 
 		} catch (Exception e) {
 			logger.error("Error in retrieving all sample sources", e);
-			throw new RuntimeException("Error in retrieving all sample sources");
+			throw new SampleException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -482,10 +427,10 @@ public class SampleService {
 	/**
 	 * 
 	 * @return a map between sample source and samples with unmasked aliquots
-	 * @throws Exception
+	 * @throws SampleException
 	 */
 	public Map<String, SortedSet<SampleBean>> getSampleSourceSamplesWithUnmaskedAliquots()
-			throws Exception {
+			throws SampleException {
 		Map<String, SortedSet<SampleBean>> sampleSourceSamples = new HashMap<String, SortedSet<SampleBean>>();
 
 		try {
@@ -517,15 +462,14 @@ public class SampleService {
 			logger.error(
 					"Error in retrieving sample beans with unmasked aliquots ",
 					e);
-			throw new RuntimeException(
-					"Error in retrieving all sample beans with unmasked aliquots. ");
+			throw new SampleException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
 		return sampleSourceSamples;
 	}
 
-	private List<StorageElement> getAllStorageElements() throws Exception {
+	private List<StorageElement> getAllStorageElements() throws SampleException {
 		List<StorageElement> storageElements = new ArrayList<StorageElement>();
 
 		try {
@@ -540,8 +484,7 @@ public class SampleService {
 
 		} catch (Exception e) {
 			logger.error("Error in retrieving all rooms and freezers", e);
-			throw new RuntimeException(
-					"Error in retrieving all rooms and freezers.");
+			throw new SampleException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -552,7 +495,7 @@ public class SampleService {
 	 * 
 	 * @return auto-generated default value for sample name
 	 */
-	public String getDefaultSampleName() throws Exception {
+	public String getDefaultSampleName() throws SampleException {
 		// read from properties file first
 		String sampleNamePrefix = PropertyReader.getProperty(
 				CaNanoLabConstants.CANANOLAB_PROPERTY, "samplePrefix");
@@ -585,8 +528,7 @@ public class SampleService {
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			logger.error("Problem in retrieving default sample ID prefix.", e);
-			throw new RuntimeException(
-					"Problem in retrieving default sample ID prefix.");
+			throw new SampleException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -632,9 +574,9 @@ public class SampleService {
 	/**
 	 * Saves the sample into the database
 	 * 
-	 * @throws Exception
+	 * @throws SampleException
 	 */
-	public void saveSample(SampleBean sample) throws Exception {
+	public void saveSample(SampleBean sample) throws SampleException {
 
 		// check if the smaple is exist
 		// For NCL, sampleId + lotId is unique -- in SampleBean, sampleId
@@ -842,12 +784,10 @@ public class SampleService {
 				session.saveOrUpdate(doSampleContainer);
 			}
 			HibernateUtil.commitTransaction();
-		} catch (DuplicateEntriesException ce) {
-			throw ce;
 		} catch (Exception e) {
 			logger.error("Problem saving the sample.", e);
 			HibernateUtil.rollbackTransaction();
-			throw e;
+			throw new SampleException();
 		} finally {
 			HibernateUtil.closeSession();
 		}

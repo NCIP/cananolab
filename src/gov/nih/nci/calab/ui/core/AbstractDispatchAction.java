@@ -1,6 +1,7 @@
 package gov.nih.nci.calab.ui.core;
 
 import gov.nih.nci.calab.dto.common.UserBean;
+import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.calab.exception.InvalidSessionException;
 import gov.nih.nci.calab.exception.NoAccessException;
 
@@ -42,8 +43,7 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 				return super.execute(mapping, form, request, response);
 			} else {
 				request.getSession().removeAttribute("user");
-				throw new NoAccessException("You don't have access to class: "
-						+ this.getClass().getName());
+				throw new NoAccessException();
 			}
 		} else {
 			throw new InvalidSessionException();
@@ -57,7 +57,8 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 	 * 
 	 * @param user
 	 * @return
-	 * @throws Exception
+	 * @throws CaNanoLabSecurityException
 	 */
-	public abstract boolean canUserExecute(UserBean user) throws Exception;
+	public abstract boolean canUserExecute(UserBean user)
+			throws CaNanoLabSecurityException;
 }

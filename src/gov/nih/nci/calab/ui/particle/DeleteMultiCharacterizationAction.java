@@ -5,6 +5,7 @@ package gov.nih.nci.calab.ui.particle;
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.common.UserBean;
+import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.calab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
@@ -81,7 +82,7 @@ public class DeleteMultiCharacterizationAction extends AbstractDispatchAction {
 		return true;
 	}
 
-	public boolean canUserExecute(UserBean user) throws Exception {
+	public boolean canUserExecute(UserBean user) throws CaNanoLabSecurityException {
 		return InitSecuritySetup.getInstance().userHasDeletePrivilege(user,
 				CaNanoLabConstants.CSM_PG_PARTICLE);
 	}

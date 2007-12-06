@@ -6,11 +6,12 @@ package gov.nih.nci.calab.ui.report;
  * @author pansu
  */
 
-/* CVS $Id: SearchReportAction.java,v 1.4 2007-12-05 20:01:08 pansu Exp $ */
+/* CVS $Id: SearchReportAction.java,v 1.5 2007-12-06 09:01:44 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
-import gov.nih.nci.calab.exception.FileNotFoundException;
+import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
+import gov.nih.nci.calab.exception.FileException;
 import gov.nih.nci.calab.service.common.FileService;
 import gov.nih.nci.calab.service.report.SearchReportService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
@@ -115,13 +116,13 @@ public class SearchReportAction extends AbstractDispatchAction {
 			}
 			out.close();
 		} else {
-			throw new FileNotFoundException(
+			throw new FileException(
 					"File to download doesn't exist on the server when searching reports");
 		}
 		return null;
 	}
 
-	public boolean canUserExecute(UserBean user) throws Exception {
+	public boolean canUserExecute(UserBean user) throws CaNanoLabSecurityException {
 		return true;
 	}
 }

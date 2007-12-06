@@ -19,7 +19,7 @@ import gov.nih.nci.calab.dto.characterization.composition.EmulsionBean;
 import gov.nih.nci.calab.dto.characterization.composition.FullereneBean;
 import gov.nih.nci.calab.dto.characterization.composition.LiposomeBean;
 import gov.nih.nci.calab.dto.characterization.composition.PolymerBean;
-import gov.nih.nci.calab.service.security.UserService;
+import gov.nih.nci.calab.exception.ParticleCompositionException;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
 import java.util.ArrayList;
@@ -43,15 +43,11 @@ public class NanoparticleCompositionService {
 	private static Logger logger = Logger
 			.getLogger(NanoparticleCompositionService.class);
 
-	// remove existing visibilities for the data
-	private UserService userService;
-
-	public NanoparticleCompositionService() throws Exception {
-		this.userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
+	public NanoparticleCompositionService() {
 	}
 
 	public CompositionBean getCompositionBy(String compositionId)
-			throws Exception {
+			throws ParticleCompositionException {
 
 		CompositionBean comp = null;
 		try {
@@ -89,7 +85,7 @@ public class NanoparticleCompositionService {
 		} catch (Exception e) {
 			logger.error("Problem finding composition by ID " + compositionId,
 					e);
-			throw e;
+			throw new ParticleCompositionException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -99,7 +95,7 @@ public class NanoparticleCompositionService {
 	// this would be replaced when composition model is separated from
 	// characterization model
 	public List<CompositionBean> getCompositionInfo(String particleId)
-			throws Exception {
+			throws ParticleCompositionException {
 		List<CompositionBean> compBeans = new ArrayList<CompositionBean>();
 		try {
 			Session session = HibernateUtil.currentSession();
@@ -123,7 +119,7 @@ public class NanoparticleCompositionService {
 		} catch (Exception e) {
 			logger.error("Problem finding characterization info for particle: "
 					+ particleId, e);
-			throw e;
+			throw new ParticleCompositionException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -135,8 +131,7 @@ public class NanoparticleCompositionService {
 	 * same particle
 	 */
 	private boolean isCompositionViewTitleUsed(Session session,
-			ParticleComposition comp, CompositionBean compBean)
-			throws Exception {
+			ParticleComposition comp, CompositionBean compBean) {
 		String viewTitleQuery = "";
 		if (compBean.getId() == null) {
 			viewTitleQuery = "select count(achar.identificationName) from Nanoparticle particle join particle.characterizationCollection achar where particle.name='"
@@ -175,10 +170,10 @@ public class NanoparticleCompositionService {
 	 * 
 	 * @param composition
 	 * @param compositionType
-	 * @throws Exception
+	 * @throws ParticleCompositionException
 	 */
 	public void addParticleComposition(CompositionBean composition,
-			String compositionType) throws Exception {
+			String compositionType) throws ParticleCompositionException {
 		ParticleComposition doComp = new ParticleComposition();
 		if (compositionType
 				.equals(CaNanoLabConstants.COMPOSITION_COMPLEX_PARTICLE_TYPE)) {
@@ -279,13 +274,14 @@ public class NanoparticleCompositionService {
 		} catch (Exception e) {
 			logger.error("Problem saving characterization. ", e);
 			HibernateUtil.rollbackTransaction();
-			throw e;
+			throw new ParticleCompositionException();
 		} finally {
 			HibernateUtil.closeSession();
 		}
 	}
 
-	public SortedSet<String> getAllDendrimerBranches() throws Exception {
+	public SortedSet<String> getAllDendrimerBranches()
+			throws ParticleCompositionException {
 		SortedSet<String> branches = new TreeSet<String>();
 
 		try {
@@ -300,7 +296,7 @@ public class NanoparticleCompositionService {
 
 		} catch (Exception e) {
 			logger.error("Problem to retrieve all Dendrimer Branches.", e);
-			throw new RuntimeException(
+			throw new ParticleCompositionException(
 					"Problem to retrieve all Dendrimer Branches. ");
 		} finally {
 			HibernateUtil.closeSession();
@@ -311,7 +307,8 @@ public class NanoparticleCompositionService {
 		return branches;
 	}
 
-	public SortedSet<String> getAllDendrimerGenerations() throws Exception {
+	public SortedSet<String> getAllDendrimerGenerations()
+			throws ParticleCompositionException {
 		SortedSet<String> generations = new TreeSet<String>();
 
 		try {
@@ -326,7 +323,7 @@ public class NanoparticleCompositionService {
 
 		} catch (Exception e) {
 			logger.error("Problem to retrieve all Dendrimer Generations.", e);
-			throw new RuntimeException(
+			throw new ParticleCompositionException(
 					"Problem to retrieve all Dendrimer Generations. ");
 		} finally {
 			HibernateUtil.closeSession();
@@ -342,7 +339,8 @@ public class NanoparticleCompositionService {
 		return compositions;
 	}
 
-	public SortedSet<String> getAllPolymerInitiators() throws Exception {
+	public SortedSet<String> getAllPolymerInitiators()
+			throws ParticleCompositionException {
 		SortedSet<String> initiators = new TreeSet<String>();
 
 		try {
@@ -357,7 +355,7 @@ public class NanoparticleCompositionService {
 
 		} catch (Exception e) {
 			logger.error("Problem to retrieve all Polymer Initiator.", e);
-			throw new RuntimeException(
+			throw new ParticleCompositionException(
 					"Problem to retrieve all Polymer Initiator. ");
 		} finally {
 			HibernateUtil.closeSession();
@@ -376,7 +374,7 @@ public class NanoparticleCompositionService {
 	}
 
 	public SortedSet<String> getAllDendrimerSurfaceGroupNames()
-			throws Exception {
+			throws ParticleCompositionException {
 		SortedSet<String> names = new TreeSet<String>();
 
 		try {
@@ -391,7 +389,7 @@ public class NanoparticleCompositionService {
 
 		} catch (Exception e) {
 			logger.error("Problem to retrieve all Surface Group name.", e);
-			throw new RuntimeException(
+			throw new ParticleCompositionException(
 					"Problem to retrieve all Surface Group name. ");
 		} finally {
 			HibernateUtil.closeSession();
