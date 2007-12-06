@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.6 2007-12-06 14:18:30 pansu Exp $ */
+/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.7 2007-12-06 22:16:05 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
@@ -81,9 +81,10 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 		InitSecuritySetup.getInstance().setAllVisibilityGroups(session);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleId = request.getParameter("particleId");
+		UserBean user = (UserBean) session.getAttribute("user");
 		NanoparticleService searchtNanoparticleService = new NanoparticleService();
-		ParticleBean particle = searchtNanoparticleService
-				.getGeneralInfo(particleId);
+		ParticleBean particle = searchtNanoparticleService.getGeneralInfo(
+				particleId, user);
 		theForm.set("particle", particle);
 		session.setAttribute("newParticleCreated", "true");
 		InitParticleSetup.getInstance()
@@ -98,9 +99,10 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleId = request.getParameter("particleId");
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		NanoparticleService searchNanoparticleService = new NanoparticleService();
-		ParticleBean particle = searchNanoparticleService
-				.getGeneralInfo(particleId);
+		ParticleBean particle = searchNanoparticleService.getGeneralInfo(
+				particleId, user);
 		theForm.set("particle", particle);
 		request.getSession().setAttribute("newParticleCreated", "true");
 		InitParticleSetup.getInstance()
@@ -113,7 +115,8 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 		return true;
 	}
 
-	public boolean canUserExecute(UserBean user) throws CaNanoLabSecurityException {
+	public boolean canUserExecute(UserBean user)
+			throws CaNanoLabSecurityException {
 		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
 				CaNanoLabConstants.CSM_PG_PARTICLE);
 	}

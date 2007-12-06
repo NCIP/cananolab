@@ -177,7 +177,9 @@ public class NanoparticleService {
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			logger
-					.error("Problem finding particles with the given search parameters ", e);
+					.error(
+							"Problem finding particles with the given search parameters ",
+							e);
 			throw new ParticleException();
 		} finally {
 			HibernateUtil.closeSession();
@@ -235,6 +237,55 @@ public class NanoparticleService {
 		return particleBean;
 	}
 
+	/**
+	 * Query nanoparticle general information such as name, type, keywords and
+	 * visibilities.
+	 * 
+	 * @param particleId
+	 * @return
+	 * @throws ParticleException
+	 * @throws CaNanoLabSecurityException
+	 */
+	public ParticleBean getGeneralInfo(String particleId, UserBean user)
+			throws ParticleException, CaNanoLabSecurityException {
+
+		Nanoparticle particle = null;
+		ParticleBean particleBean = null;
+		try {
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			particle = (Nanoparticle) session.load(Nanoparticle.class,
+					new Long(particleId));
+			if (particle == null) {
+				throw new ParticleException("No such particle in the database");
+			}
+			particleBean = new ParticleBean(particle);
+			HibernateUtil.commitTransaction();
+		} catch (Exception e) {
+			logger.error("Problem finding particle with ID: " + particleId, e);
+			throw new ParticleException();
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		if (particleBean != null) {
+			UserService userService = new UserService(
+					CaNanoLabConstants.CSM_APP_NAME);
+			List<String> accessibleGroups = userService.getAccessibleGroups(
+					particleBean.getSampleName(),
+					CaNanoLabConstants.CSM_READ_ROLE);
+			String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
+			particleBean.setVisibilityGroups(visibilityGroups);
+
+			boolean accessStatus = userService.checkReadPermission(user,
+					particleBean.getSampleName());
+			if (!accessStatus) {
+				throw new CaNanoLabSecurityException(
+						"You don't have access to the particle");
+			}
+		}
+		return particleBean;
+	}
+
 	public ParticleBean getParticleInfo(String particleId)
 			throws ParticleException {
 		ParticleBean particleBean = null;
@@ -251,6 +302,36 @@ public class NanoparticleService {
 			throw new ParticleException();
 		} finally {
 			HibernateUtil.closeSession();
+		}
+		return particleBean;
+	}
+
+	public ParticleBean getParticleInfo(String particleId, UserBean user)
+			throws ParticleException, CaNanoLabSecurityException {
+		ParticleBean particleBean = null;
+		try {
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			Nanoparticle particle = (Nanoparticle) session.load(
+					Nanoparticle.class, new Long(particleId));
+			if (particle != null)
+				particleBean = new ParticleBean(particle);
+			HibernateUtil.commitTransaction();
+		} catch (Exception e) {
+			logger.error("Problem finding particle with ID: " + particleId, e);
+			throw new ParticleException();
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		if (particleBean != null) {
+			UserService userService = new UserService(
+					CaNanoLabConstants.CSM_APP_NAME);
+			boolean accessStatus = userService.checkReadPermission(user,
+					particleBean.getSampleName());
+			if (!accessStatus) {
+				throw new CaNanoLabSecurityException(
+						"You don't have access to the particle");
+			}
 		}
 		return particleBean;
 	}
