@@ -15,7 +15,7 @@
 </c:choose>
 
 <c:choose>
-	<c:when test="${!empty allFuncTypeFuncs}">
+	<c:when test="${!empty allFuncTypeFuncs || canCreateNanoparticle eq 'true'}">
 	<li class="controlList">
 	<a href="#" class="subMenuSecondary">FUNCTION</a>
 	<ul class="sublist_4" style="${funcDisplay}">
