@@ -160,7 +160,7 @@ public class NanoparticleFunctionService {
 		// check if viewTitle is already used the same type of
 		// function for the same particle
 		String viewTitleQuery = "";
-		if (function.getId() == null) {
+		if (function.getId() == null || function.getId().length()==0) {
 			viewTitleQuery = "select count(function.identificationName) from Nanoparticle particle join particle.functionCollection function where particle.id="
 					+ particleId
 					+ " and function.identificationName='"
