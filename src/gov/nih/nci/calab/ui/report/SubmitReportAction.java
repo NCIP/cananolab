@@ -5,7 +5,7 @@ package gov.nih.nci.calab.ui.report;
  *  
  * @author pansu
  */
-/* CVS $Id: SubmitReportAction.java,v 1.6 2007-12-06 09:01:44 pansu Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.7 2007-12-06 22:16:05 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
@@ -93,8 +93,9 @@ public class SubmitReportAction extends AbstractDispatchAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String fileId = request.getParameter("fileId");
 		String fileType = request.getParameter("fileType");
+		UserBean user = (UserBean) session.getAttribute("user");
 		FileService service = new FileService();
-		LabFileBean fileBean = service.getFile(fileId);
+		LabFileBean fileBean = service.getFile(fileId, user);
 		fileBean.setInstanceType(fileType);
 		theForm.set("file", fileBean);
 		return mapping.getInputForward();
@@ -131,7 +132,8 @@ public class SubmitReportAction extends AbstractDispatchAction {
 		return true;
 	}
 
-	public boolean canUserExecute(UserBean user) throws CaNanoLabSecurityException {
+	public boolean canUserExecute(UserBean user)
+			throws CaNanoLabSecurityException {
 		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
 				CaNanoLabConstants.CSM_PG_REPORT);
 	}

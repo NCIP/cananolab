@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.report;
  * @author pansu
  */
 
-/* CVS $Id: SearchReportAction.java,v 1.5 2007-12-06 09:01:44 pansu Exp $ */
+/* CVS $Id: SearchReportAction.java,v 1.6 2007-12-06 22:16:05 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
@@ -94,8 +94,9 @@ public class SearchReportAction extends AbstractDispatchAction {
 			throws Exception {
 
 		String fileId = request.getParameter("fileId");
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		FileService service = new FileService();
-		LabFileBean fileBean = service.getFile(fileId);
+		LabFileBean fileBean = service.getFile(fileId, user);
 		String fileRoot = PropertyReader.getProperty(
 				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
 		File dFile = new File(fileRoot + File.separator + fileBean.getUri());
@@ -122,7 +123,8 @@ public class SearchReportAction extends AbstractDispatchAction {
 		return null;
 	}
 
-	public boolean canUserExecute(UserBean user) throws CaNanoLabSecurityException {
+	public boolean canUserExecute(UserBean user)
+			throws CaNanoLabSecurityException {
 		return true;
 	}
 }

@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleFunctionAction.java,v 1.8 2007-12-06 14:18:12 pansu Exp $ */
+/* CVS $Id: NanoparticleFunctionAction.java,v 1.9 2007-12-06 22:16:05 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.function.AgentBean;
@@ -58,7 +58,7 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 		FunctionBean function = (FunctionBean) theForm.get("function");
 		String functionId = request.getParameter("functionId");
 
-		if (functionId!=null && functionId.length() > 0) {
+		if (functionId != null && functionId.length() > 0) {
 			function.setId((String) theForm.get("functionId"));
 		}
 
@@ -125,9 +125,11 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 			throws Exception {
 		HttpSession session = request.getSession();
 		String particleId = request.getParameter("particleId");
-		NanoparticleService searchtNanoparticleService = new NanoparticleService();
-		ParticleBean particle = searchtNanoparticleService
-				.getParticleInfo(particleId);
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+
+		NanoparticleService searchNanoparticleService = new NanoparticleService();
+		ParticleBean particle = searchNanoparticleService.getParticleInfo(
+				particleId, user);
 		theForm.set("particle", particle);
 		InitParticleSetup.getInstance().setSideParticleMenu(request,
 				particle.getSampleId());

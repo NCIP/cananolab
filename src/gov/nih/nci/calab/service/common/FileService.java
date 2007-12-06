@@ -3,6 +3,7 @@ package gov.nih.nci.calab.service.common;
 import gov.nih.nci.calab.db.HibernateUtil;
 import gov.nih.nci.calab.domain.LabFile;
 import gov.nih.nci.calab.dto.common.LabFileBean;
+import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.calab.exception.FileException;
 import gov.nih.nci.calab.service.security.UserService;
@@ -69,6 +70,46 @@ public class FileService {
 				fileBean.getId(), CaNanoLabConstants.CSM_READ_ROLE);
 		String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
 		fileBean.setVisibilityGroups(visibilityGroups);
+		return fileBean;
+	}
+
+	/**
+	 * Load the file for the given fileId from the database
+	 * 
+	 * @param fileId
+	 * @return
+	 */
+	public LabFileBean getFile(String fileId, UserBean user)
+			throws FileException, CaNanoLabSecurityException {
+		LabFileBean fileBean = null;
+		try {
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			LabFile file = (LabFile) session.load(LabFile.class, StringUtils
+					.convertToLong(fileId));
+			fileBean = new LabFileBean(file);
+			HibernateUtil.commitTransaction();
+		} catch (Exception e) {
+			logger.error("Problem getting file with file ID: " + fileId, e);
+			throw new FileException();
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		if (fileBean != null) {
+			// get visibilities
+			UserService userService = new UserService(
+					CaNanoLabConstants.CSM_APP_NAME);
+			List<String> accessibleGroups = userService.getAccessibleGroups(
+					fileBean.getId(), CaNanoLabConstants.CSM_READ_ROLE);
+			String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
+			fileBean.setVisibilityGroups(visibilityGroups);
+			boolean accessStatus = userService.checkReadPermission(user,
+					fileBean.getId());
+			if (!accessStatus) {
+				throw new CaNanoLabSecurityException(
+						"You don't have access to the file");
+			}
+		}
 		return fileBean;
 	}
 
