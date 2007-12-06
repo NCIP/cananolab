@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.protocol;
  * @author pansu
  */
 
-/* CVS $Id: SearchProtocolAction.java,v 1.6 2007-12-06 09:01:43 pansu Exp $ */
+/* CVS $Id: SearchProtocolAction.java,v 1.7 2007-12-06 22:16:05 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
@@ -94,8 +94,9 @@ public class SearchProtocolAction extends AbstractDispatchAction {
 			throws Exception {
 
 		String fileId = request.getParameter("fileId");
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		FileService service = new FileService();
-		LabFileBean fileBean = service.getFile(fileId);
+		LabFileBean fileBean = service.getFile(fileId, user);
 		String fileRoot = PropertyReader.getProperty(
 				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
 		File dFile = new File(fileRoot + File.separator + fileBean.getUri());

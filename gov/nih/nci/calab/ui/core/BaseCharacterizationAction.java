@@ -13,7 +13,6 @@ import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
-import gov.nih.nci.calab.exception.CaNanoLabException;
 import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.calab.exception.FileException;
 import gov.nih.nci.calab.exception.ParticleCharacterizationException;
@@ -241,7 +240,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		String particleId = request.getParameter("particleId");
 		if (particleId != null) {
 			NanoparticleService particleService = new NanoparticleService();
-			ParticleBean particle = particleService.getGeneralInfo(particleId);
+			ParticleBean particle = particleService.getParticleInfo(particleId,
+					user);
 			theForm.set("particle", particle);
 			request.setAttribute("theParticle", particle);
 			// set up other particles from the same source
@@ -255,7 +255,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			InitParticleSetup.getInstance().setSideParticleMenu(request,
 					particleId);
 		} else {
-			throw new ParticleCharacterizationException("Particle ID is required.");
+			throw new ParticleCharacterizationException(
+					"Particle ID is required.");
 		}
 		InitSessionSetup.getInstance().setApplicationOwner(session);
 		InitParticleSetup.getInstance().setAllInstruments(session);
@@ -447,9 +448,12 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		UserService userService = new UserService(
 				CaNanoLabConstants.CSM_APP_NAME);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-
+		List<CharacterizationBean> charBeans = new ArrayList<CharacterizationBean>();
 		SortedSet<String> datumLabels = new TreeSet<String>();
 		for (CharacterizationSummaryBean summaryBean : charSummaryBeans) {
+			if (!charBeans.contains(summaryBean.getCharBean())) {
+				charBeans.add(summaryBean.getCharBean());
+			}
 			Map<String, String> datumMap = summaryBean.getDatumMap();
 			if (datumMap != null && !datumMap.isEmpty()) {
 				datumLabels.addAll(datumMap.keySet());
@@ -476,7 +480,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 				fileBean.setImage(imageStatus);
 			}
 		}
-		request.setAttribute("nameCharacterizationSummary", charSummaryBeans);
+		request.setAttribute("summaryViewBeans", charSummaryBeans);
+		request.setAttribute("summaryViewCharBeans", charSummaryBeans);
 		request.setAttribute("datumLabels", datumLabels);
 
 		return mapping.findForward("summaryView");
@@ -522,8 +527,9 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			throws Exception {
 
 		String fileId = request.getParameter("fileId");
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		FileService service = new FileService();
-		LabFileBean fileBean = service.getFile(fileId);
+		LabFileBean fileBean = service.getFile(fileId, user);
 		String fileRoot = PropertyReader.getProperty(
 				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
 		File dFile = new File(fileRoot + File.separator + fileBean.getUri());

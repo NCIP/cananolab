@@ -76,6 +76,48 @@ public class SearchProtocolService {
 		return pfb;
 	}
 
+	public ProtocolFileBean getProtocolFileBean(String fileId, UserBean user)
+			throws ProtocolException, CaNanoLabSecurityException {
+		ProtocolFileBean pfb = new ProtocolFileBean();
+		try {
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+
+			String hqlString = "select protocolFile from ProtocolFile protocolFile left join fetch "
+					+ "protocolFile.protocol where protocolFile.id='"
+					+ fileId
+					+ "'";
+
+			List results = session.createQuery(hqlString).list();
+
+			for (Object obj : results) {
+				ProtocolFile pf = (ProtocolFile) obj;
+				pfb = new ProtocolFileBean(pf);
+			}
+			HibernateUtil.commitTransaction();
+		} catch (Exception e) {
+			logger.error("Problem finding protocol info.", e);
+			throw new ProtocolException();
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		if (pfb != null) {
+			UserService userService = new UserService(
+					CaNanoLabConstants.CSM_APP_NAME);
+			List<String> accessibleGroups = userService.getAccessibleGroups(pfb
+					.getId(), CaNanoLabConstants.CSM_READ_ROLE);
+			String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
+			pfb.setVisibilityGroups(visibilityGroups);
+			boolean accessStatus = userService.checkReadPermission(user, pfb
+					.getId());
+			if (!accessStatus) {
+				throw new CaNanoLabSecurityException(
+						"You don't have access to the protocol");
+			}
+		}
+		return pfb;
+	}
+
 	// used for Ajax
 	public List<ProtocolFileBean> getProtocolFiles(String protocolName,
 			String protocolType) throws ProtocolException,

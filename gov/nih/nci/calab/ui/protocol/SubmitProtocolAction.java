@@ -5,7 +5,7 @@ package gov.nih.nci.calab.ui.protocol;
  *  
  * @author chenhang
  */
-/* CVS $Id: SubmitProtocolAction.java,v 1.8 2007-12-06 09:01:43 pansu Exp $ */
+/* CVS $Id: SubmitProtocolAction.java,v 1.9 2007-12-06 22:16:05 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.ProtocolBean;
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
@@ -98,8 +98,9 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		String fileId = request.getParameter("fileId");
 		if (fileId == null)
 			fileId = (String) request.getAttribute("fileId");
+		UserBean user=(UserBean)session.getAttribute("user");
 		SearchProtocolService service = new SearchProtocolService();
-		ProtocolFileBean fileBean = service.getProtocolFileBean(fileId);
+		ProtocolFileBean fileBean = service.getProtocolFileBean(fileId, user);
 		theForm.set("file", fileBean);
 		theForm.set("protocolName", fileBean.getProtocolBean().getName());
 		theForm.set("protocolType", fileBean.getProtocolBean().getType());
