@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleFunctionAction.java,v 1.7 2007-12-06 09:01:43 pansu Exp $ */
+/* CVS $Id: NanoparticleFunctionAction.java,v 1.8 2007-12-06 14:18:12 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.function.AgentBean;
@@ -56,8 +56,9 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ParticleBean particle = (ParticleBean) theForm.get("particle");
 		FunctionBean function = (FunctionBean) theForm.get("function");
+		String functionId = request.getParameter("functionId");
 
-		if (function.getId() == null || function.getId() == "") {
+		if (functionId!=null && functionId.length() > 0) {
 			function.setId((String) theForm.get("functionId"));
 		}
 
@@ -80,7 +81,7 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 		service.addParticleFunction(particle.getSampleId(), function);
 
 		ActionMessages msgs = new ActionMessages();
-		ActionMessage msg = new ActionMessage("message.addparticle.function");
+		ActionMessage msg = new ActionMessage("message.addFunction");
 		msgs.add("message", msg);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
@@ -305,7 +306,8 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 		return true;
 	}
 
-	public boolean canUserExecute(UserBean user) throws CaNanoLabSecurityException {
+	public boolean canUserExecute(UserBean user)
+			throws CaNanoLabSecurityException {
 		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
 				CaNanoLabConstants.CSM_PG_PARTICLE);
 	}
