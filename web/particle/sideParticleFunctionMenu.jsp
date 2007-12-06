@@ -14,7 +14,9 @@
 	</c:otherwise>
 </c:choose>
 
-<li class="controlList">
+<c:choose>
+	<c:when test="${!empty allFuncTypeFuncs}">
+	<li class="controlList">
 	<a href="#" class="subMenuSecondary">FUNCTION</a>
 	<ul class="sublist_4" style="${funcDisplay}">
 		<c:forEach var="funcType" items="${allFunctionTypes}">
@@ -67,3 +69,10 @@
 		</c:forEach>
 	</ul>
 </li>
+</c:when>
+	<c:otherwise>
+		<li class="nodatali">
+			FUNCTION
+		</li>
+	</c:otherwise>
+</c:choose>
