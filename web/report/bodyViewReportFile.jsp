@@ -13,7 +13,9 @@
 				</h3>
 			</td>
 			<td align="right" width="15%">
-	<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=nano_report_help')" class="helpText">Help</a>
+				<a
+					href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=nano_report_help')"
+					class="helpText">Help</a>
 				<logic:equal name="reportActionName" value="updateReport">
 				&nbsp;&nbsp;<a href="reportResults.do" class="helpText">Back</a>
 				</logic:equal>
@@ -22,7 +24,8 @@
 		<tr>
 			<td colspan="2">
 				<jsp:include page="/bodyMessage.jsp?bundle=report" />
-				<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+				<table class="topBorderOnly" cellspacing="0" cellpadding="3"
+					width="100%" align="center" summary="" border="0">
 					<tbody>
 						<tr class="topBorder">
 							<td class="formTitle" colspan="4">
@@ -45,7 +48,10 @@
 								<strong>File Name</strong>
 							</td>
 							<td class="rightLabel" colspan="3">
-								<a href="searchReport.do?dispatch=download&amp;fileId=${submitReportForm.map.file.id}"> <bean:write name="submitReportForm" property="file.displayName" /></a>
+								<a
+									href="searchReport.do?dispatch=download&amp;fileId=${submitReportForm.map.file.id}">
+									<bean:write name="submitReportForm" property="file.displayName" />
+								</a>&nbsp;
 							</td>
 						</tr>
 						<c:choose>
@@ -82,11 +88,14 @@
 										<strong>Visibility</strong>
 									</td>
 									<td class="rightLabel">
-										<html:select property="file.visibilityGroups" multiple="true" size="6">
+										<html:select property="file.visibilityGroups" multiple="true"
+											size="6">
 											<html:options name="allVisibilityGroups" />
 										</html:select>
 										<br>
-										<i>(${applicationOwner}_Researcher and ${applicationOwner}_PI are defaults if none of above is selected.)</i>
+										<i>(${applicationOwner}_Researcher and
+											${applicationOwner}_PI are defaults if none of above is
+											selected.)</i>
 									</td>
 								</tr>
 							</c:when>
@@ -105,7 +114,8 @@
 										<strong>Description</strong>
 									</td>
 									<td class="rightLabel" colspan="3">
-										<bean:write name="submitReportForm" property="file.description" />
+										<bean:write name="submitReportForm"
+											property="file.description" />
 										&nbsp;
 									</td>
 								</tr>
@@ -123,7 +133,8 @@
 										<strong>Visibility</strong>
 									</td>
 									<td class="rightLabel" colspan="3">
-										<bean:write name="submitReportForm" property="file.visibilityStr" filter="false" />
+										<bean:write name="submitReportForm"
+											property="file.visibilityStr" filter="false" />
 										&nbsp;
 									</td>
 								</tr>
@@ -138,12 +149,14 @@
 	<c:choose>
 		<c:when test="${canCreateReport eq 'true'}">
 			<br>
-			<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
+			<table width="100%" border="0" align="center" cellpadding="3"
+				cellspacing="0" class="topBorderOnly" summary="">
 				<tr>
 					<td width="30%">
 						<span class="formMessage"> </span>
 						<br>
-						<table width="498" height="32" border="0" align="right" cellpadding="4" cellspacing="0">
+						<table width="498" height="32" border="0" align="right"
+							cellpadding="4" cellspacing="0">
 							<tr>
 								<td width="490" height="32">
 									<div align="right">
