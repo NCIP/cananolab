@@ -32,6 +32,12 @@
 			<form-property name="gridNodes" type="java.lang.String[]" />
 		</form-bean>
 	</form-beans>
+	<global-exceptions>
+		<exception
+			handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+			key="error.reportException" path="home.error"
+			type="gov.nih.nci.calab.exception.ReportException" />
+	</global-exceptions>
 	<action-mappings>
 		<action path="/manageReport"
 			type="gov.nih.nci.calab.ui.core.BaseForwardAction"
@@ -44,6 +50,16 @@
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="report" key="error.generalException"
 				path="report.submitReport" type="java.lang.Exception" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="report" key="error.particleException"
+				path="report.submitReport"
+				type="gov.nih.nci.calab.exception.ParticleException" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="report" key="error.securityException"
+				path="report.submitReport"
+				type="gov.nih.nci.calab.exception.CaNanoLabSecurityException" />
 			<forward name="success" path="report.message" />
 			<forward name="input" path="report.submitReport" />
 		</action>
@@ -51,6 +67,11 @@
 			path="/updateReport"
 			type="gov.nih.nci.calab.ui.report.SubmitReportAction" input="input"
 			scope="request">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="report" key="error.securityException"
+				path="report.viewReport"
+				type="gov.nih.nci.calab.exception.CaNanoLabSecurityException" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="report" key="error.generalException"
@@ -65,6 +86,11 @@
 			parameter="dispatch" path="/searchReport"
 			type="gov.nih.nci.calab.ui.report.SearchReportAction"
 			scope="request">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="report" key="error.securityException"
+				path="report.searchReport"
+				type="gov.nih.nci.calab.exception.CaNanoLabSecurityException" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="report" key="error.generalException"
@@ -86,6 +112,15 @@
 				bundle="report" key="error.grid.notAvailable"
 				path="report.remoteSearchReportResult"
 				type="gov.nih.nci.calab.exception.GridQueryException" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="report" key="error.securityException"
+				path="report.remoteSearchReport"
+				type="gov.nih.nci.calab.exception.CaNanoLabSecurityException" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="report" key="error.generalException"
+				path="report.remoteSearchReport" type="java.lang.Exception" />
 			<forward name="input" path="report.remoteSearchReport" />
 			<forward name="success"
 				path="report.remoteSearchReportResult" />
