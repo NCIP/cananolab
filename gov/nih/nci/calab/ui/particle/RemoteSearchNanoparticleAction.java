@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: RemoteSearchNanoparticleAction.java,v 1.5 2007-12-06 09:01:43 pansu Exp $ */
+/* CVS $Id: RemoteSearchNanoparticleAction.java,v 1.6 2007-12-06 14:24:29 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.dto.remote.GridNodeBean;
@@ -72,9 +72,9 @@ public class RemoteSearchNanoparticleAction extends BaseRemoteSearchAction {
 				}
 				particles.addAll(gridParticles);
 			} catch (Exception e) {
-				ActionMessage message = new ActionMessage(
+				ActionMessage error = new ActionMessage(
 						"error.grid.notAvailable", gridNode.getHostName());
-				msgs.add("message", message);
+				msgs.add("error", error);
 				saveMessages(request, msgs);
 				e.printStackTrace();
 			}
