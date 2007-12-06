@@ -13,6 +13,8 @@
 		<c:set var="funcDisplay" value="display: none;" />
 	</c:otherwise>
 </c:choose>
+<c:choose>
+	<c:when test="${!empty remoteFuncTypeFuncs}">
 <li class="controlList">
 	<a href="#" class="subMenuSecondary">FUNCTION</a>
 	<ul class="sublist_4" style="${funcDisplay}">
@@ -40,3 +42,10 @@
 		</c:forEach>
 	</ul>
 </li>
+</c:when>
+	<c:otherwise>
+		<li class="nodatali">
+			FUNCTION
+		</li>
+	</c:otherwise>
+</c:choose>
