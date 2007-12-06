@@ -449,7 +449,6 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 
 		SortedSet<String> datumLabels = new TreeSet<String>();
-		charSummaryBeans = null;
 		for (CharacterizationSummaryBean summaryBean : charSummaryBeans) {
 			Map<String, String> datumMap = summaryBean.getDatumMap();
 			if (datumMap != null && !datumMap.isEmpty()) {
