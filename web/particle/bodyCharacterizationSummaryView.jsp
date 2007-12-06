@@ -127,7 +127,7 @@
 										</c:choose>
 									</c:otherwise>
 								</c:choose>
-							</c:if>
+							</c:if>&nbsp;
 						</td>
 					</tr>
 				</c:forEach>
