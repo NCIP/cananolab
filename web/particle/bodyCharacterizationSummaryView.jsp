@@ -63,7 +63,7 @@
 						Instrument Info
 					</th>
 				</tr>
-				<c:forEach var="summaryBean" items="${nameCharacterizationSummary}">
+				<c:forEach var="summaryBean" items="${summaryViewBeans}">
 					<tr>
 						<td class="leftLabel" valign="top">
 							<c:url var="url"
