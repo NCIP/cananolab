@@ -177,6 +177,8 @@
 			path="/loadFile.do?dispatch=setupView&amp;page=0" />
 		<forward name="deleteConfirmed"
 			path="particle.annotationMessage" />
+		<forward name="detailPrintView"
+			path="/particle/bodyCharacterizationDetailPrintView.jsp" />
 	</global-forwards>
 	<action-mappings>
 		<action path="/manageParticle"
