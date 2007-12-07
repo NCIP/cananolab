@@ -139,6 +139,8 @@
 														<input type="reset" value="Reset" onclick="">
 														<input type="hidden" name="dispatch" value="create">
 														<input type="hidden" name="page" value="1">
+														<input type="hidden" name="submitType"
+																value="${submitType}"/>
 														<html:submit />
 													</div>
 												</div>

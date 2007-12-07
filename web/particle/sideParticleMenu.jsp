@@ -9,19 +9,18 @@
 
 <!-- submenu begins -->
 <c:choose>
+	<c:when test="${!empty param.submitType}">
+		<c:set var="submitType" value="${param.submitType}" scope="session" />
+	</c:when>
+</c:choose>
+<c:choose>
 	<c:when
-		test="${!empty param.submitType && param.submitType != 'none'}">
-		<c:set var="displaytype" value="${param.submitType}" scope="request" />
+		test="${!empty submitType != 'none'}">
+		<c:set var="displaytype" value="${submitType}" scope="request" />
 	</c:when>
 	<c:otherwise>
 		<c:set var="displaytype" value="${param.displayType}" scope="request" />
 	</c:otherwise>
-</c:choose>
-
-<c:choose>
-	<c:when test="${!empty param.submitType}">
-		<c:set var="submitType" value="${param.submitType}" scope="session" />
-	</c:when>
 </c:choose>
 <c:choose>
 	<c:when test="${canCreateNanoparticle eq 'true'}">

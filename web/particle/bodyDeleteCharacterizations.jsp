@@ -75,7 +75,7 @@ function confirmDeletion()
 												<input type="hidden" name="dispatch" value="delete"/>
 												<html:hidden property="particleId"/>
 												<input type="hidden" name="submitType"
-													value="${param.submitType}"/>
+													value="${submitType}"/>
 												<input type="hidden" name="diaplayType"
 														value="${param.displayType}" />
 												<input type="button" value="Delete"
