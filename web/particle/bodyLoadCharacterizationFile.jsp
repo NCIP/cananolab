@@ -159,7 +159,9 @@
 														<input type="reset" value="Reset">
 														<input type="hidden" name="dispatch" value="submit">
 														<input type="hidden" name="page" value="2">
-														<html:hidden property="forwardPage" />
+														<input type="hidden" name="submitType"
+																value="${submitType}"/>
+														<html:hidden property="forwardPage"/>
 														<html:hidden property="fileNumber" />
 														<html:hidden property="file.particleName" />
 														<html:hidden property="file.characterizationName" />
