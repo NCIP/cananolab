@@ -1,0 +1,237 @@
+<?xml version="1.0"?>
+<project name="UpdateUtilityAntBuildFile" default="" basedir="${basedir}">
+	<description>
+         This is the build.xml run by AntInstaller for caNanoLab installation
+     </description>
+
+	<property name="jboss.home" value="${temp.dir}/jboss-4.0.5.GA" />
+	<property name="jboss.conf" value="${jboss.home}/server/default/conf" />	
+	<property name="mysql.home" value="${temp.dir}/mysql-5.0.45-win32" />
+	<property name="lib.dir" value="${temp.dir}/jars" />
+	<property name="db.dir" value="${temp.dir}/database" />
+	<property name="jboss.server.name" value="default" />
+	<property name="jboss.server.hostname" value="localhost" />
+	<property name="mail.smtp.host" value="mailfwd.nih.gov" />
+	<property name="mail.smtp.port" value="25" />
+	<property name="jboss.deploy.dir" value="${temp.dir}/jboss-4.0.5.GA/server/default/deploy" />
+	<property name="mysql.datasource.file" value="caarray-mysql-ds.xml" />
+	<property name="build.dir" value="../.." />
+	<property name="jboss.lib.dir" value="${jboss.home}/server/${jboss.server.name}/lib" />
+	<property name="jboss.server.jndi.port" value="1099" />
+
+	<!-- used to configure the updater build -->
+	<property file="${temp.dir}/local.properties" />
+	<property file="${temp.dir}/default.properties" />
+
+
+	<echoproperties />
+
+	<tstamp>
+		<format property="touch.time" pattern="yyyy-MM-dd-HH-mm" />
+	</tstamp>
+
+	<!-- this is required to pick up the properties generated during the install pages -->
+	<property file="${basedir}/ant.install.properties" />
+
+	<target name="auto-update">
+		<echoproperties />
+		<taskdef resource="net/sf/antcontrib/antcontrib.properties" />
+		<echo />
+		<echo />
+		<echo />
+		<echo />
+		<echo />
+		<echo>Installing caNanoLab...Please wait...</echo>
+		<echo />
+		<echo />
+		<echo />
+		<echo />
+		<echo />
+
+		<unzip dest="${temp.dir}" overwrite="true" src="${basedir}/installpack.zip" />
+		<unzip dest="${temp.dir}" overwrite="true" src="${temp.dir}/tools/jboss-4.0.5.GA.zip" />
+		<unzip dest="${temp.dir}" overwrite="true" src="${temp.dir}/tools/mysql-noinstall-5.0.45-win32.zip" />
+		<antcall target="mysql:stop" />
+		<antcall target="mysql:start" />
+		<antcall target="mysql:db-integrate" />		
+		<antcall target="deploy:stop-jboss" />
+		<antcall target="deploy:cananolab.ear" />
+		<antcall target="deploy:start-jboss" />
+		
+	</target>
+
+	<target name="deploy:cananolab.ear">
+		<antcall target="deploy:stop-jboss" />
+		<copy file="${temp.dir}/war/caNanoLab.war" todir="${temp.dir}/jboss-4.0.5.GA/server/default/deploy" overwrite="true" />
+		<copy file="${temp.dir}/war/caNanoLabSDK.war" todir="${temp.dir}/jboss-4.0.5.GA/server/default/deploy" overwrite="true" />
+		<copy file="${temp.dir}/war/upt.war" todir="${temp.dir}/jboss-4.0.5.GA/server/default/deploy" overwrite="true" />
+		<copy file="${temp.dir}/config/mysql-ds.xml" todir="${temp.dir}/jboss-4.0.5.GA/server/default/deploy" overwrite="true" />
+		<copy file="${temp.dir}/config/ApplicationSecurityConfig.xml" todir="${temp.dir}/jboss-4.0.5.GA/server/default/conf" overwrite="true" />
+		<copy file="${temp.dir}/config/caNanoLab.csm.hibernate.cfg.xml" todir="${temp.dir}/jboss-4.0.5.GA/server/default/conf" overwrite="true" />
+		<antcall target="-configure-jboss-applicationSecurity"/>
+		<antcall target="-configure-jboss-loginConfig"/>
+		
+		<copy file="${temp.dir}/jars/mysql-connector-java-5.0.7-bin.jar" todir="${jboss.lib.dir}" overwrite="true" />
+		
+
+		<!--
+		<copy file="${temp.dir}/config/${mysql.datasource.file}" todir="${jboss.deploy.dir}" overwrite="true">
+			<filterset id="caarray.filterset" onmissingfiltersfile="warn">
+				<filtersfile file="${build.dir}/default.properties" />
+				<filtersfile file="${build.dir}/local.properties" />
+				<filtersfile file="C:/dev/caarray2/software/build/DEV.properties" />
+			</filterset>
+		</copy>
+		
+		<copy file="${build.dir}/resources/deploy/mail-service.xml" todir="${jboss.deploy.dir}" />
+		<replace file="${jboss.deploy.dir}/mail-service.xml">
+			<replacefilter token="@SMTPHOST@" value="${mail.smtp.host}" />
+			<replacefilter token="@SMTPPORT@" value="${mail.smtp.port}" />
+		</replace>
+		
+		-->
+	</target>
+
+	<path id="project.classpath">
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<target name="-configure-jboss-applicationSecurity">
+		<echo message="Configuring cananolab-ApplicationSecurityConfig..." />
+		<taskdef name="xmlconfig" classname="com.xmlconfig.anttask.XmlConfig" classpathref="project.classpath" />
+		<xmlconfig in="${temp.dir}/jboss-4.0.5.GA/server/default/conf/ApplicationSecurityConfig.xml" verbose="false">
+			<update path="//security-config/application-list/application/authorization/hibernate-config-file" value="${jboss.home}/server/default/conf/caNanoLab.csm.hibernate.cfg.xml" />
+		</xmlconfig>
+	</target>
+	
+	<target name="configurejbossloginConfig">
+		<echo message="Configuring cananolab-ApplicationSecurityConfig..." />
+		<taskdef name="xmlconfig" classname="com.xmlconfig.anttask.XmlConfig" classpathref="project.classpath" />
+		<xmlconfig in="${temp.dir}/jboss-4.0.5.GA/server/default/conf/login-config.xml" verbose="false">
+			<insert path="//policy" type="element" value="application-policy" />
+		</xmlconfig>
+	</target>
+	
+	<target name="undeploy" description="Undeploys the application from JBoss">
+		<delete file="${jboss.deploy.dir}/${mysql.datasource.file}" />
+		<delete file="${jboss.deploy.dir}/mail-service.xml" />
+	</target>
+
+	<target name="deploy:deploy-and-wait">
+		<sleep seconds="5" />
+		<waitfor maxwait="60" maxwaitunit="second" checkevery="5" checkeveryunit="second">
+			<http url="http://${jboss.server.hostname}:${jboss.server.port}/caNanoLab" />
+		</waitfor>
+	</target>
+
+
+
+	<!-- ################################################# -->
+	<!-- #############    DB Integration   ############### -->
+	<!-- ################################################# -->
+
+	<target name="mysql:start">
+		<echo message="${mysql.home}/bin" />
+		<exec executable="cmd" dir="${mysql.home}/bin" spawn="true">
+			<arg line="/c mysqld --verbose" />
+		</exec>
+		<sleep seconds="15" />
+	</target>
+
+	<target name="mysql:stop">
+		<exec executable="cmd" dir="${mysql.home}/bin" spawn="true">
+			<arg line="/c mysqladmin -u root shutdown" />
+		</exec>
+		<sleep seconds="15" />
+	</target>
+
+	<target name="mysql:db-integrate" description="Apply DB changes">
+		<run-sql-script database.url="${database.system.url}" database.user="${database.system.user}" database.password="${database.system.password}" sql.file="${db.dir}/create_database_and_user.sql" />
+		<run-sql-script database.url="${database.url}" database.user="${database.system.user}" database.password="${database.system.password}" sql.file="${db.dir}/app_schema.sql" />
+		<run-sql-script database.url="${database.url}" database.user="${database.system.user}" database.password="${database.system.password}" sql.file="${db.dir}/app_priming_data.sql" />
+		<run-sql-script database.url="${database.url}" database.user="${database.system.user}" database.password="${database.system.password}" sql.file="${db.dir}/csm_schema.sql" />
+		<run-sql-script database.url="${database.url}" database.user="${database.system.user}" database.password="${database.system.password}" sql.file="${db.dir}/csm_priming_data.sql" />
+		<run-sql-script database.url="${database.url}" database.user="${database.system.user}" database.password="${database.system.password}" sql.file="${db.dir}/app_csm_priming_data.sql" />
+	</target>
+
+
+	<!-- ################################################# -->
+	<!-- #############   JBoss Deployment  ############### -->
+	<!-- ################################################# -->
+
+
+	<target name="deploy:stop-jboss">
+		<java classname="org.jboss.Shutdown" fork="true" spawn="true">
+			<arg line="-s ${jboss.server.hostname}:${jboss.server.jndi.port} -S" />
+			<classpath>
+				<pathelement location="${jboss.home}/bin/shutdown.jar" />
+			</classpath>
+		</java>
+		<sleep seconds="15" />
+	</target>
+
+	<target name="deploy:start-jboss" depends="deploy:check-if-jboss-is-running" unless="jboss.running">
+		<exec executable="cmd" dir="${jboss.home}/bin" spawn="true">
+			<env key="NOPAUSE" value="true" />
+			<arg line="/c run.bat" />
+		</exec>
+		<sleep seconds="15" />
+	</target>
+
+	<target name="deploy:check-if-jboss-is-running">
+		<condition property="jboss.running">
+			<socket port="8080" server="localhost" />
+		</condition>
+	</target>
+
+	<target name="deploy:copy-jsp" description="Copies the jsp's over to the unpacked war directory in jboss">
+		<property name="caarray-war.dir" value="C:/dev/caarray2/software/caarray.war" />
+		<property name="caarray-war.webapp.dir" value="${caarray-war.dir}/src/main/webapp" />
+		<for param="toDir">
+			<path>
+				<dirset dir="${jboss.deploy.dir}/../tmp/deploy" includes="tmp*caarray.ear-contents/caarray-exp.war" />
+			</path>
+			<sequential>
+				<copy todir="@{toDir}">
+					<fileset dir="${caarray-war.webapp.dir}">
+						<include name="**/*.jsp" />
+						<include name="**/*.jspf" />
+						<include name="**/*.css" />
+						<include name="**/*.js" />
+						<include name="**/*.jpg" />
+						<include name="**/*.gif" />
+						<include name="**/*.png" />
+						<include name="**/*.faces" />
+						<include name="**/*.tag" />
+						<include name="**/*.tagf" />
+					</fileset>
+				</copy>
+			</sequential>
+		</for>
+	</target>
+
+	<target name="cleanuptarget" />
+
+	<!-- ################################################# -->
+	<!-- #############      Macrodefs      ############### -->
+	<!-- ################################################# -->
+
+	<macrodef name="run-sql-script" description="By default this will use the database.url, to use drop database &amp; user use the database.system.url property">
+		<attribute name="sql.file" />
+		<attribute name="sql.delimiter" default=";" />
+		<attribute name="sql.delimitertype" default="normal" />
+		<attribute name="database.url" default="${database.url}" />
+		<attribute name="database.user" default="${database.user}" />
+		<attribute name="database.password" default="${database.password}" />
+		<sequential>
+			<sql driver="${database.driver}" url="@{database.url}" userid="@{database.user}" password="@{database.password}" src="@{sql.file}" onerror="abort" autocommit="true" delimiter="@{sql.delimiter}" delimitertype="@{sql.delimitertype}" keepformat="true">
+				<classpath>
+					<pathelement location="${lib.dir}/mysql-connector-java-5.0.7-bin.jar" />
+				</classpath>
+			</sql>
+		</sequential>
+	</macrodef>
+
+</project>
