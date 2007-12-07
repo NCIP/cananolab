@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!DOCTYPE installer PUBLIC "-//tp23 //DTD Ant Installer Config//EN" "http://antinstaller.sf.net/dtd/antinstall-config-0.8.dtd">
+<installer ui="swing,text" verbose="false"
+	lookAndFeel="org.tp23.jgoodies.plaf.plastic.PlasticXPLookAndFeel"
+	name="caNanoLab Installer"
+	windowIcon="/resources/gkmain_inv.png"
+	defaultImageResource="/resources/banner_caarray.png"
+	minJavaVersion="1.5" finishButtonText="Install" wide="600:375"
+	debug="false">
+
+	<!--  each page element represents a page of the installer -->
+	<page type="input" name="intro"
+		displayText="Welcome to the caNanoLab installer">
+
+		<comment displayText="Installation Information:" bold="true" />
+		<comment
+			displayText="This installer will install the caNanoLab software with JBoss 4.0.05-GA (with JEMS Installer-1.2.0.GA) and MySQL 5.0.45"
+			bold="false" />
+	</page>
+	<!--  type="license" shows a license page to click through -->
+	<page type="license" name="license" displayText="License conditions"
+		resource="/resources/LICENSE.txt">
+	</page>
+	<!--  type="license" shows a license page to click through
+	-->
+	<page type="text" name="release_notes" displayText="Release Notes" htmlResource="/resources/release_notes.html" textResource="/resources/release_notes.txt">
+	</page>
+	<!--  type="input" shows a list of editable options for the installer -->
+	<page type="input" name="input.file"
+		displayText="Installation Folder">
+		<comment displayText="" bold="true" />
+		<comment
+			displayText="Please enter the destination folder for the caNanoLab application:"
+			bold="true" />
+		<comment displayText="" bold="true" />
+			
+		<text displayText="Installation folder" 
+			defaultValue="C:\cananolab-app" 
+			property="temp.dir"/>
+			
+    </page>
+	
+	<page type="input" name="patchOptions" displayText="Confirmation">
+		<comment
+			displayText="Install caNanoLab?"
+			bold="true" />
+		<comment displayText="" bold="true" />
+		<target displayText="Please confirm the caNanoLab installation."
+			target="auto-update" defaultValue="Yes" />
+	</page>
+
+	<!--  page type="progress" shows a progress page with the install button
+		Its target is set to cleanuptarget since it is the last page this target will be run last-->
+	<page type="progress" name="progress" showTargets="false"
+		displayText="Installation progress" target="cleanuptarget">
+
+	</page>
+</installer>
+
+
