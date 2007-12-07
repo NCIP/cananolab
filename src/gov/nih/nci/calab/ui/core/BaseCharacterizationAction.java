@@ -425,7 +425,26 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		initSetup(request, theForm);
+		String particleId = request.getParameter("particleId");
+		String characterizationId = request.getParameter("characterizationId");
+		String submitType = request.getParameter("submitType");
+		CharacterizationBean charBean = (CharacterizationBean) theForm
+				.get("achar");
+		String printLinkURL = "/caNanoLab/" + charBean.getActionName()
+				+ ".do?page=0&dispatch=printDetailView&particleId="
+				+ particleId + "&characterizationId=" + characterizationId
+				+ "&submitType=" + submitType;
+		request.setAttribute("printLinkURL", printLinkURL);
+
 		return mapping.findForward("detailView");
+	}
+
+	public ActionForward printDetailView(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		initSetup(request, theForm);
+		return mapping.findForward("detailPrintView");
 	}
 
 	public ActionForward summaryView(ActionMapping mapping, ActionForm form,
