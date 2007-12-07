@@ -5,21 +5,11 @@
 
 <table width="100%" align="center">
 	<tr>
-		<td>
+		<td colspan="2">
 			<h4>
 				<br>
 				${pageTitle} ${submitType}
 			</h4>
-		</td>
-		<td align="right" width="15%">
-			<a
-				href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=${helpName}')"
-				class="helpText">Help</a>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="2">
-			<jsp:include page="/bodyMessage.jsp?bundle=particle" />
 		</td>
 	</tr>
 	<tr>
@@ -28,41 +18,10 @@
 				cellspacing="0" class="topBorderOnly" summary="">
 				<tr>
 					<td class="formTitle" colspan="2">
-						<table width="100%">
-							<tr>
-								<td class="formTitle" width="100%">
-									${nanoparticleCharacterizationForm.map.particle.sampleName}
-									${nanoparticleCharacterizationForm.map.particle.sampleType} -
-									${ nanoparticleCharacterizationForm.map.achar.viewTitle} - ${
-									nanoparticleCharacterizationForm.map.achar.characterizationSource}
-								</td>
-								<td align="right" class="formTitle">
-									<c:url var="url"
-										value="${nanoparticleCharacterizationForm.map.achar.actionName}.do">
-										<c:param name="page" value="0" />
-										<c:param name="dispatch" value="setupUpdate" />
-										<c:param name="particleId" value="${particleId}" />
-										<c:param name="characterizationId"
-											value="${nanoparticleCharacterizationForm.map.achar.id}" />
-										<c:param name="submitType" value="${submitType}" />
-									</c:url>
-									<c:if test="${canCreateNanoparticle eq 'true'}">
-										<td>
-											<a href="${url}"><img src="images/icon_edit_23x.gif"
-													alt="edit characterization" border="0"> </a>
-										</td>
-									</c:if>
-								<td>
-									<a href="javascript:window.print()"><img
-											src="images/icon_print_23x.gif"
-											alt="print characterization summary" border="0"> </a>
-								</td>
-								<td>
-									<a href="#"><img src="images/icon_excel_23x.gif"
-											alt="export characterization summary" border="0"> </a>
-								</td>
-							</tr>
-						</table>
+						${nanoparticleCharacterizationForm.map.particle.sampleName}
+						${nanoparticleCharacterizationForm.map.particle.sampleType} - ${
+						nanoparticleCharacterizationForm.map.achar.viewTitle} - ${
+						nanoparticleCharacterizationForm.map.achar.characterizationSource}
 					</td>
 				</tr>
 				<c:if
@@ -151,10 +110,9 @@
 									<c:otherwise>
 										<c:choose>
 											<c:when test="${derivedBioAssayData.image eq 'true'}">
-												<a href="#"
-													onclick="popImage(event, '${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.id}', ${derivedBioAssayData.id}, 100, 100)"><img
-														src="${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.id}"
-														border="0" width="150"> </a>
+												<img
+													src="${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.id}"
+													border="0">
 											</c:when>
 											<c:otherwise>
 												<a
