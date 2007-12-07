@@ -49,7 +49,7 @@
 				</tr>
 				<tr>
 					<th class="leftLabel">
-						View Title - Description
+						View Title
 					</th>
 					<c:forEach var="label" items="${datumLabels}">
 						<th class="label">
@@ -75,7 +75,7 @@
 									value="${summaryBean.charBean.id}" />
 								<c:param name="submitType" value="${submitType}" />
 							</c:url>
-							<a href="${url}">${summaryBean.charBean.viewTitle} - ${nanoparticleCharacterizationForm.map.achar.description}</a>
+							<a href="${url}">${summaryBean.charBean.viewTitle}</a>
 						</td>
 						
 						<c:forEach var="label" items="${datumLabels}">
