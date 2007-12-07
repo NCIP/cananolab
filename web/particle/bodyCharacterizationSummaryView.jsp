@@ -49,18 +49,18 @@
 				</tr>
 				<tr>
 					<th class="leftLabel">
-						Size View Title
-					</th>
-					<th class="label">
-						Instrument Info
+						View Title - Description
 					</th>
 					<c:forEach var="label" items="${datumLabels}">
 						<th class="label">
 							${label}
 						</th>
 					</c:forEach>
-					<th class="rightLabel">
+					<th class="label">
 						Characterization File
+					</th>
+					<th class="rightLabel">
+						Instrument Info
 					</th>
 				</tr>
 				<c:forEach var="summaryBean" items="${nameCharacterizationSummary}">
@@ -75,34 +75,16 @@
 									value="${summaryBean.charBean.id}" />
 								<c:param name="submitType" value="${submitType}" />
 							</c:url>
-							<a href="${url}">${summaryBean.charBean.viewTitle}</a>
+							<a href="${url}">${summaryBean.charBean.viewTitle} - ${nanoparticleCharacterizationForm.map.achar.description}</a>
 						</td>
-						<td class="label" valign="top">
-							<c:if
-								test="${!empty summaryBean.charBean.instrumentConfigBean && !empty summaryBean.charBean.instrumentConfigBean.instrumentBean.type}">						
-									${summaryBean.charBean.instrumentConfigBean.instrumentBean.type}-
-									${summaryBean.charBean.instrumentConfigBean.instrumentBean.manufacturer}
-									&nbsp;
-									<c:if
-									test="${!empty summaryBean.charBean.instrumentConfigBean.instrumentBean.abbreviation}">
-							(${summaryBean.charBean.instrumentConfigBean.instrumentBean.abbreviation})
-							</c:if>
-								<c:if
-									test="${!empty summaryBean.charBean.instrumentConfigBean.description}">
-									<br>
-									<br>
-							${summaryBean.charBean.instrumentConfigBean.description}
-							</c:if>
-							</c:if>
-							&nbsp;
-						</td>
+						
 						<c:forEach var="label" items="${datumLabels}">
 							<td class="label" valign="top">
 								${summaryBean.datumMap[label]}&nbsp;
 							</td>
 						</c:forEach>
-						<td class="rightLabel" valign="top">
-							<c:if test="${! empty summaryBean.charFile.type}">
+						<td class="label" valign="top">
+							<c:if test="${!empty summaryBean.charFile.type}">
 							${summaryBean.charFile.type}
 							<br>
 							</c:if>
@@ -128,6 +110,25 @@
 									</c:otherwise>
 								</c:choose>
 							</c:if>&nbsp;
+						</td>
+						<td class="RightLabel" valign="top">
+							<c:if
+								test="${!empty summaryBean.charBean.instrumentConfigBean && !empty summaryBean.charBean.instrumentConfigBean.instrumentBean.type}">						
+									${summaryBean.charBean.instrumentConfigBean.instrumentBean.type}-
+									${summaryBean.charBean.instrumentConfigBean.instrumentBean.manufacturer}
+									&nbsp;
+								<c:if
+									test="${!empty summaryBean.charBean.instrumentConfigBean.instrumentBean.abbreviation}">
+									(${summaryBean.charBean.instrumentConfigBean.instrumentBean.abbreviation})
+								</c:if>
+								<c:if
+									test="${!empty summaryBean.charBean.instrumentConfigBean.description}">
+									<br>
+									<br>
+									${summaryBean.charBean.instrumentConfigBean.description}
+								</c:if>
+							</c:if>
+							&nbsp;
 						</td>
 					</tr>
 				</c:forEach>
