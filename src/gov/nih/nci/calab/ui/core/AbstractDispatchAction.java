@@ -4,6 +4,9 @@ import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.calab.exception.InvalidSessionException;
 import gov.nih.nci.calab.exception.NoAccessException;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
+
+import java.util.Arrays;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,9 +31,8 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 			return super.execute(mapping, form, request, response);
 		}
 		String dispatch = request.getParameter("dispatch");
-		if (dispatch.equals("setupView") || dispatch.equals("summaryView")
-				|| dispatch.equals("detailView") || dispatch.equals("download")
-				|| dispatch.equals("loadFile")) {
+		if (Arrays.asList(CaNanoLabConstants.PUBLIC_DISPATCHES).contains(
+				dispatch)) {
 			return super.execute(mapping, form, request, response);
 		}
 		if (user != null) {
