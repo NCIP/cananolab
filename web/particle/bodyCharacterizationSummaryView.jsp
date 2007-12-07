@@ -49,7 +49,7 @@
 				</tr>
 				<tr>
 					<th class="leftLabel">
-						View Title
+						View Title /<br> Description
 					</th>
 					<c:forEach var="label" items="${datumLabels}">
 						<th class="label">
@@ -76,6 +76,9 @@
 								<c:param name="submitType" value="${submitType}" />
 							</c:url>
 							<a href="${url}">${summaryBean.charBean.viewTitle}</a>
+							<c:if test="${!empty summaryBean.charBean.description}">
+								<br><br>${summaryBean.charBean.description}
+							</c:if>
 						</td>
 						
 						<c:forEach var="label" items="${datumLabels}">
