@@ -313,4 +313,8 @@ public class CaNanoLabConstants {
 			"RAS", "SGI", "SUN", "TGA", "TIF", "TIFF", "WMF", "XBM", "XPM",
 			"YUV", "CGM", "DXF", "EMF", "EPS", "MET", "MVG", "ODG", "OTG",
 			"STD", "SVG", "SXD", "WMF" };
+
+	public static final String[] PUBLIC_DISPATCHES = { "setupView",
+			"summaryView", "detailView", "printDetailView", "exportDetailView",
+			"printSummaryView", "exportSummaryView", "download", "loadFile" };
 }
