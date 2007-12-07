@@ -2,7 +2,9 @@ package gov.nih.nci.calab.service.util;
 
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -14,7 +16,7 @@ import org.apache.log4j.Logger;
  * @author pansu
  * 
  */
-/* CVS $Id: StringUtils.java,v 1.23 2007-12-03 20:25:14 pansu Exp $ */
+/* CVS $Id: StringUtils.java,v 1.24 2007-12-07 21:08:43 cais Exp $ */
 
 public class StringUtils {
 	private static Logger logger = Logger.getLogger(StringUtils.class);
@@ -107,6 +109,28 @@ public class StringUtils {
 			i++;
 		}
 		return joinedStr;
+	}
+	
+	/* 
+	 * empty string of the collection will be included in the joined string
+	 * and null item in the collection will be converted to an empty string
+	 */
+	public static String joinEmptyItemIncluded(Collection<String> stringCollection, String delimiter) {
+		StringBuffer buffer = new StringBuffer();
+		if(stringCollection == null || stringCollection.isEmpty()) {
+			return buffer.toString();
+		}
+		
+		Iterator iter = stringCollection.iterator();
+        while (iter.hasNext()) {
+        	String item = (String)iter.next();
+        	if(item == null) item = "";
+            buffer.append(item);
+            if (iter.hasNext()) {
+                buffer.append(delimiter);
+            }
+        }
+		return buffer.toString();
 	}
 
 	public static String convertDateToString(Date date, String format) {
