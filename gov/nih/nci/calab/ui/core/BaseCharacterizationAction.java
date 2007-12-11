@@ -29,6 +29,9 @@ import gov.nih.nci.calab.ui.security.InitSecuritySetup;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
@@ -38,6 +41,7 @@ import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -438,7 +442,64 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 
 		return mapping.findForward("detailView");
 	}
+	
+	public ActionForward exportDetail(ActionMapping mapping, ActionForm form,
+            HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		initSetup(request, theForm);
+		
+		CharacterizationBean charBean = (CharacterizationBean) theForm.get("achar");
 
+		NanoparticleCharacterizationService service =
+            new NanoparticleCharacterizationService();
+
+		//response.setContentType("application/vnd.ms-execel");
+		response.setContentType("application/octet-stream");
+		response.setHeader("cache-control", "Private");
+		response.setHeader("Content-disposition", "attachment;filename=" + 
+				charBean.getActionName() + "_" + charBean.getViewTitle() + ".xls");
+
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		java.io.OutputStream out = response.getOutputStream();
+		
+		service.exportDetailService(theForm, out, user);
+		
+		return mapping.findForward("detailView");
+	}
+
+	public ActionForward exportSummary(ActionMapping mapping, ActionForm form,
+            HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		initSetup(request, theForm);
+		
+		CharacterizationBean charBean = (CharacterizationBean) theForm.get("achar");
+
+		NanoparticleCharacterizationService service =
+            new NanoparticleCharacterizationService();
+
+		//response.setContentType("application/vnd.ms-execel");
+		response.setContentType("application/octet-stream");
+		response.setHeader("cache-control", "Private");
+		response.setHeader("Content-disposition", "attachment;filename=" + 
+				charBean.getActionName() + ".xls");
+
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		java.io.OutputStream out = response.getOutputStream();
+		
+		String submitType = request.getParameter("submitType");
+		ParticleBean particle = (ParticleBean) theForm.get("particle");
+		
+		List<CharacterizationSummaryBean> summaryBeans = service
+				.getParticleCharacterizationSummaryByName(submitType, particle.getSampleId());
+		SortedSet<String> datumLabels = service.setDataLabelsAndFileVisibility(user, summaryBeans);
+		
+		service.exportSummaryService(datumLabels, summaryBeans, submitType, theForm, out, user);
+		
+		return mapping.findForward("summaryView");
+	}
+	
 	public ActionForward printDetailView(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
@@ -463,42 +524,11 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 					"There are no such characterizations in the database.");
 		}
 
-		// set data labels and file visibility, and whether file is an image
-		UserService userService = new UserService(
-				CaNanoLabConstants.CSM_APP_NAME);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		List<CharacterizationBean> charBeans = new ArrayList<CharacterizationBean>();
-		SortedSet<String> datumLabels = new TreeSet<String>();
-		for (CharacterizationSummaryBean summaryBean : charSummaryBeans) {
-			if (!charBeans.contains(summaryBean.getCharBean())) {
-				charBeans.add(summaryBean.getCharBean());
-			}
-			Map<String, String> datumMap = summaryBean.getDatumMap();
-			if (datumMap != null && !datumMap.isEmpty()) {
-				datumLabels.addAll(datumMap.keySet());
-			}
-			DerivedBioAssayDataBean fileBean = summaryBean.getCharFile();
-			if (fileBean != null) {
-				boolean accessStatus = userService.checkReadPermission(user,
-						fileBean.getId());
-				if (accessStatus) {
-					List<String> accessibleGroups = userService
-							.getAccessibleGroups(fileBean.getId(),
-									CaNanoLabConstants.CSM_READ_ROLE);
-					String[] visibilityGroups = accessibleGroups
-							.toArray(new String[0]);
-					fileBean.setVisibilityGroups(visibilityGroups);
-					fileBean.setHidden(false);
-				} else {
-					fileBean.setHidden(true);
-				}
-				boolean imageStatus = false;
-				if (fileBean.getName() != null) {
-					imageStatus = StringUtils.isImgFileExt(fileBean.getName());
-				}
-				fileBean.setImage(imageStatus);
-			}
-		}
+		
+		// set data labels and file visibility, and whether file is an image
+		SortedSet<String> datumLabels = service.setDataLabelsAndFileVisibility(user, charSummaryBeans);
+		
 		request.setAttribute("summaryViewBeans", charSummaryBeans);
 		request.setAttribute("summaryViewCharBeans", charSummaryBeans);
 		request.setAttribute("datumLabels", datumLabels);
