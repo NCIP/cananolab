@@ -46,7 +46,7 @@
 												Annotate
 											</c:when>
 													<c:otherwise>
-												Create
+												Submit
 											</c:otherwise>
 												</c:choose> a New <c:out value="${item}" /> </a>
 											<br>
@@ -56,7 +56,7 @@
 												annotate
 											</c:when>
 												<c:otherwise>
-												add
+												submit
 								        </c:otherwise>
 											</c:choose>
 											a new
