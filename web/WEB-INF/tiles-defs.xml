@@ -31,8 +31,9 @@
 		<put name="calabFooter" value="/html/calabFooter.html" />
 		<put name="nciFooter" value="/html/nciFooter.html" />
 		<put name="menu" value="home" />
-		<put name="onloadJavascript" value=""/>
+		<put name="onloadJavascript" value="" />
 		<putList name="items">
+			<item value="HOME" link="gotoPage('index.jsp')" />
 			<item value="SAMPLES" link="gotoPage('manageSample.do')" />
 			<item value="PROTOCOLS"
 				link="gotoPage('manageProtocol.do')" />
@@ -40,7 +41,6 @@
 				link="gotoPage('manageParticle.do')" />
 			<item value="REPORTS" link="gotoPage('manageReport.do')" />
 			<item value="ADMINISTRATION" link="openHelpWindow('/upt')" />
-			<item value="HOME" link="gotoPage('index.jsp')" />
 			<item value="HELP"
 				link="openHelpWindow('webHelp/index.html')" />
 			<item value="LOGOUT" link="gotoPage('logout.do')" />
