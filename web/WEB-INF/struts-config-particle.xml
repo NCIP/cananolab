@@ -179,6 +179,10 @@
 			path="particle.annotationMessage" />
 		<forward name="detailPrintView"
 			path="/particle/bodyCharacterizationDetailPrintView.jsp" />
+		<forward name="summaryPrintView"
+			path="/particle/bodyCharacterizationSummaryPrintView.jsp" />
+		<forward name="summaryPrintAllView"
+			path="/particle/bodyCharacterizationSummaryPrintAllView.jsp" />
 	</global-forwards>
 	<action-mappings>
 		<action path="/manageParticle"
