@@ -284,7 +284,7 @@ function updateOtherField(form, elementName, otherElementName) {
 	}
 }
 var imgWindow = null;
-var t=null;
+var t = null;
 function popImage(event, imgSrc, imgId) {
 	var popImg = new Image();
 	popImg.src = imgSrc;
@@ -296,16 +296,32 @@ function popImage(event, imgSrc, imgId) {
 	topPos = 50;
 	if (imgWindow && imgWindow.open) {
 		imgWindow.close();
-		t=null;
+		t = null;
 	}
-	//myScript = "<html><head>\n" + "<script>\n" + "var t=null;\n" + "function closeMe() {\n" + "t=setTimeout(\"window.close();\", 5000);\n" + "}\n" + "</script>\n" + "<title>Characterization File</title></head>\n";
-    myScript = "<html><head><title>Characterization File</title></head>\n";
+	//myScript = "<html><head>n" + "<script>n" + "var t=null;n" + "function closeMe() {n" + "t=setTimeout("window.close();", 5000);n" + "}n" + "</script>n" + "<title>Characterization File</title></head>n";
+	myScript = "<html><head><title>Characterization File</title></head>\n";
 	imgWindow = window.open("", "charFileWindow", "width=" + width + ",height=" + height + ",left=" + leftPos + ",top=" + topPos);
 	imgWindow.document.write(myScript);
-	//imgWindow.document.write("<body onLoad=\"closeMe();self.focus();\" bgcolor=\"#FFFFFF\">\n");
+	//imgWindow.document.write("<body onLoad="closeMe();self.focus();" bgcolor="#FFFFFF">n");
 	imgWindow.document.write("<body onLoad=\"self.focus();\" bgcolor=\"#FFFFFF\">\n");
 	imgWindow.document.write("<img styleId='" + imgId + "' src='" + imgSrc + "'/>\n");
 	imgWindow.document.write("</body></html>");
-	t=setTimeout("imgWindow.close();", 15000);
+	t = setTimeout("imgWindow.close();", 15000);
+}
+
+function printPage(url) {
+	var obj = document.all.tags("link");
+	for (i = 0; i < obj.length; i++) {
+		if (obj[i].name=="printlink") {
+			obj[i].href=url;
+		}
+	}
+	// if IE directly call print, otherwise bring up a pop up window first
+	if (navigator.appVersion.indexOf("MSIE") != -1) {
+		window.print();
+	} else {
+		printWindow = window.open(url, "printWindow", "top=100,left=100,menubar=yes,scrollbar=yes");
+		printWindow.focus();
+	}
 }
 
