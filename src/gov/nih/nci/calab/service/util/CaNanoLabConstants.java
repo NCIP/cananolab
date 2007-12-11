@@ -316,5 +316,6 @@ public class CaNanoLabConstants {
 
 	public static final String[] PUBLIC_DISPATCHES = { "setupView",
 			"summaryView", "detailView", "printDetailView", "exportDetailView",
-			"printSummaryView", "exportSummaryView", "download", "loadFile" };
+			"printSummaryView", "printFullSummaryView", "exportSummaryView",
+			"download", "loadFile" };
 }
