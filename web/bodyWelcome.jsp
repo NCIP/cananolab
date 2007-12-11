@@ -48,21 +48,21 @@
 						coords="100,535,218,575" alt="rectangle" />
 				</c:if>
 				<c:if test="${canCreateProtocol eq 'true'}">
-					<area href="submitProtocol.do?dispatch=setup" shape="rect"
+					<area href="submitProtocol.do?dispatch=setup&page=0" shape="rect"
 						coords="358,86,442,128" alt="rectangle" />
 				</c:if>
 				<c:if test="${canCreateSample eq 'true'}">
-					<area href="createSample.do?dispatch=setup" shape="rect"
+					<area href="createSample.do?dispatch=setup&page=0" shape="rect"
 						coords="358,162,442,200" alt="rectangle" />
-					<area href="createAliquot.do?dispatch=setup" shape="rect"
+					<area href="createAliquot.do?dispatch=setup&page=0" shape="rect"
 						coords="491,162,576,200" alt="rectangle" />
 				</c:if>
 				<c:if test="${canCreateReport eq 'true'}">
-					<area href="submitReport.do?dispatch=setup" shape="rect"
+					<area href="submitReport.do?dispatch=setup&page=0" shape="rect"
 						coords="440,227,530,267" alt="rectangle" />
 				</c:if>
 				<c:if test="${canCreateNanoparticle eq 'true'}">
-					<area href="createNanoparticle.do?dispatch=setup" shape="rect"
+					<area href="nanoparticleGeneralInfo.do?dispatch=setup&page=0" shape="rect"
 						coords="440,411,530,459" alt="rectangle" />
 				</c:if>
 			</map>
