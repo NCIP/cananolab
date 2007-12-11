@@ -79,9 +79,19 @@ public class LoginAction extends AbstractBaseAction {
 		session.setAttribute("user", user);
 		session.setAttribute("userService", userService);
 
-		boolean createSample = userService.checkCreatePermission(user,
+		Boolean createSample = userService.checkCreatePermission(user,
 				CaNanoLabConstants.CSM_PG_SAMPLE);
 		session.setAttribute("canCreateSample", createSample);
+		Boolean createProtocol = userService.checkCreatePermission(user,
+				CaNanoLabConstants.CSM_PG_PROTOCOL);
+		session.setAttribute("canCreateProtocol", createProtocol);
+		Boolean createReport = userService.checkCreatePermission(user,
+				CaNanoLabConstants.CSM_PG_REPORT);
+		session.setAttribute("canCreateReport", createReport);
+		Boolean createParticle = userService.checkCreatePermission(user,
+				CaNanoLabConstants.CSM_PG_PARTICLE);
+		session.setAttribute("canCreateNanoparticle", createParticle);
+
 		boolean isAdmin = userService.isAdmin(user.getLoginName());
 		session.setAttribute("isAdmin", isAdmin);
 
