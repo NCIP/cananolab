@@ -58,7 +58,16 @@
 											alt="print characterization summary" border="0"> </a>
 								</td>
 								<td>
-									<a href="#"><img src="images/icon_excel_23x.gif"
+									<c:url var="exportUrl"
+										value="${nanoparticleCharacterizationForm.map.achar.actionName}.do">
+										<c:param name="page" value="0" />
+										<c:param name="dispatch" value="exportDetail" />
+										<c:param name="particleId" value="${particleId}" />
+										<c:param name="characterizationId"
+											value="${nanoparticleCharacterizationForm.map.achar.id}" />
+										<c:param name="submitType" value="${submitType}" />
+									</c:url>
+									<a href="${exportUrl}"><img src="images/icon_excel_23x.gif"
 											alt="export characterization summary" border="0"> </a>
 								</td>
 							</tr>
