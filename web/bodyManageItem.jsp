@@ -5,12 +5,7 @@
 
 <table summary="" cellpadding="0" cellspacing="0" border="0"
 	width="100%" height="100%">
-	<tr>
-		<td colspan="2">
-			<span class="welcomeContent"><jsp:include
-					page="${itemDescription}" /> </span>
-		</td>
-	</tr>
+	<jsp:include page="${itemDescription}" />
 	<tr>
 		<td valign="top" width="40%">
 			<!-- sidebar begins -->
@@ -36,32 +31,29 @@
 									LINKS
 								</td>
 							</tr>
-							<bean:define id="canCreate" name="canCreate${item}"/>
+							<bean:define id="canCreate" name="canCreate${item}" />
 							<c:choose>
 								<c:when test="${canCreate eq 'true'}">
 									<tr>
 										<td class="sidebarContent">
 											<a href="${createLink}"> <c:choose>
 													<c:when test="${item eq 'Nanoparticle'}">
-												Annotate
+												Submit New <c:out value="${item}" /> Information
 											</c:when>
 													<c:otherwise>
-												Submit
-											</c:otherwise>
-												</c:choose> a New <c:out value="${item}" /> </a>
+												Submit a New <c:out value="${item}" />
+													</c:otherwise>
+												</c:choose> </a>
 											<br>
 											Click to
 											<c:choose>
 												<c:when test="${item eq 'Nanoparticle'}">
-												annotate
+												submit new <c:out value="${fn:toLowerCase(item)}" /> information.
 											</c:when>
 												<c:otherwise>
-												submit
+												submit a new <c:out value="${fn:toLowerCase(item)}" />.
 								        </c:otherwise>
 											</c:choose>
-											a new
-											<c:out value="${fn:toLowerCase(item)}" />
-											.
 										</td>
 									</tr>
 								</c:when>

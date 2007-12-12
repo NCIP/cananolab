@@ -5,16 +5,28 @@
 <table summary="" cellpadding="0" cellspacing="0" border="0"
 	width="100%" height="100%">
 	<tr>
-		<td colspan="2">
-			<span class="welcomeContent">
-				<h4>
-					Manage Sample/Aliquot Home
-				</h4> This is the manage sample/aliquot section. A sample is the 
-				nanoparticle received by the laboratory that undergoes further 
-				characterization.&nbsp; An aliquot is a portion of the total sample 
-				(nanoparticle) used during the execution of laboratory assays. In 
-				this section, you may either create a new sample, create a new aliquot, or select an 
-				existing samples and select existing aliquots. <br> <br> </span>
+		<td>
+			<h4>
+				Manage Sample/Aliquot Home
+			</h4>
+		</td>
+		<td align="right" width="15%">
+			<a
+				href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=manage_sample_aliquot_help')"
+				class="helpText">Help</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" class="welcomeContent">
+			This is the manage sample/aliquot section. A sample is the
+			nanoparticle received by the laboratory that undergoes further
+			characterization.&nbsp; An aliquot is a portion of the total sample
+			(nanoparticle) used during the execution of laboratory assays. In
+			this section, you may either create a new sample, create a new
+			aliquot, or select an existing samples and select existing aliquots.
+			<br>
+			<br>
+			</span>
 		</td>
 	</tr>
 	<tr>
@@ -88,8 +100,8 @@
 							</tr>
 							<tr>
 								<td class="sidebarContent">
-									<a href="searchAliquot.do?dispatch=setup">Search 
-										Existing Aliquots</a>
+									<a href="searchAliquot.do?dispatch=setup">Search Existing
+										Aliquots</a>
 									<br>
 									Enter search criteria to find the aliquot you wish to operate
 									on.

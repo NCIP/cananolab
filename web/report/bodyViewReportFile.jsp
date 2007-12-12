@@ -14,7 +14,7 @@
 			</td>
 			<td align="right" width="15%">
 				<a
-					href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=nano_report_help')"
+					href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=report_file_help')"
 					class="helpText">Help</a>
 				<logic:equal name="reportActionName" value="updateReport">
 				&nbsp;&nbsp;<a href="reportResults.do" class="helpText">Back</a>

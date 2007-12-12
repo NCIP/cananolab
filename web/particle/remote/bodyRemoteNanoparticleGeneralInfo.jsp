@@ -12,7 +12,7 @@
 			</h3>
 		</td>
 		<td align="right" width="15%">
-			<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=nano_general_info_help')" class="helpText">Help</a>
+			<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=annotate_nano_help')" class="helpText">Help</a>
 		</td>
 	</tr>
 	<tr>
