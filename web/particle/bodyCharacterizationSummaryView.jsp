@@ -13,7 +13,7 @@
 		</td>
 		<td align="right" width="15%">
 			<a
-				href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=${helpName}')"
+				href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=nano_${nanoparticleCharacterizationForm.map.achar.actionName}_help')"
 				class="helpText">Help</a>
 		</td>
 	</tr>
@@ -23,12 +23,13 @@
 			<table>
 				<tr>
 					<td>
-						<a href="javascript:printPage('${printLinkURL}')"><img src="images/icon_print_23x.gif"
+						<a href="javascript:printPage('${printLinkURL}')"><img
+								src="images/icon_print_23x.gif"
 								alt="print characterization summary" border="0"> </a>
 					</td>
 					<td>
 						<c:url var="sumUrl"
-								value="${nanoparticleCharacterizationForm.map.achar.actionName}.do">
+							value="${nanoparticleCharacterizationForm.map.achar.actionName}.do">
 							<c:param name="particleId" value="${particleId}" />
 							<c:param name="submitType" value="${submitType}" />
 							<c:param name="page" value="0" />
@@ -56,7 +57,9 @@
 				</tr>
 				<tr>
 					<th class="leftLabel">
-						View Title /<br> Description
+						View Title /
+						<br>
+						Description
 					</th>
 					<c:forEach var="label" items="${datumLabels}">
 						<th class="label">
@@ -84,20 +87,17 @@
 							</c:url>
 							<a href="${url}">${summaryBean.charBean.viewTitle}</a>
 							<c:if test="${!empty summaryBean.charBean.description}">
-								<br><br>${summaryBean.charBean.description}
+								<br>
+								<br>${summaryBean.charBean.description}
 							</c:if>
 						</td>
-						
+
 						<c:forEach var="label" items="${datumLabels}">
 							<td class="label" valign="top">
 								${summaryBean.datumMap[label]}&nbsp;
 							</td>
 						</c:forEach>
 						<td class="label" valign="top">
-							<c:if test="${!empty summaryBean.charFile.type}">
-							${summaryBean.charFile.type}
-							<br>
-							</c:if>
 							<c:if
 								test="${!empty summaryBean.charFile && !empty summaryBean.charFile.uri}">
 								<c:choose>
@@ -107,6 +107,8 @@
 									<c:otherwise>
 										<c:choose>
 											<c:when test="${summaryBean.charFile.image eq 'true'}">
+												${summaryBean.charFile.title}<br>
+												<br>
 												<a href="#"
 													onclick="popImage(event,'${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${summaryBean.charFile.id}', ${summaryBean.charFile.id})"><img
 														src="${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${summaryBean.charFile.id}"
@@ -119,7 +121,8 @@
 										</c:choose>
 									</c:otherwise>
 								</c:choose>
-							</c:if>&nbsp;
+							</c:if>
+							&nbsp;
 						</td>
 						<td class="RightLabel" valign="top">
 							<c:if

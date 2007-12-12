@@ -13,7 +13,7 @@
 		</td>
 		<td align="right" width="15%">
 			<a
-				href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=${helpName}')"
+				href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=nano_${nanoparticleCharacterizationForm.map.achar.actionName}_help')"
 				class="helpText">Help</a>
 		</td>
 	</tr>
@@ -149,10 +149,6 @@
 								Characterization File #${fileInd+1}
 							</th>
 							<td class="rightLabel" valign="top">
-								<c:if test="${!empty derivedBioAssayData.type}">
-								${derivedBioAssayData.type}
-								<br>
-								</c:if>
 								<c:choose>
 									<c:when test="${derivedBioAssayData.hidden eq 'true'}">
 									Private file
@@ -160,10 +156,11 @@
 									<c:otherwise>
 										<c:choose>
 											<c:when test="${derivedBioAssayData.image eq 'true'}">
+ 												${derivedBioAssayData.title}<br><br>
 												<a href="#"
 													onclick="popImage(event, '${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.id}', ${derivedBioAssayData.id}, 100, 100)"><img
 														src="${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.id}"
-														border="0" width="150"> </a>
+														border="0" width="150"></a>												
 											</c:when>
 											<c:otherwise>
 												<a
