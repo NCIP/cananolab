@@ -461,7 +461,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		
 		service.exportDetailService(theForm, out, user);
 		
-		return mapping.findForward("detailView");
+		return null;
 	}
 
 	public ActionForward exportSummary(ActionMapping mapping, ActionForm form,
@@ -493,7 +493,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		
 		service.exportSummaryService(datumLabels, summaryBeans, submitType, theForm, out, user);
 		
-		return mapping.findForward("summaryView");
+		return null;
 	}
 	
 	public ActionForward printDetailView(ActionMapping mapping,
