@@ -114,7 +114,7 @@
 											</c:when>
 											<c:otherwise>
 												<a
-													href="${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${summaryBean.charFile.id}">${summaryBean.charFile.uri}</a>
+													href="${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${summaryBean.charFile.id}">${summaryBean.charFile.title}</a>
 											</c:otherwise>
 										</c:choose>
 									</c:otherwise>
