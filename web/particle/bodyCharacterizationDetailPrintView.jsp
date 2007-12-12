@@ -4,22 +4,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html>
 	<head>
-		<title><tiles:getAsString name="title" ignore="true" />
-		</title>
 		<link rel="stylesheet" type="text/css" href="css/caLab.css">
 		<script type="text/javascript" src="javascript/script.js"></script>
 	</head>
 	<body>
 		<table width="100%" align="center">
-			<tr>
-				<td colspan="2">
-					<h4>
-						tm
-						<br>
-						${pageTitle} ${submitType}
-					</h4>
-				</td>
-			</tr>
 			<tr>
 				<td colspan="2">
 					<table width="100%" border="0" align="center" cellpadding="3"
