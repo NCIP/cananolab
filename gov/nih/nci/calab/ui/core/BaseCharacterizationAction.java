@@ -29,9 +29,6 @@ import gov.nih.nci.calab.ui.security.InitSecuritySetup;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
@@ -41,7 +38,6 @@ import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -470,7 +466,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 
 	public ActionForward exportSummary(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
-            throws Exception {
+            throws Exception {		
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		initSetup(request, theForm);
 		
@@ -508,8 +504,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		return mapping.findForward("detailPrintView");
 	}
 
-	public ActionForward summaryView(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
+	private void setSummaryView(ActionForm form, HttpServletRequest request)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		initSetup(request, theForm);
@@ -524,16 +519,79 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 					"There are no such characterizations in the database.");
 		}
 
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		
 		// set data labels and file visibility, and whether file is an image
-		SortedSet<String> datumLabels = service.setDataLabelsAndFileVisibility(user, charSummaryBeans);
-		
+		UserService userService = new UserService(
+				CaNanoLabConstants.CSM_APP_NAME);
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		List<CharacterizationBean> charBeans = new ArrayList<CharacterizationBean>();
+		SortedSet<String> datumLabels = new TreeSet<String>();
+		for (CharacterizationSummaryBean summaryBean : charSummaryBeans) {
+			if (!charBeans.contains(summaryBean.getCharBean())) {
+				charBeans.add(summaryBean.getCharBean());
+			}
+			Map<String, String> datumMap = summaryBean.getDatumMap();
+			if (datumMap != null && !datumMap.isEmpty()) {
+				datumLabels.addAll(datumMap.keySet());
+			}
+			DerivedBioAssayDataBean fileBean = summaryBean.getCharFile();
+			if (fileBean != null) {
+				boolean accessStatus = userService.checkReadPermission(user,
+						fileBean.getId());
+				if (accessStatus) {
+					List<String> accessibleGroups = userService
+							.getAccessibleGroups(fileBean.getId(),
+									CaNanoLabConstants.CSM_READ_ROLE);
+					String[] visibilityGroups = accessibleGroups
+							.toArray(new String[0]);
+					fileBean.setVisibilityGroups(visibilityGroups);
+					fileBean.setHidden(false);
+				} else {
+					fileBean.setHidden(true);
+				}
+				boolean imageStatus = false;
+				if (fileBean.getName() != null) {
+					imageStatus = StringUtils.isImgFileExt(fileBean.getName());
+				}
+				fileBean.setImage(imageStatus);
+			}
+		}
 		request.setAttribute("summaryViewBeans", charSummaryBeans);
-		request.setAttribute("summaryViewCharBeans", charSummaryBeans);
+		request.setAttribute("summaryViewCharBeans", charBeans);
 		request.setAttribute("datumLabels", datumLabels);
+	}
 
+	public ActionForward summaryView(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		setSummaryView(form, request);
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		ParticleBean particle = (ParticleBean) theForm.get("particle");
+		String submitType = request.getParameter("submitType");
+		CharacterizationBean charBean = (CharacterizationBean) theForm
+				.get("achar");
+		String printLinkURL = "/caNanoLab/" + charBean.getActionName()
+				+ ".do?page=0&dispatch=printSummaryView&particleId="
+				+ particle.getSampleId() + "&submitType=" + submitType;
+		String printAllLinkURL = "/caNanoLab/" + charBean.getActionName()
+				+ ".do?page=0&dispatch=printFullSummaryView&particleId="
+				+ particle.getSampleId() + "&submitType=" + submitType;
+		request.setAttribute("printLinkURL", printLinkURL);
+		request.setAttribute("printAllLinkURL", printAllLinkURL);
 		return mapping.findForward("summaryView");
+	}
+
+	public ActionForward printSummaryView(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		setSummaryView(form, request);
+		return mapping.findForward("summaryPrintView");
+	}
+	
+	public ActionForward printFullSummaryView(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		setSummaryView(form, request);
+		return mapping.findForward("summaryPrintAllView");
 	}
 
 	/**
