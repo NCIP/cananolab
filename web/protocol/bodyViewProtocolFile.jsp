@@ -14,7 +14,7 @@
 			</td>
 			<td align="right" width="15%">
 				<a
-					href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=nano_protocol_help')"
+					href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=protocol_file_help')"
 					class="helpText">Help</a>
 				<logic:equal name="protocolActionName" value="updateProtocol">
 				&nbsp;&nbsp;<a href="protocolResults.do" class="helpText">Back</a>
