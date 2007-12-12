@@ -72,7 +72,7 @@
 				</tr>
 				<c:forEach var="summaryBean" items="${summaryViewBeans}">
 					<tr>
-						<td class="leftLabel" valign="top">
+						<td class="leftLabel" valign="top" width="15%">
 							<c:url var="url"
 								value="${nanoparticleCharacterizationForm.map.achar.actionName}.do">
 								<c:param name="page" value="0" />
