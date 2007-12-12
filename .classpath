@@ -128,5 +128,6 @@
 	<classpathentry kind="lib" path="web/WEB-INF/lib/xercesImpl.jar"/>
 	<classpathentry kind="lib" path="web/WEB-INF/lib/xmlsec.jar"/>
 	<classpathentry kind="lib" path="lib/servlet.jar"/>
+	<classpathentry kind="lib" path="web/WEB-INF/lib/poi-3.0.1-FINAL-20070705.jar"/>
 	<classpathentry kind="output" path="web/WEB-INF/classes"/>
 </classpath>
