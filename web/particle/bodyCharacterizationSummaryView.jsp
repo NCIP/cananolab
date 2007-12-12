@@ -28,6 +28,11 @@
 								alt="print characterization summary" border="0"> </a>
 					</td>
 					<td>
+						<a href="javascript:printPage('${printAllLinkURL}')"><img
+								src="images/icon_print_23x.gif"
+								alt="print full characterization summary" border="0"> </a>
+					</td>
+					<td>
 						<c:url var="sumUrl"
 							value="${nanoparticleCharacterizationForm.map.achar.actionName}.do">
 							<c:param name="particleId" value="${particleId}" />
