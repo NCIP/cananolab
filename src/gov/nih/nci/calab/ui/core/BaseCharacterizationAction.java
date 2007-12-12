@@ -438,64 +438,68 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 
 		return mapping.findForward("detailView");
 	}
-	
+
 	public ActionForward exportDetail(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response)
-            throws Exception {
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		initSetup(request, theForm);
-		
-		CharacterizationBean charBean = (CharacterizationBean) theForm.get("achar");
 
-		NanoparticleCharacterizationService service =
-            new NanoparticleCharacterizationService();
+		CharacterizationBean charBean = (CharacterizationBean) theForm
+				.get("achar");
 
-		//response.setContentType("application/vnd.ms-execel");
+		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
+
+		// response.setContentType("application/vnd.ms-execel");
 		response.setContentType("application/octet-stream");
 		response.setHeader("cache-control", "Private");
-		response.setHeader("Content-disposition", "attachment;filename=" + 
-				charBean.getActionName() + "_" + charBean.getViewTitle() + ".xls");
+		response.setHeader("Content-disposition", "attachment;filename="
+				+ charBean.getActionName() + "_" + charBean.getViewTitle()
+				+ ".xls");
 
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		java.io.OutputStream out = response.getOutputStream();
-		
+
 		service.exportDetailService(theForm, out, user);
-		
+
 		return null;
 	}
 
 	public ActionForward exportSummary(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response)
-            throws Exception {		
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		initSetup(request, theForm);
-		
-		CharacterizationBean charBean = (CharacterizationBean) theForm.get("achar");
 
-		NanoparticleCharacterizationService service =
-            new NanoparticleCharacterizationService();
+		CharacterizationBean charBean = (CharacterizationBean) theForm
+				.get("achar");
 
-		//response.setContentType("application/vnd.ms-execel");
+		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
+
+		// response.setContentType("application/vnd.ms-execel");
 		response.setContentType("application/octet-stream");
 		response.setHeader("cache-control", "Private");
-		response.setHeader("Content-disposition", "attachment;filename=" + 
-				charBean.getActionName() + ".xls");
+		response.setHeader("Content-disposition", "attachment;filename="
+				+ charBean.getActionName() + ".xls");
 
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		java.io.OutputStream out = response.getOutputStream();
-		
+
 		String submitType = request.getParameter("submitType");
 		ParticleBean particle = (ParticleBean) theForm.get("particle");
-		
+
 		List<CharacterizationSummaryBean> summaryBeans = service
-				.getParticleCharacterizationSummaryByName(submitType, particle.getSampleId());
-		SortedSet<String> datumLabels = service.setDataLabelsAndFileVisibility(user, summaryBeans);
-		
-		service.exportSummaryService(datumLabels, summaryBeans, submitType, theForm, out, user);
-		
-		return null;
+				.getParticleCharacterizationSummaryByName(submitType, particle
+						.getSampleId());
+		SortedSet<String> datumLabels = service.setDataLabelsAndFileVisibility(
+				user, summaryBeans);
+
+		service.exportSummaryService(datumLabels, summaryBeans, submitType,
+				theForm, out, user);
+
+		return mapping.findForward("summaryView");
 	}
-	
+
 	public ActionForward printDetailView(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
@@ -526,9 +530,6 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		List<CharacterizationBean> charBeans = new ArrayList<CharacterizationBean>();
 		SortedSet<String> datumLabels = new TreeSet<String>();
 		for (CharacterizationSummaryBean summaryBean : charSummaryBeans) {
-			if (!charBeans.contains(summaryBean.getCharBean())) {
-				charBeans.add(summaryBean.getCharBean());
-			}
 			Map<String, String> datumMap = summaryBean.getDatumMap();
 			if (datumMap != null && !datumMap.isEmpty()) {
 				datumLabels.addAll(datumMap.keySet());
@@ -553,6 +554,9 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 					imageStatus = StringUtils.isImgFileExt(fileBean.getName());
 				}
 				fileBean.setImage(imageStatus);
+			}
+			if (!charBeans.contains(summaryBean.getCharBean())) {
+				charBeans.add(summaryBean.getCharBean());
 			}
 		}
 		request.setAttribute("summaryViewBeans", charSummaryBeans);
@@ -586,7 +590,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		setSummaryView(form, request);
 		return mapping.findForward("summaryPrintView");
 	}
-	
+
 	public ActionForward printFullSummaryView(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
