@@ -37,10 +37,7 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 		}
 		if (user != null) {
 			// check whether user have access to the class
-			boolean accessStatus = canUserExecute(user);
-			// if have access or if have no access but dispatch is either
-			// setupView or download or loadfile
-			// do forward
+			boolean accessStatus = canUserExecute(user);			
 			if (accessStatus) {
 				return super.execute(mapping, form, request, response);
 			} else {
