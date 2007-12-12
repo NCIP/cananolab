@@ -53,9 +53,9 @@
 										</td>
 									</c:if>
 								<td>
-									<a href="javascript:window.print()"><img
+									<a href="javascript:printPage('${printLinkURL}')"><img
 											src="images/icon_print_23x.gif"
-											alt="print characterization summary" border="0"> </a>
+											alt="print characterization detail" border="0"> </a>
 								</td>
 								<td>
 									<c:url var="exportUrl"
@@ -68,7 +68,7 @@
 										<c:param name="submitType" value="${submitType}" />
 									</c:url>
 									<a href="${exportUrl}"><img src="images/icon_excel_23x.gif"
-											alt="export characterization summary" border="0"> </a>
+											alt="export characterization detail" border="0"> </a>
 								</td>
 							</tr>
 						</table>
@@ -167,7 +167,7 @@
 											</c:when>
 											<c:otherwise>
 												<a
-													href="${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.id}">${derivedBioAssayData.uri}</a>
+													href="${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.id}">${derivedBioAssayData.title}</a>
 											</c:otherwise>
 										</c:choose>
 									</c:otherwise>
