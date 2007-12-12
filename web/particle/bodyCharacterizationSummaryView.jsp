@@ -23,7 +23,7 @@
 			<table>
 				<tr>
 					<td>
-						<a href="#"><img src="images/icon_print_23x.gif"
+						<a href="javascript:printPage('${printLinkURL}')"><img src="images/icon_print_23x.gif"
 								alt="print characterization summary" border="0"> </a>
 					</td>
 					<td>
