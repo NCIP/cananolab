@@ -141,11 +141,6 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 				.getName());
 
 		request.getSession().setAttribute("newCharacterizationCreated", "true");
-		request.getSession().setAttribute("newCharacterizationSourceCreated",
-				"true");
-		request.getSession().setAttribute("newInstrumentCreated", "true");
-		request.getSession().setAttribute("newCharacterizationFileTypeCreated",
-				"true");
 		InitParticleSetup.getInstance().setSideParticleMenu(request,
 				particle.getSampleId());
 		request.setAttribute("theParticle", particle);

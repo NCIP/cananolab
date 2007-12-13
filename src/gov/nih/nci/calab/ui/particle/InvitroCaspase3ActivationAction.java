@@ -47,7 +47,6 @@ public class InvitroCaspase3ActivationAction extends BaseCharacterizationAction 
 					acharBean);
 			service.addCaspase3Activation(aCytoBean);
 		}
-		request.getSession().setAttribute("newCytoCreated", "true");
 		return postCreate(request, theForm, mapping);
 	}
 

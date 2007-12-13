@@ -38,13 +38,9 @@ public class InitProtocolSetup {
 
 	public void setAllProtocolTypes(HttpSession session)
 			throws CaNanoLabException {
-		if (session.getAttribute("protocolTypes") == null
-				|| session.getAttribute("newProtocolCreated") != null) {
-			SortedSet<String> protocolTypes = LookupService
-					.getAllLookupTypes("ProtocolType");
-			session.setAttribute("protocolTypes", protocolTypes);
-		}
-		session.removeAttribute("newProtocolCreated");
+		SortedSet<String> protocolTypes = LookupService
+				.getAllLookupTypes("ProtocolType");
+		session.setAttribute("protocolTypes", protocolTypes);
 	}
 
 	public void setProtocolFilesByCharName(HttpSession session, String charName)

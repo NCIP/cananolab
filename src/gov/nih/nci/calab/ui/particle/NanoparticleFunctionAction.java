@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleFunctionAction.java,v 1.9 2007-12-06 22:16:05 pansu Exp $ */
+/* CVS $Id: NanoparticleFunctionAction.java,v 1.10 2007-12-13 16:30:36 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.function.AgentBean;
@@ -73,10 +73,6 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 				}
 			}
 		}
-		request.getSession().setAttribute("newFunctionCreated", "true");
-		request.getSession().setAttribute("newBondTypeCreated", "true");
-		request.getSession()
-				.setAttribute("newContrastAgentTypeCreated", "true");
 		NanoparticleFunctionService service = new NanoparticleFunctionService();
 		service.addParticleFunction(particle.getSampleId(), function);
 

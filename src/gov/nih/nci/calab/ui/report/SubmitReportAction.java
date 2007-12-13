@@ -5,7 +5,7 @@ package gov.nih.nci.calab.ui.report;
  *  
  * @author pansu
  */
-/* CVS $Id: SubmitReportAction.java,v 1.7 2007-12-06 22:16:05 pansu Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.8 2007-12-13 16:30:37 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
@@ -65,7 +65,6 @@ public class SubmitReportAction extends AbstractDispatchAction {
 		msgs.add("message", msg2);
 		saveMessages(request, msgs);
 
-		request.getSession().setAttribute("newReportCreated", "true");
 		forward = mapping.findForward("success");
 
 		return forward;
@@ -122,9 +121,6 @@ public class SubmitReportAction extends AbstractDispatchAction {
 
 		msgs.add("message", msg);
 		saveMessages(request, msgs);
-
-		request.getSession().setAttribute("newReportCreated", "true");
-
 		return mapping.findForward("success");
 	}
 
