@@ -32,28 +32,20 @@ public class InitReportSetup {
 	public void setAllReports(HttpSession session, String particleId)
 			throws ReportException, CaNanoLabSecurityException {
 		UserBean user = (UserBean) session.getAttribute("user");
-		if (session.getAttribute("particleReports") == null
-				|| session.getAttribute("newReportCreated") != null
-				|| session.getAttribute("newParticleCreated") != null) {
+		List<LabFileBean> reportBeans = reportService.getReportInfo(particleId,
+				CaNanoLabConstants.REPORT, user);
+		session.setAttribute("particleReports", reportBeans);
 
-			List<LabFileBean> reportBeans = reportService.getReportInfo(
-					particleId, CaNanoLabConstants.REPORT, user);
-			session.setAttribute("particleReports", reportBeans);
-		}
-
-		if (session.getAttribute("particleAssociatedFiles") == null
-				|| session.getAttribute("newReportCreated") != null
-				|| session.getAttribute("newParticleCreated") != null) {
-			List<LabFileBean> associatedBeans = reportService.getReportInfo(
-					particleId, CaNanoLabConstants.ASSOCIATED_FILE, user);
-			session.setAttribute("particleAssociatedFiles", associatedBeans);
-		}
+		List<LabFileBean> associatedBeans = reportService.getReportInfo(
+				particleId, CaNanoLabConstants.ASSOCIATED_FILE, user);
+		session.setAttribute("particleAssociatedFiles", associatedBeans);
 	}
 
 	public void setAllReportTypes(HttpSession session) {
-		if (session.getAttribute("allReportTypes") == null) {
+		if (session.getServletContext().getAttribute("allReportTypes") == null) {
 			String[] allReportTypes = reportService.getAllReportTypes();
-			session.setAttribute("allReportTypes", allReportTypes);
+			session.getServletContext().setAttribute("allReportTypes",
+					allReportTypes);
 		}
 	}
 }

@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleSurfaceAction.java,v 1.6 2007-12-05 20:01:09 pansu Exp $ */
+/* CVS $Id: NanoparticleSurfaceAction.java,v 1.7 2007-12-13 16:30:36 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.physical.SurfaceBean;
@@ -51,7 +51,6 @@ public class NanoparticleSurfaceAction extends BaseCharacterizationAction {
 			SurfaceBean aSurfaceBean = new SurfaceBean(propBean, acharBean);
 			service.addParticleSurface(aSurfaceBean);
 		}
-		request.getSession().setAttribute("newSurfaceCreated", "true");
 		return postCreate(request, theForm, mapping);
 	}
 

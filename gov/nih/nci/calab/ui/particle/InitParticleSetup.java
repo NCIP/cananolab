@@ -66,14 +66,9 @@ public class InitParticleSetup {
 
 	public void setNewParticleTypes(HttpSession session)
 			throws ParticleException {
-		if (session.getAttribute("allNewParticleTypes") == null
-				|| session.getAttribute("newSampleCreated") != null
-				|| session.getAttribute("newParticleCreated") != null) {
-			SortedSet<String> particleTypes = particleService
-					.getUnannotatedParticleTypes();
-			session.setAttribute("allNewParticleTypes", particleTypes);
-		}
-		session.removeAttribute("newParticleCreated");
+		SortedSet<String> particleTypes = particleService
+				.getUnannotatedParticleTypes();
+		session.setAttribute("allNewParticleTypes", particleTypes);
 	}
 
 	public void setAllCompositionDropdowns(HttpSession session)
@@ -91,43 +86,24 @@ public class InitParticleSetup {
 
 		setAllDendrimers(session);
 
-		if ((session.getAttribute("allPolymerInitiators") == null)
-				|| (session.getAttribute("newPolymerCreated") != null)) {
-			SortedSet<String> initiators = compService
-					.getAllPolymerInitiators();
-			session.setAttribute("allPolymerInitiators", initiators);
-		}
-		session.removeAttribute("newPolymerCreated");
+		SortedSet<String> initiators = compService.getAllPolymerInitiators();
+		session.setAttribute("allPolymerInitiators", initiators);
 	}
 
 	private void setAllDendrimers(HttpSession session)
 			throws ParticleCompositionException {
-		if ((session.getAttribute("allDendrimerCores") == null)
-				|| session.getAttribute("newDendrimerCreated") != null) {
-			SortedSet<String> dendrimerCores = compService
-					.getAllDendrimerCores();
-			session.setAttribute("allDendrimerCores", dendrimerCores);
-		}
-		if (session.getAttribute("allDendrimerSurfaceGroupNames") == null
-				|| session.getAttribute("newDendrimerCreated") != null) {
-			SortedSet<String> surfaceGroupNames = compService
-					.getAllDendrimerSurfaceGroupNames();
-			session.setAttribute("allDendrimerSurfaceGroupNames",
-					surfaceGroupNames);
-		}
-		if (session.getAttribute("allDendrimerBranches") == null
-				|| session.getAttribute("newDendrimerCreated") != null) {
-			SortedSet<String> branches = compService.getAllDendrimerBranches();
-			session.setAttribute("allDendrimerBranches", branches);
-		}
-		if (session.getAttribute("allDendrimerGenerations") == null
-				|| session.getAttribute("newDendrimerCreated") != null) {
-			SortedSet<String> generations = compService
-					.getAllDendrimerGenerations();
-			session.setAttribute("allDendrimerGenerations", generations);
-		}
-
-		session.removeAttribute("newDendrimerCreated");
+		SortedSet<String> dendrimerCores = compService.getAllDendrimerCores();
+		session.setAttribute("allDendrimerCores", dendrimerCores);
+		SortedSet<String> surfaceGroupNames = compService
+				.getAllDendrimerSurfaceGroupNames();
+		session
+				.setAttribute("allDendrimerSurfaceGroupNames",
+						surfaceGroupNames);
+		SortedSet<String> branches = compService.getAllDendrimerBranches();
+		session.setAttribute("allDendrimerBranches", branches);
+		SortedSet<String> generations = compService
+				.getAllDendrimerGenerations();
+		session.setAttribute("allDendrimerGenerations", generations);
 	}
 
 	public void setAllMetalCompositions(HttpSession session)
@@ -141,14 +117,9 @@ public class InitParticleSetup {
 
 	public void setAllParticleSources(HttpSession session)
 			throws ParticleException {
-		if (session.getAttribute("allParticleSources") == null
-				|| session.getAttribute("newSampleCreated") != null) {
-			SortedSet<String> particleSources = particleService
-					.getAllParticleSources();
-			session.setAttribute("allParticleSources", particleSources);
-		}
-		// clear the new sample created flag
-		session.removeAttribute("newSampleCreated");
+		SortedSet<String> particleSources = particleService
+				.getAllParticleSources();
+		session.setAttribute("allParticleSources", particleSources);
 	}
 
 	public void setSideParticleMenu(HttpServletRequest request,
@@ -371,7 +342,7 @@ public class InitParticleSetup {
 		return leafMap;
 	}
 
-	public void setFunctionTypeFunctions(HttpSession session, String particleId)
+	private void setFunctionTypeFunctions(HttpSession session, String particleId)
 			throws ParticleFunctionException {
 		if (session.getAttribute("allFuncTypeFuncs") == null
 				|| session.getAttribute("newParticleCreated") != null
@@ -449,38 +420,23 @@ public class InitParticleSetup {
 	public void setAllPhysicalDropdowns(HttpSession session)
 			throws CaNanoLabException {
 		// solubility
-		if (session.getAttribute("allSolventTypes") == null
-				|| session.getAttribute("newSolubilityCreated") != null) {
-			SortedSet<String> solventTypes = lookupService
-					.getAllLookupTypes("SolventType");
-			session.setAttribute("allSolventTypes", solventTypes);
-		}
-		if (session.getAttribute("allConcentrationUnits") == null
-				|| session.getAttribute("newSolubilityCreated") != null) {
-			SortedSet<String> concentrationUnits = lookupService
-					.getAllMeasureUnits().get("Concentration");
-			session.setAttribute("allConcentrationUnits", concentrationUnits);
-		}
-		session.removeAttribute("newSolubilityCreated");
+		SortedSet<String> solventTypes = lookupService
+				.getAllLookupTypes("SolventType");
+		session.setAttribute("allSolventTypes", solventTypes);
+		SortedSet<String> concentrationUnits = lookupService
+				.getAllMeasureUnits().get("Concentration");
+		session.setAttribute("allConcentrationUnits", concentrationUnits);
 
 		// shape
-		if (session.getAttribute("allShapeTypes") == null
-				|| session.getAttribute("newShapeCreated") != null) {
-			SortedSet<String> shapeTypes = lookupService
-					.getAllLookupTypes("ShapeType");
-			session.setAttribute("allShapeTypes", shapeTypes);
-		}
-		session.removeAttribute("newShapeCreated");
+		SortedSet<String> shapeTypes = lookupService
+				.getAllLookupTypes("ShapeType");
+		session.setAttribute("allShapeTypes", shapeTypes);
 
 		// morphology
-		if (session.getAttribute("allMorphologyTypes") == null
-				|| session.getAttribute("newMorphologyCreated") != null) {
-			SortedSet<String> morphologyTypes = lookupService
-					.getAllLookupTypes("MorphologyType");
-			;
-			session.setAttribute("allMorphologyTypes", morphologyTypes);
-		}
-		session.removeAttribute("newMorphologyCreated");
+		SortedSet<String> morphologyTypes = lookupService
+				.getAllLookupTypes("MorphologyType");
+		;
+		session.setAttribute("allMorphologyTypes", morphologyTypes);
 
 		// surface
 		if (session.getAttribute("allChargeMeasureUnits") == null
@@ -507,7 +463,6 @@ public class InitParticleSetup {
 					.get("Zeta Potential");
 			session.setAttribute("allZetaPotentialUnits", chargeUnits);
 		}
-		session.removeAttribute("newSurfaceCreated");
 	}
 
 	public void setAllAreaMeasureUnits(HttpSession session)
@@ -522,13 +477,9 @@ public class InitParticleSetup {
 
 	public void setAllInvitroDropdowns(HttpSession session)
 			throws CaNanoLabException {
-		if (session.getAttribute("allCellLines") == null
-				|| session.getAttribute("newCytoCreated") != null) {
-			SortedSet<String> cellLines = lookupService
-					.getAllLookupTypes("CellLineType");
-			session.setAttribute("allCellLines", cellLines);
-		}
-		session.removeAttribute("newCytoCreated");
+		SortedSet<String> cellLines = lookupService
+				.getAllLookupTypes("CellLineType");
+		session.setAttribute("allCellLines", cellLines);
 	}
 
 	public void setAllFunctionDropdowns(HttpSession session)
@@ -539,13 +490,9 @@ public class InitParticleSetup {
 			session.getServletContext().setAttribute("allSpecies", names);
 		}
 
-		if (session.getAttribute("allImageContrastAgentTypes") == null
-				|| session.getAttribute("newContrastAgentTypeCreated") != null) {
-			SortedSet<String> agentTypes = lookupService
-					.getAllLookupTypes("ImageContrastAgentType");
-			session.setAttribute("allImageContrastAgentTypes", agentTypes);
-		}
-		session.removeAttribute("newContrastAgentTypeCreated");
+		SortedSet<String> constrastAgentTypes = lookupService
+				.getAllLookupTypes("ImageContrastAgentType");
+		session.setAttribute("allImageContrastAgentTypes", constrastAgentTypes);
 
 		if (session.getServletContext().getAttribute("allActivationMethods") == null) {
 			SortedSet<String> methods = lookupService
@@ -554,13 +501,9 @@ public class InitParticleSetup {
 					methods);
 		}
 
-		if (session.getAttribute("allBondTypes") == null
-				|| session.getAttribute("newBondTypeCreated") != null) {
-			SortedSet<String> bondTypes = lookupService
-					.getAllLookupTypes("BondType");
-			session.setAttribute("allBondTypes", bondTypes);
-		}
-		session.removeAttribute("newBondTypeCreated");
+		SortedSet<String> bondTypes = lookupService
+				.getAllLookupTypes("BondType");
+		session.setAttribute("allBondTypes", bondTypes);
 
 		if (session.getServletContext().getAttribute("allLinkageTypes") == null) {
 			SortedSet<String> linkageTypes = lookupService
@@ -605,31 +548,22 @@ public class InitParticleSetup {
 
 	public void setAllInstruments(HttpSession session)
 			throws ParticleCharacterizationException {
-		if (session.getAttribute("allInstruments") == null
-				|| session.getAttribute("newInstrumentCreated") != null) {
-			List<InstrumentBean> instruments = charService.getAllInstruments();
-			SortedSet<String> instrumentTypes = new TreeSet<String>();
-			for (InstrumentBean instrument : instruments) {
-				instrumentTypes.add(instrument.getType());
-			}
-			SortedSet<String> manufacturers = charService.getAllManufacturers();
-			session.setAttribute("allInstruments", instruments);
-			session.setAttribute("allInstrumentTypes", instrumentTypes);
-			session.setAttribute("allManufacturers", manufacturers);
+		List<InstrumentBean> instruments = charService.getAllInstruments();
+		SortedSet<String> instrumentTypes = new TreeSet<String>();
+		for (InstrumentBean instrument : instruments) {
+			instrumentTypes.add(instrument.getType());
 		}
-		session.removeAttribute("newInstrumentCreated");
+		SortedSet<String> manufacturers = charService.getAllManufacturers();
+		session.setAttribute("allInstruments", instruments);
+		session.setAttribute("allInstrumentTypes", instrumentTypes);
+		session.setAttribute("allManufacturers", manufacturers);
 	}
 
 	public void setAllDerivedDataFileTypes(HttpSession session)
 			throws ParticleCharacterizationException {
-		if (session.getAttribute("allDerivedDataFileTypes") == null
-				|| session.getAttribute("newCharacterizationFileTypeCreated") != null) {
-
-			SortedSet<String> fileTypes = charService
-					.getAllCharacterizationFileTypes();
-			session.setAttribute("allDerivedDataFileTypes", fileTypes);
-		}
-		session.removeAttribute("newCharacterizationFileTypeCreated");
+		SortedSet<String> fileTypes = charService
+				.getAllCharacterizationFileTypes();
+		session.setAttribute("allDerivedDataFileTypes", fileTypes);
 	}
 
 	public void setAllFunctionTypes(HttpSession session)

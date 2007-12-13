@@ -31,13 +31,10 @@ public class InitSecuritySetup {
 		return new InitSecuritySetup();
 	}
 
-	public void setAllUsers(HttpSession session) throws CaNanoLabSecurityException {
-		if ((session.getAttribute("newUserCreated") != null)
-				|| (session.getServletContext().getAttribute("allUsers") == null)) {
-			List allUsers = userService.getAllUsers();
-			session.getServletContext().setAttribute("allUsers", allUsers);
-		}
-		session.removeAttribute("newUserCreated");
+	public void setAllUsers(HttpSession session)
+			throws CaNanoLabSecurityException {
+		List allUsers = userService.getAllUsers();
+		session.setAttribute("allUsers", allUsers);
 	}
 
 	public static LookupService getLookupService() {
@@ -76,12 +73,8 @@ public class InitSecuritySetup {
 
 	public void setAllVisibilityGroups(HttpSession session)
 			throws CaNanoLabSecurityException {
-		if (session.getAttribute("allVisibilityGroups") == null
-				|| session.getAttribute("newSampleCreated") != null) {
-			List<String> groupNames = userService.getAllVisibilityGroups();
-			session.setAttribute("allVisibilityGroups", groupNames);
-		}
-		session.removeAttribute("newSampleCreated");
+		List<String> groupNames = userService.getAllVisibilityGroups();
+		session.setAttribute("allVisibilityGroups", groupNames);
 	}
 
 	public void setApplicationOwner(HttpSession session) {

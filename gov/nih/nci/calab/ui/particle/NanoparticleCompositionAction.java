@@ -8,7 +8,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleCompositionAction.java,v 1.14 2007-12-06 22:16:05 pansu Exp $ */
+/* CVS $Id: NanoparticleCompositionAction.java,v 1.15 2007-12-13 16:30:36 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.composition.CarbonNanotubeBean;
 import gov.nih.nci.calab.dto.characterization.composition.ComposingElementBean;
@@ -127,13 +127,6 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		request.getSession().setAttribute("newCharacterizationCreated", "true");
 		InitParticleSetup.getInstance().setSideParticleMenu(request,
 				particle.getSampleId());
-		if (particle.getSampleType().equalsIgnoreCase(
-				CaNanoLabConstants.COMPOSITION_DENDRIMER_TYPE)) {
-			request.getSession().setAttribute("newDendrimerCreated", "true");
-		} else if (particle.getSampleType().equalsIgnoreCase(
-				CaNanoLabConstants.COMPOSITION_POLYMER_TYPE)) {
-			request.getSession().setAttribute("newPolymerCreated", "true");
-		}
 		request.setAttribute("theParticle", particle);
 		return forward;
 	}
@@ -206,7 +199,7 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		theForm.set("emulsion", new EmulsionBean());
 		theForm.set("liposome", new LiposomeBean());
 		theForm.set("composition", new CompositionBean());
-		theForm.set("particle",new ParticleBean());
+		theForm.set("particle", new ParticleBean());
 	}
 
 	protected void initSetup(HttpServletRequest request,
@@ -215,8 +208,8 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		String particleId = request.getParameter("particleId");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		NanoparticleService searchtNanoparticleService = new NanoparticleService();
-		ParticleBean particle = searchtNanoparticleService
-				.getParticleInfo(particleId, user);
+		ParticleBean particle = searchtNanoparticleService.getParticleInfo(
+				particleId, user);
 		theForm.set("particle", particle);
 		InitParticleSetup.getInstance().setSideParticleMenu(request,
 				particle.getSampleId());
@@ -245,8 +238,8 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 
 		NanoparticleService searchtNanoparticleService = new NanoparticleService();
-		ParticleBean particle = searchtNanoparticleService
-				.getParticleInfo(particleId, user);
+		ParticleBean particle = searchtNanoparticleService.getParticleInfo(
+				particleId, user);
 		theForm.set("particle", particle);
 
 		String compositionId = request.getParameter("characterizationId");
@@ -411,7 +404,8 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		return mapping.findForward("success");
 	}
 
-	public boolean canUserExecute(UserBean user) throws CaNanoLabSecurityException {
+	public boolean canUserExecute(UserBean user)
+			throws CaNanoLabSecurityException {
 		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
 				CaNanoLabConstants.CSM_PG_PARTICLE);
 	}

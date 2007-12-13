@@ -47,7 +47,6 @@ public class InvitroCellViabilityAction extends BaseCharacterizationAction {
 					acharBean);
 			service.addCellViability(aCytoBean);
 		}
-		request.getSession().setAttribute("newCytoCreated", "true");
 		return postCreate(request, theForm, mapping);
 	}
 }
