@@ -25,48 +25,58 @@
 			annotation of nanoparticles with characterizations resulting from
 			physical and in vitro nanoparticle assays and the sharing of these
 			characterizations in a secure fashion. The diagram below describes
-			the caNanoLab functionality:
+			the caNanoLab functionality. Hotspots are defined on the diagram to
+			allow users to directly navigate to the appropriate functions visible
+			to the users.
 			<br>
 			<br>
 			<map name="funcMap" id="funcMap">
 				<c:if test="${isAdmin eq 'true' }">
 					<area href="javascript:openHelpWindow('/upt')" shape="rect"
-						coords="100,108,218,148" alt="rectangle" />
+						coords="80,80,160,110" alt="rectangle" />
 				</c:if>
-				<area href="login.jsp" shape="rect" coords="100,188,218,222"
+				<area href="login.jsp" shape="rect" coords="80,140,160,170"
 					alt="rectangle" />
 				<area href="searchProtocol.do?dispatch=setup" shape="rect"
-					coords="100,315,218,355" alt="rectangle" />
+					coords="80,240,160,270" alt="rectangle" />
 				<area href="searchReport.do?dispatch=setup" shape="rect"
-					coords="100,370,218,415" alt="rectangle" />
+					coords="80,280,160,310" alt="rectangle" />
 				<area href="searchNanoparticle.do?dispatch=setup" shape="rect"
-					coords="100,425,218,470" alt="rectangle" />
+					coords="80,320,160,350" alt="rectangle" />
 				<c:if test="${canCreateSample eq 'true'}">
 					<area href="searchSample.do?dispatch=setup" shape="rect"
-						coords="100,480,218,525" alt="rectangle" />
+						coords="80,360,160,390" alt="rectangle" />
 					<area href="searchAliquot.do?dispatch=setup" shape="rect"
-						coords="100,535,218,575" alt="rectangle" />
+						coords="80,400,160,430" alt="rectangle" />
 				</c:if>
 				<c:if test="${canCreateProtocol eq 'true'}">
 					<area href="submitProtocol.do?dispatch=setup&page=0" shape="rect"
-						coords="358,86,442,128" alt="rectangle" />
+						coords="270,65,330,100" alt="rectangle" />
 				</c:if>
 				<c:if test="${canCreateSample eq 'true'}">
 					<area href="createSample.do?dispatch=setup&page=0" shape="rect"
-						coords="358,162,442,200" alt="rectangle" />
+						coords="270,120,330,150" alt="rectangle" />
 					<area href="createAliquot.do?dispatch=setup&page=0" shape="rect"
-						coords="491,162,576,200" alt="rectangle" />
+						coords="370,120,430,150" alt="rectangle" />
 				</c:if>
 				<c:if test="${canCreateReport eq 'true'}">
 					<area href="submitReport.do?dispatch=setup&page=0" shape="rect"
-						coords="440,227,530,267" alt="rectangle" />
+						coords="330,170,400,200" alt="rectangle" />
 				</c:if>
 				<c:if test="${canCreateNanoparticle eq 'true'}">
-					<area href="nanoparticleGeneralInfo.do?dispatch=setup&page=0" shape="rect"
-						coords="440,411,530,459" alt="rectangle" />
+					<area href="nanoparticleGeneralInfo.do?dispatch=setup&page=0"
+						shape="rect" coords="330,310,400,350" alt="rectangle" />
+					<area href="nanoparticleGeneralInfo.do?dispatch=setup&page=0"
+						shape="rect" coords="455,243,545,277" alt="rectangle" />
+					<area href="nanoparticleGeneralInfo.do?dispatch=setup&page=0"
+						shape="rect" coords="455,287,545,321" alt="rectangle" />
+					<area href="nanoparticleGeneralInfo.do?dispatch=setup&page=0"
+						shape="rect" coords="455,332,545,368" alt="rectangle" />
+					<area href="nanoparticleGeneralInfo.do?dispatch=setup&page=0"
+						shape="rect" coords="455,381,545,417" alt="rectangle" />
 				</c:if>
 			</map>
-			<img align="middle" src="images/functions_flowchart.gif"
+			<img align="middle" src="images/functions_flowchart.png"
 				alt="caNanoLab flowchart" usemap="#funcMap" border="0">
 			<br>
 			<br>
