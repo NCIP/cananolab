@@ -315,7 +315,7 @@ public class CaNanoLabConstants {
 			"STD", "SVG", "SXD", "WMF" };
 
 	public static final String[] PUBLIC_DISPATCHES = { "setupView",
-			"summaryView", "detailView", "printDetailView", "exportDetailView",
-			"printSummaryView", "printFullSummaryView", "exportSummary",
-			"download", "loadFile" };
+			"summaryView", "detailView", "printDetailView", "exportDetail",
+			"printSummaryView", "printFullSummaryView", "exportSummary", 
+			"exportFullSummary", "download", "loadFile" };
 }
