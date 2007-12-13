@@ -67,6 +67,7 @@ import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
 import gov.nih.nci.calab.service.util.StringUtils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -79,17 +80,16 @@ import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
 import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFPatriarch;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.struts.validator.DynaValidatorForm;
 import org.hibernate.Hibernate;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
@@ -1465,150 +1465,52 @@ public class NanoparticleCharacterizationService {
 		return charTypeChars;
 	}
 	
-	public void exportDetailService(DynaValidatorForm charaForm, OutputStream out, UserBean user)
+	String getExportDownloadFilePath(String fileId, UserBean user) {
+		String path = null;
+		try {
+			FileService service = new FileService();
+			LabFileBean fileBean = service.getFile(fileId, user);
+			String fileRoot = PropertyReader.getProperty(
+				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
+			path = fileRoot + File.separator + fileBean.getUri();
+		
+		} catch(Exception e) {
+			logger.error("Problem to get image file when exporting detail view data: ", e);
+		}
+		
+		return path;
+	}
+	
+	private int loadPicture(String path, HSSFWorkbook wb ) throws IOException
+    {
+        int pictureIndex;
+        FileInputStream fis = null;
+        ByteArrayOutputStream bos = null;
+        try {
+            fis = new FileInputStream( path);
+            bos = new ByteArrayOutputStream( );
+            int c;
+            while ( (c = fis.read()) != -1)
+                bos.write( c );
+            pictureIndex = wb.addPicture( bos.toByteArray(), HSSFWorkbook.PICTURE_TYPE_PNG );
+        }
+        finally {
+            if (fis != null)
+                fis.close();
+            if (bos != null)
+                bos.close();
+        }
+        return pictureIndex;
+    }
+
+	public void exportDetailService(ParticleBean particle, 
+			CharacterizationBean achar, OutputStream out, UserBean user)
 	{
 		HSSFWorkbook wb = new HSSFWorkbook();
 	    HSSFSheet sheet = wb.createSheet("detailSheet");
-	    HSSFFont headerFont = wb.createFont();
-	    headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
-	    HSSFCellStyle headerStyle = wb.createCellStyle();
-	    headerStyle.setFont(headerFont);
-
-	    short rowCount = 0;
-	    
-	    //title row
-	    HSSFRow row = sheet.createRow(rowCount);
-	    HSSFCell cell = row.createCell((short) 0);
-	    cell.setCellStyle(headerStyle);
-	    String title = getDetailViewTitle(charaForm);
-	    cell.setCellValue(new HSSFRichTextString(title));
-	    rowCount++;
-		
-		//description row
-		CharacterizationBean achar = (CharacterizationBean) charaForm.get("achar");
-		String description = achar.getDescription();
-		if(description != null) {
-			row = sheet.createRow(rowCount);
-			short cellCount = 0;
-			row.createCell(cellCount).setCellValue(new HSSFRichTextString("Description"));
-			cellCount++;
-			row.createCell(cellCount).setCellValue(new HSSFRichTextString(description));
-			rowCount++;
-		}
-
-		
-		//protocol row
-		ProtocolFileBean protocolFileBean = achar.getProtocolFileBean();
-		String protocolId = protocolFileBean.getId();
-		if(protocolId != null) {
-			row = sheet.createRow(rowCount);
-			short cellCount = 0;
-			row.createCell(cellCount++).setCellValue(new HSSFRichTextString("Protocol"));
-			if(protocolFileBean.isHidden()) {
-				row.createCell(cellCount++).setCellValue(new HSSFRichTextString("Private protocol"));
-			} else {
-				row.createCell(cellCount++).setCellValue(new HSSFRichTextString(protocolFileBean.getDisplayName()));
-				//row.createCell(cellCount++).setCellValue(new HSSFRichTextString(protocolFileBean.getUri()));
-			}
-			rowCount++;
-		}
-		
-		//instrument
-		InstrumentConfigBean instrumentConfigBean = achar.getInstrumentConfigBean();
-		InstrumentBean instrumentBean = instrumentConfigBean.getInstrumentBean();
-		if(instrumentConfigBean != null && instrumentBean.getType() != null) {
-			short cellCount = 0;
-			row = sheet.createRow(rowCount);
-			row.createCell(cellCount).setCellValue(new HSSFRichTextString("Instrument"));
-			cellCount++;
-			
-			StringBuffer ibuf = new StringBuffer();
-			ibuf.append(instrumentBean.getType());
-			ibuf.append("-");
-			ibuf.append(instrumentBean.getManufacturer());
-			if(instrumentBean.getAbbreviation() != null) {
-				ibuf.append(" (" + instrumentBean.getAbbreviation() + ")");
-			}
-			row.createCell(cellCount).setCellValue(new HSSFRichTextString(ibuf.toString()));
-			cellCount++;
-			
-			if(instrumentConfigBean.getDescription() != null) {
-				row.createCell(cellCount).setCellValue(new HSSFRichTextString(instrumentConfigBean.getDescription()));
-			}
-			rowCount++;
-		}
-
-		List<DerivedBioAssayDataBean> derivedBioAssayDataList =
-								achar.getDerivedBioAssayDataList();
-		int fileIndex = 1;
-		for(DerivedBioAssayDataBean derivedBioAssayData : derivedBioAssayDataList) {
-			String dDescription = derivedBioAssayData.getDescription();
-			if(dDescription != null) {
-				short cellCount = 0;
-				row = sheet.createRow(rowCount);
-				row.createCell(cellCount).setCellValue(new HSSFRichTextString("Characterization File #" + fileIndex + " Description"));
-				cellCount++;
-				row.createCell(cellCount).setCellValue(new HSSFRichTextString(dDescription));
-				rowCount++;
-			}
-		
-/*
-			if(derivedBioAssayData != null && derivedBioAssayData.getUri() != null) {
-				recList.add("Characterization File #" + fileIndex);
-				if(derivedBioAssayData.getType() != null) {
-					recList.add(derivedBioAssayData.getType());
-				}
-				if(derivedBioAssayData.isHidden()) {
-					recList.add("Private file");
-				} else {
-						sb.append("\t");
-						try {
-							out.write(sb.toString().getBytes());
-						} catch(IOException ioe) {
-							logger.error("Input/output problem to download data file ", ioe);
-						}
-						
-
-						if(derivedBioAssayData.isImage()) {
-							exportDownloadFile(derivedBioAssayData.getId(), user, out);
-						} else {	// question? download the whole file to a cell if not image?
-							exportDownloadFile(derivedBioAssayData.getId(), user, out);
-						}
-					
-						sb = new StringBuffer();
-				}
-			}
-*/
-			List<DatumBean> datumList = derivedBioAssayData.getDatumList();
-			if(datumList != null && !datumList.isEmpty()) {
-				short cellCount = 0;
-				row = sheet.createRow(rowCount);
-				rowCount++;
-				row.createCell(cellCount).setCellValue(new HSSFRichTextString("Characterization Derived Data #" + fileIndex));
-				
-				row = sheet.createRow(rowCount);
-				rowCount++;
-				short ccount = 1;
-				for(DatumBean datum: datumList) {
-					if(datum.getUnit() != null && datum.getUnit().trim().length() > 0) {
-						row.createCell(ccount).setCellValue(new HSSFRichTextString(datum.getName() + " (" + datum.getUnit() + ")" ));
-					} else {
-						row.createCell(ccount).setCellValue(new HSSFRichTextString(datum.getName()));
-					}
-					ccount++;
-				}
-				
-				row = sheet.createRow(rowCount);
-				rowCount++;
-				ccount = 1;
-				for(DatumBean datum: datumList) {
-					row.createCell(ccount).setCellValue(new HSSFRichTextString(datum.getValue()));
-					ccount++;
-				}
-			}
-			fileIndex++;
-		}
-
+	    HSSFPatriarch patriarch = sheet.createDrawingPatriarch();
+	    short startRow = 0;
+	    setDetailSheet(particle, achar, user, wb, sheet, patriarch, startRow);
 		try {	
 		    wb.write(out);
 			if(out != null) {
@@ -1619,54 +1521,187 @@ public class NanoparticleCharacterizationService {
 			logger.error("Input/output problem to export detail view data ", ioe);
 		}
 	}
-	
-	void exportDownloadFile(String fileId, UserBean user, OutputStream out) {
+
+	private short setDetailSheet(ParticleBean particle, 
+			CharacterizationBean achar, UserBean user,
+			HSSFWorkbook wb, HSSFSheet sheet, HSSFPatriarch patriarch, short rowCount)
+	{
+	    HSSFFont headerFont = wb.createFont();
+	    headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+	    HSSFCellStyle headerStyle = wb.createCellStyle();
+	    headerStyle.setFont(headerFont);
+
+	    HSSFRow row = null;
+	    HSSFCell cell = null;
+	    
+		//description row
+		String description = achar.getDescription();
+		if(description != null) {
+			row = sheet.createRow(rowCount++);
+			short cellCount = 0;
+			cell = row.createCell(cellCount++);
+			cell.setCellStyle(headerStyle);
+			cell.setCellValue(new HSSFRichTextString("Description"));
+			
+			row.createCell(cellCount++).setCellValue(new HSSFRichTextString(description));
+		}
+
 		
-		try {
-			FileService service = new FileService();
-			LabFileBean fileBean = service.getFile(fileId, user);
-			String fileRoot = PropertyReader.getProperty(
-				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
-			File dFile = new File(fileRoot + File.separator + fileBean.getUri());
-		
-			if (dFile.exists()) {
-				java.io.InputStream in = new FileInputStream(dFile);
-				int numRead = 0;
-				byte[] bytes = new byte[32768];
-				while ((numRead = in.read(bytes)) > 0) {
-					out.write(bytes, 0, numRead);
-				}
-				if(in != null) in.close();
+		//protocol row
+		ProtocolFileBean protocolFileBean = achar.getProtocolFileBean();
+		String protocolId = protocolFileBean.getId();
+		if(protocolId != null) {
+			row = sheet.createRow(rowCount++);
+			short cellCount = 0;
+			cell = row.createCell(cellCount++);
+			cell.setCellStyle(headerStyle);
+			cell.setCellValue(new HSSFRichTextString("Protocol"));
+			
+			if(protocolFileBean.isHidden()) {
+				row.createCell(cellCount++).setCellValue(new HSSFRichTextString("Private protocol"));
 			} else {
-				throw new FileException(
-					"File to download doesn't exist on the server");
+				StringBuffer buf = new StringBuffer();
+				buf.append(protocolFileBean.getDisplayName());
+				if(protocolFileBean.getUri() != null) {
+					buf.append(" ");
+					buf.append(protocolFileBean.getUri());
+				}
+				row.createCell(cellCount++).setCellValue(new HSSFRichTextString(buf.toString()));
 			}
-		} catch(IOException ioe) {
-			logger.error("Input/output problem to export detail view data file ", ioe);
-		} catch(Exception e) {
-			logger.error("Problem to export detail view data file ", e);
 		}
 		
+		//instrument
+		InstrumentConfigBean instrumentConfigBean = achar.getInstrumentConfigBean();
+		InstrumentBean instrumentBean = instrumentConfigBean.getInstrumentBean();
+		if(instrumentConfigBean != null && instrumentBean.getType() != null) {
+			short cellCount = 0;
+			row = sheet.createRow(rowCount++);
+			cell = row.createCell(cellCount++);
+			cell.setCellStyle(headerStyle);
+			cell.setCellValue(new HSSFRichTextString("Instrument"));
+			
+			StringBuffer ibuf = new StringBuffer();
+			ibuf.append(instrumentBean.getType());
+			ibuf.append("-");
+			ibuf.append(instrumentBean.getManufacturer());
+			if(instrumentBean.getAbbreviation() != null && instrumentBean.getAbbreviation().length() > 0) {
+				ibuf.append(" (" + instrumentBean.getAbbreviation() + ")");
+			}
+			row.createCell(cellCount++).setCellValue(new HSSFRichTextString(ibuf.toString()));
+			
+			if(instrumentConfigBean.getDescription() != null) {
+				row.createCell(cellCount).setCellValue(new HSSFRichTextString(instrumentConfigBean.getDescription()));
+			}
+		}
+
+		List<DerivedBioAssayDataBean> derivedBioAssayDataList =
+								achar.getDerivedBioAssayDataList();
+		int fileIndex = 1;
+		
+		for(DerivedBioAssayDataBean derivedBioAssayData : derivedBioAssayDataList) {
+			String dDescription = derivedBioAssayData.getDescription();
+			short cellCount = 0;
+			if(dDescription != null) {
+				row = sheet.createRow(rowCount++);
+				cell = row.createCell(cellCount++);
+				cell.setCellStyle(headerStyle);
+				cell.setCellValue(new HSSFRichTextString("Characterization File #" + fileIndex + " Description"));
+				row.createCell(cellCount++).setCellValue(new HSSFRichTextString(dDescription));
+
+			}
+
+			if(derivedBioAssayData != null && derivedBioAssayData.getUri() != null) {
+				row = sheet.createRow(rowCount++);
+				cellCount = 0;
+				cell = row.createCell(cellCount++);
+				cell.setCellStyle(headerStyle);
+				cell.setCellValue(new HSSFRichTextString("Characterization File #" + fileIndex));
+				/*
+				if(derivedBioAssayData.getType() != null) {
+					row.createCell(cellCount++).setCellValue(new HSSFRichTextString(derivedBioAssayData.getType()));
+				}
+				*/
+				if(derivedBioAssayData.isHidden()) {
+					row.createCell(cellCount++).setCellValue(new HSSFRichTextString("Private file"));
+				} else {
+					if(derivedBioAssayData.isImage()) {
+						row.createCell(cellCount).setCellValue(new HSSFRichTextString(derivedBioAssayData.getTitle()));
+						try {
+							String filePath = getExportDownloadFilePath(derivedBioAssayData.getId(), user);
+							HSSFClientAnchor anchor;
+							short topLeftCell = cellCount;
+							short bottomRightCell = (short)(cellCount + 7);
+							int topLeftRow = rowCount + 1;
+							int bottomRightRow = rowCount + 22;
+							anchor = new HSSFClientAnchor(0,0,0,255, topLeftCell, topLeftRow, bottomRightCell, bottomRightRow );
+							anchor.setAnchorType( 2 );
+							patriarch.createPicture(anchor, loadPicture(filePath, wb ));
+							cellCount = bottomRightCell;
+							rowCount = (short) (bottomRightRow + 3);
+						} catch(IOException ioe) {
+							logger.error("Input/output problem to export detail view image data ", ioe);
+						}
+						
+					} else {	// question? download the whole file to a cell if not image?
+						row.createCell(cellCount++).setCellValue(new HSSFRichTextString(derivedBioAssayData.getTitle()));
+					}
+
+				}
+			}
+			
+			List<DatumBean> datumList = derivedBioAssayData.getDatumList();
+			if(datumList != null && !datumList.isEmpty()) {
+				cellCount = 0;
+				row = sheet.createRow(rowCount);
+				rowCount++;
+				cell = row.createCell(cellCount++);
+				cell.setCellStyle(headerStyle);
+				cell.setCellValue(new HSSFRichTextString("Characterization Derived Data #" + fileIndex));
+				
+				row = sheet.createRow(rowCount++);
+				row = sheet.createRow(rowCount++);
+
+				short ccount = 0;
+				for(DatumBean datum: datumList) {
+					if(datum.getUnit() != null && datum.getUnit().trim().length() > 0) {
+						cell = row.createCell(ccount++);
+						cell.setCellStyle(headerStyle);
+						cell.setCellValue(new HSSFRichTextString(datum.getName() + " (" + datum.getUnit() + ")" ));
+					} else {
+						cell = row.createCell(ccount++);
+						cell.setCellStyle(headerStyle);
+						cell.setCellValue(new HSSFRichTextString(datum.getName()));
+					}
+				}
+				
+				row = sheet.createRow(rowCount++);
+				ccount = 0;
+				for(DatumBean datum: datumList) {
+					row.createCell(ccount++).setCellValue(new HSSFRichTextString(datum.getValue()));
+				}
+				rowCount++;
+			}
+			fileIndex++;
+		}
+		return rowCount;
 	}
 	
-	String getDetailViewTitle(DynaValidatorForm theForm) {
+	
+	public String getDetailViewTitle(ParticleBean particle, CharacterizationBean achar) {
 		StringBuffer sb = new StringBuffer();
-		ParticleBean particle = (ParticleBean) theForm.get("particle");
 		sb.append(particle.getSampleName());
 		sb.append(" ");
 		sb.append(particle.getSampleType());
 		sb.append("-");
 		
-		CharacterizationBean achar = (CharacterizationBean) theForm.get("achar");
 		sb.append(achar.getViewTitle());
 		sb.append("-");
 		sb.append(achar.getCharacterizationSource());
 		return sb.toString();
 	}
 	
-	String getSummaryViewTitle(DynaValidatorForm theForm, String submitType) {
+	String getSummaryViewTitle(ParticleBean particle, String submitType) {
 		StringBuffer sb = new StringBuffer();
-		ParticleBean particle = (ParticleBean) theForm.get("particle");
 		sb.append(particle.getSampleName());
 		sb.append(" ");
 		sb.append(particle.getSampleType());
@@ -1677,27 +1712,52 @@ public class NanoparticleCharacterizationService {
 		return sb.toString();
 	}
 	
-	public void exportSummaryService(SortedSet<String> datumLabels,
-			List<CharacterizationSummaryBean> summaryBeans, String submitType,
-			DynaValidatorForm charaForm, OutputStream out, UserBean user)
+	public void exportFullSummaryService(List<CharacterizationBean> charBeans,
+			SortedSet<String> datumLabels, UserBean user,
+			List<CharacterizationSummaryBean> summaryBeans,
+			ParticleBean particle, HSSFWorkbook wb)
 	{
-		HSSFWorkbook wb = new HSSFWorkbook();
+		HSSFSheet sheet = wb.createSheet("summarySheet");
+	    short startRow = 0;
+	    short rowCount = setSummarySheet(datumLabels, summaryBeans, particle,
+				wb, sheet, startRow);
+	    HSSFPatriarch patriarch = sheet.createDrawingPatriarch();
+	    rowCount += 2;
+	    for(CharacterizationBean cbean: charBeans) {
+	    	rowCount = setDetailSheet(particle, cbean, user, wb, sheet, patriarch, rowCount);
+	    	rowCount += 2;
+	    }
+	}
+	
+	public void exportSummaryService(SortedSet<String> datumLabels,
+			List<CharacterizationSummaryBean> summaryBeans,
+			ParticleBean particle, HSSFWorkbook wb)
+			//ParticleBean particle, OutputStream out, UserBean user)
+	{
+		//HSSFWorkbook wb = new HSSFWorkbook();
 	    HSSFSheet sheet = wb.createSheet("summarySheet");
+	    short startRow = 0;
+	    setSummarySheet(datumLabels, summaryBeans, particle,
+				wb, sheet, startRow);
+	}
+	    
+	private short setSummarySheet(SortedSet<String> datumLabels,
+			List<CharacterizationSummaryBean> summaryBeans,
+			ParticleBean particle, 
+			HSSFWorkbook wb, HSSFSheet sheet, short rowCount)
+	{
 	    HSSFFont headerFont = wb.createFont();
 	    headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
 	    HSSFCellStyle headerStyle = wb.createCellStyle();
 	    headerStyle.setFont(headerFont);
 	    
-	    short rowCount = 0;
+	    HSSFCellStyle newLineStyle = wb.createCellStyle();
+	    //Word Wrap MUST be turned on
+	    newLineStyle.setWrapText( true );
+
 	    short cellCount = 0;
-	    
-	    //title
-	    HSSFRow row = sheet.createRow(rowCount);
-	    HSSFCell cell = row.createCell(cellCount);
-	    cell.setCellStyle(headerStyle);
-	    String title = getSummaryViewTitle(charaForm, submitType);
-	    cell.setCellValue(new HSSFRichTextString(title));
-	    rowCount++;
+	    HSSFRow row = null;
+	    HSSFCell cell = null;
 		
 		//summary header
 	    row = sheet.createRow(rowCount);
@@ -1754,8 +1814,8 @@ public class NanoparticleCharacterizationService {
 				if(charFile.getUri() != null) {
 					if(charFile.isHidden()) {
 						sbuf.append("Private file");
-					} else {
-						sbuf.append("image file");
+					} else if(charFile.getTitle() != null) {
+						sbuf.append(charFile.getTitle());
 					}
 				}
 				row.createCell(cellCount++).setCellValue(new 
@@ -1773,17 +1833,22 @@ public class NanoparticleCharacterizationService {
 				sb.append("-");
 				sb.append(instrumentBean.getManufacturer());
 				
-				if(instrumentBean.getAbbreviation() != null)
+				if(instrumentBean.getAbbreviation() != null && instrumentBean.getAbbreviation().length() > 0)
 					sb.append(" (" + instrumentBean.getAbbreviation() + ")");
 				
 				if(instrumentConfigBean.getDescription() != null)
-					sb.append("\n" + instrumentConfigBean.getDescription());
+					sb.append("  " + instrumentConfigBean.getDescription());
 				
-				row.createCell(cellCount++).setCellValue(new HSSFRichTextString(sb.toString()));
+				cell = row.createCell(cellCount++);
+				cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+				cell.setCellValue(new HSSFRichTextString(sb.toString()));
+				//cell.setCellStyle(newLineStyle);
 			}
 
 		} // for sbean
 		
+		return rowCount;
+/*		
 		try {	
 		    wb.write(out);
 			if(out != null) {
@@ -1792,26 +1857,25 @@ public class NanoparticleCharacterizationService {
 			}
 			
 		} catch(IOException ioe) {
-			logger.error("Input/output problem to export detail view data ", ioe);
+			logger.error("Input/output problem to export summary view data ", ioe);
 		}
+		*/
 	}
 	
 	/*
 	 * set data labels and file visibility, and whether file is an image
 	 */
 	public SortedSet<String> setDataLabelsAndFileVisibility(UserBean user,
-			List<CharacterizationSummaryBean> charSummaryBeans) 
+			List<CharacterizationSummaryBean> charSummaryBeans,
+			List<CharacterizationBean> charBeans) 
 			throws CaNanoLabSecurityException {
 
 		UserService userService = new UserService(
 			CaNanoLabConstants.CSM_APP_NAME);
 	
-		List<CharacterizationBean> charBeans = new ArrayList<CharacterizationBean>();
+		//List<CharacterizationBean> charBeans = new ArrayList<CharacterizationBean>();
 		SortedSet<String> datumLabels = new TreeSet<String>();
 		for (CharacterizationSummaryBean summaryBean : charSummaryBeans) {
-			if (!charBeans.contains(summaryBean.getCharBean())) {
-				charBeans.add(summaryBean.getCharBean());
-			}
 			Map<String, String> datumMap = summaryBean.getDatumMap();
 			if (datumMap != null && !datumMap.isEmpty()) {
 				datumLabels.addAll(datumMap.keySet());
@@ -1836,6 +1900,9 @@ public class NanoparticleCharacterizationService {
 					imageStatus = StringUtils.isImgFileExt(fileBean.getName());
 				}
 				fileBean.setImage(imageStatus);
+			}
+			if (!charBeans.contains(summaryBean.getCharBean())) {
+				charBeans.add(summaryBean.getCharBean());
 			}
 		}
 		return datumLabels;
