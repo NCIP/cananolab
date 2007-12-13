@@ -36,97 +36,85 @@
 						</tr>
 						<tr>
 							<td class="formLabel">
-								<div align="justify">
-									<strong> Sample ID * </strong> (
-									<bean:write name="createSampleForm"
-										property="configuredSampleNamePrefix" />X)
-									<span class="formField"><span class="formFieldWhite"><html:text
-												property="sample.sampleNamePrefix" size="15" /> </span> &nbsp; &nbsp; <strong>Sample
-											Type* </strong><span class="formFieldWhite"><html:select
-												property="sample.sampleType">
-												<option />
-													<html:options name="allSampleTypes" />
-											</html:select> </span>&nbsp; &nbsp; &nbsp; 
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td class="formLabel">
-								<div align="justify">
-									<strong>Description <br> <span class="formField"><span
-											class="formFieldWhite"><html:textarea
-													property="sample.sampleDescription" cols="70" /> </span> </span> </strong>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td class="formLabel">
-								<div align="justify">
-									<strong>Source* <span class="formFieldWhite"> <html:select
-												property="sample.sampleSource"
-												onkeydown="javascript:fnKeyDownHandler(this, event);"
-												onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-												onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-												onchange="fnChangeHandler_A(this, event);">
-												<option value="">
-													--?--
-												</option>
-												<html:options name="allSampleSources" />
-											</html:select> &nbsp; &nbsp;Source ID <span class="formFieldWhite"><html:text
-													property="sample.sourceSampleId" size="10" /> </span> &nbsp;
-											&nbsp; 
-									</strong>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td class="formLabel">
-								<div align="justify">
-									<strong>Date Received <html:text
-											property="sample.dateReceivedStr" size="9" /> <span
-										class="formFieldWhite"> <a
-											href="javascript:cal.popup();"><img height="18"
-													src="images/calendar-icon.gif" width="22" border="0"
-													alt="Click Here to Pick up the date"></a> </span>&nbsp; &nbsp;
-										&nbsp; SOP <html:select property="sample.sampleSOP">
+								<strong> Sample ID * </strong> (
+								<bean:write name="createSampleForm"
+									property="configuredSampleNamePrefix" />
+								X)
+								<span class="formField"><span class="formFieldWhite"><html:text
+											property="sample.sampleNamePrefix" size="15" /> </span> &nbsp;
+									&nbsp; <strong>Sample Type* </strong><span
+									class="formFieldWhite"><html:select
+											property="sample.sampleType">
 											<option />
-												<html:options name="allSampleSOPs" />
-										</html:select> </strong>
-								</div>
+												<html:options name="allSampleTypes" />
+										</html:select> </span>&nbsp; &nbsp; &nbsp; 
 							</td>
 						</tr>
 						<tr>
 							<td class="formLabel">
-								<div align="justify">
-									<strong>Lot ID</strong>&nbsp; (if entered, appended to sample
-									ID)
-									<html:text property="sample.lotId" size="5" />
-									&nbsp; &nbsp; &nbsp;
-									<strong>Lot Description</strong>
-									<span class="formFieldWhite"><html:text
-											property="sample.lotDescription" size="50" /> </span>
-								</div>
+								<strong>Description <br> <span class="formField"><span
+										class="formFieldWhite"><html:textarea
+												property="sample.sampleDescription" cols="70" /> </span> </span> </strong>
+							</td>
+						</tr>
+						<tr>
+							<td class="formLabel">
+								<strong>Source* <span class="formFieldWhite"> <html:select
+											property="sample.sampleSource"
+											onkeydown="javascript:fnKeyDownHandler(this, event);"
+											onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
+											onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
+											onchange="fnChangeHandler_A(this, event);">
+											<option value="">
+												--?--
+											</option>
+											<html:options name="allSampleSources" />
+										</html:select> &nbsp; &nbsp;Source ID <span class="formFieldWhite"><html:text
+												property="sample.sourceSampleId" size="10" /> </span> &nbsp;
+										&nbsp; 
+								</strong>
+							</td>
+						</tr>
+						<tr>
+							<td class="formLabel">
+								<strong>Date Received <html:text
+										property="sample.dateReceivedStr" size="9" /> <span
+									class="formFieldWhite"> <a
+										href="javascript:cal.popup();"><img height="18"
+												src="images/calendar-icon.gif" width="22" border="0"
+												alt="Click Here to Pick up the date"> </a> </span>&nbsp; &nbsp;
+									&nbsp; SOP <html:select property="sample.sampleSOP">
+										<option />
+											<html:options name="allSampleSOPs" />
+									</html:select> </strong>
+							</td>
+						</tr>
+						<tr>
+							<td class="formLabel">
+								<strong>Lot ID</strong>&nbsp; (if entered, appended to sample
+								ID)
+								<html:text property="sample.lotId" size="5" />
+								&nbsp; &nbsp; &nbsp;
+								<strong>Lot Description</strong>
+								<span class="formFieldWhite"><html:text
+										property="sample.lotDescription" size="50" /> </span>
 							</td>
 						</tr>
 
 						<tr>
 							<td class="formLabel">
-								<div align="justify">
-									<strong>Solubility <br> <span
-										class="formFieldWhite"><html:textarea
-												property="sample.solubility" cols="70" /> </span> &nbsp;</strong>
-								</div>
+								<strong>Solubility <br> <span
+									class="formFieldWhite"><html:textarea
+											property="sample.solubility" cols="70" /> </span> &nbsp;</strong>
 							</td>
 						</tr>
 						<tr>
 							<td class="formLabel">
-								<div align="left">
-									<strong>General Comments</strong>
-									<br>
-									<span class="formField"><span class="formFieldWhite">
-											<html:textarea property="sample.generalComments" cols="70" />
-									</span> </span>
-								</div>
+								<strong>General Comments</strong>
+								<br>
+								<span class="formField"><span class="formFieldWhite">
+										<html:textarea property="sample.generalComments" cols="70" />
+								</span> </span>
 							</td>
 						</tr>
 					</tbody>
@@ -137,9 +125,7 @@
 					<tbody>
 						<tr class="topBorder">
 							<td class="formTitle">
-								<div align="justify">
-									Container Information
-								</div>
+								Container Information
 							</td>
 						</tr>
 						<tr>
