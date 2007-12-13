@@ -29,6 +29,7 @@ import gov.nih.nci.calab.ui.security.InitSecuritySetup;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
@@ -42,6 +43,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -440,22 +442,19 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		initSetup(request, theForm);
 
-		CharacterizationBean charBean = (CharacterizationBean) theForm
-				.get("achar");
-
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
-
-		// response.setContentType("application/vnd.ms-execel");
-		response.setContentType("application/octet-stream");
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		ParticleBean particle = (ParticleBean) theForm.get("particle");
+		CharacterizationBean achar = (CharacterizationBean) theForm.get("achar");
+		String title = service.getDetailViewTitle(particle, achar);
+		
+		response.setContentType("application/vnd.ms-execel");
 		response.setHeader("cache-control", "Private");
 		response.setHeader("Content-disposition", "attachment;filename="
-				+ charBean.getActionName() + "_" + charBean.getViewTitle()
-				+ ".xls");
-
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		java.io.OutputStream out = response.getOutputStream();
-
-		service.exportDetailService(theForm, out, user);
+				+ title + ".xls");
+		OutputStream out = response.getOutputStream();
+		
+		service.exportDetailService(particle, achar, out, user);
 
 		return null;
 	}
@@ -464,21 +463,20 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		initSetup(request, theForm);
+		setSummaryView(form, request);
 
 		CharacterizationBean charBean = (CharacterizationBean) theForm
 				.get("achar");
 
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 
-		// response.setContentType("application/vnd.ms-execel");
-		response.setContentType("application/octet-stream");
+		response.setContentType("application/vnd.ms-execel");
 		response.setHeader("cache-control", "Private");
 		response.setHeader("Content-disposition", "attachment;filename="
 				+ charBean.getActionName() + ".xls");
 
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		java.io.OutputStream out = response.getOutputStream();
+		OutputStream out = response.getOutputStream();
 
 		String submitType = request.getParameter("submitType");
 		ParticleBean particle = (ParticleBean) theForm.get("particle");
@@ -486,15 +484,61 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		List<CharacterizationSummaryBean> summaryBeans = service
 				.getParticleCharacterizationSummaryByName(submitType, particle
 						.getSampleId());
+		List<CharacterizationBean> charBeans = new ArrayList<CharacterizationBean>();
 		SortedSet<String> datumLabels = service.setDataLabelsAndFileVisibility(
-				user, summaryBeans);
+				user, summaryBeans, charBeans);
 
-		service.exportSummaryService(datumLabels, summaryBeans, submitType,
-				theForm, out, user);
-
+		HSSFWorkbook wb = new HSSFWorkbook();
+		service.exportSummaryService(datumLabels, summaryBeans, particle, wb);
+		wb.write(out);
+		if(out != null) {
+			out.flush();
+			out.close();
+		}
+		
 		return mapping.findForward("summaryView");
 	}
 
+	public ActionForward exportFullSummary(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		setSummaryView(form, request);
+
+		CharacterizationBean charBean = (CharacterizationBean) theForm
+				.get("achar");
+
+		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
+
+		response.setContentType("application/vnd.ms-execel");
+		response.setHeader("cache-control", "Private");
+		response.setHeader("Content-disposition", "attachment;filename="
+				+ charBean.getActionName() + ".xls");
+
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		OutputStream out = response.getOutputStream();
+
+		String submitType = request.getParameter("submitType");
+		ParticleBean particle = (ParticleBean) theForm.get("particle");
+
+		List<CharacterizationSummaryBean> summaryBeans = service
+				.getParticleCharacterizationSummaryByName(submitType, particle
+						.getSampleId());
+		List<CharacterizationBean> charBeans = new ArrayList<CharacterizationBean>();
+		SortedSet<String> datumLabels = service.setDataLabelsAndFileVisibility(
+				user, summaryBeans, charBeans);
+
+		HSSFWorkbook wb = new HSSFWorkbook();
+		service.exportFullSummaryService(charBeans, datumLabels, user, summaryBeans, particle, wb);
+		wb.write(out);
+		if(out != null) {
+			out.flush();
+			out.close();
+		}
+		
+		return mapping.findForward("summaryView");
+	}
+	
 	public ActionForward printDetailView(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
