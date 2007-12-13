@@ -43,6 +43,17 @@
 						<a href="${sumUrl}"><img src="images/icon_excel_23x.gif"
 								alt="export characterization summary" border="0"> </a>
 					</td>
+					<td>
+						<c:url var="fullSumUrl"
+							value="${nanoparticleCharacterizationForm.map.achar.actionName}.do">
+							<c:param name="particleId" value="${particleId}" />
+							<c:param name="submitType" value="${submitType}" />
+							<c:param name="page" value="0" />
+							<c:param name="dispatch" value="exportFullSummary" />
+						</c:url>
+						<a href="${fullSumUrl}"><img src="images/icon_excel_23x.gif"
+								alt="export full characterization summary" border="0"> </a>
+					</td>
 				</tr>
 			</table>
 		</td>
