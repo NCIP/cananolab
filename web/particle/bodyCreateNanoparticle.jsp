@@ -12,7 +12,7 @@
 		<tr>
 			<td>
 				<h3>
-					Submit Nanoparticle - General Information
+					Submit Nanoparticle Information
 				</h3>
 			</td>
 			<td align="right" width="15%">
