@@ -496,7 +496,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			out.close();
 		}
 		
-		return mapping.findForward("summaryView");
+		return null;
 	}
 
 	public ActionForward exportFullSummary(ActionMapping mapping, ActionForm form,
@@ -536,7 +536,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			out.close();
 		}
 		
-		return mapping.findForward("summaryView");
+		return null;
 	}
 	
 	public ActionForward printDetailView(ActionMapping mapping,
