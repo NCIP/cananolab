@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.sample;
  * @author pansu
  */
 
-/* CVS $Id: CreateSampleAction.java,v 1.6 2007-12-06 09:01:44 pansu Exp $ */
+/* CVS $Id: CreateSampleAction.java,v 1.7 2007-12-13 16:30:36 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.sample.ContainerBean;
@@ -91,12 +91,6 @@ public class CreateSampleAction extends AbstractDispatchAction {
 		UserService userService = new UserService(
 				CaNanoLabConstants.CSM_APP_NAME);
 		userService.createAGroup(sample.getSampleSource());
-
-		// set a flag to indicate that new sample have been created so session
-		// can be refreshed in initSession.do
-		session.setAttribute("newSampleCreated", "yes");
-		session.setAttribute("newSampleSourceCreated", "true");
-
 		forward = mapping.findForward("success");
 
 		return forward;

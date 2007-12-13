@@ -5,7 +5,7 @@ package gov.nih.nci.calab.ui.protocol;
  *  
  * @author chenhang
  */
-/* CVS $Id: SubmitProtocolAction.java,v 1.9 2007-12-06 22:16:05 pansu Exp $ */
+/* CVS $Id: SubmitProtocolAction.java,v 1.10 2007-12-13 16:30:36 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.ProtocolBean;
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
@@ -70,8 +70,6 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		msgs.add("message", msg1);
 		msgs.add("message", msg2);
 		saveMessages(request, msgs);
-
-		request.getSession().setAttribute("newProtocolCreated", "true");
 		forward = mapping.findForward("success");
 
 		return forward;
@@ -145,9 +143,6 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 
 		msgs.add("message", msg);
 		saveMessages(request, msgs);
-
-		// request.getSession().setAttribute("newProtocolCreated", "true");
-
 		return mapping.findForward("success");
 	}
 
