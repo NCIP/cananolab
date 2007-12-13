@@ -674,6 +674,7 @@ p,.p { /* for paragraphs */
 	font-size: 0.8em;
 	line-height: 1.5em;
 	padding-left: 0.2em;
+	text-align: justify;
 }
 
 #publicLinks, ul { /* for the public links below the welcome content of the home page */
