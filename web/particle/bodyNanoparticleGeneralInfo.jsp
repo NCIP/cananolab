@@ -43,7 +43,7 @@
 								<strong>Particle ID</strong>
 							</td>
 							<td class="rightLabel">
-								${nanoparticleGeneralInfoForm.map.particle.sampleId}
+								${nanoparticleGeneralInfoForm.map.particle.sampleName}
 							</td>
 						</tr>
 						<tr>
