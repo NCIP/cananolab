@@ -1504,22 +1504,12 @@ public class NanoparticleCharacterizationService {
     }
 
 	public void exportDetailService(ParticleBean particle, 
-			CharacterizationBean achar, OutputStream out, UserBean user)
+			CharacterizationBean achar, HSSFWorkbook wb, UserBean user)
 	{
-		HSSFWorkbook wb = new HSSFWorkbook();
 	    HSSFSheet sheet = wb.createSheet("detailSheet");
 	    HSSFPatriarch patriarch = sheet.createDrawingPatriarch();
 	    short startRow = 0;
 	    setDetailSheet(particle, achar, user, wb, sheet, patriarch, startRow);
-		try {	
-		    wb.write(out);
-			if(out != null) {
-				out.flush();
-				out.close();
-			}
-		} catch(IOException ioe) {
-			logger.error("Input/output problem to export detail view data ", ioe);
-		}
 	}
 
 	private short setDetailSheet(ParticleBean particle, 
@@ -1686,32 +1676,6 @@ public class NanoparticleCharacterizationService {
 		return rowCount;
 	}
 	
-	
-	public String getDetailViewTitle(ParticleBean particle, CharacterizationBean achar) {
-		StringBuffer sb = new StringBuffer();
-		sb.append(particle.getSampleName());
-		sb.append(" ");
-		sb.append(particle.getSampleType());
-		sb.append("-");
-		
-		sb.append(achar.getViewTitle());
-		sb.append("-");
-		sb.append(achar.getCharacterizationSource());
-		return sb.toString();
-	}
-	
-	String getSummaryViewTitle(ParticleBean particle, String submitType) {
-		StringBuffer sb = new StringBuffer();
-		sb.append(particle.getSampleName());
-		sb.append(" ");
-		sb.append(particle.getSampleType());
-		sb.append("-");
-		sb.append(submitType);
-		sb.append(" Characterizations");
-		
-		return sb.toString();
-	}
-	
 	public void exportFullSummaryService(List<CharacterizationBean> charBeans,
 			SortedSet<String> datumLabels, UserBean user,
 			List<CharacterizationSummaryBean> summaryBeans,
@@ -1732,9 +1696,7 @@ public class NanoparticleCharacterizationService {
 	public void exportSummaryService(SortedSet<String> datumLabels,
 			List<CharacterizationSummaryBean> summaryBeans,
 			ParticleBean particle, HSSFWorkbook wb)
-			//ParticleBean particle, OutputStream out, UserBean user)
 	{
-		//HSSFWorkbook wb = new HSSFWorkbook();
 	    HSSFSheet sheet = wb.createSheet("summarySheet");
 	    short startRow = 0;
 	    setSummarySheet(datumLabels, summaryBeans, particle,
@@ -1848,18 +1810,6 @@ public class NanoparticleCharacterizationService {
 		} // for sbean
 		
 		return rowCount;
-/*		
-		try {	
-		    wb.write(out);
-			if(out != null) {
-				out.flush();
-				out.close();
-			}
-			
-		} catch(IOException ioe) {
-			logger.error("Input/output problem to export summary view data ", ioe);
-		}
-		*/
 	}
 	
 	/*
