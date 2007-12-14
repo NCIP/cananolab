@@ -28,11 +28,8 @@
 							${label}
 						</th>
 					</c:forEach>
-					<th class="label">
-						Characterization File
-					</th>
 					<th class="rightLabel">
-						Instrument Info
+						Characterization File / Instrument Info
 					</th>
 				</tr>
 				<c:forEach var="summaryBean" items="${summaryViewBeans}">
@@ -49,10 +46,11 @@
 								${summaryBean.datumMap[label]}&nbsp;
 							</td>
 						</c:forEach>
-						<td class="label" valign="top">
+						
+						<td class="RightLabel" valign="top">
 							<c:if test="${!empty summaryBean.charFile.type}">
-							${summaryBean.charFile.type}
-							<br>
+								${summaryBean.charFile.type}
+								<br>
 							</c:if>
 							<c:if
 								test="${!empty summaryBean.charFile && !empty summaryBean.charFile.uri}">
@@ -64,10 +62,9 @@
 										${summaryBean.charFile.title}
 									</c:otherwise>
 								</c:choose>
+								<br>
+								<br>
 							</c:if>
-							&nbsp;
-						</td>
-						<td class="RightLabel" valign="top">
 							<c:if
 								test="${!empty summaryBean.charBean.instrumentConfigBean && !empty summaryBean.charBean.instrumentConfigBean.instrumentBean.type}">						
 									${summaryBean.charBean.instrumentConfigBean.instrumentBean.type}-
@@ -84,7 +81,7 @@
 									${summaryBean.charBean.instrumentConfigBean.description}
 								</c:if>
 							</c:if>
-							&nbsp;
+							&nbsp;		
 						</td>
 					</tr>
 				</c:forEach>
