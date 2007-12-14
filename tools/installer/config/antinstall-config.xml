@@ -3,8 +3,8 @@
 <installer ui="swing,text" verbose="false"
 	lookAndFeel="org.tp23.jgoodies.plaf.plastic.PlasticXPLookAndFeel"
 	name="caNanoLab Installer"
-	windowIcon="/resources/gkmain_inv.png"
-	defaultImageResource="/resources/banner_caarray.png"
+	windowIcon="/resources/extract-image.gif"
+	defaultImageResource="/resources/appLogo-nanolab.gif"
 	minJavaVersion="1.5" finishButtonText="Install" wide="600:375"
 	debug="false">
 
@@ -29,16 +29,65 @@
 	<page type="input" name="input.file"
 		displayText="Installation Folder">
 		<comment displayText="" bold="true" />
-		<comment
-			displayText="Please enter the destination folder for the caNanoLab application:"
-			bold="true" />
-		<comment displayText="" bold="true" />
 			
-		<text displayText="Installation folder" 
-			defaultValue="C:\cananolab-app" 
+		<directory displayText="Enter the destination folder for the caNanoLab application:" 
+			defaultValue="C:/cananolab-app" 
 			property="temp.dir"/>
+		
 			
-    </page>
+		<directory displayText="Enter the destination folder for the Jboss Server:" 
+			defaultValue="C:/cananolab-app" 
+			property="jboss.dir"/>
+
+			
+		<directory displayText="Enter the destination folder for the mySql Database" 
+			defaultValue="C:/cananolab-app" 
+			property="mysql.dir"/>			
+    	</page>
+	
+	<page type="input" name="jboss.config"
+		displayText="Jboss Configuration">
+		<comment displayText="" bold="true" />
+
+			
+		<ext-validated
+			property="jboss.http.port"
+			displayText="Http Port Number" 
+			defaultValue="18080" 
+			validationClass="com.install.CustomValidate.ValidatePort" />
+		
+   	</page>	
+	
+	<page type="input" name="mysql.config"
+		displayText="MySQL configuration">
+		<comment displayText="" bold="true" />
+
+
+		<ext-validated
+			property="database.port"
+			displayText="Database Port Number" 
+			defaultValue="3307" 
+			validationClass="com.install.CustomValidate.ValidatePort" />
+
+		<text
+			property="database.system.user"
+			displayText="Database System User" 
+			defaultValue="root" 
+			/>
+
+		<text
+			property="database.system.password"
+			displayText="Database System Password" 
+			defaultValue="mysql" 
+			/>
+		
+		<text
+			property="database.password"
+			displayText="Database User Password" 
+			defaultValue="go!23" 
+			/>		
+			
+   	</page>	
 	
 	<page type="input" name="patchOptions" displayText="Confirmation">
 		<comment
@@ -47,6 +96,15 @@
 		<comment displayText="" bold="true" />
 		<target displayText="Please confirm the caNanoLab installation."
 			target="auto-update" defaultValue="Yes" />
+		<target displayText="Please confirm the Jboss installation."
+			target="jboss-install" defaultValue="Yes" />
+		<target displayText="Please confirm the mysql installation."
+			target="mysql-install" defaultValue="Yes" />
+		<target displayText="migrate mysql data to new version."
+			target="migrate-mysql" defaultValue="Yes" />				
+		<target displayText="Please confirm the jboss configuration."
+			target="configure-jboss" defaultValue="Yes" />
+		
 	</page>
 
 	<!--  page type="progress" shows a progress page with the install button
