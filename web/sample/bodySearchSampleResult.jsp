@@ -24,7 +24,8 @@
 			<td colspan="2">
 				<c:choose>
 					<c:when test="${!empty requestScope.containerId}">
-						<c:set var="containerId" value="${requestScope.containerId}" scope="page" />
+						<c:set var="containerId" value="${requestScope.containerId}"
+							scope="page" />
 					</c:when>
 				</c:choose>
 				<jsp:include page="/bodyMessage.jsp?bundle=sample" />
@@ -32,9 +33,9 @@
 					requestURI="searchSample.do" pagesize="25" class="displaytable"
 					decorator="gov.nih.nci.calab.dto.sample.ContainerDecorator">
 					<display:column title="Select" property="containerId" />
-					<display:column title="Sample ID" property="sample.sortableName"
+					<display:column title="Sample Container Name" property="sortableName"
 						sortable="true" />
-					<display:column title="Container Name" property="sortableName"
+					<display:column title="Sample ID" property="sample.sortableName"
 						sortable="true" />
 					<display:column title="Sample Accession<br>Date"
 						property="sample.accessionDate" sortable="true"
