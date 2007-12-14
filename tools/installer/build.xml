@@ -74,7 +74,7 @@
 			<fileset dir="${installer.build.dir}" includes="resources/*" description="Used by installer antinstall-config.xml" />
 			<zipgroupfileset dir="${installer.basedir}/antlib${ant.lib.version}" includes="*.jar" excludes="ant.jar, ant-launcher.jar" description="Used by installers build script" />
 			<zipgroupfileset dir="${lib.dir}" includes="${antcontrib.jar}" description="Used by installers build script" />
-			<zipgroupfileset dir="${installer.basedir}/ext" includes="jaxen-1.1.1.jar, xmlconfig.jar, jdom.jar" description="Used by installers build script to perform XML file manipulation w/in Ant (levent gurses)" />
+			<zipgroupfileset dir="${installer.basedir}/ext" includes="jaxen-core.jar, xmlconfig.jar, jdom.jar,jaxen-jdom.jar,saxpath.jar,CustomInstaller.jar" description="Used by installers build script to perform XML file manipulation w/in Ant (levent gurses)" />
 		</installer>
 	</target>
 
@@ -84,103 +84,9 @@
 		<delete dir="${installer.dist.dir}" />
 		<delete dir="${installer.build.dir}" />
 		<delete file="${installer.basedir}/artifacts/installpack.zip" failonerror="false" />
-		<delete file="${installer.basedir}/artifacts/caarray2-installer.jar" failonerror="false" />
+		<delete file="${installer.basedir}/artifacts/caNanoLab-installer.jar" failonerror="false" />
 	</target>
 	
-	<target name="configurejbossloginConfig">
-		<echo message="Configuring cananolab-ApplicationSecurityConfig..." />
-		<taskdef name="xmlconfig" classname="com.xmlconfig.anttask.XmlConfig" classpathref="project.classpath" />
-		
-		
-			<xmlconfig in="C:\cananolab-app/jboss-4.0.5.GA/server/default/conf/login-config.xml" verbose="false">			
-				<read path="//policy/application-policy[9]/@name" property="xyz"/>
-			</xmlconfig>
-			
-		<echo message="${xyz}"/>
-		<antcall target="create-caNanoLab" />
-
-		
-		<property name="abc" value="false"/>
-		<xmlconfig in="C:\cananolab-app/jboss-4.0.5.GA/server/default/conf/login-config.xml" verbose="false">			
-			<read path="//policy/application-policy[10]/@name" property="abc"/>
-		</xmlconfig>
-		<echo message="${abc}"/>
-		
-		<antcall target="create-caNanoLab-upt" />
-	
-	</target>
-	
-	<target name="create-caNanoLab" >
-	<echo message="AGAIN ${xyz}"/>
-		<xmlconfig in="C:\cananolab-app/jboss-4.0.5.GA/server/default/conf/login-config.xml" verbose="false">				
-			<insert name="application-policy" type="element" path="//policy" />
-				<insert name="name" value="caNanoLab" type="attribute" path="//policy/application-policy[9]" />
-				<insert name="authentication"  type="element" path="//policy/application-policy[9]" />
-					<insert name="login-module"  type="element" path="//policy/application-policy[9]/authentication" />
-						<insert name="code" value="gov.nih.nci.security.authentication.loginmodules.EncryptedRDBMSLoginModule" type="attribute" path="//policy/application-policy[9]/authentication/login-module" />
-						<insert name="flag" value="required" type="attribute" path="//policy/application-policy[9]/authentication/login-module" />
-						<insert name="module-option" value="com.mysql.jdbc.Driver" type="element" path="//policy/application-policy[9]/authentication/login-module" />
-							<insert name="name" value="driver" type="attribute" path="//policy/application-policy[9]/authentication/login-module/module-option" />
-						<insert name="module-option" value="jdbc:mysql://localhost:3307/cananolab" type="element" path="//policy/application-policy[9]/authentication/login-module" />
-							<insert name="name" value="url" type="attribute" path="//policy/application-policy[9]/authentication/login-module/module-option[2]" />
-						<insert name="module-option" value="cananolab_app" type="element" path="//policy/application-policy[9]/authentication/login-module" />
-							<insert name="name" value="user" type="attribute" path="//policy/application-policy[9]/authentication/login-module/module-option[3]" />
-						<insert name="module-option" value="go!23" type="element" path="//policy/application-policy[9]/authentication/login-module" />
-							<insert name="name" value="passwd" type="attribute" path="//policy/application-policy[9]/authentication/login-module/module-option[4]" />
-						<insert name="module-option" value="SELECT * FROM CSM_USER WHERE LOGIN_NAME=? and PASSWORD=?" type="element" path="//policy/application-policy[9]/authentication/login-module" />
-							<insert name="name" value="query" type="attribute" path="//policy/application-policy[9]/authentication/login-module/module-option[5]" />
-						<insert name="module-option" value="SHA" type="element" path="//policy/application-policy[9]/authentication/login-module" />
-							<insert name="name" value="hashAlgorithm" type="attribute" path="//policy/application-policy[9]/authentication/login-module/module-option[6]" />
-		</xmlconfig>
-	</target>
-
-	<target name="create-caNanoLab-upt">
-	<echo message="AGAIN ${abc}"/>
-		<xmlconfig in="C:\cananolab-app/jboss-4.0.5.GA/server/default/conf/login-config.xml" verbose="false">
-			<insert name="application-policy" type="element" path="//policy" />
-				<insert name="name" value="caNanoLab-upt" type="attribute" path="//policy/application-policy[10]" />
-				<insert name="authentication"  type="element" path="//policy/application-policy[10]" />
-					<insert name="login-module"  type="element" path="//policy/application-policy[10]/authentication" />
-						<insert name="code" value="gov.nih.nci.security.authentication.loginmodules.EncryptedRDBMSLoginModule" type="attribute" path="//policy/application-policy[10]/authentication/login-module" />
-						<insert name="flag" value="required" type="attribute" path="//policy/application-policy[10]/authentication/login-module" />
-						<insert name="module-option" value="com.mysql.jdbc.Driver" type="element" path="//policy/application-policy[10]/authentication/login-module" />
-							<insert name="name" value="driver" type="attribute" path="//policy/application-policy[10]/authentication/login-module/module-option" />
-						<insert name="module-option" value="jdbc:mysql://localhost:3307/cananolab" type="element" path="//policy/application-policy[10]/authentication/login-module" />
-							<insert name="name" value="url" type="attribute" path="//policy/application-policy[10]/authentication/login-module/module-option[2]" />
-						<insert name="module-option" value="cananolab_app" type="element" path="//policy/application-policy[10]/authentication/login-module" />
-							<insert name="name" value="user" type="attribute" path="//policy/application-policy[10]/authentication/login-module/module-option[3]" />
-						<insert name="module-option" value="gp!23" type="element" path="//policy/application-policy[10]/authentication/login-module" />
-							<insert name="name" value="passwd" type="attribute" path="//policy/application-policy[10]/authentication/login-module/module-option[4]" />
-						<insert name="module-option" value="SELECT * FROM CSM_USER WHERE LOGIN_NAME=? and PASSWORD=?" type="element" path="//policy/application-policy[10]/authentication/login-module" />
-							<insert name="name" value="query" type="attribute" path="//policy/application-policy[10]/authentication/login-module/module-option[5]" />
-						<insert name="module-option" value="SHA" type="element" path="//policy/application-policy[10]/authentication/login-module" />
-							<insert name="name" value="hashAlgorithm" type="attribute" path="//policy/application-policy[10]/authentication/login-module/module-option[6]" />							
-		</xmlconfig>
-	</target>		
-
-
-	<target name="configurejbossloginConfig">
-		<echo message="Configuring cananolab-ApplicationSecurityConfig..." />
-		<taskdef name="xmlconfig" classname="com.xmlconfig.anttask.XmlConfig" classpathref="project.classpath" />
-		
-		
-			<xmlconfig in="C:\cananolab-app/jboss-4.0.5.GA/server/default/conf/login-config.xml" verbose="false">			
-				<read path="//policy/application-policy[9]/@name" property="xyz"/>
-			</xmlconfig>
-			
-		<echo message="${xyz}"/>
-		<antcall target="create-caNanoLab" />
-
-		
-		<property name="abc" value="false"/>
-		<xmlconfig in="C:\cananolab-app/jboss-4.0.5.GA/server/default/conf/login-config.xml" verbose="false">			
-			<read path="//policy/application-policy[10]/@name" property="abc"/>
-		</xmlconfig>
-		<echo message="${abc}"/>
-		
-		<antcall target="create-caNanoLab-upt" />
-	
-	</target>
 		
 
 	<target name="prepare">
@@ -198,11 +104,11 @@
 
 		<available file="${installer.build.dir}/resources/release_notes.html" property="release_notes.html.not.present" />
 		<fail message="Unable to have release notes translated to html using a website" unless="release_notes.html.not.present" />
-		<replace file="${installer.build.dir}/resources/release_notes.html" token="txt2html" value="Caarray2 Release Notes" />
+		<replace file="${installer.build.dir}/resources/release_notes.html" token="txt2html" value="CaNanoLab Release Notes" />
 		<copy file="${installer.basedir}/LICENSE.txt" todir="${installer.build.dir}/resources" />
 		<copy file="${docs.dir}/release_notes.txt" todir="${installer.build.dir}/resources" />
-		<copy file="${installer.basedir}/config/images/banner_caarray.png" todir="${installer.build.dir}/resources" />
-		<copy file="${installer.basedir}/config/images/banner_caarray.png" tofile="${installer.build.dir}/resources/extract-image.jpg" />
+		<copy file="${installer.basedir}/config/images/appLogo-nanolab.gif" todir="${installer.build.dir}/resources" />
+		<copy file="${installer.basedir}/config/images/appLogo-nanolab.gif" tofile="${installer.build.dir}/resources/extract-image.gif" />
 	</target>
 
 	<target name="-configure-jboss-ds">
@@ -223,7 +129,7 @@
 		<delete dir="${installer.dist.dir.temp}" />
 		<mkdir dir="${installer.dist.dir.temp}" />
 
-		<!-- Copy caarray2 EAR file to temp -->
+		<!-- Copy caNanoLab war file to temp -->
 		<copy todir="${installer.dist.dir.temp}/war">
 			<fileset dir="${cananolab.war.location}">
 				<include name="**/caNanoLab.war" />
@@ -235,11 +141,7 @@
 		<!-- Copy jars to temp -->
 		<copy todir="${installer.dist.dir.temp}/jars">
 			<fileset dir="${lib.dir}">
-				<include name="**/mysql-connector-java-5.0.7-bin.jar" />
-				<include name="**/nc2.2.jar" />
-				<include name="**/xmlconfig.jar" />
-				<include name="**/xml-apis.jar" />
-				<include name="**/jaxen-1.1-beta-10.jar" />
+				<include name="**/mysql-connector-java-5.0.7-bin.jar" />				
 			</fileset>
 		</copy>
 		
@@ -277,7 +179,6 @@
 
 		
 		<!-- Copy property files to temp -->
-		<copy file="${basedir}/../local.properties" todir="${installer.basedir}/target/dist/temp" />
 		<copy file="${basedir}/../default.properties" todir="${installer.basedir}/target/dist/temp" />
 
 		<!-- Get/Copy JBoss zip 	-->
@@ -293,9 +194,9 @@
 		<copy file="${tools.dir}/jboss-4.0.5.GA.zip" todir="${installer.dist.dir.temp}/tools" />
 		<copy file="${tools.dir}/mysql-noinstall-5.0.45-win32.zip" todir="${installer.dist.dir.temp}/tools" />
 
-		<!-- Configure JBoss MySQL datasource -->
+		<!-- Configure JBoss MySQL datasource 
 		<antcall target="-configure-jboss-ds" />
-		
+		-->
 		
 		<zip file="${installer.dist.dir}/installpack.zip">
 			<fileset dir="${installer.dist.dir.temp}">
@@ -319,50 +220,14 @@
 	</target>
 
 	<target name="run" depends="clean, selfextract">
+
 		<java jar="${installer.dist.dir}/${installer.file.name}" fork="true" />
+
 	</target>
 
 	<target name="install">
 		<java jar="${installer.dist.dir}/${installer.file.name}" fork="true" />
 	</target>
 
-	<target name="test-xmlconfig">
-		<path id="xmlconfig.path">
-			<fileset dir="${installer.ext.dir}">
-				<include name="*.jar" />
-				<exclude name="jaxen-1.1-beta-10.jar" />
-			</fileset>
-		</path>
 
-		<taskdef name="xmlconfig" classname="com.xmlconfig.anttask.XmlConfig" classpathref="xmlconfig.path" />
-
-		<property name="caXAParent" value="blank" />
-		<property name="caXAUrl" value="blank" />
-		<property name="secXAUrl" value="blank" />
-		<property name="secXAUser" value="blank" />
-		<property name="secXAPassword" value="blank" />
-		<xmlconfig in="${installer.test.dir}/test-xmlconfig.xml" verbose="true">
-			<read path="//datasources/xa-datasource/jndi-name[text()='caarray2XAOracleDS']/.." property="caXAParent" />
-			<read path="//datasources/xa-datasource/jndi-name[text()='caarray2XAOracleDS']/../xa-datasource-property[@name='URL']" property="caXAUrl" />
-			<read path="//datasources/xa-datasource/jndi-name[text()='SecurityXAOracleDS']/../xa-datasource-property[@name='URL']" property="secXAUrl" />
-			<read path="//datasources/xa-datasource/jndi-name[text()='SecurityXAOracleDS']/../xa-datasource-property[@name='User']" property="secXAUser" />
-			<read path="//datasources/xa-datasource/jndi-name[text()='SecurityXAOracleDS']/../xa-datasource-property[@name='Password']" property="secXAPassword" />
-		</xmlconfig>
-
-		<echo message="caXAParent=${caXAParent}" />
-		<echo message="caXAUrl=${caXAUrl}" />
-		<echo message="secXAUrl=${secXAUrl}" />
-		<echo message="secXAUser=${secXAUser}" />
-		<echo message="secXAPassword=${secXAPassword}" />
-
-		<copy file="${installer.test.dir}/orig-test-xmlconfig.xml" tofile="${installer.test.dir}/test-xmlconfig.xml.out" overwrite="true" />
-		<xmlconfig in="${installer.test.dir}/test-xmlconfig.xml.out" verbose="false">
-			<update path="//datasources/xa-datasource/jndi-name[text()='caarray2XAOracleDS']/../xa-datasource-property[@name='URL']" value="${caXAUrl}" />
-			<update path="//datasources/xa-datasource/jndi-name[text()='SecurityXAOracleDS']/../xa-datasource-property[@name='URL']" value="${secXAUrl}" />
-			<update path="//datasources/xa-datasource/jndi-name[text()='SecurityXAOracleDS']/../xa-datasource-property[@name='User']" value="${secXAUser}" />
-			<update path="//datasources/xa-datasource/jndi-name[text()='SecurityXAOracleDS']/../xa-datasource-property[@name='Password']" value="${secXAPassword}" />
-		</xmlconfig>
-		<loadfile srcfile="${installer.test.dir}/test-xmlconfig.xml.out" property="test-xmlconfig.xml.out.filecontents" />
-		<echo message="${test-xmlconfig.xml.out.filecontents}" />
-	</target>
 </project>
