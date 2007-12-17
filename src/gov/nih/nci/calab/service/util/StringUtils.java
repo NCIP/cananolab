@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
  * @author pansu
  * 
  */
-/* CVS $Id: StringUtils.java,v 1.24 2007-12-07 21:08:43 cais Exp $ */
+/* CVS $Id: StringUtils.java,v 1.25 2007-12-17 16:22:57 cais Exp $ */
 
 public class StringUtils {
 	private static Logger logger = Logger.getLogger(StringUtils.class);
@@ -272,7 +272,7 @@ public class StringUtils {
 
 	/**
 	 * Convert a string with multiple words separated by space to one word, with
-	 * first letter as lower case.
+	 * first letter as upper case.
 	 * 
 	 * @param words
 	 * @return
