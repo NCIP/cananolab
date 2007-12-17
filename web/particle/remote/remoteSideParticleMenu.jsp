@@ -70,7 +70,7 @@
 				<c:choose>
 					<c:when test="${!empty particleAssociatedFiles}">
 						<li class="controlList">
-							<a href="#" class="subMenuSecondary">ASSOCIATE FILES</a>
+							<a href="#" class="subMenuSecondary">ASSOCIATED FILES</a>
 							<ul class="sublist_5" style="${fileDisplay}">
 								<c:forEach var="aFile" items="${remoteParticleAssociatedFiles}">
 									<c:url var="url" value="remoteSearchReport.do">
@@ -90,7 +90,7 @@
 					</c:when>
 					<c:otherwise>
 						<li class="nodatali">
-							ASSOCIATE FILES
+							ASSOCIATED FILES
 						</li>
 					</c:otherwise>
 				</c:choose>
