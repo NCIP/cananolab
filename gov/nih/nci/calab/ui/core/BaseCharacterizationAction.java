@@ -446,10 +446,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		ParticleBean particle = (ParticleBean) theForm.get("particle");
 		CharacterizationBean achar = (CharacterizationBean) theForm.get("achar");
-		//String title = service.getDetailViewTitle(particle, achar);
-		String fileName = achar.getName() + "_" + achar.getActionName() + 
-						"_detail_view_" + StringUtils.convertDateToString(new Date(),
-						"yyyyMMdd_HH-mm-ss-SSS");
+		String fileName = service.getExportFileName(particle, achar,
+						"detail");
 		
 		response.setContentType("application/vnd.ms-execel");
 		response.setHeader("cache-control", "Private");
@@ -478,17 +476,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 
-		String fileName = charBean.getName() + "_" + charBean.getActionName() + 
-					"_summary_view_" + StringUtils.convertDateToString(new Date(),
-					"yyyyMMdd_HH-mm-ss-SSS");
-		response.setContentType("application/vnd.ms-execel");
-		response.setHeader("cache-control", "Private");
-		response.setHeader("Content-disposition", "attachment;filename="
-				+ fileName + ".xls");
-
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		OutputStream out = response.getOutputStream();
-
 		String submitType = request.getParameter("submitType");
 		ParticleBean particle = (ParticleBean) theForm.get("particle");
 
@@ -498,6 +486,14 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		List<CharacterizationBean> charBeans = new ArrayList<CharacterizationBean>();
 		SortedSet<String> datumLabels = service.setDataLabelsAndFileVisibility(
 				user, summaryBeans, charBeans);
+		
+		String fileName = service.getExportFileName(particle, charBean,
+													"summary");
+		response.setContentType("application/vnd.ms-execel");
+		response.setHeader("cache-control", "Private");
+		response.setHeader("Content-disposition", "attachment;filename="
+							+ fileName + ".xls");
+		OutputStream out = response.getOutputStream();
 
 		HSSFWorkbook wb = new HSSFWorkbook();
 		service.exportSummaryService(datumLabels, summaryBeans, particle, wb);
@@ -521,17 +517,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 
-		String fileName = charBean.getName() + "_" + charBean.getActionName() + 
-					"_full_summary_view_" + StringUtils.convertDateToString(new Date(),
-					"yyyyMMdd_HH-mm-ss-SSS");
-		response.setContentType("application/vnd.ms-execel");
-		response.setHeader("cache-control", "Private");
-		response.setHeader("Content-disposition", "attachment;filename="
-				+ fileName + ".xls");
-
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		OutputStream out = response.getOutputStream();
-
 		String submitType = request.getParameter("submitType");
 		ParticleBean particle = (ParticleBean) theForm.get("particle");
 
@@ -541,6 +527,14 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		List<CharacterizationBean> charBeans = new ArrayList<CharacterizationBean>();
 		SortedSet<String> datumLabels = service.setDataLabelsAndFileVisibility(
 				user, summaryBeans, charBeans);
+
+		String fileName = service.getExportFileName(particle, charBean,
+		"full_summary");
+		response.setContentType("application/vnd.ms-execel");
+		response.setHeader("cache-control", "Private");
+		response.setHeader("Content-disposition", "attachment;filename="
+				+ fileName + ".xls");
+		OutputStream out = response.getOutputStream();
 
 		HSSFWorkbook wb = new HSSFWorkbook();
 		service.exportFullSummaryService(charBeans, datumLabels, user, summaryBeans, particle, wb);
