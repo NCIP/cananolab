@@ -74,6 +74,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -1856,5 +1857,19 @@ public class NanoparticleCharacterizationService {
 			}
 		}
 		return datumLabels;
+	}
+	
+	public String getExportFileName(ParticleBean particle, 
+			CharacterizationBean achar, String function)
+	{
+		StringBuffer sbuf = new StringBuffer(particle.getSampleName());
+		sbuf.append("_");
+		sbuf.append(StringUtils.getOneWordUpperCaseFirstLetter(achar.getName())); 
+		sbuf.append("_");
+		sbuf.append(function);
+		sbuf.append("_");
+		sbuf.append(StringUtils.convertDateToString(new Date(),
+					"yyyyMMdd_HH-mm-ss-SSS"));
+		return sbuf.toString();
 	}
 }
