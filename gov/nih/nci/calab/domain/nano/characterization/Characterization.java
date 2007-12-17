@@ -226,7 +226,7 @@ public class Characterization implements Serializable {
 
 	public static final String IMMUNOCELLFUNCTOX_LEUKOCYTE_PROLIFERATION = "Leukocyte Proliferation";
 
-	public static final String IMMUNOCELLFUNCTOX_NKCELL_CYTOTOXIC_ACTIVITY = "Cytotoxic Activity of NK Cells";
+	public static final String IMMUNOCELLFUNCTOX_NKCELL_CYTOTOXIC_ACTIVITY = "NK Cell Cytotoxic Activity";
 
 	public static final String METABOLIC_STABILITY_CYP450 = "CYP450";
 
