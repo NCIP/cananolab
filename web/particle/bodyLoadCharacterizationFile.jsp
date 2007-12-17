@@ -20,7 +20,7 @@
 				<a
 					href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=load_characterization_file_help')"
 					class="helpText">Help</a> &nbsp;&nbsp;
-				<a href="javascript:history.go(-1)" class="helpText">back</a>
+				<a href="javascript:history.go(-1)" class="helpText">Back</a>
 			</td>
 		</tr>
 		<tr>

@@ -13,7 +13,7 @@
 		</td>
 		<td align="right" width="15%">
 			<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=nano_search_results_help')" class="helpText">Help</a>&nbsp;&nbsp; 
-			<a href="searchNanoparticle.do?dispatch=setup" class="helpText">back</a>
+			<a href="searchNanoparticle.do?dispatch=setup" class="helpText">Back</a>
 		</td>
 	</tr>
 	<tr>
