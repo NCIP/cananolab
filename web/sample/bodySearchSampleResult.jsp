@@ -17,7 +17,7 @@
 				<a
 					href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=sample_search_results')"
 					class="helpText">Help</a>&nbsp;&nbsp;
-				<a href="searchSample.do?dispatch=setup&page=0" class="helpText">back</a>
+				<a href="searchSample.do?dispatch=setup&page=0" class="helpText">Back</a>
 			</td>
 		</tr>
 		<tr>

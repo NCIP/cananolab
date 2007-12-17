@@ -20,7 +20,7 @@
 				class="helpText">Help</a>&nbsp;&nbsp;
 			<c:choose>
 				<c:when test="${not empty param.aliquotId}">
-					<a href="javascript:history.go(-1)" class="helpText">back</a>
+					<a href="javascript:history.go(-1)" class="helpText">Back</a>
 				</c:when>
 			</c:choose>
 		</td>

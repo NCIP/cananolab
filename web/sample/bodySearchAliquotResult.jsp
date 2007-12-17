@@ -19,10 +19,10 @@
 					class="helpText">Help</a> &nbsp;&nbsp;
 				<c:choose>
 					<c:when test="${empty param.fromSampleResult}">
-						<a href="searchAliquot.do?dispatch=setup&page=0" class="helpText">back</a>
+						<a href="searchAliquot.do?dispatch=setup&page=0" class="helpText">Back</a>
 					</c:when>
 					<c:otherwise>
-						<a href="javascript:history.go(-1)" class="helpText">back</a>
+						<a href="javascript:history.go(-1)" class="helpText">Back</a>
 					</c:otherwise>
 				</c:choose>
 			</td>

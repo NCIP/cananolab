@@ -127,17 +127,6 @@
 	</c:otherwise>
 </c:choose>
 
-<style type="text/css">
-	#${characterizationId} {
-		background-color: #98B7B7;
-		color: white;
-	}
-	#${characterizationId} a {
-		background-color: #98B7B7;
-		color: white;
-	}
-</style>
-
 <c:set var="physicalType" value="Physical" />
 <li class="controlList">
 	<a href="#" class="subMenuSecondary">PHYSICAL CHARACTERIZATIONS</a>

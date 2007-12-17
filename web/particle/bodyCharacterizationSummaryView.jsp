@@ -3,6 +3,13 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+
+<link rel="StyleSheet" type="text/css" href="css/printExport.css">
+
+<script type="text/javascript" src="javascript/printExport.js"></script>
+
+
 <table width="100%" align="center">
 	<tr>
 		<td>
@@ -23,15 +30,24 @@
 			<table>
 				<tr>
 					<td>
-						<a href="javascript:printPage('${printLinkURL}')"><img
+						<ul class="pemenu" id="printChara">
+						<li class="pelist">
+							<a href="#"><img
 								src="images/icon_print_23x.gif"
-								alt="print characterization summary" border="0"> </a>
+								border="0"></a>
+
+							<ul>			
+								<li>
+									<a href="javascript:printPage('${printLinkURL}')">Print Summary</a>
+								</li>
+								<li>
+									<a href="javascript:printPage('${printAllLinkURL}')">Print Full Summary</a>
+								</li>
+							</ul>
+						</li>
+						</ul>
 					</td>
-					<td>
-						<a href="javascript:printPage('${printAllLinkURL}')"><img
-								src="images/icon_print_23x.gif"
-								alt="print full characterization summary" border="0"> </a>
-					</td>
+					<td width="10">&nbsp;</td>
 					<td>
 						<c:url var="sumUrl"
 							value="${nanoparticleCharacterizationForm.map.achar.actionName}.do">
@@ -40,10 +56,6 @@
 							<c:param name="page" value="0" />
 							<c:param name="dispatch" value="exportSummary" />
 						</c:url>
-						<a href="${sumUrl}"><img src="images/icon_excel_23x.gif"
-								alt="export characterization summary" border="0"> </a>
-					</td>
-					<td>
 						<c:url var="fullSumUrl"
 							value="${nanoparticleCharacterizationForm.map.achar.actionName}.do">
 							<c:param name="particleId" value="${particleId}" />
@@ -51,9 +63,23 @@
 							<c:param name="page" value="0" />
 							<c:param name="dispatch" value="exportFullSummary" />
 						</c:url>
-						<a href="${fullSumUrl}"><img src="images/icon_excel_23x.gif"
-								alt="export full characterization summary" border="0"> </a>
+						<ul class="pemenu" id="exportChara">
+						<li class="pelist">
+							<a href="#"><img
+								src="images/icon_excel_23x.gif"
+								border="0"></a>
+							<ul>			
+								<li>
+									<a href="${sumUrl}">Export Summary</a>
+								</li>
+								<li>
+									<a href="${fullSumUrl}">Export Full Summary</a>
+								</li>
+							</ul>
+						</li>
+						</ul>
 					</td>
+					<td width="70">&nbsp;</td>
 				</tr>
 			</table>
 		</td>
