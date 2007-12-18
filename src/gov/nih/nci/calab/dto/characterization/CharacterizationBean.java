@@ -7,7 +7,6 @@ import gov.nih.nci.calab.domain.nano.characterization.DerivedBioAssayData;
 import gov.nih.nci.calab.dto.common.InstrumentConfigBean;
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
-import gov.nih.nci.calab.dto.sample.SampleBean;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 
@@ -58,8 +57,15 @@ public class CharacterizationBean {
 
 	private ParticleBean particle = new ParticleBean();
 
+	private String characterizationType; // physical or in vitro
+
+	private String dispatchActionName; //e.g. molecularWeight
+
 	public String getActionName() {
-		this.actionName = StringUtils.getOneWordLowerCaseFirstLetter(this.name);
+		if (getCharacterizationType() != null)
+			this.actionName = StringUtils.getOneWordLowerCaseFirstLetter(this
+					.getCharacterizationType())
+					+ "Characterization";
 		return this.actionName;
 	}
 
@@ -333,5 +339,19 @@ public class CharacterizationBean {
 			h += getId().hashCode();
 		}
 		return h;
+	}
+
+	public String getCharacterizationType() {
+		return characterizationType;
+	}
+
+	public void setCharacterizationType(String type) {
+		this.characterizationType = type;
+	}
+
+	public String getDispatchActionName() {
+		this.dispatchActionName = StringUtils
+				.getOneWordLowerCaseFirstLetter(getName());
+		return dispatchActionName;
 	}
 }
