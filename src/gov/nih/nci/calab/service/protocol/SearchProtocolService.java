@@ -49,7 +49,7 @@ public class SearchProtocolService {
 			Session session = HibernateUtil.currentSession();
 			HibernateUtil.beginTransaction();
 
-			String hqlString = "select protocolFile from ProtocolFile protocolFile left join fetch "
+			String hqlString = "from ProtocolFile protocolFile left join fetch "
 					+ "protocolFile.protocol where protocolFile.id='"
 					+ fileId
 					+ "'";
