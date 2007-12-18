@@ -58,7 +58,6 @@ import gov.nih.nci.calab.dto.common.ProtocolFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
-import gov.nih.nci.calab.exception.FileException;
 import gov.nih.nci.calab.exception.ParticleCharacterizationException;
 import gov.nih.nci.calab.service.common.FileService;
 import gov.nih.nci.calab.service.common.LookupService;
@@ -71,7 +70,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -336,7 +334,7 @@ public class NanoparticleCharacterizationService {
 				if (charBean.getId() == null) {
 					List results = session
 							.createQuery(
-									"from Nanoparticle particle left join fetch particle.characterizationCollection where particle.name='"
+									"select particle from Nanoparticle particle left join fetch particle.characterizationCollection where particle.name='"
 											+ charBean.getParticle()
 													.getSampleName()
 											+ "' and particle.type='"
