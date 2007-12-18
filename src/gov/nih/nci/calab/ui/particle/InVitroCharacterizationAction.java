@@ -19,7 +19,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.validator.DynaValidatorForm;
 
-public class InvitroCharacterizationAction extends BaseCharacterizationAction {
+public class InVitroCharacterizationAction extends BaseCharacterizationAction {
 	protected void initSetup(HttpServletRequest request,
 			DynaValidatorForm theForm) throws Exception {
 		super.initSetup(request, theForm);

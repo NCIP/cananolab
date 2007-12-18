@@ -236,22 +236,22 @@
 				path="particle.physicalSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
-			parameter="dispatch" path="/invitroCharacterization"
-			type="gov.nih.nci.calab.ui.particle.InvitroCharacterizationAction"
+			parameter="dispatch" path="/inVitroCharacterization"
+			type="gov.nih.nci.calab.ui.particle.InVitroCharacterizationAction"
 			input="input">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.characterizationException"
-				path="/invitroCharacterization.do?dispatch=input&amp;page=0"
+				path="/inVitroCharacterization.do?dispatch=input&amp;page=0"
 				type="gov.nih.nci.calab.exception.ParticleCharacterizationException" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				bundle="particle" key="error.duplicateEntryException"
-				path="/invitroCharacterization.do?dispatch=input&amp;page=0"
+				path="/inVitroCharacterization.do?dispatch=input&amp;page=0"
 				type="gov.nih.nci.calab.exception.DuplicateEntriesException" />
 			<forward name="success" path="particle.inVitroDetailView" />
 			<forward name="input"
-				path="/invitroCharacterization.do?dispatch=input&amp;page=0" />
+				path="/inVitroCharacterization.do?dispatch=input&amp;page=0" />
 			<forward name="cytotoxicitySetup"
 				path="particle.cytotoxicity" />
 			<forward name="setup"
