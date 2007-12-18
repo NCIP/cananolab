@@ -22,17 +22,6 @@ public class ShapeBean extends CharacterizationBean {
 
 	private String maxDimensionUnit = "nm";
 
-	// this is used for validation only
-	private String validateValue;
-
-	public String getValidateValue() {
-		return this.validateValue;
-	}
-
-	public void setValidateValue(String validateValue) {
-		this.validateValue = validateValue;
-	}
-
 	public ShapeBean() {
 
 	}
