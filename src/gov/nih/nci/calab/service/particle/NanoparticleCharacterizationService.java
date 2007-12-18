@@ -361,6 +361,7 @@ public class NanoparticleCharacterizationService {
 			// skip if there is database error above and achar has not
 			// been persisted
 			if (achar.getId() != null) {
+				charBean.setId(achar.getId().toString());
 				// save file to the file system
 				// if this block of code is inside the db try block,
 				// hibernate
