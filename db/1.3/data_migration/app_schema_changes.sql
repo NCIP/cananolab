@@ -38,6 +38,23 @@ delete from def_characterization_category
 where category='Physical'
 and name='Composition';
 
+update def_protocol_type
+set name = 'Physical Assay'
+where name like 'Physical assay%'
+;
+
+update def_protocol_type
+set name = 'In Vivo Assay'
+where name like 'In Vivo assay%'
+;
+
+update def_protocol_type
+set name = 'In Vitro Assay'
+where name like 'In Vitro assay%'
+;
+
+commit;
+
 -- re-enable foreign key checks
 set foreign_key_checks=@old_foreign_key_checks;
 
