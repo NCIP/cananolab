@@ -8,16 +8,16 @@ USE cananolab;
 # it is.
 #
 
-insert into csm_application(APPLICATION_NAME,APPLICATION_DESCRIPTION,DECLARATIVE_FLAG,ACTIVE_FLAG,UPDATE_DATE)
+insert into csm_application(application_name,application_description,declarative_flag,active_flag,update_date)
 values ("caNanoLab-upt","CSM UPT Super Admin Application",0,0,sysdate());
 
-insert into csm_user (LOGIN_NAME,FIRST_NAME,LAST_NAME,PASSWORD,UPDATE_DATE)
+insert into csm_user (login_name,first_name,last_name,password,update_date)
 values ("superadmin","super_admin_first_name","super_admin_last_name","W6ph5Mm5Pz8GgiULbPgzG37mj9g=",sysdate());
  
-insert into csm_protection_element(PROTECTION_ELEMENT_NAME,PROTECTION_ELEMENT_DESCRIPTION,OBJECT_ID,APPLICATION_ID,UPDATE_DATE)
+insert into csm_protection_element(protection_element_name,protection_element_description,object_id,application_id,update_date)
 values("caNanoLab-upt","CSM UPT Super Admin Application Protection Element","caNanoLab-upt",1,sysdate());
 
-insert into csm_user_pe(PROTECTION_ELEMENT_ID,USER_ID,UPDATE_DATE)
+insert into csm_user_pe(protection_element_id,user_id,update_date)
 values(1,1,sysdate());
 
 # 
@@ -25,10 +25,10 @@ values(1,1,sysdate());
 # Replace caNanoLab with your application name.
 #
 
-INSERT INTO csm_application(APPLICATION_NAME,APPLICATION_DESCRIPTION,DECLARATIVE_FLAG,ACTIVE_FLAG,UPDATE_DATE)
+INSERT INTO csm_application(application_name,application_description,declarative_flag,active_flag,update_date)
 VALUES ("caNanoLab","Application Description",0,0,sysdate());
 
-insert into csm_protection_element(PROTECTION_ELEMENT_NAME,PROTECTION_ELEMENT_DESCRIPTION,OBJECT_ID,APPLICATION_ID,UPDATE_DATE)
+insert into csm_protection_element(protection_element_name,protection_element_description,object_id,application_id,update_date)
 values("caNanoLab","caNanoLab Admin Application Protection Element","caNanoLab",1,sysdate());
 
 #
