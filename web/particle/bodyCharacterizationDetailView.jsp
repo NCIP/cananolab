@@ -32,9 +32,7 @@
 							<tr>
 								<td class="formTitle" width="100%">
 									${nanoparticleCharacterizationForm.map.particle.sampleName}
-									${nanoparticleCharacterizationForm.map.particle.sampleType} -
-									${ nanoparticleCharacterizationForm.map.achar.viewTitle} - ${
-									nanoparticleCharacterizationForm.map.achar.characterizationSource}
+									${nanoparticleCharacterizationForm.map.particle.sampleType}
 								</td>
 								<td align="right" class="formTitle">
 									<c:url var="url"
@@ -72,6 +70,15 @@
 								</td>
 							</tr>
 						</table>
+					</td>
+				</tr>
+				<tr>
+					<th class="leftLabel" valign="top">
+						View Title - Characterization Source
+					</th>
+					<td class="rightLabel">
+						${ nanoparticleCharacterizationForm.map.achar.viewTitle} - ${
+						nanoparticleCharacterizationForm.map.achar.characterizationSource}
 					</td>
 				</tr>
 				<c:if
@@ -156,11 +163,12 @@
 									<c:otherwise>
 										<c:choose>
 											<c:when test="${derivedBioAssayData.image eq 'true'}">
- 												${derivedBioAssayData.title}<br><br>
+ 												${derivedBioAssayData.title}<br>
+												<br>
 												<a href="#"
 													onclick="popImage(event, '${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.id}', ${derivedBioAssayData.id}, 100, 100)"><img
 														src="${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.id}"
-														border="0" width="150"></a>												
+														border="0" width="150"> </a>
 											</c:when>
 											<c:otherwise>
 												<a
