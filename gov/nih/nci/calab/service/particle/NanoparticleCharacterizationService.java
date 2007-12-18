@@ -297,8 +297,8 @@ public class NanoparticleCharacterizationService {
 			boolean viewTitleUsed = isCharacterizationViewTitleUsed(session,
 					achar, charBean);
 			if (viewTitleUsed) {
-				throw new RuntimeException(
-						"The view title is already in use.  Please enter a different one.");
+				throw new ParticleCharacterizationException(
+						"The view title is already in use.  Please enter a different one");
 			} else {
 				// if ID exists, load from database
 				if (charBean.getId() != null) {
@@ -306,8 +306,8 @@ public class NanoparticleCharacterizationService {
 					achar = (Characterization) session.get(
 							Characterization.class, new Long(charBean.getId()));
 					if (achar == null)
-						throw new Exception(
-								"This characterization is no longer in the database.  Please log in again to refresh.");
+						throw new ParticleCharacterizationException(
+								"This characterization is no longer in the database.  Please log in again to refresh");
 				}
 				// update domain object
 				if (achar instanceof Shape) {
@@ -355,7 +355,7 @@ public class NanoparticleCharacterizationService {
 		} catch (Exception e) {
 			logger.error("Problem saving characterization. ", e);
 			HibernateUtil.rollbackTransaction();
-			throw new ParticleCharacterizationException();
+			throw new ParticleCharacterizationException(e.getMessage());
 		} finally {
 			HibernateUtil.closeSession();
 			// skip if there is database error above and achar has not
@@ -1034,7 +1034,7 @@ public class NanoparticleCharacterizationService {
 			HibernateUtil.rollbackTransaction();
 			logger.error("Problem deleting characterization: ", e);
 			throw new ParticleCharacterizationException(
-					"The characterization is no longer exist in the database, please login again to refresh the view.");
+					"The characterization is no longer exist in the database, please login again to refresh the view");
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -1057,8 +1057,8 @@ public class NanoparticleCharacterizationService {
 		} catch (Exception e) {
 			logger.error(
 					"Problem to retrieve all characterization file types. ", e);
-			throw new RuntimeException(
-					"Problem to retrieve all characterization file types. ", e);
+			throw new ParticleCharacterizationException(
+					"Problem to retrieve all characterization file types ", e);
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -1092,8 +1092,8 @@ public class NanoparticleCharacterizationService {
 
 		} catch (Exception e) {
 			logger.error("Problem to retrieve all characterization types. ", e);
-			throw new RuntimeException(
-					"Problem to retrieve all characteriztaion types. ", e);
+			throw new ParticleCharacterizationException(
+					"Problem to retrieve all characteriztaion types ", e);
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -1130,8 +1130,8 @@ public class NanoparticleCharacterizationService {
 					.error(
 							"Problem to retrieve all derived bioassay data categories. ",
 							e);
-			throw new RuntimeException(
-					"Problem to retrieve all derived bioassay data categories.",
+			throw new ParticleCharacterizationException(
+					"Problem to retrieve all derived bioassay data categories",
 					e);
 
 		} finally {
@@ -1160,8 +1160,8 @@ public class NanoparticleCharacterizationService {
 					.error(
 							"Problem to retrieve all derived bioassay datum names. ",
 							e);
-			throw new RuntimeException(
-					"Problem to retrieve all derived bioassay datum names.", e);
+			throw new ParticleCharacterizationException(
+					"Problem in retrieving all derived bioassay datum names", e);
 
 		} finally {
 			HibernateUtil.closeSession();
@@ -1192,7 +1192,7 @@ public class NanoparticleCharacterizationService {
 							"Problem to retrieve all derived bioassay data categories.",
 							e);
 			throw new ParticleCharacterizationException(
-					"Problem to retrieve all derived bioassay data categories.");
+					"Problem to retrieve all derived bioassay data categories");
 
 		} finally {
 			HibernateUtil.closeSession();
@@ -1219,7 +1219,7 @@ public class NanoparticleCharacterizationService {
 					.error("Problem to retrieve all Characterization Sources.",
 							e);
 			throw new ParticleCharacterizationException(
-					"Problem to retrieve all Characterization Sources. ");
+					"Problem to retrieve all Characterization Sources ");
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -1246,7 +1246,7 @@ public class NanoparticleCharacterizationService {
 		} catch (Exception e) {
 			logger.error("Problem to retrieve all manufacturers. ", e);
 			throw new ParticleCharacterizationException(
-					"Problem to retrieve all manufacturers.");
+					"Problem to retrieve all manufacturers");
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -1294,7 +1294,7 @@ public class NanoparticleCharacterizationService {
 							"Problem to retrieve manufacturers for intrument types ",
 							e);
 			throw new ParticleCharacterizationException(
-					"Problem to retrieve manufacturers for intrument types.");
+					"Problem to retrieve manufacturers for intrument types");
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -1319,7 +1319,7 @@ public class NanoparticleCharacterizationService {
 		} catch (Exception e) {
 			logger.error("Problem to retrieve all instruments. ", e);
 			throw new ParticleCharacterizationException(
-					"Problem to retrieve all intruments. ");
+					"Problem to retrieve all intruments ");
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -1377,7 +1377,7 @@ public class NanoparticleCharacterizationService {
 							"Problem to retrieve all characterization type characterizations. ",
 							e);
 			throw new ParticleCharacterizationException(
-					"Problem to retrieve all characteriztaion type characterizations. ");
+					"Problem to retrieve all characteriztaion type characterizations ");
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -1458,7 +1458,7 @@ public class NanoparticleCharacterizationService {
 							"Problem to retrieve all characterization type characterizations. ",
 							e);
 			throw new ParticleCharacterizationException(
-					"Problem to retrieve all characteriztaion type characterizations. ");
+					"Problem to retrieve all characteriztaion type characterizations ");
 		} finally {
 			HibernateUtil.closeSession();
 		}
