@@ -11,15 +11,22 @@
 		<table width="100%" align="center">
 			<tr>
 				<td colspan="2">
-					<table width="100%" border="0" align="center" cellpadding="3"
+					<table width="100%" border="1" align="center" cellpadding="3"
 						cellspacing="0" class="topBorderOnly" summary="">
 						<tr>
 							<th class="formTitle" colspan="2" align="center">
 								${nanoparticleCharacterizationForm.map.particle.sampleName}
-								${nanoparticleCharacterizationForm.map.particle.sampleType} - ${
-								nanoparticleCharacterizationForm.map.achar.viewTitle} - ${
-								nanoparticleCharacterizationForm.map.achar.characterizationSource}
+								${nanoparticleCharacterizationForm.map.particle.sampleType}
 							</th>
+						</tr>
+						<tr>
+							<th class="leftLabel" valign="top">
+								View Title - Characterization Source
+							</th>
+							<td class="rightLabel">
+								${ nanoparticleCharacterizationForm.map.achar.viewTitle} - ${
+								nanoparticleCharacterizationForm.map.achar.characterizationSource}
+							</td>
 						</tr>
 						<c:if
 							test="${!empty nanoparticleCharacterizationForm.map.achar.description}">
@@ -124,7 +131,7 @@
 										Characterization Derived Data #1
 										<br>
 										<br>
-										<table border="1" borderColor="#CCCCCC" cellpadding="3"
+										<table border="0" cellpadding="3"
 											cellspacing="0">
 											<tr>
 												<logic:iterate id="datum"
@@ -151,6 +158,7 @@
 									</th>
 								</tr>
 							</c:if>
+							<p style="page-break-before: always"> 
 						</logic:iterate>
 					</table>
 				</td>
