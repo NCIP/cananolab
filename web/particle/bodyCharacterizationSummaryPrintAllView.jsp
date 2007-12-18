@@ -10,13 +10,13 @@
 	</head>
 	<body>
 		<jsp:include
-			page="shared/bodyCharacterizationSummaryPrintViewTable.jsp" />
-		<br>
+			page="shared/bodyCharacterizationSummaryPrintViewTable.jsp" />		
+		<p style="page-break-before: always"> 
 		<c:forEach var="charBean" items="${summaryViewCharBeans}">
 			<table width="100%" border="1" align="center" cellpadding="3"
 				cellspacing="0" class="topBorderOnly" summary="">
 				<tr>
-					<th class="formTitle" colspan="2">
+					<th class="formTitle" colspan="2" align="center">
 						${nanoparticleCharacterizationForm.map.particle.sampleName}
 						${nanoparticleCharacterizationForm.map.particle.sampleType} -
 						${charBean.viewTitle} - ${ charBean.characterizationSource}
@@ -145,7 +145,7 @@ ${charBean.protocolFileBean.uri}
 					</c:if>
 				</c:forEach>
 			</table>
-			<br>
+			<p style="page-break-before: always">
 		</c:forEach>
 	</body>
 </html>
