@@ -8,8 +8,9 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: RemoteNanoparticleCompositionAction.java,v 1.8 2007-12-06 09:01:43 pansu Exp $ */
+/* CVS $Id: RemoteNanoparticleCompositionAction.java,v 1.9 2007-12-18 16:36:18 pansu Exp $ */
 
+import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.CarbonNanotubeComposition;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.DendrimerComposition;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.EmulsionComposition;
@@ -84,30 +85,30 @@ public class RemoteNanoparticleCompositionAction extends BaseRemoteSearchAction 
 
 		CompositionBean compositionBean = new CompositionBean(comp);
 		if (particleType
-				.equalsIgnoreCase(CaNanoLabConstants.COMPOSITION_DENDRIMER_TYPE)) {
+				.equalsIgnoreCase(Characterization.DENDRIMER_TYPE)) {
 			DendrimerBean dendrimer = new DendrimerBean(
 					(DendrimerComposition) comp);
 			theForm.set("dendrimer", dendrimer);
 		} else if (particleType
-				.equalsIgnoreCase(CaNanoLabConstants.COMPOSITION_POLYMER_TYPE)) {
+				.equalsIgnoreCase(Characterization.POLYMER_TYPE)) {
 			PolymerBean polymer = new PolymerBean((PolymerComposition) comp);
 			theForm.set("polymer", polymer);
 		} else if (particleType
-				.equalsIgnoreCase(CaNanoLabConstants.COMPOSITION_LIPOSOME_TYPE)) {
+				.equalsIgnoreCase(Characterization.LIPOSOME_TYPE)) {
 			LiposomeBean liposome = new LiposomeBean((LiposomeComposition) comp);
 			theForm.set("liposome", liposome);
 		} else if (particleType
-				.equalsIgnoreCase(CaNanoLabConstants.COMPOSITION_FULLERENE_TYPE)) {
+				.equalsIgnoreCase(Characterization.FULLERENE_TYPE)) {
 			FullereneBean fullerene = new FullereneBean(
 					(FullereneComposition) comp);
 			theForm.set("fullerene", fullerene);
 		} else if (particleType
-				.equalsIgnoreCase(CaNanoLabConstants.COMPOSITION_CARBON_NANOTUBE_TYPE)) {
+				.equalsIgnoreCase(Characterization.CARBON_NANOTUBE_TYPE)) {
 			CarbonNanotubeBean carbonNanotube = new CarbonNanotubeBean(
 					(CarbonNanotubeComposition) comp);
 			theForm.set("carbonNanotube", carbonNanotube);
 		} else if (particleType
-				.equalsIgnoreCase(CaNanoLabConstants.COMPOSITION_EMULSION_TYPE)) {
+				.equalsIgnoreCase(Characterization.EMULSION_TYPE)) {
 			EmulsionBean emulsion = new EmulsionBean((EmulsionComposition) comp);
 			theForm.set("emulsion", emulsion);
 		}
