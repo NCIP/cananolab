@@ -4,11 +4,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-
 <link rel="StyleSheet" type="text/css" href="css/printExport.css">
-
 <script type="text/javascript" src="javascript/printExport.js"></script>
-
 
 <table width="100%" align="center">
 	<tr>
@@ -25,29 +22,27 @@
 		</td>
 	</tr>
 	<tr>
-		<td colspan="2" align="right">
+		<td colspan="2" align="left">
 			<jsp:include page="/bodyMessage.jsp?bundle=particle" />
 			<table>
 				<tr>
 					<td>
 						<ul class="pemenu" id="printChara">
 						<li class="pelist">
-							<a href="#"><img
-								src="images/icon_print_23x.gif"
-								border="0"></a>
-
+							<a href="#"><img src="images/icon_print_23x.gif"
+								border="0" align="middle"></a>
 							<ul>			
 								<li>
-									<a href="javascript:printPage('${printLinkURL}')">Print Summary</a>
+									<a href="javascript:printPage('${printLinkURL}')">Print Summary </a>
 								</li>
 								<li>
-									<a href="javascript:printPage('${printAllLinkURL}')">Print Full Summary</a>
+									<a href="javascript:printPage('${printAllLinkURL}')">Print Full Summary </a>
 								</li>
 							</ul>
 						</li>
 						</ul>
 					</td>
-					<td width="10">&nbsp;</td>
+					<td></td>
 					<td>
 						<c:url var="sumUrl"
 							value="${nanoparticleCharacterizationForm.map.achar.actionName}.do">
@@ -65,9 +60,8 @@
 						</c:url>
 						<ul class="pemenu" id="exportChara">
 						<li class="pelist">
-							<a href="#"><img
-								src="images/icon_excel_23x.gif"
-								border="0"></a>
+							<a href="#"><img src="images/icon_excel_23x.gif"
+								border="0" align="middle"></a>
 							<ul>			
 								<li>
 									<a href="${sumUrl}">Export Summary</a>
@@ -79,7 +73,6 @@
 						</li>
 						</ul>
 					</td>
-					<td width="70">&nbsp;</td>
 				</tr>
 			</table>
 		</td>
