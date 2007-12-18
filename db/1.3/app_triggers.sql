@@ -1,67 +1,67 @@
 use cananolab;
 
 --only available after 5.0.32
---drop trigger if exists SET_HISTORY_NANOPARTICLE_CHAR;
---drop trigger if exists SET_HISTORY_DERIVED_BIODATA;
---drop trigger if exists SET_HISTORY_DATUM;
---drop trigger if exists SET_HISTORY_CHARACTERIZATION;
---drop trigger if exists SET_HISTORY_LAB_FILE;
---drop trigger if exists SET_HIST_COMPOSING_ELEMENT;
---drop trigger if exists SET_HISTORY_SURFACE;
---drop trigger if exists SET_HISTORY_SURFACE_CHEMISTRY;
---drop trigger if exists SET_HISTORY_SURFACE_GROUP;
---drop trigger if exists SET_HISTORY_SOLUBILITY;
---drop trigger if exists SET_HISTORY_SHAPE;
---drop trigger if exists SET_HISTORY_MORPHOLOGY;
---drop trigger if exists SET_HISTORY_NANOTUBE;
---drop trigger if exists SET_HISTORY_POLYMER;
---drop trigger if exists SET_HISTORY_FULLERENE;
---drop trigger if exists SET_HISTORY_EMULSION;
---drop trigger if exists SET_HISTORY_DENDRIMER;
---drop trigger if exists SET_HISTORY_CYTOTOXICITY;
+--drop trigger if exists set_history_nanoparticle_char;
+--drop trigger if exists set_history_derived_biodata;
+--drop trigger if exists set_history_datum;
+--drop trigger if exists set_history_characterization;
+--drop trigger if exists set_history_lab_file;
+--drop trigger if exists set_hist_composing_element;
+--drop trigger if exists set_history_surface;
+--drop trigger if exists set_history_surface_chemistry;
+--drop trigger if exists set_history_surface_group;
+--drop trigger if exists set_history_solubility;
+--drop trigger if exists set_history_shape;
+--drop trigger if exists set_history_morphology;
+--drop trigger if exists set_history_nanotube;
+--drop trigger if exists set_history_polymer;
+--drop trigger if exists set_history_fullerene;
+--drop trigger if exists set_history_emulsion;
+--drop trigger if exists set_history_dendrimer;
+--drop trigger if exists set_history_cytotoxicity;
 
 delimiter $
-CREATE TRIGGER SET_HISTORY_NANOPARTICLE_CHAR
-BEFORE DELETE
-    ON NANOPARTICLE_CHAR
-    FOR EACH ROW
-BEGIN
-   -- Insert record into audit table
-    INSERT INTO HISTORY_NANOPARTICLE_CHAR
-     ( CHARACTERIZATION_PK_ID, NANOPARTICLE_PK_ID, DELETED_DATE )
-    VALUES
-     ( old.CHARACTERIZATION_PK_ID, old.NANOPARTICLE_PK_ID, sysdate());
+create trigger set_history_nanoparticle_char
+before delete
+    on nanoparticle_char
+    for each row
+begin
+   -- insert record into audit table
+    insert into history_nanoparticle_char
+     ( characterization_pk_id, nanoparticle_pk_id, deleted_date )
+    values
+     ( old.characterization_pk_id, old.nanoparticle_pk_id, sysdate());
 
-END$
+end$
 
-CREATE TRIGGER SET_HISTORY_DERIVED_BIODATA
-BEFORE update
-    ON derived_bioassay_data
-    FOR EACH ROW
-BEGIN
-   IF new.CHARACTERIZATION_PK_ID is null THEN
+create trigger set_history_derived_biodata
+before update
+    on derived_bioassay_data
+    for each row
+begin
+   if new.characterization_pk_id is null then
        insert into history_derived_bioassay_data 
-        ( DERIVED_BIOASSAY_DATA_PK_ID, 
-          CHARACTERIZATION_PK_ID, 
-          LIST_INDEX, 
-          DELETED_DATE )
+        ( derived_bioassay_data_pk_id, 
+          characterization_pk_id, 
+          list_index, 
+          deleted_date )
        values 
         (old.derived_bioassay_data_pk_id, 
          old.characterization_pk_id, 
          old.list_index,
          sysdate());
-   ELSE 
-       delete from history_derived_bioassay_data where DERIVED_BIOASSAY_DATA_PK_ID=old.DERIVED_BIOASSAY_DATA_PK_ID;
-   END IF;
-END$
+   else 
+       delete from history_derived_bioassay_data where derived_bioassay_data_pk_id=old.derived_bioassay_data_pk_id;
+   end if;
+end$
 
 
-CREATE TRIGGER SET_HISTORY_DATUM
-BEFORE update
-    ON datum
-    FOR EACH ROW
-BEGIN
-   IF new.derived_bioassay_data_pk_id is null THEN
+create trigger set_history_datum
+before update
+    on datum
+    for each row
+begin
+   if new.derived_bioassay_data_pk_id is null then
        insert into history_datum 
         ( datum_pk_id, 
           name, 
@@ -86,53 +86,53 @@ BEGIN
          old.statistics_type, 
          old.bioassay_data_category, 
          sysdate() );
-   ELSE 
+   else 
        delete from history_datum where datum_pk_id=old.datum_pk_id;
-   END IF;
-END$
+   end if;
+end$
 
-CREATE TRIGGER SET_HISTORY_CHARACTERIZATION
-BEFORE DELETE
-    ON CHARACTERIZATION
-    FOR EACH ROW
-BEGIN
-   -- Insert record into audit table
-    INSERT INTO HISTORY_CHARACTERIZATION
-     ( CHARACTERIZATION_PK_ID,
-       CLASSIFICATION,
-       SOURCE,DESCRIPTION,
-       IDENTIFIER_NAME,
-       NAME,
-       DISCRIMINATOR,
-       CREATED_DATE,
-       CREATED_BY,
-       PROTOCOL_FILE_PK_ID,
-       INSTRUMENT_CONFIG_PK_ID, 
-       DELETED_DATE,
-       TABLE_SOURCE)
-    VALUES
-     ( old.CHARACTERIZATION_PK_ID, 
-       old.CLASSIFICATION, 
-       old.SOURCE, 
-       old.DESCRIPTION, 
-       old.IDENTIFIER_NAME, 
-       old.NAME, 
-       old.DISCRIMINATOR, 
-       old.CREATED_DATE, 
-       old.CREATED_BY, 
-       old.PROTOCOL_FILE_PK_ID, 
-       old.INSTRUMENT_CONFIG_PK_ID, 
+create trigger set_history_characterization
+before delete
+    on characterization
+    for each row
+begin
+   -- insert record into audit table
+    insert into history_characterization
+     ( characterization_pk_id,
+       classification,
+       source,description,
+       identifier_name,
+       name,
+       discriminator,
+       created_date,
+       created_by,
+       protocol_file_pk_id,
+       instrument_config_pk_id, 
+       deleted_date,
+       table_source)
+    values
+     ( old.characterization_pk_id, 
+       old.classification, 
+       old.source, 
+       old.description, 
+       old.identifier_name, 
+       old.name, 
+       old.discriminator, 
+       old.created_date, 
+       old.created_by, 
+       old.protocol_file_pk_id, 
+       old.instrument_config_pk_id, 
        sysdate(),
-       'CHARACTERIZATION');
+       'characterization');
 
-END$
+end$
 
-CREATE TRIGGER SET_HIST_COMPOSING_ELEMENT
-BEFORE update
-    ON  composing_element
-    FOR EACH ROW
-BEGIN
-   IF new.characterization_pk_id is null then
+create trigger set_hist_composing_element
+before update
+    on  composing_element
+    for each row
+begin
+   if new.characterization_pk_id is null then
        insert into history_composing_element
         ( composing_element_pk_id, 
           element_type, 
@@ -149,17 +149,17 @@ BEGIN
          old.characterization_pk_id, 
          old.list_index, 
          sysdate() );
-   ELSE 
+   else 
       delete from history_composing_element where composing_element_pk_id=old.composing_element_pk_id;
-   END IF;
-END$
+   end if;
+end$
 
-CREATE TRIGGER SET_HISTORY_SURFACE_CHEMISTRY
-BEFORE update
-    ON  surface_chemistry
-    FOR EACH ROW
-BEGIN
-   IF new.surface_pk_id is null THEN
+create trigger set_history_surface_chemistry
+before update
+    on  surface_chemistry
+    for each row
+begin
+   if new.surface_pk_id is null then
        insert into history_surface_chemistry
         ( surface_chemistry_pk_id, 
           molecule_name, 
@@ -176,17 +176,17 @@ BEGIN
          old.list_index, 
 		 old.molecular_formula_type,
          sysdate() );
-   ELSE
+   else
       delete from history_surface_chemistry where surface_chemistry_pk_id=old.surface_chemistry_pk_id;
-   END IF;      
-END$
+   end if;      
+end$
 
-CREATE TRIGGER SET_HISTORY_SURFACE_GROUP
-BEFORE update
-    ON  surface_group
-    FOR EACH ROW
-BEGIN
-   IF new.d_composition_pk_id is null THEN
+create trigger set_history_surface_group
+before update
+    on  surface_group
+    for each row
+begin
+   if new.d_composition_pk_id is null then
        insert into history_surface_group
         ( surface_group_pk_id, 
           name, 
@@ -201,71 +201,71 @@ BEGIN
          old.d_composition_pk_id, 
          old.list_index, 
          sysdate() );
-   ELSE 
+   else 
       delete from history_surface_group where surface_group_pk_id=old.surface_group_pk_id;
-   END IF;
-END$
+   end if;
+end$
 
-CREATE TRIGGER SET_HISTORY_LAB_FILE
-BEFORE DELETE
-    ON LAB_FILE
-    FOR EACH ROW
-BEGIN
-   -- Insert record into audit table
-    INSERT INTO HISTORY_LAB_FILE
-     ( FILE_PK_ID,
-       FILE_NAME,
-       FILE_URI,
-       FILE_TYPE_EXTENSION,
-       FILE_SOURCE_TYPE,
-       VERSION,
-       STATUS,
-       REASON,
-       CREATED_BY,
-       CREATED_DATE,
-       SAMPLE_SOP_PK_ID,
-       RUN_PK_ID,
-       DATA_STATUS_PK_ID,
-       TITLE,
-       DESCRIPTION,
-       COMMENTS,
-       TYPE,
-       DELETED_DATE )   
-    VALUES
-     ( old.FILE_PK_ID,
-       old.FILE_NAME,
-       old.FILE_URI,
-       old.FILE_TYPE_EXTENSION,
-       old.FILE_SOURCE_TYPE,
-       old.VERSION,
-       old.STATUS,
-       old.REASON,
-       old.CREATED_BY,
-       old.CREATED_DATE,
-       old.SAMPLE_SOP_PK_ID,
-       old.RUN_PK_ID,
-       old.DATA_STATUS_PK_ID,
-       old.TITLE,
-       old.DESCRIPTION,
-       old.COMMENTS,
-       old.TYPE,
+create trigger set_history_lab_file
+before delete
+    on lab_file
+    for each row
+begin
+   -- insert record into audit table
+    insert into history_lab_file
+     ( file_pk_id,
+       file_name,
+       file_uri,
+       file_type_extension,
+       file_source_type,
+       version,
+       status,
+       reason,
+       created_by,
+       created_date,
+       sample_sop_pk_id,
+       run_pk_id,
+       data_status_pk_id,
+       title,
+       description,
+       comments,
+       type,
+       deleted_date )   
+    values
+     ( old.file_pk_id,
+       old.file_name,
+       old.file_uri,
+       old.file_type_extension,
+       old.file_source_type,
+       old.version,
+       old.status,
+       old.reason,
+       old.created_by,
+       old.created_date,
+       old.sample_sop_pk_id,
+       old.run_pk_id,
+       old.data_status_pk_id,
+       old.title,
+       old.description,
+       old.comments,
+       old.type,
        sysdate());
-END$
+end$
 
-CREATE TRIGGER SET_HISTORY_NANOTUBE
+create trigger set_history_nanotube
 before delete
     on carbon_nanotube_composition
     for each row
 begin     
-    INSERT INTO HISTORY_CHARACTERIZATION
-     ( CHARACTERIZATION_PK_ID, 
-       CHIRALITY, 
-       GROWTH_DIAMETER, 
-       AVERAGE_LENGTH, 
-       WALL_TYPE, 
-       DELETED_DATE, 
-       TABLE_SOURCE)
-    VALUES
+    insert into history_characterization
+     ( characterization_pk_id, 
+       chirality, 
+       growth_diameter, 
+       average_length, 
+       wall_type, 
+       deleted_date, 
+       table_source)
+    values
      ( old.cn_composition_pk_id, 
        old.chirality, 
        old.growth_diameter, 
@@ -276,20 +276,20 @@ begin
       
 end$
 
-CREATE TRIGGER SET_HISTORY_DENDRIMER
+create trigger set_history_dendrimer
 before delete
     on dendrimer_composition
     for each row
 begin     
-    INSERT INTO HISTORY_CHARACTERIZATION
-     ( CHARACTERIZATION_PK_ID,
-       GENERATION, 
-       MOLECULAR_FORMULA, 
-       REPEAT_UNIT, 
-       BRANCH,
-       DELETED_DATE, 
-       TABLE_SOURCE)
-    VALUES
+    insert into history_characterization
+     ( characterization_pk_id,
+       generation, 
+       molecular_formula, 
+       repeat_unit, 
+       branch,
+       deleted_date, 
+       table_source)
+    values
      ( old.d_composition_pk_id,
        old.generation,
        old.molecular_formula,
@@ -299,20 +299,20 @@ begin
        'DENDRIMER_COMPOSITION');
 end$
 
-CREATE TRIGGER SET_HISTORY_EMULSION
+create trigger set_history_emulsion
 before delete
     on emulsion_composition
     for each row
 begin     
-    INSERT INTO HISTORY_CHARACTERIZATION
-     ( CHARACTERIZATION_PK_ID,
-       EMULSION_TYPE, 
-       MOLECULAR_FORMULA, 
-       POLYMER_NAME, 
-       IS_POLYMERIZED,
-       DELETED_DATE, 
-       TABLE_SOURCE)
-    VALUES
+    insert into history_characterization
+     ( characterization_pk_id,
+       emulsion_type, 
+       molecular_formula, 
+       polymer_name, 
+       is_polymerized,
+       deleted_date, 
+       table_source)
+    values
      ( old.e_composition_pk_id,
        old.emulsion_type,
        old.molecular_formula,
@@ -322,18 +322,18 @@ begin
        'EMULSION_COMPOSITION');
 end$
 
-CREATE TRIGGER SET_HISTORY_CYTOTOXICITY
+create trigger set_history_cytotoxicity
 before delete
     on cytotoxicity
     for each row
 begin     
-    INSERT INTO HISTORY_CHARACTERIZATION
-     ( CHARACTERIZATION_PK_ID,
-       CELL_LINE, 
-       CELL_DEATH_METHOD, 
-       DELETED_DATE, 
-       TABLE_SOURCE)
-    VALUES
+    insert into history_characterization
+     ( characterization_pk_id,
+       cell_line, 
+       cell_death_method, 
+       deleted_date, 
+       table_source)
+    values
      ( old.cytotoxicity_pk_id,
        old.cell_line,
        old.cell_death_method,
@@ -341,53 +341,53 @@ begin
        'CYTOTOXICITY');
 end$
 
-CREATE TRIGGER SET_HISTORY_FULLERENE
+create trigger set_history_fullerene
 before delete
     on fullerene_composition
     for each row
 begin     
-    INSERT INTO HISTORY_CHARACTERIZATION
-     ( CHARACTERIZATION_PK_ID,
-       NUMBER_OF_CARBON,
-       DELETED_DATE, 
-       TABLE_SOURCE)
-    VALUES
+    insert into history_characterization
+     ( characterization_pk_id,
+       number_of_carbon,
+       deleted_date, 
+       table_source)
+    values
      ( old.f_composition_pk_id,
        old.number_of_carbon,
        sysdate(),
        'FULLERENE_COMPOSITION');
 end$
 
-CREATE TRIGGER SET_HISTORY_MORPHOLOGY
+create trigger set_history_morphology
 before delete
     on morphology
     for each row
 begin     
-    INSERT INTO HISTORY_CHARACTERIZATION
-     ( CHARACTERIZATION_PK_ID,
-       TYPE,
-       DELETED_DATE, 
-       TABLE_SOURCE)
-    VALUES
+    insert into history_characterization
+     ( characterization_pk_id,
+       type,
+       deleted_date, 
+       table_source)
+    values
      ( old.morphology_pk_id,
        old.type,
        sysdate(),
        'MORPHOLOGY');
 end$
 
-CREATE TRIGGER SET_HISTORY_POLYMER
+create trigger set_history_polymer
 before delete
     on polymer_composition
     for each row
 begin     
-    INSERT INTO HISTORY_CHARACTERIZATION
-     ( CHARACTERIZATION_PK_ID,
-       IS_CROSS_LINK,
-       CROSS_LINK_DEGREE,
-       INITIATOR,
-       DELETED_DATE, 
-       TABLE_SOURCE)
-    VALUES
+    insert into history_characterization
+     ( characterization_pk_id,
+       is_cross_link,
+       cross_link_degree,
+       initiator,
+       deleted_date, 
+       table_source)
+    values
      ( old.p_composition_pk_id,
        old.is_cross_link,
        old.cross_link_degree,
@@ -396,21 +396,21 @@ begin
        'POLYMER_COMPOSITION');
 end$
 
-CREATE TRIGGER SET_HISTORY_SHAPE
+create trigger set_history_shape
 before delete
     on shape
     for each row
 begin     
-    INSERT INTO HISTORY_CHARACTERIZATION
-     ( CHARACTERIZATION_PK_ID,
-       MAX_DIMENSION,
-       MIN_DIMENSION,
-       MAX_DIMENSION_UNIT,
-       MIN_DIMENSION_UNIT,
-       TYPE,
-       DELETED_DATE, 
-       TABLE_SOURCE)
-    VALUES
+    insert into history_characterization
+     ( characterization_pk_id,
+       max_dimension,
+       min_dimension,
+       max_dimension_unit,
+       min_dimension_unit,
+       type,
+       deleted_date, 
+       table_source)
+    values
      ( old.shape_pk_id,
        old.max_dimension,
        old.min_dimension,
@@ -421,20 +421,20 @@ begin
        'SHAPE');
 end$
 
-CREATE TRIGGER SET_HISTORY_SOLUBILITY
+create trigger set_history_solubility
 before delete
     on solubility
     for each row
 begin     
-    INSERT INTO HISTORY_CHARACTERIZATION
-     ( CHARACTERIZATION_PK_ID,
-       SOLVENT,
-       CRITICAL_CONCENTRATION,
-       CONCENTRATION_UNIT,
-       IS_SOLUBLE,
-       DELETED_DATE, 
-       TABLE_SOURCE)
-    VALUES
+    insert into history_characterization
+     ( characterization_pk_id,
+       solvent,
+       critical_concentration,
+       concentration_unit,
+       is_soluble,
+       deleted_date, 
+       table_source)
+    values
      ( old.solubility_pk_id,
        old.solvent,
        old.critical_concentration,
@@ -444,23 +444,23 @@ begin
        'SOLUBILITY');
 end$
 
-CREATE TRIGGER SET_HISTORY_SURFACE
+create trigger set_history_surface
 before delete
     on surface
     for each row
 begin     
-    INSERT INTO HISTORY_CHARACTERIZATION
-     ( CHARACTERIZATION_PK_ID,
-       SURFACE_AREA,
-       SURFACE_AREA_UNIT,
-       ZETA_POTENTIAL,
-	   ZETA_POTENTIAL_UNIT,
-       CHARGE,
-       CHARGE_UNIT,
-       IS_HYDROPHOBIC,
-       DELETED_DATE, 
-       TABLE_SOURCE)
-    VALUES
+    insert into history_characterization
+     ( characterization_pk_id,
+       surface_area,
+       surface_area_unit,
+       zeta_potential,
+	   zeta_potential_unit,
+       charge,
+       charge_unit,
+       is_hydrophobic,
+       deleted_date, 
+       table_source)
+    values
      ( old.surface_pk_id,
        old.surface_area,
        old.surface_area_unit,
