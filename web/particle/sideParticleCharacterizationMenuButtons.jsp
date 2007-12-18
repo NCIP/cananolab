@@ -6,7 +6,7 @@
 			<c:choose>
 			<c:when test="${!empty charaLeafToCharacterizations[param.charType]}">
 				<td class="${param.charTypeLabelStyle}">
-				<c:url var="url" value="${charaLeafActionName[param.charType]}.do">
+				<c:url var="url" value="${param.addAction}.do">
 					<c:param name="particleId" value="${particleId}" />
 					<c:param name="submitType" value="${param.charType}" />
 					<c:param name="page" value="0" />
@@ -28,7 +28,7 @@
 		<c:choose>
 			<c:when test="${canCreateNanoparticle eq 'true'}">
 				<c:url var="submitUrl"
-					value="${charaLeafActionName[param.charType]}.do">
+					value="${param.addAction}.do">
 					<c:param name="particleId" value="${particleId}" />
 					<c:param name="submitType" value="${param.charType}" />
 					<c:param name="page" value="0" />
