@@ -207,314 +207,53 @@
 			<forward name="setup" path="particle.composition" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
-			parameter="dispatch" path="/size"
-			type="gov.nih.nci.calab.ui.particle.NanoparticleSizeAction"
+			parameter="dispatch" path="/physicalCharacterization"
+			type="gov.nih.nci.calab.ui.particle.PhysicalCharacterizationAction"
 			input="input">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				key="error.characterizationException"
+				path="/physicalCharacterization.do?dispatch=input&amp;page=0"
+				type="gov.nih.nci.calab.exception.ParticleCharacterizationException" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="particle" key="error.duplicateEntryException"
+				path="/physicalCharacterization.do?dispatch=input&amp;page=0"
+				type="gov.nih.nci.calab.exception.DuplicateEntriesException" />
 			<forward name="success" path="particle.physicalDetailView" />
 			<forward name="input"
-				path="/size.do?dispatch=input&amp;page=0" />
+				path="/physicalCharacterization.do?dispatch=input&amp;page=0" />
 			<forward name="setup"
 				path="particle.physicalCharacterization" />
+			<forward name="morphologySetup" path="particle.morphology" />
+			<forward name="shapeSetup"
+				path="particle.shape" />
+			<forward name="solubilitySetup" path="particle.solubility" />
+			<forward name="surfaceSetup" path="particle.surface" />
 			<forward name="detailView"
 				path="particle.physicalDetailView" />
 			<forward name="summaryView"
 				path="particle.physicalSummaryView" />
 		</action>
 		<action name="nanoparticleCharacterizationForm"
-			parameter="dispatch" path="/surface"
-			type="gov.nih.nci.calab.ui.particle.NanoparticleSurfaceAction"
+			parameter="dispatch" path="/invitroCharacterization"
+			type="gov.nih.nci.calab.ui.particle.InvitroCharacterizationAction"
 			input="input">
-			<forward name="success" path="particle.physicalDetailView" />
-			<forward name="input"
-				path="/surface.do?dispatch=input&amp;page=0" />
-			<forward name="setup" path="particle.surface" />
-			<forward name="detailView"
-				path="particle.physicalDetailView" />
-			<forward name="summaryView"
-				path="particle.physicalSummaryView" />
-		</action>
-		<action name="nanoparticleCharacterizationForm"
-			parameter="dispatch" path="/molecularWeight"
-			type="gov.nih.nci.calab.ui.particle.NanoparticleMolecularWeightAction"
-			input="input">
-			<forward name="success" path="particle.physicalDetailView" />
-			<forward name="input"
-				path="/molecularWeight.do?dispatch=input&amp;page=0" />
-			<forward name="setup"
-				path="particle.physicalCharacterization" />
-			<forward name="detailView"
-				path="particle.physicalDetailView" />
-			<forward name="summaryView"
-				path="particle.physicalSummaryView" />
-		</action>
-		<action name="nanoparticleCharacterizationForm"
-			parameter="dispatch" path="/morphology"
-			type="gov.nih.nci.calab.ui.particle.NanoparticleMorphologyAction"
-			input="input">
-			<forward name="success" path="particle.physicalDetailView" />
-			<forward name="input"
-				path="/morphology.do?dispatch=input&amp;page=0" />
-			<forward name="setup" path="particle.morphology" />
-			<forward name="detailView"
-				path="particle.physicalDetailView" />
-			<forward name="summaryView"
-				path="particle.physicalSummaryView" />
-		</action>
-		<action name="nanoparticleCharacterizationForm"
-			parameter="dispatch" path="/shape"
-			type="gov.nih.nci.calab.ui.particle.NanoparticleShapeAction"
-			input="input">
-			<forward name="success" path="particle.physicalDetailView" />
-			<forward name="input"
-				path="/shape.do?dispatch=input&amp;page=0" />
-			<forward name="setup" path="particle.shape" />
-			<forward name="detailView"
-				path="particle.physicalDetailView" />
-			<forward name="summaryView"
-				path="particle.physicalSummaryView" />
-		</action>
-		<action name="nanoparticleCharacterizationForm"
-			parameter="dispatch" path="/purity"
-			type="gov.nih.nci.calab.ui.particle.NanoparticlePurityAction"
-			input="input">
-			<forward name="success" path="particle.physicalDetailView" />
-			<forward name="input"
-				path="/purity.do?dispatch=input&amp;page=0" />
-			<forward name="setup"
-				path="particle.physicalCharacterization" />
-			<forward name="detailView"
-				path="particle.physicalDetailView" />
-			<forward name="summaryView"
-				path="particle.physicalSummaryView" />
-		</action>
-		<action name="nanoparticleCharacterizationForm"
-			parameter="dispatch" path="/solubility"
-			type="gov.nih.nci.calab.ui.particle.NanoparticleSolubilityAction"
-			input="input">
-			<forward name="success" path="particle.physicalDetailView" />
-			<forward name="input"
-				path="/solubility.do?dispatch=input&amp;page=0" />
-			<forward name="setup" path="particle.solubility" />
-			<forward name="detailView"
-				path="particle.physicalDetailView" />
-			<forward name="summaryView"
-				path="particle.physicalSummaryView" />
-		</action>
-		<action name="nanoparticleCharacterizationForm"
-			parameter="dispatch" path="/hemolysis"
-			type="gov.nih.nci.calab.ui.particle.InvitroHemolysisAction"
-			input="input">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				key="error.characterizationException"
+				path="/invitroCharacterization.do?dispatch=input&amp;page=0"
+				type="gov.nih.nci.calab.exception.ParticleCharacterizationException" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				bundle="particle" key="error.duplicateEntryException"
+				path="/invitroCharacterization.do?dispatch=input&amp;page=0"
+				type="gov.nih.nci.calab.exception.DuplicateEntriesException" />
 			<forward name="success" path="particle.inVitroDetailView" />
 			<forward name="input"
-				path="/hemolysis.do?dispatch=input&amp;page=0" />
-			<forward name="setup"
-				path="particle.inVitroCharacterization" />
-			<forward name="detailView"
-				path="particle.inVitroDetailView" />
-			<forward name="summaryView"
-				path="particle.inVitroSummaryView" />
-		</action>
-		<action name="nanoparticleCharacterizationForm"
-			parameter="dispatch" path="/plateletAggregation"
-			type="gov.nih.nci.calab.ui.particle.InvitroPlateletAggregationAction"
-			input="input">
-			<forward name="success" path="particle.inVitroDetailView" />
-			<forward name="input"
-				path="/plateletAggregation.do?dispatch=input&amp;page=0" />
-			<forward name="setup"
-				path="particle.inVitroCharacterization" />
-			<forward name="detailView"
-				path="particle.inVitroDetailView" />
-			<forward name="summaryView"
-				path="particle.inVitroSummaryView" />
-		</action>
-		<action name="nanoparticleCharacterizationForm"
-			parameter="dispatch" path="/coagulation"
-			type="gov.nih.nci.calab.ui.particle.InvitroCoagulationAction"
-			input="input">
-			<forward name="success" path="particle.inVitroDetailView" />
-			<forward name="input"
-				path="/coagulation.do?dispatch=input&amp;page=0" />
-			<forward name="setup"
-				path="particle.inVitroCharacterization" />
-			<forward name="detailView"
-				path="particle.inVitroDetailView" />
-			<forward name="summaryView"
-				path="particle.inVitroSummaryView" />
-		</action>
-		<action name="nanoparticleCharacterizationForm"
-			parameter="dispatch" path="/plasmaProteinBinding"
-			type="gov.nih.nci.calab.ui.particle.InvitroProteinBindingAction"
-			input="input">
-			<forward name="success" path="particle.inVitroDetailView" />
-			<forward name="input"
-				path="/plasmaProteinBinding.do?dispatch=input&amp;page=0" />
-			<forward name="setup"
-				path="particle.inVitroCharacterization" />
-			<forward name="detailView"
-				path="particle.inVitroDetailView" />
-			<forward name="summaryView"
-				path="particle.inVitroSummaryView" />
-		</action>
-		<action name="nanoparticleCharacterizationForm"
-			parameter="dispatch" path="/complementActivation"
-			type="gov.nih.nci.calab.ui.particle.InvitroComplementActivationAction"
-			input="input">
-			<forward name="success" path="particle.inVitroDetailView" />
-			<forward name="input"
-				path="/complementActivation.do?dispatch=input&amp;page=0" />
-			<forward name="setup"
-				path="particle.inVitroCharacterization" />
-			<forward name="detailView"
-				path="particle.inVitroDetailView" />
-			<forward name="summaryView"
-				path="particle.inVitroSummaryView" />
-		</action>
-		<action name="nanoparticleCharacterizationForm"
-			parameter="dispatch" path="/cytokineInduction"
-			type="gov.nih.nci.calab.ui.particle.InvitroCytokineInductionAction"
-			input="input">
-			<forward name="success" path="particle.inVitroDetailView" />
-			<forward name="input"
-				path="/cytokineInduction.do?dispatch=input&amp;page=0" />
-			<forward name="setup"
-				path="particle.inVitroCharacterization" />
-			<forward name="detailView"
-				path="particle.inVitroDetailView" />
-			<forward name="summaryView"
-				path="particle.inVitroSummaryView" />
-		</action>
-		<action name="nanoparticleCharacterizationForm"
-			parameter="dispatch" path="/chemotaxis"
-			type="gov.nih.nci.calab.ui.particle.InvitroChemotaxisAction"
-			input="input">
-			<forward name="success" path="particle.inVitroDetailView" />
-			<forward name="input"
-				path="/chemotaxis.do?dispatch=input&amp;page=0" />
-			<forward name="setup"
-				path="particle.inVitroCharacterization" />
-			<forward name="detailView"
-				path="particle.inVitroDetailView" />
-			<forward name="summaryView"
-				path="particle.inVitroSummaryView" />
-		</action>
-		<action name="nanoparticleCharacterizationForm"
-			parameter="dispatch" path="/nKCellCytotoxicActivity"
-			type="gov.nih.nci.calab.ui.particle.InvitroNKCellCytotoxicActivityAction"
-			input="input">
-			<forward name="success" path="particle.inVitroDetailView" />
-			<forward name="input"
-				path="/nKCellCytotoxicActivity.do?dispatch=input&amp;page=0" />
-			<forward name="setup"
-				path="particle.inVitroCharacterization" />
-			<forward name="detailView"
-				path="particle.inVitroDetailView" />
-			<forward name="summaryView"
-				path="particle.inVitroSummaryView" />
-		</action>
-		<action name="nanoparticleCharacterizationForm"
-			parameter="dispatch" path="/leukocyteProliferation"
-			type="gov.nih.nci.calab.ui.particle.InvitroLeukocyteProliferationAction"
-			input="input">
-			<forward name="success" path="particle.inVitroDetailView" />
-			<forward name="input"
-				path="/leukocyteProliferation.do?dispatch=input&amp;page=0" />
-			<forward name="setup"
-				path="particle.inVitroCharacterization" />
-			<forward name="detailView"
-				path="particle.inVitroDetailView" />
-			<forward name="summaryView"
-				path="particle.inVitroSummaryView" />
-		</action>
-		<action name="nanoparticleCharacterizationForm"
-			parameter="dispatch" path="/cFU_GM"
-			type="gov.nih.nci.calab.ui.particle.InvitroCFU_GMAction"
-			input="input">
-			<forward name="success" path="particle.inVitroDetailView" />
-			<forward name="input"
-				path="/cFU_GM.do?dispatch=input&amp;page=0" />
-			<forward name="setup"
-				path="particle.inVitroCharacterization" />
-			<forward name="detailView"
-				path="particle.inVitroDetailView" />
-			<forward name="summaryView"
-				path="particle.inVitroSummaryView" />
-		</action>
-		<action name="nanoparticleCharacterizationForm"
-			parameter="dispatch" path="/oxidativeBurst"
-			type="gov.nih.nci.calab.ui.particle.InvitroOxidativeBurstAction"
-			input="input">
-			<forward name="success" path="particle.inVitroDetailView" />
-			<forward name="input"
-				path="/oxidativeBurst.do?dispatch=input&amp;page=0" />
-			<forward name="setup"
-				path="particle.inVitroCharacterization" />
-			<forward name="detailView"
-				path="particle.inVitroDetailView" />
-			<forward name="summaryView"
-				path="particle.inVitroSummaryView" />
-		</action>
-		<action name="nanoparticleCharacterizationForm"
-			parameter="dispatch" path="/phagocytosis"
-			type="gov.nih.nci.calab.ui.particle.InvitroPhagocytosisAction"
-			input="input">
-			<forward name="success" path="particle.inVitroDetailView" />
-			<forward name="input"
-				path="/phagocytosis.do?dispatch=input&amp;page=0" />
-			<forward name="setup"
-				path="particle.inVitroCharacterization" />
-			<forward name="detailView"
-				path="particle.inVitroDetailView" />
-			<forward name="summaryView"
-				path="particle.inVitroSummaryView" />
-		</action>
-		<action name="nanoparticleCharacterizationForm"
-			parameter="dispatch" path="/cellViability"
-			type="gov.nih.nci.calab.ui.particle.InvitroCellViabilityAction"
-			input="input">
-			<forward name="success" path="particle.inVitroDetailView" />
-			<forward name="input"
-				path="/cellViability.do?dispatch=input&amp;page=0" />
-			<forward name="setup" path="particle.cytotoxicity" />
-			<forward name="detailView"
-				path="particle.inVitroDetailView" />
-			<forward name="summaryView"
-				path="particle.inVitroSummaryView" />
-		</action>
-		<action name="nanoparticleCharacterizationForm"
-			parameter="dispatch" path="/caspase3Activation"
-			type="gov.nih.nci.calab.ui.particle.InvitroCaspase3ActivationAction"
-			input="input">
-			<forward name="success" path="particle.inVitroDetailView" />
-			<forward name="input"
-				path="/caspase3Activation.do?dispatch=input&amp;page=0" />
-			<forward name="setup" path="particle.cytotoxicity" />
-			<forward name="detailView"
-				path="particle.inVitroDetailView" />
-			<forward name="summaryView"
-				path="particle.inVitroSummaryView" />
-		</action>
-		<action name="nanoparticleCharacterizationForm"
-			parameter="dispatch" path="/enzymeInduction"
-			type="gov.nih.nci.calab.ui.particle.InvitroEnzymeInductionAction"
-			input="input">
-			<forward name="success" path="particle.inVitroDetailView" />
-			<forward name="input"
-				path="/enzymeInduction.do?dispatch=input&amp;page=0" />
-			<forward name="setup"
-				path="particle.inVitroCharacterization" />
-			<forward name="detailView"
-				path="particle.inVitroDetailView" />
-			<forward name="summaryView"
-				path="particle.inVitroSummaryView" />
-		</action>
-		<action name="nanoparticleCharacterizationForm"
-			parameter="dispatch" path="/oxidativeStress"
-			type="gov.nih.nci.calab.ui.particle.InvitroOxidativeStressAction"
-			input="input">
-			<forward name="success" path="particle.inVitroDetailView" />
-			<forward name="input"
-				path="/oxidativeStress.do?dispatch=input&amp;page=0" />
+				path="/invitroCharacterization.do?dispatch=input&amp;page=0" />
+			<forward name="cytotoxicitySetup"
+				path="particle.cytotoxicity" />
 			<forward name="setup"
 				path="particle.inVitroCharacterization" />
 			<forward name="detailView"
