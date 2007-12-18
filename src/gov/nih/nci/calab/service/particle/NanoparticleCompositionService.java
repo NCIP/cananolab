@@ -1,6 +1,7 @@
 package gov.nih.nci.calab.service.particle;
 
 import gov.nih.nci.calab.db.HibernateUtil;
+import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.CarbonNanotubeComposition;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.ComplexComposition;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.DendrimerComposition;
@@ -176,31 +177,31 @@ public class NanoparticleCompositionService {
 			String compositionType) throws ParticleCompositionException {
 		ParticleComposition doComp = new ParticleComposition();
 		if (compositionType
-				.equals(CaNanoLabConstants.COMPOSITION_COMPLEX_PARTICLE_TYPE)) {
+				.equals(Characterization.COMPLEX_PARTICLE_TYPE)) {
 			doComp = new ComplexComposition();
 		} else if (compositionType
-				.equals(CaNanoLabConstants.COMPOSITION_METAL_PARTICLE_TYPE)) {
+				.equals(Characterization.METAL_PARTICLE_TYPE)) {
 			doComp = new MetalParticleComposition();
 		} else if (compositionType
-				.equals(CaNanoLabConstants.COMPOSITION_QUANTUM_DOT_TYPE)) {
+				.equals(Characterization.QUANTUM_DOT_TYPE)) {
 			doComp = new QuantumDotComposition();
 		} else if (compositionType
-				.equals(CaNanoLabConstants.COMPOSITION_CARBON_NANOTUBE_TYPE)) {
+				.equals(Characterization.CARBON_NANOTUBE_TYPE)) {
 			doComp = new CarbonNanotubeComposition();
 		} else if (compositionType
-				.equals(CaNanoLabConstants.COMPOSITION_DENDRIMER_TYPE)) {
+				.equals(Characterization.DENDRIMER_TYPE)) {
 			doComp = new DendrimerComposition();
 		} else if (compositionType
-				.equals(CaNanoLabConstants.COMPOSITION_EMULSION_TYPE)) {
+				.equals(Characterization.EMULSION_TYPE)) {
 			doComp = new EmulsionComposition();
 		} else if (compositionType
-				.equals(CaNanoLabConstants.COMPOSITION_FULLERENE_TYPE)) {
+				.equals(Characterization.FULLERENE_TYPE)) {
 			doComp = new FullereneComposition();
 		} else if (compositionType
-				.equals(CaNanoLabConstants.COMPOSITION_LIPOSOME_TYPE)) {
+				.equals(Characterization.LIPOSOME_TYPE)) {
 			doComp = new LiposomeComposition();
 		} else if (compositionType
-				.equals(CaNanoLabConstants.COMPOSITION_POLYMER_TYPE)) {
+				.equals(Characterization.POLYMER_TYPE)) {
 			doComp = new PolymerComposition();
 		}
 		// if ID is not set save to the database otherwise update
@@ -214,7 +215,7 @@ public class NanoparticleCompositionService {
 			boolean viewTitleUsed = isCompositionViewTitleUsed(session, doComp,
 					composition);
 			if (viewTitleUsed) {
-				throw new RuntimeException(
+				throw new ParticleCompositionException(
 						"The view title is already in use.  Please enter a different one.");
 			} else {
 				// if ID exists, load from database

@@ -8,8 +8,9 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleCompositionAction.java,v 1.15 2007-12-13 16:30:36 pansu Exp $ */
+/* CVS $Id: NanoparticleCompositionAction.java,v 1.16 2007-12-18 16:35:22 pansu Exp $ */
 
+import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.dto.characterization.composition.CarbonNanotubeBean;
 import gov.nih.nci.calab.dto.characterization.composition.ComposingElementBean;
 import gov.nih.nci.calab.dto.characterization.composition.CompositionBean;
@@ -71,22 +72,22 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 
 		CompositionBean composition = null;
 		if (particle.getSampleType().equalsIgnoreCase(
-				CaNanoLabConstants.COMPOSITION_DENDRIMER_TYPE)) {
+				Characterization.DENDRIMER_TYPE)) {
 			composition = (DendrimerBean) theForm.get("dendrimer");
 		} else if (particle.getSampleType().equalsIgnoreCase(
-				CaNanoLabConstants.COMPOSITION_POLYMER_TYPE)) {
+				Characterization.POLYMER_TYPE)) {
 			composition = (PolymerBean) theForm.get("polymer");
 		} else if (particle.getSampleType().equalsIgnoreCase(
-				CaNanoLabConstants.COMPOSITION_LIPOSOME_TYPE)) {
+				Characterization.LIPOSOME_TYPE)) {
 			composition = (LiposomeBean) theForm.get("liposome");
 		} else if (particle.getSampleType().equalsIgnoreCase(
-				CaNanoLabConstants.COMPOSITION_CARBON_NANOTUBE_TYPE)) {
+				Characterization.CARBON_NANOTUBE_TYPE)) {
 			composition = (CarbonNanotubeBean) theForm.get("carbonNanotube");
 		} else if (particle.getSampleType().equalsIgnoreCase(
-				CaNanoLabConstants.COMPOSITION_FULLERENE_TYPE)) {
+				Characterization.FULLERENE_TYPE)) {
 			composition = (FullereneBean) theForm.get("fullerene");
 		} else if (particle.getSampleType().equalsIgnoreCase(
-				CaNanoLabConstants.COMPOSITION_EMULSION_TYPE)) {
+				Characterization.EMULSION_TYPE)) {
 			composition = (EmulsionBean) theForm.get("emulsion");
 		} else {
 			composition = new CompositionBean();
