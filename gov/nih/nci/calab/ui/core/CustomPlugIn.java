@@ -1,5 +1,6 @@
 package gov.nih.nci.calab.ui.core;
 
+import gov.nih.nci.calab.ui.particle.InitParticleSetup;
 import gov.nih.nci.calab.ui.sample.InitSampleSetup;
 import gov.nih.nci.calab.ui.security.InitSecuritySetup;
 
@@ -27,6 +28,8 @@ public class CustomPlugIn implements PlugIn {
 		// set all sample types and create default visible groups in CSM
 		try {
 			InitSampleSetup.getInstance().setAllSampleTypes(
+					actionServlet.getServletContext());
+			InitParticleSetup.getInstance().setCharNameToCategory(
 					actionServlet.getServletContext());
 			InitSecuritySetup.getInstance().createDefaultCSMGroups();
 		} catch (Exception e) {
