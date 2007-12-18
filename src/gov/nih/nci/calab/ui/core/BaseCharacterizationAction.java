@@ -1,5 +1,6 @@
 package gov.nih.nci.calab.ui.core;
 
+import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.CharacterizationSummaryBean;
 import gov.nih.nci.calab.dto.characterization.DatumBean;
@@ -217,22 +218,9 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		cleanSessionAttributes(session);
 	}
 
-	/**
-	 * Prepopulate data for the input form
-	 * 
-	 * @param request
-	 * @param theForm
-	 * @throws Exception
-	 */
-	protected void initSetup(HttpServletRequest request,
+	private void setParticleInForm(HttpServletRequest request,
 			DynaValidatorForm theForm) throws Exception {
-		HttpSession session = request.getSession();
-		clearMap(session, theForm);
-
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		InitParticleSetup.getInstance()
-				.setAllCharacterizationDropdowns(session);
-
 		// set up particle
 		String particleId = request.getParameter("particleId");
 		if (particleId != null) {
@@ -245,9 +233,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			SortedSet<String> allOtherParticleNames = particleService
 					.getOtherParticles(particle.getSampleSource(), particle
 							.getSampleName(), user);
-			session
-					.setAttribute("allOtherParticleNames",
-							allOtherParticleNames);
+			request.getSession().setAttribute("allOtherParticleNames",
+					allOtherParticleNames);
 
 			InitParticleSetup.getInstance().setSideParticleMenu(request,
 					particleId);
@@ -255,43 +242,38 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			throw new ParticleCharacterizationException(
 					"Particle ID is required.");
 		}
-		InitSessionSetup.getInstance().setApplicationOwner(session);
-		InitParticleSetup.getInstance().setAllInstruments(session);
-		InitParticleSetup.getInstance().setAllDerivedDataFileTypes(session);
-		InitParticleSetup.getInstance().setAllPhysicalDropdowns(session);
-		InitParticleSetup.getInstance().setAllInvitroDropdowns(session);
+	}
 
-		// set characterization
-		String submitType = (String) request.getParameter("submitType");
+	private void setCharacterizationInForm(HttpServletRequest request,
+			DynaValidatorForm theForm) throws Exception {
 		String characterizationId = request.getParameter("characterizationId");
+		CharacterizationBean charBean = (CharacterizationBean) theForm
+				.get("achar");
 		if (characterizationId != null) {
 			NanoparticleCharacterizationService charService = new NanoparticleCharacterizationService();
-			CharacterizationBean charBean = charService
-					.getCharacterizationBy(characterizationId);
-			if (charBean == null) {
-				throw new ParticleCharacterizationException(
-						"This characterization no longer exists in the database.  Please log in again to refresh.");
-			}
-			theForm.set("achar", charBean);
-		}
-		CharacterizationBean achar = (CharacterizationBean) theForm
-				.get("achar");
-		if (achar != null && submitType != null) {
-			achar.setName(submitType);
-			InitParticleSetup.getInstance()
-					.setAllCharacterizationMeasureUnitsTypes(session,
-							submitType);
-			InitParticleSetup.getInstance().setDerivedDatumNames(session,
-					achar.getName());
-			InitProtocolSetup.getInstance().setProtocolFilesByCharName(session,
-					achar.getName());
-
+			charBean = charService.getCharacterizationBy(characterizationId);
+			// set up protocol file visibility
+			ProtocolFileBean protocolFileBean = charBean.getProtocolFileBean();
+			UserBean user = (UserBean) request.getSession()
+					.getAttribute("user");
 			UserService userService = new UserService(
 					CaNanoLabConstants.CSM_APP_NAME);
+			if (protocolFileBean != null) {
+				boolean status = false;
+				if (protocolFileBean.getId() != null) {
+					status = userService.checkReadPermission(user,
+							protocolFileBean.getId());
+				}
+				if (status) {
+					protocolFileBean.setHidden(false);
+				} else {
+					protocolFileBean.setHidden(true);
+				}
+			}
 
 			// set up characterization files visibility, and whether file is an
 			// image
-			for (DerivedBioAssayDataBean fileBean : achar
+			for (DerivedBioAssayDataBean fileBean : charBean
 					.getDerivedBioAssayDataList()) {
 				boolean accessStatus = userService.checkReadPermission(user,
 						fileBean.getId());
@@ -312,21 +294,54 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 					fileBean.setImage(imageStatus);
 				}
 			}
-			// set up protocol file visibility
-			ProtocolFileBean protocolFileBean = achar.getProtocolFileBean();
-			if (protocolFileBean != null) {
-				boolean status = false;
-				if (protocolFileBean.getId() != null) {
-					status = userService.checkReadPermission(user,
-							protocolFileBean.getId());
-				}
-				if (status) {
-					protocolFileBean.setHidden(false);
-				} else {
-					protocolFileBean.setHidden(true);
-				}
+
+			if (charBean == null) {
+				throw new ParticleCharacterizationException(
+						"This characterization no longer exists in the database.  Please log in again to refresh.");
+			}
+			theForm.set("achar", charBean);
+		} else {
+			String submitType = (String) request.getParameter("submitType");
+			// set characterization name to be the same as submit type
+			if (submitType != null) {
+				charBean.setName(submitType);
 			}
 		}
+		// set characterization type whether physical or in vitro
+		String charType = InitParticleSetup.getInstance().getCharType(
+				request.getSession(), charBean.getName());
+		charBean.setCharacterizationType(charType);
+	}
+
+	/**
+	 * Prepopulate data for the input form
+	 * 
+	 * @param request
+	 * @param theForm
+	 * @throws Exception
+	 */
+	protected void initSetup(HttpServletRequest request,
+			DynaValidatorForm theForm) throws Exception {
+		HttpSession session = request.getSession();
+		clearMap(session, theForm);
+
+		InitParticleSetup.getInstance()
+				.setAllCharacterizationDropdowns(session);
+		setParticleInForm(request, theForm);
+		setCharacterizationInForm(request, theForm);
+		String submitType = request.getParameter("submitType");
+		CharacterizationBean charBean = (CharacterizationBean) theForm
+				.get("achar");
+		InitParticleSetup.getInstance()
+				.setAllCharacterizationMeasureUnitsTypes(session, submitType);
+		InitParticleSetup.getInstance().setDerivedDatumNames(session,
+				charBean.getName());
+		InitProtocolSetup.getInstance().setProtocolFilesByCharType(session,
+				charBean.getCharacterizationType());
+
+		InitSessionSetup.getInstance().setApplicationOwner(session);
+		InitParticleSetup.getInstance().setAllInstruments(session);
+		InitParticleSetup.getInstance().setAllDerivedDataFileTypes(session);
 	}
 
 	/**
@@ -366,21 +381,42 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
+
+		HttpSession session = request.getSession();
 		// update editable dropdowns
+
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
-		ShapeBean shape = (ShapeBean) theForm.get("shape");
-		MorphologyBean morphology = (MorphologyBean) theForm.get("morphology");
-		CytotoxicityBean cyto = (CytotoxicityBean) theForm.get("cytotoxicity");
-		SolubilityBean solubility = (SolubilityBean) theForm.get("solubility");
-		HttpSession session = request.getSession();
+		String charNameOneWord = StringUtils
+				.getOneWordLowerCaseFirstLetter(achar.getName());
+		String setupPage = charNameOneWord + "Setup";
+		if (achar.getName().equals(Characterization.PHYSICAL_SHAPE)) {
+			ShapeBean shape = (ShapeBean) theForm.get("shape");
+			updateShapeEditable(session, shape);
+		} else if (achar.getName().equals(Characterization.PHYSICAL_MORPHOLOGY)) {
+			MorphologyBean morphology = (MorphologyBean) theForm
+					.get("morphology");
+			updateMorphologyEditable(session, morphology);
+		} else if (achar.getName().equals(Characterization.PHYSICAL_SOLUBILITY)) {
+			SolubilityBean solubility = (SolubilityBean) theForm
+					.get("solubility");
+			updateSolubilityEditable(session, solubility);
+		} else if (achar.getName().equals(Characterization.PHYSICAL_SURFACE)) {
+		} else if (achar.getName().equals(
+				Characterization.CYTOTOXICITY_CELL_VIABILITY)
+				|| achar.getName().equals(
+						Characterization.CYTOTOXICITY_CASPASE3_ACTIVIATION)) {
+			CytotoxicityBean cyto = (CytotoxicityBean) theForm
+					.get("cytotoxicity");
+			updateCytotoxicityEditable(session, cyto);
+			setupPage = "cytotoxicitySetup";
+		} else {
+			setupPage = "setup";
+		}
 		updateAllCharEditables(session, achar);
-		updateShapeEditable(session, shape);
-		updateMorphologyEditable(session, morphology);
-		updateCytotoxicityEditable(session, cyto);
-		updateSolubilityEditable(session, solubility);
+
 		// updateSurfaceEditable(session, surface);
-		return mapping.findForward("setup");
+		return mapping.findForward(setupPage);
 	}
 
 	/**
@@ -414,7 +450,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		} else if (charBean instanceof CytotoxicityBean) {
 			theForm.set("cytotoxicity", charBean);
 		}
-		return mapping.findForward("setup");
+		return input(mapping, form, request, response);
 	}
 
 	public ActionForward detailView(ActionMapping mapping, ActionForm form,
@@ -506,9 +542,9 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		return null;
 	}
 
-	public ActionForward exportFullSummary(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
+	public ActionForward exportFullSummary(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		setSummaryView(form, request);
 
@@ -546,7 +582,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		
 		return null;
 	}
-	
+
 	public ActionForward printDetailView(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
