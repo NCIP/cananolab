@@ -195,7 +195,7 @@
 											value="titleCell2VitroNoData" />
 										<jsp:param name="tableStyle" value="subTitleTable" />
 										<jsp:param name="addLinkStyle" value="addCellVitro" />
-										<jsp:param name="addAction" value="invitroCharacterization" />
+										<jsp:param name="addAction" value="inVitroCharacterization" />
 									</jsp:include>
 								</c:otherwise>
 							</c:choose>
@@ -206,7 +206,7 @@
 										id="${charaLeafActionName[thirdLevelChar]}">
 										<c:forEach var="leafCharBean"
 											items="${charaLeafToCharacterizations[thirdLevelChar]}">
-											<c:url var="url3" value="invitroCharacterization.do">
+											<c:url var="url3" value="inVitroCharacterization.do">
 												<c:param name="page" value="0" />
 												<c:param name="dispatch" value="detailView" />
 												<c:param name="particleId" value="${particleId}" />
@@ -250,7 +250,7 @@
 																<jsp:param name="tableStyle" value="charTitle" />
 																<jsp:param name="addLinkStyle" value="addCell" />
 																<jsp:param name="addAction"
-																	value="invitroCharacterization" />
+																	value="inVitroCharacterization" />
 															</jsp:include>
 														</c:otherwise>
 													</c:choose>
@@ -260,7 +260,7 @@
 															<ul class="sublist_5">
 																<c:forEach var="leafCharBean"
 																	items="${charaLeafToCharacterizations[fourthLevelChar]}">
-																	<c:url var="url4" value="invitroCharacterization.do">
+																	<c:url var="url4" value="inVitroCharacterization.do">
 																		<c:param name="page" value="0" />
 																		<c:param name="dispatch" value="detailView" />
 																		<c:param name="particleId" value="${particleId}" />
@@ -284,7 +284,7 @@
 																		items="${allCharacterizations[fourthLevelChar]}">
 																		<li>
 																			<c:url var="submitUrl"
-																				value="invitroCharacterization.do">
+																				value="inVitroCharacterization.do">
 																				<c:param name="particleId" value="${particleId}" />
 																				<c:param name="submitType" value="${fifthLevelChar}" />
 																				<c:param name="page" value="0" />
@@ -301,7 +301,7 @@
 																				<jsp:param name="tableStyle" value="charTitle" />
 																				<jsp:param name="addLinkStyle" value="addCellVitro" />
 																				<jsp:param name="addAction"
-																					value="invitroCharacterization" />
+																					value="inVitroCharacterization" />
 																			</jsp:include>
 																			<c:if
 																				test="${!empty charaLeafToCharacterizations[fifthLevelChar]}">
@@ -309,7 +309,7 @@
 																					<c:forEach var="leafCharBean"
 																						items="${charaLeafToCharacterizations[fifthLevelChar]}">
 																						<c:url var="url5"
-																							value="invitroCharacterization.do">
+																							value="inVitroCharacterization.do">
 																							<c:param name="page" value="0" />
 																							<c:param name="dispatch" value="detailView" />
 																							<c:param name="particleId" value="${particleId}" />
