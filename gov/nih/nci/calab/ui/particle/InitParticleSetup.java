@@ -1,5 +1,6 @@
 package gov.nih.nci.calab.ui.particle;
 
+import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.CharacterizationTypeBean;
 import gov.nih.nci.calab.dto.characterization.composition.CompositionBean;
@@ -14,7 +15,6 @@ import gov.nih.nci.calab.exception.ParticleCharacterizationException;
 import gov.nih.nci.calab.exception.ParticleCompositionException;
 import gov.nih.nci.calab.exception.ParticleException;
 import gov.nih.nci.calab.exception.ParticleFunctionException;
-import gov.nih.nci.calab.exception.ReportException;
 import gov.nih.nci.calab.service.common.LookupService;
 import gov.nih.nci.calab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.calab.service.particle.NanoparticleCompositionService;
@@ -23,6 +23,7 @@ import gov.nih.nci.calab.service.particle.NanoparticleService;
 import gov.nih.nci.calab.service.remote.GridSearchService;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
+import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 import gov.nih.nci.calab.ui.report.InitReportSetup;
 
@@ -34,6 +35,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -183,7 +185,8 @@ public class InitParticleSetup {
 
 			// get all characterization types that do not have children
 			// key: characterization name, value: action name
-			Map<String, String> charLeafActionNameMap = getCharTypeLeafMap(charTypeChars);
+			Map<String, String> charLeafActionNameMap = getCharTypeLeafMap(
+					session, charTypeChars);
 
 			// all characterization types
 			Map<String, Set<String>> typeTreeMap = new HashMap<String, Set<String>>();
@@ -205,8 +208,10 @@ public class InitParticleSetup {
 					}
 					String childType = displayBean.getName();
 					while (childType != null
-							&& !childType.equalsIgnoreCase("Physical")
-							&& !childType.equalsIgnoreCase("in vitro")) {
+							&& !childType
+									.equalsIgnoreCase(Characterization.PHYSICAL_CHARACTERIZATION)
+							&& !childType
+									.equalsIgnoreCase(Characterization.INVITRO_CHARACTERIZATION)) {
 						String parentType = ascendTypeTreeMap.get(childType);
 
 						if (typeTreeMap.containsKey(parentType)) {
@@ -265,8 +270,10 @@ public class InitParticleSetup {
 
 				String childType = charBean.getName();
 				while (childType != null
-						&& !childType.equalsIgnoreCase("Physical")
-						&& !childType.equalsIgnoreCase("in vitro")) {
+						&& !childType
+								.equalsIgnoreCase(Characterization.PHYSICAL_CHARACTERIZATION)
+						&& !childType
+								.equalsIgnoreCase(Characterization.INVITRO_CHARACTERIZATION)) {
 					String parentType = ascendTypeTreeMap.get(childType);
 
 					if (typeTreeMap.containsKey(parentType)) {
@@ -328,7 +335,7 @@ public class InitParticleSetup {
 		return selectedCharTreeMap;
 	}
 
-	public Map<String, String> getCharTypeLeafMap(
+	public Map<String, String> getCharTypeLeafMap(HttpSession session,
 			Map<String, List<CharacterizationBean>> charTypeMap) {
 		Map<String, String> leafMap = new HashMap<String, String>();
 		for (String ctype : charTypeMap.keySet()) {
@@ -336,7 +343,10 @@ public class InitParticleSetup {
 					.get(ctype);
 			for (CharacterizationBean cbean : cbeanList) {
 				String cname = cbean.getName();
-				leafMap.put(cname, cbean.getActionName());
+				// set characterization type whether physical or in
+				// vitro
+				cbean.setCharacterizationType(getCharType(session, cbean.getName()));
+				leafMap.put(cname, cbean.getDispatchActionName());
 			}
 		}
 		return leafMap;
@@ -380,7 +390,8 @@ public class InitParticleSetup {
 			session.setAttribute("remoteSelectedCharacterizations",
 					typeTreeSelectedMap);
 
-			Map<String, String> charActionNameMap = getCharTypeLeafMap(orderedCharTypeChars);
+			Map<String, String> charActionNameMap = getCharTypeLeafMap(session,
+					orderedCharTypeChars);
 			session.setAttribute("remoteCharaActionName", charActionNameMap);
 		}
 
@@ -622,5 +633,38 @@ public class InitParticleSetup {
 				.getAllLookupTypes("MeasureType");
 		session.setAttribute("charMeasureUnits", charUnits);
 		session.setAttribute("charMeasureTypes", types);
+	}
+
+	public void setCharNameToCategory(ServletContext appContext)
+			throws ParticleCharacterizationException,
+			CaNanoLabSecurityException {
+		if (appContext.getAttribute("characterizationCategoryMap") == null) {
+			NanoparticleCharacterizationService charService = new NanoparticleCharacterizationService();
+			Map<String, String> charNameToCharCategory = charService
+					.getCharacterizationCategoryMap();
+			appContext.setAttribute("characterizationCategoryMap",
+					charNameToCharCategory);
+		}
+	}
+
+	public String getCharType(HttpSession session, String charName) {
+		Map<String, String> charNameToCharCategory = new HashMap<String, String>(
+				(Map<? extends String, String>) session.getServletContext()
+						.getAttribute("characterizationCategoryMap"));
+		String category = charNameToCharCategory.get(charName);
+		String charType = null;
+		if (category != null
+				&& category.equals(Characterization.PHYSICAL_CHARACTERIZATION)) {
+			charType = category;
+		} else {
+			// get the top level category
+			String nextCategory = null;
+			while (category != null) {
+				nextCategory = category;
+				category = charNameToCharCategory.get(nextCategory);
+			}
+			charType = nextCategory;
+		}
+		return charType;
 	}
 }
