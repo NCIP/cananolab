@@ -172,9 +172,9 @@ VALUES (1, 'Powder'),
   (8, 'Oil');
 
 INSERT INTO def_protocol_type(protocol_type_pk_id, name)
-VALUES (1, 'Physical assay'),
-  (2, 'In Vivo assay'),
-  (3, 'In Vitro assay'),
+VALUES (1, 'Physical Assay'),
+  (2, 'In Vivo Assay'),
+  (3, 'In Vitro Assay'),
   (4, 'Radio Labeling'),
   (5, 'Synthesis'),
   (6, 'Sample Preparation'),
