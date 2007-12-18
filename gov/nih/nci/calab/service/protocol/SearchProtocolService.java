@@ -310,7 +310,7 @@ public class SearchProtocolService {
 
 		} catch (Exception e) {
 			logger.error("Problem to retrieve all protocol types.", e);
-			throw new RuntimeException(
+			throw new ProtocolException(
 					"Problem to retrieve all protocol types.");
 		} finally {
 			HibernateUtil.closeSession();

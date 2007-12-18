@@ -109,7 +109,7 @@ public class NanoparticleFunctionService {
 					particleId, function);
 
 			if (viewTitleUsed) {
-				throw new RuntimeException(
+				throw new ParticleFunctionException(
 						"The view title is already in use.  Please enter a different one.");
 			} else {
 				// if function already exists in the database, load it first
