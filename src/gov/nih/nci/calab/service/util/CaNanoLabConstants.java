@@ -1,5 +1,7 @@
 package gov.nih.nci.calab.service.util;
 
+import gov.nih.nci.calab.domain.nano.characterization.Characterization;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -107,24 +109,6 @@ public class CaNanoLabConstants {
 	 * The following Strings are nano specific
 	 * 
 	 */
-	public static final String COMPOSITION_DENDRIMER_TYPE = "Dendrimer";
-
-	public static final String COMPOSITION_POLYMER_TYPE = "Polymer";
-
-	public static final String COMPOSITION_LIPOSOME_TYPE = "Liposome";
-
-	public static final String COMPOSITION_CARBON_NANOTUBE_TYPE = "Carbon Nanotube";
-
-	public static final String COMPOSITION_FULLERENE_TYPE = "Fullerene";
-
-	public static final String COMPOSITION_QUANTUM_DOT_TYPE = "Quantum Dot";
-
-	public static final String COMPOSITION_METAL_PARTICLE_TYPE = "Metal Particle";
-
-	public static final String COMPOSITION_EMULSION_TYPE = "Emulsion";
-
-	public static final String COMPOSITION_COMPLEX_PARTICLE_TYPE = "Complex Particle";
-
 	public static final String[] DEFAULT_CHARACTERIZATION_SOURCES = new String[] { APP_OWNER };
 
 	public static final String[] CARBON_NANOTUBE_WALLTYPES = new String[] {
@@ -222,24 +206,26 @@ public class CaNanoLabConstants {
 
 	static {
 		PARTICLE_CLASSIFICATION_MAP = new HashMap<String, String>();
-		PARTICLE_CLASSIFICATION_MAP.put(COMPOSITION_DENDRIMER_TYPE,
+		PARTICLE_CLASSIFICATION_MAP.put(Characterization.DENDRIMER_TYPE,
 				ORGANIC_HYDROCARBON);
-		PARTICLE_CLASSIFICATION_MAP.put(COMPOSITION_POLYMER_TYPE,
+		PARTICLE_CLASSIFICATION_MAP.put(Characterization.POLYMER_TYPE,
 				ORGANIC_HYDROCARBON);
-		PARTICLE_CLASSIFICATION_MAP.put(COMPOSITION_FULLERENE_TYPE,
+		PARTICLE_CLASSIFICATION_MAP.put(Characterization.FULLERENE_TYPE,
 				ORGANIC_CARBON);
-		PARTICLE_CLASSIFICATION_MAP.put(COMPOSITION_CARBON_NANOTUBE_TYPE,
+		PARTICLE_CLASSIFICATION_MAP.put(Characterization.CARBON_NANOTUBE_TYPE,
 				ORGANIC_CARBON);
-		PARTICLE_CLASSIFICATION_MAP.put(COMPOSITION_LIPOSOME_TYPE, ORGANIC);
-		PARTICLE_CLASSIFICATION_MAP.put(COMPOSITION_EMULSION_TYPE, ORGANIC);
-		PARTICLE_CLASSIFICATION_MAP.put(COMPOSITION_METAL_PARTICLE_TYPE,
-				INORGANIC);
 		PARTICLE_CLASSIFICATION_MAP
-				.put(COMPOSITION_QUANTUM_DOT_TYPE, INORGANIC);
-		PARTICLE_CLASSIFICATION_MAP.put(COMPOSITION_COMPLEX_PARTICLE_TYPE,
+				.put(Characterization.LIPOSOME_TYPE, ORGANIC);
+		PARTICLE_CLASSIFICATION_MAP
+				.put(Characterization.EMULSION_TYPE, ORGANIC);
+		PARTICLE_CLASSIFICATION_MAP.put(Characterization.METAL_PARTICLE_TYPE,
+				INORGANIC);
+		PARTICLE_CLASSIFICATION_MAP.put(Characterization.QUANTUM_DOT_TYPE,
+				INORGANIC);
+		PARTICLE_CLASSIFICATION_MAP.put(Characterization.COMPLEX_PARTICLE_TYPE,
 				COMPLEX);
 	}
-
+	
 	public static final String CSM_PI = APP_OWNER + "_PI";
 
 	public static final String CSM_RESEARCHER = APP_OWNER + "_Researcher";
@@ -300,10 +286,6 @@ public class CaNanoLabConstants {
 	public static final String PHYSICAL_ASSAY_PROTOCOL = "Physical assay";
 
 	public static final String INVITRO_ASSAY_PROTOCOL = "In Vitro assay";
-
-	public static final String PHYSICAL_CHARACTERIZATION_CATEGORY = "Physical";
-
-	public static final String IN_VITRO_CHARACTERIZATION_CATEGORY = "In Vitro";
 
 	/* image file name extension */
 	public static final String[] IMAGE_FILE_EXTENSIONS = { "AVS", "BMP", "CIN",
