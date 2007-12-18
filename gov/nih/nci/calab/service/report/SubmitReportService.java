@@ -88,7 +88,7 @@ public class SubmitReportService {
 
 				List results = session
 						.createQuery(
-								"select particle from Nanoparticle particle left join fetch particle.reportCollection where particle.name='"
+								"from Nanoparticle particle left join fetch particle.reportCollection where particle.name='"
 										+ particleName + "'").list();
 
 				for (Object obj : results) {
