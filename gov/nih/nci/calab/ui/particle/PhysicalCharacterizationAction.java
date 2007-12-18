@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: PhysicalCharacterizationAction.java,v 1.1 2007-12-18 16:35:41 pansu Exp $ */
+/* CVS $Id: PhysicalCharacterizationAction.java,v 1.2 2007-12-18 18:07:13 pansu Exp $ */
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,6 +82,7 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 		SurfaceBean surfaceBean = new SurfaceBean(propBean, charBean);
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		service.addParticleSurface(surfaceBean);
+		charBean.setId(surfaceBean.getId());
 		CharacterizationBean[] otherChars = prepareCopy(request, theForm);
 		for (CharacterizationBean acharBean : otherChars) {
 			SurfaceBean aSurfaceBean = new SurfaceBean(propBean, acharBean);
@@ -157,6 +158,7 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 		SolubilityBean solubilityBean = new SolubilityBean(propBean, charBean);
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		service.addParticleSolubility(solubilityBean);
+		charBean.setId(solubilityBean.getId());
 		CharacterizationBean[] otherChars = prepareCopy(request, theForm);
 		for (CharacterizationBean acharBean : otherChars) {
 			SolubilityBean aSolubilityBean = new SolubilityBean(propBean,
@@ -175,6 +177,7 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 		ShapeBean shapeBean = new ShapeBean(propBean, charBean);
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		service.addParticleShape(shapeBean);
+		charBean.setId(shapeBean.getId());
 		CharacterizationBean[] otherChars = prepareCopy(request, theForm);
 		for (CharacterizationBean acharBean : otherChars) {
 			ShapeBean aShapeBean = new ShapeBean(propBean, acharBean);
@@ -206,6 +209,7 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 		MorphologyBean morphologyBean = new MorphologyBean(propBean, charBean);
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		service.addParticleMorphology(morphologyBean);
+		charBean.setId(morphologyBean.getId());
 		CharacterizationBean[] otherChars = prepareCopy(request, theForm);
 		for (CharacterizationBean acharBean : otherChars) {
 			MorphologyBean aMorphologyBean = new MorphologyBean(propBean,

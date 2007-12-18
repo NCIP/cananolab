@@ -26,6 +26,7 @@ public class InVitroCharacterizationAction extends BaseCharacterizationAction {
 		InitParticleSetup.getInstance().setAllInvitroDropdowns(
 				request.getSession());
 	}
+
 	/**
 	 * Add or update the data to database
 	 * 
@@ -60,6 +61,7 @@ public class InVitroCharacterizationAction extends BaseCharacterizationAction {
 		CytotoxicityBean cytoBean = new CytotoxicityBean(propBean, charBean);
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		service.addCaspase3Activation(cytoBean);
+		charBean.setId(cytoBean.getId());
 		CharacterizationBean[] otherChars = prepareCopy(request, theForm);
 		for (CharacterizationBean acharBean : otherChars) {
 			CytotoxicityBean aCytoBean = new CytotoxicityBean(propBean,
@@ -79,6 +81,7 @@ public class InVitroCharacterizationAction extends BaseCharacterizationAction {
 		CytotoxicityBean cytoBean = new CytotoxicityBean(propBean, charBean);
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		service.addCellViability(cytoBean);
+		charBean.setId(cytoBean.getId());
 		CharacterizationBean[] otherChars = prepareCopy(request, theForm);
 		for (CharacterizationBean acharBean : otherChars) {
 			CytotoxicityBean aCytoBean = new CytotoxicityBean(propBean,
@@ -270,7 +273,7 @@ public class InVitroCharacterizationAction extends BaseCharacterizationAction {
 		}
 		return postCreate(request, theForm, mapping);
 	}
-	
+
 	public ActionForward proteinBinding(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
