@@ -72,5 +72,4 @@
 		</tr>
 	</tbody>
 </table>
-<html:hidden property="shape.validateValue" value="shape"/>
 </br>
