@@ -142,19 +142,6 @@
 	<global-exceptions>
 		<exception
 			handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-			key="error.characterizationException"
-			path="particle.annotationMessage"
-			type="gov.nih.nci.calab.exception.ParticleCharacterizationException" />
-		<exception
-			handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-			key="error.compositionException" path="particle.annotationMessage"
-			type="gov.nih.nci.calab.exception.ParticleCompositionException" />
-		<exception
-			handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-			key="error.functionException" path="particle.annotationMessage"
-			type="gov.nih.nci.calab.exception.ParticleFunctionException" />
-		<exception
-			handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 			key="error.particleException" path="particle.annotationMessage"
 			type="gov.nih.nci.calab.exception.ParticleException" />
 		<exception
@@ -162,10 +149,6 @@
 			bundle="particle" key="error.securityException"
 			path="particle.annotationMessage"
 			type="gov.nih.nci.calab.exception.CaNanoLabSecurityException" />
-		<exception
-			handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-			bundle="particle" key="error.generalException"
-			path="particle.annotationMessage" type="java.lang.Exception" />
 	</global-exceptions>
 	<global-forwards>
 		<forward name="remoteComposition"
@@ -201,6 +184,11 @@
 			path="/composition"
 			type="gov.nih.nci.calab.ui.particle.NanoparticleCompositionAction"
 			input="input">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				key="error.compositionException"
+				path="/composition.do?dispatch=input&amp;page=0"
+				type="gov.nih.nci.calab.exception.ParticleCompositionException" />
 			<forward name="success" path="particle.annotationMessage" />
 			<forward name="input"
 				path="/composition.do?dispatch=input&amp;page=0" />
@@ -220,14 +208,17 @@
 				bundle="particle" key="error.duplicateEntryException"
 				path="/physicalCharacterization.do?dispatch=input&amp;page=0"
 				type="gov.nih.nci.calab.exception.DuplicateEntriesException" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				key="error.fileException" path="home.error"
+				type="gov.nih.nci.calab.exception.FileException" />
 			<forward name="success" path="particle.physicalDetailView" />
 			<forward name="input"
 				path="/physicalCharacterization.do?dispatch=input&amp;page=0" />
 			<forward name="setup"
 				path="particle.physicalCharacterization" />
 			<forward name="morphologySetup" path="particle.morphology" />
-			<forward name="shapeSetup"
-				path="particle.shape" />
+			<forward name="shapeSetup" path="particle.shape" />
 			<forward name="solubilitySetup" path="particle.solubility" />
 			<forward name="surfaceSetup" path="particle.surface" />
 			<forward name="detailView"
@@ -249,6 +240,10 @@
 				bundle="particle" key="error.duplicateEntryException"
 				path="/inVitroCharacterization.do?dispatch=input&amp;page=0"
 				type="gov.nih.nci.calab.exception.DuplicateEntriesException" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				key="error.fileException" path="particle.annotationMessage"
+				type="gov.nih.nci.calab.exception.FileException" />
 			<forward name="success" path="particle.inVitroDetailView" />
 			<forward name="input"
 				path="/inVitroCharacterization.do?dispatch=input&amp;page=0" />
@@ -276,6 +271,11 @@
 			path="/nanoparticleFunction"
 			type="gov.nih.nci.calab.ui.particle.NanoparticleFunctionAction"
 			input="input">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				key="error.functionException"
+				path="/nanoparticleFunction.do?dispatch=input&amp;page=0"
+				type="gov.nih.nci.calab.exception.ParticleFunctionException" />
 			<forward name="success" path="particle.annotationMessage" />
 			<forward name="input"
 				path="/nanoparticleFunction.do?dispatch=input&amp;page=0" />

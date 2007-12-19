@@ -145,7 +145,7 @@ public class NanoparticleFunctionService {
 		} catch (Exception e) {
 			HibernateUtil.rollbackTransaction();
 			logger.error("Problem saving function: ", e);
-			throw new ParticleFunctionException();
+			throw new ParticleFunctionException(e.getMessage());
 		} finally {
 			HibernateUtil.closeSession();
 		}

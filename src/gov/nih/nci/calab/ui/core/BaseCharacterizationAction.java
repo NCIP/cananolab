@@ -600,10 +600,10 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		List<CharacterizationSummaryBean> charSummaryBeans = service
 				.getParticleCharacterizationSummaryByName(submitType, particle
-						.getSampleId());
+						.getSampleId());		
 		if (charSummaryBeans == null) {
 			throw new Exception(
-					"There are no such characterizations in the database.");
+					"There are no such characterizations in the database");
 		}
 
 		// set data labels and file visibility, and whether file is an image
