@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.sample;
  * @author pansu
  */
 
-/* CVS $Id: CreateAliquotAction.java,v 1.7 2007-12-13 16:30:36 pansu Exp $ */
+/* CVS $Id: CreateAliquotAction.java,v 1.8 2007-12-19 16:19:11 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.sample.AliquotBean;
@@ -52,6 +52,7 @@ public class CreateAliquotAction extends AbstractDispatchAction {
 		String fullParentName = (!fromAliquot) ? "Sample Container "
 				+ containerName : "Aliquot " + parentAliquotName;
 		request.setAttribute("fullParentName", fullParentName);
+		ActionMessages msgs = new ActionMessages();
 		if (session.getAttribute("aliquotMatrix") != null) {
 			List<AliquotBean[]> aliquotMatrix = new ArrayList<AliquotBean[]>(
 					(List<? extends AliquotBean[]>) session
@@ -59,14 +60,15 @@ public class CreateAliquotAction extends AbstractDispatchAction {
 			AliquotService manageAliquotService = new AliquotService();
 			manageAliquotService.saveAliquots(fromAliquot, parentName,
 					aliquotMatrix);
-			ActionMessages msgs = new ActionMessages();
 			ActionMessage msg = new ActionMessage("message.createAliquot");
 			msgs.add("message", msg);
 			saveMessages(request, msgs);
 			forward = mapping.findForward("success");
 		} else {
-			throw new SampleException(
-					"Can't find the aliquot matrix to save when creating aliquots.  Please click on 'Update Aliquots' button before submitting");
+			ActionMessage msg = new ActionMessage("msg.empty.aliquotMatrix");
+			msgs.add("message", msg);
+			saveMessages(request, msgs);
+			forward=mapping.getInputForward();
 		}
 		return forward;
 	}
