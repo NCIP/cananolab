@@ -53,6 +53,21 @@ set name = 'In Vitro Assay'
 where name like 'In Vitro assay%'
 ;
 
+update protocol
+set protocol_type = 'In Vitro Assay'
+where protocol_type like 'In Vitro assay%'
+;
+
+update protocol
+set protocol_type = 'In Vivo Assay'
+where protocol_type like 'In Vivo assay%'
+;
+
+update protocol
+set protocol_type = 'Physical Assay'
+where protocol_type like 'Physical assay%'
+;
+
 commit;
 
 -- re-enable foreign key checks
