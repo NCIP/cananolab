@@ -223,8 +223,7 @@ public class SearchProtocolService {
 	public List<ProtocolFileBean> searchProtocols(String fileTitle,
 			String protocolType, String protocolName, UserBean user)
 			throws ProtocolException, CaNanoLabSecurityException {
-		List<ProtocolFileBean> protocols = new ArrayList<ProtocolFileBean>();
-		List<LabFileBean> protocolFiles = new ArrayList<LabFileBean>();
+		List<ProtocolFileBean> protocolFiles = new ArrayList<ProtocolFileBean>();
 
 		try {
 			HibernateUtil.beginTransaction();
@@ -271,7 +270,7 @@ public class SearchProtocolService {
 
 			for (Object obj : results) {
 				ProtocolFile pf = (ProtocolFile) obj;
-				LabFileBean pfb = new ProtocolFileBean(pf);
+				ProtocolFileBean pfb = new ProtocolFileBean(pf);
 				protocolFiles.add(pfb);
 			}
 			HibernateUtil.commitTransaction();
@@ -282,17 +281,12 @@ public class SearchProtocolService {
 			HibernateUtil.closeSession();
 		}
 		if (protocolFiles.isEmpty())
-			return protocols;
+			return protocolFiles;
 
-		List<LabFileBean> filteredProtocols = this.userService
-				.getFilteredFiles(user, protocolFiles);
-		if (!filteredProtocols.isEmpty()) {
-			for (LabFileBean fb : filteredProtocols) {
-				protocols.add((ProtocolFileBean) fb);
-			}
-		}
-		// return returnProtocols;
-		return protocols;
+		List<ProtocolFileBean> filteredProtocols = userService
+				.getFilteredProtocolFiles(user, protocolFiles);
+
+		return filteredProtocols;
 	}
 
 	public SortedSet<String> getAllProtocolTypes() throws ProtocolException {
@@ -407,7 +401,9 @@ public class SearchProtocolService {
 						pfb.setVersion(pf.getVersion());
 						list.add(pfb);
 					}
-					pb.setFileBeanList(filterProtocols(list, user));
+					List<ProtocolFileBean> filteredList = userService
+							.getFilteredProtocolFiles(user, list);
+					pb.setFileBeanList(filteredList);
 				}
 				if (!pb.getFileBeanList().isEmpty())
 					protocolBeans.add(pb);
@@ -423,26 +419,5 @@ public class SearchProtocolService {
 			HibernateUtil.closeSession();
 		}
 		return protocolBeans;
-	}
-
-	private List<ProtocolFileBean> filterProtocols(
-			List<ProtocolFileBean> protocolFiles, UserBean user)
-			throws CaNanoLabSecurityException {
-		UserService userService = new UserService(
-				CaNanoLabConstants.CSM_APP_NAME);
-		List<LabFileBean> tempList = new ArrayList<LabFileBean>();
-		for (ProtocolFileBean pfb : protocolFiles) {
-			tempList.add(pfb);
-		}
-		List<LabFileBean> filteredProtocols = userService.getFilteredFiles(
-				user, tempList);
-		protocolFiles.clear();
-
-		if (filteredProtocols == null || filteredProtocols.isEmpty())
-			return protocolFiles;
-		for (LabFileBean lfb : filteredProtocols) {
-			protocolFiles.add((ProtocolFileBean) lfb);
-		}
-		return protocolFiles;
 	}
 }

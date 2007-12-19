@@ -5,6 +5,7 @@ import gov.nih.nci.calab.domain.AssociatedFile;
 import gov.nih.nci.calab.domain.LabFile;
 import gov.nih.nci.calab.domain.Report;
 import gov.nih.nci.calab.dto.common.LabFileBean;
+import gov.nih.nci.calab.dto.common.ReportBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.calab.exception.ReportException;
@@ -34,37 +35,25 @@ public class SearchReportService {
 		this.userService = new UserService(CaNanoLabConstants.CSM_APP_NAME);
 	}
 
-	public List<LabFileBean> getReportByParticle(String particleId,
-			UserBean user) throws ReportException {
-		List<LabFileBean> fileBeans = new ArrayList<LabFileBean>();
+	public List<ReportBean> getReportByParticle(String particleId, UserBean user)
+			throws ReportException, CaNanoLabSecurityException {
+		List<ReportBean> reportBeans = new ArrayList<ReportBean>();
 
 		try {
 
 			Session session = HibernateUtil.currentSession();
 			HibernateUtil.beginTransaction();
-			List results = session
-					.createQuery(
-							"select report.id, report.filename, report.uri from Nanoparticle particle join particle.reportCollection "
-									+ " report where particle.id=" + particleId)
-					.list();
+			List results = session.createQuery(
+					"select report from Nanoparticle particle join particle.reportCollection "
+							+ " report where particle.id=" + particleId).list();
 
 			for (Object obj : results) {
-				String reportId = ((Object[]) obj)[0].toString();
-				String fileName = (String) (((Object[]) obj)[1]);
-				String uri = (String) (((Object[]) obj)[2]);
-				String toolTip = "";
-				int idx = uri.lastIndexOf(File.separator);
-				if (idx > 0)
-					toolTip = uri.substring(idx + 1);
-
-				LabFileBean fileBean = new LabFileBean();
-				fileBean.setId(reportId);
-				fileBean.setUri(uri);
-				fileBean.setName(fileName);
-				fileBean.setType(CaNanoLabConstants.REPORT);
-				fileBeans.add(fileBean);
+				Report report = (Report) obj;
+				report.getParticleCollection();
+				ReportBean reportBean = new ReportBean(report);
+				reportBean.setInstanceType(CaNanoLabConstants.REPORT);
+				reportBeans.add(reportBean);
 			}
-			fileBeans = this.userService.getFilteredFiles(user, fileBeans);
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
 			logger.error("Problem finding report info for particle: "
@@ -73,13 +62,18 @@ public class SearchReportService {
 		} finally {
 			HibernateUtil.closeSession();
 		}
-		return fileBeans;
+		if (reportBeans.isEmpty()) {
+			return reportBeans;
+		}
+		List<ReportBean> filteredReportBeans = this.userService
+				.getFilteredReports(user, reportBeans);
+		return filteredReportBeans;
 	}
 
-	public List<LabFileBean> searchReports(String reportTitle,
+	public List<ReportBean> searchReports(String reportTitle,
 			String reportType, String particleType, String[] functionTypes,
 			UserBean user) throws ReportException, CaNanoLabSecurityException {
-		List<LabFileBean> reports = new ArrayList<LabFileBean>();
+		List<ReportBean> reports = new ArrayList<ReportBean>();
 		try {
 			HibernateUtil.beginTransaction();
 			List<Object> paramList = new ArrayList<Object>();
@@ -144,16 +138,18 @@ public class SearchReportService {
 			}
 
 			for (Object obj : results) {
-				LabFileBean fileBean = null;
+				ReportBean reportBean = null;
 				if (obj instanceof Report) {
-					fileBean = new LabFileBean((Report) obj);
-					fileBean.setInstanceType(CaNanoLabConstants.REPORT);
+					Report report = (Report) obj;
+					report.getParticleCollection();
+					reportBean = new ReportBean(report);
+					reportBean.setInstanceType(CaNanoLabConstants.REPORT);
 				} else {
-					fileBean = new LabFileBean((AssociatedFile) obj);
-					fileBean
+					reportBean = new ReportBean((AssociatedFile) obj);
+					reportBean
 							.setInstanceType(CaNanoLabConstants.ASSOCIATED_FILE);
 				}
-				reports.add(fileBean);
+				reports.add(reportBean);
 			}
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
@@ -163,7 +159,7 @@ public class SearchReportService {
 			HibernateUtil.closeSession();
 		}
 
-		List<LabFileBean> filteredReports = this.userService.getFilteredFiles(
+		List<ReportBean> filteredReports = this.userService.getFilteredReports(
 				user, reports);
 
 		return filteredReports;
@@ -179,10 +175,9 @@ public class SearchReportService {
 	 * @throws ReportException
 	 * @throws CaNanoLabSecurityException
 	 */
-	public List<LabFileBean> getReportInfo(String particleId,
-			String reportType, UserBean user) throws ReportException,
-			CaNanoLabSecurityException {
-		List<LabFileBean> fileBeans = new ArrayList<LabFileBean>();
+	public List<ReportBean> getReportInfo(String particleId, String reportType,
+			UserBean user) throws ReportException, CaNanoLabSecurityException {
+		List<ReportBean> fileBeans = new ArrayList<ReportBean>();
 
 		String reportJoin = "reportCollection";
 		String associatedFileJoin = "associatedFileCollection";
@@ -199,7 +194,12 @@ public class SearchReportService {
 			HibernateUtil.beginTransaction();
 			List results = session.createQuery(hql).list();
 			for (Object obj : results) {
-				LabFileBean fileBean = new LabFileBean((LabFile) obj);
+				ReportBean fileBean = null;
+				if (obj instanceof Report) {
+					fileBean = new ReportBean((Report) obj);
+				} else {
+					fileBean = new ReportBean((AssociatedFile) obj);
+				}
 				fileBean.setInstanceType(reportType);
 				fileBeans.add(fileBean);
 			}
@@ -212,7 +212,7 @@ public class SearchReportService {
 			HibernateUtil.closeSession();
 		}
 
-		List<LabFileBean> filteredReports = this.userService.getFilteredFiles(
+		List<ReportBean> filteredReports = this.userService.getFilteredReports(
 				user, fileBeans);
 
 		// retrieve visible groups

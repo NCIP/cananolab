@@ -2,6 +2,8 @@ package gov.nih.nci.calab.service.security;
 
 import gov.nih.nci.calab.db.HibernateUtil;
 import gov.nih.nci.calab.dto.common.LabFileBean;
+import gov.nih.nci.calab.dto.common.ProtocolFileBean;
+import gov.nih.nci.calab.dto.common.ReportBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
@@ -634,18 +636,39 @@ public class UserService {
 	}
 
 	/**
-	 * Get a list of files the user has read permission on.
+	 * Get a list of protocol files the user has read permission on.
 	 * 
 	 * @param user
-	 * @param particles
+	 * @param protocolFiles
 	 * @return
 	 * @throws CaNanoLabSecurityException
 	 */
-	public List<LabFileBean> getFilteredFiles(UserBean user,
-			List<LabFileBean> files) throws CaNanoLabSecurityException {
+	public List<ProtocolFileBean> getFilteredProtocolFiles(UserBean user,
+			List<ProtocolFileBean> protocolFiles)
+			throws CaNanoLabSecurityException {
 
-		List<LabFileBean> filteredReports = new ArrayList<LabFileBean>();
-		for (LabFileBean file : files) {
+		List<ProtocolFileBean> filteredProtocolFiles = new ArrayList<ProtocolFileBean>();
+		for (ProtocolFileBean file : protocolFiles) {
+			boolean status = checkReadPermission(user, file.getId());
+			if (status)
+				filteredProtocolFiles.add(file);
+		}
+		return filteredProtocolFiles;
+	}
+
+	/**
+	 * Get a list of reports the user has read permission on.
+	 * 
+	 * @param user
+	 * @param files
+	 * @return
+	 * @throws CaNanoLabSecurityException
+	 */
+	public List<ReportBean> getFilteredReports(UserBean user,
+			List<ReportBean> reports) throws CaNanoLabSecurityException {
+
+		List<ReportBean> filteredReports = new ArrayList<ReportBean>();
+		for (ReportBean file : reports) {
 			boolean status = checkReadPermission(user, file.getId());
 			if (status)
 				filteredReports.add(file);
