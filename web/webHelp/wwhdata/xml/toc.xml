@@ -1,132 +1,212 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WebWorksHelpTOC version="5.0" xmlns="urn:WebWorks-Help-TOC-Schema">
-  <i t="Welcome to caNanoLab 1.2" l="0" />
-  <i t="Getting Started with caNanoLab 1.2" l="1">
+  <i t="Welcome to the caNanoLab Online Help" l="0" />
+  <i t="Getting Started with caNanoLab 1.3" l="1">
     <i t="About caNanoLab" l="2">
-      <i t="Introduction to caNanoLab" l="2#1085961" />
       <i t="Permissions and Visibility" l="3" />
-      <i t="caNanoLab Welcome Login Page" l="4" />
-      <i t="Registering a New User" l="5" />
-      <i t="Logging into caNanoLab/Updating Password" l="6" />
-      <i t="caNanoLab Welcome Main Page" l="7" />
     </i>
-    <i t="Using caNanoLab Online Help" l="8" />
-    <i t="Navigation in caNanoLab" l="9">
+    <i t="Welcome to caNanoLab Login Page" l="4">
+      <i t="Browsing Public Information" l="5" />
+      <i t="Registering a New User" l="6" />
+      <i t="Logging into caNanoLab/Updating Password" l="7" />
+      <i t="Using caNanoLab Online Help" l="8" />
+    </i>
+    <i t="Welcome to caNanoLab Home Page" l="9">
       <i t="caNanoLab Functionality Overview" l="10" />
     </i>
-    <i t="Managing caNanoLab Inventory" l="11">
-      <i t="Managing Samples" l="12">
-        <i t="caNanoLab Sample Overview" l="13" />
-        <i t="Creating a New Sample" l="14" />
-      </i>
-      <i t="Manage Aliquots" l="15">
-        <i t="Creating A New Aliquot" l="16" />
-        <i t="Editing an Aliquot" l="17" />
-        <i t="Aliquot Naming Conventions" l="18" />
-        <i t="Viewing an Aliquot" l="19" />
-        <i t="Using an Aliquot" l="20" />
-        <i t="Masking an Aliquot" l="21" />
+  </i>
+  <i t="Managing Samples and Aliquots" l="11">
+    <i t="Samples Overview" l="12">
+      <i t="Description of a Sample" l="13" />
+    </i>
+    <i t="Managing Samples" l="14">
+      <i t="Creating a New Sample" l="15" />
+      <i t="Searching Existing Samples" l="16">
+        <i t="Sample Search Results" l="17" />
+        <i t="Sample Details Page" l="18" />
       </i>
     </i>
-    <i t="Working With a caNanoLab Workflow" l="22">
-      <i t="Workflow Overview" l="23" />
-      <i t="Executing a caNanoLab Workflow" l="24">
-        <i t="Creating an Assay Run" l="25" />
-        <i t="Searching Runs" l="26" />
-        <i t="Search Run Results" l="27" />
-        <i t="Run Details - Workflow General Information" l="28" />
-        <i t="Assay Run In and Out Folders" l="29" />
+    <i t="Managing Aliquots" l="19">
+      <i t="Aliquot Naming Conventions" l="20" />
+      <i t="Creating A New Aliquot" l="21" />
+      <i t="Editing an Aliquot" l="22" />
+      <i t="Searching Existing Aliquots" l="23">
+        <i t="Aliquot Search Results" l="24" />
+        <i t="Aliquot Details Page" l="25" />
       </i>
-    </i>
-    <i t="Working with Files" l="30">
-      <i t="Uploading Input/Output Files" l="31" />
-      <i t="caNanoLab File Naming Conventions" l="32" />
-      <i t="Masking a File" l="33" />
-      <i t="Downloading Files" l="34" />
     </i>
   </i>
-  <i t="Annotating Nanoparticles" l="35">
-    <i t="Sample and Nanoparticle Definitions" l="36" />
-    <i t="Submitting a Nanoparticle Annotation" l="37">
-      <i t="Nanoparticle General Information" l="38" />
-      <i t="Particle Tree" l="39" />
+  <i t="Managing Protocols" l="26">
+    <i t="Protocols Overview" l="27">
+      <i t="Description of a Protocol" l="28" />
     </i>
-    <i t="Managing Protocols" l="40">
-      <i t="Submitting a Protocol" l="41" />
+    <i t="Submitting a Protocol" l="29" />
+    <i t="Searching Existing Protocols" l="30">
+      <i t="Protocol Search Results" l="31" />
+      <i t="Protocol File Page" l="32" />
     </i>
-    <i t="Nanoparticle Functions" l="42">
-      <i t="Adding a Nanoparticle Function" l="43" />
+  </i>
+  <i t="Managing Nanoparticles" l="33">
+    <i t="Nanoparticles Overview" l="34">
+      <i t="Description of a Nanoparticle" l="35" />
+      <i t="Annotating a Nanoparticle" l="36" />
     </i>
-    <i t="Nanoparticle Characterizations" l="44">
-      <i t="Physical Characterization" l="45">
-        <i t="Composition" l="46">
-          <i t="Carbon Nanotube" l="47" />
-          <i t="Complex Particle" l="48" />
-          <i t="Dendrimer" l="49" />
-          <i t="Emulsion" l="50" />
-          <i t="Fullerene" l="51" />
-          <i t="Liposome" l="52" />
-          <i t="Metal Particle" l="53" />
-          <i t="Polymer" l="54" />
-          <i t="Quantum Dot" l="55" />
+    <i t="Submitting a Nanoparticle - General Information" l="37" />
+    <i t="Searching Existing Nanoparticles" l="38">
+      <i t="Nanoparticle Search Results" l="39" />
+      <i t="Nanoparticle Details" l="40" />
+    </i>
+    <i t="Performing a Remote Nanoparticle Search" l="41">
+      <i t="Remote Nanoparticle Search Results" l="42" />
+    </i>
+  </i>
+  <i t="The Navigation Tree" l="43">
+    <i t="Understanding the Navigation Tree" l="44" />
+    <i t="Function Category" l="45">
+      <i t="Adding a Nanoparticle Function" l="46" />
+    </i>
+    <i t="Composition Category" l="47" />
+    <i t="Physical Characterization Category" l="48">
+      <i t="Adding a Molecular Weight Physical Characterization" l="49">
+        <i t="Displaying a Summary View of Molecular Weight Physical Characterizations" l="50" />
+        <i t="Displaying a Detail View of a Molecular Weight Physical Characterization" l="51" />
+      </i>
+      <i t="Adding a Morphology Physical Characterization" l="52">
+        <i t="Displaying a Summary View of Morphology Physical Characterizations" l="53" />
+        <i t="Displaying a Detail View of a Morphology Physical Characterization" l="54" />
+      </i>
+      <i t="Adding a Purity Physical Characterization" l="55">
+        <i t="Displaying a Summary View of Purity Physical Characterizations" l="56" />
+        <i t="Displaying a Detail View of a Purity Physical Characterization" l="57" />
+      </i>
+      <i t="Adding a Shape Physical Characterization" l="58">
+        <i t="Displaying a Summary View of Shape Physical Characterizations" l="59" />
+        <i t="Displaying a Detail View of a Shape Physical Characterization" l="60" />
+      </i>
+      <i t="Adding a Size Physical Characterization" l="61">
+        <i t="Displaying a Summary View of Size Physical Characterizations" l="62" />
+        <i t="Displaying a Detail View of a Size Physical Characterization" l="63" />
+      </i>
+      <i t="Adding a Solubility Physical Characterization" l="64">
+        <i t="Displaying a Summary View of Solubility Physical Characterizations" l="65" />
+        <i t="Displaying a Detail View of a Solubility Physical Characterization" l="66" />
+      </i>
+      <i t="Adding a Surface Physical Characterization" l="67">
+        <i t="Displaying a Summary View of Surface Physical Characterizations" l="68" />
+        <i t="Displaying a Detail View of a Surface Physical Characterization" l="69" />
+      </i>
+    </i>
+    <i t="In Vitro Characterization Category" l="70">
+      <i t="Toxicity Subcategory" l="71" />
+      <i t="Toxicity Subcategory: Cytoxicity" l="72">
+        <i t="Adding a Caspase 3 Activity In Vitro Characterization" l="73">
+          <i t="Displaying a Summary View of Caspase 3 Activity In Vitro Characterizations" l="74" />
+          <i t="Displaying a Detail View of a Caspase 3 Activity In Vitro Characterization" l="75" />
         </i>
-        <i t="Loading Characterization Files" l="56" />
-        <i t="Molecular Weight" l="57" />
-        <i t="Morphology" l="58" />
-        <i t="Purity" l="59" />
-        <i t="Shape" l="60" />
-        <i t="Size" l="61" />
-        <i t="Solubility" l="62" />
-        <i t="Surface" l="63" />
+        <i t="Adding a Cell Viability In Vitro Characterization" l="76">
+          <i t="Displaying a Summary View of Cell Viability In Vitro Characterizations" l="77" />
+          <i t="Displaying a Detail View of a Cell Viability In Vitro Characterization" l="78" />
+        </i>
       </i>
-      <i t="In Vitro Characterization" l="64">
-        <i t="In Vitro Characterization Forms" l="65" />
-        <i t="Toxicity" l="66">
-          <i t="Cytotoxicity" l="67" />
-          <i t="Immunotoxicity" l="68" />
+      <i t="Toxicity Subcategory: Enzyme Induction" l="79">
+        <i t="Adding an Enzyme Induction In Vitro Characterization" l="80">
+          <i t="Displaying a Summary View of Enzyme Induction In Vitro Characterizations" l="81" />
+          <i t="Displaying a Detail View of a Enzyme Induction In Vitro Characterization" l="82" />
+        </i>
+      </i>
+      <i t="Toxicity Subcategory: Immunotoxcity" l="83" />
+      <i t="Toxicity, Immunotoxicity Subcategory: Blood Contact" l="84">
+        <i t="Adding a Coagulation In Vitro Characterization" l="85">
+          <i t="Displaying a Summary View of Coagulation In Vitro Characterizations" l="86" />
+          <i t="Displaying a Detail View of an Coagulation Stress In Vitro Characterization" l="87" />
+        </i>
+        <i t="Adding a Hemolysis In Vitro Characterization" l="88">
+          <i t="Displaying a Summary View of Hemolysis In Vitro Characterizations" l="89" />
+          <i t="Displaying a Detail View of an Hemolysis In Vitro Characterization" l="90" />
+        </i>
+        <i t="Adding a Plasma Protein Binding In Vitro Characterization" l="91">
+          <i t="Displaying a Summary View of Plasma Protein Binding In Vitro Characterizations" l="92" />
+          <i t="Displaying a Detail View of an Plasma Protein Binding In Vitro Characterization" l="93" />
+        </i>
+        <i t="Adding a Plate Aggregation In Vitro Characterization" l="94">
+          <i t="Displaying a Summary View of Plate Aggregation In Vitro Characterizations" l="95" />
+          <i t="Displaying a Detail View of an Plate Aggregation In Vitro Characterization" l="96" />
+        </i>
+      </i>
+      <i t="Toxicity, Immunotoxicity Subcategory: Immune Cell Function" l="97">
+        <i t="Adding a CFU_GM In Vitro Characterization" l="98">
+          <i t="Displaying a Summary View of CFU_GM In Vitro Characterizations" l="99" />
+          <i t="Displaying a Detail View of an CFU_GM In Vitro Characterization" l="100" />
+        </i>
+        <i t="Adding a Chemotaxis In Vitro Characterization" l="101">
+          <i t="Displaying a Summary View of Chemotaxis In Vitro Characterizations" l="102" />
+          <i t="Displaying a Detail View of an Chemotaxis In Vitro Characterization" l="103" />
+        </i>
+        <i t="Adding a Complement Activation In Vitro Characterization" l="104">
+          <i t="Displaying a Summary View of Complement Activation In Vitro Characterizations" l="105" />
+          <i t="Displaying a Detail View of an Complement Activation In Vitro Characterization" l="106" />
+        </i>
+        <i t="Adding a Cytokine Induction In Vitro Characterization" l="107">
+          <i t="Displaying a Summary View of Cytokine Induction In Vitro Characterizations" l="108" />
+          <i t="Displaying a Detail View of an Cytokine Induction In Vitro Characterization" l="109" />
+        </i>
+        <i t="Adding a Leukocyte Proliferation In Vitro Characterization" l="110">
+          <i t="Displaying a Summary View of Leukocyte Proliferation In Vitro Characterizations" l="111" />
+          <i t="Displaying a Detail View of an Leukocyte Proliferation In Vitro Characterization" l="112" />
+        </i>
+        <i t="Adding a NK Cell Cytotoxic Activity In Vitro Characterization" l="113">
+          <i t="Displaying a Summary View of NK Cell Cytotoxic Activity In Vitro Characterizations" l="114" />
+          <i t="Displaying a Detail View of an NK Cell Cytotoxic Activity In Vitro Characterization" l="115" />
+        </i>
+        <i t="Adding a Oxidative Burst In Vitro Characterization" l="116">
+          <i t="Displaying a Summary View of Oxidative Burst In Vitro Characterizations" l="117" />
+          <i t="Displaying a Detail View of an Oxidative Burst In Vitro Characterization" l="118" />
+        </i>
+        <i t="Adding a Phagocytoxix In Vitro Characterization" l="119">
+          <i t="Displaying a Summary View of Phagocytoxix In Vitro Characterizations" l="120" />
+          <i t="Displaying a Detail View of an Phagocytoxix In Vitro Characterization" l="121" />
+        </i>
+      </i>
+      <i t="Toxicity Subcategory: Oxidative Stress" l="122">
+        <i t="Adding an Oxidative Stress In Vitro Characterization" l="123">
+          <i t="Displaying a Summary View of Oxidative Stress In Vitro Characterizations" l="124" />
+          <i t="Displaying a Detail View of an Oxidative Stress In Vitro Characterization" l="125" />
         </i>
       </i>
     </i>
-    <i t="Managing Characterizations" l="69">
-      <i t="Copying Characterizations" l="69#1130595" />
-      <i t="Deleting a Characterization" l="70" />
+    <i t="Managing Characterizations" l="126">
+      <i t="Copying Characterizations" l="127" />
+      <i t="Deleting a Characterization" l="128" />
+      <i t="Loading Physical Characterization Files" l="129" />
     </i>
-    <i t="Submitting a Nanoparticle Report" l="71" />
-  </i>
-  <i t="Searching the caNanoLab Database" l="72">
-    <i t="Launching a caNanoLab Search" l="73">
-      <i t="Searching a Workflow" l="74">
-        <i t="Workflow Search Results" l="75" />
-      </i>
-      <i t="Searching Samples" l="76">
-        <i t="Sample Search Results" l="77" />
-        <i t="Sample Details Page" l="78" />
-      </i>
-      <i t="Searching Aliquots" l="79">
-        <i t="Aliquot Search Results" l="80" />
-        <i t="Aliquot Details Page" l="81" />
-      </i>
-      <i t="Searching Nanoparticles" l="82">
-        <i t="Nanoparticle Search Results" l="83" />
-        <i t="Nanoparticle Details" l="84" />
-      </i>
-      <i t="Searching Nanoparticle Reports" l="85">
-        <i t="Nanoparticle Reports Search Results" l="86" />
-        <i t="Nanoparticle Report Details Page" l="87" />
-      </i>
-    </i>
-    <i t="Searching Protocols" l="88">
-      <i t="Protocol Search Results" l="89" />
-      <i t="Protocol File Page" l="90" />
-    </i>
-    <i t="Remote Searches" l="91">
-      <i t="Remote Nanoparticle Search" l="92">
-        <i t="Remote Nanoparticle Search Results" l="93" />
-      </i>
-      <i t="Remote Reports Search" l="94">
-        <i t="Remote Report Search Results" l="95" />
-      </i>
+    <i t="Other Associated Files Category" l="130" />
+    <i t="Reports Category" l="131" />
+    <i t="In Vivo Characterization Category" l="132">
+      <i t="Displaying a Detail View of a Physical Characterization" l="133" />
+      <i t="Displaying a Summary View of Physical Characterizations" l="134" />
+      <i t="Displaying a Detail View of an In Vitro Cytotoxicity Characterization" l="135" />
+      <i t="Displaying a Summary View of In Vitro Cytotoxicity Characterizations" l="136" />
+      <i t="Displaying a Detail View of an In Vitro Enzyme Induction Characterization" l="137" />
+      <i t="Displaying a Summary View of In Vitro Enzyme Induction Characterizations" l="138" />
+      <i t="Displaying a Detail View of an In Vitro Blood Contact Characterization" l="139" />
+      <i t="Displaying a Summary View of In Vitro Blood Contact Characterizations" l="140" />
+      <i t="Displaying a Detail View of an In Vitro Immune Cell Function Characterization" l="141" />
+      <i t="Displaying a Summary View of In Vitro Immune Cell Function Characterizations" l="142" />
+      <i t="Displaying a Detail View of an In Vitro Oxidative Stress Characterization" l="143" />
+      <i t="Displaying a Summary View of In Vitro Oxidative Stress Characterizations" l="144" />
     </i>
   </i>
-  <i t="Application Support" l="96" />
+  <i t="Submitting Reports" l="145">
+    <i t="Reports Overview" l="146" />
+    <i t="Submitting a Nanoparticle Report" l="147" />
+    <i t="Searching Nanoparticle Reports" l="148">
+      <i t="Nanoparticle Reports Search Results" l="149" />
+      <i t="Report File Page" l="150" />
+    </i>
+    <i t="Performing a Remote Reports Search" l="151">
+      <i t="Remote Report Search Results" l="152" />
+    </i>
+  </i>
+  <i t="Application Support" l="153" />
+  <i t="Glossary" l="154" />
 </WebWorksHelpTOC>
