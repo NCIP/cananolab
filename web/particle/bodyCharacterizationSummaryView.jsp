@@ -17,7 +17,7 @@
 		</td>
 		<td align="right" width="15%">
 			<a
-				href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=${nanoparticleCharacterizationForm.map.achar.actionName}_summary_view_help')"
+				href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=${nanoparticleCharacterizationForm.map.achar.dispatchActionName}_summary_view_help')"
 				class="helpText">Help</a>
 		</td>
 	</tr>
@@ -28,18 +28,21 @@
 				<tr>
 					<td>
 						<ul class="pemenu" id="printChara">
-						<li class="pelist">
-							<a href="#"><img src="images/icon_print_23x.gif"
-								border="0" align="middle"></a>
-							<ul>			
-								<li>
-									<a href="javascript:printPage('${printLinkURL}')">Print Summary </a>
-								</li>
-								<li>
-									<a href="javascript:printPage('${printAllLinkURL}')">Print Full Summary </a>
-								</li>
-							</ul>
-						</li>
+							<li class="pelist">
+								<a href="#"><img src="images/icon_print_23x.gif" border="0"
+										align="middle">
+								</a>
+								<ul>
+									<li>
+										<a href="javascript:printPage('${printLinkURL}')">Print
+											Summary </a>
+									</li>
+									<li>
+										<a href="javascript:printPage('${printAllLinkURL}')">Print
+											Full Summary </a>
+									</li>
+								</ul>
+							</li>
 						</ul>
 					</td>
 					<td></td>
@@ -59,18 +62,19 @@
 							<c:param name="dispatch" value="exportFullSummary" />
 						</c:url>
 						<ul class="pemenu" id="exportChara">
-						<li class="pelist">
-							<a href="#"><img src="images/icon_excel_23x.gif"
-								border="0" align="middle"></a>
-							<ul>			
-								<li>
-									<a href="${sumUrl}">Export Summary</a>
-								</li>
-								<li>
-									<a href="${fullSumUrl}">Export Full Summary</a>
-								</li>
-							</ul>
-						</li>
+							<li class="pelist">
+								<a href="#"><img src="images/icon_excel_23x.gif" border="0"
+										align="middle">
+								</a>
+								<ul>
+									<li>
+										<a href="${sumUrl}">Export Summary</a>
+									</li>
+									<li>
+										<a href="${fullSumUrl}">Export Full Summary</a>
+									</li>
+								</ul>
+							</li>
 						</ul>
 					</td>
 				</tr>

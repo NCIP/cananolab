@@ -2,7 +2,8 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<html:form action="/${nanoparticleCharacterizationForm.map.achar.actionName}">
+<html:form
+	action="/${nanoparticleCharacterizationForm.map.achar.actionName}">
 	<table width="100%" align="center">
 		<tr>
 			<td>
@@ -12,7 +13,7 @@
 			</td>
 			<td align="right" width="15%">
 				<a
-					href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=add_${nanoparticleCharacterizationForm.map.achar.actionName}_help')"
+					href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=add_${nanoparticleCharacterizationForm.map.achar.dispatchActionName}_help')"
 					class="helpText">Help</a>
 			</td>
 		</tr>
