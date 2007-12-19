@@ -13,7 +13,7 @@
 		</td>
 		<td align="right" width="15%">
 			<a
-				href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=${nanoparticleCharacterizationForm.map.achar.actionName}_detail_view_help')"
+				href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=${nanoparticleCharacterizationForm.map.achar.dispatchActionName}_detail_view_help')"
 				class="helpText">Help</a>
 		</td>
 	</tr>
