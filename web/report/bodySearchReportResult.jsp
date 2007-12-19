@@ -13,7 +13,10 @@
 			</h3>
 		</td>
 		<td align="right" width="15%">
-			<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=search_reports_results_help')" class="helpText">Help</a>&nbsp;&nbsp; <a href="searchReport.do?dispatch=setup" class="helpText">Back</a>
+			<a
+				href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=search_reports_results_help')"
+				class="helpText">Help</a>&nbsp;&nbsp;
+			<a href="searchReport.do?dispatch=setup" class="helpText">Back</a>
 		</td>
 	</tr>
 	<tr>
@@ -27,11 +30,19 @@
 					<c:set var="link" value="viewReportURL" />
 				</c:otherwise>
 			</c:choose>
-			<display:table name="sessionScope.reports" id="report" requestURI="searchReport.do" pagesize="25" class="displaytable" decorator="gov.nih.nci.calab.dto.common.ReportDecorator">
-				<display:column title="Report Title" property="${link}" sortable="true" />
-				<display:column title="Report Type" property="instanceType" sortable="true" />
-				<display:column title="Report Description" property="description" sortable="true" />
-				<display:column title="Report Submit Date" property="createdDate" sortable="true" format="{0,date,MM-dd-yyyy}" />
+			<display:table name="sessionScope.reports" id="report"
+				requestURI="searchReport.do" pagesize="25" class="displaytable"
+				decorator="gov.nih.nci.calab.dto.common.ReportDecorator">
+				<display:column title="Report Title" property="${link}"
+					sortable="true" />
+				<display:column title="Report Type" property="instanceType"
+					sortable="true" />
+				<display:column title="Report Description" property="description"
+					sortable="true" />
+				<display:column title="Associated Particle IDs"
+					property="particleIds" sortable="true" />
+				<display:column title="Report Submit Date" property="createdDate"
+					sortable="true" format="{0,date,MM-dd-yyyy}" />
 			</display:table>
 		</td>
 	</tr>
