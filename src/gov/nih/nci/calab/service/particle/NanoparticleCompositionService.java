@@ -216,7 +216,7 @@ public class NanoparticleCompositionService {
 					composition);
 			if (viewTitleUsed) {
 				throw new ParticleCompositionException(
-						"The view title is already in use.  Please enter a different one.");
+						"The view title is already in use.  Please enter a different one");
 			} else {
 				// if ID exists, load from database
 				if (composition.getId() != null) {
@@ -225,8 +225,8 @@ public class NanoparticleCompositionService {
 							ParticleComposition.class, new Long(composition
 									.getId()));
 					if (doComp == null)
-						throw new Exception(
-								"This composition is no longer in the database.  Please log in again to refresh.");
+						throw new ParticleCompositionException(
+								"This composition is no longer in the database.  Please log in again to refresh");
 				}
 				// update domain object
 				if (doComp instanceof DendrimerComposition) {
@@ -273,9 +273,9 @@ public class NanoparticleCompositionService {
 			}
 			HibernateUtil.commitTransaction();
 		} catch (Exception e) {
-			logger.error("Problem saving characterization. ", e);
+			logger.error("Problem saving compositions. ", e);
 			HibernateUtil.rollbackTransaction();
-			throw new ParticleCompositionException();
+			throw new ParticleCompositionException(e.getMessage());
 		} finally {
 			HibernateUtil.closeSession();
 		}

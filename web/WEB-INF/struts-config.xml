@@ -33,6 +33,10 @@
 			handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 			key="error.fileException" path="home.error"
 			type="gov.nih.nci.calab.exception.FileException" />
+		<exception
+			handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+			bundle="particle" key="error.generalException"
+			path="home.error" type="java.lang.Exception" />
 	</global-exceptions>
 	<action-mappings>
 		<action name="loginForm" path="/login" scope="request"
