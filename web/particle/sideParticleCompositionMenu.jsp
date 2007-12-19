@@ -56,7 +56,7 @@
 					</table>
 				</li>
 				<c:forEach var="leafCharBean" items="${allCompositions}">
-					<c:url var="url" value="${leafCharBean.actionName}.do">
+					<c:url var="url" value="composition.do">
 						<c:param name="page" value="0" />
 						<c:param name="dispatch" value="${dispatchValue}" />
 						<c:param name="particleId" value="${particleId}" />
