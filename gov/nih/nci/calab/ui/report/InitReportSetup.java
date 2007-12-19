@@ -1,6 +1,6 @@
 package gov.nih.nci.calab.ui.report;
 
-import gov.nih.nci.calab.dto.common.LabFileBean;
+import gov.nih.nci.calab.dto.common.ReportBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.calab.exception.ReportException;
@@ -32,11 +32,11 @@ public class InitReportSetup {
 	public void setAllReports(HttpSession session, String particleId)
 			throws ReportException, CaNanoLabSecurityException {
 		UserBean user = (UserBean) session.getAttribute("user");
-		List<LabFileBean> reportBeans = reportService.getReportInfo(particleId,
+		List<ReportBean> reportBeans = reportService.getReportInfo(particleId,
 				CaNanoLabConstants.REPORT, user);
 		session.setAttribute("particleReports", reportBeans);
 
-		List<LabFileBean> associatedBeans = reportService.getReportInfo(
+		List<ReportBean> associatedBeans = reportService.getReportInfo(
 				particleId, CaNanoLabConstants.ASSOCIATED_FILE, user);
 		session.setAttribute("particleAssociatedFiles", associatedBeans);
 	}

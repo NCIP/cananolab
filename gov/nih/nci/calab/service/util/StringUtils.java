@@ -1,11 +1,14 @@
 package gov.nih.nci.calab.service.util;
 
+import gov.nih.nci.calab.dto.common.SortableName;
+
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 
@@ -16,7 +19,7 @@ import org.apache.log4j.Logger;
  * @author pansu
  * 
  */
-/* CVS $Id: StringUtils.java,v 1.25 2007-12-17 16:22:57 cais Exp $ */
+/* CVS $Id: StringUtils.java,v 1.26 2007-12-19 23:06:53 pansu Exp $ */
 
 public class StringUtils {
 	private static Logger logger = Logger.getLogger(StringUtils.class);
@@ -85,7 +88,7 @@ public class StringUtils {
 		return joinedStr;
 	}
 
-	public static String join(List<String> stringList, String delimiter) {
+	public static String join(Collection<String> stringList, String delimiter) {
 		String joinedStr = "";
 		if (stringList == null || stringList.isEmpty()) {
 			return joinedStr;
@@ -110,26 +113,58 @@ public class StringUtils {
 		}
 		return joinedStr;
 	}
-	
-	/* 
-	 * empty string of the collection will be included in the joined string
-	 * and null item in the collection will be converted to an empty string
+
+	public static String sortJoin(Collection<String> strings, String delimiter) {
+		SortedSet<SortableName> sortableNames = new TreeSet<SortableName>();
+		for (String str : strings) {
+			sortableNames.add(new SortableName(str));
+		}
+		String joinedStr = "";
+		if (sortableNames == null || sortableNames.isEmpty()) {
+			return joinedStr;
+		}
+		// remove null and empty item from the list
+		for (SortableName sortableName : sortableNames) {
+			if (sortableName == null) {
+				sortableNames.remove(sortableName);
+			}
+			if (sortableName.getName().length() == 0) {
+				sortableNames.remove(sortableName);
+			}
+		}
+		int i = 0;
+		for (SortableName sortableName : sortableNames) {
+			if (i < sortableNames.size() - 1) {
+				joinedStr += sortableName.getName() + delimiter;
+			} else {
+				joinedStr += sortableName.getName();
+			}
+			i++;
+		}
+		return joinedStr;
+	}
+
+	/*
+	 * empty string of the collection will be included in the joined string and
+	 * null item in the collection will be converted to an empty string
 	 */
-	public static String joinEmptyItemIncluded(Collection<String> stringCollection, String delimiter) {
+	public static String joinEmptyItemIncluded(
+			Collection<String> stringCollection, String delimiter) {
 		StringBuffer buffer = new StringBuffer();
-		if(stringCollection == null || stringCollection.isEmpty()) {
+		if (stringCollection == null || stringCollection.isEmpty()) {
 			return buffer.toString();
 		}
-		
+
 		Iterator iter = stringCollection.iterator();
-        while (iter.hasNext()) {
-        	String item = (String)iter.next();
-        	if(item == null) item = "";
-            buffer.append(item);
-            if (iter.hasNext()) {
-                buffer.append(delimiter);
-            }
-        }
+		while (iter.hasNext()) {
+			String item = (String) iter.next();
+			if (item == null)
+				item = "";
+			buffer.append(item);
+			if (iter.hasNext()) {
+				buffer.append(delimiter);
+			}
+		}
 		return buffer.toString();
 	}
 

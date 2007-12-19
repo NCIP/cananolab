@@ -6,9 +6,10 @@ package gov.nih.nci.calab.ui.report;
  * @author pansu
  */
 
-/* CVS $Id: SearchReportAction.java,v 1.6 2007-12-06 22:16:05 pansu Exp $ */
+/* CVS $Id: SearchReportAction.java,v 1.7 2007-12-19 23:06:50 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
+import gov.nih.nci.calab.dto.common.ReportBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.calab.exception.FileException;
@@ -51,7 +52,7 @@ public class SearchReportAction extends AbstractDispatchAction {
 		String[] functionTypes = (String[]) theForm.get("functionTypes");
 
 		SearchReportService searchReportService = new SearchReportService();
-		List<LabFileBean> reports = searchReportService.searchReports(
+		List<ReportBean> reports = searchReportService.searchReports(
 				reportTitle, reportType, particleType, functionTypes, user);
 
 		if (reports != null && !reports.isEmpty()) {
