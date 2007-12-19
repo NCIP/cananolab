@@ -1,0 +1,22 @@
+function FileData_Pairs(x)
+{
+x.t("managing","aliquots");
+x.t("managing","samples");
+x.t("describes","manage");
+x.t("aliquots","managing");
+x.t("aliquots","cananolab");
+x.t("aliquots","section");
+x.t("topics:","samples");
+x.t("includes","following");
+x.t("overview","managing");
+x.t("cananolab","samples");
+x.t("function.","section");
+x.t("samples","managing");
+x.t("samples","aliquots");
+x.t("samples","overview");
+x.t("samples","function.");
+x.t("section","describes");
+x.t("section","includes");
+x.t("manage","samples");
+x.t("following","topics:");
+}
