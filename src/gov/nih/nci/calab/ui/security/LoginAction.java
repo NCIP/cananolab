@@ -66,7 +66,7 @@ public class LoginAction extends AbstractBaseAction {
 
 			forward = mapping.findForward("success");
 		} else {
-			throw new CaNanoLabSecurityException("Invalid Credentials.");
+			throw new CaNanoLabSecurityException("Invalid Credentials");
 		}
 		return forward;
 	}
