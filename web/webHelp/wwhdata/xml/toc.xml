@@ -63,11 +63,11 @@
   <i t="The Navigation Tree" l="43">
     <i t="Understanding the Navigation Tree" l="44" />
     <i t="Function Category" l="45">
-      <i t="Adding a Particle Diagnostic Imaging Function" l="46" />
-      <i t="Adding a Particle Diagnostic Reporting Function" l="47" />
-      <i t="Adding a ParticleTargeting Function" l="48" />
-      <i t="Adding a Particle Therapeutic Function" l="49">
-        <i t="Adding a Particle Function Table" l="50" />
+      <i t="Particle Diagnostic Imaging Function" l="46" />
+      <i t="Particle Diagnostic Reporting Function" l="47" />
+      <i t="ParticleTargeting Function" l="48" />
+      <i t="Particle Therapeutic Function" l="49">
+        <i t="The Particle Function Table" l="50" />
       </i>
     </i>
     <i t="Composition Category" l="51" />
@@ -108,9 +108,9 @@
     <i t="In Vitro Characterization Category" l="76">
       <i t="Toxicity Subcategory" l="77" />
       <i t="Toxicity Subcategory: Cytoxicity" l="78">
-        <i t="Adding a Caspase 3 Activity In Vitro Characterization" l="79">
-          <i t="Displaying a Summary View of Caspase 3 Activity In Vitro Characterizations" l="80" />
-          <i t="Displaying a Detail View of a Caspase 3 Activity In Vitro Characterization" l="81" />
+        <i t="Adding a Caspase 3 Activation In Vitro Characterization" l="79">
+          <i t="Displaying a Summary View of Caspase 3 Activation In Vitro Characterizations" l="80" />
+          <i t="Displaying a Detail View of a Caspase 3 Activation In Vitro Characterization" l="81" />
         </i>
         <i t="Adding a Cell Viability In Vitro Characterization" l="82">
           <i t="Displaying a Summary View of Cell Viability In Vitro Characterizations" l="83" />
@@ -137,8 +137,8 @@
           <i t="Displaying a Summary View of Plasma Protein Binding In Vitro Characterizations" l="98" />
           <i t="Displaying a Detail View of an Plasma Protein Binding In Vitro Characterization" l="99" />
         </i>
-        <i t="Adding a Plate Aggregation In Vitro Characterization" l="100">
-          <i t="Displaying a Summary View of Plate Aggregation In Vitro Characterizations" l="101" />
+        <i t="Adding a Platelet Aggregation In Vitro Characterization" l="100">
+          <i t="Displaying a Summary View of Plate.et Aggregation In Vitro Characterizations" l="101" />
           <i t="Displaying a Detail View of an Plate Aggregation In Vitro Characterization" l="102" />
         </i>
       </i>
