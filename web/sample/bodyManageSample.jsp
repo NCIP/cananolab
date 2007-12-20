@@ -26,7 +26,6 @@
 			aliquot, or select an existing samples and select existing aliquots.
 			<br>
 			<br>
-			</span>
 		</td>
 	</tr>
 	<tr>
