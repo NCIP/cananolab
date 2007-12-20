@@ -26,6 +26,8 @@ public class FunctionBean {
 
 	private String viewTitle;
 
+	private String displayType;
+	
 	private List<LinkageBean> linkages = new ArrayList<LinkageBean>();
 
 	/**
@@ -160,5 +162,13 @@ public class FunctionBean {
 			}
 			doFunction.getLinkageCollection().add(doLinkage);
 		}
+	}
+
+	public String getDisplayType() {
+		return displayType;
+	}
+
+	public void setDisplayType(String displayType) {
+		this.displayType = displayType;
 	}
 }
