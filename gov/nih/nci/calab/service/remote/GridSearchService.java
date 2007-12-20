@@ -13,6 +13,7 @@ import gov.nih.nci.calab.domain.nano.function.Function;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
+import gov.nih.nci.calab.dto.common.ReportBean;
 import gov.nih.nci.calab.dto.function.FunctionBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.dto.remote.GridNodeBean;
@@ -50,10 +51,10 @@ public class GridSearchService {
 	 * @return
 	 * @throws GridQueryException
 	 */
-	public List<LabFileBean> getRemoteReports(String reportTitle,
+	public List<ReportBean> getRemoteReports(String reportTitle,
 			String reportType, String particleType, String[] functionTypes,
 			GridNodeBean gridNode) throws GridQueryException {
-		List<LabFileBean> reports = new ArrayList<LabFileBean>();
+		List<ReportBean> reports = new ArrayList<ReportBean>();
 
 		try {
 			CaNanoLabSvcClient gridClient = new CaNanoLabSvcClient(gridNode
@@ -63,7 +64,7 @@ public class GridSearchService {
 						particleType, functionTypes);
 				if (gridReports != null) {
 					for (Report report : gridReports) {
-						LabFileBean fileBean = new LabFileBean(report, gridNode
+						ReportBean fileBean = new ReportBean(report, gridNode
 								.getHostName());
 						fileBean.setInstanceType(CaNanoLabConstants.REPORT);
 						reports.add(fileBean);
@@ -75,7 +76,7 @@ public class GridSearchService {
 								functionTypes);
 				if (gridAssociatedFiles != null) {
 					for (AssociatedFile report : gridAssociatedFiles) {
-						LabFileBean fileBean = new LabFileBean(report, gridNode
+						ReportBean fileBean = new ReportBean(report, gridNode
 								.getHostName());
 						fileBean
 								.setInstanceType(CaNanoLabConstants.ASSOCIATED_FILE);
@@ -87,7 +88,7 @@ public class GridSearchService {
 						particleType, functionTypes);
 				if (gridReports != null) {
 					for (Report report : gridReports) {
-						LabFileBean fileBean = new LabFileBean(report, gridNode
+						ReportBean fileBean = new ReportBean(report, gridNode
 								.getHostName());
 						fileBean.setInstanceType(CaNanoLabConstants.REPORT);
 						reports.add(fileBean);
@@ -98,7 +99,7 @@ public class GridSearchService {
 								functionTypes);
 				if (gridAssociatedFiles != null) {
 					for (AssociatedFile report : gridAssociatedFiles) {
-						LabFileBean fileBean = new LabFileBean(report, gridNode
+						ReportBean fileBean = new ReportBean(report, gridNode
 								.getHostName());
 						fileBean
 								.setInstanceType(CaNanoLabConstants.ASSOCIATED_FILE);

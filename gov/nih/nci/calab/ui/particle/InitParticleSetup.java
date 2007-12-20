@@ -23,7 +23,6 @@ import gov.nih.nci.calab.service.particle.NanoparticleService;
 import gov.nih.nci.calab.service.remote.GridSearchService;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
-import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 import gov.nih.nci.calab.ui.report.InitReportSetup;
 
