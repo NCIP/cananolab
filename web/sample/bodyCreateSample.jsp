@@ -169,8 +169,8 @@
 																	</td>
 																</c:otherwise>
 															</c:choose>
-															</div>
-															</td>
+
+														
 														</tr>
 														<tr>
 															<td class="formLabel" colspan="2">
