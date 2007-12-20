@@ -14,7 +14,7 @@
 
 		<comment displayText="Installation Information:" bold="true" />
 		<comment
-			displayText="This installer will install the caNanoLab software with JBoss 4.0.05-GA (with JEMS Installer-1.2.0.GA) and MySQL 5.0.45"
+			displayText="This installer will install the caNanoLab software with JBoss 4.0.05-GA and MySQL 5.0.45"
 			bold="false" />
 	</page>
 	<!--  type="license" shows a license page to click through -->
@@ -42,19 +42,47 @@
 			
 		<directory displayText="Enter the destination folder for the mySql Database" 
 			defaultValue="C:/cananolab-app" 
-			property="mysql.dir"/>			
+			property="mysql.dir"/>	
+	<!--	
+	    grid installation
+		<directory displayText="Enter the destination folder for the Tomcat Server" 
+			defaultValue="C:/cananolab-app" 
+			property="tomcat.dir"/>
+		
+		<directory displayText="Enter the destination folder for the ws-grid" 
+			defaultValue="C:/cananolab-app" 
+			property="ws-grid.dir"/>
+
+		<directory displayText="Enter the destination folder for the Nano-grid" 
+			defaultValue="C:/cananolab-app" 
+			property="nano-grid.dir"/>
+	-->		
+			
     	</page>
 	
 	<page type="input" name="jboss.config"
 		displayText="Jboss Configuration">
-		<comment displayText="" bold="true" />
-
+		<comment displayText="" bold="true" />	
 			
 		<ext-validated
 			property="jboss.http.port"
 			displayText="Http Port Number" 
 			defaultValue="18080" 
-			validationClass="com.install.CustomValidate.ValidatePort" />
+			validationClass="com.install.customvalidate.ValidatePort" />
+		
+		
+		<ext-validated
+			property="jboss.rmi.port"
+			displayText="RMI Bind Port Number" 
+			defaultValue="18009" 
+			validationClass="com.install.customvalidate.ValidatePort" />
+			
+		<ext-validated
+			property="jboss.redirect.port"
+			displayText="Redirect Port Number" 
+			defaultValue="18443" 
+			validationClass="com.install.customvalidate.ValidatePort" />
+
 		
    	</page>	
 	
@@ -67,7 +95,7 @@
 			property="database.port"
 			displayText="Database Port Number" 
 			defaultValue="3307" 
-			validationClass="com.install.CustomValidate.ValidatePort" />
+			validationClass="com.install.customvalidate.ValidatePort" />
 
 		<text
 			property="database.system.user"
@@ -88,6 +116,43 @@
 			/>		
 			
    	</page>	
+
+	<page type="input" name="build.properties"
+		displayText="Enter the build properties">
+		<comment displayText="" bold="true" />
+
+		<text
+			property="file.repository.dir"
+			displayText="Enter the File Repository directory" 
+			defaultValue="C:/temp/caNanoLab/fileupload" 
+			/>
+
+		<text
+			property="sample.prefix"
+			displayText="Enter the Sameple Prefix" 
+			defaultValue="NCL" 
+			/>
+		
+		<text
+			property="application.owner"
+			displayText="Enter the Application Owner" 
+			defaultValue="NCL" 
+			/>		
+
+		<text
+			property="grid.indexserver"
+			displayText="Enter the Index Server with which the Grid servers are registered" 
+			defaultValue="cagrid-index.nci.nih.gov:8080" 
+			/>	
+			
+		<text
+			property="database"
+			displayText="Enter the Database" 
+			defaultValue="mysql" 
+			/>				
+			
+   	</page>
+
 	
 	<page type="input" name="patchOptions" displayText="Confirmation">
 		<comment
@@ -104,7 +169,10 @@
 			target="migrate-mysql" defaultValue="Yes" />				
 		<target displayText="Please confirm the jboss configuration."
 			target="configure-jboss" defaultValue="Yes" />
-		
+<!--			
+		<target displayText="Please confirm the Grid installation."
+			target="grid-install" defaultValue="Yes" />			
+-->		
 	</page>
 
 	<!--  page type="progress" shows a progress page with the install button
