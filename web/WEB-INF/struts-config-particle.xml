@@ -77,7 +77,6 @@
 				type="gov.nih.nci.calab.dto.particle.ParticleBean" />
 			<form-property name="function"
 				type="gov.nih.nci.calab.dto.function.FunctionBean" />
-			<form-property name="functionId" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="characterizationMultiDeletionForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
