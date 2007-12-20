@@ -90,9 +90,9 @@ if(P=="cytokineInduction_detail_view_help")C="Navigation%20Tree.6.73.html#125036
 if(P=="leukocyteProliferation_help")C="Navigation%20Tree.6.74.html#1227214";
 if(P=="leukocyteProliferation_summary_view_help")C="Navigation%20Tree.6.75.html#1250576";
 if(P=="leukocyteProliferation_detail_view_help")C="Navigation%20Tree.6.76.html#1250662";
-if(P=="nKCellCytoxicActivity_help")C="Navigation%20Tree.6.77.html#1227215";
-if(P=="nKCellCytoxicActivity_summary_view_help")C="Navigation%20Tree.6.78.html#1250915";
-if(P=="nKCellCytoxicActivity_detail_view_help")C="Navigation%20Tree.6.79.html#1251001";
+if(P=="nKCellCytotoxicActivity_help")C="Navigation%20Tree.6.77.html#1227215";
+if(P=="nKCellCytotoxicActivity_summary_view_help")C="Navigation%20Tree.6.78.html#1250915";
+if(P=="nKCellCytotoxicActivity_detail_view_help")C="Navigation%20Tree.6.79.html#1251001";
 if(P=="oxidativeBurst_help")C="Navigation%20Tree.6.80.html#1229130";
 if(P=="oxidativeBurst_summary_view_help")C="Navigation%20Tree.6.81.html#1251274";
 if(P=="oxidativeBurst_detail_view_help")C="Navigation%20Tree.6.82.html#1251360";
