@@ -26,10 +26,10 @@
 	<!-- used to configure the updater build -->
 	<property file="${installer.basedir}/installer.properties" />
 
-	<!-- used to configure the updater build -->
+	<!-- used to configure the updater build 
 	<property file="${basedir}/../local.properties" />
 	<property file="${basedir}/../default.properties" />
-
+	-->
 	<property name="build.dir" location="${basedir}/build" />
 	<property name="build.classes.dir" location="${build.dir}/classes" />
 	<property name="build.deploy.dir" location="${build.dir}/deploy" />
@@ -37,7 +37,8 @@
 	<property name="jboss.mysqlconfig.location" location="${basedir}/../conf" />
 	<property name="database.dir" location="${basedir}/../db/1.2.1" />
 	<property name="docs.dir" location="${installer.basedir}/docs" />
-	<property name="xyz" value=""/>
+	
+	
 	
 	<path id="project.classpath">
 		<fileset dir="${lib.dir}">
@@ -53,7 +54,9 @@
 	</target>
 
 	<target name="_check-version">
+		<!--
 		<fail unless="antcontrib.jar.present" message="${antcontrib.jar} is not present in the ${lib.dir}" />
+		-->
 		<condition property="antlib.missing">
 			<not>
 				<available file="antlib${ant.lib.version}" />
@@ -74,7 +77,7 @@
 			<fileset dir="${installer.build.dir}" includes="resources/*" description="Used by installer antinstall-config.xml" />
 			<zipgroupfileset dir="${installer.basedir}/antlib${ant.lib.version}" includes="*.jar" excludes="ant.jar, ant-launcher.jar" description="Used by installers build script" />
 			<zipgroupfileset dir="${lib.dir}" includes="${antcontrib.jar}" description="Used by installers build script" />
-			<zipgroupfileset dir="${installer.basedir}/ext" includes="jaxen-core.jar, xmlconfig.jar, jdom.jar,jaxen-jdom.jar,saxpath.jar,CustomInstaller.jar" description="Used by installers build script to perform XML file manipulation w/in Ant (levent gurses)" />
+			<zipgroupfileset dir="${installer.basedir}/ext" includes="jaxen-core.jar, xmlconfig.jar, jdom.jar,jaxen-jdom.jar,saxpath.jar,custominstaller.jar" description="Used by installers build script to perform XML file manipulation w/in Ant (levent gurses)" />
 		</installer>
 	</target>
 
@@ -178,21 +181,30 @@
 
 
 		
-		<!-- Copy property files to temp -->
+		<!-- Copy property files to temp 
 		<copy file="${basedir}/../default.properties" todir="${installer.basedir}/target/dist/temp" />
-
+-->
 		<!-- Get/Copy JBoss zip 	-->
 		<mkdir dir="${installer.dist.dir.temp}/tools" />
 		<available file="${tools.dir}" type="dir" property="tools.dir.present"/>
 		<available file="${tools.dir}/jboss-4.0.5.GA.zip" type="file" property="local.jboss.present"/>
 		<available file="${tools.dir}/mysql-noinstall-5.0.45-win32.zip" type="file" property="local.mysql.present"/>
+		<available file="${tools.dir}/jakarta-tomcat-5.0.28.zip" type="file" property="local.tomcat.present"/>
+		<available file="${tools.dir}/ws-core-4.0.3-bin.zip" type="file" property="local.ws-core.present"/>
+		<available file="${tools.dir}/caNanoLab_grid_1.1.zip" type="file" property="local.nano-grid.present"/>
 
 		<antcall target="create-tools-dir" />
 		<antcall target="get-jboss-bin" />
 		<antcall target="get-mysql-bin" />
+		<antcall target="get-tomcat-bin" />
+		<antcall target="get-ws-core-bin" />
+		<antcall target="get-nano-grid-bin" />
 
 		<copy file="${tools.dir}/jboss-4.0.5.GA.zip" todir="${installer.dist.dir.temp}/tools" />
 		<copy file="${tools.dir}/mysql-noinstall-5.0.45-win32.zip" todir="${installer.dist.dir.temp}/tools" />
+		<copy file="${tools.dir}/jakarta-tomcat-5.0.28.zip" todir="${installer.dist.dir.temp}/tools" />
+		<copy file="${tools.dir}/ws-core-4.0.3-bin.zip" todir="${installer.dist.dir.temp}/tools" />
+		<copy file="${tools.dir}/caNanoLab_grid_1.1.zip" todir="${installer.dist.dir.temp}/tools" />
 
 		<!-- Configure JBoss MySQL datasource 
 		<antcall target="-configure-jboss-ds" />
@@ -218,6 +230,18 @@
 	<target name="get-mysql-bin" unless="local.mysql.present" >
 		<get dest="${tools.dir}/mysql-noinstall-5.0.45-win32.zip" usetimestamp="true" ignoreerrors="false" src="http://mysql.mirrors.pair.com/Downloads/MySQL-5.0/mysql-noinstall-5.0.45-win32.zip" />
 	</target>
+
+	<target name="get-tomcat-bin" unless="local.tomcat.present" >
+		<get dest="${tools.dir}/jakarta-tomcat-5.0.28.zip" usetimestamp="true" ignoreerrors="false" src="http://www.integratebutton.com/downloads/ncicb/jakarta-tomcat-5.0.28.zip" />
+	</target>
+	
+	<target name="get-ws-core-bin" unless="local.ws-core.present" >
+		<get dest="${tools.dir}/ws-core-4.0.3-bin.zip" usetimestamp="true" ignoreerrors="false" src="http://www.integratebutton.com/downloads/ncicb/ws-core-4.0.3-bin.zip" />
+	</target>
+
+	<target name="get-nano-grid-bin" unless="local.nano-grid.present" >
+		<get dest="${tools.dir}/caNanoLab_grid_1.1.zip" usetimestamp="true" ignoreerrors="false" src="http://www.integratebutton.com/downloads/ncicb/caNanoLab_grid_1.1.zip" />
+	</target>	
 
 	<target name="run" depends="clean, selfextract">
 

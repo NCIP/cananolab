@@ -20,11 +20,27 @@
 	<property name="jboss.lib.dir" value="${jboss.home}/server/${jboss.server.name}/lib" />
 	<property name="jboss.server.jndi.port" value="1099" />
 
-	<!-- used to configure the updater build -->
+	<!-- used to configure the updater build 
 	<property file="${temp.dir}/local.properties" />
 	<property file="${temp.dir}/default.properties" />
+	-->
+	<!-- properties for grid services -->
+	<property name="tomcat.home" value="${tomcat.dir}/jakarta-tomcat-5.0.28" />
+	<property name="ws-grid.home" value="${ws-grid.dir}/ws-core-4.0.3" />
+	<property name="myant.home" value="C:\apache-ant-1.7.0" />
+	
+	<!-- properties for database installation -->
+	<property name="database.system.url" value="jdbc:mysql://${database.server}:${database.port}/" />
+	<property name="database.system.user" value="root" />
+	<property name="database.server" value="localhost" />
+	<property name="database.name" value="cananolab" />
+	<property name="database.user" value="cananolab_app" />
+	<property name="database.driver" value="com.mysql.jdbc.Driver" />
+	<property name="database.url" value="jdbc:mysql://${database.server}:${database.port}/${database.name}" />
 
-
+	<!-- properties for grid services -->
+	<property name="temp.unwar" value="C:\temp\tempwar" />
+	
 	<echoproperties />
 
 	<tstamp>
@@ -52,12 +68,10 @@
 		<unzip dest="${temp.dir}" overwrite="true" src="${basedir}/installpack.zip" />		
 	</target>
 
-	<target name="convertpath">
-<echo>${temp.dir}</echo>	
+	<target name="convertpath">	
 		<pathconvert targetos="unix" property="newtemp.dir" >
 		      <path location="${temp.dir}"/>
 		</pathconvert>
-<echo>${newtemp.dir}</echo>
 		<pathconvert targetos="unix" property="newjboss.dir" >
 		      <path location="${jboss.dir}"/>
 		</pathconvert>
@@ -104,14 +118,15 @@
 		<echo />
 
 		<unzip dest="${mysql.dir}" overwrite="true" src="${temp.dir}/tools/mysql-noinstall-5.0.45-win32.zip" />
-		<antcall target="configure-mysql-properties" />		
+		<antcall target="mysql:configure-mysql-properties" />		
 		<antcall target="mysql:stop" />
 		<antcall target="mysql:start" />
-		<antcall target="configure-mysql-root" />
+		<antcall target="mysql:configure-mysql-root" />
 	</target>
 
 	<target name="configure-jboss">
-		<antcall target="deploy:stop-jboss" />
+		<antcall target="deploy:stop-jboss" />		
+		<antcall target="deploy:configure-caNanoLab.war" />
 		<antcall target="deploy:cananolab.ear" />		
 		<antcall target="-configure-jboss-ports"/>
 		<antcall target="-configure-jboss-applicationSecurity"/>
@@ -127,34 +142,108 @@
 		<antcall target="mysql:db-integrate" />	
 	</target>
 
+	<target name="grid-install">
+		<echoproperties />
+		<taskdef resource="net/sf/antcontrib/antcontrib.properties" />
+		<echo />
+		<echo />
+		<echo />
+		<echo />
+		<echo />
+		<echo>Installing Grid Services...Please wait...</echo>
+		<echo />
+		<echo />
+		<echo />
+		<echo />
+		<echo />
+
+		<unzip dest="${tomcat.dir}" overwrite="true" src="${temp.dir}/tools/jakarta-tomcat-5.0.28.zip" />
+		<unzip dest="${ws-grid.dir}" overwrite="true" src="${temp.dir}/tools/ws-core-4.0.3-bin.zip" />		
+
+		<antcall target="grid:pre-configure-tomcat" />	
+		<unzip dest="${nano-grid.dir}" overwrite="true" src="${temp.dir}/tools/caNanoLab_grid_1.1.zip" />
+		
+	</target>
+
+	<target name="grid:pre-configure-tomcat">
+		<property environment="env" />
+		<exec executable="cmd">
+			
+			<arg line="/c ant -f ${ws-grid.home}\share\globus_wsrf_common\tomcat\tomcat.xml deployTomcat -Dtomcat.dir=${tomcat.home} -Dwebapp.name=wsrf-canano" />				
+			
+			<env key="PATH" path="${myant.home}\bin;${env.PATH}"/>
+			
+		</exec>			
+	</target>
+
+ 
+
 	<target name="deploy:cananolab.ear">
-		<copy file="${temp.dir}/war/caNanoLab.war" todir="${temp.dir}/jboss-4.0.5.GA/server/default/deploy" overwrite="true" />
-		<copy file="${temp.dir}/war/caNanoLabSDK.war" todir="${temp.dir}/jboss-4.0.5.GA/server/default/deploy" overwrite="true" />
-		<copy file="${temp.dir}/war/upt.war" todir="${temp.dir}/jboss-4.0.5.GA/server/default/deploy" overwrite="true" />
-		<copy file="${temp.dir}/config/mysql-ds.xml" todir="${temp.dir}/jboss-4.0.5.GA/server/default/deploy" overwrite="true" />
-		<copy file="${temp.dir}/config/ApplicationSecurityConfig.xml" todir="${temp.dir}/jboss-4.0.5.GA/server/default/conf" overwrite="true" />
-		<copy file="${temp.dir}/config/caNanoLab.csm.hibernate.cfg.xml" todir="${temp.dir}/jboss-4.0.5.GA/server/default/conf" overwrite="true" />
+		<copy file="${temp.unwar}/caNanoLab.war" todir="${jboss.dir}/jboss-4.0.5.GA/server/default/deploy" overwrite="true" />
+		<copy file="${temp.dir}/war/caNanoLabSDK.war" todir="${jboss.dir}/jboss-4.0.5.GA/server/default/deploy" overwrite="true" />
+		<copy file="${temp.dir}/war/upt.war" todir="${jboss.dir}/jboss-4.0.5.GA/server/default/deploy" overwrite="true" />
+		<copy file="${temp.dir}/config/mysql-ds.xml" todir="${jboss.dir}/jboss-4.0.5.GA/server/default/deploy" overwrite="true" />
+		<copy file="${temp.dir}/config/ApplicationSecurityConfig.xml" todir="${jboss.dir}/jboss-4.0.5.GA/server/default/conf" overwrite="true" />
+		<copy file="${temp.dir}/config/caNanoLab.csm.hibernate.cfg.xml" todir="${jboss.dir}/jboss-4.0.5.GA/server/default/conf" overwrite="true" />
 		
 		<copy file="${temp.dir}/jars/mysql-connector-java-5.0.7-bin.jar" todir="${jboss.lib.dir}" overwrite="true" />
 		
 	</target>
 
+	<target name="deploy:configure-caNanoLab.war">
+		<delete dir="${temp.unwar}" quiet="true" />
+		<unzip src="${temp.dir}/war/caNanoLab.war" dest="${temp.unwar}"/>
+		<replace dir="${temp.unwar}/WEB-INF/classes" value="${file.repository.dir}">
+			<include name="*.xml" />
+			<include name="*.properties" />
+			<include name="*.template" />
+		  	<replacetoken>@FILE_REPOSITORY_DIR@</replacetoken>
+		</replace>
+		<replace dir="${temp.unwar}/WEB-INF/classes" value="${sample.prefix}">
+			<include name="*.xml" />
+			<include name="*.properties" />
+			<include name="*.template" />
+		  	<replacetoken>@SAMPLE_PREFIX@</replacetoken>
+		</replace>
+		<replace dir="${temp.unwar}/WEB-INF/classes" value="${application.owner}">
+			<include name="*.xml" />
+			<include name="*.properties" />
+			<include name="*.template" />
+		  	<replacetoken>@APP_OWNER@</replacetoken>
+		</replace>
+		<replace dir="${temp.unwar}/WEB-INF/classes" value="${grid.indexserver}">
+			<include name="*.xml" />
+			<include name="*.properties" />
+			<include name="*.template" />
+		  	<replacetoken>@GRID_INDEX_SERVER@</replacetoken>
+		</replace>
+		<replace dir="${temp.unwar}/WEB-INF/classes" value="${database}">
+			<include name="*.xml" />
+			<include name="*.properties" />
+			<include name="*.template" />
+		  	<replacetoken>@DATABASE@</replacetoken>
+		</replace>
+		<war destfile="${temp.unwar}\caNanoLab.war"  basedir="${temp.unwar}" compress="true" />
+	</target>
 
 	<target name="-configure-jboss-ports">
 		<echo message="Configuring Jboss Properties..." />
 		<taskdef name="xmlconfig" classname="com.xmlconfig.anttask.XmlConfig"/>
 		<xmlconfig in="${jboss.deploy}/jbossweb-tomcat55.sar/server.xml" verbose="false">
 			<insert path="//Server/Service/Connector[1]" name="port" type="attribute"  value="${jboss.http.port}" />
+			<insert path="//Server/Service/Connector[1]" name="redirectPort" type="attribute"  value="${jboss.redirect.port}" />
+			<insert path="//Server/Service/Connector[2]" name="port" type="attribute"  value="${jboss.rmi.port}" />
+			<insert path="//Server/Service/Connector[2]" name="redirectPort" type="attribute"  value="${jboss.redirect.port}" />
 		</xmlconfig>
 	</target>
 
-	<target name="configure-mysql-properties" >
+	<target name="mysql:configure-mysql-properties" >
 		<echo message="Configuring MySQL properties..." />
 		<replace file="${mysql.home}/my.ini" value="${database.port}">		
-			<replacetoken>%PORT_NUM%</replacetoken>
+			<replacetoken>@PORT_NUM@</replacetoken>
 		</replace>
 		<replace file="${mysql.home}/my.ini" value="${newmysql.home}">		
-			<replacetoken>%MYSQL_DIR%</replacetoken>
+			<replacetoken>@MYSQL_DIR@</replacetoken>
 		</replace>
 	
 	</target>
@@ -162,11 +251,11 @@
 	<target name="mysql:update-password" >
 		<echo message="Configuring MySQL properties..." />
 		<replace file="${db.dir}/create_database_and_user.sql" value="${database.password}">		
-			<replacetoken>%DB_PASS%</replacetoken>
+			<replacetoken>@DB_PASS@</replacetoken>
 		</replace>
 	</target>
 
-	<target name="configure-mysql-root" >
+	<target name="mysql:configure-mysql-root" >
 	<echo message="echo ${database.system.password}" />
 		<exec executable="cmd" dir="${mysql.home}/bin" spawn="true">
 			<arg line="/c mysqladmin -u root password ${database.system.password}" />
@@ -214,7 +303,6 @@
 	</target>
 	
 	<target name="create-caNanoLab" >
-	<echo message="AGAIN ${xyz}"/>
 		<xmlconfig in="${jboss.conf}/login-config.xml" verbose="false">				
 			<insert name="application-policy" type="element" path="//policy" />
 				<insert name="name" value="caNanoLab" type="attribute" path="//policy/application-policy[9]" />
@@ -239,7 +327,6 @@
 	</target>
 
 	<target name="create-caNanoLab-upt">
-	<echo message="AGAIN ${abc}"/>
 		<xmlconfig in="${jboss.conf}/login-config.xml" verbose="false">
 			<insert name="application-policy" type="element" path="//policy" />
 				<insert name="name" value="caNanoLab-upt" type="attribute" path="//policy/application-policy[10]" />
