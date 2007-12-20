@@ -15,7 +15,7 @@
 			</td>
 			<td align="right" width="15%">
 				<a
-					href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=nano_functional_help')"
+					href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=${nanoparticleFunctionForm.map.function.displayType}_help')"
 					class="helpText">Help</a>
 			</td>
 		</tr>
