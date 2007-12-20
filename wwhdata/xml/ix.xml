@@ -5,7 +5,7 @@
       <i t="aliquot">
         <j l="21" />
       </i>
-      <i t="Caspase 3 Activity characterization">
+      <i t="Caspase 3 Activation characterization">
         <j l="79" />
       </i>
       <i t="Cell Viability characterization">
@@ -29,6 +29,12 @@
       <i t="data to fields">
         <j l="9#1157328" />
       </i>
+      <i t="Diagnostic Imaging function">
+        <j l="46" />
+      </i>
+      <i t="Diagnostic Reporting function">
+        <j l="47" />
+      </i>
       <i t="Enzyme Induction characterization">
         <j l="86" />
       </i>
@@ -43,12 +49,6 @@
       </i>
       <i t="Morphhology characterization">
         <j l="57" />
-      </i>
-      <i t="nanoparticle function">
-        <j l="46" />
-        <j l="47" />
-        <j l="48" />
-        <j l="49" />
       </i>
       <i t="nanoparticle physical characterization">
         <j l="52#1175369" />
@@ -71,7 +71,7 @@
       <i t="Plasma Protein Binding characterization">
         <j l="97" />
       </i>
-      <i t="Plate Aggregation characterization">
+      <i t="Platelet Aggregation characterization">
         <j l="100" />
       </i>
       <i t="Purirty characterization">
@@ -91,6 +91,12 @@
       </i>
       <i t="Surface characterization">
         <j l="73" />
+      </i>
+      <i t="Targeting function">
+        <j l="48" />
+      </i>
+      <i t="Therapeutic function">
+        <j l="49" />
       </i>
     </i>
     <i t="agent">
@@ -209,7 +215,7 @@
         <j l="51#1162236" />
       </i>
     </i>
-    <i t="Caspase 3 Activity">
+    <i t="Caspase 3 Activation">
       <j l="148#1069903" />
       <i t="adding">
         <j l="79" />
@@ -294,9 +300,6 @@
       <i t="nanoparticle immunotoxicity">
         <j l="89#1225558" />
       </i>
-      <i t="nanoparticle toxicity">
-        <j l="77#1465412" />
-      </i>
       <i t="physical">
         <j l="52#1175369" />
         <j l="53#1231982" />
@@ -344,11 +347,11 @@
       </i>
     </i>
     <i t="composition">
-      <j l="51#1164772" />
       <j l="148#1070489" />
     </i>
     <i t="Composition category">
       <j l="44#1161976" />
+      <j l="51#1164772" />
     </i>
     <i t="copying">
       <i t="a characterization">
@@ -396,7 +399,7 @@
       </i>
     </i>
     <i t="detailed view">
-      <i t="Caspase 3 Activity">
+      <i t="Caspase 3 Activation">
         <j l="81" />
       </i>
       <i t="Cell Viability">
@@ -447,7 +450,7 @@
       <i t="Plasma Protein Binding">
         <j l="99" />
       </i>
-      <i t="Plate Aggregation">
+      <i t="Platelet Aggregation">
         <j l="102" />
       </i>
       <i t="Purity">
@@ -469,8 +472,24 @@
     <i t="diagnostic imaging">
       <j l="148#1070562" />
     </i>
+    <i t="Diagnostic Imaging function">
+      <i t="adding">
+        <j l="46" />
+      </i>
+      <i t="editing">
+        <j l="46" />
+      </i>
+    </i>
     <i t="diagnostic reporting">
       <j l="148#1070596" />
+    </i>
+    <i t="Diagnostic Reporting function">
+      <i t="adding">
+        <j l="47" />
+      </i>
+      <i t="editing">
+        <j l="47" />
+      </i>
     </i>
     <i t="DNA">
       <j l="148#1070227" />
@@ -483,11 +502,23 @@
   </g>
   <g t="E" o="002">
     <i t="editing">
+      <i t="Diagnostic Imaging function">
+        <j l="46" />
+      </i>
+      <i t="Diagnostic Reporting function">
+        <j l="47" />
+      </i>
       <i t="In Vitro Characterization category">
         <j l="56#1174279" />
       </i>
       <i t="Physical Characterization category">
         <j l="56#1174279" />
+      </i>
+      <i t="Targeting function">
+        <j l="48" />
+      </i>
+      <i t="Therapeutic function">
+        <j l="49" />
       </i>
     </i>
     <i t="editing an aliquot">
@@ -567,12 +598,6 @@
     </i>
     <i t="Function category">
       <j l="44#1144564" />
-      <i t="adding">
-        <j l="46" />
-        <j l="47" />
-        <j l="48" />
-        <j l="49" />
-      </i>
       <i t="nanoparticle, description">
         <j l="45" />
       </i>
@@ -624,8 +649,9 @@
     <i t="In Vitro Characterization category">
       <j l="44#1162016" />
       <j l="76#1285089" />
+      <j l="138" />
       <j l="148#1069973" />
-      <i t="Caspase 3 Activity">
+      <i t="Caspase 3 Activation">
         <j l="79" />
       </i>
       <i t="Cell Viability">
@@ -685,7 +711,7 @@
       <i t="Plasma Protein Binding">
         <j l="97" />
       </i>
-      <i t="Plate Aggregation">
+      <i t="Platelet Aggregation">
         <j l="100" />
       </i>
       <i t="printing">
@@ -702,15 +728,10 @@
       </i>
     </i>
     <i t="In Vivo Characterization category">
+      <j l="44#1162052" />
       <i t="overview">
         <j l="138" />
       </i>
-    </i>
-    <i t="In Vivo Characterizations subcategory">
-      <j l="44#1162052" />
-    </i>
-    <i t="invitro characterization">
-      <j l="138" />
     </i>
   </g>
   <g t="L" o="002">
@@ -738,9 +759,6 @@
       <i t="a physical characterization">
         <j l="135#1181223" />
       </i>
-    </i>
-    <i t="loading characterization file">
-      <j l="135" />
     </i>
     <i t="login">
       <j l="7#1157017" />
@@ -797,14 +815,20 @@
       </i>
     </i>
     <i t="nanoparticle">
-      <i t="adding, function">
+      <i t="adding, Diagnostic Imaging function">
         <j l="46" />
+      </i>
+      <i t="adding, Diagnostic Reporting function">
         <j l="47" />
-        <j l="48" />
-        <j l="49" />
       </i>
       <i t="adding, physical characterization">
         <j l="52#1175369" />
+      </i>
+      <i t="adding, Targeting function">
+        <j l="48" />
+      </i>
+      <i t="adding, Therapeutic function">
+        <j l="49" />
       </i>
       <i t="annotating">
         <j l="35#1110444" />
@@ -818,6 +842,18 @@
       </i>
       <i t="details page">
         <j l="40#1153324" />
+      </i>
+      <i t="editing, Diagnostic Imaging function">
+        <j l="46" />
+      </i>
+      <i t="editing, Diagnostic Reporting function">
+        <j l="47" />
+      </i>
+      <i t="editing, Targeting function">
+        <j l="48" />
+      </i>
+      <i t="editing, Therapeutic function">
+        <j l="49" />
       </i>
       <i t="grid search">
         <j l="41" />
@@ -892,16 +928,14 @@
     </i>
     <i t="NK Cell Cytotoxic Activity">
       <j l="148#1070021" />
+      <i t="adding">
+        <j l="119" />
+      </i>
       <i t="detailed summary view of category">
         <j l="121" />
       </i>
       <i t="summary view of category">
         <j l="120" />
-      </i>
-    </i>
-    <i t="NK Cell Cytoxic Activity">
-      <i t="adding">
-        <j l="119" />
       </i>
     </i>
   </g>
@@ -1004,8 +1038,12 @@
       <i t="Purity">
         <j l="61" />
       </i>
-      <i t="saving to file, one characterizaiton">
-        <j l="56#1174296" />
+      <i t="saving">
+        <i t="to a file">
+          <i t="one characterization">
+            <j l="56#1174296" />
+          </i>
+        </i>
       </i>
       <i t="Shape">
         <j l="64" />
@@ -1039,9 +1077,13 @@
     </i>
     <i t="Plate Aggregation">
       <j l="148#1070063" />
+    </i>
+    <i t="Platelet  Aggregation">
       <i t="adding">
         <j l="100" />
       </i>
+    </i>
+    <i t="Platelet Aggregation">
       <i t="detailed view">
         <j l="102" />
       </i>
@@ -1196,12 +1238,10 @@
       </i>
     </i>
     <i t="Reports category">
+      <j l="44#1144756" />
       <i t="overview">
         <j l="137" />
       </i>
-    </i>
-    <i t="Reports subcategory">
-      <j l="44#1144756" />
     </i>
   </g>
   <g t="S" o="002">
@@ -1254,6 +1294,10 @@
         <i t="Molecular Weight, summary">
           <j l="54#1458480" />
         </i>
+        <i t="one In Vitro Characterization category">
+          <j l="56#1174296" />
+          <j l="56#1174296" />
+        </i>
         <i t="Physical Characterization, full summary">
           <j l="59#1460748" />
         </i>
@@ -1266,12 +1310,6 @@
         <i t="Size, summary">
           <j l="68#1460493" />
         </i>
-      </i>
-    </i>
-    <i t="saving to file">
-      <i t="one In Vitro Characterization category">
-        <j l="56#1174296" />
-        <j l="56#1174296" />
       </i>
     </i>
     <i t="search">
@@ -1396,7 +1434,7 @@
       <j l="148#1070111" />
     </i>
     <i t="summary view">
-      <i t="Caspase 3 Activity">
+      <i t="Caspase 3 Activation">
         <j l="80" />
       </i>
       <i t="Cell Viability">
@@ -1471,7 +1509,7 @@
       <i t="Plasma Protein Binding">
         <j l="98" />
       </i>
-      <i t="Plate Aggregation">
+      <i t="Platelet Aggregation">
         <j l="101" />
       </i>
       <i t="Purity">
@@ -1513,14 +1551,27 @@
     <i t="target">
       <j l="148#1070627" />
     </i>
+    <i t="Targeting function">
+      <i t="adding">
+        <j l="48" />
+      </i>
+      <i t="editing">
+        <j l="48" />
+      </i>
+    </i>
     <i t="therapeutic">
       <j l="148#1070105" />
     </i>
+    <i t="Therapeutic function">
+      <i t="adding">
+        <j l="49" />
+      </i>
+      <i t="editing">
+        <j l="49" />
+      </i>
+    </i>
     <i t="Toxicity">
       <j l="148#1070117" />
-    </i>
-    <i t="toxicity, nanoparticle characterization">
-      <j l="77#1465412" />
     </i>
   </g>
   <g t="U" o="002">
