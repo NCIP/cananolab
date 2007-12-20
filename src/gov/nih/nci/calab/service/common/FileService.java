@@ -208,7 +208,7 @@ public class FileService {
 
 			// Ensure all the bytes have been read in
 			if (offset < fileData.length) {
-				throw new IOException("Could not completely read file "
+				throw new FileException("Could not completely read file "
 						+ fileObj.getName());
 			}
 

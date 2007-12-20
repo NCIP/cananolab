@@ -61,7 +61,7 @@ public class LoginService {
 			return this.am.login(strUsername, strPassword);
 		} catch (Exception e) {
 			logger.error(e);
-			throw new CaNanoLabSecurityException("Invalid Credentials.");
+			throw new CaNanoLabSecurityException("Invalid Credentials");
 		}
 	}
 }
