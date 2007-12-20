@@ -94,7 +94,7 @@
 								<strong>Lot ID</strong>&nbsp; (if entered, appended to sample
 								ID)
 								<html:text property="sample.lotId" size="5" />
-								&nbsp; &nbsp; &nbsp;
+								<br>
 								<strong>Lot Description</strong>
 								<span class="formFieldWhite"><html:text
 										property="sample.lotDescription" size="50" /> </span>
