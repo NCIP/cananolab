@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleFunctionAction.java,v 1.10 2007-12-13 16:30:36 pansu Exp $ */
+/* CVS $Id: NanoparticleFunctionAction.java,v 1.11 2007-12-20 15:30:27 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.function.AgentBean;
@@ -19,6 +19,7 @@ import gov.nih.nci.calab.exception.ParticleFunctionException;
 import gov.nih.nci.calab.service.particle.NanoparticleFunctionService;
 import gov.nih.nci.calab.service.particle.NanoparticleService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
+import gov.nih.nci.calab.service.util.StringUtils;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 import gov.nih.nci.calab.ui.security.InitSecuritySetup;
@@ -126,6 +127,18 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 		NanoparticleService searchNanoparticleService = new NanoparticleService();
 		ParticleBean particle = searchNanoparticleService.getParticleInfo(
 				particleId, user);
+		String submitType = request.getParameter("submitType");
+		String functionId = request.getParameter("functionId");
+		FunctionBean functionBean = null;
+		if (functionId != null) {
+			NanoparticleFunctionService service = new NanoparticleFunctionService();
+			functionBean = service.getFunctionBy(functionId);
+			theForm.set("function", functionBean);
+		} else {
+			functionBean = (FunctionBean) theForm.get("function");
+		}
+		functionBean.setDisplayType(StringUtils
+				.getOneWordLowerCaseFirstLetter(submitType));
 		theForm.set("particle", particle);
 		InitParticleSetup.getInstance().setSideParticleMenu(request,
 				particle.getSampleId());
@@ -148,10 +161,6 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		initSetup(request, theForm);
-		String functionId = (String) theForm.get("functionId");
-		NanoparticleFunctionService service = new NanoparticleFunctionService();
-		FunctionBean functionBean = service.getFunctionBy(functionId);
-		theForm.set("function", functionBean);
 		return mapping.findForward("setup");
 	}
 
