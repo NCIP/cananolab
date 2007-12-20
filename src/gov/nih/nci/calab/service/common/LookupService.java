@@ -21,7 +21,7 @@ import org.hibernate.Session;
  * @author zengje
  * 
  */
-/* CVS $Id: LookupService.java,v 1.139 2007-12-06 09:01:44 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.140 2007-12-20 15:30:40 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -51,7 +51,8 @@ public class LookupService {
 
 		} catch (Exception e) {
 			logger.error("Error in retrieving all measure units", e);
-			throw new CaNanoLabException("Error in retrieving all measure units.");
+			throw new CaNanoLabException(
+					"Error in retrieving all measure units");
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -76,8 +77,8 @@ public class LookupService {
 			logger
 					.error("Problem to retrieve all " + lookupType + " types.",
 							e);
-			throw new CaNanoLabException("Problem to retrieve all " + lookupType
-					+ " types.");
+			throw new CaNanoLabException("Problem to retrieve all "
+					+ lookupType + " types");
 		} finally {
 			HibernateUtil.closeSession();
 		}
