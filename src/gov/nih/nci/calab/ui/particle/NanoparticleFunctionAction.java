@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleFunctionAction.java,v 1.11 2007-12-20 15:30:27 pansu Exp $ */
+/* CVS $Id: NanoparticleFunctionAction.java,v 1.12 2007-12-20 16:25:53 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.function.AgentBean;
@@ -70,7 +70,7 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 
 				if (agentTargetBean.getType().length() == 0) {
 					throw new ParticleFunctionException(
-							"Agent target type can not be empty.");
+							"Agent target type can not be empty");
 				}
 			}
 		}
@@ -82,10 +82,11 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 		msgs.add("message", msg);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
-
+		request.getSession().setAttribute("newFunctionCreated", true);
 		InitParticleSetup.getInstance().setSideParticleMenu(request,
 				particle.getSampleId());
 		request.setAttribute("theParticle", particle);
+		
 		return forward;
 	}
 
