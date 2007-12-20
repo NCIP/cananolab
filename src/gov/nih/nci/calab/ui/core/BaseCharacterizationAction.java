@@ -78,7 +78,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 					&& derivedDataFileBean.getDisplayName().length() == 0
 					&& derivedDataFileBean.getDatumList().size() == 0) {
 				throw new ParticleCharacterizationException(
-						"has an empty section for characterization file/derived data. Please remove it prior to saving.");
+						"has an empty section for characterization file/derived data. Please remove it prior to saving");
 			}
 		}
 

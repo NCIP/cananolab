@@ -8,7 +8,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleCompositionAction.java,v 1.16 2007-12-18 16:35:22 pansu Exp $ */
+/* CVS $Id: NanoparticleCompositionAction.java,v 1.17 2007-12-20 16:26:27 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.dto.characterization.composition.CarbonNanotubeBean;
@@ -248,7 +248,7 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		CompositionBean composition = service.getCompositionBy(compositionId);
 		if (composition == null) {
 			throw new ParticleCompositionException(
-					"This composition no longer exists in the database.  Please log in again to refresh.");
+					"This composition no longer exists in the database.  Please log in again to refresh");
 		}
 
 		initSetup(request, theForm);

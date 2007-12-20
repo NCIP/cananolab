@@ -10,6 +10,7 @@ import java.util.List;
 
 public class ReportBean extends LabFileBean {
 	List<ParticleBean> particleList = new ArrayList<ParticleBean>();
+
 	public ReportBean(Report report) {
 		super(report);
 		for (Nanoparticle particle : report.getParticleCollection()) {
@@ -17,11 +18,19 @@ public class ReportBean extends LabFileBean {
 		}
 	}
 
+	public ReportBean(Report report, String gridNodeURL) {
+		super(report, gridNodeURL);
+	}
+
 	public ReportBean(AssociatedFile associatedFile) {
 		super(associatedFile);
 		for (Nanoparticle particle : associatedFile.getParticleCollection()) {
 			particleList.add(new ParticleBean(particle));
 		}
+	}
+
+	public ReportBean(AssociatedFile report, String gridNodeURL) {
+		super(report, gridNodeURL);
 	}
 
 	public List<ParticleBean> getParticleList() {

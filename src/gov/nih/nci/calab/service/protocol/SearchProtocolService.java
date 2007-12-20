@@ -305,7 +305,7 @@ public class SearchProtocolService {
 		} catch (Exception e) {
 			logger.error("Problem to retrieve all protocol types.", e);
 			throw new ProtocolException(
-					"Problem to retrieve all protocol types.");
+					"Problem to retrieve all protocol types");
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -414,7 +414,7 @@ public class SearchProtocolService {
 					.error("Problem to retrieve all protocol names and types.",
 							e);
 			throw new ProtocolException(
-					"Problem to retrieve all protocol names and types.");
+					"Problem to retrieve all protocol names and types");
 		} finally {
 			HibernateUtil.closeSession();
 		}

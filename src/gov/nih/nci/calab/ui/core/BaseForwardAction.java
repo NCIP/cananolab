@@ -16,7 +16,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: BaseForwardAction.java,v 1.8 2007-11-29 19:20:59 pansu Exp $ */
+/* CVS $Id: BaseForwardAction.java,v 1.9 2007-12-20 16:26:26 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.exception.InvalidSessionException;
@@ -39,7 +39,7 @@ public class BaseForwardAction extends AbstractBaseAction {
 		HttpSession session = request.getSession();
 		if (session.isNew()) {
 			throw new InvalidSessionException(
-					"Session timed out.  Please start again.");
+					"Session timed out.  Please start again");
 		}
 		ForwardAction forwardAction = new ForwardAction();
 		UserService userService = new UserService(

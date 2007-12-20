@@ -222,7 +222,7 @@ public class FileService {
 							"Error getting file content from the file system and writing to the output stream",
 							e);
 			throw new FileException(
-					"Error getting file content from the file system and writing to the output stream.");
+					"Error getting file content from the file system and writing to the output stream");
 		} finally {
 			HibernateUtil.closeSession();
 		}

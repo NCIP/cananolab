@@ -33,7 +33,7 @@ public class ActionUtil {
 		if (file == null || response == null) {
 			throw new CaNanoLabException(
 					"Unable to write file to HttpServletResponse: "
-							+ "Either pathName or response is null.");
+							+ "Either pathName or response is null");
 		}
 		try {
 			// set a non-standard content type to force brower to open Save As
