@@ -110,7 +110,7 @@ public class NanoparticleFunctionService {
 
 			if (viewTitleUsed) {
 				throw new ParticleFunctionException(
-						"The view title is already in use.  Please enter a different one.");
+						"The view title is already in use.  Please enter a different one");
 			} else {
 				// if function already exists in the database, load it first
 				if (function.getId() != null) {
@@ -160,7 +160,7 @@ public class NanoparticleFunctionService {
 		// check if viewTitle is already used the same type of
 		// function for the same particle
 		String viewTitleQuery = "";
-		if (function.getId() == null || function.getId().length()==0) {
+		if (function.getId() == null || function.getId().length() == 0) {
 			viewTitleQuery = "select count(function.identificationName) from Nanoparticle particle join particle.functionCollection function where particle.id="
 					+ particleId
 					+ " and function.identificationName='"
