@@ -6,9 +6,10 @@ package gov.nih.nci.calab.ui.report;
  * @author pansu
  */
 
-/* CVS $Id: RemoteSearchReportAction.java,v 1.6 2007-12-06 09:01:44 pansu Exp $ */
+/* CVS $Id: RemoteSearchReportAction.java,v 1.7 2007-12-20 16:26:49 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
+import gov.nih.nci.calab.dto.common.ReportBean;
 import gov.nih.nci.calab.dto.remote.GridNodeBean;
 import gov.nih.nci.calab.exception.FileException;
 import gov.nih.nci.calab.service.remote.GridSearchService;
@@ -63,7 +64,7 @@ public class RemoteSearchReportAction extends BaseRemoteSearchAction {
 		List<LabFileBean> reports = new ArrayList<LabFileBean>();
 		for (GridNodeBean gridNode : gridNodes) {
 			try {
-				List<LabFileBean> gridReports = searchService.getRemoteReports(
+				List<ReportBean> gridReports = searchService.getRemoteReports(
 						reportTitle, reportType, particleType, functionTypes,
 						gridNode);
 				if (gridReports.size() == 0) {
