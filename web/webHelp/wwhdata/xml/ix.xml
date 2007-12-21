@@ -346,12 +346,12 @@
         <j l="51#1162303" />
       </i>
     </i>
-    <i t="composition">
-      <j l="148#1070489" />
-    </i>
     <i t="Composition category">
       <j l="44#1161976" />
       <j l="51#1164772" />
+      <i t="defined">
+        <j l="148#1070489" />
+      </i>
     </i>
     <i t="copying">
       <i t="a characterization">
@@ -469,9 +469,6 @@
         <j l="75" />
       </i>
     </i>
-    <i t="diagnostic imaging">
-      <j l="148#1070562" />
-    </i>
     <i t="Diagnostic Imaging function">
       <i t="adding">
         <j l="46" />
@@ -480,8 +477,8 @@
         <j l="46" />
       </i>
     </i>
-    <i t="diagnostic reporting">
-      <j l="148#1070596" />
+    <i t="diagnostic imaging, defined">
+      <j l="148#1070562" />
     </i>
     <i t="Diagnostic Reporting function">
       <i t="adding">
@@ -490,6 +487,9 @@
       <i t="editing">
         <j l="47" />
       </i>
+    </i>
+    <i t="diagnostic reporting, defined">
+      <j l="148#1070596" />
     </i>
     <i t="DNA">
       <j l="148#1070227" />
@@ -502,6 +502,9 @@
   </g>
   <g t="E" o="002">
     <i t="editing">
+      <i t="an aliquot">
+        <j l="22" />
+      </i>
       <i t="Diagnostic Imaging function">
         <j l="46" />
       </i>
@@ -520,9 +523,6 @@
       <i t="Therapeutic function">
         <j l="49" />
       </i>
-    </i>
-    <i t="editing an aliquot">
-      <j l="22" />
     </i>
     <i t="Emulsion">
       <i t="adding annotation">
@@ -858,8 +858,10 @@
       <i t="grid search">
         <j l="41" />
       </i>
-      <i t="remote host search">
-        <j l="41#1153416" />
+      <i t="remote">
+        <i t="host search">
+          <j l="41#1153416" />
+        </i>
       </i>
       <i t="remote search results">
         <j l="42#1153511" />
@@ -985,6 +987,7 @@
       <j l="3" />
     </i>
     <i t="Phagocytosis">
+      <j l="148#1070045" />
       <i t="adding">
         <j l="125" />
       </i>
@@ -994,9 +997,6 @@
       <i t="summary view of category">
         <j l="126" />
       </i>
-    </i>
-    <i t="Phagocytoxix">
-      <j l="148#1070045" />
     </i>
     <i t="physical characterization">
       <j l="52#1175369" />
@@ -1075,15 +1075,13 @@
         <j l="98" />
       </i>
     </i>
-    <i t="Plate Aggregation">
-      <j l="148#1070063" />
-    </i>
     <i t="Platelet  Aggregation">
       <i t="adding">
         <j l="100" />
       </i>
     </i>
     <i t="Platelet Aggregation">
+      <j l="148#1070063" />
       <i t="detailed view">
         <j l="102" />
       </i>
@@ -1137,9 +1135,18 @@
     <i t="probe">
       <j l="148#1070265" />
     </i>
-    <i t="protocol">
+    <i t="Protocols">
+      <i t="browsing publicly available">
+        <j l="5#1156880" />
+      </i>
       <i t="file">
         <j l="32#1147882" />
+      </i>
+      <i t="management">
+        <j l="27#1145190" />
+      </i>
+      <i t="menu option">
+        <j l="27#1145190" />
       </i>
       <i t="search">
         <j l="30#1147817" />
@@ -1149,19 +1156,6 @@
       </i>
       <i t="submitting">
         <j l="29#1148938" />
-      </i>
-    </i>
-    <i t="protocols">
-      <i t="browsing publicly availalbe">
-        <j l="5#1156880" />
-      </i>
-    </i>
-    <i t="Protocols">
-      <i t="management">
-        <j l="27#1145190" />
-      </i>
-      <i t="menu option">
-        <j l="27#1145190" />
       </i>
     </i>
     <i t="public">
@@ -1201,26 +1195,29 @@
     <i t="receptor">
       <j l="148#1070308" />
     </i>
-    <i t="remote host searches">
-      <j l="41#1154144" />
+    <i t="remote">
+      <i t="host searches">
+        <j l="41#1154144" />
+      </i>
+      <i t="report search">
+        <j l="145#1114688" />
+      </i>
     </i>
-    <i t="remote report search">
-      <j l="145#1114688" />
-    </i>
-    <i t="report">
+    <i t="Reports">
+      <i t="browsing publicly availalbe">
+        <j l="5#1156919" />
+      </i>
+      <i t="management">
+        <j l="140#1123963" />
+      </i>
+      <i t="menu option">
+        <j l="140#1123963" />
+      </i>
       <i t="remote search">
         <j l="145#1114688" />
       </i>
       <i t="remote search results">
         <j l="146#1115243" />
-      </i>
-    </i>
-    <i t="report, submitting nanoparticle">
-      <j l="141" />
-    </i>
-    <i t="reports">
-      <i t="browsing publicly availalbe">
-        <j l="5#1156919" />
       </i>
       <i t="search results">
         <j l="143#1104908" />
@@ -1228,13 +1225,8 @@
       <i t="searching">
         <j l="142" />
       </i>
-    </i>
-    <i t="Reports">
-      <i t="management">
-        <j l="140#1123963" />
-      </i>
-      <i t="menu option">
-        <j l="140#1123963" />
+      <i t="submitting nanoparticle">
+        <j l="141" />
       </i>
     </i>
     <i t="Reports category">
@@ -1245,17 +1237,21 @@
     </i>
   </g>
   <g t="S" o="002">
-    <i t="sample">
-      <i t="nanoparticle search">
-        <j l="38#1153202" />
-      </i>
-    </i>
-    <i t="Sample">
+    <i t="Samples">
       <i t="creating">
         <j l="15" />
       </i>
       <i t="details page">
         <j l="18#1145290" />
+      </i>
+      <i t="management">
+        <j l="12#1108703" />
+      </i>
+      <i t="menu option">
+        <j l="12#1108703" />
+      </i>
+      <i t="nanoparticle search">
+        <j l="38#1153202" />
       </i>
       <i t="search">
         <j l="16#1147066" />
@@ -1264,14 +1260,6 @@
       <i t="search results">
         <j l="17#1145234" />
         <j l="24#1149639" />
-      </i>
-    </i>
-    <i t="Samples">
-      <i t="management">
-        <j l="12#1108703" />
-      </i>
-      <i t="menu option">
-        <j l="12#1108703" />
       </i>
     </i>
     <i t="saving">
@@ -1312,20 +1300,6 @@
         </i>
       </i>
     </i>
-    <i t="search">
-      <i t="remote host searches">
-        <j l="41#1154144" />
-      </i>
-      <i t="remote nanoparticle">
-        <j l="41#1153416" />
-      </i>
-      <i t="remote report">
-        <j l="145#1114688" />
-      </i>
-    </i>
-    <i t="search reports results">
-      <j l="143" />
-    </i>
     <i t="search results">
       <i t="nanoparticle">
         <j l="39#1154004" />
@@ -1342,6 +1316,9 @@
       <i t="remote report search">
         <j l="146#1115243" />
       </i>
+      <i t="reports">
+        <j l="143" />
+      </i>
       <i t="sample container">
         <j l="17#1145234" />
         <j l="24#1149639" />
@@ -1356,6 +1333,15 @@
       </i>
       <i t="protocols">
         <j l="30#1147817" />
+      </i>
+      <i t="remote host searches">
+        <j l="41#1154144" />
+      </i>
+      <i t="remote nanoparticle">
+        <j l="41#1153416" />
+      </i>
+      <i t="remote report">
+        <j l="145#1114688" />
       </i>
       <i t="reports">
         <j l="142" />

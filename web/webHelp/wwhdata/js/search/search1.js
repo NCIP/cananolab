@@ -419,7 +419,7 @@ if(x.t("core."))y.f("51,1");
 if(x.t("making"))y.f("51,2");
 if(x.t("olecular"))y.f("53,1");
 if(x.t("hexagonal"))y.f("64,1");
-if(x.t("platelet"))y.f("90,1,100,27,148,2,101,4,102,4");
+if(x.t("platelet"))y.f("90,1,100,29,148,2,101,6,102,26");
 if(x.t("cleavages"))y.f("148,1");
 if(x.t("receptors"))y.f("148,2");
 if(x.t("tissue."))y.f("148,2");
