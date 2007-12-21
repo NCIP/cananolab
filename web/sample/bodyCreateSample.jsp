@@ -94,7 +94,10 @@
 								<strong>Lot ID</strong>&nbsp; (if entered, appended to sample
 								ID)
 								<html:text property="sample.lotId" size="5" />
-								<br>
+							</td>
+						</tr>
+						<tr>
+							<td class="formLabel">
 								<strong>Lot Description</strong>
 								<span class="formFieldWhite"><html:text
 										property="sample.lotDescription" size="50" /> </span>
@@ -170,7 +173,7 @@
 																</c:otherwise>
 															</c:choose>
 
-														
+
 														</tr>
 														<tr>
 															<td class="formLabel" colspan="2">
