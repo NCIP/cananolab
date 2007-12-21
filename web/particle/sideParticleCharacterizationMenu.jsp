@@ -128,7 +128,9 @@
 </c:choose>
 
 <c:set var="physicalType" value="Physical" />
-<li class="controlList">
+<c:choose>
+	<c:when test="${!empty allCharacterizations[physicalType] || canCreateNanoparticle eq 'true'}">
+	<li class="controlList">
 	<a href="#" class="subMenuSecondary">PHYSICAL CHARACTERIZATIONS</a>
 	<ul class="sublist_4" style="${phyDisplay}">
 		<c:forEach var="subCharType"
@@ -163,9 +165,19 @@
 			</li>
 		</c:forEach>
 	</ul>
-</li>
+	</li>
+	</c:when>
+	<c:otherwise>
+		<li class="nodatali">
+			PHYSICAL CHARACTERIZATIONS
+		</li>
+	</c:otherwise>
+</c:choose>
+
 <c:set var="inVitroType" value="In Vitro" />
-<li class="controlList">
+<c:choose>
+	<c:when test="${!empty allCharacterizations[inVitroType] || canCreateNanoparticle eq 'true'}">
+	<li class="controlList">
 	<a href="#" class="subMenuSecondary">IN VITRO CHARACTERIZATIONS</a>
 	<ul class="sublist_1" style="${invitroDisplay}">
 		<c:forEach var="secondLevelChar"
@@ -344,3 +356,10 @@
 		</c:forEach>
 	</ul>
 </li>
+</c:when>
+	<c:otherwise>
+		<li class="nodatali">
+			IN VITRO CHARACTERIZATIONS
+		</li>
+	</c:otherwise>
+</c:choose>
