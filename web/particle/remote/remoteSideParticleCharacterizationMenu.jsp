@@ -169,7 +169,9 @@
 <c:url var="url" value="underConstruction.do">
 	<c:param name="submitType" value="Physical" />
 </c:url>
-<li class="controlList">
+<c:choose>
+	<c:when test="${!empty remoteSelectedCharacterizations[physicalType]}">
+	<li class="controlList">
 	<a href="#" class="subMenuSecondary">PHYSICAL CHARACTERIZATIONS</a>
 	<ul class="sublist_4" style="${phyDisplay}">
 		<c:forEach var="subCharType"
@@ -188,10 +190,19 @@
 			</li>
 		</c:forEach>
 	</ul>
-</li>
+	</li>
+	</c:when>
+	<c:otherwise>
+		<li class="nodatali">
+			PHYSICAL CHARACTERIZATIONS
+		</li>
+	</c:otherwise>
+</c:choose>
 
 
 <c:set var="inVitroType" value="In Vitro" />
+<c:choose>
+	<c:when test="${!empty remoteSelectedCharacterizations[inVitroType]}">
 <li class="controlList">
 	<a href="#" class="subMenuSecondary">IN VITRO CHARACTERIZATIONS</a>
 	<ul class="sublist_1" style="${invitroDisplay}">
@@ -282,4 +293,11 @@
 		</c:forEach>
 	</ul>
 </li>
+</c:when>
+	<c:otherwise>
+		<li class="nodatali">
+			IN VITRO CHARACTERIZATIONS
+		</li>
+	</c:otherwise>
+</c:choose>
 
