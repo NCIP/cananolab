@@ -23,7 +23,7 @@
 			</c:choose>
 
 		<td>
-			&nbsp;&nbsp;
+			&nbsp;
 		</td>
 		<c:choose>
 			<c:when test="${canCreateNanoparticle eq 'true'}">
