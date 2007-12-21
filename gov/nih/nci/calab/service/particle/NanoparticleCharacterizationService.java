@@ -334,7 +334,7 @@ public class NanoparticleCharacterizationService {
 				if (charBean.getId() == null) {
 					List results = session
 							.createQuery(
-									"from Nanoparticle particle join fetch particle.characterizationCollection where particle.name='"
+									"from Nanoparticle particle left join fetch particle.characterizationCollection where particle.name='"
 											+ charBean.getParticle()
 													.getSampleName()
 											+ "' and particle.type='"
