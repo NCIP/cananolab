@@ -195,6 +195,9 @@
 											<td class="titleCell2Vitro">
 												<a href="#" class="sublist_2">${thirdLevelChar}</a>
 											</td>
+											<td width="100%" class="titleCell2Vitro">
+												&nbsp;
+											</td>
 										</tr>
 									</table>
 								</c:when>

@@ -166,7 +166,7 @@ li.sublist_4_func {
 }
 
 ul.sublist_5_clicked a {
-	background-color: #98B7B7; /* #F4F4F5; */
+	background-color: #98B7B7;
 	color: #FFFFFF;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 0.8em;
@@ -177,12 +177,12 @@ ul.sublist_5_clicked a {
 }
 
 li.clickedLi {
-	background-color: #98B7B7; /* #F4F4F5; */
+	background-color: #98B7B7;
 	color: #FFFFFF;
 }
 
 ul.sublist_5 a {
-	background-color: #FFFFFF; /* #F4F4F5; */
+	background-color: #FFFFFF;
 	color: black;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 0.8em;
@@ -193,7 +193,7 @@ ul.sublist_5 a {
 }
 
 ul.sublist_5_control a {
-	background-color: #FFFFFF; /* #F4F4F5; */
+	background-color: #FFFFFF;
 	color: black;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 0.8em;
@@ -204,7 +204,7 @@ ul.sublist_5_control a {
 }
 
 ul.sublist_5 li {
-	background-color: #FFFFFF /* #F4F4F5 */;
+	background-color: #FFFFFF;
 	border-bottom: 0;
 }
 
@@ -268,10 +268,7 @@ table.charTitle {
 	margin-top: 0;
 	margin-bottom: 0;
 	margin-right: 0;
-	padding-top: 0;
-	padding-bottom: 0;
-	padding-left: 0;
-	padding-bottom: 0;
+	padding: 0 0 0 0;
 }
 
 tr.titleRow td {
@@ -336,7 +333,7 @@ td.titleCell2NoData li {
 
 table.subTitleTable {
 	background-color: #F4F4F5;
-	width: 100%;
+	/* width: 100%; */
 	border-collapse: collapse;
 }
 
