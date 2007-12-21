@@ -289,19 +289,19 @@ public class GridSearchService {
 		return funcTypeFuncs;
 	}
 
-	public List<LabFileBean> getRemoteReports(String particleName,
+	public List<ReportBean> getRemoteReports(String particleName,
 			GridNodeBean gridNode) throws GridQueryException {
-		List<LabFileBean> reports = null;
+		List<ReportBean> reports = null;
 		try {
 			CaNanoLabSvcClient gridClient = new CaNanoLabSvcClient(gridNode
 					.getAddress());
 
-			reports = new ArrayList<LabFileBean>();
+			reports = new ArrayList<ReportBean>();
 			Report[] gridReports = gridClient
 					.getReportsByParticleName(particleName);
 			if (gridReports != null) {
 				for (Report report : gridReports) {
-					LabFileBean fileBean = new LabFileBean(report, gridNode
+					ReportBean fileBean = new ReportBean(report, gridNode
 							.getHostName());
 					fileBean.setInstanceType(CaNanoLabConstants.REPORT);
 					reports.add(fileBean);
@@ -314,19 +314,19 @@ public class GridSearchService {
 		return reports;
 	}
 
-	public List<LabFileBean> getRemoteAssociatedFiles(String particleName,
+	public List<ReportBean> getRemoteAssociatedFiles(String particleName,
 			GridNodeBean gridNode) throws GridQueryException {
-		List<LabFileBean> files = null;
+		List<ReportBean> files = null;
 		try {
 			CaNanoLabSvcClient gridClient = new CaNanoLabSvcClient(gridNode
 					.getAddress());
 
-			files = new ArrayList<LabFileBean>();
+			files = new ArrayList<ReportBean>();
 			AssociatedFile[] gridFiles = gridClient
 					.getOtherAssociatedFilesByParticleName(particleName);
 			if (gridFiles != null) {
 				for (AssociatedFile file : gridFiles) {
-					LabFileBean fileBean = new LabFileBean(file, gridNode
+					ReportBean fileBean = new ReportBean(file, gridNode
 							.getHostName());
 					fileBean
 							.setInstanceType(CaNanoLabConstants.ASSOCIATED_FILE);
