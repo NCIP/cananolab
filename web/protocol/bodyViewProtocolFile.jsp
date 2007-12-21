@@ -129,7 +129,6 @@
 										</c:choose>
 										<%-- <html:file property="uploadedFile" /> &nbsp; &nbsp; --%>
 									</td>
-									</td>
 								</tr>
 								<tr>
 									<td class="leftLabel">
