@@ -6,6 +6,7 @@ import gov.nih.nci.calab.dto.characterization.CharacterizationTypeBean;
 import gov.nih.nci.calab.dto.characterization.composition.CompositionBean;
 import gov.nih.nci.calab.dto.common.InstrumentBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
+import gov.nih.nci.calab.dto.common.ReportBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.function.FunctionBean;
 import gov.nih.nci.calab.dto.remote.GridNodeBean;
@@ -406,7 +407,7 @@ public class InitParticleSetup {
 				|| session.getAttribute("newReportCreated") != null
 				|| session.getAttribute("newRemoteParticleCreated") != null) {
 
-			List<LabFileBean> reportBeans = service.getRemoteReports(
+			List<ReportBean> reportBeans = service.getRemoteReports(
 					particleName, gridNode);
 			session.setAttribute("remoteParticleReports", reportBeans);
 		}
@@ -414,7 +415,7 @@ public class InitParticleSetup {
 		if (session.getAttribute("remoteParticleAssociatedFiles") == null
 				|| session.getAttribute("newReportCreated") != null
 				|| session.getAttribute("newRemoteParticleCreated") != null) {
-			List<LabFileBean> associatedBeans = service
+			List<ReportBean> associatedBeans = service
 					.getRemoteAssociatedFiles(particleName, gridNode);
 			session.setAttribute("remoteParticleAssociatedFiles",
 					associatedBeans);
