@@ -86,7 +86,7 @@
 					VIEWING PARTICLE:
 					<c:out value="${particleName}" />
 				</li>
-				<li class="toplist">
+				<li class="controlList">
 					<c:url var="url" value="nanoparticleGeneralInfo.do">
 						<c:param name="dispatch" value="${dispatchValue}" />
 						<c:param name="particleId" value="${particleId}" />
@@ -99,7 +99,7 @@
 
 				<c:choose>
 					<c:when test="${!empty particleAssociatedFiles}">
-						<li class="toplist">
+						<li class="controlList">
 							<a href="#" class="subMenuSecondary">ASSOCIATED FILES</a>
 							<ul class="sublist_5" style="${fileDisplay}">
 								<c:forEach var="aReport" items="${particleAssociatedFiles}">
