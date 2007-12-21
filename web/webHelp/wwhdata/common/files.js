@@ -102,7 +102,7 @@ P.fA("Displaying a Summary View of Plasma Protein Binding In Vitro Characterizat
 P.fA("Displaying a Detail View of an Plasma Protein Binding In Vitro Characterization","Navigation%20Tree.6.57.html");
 P.fA("Adding a Platelet Aggregation In Vitro Characterization","Navigation%20Tree.6.58.html");
 P.fA("Displaying a Summary View of Plate.et Aggregation In Vitro Characterizations","Navigation%20Tree.6.59.html");
-P.fA("Displaying a Detail View of an Plate Aggregation In Vitro Characterization","Navigation%20Tree.6.60.html");
+P.fA("Displaying a Detail View of an Platelet Aggregation In Vitro Characterization","Navigation%20Tree.6.60.html");
 P.fA("Toxicity, Immunotoxicity Subcategory: Immune Cell Function","Navigation%20Tree.6.61.html");
 P.fA("Adding a CFU_GM In Vitro Characterization","Navigation%20Tree.6.62.html");
 P.fA("Displaying a Summary View of CFU_GM In Vitro Characterizations","Navigation%20Tree.6.63.html");
@@ -122,7 +122,7 @@ P.fA("Displaying a Detail View of an Leukocyte Proliferation In Vitro Characteri
 P.fA("Adding a NK Cell Cytotoxic Activity In Vitro Characterization","Navigation%20Tree.6.77.html");
 P.fA("Displaying a Summary View of NK Cell Cytotoxic Activity In Vitro Characterizations","Navigation%20Tree.6.78.html");
 P.fA("Displaying a Detail View of an NK Cell Cytotoxic Activity In Vitro Characterization","Navigation%20Tree.6.79.html");
-P.fA("Adding a Oxidative Burst In Vitro Characterization","Navigation%20Tree.6.80.html");
+P.fA("Adding an Oxidative Burst In Vitro Characterization","Navigation%20Tree.6.80.html");
 P.fA("Displaying a Summary View of Oxidative Burst In Vitro Characterizations","Navigation%20Tree.6.81.html");
 P.fA("Displaying a Detail View of an Oxidative Burst In Vitro Characterization","Navigation%20Tree.6.82.html");
 P.fA("Adding a Phagocytosis In Vitro Characterization","Navigation%20Tree.6.83.html");
