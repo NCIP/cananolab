@@ -45,9 +45,6 @@
 				</td>
 			</c:otherwise>
 		</c:choose>
-		<td>
-			&nbsp;
-		</td>
 		<c:choose>
 			<c:when
 				test="${canUserDeleteChars eq 'true' &&
@@ -58,7 +55,9 @@
 					<c:param name="page" value="0" />
 					<c:param name="dispatch" value="setup" />
 				</c:url>
-
+				<td>
+					&nbsp;
+				</td>
 				<td class="${param.addLinkStyle}">
 					<a href="${deleteUrl}" class="addlink"><img
 							src="images/btn_delete.gif" border="0" /></a>
@@ -70,5 +69,10 @@
 				</td>
 			</c:otherwise>
 		</c:choose>
+		<c:if test="${param.tableStyle == 'subTitleTable'}">
+			<td width="100%">
+				&nbsp;
+			</td>
+		</c:if>
 	</tr>
 </table>
