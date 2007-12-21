@@ -110,13 +110,12 @@
 				type="gov.nih.nci.calab.exception.SampleException" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="sample" key="error.createSample.duplicate"
-				path="sample.createSample"
+				key="error.duplicateEntryException" path="sample.createSample"
 				type="gov.nih.nci.calab.exception.DuplicateEntriesException" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="sample" key="error.generalException"
-				path="sample.createSample" type="java.lang.Exception" />
+				key="error.generalException" path="sample.createSample"
+				type="java.lang.Exception" />
 			<forward name="success" path="sample.viewSampleDetails" />
 			<forward name="input"
 				path="/createSample.do?dispatch=input&amp;page=0" />
@@ -133,12 +132,12 @@
 				type="gov.nih.nci.calab.exception.SampleException" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="sample" key="error.createAliquot.duplicate"
+				key="error.duplicateEntryException"
 				path="sample.createAliquot.duplicate"
 				type="gov.nih.nci.calab.exception.DuplicateEntriesException" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="sample" key="error.generalException" path="sample.message"
+				key="error.generalException" path="sample.message"
 				type="java.lang.Exception" />
 			<forward name="setup" path="sample.createAliquot" />
 			<forward name="input"
@@ -155,7 +154,7 @@
 				type="gov.nih.nci.calab.exception.SampleException" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="sample" key="error.generalException" path="sample.message"
+				key="error.generalException" path="sample.message"
 				type="java.lang.Exception" />
 			<forward name="setup" path="sample.editAliquot" />
 			<forward name="input"
@@ -168,8 +167,8 @@
 			scope="request">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="sample" key="error.generalException"
-				path="sample.searchSample" type="java.lang.Exception" />
+				key="error.generalException" path="sample.searchSample"
+				type="java.lang.Exception" />
 			<forward name="input" path="sample.searchSample" />
 			<forward name="success" path="sample.searchSampleResult" />
 		</action>
@@ -179,8 +178,8 @@
 			scope="request">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="sample" key="error.generalException"
-				path="sample.searchAliquot" type="java.lang.Exception" />
+				key="error.generalException" path="sample.searchAliquot"
+				type="java.lang.Exception" />
 			<forward name="input" path="sample.searchAliquot" />
 			<forward name="success" path="sample.searchAliquotResult" />
 			<forward name="sampleResult"
@@ -192,8 +191,8 @@
 			scope="request">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="sample" key="error.generalException"
-				path="sample.showaliquot" type="java.lang.Exception" />
+				key="error.generalException" path="sample.showaliquot"
+				type="java.lang.Exception" />
 			<forward name="input" path="sample.searchSampleResult" />
 			<forward name="success" path="sample.searchAliquotResult" />
 		</action>
@@ -207,8 +206,8 @@
 				type="java.lang.CaNanoLabException" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="sample" key="error.generalException"
-				path="sample.searchSampleResult" type="java.lang.Exception" />
+				key="error.generalException" path="sample.searchSampleResult"
+				type="java.lang.Exception" />
 			<forward name="input" path="sample.searchSampleResult" />
 			<forward name="success" path="sample.viewSampleDetails" />
 		</action>
@@ -222,8 +221,8 @@
 				type="java.lang.CaNanoLabException" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="sample" key="error.generalException"
-				path="sample.searchSampleResult" type="java.lang.Exception" />
+				key="error.generalException" path="sample.searchSampleResult"
+				type="java.lang.Exception" />
 			<forward name="input" path="sample.searchAliquotResult" />
 			<forward name="success" path="sample.viewAliquotDetails" />
 		</action>

@@ -36,7 +36,7 @@
 	<global-exceptions>
 		<exception
 			handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-			key="error.protocolException" path="home.error"
+			bundle="protocol" key="error.protocolException" path="home.error"
 			type="gov.nih.nci.calab.exception.ProtocolException" />
 	</global-exceptions>
 	<action-mappings>
@@ -49,12 +49,12 @@
 			input="input" scope="request">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="protocol" key="error.securityException"
+				key="error.securityException"
 				path="protocol.submitProtocol"
 				type="gov.nih.nci.calab.exception.CaNanoLabSecurityException" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="protocol" key="error.generalException"
+				key="error.generalException"
 				path="protocol.submitProtocol" type="java.lang.Exception" />
 			<forward name="success" path="protocol.message" />
 			<forward name="input"
@@ -69,12 +69,12 @@
 			input="input" scope="request">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="protocol" key="error.securityException"
+				key="error.securityException"
 				path="protocol.updateProtocol"
 				type="gov.nih.nci.calab.exception.CaNanoLabSecurityException" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="protocol" key="error.generalException"
+				key="error.generalException"
 				path="protocol.updateProtocol" type="java.lang.Exception" />
 			<forward name="success" path="protocol.message" />
 			<forward name="input"
@@ -89,7 +89,7 @@
 			scope="request">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="protocol" key="error.generalException"
+				key="error.generalException"
 				path="protocol.searchProtocol" type="java.lang.Exception" />
 			<forward name="input" path="protocol.searchProtocol" />
 			<forward name="success"
