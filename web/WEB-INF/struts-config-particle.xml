@@ -141,13 +141,9 @@
 	<global-exceptions>
 		<exception
 			handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-			key="error.particleException" path="particle.annotationMessage"
-			type="gov.nih.nci.calab.exception.ParticleException" />
-		<exception
-			handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-			bundle="particle" key="error.securityException"
+			bundle="particle" key="error.particleException"
 			path="particle.annotationMessage"
-			type="gov.nih.nci.calab.exception.CaNanoLabSecurityException" />
+			type="gov.nih.nci.calab.exception.ParticleException" />
 	</global-exceptions>
 	<global-forwards>
 		<forward name="remoteComposition"
@@ -185,7 +181,7 @@
 			input="input">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				key="error.compositionException"
+				bundle="particle" key="error.compositionException"
 				path="/composition.do?dispatch=input&amp;page=0"
 				type="gov.nih.nci.calab.exception.ParticleCompositionException" />
 			<forward name="success" path="particle.annotationMessage" />
@@ -199,18 +195,17 @@
 			input="input">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				key="error.characterizationException"
+				bundle="particle" key="error.characterizationException"
 				path="/physicalCharacterization.do?dispatch=input&amp;page=0"
 				type="gov.nih.nci.calab.exception.ParticleCharacterizationException" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="particle" key="error.duplicateEntryException"
-				path="/physicalCharacterization.do?dispatch=input&amp;page=0"
-				type="gov.nih.nci.calab.exception.DuplicateEntriesException" />
+				key="error.fileException" path="particle.annotationMessage"
+				type="gov.nih.nci.calab.exception.FileException" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				key="error.fileException" path="home.error"
-				type="gov.nih.nci.calab.exception.FileException" />
+				key="error.generalException" path="particle.annotationMessage"
+				type="java.lang.Exception" />
 			<forward name="success" path="particle.physicalDetailView" />
 			<forward name="input"
 				path="/physicalCharacterization.do?dispatch=input&amp;page=0" />
@@ -231,18 +226,17 @@
 			input="input">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				key="error.characterizationException"
+				bundle="particle" key="error.characterizationException"
 				path="/inVitroCharacterization.do?dispatch=input&amp;page=0"
 				type="gov.nih.nci.calab.exception.ParticleCharacterizationException" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="particle" key="error.duplicateEntryException"
-				path="/inVitroCharacterization.do?dispatch=input&amp;page=0"
-				type="gov.nih.nci.calab.exception.DuplicateEntriesException" />
-			<exception
-				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.fileException" path="particle.annotationMessage"
 				type="gov.nih.nci.calab.exception.FileException" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				key="error.generalException" path="particle.annotationMessage"
+				type="java.lang.Exception" />
 			<forward name="success" path="particle.inVitroDetailView" />
 			<forward name="input"
 				path="/inVitroCharacterization.do?dispatch=input&amp;page=0" />
@@ -261,7 +255,7 @@
 			input="input" scope="request">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="particle" key="error.generalException"
+				key="error.generalException"
 				path="particle.loadCharacterizationFile" type="java.lang.Exception" />
 			<forward name="input"
 				path="particle.loadCharacterizationFile" />
@@ -272,9 +266,13 @@
 			input="input">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				key="error.functionException"
+				bundle="particle" key="error.functionException"
 				path="/nanoparticleFunction.do?dispatch=input&amp;page=0"
 				type="gov.nih.nci.calab.exception.ParticleFunctionException" />
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				key="error.generalException" path="particle.annotationMessage"
+				type="java.lang.Exception" />
 			<forward name="success" path="particle.annotationMessage" />
 			<forward name="input"
 				path="/nanoparticleFunction.do?dispatch=input&amp;page=0" />
@@ -287,6 +285,10 @@
 			path="/deleteAction"
 			type="gov.nih.nci.calab.ui.particle.DeleteMultiCharacterizationAction"
 			parameter="dispatch" input="input" scope="request">
+			<exception
+				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				key="error.generalException" path="particle.annotationMessage"
+				type="java.lang.Exception" />
 			<forward name="message" path="particle.annotationMessage" />
 			<forward name="input"
 				path="particle.deleteCharacterization" />
@@ -302,13 +304,13 @@
 				type="gov.nih.nci.calab.exception.ParticleException" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="particle" key="error.particleException"
+				key="error.securityException"
 				path="particle.searchNanoparticle"
 				type="gov.nih.nci.calab.exception.CaNanoLabSecurityException" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="particle" key="error.generalException"
-				path="particle.searchNanoparticle" type="java.lang.Exception" />
+				key="error.generalException" path="particle.searchNanoparticle"
+				type="java.lang.Exception" />
 			<forward name="input" path="particle.searchNanoparticle" />
 			<forward name="success"
 				path="particle.searchNanoparticleResult" />
@@ -324,12 +326,12 @@
 				type="gov.nih.nci.calab.exception.ParticleException" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="particle" key="error.particleException"
+				key="error.securityException"
 				path="particle.advancedSearchNanoparticle"
 				type="gov.nih.nci.calab.exception.CaNanoLabSecurityException" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="particle" key="error.generalException"
+				key="error.generalException"
 				path="particle.advancedSearchNanoparticle"
 				type="java.lang.Exception" />
 			<forward name="input"
@@ -351,16 +353,16 @@
 				type="gov.nih.nci.calab.exception.ParticleException" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="particle" key="error.securityException"
+				key="error.securityException"
 				path="particle.remoteSearchNanoparticle"
 				type="gov.nih.nci.calab.exception.CaNanoLabSecurityException" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="particle" key="error.generalException"
+				key="error.generalException"
 				path="particle.remoteSearchNanoparticle" type="java.lang.Exception" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="particle" key="error.grid.discovery"
+				key="error.grid.discovery"
 				path="particle.remoteSearchNanoparticle"
 				type="gov.nih.nci.calab.exception.GridAutoDiscoveryException" />
 			<forward name="input"
@@ -374,12 +376,12 @@
 			input="input" scope="request">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="particle" key="error.grid.discovery"
+				key="error.grid.discovery"
 				path="particle.annotationMessage"
 				type="gov.nih.nci.calab.exception.GridAutoDiscoveryException" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="particle" key="error.grid.notAvailable"
+				key="error.grid.notAvailable"
 				path="particle.annotationMessage"
 				type="gov.nih.nci.calab.exception.GridQueryException" />
 			<forward name="success" path="particle.remoteGeneralInfo" />
@@ -391,7 +393,7 @@
 			input="input">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="particle" key="error.grid.notAvailable"
+				key="error.grid.notAvailable"
 				path="particle.annotationMessage"
 				type="gov.nih.nci.calab.exception.GridQueryException" />
 			<forward name="input" path="particle.annotationMessage" />
