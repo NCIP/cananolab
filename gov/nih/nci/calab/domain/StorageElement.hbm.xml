@@ -2,16 +2,16 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping package="gov.nih.nci.calab.domain">
-  <class name="StorageElement" table="Storage" lazy="true" polymorphism="explicit">
+  <class name="StorageElement" table="storage" lazy="true" polymorphism="explicit">
     <cache usage="read-write" />
-    <id name="id" type="java.lang.Long" column="STORAGE_PK_ID" unsaved-value="0">
+    <id name="id" type="java.lang.Long" column="storage_pk_id" unsaved-value="0">
       <generator class="org.hibernate.id.TableHiLoGenerator">
   	  			<param name="table">hibernate_unique_key</param>
 				<param name="column">next_hi</param>
 	   </generator>
     </id>
-    <property name="location" type="java.lang.String" column="STORAGE_LOCATION" />
-    <property name="type" type="java.lang.String" column="STORAGE_TYPE" />
+    <property name="location" type="java.lang.String" column="storage_location" />
+    <property name="type" type="java.lang.String" column="storage_type" />
     
   </class>
 </hibernate-mapping>
