@@ -2,22 +2,22 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping package="gov.nih.nci.calab.domain">
-   <class name="SampleType" table="DEF_Sample_Type" lazy="true"
+   <class name="SampleType" table="def_sample_type" lazy="true"
 		polymorphism="explicit">
 		<cache usage="read-write" />
-		<id name="id" type="java.lang.Long" column="SAMPLE_TYPE_PK_ID"
+		<id name="id" type="java.lang.Long" column="sample_type_pk_id"
 			unsaved-value="0">
 			<generator class="org.hibernate.id.TableHiLoGenerator">
 				<param name="table">hibernate_unique_key</param>
 				<param name="column">next_hi</param>
 			</generator>
 		</id>
-		<property name="name" type="java.lang.String" column="NAME" />
+		<property name="name" type="java.lang.String" column="name" />
 	</class>
-	<class name="MeasureUnit" table="DEF_Measure_Unit" lazy="true"
+	<class name="MeasureUnit" table="def_measure_unit" lazy="true"
 		polymorphism="explicit">
 		<cache usage="read-write" />
-		<id name="id" type="java.lang.Long" column="MEASURE_UNIT_PK_ID"
+		<id name="id" type="java.lang.Long" column="measure_unit_pk_id"
 			unsaved-value="0">
 			<generator class="org.hibernate.id.TableHiLoGenerator">
 				<param name="table">hibernate_unique_key</param>
@@ -25,34 +25,34 @@
 			</generator>
 		</id>
 		<property name="name" type="java.lang.String"
-			column="UNIT_NAME" />
+			column="unit_name" />
 		<property name="description" type="java.lang.String"
-			column="DESCRIPTION" />
+			column="description" />
 		<property name="type" type="java.lang.String"
-			column="UNIT_TYPE" />
+			column="unit_type" />
 	</class>
-	<class name="ProtocolType" table="DEF_PROTOCOL_Type" lazy="true"
+	<class name="ProtocolType" table="def_protocol_type" lazy="true"
 		polymorphism="explicit">
 		<cache usage="read-write" />
-		<id name="id" type="java.lang.Long" column="PROTOCOL_TYPE_PK_ID"
+		<id name="id" type="java.lang.Long" column="protocol_type_pk_id"
 			unsaved-value="0">
 			<generator class="org.hibernate.id.TableHiLoGenerator">
 				<param name="table">hibernate_unique_key</param>
 				<param name="column">next_hi</param>
 			</generator>
 		</id>
-		<property name="name" type="java.lang.String" column="NAME" />
+		<property name="name" type="java.lang.String" column="name" />
 	</class>
-	<class name="MeasureType" table="DEF_MEASURE_TYPE" lazy="true"
+	<class name="MeasureType" table="def_measure_type" lazy="true"
 		polymorphism="explicit">
 		<cache usage="read-write" />
-		<id name="id" type="java.lang.Long" column="MEASURE_TYPE_PK_ID"
+		<id name="id" type="java.lang.Long" column="measure_type_pk_id"
 			unsaved-value="0">
 			<generator class="org.hibernate.id.TableHiLoGenerator">
 				<param name="table">hibernate_unique_key</param>
 				<param name="column">next_hi</param>
 			</generator>
 		</id>
-		<property name="name" type="java.lang.String" column="NAME" />
+		<property name="name" type="java.lang.String" column="name" />
 	</class>
 </hibernate-mapping>
