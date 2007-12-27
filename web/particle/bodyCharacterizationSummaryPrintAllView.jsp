@@ -102,9 +102,9 @@ ${charBean.protocolFileBean.uri}
 									<c:otherwise>
 										<c:choose>
 											<c:when test="${derivedBioAssayData.image eq 'true'}">
-												<img
-													src="${charBean.actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.id}"
-													border="0">
+											<img src="${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.id}"
+															border="0">
+											
 											</c:when>
 											<c:otherwise>${derivedBioAssayData.title}
 												</c:otherwise>
