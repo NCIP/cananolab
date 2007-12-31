@@ -70,7 +70,7 @@
 			</c:otherwise>
 		</c:choose>
 		<c:if test="${param.tableStyle == 'subTitleTable'}">
-			<td width="100%">
+			<td width="30%">
 				&nbsp;
 			</td>
 		</c:if>
