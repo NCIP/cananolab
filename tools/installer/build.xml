@@ -18,7 +18,7 @@
 	<property name="antcontrib.jar" value="ant-contrib-1.0b3.jar" />
 	<property name="application.name" value="pmd-tmp" />
 
-	<available file="${lib.dir}/${antcontrib.jar}" property="antcontrib.jar.present"/>
+	<available file="${installer.lib.dir}/${antcontrib.jar}" property="antcontrib.jar.present"/>
 
 	<!-- This file should either not exist or contain a property that points to a valid ./antlib${ant.lib.version} directory -->
 	<property file="${installer.basedir}/version.properties" />
@@ -54,9 +54,7 @@
 	</target>
 
 	<target name="_check-version">
-		<!--
 		<fail unless="antcontrib.jar.present" message="${antcontrib.jar} is not present in the ${lib.dir}" />
-		-->
 		<condition property="antlib.missing">
 			<not>
 				<available file="antlib${ant.lib.version}" />
@@ -76,7 +74,7 @@
 			<fileset dir="${installer.dist.dir}" includes="installpack.zip" description="caNanoLab artifacts. Used by installer's build script" />
 			<fileset dir="${installer.build.dir}" includes="resources/*" description="Used by installer antinstall-config.xml" />
 			<zipgroupfileset dir="${installer.basedir}/antlib${ant.lib.version}" includes="*.jar" excludes="ant.jar, ant-launcher.jar" description="Used by installers build script" />
-			<zipgroupfileset dir="${lib.dir}" includes="${antcontrib.jar}" description="Used by installers build script" />
+			<zipgroupfileset dir="${installer.lib.dir}" includes="${antcontrib.jar}" description="Used by installers build script" />
 			<zipgroupfileset dir="${installer.basedir}/ext" includes="jaxen-core.jar, xmlconfig.jar, jdom.jar,jaxen-jdom.jar,saxpath.jar,custominstaller.jar" description="Used by installers build script to perform XML file manipulation w/in Ant (levent gurses)" />
 		</installer>
 	</target>
@@ -93,14 +91,14 @@
 		
 
 	<target name="prepare">
-		<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpath="${lib.dir}/${antcontrib.jar}" />
+		<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpath="${installer.lib.dir}/${antcontrib.jar}" />
 
 		<delete dir="${installer.build.dir}/resources" />
 
 		<mkdir dir="${installer.build.dir}/resources" />
 
 		<loadfile property="release_notes.txt" srcfile="${docs.dir}/release_notes.txt" />
-
+<!--
 		<post to="http://txt2html.sourceforge.net/cgi-bin/txt2html.cgi" verbose="false" logfile="${installer.build.dir}/resources/release_notes.html" failonerror="true">
 			<prop name="text" value="${release_notes.txt}" />
 		</post>
@@ -108,6 +106,7 @@
 		<available file="${installer.build.dir}/resources/release_notes.html" property="release_notes.html.not.present" />
 		<fail message="Unable to have release notes translated to html using a website" unless="release_notes.html.not.present" />
 		<replace file="${installer.build.dir}/resources/release_notes.html" token="txt2html" value="CaNanoLab Release Notes" />
+-->
 		<copy file="${installer.basedir}/LICENSE.txt" todir="${installer.build.dir}/resources" />
 		<copy file="${docs.dir}/release_notes.txt" todir="${installer.build.dir}/resources" />
 		<copy file="${installer.basedir}/config/images/appLogo-nanolab.gif" todir="${installer.build.dir}/resources" />
@@ -189,23 +188,26 @@
 		<available file="${tools.dir}" type="dir" property="tools.dir.present"/>
 		<available file="${tools.dir}/jboss-4.0.5.GA.zip" type="file" property="local.jboss.present"/>
 		<available file="${tools.dir}/mysql-noinstall-5.0.45-win32.zip" type="file" property="local.mysql.present"/>
+		<!--
 		<available file="${tools.dir}/jakarta-tomcat-5.0.28.zip" type="file" property="local.tomcat.present"/>
 		<available file="${tools.dir}/ws-core-4.0.3-bin.zip" type="file" property="local.ws-core.present"/>
 		<available file="${tools.dir}/caNanoLab_grid_1.1.zip" type="file" property="local.nano-grid.present"/>
-
+-->
 		<antcall target="create-tools-dir" />
 		<antcall target="get-jboss-bin" />
 		<antcall target="get-mysql-bin" />
+<!--
 		<antcall target="get-tomcat-bin" />
 		<antcall target="get-ws-core-bin" />
 		<antcall target="get-nano-grid-bin" />
-
+-->
 		<copy file="${tools.dir}/jboss-4.0.5.GA.zip" todir="${installer.dist.dir.temp}/tools" />
 		<copy file="${tools.dir}/mysql-noinstall-5.0.45-win32.zip" todir="${installer.dist.dir.temp}/tools" />
+<!--		
 		<copy file="${tools.dir}/jakarta-tomcat-5.0.28.zip" todir="${installer.dist.dir.temp}/tools" />
 		<copy file="${tools.dir}/ws-core-4.0.3-bin.zip" todir="${installer.dist.dir.temp}/tools" />
 		<copy file="${tools.dir}/caNanoLab_grid_1.1.zip" todir="${installer.dist.dir.temp}/tools" />
-
+-->
 		<!-- Configure JBoss MySQL datasource 
 		<antcall target="-configure-jboss-ds" />
 		-->

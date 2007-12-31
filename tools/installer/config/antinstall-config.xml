@@ -22,26 +22,30 @@
 		resource="/resources/LICENSE.txt">
 	</page>
 	<!--  type="license" shows a license page to click through
-	-->
+	
 	<page type="text" name="release_notes" displayText="Release Notes" htmlResource="/resources/release_notes.html" textResource="/resources/release_notes.txt">
 	</page>
+	-->
 	<!--  type="input" shows a list of editable options for the installer -->
 	<page type="input" name="input.file"
 		displayText="Installation Folder">
 		<comment displayText="" bold="true" />
 			
 		<directory displayText="Enter the destination folder for the caNanoLab application:" 
-			defaultValue="C:/cananolab-app" 
+			defaultValue="${java.user.home}/cananolab-app" 
+			defaultValueWin="C:/cananolab-app" 
 			property="temp.dir"/>
 		
 			
 		<directory displayText="Enter the destination folder for the Jboss Server:" 
-			defaultValue="C:/cananolab-app" 
+			defaultValue="${java.user.home}/cananolab-app" 
+			defaultValueWin="C:/cananolab-app"
 			property="jboss.dir"/>
 
 			
 		<directory displayText="Enter the destination folder for the mySql Database" 
-			defaultValue="C:/cananolab-app" 
+			defaultValue="${java.user.home}/cananolab-app" 
+			defaultValueWin="C:/cananolab-app"
 			property="mysql.dir"/>	
 	<!--	
 	    grid installation
@@ -83,11 +87,15 @@
 			defaultValue="18443" 
 			validationClass="com.install.customvalidate.ValidatePort" />
 
+		<hidden
+			property="os"
+			value="${os.name}"
+		/>
 		
    	</page>	
 	
 	<page type="input" name="mysql.config"
-		displayText="MySQL configuration">
+		displayText="MySQL configuration for Windows" ifProperty="(${java.os.name}=Windows XP)OR(${java.os.name}=Windows 2000)" >
 		<comment displayText="" bold="true" />
 
 
@@ -116,15 +124,48 @@
 			/>		
 			
    	</page>	
+   	
+   		<page type="input" name="linux.mysql.config"
+			displayText="MySQL configuration for linux" ifProperty="${java.os.name}=Linux">
+			<comment displayText="" bold="true" />
+	
+	
+			<text
+				property="database.port"
+				displayText="Database Port Number" 
+				defaultValue="3307" 
+				/>
+	
+			<text
+				property="database.system.user"
+				displayText="Database System User" 
+				defaultValue="root" 
+				/>
+	
+			<text
+				property="database.system.password"
+				displayText="Database System Password" 
+				defaultValue="mysql" 
+				/>
+			
+			<text
+				property="database.password"
+				displayText="Database User Password" 
+				defaultValue="go!23" 
+				/>		
+				
+   	</page>	
+   	
 
 	<page type="input" name="build.properties"
 		displayText="Enter the build properties">
 		<comment displayText="" bold="true" />
 
-		<text
+		<directory
 			property="file.repository.dir"
 			displayText="Enter the File Repository directory" 
-			defaultValue="C:/temp/caNanoLab/fileupload" 
+			defaultValue="${java.user.home}/caNanoLab/fileupload" 
+			defaultValueWin="C:/temp/caNanoLab/fileupload" 
 			/>
 
 		<text
@@ -160,16 +201,27 @@
 			bold="true" />
 		<comment displayText="" bold="true" />
 		<target displayText="Please confirm the caNanoLab installation."
-			target="auto-update" defaultValue="Yes" />
+			target="auto-update" defaultValue="Yes"
+			osSpecific="true"
+        		strict="false" 
+			/>
 		<target displayText="Please confirm the Jboss installation."
-			target="jboss-install" defaultValue="Yes" />
+			target="jboss-install" defaultValue="Yes"
+			osSpecific="true"
+        		strict="false" 
+			/>
 		<target displayText="Please confirm the mysql installation."
-			target="mysql-install" defaultValue="Yes" />
+			target="mysql-install" defaultValue="Yes"
+			osSpecific="true"
+        		strict="false" 
+			/>
 		<target displayText="migrate mysql data to new version."
-			target="migrate-mysql" defaultValue="Yes" />				
+			target="migrate-mysql" defaultValue="Yes" 
+			/>
+<!--			
 		<target displayText="Please confirm the jboss configuration."
 			target="configure-jboss" defaultValue="Yes" />
-<!--			
+			
 		<target displayText="Please confirm the Grid installation."
 			target="grid-install" defaultValue="Yes" />			
 -->		
