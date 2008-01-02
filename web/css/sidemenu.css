@@ -333,8 +333,20 @@ td.titleCell2NoData li {
 
 table.subTitleTable {
 	background-color: #F4F4F5;
-	/* width: 100%; */
+	width: 100%;
 	border-collapse: collapse;
+}
+
+td.tdfill {
+	width: 5%;
+}
+
+table.subTitleTable td.tdfill {
+	width: 30%;
+}
+
+table.subTitleTable td.titleCell2Vitro {
+	width: 60%;
 }
 
 td.titleCell2Vitro a {
@@ -353,6 +365,7 @@ td.titleCell2VitroNoData {
 	font-weight: bold;
 	font-family: Verdana, Helvetica, Arial, sans-serif;
 	text-indent: 1.4em;
+	width: 130px;
 }
 
 
@@ -390,6 +403,7 @@ td.titleCell4NoData {
 	font-weight: bold;
 	font-family: Verdana, Helvetica, Arial, sans-serif;
 	text-indent: 2.6em;
+	/* width: 40%; */
 }
 
 td.addCell a {
