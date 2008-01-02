@@ -2,34 +2,34 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping package="gov.nih.nci.calab.domain.nano.particle">
-	<joined-subclass name="Nanoparticle" table="NANOPARTICLE" extends="gov.nih.nci.calab.domain.Sample" dynamic-insert="false">
-		<key column="NANOPARTICLE_PK_ID" />
-		<property name="classification" column="CLASSIFICATION" type="java.lang.String" />
+	<joined-subclass name="Nanoparticle" table="nanoparticle" extends="gov.nih.nci.calab.domain.Sample" dynamic-insert="false">
+		<key column="nanoparticle_pk_id" />
+		<property name="classification" column="classification" type="java.lang.String" />
 
 		<set name="functionCollection" cascade="all-delete-orphan" lazy="true">
 			<cache usage="read-write" />
-			<key column="NANOPARTICLE_PK_ID" />
+			<key column="nanoparticle_pk_id" />
 			<one-to-many class="gov.nih.nci.calab.domain.nano.function.Function" />
 		</set>
-		<set name="characterizationCollection" table="NANOPARTICLE_CHAR" cascade="all-delete-orphan" lazy="true">
+		<set name="characterizationCollection" table="nanoparticle_char" cascade="all-delete-orphan" lazy="true">
 			<cache usage="read-write" />
-			<key column="NANOPARTICLE_PK_ID" />
-			<many-to-many class="gov.nih.nci.calab.domain.nano.characterization.Characterization" column="CHARACTERIZATION_PK_ID" />
+			<key column="nanoparticle_pk_id" />
+			<many-to-many class="gov.nih.nci.calab.domain.nano.characterization.Characterization" column="characterization_pk_id" />
 		</set>
-		<set name="keywordCollection" table="KEYWORD_NANOPARTICLE" cascade="all-delete-orphan" lazy="true">
+		<set name="keywordCollection" table="keyword_nanoparticle" cascade="all-delete-orphan" lazy="true">
 			<cache usage="read-write" />
-			<key column="NANOPARTICLE_PK_ID" />
-			<many-to-many class="gov.nih.nci.calab.domain.Keyword" column="KEYWORD_PK_ID" />
+			<key column="nanoparticle_pk_id" />
+			<many-to-many class="gov.nih.nci.calab.domain.Keyword" column="keyword_pk_id" />
 		</set>
-		<set name="reportCollection" table="SAMPLE_REPORT" cascade="all-delete-orphan" lazy="true">
+		<set name="reportCollection" table="sample_report" cascade="all-delete-orphan" lazy="true">
 			<cache usage="read-write" />
-			<key column="SAMPLE_PK_ID" />
-			<many-to-many class="gov.nih.nci.calab.domain.Report" column="FILE_PK_ID" />
+			<key column="sample_pk_id" />
+			<many-to-many class="gov.nih.nci.calab.domain.Report" column="file_pk_id" />
 		</set>
-		<set name="associatedFileCollection" table="SAMPLE_ASSOCIATED_FILE" cascade="all-delete-orphan" lazy="true">
+		<set name="associatedFileCollection" table="sample_associated_file" cascade="all-delete-orphan" lazy="true">
 			<cache usage="read-write" />
-			<key column="SAMPLE_PK_ID" />
-			<many-to-many class="gov.nih.nci.calab.domain.AssociatedFile" column="ASSOCIATED_FILE_PK_ID" />
+			<key column="sample_pk_id" />
+			<many-to-many class="gov.nih.nci.calab.domain.AssociatedFile" column="associated_file_pk_id" />
 		</set>
 
 	</joined-subclass>

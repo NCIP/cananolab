@@ -2,101 +2,101 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping package="gov.nih.nci.calab.domain.nano.function">
-	<class name="FunctionType" table="DEF_Function_Type" lazy="true"
+	<class name="FunctionType" table="def_function_type" lazy="true"
 		polymorphism="explicit">
 		<cache usage="read-write" />
-		<id name="id" type="java.lang.Long" column="FUNCTION_TYPE_PK_ID"
+		<id name="id" type="java.lang.Long" column="function_type_pk_id"
 			unsaved-value="0">
 			<generator class="org.hibernate.id.TableHiLoGenerator">
 				<param name="table">hibernate_unique_key</param>
 				<param name="column">next_hi</param>
 			</generator>
 		</id>
-		<property name="name" type="java.lang.String" column="NAME" />
+		<property name="name" type="java.lang.String" column="name" />
 	</class>
-	<class name="ActivationMethod" table="DEF_ACTIVATION_METHOD"
+	<class name="ActivationMethod" table="def_activation_method"
 		lazy="true" polymorphism="explicit">
 		<cache usage="read-write" />
 		<id name="id" type="java.lang.Long"
-			column="ACTIVATION_METHOD_PK_ID" unsaved-value="0">
+			column="activation_method_pk_id" unsaved-value="0">
 			<generator class="org.hibernate.id.TableHiLoGenerator">
 				<param name="table">hibernate_unique_key</param>
 				<param name="column">next_hi</param>
 			</generator>
 		</id>
-		<property name="name" type="java.lang.String" column="NAME" />
+		<property name="name" type="java.lang.String" column="name" />
 	</class>
-	<class name="SpeciesName" table="DEF_SPECIES_NAME" lazy="true"
+	<class name="SpeciesName" table="def_species_name" lazy="true"
 		polymorphism="explicit">
 		<cache usage="read-write" />
-		<id name="id" type="java.lang.Long" column="SPECIES_NAME_PK_ID"
+		<id name="id" type="java.lang.Long" column="species_name_pk_id"
 			unsaved-value="0">
 			<generator class="org.hibernate.id.TableHiLoGenerator">
 				<param name="table">hibernate_unique_key</param>
 				<param name="column">next_hi</param>
 			</generator>
 		</id>
-		<property name="name" type="java.lang.String" column="NAME" />
+		<property name="name" type="java.lang.String" column="name" />
 	</class>
 	<class name="ImageContrastAgentType"
-		table="DEF_IMAGE_CONTRAST_AGENT_TYPE" lazy="true"
+		table="def_image_contrast_agent_type" lazy="true"
 		polymorphism="explicit">
 		<cache usage="read-write" />
-		<id name="id" type="java.lang.Long" column="AGENT_TYPE_PK_ID"
+		<id name="id" type="java.lang.Long" column="agent_type_pk_id"
 			unsaved-value="0">
 			<generator class="org.hibernate.id.TableHiLoGenerator">
 				<param name="table">hibernate_unique_key</param>
 				<param name="column">next_hi</param>
 			</generator>
 		</id>
-		<property name="name" type="java.lang.String" column="NAME" />
+		<property name="name" type="java.lang.String" column="name" />
 	</class>
-	<class name="BondType" table="DEF_BOND_TYPE" lazy="true"
+	<class name="BondType" table="def_bond_type" lazy="true"
 		polymorphism="explicit">
 		<cache usage="read-write" />
-		<id name="id" type="java.lang.Long" column="BOND_TYPE_PK_ID"
+		<id name="id" type="java.lang.Long" column="bond_type_pk_id"
 			unsaved-value="0">
 			<generator class="org.hibernate.id.TableHiLoGenerator">
 				<param name="table">hibernate_unique_key</param>
 				<param name="column">next_hi</param>
 			</generator>
 		</id>
-		<property name="name" type="java.lang.String" column="NAME" />
+		<property name="name" type="java.lang.String" column="name" />
 	</class>
-	<class name="FunctionLinkageType" table="DEF_FUNCTION_LINKAGE_TYPE" lazy="true"
+	<class name="FunctionLinkageType" table="def_function_linkage_type" lazy="true"
 		polymorphism="explicit">
 		<cache usage="read-write" />
-		<id name="id" type="java.lang.Long" column="LINKAGE_TYPE_PK_ID"
+		<id name="id" type="java.lang.Long" column="linkage_type_pk_id"
 			unsaved-value="0">
 			<generator class="org.hibernate.id.TableHiLoGenerator">
 				<param name="table">hibernate_unique_key</param>
 				<param name="column">next_hi</param>
 			</generator>
 		</id>
-		<property name="name" type="java.lang.String" column="NAME" />
+		<property name="name" type="java.lang.String" column="name" />
 	</class>
-	<class name="FunctionAgentType" table="DEF_FUNCTION_AGENT_TYPE" lazy="true"
+	<class name="FunctionAgentType" table="def_function_agent_type" lazy="true"
 		polymorphism="explicit">
 		<cache usage="read-write" />
-		<id name="id" type="java.lang.Long" column="AGENT_TYPE_PK_ID"
+		<id name="id" type="java.lang.Long" column="agent_type_pk_id"
 			unsaved-value="0">
 			<generator class="org.hibernate.id.TableHiLoGenerator">
 				<param name="table">hibernate_unique_key</param>
 				<param name="column">next_hi</param>
 			</generator>
 		</id>
-		<property name="name" type="java.lang.String" column="NAME" />
+		<property name="name" type="java.lang.String" column="name" />
 	</class>
-	<class name="FunctionAgentTargetType" table="DEF_FUNCTION_AGENT_TARGET_TYPE" lazy="true"
+	<class name="FunctionAgentTargetType" table="def_function_agent_target_type" lazy="true"
 		polymorphism="explicit">
 		<cache usage="read-write" />
-		<id name="id" type="java.lang.Long" column="AGENT_TARGET_TYPE_PK_ID"
+		<id name="id" type="java.lang.Long" column="agent_target_type_pk_id"
 			unsaved-value="0">
 			<generator class="org.hibernate.id.TableHiLoGenerator">
 				<param name="table">hibernate_unique_key</param>
 				<param name="column">next_hi</param>
 			</generator>
 		</id>
-		<property name="name" type="java.lang.String" column="NAME" />
+		<property name="name" type="java.lang.String" column="name" />
 	</class>
 </hibernate-mapping>
