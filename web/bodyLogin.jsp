@@ -33,7 +33,7 @@
 										<c:param name="dispatch">setup</c:param>
 									</c:url>
 									<h4>
-										<a href="${protocolURL}" >Protocols</a>
+										<a href="${protocolURL}">Protocols</a>
 									</h4>
 									<h5>
 										Provides access to publicly available nanotechnology
@@ -48,7 +48,7 @@
 										<c:param name="dispatch">setup</c:param>
 									</c:url>
 									<h4>
-										<a href="${charURL}" >Nanoparticles</a>
+										<a href="${charURL}">Nanoparticles</a>
 									</h4>
 									<h5>
 										Provides access to publicly available nanoparticle
@@ -64,7 +64,7 @@
 										<c:param name="dispatch">setup</c:param>
 									</c:url>
 									<h4>
-										<a href="${reportURL}" >Reports</a>
+										<a href="${reportURL}">Reports</a>
 									</h4>
 									<h5>
 										Provides access to publicly available reports detailing the
@@ -164,29 +164,47 @@
 									<td class="sidebarContent">
 										<strong>caNanoLab 1.3 is now available!</strong>
 										<br>
-										caNanoLab 1.3 contains the following features:
+										<br>
+										caNanoLab 1.3 contains the following primary features:
 										<br>
 										<ul>
+											<li>
+												New navigation and usability enhancements
+											</li>
 											<li>
 												Public Browse for Protocols, Nanoparticles, and Reports
 											</li>
 											<li>
-												MySQL 5.0.x Database
+												Summary Views of Nanoparticle Information
 											</li>
+											<li>
+												Print and Export of Nanoparticle Information
+											</li>
+										</ul>
+										caNanoLab 1.3 expands upon existing caNanoLab functionality
+										including:
+										<br>
+										<ul>
 											<li>
 												Sample and Aliquot Management
 											</li>
 											<li>
-												Nanoparticle Annotation Creation, Deletion and Search
+												Protocol Management
 											</li>
 											<li>
-												Report and Protocol Management
+												Nanoparticle Information (Characterizations) Management
 											</li>
 											<li>
-												Remote Grid Search for Reports and Physical Composition Data
+												Report Management
+											</li>
+											<li>
+												Remote Grid Search (Reports and Physical Composition Data)
 											</li>
 											<li>
 												Role-based Security
+											</li>
+											<li>
+												MySQL 5.0.x Database Support
 											</li>
 										</ul>
 										<br>

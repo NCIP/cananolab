@@ -18,16 +18,17 @@
 	</tr>
 	<tr>
 		<td class="welcomeContent" valign="top">
-			Welcome to the
-			<strong>cancer Nanotechnology Laboratory (caNanoLab)</strong> portal.
+			<b>WELCOME TO caNanoLab</b>
+			<br>
+			Welcome to the cancer Nanotechnology Laboratory (caNanoLab) portal.
 			caNanoLab is a data sharing portal designed for laboratories
 			performing nanoparticle assays. caNanoLab provides support for the
 			annotation of nanoparticles with characterizations resulting from
 			physical and in vitro nanoparticle assays and the sharing of these
-			characterizations in a secure fashion. The diagram below describes
-			the caNanoLab functionality. Hotspots are defined on the diagram to
-			allow users to directly navigate to the appropriate functions visible
-			to the users.
+			characterizations in a secure fashion. The diagram below illustrates
+			the caNanoLab functionality and workflow. Active links are provided
+			on the diagram to allow a user to directly navigate to the
+			appropriate function based on the authorization level of the user.
 			<br>
 			<br>
 			<map name="funcMap" id="funcMap">

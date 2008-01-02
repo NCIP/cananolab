@@ -63,9 +63,9 @@
 									<a href="${searchLink}">Search Existing <c:out
 											value="${item}" />s </a>
 									<br>
-									Enter search criteria to find the
-									<c:out value="${fn:toLowerCase(item)}" />
-									you wish to operate on.
+									Enter search criteria to obtain information on
+									<c:out value="${fn:toLowerCase(item)}" />s
+									of interest.
 								</td>
 							</tr>
 						</table>
