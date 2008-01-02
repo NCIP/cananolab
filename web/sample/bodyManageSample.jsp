@@ -7,7 +7,7 @@
 	<tr>
 		<td>
 			<h4>
-				Manage Sample/Aliquot Home
+				Manage Samples/Aliquots
 			</h4>
 		</td>
 		<td align="right" width="15%">
@@ -18,12 +18,14 @@
 	</tr>
 	<tr>
 		<td colspan="2" class="welcomeContent">
-			This is the manage sample/aliquot section. A sample is the
-			nanoparticle received by the laboratory that undergoes further
-			characterization.&nbsp; An aliquot is a portion of the total sample
-			(nanoparticle) used during the execution of laboratory assays. In
-			this section, you may either create a new sample, create a new
-			aliquot, or select an existing samples and select existing aliquots.
+			This is the manage samples/aliquots section. A sample is the initial
+			nanomaterial that is received by the laboratory that undergoes
+			further characterization. An aliquot is a portion of the total sample
+			(nanomaterial) used during the execution of laboratory assays. In
+			this section, depending on your authorization level, you may create a
+			new sample or aliquot, or search for an existing sample or aliquot. A
+			sample must first be created prior to submitting additional
+			information (characterizations) about a nanoparticle.
 			<br>
 			<br>
 		</td>
@@ -71,8 +73,8 @@
 									<a href="searchSample.do?dispatch=setup">Search Existing
 										Samples </a>
 									<br>
-									Enter search criteria to find the sample you wish to operate
-									on.
+									Enter search criteria to obtain information on samples of
+									interest.
 								</td>
 							</tr>
 						</table>
@@ -102,8 +104,8 @@
 									<a href="searchAliquot.do?dispatch=setup">Search Existing
 										Aliquots</a>
 									<br>
-									Enter search criteria to find the aliquot you wish to operate
-									on.
+									Enter search criteria to obtain information on aliquots of
+									interest.
 								</td>
 							</tr>
 						</table>
