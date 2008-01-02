@@ -3,16 +3,16 @@
 
 <hibernate-mapping
 	package="gov.nih.nci.calab.domain.nano.characterization.invitro">
-	<class name="CellLineType" table="DEF_CellLine_Type" lazy="true"
+	<class name="CellLineType" table="def_cellline_type" lazy="true"
 		polymorphism="explicit">
 		<cache usage="read-write" />
-		<id name="id" type="java.lang.Long" column="CELLLINE_TYPE_PK_ID"
+		<id name="id" type="java.lang.Long" column="cellline_type_pk_id"
 			unsaved-value="0">
 			<generator class="org.hibernate.id.TableHiLoGenerator">
 				<param name="table">hibernate_unique_key</param>
 				<param name="column">next_hi</param>
 			</generator>
 		</id>
-		<property name="name" type="java.lang.String" column="NAME" />
+		<property name="name" type="java.lang.String" column="name" />
 	</class>
 </hibernate-mapping>

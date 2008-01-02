@@ -2,17 +2,17 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping package="gov.nih.nci.calab.domain.nano.characterization.physical.composition">
-	<class name="ComposingElement" table="COMPOSING_ELEMENT" lazy="true" polymorphism="explicit">
+	<class name="ComposingElement" table="composing_element" lazy="true" polymorphism="explicit">
 		<cache usage="read-write" />
-		<id name="id" type="java.lang.Long" column="COMPOSING_ELEMENT_PK_ID" unsaved-value="0">
+		<id name="id" type="java.lang.Long" column="composing_element_pk_id" unsaved-value="0">
 			<generator class="org.hibernate.id.TableHiLoGenerator">
 				<param name="table">hibernate_unique_key</param>
 				<param name="column">next_hi</param>
 			</generator>
 		</id>
-		<property name="elementType" type="java.lang.String" column="ELEMENT_TYPE" />
-		<property name="chemicalName" type="java.lang.String" column="CHEMICAL_NAME" />
-		<property name="description" type="java.lang.String" column="DESCRIPTION" />
+		<property name="elementType" type="java.lang.String" column="element_type" />
+		<property name="chemicalName" type="java.lang.String" column="chemical_name" />
+		<property name="description" type="java.lang.String" column="description" />
 
 	</class>
 </hibernate-mapping>

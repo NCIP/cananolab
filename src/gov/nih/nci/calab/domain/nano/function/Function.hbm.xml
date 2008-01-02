@@ -2,24 +2,24 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping package="gov.nih.nci.calab.domain.nano.function">
-	<class name="Function" table="PARTICLE_FUNCTION" lazy="true" polymorphism="explicit">
+	<class name="Function" table="particle_function" lazy="true" polymorphism="explicit">
 		<cache usage="read-write" />
-		<id name="id" type="java.lang.Long" column="PARTICLE_FUNCTION_PK_ID" unsaved-value="0">
+		<id name="id" type="java.lang.Long" column="particle_function_pk_id" unsaved-value="0">
 			<generator class="org.hibernate.id.TableHiLoGenerator">
 				<param name="table">hibernate_unique_key</param>
 				<param name="column">next_hi</param>
 			</generator>
 		</id>
 
-		<property name="type" type="java.lang.String" column="TYPE" />
-		<property name="activationMethod" type="java.lang.String" column="ACTIVATION_METHOD" />
-		<property name="description" type="java.lang.String" column="DESCRIPTION" />
-		<property name="identificationName" type="java.lang.String" column="IDENTIFIER_NAME" />
+		<property name="type" type="java.lang.String" column="type" />
+		<property name="activationMethod" type="java.lang.String" column="activation_method" />
+		<property name="description" type="java.lang.String" column="description" />
+		<property name="identificationName" type="java.lang.String" column="identifier_name" />
 
 		<list name="linkageCollection" cascade="all-delete-orphan" lazy="true">
 			<cache usage="read-write" />
-			<key column="FUNCTION_PK_ID" />
-			<list-index column="LIST_INDEX" />
+			<key column="function_pk_id" />
+			<list-index column="list_index" />
 			<one-to-many class="gov.nih.nci.calab.domain.nano.function.Linkage" />
 		</list>
 	</class>
