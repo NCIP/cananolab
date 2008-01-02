@@ -3,40 +3,40 @@
 
 <hibernate-mapping
 	package="gov.nih.nci.calab.domain.nano.characterization.physical">
-	<class name="ShapeType" table="DEF_Shape_Type" lazy="true"
+	<class name="ShapeType" table="def_shape_type" lazy="true"
 		polymorphism="explicit">
 		<cache usage="read-write" />
-		<id name="id" type="java.lang.Long" column="SHAPE_TYPE_PK_ID"
+		<id name="id" type="java.lang.Long" column="shape_type_pk_id"
 			unsaved-value="0">
 			<generator class="org.hibernate.id.TableHiLoGenerator">
 				<param name="table">hibernate_unique_key</param>
 				<param name="column">next_hi</param>
 			</generator>
 		</id>
-		<property name="name" type="java.lang.String" column="NAME" />
+		<property name="name" type="java.lang.String" column="name" />
 	</class>
-	<class name="MorphologyType" table="DEF_Morphology_Type" lazy="true"
+	<class name="MorphologyType" table="def_morphology_type" lazy="true"
 		polymorphism="explicit">
 		<cache usage="read-write" />
 		<id name="id" type="java.lang.Long"
-			column="MORPHOLOGY_TYPE_PK_ID" unsaved-value="0">
+			column="morphology_type_pk_id" unsaved-value="0">
 			<generator class="org.hibernate.id.TableHiLoGenerator">
 				<param name="table">hibernate_unique_key</param>
 				<param name="column">next_hi</param>
 			</generator>
 		</id>
-		<property name="name" type="java.lang.String" column="NAME" />
+		<property name="name" type="java.lang.String" column="name" />
 	</class>
-	<class name="SolventType" table="DEF_Solvent_Type" lazy="true"
+	<class name="SolventType" table="def_solvent_type" lazy="true"
 		polymorphism="explicit">
 		<cache usage="read-write" />
-		<id name="id" type="java.lang.Long" column="SOLVENT_TYPE_PK_ID"
+		<id name="id" type="java.lang.Long" column="solvent_type_pk_id"
 			unsaved-value="0">
 			<generator class="org.hibernate.id.TableHiLoGenerator">
 				<param name="table">hibernate_unique_key</param>
 				<param name="column">next_hi</param>
 			</generator>
 		</id>
-		<property name="name" type="java.lang.String" column="NAME" />
+		<property name="name" type="java.lang.String" column="name" />
 	</class>
 </hibernate-mapping>

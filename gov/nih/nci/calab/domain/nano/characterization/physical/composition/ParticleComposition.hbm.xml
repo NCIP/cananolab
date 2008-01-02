@@ -9,8 +9,8 @@
 		<list name="composingElementCollection"
 			cascade="all-delete-orphan" lazy="true">
 			<cache usage="read-write" />
-			<key column="CHARACTERIZATION_PK_ID" />
-			<list-index column="LIST_INDEX" />
+			<key column="characterization_pk_id" />
+			<list-index column="list_index" />
 			<one-to-many
 				class="gov.nih.nci.calab.domain.nano.characterization.physical.composition.ComposingElement" />
 		</list>
@@ -26,10 +26,10 @@
 		<subclass name="FullereneComposition"
 			extends="gov.nih.nci.calab.domain.nano.characterization.physical.composition.ParticleComposition"
 			discriminator-value="FullereneComp">
-			<join table="FULLERENE_COMPOSITION">
-				<key column="F_COMPOSITION_PK_ID" />
+			<join table="fullerene_composition">
+				<key column="f_composition_pk_id" />
 				<property name="numberOfCarbon"
-					column="NUMBER_OF_CARBON" type="java.lang.Integer" />
+					column="number_of_carbon" type="java.lang.Integer" />
 			</join>
 		</subclass>
 		<subclass name="DendrimerComposition"
@@ -38,74 +38,74 @@
 			<list name="surfaceGroupCollection"
 				cascade="all-delete-orphan" lazy="false">
 				<cache usage="read-write" />
-				<key column="D_COMPOSITION_PK_ID" />
-				<list-index column="LIST_INDEX" />
+				<key column="d_composition_pk_id" />
+				<list-index column="list_index" />
 				<one-to-many
 					class="gov.nih.nci.calab.domain.nano.characterization.physical.composition.SurfaceGroup" />
 			</list>
-			<join table="DENDRIMER_COMPOSITION">
-				<key column="D_COMPOSITION_PK_ID" />
-				<property name="branch" column="BRANCH"
+			<join table="dendrimer_composition">
+				<key column="d_composition_pk_id" />
+				<property name="branch" column="branch"
 					type="java.lang.String" />
-				<property name="generation" column="GENERATION"
+				<property name="generation" column="generation"
 					type="java.lang.Float" />
 				<property name="molecularFormula"
-					column="MOLECULAR_FORMULA" type="java.lang.String" />
-				<property name="repeatUnit" column="REPEAT_UNIT"
+					column="molecular_formula" type="java.lang.String" />
+				<property name="repeatUnit" column="repeat_unit"
 					type="java.lang.String" />
 			</join>
 		</subclass>
 		<subclass name="CarbonNanotubeComposition"
 			extends="gov.nih.nci.calab.domain.nano.characterization.physical.composition.ParticleComposition"
 			discriminator-value="CarbNanotubeComp">
-			<join table="CARBON_NANOTUBE_COMPOSITION">
-				<key column="CN_COMPOSITION_PK_ID" />
-				<property name="chirality" column="CHIRALITY"
+			<join table="carbon_nanotube_composition">
+				<key column="cn_composition_pk_id" />
+				<property name="chirality" column="chirality"
 					type="java.lang.String" />
-				<property name="growthDiameter" column="GROWTH_DIAMETER"
+				<property name="growthDiameter" column="growth_diameter"
 					type="java.lang.Float" />
-				<property name="averageLength" column="AVERAGE_LENGTH"
+				<property name="averageLength" column="average_length"
 					type="java.lang.Float" />
-				<property name="wallType" column="WALL_TYPE"
+				<property name="wallType" column="wall_type"
 					type="java.lang.String" />
 			</join>
 		</subclass>
 		<subclass name="LiposomeComposition"
 			extends="gov.nih.nci.calab.domain.nano.characterization.physical.composition.ParticleComposition"
 			discriminator-value="LiposomeComp">
-			<join table="LIPOSOME_COMPOSITION">
-				<key column="L_COMPOSITION_PK_ID" />
-				<property name="polymerized" column="IS_POLYMERIZED"
+			<join table="liposome_composition">
+				<key column="l_composition_pk_id" />
+				<property name="polymerized" column="is_polymerized"
 					type="boolean" />
-				<property name="polymerName" column="POLYMER_NAME"
+				<property name="polymerName" column="polymer_name"
 					type="java.lang.String" />
 			</join>
 		</subclass>
 		<subclass name="PolymerComposition"
 			extends="gov.nih.nci.calab.domain.nano.characterization.physical.composition.ParticleComposition"
 			discriminator-value="PolymerComp">
-			<join table="POLYMER_COMPOSITION">
-				<key column="P_COMPOSITION_PK_ID" />
-				<property name="crossLinked" column="IS_CROSS_LINK"
+			<join table="polymer_composition">
+				<key column="p_composition_pk_id" />
+				<property name="crossLinked" column="is_cross_link"
 					type="boolean" />
 				<property name="crossLinkDegree"
-					column="CROSS_LINK_DEGREE" type="java.lang.Float" />
-				<property name="initiator" column="INITIATOR"
+					column="cross_link_degree" type="java.lang.Float" />
+				<property name="initiator" column="initiator"
 					type="java.lang.String" />
 			</join>
 		</subclass>
 		<subclass name="EmulsionComposition"
 			extends="gov.nih.nci.calab.domain.nano.characterization.physical.composition.ParticleComposition"
 			discriminator-value="EmulsionComp">
-			<join table="EMULSION_COMPOSITION">
-				<key column="E_COMPOSITION_PK_ID" />
-				<property name="type" column="EMULSION_TYPE"
+			<join table="emulsion_composition">
+				<key column="e_composition_pk_id" />
+				<property name="type" column="emulsion_type"
 					type="java.lang.String" />
 				<property name="molecularFormula"
-					column="MOLECULAR_FORMULA" type="java.lang.String" />
-				<property name="polymerized" column="IS_POLYMERIZED"
+					column="molecular_formula" type="java.lang.String" />
+				<property name="polymerized" column="is_polymerized"
 					type="boolean" />
-				<property name="polymerName" column="POLYMER_NAME"
+				<property name="polymerName" column="polymer_name"
 					type="java.lang.String" />
 			</join>
 		</subclass>

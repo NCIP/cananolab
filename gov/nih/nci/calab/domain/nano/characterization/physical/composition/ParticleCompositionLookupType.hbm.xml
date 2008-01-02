@@ -4,41 +4,41 @@
 <hibernate-mapping
 	package="gov.nih.nci.calab.domain.nano.characterization.physical.composition">
 	<class name="ComposingElementType"
-		table="DEF_composing_element_Type" lazy="true"
+		table="def_composing_element_type" lazy="true"
 		polymorphism="explicit">
 		<cache usage="read-write" />
 		<id name="id" type="java.lang.Long"
-			column="composing_element_TYPE_PK_ID" unsaved-value="0">
+			column="composing_element_type_pk_id" unsaved-value="0">
 			<generator class="org.hibernate.id.TableHiLoGenerator">
 				<param name="table">hibernate_unique_key</param>
 				<param name="column">next_hi</param>
 			</generator>
 		</id>
-		<property name="name" type="java.lang.String" column="NAME" />
+		<property name="name" type="java.lang.String" column="name" />
 	</class>
 	<class name="MolecularFormulaType"
-		table="DEF_Molecular_Formula_Type" lazy="true"
+		table="def_molecular_formula_type" lazy="true"
 		polymorphism="explicit">
 		<cache usage="read-write" />
 		<id name="id" type="java.lang.Long"
-			column="Molecular_Formula_TYPE_PK_ID" unsaved-value="0">
+			column="molecular_formula_type_pk_id" unsaved-value="0">
 			<generator class="org.hibernate.id.TableHiLoGenerator">
 				<param name="table">hibernate_unique_key</param>
 				<param name="column">next_hi</param>
 			</generator>
 		</id>
-		<property name="name" type="java.lang.String" column="NAME" />
+		<property name="name" type="java.lang.String" column="name" />
 	</class>
-	<class name="SurfaceGroupType" table="DEF_Surface_Group_Type"
+	<class name="SurfaceGroupType" table="def_surface_group_type"
 		lazy="true" polymorphism="explicit">
 		<cache usage="read-write" />
 		<id name="id" type="java.lang.Long"
-			column="SURFACE_GROUP_TYPE_PK_ID" unsaved-value="0">
+			column="surface_group_type_pk_id" unsaved-value="0">
 			<generator class="org.hibernate.id.TableHiLoGenerator">
 				<param name="table">hibernate_unique_key</param>
 				<param name="column">next_hi</param>
 			</generator>
 		</id>
-		<property name="name" type="java.lang.String" column="NAME" />
+		<property name="name" type="java.lang.String" column="name" />
 	</class>
 </hibernate-mapping>
