@@ -5,14 +5,14 @@
 		
 			<c:choose>
 			<c:when test="${!empty charaLeafToCharacterizations[param.charType]}">
-				<td class="${param.charTypeLabelStyle}">
 				<c:url var="url" value="${param.addAction}.do">
 					<c:param name="particleId" value="${particleId}" />
 					<c:param name="submitType" value="${param.charType}" />
 					<c:param name="page" value="0" />
 					<c:param name="dispatch" value="summaryView" />
 				</c:url>
-				<a href="${url}" class="${param.charTypeStyle}">${param.charType}</a>
+				<td class="${param.charTypeLabelStyle}">
+					<a href="${url}" class="${param.charTypeStyle}">${param.charType}</a>
 				</td>
 			</c:when>
 			<c:otherwise>
@@ -39,11 +39,6 @@
 							src="images/btn_add.gif" border="0" /></a>
 				</td>
 			</c:when>
-			<c:otherwise>
-				<td>
-					&nbsp;
-				</td>
-			</c:otherwise>
 		</c:choose>
 		<c:choose>
 			<c:when
@@ -69,10 +64,8 @@
 				</td>
 			</c:otherwise>
 		</c:choose>
-		<c:if test="${param.tableStyle == 'subTitleTable'}">
-			<td width="30%">
+		<td class="tdfill">
 				&nbsp;
-			</td>
-		</c:if>
+		</td>
 	</tr>
 </table>
