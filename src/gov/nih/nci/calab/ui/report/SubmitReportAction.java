@@ -5,7 +5,7 @@ package gov.nih.nci.calab.ui.report;
  *  
  * @author pansu
  */
-/* CVS $Id: SubmitReportAction.java,v 1.8 2007-12-13 16:30:37 pansu Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.9 2008-01-03 21:25:11 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
@@ -61,8 +61,8 @@ public class SubmitReportAction extends AbstractDispatchAction {
 				StringUtils.join(fileBean.getVisibilityGroups(), ", "));
 		ActionMessage msg2 = new ActionMessage("message.submitReport.file",
 				uploadedFile.getFileName());
-		msgs.add("message", msg1);
-		msgs.add("message", msg2);
+		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg1);
+		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg2);
 		saveMessages(request, msgs);
 
 		forward = mapping.findForward("success");
@@ -119,7 +119,7 @@ public class SubmitReportAction extends AbstractDispatchAction {
 		ActionMessage msg = new ActionMessage("message.updateReport", fileBean
 				.getUri());
 
-		msgs.add("message", msg);
+		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 		return mapping.findForward("success");
 	}

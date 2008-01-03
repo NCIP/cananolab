@@ -6,12 +6,11 @@ package gov.nih.nci.calab.ui.report;
  * @author pansu
  */
 
-/* CVS $Id: RemoteSearchReportAction.java,v 1.7 2007-12-20 16:26:49 pansu Exp $ */
+/* CVS $Id: RemoteSearchReportAction.java,v 1.8 2008-01-03 21:25:11 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.ReportBean;
 import gov.nih.nci.calab.dto.remote.GridNodeBean;
-import gov.nih.nci.calab.exception.FileException;
 import gov.nih.nci.calab.service.remote.GridSearchService;
 import gov.nih.nci.calab.service.remote.GridService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
@@ -56,7 +55,7 @@ public class RemoteSearchReportAction extends BaseRemoteSearchAction {
 			ActionMessage msg = new ActionMessage(
 					"message.grid.discovery.none",
 					CaNanoLabConstants.DOMAIN_MODEL_NAME);
-			msgs.add("message", msg);
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, msgs);
 			return mapping.getInputForward();
 		}
@@ -71,15 +70,15 @@ public class RemoteSearchReportAction extends BaseRemoteSearchAction {
 					ActionMessage message = new ActionMessage(
 							"message.remoteSearchReport.noresult", gridNode
 									.getHostName());
-					msgs.add("message", message);
+					msgs.add(ActionMessages.GLOBAL_MESSAGE, message);
 					saveMessages(request, msgs);
 				}
 				reports.addAll(gridReports);
 			} catch (Exception e) {
 				ActionMessage message = new ActionMessage(
 						"error.grid.notAvailable", gridNode.getHostName());
-				msgs.add("message", message);
-				saveMessages(request, msgs);
+				msgs.add(ActionMessages.GLOBAL_MESSAGE, message);
+				saveErrors(request, msgs);
 				e.printStackTrace();
 			}
 		}
@@ -89,7 +88,7 @@ public class RemoteSearchReportAction extends BaseRemoteSearchAction {
 		} else {
 			ActionMessage msg = new ActionMessage(
 					"message.searchReport.noresult");
-			msgs.add("message", msg);
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, msgs);
 			forward = mapping.getInputForward();
 		}
@@ -125,7 +124,7 @@ public class RemoteSearchReportAction extends BaseRemoteSearchAction {
 			ActionMessage msg = new ActionMessage(
 					"message.grid.discovery.none",
 					CaNanoLabConstants.DOMAIN_MODEL_NAME);
-			msgs.add("message", msg);
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, msgs);
 			return mapping.getInputForward();
 		}
@@ -141,9 +140,11 @@ public class RemoteSearchReportAction extends BaseRemoteSearchAction {
 			java.io.OutputStream out = response.getOutputStream();
 			out.write(fileData);
 			out.close();
-		} else {
-			throw new FileException(
-					"File to download doesn't exist on the server");
+		} else {			
+			ActionMessage msg = new ActionMessage("error.noReportFile");
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveErrors(request, msgs);
+			return mapping.getInputForward();
 		}
 		return null;
 	}

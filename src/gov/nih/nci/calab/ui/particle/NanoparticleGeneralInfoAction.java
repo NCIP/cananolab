@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.7 2007-12-06 22:16:05 pansu Exp $ */
+/* CVS $Id: NanoparticleGeneralInfoAction.java,v 1.8 2008-01-03 21:25:29 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
@@ -53,7 +53,7 @@ public class NanoparticleGeneralInfoAction extends AbstractDispatchAction {
 		ActionMessage msg = new ActionMessage(
 				"message.createNanoparticle.secure", StringUtils.join(visList,
 						", "));
-		msgs.add("message", msg);
+		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
 		session.setAttribute("newParticleCreated", "true");

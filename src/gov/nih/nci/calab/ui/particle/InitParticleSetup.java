@@ -5,7 +5,6 @@ import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.CharacterizationTypeBean;
 import gov.nih.nci.calab.dto.characterization.composition.CompositionBean;
 import gov.nih.nci.calab.dto.common.InstrumentBean;
-import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.ReportBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.function.FunctionBean;
@@ -564,8 +563,7 @@ public class InitParticleSetup {
 		for (InstrumentBean instrument : instruments) {
 			instrumentTypes.add(instrument.getType());
 		}
-		SortedSet<String> manufacturers = charService.getAllManufacturers();
-		session.setAttribute("allInstruments", instruments);
+		SortedSet<String> manufacturers = charService.getAllManufacturers();		
 		session.setAttribute("allInstrumentTypes", instrumentTypes);
 		session.setAttribute("allManufacturers", manufacturers);
 	}

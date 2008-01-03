@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: RemoteNanoparticleGeneralInfoAction.java,v 1.7 2007-12-05 20:01:09 pansu Exp $ */
+/* CVS $Id: RemoteNanoparticleGeneralInfoAction.java,v 1.8 2008-01-03 21:25:29 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.remote.GridNodeBean;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
@@ -36,7 +36,7 @@ public class RemoteNanoparticleGeneralInfoAction extends BaseRemoteSearchAction 
 			ActionMessage msg = new ActionMessage(
 					"message.grid.discovery.none",
 					CaNanoLabConstants.DOMAIN_MODEL_NAME);
-			msgs.add("message", msg);
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, msgs);
 			return mapping.getInputForward();
 		}

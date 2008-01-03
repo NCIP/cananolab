@@ -7,13 +7,12 @@ package gov.nih.nci.calab.ui.sample;
  * @author pansu
  */
 
-/* CVS $Id: CreateAliquotAction.java,v 1.8 2007-12-19 16:19:11 pansu Exp $ */
+/* CVS $Id: CreateAliquotAction.java,v 1.9 2008-01-03 21:24:48 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.sample.AliquotBean;
 import gov.nih.nci.calab.dto.sample.ContainerInfoBean;
 import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
-import gov.nih.nci.calab.exception.SampleException;
 import gov.nih.nci.calab.service.sample.AliquotService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
@@ -61,14 +60,14 @@ public class CreateAliquotAction extends AbstractDispatchAction {
 			manageAliquotService.saveAliquots(fromAliquot, parentName,
 					aliquotMatrix);
 			ActionMessage msg = new ActionMessage("message.createAliquot");
-			msgs.add("message", msg);
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, msgs);
 			forward = mapping.findForward("success");
 		} else {
 			ActionMessage msg = new ActionMessage("msg.empty.aliquotMatrix");
-			msgs.add("message", msg);
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, msgs);
-			forward=mapping.getInputForward();
+			forward = mapping.getInputForward();
 		}
 		return forward;
 	}
