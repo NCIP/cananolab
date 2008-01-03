@@ -3,8 +3,12 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <script type="text/javascript" src="javascript/editableDropDown.js"></script>
-<table width="100%" border="0" align="center" cellpadding="3"
-	cellspacing="0" class="topBorderOnly" summary="">
+<script type='text/javascript' src='javascript/InstrumentManager.js'></script>
+<script type='text/javascript' src='dwr/interface/InstrumentManager.js'></script>
+<script type='text/javascript' src='dwr/engine.js'></script>
+
+<table border="0" align="center" cellpadding="3" cellspacing="0"
+	class="topBorderOnly" summary="">
 	<tr>
 	<tr class="topBorder">
 		<td class="formTitle" colspan="4">
@@ -25,7 +29,7 @@
 						onkeydown="javascript:fnKeyDownHandler(this, event);"
 						onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
 						onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-						onchange="fnChangeHandler_A(this, event);filterAbbreviation();">
+						onchange="fnChangeHandler_A(this, event);retrieveInstrumentAbbreviation();">
 						<option value="">
 							--?--
 						</option>
@@ -37,21 +41,18 @@
 				</c:otherwise>
 			</c:choose>
 		</td>
-		<td class="label">
-			<strong>Instrument Type Abbreviation </strong>
-		</td>
 		<c:choose>
 			<c:when test="${canCreateNanoparticle eq 'true'}">
-				<td class="rightLabel">
-					<html:text styleId="instrumentAbbr"
-						property="achar.instrumentConfigBean.instrumentBean.abbreviation"
-						readonly="true" />
-					&nbsp;
+				<td class="rightLabel" width="30%">
+					<span id="instrumentAbbr"><b>Abbreviation: </b>${nanoparticleCharacterizationForm.map.achar.instrumentConfigBean.instrumentBean.abbreviation}</span>&nbsp;
 				</td>
 			</c:when>
 			<c:otherwise>
-				<td class="rightLabel">
-					${nanoparticleCharacterizationForm.map.achar.instrumentConfigBean.instrumentBean.abbreviation}
+				<td class="rightLabel" width="30%">
+					<c:if
+						test="${!empty nanoparticleCharacterizationForm.map.achar.instrumentConfigBean.instrumentBean.abbreviation}">
+						<b>Abbreviation: </b>${nanoparticleCharacterizationForm.map.achar.instrumentConfigBean.instrumentBean.abbreviation}
+					</c:if>
 					&nbsp;
 				</td>
 			</c:otherwise>
@@ -100,30 +101,4 @@
 	</tr>
 </table>
 <br>
-
-<script language="JavaScript">
-<!--//
-  /* populate a hashtable containing instrument type manufacturers */
-  var instrumentTypeManufacturers=new Array();    
-  <c:forEach var="item" items="${allInstrumentTypeToManufacturers}">  	
-    var manufacturers=new Array();
-    <c:forEach var="manufacturer" items="${allInstrumentTypeToManufacturers[item.key]}" varStatus="count">
-  		manufacturers[${count.index}]='${manufacturer}';  	  		
-    </c:forEach>
-    instrumentTypeManufacturers['${item.key}'] = manufacturers;
-  </c:forEach> 
-  
-    
-  function filterAbbreviation() {  
-    var instrumentType=document.getElementById("instrumentType");
-    var instrumentAbbr=document.getElementById("instrumentAbbr");
-    var allInstruments=new Array();    
-    <c:forEach var="instrument" items="${allInstruments}">  	    
-     if (instrumentType.value=="${instrument.type}") {
-          instrumentAbbr.value="${instrument.abbreviation}";
-      }
-    </c:forEach> 
-  }
-//-->
-</script>
 
