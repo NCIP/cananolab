@@ -35,8 +35,8 @@
 			type="gov.nih.nci.calab.exception.FileException" />
 		<exception
 			handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-			key="error.caNanoLabException"
-			path="sample.searchSampleResult" type="java.lang.CaNanoLabException" />
+			key="error.caNanoLabException" path="home.error"
+			type="java.lang.CaNanoLabException" />
 		<exception
 			handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 			key="error.generalException" path="home.error"
