@@ -68,6 +68,16 @@ set protocol_type = 'Physical Assay'
 where protocol_type like 'Physical assay%'
 ;
 
+-- update missing abbreviation
+update instrument a
+set abbreviation=(
+	select abbreviation from (
+		select * from instrument
+	)	as x
+  where type=a.type
+  and abbreviation is not null)
+where a.abbreviation is null
+
 commit;
 
 -- re-enable foreign key checks

@@ -250,24 +250,29 @@ VALUES (1, 'SWNT'),
 INSERT INTO hibernate_unique_key(next_hi)
 VALUES (113);
 
-INSERT INTO instrument(instrument_pk_id, type, abbreviation, manufacturer)
-VALUES (1, 'Atomic Force Microscope', 'AFM', 'Molecular Imaging'),
-  (2, 'Clot Detection System', NULL, 'Diagnostica'),
-  (3, 'Coulter Counter', NULL, 'Beckman/Coulter'),
-  (4, 'Dynamic Light Scattering', 'DLS', 'Wyatt Technologies'),
-  (5, 'Energy Dispersive Spectroscopy', 'EDS', 'EDAX'),
-  (6, 'Flow Cytometer', NULL, 'Becton Dickinson'),
-  (7, 'High Performance Liquid Chromatography', 'HPLC', 'Agilent'),
-  (8, 'High Performance Liquid Chromatography', 'HPLC', 'Shimadzu'),
-  (9, 'Imaging System', NULL, 'Kodak'),
-  (10, 'Liquid Chromatography', 'LC', 'Amersham'),
-  (11, 'Refractometer', NULL, 'Waters'),
-  (12, 'Scintillation Counter', NULL, 'Beckman/Coulter'),
-  (13, 'Spectrophotometer', NULL, 'Molecular Devices'),
-  (14, 'Spectrophotometer', NULL, 'Tecan'),
-  (15, 'Spectrophotometer', NULL, 'Thermo Electron'),
-  (16, 'Thermal Cycler', NULL, 'Biorad'),
-  (17, 'Zetasizer', NULL, 'Malvern');
+INSERT INTO instrument(instrument_pk_id,type,abbreviation,manufacturer) 
+values (1,'Asymmetrical Flow Field-Flow Fractionation with Multi-Angle Light Scattering','AFFF-MALLS','Wyatt'),
+ (2,'Atomic Force Microscope','AFM','Molecular Imaging'),
+ (3,'Capillary Electrophoresis',null,'NA'),
+ (4,'Clot Detection System',null,'Diagnostica'),
+ (5,'Coulter Counter',null,'Beckman/Coulter'),
+ (6,'Dynamic Light Scattering','DLS','Malvern'),
+ (7,'Dynamic Light Scattering','DLS','Wyatt Technologies'),
+ (8,'Energy Dispersive Spectroscopy','EDS','EDAX'),
+ (9,'Flow Cytometer',null,'Becton Dickinson'),
+ (10,'Hemocytometer',null,'Unknown'),
+ (11,'High Performance Liquid Chromatography','HPLC','Agilent'),
+ (12,'High Performance Liquid Chromatography','HPLC','Shimadzu'),
+ (13,'Imaging System',null,'Kodak'),
+ (14,'Liquid Chromatography','LC','Amersham'),
+ (15,'Refractometer',null,'Waters'),
+ (16,'Scintillation Counter',null,'Beckman/Coulter'),
+ (17,'Size Exclusion Chromatography with Multi-Angle Light Scattering','SEC-MALLS','Wyatt'),
+ (18,'Spectrophotometer',null,'Molecular Devices'),
+ (19,'Spectrophotometer',null,'Tecan'),
+ (20,'Spectrophotometer',null,'Thermo Electron'),
+ (21,'Thermal Cycler',null,'Biorad'),
+ (22,'Zetasizer',null,'Malvern');
 
 INSERT INTO lab_file(file_pk_id, file_name, file_uri, file_type_extension, file_source_type, version, status, reason, created_by, created_date, sample_sop_pk_id, run_pk_id, data_status_pk_id, title, description, comments, type)
 VALUES (1, NULL, '/doc/solubilized.doc', 'doc', 'SOP', NULL, NULL, NULL, NULL, NULL, 4, NULL, NULL, NULL, NULL, NULL, NULL),
