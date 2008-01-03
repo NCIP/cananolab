@@ -509,7 +509,7 @@ public class UserService {
 			Session session = HibernateUtil.currentSession();
 			HibernateUtil.beginTransaction();
 			SQLQuery queryObj = session.createSQLQuery(query);
-			queryObj.addScalar("ROLE_ID", Hibernate.STRING);
+			queryObj.addScalar("role_id", Hibernate.STRING);
 			List results = queryObj.list();
 			for (Object obj : results) {
 				String roleId = (String) obj;
@@ -735,16 +735,16 @@ public class UserService {
 			throws CaNanoLabSecurityException {
 		List<String> groups = new ArrayList<String>();
 
-		String query = "select d.GROUP_NAME GROUP_NAME from csm_protection_group a, csm_role b, csm_user_group_role_pg c, csm_group d	"
-				+ "where a.PROTECTION_GROUP_ID=c.PROTECTION_GROUP_ID and b.ROLE_ID=c.ROLE_ID and c.GROUP_ID=d.GROUP_ID and "
-				+ "a.PROTECTION_GROUP_NAME='"
+		String query = "select d.group_name group_name from csm_protection_group a, csm_role b, csm_user_group_role_pg c, csm_group d	"
+				+ "where a.protection_group_id=c.protection_group_id and b.role_id=c.role_id and c.group_id=d.group_id and "
+				+ "a.protection_group_name='"
 				+ objectName
-				+ "' and b.ROLE_NAME='" + roleName + "'";
+				+ "' and b.role_name='" + roleName + "'";
 		try {
 			Session session = HibernateUtil.currentSession();
 			HibernateUtil.beginTransaction();
 			SQLQuery queryObj = session.createSQLQuery(query);
-			queryObj.addScalar("GROUP_NAME", Hibernate.STRING);
+			queryObj.addScalar("group_name", Hibernate.STRING);
 			List results = queryObj.list();
 			for (Object obj : results) {
 				String group = (String) obj;
@@ -838,8 +838,8 @@ public class UserService {
 			Group group = this.getGroup(groupName);
 
 			String query = "delete from csm_user_group_role_pg "
-					+ "where PROTECTION_GROUP_ID=" + pg.getProtectionGroupId()
-					+ "and ROLE_ID=" + role.getId() + " and GROUP_ID="
+					+ "where protection_group_id=" + pg.getProtectionGroupId()
+					+ "and role_id=" + role.getId() + " and group_id="
 					+ group.getGroupId();
 
 			Session session = HibernateUtil.currentSession();
@@ -882,10 +882,10 @@ public class UserService {
 			}
 
 			String query = "delete from csm_user_group_role_pg "
-					+ "where PROTECTION_GROUP_ID=" + pg.getProtectionGroupId()
-					+ " and ROLE_ID=" + role.getId();
+					+ "where protection_group_id=" + pg.getProtectionGroupId()
+					+ " and role_id=" + role.getId();
 			if (!exceptionGroupIds.isEmpty()) {
-				query += " and GROUP_ID not in ("
+				query += " and group_id not in ("
 						+ StringUtils.join(exceptionGroupIds, ",") + ")";
 			}
 			Session session = HibernateUtil.currentSession();
