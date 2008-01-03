@@ -11,16 +11,13 @@ import gov.nih.nci.calab.dto.characterization.physical.ShapeBean;
 import gov.nih.nci.calab.dto.characterization.physical.SolubilityBean;
 import gov.nih.nci.calab.dto.characterization.physical.SurfaceBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
-import gov.nih.nci.calab.dto.common.ProtocolFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
-import gov.nih.nci.calab.exception.FileException;
-import gov.nih.nci.calab.exception.ParticleCharacterizationException;
+import gov.nih.nci.calab.exception.InvalidSessionException;
 import gov.nih.nci.calab.service.common.FileService;
 import gov.nih.nci.calab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.calab.service.particle.NanoparticleService;
-import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.PropertyReader;
 import gov.nih.nci.calab.service.util.StringUtils;
@@ -65,11 +62,13 @@ import org.apache.struts.validator.DynaValidatorForm;
  */
 
 public abstract class BaseCharacterizationAction extends AbstractDispatchAction {
-	protected CharacterizationBean prepareCreate(HttpServletRequest request,
-			DynaValidatorForm theForm) throws Exception {
+	protected ActionForward prepareCreate(ActionMapping mapping,
+			HttpServletRequest request, DynaValidatorForm theForm)
+			throws Exception {
 		HttpSession session = request.getSession();
 		CharacterizationBean charBean = (CharacterizationBean) theForm
 				.get("achar");
+		ActionMessages msgs = new ActionMessages();
 		// validate that characterization file/derived data can't be empty
 		for (DerivedBioAssayDataBean derivedDataFileBean : charBean
 				.getDerivedBioAssayDataList()) {
@@ -77,8 +76,11 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 					&& derivedDataFileBean.getCategories().length == 0
 					&& derivedDataFileBean.getDisplayName().length() == 0
 					&& derivedDataFileBean.getDatumList().size() == 0) {
-				throw new ParticleCharacterizationException(
-						"has an empty section for characterization file/derived data. Please remove it prior to saving");
+				ActionMessage msg = new ActionMessage(
+						"error.emptyCharacterizationFile");
+				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+				saveErrors(request, msgs);
+				return mapping.getInputForward();
 			}
 		}
 
@@ -89,8 +91,11 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 				// validate that neither name nor value can be empty
 				if (datumBean.getName().length() == 0
 						|| datumBean.getValue().length() == 0) {
-					throw new ParticleCharacterizationException(
-							"Derived data name and value can't be empty.");
+					ActionMessage msg = new ActionMessage(
+							"error.emptyDerivedDatum");
+					msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+					saveErrors(request, msgs);
+					return mapping.getInputForward();
 				}
 
 				if (datumBean.getStatisticsType().equalsIgnoreCase("boolean")) {
@@ -98,14 +103,20 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 							&& !datumBean.getValue().equalsIgnoreCase("false")
 							&& !datumBean.getValue().equalsIgnoreCase("yes")
 							&& !datumBean.getValue().equalsIgnoreCase("no")) {
-						throw new ParticleCharacterizationException(
-								"The datum value for boolean type should be 'True'/'False' or 'Yes'/'No'.");
+						ActionMessage msg = new ActionMessage(
+								"error.booleanDerivedDatum");
+						msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+						saveErrors(request, msgs);
+						return mapping.getInputForward();
 					}
 				} else {
 					if (!StringUtils.isDouble(datumBean.getValue())
 							&& !StringUtils.isInteger(datumBean.getValue())) {
-						throw new ParticleCharacterizationException(
-								"The datum value should be a number.");
+						ActionMessage msg = new ActionMessage(
+								"error.derivedDatumFormat");
+						msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+						saveErrors(request, msgs);
+						return mapping.getInputForward();
 					}
 				}
 
@@ -115,8 +126,11 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 						+ datumBean.getStatisticsType() + ":"
 						+ datumBean.getCategory();
 				if (uniqueDatumMap.get(uniqueStr) != null) {
-					throw new ParticleCharacterizationException(
-							"no two derived data can have the same name, statistics type and category.");
+					ActionMessage msg = new ActionMessage(
+							"error.uniqueDerivedDatum");
+					msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+					saveErrors(request, msgs);
+					return mapping.getInputForward();
 				} else {
 					uniqueDatumMap.put(uniqueStr, 1);
 				}
@@ -129,7 +143,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		charBean.setCreatedDate(date);
 		ParticleBean particle = (ParticleBean) theForm.get("particle");
 		charBean.setParticle(particle);
-		return charBean;
+		return null;
 	}
 
 	protected ActionForward postCreate(HttpServletRequest request,
@@ -142,7 +156,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		service.addNewCharacterizationDataDropdowns(charBean, charBean
 				.getName());
-
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		service.setCharacterizationUserVisiblity(charBean, user);
 		request.getSession().setAttribute("newCharacterizationCreated", "true");
 		InitParticleSetup.getInstance().setSideParticleMenu(request,
 				particle.getSampleId());
@@ -151,7 +166,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.addCharacterization",
 				charBean.getName());
-		msgs.add("message", msg);
+		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 		return mapping.findForward("success");
 	}
@@ -169,11 +184,9 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		for (String particleName : otherParticles) {
 			CharacterizationBean newCharBean = charBean.copy(copyData
 					.booleanValue());
-			// overwrite particle and particle type;
-			newCharBean.getParticle().setSampleName(particleName);
+			// overwrite particle
 			ParticleBean otherParticle = service.getParticleBy(particleName);
-			newCharBean.getParticle().setSampleType(
-					otherParticle.getSampleType());
+			newCharBean.setParticle(otherParticle);
 			// reset view title
 			String timeStamp = StringUtils.convertDateToString(new Date(),
 					"MMddyyHHmmssSSS");
@@ -223,25 +236,20 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		// set up particle
 		String particleId = request.getParameter("particleId");
-		if (particleId != null) {
-			NanoparticleService particleService = new NanoparticleService();
-			ParticleBean particle = particleService.getParticleInfo(particleId,
-					user);
-			theForm.set("particle", particle);
-			request.setAttribute("theParticle", particle);
-			// set up other particles from the same source
-			SortedSet<String> allOtherParticleNames = particleService
-					.getOtherParticles(particle.getSampleSource(), particle
-							.getSampleName(), user);
-			request.getSession().setAttribute("allOtherParticleNames",
-					allOtherParticleNames);
+		NanoparticleService particleService = new NanoparticleService();
+		ParticleBean particle = particleService.getParticleInfo(particleId,
+				user);
+		theForm.set("particle", particle);
+		request.setAttribute("theParticle", particle);
+		// set up other particles from the same source
+		SortedSet<String> allOtherParticleNames = particleService
+				.getOtherParticles(particle.getSampleSource(), particle
+						.getSampleName(), user);
+		request.getSession().setAttribute("allOtherParticleNames",
+				allOtherParticleNames);
 
-			InitParticleSetup.getInstance().setSideParticleMenu(request,
-					particleId);
-		} else {
-			throw new ParticleCharacterizationException(
-					"Particle ID is required.");
-		}
+		InitParticleSetup.getInstance()
+				.setSideParticleMenu(request, particleId);
 	}
 
 	private void setCharacterizationInForm(HttpServletRequest request,
@@ -249,54 +257,15 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		String characterizationId = request.getParameter("characterizationId");
 		CharacterizationBean charBean = (CharacterizationBean) theForm
 				.get("achar");
+		// set createdBy and createdDate for the characterization
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+
 		if (characterizationId != null) {
 			NanoparticleCharacterizationService charService = new NanoparticleCharacterizationService();
-			charBean = charService.getCharacterizationBy(characterizationId);
-			// set up protocol file visibility
-			ProtocolFileBean protocolFileBean = charBean.getProtocolFileBean();
-			UserBean user = (UserBean) request.getSession()
-					.getAttribute("user");
-			UserService userService = new UserService(
-					CaNanoLabConstants.CSM_APP_NAME);
-			if (protocolFileBean != null) {
-				boolean status = false;
-				if (protocolFileBean.getId() != null) {
-					status = userService.checkReadPermission(user,
-							protocolFileBean.getId());
-				}
-				if (status) {
-					protocolFileBean.setHidden(false);
-				} else {
-					protocolFileBean.setHidden(true);
-				}
-			}
-
-			// set up characterization files visibility, and whether file is an
-			// image
-			for (DerivedBioAssayDataBean fileBean : charBean
-					.getDerivedBioAssayDataList()) {
-				boolean accessStatus = userService.checkReadPermission(user,
-						fileBean.getId());
-				if (accessStatus) {
-					List<String> accessibleGroups = userService
-							.getAccessibleGroups(fileBean.getId(),
-									CaNanoLabConstants.CSM_READ_ROLE);
-					String[] visibilityGroups = accessibleGroups
-							.toArray(new String[0]);
-					fileBean.setVisibilityGroups(visibilityGroups);
-					fileBean.setHidden(false);
-				} else {
-					fileBean.setHidden(true);
-				}
-				boolean imageStatus = false;
-				if (fileBean.getName() != null) {
-					imageStatus = StringUtils.isImgFileExt(fileBean.getName());
-					fileBean.setImage(imageStatus);
-				}
-			}
-
+			charBean = charService.getCharacterizationBy(characterizationId,
+					user);
 			if (charBean == null) {
-				throw new ParticleCharacterizationException(
+				throw new InvalidSessionException(
 						"This characterization no longer exists in the database.  Please log in again to refresh.");
 			}
 			theForm.set("achar", charBean);
@@ -481,10 +450,10 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		ParticleBean particle = (ParticleBean) theForm.get("particle");
-		CharacterizationBean achar = (CharacterizationBean) theForm.get("achar");
-		String fileName = service.getExportFileName(particle, achar,
-						"detail");
-		
+		CharacterizationBean achar = (CharacterizationBean) theForm
+				.get("achar");
+		String fileName = service.getExportFileName(particle, achar, "detail");
+
 		response.setContentType("application/vnd.ms-execel");
 		response.setHeader("cache-control", "Private");
 		response.setHeader("Content-disposition", "attachment;filename="
@@ -493,7 +462,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		HSSFWorkbook wb = new HSSFWorkbook();
 		service.exportDetailService(particle, achar, wb, user);
 		wb.write(out);
-		if(out != null) {
+		if (out != null) {
 			out.flush();
 			out.close();
 		}
@@ -506,39 +475,25 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		setSummaryView(form, request);
-
 		CharacterizationBean charBean = (CharacterizationBean) theForm
 				.get("achar");
+		ParticleBean particle = (ParticleBean) theForm.get("particle");
+		List<CharacterizationSummaryBean> summaryBeans = new ArrayList<CharacterizationSummaryBean>(
+				(List<? extends CharacterizationSummaryBean>) request
+						.getAttribute("summaryViewBeans"));
+		SortedSet<String> datumLabels = new TreeSet<String>(
+				(SortedSet<? extends String>) request
+						.getAttribute("datumLabels"));
 
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
-
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		String submitType = request.getParameter("submitType");
-		ParticleBean particle = (ParticleBean) theForm.get("particle");
-
-		List<CharacterizationSummaryBean> summaryBeans = service
-				.getParticleCharacterizationSummaryByName(submitType, particle
-						.getSampleId());
-		List<CharacterizationBean> charBeans = new ArrayList<CharacterizationBean>();
-		SortedSet<String> datumLabels = service.setDataLabelsAndFileVisibility(
-				user, summaryBeans, charBeans);
-		
 		String fileName = service.getExportFileName(particle, charBean,
-													"summary");
+				"summary");
 		response.setContentType("application/vnd.ms-execel");
 		response.setHeader("cache-control", "Private");
 		response.setHeader("Content-disposition", "attachment;filename="
-							+ fileName + ".xls");
+				+ fileName + ".xls");
 		OutputStream out = response.getOutputStream();
-
-		HSSFWorkbook wb = new HSSFWorkbook();
-		service.exportSummaryService(datumLabels, summaryBeans, particle, wb);
-		wb.write(out);
-		if(out != null) {
-			out.flush();
-			out.close();
-		}
-		
+		service.exportSummaryService(datumLabels, summaryBeans, particle, out);
 		return null;
 	}
 
@@ -547,39 +502,30 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			HttpServletResponse response) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		setSummaryView(form, request);
+		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
+		List<CharacterizationSummaryBean> summaryBeans = new ArrayList<CharacterizationSummaryBean>(
+				(List<? extends CharacterizationSummaryBean>) request
+						.getAttribute("summaryViewBeans"));
+		SortedSet<String> datumLabels = new TreeSet<String>(
+				(SortedSet<? extends String>) request
+						.getAttribute("datumLabels"));
+		List<CharacterizationBean> charBeans = new ArrayList<CharacterizationBean>(
+				(List<? extends CharacterizationBean>) request
+						.getAttribute("summaryViewCharBeans"));
 
 		CharacterizationBean charBean = (CharacterizationBean) theForm
 				.get("achar");
-
-		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
-
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		String submitType = request.getParameter("submitType");
 		ParticleBean particle = (ParticleBean) theForm.get("particle");
-
-		List<CharacterizationSummaryBean> summaryBeans = service
-				.getParticleCharacterizationSummaryByName(submitType, particle
-						.getSampleId());
-		List<CharacterizationBean> charBeans = new ArrayList<CharacterizationBean>();
-		SortedSet<String> datumLabels = service.setDataLabelsAndFileVisibility(
-				user, summaryBeans, charBeans);
-
 		String fileName = service.getExportFileName(particle, charBean,
-		"full_summary");
+				"full_summary");
 		response.setContentType("application/vnd.ms-execel");
 		response.setHeader("cache-control", "Private");
 		response.setHeader("Content-disposition", "attachment;filename="
 				+ fileName + ".xls");
 		OutputStream out = response.getOutputStream();
-
-		HSSFWorkbook wb = new HSSFWorkbook();
-		service.exportFullSummaryService(charBeans, datumLabels, user, summaryBeans, particle, wb);
-		wb.write(out);
-		if(out != null) {
-			out.flush();
-			out.close();
-		}
-		
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		service.exportFullSummaryService(charBeans, datumLabels, user,
+				summaryBeans, particle, out);
 		return null;
 	}
 
@@ -597,46 +543,21 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 		initSetup(request, theForm);
 		String submitType = request.getParameter("submitType");
 		ParticleBean particle = (ParticleBean) theForm.get("particle");
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		List<CharacterizationSummaryBean> charSummaryBeans = service
 				.getParticleCharacterizationSummaryByName(submitType, particle
-						.getSampleId());		
+						.getSampleId(), user);
 		if (charSummaryBeans == null) {
-			throw new Exception(
-					"There are no such characterizations in the database");
+			throw new InvalidSessionException(
+					"These characterizations no longer exist in the database.  Please log in again to refresh");
 		}
-
-		// set data labels and file visibility, and whether file is an image
-		UserService userService = new UserService(
-				CaNanoLabConstants.CSM_APP_NAME);
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		List<CharacterizationBean> charBeans = new ArrayList<CharacterizationBean>();
 		SortedSet<String> datumLabels = new TreeSet<String>();
 		for (CharacterizationSummaryBean summaryBean : charSummaryBeans) {
 			Map<String, String> datumMap = summaryBean.getDatumMap();
 			if (datumMap != null && !datumMap.isEmpty()) {
 				datumLabels.addAll(datumMap.keySet());
-			}
-			DerivedBioAssayDataBean fileBean = summaryBean.getCharFile();
-			if (fileBean != null) {
-				boolean accessStatus = userService.checkReadPermission(user,
-						fileBean.getId());
-				if (accessStatus) {
-					List<String> accessibleGroups = userService
-							.getAccessibleGroups(fileBean.getId(),
-									CaNanoLabConstants.CSM_READ_ROLE);
-					String[] visibilityGroups = accessibleGroups
-							.toArray(new String[0]);
-					fileBean.setVisibilityGroups(visibilityGroups);
-					fileBean.setHidden(false);
-				} else {
-					fileBean.setHidden(true);
-				}
-				boolean imageStatus = false;
-				if (fileBean.getName() != null) {
-					imageStatus = StringUtils.isImgFileExt(fileBean.getName());
-				}
-				fileBean.setImage(imageStatus);
 			}
 			if (!charBeans.contains(summaryBean.getCharBean())) {
 				charBeans.add(summaryBean.getCharBean());
@@ -744,8 +665,12 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			}
 			out.close();
 		} else {
-			throw new FileException(
-					"File to download doesn't exist on the server");
+			ActionMessages msgs = new ActionMessages();
+			ActionMessage msg = new ActionMessage(
+					"error.noCharacterizationFile");
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			this.saveErrors(request, msgs);
+			return mapping.findForward("particleMessage");
 		}
 		return null;
 	}
@@ -865,12 +790,12 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		initSetup(request, theForm);
+		CharacterizationBean charBean = (CharacterizationBean) theForm
+				.get("achar");
 		ParticleBean particle = (ParticleBean) theForm.get("particle");
-		String charId = request.getParameter("characterizationId");
 
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
-		service.deleteCharacterizations(new String[] { charId });
+		service.deleteCharacterizations(new String[] { charBean.getId() });
 
 		// signal the session that characterization has been changed
 		request.getSession().setAttribute("newCharacterizationCreated", "true");
@@ -879,10 +804,10 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 				particle.getSampleId());
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.delete.characterization");
-		msgs.add("message", msg);
+		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 
-		return mapping.findForward("success");
+		return mapping.findForward("particleMessage");
 	}
 
 	// add edited option to all editable dropdowns
