@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: BaseRemoteSearchAction.java,v 1.2 2007-12-06 09:01:44 pansu Exp $ */
+/* CVS $Id: BaseRemoteSearchAction.java,v 1.3 2008-01-03 21:28:34 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.remote.GridNodeBean;
@@ -65,7 +65,7 @@ public abstract class BaseRemoteSearchAction extends AbstractDispatchAction {
 			ActionMessage msg = new ActionMessage(
 					"message.grid.discovery.none",
 					CaNanoLabConstants.DOMAIN_MODEL_NAME);
-			msgs.add("message", msg);
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, msgs);
 		}
 		return mapping.getInputForward();

@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: RemoteSearchNanoparticleAction.java,v 1.6 2007-12-06 14:24:29 pansu Exp $ */
+/* CVS $Id: RemoteSearchNanoparticleAction.java,v 1.7 2008-01-03 21:25:29 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.dto.remote.GridNodeBean;
@@ -48,7 +48,7 @@ public class RemoteSearchNanoparticleAction extends BaseRemoteSearchAction {
 			ActionMessage msg = new ActionMessage(
 					"message.grid.discovery.none",
 					CaNanoLabConstants.DOMAIN_MODEL_NAME);
-			msgs.add("message", msg);
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, msgs);
 			return mapping.getInputForward();
 		}
@@ -67,15 +67,15 @@ public class RemoteSearchNanoparticleAction extends BaseRemoteSearchAction {
 					ActionMessage message = new ActionMessage(
 							"message.remoteSearchNanoparticle.noresult",
 							gridNode.getHostName());
-					msgs.add("message", message);
+					msgs.add(ActionMessages.GLOBAL_MESSAGE, message);
 					saveMessages(request, msgs);
 				}
 				particles.addAll(gridParticles);
 			} catch (Exception e) {
 				ActionMessage error = new ActionMessage(
 						"error.grid.notAvailable", gridNode.getHostName());
-				msgs.add("error", error);
-				saveMessages(request, msgs);
+				msgs.add(ActionMessages.GLOBAL_MESSAGE, error);
+				saveErrors(request, msgs);
 				e.printStackTrace();
 			}
 		}
@@ -87,7 +87,7 @@ public class RemoteSearchNanoparticleAction extends BaseRemoteSearchAction {
 			// ActionMessages msgs = new ActionMessages();
 			ActionMessage msg = new ActionMessage(
 					"message.searchNanoparticle.noresult");
-			msgs.add("message", msg);
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, msgs);
 			forward = mapping.getInputForward();
 		}

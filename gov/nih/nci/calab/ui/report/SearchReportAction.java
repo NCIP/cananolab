@@ -6,13 +6,12 @@ package gov.nih.nci.calab.ui.report;
  * @author pansu
  */
 
-/* CVS $Id: SearchReportAction.java,v 1.7 2007-12-19 23:06:50 pansu Exp $ */
+/* CVS $Id: SearchReportAction.java,v 1.8 2008-01-03 21:25:10 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.ReportBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
-import gov.nih.nci.calab.exception.FileException;
 import gov.nih.nci.calab.service.common.FileService;
 import gov.nih.nci.calab.service.report.SearchReportService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
@@ -62,7 +61,7 @@ public class SearchReportAction extends AbstractDispatchAction {
 			ActionMessages msgs = new ActionMessages();
 			ActionMessage msg = new ActionMessage(
 					"message.searchReport.noresult");
-			msgs.add("message", msg);
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, msgs);
 			forward = mapping.getInputForward();
 		}
@@ -118,8 +117,11 @@ public class SearchReportAction extends AbstractDispatchAction {
 			}
 			out.close();
 		} else {
-			throw new FileException(
-					"File to download doesn't exist on the server when searching reports");
+			ActionMessages msgs = new ActionMessages();
+			ActionMessage msg = new ActionMessage("error.noReportFile");
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			this.saveErrors(request, msgs);
+			return mapping.getInputForward();
 		}
 		return null;
 	}

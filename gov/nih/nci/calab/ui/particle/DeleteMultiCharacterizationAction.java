@@ -48,7 +48,7 @@ public class DeleteMultiCharacterizationAction extends AbstractDispatchAction {
 			ActionMessages msgs = new ActionMessages();
 			ActionMessage msg = new ActionMessage(
 					"message.delete.no.characterizations");
-			msgs.add("message", msg);
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, msgs);
 			return mapping.findForward("message");
 		}
@@ -73,7 +73,7 @@ public class DeleteMultiCharacterizationAction extends AbstractDispatchAction {
 				.setSideParticleMenu(request, particleId);
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.delete.characterization");
-		msgs.add("message", msg);
+		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 		return mapping.findForward("message");
 	}
@@ -82,7 +82,8 @@ public class DeleteMultiCharacterizationAction extends AbstractDispatchAction {
 		return true;
 	}
 
-	public boolean canUserExecute(UserBean user) throws CaNanoLabSecurityException {
+	public boolean canUserExecute(UserBean user)
+			throws CaNanoLabSecurityException {
 		return InitSecuritySetup.getInstance().userHasDeletePrivilege(user,
 				CaNanoLabConstants.CSM_PG_PARTICLE);
 	}

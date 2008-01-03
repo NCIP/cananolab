@@ -6,10 +6,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: PhysicalCharacterizationAction.java,v 1.2 2007-12-18 18:07:13 pansu Exp $ */
-
-import java.util.ArrayList;
-import java.util.List;
+/* CVS $Id: PhysicalCharacterizationAction.java,v 1.3 2008-01-03 21:25:29 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.physical.MorphologyBean;
@@ -20,6 +17,9 @@ import gov.nih.nci.calab.dto.characterization.physical.SurfaceChemistryBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.calab.ui.core.BaseCharacterizationAction;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -52,10 +52,15 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CharacterizationBean charBean = prepareCreate(request, theForm);
+		ActionForward forward = prepareCreate(mapping, request, theForm);
+		if (forward != null) {
+			return forward;
+		}
+		CharacterizationBean charBean = (CharacterizationBean) theForm
+				.get("achar");
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		service.addParticleSize(charBean);
-		theForm.set("achar", charBean);
+		// theForm.set("achar", charBean);
 		CharacterizationBean[] otherChars = prepareCopy(request, theForm);
 		for (CharacterizationBean acharBean : otherChars) {
 			service.addParticleSize(acharBean);
@@ -77,7 +82,12 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CharacterizationBean charBean = prepareCreate(request, theForm);
+		ActionForward forward = prepareCreate(mapping, request, theForm);
+		if (forward != null) {
+			return forward;
+		}
+		CharacterizationBean charBean = (CharacterizationBean) theForm
+				.get("achar");
 		SurfaceBean propBean = (SurfaceBean) theForm.get("surface");
 		SurfaceBean surfaceBean = new SurfaceBean(propBean, charBean);
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
@@ -153,7 +163,12 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CharacterizationBean charBean = prepareCreate(request, theForm);
+		ActionForward forward = prepareCreate(mapping, request, theForm);
+		if (forward != null) {
+			return forward;
+		}
+		CharacterizationBean charBean = (CharacterizationBean) theForm
+				.get("achar");
 		SolubilityBean propBean = (SolubilityBean) theForm.get("solubility");
 		SolubilityBean solubilityBean = new SolubilityBean(propBean, charBean);
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
@@ -172,7 +187,12 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CharacterizationBean charBean = prepareCreate(request, theForm);
+		ActionForward forward = prepareCreate(mapping, request, theForm);
+		if (forward != null) {
+			return forward;
+		}
+		CharacterizationBean charBean = (CharacterizationBean) theForm
+				.get("achar");
 		ShapeBean propBean = (ShapeBean) theForm.get("shape");
 		ShapeBean shapeBean = new ShapeBean(propBean, charBean);
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
@@ -190,7 +210,12 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CharacterizationBean charBean = prepareCreate(request, theForm);
+		ActionForward forward = prepareCreate(mapping, request, theForm);
+		if (forward != null) {
+			return forward;
+		}
+		CharacterizationBean charBean = (CharacterizationBean) theForm
+				.get("achar");
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		service.addParticlePurity(charBean);
 		CharacterizationBean[] otherChars = prepareCopy(request, theForm);
@@ -204,7 +229,12 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CharacterizationBean charBean = prepareCreate(request, theForm);
+		ActionForward forward = prepareCreate(mapping, request, theForm);
+		if (forward != null) {
+			return forward;
+		}
+		CharacterizationBean charBean = (CharacterizationBean) theForm
+				.get("achar");
 		MorphologyBean propBean = (MorphologyBean) theForm.get("morphology");
 		MorphologyBean morphologyBean = new MorphologyBean(propBean, charBean);
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
@@ -223,7 +253,12 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CharacterizationBean charBean = prepareCreate(request, theForm);
+		ActionForward forward = prepareCreate(mapping, request, theForm);
+		if (forward != null) {
+			return forward;
+		}
+		CharacterizationBean charBean = (CharacterizationBean) theForm
+				.get("achar");
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		service.addParticleMolecularWeight(charBean);
 		CharacterizationBean[] otherChars = prepareCopy(request, theForm);
