@@ -2,7 +2,6 @@ package gov.nih.nci.calab.service.report;
 
 import gov.nih.nci.calab.db.HibernateUtil;
 import gov.nih.nci.calab.domain.AssociatedFile;
-import gov.nih.nci.calab.domain.LabFile;
 import gov.nih.nci.calab.domain.Report;
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.ReportBean;
@@ -13,7 +12,6 @@ import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.service.util.StringUtils;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 

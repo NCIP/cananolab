@@ -3,7 +3,6 @@ package gov.nih.nci.calab.service.protocol;
 import gov.nih.nci.calab.db.HibernateUtil;
 import gov.nih.nci.calab.domain.Protocol;
 import gov.nih.nci.calab.domain.ProtocolFile;
-import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.ProtocolBean;
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
