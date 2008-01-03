@@ -6,13 +6,12 @@ package gov.nih.nci.calab.ui.sample;
  * @author pansu
  */
 
-/* CVS $Id: ViewSampleDetailAction.java,v 1.5 2008-01-03 21:24:48 pansu Exp $ */
+/* CVS $Id: ViewSampleDetailAction.java,v 1.6 2008-01-03 22:25:51 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.sample.ContainerBean;
 import gov.nih.nci.calab.dto.sample.SampleBean;
 import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
-import gov.nih.nci.calab.exception.InvalidSessionException;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.ui.core.AbstractBaseAction;
 import gov.nih.nci.calab.ui.security.InitSecuritySetup;
@@ -39,23 +38,18 @@ public class ViewSampleDetailAction extends AbstractBaseAction {
 
 		String containerId = (String) theForm.get("containerId");
 
-		if (session.getAttribute("sampleContainers") != null) {
-			List<ContainerBean> sampleContainers = new ArrayList<ContainerBean>(
-					(List<? extends ContainerBean>) session
-							.getAttribute("sampleContainers"));
-			SampleBean sample = null;
-			for (ContainerBean container : sampleContainers) {
-				if (container.getContainerId().equals(containerId)) {
-					sample = container.getSample();
-					request.setAttribute("sample", sample);
-					break;
-				}
+		List<ContainerBean> sampleContainers = new ArrayList<ContainerBean>(
+				(List<? extends ContainerBean>) session
+						.getAttribute("sampleContainers"));
+		SampleBean sample = null;
+		for (ContainerBean container : sampleContainers) {
+			if (container.getContainerId().equals(containerId)) {
+				sample = container.getSample();
+				request.setAttribute("sample", sample);
+				break;
 			}
-			forward = mapping.findForward("success");
-		} else {
-			throw new InvalidSessionException(
-					"Session containing the searched sample results either is expired.  Please log in again");
 		}
+		forward = mapping.findForward("success");
 		return forward;
 	}
 
