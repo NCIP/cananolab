@@ -14,6 +14,11 @@
 				value="gov.nih.nci.calab.service.particle.NanoparticleService" />
 			<include method="getNewParticleNamesByType" />
 		</create>
+		<create creator="new" javascript="InstrumentManager">
+			<param name="class"
+				value="gov.nih.nci.calab.service.particle.NanoparticleCharacterizationService" />
+			<include method="getInstrumentAbbreviation" />
+		</create>
 		<convert converter="bean"
 			match="gov.nih.nci.calab.dto.common.ProtocolFileBean">
 			<param name="include" value="id, name, title, uri, version" />
