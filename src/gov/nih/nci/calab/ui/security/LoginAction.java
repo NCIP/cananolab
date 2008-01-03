@@ -1,7 +1,6 @@
 package gov.nih.nci.calab.ui.security;
 
 import gov.nih.nci.calab.dto.common.UserBean;
-import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.calab.service.security.LoginService;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
@@ -57,7 +56,7 @@ public class LoginAction extends AbstractBaseAction {
 				ActionMessages msgs = new ActionMessages();
 				ActionMessage msg = new ActionMessage(
 						"message.login.changepassword");
-				msgs.add("message", msg);
+				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 				saveMessages(request, msgs);
 				return mapping.findForward("changePassword");
 			}

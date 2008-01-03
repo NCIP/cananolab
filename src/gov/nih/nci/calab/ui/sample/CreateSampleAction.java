@@ -7,7 +7,7 @@ package gov.nih.nci.calab.ui.sample;
  * @author pansu
  */
 
-/* CVS $Id: CreateSampleAction.java,v 1.7 2007-12-13 16:30:36 pansu Exp $ */
+/* CVS $Id: CreateSampleAction.java,v 1.8 2008-01-03 21:24:48 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.sample.ContainerBean;
@@ -60,8 +60,8 @@ public class CreateSampleAction extends AbstractDispatchAction {
 			ActionMessages msgs = new ActionMessages();
 			ActionMessage msg = new ActionMessage(
 					"error.createSample.SampleIDFormat", samplePrefix);
-			msgs.add("error", msg);
-			saveMessages(request, msgs);
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveErrors(request, msgs);
 
 			forward = mapping.findForward("input");
 

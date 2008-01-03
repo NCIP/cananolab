@@ -5,7 +5,7 @@ package gov.nih.nci.calab.ui.protocol;
  *  
  * @author chenhang
  */
-/* CVS $Id: SubmitProtocolAction.java,v 1.10 2007-12-13 16:30:36 pansu Exp $ */
+/* CVS $Id: SubmitProtocolAction.java,v 1.11 2008-01-03 21:25:18 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.ProtocolBean;
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
@@ -67,8 +67,8 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 				StringUtils.join(fileBean.getVisibilityGroups(), ", "));
 		ActionMessage msg2 = new ActionMessage("message.submitProtocol.file",
 				uploadedFile.getFileName());
-		msgs.add("message", msg1);
-		msgs.add("message", msg2);
+		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg1);
+		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg2);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
 
@@ -96,7 +96,7 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		String fileId = request.getParameter("fileId");
 		if (fileId == null)
 			fileId = (String) request.getAttribute("fileId");
-		UserBean user=(UserBean)session.getAttribute("user");
+		UserBean user = (UserBean) session.getAttribute("user");
 		SearchProtocolService service = new SearchProtocolService();
 		ProtocolFileBean fileBean = service.getProtocolFileBean(fileId, user);
 		theForm.set("file", fileBean);
@@ -132,7 +132,7 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		} catch (Exception e) {
 			ActionMessage msg = new ActionMessage("error.updateProtocol", e
 					.getMessage());
-			msgs.add("message", msg);
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, msgs);
 			request.setAttribute("fileId", fileBean.getId());
 			return setupUpdate(mapping, form, request, response);
@@ -141,7 +141,7 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		ActionMessage msg = new ActionMessage("message.updateProtocol",
 				fileBean.getTitle());
 
-		msgs.add("message", msg);
+		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 		return mapping.findForward("success");
 	}

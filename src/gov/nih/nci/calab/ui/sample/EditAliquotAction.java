@@ -6,14 +6,13 @@ package gov.nih.nci.calab.ui.sample;
  * @author pansu
  */
 
-/* CVS $Id: EditAliquotAction.java,v 1.4 2007-12-06 09:01:44 pansu Exp $ */
+/* CVS $Id: EditAliquotAction.java,v 1.5 2008-01-03 21:24:48 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.sample.AliquotBean;
 import gov.nih.nci.calab.dto.sample.ContainerInfoBean;
-import gov.nih.nci.calab.exception.CaNanoLabException;
 import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
-import gov.nih.nci.calab.exception.SampleException;
+import gov.nih.nci.calab.exception.InvalidSessionException;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
@@ -48,8 +47,8 @@ public class EditAliquotAction extends AbstractDispatchAction {
 			((AliquotBean[]) aliquotMatrx.get(rowNum))[colNum] = aliquot;
 			forward = mapping.findForward("success");
 		} else {
-			throw new SampleException(
-					"Session containing the aliquot matrix either is expired or doesn't exist when editing aliquots");
+			throw new InvalidSessionException(
+					"The aliquot matrix is expired. Please log in again");
 		}
 		return forward;
 	}
@@ -77,8 +76,8 @@ public class EditAliquotAction extends AbstractDispatchAction {
 			theForm.set("aliquot", aliquot);
 			forward = mapping.getInputForward();
 		} else {
-			throw new SampleException(
-					"Session containing the aliquot matrix either is expired or doesn't exist when editing aliquots");
+			throw new InvalidSessionException(
+					"Session containing the aliquot matrix either is expired. Please log in again");
 		}
 
 		// update editable drop-down to include new entry

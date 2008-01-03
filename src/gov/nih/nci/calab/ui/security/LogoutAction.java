@@ -33,7 +33,7 @@ public class LogoutAction extends Action {
 		}
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage message = new ActionMessage("msg.logout");
-		msgs.add("message", message);
+		msgs.add(ActionMessages.GLOBAL_MESSAGE, message);
 		saveMessages(request, msgs);
 
 		forward = mapping.findForward("success");

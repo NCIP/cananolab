@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.sample;
  * @author pansu
  */
 
-/* CVS $Id: SearchSampleAction.java,v 1.6 2007-12-06 09:01:44 pansu Exp $ */
+/* CVS $Id: SearchSampleAction.java,v 1.7 2008-01-03 21:24:48 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.sample.ContainerBean;
@@ -83,7 +83,7 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		if (samples == null || samples.isEmpty()) {
 			ActionMessage msg = new ActionMessage(
 					"message.searchSample.noResult");
-			msgs.add("message", msg);
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, msgs);
 			forward = mapping.getInputForward();
 		} else {

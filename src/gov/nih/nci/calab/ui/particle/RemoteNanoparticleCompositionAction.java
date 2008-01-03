@@ -8,7 +8,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: RemoteNanoparticleCompositionAction.java,v 1.9 2007-12-18 16:36:18 pansu Exp $ */
+/* CVS $Id: RemoteNanoparticleCompositionAction.java,v 1.10 2008-01-03 21:25:29 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.domain.nano.characterization.physical.composition.CarbonNanotubeComposition;
@@ -29,7 +29,6 @@ import gov.nih.nci.calab.dto.characterization.composition.PolymerBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.dto.remote.GridNodeBean;
 import gov.nih.nci.calab.service.remote.GridSearchService;
-import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.ui.core.BaseRemoteSearchAction;
 
 import java.util.Map;

@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SearchNanoparticleAction.java,v 1.3 2007-12-06 09:01:43 pansu Exp $ */
+/* CVS $Id: SearchNanoparticleAction.java,v 1.4 2008-01-03 21:25:29 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
@@ -65,7 +65,7 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 			ActionMessages msgs = new ActionMessages();
 			ActionMessage msg = new ActionMessage(
 					"message.searchNanoparticle.noresult");
-			msgs.add("message", msg);
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, msgs);
 
 			forward = mapping.getInputForward();

@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleFunctionAction.java,v 1.12 2007-12-20 16:25:53 pansu Exp $ */
+/* CVS $Id: NanoparticleFunctionAction.java,v 1.13 2008-01-03 21:25:29 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.function.AgentBean;
@@ -15,7 +15,6 @@ import gov.nih.nci.calab.dto.function.FunctionBean;
 import gov.nih.nci.calab.dto.function.LinkageBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
-import gov.nih.nci.calab.exception.ParticleFunctionException;
 import gov.nih.nci.calab.service.particle.NanoparticleFunctionService;
 import gov.nih.nci.calab.service.particle.NanoparticleService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
@@ -53,7 +52,7 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		ActionForward forward = null;
-
+		ActionMessages msgs = new ActionMessages();
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ParticleBean particle = (ParticleBean) theForm.get("particle");
 		FunctionBean function = (FunctionBean) theForm.get("function");
@@ -69,17 +68,18 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 					.getAgentTargets()) {
 
 				if (agentTargetBean.getType().length() == 0) {
-					throw new ParticleFunctionException(
-							"Agent target type can not be empty");
+					ActionMessage msg = new ActionMessage("error.emptyAgentTarget");
+					msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+					saveErrors(request, msgs);
 				}
 			}
 		}
 		NanoparticleFunctionService service = new NanoparticleFunctionService();
 		service.addParticleFunction(particle.getSampleId(), function);
 
-		ActionMessages msgs = new ActionMessages();
+		
 		ActionMessage msg = new ActionMessage("message.addFunction");
-		msgs.add("message", msg);
+		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
 		request.getSession().setAttribute("newFunctionCreated", true);

@@ -8,7 +8,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleCompositionAction.java,v 1.17 2007-12-20 16:26:27 pansu Exp $ */
+/* CVS $Id: NanoparticleCompositionAction.java,v 1.18 2008-01-03 21:25:29 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.dto.characterization.composition.CarbonNanotubeBean;
@@ -23,7 +23,7 @@ import gov.nih.nci.calab.dto.characterization.composition.SurfaceGroupBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
-import gov.nih.nci.calab.exception.ParticleCompositionException;
+import gov.nih.nci.calab.exception.InvalidSessionException;
 import gov.nih.nci.calab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.calab.service.particle.NanoparticleCompositionService;
 import gov.nih.nci.calab.service.particle.NanoparticleService;
@@ -121,7 +121,7 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		InitParticleSetup.getInstance().setAllCompositionDropdowns(session);
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.addParticleComposition");
-		msgs.add("message", msg);
+		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
 
@@ -247,7 +247,7 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		NanoparticleCompositionService service = new NanoparticleCompositionService();
 		CompositionBean composition = service.getCompositionBy(compositionId);
 		if (composition == null) {
-			throw new ParticleCompositionException(
+			throw new InvalidSessionException(
 					"This composition no longer exists in the database.  Please log in again to refresh");
 		}
 
@@ -399,7 +399,7 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.delete.characterization");
-		msgs.add("message", msg);
+		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 
 		return mapping.findForward("success");

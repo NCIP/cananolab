@@ -41,7 +41,12 @@ public class InVitroCharacterizationAction extends BaseCharacterizationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CharacterizationBean charBean = prepareCreate(request, theForm);
+		ActionForward forward = prepareCreate(mapping, request, theForm);
+		if (forward != null) {
+			return forward;
+		}
+		CharacterizationBean charBean = (CharacterizationBean) theForm
+				.get("achar");
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		service.addCoagulation(charBean);
 		CharacterizationBean[] otherChars = prepareCopy(request, theForm);
@@ -55,7 +60,12 @@ public class InVitroCharacterizationAction extends BaseCharacterizationAction {
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CharacterizationBean charBean = prepareCreate(request, theForm);
+		ActionForward forward = prepareCreate(mapping, request, theForm);
+		if (forward != null) {
+			return forward;
+		}
+		CharacterizationBean charBean = (CharacterizationBean) theForm
+				.get("achar");
 		CytotoxicityBean propBean = (CytotoxicityBean) theForm
 				.get("cytotoxicity");
 		CytotoxicityBean cytoBean = new CytotoxicityBean(propBean, charBean);
@@ -75,7 +85,12 @@ public class InVitroCharacterizationAction extends BaseCharacterizationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CharacterizationBean charBean = prepareCreate(request, theForm);
+		ActionForward forward = prepareCreate(mapping, request, theForm);
+		if (forward != null) {
+			return forward;
+		}
+		CharacterizationBean charBean = (CharacterizationBean) theForm
+				.get("achar");
 		CytotoxicityBean propBean = (CytotoxicityBean) theForm
 				.get("cytotoxicity");
 		CytotoxicityBean cytoBean = new CytotoxicityBean(propBean, charBean);
@@ -95,7 +110,12 @@ public class InVitroCharacterizationAction extends BaseCharacterizationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CharacterizationBean charBean = prepareCreate(request, theForm);
+		ActionForward forward = prepareCreate(mapping, request, theForm);
+		if (forward != null) {
+			return forward;
+		}
+		CharacterizationBean charBean = (CharacterizationBean) theForm
+				.get("achar");
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		service.addCFU_GM(charBean);
 		CharacterizationBean[] otherChars = prepareCopy(request, theForm);
@@ -109,7 +129,12 @@ public class InVitroCharacterizationAction extends BaseCharacterizationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CharacterizationBean charBean = prepareCreate(request, theForm);
+		ActionForward forward = prepareCreate(mapping, request, theForm);
+		if (forward != null) {
+			return forward;
+		}
+		CharacterizationBean charBean = (CharacterizationBean) theForm
+				.get("achar");
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		service.addChemotaxis(charBean);
 		CharacterizationBean[] otherChars = prepareCopy(request, theForm);
@@ -123,7 +148,12 @@ public class InVitroCharacterizationAction extends BaseCharacterizationAction {
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CharacterizationBean charBean = prepareCreate(request, theForm);
+		ActionForward forward = prepareCreate(mapping, request, theForm);
+		if (forward != null) {
+			return forward;
+		}
+		CharacterizationBean charBean = (CharacterizationBean) theForm
+				.get("achar");
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		service.addComplementActivation(charBean);
 		CharacterizationBean[] otherChars = prepareCopy(request, theForm);
@@ -137,7 +167,12 @@ public class InVitroCharacterizationAction extends BaseCharacterizationAction {
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CharacterizationBean charBean = prepareCreate(request, theForm);
+		ActionForward forward = prepareCreate(mapping, request, theForm);
+		if (forward != null) {
+			return forward;
+		}
+		CharacterizationBean charBean = (CharacterizationBean) theForm
+				.get("achar");
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		service.addCytokineInduction(charBean);
 		CharacterizationBean[] otherChars = prepareCopy(request, theForm);
@@ -151,7 +186,12 @@ public class InVitroCharacterizationAction extends BaseCharacterizationAction {
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CharacterizationBean charBean = prepareCreate(request, theForm);
+		ActionForward forward = prepareCreate(mapping, request, theForm);
+		if (forward != null) {
+			return forward;
+		}
+		CharacterizationBean charBean = (CharacterizationBean) theForm
+				.get("achar");
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		service.addEnzymeInduction(charBean);
 		CharacterizationBean[] otherChars = prepareCopy(request, theForm);
@@ -165,7 +205,12 @@ public class InVitroCharacterizationAction extends BaseCharacterizationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CharacterizationBean charBean = prepareCreate(request, theForm);
+		ActionForward forward = prepareCreate(mapping, request, theForm);
+		if (forward != null) {
+			return forward;
+		}
+		CharacterizationBean charBean = (CharacterizationBean) theForm
+				.get("achar");
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		service.addEnzymeInduction(charBean);
 		CharacterizationBean[] otherChars = prepareCopy(request, theForm);
@@ -179,7 +224,12 @@ public class InVitroCharacterizationAction extends BaseCharacterizationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CharacterizationBean charBean = prepareCreate(request, theForm);
+		ActionForward forward = prepareCreate(mapping, request, theForm);
+		if (forward != null) {
+			return forward;
+		}
+		CharacterizationBean charBean = (CharacterizationBean) theForm
+				.get("achar");
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		service.addHemolysis(charBean);
 		CharacterizationBean[] otherChars = prepareCopy(request, theForm);
@@ -193,7 +243,12 @@ public class InVitroCharacterizationAction extends BaseCharacterizationAction {
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CharacterizationBean charBean = prepareCreate(request, theForm);
+		ActionForward forward = prepareCreate(mapping, request, theForm);
+		if (forward != null) {
+			return forward;
+		}
+		CharacterizationBean charBean = (CharacterizationBean) theForm
+				.get("achar");
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		service.addLeukocyteProliferation(charBean);
 		CharacterizationBean[] otherChars = prepareCopy(request, theForm);
@@ -208,7 +263,12 @@ public class InVitroCharacterizationAction extends BaseCharacterizationAction {
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CharacterizationBean charBean = prepareCreate(request, theForm);
+		ActionForward forward = prepareCreate(mapping, request, theForm);
+		if (forward != null) {
+			return forward;
+		}
+		CharacterizationBean charBean = (CharacterizationBean) theForm
+				.get("achar");
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		service.addNKCellCytotoxicActivity(charBean);
 		CharacterizationBean[] otherChars = prepareCopy(request, theForm);
@@ -222,7 +282,12 @@ public class InVitroCharacterizationAction extends BaseCharacterizationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CharacterizationBean charBean = prepareCreate(request, theForm);
+		ActionForward forward = prepareCreate(mapping, request, theForm);
+		if (forward != null) {
+			return forward;
+		}
+		CharacterizationBean charBean = (CharacterizationBean) theForm
+				.get("achar");
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		service.addOxidativeBurst(charBean);
 		CharacterizationBean[] otherChars = prepareCopy(request, theForm);
@@ -236,7 +301,12 @@ public class InVitroCharacterizationAction extends BaseCharacterizationAction {
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CharacterizationBean charBean = prepareCreate(request, theForm);
+		ActionForward forward = prepareCreate(mapping, request, theForm);
+		if (forward != null) {
+			return forward;
+		}
+		CharacterizationBean charBean = (CharacterizationBean) theForm
+				.get("achar");
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		service.addOxidativeStress(charBean);
 		CharacterizationBean[] otherChars = prepareCopy(request, theForm);
@@ -250,7 +320,12 @@ public class InVitroCharacterizationAction extends BaseCharacterizationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CharacterizationBean charBean = prepareCreate(request, theForm);
+		ActionForward forward = prepareCreate(mapping, request, theForm);
+		if (forward != null) {
+			return forward;
+		}
+		CharacterizationBean charBean = (CharacterizationBean) theForm
+				.get("achar");
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		service.addPhagocytosis(charBean);
 		CharacterizationBean[] otherChars = prepareCopy(request, theForm);
@@ -264,7 +339,12 @@ public class InVitroCharacterizationAction extends BaseCharacterizationAction {
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CharacterizationBean charBean = prepareCreate(request, theForm);
+		ActionForward forward = prepareCreate(mapping, request, theForm);
+		if (forward != null) {
+			return forward;
+		}
+		CharacterizationBean charBean = (CharacterizationBean) theForm
+				.get("achar");
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		service.addPlateletAggregation(charBean);
 		CharacterizationBean[] otherChars = prepareCopy(request, theForm);
@@ -278,7 +358,12 @@ public class InVitroCharacterizationAction extends BaseCharacterizationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CharacterizationBean charBean = prepareCreate(request, theForm);
+		ActionForward forward = prepareCreate(mapping, request, theForm);
+		if (forward != null) {
+			return forward;
+		}
+		CharacterizationBean charBean = (CharacterizationBean) theForm
+				.get("achar");
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		service.addProteinBinding(charBean);
 		CharacterizationBean[] otherChars = prepareCopy(request, theForm);
