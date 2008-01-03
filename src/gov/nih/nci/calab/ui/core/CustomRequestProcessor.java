@@ -1,5 +1,9 @@
 package gov.nih.nci.calab.ui.core;
 
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
+
+import java.util.Arrays;
+
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts.action.ActionForm;
@@ -21,7 +25,12 @@ public class CustomRequestProcessor extends TilesRequestProcessor {
 			javax.servlet.http.HttpServletResponse response,
 			ActionMapping mapping) {
 		HttpSession session = request.getSession();
-		if (session.isNew() && (request.getServletPath().startsWith("/create"))) {
+		String dispatch = request.getParameter("dispatch");
+
+		if (session.isNew()
+				&& (dispatch == null || !Arrays.asList(
+						CaNanoLabConstants.PUBLIC_DISPATCHES)
+						.contains(dispatch))) {
 			return null;
 		} else {
 			return super.processActionForm(request, response, mapping);
