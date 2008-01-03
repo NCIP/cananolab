@@ -6,13 +6,12 @@ package gov.nih.nci.calab.ui.sample;
  * @author pansu
  */
 
-/* CVS $Id: EditAliquotAction.java,v 1.5 2008-01-03 21:24:48 pansu Exp $ */
+/* CVS $Id: EditAliquotAction.java,v 1.6 2008-01-03 22:25:51 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.sample.AliquotBean;
 import gov.nih.nci.calab.dto.sample.ContainerInfoBean;
 import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
-import gov.nih.nci.calab.exception.InvalidSessionException;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
@@ -41,15 +40,10 @@ public class EditAliquotAction extends AbstractDispatchAction {
 		aliquot.setCreationDate(new Date());
 		int rowNum = Integer.parseInt((String) theForm.get("rowNum"));
 		int colNum = Integer.parseInt((String) theForm.get("colNum"));
-		if (session.getAttribute("aliquotMatrix") != null) {
-			List aliquotMatrx = (List) session.getAttribute("aliquotMatrix");
-			// replace the aliquot in the matrix and reset the session variable
-			((AliquotBean[]) aliquotMatrx.get(rowNum))[colNum] = aliquot;
-			forward = mapping.findForward("success");
-		} else {
-			throw new InvalidSessionException(
-					"The aliquot matrix is expired. Please log in again");
-		}
+		List aliquotMatrx = (List) session.getAttribute("aliquotMatrix");
+		// replace the aliquot in the matrix and reset the session variable
+		((AliquotBean[]) aliquotMatrx.get(rowNum))[colNum] = aliquot;
+		forward = mapping.findForward("success");
 		return forward;
 	}
 
@@ -70,15 +64,10 @@ public class EditAliquotAction extends AbstractDispatchAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		int rowNum = Integer.parseInt((String) theForm.get("rowNum"));
 		int colNum = Integer.parseInt((String) theForm.get("colNum"));
-		if (session.getAttribute("aliquotMatrix") != null) {
-			List aliquotMatrx = (List) session.getAttribute("aliquotMatrix");
-			AliquotBean aliquot = ((AliquotBean[]) aliquotMatrx.get(rowNum))[colNum];
-			theForm.set("aliquot", aliquot);
-			forward = mapping.getInputForward();
-		} else {
-			throw new InvalidSessionException(
-					"Session containing the aliquot matrix either is expired. Please log in again");
-		}
+		List aliquotMatrx = (List) session.getAttribute("aliquotMatrix");
+		AliquotBean aliquot = ((AliquotBean[]) aliquotMatrx.get(rowNum))[colNum];
+		theForm.set("aliquot", aliquot);
+		forward = mapping.getInputForward();
 
 		// update editable drop-down to include new entry
 		updateAllEditables(request.getSession(), theForm);
