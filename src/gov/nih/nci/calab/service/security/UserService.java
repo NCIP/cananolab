@@ -1,7 +1,6 @@
 package gov.nih.nci.calab.service.security;
 
 import gov.nih.nci.calab.db.HibernateUtil;
-import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
 import gov.nih.nci.calab.dto.common.ReportBean;
 import gov.nih.nci.calab.dto.common.UserBean;

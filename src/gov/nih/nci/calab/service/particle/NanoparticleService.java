@@ -8,7 +8,6 @@ import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.dto.common.SearchableBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
-import gov.nih.nci.calab.exception.CaNanoLabException;
 import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.calab.exception.ParticleException;
 import gov.nih.nci.calab.service.sample.SampleService;

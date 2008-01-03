@@ -1,13 +1,11 @@
 package gov.nih.nci.calab.dto.common;
 
 import gov.nih.nci.calab.dto.particle.ParticleBean;
-import gov.nih.nci.calab.service.util.CaNanoLabComparators;
 import gov.nih.nci.calab.service.util.StringUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.displaytag.decorator.TableDecorator;
