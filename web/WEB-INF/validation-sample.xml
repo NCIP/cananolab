@@ -19,10 +19,6 @@
 				<arg position="0" key="createSampleForm.sampleSource"
 					bundle="sample" />
 			</field>
-			<field property="sample.lotId" page="2" depends="integer">
-				<arg position="0" key="createSampleForm.lotId"
-					bundle="sample" />
-			</field>
 			<field property="sample.dateReceivedStr" page="2" depends="date">
 				<arg position="0" key="createSampleForm.dateReceived"
 					bundle="sample" />
