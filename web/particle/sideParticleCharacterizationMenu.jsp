@@ -157,7 +157,15 @@
 								<c:param name="submitType" value="${leafCharBean.name}" />
 							</c:url>
 							<li id="${leafCharBean.id}">
-								<a href=${url } class="sublist_5"><span class="data_anchar">>&nbsp;</span>${leafCharBean.viewTitle}</a>
+							<c:choose>
+								<c:when test="${leafCharBean.viewColor != null}">
+									<c:set var="viewTitleDisplay" value="color: ${leafCharBean.viewColor};" />
+									<a href="${url}" class="sublist_5" style="${viewTitleDisplay}" ><span class="data_anchar">>&nbsp;</span>${leafCharBean.viewTitle}</a>
+								</c:when>
+								<c:otherwise>
+									<a href="${url}" class="sublist_5"><span class="data_anchar">>&nbsp;</span>${leafCharBean.viewTitle}</a>
+								</c:otherwise>
+							</c:choose>
 							</li>
 						</c:forEach>
 					</ul>
@@ -230,8 +238,17 @@
 												<c:param name="submitType" value="${leafCharBean.name}" />
 											</c:url>
 											<li>
-												<a href="${url3}" class="sublist_5"><span
+											<c:choose>
+												<c:when test="${leafCharBean.viewColor != null}">
+													<c:set var="viewTitleDisplay" value="color: ${leafCharBean.viewColor};" />
+													<a href="${url3}" class="sublist_5" style="${viewTitleDisplay}" >
+													<span class="data_anchar">>&nbsp;</span>${leafCharBean.viewTitle}</a>
+												</c:when>
+												<c:otherwise>
+													<a href="${url3}" class="sublist_5"><span
 													class="data_anchar">>&nbsp;</span>${leafCharBean.viewTitle}</a>
+												</c:otherwise>
+											</c:choose>
 											</li>
 										</c:forEach>
 									</ul>
@@ -285,8 +302,17 @@
 																			value="${leafCharBean.name}" />
 																	</c:url>
 																	<li>
+																	<c:choose>
+																		<c:when test="${leafCharBean.viewColor != null}">
+																			<c:set var="viewTitleDisplay" value="color: ${leafCharBean.viewColor};" />
+																			<a href="${url4}" class="sublist_5" style="${viewTitleDisplay}" >
+																			<span class="data_anchar">>&nbsp;</span>${leafCharBean.viewTitle}</a>
+																		</c:when>
+																	<c:otherwise>
 																		<a href="${url4}" class="sublist_5"><span
 																			class="data_anchar">>&nbsp;</span>${leafCharBean.viewTitle}</a>
+																	</c:otherwise>
+																	</c:choose>
 																	</li>
 																</c:forEach>
 															</ul>
@@ -334,8 +360,17 @@
 																								value="${leafCharBean.name}" />
 																						</c:url>
 																						<li>
-																							<a href=${url5 } class="sublist_5"><span
+																						<c:choose>
+																						<c:when test="${leafCharBean.viewColor != null}">
+																							<c:set var="viewTitleDisplay" value="color: ${leafCharBean.viewColor};" />
+																							<a href="${url5}" class="sublist_5" style="${viewTitleDisplay}" >
+																							<span class="data_anchar">>&nbsp;</span>${leafCharBean.viewTitle}</a>
+																						</c:when>
+																						<c:otherwise>
+																							<a href="${url5}" class="sublist_5"><span
 																								class="data_anchar">>&nbsp;</span>${leafCharBean.viewTitle}</a>
+																						</c:otherwise>
+																						</c:choose>
 																						</li>
 																					</c:forEach>
 																				</ul>
