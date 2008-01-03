@@ -283,9 +283,9 @@ public class CaNanoLabConstants {
 
 	public static final String CSM_PG_REPORT = "report";
 
-	public static final String PHYSICAL_ASSAY_PROTOCOL = "Physical assay";
+	public static final String PHYSICAL_ASSAY_PROTOCOL = "Physical Assay";
 
-	public static final String INVITRO_ASSAY_PROTOCOL = "In Vitro assay";
+	public static final String INVITRO_ASSAY_PROTOCOL = "In Vitro Assay";
 
 	/* image file name extension */
 	public static final String[] IMAGE_FILE_EXTENSIONS = { "AVS", "BMP", "CIN",
