@@ -46,19 +46,6 @@
 			path="/submitReport"
 			type="gov.nih.nci.calab.ui.report.SubmitReportAction" input="input"
 			scope="request">
-			<exception
-				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				key="error.generalException" path="report.submitReport"
-				type="java.lang.Exception" />
-			<exception
-				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="particle" key="error.particleException"
-				path="report.submitReport"
-				type="gov.nih.nci.calab.exception.ParticleException" />
-			<exception
-				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				key="error.securityException" path="report.submitReport"
-				type="gov.nih.nci.calab.exception.CaNanoLabSecurityException" />
 			<forward name="success" path="report.message" />
 			<forward name="input" path="report.submitReport" />
 		</action>
@@ -66,14 +53,6 @@
 			path="/updateReport"
 			type="gov.nih.nci.calab.ui.report.SubmitReportAction" input="input"
 			scope="request">
-			<exception
-				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				key="error.securityException" path="report.viewReport"
-				type="gov.nih.nci.calab.exception.CaNanoLabSecurityException" />
-			<exception
-				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				key="error.generalException" path="report.viewReport"
-				type="java.lang.Exception" />
 			<forward name="input" path="report.viewReport" />
 			<forward name="success" path="report.message" />
 		</action>
@@ -84,14 +63,6 @@
 			parameter="dispatch" path="/searchReport"
 			type="gov.nih.nci.calab.ui.report.SearchReportAction"
 			scope="request">
-			<exception
-				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				key="error.securityException" path="report.searchReport"
-				type="gov.nih.nci.calab.exception.CaNanoLabSecurityException" />
-			<exception
-				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				key="error.generalException" path="report.searchReport"
-				type="java.lang.Exception" />
 			<forward name="input" path="report.searchReport" />
 			<forward name="success" path="report.searchReportResult" />
 		</action>
@@ -101,23 +72,12 @@
 			scope="request">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				key="error.grid.discovery"
-				path="report.remoteSearchReport"
+				key="error.grid.discovery" path="report.remoteSearchReport"
 				type="gov.nih.nci.calab.exception.GridAutoDiscoveryException" />
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				key="error.grid.notAvailable"
-				path="report.remoteSearchReportResult"
+				key="error.grid.notAvailable" path="report.remoteSearchReportResult"
 				type="gov.nih.nci.calab.exception.GridQueryException" />
-			<exception
-				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				key="error.securityException"
-				path="report.remoteSearchReport"
-				type="gov.nih.nci.calab.exception.CaNanoLabSecurityException" />
-			<exception
-				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				key="error.generalException"
-				path="report.remoteSearchReport" type="java.lang.Exception" />
 			<forward name="input" path="report.remoteSearchReport" />
 			<forward name="success"
 				path="report.remoteSearchReportResult" />

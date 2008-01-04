@@ -47,15 +47,6 @@
 			path="/submitProtocol"
 			type="gov.nih.nci.calab.ui.protocol.SubmitProtocolAction"
 			input="input" scope="request">
-			<exception
-				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				key="error.securityException"
-				path="protocol.submitProtocol"
-				type="gov.nih.nci.calab.exception.CaNanoLabSecurityException" />
-			<exception
-				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				key="error.generalException"
-				path="protocol.submitProtocol" type="java.lang.Exception" />
 			<forward name="success" path="protocol.message" />
 			<forward name="input"
 				path="/submitProtocol.do?dispatch=reSetup&amp;page=0" />
@@ -67,15 +58,6 @@
 			path="/updateProtocol"
 			type="gov.nih.nci.calab.ui.protocol.SubmitProtocolAction"
 			input="input" scope="request">
-			<exception
-				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				key="error.securityException"
-				path="protocol.updateProtocol"
-				type="gov.nih.nci.calab.exception.CaNanoLabSecurityException" />
-			<exception
-				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				key="error.generalException"
-				path="protocol.updateProtocol" type="java.lang.Exception" />
 			<forward name="success" path="protocol.message" />
 			<forward name="input"
 				path="/updateProtocol.do?dispatch=setupUpdate&amp;page=0" />
@@ -87,10 +69,6 @@
 			parameter="dispatch" path="/searchProtocol"
 			type="gov.nih.nci.calab.ui.protocol.SearchProtocolAction"
 			scope="request">
-			<exception
-				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				key="error.generalException"
-				path="protocol.searchProtocol" type="java.lang.Exception" />
 			<forward name="input" path="protocol.searchProtocol" />
 			<forward name="success"
 				path="protocol.searchProtocolResult" />
