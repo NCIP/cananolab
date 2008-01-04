@@ -360,7 +360,7 @@ public class CharacterizationBean {
 	public String getExportFileName() {
 		List<String> nameParts = new ArrayList<String>();
 		nameParts.add(particle.getSampleName());
-		nameParts.add(dispatchActionName);
+		nameParts.add(getDispatchActionName());
 		nameParts.add("detailView");
 		nameParts.add(StringUtils.convertDateToString(new Date(),
 				"yyyyMMdd_HH-mm-ss-SSS"));
