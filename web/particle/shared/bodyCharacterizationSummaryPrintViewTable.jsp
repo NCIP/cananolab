@@ -10,7 +10,8 @@
 			<table width="100%" border="1" align="center" cellpadding="3"
 				cellspacing="0" class="topBorderOnly" summary="">
 				<tr>
-					<th class="formTitle" colspan="${3+fn:length(datumLabels)}"
+					<th class="formTitle"
+						colspan="${3+fn:length(nanoparticleCharacterizationForm.map.charSummary.columnLabels)}"
 						align="center">
 						${nanoparticleCharacterizationForm.map.particle.sampleName}
 						${nanoparticleCharacterizationForm.map.particle.sampleType} - ${
@@ -23,7 +24,8 @@
 						<br>
 						Description
 					</th>
-					<c:forEach var="label" items="${datumLabels}">
+					<c:forEach var="label"
+						items="${nanoparticleCharacterizationForm.map.charSummary.columnLabels}">
 						<th class="label">
 							${label}
 						</th>
@@ -32,56 +34,58 @@
 						Characterization File / Instrument Info
 					</th>
 				</tr>
-				<c:forEach var="summaryBean" items="${summaryViewBeans}">
+				<c:forEach var="summaryRow"
+					items="${nanoparticleCharacterizationForm.map.charSummary.summaryRows}">
 					<tr>
 						<td class="leftLabel" valign="top" width="15%">
-							${summaryBean.charBean.viewTitle}
-							<c:if test="${!empty summaryBean.charBean.description}">
+							${summaryRow.charBean.viewTitle}
+							<c:if test="${!empty summaryRow.charBean.description}">
 								<br>
-								<br>${summaryBean.charBean.description}
+								<br>${summaryRow.charBean.description}
 							</c:if>
 						</td>
-						<c:forEach var="label" items="${datumLabels}">
+						<c:forEach var="label"
+							items="${nanoparticleCharacterizationForm.map.charSummary.columnLabels}">
 							<td class="label" valign="top">
-								${summaryBean.datumMap[label]}&nbsp;
+								${summaryRow.datumMap[label]}&nbsp;
 							</td>
 						</c:forEach>
-						
+
 						<td class="RightLabel" valign="top">
-							<c:if test="${!empty summaryBean.charFile.type}">
-								${summaryBean.charFile.type}
+							<c:if test="${!empty summaryRow.charFile.type}">
+								${summaryRow.charFile.type}
 								<br>
 							</c:if>
 							<c:if
-								test="${!empty summaryBean.charFile && !empty summaryBean.charFile.uri}">
+								test="${!empty summaryRow.charFile && !empty summaryRow.charFile.uri}">
 								<c:choose>
-									<c:when test="${summaryBean.charFile.hidden eq 'true' }">
+									<c:when test="${summaryRow.charFile.hidden eq 'true' }">
 										Private file
 									</c:when>
 									<c:otherwise>
-										${summaryBean.charFile.title}
+										${summaryRow.charFile.title}
 									</c:otherwise>
 								</c:choose>
 								<br>
 								<br>
 							</c:if>
 							<c:if
-								test="${!empty summaryBean.charBean.instrumentConfigBean && !empty summaryBean.charBean.instrumentConfigBean.instrumentBean.type}">						
-									${summaryBean.charBean.instrumentConfigBean.instrumentBean.type}-
-									${summaryBean.charBean.instrumentConfigBean.instrumentBean.manufacturer}
+								test="${!empty summaryRow.charBean.instrumentConfigBean && !empty summaryRow.charBean.instrumentConfigBean.instrumentBean.type}">						
+									${summaryRow.charBean.instrumentConfigBean.instrumentBean.type}-
+									${summaryRow.charBean.instrumentConfigBean.instrumentBean.manufacturer}
 									&nbsp;
 								<c:if
-									test="${!empty summaryBean.charBean.instrumentConfigBean.instrumentBean.abbreviation}">
-									(${summaryBean.charBean.instrumentConfigBean.instrumentBean.abbreviation})
+									test="${!empty summaryRow.charBean.instrumentConfigBean.instrumentBean.abbreviation}">
+									(${summaryRow.charBean.instrumentConfigBean.instrumentBean.abbreviation})
 								</c:if>
 								<c:if
-									test="${!empty summaryBean.charBean.instrumentConfigBean.description}">
+									test="${!empty summaryRow.charBean.instrumentConfigBean.description}">
 									<br>
 									<br>
-									${summaryBean.charBean.instrumentConfigBean.description}
+									${summaryRow.charBean.instrumentConfigBean.description}
 								</c:if>
 							</c:if>
-							&nbsp;		
+							&nbsp;
 						</td>
 					</tr>
 				</c:forEach>

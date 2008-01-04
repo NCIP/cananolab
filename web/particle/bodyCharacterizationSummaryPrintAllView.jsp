@@ -12,7 +12,7 @@
 		<jsp:include
 			page="shared/bodyCharacterizationSummaryPrintViewTable.jsp" />		
 		<p style="page-break-before: always"> 
-		<c:forEach var="charBean" items="${summaryViewCharBeans}">
+		<c:forEach var="charBean" items="${nanoparticleCharacterizationForm.map.charSummary.charBeans}">
 			<table width="100%" border="1" align="center" cellpadding="3"
 				cellspacing="0" class="topBorderOnly" summary="">
 				<tr>
@@ -102,7 +102,7 @@ ${charBean.protocolFileBean.uri}
 									<c:otherwise>
 										<c:choose>
 											<c:when test="${derivedBioAssayData.image eq 'true'}">
-											<img src="${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.id}"
+											<img src="${nanoparticleCharacterizationForm.map.charSummary.actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.id}"
 															border="0">
 											
 											</c:when>

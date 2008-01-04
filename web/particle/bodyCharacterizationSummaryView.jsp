@@ -17,7 +17,7 @@
 		</td>
 		<td align="right" width="15%">
 			<a
-				href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=${nanoparticleCharacterizationForm.map.achar.dispatchActionName}_summary_view_help')"
+				href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=${nanoparticleCharacterizationForm.map.charSummary.dispatchActionName}_summary_view_help')"
 				class="helpText">Help</a>
 		</td>
 	</tr>
@@ -30,8 +30,7 @@
 						<ul class="pemenu" id="printChara">
 							<li class="pelist">
 								<a href="#"><img src="images/icon_print_23x.gif" border="0"
-										align="middle">
-								</a>
+										align="middle"> </a>
 								<ul>
 									<li>
 										<a href="javascript:printPage('${printLinkURL}')">Print
@@ -48,14 +47,14 @@
 					<td></td>
 					<td>
 						<c:url var="sumUrl"
-							value="${nanoparticleCharacterizationForm.map.achar.actionName}.do">
+							value="${nanoparticleCharacterizationForm.map.charSummary.actionName}.do">
 							<c:param name="particleId" value="${particleId}" />
 							<c:param name="submitType" value="${submitType}" />
 							<c:param name="page" value="0" />
 							<c:param name="dispatch" value="exportSummary" />
 						</c:url>
 						<c:url var="fullSumUrl"
-							value="${nanoparticleCharacterizationForm.map.achar.actionName}.do">
+							value="${nanoparticleCharacterizationForm.map.charSummary.actionName}.do">
 							<c:param name="particleId" value="${particleId}" />
 							<c:param name="submitType" value="${submitType}" />
 							<c:param name="page" value="0" />
@@ -64,8 +63,7 @@
 						<ul class="pemenu" id="exportChara">
 							<li class="pelist">
 								<a href="#"><img src="images/icon_excel_23x.gif" border="0"
-										align="middle">
-								</a>
+										align="middle"> </a>
 								<ul>
 									<li>
 										<a href="${sumUrl}">Export Summary</a>
@@ -86,7 +84,8 @@
 			<table width="100%" border="0" align="center" cellpadding="3"
 				cellspacing="0" class="topBorderOnly" summary="">
 				<tr>
-					<td class="formTitle" colspan="${3+fn:length(datumLabels)}">
+					<td class="formTitle"
+						colspan="${3+fn:length(nanoparticleCharacterizationForm.map.charSummary.columnLabels)}">
 						<div align="justify">
 							${nanoparticleCharacterizationForm.map.particle.sampleName}
 							${nanoparticleCharacterizationForm.map.particle.sampleType} - ${
@@ -100,7 +99,7 @@
 						<br>
 						Description
 					</th>
-					<c:forEach var="label" items="${datumLabels}">
+					<c:forEach var="label" items="${nanoparticleCharacterizationForm.map.charSummary.columnLabels}">
 						<th class="label">
 							${label}
 						</th>
@@ -112,50 +111,52 @@
 						Instrument Info
 					</th>
 				</tr>
-				<c:forEach var="summaryBean" items="${summaryViewBeans}">
+				<c:forEach var="summaryRow"
+					items="${nanoparticleCharacterizationForm.map.charSummary.summaryRows}">
 					<tr>
 						<td class="leftLabel" valign="top" width="15%">
 							<c:url var="url"
-								value="${nanoparticleCharacterizationForm.map.achar.actionName}.do">
+								value="${nanoparticleCharacterizationForm.map.charSummary.actionName}.do">
 								<c:param name="page" value="0" />
 								<c:param name="dispatch" value="detailView" />
 								<c:param name="particleId" value="${particleId}" />
 								<c:param name="characterizationId"
-									value="${summaryBean.charBean.id}" />
+									value="${summaryRow.charBean.id}" />
 								<c:param name="submitType" value="${submitType}" />
 							</c:url>
-							<a href="${url}">${summaryBean.charBean.viewTitle}</a>
-							<c:if test="${!empty summaryBean.charBean.description}">
+							<a href="${url}">${summaryRow.charBean.viewTitle}</a>
+							<c:if test="${!empty summaryRow.charBean.description}">
 								<br>
-								<br>${summaryBean.charBean.description}
+								<br>${summaryRow.charBean.description}
 							</c:if>
 						</td>
 
-						<c:forEach var="label" items="${datumLabels}">
+						<c:forEach var="label"
+							items="${nanoparticleCharacterizationForm.map.charSummary.columnLabels}">
 							<td class="label" valign="top">
-								${summaryBean.datumMap[label]}&nbsp;
+								${summaryRow.datumMap[label]}&nbsp;
 							</td>
 						</c:forEach>
 						<td class="label" valign="top">
 							<c:if
-								test="${!empty summaryBean.charFile && !empty summaryBean.charFile.uri}">
+								test="${!empty summaryRow.charFile && !empty summaryRow.charFile.uri}">
 								<c:choose>
-									<c:when test="${summaryBean.charFile.hidden eq 'true' }">
+									<c:when test="${summaryRow.charFile.hidden eq 'true' }">
 										Private file
 									</c:when>
 									<c:otherwise>
 										<c:choose>
-											<c:when test="${summaryBean.charFile.image eq 'true'}">
-												${summaryBean.charFile.title}<br>
+											<c:when test="${summaryRow.charFile.image eq 'true'}">
+												${summaryRow.charFile.title}<br>
 												<br>
 												<a href="#"
-													onclick="popImage(event,'${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${summaryBean.charFile.id}', ${summaryBean.charFile.id})"><img
-														src="${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${summaryBean.charFile.id}"
+													onclick="popImage(event,'${nanoparticleCharacterizationForm.map.charSummary.actionName}.do?dispatch=download&amp;fileId=${summaryRow.charFile.id}', ${summaryRow.charFile.id})"><img
+														src="${nanoparticleCharacterizationForm.map.charSummary.actionName}.do?dispatch=download&amp;fileId=${summaryRow.charFile.id}"
 														border="0" width="150"> </a>
 											</c:when>
 											<c:otherwise>
 												<a
-													href="${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${summaryBean.charFile.id}">${summaryBean.charFile.title}</a>
+													href="${nanoparticleCharacterizationForm.map.charSummary.actionName}.do?dispatch=download&amp;fileId=${summaryRow.charFile.id}">${summaryRow.charFile.title}</a>
 											</c:otherwise>
 										</c:choose>
 									</c:otherwise>
@@ -165,19 +166,19 @@
 						</td>
 						<td class="RightLabel" valign="top">
 							<c:if
-								test="${!empty summaryBean.charBean.instrumentConfigBean && !empty summaryBean.charBean.instrumentConfigBean.instrumentBean.type}">						
-									${summaryBean.charBean.instrumentConfigBean.instrumentBean.type}-
-									${summaryBean.charBean.instrumentConfigBean.instrumentBean.manufacturer}
+								test="${!empty summaryRow.charBean.instrumentConfigBean && !empty summaryRow.charBean.instrumentConfigBean.instrumentBean.type}">						
+									${summaryRow.charBean.instrumentConfigBean.instrumentBean.type}-
+									${summaryRow.charBean.instrumentConfigBean.instrumentBean.manufacturer}
 									&nbsp;
 								<c:if
-									test="${!empty summaryBean.charBean.instrumentConfigBean.instrumentBean.abbreviation}">
-									(${summaryBean.charBean.instrumentConfigBean.instrumentBean.abbreviation})
+									test="${!empty summaryRow.charBean.instrumentConfigBean.instrumentBean.abbreviation}">
+									(${summaryRow.charBean.instrumentConfigBean.instrumentBean.abbreviation})
 								</c:if>
 								<c:if
-									test="${!empty summaryBean.charBean.instrumentConfigBean.description}">
+									test="${!empty summaryRow.charBean.instrumentConfigBean.description}">
 									<br>
 									<br>
-									${summaryBean.charBean.instrumentConfigBean.description}
+									${summaryRow.charBean.instrumentConfigBean.description}
 								</c:if>
 							</c:if>
 							&nbsp;
