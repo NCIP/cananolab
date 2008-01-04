@@ -10,6 +10,7 @@ import gov.nih.nci.calab.domain.nano.function.ImageContrastAgentType;
 import gov.nih.nci.calab.domain.nano.function.Linkage;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.dto.function.FunctionBean;
+import gov.nih.nci.calab.exception.ParticleCharacterizationException;
 import gov.nih.nci.calab.exception.ParticleFunctionException;
 import gov.nih.nci.calab.service.common.LookupService;
 
@@ -105,25 +106,17 @@ public class NanoparticleFunctionService {
 			Session session = HibernateUtil.currentSession();
 			HibernateUtil.beginTransaction();
 
-			boolean viewTitleUsed = isFunctionViewTitleUsed(session,
-					particleId, function);
-
-			if (viewTitleUsed) {
-				throw new ParticleFunctionException(
-						"The view title is already in use.  Please enter a different one");
+			// if function already exists in the database, load it first
+			if (function.getId() != null) {
+				doFunction = (Function) session.get(Function.class, new Long(
+						function.getId()));
+				function.updateDomainObj(doFunction);
 			} else {
-				// if function already exists in the database, load it first
-				if (function.getId() != null) {
-					doFunction = (Function) session.get(Function.class,
-							new Long(function.getId()));
-					function.updateDomainObj(doFunction);
-				} else {
-					function.updateDomainObj(doFunction);
-					Nanoparticle particle = (Nanoparticle) session.load(
-							Nanoparticle.class, new Long(particleId));
-					if (particle != null) {
-						particle.getFunctionCollection().add(doFunction);
-					}
+				function.updateDomainObj(doFunction);
+				Nanoparticle particle = (Nanoparticle) session.load(
+						Nanoparticle.class, new Long(particleId));
+				if (particle != null) {
+					particle.getFunctionCollection().add(doFunction);
 				}
 			}
 
@@ -155,37 +148,48 @@ public class NanoparticleFunctionService {
 	 * check if viewTitle is already used the same type of function for the same
 	 * particle
 	 */
-	private boolean isFunctionViewTitleUsed(Session session, String particleId,
-			FunctionBean function) {
+	public boolean isFunctionViewTitleUsed(String particleId,
+			FunctionBean function) throws ParticleFunctionException {
 		// check if viewTitle is already used the same type of
 		// function for the same particle
-		String viewTitleQuery = "";
-		if (function.getId() == null || function.getId().length() == 0) {
-			viewTitleQuery = "select count(function.identificationName) from Nanoparticle particle join particle.functionCollection function where particle.id="
-					+ particleId
-					+ " and function.identificationName='"
-					+ function.getViewTitle()
-					+ "' and function.type='"
-					+ function.getType() + "'";
-		} else {
-			viewTitleQuery = "select count(function.identificationName) from Nanoparticle particle join particle.functionCollection function where particle.id="
-					+ particleId
-					+ " and function.identificationName='"
-					+ function.getViewTitle()
-					+ "' and function.id!="
-					+ function.getId()
-					+ " and function.type='"
-					+ function.getType() + "'";
-		}
-		List viewTitleResult = session.createQuery(viewTitleQuery).list();
-		int existingViewTitleCount = -1;
-		for (Object obj : viewTitleResult) {
-			existingViewTitleCount = ((Integer) (obj)).intValue();
-		}
-		if (existingViewTitleCount > 0) {
-			return true;
-		} else {
-			return false;
+		try {
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+
+			String viewTitleQuery = "";
+			if (function.getId() == null || function.getId().length() == 0) {
+				viewTitleQuery = "select count(function.identificationName) from Nanoparticle particle join particle.functionCollection function where particle.id="
+						+ particleId
+						+ " and function.identificationName='"
+						+ function.getViewTitle()
+						+ "' and function.type='"
+						+ function.getType() + "'";
+			} else {
+				viewTitleQuery = "select count(function.identificationName) from Nanoparticle particle join particle.functionCollection function where particle.id="
+						+ particleId
+						+ " and function.identificationName='"
+						+ function.getViewTitle()
+						+ "' and function.id!="
+						+ function.getId()
+						+ " and function.type='"
+						+ function.getType() + "'";
+			}
+			List viewTitleResult = session.createQuery(viewTitleQuery).list();
+			int existingViewTitleCount = -1;
+			for (Object obj : viewTitleResult) {
+				existingViewTitleCount = ((Integer) (obj)).intValue();
+			}
+			if (existingViewTitleCount > 0) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+			HibernateUtil.rollbackTransaction();
+			logger.error("Problem checking view title ", e);
+			throw new ParticleFunctionException();
+		} finally {
+			HibernateUtil.closeSession();
 		}
 	}
 }
