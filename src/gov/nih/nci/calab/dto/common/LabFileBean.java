@@ -51,9 +51,9 @@ public class LabFileBean {
 
 	private String timeStampedName;
 
-	private boolean hidden;
+	private boolean hidden=true;
 
-	private boolean image;
+	private boolean image=false;
 
 	public String getInstanceType() {
 		return this.instanceType;
