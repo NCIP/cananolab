@@ -57,7 +57,6 @@ import gov.nih.nci.calab.dto.common.InstrumentConfigBean;
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
 import gov.nih.nci.calab.dto.common.UserBean;
-import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.calab.exception.ParticleCharacterizationException;
 import gov.nih.nci.calab.service.common.FileService;
@@ -74,7 +73,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -153,9 +151,8 @@ public class NanoparticleCharacterizationService {
 		} finally {
 			HibernateUtil.closeSession();
 		}
-		if (user != null) {
-			this.setCharacterizationUserVisiblity(charBean, user);
-		}
+
+		setCharacterizationUserVisiblity(charBean, user);
 		return charBean;
 	}
 
