@@ -8,7 +8,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleCompositionAction.java,v 1.18 2008-01-03 21:25:29 pansu Exp $ */
+/* CVS $Id: NanoparticleCompositionAction.java,v 1.19 2008-01-04 17:25:06 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.dto.characterization.composition.CarbonNanotubeBean;
@@ -69,7 +69,6 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		ParticleBean particle = (ParticleBean) theForm.get("particle");
 		CompositionBean baseComposition = (CompositionBean) theForm
 				.get("composition");
-
 		CompositionBean composition = null;
 		if (particle.getSampleType().equalsIgnoreCase(
 				Characterization.DENDRIMER_TYPE)) {
@@ -102,13 +101,25 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		composition
 				.setComposingElements(baseComposition.getComposingElements());
 		composition.setId(baseComposition.getId());
-
+		String submitType=request.getParameter("submitType");
+		composition.setName(submitType);
+		// check if viewTitle is already used the same type of
+		// characterization for the same particle
+		NanoparticleCompositionService service = new NanoparticleCompositionService();
+		boolean viewTitleUsed = service
+				.isCompositionViewTitleUsed(composition);
+		ActionMessages msgs = new ActionMessages();
+		if (viewTitleUsed) {
+			ActionMessage msg = new ActionMessage("error.viewTitleUsed");
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveErrors(request, msgs);
+			return mapping.getInputForward();
+		}
 		// set createdBy and createdDate for the composition
 		UserBean user = (UserBean) session.getAttribute("user");
 		Date date = new Date();
 		composition.setCreatedBy(user.getLoginName());
-		composition.setCreatedDate(date);
-		NanoparticleCompositionService service = new NanoparticleCompositionService();
+		composition.setCreatedDate(date);		
 		service.addParticleComposition(composition, particle.getSampleType());
 
 		// In case there is other type of branch, generation, etc created during
@@ -119,7 +130,6 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		// variable here.
 
 		InitParticleSetup.getInstance().setAllCompositionDropdowns(session);
-		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.addParticleComposition");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
