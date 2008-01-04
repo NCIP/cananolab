@@ -96,6 +96,12 @@
 				initial="0" />
 		</form-bean>
 	</form-beans>
+	<global-exceptions>
+		<exception
+			handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+			bundle="sample" key="error.sampleException" path="sample.message"
+			type="gov.nih.nci.calab.exception.SampleException" />
+	</global-exceptions>
 	<action-mappings>
 		<action path="/manageSample"
 			type="gov.nih.nci.calab.ui.core.BaseForwardAction"
@@ -106,16 +112,8 @@
 			input="input">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="sample" key="error.sampleException" path="sample.message"
-				type="gov.nih.nci.calab.exception.SampleException" />
-			<exception
-				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.duplicateEntryException" path="sample.createSample"
 				type="gov.nih.nci.calab.exception.DuplicateEntriesException" />
-			<exception
-				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				key="error.generalException" path="sample.createSample"
-				type="java.lang.Exception" />
 			<forward name="success" path="sample.viewSampleDetails" />
 			<forward name="input"
 				path="/createSample.do?dispatch=input&amp;page=0" />
@@ -127,18 +125,9 @@
 			input="input">
 			<exception
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="sample" key="error.createAliquot.nomatrix"
-				path="sample.createAliquot"
-				type="gov.nih.nci.calab.exception.SampleException" />
-			<exception
-				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.duplicateEntryException"
 				path="sample.createAliquot.duplicate"
 				type="gov.nih.nci.calab.exception.DuplicateEntriesException" />
-			<exception
-				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				key="error.generalException" path="sample.message"
-				type="java.lang.Exception" />
 			<forward name="setup" path="sample.createAliquot" />
 			<forward name="input"
 				path="/createAliquot.do?dispatch=input&amp;page=0" />
@@ -147,15 +136,6 @@
 		<action name="editAliquotForm" parameter="dispatch"
 			path="/editAliquot" scope="request"
 			type="gov.nih.nci.calab.ui.sample.EditAliquotAction" input="input">
-			<exception
-				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="sample" key="error.editAliquot.nomatrix"
-				path="sample.createAliquot"
-				type="gov.nih.nci.calab.exception.SampleException" />
-			<exception
-				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				key="error.generalException" path="sample.message"
-				type="java.lang.Exception" />
 			<forward name="setup" path="sample.editAliquot" />
 			<forward name="input"
 				path="/editAliquot.do?dispatch=input&amp;page=0" />
@@ -165,10 +145,6 @@
 			parameter="dispatch" path="/searchSample"
 			type="gov.nih.nci.calab.ui.sample.SearchSampleAction"
 			scope="request">
-			<exception
-				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				key="error.generalException" path="sample.searchSample"
-				type="java.lang.Exception" />
 			<forward name="input" path="sample.searchSample" />
 			<forward name="success" path="sample.searchSampleResult" />
 		</action>
@@ -176,10 +152,6 @@
 			parameter="dispatch" path="/searchAliquot"
 			type="gov.nih.nci.calab.ui.sample.SearchAliquotAction"
 			scope="request">
-			<exception
-				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				key="error.generalException" path="sample.searchAliquot"
-				type="java.lang.Exception" />
 			<forward name="input" path="sample.searchAliquot" />
 			<forward name="success" path="sample.searchAliquotResult" />
 			<forward name="sampleResult"
@@ -189,40 +161,18 @@
 			parameter="dispatch" path="/showAliquot"
 			type="gov.nih.nci.calab.ui.sample.SearchAliquotAction"
 			scope="request">
-			<exception
-				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				key="error.generalException" path="sample.showaliquot"
-				type="java.lang.Exception" />
 			<forward name="input" path="sample.searchSampleResult" />
 			<forward name="success" path="sample.searchAliquotResult" />
 		</action>
 		<action input="input" name="viewSampleDetailForm"
 			path="/viewSampleDetail" scope="request"
 			type="gov.nih.nci.calab.ui.sample.ViewSampleDetailAction">
-			<exception
-				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="sample" key="error.viewSampleDetails.noSamples"
-				path="sample.searchSampleResult"
-				type="java.lang.CaNanoLabException" />
-			<exception
-				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				key="error.generalException" path="sample.searchSampleResult"
-				type="java.lang.Exception" />
 			<forward name="input" path="sample.searchSampleResult" />
 			<forward name="success" path="sample.viewSampleDetails" />
 		</action>
 		<action input="input" name="viewAliquotDetailForm"
 			path="/viewAliquotDetail" scope="request"
 			type="gov.nih.nci.calab.ui.sample.ViewAliquotDetailAction">
-			<exception
-				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				bundle="sample" key="error.viewSampleDetails.noSamples"
-				path="sample.searchSampleResult"
-				type="java.lang.CaNanoLabException" />
-			<exception
-				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				key="error.generalException" path="sample.searchSampleResult"
-				type="java.lang.Exception" />
 			<forward name="input" path="sample.searchAliquotResult" />
 			<forward name="success" path="sample.viewAliquotDetails" />
 		</action>
