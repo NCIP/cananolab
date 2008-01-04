@@ -43,6 +43,7 @@ import gov.nih.nci.calab.domain.nano.characterization.toxicity.Cytotoxicity;
 import gov.nih.nci.calab.domain.nano.particle.Nanoparticle;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.CharacterizationSummaryBean;
+import gov.nih.nci.calab.dto.characterization.CharacterizationSummaryRowBean;
 import gov.nih.nci.calab.dto.characterization.CharacterizationTypeBean;
 import gov.nih.nci.calab.dto.characterization.DatumBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
@@ -190,11 +191,11 @@ public class NanoparticleCharacterizationService {
 		return charBeans;
 	}
 
-	public List<CharacterizationSummaryBean> getParticleCharacterizationSummaryByName(
+	public List<CharacterizationSummaryRowBean> getParticleCharacterizationSummaryByName(
 			String charName, String particleId, UserBean user)
 			throws ParticleCharacterizationException,
 			CaNanoLabSecurityException {
-		List<CharacterizationSummaryBean> charSummaryBeans = new ArrayList<CharacterizationSummaryBean>();
+		List<CharacterizationSummaryRowBean> charSummaryBeans = new ArrayList<CharacterizationSummaryRowBean>();
 		List<CharacterizationBean> charBeans = getParticleCharacterizationsByName(
 				charName, particleId);
 		if (charBeans.isEmpty()) {
@@ -215,14 +216,14 @@ public class NanoparticleCharacterizationService {
 						}
 						datumMap.put(datumLabel, data.getValue());
 					}
-					CharacterizationSummaryBean charSummaryBean = new CharacterizationSummaryBean();
+					CharacterizationSummaryRowBean charSummaryBean = new CharacterizationSummaryRowBean();
 					charSummaryBean.setCharBean(charBean);
 					charSummaryBean.setDatumMap(datumMap);
 					charSummaryBean.setCharFile(charFile);
 					charSummaryBeans.add(charSummaryBean);
 				}
 			} else {
-				CharacterizationSummaryBean charSummaryBean = new CharacterizationSummaryBean();
+				CharacterizationSummaryRowBean charSummaryBean = new CharacterizationSummaryRowBean();
 				charSummaryBean.setCharBean(charBean);
 				charSummaryBeans.add(charSummaryBean);
 			}
@@ -299,63 +300,51 @@ public class NanoparticleCharacterizationService {
 			Session session = HibernateUtil.currentSession();
 			HibernateUtil.beginTransaction();
 
-			// check if viewTitle is already used the same type of
-			// characterization for the same particle
-			boolean viewTitleUsed = isCharacterizationViewTitleUsed(session,
-					achar, charBean);
-			if (viewTitleUsed) {
-				throw new ParticleCharacterizationException(
-						"The view title is already in use.  Please enter a different one");
-			} else {
-				// if ID exists, load from database
-				if (charBean.getId() != null) {
-					// check if ID is still valid
-					achar = (Characterization) session.get(
-							Characterization.class, new Long(charBean.getId()));
-					if (achar == null)
-						throw new ParticleCharacterizationException(
-								"This characterization is no longer in the database.  Please log in again to refresh");
+			// if ID exists, load from database
+			if (charBean.getId() != null) {
+				// check if ID is still valid
+				achar = (Characterization) session.get(Characterization.class,
+						new Long(charBean.getId()));
+				if (achar == null)
+					throw new ParticleCharacterizationException(
+							"This characterization is no longer in the database.  Please log in again to refresh");
+			}
+			// update domain object
+			if (achar instanceof Shape) {
+				((ShapeBean) charBean).updateDomainObj((Shape) achar);
+			} else if (achar instanceof Morphology) {
+				((MorphologyBean) charBean).updateDomainObj((Morphology) achar);
+			} else if (achar instanceof Solubility) {
+				((SolubilityBean) charBean).updateDomainObj((Solubility) achar);
+			} else if (achar instanceof Surface) {
+				((SurfaceBean) charBean).updateDomainObj((Surface) achar);
+			} else if (achar instanceof Cytotoxicity) {
+				((CytotoxicityBean) charBean)
+						.updateDomainObj((Cytotoxicity) achar);
+			} else
+				charBean.updateDomainObj(achar);
+
+			addProtocolFile(charBean.getProtocolFileBean(), achar, session);
+			// store instrumentConfig and instrument
+			addInstrumentConfig(charBean.getInstrumentConfigBean(), achar,
+					session);
+
+			if (charBean.getId() == null) {
+				List results = session
+						.createQuery(
+								"from Nanoparticle particle left join fetch particle.characterizationCollection where particle.name='"
+										+ charBean.getParticle()
+												.getSampleName()
+										+ "' and particle.type='"
+										+ charBean.getParticle()
+												.getSampleType() + "'").list();
+
+				for (Object obj : results) {
+					particle = (Nanoparticle) obj;
 				}
-				// update domain object
-				if (achar instanceof Shape) {
-					((ShapeBean) charBean).updateDomainObj((Shape) achar);
-				} else if (achar instanceof Morphology) {
-					((MorphologyBean) charBean)
-							.updateDomainObj((Morphology) achar);
-				} else if (achar instanceof Solubility) {
-					((SolubilityBean) charBean)
-							.updateDomainObj((Solubility) achar);
-				} else if (achar instanceof Surface) {
-					((SurfaceBean) charBean).updateDomainObj((Surface) achar);
-				} else if (achar instanceof Cytotoxicity) {
-					((CytotoxicityBean) charBean)
-							.updateDomainObj((Cytotoxicity) achar);
-				} else
-					charBean.updateDomainObj(achar);
 
-				addProtocolFile(charBean.getProtocolFileBean(), achar, session);
-				// store instrumentConfig and instrument
-				addInstrumentConfig(charBean.getInstrumentConfigBean(), achar,
-						session);
-
-				if (charBean.getId() == null) {
-					List results = session
-							.createQuery(
-									"from Nanoparticle particle left join fetch particle.characterizationCollection where particle.name='"
-											+ charBean.getParticle()
-													.getSampleName()
-											+ "' and particle.type='"
-											+ charBean.getParticle()
-													.getSampleType() + "'")
-							.list();
-
-					for (Object obj : results) {
-						particle = (Nanoparticle) obj;
-					}
-
-					if (particle != null) {
-						particle.getCharacterizationCollection().add(achar);
-					}
+				if (particle != null) {
+					particle.getCharacterizationCollection().add(achar);
 				}
 			}
 			HibernateUtil.commitTransaction();
@@ -444,38 +433,50 @@ public class NanoparticleCharacterizationService {
 	 * check if viewTitle is already used the same type of characterization for
 	 * the same particle
 	 */
-	private boolean isCharacterizationViewTitleUsed(Session session,
-			Characterization achar, CharacterizationBean charBean) {
-		String viewTitleQuery = "";
-		if (charBean.getId() == null) {
-			viewTitleQuery = "select count(achar.identificationName) from Nanoparticle particle join particle.characterizationCollection achar where particle.name='"
-					+ charBean.getParticle().getSampleName()
-					+ "' and particle.type='"
-					+ charBean.getParticle().getSampleType()
-					+ "' and achar.identificationName='"
-					+ charBean.getViewTitle()
-					+ "' and achar.name='"
-					+ achar.getName() + "'";
-		} else {
-			viewTitleQuery = "select count(achar.identificationName) from Nanoparticle particle join particle.characterizationCollection achar where particle.name='"
-					+ charBean.getParticle().getSampleName()
-					+ "' and particle.type='"
-					+ charBean.getParticle().getSampleType()
-					+ "' and achar.identificationName='"
-					+ charBean.getViewTitle()
-					+ "' and achar.name='"
-					+ achar.getName() + "' and achar.id!=" + charBean.getId();
-		}
-		List viewTitleResult = session.createQuery(viewTitleQuery).list();
+	public boolean isCharacterizationViewTitleUsed(CharacterizationBean charBean)
+			throws ParticleCharacterizationException {
+		try {
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+			String viewTitleQuery = "";
+			if (charBean.getId() == null) {
+				viewTitleQuery = "select count(achar.identificationName) from Nanoparticle particle join particle.characterizationCollection achar where particle.name='"
+						+ charBean.getParticle().getSampleName()
+						+ "' and particle.type='"
+						+ charBean.getParticle().getSampleType()
+						+ "' and achar.identificationName='"
+						+ charBean.getViewTitle()
+						+ "' and achar.name='"
+						+ charBean.getName() + "'";
+			} else {
+				viewTitleQuery = "select count(achar.identificationName) from Nanoparticle particle join particle.characterizationCollection achar where particle.name='"
+						+ charBean.getParticle().getSampleName()
+						+ "' and particle.type='"
+						+ charBean.getParticle().getSampleType()
+						+ "' and achar.identificationName='"
+						+ charBean.getViewTitle()
+						+ "' and achar.name='"
+						+ charBean.getName()
+						+ "' and achar.id!="
+						+ charBean.getId();
+			}
+			List viewTitleResult = session.createQuery(viewTitleQuery).list();
 
-		int existingViewTitleCount = -1;
-		for (Object obj : viewTitleResult) {
-			existingViewTitleCount = ((Integer) (obj)).intValue();
-		}
-		if (existingViewTitleCount > 0) {
-			return true;
-		} else {
-			return false;
+			int existingViewTitleCount = -1;
+			for (Object obj : viewTitleResult) {
+				existingViewTitleCount = ((Integer) (obj)).intValue();
+			}
+			if (existingViewTitleCount > 0) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+			HibernateUtil.rollbackTransaction();
+			logger.error("Problem checking view title ", e);
+			throw new ParticleCharacterizationException();
+		} finally {
+			HibernateUtil.closeSession();
 		}
 	}
 
@@ -596,6 +597,8 @@ public class NanoparticleCharacterizationService {
 			protocolFileBean.setCreatedBy(protocolFile.getCreatedBy());
 			protocolFileBean.setCreatedDate(protocolFile.getCreatedDate());
 			protocolFileBean.setVersion(protocolFile.getVersion());
+			protocolFileBean.getProtocolBean().setName(
+					protocolFile.getProtocol().getName());
 		}
 		doChar.setProtocolFile(protocolFile);
 	}
@@ -1527,17 +1530,17 @@ public class NanoparticleCharacterizationService {
 		return pictureIndex;
 	}
 
-	public void exportDetailService(ParticleBean particle,
-			CharacterizationBean achar, HSSFWorkbook wb, UserBean user) {
+	public void exportDetailService(CharacterizationBean achar,
+			HSSFWorkbook wb, UserBean user) {
 		HSSFSheet sheet = wb.createSheet("detailSheet");
 		HSSFPatriarch patriarch = sheet.createDrawingPatriarch();
 		short startRow = 0;
-		setDetailSheet(particle, achar, user, wb, sheet, patriarch, startRow);
+		setDetailSheet(achar, user, wb, sheet, patriarch, startRow);
 	}
 
-	private short setDetailSheet(ParticleBean particle,
-			CharacterizationBean achar, UserBean user, HSSFWorkbook wb,
-			HSSFSheet sheet, HSSFPatriarch patriarch, short rowCount) {
+	private short setDetailSheet(CharacterizationBean achar, UserBean user,
+			HSSFWorkbook wb, HSSFSheet sheet, HSSFPatriarch patriarch,
+			short rowCount) {
 		HSSFFont headerFont = wb.createFont();
 		headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
 		HSSFCellStyle headerStyle = wb.createCellStyle();
@@ -1731,20 +1734,18 @@ public class NanoparticleCharacterizationService {
 		return rowCount;
 	}
 
-	public void exportFullSummaryService(List<CharacterizationBean> charBeans,
-			SortedSet<String> datumLabels, UserBean user,
-			List<CharacterizationSummaryBean> summaryBeans,
-			ParticleBean particle, OutputStream out) throws IOException {
+	public void exportFullSummaryService(
+			CharacterizationSummaryBean summaryBean, UserBean user,
+			OutputStream out) throws IOException {
 		HSSFWorkbook wb = new HSSFWorkbook();
 		HSSFSheet sheet = wb.createSheet("summarySheet");
 		short startRow = 0;
-		short rowCount = setSummarySheet(datumLabels, summaryBeans, particle,
-				wb, sheet, startRow);
+		short rowCount = setSummarySheet(summaryBean, wb, sheet, startRow);
 		HSSFPatriarch patriarch = sheet.createDrawingPatriarch();
 		rowCount += 2;
-		for (CharacterizationBean cbean : charBeans) {
-			rowCount = setDetailSheet(particle, cbean, user, wb, sheet,
-					patriarch, rowCount);
+		for (CharacterizationBean cbean : summaryBean.getCharBeans()) {
+			rowCount = setDetailSheet(cbean, user, wb, sheet, patriarch,
+					rowCount);
 			rowCount += 2;
 		}
 		wb.write(out);
@@ -1754,14 +1755,12 @@ public class NanoparticleCharacterizationService {
 		}
 	}
 
-	public void exportSummaryService(SortedSet<String> datumLabels,
-			List<CharacterizationSummaryBean> summaryBeans,
-			ParticleBean particle, OutputStream out) throws IOException {
+	public void exportSummaryService(CharacterizationSummaryBean summaryBean,
+			OutputStream out) throws IOException {
 		HSSFWorkbook wb = new HSSFWorkbook();
 		HSSFSheet sheet = wb.createSheet("summarySheet");
 		short startRow = 0;
-		setSummarySheet(datumLabels, summaryBeans, particle, wb, sheet,
-				startRow);
+		setSummarySheet(summaryBean, wb, sheet, startRow);
 		wb.write(out);
 		if (out != null) {
 			out.flush();
@@ -1769,10 +1768,8 @@ public class NanoparticleCharacterizationService {
 		}
 	}
 
-	private short setSummarySheet(SortedSet<String> datumLabels,
-			List<CharacterizationSummaryBean> summaryBeans,
-			ParticleBean particle, HSSFWorkbook wb, HSSFSheet sheet,
-			short rowCount) {
+	private short setSummarySheet(CharacterizationSummaryBean summaryBean,
+			HSSFWorkbook wb, HSSFSheet sheet, short rowCount) {
 		HSSFFont headerFont = wb.createFont();
 		headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
 		HSSFCellStyle headerStyle = wb.createCellStyle();
@@ -1798,7 +1795,7 @@ public class NanoparticleCharacterizationService {
 		cell.setCellStyle(headerStyle);
 		cell.setCellValue(new HSSFRichTextString("Description"));
 
-		for (String label : datumLabels) {
+		for (String label : summaryBean.getColumnLabels()) {
 			cell = row.createCell(cellCount++);
 			cell.setCellStyle(headerStyle);
 			cell.setCellValue(new HSSFRichTextString(label));
@@ -1812,7 +1809,8 @@ public class NanoparticleCharacterizationService {
 		cell.setCellValue(new HSSFRichTextString("Instrument Info"));
 
 		// data
-		for (CharacterizationSummaryBean sbean : summaryBeans) {
+		for (CharacterizationSummaryRowBean sbean : summaryBean
+				.getSummaryRows()) {
 			row = sheet.createRow(rowCount);
 			rowCount++;
 			cellCount = 0;
@@ -1831,7 +1829,7 @@ public class NanoparticleCharacterizationService {
 					new HSSFRichTextString(description));
 
 			Map datumMap = sbean.getDatumMap();
-			for (String label : datumLabels) {
+			for (String label : summaryBean.getColumnLabels()) {
 				row.createCell(cellCount++).setCellValue(
 						new HSSFRichTextString((String) datumMap.get(label)));
 			}
@@ -1890,13 +1888,13 @@ public class NanoparticleCharacterizationService {
 	 * set data labels and file visibility, and whether file is an image
 	 */
 	public SortedSet<String> setDataLabelsAndFileVisibility(UserBean user,
-			List<CharacterizationSummaryBean> charSummaryBeans,
+			List<CharacterizationSummaryRowBean> charSummaryBeans,
 			List<CharacterizationBean> charBeans)
 			throws CaNanoLabSecurityException {
 		// List<CharacterizationBean> charBeans = new
 		// ArrayList<CharacterizationBean>();
 		SortedSet<String> datumLabels = new TreeSet<String>();
-		for (CharacterizationSummaryBean summaryBean : charSummaryBeans) {
+		for (CharacterizationSummaryRowBean summaryBean : charSummaryBeans) {
 			Map<String, String> datumMap = summaryBean.getDatumMap();
 			if (datumMap != null && !datumMap.isEmpty()) {
 				datumLabels.addAll(datumMap.keySet());
@@ -1929,21 +1927,6 @@ public class NanoparticleCharacterizationService {
 		return datumLabels;
 	}
 
-	public String getExportFileName(ParticleBean particle,
-			CharacterizationBean achar, String function) {
-		StringBuffer sbuf = new StringBuffer(particle.getSampleName());
-		sbuf.append("_");
-		sbuf
-				.append(StringUtils.getOneWordUpperCaseFirstLetter(achar
-						.getName()));
-		sbuf.append("_");
-		sbuf.append(function);
-		sbuf.append("_");
-		sbuf.append(StringUtils.convertDateToString(new Date(),
-				"yyyyMMdd_HH-mm-ss-SSS"));
-		return sbuf.toString();
-	}
-
 	public void setCharacterizationUserVisiblity(CharacterizationBean charBean,
 			UserBean user) throws CaNanoLabSecurityException {
 		// set up characterization files visibility, and whether file is an
@@ -1973,7 +1956,8 @@ public class NanoparticleCharacterizationService {
 		ProtocolFileBean protocolFileBean = charBean.getProtocolFileBean();
 		if (protocolFileBean != null) {
 			boolean status = false;
-			if (protocolFileBean.getId() != null) {
+			if (protocolFileBean.getId() != null
+					&& protocolFileBean.getId().length() > 0) {
 				status = userService.checkReadPermission(user, protocolFileBean
 						.getId());
 			}
