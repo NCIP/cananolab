@@ -18,6 +18,7 @@ public class CompositionBean extends CharacterizationBean {
 	private List<ComposingElementBean> composingElements = new ArrayList<ComposingElementBean>();
 
 	public CompositionBean() {
+		super();
 	}
 
 	public CompositionBean(String id, String name, String viewTitle) {
