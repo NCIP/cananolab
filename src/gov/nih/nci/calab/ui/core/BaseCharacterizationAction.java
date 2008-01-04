@@ -188,10 +188,21 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 			DynaValidatorForm theForm) throws Exception {
 		CharacterizationBean charBean = (CharacterizationBean) theForm
 				.get("achar");
+		
 		ParticleBean particle = (ParticleBean) theForm.get("particle");
 		String[] otherParticles = (String[]) theForm.get("otherParticles");
 		Boolean copyData = (Boolean) theForm.get("copyData");
 		CharacterizationBean[] charBeans = new CharacterizationBean[otherParticles.length];
+		if (otherParticles.length==0) {
+			return charBeans;
+		}
+		//retrieve file contents
+		FileService fileService=new FileService();
+		for (DerivedBioAssayDataBean file: charBean.getDerivedBioAssayDataList()) {
+			byte[] content=fileService.getFileContent(new Long(file.getId()));
+			file.setFileContent(content);
+		}
+		
 		NanoparticleService service = new NanoparticleService();
 		int i = 0;
 		for (String particleName : otherParticles) {
