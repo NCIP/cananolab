@@ -131,38 +131,51 @@ public class NanoparticleCompositionService {
 	 * check if viewTitle is already used the same type of composition for the
 	 * same particle
 	 */
-	private boolean isCompositionViewTitleUsed(Session session,
-			ParticleComposition comp, CompositionBean compBean) {
-		String viewTitleQuery = "";
-		if (compBean.getId() == null) {
-			viewTitleQuery = "select count(achar.identificationName) from Nanoparticle particle join particle.characterizationCollection achar where particle.name='"
-					+ compBean.getParticle().getSampleName()
-					+ "' and particle.type='"
-					+ compBean.getParticle().getSampleType()
-					+ "' and achar.identificationName='"
-					+ compBean.getViewTitle()
-					+ "' and achar.name='"
-					+ comp.getName() + "'";
-		} else {
-			viewTitleQuery = "select count(achar.identificationName) from Nanoparticle particle join particle.characterizationCollection achar where particle.name='"
-					+ compBean.getParticle().getSampleName()
-					+ "' and particle.type='"
-					+ compBean.getParticle().getSampleType()
-					+ "' and achar.identificationName='"
-					+ compBean.getViewTitle()
-					+ "' and achar.name='"
-					+ comp.getName() + "' and achar.id!=" + compBean.getId();
-		}
-		List viewTitleResult = session.createQuery(viewTitleQuery).list();
+	public boolean isCompositionViewTitleUsed(CompositionBean compBean)
+			throws ParticleCompositionException {
+		try {
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
 
-		int existingViewTitleCount = -1;
-		for (Object obj : viewTitleResult) {
-			existingViewTitleCount = ((Integer) (obj)).intValue();
-		}
-		if (existingViewTitleCount > 0) {
-			return true;
-		} else {
-			return false;
+			String viewTitleQuery = "";
+			if (compBean.getId() == null) {
+				viewTitleQuery = "select count(achar.identificationName) from Nanoparticle particle join particle.characterizationCollection achar where particle.name='"
+						+ compBean.getParticle().getSampleName()
+						+ "' and particle.type='"
+						+ compBean.getParticle().getSampleType()
+						+ "' and achar.identificationName='"
+						+ compBean.getViewTitle()
+						+ "' and achar.name='"
+						+ compBean.getName() + "'";
+			} else {
+				viewTitleQuery = "select count(achar.identificationName) from Nanoparticle particle join particle.characterizationCollection achar where particle.name='"
+						+ compBean.getParticle().getSampleName()
+						+ "' and particle.type='"
+						+ compBean.getParticle().getSampleType()
+						+ "' and achar.identificationName='"
+						+ compBean.getViewTitle()
+						+ "' and achar.name='"
+						+ compBean.getName()
+						+ "' and achar.id!="
+						+ compBean.getId();
+			}
+			List viewTitleResult = session.createQuery(viewTitleQuery).list();
+
+			int existingViewTitleCount = -1;
+			for (Object obj : viewTitleResult) {
+				existingViewTitleCount = ((Integer) (obj)).intValue();
+			}
+			if (existingViewTitleCount > 0) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+			HibernateUtil.rollbackTransaction();
+			logger.error("Problem checking view title ", e);
+			throw new ParticleCompositionException();
+		} finally {
+			HibernateUtil.closeSession();
 		}
 	}
 
@@ -176,32 +189,24 @@ public class NanoparticleCompositionService {
 	public void addParticleComposition(CompositionBean composition,
 			String compositionType) throws ParticleCompositionException {
 		ParticleComposition doComp = new ParticleComposition();
-		if (compositionType
-				.equals(Characterization.COMPLEX_PARTICLE_TYPE)) {
+		if (compositionType.equals(Characterization.COMPLEX_PARTICLE_TYPE)) {
 			doComp = new ComplexComposition();
-		} else if (compositionType
-				.equals(Characterization.METAL_PARTICLE_TYPE)) {
+		} else if (compositionType.equals(Characterization.METAL_PARTICLE_TYPE)) {
 			doComp = new MetalParticleComposition();
-		} else if (compositionType
-				.equals(Characterization.QUANTUM_DOT_TYPE)) {
+		} else if (compositionType.equals(Characterization.QUANTUM_DOT_TYPE)) {
 			doComp = new QuantumDotComposition();
 		} else if (compositionType
 				.equals(Characterization.CARBON_NANOTUBE_TYPE)) {
 			doComp = new CarbonNanotubeComposition();
-		} else if (compositionType
-				.equals(Characterization.DENDRIMER_TYPE)) {
+		} else if (compositionType.equals(Characterization.DENDRIMER_TYPE)) {
 			doComp = new DendrimerComposition();
-		} else if (compositionType
-				.equals(Characterization.EMULSION_TYPE)) {
+		} else if (compositionType.equals(Characterization.EMULSION_TYPE)) {
 			doComp = new EmulsionComposition();
-		} else if (compositionType
-				.equals(Characterization.FULLERENE_TYPE)) {
+		} else if (compositionType.equals(Characterization.FULLERENE_TYPE)) {
 			doComp = new FullereneComposition();
-		} else if (compositionType
-				.equals(Characterization.LIPOSOME_TYPE)) {
+		} else if (compositionType.equals(Characterization.LIPOSOME_TYPE)) {
 			doComp = new LiposomeComposition();
-		} else if (compositionType
-				.equals(Characterization.POLYMER_TYPE)) {
+		} else if (compositionType.equals(Characterization.POLYMER_TYPE)) {
 			doComp = new PolymerComposition();
 		}
 		// if ID is not set save to the database otherwise update
@@ -210,65 +215,55 @@ public class NanoparticleCompositionService {
 			Session session = HibernateUtil.currentSession();
 			HibernateUtil.beginTransaction();
 
-			// check if viewTitle is already used the same type of
-			// characterization for the same particle
-			boolean viewTitleUsed = isCompositionViewTitleUsed(session, doComp,
-					composition);
-			if (viewTitleUsed) {
-				throw new ParticleCompositionException(
-						"The view title is already in use.  Please enter a different one");
+			// if ID exists, load from database
+			if (composition.getId() != null) {
+				// check if ID is still valid
+				doComp = (ParticleComposition) session.get(
+						ParticleComposition.class,
+						new Long(composition.getId()));
+				if (doComp == null)
+					throw new ParticleCompositionException(
+							"This composition is no longer in the database.  Please log in again to refresh");
+			}
+			// update domain object
+			if (doComp instanceof DendrimerComposition) {
+				((DendrimerBean) composition)
+						.updateDomainObj((DendrimerComposition) doComp);
+			} else if (doComp instanceof CarbonNanotubeComposition) {
+				((CarbonNanotubeBean) composition)
+						.updateDomainObj((CarbonNanotubeComposition) doComp);
+			} else if (doComp instanceof EmulsionComposition) {
+				((EmulsionBean) composition)
+						.updateDomainObj((EmulsionComposition) doComp);
+			} else if (doComp instanceof FullereneComposition) {
+				((FullereneBean) composition)
+						.updateDomainObj((FullereneComposition) doComp);
+			} else if (doComp instanceof LiposomeComposition) {
+				((LiposomeBean) composition)
+						.updateDomainObj((LiposomeComposition) doComp);
+			} else if (doComp instanceof PolymerComposition) {
+				((PolymerBean) composition)
+						.updateDomainObj((PolymerComposition) doComp);
 			} else {
-				// if ID exists, load from database
-				if (composition.getId() != null) {
-					// check if ID is still valid
-					doComp = (ParticleComposition) session.get(
-							ParticleComposition.class, new Long(composition
-									.getId()));
-					if (doComp == null)
-						throw new ParticleCompositionException(
-								"This composition is no longer in the database.  Please log in again to refresh");
-				}
-				// update domain object
-				if (doComp instanceof DendrimerComposition) {
-					((DendrimerBean) composition)
-							.updateDomainObj((DendrimerComposition) doComp);
-				} else if (doComp instanceof CarbonNanotubeComposition) {
-					((CarbonNanotubeBean) composition)
-							.updateDomainObj((CarbonNanotubeComposition) doComp);
-				} else if (doComp instanceof EmulsionComposition) {
-					((EmulsionBean) composition)
-							.updateDomainObj((EmulsionComposition) doComp);
-				} else if (doComp instanceof FullereneComposition) {
-					((FullereneBean) composition)
-							.updateDomainObj((FullereneComposition) doComp);
-				} else if (doComp instanceof LiposomeComposition) {
-					((LiposomeBean) composition)
-							.updateDomainObj((LiposomeComposition) doComp);
-				} else if (doComp instanceof PolymerComposition) {
-					((PolymerBean) composition)
-							.updateDomainObj((PolymerComposition) doComp);
-				} else {
-					composition.updateDomainObj(doComp);
+				composition.updateDomainObj(doComp);
+			}
+
+			if (composition.getId() == null) {
+				List results = session
+						.createQuery(
+								"from Nanoparticle particle left join fetch particle.characterizationCollection where particle.name='"
+										+ composition.getParticle()
+												.getSampleName()
+										+ "' and particle.type='"
+										+ composition.getParticle()
+												.getSampleType() + "'").list();
+
+				for (Object obj : results) {
+					particle = (Nanoparticle) obj;
 				}
 
-				if (composition.getId() == null) {
-					List results = session
-							.createQuery(
-									"from Nanoparticle particle left join fetch particle.characterizationCollection where particle.name='"
-											+ composition.getParticle()
-													.getSampleName()
-											+ "' and particle.type='"
-											+ composition.getParticle()
-													.getSampleType() + "'")
-							.list();
-
-					for (Object obj : results) {
-						particle = (Nanoparticle) obj;
-					}
-
-					if (particle != null) {
-						particle.getCharacterizationCollection().add(doComp);
-					}
+				if (particle != null) {
+					particle.getCharacterizationCollection().add(doComp);
 				}
 			}
 			HibernateUtil.commitTransaction();
