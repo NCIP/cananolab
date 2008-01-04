@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleFunctionAction.java,v 1.13 2008-01-03 21:25:29 pansu Exp $ */
+/* CVS $Id: NanoparticleFunctionAction.java,v 1.14 2008-01-04 17:25:07 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.function.AgentBean;
@@ -56,6 +56,20 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ParticleBean particle = (ParticleBean) theForm.get("particle");
 		FunctionBean function = (FunctionBean) theForm.get("function");
+
+		// check if viewTitle is already used the same type of
+		// function for the same particle
+		NanoparticleFunctionService service = new NanoparticleFunctionService();
+		boolean viewTitleUsed = service.isFunctionViewTitleUsed(particle
+				.getSampleId(), function);
+
+		if (viewTitleUsed) {
+			ActionMessage msg = new ActionMessage("error.viewTitleUsed");
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveErrors(request, msgs);
+			return mapping.getInputForward();
+		}
+
 		String functionId = request.getParameter("functionId");
 
 		if (functionId != null && functionId.length() > 0) {
@@ -68,16 +82,16 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 					.getAgentTargets()) {
 
 				if (agentTargetBean.getType().length() == 0) {
-					ActionMessage msg = new ActionMessage("error.emptyAgentTarget");
+					ActionMessage msg = new ActionMessage(
+							"error.emptyAgentTarget");
 					msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 					saveErrors(request, msgs);
 				}
 			}
 		}
-		NanoparticleFunctionService service = new NanoparticleFunctionService();
+
 		service.addParticleFunction(particle.getSampleId(), function);
 
-		
 		ActionMessage msg = new ActionMessage("message.addFunction");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
@@ -86,7 +100,7 @@ public class NanoparticleFunctionAction extends AbstractDispatchAction {
 		InitParticleSetup.getInstance().setSideParticleMenu(request,
 				particle.getSampleId());
 		request.setAttribute("theParticle", particle);
-		
+
 		return forward;
 	}
 
