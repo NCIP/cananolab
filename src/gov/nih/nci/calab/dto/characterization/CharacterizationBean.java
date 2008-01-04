@@ -53,13 +53,15 @@ public class CharacterizationBean {
 
 	private ProtocolFileBean protocolFileBean = new ProtocolFileBean();
 
-	private String actionName;
+	private String actionName; // physical or inVitro
 
 	private ParticleBean particle = new ParticleBean();
 
 	private String characterizationType; // physical or in vitro
 
-	private String dispatchActionName; //e.g. molecularWeight
+	private String dispatchActionName; // e.g. molecularWeight
+
+	private String exportFileName;
 
 	public String getActionName() {
 		if (getCharacterizationType() != null)
@@ -70,7 +72,7 @@ public class CharacterizationBean {
 	}
 
 	public CharacterizationBean() {
-
+		particle = new ParticleBean();
 	}
 
 	/** Used in the side menu tree */
@@ -353,5 +355,16 @@ public class CharacterizationBean {
 		this.dispatchActionName = StringUtils
 				.getOneWordLowerCaseFirstLetter(getName());
 		return dispatchActionName;
+	}
+
+	public String getExportFileName() {
+		List<String> nameParts = new ArrayList<String>();
+		nameParts.add(particle.getSampleName());
+		nameParts.add(dispatchActionName);
+		nameParts.add("detailView");
+		nameParts.add(StringUtils.convertDateToString(new Date(),
+				"yyyyMMdd_HH-mm-ss-SSS"));
+		exportFileName = StringUtils.join(nameParts, "_");
+		return exportFileName;
 	}
 }
