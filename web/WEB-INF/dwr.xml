@@ -8,6 +8,7 @@
 			<include method="getProtocolFileBean" />
 			<include method="getProtocolFiles" />
 			<include method="getProtocolNames" />
+			<include method="getProtocolFileUri"/>
 		</create>
 		<create creator="new" javascript="ParticleManager">
 			<param name="class"
