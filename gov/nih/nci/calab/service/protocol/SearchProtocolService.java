@@ -75,6 +75,31 @@ public class SearchProtocolService {
 		return pfb;
 	}
 
+	public String getProtocolFileUri(String fileId) throws ProtocolException,
+			CaNanoLabSecurityException {
+		String uri = null;
+		try {
+			Session session = HibernateUtil.currentSession();
+			HibernateUtil.beginTransaction();
+
+			String hqlString = "select protocolFile.uri from ProtocolFile protocolFile where protocolFile.id='"
+					+ fileId + "'";
+
+			List results = session.createQuery(hqlString).list();
+
+			for (Object obj : results) {
+				uri = (String) obj;
+			}
+			HibernateUtil.commitTransaction();
+		} catch (Exception e) {
+			logger.error("Problem finding protocol info.", e);
+			throw new ProtocolException();
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		return uri;
+	}
+
 	public ProtocolFileBean getProtocolFileBean(String fileId, UserBean user)
 			throws ProtocolException, CaNanoLabSecurityException {
 		ProtocolFileBean pfb = new ProtocolFileBean();
