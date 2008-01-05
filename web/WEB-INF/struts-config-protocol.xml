@@ -39,6 +39,10 @@
 			bundle="protocol" key="error.protocolException" path="home.error"
 			type="gov.nih.nci.calab.exception.ProtocolException" />
 	</global-exceptions>
+	<global-forwards>
+		<forward name="protocolMessage"
+			path="protocol.message" />
+	</global-forwards>
 	<action-mappings>
 		<action path="/manageProtocol"
 			type="gov.nih.nci.calab.ui.core.BaseForwardAction"
