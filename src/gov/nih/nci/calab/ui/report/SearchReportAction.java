@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.report;
  * @author pansu
  */
 
-/* CVS $Id: SearchReportAction.java,v 1.8 2008-01-03 21:25:10 pansu Exp $ */
+/* CVS $Id: SearchReportAction.java,v 1.9 2008-01-05 07:27:06 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.ReportBean;
@@ -121,7 +121,7 @@ public class SearchReportAction extends AbstractDispatchAction {
 			ActionMessage msg = new ActionMessage("error.noReportFile");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			this.saveErrors(request, msgs);
-			return mapping.getInputForward();
+			return mapping.findForward("reportMessage");
 		}
 		return null;
 	}
