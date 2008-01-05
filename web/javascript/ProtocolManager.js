@@ -40,9 +40,26 @@ function populateProtocolFileVersions(protocolFiles) {
 }
 function retrieveProtocolFile() {
 	var fileId = document.getElementById("protocolId").value;
-	ProtocolManager.getProtocolFileBean(fileId, writeLink);
+	//ProtocolManager.getProtocolFileBean(fileId, writeLink); //not working on linux
+	ProtocolManager.getProtocolFileUri(fileId, writeLink);
 }
-function writeLink(protocolFile) {
+
+function writeLink(uri) {
+	var fileId = document.getElementById("protocolId").value;
+	if (uri != null) {
+		var fileUri = uri;
+		if (fileUri != null) {
+			document.getElementById("protocolLink").innerHTML = "<a href='searchProtocol.do?dispatch=download&amp;fileId=" + fileId + "'>" + fileUri + "</a>";
+		} else {
+			document.getElementById("protocolLink").innerHTML = "";
+		}
+	} else {
+		document.getElementById("protocolLink").innerHTML = "";
+	}
+}
+	
+//not working on linux
+function writeLink0(protocolFile) {
 	var fileId = document.getElementById("protocolId").value;
 	if (protocolFile != null) {
 		var fileUri = protocolFile.uri;
