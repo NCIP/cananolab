@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.protocol;
  * @author pansu
  */
 
-/* CVS $Id: SearchProtocolAction.java,v 1.8 2008-01-03 21:25:18 pansu Exp $ */
+/* CVS $Id: SearchProtocolAction.java,v 1.9 2008-01-05 07:27:05 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.ProtocolFileBean;
@@ -120,7 +120,7 @@ public class SearchProtocolAction extends AbstractDispatchAction {
 			ActionMessage msg = new ActionMessage("error.noProtocolFile");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			this.saveErrors(request, msgs);
-			return mapping.getInputForward();
+			return mapping.findForward("protocolMessage");
 		}
 		return null;
 	}
