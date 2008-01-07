@@ -308,20 +308,24 @@ function popImage(event, imgSrc, imgId) {
 	imgWindow.document.write("</body></html>");
 	t = setTimeout("imgWindow.close();", 15000);
 }
-
-function printPage(url) {
+function printPage0(url) {
 	var obj = document.all.tags("link");
 	for (i = 0; i < obj.length; i++) {
-		if (obj[i].name=="printlink") {
-			obj[i].href=url;
+		if (obj[i].name == "printlink") {
+			obj[i].href = url;
 		}
 	}
 	// if IE directly call print, otherwise bring up a pop up window first
 	if (navigator.appVersion.indexOf("MSIE") != -1) {
 		window.print();
 	} else {
-		printWindow = window.open(url, "printWindow", "top=100,left=100,menubar=yes,scrollbars=yes");
+		printWindow = window.open(url, "printWindow", "top=50,left=50,width=650,height=650,menubar=yes,scrollbars=yes");
 		printWindow.focus();
 	}
+}
+
+function printPage(url) {
+	printWindow = window.open(url, "printWindow", "top=50,left=50,width=500,height=500,menubar=yes,scrollbars=yes");
+	printWindow.focus();
 }
 
