@@ -488,7 +488,7 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 				+ ".do?page=0&dispatch=printDetailView&particleId="
 				+ particleId + "&characterizationId=" + characterizationId
 				+ "&submitType=" + submitType;
-		request.setAttribute("printLinkURL", printLinkURL);
+		request.getSession().setAttribute("printDetailViewLinkURL", printLinkURL);
 
 		return mapping.findForward("detailView");
 	}
@@ -553,8 +553,8 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 				+ ".do?page=0&dispatch=printFullSummaryView&particleId="
 				+ particle.getSampleId() + "&submitType="
 				+ charSummaryBean.getCharacterizationName();
-		request.setAttribute("printLinkURL", printLinkURL);
-		request.setAttribute("printAllLinkURL", printAllLinkURL);
+		request.setAttribute("printSummaryViewLinkURL", printLinkURL);
+		request.setAttribute("printFullSummaryViewLinkURL", printAllLinkURL);
 		return mapping.findForward("summaryView");
 	}
 
