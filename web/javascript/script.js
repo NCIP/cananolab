@@ -320,7 +320,7 @@ function printPage(url) {
 	if (navigator.appVersion.indexOf("MSIE") != -1) {
 		window.print();
 	} else {
-		printWindow = window.open(url, "printWindow", "top=100,left=100,menubar=yes,scrollbar=yes");
+		printWindow = window.open(url, "printWindow", "top=100,left=100,menubar=yes,scrollbars=yes");
 		printWindow.focus();
 	}
 }
