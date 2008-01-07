@@ -325,7 +325,7 @@ function printPage0(url) {
 }
 
 function printPage(url) {
-	printWindow = window.open(url, "printWindow", "top=50,left=50,width=500,height=500,menubar=yes,scrollbars=yes");
+	printWindow = window.open(url, "printWindow", "top=50,left=50,width=600,height=600,resizable=yes,menubar=yes,scrollbars=yes");
 	printWindow.focus();
 }
 
