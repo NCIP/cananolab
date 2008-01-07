@@ -8,10 +8,12 @@
 		<link rel="stylesheet" type="text/css" href="css/caLab.css">
 		<link rel="stylesheet" type="text/css" href="css/menu.css">
 		<link rel="StyleSheet" type="text/css" href="css/dtree.css">
+		<%-- doesn't work in FireFox 
 		<c:if test="${!empty printLinkURL}">
 			<link rel="alternate" name="printlink" media="print"
 				href="${printLinkURL}">
 		</c:if>
+		--%>
 		<script type="text/javascript" src="javascript/script.js"></script>
 		<script type="text/javascript" src="javascript/dtree.js"></script>
 	</head>
