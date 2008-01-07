@@ -33,11 +33,11 @@
 										align="middle"> </a>
 								<ul>
 									<li>
-										<a href="javascript:printPage('${printLinkURL}')">Print
+										<a href="javascript:printPage('${printSummaryViewLinkURL}')">Print
 											Summary </a>
 									</li>
 									<li>
-										<a href="javascript:printPage('${printAllLinkURL}')">Print
+										<a href="javascript:printPage('${printFullSummaryViewLinkURL}')">Print
 											Full Summary </a>
 									</li>
 								</ul>

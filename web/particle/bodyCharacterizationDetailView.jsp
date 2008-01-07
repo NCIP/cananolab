@@ -51,7 +51,7 @@
 										</td>
 									</c:if>
 								<td>
-									<a href="javascript:printPage('${printLinkURL}')"><img
+									<a href="javascript:printPage('${printDetailViewLinkURL}')"><img
 											src="images/icon_print_23x.gif"
 											alt="print characterization detail" border="0"> </a>
 								</td>
