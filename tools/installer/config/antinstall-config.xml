@@ -93,6 +93,8 @@
 		/>
 		
    	</page>	
+
+
 	
 	<page type="input" name="mysql.config"
 		displayText="MySQL configuration for Windows" ifProperty="(${java.os.name}=Windows XP)OR(${java.os.name}=Windows 2000)" >
@@ -125,37 +127,76 @@
 			
    	</page>	
    	
-   		<page type="input" name="linux.mysql.config"
-			displayText="MySQL configuration for linux" ifProperty="${java.os.name}=Linux">
-			<comment displayText="" bold="true" />
-	
-	
-			<text
-				property="database.port"
-				displayText="Database Port Number" 
-				defaultValue="3307" 
-				/>
-	
-			<text
-				property="database.system.user"
-				displayText="Database System User" 
-				defaultValue="root" 
-				/>
-	
-			<text
-				property="database.system.password"
-				displayText="Database System Password" 
-				defaultValue="mysql" 
-				/>
-			
-			<text
-				property="database.password"
-				displayText="Database User Password" 
-				defaultValue="go!23" 
-				/>		
-				
+	<page type="input" name="linux.mysql.config"
+		displayText="MySQL configuration for linux" ifProperty="${java.os.name}=Linux" >
+		<hidden property="checkdb" value="true" />
+		<hidden property="dbvalid" value="false" />
+		
+		<comment displayText="" bold="true" />
+
+		<text
+			property="database.server"
+			displayText="Database Host Name" 
+			defaultValue="localhost" 			
+			/>
+
+		<text
+			property="database.port"
+			displayText="Database Port Number" 
+			defaultValue="3306" 
+			/>
+
+		<text
+			property="database.system.user"
+			displayText="Database System User" 
+			defaultValue="root" 
+			/>
+
+		<ext-validated
+			property="database.system.password"
+			displayText="Database System Password" 
+			defaultValue="mysql" 
+			validationClass="com.install.customvalidate.ValidateConnection" 
+			/>
+
+		<text
+			property="database.password"
+			displayText="Database User Password" 
+			defaultValue="go!23" 
+			/>		
+
+		
+		
+
    	</page>	
-   	
+
+	<page type="input" name="linux.mysql.confirmation"
+		displayText="Testing the database connection" ifProperty="(${checkdb}=true) AND (${dbvalid}=false)" postDisplayTarget="antinstaller-checkdb" >	
+		<comment displayText="" bold="true" />
+
+    		<comment displayText="Press Next to test the database connection ..." />
+    		
+    		<hidden property="db.server" value="${database.server}"  />
+    		<hidden property="db.port" value="${database.port}"  />
+    		<hidden property="db.system.user" value="${database.system.user}"  />
+    		<hidden property="db.system.password" value="${database.system.password}"  />
+    		<hidden property="jdbc.url" value="jdbc:mysql://${db.server}:${db.port}/mysql"  />
+    		
+   	</page>	   	
+
+	<page type="input" name="linux.mysql.dbcheck"
+		displayText="MySQL configuration for linux" ifProperty="(${checkdb}=true) AND (${dbvalid}=false)" >
+		<comment displayText="" bold="true" />
+		<comment displayText="Please go back and specify the correct database configurtion parameters." bold="true" />
+    		
+		<hidden property="checkdb" value="false" />
+ 		<hidden property="db.server" value=""  />
+    		<hidden property="db.port" value=""  />
+    		<hidden property="db.system.user" value=""  />
+    		<hidden property="db.system.password" value=""  />
+    		<hidden property="jdbc.url" value=""  />
+   
+   	</page>	
 
 	<page type="input" name="build.properties"
 		displayText="Enter the build properties">
