@@ -7,7 +7,7 @@
 		<link rel="stylesheet" type="text/css" href="css/caLab.css">
 		<script type="text/javascript" src="javascript/script.js"></script>
 	</head>
-	<body>
+	<body onload="window.print();self.close()">
 		<table width="100%" align="center">
 			<tr>
 				<td colspan="2">
