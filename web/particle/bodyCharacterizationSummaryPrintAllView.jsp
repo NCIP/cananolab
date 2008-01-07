@@ -8,7 +8,7 @@
 		<link rel="stylesheet" type="text/css" href="css/caLab.css">
 		<script type="text/javascript" src="javascript/script.js"></script>
 	</head>
-	<body>
+	<body onload="window.print();self.close()">
 		<jsp:include
 			page="shared/bodyCharacterizationSummaryPrintViewTable.jsp" />		
 		<p style="page-break-before: always"> 
