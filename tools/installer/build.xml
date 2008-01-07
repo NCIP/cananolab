@@ -74,8 +74,8 @@
 			<fileset dir="${installer.dist.dir}" includes="installpack.zip" description="caNanoLab artifacts. Used by installer's build script" />
 			<fileset dir="${installer.build.dir}" includes="resources/*" description="Used by installer antinstall-config.xml" />
 			<zipgroupfileset dir="${installer.basedir}/antlib${ant.lib.version}" includes="*.jar" excludes="ant.jar, ant-launcher.jar" description="Used by installers build script" />
-			<zipgroupfileset dir="${installer.lib.dir}" includes="${antcontrib.jar}" description="Used by installers build script" />
-			<zipgroupfileset dir="${installer.basedir}/ext" includes="jaxen-core.jar, xmlconfig.jar, jdom.jar,jaxen-jdom.jar,saxpath.jar,custominstaller.jar" description="Used by installers build script to perform XML file manipulation w/in Ant (levent gurses)" />
+			<zipgroupfileset dir="${installer.lib.dir}" includes="${antcontrib.jar},mysql-connector-java-5.0.7-bin.jar" description="Used by installers build script" />
+			<zipgroupfileset dir="${installer.basedir}/ext" includes="jaxen-core.jar, xmlconfig.jar, jdom.jar,jaxen-jdom.jar,saxpath.jar,custominstaller.jar,dbconfig.jar" description="Used by installers build script to perform XML file manipulation w/in Ant (levent gurses)" />
 		</installer>
 	</target>
 
@@ -201,6 +201,7 @@
 		<antcall target="get-ws-core-bin" />
 		<antcall target="get-nano-grid-bin" />
 -->
+
 		<copy file="${tools.dir}/jboss-4.0.5.GA.zip" todir="${installer.dist.dir.temp}/tools" />
 		<copy file="${tools.dir}/mysql-noinstall-5.0.45-win32.zip" todir="${installer.dist.dir.temp}/tools" />
 <!--		

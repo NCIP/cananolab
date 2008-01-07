@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="UpdateUtilityAntBuildFile" default="auto-update" basedir="${basedir}">
+<project name="UpdateUtilityAntBuildFile" default="auto-update" basedir=".">
 	<description>
          This is the build.xml run by AntInstaller for caNanoLab installation
      </description>
@@ -20,10 +20,6 @@
 	<property name="jboss.lib.dir" value="${jboss.home}/server/${jboss.server.name}/lib" />
 	<property name="jboss.server.jndi.port" value="1099" />
 
-	<!-- used to configure the updater build 
-	<property file="${temp.dir}/local.properties" />
-	<property file="${temp.dir}/default.properties" />
-	-->
 	<!-- properties for grid services -->
 	<property name="tomcat.home" value="${tomcat.dir}/jakarta-tomcat-5.0.28" />
 	<property name="ws-grid.home" value="${ws-grid.dir}/ws-core-4.0.3" />
@@ -31,15 +27,14 @@
 	
 	<!-- properties for database installation -->
 	<property name="database.system.url" value="jdbc:mysql://${database.server}:${database.port}/" />
-	<property name="database.system.user" value="root" />
-	<property name="database.server" value="localhost" />
+
 	<property name="database.name" value="cananolab" />
 	<property name="database.user" value="cananolab_app" />
 	<property name="database.driver" value="com.mysql.jdbc.Driver" />
 	<property name="database.url" value="jdbc:mysql://${database.server}:${database.port}/${database.name}" />
 
 	<!-- properties for grid services -->
-	<property name="temp.unwar" value="C:\temp\tempwar" />
+	<property name="temp.unwar" value="${temp.dir}/tempwar" />
 	
 	<echoproperties />
 
@@ -48,7 +43,7 @@
 	</tstamp>
 
 	<!-- this is required to pick up the properties generated during the install pages -->
-	<property file="${basedir}/ant.install.properties" />
+	<property file="ant.install.properties" />
 
 	<target name="auto-update-win" depends="convertpath">
 		<echoproperties />
@@ -65,7 +60,7 @@
 		<echo />
 		<echo />
 
-		<unzip dest="${temp.dir}" overwrite="true" src="${basedir}/installpack.zip" />		
+		<unzip dest="${temp.dir}" overwrite="true" src="installpack.zip" />		
 	</target>
 
 	<target name="auto-update-linux" depends="convertpath">
@@ -83,7 +78,7 @@
 		<echo />
 		<echo />
 
-		<unzip dest="${temp.dir}" overwrite="true" src="${basedir}/installpack.zip" />		
+		<unzip dest="${temp.dir}" overwrite="true" src="installpack.zip" />		
 	</target>
 	
 
@@ -318,7 +313,7 @@
 			<arg line="/c mysqladmin -u root password ${database.system.password}" />
 		</exec>
 		<exec executable="sh" os="Linux" dir="${mysql.home}/bin" spawn="true">
-			<arg line="/c mysqladmin -u root password ${database.system.password}" />
+			<arg line="mysqladmin -u root password ${database.system.password}" />
 		</exec>					
 	</target>
 
@@ -462,13 +457,13 @@
 		<sleep seconds="15" />
 	</target>
 
-	<target name="mysql:db-integrate" description="Apply DB changes">		
-	 	<run-sql-script database.url="${database.system.url}" database.user="${database.system.user}" database.password="${database.system.password}" sql.file="${db.dir}/create_database_and_user.sql" />
-		<run-sql-script database.url="${database.system.url}" database.user="${database.system.user}" database.password="${database.system.password}" sql.file="${db.dir}/app_schema.sql" />
-		<run-sql-script database.url="${database.system.url}" database.user="${database.system.user}" database.password="${database.system.password}" sql.file="${db.dir}/app_priming_data.sql" />
-		<run-sql-script database.url="${database.system.url}" database.user="${database.system.user}" database.password="${database.system.password}" sql.file="${db.dir}/csm_schema.sql" />
-		<run-sql-script database.url="${database.system.url}" database.user="${database.system.user}" database.password="${database.system.password}" sql.file="${db.dir}/csm_priming_data.sql" />      
-		<run-sql-script database.url="${database.url}" database.user="${database.user}" database.password="${database.password}" sql.file="${db.dir}/app_csm_priming_data.sql" />
+	<target name="mysql:db-integrate" description="Apply DB changes">	
+		<run-sql-script database.url="${database.system.url}" database.user="${database.system.user}" database.password="${database.system.password}" sql.file="${db.dir}/create_database_and_user.sql" />
+     		<run-sql-script database.url="${database.system.url}" database.user="${database.system.user}" database.password="${database.system.password}" sql.file="${db.dir}/app_schema.sql" />
+     		<run-sql-script database.url="${database.system.url}" database.user="${database.system.user}" database.password="${database.system.password}" sql.file="${db.dir}/app_priming_data.sql" />
+     		<run-sql-script database.url="${database.system.url}" database.user="${database.system.user}" database.password="${database.system.password}" sql.file="${db.dir}/csm_schema.sql" />
+     		<run-sql-script database.url="${database.system.url}" database.user="${database.system.user}" database.password="${database.system.password}" sql.file="${db.dir}/csm_priming_data.sql" />      
+    		<run-sql-script database.url="${database.url}" database.user="${database.user}" database.password="${database.password}" sql.file="${db.dir}/app_csm_priming_data.sql" />
 	    	<run-sql-commandline database.server="${database.server}" database.user="${database.system.user}" database.password="${database.system.password}" sql.file="${db.dir}/app_triggers.sql" />
 	</target>
 
@@ -501,7 +496,7 @@
 		</exec>
 		<exec executable="sh" os="Linux" dir="${jboss.home}/bin" spawn="true">
 			<env key="NOPAUSE" value="true" />
-			<arg line="/c run.sh" />
+			<arg line="run.sh" />
 		</exec>		
 		<sleep seconds="15" />
 	</target>
@@ -510,6 +505,30 @@
 		<condition property="jboss.running">
 			<socket port="8080" server="localhost" />
 		</condition>
+	</target>
+
+	<taskdef name="checkConnection" classname="com.install.customvalidate.AntInstallerCheckConnection" />
+
+	
+	<target name="antinstaller-checkdb">
+		<antinstaller-log message="${jdbc.url}"/>
+		<antinstaller-log message="${database.system.user}"/>
+		<antinstaller-log message="${database.system.password}"/>
+		
+		<antinstaller-log message="${dbvalid}"/>
+		<!--
+		<checkConnection driver="com.mysql.jdbc.Driver" url="${jdbc.url}" userid="${db.system.user}" password="${db.system.password}"/>
+-->
+		<taskdef name="dbconfig" classname="com.dbconfig.anttask.DbConfig" />
+		<dbconfig verbose="true" property="dbtest.result">
+			<validate driver="com.mysql.jdbc.Driver" host="${db.server}" port="${db.port}" user="${db.system.user}" password="${db.system.password}" />
+		</dbconfig>
+		
+		<antinstaller-log message="${dbtest.result}"/>
+		<antinstaller-property name="dbvalid" value="${dbtest.result}" />
+		
+		<antinstaller-log message="${dbvalid}"/>
+		
 	</target>
 
 
@@ -546,7 +565,7 @@
 				<arg value="/c mysql -h @{database.server} -u @{database.user} -p@{database.password} &lt;@{sql.file}"/>
 			</exec>
 			<exec executable="sh" os="Linux">
-				<arg value="mysql -h @{database.server} -u @{database.user} -p@{database.password} &lt;@{sql.file}"/>
+				<arg line="-c 'mysql -h @{database.server} -u @{database.user} -p@{database.password} &lt;@{sql.file}'"/>
 			</exec>			
 		</sequential>
 	</macrodef>
