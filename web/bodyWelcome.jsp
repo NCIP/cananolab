@@ -17,9 +17,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="welcomeContent" valign="top">
-			<b>WELCOME TO caNanoLab</b>
-			<br>
+		<td class="welcomeContent" valign="top">		
 			Welcome to the cancer Nanotechnology Laboratory (caNanoLab) portal.
 			caNanoLab is a data sharing portal designed for laboratories
 			performing nanoparticle assays. caNanoLab provides support for the
