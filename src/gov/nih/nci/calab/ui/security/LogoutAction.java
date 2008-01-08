@@ -26,11 +26,12 @@ public class LogoutAction extends Action {
 
 		ActionForward forward = null;
 
-		HttpSession session = request.getSession();
-		if (!session.isNew()) {
+		HttpSession session = request.getSession(false);
+		if (session != null) {
 			// invalidate the old one
 			session.invalidate();
 		}
+
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage message = new ActionMessage("msg.logout");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, message);
