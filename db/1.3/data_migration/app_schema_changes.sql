@@ -32,12 +32,13 @@ values (1, 'core'),
   (9, 'drug'),
   (10, 'image contrast agent');
 
-INSERT INTO instrument(instrument_pk_id, type, abbreviation, manufacturer)
-VALUES (18, 'Asymmetrical Flow Field-Flow Fractionation with Multi-Angle Light Scattering','AFFF-MALLS','Wyatt'),
-  (19,'Capillary Electrophoresis',null,'NA'),
-  (20,'Dynamic Light Scattering','DLS','Malvern'),
-  (21,'Hemocytometer',null,'Unknown'),
-  (22,'Size Exclusion Chromatography with Multi-Angle Light Scattering','SEC-MALLS','Wyatt'); 
+
+--insert into instrument(instrument_pk_id, type, abbreviation, manufacturer)
+--values (18, 'Asymmetrical Flow Field-Flow Fractionation with Multi-Angle Light Scattering','AFFF-MALLS','Wyatt'),
+--  (19,'Capillary Electrophoresis',null,'NA'),
+--  (20,'Dynamic Light Scattering','DLS','Malvern'),
+--  (21,'Hemocytometer',null,'Unknown'),
+--  (22,'Size Exclusion Chromatography with Multi-Angle Light Scattering','SEC-MALLS','Wyatt'); 
 
 delete from def_characterization_category
 where category='Physical'
@@ -45,33 +46,27 @@ and name='Composition';
 
 update def_protocol_type
 set name = 'Physical Assay'
-where name like 'Physical assay%'
-;
+where name like 'Physical assay%';
 
 update def_protocol_type
 set name = 'In Vivo Assay'
-where name like 'In Vivo assay%'
-;
+where name like 'In Vivo assay%';
 
 update def_protocol_type
 set name = 'In Vitro Assay'
-where name like 'In Vitro assay%'
-;
+where name like 'In Vitro assay%';
 
 update protocol
 set protocol_type = 'In Vitro Assay'
-where protocol_type like 'In Vitro assay%'
-;
+where protocol_type like 'In Vitro assay%';
 
 update protocol
 set protocol_type = 'In Vivo Assay'
-where protocol_type like 'In Vivo assay%'
-;
+where protocol_type like 'In Vivo assay%';
 
 update protocol
 set protocol_type = 'Physical Assay'
-where protocol_type like 'Physical assay%'
-;
+where protocol_type like 'Physical assay%';
 
 -- update missing abbreviation
 update instrument a
@@ -81,7 +76,7 @@ set abbreviation=(
 	)	as x
   where type=a.type
   and abbreviation is not null)
-where a.abbreviation is null
+where a.abbreviation is null;
 
 commit;
 
