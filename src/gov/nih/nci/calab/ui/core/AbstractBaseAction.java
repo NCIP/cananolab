@@ -17,7 +17,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: AbstractBaseAction.java,v 1.16 2007-12-06 09:01:44 pansu Exp $ */
+/* CVS $Id: AbstractBaseAction.java,v 1.17 2008-01-08 20:59:39 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
@@ -39,6 +39,15 @@ public abstract class AbstractBaseAction extends Action {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		HttpSession session = request.getSession();
+		// Forces caches to obtain a new copy of the page from the origin
+		// server
+		response.setHeader("Cache-Control", "no-cache");
+		// Directs caches not to store the page under any circumstance
+		response.setHeader("Cache-Control", "no-store");
+		// Causes the proxy cache to see the page as "stale"
+		response.setDateHeader("Expires", 0);
+		// HTTP 1.0 backward compatibility
+		response.setHeader("Pragma", "no-cache");
 		UserBean user = (UserBean) session.getAttribute("user");
 
 		if (!loginRequired()) {
