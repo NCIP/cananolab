@@ -29,13 +29,6 @@ public class LoginAction extends AbstractBaseAction {
 			throws Exception {
 
 		ActionForward forward = null;
-		// logout first
-		HttpSession session = request.getSession();
-		if (!session.isNew()) {
-			// invalidate the old one
-			session.invalidate();
-		}
-
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String strLoginId = (String) theForm.get("loginId");
 		String strPassword = (String) theForm.get("password");
@@ -60,7 +53,13 @@ public class LoginAction extends AbstractBaseAction {
 				saveMessages(request, msgs);
 				return mapping.findForward("changePassword");
 			}
-			session = request.getSession();
+			// Invalide the current session and create a new one
+			HttpSession session = request.getSession(false);
+			if (session != null) {
+				session.invalidate();
+			}
+			session = request.getSession(true);
+
 			setUserSessionInfo(session, strLoginId);
 
 			forward = mapping.findForward("success");
