@@ -32,7 +32,12 @@ values (1, 'core'),
   (9, 'drug'),
   (10, 'image contrast agent');
 
-commit;
+INSERT INTO instrument(instrument_pk_id, type, abbreviation, manufacturer)
+VALUES (18, 'Asymmetrical Flow Field-Flow Fractionation with Multi-Angle Light Scattering','AFFF-MALLS','Wyatt'),
+  (19,'Capillary Electrophoresis',null,'NA'),
+  (20,'Dynamic Light Scattering','DLS','Malvern'),
+  (21,'Hemocytometer',null,'Unknown'),
+  (22,'Size Exclusion Chromatography with Multi-Angle Light Scattering','SEC-MALLS','Wyatt'); 
 
 delete from def_characterization_category
 where category='Physical'
