@@ -354,7 +354,7 @@ public class InVitroCharacterizationAction extends BaseCharacterizationAction {
 		return postCreate(request, theForm, mapping);
 	}
 
-	public ActionForward proteinBinding(ActionMapping mapping, ActionForm form,
+	public ActionForward plasmaProteinBinding(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
