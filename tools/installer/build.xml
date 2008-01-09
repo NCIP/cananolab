@@ -2,7 +2,7 @@
 
 <!-- Ant script for creating self-extracting AntInstaller for CaNanoLab -->
 <!-- To run, type ant from the command line -->
-<project name="caarrray-local-installer" default="run" basedir="../../output">
+<project name="caNanoLab-local-installer" default="run" basedir="../../output">
 
 	<property name="installer.basedir" value="${basedir}/../tools/installer" />
 	<property name="target.dir" value="${installer.basedir}/target" />
