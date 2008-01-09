@@ -8,9 +8,10 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleCompositionAction.java,v 1.19 2008-01-04 17:25:06 pansu Exp $ */
+/* CVS $Id: NanoparticleCompositionAction.java,v 1.20 2008-01-09 17:46:01 pansu Exp $ */
 
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
+import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.composition.CarbonNanotubeBean;
 import gov.nih.nci.calab.dto.characterization.composition.ComposingElementBean;
 import gov.nih.nci.calab.dto.characterization.composition.CompositionBean;
@@ -101,13 +102,12 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		composition
 				.setComposingElements(baseComposition.getComposingElements());
 		composition.setId(baseComposition.getId());
-		String submitType=request.getParameter("submitType");
+		String submitType = request.getParameter("submitType");
 		composition.setName(submitType);
 		// check if viewTitle is already used the same type of
 		// characterization for the same particle
 		NanoparticleCompositionService service = new NanoparticleCompositionService();
-		boolean viewTitleUsed = service
-				.isCompositionViewTitleUsed(composition);
+		boolean viewTitleUsed = service.isCompositionViewTitleUsed(composition);
 		ActionMessages msgs = new ActionMessages();
 		if (viewTitleUsed) {
 			ActionMessage msg = new ActionMessage("error.viewTitleUsed");
@@ -119,7 +119,7 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 		UserBean user = (UserBean) session.getAttribute("user");
 		Date date = new Date();
 		composition.setCreatedBy(user.getLoginName());
-		composition.setCreatedDate(date);		
+		composition.setCreatedDate(date);
 		service.addParticleComposition(composition, particle.getSampleType());
 
 		// In case there is other type of branch, generation, etc created during
@@ -397,10 +397,11 @@ public class NanoparticleCompositionAction extends AbstractDispatchAction {
 			HttpServletResponse response) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ParticleBean particle = (ParticleBean) theForm.get("particle");
-		String strCharId = request.getParameter("characterizationId");
+
+		CompositionBean compBean = (CompositionBean) theForm.get("composition");
 
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
-		service.deleteCharacterizations(new String[] { strCharId });
+		service.deleteCharacterizations(new String[] { compBean.getId() });
 
 		// signal the session that characterization has been changed
 		request.getSession().setAttribute("newCharacterizationCreated", "true");
