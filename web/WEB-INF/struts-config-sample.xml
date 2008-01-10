@@ -157,6 +157,12 @@
 			<forward name="sampleResult"
 				path="sample.searchSampleResult" />
 		</action>
+		<action path="/sampleResults"
+			type="gov.nih.nci.calab.ui.core.BaseForwardAction"
+			parameter="sample.searchSampleResult" scope="request" />
+		<action path="/aliquotResults"
+			type="gov.nih.nci.calab.ui.core.BaseForwardAction"
+			parameter="sample.searchAliquotResult" scope="request" />
 		<action input="input" name="searchAliquotForm"
 			parameter="dispatch" path="/showAliquot"
 			type="gov.nih.nci.calab.ui.sample.SearchAliquotAction"
