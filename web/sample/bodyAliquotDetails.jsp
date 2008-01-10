@@ -19,9 +19,12 @@
 				href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=aliquot_details_help')"
 				class="helpText">Help</a>&nbsp;&nbsp;
 			<c:choose>
-				<c:when test="${not empty param.aliquotId}">
-					<a href="javascript:history.go(-1)" class="helpText">Back</a>
+				<c:when test="${not empty param.fromSampleResult}">
+					<a href="aliquotResults.do?fromSampleResult=true" class="helpText">Back</a>
 				</c:when>
+				<c:otherwise>
+					<a href="aliquotResults.do" class="helpText">Back</a>
+				</c:otherwise>
 			</c:choose>
 		</td>
 	</tr>
@@ -106,8 +109,7 @@
 					<tr>
 						<td class="formLabelWhite">
 							<div align="left">
-								<strong><strong>Date Received</strong>
-								</strong>
+								<strong><strong>Date Received</strong> </strong>
 							</div>
 						</td>
 
@@ -120,8 +122,7 @@
 					<tr>
 						<td class="formLabel">
 							<div align="left">
-								<span class="formField"><strong>Solubility</strong>
-								</span>
+								<span class="formField"><strong>Solubility</strong> </span>
 							</div>
 						</td>
 
