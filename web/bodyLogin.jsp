@@ -33,10 +33,10 @@
 										<c:param name="dispatch">setup</c:param>
 									</c:url>
 									<h4>
-										<a href="${protocolURL}">Protocols</a>
+										<a href="${protocolURL}">Browse Protocols</a>
 									</h4>
 									<h5>
-										Provides access to publicly available nanotechnology
+										Provides access to <u>publicly</u> available nanotechnology
 										protocols. Includes protocols for nanoparticle
 										characterizations (physical, in vitro, in vivo), sample
 										preparation, radio labeling, and safety.
@@ -48,10 +48,10 @@
 										<c:param name="dispatch">setup</c:param>
 									</c:url>
 									<h4>
-										<a href="${charURL}">Nanoparticles</a>
+										<a href="${charURL}">Browse Nanoparticles</a>
 									</h4>
 									<h5>
-										Provides access to publicly available nanoparticle
+										Provides access to <u>publicly</u> available nanoparticle
 										characterization data. Includes information on particle
 										composition, function, and physical and in vitro
 										characterizations (in vivo coming soon).
@@ -64,10 +64,10 @@
 										<c:param name="dispatch">setup</c:param>
 									</c:url>
 									<h4>
-										<a href="${reportURL}">Reports</a>
+										<a href="${reportURL}">Browse Reports</a>
 									</h4>
 									<h5>
-										Provides access to publicly available reports detailing the
+										Provides access to <u>publicly</u> available reports detailing the
 										results of nanoparticle characterization projects.
 									</h5>
 								</li>

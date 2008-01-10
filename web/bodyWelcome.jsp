@@ -26,7 +26,8 @@
 			characterizations in a secure fashion. The diagram below illustrates
 			the caNanoLab functionality and workflow. Active links are provided
 			on the diagram to allow a user to directly navigate to the
-			appropriate function based on the authorization level of the user.
+			appropriate function based on the authorization level of the user.  
+			Function navigation is also available through the menus above.
 			<br>
 			<br>
 			<map name="funcMap" id="funcMap">
