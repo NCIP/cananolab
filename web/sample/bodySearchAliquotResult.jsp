@@ -22,7 +22,7 @@
 						<a href="searchAliquot.do?dispatch=setup&page=0" class="helpText">Back</a>
 					</c:when>
 					<c:otherwise>
-						<a href="javascript:history.go(-1)" class="helpText">Back</a>
+						<a href="sampleResults.do" class="helpText">Back</a>
 					</c:otherwise>
 				</c:choose>
 			</td>
@@ -64,6 +64,7 @@
 						<input type="button" value="View Details"
 							onclick="javascript:submitAction(document.resultForm, 'viewAliquotDetail.do')">
 						<input type="hidden" name="page" value="1">
+						<input type="hidden" name="fromSampleResult" value="${param.fromSampleResult}">
 					</div>
 				</logic:present>
 			</td>
