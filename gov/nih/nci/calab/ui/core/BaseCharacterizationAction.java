@@ -685,6 +685,11 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 	public ActionForward addFile(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		//if user pressed cancel in load characterization file
+		String cancel=request.getParameter("cancel");
+		if (cancel!=null) {
+			return input(mapping, form, request, response);
+		}
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
@@ -707,6 +712,11 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 	public ActionForward removeFile(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		//if user pressed cancel in load characterization file
+		String cancel=request.getParameter("cancel");
+		if (cancel!=null) {
+			return input(mapping, form, request, response);
+		}
 		String fileIndexStr = (String) request.getParameter("compInd");
 		int fileInd = Integer.parseInt(fileIndexStr);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
@@ -733,6 +743,11 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 	public ActionForward addData(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		//if user pressed cancel in load characterization file
+		String cancel=request.getParameter("cancel");
+		if (cancel!=null) {
+			return input(mapping, form, request, response);
+		}
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
@@ -758,6 +773,11 @@ public abstract class BaseCharacterizationAction extends AbstractDispatchAction 
 	public ActionForward removeData(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		//if user pressed cancel in load characterization file
+		String cancel=request.getParameter("cancel");
+		if (cancel!=null) {
+			return input(mapping, form, request, response);
+		}
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
