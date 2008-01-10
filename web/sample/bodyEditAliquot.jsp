@@ -195,7 +195,7 @@
 									<html:hidden property="aliquot.creator" />
 									<input type="reset" value="Reset">
 									<input type="button" value="Cancel"
-										onclick="javascript:history.go(-1);">
+										onclick="javascript:cancel()">
 									<input type="hidden" name="dispatch" value="edit">
 									<input type="hidden" name="page" value="1">
 									<html:submit />
