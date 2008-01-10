@@ -323,13 +323,17 @@ function printPage0(url) {
 		printWindow.focus();
 	}
 }
-
 function printPage(url) {
 	printWindow = window.open(url, "printWindow", "top=50,left=50,width=600,height=600,resizable=yes,menubar=yes,scrollbars=yes");
 	printWindow.focus();
 }
-
-function cancel() {
-   var url=document.referrer;
-   gotoPage(url);
+function cancel(parameter) {
+	var url = document.referrer;
+	if (url != null) {
+		if (parameter != null) {
+			url = url + "&"+parameter+"=true";
+		}		
+		gotoPage(url);
+	}
 }
+
