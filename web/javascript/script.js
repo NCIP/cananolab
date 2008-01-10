@@ -329,3 +329,7 @@ function printPage(url) {
 	printWindow.focus();
 }
 
+function cancel() {
+   var url=document.referrer;
+   gotoPage(url);
+}
