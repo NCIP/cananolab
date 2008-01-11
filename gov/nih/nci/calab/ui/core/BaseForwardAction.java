@@ -16,9 +16,10 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: BaseForwardAction.java,v 1.9 2007-12-20 16:26:26 pansu Exp $ */
+/* CVS $Id: BaseForwardAction.java,v 1.10 2008-01-11 16:24:03 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
+import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.calab.exception.InvalidSessionException;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
@@ -66,7 +67,8 @@ public class BaseForwardAction extends AbstractBaseAction {
 		return false;
 	}
 
-	public boolean canUserExecute(UserBean user) {
+	public boolean canUserExecute(UserBean user)
+			throws CaNanoLabSecurityException {
 		return true;
 	}
 }
