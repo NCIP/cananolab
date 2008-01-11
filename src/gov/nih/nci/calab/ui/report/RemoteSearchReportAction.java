@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.report;
  * @author pansu
  */
 
-/* CVS $Id: RemoteSearchReportAction.java,v 1.8 2008-01-03 21:25:11 pansu Exp $ */
+/* CVS $Id: RemoteSearchReportAction.java,v 1.9 2008-01-11 22:33:27 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.ReportBean;
@@ -86,10 +86,13 @@ public class RemoteSearchReportAction extends BaseRemoteSearchAction {
 			request.getSession().setAttribute("remoteReports", reports);
 			forward = mapping.findForward("success");
 		} else {
-			ActionMessage msg = new ActionMessage(
-					"message.searchReport.noresult");
-			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			saveMessages(request, msgs);
+			// if already errors, don't show message
+			if (getErrors(request).isEmpty()) {
+				ActionMessage msg = new ActionMessage(
+						"message.searchReport.noresult");
+				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+				saveMessages(request, msgs);
+			}
 			forward = mapping.getInputForward();
 		}
 		return forward;
@@ -140,7 +143,7 @@ public class RemoteSearchReportAction extends BaseRemoteSearchAction {
 			java.io.OutputStream out = response.getOutputStream();
 			out.write(fileData);
 			out.close();
-		} else {			
+		} else {
 			ActionMessage msg = new ActionMessage("error.noReportFile");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveErrors(request, msgs);
