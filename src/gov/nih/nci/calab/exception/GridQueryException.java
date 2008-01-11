@@ -9,7 +9,7 @@ public class GridQueryException extends CaNanoLabException {
 	private static final long serialVersionUID = 1234567890L;
 
 	public GridQueryException() {
-		super("Error in auto-discovering grid nodes");
+		super("Error in query against grid node");
 	}
 
 	public GridQueryException(String message) {
