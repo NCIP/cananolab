@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: RemoteSearchNanoparticleAction.java,v 1.7 2008-01-03 21:25:29 pansu Exp $ */
+/* CVS $Id: RemoteSearchNanoparticleAction.java,v 1.8 2008-01-11 22:33:24 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.dto.remote.GridNodeBean;
@@ -79,19 +79,20 @@ public class RemoteSearchNanoparticleAction extends BaseRemoteSearchAction {
 				e.printStackTrace();
 			}
 		}
-		ActionForward forward = null;
+		ActionForward forward = null;		
 		if (!particles.isEmpty()) {
 			request.getSession().setAttribute("remoteParticles", particles);
 			forward = mapping.findForward("success");
 		} else {
-			// ActionMessages msgs = new ActionMessages();
-			ActionMessage msg = new ActionMessage(
-					"message.searchNanoparticle.noresult");
-			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			saveMessages(request, msgs);
+			//if already errors, don't show message
+			if (getErrors(request).isEmpty()) {
+				ActionMessage msg = new ActionMessage(
+						"message.searchNanoparticle.noresult");
+				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+				saveMessages(request, msgs);
+			}
 			forward = mapping.getInputForward();
 		}
-
 		return forward;
 	}
 
