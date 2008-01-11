@@ -5,6 +5,9 @@
 
 <table>
 	<tr>
+		<jsp:include page="/bodyMessage.jsp" />
+	</tr>
+	<tr>
 		<td class="welcomeTitle" height="20">
 			WELCOME TO caNanoLab
 		</td>
@@ -17,7 +20,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="welcomeContent" valign="top">		
+		<td class="welcomeContent" valign="top">
 			Welcome to the cancer Nanotechnology Laboratory (caNanoLab) portal.
 			caNanoLab is a data sharing portal designed for laboratories
 			performing nanoparticle assays. caNanoLab provides support for the
@@ -26,7 +29,7 @@
 			characterizations in a secure fashion. The diagram below illustrates
 			the caNanoLab functionality and workflow. Active links are provided
 			on the diagram to allow a user to directly navigate to the
-			appropriate function based on the authorization level of the user.  
+			appropriate function based on the authorization level of the user.
 			Function navigation is also available through the menus above.
 			<br>
 			<br>
