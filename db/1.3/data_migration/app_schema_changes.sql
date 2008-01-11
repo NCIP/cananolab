@@ -71,7 +71,7 @@ where protocol_type like 'Physical assay%';
 -- update missing abbreviation
 update instrument a
 set abbreviation=(
-	select abbreviation from (
+	select distinct abbreviation from (
 		select * from instrument
 	)	as x
   where type=a.type
