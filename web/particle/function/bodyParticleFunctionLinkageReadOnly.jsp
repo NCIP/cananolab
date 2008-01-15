@@ -81,7 +81,7 @@ function hideDetail(elementId) {
 				<br>
 			</td>
 			<td class="rightLabel" colspan="2">
-				${nanoparticleFunctionForm.map.linkage.description}&nbsp;
+				${nanoparticleFunctionForm.map.function.linkages[param.linkageInd].description}&nbsp;
 				<br>
 			</td>
 		</tr>
@@ -211,7 +211,7 @@ function hideDetail(elementId) {
 				<br>
 			</td>
 			<td class="rightLabel" colspan="3">
-				${nanoparticleFunctionForm.map.function.linkages[param.linkageInd].description}&nbsp;
+				${nanoparticleFunctionForm.map.function.linkages[param.linkageInd].agent.description}&nbsp;
 				<br>
 			</td>
 		</tr>		
@@ -226,6 +226,18 @@ function hideDetail(elementId) {
 								indexId="tIndex">
 								<jsp:include
 									page="/particle/function/bodyParticleFunctionAgentTargetReadOnly.jsp">
+									<jsp:param name="linkageInd" value="${param.linkageInd}" />
+									<jsp:param name="targetInd" value="${tIndex}" />
+								</jsp:include>
+								<br>
+							</logic:iterate>
+						</td>
+						<td>
+							<logic:iterate id="target" name="nanoparticleFunctionForm"
+								property="function.linkages[${param.linkageInd}].agent.agentTargets"
+								indexId="tIndex">
+								<jsp:include
+									page="/particle/function/bodyParticleFunctionAgentTarget.jsp">
 									<jsp:param name="linkageInd" value="${param.linkageInd}" />
 									<jsp:param name="targetInd" value="${tIndex}" />
 								</jsp:include>
