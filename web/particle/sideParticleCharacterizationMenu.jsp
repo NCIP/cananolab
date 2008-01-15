@@ -201,7 +201,7 @@
 									<table class="subTitleTable">
 										<tr class="titleRowVitro">
 											<td class="titleCell2Vitro">
-												<a href="#" class="sublist_2">${thirdLevelChar}</a>
+												<a href="#" class="sublist_2"><img src="images/subMenuArrow.gif" border="0" />&nbsp;${thirdLevelChar}</a>
 											</td>
 											<td width="100%" class="titleCell2Vitro">
 												&nbsp;
@@ -213,7 +213,7 @@
 									<jsp:include page="sideParticleCharacterizationMenuButtons.jsp">
 										<jsp:param name="charType" value="${thirdLevelChar}" />
 										<jsp:param name="charTypeStyle" value="sublist_2" />
-										<jsp:param name="charTypeLabelStyle" value="titleCell2Vitro" />
+										<jsp:param name="charTypeLabelStyle" value="titleCell2VitroButton" />
 										<jsp:param name="noDataLabelStyle"
 											value="titleCell2VitroNoData" />
 										<jsp:param name="tableStyle" value="subTitleTable" />
