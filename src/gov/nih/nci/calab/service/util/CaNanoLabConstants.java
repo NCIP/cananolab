@@ -112,7 +112,7 @@ public class CaNanoLabConstants {
 	public static final String[] DEFAULT_CHARACTERIZATION_SOURCES = new String[] { APP_OWNER };
 
 	public static final String[] CARBON_NANOTUBE_WALLTYPES = new String[] {
-			"Single (SWNT)", "Double (DWMT)", "Multiple (MWNT)" };
+			"Single (SWNT)", "Double (DWNT)", "Multiple (MWNT)" };
 
 	public static final String REPORT = "Report";
 
