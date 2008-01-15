@@ -93,7 +93,7 @@
 							<td class="formLabel">
 								<strong>Lot ID</strong>&nbsp; (if entered, appended to sample
 								ID)
-								<html:text property="sample.lotId" size="5" />
+								<html:text property="sample.lotId" size="30" />
 							</td>
 						</tr>
 						<tr>
