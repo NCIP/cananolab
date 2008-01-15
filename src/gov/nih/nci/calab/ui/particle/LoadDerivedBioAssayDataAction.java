@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: LoadDerivedBioAssayDataAction.java,v 1.5 2007-12-06 09:01:43 pansu Exp $ */
+/* CVS $Id: LoadDerivedBioAssayDataAction.java,v 1.6 2008-01-15 22:54:19 pansu Exp $ */
 
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean;
@@ -56,25 +56,32 @@ public class LoadDerivedBioAssayDataAction extends AbstractDispatchAction {
 			fileBean.setUri(filePath + File.separator
 					+ fileBean.getTimeStampedName());
 		}
-		String forwardPage = (String) theForm.get("forwardPage");
+
 		DynaValidatorForm charForm = (DynaValidatorForm) request.getSession()
 				.getAttribute("nanoparticleCharacterizationForm");
 		CharacterizationBean achar = (CharacterizationBean) charForm
 				.get("achar");
 		int fileNum = (Integer) theForm.get("fileNumber");
+
 		DerivedBioAssayDataBean derivedBioAssayDataBean = achar
 				.getDerivedBioAssayDataList().get(fileNum);
+		// update content and uri only if rebrowse again
+		if (uploadedFile.getFileName().length() > 0) {
+			derivedBioAssayDataBean.setFileContent(fileBean.getFileContent());
+			derivedBioAssayDataBean.setUri(fileBean.getUri());
+		}
 		derivedBioAssayDataBean.setName(fileBean.getName());
 		derivedBioAssayDataBean.setTitle(fileBean.getTitle());
-		derivedBioAssayDataBean.setFileContent(fileBean.getFileContent());
-		derivedBioAssayDataBean.setUri(fileBean.getUri());
 		derivedBioAssayDataBean.setVisibilityGroups(fileBean
 				.getVisibilityGroups());
 		derivedBioAssayDataBean.setKeywords(fileBean.getKeywords());
 		derivedBioAssayDataBean.setCreatedDate(new Date());
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		derivedBioAssayDataBean.setCreatedBy(user.getLoginName());
+		derivedBioAssayDataBean.setHidden(false);
+
 		ActionForward forward = new ActionForward();
+		String forwardPage = (String) theForm.get("forwardPage");
 		forward.setPath(forwardPage);
 		return forward;
 	}
@@ -95,7 +102,8 @@ public class LoadDerivedBioAssayDataAction extends AbstractDispatchAction {
 		return true;
 	}
 
-	public boolean canUserExecute(UserBean user) throws CaNanoLabSecurityException {
+	public boolean canUserExecute(UserBean user)
+			throws CaNanoLabSecurityException {
 		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
 				CaNanoLabConstants.CSM_PG_PARTICLE);
 	}
