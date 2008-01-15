@@ -338,11 +338,11 @@ table.subTitleTable {
 }
 
 td.tdfill {
-	width: 5%;
+	width: 30%;
 }
 
 table.subTitleTable td.tdfill {
-	width: 30%;
+	/* width: 5%; */
 }
 
 table.subTitleTable td.titleCell2Vitro {
@@ -358,14 +358,23 @@ td.titleCell2Vitro a {
 	text-indent: 1.4em;
 }
 
+td.titleCell2VitroButton a {
+	color: #400080;
+	background-color: #F4F4F5;
+	font-size: 0.6em;
+	font-weight: bold;
+	font-family: Verdana, Helvetica, Arial, sans-serif;
+	text-indent: 1.8em;
+}
+
 td.titleCell2VitroNoData {
 	color: #400080;
 	background-color: #F4F4F5;
 	font-size: 0.6em;
 	font-weight: bold;
 	font-family: Verdana, Helvetica, Arial, sans-serif;
-	text-indent: 1.4em;
-	width: 130px;
+	text-indent: 1.8em;
+	width: 150px;
 }
 
 
