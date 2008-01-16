@@ -225,7 +225,7 @@ function hideDetail(elementId) {
 								property="function.linkages[${param.linkageInd}].agent.agentTargets"
 								indexId="tIndex">
 								<jsp:include
-									page="/particle/function/bodyParticleFunctionAgentTarget.jsp">
+									page="/particle/function/bodyParticleFunctionAgentTargetReadOnly.jsp">
 									<jsp:param name="linkageInd" value="${param.linkageInd}" />
 									<jsp:param name="targetInd" value="${tIndex}" />
 								</jsp:include>
