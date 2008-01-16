@@ -63,7 +63,9 @@
 									onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
 									onchange="fnChangeHandler_A(this, event); resetProtocolFiles(); retrieveProtocolFileVersions();">
 									<html:option value="">--?--</html:option>
+									<c:if test="${! empty submitProtocolForm.map.protocolName}">
 									<html:option value="${submitProtocolForm.map.protocolName}">${submitProtocolForm.map.protocolName}</html:option>
+									</c:if>
 								</html:select>
 								&nbsp; &nbsp;
 								<strong>Protocol Version* </strong>&nbsp;
