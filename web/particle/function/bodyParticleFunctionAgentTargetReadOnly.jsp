@@ -17,13 +17,20 @@
 				<strong>Target Type</strong>
 			</td>
 			<td class="labelWithTop">
-				${linkage.agent.agentTargets[param.targetInd].type}&nbsp;
+				<html:select
+					property="function.linkages[${param.linkageInd}].agent.agentTargets[${param.targetInd}].type">
+					<option value=""></option>
+					<html:options name="allAgentTargetTypes" />
+				</html:select>
+				&nbsp;
 			</td>
 			<td class="labelWithTop">
 				<strong>Target Name</strong>
 			</td>
 			<td class="rightLabelWithTop">
-				${linkage.agent.agentTargets[param.targetInd].name}&nbsp;
+				<html:text
+					property="function.linkages[${param.linkageInd}].agent.agentTargets[${param.targetInd}].name" />
+				&nbsp;
 			</td>
 		</tr>
 		<tr>
@@ -31,7 +38,10 @@
 				<strong>Target Description</strong>
 			</td>
 			<td class="rightLabel" colspan="3">
-				${linkage.agent.agentTargets[param.targetInd].description}&nbsp;
+				<html:textarea
+					property="function.linkages[${param.linkageInd}].agent.agentTargets[${param.targetInd}].description"
+					rows="3" cols="60" />
+				&nbsp;
 			</td>
 		</tr>
 </table>
