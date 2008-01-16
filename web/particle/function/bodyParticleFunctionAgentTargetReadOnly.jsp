@@ -17,18 +17,15 @@
 				<strong>Target Type</strong>
 			</td>
 			<td class="labelWithTop">
-				<html:select
-					property="function.linkages[${param.linkageInd}].agent.agentTargets[${param.targetInd}].type">
-					<option value=""></option>
-					<html:options name="allAgentTargetTypes" />
-				</html:select>
+				<bean:write name="nanoparticleFunctionForm"
+					property="function.linkages[${param.linkageInd}].agent.agentTargets[${param.targetInd}].type" />
 				&nbsp;
 			</td>
 			<td class="labelWithTop">
 				<strong>Target Name</strong>
 			</td>
 			<td class="rightLabelWithTop">
-				<html:text
+				<bean:write name="nanoparticleFunctionForm"
 					property="function.linkages[${param.linkageInd}].agent.agentTargets[${param.targetInd}].name" />
 				&nbsp;
 			</td>
@@ -38,9 +35,8 @@
 				<strong>Target Description</strong>
 			</td>
 			<td class="rightLabel" colspan="3">
-				<html:textarea
-					property="function.linkages[${param.linkageInd}].agent.agentTargets[${param.targetInd}].description"
-					rows="3" cols="60" />
+				<bean:write name="nanoparticleFunctionForm"
+					property="function.linkages[${param.linkageInd}].agent.agentTargets[${param.targetInd}].description" />
 				&nbsp;
 			</td>
 		</tr>
