@@ -105,6 +105,8 @@
 			<form-property name="summaries" type="java.lang.String" />
 			<form-property name="summaryType" type="java.lang.String"
 				initial="characterization" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
 		</form-bean>
 		<form-bean name="searchNanoparticleAdvancedForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
