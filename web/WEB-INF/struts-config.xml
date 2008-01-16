@@ -104,6 +104,8 @@
 			value="/WEB-INF/validation.xml,
 			      /WEB-INF/validation-sample.xml, 
 			      /WEB-INF/validation-particle.xml,             
+			      /WEB-INF/validation-report.xml, 
+			      /WEB-INF/validation-protocol.xml, 
                   /WEB-INF/validator-rules.xml" />
 	</plug-in>
 	<plug-in className="gov.nih.nci.calab.ui.core.CustomPlugIn" />

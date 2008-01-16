@@ -139,7 +139,7 @@
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((file.id!=null) or (*this*!=null))
+						((file.uri!=null) or (*this*!=null))
 					</var-value>
 				</var>
 			</field>
@@ -226,13 +226,9 @@
 					bundle="particle" />
 				<var>
 					<var-name>test</var-name>
-					<var-value>
-						(*this*!=null)
-					</var-value>
+					<var-value>(*this*!=null)</var-value>
 				</var>
-
 			</field>
-
 			<field property="solubility.criticalConcentration" page="2"
 				depends="float">
 				<arg position="0"
@@ -255,6 +251,42 @@
 			<field property="charIds" depends="required" page="2">
 				<arg position="0" key="delete.charIds"
 					bundle="particle" />
+			</field>
+		</form>
+		<form name="searchNanoparticleForm">
+			<field property="particleType" page="1" depends="mask">
+				<arg position="0" key="particleType" bundle="particle" />
+				<msg name="mask" key="particleType.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>^[a-zA-Z0-9\-\_\s]*$</var-value>
+				</var>
+			</field>
+			<field property="keywords" page="1" depends="mask">
+				<arg position="0" key="keywords" bundle="particle" />
+				<msg name="mask" key="keywords.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>^[a-zA-Z0-9\-\_\s]*$</var-value>
+				</var>
+			</field>
+			<field property="summaries" page="1" depends="mask">
+				<arg position="0" key="summaries" bundle="particle" />
+				<msg name="mask" key="summaries.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>^[a-zA-Z0-9\-\_\s]*$</var-value>
+				</var>
+			</field>
+		</form>
+		<form name="remoteSearchNanoparticleForm">
+			<field property="particleType" page="1" depends="mask">
+				<arg position="0" key="particleType" bundle="particle" />
+				<msg name="mask" key="particleType.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>^[a-zA-Z0-9\-\_\s]*$</var-value>
+				</var>
 			</field>
 		</form>
 	</formset>

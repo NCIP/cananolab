@@ -21,6 +21,8 @@
 				type="java.lang.String[]" />
 			<form-property name="reportTitle" type="java.lang.String" />
 			<form-property name="reportType" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
 		</form-bean>
 		<form-bean name="remoteSearchReportForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
@@ -30,6 +32,8 @@
 			<form-property name="reportTitle" type="java.lang.String" />
 			<form-property name="reportType" type="java.lang.String" />
 			<form-property name="gridNodes" type="java.lang.String[]" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
 		</form-bean>
 	</form-beans>
 	<global-exceptions>
