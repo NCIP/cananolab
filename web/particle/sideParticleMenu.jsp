@@ -22,6 +22,9 @@
 		<c:set var="displaytype" value="${param.displayType}" scope="request" />
 	</c:otherwise>
 </c:choose>
+<c:if test="${theParticle.sampleId != null && particleId != theParticle.sampleId }">
+	<c:set var="displaytype" value="" scope="request" />
+</c:if>
 <c:choose>
 	<c:when test="${canCreateNanoparticle eq 'true'}">
 		<c:set var="dispatchValue" value="setupUpdate" scope="session" />
@@ -63,7 +66,7 @@
 	</c:otherwise>
 </c:choose>
 <c:choose>
-	<c:when test="${submitType == 'associateFile'}">
+	<c:when test="${submitType == 'associatedFile'}">
 		<c:set var="fileDisplay" value="display: block;" />
 	</c:when>
 	<c:otherwise>
@@ -79,7 +82,6 @@
 	</tr>
 	<tr>
 		<td>
-
 			<ul class="slidingmenu" id="menuroot">
 
 				<li id="view_particle">
@@ -106,10 +108,9 @@
 									<c:url var="url" value="updateReportForParticle.do">
 										<c:param name="page" value="0" />
 										<c:param name="dispatch" value="${dispatchValue}" />
-										<c:param name="submitType" value="none" />
 										<c:param name="fileId" value="${aReport.id}" />
 										<c:param name="fileType" value="${aReport.type}" />
-										<c:param name="submitType" value="associateFile" />
+										<c:param name="submitType" value="associatedFile" />
 									</c:url>
 									<li>
 										<a href="${url}" title="${aReport.displayName}"><span
@@ -136,7 +137,6 @@
 										<c:param name="submitType" value="report" />
 										<c:param name="page" value="0" />
 										<c:param name="dispatch" value="${dispatchValue}" />
-										<c:param name="submitType" value="none" />
 										<c:param name="fileId" value="${aReport.id}" />
 										<c:param name="fileType" value="${aReport.type}" />
 									</c:url>
