@@ -80,6 +80,19 @@ where a.abbreviation is null;
 
 commit;
 
+-- update missing protection group names
+update csm_protection_group c, csm_pg_pe a, csm_protection_element b
+set c.protection_group_name=b.protection_element_name
+where a.protection_element_id=b.protection_element_id
+and a.protection_group_id=c.protection_group_id
+and c.protection_group_name!=b.protection_element_name
+and b.protection_element_name not in
+(
+select protection_group_name
+from (
+select * from csm_protection_group
+) as x)
+
 -- re-enable foreign key checks
 set foreign_key_checks=@old_foreign_key_checks;
 
