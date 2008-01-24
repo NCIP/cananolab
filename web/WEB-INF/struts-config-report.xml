@@ -39,7 +39,7 @@
 	<global-exceptions>
 		<exception
 			handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-			bundle="report" key="error.reportException" path="home.error"
+			bundle="report" key="error.reportException" path="report.message"
 			type="gov.nih.nci.calab.exception.ReportException" />
 	</global-exceptions>
 	<global-forwards>

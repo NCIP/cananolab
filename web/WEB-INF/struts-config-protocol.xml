@@ -38,7 +38,7 @@
 	<global-exceptions>
 		<exception
 			handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-			bundle="protocol" key="error.protocolException" path="home.error"
+			bundle="protocol" key="error.protocolException" path="protocol.message"
 			type="gov.nih.nci.calab.exception.ProtocolException" />
 	</global-exceptions>
 	<global-forwards>
