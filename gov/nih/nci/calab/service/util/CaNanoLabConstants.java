@@ -47,7 +47,7 @@ public class CaNanoLabConstants {
 	public static final String RUN = "Run";
 
 	// File upload
-	public static final String FILEUPLOAD_PROPERTY = "fileupload.properties";
+	public static final String FILEUPLOAD_PROPERTY = "caNanoLab.properties";
 
 	public static final String UNCOMPRESSED_FILE_DIRECTORY = "decompressedFiles";
 
