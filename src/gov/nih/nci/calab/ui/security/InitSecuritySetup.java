@@ -93,7 +93,7 @@ public class InitSecuritySetup {
 			userService.createAGroup(groupName);
 		}
 
-		// assign PI group to role CURAD on sample, protocol, nanopoarticle and
+		// assign PI group to role CURD on sample, protocol, nanopoarticle and
 		// report
 		userService.assignGroupToProtectionGroupWithRole(
 				CaNanoLabConstants.CSM_PI, CaNanoLabConstants.CSM_PG_SAMPLE,
@@ -108,7 +108,7 @@ public class InitSecuritySetup {
 				CaNanoLabConstants.CSM_PI, CaNanoLabConstants.CSM_PG_PARTICLE,
 				CaNanoLabConstants.CSM_CURD_ROLE);
 
-		// assign researcher to role CURA on sample
+		// assign researcher to role CURD on sample
 		userService.assignGroupToProtectionGroupWithRole(
 				CaNanoLabConstants.CSM_RESEARCHER,
 				CaNanoLabConstants.CSM_PG_SAMPLE,
