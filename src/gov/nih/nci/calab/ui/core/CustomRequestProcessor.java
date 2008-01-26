@@ -26,11 +26,11 @@ public class CustomRequestProcessor extends TilesRequestProcessor {
 			ActionMapping mapping) {
 		HttpSession session = request.getSession();
 		String dispatch = request.getParameter("dispatch");
-
-		if (session.isNew()
+		String path=request.getServletPath();
+		if (session.isNew()				
 				&& (dispatch == null || !Arrays.asList(
 						CaNanoLabConstants.PUBLIC_DISPATCHES)
-						.contains(dispatch))) {
+						.contains(dispatch)) && !path.contains("login")) {
 			return null;
 		} else {
 			return super.processActionForm(request, response, mapping);
