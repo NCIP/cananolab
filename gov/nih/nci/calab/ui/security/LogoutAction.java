@@ -38,6 +38,7 @@ public class LogoutAction extends Action {
 		saveMessages(request, msgs);
 
 		forward = mapping.findForward("success");
+		resetToken(request);
 		return forward;
 	}
 
