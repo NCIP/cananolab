@@ -23,7 +23,7 @@
 	<global-exceptions>
 		<exception
 			handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-			key="error.session.expired" path="/index.jsp"
+			key="error.session.expired" path="/loginPage.do"
 			type="gov.nih.nci.calab.exception.InvalidSessionException" />
 		<exception
 			handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
@@ -50,7 +50,7 @@
 				key="error.securityException" path="/index.jsp"
 				type="gov.nih.nci.calab.exception.CaNanoLabSecurityException" />
 			<forward name="success" path="calab.welcome" />
-			<forward name="input" path="calab.login" />
+			<forward name="input" path="/loginPage.do" />
 			<forward name="changePassword" path="calab.password" />
 		</action>
 		<action name="updatePasswordForm" path="/updatePassword"
@@ -61,15 +61,17 @@
 				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
 				key="error.securityException" path="calab.password"
 				type="gov.nih.nci.calab.exception.CaNanoLabSecurityException" />
-			<forward name="success" path="calab.login" />
+			<forward name="success" path="/loginPage.do" />
 			<forward name="input" path="calab.password" />
 		</action>
 		<action path="/logout" scope="request"
 			type="gov.nih.nci.calab.ui.security.LogoutAction">
-			<forward name="success" path="calab.login" />
+			<forward name="success" path="/loginPage.do" />
 		</action>
+		<action path="/loginPage"
+			type="gov.nih.nci.calab.ui.security.WelcomeAction"
+			parameter="calab.login" scope="request" />
 	</action-mappings>
-
 	<controller>
 		<set-property value="true" property="inputForward" />
 		<set-property property="processorClass"
