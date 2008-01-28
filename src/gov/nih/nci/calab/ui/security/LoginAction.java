@@ -1,6 +1,7 @@
 package gov.nih.nci.calab.ui.security;
 
 import gov.nih.nci.calab.dto.common.UserBean;
+import gov.nih.nci.calab.exception.InvalidSessionException;
 import gov.nih.nci.calab.service.security.LoginService;
 import gov.nih.nci.calab.service.security.UserService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
@@ -27,8 +28,13 @@ public class LoginAction extends AbstractBaseAction {
 	public ActionForward executeTask(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-
+		//if comes in from back and refresh			
+		if (!isTokenValid(request)) {			
+			throw new InvalidSessionException(
+			"Session doesn't exist.  Please start again");
+		}
 		ActionForward forward = null;
+		ActionMessages msgs = new ActionMessages();		
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String strLoginId = (String) theForm.get("loginId");
 		String strPassword = (String) theForm.get("password");
@@ -46,13 +52,12 @@ public class LoginAction extends AbstractBaseAction {
 			// check if the password is the initial password
 			// redirect to change password page
 			if (strLoginId.equals(strPassword)) {
-				ActionMessages msgs = new ActionMessages();
 				ActionMessage msg = new ActionMessage(
 						"message.login.changepassword");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 				saveMessages(request, msgs);
 				return mapping.findForward("changePassword");
-			}
+			}			
 			// Invalide the current session and create a new one
 			HttpSession session = request.getSession(false);
 			if (session != null) {
@@ -63,6 +68,7 @@ public class LoginAction extends AbstractBaseAction {
 			setUserSessionInfo(session, strLoginId);
 
 			forward = mapping.findForward("success");
+			resetToken(request);
 		}
 		return forward;
 	}
