@@ -296,7 +296,7 @@ public class CaNanoLabConstants {
 			"YUV", "CGM", "DXF", "EMF", "EPS", "MET", "MVG", "ODG", "OTG",
 			"STD", "SVG", "SXD", "WMF" };
 
-	public static final String[] PUBLIC_DISPATCHES = { "setupView",
+	public static final String[] PUBLIC_DISPATCHES = {"view", "search", "setupView",
 			"summaryView", "detailView", "printDetailView", "exportDetail",
 			"printSummaryView", "printFullSummaryView", "exportSummary", 
 			"exportFullSummary", "download", "loadFile" };
