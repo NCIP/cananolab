@@ -113,7 +113,7 @@
 													</label>
 												</td>
 												<td class="formFieldLogin">
-													<html:text property="loginId" size="14" />
+													<input type="text" name="loginId" size="14"/>
 												</td>
 											</tr>
 											<tr>
@@ -123,7 +123,7 @@
 													</label>
 												</td>
 												<td class="formFieldLogin">
-													<html:password property="password" size="14" />
+													<input type="password" name="password" size="14"/>
 												</td>
 											</tr>
 											<tr>
@@ -228,4 +228,5 @@
 		</td>
 	</tr>
 </table>
+
 
