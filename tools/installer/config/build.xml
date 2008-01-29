@@ -186,12 +186,16 @@
 		<antcall target="-configure-jboss-PropertiesService"/>
 		<antcall target="-configure-jboss-ds"/>	
 		
-		<antcall target="deploy:start-jboss" />
+		<!-- <antcall target="deploy:start-jboss" /> -->
 	</target>
-
+	
 	<target name="migrate-mysql">	
 		<antcall target="mysql:update-password" />	
 		<antcall target="mysql:db-integrate" />	
+	</target>
+	
+	<target name="start-jboss">	
+		<antcall target="deploy:start-jboss" />
 	</target>
 
 	<target name="grid-install">
@@ -227,8 +231,6 @@
 			
 		</exec>			
 	</target>
-
- 
 
 	<target name="deploy:cananolab.ear">
 		<copy file="${temp.unwar}/caNanoLab.war" todir="${jboss.dir}/jboss-4.0.5.GA/server/default/deploy" overwrite="true" />
@@ -277,7 +279,7 @@
 		</replace>
 		<war destfile="${temp.unwar}\caNanoLab.war"  basedir="${temp.unwar}" compress="true" />
 	</target>
-
+	
 	<target name="-configure-jboss-ports">
 		<echo message="Configuring Jboss Properties..." />
 		<taskdef name="xmlconfig" classname="com.xmlconfig.anttask.XmlConfig"/>
@@ -319,7 +321,8 @@
 
 
 	<path id="project.classpath">
-		<fileset dir="C:\Dev\caNanoLab_1.2.1\tools\installer\ext">
+		<!-- <fileset dir="C:\Dev\caNanoLab_1.2.1\tools\installer\ext"> -->
+		<fileset dir="C:\Dev\caNanoLab_1.3\tools\installer\ext">
 			<include name="**/*.jar" />
 		</fileset>
 	</path>
@@ -503,7 +506,8 @@
 
 	<target name="deploy:check-if-jboss-is-running">
 		<condition property="jboss.running">
-			<socket port="8080" server="localhost" />
+			<!-- <socket port="8080" server="localhost" /> -->
+			<socket port="${jboss.http.port}" server="localhost" />
 		</condition>
 	</target>
 
