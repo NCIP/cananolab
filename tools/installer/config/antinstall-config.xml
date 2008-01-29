@@ -64,8 +64,7 @@
 			
     	</page>
 	
-	<page type="input" name="jboss.config"
-		displayText="Jboss Configuration">
+	<page type="input" name="jboss.config" displayText="Jboss Configuration">
 		<comment displayText="" bold="true" />	
 			
 		<ext-validated
@@ -258,7 +257,11 @@
 			/>
 		<target displayText="migrate mysql data to new version."
 			target="migrate-mysql" defaultValue="Yes" 
-			/>
+		/>
+		
+		<target displayText="start jboss server."
+			target="start-jboss" defaultValue="Yes" 
+		/>
 <!--			
 		<target displayText="Please confirm the jboss configuration."
 			target="configure-jboss" defaultValue="Yes" />
