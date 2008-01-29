@@ -35,7 +35,7 @@
 	<property name="build.deploy.dir" location="${build.dir}/deploy" />
 	<property name="cananolab.war.location" location="${basedir}/war" />
 	<property name="jboss.mysqlconfig.location" location="${basedir}/../conf" />
-	<property name="database.dir" location="${basedir}/../db/1.2.1" />
+	<property name="database.dir" location="${basedir}/../db/1.3" />
 	<property name="docs.dir" location="${installer.basedir}/docs" />
 	
 	
