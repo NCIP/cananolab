@@ -164,14 +164,14 @@
 			/>			
 		<text
 			property="database.application.user"
-			displayText="Database caNanoLab Application User" 
+			displayText="caNanoLab Application Database User" 
 			defaultValue="cananolab_app" 
 			/>
 		<text
 			property="database.application.password"
-			displayText="Database caNanoLab Application User Password" 
+			displayText="caNanoLab Application Data User Password" 
 			defaultValue="go!23" 
-			/>		
+			/>					
    	</page>	
 
 	<page type="input" name="linux.mysql.confirmation"
@@ -245,27 +245,27 @@
 			displayText="Install caNanoLab?"
 			bold="true" />
 		<comment displayText="" bold="true" />
-		<target displayText="Please confirm the caNanoLab installation."
+		<target displayText="Are you sure to build a caNanoLab application?"
 			target="auto-update" defaultValue="Yes"
 			osSpecific="true"
         		strict="false" 
 			/>
-		<target displayText="Please confirm the JBoss installation."
+		<target displayText="Are you sure to install JBoss?"
 			target="jboss-install" defaultValue="Yes"
 			osSpecific="true"
         		strict="false" 
 			/>
-		<target displayText="Please confirm the MySQL installation."
+		<target displayText="Are you sure to install MySQL?"
 			target="mysql-install" defaultValue="Yes"
 			osSpecific="true"
         		strict="false" 
 			/>
-<!-- 
-		<target displayText="migrate mysql data to new version."
+
+		<target displayText="Are you sure to create a caNanoLab database?"
 			target="migrate-mysql" defaultValue="Yes" 
 		/>
--->		
-		<target displayText="Start JBoss server after successful installation."
+
+		<target displayText="Are yo sure to start JBoss server after successful installations?"
 			target="start-jboss" defaultValue="Yes" 
 		/>
 <!--			
