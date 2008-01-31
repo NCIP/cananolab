@@ -37,13 +37,13 @@
 			property="temp.dir"/>
 		
 			
-		<directory displayText="Enter the destination folder for the Jboss Server:" 
+		<directory displayText="Enter the destination folder for the JBoss Server:" 
 			defaultValue="${java.user.home}/cananolab-app" 
 			defaultValueWin="C:/cananolab-app"
 			property="jboss.dir"/>
 
 			
-		<directory displayText="Enter the destination folder for the mySql Database" 
+		<directory displayText="Enter the destination folder for the mySQL Database" 
 			defaultValue="${java.user.home}/cananolab-app" 
 			defaultValueWin="C:/cananolab-app"
 			property="mysql.dir"/>	
@@ -64,7 +64,7 @@
 			
     	</page>
 	
-	<page type="input" name="jboss.config" displayText="Jboss Configuration">
+	<page type="input" name="jboss.config" displayText="JBoss Configuration">
 		<comment displayText="" bold="true" />	
 			
 		<ext-validated
@@ -205,33 +205,33 @@
 			property="file.repository.dir"
 			displayText="Enter the File Repository directory" 
 			defaultValue="${java.user.home}/caNanoLab/fileupload" 
-			defaultValueWin="C:/temp/caNanoLab/fileupload" 
+			defaultValueWin="C:/caNanoLab/data/" 
 			/>
 
 		<text
 			property="sample.prefix"
 			displayText="Enter the Sameple Prefix" 
-			defaultValue="NCL" 
+			defaultValue="NCICB" 
 			/>
 		
 		<text
 			property="application.owner"
 			displayText="Enter the Application Owner" 
-			defaultValue="NCL" 
+			defaultValue="NCICB" 
 			/>		
 
 		<text
 			property="grid.indexserver"
-			displayText="Enter the Index Server with which the Grid servers are registered" 
-			defaultValue="cagrid-index.nci.nih.gov:8080" 
+			displayText="Enter the Index Server URL with which the caNanoLab Grid servies are registered" 
+			defaultValue="http://cagrid-index-stage.nci.nih.gov:8080/wsrf/services/DefaultIndexService" 
 			/>	
-			
+	<!-- 
 		<text
 			property="database"
-			displayText="Enter the Database" 
+			displayText="Enter the Database Type" 
 			defaultValue="mysql" 
 			/>				
-			
+	-->		
    	</page>
 
 	
@@ -245,20 +245,21 @@
 			osSpecific="true"
         		strict="false" 
 			/>
-		<target displayText="Please confirm the Jboss installation."
+		<target displayText="Please confirm the JBoss installation."
 			target="jboss-install" defaultValue="Yes"
 			osSpecific="true"
         		strict="false" 
 			/>
-		<target displayText="Please confirm the mysql installation."
+		<target displayText="Please confirm the MySQL installation."
 			target="mysql-install" defaultValue="Yes"
 			osSpecific="true"
         		strict="false" 
 			/>
+<!-- 
 		<target displayText="migrate mysql data to new version."
 			target="migrate-mysql" defaultValue="Yes" 
 		/>
-		
+-->		
 		<target displayText="start jboss server."
 			target="start-jboss" defaultValue="Yes" 
 		/>
