@@ -260,7 +260,7 @@
 			target="migrate-mysql" defaultValue="Yes" 
 		/>
 -->		
-		<target displayText="start jboss server."
+		<target displayText="Start JBoss server after successful installation"
 			target="start-jboss" defaultValue="Yes" 
 		/>
 <!--			
