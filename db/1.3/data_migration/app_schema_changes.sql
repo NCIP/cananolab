@@ -91,7 +91,7 @@ and b.protection_element_name not in
 select protection_group_name
 from (
 select * from csm_protection_group
-) as x)
+) as x);
 
 -- re-enable foreign key checks
 set foreign_key_checks=@old_foreign_key_checks;
