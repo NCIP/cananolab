@@ -119,8 +119,13 @@
 			/>
 		
 		<text
-			property="database.password"
-			displayText="Database User Password" 
+			property="database.application.user"
+			displayText="caNanoLab Application Database User" 
+			defaultValue="cananolab_app" 
+			/>
+		<text
+			property="database.application.password"
+			displayText="caNanoLab Application Data User Password" 
 			defaultValue="go!23" 
 			/>		
 			
@@ -156,17 +161,17 @@
 			displayText="Database System Password" 
 			defaultValue="mysql" 
 			validationClass="com.install.customvalidate.ValidateConnection" 
-			/>
-
+			/>			
 		<text
-			property="database.password"
-			displayText="Database User Password" 
+			property="database.application.user"
+			displayText="Database caNanoLab Application User" 
+			defaultValue="cananolab_app" 
+			/>
+		<text
+			property="database.application.password"
+			displayText="Database caNanoLab Application User Password" 
 			defaultValue="go!23" 
 			/>		
-
-		
-		
-
    	</page>	
 
 	<page type="input" name="linux.mysql.confirmation"
@@ -260,7 +265,7 @@
 			target="migrate-mysql" defaultValue="Yes" 
 		/>
 -->		
-		<target displayText="Start JBoss server after successful installation"
+		<target displayText="Start JBoss server after successful installation."
 			target="start-jboss" defaultValue="Yes" 
 		/>
 <!--			
