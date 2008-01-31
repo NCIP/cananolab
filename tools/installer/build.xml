@@ -97,7 +97,7 @@
 
 		<mkdir dir="${installer.build.dir}/resources" />
 
-		<loadfile property="release_notes.txt" srcfile="${docs.dir}/release_notes.txt" />
+		<loadfile property="release_notes.txt" srcfile="../caNanoLab_release_notes.txt" />
 <!--
 		<post to="http://txt2html.sourceforge.net/cgi-bin/txt2html.cgi" verbose="false" logfile="${installer.build.dir}/resources/release_notes.html" failonerror="true">
 			<prop name="text" value="${release_notes.txt}" />
