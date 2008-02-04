@@ -32,6 +32,7 @@
 	<!--
 	<property name="database.user" value="cananolab_app" />
 	-->
+	<property name="database.system.user" value="root" />
 	<property name="database.driver" value="com.mysql.jdbc.Driver" />
 	<property name="database.url" value="jdbc:mysql://${database.server}:${database.port}/${database.name}" />
 
@@ -192,7 +193,7 @@
 	</target>
 
 	<target name="migrate-mysql">
-		<antcall target="mysql:update-user-password" />
+		<antcall target="mysql:update-password" />
 		<antcall target="mysql:db-integrate" />
 	</target>
 
@@ -304,8 +305,8 @@
 
 	</target>
 
-	<target name="mysql:update-user-password">
-		<echo message="Configuring MySQL properties... " />
+	<target name="mysql:update-password">
+		<echo message="Configuring MySQL properties..." />
 		<replace file="${db.dir}/create_database_and_user.sql" value="${database.application.user}">
 			<replacetoken>@DB_USER@</replacetoken>
 		</replace>
@@ -317,10 +318,10 @@
 	<target name="mysql:configure-mysql-root">
 		<echo message="echo ${database.system.password}" />
 		<exec executable="cmd" os="Windows XP,Windows 2000" dir="${mysql.home}/bin" spawn="true">
-			<arg line="/c mysqladmin -u root password ${database.system.password}" />
+			<arg line="/c mysqladmin -u ${database.system.user} password ${database.system.password}" />
 		</exec>
 		<exec executable="sh" os="Linux" dir="${mysql.home}/bin" spawn="true">
-			<arg line="mysqladmin -u root password ${database.system.password}" />
+			<arg line="mysqladmin -u ${database.system.user} password ${database.system.password}" />
 		</exec>
 	</target>
 
@@ -460,7 +461,7 @@
 
 	<target name="mysql:stop">
 		<exec executable="cmd" dir="${mysql.home}/bin" spawn="true">
-			<arg line="/c mysqladmin -u root shutdown" />
+			<arg line="/c mysqladmin -u ${database.system.user} shutdown" />
 		</exec>
 		<sleep seconds="15" />
 	</target>
@@ -471,7 +472,7 @@
 		<run-sql-script database.url="${database.system.url}" database.user="${database.system.user}" database.password="${database.system.password}" sql.file="${db.dir}/app_priming_data.sql" />
 		<run-sql-script database.url="${database.system.url}" database.user="${database.system.user}" database.password="${database.system.password}" sql.file="${db.dir}/csm_schema.sql" />
 		<run-sql-script database.url="${database.system.url}" database.user="${database.system.user}" database.password="${database.system.password}" sql.file="${db.dir}/csm_priming_data.sql" />
-		<run-sql-script database.url="${database.system.url}" database.user="${database.system.user}" database.password="${database.system.password}" sql.file="${db.dir}/app_csm_priming_data.sql" />
+		<run-sql-script database.url="${database.url}" database.user="${database.system.user}" database.password="${database.system.password}" sql.file="${db.dir}/app_csm_priming_data.sql" />
 		<run-sql-commandline database.server="${database.server}" database.user="${database.system.user}" database.password="${database.system.password}" sql.file="${db.dir}/app_triggers.sql" />
 	</target>
 
