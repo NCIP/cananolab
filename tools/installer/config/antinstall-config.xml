@@ -105,16 +105,16 @@
 			displayText="Database Port Number" 
 			defaultValue="3307" 
 			validationClass="com.install.customvalidate.ValidatePort" />
-
+<!-- 
 		<text
 			property="database.system.user"
 			displayText="Database System User" 
 			defaultValue="root" 
 			/>
-
+-->
 		<text
 			property="database.system.password"
-			displayText="Database System Password" 
+			displayText="Database Root Password" 
 			defaultValue="mysql" 
 			/>
 		
@@ -149,16 +149,16 @@
 			displayText="Database Port Number" 
 			defaultValue="3306" 
 			/>
-
+<!-- 
 		<text
 			property="database.system.user"
 			displayText="Database System User" 
 			defaultValue="root" 
 			/>
-
+-->
 		<ext-validated
 			property="database.system.password"
-			displayText="Database System Password" 
+			displayText="Database Root Password" 
 			defaultValue="mysql" 
 			validationClass="com.install.customvalidate.ValidateConnection" 
 			/>			
@@ -182,7 +182,7 @@
     		
     		<hidden property="db.server" value="${database.server}"  />
     		<hidden property="db.port" value="${database.port}"  />
-    		<hidden property="db.system.user" value="${database.system.user}"  />
+    		<hidden property="db.system.user" value="root"  />
     		<hidden property="db.system.password" value="${database.system.password}"  />
     		<hidden property="jdbc.url" value="jdbc:mysql://${db.server}:${db.port}/mysql"  />
     		
