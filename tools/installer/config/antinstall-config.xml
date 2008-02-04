@@ -228,7 +228,7 @@
 		<text
 			property="grid.indexserver"
 			displayText="Enter the Index Server URL with which the caNanoLab Grid servies are registered" 
-			defaultValue="http://cagrid-index-stage.nci.nih.gov:8080/wsrf/services/DefaultIndexService" 
+			defaultValue="http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService" 
 			/>	
 	<!-- 
 		<text
