@@ -76,7 +76,7 @@
 		
 		<ext-validated
 			property="jboss.rmi.port"
-			displayText="RMI Bind Port Number" 
+			displayText="AJP Port Number" 
 			defaultValue="18009" 
 			validationClass="com.install.customvalidate.ValidatePort" />
 			
@@ -215,7 +215,7 @@
 
 		<text
 			property="sample.prefix"
-			displayText="Enter the Sameple Prefix" 
+			displayText="Enter the Sample Prefix" 
 			defaultValue="NCICB" 
 			/>
 		
@@ -227,7 +227,7 @@
 
 		<text
 			property="grid.indexserver"
-			displayText="Enter the Index Server URL with which the caNanoLab Grid servies are registered" 
+			displayText="Enter the Index Server URL with which the caNanoLab Grid services are registered" 
 			defaultValue="http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService" 
 			/>	
 	<!-- 
@@ -265,7 +265,7 @@
 			target="migrate-mysql" defaultValue="Yes" 
 		/>
 
-		<target displayText="Are yo sure to start JBoss server after successful installations?"
+		<target displayText="Are you sure to start JBoss server after successful installations?"
 			target="start-jboss" defaultValue="Yes" 
 		/>
 <!--			
