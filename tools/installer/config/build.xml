@@ -193,11 +193,33 @@
 	</target>
 
 	<target name="migrate-mysql">
+		<echo />
+		<echo />
+		<echo />
+		<echo />
+		<echo />
+		<echo>Creating a caNanoLab database...Please wait...</echo>
+		<echo />
+		<echo />
+		<echo />
+		<echo />
+		<echo />
 		<antcall target="mysql:update-password" />
 		<antcall target="mysql:db-integrate" />
 	</target>
 
 	<target name="start-jboss">
+		<echo />
+		<echo />
+		<echo />
+		<echo />
+		<echo />
+		<echo>Starting JBoss...Please wait...</echo>
+		<echo />
+		<echo />
+		<echo />
+		<echo />
+		<echo />
 		<antcall target="deploy:start-jboss" />
 	</target>
 
