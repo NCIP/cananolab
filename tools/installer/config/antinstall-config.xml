@@ -66,7 +66,7 @@
 	
 	<page type="input" name="jboss.config" displayText="JBoss Configuration">
 		<comment displayText="" bold="true" />	
-			
+
 		<ext-validated
 			property="jboss.http.port"
 			displayText="Http Port Number" 
@@ -222,12 +222,12 @@
 		<text
 			property="application.owner"
 			displayText="Enter the Application Owner" 
-			defaultValue="NCICB" 
+			defaultValue="NCICB"
 			/>		
 
 		<text
-			property="grid.indexserver"
-			displayText="Enter the Index Server URL with which the caNanoLab Grid services are registered" 
+			property="grid.indexserver" 
+			displayText="Enter the caGrid index server URL" 
 			defaultValue="http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService" 
 			/>	
 	<!-- 
@@ -241,28 +241,35 @@
 
 	
 	<page type="input" name="patchOptions" displayText="Confirmation">
+<!--
+		<target  displayText="Install caNanoLab?"
+			target="install-canano" defaultValue="Yes"
+			osSpecific="true" strict="false"
+		/>
+-->
 		<comment
 			displayText="Install caNanoLab?"
 			bold="true" />
 		<comment displayText="" bold="true" />
-		<target displayText="Are you sure to build a caNanoLab application?"
+
+		<target  displayText="Build a caNanoLab application."
 			target="auto-update" defaultValue="Yes"
 			osSpecific="true"
-        		strict="false" 
+        		strict="false" force="true"
 			/>
-		<target displayText="Are you sure to install JBoss?"
+		<target displayText="Install JBoss."
 			target="jboss-install" defaultValue="Yes"
 			osSpecific="true"
-        		strict="false" 
+        		strict="false" force="true"
 			/>
-		<target displayText="Are you sure to install MySQL?"
+		<target displayText="Install MySQL."
 			target="mysql-install" defaultValue="Yes"
 			osSpecific="true"
-        		strict="false" 
+        		strict="false" force="true"
 			/>
 
-		<target displayText="Are you sure to create a caNanoLab database?"
-			target="migrate-mysql" defaultValue="Yes" 
+		<target displayText="Create a caNanoLab database."
+			target="migrate-mysql" defaultValue="Yes" force="true"
 		/>
 
 		<target displayText="Are you sure to start JBoss server after successful installations?"

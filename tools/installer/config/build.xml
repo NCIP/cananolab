@@ -133,7 +133,6 @@
 		<echo />
 		<echo />
 		<echo />
-
 		<unzip dest="${jboss.dir}" overwrite="true" src="${temp.dir}/tools/jboss-4.0.5.GA.zip" />
 		<antcall target="configure-jboss" />
 	</target>
@@ -153,7 +152,6 @@
 		<echo />
 		<echo />
 		<echo />
-
 		<unzip dest="${mysql.dir}" overwrite="true" src="${temp.dir}/tools/mysql-noinstall-5.0.45-win32.zip" />
 		<antcall target="mysql:configure-mysql-properties" />
 		<antcall target="mysql:stop" />
@@ -178,6 +176,19 @@
 		<echo />
 	</target>
 
+	<target name="install-canano-win">
+		<antcall target="auto-update-win" />
+		<antcall target="jboss-install-win" />
+		<antcall target="mysql-install-win" />
+		<!--
+		<unzip dest="${mysql.dir}" overwrite="true" src="${temp.dir}/tools/mysql-noinstall-5.0.45-win32.zip" />
+		<antcall target="mysql:configure-mysql-properties" />
+		<antcall target="mysql:stop" />
+		<antcall target="mysql:start" />
+		<antcall target="mysql:configure-mysql-root" />
+		-->	
+		<antcall target="migrate-mysql" />
+	</target>
 
 	<target name="configure-jboss">
 		<antcall target="deploy:stop-jboss" />
