@@ -120,10 +120,13 @@ public class GridService {
 			gridNodes = new GridNodeBean[gridNodeHosts.length];
 			int i = 0;
 			for (String host : gridNodeHosts) {
-				gridNodes[i] = gridNodeMap.get(host);
-				i++;
+				if(host != null) {
+					gridNodes[i] = gridNodeMap.get(host);
+					i++;
+				}
 			}
 		}
 		return gridNodes;
 	}
+	
 }
