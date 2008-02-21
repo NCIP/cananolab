@@ -678,13 +678,71 @@ p,.p { /* for paragraphs */
 	text-align: justify;
 }
 
+#publicLinks {
+	margin: 30px 20px 20px 30px;
+}
+
+div.griddiv {
+	background-color: #F4F4F5;
+	padding: 20px 10px 20px 55px;
+}
+
+#pubh2 {
+	color: 4A49A8;
+	text-align: left;
+	text-indent: 1em;
+	vertical-align: middle;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 1.2em;
+	margin-bottom: 0;
+}
+
+.girdtable {
+	width: 300px;
+	border: 1 solid #cccccc;
+	border-width: 1px;
+	border-color: #cccccc;
+	border-style: solid;
+	border-collapse: collapse;
+}
+
+.girdtable th {
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 0.8em;
+	padding: 5px 30px 10px 30px;
+	border-style: solid;
+	border: 1 solid #cccccc;
+	border-width: 1px;
+	border-color: #cccccc;
+}
+
+.girdtable td {
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 0.7em;
+	padding: 5px 0 5px 5px;
+	border: 1 solid #cccccc;
+	border-width: 1px;
+	border-color: #cccccc;
+	border-style: solid;
+	vertical-align: middle;
+}
+
 #publicLinks, ul { /* for the public links below the welcome content of the home page */
+
 	font-family: arial, helvetica, verdana, sans-serif;
 	font-size: 0.8em;
 	font-weight: bold;
 	padding-left: 0;
 	margin-left: 0.5em;
 	list-style: none;
+}
+
+label.toplabel {  
+	display: block;
+	font-size: 0.9em;
+	padding-bottom: 5px;
 }
 
 #publicLinks h5 {
