@@ -50,6 +50,45 @@ public class GridSearchService {
 	 * @return
 	 * @throws GridQueryException
 	 */
+	public int getRemoteReportCount(String reportTitle,
+			String particleType, String[] functionTypes,
+			GridNodeBean gridNode) throws GridQueryException {
+		
+		int reportCount = 0;
+
+		try {
+			CaNanoLabSvcClient gridClient = new CaNanoLabSvcClient(gridNode
+					.getAddress());
+			
+			Report[] gridReports = gridClient.getReports(reportTitle,
+						particleType, functionTypes);
+			if(gridReports != null)
+				reportCount += gridReports.length;
+				
+			AssociatedFile[] gridAssociatedFiles = gridClient
+						.getOtherAssociatedFiles(reportTitle, particleType,
+								functionTypes);
+			if(gridAssociatedFiles != null)
+				reportCount += gridAssociatedFiles.length;
+			
+		} catch (Exception e) {
+			logger.error("Error in searching remote reports: " + e);
+			throw new GridQueryException();
+		}
+		return reportCount;
+	}
+	
+	/**
+	 * Retrieve remote reports files from the given grid node.
+	 * 
+	 * @param reportTitle
+	 * @param reportType
+	 * @param particleType
+	 * @param functionTypes
+	 * @param gridNode
+	 * @return
+	 * @throws GridQueryException
+	 */
 	public List<ReportBean> getRemoteReports(String reportTitle,
 			String reportType, String particleType, String[] functionTypes,
 			GridNodeBean gridNode) throws GridQueryException {
@@ -161,7 +200,36 @@ public class GridSearchService {
 		}
 		return particles;
 	}
-
+	
+	/**
+	 * Retrieve nanoparticles counts from the given grid node
+	 * 
+	 * @param particleType
+	 * @param functionTypes
+	 * @param characterizationTypes
+	 * @param gridNode
+	 * @return
+	 * @throws GridQueryException
+	 */
+	public int getRemoteNanoparticleCount(String particleType,
+			String[] functionTypes, String[] characterizationTypes,
+			GridNodeBean gridNode) throws GridQueryException {
+		List<ParticleBean> particles = new ArrayList<ParticleBean>();
+		try {
+			CaNanoLabSvcClient gridClient = new CaNanoLabSvcClient(gridNode
+					.getAddress());
+			Nanoparticle[] gridParticles = gridClient.getNanoparticles(
+					particleType, characterizationTypes, functionTypes);
+			if (gridParticles != null) {
+				return gridParticles.length;
+			}
+		} catch (Exception e) {
+			logger.error("Error in searching remote particles: " + e);
+			throw new GridQueryException();
+		}
+		return 0;
+	}
+	
 	public Nanoparticle getRemoteNanoparticle(String particleName,
 			GridNodeBean gridNode) throws GridQueryException {
 		Nanoparticle particle = null;
