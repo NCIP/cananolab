@@ -1,0 +1,47 @@
+
+#prompt {
+	position: relative;
+	left: 350px;
+	top: -800px;
+	width: 350px;
+	border: 1px outset #bbbbbb;
+	background-color: #FFFFFF;
+}
+
+
+input.prompt {
+	border: 1px solid #7F9DB9;
+	background-color: #FFFFFF;
+	width: 70;
+	font-family: arial;
+	font-size: 12;
+	color: black;
+}
+
+td.titlebar {
+	background-color: #FF9F40;
+	color: #0000D2;
+	font-weight: bold;
+	font-family: arial;
+	font-size: 12;
+}
+
+table.promptbox {
+	border: 1 solid #ccccff;
+	background-color: #F4F4F5;
+	color: black;
+	padding-left: 2;
+	padding-right: 2;
+	padding-bottom: 3;
+	font-family: arial;
+	font-size: 12;
+}
+
+input.promptbox {
+	border: 1 solid #7F9DB9;
+	background-color: white;
+	width: 100%;
+	font-family: arial;
+	font-size: 12;
+	color: black;
+}
