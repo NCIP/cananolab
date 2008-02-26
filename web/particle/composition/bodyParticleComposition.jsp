@@ -3,7 +3,9 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page import="gov.nih.nci.calab.service.util.StringUtils"%>
-<script type="text/javascript" src="javascript/editableDropDown.js"></script>
+
+<link rel="StyleSheet" type="text/css" href="css/promptBox.css">
+<script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
 
 <script type="text/javascript">
 <!--//
@@ -68,19 +70,15 @@ function confirmDeletion()
 						<td class="leftLabel">
 							<strong>Characterization Source*</strong>
 						</td>
-						<td class="label">
+						<td class="label" >
 							<c:choose>
 								<c:when
 									test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
-									<html:select property="composition.characterizationSource"
-										onkeydown="javascript:fnKeyDownHandler(this, event);"
-										onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-										onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-										onchange="fnChangeHandler_A(this, event);">
-										<option value="">
-											--?--
-										</option>
+									<html:select styleId="charSource"
+									 property="composition.characterizationSource"
+										onchange="javascript:callPrompt('Characterization Source', 'charSource');">
 										<html:options name="characterizationSources" />
+										<option value="other">Other</option>
 									</html:select>
 								</c:when>
 								<c:otherwise>
@@ -199,20 +197,15 @@ function confirmDeletion()
 																<c:when
 																	test="${canCreateNanoparticle eq 'true'&& isRemote eq 'false'}">
 																	<td class="labelWithTop" valign="top">
-																		<html:select
+																		<html:select styleId="compElemType"
 																			property="composition.composingElements[${ind}].elementType"
-																			onkeydown="javascript:fnKeyDownHandler(this, event);"
-																			onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-																			onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-																			onchange="fnChangeHandler_A(this, event);">
-																			<option value="">
-																				--?--
-																			</option>
+																			onchange="javascript:callPrompt('Composing Element Type', 'compElemType');">
 																			<html:options name="allComposingElementTypes" />
 																			<c:if
 																				test="${nanoparticleCompositionForm.map.particle.sampleType eq 'Complex Particle'}">
 																				<html:options name="allParticleElementTypes" />
 																			</c:if>
+																			<option value="other">Other</option>
 																		</html:select>
 																	</td>
 																</c:when>

@@ -36,16 +36,12 @@
 				<td class="leftLabel">
 					<c:choose>
 						<c:when test="${canCreateNanoparticle eq 'true'}">
-							<html:select
+							<html:select styleId="assayName${param.fileInd}${dInd}"
 								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].name"
-								onkeydown="javascript:fnKeyDownHandler(this, event);"
-								onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-								onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-								onchange="fnChangeHandler_A(this, event);">
-								<option value="">
-									--?--
-								</option>
+								onchange="javascript:callPrompt('Name', 'assayName' + ${param.fileInd} + ${dInd});">
 								<html:options name="datumNames" />
+								<option value=""></option>
+								<option value="other">Other</option>
 							</html:select>&nbsp; 	
 						</c:when>
 						<c:otherwise>
@@ -56,16 +52,11 @@
 				<td class="label">
 					<c:choose>
 						<c:when test="${canCreateNanoparticle eq 'true'}">
-							<html:select
+							<html:select styleId="statisticsType${param.fileInd}${dInd}"
 								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].statisticsType"
-								onkeydown="javascript:fnKeyDownHandler(this, event);"
-								onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-								onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-								onchange="fnChangeHandler_A(this, event);">
-								<option value="">
-									--?--
-								</option>
+								onchange="javascript:callPrompt('Statistics Type', 'statisticsType' + ${param.fileInd} + ${dInd});">
 								<html:options name="charMeasureTypes" />
+								<option value="other">Other</option>
 							</html:select>&nbsp; 						
 						</c:when>
 						<c:otherwise>
@@ -88,16 +79,11 @@
 				<td class="label">
 					<c:choose>
 						<c:when test="${canCreateNanoparticle eq 'true'}">
-							<html:select
+							<html:select styleId="unit${param.fileInd}${dInd}"
 								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].unit"
-								onkeydown="javascript:fnKeyDownHandler(this, event);"
-								onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-								onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-								onchange="fnChangeHandler_A(this, event);">
-								<option value="">
-									--?--
-								</option>
+								onchange="javascript:callPrompt('Unit', 'unit' + ${param.fileInd} + ${dInd});">
 								<html:options name="charMeasureUnits" />
+								<option value="other">Other</option>
 							</html:select>&nbsp; 						
 						</c:when>
 						<c:otherwise>

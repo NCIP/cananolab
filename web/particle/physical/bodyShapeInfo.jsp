@@ -21,15 +21,10 @@
 			<td class="rightLabel" colspan="3">
 				<c:choose>
 					<c:when test="${canCreateNanoparticle eq 'true'}">
-						<html:select property="shape.type"
-							onkeydown="javascript:fnKeyDownHandler(this, event);"
-							onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-							onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-							onchange="fnChangeHandler_A(this, event);">
-							<option value="">
-								--?--
-							</option>
+						<html:select property="shape.type" styleId="shapeType"
+							onchange="javascript:callPrompt('Type', 'shapeType');">
 							<html:options name="allShapeTypes" />
+							<option value="other">Other</option>
 						</html:select>
 					</c:when>
 					<c:otherwise>

@@ -50,12 +50,10 @@
 			<td class="label">
 				<c:choose>
 					<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
-						<html:select property="polymer.initiator" onkeydown="javascript:fnKeyDownHandler(this, event);"
-											onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-											onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-											onchange="fnChangeHandler_A(this, event);">
-							<option value="">--?--</option>
+						<html:select property="polymer.initiator" styleId="initiator"
+											onchange="javascript:callPrompt('Initiator', 'initiator');">
 								<html:options name="allPolymerInitiators" />
+								<option value="other">Other</option>
 						</html:select>
 					</c:when>
 					<c:otherwise>

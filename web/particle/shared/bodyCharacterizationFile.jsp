@@ -39,16 +39,11 @@
 			<c:choose>
 				<c:when test="${canCreateNanoparticle eq 'true'}">
 					<td class="labelWithTop" valign="top">
-						<html:select
+						<html:select styleId="fileType${param.fileInd}"
 							property="achar.derivedBioAssayDataList[${param.fileInd}].type"
-							onkeydown="javascript:fnKeyDownHandler(this, event);"
-							onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-							onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-							onchange="fnChangeHandler_A(this, event);">
-							<option value="">
-								--?--
-							</option>
+							onchange="javascript:callPrompt('File Type', 'fileType' + ${param.fileInd});">
 							<html:options name="allDerivedDataFileTypes" />
+							<option value="other">Other</option>
 						</html:select>
 					</td>
 				</c:when>
@@ -64,17 +59,12 @@
 			<c:choose>
 				<c:when test="${canCreateNanoparticle eq 'true'}">
 					<td class="rightLabelWithTop" valign="top">
-						<html:select
+						<html:select styleId="dataCategory${param.fileInd}"
 							property="achar.derivedBioAssayDataList[${param.fileInd}].categories"
 							multiple="yes" size="4"
-							onkeydown="javascript:fnKeyDownHandler(this, event);"
-							onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-							onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-							onchange="fnChangeHandler_A(this, event); filterDatumCategories(${param.fileInd}, ${fn:length(nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].datumList)})">
-							<option value="">
-								--?--
-							</option>
+							onchange="javascript:callPrompt('Data Category', 'dataCategory' + ${param.fileInd}); filterDatumCategories(${param.fileInd}, ${fn:length(nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].datumList)})">
 							<html:options name="derivedDataCategories" />
+							<option value="other">Other</option>
 						</html:select>
 					</td>
 				</c:when>

@@ -18,12 +18,10 @@
 		<c:choose>
 			<c:when test="${canCreateNanoparticle eq 'true'}">
 				<td class="label">
-					<html:select property="cytotoxicity.cellLine" onkeydown="javascript:fnKeyDownHandler(this, event);"
-											onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-											onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-											onchange="fnChangeHandler_A(this, event);">
-						<option value="">--?--</option>
+					<html:select property="cytotoxicity.cellLine" styleId="cellLine"
+											onchange="javascript:callPrompt('Cell Line', 'cellLine');">
 						<html:options name="allCellLines" />
+						<option value="other">Other</option>
 					</html:select>
 				</td>
 			</c:when>

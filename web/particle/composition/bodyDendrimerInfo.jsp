@@ -22,15 +22,10 @@
 				<c:choose>
 					<c:when
 						test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
-						<html:select property="dendrimer.branch"
-							onkeydown="javascript:fnKeyDownHandler(this, event);"
-							onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-							onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-							onchange="fnChangeHandler_A(this, event);">
-							<option value="">
-								--?--
-							</option>
+						<html:select property="dendrimer.branch" styleId="branch"
+							onchange="javascript:callPrompt('Branch', 'branch');">
 							<html:options name="allDendrimerBranches" />
+							<option value="other">Other</option>
 						</html:select>
 					</c:when>
 					<c:otherwise>
@@ -61,15 +56,10 @@
 				<c:choose>
 					<c:when
 						test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
-						<html:select property="dendrimer.generation"
-							onkeydown="javascript:fnKeyDownHandler(this, event);"
-							onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-							onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-							onchange="fnChangeHandler_A(this, event);">
-							<option value="">
-								--?--
-							</option>
+						<html:select property="dendrimer.generation" styleId="generation"
+							onchange="javascript:callPrompt('Generation', 'generation');">
 							<html:options name="allDendrimerGenerations" />
+							<option value="other">Other</option>
 						</html:select>
 					</c:when>
 					<c:otherwise>
@@ -158,16 +148,11 @@
 												<c:choose>
 													<c:when
 														test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
-														<html:select
+														<html:select styleId="name"
 															property="dendrimer.surfaceGroups[${ind}].name"
-															onkeydown="javascript:fnKeyDownHandler(this, event);"
-															onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-															onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-															onchange="fnChangeHandler_A(this, event);">
-															<option value="">
-																--?--
-															</option>
+															onchange="javascript:callPrompt('Name', 'name');">
 															<html:options name="allDendrimerSurfaceGroupNames" />
+															<option value="other">Other</option>
 														</html:select>
 													</c:when>
 													<c:otherwise>

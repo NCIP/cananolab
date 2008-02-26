@@ -26,14 +26,9 @@
 				<c:when test="${canCreateNanoparticle eq 'true'}">
 					<html:select styleId="instrumentType"
 						property="achar.instrumentConfigBean.instrumentBean.type"
-						onkeydown="javascript:fnKeyDownHandler(this, event);"
-						onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-						onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-						onchange="fnChangeHandler_A(this, event);retrieveInstrumentAbbreviation();">
-						<option value="">
-							--?--
-						</option>
+						onchange="javascript:callPrompt('Instrument Type', 'instrumentType');">
 						<html:options name="allInstrumentTypes" />
+						<option value="other">Other</option>
 					</html:select>
 				</c:when>
 				<c:otherwise>
@@ -43,12 +38,12 @@
 		</td>
 		<c:choose>
 			<c:when test="${canCreateNanoparticle eq 'true'}">
-				<td class="rightLabel" width="30%">
+				<td class="rightLabel" width="20%">
 					<span id="instrumentAbbr"><b>Abbreviation: </b>${nanoparticleCharacterizationForm.map.achar.instrumentConfigBean.instrumentBean.abbreviation}</span>&nbsp;
 				</td>
 			</c:when>
 			<c:otherwise>
-				<td class="rightLabel" width="30%">
+				<td class="rightLabel" width="20%">
 					<c:if
 						test="${!empty nanoparticleCharacterizationForm.map.achar.instrumentConfigBean.instrumentBean.abbreviation}">
 						<b>Abbreviation: </b>${nanoparticleCharacterizationForm.map.achar.instrumentConfigBean.instrumentBean.abbreviation}
@@ -67,14 +62,9 @@
 				<c:when test="${canCreateNanoparticle eq 'true'}">
 					<html:select styleId="instrumentManufacturer"
 						property="achar.instrumentConfigBean.instrumentBean.manufacturer"
-						onkeydown="javascript:fnKeyDownHandler(this, event);"
-						onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-						onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-						onchange="fnChangeHandler_A(this, event);">
-						<option value="">
-							--?--
-						</option>
+						onchange="javascript:callPrompt('Instrument Manufacturer', 'instrumentManufacturer');">
 						<html:options name="allManufacturers" />
+						<option value="other">Other</option>
 					</html:select>
 				</c:when>
 				<c:otherwise>

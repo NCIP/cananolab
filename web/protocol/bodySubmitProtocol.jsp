@@ -3,11 +3,13 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<script type="text/javascript" src="javascript/editableDropDown.js"></script>
+<script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
 <script type='text/javascript' src='javascript/ProtocolManager.js'></script>
 <script type='text/javascript' src='dwr/interface/ProtocolManager.js'></script>
 <script type='text/javascript' src='dwr/engine.js'></script>
 <script type='text/javascript' src='dwr/util.js'></script>
+
+<link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 
 <html:form action="/submitProtocol" enctype="multipart/form-data">
 	<table width="100%" align="center">
@@ -43,12 +45,9 @@
 							</td>
 							<td class="rightLabel">
 								<html:select styleId="protocolType" property="protocolType"
-									onkeydown="javascript:fnKeyDownHandler(this, event);"
-									onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-									onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-									onchange="fnChangeHandler_A(this, event); resetProtocols(); retrieveProtocols();">
-									<html:option value="">--?--</html:option>
+									onchange="javascript:callPrompt('Protocol Type', 'protocolType'); resetProtocols(); retrieveProtocols();">
 									<html:options name="protocolTypes" />
+									<option value="other">Other</option>
 								</html:select>
 							</td>
 						</tr>
@@ -58,23 +57,17 @@
 							</td>
 							<td class="rightLabel">
 								<html:select styleId="protocolName" property="protocolName"
-									onkeydown="javascript:fnKeyDownHandler(this, event);"
-									onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-									onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-									onchange="fnChangeHandler_A(this, event); resetProtocolFiles(); retrieveProtocolFileVersions();">
-									<html:option value="">--?--</html:option>
+									onchange="javascript:callPrompt('Protocol Name', 'protocolName'); resetProtocolFiles(); retrieveProtocolFileVersions();">
 									<c:if test="${! empty submitProtocolForm.map.protocolName}">
 									<html:option value="${submitProtocolForm.map.protocolName}">${submitProtocolForm.map.protocolName}</html:option>
 									</c:if>
+									<option value="other">Other</option>
 								</html:select>
 								&nbsp; &nbsp;
 								<strong>Protocol Version* </strong>&nbsp;
 								<html:select styleId="protocolId" property="file.id"
-									onkeydown="javascript:fnKeyDownHandler(this, event);"
-									onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-									onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-									onchange="fnChangeHandler_A(this, event); retrieveProtocolFile(); ">
-									<html:option value="">--?--</html:option>
+									onfocus="javascript:callPrompt('Protocol Version', 'protocolId');">
+									<option value="other">Other</option>
 								</html:select>
 								&nbsp; &nbsp;
 							</td>
