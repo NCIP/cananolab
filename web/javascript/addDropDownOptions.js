@@ -40,7 +40,7 @@ function addOptionPrompt(optionName, tdId) {
 function addOptionPrompt(opt, selectId) {
 	if (opt != null && opt != "") {
 		var selectEle = document.getElementById(selectId);
-		if(opt == "enterNew") return false;
+		if(opt == "other") return false;
 		if (!validateOptions(opt, selectEle.options)) {
 			selectEle.options.selectedIndex = 0;
 			alert(opt + " is already on the list!");
@@ -65,13 +65,13 @@ function prompt2(message, sendto, parentId) {
 	promptbox.setAttribute("id", "prompt");
 	document.getElementsByTagName("body")[0].appendChild(promptbox);
 	promptbox = eval("document.getElementById('prompt').style");
-		/*
+	
 	promptbox.position = "absolute";
 	promptbox.top = 150;
 	promptbox.left = 200;
-	promptbox.width = 300;
-	promptbox.border = "outset #bbbbbb 1px";
-			*/
+	//promptbox.width = 300;
+	//promptbox.border = "outset #bbbbbb 1px";
+	
 	document.getElementById("prompt").innerHTML = "<table cellspacing='5' cellpadding='0' border='0' width='100%' class='promptbox'>" + 
 		"<tr><td>" + message + "</td></tr>" + "<tr><td><input type='text' id='promptbox' onblur='this.focus()' class='promptbox'></td></tr>" + 
 		"<tr><td align='right'><br><input type='button' class='prompt' value='Add' onMouseOver='this.style.border=\"1 outset #dddddd\"' onMouseOut='this.style.border=\"1 solid transparent\"' onClick='" + 
@@ -91,8 +91,7 @@ function myfunction(value, parentId) {
 
 function callPrompt(optionName, selectId) {
 	var selectEle = document.getElementById(selectId);
-	if(selectEle.options[selectEle.options.selectedIndex].value != "enterNew" &&
-		selectEle.options[selectEle.options.selectedIndex].value != "Enter New")
+	if(selectEle.options[selectEle.options.selectedIndex].value != "other")
 		return false;
 		
 	prompt2("New " + optionName + ":", "myfunction", selectId);
