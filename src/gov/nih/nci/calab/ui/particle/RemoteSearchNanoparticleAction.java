@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: RemoteSearchNanoparticleAction.java,v 1.9 2008-02-21 16:58:36 cais Exp $ */
+/* CVS $Id: RemoteSearchNanoparticleAction.java,v 1.10 2008-02-26 18:38:14 cais Exp $ */
 
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.dto.remote.GridNodeBean;
@@ -40,6 +40,11 @@ public class RemoteSearchNanoparticleAction extends BaseRemoteSearchAction {
 		String particleType = "";
 		String[] functionTypes = new String[0];
 		String[] characterizations = new String[0];
+		
+		String gridNodeHostStr =(String) request.getParameter("gridNodeHost");
+		String[] gridNodeHosts = gridNodeHostStr.split("~");
+		
+		/*
 		String[] gridNodeHosts = new String[1];
 		String gridNodeHost =(String) request.getParameter("gridNodeHost");
 
@@ -48,6 +53,8 @@ public class RemoteSearchNanoparticleAction extends BaseRemoteSearchAction {
 		} else {
 			gridNodeHosts = new String[0];
 		}
+		*/
+		
 		ActionMessages msgs = new ActionMessages();
 
 		Map<String, GridNodeBean> gridNodes = prepareSearch(request);
@@ -113,15 +120,19 @@ public class RemoteSearchNanoparticleAction extends BaseRemoteSearchAction {
 
 			String particleType = "";
 			String[] functionTypes = new String[0];
-			String[] characterizations = new String[0];
-			String[] gridNodeHosts = new String[1];
-			String gridNodeHost =(String) request.getParameter("gridNodeHost");
-
+			String[] characterizations = new String[0];			
+			
+			String gridNodeHostStr =(String) request.getParameter("gridNodeHost");
+			String[] gridNodeHosts = gridNodeHostStr.split("~");
+			
+			/*
+		 	String[] gridNodeHosts = new String[1];
 			if(!gridNodeHost.equals("allLocations")) {
 				gridNodeHosts[0] = gridNodeHost;
 			} else {
 				gridNodeHosts = new String[0];
 			}
+			*/
 			ActionMessages msgs = new ActionMessages();
 
 			Map<String, GridNodeBean> gridNodes = prepareSearch(request);
