@@ -3,7 +3,9 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<script type="text/javascript" src="javascript/editableDropDown.js"></script>
+
+<link rel="StyleSheet" type="text/css" href="css/promptBox.css">
+<script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
 
 <script language="JavaScript">
 <!--
@@ -77,16 +79,11 @@ function hideDetail(elementId) {
 			<td class="rightLabel">
 				<span id="Attachment Detail${param.linkageInd}"
 					style="visibility:${attachmentVis};position:absolute;"> <strong>Bond
-						Type</strong> <html:select
+						Type</strong> <html:select styleId="bondType"
 						property="function.linkages[${param.linkageInd}].bondType"
-						onkeydown="javascript:fnKeyDownHandler(this, event);"
-						onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-						onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-						onchange="fnChangeHandler_A(this, event);">
-						<option value="">
-							--?--
-						</option>
+						onchange="javascript:callPrompt('Bond Type', 'bondType');">
 						<html:options name="allBondTypes" />
+						<option value="other">Other</option>
 					</html:select> </span>
 				<span id="Encapsulation Detail${param.linkageInd}"
 					style="visibility:${encapsulationVis};"> <strong>Localization</strong>
@@ -209,16 +206,11 @@ function hideDetail(elementId) {
 								<strong>Type</strong>
 							</td>
 							<td class="borderlessLabel">
-								<html:select
+								<html:select styleId="type"
 									property="function.linkages[${param.linkageInd}].agent.imageContrastAgent.type"
-									onkeydown="javascript:fnKeyDownHandler(this, event);"
-									onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-									onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-									onchange="fnChangeHandler_A(this, event);">
-									<option value="">
-										--?--
-									</option>
+									onchange="javascript:callPrompt('Type', 'type');">
 									<html:options name="allImageContrastAgentTypes" />
+									<option value="other">Other</option>
 								</html:select>
 							</td>
 						</tr>

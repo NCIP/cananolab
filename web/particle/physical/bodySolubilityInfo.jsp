@@ -21,15 +21,10 @@
 			<td class="label">
 				<c:choose>
 					<c:when test="${canCreateNanoparticle eq 'true'}">
-						<html:select property="solubility.solvent"
-							onkeydown="javascript:fnKeyDownHandler(this, event);"
-							onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-							onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-							onchange="fnChangeHandler_A(this, event);">
-							<option value="">
-								--?--
-							</option>
+						<html:select property="solubility.solvent" styleId="solvent"
+							onchange="javascript:callPrompt('Solvent', 'solvent');">
 							<html:options name="allSolventTypes" />
+							<option value="other">Other</option>
 						</html:select>
 					</c:when>
 					<c:otherwise>

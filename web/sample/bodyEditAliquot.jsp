@@ -2,7 +2,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<script type="text/javascript" src="javascript/editableDropDown.js"></script>
+
 <table width="100%" align="center">
 	<tr>
 		<td>
@@ -38,13 +38,11 @@
 							<td class="formLabel">
 								<div align="justify">
 									<strong>Container Type* <span class="formFieldWhite">
-											<html:select property="aliquot.container.containerType"
-												onkeydown="javascript:fnKeyDownHandler(this, event);"
-												onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-												onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-												onchange="fnChangeHandler_A(this, event);">
-												<option value="">--?--</option>
+											<html:select styleId="containerType"
+												property="aliquot.container.containerType"
+												onchange="javascript:callPrompt('Container Type', 'containerType');">
 												<html:options name="allAliquotContainerTypes" />
+												<option value="other">Other</option>
 											</html:select> </span> </strong>
 								</div>
 							</td>
@@ -116,59 +114,47 @@
 												<strong>Room</strong>
 											</td>
 											<td class="borderlessLabel">
-												<html:select
+												<html:select styleId="room"
 													property="aliquot.container.storageLocation.room"
-													onkeydown="javascript:fnKeyDownHandler(this, event);"
-													onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-													onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-													onchange="fnChangeHandler_A(this, event);">
-													<option value="">--?--</option>
+													onchange="javascript:callPrompt('Room', 'room');">
 													<html:options name="aliquotContainerInfo"
 														property="storageRooms" />
+													<option value="other">Other</option>
 												</html:select>
 											</td>											<td class="borderlessLabel">
 												<strong>Freezer</strong>
 											</td>
 											<td class="borderlessLabel">
-												<html:select
+												<html:select styleId="freezer"
 													property="aliquot.container.storageLocation.freezer"
-													onkeydown="javascript:fnKeyDownHandler(this, event);"
-													onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-													onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-													onchange="fnChangeHandler_A(this, event);">
-													<option value="">--?--</option>
+													onchange="javascript:callPrompt('Freezer', 'freezer');">
 													<html:options name="aliquotContainerInfo"
 														property="storageFreezers" />
+													<option value="other">Other</option>
 												</html:select>
 											</td>
 											<td class="borderlessLabel">
 												<strong>Shelf</strong>
 											</td>
 											<td class="borderlessLabel">
-												<html:select
+												<html:select styleId="shelf"
 													property="aliquot.container.storageLocation.shelf"
-													onkeydown="javascript:fnKeyDownHandler(this, event);"
-													onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-													onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-													onchange="fnChangeHandler_A(this, event);">
-													<option value="">--?--</option>
+													onchange="javascript:callPrompt('Shelf', 'shelf');">
 													<html:options name="aliquotContainerInfo"
 														property="storageShelves" />
+													<option value="other">Other</option>
 												</html:select>
 											</td>
 											<td class="borderlessLabel">
 												<strong>Box</strong>
 											</td>
 											<td class="borderlessLabel">
-												<html:select
+												<html:select styleId="box"
 													property="aliquot.container.storageLocation.box"
-													onkeydown="javascript:fnKeyDownHandler(this, event);"
-													onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-													onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-													onchange="fnChangeHandler_A(this, event);">
-													<option value="">--?--</option>
+													onchange="javascript:callPrompt('Box', 'box');">
 													<html:options name="aliquotContainerInfo"
 														property="storageBoxes" />
+													<option value="other">Other</option>
 												</html:select>
 											</td>
 										</tr>

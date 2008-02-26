@@ -4,7 +4,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <script type="text/javascript" src="javascript/calendar2.js"></script>
-<script type="text/javascript" src="javascript/editableDropDown.js"></script>
+<script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
+
+<link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 
 <html:form action="/createSample">
 	<table width="100%" align="center">
@@ -60,15 +62,10 @@
 						<tr>
 							<td class="formLabel">
 								<strong>Source* <span class="formFieldWhite"> <html:select
-											property="sample.sampleSource"
-											onkeydown="javascript:fnKeyDownHandler(this, event);"
-											onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-											onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-											onchange="fnChangeHandler_A(this, event);">
-											<option value="">
-												--?--
-											</option>
+											property="sample.sampleSource" styleId="source"
+											onchange="javascript:callPrompt('Source', 'source');">
 											<html:options name="allSampleSources" />
+											<option value="other">Other</option>
 										</html:select> &nbsp; &nbsp;Source ID <span class="formFieldWhite"><html:text
 												property="sample.sourceSampleId" size="10" /> </span> &nbsp;
 										&nbsp; 
@@ -179,16 +176,11 @@
 															<td class="formLabel" colspan="2">
 																<div align="justify">
 																	<strong>Container Type* <span
-																		class="formFieldWhite"> <html:select
+																		class="formFieldWhite"> <html:select styleId="containerType${ind}"
 																				property="sample.containers[${ind}].containerType"
-																				onkeydown="javascript:fnKeyDownHandler(this, event);"
-																				onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-																				onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-																				onchange="fnChangeHandler_A(this, event);">
-																				<option value="">
-																					--?--
-																				</option>
+																				onchange="javascript:callPrompt('Container Type', 'containerType' + ${ind});">
 																				<html:options name="allSampleContainerTypes" />
+																				<option value="other">Other</option>
 																			</html:select> </span>
 																</div>
 															</td>
@@ -263,67 +255,47 @@
 																			</td>
 																			<td class="borderlessLabel">
 																				<html:select
-																					property="sample.containers[${ind}].storageLocation.room"
-																					onkeydown="javascript:fnKeyDownHandler(this, event);"
-																					onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-																					onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-																					onchange="fnChangeHandler_A(this, event);">
-																					<option value="">
-																						--?--
-																					</option>
+																					property="sample.containers[${ind}].storageLocation.room" styleId="room${ind}"
+																					onchange="javascript:callPrompt('Room', 'room' + ${ind});">
 																					<html:options name="sampleContainerInfo"
 																						property="storageRooms" />
+																					<option value="other">Other</option>
 																				</html:select>
 																			</td>
 																			<td class="borderlessLabel">
 																				<strong>Freezer</strong>
 																			</td>
 																			<td class="borderlessLabel">
-																				<html:select
+																				<html:select styleId="freezer${ind}"
 																					property="sample.containers[${ind}].storageLocation.freezer"
-																					onkeydown="javascript:fnKeyDownHandler(this, event);"
-																					onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-																					onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-																					onchange="fnChangeHandler_A(this, event);">
-																					<option value="">
-																						--?--
-																					</option>
+																					onchange="javascript:callPrompt('Freezer', 'freezer' + ${ind});">
 																					<html:options name="sampleContainerInfo"
 																						property="storageFreezers" />
+																					<option value="other">Other</option>
 																				</html:select>
 																			</td>
 																			<td class="borderlessLabel">
 																				<strong>Shelf</strong>
 																			</td>
 																			<td class="borderlessLabel">
-																				<html:select
+																				<html:select styleId="shelf${ind}"
 																					property="sample.containers[${ind}].storageLocation.shelf"
-																					onkeydown="javascript:fnKeyDownHandler(this, event);"
-																					onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-																					onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-																					onchange="fnChangeHandler_A(this, event);">
-																					<option value="">
-																						--?--
-																					</option>
+																					onchange="javascript:callPrompt('Shelf', 'shelf' + ${ind});">
 																					<html:options name="sampleContainerInfo"
 																						property="storageShelves" />
+																					<option value="other">Other</option>
 																				</html:select>
 																			</td>
 																			<td class="borderlessLabel">
 																				<strong>Box</strong>
 																			</td>
 																			<td class="borderlessLabel">
-																				<html:select
+																				<html:select styleId="box${ind}"
 																					property="sample.containers[${ind}].storageLocation.box"
-																					onkeydown="javascript:fnKeyDownHandler(this, event);"
-																					onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-																					onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-																					onchange="fnChangeHandler_A(this, event);">
-																					<option value="">
-																						--?--
-																					</option>
+																					onchange="javascript:callPrompt('Box', 'box' + ${ind});">
 																					<html:options name="sampleContainerInfo"
 																						property="storageBoxes" />
+																					<option value="other">Other</option>
 																				</html:select>
 																			</td>
 																		</tr>

@@ -21,15 +21,10 @@
 			<td class="rightLabel">
 				<c:choose>
 					<c:when test="${canCreateNanoparticle eq 'true'}">
-						<html:select property="morphology.type"
-							onkeydown="javascript:fnKeyDownHandler(this, event);"
-							onkeyup="javascript:fnKeyUpHandler_A(this, event); return false;"
-							onkeypress="javascript:return fnKeyPressHandler_A(this, event);"
-							onchange="fnChangeHandler_A(this, event);">
-							<option value="">
-								--?--
-							</option>
+						<html:select property="morphology.type" styleId="morphologyType"
+							onchange="javascript:callPrompt('Type', 'morphologyType');">
 							<html:options name="allMorphologyTypes" />
+							<option value="other">Other</option>
 						</html:select>
 					</c:when>
 					<c:otherwise>
