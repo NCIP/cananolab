@@ -729,6 +729,12 @@ div.griddiv {
 	vertical-align: middle;
 }
 
+tr.gridTableHeader {
+	height: 20px;
+	font-size: 0.85em;
+	font-weight: normal;
+}
+	
 #publicLinks, ul { /* for the public links below the welcome content of the home page */
 
 	font-family: arial, helvetica, verdana, sans-serif;
@@ -745,23 +751,21 @@ label.toplabel {
 	padding-bottom: 5px;
 }
 
-#publicLinks h5 {
-	margin-top: 0.6em;
-	font-weight: normal;
-	font-size: 1em;
-	line-height: 1.3em;
+#location {
+	margin-bottom: 10px;
 }
 
-#publicLinks h4 {
-	margin-bottom: 0;
-	padding-bottom: 0;
+#results {
+	padding-left: 9px;
+	padding-right: 9px;
+	margin-left: 0;
+	margin-right: 0;
 }
 
-#publicLinks p {
-	margin: 0.6em 0 1em 0;
-	text-align: left;
-	font-weight: normal;
-	line-height: 1.3em;
+.countsLink {
+	display: block;
+	margin-left: 22px;
+    margin-right: auto;
 }
 
 #publicLinks img {
