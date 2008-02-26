@@ -1,13 +1,18 @@
 
 #prompt {
+	/*
 	position: relative;
 	left: 350px;
 	top: -800px;
+	*/
+	
+	position: absolute;
+	top: 130;
+	left: 240;
 	width: 350px;
 	border: 1px outset #bbbbbb;
 	background-color: #FFFFFF;
 }
-
 
 input.prompt {
 	border: 1px solid #7F9DB9;
