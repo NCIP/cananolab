@@ -88,9 +88,13 @@
 							<td class="rightLabel" colspan="3">
 								<strong> <html:select property="gridNodes"
 										multiple="true" size="3">
-										<html:options collection="allGridNodes" property="key"
-											labelProperty="key" />
-									</html:select> </strong>
+									<c:forEach var="selectedNode" items="${selectedGridNodeHosts}">
+										<option value="${selectedNode}" selected>${selectedNode}</option>
+									</c:forEach>
+									<c:forEach var="unselectedNode" items="${unselectedGridNodeHosts}">
+										<option value="${unselectedNode}">${unselectedNode}</option>
+									</c:forEach>
+								</html:select> </strong>
 							</td>
 						</tr>
 					</table>
