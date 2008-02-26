@@ -49,7 +49,7 @@ public class InitSessionSetup {
 			dropdown = new TreeSet<String>();
 		}
 		if (formAttributeValue != null && formAttributeValue.length() > 0 &&
-				!formAttributeValue.equals("enterNew")) {
+				!formAttributeValue.equals("other")) {
 			dropdown.add(formAttributeValue);
 		}
 		session.setAttribute(sessionAttributeName, dropdown);
