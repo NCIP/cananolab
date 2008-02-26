@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.report;
  * @author pansu
  */
 
-/* CVS $Id: RemoteSearchReportAction.java,v 1.9 2008-01-11 22:33:27 pansu Exp $ */
+/* CVS $Id: RemoteSearchReportAction.java,v 1.10 2008-02-26 18:50:44 cais Exp $ */
 
 import gov.nih.nci.calab.dto.common.LabFileBean;
 import gov.nih.nci.calab.dto.common.ReportBean;
@@ -18,6 +18,7 @@ import gov.nih.nci.calab.ui.core.BaseRemoteSearchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 import gov.nih.nci.calab.ui.particle.InitParticleSetup;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +35,82 @@ import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
 public class RemoteSearchReportAction extends BaseRemoteSearchAction {
+	
+	public ActionForward publicSearch(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+
+		ActionForward forward = null;
+
+		String reportTitle = "";
+		String reportType = "";
+		String particleType = "";
+		String[] functionTypes = new String[0];
+
+		String gridNodeHostStr =(String) request.getParameter("gridNodeHost");
+		String[] gridNodeHosts = gridNodeHostStr.split("~");
+		
+		/*
+		String gridNodeHost =(String) request.getParameter("gridNodeHost");
+		String[] gridNodeHosts = new String[1];
+		if(!gridNodeHost.equals("allLocations")) {
+			gridNodeHosts[0] = gridNodeHost;
+		} else {
+			gridNodeHosts = new String[0];
+		}
+		*/
+		
+		Map<String, GridNodeBean> gridNodeMap = prepareSearch(request);
+		GridNodeBean[] gridNodes = GridService.getGridNodesFromHostNames(
+				gridNodeMap, gridNodeHosts);
+		ActionMessages msgs = new ActionMessages();
+		if (gridNodes == null) {
+			ActionMessage msg = new ActionMessage(
+					"message.grid.discovery.none",
+					CaNanoLabConstants.DOMAIN_MODEL_NAME);
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveMessages(request, msgs);
+			return mapping.getInputForward();
+		}
+		GridSearchService searchService = new GridSearchService();
+		List<LabFileBean> reports = new ArrayList<LabFileBean>();
+		for (GridNodeBean gridNode : gridNodes) {
+			try {
+				List<ReportBean> gridReports = searchService.getRemoteReports(
+						reportTitle, reportType, particleType, functionTypes,
+						gridNode);
+				if (gridReports.size() == 0) {
+					ActionMessage message = new ActionMessage(
+							"message.remoteSearchReport.noresult", gridNode
+									.getHostName());
+					msgs.add(ActionMessages.GLOBAL_MESSAGE, message);
+					saveMessages(request, msgs);
+				}
+				reports.addAll(gridReports);
+			} catch (Exception e) {
+				ActionMessage message = new ActionMessage(
+						"error.grid.notAvailable", gridNode.getHostName());
+				msgs.add(ActionMessages.GLOBAL_MESSAGE, message);
+				saveErrors(request, msgs);
+				e.printStackTrace();
+			}
+		}
+		if (!reports.isEmpty()) {
+			request.getSession().setAttribute("remoteReports", reports);
+			forward = mapping.findForward("success");
+		} else {
+			// if already errors, don't show message
+			if (getErrors(request).isEmpty()) {
+				ActionMessage msg = new ActionMessage(
+						"message.searchReport.noresult");
+				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+				saveMessages(request, msgs);
+			}
+			forward = mapping.getInputForward();
+		}
+		return forward;
+	}
+	
 	public ActionForward search(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
