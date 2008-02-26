@@ -23,55 +23,72 @@
 						support for the annotation of nanoparticles with characterizations
 						resulting from physical and in vitro nanoparticle assays and the
 						sharing of these characterizations in a secure fashion.
-						<br>
-						<br>
-						<div id="publicLinks">
-							<ul>
-								<img src="images/icon_protocol_48x.jpg" />
-								<li>
-									<c:url var="protocolURL" value="searchProtocol.do">
-										<c:param name="dispatch">setup</c:param>
-									</c:url>
-									<h4>
-										<a href="${protocolURL}">Browse Protocols</a>
-									</h4>
-									<h5>
-										Provides access to <u>publicly</u> available nanotechnology
-										protocols. Includes protocols for nanoparticle
-										characterizations (physical, in vitro, in vivo), sample
-										preparation, radio labeling, and safety.
-									</h5>
-								</li>
-								<img src="images/icon_nanoparticle_48x.jpg" />
-								<li>
-									<c:url var="charURL" value="searchNanoparticle.do">
-										<c:param name="dispatch">setup</c:param>
-									</c:url>
-									<h4>
-										<a href="${charURL}">Browse Nanoparticles</a>
-									</h4>
-									<h5>
-										Provides access to <u>publicly</u> available nanoparticle
-										characterization data. Includes information on particle
-										composition, function, and physical and in vitro
-										characterizations (in vivo coming soon).
-									</h5>
-								</li>
 
-								<img src="images/icon_report_48x.gif" />
-								<li>
-									<c:url var="reportURL" value="searchReport.do">
-										<c:param name="dispatch">setup</c:param>
-									</c:url>
-									<h4>
-										<a href="${reportURL}">Browse Reports</a>
-									</h4>
-									<h5>
-										Provides access to <u>publicly</u> available reports detailing the
-										results of nanoparticle characterization projects.
-									</h5>
-								</li>
-							</ul>
+						<div id="publicLinks">
+							<h2 class="welcomeTitle" id="pubh2">
+								Browse caNanoLab
+							</h2>
+							<div class="griddiv">
+								<table class="girdtable">
+									<tr>
+										<th colspan="2">
+											<label class="toplabel" for="location">
+												Location
+											</label>
+											<select name="location" id="location" multiple="true"
+													size="3" onchange="getGridCounts(this);">
+												<option value="local" selected>
+													Local
+												</option>
+												<option value="caNanoLab-PROD">
+													caNanoLab-PROD
+												</option>
+												<option value="caNanoLab-NCL_PROD">
+													caNanoLab-NCL_PROD
+												</option>
+												<option value="caNanoLab-WUSTL">
+													caNanoLab-WUSTL
+												</option>
+												
+											</select>
+										</th>
+									</tr>
+									<tr class="gridTableHeader">
+									<th>Data Type</th>
+									<th id="results">Results</th>
+									</tr>
+									<tr>
+										<td>
+											<img src="images/icon_protocol_48x.jpg" width="15%" />
+											&nbsp;Protocols&nbsp;(
+											<a href="#" onclick="searchProtocols('location');">search</a> )
+										</td>
+										<td class="counts">
+											<a href="#" onclick="browseProtocols('location');" id="protocolCount" class="countsLink"></a>
+										</td>
+									</tr>
+									<tr class="alt">
+										<td>
+											<img src="images/icon_nanoparticle_48x.jpg" width="15%" />
+											&nbsp;Nanoparticles&nbsp;(
+											<a href="#" onclick="searchParitcles('location');">search</a> )
+										</td>
+										<td class="counts">
+											<a href="#" onclick="browseParitcles('location');" id="particleCount" class="countsLink"></a>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<img src="images/icon_report_48x.gif" width="15%" />
+											&nbsp;Reports&nbsp;(
+											<a href="#" onclick="searchReports('location');">search</a> )
+										</td>
+										<td class="counts">
+											<a href="#" onclick="browseReports('location');" id="reportCount" class="countsLink"></a>
+										</td>
+									</tr>
+								</table>
+							</div>
 						</div>
 					</td>
 				</tr>
@@ -113,7 +130,7 @@
 													</label>
 												</td>
 												<td class="formFieldLogin">
-													<input type="text" name="loginId" size="14"/>
+													<input type="text" name="loginId" size="14" />
 												</td>
 											</tr>
 											<tr>
@@ -123,7 +140,7 @@
 													</label>
 												</td>
 												<td class="formFieldLogin">
-													<input type="password" name="password" size="14"/>
+													<input type="password" name="password" size="14" />
 												</td>
 											</tr>
 											<tr>
