@@ -3,6 +3,7 @@ package gov.nih.nci.calab.ui.particle;
 import gov.nih.nci.calab.domain.nano.characterization.Characterization;
 import gov.nih.nci.calab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.calab.dto.characterization.CharacterizationTypeBean;
+import gov.nih.nci.calab.dto.characterization.SideMenuTree;
 import gov.nih.nci.calab.dto.characterization.composition.CompositionBean;
 import gov.nih.nci.calab.dto.common.InstrumentBean;
 import gov.nih.nci.calab.dto.common.ReportBean;
@@ -169,8 +170,7 @@ public class InitParticleSetup {
 			throws ParticleCharacterizationException,
 			CaNanoLabSecurityException {
 		setAllCharacterizationTypes(session);
-		Map<String, List<CharacterizationBean>> charTypeChars = (Map<String, List<CharacterizationBean>>) session
-				.getServletContext().getAttribute("allCharTypeChars");
+		
 		if (session.getAttribute("allCharacterizations") == null
 				|| session.getAttribute("newCharacterizationCreated") != null
 				|| session.getAttribute("newParticleCreated") != null) {
@@ -178,19 +178,16 @@ public class InitParticleSetup {
 			NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 			List<CharacterizationBean> charBeans = service
 					.getCharacterizationInfo(particleId);
+			
+			/*
 			Map<String, List<CharacterizationBean>> charMap = new HashMap<String, List<CharacterizationBean>>();
 
 			Map<String, String> ascendTypeTreeMap = getAscendTypeTreeMap(charTypeChars);
 
-			// get all characterization types that do not have children
-			// key: characterization name, value: action name
-			Map<String, String> charLeafActionNameMap = getCharTypeLeafMap(
-					session, charTypeChars);
-
 			// all characterization types
 			Map<String, Set<String>> typeTreeMap = new HashMap<String, Set<String>>();
 
-			/* charType: category column of table def_characterization_category */
+			//charType: category column of table def_characterization_category
 			for (String charType : charTypeChars.keySet()) {
 				List<CharacterizationBean> newCharBeans = new ArrayList<CharacterizationBean>();
 
@@ -205,31 +202,33 @@ public class InitParticleSetup {
 							newCharBeans.add(charBean);
 						}
 					}
-					String childType = displayBean.getName();
-					while (childType != null
-							&& !childType
-									.equalsIgnoreCase(Characterization.PHYSICAL_CHARACTERIZATION)
-							&& !childType
-									.equalsIgnoreCase(Characterization.INVITRO_CHARACTERIZATION)) {
-						String parentType = ascendTypeTreeMap.get(childType);
-
-						if (typeTreeMap.containsKey(parentType)) {
-							typeTreeMap.get(parentType).add(childType);
-						} else {
-							Set<String> typeSet = new TreeSet<String>();
-							typeSet.add(childType);
-							typeTreeMap.put(parentType, typeSet);
-						}
-						childType = parentType;
-					}
+					
 				}
 				if (!newCharBeans.isEmpty()) {
 					charMap.put(charType, newCharBeans);
 				}
-			} // only characterization types that searched with
+			} 
+			
+			typeTreeMap = createCharaTypeTree(
+					charTypeChars, ascendTypeTreeMap);
+			
+			// only characterization types that searched with
 			// viewTitles
 			Map<String, Set<String>> typeTreeSelectedMap = createCharaTypeTree(
 					charMap, ascendTypeTreeMap);
+			
+			*/
+			
+			Map<String, List<CharacterizationBean>> charTypeChars = 
+					(Map<String, List<CharacterizationBean>>) session
+						.getServletContext().getAttribute("allCharTypeChars");
+			
+			
+			//if(SideMenuTree.getCharTypeCharsMap() == null)
+					//SideMenuTree.setCharTypeCharsMap(charTypeChars);
+			
+			SideMenuTree charMenuTree = new SideMenuTree(charTypeChars, charBeans);
+			
 			// set allCharacterizations based on user privilege
 			UserService userService = new UserService(
 					CaNanoLabConstants.CSM_APP_NAME);
@@ -242,15 +241,15 @@ public class InitParticleSetup {
 			Boolean canCreateNanoparticle = (Boolean) session
 					.getAttribute("canCreateNanoparticle");
 			if (canCreateNanoparticle) {
-				session.setAttribute("allCharacterizations", typeTreeMap);
+				session.setAttribute("allCharacterizations", SideMenuTree.getTypeTreeMap());
 			} else {
 				session.setAttribute("allCharacterizations",
-						typeTreeSelectedMap);
+						charMenuTree.getSelectedTypeTreeMap());
 			}
 
-			session.setAttribute("charaLeafActionName", charLeafActionNameMap);
-			Map<String, List<CharacterizationBean>> nameCharMap = getLeafCharaMap(charMap);
+			Map<String, List<CharacterizationBean>> nameCharMap = charMenuTree.getLeafCharaMap();
 			session.setAttribute("charaLeafToCharacterizations", nameCharMap);
+
 		}
 	}
 
@@ -372,26 +371,23 @@ public class InitParticleSetup {
 				|| session.getAttribute("newCharacterizationCreated") != null
 				|| session.getAttribute("newRemoteParticleCreated") != null) {
 
-			Map<String, List<CharacterizationBean>> charTypeChars = service
+			Map<String, List<CharacterizationBean>> selectedCharTypeChars = service
 					.getRemoteCharacterizationMap(particleName, gridNode);
-			List<CharacterizationBean> remoteComps = charTypeChars
+			List<CharacterizationBean> remoteComps = selectedCharTypeChars
 					.get("Composition");
 			session.setAttribute("remoteCompositions", remoteComps);
-			Map<String, List<CharacterizationBean>> nameCharMap = getLeafCharaMap(charTypeChars);
+			Map<String, List<CharacterizationBean>> nameCharMap = getLeafCharaMap(selectedCharTypeChars);
 			session.setAttribute("remoteCharaLeafToCharacterizations",
 					nameCharMap);
 
-			Map<String, List<CharacterizationBean>> orderedCharTypeChars = charService
-					.getCharacterizationTypeCharacterizations();
-			Map<String, String> ascendTypeTreeMap = getAscendTypeTreeMap(orderedCharTypeChars);
-			Map<String, Set<String>> typeTreeSelectedMap = createCharaTypeTree(
-					charTypeChars, ascendTypeTreeMap);
+			Map<String, List<CharacterizationBean>> charTypeChars = 
+				(Map<String, List<CharacterizationBean>>) session
+					.getServletContext().getAttribute("allCharTypeChars");
+		
+			SideMenuTree charMenuTree = new SideMenuTree(charTypeChars, selectedCharTypeChars);
 			session.setAttribute("remoteSelectedCharacterizations",
-					typeTreeSelectedMap);
-
-			Map<String, String> charActionNameMap = getCharTypeLeafMap(session,
-					orderedCharTypeChars);
-			session.setAttribute("remoteCharaActionName", charActionNameMap);
+					charMenuTree.getSelectedTypeTreeMap());
+			
 		}
 
 		if (session.getAttribute("remoteFuncTypeFuncs") == null
@@ -595,14 +591,28 @@ public class InitParticleSetup {
 			session.getServletContext().setAttribute(
 					"allCharacterizationTypes", types);
 		}
-
+		
 		// set in application context mapping between characterization type and
 		// child characterization name and abbrs
-		if (session.getServletContext().getAttribute("allCharTypeChars") == null) {
+		if (session.getServletContext().getAttribute("allCharTypeChars") == null ||
+				session.getServletContext().getAttribute("charaLeafActionName") == null	) {
 			Map<String, List<CharacterizationBean>> charTypeChars = charService
 					.getCharacterizationTypeCharacterizations();
-			session.getServletContext().setAttribute("allCharTypeChars",
+			
+			if (session.getServletContext().getAttribute("allCharTypeChars") == null) {
+					session.getServletContext().setAttribute("allCharTypeChars",
 					charTypeChars);
+			}
+		
+			if (session.getServletContext().getAttribute("charaLeafActionName") == null) {
+			
+				// get all characterization types that do not have children
+				// key: characterization name, value: action name
+				Map<String, String> charLeafActionNameMap = getCharTypeLeafMap(
+						session, charTypeChars);
+			
+				session.getServletContext().setAttribute("charaLeafActionName", charLeafActionNameMap);
+			}
 		}
 	}
 
