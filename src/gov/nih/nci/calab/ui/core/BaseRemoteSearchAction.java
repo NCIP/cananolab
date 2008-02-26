@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: BaseRemoteSearchAction.java,v 1.3 2008-01-03 21:28:34 pansu Exp $ */
+/* CVS $Id: BaseRemoteSearchAction.java,v 1.4 2008-02-26 18:34:26 cais Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.remote.GridNodeBean;
@@ -14,7 +14,10 @@ import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.calab.service.remote.GridService;
 import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -67,6 +70,21 @@ public abstract class BaseRemoteSearchAction extends AbstractDispatchAction {
 					CaNanoLabConstants.DOMAIN_MODEL_NAME);
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, msgs);
+		} else {
+			String gridNodeHostStr =(String) request.getParameter("gridNodeHost");
+			if(gridNodeHostStr != null) {
+				String[] selectedGridNodeHosts = gridNodeHostStr.split("~");
+				List<String> gridlist = Arrays.asList(selectedGridNodeHosts);
+				request.getSession().setAttribute("selectedGridNodeHosts", gridlist);
+			
+				List<String> unselectedGridNodeHosts = new ArrayList<String>();
+				for(String hostNode: gridNodes.keySet()) {
+					if(!gridlist.contains(hostNode)) {
+						unselectedGridNodeHosts.add(hostNode);
+					}
+				}
+				request.getSession().setAttribute("unselectedGridNodeHosts", unselectedGridNodeHosts);
+			}
 		}
 		return mapping.getInputForward();
 	}
