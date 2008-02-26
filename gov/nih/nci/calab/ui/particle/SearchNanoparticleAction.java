@@ -6,15 +6,20 @@ package gov.nih.nci.calab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SearchNanoparticleAction.java,v 1.4 2008-01-03 21:25:29 pansu Exp $ */
+/* CVS $Id: SearchNanoparticleAction.java,v 1.5 2008-02-26 18:49:22 cais Exp $ */
 
+import gov.nih.nci.calab.dto.common.ProtocolFileBean;
+import gov.nih.nci.calab.dto.common.ReportBean;
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.particle.ParticleBean;
 import gov.nih.nci.calab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.calab.service.particle.NanoparticleService;
+import gov.nih.nci.calab.service.protocol.SearchProtocolService;
+import gov.nih.nci.calab.service.report.SearchReportService;
 import gov.nih.nci.calab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.calab.ui.core.InitSessionSetup;
 
+import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +34,52 @@ import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
 public class SearchNanoparticleAction extends AbstractDispatchAction {
+	public ActionForward publicCounts(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+
+		HttpSession session = request.getSession();
+		UserBean user = (UserBean) session.getAttribute("user");
+
+		String particleSource = "";
+		String particleType = "";
+		String[] functionTypes = new String[0];
+		String[] characterizations = new String[0];
+		String keywordType = "";
+		
+		String summaryType = "";
+		String[] keywordList = null;
+		String[] summaryList = null;
+
+		NanoparticleService searchParticleService = new NanoparticleService();
+		List<ParticleBean> particles = searchParticleService.basicSearch(
+				particleSource, particleType, functionTypes, characterizations,
+				keywordList, keywordType, summaryList, summaryType, user);
+
+		int particleCount = particles.size();
+		
+		//report count
+		String reportTitle = "";
+		String reportType = "";
+		SearchReportService searchReportService = new SearchReportService();
+		List<ReportBean> reports = searchReportService.searchReports(
+				reportTitle, reportType, particleType, functionTypes, user);
+		int reportCount = reports.size();
+		
+		//protocol count
+		String fileTitle = "";
+		String protocolType = "";
+		String protocolName = "";
+		SearchProtocolService searchProtocolService = new SearchProtocolService();
+		List<ProtocolFileBean> protocols = searchProtocolService
+				.searchProtocols(fileTitle, protocolType, protocolName, user);
+		int protocolCount = protocols.size();
+		
+		PrintWriter out = response.getWriter();
+	    out.print(particleCount + "\t" + reportCount + "\t" + protocolCount);
+		return null;
+	}
+	
 	public ActionForward search(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
