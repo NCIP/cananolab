@@ -43,6 +43,7 @@
 					property="particleIds" sortable="true" />
 				<display:column title="Report Submit Date" property="createdDate"
 					sortable="true" format="{0,date,MM-dd-yyyy}" />
+				<display:column title="Location" >Local</display:column>
 			</display:table>
 		</td>
 	</tr>

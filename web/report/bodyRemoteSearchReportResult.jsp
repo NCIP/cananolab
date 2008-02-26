@@ -23,8 +23,11 @@
 				<display:column title="Report Title" property="remoteDownloadURL" sortable="true" />
 				<display:column title="Report Type" property="instanceType" sortable="true" />
 				<display:column title="Report Description" property="description" sortable="true" />
-				<display:column title="Report Comments" property="comments" sortable="true" />
-				<display:column title="Grid Node Host" property="gridNode" sortable="true" />
+				<display:column title="Associated Particle IDs"
+					property="particleIds" sortable="true" />
+				<display:column title="Report Submit Date" property="createdDate"
+					sortable="true" format="{0,date,MM-dd-yyyy}" />
+				<display:column title="Location" property="gridNode" sortable="true" />
 			</display:table>
 		</td>
 	</tr>
