@@ -9,9 +9,10 @@
 		<link rel="StyleSheet" type="text/css" href="css/dtree.css">
 		<script type="text/javascript" src="javascript/script.js"></script>
 		<script type="text/javascript" src="javascript/dtree.js"></script>
+		<script type="text/javascript" src="javascript/browseGrid.js"></script>
 	</head>
 	<tiles:importAttribute scope="session" />
-	<body>
+	<body onload="getLocalCounts('location');">
 		<table height="100%" cellspacing="0" cellpadding="0" width="100%"
 			summary="" border="0" align="center">
 			<!-- nci hdr begins -->
@@ -71,8 +72,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td>
-						<%-- include NCI footer --%>
+					<td>l<%-- include NCI footer --%>
 						<tiles:insert attribute="nciFooter" />
 					</td>
 				</tr>
