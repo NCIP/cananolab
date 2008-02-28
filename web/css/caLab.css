@@ -701,7 +701,6 @@ div.griddiv {
 
 .girdtable {
 	width: 300px;
-	border: 1 solid #cccccc;
 	border-width: 1px;
 	border-color: #cccccc;
 	border-style: solid;
@@ -713,7 +712,6 @@ div.griddiv {
 	font-size: 0.8em;
 	padding: 5px 30px 10px 30px;
 	border-style: solid;
-	border: 1 solid #cccccc;
 	border-width: 1px;
 	border-color: #cccccc;
 }
@@ -722,7 +720,6 @@ div.griddiv {
 	font-family: verdana, arial, helvetica, sans-serif;
 	font-size: 0.7em;
 	padding: 5px 0 5px 5px;
-	border: 1 solid #cccccc;
 	border-width: 1px;
 	border-color: #cccccc;
 	border-style: solid;
