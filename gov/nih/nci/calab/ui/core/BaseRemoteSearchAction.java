@@ -6,7 +6,7 @@ package gov.nih.nci.calab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: BaseRemoteSearchAction.java,v 1.4 2008-02-26 18:34:26 cais Exp $ */
+/* CVS $Id: BaseRemoteSearchAction.java,v 1.5 2008-03-18 15:32:46 cais Exp $ */
 
 import gov.nih.nci.calab.dto.common.UserBean;
 import gov.nih.nci.calab.dto.remote.GridNodeBean;
@@ -36,11 +36,12 @@ public abstract class BaseRemoteSearchAction extends AbstractDispatchAction {
 		Map<String, GridNodeBean> gridNodes = null;
 		// set grid nodes map in the session
 
-		gridNodes = GridService.discoverServices(
+		if(request.getSession().getAttribute("allGridNodes") == null) {
+			gridNodes = GridService.discoverServices(
 				CaNanoLabConstants.GRID_INDEX_SERVICE_URL,
 				CaNanoLabConstants.DOMAIN_MODEL_NAME);
-		request.getSession().setAttribute("allGridNodes", gridNodes);
-
+			request.getSession().setAttribute("allGridNodes", gridNodes);
+		}
 		return gridNodes;
 	}
 
