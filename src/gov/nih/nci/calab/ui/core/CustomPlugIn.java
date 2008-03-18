@@ -1,5 +1,10 @@
 package gov.nih.nci.calab.ui.core;
 
+import java.util.Map;
+
+import gov.nih.nci.calab.dto.remote.GridNodeBean;
+import gov.nih.nci.calab.service.remote.GridService;
+import gov.nih.nci.calab.service.util.CaNanoLabConstants;
 import gov.nih.nci.calab.ui.particle.InitParticleSetup;
 import gov.nih.nci.calab.ui.sample.InitSampleSetup;
 import gov.nih.nci.calab.ui.security.InitSecuritySetup;
@@ -32,6 +37,12 @@ public class CustomPlugIn implements PlugIn {
 			InitParticleSetup.getInstance().setCharNameToCategory(
 					actionServlet.getServletContext());
 			InitSecuritySetup.getInstance().createDefaultCSMGroups();
+			
+			//set grid node hosts for public browse on bodyLogin.jsp
+			Map<String, GridNodeBean> gridNodes = GridService.discoverServices(
+					CaNanoLabConstants.GRID_INDEX_SERVICE_URL,
+					CaNanoLabConstants.DOMAIN_MODEL_NAME);
+			actionServlet.getServletContext().setAttribute("allGridNodes", gridNodes);
 		} catch (Exception e) {
 			this.logger.error("Servlet initialization error", e);
 		}

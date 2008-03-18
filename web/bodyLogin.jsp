@@ -35,22 +35,16 @@
 											<label class="toplabel" for="location">
 												Location
 											</label>
-											<select name="location" id="location" multiple="true"
+											<html:form action="remoteSearchNanoparticle">
+											<html:select property="gridNodes" styleId="location" multiple="true"
 													size="3" onchange="getGridCounts(this);">
 												<option value="local" selected>
 													Local
 												</option>
-												<option value="caNanoLab-PROD">
-													caNanoLab-PROD
-												</option>
-												<option value="caNanoLab-NCL_PROD">
-													caNanoLab-NCL_PROD
-												</option>
-												<option value="caNanoLab-WUSTL">
-													caNanoLab-WUSTL
-												</option>
-												
-											</select>
+												<html:options collection="allGridNodes" property="key"
+																labelProperty="key" />
+											</html:select>
+											</html:form>
 										</th>
 									</tr>
 									<tr class="gridTableHeader">
