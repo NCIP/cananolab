@@ -657,8 +657,9 @@ CREATE TABLE activation_method
 ) 
 ;
 
-
-
+CREATE TABLE hibernate_unique_key (
+  next_hi BIGINT NOT NULL
+) ENGINE=InnoDB;
 
 
 ALTER TABLE target ADD CONSTRAINT FK_target_function 
