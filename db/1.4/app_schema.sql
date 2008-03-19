@@ -32,15 +32,6 @@ CREATE TABLE function
 ;
 
 
-CREATE TABLE small_molecule
-(
-	small_molecule_pk_id BIGINT NOT NULL,
-	alternate_name VARCHAR(200) NULL,
-	PRIMARY KEY (small_molecule_pk_id)
-) 
-;
-
-
 CREATE TABLE sample_container_storage
 (
 	sample_container_pk_id BIGINT NOT NULL,
@@ -68,17 +59,8 @@ CREATE TABLE other_nanoparticle_entity
 (
 	other_nanoparticle_entity_pk_id BIGINT NOT NULL,
 	type VARCHAR(200) NOT NULL,
-	PRIMARY KEY (other_nanoparticle_entity_pk_id)
-) 
-;
-
-
-CREATE TABLE other_functionalizing_entity
-(
-	other_func_entity_pk_id BIGINT NOT NULL,
-	type VARCHAR(200) NOT NULL,
-	PRIMARY KEY (other_func_entity_pk_id),
-	KEY (other_func_entity_pk_id)
+	PRIMARY KEY (other_nanoparticle_entity_pk_id),
+	KEY (other_nanoparticle_entity_pk_id)
 ) 
 ;
 
@@ -114,6 +96,24 @@ CREATE TABLE emulsion
 	is_polymerized TINYINT NULL,
 	PRIMARY KEY (emulsion_pk_id),
 	KEY (emulsion_pk_id)
+) TYPE=InnoDB
+;
+
+
+CREATE TABLE derived_datum
+(
+	datum_pk_id BIGINT NOT NULL,
+	datum_name VARCHAR(200) NOT NULL,
+	value DECIMAL(22,3) NOT NULL,
+	value_type VARCHAR(200) NULL,
+	value_unit VARCHAR(200) NULL,
+	description TEXT NULL,
+	created_by VARCHAR(200) NOT NULL,
+	created_date DATETIME NOT NULL,
+	derived_bioassay_data_pk_id BIGINT NOT NULL,
+	PRIMARY KEY (datum_pk_id),
+	UNIQUE (datum_pk_id),
+	KEY (derived_bioassay_data_pk_id)
 ) TYPE=InnoDB
 ;
 
@@ -164,30 +164,6 @@ CREATE TABLE biopolymer_p
 	name VARCHAR(200) NULL,
 	PRIMARY KEY (biopolymer_pk_id),
 	KEY (biopolymer_pk_id)
-) 
-;
-
-
-CREATE TABLE biopolymer_f
-(
-	biopolymer_pk_id BIGINT NOT NULL,
-	type VARCHAR(50) NOT NULL,
-	sequence TEXT NULL,
-	PRIMARY KEY (biopolymer_pk_id),
-	UNIQUE (biopolymer_pk_id)
-) 
-;
-
-
-CREATE TABLE antibody
-(
-	antibody_pk_id BIGINT NOT NULL,
-	species VARCHAR(200) NULL,
-	type VARCHAR(200) NULL,
-	isotype VARCHAR(200) NULL,
-	PRIMARY KEY (antibody_pk_id),
-	UNIQUE (antibody_pk_id),
-	KEY (antibody_pk_id)
 ) 
 ;
 
@@ -286,14 +262,16 @@ CREATE TABLE nanoparticle_entity
 ;
 
 
-CREATE TABLE functionalizing_entity
+CREATE TABLE derived_bioassay_data
 (
-	functionalizing_entity_pk_id BIGINT NOT NULL,
-	activation_method_pk_id BIGINT NULL,
-	composition_pk_id BIGINT NOT NULL,
-	PRIMARY KEY (functionalizing_entity_pk_id),
-	KEY (activation_method_pk_id),
-	KEY (composition_pk_id)
+	derived_bioassay_data_pk_id BIGINT NOT NULL,
+	characterization_pk_id BIGINT NOT NULL,
+	file_pk_id BIGINT NULL,
+	created_by VARCHAR(200) NOT NULL,
+	created_date DATETIME NOT NULL,
+	PRIMARY KEY (derived_bioassay_data_pk_id),
+	KEY (characterization_pk_id),
+	KEY (file_pk_id)
 ) TYPE=InnoDB
 ;
 
@@ -305,6 +283,15 @@ CREATE TABLE composition_lab_file
 	PRIMARY KEY (composition_pk_id, file_pk_id),
 	KEY (composition_pk_id),
 	KEY (file_pk_id)
+) 
+;
+
+
+CREATE TABLE small_molecule
+(
+	small_molecule_pk_id BIGINT NOT NULL,
+	alternate_name VARCHAR(200) NULL,
+	PRIMARY KEY (small_molecule_pk_id)
 ) 
 ;
 
@@ -329,29 +316,22 @@ CREATE TABLE sample_management
 ;
 
 
+CREATE TABLE other_functionalizing_entity
+(
+	other_func_entity_pk_id BIGINT NOT NULL,
+	type VARCHAR(200) NOT NULL,
+	PRIMARY KEY (other_func_entity_pk_id),
+	KEY (other_func_entity_pk_id)
+) 
+;
+
+
 CREATE TABLE nanoparticle_sample_report
 (
 	particle_sample_pk_id BIGINT NOT NULL,
 	file_pk_id BIGINT NOT NULL,
 	KEY (particle_sample_pk_id),
 	KEY (file_pk_id)
-) TYPE=InnoDB
-;
-
-
-CREATE TABLE derived_datum
-(
-	datum_pk_id BIGINT NOT NULL,
-	datum_name VARCHAR(200) NOT NULL,
-	value DECIMAL(22,3) NOT NULL,
-	value_type VARCHAR(200) NULL,
-	value_unit VARCHAR(200) NULL,
-	description TEXT NULL,
-	created_by VARCHAR(200) NOT NULL,
-	created_date DATETIME NOT NULL,
-	derived_bioassay_data_pk_id BIGINT NOT NULL,
-	PRIMARY KEY (datum_pk_id),
-	UNIQUE (datum_pk_id)
 ) TYPE=InnoDB
 ;
 
@@ -403,6 +383,31 @@ CREATE TABLE characterization
 	KEY (particle_sample_pk_id),
 	KEY (protocol_file_pk_id)
 ) TYPE=InnoDB
+;
+
+
+CREATE TABLE biopolymer_f
+(
+	biopolymer_pk_id BIGINT NOT NULL,
+	type VARCHAR(50) NOT NULL,
+	sequence TEXT NULL,
+	PRIMARY KEY (biopolymer_pk_id),
+	UNIQUE (biopolymer_pk_id),
+	KEY (biopolymer_pk_id)
+) 
+;
+
+
+CREATE TABLE antibody
+(
+	antibody_pk_id BIGINT NOT NULL,
+	species VARCHAR(200) NULL,
+	type VARCHAR(200) NULL,
+	isotype VARCHAR(200) NULL,
+	PRIMARY KEY (antibody_pk_id),
+	UNIQUE (antibody_pk_id),
+	KEY (antibody_pk_id)
+) 
 ;
 
 
@@ -478,15 +483,15 @@ CREATE TABLE instrument_config
 ;
 
 
-CREATE TABLE derived_bioassay_data
+CREATE TABLE functionalizing_entity
 (
-	derived_bioassay_data_pk_id BIGINT NOT NULL,
-	characterization_pk_id BIGINT NOT NULL,
-	file_pk_id BIGINT NULL,
-	created_by VARCHAR(200) NOT NULL,
-	created_date DATETIME NOT NULL,
-	PRIMARY KEY (derived_bioassay_data_pk_id),
-	KEY (file_pk_id)
+	functionalizing_entity_pk_id BIGINT NOT NULL,
+	activation_method_pk_id BIGINT NULL,
+	composition_pk_id BIGINT NOT NULL,
+	PRIMARY KEY (functionalizing_entity_pk_id),
+	KEY (functionalizing_entity_pk_id),
+	KEY (activation_method_pk_id),
+	KEY (composition_pk_id)
 ) TYPE=InnoDB
 ;
 
@@ -686,6 +691,10 @@ ALTER TABLE polymer ADD CONSTRAINT FK_polymer_nanoparticle_entity
 	FOREIGN KEY (polymer_pk_id) REFERENCES nanoparticle_entity (nanoparticle_entity_pk_id)
 ;
 
+ALTER TABLE other_nanoparticle_entity ADD CONSTRAINT FK_other_nanoparticle_entity_nanoparticle_entity 
+	FOREIGN KEY (other_nanoparticle_entity_pk_id) REFERENCES nanoparticle_entity (nanoparticle_entity_pk_id)
+;
+
 ALTER TABLE liposome ADD CONSTRAINT FK_liposome_nanoparticle_entity 
 	FOREIGN KEY (liposome_pk_id) REFERENCES nanoparticle_entity (nanoparticle_entity_pk_id)
 ;
@@ -698,8 +707,16 @@ ALTER TABLE emulsion ADD CONSTRAINT FK_emulsion_nanoparticle_entity
 	FOREIGN KEY (emulsion_pk_id) REFERENCES nanoparticle_entity (nanoparticle_entity_pk_id)
 ;
 
+ALTER TABLE derived_datum ADD CONSTRAINT FK_derived_datum_derived_bioassay_data 
+	FOREIGN KEY (derived_bioassay_data_pk_id) REFERENCES derived_bioassay_data (derived_bioassay_data_pk_id)
+;
+
 ALTER TABLE dendrimer ADD CONSTRAINT FK_dendrimer_nanoparticle_entity 
 	FOREIGN KEY (dendrimer_pk_id) REFERENCES nanoparticle_entity (nanoparticle_entity_pk_id)
+;
+
+ALTER TABLE composing_element ADD CONSTRAINT FK_composing_element_associated_element 
+	FOREIGN KEY (composing_element_pk_id) REFERENCES associated_element (associated_element_pk_id)
 ;
 
 ALTER TABLE composing_element ADD CONSTRAINT FK_composing_element_nanoparticle_entity 
@@ -743,12 +760,12 @@ ALTER TABLE nanoparticle_entity ADD CONSTRAINT FK_nanoparticle_entity_compositio
 	FOREIGN KEY (composition_pk_id) REFERENCES composition (composition_pk_id)
 ;
 
-ALTER TABLE functionalizing_entity ADD CONSTRAINT FK_functionalizing_entity_activation_method 
-	FOREIGN KEY (activation_method_pk_id) REFERENCES activation_method (activation_method_pk_id)
+ALTER TABLE derived_bioassay_data ADD CONSTRAINT FK_derived_bioassay_data_characterization 
+	FOREIGN KEY (characterization_pk_id) REFERENCES characterization (characterization_pk_id)
 ;
 
-ALTER TABLE functionalizing_entity ADD CONSTRAINT FK_functionalizing_entity_composition 
-	FOREIGN KEY (composition_pk_id) REFERENCES composition (composition_pk_id)
+ALTER TABLE derived_bioassay_data ADD CONSTRAINT FK_derived_bioassay_data_lab_file 
+	FOREIGN KEY (file_pk_id) REFERENCES lab_file (file_pk_id)
 ;
 
 ALTER TABLE composition_lab_file ADD CONSTRAINT FK_composition_lab_file_composition 
@@ -761,6 +778,10 @@ ALTER TABLE composition_lab_file ADD CONSTRAINT FK_composition_lab_file_lab_file
 
 ALTER TABLE sample_management ADD CONSTRAINT FK_sample_management_nanoparticle_sample 
 	FOREIGN KEY (particle_sample_pk_id) REFERENCES nanoparticle_sample (particle_sample_pk_id)
+;
+
+ALTER TABLE other_functionalizing_entity ADD CONSTRAINT FK_other_functionalizing_entity_functionalizing_entity 
+	FOREIGN KEY (other_func_entity_pk_id) REFERENCES functionalizing_entity (functionalizing_entity_pk_id)
 ;
 
 ALTER TABLE nanoparticle_sample_report ADD CONSTRAINT FK_nanoparticle_sample_report_nanoparticle_sample 
@@ -793,6 +814,14 @@ ALTER TABLE characterization ADD CONSTRAINT FK_characterization_nanoparticle_sam
 
 ALTER TABLE characterization ADD CONSTRAINT FK_characterization_protocol_file 
 	FOREIGN KEY (protocol_file_pk_id) REFERENCES protocol_file (protocol_file_pk_id)
+;
+
+ALTER TABLE biopolymer_f ADD CONSTRAINT FK_biopolymer_f_functionalizing_entity 
+	FOREIGN KEY (biopolymer_pk_id) REFERENCES functionalizing_entity (functionalizing_entity_pk_id)
+;
+
+ALTER TABLE antibody ADD CONSTRAINT FK_antibody_functionalizing_entity 
+	FOREIGN KEY (antibody_pk_id) REFERENCES functionalizing_entity (functionalizing_entity_pk_id)
 ;
 
 ALTER TABLE report ADD CONSTRAINT FK_report_lab_file 
@@ -831,8 +860,16 @@ ALTER TABLE instrument_config ADD CONSTRAINT FK_instrument_config_instrument
 	FOREIGN KEY (instrument_pk_id) REFERENCES instrument (instrument_pk_id)
 ;
 
-ALTER TABLE derived_bioassay_data ADD CONSTRAINT FK_derived_bioassay_data_lab_file 
-	FOREIGN KEY (file_pk_id) REFERENCES lab_file (file_pk_id)
+ALTER TABLE functionalizing_entity ADD CONSTRAINT FK_functionalizing_entity_associated_element 
+	FOREIGN KEY (functionalizing_entity_pk_id) REFERENCES associated_element (associated_element_pk_id)
+;
+
+ALTER TABLE functionalizing_entity ADD CONSTRAINT FK_functionalizing_entity_activation_method 
+	FOREIGN KEY (activation_method_pk_id) REFERENCES activation_method (activation_method_pk_id)
+;
+
+ALTER TABLE functionalizing_entity ADD CONSTRAINT FK_functionalizing_entity_composition 
+	FOREIGN KEY (composition_pk_id) REFERENCES composition (composition_pk_id)
 ;
 
 ALTER TABLE chemical_association ADD CONSTRAINT FK_chemical_association_associated_element_a 
@@ -849,6 +886,10 @@ ALTER TABLE chemical_association ADD CONSTRAINT FK_chemical_association_composit
 
 ALTER TABLE associated_file ADD CONSTRAINT FK_associated_file_lab_file 
 	FOREIGN KEY (associated_file_pk_id) REFERENCES lab_file (file_pk_id)
+;
+
+ALTER TABLE associated_element_lab_file ADD CONSTRAINT FK_associated_element_lab_file_associated_element 
+	FOREIGN KEY (associated_element_pk_id) REFERENCES associated_element (associated_element_pk_id)
 ;
 
 ALTER TABLE associated_element_lab_file ADD CONSTRAINT FK_associated_element_lab_file_lab_file 
