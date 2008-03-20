@@ -1,5 +1,4 @@
-USE canano
-;
+USE canano;
 
 CREATE TABLE target
 (
