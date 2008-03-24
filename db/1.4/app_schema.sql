@@ -540,9 +540,7 @@ CREATE TABLE storage
 	storage_pk_id BIGINT NOT NULL,
 	storage_location TEXT NULL,
 	storage_type VARCHAR(200) NOT NULL,
-	sample_container_pk_id BIGINT NULL,
 	PRIMARY KEY (storage_pk_id),
-	UNIQUE (sample_container_pk_id),
 	UNIQUE (storage_pk_id)
 ) TYPE=InnoDB
 ;
@@ -613,17 +611,6 @@ CREATE TABLE instrument
 	UNIQUE (instrument_pk_id)
 ) TYPE=InnoDB
 ;
-
-
-CREATE TABLE container_storage_location
-(
-	sample_container_pk_id BIGINT NOT NULL,
-	storage_pk_id BIGINT NOT NULL,
-	PRIMARY KEY (sample_container_pk_id, storage_pk_id),
-	KEY (sample_container_pk_id)
-) TYPE=InnoDB
-;
-
 
 CREATE TABLE common_lookup
 (
