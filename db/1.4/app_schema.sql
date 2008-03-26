@@ -1,4 +1,7 @@
-USE canano;
+USE canano
+;
+
+
 
 CREATE TABLE target
 (
@@ -255,6 +258,7 @@ CREATE TABLE nanoparticle_entity
 	nanoparticle_entity_pk_id BIGINT NOT NULL,
 	composition_pk_id BIGINT NOT NULL,
 	discriminator VARCHAR(200) NULL,
+	description TEXT NULL,
 	PRIMARY KEY (nanoparticle_entity_pk_id),
 	KEY (composition_pk_id)
 ) 
@@ -290,7 +294,8 @@ CREATE TABLE small_molecule
 (
 	small_molecule_pk_id BIGINT NOT NULL,
 	alternate_name VARCHAR(200) NULL,
-	PRIMARY KEY (small_molecule_pk_id)
+	PRIMARY KEY (small_molecule_pk_id),
+	KEY (small_molecule_pk_id)
 ) 
 ;
 
@@ -541,6 +546,7 @@ CREATE TABLE storage
 	storage_location TEXT NULL,
 	storage_type VARCHAR(200) NOT NULL,
 	PRIMARY KEY (storage_pk_id),
+	UNIQUE (),
 	UNIQUE (storage_pk_id)
 ) TYPE=InnoDB
 ;
@@ -612,6 +618,7 @@ CREATE TABLE instrument
 ) TYPE=InnoDB
 ;
 
+
 CREATE TABLE common_lookup
 (
 	common_lookup_pk_id BIGINT NOT NULL,
@@ -648,9 +655,8 @@ CREATE TABLE activation_method
 ) 
 ;
 
-CREATE TABLE hibernate_unique_key (
-  next_hi BIGINT NOT NULL
-) ENGINE=InnoDB;
+
+
 
 
 ALTER TABLE target ADD CONSTRAINT FK_target_function 
@@ -760,6 +766,10 @@ ALTER TABLE composition_lab_file ADD CONSTRAINT FK_composition_lab_file_composit
 
 ALTER TABLE composition_lab_file ADD CONSTRAINT FK_composition_lab_file_lab_file 
 	FOREIGN KEY (file_pk_id) REFERENCES lab_file (file_pk_id)
+;
+
+ALTER TABLE small_molecule ADD CONSTRAINT FK_small_molecule_functionalizing_entity 
+	FOREIGN KEY (small_molecule_pk_id) REFERENCES functionalizing_entity (functionalizing_entity_pk_id)
 ;
 
 ALTER TABLE sample_management ADD CONSTRAINT FK_sample_management_nanoparticle_sample 
