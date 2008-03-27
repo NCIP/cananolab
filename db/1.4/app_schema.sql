@@ -28,7 +28,7 @@ CREATE TABLE function
 	PRIMARY KEY (function_pk_id),
 	KEY (composing_element_pk_id),
 	KEY (functionalizing_entity_pk_id)
-) 
+) TYPE=InnoDB
 ;
 
 
@@ -39,7 +39,7 @@ CREATE TABLE sample_container_storage
 	PRIMARY KEY (sample_container_pk_id, storage_pk_id),
 	KEY (sample_container_pk_id),
 	KEY (storage_pk_id)
-) 
+) TYPE=InnoDB
 ;
 
 
@@ -61,7 +61,7 @@ CREATE TABLE other_nanoparticle_entity
 	type VARCHAR(200) NOT NULL,
 	PRIMARY KEY (other_nanoparticle_entity_pk_id),
 	KEY (other_nanoparticle_entity_pk_id)
-) 
+) TYPE=InnoDB
 ;
 
 
@@ -137,7 +137,7 @@ CREATE TABLE composing_element
 	PRIMARY KEY (composing_element_pk_id),
 	KEY (composing_element_pk_id),
 	KEY (nanoparticle_entity_pk_id)
-) 
+) TYPE=InnoDB
 ;
 
 
@@ -164,7 +164,7 @@ CREATE TABLE biopolymer_p
 	name VARCHAR(200) NULL,
 	PRIMARY KEY (biopolymer_pk_id),
 	KEY (biopolymer_pk_id)
-) 
+) TYPE=InnoDB
 ;
 
 
@@ -259,7 +259,7 @@ CREATE TABLE nanoparticle_entity
 	description TEXT NULL,
 	PRIMARY KEY (nanoparticle_entity_pk_id),
 	KEY (composition_pk_id)
-) 
+) TYPE=InnoDB
 ;
 
 
@@ -284,7 +284,7 @@ CREATE TABLE composition_lab_file
 	PRIMARY KEY (composition_pk_id, file_pk_id),
 	KEY (composition_pk_id),
 	KEY (file_pk_id)
-) 
+) TYPE=InnoDB
 ;
 
 
@@ -294,7 +294,7 @@ CREATE TABLE small_molecule
 	alternate_name VARCHAR(200) NULL,
 	PRIMARY KEY (small_molecule_pk_id),
 	KEY (small_molecule_pk_id)
-) 
+) TYPE=InnoDB
 ;
 
 
@@ -324,7 +324,7 @@ CREATE TABLE other_functionalizing_entity
 	type VARCHAR(200) NOT NULL,
 	PRIMARY KEY (other_func_entity_pk_id),
 	KEY (other_func_entity_pk_id)
-) 
+) TYPE=InnoDB
 ;
 
 
@@ -349,7 +349,7 @@ CREATE TABLE composition
 	UNIQUE (composition_pk_id),
 	UNIQUE (particle_sample_pk_id),
 	KEY (particle_sample_pk_id)
-) 
+) TYPE=InnoDB
 ;
 
 
@@ -360,7 +360,7 @@ CREATE TABLE chemical_association_lab_file
 	PRIMARY KEY (chemical_association_pk_id, file_pk_id),
 	KEY (chemical_association_pk_id),
 	KEY (file_pk_id)
-) 
+) TYPE=InnoDB
 ;
 
 
@@ -396,7 +396,7 @@ CREATE TABLE biopolymer_f
 	PRIMARY KEY (biopolymer_pk_id),
 	UNIQUE (biopolymer_pk_id),
 	KEY (biopolymer_pk_id)
-) 
+) TYPE=InnoDB
 ;
 
 
@@ -409,7 +409,7 @@ CREATE TABLE antibody
 	PRIMARY KEY (antibody_pk_id),
 	UNIQUE (antibody_pk_id),
 	KEY (antibody_pk_id)
-) 
+) TYPE=InnoDB
 ;
 
 
@@ -446,7 +446,7 @@ CREATE TABLE nanoparticle_sample
 	UNIQUE (particle_sample_name),
 	UNIQUE (particle_sample_pk_id),
 	KEY (source_pk_id)
-) 
+) TYPE=InnoDB
 ;
 
 
@@ -514,7 +514,7 @@ CREATE TABLE chemical_association
 	KEY (associated_element_a_pk_id),
 	KEY (associated_element_b_pk_id),
 	KEY (composition_pk_id)
-) 
+) TYPE=InnoDB
 ;
 
 
@@ -534,7 +534,7 @@ CREATE TABLE associated_element_lab_file
 	PRIMARY KEY (associated_element_pk_id, file_pk_id),
 	KEY (associated_element_pk_id),
 	KEY (file_pk_id)
-) 
+) TYPE=InnoDB
 ;
 
 
@@ -544,7 +544,6 @@ CREATE TABLE storage
 	storage_location TEXT NULL,
 	storage_type VARCHAR(200) NOT NULL,
 	PRIMARY KEY (storage_pk_id),
-	UNIQUE (),
 	UNIQUE (storage_pk_id)
 ) TYPE=InnoDB
 ;
@@ -624,7 +623,7 @@ CREATE TABLE common_lookup
 	attribute VARCHAR(200) NOT NULL,
 	value VARCHAR(200) NOT NULL,
 	PRIMARY KEY (common_lookup_pk_id)
-) 
+) TYPE=InnoDB
 ;
 
 
@@ -640,7 +639,7 @@ CREATE TABLE associated_element
 	value DECIMAL(22,3) NULL,
 	value_unit VARCHAR(200) NULL,
 	PRIMARY KEY (associated_element_pk_id)
-) 
+) TYPE=InnoDB
 ;
 
 
@@ -650,10 +649,14 @@ CREATE TABLE activation_method
 	type VARCHAR(200) NOT NULL,
 	activation_effect TEXT NULL,
 	PRIMARY KEY (activation_method_pk_id)
-) 
+) TYPE=InnoDB
 ;
 
 
+CREATE TABLE hibernate_unique_key (
+  next_hi BIGINT NOT NULL
+) TYPE=InnoDB
+;
 
 
 
