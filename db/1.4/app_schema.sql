@@ -559,7 +559,8 @@ CREATE TABLE source
 	country VARCHAR(100) NULL,
 	postal_code VARCHAR(10) NULL,
 	PRIMARY KEY (source_pk_id),
-	UNIQUE (source_pk_id)
+	UNIQUE (source_pk_id),
+	UNIQUE (organization_name)
 ) TYPE=InnoDB
 ;
 
@@ -599,7 +600,8 @@ CREATE TABLE keyword
 (
 	keyword_pk_id BIGINT NOT NULL,
 	name VARCHAR(100) NULL,
-	PRIMARY KEY (keyword_pk_id)
+	PRIMARY KEY (keyword_pk_id),
+	UNIQUE KEY (name)
 ) TYPE=InnoDB
 ;
 
