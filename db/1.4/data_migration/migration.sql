@@ -43,7 +43,8 @@ SELECT shape_pk_id,
 	type,
 	min_dimension_unit,
 	max_dimension_unit
-FROM cananolab.shape;
+FROM cananolab.shape
+;
 
 
 -- solubility --
@@ -60,7 +61,8 @@ SELECT solubility_pk_id,
 	critical_concentration,
 	concentration_unit,
 	is_soluble
-FROM cananolab.solubility;
+FROM cananolab.solubility
+;
 
 INSERT INTO canano.surface_chemistry (
 	surface_chemistry_pk_id,
@@ -78,8 +80,8 @@ SELECT surface_chemistry_pk_id,
 	'DATA_MIGRATION',
 	SYSDATE()
 FROM cananolab.surface_chemistry
-ORDER BY surface_pk_id, list_index;
-
+ORDER BY surface_pk_id, list_index
+;
 
 INSERT INTO canano.protocol_file
 (
@@ -165,27 +167,6 @@ SELECT instrument_config_pk_id,
 FROM cananolab.instrument_config
 ;
 
-/*
-INSERT INTO canano.derived_bioassay_data
-(
-	derived_bioassay_data_pk_id,
-	characterization_pk_id,
-	file_pk_id,
-	created_by,
-	created_date
-)
-SELECT
-	derived_bioassay_data_pk_id,
-	characterization_pk_id,
-	derived_bioassay_data_pk_id,
-	'DATA_MIGRATION',
-	SYSDATE()
-FROM cananolab.derived_bioassay_data
-ORDER BY characterization_pk_id, list_index
-;
-*/
-
--- version 2
 INSERT INTO canano.derived_bioassay_data
 (
 	derived_bioassay_data_pk_id,
@@ -316,19 +297,7 @@ SELECT keyword_pk_id,
 FROM cananolab.keyword_bioassay_data
 ;
 
-
-INSERT INTO canano.keyword
-(
-	keyword_pk_id,
-	name
-)
-SELECT keyword_pk_id,
-  name
-FROM cananolab.keyword
-;
-
 -- sample
-
 insert into canano.report
 (
 	report_pk_id,
@@ -355,7 +324,9 @@ insert into canano.nanoparticle_sample_report
 )
 SELECT sample_pk_id,
 	file_pk_id
-FROM cananolab.sample_report;
+FROM cananolab.sample_report
+;
+
 
 insert into canano.nanoparticle_sample_report
 (
@@ -1177,23 +1148,23 @@ SELECT next_hi
 FROM cananolab.hibernate_unique_key
 ;
 
--- remove duplicated keyword name from keyword table
+-- remove duplicated keyword name from cananolab.keyword table
 -- keyword table
 CREATE TABLE 
 keyword_temp(keyword_pk_id BIGINT(20), name VARCHAR(100));
 
 INSERT INTO keyword_temp(name)
-SELECT DISTINCT ucase(name) FROM keyword;
+SELECT DISTINCT ucase(name) FROM cananolab.keyword;
 
-update keyword_temp, keyword
-set keyword_temp.keyword_pk_id = keyword.keyword_pk_id
-where lcase(keyword_temp.name) = lcase(keyword.name)
+update keyword_temp, cananolab.keyword labk
+set keyword_temp.keyword_pk_id = labk.keyword_pk_id
+where lcase(keyword_temp.name) = lcase(labk.name)
 ;
 
 -- keyword_nanoparticle_sample table
 CREATE TABLE keyword_particle_temp AS SELECT * FROM keyword_nanoparticle_sample;
 
-update keyword_particle_temp kpt, keyword_temp kt, keyword k
+update keyword_particle_temp kpt, keyword_temp kt, cananolab.keyword k
 set kpt.keyword_pk_id = kt.keyword_pk_id
 where  lcase(kt.name) = lcase(k.name)
 and  kpt.keyword_pk_id = k.keyword_pk_id
@@ -1209,7 +1180,7 @@ DROP TABLE keyword_particle_temp;
 -- keyword_lab_file table
 CREATE TABLE keyword_file_temp AS SELECT * FROM keyword_lab_file;
 
-update keyword_file_temp kpt, keyword_temp kt, keyword k
+update keyword_file_temp kpt, keyword_temp kt, cananolab.keyword k
 set kpt.keyword_pk_id = kt.keyword_pk_id
 where  lcase(kt.name) = lcase(k.name)
 and  kpt.keyword_pk_id = k.keyword_pk_id
