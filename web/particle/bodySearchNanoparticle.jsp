@@ -12,9 +12,6 @@
 				</h3>
 			</td>
 			<td align="right" width="30%">
-				<img src="images/icon_gridSearch_48x.gif" alt="caBIG grid search"
-					align="center"><a href="remoteSearchNanoparticle.do?dispatch=setup"
-					class="helpText">Grid Search</a>&nbsp;&nbsp;
 				<%--<a href="advancedNanoparticleSearch.do" class="helpText">Advanced Search</a> &nbsp; &nbsp; --%>
 				<a
 					href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=search_nano_help')"
@@ -27,7 +24,7 @@
 				<table width="100%" border="0" align="center" cellpadding="3"
 					cellspacing="0" summary="">
 					<tr class="topBorder">
-						<td class="formTitle" colspan="4">
+						<td class="formTitle" colspan="5">
 							<div align="justify">
 								Search Criteria
 							</div>
@@ -43,22 +40,28 @@
 										<html:options name="allParticleSources" />
 								</html:select> </strong>
 						</td>
-						<td class="label">
-							<strong> Particle Type </strong>
-						</td>
-						<td class="rightLabel">
-							<strong> <html:select property="particleType">
-									<option value="" />
-										<html:options name="allSampleTypes" />
-								</html:select> </strong>
-						</td>
+						<td class="label">&nbsp;</td>
+						<td class="label">&nbsp;</td>
+						<td class="rightLabel">&nbsp;</td>
 					</tr>
 					<tr>
 						<td class="leftLabel" valign="top">
-							<strong> Function Type </strong>
+							<strong>Composition</strong>
 						</td>
-						<td class="rightLabel" colspan="3">
-							<strong> <html:select property="functionTypes"
+						<td class="label" valign="top">
+							Nanoparticle Entity
+						</td>
+						<td class="label">
+							<strong><html:select property="particleType"
+							multiple="true" size="4">
+										<html:options name="allSampleTypes" />
+								</html:select> </strong>
+						</td>
+						<td class="label" valign="top">
+							Functionalizing Entity
+						</td>
+						<td class="rightLabel">
+							<strong><html:select property="functionTypes"
 									multiple="true" size="4">
 									<html:options name="allFunctionTypes" />
 								</html:select> </strong>
@@ -66,7 +69,7 @@
 					</tr>
 					<tr>
 						<td class="leftLabel" valign="top">
-							<strong> Characterization Type </strong>
+							<strong>Characterization Type</strong>
 						</td>
 						<td class="label">
 							<c:forEach var="charType" items="${allCharacterizationTypes}">
@@ -86,11 +89,10 @@
 							<html:hidden styleId="characterizationType"
 								property="characterizationType" />
 						</td>
-
 						<td class="label" valign="top">
-							<strong> Characterization </strong>
+							<strong>Characterization</strong>
 						</td>
-						<td class="rightLabel" valign="top">
+						<td class="rightLabel" valign="top" colspan="2">
 							<strong> <html:select property="characterizations"
 									multiple="true" size="4">
 									<c:forEach var="char"
@@ -102,11 +104,11 @@
 					</tr>
 					<tr>
 						<td class="leftLabel" valign="top">
-							<strong> Summary/Description <em>(one word per
+							<strong> Summary/Description<br><em>(one word per
 									line)</em> </strong>
 						</td>
-						<td class="label">
-							<html:textarea property="summaries" rows="4" />
+						<td class="label" colspan="2">
+							<html:textarea property="summaries" rows="3" />
 						</td>
 						<td class="rightLabel" colspan="2">
 							<strong>for<br> <html:radio property="summaryType"
@@ -117,16 +119,36 @@
 					</tr>
 					<tr>
 						<td class="leftLabel" valign="top">
-							<strong> Keywords <em>(one word per line)</em> </strong>
+							<strong>Keywords<br><em>(one word per line)</em></strong>
 						</td>
-						<td class="label">
-							<html:textarea property="keywords" rows="4" />
+						<td class="label" colspan="2">
+							<html:textarea property="keywords" rows="3" />
 						</td>
 						<td class="rightLabel" colspan="2">
 							<strong>for<br> <html:radio property="keywordType"
 									value="nanoparticle">Nanoparticle</html:radio> <br> <html:radio
 									property="keywordType" value="assayResult">Characterization File</html:radio>
 							</strong>
+						</td>
+					</tr>
+					<tr>
+						<td class="leftLabel" valign="top">
+							<strong>Search Location</strong>
+						</td>
+						<td class="rightLabel" colspan="4">
+								<strong><html:select property="gridNodes"
+										multiple="true" size="3">
+									<option value="local" selected>Local</option>
+									<option value="caNanoLab-NCL_PROD">caNanoLab-NCL_PROD</option>
+									<option value="caNanoLab-PROD">caNanoLab-PROD</option>
+									<option value="caNanoLab-WUSTL">caNanoLab-WUSTL</option>
+									<c:forEach var="selectedNode" items="${selectedGridNodeHosts}">
+										<option value="${selectedNode}" selected>${selectedNode}</option>
+									</c:forEach>
+									<c:forEach var="unselectedNode" items="${unselectedGridNodeHosts}">
+										<option value="${unselectedNode}">${unselectedNode}</option>
+									</c:forEach>
+								</html:select></strong>
 						</td>
 					</tr>
 				</table>
