@@ -12,8 +12,6 @@
 				</h3>
 			</td>
 			<td align="right" width="30%">
-				<img src="images/icon_gridSearch_48x.gif" alt="caBIG grid search"
-					align="center"><a href="remoteSearchReport.do?dispatch=setup" class="helpText">Grid Search</a>&nbsp;
 				<%--<a href="advancedNanoparticleSearch.do" class="helpText">Advanced Search</a> &nbsp; &nbsp; --%>
 				<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=search_reports_help')" class="helpText">Help</a>
 			</td>
@@ -28,7 +26,7 @@
 								Search Criteria
 							</div>
 						</td>
-						<td class="formTitle" colspan="3">
+						<td class="formTitle" colspan="4">
 							<div align="justify">
 								* for Search Wildcards
 							</div>
@@ -38,7 +36,7 @@
 						<td class="leftLabel">
 							<strong>Report Title</strong>
 						</td>
-						<td class="rightLabel" colspan="3">
+						<td class="rightLabel" colspan="4">
 							<html:text property="reportTitle" size="50" />
 						</td>
 					</tr>
@@ -46,31 +44,66 @@
 						<td class="leftLabel">
 							<strong>Report Type</strong>
 						</td>
-						<td class="rightLabel"">
+						<td class="label"">
 							<html:select property="reportType">
 								<option value=""/>
 								<html:options name="allReportTypes" />
 							</html:select>
 						</td>
+						<td class="label">&nbsp;</td>
+						<td class="label">&nbsp;</td>
+						<td class="rightLabel">&nbsp;</td>
 					</tr>
 					<tr>
 						<td class="leftLabel" valign="top">
-							<strong> Particle Type </strong>
+							<strong>Particle Composition</strong>
 						</td>
-						<td class="rightLabel" colspan="3">
-							<strong> <html:select property="particleType">
-									<option value="" />
+						<td class="label" valign="top">
+							Nanoparticle Entity
+						</td>
+						<td class="label">
+							<strong><html:select property="particleType"
+							multiple="true" size="4">
 										<html:options name="allSampleTypes" />
+								</html:select> </strong>
+						</td>
+						<td class="label" valign="top">
+							Functionalizing Entity
+						</td>
+						<td class="rightLabel">
+							<strong><html:select property="functionTypes"
+									multiple="true" size="4">
+									<html:options name="allFunctionTypes" />
+								</html:select> </strong>
+						</td>
+					</tr>
+					<tr>
+						<td class="leftLabel" valign="top">
+							<strong>Particle Function Type</strong>
+						</td>
+						<td class="rightLabel" colspan="4">
+							<strong> <html:select property="functionTypes" multiple="true" size="4">
+									<html:options name="allFunctionTypes"/>
 								</html:select></strong>
 						</td>
 					</tr>
 					<tr>
 						<td class="leftLabel" valign="top">
-							<strong> Function Type </strong>
+							<strong>Search Location</strong>
 						</td>
-						<td class="rightLabel" colspan="3">
-							<strong> <html:select property="functionTypes" multiple="true" size="4">
-									<html:options name="allFunctionTypes"/>
+						<td class="rightLabel" colspan="4">
+								<strong><html:select property="gridNodes"
+										multiple="true" size="3">
+									<option value="local" selected>Local</option>
+									<option value="caNanoLab-NCL_PROD">caNanoLab-NCL_PROD</option>
+									<option value="caNanoLab-PROD">caNanoLab-PROD</option>
+									<option value="caNanoLab-WUSTL">caNanoLab-WUSTL</option>
+									<c:forEach var="selectedNode" items="${selectedGridNodeHosts}">
+										<option value="${selectedNode}" selected>${selectedNode}</option>
+									</c:forEach>
+									<c:forEach var="unselectedNode" items="${unselectedGridNodeHosts}">
+										<option value="${unselectedNode}">${unselectedNode}</option>
+									</c:forEach>
 								</html:select></strong>
 						</td>
 					</tr>
