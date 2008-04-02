@@ -24,7 +24,7 @@
 						<html:select property="solubility.solvent" styleId="solvent"
 							onchange="javascript:callPrompt('Solvent', 'solvent');">
 							<html:options name="allSolventTypes" />
-							<option value="other">Other</option>
+							<option value="other">[Other]</option>
 						</html:select>
 					</c:when>
 					<c:otherwise>

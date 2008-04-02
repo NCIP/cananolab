@@ -30,7 +30,7 @@
 					<html:select property="achar.characterizationSource" styleId="charSource"
 						onchange="javascript:callPrompt('Characterization Source', 'charSource');">
 						<html:options name="characterizationSources" />
-						<option value="other">Other</option>
+						<option value="other">[Other]</option>
 					</html:select>
 				</c:when>
 				<c:otherwise>

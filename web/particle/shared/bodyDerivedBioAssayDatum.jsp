@@ -41,7 +41,7 @@
 								onchange="javascript:callPrompt('Name', 'assayName' + ${param.fileInd} + ${dInd});">
 								<html:options name="datumNames" />
 								<option value=""></option>
-								<option value="other">Other</option>
+								<option value="other">[Other]</option>
 							</html:select>&nbsp; 	
 						</c:when>
 						<c:otherwise>
@@ -56,7 +56,7 @@
 								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].statisticsType"
 								onchange="javascript:callPrompt('Statistics Type', 'statisticsType' + ${param.fileInd} + ${dInd});">
 								<html:options name="charMeasureTypes" />
-								<option value="other">Other</option>
+								<option value="other">[Other]</option>
 							</html:select>&nbsp; 						
 						</c:when>
 						<c:otherwise>
@@ -83,7 +83,7 @@
 								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].unit"
 								onchange="javascript:callPrompt('Unit', 'unit' + ${param.fileInd} + ${dInd});">
 								<html:options name="charMeasureUnits" />
-								<option value="other">Other</option>
+								<option value="other">[Other]</option>
 							</html:select>&nbsp; 						
 						</c:when>
 						<c:otherwise>

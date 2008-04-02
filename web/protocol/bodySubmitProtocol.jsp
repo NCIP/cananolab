@@ -47,7 +47,7 @@
 								<html:select styleId="protocolType" property="protocolType"
 									onchange="javascript:callPrompt('Protocol Type', 'protocolType'); resetProtocols(); retrieveProtocols();">
 									<html:options name="protocolTypes" />
-									<option value="other">Other</option>
+									<option value="other">[Other]</option>
 								</html:select>
 							</td>
 						</tr>
@@ -61,13 +61,13 @@
 									<c:if test="${! empty submitProtocolForm.map.protocolName}">
 									<html:option value="${submitProtocolForm.map.protocolName}">${submitProtocolForm.map.protocolName}</html:option>
 									</c:if>
-									<option value="other">Other</option>
+									<option value="other">[Other]</option>
 								</html:select>
 								&nbsp; &nbsp;
 								<strong>Protocol Version* </strong>&nbsp;
 								<html:select styleId="protocolId" property="file.id"
 									onfocus="javascript:callPrompt('Protocol Version', 'protocolId');">
-									<option value="other">Other</option>
+									<option value="other">[Other]</option>
 								</html:select>
 								&nbsp; &nbsp;
 							</td>

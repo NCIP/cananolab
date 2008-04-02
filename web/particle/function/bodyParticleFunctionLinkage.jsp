@@ -83,7 +83,7 @@ function hideDetail(elementId) {
 						property="function.linkages[${param.linkageInd}].bondType"
 						onchange="javascript:callPrompt('Bond Type', 'bondType');">
 						<html:options name="allBondTypes" />
-						<option value="other">Other</option>
+						<option value="other">[Other]</option>
 					</html:select> </span>
 				<span id="Encapsulation Detail${param.linkageInd}"
 					style="visibility:${encapsulationVis};"> <strong>Localization</strong>
@@ -210,7 +210,7 @@ function hideDetail(elementId) {
 									property="function.linkages[${param.linkageInd}].agent.imageContrastAgent.type"
 									onchange="javascript:callPrompt('Type', 'type');">
 									<html:options name="allImageContrastAgentTypes" />
-									<option value="other">Other</option>
+									<option value="other">[Other]</option>
 								</html:select>
 							</td>
 						</tr>

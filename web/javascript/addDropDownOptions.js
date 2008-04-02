@@ -1,4 +1,3 @@
-
 function validateOptions(newOption, optionsArray) {
 	for (var i = 0; i < optionsArray.length; i++) {
 		if(optionsArray[i].text == "enterNew") 
@@ -10,34 +9,9 @@ function validateOptions(newOption, optionsArray) {
 	}
 	return true;
 }
-/*
-function addOptionPrompt(optionName, tdId) {
-	var opt = prompt("New " + optionName + ":", "");
-	if (opt != null && opt != "") {
-		var parentEle = document.getElementById(tdId);
-		var selectEle = parentEle.getElementsByTagName("select");
-		if (selectEle.length == 1) {
-			if (!validateOptions(opt, selectEle[0].options)) {
-				selectEle[0].options.selectedIndex = 0;
-				alert(opt + " is already on the list!");
-				return false;
-			}
-			var optObj = new Option(opt, opt);
-			selectEle[0].options[selectEle[0].options.length] = optObj;
-			for (var i = selectEle[0].options.length - 1; i > 0; i--) {
-				selectEle[0].options[i].text = selectEle[0].options[i - 1].text;
-				selectEle[0].options[i].value = selectEle[0].options[i - 1].value;
-			}
-			selectEle[0].options[0].text = opt;
-			selectEle[0].options[0].value = opt;
-			selectEle[0].options.selectedIndex = 0;
-		}
-	}
-	return false;
-}
-*/
 
-function addOptionPrompt(opt, selectId) {
+function addOption(selectId) {
+	var opt = document.getElementById("promptbox").value;
 	if (opt != null && opt != "") {
 		var selectEle = document.getElementById(selectId);
 		if(opt == "other") return false;
@@ -52,48 +26,136 @@ function addOptionPrompt(opt, selectId) {
 			selectEle.options[i].text = selectEle.options[i - 1].text;
 			selectEle.options[i].value = selectEle.options[i - 1].value;
 		}
-		selectEle.options[0].text = opt;
+		selectEle.options[0].text = "[" + opt + "]";
 		selectEle.options[0].value = opt;
 		selectEle.options.selectedIndex = 0;
 	}
+	document.getElementsByTagName("body")[0].removeChild(document.getElementById("prompt"));
 	return false;
 }
-var response = null;
 
-function prompt2(message, sendto, parentId) {
+function changeOption(selectId) {
+	var opt = document.getElementById("promptbox").value;
+	if (opt != null && opt != "") {
+		var selectEle = document.getElementById(selectId);
+		if(opt == "other") return false;
+		if (!validateOptions(opt, selectEle.options)) {
+			selectEle.options.selectedIndex = 0;
+			alert(opt + " is already on the list!");
+			return false;
+		}
+		
+		selectEle.options[selectEle.options.selectedIndex].text = "[" + opt + "]";
+		selectEle.options[selectEle.options.selectedIndex].value = opt;
+	}
+	document.getElementsByTagName("body")[0].removeChild(document.getElementById("prompt"));
+	return false;
+}
+
+function removeOption(selectId) {
+	var selectEle = document.getElementById(selectId);
+	selectEle.options[selectEle.options.selectedIndex] = null;
+
+	document.getElementsByTagName("body")[0].removeChild(document.getElementById("prompt"));
+	return false;
+}
+
+function addNewOption(message, parentId) {
 	promptbox = document.createElement("div");
 	promptbox.setAttribute("id", "prompt");
 	document.getElementsByTagName("body")[0].appendChild(promptbox);
-	promptbox = eval("document.getElementById('prompt').style");
-	
-	promptbox.position = "absolute";
-	promptbox.top = 150;
-	promptbox.left = 200;
-	//promptbox.width = 300;
-	//promptbox.border = "outset #bbbbbb 1px";
 	
 	document.getElementById("prompt").innerHTML = "<table cellspacing='5' cellpadding='0' border='0' width='100%' class='promptbox'>" + 
-		"<tr><td>" + message + "</td></tr>" + "<tr><td><input type='text' id='promptbox' onblur='this.focus()' class='promptbox'></td></tr>" + 
-		"<tr><td align='right'><br><input type='button' class='prompt' value='Add' onMouseOver='this.style.border=\"1 outset #dddddd\"' onMouseOut='this.style.border=\"1 solid transparent\"' onClick='" + 
-		sendto + "(document.getElementById(\"promptbox\").value, \"" + parentId + 
-		"\"); document.getElementsByTagName(\"body\")[0].removeChild(document.getElementById(\"prompt\"))'> <input type='button' class='prompt' value='Cancel' onMouseOver='this.style.border=\"1 outset transparent\"' onMouseOut='this.style.border=\"1 solid transparent\"' onClick='" + 
-		sendto + "(\"\"); document.getElementsByTagName(\"body\")[0].removeChild(document.getElementById(\"prompt\"))'></td></tr></table>";
+		"<tr><td>" + message + "</td></tr>" + 
+		"<tr><td><input type='text' id='promptbox' onblur='this.focus()' class='promptbox'></td></tr>" + 
+		"<tr><td align='right'><br>" +
+		"<input type='button' class='prompt' value='Add' onMouseOver='mouseOverStyle();' onMouseOut='mouseOutStyle();' onClick='addOption(\"" + parentId + "\");' >" +
+		"<input type='button' class='prompt' value='Cancel' onMouseOver='mouseOverStyle();' onMouseOut='mouseOutStyle();' onClick='cancelAddOption()';>" +
+		"</td></tr></table>";
 		
 	document.getElementById("promptbox").focus();
 }
-function myfunction(value, parentId) {
-	if (value.length <= 0) {
-		return false;
-	} else {
-		addOptionPrompt(value, parentId);
-	}
+
+function modifyOption(message, parentId, selectedText) {
+	promptbox = document.createElement("div");
+	promptbox.setAttribute("id", "prompt");
+	document.getElementsByTagName("body")[0].appendChild(promptbox);
+	
+	document.getElementById("prompt").innerHTML = "<table cellspacing='5' cellpadding='0' border='0' width='100%' class='promptbox'>" + 
+		"<tr><td>" + message + "</td></tr>" + 
+		"<tr><td><input type='text' id='promptbox' onblur='this.focus()' class='promptbox' value='" + selectedText + "'></td></tr>" + 
+		"<tr><td align='right'><br>" +
+		"<input type='button' class='prompt' value='Save' onMouseOver='mouseOverStyle();' onMouseOut='mouseOutStyle();' onClick='changeOption(\"" + parentId + "\");' >" +
+		"<input type='button' class='prompt' value='Remove' onMouseOver='mouseOverStyle();' onMouseOut='mouseOutStyle();' onClick='removeOption(\"" + parentId + "\");' >" +
+		"<input type='button' class='prompt' value='Cancel' onMouseOver='mouseOverStyle();' onMouseOut='mouseOutStyle();' onClick='cancelAddOption()';>" +
+		"</td></tr></table>";
+		
+	document.getElementById("promptbox").focus();
 }
+
+function cancelAddOption() {
+	document.getElementsByTagName("body")[0].removeChild(document.getElementById("prompt"));
+	return false;
+}
+
+
+function mouseOverStyle(event) {
+	var targetObj = getTargetElement(event);
+	if (targetObj == null) {
+		return false;
+	}
+	//var inputObj = ascendDOM(targetObj, 'input');
+	targetObj.style.border = "1 outset #dddddd";
+}
+function getTargetElement(e) {
+	var el;
+	if (window.event && window.event.srcElement) {
+		el = window.event.srcElement;
+	}
+	if (e && e.target) {
+		el = e.target;
+	}
+	if (!el) {
+		return null;
+	}
+	return el;
+}
+function mouseOutStyle(event) {
+	var targetObj = getTargetElement(event);
+	if (targetObj == null) {
+		return false;
+	}
+	targetObj.style.border = "1 solid transparent";
+}
+
+/*
+function callPrompt(optionName, selectId) {
+	var selectEle = document.getElementById(selectId);
+	var ovalue = selectEle.options[selectEle.options.selectedIndex].value;
+	if(ovalue == "other")
+		addNewOption("New " + optionName + ":", selectId);
+	else if(ovalue.charAt(0) == "[" &&
+			ovalue.charAt(ovalue.length - 1) == "]") {
+		var otext = selectEle.options[selectEle.options.selectedIndex].text;
+		modifyOption("Edit " + optionName + " option:", selectId, otext);
+	}
+	return false;
+}
+*/
 
 function callPrompt(optionName, selectId) {
 	var selectEle = document.getElementById(selectId);
-	if(selectEle.options[selectEle.options.selectedIndex].value != "other")
-		return false;
-		
-	prompt2("New " + optionName + ":", "myfunction", selectId);
+	var otext = selectEle.options[selectEle.options.selectedIndex].text;
+	if(otext == "[Other]")
+		addNewOption("New " + optionName + ":", selectId);
+	else if(otext.charAt(0) == "[" &&
+			otext.charAt(otext.length - 1) == "]") {
+		var text = removeBracket(otext);
+		modifyOption("Edit " + optionName + " Option:", selectId, text);
+	}
+	return false;
 }
 
+function removeBracket(bracketStr) {
+	return bracketStr.substring(1, bracketStr.length - 1);
+}

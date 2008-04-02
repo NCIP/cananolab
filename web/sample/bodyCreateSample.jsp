@@ -65,7 +65,7 @@
 											property="sample.sampleSource" styleId="source"
 											onchange="javascript:callPrompt('Source', 'source');">
 											<html:options name="allSampleSources" />
-											<option value="other">Other</option>
+											<option value="other">[Other]</option>
 										</html:select> &nbsp; &nbsp;Source ID <span class="formFieldWhite"><html:text
 												property="sample.sourceSampleId" size="10" /> </span> &nbsp;
 										&nbsp; 
@@ -180,7 +180,7 @@
 																				property="sample.containers[${ind}].containerType"
 																				onchange="javascript:callPrompt('Container Type', 'containerType' + ${ind});">
 																				<html:options name="allSampleContainerTypes" />
-																				<option value="other">Other</option>
+																				<option value="other">[Other]</option>
 																			</html:select> </span>
 																</div>
 															</td>
@@ -259,7 +259,7 @@
 																					onchange="javascript:callPrompt('Room', 'room' + ${ind});">
 																					<html:options name="sampleContainerInfo"
 																						property="storageRooms" />
-																					<option value="other">Other</option>
+																					<option value="other">[Other]</option>
 																				</html:select>
 																			</td>
 																			<td class="borderlessLabel">
@@ -271,7 +271,7 @@
 																					onchange="javascript:callPrompt('Freezer', 'freezer' + ${ind});">
 																					<html:options name="sampleContainerInfo"
 																						property="storageFreezers" />
-																					<option value="other">Other</option>
+																					<option value="other">[Other]</option>
 																				</html:select>
 																			</td>
 																			<td class="borderlessLabel">
@@ -283,7 +283,7 @@
 																					onchange="javascript:callPrompt('Shelf', 'shelf' + ${ind});">
 																					<html:options name="sampleContainerInfo"
 																						property="storageShelves" />
-																					<option value="other">Other</option>
+																					<option value="other">[Other]</option>
 																				</html:select>
 																			</td>
 																			<td class="borderlessLabel">
@@ -295,7 +295,7 @@
 																					onchange="javascript:callPrompt('Box', 'box' + ${ind});">
 																					<html:options name="sampleContainerInfo"
 																						property="storageBoxes" />
-																					<option value="other">Other</option>
+																					<option value="other">[Other]</option>
 																				</html:select>
 																			</td>
 																		</tr>

@@ -21,7 +21,7 @@
 					<html:select property="cytotoxicity.cellLine" styleId="cellLine"
 											onchange="javascript:callPrompt('Cell Line', 'cellLine');">
 						<html:options name="allCellLines" />
-						<option value="other">Other</option>
+						<option value="other">[Other]</option>
 					</html:select>
 				</td>
 			</c:when>

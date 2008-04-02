@@ -43,7 +43,7 @@
 							property="achar.derivedBioAssayDataList[${param.fileInd}].type"
 							onchange="javascript:callPrompt('File Type', 'fileType' + ${param.fileInd});">
 							<html:options name="allDerivedDataFileTypes" />
-							<option value="other">Other</option>
+							<option value="other">[Other]</option>
 						</html:select>
 					</td>
 				</c:when>
@@ -64,7 +64,7 @@
 							multiple="yes" size="4"
 							onchange="javascript:callPrompt('Data Category', 'dataCategory' + ${param.fileInd}); filterDatumCategories(${param.fileInd}, ${fn:length(nanoparticleCharacterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].datumList)})">
 							<html:options name="derivedDataCategories" />
-							<option value="other">Other</option>
+							<option value="other">[Other]</option>
 						</html:select>
 					</td>
 				</c:when>
