@@ -42,7 +42,7 @@
 												property="aliquot.container.containerType"
 												onchange="javascript:callPrompt('Container Type', 'containerType');">
 												<html:options name="allAliquotContainerTypes" />
-												<option value="other">Other</option>
+												<option value="other">[Other]</option>
 											</html:select> </span> </strong>
 								</div>
 							</td>
@@ -119,7 +119,7 @@
 													onchange="javascript:callPrompt('Room', 'room');">
 													<html:options name="aliquotContainerInfo"
 														property="storageRooms" />
-													<option value="other">Other</option>
+													<option value="other">[Other]</option>
 												</html:select>
 											</td>											<td class="borderlessLabel">
 												<strong>Freezer</strong>
@@ -130,7 +130,7 @@
 													onchange="javascript:callPrompt('Freezer', 'freezer');">
 													<html:options name="aliquotContainerInfo"
 														property="storageFreezers" />
-													<option value="other">Other</option>
+													<option value="other">[Other]</option>
 												</html:select>
 											</td>
 											<td class="borderlessLabel">
@@ -142,7 +142,7 @@
 													onchange="javascript:callPrompt('Shelf', 'shelf');">
 													<html:options name="aliquotContainerInfo"
 														property="storageShelves" />
-													<option value="other">Other</option>
+													<option value="other">[Other]</option>
 												</html:select>
 											</td>
 											<td class="borderlessLabel">
@@ -154,7 +154,7 @@
 													onchange="javascript:callPrompt('Box', 'box');">
 													<html:options name="aliquotContainerInfo"
 														property="storageBoxes" />
-													<option value="other">Other</option>
+													<option value="other">[Other]</option>
 												</html:select>
 											</td>
 										</tr>

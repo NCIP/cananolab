@@ -28,7 +28,7 @@
 						property="achar.instrumentConfigBean.instrumentBean.type"
 						onchange="javascript:callPrompt('Instrument Type', 'instrumentType');">
 						<html:options name="allInstrumentTypes" />
-						<option value="other">Other</option>
+						<option value="other">[Other]</option>
 					</html:select>
 				</c:when>
 				<c:otherwise>
@@ -64,7 +64,7 @@
 						property="achar.instrumentConfigBean.instrumentBean.manufacturer"
 						onchange="javascript:callPrompt('Instrument Manufacturer', 'instrumentManufacturer');">
 						<html:options name="allManufacturers" />
-						<option value="other">Other</option>
+						<option value="other">[Other]</option>
 					</html:select>
 				</c:when>
 				<c:otherwise>

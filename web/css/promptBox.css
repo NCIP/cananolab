@@ -7,8 +7,8 @@
 	*/
 	
 	position: absolute;
-	top: 130;
-	left: 240;
+	top: 130px;
+	left: 240px;
 	width: 350px;
 	border: 1px outset #bbbbbb;
 	background-color: #FFFFFF;
@@ -17,10 +17,12 @@
 input.prompt {
 	border: 1px solid #7F9DB9;
 	background-color: #FFFFFF;
-	width: 70;
+	width: 60px;
 	font-family: arial;
-	font-size: 12;
+	font-size: 12px;
 	color: black;
+	margin-left: 2px;
+	margin-right: 2px;
 }
 
 td.titlebar {
@@ -28,18 +30,18 @@ td.titlebar {
 	color: #0000D2;
 	font-weight: bold;
 	font-family: arial;
-	font-size: 12;
+	font-size: 12px;
 }
 
 table.promptbox {
 	border: 1 solid #ccccff;
 	background-color: #F4F4F5;
 	color: black;
-	padding-left: 2;
-	padding-right: 2;
-	padding-bottom: 3;
+	padding-left: 2px;
+	padding-right: 2px;
+	padding-bottom: 3px;
 	font-family: arial;
-	font-size: 12;
+	font-size: 12px;
 }
 
 input.promptbox {
@@ -47,6 +49,6 @@ input.promptbox {
 	background-color: white;
 	width: 100%;
 	font-family: arial;
-	font-size: 12;
+	font-size: 12px;
 	color: black;
 }

@@ -24,7 +24,7 @@
 						<html:select property="shape.type" styleId="shapeType"
 							onchange="javascript:callPrompt('Type', 'shapeType');">
 							<html:options name="allShapeTypes" />
-							<option value="other">Other</option>
+							<option value="other">[Other]</option>
 						</html:select>
 					</c:when>
 					<c:otherwise>

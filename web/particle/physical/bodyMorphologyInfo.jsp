@@ -24,7 +24,7 @@
 						<html:select property="morphology.type" styleId="morphologyType"
 							onchange="javascript:callPrompt('Type', 'morphologyType');">
 							<html:options name="allMorphologyTypes" />
-							<option value="other">Other</option>
+							<option value="other">[Other]</option>
 						</html:select>
 					</c:when>
 					<c:otherwise>
