@@ -23,11 +23,17 @@ public class CustomPlugIn implements PlugIn {
 	// This method will be called at application startup time
 	public void init(ActionServlet actionServlet, ModuleConfig config)
 			throws ServletException {
-		System.out.println("Entering CustomPlugIn.init()");		
+		System.out.println("Entering CustomPlugIn.init()");
 		try {
-			//set servlet context variables
+			// set servlet context variables
 			InitNanoparticleSetup.getInstance().setDefaultFunctionTypes(
 					actionServlet.getServletContext());
+			InitNanoparticleSetup.getInstance()
+					.setDefaultNanoparticleEntityTypes(
+							actionServlet.getServletContext());
+			InitNanoparticleSetup.getInstance()
+					.setDefaultFunctionalizingEntityTypes(
+							actionServlet.getServletContext());
 			InitSecuritySetup.getInstance().createDefaultCSMGroups();
 		} catch (Exception e) {
 			this.logger.error("Servlet initialization error", e);
