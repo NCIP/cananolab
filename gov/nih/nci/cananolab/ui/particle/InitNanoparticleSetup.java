@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
  * This class sets up information required for nanoparticle forms.
  * 
  * @author pansu
- *
+ * 
  */
 public class InitNanoparticleSetup {
 	private InitNanoparticleSetup() {
@@ -44,5 +44,35 @@ public class InitNanoparticleSetup {
 			}
 		}
 		appContext.setAttribute("defaultFunctionTypes", functionTypes);
+	}
+
+	public void setDefaultNanoparticleEntityTypes(ServletContext appContext)
+			throws Exception {
+		List<String> nanoparticleEntityTypes = new ArrayList<String>();
+		List<String> classNames = ClassUtils
+				.getChildClassNames("gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity");
+		for (String name : classNames) {
+			if (!name.contains("Other")) {
+				nanoparticleEntityTypes.add(ClassUtils
+						.getClassDisplayName(name));
+			}
+		}
+		appContext.setAttribute("defaultNanoparticleEntityTypes",
+				nanoparticleEntityTypes);
+	}
+
+	public void setDefaultFunctionalizingEntityTypes(ServletContext appContext)
+			throws Exception {
+		List<String> functionalizingEntityTypes = new ArrayList<String>();
+		List<String> classNames = ClassUtils
+				.getChildClassNames("gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity");
+		for (String name : classNames) {
+			if (!name.contains("Other")) {
+				functionalizingEntityTypes.add(ClassUtils
+						.getClassDisplayName(name));
+			}
+		}
+		appContext.setAttribute("defaultNanoparticleEntityTypes",
+				functionalizingEntityTypes);
 	}
 }
