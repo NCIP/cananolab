@@ -72,8 +72,10 @@
 						</td>
 						<td class="rightLabel">
 							<strong><html:select property="functionTypes"
-									multiple="true" size="4">
-									<html:options name="allFunctionTypes" />
+									multiple="true" size="3">
+									<option value=antibody>Antibody</option>
+									<option value=biomolecule>Biomolecule</option>
+									<option value=smallMolecule>Small Molecule</option>
 								</html:select> </strong>
 						</td>
 					</tr>
