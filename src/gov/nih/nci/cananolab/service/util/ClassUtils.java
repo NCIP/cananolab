@@ -30,7 +30,7 @@ public class ClassUtils {
 		Collection<Class> list = new ArrayList<Class>();
 		JarFile file = null;
 		URL url = Thread.currentThread().getContextClassLoader().getResource(
-				"hibernate.cfg.xml");
+				"application-config.xml");
 		
 		File webinfDirect= (new File(url.getPath())).getParentFile().getParentFile();
 		
