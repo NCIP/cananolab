@@ -33,46 +33,98 @@ public class InitNanoparticleSetup {
 		request.setAttribute("allSampleSources", sampleSources);
 	}
 
-	public void setDefaultFunctionTypes(ServletContext appContext)
+	public List<String> getDefaultFunctionTypes(ServletContext appContext)
 			throws Exception {
-		List<String> functionTypes = new ArrayList<String>();
-		List<String> functionClassNames = ClassUtils
-				.getChildClassNames("gov.nih.nci.cananolab.domain.particle.samplecomposition.Function");
-		for (String name : functionClassNames) {
-			if (!name.contains("Other")) {
-				functionTypes.add(ClassUtils.getClassDisplayName(name));
+		if (appContext.getAttribute("defaultFunctionTypes") == null) {
+			List<String> functionTypes = new ArrayList<String>();
+			List<String> functionClassNames = ClassUtils
+					.getChildClassNames("gov.nih.nci.cananolab.domain.particle.samplecomposition.Function");
+			for (String name : functionClassNames) {
+				if (!name.contains("Other")) {
+					functionTypes.add(ClassUtils.getClassDisplayName(name));
+				}
 			}
+			appContext.setAttribute("defaultFunctionTypes", functionTypes);
+			return functionTypes;
+		} else {
+			return new ArrayList<String>((List<? extends String>) appContext
+					.getAttribute("defaultFunctionTypes"));
 		}
-		appContext.setAttribute("defaultFunctionTypes", functionTypes);
+
 	}
 
-	public void setDefaultNanoparticleEntityTypes(ServletContext appContext)
-			throws Exception {
-		List<String> nanoparticleEntityTypes = new ArrayList<String>();
-		List<String> classNames = ClassUtils
-				.getChildClassNames("gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity");
-		for (String name : classNames) {
-			if (!name.contains("Other")) {
-				nanoparticleEntityTypes.add(ClassUtils
-						.getClassDisplayName(name));
+	public List<String> getDefaultNanoparticleEntityTypes(
+			ServletContext appContext) throws Exception {
+		if (appContext.getAttribute("defaultNanoparticleEntityTypes") == null) {
+			List<String> nanoparticleEntityTypes = new ArrayList<String>();
+			List<String> classNames = ClassUtils
+					.getChildClassNames("gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity");
+			for (String name : classNames) {
+				if (!name.contains("Other")) {
+					nanoparticleEntityTypes.add(ClassUtils
+							.getClassDisplayName(name));
+				}
 			}
+			appContext.setAttribute("defaultNanoparticleEntityTypes",
+					nanoparticleEntityTypes);
+			return nanoparticleEntityTypes;
+		} else {
+			return new ArrayList<String>((List<? extends String>) appContext
+					.getAttribute("defaultNanoparticleEntityTypes"));
 		}
-		appContext.setAttribute("defaultNanoparticleEntityTypes",
-				nanoparticleEntityTypes);
+
 	}
 
-	public void setDefaultFunctionalizingEntityTypes(ServletContext appContext)
-			throws Exception {
-		List<String> functionalizingEntityTypes = new ArrayList<String>();
-		List<String> classNames = ClassUtils
-				.getChildClassNames("gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity");
-		for (String name : classNames) {
-			if (!name.contains("Other")) {
-				functionalizingEntityTypes.add(ClassUtils
-						.getClassDisplayName(name));
+	public List<String> getDefaultFunctionalizingEntityTypes(
+			ServletContext appContext) throws Exception {
+		if (appContext.getAttribute("defaultFunctionalizingEntityTypes") == null) {
+			List<String> functionalizingEntityTypes = new ArrayList<String>();
+			List<String> classNames = ClassUtils
+					.getChildClassNames("gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity");
+			for (String name : classNames) {
+				if (!name.contains("Other")) {
+					functionalizingEntityTypes.add(ClassUtils
+							.getClassDisplayName(name));
+				}
 			}
+			appContext.setAttribute("defaultFunctionalizingEntityTypes",
+					functionalizingEntityTypes);
+			return functionalizingEntityTypes;
+		} else {
+			return new ArrayList<String>((List<? extends String>) appContext
+					.getAttribute("defaultFunctionalizingEntityTypes"));
 		}
-		appContext.setAttribute("defaultNanoparticleEntityTypes",
-				functionalizingEntityTypes);
+	}
+
+	public void setFunctionTypes(HttpServletRequest request) throws Exception {
+		List<String> defaultTypes = getDefaultFunctionTypes(request
+				.getSession().getServletContext());
+		SortedSet<String> otherTypes = particleService
+				.getAllOtherFunctionTypes();
+		List<String> types = new ArrayList<String>(defaultTypes);
+		types.addAll(otherTypes);
+		request.setAttribute("functionTypes", types);
+	}
+
+	public void setNanoparticleEntityTypes(HttpServletRequest request)
+			throws Exception {
+		List<String> defaultTypes = getDefaultNanoparticleEntityTypes(request
+				.getSession().getServletContext());
+		SortedSet<String> otherTypes = particleService
+				.getAllOtherNanoparticleEntityTypes();
+		List<String> types = new ArrayList<String>(defaultTypes);
+		types.addAll(otherTypes);
+		request.setAttribute("nanoparticleEntityTypes", types);
+	}
+
+	public void setFunctionalizingEntityTypes(HttpServletRequest request)
+			throws Exception {
+		List<String> defaultTypes = getDefaultFunctionalizingEntityTypes(request
+				.getSession().getServletContext());
+		SortedSet<String> otherTypes = particleService
+				.getAllOtherFunctionalizingEntityTypes();
+		List<String> types = new ArrayList<String>(defaultTypes);
+		types.addAll(otherTypes);
+		request.setAttribute("functionalizingEntityTypes", types);
 	}
 }

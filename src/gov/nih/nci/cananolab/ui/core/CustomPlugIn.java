@@ -26,13 +26,13 @@ public class CustomPlugIn implements PlugIn {
 		System.out.println("Entering CustomPlugIn.init()");
 		try {
 			// set servlet context variables
-			InitNanoparticleSetup.getInstance().setDefaultFunctionTypes(
+			InitNanoparticleSetup.getInstance().getDefaultFunctionTypes(
 					actionServlet.getServletContext());
 			InitNanoparticleSetup.getInstance()
-					.setDefaultNanoparticleEntityTypes(
+					.getDefaultNanoparticleEntityTypes(
 							actionServlet.getServletContext());
 			InitNanoparticleSetup.getInstance()
-					.setDefaultFunctionalizingEntityTypes(
+					.getDefaultFunctionalizingEntityTypes(
 							actionServlet.getServletContext());
 			InitSecuritySetup.getInstance().createDefaultCSMGroups();
 		} catch (Exception e) {
