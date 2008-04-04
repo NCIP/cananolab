@@ -145,8 +145,8 @@ CREATE TABLE carbon_nanotube
 (
 	carbon_nanotube_pk_id BIGINT NOT NULL,
 	chirality VARCHAR(100) NULL,
-	growth_diameter DECIMAL(22,3) NULL,
-	growth_diameter_unit VARCHAR(200) NULL,
+	diameter DECIMAL(22,3) NULL,
+	diameter_unit VARCHAR(200) NULL,
 	average_length DECIMAL(22,3) NULL,
 	average_length_unit VARCHAR(200) NULL,
 	wall_type VARCHAR(100) NULL,
@@ -380,6 +380,7 @@ CREATE TABLE characterization
 	cytotoxicity_cell_line VARCHAR(200) NULL,
 	cytotoxicity_cell_death_method VARCHAR(200) NULL,
 	surface_is_hydrophobic TINYINT NULL,
+	characterization_date DATETIME NULL,
 	PRIMARY KEY (characterization_pk_id),
 	KEY (instrument_config_pk_id),
 	KEY (particle_sample_pk_id),
