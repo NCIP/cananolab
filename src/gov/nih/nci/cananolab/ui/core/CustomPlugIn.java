@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.ui.core;
 
 import gov.nih.nci.cananolab.ui.particle.InitNanoparticleSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
+import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
 import javax.servlet.ServletException;
 
@@ -34,7 +35,9 @@ public class CustomPlugIn implements PlugIn {
 			InitNanoparticleSetup.getInstance()
 					.getDefaultFunctionalizingEntityTypes(
 							actionServlet.getServletContext());
-			InitSecuritySetup.getInstance().createDefaultCSMGroups();
+			actionServlet.getServletContext().setAttribute("applicationOwner",
+					CaNanoLabConstants.APP_OWNER);
+			// InitSecuritySetup.getInstance().createDefaultCSMGroups();
 		} catch (Exception e) {
 			this.logger.error("Servlet initialization error", e);
 		}
