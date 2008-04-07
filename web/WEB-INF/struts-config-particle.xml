@@ -2,97 +2,23 @@
 <!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
 <struts-config>
 	<form-beans>
-		<form-bean name="nanoparticleGeneralInfoForm"
+		<form-bean name="nanoparticleSampleForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="dispatch" type="java.lang.String" />
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
-			<form-property name="particle"
-				type="gov.nih.nci.calab.dto.particle.ParticleBean" />
+			<form-property name="particleSampleBean"
+				type="gov.nih.nci.cananolab.dto.particle.ParticleBean" />
 		</form-bean>
-		<form-bean name="nanoparticleCompositionForm"
-			type="org.apache.struts.validator.DynaValidatorForm">
-			<form-property name="dispatch" type="java.lang.String" />
-			<form-property name="page" type="java.lang.Integer"
-				initial="0" />
-			<form-property name="particle"
-				type="gov.nih.nci.calab.dto.particle.ParticleBean" />
-			<form-property name="composition"
-				type="gov.nih.nci.calab.dto.characterization.composition.CompositionBean" />
-			<form-property name="dendrimer"
-				type="gov.nih.nci.calab.dto.characterization.composition.DendrimerBean" />
-			<form-property name="liposome"
-				type="gov.nih.nci.calab.dto.characterization.composition.LiposomeBean" />
-			<form-property name="carbonNanotube"
-				type="gov.nih.nci.calab.dto.characterization.composition.CarbonNanotubeBean" />
-			<form-property name="fullerene"
-				type="gov.nih.nci.calab.dto.characterization.composition.FullereneBean" />
-			<form-property name="polymer"
-				type="gov.nih.nci.calab.dto.characterization.composition.PolymerBean" />
-			<form-property name="emulsion"
-				type="gov.nih.nci.calab.dto.characterization.composition.EmulsionBean" />
-		</form-bean>
-		<form-bean name="nanoparticleCharacterizationForm"
-			type="org.apache.struts.validator.DynaValidatorForm">
-			<form-property name="dispatch" type="java.lang.String" />
-			<form-property name="page" type="java.lang.Integer"
-				initial="0" />
-			<form-property name="otherParticles"
-				type="java.lang.String[]" />
-			<form-property name="copyData" type="java.lang.Boolean"
-				initial="false" />
-			<form-property name="particle"
-				type="gov.nih.nci.calab.dto.particle.ParticleBean" />
-			<form-property name="charSummary"
-				type="gov.nih.nci.calab.dto.characterization.CharacterizationSummaryBean" />
-			<form-property name="achar"
-				type="gov.nih.nci.calab.dto.characterization.CharacterizationBean" />
-			<form-property name="surface"
-				type="gov.nih.nci.calab.dto.characterization.physical.SurfaceBean" />
-			<form-property name="morphology"
-				type="gov.nih.nci.calab.dto.characterization.physical.MorphologyBean" />
-			<form-property name="shape"
-				type="gov.nih.nci.calab.dto.characterization.physical.ShapeBean" />
-			<form-property name="solubility"
-				type="gov.nih.nci.calab.dto.characterization.physical.SolubilityBean" />
-			<form-property name="cytotoxicity"
-				type="gov.nih.nci.calab.dto.characterization.invitro.CytotoxicityBean" />
-		</form-bean>
-		<form-bean name="loadDerivedBioAssayDataForm"
-			type="org.apache.struts.validator.DynaValidatorForm">
-			<form-property name="dispatch" type="java.lang.String" />
-			<form-property name="page" type="java.lang.Integer"
-				initial="0" />
-			<form-property name="fileNumber" type="java.lang.Integer" />
-			<form-property name="uploadedFile"
-				type="org.apache.struts.upload.FormFile" />
-			<form-property name="file"
-				type="gov.nih.nci.calab.dto.characterization.DerivedBioAssayDataBean" />
-			<form-property name="forwardPage" type="java.lang.String" />
-		</form-bean>
-		<form-bean name="nanoparticleFunctionForm"
-			type="org.apache.struts.validator.DynaValidatorForm">
-			<form-property name="dispatch" type="java.lang.String" />
-			<form-property name="page" type="java.lang.Integer"
-				initial="0" />
-			<form-property name="particle"
-				type="gov.nih.nci.calab.dto.particle.ParticleBean" />
-			<form-property name="function"
-				type="gov.nih.nci.calab.dto.function.FunctionBean" />
-		</form-bean>
-		<form-bean name="characterizationMultiDeletionForm"
-			type="org.apache.struts.validator.DynaValidatorForm">
-			<form-property name="dispatch" type="java.lang.String" />
-			<form-property name="particleId" type="java.lang.String" />
-			<form-property name="charIds" type="java.lang.String[]" />
-			<form-property name="page" type="java.lang.Integer"
-				initial="0" />
-		</form-bean>
-		<form-bean name="searchNanoparticleForm"
+
+		<form-bean name="searchNanoparticleSampleForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="particleSource"
 				type="java.lang.String" />
-			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="nanoparticleEntityTypes"
+				type="java.lang.String[]" />
+			<form-property name="functionalizingEntityTypes"
+				type="java.lang.String[]" />
 			<form-property name="functionTypes"
 				type="java.lang.String[]" />
 			<form-property name="characterizationType"
@@ -108,232 +34,29 @@
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
 		</form-bean>
-		<form-bean name="searchNanoparticleAdvancedForm"
-			type="org.apache.struts.validator.DynaValidatorForm">
-			<form-property name="particleType" type="java.lang.String" />
-			<form-property name="functionTypes"
-				type="java.lang.String[]" />
-			<form-property name="size1"
-				type="gov.nih.nci.calab.dto.common.SearchableBean" />
-			<form-property name="size2"
-				type="gov.nih.nci.calab.dto.common.SearchableBean" />
-			<form-property name="molecularWeight"
-				type="gov.nih.nci.calab.dto.common.SearchableBean" />
-			<form-property name="cellViability"
-				type="gov.nih.nci.calab.dto.common.SearchableBean" />
-		</form-bean>
-		<form-bean name="remoteSearchNanoparticleForm"
-			type="org.apache.struts.validator.DynaValidatorForm">
-			<form-property name="particleType" type="java.lang.String" />
-			<form-property name="functionTypes"
-				type="java.lang.String[]" />
-			<form-property name="characterizationType"
-				type="java.lang.String" />
-			<form-property name="characterizations"
-				type="java.lang.String[]" />
-			<form-property name="gridNodes" type="java.lang.String[]" />
-		</form-bean>
-		<form-bean name="remoteNanoparticleGeneralInfoForm"
-			type="org.apache.struts.validator.DynaValidatorForm">
-			<form-property name="dispatch" type="java.lang.String" />
-			<form-property name="page" type="java.lang.Integer"
-				initial="0" />
-			<form-property name="particleType" type="java.lang.String" />
-			<form-property name="particleName" type="java.lang.String" />
-		</form-bean>
 	</form-beans>
-	<global-exceptions>
-		<exception
-			handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-			bundle="particle" key="error.particleException"
-			path="particle.annotationMessage"
-			type="gov.nih.nci.calab.exception.ParticleException" />
-		<exception
-			handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-			bundle="particle" key="error.compositionException"
-			path="/composition.do?dispatch=input&amp;page=0"
-			type="gov.nih.nci.calab.exception.ParticleCompositionException" />
-		<exception
-			handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-			bundle="particle" key="error.characterizationException"
-			path="particle.annotationMessage"
-			type="gov.nih.nci.calab.exception.ParticleCharacterizationException" />
-		<exception
-			handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-			bundle="particle" key="error.functionException"
-			path="/nanoparticleFunction.do?dispatch=input&amp;page=0"
-			type="gov.nih.nci.calab.exception.ParticleFunctionException" />
-		<exception
-			handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-			bundle="particle" key="error.particleException"
-			path="particle.searchNanoparticle"
-			type="gov.nih.nci.calab.exception.ParticleException" />
-	</global-exceptions>
-	<global-forwards>
-		<forward name="remoteComposition"
-			path="/remoteNanoparticleComposition.do" />
-		<forward name="remoteSearchMessage"
-			path="particle.remote.message" />
-		<forward name="function" path="nanoparticleFunction.do?page=0" />
-		<forward name="loadFile"
-			path="/loadFile.do?dispatch=setupView&amp;page=0" />
-		<forward name="particleMessage"
-			path="particle.annotationMessage" />
-		<forward name="detailPrintView"
-			path="/particle/bodyCharacterizationDetailPrintView.jsp" />
-		<forward name="summaryPrintView"
-			path="/particle/bodyCharacterizationSummaryPrintView.jsp" />
-		<forward name="summaryPrintAllView"
-			path="/particle/bodyCharacterizationSummaryPrintAllView.jsp" />
-	</global-forwards>
 	<action-mappings>
 		<action path="/manageParticle"
-			type="gov.nih.nci.calab.ui.core.BaseForwardAction"
+			type="gov.nih.nci.cananolab.ui.core.BaseForwardAction"
 			parameter="particle.manageNanoparticle" scope="request" />
-		<action name="nanoparticleGeneralInfoForm" parameter="dispatch"
-			path="/nanoparticleGeneralInfo"
-			type="gov.nih.nci.calab.ui.particle.NanoparticleGeneralInfoAction"
+		<action name="nanoparticleSampleForm" parameter="dispatch"
+			path="/submitNanoparticleSample"
+			type="gov.nih.nci.cananolab.ui.particle.SubmitNanoparticleAction"
 			input="input" scope="request">
-			<forward name="success" path="particle.generalInfo" />
+			<forward name="success"
+				path="particle.submitNanoparticleSample" />
 			<forward name="view" path="particle.generalInfo" />
 			<forward name="update" path="particle.generalInfo" />
-			<forward name="input" path="particle.createNanoparticle" />
-		</action>
-		<action name="nanoparticleCompositionForm" parameter="dispatch"
-			path="/composition"
-			type="gov.nih.nci.calab.ui.particle.NanoparticleCompositionAction"
-			input="input">
-			<forward name="success" path="particle.annotationMessage" />
 			<forward name="input"
-				path="/composition.do?dispatch=input&amp;page=0" />
-			<forward name="setup" path="particle.composition" />
+				path="particle.submitNanoparticleSample" />
 		</action>
-		<action name="nanoparticleCharacterizationForm"
-			parameter="dispatch" path="/physicalCharacterization"
-			type="gov.nih.nci.calab.ui.particle.PhysicalCharacterizationAction"
-			input="input">
-			<forward name="success" path="particle.physicalDetailView" />
-			<forward name="input"
-				path="/physicalCharacterization.do?dispatch=input&amp;page=0" />
-			<forward name="setup"
-				path="particle.physicalCharacterization" />
-			<forward name="morphologySetup" path="particle.morphology" />
-			<forward name="shapeSetup" path="particle.shape" />
-			<forward name="solubilitySetup" path="particle.solubility" />
-			<forward name="surfaceSetup" path="particle.surface" />
-			<forward name="detailView"
-				path="particle.physicalDetailView" />
-			<forward name="summaryView"
-				path="particle.physicalSummaryView" />
-		</action>
-		<action name="nanoparticleCharacterizationForm"
-			parameter="dispatch" path="/inVitroCharacterization"
-			type="gov.nih.nci.calab.ui.particle.InVitroCharacterizationAction"
-			input="input">
-			<forward name="success" path="particle.inVitroDetailView" />
-			<forward name="input"
-				path="/inVitroCharacterization.do?dispatch=input&amp;page=0" />
-			<forward name="cytotoxicitySetup"
-				path="particle.cytotoxicity" />
-			<forward name="setup"
-				path="particle.inVitroCharacterization" />
-			<forward name="detailView"
-				path="particle.inVitroDetailView" />
-			<forward name="summaryView"
-				path="particle.inVitroSummaryView" />
-		</action>
-		<action name="loadDerivedBioAssayDataForm" parameter="dispatch"
-			path="/loadFile"
-			type="gov.nih.nci.calab.ui.particle.LoadDerivedBioAssayDataAction"
-			input="input" scope="request">
-			<forward name="input"
-				path="particle.loadCharacterizationFile" />
-		</action>
-		<action name="nanoparticleFunctionForm" parameter="dispatch"
-			path="/nanoparticleFunction"
-			type="gov.nih.nci.calab.ui.particle.NanoparticleFunctionAction"
-			input="input">
-			<forward name="success" path="particle.annotationMessage" />
-			<forward name="input"
-				path="/nanoparticleFunction.do?dispatch=input&amp;page=0" />
-			<forward name="setup" path="particle.function" />
-		</action>
-		<action path="/submitAction"
-			type="gov.nih.nci.calab.ui.core.BaseForwardAction"
-			parameter="particle.annotationMessage" scope="request" />
-		<action name="characterizationMultiDeletionForm"
-			path="/deleteAction"
-			type="gov.nih.nci.calab.ui.particle.DeleteMultiCharacterizationAction"
-			parameter="dispatch" input="input" scope="request">
-			<forward name="message" path="particle.annotationMessage" />
-			<forward name="input"
-				path="particle.deleteCharacterization" />
-		</action>
-		<action input="input" name="searchNanoparticleForm"
+		<action input="input" name="searchNanoparticleSampleForm"
 			parameter="dispatch" path="/searchNanoparticle"
-			type="gov.nih.nci.calab.ui.particle.SearchNanoparticleAction"
+			type="gov.nih.nci.cananolab.ui.particle.SearchNanoparticleAction"
 			scope="request">
 			<forward name="input" path="particle.searchNanoparticle" />
 			<forward name="success"
 				path="particle.searchNanoparticleResult" />
-		</action>
-		<action input="input" name="searchNanoparticleAdvancedForm"
-			parameter="dispatch" path="/searchNanoparticleAdvanced"
-			type="gov.nih.nci.calab.ui.particle.SearchNanoparticleAdvancedAction"
-			scope="request">
-			<forward name="input"
-				path="particle.advancedSearchNanoparticle" />
-			<forward name="success"
-				path="particle.advancedSearchNanoparticleResult" />
-		</action>
-		<action path="/underConstruction"
-			type="gov.nih.nci.calab.ui.core.BaseForwardAction"
-			parameter="particle.remoteUnderConstruction" scope="request" />
-		<action input="input" name="remoteSearchNanoparticleForm"
-			parameter="dispatch" path="/remoteSearchNanoparticle"
-			type="gov.nih.nci.calab.ui.particle.RemoteSearchNanoparticleAction"
-			scope="request">
-			<exception
-				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				key="error.grid.discovery" path="particle.remoteSearchNanoparticle"
-				type="gov.nih.nci.calab.exception.GridAutoDiscoveryException" />
-			<forward name="input"
-				path="particle.remoteSearchNanoparticle" />
-			<forward name="success"
-				path="particle.remoteSearchNanoparticleResult" />
-		</action>
-		<action name="remoteNanoparticleGeneralInfoForm"
-			parameter="dispatch" path="/remoteNanoparticleGeneralInfo"
-			type="gov.nih.nci.calab.ui.particle.RemoteNanoparticleGeneralInfoAction"
-			input="input" scope="request">
-			<exception
-				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				key="error.grid.discovery" path="particle.annotationMessage"
-				type="gov.nih.nci.calab.exception.GridAutoDiscoveryException" />
-			<exception
-				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				key="error.grid.notAvailable" path="particle.annotationMessage"
-				type="gov.nih.nci.calab.exception.GridQueryException" />
-			<forward name="success" path="particle.remoteGeneralInfo" />
-			<forward name="input" path="particle.annotationMessage" />
-		</action>
-		<action name="nanoparticleCompositionForm" parameter="dispatch"
-			path="/remoteNanoparticleComposition"
-			type="gov.nih.nci.calab.ui.particle.RemoteNanoparticleCompositionAction"
-			input="input">
-			<exception
-				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				key="error.grid.notAvailable" path="particle.annotationMessage"
-				type="gov.nih.nci.calab.exception.GridQueryException" />
-			<forward name="input" path="particle.annotationMessage" />
-			<forward name="success" path="particle.remoteComposition" />
-		</action>
-		<action name="submitReportForm" parameter="dispatch"
-			path="/updateReportForParticle"
-			type="gov.nih.nci.calab.ui.report.SubmitReportAction" input="input"
-			scope="request">
-			<forward name="input" path="particle.viewReport" />
-			<forward name="success" path="particle.annotationMessage" />
 		</action>
 	</action-mappings>
 </struts-config>
