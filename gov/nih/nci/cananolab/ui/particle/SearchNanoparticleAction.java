@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SearchNanoparticleAction.java,v 1.1 2008-04-07 20:12:10 pansu Exp $ */
+/* CVS $Id: SearchNanoparticleAction.java,v 1.2 2008-04-07 21:49:32 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -28,7 +28,7 @@ import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
 public class SearchNanoparticleAction extends AbstractDispatchAction {
-	/*
+
 	public ActionForward search(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -39,7 +39,11 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleSource = (String) theForm.get("particleSource");
-		String particleType = (String) theForm.get("particleType");
+
+		String[] nanoparticleEntityTypes = (String[]) theForm
+				.get("nanoparticleEntityTypes");
+		String[] functionalizingEntityTypes = (String[]) theForm
+				.get("functionalizingEntityTypes");
 		String[] functionTypes = (String[]) theForm.get("functionTypes");
 		String[] characterizations = (String[]) theForm
 				.get("characterizations");
@@ -53,9 +57,10 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 		String[] summaryList = (summaries.length() == 0) ? null : summaries
 				.split("\r\n");
 
-		NanoparticleService searchParticleService = new NanoparticleService();
-		List<ParticleBean> particles = searchParticleService.basicSearch(
-				particleSource, particleType, functionTypes, characterizations,
+		NanoparticleSampleService service = new NanoparticleSampleService();
+		List<ParticleBean> particles = service.findNanoparticleSamplesBy(
+				particleSource, nanoparticleEntityTypes,
+				functionalizingEntityTypes, functionTypes, characterizations,
 				keywordList, keywordType, summaryList, summaryType, user);
 
 		if (particles != null && !particles.isEmpty()) {
@@ -73,17 +78,17 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 
 		return forward;
 	}
-    */
-	
+
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {		
+			throws Exception {
 		InitNanoparticleSetup.getInstance().setAllNanoparticleSampleSources(
 				request);
 		InitNanoparticleSetup.getInstance().setFunctionTypes(request);
-		InitNanoparticleSetup.getInstance().setFunctionalizingEntityTypes(request);
+		InitNanoparticleSetup.getInstance().setFunctionalizingEntityTypes(
+				request);
 		InitNanoparticleSetup.getInstance().setNanoparticleEntityTypes(request);
-		//InitParticleSetup.getInstance().setAllCharacterizationTypes(session);
+		// InitParticleSetup.getInstance().setAllCharacterizationTypes(session);
 
 		return mapping.getInputForward();
 	}
