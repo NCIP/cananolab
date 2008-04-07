@@ -1148,6 +1148,8 @@ SELECT next_hi
 FROM cananolab.hibernate_unique_key
 ;
 
+use canano;
+
 -- remove duplicated keyword name from cananolab.keyword table
 -- keyword table
 CREATE TABLE 
