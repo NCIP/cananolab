@@ -1,11 +1,15 @@
 package gov.nih.nci.cananolab.service.common;
 
 import gov.nih.nci.cananolab.domain.common.CommonLookup;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.OtherFunction;
 import gov.nih.nci.cananolab.exception.CaNanoLabException;
+import gov.nih.nci.cananolab.exception.ParticleException;
+import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.system.applicationservice.ApplicationService;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -20,7 +24,7 @@ import org.hibernate.criterion.Property;
  * @author pansu
  * 
  */
-/* CVS $Id: LookupService.java,v 1.1 2008-04-04 18:50:32 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.2 2008-04-07 20:16:13 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
