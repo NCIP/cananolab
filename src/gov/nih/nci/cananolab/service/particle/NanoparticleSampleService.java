@@ -6,13 +6,16 @@ import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.OtherFunction;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.OtherNanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity;
+import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
+import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.ParticleException;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -20,6 +23,8 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Expression;
 
 /**
  * This class includes service calls involved around a nanoparticle sample
@@ -61,10 +66,9 @@ public class NanoparticleSampleService {
 	 * @param particleSampleBean
 	 * @throws Exception
 	 */
-	public void createNewNanoparticleSample(
-			ParticleBean particleBean) throws Exception {
-		NanoparticleSample particleSample = particleBean
-				.getParticleSample();
+	public void createNewNanoparticleSample(ParticleBean particleBean)
+			throws Exception {
+		NanoparticleSample particleSample = particleBean.getParticleSample();
 
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
@@ -122,7 +126,6 @@ public class NanoparticleSampleService {
 		return types;
 	}
 
-
 	/**
 	 * Return user-defined functionalizing entity types
 	 * 
@@ -142,7 +145,9 @@ public class NanoparticleSampleService {
 				types.add(other.getType());
 			}
 		} catch (Exception e) {
-			logger.error("Error in retrieving other values for nanoparticle entity", e);
+			logger.error(
+					"Error in retrieving other values for nanoparticle entity",
+					e);
 			throw new ParticleException();
 		}
 		return types;
@@ -167,10 +172,76 @@ public class NanoparticleSampleService {
 				types.add(other.getType());
 			}
 		} catch (Exception e) {
-			logger.error("Error in retrieving other values for functionalizing entity", e);
+			logger
+					.error(
+							"Error in retrieving other values for functionalizing entity",
+							e);
 			throw new ParticleException();
 		}
 		return types;
 	}
 
+	public List<ParticleBean> findNanoparticleSamplesBy(String particleSource,
+			String[] nanoparticleEntityTypes,
+			String[] functionalizingEntityTypes, String[] functionTypes,
+			String[] characterizations, String[] keywords, String keywordType,
+			String[] summaries, String summaryType, UserBean user)
+			throws ParticleException, CaNanoLabSecurityException {
+		List<ParticleBean> particles = new ArrayList<ParticleBean>();
+
+		try {
+			DetachedCriteria crit = DetachedCriteria
+					.forClass(NanoparticleSample.class);
+			if (particleSource != null && particleSource.length() > 0) {
+				crit.createAlias("source", "source").add(
+						Expression
+								.eq("source.organizationName", particleSource));
+			}
+
+			if (keywords != null && keywords.length > 0) {
+				if (keywordType.equals("nanoparticle")) {
+					crit.createAlias("keywordCollection", "keyword").add(
+							Expression.in("keyword.name", keywords));
+				} else {
+					crit
+							.createAlias("characterizationCollection", "chara")
+							.createAlias("chara.derivedBioAssayData", "derived")
+							.createAlias("derived.labFile", "charFile")
+							.createAlias("charFile.keywordCollection",
+									"keyword").add(
+									Expression.in("keyword.name", keywords));
+				}
+			}
+			if (functionTypes != null && functionTypes.length > 0) {
+
+			}
+			if (summaries != null && summaries.length > 0) {
+				for (String summary : summaries) {
+
+				}
+
+				if (summaryType.equals("characterization")) {
+
+				} else {
+
+				}
+			}
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			List results = appService.query(crit);
+			for (Object obj : new HashSet<Object>(results)) {
+				NanoparticleSample particle = (NanoparticleSample) obj;
+				ParticleBean particleBean = new ParticleBean(particle);
+				particles.add(particleBean);
+			}
+			return particles;
+
+		} catch (Exception e) {
+			logger
+					.error(
+							"Problem finding particles with the given search parameters ",
+							e);
+			throw new ParticleException();
+		}
+	}
 }
