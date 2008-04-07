@@ -6,10 +6,10 @@ import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.OtherFunction;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.OtherNanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity;
-import gov.nih.nci.cananolab.dto.particle.NanoparticleSampleBean;
+import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.ParticleException;
-import gov.nih.nci.cananolab.service.util.CaNanoLabComparators;
+import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
@@ -37,7 +37,7 @@ public class NanoparticleSampleService {
 	 */
 	public SortedSet<Source> getAllSampleSources() throws ParticleException {
 		SortedSet<Source> sampleSources = new TreeSet<Source>(
-				new CaNanoLabComparators.SampleSourceComparator());
+				new CaNanoLabComparators.ParticleSourceComparator());
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
@@ -62,8 +62,8 @@ public class NanoparticleSampleService {
 	 * @throws Exception
 	 */
 	public void createNewNanoparticleSample(
-			NanoparticleSampleBean particleSampleBean) throws Exception {
-		NanoparticleSample particleSample = particleSampleBean
+			ParticleBean particleBean) throws Exception {
+		NanoparticleSample particleSample = particleBean
 				.getParticleSample();
 
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
