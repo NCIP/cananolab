@@ -339,10 +339,16 @@ public class CustomizedORMDAOImpl extends HibernateDaoSupport implements
 		DetachedCriteria crit = DetachedCriteria.forClass(domainClass).add(
 				Property.forName(uniqueKeyName).eq(uniqueKeyValue));
 		List results = getHibernateTemplate().findByCriteria(crit);
+
 		if (results != null && !results.isEmpty()) {
 			return results.get(0);
 		} else {
 			return null;
 		}
+	}
+
+	public Session getCurrentSession() {
+		Session session = getSessionFactory().getCurrentSession();
+		return session;
 	}
 }

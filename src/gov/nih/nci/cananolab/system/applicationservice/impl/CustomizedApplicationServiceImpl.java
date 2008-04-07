@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.system.applicationservice.impl;
 
+import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.system.dao.CustomizedORMDAO;
 import gov.nih.nci.system.applicationservice.ApplicationException;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
 
 /**
  * Customized to contain more CRUD operations.
@@ -101,6 +103,18 @@ public class CustomizedApplicationServiceImpl extends ApplicationServiceImpl
 		} catch (Exception e) {
 			String err = "Could not get unique object for class "
 					+ domainClass.getCanonicalName();
+			logger.error(err);
+			throw new ApplicationException(err, e);
+		}
+	}
+
+	public Session getCurrentSession() throws ApplicationException {
+		try {
+			CustomizedORMDAO dao = (CustomizedORMDAO) classCache
+					.getDAOForClass(NanoparticleSample.class.getCanonicalName());
+			return dao.getCurrentSession();
+		} catch (Exception e) {
+			String err = "Could not get current session.";
 			logger.error(err);
 			throw new ApplicationException(err, e);
 		}
