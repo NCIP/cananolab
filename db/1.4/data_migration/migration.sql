@@ -536,8 +536,8 @@ insert into canano.carbon_nanotube
 (
 	carbon_nanotube_pk_id,
 	chirality,
-	growth_diameter,
-	growth_diameter_unit,
+	diameter,
+	diameter_unit,
 	average_length,
 	average_length_unit,
 	wall_type
