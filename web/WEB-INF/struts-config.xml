@@ -22,72 +22,72 @@
 	</form-beans>
 	<global-exceptions>
 		<exception
-			handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+			handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 			key="error.session.expired" path="/loginPage.do"
-			type="gov.nih.nci.calab.exception.InvalidSessionException" />
+			type="gov.nih.nci.cananolab.exception.InvalidSessionException" />
 		<exception
-			handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+			handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 			key="error.noaccess" path="/index.jsp"
-			type="gov.nih.nci.calab.exception.NoAccessException" />
+			type="gov.nih.nci.cananolab.exception.NoAccessException" />
 		<exception
-			handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+			handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 			key="error.fileException" path="home.error"
-			type="gov.nih.nci.calab.exception.FileException" />
+			type="gov.nih.nci.cananolab.exception.FileException" />
 		<exception
-			handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+			handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 			key="error.caNanoLabException" path="home.error"
 			type="java.lang.CaNanoLabException" />
 		<exception
-			handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+			handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 			key="error.generalException" path="home.error"
 			type="java.lang.Exception" />
 	</global-exceptions>
 	<action-mappings>
 		<action name="loginForm" path="/login" scope="request"
-			type="gov.nih.nci.calab.ui.security.LoginAction" input="input">
+			type="gov.nih.nci.cananolab.ui.security.LoginAction" input="input">
 			<exception
-				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 				key="error.securityException" path="/index.jsp"
-				type="gov.nih.nci.calab.exception.CaNanoLabSecurityException" />
+				type="gov.nih.nci.cananolab.exception.CaNanoLabSecurityException" />
 			<forward name="success" path="calab.welcome" />
 			<forward name="input" path="/loginPage.do" />
 			<forward name="changePassword" path="calab.password" />
 		</action>
 		<action name="updatePasswordForm" path="/updatePassword"
 			scope="request"
-			type="gov.nih.nci.calab.ui.security.UpdatePasswordAction"
+			type="gov.nih.nci.cananolab.ui.security.UpdatePasswordAction"
 			input="input">
 			<exception
-				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 				key="error.securityException" path="calab.password"
-				type="gov.nih.nci.calab.exception.CaNanoLabSecurityException" />
+				type="gov.nih.nci.cananolab.exception.CaNanoLabSecurityException" />
 			<forward name="success" path="/loginPage.do" />
 			<forward name="input" path="calab.password" />
 		</action>
 		<action path="/logout" scope="request"
-			type="gov.nih.nci.calab.ui.security.LogoutAction">
+			type="gov.nih.nci.cananolab.ui.security.LogoutAction">
 			<forward name="success" path="/loginPage.do" />
 		</action>
 		<action path="/loginPage"
-			type="gov.nih.nci.calab.ui.security.WelcomeAction"
+			type="gov.nih.nci.cananolab.ui.security.WelcomeAction"
 			parameter="calab.login" scope="request" />
 	</action-mappings>
 	<controller>
 		<set-property value="true" property="inputForward" />
 		<set-property property="processorClass"
-			value="gov.nih.nci.calab.ui.core.CustomRequestProcessor" />
+			value="gov.nih.nci.cananolab.ui.core.CustomRequestProcessor" />
 		<set-property property="nocache" value="true" />
 	</controller>
 	<message-resources
-		parameter="gov.nih.nci.calab.resources.application" null="false" />
+		parameter="gov.nih.nci.cananolab.resources.application" null="false" />
 	<message-resources key="sample"
-		parameter="gov.nih.nci.calab.resources.sample" null="false" />
+		parameter="gov.nih.nci.cananolab.resources.sample" null="false" />
 	<message-resources key="protocol"
-		parameter="gov.nih.nci.calab.resources.protocol" null="false" />
+		parameter="gov.nih.nci.cananolab.resources.protocol" null="false" />
 	<message-resources key="particle"
-		parameter="gov.nih.nci.calab.resources.particle" null="false" />
+		parameter="gov.nih.nci.cananolab.resources.particle" null="false" />
 	<message-resources key="report"
-		parameter="gov.nih.nci.calab.resources.report" null="false" />
+		parameter="gov.nih.nci.cananolab.resources.report" null="false" />
 
 	<plug-in className="org.apache.struts.tiles.TilesPlugin">
 		<set-property property="definitions-config"
@@ -111,5 +111,5 @@
 			      /WEB-INF/validation-protocol.xml, 
                   /WEB-INF/validator-rules.xml" />
 	</plug-in>
-	<plug-in className="gov.nih.nci.calab.ui.core.CustomPlugIn" />
+	<plug-in className="gov.nih.nci.cananolab.ui.core.CustomPlugIn" />
 </struts-config>
