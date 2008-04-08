@@ -24,7 +24,7 @@
 			<key column="associated_element_pk_id" />
 			<many-to-many class="gov.nih.nci.cananolab.domain.common.LabFile" column="file_pk_id" />
 		</set>
-		<joined-subclass name="gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement" table="composing_element" lazy="true">
+		<joined-subclass name="gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement" table="composing_element" lazy="false">
 			<key column="composing_element_pk_id" />
 			<!-- Attributes mapping for the ComposingElement class -->
 			<property name="type" type="string" column="element_type"/>
