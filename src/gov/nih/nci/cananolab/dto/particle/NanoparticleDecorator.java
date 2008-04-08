@@ -7,6 +7,7 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.Nanoparticle
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
 import gov.nih.nci.cananolab.dto.common.SortableName;
 import gov.nih.nci.cananolab.exception.CaNanoLabException;
+import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -101,35 +102,13 @@ public class NanoparticleDecorator extends TableDecorator {
 	public String getFunctionStr() throws CaNanoLabException {
 		ParticleBean particle = (ParticleBean) getCurrentRowObject();
 		SortedSet<String> functionNames = new TreeSet<String>();
-		if (particle.getParticleSample().getSampleComposition() != null) {
-			for (NanoparticleEntity entity : particle.getParticleSample()
-					.getSampleComposition().getNanoparticleEntityCollection()) {
-				for (ComposingElement element : entity
-						.getComposingElementCollection()) {
-					for (Function function : element
-							.getInherentFunctionCollection()) {
-						String displayName = InitSetup.getInstance()
-								.getDisplayName(
-										ClassUtils.getShortClassName(function
-												.getClass().getName()),
-										this.getPageContext()
-												.getServletContext());
-						functionNames.add(displayName);
-					}
-				}
-			}
-			for (FunctionalizingEntity entity : particle.getParticleSample()
-					.getSampleComposition()
-					.getFunctionalizingEntityCollection()) {
-				for (Function function : entity.getFunctionCollection()) {
-					String displayName = InitSetup.getInstance()
-							.getDisplayName(
-									ClassUtils.getShortClassName(function
-											.getClass().getName()),
-									this.getPageContext().getServletContext());
-					functionNames.add(displayName);
-				}
-			}
+		NanoparticleSampleService service = new NanoparticleSampleService();
+		SortedSet<String> functionClassNames = service
+				.getStoredFunctionClassNames(particle);
+		for (String name : functionClassNames) {
+			String displayName = InitSetup.getInstance().getDisplayName(name,
+					this.getPageContext().getServletContext());
+			functionNames.add(displayName);
 		}
 		return StringUtils.join(functionNames, "<br>");
 	}
