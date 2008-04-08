@@ -288,6 +288,12 @@ SELECT morphology_pk_id,
 FROM cananolab.morphology
 ;
 
+-- update canano.characterization table to replace "Morphology" with "Physical State"
+update canano.characterization
+set name = 'Physical State'
+where name = 'Morphology'
+;
+
 -- keyword_bioassay_data table in 1.3 loaded into keyword_lab_file table in 1.4
 INSERT INTO canano.keyword_lab_file
 (
