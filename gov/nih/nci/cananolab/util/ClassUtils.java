@@ -101,20 +101,6 @@ public class ClassUtils {
 		return strs[strs.length - 1];
 	}
 
-	/**
-	 * Get the class display name stored in the database
-	 * @param className
-	 * @return
-	 * @throws CaNanoLabException
-	 */
-	public static String getClassDisplayName(String className)
-			throws CaNanoLabException {
-		String shortClassName = getShortClassName(className);
-		SortedSet<String> values = LookupService.getLookupValues(
-				shortClassName, "displayName");
-		return values.first();
-	}
-
 	public static void main(String[] args) {
 		try {
 			List<String> names = ClassUtils
