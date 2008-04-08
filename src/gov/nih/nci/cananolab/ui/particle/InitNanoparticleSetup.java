@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.ui.particle;
 
 import gov.nih.nci.cananolab.domain.common.Source;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
+import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.ArrayList;
@@ -29,8 +30,9 @@ public class InitNanoparticleSetup {
 
 	public void setAllNanoparticleSampleSources(HttpServletRequest request)
 			throws Exception {
-		SortedSet<Source> sampleSources = particleService.getAllSampleSources();
-		request.setAttribute("allSampleSources", sampleSources);
+		SortedSet<Source> sampleSources = particleService
+				.getAllParticleSources();
+		request.setAttribute("allParticleSources", sampleSources);
 	}
 
 	public List<String> getDefaultFunctionTypes(ServletContext appContext)
@@ -41,7 +43,10 @@ public class InitNanoparticleSetup {
 					.getChildClassNames("gov.nih.nci.cananolab.domain.particle.samplecomposition.Function");
 			for (String name : functionClassNames) {
 				if (!name.contains("Other")) {
-					functionTypes.add(ClassUtils.getClassDisplayName(name));
+					String displayName = InitSetup.getInstance()
+							.getDisplayName(ClassUtils.getShortClassName(name),
+									appContext);
+					functionTypes.add(displayName);
 				}
 			}
 			appContext.setAttribute("defaultFunctionTypes", functionTypes);
@@ -61,8 +66,10 @@ public class InitNanoparticleSetup {
 					.getChildClassNames("gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity");
 			for (String name : classNames) {
 				if (!name.contains("Other")) {
-					nanoparticleEntityTypes.add(ClassUtils
-							.getClassDisplayName(name));
+					String displayName = InitSetup.getInstance()
+							.getDisplayName(ClassUtils.getShortClassName(name),
+									appContext);
+					nanoparticleEntityTypes.add(displayName);
 				}
 			}
 			appContext.setAttribute("defaultNanoparticleEntityTypes",
@@ -83,8 +90,10 @@ public class InitNanoparticleSetup {
 					.getChildClassNames("gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity");
 			for (String name : classNames) {
 				if (!name.contains("Other")) {
-					functionalizingEntityTypes.add(ClassUtils
-							.getClassDisplayName(name));
+					String displayName = InitSetup.getInstance()
+							.getDisplayName(ClassUtils.getShortClassName(name),
+									appContext);
+					functionalizingEntityTypes.add(displayName);
 				}
 			}
 			appContext.setAttribute("defaultFunctionalizingEntityTypes",
