@@ -1,5 +1,6 @@
 SET FOREIGN_KEY_CHECKS = 0;
 
+
 -- characterization
 INSERT INTO canano.characterization (
 	characterization_pk_id,
@@ -28,6 +29,7 @@ SELECT c.characterization_pk_id,
 FROM cananolab.characterization c,
 	cananolab.nanoparticle_char n
 where c.characterization_pk_id = n.characterization_pk_id
+AND c.name != 'Composition'
 ;
 
 insert into canano.shape (
