@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SearchNanoparticleAction.java,v 1.2 2008-04-07 21:49:32 pansu Exp $ */
+/* CVS $Id: SearchNanoparticleAction.java,v 1.3 2008-04-08 20:23:32 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -46,11 +46,8 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 				.get("functionalizingEntityTypes");
 		String[] functionTypes = (String[]) theForm.get("functionTypes");
 		String[] characterizations = (String[]) theForm
-				.get("characterizations");
-		String keywordType = (String) theForm.get("keywordType");
-		String keywords = (String) theForm.get("keywords");
-
-		String summaryType = theForm.getString("summaryType");
+				.get("characterizations");		
+		String keywords = (String) theForm.get("keywords");		
 		String summaries = theForm.getString("summaries");
 		String[] keywordList = (keywords.length() == 0) ? null : keywords
 				.split("\r\n");
@@ -61,7 +58,7 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 		List<ParticleBean> particles = service.findNanoparticleSamplesBy(
 				particleSource, nanoparticleEntityTypes,
 				functionalizingEntityTypes, functionTypes, characterizations,
-				keywordList, keywordType, summaryList, summaryType, user);
+				keywordList, summaryList, user);
 
 		if (particles != null && !particles.isEmpty()) {
 			request.setAttribute("particles", particles);
