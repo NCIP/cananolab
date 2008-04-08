@@ -27,7 +27,8 @@ public class CustomPlugIn implements PlugIn {
 		System.out.println("Entering CustomPlugIn.init()");
 		try {
 			// set servlet context variables
-			
+			InitSetup.getInstance().getDisplayNameLookup(
+					actionServlet.getServletContext());
 			InitNanoparticleSetup.getInstance().getDefaultFunctionTypes(
 					actionServlet.getServletContext());
 			InitNanoparticleSetup.getInstance()
