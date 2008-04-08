@@ -32,17 +32,24 @@
 					</tr>
 					<tr>
 						<td class="leftLabel">
-							<strong> Particle Source </strong>
+							<strong> Nanoparticle Sample Source </strong>
 						</td>
 						<td class="label">
 							<strong> <html:select property="particleSource">
 									<option value="" />
-										<html:options name="allParticleSources" />
+										<html:options collection="allSampleSources"
+											labelProperty="organizationName" property="organizationName" />
 								</html:select> </strong>
 						</td>
-						<td class="label">&nbsp;</td>
-						<td class="label">&nbsp;</td>
-						<td class="rightLabel">&nbsp;</td>
+						<td class="label">
+							&nbsp;
+						</td>
+						<td class="label">
+							&nbsp;
+						</td>
+						<td class="rightLabel">
+							&nbsp;
+						</td>
 					</tr>
 					<tr>
 						<td class="leftLabel" valign="top">
@@ -52,20 +59,18 @@
 							Nanoparticle Entity
 						</td>
 						<td class="label">
-							<strong><html:select property="particleType"
-							multiple="true" size="4">
-										<html:options name="allSampleTypes" />
+							<strong><html:select property="nanoparticleEntityTypes"
+									multiple="true" size="4">
+									<html:options name="nanoparticleEntityTypes" />
 								</html:select> </strong>
 						</td>
 						<td class="label" valign="top">
 							Functionalizing Entity
 						</td>
-						<td class="rightLabel">
-							<strong><html:select property="functionTypes"
-									multiple="true" size="3">
-									<option value=antibody>Antibody</option>
-									<option value=biomolecule>Biomolecule</option>
-									<option value=smallMolecule>Small Molecule</option>
+						<td class="rightLabel" valign="top">
+							<strong><html:select
+									property="functionalizingEntityTypes" multiple="true" size="3">
+									<html:options name="functionalizingEntityTypes" />
 								</html:select> </strong>
 						</td>
 					</tr>
@@ -75,11 +80,12 @@
 						</td>
 						<td class="rightLabel" colspan="4" valign="top">
 							<strong><html:select property="functionTypes"
-									multiple="true" size="4">
-									<html:options name="allFunctionTypes" />
+									multiple="true" size="3">
+									<html:options name="functionTypes" />
 								</html:select> </strong>
 						</td>
 					</tr>
+					<%--
 					<tr>
 						<td class="leftLabel" valign="top">
 							<strong>Characterization Type</strong>
@@ -115,10 +121,11 @@
 								</html:select> </strong>
 						</td>
 					</tr>
+					--%>
 					<tr>
 						<td class="leftLabel" valign="top">
-							<strong> Summary/Description<br><em>(one word per
-									line)</em> </strong>
+							<strong> Summary/Description<br> <em>(one word
+									per line)</em> </strong>
 						</td>
 						<td class="label" colspan="2">
 							<html:textarea property="summaries" rows="3" />
@@ -132,7 +139,7 @@
 					</tr>
 					<tr>
 						<td class="leftLabel" valign="top">
-							<strong>Keywords<br><em>(one word per line)</em></strong>
+							<strong>Keywords<br> <em>(one word per line)</em> </strong>
 						</td>
 						<td class="label" colspan="2">
 							<html:textarea property="keywords" rows="3" />
@@ -144,26 +151,41 @@
 							</strong>
 						</td>
 					</tr>
+					<%--
 					<tr>
 						<td class="leftLabel" valign="top">
 							<strong>Search Location</strong>
 						</td>
 						<td class="rightLabel" colspan="4">
-								<strong><html:select property="gridNodes"
-										multiple="true" size="3">
-									<option value="local" selected>Local</option>
-									<option value="caNanoLab-NCL_PROD">caNanoLab-NCL_PROD</option>
-									<option value="caNanoLab-PROD">caNanoLab-PROD</option>
-									<option value="caNanoLab-WUSTL">caNanoLab-WUSTL</option>
+							<strong><html:select property="gridNodes"
+									multiple="true" size="3">
+									<option value="local" selected>
+										Local
+									</option>
+									<option value="caNanoLab-NCL_PROD">
+										caNanoLab-NCL_PROD
+									</option>
+									<option value="caNanoLab-PROD">
+										caNanoLab-PROD
+									</option>
+									<option value="caNanoLab-WUSTL">
+										caNanoLab-WUSTL
+									</option>
 									<c:forEach var="selectedNode" items="${selectedGridNodeHosts}">
-										<option value="${selectedNode}" selected>${selectedNode}</option>
+										<option value="${selectedNode}" selected>
+											${selectedNode}
+										</option>
 									</c:forEach>
-									<c:forEach var="unselectedNode" items="${unselectedGridNodeHosts}">
-										<option value="${unselectedNode}">${unselectedNode}</option>
+									<c:forEach var="unselectedNode"
+										items="${unselectedGridNodeHosts}">
+										<option value="${unselectedNode}">
+											${unselectedNode}
+										</option>
 									</c:forEach>
-								</html:select></strong>
+								</html:select> </strong>
 						</td>
 					</tr>
+					--%>
 				</table>
 				<br>
 				<table width="100%" border="0" align="center" cellpadding="3"
