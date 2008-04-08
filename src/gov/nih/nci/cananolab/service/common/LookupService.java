@@ -1,15 +1,13 @@
 package gov.nih.nci.cananolab.service.common;
 
 import gov.nih.nci.cananolab.domain.common.CommonLookup;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.OtherFunction;
 import gov.nih.nci.cananolab.exception.CaNanoLabException;
-import gov.nih.nci.cananolab.exception.ParticleException;
-import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.system.applicationservice.ApplicationService;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -24,7 +22,7 @@ import org.hibernate.criterion.Property;
  * @author pansu
  * 
  */
-/* CVS $Id: LookupService.java,v 1.2 2008-04-07 20:16:13 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.3 2008-04-08 20:21:38 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -49,5 +47,33 @@ public class LookupService {
 			throw new CaNanoLabException();
 		}
 		return lookupValues;
+	}
+
+	/**
+	 * Return a map all of display names stored in CommonLookup
+	 * 
+	 * @return
+	 * @throws CaNanoLabException
+	 */
+	public static Map<String, String> getDisplayNameLookup()
+			throws CaNanoLabException {
+		Map<String, String> lookup = new HashMap<String, String>();
+		try {
+			ApplicationService appService = ApplicationServiceProvider
+					.getApplicationService();
+			DetachedCriteria crit = DetachedCriteria
+					.forClass(CommonLookup.class);
+			crit.add(Property.forName("attribute").eq("displayName"));
+			Collection results = appService.query(crit);
+			for (Object obj : results) {
+				lookup.put(((CommonLookup) obj).getName(), ((CommonLookup) obj)
+						.getValue());
+			}
+		} catch (Exception e) {
+			logger.error("Error in retrieving display names from CommonLookup",
+					e);
+			throw new CaNanoLabException();
+		}
+		return lookup;
 	}
 }
