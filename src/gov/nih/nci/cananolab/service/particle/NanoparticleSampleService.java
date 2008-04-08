@@ -11,8 +11,8 @@ import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.ParticleException;
-import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
@@ -23,8 +23,11 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
+import org.hibernate.FetchMode;
+import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.Restrictions;
 
 /**
  * This class includes service calls involved around a nanoparticle sample
@@ -38,9 +41,9 @@ public class NanoparticleSampleService {
 
 	/**
 	 * 
-	 * @return all sample sources
+	 * @return all particle sources
 	 */
-	public SortedSet<Source> getAllSampleSources() throws ParticleException {
+	public SortedSet<Source> getAllParticleSources() throws ParticleException {
 		SortedSet<Source> sampleSources = new TreeSet<Source>(
 				new CaNanoLabComparators.ParticleSourceComparator());
 		try {
@@ -184,9 +187,8 @@ public class NanoparticleSampleService {
 	public List<ParticleBean> findNanoparticleSamplesBy(String particleSource,
 			String[] nanoparticleEntityTypes,
 			String[] functionalizingEntityTypes, String[] functionTypes,
-			String[] characterizations, String[] keywords, String keywordType,
-			String[] summaries, String summaryType, UserBean user)
-			throws ParticleException, CaNanoLabSecurityException {
+			String[] characterizations, String[] keywords, String[] summaries,
+			UserBean user) throws ParticleException, CaNanoLabSecurityException {
 		List<ParticleBean> particles = new ArrayList<ParticleBean>();
 
 		try {
@@ -194,23 +196,36 @@ public class NanoparticleSampleService {
 					.forClass(NanoparticleSample.class);
 			if (particleSource != null && particleSource.length() > 0) {
 				crit.createAlias("source", "source").add(
-						Expression
-								.eq("source.organizationName", particleSource));
+						Restrictions.eq("source.organizationName",
+								particleSource));
 			}
 
 			if (keywords != null && keywords.length > 0) {
-				if (keywordType.equals("nanoparticle")) {
-					crit.createAlias("keywordCollection", "keyword").add(
-							Expression.in("keyword.name", keywords));
-				} else {
-					crit
-							.createAlias("characterizationCollection", "chara")
-							.createAlias("chara.derivedBioAssayData", "derived")
-							.createAlias("derived.labFile", "charFile")
-							.createAlias("charFile.keywordCollection",
-									"keyword").add(
-									Expression.in("keyword.name", keywords));
+				// turn keywords into upper case before search
+				String[] upperKeywords = new String[keywords.length];
+				for (int i = 0; i < keywords.length; i++) {
+					upperKeywords[i] = keywords[i].toUpperCase();
 				}
+
+				crit.createAlias("keywordCollection", "keyword1",
+						CriteriaSpecification.LEFT_JOIN);
+				Criterion keywordCrit1 = Restrictions.in("keyword1.name",
+						upperKeywords);
+
+				crit.createAlias("characterizationCollection", "chara",
+						CriteriaSpecification.LEFT_JOIN).createAlias(
+						"chara.derivedBioAssayDataCollection", "derived",
+						CriteriaSpecification.LEFT_JOIN).createAlias(
+						"derived.labFile", "charFile",
+						CriteriaSpecification.LEFT_JOIN).createAlias(
+						"charFile.keywordCollection", "keyword2",
+						CriteriaSpecification.LEFT_JOIN);
+				;
+				Criterion keywordCrit2 = Restrictions.in("keyword2.name",
+						upperKeywords);
+
+				crit.add(Restrictions.or(keywordCrit1, keywordCrit2));
+
 			}
 			if (functionTypes != null && functionTypes.length > 0) {
 
@@ -219,17 +234,19 @@ public class NanoparticleSampleService {
 				for (String summary : summaries) {
 
 				}
-
-				if (summaryType.equals("characterization")) {
-
-				} else {
-
-				}
 			}
+			crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
+			crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
+					FetchMode.JOIN);
+			crit.setFetchMode(
+					"sampleComposition.functionalizingEntityCollection",
+					FetchMode.JOIN);
+			crit
+					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			List results = appService.query(crit);
-			for (Object obj : new HashSet<Object>(results)) {
+			for (Object obj : results) {
 				NanoparticleSample particle = (NanoparticleSample) obj;
 				ParticleBean particleBean = new ParticleBean(particle);
 				particles.add(particleBean);
