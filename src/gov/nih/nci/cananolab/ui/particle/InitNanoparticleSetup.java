@@ -32,7 +32,7 @@ public class InitNanoparticleSetup {
 			throws Exception {
 		SortedSet<Source> sampleSources = particleService
 				.getAllParticleSources();
-		request.setAttribute("allParticleSources", sampleSources);
+		request.getSession().setAttribute("allParticleSources", sampleSources);
 	}
 
 	public List<String> getDefaultFunctionTypes(ServletContext appContext)
@@ -112,7 +112,7 @@ public class InitNanoparticleSetup {
 				.getAllOtherFunctionTypes();
 		List<String> types = new ArrayList<String>(defaultTypes);
 		types.addAll(otherTypes);
-		request.setAttribute("functionTypes", types);
+		request.getSession().setAttribute("functionTypes", types);
 	}
 
 	public void setNanoparticleEntityTypes(HttpServletRequest request)
@@ -123,7 +123,7 @@ public class InitNanoparticleSetup {
 				.getAllOtherNanoparticleEntityTypes();
 		List<String> types = new ArrayList<String>(defaultTypes);
 		types.addAll(otherTypes);
-		request.setAttribute("nanoparticleEntityTypes", types);
+		request.getSession().setAttribute("nanoparticleEntityTypes", types);
 	}
 
 	public void setFunctionalizingEntityTypes(HttpServletRequest request)
@@ -134,6 +134,6 @@ public class InitNanoparticleSetup {
 				.getAllOtherFunctionalizingEntityTypes();
 		List<String> types = new ArrayList<String>(defaultTypes);
 		types.addAll(otherTypes);
-		request.setAttribute("functionalizingEntityTypes", types);
+		request.getSession().setAttribute("functionalizingEntityTypes", types);
 	}
 }
