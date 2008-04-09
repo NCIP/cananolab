@@ -4,7 +4,7 @@
 	<allow>
 		<create creator="new" javascript="ProtocolManager">
 			<param name="class"
-				value="gov.nih.nci.calab.service.protocol.SearchProtocolService" />
+				value="gov.nih.nci.cananolab.service.protocol.SearchProtocolService" />
 			<include method="getProtocolFileBean" />
 			<include method="getProtocolFiles" />
 			<include method="getProtocolNames" />
@@ -12,16 +12,16 @@
 		</create>
 		<create creator="new" javascript="ParticleManager">
 			<param name="class"
-				value="gov.nih.nci.calab.service.particle.NanoparticleService" />
+				value="gov.nih.nci.cananolab.service.particle.NanoparticleService" />
 			<include method="getNewParticleNamesByType" />
 		</create>
 		<create creator="new" javascript="InstrumentManager">
 			<param name="class"
-				value="gov.nih.nci.calab.service.particle.NanoparticleCharacterizationService" />
+				value="gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService" />
 			<include method="getInstrumentAbbreviation" />
 		</create>
 		<convert converter="bean"
-			match="gov.nih.nci.calab.dto.common.ProtocolFileBean">
+			match="gov.nih.nci.cananolab.dto.common.ProtocolFileBean">
 			<param name="include" value="id, name, title, uri, version" />
 		</convert>
 	</allow>

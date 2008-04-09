@@ -26,11 +26,9 @@
 			<form-property name="characterizations"
 				type="java.lang.String[]" />
 			<form-property name="keywords" type="java.lang.String" />
-			<form-property name="keywordType" type="java.lang.String"
-				initial="nanoparticle" />
 			<form-property name="summaries" type="java.lang.String" />
-			<form-property name="summaryType" type="java.lang.String"
-				initial="characterization" />
+			<form-property name="searchLocations"
+				type="java.lang.String[]" />
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
 		</form-bean>
