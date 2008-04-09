@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.service.particle;
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.Source;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
+import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.OtherFunction;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
@@ -16,7 +17,6 @@ import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.ParticleException;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
-import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
@@ -33,6 +33,8 @@ import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
 /**
@@ -211,7 +213,21 @@ public class NanoparticleSampleService {
 			String[] keywords, String[] summaries, UserBean user)
 			throws ParticleException, CaNanoLabSecurityException {
 		List<ParticleBean> particles = new ArrayList<ParticleBean>();
-
+		// trim leading and trailing spaces
+		String[] trimmedKeywords = null;
+		if (keywords != null && keywords.length > 0) {
+			trimmedKeywords = new String[keywords.length];
+			for (int i = 0; i < keywords.length; i++) {
+				trimmedKeywords[i] = keywords[i].trim();
+			}
+		}
+		String[] trimmedSummaries = null;
+		if (summaries != null && summaries.length > 0) {
+			trimmedSummaries = new String[summaries.length];
+			for (int i = 0; i < summaries.length; i++) {
+				trimmedSummaries[i] = summaries[i].trim();
+			}
+		}
 		try {
 			DetachedCriteria crit = DetachedCriteria
 					.forClass(NanoparticleSample.class);
@@ -221,11 +237,11 @@ public class NanoparticleSampleService {
 								particleSource));
 			}
 
-			if (keywords != null && keywords.length > 0) {
+			if (trimmedKeywords != null && trimmedKeywords.length > 0) {
 				// turn keywords into upper case before search
-				String[] upperKeywords = new String[keywords.length];
-				for (int i = 0; i < keywords.length; i++) {
-					upperKeywords[i] = keywords[i].toUpperCase();
+				String[] upperKeywords = new String[trimmedKeywords.length];
+				for (int i = 0; i < trimmedKeywords.length; i++) {
+					upperKeywords[i] = trimmedKeywords[i].toUpperCase();
 				}
 
 				crit.createAlias("keywordCollection", "keyword1",
@@ -248,10 +264,27 @@ public class NanoparticleSampleService {
 				crit.add(Restrictions.or(keywordCrit1, keywordCrit2));
 
 			}
-			if (summaries != null && summaries.length > 0) {
-				for (String summary : summaries) {
-
+			if (trimmedSummaries != null && trimmedSummaries.length > 0) {
+				// criteria is already created if keyword is not null
+				if (trimmedKeywords == null || trimmedKeywords.length == 0) {
+					crit.createAlias("characterizationCollection", "chara",
+							CriteriaSpecification.LEFT_JOIN).createAlias(
+							"chara.derivedBioAssayDataCollection", "derived",
+							CriteriaSpecification.LEFT_JOIN).createAlias(
+							"derived.labFile", "charFile");
 				}
+				Disjunction disjunction = Restrictions.disjunction();
+				for (String summary : trimmedSummaries) {
+					Criterion summaryCrit1 = Restrictions.ilike(
+							"chara.description", summary, MatchMode.ANYWHERE);
+					Criterion summaryCrit2 = Restrictions
+							.ilike("charFile.description", summary,
+									MatchMode.ANYWHERE);
+					Criterion summaryCrit = Restrictions.or(summaryCrit1,
+							summaryCrit2);
+					disjunction.add(summaryCrit);
+				}
+				crit.add(disjunction);
 			}
 			crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
 			crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
@@ -271,7 +304,13 @@ public class NanoparticleSampleService {
 			}
 			List<ParticleBean> functionFilteredParticles = filterByFunctions(
 					functionClassNames, particles);
-			return functionFilteredParticles;
+			List<ParticleBean> characterizationFilteredParticles = filterByCharacterizations(
+					characterizationClassNames, functionFilteredParticles);
+			List<ParticleBean> compositionFilteredParticles = filterByCompositions(
+					nanoparticleEntityClassNames,
+					functionalizingEntityClassNames,
+					characterizationFilteredParticles);
+			return compositionFilteredParticles;
 
 		} catch (Exception e) {
 			logger
@@ -300,6 +339,114 @@ public class NanoparticleSampleService {
 		} else {
 			return particles;
 		}
+	}
+
+	private List<ParticleBean> filterByCharacterizations(
+			String[] characterizationClassNames, List<ParticleBean> particles) {
+		if (characterizationClassNames != null
+				&& characterizationClassNames.length > 0) {
+			List<ParticleBean> filteredList = new ArrayList<ParticleBean>();
+			for (ParticleBean particle : particles) {
+				SortedSet<String> storedChars = getStoredCharacterizationClassNames(particle);
+				for (String func : characterizationClassNames) {
+					// if at least one characterization type matches, keep the
+					// particle
+					if (storedChars.contains(func)) {
+						filteredList.add(particle);
+						break;
+					}
+				}
+			}
+			return filteredList;
+		} else {
+			return particles;
+		}
+	}
+
+	private List<ParticleBean> filterByCompositions(
+			String[] nanoparticleEntityClassNames,
+			String[] functionalizingEntityClassNames,
+			List<ParticleBean> particles) {
+
+		List<ParticleBean> filteredList1 = new ArrayList<ParticleBean>();
+		if (nanoparticleEntityClassNames != null
+				&& nanoparticleEntityClassNames.length > 0) {
+			for (ParticleBean particle : particles) {
+				SortedSet<String> storedEntities = getStoredNanoparticleEntityClassNames(particle);
+				for (String entity : nanoparticleEntityClassNames) {
+					// if at least one function type matches, keep the particle
+					if (storedEntities.contains(entity)) {
+						filteredList1.add(particle);
+						break;
+					}
+				}
+			}
+		} else {
+			filteredList1 = particles;
+		}
+		List<ParticleBean> filteredList2 = new ArrayList<ParticleBean>();
+		if (functionalizingEntityClassNames != null
+				&& functionalizingEntityClassNames.length > 0) {
+			for (ParticleBean particle : particles) {
+				SortedSet<String> storedEntities = getStoredFunctionalizingEntityClassNames(particle);
+				for (String entity : functionalizingEntityClassNames) {
+					// if at least one function type matches, keep the particle
+					if (storedEntities.contains(entity)) {
+						filteredList2.add(particle);
+						break;
+					}
+				}
+			}
+		} else {
+			filteredList2 = particles;
+		}
+		if (filteredList1.size() > filteredList2.size()) {
+			filteredList1.retainAll(filteredList2);
+			return filteredList1;
+		} else {
+			filteredList2.retainAll(filteredList1);
+			return filteredList2;
+		}
+	}
+
+	public SortedSet<String> getStoredCharacterizationClassNames(
+			ParticleBean particle) {
+		SortedSet<String> storedChars = new TreeSet<String>();
+		for (Characterization achar : particle.getParticleSample()
+				.getCharacterizationCollection()) {
+			storedChars.add(ClassUtils.getShortClassName(achar.getClass()
+					.getCanonicalName()));
+		}
+		return storedChars;
+	}
+
+	public SortedSet<String> getStoredNanoparticleEntityClassNames(
+			ParticleBean particle) {
+		SortedSet<String> storedEntities = new TreeSet<String>();
+
+		if (particle.getParticleSample().getSampleComposition() != null) {
+			for (NanoparticleEntity entity : particle.getParticleSample()
+					.getSampleComposition().getNanoparticleEntityCollection()) {
+				storedEntities.add(ClassUtils.getShortClassName(entity
+						.getClass().getCanonicalName()));
+			}
+		}
+		return storedEntities;
+	}
+
+	public SortedSet<String> getStoredFunctionalizingEntityClassNames(
+			ParticleBean particle) {
+		SortedSet<String> storedEntities = new TreeSet<String>();
+
+		if (particle.getParticleSample().getSampleComposition() != null) {
+			for (FunctionalizingEntity entity : particle.getParticleSample()
+					.getSampleComposition()
+					.getFunctionalizingEntityCollection()) {
+				storedEntities.add(ClassUtils.getShortClassName(entity
+						.getClass().getCanonicalName()));
+			}
+		}
+		return storedEntities;
 	}
 
 	public SortedSet<String> getStoredFunctionClassNames(ParticleBean particle) {
