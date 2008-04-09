@@ -24,39 +24,27 @@
 				<table width="100%" border="0" align="center" cellpadding="3"
 					cellspacing="0" summary="">
 					<tr class="topBorder">
-						<td class="formTitle" colspan="5">
+						<td class="formTitle" colspan="6">
 							<div align="justify">
 								Search Criteria
 							</div>
 						</td>
 					</tr>
 					<tr>
-						<td class="leftLabel">
+						<td class="leftLabel" width="20%">
 							<strong> Nanoparticle Sample Source </strong>
 						</td>
-						<td class="label">
+						<td class="rightLabel" colspan="5">
 							<strong> <html:select property="particleSource">
 									<option value="" />
-										<html:options collection="allSampleSources"
+										<html:options collection="allParticleSources"
 											labelProperty="organizationName" property="organizationName" />
 								</html:select> </strong>
-						</td>
-						<td class="label">
-							&nbsp;
-						</td>
-						<td class="label">
-							&nbsp;
-						</td>
-						<td class="rightLabel">
-							&nbsp;
 						</td>
 					</tr>
 					<tr>
 						<td class="leftLabel" valign="top">
-							<strong>Composition</strong>
-						</td>
-						<td class="label" valign="top">
-							Nanoparticle Entity
+							<strong>Composition<br> Nanoparticle Entity</strong>
 						</td>
 						<td class="label">
 							<strong><html:select property="nanoparticleEntityTypes"
@@ -65,20 +53,18 @@
 								</html:select> </strong>
 						</td>
 						<td class="label" valign="top">
-							Functionalizing Entity
+							<strong>Composition <br>Functionalizing Entity</strong>
 						</td>
-						<td class="rightLabel" valign="top">
+						<td class="label" valign="top">
 							<strong><html:select
 									property="functionalizingEntityTypes" multiple="true" size="3">
 									<html:options name="functionalizingEntityTypes" />
 								</html:select> </strong>
 						</td>
-					</tr>
-					<tr>
-						<td class="leftLabel" valign="top">
+						<td class="label" valign="top">
 							<strong>Function</strong>
 						</td>
-						<td class="rightLabel" colspan="4" valign="top">
+						<td class="rightLabel" valign="top">
 							<strong><html:select property="functionTypes"
 									multiple="true" size="3">
 									<html:options name="functionTypes" />
@@ -124,41 +110,36 @@
 					--%>
 					<tr>
 						<td class="leftLabel" valign="top">
-							<strong> Summary/Description<br> <em>(one word
-									per line)</em> </strong>
+							<strong>Keywords</strong>
+							<br>
+							<em> (for Nanoparticle <br>or Characterization File)</em>
 						</td>
-						<td class="label" colspan="2">
-							<html:textarea property="summaries" rows="3" />
-						</td>
-						<td class="rightLabel" colspan="2">
-							<strong>for<br> <html:radio property="summaryType"
-									value="characterization">Characterization</html:radio> <br>
-								<html:radio property="summaryType" value="assayResult">Characterization File/Derived Data</html:radio>
-							</strong>
+						<td class="rightLabel" colspan="5">
+							<html:textarea property="keywords" rows="3" />
+							<br>
+							<em>case insensitive, one word per line</em>
 						</td>
 					</tr>
 					<tr>
 						<td class="leftLabel" valign="top">
-							<strong>Keywords<br> <em>(one word per line)</em> </strong>
+							<strong> Sentence fragments in Summary/Description</strong>
+							<br>
+							<em> (for Characterization <br>or Characterization
+								File)</em>
 						</td>
-						<td class="label" colspan="2">
-							<html:textarea property="keywords" rows="3" />
-						</td>
-						<td class="rightLabel" colspan="2">
-							<strong>for<br> <html:radio property="keywordType"
-									value="nanoparticle">Nanoparticle</html:radio> <br> <html:radio
-									property="keywordType" value="assayResult">Characterization File</html:radio>
-							</strong>
+						<td class="rightLabel" colspan="5">
+							<html:textarea property="summaries" rows="3" cols="60" />
+							<br>
+							<em>case insensitive, one sentence fragment per line</em>
 						</td>
 					</tr>
-					<%--
 					<tr>
 						<td class="leftLabel" valign="top">
 							<strong>Search Location</strong>
 						</td>
-						<td class="rightLabel" colspan="4">
-							<strong><html:select property="gridNodes"
-									multiple="true" size="3">
+						<td class="rightLabel" colspan="5">
+							<strong><html:select property="searchLocations"
+									multiple="true" size="4">
 									<option value="local" selected>
 										Local
 									</option>
@@ -171,6 +152,7 @@
 									<option value="caNanoLab-WUSTL">
 										caNanoLab-WUSTL
 									</option>
+									<%--
 									<c:forEach var="selectedNode" items="${selectedGridNodeHosts}">
 										<option value="${selectedNode}" selected>
 											${selectedNode}
@@ -182,10 +164,10 @@
 											${unselectedNode}
 										</option>
 									</c:forEach>
+									--%>
 								</html:select> </strong>
 						</td>
 					</tr>
-					--%>
 				</table>
 				<br>
 				<table width="100%" border="0" align="center" cellpadding="3"
