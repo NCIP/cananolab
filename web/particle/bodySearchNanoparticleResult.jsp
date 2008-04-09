@@ -7,12 +7,14 @@
 <table width="100%" align="center">
 	<tr>
 		<td>
-			<h3>			
+			<h3>
 				Nanoparticle Search Results
 			</h3>
 		</td>
 		<td align="right" width="15%">
-			<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=nano_search_results_help')" class="helpText">Help</a>&nbsp;&nbsp; 
+			<a
+				href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=nano_search_results_help')"
+				class="helpText">Help</a>&nbsp;&nbsp;
 			<a href="searchNanoparticle.do?dispatch=setup" class="helpText">Back</a>
 		</td>
 	</tr>
@@ -27,15 +29,24 @@
 				</c:otherwise>
 			</c:choose>
 			<jsp:include page="/bodyMessage.jsp?bundle=particle" />
-			<display:table name="particles" id="particle" requestURI="searchNanoparticle.do" pagesize="25" class="displaytable" decorator="gov.nih.nci.calab.dto.particle.NanoparticleDecorator">
-				<display:column title="Particle ID" property="${particleURL}" sortable="true" />
-				<display:column title="Particle<br>Source" property="sampleSource" sortable="true" />
-				<display:column title="Particle<br>Classification" property="particleClassification" sortable="true" />
-				<display:column title="Particle Type" property="sampleType" sortable="true" />
-				<display:column title="Particle Functions" property="functionTypesStr" />
-				<display:column title="Particle Characterizations" property="characterizationsStr" />
-				<display:column title="Particle Keywords" property="keywordsStr" />
-				<display:column title="Location" >Local</display:column>
+			<display:table name="particles" id="particle"
+				requestURI="searchNanoparticle.do" pagesize="25"
+				class="displaytable"
+				decorator="gov.nih.nci.cananolab.dto.particle.NanoparticleDecorator">
+				<display:column title="Particle<br> Sample Name"
+					property="${particleURL}" sortable="true" />
+				<display:column title="Particle<br> Source"
+					property="particleSample.source.organizationName" sortable="true" />
+				<display:column title="Particle<br> Composition"
+					property="compositionStr" sortable="true" />
+				<display:column title="Particle<br> Functions" property="functionStr" />
+				<display:column title="Particle<br> Characterizations"
+					property="characterizationStr" />
+				<%--
+				<display:column title="Particle<br> Keywords"
+					property="keywordStr" />
+				--%>
+				<display:column title="Particle<br> Location">Local</display:column>
 			</display:table>
 			<%--
 				<div align="right">
