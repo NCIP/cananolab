@@ -34,7 +34,7 @@
 						</tr>
 						<tr>
 							<td class="leftLabel">
-								<strong>Nanoparticle Sample ID *</strong>
+								<strong>Nanoparticle Sample Name *</strong>
 							</td>
 							<td class="rightLabel">
 								<html:text property="particleSampleBean.particleSample.name" />
