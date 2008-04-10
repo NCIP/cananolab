@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
 
@@ -179,11 +180,11 @@ public class InitNanoparticleSetup {
 
 	}
 
-	public TreeMap<TreeNodeBean, List<String>> getDefaultCharacterizationTypes(
+	public SortedMap<TreeNodeBean, List<String>> getDefaultCharacterizationTypes(
 			ServletContext appContext) throws Exception {
 		if (appContext.getAttribute("characterizationTypes") == null) {
 
-			TreeMap<TreeNodeBean, List<String>> charaMap = new TreeMap<TreeNodeBean, List<String>>();
+			SortedMap<TreeNodeBean, List<String>> charaMap = new TreeMap<TreeNodeBean, List<String>>();
 			Map<TreeNodeBean, List<String>> physicalMap = getDefaultPhysicalCharacterizationTypes(appContext);
 			Map<TreeNodeBean, List<String>> invitroMap = getDefaultInvitroCharacterizationTypes(appContext);
 
@@ -191,6 +192,7 @@ public class InitNanoparticleSetup {
 			charaMap.putAll(invitroMap);
 
 			appContext.setAttribute("characterizationTypes", charaMap);
+
 			return charaMap;
 
 		} else {
