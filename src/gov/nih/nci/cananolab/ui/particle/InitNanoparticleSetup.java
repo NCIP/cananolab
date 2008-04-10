@@ -9,10 +9,9 @@ import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
 
@@ -39,7 +38,7 @@ public class InitNanoparticleSetup {
 			throws Exception {
 		SortedSet<Source> sampleSources = particleService
 				.getAllParticleSources();
-		request.setAttribute("allParticleSources", sampleSources);
+		request.getSession().setAttribute("allParticleSources", sampleSources);
 	}
 
 	public List<String> getDefaultFunctionTypes(ServletContext appContext)
@@ -119,7 +118,7 @@ public class InitNanoparticleSetup {
 				.getAllOtherFunctionTypes();
 		List<String> types = new ArrayList<String>(defaultTypes);
 		types.addAll(otherTypes);
-		request.setAttribute("functionTypes", types);
+		request.getSession().setAttribute("functionTypes", types);
 	}
 
 	public void setNanoparticleEntityTypes(HttpServletRequest request)
@@ -130,7 +129,7 @@ public class InitNanoparticleSetup {
 				.getAllOtherNanoparticleEntityTypes();
 		List<String> types = new ArrayList<String>(defaultTypes);
 		types.addAll(otherTypes);
-		request.setAttribute("nanoparticleEntityTypes", types);
+		request.getSession().setAttribute("nanoparticleEntityTypes", types);
 	}
 
 	public void setFunctionalizingEntityTypes(HttpServletRequest request)
@@ -141,7 +140,7 @@ public class InitNanoparticleSetup {
 				.getAllOtherFunctionalizingEntityTypes();
 		List<String> types = new ArrayList<String>(defaultTypes);
 		types.addAll(otherTypes);
-		request.setAttribute("functionalizingEntityTypes", types);
+		request.getSession().setAttribute("functionalizingEntityTypes", types);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -180,11 +179,11 @@ public class InitNanoparticleSetup {
 		return searchTreeMap;
 	}
 	
-	public TreeMap<TreeNodeBean, List<String>> getDefaultCharacterizationTypes(
+	public SortedMap<TreeNodeBean, List<String>> getDefaultCharacterizationTypes(
 			ServletContext appContext) throws Exception {
 		if (appContext.getAttribute("CharacterizationTypes") == null) {
 			
-			TreeMap<TreeNodeBean, List<String>> charaMap = new TreeMap<TreeNodeBean, List<String>>();
+			SortedMap<TreeNodeBean, List<String>> charaMap = new TreeMap<TreeNodeBean, List<String>>();
 			Map<TreeNodeBean, List<String>> physicalMap = getDefaultPhysicalCharacterizationTypes(appContext);
 			Map<TreeNodeBean, List<String>> invitroMap = getDefaultInvitroCharacterizationTypes(appContext);
 		
@@ -196,7 +195,7 @@ public class InitNanoparticleSetup {
 		
 		} else {
 			return new TreeMap<TreeNodeBean, List<String>>
-				((TreeMap<TreeNodeBean, List<String>>) appContext.getAttribute("CharacterizationTypes"));
+				((SortedMap<? extends TreeNodeBean, List<String>>) appContext.getAttribute("CharacterizationTypes"));
 		}
 	}
 	
