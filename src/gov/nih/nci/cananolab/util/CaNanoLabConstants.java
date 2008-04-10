@@ -1,5 +1,8 @@
 package gov.nih.nci.cananolab.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import gov.nih.nci.cananolab.util.PropertyReader;
 
 public class CaNanoLabConstants {
@@ -283,7 +286,28 @@ public class CaNanoLabConstants {
 	public static final String PHYSICAL_ASSAY_PROTOCOL = "Physical Assay";
 
 	public static final String INVITRO_ASSAY_PROTOCOL = "In Vitro Assay";
-
+	
+	public static final String PHYSICAL_CHARACTERIZATION_CLASS_NAME = "Physical Characterization";
+	public static final String IN_VITRO_CHARACTERIZATION_CLASS_NAME = "In Vitro Characterization";
+	public static final short CHARACTERIZATION_ROOT_DISPLAY_ORDER = 0;
+	public static final Map<String, Integer> CHARACTERIZATION_ORDER_MAP = new HashMap<String, Integer>();
+	static {
+		CHARACTERIZATION_ORDER_MAP.put(new String("Physical Characterization"),
+				new Integer(0));
+		CHARACTERIZATION_ORDER_MAP.put(new String("In Vitro Characterization"),
+				new Integer(1));
+		CHARACTERIZATION_ORDER_MAP.put(new String("Toxicity"),
+				new Integer(2));
+		CHARACTERIZATION_ORDER_MAP.put(new String("Cytotoxicity"),
+				new Integer(3));
+		CHARACTERIZATION_ORDER_MAP.put(new String("Immunotoxicity"), 
+				new Integer(4));
+		CHARACTERIZATION_ORDER_MAP.put(new String("Blood Contact"), 
+				new Integer(5));
+		CHARACTERIZATION_ORDER_MAP.put(new String("Immune Cell Function"),
+				new Integer(6));
+	}
+	
 	/* image file name extension */
 	public static final String[] IMAGE_FILE_EXTENSIONS = { "AVS", "BMP", "CIN",
 			"DCX", "DIB", "DPX", "FITS", "GIF", "ICO", "JFIF", "JIF", "JPE",
