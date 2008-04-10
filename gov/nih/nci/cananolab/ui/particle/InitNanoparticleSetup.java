@@ -231,7 +231,7 @@ public class InitNanoparticleSetup {
 				subclassName = sclassName;
 			}
 			
-			nodeBean.setHasGrandChildrenFlag(subclassName);
+			nodeBean.setHasGrandChildernFlag(ClassUtils.hasChildrenClasses(subclassName));
 			typeMap.put(parentDisplayName, tempList);
 			searchTreeMap.put(nodeBean, tempList);
 
