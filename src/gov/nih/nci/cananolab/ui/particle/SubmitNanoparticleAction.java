@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SubmitNanoparticleAction.java,v 1.1 2008-04-07 20:12:10 pansu Exp $ */
+/* CVS $Id: SubmitNanoparticleAction.java,v 1.2 2008-04-10 18:51:35 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -49,7 +49,7 @@ public class SubmitNanoparticleAction extends AbstractDispatchAction {
 
 		NanoparticleSampleService service = new NanoparticleSampleService();
 
-		service.createNewNanoparticleSample(particleSampleBean);
+		service.saveNanoparticleSample(particleSampleBean);
 		HttpSession session = request.getSession();
 
 		// display default visible groups
@@ -65,6 +65,28 @@ public class SubmitNanoparticleAction extends AbstractDispatchAction {
 		forward = mapping.findForward("success");
 		session.setAttribute("newParticleCreated", "true");
 		return forward;
+	}
+
+	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		HttpSession session = request.getSession();
+		InitNanoparticleSetup.getInstance().setAllNanoparticleSampleSources(
+				request);
+		InitSecuritySetup.getInstance().setAllVisibilityGroups(session);
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		String particleId = request.getParameter("particleId");
+		UserBean user = (UserBean) session.getAttribute("user");
+		NanoparticleSampleService service = new NanoparticleSampleService();
+		ParticleBean particleSampleBean = service.findNanoparticleSampleBy(particleId,
+				user);
+		theForm.set("particleSampleBean", particleSampleBean);
+		session.setAttribute("newParticleCreated", "true");
+		/*
+		 * InitParticleSetup.getInstance() .setSideParticleMenu(request,
+		 * particleId);
+		 */		
+		return mapping.findForward("update");
 	}
 
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
