@@ -5,12 +5,17 @@
 <script type='text/javascript' src='javascript/addDropDownOptions.js'></script>
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 
+<c:set var="action" value="Submit" scope="request" />
+<c:if test="${param.dispatch eq 'setupUpdate'}">
+	<c:set var="action" value="Update" scope="request" />
+</c:if>
+
 <html:form action="/submitNanoparticleSample">
 	<table width="100%" align="center">
 		<tr>
 			<td>
 				<h3>
-					Submit Nanoparticle Sample
+					${action} Nanoparticle Sample
 				</h3>
 			</td>
 			<td align="right" width="15%">
@@ -38,6 +43,11 @@
 							</td>
 							<td class="rightLabel">
 								<html:text property="particleSampleBean.particleSample.name" />
+								<c:if
+									test="${!empty nanoparticleSampleForm.map.particleSampleBean.particleSample.id}">
+									<html:hidden property="particleSampleBean.particleSample.id"
+										value="${nanoparticleSampleForm.map.particleSampleBean.particleSample.id}" />
+								</c:if>
 							</td>
 						</tr>
 						<tr>
@@ -45,14 +55,15 @@
 								<strong>Nanoparticle Sample Source</strong>
 							</td>
 							<td class="rightLabel">
-								<html:select property="particleSampleBean.particleSample.source.organizationName"
+								<html:select
+									property="particleSampleBean.particleSample.source.organizationName"
 									styleId="sampleSource"
 									onchange="javascript:callPrompt('Nanoparticle Sample Source', 'sampleSource');">
 									<option />
-										<html:options collection="allSampleSources"
+										<html:options collection="allParticleSources"
 											labelProperty="organizationName" property="organizationName" />
 									<option value="other">
-										Other
+										[Other]
 									</option>
 								</html:select>
 							</td>
@@ -62,7 +73,8 @@
 								<strong>Keywords <em>(one word per line)</em> </strong>
 							</td>
 							<td class="rightLabel">
-								<html:textarea property="particleSampleBean.keywordsStr" rows="4" />
+								<html:textarea property="particleSampleBean.keywordsStr"
+									rows="6" />
 							</td>
 						</tr>
 						<tr>
@@ -98,7 +110,7 @@
 												<input type="reset" value="Reset" onclick="">
 												<input type="hidden" name="dispatch" value="create">
 												<input type="hidden" name="page" value="1">
-												<html:submit />
+												<html:submit value="${action}" />
 											</div>
 										</div>
 									</td>
