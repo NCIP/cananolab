@@ -1,14 +1,10 @@
 package gov.nih.nci.cananolab.dto.common;
 
-import gov.nih.nci.cananolab.util.ClassUtils;
-
-import java.util.List;
-
 public class TreeNodeBean implements Comparable<TreeNodeBean> {
 	private String nodeName;
 	private Integer order;
 	private Integer indentLevel; // root node indent level = 0;
-	private boolean hasGrandChildrenFlag;
+	private boolean hasGrandChildernFlag;
 	
 	public TreeNodeBean(String nodeName, int order, int indentLevel) {
 		this.nodeName = nodeName;
@@ -33,21 +29,26 @@ public class TreeNodeBean implements Comparable<TreeNodeBean> {
 	}
 
 	public boolean hasGrandChildern() {
-		return hasGrandChildrenFlag;
+		return hasGrandChildernFlag;
 	}
 
-	public void setHasGrandChildrenFlag(String childClassName) throws Exception {
-		if(childClassName == null) {
-			hasGrandChildrenFlag = false;
-			return;
-		}
-		List<String> subclassList = ClassUtils
-			.getChildClassNames(childClassName);
-		if(subclassList == null || subclassList.size() == 0)
-			hasGrandChildrenFlag = false;
-		else
-			hasGrandChildrenFlag = true;
-		
+	public boolean isHasGrandChildernFlag() {
+		return hasGrandChildernFlag;
 	}
-	
+
+	public void setHasGrandChildernFlag(boolean hasGrandChildernFlag) {
+		this.hasGrandChildernFlag = hasGrandChildernFlag;
+	}
+
+	public void setIndentLevel(Integer indentLevel) {
+		this.indentLevel = indentLevel;
+	}
+
+	public void setNodeName(String nodeName) {
+		this.nodeName = nodeName;
+	}
+
+	public void setOrder(Integer order) {
+		this.order = order;
+	}
 }
