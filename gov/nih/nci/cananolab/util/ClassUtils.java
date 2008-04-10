@@ -101,6 +101,26 @@ public class ClassUtils {
 		return strs[strs.length - 1];
 	}
 
+	/**
+	 * check if a class has children classes
+	 * @param parent class name
+	 * @return
+	 */
+	public static boolean hasChildrenClasses(String parentClassName) throws Exception {
+		boolean hasChildernFlag = false;
+		if(parentClassName == null) {
+			return hasChildernFlag;
+		}
+		List<String> subclassList = ClassUtils
+			.getChildClassNames(parentClassName);
+		if(subclassList == null || subclassList.size() == 0)
+			hasChildernFlag = false;
+		else
+			hasChildernFlag = true;
+		
+		return hasChildernFlag;
+	}
+	
 	public static void main(String[] args) {
 		try {
 			List<String> names = ClassUtils
