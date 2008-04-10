@@ -67,9 +67,9 @@
 
 	<!-- definition for the particle general info view page -->
 	<definition name="particle.generalInfo"
-		extends="particle.annotationHome">
+		extends="calab.home">
 		<put name="calabContent"
-			value="/particle/bodyNanoparticleGeneralInfo.jsp" />
+			value="/particle/bodySubmitNanoparticleSample.jsp" />
 		<put name="menu" value="nanoparticles" />
 	</definition>
 
