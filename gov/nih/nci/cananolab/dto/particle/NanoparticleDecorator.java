@@ -25,7 +25,7 @@ public class NanoparticleDecorator extends TableDecorator {
 		ParticleBean particle = (ParticleBean) getCurrentRowObject();
 		String particleId = particle.getParticleSample().getId().toString();
 		String particleName = particle.getParticleSample().getName();
-		String editParticleURL = "nanoparticleGeneralInfo.do?dispatch=setupUpdate&particleId="
+		String editParticleURL = "submitNanoparticleSample.do?dispatch=setupUpdate&particleId="
 				+ particleId;
 		String link = "<a href=" + editParticleURL + ">" + particleName
 				+ "</a>";
@@ -59,7 +59,7 @@ public class NanoparticleDecorator extends TableDecorator {
 		SortableName sortableLink = new SortableName(particleName, link);
 		return sortableLink;
 	}
-
+	
 	public String getKeywordStr() {
 		ParticleBean particle = (ParticleBean) getCurrentRowObject();
 		String keywordsStr = particle.getKeywordsStr();
