@@ -181,7 +181,7 @@ public class InitNanoparticleSetup {
 	
 	public SortedMap<TreeNodeBean, List<String>> getDefaultCharacterizationTypes(
 			ServletContext appContext) throws Exception {
-		if (appContext.getAttribute("CharacterizationTypes") == null) {
+		if (appContext.getAttribute("characterizationTypes") == null) {
 			
 			SortedMap<TreeNodeBean, List<String>> charaMap = new TreeMap<TreeNodeBean, List<String>>();
 			Map<TreeNodeBean, List<String>> physicalMap = getDefaultPhysicalCharacterizationTypes(appContext);
@@ -190,12 +190,12 @@ public class InitNanoparticleSetup {
 			charaMap.putAll(physicalMap);
 			charaMap.putAll(invitroMap);
 			
-			appContext.setAttribute("CharacterizationTypes", charaMap);
+			appContext.setAttribute("characterizationTypes", charaMap);
 			return charaMap;
 		
 		} else {
 			return new TreeMap<TreeNodeBean, List<String>>
-				((SortedMap<? extends TreeNodeBean, List<String>>) appContext.getAttribute("CharacterizationTypes"));
+				((SortedMap<? extends TreeNodeBean, List<String>>) appContext.getAttribute("characterizationTypes"));
 		}
 	}
 	
