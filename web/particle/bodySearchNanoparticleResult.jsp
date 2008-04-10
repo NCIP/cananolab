@@ -25,7 +25,7 @@
 					<c:set var="particleURL" value="editParticleURL" />
 				</c:when>
 				<c:otherwise>
-					<c:set var="particleURL" value="viewParticleURL" />
+					<c:set var="particleURL" value="editParticleURL" />
 				</c:otherwise>
 			</c:choose>
 			<jsp:include page="/bodyMessage.jsp?bundle=particle" />
@@ -39,13 +39,10 @@
 					property="particleSample.source.organizationName" sortable="true" />
 				<display:column title="Particle<br> Composition"
 					property="compositionStr" sortable="true" />
-				<display:column title="Particle<br> Functions" property="functionStr" />
+				<display:column title="Particle<br> Functions"
+					property="functionStr" />
 				<display:column title="Particle<br> Characterizations"
 					property="characterizationStr" />
-				<%--
-				<display:column title="Particle<br> Keywords"
-					property="keywordStr" />
-				--%>
 				<display:column title="Particle<br> Location">Local</display:column>
 			</display:table>
 			<%--
