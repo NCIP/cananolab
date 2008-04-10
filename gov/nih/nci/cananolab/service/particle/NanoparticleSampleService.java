@@ -35,6 +35,7 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 
 /**
@@ -72,21 +73,24 @@ public class NanoparticleSampleService {
 	}
 
 	/**
-	 * Persist a new nanoparticle sample
+	 * Persist a new nanoparticle sample or update an existing nanoparticle
+	 * sample
 	 * 
 	 * @param particleSampleBean
 	 * @throws Exception
 	 */
-	public void createNewNanoparticleSample(ParticleBean particleBean)
+	public void saveNanoparticleSample(ParticleBean particleBean)
 			throws Exception {
 		NanoparticleSample particleSample = particleBean.getParticleSample();
 
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
+
 		NanoparticleSample dbParticle = (NanoparticleSample) appService
 				.getObject(NanoparticleSample.class, "name", particleSample
 						.getName());
-		if (dbParticle != null) {
+		if (dbParticle != null
+				&& !dbParticle.getId().equals(particleSample.getId())) {
 			throw new DuplicateEntriesException(
 					"This nanoparticle sample ID has already been used.  Please use a different one");
 		}
@@ -310,6 +314,9 @@ public class NanoparticleSampleService {
 					nanoparticleEntityClassNames,
 					functionalizingEntityClassNames,
 					characterizationFilteredParticles);
+
+			// TODO sort particles
+			// TODO add CSM
 			return compositionFilteredParticles;
 
 		} catch (Exception e) {
@@ -475,5 +482,39 @@ public class NanoparticleSampleService {
 			}
 		}
 		return storedFunctions;
+	}
+
+	public ParticleBean findNanoparticleSampleBy(String particleId,
+			UserBean user) throws ParticleException, CaNanoLabSecurityException {
+		ParticleBean particleBean = null;
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+
+			DetachedCriteria crit = DetachedCriteria.forClass(
+					NanoparticleSample.class).add(
+					Property.forName("id").eq(new Long(particleId)));
+
+			crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
+			crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
+					FetchMode.JOIN);
+			crit.setFetchMode(
+					"sampleComposition.functionalizingEntityCollection",
+					FetchMode.JOIN);
+			crit
+					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+
+			List result = appService.query(crit);
+			if (!result.isEmpty()) {
+				NanoparticleSample particleSample = (NanoparticleSample) result
+						.get(0);
+				particleBean = new ParticleBean(particleSample);
+			}
+
+			return particleBean;
+		} catch (Exception e) {
+			logger.error("Problem finding the particle by id", e);
+			throw new ParticleException();
+		}
 	}
 }
