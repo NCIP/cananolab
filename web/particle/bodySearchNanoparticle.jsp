@@ -70,44 +70,42 @@
 									<html:options name="functionTypes" />
 								</html:select> </strong>
 						</td>
-					</tr>
-					<%--
+					</tr>					
 					<tr>
 						<td class="leftLabel" valign="top">
 							<strong>Characterization Type</strong>
+							<html:hidden styleId="characterizationType"
+								property="characterizationType" />
 						</td>
 						<td class="label">
-							<c:forEach var="charType" items="${allCharacterizationTypes}">
+							<c:forEach var="charType" items="${characterizationTypes}">
 								<c:choose>
-									<c:when test="${charType.hasAction}">
-										<span class="indented${charType.indentLevel}"><a
+									<c:when test="${charType.key.hasGrandChildrenFlag eq false}">
+										<span class="indented${charType.key.indentLevel}"><a
 											href="#"
-											onclick="javascript:dynamicDropdown('${charType.type}', document.searchNanoparticleForm.characterizations, charTypeChars); setHiddenCharType('${charType.type}')">${charType.type}
+											onclick="javascript:dynamicDropdown('${charType.key.nodeName}', document.searchNanoparticleSampleForm.characterizations, charTypeChars); setHiddenCharType('${charType.key.nodeName}')">${charType.key.nodeName}
 										</a> </span>
 									</c:when>
 									<c:otherwise>
-										<span class="indented${charType.indentLevel}">${charType.type}</span>
+										<span class="indented${charType.key.indentLevel}">${charType.key.nodeName}</span>
 									</c:otherwise>
 								</c:choose>
 								<br>
 							</c:forEach>
-							<html:hidden styleId="characterizationType"
-								property="characterizationType" />
 						</td>
 						<td class="label" valign="top">
 							<strong>Characterization</strong>
 						</td>
-						<td class="rightLabel" valign="top" colspan="2">
+						<td class="rightLabel" valign="top" colspan="3">
 							<strong> <html:select property="characterizations"
 									multiple="true" size="4">
-									<c:forEach var="char"
-										items="${allCharTypeChars[searchNanoparticleForm.map.characterizationType]}">
-										<html:option value="${char.name}">${char.name}</html:option>
-									</c:forEach>
+									<c:forEach var="achar"
+										items="${searchNanoparticleSampleForm.map.characterizations}">
+										<html:option value="${achar}">${achar}</html:option>
+									</c:forEach>									
 								</html:select> </strong>
 						</td>
 					</tr>
-					--%>
 					<tr>
 						<td class="leftLabel" valign="top">
 							<strong>Keywords</strong>
@@ -202,17 +200,19 @@
 
 /* populate a hashtable containing characterization type characterizations */
   var charTypeChars=new Array();    
-  <c:forEach var="item" items="${allCharTypeChars}">  
+  <c:forEach var="item" items="${characterizationTypes}">  
     var chars=new Array();    
-   <c:forEach var="char" items="${allCharTypeChars[item.key]}" varStatus="count">
-  		chars[${count.index}]='${char.name}'; 
-    </c:forEach>
-    charTypeChars['${item.key}']=chars;
-  </c:forEach>
   
-  function setHiddenCharType(charType) { 
+   <c:forEach var="achar" items="${characterizationTypes[item.key]}" varStatus="count">
+  		chars[${count.index}]='${achar}'; 
+    </c:forEach>
+    charTypeChars['${item.key.nodeName}']=chars;
+  </c:forEach>  
+  
+   function setHiddenCharType(charType) { 
      document.getElementById("characterizationType").value=charType;          
-  }
+   }
+  
 //-->
 </script>
 <!--_____ main content ends _____-->
