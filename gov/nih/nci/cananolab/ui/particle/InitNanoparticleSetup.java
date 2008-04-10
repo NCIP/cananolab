@@ -1,13 +1,20 @@
 package gov.nih.nci.cananolab.ui.particle;
 
 import gov.nih.nci.cananolab.domain.common.Source;
+import gov.nih.nci.cananolab.dto.characterization.TreeNodeBean;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
+import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.SortedSet;
+import java.util.TreeMap;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -32,7 +39,7 @@ public class InitNanoparticleSetup {
 			throws Exception {
 		SortedSet<Source> sampleSources = particleService
 				.getAllParticleSources();
-		request.getSession().setAttribute("allParticleSources", sampleSources);
+		request.setAttribute("allParticleSources", sampleSources);
 	}
 
 	public List<String> getDefaultFunctionTypes(ServletContext appContext)
@@ -112,7 +119,7 @@ public class InitNanoparticleSetup {
 				.getAllOtherFunctionTypes();
 		List<String> types = new ArrayList<String>(defaultTypes);
 		types.addAll(otherTypes);
-		request.getSession().setAttribute("functionTypes", types);
+		request.setAttribute("functionTypes", types);
 	}
 
 	public void setNanoparticleEntityTypes(HttpServletRequest request)
@@ -123,7 +130,7 @@ public class InitNanoparticleSetup {
 				.getAllOtherNanoparticleEntityTypes();
 		List<String> types = new ArrayList<String>(defaultTypes);
 		types.addAll(otherTypes);
-		request.getSession().setAttribute("nanoparticleEntityTypes", types);
+		request.setAttribute("nanoparticleEntityTypes", types);
 	}
 
 	public void setFunctionalizingEntityTypes(HttpServletRequest request)
@@ -134,6 +141,103 @@ public class InitNanoparticleSetup {
 				.getAllOtherFunctionalizingEntityTypes();
 		List<String> types = new ArrayList<String>(defaultTypes);
 		types.addAll(otherTypes);
-		request.getSession().setAttribute("functionalizingEntityTypes", types);
+		request.setAttribute("functionalizingEntityTypes", types);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public Map<TreeNodeBean, List<String>> getDefaultPhysicalCharacterizationTypes(
+			ServletContext appContext) throws Exception {
+
+		Map<String, List<String>> physicalCharaMap = new HashMap<String, List<String>>();
+		Map<TreeNodeBean, List<String>> searchTreeMap = new HashMap<TreeNodeBean, List<String>>();
+		short indentLevel = -1;
+
+		setSubclassMap(
+				appContext,
+				physicalCharaMap,
+				searchTreeMap,
+				"gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalCharacterization",
+				indentLevel);
+
+		return searchTreeMap;
+	}
+
+	@SuppressWarnings("unchecked")
+	public Map<TreeNodeBean, List<String>> getDefaultInvitroCharacterizationTypes(
+			ServletContext appContext) throws Exception {
+
+		Map<String, List<String>> invitroCharaMap = new HashMap<String, List<String>>();
+		Map<TreeNodeBean, List<String>> searchTreeMap = new HashMap<TreeNodeBean, List<String>>();
+
+		short indentLevel = -1;
+		setSubclassMap(
+				appContext,
+				invitroCharaMap,
+				searchTreeMap,
+				"gov.nih.nci.cananolab.domain.particle.characterization.invitro.InvitroCharacterization",
+				indentLevel);
+
+		return searchTreeMap;
+
+	}
+	
+	public TreeMap<TreeNodeBean, List<String>> getDefaultCharacterizationTypes(
+			ServletContext appContext) throws Exception {
+		if (appContext.getAttribute("CharacterizationTypes") == null) {
+			
+			TreeMap<TreeNodeBean, List<String>> charaMap = new TreeMap<TreeNodeBean, List<String>>();
+			Map<TreeNodeBean, List<String>> physicalMap = getDefaultPhysicalCharacterizationTypes(appContext);
+			Map<TreeNodeBean, List<String>> invitroMap = getDefaultInvitroCharacterizationTypes(appContext);
+		
+			charaMap.putAll(physicalMap);
+			charaMap.putAll(invitroMap);
+			
+			appContext.setAttribute("CharacterizationTypes", charaMap);
+			return charaMap;
+		
+		} else {
+			return new TreeMap<TreeNodeBean, List<String>>
+				((TreeMap<TreeNodeBean, List<String>>) appContext.getAttribute("CharacterizationTypes"));
+		}
+		
+	}
+	
+	private static void setSubclassMap(ServletContext appContext,
+			Map<String, List<String>> typeMap,
+			Map<TreeNodeBean, List<String>> searchTreeMap,
+			String parentClassName, int indentLevel) {
+		try {
+			List<String> subclassList = ClassUtils
+					.getChildClassNames(parentClassName);
+
+			if (subclassList == null || subclassList.size() == 0) {
+				return;
+			}
+			List<String> tempList = new ArrayList<String>();
+
+			indentLevel++;
+			for (String sclassName : subclassList) {
+				String displayName = InitSetup.getInstance().getDisplayName(
+						ClassUtils.getShortClassName(sclassName), appContext);
+				tempList.add(displayName);
+
+				setSubclassMap(appContext, typeMap, searchTreeMap, sclassName,
+						indentLevel);
+			}
+
+			String parentDisplayName = InitSetup.getInstance().getDisplayName(
+					ClassUtils.getShortClassName(parentClassName), appContext);
+
+			typeMap.put(parentDisplayName, tempList);
+
+			TreeNodeBean nodeBean = new TreeNodeBean(parentDisplayName,
+					CaNanoLabConstants.CHARACTERIZATION_ORDER_MAP
+							.get(parentDisplayName), new Integer(indentLevel));
+			searchTreeMap.put(nodeBean, tempList);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 }
