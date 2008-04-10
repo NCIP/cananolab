@@ -8,7 +8,7 @@ public class TreeNodeBean implements Comparable<TreeNodeBean> {
 	private String nodeName;
 	private Integer order;
 	private Integer indentLevel; // root node indent level = 0;
-	private boolean hasGrandChildernFlag;
+	private boolean hasGrandChildrenFlag;
 	
 	public TreeNodeBean(String nodeName, int order, int indentLevel) {
 		this.nodeName = nodeName;
@@ -33,20 +33,20 @@ public class TreeNodeBean implements Comparable<TreeNodeBean> {
 	}
 
 	public boolean hasGrandChildern() {
-		return hasGrandChildernFlag;
+		return hasGrandChildrenFlag;
 	}
 
 	public void setHasGrandChildrenFlag(String childClassName) throws Exception {
 		if(childClassName == null) {
-			hasGrandChildernFlag = false;
+			hasGrandChildrenFlag = false;
 			return;
 		}
 		List<String> subclassList = ClassUtils
 			.getChildClassNames(childClassName);
 		if(subclassList == null || subclassList.size() == 0)
-			hasGrandChildernFlag = false;
+			hasGrandChildrenFlag = false;
 		else
-			hasGrandChildernFlag = true;
+			hasGrandChildrenFlag = true;
 		
 	}
 	
