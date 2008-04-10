@@ -41,6 +41,13 @@ public class CustomizedApplicationServiceImpl extends ApplicationServiceImpl
 		return dao.load(domainClass, id);
 	}
 
+	public Object get(Class domainClass, Serializable id)
+			throws ApplicationException {
+		CustomizedORMDAO dao = (CustomizedORMDAO) classCache
+				.getDAOForClass(domainClass.getCanonicalName());
+		return dao.get(domainClass, id);
+	}
+
 	public void saveOrUpdate(Object object) throws ApplicationException {
 		CustomizedORMDAO dao = (CustomizedORMDAO) classCache
 				.getDAOForClass(object.getClass().getCanonicalName());

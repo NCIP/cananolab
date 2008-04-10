@@ -6,7 +6,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 
 /**
  * Customized to contain generic CRUD operations.
@@ -19,6 +18,8 @@ public interface CustomizedORMDAO extends DAO {
 	public void saveOrUpdate(Object object);
 
 	public Object load(Class domainClass, Serializable id);
+
+	public Object get(Class domainClass, Serializable id);
 
 	public void delete(Object object);
 
