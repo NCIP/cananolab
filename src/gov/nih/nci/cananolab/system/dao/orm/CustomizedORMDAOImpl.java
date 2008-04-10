@@ -315,6 +315,10 @@ public class CustomizedORMDAOImpl extends HibernateDaoSupport implements
 	public Object load(Class domainClass, Serializable id) {
 		return getHibernateTemplate().load(domainClass, id);
 	}
+	
+	public Object get(Class domainClass, Serializable id) {
+		return getHibernateTemplate().get(domainClass, id);
+	}
 
 	public void saveOrUpdate(Object t) {
 		getHibernateTemplate().saveOrUpdate(t);

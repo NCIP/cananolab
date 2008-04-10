@@ -21,6 +21,9 @@ public interface CustomizedApplicationService extends ApplicationService {
 	public Object load(Class domainClass, Serializable id)
 			throws ApplicationException;
 
+	public Object get(Class domainClass, Serializable id)
+			throws ApplicationException;
+
 	public void delete(Object object) throws ApplicationException;
 
 	public void deleteById(Class domainClass, Serializable id)
@@ -31,6 +34,7 @@ public interface CustomizedApplicationService extends ApplicationService {
 	public Object getObject(Class domainClass, String uniqueKeyName,
 			Object uniqueKeyValue) throws ApplicationException;
 
-	//used to execute native SQL queries for CSM, up for removal in next release
+	// used to execute native SQL queries for CSM, up for removal in next
+	// release
 	public Session getCurrentSession() throws ApplicationException;
 }
