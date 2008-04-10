@@ -39,6 +39,12 @@ public class CustomPlugIn implements PlugIn {
 							actionServlet.getServletContext());
 			actionServlet.getServletContext().setAttribute("applicationOwner",
 					CaNanoLabConstants.APP_OWNER);
+			
+			InitNanoparticleSetup.getInstance()
+				.getDefaultCharacterizationTypes(
+						actionServlet.getServletContext());
+	
+	
 			// InitSecuritySetup.getInstance().createDefaultCSMGroups();
 		} catch (Exception e) {
 			this.logger.error("Servlet initialization error", e);
