@@ -2,10 +2,13 @@ package gov.nih.nci.cananolab.dto.common;
 
 public class TreeNodeBean implements Comparable<TreeNodeBean> {
 	private String nodeName;
+
 	private Integer order;
+
 	private Integer indentLevel; // root node indent level = 0;
-	private boolean hasGrandChildernFlag;
-	
+
+	private boolean hasGrandChildrenFlag;
+
 	public TreeNodeBean(String nodeName, int order, int indentLevel) {
 		this.nodeName = nodeName;
 		this.order = order;
@@ -28,16 +31,12 @@ public class TreeNodeBean implements Comparable<TreeNodeBean> {
 		return order.compareTo(tnb.getOrder());
 	}
 
-	public boolean hasGrandChildern() {
-		return hasGrandChildernFlag;
+	public boolean isHasGrandChildrenFlag() {
+		return hasGrandChildrenFlag;
 	}
 
-	public boolean isHasGrandChildernFlag() {
-		return hasGrandChildernFlag;
-	}
-
-	public void setHasGrandChildernFlag(boolean hasGrandChildernFlag) {
-		this.hasGrandChildernFlag = hasGrandChildernFlag;
+	public void setHasGrandChildrenFlag(boolean hasGrandChildrenFlag) {
+		this.hasGrandChildrenFlag = hasGrandChildrenFlag;
 	}
 
 	public void setIndentLevel(Integer indentLevel) {

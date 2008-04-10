@@ -142,7 +142,7 @@ public class InitNanoparticleSetup {
 		types.addAll(otherTypes);
 		request.getSession().setAttribute("functionalizingEntityTypes", types);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public Map<TreeNodeBean, List<String>> getDefaultPhysicalCharacterizationTypes(
 			ServletContext appContext) throws Exception {
@@ -178,27 +178,28 @@ public class InitNanoparticleSetup {
 
 		return searchTreeMap;
 	}
-	
+
 	public SortedMap<TreeNodeBean, List<String>> getDefaultCharacterizationTypes(
 			ServletContext appContext) throws Exception {
 		if (appContext.getAttribute("characterizationTypes") == null) {
-			
+
 			SortedMap<TreeNodeBean, List<String>> charaMap = new TreeMap<TreeNodeBean, List<String>>();
 			Map<TreeNodeBean, List<String>> physicalMap = getDefaultPhysicalCharacterizationTypes(appContext);
 			Map<TreeNodeBean, List<String>> invitroMap = getDefaultInvitroCharacterizationTypes(appContext);
-		
+
 			charaMap.putAll(physicalMap);
 			charaMap.putAll(invitroMap);
-			
+
 			appContext.setAttribute("characterizationTypes", charaMap);
 			return charaMap;
-		
+
 		} else {
-			return new TreeMap<TreeNodeBean, List<String>>
-				((SortedMap<? extends TreeNodeBean, List<String>>) appContext.getAttribute("characterizationTypes"));
+			return new TreeMap<TreeNodeBean, List<String>>(
+					(SortedMap<? extends TreeNodeBean, List<String>>) appContext
+							.getAttribute("characterizationTypes"));
 		}
 	}
-	
+
 	private static void setSubclassMap(ServletContext appContext,
 			Map<String, List<String>> typeMap,
 			Map<TreeNodeBean, List<String>> searchTreeMap,
@@ -214,24 +215,25 @@ public class InitNanoparticleSetup {
 
 			String parentDisplayName = InitSetup.getInstance().getDisplayName(
 					ClassUtils.getShortClassName(parentClassName), appContext);
-			
+
 			TreeNodeBean nodeBean = new TreeNodeBean(parentDisplayName,
 					CaNanoLabConstants.CHARACTERIZATION_ORDER_MAP
 							.get(parentDisplayName), new Integer(indentLevel));
-			
+
 			indentLevel++;
 			String subclassName = null;
 			for (String sclassName : subclassList) {
 				String displayName = InitSetup.getInstance().getDisplayName(
 						ClassUtils.getShortClassName(sclassName), appContext);
 				tempList.add(displayName);
-				
+
 				setSubclassMap(appContext, typeMap, searchTreeMap, sclassName,
 						indentLevel);
 				subclassName = sclassName;
 			}
-			
-			nodeBean.setHasGrandChildernFlag(ClassUtils.hasChildrenClasses(subclassName));
+
+			nodeBean.setHasGrandChildrenFlag(ClassUtils
+					.hasChildrenClasses(subclassName));
 			typeMap.put(parentDisplayName, tempList);
 			searchTreeMap.put(nodeBean, tempList);
 
@@ -239,5 +241,5 @@ public class InitNanoparticleSetup {
 			e.printStackTrace();
 		}
 	}
-	
+
 }
