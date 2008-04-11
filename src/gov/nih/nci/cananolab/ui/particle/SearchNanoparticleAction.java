@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SearchNanoparticleAction.java,v 1.5 2008-04-10 18:51:22 pansu Exp $ */
+/* CVS $Id: SearchNanoparticleAction.java,v 1.6 2008-04-11 19:44:40 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -14,7 +14,9 @@ import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
+import gov.nih.nci.cananolab.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -74,18 +76,15 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 			charaClassNames[i] = InitSetup.getInstance().getObjectName(
 					characterizations[i], session.getServletContext());
 		}
-		String keywords = (String) theForm.get("keywords");
-		String summaries = theForm.getString("summaries");
-		String[] keywordList = (keywords.length() == 0) ? null : keywords
-				.split("\r\n");
-		String[] summaryList = (summaries.length() == 0) ? null : summaries
-				.split("\r\n");
-
+		String texts = ((String) theForm.get("texts")).trim();
+		List<String> wordList = StringUtils.parseToWords(texts);
+		String[] words = new String[wordList.size()];
+		wordList.toArray(words);
 		NanoparticleSampleService service = new NanoparticleSampleService();
 		List<ParticleBean> particles = service.findNanoparticleSamplesBy(
 				particleSource, nanoparticleEntityClassNames,
 				functionalizingEntityClassNames, functionClassNames,
-				charaClassNames, keywordList, summaryList, user);
+				charaClassNames, words, user);
 
 		if (particles != null && !particles.isEmpty()) {
 			request.setAttribute("particles", particles);
