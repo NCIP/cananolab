@@ -1,7 +1,14 @@
 package gov.nih.nci.cananolab.ui.particle;
 
+import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.common.Source;
+import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
 import gov.nih.nci.cananolab.dto.common.TreeNodeBean;
+import gov.nih.nci.cananolab.dto.particle.ParticleBean;
+import gov.nih.nci.cananolab.dto.particle.ParticleDataLinkBean;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
@@ -242,4 +249,68 @@ public class InitNanoparticleSetup {
 		}
 	}
 
+	public Map<String, List<ParticleDataLinkBean>> getDataTree(
+			ParticleBean particleBean, ServletContext appContext)
+			throws Exception {
+		NanoparticleSample particleSample = particleBean.getParticleSample();
+		Map<String, List<ParticleDataLinkBean>> dataTree = new HashMap<String, List<ParticleDataLinkBean>>();
+		// composition
+		if (particleSample.getSampleComposition() != null) {
+			List<ParticleDataLinkBean> ndataBeans = new ArrayList<ParticleDataLinkBean>();
+			for (NanoparticleEntity entity : particleSample
+					.getSampleComposition().getNanoparticleEntityCollection()) {
+				ParticleDataLinkBean dataBean = new ParticleDataLinkBean(entity
+						.getId().toString(), "composition");
+				dataBean.setDataClassName(ClassUtils.getShortClassName(entity
+						.getClass().getCanonicalName()));
+				dataBean.setDataDisplayType(InitSetup.getInstance()
+						.getDisplayName(dataBean.getDataDisplayType(),
+								appContext));
+				ndataBeans.add(dataBean);
+			}
+			dataTree.put("Nanoparticle Entity", ndataBeans);
+
+			List<ParticleDataLinkBean> fdataBeans = new ArrayList<ParticleDataLinkBean>();
+			for (FunctionalizingEntity entity : particleSample
+					.getSampleComposition()
+					.getFunctionalizingEntityCollection()) {
+				ParticleDataLinkBean dataBean = new ParticleDataLinkBean(entity
+						.getId().toString(), "composition");
+				dataBean.setDataClassName(ClassUtils.getShortClassName(entity
+						.getClass().getCanonicalName()));
+				dataBean.setDataDisplayType(InitSetup.getInstance()
+						.getDisplayName(dataBean.getDataDisplayType(),
+								appContext));
+				fdataBeans.add(dataBean);
+			}
+			dataTree.put("Functionalizing Entity", fdataBeans);
+
+			List<ParticleDataLinkBean> adataBeans = new ArrayList<ParticleDataLinkBean>();
+			for (ChemicalAssociation association : particleSample
+					.getSampleComposition().getChemicalAssociationCollection()) {
+				ParticleDataLinkBean dataBean = new ParticleDataLinkBean(
+						association.getId().toString(), "composition");
+				dataBean.setDataClassName(ClassUtils
+						.getShortClassName(association.getClass()
+								.getCanonicalName()));
+				dataBean.setDataDisplayType(InitSetup.getInstance()
+						.getDisplayName(dataBean.getDataDisplayType(),
+								appContext));
+				adataBeans.add(dataBean);
+			}
+			dataTree.put("Chemical Association", adataBeans);
+
+			List<ParticleDataLinkBean> ldataBeans = new ArrayList<ParticleDataLinkBean>();
+			for (LabFile file : particleSample.getSampleComposition()
+					.getLabFileCollection()) {
+				ParticleDataLinkBean dataBean = new ParticleDataLinkBean(file
+						.getId().toString(), "composition");
+				dataBean.setDataClassName("LabFile");
+				dataBean.setDataDisplayType(file.getType());
+				ldataBeans.add(dataBean);
+			}
+			dataTree.put("Composition File", ldataBeans);
+		}
+		return dataTree;
+	}
 }
