@@ -507,7 +507,12 @@ public class NanoparticleSampleService {
 			crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
 					FetchMode.JOIN);
 			crit.setFetchMode(
+					"sampleComposition.chemicalAssociationCollection",
+					FetchMode.JOIN);
+			crit.setFetchMode(
 					"sampleComposition.functionalizingEntityCollection",
+					FetchMode.JOIN);
+			crit.setFetchMode("sampleComposition.labFileCollection",
 					FetchMode.JOIN);
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
