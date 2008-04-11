@@ -294,6 +294,11 @@ set name = 'Physical State'
 where name = 'Morphology'
 ;
 
+update canano.characterization
+set discriminator = 'PhysicalState'
+where discriminator = 'Morphology'
+;
+
 -- keyword_bioassay_data table in 1.3 loaded into keyword_lab_file table in 1.4
 INSERT INTO canano.keyword_lab_file
 (
