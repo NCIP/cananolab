@@ -18,6 +18,7 @@
 					class="helpText">Help</a>
 			</td>
 		</tr>
+
 		<tr>
 			<td colspan="2">
 				<jsp:include page="/bodyMessage.jsp?bundle=particle" />
@@ -26,7 +27,36 @@
 					<tr class="topBorder">
 						<td class="formTitle" colspan="6">
 							<div align="justify">
-								Search Criteria
+								Basic Search
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td class="leftLabel" valign="top">
+							<strong>Texts</strong>
+							<br>
+							<em> (e.g. Keywords for nanoparticles or characterization
+								files. <br>Words/phrases in characterization descriptionor
+								characterization file description.)</em>
+						</td>
+						<td class="rightLabel" colspan="5">
+							<html:textarea property="texts" rows="3" cols="60" />
+							<br>
+							<em>case insensitive</em>
+							<br>
+							<em>words in quotes are searched together</em>
+							<br>
+						</td>
+					</tr>
+				</table>
+				<br>
+
+				<table width="100%" border="0" align="center" cellpadding="3"
+					cellspacing="0" summary="">
+					<tr class="topBorder">
+						<td class="formTitle" colspan="6">
+							<div align="justify">
+								Advanced Search
 							</div>
 						</td>
 					</tr>
@@ -70,7 +100,7 @@
 									<html:options name="functionTypes" />
 								</html:select> </strong>
 						</td>
-					</tr>					
+					</tr>
 					<tr>
 						<td class="leftLabel" valign="top">
 							<strong>Characterization Type</strong>
@@ -102,40 +132,19 @@
 									<c:forEach var="achar"
 										items="${searchNanoparticleSampleForm.map.characterizations}">
 										<html:option value="${achar}">${achar}</html:option>
-									</c:forEach>									
+									</c:forEach>
 								</html:select> </strong>
 						</td>
 					</tr>
+				</table>
+				<br>
+				<table width="100%" border="0" align="center" cellpadding="3"
+					cellspacing="0" summary="">
 					<tr>
-						<td class="leftLabel" valign="top">
-							<strong>Keywords</strong>
-							<br>
-							<em> (for Nanoparticle <br>or Characterization File)</em>
-						</td>
-						<td class="rightLabel" colspan="5">
-							<html:textarea property="keywords" rows="3" />
-							<br>
-							<em>case insensitive, one word per line</em>
-						</td>
-					</tr>
-					<tr>
-						<td class="leftLabel" valign="top">
-							<strong> Sentence fragments in Summary/Description</strong>
-							<br>
-							<em> (for Characterization <br>or Characterization
-								File)</em>
-						</td>
-						<td class="rightLabel" colspan="5">
-							<html:textarea property="summaries" rows="3" cols="60" />
-							<br>
-							<em>case insensitive, one sentence fragment per line</em>
-						</td>
-					</tr>
-					<tr>
-						<td class="leftLabel" valign="top">
+						<td class="leftLabelWithTop" valign="top">
 							<strong>Search Location</strong>
 						</td>
-						<td class="rightLabel" colspan="5">
+						<td class="rightLabelWithTop" colspan="5">
 							<strong><html:select property="searchLocations"
 									multiple="true" size="4">
 									<option value="local" selected>
