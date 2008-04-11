@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SubmitNanoparticleAction.java,v 1.2 2008-04-10 18:51:35 pansu Exp $ */
+/* CVS $Id: SubmitNanoparticleAction.java,v 1.3 2008-04-11 14:42:23 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -78,14 +78,15 @@ public class SubmitNanoparticleAction extends AbstractDispatchAction {
 		String particleId = request.getParameter("particleId");
 		UserBean user = (UserBean) session.getAttribute("user");
 		NanoparticleSampleService service = new NanoparticleSampleService();
-		ParticleBean particleSampleBean = service.findNanoparticleSampleBy(particleId,
-				user);
-		theForm.set("particleSampleBean", particleSampleBean);
+		ParticleBean particleBean = service.findNanoparticleSampleBy(
+				particleId, user);
+		theForm.set("particleSampleBean", particleBean);
 		session.setAttribute("newParticleCreated", "true");
-		/*
-		 * InitParticleSetup.getInstance() .setSideParticleMenu(request,
-		 * particleId);
-		 */		
+		
+		session.setAttribute("particleDataTree", InitNanoparticleSetup
+				.getInstance().getDataTree(particleBean,
+						session.getServletContext()));
+
 		return mapping.findForward("update");
 	}
 
