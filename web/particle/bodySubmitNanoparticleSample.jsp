@@ -52,7 +52,7 @@
 						</tr>
 						<tr>
 							<td class="leftLabel">
-								<strong>Nanoparticle Sample Source</strong>
+								<strong>Nanoparticle Sample Source *</strong>
 							</td>
 							<td class="rightLabel">
 								<html:select
