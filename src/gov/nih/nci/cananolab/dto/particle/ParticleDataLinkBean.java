@@ -19,7 +19,8 @@ public class ParticleDataLinkBean {
 
 	private String dataCategory;
 
-	public ParticleDataLinkBean(String category) {
+	public ParticleDataLinkBean(String dataId, String category) {
+		this.dataId=dataId;
 		dataCategory = category;
 	}
 
