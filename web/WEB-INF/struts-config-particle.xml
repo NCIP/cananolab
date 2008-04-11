@@ -25,8 +25,7 @@
 				type="java.lang.String" />
 			<form-property name="characterizations"
 				type="java.lang.String[]" />
-			<form-property name="keywords" type="java.lang.String" />
-			<form-property name="summaries" type="java.lang.String" />
+			<form-property name="texts" type="java.lang.String" />
 			<form-property name="searchLocations"
 				type="java.lang.String[]" />
 			<form-property name="page" type="java.lang.Integer"
