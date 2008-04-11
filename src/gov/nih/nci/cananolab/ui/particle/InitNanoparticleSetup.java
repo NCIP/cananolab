@@ -3,6 +3,9 @@ package gov.nih.nci.cananolab.ui.particle;
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.common.Source;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
+import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
+import gov.nih.nci.cananolab.domain.particle.characterization.invitro.InvitroCharacterization;
+import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalCharacterization;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
@@ -263,9 +266,10 @@ public class InitNanoparticleSetup {
 						.getId().toString(), "composition");
 				dataBean.setDataClassName(ClassUtils.getShortClassName(entity
 						.getClass().getCanonicalName()));
-				dataBean.setDataDisplayType(InitSetup.getInstance()
-						.getDisplayName(dataBean.getDataDisplayType(),
-								appContext));
+				dataBean
+						.setDataDisplayType(InitSetup.getInstance()
+								.getDisplayName(dataBean.getDataClassName(),
+										appContext));
 				ndataBeans.add(dataBean);
 			}
 			dataTree.put("Nanoparticle Entity", ndataBeans);
@@ -278,9 +282,10 @@ public class InitNanoparticleSetup {
 						.getId().toString(), "composition");
 				dataBean.setDataClassName(ClassUtils.getShortClassName(entity
 						.getClass().getCanonicalName()));
-				dataBean.setDataDisplayType(InitSetup.getInstance()
-						.getDisplayName(dataBean.getDataDisplayType(),
-								appContext));
+				dataBean
+						.setDataDisplayType(InitSetup.getInstance()
+								.getDisplayName(dataBean.getDataClassName(),
+										appContext));
 				fdataBeans.add(dataBean);
 			}
 			dataTree.put("Functionalizing Entity", fdataBeans);
@@ -293,9 +298,10 @@ public class InitNanoparticleSetup {
 				dataBean.setDataClassName(ClassUtils
 						.getShortClassName(association.getClass()
 								.getCanonicalName()));
-				dataBean.setDataDisplayType(InitSetup.getInstance()
-						.getDisplayName(dataBean.getDataDisplayType(),
-								appContext));
+				dataBean
+						.setDataDisplayType(InitSetup.getInstance()
+								.getDisplayName(dataBean.getDataClassName(),
+										appContext));
 				adataBeans.add(dataBean);
 			}
 			dataTree.put("Chemical Association", adataBeans);
@@ -304,12 +310,39 @@ public class InitNanoparticleSetup {
 			for (LabFile file : particleSample.getSampleComposition()
 					.getLabFileCollection()) {
 				ParticleDataLinkBean dataBean = new ParticleDataLinkBean(file
-						.getId().toString(), "composition");
+						.getId().toString(), "Composition");
 				dataBean.setDataClassName("LabFile");
 				dataBean.setDataDisplayType(file.getType());
 				ldataBeans.add(dataBean);
 			}
 			dataTree.put("Composition File", ldataBeans);
+		}
+
+		// characterization
+		List<ParticleDataLinkBean> cdataBeans = null;
+		for (Characterization achar : particleSample
+				.getCharacterizationCollection()) {
+			String category = "";
+			if (achar instanceof PhysicalCharacterization) {
+				category = "Physical Characterization";
+			} else if (achar instanceof InvitroCharacterization) {
+				category = "In Vitro Characterization";
+			}
+			ParticleDataLinkBean dataBean = new ParticleDataLinkBean(achar
+					.getId().toString(), category);
+			dataBean.setDataClassName(ClassUtils.getShortClassName(achar
+					.getClass().getCanonicalName()));
+			String charName = InitSetup.getInstance().getDisplayName(
+					dataBean.getDataClassName(), appContext);
+			dataBean.setDataDisplayType(achar.getIdentificationName());
+			if (dataTree.get(charName) != null) {
+				cdataBeans = (List<ParticleDataLinkBean>) dataTree
+						.get(charName);
+			} else {
+				cdataBeans = new ArrayList<ParticleDataLinkBean>();
+				dataTree.put(charName, cdataBeans);
+			}
+			cdataBeans.add(dataBean);
 		}
 		return dataTree;
 	}
