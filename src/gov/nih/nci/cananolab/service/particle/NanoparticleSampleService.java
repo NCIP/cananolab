@@ -525,48 +525,4 @@ public class NanoparticleSampleService {
 			throw new ParticleException();
 		}
 	}
-
-	public Map<String, List> getDataTree(ParticleBean particleBean) {
-		NanoparticleSample particleSample = particleBean.getParticleSample();
-		Map<String, List> dataTree = new HashMap<String, List>();
-		// composition
-		if (particleSample.getSampleComposition() != null) {
-			List<NanoparticleEntityBean> nanoparticleEntityBeans = new ArrayList<NanoparticleEntityBean>();
-			for (NanoparticleEntity entity : particleSample
-					.getSampleComposition().getNanoparticleEntityCollection()) {
-				NanoparticleEntityBean entityBean = new NanoparticleEntityBean(
-						entity);
-				nanoparticleEntityBeans.add(entityBean);
-			}
-			dataTree.put("Nanoparticle Entity", nanoparticleEntityBeans);
-
-			List<FunctionalizingEntityBean> functionalizingEntityBeans = new ArrayList<FunctionalizingEntityBean>();
-			for (FunctionalizingEntity entity : particleSample
-					.getSampleComposition()
-					.getFunctionalizingEntityCollection()) {
-				FunctionalizingEntityBean entityBean = new FunctionalizingEntityBean(
-						entity);
-				functionalizingEntityBeans.add(entityBean);
-			}
-			dataTree.put("Functionalizing Entity", nanoparticleEntityBeans);
-
-			List<ChemicalAssociationBean> chemcialAssociationBeans = new ArrayList<ChemicalAssociationBean>();
-			for (ChemicalAssociation association : particleSample
-					.getSampleComposition().getChemicalAssociationCollection()) {
-				ChemicalAssociationBean associationBean = new ChemicalAssociationBean(
-						association);
-				chemcialAssociationBeans.add(associationBean);
-			}
-			dataTree.put("Chemical Association", chemcialAssociationBeans);
-
-			List<LabFileBean> fileBeans = new ArrayList<LabFileBean>();
-			for (LabFile file : particleSample.getSampleComposition()
-					.getLabFileCollection()) {
-				LabFileBean fileBean = new LabFileBean(file);
-				fileBeans.add(fileBean);
-			}
-			dataTree.put("Composition File", fileBeans);
-		}
-		return dataTree;
-	}
 }
