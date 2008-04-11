@@ -4,11 +4,18 @@ import gov.nih.nci.cananolab.dto.common.SortableName;
 
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
@@ -19,7 +26,7 @@ import org.apache.log4j.Logger;
  * @author pansu
  * 
  */
-/* CVS $Id: StringUtils.java,v 1.1 2008-04-07 20:13:36 pansu Exp $ */
+/* CVS $Id: StringUtils.java,v 1.2 2008-04-11 19:45:03 pansu Exp $ */
 
 public class StringUtils {
 	private static Logger logger = Logger.getLogger(StringUtils.class);
@@ -320,11 +327,49 @@ public class StringUtils {
 		return oneWord;
 	}
 
+	/**
+	 * Parse the texts into an array of words using white space as delimiter.
+	 * Keeping words in quotes together.
+	 * 
+	 * @param texts
+	 * @return
+	 */
+	public static List<String> parseToWords(String texts) {
+		SortedSet<String> wordList = new TreeSet<String>();
+
+		// extract words in quotes first
+		String patternStr = "\\B[\"']([^\"']*)[\"']\\B";
+		String[] nonQuotedTexts = texts.split(patternStr);
+		for (String txt : nonQuotedTexts) {
+			String[] nonQuotedWords = txt.split("\\s");
+			wordList.addAll(Arrays.asList(nonQuotedWords));
+		}
+		Pattern pattern = Pattern.compile(patternStr);
+		Matcher matcher = pattern.matcher(texts);
+
+		List<String> quotedWords = new ArrayList<String>();
+		int start = 0;
+		while (matcher.find(start)) {
+			String quotedWord = matcher.group(1).trim();
+			quotedWords.add(quotedWord);
+			start = matcher.end(1);
+		}
+		wordList.addAll(quotedWords);
+
+		return new ArrayList<String>(wordList);
+	}
+
 	public static void main(String[] args) {
 		try {
 			String dateString = StringUtils.convertDateToString(new Date(),
 					"yyyyMMdd_HH-mm-ss-SSS");
 			System.out.println(dateString);
+			String texts = "this is 'a test' of \"parsing words\"";
+			System.out.println(texts);
+			List<String> words = StringUtils.parseToWords(texts);
+			for (String word : words) {
+				System.out.println(word);
+			}
 		} catch (Exception e) {
 			logger.error(e);
 		}
