@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.service.particle;
 
 import gov.nih.nci.cananolab.domain.common.Keyword;
+import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.common.Source;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
@@ -9,10 +10,15 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.OtherFunction;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.OtherNanoparticleEntity;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity;
+import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
+import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
+import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
+import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.ParticleException;
@@ -23,8 +29,10 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -516,5 +524,49 @@ public class NanoparticleSampleService {
 			logger.error("Problem finding the particle by id", e);
 			throw new ParticleException();
 		}
+	}
+
+	public Map<String, List> getDataTree(ParticleBean particleBean) {
+		NanoparticleSample particleSample = particleBean.getParticleSample();
+		Map<String, List> dataTree = new HashMap<String, List>();
+		// composition
+		if (particleSample.getSampleComposition() != null) {
+			List<NanoparticleEntityBean> nanoparticleEntityBeans = new ArrayList<NanoparticleEntityBean>();
+			for (NanoparticleEntity entity : particleSample
+					.getSampleComposition().getNanoparticleEntityCollection()) {
+				NanoparticleEntityBean entityBean = new NanoparticleEntityBean(
+						entity);
+				nanoparticleEntityBeans.add(entityBean);
+			}
+			dataTree.put("Nanoparticle Entity", nanoparticleEntityBeans);
+
+			List<FunctionalizingEntityBean> functionalizingEntityBeans = new ArrayList<FunctionalizingEntityBean>();
+			for (FunctionalizingEntity entity : particleSample
+					.getSampleComposition()
+					.getFunctionalizingEntityCollection()) {
+				FunctionalizingEntityBean entityBean = new FunctionalizingEntityBean(
+						entity);
+				functionalizingEntityBeans.add(entityBean);
+			}
+			dataTree.put("Functionalizing Entity", nanoparticleEntityBeans);
+
+			List<ChemicalAssociationBean> chemcialAssociationBeans = new ArrayList<ChemicalAssociationBean>();
+			for (ChemicalAssociation association : particleSample
+					.getSampleComposition().getChemicalAssociationCollection()) {
+				ChemicalAssociationBean associationBean = new ChemicalAssociationBean(
+						association);
+				chemcialAssociationBeans.add(associationBean);
+			}
+			dataTree.put("Chemical Association", chemcialAssociationBeans);
+
+			List<LabFileBean> fileBeans = new ArrayList<LabFileBean>();
+			for (LabFile file : particleSample.getSampleComposition()
+					.getLabFileCollection()) {
+				LabFileBean fileBean = new LabFileBean(file);
+				fileBeans.add(fileBean);
+			}
+			dataTree.put("Composition File", fileBeans);
+		}
+		return dataTree;
 	}
 }
