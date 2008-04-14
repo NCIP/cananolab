@@ -214,7 +214,7 @@ public class NanoparticleEntityBean {
 		return description;
 	}
 
-	public void setEntityDescription(String description) {
+	public void setDescription(String description) {
 		this.description = description;
 	}
 }
