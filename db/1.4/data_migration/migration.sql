@@ -7,7 +7,6 @@ INSERT INTO canano.characterization (
 	source,
 	description,
 	identifier_name,
-	name,
 	created_date,
 	created_by,
 	protocol_file_pk_id,
@@ -19,7 +18,6 @@ SELECT c.characterization_pk_id,
 	c.source,
 	c.description,
 	c.identifier_name,
-	c.name,
 	c.created_date,
 	c.created_by,
 	c.protocol_file_pk_id,
@@ -286,12 +284,6 @@ INSERT INTO canano.physical_state
 SELECT morphology_pk_id,
 	type
 FROM cananolab.morphology
-;
-
--- update canano.characterization table to replace "Morphology" with "Physical State"
-update canano.characterization
-set name = 'Physical State'
-where name = 'Morphology'
 ;
 
 update canano.characterization
