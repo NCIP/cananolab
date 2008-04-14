@@ -24,13 +24,13 @@ public class FunctionBean {
 
 	private String description;
 
-	private ImagingFunction imagingFunction;
+	private ImagingFunction imagingFunction=new ImagingFunction();
 
-	private TherapeuticFunction therapeuticFunction;
+	private TherapeuticFunction therapeuticFunction=new TherapeuticFunction();
 
-	private TargetingFunction targetingFunction;
+	private TargetingFunction targetingFunction=new TargetingFunction();
 
-	private OtherFunction otherFunction;
+	private OtherFunction otherFunction=new OtherFunction();
 
 	private String className;
 
@@ -38,6 +38,9 @@ public class FunctionBean {
 
 	private List<TargetBean> targets = new ArrayList<TargetBean>();
 
+	public FunctionBean() {
+		
+	}
 	public FunctionBean(Function function) {
 		className = ClassUtils.getShortClassName(function.getClass()
 				.getCanonicalName());
