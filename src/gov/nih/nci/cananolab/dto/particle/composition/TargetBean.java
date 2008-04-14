@@ -32,6 +32,10 @@ public class TargetBean {
 
 	private Target domainTarget;
 
+	public TargetBean() {
+		
+	}
+	
 	public TargetBean(Target target) {
 		if (target instanceof Antigen) {
 			antigen = (Antigen) target;

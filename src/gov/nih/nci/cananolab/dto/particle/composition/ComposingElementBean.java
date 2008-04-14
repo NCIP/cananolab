@@ -13,9 +13,9 @@ import java.util.List;
  * 
  */
 public class ComposingElementBean {
-	private ComposingElement composingElement;
+	private ComposingElement composingElement=new ComposingElement();
 
-	private List<FunctionBean> inherentFunctions;
+	private List<FunctionBean> inherentFunctions = new ArrayList<FunctionBean>();
 
 	public ComposingElementBean(ComposingElement composingElement) {
 		this.composingElement = composingElement;
@@ -23,6 +23,9 @@ public class ComposingElementBean {
 				.getInherentFunctionCollection()) {
 			inherentFunctions.add(new FunctionBean(function));
 		}
+	}
+
+	public ComposingElementBean() {
 	}
 
 	public ComposingElement getComposingElement() {
