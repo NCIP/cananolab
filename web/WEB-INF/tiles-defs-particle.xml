@@ -44,7 +44,7 @@
 			value="/particle/sideParticleMenu.jsp" />
 		<put name="menu" value="nanoparticles" />
 	</definition>
-
+	
 	<definition name="particle.characterization"
 		extends="particle.annotationHome">
 		<put name="calabContent"
@@ -58,20 +58,38 @@
 			value="/bodyMessage.jsp?bundle=particle" />
 	</definition>
 
-	<!-- definition for the nanoparticle composition page -->
-	<definition name="particle.composition"
-		extends="particle.physicalCharacterization">
-		<put name="calabContent"
-			value="/particle/composition/bodyParticleComposition.jsp" />
+	<!-- definition for the nanoparticle composition particle entity page -->
+	<definition name="particle.composition.particleEntity"
+		extends="particle.annotationHome">
+		<put name="calabContent" value="/particle/composition/bodyParticleEntity.jsp" />
+	</definition>
+	
+	<!-- definition for the nanoparticle composition functionalizing entity page -->
+	<definition name="particle.composition.functionalizingEntity"
+		extends="particle.annotationHome">
+		<put name="calabContent" value="/particle/composition/bodyFunctionalizingEntity.jsp" />
+	</definition>
+	
+	<!-- definition for the nanoparticle composition chemical association page -->
+	<definition name="particle.composition.chemicalAssociation"
+		extends="particle.annotationHome">
+		<put name="calabContent" value="/particle/composition/bodyChemicalAssociation.jsp" />
+	</definition>
+	
+	<!-- definition for the nanoparticle composition file page -->
+	<definition name="particle.composition.compositionFile"
+		extends="particle.annotationHome">
+		<put name="calabContent" value="/particle/composition/compositionFile.jsp" />
 	</definition>
 
 	<!-- definition for the particle general info view page -->
 	<definition name="particle.generalInfo"
-		extends="calab.home">
+		extends="particle.annotationHome">
 		<put name="calabContent"
 			value="/particle/bodySubmitNanoparticleSample.jsp" />
 		<put name="menu" value="nanoparticles" />
 	</definition>
+
 
 	<definition name="particle.physicalCharacterization"
 		extends="particle.characterization">
