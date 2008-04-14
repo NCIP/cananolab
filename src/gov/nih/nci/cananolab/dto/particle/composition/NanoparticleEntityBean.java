@@ -17,13 +17,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NanoparticleEntityBean {
-	private String entityType;
+	private String type;
 
 	private String description;
 
-	private String entityClassName;
+	private String className;
 
-	private String entityId;
+	private String id;
 
 	private Polymer polymer = new Polymer();
 
@@ -51,7 +51,7 @@ public class NanoparticleEntityBean {
 	}
 
 	public NanoparticleEntityBean(NanoparticleEntity nanoparticleEntity) {
-		entityClassName = ClassUtils.getShortClassName(nanoparticleEntity
+		className = ClassUtils.getShortClassName(nanoparticleEntity
 				.getClass().getCanonicalName());
 		if (nanoparticleEntity instanceof Dendrimer) {
 			dendrimer = (Dendrimer) nanoparticleEntity;
@@ -70,23 +70,23 @@ public class NanoparticleEntityBean {
 				.getComposingElementCollection()) {
 			composingElements.add(new ComposingElementBean(composingElement));
 		}
-		entityId = nanoparticleEntity.getId().toString();
+		id = nanoparticleEntity.getId().toString();
 	}
 
 	public int compareTo(NanoparticleEntityBean other) {
-		return entityType.compareTo(other.getEntityType());
+		return type.compareTo(other.getType());
 	}
 
-	public String getEntityType() {
-		return entityType;
+	public String getType() {
+		return type;
 	}
 
-	public void setEntityType(String entityType) {
-		this.entityType = entityType;
+	public void setType(String entityType) {
+		this.type = entityType;
 	}
 
-	public String getEntityClassName() {
-		return entityClassName;
+	public String getClassName() {
+		return className;
 	}
 
 	public Dendrimer getDendrimer() {
@@ -192,22 +192,22 @@ public class NanoparticleEntityBean {
 
 	public void setOtherEntity(OtherNanoparticleEntity otherEntity) {
 		this.otherEntity = otherEntity;
-		otherEntity.setType(entityType);
+		otherEntity.setType(type);
 		otherEntity.setComposingElementCollection(domainComposingElements);
 		otherEntity.setLabFileCollection(files);
 		otherEntity.setDescription(description);
 	}
 
-	public String getEntityId() {
-		return entityId;
+	public String getId() {
+		return id;
 	}
 
-	public void setEntityId(String entityId) {
-		this.entityId = entityId;
+	public void setId(String entityId) {
+		this.id = entityId;
 	}
 
-	public void setEntityClassName(String entityClassName) {
-		this.entityClassName = entityClassName;
+	public void setClassName(String entityClassName) {
+		this.className = entityClassName;
 	}
 
 	public String getDescription() {
