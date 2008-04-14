@@ -31,6 +31,14 @@
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
 		</form-bean>
+
+		<form-bean name="nanoparticleEntityForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="entity"
+				type="gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean" />
+			<form-property name="particleSampleBean"
+				type="gov.nih.nci.cananolab.dto.particle.ParticleBean" />
+		</form-bean>
 	</form-beans>
 	<action-mappings>
 		<action path="/manageParticle"
@@ -54,6 +62,15 @@
 			<forward name="input" path="particle.searchNanoparticle" />
 			<forward name="success"
 				path="particle.searchNanoparticleResult" />
+		</action>
+		<action input="input" name="nanoparticleEntityForm"
+			parameter="dispatch" path="/nanoparticleEntity"
+			type="gov.nih.nci.cananolab.ui.particle.NanoparticleEntityAction"
+			scope="request">
+			<forward name="input"
+				path="particle.composition.particleEntity" />
+			<forward name="success"
+				path="particle.composition.particleEntity" />
 		</action>
 	</action-mappings>
 </struts-config>
