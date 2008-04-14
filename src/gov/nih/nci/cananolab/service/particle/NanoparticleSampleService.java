@@ -13,9 +13,11 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
+import gov.nih.nci.cananolab.exception.CaNanoLabException;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.ParticleException;
+import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.ClassUtils;
@@ -214,24 +216,10 @@ public class NanoparticleSampleService {
 			String[] nanoparticleEntityClassNames,
 			String[] functionalizingEntityClassNames,
 			String[] functionClassNames, String[] characterizationClassNames,
-			String[] keywords, String[] summaries, UserBean user)
-			throws ParticleException, CaNanoLabSecurityException {
+			String[] wordList, UserBean user) throws ParticleException,
+			CaNanoLabSecurityException {
 		List<ParticleBean> particles = new ArrayList<ParticleBean>();
-		// trim leading and trailing spaces
-		String[] trimmedKeywords = null;
-		if (keywords != null && keywords.length > 0) {
-			trimmedKeywords = new String[keywords.length];
-			for (int i = 0; i < keywords.length; i++) {
-				trimmedKeywords[i] = keywords[i].trim();
-			}
-		}
-		String[] trimmedSummaries = null;
-		if (summaries != null && summaries.length > 0) {
-			trimmedSummaries = new String[summaries.length];
-			for (int i = 0; i < summaries.length; i++) {
-				trimmedSummaries[i] = summaries[i].trim();
-			}
-		}
+
 		try {
 			DetachedCriteria crit = DetachedCriteria
 					.forClass(NanoparticleSample.class);
@@ -241,11 +229,11 @@ public class NanoparticleSampleService {
 								particleSource));
 			}
 
-			if (trimmedKeywords != null && trimmedKeywords.length > 0) {
-				// turn keywords into upper case before search
-				String[] upperKeywords = new String[trimmedKeywords.length];
-				for (int i = 0; i < trimmedKeywords.length; i++) {
-					upperKeywords[i] = trimmedKeywords[i].toUpperCase();
+			if (wordList != null && wordList.length > 0) {
+				// turn words into upper case before searching keywords
+				String[] upperKeywords = new String[wordList.length];
+				for (int i = 0; i < wordList.length; i++) {
+					upperKeywords[i] = wordList[i].toUpperCase();
 				}
 
 				crit.createAlias("keywordCollection", "keyword1",
@@ -264,26 +252,14 @@ public class NanoparticleSampleService {
 				;
 				Criterion keywordCrit2 = Restrictions.in("keyword2.name",
 						upperKeywords);
-
-				crit.add(Restrictions.or(keywordCrit1, keywordCrit2));
-
-			}
-			if (trimmedSummaries != null && trimmedSummaries.length > 0) {
-				// criteria is already created if keyword is not null
-				if (trimmedKeywords == null || trimmedKeywords.length == 0) {
-					crit.createAlias("characterizationCollection", "chara",
-							CriteriaSpecification.LEFT_JOIN).createAlias(
-							"chara.derivedBioAssayDataCollection", "derived",
-							CriteriaSpecification.LEFT_JOIN).createAlias(
-							"derived.labFile", "charFile");
-				}
 				Disjunction disjunction = Restrictions.disjunction();
-				for (String summary : trimmedSummaries) {
+				disjunction.add(keywordCrit1).add(keywordCrit2);
+
+				for (String word : wordList) {
 					Criterion summaryCrit1 = Restrictions.ilike(
-							"chara.description", summary, MatchMode.ANYWHERE);
-					Criterion summaryCrit2 = Restrictions
-							.ilike("charFile.description", summary,
-									MatchMode.ANYWHERE);
+							"chara.description", word, MatchMode.ANYWHERE);
+					Criterion summaryCrit2 = Restrictions.ilike(
+							"charFile.description", word, MatchMode.ANYWHERE);
 					Criterion summaryCrit = Restrictions.or(summaryCrit1,
 							summaryCrit2);
 					disjunction.add(summaryCrit);
