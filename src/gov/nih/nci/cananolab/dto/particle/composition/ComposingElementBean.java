@@ -28,6 +28,8 @@ public class ComposingElementBean {
 	}
 
 	public ComposingElementBean() {
+		FunctionBean fb = new FunctionBean();
+		inherentFunctions.add(fb);
 	}
 
 	public ComposingElement getDomainComposingElement() {

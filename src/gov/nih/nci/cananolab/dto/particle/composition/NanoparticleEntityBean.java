@@ -56,6 +56,8 @@ public class NanoparticleEntityBean {
 	private NanoparticleEntity domainEntity=new NanoparticleEntity();
 
 	public NanoparticleEntityBean() {
+		ComposingElementBean ceb = new ComposingElementBean();
+		composingElements.add(ceb);
 	}
 
 	public NanoparticleEntityBean(NanoparticleEntity nanoparticleEntity) {
