@@ -21,18 +21,16 @@ import java.util.TreeSet;
 public class ParticleBean {
 	private String keywordsStr;
 
-	private Collection<Keyword> keywords;
+	private Collection<Keyword> keywords = new HashSet<Keyword>();
 
 	private String[] visibilityGroups = new String[0];
 
 	private String gridNode;
 
-	private NanoparticleSample particleSample;
+	private NanoparticleSample particleSample = new NanoparticleSample();
 
-	public ParticleBean() {
-		particleSample = new NanoparticleSample();
+	public ParticleBean() {		
 		particleSample.setSource(new Source());
-		keywords = new HashSet<Keyword>();
 	}
 
 	public ParticleBean(NanoparticleSample particleSample) {
@@ -73,7 +71,7 @@ public class ParticleBean {
 				// change to upper case
 				Keyword keyword = new Keyword();
 				keyword.setName(str.toUpperCase());
-				keywords.add(keyword);				
+				keywords.add(keyword);
 			}
 		}
 		particleSample.setKeywordCollection(keywords);
