@@ -25,7 +25,7 @@
 					<c:set var="particleURL" value="editParticleURL" />
 				</c:when>
 				<c:otherwise>
-					<c:set var="particleURL" value="editParticleURL" />
+					<c:set var="particleURL" value="viewParticleURL" />
 				</c:otherwise>
 			</c:choose>
 			<jsp:include page="/bodyMessage.jsp?bundle=particle" />
