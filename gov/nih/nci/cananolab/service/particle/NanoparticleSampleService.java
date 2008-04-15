@@ -266,6 +266,7 @@ public class NanoparticleSampleService {
 				}
 				crit.add(disjunction);
 			}
+
 			crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
 			crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
 					FetchMode.JOIN);
@@ -274,6 +275,7 @@ public class NanoparticleSampleService {
 					FetchMode.JOIN);
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			List results = appService.query(crit);
