@@ -43,9 +43,7 @@ public class CustomPlugIn implements PlugIn {
 			InitNanoparticleSetup.getInstance()
 				.getDefaultCharacterizationTypes(
 						actionServlet.getServletContext());
-	
-	
-			// InitSecuritySetup.getInstance().createDefaultCSMGroups();
+			InitSecuritySetup.getInstance().createDefaultCSMGroups();
 		} catch (Exception e) {
 			this.logger.error("Servlet initialization error", e);
 		}
