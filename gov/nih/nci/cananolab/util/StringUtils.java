@@ -8,10 +8,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
@@ -26,7 +24,7 @@ import org.apache.log4j.Logger;
  * @author pansu
  * 
  */
-/* CVS $Id: StringUtils.java,v 1.2 2008-04-11 19:45:03 pansu Exp $ */
+/* CVS $Id: StringUtils.java,v 1.3 2008-04-15 14:20:40 pansu Exp $ */
 
 public class StringUtils {
 	private static Logger logger = Logger.getLogger(StringUtils.class);
@@ -328,24 +326,27 @@ public class StringUtils {
 	}
 
 	/**
-	 * Parse the texts into an array of words using white space as delimiter.
+	 * Parse the text into an array of words using white space as delimiter.
 	 * Keeping words in quotes together.
 	 * 
 	 * @param texts
 	 * @return
 	 */
-	public static List<String> parseToWords(String texts) {
+	public static List<String> parseToWords(String text) {
+		if (text == null || text.length() == 0) {
+			return null;
+		}
 		SortedSet<String> wordList = new TreeSet<String>();
 
 		// extract words in quotes first
 		String patternStr = "\\B[\"']([^\"']*)[\"']\\B";
-		String[] nonQuotedTexts = texts.split(patternStr);
+		String[] nonQuotedTexts = text.split(patternStr);
 		for (String txt : nonQuotedTexts) {
 			String[] nonQuotedWords = txt.split("\\s");
 			wordList.addAll(Arrays.asList(nonQuotedWords));
 		}
 		Pattern pattern = Pattern.compile(patternStr);
-		Matcher matcher = pattern.matcher(texts);
+		Matcher matcher = pattern.matcher(text);
 
 		List<String> quotedWords = new ArrayList<String>();
 		int start = 0;
