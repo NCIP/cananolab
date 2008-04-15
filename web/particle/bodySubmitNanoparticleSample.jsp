@@ -6,10 +6,9 @@
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 
 <c:set var="action" value="Submit" scope="request" />
-<c:if test="${param.dispatch eq 'setupUpdate'}">
+<c:if test="${param.dispatch eq 'setupUpdate' || newParticleCreated eq 'true'}">
 	<c:set var="action" value="Update" scope="request" />
 </c:if>
-
 <html:form action="/submitNanoparticleSample">
 	<table width="100%" align="center">
 		<tr>
