@@ -18,7 +18,7 @@
 		<put name="itemDescription"
 			value="/particle/bodyNanoparticleDescription.jsp" />
 		<put name="createLink"
-			value="nanoparticleGeneralInfo.do?dispatch=setup&amp;page=0" />
+			value="submitNanoparticleSample.do?dispatch=setup&amp;page=0" />
 		<put name="searchLink"
 			value="searchNanoparticle.do?dispatch=setup" />
 	</definition>
@@ -28,14 +28,6 @@
 		extends="calab.home">
 		<put name="calabContent"
 			value="/particle/bodySubmitNanoparticleSample.jsp" />
-		<put name="menu" value="nanoparticles" />
-	</definition>
-
-	<!-- definition for the annotate nanoparticle page -->
-	<definition name="particle.createNanoparticle"
-		extends="calab.home">
-		<put name="calabContent"
-			value="/particle/bodyCreateNanoparticle.jsp" />
 		<put name="menu" value="nanoparticles" />
 	</definition>
 
